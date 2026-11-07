@@ -14,7 +14,11 @@ export type RenderPortfolioPageInput = {
 	messages: PortfolioPageMessages;
 	/** Shapes of the resume icons the page uses (`portfolioIconNames`), by name; missing ones are left out. */
 	icons?: Readonly<Record<string, string>>;
-	/** An image address as the page loads it; by default every address is used as given. */
+	/**
+	 * An image address as the page loads it, or undefined to leave the picture out. By default http(s) addresses and
+	 * paths on the page's own site load as given (`pageImageUrl`); anything else (`data:`, `javascript:`, `//host`)
+	 * doesn't.
+	 */
 	imageUrl?: (src: string) => string | undefined;
 	/** The footer's year. Given rather than read from the clock, so a render is a pure function of its input. */
 	year: number;
@@ -41,14 +45,22 @@ export type PortfolioPage = {
 	themeColors: { light: string; dark: string };
 };
 
-/** The resume icons a view draws (service, metric and client icons), for the caller to load before rendering. */
+/** An address an `<img>` may load: http(s), or a path on the page's own site (not `//host`, no other scheme). */
+// Browsers read a leading `\` like `/`, so `/\host` and `\\host` are other sites too.
+const PAGE_IMAGE = /^(?:https?:\/\/|\/(?![/\\])|(?![a-z][\d+.a-z-]*:)[^/\\])/i;
+
+/** The default `imageUrl`: allowed addresses (`PAGE_IMAGE`) as given, others left out. */
+const pageImageUrl = (src: string) => (PAGE_IMAGE.test(src) ? src : undefined);
+
+/**
+ * The resume icons a view draws (service, metric and client icons, link cards' brands), for the caller to load before
+ * rendering. The intro's highlights are drawn compact, without their icons, so theirs aren't loaded.
+ */
 export function portfolioIconNames(view: PortfolioView): string[] {
 	const names = new Set<string>();
-	const metrics = [
-		...view.hero.highlights,
-		...view.works.flatMap((work) => work.blocks.flatMap((block) => (block.type === "metrics" ? block.items : []))),
-	];
-	for (const metric of metrics) if (metric.icon) names.add(metric.icon);
+	for (const work of view.works)
+		for (const block of work.blocks)
+			if (block.type === "metrics") for (const metric of block.items) if (metric.icon) names.add(metric.icon);
 	for (const work of view.works)
 		for (const block of work.blocks) if (block.type === "link" && block.brandIcon) names.add(block.brandIcon);
 	for (const section of view.sections) {
@@ -67,12 +79,17 @@ export function renderPortfolioPage(input: RenderPortfolioPageInput): PortfolioP
 	const { view } = input;
 	const theme = themeRenderer(view.theme);
 	let counter = 0;
+	const icons = input.icons ?? {};
 	const context: RenderContext = {
 		view,
 		messages: input.messages,
 		locale: view.locale,
-		icon: (name) => (name ? (input.icons?.[name] ?? null) : null),
-		imageUrl: input.imageUrl ?? ((src) => src),
+		// Only the map's own entries, and only text: a name such as "constructor" must not reach Object's prototype.
+		icon: (name) => {
+			const shape = name && Object.hasOwn(icons, name) ? icons[name] : undefined;
+			return typeof shape === "string" ? shape : null;
+		},
+		imageUrl: input.imageUrl ?? pageImageUrl,
 		nextId: (prefix) => `${prefix}-${++counter}`,
 	};
 	const markup = renderToStaticMarkup(

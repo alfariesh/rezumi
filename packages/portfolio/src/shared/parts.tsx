@@ -2,15 +2,16 @@ import type { PortfolioView, PortfolioViewLink, PortfolioViewSection, PortfolioV
 import type { UiIconName } from "./icons";
 import type { ReactNode } from "react";
 import { PORTFOLIO_MAP_ZOOM } from "@rezumi/schema/portfolio/data";
+import { fillPortfolioMessage } from "../messages";
 import { renderPortfolioHtml } from "../rich-text";
 import { htmlToText } from "../text";
 import { useRender } from "./context";
 import { RezumiMark, ResumeIcon, UiIcon } from "./icons";
 import { LinkCard, PdfCard, VideoFacade } from "./media";
 import { MetricGroup } from "./metric";
-import { hostOf, linkAttributes, Picture, vars } from "./primitives";
+import { headingId, hostOf, linkAttributes, Picture, vars } from "./primitives";
 
-export { hostOf, linkAttributes, Picture, vars };
+export { headingId, hostOf, linkAttributes, Picture, vars };
 
 const BUTTON_ICONS: Partial<Record<NonNullable<PortfolioViewLink["kind"]>, UiIconName>> = {
 	resume: "resume",
@@ -50,9 +51,18 @@ export function Buttons({ links }: ButtonsProps) {
 
 type ProseProps = { html: string; className?: string };
 
+/**
+ * Rich text's own headings, under the heading of the section or work they sit in: when the text uses H2, its H2 and
+ * H3 become `h3` and `h4`; H3 alone stays `h3`. The cleaned text holds those tags without attributes.
+ */
+const demoteHeadings = (html: string) =>
+	html.includes("<h2>")
+		? html.replace(/<(\/?)h([23])>/g, (_tag, slash: string, level: string) => `<${slash}h${Number(level) + 1}>`)
+		: html;
+
 /** Rich text, cleaned once more at render (`02-teknis.md` section 15). */
 export function Prose({ html, className }: ProseProps) {
-	const clean = renderPortfolioHtml(html);
+	const clean = demoteHeadings(renderPortfolioHtml(html));
 	if (!htmlToText(clean)) return null;
 	return (
 		<div
@@ -67,9 +77,69 @@ type SectionTitleProps = { section: { anchor: string; title: string }; className
 
 export function SectionTitle({ section, className }: SectionTitleProps) {
 	return (
-		<h2 className={["pf-section__title", className].filter(Boolean).join(" ")} id={`${section.anchor}-title`}>
+		<h2 className={["pf-section__title", className].filter(Boolean).join(" ")} id={headingId(section.anchor)}>
 			{section.title}
 		</h2>
+	);
+}
+
+type SectionProps = {
+	/** Its anchor and the title its heading shows. */
+	section: { anchor: string; title: string };
+	className: string;
+	/** The heading's class besides `pf-section__title`. */
+	titleClassName?: string;
+	/** More attributes for the section element (Mozaik's tile shapes). */
+	attributes?: Record<string, string>;
+	children: ReactNode;
+};
+
+/** A section of the page: its anchor, named by its heading, then what the theme draws in it. */
+export function Section({ section, className, titleClassName, attributes, children }: SectionProps) {
+	return (
+		<section className={className} id={section.anchor} aria-labelledby={headingId(section.anchor)} {...attributes}>
+			<SectionTitle section={section} {...(titleClassName ? { className: titleClassName } : {})} />
+			{children}
+		</section>
+	);
+}
+
+type ExtraSectionProps = {
+	section: { anchor: string; title: string };
+	/** Kanvas' rows leave out `pf-extra`. */
+	className?: string;
+	children: ReactNode;
+};
+
+/**
+ * A short list that shares one block with the short lists beside it (`groupSections`): it keeps its own anchor and
+ * names itself with a small heading.
+ */
+export function ExtraSection({ section, className = "pf-section pf-extra", children }: ExtraSectionProps) {
+	return (
+		<section className={className} id={section.anchor} aria-labelledby={headingId(section.anchor)}>
+			<h2 className="pf-extra__title" id={headingId(section.anchor)}>
+				{section.title}
+			</h2>
+			{children}
+		</section>
+	);
+}
+
+type CustomSectionBodyProps = {
+	section: Extract<PortfolioViewSection, { kind: "custom" }>;
+	imageClassName: string;
+	proseClassName?: string;
+};
+
+/** One of the portfolio's own free sections: its picture, text and button. */
+export function CustomSectionBody({ section, imageClassName, proseClassName }: CustomSectionBodyProps) {
+	return (
+		<>
+			{section.image && <Picture image={section.image} className={imageClassName} />}
+			<Prose html={section.html} {...(proseClassName ? { className: proseClassName } : {})} />
+			{section.button && <Buttons links={[section.button]} />}
+		</>
 	);
 }
 
@@ -77,13 +147,14 @@ type WorkDetailProps = { work: PortfolioViewWork; previous: PortfolioViewWork; n
 
 /**
  * A work's detail, opened by its anchor (`#work-<slug>`) through `:target`, so it reads without JavaScript and each work
- * can be shared. The bar closes back to the list and steps to the previous and next work.
+ * can be shared. The bar closes back to the list and steps to the previous and next work. It's modal: the page script
+ * makes everything behind it inert while it's open.
  */
-export function WorkDetail({ work, previous, next, total }: WorkDetailProps) {
+function WorkDetail({ work, previous, next, total }: WorkDetailProps) {
 	const { messages, view, imageUrl } = useRender();
-	const titleId = `${work.anchor}-title`;
+	const titleId = headingId(work.anchor);
 	return (
-		<section className="pf-detail" id={work.anchor} role="dialog" aria-labelledby={titleId}>
+		<section className="pf-detail" id={work.anchor} role="dialog" aria-modal="true" aria-labelledby={titleId}>
 			<article className="pf-detail__panel">
 				<div className="pf-detail__bar">
 					<a href="#work" data-close>
@@ -142,27 +213,41 @@ export function WorkDetail({ work, previous, next, total }: WorkDetailProps) {
 								case "images":
 									return (
 										<div key={block.id} className="pf-gallery" data-layout={block.layout}>
-											{block.images.map((image, index) => (
-												<figure key={`${image.src}-${index}`}>
-													{/* The full picture: the page script opens it in the viewer, without it the link opens the file. */}
-													<a
-														className="pf-zoom"
-														href={imageUrl(image.src) ?? image.src}
-														data-lightbox=""
-														{...(image.caption ? { "data-caption": image.caption } : {})}
-													>
-														<Picture
-															image={image}
-															sizes={
-																block.layout === "grid"
-																	? "(min-width: 860px) 400px, 100vw"
-																	: "(min-width: 860px) 820px, 100vw"
-															}
-														/>
-													</a>
-													{image.caption && <figcaption>{image.caption}</figcaption>}
-												</figure>
-											))}
+											{block.images.map((image, index) => {
+												const full = imageUrl(image.src);
+												if (!full) return null;
+												// The picture names its link: its own text, else its caption, else the work and its place.
+												const alt =
+													image.alt ||
+													image.caption ||
+													(block.images.length > 1
+														? `${work.title} (${index + 1}/${block.images.length})`
+														: work.title);
+												return (
+													<figure key={`${image.src}-${index}`}>
+														{/* The full picture: the page script opens it in the viewer; without it (or in the
+														editor's inert preview) the link opens the file in a new tab. */}
+														<a
+															className="pf-zoom"
+															href={full}
+															target="_blank"
+															rel="noopener"
+															data-lightbox=""
+															{...(image.caption ? { "data-caption": image.caption } : {})}
+														>
+															<Picture
+																image={{ ...image, alt }}
+																sizes={
+																	block.layout === "grid"
+																		? "(min-width: 860px) 400px, 100vw"
+																		: "(min-width: 860px) 820px, 100vw"
+																}
+															/>
+														</a>
+														{image.caption && <figcaption>{image.caption}</figcaption>}
+													</figure>
+												);
+											})}
 										</div>
 									);
 								case "metrics":
@@ -191,7 +276,7 @@ export function WorkDetail({ work, previous, next, total }: WorkDetailProps) {
  * The full-screen picture viewer the page script fills from a gallery: one per page, hidden until a gallery picture
  * is opened. Escape, the arrow keys and swiping step through the gallery; closing returns focus to the picture.
  */
-export function Lightbox() {
+function Lightbox() {
 	const { messages } = useRender();
 	return (
 		<div className="pf-lightbox" role="dialog" aria-modal="true" aria-label={messages.pictureViewer} hidden>
@@ -218,180 +303,26 @@ export function Lightbox() {
 	);
 }
 
-type ResumeItem = Record<string, unknown> & { id: string };
-
-const text = (value: unknown) => (typeof value === "string" ? value.trim() : "");
-const websiteOf = (item: ResumeItem) => {
-	const website = item.website as { url?: unknown } | undefined;
-	return text(website?.url);
-};
-
 /**
- * A resume item's parts, whatever its section: what it is, where, when, its link and description. Sections differ
- * in field names (position or degree, company or school), so each one is mapped here.
+ * Every work's detail the page holds (`view.works`), each stepping to the one before and after it, and the picture
+ * viewer when a detail has a gallery. They stay children of the page's root, after the footer: the page script makes
+ * the root's other children inert while one is open.
  */
-function resumeItemParts(kind: string, raw: ResumeItem) {
-	const join = (...parts: string[]) => parts.filter(Boolean).join(" · ");
-	const item = raw as Record<string, unknown>;
-	switch (kind) {
-		case "experience":
-			return {
-				title: text(item.position) || text(item.company),
-				org: join(text(item.position) ? text(item.company) : "", text(item.location)),
-				when: text(item.period),
-				description: text(item.description),
-				roles: Array.isArray(item.roles) ? (item.roles as ResumeItem[]) : [],
-			};
-		case "education":
-			return {
-				title: [text(item.degree), text(item.area)].filter(Boolean).join(", ") || text(item.school),
-				org: join(text(item.degree) || text(item.area) ? text(item.school) : "", text(item.location), text(item.grade)),
-				when: text(item.period),
-				description: text(item.description),
-				roles: [],
-			};
-		case "profiles":
-			return {
-				title: text(item.network) || text(item.username),
-				org: text(item.network) ? text(item.username) : "",
-				when: "",
-				description: "",
-				roles: [],
-			};
-		case "volunteer":
-			return {
-				title: text(item.organization),
-				org: text(item.location),
-				when: text(item.period),
-				description: text(item.description),
-				roles: [],
-			};
-		default:
-			return {
-				title:
-					text(item.title) || text(item.name) || text(item.position) || text(item.organization) || text(item.language),
-				org: join(
-					text(item.awarder),
-					text(item.issuer),
-					text(item.publisher),
-					text(item.company),
-					text(item.school),
-					text(item.fluency),
-					text(item.location),
-				),
-				when: text(item.date) || text(item.period),
-				description: text(item.description) || text(item.content),
-				roles: [],
-			};
-	}
-}
-
-type CvListProps = { kind: string; items: readonly ResumeItem[]; variant?: string };
-
-/** Experience, education, volunteering and the resume's custom sections: role, place, period, description. */
-export function CvList({ kind, items, variant }: CvListProps) {
-	const Tag = kind === "experience" ? "ol" : "ul";
+export function WorkDetails() {
+	const { works } = useRender().view;
 	return (
-		<Tag className="pf-cvlist" data-variant={variant}>
-			{items.map((item) => {
-				const parts = resumeItemParts(kind, item);
-				const website = websiteOf(item);
-				if (!parts.title && !parts.description) return null;
-				return (
-					<li key={item.id} className="pf-cvitem">
-						<div className="pf-cvitem__head">
-							<span className="pf-cvitem__role">{parts.title}</span>
-							{parts.when && <span className="pf-cvitem__when">{parts.when}</span>}
-						</div>
-						{(parts.org || website) && (
-							<span className="pf-cvitem__org">
-								{website ? <a {...linkAttributes(website)}>{parts.org || website}</a> : parts.org}
-							</span>
-						)}
-						{parts.description && <Prose html={parts.description} />}
-						{parts.roles.length > 0 && (
-							<ul className="pf-cvitem__roles">
-								{parts.roles.map((role) => (
-									<li key={role.id} className="pf-cvitem">
-										<div className="pf-cvitem__head">
-											<span className="pf-cvitem__role">{text(role.position)}</span>
-											{text(role.period) && <span className="pf-cvitem__when">{text(role.period)}</span>}
-										</div>
-										{text(role.description) && <Prose html={text(role.description)} />}
-									</li>
-								))}
-							</ul>
-						)}
-					</li>
-				);
-			})}
-		</Tag>
-	);
-}
-
-type ExtraListProps = { kind: string; items: readonly ResumeItem[] };
-
-/** Short lists (languages, certificates, awards, publications, interests): a bold line and a muted one. */
-export function ExtraList({ kind, items }: ExtraListProps) {
-	return (
-		<ul>
-			{items.map((item) => {
-				const record = item as Record<string, unknown>;
-				const parts = resumeItemParts(kind, item);
-				const keywords = Array.isArray(record.keywords) ? (record.keywords as unknown[]).map(text).filter(Boolean) : [];
-				const detail = [parts.org, parts.when, keywords.join(", ")].filter(Boolean).join(" · ");
-				const website = websiteOf(item);
-				if (!parts.title) return null;
-				return (
-					<li key={item.id}>
-						<b>{website ? <a {...linkAttributes(website)}>{parts.title}</a> : parts.title}</b>
-						{detail && <span>{detail}</span>}
-					</li>
-				);
-			})}
-		</ul>
-	);
-}
-
-type SkillsProps = { items: readonly ResumeItem[]; variant: string };
-
-/** Skills as groups (a skill with its keywords) or as one row of chips. */
-export function Skills({ items, variant }: SkillsProps) {
-	const skills = items
-		.map((item) => {
-			const record = item as Record<string, unknown>;
-			return {
-				id: item.id,
-				name: text(record.name),
-				icon: text(record.icon),
-				keywords: Array.isArray(record.keywords) ? (record.keywords as unknown[]).map(text).filter(Boolean) : [],
-			};
-		})
-		.filter((skill) => skill.name || skill.keywords.length);
-	if (variant === "chips" || skills.every((skill) => !skill.keywords.length)) {
-		return (
-			<ul className="pf-tags" data-variant="chips">
-				{skills.map((skill) => (
-					<li key={skill.id}>{skill.name || skill.keywords.join(", ")}</li>
-				))}
-			</ul>
-		);
-	}
-	return (
-		<div className="pf-skillgroups" data-variant="groups">
-			{skills.map((skill) => (
-				<div key={skill.id} className="pf-skillgroup">
-					{skill.name && <b>{skill.name}</b>}
-					{skill.keywords.length > 0 && (
-						<ul className="pf-tags">
-							{skill.keywords.map((keyword) => (
-								<li key={keyword}>{keyword}</li>
-							))}
-						</ul>
-					)}
-				</div>
+		<>
+			{works.map((work, index) => (
+				<WorkDetail
+					key={work.id}
+					work={work}
+					previous={works[(index - 1 + works.length) % works.length] ?? work}
+					next={works[(index + 1) % works.length] ?? work}
+					total={works.length}
+				/>
 			))}
-		</div>
+			{works.some((work) => work.blocks.some((block) => block.type === "images")) && <Lightbox />}
+		</>
 	);
 }
 
@@ -399,11 +330,12 @@ type ContactSection = Extract<PortfolioViewSection, { kind: "contact" }>;
 
 /**
  * An OpenStreetMap address centred on the location's point, at the zoom its precision allows. Only a city gets a
- * marker; a province or country is an area, centred on its middle.
+ * marker; a province or country is an area, centred on its middle. The view rounded the point to its precision, so
+ * the address says no more than the person chose to show.
  */
 function openStreetMapUrl(point: NonNullable<NonNullable<PortfolioView["location"]>["point"]>): string {
-	const lat = point.lat.toFixed(4);
-	const lng = point.lng.toFixed(4);
+	const lat = String(point.lat);
+	const lng = String(point.lng);
 	const marker = point.precision === "city" ? `?mlat=${lat}&mlon=${lng}` : "";
 	return `https://www.openstreetmap.org/${marker}#map=${PORTFOLIO_MAP_ZOOM[point.precision]}/${lat}/${lng}`;
 }
@@ -419,7 +351,7 @@ function LocationMap({ location }: LocationMapProps) {
 	const { messages, view, imageUrl } = useRender();
 	const { map } = location;
 	if (!map) return null;
-	const alt = location.label ? messages.mapAround.replace("{place}", location.label) : "";
+	const alt = location.label ? fillPortfolioMessage(messages.mapAround, { place: location.label }) : "";
 	const light = imageUrl(map.light.src);
 	const dark = imageUrl(map.dark.src);
 	const { scheme } = view.design;
@@ -456,14 +388,12 @@ function LocationCard({ location }: LocationMapProps) {
 				{(location.label || location.showLocalTime) && (
 					<div className="pf-loc__city">
 						{location.label && <b>{location.label}</b>}
+						{/* The page script writes the time into the last span and shows it. */}
 						{location.showLocalTime && location.timezone && (
-							<span
-								className="pf-loc__time"
-								data-tz={location.timezone}
-								data-lang={locale}
-								aria-label={messages.localTime}
-								hidden
-							/>
+							<span className="pf-loc__time" data-tz={location.timezone} data-lang={locale} hidden>
+								<span className="sr-only">{messages.localTime}: </span>
+								<span />
+							</span>
 						)}
 					</div>
 				)}
@@ -486,7 +416,7 @@ function LocationCard({ location }: LocationMapProps) {
 	);
 }
 
-type ContactProps = { section: ContactSection; ctaClassName?: string; children?: ReactNode };
+type ContactProps = { section: ContactSection; ctaClassName?: string };
 
 /** The contact section's buttons, list of ways to reach the person, and location card. */
 export function Contact({ section, ctaClassName }: ContactProps) {
@@ -539,20 +469,24 @@ export function Contact({ section, ctaClassName }: ContactProps) {
 
 type ClientsProps = { section: Extract<PortfolioViewSection, { kind: "clients" }>; variant: string };
 
-/** Clients as a row of logos (grey until pointed at, unless the variant is colour) or names. */
+/**
+ * Clients as a row of logos (grey until pointed at, unless the variant is colour) or names. A logo or brand icon
+ * without a name beside it is named by its own text or the site it links to; a client with nothing to draw is left out.
+ */
 export function Clients({ section, variant }: ClientsProps) {
+	const { icon } = useRender();
 	return (
 		<ul className="pf-logos" data-variant={variant}>
 			{section.clients.map((client) => {
-				const content = (
+				const brand = !client.logo && client.brandIcon && icon(client.brandIcon) ? client.brandIcon : null;
+				if (!client.logo && !brand && !client.name) return null;
+				const label = client.name || client.logo?.alt || (client.href ? hostOf(client.href) : "");
+				const content = client.logo ? (
+					<Picture image={{ ...client.logo, alt: label }} />
+				) : (
 					<>
-						{client.logo ? (
-							<Picture image={{ ...client.logo, alt: client.name || client.logo.alt }} />
-						) : (
-							<ResumeIcon name={client.brandIcon} />
-						)}
-						{(!client.logo || !client.name) && client.name && <span>{client.name}</span>}
-						{client.logo && client.name && <span className="sr-only">{client.name}</span>}
+						{brand && <ResumeIcon name={brand} {...(!client.name && label ? { label } : {})} />}
+						{client.name && <span>{client.name}</span>}
 					</>
 				);
 				return (
@@ -598,5 +532,3 @@ function formatPhoneNumber(digits: string): string {
 	const indonesian = /^62(\d{3})(\d{3,4})(\d{3,5})$/.exec(digits);
 	return indonesian ? `+62 ${indonesian[1]} ${indonesian[2]} ${indonesian[3]}` : `+${digits}`;
 }
-
-export type { ResumeItem };

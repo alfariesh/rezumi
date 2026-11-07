@@ -26,10 +26,9 @@ export type ThemeRenderer = {
 	headingDisplay?: "swap" | "optional";
 };
 
-const lugas: ThemeRenderer = { id: "lugas", Page: LugasPage, css: LUGAS_CSS, palette: LUGAS_PALETTE };
-
+/** Every theme's renderer: the record is complete, so a new theme doesn't build without one. */
 const RENDERERS: Record<PortfolioTheme, ThemeRenderer> = {
-	lugas,
+	lugas: { id: "lugas", Page: LugasPage, css: LUGAS_CSS, palette: LUGAS_PALETTE },
 	prima: {
 		id: "prima",
 		Page: PrimaPage,
@@ -52,9 +51,9 @@ const RENDERERS: Record<PortfolioTheme, ThemeRenderer> = {
 	mozaik: { id: "mozaik", Page: MozaikPage, css: MOZAIK_CSS, palette: MOZAIK_PALETTE },
 };
 
-/** The themes with a renderer; `@rezumi/portfolio/editor` lists the same ones without loading them. */
+/** The themes with a renderer, all of them; `@rezumi/portfolio/editor` lists the same ones without loading them. */
 export const RENDERED_THEMES = Object.keys(RENDERERS) as PortfolioTheme[];
 
 export function themeRenderer(theme: PortfolioTheme): ThemeRenderer {
-	return RENDERERS[theme] ?? lugas;
+	return RENDERERS[theme];
 }

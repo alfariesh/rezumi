@@ -1,200 +1,34 @@
 import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
-import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { renderPortfolioDocument } from "./document";
-import { testResume } from "./fixtures.test-helpers";
-import { portfolioMessages, portfolioViewMessages } from "./messages";
+import {
+	count,
+	expectSoundPage,
+	fullPortfolioData,
+	fullTestResume,
+	renderTestPage,
+	testImage as image,
+	testResume,
+} from "./fixtures.test-helpers";
+import { fillPortfolioMessage } from "./messages";
 import { portfolioIconNames, renderPortfolioPage } from "./page";
-import { buildPortfolioView } from "./view";
+import { linkAttributes } from "./shared/primitives";
 
-const image = (name: string, width = 1600, height = 1200) => ({
-	key: `uploads/user-1/pictures/portfolio/${name}.webp`,
-	thumbKey: `uploads/user-1/pictures/portfolio/${name}-small.webp`,
-	width,
-	height,
-	alt: `${name} picture`,
-});
-
-/** Every section and block type, with metrics using every optional part. */
-const fullData: PortfolioDataInput = {
-	hero: {
-		greeting: "I design calm apps for busy people.",
-		availability: { show: true, text: "" },
-		highlights: [
-			{ id: "h1", label: "Monthly users", value: { kind: "number", number: 4_000_000 }, format: "compact" },
-			{ id: "h2", label: "Successful payments", value: { kind: "number", number: 97.5 }, format: "percent" },
-			{ id: "h3", label: "Ranking", value: { kind: "text", text: "Top 3" }, format: "plain" },
-		],
-		buttons: [{ kind: "resume" }, { kind: "contact" }, { kind: "link", url: "https://dribbble.example.test/nadia" }],
-	},
-	about: { content: '<p>Hello <script>alert(1)</script><a href="https://example.test">there</a>.</p>' },
-	works: {
-		items: [
-			{
-				id: "w1",
-				slug: "kopi-app",
-				title: "Coffee ordering app",
-				summary: "Ordering in three taps.",
-				role: "Lead designer",
-				date: "2024",
-				tags: ["Mobile", "Research"],
-				cover: { ...image("cover-1"), focus: { x: 0.3, y: 0.6 } },
-				highlightMetricId: "m1",
-				primaryLink: { label: "Case study", url: "https://behance.example.test/kopi" },
-				blocks: [
-					{ id: "b1", type: "text", html: "<h3>Problem</h3><p>Orders took too long.</p>" },
-					{
-						id: "b2",
-						type: "images",
-						layout: "grid",
-						images: [
-							{ ...image("shot-1"), caption: "Home screen" },
-							{ ...image("shot-2"), caption: "" },
-						],
-					},
-					{
-						id: "b3",
-						type: "metrics",
-						items: [
-							{
-								id: "m1",
-								label: "Checkout conversion",
-								value: { kind: "number", number: 2.8 },
-								format: "percent",
-								change: { direction: "up", text: "+35%", good: true },
-								before: 2.1,
-								series: [1.9, 2.1, 2.4, 2.8],
-								context: "3 months after launch",
-							},
-							{
-								id: "m2",
-								label: "Revenue",
-								value: { kind: "number", number: 1_200_000_000 },
-								format: "currency",
-								currency: "IDR",
-								progress: 80,
-								change: { direction: "down", text: "-4%", good: false },
-							},
-						],
-					},
-					{
-						id: "b4",
-						type: "video",
-						provider: "youtube",
-						videoId: "dQw4w9WgXcQ",
-						title: "Checkout demo",
-						thumbnailUrl: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-						thumbnail: image("video-thumb", 480, 360),
-					},
-					{ id: "b5", type: "video", provider: "vimeo", videoId: "76979871", hash: "9f2c1a7b3d" },
-					{
-						id: "b6",
-						type: "pdf",
-						file: "uploads/user-1/documents/portfolio/case-study.pdf",
-						title: "Case study (public version)",
-						pages: 12,
-						bytes: 2_400_000,
-						preview: image("case-study-page", 800, 1131),
-					},
-					{
-						id: "b7",
-						type: "link",
-						url: "https://medium.example.test/@nadia/fewer-failed-payments",
-						title: "How we cut failed payments",
-						description: "Three experiments that mattered most.",
-						siteName: "Medium",
-						brandIcon: "medium",
-					},
-					{
-						id: "b8",
-						type: "link",
-						url: "https://github.example.test/nadia/kopi",
-						title: "nadia/kopi",
-						image: image("repo-card", 1200, 600),
-					},
-				],
-			},
-			{ id: "w2", slug: "no-cover", title: "Work without pictures", summary: "", blocks: [] },
-			{ id: "w3", slug: "hidden-work", title: "Hidden work", hidden: true, blocks: [] },
-		],
-	},
-	services: {
-		items: [
-			{
-				id: "s1",
-				title: "Design audit",
-				description: "A list of fixes, in order.",
-				price: "From Rp7.5m",
-				cta: { kind: "whatsapp" },
-			},
-		],
-	},
-	testimonials: {
-		items: [
-			{
-				id: "t1",
-				quote: "Calm and clear.",
-				name: "Damar Wicaksana",
-				role: "Engineering Manager",
-				sourceUrl: "https://www.linkedin.example.test/in/damar",
-				consent: true,
-			},
-		],
-	},
-	clients: {
-		items: [
-			{ id: "c1", name: "Kilau Pay" },
-			{ id: "c2", name: "", logo: image("logo", 600, 200) },
-		],
-	},
-	custom: [{ id: "x1", title: "Product notes", content: "<p>Every Friday.</p>", hidden: false }],
-	location: {
-		label: "Jakarta, Indonesia",
-		point: { lat: -6.2088, lng: 106.8456, precision: "city" },
-		showMap: true,
-		map: { light: image("map-light", 800, 480), dark: image("map-dark", 800, 480) },
-		workModes: ["hybrid", "remote"],
-		relocate: true,
-		timezone: "Asia/Jakarta",
-		showLocalTime: true,
-	},
-	contact: { whatsapp: { show: true, number: "6281255501824" }, note: "Let's talk." },
-};
+const fullData: PortfolioDataInput = fullPortfolioData;
 
 function render(data: PortfolioDataInput, resume: ResumeData | null = testResume(), locale?: string) {
-	const parsed = parseWritablePortfolioData(locale ? { ...data, locale } : data);
-	const messages = portfolioMessages(parsed.locale ?? resume?.metadata.page.locale ?? "en-US");
-	const view = buildPortfolioView({
-		portfolio: { data: parsed },
-		resume: resume ? { data: resume } : null,
-		owner: { name: "Account Name", username: "nadia" },
-		entitlements: { hidePortfolioCredit: false },
-		messages: portfolioViewMessages(messages),
-		fileUrl: (key) => `https://rezumi.example/${key}`,
-		links: { resume: "https://rezumi.example/nadia/cv", resumePdf: null },
-	});
-	const page = renderPortfolioPage({
-		view,
-		messages,
-		year: 2026,
-		creditUrl: "https://rezumi.example",
-		imageUrl: (src) => (src.startsWith("/") ? `https://rezumi.example${src}` : src),
-		icons: {},
-	});
-	return { view, page, html: page.html };
+	return renderTestPage(data, { resume, ...(locale ? { locale } : {}) });
 }
-
-const count = (html: string, pattern: RegExp) => html.match(pattern)?.length ?? 0;
 
 describe("renderPortfolioPage (Lugas)", () => {
 	const { view, page, html } = render(fullData);
 
 	it("draws every section with its anchor and heading, and no undefined or NaN", () => {
+		expectSoundPage(html, "lugas");
 		for (const anchor of ["about", "work", "services", "testimonials", "clients", "experience", "contact", "custom-x1"])
 			expect(html).toContain(`id="${anchor}"`);
-		expect(html).toContain('id="custom-x1-title"');
-		expect(html).not.toMatch(/undefined|NaN|\[object Object\]/);
+		expect(html).toContain('id="custom-x1--title"');
 		expect(page.css).not.toMatch(/undefined|NaN/);
 		expect(page.lang).toBe("id-ID");
 	});
@@ -205,9 +39,9 @@ describe("renderPortfolioPage (Lugas)", () => {
 		expect(html).not.toContain("Someone Else");
 	});
 
-	it("opens each shown work's detail by its anchor, with previous and next", () => {
+	it("opens each shown work's detail by its anchor, as a modal dialog, with previous and next", () => {
 		expect(html).toContain('href="#work-kopi-app"');
-		expect(html).toContain('id="work-kopi-app" role="dialog" aria-labelledby="work-kopi-app-title"');
+		expect(html).toContain('id="work-kopi-app" role="dialog" aria-modal="true" aria-labelledby="work-kopi-app--title"');
 		expect(html).toContain('href="#work-no-cover" aria-label="Berikutnya: Work without pictures"');
 		expect(count(html, /class="pf-detail"/g)).toBe(view.works.length);
 	});
@@ -228,12 +62,12 @@ describe("renderPortfolioPage (Lugas)", () => {
 		expect(html).toMatch(/<span class="pf-work-metric"><b>2,8%<\/b><span>Checkout conversion<\/span><\/span>/);
 	});
 
-	it("opens gallery pictures full size, in one viewer the page script fills", () => {
+	it("opens gallery pictures full size, in one viewer the page script fills (a new tab without it)", () => {
 		expect(html).toContain(
-			'<a class="pf-zoom" href="https://rezumi.example/uploads/user-1/pictures/portfolio/shot-1.webp" data-lightbox="" data-caption="Home screen">',
+			'<a class="pf-zoom" href="https://rezumi.example/uploads/user-1/pictures/portfolio/shot-1.webp" target="_blank" rel="noopener" data-lightbox="" data-caption="Home screen">',
 		);
 		expect(html).toContain(
-			'<a class="pf-zoom" href="https://rezumi.example/uploads/user-1/pictures/portfolio/shot-2.webp" data-lightbox="">',
+			'<a class="pf-zoom" href="https://rezumi.example/uploads/user-1/pictures/portfolio/shot-2.webp" target="_blank" rel="noopener" data-lightbox="">',
 		);
 		expect(count(html, /class="pf-lightbox"/g)).toBe(1);
 		expect(html).toMatch(/<div class="pf-lightbox" role="dialog" aria-modal="true" aria-label="[^"]+" hidden="">/);
@@ -284,8 +118,9 @@ describe("renderPortfolioPage (Lugas)", () => {
 	});
 
 	it("draws a PDF card with its first page, page count, size and an Open PDF button", () => {
+		const { messages } = render(fullData);
 		expect(html).toContain("uploads/user-1/pictures/portfolio/case-study-page.webp");
-		expect(html).toContain("PDF · 12 halaman · 2,4 MB");
+		expect(html).toContain(`PDF · ${fillPortfolioMessage(messages.pages, { count: 12 })} · 2,4 MB`);
 		expect(html).toMatch(
 			/<a class="pf-btn pf-btn--secondary" href="https:\/\/rezumi\.example\/uploads\/user-1\/documents\/portfolio\/case-study\.pdf" target="_blank" rel="noopener" data-pf-event="document"/,
 		);
@@ -317,9 +152,8 @@ describe("renderPortfolioPage (Lugas)", () => {
 		expect(html).toContain('alt="Peta sekitar Jakarta, Indonesia"');
 		expect(html).toContain('class="pf-loc__pin"');
 		expect(html).toContain("© OpenMapTiles © OpenStreetMap contributors");
-		expect(html).toContain(
-			'href="https://www.openstreetmap.org/?mlat=-6.2088&amp;mlon=106.8456#map=10/-6.2088/106.8456"',
-		);
+		// The point is rounded to its precision: about a kilometre for a city.
+		expect(html).toContain('href="https://www.openstreetmap.org/?mlat=-6.21&amp;mlon=106.85#map=10/-6.21/106.85"');
 		expect(html).not.toMatch(/openfreemap|maplibre|tiles\./i);
 		// A province or country is an area: no pin, no marker on the map link.
 		const region = render({
@@ -327,7 +161,8 @@ describe("renderPortfolioPage (Lugas)", () => {
 			location: { ...fullData.location, point: { lat: -6.88, lng: 107.56, precision: "region" } },
 		}).html;
 		expect(region).not.toContain('class="pf-loc__pin"');
-		expect(region).toContain('href="https://www.openstreetmap.org/#map=7/-6.8800/107.5600"');
+		expect(region).toContain('href="https://www.openstreetmap.org/#map=7/-7/108"');
+		expect(region).not.toMatch(/-6\.88|107\.56/);
 	});
 
 	it("shows contact, location and the credit", () => {
@@ -486,5 +321,211 @@ describe("renderPortfolioPage edge cases", () => {
 		expect(render({ design: { scheme: "auto" } }).page.css).toContain(
 			'@media (prefers-color-scheme:dark){:root[data-pf-scheme="auto"]',
 		);
+	});
+});
+
+describe("renderPortfolioPage hardening", () => {
+	it("publishes no work, detail or picture viewer while the Work section is hidden, in every theme", () => {
+		for (const theme of ["lugas", "prima", "kanvas", "mozaik"] as const) {
+			const { html, view } = render({ ...fullData, theme, sections: { hidden: ["work"] } });
+			expectSoundPage(html, theme);
+			expect(view.works).toEqual([]);
+			expect(html).not.toContain("pf-detail");
+			expect(html).not.toContain("pf-lightbox");
+			expect(html).not.toContain("Coffee ordering app");
+			expect(html).not.toContain("Orders took too long");
+		}
+	});
+
+	it("names heading ids apart from every work anchor, in every theme", () => {
+		const works = {
+			items: [
+				{ id: "w1", slug: "title", title: "Title" },
+				{ id: "w2", slug: "brand", title: "Brand" },
+				{ id: "w3", slug: "brand-title", title: "Brand Title" },
+			],
+		};
+		for (const theme of ["lugas", "prima", "kanvas", "mozaik"] as const) {
+			const { html } = render({ ...fullData, theme, works });
+			expectSoundPage(html, theme);
+			expect(html).toContain('id="work-brand-title"');
+			expect(html).toContain('id="work-brand--title"');
+			expect(html).toContain('id="work--title"');
+		}
+	});
+
+	it("draws a resume custom section like the standard section of its type, keywords included, in every theme", () => {
+		for (const theme of ["lugas", "prima", "kanvas", "mozaik"] as const) {
+			const { html } = render({ ...fullData, theme, design: { variants: { skills: "groups" } } }, fullTestResume());
+			expectSoundPage(html, theme);
+			const tools = /<section[^>]* id="resume-tools"[\s\S]*?<\/section>/.exec(html)?.[0] ?? "";
+			expect(tools, theme).toContain('<div class="pf-skillgroups" data-variant="groups">');
+			expect(tools, theme).toContain("<li>Figma</li><li>Sketch</li>");
+			// The section whose ID a link can't hold as it is gets a safe anchor of its own.
+			expect(html).toMatch(/id="resume-x[\da-z]+"/);
+			expect(html).toContain("Sundanese");
+		}
+	});
+
+	it("styles a lone profiles list like the other short lists", () => {
+		const { html } = render({ ...fullData, sections: { hidden: [], order: ["profiles", "contact"] } });
+		expect(html).toMatch(/<section class="pf-section lg-sec" id="profiles"[^>]*>[\s\S]*?<ul class="pf-extralist">/);
+	});
+
+	it("puts headings in rich text under the section's or the work's own", () => {
+		const { html } = render(fullData);
+		expect(html).toContain("<h3>Problem</h3><h4>Why</h4>");
+		expect(render({ ...fullData, about: { content: "<h2>Hi</h2><p>There</p>" } }).html).toContain("<h3>Hi</h3>");
+		expect(render(fullData).page.css).toContain(".pf-prose h3,.pf-prose h4{");
+		// A text that starts at H3 keeps it: nothing to make room for.
+		expect(render({ ...fullData, about: { content: "<h3>Only</h3><p>x</p>" } }).html).toContain("<h3>Only</h3>");
+	});
+
+	it("names every gallery picture's link, even a picture without its own text", () => {
+		const { html } = render({
+			...fullData,
+			works: {
+				items: [
+					{
+						id: "w1",
+						slug: "a",
+						title: "Coffee app",
+						blocks: [
+							{
+								id: "b1",
+								type: "images",
+								layout: "grid",
+								images: [
+									{ ...image("one"), alt: "" },
+									{ ...image("two"), alt: "", caption: "Checkout" },
+								],
+							},
+						],
+					},
+				],
+			},
+		});
+		expect(html).toMatch(/<a class="pf-zoom"[^>]*><img [^>]*alt="Coffee app \(1\/2\)"/);
+		expect(html).toMatch(/<a class="pf-zoom"[^>]*data-caption="Checkout"><img [^>]*alt="Checkout"/);
+	});
+
+	it("names client logos once, names a brand icon without a name, and leaves out a client with nothing to draw", () => {
+		const { html } = renderTestPage(
+			{
+				clients: {
+					items: [
+						{ id: "c1", name: "Kilau Pay", logo: image("logo", 600, 200) },
+						{ id: "c2", name: "", logo: { brandIcon: "medium" }, url: "https://medium.example.test" },
+						{ id: "c3", name: "", logo: { brandIcon: "unknown-brand" } },
+					],
+				},
+			},
+			{ icons: { medium: "<path d='M1 1h2'/>" } },
+		);
+		const logos = /<ul class="pf-logos"[\s\S]*?<\/ul>/.exec(html)?.[0] ?? "";
+		expect(logos).toContain('alt="Kilau Pay"');
+		expect(logos).not.toContain("sr-only");
+		expect(logos).toMatch(
+			/<a class="pf-logo"[^>]*><svg class="pf-icon" viewBox="0 0 24 24" role="img" aria-label="medium.example.test"/,
+		);
+		expect(count(logos, /<li>/g)).toBe(2);
+	});
+
+	it("never draws an icon from outside the map it was given", () => {
+		const { html } = renderTestPage(
+			{ clients: { items: [{ id: "c1", name: "", logo: { brandIcon: "constructor" } }] } },
+			{ icons: {} },
+		);
+		expect(html).not.toContain("[native code]");
+		expect(html).not.toContain("function");
+	});
+
+	it("declares the small copy's real width in srcset, narrower for a portrait picture", () => {
+		const { html } = render({
+			...fullData,
+			works: { items: [{ id: "w1", slug: "a", title: "Tall", cover: image("tall", 900, 1350) }] },
+		});
+		expect(html).toContain(
+			"tall-small.webp 533w, https://rezumi.example/uploads/user-1/pictures/portfolio/tall.webp 900w",
+		);
+	});
+
+	it("tells screen readers the local time and the sparkline's numbers without naming a plain element", () => {
+		const { html } = render(fullData);
+		expect(html).toMatch(
+			/<span class="pf-loc__time" data-tz="Asia\/Jakarta" data-lang="id-ID" hidden=""><span class="sr-only">[^<]+: <\/span><span><\/span><\/span>/,
+		);
+		expect(html).toMatch(/<dd class="pf-metric__chart"><span class="sr-only">1,9%\W+2,1%\W+2,4%\W+2,8%<\/span><svg/);
+	});
+
+	it("fills text in a person's words as written, never as a replacement pattern", () => {
+		const { html } = render({ ...fullData, location: { ...fullData.location, label: "Rock $& Roll $$" } });
+		expect(html).toContain("Rock $&amp; Roll $$");
+		expect(html).not.toContain("Rock Map around");
+	});
+
+	it("draws a link or picture only from an address that is safe to use", () => {
+		expect(linkAttributes("javascript:alert(1)")).toEqual({});
+		expect(linkAttributes("//evil.example.test")).toEqual({});
+		// Browsers read a backslash like a slash, so these lead to another site too.
+		expect(linkAttributes("/\\evil.example.test")).toEqual({});
+		expect(linkAttributes("\\\\evil.example.test")).toEqual({});
+		expect(linkAttributes("data:text/html,hi")).toEqual({});
+		expect(linkAttributes("#contact")).toEqual({ href: "#contact" });
+		expect(linkAttributes("mailto:nadia@example.test")).toEqual({ href: "mailto:nadia@example.test" });
+		expect(linkAttributes("https://example.test")).toMatchObject({ target: "_blank" });
+		// Without an `imageUrl`, only http(s) addresses and the page's own paths load.
+		const resume = testResume();
+		resume.picture.url = "data:image/svg+xml,<svg onload=alert(1)>";
+		const { view, messages } = renderTestPage({}, { resume });
+		const page = renderPortfolioPage({ view, messages, year: 2026, creditUrl: "https://rezumi.example" });
+		expect(page.html).not.toContain("data:image");
+		// A path on the page's own site loads (the preview tools serve pictures beside the page); `//host` doesn't.
+		const withPicture = (src: string) =>
+			renderPortfolioPage({
+				view: { ...view, hero: { ...view.hero, picture: { src, alt: "Me" } } },
+				messages,
+				year: 2026,
+				creditUrl: "https://rezumi.example",
+			}).html;
+		expect(withPicture("img/me.png")).toContain('src="img/me.png"');
+		expect(withPicture("/uploads/me.webp")).toContain('src="/uploads/me.webp"');
+		expect(withPicture("//evil.example.test/me.png")).not.toContain("evil.example.test");
+		expect(withPicture("/\\evil.example.test/me.png")).not.toContain("evil.example.test");
+		expect(withPicture("\\\\evil.example.test/me.png")).not.toContain("evil.example.test");
+		expect(withPicture("javascript:alert(1)")).not.toContain("javascript:");
+	});
+
+	it("keeps a Mozaik Contact whose only content is the place's name, so its buttons land", () => {
+		const resume = testResume();
+		resume.basics.email = "";
+		resume.basics.website = { url: "", label: "" };
+		resume.sections.profiles.items = [];
+		const { html } = render(
+			{
+				theme: "mozaik",
+				hero: { buttons: [{ kind: "contact" }] },
+				contact: { whatsapp: { show: false, number: "" }, note: "" },
+				location: { label: "Bandung", showMap: false, workModes: [], relocate: false, showLocalTime: false },
+			},
+			resume,
+		);
+		expectSoundPage(html, "mozaik");
+		expect(html).toContain('href="#contact"');
+		expect(html).toContain('<section class="mz-tile mz-loc pf-section" id="contact"');
+		expect(html).not.toMatch(/<li class="pf-chip"><svg[^]*?<\/svg>Bandung<\/li>/);
+	});
+
+	it("draws the featured work in the large first place of the layouts that have one", () => {
+		const works = {
+			items: [
+				{ id: "w1", slug: "first", title: "First" },
+				{ id: "w2", slug: "chosen", title: "Chosen", featured: true },
+			],
+		};
+		for (const theme of ["kanvas", "mozaik"] as const) {
+			const { html } = render({ ...fullData, theme, works });
+			expect(html.indexOf('href="#work-chosen"'), theme).toBeLessThan(html.indexOf('href="#work-first"'));
+		}
 	});
 });

@@ -17,19 +17,12 @@ export const LUGAS_CSS = String.raw`
 .pf[data-theme="lugas"] .lg-greeting{font-size:clamp(1.125rem,1rem + .5vw,1.3rem);line-height:1.5;max-width:36ch}
 .pf[data-theme="lugas"] .lg-stats{width:100%;padding-block:28px 4px;border-top:1px solid var(--pf-border);margin-top:6px}
 .pf[data-theme="lugas"] .lg-stats.pf-metrics{--pf-metric-value:clamp(2rem,1.5rem + 2vw,2.75rem);grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:24px}
-.pf[data-theme="lugas"] .lg-stats .pf-metric{gap:8px}
-.pf[data-theme="lugas"] .lg-stats .pf-metric__label{order:2;color:var(--pf-text);font-size:var(--pf-text-sm)}
-.pf[data-theme="lugas"] .lg-stats .pf-metric__row{order:1}
-.pf[data-theme="lugas"] .lg-stats .pf-metric__value{color:var(--pf-accent-text)}
 @media (max-width:560px){.pf[data-theme="lugas"] .lg-stats.pf-metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;--pf-metric-value:1.7rem}.pf[data-theme="lugas"] .lg-stats .pf-metric__label{font-size:var(--pf-text-xs)}}
 .pf[data-theme="lugas"] .lg-hero[data-variant="photo-left"]{grid-template-columns:auto minmax(0,1fr);column-gap:28px;align-items:center}
 .pf[data-theme="lugas"] .lg-hero[data-variant="photo-left"] .lg-photo{width:120px;height:120px;grid-row:span 1}
 .pf[data-theme="lugas"] .lg-hero[data-variant="photo-left"]>:not(.lg-photo):not(.lg-hero__text){grid-column:1/-1}
 @media (max-width:520px){.pf[data-theme="lugas"] .lg-hero[data-variant="photo-left"]{grid-template-columns:minmax(0,1fr)}.pf[data-theme="lugas"] .lg-hero[data-variant="photo-left"] .lg-photo{width:88px;height:88px}}
-.pf[data-theme="lugas"] .lg-hero[data-bg]:not([data-bg="plain"]){position:relative;padding:clamp(24px,5vw,40px);border-radius:calc(var(--pf-radius) + 6px);overflow:hidden}
-.pf[data-theme="lugas"] .lg-hero[data-bg="soft-gradient"]{background:radial-gradient(120% 90% at 0% 0%,var(--pf-accent-soft),transparent 70%),radial-gradient(90% 80% at 100% 100%,color-mix(in oklab,var(--pf-accent-soft) 70%,transparent),transparent 70%),var(--pf-bg)}
-.pf[data-theme="lugas"] .lg-hero[data-bg="pattern"]{background:radial-gradient(color-mix(in oklab,var(--pf-accent) 22%,transparent) 1.2px,transparent 1.4px) 0 0/18px 18px,var(--pf-surface)}
-.pf[data-theme="lugas"] .lg-hero[data-bg="image"]{background:linear-gradient(rgb(8 10 14/.62),rgb(8 10 14/.7)),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-text:#fff;--pf-muted:rgb(255 255 255/.82);--pf-border:rgb(255 255 255/.28);--pf-surface:rgb(255 255 255/.14);--pf-accent-text:var(--pf-accent-text-dark);color:var(--pf-text)}
+.pf[data-theme="lugas"] .lg-hero[data-bg]:not([data-bg="plain"]){position:relative;padding:clamp(24px,5vw,40px);border-radius:calc(var(--pf-radius) + 6px);overflow:hidden;background:var(--pf-hero-bg)}
 .pf[data-theme="lugas"] .lg-sec{display:grid;gap:28px;min-width:0}
 .pf[data-theme="lugas"] .lg-sec .pf-section__title{font-size:clamp(1.5rem,1.2rem + 1vw,1.875rem);letter-spacing:-.025em;font-weight:800}
 .pf[data-theme="lugas"] .lg-lead{font-size:var(--pf-text-lg);line-height:1.6}

@@ -5,7 +5,7 @@
  * are data attributes.
  */
 export const PRIMA_CSS = String.raw`
-.pf[data-theme="prima"]{--pf-max-width:1160px;--pf-radius:6px;--pf-radius-sm:4px}
+.pf[data-theme="prima"]{--pf-max-width:1160px;--pf-radius:6px;--pf-radius-sm:4px;--pf-hero-ground:var(--pf-surface);--pf-hero-shade:rgb(8 10 14/.68),rgb(8 10 14/.76)}
 .pf[data-theme="prima"] .pf-btn{border-radius:var(--pf-radius)}
 .pf[data-theme="prima"] .pf-btn--primary{border-color:color-mix(in oklab,var(--pf-accent) 78%,var(--pf-text))}
 .pf[data-theme="prima"] .pf-chip{border-radius:var(--pf-radius-sm);background:var(--pf-surface);border:1px solid var(--pf-border)}
@@ -37,10 +37,8 @@ export const PRIMA_CSS = String.raw`
 .pf[data-theme="prima"] .pr-hero[data-variant="no-photo"]{--pr-col:var(--pr-inner)}
 .pf[data-theme="prima"] .pr-hero[data-variant="no-photo"] .pr-hero__grid{grid-template-columns:minmax(0,1fr)}
 @media (max-width:820px){.pf[data-theme="prima"] .pr-hero{--pr-col:var(--pr-inner)}.pf[data-theme="prima"] .pr-hero[data-variant] .pr-hero__grid{grid-template-columns:minmax(0,1fr)}.pf[data-theme="prima"] .pr-hero[data-variant] .pr-photo{order:-1;justify-self:start;max-width:200px}}
-.pf[data-theme="prima"] .pr-hero[data-bg]:not([data-bg="plain"]){--pr-pad:clamp(24px,5vw,56px);position:relative;margin-block:clamp(16px,3vw,32px) clamp(40px,6vw,72px);padding:var(--pr-pad);border:1px solid var(--pf-border);border-radius:calc(var(--pf-radius) + 4px);overflow:hidden}
-.pf[data-theme="prima"] .pr-hero[data-bg="soft-gradient"]{background:radial-gradient(120% 90% at 0% 0%,var(--pf-accent-soft),transparent 70%),radial-gradient(90% 80% at 100% 100%,color-mix(in oklab,var(--pf-accent-soft) 70%,transparent),transparent 70%),var(--pf-surface)}
-.pf[data-theme="prima"] .pr-hero[data-bg="pattern"]{background:radial-gradient(color-mix(in oklab,var(--pf-accent) 22%,transparent) 1.2px,transparent 1.4px) 0 0/18px 18px,var(--pf-surface)}
-.pf[data-theme="prima"] .pr-hero[data-bg="image"]{background:linear-gradient(rgb(8 10 14/.68),rgb(8 10 14/.76)),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-text:#fff;--pf-muted:rgb(255 255 255/.82);--pf-border:rgb(255 255 255/.28);--pf-surface:rgb(255 255 255/.14);--pf-accent-text:var(--pf-accent-text-dark);color:var(--pf-text);border-color:transparent}
+.pf[data-theme="prima"] .pr-hero[data-bg]:not([data-bg="plain"]){--pr-pad:clamp(24px,5vw,56px);position:relative;margin-block:clamp(16px,3vw,32px) clamp(40px,6vw,72px);padding:var(--pr-pad);border:1px solid var(--pf-border);border-radius:calc(var(--pf-radius) + 4px);overflow:hidden;background:var(--pf-hero-bg)}
+.pf[data-theme="prima"] .pr-hero[data-bg="image"]{border-color:transparent}
 .pf[data-theme="prima"] .pr-hero[data-bg="image"] .pr-headline{color:color-mix(in oklab,var(--pf-accent-text) 40%,#fff)}
 .pf[data-theme="prima"] .pr-hero[data-bg="image"] .pr-kpis .pf-metric{background:rgb(8 10 14/.5)}
 .pf[data-theme="prima"] .pr-kpis{min-width:0}
@@ -56,15 +54,14 @@ export const PRIMA_CSS = String.raw`
 .pf[data-theme="prima"] .pr-facts>.pf-extras{grid-column:2;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:28px}
 @media (max-width:820px){.pf[data-theme="prima"] .pr-row{grid-template-columns:minmax(0,1fr)}.pf[data-theme="prima"] .pr-facts>.pf-extras{grid-column:1}}
 .pf[data-theme="prima"] .pf-extra__title{margin-bottom:12px;color:var(--pf-muted);font:600 var(--pf-text-xs)/1.4 var(--pf-font-body);letter-spacing:.08em;text-transform:uppercase}
-.pf[data-theme="prima"] .pf-extra ul{gap:12px}
+.pf[data-theme="prima"] .pf-extra .pf-extralist{gap:12px}
 .pf[data-theme="prima"] .pr-row__body>.pr-list ul{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:14px 28px;margin:0;padding:0;list-style:none}
 .pf[data-theme="prima"] .pr-row__body>.pr-list li{display:grid;gap:1px;font-size:var(--pf-text-sm)}
 .pf[data-theme="prima"] .pr-row__body>.pr-list li span{color:var(--pf-muted);font-size:var(--pf-text-xs)}
 .pf[data-theme="prima"] .pr-list li a{text-underline-offset:3px}
 .pf[data-theme="prima"] .pr-lead{font-size:var(--pf-text-lg);line-height:1.6}
 .pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]{gap:0}
-.pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"] .pf-cvitem{margin:0;padding:0;border:0}
-.pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"] .pf-cvitem::before{content:none}
+.pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem{margin:0;padding:0;border:0}
 .pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem{position:relative;display:grid;grid-template-columns:150px 16px minmax(0,1fr);gap:4px 18px;padding-bottom:28px}
 .pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem:last-child{padding-bottom:0}
 .pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem>.pf-cvitem__head{display:contents}

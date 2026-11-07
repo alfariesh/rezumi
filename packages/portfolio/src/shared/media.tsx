@@ -1,4 +1,5 @@
 import type { PortfolioViewBlock } from "../view";
+import { fillPortfolioMessage } from "../messages";
 import { useRender } from "./context";
 import { ResumeIcon, UiIcon } from "./icons";
 import { hostOf, linkAttributes, Picture } from "./primitives";
@@ -68,7 +69,7 @@ type PdfCardProps = { block: PdfBlock };
  */
 export function PdfCard({ block }: PdfCardProps) {
 	const { messages, locale } = useRender();
-	const pages = block.pages === 1 ? messages.onePage : messages.pageCount.replace("{count}", String(block.pages));
+	const pages = fillPortfolioMessage(messages.pages, { count: block.pages });
 	const details = ["PDF", pages, block.bytes ? formatFileSize(block.bytes, locale) : ""].filter(Boolean).join(" · ");
 	return (
 		<div className="pf-pdf">

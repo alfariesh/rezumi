@@ -15,8 +15,11 @@ const WORDS = String.raw`[data-pfx] .pfx-w{animation:pfx-up .7s cubic-bezier(.2,
 
 export const EFFECT_CSS: Record<Exclude<PortfolioHeroEffect, "none">, string> = {
 	"fade-up": String.raw`@media (prefers-reduced-motion:no-preference){${WORDS}}`,
+	// The sweep starts and ends on the text's own colour (`currentColor`: the glyphs turn transparent through
+	// `-webkit-text-fill-color`, so `color` keeps it), so an accent headline ends in its accent, as without motion.
 	shimmer: String.raw`
-@media (prefers-reduced-motion:no-preference){[data-pfx="shimmer"]{background:linear-gradient(100deg,var(--pf-text) 0 38%,var(--pf-accent-text) 46%,color-mix(in oklab,var(--pf-accent-text) 55%,var(--pf-text)) 50%,var(--pf-accent-text) 54%,var(--pf-text) 62% 100%) 0 0/280% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:pfx-shimmer 1.6s ease-in-out 3 both}}
+@media (prefers-reduced-motion:no-preference){[data-pfx="shimmer"]{background:linear-gradient(100deg,currentColor 0 38%,var(--pf-accent-text) 46%,color-mix(in oklab,var(--pf-accent-text) 55%,currentColor) 50%,var(--pf-accent-text) 54%,currentColor 62% 100%) 0 0/280% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:pfx-shimmer 1.6s ease-in-out 3 both}}
+@media (forced-colors:active){[data-pfx="shimmer"]{-webkit-text-fill-color:currentColor}}
 @keyframes pfx-shimmer{from{background-position:100% 0}to{background-position:0 0}}
 `,
 	gradient: String.raw`

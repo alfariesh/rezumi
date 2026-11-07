@@ -1,10 +1,15 @@
 import type { PortfolioViewInput, PortfolioViewSection } from "./view";
 import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
-import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { CustomSection, ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
+import { isPortfolioSectionKey } from "@rezumi/schema/portfolio/sections";
 import { testResume } from "./fixtures.test-helpers";
-import { buildPortfolioView, englishPortfolioViewMessages, resolveSectionOrder } from "./view";
+import { portfolioMessages, portfolioViewMessages } from "./messages";
+import { buildPortfolioView, resolveSectionOrder } from "./view";
+
+const englishMessages = portfolioViewMessages(portfolioMessages("en-US"));
 
 const image = (name: string) => ({
 	key: `uploads/user-1/pictures/portfolio/${name}.webp`,
@@ -13,6 +18,21 @@ const image = (name: string) => ({
 	height: 1200,
 	alt: "",
 });
+
+/** A resume custom section, with the fields the resume schema gives every section. */
+const customSection = (id: string, type: CustomSection["type"], title: string, items: unknown[], hidden = false) =>
+	({
+		id,
+		type,
+		title,
+		icon: "",
+		columns: 1,
+		hidden,
+		showHeading: true,
+		keepTogether: false,
+		startOnNewPage: false,
+		items,
+	}) as CustomSection;
 
 function view(
 	data: PortfolioDataInput = {},
@@ -24,7 +44,7 @@ function view(
 		resume: resume ? { data: resume } : null,
 		owner: { name: "Account Name", username: "nadia" },
 		entitlements: { hidePortfolioCredit: false },
-		messages: englishPortfolioViewMessages,
+		messages: englishMessages,
 		fileUrl: (key) => `https://rezumi.example/${key}`,
 		...rest,
 	});
@@ -61,9 +81,14 @@ describe("buildPortfolioView basics", () => {
 			alt: "Nadia R.",
 		});
 		expect(view({ basics: { picture: null } }).basics.picture).toBeNull();
-		const hidden = view({ hero: { showPicture: false } });
-		expect(hidden.hero.picture).toBeNull();
-		expect(hidden.basics.picture).not.toBeNull();
+	});
+
+	it("shows no photo anywhere when the intro shows none, so the share card and search engines don't get it", () => {
+		for (const basics of [{}, { picture: image("casual") }]) {
+			const hidden = view({ basics, hero: { showPicture: false } });
+			expect(hidden.hero.picture).toBeNull();
+			expect(hidden.basics.picture).toBeNull();
+		}
 	});
 
 	it("works without a resume: own basics, then the account's name, and no career sections", () => {
@@ -300,5 +325,181 @@ describe("buildPortfolioView contact and buttons", () => {
 			"Taking freelance work",
 		);
 		expect(view().hero.availability).toBeNull();
+	});
+});
+
+describe("buildPortfolioView keeps what's hidden hidden", () => {
+	it("leaves out resume sections hidden as a whole, standard and custom, and profiles hidden in the resume", () => {
+		const resume = testResume();
+		resume.sections.experience.hidden = true;
+		resume.sections.profiles.hidden = true;
+		resume.customSections = [
+			customSection(
+				"private",
+				"experience",
+				"Private work",
+				[{ id: "x1", hidden: false, company: "Secret Employer", position: "Moonlighting", period: "2025" }],
+				true,
+			),
+			customSection("shown", "awards", "Grants", [{ id: "g1", hidden: false, title: "Design grant" }]),
+		];
+		const result = view({ sections: { hidden: [] } }, { resume });
+		const kinds = result.sections.map((item) => item.kind);
+		expect(kinds).not.toContain("experience");
+		expect(kinds).not.toContain("profiles");
+		expect(result.sections.map((item) => item.key)).toEqual(expect.arrayContaining(["resume:shown"]));
+		expect(JSON.stringify(result)).not.toContain("Secret Employer");
+		expect(section(result.sections, "contact")?.contact.profiles).toEqual([]);
+	});
+
+	it("publishes no work detail while the Work section is hidden, except the work the editor has open", () => {
+		const secret = { id: "w1", slug: "secret", title: "Secret client", summary: "Confidential" };
+		const works = { items: [secret, { id: "w2", slug: "draft", title: "  " }] };
+		const hidden = view({ works, sections: { hidden: ["work"] } });
+		expect(hidden.sections.some((item) => item.kind === "work")).toBe(false);
+		expect(hidden.works).toEqual([]);
+		// The editor's preview keeps the detail of the work being edited, even an untitled one.
+		expect(view({ works, sections: { hidden: ["work"] } }, { openWorkId: "w1" }).works.map((w) => w.id)).toEqual([
+			"w1",
+		]);
+		expect(view({ works }, { openWorkId: "w2" }).works.map((w) => w.id)).toEqual(["w1", "w2"]);
+		expect(view({ works: { items: [{ ...secret, hidden: true }] } }, { openWorkId: "w1" }).works).toEqual([]);
+	});
+
+	it("leaves out works without a title, and trims the ones it shows", () => {
+		const result = view({
+			works: {
+				items: [
+					{ id: "w1", slug: "a", title: "" },
+					{ id: "w2", slug: "b", title: "  Kopi  " },
+				],
+			},
+		});
+		expect(result.works.map((work) => work.title)).toEqual(["Kopi"]);
+		expect(section(result.sections, "work")?.works.map((work) => work.id)).toEqual(["w2"]);
+	});
+
+	it("points no button at Contact when the page doesn't show it", () => {
+		const data = {
+			hero: { buttons: [{ kind: "contact" as const }] },
+			services: { items: [{ id: "s", title: "Logo", cta: { kind: "contact" as const } }] },
+			custom: [{ id: "c1", title: "Note", content: "<p>Hi</p>", button: { kind: "contact" as const } }],
+		};
+		expect(view(data).hero.buttons.map((button) => button.href)).toEqual(["#contact"]);
+		const hidden = view({ ...data, sections: { hidden: ["contact"] } });
+		expect(hidden.hero.buttons).toEqual([]);
+		expect(section(hidden.sections, "services")?.services[0]?.cta).toBeNull();
+		expect(section(hidden.sections, "custom")?.button).toBeNull();
+	});
+});
+
+describe("buildPortfolioView makes what it takes from the resume safe", () => {
+	it("links only to http(s) addresses, giving a bare domain https://", () => {
+		const resume = testResume();
+		const profile = resume.sections.profiles.items[0];
+		if (!profile) throw new Error("The test resume has a profile.");
+		resume.sections.profiles.items = [
+			{ ...profile, id: "a", network: "GitHub", website: { ...profile.website, url: "github.com/nadia" } },
+			{ ...profile, id: "b", network: "Evil", website: { ...profile.website, url: "javascript:alert(1)" } },
+			{ ...profile, id: "c", network: "Relative", website: { ...profile.website, url: "//evil.example.test/x" } },
+			{ ...profile, id: "d", network: "Data", website: { ...profile.website, url: "data:text/html,hi" } },
+		];
+		resume.sections.experience.items = resume.sections.experience.items.map((item) => ({
+			...item,
+			website: { ...item.website, url: "file:///etc/passwd" },
+		}));
+		resume.basics.website = { url: "javascript:alert(1)", label: "Home" };
+		const result = view({ sections: { hidden: [] } }, { resume });
+		const contact = section(result.sections, "contact")?.contact;
+		expect(contact?.website).toBeNull();
+		expect(contact?.profiles.map((item) => item.href)).toEqual(["https://github.com/nadia", null, null, null]);
+		expect(section(result.sections, "profiles")?.items.map((item) => item.website.url)).toEqual([
+			"https://github.com/nadia",
+			"",
+			"",
+			"",
+		]);
+		expect(section(result.sections, "experience")?.items.every((item) => item.website.url === "")).toBe(true);
+		expect(JSON.stringify(result)).not.toMatch(/javascript:|file:|data:text|\/\/evil/);
+	});
+
+	it("keeps a resume website that is a full address as it is", () => {
+		const resume = testResume();
+		resume.basics.website = { url: "http://nadia.example.test/about?x=1", label: "" };
+		expect(section(view({}, { resume }).sections, "contact")?.contact.website?.href).toBe(
+			"http://nadia.example.test/about?x=1",
+		);
+	});
+
+	it("rounds the location's point to the precision the person chose", () => {
+		const location = (precision: "city" | "region" | "country") =>
+			view({ location: { label: "Bandung", point: { lat: -6.917_464, lng: 107.619_123, precision } } }).location?.point;
+		expect(location("city")).toEqual({ lat: -6.92, lng: 107.62, precision: "city" });
+		// A region or country can't name a city: whole degrees, even from a city's own point saved by older data.
+		expect(location("region")).toEqual({ lat: -7, lng: 108, precision: "region" });
+		expect(location("country")).toEqual({ lat: -7, lng: 108, precision: "country" });
+	});
+
+	it("gives every section an anchor that is safe and unique, whatever the resume's IDs", () => {
+		const resume = testResume();
+		const award = (title: string) => [{ id: title, hidden: false, title }];
+		resume.customSections = [
+			customSection("0193-abc", "awards", "Plain", award("one")),
+			customSection('A "quoted" id', "awards", "Quoted", award("two")),
+			customSection("a--title", "awards", "Dashes", award("three")),
+			customSection("#hash</h2>", "awards", "Markup", award("four")),
+			customSection("dup", "awards", "First", award("five")),
+			customSection("dup", "awards", "Second", award("six")),
+			customSection("", "awards", "Empty id", award("seven")),
+			customSection("x".repeat(PORTFOLIO_LIMITS.text.id + 1), "awards", "Too long", award("eight")),
+		];
+		const result = view({}, { resume });
+		const anchors = result.sections.map((item) => item.anchor);
+		expect(new Set(anchors).size).toBe(anchors.length);
+		for (const anchor of anchors) expect(anchor).toMatch(/^[\da-z]+(?:-[\da-z]+)*$/i);
+		expect(anchors).toContain("resume-0193-abc");
+		expect(result.sections.filter((item) => item.kind === "resume").map((item) => item.title)).toEqual([
+			"Plain",
+			"Quoted",
+			"Dashes",
+			"Markup",
+			"First",
+		]);
+		// The same ID always gives the same anchor, so a shared link keeps working.
+		expect(view({}, { resume }).sections.map((item) => item.anchor)).toEqual(anchors);
+		// The editor only ever stores keys the server takes.
+		for (const key of resolveSectionOrder(parseWritablePortfolioData({}), "lugas", resume))
+			expect(isPortfolioSectionKey(key), key).toBe(true);
+	});
+});
+
+describe("buildPortfolioView choices", () => {
+	it("puts featured works first in layouts that draw the first work larger, and keeps the order elsewhere", () => {
+		const works = {
+			items: [
+				{ id: "w1", slug: "a", title: "First" },
+				{ id: "w2", slug: "b", title: "Second", featured: true },
+				{ id: "w3", slug: "c", title: "Third" },
+				{ id: "w4", slug: "d", title: "Fourth", featured: true },
+			],
+		};
+		const order = (data: PortfolioDataInput) => view({ works, ...data }).works.map((work) => work.id);
+		expect(order({ theme: "lugas", design: { variants: { work: "featured-grid" } } })).toEqual([
+			"w2",
+			"w4",
+			"w1",
+			"w3",
+		]);
+		expect(order({ theme: "kanvas" })).toEqual(["w2", "w4", "w1", "w3"]);
+		expect(order({ theme: "mozaik" })).toEqual(["w2", "w4", "w1", "w3"]);
+		expect(order({ theme: "lugas" })).toEqual(["w1", "w2", "w3", "w4"]);
+		expect(order({ theme: "prima" })).toEqual(["w1", "w2", "w3", "w4"]);
+		expect(order({ theme: "mozaik", design: { variants: { work: "grid-2" } } })).toEqual(["w1", "w2", "w3", "w4"]);
+	});
+
+	it("cuts a description made from About to the length search engines show", () => {
+		const description = view({ about: { content: `<p>${"word ".repeat(100)}</p>` } }).seo.description;
+		expect(description.length).toBeLessThanOrEqual(PORTFOLIO_LIMITS.text.seoDescription);
+		expect(description.endsWith("…")).toBe(true);
 	});
 });

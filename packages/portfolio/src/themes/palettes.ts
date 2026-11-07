@@ -36,11 +36,10 @@ export const MOZAIK_PALETTE: ThemePalette = {
 };
 
 /**
- * The neutral colours of every theme with a renderer, apart from their CSS so the editor can read them without loading
- * the themes. Its keys are the themes the renderer draws as themselves (`themes/index.ts` has the same ones; a test
- * keeps them in step).
+ * Every theme's neutral colours, apart from their CSS so the editor can read them without loading the themes. Like
+ * the renderers (`themes/index.ts`), it holds every theme: a theme without one doesn't build.
  */
-export const THEME_PALETTES: Partial<Record<PortfolioTheme, ThemePalette>> = {
+export const THEME_PALETTES: Record<PortfolioTheme, ThemePalette> = {
 	lugas: LUGAS_PALETTE,
 	prima: PRIMA_PALETTE,
 	kanvas: KANVAS_PALETTE,

@@ -1,6 +1,9 @@
+import type { PortfolioView } from "../view";
 import type { PortfolioHeroEffect, PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import { describe, expect, it } from "vite-plus/test";
+import { parseAst } from "vite-plus";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { PORTFOLIO_ACCENTS, PORTFOLIO_THEME_INFO, PORTFOLIO_THEMES } from "@rezumi/schema/portfolio/themes";
 import { contrastRatio } from "@rezumi/utils/contrast";
 import { testResume } from "../fixtures.test-helpers";
@@ -13,8 +16,16 @@ import { gradientColors } from "./colors";
 import { EFFECT_CSS } from "./css";
 import { PREVIEW_STILL_CSS } from "./editor";
 import { effectScript } from "./index";
+import { EFFECT_RUNNERS } from "./runtime";
 
-type Options = { theme?: PortfolioTheme; target?: "name" | "headline"; phrases?: string[]; headline?: string };
+type Options = {
+	theme?: PortfolioTheme;
+	target?: "name" | "headline";
+	phrases?: string[];
+	headline?: string;
+	/** Changes the view before it's drawn: what saved data can't say but a view might. */
+	adjust?: (view: PortfolioView) => PortfolioView;
+};
 
 function render(effect: PortfolioHeroEffect, options: Options = {}) {
 	const resume = testResume();
@@ -32,7 +43,62 @@ function render(effect: PortfolioHeroEffect, options: Options = {}) {
 		messages: portfolioViewMessages(messages),
 		fileUrl: (key) => `https://rezumi.example/${key}`,
 	});
-	return renderPortfolioPage({ view, messages, year: 2026, creditUrl: "https://rezumi.example" });
+	return renderPortfolioPage({
+		view: options.adjust?.(view) ?? view,
+		messages,
+		year: 2026,
+		creditUrl: "https://rezumi.example",
+	});
+}
+
+/** Globals an effect may use: the page's document and the language's own objects. */
+const GLOBALS = new Set(["document", "undefined", "Array", "Intl", "JSON", "Map", "Math", "Promise", "String"]);
+
+/**
+ * A script's size as visitors get it, near enough: without its whitespace. The page ships each effect's own source,
+ * which the production bundle minifies; tests see it as the test transform prints it, spaces and all.
+ */
+const shippedSize = (source: string) => source.replace(/\s+/g, "").length;
+
+/**
+ * The names a script reads without declaring them anywhere inside itself (a flat, scope-blind check: any declaration
+ * counts everywhere), from its syntax tree.
+ */
+function freeNames(source: string): string[] {
+	type Node = { type: string; [key: string]: unknown };
+	const declared = new Set<string>();
+	const used = new Set<string>();
+	const declare = (pattern: Node | null | undefined): void => {
+		if (!pattern) return;
+		if (pattern.type === "Identifier") declared.add(pattern.name as string);
+		else if (pattern.type === "ArrayPattern") (pattern.elements as (Node | null)[]).forEach(declare);
+		else if (pattern.type === "ObjectPattern")
+			for (const property of pattern.properties as Node[])
+				declare((property.type === "RestElement" ? property.argument : property.value) as Node);
+		else if (pattern.type === "AssignmentPattern") declare(pattern.left as Node);
+		else if (pattern.type === "RestElement") declare(pattern.argument as Node);
+	};
+	const walk = (node: unknown, parent?: Node, key?: string): void => {
+		if (!node || typeof node !== "object" || typeof (node as Node).type !== "string") return;
+		const current = node as Node;
+		if (current.type === "VariableDeclarator") declare(current.id as Node);
+		if (current.type === "CatchClause") declare(current.param as Node);
+		if (/Function/.test(current.type)) {
+			declare(current.id as Node);
+			for (const param of current.params as Node[]) declare(param);
+		}
+		if (current.type === "Identifier") {
+			const property = parent?.type === "MemberExpression" && key === "property" && !parent.computed;
+			const objectKey = parent?.type === "Property" && key === "key" && !parent.computed;
+			if (!property && !objectKey) used.add(current.name as string);
+			return;
+		}
+		for (const [childKey, value] of Object.entries(current))
+			if (Array.isArray(value)) for (const child of value) walk(child, current, childKey);
+			else walk(value, current, childKey);
+	};
+	walk(parseAst(source));
+	return [...used].filter((name) => !declared.has(name));
 }
 
 /** The name as a reader gets it: the h1's text without tags. */
@@ -77,12 +143,22 @@ describe("intro effects", () => {
 	});
 
 	it("types the headline first, keeps every phrase readable and hides the moving copy from screen readers", () => {
-		const page = render("typewriter", { phrases: ["UX Researcher", "Mentor", "Too many"] });
+		const page = render("typewriter", { phrases: ["UX Researcher", "Mentor"] });
 		const headline = /<p[^>]*data-pfx="typewriter"[^>]*>([\s\S]*?)<\/p>/.exec(page.html)?.[0] ?? "";
 		expect(headline).toContain('aria-hidden="true"');
 		expect(headline).toContain('<span class="sr-only">Product Designer · UX Researcher · Mentor</span>');
 		expect(headline).toContain('<span class="pfx-type__out">Product Designer</span>');
-		expect(headline).not.toContain("Too many");
+	});
+
+	it("types at most the headline and the roles the limit allows, whatever a view holds", () => {
+		const roles = ["UX Researcher", "Mentor", "Too many", "Way too many"];
+		const page = render("typewriter", {
+			adjust: (view) => ({ ...view, design: { ...view.design, effect: { ...view.design.effect, phrases: roles } } }),
+		});
+		const phrases = JSON.parse(
+			(/data-pfx-phrases="([^"]+)"/.exec(page.html)?.[1] ?? "[]").replaceAll("&quot;", '"'),
+		) as string[];
+		expect(phrases).toEqual(["Product Designer", ...roles.slice(0, PORTFOLIO_LIMITS.typewriterPhrases)]);
 	});
 
 	it("leaves the typewriter off when there is only one thing to type", () => {
@@ -107,18 +183,66 @@ describe("intro effects", () => {
 		expect(PREVIEW_STILL_CSS).toContain("animation:none!important");
 	});
 
-	it("ships self-contained scripts that run against any document", () => {
+	it("ships self-contained scripts: every name they read is their own or the browser's", () => {
 		for (const effect of SCRIPT_EFFECTS) {
 			const script = effectScript(effect);
 			expect(script).toMatch(/\(document\);$/);
 			expect(script).not.toMatch(/\bimport\b|\brequire\(|<\/script/i);
+			expect(
+				freeNames(script).filter((name) => !GLOBALS.has(name)),
+				effect,
+			).toEqual([]);
 			const document = {
 				defaultView: { matchMedia: () => ({ matches: false }), performance: { now: () => 0 } },
 				querySelectorAll: () => [],
 			};
-			// oxlint-disable-next-line no-new-func -- runs the inlined source to prove it has no outside references.
+			// oxlint-disable-next-line no-new-func -- runs the inlined source against a document of nothing.
 			expect(() => new Function("document", script)(document)).not.toThrow();
 		}
+		// The check itself finds a name from outside.
+		expect(freeNames("(d=>{const w=d.defaultView;w.alert(OUTSIDE)})(document);")).toEqual(["OUTSIDE", "document"]);
+	});
+
+	it("keeps the page script and the largest effect's within 6 KB together, and each effect within 3 KB", () => {
+		const largest = Math.max(...SCRIPT_EFFECTS.map((effect) => shippedSize(effectScript(effect))));
+		expect(largest).toBeLessThanOrEqual(3 * 1024);
+		// `02-teknis.md` sections 5.2 and 22: a page ships its script and at most one effect's.
+		expect(shippedSize(PORTFOLIO_PAGE_SCRIPT) + largest).toBeLessThanOrEqual(6 * 1024);
+	});
+
+	it("finishes typing within five seconds, pauses included, however long the phrases", () => {
+		for (const phrases of [
+			["Product Designer", "UX Researcher", "Mentor"],
+			["x".repeat(300), "y".repeat(40), "z".repeat(40)],
+			["a", "b"],
+			["Head", "One", "Two", "Three", "Four", "Five"],
+		]) {
+			const delays: number[] = [];
+			const out = { textContent: "" };
+			const element = {
+				dataset: { pfxPhrases: JSON.stringify(phrases) },
+				querySelector: () => out,
+				classList: { add: () => undefined, remove: () => undefined },
+			};
+			const window = {
+				matchMedia: () => ({ matches: false }),
+				setTimeout: (_: () => void, delay: number) => delays.push(delay),
+				clearTimeout: () => undefined,
+			};
+			EFFECT_RUNNERS.typewriter?.({
+				defaultView: window,
+				querySelectorAll: () => [element],
+			} as unknown as Document);
+			expect(Math.max(...delays), phrases.join("|").slice(0, 40)).toBeLessThanOrEqual(5000);
+			expect(delays.length).toBeGreaterThan(phrases.length);
+		}
+	});
+
+	it("ends Kilau's sweep on the text's own colour, as it looks without motion", () => {
+		expect(EFFECT_CSS.shimmer).toContain("linear-gradient(100deg,currentColor 0 38%");
+		expect(EFFECT_CSS.shimmer).toContain("currentColor 62% 100%");
+		expect(EFFECT_CSS.shimmer).toContain("-webkit-text-fill-color:transparent");
+		expect(EFFECT_CSS.shimmer).not.toContain("var(--pf-text)");
 	});
 
 	it("keeps Gradien hidup's colours readable in both modes of every theme, for every accent", () => {

@@ -1,8 +1,9 @@
 /**
  * Rules every theme shares: reset, tokens' fixed scale, and the shared building blocks (buttons, chips, navigation,
- * metric widget, covers, work detail, CV lists, location card, footer). Themes restyle them through the tokens and
- * their own rules under `.pf[data-theme="<id>"]`. Ported from `mockups/shared.css` (Phase 00), without the parts later
- * phases add (contact form, intro effects). Phase 05 added the video, PDF and link cards and the map picture.
+ * metric widget, covers, work detail, CV lists, location card, footer, the intro's backgrounds). Themes restyle them
+ * through the tokens and their own rules under `.pf[data-theme="<id>"]`. Ported from `mockups/shared.css` (Phase 00),
+ * without the parts later phases add (contact form, intro effects). Phase 05 added the video, PDF and link cards and
+ * the map picture.
  */
 export const BASE_CSS = String.raw`
 *,*::before,*::after{box-sizing:border-box}
@@ -17,7 +18,7 @@ h1,h2,h3,h4,p,ul,ol,dl,dd,figure,blockquote{margin:0}
 h1,h2,h3,h4{font-family:var(--pf-font-heading);text-wrap:balance;line-height:var(--pf-leading-tight)}
 p{text-wrap:pretty}
 /* User text may be written in another direction than the page (Latin on an Arabic page): each block takes its own. */
-p,li,blockquote,h1,h2,h3,dt,dd{unicode-bidi:plaintext}
+p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 :focus-visible{outline:2px solid var(--pf-accent-text);outline-offset:3px;border-radius:4px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .pf-skip{position:absolute;inset-inline-start:12px;top:-60px;z-index:80;padding:10px 16px;border-radius:999px;background:var(--pf-text);color:var(--pf-bg);font-weight:600;text-decoration:none}
@@ -54,7 +55,7 @@ p,li,blockquote,h1,h2,h3,dt,dd{unicode-bidi:plaintext}
 .pf-section__title{font-size:var(--pf-text-xl);font-weight:700;letter-spacing:-.01em}
 .pf-prose{max-width:66ch}
 .pf-prose>*+*{margin-top:.9em}
-.pf-prose h2,.pf-prose h3{margin-top:1.6em;font-size:var(--pf-text-lg)}
+.pf-prose h3,.pf-prose h4{margin-top:1.6em;font-size:var(--pf-text-lg)}
 .pf-prose ul,.pf-prose ol{padding-inline-start:1.2em}
 .pf-prose li+li{margin-top:.35em}
 .pf-prose a{color:var(--pf-accent-text);text-underline-offset:3px}
@@ -97,11 +98,11 @@ p,li,blockquote,h1,h2,h3,dt,dd{unicode-bidi:plaintext}
 .pf-metrics[data-variant="ba"] .pf-metric__chart svg{height:30px}
 .pf-metrics[data-variant="ba"] .pf-metric__value{font-size:calc(var(--pf-metric-value) * .85)}
 .pf-work-metric{display:inline-flex;align-items:baseline;gap:6px;max-width:100%;padding:4px 10px;border-radius:999px;background:var(--pf-accent-soft);color:var(--pf-text);font-size:var(--pf-text-xs);line-height:1.4}
-.pf-work-metric b{color:var(--pf-accent-text);font-size:var(--pf-text-sm);font-variant-numeric:tabular-nums}
+.pf-work-metric b{color:var(--pf-accent-text-soft);font-size:var(--pf-text-sm);font-variant-numeric:tabular-nums}
 .pf-cover{display:block;position:relative;overflow:hidden;background:var(--pf-surface);aspect-ratio:var(--pf-cover-ratio,4/3);max-width:100%}
 .pf-cover img{width:100%;height:100%;object-fit:cover}
 .pf-detail{display:none;position:fixed;inset:0;z-index:60;overflow-y:auto;overscroll-behavior:contain;background:color-mix(in oklab,#000 55%,transparent);padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
-.pf-detail:target{display:block}
+.pf-detail:target,.pf-detail.pf-open{display:block}
 .pf-detail__panel{position:relative;max-width:960px;margin:0 auto;background:var(--pf-bg);color:var(--pf-text);border-radius:calc(var(--pf-radius) + 6px);--pf-detail-pad:clamp(20px,4vw,48px);padding:var(--pf-detail-pad);display:grid;gap:var(--pf-space-6)}
 .pf-detail__bar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:calc(-1 * var(--pf-detail-pad)) calc(-1 * var(--pf-detail-pad)) 0;padding:12px var(--pf-detail-pad);background:color-mix(in oklab,var(--pf-bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--pf-border);border-radius:calc(var(--pf-radius) + 6px) calc(var(--pf-radius) + 6px) 0 0;font-size:var(--pf-text-sm)}
 .pf-detail__bar nav{display:flex;gap:6px}
@@ -175,8 +176,14 @@ p,li,blockquote,h1,h2,h3,dt,dd{unicode-bidi:plaintext}
 .pf-link__domain{display:inline-flex;align-items:center;gap:6px;margin-top:4px;min-width:0;color:var(--pf-muted);font-size:var(--pf-text-xs)}
 .pf-link__domain .pf-icon{width:.95em;height:.95em}
 @media (max-width:520px){.pf-link[data-image]{grid-template-columns:minmax(0,1fr)}.pf-link[data-image] .pf-link__image{width:100%}.pf-pdf__page{width:72px}}
-.pf-avatar{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--pf-accent-soft);color:var(--pf-accent-text);font:700 var(--pf-text-sm)/1 var(--pf-font-heading)}
+.pf-avatar{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--pf-accent-soft);color:var(--pf-accent-text-soft);font:700 var(--pf-text-sm)/1 var(--pf-font-heading)}
 .pf-avatar img{width:100%;height:100%;object-fit:cover}
+/* The intro's background, drawn by the element with data-bg through background:var(--pf-hero-bg): the accent's soft gradient over the theme's ground, a dot pattern, or the picture under a shade with light text on it. Themes set --pf-hero-ground and --pf-hero-shade (two stops). */
+[data-bg="soft-gradient"]{--pf-hero-bg:radial-gradient(120% 90% at 0% 0%,var(--pf-accent-soft),transparent 70%),radial-gradient(90% 80% at 100% 100%,color-mix(in oklab,var(--pf-accent-soft) 70%,transparent),transparent 70%),var(--pf-hero-ground,var(--pf-bg))}
+[data-bg="pattern"]{--pf-hero-bg:radial-gradient(color-mix(in oklab,var(--pf-accent) 22%,transparent) 1.2px,transparent 1.4px) 0 0/18px 18px,var(--pf-surface)}
+[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.62),rgb(8 10 14/.7))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-text:#fff;--pf-muted:rgb(255 255 255/.82);--pf-border:rgb(255 255 255/.28);--pf-surface:rgb(255 255 255/.14);--pf-accent-text:var(--pf-accent-text-dark);color:var(--pf-text)}
+/* An intro on the soft gradient draws accent text on the accent's tint: the tone made for it. */
+[data-bg="soft-gradient"]{--pf-accent-text:var(--pf-accent-text-soft)}
 .pf-person{display:flex;align-items:center;gap:12px;min-width:0}
 .pf-person__text b{display:block;font-weight:600;line-height:1.3}
 .pf-person__text span{display:block;color:var(--pf-muted);font-size:var(--pf-text-xs);line-height:1.35}
@@ -198,19 +205,19 @@ p,li,blockquote,h1,h2,h3,dt,dd{unicode-bidi:plaintext}
 .pf-cvitem .pf-prose{margin-top:6px;font-size:var(--pf-text-sm)}
 .pf-cvitem__roles{display:grid;gap:10px;margin:8px 0 0;padding-inline-start:14px;border-inline-start:2px solid var(--pf-border);list-style:none}
 .pf-cvlist[data-variant="timeline"]{gap:0}
-.pf-cvlist[data-variant="timeline"] .pf-cvitem{position:relative;padding:0 0 var(--pf-space-5);padding-inline-start:26px;border-inline-start:2px solid var(--pf-border);margin-inline-start:6px}
-.pf-cvlist[data-variant="timeline"] .pf-cvitem:last-child{border-color:transparent;padding-bottom:0}
-.pf-cvlist[data-variant="timeline"] .pf-cvitem::before{content:"";position:absolute;inset-inline-start:-8px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid var(--pf-accent);background:var(--pf-bg)}
-.pf-cvlist[data-variant="timeline"] .pf-cvitem:first-child::before{background:var(--pf-accent)}
+.pf-cvlist[data-variant="timeline"]>.pf-cvitem{position:relative;padding:0 0 var(--pf-space-5);padding-inline-start:26px;border-inline-start:2px solid var(--pf-border);margin-inline-start:6px}
+.pf-cvlist[data-variant="timeline"]>.pf-cvitem:last-child{border-color:transparent;padding-bottom:0}
+.pf-cvlist[data-variant="timeline"]>.pf-cvitem::before{content:"";position:absolute;inset-inline-start:-8px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid var(--pf-accent);background:var(--pf-bg)}
+.pf-cvlist[data-variant="timeline"]>.pf-cvitem:first-child::before{background:var(--pf-accent)}
 .pf-skillgroups{display:grid;gap:var(--pf-space-4)}
 .pf-skillgroup{display:grid;gap:8px}
 .pf-skillgroup b{font-size:var(--pf-text-sm)}
 .pf-extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:var(--pf-space-6)}
 .pf-extra__title{font-size:var(--pf-text-md);font-weight:700;margin-bottom:12px}
-.pf-extra ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.pf-extra li{display:grid;gap:1px;font-size:var(--pf-text-sm)}
-.pf-extra li span{color:var(--pf-muted);font-size:var(--pf-text-xs)}
-.pf-extra li a{text-underline-offset:3px}
+.pf-extralist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.pf-extralist li{display:grid;gap:1px;font-size:var(--pf-text-sm)}
+.pf-extralist li span{color:var(--pf-muted);font-size:var(--pf-text-xs)}
+.pf-extralist li a{text-underline-offset:3px}
 .pf-loc{display:grid;gap:12px;padding:16px;border:1px solid var(--pf-border);border-radius:var(--pf-radius);background:var(--pf-bg)}
 .pf-loc[data-map]{padding:12px}
 .pf-loc__map{position:relative;overflow:hidden;border-radius:calc(var(--pf-radius) - 4px);aspect-ratio:5/3;max-width:100%;background:var(--pf-surface)}
@@ -228,7 +235,7 @@ p,li,blockquote,h1,h2,h3,dt,dd{unicode-bidi:plaintext}
 .pf-contact-links span{min-width:88px;color:var(--pf-muted)}
 .pf-contact-links a{text-underline-offset:3px;overflow-wrap:anywhere}
 .pf-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 24px;padding-block:var(--pf-space-6);color:var(--pf-muted);font-size:var(--pf-text-xs)}
-.pf-foot a{color:var(--pf-muted);text-underline-offset:3px}
-.pf-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 8px;border:1px solid var(--pf-border);border-radius:999px;color:var(--pf-text)!important;text-decoration:none;font-weight:600}
+.pf-foot a:not(.pf-badge){color:var(--pf-muted);text-underline-offset:3px}
+.pf-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 8px;border:1px solid var(--pf-border);border-radius:999px;color:var(--pf-text);text-decoration:none;font-weight:600}
 .pf-badge svg{width:20px;height:20px}
 `;

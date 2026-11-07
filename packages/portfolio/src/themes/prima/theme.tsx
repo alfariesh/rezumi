@@ -1,30 +1,26 @@
 import type { PortfolioPageMessages } from "../../messages";
-import type { ResumeItem } from "../../shared/parts";
 import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
 import type { ReactNode } from "react";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { HeroHeadline, HeroName } from "../../shared/hero-text";
-import { ResumeIcon, UiIcon } from "../../shared/icons";
+import { introLocation, IntroChips, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
+import { ServiceList, TestimonialList } from "../../shared/offers";
 import {
 	Buttons,
 	Clients,
 	Contact,
-	CvList,
-	ExtraList,
-	Footer,
-	hostOf,
-	Lightbox,
-	linkAttributes,
+	CustomSectionBody,
+	ExtraSection,
 	Picture,
 	Prose,
-	SectionTitle,
-	Skills,
+	Section,
 	vars,
-	WorkDetail,
 } from "../../shared/parts";
-import { EXTRA_KINDS, groupSections, initials, navSections } from "../../shared/sections";
+import { ResumeSectionBody } from "../../shared/resume";
+import { EXTRA_KINDS, groupSections } from "../../shared/sections";
+import { Navigation, PageShell } from "../../shared/shell";
 
 /** A section's title as Prima shows it: the Work section is "Case studies" unless the person renamed it. */
 function titleOf(section: PortfolioViewSection, messages: PortfolioPageMessages): string {
@@ -43,87 +39,29 @@ function credentials(sections: readonly PortfolioViewSection[]): string {
 	return "";
 }
 
-function Navigation() {
-	const { view, messages } = useRender();
-	const links = navSections(view.sections);
-	const contact = view.sections.find((section) => section.kind === "contact");
-	const items = links.map((section) => (
-		<li key={section.key}>
-			<a href={`#${section.anchor}`}>{titleOf(section, messages)}</a>
-		</li>
-	));
-	return (
-		<header className="pr-head">
-			<div className="pf-wrap">
-				<nav className="pf-nav" aria-label={messages.pageNavigation}>
-					<a className="pf-nav__brand pr-brand" href="#main">
-						<span>{view.basics.name}</span>
-					</a>
-					{links.length > 0 && (
-						<>
-							<ul className="pf-nav__links">
-								{items}
-								{contact && (
-									<li className="pr-head__cta">
-										<a className="pf-btn pf-btn--primary" href={`#${contact.anchor}`}>
-											{messages.sendMessage}
-										</a>
-									</li>
-								)}
-							</ul>
-							<details className="pf-menu">
-								<summary>
-									<UiIcon name="menu" />
-									{messages.menu}
-								</summary>
-								<ul className="pf-menu__list">{items}</ul>
-							</details>
-						</>
-					)}
-				</nav>
-			</div>
-		</header>
-	);
-}
-
 /**
  * The intro: headline above the name in small capitals, greeting, chips and buttons beside the photo with its
  * credentials, then the achievements as one joined KPI strip.
  */
 function Hero() {
-	const { view, messages, imageUrl } = useRender();
-	const { hero, basics } = view;
+	const { view, messages } = useRender();
+	const { hero } = view;
 	const variant = themeVariant("prima", "hero", view.design.variants.hero);
-	const location = view.location?.label || basics.location;
-	const background = hero.background.image ? imageUrl(hero.background.image.src) : undefined;
-	const bg = hero.background.kind === "image" && !background ? "plain" : hero.background.kind;
+	const background = useIntroBackground();
 	const caption = credentials(view.sections);
 	return (
 		<section
 			className="pr-hero"
 			aria-label={messages.intro}
 			data-variant={hero.picture ? variant : "no-photo"}
-			data-bg={bg}
-			{...(bg === "image" && background
-				? { style: vars({ "--pf-hero-image": `url("${encodeURI(background).replaceAll('"', "%22")}")` }) }
-				: {})}
+			{...background}
 		>
 			<div className="pr-hero__grid">
 				<div className="pr-hero__text">
 					<HeroName className="pr-name" />
 					<HeroHeadline className="pr-headline" />
 					{hero.greeting && <p className="pr-greeting">{hero.greeting}</p>}
-					{(location || hero.availability) && (
-						<ul className="pf-chips">
-							{location && (
-								<li className="pf-chip">
-									<UiIcon name="pin" />
-									{location}
-								</li>
-							)}
-							{hero.availability && <li className="pf-chip pf-chip--open">{hero.availability}</li>}
-						</ul>
-					)}
+					<IntroChips location={introLocation(view)} availability={hero.availability} />
 					<Buttons links={hero.buttons} />
 				</div>
 				{hero.picture && (
@@ -194,75 +132,13 @@ function SectionBody({ section }: SectionProps): ReactNode {
 		case "work":
 			return <WorkList works={section.works} />;
 		case "services":
-			return (
-				<ul className="pr-services" data-variant={variant("services")}>
-					{section.services.map((service) => (
-						<li key={service.id} className="pf-service">
-							<div className="pf-service__head">
-								<h3>
-									<ResumeIcon name={service.icon} />
-									{service.title}
-								</h3>
-								{service.price && <span className="pf-service__price">{service.price}</span>}
-							</div>
-							{service.description && <p>{service.description}</p>}
-							{service.cta && (
-								<a className="pf-service__cta" {...linkAttributes(service.cta.href, service.cta)}>
-									{service.cta.label}
-									<UiIcon name="arrow-right" flip />
-								</a>
-							)}
-						</li>
-					))}
-				</ul>
-			);
+			return <ServiceList section={section} className="pr-services" variant={variant("services")} />;
 		case "testimonials":
-			return (
-				<ul className="pr-quotes" data-variant={variant("testimonials")}>
-					{section.testimonials.map((testimonial) => (
-						<li key={testimonial.id} className="pf-quote">
-							<blockquote>{testimonial.quote}</blockquote>
-							<div className="pf-person">
-								<span className="pf-avatar" aria-hidden="true">
-									{testimonial.photo ? (
-										<Picture image={testimonial.photo} decorative sizes="44px" />
-									) : (
-										initials(testimonial.name)
-									)}
-								</span>
-								<span className="pf-person__text">
-									<b>{testimonial.name}</b>
-									{testimonial.role && <span>{testimonial.role}</span>}
-								</span>
-							</div>
-							{testimonial.sourceUrl && (
-								<a className="pf-quote__source" {...linkAttributes(testimonial.sourceUrl)}>
-									{hostOf(testimonial.sourceUrl)}
-								</a>
-							)}
-						</li>
-					))}
-				</ul>
-			);
+			return <TestimonialList section={section} className="pr-quotes" variant={variant("testimonials")} />;
 		case "clients":
 			return <Clients section={section} variant={variant("clients")} />;
-		case "experience":
-		case "education":
-			return <CvList kind={section.kind} items={section.items as ResumeItem[]} variant={variant(section.kind)} />;
-		case "volunteer":
-			return <CvList kind="volunteer" items={section.items as ResumeItem[]} variant={variant("experience")} />;
-		case "skills":
-			return <Skills items={section.items as ResumeItem[]} variant={variant("skills")} />;
-		case "resume":
-			return <CvList kind={section.type} items={section.items as unknown as ResumeItem[]} />;
 		case "custom":
-			return (
-				<>
-					{section.image && <Picture image={section.image} className="pr-custom__image" />}
-					<Prose html={section.html} />
-					{section.button && <Buttons links={[section.button]} />}
-				</>
-			);
+			return <CustomSectionBody section={section} imageClassName="pr-custom__image" />;
 		case "contact":
 			return (
 				<div className="pr-contact" {...(section.contact.location ? { "data-loc": "" } : {})}>
@@ -270,11 +146,7 @@ function SectionBody({ section }: SectionProps): ReactNode {
 				</div>
 			);
 		default:
-			return (
-				<div className="pr-list">
-					<ExtraList kind={section.kind} items={section.items as ResumeItem[]} />
-				</div>
-			);
+			return <ResumeSectionBody section={section} listClassName="pr-list" />;
 	}
 }
 
@@ -282,16 +154,14 @@ function SectionBody({ section }: SectionProps): ReactNode {
 function Row({ section }: SectionProps) {
 	const { messages } = useRender();
 	return (
-		<section
+		<Section
+			section={{ anchor: section.anchor, title: titleOf(section, messages) }}
 			className={`pf-section pr-row${section.kind === "custom" ? " pr-custom" : ""}`}
-			id={section.anchor}
-			aria-labelledby={`${section.anchor}-title`}
 		>
-			<SectionTitle section={{ anchor: section.anchor, title: titleOf(section, messages) }} />
 			<div className="pr-row__body">
 				<SectionBody section={section} />
 			</div>
-		</section>
+		</Section>
 	);
 }
 
@@ -304,51 +174,40 @@ type PrimaPageProps = { year: number; creditUrl: string };
  */
 export function PrimaPage({ year, creditUrl }: PrimaPageProps) {
 	const { view, messages } = useRender();
-	const works = view.works;
+	const contact = view.sections.find((section) => section.kind === "contact");
 	return (
-		<div className="pf" data-theme="prima">
-			<a className="pf-skip" href="#main">
-				{messages.skipToContent}
-			</a>
-			<Navigation />
-			<main className="pf-wrap pr-main" id="main" tabIndex={-1}>
-				<Hero />
-				{groupSections(view.sections).map((group) => {
-					const first = group[0] as PortfolioViewSection;
-					if (group.length > 1 && EXTRA_KINDS.has(first.kind))
-						return (
-							<div key={first.key} className="pr-row pr-facts">
-								<div className="pf-extras">
-									{group.map((section) => (
-										<section
-											key={section.key}
-											className="pf-section pf-extra"
-											id={section.anchor}
-											aria-labelledby={`${section.anchor}-title`}
-										>
-											<h2 className="pf-extra__title" id={`${section.anchor}-title`}>
-												{section.title}
-											</h2>
-											<SectionBody section={section} />
-										</section>
-									))}
-								</div>
-							</div>
-						);
-					return <Row key={first.key} section={first} />;
-				})}
-			</main>
-			<Footer year={year} creditUrl={creditUrl} />
-			{works.map((work, index) => (
-				<WorkDetail
-					key={work.id}
-					work={work}
-					previous={works[(index - 1 + works.length) % works.length] as PortfolioViewWork}
-					next={works[(index + 1) % works.length] as PortfolioViewWork}
-					total={works.length}
+		<PageShell
+			theme="prima"
+			navigation={
+				<Navigation
+					className="pr-head"
+					innerClassName="pf-wrap"
+					brandClassName="pr-brand"
+					label={(section) => titleOf(section, messages)}
+					message={contact ? { anchor: contact.anchor, className: "pr-head__cta" } : null}
 				/>
-			))}
-			{works.some((work) => work.blocks.some((block) => block.type === "images")) && <Lightbox />}
-		</div>
+			}
+			mainClassName="pr-main"
+			year={year}
+			creditUrl={creditUrl}
+		>
+			<Hero />
+			{groupSections(view.sections).map((group) => {
+				const first = group[0] as PortfolioViewSection;
+				if (group.length > 1 && EXTRA_KINDS.has(first.kind))
+					return (
+						<div key={first.key} className="pr-row pr-facts">
+							<div className="pf-extras">
+								{group.map((section) => (
+									<ExtraSection key={section.key} section={section}>
+										<SectionBody section={section} />
+									</ExtraSection>
+								))}
+							</div>
+						</div>
+					);
+				return <Row key={first.key} section={first} />;
+			})}
+		</PageShell>
 	);
 }

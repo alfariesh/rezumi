@@ -7,14 +7,19 @@
  * functions in a `__name` helper that only exists in their own module. The source is what visitors download.
  *
  * Every effect leaves the real text in place: the typewriter's phrases are all in the HTML, the scramble draws an
- * `aria-hidden` layer over the name (which keeps its size), and the vector outline wraps letters in spans and labels
- * the heading with the name. Each one stops by itself within five seconds, and none runs when the device asks for
- * less motion.
+ * `aria-hidden` layer over the name (which keeps its size), and the vector outline keeps a screen-reader copy of the
+ * text beside the letters it wraps (hidden from screen readers). The typewriter and the scramble play once and stop
+ * by themselves within five seconds; the vector outline only answers the pointer. Playing one again (the editor's
+ * "Replay") stops the run before it. None runs when the device asks for less motion.
  */
 
 type EffectRunner = (d: Document) => void;
 
-/** Types the headline's phrases in turn, back to the first one, within about five seconds. */
+/**
+ * Types the headline's phrases in turn and back to the first one, done within five seconds however long they are:
+ * the pauses take at most 1.7 seconds, and the typing shares the 2.9 seconds left, as fast as it needs (no lower
+ * limit on a letter's time).
+ */
 const typewriter: EffectRunner = (d) => {
 	const w = d.defaultView;
 	if (!w || w.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -31,23 +36,24 @@ const typewriter: EffectRunner = (d) => {
 		const timers: number[] = [];
 		const first = [...(list[0] as string)];
 		const order = [...list.slice(1), list[0] as string].map((phrase) => [...phrase]);
+		const pause = Math.min(600, 1200 / (order.length - 1));
 		let count = 0;
 		order.reduce((current, next) => ((count += current.length + next.length), next), first);
-		const step = Math.min(55, Math.max(16, 2900 / count));
+		const step = Math.min(55, 2900 / count);
 		let at = 500;
 		let current = first;
 		const frames: [string, number][] = [];
 		for (const next of order) {
 			for (let i = current.length - 1; i >= 0; i--) frames.push([current.slice(0, i).join(""), (at += step * 0.6)]);
 			for (let i = 1; i <= next.length; i++) frames.push([next.slice(0, i).join(""), (at += step)]);
-			at += 600;
+			at += pause;
 			current = next;
 		}
 		for (const [text, time] of frames) timers.push(w.setTimeout(() => (out.textContent = text), time));
 		el.classList.remove("pfx-done");
 		el.classList.add("pfx-on");
 		out.textContent = first.join("");
-		timers.push(w.setTimeout(() => el.classList.add("pfx-done"), at - 600));
+		timers.push(w.setTimeout(() => el.classList.add("pfx-done"), at - pause));
 		(el as HTMLElement & { pfxStop?: () => void }).pfxStop = () => {
 			timers.forEach((timer) => w.clearTimeout(timer));
 			out.textContent = first.join("");
@@ -56,14 +62,19 @@ const typewriter: EffectRunner = (d) => {
 	});
 };
 
-/** Random letters settle into the name from its start, once, in about 1.1 seconds. */
+/**
+ * Random letters settle into the name from its start, once, in about 1.1 seconds. A letter is what a reader sees as
+ * one (a grapheme: an accent or emoji parts stay with their letter), where the browser can tell.
+ */
 const scramble: EffectRunner = (d) => {
 	const w = d.defaultView;
 	if (!w || w.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 	const begin = w.performance.now();
 	(d.fonts ? d.fonts.ready : Promise.resolve()).then(() => {
 		if (w.performance.now() - begin > 1200) return;
+		const graphemes = Intl.Segmenter ? new Intl.Segmenter(undefined, { granularity: "grapheme" }) : null;
 		d.querySelectorAll<HTMLElement>('[data-pfx="scramble"]').forEach((el) => {
+			(el as HTMLElement & { pfxStop?: () => void }).pfxStop?.();
 			el.querySelector(".pfx-layer")?.remove();
 			el.classList.remove("pfx-hide");
 			const text = el.textContent || "";
@@ -78,14 +89,13 @@ const scramble: EffectRunner = (d) => {
 			const range = d.createRange();
 			for (let node = walker.nextNode(); node; node = walker.nextNode()) {
 				const data = node.textContent || "";
-				for (let i = 0; i < data.length; i++) {
-					const size = (data.codePointAt(i) ?? 0) > 0xffff ? 2 : 1;
-					const ch = data.slice(i, i + size);
-					const from = i;
-					i += size - 1;
+				let next = 0;
+				for (const ch of graphemes ? Array.from(graphemes.segment(data), (part) => part.segment) : data) {
+					const from = next;
+					next += ch.length;
 					if (/\s/.test(ch)) continue;
 					range.setStart(node, from);
-					range.setEnd(node, from + size);
+					range.setEnd(node, from + ch.length);
 					const r = range.getBoundingClientRect();
 					const cell = d.createElement("span");
 					cell.textContent = ch;
@@ -117,6 +127,11 @@ const scramble: EffectRunner = (d) => {
 					el.classList.remove("pfx-hide");
 				}
 			}, 50);
+			(el as HTMLElement & { pfxStop?: () => void }).pfxStop = () => {
+				w.clearInterval(timer);
+				layer.remove();
+				el.classList.remove("pfx-hide");
+			};
 		});
 	});
 };
@@ -124,7 +139,9 @@ const scramble: EffectRunner = (d) => {
 /**
  * On a desktop with a mouse, the letter under the pointer turns into a dashed outline inside a selection box with
  * handles and its size, like a design app; it returns 0.65 seconds after the pointer leaves. On touch screens and phones
- * the CSS plays the gentle fade-up instead.
+ * the CSS plays the gentle fade-up instead. Hebrew and Arabic text, whose letters join, isn't split and stays still.
+ * Screen readers read a hidden copy of the text, not the wrapped letters (naming a paragraph with `aria-label` isn't
+ * allowed).
  */
 const vector: EffectRunner = (d) => {
 	const w = d.defaultView;
@@ -133,13 +150,16 @@ const vector: EffectRunner = (d) => {
 	d.querySelectorAll<HTMLElement>('[data-pfx="vector-hover"]').forEach((el) => {
 		if (el.dataset.pfxReady) return;
 		const text = (el.textContent || "").trim();
-		if (/[֐-ࣿ]/.test(text)) {
-			el.dataset.pfx = "fade-up";
-			return;
-		}
+		if (/[֐-ࣿ]/.test(text)) return;
 		el.dataset.pfxReady = "1";
-		el.setAttribute("aria-label", text);
-		const walker = d.createTreeWalker(el, 4);
+		const copy = d.createElement("span");
+		copy.className = "sr-only";
+		copy.textContent = text;
+		const shown = d.createElement("span");
+		shown.setAttribute("aria-hidden", "true");
+		shown.append(...el.childNodes);
+		el.append(copy, shown);
+		const walker = d.createTreeWalker(shown, 4);
 		const nodes: Node[] = [];
 		for (let node = walker.nextNode(); node; node = walker.nextNode()) nodes.push(node);
 		for (const node of nodes) {
@@ -182,14 +202,7 @@ const vector: EffectRunner = (d) => {
 				outline.append(glyph);
 				const size = d.createElement("em");
 				size.textContent = `${Math.round(r.width)} × ${Math.round(r.height)}`;
-				box.append(
-					outline,
-					d.createElement("b"),
-					d.createElement("b"),
-					d.createElement("b"),
-					d.createElement("b"),
-					size,
-				);
+				box.append(outline, ...[1, 2, 3, 4].map(() => d.createElement("b")), size);
 				letter.append(box);
 			}
 			w.requestAnimationFrame(() => letter.classList.add("pfx-on"));
