@@ -1,6 +1,6 @@
 # Desain — portfolio web
 
-Untuk pemilik dan agent. Bagian 5 (empat tema), 6 (token), 16 (widget metrik), dan 18 (efek intro) berisi keputusan final Phase 00 (2026-11-05); acuan visualnya ada di `mockups/`.
+Untuk pemilik dan agent. Bagian 5 (empat tema awal), 6 (token), 16 (widget metrik), dan 18 (efek intro) berisi keputusan final Phase 00 (2026-11-05); acuan visualnya ada di `mockups/`.
 
 ## 1. Prinsip
 
@@ -59,7 +59,7 @@ Aturan halaman:
 
 | Kontrol                     | Pilihan                                                                                                                            | Bawaan                   |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| Tema                        | Lugas, Prima (gratis); Kanvas, Mozaik (Plus) — bagian 5                                                                            | Lugas                    |
+| Tema                        | Lugas, Prima (gratis); Kanvas, Mozaik, Paper, Brutal (Plus) — bagian 5                                                             | Lugas                    |
 | Mode warna                  | Terang, Gelap, Ikuti perangkat                                                                                                     | Sesuai tema              |
 | Warna aksen                 | Ikut CV, 8 warna kurasi, warna bebas (hex)                                                                                         | Ikut CV                  |
 | Font                        | Ikut CV, 5–6 pasangan font kurasi per tema                                                                                         | Pasangan bawaan tema     |
@@ -427,3 +427,34 @@ Keputusan pemilik 2026-11-05: **keenam efek masuk rilis pertama**, ditambah "Tan
 - **Editor:** peta interaktif **HeroUI Map** untuk memilih kota (cari dari daftar kota), menggeser penanda, dan memilih presisi Kota/Provinsi/Negara.
 - **Halaman publik:** gambar peta (versi terang dan gelap) yang dibuat editor saat menyimpan, penanda berwarna aksen, atribusi OpenStreetMap, dan tautan "Buka di peta". Tidak ada peta interaktif di halaman publik agar tetap cepat dan pengunjung tidak dilacak penyedia peta (peta interaktif ada di backlog).
 - **Dashboard:** HeroUI Map juga menampilkan negara asal pengunjung (bagian 10).
+
+## 20. Tema Paper (tambahan 2026-11-07)
+
+Permintaan pemilik: menambah tema **Paper** di builder Rezumi, dengan acuan implementasi portfolio pribadi di `/Users/salmanalfariesh/Documents/Portofolio`. README, catatan desain, token, komponen Home/Grid/Hero/WorkRow dan gaya responsif proyek itu dibaca lebih dulu. Mockup Paper “Portfolio — Salman” tercatat tertinggal dari kode; kode portfolio saat ini menjadi acuan visual.
+
+- ID `paper`, nama **Paper**, pilihan kelima di dialog buat dan Desain. Label **Plus** mengikuti tema kreatif Kanvas/Mozaik; dua tema gratis dan tema bawaan tetap sama. Penegakan paket tetap pekerjaan Phase 07.
+- Kertas terang `#FEFEFC`, permukaan `#F6F7F3`, tinta `#23251D`, teks sekunder `#65675E`, garis `#D8DAD1`. Padanan gelap: `#191B16`, `#22251E`, `#F3F4EC`, `#ADB0A3`, `#3B3F34`. Aksen tetap mengikuti CV/pilihan pengguna; tanpa CV atau warna CV yang sah, bawaan Paper `#F54E00`, dikoreksi kontras untuk teks.
+- Huruf bawaan **Google Sans**, angka/tanggal **JetBrains Mono**. Pilihan lain: Plus Jakarta Sans, Manrope, DM Sans, Source Serif 4 + Source Sans 3. Efek bawaan **Tanpa efek**, keenam efek yang ada tetap tersedia.
+- Navigasi lebar 1321 px, isi 1082 px. Intro dua kolom: bawaan foto kecil di atas teks + ilustrasi lembar kertas isometrik SVG orisinal di kanan; alternatif foto besar kanan/kiri. Tanpa foto, ilustrasi dekoratif tetap tampil di desktop. HP menjadi satu kolom dan menyembunyikan ilustrasi dekoratif; foto pengguna tetap opsional.
+- Angka intro dalam strip bersambung. Isi berupa sel bergaris tipis, tanda silang kecil di pertemuan sudut, tekstur serat dari aset asli portfolio pemilik (`paper-texture.webp`, hasil render PaperFibre), dan sudut lipatan. Tidak ada grid latar berulang atau runtime WebGL.
+- Tentang dua kolom, bagian karier berpasangan (bagian terakhir yang tidak punya pasangan melebar), Karya berupa gambar/cerita berselang atau grid 2/3 kolom, Layanan daftar/kartu, Testimoni kartu/geser, Kontak di atas permukaan kertas yang lebih gelap. Urutan dan judul bagian tetap milik pengguna; semua bagian dan media memakai primitif bersama.
+- Galeri memakai persona fiktif Nadia Rahmawati, bukan konten pribadi pemilik. Monogram mengambil inisial pengguna; logo Paper, isi studi kasus pribadi, ilustrasi dan shader proyek acuan tidak disalin.
+- Nama mengikuti lebar kolom dengan batas bawah 28 px; teks panjang tanpa spasi boleh membungkus. Satu kartu karya adalah satu tautan dengan judul sebagai nama aksesibel. Di HP, tiga angka intro sejajar; empat angka menjadi dua baris berimbang. Sel isi berlatar solid agar teks kecil tetap kontras, sementara tekstur asli terlihat di latar dan footer.
+
+### Koreksi tekstur Paper (2026-11-07)
+
+Pemilik menegaskan bahwa tekstur kertas acuan harus ikut. Grain SVG beropasitas 3,5% pada versi awal terlalu tipis dan bukan padanan serat PaperFibre. Tema kini memakai byte asli `Portofolio/src/assets/paper-texture.webp` (21.594 byte), yang proyek acuan sendiri pakai sebagai hasil render statis shader pada deretan tools. Opasitas latar 55% mengikuti `.backdrop__paper`; footer 100%. Mode gelap membalik luminansinya dan memakai `screen`. Lapisan berada di belakang isi, tidak menyaring gambar karya, foto, atau teks. Tidak ada runtime WebGL baru.
+
+## 21. Tema Brutal (tambahan 2026-11-07)
+
+Permintaan pemilik: tema tambahan bergaya neobrutalism, mengacu ke [Neubrutalism](https://neubrutalism.com/) dan [Attachment — Neobrutalism components](https://www.neobrutalism.dev/docs/attachment). Kedua halaman dibaca dan tampilannya dilihat sebelum implementasi. Implementasi memakai primitif Rezumi; tidak memasang Shadcn/Base UI atau menyalin komponen situs acuan.
+
+- ID `brutal`, nama **Brutal**, pilihan keenam di dialog buat dan Desain; label **Plus**, mengikuti tema kreatif. Tema bawaan dan dua tema gratis tetap sama.
+- Kesan utama: latar krem, kartu putih, outline tinta 3 px (2 px di HP), radius 3–4 px, bayangan keras 4–8 px tanpa blur, huruf judul besar dan kapital, bentuk bintang dekoratif dan kartu foto sedikit miring. Isi panjang tetap memakai huruf isi yang tenang. Palet terang: `#FFFDF5` / `#FFFFFF` / `#171717` / `#545454` / `#171717`; gelap: `#171717` / `#242424` / `#FAFAF5` / `#C0C0B7` / `#FAFAF5` (latar, kartu, teks, sekunder, garis). Mode gelap merupakan adaptasi Rezumi; situs komponen acuan saat ini hanya menawarkan palet terang.
+- Aksen mengikuti CV atau pilihan pengguna; tanpa warna CV yang sah bawaan kuning `#FFD23F`. Teks di atas aksen memakai token kontras, dan teks aksen dikoreksi terhadap latar/kartu. Tidak ada gradien atau blur pada gaya bawaan. Pengaturan latar intro yang sudah ada tetap dihormati bila dipilih pengguna.
+- Font bawaan **Space Grotesk + Inter**; alternatif Syne + DM Sans, Plus Jakarta Sans, Archivo dan Outfit. Efek bawaan **Tanpa efek**; pilihan Muncul halus, Ketik berganti, Acak teknologi dan Garis vektor tersedia. Kilau dan Gradien hidup tidak ditawarkan oleh tema ini.
+- Intro dua kolom: nama besar, headline, sapaan, chip lokasi/ketersediaan dan tombol; foto berupa kartu berbingkai dengan bar kecil di atasnya, bayangan keras, aksen di sekeliling foto dan bintang dekoratif. Foto ditampilkan hitam-putih. Tanpa foto: inisial pengguna. Varian foto kiri dan nama besar tersedia; HP menjadi satu kolom. Angka pencapaian berupa kartu berjajar dengan aksen pada setiap kartu kedua.
+- Karya berada setelah Intro secara bawaan, dengan kartu bergaris dan keterangan selalu terlihat. Varian grid 2/3 kolom, unggulan + grid, dan daftar; kartu bergeser ke arah bayangannya saat hover/fokus. Bagian lain berbentuk panel dengan judul, nomor dekoratif dan isi. Semua bagian, metrik dan media tetap tersedia.
+- PDF, video dan tautan mengikuti gaya kartu attachment: outline tebal, sudut kecil, bayangan keras, informasi file dan tombol yang tetap terbaca. Perilaku video/PDF, detail, lightbox, navigasi keyboard, privasi dan sanitasi memakai jalur bersama.
+- Galeri Inggris/Indonesia memakai persona fiktif **Citra Maharani**. Tidak menyalin contoh isi, logo, kode atau ilustrasi dari situs acuan. Semua perubahan hanya untuk web dan paket bersama.
+- Angka dan tanggal memuat **IBM Plex Mono**. Nama dibatasi minimal 28 px; teks tanpa spasi membungkus, termasuk saat memakai Syne. Judul kartu karya berupa heading dan menjadi nama aksesibel satu tautan kartu.

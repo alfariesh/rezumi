@@ -15,9 +15,11 @@ import {
 	testResume,
 } from "./fixtures.test-helpers";
 import { BASE_CSS } from "./shared/base-css";
+import { BRUTAL_CSS } from "./themes/brutal/css";
 import { KANVAS_CSS } from "./themes/kanvas/css";
 import { LUGAS_CSS } from "./themes/lugas/css";
 import { MOZAIK_CSS } from "./themes/mozaik/css";
+import { PAPER_CSS } from "./themes/paper/css";
 import { PRIMA_CSS } from "./themes/prima/css";
 
 describe("portfolio font pairs", () => {
@@ -67,7 +69,7 @@ describe("every theme draws a sound page (`expectSoundPage`)", () => {
 });
 
 describe("shared and theme rules", () => {
-	const THEME_CSS = [BASE_CSS, LUGAS_CSS, PRIMA_CSS, KANVAS_CSS, MOZAIK_CSS];
+	const THEME_CSS = [BASE_CSS, LUGAS_CSS, PRIMA_CSS, KANVAS_CSS, MOZAIK_CSS, PAPER_CSS, BRUTAL_CSS];
 
 	it("draws the timeline on a list's own items only, so a job's roles get no dots or second rail", () => {
 		for (const css of THEME_CSS) expect(css).not.toMatch(/\[data-variant="timeline"\] \.pf-cvitem/);
@@ -92,7 +94,7 @@ describe("shared and theme rules", () => {
 			'[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.62),rgb(8 10 14/.7))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-text:#fff;',
 		);
 		expect(BASE_CSS).toContain("var(--pf-hero-ground,var(--pf-bg))}");
-		for (const css of [LUGAS_CSS, PRIMA_CSS, KANVAS_CSS, MOZAIK_CSS]) {
+		for (const css of [LUGAS_CSS, PRIMA_CSS, KANVAS_CSS, MOZAIK_CSS, PAPER_CSS, BRUTAL_CSS]) {
 			expect(css).toMatch(/\[data-bg\]:not\(\[data-bg="plain"\]\)\{[^}]*background:var\(--pf-hero-bg\)\}/);
 			expect(css).not.toMatch(/\[data-bg="(?:soft-gradient|pattern)"\]|--pf-text:#fff/);
 		}

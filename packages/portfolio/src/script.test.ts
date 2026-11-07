@@ -2,6 +2,7 @@
 
 import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
 import { afterEach, describe, expect, it } from "vite-plus/test";
+import { PORTFOLIO_THEMES } from "@rezumi/schema/portfolio/themes";
 import { fullPortfolioData, renderTestPage } from "./fixtures.test-helpers";
 import { PORTFOLIO_PAGE_SCRIPT } from "./script";
 
@@ -69,19 +70,27 @@ describe("page script: work details", () => {
 		expect(document.activeElement?.getAttribute("tabindex")).toBe("-1");
 	});
 
-	it("opens on a link, closes with Escape and gives focus back to the work's card", async () => {
-		load();
-		expect(document.querySelector(".pf-open")).toBeNull();
-		await go("#work-kopi-app");
-		expect($("#work-kopi-app").classList.contains("pf-open")).toBe(true);
-		press("Escape");
-		await settle();
-		expect(location.hash).toBe("#work");
-		expect(document.querySelector(".pf-open")).toBeNull();
-		expect(document.documentElement.style.overflow).toBe("");
-		expect(document.querySelector("[inert]")).toBeNull();
-		expect(document.activeElement).toBe($('main a[href="#work-kopi-app"]'));
-	});
+	it.each(PORTFOLIO_THEMES)(
+		"%s: closes with Escape and restores one keyboard stop to the work's card",
+		async (theme) => {
+			load({ data: { ...fullPortfolioData, theme } });
+			const cards = document.querySelectorAll<HTMLAnchorElement>('main a[href="#work-kopi-app"]');
+			expect(cards).toHaveLength(1);
+			const card = cards[0] as HTMLAnchorElement;
+			card.focus();
+			expect(document.querySelector(".pf-open")).toBeNull();
+			await go("#work-kopi-app");
+			expect($("#work-kopi-app").classList.contains("pf-open")).toBe(true);
+			press("Escape");
+			await settle();
+			expect(location.hash).toBe("#work");
+			expect(document.querySelector(".pf-open")).toBeNull();
+			expect(document.documentElement.style.overflow).toBe("");
+			expect(document.querySelector("[inert]")).toBeNull();
+			expect(document.activeElement).toBe(card);
+			expect(card.tabIndex).toBe(0);
+		},
+	);
 
 	it("steps with the arrow keys, mirrored right to left, but not with a modifier key or inside a gallery", async () => {
 		load({ hash: "#work-kopi-app" });

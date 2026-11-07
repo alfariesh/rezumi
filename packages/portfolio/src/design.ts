@@ -1,6 +1,7 @@
 import type { PortfolioView } from "./view";
 import type { FontWeight } from "@rezumi/fonts";
 import { getWebFont } from "@rezumi/fonts";
+import { PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
 import { contrastRatio, mixColors, readableAccent, readableOn } from "@rezumi/utils/contrast";
 import { readableOnNeutrals } from "./themes/palettes";
 
@@ -134,8 +135,8 @@ const DEFAULT_HEADING_WEIGHTS: readonly FontWeight[] = ["700", "800"];
 
 /**
  * The font files a page loads: headings in the theme's weights (700 and 800 unless the theme sets its own), body text
- * in 400 and 600 plus 400 italic, at most two families. Files come from the web font list (the same files the resume
- * pages load), with `font-display: swap`.
+ * in 400 and 600 plus 400 italic, and an optional theme-specific mono face in 400 and 700. Files come from the web
+ * font list (the same files the resume pages load), with `font-display: swap`.
  */
 export function portfolioFontFaces(
 	view: PortfolioView,
@@ -148,6 +149,10 @@ export function portfolioFontFaces(
 		wanted.set(family, set);
 	};
 	const { heading, body } = view.design.fonts;
+	if (PORTFOLIO_THEME_INFO[view.theme].monoFont) {
+		want(view.design.fonts.mono, "400");
+		want(view.design.fonts.mono, "700");
+	}
 	for (const weight of headingWeights) want(heading, weight);
 	want(body, "400");
 	want(body, "600");

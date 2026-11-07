@@ -1,12 +1,12 @@
 import type { PortfolioStandardSection } from "./sections";
 import z from "zod";
 
-/** The release lineup, chosen in Phase 00 of the portfolio plan. Lugas and Prima are free; Kanvas and Mozaik need Plus. */
-export const PORTFOLIO_THEMES = ["lugas", "prima", "kanvas", "mozaik"] as const;
+/** Lugas and Prima are free; the creative themes belong to Plus. */
+export const PORTFOLIO_THEMES = ["lugas", "prima", "kanvas", "mozaik", "paper", "brutal"] as const;
 export type PortfolioTheme = (typeof PORTFOLIO_THEMES)[number];
 export const portfolioThemeSchema = z
 	.enum(PORTFOLIO_THEMES)
-	.describe("The portfolio theme: lugas, prima (free), kanvas or mozaik (Plus).");
+	.describe("The portfolio theme: lugas, prima (free), kanvas, mozaik, paper or brutal (Plus).");
 export const defaultPortfolioTheme: PortfolioTheme = "lugas";
 
 export const PORTFOLIO_SCHEMES = ["light", "dark", "auto"] as const;
@@ -81,9 +81,11 @@ type FontPair = {
 
 /**
  * Curated heading + body pairs, all in `packages/fonts/src/webfontlist.json` and freely licensed. Themes offer five or
- * six each (`PortfolioThemeInfo.fontPairs`, the first being the theme's default). Monospace is IBM Plex Mono throughout.
+ * six each (`PortfolioThemeInfo.fontPairs`, the first being the theme's default). Monospace defaults to IBM Plex Mono.
  */
 export const PORTFOLIO_FONT_PAIRS = {
+	"space-inter": { label: "Space Grotesk + Inter", heading: "Space Grotesk", body: "Inter" },
+	"google-sans": { label: "Google Sans", heading: "Google Sans", body: "Google Sans" },
 	jakarta: { label: "Plus Jakarta Sans", heading: "Plus Jakarta Sans", body: "Plus Jakarta Sans" },
 	"lora-figtree": { label: "Lora + Figtree", heading: "Lora", body: "Figtree" },
 	manrope: { label: "Manrope", heading: "Manrope", body: "Manrope" },
@@ -118,6 +120,10 @@ export type PortfolioThemeInfo = {
 	/** Free themes are open to every plan; Plus themes need a paid plan once billing applies (Phase 07). */
 	plan: "free" | "plus";
 	defaultScheme: Exclude<PortfolioScheme, "auto">;
+	/** Used only when following a resume with no usable accent (including portfolios without a resume). */
+	fallbackAccent?: string;
+	/** A theme's own face for figures and dates; otherwise the shared IBM Plex Mono. */
+	monoFont?: string;
 	/** Supported effects; the first is the theme's default. */
 	effects: readonly PortfolioHeroEffect[];
 	/** Offered font pairs; the first is the theme's default. */
@@ -237,6 +243,84 @@ export const PORTFOLIO_THEME_INFO: Record<PortfolioTheme, PortfolioThemeInfo> = 
 			"awards",
 			"languages",
 			"certifications",
+			"publications",
+			"volunteer",
+			"interests",
+			"profiles",
+			"contact",
+		],
+	},
+	brutal: {
+		id: "brutal",
+		name: "Brutal",
+		plan: "plus",
+		defaultScheme: "light",
+		fallbackAccent: "#FFD23F",
+		monoFont: "IBM Plex Mono",
+		effects: ["none", "fade-up", "typewriter", "scramble", "vector-hover"],
+		fontPairs: ["space-inter", "syne-dm", "jakarta", "archivo", "outfit"],
+		variants: {
+			hero: ["photo-right", "photo-left", "big-name"],
+			work: ["grid-2", "grid-3", "featured-grid", "list"],
+			services: ["cards", "list"],
+			testimonials: ["cards", "carousel"],
+			clients: ["color", "grayscale"],
+			experience: ["timeline", "compact"],
+			education: ["compact", "timeline"],
+			skills: ["chips", "groups"],
+			metric: allMetricVariants("kpi"),
+		},
+		sectionOrder: [
+			"work",
+			"about",
+			"services",
+			"experience",
+			"skills",
+			"testimonials",
+			"clients",
+			"education",
+			"certifications",
+			"awards",
+			"languages",
+			"publications",
+			"volunteer",
+			"interests",
+			"profiles",
+			"contact",
+		],
+	},
+	paper: {
+		id: "paper",
+		name: "Paper",
+		plan: "plus",
+		defaultScheme: "light",
+		fallbackAccent: "#F54E00",
+		monoFont: "JetBrains Mono",
+		effects: ["none", "fade-up", "shimmer", "gradient", "typewriter", "scramble", "vector-hover"],
+		fontPairs: ["google-sans", "jakarta", "manrope", "dm-sans", "source-serif-sans"],
+		variants: {
+			hero: ["photo-top", "photo-right", "photo-left"],
+			work: ["list", "grid-2", "grid-3"],
+			services: ["list", "cards"],
+			testimonials: ["cards", "carousel"],
+			clients: ["grayscale", "color"],
+			experience: ["compact", "timeline"],
+			education: ["compact", "timeline"],
+			skills: ["groups", "chips"],
+			metric: allMetricVariants("big"),
+		},
+		sectionOrder: [
+			"about",
+			"experience",
+			"education",
+			"awards",
+			"skills",
+			"work",
+			"services",
+			"testimonials",
+			"clients",
+			"certifications",
+			"languages",
 			"publications",
 			"volunteer",
 			"interests",

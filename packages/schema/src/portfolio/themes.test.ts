@@ -17,8 +17,15 @@ import {
 } from "./themes";
 
 describe("portfolio themes", () => {
-	it("ships the Phase 00 lineup, two of them free", () => {
-		expect(portfolioThemeLineup.map((theme) => theme.id)).toEqual(["lugas", "prima", "kanvas", "mozaik"]);
+	it("ships every portfolio theme, with the same two free themes", () => {
+		expect(portfolioThemeLineup.map((theme) => theme.id)).toEqual([
+			"lugas",
+			"prima",
+			"kanvas",
+			"mozaik",
+			"paper",
+			"brutal",
+		]);
 		expect(PORTFOLIO_THEMES.filter(isFreePortfolioTheme)).toEqual(["lugas", "prima"]);
 		expect(defaultPortfolioTheme).toBe("lugas");
 	});
@@ -35,6 +42,8 @@ describe("portfolio themes", () => {
 			prima: ["light", "none", "kpi", "source-plex"],
 			kanvas: ["dark", "vector-hover", "big", "archivo"],
 			mozaik: ["light", "gradient", "kpi", "bricolage-onest"],
+			paper: ["light", "none", "big", "google-sans"],
+			brutal: ["light", "none", "kpi", "space-inter"],
 		});
 	});
 

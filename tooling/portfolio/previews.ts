@@ -48,6 +48,8 @@ try {
 		for (const lang of langs) {
 			const page = await writePersonaPage(work, `${theme}-${lang}.html`, {
 				persona: THEME_PERSONAS[theme],
+				theme,
+				...(PORTFOLIO_THEME_INFO[theme].fallbackAccent ? { accent: PORTFOLIO_THEME_INFO[theme].fallbackAccent } : {}),
 				lang,
 				scheme: PORTFOLIO_THEME_INFO[theme].defaultScheme,
 			});
