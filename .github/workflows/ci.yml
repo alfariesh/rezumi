@@ -142,6 +142,9 @@ jobs:
 
       - name: Run browser tests
         if: matrix.suite == 'Browser'
+        # Portfolios stay off in production until launch; the disposable test server turns them on so their spec runs.
+        env:
+          PORTFOLIO_MODE: "on"
         run: pnpm exec playwright test --workers=${{ vars.USE_BLACKSMITH == 'true' && 4 || 1 }}
 
       - name: Upload browser test reports and traces

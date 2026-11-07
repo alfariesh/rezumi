@@ -42,7 +42,8 @@ test("creates a portfolio from a resume, publishes it, and a guest sees each cha
 	await expect(
 		page.frameLocator('iframe[title="Portfolio preview"]').getByText("I make payments simple."),
 	).toBeVisible();
-	await expect(page.getByRole("status").first()).toHaveAttribute("title", "Saved");
+	// The save status names its state in its title; its live region only speaks up when saving fails.
+	await expect(page.getByTitle("Saved", { exact: true })).toBeVisible();
 
 	await page.getByRole("tab", { name: "Publish" }).click();
 	await page.getByRole("region", { name: "Publish" }).getByRole("button", { name: "Publish" }).click();
@@ -59,7 +60,7 @@ test("creates a portfolio from a resume, publishes it, and a guest sees each cha
 
 		await page.getByRole("tab", { name: "Content" }).click();
 		await page.getByRole("textbox", { name: "Greeting" }).fill("I make payments simple and safe.");
-		await expect(page.getByRole("status").first()).toHaveAttribute("title", "Saved");
+		await expect(page.getByTitle("Saved", { exact: true })).toBeVisible();
 		await visitor.reload();
 		await expect(visitor.getByText("I make payments simple and safe.")).toBeVisible();
 	} finally {
