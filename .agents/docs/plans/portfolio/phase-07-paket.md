@@ -25,7 +25,7 @@ Juga label "Plus" dan dialog paket di editor, daftar manfaat di halaman Paket da
 
 1. **Konfirmasi** aturan turunan #1–#4, #9, #14, dan #16 dengan AskUserQuestion (rekomendasi di urutan pertama), lalu pindahkan jawabannya ke log `00-keputusan.md`.
 2. **Katalog** (`02-teknis.md` bagian 11): fitur `premiumPortfolioThemes`, `hidePortfolioCredit`, `customDomain`; batas `portfolioWorks` dan `portfolioStorageBytes` (gambar + PDF); `FREE_PORTFOLIO_THEMES`; `PLAN_FEATURE_KEYS`; naikkan `BILLING_CATALOG_VERSION`. Perbarui katalog di `.agents/docs/plans/membership/00-keputusan-produk.md` (dan log-nya) karena isi paket berubah.
-3. **Penegakan server** di semua jalur: `create`, `update` (tema premium dan efek intro Plus hanya saat nilainya berubah, badge, jumlah karya), `importWorks`, karya dari tempel tautan, `uploadImage`, `uploadPdf`, dan `importRemoteImage` (kuota), domain (Phase 09 memakai fitur yang sama), dan rincian statistik (`portfolio.statistics` hanya mengirim rincian Analytics Engine bila fitur dimiliki, aturan turunan #16). Pakai helper dan kode error yang ada (`PLAN_FEATURE_REQUIRED`, `PLAN_LIMIT_REACHED`) dengan pesan netral (tanpa harga atau ajakan membeli). Pengecekan batas berada dalam transaksi bersama kunci akun, seperti batas dokumen.
+3. **Penegakan server** di semua jalur: `create`, `update` (tema premium dan efek intro Plus hanya saat nilainya berubah, badge, jumlah karya), `importWorks`, karya dari tempel tautan, `uploadImage` dan `uploadPdf` (kuota; gambar dari tautan juga masuk lewat `uploadImage`, karena `fetchRemoteImage` hanya mengambilnya tanpa menyimpan), domain (Phase 09 memakai fitur yang sama), dan rincian statistik (`portfolio.statistics` hanya mengirim rincian Analytics Engine bila fitur dimiliki, aturan turunan #16). Pakai helper dan kode error yang ada (`PLAN_FEATURE_REQUIRED`, `PLAN_LIMIT_REACHED`) dengan pesan netral (tanpa harga atau ajakan membeli). Pengecekan batas berada dalam transaksi bersama kunci akun, seperti batas dokumen.
 4. **Render publik** membaca hak akses saat ini untuk badge (dan domain di Phase 09); tema premium dan efek intro Plus yang tersimpan tetap dirender.
 5. **Paket berakhir**: perilaku sesuai jawaban aturan turunan #2; catat masa tenggang domain untuk Phase 09 di `02-teknis.md`.
 6. **UI web**: label "Plus" + gembok + dialog paket di galeri tema, saklar badge, tombol tambah karya, meteran penyimpanan, domain; daftar manfaat di halaman Paket, harga beranda, llms.txt/SEO, S&K ID/EN (draf yang disetujui pemilik).
@@ -46,3 +46,10 @@ Juga label "Plus" dan dialog paket di editor, daftar manfaat di halaman Paket da
 
 - Semua aturan tabel `00-keputusan.md` bagian 4 ditegakkan di server dan terlihat jelas di web.
 - Katalog, halaman harga, dan S&K konsisten.
+
+### Catatan dari hardening Phase 01–06 (2026-11-07, `02-teknis.md` bagian 32)
+
+- Batas teknis penyimpanan sudah ada: 1 GiB dan 3.000 file per akun (`PORTFOLIO_UPLOAD.accountBytes`/`accountFiles`), dicek di `recordUploads` (`packages/api/src/features/portfolio/service.ts`) di bawah kunci baris portfolio, dalam transaksi yang sama dengan insert baris file. Kuota paket masuk di tempat yang sama dan tidak boleh melebihi batas teknis.
+- Putuskan apakah file yang masih dalam masa tenggang (tidak dipakai < 24 jam) ikut kuota paket; sekarang ikut dihitung, sedangkan file bertanda `OVERDUE` (portfolio dihapus, `deleteFile`) tidak. `portfolio.get().limits.storageBytes` menampilkan batas teknis; ganti dengan kuota paket akun.
+- Editor sudah menggolongkan galat paket (`getPlanProblem`) sebagai `invalid` di `apps/web/src/features/portfolio/editor/save-failure.ts`; ruang karya membaca `limits.works` dari server (`works/limits.ts`).
+- Tulisan karena paket berakhir atau berubah tidak boleh menyentuh `updated_at` (versi data) dan mengikuti urutan kunci baris `portfolio` → `portfolio_file`.

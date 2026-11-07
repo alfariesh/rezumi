@@ -53,3 +53,9 @@
 
 - Alur laporan sampai penangguhan berjalan dan tercatat.
 - Teks legal disetujui pemilik dan diterbitkan bersama rilis (atau dijadwalkan untuk Phase 12).
+
+### Catatan dari hardening Phase 01–06 (2026-11-07, `02-teknis.md` bagian 32)
+
+- File portfolio (gambar dan PDF) sudah hanya publik selama portfolio terbit, tidak ditangguhkan, saklar menyala, pemilik tidak dilarang, dan data tersimpan memakainya (`isPublicPortfolioFile`); penangguhan langsung menutup file, kecuali salinan cache publik ≤1 jam.
+- Penangguhan tidak boleh mengubah `updated_at` (versi data; editor yang terbuka akan melihat konflik palsu) dan mengikuti urutan kunci baris `portfolio` → `portfolio_file`.
+- Belum ditangani: metadata PDF (Author, Creator, riwayat XMP) dipublikasikan apa adanya, gambar dikodekan ulang tetapi PDF tidak; belum ada pilihan "tanpa lokasi" (lokasi kosong = ikut CV, termasuk alamat jalan di CV); tombol Email/WhatsApp di intro, layanan, dan bagian bebas memuat alamatnya walau kartu Kontak menyembunyikannya (tombol dianggap persetujuan; jelaskan di editor dan S&K).
