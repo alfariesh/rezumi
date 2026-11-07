@@ -20,9 +20,22 @@ export const portfolioPdfKeySchema = z
 	.regex(PORTFOLIO_PDF_KEY_PATTERN, "Use a PDF uploaded to this portfolio.")
 	.describe("The storage key of a PDF uploaded to the portfolio: uploads/<userId>/documents/portfolio/<id>.pdf.");
 
-/** The storage folders of an account's portfolio files, for deleting them all. */
+/**
+ * The storage folders of an account's portfolio files, each with its trailing slash: storage lists by prefix, and
+ * without the slash a listing would also return siblings such as `pictures/portfolio-persona.jpg`.
+ */
 export function portfolioFilePrefixes(userId: string): string[] {
-	return [`uploads/${userId}/pictures/portfolio`, `uploads/${userId}/documents/portfolio`];
+	return [`uploads/${userId}/pictures/portfolio/`, `uploads/${userId}/documents/portfolio/`];
+}
+
+/**
+ * Whether deleting this storage key, a file or a whole folder, would delete any of the account's portfolio files: a
+ * key inside one of its portfolio folders, the folder itself, or a folder holding one. Those files are recorded in
+ * `portfolio_file`, so only the portfolio API may delete them.
+ */
+export function reachesPortfolioFiles(userId: string, key: string): boolean {
+	const path = `${key.replace(/\/+$/, "")}/`;
+	return portfolioFilePrefixes(userId).some((prefix) => path.startsWith(prefix) || prefix.startsWith(path));
 }
 
 const side = z.number().int().min(1).max(PORTFOLIO_LIMITS.imageSide);

@@ -1,3 +1,5 @@
+import { PORTFOLIO_LIMITS } from "./limits";
+
 export const VIDEO_PROVIDERS = ["youtube", "vimeo"] as const;
 export type VideoProvider = (typeof VIDEO_PROVIDERS)[number];
 
@@ -29,7 +31,7 @@ function vimeo(videoId: string | undefined, hash: string | null | undefined): Pa
  */
 export function parseVideoUrl(input: string): ParsedVideo | null {
 	const text = input.trim();
-	if (!text || text.length > 2048) return null;
+	if (!text || text.length > PORTFOLIO_LIMITS.text.url) return null;
 	let url: URL;
 	try {
 		url = new URL(/^[a-z][\d+.a-z-]*:/i.test(text) ? text : `https://${text}`);

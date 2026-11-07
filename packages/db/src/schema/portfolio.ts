@@ -1,4 +1,3 @@
-import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import * as pg from "drizzle-orm/pg-core";
 import { generateId } from "@rezumi/utils/string";
 import { user } from "./auth";
@@ -31,22 +30,21 @@ export const portfolio = pg.pgTable(
 		// An admin took it down (Phase 11): it is treated as unpublished and can't be published until lifted.
 		suspendedAt: pg.timestamp("suspended_at", { withTimezone: true }),
 		suspendedReason: pg.text("suspended_reason"),
-		data: pg.jsonb("data").notNull().$type<PortfolioData>(),
+		// Saved by the strict write schema, but read it only through `parsePortfolioData`: stored JSON may predate today's
+		// schema, and the lenient read repairs what it can.
+		data: pg.jsonb("data").notNull().$type<unknown>(),
 		// When the weekly file sweep last compared this portfolio's files with its data and storage; null = never.
 		filesCheckedAt: pg.timestamp("files_checked_at", { withTimezone: true }),
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-		// Editors send it back with each save to detect a change made elsewhere in the meantime.
-		updatedAt: pg
-			.timestamp("updated_at", { withTimezone: true })
-			.notNull()
-			.defaultNow()
-			.$onUpdate(() => /* @__PURE__ */ new Date()),
+		// The version of `data`: editors send it back with each save to detect a change made elsewhere in the meantime.
+		// Only saves of data move it (the API sets it, never an automatic update), so publishing, settings, an admin's
+		// takedown or the file checks never make an open editor report a conflict.
+		updatedAt: pg.timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 	},
 	(t) => [pg.index().on(t.sourceResumeId)],
 );
 
 export const PORTFOLIO_FILE_KINDS = ["image", "pdf"] as const;
-export type PortfolioFileKind = (typeof PORTFOLIO_FILE_KINDS)[number];
 
 /**
  * The files an account uploaded for its portfolio. Data may only use keys recorded here; their bytes count toward
@@ -74,7 +72,8 @@ export const portfolioFile = pg.pgTable(
 		height: pg.integer("height"),
 		pages: pg.integer("pages"),
 		// Since when no saved data uses the file; null while it is used. A file unused for a day is deleted by the
-		// cleanup job, so an upload the editor hasn't saved yet (or an undo away) survives a short while.
+		// cleanup job, so an upload the editor hasn't saved yet (or an undo away) survives a short while. Deleting the
+		// portfolio (or the file) sets it far in the past, so the file goes on the job's next run.
 		unusedSince: pg.timestamp("unused_since", { withTimezone: true }),
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 	},

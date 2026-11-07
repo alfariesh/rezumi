@@ -1,5 +1,11 @@
 import z from "zod";
-import { RICH_TEXT_MARKUP_FACTOR, richTextLength } from "./limits";
+import {
+	isResumeReferenceId,
+	PORTFOLIO_ITEM_ID_PATTERN,
+	PORTFOLIO_LIMITS,
+	RICH_TEXT_MARKUP_FACTOR,
+	richTextLength,
+} from "./limits";
 
 /**
  * Portfolio data has two schemas built from one definition. The write schema checks what a client sends: limits,
@@ -101,8 +107,14 @@ export function createSchemaKit(lenient: boolean): SchemaKit {
 	};
 }
 
-/** Item IDs: UUIDs and other short URL-safe identifiers. */
+/** IDs of the portfolio's own items: UUIDs and other short URL-safe identifiers. */
 export const itemIdSchema = z
 	.string()
-	.regex(/^[\w-]{1,64}$/, "Use an id of letters, digits, '-' or '_' (at most 64).")
+	.regex(PORTFOLIO_ITEM_ID_PATTERN, `Use an id of letters, digits, '-' or '_' (at most ${PORTFOLIO_LIMITS.text.id}).`)
 	.describe("A stable identifier for the item, usually a UUID.");
+
+/** The ID of a resume item the portfolio refers to, as the resume has it (`isResumeReferenceId`). */
+export const resumeItemIdSchema = z
+	.string()
+	.refine(isResumeReferenceId, `Use the resume item's id, at most ${PORTFOLIO_LIMITS.text.id} characters.`)
+	.describe("The id of an item in the source resume, exactly as the resume has it.");

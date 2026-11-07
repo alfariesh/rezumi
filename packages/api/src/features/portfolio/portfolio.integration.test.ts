@@ -9,6 +9,8 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import sharp from "sharp";
 import * as tables from "@rezumi/db/schema";
+import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
+import { PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const fixture = vi.hoisted(() => ({
@@ -18,6 +20,12 @@ const fixture = vi.hoisted(() => ({
 	/** Storage, in memory: key → bytes. */
 	files: new Map<string, Uint8Array>(),
 	failWrites: false,
+	/** Keys storage refuses to delete, reporting `false` as the S3 and local adapters do. */
+	keepOnDelete: new Set<string>(),
+	/** Listings of a prefix containing one of these fail. */
+	failLists: [] as string[],
+	/** Runs before each delete, so a test can hold storage mid-delete. */
+	beforeDelete: undefined as ((key: string) => Promise<void>) | undefined,
 }));
 vi.mock("@rezumi/db/client", () => ({
 	get db() {
@@ -36,25 +44,30 @@ vi.mock("@rezumi/env/server", async () => {
 		},
 	};
 });
-vi.mock("../storage", () => {
-	const under = (key: string, prefix: string) => key === prefix || key.startsWith(`${prefix.replace(/\/$/, "")}/`);
-	return {
-		getStorageService: () => ({
-			list: (prefix: string) => Promise.resolve([...fixture.files.keys()].filter((key) => under(key, prefix))),
-			write: ({ key, data }: { key: string; data: Uint8Array }) => {
-				if (fixture.failWrites) return Promise.reject(new Error("Storage is down"));
-				fixture.files.set(key, data);
-				return Promise.resolve();
-			},
-			delete: (key: string) => {
-				fixture.deleted.push(key);
-				const keys = [...fixture.files.keys()].filter((candidate) => under(candidate, key));
-				for (const candidate of keys) fixture.files.delete(candidate);
-				return Promise.resolve(keys.length > 0);
-			},
-		}),
-	};
-});
+vi.mock("../storage", () => ({
+	getStorageService: () => ({
+		// By raw prefix, as S3, R2 and Blob list: a folder named without its slash lists siblings that start alike.
+		list: (prefix: string) =>
+			fixture.failLists.some((part) => prefix.includes(part))
+				? Promise.reject(new Error("Storage is down"))
+				: Promise.resolve([...fixture.files.keys()].filter((key) => key.startsWith(prefix))),
+		write: ({ key, data }: { key: string; data: Uint8Array }) => {
+			if (fixture.failWrites) return Promise.reject(new Error("Storage is down"));
+			fixture.files.set(key, data);
+			return Promise.resolve();
+		},
+		// A file, or a folder and everything in it, as every adapter deletes.
+		delete: async (key: string) => {
+			fixture.deleted.push(key);
+			await fixture.beforeDelete?.(key);
+			if (fixture.keepOnDelete.has(key)) return false;
+			const folder = `${key.replace(/\/$/, "")}/`;
+			const keys = [...fixture.files.keys()].filter((candidate) => candidate === key || candidate.startsWith(folder));
+			for (const candidate of keys) fixture.files.delete(candidate);
+			return keys.length > 0;
+		},
+	}),
+}));
 
 function getDb() {
 	if (!fixture.db) throw new Error("Test database is not initialized.");
@@ -62,6 +75,7 @@ function getDb() {
 }
 
 const databaseUrl = process.env.PORTFOLIO_TEST_DATABASE_URL;
+const hour = 60 * 60 * 1000;
 
 function resumeData(name: string): ResumeData {
 	const data = structuredClone(defaultResumeData);
@@ -87,6 +101,43 @@ const image = (userId: string, name: string) => ({
 	alt: "",
 });
 
+const picture = async (width: number, height: number, format: "webp" | "png" | "jpeg" = "webp", name = "a") => {
+	const image = sharp({ create: { width, height, channels: 3, background: "#225588" } });
+	const buffer = await image[format]().toBuffer();
+	return new File([new Uint8Array(buffer)], `${name}.${format}`, { type: `image/${format}` });
+};
+
+const pdf = (bytes = 2000, name = "case.pdf") => {
+	const data = new Uint8Array(bytes);
+	data.set(new TextEncoder().encode("%PDF-1.7\n"));
+	return new File([data], name, { type: "application/pdf" });
+};
+
+/** Holds whatever waits on it: `arrived` once something does, until `open()`. */
+function gate() {
+	let open = () => {};
+	let arrive = () => {};
+	const opened = new Promise<void>((resolve) => {
+		open = resolve;
+	});
+	const arrived = new Promise<void>((resolve) => {
+		arrive = resolve;
+	});
+	return {
+		arrived,
+		open: () => open(),
+		wait: () => {
+			arrive();
+			return opened;
+		},
+	};
+}
+
+const timeout = (ms: number) =>
+	new Promise<never>((_, reject) => {
+		setTimeout(() => reject(new Error(`Still waiting after ${ms} ms`)), ms);
+	});
+
 // Opt-in real PostgreSQL tests: all tables live in an isolated schema that the suite drops afterwards.
 describe.skipIf(!databaseUrl)("portfolio service", () => {
 	let service: typeof import("./service").portfolioService;
@@ -111,12 +162,30 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			.insert(tables.portfolioFile)
 			.values({ userId, kind: "image", key: image(userId, name).key, bytes: 1000, width: 800, height: 600 });
 
+	/** Saves data through the service as the router hands it over: checked by the write schema first. */
+	const update = (userId: string, data: PortfolioDataInput, expectedUpdatedAt: Date) =>
+		service.update(userId, { data: parseWritablePortfolioData(data), expectedUpdatedAt });
+
 	const save = async (userId: string, data: PortfolioDataInput, expectedUpdatedAt?: Date) => {
 		const current = await service.get(userId);
-		return service.update(userId, {
-			data,
-			expectedUpdatedAt: expectedUpdatedAt ?? (current.portfolio?.updatedAt as Date),
-		});
+		return update(userId, data, expectedUpdatedAt ?? (current.portfolio?.updatedAt as Date));
+	};
+
+	const fileRows = (userId = "member") =>
+		getDb()
+			.select({ key: tables.portfolioFile.key, unusedSince: tables.portfolioFile.unusedSince })
+			.from(tables.portfolioFile)
+			.where(eq(tables.portfolioFile.userId, userId))
+			.orderBy(tables.portfolioFile.key);
+
+	const markUnused = (key: string, since: Date | null) =>
+		getDb().update(tables.portfolioFile).set({ unusedSince: since }).where(eq(tables.portfolioFile.key, key));
+
+	/** A file in storage, under the account's portfolio pictures. */
+	const stored = (userId: string, name: string) => {
+		const { key } = image(userId, name);
+		fixture.files.set(key, new Uint8Array([1, 2, 3]));
+		return key;
 	};
 
 	beforeAll(async () => {
@@ -152,6 +221,9 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 		fixture.deleted = [];
 		fixture.files = new Map();
 		fixture.failWrites = false;
+		fixture.keepOnDelete = new Set();
+		fixture.failLists = [];
+		fixture.beforeDelete = undefined;
 		await pool.query('TRUNCATE "user", released_username CASCADE');
 		await getDb()
 			.insert(tables.user)
@@ -176,6 +248,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 		it("hides portfolios from everyone when off, without changing anything", async () => {
 			fixture.mode = "off";
 			expect((await service.get("owner")).enabled).toBe(false);
+			expect(await service.status("owner")).toEqual({ enabled: false, portfolio: null });
 			await expect(service.create("owner", {})).rejects.toMatchObject({ code: "PORTFOLIO_DISABLED" });
 			expect(await getDb().select().from(tables.portfolio)).toEqual([]);
 		});
@@ -183,6 +256,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 		it("opens portfolios to admins only while testing", async () => {
 			fixture.mode = "admins";
 			expect((await service.get("member")).enabled).toBe(false);
+			expect(await service.status("member")).toEqual({ enabled: false, portfolio: null });
 			await expect(service.create("member", {})).rejects.toMatchObject({ code: "PORTFOLIO_DISABLED" });
 			expect((await service.get("owner")).enabled).toBe(true);
 			await expect(service.create("owner", {})).resolves.toMatchObject({ isPublic: false });
@@ -190,15 +264,14 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 
 		it("never opens them to guest accounts", async () => {
 			expect((await service.get("guest")).enabled).toBe(false);
+			expect(await service.status("guest")).toEqual({ enabled: false, portfolio: null });
 			await expect(service.create("guest", {})).rejects.toMatchObject({ code: "PORTFOLIO_DISABLED" });
 		});
 
 		it("keeps a portfolio made while on, but refuses changes once off again", async () => {
 			const created = await service.create("member", {});
 			fixture.mode = "off";
-			await expect(service.update("member", { data: {}, expectedUpdatedAt: created.updatedAt })).rejects.toMatchObject({
-				code: "PORTFOLIO_DISABLED",
-			});
+			await expect(update("member", {}, created.updatedAt)).rejects.toMatchObject({ code: "PORTFOLIO_DISABLED" });
 			await expect(service.setPublic("member", { isPublic: true })).rejects.toMatchObject({
 				code: "PORTFOLIO_DISABLED",
 			});
@@ -249,7 +322,17 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			for (const sourceResumeId of [foreign, trashed, "missing"])
 				await expect(service.create("member", { sourceResumeId })).rejects.toMatchObject({
 					code: "PORTFOLIO_SOURCE_INVALID",
+					data: { reason: "unavailable" },
 				});
+		});
+
+		it("refuses a resume whose stored data can't be read, rather than failing", async () => {
+			const broken = await addResume("member", { data: { basics: "not a resume" } as never, isPrimary: true });
+			const unreadable = { code: "PORTFOLIO_SOURCE_INVALID", status: 400, data: { reason: "unreadable" } };
+			await expect(service.create("member", { sourceResumeId: broken })).rejects.toMatchObject(unreadable);
+			// The primary resume, used when none is chosen.
+			await expect(service.create("member", {})).rejects.toMatchObject(unreadable);
+			expect(await getDb().select().from(tables.portfolio)).toEqual([]);
 		});
 	});
 
@@ -276,31 +359,50 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 
 		it("only ever changes the signed-in account's own portfolio", async () => {
 			const created = await service.create("member", { sourceResumeId: null });
-			await expect(
-				service.update("other", { data: { hero: { greeting: "Hacked" } }, expectedUpdatedAt: created.updatedAt }),
-			).rejects.toMatchObject({ code: "NOT_FOUND" });
+			await expect(update("other", { hero: { greeting: "Hacked" } }, created.updatedAt)).rejects.toMatchObject({
+				code: "NOT_FOUND",
+			});
 			expect((await service.get("member")).portfolio?.data.hero.greeting).toBe("");
 		});
 
 		it("detects a change made elsewhere since the editor loaded", async () => {
 			const created = await service.create("member", { sourceResumeId: null });
-			const first = await service.update("member", {
-				data: { hero: { greeting: "First tab" } },
-				expectedUpdatedAt: created.updatedAt,
-			});
-			const stale = service.update("member", {
-				data: { hero: { greeting: "Second tab" } },
-				expectedUpdatedAt: created.updatedAt,
-			});
-			await expect(stale).rejects.toMatchObject({
+			const first = await update("member", { hero: { greeting: "First tab" } }, created.updatedAt);
+			expect(first.updatedAt.getTime()).toBeGreaterThan(created.updatedAt.getTime());
+			await expect(update("member", { hero: { greeting: "Second tab" } }, created.updatedAt)).rejects.toMatchObject({
 				code: "PORTFOLIO_VERSION_CONFLICT",
 				status: 409,
 				data: { updatedAt: first.updatedAt.toISOString() },
 			});
 			expect((await service.get("member")).portfolio?.data.hero.greeting).toBe("First tab");
+			await expect(update("member", { hero: { greeting: "Reloaded" } }, first.updatedAt)).resolves.toMatchObject({
+				data: { hero: { greeting: "Reloaded" } },
+			});
+		});
+
+		it("answers a stale editor with a conflict before looking at its files", async () => {
+			const created = await service.create("member", { sourceResumeId: null });
+			const first = await update("member", { hero: { greeting: "First tab" } }, created.updatedAt);
 			await expect(
-				service.update("member", { data: { hero: { greeting: "Reloaded" } }, expectedUpdatedAt: first.updatedAt }),
-			).resolves.toMatchObject({ data: { hero: { greeting: "Reloaded" } } });
+				update("member", { basics: { picture: image("member", "never-uploaded") } }, created.updatedAt),
+			).rejects.toMatchObject({
+				code: "PORTFOLIO_VERSION_CONFLICT",
+				data: { updatedAt: first.updatedAt.toISOString() },
+			});
+		});
+
+		it("keeps the data's version when anything but a save changes the portfolio", async () => {
+			const created = await service.create("member", { sourceResumeId: null });
+			// An admin's takedown and the file checks write the row directly.
+			await getDb()
+				.update(tables.portfolio)
+				.set({ suspendedAt: new Date(), suspendedReason: "Scam", filesCheckedAt: new Date() })
+				.where(eq(tables.portfolio.userId, "member"));
+			const [row] = await getDb().select({ updatedAt: tables.portfolio.updatedAt }).from(tables.portfolio);
+			expect(row?.updatedAt.getTime()).toBe(created.updatedAt.getTime());
+			await expect(update("member", { hero: { greeting: "Still mine" } }, created.updatedAt)).resolves.toMatchObject({
+				data: { hero: { greeting: "Still mine" } },
+			});
 		});
 
 		it("refuses data over the size limit", async () => {
@@ -317,13 +419,6 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			});
 		});
 
-		it("refuses invalid data", async () => {
-			await service.create("member", { sourceResumeId: null });
-			await expect(
-				save("member", { testimonials: { items: [{ id: "t", quote: "Fake", name: "Nobody" }] } } as PortfolioDataInput),
-			).rejects.toMatchObject({ code: "BAD_REQUEST" });
-		});
-
 		it("only uses files uploaded to the account's own portfolio", async () => {
 			await service.create("member", { sourceResumeId: null });
 			await addFile("member", "mine");
@@ -336,6 +431,8 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 					code: "PORTFOLIO_FILE_NOT_FOUND",
 					data: { key: picture.key },
 				});
+			// A refused save changes nothing.
+			expect((await service.get("member")).portfolio?.data.basics.picture?.key).toBe(image("member", "mine").key);
 		});
 	});
 
@@ -354,10 +451,11 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			await service.setPublic("member", { isPublic: false });
 			const again = await service.setPublic("member", { isPublic: true });
 			expect(again.publishedAt?.getTime()).toBe(published.publishedAt?.getTime());
+			expect((await service.updateSettings("member", { showInSearchEngines: false })).updatedAt.getTime()).toBe(
+				created.updatedAt.getTime(),
+			);
 			// An editor open before publishing can still save.
-			await expect(
-				service.update("member", { data: { hero: { greeting: "Still mine" } }, expectedUpdatedAt: created.updatedAt }),
-			).resolves.toBeDefined();
+			await expect(update("member", { hero: { greeting: "Still mine" } }, created.updatedAt)).resolves.toBeDefined();
 		});
 
 		it("can't publish a portfolio an admin took down, but can unpublish it", async () => {
@@ -389,6 +487,9 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			await expect(
 				service.updateSettings("member", { sourceResumeId: null, showInSearchEngines: false }),
 			).resolves.toMatchObject({ sourceResumeId: null, showInSearchEngines: false });
+			// Nothing to change: the portfolio as it is.
+			await expect(service.updateSettings("member", {})).resolves.toMatchObject({ sourceResumeId: null });
+			await expect(service.updateSettings("other", {})).rejects.toMatchObject({ code: "NOT_FOUND" });
 		});
 
 		it("shows a source resume moved to Trash, and lets go of a deleted one", async () => {
@@ -399,18 +500,99 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			await getDb().delete(tables.resume).where(eq(tables.resume.id, resumeId));
 			expect((await service.get("member")).portfolio).toMatchObject({ sourceResumeId: null, sourceResume: null });
 		});
+
+		it("tells whether the account has a portfolio and whether it's live, without reading it", async () => {
+			expect(await service.status("member")).toEqual({ enabled: true, portfolio: null });
+			await service.create("member", { sourceResumeId: null });
+			expect(await service.status("member")).toEqual({
+				enabled: true,
+				portfolio: { isPublic: false, suspendedAt: null },
+			});
+			await service.setPublic("member", { isPublic: true });
+			expect(await service.status("member")).toEqual({
+				enabled: true,
+				portfolio: { isPublic: true, suspendedAt: null },
+			});
+			const takenDown = new Date("2026-11-07T10:00:00Z");
+			await getDb()
+				.update(tables.portfolio)
+				.set({ suspendedAt: takenDown, suspendedReason: "Scam" })
+				.where(eq(tables.portfolio.userId, "member"));
+			expect(await service.status("member")).toEqual({
+				enabled: true,
+				portfolio: { isPublic: true, suspendedAt: takenDown },
+			});
+		});
 	});
 
 	describe("deleting", () => {
-		it("deletes the portfolio and its files", async () => {
+		it("deletes the portfolio at once, and its files on the cleanup job's next run", async () => {
 			await service.create("member", { sourceResumeId: null });
-			await addFile("member", "a");
+			const used = await service.uploadImage("member", {
+				file: await picture(300, 200),
+				thumbnail: await picture(200, 133),
+			});
+			await save("member", {
+				basics: { picture: { key: used.key, thumbKey: used.thumbKey, width: 300, height: 200, alt: "" } },
+			});
+			await service.uploadPdf("member", { file: pdf(), pages: 2 });
 			await addFile("other", "b");
+			const theirs = stored("other", "b");
+
 			await service.delete("member");
-			expect(fixture.deleted).toEqual(["uploads/member/pictures/portfolio", "uploads/member/documents/portfolio"]);
 			expect(await getDb().select().from(tables.portfolio)).toEqual([]);
-			expect((await getDb().select().from(tables.portfolioFile)).map((file) => file.userId)).toEqual(["other"]);
+			expect(await service.status("member")).toEqual({ enabled: true, portfolio: null });
+			// Storage isn't touched while deleting: every file is due for the cleanup job at once.
+			expect(fixture.deleted).toEqual([]);
+			expect((await fileRows()).map((row) => row.unusedSince?.getTime())).toEqual([0, 0, 0]);
 			await expect(service.delete("member")).rejects.toMatchObject({ code: "NOT_FOUND" });
+
+			expect(await jobs.runPortfolioJobs()).toEqual({ deletedFiles: 3, checkedPortfolios: 0 });
+			expect(await fileRows()).toEqual([]);
+			expect([...fixture.files.keys()]).toEqual([theirs]);
+			expect(await fileRows("other")).toEqual([{ key: theirs, unusedSince: null }]);
+		});
+
+		it("tries again later for files storage can't delete once the portfolio is gone", async () => {
+			await service.create("member", { sourceResumeId: null });
+			const kept = await service.uploadImage("member", { file: await picture(300, 200) });
+			const lost = await service.uploadImage("member", { file: await picture(300, 200) });
+			await service.delete("member");
+			fixture.keepOnDelete.add(kept.key);
+			// Already gone from storage: it counts as deleted.
+			fixture.files.delete(lost.key);
+			const logged = vi.spyOn(console, "error").mockImplementation(() => {});
+			try {
+				await jobs.runPortfolioJobs();
+				expect((await fileRows()).map((row) => row.key)).toContain(kept.key);
+				expect(fixture.files.has(kept.key)).toBe(true);
+				fixture.keepOnDelete.clear();
+				await jobs.runPortfolioJobs();
+				await jobs.runPortfolioJobs();
+				expect(await fileRows()).toEqual([]);
+				expect(fixture.files.size).toBe(0);
+			} finally {
+				logged.mockRestore();
+			}
+		});
+
+		it("never deadlocks with a save running at the same time", async () => {
+			for (let round = 0; round < 5; round += 1) {
+				const created = await service.create("member", { sourceResumeId: null });
+				const uploaded = await service.uploadImage("member", { file: await picture(300, 200) });
+				const [saved, deleted] = await Promise.allSettled([
+					update(
+						"member",
+						{ basics: { picture: { key: uploaded.key, width: 300, height: 200, alt: "" } } },
+						created.updatedAt,
+					),
+					service.delete("member"),
+				]);
+				expect(deleted).toMatchObject({ status: "fulfilled" });
+				if (saved.status === "rejected") expect(saved.reason).toMatchObject({ code: "NOT_FOUND" });
+				expect(await getDb().select().from(tables.portfolio)).toEqual([]);
+				expect((await fileRows()).every((row) => row.unusedSince?.getTime() === 0)).toBe(true);
+			}
 		});
 
 		it("goes with the account", async () => {
@@ -423,17 +605,6 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 	});
 
 	describe("pictures", () => {
-		const picture = async (width: number, height: number, format: "webp" | "png" | "jpeg" = "webp", name = "a") => {
-			const image = sharp({ create: { width, height, channels: 3, background: "#225588" } });
-			const buffer = await image[format]().toBuffer();
-			return new File([new Uint8Array(buffer)], `${name}.${format}`, { type: `image/${format}` });
-		};
-		const fileRows = (userId = "member") =>
-			getDb()
-				.select({ key: tables.portfolioFile.key, unusedSince: tables.portfolioFile.unusedSince })
-				.from(tables.portfolioFile)
-				.where(eq(tables.portfolioFile.userId, userId));
-
 		it("stores a picture and its small copy, unused until saved data uses them", async () => {
 			await service.create("member", { sourceResumeId: null });
 			const uploaded = await service.uploadImage("member", {
@@ -555,12 +726,111 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 		});
 	});
 
+	describe("the storage ceiling", () => {
+		const largeFile = (userId: string, bytes: number, unusedSince: Date | null = null) =>
+			getDb()
+				.insert(tables.portfolioFile)
+				.values({
+					userId,
+					kind: "pdf",
+					key: `uploads/${userId}/documents/portfolio/${randomUUID()}.pdf`,
+					bytes,
+					pages: 1,
+					unusedSince,
+				});
+
+		it("refuses uploads past what an account may store, counting files waiting for cleanup", async () => {
+			await service.create("member", { sourceResumeId: null });
+			const file = await picture(300, 200);
+			const stored = PORTFOLIO_UPLOAD.accountBytes - file.size + 1;
+			// Removed from the portfolio but not deleted yet: it still takes room.
+			await largeFile("member", stored, new Date());
+			const before = await fileRows();
+			const full = {
+				code: "PORTFOLIO_STORAGE_FULL",
+				status: 413,
+				data: {
+					bytes: stored,
+					maxBytes: PORTFOLIO_UPLOAD.accountBytes,
+					files: 1,
+					maxFiles: PORTFOLIO_UPLOAD.accountFiles,
+				},
+			};
+			await expect(service.uploadImage("member", { file })).rejects.toMatchObject(full);
+			await expect(service.uploadPdf("member", { file: pdf(), pages: 1 })).rejects.toMatchObject(full);
+			expect(fixture.files.size).toBe(0);
+			expect(await fileRows()).toEqual(before);
+			expect(await service.get("member")).toMatchObject({
+				limits: { storageBytes: PORTFOLIO_UPLOAD.accountBytes },
+				usage: { storageBytes: stored },
+			});
+			// A file that fills it exactly still fits.
+			await getDb()
+				.update(tables.portfolioFile)
+				.set({ bytes: stored - 1 })
+				.where(eq(tables.portfolioFile.userId, "member"));
+			await expect(service.uploadImage("member", { file })).resolves.toMatchObject({ bytes: file.size });
+			expect((await service.get("member")).usage.storageBytes).toBe(PORTFOLIO_UPLOAD.accountBytes);
+		});
+
+		it("doesn't count a deleted portfolio's files, which nothing can use again", async () => {
+			await service.create("member", { sourceResumeId: null });
+			await largeFile("member", PORTFOLIO_UPLOAD.accountBytes);
+			await service.delete("member");
+			await service.create("member", { sourceResumeId: null });
+			// Its files wait for the cleanup job, marked overdue; a new portfolio can upload meanwhile.
+			const file = await picture(300, 200);
+			await expect(service.uploadImage("member", { file })).resolves.toMatchObject({ bytes: file.size });
+			expect((await service.get("member")).usage.storageBytes).toBe(file.size);
+		});
+
+		it("refuses uploads past how many files an account may store", async () => {
+			await service.create("member", { sourceResumeId: null });
+			await getDb()
+				.insert(tables.portfolioFile)
+				.values(
+					Array.from({ length: PORTFOLIO_UPLOAD.accountFiles }, (_, index) => ({
+						userId: "member",
+						kind: "image" as const,
+						key: image("member", `f${index}`).key,
+						bytes: 1,
+						width: 1,
+						height: 1,
+					})),
+				);
+			await expect(service.uploadPdf("member", { file: pdf(), pages: 1 })).rejects.toMatchObject({
+				code: "PORTFOLIO_STORAGE_FULL",
+				data: { files: PORTFOLIO_UPLOAD.accountFiles },
+			});
+			await getDb()
+				.delete(tables.portfolioFile)
+				.where(eq(tables.portfolioFile.key, image("member", "f0").key));
+			await expect(service.uploadPdf("member", { file: pdf(), pages: 1 })).resolves.toMatchObject({ bytes: 2000 });
+		});
+
+		it("lets only one of two uploads at once take the last room", async () => {
+			await service.create("member", { sourceResumeId: null });
+			const [first, second] = [await picture(300, 200, "webp", "a"), await picture(300, 200, "webp", "b")];
+			await largeFile("member", PORTFOLIO_UPLOAD.accountBytes - first.size - Math.floor(second.size / 2));
+			const results = await Promise.allSettled([
+				service.uploadImage("member", { file: first }),
+				service.uploadImage("member", { file: second }),
+			]);
+			expect(results.filter((result) => result.status === "fulfilled")).toHaveLength(1);
+			expect(results.find((result) => result.status === "rejected")?.reason).toMatchObject({
+				code: "PORTFOLIO_STORAGE_FULL",
+			});
+			expect(fixture.files.size).toBe(1);
+		});
+
+		it("counts each account on its own", async () => {
+			await service.create("member", { sourceResumeId: null });
+			await largeFile("other", PORTFOLIO_UPLOAD.accountBytes);
+			await expect(service.uploadPdf("member", { file: pdf(), pages: 1 })).resolves.toMatchObject({ bytes: 2000 });
+		});
+	});
+
 	describe("PDFs", () => {
-		const pdf = (bytes = 2000, name = "case.pdf") => {
-			const data = new Uint8Array(bytes);
-			data.set(new TextEncoder().encode("%PDF-1.7\n"));
-			return new File([data], name, { type: "application/pdf" });
-		};
 		const pdfRows = (userId = "member") =>
 			getDb()
 				.select({
@@ -704,12 +974,16 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			]);
 			expect(added.updatedAt.getTime()).toBeGreaterThan(trimmed.updatedAt.getTime());
 
+			// Nothing new: nothing is written, and the version stays.
 			const again = await service.importWorks("member", {
 				resumeItemIds: ["p2"],
 				expectedUpdatedAt: added.updatedAt,
 			});
 			expect(again.data.works.items).toHaveLength(3);
 			expect(again.updatedAt.getTime()).toBe(added.updatedAt.getTime());
+			await expect(
+				update("member", { works: { items: again.data.works.items } }, added.updatedAt),
+			).resolves.toBeDefined();
 		});
 
 		it("refuses a stale editor, a missing resume and going past the work limit", async () => {
@@ -733,20 +1007,20 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			const other = await service.get("other");
 			await expect(
 				service.importWorks("other", { resumeItemIds: ["p1"], expectedUpdatedAt: other.portfolio?.updatedAt as Date }),
-			).rejects.toMatchObject({ code: "PORTFOLIO_SOURCE_INVALID" });
+			).rejects.toMatchObject({ code: "PORTFOLIO_SOURCE_INVALID", data: { reason: "unavailable" } });
+		});
+
+		it("refuses a source resume whose stored data can't be read, rather than failing", async () => {
+			const created = await service.create("member", { sourceResumeId: await resumeWithProjects("member") });
+			const broken = await addResume("member", { data: { basics: "not a resume" } as never });
+			await service.updateSettings("member", { sourceResumeId: broken });
+			await expect(
+				service.importWorks("member", { resumeItemIds: ["p1"], expectedUpdatedAt: created.updatedAt }),
+			).rejects.toMatchObject({ code: "PORTFOLIO_SOURCE_INVALID", status: 400, data: { reason: "unreadable" } });
 		});
 	});
 
 	describe("the file cleanup job", () => {
-		const hour = 60 * 60 * 1000;
-		const markUnused = (key: string, since: Date | null) =>
-			getDb().update(tables.portfolioFile).set({ unusedSince: since }).where(eq(tables.portfolioFile.key, key));
-		const stored = (userId: string, name: string) => {
-			const { key } = image(userId, name);
-			fixture.files.set(key, new Uint8Array([1, 2, 3]));
-			return key;
-		};
-
 		it("deletes files unused for a day and stray files, keeps the rest, and is safe to run twice", async () => {
 			const now = new Date();
 			await service.create("member", { sourceResumeId: null });
@@ -767,10 +1041,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			await markUnused(image("member", "never-tracked").key, null);
 
 			expect(await jobs.runPortfolioJobs(now)).toEqual({ deletedFiles: 1, checkedPortfolios: 1 });
-			const rows = await getDb()
-				.select({ key: tables.portfolioFile.key, unusedSince: tables.portfolioFile.unusedSince })
-				.from(tables.portfolioFile)
-				.orderBy(tables.portfolioFile.key);
+			const rows = await fileRows();
 			const state = Object.fromEntries(
 				rows.map((row) => [row.key.split("/").pop(), row.unusedSince ? "unused" : "used"]),
 			);
@@ -795,6 +1066,160 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			expect(await jobs.runPortfolioJobs(new Date(now.getTime() + 25 * hour))).toMatchObject({ deletedFiles: 2 });
 		});
 
+		it("keeps files the stored data names anywhere, even in a field this version doesn't read", async () => {
+			const now = new Date();
+			await service.create("member", { sourceResumeId: null });
+			const key = stored("member", "future");
+			await addFile("member", "future");
+			// Data a later version saved, with a field this one doesn't know.
+			const [row] = await getDb().select({ data: tables.portfolio.data }).from(tables.portfolio);
+			await getDb()
+				.update(tables.portfolio)
+				.set({ data: { ...(row?.data as object), intro: { slides: [{ picture: key }] } } })
+				.where(eq(tables.portfolio.userId, "member"));
+			await markUnused(key, new Date(now.getTime() - 48 * hour));
+
+			await expect(service.deleteFile("member", { key })).rejects.toMatchObject({ code: "PORTFOLIO_FILE_IN_USE" });
+			expect(await jobs.runPortfolioJobs(now)).toEqual({ deletedFiles: 0, checkedPortfolios: 1 });
+			expect(fixture.files.has(key)).toBe(true);
+			expect(await fileRows()).toEqual([{ key, unusedSince: null }]);
+		});
+
+		it("never touches files beside the portfolio's folders", async () => {
+			await service.create("member", { sourceResumeId: null });
+			const beside = [
+				"uploads/member/pictures/portfolio-persona.jpg",
+				"uploads/member/documents/portfolio.pdf",
+				"uploads/member/pictures/photo.jpg",
+			];
+			for (const key of beside) fixture.files.set(key, new Uint8Array([1]));
+			const stray = stored("member", "stray");
+			expect(await jobs.runPortfolioJobs()).toEqual({ deletedFiles: 0, checkedPortfolios: 1 });
+			expect(fixture.files.has(stray)).toBe(false);
+			expect([...fixture.files.keys()].sort()).toEqual([...beside].sort());
+		});
+
+		it("never holds a portfolio's lock while storage deletes, so saving doesn't wait", async () => {
+			const now = new Date();
+			const created = await service.create("member", { sourceResumeId: null });
+			const key = stored("member", "old");
+			await addFile("member", "old");
+			await markUnused(key, new Date(now.getTime() - 48 * hour));
+			const hold = gate();
+			fixture.beforeDelete = (deleting) => (deleting === key ? hold.wait() : Promise.resolve());
+			const run = jobs.runPortfolioJobs(now);
+			try {
+				await hold.arrived;
+				// The job is mid-delete; a save goes through at once.
+				await expect(
+					Promise.race([update("member", { hero: { greeting: "Saved" } }, created.updatedAt), timeout(3000)]),
+				).resolves.toMatchObject({ data: { hero: { greeting: "Saved" } } });
+			} finally {
+				hold.open();
+			}
+			expect(await run).toEqual({ deletedFiles: 1, checkedPortfolios: 1 });
+			expect(fixture.files.has(key)).toBe(false);
+		});
+
+		it("lets no save keep a file it's deleting after the portfolio was deleted", async () => {
+			await service.create("member", { sourceResumeId: null });
+			const uploaded = await service.uploadImage("member", { file: await picture(300, 200) });
+			await service.delete("member");
+			const hold = gate();
+			fixture.beforeDelete = (key) => (key === uploaded.key ? hold.wait() : Promise.resolve());
+			const run = jobs.runPortfolioJobs();
+			try {
+				await hold.arrived;
+				// A new portfolio whose save names the file being deleted (an old editor's data, say) waits for the job,
+				// then finds the file gone.
+				const fresh = await service.create("member", { sourceResumeId: null });
+				const saving = update(
+					"member",
+					{ basics: { picture: { key: uploaded.key, width: 300, height: 200, alt: "" } } },
+					fresh.updatedAt,
+				);
+				let settled = false;
+				void saving.then(
+					() => (settled = true),
+					() => (settled = true),
+				);
+				await new Promise((resolve) => setTimeout(resolve, 300));
+				expect(settled).toBe(false);
+				hold.open();
+				await expect(saving).rejects.toMatchObject({ code: "PORTFOLIO_FILE_NOT_FOUND", data: { key: uploaded.key } });
+			} finally {
+				hold.open();
+			}
+			await run;
+			expect(fixture.files.has(uploaded.key)).toBe(false);
+			expect(await fileRows()).toEqual([]);
+			expect((await service.get("member")).portfolio?.data.basics.picture).toBeUndefined();
+		});
+
+		it("leaves a file storage won't delete as a stray, which a later check deletes", async () => {
+			const now = new Date();
+			await service.create("member", { sourceResumeId: null });
+			const key = stored("member", "old");
+			await addFile("member", "old");
+			await markUnused(key, new Date(now.getTime() - 25 * hour));
+			fixture.keepOnDelete.add(key);
+			const logged = vi.spyOn(console, "error").mockImplementation(() => {});
+			try {
+				// Its row goes (no save can use the file anymore); storage keeps the file, the check can't delete it either.
+				expect(await jobs.runPortfolioJobs(now)).toEqual({ deletedFiles: 1, checkedPortfolios: 1 });
+				expect(await fileRows()).toEqual([]);
+				expect(fixture.files.has(key)).toBe(true);
+				expect(logged).toHaveBeenCalled();
+			} finally {
+				logged.mockRestore();
+			}
+			fixture.keepOnDelete.clear();
+			expect(await jobs.runPortfolioJobs(new Date(now.getTime() + 8 * 24 * hour))).toEqual({
+				deletedFiles: 0,
+				checkedPortfolios: 1,
+			});
+			expect(fixture.files.has(key)).toBe(false);
+		});
+
+		it("goes on with the other accounts when one fails", async () => {
+			await service.create("member", { sourceResumeId: null });
+			await service.create("other", { sourceResumeId: null });
+			const theirs = stored("other", "stray");
+			const mine = stored("member", "stray");
+			fixture.failLists.push("uploads/member/");
+			const logged = vi.spyOn(console, "error").mockImplementation(() => {});
+			try {
+				expect(await jobs.runPortfolioJobs()).toEqual({ deletedFiles: 0, checkedPortfolios: 1 });
+			} finally {
+				logged.mockRestore();
+			}
+			expect(fixture.files.has(theirs)).toBe(false);
+			expect(fixture.files.has(mine)).toBe(true);
+
+			// The failed check is given back, so the next run tries this portfolio again instead of waiting a week.
+			fixture.failLists.length = 0;
+			expect(await jobs.runPortfolioJobs()).toEqual({ deletedFiles: 0, checkedPortfolios: 1 });
+			expect(fixture.files.has(mine)).toBe(false);
+		});
+
+		it("deletes other accounts' files when storage fails one account's", async () => {
+			for (const userId of ["member", "other"]) {
+				await service.create(userId, { sourceResumeId: null });
+				await service.uploadImage(userId, { file: await picture(300, 200) });
+				await service.delete(userId);
+			}
+			const [mine] = await fileRows("member");
+			fixture.keepOnDelete.add(mine?.key as string);
+			const logged = vi.spyOn(console, "error").mockImplementation(() => {});
+			try {
+				expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 1 });
+			} finally {
+				logged.mockRestore();
+			}
+			expect(await fileRows("other")).toEqual([]);
+			expect(await fileRows("member")).toHaveLength(1);
+		});
+
 		it("leaves files alone while portfolios are off", async () => {
 			await service.create("member", { sourceResumeId: null });
 			stored("member", "old");
@@ -813,7 +1238,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 		expect(await service.get("member")).toMatchObject({
 			enabled: true,
 			usage: { works: 0, storageBytes: 2000 },
-			limits: { works: 50 },
+			limits: { works: 50, storageBytes: PORTFOLIO_UPLOAD.accountBytes, dataBytes: 256 * 1024 },
 		});
 	});
 });

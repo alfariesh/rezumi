@@ -1,5 +1,5 @@
 import z from "zod";
-import { PORTFOLIO_LIMITS } from "./limits";
+import { isResumeReferenceId, PORTFOLIO_ITEM_ID_PATTERN } from "./limits";
 
 /**
  * The sections a portfolio page can show below the intro, which is always first and has no key. Portfolio-owned ones
@@ -49,19 +49,24 @@ export type PortfolioResumeSection = (typeof PORTFOLIO_RESUME_SECTIONS)[number];
  */
 export type PortfolioSectionKey = PortfolioStandardSection | `custom:${string}` | `resume:${string}`;
 
-const ITEM_ID_PATTERN = /^[\w-]{1,64}$/;
 const STANDARD = new Set<string>(PORTFOLIO_STANDARD_SECTIONS);
+const CUSTOM_PREFIX = "custom:";
+const RESUME_PREFIX = "resume:";
 
+/**
+ * Whether a value is a section key. A `custom:` key holds one of the portfolio's own IDs; a `resume:` key holds the
+ * resume custom section's ID as the resume has it (`isResumeReferenceId`), which can be any text. Either ID is at most
+ * `PORTFOLIO_LIMITS.text.id` long, so this also bounds a key's length.
+ */
 export function isPortfolioSectionKey(value: unknown): value is PortfolioSectionKey {
 	if (typeof value !== "string") return false;
 	if (STANDARD.has(value)) return true;
-	const match = /^(custom|resume):(.+)$/.exec(value);
-	return Boolean(match?.[2] && ITEM_ID_PATTERN.test(match[2]));
+	if (value.startsWith(CUSTOM_PREFIX)) return PORTFOLIO_ITEM_ID_PATTERN.test(value.slice(CUSTOM_PREFIX.length));
+	return value.startsWith(RESUME_PREFIX) && isResumeReferenceId(value.slice(RESUME_PREFIX.length));
 }
 
 export const portfolioSectionKeySchema = z
 	.string()
-	.max(PORTFOLIO_LIMITS.text.id + 7)
 	.refine(isPortfolioSectionKey, "Use a section key such as about, work, custom:<id> or resume:<id>.")
 	.transform((value) => value as PortfolioSectionKey)
 	.describe(

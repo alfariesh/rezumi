@@ -3,20 +3,27 @@ import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import type { ProjectItem, ResumeData } from "@rezumi/schema/resume/data";
 import { parseWritablePortfolioData, uniquePortfolioSlug } from "@rezumi/schema/portfolio/data";
 import { createDefaultPortfolioData } from "@rezumi/schema/portfolio/default";
-import { PORTFOLIO_LIMITS, portfolioDataBytes, richTextLength } from "@rezumi/schema/portfolio/limits";
-import { isAllowedPortfolioUrl } from "@rezumi/schema/portfolio/links";
+import {
+	fitsRichText,
+	isResumeReferenceId,
+	PORTFOLIO_LIMITS,
+	portfolioDataBytes,
+} from "@rezumi/schema/portfolio/limits";
+import { isAllowedPortfolioUrl, PORTFOLIO_WEB_PROTOCOLS } from "@rezumi/schema/portfolio/links";
 import { fallbackPortfolioAccent } from "@rezumi/schema/portfolio/themes";
 import { generateId } from "@rezumi/utils/string";
 import { sanitizePortfolioHtml } from "./rich-text";
-import { escapeHtmlText, htmlToText, truncateText } from "./text";
+import { cutText, escapeHtmlText, htmlToText, truncateText } from "./text";
 
 const { text: max } = PORTFOLIO_LIMITS;
-const WEB = new Set(["https:", "http:"]);
 
-/** Resume HTML cleaned to the portfolio's subset; when its text runs past `limit`, the start of its text instead. */
+/**
+ * Resume HTML cleaned to the portfolio's subset. When it doesn't fit the field (its text runs past `limit`, or its
+ * markup past what the field holds), the start of its text instead.
+ */
 function fitRichText(html: string, limit: number): string {
 	const clean = sanitizePortfolioHtml(html);
-	if (richTextLength(clean) <= limit) return clean;
+	if (fitsRichText(clean, limit)) return clean;
 	return `<p>${escapeHtmlText(truncateText(htmlToText(clean), limit))}</p>`;
 }
 
@@ -33,8 +40,8 @@ export function workFromResumeProject(project: ProjectItem, taken: Set<string>):
 	const description = fitRichText(project.description, max.blockText);
 	if (!project.name.trim() && !htmlToText(description)) return null;
 	const url = project.website.url.trim();
-	const link = isAllowedPortfolioUrl(url, WEB) ? url : null;
-	const label = project.website.label.trim().slice(0, max.buttonLabel);
+	const link = isAllowedPortfolioUrl(url, PORTFOLIO_WEB_PROTOCOLS) ? url : null;
+	const label = cutText(project.website.label.trim(), max.buttonLabel);
 	const title = truncateText(project.name.trim(), max.workTitle);
 	const slug = uniquePortfolioSlug(title, taken);
 	taken.add(slug);
@@ -61,7 +68,7 @@ export function workFromResumeProject(project: ProjectItem, taken: Set<string>):
 		featured: false,
 		hidden: false,
 		...(link ? { primaryLink: { label, url: link } } : {}),
-		...(/^[\w-]{1,64}$/.test(project.id) ? { fromResumeItemId: project.id } : {}),
+		...(isResumeReferenceId(project.id) ? { fromResumeItemId: project.id } : {}),
 	};
 }
 
@@ -75,8 +82,9 @@ export type InitialPortfolioInput = {
 
 /**
  * A new portfolio's first content (`02-teknis.md` 4.3). From a resume: About from its summary, works copied from its
- * projects, and accent and fonts following it. Without one: the basics given, a curated accent and the theme's fonts.
- * The career sections are not copied; they are read live from the resume.
+ * projects, and accent and fonts following it. What the resume hides (its summary, its Projects section, a project)
+ * isn't copied. Without one: the basics given, a curated accent and the theme's fonts. The career sections are not
+ * copied; they are read live from the resume.
  */
 export function createInitialPortfolioData(input: InitialPortfolioInput): PortfolioData {
 	const data = createDefaultPortfolioData(input.theme);
@@ -84,9 +92,9 @@ export function createInitialPortfolioData(input: InitialPortfolioInput): Portfo
 	if (!input.resume) {
 		const basics = Object.fromEntries(
 			Object.entries({
-				name: input.basics?.name?.trim().slice(0, max.name),
-				headline: input.basics?.headline?.trim().slice(0, max.headline),
-				location: input.basics?.location?.trim().slice(0, max.location),
+				name: cutText(input.basics?.name?.trim() ?? "", max.name),
+				headline: cutText(input.basics?.headline?.trim() ?? "", max.headline),
+				location: cutText(input.basics?.location?.trim() ?? "", max.location),
 			}).filter(([, value]) => value),
 		);
 		return parseWritablePortfolioData({
@@ -96,8 +104,9 @@ export function createInitialPortfolioData(input: InitialPortfolioInput): Portfo
 		});
 	}
 
+	const { summary, sections } = input.resume;
 	const taken = new Set<string>();
-	const works = input.resume.sections.projects.items
+	const works = (sections.projects.hidden ? [] : sections.projects.items)
 		.filter((project) => !project.hidden)
 		.map((project) => workFromResumeProject(project, taken))
 		.filter((work): work is PortfolioWork => work !== null)
@@ -106,7 +115,7 @@ export function createInitialPortfolioData(input: InitialPortfolioInput): Portfo
 	const initial = parseWritablePortfolioData({
 		...data,
 		design: { ...data.design, accent: { source: "resume" }, fonts: { source: "resume" } },
-		about: { content: fitRichText(input.resume.summary.content, max.about) },
+		about: { content: summary.hidden ? "" : fitRichText(summary.content, max.about) },
 		works: { items: works },
 	});
 	// A resume with many long projects could outgrow the saved size; the last ones stay in the resume to add later.

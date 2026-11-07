@@ -4,8 +4,10 @@ import portfolioCatalog from "./portfolio-catalog.json";
 /**
  * The interface text on a portfolio page, in English. `portfolio-catalog.json` translates it: `pnpm pdf:translations`
  * copies the translations from the app's Lingui catalogs, where `apps/web/src/features/portfolio/page-text.ts`
- * declares the same strings for translators. Keep both lists in step; the generator fails on a missing string.
- * `{service}`, `{count}`, `{place}` and `{site}` are filled in at render time.
+ * declares the same strings for translators. Keep both lists in step: that file's test compares them, and the generator
+ * fails on a missing string. `{service}`, `{count}`, `{place}` and `{site}` are filled in at render time with
+ * `fillPortfolioMessage`, never `String.replace` (a person's text could hold `$&`). The page has no plural rules, so a
+ * count goes after a label ("Pages: {count}") rather than into words that change with it.
  */
 const ENGLISH = {
 	about: "About me",
@@ -46,8 +48,7 @@ const ENGLISH = {
 	pictureViewer: "Picture viewer",
 	playVideo: "Play video",
 	openPdf: "Open PDF",
-	onePage: "1 page",
-	pageCount: "{count} pages",
+	pages: "Pages: {count}",
 	openMap: "Open in map",
 	mapAround: "Map around {place}",
 	phone: "Phone",
@@ -77,6 +78,16 @@ export type PortfolioPageMessages = typeof ENGLISH;
 export const PORTFOLIO_SOURCE_MESSAGES = Object.values(ENGLISH);
 
 const catalogs: Record<string, Record<string, string>> = portfolioCatalog;
+
+/**
+ * Fills the `{name}` placeholders of a page string. Values go in exactly as given, in one pass: a person's text can't
+ * add placeholders or `String.replace` patterns such as `$&`.
+ */
+export function fillPortfolioMessage(message: string, values: Readonly<Record<string, string | number>>): string {
+	return message.replace(/\{(\w+)\}/g, (placeholder, name: string) =>
+		Object.hasOwn(values, name) ? String(values[name]) : placeholder,
+	);
+}
 
 /** A portfolio page's interface text in `locale`, falling back to English string by string. */
 export function portfolioMessages(locale: string): PortfolioPageMessages {
@@ -117,6 +128,6 @@ export function portfolioViewMessages(messages: PortfolioPageMessages): Portfoli
 			link: messages.openLink,
 		},
 		openToWork: messages.openToWork,
-		serviceInquiry: (service) => messages.serviceInquiry.replace("{service}", service),
+		serviceInquiry: (service) => fillPortfolioMessage(messages.serviceInquiry, { service }),
 	};
 }

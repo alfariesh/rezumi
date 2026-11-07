@@ -39,8 +39,26 @@ const options: sanitizeHtml.IOptions = {
 		h6: "h3",
 		div: "p",
 	},
-	// Other tags go but keep their text; these lose their content too.
-	nonTextTags: ["script", "style", "textarea", "option", "noscript", "template", "iframe", "object", "svg", "math"],
+	// Other tags go but keep their text; these lose their content too. That includes every element whose content the
+	// parser reads as raw text (`title`, `xmp`, `plaintext`…): kept, markup inside them would turn into visible text the
+	// length limit counted as tags.
+	nonTextTags: [
+		"script",
+		"style",
+		"textarea",
+		"option",
+		"noscript",
+		"template",
+		"iframe",
+		"object",
+		"svg",
+		"math",
+		"title",
+		"xmp",
+		"plaintext",
+		"noembed",
+		"noframes",
+	],
 };
 
 /**
