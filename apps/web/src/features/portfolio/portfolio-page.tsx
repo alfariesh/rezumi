@@ -4,9 +4,12 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { toast } from "@rezumi/ui/components/toast";
 import { CreatePortfolioDialog } from "./create-dialog";
+import { portfolioErrorMessage } from "./errors";
+import { invalidatePortfolioQueries, isPortfolioLive } from "./status";
 import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { WidgetHeading } from "@/components/layout/widget-heading";
@@ -14,7 +17,6 @@ import { CopyLinkButton } from "@/features/resume/share/copy-link-button";
 import { useShareOrigin } from "@/features/resume/share/use-share-origin";
 import { useConfirm } from "@/hooks/use-confirm";
 import { authClient } from "@/libs/auth/client";
-import { toastError } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 
 /**
@@ -73,10 +75,12 @@ function StatusCard() {
 	const queryClient = useQueryClient();
 	const confirm = useConfirm();
 	const origin = useShareOrigin();
+	const titleId = useId();
 	const portfolio = data?.portfolio;
 	if (!portfolio) return null;
 	const username = session?.user.username ?? "";
 	const url = `${origin}/${encodeURIComponent(username)}`;
+	const live = isPortfolioLive(portfolio);
 
 	const remove = async () => {
 		const confirmed = await confirm(t`Delete your portfolio?`, {
@@ -87,22 +91,29 @@ function StatusCard() {
 		if (!confirmed) return;
 		try {
 			await client.portfolio.delete();
-			await queryClient.invalidateQueries({ queryKey: orpc.portfolio.get.key() });
+			await invalidatePortfolioQueries(queryClient);
 		} catch (error) {
-			toastError(error, t`Couldn't delete your portfolio. Try again.`, { allowServerMessage: true });
+			toast.add({
+				type: "error",
+				description: portfolioErrorMessage(error, { fallback: t`Couldn't delete your portfolio. Try again.` }),
+			});
 		}
 	};
 
 	return (
-		<Widget role="region" aria-labelledby="portfolio-status-title">
+		<Widget role="region" aria-labelledby={titleId}>
 			<WidgetHeading
-				id="portfolio-status-title"
+				id={titleId}
 				icon="globe-hemisphere-west"
 				title={<Trans>Your portfolio</Trans>}
 				action={
-					portfolio.isPublic ? (
+					live ? (
 						<Chip size="sm" color="success" variant="soft">
 							<Trans>Published</Trans>
+						</Chip>
+					) : portfolio.suspendedAt ? (
+						<Chip size="sm" color="danger" variant="soft">
+							<Trans>Taken down</Trans>
 						</Chip>
 					) : (
 						<Chip size="sm" variant="soft">
@@ -119,8 +130,10 @@ function StatusCard() {
 					<CopyLinkButton url={url} />
 				</div>
 				<p className="text-sm text-muted">
-					{portfolio.isPublic ? (
+					{live ? (
 						<Trans>Anyone with the link can see it. Visitor numbers are coming soon.</Trans>
+					) : portfolio.suspendedAt ? (
+						<Trans>It was taken down, so visitors can't see it. Contact support to appeal.</Trans>
 					) : (
 						<Trans>Only you can see it. Publish it from the editor when it's ready.</Trans>
 					)}
@@ -130,7 +143,7 @@ function StatusCard() {
 						<Icon name="pencil-simple" size={18} />
 						<Trans>Edit portfolio</Trans>
 					</Link>
-					{portfolio.isPublic && (
+					{live && (
 						<a href={url} target="_blank" rel="noopener" className={buttonVariants({ variant: "secondary" })}>
 							<Icon name="arrow-square-out" size={18} />
 							<Trans>Open page</Trans>

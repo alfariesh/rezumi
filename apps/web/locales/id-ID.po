@@ -40,6 +40,10 @@ msgstr "“{0}” dipindahkan ke Sampah"
 msgid "“{0}” stops being your primary resume."
 msgstr "“{0}” tidak lagi menjadi CV utama Anda."
 
+#: src/features/portfolio/images/upload.ts
+msgid "“{fileName}”: {message}"
+msgstr "“{fileName}”: {message}"
+
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "“{name}” moved to Trash"
@@ -86,7 +90,7 @@ msgid "(theme default)"
 msgstr "(bawaan tema)"
 
 #. placeholder {0}: chosen.size
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
 msgstr "{0, plural, =0 {Tambahkan karya} other {Tambahkan # karya}}"
 
@@ -191,6 +195,11 @@ msgstr "{0, plural, one {# kolom ditandai untuk diperiksa sekilas di editor.} ot
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{0, plural, one {# issue is ignored.} other {# issues are ignored.}}"
 msgstr "{0, plural, one {Masalah # diabaikan.} other {Masalah # diabaikan.}}"
+
+#. placeholder {0}: block.pages
+#: src/features/portfolio/blocks/pdf-block.tsx
+msgid "{0, plural, one {# page} other {# pages}}"
+msgstr "{0, plural, other {# halaman}}"
 
 #. placeholder {0}: paid.length
 #: src/features/billing/admin/customer.tsx
@@ -361,11 +370,6 @@ msgstr "{0} untuk Rezumi AI sudah ditambahkan."
 #: src/features/applications/components/board.tsx
 msgid "{0} at {1}"
 msgstr ""
-
-#. placeholder {0}: info.title
-#: src/features/portfolio/blocks/block-list.tsx
-msgid "{0} block removed"
-msgstr "Blok {0} dihapus"
 
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
@@ -692,11 +696,6 @@ msgstr "{count, plural, other {Terapkan # perubahan}}"
 msgid "{count, plural, other {# more}}"
 msgstr ""
 
-#: src/features/portfolio/blocks/media-blocks.tsx
-#: src/features/portfolio/page-text.ts
-msgid "{count} pages"
-msgstr "{count} halaman"
-
 #: src/features/templates/gallery.tsx
 msgid "{count} resume templates. Find your fit."
 msgstr ""
@@ -800,6 +799,10 @@ msgstr "Koneksi {label}"
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr "{left, plural, other {Sisa #, kedaluwarsa pada {expires}}}"
 
+#: src/features/portfolio/images/upload.ts
+msgid "{left, plural, one {# picture wasn't uploaded.} other {# pictures weren't uploaded.}}"
+msgstr "{left, plural, other {# gambar tidak terunggah.}}"
+
 #: src/features/career/workspace/debrief.tsx
 msgid "{length}m"
 msgstr "{length} mnt"
@@ -847,6 +850,10 @@ msgstr "{name} ditambahkan ke halaman 1"
 #: src/features/billing/plan.ts
 msgid "{name} and custom styles aren't in your plan, so the imported document uses {free} without the file's styles."
 msgstr "{name} dan gaya kustom tidak termasuk dalam paketmu, jadi dokumen hasil impor memakai {free} tanpa gaya dari file."
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "{name} block removed"
+msgstr "Blok {name} dihapus"
 
 #: src/features/career/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
@@ -952,6 +959,10 @@ msgstr "{plan} gratis sampai {0}. Setelah itu kartumu ditagih {price} ditambah p
 msgid "{price}, open until {deadline}."
 msgstr "{price}, terbuka sampai {deadline}."
 
+#: src/features/portfolio/images/upload.ts
+msgid "{problem} {notUploaded}"
+msgstr "{problem} {notUploaded}"
+
 #: src/features/homepage/plans.ts
 msgid "{proCredits} AI credits every month"
 msgstr "{proCredits} kredit AI setiap bulan"
@@ -1047,6 +1058,10 @@ msgstr "{value} per jam"
 msgid "{words, plural, one {# word} other {# words}}"
 msgstr "{words, plural, one {Kata #} other {kata-kata #}}"
 
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "{words}. {reason}"
+msgstr "{words}. {reason}"
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ hour"
 msgstr "/ jam"
@@ -1079,14 +1094,9 @@ msgstr "<0>Dikirim pada {0}.</0> Versi yang Anda kirim disimpan di Tersimpan. Pe
 msgid "1 column, inline"
 msgstr "1 kolom, sebaris"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
-#: src/features/portfolio/page-text.ts
-msgid "1 page"
-msgstr "1 halaman"
-
 #: src/features/portfolio/blocks/block-list.tsx
-msgid "1 to 12 pictures with captions"
-msgstr "1–12 gambar dengan keterangan"
+msgid "1 to {most} pictures with captions"
+msgstr "1–{most} gambar dengan keterangan"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "10-minute briefing"
@@ -1241,8 +1251,8 @@ msgid "A deep night sidebar where a large serif name, the portrait and the conta
 msgstr "Sidebar gelap seperti malam: nama serif besar, foto, dan kontak bercahaya dalam teks terang, di samping kolom utama yang putih."
 
 #: src/features/portfolio/blocks/block-list.tsx
-msgid "A document up to 10 MB"
-msgstr "Dokumen maks. 10 MB"
+msgid "A document up to {limit}"
+msgstr "Dokumen maks. {limit}"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "A fact changed. Review this story."
@@ -1283,6 +1293,10 @@ msgstr "Kilau warna aksen Anda menyapu beberapa kali."
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "A link"
 msgstr "Sebuah tautan"
+
+#: src/features/portfolio/blocks/add-media-block.tsx
+msgid "A Link block opens a web page, not an email address. Visitors find your email in Contact."
+msgstr "Blok Tautan membuka halaman web, bukan alamat email. Pengunjung menemukan email Anda di Kontak."
 
 #: src/features/resume/editor/check/issues.ts
 msgid "A link isn't a full address"
@@ -1336,9 +1350,17 @@ msgstr "Foto bisa ditambahkan nanti."
 msgid "A photo for the portfolio only"
 msgstr "Foto khusus portofolio"
 
+#: src/features/portfolio/errors.ts
+msgid "A picture or file in your portfolio isn't available anymore. Remove it, then upload it again."
+msgstr "Sebuah gambar atau file di portofolio Anda sudah tidak tersedia. Hapus, lalu unggah lagi."
+
 #: src/features/portfolio/blocks/images-block.tsx
-msgid "A Pictures block holds up to 12 pictures. Add another block for more."
-msgstr "Satu blok Gambar memuat maks. 12 gambar. Tambahkan blok lain untuk gambar berikutnya."
+msgid "A Pictures block holds up to {most} pictures. Add another block for more."
+msgstr "Satu blok Gambar memuat maks. {most} gambar. Tambahkan blok lain untuk gambar berikutnya."
+
+#: src/features/portfolio/errors.ts
+msgid "A portfolio holds at most {maxWorks} works. Remove some before adding more."
+msgstr "Portofolio memuat maks. {maxWorks} karya. Hapus beberapa sebelum menambah lagi."
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "A profile (LinkedIn, GitHub…)"
@@ -1516,6 +1538,7 @@ msgid "Accounts"
 msgstr "Akun"
 
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Achievement numbers"
 msgstr "Angka pencapaian"
 
@@ -1629,7 +1652,7 @@ msgstr "Tambahkan kata kunci..."
 msgid "Add a label to the URL"
 msgstr "Tambahkan label ke URL"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add a link"
 msgstr "Tambahkan tautan"
@@ -1734,7 +1757,7 @@ msgstr ""
 msgid "Add a testimonial"
 msgstr "Tambah testimoni"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Add a video"
 msgstr "Tambah video"
 
@@ -1849,7 +1872,7 @@ msgstr "Tambahkan kata kunci"
 msgid "Add language"
 msgstr "Tambahkan bahasa"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Add link"
 msgstr "Tambah tautan"
 
@@ -1967,7 +1990,7 @@ msgstr "Tambahkan ke Keterampilan"
 msgid "Add two or three lines at the top describing what you do."
 msgstr "Tambahkan dua atau tiga baris di bagian atas yang menjelaskan apa yang Anda kerjakan."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Add video"
 msgstr "Tambah video"
 
@@ -1979,19 +2002,21 @@ msgstr "Tambahkan kesukarelaan"
 msgid "Add what happened before you can save."
 msgstr "Tambahkan apa yang terjadi sebelum menyimpan."
 
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 #: src/features/portfolio/works/works-form.tsx
 msgid "Add work"
 msgstr "Tambah karya"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Add work from a link"
 msgstr "Tambah karya dari tautan"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Add work from pictures"
 msgstr "Tambah karya dari gambar"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Add work from your resume"
 msgstr "Tambah karya dari CV Anda"
 
@@ -2282,7 +2307,7 @@ msgstr "Sudah tercakup · pilih satu untuk menemukannya di halaman"
 msgid "Already have an account? <0>Sign in now <1/></0>"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Already in your work"
 msgstr "Sudah ada di karya Anda"
 
@@ -2368,6 +2393,7 @@ msgstr "Halaman eksekutif: garis aksen tebal di atas, nama yang tegas, dan judul
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "Terjadi kesalahan tak terduga yang menyebabkan halaman ini gagal dimuat. Coba lagi, atau buka dasbor."
 
+#: src/features/portfolio/errors.ts
 #: src/features/portfolio/images/upload.ts
 msgid "Animated GIFs can't be used. Upload a still picture (JPG, PNG or WebP)."
 msgstr "GIF bergerak tidak bisa dipakai. Unggah gambar diam (JPG, PNG, atau WebP)."
@@ -2811,7 +2837,7 @@ msgstr "S1 Desain Komunikasi Visual · Nusantara Institute of Design"
 
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/parts.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Kembali"
@@ -2950,11 +2976,11 @@ msgstr "Di depan email, telepon, lokasi, situs web, dan kolom kustom."
 msgid "Before: {before}"
 msgstr "Sebelum: {before}"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Behance, Dribbble, GitHub, Figma, Medium, YouTube, Vimeo or any public page."
 msgstr "Behance, Dribbble, GitHub, Figma, Medium, YouTube, Vimeo, atau halaman publik apa pun."
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Behance, Dribbble, GitHub, YouTube or any site fills in the card."
 msgstr "Behance, Dribbble, GitHub, YouTube, atau situs apa pun mengisi kartunya."
 
@@ -3167,6 +3193,7 @@ msgid "Button text (optional)"
 msgstr "Teks tombol (opsional)"
 
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Buttons"
 msgstr "Tombol"
 
@@ -3213,6 +3240,7 @@ msgstr "Bisakah perangkat lunak membaca resume Anda?"
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -3267,7 +3295,7 @@ msgstr "Bagian karier diambil dari"
 msgid "Case studies"
 msgstr "Studi kasus"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Case study (public version)"
 msgstr "Studi kasus (versi publik)"
 
@@ -3619,6 +3647,10 @@ msgstr "Pilih salah satu font di Desain sebagai gantinya."
 msgid "Choose color"
 msgstr "Pilih warna"
 
+#: src/features/portfolio/errors.ts
+msgid "Choose one of your resumes that isn't in Trash."
+msgstr "Pilih salah satu CV Anda yang tidak ada di Sampah."
+
 #: src/features/portfolio/images/image-field.tsx
 msgid "Choose pictures"
 msgstr "Pilih gambar"
@@ -3634,6 +3666,10 @@ msgstr "Lingkaran"
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Cities"
 msgstr "Kota"
+
+#: src/features/portfolio/location/location-fields.tsx
+msgid "Cities are listed by their names in Latin letters. Type it that way, such as “Tokyo”."
+msgstr "Kota tercantum dengan nama berhuruf Latin. Ketik dengan huruf Latin, misalnya “Tokyo”."
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "City"
@@ -3735,7 +3771,7 @@ msgstr "Klien"
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/page-text.ts
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
@@ -3830,7 +3866,6 @@ msgid "Columns can scramble the order text is read in."
 msgstr "Kolom dapat mengacak urutan teks dibaca."
 
 #: src/features/homepage/pricing.tsx
-#: src/features/portfolio/works/works-form.tsx
 msgid "Coming soon"
 msgstr "Segera tersedia"
 
@@ -4227,7 +4262,7 @@ msgstr "Salin seluruh deskripsi pekerjaan dari lowongan tersebut dan tempel di b
 msgid "Copy the text out of the exported file and read it through; fix anything that arrives in the wrong place."
 msgstr "Salin teks dari file yang diekspor dan baca seluruhnya; perbaiki apa pun yang muncul di tempat yang salah."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "Copy the thumbnail"
 msgstr "Salin gambar mini"
 
@@ -4235,11 +4270,11 @@ msgstr "Salin gambar mini"
 msgid "Copy transcript"
 msgstr "Salin transkrip"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "Copying the thumbnail into your portfolio…"
 msgstr "Menyalin gambar mini ke portofolio…"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Copying the thumbnail…"
 msgstr "Menyalin gambar mini…"
 
@@ -4695,10 +4730,6 @@ msgstr "Tidak dapat menyimpan jadwal ini. Coba lagi."
 #: src/routes/builder/letter/$coverLetterId.tsx
 msgid "Couldn't save your changes. Try again before continuing."
 msgstr "Tidak dapat menyimpan perubahan Anda. Coba lagi sebelum melanjutkan."
-
-#: src/routes/builder/portfolio/index.tsx
-msgid "Couldn't save your changes. Try again before leaving."
-msgstr "Perubahan Anda gagal disimpan. Coba lagi sebelum keluar."
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Couldn't save your changes. Try again."
@@ -5463,7 +5494,7 @@ msgstr "Jelaskan perannya"
 msgid "Description"
 msgstr "Deskripsi"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "Description (optional)"
 msgstr "Deskripsi (opsional)"
 
@@ -5477,6 +5508,7 @@ msgid "Description of role {0}"
 msgstr "Deskripsi peran {0}"
 
 #: src/features/homepage/features.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
@@ -5648,7 +5680,7 @@ msgid "Don't send {0}"
 msgstr "Jangan kirim {0}"
 
 #: src/features/billing/admin/customer.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Done"
@@ -5869,7 +5901,7 @@ msgstr "Letakkan file di sini atau jelajahi. PDF, Word, Rezumi atau JSON Resume.
 msgid "Drop a PDF, Word or JSON file"
 msgstr "Jatuhkan file PDF, Word atau JSON"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Drop pictures here"
 msgstr "Letakkan gambar di sini"
 
@@ -6140,7 +6172,7 @@ msgid "Embed all fonts when exporting, so characters map the way you intended."
 msgstr "Sematkan semua font saat mengekspor, agar karakter dipetakan sesuai maksud Anda."
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Empty"
 msgstr "Kosong"
 
@@ -6229,8 +6261,8 @@ msgstr "Masukkan alamat lengkap, seperti https://example.com atau mailto:anda@ex
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
 msgstr "Masukkan jumlah lengkap, misalnya 95000. Jumlah sebelumnya tidak berubah."
 
+#: src/features/portfolio/blocks/add-media-block.tsx
 #: src/features/portfolio/editor/fields.tsx
-#: src/features/portfolio/editor/offer-forms.tsx
 msgid "Enter a full web address, such as https://example.com."
 msgstr "Masukkan alamat web lengkap, seperti https://example.com."
 
@@ -6595,11 +6627,11 @@ msgstr "file dibaca"
 msgid "Fill fields"
 msgstr "Isi kolom"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "Fill in from the link"
 msgstr "Isi dari tautan"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Fill in the card, then build the detail from blocks."
 msgstr "Isi kartunya, lalu susun detailnya dari blok."
 
@@ -7009,15 +7041,17 @@ msgstr "Ramah namun formal: foto dan nama membuka halaman, kontak menyusul dalam
 msgid "From"
 msgstr "Dari"
 
+#. placeholder {0}: PROGRESS.min
+#. placeholder {1}: PROGRESS.max
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "From {0} to {1}, drawn as a bar."
+msgstr "Dari {0} sampai {1}, digambar sebagai batang."
+
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
 #: src/features/billing/plan-page.tsx
 msgid "From {0} until {1}"
 msgstr "Dari {0} sampai {1}"
-
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "From 0 to 100, drawn as a bar."
-msgstr "Dari 0 sampai 100, digambar sebagai batang."
 
 #: src/features/career/knowledge/facts.tsx
 msgid "From a debrief"
@@ -7031,7 +7065,7 @@ msgstr "Dari dokumen yang Anda lampirkan"
 msgid "From Fit"
 msgstr "Dari Kecocokan"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "From my resume"
 msgstr "Dari CV saya"
 
@@ -7254,6 +7288,7 @@ msgid "Green"
 msgstr "Hijau"
 
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Greeting"
 msgstr "Salam pembuka"
@@ -7335,6 +7370,7 @@ msgstr "Judul diubah"
 
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Headline"
 msgstr "Headline"
@@ -7903,15 +7939,18 @@ msgstr "Pewawancara"
 
 #: src/features/portfolio/editor/content-panel.tsx
 #: src/features/portfolio/editor/design-panel.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/page-text.ts
 msgid "Intro"
 msgstr "Intro"
 
 #: src/features/portfolio/editor/design-panel.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Intro background"
 msgstr "Latar intro"
 
 #: src/features/portfolio/editor/intro-effect.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Intro effect"
 msgstr "Efek intro"
 
@@ -8030,8 +8069,12 @@ msgid "It may have been deleted. Choose another story or add a new one."
 msgstr "Mungkin sudah dihapus. Pilih cerita lain atau tambahkan yang baru."
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
-msgid "It was saved in another tab or on another device after you opened it here. Reload to continue from that version; your last changes here weren't saved."
-msgstr "Portofolio ini disimpan di tab atau perangkat lain setelah Anda membukanya di sini. Muat ulang untuk melanjutkan dari versi itu; perubahan terakhir Anda di sini tidak tersimpan."
+msgid "It was saved in another tab or on another device after you opened it here. Reload to continue from that version, or keep your version and save it over that one."
+msgstr "Portofolio ini disimpan di tab atau perangkat lain setelah Anda membukanya di sini. Muat ulang untuk melanjutkan dari versi itu, atau pertahankan versi Anda dan simpan di atasnya."
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "It was taken down, so visitors can't see it. Contact support to appeal."
+msgstr "Portofolio ini diturunkan, jadi pengunjung tidak bisa melihatnya. Hubungi dukungan untuk mengajukan banding."
 
 #: src/features/documents/document-actions.tsx
 msgid "It will be deleted for good and can't be restored."
@@ -8041,7 +8084,7 @@ msgstr "Ini akan dihapus selamanya dan tidak dapat dipulihkan."
 msgid "It will show on the application's timeline and on the calendar."
 msgstr "Ini akan ditampilkan di timeline lamaran pekerjaan dan di kalender."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "It's copied into your portfolio, so your page never loads pictures from other sites. Use it only if you may show it."
 msgstr "Gambar ini disalin ke portofolio Anda, jadi halaman Anda tidak pernah memuat gambar dari situs lain. Pakai hanya bila Anda boleh menampilkannya."
 
@@ -8147,7 +8190,7 @@ msgstr "John Doe"
 msgid "john.doe"
 msgstr "john.doe"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "JPG, PNG or WebP. Each is shrunk in your browser before it's uploaded, and its location data is removed."
 msgstr "JPG, PNG, atau WebP. Setiap gambar dikecilkan di browser sebelum diunggah, dan data lokasinya dihapus."
 
@@ -8181,6 +8224,7 @@ msgid "Keep account"
 msgstr "Pertahankan akun"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/portfolio/editor/leave.ts
 #: src/hooks/use-form-blocker.tsx
 msgid "Keep editing"
 msgstr "Lanjutkan mengedit"
@@ -8204,6 +8248,10 @@ msgstr "Jaga agar tetap di bawah 2,5 MB, biasanya dengan menghapus atau memperke
 #: src/features/resume/editor/write/improve.tsx
 msgid "Keep mine"
 msgstr "Simpan milikku"
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Keep my version"
+msgstr "Pertahankan versi saya"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Keep on one page"
@@ -8478,6 +8526,14 @@ msgstr "Biarkan kosong untuk menggunakan judul asli."
 msgid "Leave out"
 msgstr "Tinggalkan"
 
+#: src/features/portfolio/editor/leave.ts
+msgid "Leave without saving"
+msgstr "Keluar tanpa menyimpan"
+
+#: src/features/portfolio/editor/leave.ts
+msgid "Leave without saving?"
+msgstr "Keluar tanpa menyimpan?"
+
 #: src/features/homepage/features.tsx
 msgid "Led the checkout redesign"
 msgstr "Memimpin redesain checkout"
@@ -8636,9 +8692,9 @@ msgstr "Garis sedekat ini dapat berjalan bersamaan saat dibaca. Gunakan setidakn
 
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/portfolio/blocks/block-list.tsx
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 #: src/features/resume/editor/write/fields.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Link"
@@ -8868,6 +8924,7 @@ msgstr "Waktu setempat"
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/design/entries-group.tsx
@@ -8964,7 +9021,7 @@ msgstr "Tautan utama (opsional)"
 msgid "Main navigation"
 msgstr "Navigasi utama"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Make"
 msgstr "Buat"
 
@@ -9045,7 +9102,7 @@ msgstr "Dikelola oleh server Anda"
 msgid "Manual transfer"
 msgstr "Transfer manual"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Many at once: one work with all of them, or one work per picture."
 msgstr "Banyak sekaligus: satu karya berisi semuanya, atau satu karya per gambar."
 
@@ -9483,6 +9540,7 @@ msgstr "Peran saya"
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -9937,7 +9995,7 @@ msgstr "Tanpa foto"
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "Tidak ada foto. Kebanyakan ATS mengabaikan foto; beberapa daerah mengharapkannya."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "No picture"
 msgstr "Tanpa gambar"
 
@@ -10165,8 +10223,8 @@ msgid "Not saved — this fact was forgotten before."
 msgstr "Tidak disimpan — fakta ini sudah pernah dilupakan."
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
-msgid "Not saved: a field needs fixing"
-msgstr "Belum tersimpan: ada isian yang perlu diperbaiki"
+msgid "Not saved: something needs fixing"
+msgstr "Belum tersimpan: ada yang perlu diperbaiki"
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "not scored"
@@ -10452,11 +10510,11 @@ msgstr "Satu atau dua kalimat di bawah nama Anda. {0}/{1}"
 msgid "One result from this work's Metrics blocks, shown as a chip on its card."
 msgstr "Satu hasil dari blok Metrik karya ini, tampil sebagai chip di kartunya."
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "One work per picture (photographers, illustrators)"
 msgstr "Satu karya per gambar (fotografer, ilustrator)"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "One work with all the pictures"
 msgstr "Satu karya berisi semua gambar"
 
@@ -10617,7 +10675,7 @@ msgstr "Buka file yang diekspor dan pastikan Anda dapat memilih dan menyalin set
 msgid "Open the link we sent to {email}. Your invoices go there too."
 msgstr "Buka tautan yang kami kirim ke {email}. Invoice-mu juga dikirim ke sana."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Open the PDF"
 msgstr "Buka PDF-nya"
 
@@ -10843,6 +10901,7 @@ msgid "Page 1 · {formatLabel}"
 msgstr "Halaman 1 · {formatLabel}"
 
 #: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Page language"
 msgstr "Bahasa halaman"
 
@@ -10862,6 +10921,11 @@ msgstr "Pembacaan halaman belum selesai."
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Page view"
 msgstr "Tampilan halaman"
+
+#. A PDF's page count on a public portfolio page. Keep a label before the number: the page has no plural forms.
+#: src/features/portfolio/page-text.ts
+msgid "Pages: {count}"
+msgstr "Halaman: {count}"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
@@ -10981,11 +11045,11 @@ msgstr "Tempel tautan pekerjaan. Kami akan menyimpan postingan pekerjaan sehingg
 msgid "Paste a job posting…"
 msgstr "Tempelkan postingan pekerjaan…"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Paste a link"
 msgstr "Tempel tautan"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Paste a link to Behance, Dribbble, GitHub, Figma, Medium or any site. The card fills itself in."
 msgstr "Tempel tautan Behance, Dribbble, GitHub, Figma, Medium, atau situs apa pun. Kartunya terisi sendiri."
 
@@ -10994,7 +11058,7 @@ msgstr "Tempel tautan Behance, Dribbble, GitHub, Figma, Medium, atau situs apa p
 msgid "Paste a message from {0}"
 msgstr "Tempel pesan dari {0}"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Paste a YouTube or Vimeo link. The player loads only when a visitor presses play."
 msgstr "Tempel tautan YouTube atau Vimeo. Pemutar baru dimuat saat pengunjung menekan putar."
 
@@ -11113,7 +11177,7 @@ msgstr "PDF tersedia di semua paket, begitu juga Markdown dan JSON. Word (DOCX) 
 msgid "PDF styles support a subset of CSS. Rotation, dashed and dotted borders, and some layout properties are ignored."
 msgstr "Gaya PDF mendukung subset CSS. Rotasi, batas putus-putus dan putus-putus, serta beberapa properti tata letak diabaikan."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/pdf-block.tsx
 msgid "PDF title"
 msgstr "Judul PDF"
 
@@ -11169,6 +11233,7 @@ msgid "Phone (optional)"
 msgstr "Telepon (opsional)"
 
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Photo"
 msgstr "Foto"
 
@@ -11212,7 +11277,7 @@ msgstr "Pilih ikon"
 msgid "Pick one format and use it everywhere."
 msgstr "Pilih satu format dan gunakan di mana pun."
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Pick projects from your resume: title, summary, dates and link come along."
 msgstr "Pilih proyek dari CV Anda: judul, ringkasan, tanggal, dan tautannya ikut terisi."
 
@@ -11229,7 +11294,7 @@ msgstr "Memilih cerita Anda"
 msgid "Picture"
 msgstr "Gambar"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Picture (optional)"
 msgstr "Gambar (opsional)"
@@ -11425,6 +11490,7 @@ msgstr "Memoles"
 
 #: src/features/portfolio/portfolio-page.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+#: src/routes/builder/portfolio/index.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Portfolio"
 msgstr "Portofolio"
@@ -11436,6 +11502,10 @@ msgstr "Foto portofolio"
 #: src/features/portfolio/editor/preview.tsx
 msgid "Portfolio preview"
 msgstr "Pratinjau portofolio"
+
+#: src/features/portfolio/errors.ts
+msgid "Portfolios aren't available for your account right now."
+msgstr "Portofolio belum tersedia untuk akun Anda saat ini."
 
 #. Preset button for setting picture aspect ratio to portrait orientation
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -12081,7 +12151,7 @@ msgstr "Baca tautan pekerjaan yang Anda simpan. Menyimpan dan menyiapkan pekerja
 msgid "Read the letter"
 msgstr "Baca surat itu"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Read the link"
 msgstr "Baca tautan"
 
@@ -12127,7 +12197,8 @@ msgstr "Skor keterbacaan: {0} dari 100"
 msgid "Readability score: {score} out of 100"
 msgstr "Skor keterbacaan: {score} dari 100"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
+#: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Reading and uploading the PDF…"
 msgstr "Membaca dan mengunggah PDF…"
 
@@ -12140,7 +12211,7 @@ msgid "Reading the file"
 msgstr "Membaca file"
 
 #: src/features/applications/components/add-application-dialog.tsx
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Reading the link…"
 msgstr "Membaca tautannya…"
 
@@ -12170,7 +12241,7 @@ msgstr "Membaca pertanyaan"
 msgid "Reading the text"
 msgstr "Membaca teks"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Reading the video…"
 msgstr "Membaca video…"
 
@@ -12691,7 +12762,7 @@ msgstr "Ganti gambar"
 msgid "Replace tables with plain paragraphs and lists. Cells extract in storage order, not reading order."
 msgstr "Ganti tabel dengan paragraf dan daftar biasa. Sel diekstrak sesuai urutan penyimpanan, bukan urutan baca."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Replace the PDF"
 msgstr "Ganti PDF"
 
@@ -12854,7 +12925,7 @@ msgstr ""
 msgid "Resume review"
 msgstr "Review CV"
 
-#: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/editor/sections.ts
 msgid "Resume section"
 msgstr "Bagian CV"
 
@@ -13290,6 +13361,10 @@ msgstr "Simpan ke lamaran pekerjaan"
 msgid "Save your backup codes"
 msgstr "Simpan kode cadangan Anda"
 
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Save your version over the other one?"
+msgstr "Simpan versi Anda di atas versi yang lain?"
+
 #: src/features/resume/share/format.ts
 msgid "saved"
 msgstr "disimpan"
@@ -13462,6 +13537,7 @@ msgid "Search documents"
 msgstr "Cari dokumen"
 
 #: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Search engines"
 msgstr "Mesin pencari"
 
@@ -13589,6 +13665,7 @@ msgstr "Judul bagian"
 #: src/features/ats-checker/messages.ts
 #: src/features/homepage/section-nav.tsx
 #: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Sections"
@@ -13908,7 +13985,7 @@ msgstr ""
 msgid "Short number (1.2k, 1.2m)"
 msgstr "Angka ringkas (1,2 rb, 1,2 jt)"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Short summary"
 msgstr "Ringkasan singkat"
 
@@ -14002,6 +14079,14 @@ msgstr "Tampilkan di mesin pencari"
 #: src/features/resume/editor/write/fields.tsx
 msgid "Show link in title"
 msgstr "Tampilkan tautan di judul"
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Show me"
+msgstr "Tunjukkan"
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Show me: {placeLabel}"
+msgstr "Tunjukkan: {placeLabel}"
 
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Show my email address"
@@ -14172,7 +14257,7 @@ msgstr "Mendaftar..."
 msgid "since last view"
 msgstr "sejak tampilan terakhir"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "Site name (optional)"
 msgstr "Nama situs (opsional)"
 
@@ -14317,6 +14402,14 @@ msgstr "Beberapa teks diputar."
 #: src/features/homepage/faq.tsx
 msgid "Something else on your mind? Write to us at"
 msgstr "Ada pertanyaan lain? Kirim email ke"
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "Something in {where} can't be saved as it is. Change or remove it, or undo your last change."
+msgstr "Ada isi di {where} yang tidak bisa disimpan apa adanya. Ubah atau hapus, atau urungkan perubahan terakhir Anda."
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "Something in your portfolio can't be saved as it is. Undo your last change, or contact support if this keeps happening."
+msgstr "Ada isi portofolio Anda yang tidak bisa disimpan apa adanya. Urungkan perubahan terakhir Anda, atau hubungi dukungan bila ini terus terjadi."
 
 #: src/features/career/knowledge/facts.tsx
 msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
@@ -14796,6 +14889,10 @@ msgstr "Swedia"
 msgid "Swipe sideways"
 msgstr "Geser ke samping"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Switch between plus and minus"
+msgstr "Ganti antara plus dan minus"
+
 #: src/features/assistant/conversation.tsx
 msgid "Switch model"
 msgstr "Ganti model"
@@ -14924,6 +15021,10 @@ msgstr "Dikurangi pada {at}"
 #: src/features/billing/credits.ts
 msgid "Taken back on {0}"
 msgstr "Ditarik pada {0}"
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Taken down"
+msgstr "Diturunkan"
 
 #: src/libs/locale.ts
 msgid "Tamil"
@@ -15164,11 +15265,11 @@ msgstr "File itu tidak dapat dibaca sebagai PDF. Pilih file PDF dan coba lagi."
 msgid "That file is too large to check. PDFs up to 25 MB work."
 msgstr "File itu terlalu besar untuk diperiksa. PDFs hingga 25 MB berfungsi."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "That isn't a YouTube or Vimeo video link."
 msgstr "Itu bukan tautan video YouTube atau Vimeo."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "That isn't a YouTube or Vimeo video link. Copy the address from the video's page."
 msgstr "Itu bukan tautan video YouTube atau Vimeo. Salin alamat dari halaman videonya."
 
@@ -15200,7 +15301,7 @@ msgstr "Rekaman itu kosong atau lebih dari 2 MB. Coba jawaban yang lebih singkat
 msgid "That sign-in provider is no longer available on this server. Use another sign-in method."
 msgstr "Penyedia masuk tersebut tidak lagi tersedia di server ini. Gunakan metode masuk lain."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "That's a video, so it was added as a Video block."
 msgstr "Itu video, jadi ditambahkan sebagai blok Video."
 
@@ -15231,6 +15332,10 @@ msgstr "Asisten menggunakan kunci Anda sendiri. Tidak ada yang dikirim ke mana p
 #: src/features/settings/ai/web-access.tsx
 msgid "The built-in reader remains active."
 msgstr "Pembaca internal tetap aktif."
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "The changes saved in the other tab or device are replaced by what you see here."
+msgstr "Perubahan yang tersimpan di tab atau perangkat lain diganti dengan yang Anda lihat di sini."
 
 #: src/features/homepage/features.tsx
 msgid "The checker shows the text a parser extracts and what to fix first."
@@ -15267,6 +15372,10 @@ msgstr "Coach membaca ini hanya untuk lamaran ini."
 #: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Coach menyimpan fakta yang Anda sebutkan, dan memberi tahu Anda. Anda bisa membatalkannya."
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "The connection dropped. Your changes are kept here, and saving tries again by itself."
+msgstr "Koneksi terputus. Perubahan Anda tetap ada di sini, dan penyimpanan dicoba lagi otomatis."
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "The copy is linked to the application, so Check and the assistant use its posting."
@@ -15408,7 +15517,7 @@ msgstr "Versi asli tetap ada di riwayat."
 msgid "The page had no job details to read. Fill in the role and company."
 msgstr "Halaman tersebut tidak memiliki detail pekerjaan untuk dibaca. Isi peran dan perusahaan."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "The page shows a plain play button until the thumbnail is copied."
 msgstr "Halaman menampilkan tombol putar polos sampai gambar mini tersalin."
 
@@ -15444,7 +15553,7 @@ msgstr "Foto di CV saya"
 msgid "The picture couldn't be copied from the site. Upload one yourself instead."
 msgstr "Gambar tidak bisa disalin dari situs itu. Unggah gambar Anda sendiri saja."
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "The picture couldn't be copied. Add a cover yourself."
 msgstr "Gambar tidak bisa disalin. Tambahkan sampul sendiri."
 
@@ -15468,6 +15577,14 @@ msgstr "Postingan pekerjaan tidak dapat dibaca. Isi peran dan perusahaan."
 msgid "The posting saved with this application."
 msgstr "Postingan pekerjaan disimpan dengan lamaran pekerjaan ini."
 
+#: src/features/portfolio/editor/preview.tsx
+msgid "The preview couldn't be drawn. Your changes are still saved as you edit."
+msgstr "Pratinjau tidak bisa ditampilkan. Perubahan Anda tetap tersimpan selagi Anda mengedit."
+
+#: src/features/portfolio/editor/preview.tsx
+msgid "The preview couldn't be updated, so it shows an earlier version."
+msgstr "Pratinjau tidak bisa diperbarui, jadi yang tampil versi sebelumnya."
+
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "The problem"
 msgstr "Masalah"
@@ -15476,7 +15593,7 @@ msgstr "Masalah"
 msgid "The process"
 msgstr "Proses"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "The projects couldn't be added. Check your connection, then try again."
 msgstr "Proyek tidak bisa ditambahkan. Periksa koneksi Anda, lalu coba lagi."
 
@@ -15570,9 +15687,13 @@ msgstr "Skor mencerminkan seberapa andal teks diekstraksi, bukan peluang Anda."
 msgid "The server couldn't read this PDF. Save it again as a PDF."
 msgstr "Server tidak bisa membaca PDF ini. Simpan ulang sebagai PDF."
 
-#: src/features/portfolio/images/upload.ts
+#: src/features/portfolio/errors.ts
 msgid "The server couldn't read this picture. Try another JPG, PNG or WebP file."
 msgstr "Server tidak bisa membaca gambar ini. Coba file JPG, PNG, atau WebP lain."
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "The server couldn't save your changes. Saving tries again by itself."
+msgstr "Server tidak bisa menyimpan perubahan Anda. Penyimpanan dicoba lagi otomatis."
 
 #: src/features/settings/ai/web-access.tsx
 msgid "The service didn't respond in time. Try again."
@@ -15784,6 +15905,10 @@ msgstr "File ini besar untuk ukuran sebuah resume."
 msgid "This file is larger than many application forms accept."
 msgstr "File ini lebih besar dari yang diterima banyak formulir lamaran."
 
+#: src/features/portfolio/errors.ts
+msgid "This file is too large to upload."
+msgstr "File ini terlalu besar untuk diunggah."
+
 #: src/features/resume/editor/design/uploaded-fonts.tsx
 msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
 msgstr "File ini bukan font yang bisa dibaca Rezumi. Unggah file TTF atau OTF."
@@ -15792,6 +15917,11 @@ msgstr "File ini bukan font yang bisa dibaca Rezumi. Unggah file TTF atau OTF."
 msgid "This file isn't a PDF. Choose a .pdf file."
 msgstr "File ini bukan PDF. Pilih file .pdf."
 
+#: src/features/portfolio/errors.ts
+msgid "This file isn't a PDF. Upload a PDF file."
+msgstr "File ini bukan PDF. Unggah file PDF."
+
+#: src/features/portfolio/errors.ts
 #: src/features/portfolio/images/upload.ts
 msgid "This file isn't a picture your browser can read. Use a JPG, PNG or WebP file."
 msgstr "File ini bukan gambar yang bisa dibaca browser Anda. Pakai file JPG, PNG, atau WebP."
@@ -15820,7 +15950,7 @@ msgstr "Invoice ini tidak tersedia di sini. Buka halaman tagihan untuk melihat s
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "Ini adalah PDF Portfolio: halaman yang terlihat hanyalah sampul."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "This is a video. Add it as a Video block to play it on the page."
 msgstr "Ini video. Tambahkan sebagai blok Video agar bisa diputar di halaman."
 
@@ -15831,6 +15961,10 @@ msgstr "Ini adalah formulir XFA, sehingga sebagian besar perangkat lunak hanya m
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "Ini bukan ukuran halaman resume yang umum."
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "This item can't be hidden here. Hide it on your resume instead."
+msgstr "Item ini tidak bisa disembunyikan di sini. Sembunyikan di CV Anda."
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "This letter and “{resumeName}” as two PDFs, named to match."
@@ -15905,12 +16039,12 @@ msgid "This PDF is a scanned image. There's no text to read. Try the Word versio
 msgstr "PDF ini adalah gambar yang dipindai. Tidak ada teks untuk dibaca. Coba versi Word, atau mulai kosongkan dan tempelkan bagiannya."
 
 #: src/features/portfolio/media/pdf.ts
-msgid "This PDF is larger than 10 MB. Make it smaller (for example, export it with compressed pictures), then try again."
-msgstr "PDF ini lebih dari 10 MB. Perkecil dulu (misalnya ekspor dengan gambar terkompres), lalu coba lagi."
+msgid "This PDF is larger than {limit}. Make it smaller (for example, export it with compressed pictures), then try again."
+msgstr "PDF ini lebih dari {limit}. Perkecil dulu (misalnya ekspor dengan gambar terkompres), lalu coba lagi."
 
 #: src/features/portfolio/media/pdf.ts
-msgid "This PDF is larger than 10 MB. Make it smaller, then try again."
-msgstr "PDF ini lebih dari 10 MB. Perkecil dulu, lalu coba lagi."
+msgid "This PDF is larger than {limit}. Make it smaller, then try again."
+msgstr "PDF ini lebih dari {limit}. Perkecil dulu, lalu coba lagi."
 
 #: src/features/ats-checker/checker.tsx
 msgid "This PDF is password protected. Save an unprotected copy and try again."
@@ -15920,22 +16054,34 @@ msgstr "PDF ini dilindungi kata sandi. Simpan salinan yang tidak dilindungi dan 
 msgid "This PDF is protected by a password. Save a copy without one, then upload that."
 msgstr "PDF ini dilindungi kata sandi. Simpan salinan tanpa kata sandi, lalu unggah salinan itu."
 
-#: src/features/portfolio/images/upload.ts
-msgid "This picture is too large to prepare. Use one under 50 MB and 100 megapixels."
-msgstr "Gambar ini terlalu besar untuk disiapkan. Pakai gambar di bawah 50 MB dan 100 megapiksel."
+#: src/features/portfolio/errors.ts
+msgid "This picture is larger than the portfolio allows. Upload it again so it's made smaller first."
+msgstr "Gambar ini lebih besar dari yang diizinkan portofolio. Unggah lagi agar diperkecil dulu."
 
-#. placeholder {0}: PORTFOLIO_LIMITS.works
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/images/upload.ts
+msgid "This picture is too large to prepare. Use one under {megabytes} MB and {megapixels} megapixels."
+msgstr "Gambar ini terlalu besar untuk disiapkan. Pakai gambar di bawah {megabytes} MB dan {megapixels} megapiksel."
+
+#. placeholder {0}: limits.works
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "This portfolio already holds {0} works."
 msgstr "Portofolio ini sudah berisi {0} karya."
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/errors.ts
+msgid "This portfolio doesn't exist anymore. It may have been deleted in another tab."
+msgstr "Portofolio ini sudah tidak ada. Mungkin dihapus di tab lain."
+
+#: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
 msgstr "Portofolio ini tidak punya CV untuk diambil proyeknya. Pilih CV di Terbitkan → CV sumber."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "This portfolio was taken down"
 msgstr "Portofolio ini diturunkan"
+
+#: src/features/portfolio/errors.ts
+msgid "This resume can't be read. Choose another resume."
+msgstr "CV ini tidak bisa dibaca. Pilih CV lain."
 
 #: src/features/resume/builder/draft.ts
 msgid "This resume is locked. Unlock it from its menu to edit."
@@ -15996,6 +16142,10 @@ msgstr "Server ini tidak menerima akun baru. Masuk dengan akun yang sudah ada."
 #: src/features/auth/pages/error.tsx
 msgid "This sign-in attempt expired or was already used. Try again."
 msgstr "Upaya masuk ini kedaluwarsa atau sudah digunakan. Coba lagi."
+
+#: src/features/portfolio/errors.ts
+msgid "This site can't be read automatically. Fill in the details yourself."
+msgstr "Situs ini tidak bisa dibaca otomatis. Isi detailnya sendiri."
 
 #: src/features/portfolio/media/remote.ts
 msgid "This site can't be read automatically. Fill the card in by hand."
@@ -16113,7 +16263,7 @@ msgid "Tip"
 msgstr "Tips"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Title"
@@ -16123,13 +16273,22 @@ msgstr "Judul"
 msgid "Title in search results"
 msgstr "Judul di hasil pencarian"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Title of the work"
 msgstr "Judul karya"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "To"
 msgstr "Ke"
+
+#: src/features/portfolio/location/location-fields.tsx
+msgid "To show your city, find it again above. The page keeps what it shows until then."
+msgstr "Untuk menampilkan kota Anda, cari lagi di atas. Sampai saat itu halaman tetap menampilkan yang sekarang."
+
+#: src/features/portfolio/location/location-fields.tsx
+msgid "To show your province or state, find your city again above. The page keeps what it shows until then."
+msgstr "Untuk menampilkan provinsi atau negara bagian Anda, cari kota Anda lagi di atas. Sampai saat itu halaman tetap menampilkan yang sekarang."
 
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
@@ -16161,9 +16320,17 @@ msgstr "Terlalu terang untuk judul berwarna putih. Mungkin sulit untuk membaca d
 msgid "Too many links read in a short time. Wait a while, or fill the card in by hand."
 msgstr "Terlalu banyak tautan dibaca dalam waktu singkat. Tunggu sebentar, atau isi kartunya secara manual."
 
+#: src/features/portfolio/errors.ts
+msgid "Too many requests in a short time. Wait a minute, then try again."
+msgstr "Terlalu banyak permintaan dalam waktu singkat. Tunggu sebentar, lalu coba lagi."
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Too many requests. Try again later."
 msgstr "Terlalu banyak permintaan. Coba lagi nanti."
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "Too many saves in a short time. Saving tries again in a moment."
+msgstr "Terlalu banyak penyimpanan dalam waktu singkat. Penyimpanan dicoba lagi sebentar lagi."
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Too many tries in a row. Wait a few minutes, then try again."
@@ -16296,6 +16463,7 @@ msgstr "Coba sampel"
 #: src/features/career/workspace/practise.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/features/documents/library-error.tsx
+#: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/resume/editor/write/improve.tsx
 #: src/features/resume/preview/preview.browser.tsx
@@ -16570,6 +16738,7 @@ msgid "Untitled"
 msgstr "Tanpa judul"
 
 #: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled client"
 msgstr "Klien tanpa nama"
 
@@ -16581,30 +16750,38 @@ msgstr "Surat tanpa judul"
 msgid "Untitled resume"
 msgstr "Resume tanpa judul"
 
-#: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/editor/sections.ts
 msgid "Untitled section"
 msgstr "Bagian tanpa judul"
 
 #: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled service"
 msgstr "Layanan tanpa nama"
 
 #: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled testimonial"
 msgstr "Testimoni tanpa nama"
 
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/portfolio/works/works-form.tsx
 msgid "Untitled work"
 msgstr "Karya tanpa judul"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
-msgid "Up to 10 MB, without a password. Visitors open it in a new tab."
-msgstr "Maks. 10 MB, tanpa kata sandi. Pengunjung membukanya di tab baru."
-
+#. placeholder {0}: PORTFOLIO_LIMITS.tagsPerWork
 #: src/features/portfolio/works/work-editor.tsx
-msgid "Up to 12, such as “UX research” or “Figma”. Press Enter or a comma after each."
-msgstr "Maks. 12, misalnya “Riset UX” atau “Figma”. Tekan Enter atau koma setelah masing-masing."
+msgid "Up to {0}, such as “UX research” or “Figma”. Press Enter or a comma after each."
+msgstr "Maks. {0}, misalnya “Riset UX” atau “Figma”. Tekan Enter atau koma setelah masing-masing."
+
+#: src/features/portfolio/blocks/pdf-block.tsx
+msgid "Up to {limit}, without a password. Visitors open it in a new tab."
+msgstr "Maks. {limit}, tanpa kata sandi. Pengunjung membukanya di tab baru."
+
+#: src/features/portfolio/images/upload.ts
+msgid "Up to {MAX_BATCH_PICTURES} pictures are uploaded at a time. Add the others afterwards."
+msgstr "Maks. {MAX_BATCH_PICTURES} gambar diunggah sekaligus. Tambahkan sisanya setelah itu."
 
 #: src/features/career/workspace/practise.tsx
 msgid "Up to 2 minutes. Or <0>choose an audio file</0> up to 2 MB."
@@ -16682,7 +16859,7 @@ msgstr "Unggah font"
 msgid "Upload photo"
 msgstr "Unggah foto"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Upload pictures"
 msgstr "Unggah gambar"
 
@@ -16690,7 +16867,7 @@ msgstr "Unggah gambar"
 msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
 msgstr "Unggah file TTF atau OTF yang boleh kamu pakai, satu file untuk setiap ketebalan atau gaya. Siapa pun yang membuka tautan bagikan dokumen ini bisa mengunduhnya."
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Uploaded pictures"
 msgstr "Gambar yang diunggah"
 
@@ -16803,7 +16980,7 @@ msgstr "Gunakan untuk semua lamaran"
 msgid "Use in coaching: {excerpt}"
 msgstr "Gunakan dalam coaching: {excerpt}"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Use it only if you may show it. Your page never loads pictures from other sites."
 msgstr "Pakai hanya bila Anda boleh menampilkannya. Halaman Anda tidak pernah memuat gambar dari situs lain."
 
@@ -16843,7 +17020,7 @@ msgstr "Gunakan postingan pekerjaan"
 msgid "Use sample"
 msgstr "Gunakan contoh"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "Use the page's picture?"
 msgstr "Pakai gambar dari halaman itu?"
 
@@ -16863,11 +17040,11 @@ msgstr "Pakai kota ini"
 msgid "Use this device's timezone ({device})"
 msgstr "Gunakan zona waktu perangkat ini ({device})"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "Use this picture"
 msgstr "Pakai gambar ini"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Use this picture as the cover (it's copied into your portfolio)"
 msgstr "Pakai gambar ini sebagai sampul (disalin ke portofolio Anda)"
 
@@ -16991,6 +17168,10 @@ msgstr "Verifikasi"
 msgid "Verify with a backup code"
 msgstr "Verifikasi dengan kode cadangan"
 
+#: src/features/portfolio/errors.ts
+msgid "Verify your email address before publishing your portfolio."
+msgstr "Verifikasi alamat email Anda sebelum menerbitkan portofolio."
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Verify your email address first"
 msgstr "Verifikasi alamat email Anda dulu"
@@ -17056,7 +17237,7 @@ msgstr "Hanya sedikit teks yang berhasil dipulihkan untuk sebanyak ini halaman."
 msgid "Video"
 msgstr "Video"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "Video link"
 msgstr "Tautan video"
 
@@ -17064,11 +17245,11 @@ msgstr "Tautan video"
 msgid "Video link, office address, or phone number"
 msgstr "Tautan video, alamat kantor, atau nomor telepon"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "Video title (optional)"
 msgstr "Judul video (opsional)"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Video: it plays on your page when a visitor presses play"
 msgstr "Video: diputar di halaman Anda saat pengunjung menekan putar"
 
@@ -17126,6 +17307,10 @@ msgstr "Pengunjung dapat mengunduh PDF"
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Visitors can't see it anymore. Your short link opens your primary resume again, if you have a published one."
 msgstr "Pengunjung tidak bisa melihatnya lagi. Tautan pendek Anda kembali membuka CV utama, bila ada yang terbit."
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Visitors can't see it while it's taken down."
+msgstr "Pengunjung tidak bisa melihatnya selama diturunkan."
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
@@ -17256,7 +17441,7 @@ msgstr "Webhook dengan tanda tangan salah"
 msgid "Website"
 msgstr "Situs Web"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Wedding photos, Bandung 2025"
 msgstr "Foto pernikahan, Bandung 2025"
 
@@ -17786,6 +17971,14 @@ msgstr "Kemarin {time}"
 msgid "You"
 msgstr "Anda"
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "You already have a portfolio, so it opens instead."
+msgstr "Anda sudah punya portofolio, jadi portofolio itu yang dibuka."
+
+#: src/features/portfolio/errors.ts
+msgid "You already have a portfolio. Open it from Portfolio in the menu."
+msgstr "Anda sudah punya portofolio. Buka dari Portofolio di menu."
+
 #. placeholder {0}: result.takenBy
 #: src/features/resume/share/address-field.tsx
 msgid "You already use this for “{0}”."
@@ -17878,6 +18071,10 @@ msgstr "Sekarang kamu ditagih tahunan."
 #: src/features/resume/builder/draft.ts
 msgid "You're offline. Reconnect to save your changes before leaving."
 msgstr "Anda sedang luring. Hubungkan kembali untuk menyimpan perubahan Anda sebelum keluar."
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "You're signed out. Sign in again in another tab, and saving continues."
+msgstr "Anda sudah keluar. Masuk lagi di tab lain, lalu penyimpanan berlanjut."
 
 #: src/features/career/today.tsx
 msgid "You're up to date"
@@ -18092,6 +18289,22 @@ msgstr "Pengetahuan Anda"
 msgid "Your last payment didn't go through. Update your payment method in billing first."
 msgstr "Pembayaran terakhirmu gagal. Perbarui dulu metode pembayaran di halaman tagihan."
 
+#: src/features/portfolio/works/add-work/from-resume.tsx
+msgid "Your latest changes aren't saved yet, so the projects weren't added. Once they're saved, try again."
+msgstr "Perubahan terakhir Anda belum tersimpan, jadi proyek belum ditambahkan. Setelah tersimpan, coba lagi."
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Your latest changes aren't saved, so nothing was changed. Check the save status at the top, then try again."
+msgstr "Perubahan terakhir Anda belum tersimpan, jadi tidak ada yang diubah. Periksa status simpan di bagian atas, lalu coba lagi."
+
+#: src/features/portfolio/editor/leave.ts
+msgid "Your latest changes aren't saved. If you leave now, they're lost."
+msgstr "Perubahan terakhir Anda belum tersimpan. Jika keluar sekarang, perubahan itu hilang."
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Your latest changes here aren't saved."
+msgstr "Perubahan terakhir Anda di sini belum tersimpan."
+
 #: src/features/ats-checker/messages.ts
 msgid "Your lines are packed very tightly."
 msgstr "Garis Anda dikemas sangat rapat."
@@ -18224,8 +18437,24 @@ msgid "Your portfolio"
 msgstr "Portofolio Anda"
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Your portfolio can't be saved"
+msgstr "Portofolio Anda tidak bisa disimpan"
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio changed in another tab or device. Reload it to see the latest version."
+msgstr "Portofolio Anda berubah di tab atau perangkat lain. Muat ulang untuk melihat versi terbaru."
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Your portfolio changed somewhere else"
 msgstr "Portofolio Anda diubah di tempat lain"
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "Your portfolio couldn't be saved. Undo your last change, or contact support if this keeps happening."
+msgstr "Portofolio Anda gagal disimpan. Urungkan perubahan terakhir Anda, atau hubungi dukungan bila ini terus terjadi."
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio holds as many works as it can. Remove some before adding more."
+msgstr "Portofolio Anda sudah memuat karya sebanyak mungkin. Hapus beberapa sebelum menambah lagi."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your portfolio is live"
@@ -18235,9 +18464,31 @@ msgstr "Portofolio Anda sudah tayang"
 msgid "Your portfolio is no longer published"
 msgstr "Portofolio Anda tidak lagi terbit"
 
+#. placeholder {0}: Math.ceil(bytes / 1024)
+#. placeholder {1}: Math.floor(max / 1024)
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio is too large to save ({0} KB of {1} KB). Shorten some text or remove a few blocks."
+msgstr "Portofolio Anda terlalu besar untuk disimpan ({0} KB dari {1} KB). Persingkat sebagian teks atau hapus beberapa blok."
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio is too large to save. Shorten some text or remove a few blocks."
+msgstr "Portofolio Anda terlalu besar untuk disimpan. Persingkat sebagian teks atau hapus beberapa blok."
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your portfolio still shows its own content. Choose another resume to fill Experience, Education and the other sections again."
 msgstr "Portofolio Anda tetap menampilkan isinya sendiri. Pilih CV lain untuk mengisi lagi Pengalaman, Pendidikan, dan bagian lainnya."
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio still uses this file. Remove it from the portfolio first."
+msgstr "Portofolio Anda masih memakai file ini. Hapus dulu dari portofolio."
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio was taken down and can't be published. Contact support to appeal."
+msgstr "Portofolio Anda diturunkan dan tidak bisa diterbitkan. Hubungi dukungan untuk mengajukan banding."
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio's storage is full. Remove pictures or PDFs you don't need, then try again."
+msgstr "Penyimpanan portofolio Anda penuh. Hapus gambar atau PDF yang tidak diperlukan, lalu coba lagi."
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Your primary resume"
@@ -18280,7 +18531,7 @@ msgstr "Resume Anda telah diduplikasi."
 msgid "Your resume has been updated."
 msgstr "Resume Anda telah diperbarui."
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your resume has no projects yet. Add them in the resume editor, or start an empty work."
 msgstr "CV Anda belum punya proyek. Tambahkan di editor CV, atau mulai karya kosong."
 
@@ -18361,7 +18612,7 @@ msgstr "Pekerjaan Anda akan hilang saat Anda keluar atau sesi berakhir. Buat aku
 msgid "YouTube or Vimeo, loaded when played"
 msgstr "YouTube atau Vimeo, dimuat saat diputar"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
 msgstr "YouTube atau Vimeo. Pengunjung melihat gambar mini ini; pemutar baru dimuat saat mereka menekan putar."
 

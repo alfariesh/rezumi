@@ -16,8 +16,10 @@ import {
 } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { lazy, Suspense, useId, useState } from "react";
-import { isAllowedPortfolioUrl } from "@rezumi/schema/portfolio/links";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
+import { isAllowedPortfolioUrl, PORTFOLIO_WEB_PROTOCOLS } from "@rezumi/schema/portfolio/links";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { useDraftText } from "../metrics/use-draft-text";
 import { usePortfolioEditorStore } from "./store";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 
@@ -54,10 +56,13 @@ type TextInputProps = {
 	maxLength: number;
 	placeholder?: string | undefined;
 	description?: ReactNode;
+	/** What's wrong with the value, shown under the field (which is marked invalid) instead of the description. */
+	errorMessage?: string | undefined;
 	multiline?: boolean;
 	isDisabled?: boolean;
 	type?: "text" | "email" | "tel";
 	inputMode?: "text" | "numeric" | "tel";
+	onBlur?: () => void;
 };
 
 /** A labelled text field that saves as it's typed. `maxLength` matches the server's limit, so typing stops there. */
@@ -68,10 +73,12 @@ export function TextInput({
 	maxLength,
 	placeholder,
 	description,
+	errorMessage,
 	multiline = false,
 	isDisabled = false,
 	type = "text",
 	inputMode,
+	onBlur,
 }: TextInputProps) {
 	return (
 		<TextField
@@ -80,7 +87,9 @@ export function TextInput({
 			value={value}
 			maxLength={maxLength}
 			isDisabled={isDisabled}
+			isInvalid={Boolean(errorMessage)}
 			onChange={onChange}
+			{...(onBlur ? { onBlur } : {})}
 			className="gap-1.5"
 		>
 			<Label>{label}</Label>
@@ -89,7 +98,8 @@ export function TextInput({
 			) : (
 				<Input variant="secondary" {...(placeholder ? { placeholder } : {})} {...(inputMode ? { inputMode } : {})} />
 			)}
-			{description && <Description>{description}</Description>}
+			{description && !errorMessage && <Description>{description}</Description>}
+			<FieldError>{errorMessage}</FieldError>
 		</TextField>
 	);
 }
@@ -99,13 +109,15 @@ type UrlInputProps = {
 	value: string | undefined;
 	/** Called with a valid address, or undefined once the field is cleared. */
 	onChange: (value: string | undefined) => void;
+	/** Whether what's typed is an address that can be used (or nothing), for forms that wait for one. */
+	onValidChange?: (valid: boolean) => void;
 	/** Web pages only (no mailto:). */
 	webOnly?: boolean;
 	placeholder?: string | undefined;
 	description?: ReactNode;
+	/** Called when the field loses focus, once typing in it is over. */
+	onBlur?: () => void;
 };
-
-const WEB_PROTOCOLS: ReadonlySet<string> = new Set(["https:", "http:"]);
 
 /** Adds https:// to an address typed without one ("linkedin.com/in/nadia"). */
 export function normalizePortfolioUrl(text: string): string {
@@ -119,23 +131,27 @@ export function normalizePortfolioUrl(text: string): string {
  * An address field: what's typed stays in the field, and only a full, allowed address (or nothing) reaches the data,
  * so a half-typed link never stops the portfolio from saving.
  */
-export function UrlInput({ label, value, onChange, webOnly = false, placeholder, description }: UrlInputProps) {
-	const revision = usePortfolioEditorStore((state) => state.revision);
-	const [text, setText] = useState(value ?? "");
-	const [seenRevision, setSeenRevision] = useState(revision);
+export function UrlInput({
+	label,
+	value,
+	onChange,
+	onValidChange,
+	webOnly = false,
+	placeholder,
+	description,
+	onBlur,
+}: UrlInputProps) {
+	// Undo, redo or a reload put another address in the data: the field shows that one.
+	const [text, setText] = useDraftText(value ?? "");
 	const [touched, setTouched] = useState(false);
-	// Undo, redo or a reload put another address in the data: show that one.
-	if (seenRevision !== revision) {
-		setSeenRevision(revision);
-		setText(value ?? "");
-	}
-	const allowed = (url: string) => isAllowedPortfolioUrl(url, webOnly ? WEB_PROTOCOLS : undefined);
+	const allowed = (url: string) => isAllowedPortfolioUrl(url, webOnly ? PORTFOLIO_WEB_PROTOCOLS : undefined);
 	const normalized = normalizePortfolioUrl(text);
 	const valid = normalized === "" || allowed(normalized);
 
 	const change = (next: string) => {
 		setText(next);
 		const url = normalizePortfolioUrl(next);
+		onValidChange?.(url === "" || allowed(url));
 		if (url === "") onChange(undefined);
 		else if (allowed(url)) onChange(url);
 	};
@@ -145,10 +161,13 @@ export function UrlInput({ label, value, onChange, webOnly = false, placeholder,
 			fullWidth
 			type="url"
 			value={text}
-			maxLength={2048}
+			maxLength={PORTFOLIO_LIMITS.text.url}
 			isInvalid={touched && !valid}
 			onChange={change}
-			onBlur={() => setTouched(true)}
+			onBlur={() => {
+				setTouched(true);
+				onBlur?.();
+			}}
 			className="gap-1.5"
 		>
 			<Label>{label}</Label>

@@ -3,10 +3,11 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect, useBlocker } from "@tanstack/react-router";
 import { useEffect } from "react";
 import z from "zod";
-import { toast } from "@rezumi/ui/components/toast";
 import { PortfolioShell } from "./-components/portfolio-shell";
+import { shouldStayInEditor } from "@/features/portfolio/editor/leave";
 import { usePortfolioEditorStore } from "@/features/portfolio/editor/store";
 import { usePortfolioEditorUi } from "@/features/portfolio/editor/ui";
+import { useConfirm } from "@/hooks/use-confirm";
 import { orpc } from "@/libs/orpc/client";
 import { createNoindexFollowMeta } from "@/libs/seo";
 
@@ -33,24 +34,17 @@ export const Route = createFileRoute("/builder/portfolio/")({
 		if (!result.enabled) throw redirect({ to: "/dashboard", replace: true });
 		if (!result.portfolio) throw redirect({ to: "/dashboard/portfolio", replace: true });
 	},
-	head: () => ({ meta: [{ title: "Portfolio - Rezumi" }, createNoindexFollowMeta()] }),
+	head: () => ({ meta: [{ title: `${t`Portfolio`} - Rezumi` }, createNoindexFollowMeta()] }),
 });
 
 function RouteComponent() {
 	const { data } = useSuspenseQuery(orpc.portfolio.get.queryOptions());
 	const loaded = usePortfolioEditorStore((state) => state.portfolio !== null);
+	const confirm = useConfirm();
 
-	// Leaving waits for what's still being saved; a failed save keeps the editor open.
+	// Leaving saves what's pending first; when that can't be done, the person decides (`shouldStayInEditor`).
 	useBlocker({
-		shouldBlockFn: async ({ next }) => {
-			if (next.pathname.startsWith("/builder/portfolio")) return false;
-			const { status, dirty } = usePortfolioEditorStore.getState();
-			if (status === "saved" && !dirty) return false;
-			if (status === "conflict") return false;
-			const saved = await usePortfolioEditorStore.getState().flush();
-			if (!saved) toast.add({ type: "error", description: t`Couldn't save your changes. Try again before leaving.` });
-			return !saved;
-		},
+		shouldBlockFn: ({ next }) => (next.pathname.startsWith("/builder/portfolio") ? false : shouldStayInEditor(confirm)),
 		enableBeforeUnload: false,
 	});
 
@@ -60,10 +54,11 @@ function RouteComponent() {
 		if (data.portfolio && current?.id !== data.portfolio.id) usePortfolioEditorStore.getState().load(data.portfolio);
 	}, [data.portfolio]);
 
+	// Leaving: edits still waiting for the pause in typing go out on their own, and the next visit starts fresh.
 	useEffect(
 		() => () => {
-			usePortfolioEditorStore.getState().reset();
-			usePortfolioEditorUi.getState().openWork(null);
+			usePortfolioEditorStore.getState().close();
+			usePortfolioEditorUi.getState().reset();
 		},
 		[],
 	);

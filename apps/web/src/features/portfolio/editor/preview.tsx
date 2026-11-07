@@ -6,7 +6,6 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useEffect, useRef, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
-import { webPageImageUrl } from "@rezumi/pdf/web-page";
 import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
 import { renderPortfolioDocument } from "@rezumi/portfolio/document";
 import { PREVIEW_STILL_CSS, replayIntroEffect } from "@rezumi/portfolio/effects";
@@ -14,8 +13,10 @@ import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/mess
 import { buildPortfolioView } from "@rezumi/portfolio/view";
 import { themeEffect } from "@rezumi/schema/portfolio/themes";
 import { Icon } from "@rezumi/ui/components/icon";
+import { ownPictureUrl } from "@rezumi/utils/own-picture";
 import { cn } from "@rezumi/utils/style";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
+import { useOwnOrigins, withOwnPicture } from "./pictures";
 import { usePortfolioData } from "./store";
 import { usePortfolioEditorUi } from "./ui";
 // The page's own text, declared for translators; see the module.
@@ -29,45 +30,58 @@ type PreviewInput = {
 	owner: { name: string; username: string };
 	/** Which resume buttons the page would show; the preview's links lead nowhere. */
 	links: { resume: boolean; resumePdf: boolean };
-	/** A work's detail anchor to show open, while that work is being edited. */
-	openAnchor?: string | null;
+	/** The work being edited: its detail shows open, even while the Work section is hidden. */
+	openWorkId?: string | null;
+	/** Where this app's uploads are served from: the only pictures the page shows (`./pictures.ts`). */
+	origins: readonly string[];
 };
 
 let glyphs: Promise<Readonly<Record<string, string>>> | undefined;
 
+/** The icon set's glyphs, loaded once; a failed load is tried again on the next draw instead of being kept. */
+function loadGlyphs(): Promise<Readonly<Record<string, string>>> {
+	glyphs ??= import("@rezumi/pdf/icon-glyphs").then(({ loadIconGlyphs }) => loadIconGlyphs("standard"));
+	return glyphs.catch(() => {
+		glyphs = undefined;
+		return {};
+	});
+}
+
 /** The page a visitor gets, drawn by the server's renderer from the draft, as an inert document. */
-export async function renderPortfolioPreview({
+async function renderPortfolioPreview({
 	data,
 	resume,
 	owner,
 	links,
-	openAnchor,
+	openWorkId,
+	origins,
 }: PreviewInput): Promise<string> {
 	const origin = window.location.origin;
 	const locale = pageLocaleOf(data, resume);
 	const messages = portfolioMessages(locale);
 	const view = buildPortfolioView({
 		portfolio: { data },
-		resume: resume ? { data: resume } : null,
+		// A resume photo kept on another site shows no photo, as on the page.
+		resume: resume ? { data: withOwnPicture(resume, origins) } : null,
 		owner,
 		// Plans arrive in Phase 07; until then every portfolio shows the credit.
 		entitlements: { hidePortfolioCredit: false },
 		messages: portfolioViewMessages(messages),
 		fileUrl: (key) => `${origin}/${key}`,
 		links: { resume: links.resume ? "#" : null, resumePdf: links.resumePdf ? "#" : null },
+		openWorkId: openWorkId ?? null,
 	});
 	const names = portfolioIconNames(view);
 	let icons: Record<string, string> = {};
 	if (names.length) {
-		glyphs ??= import("@rezumi/pdf/icon-glyphs").then(({ loadIconGlyphs }) => loadIconGlyphs("standard"));
-		const loaded = await glyphs.catch(() => ({}) as Record<string, string>);
+		const loaded = await loadGlyphs();
 		icons = Object.fromEntries(names.flatMap((name) => (loaded[name] ? [[name, loaded[name]]] : [])));
 	}
 	const page = renderPortfolioPage({
 		view,
 		messages,
 		icons,
-		imageUrl: webPageImageUrl(origin),
+		imageUrl: (source) => ownPictureUrl(source, origins),
 		year: new Date().getFullYear(),
 		creditUrl: origin,
 	});
@@ -75,6 +89,7 @@ export async function renderPortfolioPreview({
 	const html = renderPortfolioDocument({ page }).replace("</head>", `${PREVIEW_STILL_CSS}</head>`);
 	// The page opens a detail by its address (`:target`); an inert preview has no address to change, so the detail of
 	// the work being edited is shown by a rule instead. Anchors are `work-<slug>`, letters, digits and dashes only.
+	const openAnchor = view.works.find((work) => work.id === openWorkId)?.anchor;
 	if (!openAnchor || !/^work-[\da-z-]+$/.test(openAnchor)) return html;
 	return html.replace("</head>", `<style>#${openAnchor}{display:block}</style></head>`);
 }
@@ -94,13 +109,21 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	const source = useSourceResume();
 	const [device, setDevice] = useState<Device>("desktop");
 	const [document, setDocument] = useState<string>();
+	// The last draw failed: the preview says so (over the previous one, when there is one) and offers to try again.
+	const [failed, setFailed] = useState(false);
+	const [attempt, setAttempt] = useState(0);
 	const [debouncedData] = useDebounceValue(data, 250);
 	const openWorkId = usePortfolioEditorUi((state) => state.openWorkId);
 	const openWork = debouncedData.works.items.find((work) => work.id === openWorkId && !work.hidden);
+	const openWorkKey = openWork?.id ?? null;
+	// What scroll positions are kept for: the open work's detail, by its address.
 	const openAnchor = openWork ? `work-${openWork.slug}` : null;
+	const origins = useOwnOrigins();
 	const frame = useRef<HTMLIFrameElement>(null);
 	const effectReplay = usePortfolioEditorUi((state) => state.effectReplay);
 	const replayEffect = usePortfolioEditorUi((state) => state.replayEffect);
+	// Replays asked for before this preview was shown (in another tab, or on the phone's panel) have played already.
+	const replayBeforeShown = useRef(effectReplay);
 	// A replay asked for before the redrawn preview has loaded plays once it has.
 	const pendingReplay = useRef(0);
 	const hasEffect = themeEffect(data.theme, data.hero.effect.id) !== "none";
@@ -119,7 +142,8 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 			resume: source.data,
 			owner: { name: owner.name, username: owner.username },
 			links: { resume: showResume, resumePdf: showPdf },
-			openAnchor,
+			openWorkId: openWorkKey,
+			origins,
 		})
 			.then((html) => {
 				if (!current) return;
@@ -132,12 +156,29 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 					anchor: openAnchor,
 				};
 				setDocument(html);
+				setFailed(false);
 			})
-			.catch((error: unknown) => console.error("Portfolio preview failed", error));
+			.catch((error: unknown) => {
+				if (!current) return;
+				console.error("Portfolio preview failed", error);
+				setFailed(true);
+			});
 		return () => {
 			current = false;
 		};
-	}, [debouncedData, source.data, source.isLoading, owner.name, owner.username, showResume, showPdf, openAnchor]);
+	}, [
+		debouncedData,
+		source.data,
+		source.isLoading,
+		owner.name,
+		owner.username,
+		showResume,
+		showPdf,
+		openWorkKey,
+		openAnchor,
+		origins,
+		attempt,
+	]);
 
 	// Plays the intro effect in the preview's document from here: the preview itself runs no script (`02-teknis.md` 5.4).
 	const playEffect = () => {
@@ -149,7 +190,7 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	};
 
 	useEffect(() => {
-		if (!effectReplay) return;
+		if (effectReplay === replayBeforeShown.current) return;
 		pendingReplay.current = effectReplay;
 		// A newly chosen effect plays once the redrawn preview loads; "Replay" on the current one plays at once.
 		const timer = window.setTimeout(() => {
@@ -218,9 +259,32 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 						sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
 						className="size-full border-0"
 					/>
-				) : (
+				) : failed ? null : (
 					<div className="grid size-full place-items-center">
 						<Spinner size="md" color="current" />
+					</div>
+				)}
+				{failed && (
+					<div
+						role="alert"
+						className={cn(
+							"flex items-center gap-3 p-3 text-sm",
+							document
+								? "absolute inset-x-3 top-3 rounded-xl border border-separator bg-overlay shadow-overlay"
+								: "size-full flex-col justify-center text-center",
+						)}
+					>
+						<Icon name="warning-circle" size={18} className="shrink-0 text-danger" />
+						<span className="min-w-0 flex-1">
+							{document ? (
+								<Trans>The preview couldn't be updated, so it shows an earlier version.</Trans>
+							) : (
+								<Trans>The preview couldn't be drawn. Your changes are still saved as you edit.</Trans>
+							)}
+						</span>
+						<Button size="sm" variant="secondary" onPress={() => setAttempt((count) => count + 1)}>
+							<Trans>Try again</Trans>
+						</Button>
 					</div>
 				)}
 			</div>

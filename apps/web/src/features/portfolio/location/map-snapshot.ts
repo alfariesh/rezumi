@@ -1,24 +1,7 @@
 import type { MapPrecision } from "./map-config";
 import { Map as MapLibreMap, setWorkerUrl } from "maplibre-gl";
 import { MAP_PICTURE, MAP_STYLES, MAP_WORKER_URL, mapZoom } from "./map-config";
-
-const TIMEOUT_MS = 20_000;
-
-/** Resolves on the map's next `idle` (everything drawn), or fails after a while (the map service is down). */
-function settled(map: MapLibreMap): Promise<void> {
-	return new Promise((resolve, reject) => {
-		const timer = setTimeout(() => {
-			map.off("idle", done);
-			reject(new Error("The map didn't finish drawing."));
-		}, TIMEOUT_MS);
-		const done = () => {
-			clearTimeout(timer);
-			resolve();
-		};
-		// Missing tiles or glyphs log errors but still reach idle; only the timeout gives up.
-		map.once("idle", done);
-	});
-}
+import { mapEvent, snapshotCancelled } from "./map-events";
 
 function canvasBlob(canvas: HTMLCanvasElement): Promise<Blob> {
 	return new Promise((resolve, reject) =>
@@ -31,9 +14,11 @@ function canvasBlob(canvas: HTMLCanvasElement): Promise<Blob> {
 
 /**
  * Draws the location map off screen, light then dark (`02-teknis.md` section 24), and returns both pictures as PNG.
- * No pin and no attribution: the page draws the pin in the accent colour and writes the attribution itself.
+ * No pin and no attribution: the page draws the pin in the accent colour and writes the attribution itself. Gives up
+ * after a while at each step, or when `signal` aborts, and always removes the map.
  */
-export async function snapshotMap(point: { lat: number; lng: number }, precision: MapPrecision) {
+export async function snapshotMap(point: { lat: number; lng: number }, precision: MapPrecision, signal?: AbortSignal) {
+	if (signal?.aborted) throw snapshotCancelled();
 	const container = document.createElement("div");
 	Object.assign(container.style, {
 		position: "fixed",
@@ -59,11 +44,12 @@ export async function snapshotMap(point: { lat: number; lng: number }, precision
 		canvasContextAttributes: { preserveDrawingBuffer: true },
 	});
 	try {
-		await settled(map);
+		await mapEvent(map, "idle", signal);
 		const light = await canvasBlob(map.getCanvas());
+		const styled = mapEvent(map, "style.load", signal);
 		map.setStyle(MAP_STYLES.dark, { diff: false });
-		await new Promise<void>((resolve) => map.once("style.load", () => resolve()));
-		await settled(map);
+		await styled;
+		await mapEvent(map, "idle", signal);
 		const dark = await canvasBlob(map.getCanvas());
 		return { light, dark };
 	} finally {

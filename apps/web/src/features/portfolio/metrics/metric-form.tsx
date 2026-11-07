@@ -3,7 +3,7 @@ import type { PortfolioMetric } from "@rezumi/schema/portfolio/metric";
 import type { Draft } from "immer";
 import type { ReactNode } from "react";
 import { Segment } from "@heroui-pro/react";
-import { Button, Description, FieldError, Input, Label, Skeleton, Switch, TextField } from "@heroui/react";
+import { Button, Description, FieldError, Input, InputGroup, Label, Skeleton, Switch, TextField } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -11,8 +11,8 @@ import { lazy, Suspense, useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { METRIC_DIRECTIONS, METRIC_DURATION_UNITS } from "@rezumi/schema/portfolio/metric";
 import { Icon } from "@rezumi/ui/components/icon";
+import { useRemovalFocus } from "../blocks/list-focus";
 import { ChoiceSelect, ItemToolbar, moveItem, TextInput } from "../editor/fields";
-import { usePortfolioEditorStore } from "../editor/store";
 import {
 	applyMetricFormat,
 	METRIC_FORMAT_CHOICES,
@@ -22,13 +22,18 @@ import {
 	newMetric,
 	parseMetricNumber,
 	parseMetricSeries,
+	toggleMinus,
 	usesDecimalComma,
 } from "./metrics";
+import { useDraftText } from "./use-draft-text";
 import { IconPicker } from "@/components/input/icon-picker";
 
 const LazyMetricPreview = lazy(() => import("./metric-preview"));
 
 const { text: max } = PORTFOLIO_LIMITS;
+
+/** A metric's progress bar runs over this range, as the metric schema takes it. */
+const PROGRESS = { min: 0, max: 100 } as const;
 
 const formatLabel = (choice: MetricFormatChoice) =>
 	({
@@ -59,9 +64,14 @@ type NumberTextProps = {
 	max?: number;
 	/** The field can't be left empty. */
 	isRequired?: boolean;
+	/** Shows a ± button: the number keypad on iPhones has no minus key. */
+	allowNegative?: boolean;
 };
 
-/** A number typed the way the app's language writes it ("2,8" in Indonesian). It keeps what's typed until it reads. */
+/**
+ * A number typed the way the app's language writes it ("2,8" in Indonesian), in any script's digits. It keeps what's
+ * typed until it reads.
+ */
 function NumberText({
 	label,
 	value,
@@ -71,40 +81,56 @@ function NumberText({
 	min,
 	max: upper,
 	isRequired,
+	allowNegative = false,
 }: NumberTextProps) {
 	const locale = i18n.locale;
-	const revision = usePortfolioEditorStore((state) => state.revision);
-	const [text, setText] = useState(() => metricNumberText(value, locale));
-	const [seen, setSeen] = useState(revision);
+	const [text, setText] = useDraftText(metricNumberText(value, locale));
 	const [touched, setTouched] = useState(false);
-	if (seen !== revision) {
-		setSeen(revision);
-		setText(metricNumberText(value, locale));
-	}
 	const parsed = parseMetricNumber(text, locale);
 	const inRange = parsed !== null && (min === undefined || parsed >= min) && (upper === undefined || parsed <= upper);
 	const valid = text.trim() === "" ? !isRequired : inRange;
+
+	const change = (next: string) => {
+		setText(next);
+		if (next.trim() === "") {
+			if (!isRequired) onChange(undefined);
+			return;
+		}
+		const number = parseMetricNumber(next, locale);
+		if (number !== null && (min === undefined || number >= min) && (upper === undefined || number <= upper))
+			onChange(number);
+	};
+
+	const input = { inputMode: "decimal", dir: "ltr", ...(placeholder ? { placeholder } : {}) } as const;
 
 	return (
 		<TextField
 			fullWidth
 			value={text}
 			isInvalid={touched && !valid}
-			onChange={(next) => {
-				setText(next);
-				if (next.trim() === "") {
-					if (!isRequired) onChange(undefined);
-					return;
-				}
-				const number = parseMetricNumber(next, locale);
-				if (number !== null && (min === undefined || number >= min) && (upper === undefined || number <= upper))
-					onChange(number);
-			}}
+			onChange={change}
 			onBlur={() => setTouched(true)}
 			className="gap-1.5"
 		>
 			<Label>{label}</Label>
-			<Input variant="secondary" inputMode="decimal" dir="ltr" {...(placeholder ? { placeholder } : {})} />
+			{allowNegative ? (
+				<InputGroup variant="secondary" fullWidth>
+					<InputGroup.Input {...input} />
+					<InputGroup.Suffix className="pe-1">
+						<Button
+							size="sm"
+							variant="ghost"
+							isIconOnly
+							aria-label={t`Switch between plus and minus`}
+							onPress={() => change(toggleMinus(text))}
+						>
+							<span aria-hidden="true">±</span>
+						</Button>
+					</InputGroup.Suffix>
+				</InputGroup>
+			) : (
+				<Input variant="secondary" {...input} />
+			)}
 			{description && <Description>{description}</Description>}
 			<FieldError>
 				{min !== undefined && upper !== undefined
@@ -115,23 +141,16 @@ function NumberText({
 	);
 }
 
-/** Sparkline values in a row. They reach the data only once 3 to 12 of them read as numbers. */
-function SeriesText({
-	value,
-	onChange,
-}: {
-	value: number[] | undefined;
-	onChange: (value: number[] | undefined) => void;
-}) {
+type SeriesTextProps = { value: number[] | undefined; onChange: (value: number[] | undefined) => void };
+
+/**
+ * Sparkline values in a row. They reach the data only once 3 to 12 of them read as numbers. The full keyboard: a number
+ * keypad has no separators or minus.
+ */
+function SeriesText({ value, onChange }: SeriesTextProps) {
 	const locale = i18n.locale;
-	const revision = usePortfolioEditorStore((state) => state.revision);
-	const [text, setText] = useState(() => metricSeriesText(value, locale));
-	const [seen, setSeen] = useState(revision);
+	const [text, setText] = useDraftText(metricSeriesText(value, locale));
 	const [touched, setTouched] = useState(false);
-	if (seen !== revision) {
-		setSeen(revision);
-		setText(metricSeriesText(value, locale));
-	}
 	const { min, max: most } = PORTFOLIO_LIMITS.sparklinePoints;
 	const parsed = parseMetricSeries(text, locale);
 	const valid = parsed !== null && (parsed.length === 0 || parsed.length >= min);
@@ -153,7 +172,7 @@ function SeriesText({
 			className="gap-1.5"
 		>
 			<Label>{t`Small chart (optional)`}</Label>
-			<Input variant="secondary" inputMode="decimal" dir="ltr" placeholder={["12", "15", "21", "28"].join(separator)} />
+			<Input variant="secondary" inputMode="text" dir="ltr" placeholder={["12", "15", "21", "28"].join(separator)} />
 			<Description>{t`${min} to ${most} values in order, oldest first. The page draws them as a small line.`}</Description>
 			<FieldError>{t`Enter ${min} to ${most} numbers separated by “${separator.trim()}”.`}</FieldError>
 		</TextField>
@@ -221,6 +240,7 @@ function MetricFields({ metric, edit, locale, compact = false }: MetricFieldsPro
 						key={`${metric.id}-value`}
 						label={t`Value`}
 						isRequired
+						allowNegative
 						value={metric.value.number}
 						placeholder="2,8"
 						onChange={(value) =>
@@ -368,6 +388,7 @@ function MoreMetricFields({ metric, edit }: Pick<MetricFieldsProps, "metric" | "
 				<NumberText
 					key={`${metric.id}-before`}
 					label={t`Value before (optional)`}
+					allowNegative
 					value={metric.before}
 					description={t`Shown as before → after bars, in the same format.`}
 					onChange={(value) =>
@@ -391,9 +412,9 @@ function MoreMetricFields({ metric, edit }: Pick<MetricFieldsProps, "metric" | "
 				key={`${metric.id}-progress`}
 				label={t`Progress (optional)`}
 				value={metric.progress}
-				min={0}
-				max={100}
-				description={t`From 0 to 100, drawn as a bar.`}
+				min={PROGRESS.min}
+				max={PROGRESS.max}
+				description={t`From ${PROGRESS.min} to ${PROGRESS.max}, drawn as a bar.`}
 				onChange={(value) =>
 					edit((draft) => {
 						if (value === undefined) delete draft.progress;
@@ -460,6 +481,7 @@ export function MetricsEditor({
 	addLabel,
 	onRemoveLast,
 }: MetricsEditorProps) {
+	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 	return (
 		<div className="grid gap-3">
 			<p className="text-xs text-muted">
@@ -468,7 +490,7 @@ export function MetricsEditor({
 			{metrics.map((metric, index) => {
 				const name = metric.label.trim() || t`Metric ${index + 1}`;
 				return (
-					<div key={metric.id} className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
+					<div key={metric.id} {...itemProps} className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
 						<MetricFields
 							metric={metric}
 							compact={compact}
@@ -493,6 +515,7 @@ export function MetricsEditor({
 									onRemoveLast?.();
 									return;
 								}
+								removed(index);
 								edit(
 									(list) => {
 										list.splice(index, 1);
@@ -504,20 +527,22 @@ export function MetricsEditor({
 					</div>
 				);
 			})}
-			{metrics.length < maxItems && (
-				<Button
-					variant="secondary"
-					className="w-fit"
-					onPress={() =>
-						edit((list) => {
-							list.push(newMetric());
-						})
-					}
-				>
-					<Icon name="plus" size={18} />
-					{addLabel}
-				</Button>
-			)}
+			<div ref={fallbackRef} className="contents">
+				{metrics.length < maxItems && (
+					<Button
+						variant="secondary"
+						className="w-fit"
+						onPress={() =>
+							edit((list) => {
+								list.push(newMetric());
+							})
+						}
+					>
+						<Icon name="plus" size={18} />
+						{addLabel}
+					</Button>
+				)}
+			</div>
 		</div>
 	);
 }

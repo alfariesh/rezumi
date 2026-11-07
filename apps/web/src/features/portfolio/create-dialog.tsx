@@ -7,10 +7,12 @@ import { useNavigate } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { defaultPortfolioTheme } from "@rezumi/schema/portfolio/themes";
+import { toast } from "@rezumi/ui/components/toast";
 import { TextInput } from "./editor/fields";
+import { portfolioErrorCode, portfolioErrorMessage } from "./errors";
+import { invalidatePortfolioQueries } from "./status";
 import { ThemeGallery } from "./theme-gallery";
 import { authClient } from "@/libs/auth/client";
-import { toastError } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 
 const WITHOUT_RESUME = "none";
@@ -19,7 +21,9 @@ const WITHOUT_RESUME = "none";
  * Make a portfolio (`01-desain.md` section 2): first the resume it comes from (the primary one is picked) or none,
  * with a name and headline; then a theme. Starting with AI joins as a third step in Phase 10. The editor opens next.
  */
-export function CreatePortfolioDialog({ onClose }: { onClose: () => void }) {
+type CreatePortfolioDialogProps = { onClose: () => void };
+
+export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 	const id = useId();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
@@ -36,6 +40,12 @@ export function CreatePortfolioDialog({ onClose }: { onClose: () => void }) {
 	const source = chosen ?? primary?.id ?? WITHOUT_RESUME;
 	const withoutResume = source === WITHOUT_RESUME;
 
+	const openEditor = async () => {
+		await invalidatePortfolioQueries(queryClient);
+		onClose();
+		void navigate({ to: "/builder/portfolio" });
+	};
+
 	const create = async () => {
 		setCreating(true);
 		try {
@@ -44,11 +54,18 @@ export function CreatePortfolioDialog({ onClose }: { onClose: () => void }) {
 					? { sourceResumeId: null, theme, basics: { name: name.trim(), headline: headline.trim() } }
 					: { sourceResumeId: source, theme },
 			);
-			await queryClient.invalidateQueries({ queryKey: orpc.portfolio.get.key() });
-			onClose();
-			void navigate({ to: "/builder/portfolio" });
+			await openEditor();
 		} catch (error) {
-			toastError(error, t`Couldn't create your portfolio. Try again.`, { allowServerMessage: true });
+			// Made meanwhile in another tab: that one opens, as an account has one portfolio.
+			if (portfolioErrorCode(error) === "PORTFOLIO_EXISTS") {
+				toast.add({ description: t`You already have a portfolio, so it opens instead.` });
+				await openEditor();
+				return;
+			}
+			toast.add({
+				type: "error",
+				description: portfolioErrorMessage(error, { fallback: t`Couldn't create your portfolio. Try again.` }),
+			});
 			setCreating(false);
 		}
 	};

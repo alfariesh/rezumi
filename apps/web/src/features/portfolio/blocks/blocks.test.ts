@@ -5,14 +5,19 @@ import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import {
 	addCaseStudy,
+	blockPlace,
 	blockRoom,
 	caseStudyBlocks,
 	insertBlocks,
+	insertBlocksAt,
 	newImagesBlock,
 	newMetricsBlock,
 	newTextBlock,
+	pictureKeys,
 	removeBlock,
+	restoreBlock,
 } from "./blocks";
+import { itemAfterRemoval } from "./list-focus";
 
 const titles = { problem: "Masalah", role: "Peran saya", process: "Proses", result: "Hasil" };
 
@@ -81,5 +86,83 @@ describe("blocks", () => {
 		});
 		expect(withOutline.blocks[1]).toMatchObject({ html: "<h2>Masalah</h2><p></p>" });
 		expect(() => parseWritablePortfolioData({ works: { items: [withOutline] } })).not.toThrow();
+	});
+});
+
+describe("adding a block after a wait", () => {
+	const [a, b, c] = [newTextBlock("<p>a</p>"), newTextBlock("<p>b</p>"), newTextBlock("<p>c</p>")];
+
+	it("reads the place as the block before it, or the end for the last menu", () => {
+		const blocks = work([a, b]);
+		expect(blockPlace(blocks, 0)).toEqual({ after: null });
+		expect(blockPlace(blocks, 1)).toEqual({ after: a.id });
+		expect(blockPlace(blocks, 2, true)).toBe("end");
+	});
+
+	it("lands after the same block even when blocks moved or arrived meanwhile", () => {
+		const late = newMetricsBlock();
+		// Chosen between A and B; meanwhile C was added at the top and B moved first.
+		const after = produce(work([c, b, a]), (draft) => {
+			insertBlocksAt(draft as PortfolioWork, { after: a.id }, [late], 1);
+		});
+		expect(after.blocks.map((block) => block.id)).toEqual([c.id, b.id, a.id, late.id]);
+	});
+
+	it("goes to the top, to the end, or to the old place when the block it followed is gone", () => {
+		const late = newMetricsBlock();
+		const top = produce(work([a, b]), (draft) => {
+			insertBlocksAt(draft as PortfolioWork, { after: null }, [late]);
+		});
+		expect(top.blocks[0]?.id).toBe(late.id);
+		const end = produce(work([a, b]), (draft) => {
+			insertBlocksAt(draft as PortfolioWork, "end", [late]);
+		});
+		expect(end.blocks.at(-1)?.id).toBe(late.id);
+		const gone = produce(work([b, c]), (draft) => {
+			insertBlocksAt(draft as PortfolioWork, { after: a.id }, [late], 1);
+		});
+		expect(gone.blocks.map((block) => block.id)).toEqual([b.id, late.id, c.id]);
+	});
+});
+
+describe("Undo in the block-removed toast", () => {
+	it("puts back that block at its old place, with the card's metric it held", () => {
+		const metrics = newMetricsBlock();
+		const highlight = metrics.items[0]?.id ?? "";
+		const start = { ...work([newTextBlock(), metrics, newTextBlock()]), highlightMetricId: highlight };
+		const removed = produce(start, (draft) => removeBlock(draft as PortfolioWork, metrics.id));
+		// Another edit came after the removal; the block alone comes back.
+		const edited = produce(removed, (draft) => {
+			draft.title = "Renamed";
+		});
+		const restored = produce(edited, (draft) => {
+			expect(restoreBlock(draft as PortfolioWork, metrics, 1, highlight)).toBe(true);
+		});
+		expect(restored.blocks[1]?.id).toBe(metrics.id);
+		expect(restored).toMatchObject({ title: "Renamed", highlightMetricId: highlight });
+	});
+
+	it("does nothing when the block is back already", () => {
+		const block = newTextBlock();
+		const start = work([block]);
+		const after = produce(start, (draft) => {
+			expect(restoreBlock(draft as PortfolioWork, block, 0, undefined)).toBe(false);
+		});
+		expect(after).toBe(start);
+	});
+});
+
+describe("block editors' helpers", () => {
+	it("keys pictures by their file, so a moved picture keeps its fields", () => {
+		const [one, two] = [picture("one"), picture("two")];
+		expect(pictureKeys([one, two])).toEqual([one.key, two.key]);
+		expect(pictureKeys([two, one])).toEqual([two.key, one.key]);
+		expect(pictureKeys([one, one])).toEqual([one.key, `${one.key}#1`]);
+	});
+
+	it("moves focus to the item that took a removed one's place, else the one before", () => {
+		expect(itemAfterRemoval(["a", "c"], 1)).toBe("c");
+		expect(itemAfterRemoval(["a", "b"], 2)).toBe("b");
+		expect(itemAfterRemoval([], 0)).toBeNull();
 	});
 });

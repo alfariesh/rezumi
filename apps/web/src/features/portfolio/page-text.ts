@@ -3,7 +3,8 @@ import { msg } from "@lingui/core/macro";
 
 // The text the server-rendered portfolio page shows (`packages/portfolio/src/messages.ts`). It's declared here so Lingui
 // extracts it into the app's catalogs for translators; `pnpm pdf:translations` copies the translations to the page.
-// Keep both lists in step: the generator fails when one of these is missing from the catalog.
+// Keep both lists in step: `page-text.test.ts` compares them, and the generator fails when one of these is missing
+// from the catalog.
 const service = "";
 const count = "";
 const place = "";
@@ -43,8 +44,11 @@ msg`Close`;
 msg`Picture viewer`;
 msg`Play video`;
 msg`Open PDF`;
-msg`1 page`;
-msg`${count} pages`;
+msg({
+	message: `Pages: ${count}`,
+	comment:
+		"A PDF's page count on a public portfolio page. Keep a label before the number: the page has no plural forms.",
+});
 msg`Open in map`;
 msg`Map around ${place}`;
 msg`Previous`;

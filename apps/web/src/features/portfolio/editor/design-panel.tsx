@@ -1,11 +1,15 @@
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioScheme, PortfolioVariantKey, PortfolioVariantValue } from "@rezumi/schema/portfolio/themes";
+import type { ReactNode } from "react";
 import { Segment } from "@heroui-pro/react";
+import { Radio, RadioGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { useId } from "react";
 import { accentIsCorrected } from "@rezumi/portfolio/editor";
 import { PORTFOLIO_HERO_BACKGROUNDS } from "@rezumi/schema/portfolio/data";
 import {
+	PORTFOLIO_ACCENT_IDS,
 	PORTFOLIO_ACCENTS,
 	PORTFOLIO_FONT_PAIRS,
 	PORTFOLIO_THEME_INFO,
@@ -113,9 +117,22 @@ function ColorsGroup() {
 	const resumeColor = source.data?.metadata.design.colors.primary;
 	const resumeAccent = followsResume ? accent : resumeColor ? rgbaStringToHex(resumeColor).toUpperCase() : undefined;
 
+	const accentLabelId = useId();
+	const accentValue =
+		design.accent.source === "resume" ? RESUME_ACCENT : design.accent.source === "preset" ? design.accent.id : "";
+
 	const setScheme = (next: PortfolioScheme) =>
 		editPortfolio((draft) => {
 			draft.design.scheme = next;
+		});
+
+	const chooseAccent = (value: string) =>
+		editPortfolio((draft) => {
+			if (value === RESUME_ACCENT) draft.design.accent = { source: "resume" };
+			else {
+				const preset = PORTFOLIO_ACCENT_IDS.find((id) => id === value);
+				if (preset) draft.design.accent = { source: "preset", id: preset };
+			}
 		});
 
 	return (
@@ -152,35 +169,31 @@ function ColorsGroup() {
 			</div>
 
 			<div className="grid gap-2">
-				<span id="portfolio-accent-label" className="text-sm font-medium">
+				<span id={accentLabelId} className="text-sm font-medium">
 					<Trans>Accent color</Trans>
 				</span>
-				<div role="radiogroup" aria-labelledby="portfolio-accent-label" className="flex flex-wrap items-center gap-2">
-					<AccentSwatch
-						label={t`Same as my resume`}
-						color={resumeAccent}
-						selected={followsResume}
-						onSelect={() =>
-							editPortfolio((draft) => {
-								draft.design.accent = { source: "resume" };
-							})
-						}
+				<div className="flex flex-wrap items-center gap-2">
+					{/* One Tab stop for the swatches, arrow keys between them; your own color is its own control. */}
+					<RadioGroup
+						aria-labelledby={accentLabelId}
+						orientation="horizontal"
+						// No swatch is chosen while your own color is: null (not "") keeps every swatch reachable by Tab.
+						value={accentValue || null}
+						onChange={chooseAccent}
+						className="flex flex-wrap items-center gap-2"
 					>
-						<Icon name="file-text" size={16} />
-					</AccentSwatch>
-					{Object.entries(PORTFOLIO_ACCENTS).map(([id, preset]) => (
-						<AccentSwatch
-							key={id}
-							label={preset.label}
-							color={preset.color}
-							selected={design.accent.source === "preset" && design.accent.id === id}
-							onSelect={() =>
-								editPortfolio((draft) => {
-									draft.design.accent = { source: "preset", id: id as keyof typeof PORTFOLIO_ACCENTS };
-								})
-							}
-						/>
-					))}
+						<AccentSwatch value={RESUME_ACCENT} label={t`Same as my resume`} color={resumeAccent}>
+							<Icon name="file-text" size={16} />
+						</AccentSwatch>
+						{PORTFOLIO_ACCENT_IDS.map((id) => (
+							<AccentSwatch
+								key={id}
+								value={id}
+								label={PORTFOLIO_ACCENTS[id].label}
+								color={PORTFOLIO_ACCENTS[id].color}
+							/>
+						))}
+					</RadioGroup>
 					<ColorPicker
 						aria-label={t`Your own color`}
 						value={accent}
@@ -210,32 +223,37 @@ function ColorsGroup() {
 	);
 }
 
+/** The accent swatch that follows the resume's color; the others are the curated accents' ids. */
+const RESUME_ACCENT = "resume";
+
 type AccentSwatchProps = {
+	value: string;
 	label: string;
 	color: string | undefined;
-	selected: boolean;
-	onSelect: () => void;
-	children?: React.ReactNode;
+	children?: ReactNode;
 };
 
-function AccentSwatch({ label, color, selected, onSelect, children }: AccentSwatchProps) {
+/** One accent color: a round swatch named by its label (the color itself is only seen). */
+function AccentSwatch({ value, label, color, children }: AccentSwatchProps) {
 	return (
-		<button
-			type="button"
-			role="radio"
-			aria-checked={selected}
-			aria-label={label}
-			title={label}
-			onClick={onSelect}
-			className={cn(
-				"grid size-9 shrink-0 cursor-(--cursor-interactive) place-items-center rounded-full border border-separator text-white outline-none focus-visible:ring-2 focus-visible:ring-focus",
-				selected && "ring-2 ring-accent ring-offset-2 ring-offset-background",
-				!color && "bg-default text-foreground",
-			)}
-			style={color ? { backgroundColor: color } : undefined}
-		>
-			{children}
-		</button>
+		<Radio value={value} aria-label={label}>
+			<Radio.Content
+				className={({ isSelected, isFocusVisible }) =>
+					cn(
+						"grid size-9 shrink-0 cursor-(--cursor-interactive) place-items-center rounded-full border border-separator text-white",
+						isSelected && "ring-2 ring-accent ring-offset-2 ring-offset-background",
+						isFocusVisible && "ring-2 ring-focus ring-offset-2 ring-offset-background",
+						!color && "bg-default text-foreground",
+					)
+				}
+				{...(color ? { style: { backgroundColor: color } } : {})}
+			>
+				{/* The name on hover; screen readers get it from the radio's label. */}
+				<span title={label} className="grid size-full place-items-center">
+					{children}
+				</span>
+			</Radio.Content>
+		</Radio>
 	);
 }
 

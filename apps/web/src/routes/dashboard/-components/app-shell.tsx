@@ -48,8 +48,9 @@ function useNavItems() {
 	const { data: counts } = useQuery(orpc.documents.counts.queryOptions());
 	const { data: applicationStats } = useQuery(orpc.applications.stats.queryOptions({}));
 	const { data: notifications } = useQuery(orpc.career.notifications.queryOptions({ input: {} }));
-	// Shown only to accounts the switch (`PORTFOLIO_MODE`) lets have one; while it's off nothing changes here.
-	const { data: portfolio } = useQuery(orpc.portfolio.get.queryOptions());
+	// Shown only to accounts the switch (`PORTFOLIO_MODE`) lets have one; while it's off nothing changes here. The light
+	// status, not the portfolio itself: the menu reads it on every page.
+	const { data: portfolio } = useQuery(orpc.portfolio.status.queryOptions());
 	// Home counts what's waiting for the user (unread notifications), so nothing shows at zero.
 	const unread = notifications?.filter((notification) => !notification.readAt).length ?? 0;
 

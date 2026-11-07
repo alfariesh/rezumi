@@ -198,7 +198,7 @@ type AddressesSectionProps = { origin: string; username: string; setting: ShareS
 
 /** Whether a published portfolio holds the short link and custom domain (portfolio plan Phase 03). */
 function usePortfolioHoldsShortLink() {
-	const { data } = useQuery(orpc.portfolio.get.queryOptions());
+	const { data } = useQuery(orpc.portfolio.status.queryOptions());
 	return portfolioHoldsShortLink(data);
 }
 
