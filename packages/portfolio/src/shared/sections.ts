@@ -29,14 +29,3 @@ export function groupSections(
 	}
 	return groups;
 }
-
-/** Up to two initials, for avatars without a photo. */
-export function initials(name: string): string {
-	return name
-		.split(/\s+/)
-		.filter(Boolean)
-		.slice(0, 2)
-		.map((word) => [...word][0] ?? "")
-		.join("")
-		.toUpperCase();
-}

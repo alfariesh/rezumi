@@ -1,13 +1,10 @@
-import type { PortfolioViewMessages } from "@rezumi/portfolio/view";
-import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioSectionKey, PortfolioStandardSection } from "@rezumi/schema/portfolio/sections";
-import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { Button, Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useId, useState } from "react";
+import { useEffect, useId, useRef } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -23,8 +20,9 @@ import { AboutForm, addCustomSection, CustomSectionForm, ResumeItemsForm } from 
 import {
 	editorSectionOrder,
 	isResumeSection,
+	isStandardSection,
 	moveSection,
-	resumeCustomSectionTitle,
+	sectionLabel,
 	setSectionHidden,
 	setSectionTitle,
 } from "./sections";
@@ -54,22 +52,7 @@ const SECTION_ICONS: Record<PortfolioStandardSection, IconName> = {
 };
 
 const sectionIcon = (key: PortfolioSectionKey): IconName =>
-	key.startsWith("custom:") ? "note-pencil" : key.startsWith("resume:") ? "file-text" : SECTION_ICONS[key as never];
-
-/** A section's name in the list: its custom title, else the page's default in the page's language. */
-function sectionLabel(
-	key: PortfolioSectionKey,
-	data: PortfolioData,
-	resume: ResumeData | null,
-	messages: PortfolioViewMessages,
-): string {
-	const custom = data.sections.titles[key]?.trim();
-	if (custom) return custom;
-	if (key.startsWith("custom:"))
-		return data.custom.find((section) => `custom:${section.id}` === key)?.title.trim() || t`Untitled section`;
-	if (key.startsWith("resume:")) return resumeCustomSectionTitle(resume, key) || t`Resume section`;
-	return messages.sections[key as PortfolioStandardSection];
-}
+	isStandardSection(key) ? SECTION_ICONS[key] : key.startsWith("custom:") ? "note-pencil" : "file-text";
 
 /**
  * Content: the intro, which is always first, then every section in page order. Drag a section (or use its arrows) to
@@ -97,7 +80,9 @@ function SectionsGroup() {
 	const messages = usePageMessages();
 	const order = editorSectionOrder(data, source.data);
 	const shown = new Set(view.sections.map((section) => section.key));
-	const [open, setOpen] = useState<PortfolioSectionKey | null>(null);
+	// Kept with the editor, so it stays open across tabs and the save status can open the section with a problem.
+	const open = usePortfolioEditorUi((state) => state.openSectionKey);
+	const setOpen = usePortfolioEditorUi((state) => state.openSection);
 
 	const move = (key: PortfolioSectionKey, to: number) =>
 		editPortfolio((draft) => moveSection(draft, order, key, to), { structural: true });
@@ -200,6 +185,16 @@ function SectionRow({
 	const sortable = useSortableItem({ id: sectionKey, list: "sections", index, label: title });
 	const fromResume = isResumeSection(sectionKey);
 	const renamable = !sectionKey.startsWith("custom:");
+	const toggle = useRef<HTMLButtonElement>(null);
+	const revealing = usePortfolioEditorUi((state) => state.revealing === sectionKey);
+
+	// "Show me" from the save status: once open, the section comes into view with its toggle focused.
+	useEffect(() => {
+		if (!revealing || !open) return;
+		toggle.current?.scrollIntoView({ block: "start" });
+		toggle.current?.focus({ preventScroll: true });
+		usePortfolioEditorUi.getState().revealed();
+	}, [revealing, open]);
 
 	const rename = async () => {
 		const value = await prompt(t`Rename section`, {
@@ -224,6 +219,7 @@ function SectionRow({
 					className={cn("h-11 w-7", hidden && "opacity-40")}
 				/>
 				<button
+					ref={toggle}
 					type="button"
 					aria-expanded={open}
 					aria-labelledby={titleId}

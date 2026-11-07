@@ -1,12 +1,12 @@
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { SQL, SQLWrapper } from "drizzle-orm";
-import { and, asc, count, eq, isNotNull, isNull, lte, sql } from "drizzle-orm";
+import { and, asc, count, eq, isNotNull, isNull, sql } from "drizzle-orm";
 import { isbot } from "isbot";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { parsePortfolioData } from "@rezumi/schema/portfolio/data";
-import { PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS, portfolioIndexableFrom } from "@rezumi/schema/portfolio/limits";
+import { PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS } from "@rezumi/schema/portfolio/limits";
 import { isCustomDomainsEnabled } from "../custom-domain/service";
 import { isOwner, ownerIsNotBanned, resolveViewer } from "../resume/access-policy";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
@@ -26,7 +26,41 @@ export function portfolioOwnsProfilePath(userId: SQLWrapper): SQL<boolean> {
 	return sql<boolean>`exists (select 1 from ${schema.portfolio} owned_portfolio inner join ${schema.user} owned_user on owned_user.id = owned_portfolio.user_id where owned_portfolio.user_id = ${userId} and owned_portfolio.is_public and owned_portfolio.suspended_at is null and owned_user.is_anonymous is not true${mode === "admins" ? sql` and owned_user.role = 'admin'` : sql``})`;
 }
 
-export type PublicPortfolioResume = {
+/**
+ * Whether search engines may list a portfolio (`02-teknis.md` section 5.3), as one condition on a query that joins
+ * `portfolio` and its owner (`user`): it shows at `/<username>` (published, not suspended, switched on for its owner),
+ * the owner isn't banned and allows it ("Show in search engines"), and the account is at least a week old (owner
+ * decision #5). The page's robots tag and the sitemap both read this one rule.
+ */
+function portfolioIsIndexable(): SQL<boolean> {
+	return sql<boolean>`(${schema.portfolio.showInSearchEngines} and ${schema.user.createdAt} <= now() - make_interval(days => ${PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS}) and ${portfolioOwnsProfilePath(schema.portfolio.userId)} and ${ownerIsNotBanned()})`;
+}
+
+/**
+ * Whether one of the portfolio's files (a `pictures/portfolio/` or `documents/portfolio/` storage key) may be served
+ * to anyone: saved data uses it (`unused_since` is null), and its owner's portfolio shows at `/<username>` (the rule
+ * above) to an owner who isn't banned. Uploads not saved yet, files the portfolio stopped using, and every file of an
+ * unpublished, suspended or switched-off portfolio stay with their owner. One lookup by the key's unique index.
+ */
+export async function isPublicPortfolioFile(key: string): Promise<boolean> {
+	if (getPortfolioMode() === "off") return false;
+	const [row] = await db
+		.select({ id: schema.portfolioFile.id })
+		.from(schema.portfolioFile)
+		.innerJoin(schema.user, eq(schema.portfolioFile.userId, schema.user.id))
+		.where(
+			and(
+				eq(schema.portfolioFile.key, key),
+				isNull(schema.portfolioFile.unusedSince),
+				portfolioOwnsProfilePath(schema.portfolioFile.userId),
+				ownerIsNotBanned(),
+			),
+		)
+		.limit(1);
+	return row !== undefined;
+}
+
+type PublicPortfolioResume = {
 	data: ResumeData;
 	slug: string;
 	/** The resume's own web page is shared; buttons may link to it. */
@@ -62,12 +96,11 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 			id: schema.portfolio.id,
 			userId: schema.portfolio.userId,
 			sourceResumeId: schema.portfolio.sourceResumeId,
-			showInSearchEngines: schema.portfolio.showInSearchEngines,
 			data: schema.portfolio.data,
 			updatedAt: schema.portfolio.updatedAt,
 			username: schema.user.username,
 			ownerName: schema.user.name,
-			ownerCreatedAt: schema.user.createdAt,
+			indexable: portfolioIsIndexable(),
 		})
 		.from(schema.portfolio)
 		.innerJoin(schema.user, eq(schema.portfolio.userId, schema.user.id))
@@ -120,17 +153,33 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 		ownerName: row.ownerName,
 		data: parsePortfolioData(row.data),
 		updatedAt: row.updatedAt,
-		indexable: row.showInSearchEngines && portfolioIndexableFrom(row.ownerCreatedAt) <= new Date(),
+		indexable: row.indexable === true,
 		customDomain: domain,
-		resume: resume
-			? {
-					data: parseStoredResumeData(resume.data),
-					slug: resume.slug,
-					isPublic: resume.isPublic,
-					hasPassword: resume.password !== null,
-					showDownloadButtons: resume.showDownloadButtons,
-				}
-			: null,
+		resume: resume ? readSourceResume(row.id, resume) : null,
+	};
+}
+
+/**
+ * The source resume as the page reads it. Stored data that no longer passes the resume schema leaves the page
+ * without its resume sections (logged for us to repair) instead of failing the whole page.
+ */
+function readSourceResume(
+	portfolioId: string,
+	resume: { data: unknown; slug: string; isPublic: boolean; password: string | null; showDownloadButtons: boolean },
+): PublicPortfolioResume | null {
+	let data: ResumeData;
+	try {
+		data = parseStoredResumeData(resume.data);
+	} catch (error) {
+		console.error(`[portfolio] Source resume of portfolio ${portfolioId} can't be read; shown without it`, error);
+		return null;
+	}
+	return {
+		data,
+		slug: resume.slug,
+		isPublic: resume.isPublic,
+		hasPassword: resume.password !== null,
+		showDownloadButtons: resume.showDownloadButtons,
 	};
 }
 
@@ -161,16 +210,12 @@ export async function recordPortfolioVisit(input: {
 const SITEMAP_PAGE_SIZE = 50_000;
 
 /**
- * Portfolios listed in search engines: shown at `/<username>` now, allowed to be indexed, and the account is at least
- * a week old (owner decision #5). One with a verified custom domain is left out; its own domain is its address. Needs
- * the `user` join.
+ * Portfolios listed in the sitemap: indexable (`portfolioIsIndexable`), except one with a verified custom domain, whose
+ * own domain is its address. Needs the `user` join.
  */
 const indexablePortfolioWhere = () =>
 	and(
-		eq(schema.portfolio.showInSearchEngines, true),
-		lte(schema.user.createdAt, sql`now() - make_interval(days => ${PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS})`),
-		portfolioOwnsProfilePath(schema.portfolio.userId),
-		ownerIsNotBanned(),
+		portfolioIsIndexable(),
 		isCustomDomainsEnabled()
 			? sql`not exists (select 1 from ${schema.customDomain} verified_domain where verified_domain.user_id = ${schema.portfolio.userId} and verified_domain.verified_at is not null)`
 			: undefined,

@@ -47,6 +47,18 @@ describe("works", () => {
 
 	it("titles works after their files", () => {
 		expect(titleFromFileName("kopi-senja_final.v2.JPG")).toBe("kopi senja final.v2");
+		expect(titleFromFileName("a-very-long-name.jpg", 6)).toBe("a very");
+	});
+
+	it("counts room against the account's limit, never beyond the technical one", () => {
+		const data = produce(empty(), (draft) => {
+			for (let index = 0; index < 3; index++) draft.works.items.push(newWork(draft, `W${index}`));
+		});
+		expect(workRoom(data)).toBe(PORTFOLIO_LIMITS.works - 3);
+		expect(workRoom(data, 5)).toBe(2);
+		expect(workRoom(data, 2)).toBe(0);
+		expect(workRoom(data, 10_000)).toBe(PORTFOLIO_LIMITS.works - 3);
+		expect(worksFromImages(data, [picture("a"), picture("b"), picture("c")], "each", "", 5)).toHaveLength(2);
 	});
 
 	it("makes one work for all pictures, twelve per work at most", () => {

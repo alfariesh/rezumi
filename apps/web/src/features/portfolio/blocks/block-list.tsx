@@ -1,12 +1,14 @@
 import type { SlashItem } from "../editor/rich-text-editor";
-import type { EditorBlockType } from "./blocks";
-import type { PortfolioBlock, PortfolioBlockOf } from "@rezumi/schema/portfolio/blocks";
+import type { BlockPlace } from "./blocks";
+import type { PortfolioBlock, PortfolioBlockOf, PortfolioBlockType } from "@rezumi/schema/portfolio/blocks";
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Draft } from "immer";
 import { Button, Dropdown, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { useRef } from "react";
+import { PORTFOLIO_BLOCK_TYPES } from "@rezumi/schema/portfolio/blocks";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -15,20 +17,27 @@ import { cn } from "@rezumi/utils/style";
 import { moveItem, RichTextField } from "../editor/fields";
 import { editPortfolio, usePortfolioEditorStore } from "../editor/store";
 import { UploadStatus, useFilePicker, useImageUploads } from "../images/image-field";
+import { discardUnplacedImages } from "../images/upload";
+import { pdfLimitText } from "../media/pdf";
 import { MetricsEditor } from "../metrics/metric-form";
 import { dropMissingHighlight } from "../metrics/metrics";
+import { useAddMediaBlock } from "./add-media-block";
 import {
 	addCaseStudy,
+	blockPlace,
 	blockRoom,
-	EDITOR_BLOCK_TYPES,
-	insertBlocks,
+	insertBlocksAt,
 	newImagesBlock,
 	newMetricsBlock,
 	newTextBlock,
 	removeBlock,
+	restoreBlock,
 } from "./blocks";
 import { ImagesBlockEditor } from "./images-block";
-import { LinkBlockEditor, PdfBlockEditor, useAddMediaBlock, VideoBlockEditor } from "./media-blocks";
+import { LinkBlockEditor } from "./link-block";
+import { useRemovalFocus } from "./list-focus";
+import { PdfBlockEditor } from "./pdf-block";
+import { VideoBlockEditor } from "./video-block";
 import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
 
 const { text: max } = PORTFOLIO_LIMITS;
@@ -63,15 +72,30 @@ function editBlock<T extends PortfolioBlock["type"]>(
 	);
 }
 
-const undoToast = (description: string) =>
+/**
+ * Removes a block and offers it back in a toast. Its Undo puts back that block: Undo itself while nothing else changed
+ * since, else the block alone at its old place, so it never takes back a later edit instead.
+ */
+function removeBlockWithUndo(work: PortfolioWork, block: PortfolioBlock, index: number, name: string) {
+	const highlight = work.highlightMetricId;
+	editWork(work.id, (draft) => removeBlock(draft as PortfolioWork, block.id), { structural: true });
+	const removed = usePortfolioEditorStore.getState().portfolio?.data;
 	toast.add({
-		description,
-		actionProps: { children: t`Undo`, onPress: () => usePortfolioEditorStore.getState().undo() },
+		description: t`${name} block removed`,
+		actionProps: {
+			children: t`Undo`,
+			onPress: () => {
+				const store = usePortfolioEditorStore.getState();
+				if (removed && store.portfolio?.data === removed) store.undo();
+				else editWork(work.id, (draft) => restoreBlock(draft as PortfolioWork, block, index, highlight));
+			},
+		},
 	});
+}
 
 type BlockTypeInfo = { icon: IconName; title: string; description: string; keywords: string[] };
 
-function blockTypeInfo(type: PortfolioBlock["type"]): BlockTypeInfo {
+function blockTypeInfo(type: PortfolioBlockType): BlockTypeInfo {
 	switch (type) {
 		case "text":
 			return {
@@ -80,13 +104,15 @@ function blockTypeInfo(type: PortfolioBlock["type"]): BlockTypeInfo {
 				description: t`Paragraphs, headings, lists and links`,
 				keywords: ["text", "teks", "paragraph"],
 			};
-		case "images":
+		case "images": {
+			const most = PORTFOLIO_LIMITS.imagesPerBlock;
 			return {
 				icon: "image",
 				title: t`Pictures`,
-				description: t`1 to 12 pictures with captions`,
+				description: t`1 to ${most} pictures with captions`,
 				keywords: ["image", "picture", "gambar", "foto", "gallery"],
 			};
+		}
 		case "metrics":
 			return {
 				icon: "chart-line-up",
@@ -101,13 +127,15 @@ function blockTypeInfo(type: PortfolioBlock["type"]): BlockTypeInfo {
 				description: t`YouTube or Vimeo, loaded when played`,
 				keywords: ["video", "youtube", "vimeo"],
 			};
-		case "pdf":
+		case "pdf": {
+			const limit = pdfLimitText();
 			return {
 				icon: "file-pdf",
 				title: t`PDF`,
-				description: t`A document up to 10 MB`,
+				description: t`A document up to ${limit}`,
 				keywords: ["pdf", "document", "dokumen"],
 			};
+		}
 		case "link":
 			return {
 				icon: "link-simple-horizontal",
@@ -120,37 +148,41 @@ function blockTypeInfo(type: PortfolioBlock["type"]): BlockTypeInfo {
 
 /**
  * Adds a block at a place in a work: text and metrics at once, pictures after they're chosen and uploaded (a Pictures
- * block always holds one), a video or link once its address is given, a PDF once it's uploaded. Returns the action,
- * whether something is still uploading, and the pickers and progress the actions show.
+ * block always holds one), a video or link once its address is given, a PDF once it's uploaded. A block that arrives
+ * late still lands next to the block it was added after. Returns the action, whether something is still uploading,
+ * and the pickers and progress the actions show.
  */
-function useAddBlock(work: PortfolioWork, index: number) {
+function useAddBlock(work: PortfolioWork, index: number, last = false) {
 	const uploads = useImageUploads();
-	const insert = (block: PortfolioBlock) =>
-		editWork(work.id, (draft) => insertBlocks(draft as PortfolioWork, index, [block]), { structural: true });
-	const media = useAddMediaBlock(work, insert, (workId, blockId, recipe) =>
-		editWork(
-			workId,
-			(draft) => {
-				const block = draft.blocks.find((entry) => entry.id === blockId);
-				if (block) recipe(block);
-			},
-			{ structural: true },
-		),
+	// The place is read when the action starts; the block may only arrive after an upload.
+	const inserter = (place: BlockPlace) => (block: PortfolioBlock) =>
+		editWork(work.id, (draft) => insertBlocksAt(draft as PortfolioWork, place, [block], index));
+	const media = useAddMediaBlock(work.id, (workId, blockId, recipe) =>
+		editWork(workId, (draft) => {
+			const block = draft.blocks.find((entry) => entry.id === blockId);
+			if (block) recipe(block);
+		}),
 	);
+	// Where chosen pictures go, read when the picker opened.
+	const picturePlace = useRef<BlockPlace>("end");
 
-	async function addPictures(files: File[]) {
+	async function addPictures(files: File[], place: BlockPlace) {
 		const images = await uploads.upload(files.slice(0, PORTFOLIO_LIMITS.imagesPerBlock), {
 			alt: () => work.title.trim(),
 		});
-		if (images.length) insert(newImagesBlock(images));
+		if (!images.length) return;
+		inserter(place)(newImagesBlock(images));
+		discardUnplacedImages(images);
 	}
 
-	const picker = useFilePicker((files) => void addPictures(files));
+	const picker = useFilePicker((files) => void addPictures(files, picturePlace.current), { multiple: true });
 
-	const add = (type: EditorBlockType) => {
+	const add = (type: PortfolioBlockType) => {
+		const place = blockPlace(work, index, last);
+		picturePlace.current = place;
 		if (type === "images") picker.open();
-		else if (type === "video" || type === "pdf" || type === "link") media.add(type);
-		else insert(type === "text" ? newTextBlock() : newMetricsBlock());
+		else if (type === "video" || type === "pdf" || type === "link") media.add(type, inserter(place));
+		else inserter(place)(type === "text" ? newTextBlock() : newMetricsBlock());
 	};
 
 	const status = (
@@ -172,7 +204,7 @@ type AddBlockMenuProps = {
 
 /** "+ Add block" between blocks: Text, Pictures, Metrics, Video, PDF, Link. */
 function AddBlockMenu({ work, index, last = false }: AddBlockMenuProps) {
-	const { add, busy, status } = useAddBlock(work, index);
+	const { add, busy, status } = useAddBlock(work, index, last);
 	const full = blockRoom(work) === 0;
 
 	return (
@@ -196,8 +228,8 @@ function AddBlockMenu({ work, index, last = false }: AddBlockMenuProps) {
 					</Button>
 				)}
 				<Dropdown.Popover placement="bottom" className="w-72">
-					<Dropdown.Menu onAction={(key) => add(key as EditorBlockType)}>
-						{EDITOR_BLOCK_TYPES.map((type) => {
+					<Dropdown.Menu onAction={(key) => add(key as PortfolioBlockType)}>
+						{PORTFOLIO_BLOCK_TYPES.map((type) => {
 							const info = blockTypeInfo(type);
 							return (
 								<Dropdown.Item key={type} id={type} textValue={info.title}>
@@ -226,6 +258,7 @@ type BlockListProps = { work: PortfolioWork; locale: string };
 export function BlockList({ work, locale }: BlockListProps) {
 	const blocks = work.blocks;
 	const list = `blocks:${work.id}`;
+	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 
 	const startCaseStudy = () =>
 		editWork(
@@ -272,12 +305,20 @@ export function BlockList({ work, locale }: BlockListProps) {
 					{blocks.map((block, index) => (
 						<div key={block.id} className="grid gap-1">
 							{index > 0 && <AddBlockMenu work={work} index={index} />}
-							<BlockCard work={work} block={block} index={index} list={list} locale={locale} />
+							<BlockCard
+								work={work}
+								block={block}
+								index={index}
+								list={list}
+								locale={locale}
+								itemProps={itemProps}
+								onRemoved={removed}
+							/>
 						</div>
 					))}
 				</div>
 			</SortableProvider>
-			<div className="flex flex-wrap items-center gap-2 pt-1">
+			<div ref={fallbackRef} className="flex flex-wrap items-center gap-2 pt-1">
 				<AddBlockMenu work={work} index={blocks.length} last />
 				{blocks.length > 0 && (
 					<span className="text-xs text-muted">
@@ -289,21 +330,32 @@ export function BlockList({ work, locale }: BlockListProps) {
 	);
 }
 
-type BlockCardProps = { work: PortfolioWork; block: PortfolioBlock; index: number; list: string; locale: string };
+type BlockCardProps = {
+	work: PortfolioWork;
+	block: PortfolioBlock;
+	index: number;
+	list: string;
+	locale: string;
+	/** Marks the card for `useRemovalFocus`. */
+	itemProps: Record<string, string>;
+	/** Called as the card is removed, so focus moves to the next one. */
+	onRemoved: (index: number) => void;
+};
 
-function BlockCard({ work, block, index, list, locale }: BlockCardProps) {
+function BlockCard({ work, block, index, list, locale, itemProps, onRemoved }: BlockCardProps) {
 	const info = blockTypeInfo(block.type);
 	const sortable = useSortableItem({ id: block.id, list, index, label: info.title });
 	const count = work.blocks.length;
 
 	const move = (to: number) => editWork(work.id, (draft) => moveItem(draft.blocks, index, to), { structural: true });
 	const remove = () => {
-		editWork(work.id, (draft) => removeBlock(draft as PortfolioWork, block.id), { structural: true });
-		undoToast(t`${info.title} block removed`);
+		onRemoved(index);
+		removeBlockWithUndo(work, block, index, info.title);
 	};
 
 	return (
 		<div
+			{...itemProps}
 			{...sortable.dropTargetProps}
 			className={cn("relative grid gap-3 rounded-2xl bg-surface-secondary p-3", sortable.isDragging && "opacity-50")}
 		>
@@ -415,8 +467,8 @@ type TextBlockEditorProps = { work: PortfolioWork; block: PortfolioBlockOf<"text
 
 /** Rich text; typing "/" adds a block after this one. */
 function TextBlockEditor({ work, block, index }: TextBlockEditorProps) {
-	const { add, status } = useAddBlock(work, index + 1);
-	const slashItems: SlashItem[] = EDITOR_BLOCK_TYPES.map((type) => {
+	const { add, busy, status } = useAddBlock(work, index + 1);
+	const slashItems: SlashItem[] = PORTFOLIO_BLOCK_TYPES.map((type) => {
 		const info = blockTypeInfo(type);
 		return { ...info, onSelect: () => add(type) };
 	});
@@ -429,7 +481,8 @@ function TextBlockEditor({ work, block, index }: TextBlockEditorProps) {
 				value={block.html}
 				maxLength={max.blockText}
 				placeholder={t`Write here. Type “/” to add a block after this one.`}
-				slashItems={blockRoom(work) > 0 ? slashItems : undefined}
+				// One add at a time: a second one would cancel the upload or link reading still going.
+				slashItems={blockRoom(work) > 0 && !busy ? slashItems : undefined}
 				onChange={(html) =>
 					editBlock(
 						work.id,

@@ -21,7 +21,10 @@ export function readServerImage(
 	const ownPicture =
 		uploadOrigin !== undefined &&
 		url.origin === new URL(uploadOrigin).origin &&
-		/^\/(?:api\/)?uploads\/[A-Za-z0-9_-]+\/pictures\/[A-Za-z0-9_-]+\.(?:png|jpe?g|webp)$/.test(url.pathname) &&
+		// A resume's picture, or a portfolio's (`pictures/portfolio/<file>`).
+		/^\/(?:api\/)?uploads\/[A-Za-z0-9_-]+\/pictures\/(?:portfolio\/)?[A-Za-z0-9_-]+\.(?:png|jpe?g|webp)$/.test(
+			url.pathname,
+		) &&
 		!url.search;
 	if (
 		!/^https?:$/.test(url.protocol) ||

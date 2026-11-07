@@ -169,7 +169,9 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 						}
 					/>
 					<span className="text-xs text-muted">
-						<Trans>Up to 12, such as “UX research” or “Figma”. Press Enter or a comma after each.</Trans>
+						<Trans>
+							Up to {PORTFOLIO_LIMITS.tagsPerWork}, such as “UX research” or “Figma”. Press Enter or a comma after each.
+						</Trans>
 					</span>
 				</div>
 				<ChoiceSelect

@@ -1,15 +1,19 @@
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Draft } from "immer";
-import { describe, expect, it } from "vite-plus/test";
+import { beforeAll, describe, expect, it } from "vite-plus/test";
+import { i18n } from "@lingui/core";
 import { produce } from "immer";
-import { buildPortfolioView, englishPortfolioViewMessages } from "@rezumi/portfolio/view";
+import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
+import { buildPortfolioView } from "@rezumi/portfolio/view";
 import { parsePortfolioData } from "@rezumi/schema/portfolio/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import {
 	editorSectionOrder,
+	isStandardSection,
 	moveSection,
 	resumeSectionItems,
+	sectionLabel,
 	setBasicsText,
 	setItemHidden,
 	setSectionHidden,
@@ -17,6 +21,10 @@ import {
 } from "./sections";
 
 const portfolio = (patch: Partial<PortfolioData> = {}): PortfolioData => ({ ...parsePortfolioData({}), ...patch });
+
+beforeAll(() => {
+	i18n.loadAndActivate({ locale: "en", messages: {} });
+});
 
 function resume(): ResumeData {
 	const data = structuredClone(defaultResumeData);
@@ -46,13 +54,22 @@ function defaultExperience() {
 
 const edit = (data: PortfolioData, recipe: (draft: Draft<PortfolioData>) => void) => produce(data, recipe);
 
+const englishMessages = portfolioViewMessages(portfolioMessages("en-US"));
+
+/** The resume with one custom section of its own (an experience-like list), as `resume:<id>` on the portfolio. */
+function withCustomSection(data: ResumeData, id: string, title: string): ResumeData {
+	const item = { ...defaultExperience(), id: "talk-1", company: "Kopi Senja", position: "Designer" };
+	const section = { id, type: "experience", title, icon: "", columns: 1, hidden: false, items: [item] };
+	return { ...data, customSections: [section as unknown as ResumeData["customSections"][number]] };
+}
+
 const view = (data: PortfolioData, source: ResumeData | null = resume()) =>
 	buildPortfolioView({
 		portfolio: { data },
 		resume: source ? { data: source } : null,
 		owner: { name: "Account name", username: "nadia" },
 		entitlements: { hidePortfolioCredit: false },
-		messages: englishPortfolioViewMessages,
+		messages: englishMessages,
 		fileUrl: (key) => `/${key}`,
 	});
 
@@ -79,6 +96,41 @@ describe("section order", () => {
 		const data = portfolio();
 		const order = editorSectionOrder(data, null);
 		expect(edit(data, (draft) => moveSection(draft, order, "custom:missing", 0))).toBe(data);
+	});
+
+	it("keeps the place of a resume section the list can't show yet (the resume is still loading)", () => {
+		const source = withCustomSection(resume(), "cs-1", "Speaking");
+		const placed = edit(portfolio(), (draft) =>
+			moveSection(draft, editorSectionOrder(draft, source), "resume:cs-1", 1),
+		);
+		expect(editorSectionOrder(placed, source).slice(0, 3)).toEqual(["about", "resume:cs-1", "work"]);
+
+		// Moved while the resume loads: the list has no resume sections, but the saved order keeps this one's place.
+		const moved = edit(placed, (draft) => moveSection(draft, editorSectionOrder(placed, null), "contact", 0));
+		expect(moved.sections.order).toContain("resume:cs-1");
+		expect(editorSectionOrder(moved, source).slice(0, 4)).toEqual(["contact", "about", "resume:cs-1", "work"]);
+	});
+});
+
+describe("section names", () => {
+	it("use a custom title, else the page's default, the portfolio's own title, or the resume's", () => {
+		const source = withCustomSection(resume(), "cs-1", " Speaking ");
+		const data = edit(portfolio(), (draft) => {
+			draft.custom.push({ id: "c-1", title: "How I work", content: "", hidden: false });
+			draft.sections.titles.about = "Who I am";
+		});
+		expect(sectionLabel("about", data, source, englishMessages)).toBe("Who I am");
+		expect(sectionLabel("work", data, source, englishMessages)).toBe(englishMessages.sections.work);
+		expect(sectionLabel("custom:c-1", data, source, englishMessages)).toBe("How I work");
+		expect(sectionLabel("resume:cs-1", data, source, englishMessages)).toBe("Speaking");
+		expect(sectionLabel("custom:gone", data, source, englishMessages)).toBe("Untitled section");
+		expect(sectionLabel("resume:cs-1", data, null, englishMessages)).toBe("Resume section");
+	});
+
+	it("tell the standard sections from the portfolio's and the resume's own", () => {
+		expect(isStandardSection("experience")).toBe(true);
+		expect(isStandardSection("custom:c-1")).toBe(false);
+		expect(isStandardSection("resume:cs-1")).toBe(false);
 	});
 });
 
@@ -114,6 +166,14 @@ describe("hiding", () => {
 		expect(resumeSectionItems(null, "experience")).toEqual([]);
 		expect(resumeSectionItems(resume(), "about")).toEqual([]);
 	});
+
+	it("lists the items of the resume's own sections too", () => {
+		const source = withCustomSection(resume(), "cs-1", "Speaking");
+		expect(resumeSectionItems(source, "resume:cs-1")).toEqual([
+			{ id: "talk-1", label: "Designer · Kopi Senja", hiddenOnResume: false },
+		]);
+		expect(resumeSectionItems(source, "resume:missing")).toEqual([]);
+	});
 });
 
 describe("section titles", () => {
@@ -127,7 +187,7 @@ describe("section titles", () => {
 		const cleared = edit(titled, (draft) => setSectionTitle(draft, "about", "   "));
 		expect(cleared.sections.titles).toEqual({});
 		expect(view(cleared).sections.find((section) => section.key === "about")?.title).toBe(
-			englishPortfolioViewMessages.sections.about,
+			englishMessages.sections.about,
 		);
 	});
 });

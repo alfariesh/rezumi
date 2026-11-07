@@ -2,7 +2,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS, portfolioDataBytes } from "@rezumi/schema/portfolio/limits";
 import { testResume } from "./fixtures.test-helpers";
-import { createInitialPortfolioData } from "./initial";
+import { createInitialPortfolioData, workFromResumeProject } from "./initial";
 
 describe("a new portfolio from a resume", () => {
 	it("starts About from the summary, cleaned", () => {
@@ -27,6 +27,30 @@ describe("a new portfolio from a resume", () => {
 		expect(work?.blocks.map((block) => block.type)).toEqual(["text", "link"]);
 		expect(work?.blocks[0]).toMatchObject({ html: "<p>Redesigned ordering for a coffee chain.</p>" });
 		expect(work?.blocks[1]).toMatchObject({ url: "https://behance.example.test/kopi", title: "behance.example.test" });
+	});
+
+	it("copies nothing the resume hides: its summary or its Projects section", () => {
+		const resume = testResume();
+		resume.summary.hidden = true;
+		resume.sections.projects.hidden = true;
+		const data = createInitialPortfolioData({ resume });
+		expect(data.about.content).toBe("");
+		expect(data.works.items).toEqual([]);
+	});
+
+	it("remembers which resume project a work came from, whatever text its id is", () => {
+		const resume = testResume();
+		const ids = ["proj.1", "Ünïcode id", "x".repeat(PORTFOLIO_LIMITS.text.id + 1)];
+		resume.sections.projects.items = ids.map((id, index) => ({
+			id,
+			hidden: false,
+			name: `Project ${index}`,
+			period: "",
+			website: { url: "", label: "", inlineLink: false },
+			description: "",
+		}));
+		const data = createInitialPortfolioData({ resume });
+		expect(data.works.items.map((work) => work.fromResumeItemId)).toEqual(["proj.1", "Ünïcode id", undefined]);
 	});
 
 	it("follows the resume's accent and fonts and the theme's order", () => {
@@ -71,6 +95,32 @@ describe("a new portfolio from a resume", () => {
 		expect(() => parseWritablePortfolioData(data)).not.toThrow();
 		expect(data.works.items[0]?.title.length).toBeLessThanOrEqual(PORTFOLIO_LIMITS.text.workTitle);
 		expect(data.works.items[0]?.date.length).toBeLessThanOrEqual(PORTFOLIO_LIMITS.text.workDate);
+	});
+
+	it("keeps the text of resume HTML whose markup is too long for the field", () => {
+		const links = (count: number) =>
+			`<p>${Array.from({ length: count }, (_, index) => `<a href="https://example.test/${"a".repeat(1900)}">Link ${index}</a>`).join(" ")}</p>`;
+		const project = {
+			id: "p1",
+			hidden: false,
+			name: "Links",
+			period: "",
+			website: { url: "", label: "", inlineLink: false },
+			description: links(50),
+		};
+		const resume = testResume();
+		resume.summary.content = links(25);
+		resume.sections.projects.items = [project];
+		const data = createInitialPortfolioData({ resume });
+		expect(() => parseWritablePortfolioData(data)).not.toThrow();
+		expect(data.about.content).toMatch(/^<p>Link 0 Link 1 .* Link 24<\/p>$/);
+		expect(data.works.items[0]?.blocks[0]).toMatchObject({
+			type: "text",
+			html: expect.stringMatching(/Link 49<\/p>$/),
+		});
+		// Adding the project later ("Take from resume") makes the same work.
+		const work = workFromResumeProject(project, new Set());
+		expect(() => parseWritablePortfolioData({ works: { items: [work] } })).not.toThrow();
 	});
 
 	it("leaves out the last projects when all of them wouldn't fit the size limit", () => {

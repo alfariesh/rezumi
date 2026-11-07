@@ -59,3 +59,10 @@ Untuk statistik tidak ada yang perlu disiapkan: Cloudflare Analytics Engine suda
 
 - Pemilik portfolio menerima pesan lewat email dan dashboard; statistik 30 hari tampil benar.
 - Keputusan perilaku form di domain sendiri tercatat untuk Phase 09.
+
+### Catatan dari hardening Phase 01–06 (2026-11-07, `02-teknis.md` bagian 32)
+
+- Kunjungan sudah hanya dihitung untuk GET (bukan HEAD, prefetch, prerender, preview) dan dicatat setelah respons (Workers: `configurePortfolioVisitLifetime` → `waitUntil`).
+- Putuskan batas hari statistik: `recordPortfolioVisit` (`packages/api/src/features/portfolio/public.ts`) masih memakai tanggal UTC, jadi kunjungan 00:00–06:59 WIB masuk hari sebelumnya. Putuskan juga deduplikasi per IP (CGNAT, `ip:unknown` bila klien tidak dipercaya).
+- Turnstile ditambahkan ke CSP halaman lewat `portfolioContentSecurityPolicy(script, additions)` (`apps/server/src/static/portfolio-page.ts`), bukan dengan mengedit string CSP.
+- Skrip halaman + satu efek dibatasi 6 KB tanpa spasi (uji di `packages/portfolio`); skrip form, beacon, dan salin-email perlu ruang di anggaran itu atau anggaran baru yang disepakati. Mozaik sudah menghitung form kontak sebagai isi Kontak.

@@ -5,7 +5,7 @@ import z from "zod";
 import { localeSchema } from "@rezumi/utils/locale";
 import { brandIconSchema, createBlockSchema, PORTFOLIO_BLOCK_TYPES } from "./blocks";
 import { createImageSchema } from "./files";
-import { createSchemaKit, itemIdSchema } from "./kit";
+import { createSchemaKit, itemIdSchema, resumeItemIdSchema } from "./kit";
 import { PORTFOLIO_LIMITS } from "./limits";
 import { portfolioUrlSchema, webUrlSchema } from "./links";
 import { createMetricSchema, portfolioIconSchema } from "./metric";
@@ -108,7 +108,7 @@ function createPortfolioSchemas(kit: SchemaKit) {
 			blocks: kit.list(block, PORTFOLIO_LIMITS.blocksPerWork, { id: (item) => item.id }),
 			featured: kit.field(z.boolean(), false),
 			hidden: kit.field(z.boolean(), false),
-			fromResumeItemId: kit.optional(itemIdSchema).describe("The resume project this work was copied from."),
+			fromResumeItemId: kit.optional(resumeItemIdSchema).describe("The resume project this work was copied from."),
 		}),
 		(value, issue) => {
 			if (value.highlightMetricId && !workMetricIds(value).has(value.highlightMetricId))
@@ -196,7 +196,13 @@ function createPortfolioSchemas(kit: SchemaKit) {
 							ctx.addIssue({ code: "custom", path: [key], message: "This isn't a portfolio section." });
 				})) as unknown as z.ZodType<Partial<Record<PortfolioSectionKey, z.output<T>>>>;
 
-	const sectionKeyList = kit.list(portfolioSectionKeySchema, 100, { id: (key) => key });
+	const sectionKeyList = kit.list(portfolioSectionKeySchema, PORTFOLIO_LIMITS.sectionKeys, { id: (key) => key });
+	// Reading stored data, only entries that aren't text are dropped, one at a time: any text might name a hidden item,
+	// so keeping it can never show something the person hid.
+	const hiddenItemList = kit.list(
+		kit.lenient ? z.string() : resumeItemIdSchema,
+		PORTFOLIO_LIMITS.hiddenItemsPerSection,
+	);
 
 	const data = z.object({
 		version: kit.field(z.literal(1), 1),
@@ -259,7 +265,9 @@ function createPortfolioSchemas(kit: SchemaKit) {
 						target: kit.field(z.enum(["name", "headline"]), "name"),
 						phrases: kit
 							.list(kit.text(max.phrase), PORTFOLIO_LIMITS.typewriterPhrases)
-							.describe("Phrases the typewriter effect cycles through; the headline comes first."),
+							.describe(
+								"Up to two roles the typewriter effect types after the headline, which it types first and stops on.",
+							),
 					}),
 					{ target: "name", phrases: [] },
 				),
@@ -301,8 +309,8 @@ function createPortfolioSchemas(kit: SchemaKit) {
 				hidden: sectionKeyList.describe("Sections not shown."),
 				titles: kit.field(sectionRecord(kit.text(max.sectionTitle)), {}).describe("Custom section titles."),
 				hiddenItems: kit
-					.field(sectionRecord(z.array(itemIdSchema).max(PORTFOLIO_LIMITS.hiddenItemsPerSection)), {})
-					.describe("Resume items hidden on the portfolio only, by section."),
+					.field(sectionRecord(hiddenItemList), {})
+					.describe("Resume items hidden on the portfolio only, by section, with their ids as the resume has them."),
 			}),
 			{ order: [], hidden: [], titles: {}, hiddenItems: {} },
 		),
@@ -323,7 +331,7 @@ function createPortfolioSchemas(kit: SchemaKit) {
 				map: kit.optional(z.object({ light: image, dark: image })).describe("Map pictures the editor made."),
 				workModes: kit.list(z.enum(PORTFOLIO_WORK_MODES), PORTFOLIO_WORK_MODES.length, { id: (mode) => mode }),
 				relocate: kit.field(z.boolean(), false),
-				timezone: kit.optional(z.string().max(64).refine(isTimeZone, "Use an IANA time zone.")),
+				timezone: kit.optional(z.string().max(max.timezone).refine(isTimeZone, "Use an IANA time zone.")),
 				showLocalTime: kit.field(z.boolean(), false),
 			}),
 			{ label: "", showMap: false, workModes: [], relocate: false, showLocalTime: false },

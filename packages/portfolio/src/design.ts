@@ -18,12 +18,39 @@ const TREND = {
 /** Small text needs 4.5:1 (WCAG AA); the accent as text, trend chips and links all reach it. */
 const TEXT_CONTRAST = 4.5;
 
+/** The accent's share of `--pf-accent-soft`, the tint under work metrics, avatars, Mozaik's soft tiles and the soft intro. */
+export const ACCENT_SOFT_AMOUNT = 0.11;
+
+/** A trend colour's share of its chip's background (`.pf-trend`), laid over the page or a card. */
+export const TREND_TINT_AMOUNT = 0.13;
+
+/**
+ * A trend colour as small text on its own chip: readable on the page, on cards, and on the chip's tint of itself over
+ * either. Darkening the colour (or lightening it, in dark mode) darkens its tint a little too, so it settles in a few
+ * rounds.
+ */
+function readableOnOwnTint(colour: string, neutrals: ThemeNeutrals): string {
+	let result = readableOnNeutrals(colour, neutrals, TEXT_CONTRAST);
+	for (let round = 0; round < 10; round++) {
+		const next = [neutrals.bg, neutrals.surface].reduce(
+			(value, base) => readableAccent(value, mixColors(value, base, TREND_TINT_AMOUNT), TEXT_CONTRAST),
+			result,
+		);
+		if (next === result) break;
+		result = next;
+	}
+	return result;
+}
+
 type SchemeTokens = Record<`--pf-${string}`, string>;
 
 /** Every colour token of one mode, accent ones corrected for contrast against that mode's background. */
 function schemeTokens(accent: string, neutrals: ThemeNeutrals, mode: "light" | "dark"): SchemeTokens {
 	// Readable on the page and on cards: accent text sits on both (links in a card, Mozaik's tiles, Prima's cards).
 	const accentText = readableOnNeutrals(accent, neutrals, TEXT_CONTRAST);
+	// Mixed here rather than with color-mix(): a token built from var() on :root would keep the other mode's value
+	// wherever a section switches mode (`02-teknis.md` section 25).
+	const accentSoft = mixColors(accent, neutrals.bg, ACCENT_SOFT_AMOUNT);
 	return {
 		"--pf-bg": neutrals.bg,
 		"--pf-surface": neutrals.surface,
@@ -36,11 +63,11 @@ function schemeTokens(accent: string, neutrals: ThemeNeutrals, mode: "light" | "
 		// A primary button's edge: the accent itself, unless it nearly matches the page (a near-black accent in dark
 		// mode), where the edge moves to a 3:1 shade so the button keeps its shape (WCAG 1.4.11).
 		"--pf-accent-edge": contrastRatio(accent, neutrals.bg) >= 3 ? accent : readableAccent(accent, neutrals.bg, 3),
-		// Mixed here rather than with color-mix(): a token built from var() on :root would keep the other mode's value
-		// wherever a section switches mode (`02-teknis.md` section 25).
-		"--pf-accent-soft": mixColors(accent, neutrals.bg, 0.11),
-		"--pf-positive": readableOnNeutrals(TREND[mode].positive, neutrals, TEXT_CONTRAST),
-		"--pf-negative": readableOnNeutrals(TREND[mode].negative, neutrals, TEXT_CONTRAST),
+		"--pf-accent-soft": accentSoft,
+		// Accent text on the soft tint (a work card's metric, Mozaik's "More on" tile), still readable on page and cards.
+		"--pf-accent-text-soft": readableAccent(accentText, accentSoft, TEXT_CONTRAST),
+		"--pf-positive": readableOnOwnTint(TREND[mode].positive, neutrals),
+		"--pf-negative": readableOnOwnTint(TREND[mode].negative, neutrals),
 		"--pf-chart": accentText,
 	};
 }

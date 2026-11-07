@@ -1,10 +1,6 @@
 /** Every Kanvas rule is scoped under the theme's root. */
 const K = '.pf[data-theme="kanvas"]';
 
-/** Hidden from sight, kept for screen readers (the work heading when the grid follows the intro). */
-const SR_ONLY =
-	"position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0";
-
 /**
  * Kanvas: dark by default, 1400 px wide, 4 px corners; pictures are the content and the text around them stays small
  * and calm. Values from `mockups/kanvas.html`; the variants the theme offers (`PORTFOLIO_THEME_INFO.kanvas.variants`)
@@ -51,13 +47,9 @@ ${K} .kv-stats.pf-metrics{--pf-metric-value:clamp(1.75rem,1.3rem + 1.6vw,2.5rem)
 ${K} .kv-stats .pf-metric{gap:6px}
 ${K} .kv-stats .pf-metric__label{font-size:var(--pf-text-sm)}
 @media (max-width:560px){${K} .kv-stats.pf-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}${K} .kv-stats .pf-metric__label{font-size:var(--pf-text-xs)}}
-${K} .kv-hero[data-bg]:not([data-bg="plain"]){margin-block:clamp(8px,2vw,16px);padding:clamp(24px,5vw,56px) clamp(20px,4vw,48px);border-radius:var(--pf-radius)}
-${K} .kv-hero[data-bg="soft-gradient"]{background:radial-gradient(120% 90% at 0% 0%,var(--pf-accent-soft),transparent 70%),radial-gradient(90% 80% at 100% 100%,color-mix(in oklab,var(--pf-accent-soft) 70%,transparent),transparent 70%),var(--pf-bg)}
-${K} .kv-hero[data-bg="pattern"]{background:radial-gradient(color-mix(in oklab,var(--pf-accent) 22%,transparent) 1.2px,transparent 1.4px) 0 0/18px 18px,var(--pf-surface)}
-${K} .kv-hero[data-bg="image"]{background:linear-gradient(rgb(8 10 14/.62),rgb(8 10 14/.7)),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-text:#fff;--pf-muted:rgb(255 255 255/.82);--pf-border:rgb(255 255 255/.28);--pf-surface:rgb(255 255 255/.14);--pf-accent-text:var(--pf-accent-text-dark);color:var(--pf-text)}
+${K} .kv-hero[data-bg]:not([data-bg="plain"]){margin-block:clamp(8px,2vw,16px);padding:clamp(24px,5vw,56px) clamp(20px,4vw,48px);border-radius:var(--pf-radius);background:var(--pf-hero-bg)}
 
 ${K} .kv-work{display:grid;gap:24px;min-width:0}
-${K} .kv-hero+.kv-work .kv-label{${SR_ONLY}}
 ${K} .kv-sec+.kv-work{padding-block:clamp(32px,4vw,56px) 0;border-top:1px solid var(--pf-border)}
 ${K} .kv-work+.kv-sec{margin-top:clamp(56px,8vw,112px)}
 ${K} .kv-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:28px 12px}
@@ -97,7 +89,7 @@ ${K} .kv-tile[data-noimg]>a{display:grid;align-content:end;min-height:0;padding:
 ${K} .kv-tile[data-noimg] .kv-cap{position:static;opacity:1;transform:none;padding:clamp(18px,2vw,28px);background:none;color:var(--pf-text)}
 ${K} .kv-tile[data-noimg] .kv-cap__meta{color:var(--pf-muted);opacity:1}
 ${K} .kv-tile[data-noimg] .kv-cap .pf-work-metric{background:var(--pf-accent-soft);color:var(--pf-text);backdrop-filter:none}
-${K} .kv-tile[data-noimg] .kv-cap .pf-work-metric b{color:var(--pf-accent-text)}
+${K} .kv-tile[data-noimg] .kv-cap .pf-work-metric b{color:var(--pf-accent-text-soft)}
 ${K} .kv-tile[data-noimg]>a:is(:hover,:focus-visible) .kv-cap__title{text-decoration:underline}
 }
 @media (hover:hover) and (min-width:1024px){
@@ -144,7 +136,7 @@ ${K} .kv-custom{display:grid;gap:20px;justify-items:start;min-width:0}
 ${K} .kv-custom__image{border-radius:var(--pf-radius)}
 ${K} .kv-contact{display:grid;gap:22px;align-items:start;min-width:0}
 ${K} .kv-cta{font:var(--kv-display) clamp(1.75rem,1.2rem + 2.4vw,3.25rem)/1 var(--pf-font-heading);text-transform:var(--pf-name-transform);letter-spacing:-.015em;max-width:18ch}
-@media (min-width:901px){${K} .kv-contact:has(>.pf-loc){grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);grid-template-rows:repeat(3,auto) 1fr;column-gap:32px}${K} .kv-contact>:not(.pf-loc){grid-column:1}${K} .kv-contact>.pf-loc{grid-column:2;grid-row:1/-1}}
+@media (min-width:901px){${K} .kv-contact:has(>.pf-loc){grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);grid-template-rows:repeat(6,auto) 1fr;gap:0 32px}${K} .kv-contact:has(>.pf-loc)>:not(.pf-loc)+:not(.pf-loc){margin-top:22px}${K} .kv-contact>:not(.pf-loc){grid-column:1}${K} .kv-contact>.pf-loc{grid-column:2;grid-row:1/-1}}
 
 ${K} .pf-detail{padding:0 env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px);background:var(--pf-bg)}
 ${K} .pf-detail__panel{max-width:none;min-height:100%;border-radius:0;background:var(--pf-bg);--pf-detail-pad:clamp(16px,4vw,48px)}
@@ -152,7 +144,6 @@ ${K} .pf-detail__panel>*{width:100%;max-width:1200px;justify-self:center}
 ${K} .pf-detail__panel>.pf-detail__bar{width:auto;max-width:none;justify-self:stretch;border-radius:0;padding-top:max(12px,env(safe-area-inset-top,0px));padding-inline:calc(var(--pf-detail-pad) + max(0px,(100% - 1200px) / 2))}
 ${K} .pf-detail__title{font:var(--kv-display) clamp(2.25rem,1.2rem + 4vw,4.5rem)/.92 var(--pf-font-heading);text-transform:var(--pf-name-transform);letter-spacing:var(--kv-track)}
 ${K} .pf-detail__hero{border-radius:var(--pf-radius)}
-${K} .pf-video .pf-cover{display:block}
 ${K} .pf-blocks>.pf-prose{font-size:var(--pf-text-lg)}
 ${K} .pf-gallery:not([data-layout="carousel"]){grid-template-columns:minmax(0,1fr)}
 ${K} .pf-gallery[data-layout="carousel"] figure{flex-basis:min(85%,720px)}

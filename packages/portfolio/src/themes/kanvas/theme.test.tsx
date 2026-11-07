@@ -2,22 +2,17 @@ import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
 import type { PortfolioVariantKey } from "@rezumi/schema/portfolio/themes";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
-import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
-import { createSampleResumeData } from "@rezumi/schema/resume/sample";
-import { testResume } from "../../fixtures.test-helpers";
-import { portfolioMessages, portfolioViewMessages } from "../../messages";
-import { renderPortfolioPage } from "../../page";
-import { buildPortfolioView } from "../../view";
+import {
+	count,
+	expectSoundPage,
+	fullTestResume,
+	testImage as image,
+	renderTestPage,
+	testResume,
+} from "../../fixtures.test-helpers";
+import { headingId } from "../../shared/primitives";
 import { KANVAS_CSS } from "./css";
-
-const image = (name: string, width = 1600, height = 1200) => ({
-	key: `uploads/user-1/pictures/portfolio/${name}.webp`,
-	thumbKey: `uploads/user-1/pictures/portfolio/${name}-small.webp`,
-	width,
-	height,
-	alt: `${name} picture`,
-});
 
 const work = (index: number, cover = true) => ({
 	id: `w${index}`,
@@ -169,39 +164,11 @@ const fullData: PortfolioDataInput = {
 };
 
 /** A resume with every section filled (awards, languages, volunteering, interests, its own sections…). */
-function fullResume(): ResumeData {
-	const resume = createSampleResumeData();
-	const base = testResume();
-	resume.basics = base.basics;
-	resume.picture.url = base.picture.url;
-	resume.metadata.page.locale = "id-ID";
-	return resume;
-}
+const fullResume = fullTestResume;
 
 function render(data: PortfolioDataInput, resume: ResumeData | null = fullResume()) {
-	const parsed = parseWritablePortfolioData(data);
-	const messages = portfolioMessages(parsed.locale ?? resume?.metadata.page.locale ?? "en-US");
-	const view = buildPortfolioView({
-		portfolio: { data: parsed },
-		resume: resume ? { data: resume } : null,
-		owner: { name: "Account Name", username: "bayu" },
-		entitlements: { hidePortfolioCredit: false },
-		messages: portfolioViewMessages(messages),
-		fileUrl: (key) => `https://rezumi.example/${key}`,
-		links: { resume: "https://rezumi.example/bayu/cv", resumePdf: null },
-	});
-	const page = renderPortfolioPage({
-		view,
-		messages,
-		year: 2026,
-		creditUrl: "https://rezumi.example",
-		imageUrl: (src) => (src.startsWith("/") ? `https://rezumi.example${src}` : src),
-		icons: {},
-	});
-	return { view, page, html: page.html };
+	return renderTestPage(data, { resume, username: "bayu" });
 }
-
-const count = (html: string, pattern: RegExp) => html.match(pattern)?.length ?? 0;
 
 /** The text of every `h2` with an id, keyed by id. */
 function headings(html: string): Map<string, string> {
@@ -224,19 +191,7 @@ function splitSelectors(list: string): string[] {
 	return parts;
 }
 
-function expectSound(html: string) {
-	expect(html).toMatch(/^<div class="pf" data-theme="kanvas"/);
-	expect(count(html, /<h1[\s>]/g)).toBe(1);
-	expect(html).not.toMatch(/undefined|NaN|\[object Object\]/);
-	// Every picture says what it shows, or is marked as decoration.
-	expect(count(html, /<img(?![^>]*\balt=)[^>]*>/g)).toBe(0);
-	// Every section is labelled by a heading that has text.
-	for (const match of html.matchAll(/<section[^>]* aria-labelledby="([^"]+)"/g)) {
-		const id = match[1] as string;
-		expect(headings(html).get(id) || html.includes(`id="${id}"`), id).toBeTruthy();
-	}
-	for (const [id, text] of headings(html)) expect(text, id).not.toBe("");
-}
+const expectSound = (html: string) => expectSoundPage(html, "kanvas");
 
 describe("Kanvas", () => {
 	const { view, page, html } = render(fullData);
@@ -246,7 +201,7 @@ describe("Kanvas", () => {
 		expect(view.theme).toBe("kanvas");
 		for (const section of view.sections) {
 			expect(html, section.anchor).toContain(`id="${section.anchor}"`);
-			expect(headings(html).get(`${section.anchor}-title`), section.anchor).toBe(section.title);
+			expect(headings(html).get(headingId(section.anchor)), section.anchor).toBe(section.title);
 		}
 		for (const kind of ["awards", "languages", "volunteer", "interests", "profiles", "education", "skills"])
 			expect(
@@ -260,7 +215,8 @@ describe("Kanvas", () => {
 
 	it("puts the work grid right after the intro, its heading kept for screen readers", () => {
 		expect(view.sections[0]?.kind).toBe("work");
-		expect(html).toMatch(/<\/section><section class="pf-section kv-work" id="work" aria-labelledby="work-title">/);
+		expect(html).toMatch(/<\/section><section class="pf-section kv-work" id="work" aria-labelledby="work--title">/);
+		expect(html).toContain('<h2 class="pf-section__title kv-label sr-only" id="work--title">');
 		expect(html).toContain('<ul class="kv-grid" data-variant="featured-grid">');
 		expect(count(html, /class="kv-tile"/g)).toBe(4);
 		// The first, biggest picture loads at once; the rest wait.
@@ -307,7 +263,8 @@ describe("Kanvas", () => {
 		const group = /<div class="kv-sec kv-group"><p class="kv-label" aria-hidden="true">([^<]+)<\/p>/.exec(html);
 		expect(group?.[1]).toContain(" · ");
 		const grouped = view.sections.filter((section) => ["awards", "languages", "certifications"].includes(section.kind));
-		for (const section of grouped) expect(html).toContain(`<h2 class="pf-extra__title" id="${section.anchor}-title">`);
+		for (const section of grouped)
+			expect(html).toContain(`<h2 class="pf-extra__title" id="${headingId(section.anchor)}">`);
 	});
 
 	it("draws contact with its call to action, buttons and location card", () => {
@@ -359,7 +316,7 @@ describe("Kanvas", () => {
 			sections: { order: ["about", "work"], hidden: [], titles: {}, hiddenItems: {} },
 		});
 		expect(later).toMatch(/<section class="pf-section kv-sec kv-sec--about"[\s\S]*<section class="pf-section kv-work"/);
-		expect(later).toContain('<h2 class="pf-section__title kv-label" id="work-title">');
+		expect(later).toContain('<h2 class="pf-section__title kv-label" id="work--title">');
 		// The first tile is below other content now: it loads lazily like the rest.
 		expect(later).toContain('kv-tile__img"><img');
 		expect(later).not.toMatch(/kv-tile__img"><img [^>]*loading="eager"/);

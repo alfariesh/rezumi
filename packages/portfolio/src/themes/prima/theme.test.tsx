@@ -1,20 +1,9 @@
 import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
-import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
-import { testResume } from "../../fixtures.test-helpers";
-import { portfolioMessages, portfolioViewMessages } from "../../messages";
-import { renderPortfolioPage } from "../../page";
-import { buildPortfolioView } from "../../view";
-
-const image = (name: string, width = 1600, height = 1200) => ({
-	key: `uploads/user-1/pictures/portfolio/${name}.webp`,
-	thumbKey: `uploads/user-1/pictures/portfolio/${name}-small.webp`,
-	width,
-	height,
-	alt: `${name} picture`,
-});
+import { count, expectSoundPage, testImage as image, renderTestPage, testResume } from "../../fixtures.test-helpers";
+import { headingId } from "../../shared/primitives";
 
 /** Every section and block type Prima draws, with highlights for the KPI strip. */
 const fullData: PortfolioDataInput = {
@@ -207,29 +196,11 @@ function primaResume(): ResumeData {
 }
 
 function render(data: PortfolioDataInput, resume: ResumeData | null = primaResume()) {
-	const parsed = parseWritablePortfolioData({ theme: "prima", ...data });
-	const messages = portfolioMessages(parsed.locale ?? resume?.metadata.page.locale ?? "en-US");
-	const view = buildPortfolioView({
-		portfolio: { data: parsed },
-		resume: resume ? { data: resume } : null,
-		owner: { name: "Account Name", username: "nadia" },
-		entitlements: { hidePortfolioCredit: false },
-		messages: portfolioViewMessages(messages),
-		fileUrl: (key) => `https://rezumi.example/${key}`,
-		links: { resume: "https://rezumi.example/nadia/cv", resumePdf: null },
-	});
-	const page = renderPortfolioPage({
-		view,
-		messages,
-		year: 2026,
-		creditUrl: "https://rezumi.example",
-		imageUrl: (src) => (src.startsWith("/") ? `https://rezumi.example${src}` : src),
-		icons: {},
-	});
-	return { view, page, html: page.html, messages };
+	const rendered = renderTestPage({ theme: "prima", ...data }, { resume });
+	expectSoundPage(rendered.html, "prima");
+	return rendered;
 }
 
-const count = (html: string, pattern: RegExp) => html.match(pattern)?.length ?? 0;
 const SCHEMES = ["light", "dark"] as const;
 
 describe("Prima theme", () => {
@@ -241,8 +212,8 @@ describe("Prima theme", () => {
 			expect(html).toContain('<main class="pf-wrap pr-main" id="main" tabindex="-1">');
 			for (const section of view.sections) {
 				expect(html).toContain(`id="${section.anchor}"`);
-				expect(html).toContain(`aria-labelledby="${section.anchor}-title"`);
-				expect(html).toContain(`id="${section.anchor}-title"`);
+				expect(html).toContain(`aria-labelledby="${headingId(section.anchor)}"`);
+				expect(html).toContain(`id="${headingId(section.anchor)}"`);
 			}
 			for (const anchor of [
 				"about",
@@ -299,10 +270,10 @@ describe("Prima theme", () => {
 
 	it("titles the Work section Case studies unless the person renamed it", () => {
 		const { html, messages } = render(fullData);
-		expect(html).toContain(`<h2 class="pf-section__title" id="work-title">${messages.caseStudies}</h2>`);
+		expect(html).toContain(`<h2 class="pf-section__title" id="work--title">${messages.caseStudies}</h2>`);
 		expect(html).toContain(`<a href="#work">${messages.caseStudies}</a>`);
 		const { html: renamed } = render({ ...fullData, sections: { titles: { work: "Selected projects" } } });
-		expect(renamed).toContain('<h2 class="pf-section__title" id="work-title">Selected projects</h2>');
+		expect(renamed).toContain('<h2 class="pf-section__title" id="work--title">Selected projects</h2>');
 	});
 
 	it("draws work cards with covers, alt text and a detail with every block type", () => {
@@ -312,7 +283,7 @@ describe("Prima theme", () => {
 		expect(html).toMatch(/<span class="pr-card__meta">2024 · Lead designer<\/span>/);
 		expect(html).toMatch(/<span class="pf-work-metric"><b>2,8%<\/b>/);
 		expect(count(html, /class="pf-detail"/g)).toBe(view.works.length);
-		// Text, images, metrics, video, PDF and link blocks inside the detail.
+		// Text (its heading under the work's), images, metrics, video, PDF and link blocks inside the detail.
 		expect(html).toContain("<h3>Problem</h3>");
 		expect(html).toContain('class="pf-gallery" data-layout="grid"');
 		expect(html).toContain('class="pf-metric__chart"');
@@ -328,9 +299,9 @@ describe("Prima theme", () => {
 		const { html } = render(fullData);
 		// Prima's order puts certifications and awards next to each other.
 		expect(html).toMatch(
-			/<div class="pr-row pr-facts"><div class="pf-extras"><section class="pf-section pf-extra" id="certifications"[^>]*><h2 class="pf-extra__title" id="certifications-title">[^<]+<\/h2>.*?<section class="pf-section pf-extra" id="awards"/,
+			/<div class="pr-row pr-facts"><div class="pf-extras"><section class="pf-section pf-extra" id="certifications"[^>]*><h2 class="pf-extra__title" id="certifications--title">[^<]+<\/h2>.*?<section class="pf-section pf-extra" id="awards"/,
 		);
-		expect(html).toMatch(/<section class="pf-section pr-row" id="languages" aria-labelledby="languages-title">/);
+		expect(html).toMatch(/<section class="pf-section pr-row" id="languages" aria-labelledby="languages--title">/);
 	});
 
 	it("puts the location card beside the contact details", () => {

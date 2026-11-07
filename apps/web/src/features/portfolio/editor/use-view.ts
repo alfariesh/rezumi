@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
 import { buildPortfolioView } from "@rezumi/portfolio/view";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
+import { useOwnOrigins, withOwnPicture } from "./pictures";
 import { usePortfolioData } from "./store";
 
 /** The page's own words (default section titles, button labels) in its language. */
@@ -22,16 +23,18 @@ export function useEditorView() {
 	const source = useSourceResume();
 	const owner = usePortfolioOwner();
 	const messages = usePageMessages();
+	const origins = useOwnOrigins();
 	return useMemo(
 		() =>
 			buildPortfolioView({
 				portfolio: { data },
-				resume: source.data ? { data: source.data } : null,
+				// A resume photo kept on another site shows no photo, as on the page (`./pictures.ts`).
+				resume: source.data ? { data: withOwnPicture(source.data, origins) } : null,
 				owner: { name: owner.name, username: owner.username },
 				entitlements: { hidePortfolioCredit: false },
 				messages,
 				fileUrl: (key) => `/${key}`,
 			}),
-		[data, source.data, owner.name, owner.username, messages],
+		[data, source.data, owner.name, owner.username, messages, origins],
 	);
 }

@@ -64,7 +64,8 @@ const blockedIpv6s = new BlockList();
 for (const [address, prefix] of blockedIpv6Cidrs) blockedIpv6s.addSubnet(address, prefix, "ipv6");
 
 export function isPrivateOrLoopbackHost(hostname: string) {
-	const normalized = stripIpv6Brackets(normalizeHostname(hostname));
+	// A fully qualified name ends in a dot that DNS ignores: `localhost.` and `a.localhost.` are still loopback.
+	const normalized = stripIpv6Brackets(normalizeHostname(hostname)).replace(/\.+$/, "");
 	if (normalized.startsWith("::ffff:")) return true;
 	if (normalized === "localhost" || normalized === "::1" || normalized.endsWith(".localhost")) return true;
 

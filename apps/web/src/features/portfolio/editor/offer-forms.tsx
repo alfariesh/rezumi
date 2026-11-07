@@ -5,13 +5,12 @@ import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { getBrandIcon } from "@rezumi/resume/icons";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
-import { isAllowedPortfolioUrl } from "@rezumi/schema/portfolio/links";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { generateId } from "@rezumi/utils/string";
 import { ImageField } from "../images/image-field";
 import { useSourceResume } from "./context";
-import { ChoiceSelect, ItemToolbar, moveItem, normalizePortfolioUrl, TextInput, UrlInput } from "./fields";
+import { ChoiceSelect, ItemToolbar, moveItem, TextInput, UrlInput } from "./fields";
 import { editPortfolio, usePortfolioData } from "./store";
 import { IconPicker } from "@/components/input/icon-picker";
 
@@ -292,13 +291,14 @@ function TestimonialFields({ value, onChange }: TestimonialFieldsProps) {
 }
 
 /** A new testimonial is added only with the statement ticked, so the portfolio never holds one without it. */
-function AddTestimonialDialog({ onClose }: { onClose: () => void }) {
+type AddTestimonialDialogProps = { onClose: () => void };
+
+function AddTestimonialDialog({ onClose }: AddTestimonialDialogProps) {
 	const id = useId();
 	const [value, setValue] = useState<TestimonialText>({ quote: "", name: "", role: "" });
-	const [sourceUrl, setSourceUrl] = useState("");
+	const [sourceUrl, setSourceUrl] = useState<string>();
+	const [sourceValid, setSourceValid] = useState(true);
 	const [consent, setConsent] = useState(false);
-	const source = normalizePortfolioUrl(sourceUrl);
-	const sourceValid = source === "" || isAllowedPortfolioUrl(source, new Set(["https:", "http:"]));
 	const ready = consent && value.quote.trim() !== "" && value.name.trim() !== "" && sourceValid;
 
 	const add = () => {
@@ -307,7 +307,7 @@ function AddTestimonialDialog({ onClose }: { onClose: () => void }) {
 			draft.testimonials.items.push({
 				id: generateId(),
 				...value,
-				...(source ? { sourceUrl: source } : {}),
+				...(sourceUrl ? { sourceUrl } : {}),
 				consent: true,
 			});
 		});
@@ -333,13 +333,13 @@ function AddTestimonialDialog({ onClose }: { onClose: () => void }) {
 					>
 						<Modal.Body className="grid gap-4">
 							<TestimonialFields value={value} onChange={(field, text) => setValue({ ...value, [field]: text })} />
-							<TextInput
+							<UrlInput
 								label={t`Where it was given (optional)`}
 								value={sourceUrl}
-								maxLength={2048}
+								webOnly
 								placeholder={t`https://linkedin.com/in/…`}
-								description={sourceValid ? undefined : t`Enter a full web address, such as https://example.com.`}
 								onChange={setSourceUrl}
+								onValidChange={setSourceValid}
 							/>
 							<Checkbox isSelected={consent} onChange={setConsent}>
 								<Checkbox.Content className="items-start">

@@ -12,37 +12,48 @@ import {
 	portfolioUpdateRateLimit,
 	portfolioUploadRateLimit,
 } from "../../middleware/rate-limit";
+import { portfolioErrorMap, portfolioErrors } from "./errors";
 import { portfolioService } from "./service";
 
 // Kept out of the public API and its OpenAPI spec until portfolios launch (portfolio plan Phase 12).
 const route = { tags: ["Internal"] };
 
-const disabled = { PORTFOLIO_DISABLED: { status: 403, message: "Portfolios aren't available for this account yet." } };
-const notFound = { NOT_FOUND: { status: 404, message: "This account has no portfolio yet." } };
-const sourceInvalid = {
-	PORTFOLIO_SOURCE_INVALID: { status: 400, message: "Choose one of your resumes that isn't in Trash." },
-};
+// Every rate limit here is keyed by account alone, so it runs before the input is checked (`.use` before `.input`):
+// an account over its limit costs no parsing, however large or broken its input.
 
 const resumeIdSchema = z.string().min(1).max(64);
-const conflict = {
-	PORTFOLIO_VERSION_CONFLICT: { status: 409, message: "The portfolio changed somewhere else after you opened it." },
-};
-const fileNotFound = {
-	PORTFOLIO_FILE_NOT_FOUND: { status: 400, message: "A file in this portfolio isn't one of its uploads." },
-};
 
-const linkUnreadable = {
-	PORTFOLIO_LINK_UNREADABLE: {
-		status: 400,
-		message: "This site can't be read automatically. Fill in the details yourself.",
-	},
-};
 const remoteUrlSchema = z
 	.string()
 	.trim()
 	.min(1)
 	.max(PORTFOLIO_LIMITS.text.url)
 	.describe("A public http(s) address; one without a scheme is read as https.");
+
+const MB = 1024 * 1024;
+
+/**
+ * Raw data longer than this many characters of JSON is over `PORTFOLIO_LIMITS.dataBytes` by any measure (UTF-8 takes
+ * at least a byte per character), with room for markup the sanitizer would strip.
+ */
+const PORTFOLIO_INPUT_CHARACTERS = 4 * PORTFOLIO_LIMITS.dataBytes;
+
+/**
+ * Refuses portfolio data far over the size limit (`PORTFOLIO_TOO_LARGE`) from its raw JSON, before the schema parses
+ * it and the service sanitizes its rich text: both take time in proportion to the input, and every field can be
+ * within its own limit while the whole is hundreds of times too large.
+ */
+function rejectOversizedData(input: unknown): void {
+	const data = typeof input === "object" && input !== null && "data" in input ? input.data : undefined;
+	let json: string | undefined;
+	try {
+		json = JSON.stringify(data);
+	} catch {
+		return; // Not JSON at all (a BigInt, say): the schema refuses it next.
+	}
+	if (json === undefined || json.length <= PORTFOLIO_INPUT_CHARACTERS) return;
+	throw portfolioErrors.tooLarge(new TextEncoder().encode(json).byteLength);
+}
 
 const unfurlSchema = z.discriminatedUnion("kind", [
 	z.object({
@@ -95,13 +106,43 @@ export const portfolioRouter = {
 				portfolio: portfolioSchema.nullable(),
 				limits: z.object({
 					works: z.number().int(),
-					storageBytes: z.number().int().nullable().describe("Null when unlimited."),
+					storageBytes: z
+						.number()
+						.int()
+						.describe("The most bytes the account may store for its portfolio, files waiting for cleanup included."),
 					dataBytes: z.number().int(),
 				}),
-				usage: z.object({ works: z.number().int(), storageBytes: z.number().int() }),
+				usage: z.object({
+					works: z.number().int(),
+					storageBytes: z.number().int().describe("Bytes stored, files waiting for cleanup included."),
+				}),
 			}),
 		)
 		.handler(({ context }) => portfolioService.get(context.user.id)),
+
+	status: protectedProcedure
+		.route({
+			...route,
+			method: "GET",
+			path: "/portfolio/status",
+			operationId: "getPortfolioStatus",
+			summary: "Whether the account has a portfolio, and whether it's live",
+			description: "What the app's menu and share panels need, without reading the portfolio itself.",
+		})
+		.input(z.object({}).optional())
+		.output(
+			z.object({
+				enabled: z.boolean().describe("Whether portfolios are open to this account; false hides the feature."),
+				portfolio: z
+					.object({
+						isPublic: z.boolean().describe("Whether it is published at /<username>."),
+						suspendedAt: z.date().nullable().describe("When an admin took it down; it isn't shown while set."),
+					})
+					.nullable()
+					.describe("Null while the account has no portfolio."),
+			}),
+		)
+		.handler(({ context }) => portfolioService.status(context.user.id)),
 
 	create: protectedProcedure
 		.route({
@@ -111,6 +152,7 @@ export const portfolioRouter = {
 			operationId: "createPortfolio",
 			summary: "Create the portfolio",
 		})
+		.use(portfolioMutationRateLimit)
 		.input(
 			z.object({
 				sourceResumeId: resumeIdSchema
@@ -128,12 +170,7 @@ export const portfolioRouter = {
 					.describe("For a portfolio without a resume."),
 			}),
 		)
-		.use(portfolioMutationRateLimit)
-		.errors({
-			...disabled,
-			...sourceInvalid,
-			PORTFOLIO_EXISTS: { status: 409, message: "This account already has a portfolio." },
-		})
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "PORTFOLIO_SOURCE_INVALID", "PORTFOLIO_EXISTS"))
 		.output(portfolioSchema)
 		.handler(({ context, input }) => portfolioService.create(context.user.id, input)),
 
@@ -145,6 +182,11 @@ export const portfolioRouter = {
 			operationId: "updatePortfolio",
 			summary: "Save the portfolio's data",
 		})
+		.use(portfolioUpdateRateLimit)
+		.use(({ next }, input) => {
+			rejectOversizedData(input);
+			return next();
+		})
 		.input(
 			z.object({
 				data: writablePortfolioDataSchema,
@@ -153,14 +195,15 @@ export const portfolioRouter = {
 					.describe("The updatedAt this save was made from; a different one means it changed elsewhere."),
 			}),
 		)
-		.use(portfolioUpdateRateLimit)
-		.errors({
-			...disabled,
-			...notFound,
-			...conflict,
-			...fileNotFound,
-			PORTFOLIO_TOO_LARGE: { status: 413, message: "The portfolio is too large to save." },
-		})
+		.errors(
+			portfolioErrorMap(
+				"PORTFOLIO_DISABLED",
+				"NOT_FOUND",
+				"PORTFOLIO_VERSION_CONFLICT",
+				"PORTFOLIO_FILE_NOT_FOUND",
+				"PORTFOLIO_TOO_LARGE",
+			),
+		)
 		.output(portfolioSchema)
 		.handler(({ context, input }) => portfolioService.update(context.user.id, input)),
 
@@ -172,14 +215,9 @@ export const portfolioRouter = {
 			operationId: "setPortfolioPublic",
 			summary: "Publish or unpublish the portfolio",
 		})
-		.input(z.object({ isPublic: z.boolean() }))
 		.use(portfolioMutationRateLimit)
-		.errors({
-			...disabled,
-			...notFound,
-			PORTFOLIO_EMAIL_NOT_VERIFIED: { status: 403, message: "Verify your email address before publishing." },
-			PORTFOLIO_SUSPENDED: { status: 403, message: "This portfolio was taken down and can't be published." },
-		})
+		.input(z.object({ isPublic: z.boolean() }))
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND", "PORTFOLIO_EMAIL_NOT_VERIFIED", "PORTFOLIO_SUSPENDED"))
 		.output(portfolioSchema)
 		.handler(({ context, input }) => portfolioService.setPublic(context.user.id, input)),
 
@@ -191,6 +229,7 @@ export const portfolioRouter = {
 			operationId: "updatePortfolioSettings",
 			summary: "Change the portfolio's settings",
 		})
+		.use(portfolioMutationRateLimit)
 		.input(
 			z.object({
 				showInSearchEngines: z.boolean().optional(),
@@ -200,8 +239,7 @@ export const portfolioRouter = {
 					.describe("Another resume of the account, or null for none."),
 			}),
 		)
-		.use(portfolioMutationRateLimit)
-		.errors({ ...disabled, ...notFound, ...sourceInvalid })
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND", "PORTFOLIO_SOURCE_INVALID"))
 		.output(portfolioSchema)
 		.handler(({ context, input }) => portfolioService.updateSettings(context.user.id, input)),
 
@@ -212,10 +250,11 @@ export const portfolioRouter = {
 			path: "/portfolio",
 			operationId: "deletePortfolio",
 			summary: "Delete the portfolio",
+			description: "Its files stop being served at once and are deleted from storage shortly after.",
 		})
-		.input(z.object({}).optional())
 		.use(portfolioMutationRateLimit)
-		.errors({ ...disabled, ...notFound })
+		.input(z.object({}).optional())
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND"))
 		.output(z.void())
 		.handler(({ context }) => portfolioService.delete(context.user.id)),
 
@@ -227,6 +266,7 @@ export const portfolioRouter = {
 			operationId: "importPortfolioWorks",
 			summary: "Add works from the source resume's projects",
 		})
+		.use(portfolioMutationRateLimit)
 		.input(
 			z.object({
 				resumeItemIds: z
@@ -237,16 +277,17 @@ export const portfolioRouter = {
 				expectedUpdatedAt: z.coerce.date().describe("The updatedAt the editor has; a different one is a conflict."),
 			}),
 		)
-		.use(portfolioMutationRateLimit)
-		.errors({
-			...disabled,
-			...notFound,
-			...sourceInvalid,
-			...conflict,
-			...fileNotFound,
-			PORTFOLIO_TOO_LARGE: { status: 413, message: "The portfolio is too large to save." },
-			PORTFOLIO_WORKS_LIMIT: { status: 400, message: `A portfolio holds at most ${PORTFOLIO_LIMITS.works} works.` },
-		})
+		.errors(
+			portfolioErrorMap(
+				"PORTFOLIO_DISABLED",
+				"NOT_FOUND",
+				"PORTFOLIO_SOURCE_INVALID",
+				"PORTFOLIO_VERSION_CONFLICT",
+				"PORTFOLIO_FILE_NOT_FOUND",
+				"PORTFOLIO_TOO_LARGE",
+				"PORTFOLIO_WORKS_LIMIT",
+			),
+		)
 		.output(portfolioSchema)
 		.handler(({ context, input }) => portfolioService.importWorks(context.user.id, input)),
 
@@ -257,21 +298,24 @@ export const portfolioRouter = {
 			path: "/portfolio/files/images",
 			operationId: "uploadPortfolioImage",
 			summary: "Upload a picture for the portfolio",
-			description: `A JPEG, PNG or WebP picture the browser already made smaller: at most ${PORTFOLIO_UPLOAD.imageBytes / 1024 / 1024} MB and ${PORTFOLIO_UPLOAD.imageSide} px on its longest side, with an optional small copy of at most ${PORTFOLIO_UPLOAD.thumbSide} px. Unused until saved data refers to its key.`,
+			description: `A JPEG, PNG or WebP picture the browser already made smaller: at most ${PORTFOLIO_UPLOAD.imageBytes / MB} MB and ${PORTFOLIO_UPLOAD.imageSide} px on its longest side, with an optional small copy of at most ${PORTFOLIO_UPLOAD.thumbSide} px. Unused until saved data refers to its key. An account stores at most ${PORTFOLIO_UPLOAD.accountBytes / MB} MB in ${PORTFOLIO_UPLOAD.accountFiles} files for its portfolio.`,
 		})
+		.use(portfolioUploadRateLimit)
 		.input(
 			z.object({
-				file: z.file().describe("The picture."),
-				thumbnail: z.file().optional().describe("A small copy for cards and lists."),
+				file: z.file().max(PORTFOLIO_UPLOAD.imageBytes).describe("The picture."),
+				thumbnail: z.file().max(PORTFOLIO_UPLOAD.imageBytes).optional().describe("A small copy for cards and lists."),
 			}),
 		)
-		.use(portfolioUploadRateLimit)
-		.errors({
-			...disabled,
-			...notFound,
-			PORTFOLIO_FILE_TOO_LARGE: { status: 413, message: "This picture is too large to upload." },
-			PORTFOLIO_IMAGE_INVALID: { status: 400, message: "This picture can't be used." },
-		})
+		.errors(
+			portfolioErrorMap(
+				"PORTFOLIO_DISABLED",
+				"NOT_FOUND",
+				"PORTFOLIO_FILE_TOO_LARGE",
+				"PORTFOLIO_IMAGE_INVALID",
+				"PORTFOLIO_STORAGE_FULL",
+			),
+		)
 		.output(
 			z.object({
 				key: z.string().describe("The picture's storage key, for the portfolio's data."),
@@ -290,21 +334,24 @@ export const portfolioRouter = {
 			path: "/portfolio/files/pdfs",
 			operationId: "uploadPortfolioPdf",
 			summary: "Upload a PDF for a work",
-			description: `A PDF of at most ${PORTFOLIO_UPLOAD.pdfBytes / 1024 / 1024} MB that opens without a password, with the page count the browser read. Its first page's picture is uploaded with uploadImage. Unused until saved data refers to its key.`,
+			description: `A PDF of at most ${PORTFOLIO_UPLOAD.pdfBytes / MB} MB that opens without a password, with the page count the browser read. Its first page's picture is uploaded with uploadImage. Unused until saved data refers to its key.`,
 		})
+		.use(portfolioUploadRateLimit)
 		.input(
 			z.object({
-				file: z.file().describe("The PDF."),
+				file: z.file().max(PORTFOLIO_UPLOAD.pdfBytes).describe("The PDF."),
 				pages: z.coerce.number().int().min(1).max(PORTFOLIO_LIMITS.pdfPages).describe("How many pages it has."),
 			}),
 		)
-		.use(portfolioUploadRateLimit)
-		.errors({
-			...disabled,
-			...notFound,
-			PORTFOLIO_FILE_TOO_LARGE: { status: 413, message: "This PDF is too large to upload." },
-			PORTFOLIO_PDF_INVALID: { status: 400, message: "This file isn't a PDF." },
-		})
+		.errors(
+			portfolioErrorMap(
+				"PORTFOLIO_DISABLED",
+				"NOT_FOUND",
+				"PORTFOLIO_FILE_TOO_LARGE",
+				"PORTFOLIO_PDF_INVALID",
+				"PORTFOLIO_STORAGE_FULL",
+			),
+		)
 		.output(
 			z.object({
 				key: z.string().describe("The PDF's storage key, for the portfolio's data."),
@@ -324,9 +371,9 @@ export const portfolioRouter = {
 			description:
 				"YouTube and Vimeo links become a video (title and picture from the site's oEmbed); other pages a link card from their meta tags. Results are kept for a day.",
 		})
-		.input(z.object({ url: remoteUrlSchema }))
 		.use(portfolioUnfurlRateLimit)
-		.errors({ ...disabled, ...linkUnreadable })
+		.input(z.object({ url: remoteUrlSchema }))
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "PORTFOLIO_LINK_UNREADABLE"))
 		.output(unfurlSchema)
 		.handler(({ context, input, signal }) => portfolioService.unfurl(context.user.id, input, signal)),
 
@@ -337,17 +384,19 @@ export const portfolioRouter = {
 			path: "/portfolio/links/image",
 			operationId: "fetchPortfolioRemoteImage",
 			summary: "Fetch a link's preview picture",
-			description: `The picture at a public address (JPEG, PNG, WebP or GIF, at most ${PORTFOLIO_UPLOAD.remoteImageBytes / 1024 / 1024} MB), for the browser to shrink and store with uploadImage. Nothing is stored.`,
+			description: `The picture at a public address (JPEG, PNG, WebP or GIF, at most ${PORTFOLIO_UPLOAD.remoteImageBytes / MB} MB), for the browser to shrink and store with uploadImage. Nothing is stored.`,
 		})
-		.input(z.object({ url: remoteUrlSchema }))
 		.use(portfolioRemoteImageRateLimit)
-		.errors({
-			...disabled,
-			...notFound,
-			...linkUnreadable,
-			PORTFOLIO_FILE_TOO_LARGE: { status: 413, message: "This picture is too large to copy." },
-			PORTFOLIO_IMAGE_INVALID: { status: 400, message: "This isn't a picture that can be used." },
-		})
+		.input(z.object({ url: remoteUrlSchema }))
+		.errors(
+			portfolioErrorMap(
+				"PORTFOLIO_DISABLED",
+				"NOT_FOUND",
+				"PORTFOLIO_LINK_UNREADABLE",
+				"PORTFOLIO_FILE_TOO_LARGE",
+				"PORTFOLIO_IMAGE_INVALID",
+			),
+		)
 		.output(z.file().describe("The picture as the site sent it."))
 		.handler(({ context, input, signal }) => portfolioService.fetchRemoteImage(context.user.id, input, signal)),
 
@@ -359,13 +408,9 @@ export const portfolioRouter = {
 			operationId: "deletePortfolioFile",
 			summary: "Delete a portfolio file the portfolio no longer uses",
 		})
-		.input(z.object({ key: z.string().min(1).max(PORTFOLIO_LIMITS.text.url) }))
 		.use(portfolioFileDeleteRateLimit)
-		.errors({
-			...disabled,
-			...fileNotFound,
-			PORTFOLIO_FILE_IN_USE: { status: 409, message: "The portfolio still uses this file." },
-		})
+		.input(z.object({ key: z.string().min(1).max(PORTFOLIO_LIMITS.text.url) }))
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "PORTFOLIO_FILE_NOT_FOUND", "PORTFOLIO_FILE_IN_USE"))
 		.output(z.void())
 		.handler(({ context, input }) => portfolioService.deleteFile(context.user.id, input)),
 };

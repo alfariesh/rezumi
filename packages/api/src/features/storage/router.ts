@@ -1,6 +1,7 @@
 import { ORPCError } from "@orpc/server";
 import z from "zod";
 import { MAX_UPLOADED_FONT_BYTES } from "@rezumi/fonts/uploaded";
+import { reachesPortfolioFiles } from "@rezumi/schema/portfolio/files";
 import { protectedProcedure } from "../../context";
 import { storageDeleteRateLimit, storageUploadRateLimit } from "../../middleware/rate-limit";
 import { assertFeature } from "../billing/limits";
@@ -122,6 +123,13 @@ export const storageRouter = {
 
 			if (isUnsafeStorageKey(key) || !key.startsWith(userPrefix)) {
 				throw new ORPCError("FORBIDDEN");
+			}
+			// Portfolio files are recorded in `portfolio_file` (storage quota, cleanup, what the public route serves), so
+			// only the portfolio API deletes them, never a key or folder here.
+			if (reachesPortfolioFiles(context.user.id, key)) {
+				throw new ORPCError("FORBIDDEN", {
+					message: "Portfolio files are deleted through the portfolio, which keeps track of them.",
+				});
 			}
 
 			const deleted = await getStorageService().delete(key);

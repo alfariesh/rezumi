@@ -5,9 +5,10 @@ import { WHATSAPP_NUMBER_PATTERN } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { LocationFields } from "../location/location-fields";
+import { useDraftText } from "../metrics/use-draft-text";
 import { useSourceResume } from "./context";
 import { TextInput } from "./fields";
-import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "./store";
+import { editPortfolio, usePortfolioData } from "./store";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -91,13 +92,8 @@ export function ContactForm() {
 
 function WhatsAppField() {
 	const { contact } = usePortfolioData();
-	const revision = usePortfolioEditorStore((state) => state.revision);
-	const [text, setText] = useState(contact.whatsapp.number ? `+${contact.whatsapp.number}` : "");
-	const [seen, setSeen] = useState(revision);
-	if (seen !== revision) {
-		setSeen(revision);
-		setText(contact.whatsapp.number ? `+${contact.whatsapp.number}` : "");
-	}
+	const [text, setText] = useDraftText(contact.whatsapp.number ? `+${contact.whatsapp.number}` : "");
+	const [touched, setTouched] = useState(false);
 	const number = normalizeWhatsAppNumber(text);
 	const valid = WHATSAPP_NUMBER_PATTERN.test(number);
 
@@ -120,11 +116,10 @@ function WhatsAppField() {
 				value={text}
 				maxLength={20}
 				placeholder="+62 812 5550 1824"
-				description={
-					valid
-						? t`With the country code. Numbers starting with 0 are read as Indonesian (+62).`
-						: t`Enter 7 to 15 digits, with the country code.`
-				}
+				description={t`With the country code. Numbers starting with 0 are read as Indonesian (+62).`}
+				// Like address fields: said once the field is left, so a number being typed isn't called wrong.
+				errorMessage={touched && !valid ? t`Enter 7 to 15 digits, with the country code.` : undefined}
+				onBlur={() => setTouched(true)}
 				onChange={(value) => {
 					setText(value);
 					const next = normalizeWhatsAppNumber(value);

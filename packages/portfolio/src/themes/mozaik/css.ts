@@ -5,7 +5,7 @@
  * Container query units size the name and the stat values to their tile.
  */
 export const MOZAIK_CSS = String.raw`
-.pf[data-theme="mozaik"]{--pf-max-width:1200px;--pf-radius:26px;--pf-radius-sm:14px;--mz-gap:14px;--mz-pad:clamp(18px,2.4vw,28px);--mz-rim:inset 0 0 0 1px color-mix(in oklab,var(--pf-text) 8%,transparent)}
+.pf[data-theme="mozaik"]{--pf-max-width:1200px;--pf-radius:26px;--pf-radius-sm:14px;--pf-hero-ground:var(--pf-surface);--pf-hero-shade:rgb(8 10 14/.7),rgb(8 10 14/.78);--mz-gap:14px;--mz-pad:clamp(18px,2.4vw,28px);--mz-rim:inset 0 0 0 1px color-mix(in oklab,var(--pf-text) 8%,transparent)}
 .pf[data-theme="mozaik"] .pf-btn{border-radius:999px}
 .pf[data-theme="mozaik"] .pf-btn--secondary{background:var(--pf-surface)}
 .pf[data-theme="mozaik"] .pf-btn--primary{box-shadow:var(--mz-rim)}
@@ -37,9 +37,8 @@ export const MOZAIK_CSS = String.raw`
 .pf[data-theme="mozaik"] .mz-headline{color:var(--pf-accent-text);font:700 var(--pf-text-lg)/1.3 var(--pf-font-heading)}
 .pf[data-theme="mozaik"] .mz-greeting{max-width:42ch;color:var(--pf-muted);font-size:var(--pf-text-md)}
 .pf[data-theme="mozaik"] .mz-intro .pf-btns{margin-top:4px}
-.pf[data-theme="mozaik"] .mz-intro[data-bg="soft-gradient"]{background:radial-gradient(120% 90% at 0% 0%,var(--pf-accent-soft),transparent 70%),radial-gradient(90% 80% at 100% 100%,color-mix(in oklab,var(--pf-accent-soft) 70%,transparent),transparent 70%),var(--pf-surface)}
-.pf[data-theme="mozaik"] .mz-intro[data-bg="pattern"]{background:radial-gradient(color-mix(in oklab,var(--pf-accent) 22%,transparent) 1.2px,transparent 1.4px) 0 0/18px 18px,var(--pf-surface)}
-.pf[data-theme="mozaik"] .mz-intro[data-bg="image"]{background:linear-gradient(rgb(8 10 14/.7),rgb(8 10 14/.78)),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-text:#fff;--pf-muted:rgb(255 255 255/.82);--pf-border:rgb(255 255 255/.28);--pf-surface:rgb(255 255 255/.14);--pf-bg:rgb(255 255 255/.14);--pf-accent-text:var(--pf-accent-text-dark);color:var(--pf-text)}
+.pf[data-theme="mozaik"] .mz-intro[data-bg]:not([data-bg="plain"]){background:var(--pf-hero-bg)}
+.pf[data-theme="mozaik"] .mz-intro[data-bg="image"]{--pf-bg:rgb(255 255 255/.14)}
 .pf[data-theme="mozaik"] .mz-intro[data-bg="image"] .pf-btn--secondary{background:transparent}
 .pf[data-theme="mozaik"] .mz-photo{grid-area:photo;position:relative;min-height:300px;padding:0;overflow:hidden}
 .pf[data-theme="mozaik"] .mz-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
@@ -62,7 +61,7 @@ export const MOZAIK_CSS = String.raw`
 .pf[data-theme="mozaik"] .mz-loc .pf-loc:not([data-map]) .pf-loc__body{padding:0}
 @container (min-width:520px){.pf[data-theme="mozaik"] .mz-loc .pf-loc[data-map]{grid-template-columns:minmax(0,min(420px,52%)) minmax(0,1fr);align-items:center;gap:16px}}
 .pf[data-theme="mozaik"] .mz-links{grid-area:links}
-.pf[data-theme="mozaik"] .mz-links ul{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:6px;margin:0;padding:0;list-style:none}
+.pf[data-theme="mozaik"] .mz-links__list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:6px;margin:0;padding:0;list-style:none}
 .pf[data-theme="mozaik"] .mz-link{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;padding:10px 14px;border-radius:14px;background:var(--pf-bg);font-size:var(--pf-text-sm);font-weight:600;text-decoration:none;transition:background-color .15s}
 .pf[data-theme="mozaik"] .mz-link>span{min-width:0;overflow-wrap:anywhere}
 .pf[data-theme="mozaik"] a.mz-link:is(:hover,:focus-visible){background:var(--pf-accent-soft)}
@@ -88,7 +87,7 @@ export const MOZAIK_CSS = String.raw`
 .pf[data-theme="mozaik"] .mz-work__summary{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;min-height:0;padding:10px 10px 0;color:var(--pf-muted);font-size:var(--pf-text-sm);line-height:1.45}
 .pf[data-theme="mozaik"] .mz-more>a{display:grid;align-content:end;gap:6px;padding:24px;background:var(--pf-accent-soft);box-shadow:var(--mz-rim)}
 .pf[data-theme="mozaik"] .mz-more b{font:800 var(--pf-text-xl)/1.1 var(--pf-font-heading);letter-spacing:-.02em;overflow-wrap:anywhere}
-.pf[data-theme="mozaik"] .mz-more span{display:inline-flex;align-items:center;gap:6px;min-width:0;color:var(--pf-accent-text);font-weight:600;overflow-wrap:anywhere}
+.pf[data-theme="mozaik"] .mz-more span{display:inline-flex;align-items:center;gap:6px;min-width:0;color:var(--pf-accent-text-soft);font-weight:600;overflow-wrap:anywhere}
 .pf[data-theme="mozaik"] .mz-more>a:is(:hover,:focus-visible) span{text-decoration:underline;text-underline-offset:4px}
 .pf[data-theme="mozaik"] .mz-works[data-variant="grid-2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
 .pf[data-theme="mozaik"] .mz-card{display:grid;align-content:start;gap:14px;height:100%;padding:10px 10px 20px;border-radius:var(--pf-radius);background:var(--pf-surface);text-decoration:none}
@@ -141,8 +140,8 @@ export const MOZAIK_CSS = String.raw`
 .pf[data-theme="mozaik"] .mz-cv>[data-shape="tall"]{grid-row:span 2}
 .pf[data-theme="mozaik"] .mz-cv>[data-shape="wide"],.pf[data-theme="mozaik"] .mz-cv>.mz-extras{grid-column:1/-1}
 .pf[data-theme="mozaik"] .mz-extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:24px 32px}
-.pf[data-theme="mozaik"] .pf-cvlist[data-variant="timeline"] .pf-cvitem::before{background:var(--pf-surface)}
-.pf[data-theme="mozaik"] .pf-cvlist[data-variant="timeline"] .pf-cvitem:first-child::before{background:var(--pf-accent)}
+.pf[data-theme="mozaik"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem::before{background:var(--pf-surface)}
+.pf[data-theme="mozaik"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem:first-child::before{background:var(--pf-accent)}
 .pf[data-theme="mozaik"] .pf-skillgroup b{font-weight:600}
 @media (max-width:900px){.pf[data-theme="mozaik"] .mz-pair[data-count="2"],.pf[data-theme="mozaik"] .mz-pair[data-count="2"][data-first="clients"],.pf[data-theme="mozaik"] .mz-cv{grid-template-columns:minmax(0,1fr)}.pf[data-theme="mozaik"] .mz-cv>[data-shape="tall"]{grid-row:auto}}
 
@@ -159,7 +158,7 @@ export const MOZAIK_CSS = String.raw`
 .pf[data-theme="mozaik"] .mz-contact__main{display:grid;align-content:start;gap:20px;background:var(--pf-accent-soft);box-shadow:var(--mz-rim)}
 .pf[data-theme="mozaik"] .mz-contact__main>*{grid-column:1;min-width:0}
 .pf[data-theme="mozaik"] .mz-contact__main .mz-title{max-width:22ch;margin:0}
-.pf[data-theme="mozaik"] .mz-contact__main[data-note] .mz-title{color:var(--pf-accent-text);font-size:var(--pf-text-sm);font-weight:700;letter-spacing:.01em}
+.pf[data-theme="mozaik"] .mz-contact__main[data-note] .mz-title{color:var(--pf-accent-text-soft);font-size:var(--pf-text-sm);font-weight:700;letter-spacing:.01em}
 .pf[data-theme="mozaik"] .mz-cta{max-width:22ch;font:800 clamp(1.5rem,1.1rem + 1.4vw,2.25rem)/1.15 var(--pf-font-heading);letter-spacing:-.03em;text-wrap:balance}
 .pf[data-theme="mozaik"] .mz-contact__main>.pf-contact-links{gap:4px;padding:16px 18px;border-radius:20px;background:var(--pf-surface)}
 .pf[data-theme="mozaik"] .mz-contact__main>.pf-contact-links li{padding-block:4px}

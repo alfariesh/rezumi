@@ -182,6 +182,68 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			await getDb().update(tables.resume).set({ trashedAt: new Date() }).where(eq(tables.resume.id, resumeId));
 			expect((await publicPortfolio.findPublicPortfolio(username("member")))?.resume).toBeNull();
 		});
+
+		it("still shows when its source resume's stored data can't be read, without the resume", async () => {
+			const resumeId = await addResume("member", { data: { basics: "not a resume" } as never });
+			await addPortfolio("member", { sourceResumeId: resumeId });
+			const logged = vi.spyOn(console, "error").mockImplementation(() => {});
+			const found = await publicPortfolio.findPublicPortfolio(username("member"));
+			expect(found).toMatchObject({ username: username("member"), resume: null });
+			expect(logged).toHaveBeenCalledOnce();
+			logged.mockRestore();
+		});
+	});
+
+	describe("its files", () => {
+		const key = (userId: string, name: string) => `uploads/${userId}/pictures/portfolio/${name}.webp`;
+		const addFile = async (userId: string, name: string, used = true) => {
+			await getDb()
+				.insert(tables.portfolioFile)
+				.values({
+					userId,
+					kind: "image",
+					key: key(userId, name),
+					bytes: 10,
+					width: 1,
+					height: 1,
+					unusedSince: used ? null : new Date(),
+				});
+			return key(userId, name);
+		};
+
+		it("are public only while saved data uses them and the portfolio shows", async () => {
+			const portfolioId = await addPortfolio("member");
+			const used = await addFile("member", "used");
+			const unsaved = await addFile("member", "unsaved", false);
+			expect(await publicPortfolio.isPublicPortfolioFile(used)).toBe(true);
+			expect(await publicPortfolio.isPublicPortfolioFile(unsaved)).toBe(false);
+			expect(await publicPortfolio.isPublicPortfolioFile(key("member", "unknown"))).toBe(false);
+
+			await getDb().update(tables.portfolio).set({ isPublic: false }).where(eq(tables.portfolio.id, portfolioId));
+			expect(await publicPortfolio.isPublicPortfolioFile(used)).toBe(false);
+			await getDb()
+				.update(tables.portfolio)
+				.set({ isPublic: true, suspendedAt: new Date(), suspendedReason: "Scam" })
+				.where(eq(tables.portfolio.id, portfolioId));
+			expect(await publicPortfolio.isPublicPortfolioFile(used)).toBe(false);
+			await getDb()
+				.update(tables.portfolio)
+				.set({ suspendedAt: null, suspendedReason: null })
+				.where(eq(tables.portfolio.id, portfolioId));
+			expect(await publicPortfolio.isPublicPortfolioFile(used)).toBe(true);
+
+			// The switch decides too: off for everyone, or on only for admins.
+			fixture.mode = "admins";
+			expect(await publicPortfolio.isPublicPortfolioFile(used)).toBe(false);
+			fixture.mode = "off";
+			expect(await publicPortfolio.isPublicPortfolioFile(used)).toBe(false);
+		});
+
+		it("are never public for a banned owner, or without a portfolio", async () => {
+			await addPortfolio("banned");
+			expect(await publicPortfolio.isPublicPortfolioFile(await addFile("banned", "photo"))).toBe(false);
+			expect(await publicPortfolio.isPublicPortfolioFile(await addFile("nobody", "photo"))).toBe(false);
+		});
 	});
 
 	describe("the primary resume", () => {
@@ -231,6 +293,26 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			expect(await publicPortfolio.countIndexablePortfolios()).toBe(0);
 			fixture.mode = "off";
 			expect(await publicPortfolio.listIndexablePortfolios(0)).toEqual([]);
+		});
+
+		it("agrees with the page on what search engines may list", async () => {
+			const portfolioId = await addPortfolio("member");
+			const listed = async () => ({
+				page: (await publicPortfolio.findPublicPortfolio(username("member")))?.indexable ?? null,
+				sitemap: (await publicPortfolio.listIndexablePortfolios(0)).length === 1,
+			});
+			expect(await listed()).toEqual({ page: true, sitemap: true });
+			await getDb()
+				.update(tables.portfolio)
+				.set({ showInSearchEngines: false })
+				.where(eq(tables.portfolio.id, portfolioId));
+			expect(await listed()).toEqual({ page: false, sitemap: false });
+			await getDb()
+				.update(tables.portfolio)
+				.set({ showInSearchEngines: true, suspendedAt: new Date(), suspendedReason: "Scam" })
+				.where(eq(tables.portfolio.id, portfolioId));
+			// Suspended: no page at all, and not listed.
+			expect(await listed()).toEqual({ page: null, sitemap: false });
 		});
 
 		it("keeps a portfolio out of search engines for its account's first week", async () => {

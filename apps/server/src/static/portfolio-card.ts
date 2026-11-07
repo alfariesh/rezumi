@@ -1,3 +1,4 @@
+import type { PortfolioViewImage } from "@rezumi/portfolio/view";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -21,6 +22,28 @@ const CACHE_LIMIT = 200;
 
 const banner = () => Response.redirect(new URL("/opengraph/banner.jpg", env.APP_URL), 302);
 
+/** Formats the card's renderer (resvg) draws. It can't draw WebP, which the editor uploads pictures as. */
+const DRAWABLE_PICTURE = /\.(?:jpe?g|png)$/i;
+
+/**
+ * The photo the card draws: the small copy when it's a PNG or JPEG, else the photo itself when it is, else none. A
+ * portfolio's picture names its format (the server names each upload after its bytes), and the view only holds this
+ * app's own uploads.
+ */
+function cardPicture(picture: PortfolioViewImage | null): string {
+	if (!picture) return "";
+	return (
+		[picture.srcSmall, picture.src].find((src) => {
+			if (!src) return false;
+			try {
+				return DRAWABLE_PICTURE.test(new URL(src, env.APP_URL).pathname);
+			} catch {
+				return false;
+			}
+		}) ?? ""
+	);
+}
+
 /**
  * `GET /cards/<username>.png`: a published portfolio's link preview (WhatsApp, LinkedIn): name, headline, photo and
  * address in the portfolio's fonts and accent. An address that doesn't show a portfolio gets the generic banner, so a
@@ -33,7 +56,7 @@ export async function handlePortfolioCard(request: Request, username: string): P
 
 	const address = portfolio.customDomain ?? `${new URL(env.APP_ALIAS_URL ?? env.APP_URL).host}/${portfolio.username}`;
 	const text = { name: view.basics.name, headline: view.basics.headline, address, color: view.design.accent };
-	const picture = view.basics.picture?.src ?? "";
+	const picture = cardPicture(view.basics.picture);
 	const fonts = { heading: view.design.fonts.heading, body: view.design.fonts.body };
 	const key = createHash("sha256")
 		.update(JSON.stringify([text, fonts, picture, view.locale]))
@@ -56,11 +79,13 @@ export async function handlePortfolioCard(request: Request, username: string): P
 				import("@rezumi/api/features/storage"),
 			]);
 			const assets = await loadResumeCardAssets(data, env.APP_URL, readUploadedFont);
+			// Bytes that turn out to be WebP whatever the name says would draw as a blank circle: leave the photo out.
+			const photo = assets.picture?.startsWith("data:image/webp") ? undefined : assets.picture;
 			const svg = resumeCardSvg({
 				...text,
 				headingFamily: assets.headingFamily,
 				bodyFamily: assets.bodyFamily,
-				picture: assets.picture,
+				picture: photo,
 			});
 			await initialize();
 			const resvg = new Resvg(svg, {
@@ -70,8 +95,8 @@ export async function handlePortfolioCard(request: Request, username: string): P
 			png = resvg.render().asPng();
 			resvg.free();
 			if (cache.size >= CACHE_LIMIT) cache.clear();
-			// A photo that failed to load is tried again next time.
-			if (!picture || assets.picture) cache.set(key, png);
+			// A photo that failed to load or draw is tried again next time.
+			if (!picture || photo) cache.set(key, png);
 		} catch (error) {
 			console.error("Portfolio card rendering failed", error);
 			return banner();

@@ -11,7 +11,7 @@ import { join } from "node:path";
 import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
 import { renderPortfolioDocument } from "@rezumi/portfolio/document";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
-import { buildPortfolioView } from "@rezumi/portfolio/view";
+import { buildPortfolioView, portfolioPageLocale } from "@rezumi/portfolio/view";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { buildPersona } from "./persona";
 
@@ -87,7 +87,7 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 
 	const names = new Map(persona.files.map((file) => [file.key, file.name]));
 	const parsed = parseWritablePortfolioData(data);
-	const messages = portfolioMessages(parsed.locale ?? resume.metadata.page.locale);
+	const messages = portfolioMessages(portfolioPageLocale(parsed, resume));
 	const view = buildPortfolioView({
 		portfolio: { data: parsed },
 		resume: { data: resume },

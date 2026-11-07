@@ -40,6 +40,10 @@ msgstr "\"{0}\" spostato nel Cestino"
 msgid "“{0}” stops being your primary resume."
 msgstr "“{0}” non sarà più il tuo curriculum principale."
 
+#: src/features/portfolio/images/upload.ts
+msgid "“{fileName}”: {message}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "“{name}” moved to Trash"
@@ -86,7 +90,7 @@ msgid "(theme default)"
 msgstr ""
 
 #. placeholder {0}: chosen.size
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
 msgstr ""
 
@@ -191,6 +195,11 @@ msgstr "{0, plural, one {# campo è segnalato per un rapido controllo nell'edito
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{0, plural, one {# issue is ignored.} other {# issues are ignored.}}"
 msgstr "{0, plural, one {Il problema # viene ignorato.} other {I problemi # vengono ignorati.}}"
+
+#. placeholder {0}: block.pages
+#: src/features/portfolio/blocks/pdf-block.tsx
+msgid "{0, plural, one {# page} other {# pages}}"
+msgstr ""
 
 #. placeholder {0}: paid.length
 #: src/features/billing/admin/customer.tsx
@@ -360,11 +369,6 @@ msgstr ""
 #. placeholder {1}: application.company
 #: src/features/applications/components/board.tsx
 msgid "{0} at {1}"
-msgstr ""
-
-#. placeholder {0}: info.title
-#: src/features/portfolio/blocks/block-list.tsx
-msgid "{0} block removed"
 msgstr ""
 
 #. placeholder {0}: insights.closed
@@ -692,11 +696,6 @@ msgstr "{count, plural, one {Applica # modifica} other {Applica # modifiche}}"
 msgid "{count, plural, other {# more}}"
 msgstr ""
 
-#: src/features/portfolio/blocks/media-blocks.tsx
-#: src/features/portfolio/page-text.ts
-msgid "{count} pages"
-msgstr ""
-
 #: src/features/templates/gallery.tsx
 msgid "{count} resume templates. Find your fit."
 msgstr ""
@@ -800,6 +799,10 @@ msgstr "Connessione {label}"
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr ""
 
+#: src/features/portfolio/images/upload.ts
+msgid "{left, plural, one {# picture wasn't uploaded.} other {# pictures weren't uploaded.}}"
+msgstr ""
+
 #: src/features/career/workspace/debrief.tsx
 msgid "{length}m"
 msgstr "{length} min"
@@ -846,6 +849,10 @@ msgstr "{name} aggiunto a pagina 1"
 
 #: src/features/billing/plan.ts
 msgid "{name} and custom styles aren't in your plan, so the imported document uses {free} without the file's styles."
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "{name} block removed"
 msgstr ""
 
 #: src/features/career/hooks.ts
@@ -952,6 +959,10 @@ msgstr ""
 msgid "{price}, open until {deadline}."
 msgstr ""
 
+#: src/features/portfolio/images/upload.ts
+msgid "{problem} {notUploaded}"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "{proCredits} AI credits every month"
 msgstr ""
@@ -1047,6 +1058,10 @@ msgstr "{value} all'ora"
 msgid "{words, plural, one {# word} other {# words}}"
 msgstr "{words, plural, one {Parola #} other {# parole}}"
 
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "{words}. {reason}"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ hour"
 msgstr "/ ora"
@@ -1079,13 +1094,8 @@ msgstr "<0>Inviata il {0}.</0> Le versioni che hai inviato restano in Salvato. L
 msgid "1 column, inline"
 msgstr "1 colonna, in linea"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
-#: src/features/portfolio/page-text.ts
-msgid "1 page"
-msgstr ""
-
 #: src/features/portfolio/blocks/block-list.tsx
-msgid "1 to 12 pictures with captions"
+msgid "1 to {most} pictures with captions"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -1241,7 +1251,7 @@ msgid "A deep night sidebar where a large serif name, the portrait and the conta
 msgstr ""
 
 #: src/features/portfolio/blocks/block-list.tsx
-msgid "A document up to 10 MB"
+msgid "A document up to {limit}"
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
@@ -1282,6 +1292,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "A link"
+msgstr ""
+
+#: src/features/portfolio/blocks/add-media-block.tsx
+msgid "A Link block opens a web page, not an email address. Visitors find your email in Contact."
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -1336,8 +1350,16 @@ msgstr ""
 msgid "A photo for the portfolio only"
 msgstr ""
 
+#: src/features/portfolio/errors.ts
+msgid "A picture or file in your portfolio isn't available anymore. Remove it, then upload it again."
+msgstr ""
+
 #: src/features/portfolio/blocks/images-block.tsx
-msgid "A Pictures block holds up to 12 pictures. Add another block for more."
+msgid "A Pictures block holds up to {most} pictures. Add another block for more."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "A portfolio holds at most {maxWorks} works. Remove some before adding more."
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
@@ -1516,6 +1538,7 @@ msgid "Accounts"
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Achievement numbers"
 msgstr ""
 
@@ -1629,7 +1652,7 @@ msgstr "Aggiunga una parola chiave..."
 msgid "Add a label to the URL"
 msgstr "Aggiungi un'etichetta all'URL"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add a link"
 msgstr "Aggiungi un collegamento"
@@ -1734,7 +1757,7 @@ msgstr ""
 msgid "Add a testimonial"
 msgstr ""
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Add a video"
 msgstr ""
 
@@ -1849,7 +1872,7 @@ msgstr "Aggiungi la parola chiave"
 msgid "Add language"
 msgstr "Aggiungi lingua"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Add link"
 msgstr ""
 
@@ -1967,7 +1990,7 @@ msgstr "Aggiungi alle competenze"
 msgid "Add two or three lines at the top describing what you do."
 msgstr "Aggiungi due o tre righe in alto che descrivano cosa fai."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Add video"
 msgstr ""
 
@@ -1979,19 +2002,21 @@ msgstr "Aggiungi il volontariato"
 msgid "Add what happened before you can save."
 msgstr "Descrivi cosa è successo per poter salvare."
 
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 #: src/features/portfolio/works/works-form.tsx
 msgid "Add work"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Add work from a link"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Add work from pictures"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Add work from your resume"
 msgstr ""
 
@@ -2282,7 +2307,7 @@ msgstr "Già coperto · Scegline uno per trovarlo sulla pagina"
 msgid "Already have an account? <0>Sign in now <1/></0>"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Already in your work"
 msgstr ""
 
@@ -2368,6 +2393,7 @@ msgstr ""
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "Un errore imprevisto ha impedito il caricamento di questa pagina. Riprova o vai alla dashboard."
 
+#: src/features/portfolio/errors.ts
 #: src/features/portfolio/images/upload.ts
 msgid "Animated GIFs can't be used. Upload a still picture (JPG, PNG or WebP)."
 msgstr ""
@@ -2811,7 +2837,7 @@ msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/parts.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Indietro"
@@ -2950,11 +2976,11 @@ msgstr ""
 msgid "Before: {before}"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Behance, Dribbble, GitHub, Figma, Medium, YouTube, Vimeo or any public page."
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Behance, Dribbble, GitHub, YouTube or any site fills in the card."
 msgstr ""
 
@@ -3167,6 +3193,7 @@ msgid "Button text (optional)"
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Buttons"
 msgstr ""
 
@@ -3213,6 +3240,7 @@ msgstr "Il software può leggere il tuo curriculum?"
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -3267,7 +3295,7 @@ msgstr ""
 msgid "Case studies"
 msgstr ""
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Case study (public version)"
 msgstr ""
 
@@ -3619,6 +3647,10 @@ msgstr ""
 msgid "Choose color"
 msgstr "Scegli il colore"
 
+#: src/features/portfolio/errors.ts
+msgid "Choose one of your resumes that isn't in Trash."
+msgstr ""
+
 #: src/features/portfolio/images/image-field.tsx
 msgid "Choose pictures"
 msgstr ""
@@ -3633,6 +3665,10 @@ msgstr "Cerchio"
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Cities"
+msgstr ""
+
+#: src/features/portfolio/location/location-fields.tsx
+msgid "Cities are listed by their names in Latin letters. Type it that way, such as “Tokyo”."
 msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
@@ -3735,7 +3771,7 @@ msgstr ""
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/page-text.ts
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
@@ -3830,7 +3866,6 @@ msgid "Columns can scramble the order text is read in."
 msgstr "Le colonne possono confondere l'ordine in cui il testo viene letto."
 
 #: src/features/homepage/pricing.tsx
-#: src/features/portfolio/works/works-form.tsx
 msgid "Coming soon"
 msgstr ""
 
@@ -4227,7 +4262,7 @@ msgstr "Copia l'intera descrizione del lavoro dall'annuncio e incollala qui sott
 msgid "Copy the text out of the exported file and read it through; fix anything that arrives in the wrong place."
 msgstr "Copia il testo dal file esportato e leggilo per intero; correggi tutto ciò che finisce nel posto sbagliato."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "Copy the thumbnail"
 msgstr ""
 
@@ -4235,11 +4270,11 @@ msgstr ""
 msgid "Copy transcript"
 msgstr "Copia la trascrizione"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "Copying the thumbnail into your portfolio…"
 msgstr ""
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Copying the thumbnail…"
 msgstr ""
 
@@ -4695,10 +4730,6 @@ msgstr "Impossibile salvare questa pianificazione. Riprova."
 #: src/routes/builder/letter/$coverLetterId.tsx
 msgid "Couldn't save your changes. Try again before continuing."
 msgstr "Impossibile salvare le modifiche. Riprovare prima di continuare."
-
-#: src/routes/builder/portfolio/index.tsx
-msgid "Couldn't save your changes. Try again before leaving."
-msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Couldn't save your changes. Try again."
@@ -5463,7 +5494,7 @@ msgstr "Descrivi il ruolo"
 msgid "Description"
 msgstr "Descrizione"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "Description (optional)"
 msgstr ""
 
@@ -5477,6 +5508,7 @@ msgid "Description of role {0}"
 msgstr "Descrizione del ruolo {0}"
 
 #: src/features/homepage/features.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
@@ -5648,7 +5680,7 @@ msgid "Don't send {0}"
 msgstr "Non inviare {0}"
 
 #: src/features/billing/admin/customer.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Done"
@@ -5869,7 +5901,7 @@ msgstr "Trascina un file qui o sfoglia. PDF, Word, Rezumi o JSON Resume. Compili
 msgid "Drop a PDF, Word or JSON file"
 msgstr "Rilascia un file PDF, Word o JSON"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Drop pictures here"
 msgstr ""
 
@@ -6140,7 +6172,7 @@ msgid "Embed all fonts when exporting, so characters map the way you intended."
 msgstr "Incorpora tutti i font durante l'esportazione, così i caratteri vengono mappati come previsto."
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Empty"
 msgstr ""
 
@@ -6229,8 +6261,8 @@ msgstr ""
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
 msgstr "Inserisci un importo completo, ad esempio 95000. L'importo precedente non è cambiato."
 
+#: src/features/portfolio/blocks/add-media-block.tsx
 #: src/features/portfolio/editor/fields.tsx
-#: src/features/portfolio/editor/offer-forms.tsx
 msgid "Enter a full web address, such as https://example.com."
 msgstr ""
 
@@ -6595,11 +6627,11 @@ msgstr "file letto"
 msgid "Fill fields"
 msgstr "Compila campi"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "Fill in from the link"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Fill in the card, then build the detail from blocks."
 msgstr ""
 
@@ -7009,14 +7041,16 @@ msgstr ""
 msgid "From"
 msgstr "Da"
 
+#. placeholder {0}: PROGRESS.min
+#. placeholder {1}: PROGRESS.max
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "From {0} to {1}, drawn as a bar."
+msgstr ""
+
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
 #: src/features/billing/plan-page.tsx
 msgid "From {0} until {1}"
-msgstr ""
-
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "From 0 to 100, drawn as a bar."
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -7031,7 +7065,7 @@ msgstr "Da un documento che hai allegato"
 msgid "From Fit"
 msgstr "Da Adattamento"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "From my resume"
 msgstr ""
 
@@ -7254,6 +7288,7 @@ msgid "Green"
 msgstr "Verde"
 
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Greeting"
 msgstr "Saluto iniziale"
@@ -7335,6 +7370,7 @@ msgstr "La rubrica è cambiata"
 
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Headline"
 msgstr "Intestazione"
@@ -7903,15 +7939,18 @@ msgstr "Intervistatore"
 
 #: src/features/portfolio/editor/content-panel.tsx
 #: src/features/portfolio/editor/design-panel.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/page-text.ts
 msgid "Intro"
 msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Intro background"
 msgstr ""
 
 #: src/features/portfolio/editor/intro-effect.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Intro effect"
 msgstr ""
 
@@ -8030,7 +8069,11 @@ msgid "It may have been deleted. Choose another story or add a new one."
 msgstr "Potrebbe essere stata eliminata. Scegli un'altra storia o aggiungine una nuova."
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
-msgid "It was saved in another tab or on another device after you opened it here. Reload to continue from that version; your last changes here weren't saved."
+msgid "It was saved in another tab or on another device after you opened it here. Reload to continue from that version, or keep your version and save it over that one."
+msgstr ""
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "It was taken down, so visitors can't see it. Contact support to appeal."
 msgstr ""
 
 #: src/features/documents/document-actions.tsx
@@ -8041,7 +8084,7 @@ msgstr "Verrà eliminato definitivamente e non potrà essere ripristinato."
 msgid "It will show on the application's timeline and on the calendar."
 msgstr "Verrà visualizzato sulla sequenza temporale della domanda di lavoro e sul calendario."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "It's copied into your portfolio, so your page never loads pictures from other sites. Use it only if you may show it."
 msgstr ""
 
@@ -8147,7 +8190,7 @@ msgstr "Sconosciuto"
 msgid "john.doe"
 msgstr "john.doe"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "JPG, PNG or WebP. Each is shrunk in your browser before it's uploaded, and its location data is removed."
 msgstr ""
 
@@ -8181,6 +8224,7 @@ msgid "Keep account"
 msgstr "Tieni il conto"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/portfolio/editor/leave.ts
 #: src/hooks/use-form-blocker.tsx
 msgid "Keep editing"
 msgstr "Continua a modificare"
@@ -8204,6 +8248,10 @@ msgstr "Mantienilo sotto i 2,5 MB, di solito rimuovendo o riducendo le immagini.
 #: src/features/resume/editor/write/improve.tsx
 msgid "Keep mine"
 msgstr "Tieni il mio"
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Keep my version"
+msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Keep on one page"
@@ -8478,6 +8526,14 @@ msgstr "Lascialo vuoto per usare il titolo originale."
 msgid "Leave out"
 msgstr "Lascia fuori"
 
+#: src/features/portfolio/editor/leave.ts
+msgid "Leave without saving"
+msgstr ""
+
+#: src/features/portfolio/editor/leave.ts
+msgid "Leave without saving?"
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "Led the checkout redesign"
 msgstr ""
@@ -8636,9 +8692,9 @@ msgstr "Le righe così vicine possono essere unite quando vengono lette. Utilizz
 
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/portfolio/blocks/block-list.tsx
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 #: src/features/resume/editor/write/fields.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Link"
@@ -8868,6 +8924,7 @@ msgstr ""
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/design/entries-group.tsx
@@ -8964,7 +9021,7 @@ msgstr ""
 msgid "Main navigation"
 msgstr "Navigazione principale"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Make"
 msgstr ""
 
@@ -9045,7 +9102,7 @@ msgstr "Gestito dal tuo server"
 msgid "Manual transfer"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Many at once: one work with all of them, or one work per picture."
 msgstr ""
 
@@ -9483,6 +9540,7 @@ msgstr ""
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -9937,7 +9995,7 @@ msgstr ""
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "Nessuna foto. La maggior parte degli ATS ignora le foto; alcune regioni se ne aspettano uno."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "No picture"
 msgstr ""
 
@@ -10165,7 +10223,7 @@ msgid "Not saved — this fact was forgotten before."
 msgstr "Non salvato: questo fatto era già stato dimenticato."
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
-msgid "Not saved: a field needs fixing"
+msgid "Not saved: something needs fixing"
 msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
@@ -10452,11 +10510,11 @@ msgstr ""
 msgid "One result from this work's Metrics blocks, shown as a chip on its card."
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "One work per picture (photographers, illustrators)"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "One work with all the pictures"
 msgstr ""
 
@@ -10617,7 +10675,7 @@ msgstr "Apri il file esportato e verifica di poter selezionare e copiare ogni su
 msgid "Open the link we sent to {email}. Your invoices go there too."
 msgstr ""
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Open the PDF"
 msgstr ""
 
@@ -10843,6 +10901,7 @@ msgid "Page 1 · {formatLabel}"
 msgstr "Pagina 1 · {formatLabel}"
 
 #: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Page language"
 msgstr ""
 
@@ -10862,6 +10921,11 @@ msgstr "La lettura della pagina non è terminata."
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Page view"
 msgstr "Visualizzazione della pagina"
+
+#. A PDF's page count on a public portfolio page. Keep a label before the number: the page has no plural forms.
+#: src/features/portfolio/page-text.ts
+msgid "Pages: {count}"
+msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
@@ -10981,11 +11045,11 @@ msgstr "Incolla un collegamento al lavoro. Salveremo l'annuncio di lavoro in mod
 msgid "Paste a job posting…"
 msgstr "Incolla un annuncio di lavoro..."
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Paste a link"
 msgstr ""
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Paste a link to Behance, Dribbble, GitHub, Figma, Medium or any site. The card fills itself in."
 msgstr ""
 
@@ -10994,7 +11058,7 @@ msgstr ""
 msgid "Paste a message from {0}"
 msgstr "Incolla un messaggio di {0}"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Paste a YouTube or Vimeo link. The player loads only when a visitor presses play."
 msgstr ""
 
@@ -11113,7 +11177,7 @@ msgstr ""
 msgid "PDF styles support a subset of CSS. Rotation, dashed and dotted borders, and some layout properties are ignored."
 msgstr "Gli stili PDF supportano un sottoinsieme di CSS. La rotazione, i bordi tratteggiati e punteggiati e alcune proprietà del layout vengono ignorati."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/pdf-block.tsx
 msgid "PDF title"
 msgstr ""
 
@@ -11169,6 +11233,7 @@ msgid "Phone (optional)"
 msgstr "Telefono (facoltativo)"
 
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Photo"
 msgstr ""
 
@@ -11212,7 +11277,7 @@ msgstr "Scegli un'icona"
 msgid "Pick one format and use it everywhere."
 msgstr "Scegli un formato e usalo ovunque."
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Pick projects from your resume: title, summary, dates and link come along."
 msgstr ""
 
@@ -11229,7 +11294,7 @@ msgstr "Scelgo le tue storie"
 msgid "Picture"
 msgstr "Immagine"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Picture (optional)"
 msgstr ""
@@ -11425,6 +11490,7 @@ msgstr "Rifinisco"
 
 #: src/features/portfolio/portfolio-page.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+#: src/routes/builder/portfolio/index.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Portfolio"
 msgstr ""
@@ -11435,6 +11501,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/preview.tsx
 msgid "Portfolio preview"
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "Portfolios aren't available for your account right now."
 msgstr ""
 
 #. Preset button for setting picture aspect ratio to portrait orientation
@@ -12081,7 +12151,7 @@ msgstr "Leggi i link alle offerte di lavoro che salvi. Il salvataggio e la prepa
 msgid "Read the letter"
 msgstr "Leggi la lettera"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Read the link"
 msgstr ""
 
@@ -12127,7 +12197,8 @@ msgstr "Punteggio di leggibilità: {0} su 100"
 msgid "Readability score: {score} out of 100"
 msgstr "Punteggio di leggibilità: {score} su 100"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
+#: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Reading and uploading the PDF…"
 msgstr ""
 
@@ -12140,7 +12211,7 @@ msgid "Reading the file"
 msgstr "Lettura del fascicolo"
 
 #: src/features/applications/components/add-application-dialog.tsx
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Reading the link…"
 msgstr "Leggendo il collegamento…"
 
@@ -12170,7 +12241,7 @@ msgstr "Leggo la domanda"
 msgid "Reading the text"
 msgstr "Leggere il testo"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Reading the video…"
 msgstr ""
 
@@ -12691,7 +12762,7 @@ msgstr ""
 msgid "Replace tables with plain paragraphs and lists. Cells extract in storage order, not reading order."
 msgstr "Sostituisci le tabelle con paragrafi ed elenchi semplici. Le celle vengono estratte nell'ordine di archiviazione, non in quello di lettura."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Replace the PDF"
 msgstr ""
 
@@ -12854,7 +12925,7 @@ msgstr ""
 msgid "Resume review"
 msgstr ""
 
-#: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/editor/sections.ts
 msgid "Resume section"
 msgstr ""
 
@@ -13290,6 +13361,10 @@ msgstr "Salva nella domanda di lavoro"
 msgid "Save your backup codes"
 msgstr "Salva i codici di backup"
 
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Save your version over the other one?"
+msgstr ""
+
 #: src/features/resume/share/format.ts
 msgid "saved"
 msgstr "salvato"
@@ -13462,6 +13537,7 @@ msgid "Search documents"
 msgstr "Cerca documenti"
 
 #: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Search engines"
 msgstr ""
 
@@ -13589,6 +13665,7 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 #: src/features/homepage/section-nav.tsx
 #: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Sections"
@@ -13908,7 +13985,7 @@ msgstr ""
 msgid "Short number (1.2k, 1.2m)"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Short summary"
 msgstr ""
 
@@ -14002,6 +14079,14 @@ msgstr "Mostra nei motori di ricerca"
 #: src/features/resume/editor/write/fields.tsx
 msgid "Show link in title"
 msgstr "Mostra il link nel titolo"
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Show me"
+msgstr ""
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Show me: {placeLabel}"
+msgstr ""
 
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Show my email address"
@@ -14172,7 +14257,7 @@ msgstr "Registrazione in corso..."
 msgid "since last view"
 msgstr "dall'ultima visualizzazione"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "Site name (optional)"
 msgstr ""
 
@@ -14316,6 +14401,14 @@ msgstr "Del testo è ruotato."
 
 #: src/features/homepage/faq.tsx
 msgid "Something else on your mind? Write to us at"
+msgstr ""
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "Something in {where} can't be saved as it is. Change or remove it, or undo your last change."
+msgstr ""
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "Something in your portfolio can't be saved as it is. Undo your last change, or contact support if this keeps happening."
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -14796,6 +14889,10 @@ msgstr "Svedese"
 msgid "Swipe sideways"
 msgstr ""
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Switch between plus and minus"
+msgstr ""
+
 #: src/features/assistant/conversation.tsx
 msgid "Switch model"
 msgstr "Cambia modello"
@@ -14923,6 +15020,10 @@ msgstr ""
 #. placeholder {0}: formatDate(entry.revokedAt)
 #: src/features/billing/credits.ts
 msgid "Taken back on {0}"
+msgstr ""
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Taken down"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -15164,11 +15265,11 @@ msgstr "Impossibile leggere quel file come PDF. Scegli un file PDF e riprova."
 msgid "That file is too large to check. PDFs up to 25 MB work."
 msgstr "Il file è troppo grande per essere controllato. PDFs fino a 25 MB funzionano."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "That isn't a YouTube or Vimeo video link."
 msgstr ""
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "That isn't a YouTube or Vimeo video link. Copy the address from the video's page."
 msgstr ""
 
@@ -15200,7 +15301,7 @@ msgstr "La registrazione era vuota o superava 2 MB. Prova con una risposta più 
 msgid "That sign-in provider is no longer available on this server. Use another sign-in method."
 msgstr "Quel provider di accesso non è più disponibile su questo server. Usa un altro metodo di accesso."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "That's a video, so it was added as a Video block."
 msgstr ""
 
@@ -15231,6 +15332,10 @@ msgstr "L'assistente utilizza la tua chiave. Niente viene inviato da nessuna par
 #: src/features/settings/ai/web-access.tsx
 msgid "The built-in reader remains active."
 msgstr "Il lettore integrato rimane attivo."
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "The changes saved in the other tab or device are replaced by what you see here."
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "The checker shows the text a parser extracts and what to fix first."
@@ -15267,6 +15372,10 @@ msgstr "Il coach li legge solo per questa candidatura."
 #: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Il coach salva i fatti che dichiari e te lo comunica. Puoi annullare."
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "The connection dropped. Your changes are kept here, and saving tries again by itself."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "The copy is linked to the application, so Check and the assistant use its posting."
@@ -15408,7 +15517,7 @@ msgstr "L'originale resta nella cronologia."
 msgid "The page had no job details to read. Fill in the role and company."
 msgstr "La pagina non conteneva dettagli sul lavoro da leggere. Compila ruolo e azienda."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "The page shows a plain play button until the thumbnail is copied."
 msgstr ""
 
@@ -15444,7 +15553,7 @@ msgstr ""
 msgid "The picture couldn't be copied from the site. Upload one yourself instead."
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "The picture couldn't be copied. Add a cover yourself."
 msgstr ""
 
@@ -15468,6 +15577,14 @@ msgstr "Impossibile leggere l'annuncio di lavoro. Compila ruolo e azienda."
 msgid "The posting saved with this application."
 msgstr "L'annuncio di lavoro salvato con questa domanda di lavoro."
 
+#: src/features/portfolio/editor/preview.tsx
+msgid "The preview couldn't be drawn. Your changes are still saved as you edit."
+msgstr ""
+
+#: src/features/portfolio/editor/preview.tsx
+msgid "The preview couldn't be updated, so it shows an earlier version."
+msgstr ""
+
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "The problem"
 msgstr ""
@@ -15476,7 +15593,7 @@ msgstr ""
 msgid "The process"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "The projects couldn't be added. Check your connection, then try again."
 msgstr ""
 
@@ -15570,8 +15687,12 @@ msgstr "Il punteggio riflette l'affidabilità con cui viene estratto il testo, n
 msgid "The server couldn't read this PDF. Save it again as a PDF."
 msgstr ""
 
-#: src/features/portfolio/images/upload.ts
+#: src/features/portfolio/errors.ts
 msgid "The server couldn't read this picture. Try another JPG, PNG or WebP file."
+msgstr ""
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "The server couldn't save your changes. Saving tries again by itself."
 msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
@@ -15784,6 +15905,10 @@ msgstr "Questo file è grande per essere un curriculum."
 msgid "This file is larger than many application forms accept."
 msgstr "Questo file è più grande di quanto molti moduli di candidatura accettino."
 
+#: src/features/portfolio/errors.ts
+msgid "This file is too large to upload."
+msgstr ""
+
 #: src/features/resume/editor/design/uploaded-fonts.tsx
 msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
 msgstr ""
@@ -15792,6 +15917,11 @@ msgstr ""
 msgid "This file isn't a PDF. Choose a .pdf file."
 msgstr ""
 
+#: src/features/portfolio/errors.ts
+msgid "This file isn't a PDF. Upload a PDF file."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
 #: src/features/portfolio/images/upload.ts
 msgid "This file isn't a picture your browser can read. Use a JPG, PNG or WebP file."
 msgstr ""
@@ -15820,7 +15950,7 @@ msgstr ""
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "Questo è un PDF Portfolio: la pagina visibile è solo una copertina."
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "This is a video. Add it as a Video block to play it on the page."
 msgstr ""
 
@@ -15831,6 +15961,10 @@ msgstr "Questo è un modulo XFA, quindi la maggior parte dei software legge solo
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "Questo non è un formato di pagina comune per un curriculum."
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "This item can't be hidden here. Hide it on your resume instead."
+msgstr ""
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "This letter and “{resumeName}” as two PDFs, named to match."
@@ -15905,11 +16039,11 @@ msgid "This PDF is a scanned image. There's no text to read. Try the Word versio
 msgstr "Questa PDF è un'immagine scansionata. Non c'è testo da leggere. Prova la versione Word oppure inizia a creare sezioni vuote e incollale."
 
 #: src/features/portfolio/media/pdf.ts
-msgid "This PDF is larger than 10 MB. Make it smaller (for example, export it with compressed pictures), then try again."
+msgid "This PDF is larger than {limit}. Make it smaller (for example, export it with compressed pictures), then try again."
 msgstr ""
 
 #: src/features/portfolio/media/pdf.ts
-msgid "This PDF is larger than 10 MB. Make it smaller, then try again."
+msgid "This PDF is larger than {limit}. Make it smaller, then try again."
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -15920,21 +16054,33 @@ msgstr "Questo PDF è protetto da password. Salva una copia non protetta e ripro
 msgid "This PDF is protected by a password. Save a copy without one, then upload that."
 msgstr ""
 
-#: src/features/portfolio/images/upload.ts
-msgid "This picture is too large to prepare. Use one under 50 MB and 100 megapixels."
+#: src/features/portfolio/errors.ts
+msgid "This picture is larger than the portfolio allows. Upload it again so it's made smaller first."
 msgstr ""
 
-#. placeholder {0}: PORTFOLIO_LIMITS.works
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/images/upload.ts
+msgid "This picture is too large to prepare. Use one under {megabytes} MB and {megapixels} megapixels."
+msgstr ""
+
+#. placeholder {0}: limits.works
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "This portfolio already holds {0} works."
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/errors.ts
+msgid "This portfolio doesn't exist anymore. It may have been deleted in another tab."
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "This portfolio was taken down"
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "This resume can't be read. Choose another resume."
 msgstr ""
 
 #: src/features/resume/builder/draft.ts
@@ -15996,6 +16142,10 @@ msgstr "Questo server non accetta nuovi account. Accedi con un account esistente
 #: src/features/auth/pages/error.tsx
 msgid "This sign-in attempt expired or was already used. Try again."
 msgstr "Questo tentativo di accesso è scaduto o è già stato usato. Riprova."
+
+#: src/features/portfolio/errors.ts
+msgid "This site can't be read automatically. Fill in the details yourself."
+msgstr ""
 
 #: src/features/portfolio/media/remote.ts
 msgid "This site can't be read automatically. Fill the card in by hand."
@@ -16113,7 +16263,7 @@ msgid "Tip"
 msgstr "Suggerimento"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Title"
@@ -16123,13 +16273,22 @@ msgstr "Titolo"
 msgid "Title in search results"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Title of the work"
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "To"
 msgstr "A"
+
+#: src/features/portfolio/location/location-fields.tsx
+msgid "To show your city, find it again above. The page keeps what it shows until then."
+msgstr ""
+
+#: src/features/portfolio/location/location-fields.tsx
+msgid "To show your province or state, find your city again above. The page keeps what it shows until then."
+msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
@@ -16161,9 +16320,17 @@ msgstr "Troppo chiaro per i titoli su bianco. Potrebbe essere difficile da legge
 msgid "Too many links read in a short time. Wait a while, or fill the card in by hand."
 msgstr ""
 
+#: src/features/portfolio/errors.ts
+msgid "Too many requests in a short time. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Too many requests. Try again later."
 msgstr "Troppe richieste. Riprova più tardi."
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "Too many saves in a short time. Saving tries again in a moment."
+msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Too many tries in a row. Wait a few minutes, then try again."
@@ -16296,6 +16463,7 @@ msgstr "Prova un campione"
 #: src/features/career/workspace/practise.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/features/documents/library-error.tsx
+#: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/resume/editor/write/improve.tsx
 #: src/features/resume/preview/preview.browser.tsx
@@ -16570,6 +16738,7 @@ msgid "Untitled"
 msgstr "Senza titolo"
 
 #: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled client"
 msgstr ""
 
@@ -16581,29 +16750,37 @@ msgstr "Lettera senza titolo"
 msgid "Untitled resume"
 msgstr "Curriculum senza titolo"
 
-#: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/editor/sections.ts
 msgid "Untitled section"
 msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled service"
 msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled testimonial"
 msgstr ""
 
+#: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/portfolio/works/works-form.tsx
 msgid "Untitled work"
 msgstr ""
 
-#: src/features/portfolio/blocks/media-blocks.tsx
-msgid "Up to 10 MB, without a password. Visitors open it in a new tab."
+#. placeholder {0}: PORTFOLIO_LIMITS.tagsPerWork
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Up to {0}, such as “UX research” or “Figma”. Press Enter or a comma after each."
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Up to 12, such as “UX research” or “Figma”. Press Enter or a comma after each."
+#: src/features/portfolio/blocks/pdf-block.tsx
+msgid "Up to {limit}, without a password. Visitors open it in a new tab."
+msgstr ""
+
+#: src/features/portfolio/images/upload.ts
+msgid "Up to {MAX_BATCH_PICTURES} pictures are uploaded at a time. Add the others afterwards."
 msgstr ""
 
 #: src/features/career/workspace/practise.tsx
@@ -16682,7 +16859,7 @@ msgstr ""
 msgid "Upload photo"
 msgstr "Carica foto"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Upload pictures"
 msgstr ""
 
@@ -16690,7 +16867,7 @@ msgstr ""
 msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Uploaded pictures"
 msgstr ""
 
@@ -16803,7 +16980,7 @@ msgstr "Usa per tutte le candidature"
 msgid "Use in coaching: {excerpt}"
 msgstr "Usa nel coaching: {excerpt}"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Use it only if you may show it. Your page never loads pictures from other sites."
 msgstr ""
 
@@ -16843,7 +17020,7 @@ msgstr "Utilizza gli annunci di lavoro"
 msgid "Use sample"
 msgstr "Usa esempio"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "Use the page's picture?"
 msgstr ""
 
@@ -16863,11 +17040,11 @@ msgstr ""
 msgid "Use this device's timezone ({device})"
 msgstr "Usa il fuso orario di questo dispositivo ({device})"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/link-block.tsx
 msgid "Use this picture"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Use this picture as the cover (it's copied into your portfolio)"
 msgstr ""
 
@@ -16991,6 +17168,10 @@ msgstr "Verifica"
 msgid "Verify with a backup code"
 msgstr "Verifica con un codice di backup"
 
+#: src/features/portfolio/errors.ts
+msgid "Verify your email address before publishing your portfolio."
+msgstr ""
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Verify your email address first"
 msgstr ""
@@ -17056,7 +17237,7 @@ msgstr "È stato recuperato pochissimo testo per così tante pagine."
 msgid "Video"
 msgstr ""
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "Video link"
 msgstr ""
 
@@ -17064,11 +17245,11 @@ msgstr ""
 msgid "Video link, office address, or phone number"
 msgstr "Collegamento video, indirizzo dell'ufficio o numero di telefono"
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "Video title (optional)"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Video: it plays on your page when a visitor presses play"
 msgstr ""
 
@@ -17125,6 +17306,10 @@ msgstr "I visitatori possono scaricare PDF"
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Visitors can't see it anymore. Your short link opens your primary resume again, if you have a published one."
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Visitors can't see it while it's taken down."
 msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
@@ -17256,7 +17441,7 @@ msgstr ""
 msgid "Website"
 msgstr "Sito Web"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Wedding photos, Bandung 2025"
 msgstr ""
 
@@ -17786,6 +17971,14 @@ msgstr "Ieri {time}"
 msgid "You"
 msgstr "Voi"
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "You already have a portfolio, so it opens instead."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "You already have a portfolio. Open it from Portfolio in the menu."
+msgstr ""
+
 #. placeholder {0}: result.takenBy
 #: src/features/resume/share/address-field.tsx
 msgid "You already use this for “{0}”."
@@ -17878,6 +18071,10 @@ msgstr ""
 #: src/features/resume/builder/draft.ts
 msgid "You're offline. Reconnect to save your changes before leaving."
 msgstr "Sei offline. Riconnettiti per salvare le modifiche prima di uscire."
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "You're signed out. Sign in again in another tab, and saving continues."
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "You're up to date"
@@ -18092,6 +18289,22 @@ msgstr "le tue Conoscenze"
 msgid "Your last payment didn't go through. Update your payment method in billing first."
 msgstr ""
 
+#: src/features/portfolio/works/add-work/from-resume.tsx
+msgid "Your latest changes aren't saved yet, so the projects weren't added. Once they're saved, try again."
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Your latest changes aren't saved, so nothing was changed. Check the save status at the top, then try again."
+msgstr ""
+
+#: src/features/portfolio/editor/leave.ts
+msgid "Your latest changes aren't saved. If you leave now, they're lost."
+msgstr ""
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Your latest changes here aren't saved."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your lines are packed very tightly."
 msgstr "Le tue battute sono molto fitte."
@@ -18224,7 +18437,23 @@ msgid "Your portfolio"
 msgstr ""
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Your portfolio can't be saved"
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio changed in another tab or device. Reload it to see the latest version."
+msgstr ""
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Your portfolio changed somewhere else"
+msgstr ""
+
+#: src/features/portfolio/editor/save-problem.ts
+msgid "Your portfolio couldn't be saved. Undo your last change, or contact support if this keeps happening."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio holds as many works as it can. Remove some before adding more."
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -18235,8 +18464,30 @@ msgstr ""
 msgid "Your portfolio is no longer published"
 msgstr ""
 
+#. placeholder {0}: Math.ceil(bytes / 1024)
+#. placeholder {1}: Math.floor(max / 1024)
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio is too large to save ({0} KB of {1} KB). Shorten some text or remove a few blocks."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio is too large to save. Shorten some text or remove a few blocks."
+msgstr ""
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your portfolio still shows its own content. Choose another resume to fill Experience, Education and the other sections again."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio still uses this file. Remove it from the portfolio first."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio was taken down and can't be published. Contact support to appeal."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "Your portfolio's storage is full. Remove pictures or PDFs you don't need, then try again."
 msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
@@ -18280,7 +18531,7 @@ msgstr "Il tuo curriculum è stato duplicato."
 msgid "Your resume has been updated."
 msgstr "Il tuo curriculum è stato aggiornato."
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your resume has no projects yet. Add them in the resume editor, or start an empty work."
 msgstr ""
 
@@ -18361,7 +18612,7 @@ msgstr "Il tuo lavoro andrà perso quando esci o la sessione scade. Crea un acco
 msgid "YouTube or Vimeo, loaded when played"
 msgstr ""
 
-#: src/features/portfolio/blocks/media-blocks.tsx
+#: src/features/portfolio/blocks/video-block.tsx
 msgid "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
 msgstr ""
 

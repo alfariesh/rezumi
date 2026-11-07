@@ -2,7 +2,7 @@ import type { RemoteHop } from "./remote";
 import type { IncomingMessage, Server, ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
 import { createServer } from "node:http";
-import { afterAll, beforeAll, describe, expect, it, vi } from "vite-plus/test";
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vite-plus/test";
 import sharp from "sharp";
 
 // No shared cache in these tests: the in-process one is used.
@@ -13,6 +13,7 @@ const { fetchRemote, RemoteFetchError } = await import("./remote");
 const {
 	fetchRemoteImage,
 	readUnfurlCache,
+	REMOTE_IMAGE_MAX_PIXELS,
 	RemoteImageError,
 	unfurlUrl,
 	UnfurlError,
@@ -334,6 +335,35 @@ describe("fetchRemoteImage", () => {
 		});
 	});
 
+	it("refuses pictures with more pixels than a browser should decode, whatever their file size", async () => {
+		const problem = (reason: string) => expect.objectContaining({ name: "RemoteImageError", reason });
+		const side = Math.ceil(Math.sqrt(REMOTE_IMAGE_MAX_PIXELS)) + 1;
+		// Headers that promise a huge canvas in a few bytes, each format's own way.
+		const gif = new Uint8Array([...new TextEncoder().encode("GIF89a"), side & 0xff, side >> 8, side & 0xff, side >> 8]);
+		const png = await sharp({ create: { width: 2, height: 2, channels: 3, background: "#000" } })
+			.png()
+			.toBuffer();
+		const bigPng = new Uint8Array(png);
+		new DataView(bigPng.buffer).setUint32(16, side);
+		new DataView(bigPng.buffer).setUint32(20, side);
+		routes.set("cdn.example.test/bomb.gif", (_request, response) => {
+			response.writeHead(200, { "content-type": "image/gif" });
+			response.end(gif);
+		});
+		routes.set("cdn.example.test/bomb.png", (_request, response) => {
+			response.writeHead(200, { "content-type": "image/png" });
+			response.end(bigPng);
+		});
+		await expect(fetchRemoteImage("https://cdn.example.test/bomb.gif", options)).rejects.toEqual(problem("too-large"));
+		await expect(fetchRemoteImage("https://cdn.example.test/bomb.png", options)).rejects.toEqual(problem("too-large"));
+		// A GIF whose header says nothing about its size isn't a picture.
+		routes.set("cdn.example.test/empty.gif", (_request, response) => {
+			response.writeHead(200, { "content-type": "image/gif" });
+			response.end(new TextEncoder().encode("GIF89a"));
+		});
+		await expect(fetchRemoteImage("https://cdn.example.test/empty.gif", options)).rejects.toEqual(problem("type"));
+	});
+
 	it("refuses anything else, too large pictures, and private addresses", async () => {
 		const problem = (reason: string) => expect.objectContaining({ name: "RemoteImageError", reason });
 		await expect(fetchRemoteImage("https://cdn.example.test/logo.svg", options)).rejects.toEqual(problem("type"));
@@ -359,20 +389,100 @@ describe("the unfurl cache", () => {
 		await expect(readUnfurlCache("https://cache.example.test/b", now)).resolves.toBeNull();
 		await expect(readUnfurlCache("https://cache.example.test/a", now + 25 * 60 * 60 * 1000)).resolves.toBeNull();
 	});
+
+	it("doesn't keep a video whose oEmbed answer failed, so the next paste asks again", async () => {
+		const now = Date.now();
+		const link = "https://www.youtube.com/watch?v=bbbbbbbbbbb";
+		const partial = await unfurlUrl(link, options);
+		expect(partial).toMatchObject({ kind: "video", videoId: "bbbbbbbbbbb" });
+		expect(partial).not.toHaveProperty("title");
+		await writeUnfurlCache(link, partial, now);
+		await expect(readUnfurlCache(link, now + 1000)).resolves.toBeNull();
+
+		const complete = await unfurlUrl("https://youtu.be/dQw4w9WgXcQ", options);
+		await writeUnfurlCache("https://youtu.be/dQw4w9WgXcQ", complete, now);
+		await expect(readUnfurlCache("https://youtu.be/dQw4w9WgXcQ", now + 1000)).resolves.toEqual(complete);
+	});
+});
+
+describe("the shared unfurl cache", () => {
+	const store = new Map<string, string>();
+	const shared = {
+		get: vi.fn((key: string) => Promise.resolve(store.get(key) ?? null)),
+		set: vi.fn((key: string, value: string) => {
+			store.set(key, value);
+			return Promise.resolve();
+		}),
+	};
+
+	afterEach(() => {
+		vi.doUnmock("@rezumi/db/coordination");
+		vi.resetModules();
+	});
+
+	it("is versioned and reads only results in today's shape", async () => {
+		vi.resetModules();
+		vi.doMock("@rezumi/db/coordination", () => ({ getCoordination: () => shared }));
+		const cache = await import("./unfurl");
+		const value = { kind: "link" as const, url: "https://shared.example.test/a", title: "Shared", siteName: "Site" };
+		await cache.writeUnfurlCache("https://shared.example.test/a", value);
+		const [key] = [...store.keys()];
+		expect(key).toMatch(/^portfolio-unfurl:v2:[\da-f]{64}$/);
+		await expect(cache.readUnfurlCache("https://shared.example.test/a")).resolves.toEqual(value);
+
+		// Broken JSON, an older shape, or values no result can hold read as a miss, not as a result.
+		for (const stored of [
+			"{not json",
+			JSON.stringify({ kind: "link", url: "https://shared.example.test/a" }),
+			JSON.stringify({ ...value, url: "javascript:alert(1)" }),
+			JSON.stringify({ ...value, imageUrl: "data:image/png;base64,AAAA" }),
+			JSON.stringify({
+				kind: "video",
+				url: "https://www.youtube.com/watch?v=x",
+				provider: "dailymotion",
+				videoId: "x",
+			}),
+		]) {
+			store.set(key as string, stored);
+			await expect(cache.readUnfurlCache("https://shared.example.test/a"), stored).resolves.toBeNull();
+		}
+	});
 });
 
 describe("the default transport", () => {
-	it("refuses loopback even when the address check is skipped", async () => {
-		await expect(
-			fetchRemote(new URL(`http://127.0.0.1:${port}/`), {
-				signal: AbortSignal.timeout(5000),
-				accept: "*/*",
-				acceptsType: () => true,
-				maxBytes: 1024,
-				overflow: "refuse",
-				isAllowedHost: () => true,
-			}),
-		).rejects.toEqual(expect.objectContaining({ reason: "unsafe-url" }));
-		expect(RemoteFetchError).toBeDefined();
+	it("refuses loopback even when the address check is skipped, worded like a name that doesn't resolve", async () => {
+		const reading = fetchRemote(new URL("http://127.0.0.1/"), {
+			signal: AbortSignal.timeout(5000),
+			accept: "*/*",
+			acceptsType: () => true,
+			maxBytes: 1024,
+			overflow: "refuse",
+			isAllowedHost: () => true,
+		});
+		await expect(reading).rejects.toBeInstanceOf(RemoteFetchError);
+		// The transport refused before connecting; the reason doesn't say so.
+		await expect(reading).rejects.toEqual(
+			expect.objectContaining({ reason: "unreachable", cause: expect.objectContaining({ cause: "unsafe-url" }) }),
+		);
+	});
+
+	it("asks only a site's default port, also after a redirect", async () => {
+		routes.set("hop.example.test/to-port", (_request, response) => {
+			response.writeHead(302, { location: "https://studio.example.test:8443/work/kopi" });
+			response.end();
+		});
+		requests.length = 0;
+		for (const url of ["https://studio.example.test:8443/work/kopi", "http://studio.example.test:6379/"])
+			await expect(unfurlUrl(url, options), url).rejects.toEqual(unreadable("unsafe-url"));
+		await expect(fetchRemoteImage("https://cdn.example.test:8080/cover.png", options)).rejects.toEqual(
+			expect.objectContaining({ name: "RemoteImageError", reason: "unsafe-url" }),
+		);
+		expect(requests).toEqual([]);
+		await expect(unfurlUrl("https://hop.example.test/to-port", options)).rejects.toEqual(unreadable("unsafe-url"));
+		expect(requests.map((request) => request.host)).toEqual(["hop.example.test"]);
+		// The scheme's own port, written out, is the same address.
+		await expect(unfurlUrl("https://studio.example.test:443/work/kopi", options)).resolves.toMatchObject({
+			title: "Kopi Senja",
+		});
 	});
 });

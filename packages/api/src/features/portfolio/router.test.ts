@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { createRouterClient } from "@orpc/server";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
+import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 
 const fixture = vi.hoisted(() => ({ mode: "off" as "off" | "admins" | "on" }));
 
@@ -23,14 +24,15 @@ vi.mock("../../context", async () => {
 		publicProcedure: os.$context<Record<string, never>>(),
 	};
 });
-// With the mode off, no procedure may touch the database.
+// With the mode off, no procedure may touch the database; with it on, these tests are refused before they could.
 vi.mock("@rezumi/db/client", () => ({
 	get db(): never {
-		throw new Error("The database was used while portfolios are off.");
+		throw new Error("The database was used.");
 	},
 }));
 
 const { portfolioRouter } = await import("./router");
+const { PORTFOLIO_ERRORS } = await import("./errors");
 const { flagsRouter } = await import("../flags/router");
 
 const client = () =>
@@ -45,13 +47,14 @@ describe("portfolio procedures while PORTFOLIO_MODE is off", () => {
 		await expect(client().get()).resolves.toEqual({
 			enabled: false,
 			portfolio: null,
-			limits: { works: 50, storageBytes: null, dataBytes: 256 * 1024 },
+			limits: { works: 50, storageBytes: PORTFOLIO_UPLOAD.accountBytes, dataBytes: 256 * 1024 },
 			usage: { works: 0, storageBytes: 0 },
 		});
+		await expect(client().status()).resolves.toEqual({ enabled: false, portfolio: null });
 	});
 
-	it("refuses every change", async () => {
-		const disabled = { code: "PORTFOLIO_DISABLED", status: 403 };
+	it("refuses every change, with the refusal each procedure declares", async () => {
+		const disabled = { code: "PORTFOLIO_DISABLED", status: 403, defined: true };
 		const data = parseWritablePortfolioData({});
 		await expect(client().create({})).rejects.toMatchObject(disabled);
 		await expect(client().update({ data, expectedUpdatedAt: new Date() })).rejects.toMatchObject(disabled);
@@ -73,12 +76,75 @@ describe("portfolio procedures while PORTFOLIO_MODE is off", () => {
 		await expect(client().unfurl({ url: "https://github.com/nadia/kopi-app" })).rejects.toMatchObject(disabled);
 		await expect(client().fetchRemoteImage({ url: "https://example.com/cover.png" })).rejects.toMatchObject(disabled);
 	});
+});
+
+describe("portfolio input", () => {
+	beforeEach(() => {
+		fixture.mode = "on";
+	});
 
 	it("rejects invalid data before anything else", async () => {
-		fixture.mode = "on";
 		await expect(
 			client().update({ data: { hero: { greeting: "x".repeat(161) } }, expectedUpdatedAt: new Date() }),
 		).rejects.toMatchObject({ code: "BAD_REQUEST" });
+		await expect(
+			client().update({
+				data: { testimonials: { items: [{ id: "t", quote: "Fake", name: "Nobody" }] } } as never,
+				expectedUpdatedAt: new Date(),
+			}),
+		).rejects.toMatchObject({ code: "BAD_REQUEST" });
+	});
+
+	it("refuses data far over the size limit from its raw size, before parsing it", async () => {
+		// Every field within its own limit would still be refused by the schema here (the text is too long); the raw
+		// size check answers first, without parsing.
+		const content = `<p>${"x".repeat(4 * PORTFOLIO_LIMITS.dataBytes)}</p>`;
+		await expect(
+			client().update({ data: { about: { content } }, expectedUpdatedAt: new Date() }),
+		).rejects.toMatchObject({
+			code: "PORTFOLIO_TOO_LARGE",
+			status: 413,
+			defined: true,
+			data: { bytes: expect.any(Number), max: PORTFOLIO_LIMITS.dataBytes },
+		});
+		// Input that isn't JSON at all is left to the schema.
+		await expect(
+			client().update({ data: { hero: { greeting: 1n } } as never, expectedUpdatedAt: new Date() }),
+		).rejects.toMatchObject({ code: "BAD_REQUEST" });
+	});
+
+	it("refuses files over the upload limits before reading them", async () => {
+		const tooBig = (bytes: number, name: string, type: string) => new File([new Uint8Array(bytes)], name, { type });
+		await expect(
+			client().uploadImage({ file: tooBig(PORTFOLIO_UPLOAD.imageBytes + 1, "a.webp", "image/webp") }),
+		).rejects.toMatchObject({ code: "BAD_REQUEST" });
+		await expect(
+			client().uploadImage({
+				file: tooBig(10, "a.webp", "image/webp"),
+				thumbnail: tooBig(PORTFOLIO_UPLOAD.imageBytes + 1, "b.webp", "image/webp"),
+			}),
+		).rejects.toMatchObject({ code: "BAD_REQUEST" });
+		await expect(
+			client().uploadPdf({ file: tooBig(PORTFOLIO_UPLOAD.pdfBytes + 1, "a.pdf", "application/pdf"), pages: 1 }),
+		).rejects.toMatchObject({ code: "BAD_REQUEST" });
+	});
+});
+
+describe("the portfolio router", () => {
+	const procedures = Object.entries(portfolioRouter);
+
+	it("rate-limits before checking input, so a limited account costs no parsing", () => {
+		for (const [name, procedure] of procedures) {
+			const { inputValidationIndex, middlewares } = procedure["~orpc"];
+			expect(inputValidationIndex, name).toBe(middlewares.length);
+		}
+		expect(portfolioRouter.update["~orpc"].middlewares.length).toBeGreaterThan(1);
+	});
+
+	it("declares each refusal from the one shared definition", () => {
+		for (const [name, procedure] of procedures)
+			for (const [code, definition] of Object.entries(procedure["~orpc"].errorMap))
+				expect(definition, `${name} ${code}`).toBe(PORTFOLIO_ERRORS[code as keyof typeof PORTFOLIO_ERRORS]);
 	});
 });
 

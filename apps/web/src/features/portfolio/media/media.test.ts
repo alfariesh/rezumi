@@ -1,10 +1,31 @@
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
-import { describe, expect, it } from "vite-plus/test";
+import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { i18n } from "@lingui/core";
+import { ORPCError } from "@orpc/client";
 import { parsePortfolioData, writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
-import { newWork } from "../works/works";
-import { clip, linkBlockFromUnfurl, videoBlockFromUnfurl, workFromLink } from "./link-blocks";
-import { looksLikePdf, pdfTitleFromName } from "./pdf";
-import { videoThumbnailCandidates } from "./remote";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
+import { newWork, titleFromFileName } from "../works/works";
+import {
+	clip,
+	linkBlockFromUnfurl,
+	readLinkAddress,
+	samePlayedVideo,
+	siteOf,
+	stillPlays,
+	videoAddress,
+	videoBlockFromUnfurl,
+	workFromLink,
+} from "./link-blocks";
+import { formatFileSize, looksLikePdf, pdfErrorMessage } from "./pdf";
+import { unfurlErrorMessage, videoBlockFromUrl, videoThumbnailCandidates } from "./remote";
+
+const unfurl = vi.hoisted(() => vi.fn());
+vi.mock("@/libs/orpc/client", () => ({ client: { portfolio: { unfurl } } }));
+
+beforeEach(() => {
+	i18n.loadAndActivate({ locale: "en-US", messages: {} });
+	unfurl.mockReset();
+});
 
 const empty = (): PortfolioData => parsePortfolioData({});
 
@@ -93,6 +114,112 @@ describe("PDF checks in the browser", () => {
 	});
 
 	it("titles a PDF after its file name", () => {
-		expect(pdfTitleFromName("case-study_final.PDF")).toBe("case study final");
+		expect(titleFromFileName("case-study_final.PDF", PORTFOLIO_LIMITS.text.mediaTitle)).toBe("case study final");
+		expect(titleFromFileName(`${"a".repeat(200)}.pdf`, PORTFOLIO_LIMITS.text.mediaTitle)).toHaveLength(140);
+	});
+
+	it("counts sizes the way the limit is counted, in the app's language", () => {
+		expect(formatFileSize(10 * 1024 * 1024, "en-US")).toBe("10 MB");
+		expect(formatFileSize(1.5 * 1024 * 1024, "id-ID")).toBe("1,5 MB");
+		expect(formatFileSize(300, "en-US")).toBe("1 kB");
+		expect(pdfErrorMessage(new ORPCError("PORTFOLIO_FILE_TOO_LARGE"))).toBe(
+			"This PDF is larger than 10 MB. Make it smaller, then try again.",
+		);
+		expect(pdfErrorMessage(new ORPCError("BAD_REQUEST"))).toBe(
+			"This PDF is larger than 10 MB. Make it smaller, then try again.",
+		);
+		expect(pdfErrorMessage(new ORPCError("PORTFOLIO_STORAGE_FULL", { status: 413 }))).toBe(
+			"Your portfolio's storage is full. Remove pictures or PDFs you don't need, then try again.",
+		);
+	});
+});
+
+describe("pasted link addresses", () => {
+	it("takes web pages, adding https:// when it's missing", () => {
+		expect(readLinkAddress(" behance.net/gallery/1 ")).toEqual({ ok: true, url: "https://behance.net/gallery/1" });
+		expect(readLinkAddress("http://example.com")).toEqual({ ok: true, url: "http://example.com" });
+	});
+
+	it("refuses what a Link block can't hold, so a failed read never stops saving", () => {
+		expect(readLinkAddress("")).toEqual({ ok: false, problem: "empty" });
+		expect(readLinkAddress("mailto:nadia@example.com")).toEqual({ ok: false, problem: "email" });
+		expect(readLinkAddress("https://exa mple.com")).toEqual({ ok: false, problem: "invalid" });
+		expect(readLinkAddress("javascript:alert(1)")).toEqual({ ok: false, problem: "invalid" });
+	});
+
+	it("keeps the pasted address when the page ended up somewhere the data can't hold, and drops odd brand icons", () => {
+		const block = linkBlockFromUnfurl(
+			{ kind: "link", url: "javascript:alert(1)", title: "Odd", brandIcon: "Not A Brand!" },
+			"https://example.com/work",
+		);
+		expect(block).toMatchObject({ url: "https://example.com/work", title: "Odd" });
+		expect(block.brandIcon).toBeUndefined();
+	});
+
+	it("words the server's refusals of a link in the app's language", () => {
+		expect(unfurlErrorMessage(new ORPCError("PORTFOLIO_LINK_UNREADABLE", { data: { reason: "unsafe-url" } }))).toBe(
+			"This address can't be read. Use a public web page.",
+		);
+		expect(unfurlErrorMessage(new ORPCError("PORTFOLIO_LINK_UNREADABLE", { message: "Raw" }))).toBe(
+			"This site can't be read automatically. Fill the card in by hand.",
+		);
+		expect(unfurlErrorMessage(new Error("Failed to fetch"))).toBe(
+			"This site can't be read automatically. Fill the card in by hand.",
+		);
+	});
+});
+
+describe("video blocks", () => {
+	it("knows the video a block plays, unlisted Vimeo hash included", () => {
+		expect(videoAddress({ provider: "youtube", videoId: "dQw4w9WgXcQ" })).toBe(
+			"https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+		);
+		const vimeo = { provider: "vimeo" as const, videoId: "76979871", hash: "9f2c1a7b3d" };
+		expect(videoAddress(vimeo)).toBe("https://vimeo.com/76979871/9f2c1a7b3d");
+		expect(samePlayedVideo(vimeo, { provider: "vimeo", videoId: "76979871", hash: "9f2c1a7b3d" })).toBe(true);
+		expect(samePlayedVideo(vimeo, { provider: "vimeo", videoId: "76979871" })).toBe(false);
+		expect(samePlayedVideo(vimeo, { provider: "youtube", videoId: "76979871abc" })).toBe(false);
+	});
+
+	it("keeps a late thumbnail only while the block still plays that video", () => {
+		const video = { id: "v", type: "video" as const, provider: "youtube" as const, videoId: "dQw4w9WgXcQ" };
+		expect(stillPlays(video, video)).toBe(true);
+		expect(stillPlays({ ...video, videoId: "aaaaaaaaaaa" }, video)).toBe(false);
+		expect(stillPlays(undefined, video)).toBe(false);
+	});
+
+	it("makes a block from a pasted address, with what oEmbed says when it can", async () => {
+		unfurl.mockResolvedValueOnce({
+			kind: "video",
+			url: "https://vimeo.com/76979871",
+			provider: "vimeo",
+			videoId: "76979871",
+			title: "Checkout demo",
+			thumbnailUrl: "https://i.vimeocdn.com/video/1.jpg",
+		});
+		expect(await videoBlockFromUrl("https://vimeo.com/76979871")).toMatchObject({
+			provider: "vimeo",
+			videoId: "76979871",
+			title: "Checkout demo",
+			thumbnailUrl: "https://i.vimeocdn.com/video/1.jpg",
+		});
+		unfurl.mockRejectedValueOnce(new ORPCError("PORTFOLIO_LINK_UNREADABLE"));
+		const plain = await videoBlockFromUrl("https://youtu.be/dQw4w9WgXcQ");
+		expect(plain).toMatchObject({ provider: "youtube", videoId: "dQw4w9WgXcQ" });
+		expect(plain?.title).toBeUndefined();
+		expect(await videoBlockFromUrl("https://example.com")).toBeNull();
+	});
+
+	it("stops when it's cancelled, instead of making a block without details", async () => {
+		const controller = new AbortController();
+		controller.abort();
+		unfurl.mockRejectedValueOnce(new DOMException("Aborted", "AbortError"));
+		await expect(videoBlockFromUrl("https://youtu.be/dQw4w9WgXcQ", controller.signal)).rejects.toThrow();
+	});
+
+	it("tells sites apart, so a card's site name goes when its link moves to another site", () => {
+		expect(siteOf("https://www.behance.net/gallery/1")).toBe("behance.net");
+		expect(siteOf("https://behance.net/other")).toBe("behance.net");
+		expect(siteOf("not a url")).toBeNull();
 	});
 });

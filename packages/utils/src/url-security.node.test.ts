@@ -85,6 +85,17 @@ describe("isPrivateOrLoopbackHost", () => {
 		it("matches bracketed IPv6 loopback [::1]", () => {
 			expect(isPrivateOrLoopbackHost("[::1]")).toBe(true);
 		});
+
+		it("matches them written with the trailing dot of a fully qualified name", () => {
+			expect(isPrivateOrLoopbackHost("localhost.")).toBe(true);
+			expect(isPrivateOrLoopbackHost("a.localhost.")).toBe(true);
+			expect(isPrivateOrLoopbackHost("LOCALHOST..")).toBe(true);
+			expect(isPrivateOrLoopbackHost("127.0.0.1.")).toBe(true);
+			// As a URL gives them.
+			expect(isPrivateOrLoopbackHost(new URL("http://localhost./").hostname)).toBe(true);
+			expect(isPrivateOrLoopbackHost(new URL("http://api.localhost./").hostname)).toBe(true);
+			expect(isPrivateOrLoopbackHost("example.com.")).toBe(false);
+		});
 	});
 
 	describe("private IPv4 ranges", () => {

@@ -11,5 +11,3 @@ import { defaultPortfolioTheme } from "./themes";
 export function createDefaultPortfolioData(theme: PortfolioTheme = defaultPortfolioTheme): PortfolioData {
 	return parseWritablePortfolioData({ theme, sections: { hidden: ["profiles"] } });
 }
-
-export const defaultPortfolioData: PortfolioData = createDefaultPortfolioData();

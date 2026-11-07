@@ -1,73 +1,36 @@
-import type { ResumeItem } from "../../shared/parts";
 import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
 import type { ReactNode } from "react";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { effectTarget, HeroHeadline, HeroName } from "../../shared/hero-text";
-import { ResumeIcon, UiIcon } from "../../shared/icons";
+import { introLocation, IntroChips, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
+import { ServiceList, TestimonialList } from "../../shared/offers";
 import {
 	Buttons,
 	Clients,
 	Contact,
-	CvList,
-	ExtraList,
-	Footer,
-	hostOf,
-	Lightbox,
-	linkAttributes,
+	CustomSectionBody,
+	ExtraSection,
 	Picture,
 	Prose,
-	SectionTitle,
-	Skills,
-	vars,
-	WorkDetail,
+	Section,
 } from "../../shared/parts";
-import { groupSections, initials, navSections } from "../../shared/sections";
+import { isResumeSection, ResumeSectionBody } from "../../shared/resume";
+import { groupSections } from "../../shared/sections";
+import { Navigation, PageShell } from "../../shared/shell";
 
 type VariantKey = Parameters<typeof themeVariant>[1];
-
-function Navigation() {
-	const { view, messages } = useRender();
-	const links = navSections(view.sections);
-	const items = links.map((section) => (
-		<li key={section.key}>
-			<a href={`#${section.anchor}`}>{section.title}</a>
-		</li>
-	));
-	return (
-		<header className="pf-wrap kv-top">
-			<nav className="pf-nav" aria-label={messages.pageNavigation}>
-				<a className="pf-nav__brand kv-brand" href="#main">
-					<span>{view.basics.name}</span>
-				</a>
-				{links.length > 0 && (
-					<>
-						<ul className="pf-nav__links">{items}</ul>
-						<details className="pf-menu">
-							<summary>
-								<UiIcon name="menu" />
-								{messages.menu}
-							</summary>
-							<ul className="pf-menu__list">{items}</ul>
-						</details>
-					</>
-				)}
-			</nav>
-		</header>
-	);
-}
 
 /**
  * The "big name" intro: the name across the page, then under a thin rule three columns (photo and headline, greeting,
  * chips and buttons), then the achievements as big numbers.
  */
 function Hero() {
-	const { view, messages, imageUrl } = useRender();
+	const { view, messages } = useRender();
 	const { hero, basics } = view;
-	const location = view.location?.label || basics.location;
-	const background = hero.background.image ? imageUrl(hero.background.image.src) : undefined;
-	const bg = hero.background.kind === "image" && !background ? "plain" : hero.background.kind;
+	const background = useIntroBackground();
+	const location = introLocation(view);
 	const typing = view.design.effect.id === "typewriter" && effectTarget(view) === "headline";
 	const who = Boolean(hero.picture || basics.headline || typing);
 	const side = Boolean(location || hero.availability || hero.buttons.length);
@@ -76,10 +39,7 @@ function Hero() {
 			className="kv-hero"
 			aria-label={messages.intro}
 			data-variant={hero.picture ? "big-name" : "no-photo"}
-			data-bg={bg}
-			{...(bg === "image" && background
-				? { style: vars({ "--pf-hero-image": `url("${encodeURI(background).replaceAll('"', "%22")}")` }) }
-				: {})}
+			{...background}
 		>
 			<HeroName className="kv-name" />
 			{(who || hero.greeting || side) && (
@@ -93,17 +53,7 @@ function Hero() {
 					{hero.greeting && <p className="kv-greeting">{hero.greeting}</p>}
 					{side && (
 						<div className="kv-hero__side">
-							{(location || hero.availability) && (
-								<ul className="pf-chips">
-									{location && (
-										<li className="pf-chip">
-											<UiIcon name="pin" />
-											{location}
-										</li>
-									)}
-									{hero.availability && <li className="pf-chip pf-chip--open">{hero.availability}</li>}
-								</ul>
-							)}
+							<IntroChips location={location} availability={hero.availability} />
 							<Buttons links={hero.buttons} />
 						</div>
 					)}
@@ -163,84 +113,25 @@ function WorkGrid({ works, first }: WorkGridProps) {
 	);
 }
 
-type SectionProps = { section: PortfolioViewSection };
+type SectionProps = { section: Exclude<PortfolioViewSection, { kind: "work" }> };
 
+/** A section's content beside its label. The page draws the work section itself, as a grid without a label column. */
 function SectionBody({ section }: SectionProps): ReactNode {
 	const { view } = useRender();
 	const variant = (key: VariantKey) => themeVariant("kanvas", key, view.design.variants[key]);
 	switch (section.kind) {
 		case "about":
 			return <Prose html={section.html} className="kv-lead" />;
-		case "work":
-			return <WorkGrid works={section.works} first={false} />;
 		case "services":
-			return (
-				<ul className="kv-services" data-variant={variant("services")}>
-					{section.services.map((service) => (
-						<li key={service.id} className="pf-service">
-							<div className="pf-service__head">
-								<h3>
-									<ResumeIcon name={service.icon} />
-									{service.title}
-								</h3>
-								{service.price && <span className="pf-service__price">{service.price}</span>}
-							</div>
-							{service.description && <p className="pf-service__desc">{service.description}</p>}
-							{service.cta && (
-								<a className="pf-service__cta" {...linkAttributes(service.cta.href, service.cta)}>
-									{service.cta.label}
-									<UiIcon name="arrow-right" flip />
-								</a>
-							)}
-						</li>
-					))}
-				</ul>
-			);
+			return <ServiceList section={section} className="kv-services" variant={variant("services")} />;
 		case "testimonials":
-			return (
-				<ul className="kv-quotes" data-variant={variant("testimonials")}>
-					{section.testimonials.map((testimonial) => (
-						<li key={testimonial.id} className="pf-quote">
-							<blockquote>{testimonial.quote}</blockquote>
-							<div className="pf-person">
-								<span className="pf-avatar" aria-hidden="true">
-									{testimonial.photo ? (
-										<Picture image={testimonial.photo} decorative sizes="44px" />
-									) : (
-										initials(testimonial.name)
-									)}
-								</span>
-								<span className="pf-person__text">
-									<b>{testimonial.name}</b>
-									{testimonial.role && <span>{testimonial.role}</span>}
-								</span>
-							</div>
-							{testimonial.sourceUrl && (
-								<a className="pf-quote__source" {...linkAttributes(testimonial.sourceUrl)}>
-									{hostOf(testimonial.sourceUrl)}
-								</a>
-							)}
-						</li>
-					))}
-				</ul>
-			);
+			return <TestimonialList section={section} className="kv-quotes" variant={variant("testimonials")} />;
 		case "clients":
 			return <Clients section={section} variant={variant("clients")} />;
-		case "experience":
-		case "education":
-			return <CvList kind={section.kind} items={section.items as ResumeItem[]} variant={variant(section.kind)} />;
-		case "volunteer":
-			return <CvList kind="volunteer" items={section.items as ResumeItem[]} variant={variant("experience")} />;
-		case "skills":
-			return <Skills items={section.items as ResumeItem[]} variant={variant("skills")} />;
-		case "resume":
-			return <CvList kind={section.type} items={section.items as unknown as ResumeItem[]} />;
 		case "custom":
 			return (
 				<div className="kv-custom">
-					{section.image && <Picture image={section.image} className="kv-custom__image" />}
-					<Prose html={section.html} className="kv-lead" />
-					{section.button && <Buttons links={[section.button]} />}
+					<CustomSectionBody section={section} imageClassName="kv-custom__image" proseClassName="kv-lead" />
 				</div>
 			);
 		case "contact":
@@ -250,23 +141,8 @@ function SectionBody({ section }: SectionProps): ReactNode {
 				</div>
 			);
 		default:
-			return (
-				<div className="pf-extra">
-					<ExtraList kind={section.kind} items={section.items as ResumeItem[]} />
-				</div>
-			);
+			return <ResumeSectionBody section={section} listClassName="pf-extra" />;
 	}
-}
-
-/** The work section: the grid right after the intro, its heading for screen readers only (shown when it isn't first). */
-function WorkSection({ section, first }: SectionProps & { first: boolean }) {
-	if (section.kind !== "work") return null;
-	return (
-		<section className="pf-section kv-work" id={section.anchor} aria-labelledby={`${section.anchor}-title`}>
-			<SectionTitle section={section} className="kv-label" />
-			<WorkGrid works={section.works} first={first} />
-		</section>
-	);
 }
 
 type KanvasPageProps = { year: number; creditUrl: string };
@@ -277,70 +153,63 @@ type KanvasPageProps = { year: number; creditUrl: string };
  * as full screens.
  */
 export function KanvasPage({ year, creditUrl }: KanvasPageProps) {
-	const { view, messages } = useRender();
-	const works = view.works;
+	const { view } = useRender();
 	const pair = view.design.fonts.pair;
 	return (
-		<div className="pf" data-theme="kanvas" {...(pair ? { "data-font-pair": pair } : {})}>
-			<a className="pf-skip" href="#main">
-				{messages.skipToContent}
-			</a>
-			<Navigation />
-			<main className="pf-wrap kv-main" id="main" tabIndex={-1}>
-				<Hero />
-				{groupSections(view.sections).map((group, index) => {
-					const first = group[0] as PortfolioViewSection;
-					if (first.kind === "work") return <WorkSection key={first.key} section={first} first={index === 0} />;
-					// Short lists that follow each other share one row: a joined label, then each list with its own heading.
-					if (group.length > 1)
-						return (
-							<div key={first.key} className="kv-sec kv-group">
-								<p className="kv-label" aria-hidden="true">
-									{group.map((section) => section.title).join(" · ")}
-								</p>
-								<div className="kv-sec__body kv-extras">
-									{group.map((section) => (
-										<section
-											key={section.key}
-											className="pf-section"
-											id={section.anchor}
-											aria-labelledby={`${section.anchor}-title`}
-										>
-											<h2 className="pf-extra__title" id={`${section.anchor}-title`}>
-												{section.title}
-											</h2>
-											<SectionBody section={section} />
-										</section>
-									))}
-								</div>
-							</div>
-						);
+		<PageShell
+			theme="kanvas"
+			{...(pair ? { attributes: { "data-font-pair": pair } } : {})}
+			navigation={<Navigation className="pf-wrap kv-top" brandClassName="kv-brand" />}
+			mainClassName="kv-main"
+			year={year}
+			creditUrl={creditUrl}
+		>
+			<Hero />
+			{groupSections(view.sections).map((group, index) => {
+				const first = group[0] as PortfolioViewSection;
+				// The work section: the grid right after the intro, its heading for screen readers only (shown when it
+				// isn't first).
+				if (first.kind === "work")
 					return (
-						<section
+						<Section
 							key={first.key}
-							className={`pf-section kv-sec kv-sec--${first.kind}`}
-							id={first.anchor}
-							aria-labelledby={`${first.anchor}-title`}
+							section={first}
+							className="pf-section kv-work"
+							titleClassName={index === 0 ? "kv-label sr-only" : "kv-label"}
 						>
-							<SectionTitle section={first} className="kv-label" />
-							<div className="kv-sec__body">
-								<SectionBody section={first} />
-							</div>
-						</section>
+							<WorkGrid works={first.works} first={index === 0} />
+						</Section>
 					);
-				})}
-			</main>
-			<Footer year={year} creditUrl={creditUrl} />
-			{works.map((work, index) => (
-				<WorkDetail
-					key={work.id}
-					work={work}
-					previous={works[(index - 1 + works.length) % works.length] as PortfolioViewWork}
-					next={works[(index + 1) % works.length] as PortfolioViewWork}
-					total={works.length}
-				/>
-			))}
-			{works.some((work) => work.blocks.some((block) => block.type === "images")) && <Lightbox />}
-		</div>
+				// Short lists that follow each other share one row: a joined label, then each list with its own heading.
+				// Only the resume's short lists ever group (`groupSections`).
+				if (group.length > 1)
+					return (
+						<div key={first.key} className="kv-sec kv-group">
+							<p className="kv-label" aria-hidden="true">
+								{group.map((section) => section.title).join(" · ")}
+							</p>
+							<div className="kv-sec__body kv-extras">
+								{group.filter(isResumeSection).map((section) => (
+									<ExtraSection key={section.key} section={section} className="pf-section">
+										<SectionBody section={section} />
+									</ExtraSection>
+								))}
+							</div>
+						</div>
+					);
+				return (
+					<Section
+						key={first.key}
+						section={first}
+						className={`pf-section kv-sec kv-sec--${first.kind}`}
+						titleClassName="kv-label"
+					>
+						<div className="kv-sec__body">
+							<SectionBody section={first} />
+						</div>
+					</Section>
+				);
+			})}
+		</PageShell>
 	);
 }

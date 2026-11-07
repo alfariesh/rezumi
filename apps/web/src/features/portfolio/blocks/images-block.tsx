@@ -7,6 +7,9 @@ import { IMAGE_BLOCK_LAYOUTS } from "@rezumi/schema/portfolio/blocks";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { ChoiceSelect, ItemToolbar, moveItem, TextInput } from "../editor/fields";
 import { AltTextInput, ImageDrop, portfolioImageSrc, UploadStatus, useImageUploads } from "../images/image-field";
+import { discardUnplacedImages } from "../images/upload";
+import { pictureKeys } from "./blocks";
+import { useRemovalFocus } from "./list-focus";
 
 const layoutLabel = (layout: (typeof IMAGE_BLOCK_LAYOUTS)[number]) =>
 	({ full: t`Full width, one under another`, grid: t`Grid`, carousel: t`Swipe sideways` })[layout];
@@ -25,15 +28,20 @@ type ImagesBlockEditorProps = {
 /** A Pictures block: 1 to 12 pictures, each described and with an optional caption, laid out one of three ways. */
 export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEditorProps) {
 	const uploads = useImageUploads();
+	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 	const images = block.images;
-	const room = PORTFOLIO_LIMITS.imagesPerBlock - images.length;
+	const most = PORTFOLIO_LIMITS.imagesPerBlock;
+	const room = most - images.length;
+	const keys = pictureKeys(images);
 
 	const add = async (files: File[]) => {
 		const added = await uploads.upload(files.slice(0, room), { alt: () => work.title.trim() });
-		if (added.length)
-			edit((draft) => {
-				draft.images.push(...added.slice(0, PORTFOLIO_LIMITS.imagesPerBlock - draft.images.length));
-			});
+		if (!added.length) return;
+		edit((draft) => {
+			draft.images.push(...added.slice(0, most - draft.images.length));
+		});
+		// Pictures there was no more room for when they arrived (another upload filled the block) aren't kept.
+		discardUnplacedImages(added);
 	};
 
 	return (
@@ -51,7 +59,7 @@ export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEd
 			{images.map((image, index) => {
 				const name = image.alt.trim() || t`Picture ${index + 1}`;
 				return (
-					<div key={`${image.key}-${index}`} className="grid gap-3 rounded-xl border border-border p-3">
+					<div key={keys[index]} {...itemProps} className="grid gap-3 rounded-xl border border-border p-3">
 						<div className="flex gap-3">
 							<img
 								src={portfolioImageSrc(image)}
@@ -102,6 +110,7 @@ export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEd
 									onRemove();
 									return;
 								}
+								removed(index);
 								edit(
 									(draft) => {
 										draft.images.splice(index, 1);
@@ -113,20 +122,22 @@ export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEd
 					</div>
 				);
 			})}
-			{room > 0 ? (
-				<ImageDrop
-					compact
-					multiple
-					label={t`Add pictures`}
-					description={t`${images.length} of ${PORTFOLIO_LIMITS.imagesPerBlock}. Drop, choose or paste them.`}
-					isDisabled={uploads.busy}
-					onFiles={(files) => void add(files)}
-				/>
-			) : (
-				<p className="text-xs text-muted">
-					<Trans>A Pictures block holds up to 12 pictures. Add another block for more.</Trans>
-				</p>
-			)}
+			<div ref={fallbackRef} className="contents">
+				{room > 0 ? (
+					<ImageDrop
+						compact
+						multiple
+						label={t`Add pictures`}
+						description={t`${images.length} of ${PORTFOLIO_LIMITS.imagesPerBlock}. Drop, choose or paste them.`}
+						isDisabled={uploads.busy}
+						onFiles={(files) => void add(files)}
+					/>
+				) : (
+					<p className="text-xs text-muted">
+						<Trans>A Pictures block holds up to {most} pictures. Add another block for more.</Trans>
+					</p>
+				)}
+			</div>
 			<UploadStatus progress={uploads.progress} errors={uploads.errors} />
 		</div>
 	);

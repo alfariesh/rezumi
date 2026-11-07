@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
+import { richTextLength } from "@rezumi/schema/portfolio/limits";
 import { sanitizePortfolioData, sanitizePortfolioHtml } from "./rich-text";
 
 describe("sanitizePortfolioHtml", () => {
@@ -32,6 +33,32 @@ describe("sanitizePortfolioHtml", () => {
 		expect(sanitizePortfolioHtml("<b>B</b><i>I</i><strike>S</strike><h1>Big</h1><h5>Tiny</h5><div>Block</div>")).toBe(
 			"<strong>B</strong><em>I</em><s>S</s><h2>Big</h2><h3>Tiny</h3><p>Block</p>",
 		);
+	});
+
+	it("keeps text that only looks like a tag, which the length limit counts as text too", () => {
+		for (const html of ["<p><1 abc> x</p>", "<p>< p>x</p>", "<p>a <= b</p>", "<p><Ä>x <_y> z<</p>"]) {
+			const clean = sanitizePortfolioHtml(html);
+			expect(clean).toContain("&lt;");
+			expect(richTextLength(html)).toBe(richTextLength(clean));
+		}
+	});
+
+	it("drops what the parser reads as raw text, so markup there can't turn into text", () => {
+		expect(sanitizePortfolioHtml("<title><b>x</b></title><p>a</p><xmp><b>y</b></xmp><p>b</p>")).toBe(
+			"<p>a</p><p>b</p>",
+		);
+		expect(sanitizePortfolioHtml("<noembed><b>x</b></noembed><noframes>y</noframes><p>a</p>")).toBe("<p>a</p>");
+		expect(sanitizePortfolioHtml("<p>a</p><plaintext><b>x</b><p>b</p>")).toBe("<p>a</p>");
+	});
+
+	it("never shows more text than the length limit counted", () => {
+		for (const html of [
+			`<p>${"<1 a>".repeat(20)}</p>`,
+			`<title>${"<b>x</b>".repeat(20)}</title>`,
+			`<p>${"&zz;".repeat(20)} &AMP; &NBSP; &#233; &#x1F600;</p>`,
+			'<p><a href="https://example.com/?a>b">link</a></p>',
+		])
+			expect(richTextLength(html)).toBeGreaterThanOrEqual(richTextLength(sanitizePortfolioHtml(html)));
 	});
 });
 

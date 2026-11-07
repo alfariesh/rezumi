@@ -1,13 +1,19 @@
 import type { RemoteHop } from "./remote";
 import type { VideoProvider } from "@rezumi/schema/portfolio/video";
 import { createHash } from "node:crypto";
+import z from "zod";
 import { getCoordination } from "@rezumi/db/coordination";
 import { getRedis, redisKey } from "@rezumi/db/redis";
+import { readPortfolioImageHeader } from "@rezumi/portfolio/image-header";
 import { truncateText } from "@rezumi/portfolio/text";
 import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
-import { isVideoThumbnailUrl, parseVideoUrl, youtubeThumbnailUrl } from "@rezumi/schema/portfolio/video";
+import {
+	isVideoThumbnailUrl,
+	parseVideoUrl,
+	VIDEO_PROVIDERS,
+	youtubeThumbnailUrl,
+} from "@rezumi/schema/portfolio/video";
 import { brandIconForUrl } from "./brand";
-import { readPortfolioImageHeader } from "./image";
 import { decodePage, parseLinkMeta } from "./link-meta";
 import { fetchRemote, RemoteFetchError, remoteDeadline, remoteUrl } from "./remote";
 
@@ -175,9 +181,47 @@ export class RemoteImageError extends Error {
 const GIF_SIGNATURE = /^GIF8[79]a$/;
 
 /**
+ * The most pixels a fetched picture may have. The browser decodes it to shrink it, and a small file can unpack into a
+ * bitmap large enough to run a phone out of memory; real preview pictures are a few megapixels.
+ */
+export const REMOTE_IMAGE_MAX_PIXELS = 50_000_000;
+
+type RasterKind = { contentType: string; extension: string; width: number; height: number };
+
+const ascii = (bytes: Uint8Array, start: number, length: number) =>
+	String.fromCharCode(...bytes.subarray(start, start + length));
+const u16le = (bytes: Uint8Array, at: number) => (bytes[at] ?? 0) | ((bytes[at + 1] ?? 0) << 8);
+const u24le = (bytes: Uint8Array, at: number) => u16le(bytes, at) | ((bytes[at + 2] ?? 0) << 16);
+const u32be = (bytes: Uint8Array, at: number) =>
+	(((bytes[at] ?? 0) << 24) >>> 0) + ((bytes[at + 1] ?? 0) << 16) + ((bytes[at + 2] ?? 0) << 8) + (bytes[at + 3] ?? 0);
+
+/**
+ * What a fetched picture is and its pixel size, from its header: a still JPEG, PNG or WebP, an animated PNG or WebP
+ * (its first frame is still a picture the browser can use), or a GIF (the browser refuses animated ones, as for
+ * uploads). Null for anything else.
+ */
+function rasterKind(bytes: Uint8Array): RasterKind | null {
+	if (GIF_SIGNATURE.test(ascii(bytes, 0, 6)))
+		// The logical screen: every frame is drawn inside it.
+		return { contentType: "image/gif", extension: "gif", width: u16le(bytes, 6), height: u16le(bytes, 8) };
+	const header = readPortfolioImageHeader(bytes);
+	if (header.ok) return header.image;
+	if (header.reason !== "animated") return null;
+	if (ascii(bytes, 0, 8) === "\x89PNG\r\n\x1a\n")
+		return { contentType: "image/png", extension: "png", width: u32be(bytes, 16), height: u32be(bytes, 20) };
+	// An animated WebP is always the extended format, whose header holds the canvas size.
+	return {
+		contentType: "image/webp",
+		extension: "webp",
+		width: u24le(bytes, 24) + 1,
+		height: u24le(bytes, 27) + 1,
+	};
+}
+
+/**
  * Fetches a preview picture the owner approved, for the browser to shrink and upload like any other picture (the
- * server can't resize on Workers). Only a JPEG, PNG, WebP or GIF by its own bytes; the browser refuses animated
- * GIFs as it does for uploads.
+ * server can't resize on Workers). Only a JPEG, PNG, WebP or GIF by its own bytes, of at most
+ * `REMOTE_IMAGE_MAX_PIXELS`; the browser refuses animated GIFs as it does for uploads.
  */
 export async function fetchRemoteImage(
 	input: string,
@@ -196,13 +240,9 @@ export async function fetchRemoteImage(
 			hop: options.hop,
 			isAllowedHost: options.isAllowedHost,
 		});
-		if (GIF_SIGNATURE.test(String.fromCharCode(...bytes.subarray(0, 6))))
-			return { bytes, contentType: "image/gif", extension: "gif" };
-		const header = readPortfolioImageHeader(bytes);
-		// An animated WebP or PNG still has a first frame the browser can use; only the kind of file matters here.
-		if (!header.ok && header.reason !== "animated") throw new RemoteImageError("type");
-		const kind = header.ok ? header.image : detectRasterKind(bytes);
-		if (!kind) throw new RemoteImageError("type");
+		const kind = rasterKind(bytes);
+		if (!kind || kind.width < 1 || kind.height < 1) throw new RemoteImageError("type");
+		if (kind.width * kind.height > REMOTE_IMAGE_MAX_PIXELS) throw new RemoteImageError("too-large");
 		return { bytes, contentType: kind.contentType, extension: kind.extension };
 	} catch (error) {
 		if (error instanceof RemoteFetchError) {
@@ -214,21 +254,66 @@ export async function fetchRemoteImage(
 	}
 }
 
-function detectRasterKind(bytes: Uint8Array): { contentType: string; extension: string } | null {
-	const ascii = (start: number, length: number) => String.fromCharCode(...bytes.subarray(start, start + length));
-	if (ascii(0, 8) === "\x89PNG\r\n\x1a\n") return { contentType: "image/png", extension: "png" };
-	if (ascii(0, 4) === "RIFF" && ascii(8, 4) === "WEBP") return { contentType: "image/webp", extension: "webp" };
-	return null;
-}
-
 // Results by link, for a day: the same link pasted again (another work, an undo) asks the site once.
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const MEMORY_CACHE_LIMIT = 500;
 const memoryCache = new Map<string, { value: PortfolioUnfurl; expires: number }>();
+/** Part of every cache key: a change to what a result holds bumps it, so results in the old shape are never read. */
+const CACHE_VERSION = "v2";
+
+const cachedText = (max: number) => z.string().max(max).optional();
+const cachedUrl = z
+	.string()
+	.max(PORTFOLIO_LIMITS.text.url)
+	.regex(/^https?:\/\//);
+
+/** What a cached result must look like to be used; anything else (an older shape, a broken value) reads as a miss. */
+const cachedUnfurlSchema = z.discriminatedUnion("kind", [
+	z.object({
+		kind: z.literal("video"),
+		url: cachedUrl,
+		provider: z.enum(VIDEO_PROVIDERS),
+		videoId: z.string().max(PORTFOLIO_LIMITS.text.id),
+		hash: cachedText(PORTFOLIO_LIMITS.text.id),
+		// A video is only cached with its title (see `isCompleteUnfurl`).
+		title: z.string().min(1).max(PORTFOLIO_LIMITS.text.mediaTitle),
+		thumbnailUrl: cachedUrl.optional(),
+	}),
+	z.object({
+		kind: z.literal("link"),
+		url: cachedUrl,
+		title: z.string().max(PORTFOLIO_LIMITS.text.linkTitle),
+		description: cachedText(PORTFOLIO_LIMITS.text.linkDescription),
+		siteName: cachedText(PORTFOLIO_LIMITS.text.siteName),
+		imageUrl: cachedUrl.optional(),
+		brandIcon: cachedText(PORTFOLIO_LIMITS.text.id),
+	}),
+]);
+
+/**
+ * Whether a result is worth keeping for a day. A video whose oEmbed answer failed (timeout, refused, broken JSON) has
+ * no title; it's still shown, but the next paste asks again instead of keeping it title-less for a day.
+ */
+function isCompleteUnfurl(value: PortfolioUnfurl): boolean {
+	return value.kind === "link" || Boolean(value.title);
+}
 
 function cacheKey(input: string): string | null {
 	const url = remoteUrl(input);
-	return url ? redisKey("portfolio-unfurl", createHash("sha256").update(url.href).digest("hex")) : null;
+	return url ? redisKey("portfolio-unfurl", CACHE_VERSION, createHash("sha256").update(url.href).digest("hex")) : null;
+}
+
+/** A stored result, when it is one this version wrote; null otherwise. */
+function parseCachedUnfurl(stored: string): PortfolioUnfurl | null {
+	let value: unknown;
+	try {
+		value = JSON.parse(stored);
+	} catch {
+		return null;
+	}
+	const parsed = cachedUnfurlSchema.safeParse(value);
+	// The schema states exactly `PortfolioUnfurl`; Zod adds no keys for the optional fields left out.
+	return parsed.success ? (parsed.data as PortfolioUnfurl) : null;
 }
 
 /**
@@ -242,7 +327,7 @@ export async function readUnfurlCache(input: string, now = Date.now()): Promise<
 		const redis = getRedis();
 		const coordination = getCoordination();
 		const stored = redis ? await redis.get(key) : coordination ? await coordination.get(key) : undefined;
-		if (stored !== undefined) return stored ? (JSON.parse(stored) as PortfolioUnfurl) : null;
+		if (stored !== undefined) return stored ? parseCachedUnfurl(stored) : null;
 	} catch (error) {
 		console.error("[portfolio] Unfurl cache unavailable", error);
 		return null;
@@ -254,9 +339,10 @@ export async function readUnfurlCache(input: string, now = Date.now()): Promise<
 	return null;
 }
 
+/** Keeps a result for a day; a partial one (a video without its oEmbed title) isn't kept. */
 export async function writeUnfurlCache(input: string, value: PortfolioUnfurl, now = Date.now()): Promise<void> {
 	const key = cacheKey(input);
-	if (!key) return;
+	if (!key || !isCompleteUnfurl(value)) return;
 	try {
 		const redis = getRedis();
 		if (redis) {

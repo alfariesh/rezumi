@@ -1,7 +1,7 @@
 import type { Sharp } from "sharp";
 import { describe, expect, it } from "vite-plus/test";
 import sharp from "sharp";
-import { readPortfolioImageHeader } from "./image";
+import { readPortfolioImageHeader } from "@rezumi/portfolio/image-header";
 
 const canvas = (width: number, height: number, alpha = false) =>
 	sharp({

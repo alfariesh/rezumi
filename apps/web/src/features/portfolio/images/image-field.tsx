@@ -7,13 +7,13 @@ import { DropZone, useDropZonePickerContext } from "@heroui-pro/react";
 import { Alert, Button, Description, FieldError, Input, Label, ProgressBar, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isFileDropItem } from "react-aria-components";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { pictureFiles } from "./compress";
-import { uploadPortfolioImages } from "./upload";
+import { discardUploadedImages, MAX_BATCH_PICTURES, uploadImageBatch } from "./upload";
 
 /** A stored picture's address in the editor (the upload route serves `uploads/...` at the app's origin). */
 export function portfolioImageSrc(image: Pick<PortfolioImage, "key" | "thumbKey">, small = true): string {
@@ -89,15 +89,9 @@ export function ImageDrop({
 	);
 }
 
-function PickerButton({
-	compact,
-	isDisabled,
-	children,
-}: {
-	compact: boolean;
-	isDisabled: boolean;
-	children: ReactNode;
-}) {
+type PickerButtonProps = { compact: boolean; isDisabled: boolean; children: ReactNode };
+
+function PickerButton({ compact, isDisabled, children }: PickerButtonProps) {
 	const { openFilePicker } = useDropZonePickerContext();
 	return (
 		<Button
@@ -113,8 +107,10 @@ function PickerButton({
 	);
 }
 
+type UploadStatusProps = { progress: UploadProgress | null; errors: readonly string[] };
+
 /** Progress of a batch of uploads, and what went wrong with any picture in it. */
-export function UploadStatus({ progress, errors }: { progress: UploadProgress | null; errors: readonly string[] }) {
+export function UploadStatus({ progress, errors }: UploadStatusProps) {
 	return (
 		<>
 			{progress && progress.done < progress.total && (
@@ -144,8 +140,9 @@ export function UploadStatus({ progress, errors }: { progress: UploadProgress | 
 						<Icon name="warning-circle" />
 					</Alert.Indicator>
 					<Alert.Content>
-						{errors.map((error) => (
-							<Alert.Description key={error}>{error}</Alert.Description>
+						{errors.map((error, index) => (
+							// Two files can fail the same way: the place keeps each message apart.
+							<Alert.Description key={`${index}:${error}`}>{error}</Alert.Description>
 						))}
 					</Alert.Content>
 				</Alert>
@@ -162,30 +159,53 @@ type UploadOptions = {
 
 /**
  * Uploads pictures one at a time with progress, keeping the reasons any of them failed for `UploadStatus`. Resolves
- * with the pictures that made it.
+ * with the pictures that made it. The batch is cancelled when the component goes away (a dialog closed, an item
+ * removed) or on `cancel()`: it then resolves with none, so nothing is added to the portfolio afterwards, and the
+ * pictures already uploaded are deleted.
  */
 export function useImageUploads() {
 	const [progress, setProgress] = useState<UploadProgress | null>(null);
 	const [errors, setErrors] = useState<string[]>([]);
+	const running = useRef<AbortController | null>(null);
 	const busy = progress !== null && progress.done < progress.total;
+
+	useEffect(() => () => running.current?.abort(), []);
 
 	/** The pictures that made it, with the names of their files. */
 	const uploadNamed = async (files: readonly File[], options: UploadOptions = {}): Promise<UploadedImage[]> => {
+		running.current?.abort();
+		const controller = new AbortController();
+		running.current = controller;
 		setErrors([]);
-		setProgress({ done: 0, total: files.length, current: null });
+		setProgress({ done: 0, total: Math.min(files.length, MAX_BATCH_PICTURES), current: null });
 		try {
-			const outcome = await uploadPortfolioImages(files, { ...options, onProgress: setProgress });
+			const outcome = await uploadImageBatch(files, { ...options, signal: controller.signal, onProgress: setProgress });
+			if (controller.signal.aborted) {
+				void discardUploadedImages(outcome.uploaded.map((entry) => entry.image));
+				return [];
+			}
 			setErrors(outcome.errors);
 			return outcome.uploaded;
 		} finally {
-			setProgress(null);
+			if (running.current === controller) {
+				running.current = null;
+				setProgress(null);
+			}
 		}
 	};
 
 	const upload = async (files: readonly File[], options: UploadOptions = {}) =>
 		(await uploadNamed(files, options)).map((entry) => entry.image);
 
-	return { upload, uploadNamed, busy, progress, errors, clearErrors: () => setErrors([]) };
+	return {
+		upload,
+		uploadNamed,
+		busy,
+		progress,
+		errors,
+		clearErrors: () => setErrors([]),
+		cancel: () => running.current?.abort(),
+	};
 }
 
 type AltTextInputProps = {
@@ -403,42 +423,46 @@ export function ImageField({
 	);
 }
 
+type ReplaceButtonProps = { onFiles: (files: File[]) => void; isDisabled?: boolean };
+
 /** "Replace": opens the file picker for one picture. */
-function ReplaceButton({ onFiles, isDisabled = false }: { onFiles: (files: File[]) => void; isDisabled?: boolean }) {
-	const input = useRef<HTMLInputElement>(null);
+function ReplaceButton({ onFiles, isDisabled = false }: ReplaceButtonProps) {
+	const picker = useFilePicker(onFiles);
 	return (
 		<>
-			<Button size="sm" variant="secondary" isDisabled={isDisabled} onPress={() => input.current?.click()}>
+			<Button size="sm" variant="secondary" isDisabled={isDisabled} onPress={picker.open}>
 				<Icon name="arrows-clockwise" size={16} />
 				<Trans>Replace picture</Trans>
 			</Button>
-			<input
-				ref={input}
-				type="file"
-				accept="image/*"
-				hidden
-				onChange={(event) => {
-					const files = pictureFiles(event.currentTarget.files ?? []);
-					event.currentTarget.value = "";
-					if (files.length) onFiles(files);
-				}}
-			/>
+			{picker.element}
 		</>
 	);
 }
 
-/** A hidden picker opened by code, for "add pictures" menu items. */
-export function useFilePicker(onFiles: (files: File[]) => void, multiple = true) {
+type FilePickerOptions = {
+	/** What the system's picker offers: pictures unless told otherwise. */
+	accept?: string;
+	multiple?: boolean;
+	/** Keeps the chosen files the caller can use: pictures unless told otherwise. */
+	filter?: (files: readonly File[]) => File[];
+};
+
+/**
+ * A hidden file picker opened by code ("Replace" buttons, "add pictures" menu items, a PDF block): render `element`
+ * anywhere, call `open`. Only files `filter` keeps reach `onFiles`, never none.
+ */
+export function useFilePicker(onFiles: (files: File[]) => void, options: FilePickerOptions = {}) {
+	const { accept = "image/*", multiple = false, filter = pictureFiles } = options;
 	const input = useRef<HTMLInputElement>(null);
 	const element = (
 		<input
 			ref={input}
 			type="file"
-			accept="image/*"
+			accept={accept}
 			multiple={multiple}
 			hidden
 			onChange={(event) => {
-				const files = pictureFiles(event.currentTarget.files ?? []);
+				const files = filter([...(event.currentTarget.files ?? [])]);
 				event.currentTarget.value = "";
 				if (files.length) onFiles(files);
 			}}

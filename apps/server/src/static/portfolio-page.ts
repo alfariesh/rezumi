@@ -1,30 +1,56 @@
 import type { PublicPortfolio } from "@rezumi/api/features/portfolio/public";
 import type { PortfolioPage } from "@rezumi/portfolio";
 import type { PortfolioView } from "@rezumi/portfolio/view";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { createHash } from "node:crypto";
 import { findPublicPortfolio, recordPortfolioVisit } from "@rezumi/api/features/portfolio/public";
 import { env } from "@rezumi/env/server";
-import { webPageImageUrl } from "@rezumi/pdf/web-page";
 import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
 import { renderPortfolioDocument } from "@rezumi/portfolio/document";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
-import { buildPortfolioView } from "@rezumi/portfolio/view";
+import { buildPortfolioView, portfolioPageLocale } from "@rezumi/portfolio/view";
 import { publicResumePath } from "@rezumi/resume/sharing";
+import { ownPictureUrl } from "@rezumi/utils/own-picture";
 import { serveResumePage } from "./resume-page";
-import { BASE_SECURITY_HEADERS, contentSecurityPolicy } from "./web";
+import { BASE_SECURITY_HEADERS } from "./web";
 
 const origin = () => new URL(env.APP_URL).origin;
 
+/** The players a video block loads after a click (`02-teknis.md` section 18); nothing else is ever framed. */
+const VIDEO_PLAYER_ORIGINS = ["https://www.youtube-nocookie.com", "https://player.vimeo.com"] as const;
+
+/** Sources a directive of the page's policy allows, as written in the header. */
+export type PortfolioPolicyDirectives = Record<string, readonly string[]>;
+
 /**
- * The page's policy: the app's own, which allows the page's script by its hash (the shared page script, plus the intro
- * effect's when the page plays a script effect), plus the players a video block may load after a click
- * (`02-teknis.md` section 18). Turnstile joins in Phase 08.
+ * The page's policy, directive by directive (`02-teknis.md` section 18). Its one script runs by hash (the shared page
+ * script, plus the intro effect's when the page plays a script effect); Cloudflare Web Analytics may add its beacon.
+ * Pictures and fonts load like on the app's other pages. Only the video players may be framed, nothing is embedded or
+ * run as a worker, forms post to this site only, and no other site may frame the page. `additions` adds sources to a
+ * directive: Phase 08's Turnstile widget adds `https://challenges.cloudflare.com` to `script-src` and `frame-src`.
  */
-function portfolioContentSecurityPolicy(script: string): string {
-	return contentSecurityPolicy(`<script>${script}</script>`).replace(
-		"frame-src 'self' blob:",
-		"frame-src 'self' blob: https://www.youtube-nocookie.com https://player.vimeo.com",
-	);
+export function portfolioContentSecurityPolicy(script: string, additions: PortfolioPolicyDirectives = {}): string {
+	const hash = `'sha256-${createHash("sha256").update(script).digest("base64")}'`;
+	const directives: PortfolioPolicyDirectives = {
+		"default-src": ["'self'"],
+		"script-src": ["'self'", "https://static.cloudflareinsights.com", hash],
+		"style-src": ["'self'", "'unsafe-inline'"],
+		"img-src": ["'self'", "data:", "blob:", "https:"],
+		"font-src": ["'self'", "data:", "https:"],
+		"connect-src": ["'self'", "data:", "blob:", "https:"],
+		"media-src": ["'self'", "data:", "blob:"],
+		"frame-src": VIDEO_PLAYER_ORIGINS,
+		"worker-src": ["'none'"],
+		"object-src": ["'none'"],
+		"frame-ancestors": ["'none'"],
+		"base-uri": ["'self'"],
+		"form-action": ["'self'"],
+	};
+	for (const [name, sources] of Object.entries(additions))
+		directives[name] = [...new Set([...(directives[name] ?? []).filter((source) => source !== "'none'"), ...sources])];
+	return Object.entries(directives)
+		.map(([name, sources]) => [name, ...sources].join(" "))
+		.join("; ");
 }
 
 function html(body: string, script: string, headers: Record<string, string> = {}) {
@@ -41,14 +67,31 @@ function html(body: string, script: string, headers: Record<string, string> = {}
 	});
 }
 
+/**
+ * The address of a picture the page may show, or undefined: only this app's own uploads (`ownPictureUrl`,
+ * `02-teknis.md` section 20). A visit never asks another site for anything, so a resume photo kept elsewhere (an
+ * imported link) isn't shown.
+ */
+export function portfolioPictureUrl(source: string): string | undefined {
+	// The app's own origin first: a relative address resolves against it.
+	const origins = [env.APP_URL, env.APP_ALIAS_URL].flatMap((address) => (address ? [new URL(address).origin] : []));
+	return ownPictureUrl(source, origins);
+}
+
+/** The resume as the page may use it: its photo only when it's one of this app's uploads. */
+function withOwnPicture(data: ResumeData): ResumeData {
+	if (!data.picture.url.trim() || portfolioPictureUrl(data.picture.url)) return data;
+	return { ...data, picture: { ...data.picture, url: "" } };
+}
+
 /** The view of a published portfolio as every visitor sees it, with addresses on this app. */
 export function publicPortfolioView(portfolio: PublicPortfolio): PortfolioView {
 	const { resume } = portfolio;
-	const locale = portfolio.data.locale ?? resume?.data.metadata.page.locale ?? "en-US";
+	const locale = portfolioPageLocale(portfolio.data, resume?.data);
 	const resumePath = resume ? publicResumePath({ username: portfolio.username, slug: resume.slug }) : null;
 	return buildPortfolioView({
 		portfolio: { data: portfolio.data },
-		resume: resume ? { data: resume.data } : null,
+		resume: resume ? { data: withOwnPicture(resume.data) } : null,
 		owner: { name: portfolio.ownerName, username: portfolio.username },
 		// Plans arrive in Phase 07; until then every portfolio shows the credit.
 		entitlements: { hidePortfolioCredit: false },
@@ -86,7 +129,7 @@ async function renderPage(view: PortfolioView): Promise<PortfolioPage> {
 		view,
 		messages: portfolioMessages(view.locale),
 		icons,
-		imageUrl: webPageImageUrl(origin()),
+		imageUrl: portfolioPictureUrl,
 		year,
 		creditUrl: origin(),
 	});
@@ -99,7 +142,7 @@ async function renderPage(view: PortfolioView): Promise<PortfolioPage> {
 function structuredData(view: PortfolioView, url: string, updatedAt: Date, meLinks: readonly string[]) {
 	const work = view.sections.find((section) => section.kind === "work");
 	const services = view.sections.find((section) => section.kind === "services");
-	const picture = view.basics.picture ? webPageImageUrl(origin())(view.basics.picture.src) : undefined;
+	const picture = view.basics.picture ? portfolioPictureUrl(view.basics.picture.src) : undefined;
 	const parts = [
 		...(work?.kind === "work"
 			? work.works.map((item) => ({
@@ -128,11 +171,47 @@ function structuredData(view: PortfolioView, url: string, updatedAt: Date, meLin
 			name: view.basics.name,
 			...(view.basics.headline ? { jobTitle: view.basics.headline } : {}),
 			...(view.location?.label ? { homeLocation: { "@type": "Place", name: view.location.label } } : {}),
-			...(picture && !picture.startsWith("data:") ? { image: picture } : {}),
+			...(picture ? { image: picture } : {}),
 			...(meLinks.length > 0 ? { sameAs: meLinks } : {}),
 		},
 		...(parts.length > 0 ? { hasPart: parts } : {}),
 	};
+}
+
+/**
+ * Requests a browser makes on its own, before anyone opens the page (or without them ever opening it): Chrome's
+ * prefetch and prerender (`Sec-Purpose`, formerly `Purpose`), Safari's previews (`X-Purpose`), Firefox's prefetch.
+ */
+function isSpeculative(headers: Headers): boolean {
+	const purpose = ["sec-purpose", "purpose", "x-purpose", "x-moz"].map((name) => headers.get(name) ?? "").join(",");
+	return /\b(?:prefetch|prerender|preview)\b/i.test(purpose);
+}
+
+type KeepAlive = (work: Promise<unknown>) => void;
+let keepAlive: KeepAlive | undefined;
+
+/**
+ * How the platform keeps work going after a response is sent, set once at startup. Workers passes `ctx.waitUntil`
+ * together with the request's database pool (`apps/server/src/cloudflare/index.ts`, like the assistant's streams).
+ */
+export function configurePortfolioVisitLifetime(callback: KeepAlive | undefined): void {
+	keepAlive = callback;
+}
+
+/**
+ * Counts the visit without holding up the page (`02-teknis.md` section 9). Node keeps running it after the response;
+ * Workers does only through `configurePortfolioVisitLifetime`, so without that the page waits for it there, as before.
+ * Counting that fails is logged, never shown.
+ */
+function countVisit(request: Request, portfolio: PublicPortfolio, trustedClient: string): Promise<void> {
+	const counting = recordPortfolioVisit({ portfolio, requestHeaders: request.headers, trustedClient }).catch(
+		(error: unknown) => console.error("Portfolio visit counting failed", error),
+	);
+	if (keepAlive) {
+		keepAlive(counting);
+		return Promise.resolve();
+	}
+	return process.env.CLOUDFLARE === "1" ? counting : Promise.resolve();
 }
 
 type ServeOptions = {
@@ -146,6 +225,11 @@ async function showPortfolio(
 	trustedClient: string,
 	options: ServeOptions,
 ) {
+	// A visit is a page someone opens: not a HEAD request, a prefetch or a prerender.
+	const counted =
+		request.method === "GET" && !isSpeculative(request.headers)
+			? countVisit(request, portfolio, trustedClient)
+			: Promise.resolve();
 	const view = publicPortfolioView(portfolio);
 	const page = await renderPage(view);
 	const domain = options.customDomain ?? portfolio.customDomain;
@@ -172,9 +256,7 @@ async function showPortfolio(
 				: undefined,
 		},
 	});
-	await recordPortfolioVisit({ portfolio, requestHeaders: request.headers, trustedClient }).catch((error: unknown) =>
-		console.error("Portfolio visit counting failed", error),
-	);
+	await counted;
 	return html(body, page.script, portfolio.indexable ? {} : { "X-Robots-Tag": "noindex, follow" });
 }
 

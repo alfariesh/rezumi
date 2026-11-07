@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { decodePage, parseLinkMeta } from "./link-meta";
+import { decodePage, LINK_META_SCAN_CHARACTERS, parseLinkMeta } from "./link-meta";
 
 // Shaped like the pages people paste (a repository, a design case study); fictional content, no network.
 const repositoryPage = `<!DOCTYPE html>
@@ -97,6 +97,88 @@ describe("parseLinkMeta", () => {
 		expect(parseLinkMeta(cut, "https://github.example.test/").title).toBe(
 			"nadia/kopi-app: Coffee ordering for small cafés",
 		);
+		// A tag the page never closes ends the read; what came before still counts.
+		expect(
+			parseLinkMeta(
+				`<title>Kept</title><meta property="og:description" content="never closed`,
+				"https://a.example.test/",
+			),
+		).toEqual({ title: "Kept" });
+	});
+
+	it("reads tags the way browsers do: quotes only around values, any case, odd spacing", () => {
+		const html = `<HEAD><META NAME = description CONTENT=it's-unquoted><meta/property="og:title"/content="Slashes">
+			<meta property="og:site_name" content='Single "quoted"'><TITLE>Upper</TITLE></HEAD>`;
+		expect(parseLinkMeta(html, "https://a.example.test/")).toEqual({
+			title: "Slashes",
+			description: "it's-unquoted",
+			siteName: 'Single "quoted"',
+		});
+		// A `<` that starts no tag is text, and an `=` inside a quoted value is part of it.
+		expect(
+			parseLinkMeta(`<p>1 < 2</p><meta property="og:title" content="a=b > c">`, "https://a.example.test/").title,
+		).toBe("a=b > c");
+	});
+
+	it("keeps entity names to its own list", () => {
+		expect(parseLinkMeta(`<title>&constructor; &toString &amp;</title>`, "https://a.example.test/").title).toBe(
+			"&constructor; &toString &",
+		);
+	});
+
+	it("reads the whole head, but the body only near the end of the head", () => {
+		const padding = "x".repeat(LINK_META_SCAN_CHARACTERS);
+		// A long head (inline styles) still gives its tags.
+		expect(
+			parseLinkMeta(
+				`<head><style>${padding}</style><meta property="og:title" content="Late in the head"></head>`,
+				"https://a.example.test/",
+			).title,
+		).toBe("Late in the head");
+		// Tags streamed into the start of the body count; tags deep in a long body don't.
+		expect(
+			parseLinkMeta(
+				`<head></head><body><meta property="og:title" content="Streamed"><p>${padding}</p><meta name="description" content="Too far">`,
+				"https://a.example.test/",
+			),
+		).toEqual({ title: "Streamed" });
+		// After a head longer than the window, tags at the start of the body still count.
+		expect(
+			parseLinkMeta(
+				`<head><title>Head title</title><style>${padding}</style></head><body><meta property="og:title" content="Body title"><meta property="og:image" content="/card.png">`,
+				"https://a.example.test/",
+			),
+		).toEqual({ title: "Body title", image: "https://a.example.test/card.png" });
+	});
+
+	it("reads a hostile megabyte in linear time", () => {
+		const size = 1024 * 1024;
+		const repeat = (unit: string) => unit.repeat(Math.ceil(size / unit.length)).slice(0, size);
+		const pages = [
+			repeat("<meta"),
+			repeat("<script"),
+			repeat("<title"),
+			repeat("<style"),
+			repeat("<!--"),
+			repeat("<script>x"),
+			repeat("<title>x"),
+			repeat("<a b='"),
+			repeat('<meta content="'),
+			repeat("</"),
+			repeat("<meta a=b>"),
+			repeat("<a "),
+			repeat("<!x"),
+			`<head><title>${repeat("</titl")}`,
+			`<head><script>${repeat("</scrip")}`,
+			`<meta property="og:title" content="${repeat("&amp;")}">`,
+			`<meta property="og:image" content="${repeat("&#x41;")}">`,
+		];
+		for (const html of pages) {
+			const started = performance.now();
+			parseLinkMeta(html, "https://a.example.test/");
+			const elapsed = performance.now() - started;
+			expect(elapsed, html.slice(0, 20)).toBeLessThan(100);
+		}
 	});
 });
 

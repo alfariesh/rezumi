@@ -10,9 +10,12 @@ function slugsExcept(data: Pick<PortfolioData, "works">, workId?: string): Set<s
 	return new Set(data.works.items.filter((work) => work.id !== workId).map((work) => work.slug));
 }
 
-/** How many more works the portfolio can hold (the technical limit; plans arrive in Phase 07). */
-export function workRoom(data: Pick<PortfolioData, "works">): number {
-	return Math.max(0, PORTFOLIO_LIMITS.works - data.works.items.length);
+/**
+ * How many more works the portfolio can hold: `limit` is the account's (`portfolio.get` → `limits.works`, which plans
+ * set from Phase 07), else the technical limit.
+ */
+export function workRoom(data: Pick<PortfolioData, "works">, limit: number = PORTFOLIO_LIMITS.works): number {
+	return Math.max(0, Math.min(limit, PORTFOLIO_LIMITS.works) - data.works.items.length);
 }
 
 /** An empty work with its own address. */
@@ -32,8 +35,9 @@ export function newWork(data: Pick<PortfolioData, "works">, title = ""): Portfol
 }
 
 /**
- * Changes a work's title. Its address follows the title while it still is the one made from the old title; an
- * address that came from elsewhere (an import, an older title kept on purpose) stays.
+ * Changes a work's title. Its address follows the title while it still is the one the old title makes, as it is for
+ * works made in the editor, imported from the resume, or made from pictures or a link. An address that differs (a
+ * work whose address another work's took first, data written outside the editor) stays as it is.
  */
 export function retitleWork(data: Pick<PortfolioData, "works">, work: PortfolioWork, title: string): void {
 	const others = slugsExcept(data, work.id);
@@ -42,14 +46,14 @@ export function retitleWork(data: Pick<PortfolioData, "works">, work: PortfolioW
 	if (automatic) work.slug = uniquePortfolioSlug(title, others);
 }
 
-/** A title from a file name: "kopi-senja_final.jpg" → "kopi senja final". */
-export function titleFromFileName(name: string): string {
+/** A title from a file name, at most `max` characters: "kopi-senja_final.jpg" → "kopi senja final". */
+export function titleFromFileName(name: string, max: number = PORTFOLIO_LIMITS.text.workTitle): string {
 	return name
 		.replace(/\.[^.]+$/, "")
 		.replace(/[_-]+/g, " ")
 		.replace(/\s+/g, " ")
 		.trim()
-		.slice(0, PORTFOLIO_LIMITS.text.workTitle);
+		.slice(0, max);
 }
 
 /**
@@ -61,8 +65,9 @@ export function worksFromImages(
 	images: readonly { image: PortfolioImage; fileName: string }[],
 	mode: "one" | "each",
 	title: string,
+	limit?: number,
 ): PortfolioWork[] {
-	const room = workRoom(data);
+	const room = workRoom(data, limit);
 	if (!images.length || !room) return [];
 	const taken = slugsExcept(data);
 	const make = (workTitle: string, pictures: readonly PortfolioImage[]): PortfolioWork => {

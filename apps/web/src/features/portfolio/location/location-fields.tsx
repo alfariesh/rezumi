@@ -2,9 +2,10 @@ import type { City } from "./cities";
 import type { MapPrecision } from "./map-config";
 import type { PortfolioLocation } from "@rezumi/schema/portfolio/data";
 import { Alert, Button, Checkbox, Label, RadioGroup, Spinner } from "@heroui/react";
+import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { PORTFOLIO_WORK_MODES } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -12,9 +13,16 @@ import { SwitchRow } from "@rezumi/ui/components/switch";
 import { pageLocaleOf, useSourceResume } from "../editor/context";
 import { ChoiceSelect, RadioOption, TextInput } from "../editor/fields";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "../editor/store";
-import { uploadPortfolioImage } from "../images/upload";
-import { areaCenter, cityLabel, countryNames, findCity, searchCities } from "./cities";
+import { areaCenter, cityLabel, countryNames, findCity, hasOnlyOtherScripts, searchCities } from "./cities";
 import { loadCities } from "./load-cities";
+import {
+	mapPictureNeeded,
+	mapPictures,
+	mapPictureSignature,
+	setLocationPoint,
+	useMapPictureStatus,
+} from "./map-pictures";
+import { identifyPlace, placeAtPrecision, useChosenCity } from "./place";
 
 const LocationMap = lazy(() => import("./location-map"));
 
@@ -48,20 +56,6 @@ function timeZoneOptions(current: string | undefined) {
 	return all.map((zone) => ({ id: zone, label: zone.replaceAll("_", " ") }));
 }
 
-/** The nearest listed city to a point (a saved location, before the list knew which city it was). */
-function nearestCity(cities: readonly City[], point: { lat: number; lng: number }): City | null {
-	let best: City | null = null;
-	let distance = Number.POSITIVE_INFINITY;
-	for (const city of cities) {
-		const next = (city.lat - point.lat) ** 2 + (city.lng - point.lng) ** 2;
-		if (next < distance) {
-			distance = next;
-			best = city;
-		}
-	}
-	return best;
-}
-
 /** The city list, loaded when the form first needs it. */
 function useCities() {
 	const [cities, setCities] = useState<City[] | null>(null);
@@ -81,71 +75,24 @@ function useCities() {
 	return { cities, failed, load };
 }
 
-type MapPictureStatus = "idle" | "working" | "saved" | "failed";
+type MapPictureState = "idle" | "working" | "saved" | "failed";
 
-/** What a map picture shows: the point and precision, while the map is on. */
-function pointSignature(location: PortfolioLocation): string | null {
-	const { point } = location;
-	return location.showMap && point ? `${point.lat},${point.lng},${point.precision}` : null;
-}
-
-/**
- * Keeps `location.map` in step with the point (`02-teknis.md` section 24): while the map is on, a change of point or
- * precision makes new light and dark pictures (off screen, after a short pause) and uploads them; turning the map off
- * removes them. A picture finished for a point that changed meanwhile is dropped.
- */
-function useMapPictures(location: PortfolioLocation) {
-	const signature = pointSignature(location);
-	const hasMap = Boolean(location.map);
-	// A saved picture belongs to the point it was saved with; only a later change remakes it.
-	const made = useRef<string | null>(hasMap ? signature : null);
-	const [status, setStatus] = useState<MapPictureStatus>(hasMap ? "saved" : "idle");
-	const [attempt, setAttempt] = useState(0);
-
-	useEffect(() => {
-		if (!signature || (made.current === signature && hasMap)) return;
-		let cancelled = false;
-		const timer = setTimeout(async () => {
-			const point = usePortfolioEditorStore.getState().portfolio?.data.location.point;
-			if (!point) return;
-			setStatus("working");
-			try {
-				const { snapshotMap } = await import("./map-snapshot");
-				const pictures = await snapshotMap(point, point.precision);
-				if (cancelled) return;
-				const [light, dark] = await Promise.all([
-					uploadPortfolioImage(new File([pictures.light], "map-light.png", { type: "image/png" })),
-					uploadPortfolioImage(new File([pictures.dark], "map-dark.png", { type: "image/png" })),
-				]);
-				const current = usePortfolioEditorStore.getState().portfolio?.data.location;
-				if (cancelled || !current || pointSignature(current) !== signature) return;
-				made.current = signature;
-				editPortfolio((draft) => {
-					draft.location.map = { light, dark };
-				});
-				setStatus("saved");
-			} catch {
-				if (cancelled) return;
-				// The page shows the card without a map rather than an old place's picture.
-				editPortfolio((draft) => {
-					delete draft.location.map;
-				});
-				setStatus("failed");
-			}
-		}, 1200);
-		return () => {
-			cancelled = true;
-			clearTimeout(timer);
-		};
-	}, [signature, hasMap, attempt]);
-
-	return { status, retry: () => setAttempt((value) => value + 1) };
+/** What the map picture of the location shown is doing, from the data and the picture maker. */
+function useMapPictureState(location: PortfolioLocation): MapPictureState {
+	const signature = mapPictureSignature(location);
+	const status = useMapPictureStatus();
+	if (!signature) return "idle";
+	if (location.map) return "saved";
+	if (status.working === signature) return "working";
+	if (mapPictureNeeded(location) && status.failed.includes(signature)) return "failed";
+	return "working";
 }
 
 /**
  * The Location card's form (`01-desain.md` section 19): pick a city from the bundled list (first suggestion from the
  * resume's location), choose how precise to be, and optionally show a map. Privacy first: the map is off by default,
- * the pin sits at the city's centre, and there's no "use my location".
+ * the pin sits at the city's centre, and there's no "use my location". The map's pictures are made by `mapPictures`,
+ * which follows the data, so they arrive even after this form closes.
  */
 export function LocationFields() {
 	const data = usePortfolioData();
@@ -153,15 +100,25 @@ export function LocationFields() {
 	const source = useSourceResume();
 	const resumeLocation = source.data?.basics.location ?? "";
 	const pageLocale = pageLocaleOf(data, source.data);
+	const appLocale = i18n.locale;
 	const names = useMemo(() => countryNames(pageLocale), [pageLocale]);
-	const appNames = useMemo(() => countryNames(navigator.language), []);
+	const appNames = useMemo(() => countryNames(appLocale), [appLocale]);
+	// Countries after a comma may be typed in the app's language, the page's, or English.
+	const areaNames = useMemo(() => [appNames, names, countryNames("en")], [appNames, names]);
 	const { cities, failed, load } = useCities();
 	const [query, setQuery] = useState("");
+	const search = useDeferredValue(query);
 	const [searching, setSearching] = useState(false);
-	const [city, setCity] = useState<City | null>(null);
-	const pictures = useMapPictures(location);
+	/** A finer precision asked for when the city isn't known: picking the city again applies it. */
+	const [wanted, setWanted] = useState<MapPrecision | null>(null);
+	const picture = useMapPictureState(location);
 	const precision = location.point?.precision ?? "city";
 	const hasPoint = Boolean(location.point);
+
+	// From here on, map pictures follow the data for the rest of the visit, also once this form closes.
+	useEffect(() => {
+		mapPictures.watch();
+	}, []);
 
 	// Without a city yet, the list loads at once so the resume's location can be offered.
 	useEffect(() => {
@@ -169,35 +126,52 @@ export function LocationFields() {
 		// oxlint-disable-next-line react-hooks/exhaustive-deps -- `load` is remade each render; loading once is enough.
 	}, [hasPoint]);
 
-	const results = cities && searching ? searchCities(cities, query, appNames, 6) : [];
-	const suggestion =
-		cities && !location.point && !query.trim() ? findCity(cities, location.label || resumeLocation, appNames) : null;
+	const results = useMemo(
+		() => (cities && searching ? searchCities(cities, search, areaNames, 6) : []),
+		[cities, searching, search, areaNames],
+	);
+	const suggestion = useMemo(
+		() =>
+			cities && !location.point && !search.trim()
+				? findCity(cities, location.label || resumeLocation, areaNames)
+				: null,
+		[cities, location.point, location.label, resumeLocation, search, areaNames],
+	);
 
-	const place = (chosen: City, nextPrecision: MapPrecision) => {
-		const all = cities ?? [];
-		setCity(chosen);
+	const place = (city: City, nextPrecision: MapPrecision) => {
+		const list = cities ?? [];
+		useChosenCity.getState().choose(city);
 		setQuery("");
 		setSearching(false);
-		editPortfolio(
-			(draft) => {
-				draft.location.point = { ...areaCenter(all, chosen, nextPrecision), precision: nextPrecision };
-				draft.location.label = cityLabel(chosen, nextPrecision, names);
-				draft.location.timezone = chosen.timezone;
-			},
-			{ structural: true },
-		);
+		setWanted(null);
+		editPortfolio((draft) => {
+			setLocationPoint(
+				draft.location,
+				{ ...areaCenter(list, city, nextPrecision), precision: nextPrecision },
+				cityLabel(city, nextPrecision, names),
+			);
+			// Picking a city is the only time its time zone is taken; a precision change keeps the zone.
+			draft.location.timezone = city.timezone;
+		});
 	};
 
 	const changePrecision = async (next: MapPrecision) => {
 		const list = await load();
-		const chosen =
-			city ??
-			(list && (findCity(list, location.label, names) ?? (location.point ? nearestCity(list, location.point) : null)));
-		if (chosen) place(chosen, next);
+		const current = usePortfolioEditorStore.getState().portfolio?.data.location;
+		if (!list || !current?.point || current.point.precision === next) return;
+		const change = placeAtPrecision(list, identifyPlace(list, current, useChosenCity.getState().city), next, names);
+		if (!change) {
+			// The saved place doesn't say which city it was: it's picked again, never guessed.
+			setWanted(next);
+			return;
+		}
+		setWanted(null);
+		editPortfolio((draft) => setLocationPoint(draft.location, change.point, change.label));
 	};
 
 	const clearPlace = () => {
-		setCity(null);
+		useChosenCity.getState().choose(null);
+		setWanted(null);
 		editPortfolio(
 			(draft) => {
 				delete draft.location.point;
@@ -207,6 +181,8 @@ export function LocationFields() {
 			{ structural: true },
 		);
 	};
+
+	const noResults = searching && search.trim() !== "" && cities !== null && results.length === 0;
 
 	return (
 		<div className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
@@ -231,14 +207,14 @@ export function LocationFields() {
 						<Trans>The city list didn't load. Check your connection, then type again.</Trans>
 					</p>
 				)}
-				{searching && query.trim() && cities && (
+				{searching && search.trim() && cities && (
 					<ul className="grid gap-1" aria-label={t`Cities`}>
 						{results.map((result) => (
 							<li key={`${result.name}-${result.country}-${result.lat}-${result.lng}`}>
 								<Button
 									variant="ghost"
 									className="h-auto w-full justify-start py-1.5 text-start"
-									onPress={() => place(result, precision)}
+									onPress={() => place(result, wanted ?? precision)}
 								>
 									<Icon name="map-pin" size={16} className="text-muted" />
 									<span className="grid">
@@ -250,9 +226,15 @@ export function LocationFields() {
 								</Button>
 							</li>
 						))}
-						{results.length === 0 && (
+						{noResults && (
 							<li className="px-2 text-xs text-muted">
-								<Trans>No city by that name. Larger towns are listed; type the nearest one, then edit the label.</Trans>
+								{hasOnlyOtherScripts(search.split(",")[0] ?? "") ? (
+									<Trans>Cities are listed by their names in Latin letters. Type it that way, such as “Tokyo”.</Trans>
+								) : (
+									<Trans>
+										No city by that name. Larger towns are listed; type the nearest one, then edit the label.
+									</Trans>
+								)}
 							</li>
 						)}
 					</ul>
@@ -315,6 +297,17 @@ export function LocationFields() {
 					</div>
 				</RadioGroup>
 			)}
+			{wanted && wanted !== precision && location.point && (
+				<p className="text-xs text-warning" role="status">
+					{wanted === "city" ? (
+						<Trans>To show your city, find it again above. The page keeps what it shows until then.</Trans>
+					) : (
+						<Trans>
+							To show your province or state, find your city again above. The page keeps what it shows until then.
+						</Trans>
+					)}
+				</p>
+			)}
 
 			<SwitchRow
 				isSelected={location.showMap}
@@ -322,7 +315,8 @@ export function LocationFields() {
 				onChange={(checked) =>
 					editPortfolio((draft) => {
 						draft.location.showMap = checked;
-						if (!checked) delete draft.location.map;
+						// Pictures are made for the map that's turned on, never kept from an earlier one.
+						delete draft.location.map;
 					})
 				}
 				label={t`Show a map on my page`}
@@ -348,12 +342,10 @@ export function LocationFields() {
 							precision={precision}
 							label={location.label}
 							onMove={(point) =>
-								editPortfolio(
-									(draft) => {
-										if (draft.location.point) Object.assign(draft.location.point, point);
-									},
-									{ structural: true },
-								)
+								editPortfolio((draft) => {
+									const current = draft.location.point;
+									if (current) setLocationPoint(draft.location, { ...point, precision: current.precision });
+								})
 							}
 						/>
 					</Suspense>
@@ -372,7 +364,7 @@ export function LocationFields() {
 							</Alert.Content>
 						</Alert>
 					)}
-					<MapPictureNote status={pictures.status} onRetry={pictures.retry} />
+					<MapPictureNote state={picture} onRetry={mapPictures.retry} />
 				</div>
 			)}
 
@@ -449,17 +441,17 @@ export function LocationFields() {
 	);
 }
 
-type MapPictureNoteProps = { status: MapPictureStatus; onRetry: () => void };
+type MapPictureNoteProps = { state: MapPictureState; onRetry: () => void };
 
-function MapPictureNote({ status, onRetry }: MapPictureNoteProps) {
-	if (status === "working")
+function MapPictureNote({ state, onRetry }: MapPictureNoteProps) {
+	if (state === "working")
 		return (
 			<p className="flex items-center gap-2 text-xs text-muted">
 				<Spinner size="sm" />
 				<Trans>Making the map picture for your page…</Trans>
 			</p>
 		);
-	if (status === "failed")
+	if (state === "failed")
 		return (
 			<div className="flex flex-wrap items-center gap-2 text-xs text-danger">
 				<Trans>
@@ -470,7 +462,7 @@ function MapPictureNote({ status, onRetry }: MapPictureNoteProps) {
 				</Button>
 			</div>
 		);
-	if (status === "saved")
+	if (state === "saved")
 		return (
 			<p className="text-xs text-muted">
 				<Trans>Your page shows this map as a picture, in light and dark mode. © OpenStreetMap contributors.</Trans>

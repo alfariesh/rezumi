@@ -7,7 +7,7 @@ import {
 	writablePortfolioDataSchema,
 } from "./data";
 import { createDefaultPortfolioData } from "./default";
-import { PORTFOLIO_LIMITS, portfolioDataBytes, richTextLength } from "./limits";
+import { fitsRichText, PORTFOLIO_LIMITS, portfolioDataBytes, richTextLength } from "./limits";
 
 const image = (name = "a") => ({
 	key: `uploads/user-1/pictures/portfolio/${name}.webp`,
@@ -118,6 +118,25 @@ describe("reading stored portfolio data", () => {
 		expect(data.works.items.map((item) => item.slug)).toEqual(["cafe-ordering-2", "cafe-ordering", "third"]);
 	});
 
+	it("drops a broken hidden item on its own and keeps every other one hidden", () => {
+		const long = "x".repeat(PORTFOLIO_LIMITS.text.id + 10);
+		const data = parsePortfolioData({
+			sections: {
+				hiddenItems: {
+					experience: ["e1", 42, null, "proj.1", { id: "e3" }, long, "e3"],
+					education: "not a list",
+					nope: ["e1"],
+				},
+			},
+		});
+		expect(data.sections.hiddenItems).toEqual({ experience: ["e1", "proj.1", long, "e3"], education: [] });
+	});
+
+	it("keeps up to two typewriter roles from data saved with more", () => {
+		const data = parsePortfolioData({ hero: { effect: { id: "typewriter", phrases: ["Mentor", "Writer", "Coach"] } } });
+		expect(data.hero.effect.phrases).toEqual(["Mentor", "Writer"]);
+	});
+
 	it("keeps variants, section keys and titles it knows and drops the rest", () => {
 		const data = parsePortfolioData({
 			design: { variants: { work: "grid-2", metric: "ba", hero: "spinning", nav: "sticky" } },
@@ -167,6 +186,22 @@ describe("checking portfolio data before saving", () => {
 		expect(richTextLength(about)).toBe(PORTFOLIO_LIMITS.text.about);
 		expect(issues({ about: { content: about } })).toEqual([]);
 		expect(issues({ about: { content: `${about}<p>b</p>` } })).toEqual(["about.content"]);
+	});
+
+	it("counts text that only looks like a tag or an entity as text, as the page shows it", () => {
+		expect(richTextLength("<p><1 abc> x</p>")).toBe(9);
+		expect(richTextLength("<p>a <= b &amp; c</p><h2 >d</h2><BR/>")).toBe(11);
+		expect(richTextLength("<p>&zz; &nbsp;&#233;&#xE9;&AMP;&quot;</p>")).toBe(10);
+		expect(richTextLength("<p>&#x1F600;😀</p>")).toBe(4);
+		const fake = `<p>${"<1 a>".repeat(PORTFOLIO_LIMITS.text.about)}</p>`;
+		expect(issues({ about: { content: fake } })).toEqual(["about.content"]);
+	});
+
+	it("needs rich text to fit both its text limit and its markup limit", () => {
+		const max = 10;
+		expect(fitsRichText(`<p>${"a".repeat(max)}</p>`, max)).toBe(true);
+		expect(fitsRichText(`<p>${"a".repeat(max + 1)}</p>`, max)).toBe(false);
+		expect(fitsRichText(`<p><a href="https://example.com/${"x".repeat(80)}">a</a></p>`, max)).toBe(false);
 	});
 
 	it("enforces list limits", () => {
@@ -299,6 +334,44 @@ describe("checking portfolio data before saving", () => {
 		expect(issues({ design: { accent: { source: "custom", color: "#12ab9F" } } })).toEqual([]);
 		expect(issues({ design: { accent: { source: "custom", color: "red" } } })).toEqual(["design.accent.color"]);
 		expect(issues({ design: { fonts: { source: "pair", id: "comic-sans" } } })).toEqual(["design.fonts.id"]);
+	});
+
+	it("refers to resume items and sections by any id the resume uses, up to the id limit", () => {
+		const long = "x".repeat(PORTFOLIO_LIMITS.text.id);
+		for (const id of ["proj.1", "Ünïcode", "a b", "job:acme", long]) {
+			expect(issues({ works: { items: [work("w", { fromResumeItemId: id })] } })).toEqual([]);
+			expect(issues({ sections: { hiddenItems: { experience: [id], [`resume:${id}`]: [id] } } })).toEqual([]);
+			expect(issues({ sections: { order: [`resume:${id}`], hidden: [`resume:${id}`] } })).toEqual([]);
+		}
+		expect(issues({ works: { items: [work("w", { fromResumeItemId: "" })] } })).toEqual([
+			"works.items.0.fromResumeItemId",
+		]);
+		expect(issues({ works: { items: [work("w", { fromResumeItemId: `${long}x` })] } })).toEqual([
+			"works.items.0.fromResumeItemId",
+		]);
+		expect(issues({ sections: { hiddenItems: { experience: ["e1", ""] } } })).toEqual([
+			"sections.hiddenItems.experience.1",
+		]);
+		expect(issues({ sections: { order: ["resume:", `resume:${long}x`] } })).toEqual([
+			"sections.order.0",
+			"sections.order.1",
+		]);
+		// The portfolio's own sections keep its own ids.
+		expect(issues({ sections: { order: ["custom:a.b"] } })).toEqual(["sections.order.0"]);
+		const read = parsePortfolioData({
+			works: { items: [work("w", { fromResumeItemId: "proj.1" })] },
+			sections: { order: ["resume:proj.1"], hiddenItems: { "resume:proj.1": ["a b"] } },
+		});
+		expect(read.works.items[0]?.fromResumeItemId).toBe("proj.1");
+		expect(read.sections).toMatchObject({ order: ["resume:proj.1"], hiddenItems: { "resume:proj.1": ["a b"] } });
+	});
+
+	it("takes at most two typewriter roles after the headline", () => {
+		const phrases = (list: string[]) => issues({ hero: { effect: { id: "typewriter", phrases: list } } });
+		expect(PORTFOLIO_LIMITS.typewriterPhrases).toBe(2);
+		expect(phrases(["", "Mentor"])).toEqual([]);
+		expect(phrases(["UX researcher", "Mentor"])).toEqual([]);
+		expect(phrases(["UX researcher", "Mentor", "Coach"])).toEqual(["hero.effect.phrases"]);
 	});
 
 	it("can't carry visibility settings inside the data", () => {

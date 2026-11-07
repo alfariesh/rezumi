@@ -22,6 +22,7 @@ import * as schema from "@rezumi/db/schema";
 import { ResetPasswordEmail, VerifyEmail, VerifyEmailChange } from "@rezumi/email/templates/auth";
 import { sendEmail } from "@rezumi/email/transport";
 import { env } from "@rezumi/env/server";
+import { RESERVED_PROFILE_SEGMENTS } from "@rezumi/utils/app-paths";
 import { rateLimitConfig } from "@rezumi/utils/rate-limit";
 import { generateId, toUsername } from "@rezumi/utils/string";
 import { timezoneSchema } from "@rezumi/utils/timezone";
@@ -108,6 +109,17 @@ export function isCustomOAuthProviderEnabled() {
 
 const TRUSTED_ORIGINS = getTrustedOrigins(env.APP_URL);
 const accountUser = new AsyncLocalStorage<User>();
+
+/**
+ * Whether a username is a path the app answers itself (`RESERVED_PROFILE_SEGMENTS`): an account holding it could never
+ * be reached at `/<username>`. Sign-up and username changes refuse them; accounts that already hold one keep it.
+ */
+export const isAppPathUsername = (value: string) => RESERVED_PROFILE_SEGMENTS.has(toUsername(value));
+
+/** The username an account holds now, when it has one. */
+const currentUsername = (account: object | undefined) =>
+	account && "username" in account && typeof account.username === "string" ? account.username : undefined;
+
 const oauthProviderRateLimit = isRateLimitEnabled
 	? rateLimitConfig.betterAuth.oauthProvider
 	: ({
@@ -336,11 +348,14 @@ const getAuthConfig = () => {
 					["/sign-up/email", "/update-user", "/is-username-available"].includes(ctx.path)
 				) {
 					const claimant =
-						user?.id ??
+						user ??
 						(ctx.path === "/update-user"
-							? (await auth.api.getSession({ headers: ctx.headers ?? new Headers() }))?.user.id
+							? (await auth.api.getSession({ headers: ctx.headers ?? new Headers() }))?.user
 							: undefined);
-					if (await isUsernameReserved(toUsername(requestedUsername), claimant))
+					const requested = toUsername(requestedUsername);
+					// An account that already holds an app path keeps it; nobody new can take one.
+					const takenByApp = isAppPathUsername(requested) && requested !== currentUsername(claimant);
+					if (takenByApp || (await isUsernameReserved(requested, claimant?.id)))
 						throw new APIError("UNPROCESSABLE_ENTITY", {
 							code: "USERNAME_IS_ALREADY_TAKEN",
 							message: "This username is already taken. Choose another.",

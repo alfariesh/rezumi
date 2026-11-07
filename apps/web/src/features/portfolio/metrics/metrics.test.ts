@@ -7,10 +7,13 @@ import {
 	dropMissingHighlight,
 	isMetricComplete,
 	metricFormatChoice,
+	metricNumberText,
 	metricSeriesText,
 	newMetric,
 	parseMetricNumber,
 	parseMetricSeries,
+	toggleMinus,
+	westernDigits,
 	workMetrics,
 } from "./metrics";
 
@@ -40,6 +43,40 @@ describe("parseMetricNumber", () => {
 		expect(parseMetricNumber("35%", "en-US")).toBeNull();
 		expect(parseMetricNumber("1.2.3,4.5", "en-US")).toBeNull();
 		expect(parseMetricNumber("9".repeat(20), "en-US")).toBeNull();
+	});
+});
+
+describe("numbers in languages with their own digits", () => {
+	const locales = ["ar-SA", "fa-IR", "bn-BD", "mr-IN", "ne-NP", "hi-IN", "id-ID", "en-US"];
+
+	it("shows numbers with Western digits that read back the same, in every language", () => {
+		for (const locale of locales) {
+			for (const value of [1234.5, -40, 0.25, 1_200_000]) {
+				const shown = metricNumberText(value, locale);
+				expect(shown, locale).toMatch(/^-?[\d.,]+$/);
+				expect(parseMetricNumber(shown, locale), `${locale} ${shown}`).toBe(value);
+			}
+			expect(parseMetricSeries(metricSeriesText([12, 15.5, -21], locale), locale), locale).toEqual([12, 15.5, -21]);
+		}
+	});
+
+	it("reads digits typed in Arabic, Persian, Bengali and Devanagari, with Arabic separators", () => {
+		expect(parseMetricNumber("١٢٣٤٫٥", "ar-SA")).toBe(1234.5);
+		expect(parseMetricNumber("١٬٢٣٤٫٥", "ar-SA")).toBe(1234.5);
+		expect(parseMetricNumber("۱۲۳۴٫۵", "fa-IR")).toBe(1234.5);
+		expect(parseMetricNumber("‎−۴۰", "fa-IR")).toBe(-40);
+		expect(parseMetricNumber("১২৩৪.৫", "bn-BD")).toBe(1234.5);
+		expect(parseMetricNumber("१,२३४.५", "mr-IN")).toBe(1234.5);
+		expect(parseMetricSeries("١٢، ١٥، ٢١", "ar-SA")).toEqual([12, 15, 21]);
+		expect(westernDigits("؜-١٢٣")).toBe("-123");
+	});
+
+	it("switches a number's sign for keypads without a minus key", () => {
+		expect(toggleMinus("12,5")).toBe("-12,5");
+		expect(toggleMinus("-12,5")).toBe("12,5");
+		expect(toggleMinus("−3")).toBe("3");
+		expect(toggleMinus("+35")).toBe("-35");
+		expect(toggleMinus("")).toBe("-");
 	});
 });
 

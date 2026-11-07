@@ -1,3 +1,4 @@
+import type { SettingOptions } from "./settings";
 import type { PortfolioRecord } from "./store";
 import type { Locale } from "@rezumi/utils/locale";
 import {
@@ -23,9 +24,12 @@ import { PORTFOLIO_LIMITS, portfolioIndexableFrom } from "@rezumi/schema/portfol
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
+import { portfolioErrorMessage } from "../errors";
+import { invalidatePortfolioQueries, isPortfolioLive } from "../status";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { PanelGroup, TextInput } from "./fields";
-import { editPortfolio, usePortfolioData, usePortfolioEditorStore, usePortfolioRecord } from "./store";
+import { changeSetting } from "./settings";
+import { editPortfolio, usePortfolioData, usePortfolioRecord } from "./store";
 import { useEditorView } from "./use-view";
 import { Combobox } from "@/components/ui/combobox";
 import { getLocaleOptions } from "@/features/locale/locale-options";
@@ -33,7 +37,6 @@ import { CopyLinkButton } from "@/features/resume/share/copy-link-button";
 import { useShareOrigin } from "@/features/resume/share/use-share-origin";
 import { useConfirm } from "@/hooks/use-confirm";
 import { authClient } from "@/libs/auth/client";
-import { toastError } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 
 /** The portfolio's address: `/<username>` on the app (or its alias). */
@@ -43,26 +46,25 @@ export function usePortfolioUrl(): string {
 	return `${origin}/${encodeURIComponent(username)}`;
 }
 
-/**
- * Saves a setting that lives beside the data (published, search engines, source resume) and takes the result into
- * the editor. Pending edits are saved first, so the page never goes live without them.
- */
+/** Changes a setting that lives beside the data (`changeSetting`), saying what went wrong when it couldn't. */
 function useSettingAction() {
 	const queryClient = useQueryClient();
 	const [pending, setPending] = useState(false);
 
-	const run = async (action: () => Promise<PortfolioRecord>, fallback: string) => {
+	const run = async (action: () => Promise<PortfolioRecord>, fallback: string, options: SettingOptions = {}) => {
 		setPending(true);
 		try {
-			await usePortfolioEditorStore.getState().flush();
-			const record = await action();
-			usePortfolioEditorStore.getState().applySettings(record);
-			void queryClient.invalidateQueries({ queryKey: orpc.portfolio.get.key() });
-			// The resume's Share panel says what the short link opens.
-			void queryClient.invalidateQueries({ queryKey: orpc.resume.list.key() });
+			if ((await changeSetting(action, options)) === "unsaved") {
+				toast.add({
+					type: "error",
+					description: t`Your latest changes aren't saved, so nothing was changed. Check the save status at the top, then try again.`,
+				});
+				return false;
+			}
+			void invalidatePortfolioQueries(queryClient);
 			return true;
 		} catch (error) {
-			toastError(error, fallback, { allowServerMessage: true });
+			toast.add({ type: "error", description: portfolioErrorMessage(error, { fallback }) });
 			return false;
 		} finally {
 			setPending(false);
@@ -91,6 +93,7 @@ function PublishGroup() {
 	const { run, pending } = useSettingAction();
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const suspended = record.suspendedAt !== null;
+	const live = isPortfolioLive(record);
 
 	const unpublish = async () => {
 		const confirmed = await confirm(t`Unpublish your portfolio?`, {
@@ -118,12 +121,17 @@ function PublishGroup() {
 				</Alert>
 			)}
 			{record.isPublic ? (
+				// Still on while taken down, so it can be switched off; visitors can't see it either way.
 				<SwitchRow
 					isSelected
 					isDisabled={pending}
 					onChange={() => void unpublish()}
 					label={t`Published`}
-					description={t`Anyone with the link can see your portfolio. Changes show as soon as they're saved.`}
+					description={
+						live
+							? t`Anyone with the link can see your portfolio. Changes show as soon as they're saved.`
+							: t`Visitors can't see it while it's taken down.`
+					}
 					className="items-start py-0"
 				/>
 			) : (
@@ -155,7 +163,7 @@ function PublishGroup() {
 				</InputGroup>
 			</TextField>
 
-			{record.isPublic && (
+			{live && (
 				<div className="grid grid-cols-2 gap-2">
 					<a
 						href={url}
@@ -243,6 +251,7 @@ function PublishDialog({ onClose }: { onClose: () => void }) {
 				return client.portfolio.setPublic({ isPublic: true });
 			},
 			t`Couldn't publish. Try again.`,
+			{ saveFirst: true },
 		);
 		if (!done) return;
 		toast.add({ type: "success", description: t`Your portfolio is live` });
@@ -393,10 +402,23 @@ function SearchGroup() {
 	);
 }
 
+/** A language's name in the app's language ("Indonesian", "Bahasa Indonesia" in Indonesian), else its code. */
+function languageName(locale: string, appLocale: string): string {
+	try {
+		return new Intl.DisplayNames([appLocale, "en"], { type: "language" }).of(locale) ?? locale;
+	} catch {
+		return locale;
+	}
+}
+
 function LanguageGroup() {
 	const data = usePortfolioData();
 	const source = useSourceResume();
-	const resumeLocale = source.data ? pageLocaleOf({ ...data, locale: undefined }, source.data) : null;
+	const { i18n } = useLingui();
+	// The resume's language by name (the placeholder's name stays, so its translations do).
+	const resumeLocale = source.data
+		? languageName(pageLocaleOf({ ...data, locale: undefined }, source.data), i18n.locale)
+		: null;
 	const languageId = useId();
 
 	return (

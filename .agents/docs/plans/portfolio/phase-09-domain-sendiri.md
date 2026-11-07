@@ -50,3 +50,8 @@
 
 - Domain uji pemilik membuka portfolio lewat HTTPS dan statusnya tampil benar di editor.
 - Dokumen self-hosting dan draf panduan diperbarui.
+
+### Catatan dari hardening Phase 01–06 (2026-11-07, `02-teknis.md` bagian 32)
+
+- Host yang bukan host aplikasi dan bukan domain sendiri terverifikasi saat ini jatuh ke seluruh aplikasi (masuk, dasbor, API) di `apps/server/src/http/custom-domain.ts`. Dengan Cloudflare for SaaS, domain yang belum terverifikasi atau sudah dihapus akan menyajikan aplikasi di domain milik pengguna: jawab 404/421 atau alihkan ke `APP_URL` untuk host seperti itu.
+- File portfolio yang dipakai halaman terbit sudah dikirim dengan `Cross-Origin-Resource-Policy: cross-origin`, jadi gambar tampil di domain sendiri.

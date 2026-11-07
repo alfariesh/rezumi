@@ -1,3 +1,4 @@
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { abortable, fetchPublic, isPrivateOrLoopbackHost, resolveHostAddresses } from "@rezumi/utils/url-security.node";
 
 /**
@@ -10,10 +11,21 @@ import { abortable, fetchPublic, isPrivateOrLoopbackHost, resolveHostAddresses }
 export type RemoteProblem = "unreachable" | "timeout" | "unsafe-url" | "blocked" | "too-large" | "wrong-type";
 
 export class RemoteFetchError extends Error {
-	constructor(readonly reason: RemoteProblem) {
-		super(`Remote fetch failed: ${reason}`);
+	constructor(
+		readonly reason: RemoteProblem,
+		options?: ErrorOptions,
+	) {
+		super(`Remote fetch failed: ${reason}`, options);
 		this.name = "RemoteFetchError";
 	}
+}
+
+/**
+ * Whether a link may be asked at all, from the address alone: http(s) on the scheme's own port (a port is how probes
+ * for internal services look: `:6379`, `:8080`), no credentials, and an allowed host.
+ */
+function isFetchableUrl(url: URL, isAllowedHost: (hostname: string) => boolean): boolean {
+	return /^https?:$/.test(url.protocol) && !url.username && !url.password && !url.port && isAllowedHost(url.hostname);
 }
 
 /** One request to one address; redirects come back as they are. Tests swap it for a local server. */
@@ -43,29 +55,32 @@ const BLOCKED_STATUSES = new Set([401, 403, 407, 429, 451]);
 /**
  * The real request: `fetchPublic` connects to public addresses only (checked again at connection time on Node; on
  * Workers `global_fetch_strictly_public` refuses private destinations), and Workers also resolves the host first, as
- * `fetchWorkerPublicUrl` does.
+ * `fetchWorkerPublicUrl` does. A name that resolves to a private address fails like one that doesn't resolve at all
+ * (see `toRemoteError`), so the answer never tells which internal names exist.
  */
 const publicHop: RemoteHop = async (url, init) => {
 	if (process.env.CLOUDFLARE === "1") {
 		const addresses = await abortable(resolveHostAddresses(url.hostname), init.signal);
 		if (!addresses.length || addresses.some(({ address }) => isPrivateOrLoopbackHost(address)))
-			throw new RemoteFetchError("unsafe-url");
+			throw new RemoteFetchError("unreachable");
 	}
 	return fetchPublic(url, { method: "GET", headers: init.headers, signal: init.signal, redirect: "manual" });
 };
 
-/** The address as typed, when it's one this may fetch: http(s), no credentials, an allowed host; else null. */
+/**
+ * The address as typed, when it's one this may fetch: http(s) on its default port, no credentials, an allowed host;
+ * else null.
+ */
 export function remoteUrl(input: string, isAllowedHost = (hostname: string) => !isPrivateOrLoopbackHost(hostname)) {
 	const text = input.trim();
-	if (!text || text.length > 2048 || /\s/.test(text)) return null;
+	if (!text || text.length > PORTFOLIO_LIMITS.text.url || /\s/.test(text)) return null;
 	let url: URL;
 	try {
 		url = new URL(/^[a-z][\d+.a-z-]*:/i.test(text) ? text : `https://${text}`);
 	} catch {
 		return null;
 	}
-	if (!/^https?:$/.test(url.protocol) || url.username || url.password || !url.hostname) return null;
-	if (!isAllowedHost(url.hostname)) return null;
+	if (!url.hostname || !isFetchableUrl(url, isAllowedHost)) return null;
 	url.hash = "";
 	return url;
 }
@@ -114,7 +129,10 @@ function toRemoteError(error: unknown, signal: AbortSignal): unknown {
 		// The caller went away (the request was cancelled): nothing to report to anyone.
 		return reason;
 	}
-	if (error instanceof Error && error.cause === "unsafe-url") return new RemoteFetchError("unsafe-url");
+	// The address itself was checked before the request, so a refusal from the transport comes from DNS: the name
+	// resolved to a private address. It reads as a name that doesn't resolve, which says nothing about the network.
+	if (error instanceof Error && error.cause === "unsafe-url")
+		return new RemoteFetchError("unreachable", { cause: error });
 	// fetchPublic refuses statuses a Response can't hold (LinkedIn answers bots with 999).
 	if (error instanceof Error && error.message.startsWith("Invalid response status"))
 		return new RemoteFetchError("blocked");
@@ -122,8 +140,8 @@ function toRemoteError(error: unknown, signal: AbortSignal): unknown {
 }
 
 /**
- * Reads one address, following at most three redirects, each one checked like the first and never from https down
- * to http. Refuses anything but a 2xx answer of an accepted type.
+ * Reads one address, following at most three redirects, each one checked like the first (default port included) and
+ * never from https down to http. Refuses anything but a 2xx answer of an accepted type.
  */
 export async function fetchRemote(input: URL, options: RemoteFetchOptions): Promise<RemoteBody> {
 	const isAllowedHost = options.isAllowedHost ?? ((hostname: string) => !isPrivateOrLoopbackHost(hostname));
@@ -133,8 +151,7 @@ export async function fetchRemote(input: URL, options: RemoteFetchOptions): Prom
 		let url = input;
 		for (let redirects = 0; ; redirects++) {
 			signal.throwIfAborted();
-			if (!/^https?:$/.test(url.protocol) || url.username || url.password || !isAllowedHost(url.hostname))
-				throw new RemoteFetchError("unsafe-url");
+			if (!isFetchableUrl(url, isAllowedHost)) throw new RemoteFetchError("unsafe-url");
 			const response = await hop(url, {
 				signal,
 				headers: { accept: options.accept, "accept-language": "en, *;q=0.5", "user-agent": USER_AGENT },

@@ -16,6 +16,7 @@ import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { personas as resumePersonas } from "../templates/personas";
 import { buildPersonaResume } from "../templates/personas/persona";
 import { anindya } from "./personas/anindya";
@@ -366,7 +367,7 @@ export function buildPersona(id: PersonaId, options: { lang?: PersonaLang; varia
 					...copies(works, "copy").map((work, index) => ({
 						...work,
 						slug: `${work.slug}-${index + 2}`,
-						title: `${work.title ?? ""}${longer}`.slice(0, 100),
+						title: `${work.title ?? ""}${longer}`.slice(0, PORTFOLIO_LIMITS.text.workTitle),
 						featured: false,
 					})),
 				],

@@ -15,7 +15,8 @@ export function isAllowedPortfolioUrl(value: string, protocols: ReadonlySet<stri
 	}
 }
 
-const WEB_PROTOCOLS = new Set(["https:", "http:"]);
+/** Web addresses only, for `isAllowedPortfolioUrl`: links to other sites, without mailto. */
+export const PORTFOLIO_WEB_PROTOCOLS: ReadonlySet<string> = new Set(["https:", "http:"]);
 
 export const portfolioUrlSchema = z
 	.string()
@@ -24,5 +25,8 @@ export const portfolioUrlSchema = z
 
 export const webUrlSchema = z
 	.string()
-	.refine((value) => isAllowedPortfolioUrl(value, WEB_PROTOCOLS), "Use a full address starting with https://.")
+	.refine(
+		(value) => isAllowedPortfolioUrl(value, PORTFOLIO_WEB_PROTOCOLS),
+		"Use a full address starting with https://.",
+	)
 	.describe("An absolute https:// or http:// address.");

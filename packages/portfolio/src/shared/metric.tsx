@@ -5,6 +5,7 @@ import {
 	beforeAfterBars,
 	formatMetric,
 	formatMetricBefore,
+	formatMetricNumber,
 	SPARKLINE_HEIGHT,
 	SPARKLINE_WIDTH,
 	sparklinePaths,
@@ -39,15 +40,28 @@ function Trend({ change }: TrendProps) {
 	);
 }
 
-type SparklineProps = { series: readonly number[] };
+/** A sparkline's numbers as text, in the metric's format: what the drawing shows, for screen readers. */
+function seriesText(metric: PortfolioMetric, series: readonly number[], locale: string): string {
+	const values = series.map(
+		(value) => `${metric.prefix ?? ""}${formatMetricNumber(value, metric, locale)}${metric.suffix ?? ""}`,
+	);
+	try {
+		return new Intl.ListFormat(locale, { type: "unit", style: "narrow" }).format(values);
+	} catch {
+		return values.join(" ");
+	}
+}
 
-function Sparkline({ series }: SparklineProps) {
-	const { nextId } = useRender();
+type SparklineProps = { metric: PortfolioMetric; series: readonly number[] };
+
+function Sparkline({ metric, series }: SparklineProps) {
+	const { nextId, locale } = useRender();
 	const paths = sparklinePaths(series);
 	if (!paths) return null;
 	const id = nextId("pf-spark");
 	return (
 		<dd className="pf-metric__chart">
+			<span className="sr-only">{seriesText(metric, series, locale)}</span>
 			<svg
 				viewBox={`0 0 ${SPARKLINE_WIDTH} ${SPARKLINE_HEIGHT}`}
 				preserveAspectRatio="none"
@@ -116,7 +130,7 @@ function Metric({ metric, compact }: MetricProps) {
 					<i style={width(Math.max(0, Math.min(100, metric.progress)))} />
 				</dd>
 			)}
-			{!compact && metric.series && <Sparkline series={metric.series} />}
+			{!compact && metric.series && <Sparkline metric={metric} series={metric.series} />}
 			{!compact && metric.context?.trim() && <dd className="pf-metric__context">{metric.context}</dd>}
 		</div>
 	);

@@ -1,12 +1,22 @@
 import type { PortfolioViewImage } from "../view";
 import type { AnchorHTMLAttributes, CSSProperties } from "react";
+import { PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import { useRender } from "./context";
 
-/** Attributes for a link: outside links open in a new tab and aren't credited by search engines (user content). */
+/** Addresses a link may lead to: other sites over http(s), mail and phone, and places on this page or site. */
+// A path is `/` then neither `/` nor `\` (browsers read `/\host` like `//host`, another site).
+const LINKABLE = /^(?:https?:\/\/|mailto:|tel:|#|\/(?![/\\]))/i;
+
+/**
+ * Attributes for a link: outside links open in a new tab and aren't credited by search engines (user content).
+ * Anything else (`javascript:`, `data:`, `//host`, a bare word) gets no `href`, so it never becomes a link; the view
+ * already makes every address safe, this keeps a slip from turning into one.
+ */
 export function linkAttributes(
 	href: string,
 	options: { external?: boolean; me?: boolean } = {},
 ): AnchorHTMLAttributes<HTMLAnchorElement> {
+	if (!LINKABLE.test(href)) return {};
 	const external = options.external ?? /^https?:/i.test(href);
 	if (!external) return { href };
 	return {
@@ -14,6 +24,14 @@ export function linkAttributes(
 		target: "_blank",
 		rel: [options.me ? "me" : "", "ugc nofollow noopener noreferrer"].filter(Boolean).join(" "),
 	};
+}
+
+/**
+ * The id of the heading that names a section or a work's detail. `--` keeps it apart from every anchor: work slugs
+ * and section anchors never hold two dashes in a row.
+ */
+export function headingId(anchor: string): string {
+	return `${anchor}--title`;
 }
 
 type PictureProps = {
@@ -25,6 +43,15 @@ type PictureProps = {
 	decorative?: boolean;
 	sizes?: string;
 };
+
+/**
+ * The small copy's width: copies are made `PORTFOLIO_UPLOAD.thumbSide` pixels on the longest side (never enlarged), so
+ * a portrait picture's copy is narrower than that.
+ */
+function smallWidth(width: number, height: number | undefined): number {
+	// Never larger than the picture itself: a small picture's copy isn't enlarged.
+	return Math.min(width, Math.round((PORTFOLIO_UPLOAD.thumbSide * width) / Math.max(width, height ?? width)));
+}
 
 /** An `<img>` with its size (no layout shift), lazy loading, the small copy for narrow cards, and its focus point. */
 export function Picture({ image, className, eager, decorative, sizes }: PictureProps) {
@@ -39,7 +66,12 @@ export function Picture({ image, className, eager, decorative, sizes }: PictureP
 		<img
 			className={className}
 			src={src}
-			{...(small && image.width ? { srcSet: `${small} 800w, ${src} ${image.width}w`, sizes: sizes ?? "100vw" } : {})}
+			{...(small && image.width
+				? {
+						srcSet: `${small} ${smallWidth(image.width, image.height)}w, ${src} ${image.width}w`,
+						sizes: sizes ?? "100vw",
+					}
+				: {})}
 			alt={decorative ? "" : image.alt}
 			{...(image.width && image.height ? { width: image.width, height: image.height } : {})}
 			loading={eager ? "eager" : "lazy"}

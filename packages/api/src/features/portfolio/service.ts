@@ -1,22 +1,35 @@
-import type { PortfolioUnfurl, UnfurlProblem } from "./unfurl";
+import type { PortfolioUnfurl } from "./unfurl";
 import type { DbOrTx } from "@rezumi/db/client";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { randomUUID } from "node:crypto";
-import { ORPCError } from "@orpc/server";
-import { and, desc, eq, inArray, isNotNull, isNull, notInArray, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
-import { portfolioFileKeys } from "@rezumi/portfolio/files";
+import { portfolioFileKeys, portfolioFileKeysInStoredData } from "@rezumi/portfolio/files";
+import { readPortfolioImageHeader } from "@rezumi/portfolio/image-header";
 import { createInitialPortfolioData, workFromResumeProject } from "@rezumi/portfolio/initial";
 import { sanitizePortfolioData } from "@rezumi/portfolio/rich-text";
 import { parsePortfolioData, parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
-import { portfolioFilePrefixes } from "@rezumi/schema/portfolio/files";
-import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD, portfolioDataBytes } from "@rezumi/schema/portfolio/limits";
+import {
+	PORTFOLIO_LIMITS,
+	PORTFOLIO_UNUSED_FILE_GRACE_MS,
+	PORTFOLIO_UPLOAD,
+	portfolioDataBytes,
+} from "@rezumi/schema/portfolio/limits";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
 import { getStorageService } from "../storage";
-import { readPortfolioImageHeader } from "./image";
+import { portfolioErrors } from "./errors";
+import {
+	deleteUnusedFiles,
+	lockPortfolio,
+	markFileUsage,
+	OVERDUE,
+	readStoredData,
+	removeStoredFile,
+	storedFiles,
+} from "./file-store";
 import { getPortfolioMode, isPortfolioEnabledFor } from "./mode";
 import {
 	fetchRemoteImage,
@@ -27,7 +40,8 @@ import {
 	writeUnfurlCache,
 } from "./unfurl";
 
-const portfolioColumns = {
+/** The portfolio's columns but its data, which a save already has and a read parses. */
+const rowColumns = {
 	id: schema.portfolio.id,
 	sourceResumeId: schema.portfolio.sourceResumeId,
 	isPublic: schema.portfolio.isPublic,
@@ -35,10 +49,10 @@ const portfolioColumns = {
 	publishedAt: schema.portfolio.publishedAt,
 	suspendedAt: schema.portfolio.suspendedAt,
 	suspendedReason: schema.portfolio.suspendedReason,
-	data: schema.portfolio.data,
 	createdAt: schema.portfolio.createdAt,
 	updatedAt: schema.portfolio.updatedAt,
 };
+const portfolioColumns = { ...rowColumns, data: schema.portfolio.data };
 
 type PortfolioRow = {
 	id: string;
@@ -48,111 +62,16 @@ type PortfolioRow = {
 	publishedAt: Date | null;
 	suspendedAt: Date | null;
 	suspendedReason: string | null;
-	data: unknown;
 	createdAt: Date;
 	updatedAt: Date;
 };
 
-export type PortfolioSourceResume = { id: string; name: string; slug: string; inTrash: boolean };
+type SourceResume = { id: string; name: string; slug: string; inTrash: boolean };
 
-export type PortfolioDto = Omit<PortfolioRow, "data"> & {
+export type PortfolioDto = PortfolioRow & {
 	data: PortfolioData;
 	/** The source resume, or null when there is none. One in Trash still shows here, so the editor can ask for another. */
-	sourceResume: PortfolioSourceResume | null;
-};
-
-export const portfolioErrors = {
-	disabled: () =>
-		new ORPCError("PORTFOLIO_DISABLED", { status: 403, message: "Portfolios aren't available for this account yet." }),
-	exists: () => new ORPCError("PORTFOLIO_EXISTS", { status: 409, message: "This account already has a portfolio." }),
-	notFound: () => new ORPCError("NOT_FOUND", { status: 404, message: "This account has no portfolio yet." }),
-	sourceInvalid: () =>
-		new ORPCError("PORTFOLIO_SOURCE_INVALID", {
-			status: 400,
-			message: "Choose one of your resumes that isn't in Trash.",
-		}),
-	conflict: (updatedAt: Date) =>
-		new ORPCError("PORTFOLIO_VERSION_CONFLICT", {
-			status: 409,
-			message: "The portfolio changed somewhere else after you opened it. Reload it, then make your change again.",
-			data: { updatedAt: updatedAt.toISOString() },
-		}),
-	tooLarge: (bytes: number) =>
-		new ORPCError("PORTFOLIO_TOO_LARGE", {
-			status: 413,
-			message: `The portfolio is too large to save (${Math.ceil(bytes / 1024)} KB of ${PORTFOLIO_LIMITS.dataBytes / 1024} KB). Shorten some text or remove a few blocks.`,
-			data: { bytes, max: PORTFOLIO_LIMITS.dataBytes },
-		}),
-	invalid: (cause: unknown) =>
-		new ORPCError("BAD_REQUEST", { status: 400, message: "The portfolio data isn't valid.", cause }),
-	fileNotFound: (key: string) =>
-		new ORPCError("PORTFOLIO_FILE_NOT_FOUND", {
-			status: 400,
-			message: "A file in this portfolio isn't one of its uploads. Upload it again.",
-			data: { key },
-		}),
-	emailNotVerified: () =>
-		new ORPCError("PORTFOLIO_EMAIL_NOT_VERIFIED", {
-			status: 403,
-			message: "Verify your email address before publishing your portfolio.",
-		}),
-	suspended: () =>
-		new ORPCError("PORTFOLIO_SUSPENDED", {
-			status: 403,
-			message: "This portfolio was taken down and can't be published. Contact support to appeal.",
-		}),
-	fileTooLarge: (bytes: number, kind: "picture" | "pdf" | "remote-picture" = "picture") => {
-		const max = {
-			picture: PORTFOLIO_UPLOAD.imageBytes,
-			pdf: PORTFOLIO_UPLOAD.pdfBytes,
-			"remote-picture": PORTFOLIO_UPLOAD.remoteImageBytes,
-		}[kind];
-		const size = `${(bytes / 1024 / 1024).toFixed(1)} MB of ${max / 1024 / 1024} MB`;
-		return new ORPCError("PORTFOLIO_FILE_TOO_LARGE", {
-			status: 413,
-			message: {
-				picture: `This picture is too large to upload (${size}).`,
-				pdf: `This PDF is too large to upload (${size}). Save a smaller copy and try again.`,
-				"remote-picture": `This picture is too large to copy (more than ${max / 1024 / 1024} MB). Upload it yourself instead.`,
-			}[kind],
-			data: { bytes, max },
-		});
-	},
-	pdfInvalid: (reason: "type") =>
-		new ORPCError("PORTFOLIO_PDF_INVALID", {
-			status: 400,
-			message: "This file isn't a PDF. Upload a PDF file.",
-			data: { reason },
-		}),
-	linkUnreadable: (reason: UnfurlProblem) =>
-		new ORPCError("PORTFOLIO_LINK_UNREADABLE", {
-			status: 400,
-			message: "This site can't be read automatically. Fill in the details yourself.",
-			data: { reason },
-		}),
-	imageInvalid: (reason: "type" | "animated" | "dimensions" | "unreadable") =>
-		new ORPCError("PORTFOLIO_IMAGE_INVALID", {
-			status: 400,
-			message: {
-				type: "Upload a JPEG, PNG or WebP picture.",
-				animated: "Animated pictures can't be used. Upload a still picture.",
-				dimensions: "This picture is larger than the portfolio allows. Upload it again so it's made smaller first.",
-				unreadable: "This picture can't be read. Save it again as JPEG, PNG or WebP and upload that.",
-			}[reason],
-			data: { reason },
-		}),
-	fileInUse: (key: string) =>
-		new ORPCError("PORTFOLIO_FILE_IN_USE", {
-			status: 409,
-			message: "The portfolio still uses this file. Remove it from the portfolio first.",
-			data: { key },
-		}),
-	worksLimit: () =>
-		new ORPCError("PORTFOLIO_WORKS_LIMIT", {
-			status: 400,
-			message: `A portfolio holds at most ${PORTFOLIO_LIMITS.works} works. Remove some before adding more.`,
-			data: { max: PORTFOLIO_LIMITS.works },
-		}),
+	sourceResume: SourceResume | null;
 };
 
 type Account = { role: string | null; isAnonymous: boolean; emailVerified: boolean };
@@ -199,8 +118,17 @@ async function defaultSourceResume(userId: string) {
 	return row ?? null;
 }
 
-async function toDto(row: PortfolioRow, userId: string, client: DbOrTx = db): Promise<PortfolioDto> {
-	let sourceResume: PortfolioSourceResume | null = null;
+/** A source resume's data; stored data that can't be read is `PORTFOLIO_SOURCE_INVALID`, never a server error. */
+function readSourceResume(data: unknown): ResumeData {
+	try {
+		return parseStoredResumeData(data);
+	} catch (cause) {
+		throw portfolioErrors.sourceInvalid("unreadable", cause);
+	}
+}
+
+async function toDto(row: PortfolioRow, data: PortfolioData, userId: string, client: DbOrTx = db) {
+	let sourceResume: SourceResume | null = null;
 	if (row.sourceResumeId) {
 		const [resume] = await client
 			.select({
@@ -214,10 +142,29 @@ async function toDto(row: PortfolioRow, userId: string, client: DbOrTx = db): Pr
 		if (resume)
 			sourceResume = { id: resume.id, name: resume.name, slug: resume.slug, inTrash: resume.trashedAt !== null };
 	}
-	return { ...row, data: parsePortfolioData(row.data), sourceResume };
+	return { ...row, data, sourceResume } satisfies PortfolioDto;
 }
 
-function parseInput(data: unknown): PortfolioData {
+/** Data a save writes: cleaned, within the size limit, and the files it refers to (the account's own). */
+type PreparedData = { data: PortfolioData; files: string[] };
+
+/**
+ * Cleans rich text, then checks the size and that every file the data refers to is under the account's folder.
+ * Whether each is recorded is checked as the data is saved (`markFileUsage`). It needs no database, so a save runs it
+ * before taking the portfolio's lock.
+ */
+function prepareData(userId: string, data: PortfolioData): PreparedData {
+	const clean = sanitizePortfolioData(data);
+	const bytes = portfolioDataBytes(clean);
+	if (bytes > PORTFOLIO_LIMITS.dataBytes) throw portfolioErrors.tooLarge(bytes);
+	const files = portfolioFileKeys(clean);
+	const foreign = files.find((key) => !key.startsWith(`uploads/${userId}/`));
+	if (foreign) throw portfolioErrors.fileNotFound(foreign);
+	return { data: clean, files };
+}
+
+/** Strictly checks data the server built from stored data (`importWorks`); the router checks what clients send. */
+function parseBuiltData(data: unknown): PortfolioData {
 	try {
 		return parseWritablePortfolioData(data);
 	} catch (cause) {
@@ -225,59 +172,43 @@ function parseInput(data: unknown): PortfolioData {
 	}
 }
 
-/** Cleans rich text and checks the size and every file the data uses, before it is saved. */
-async function prepareData(userId: string, data: PortfolioData, client: DbOrTx = db): Promise<PortfolioData> {
-	const clean = sanitizePortfolioData(data);
-	const bytes = portfolioDataBytes(clean);
-	if (bytes > PORTFOLIO_LIMITS.dataBytes) throw portfolioErrors.tooLarge(bytes);
-
-	const keys = portfolioFileKeys(clean);
-	const foreign = keys.find((key) => !key.startsWith(`uploads/${userId}/`));
-	if (foreign) throw portfolioErrors.fileNotFound(foreign);
-	if (keys.length) {
-		const recorded = await client
-			.select({ key: schema.portfolioFile.key })
-			.from(schema.portfolioFile)
-			.where(and(eq(schema.portfolioFile.userId, userId), inArray(schema.portfolioFile.key, keys)));
-		const known = new Set(recorded.map((row) => row.key));
-		const missing = keys.find((key) => !known.has(key));
-		if (missing) throw portfolioErrors.fileNotFound(missing);
-	}
-	return clean;
-}
+type LockedPortfolio = NonNullable<Awaited<ReturnType<typeof lockPortfolio>>>;
 
 /**
- * Marks which of the account's files the saved data uses: used files get `unused_since` cleared; files nothing uses
- * anymore start counting from now, and the cleanup job deletes them a day later (`./jobs.ts`).
+ * The one way data is saved over the version an editor had (`update`, `importWorks`), in the caller's transaction:
+ * lock the portfolio's row, compare the version (cheap, so a stale editor costs nothing more), build the new data
+ * (`build` returns null when nothing changes: then nothing is written and the version stays), write it with a new
+ * version, and mark which files it uses (refusing files that aren't recorded).
  */
-async function trackFileUsage(userId: string, data: PortfolioData, client: DbOrTx = db): Promise<void> {
-	const keys = portfolioFileKeys(data);
-	const file = schema.portfolioFile;
-	if (keys.length)
-		await client
-			.update(file)
-			.set({ unusedSince: null })
-			.where(and(eq(file.userId, userId), inArray(file.key, keys), isNotNull(file.unusedSince)));
-	await client
-		.update(file)
-		.set({ unusedSince: sql`now()` })
-		.where(
-			and(eq(file.userId, userId), isNull(file.unusedSince), keys.length ? notInArray(file.key, keys) : undefined),
-		);
-}
+async function saveVersionedData(
+	tx: DbOrTx,
+	userId: string,
+	expectedUpdatedAt: Date,
+	build: (existing: LockedPortfolio) => PreparedData | null | Promise<PreparedData | null>,
+): Promise<PortfolioDto> {
+	const existing = await lockPortfolio(tx, userId);
+	if (!existing) throw portfolioErrors.notFound();
+	// Compared in JavaScript, at millisecond precision: Postgres keeps microseconds, so an SQL comparison with a
+	// JavaScript date would never match a row stamped by now() (see the resume service).
+	if (existing.updatedAt.getTime() !== expectedUpdatedAt.getTime()) throw portfolioErrors.conflict(existing.updatedAt);
 
-/** Locks the account's portfolio row for this transaction: saves, file deletion and the cleanup job take turns. */
-async function lockPortfolio(userId: string, tx: DbOrTx) {
+	const next = await build(existing);
+	if (!next) {
+		const [row] = await tx.select(portfolioColumns).from(schema.portfolio).where(eq(schema.portfolio.userId, userId));
+		if (!row) throw portfolioErrors.notFound();
+		return toDto(row, parsePortfolioData(row.data), userId, tx);
+	}
+
+	// Always later than the version replaced, even within one millisecond or with a server clock behind another's.
+	const updatedAt = new Date(Math.max(Date.now(), existing.updatedAt.getTime() + 1));
 	const [row] = await tx
-		.select({
-			updatedAt: schema.portfolio.updatedAt,
-			sourceResumeId: schema.portfolio.sourceResumeId,
-			data: schema.portfolio.data,
-		})
-		.from(schema.portfolio)
+		.update(schema.portfolio)
+		.set({ data: next.data, updatedAt })
 		.where(eq(schema.portfolio.userId, userId))
-		.for("update");
-	return row ?? null;
+		.returning(rowColumns);
+	if (!row) throw portfolioErrors.notFound();
+	await markFileUsage(tx, userId, portfolioFileKeysInStoredData(next.data), { required: next.files });
+	return toDto(row, next.data, userId, tx);
 }
 
 /** A picture's bytes and what it really is, or the error saying why it can't be stored. */
@@ -299,17 +230,42 @@ async function requirePortfolio(userId: string): Promise<void> {
 	if (!portfolio) throw portfolioErrors.notFound();
 }
 
-/** Writes files already recorded in `portfolio_file`; when storage fails, removes what was written and the rows. */
+type NewFile = { key: string; bytes: number } & (
+	| { kind: "image"; width: number; height: number }
+	| { kind: "pdf"; pages: number }
+);
+
+/**
+ * Records uploads before they're written, in one transaction under the portfolio's lock with the check of the
+ * account's storage ceiling (`PORTFOLIO_UPLOAD.accountBytes` and `accountFiles`), so two uploads at once can't both
+ * take the last room. Every recorded file counts, ones waiting for the cleanup job too; plan quotas (Phase 07) decide
+ * for themselves. A recorded file is unused until saved data uses it.
+ */
+async function recordUploads(userId: string, files: readonly NewFile[]): Promise<void> {
+	await db.transaction(async (tx) => {
+		if (!(await lockPortfolio(tx, userId))) throw portfolioErrors.notFound();
+		const stored = await storedFiles(userId, tx);
+		const bytes = files.reduce((sum, file) => sum + file.bytes, 0);
+		if (
+			stored.bytes + bytes > PORTFOLIO_UPLOAD.accountBytes ||
+			stored.files + files.length > PORTFOLIO_UPLOAD.accountFiles
+		)
+			throw portfolioErrors.storageFull(stored);
+		await tx.insert(schema.portfolioFile).values(files.map((file) => ({ ...file, userId, unusedSince: sql`now()` })));
+	});
+}
+
+/**
+ * Writes files already recorded in `portfolio_file`, after their transaction committed. When storage fails, what was
+ * written is deleted again and the rows go, so storage never keeps a file without a row for long (a stray left by a
+ * failed delete is the weekly check's).
+ */
 async function storeRecordedFiles(files: readonly { key: string; data: Uint8Array; contentType: string }[]) {
 	const storage = getStorageService();
-	const written: string[] = [];
 	try {
-		for (const file of files) {
-			await storage.write({ key: file.key, data: file.data, contentType: file.contentType });
-			written.push(file.key);
-		}
+		for (const file of files) await storage.write({ key: file.key, data: file.data, contentType: file.contentType });
 	} catch (error) {
-		await Promise.allSettled(written.map((key) => storage.delete(key)));
+		for (const file of files) await removeStoredFile(file.key, storage);
 		await db.delete(schema.portfolioFile).where(
 			inArray(
 				schema.portfolioFile.key,
@@ -322,33 +278,37 @@ async function storeRecordedFiles(files: readonly { key: string; data: Uint8Arra
 
 const PDF_SIGNATURE = "%PDF-";
 
-async function storageUsage(userId: string): Promise<number> {
-	const [row] = await db
-		.select({ bytes: sql<string | null>`sum(${schema.portfolioFile.bytes})` })
-		.from(schema.portfolioFile)
-		.where(eq(schema.portfolioFile.userId, userId));
-	return Number(row?.bytes ?? 0);
-}
-
-/**
- * Settings changes keep `updatedAt` as it is: it versions the data, so publishing in one tab never makes an editor
- * open in another report a conflict.
- */
-const keepUpdatedAt = { updatedAt: sql`${schema.portfolio.updatedAt}` };
-
 export const portfolioService = {
 	get: async (userId: string) => {
-		const limits = { works: PORTFOLIO_LIMITS.works, storageBytes: null, dataBytes: PORTFOLIO_LIMITS.dataBytes };
+		const limits = {
+			works: PORTFOLIO_LIMITS.works,
+			storageBytes: PORTFOLIO_UPLOAD.accountBytes,
+			dataBytes: PORTFOLIO_LIMITS.dataBytes,
+		};
 		if (!(await enabledAccount(userId)))
 			return { enabled: false, portfolio: null, limits, usage: { works: 0, storageBytes: 0 } };
 		const [row] = await db.select(portfolioColumns).from(schema.portfolio).where(eq(schema.portfolio.userId, userId));
-		const portfolio = row ? await toDto(row, userId) : null;
+		const portfolio = row ? await toDto(row, parsePortfolioData(row.data), userId) : null;
 		return {
 			enabled: true,
 			portfolio,
 			limits,
-			usage: { works: portfolio?.data.works.items.length ?? 0, storageBytes: await storageUsage(userId) },
+			usage: { works: portfolio?.data.works.items.length ?? 0, storageBytes: (await storedFiles(userId)).bytes },
 		};
+	},
+
+	/**
+	 * Whether portfolios are open to the account and, when it has one, whether it's published or taken down: what the
+	 * app's menu and the resume's Share panel need, without the data, the storage sum or the source resume that `get`
+	 * reads. Reads nothing while the mode is off.
+	 */
+	status: async (userId: string) => {
+		if (!(await enabledAccount(userId))) return { enabled: false, portfolio: null };
+		const [row] = await db
+			.select({ isPublic: schema.portfolio.isPublic, suspendedAt: schema.portfolio.suspendedAt })
+			.from(schema.portfolio)
+			.where(eq(schema.portfolio.userId, userId));
+		return { enabled: true, portfolio: row ?? null };
 	},
 
 	create: async (
@@ -369,101 +329,81 @@ export const portfolioService = {
 			source = await defaultSourceResume(userId);
 		}
 
-		const resume: ResumeData | null = source ? parseStoredResumeData(source.data) : null;
+		const resume = source ? readSourceResume(source.data) : null;
 		const { name, headline, location } = input.basics ?? {};
 		const basics = {
 			...(name === undefined ? {} : { name }),
 			...(headline === undefined ? {} : { headline }),
 			...(location === undefined ? {} : { location }),
 		};
-		const data = await prepareData(
+		const next = prepareData(
 			userId,
 			createInitialPortfolioData({ resume, ...(input.theme ? { theme: input.theme } : {}), basics }),
 		);
 
-		// The unique user_id decides between two creates racing each other: one row, the other gets PORTFOLIO_EXISTS.
-		const [row] = await db
-			.insert(schema.portfolio)
-			.values({ userId, sourceResumeId: source?.id ?? null, data })
-			.onConflictDoNothing({ target: schema.portfolio.userId })
-			.returning(portfolioColumns);
-		if (!row) throw portfolioErrors.exists();
-		await trackFileUsage(userId, data);
-		return toDto(row, userId);
-	},
-
-	update: async (userId: string, input: { data: unknown; expectedUpdatedAt: Date }): Promise<PortfolioDto> => {
-		await requireEnabled(userId);
-		const parsed = parseInput(input.data);
 		return db.transaction(async (tx) => {
-			// The row lock comes first, so a file the data uses can't be deleted (by `deleteFile` or the cleanup job)
-			// between checking it and saving.
-			const existing = await lockPortfolio(userId, tx);
-			if (!existing) throw portfolioErrors.notFound();
-			const data = await prepareData(userId, parsed, tx);
-			// Compared in JavaScript under the row lock, at millisecond precision: Postgres keeps microseconds, so an
-			// SQL comparison with a JavaScript date would never match a row stamped by now() (see the resume service).
-			if (existing.updatedAt.getTime() !== input.expectedUpdatedAt.getTime())
-				throw portfolioErrors.conflict(existing.updatedAt);
+			// The unique user_id decides between two creates racing each other: one row, the other gets PORTFOLIO_EXISTS.
 			const [row] = await tx
-				.update(schema.portfolio)
-				.set({ data })
-				.where(eq(schema.portfolio.userId, userId))
-				.returning(portfolioColumns);
-			if (!row) throw portfolioErrors.notFound();
-			await trackFileUsage(userId, data, tx);
-			return toDto(row, userId, tx);
+				.insert(schema.portfolio)
+				.values({ userId, sourceResumeId: source?.id ?? null, data: next.data })
+				.onConflictDoNothing({ target: schema.portfolio.userId })
+				.returning(rowColumns);
+			if (!row) throw portfolioErrors.exists();
+			await markFileUsage(tx, userId, portfolioFileKeysInStoredData(next.data), { required: next.files });
+			return toDto(row, next.data, userId, tx);
 		});
 	},
 
 	/**
+	 * Saves the editor's data over the version it had. `data` has passed the router's strict schema; it is cleaned and
+	 * size-checked before the portfolio's lock is taken (`saveVersionedData`).
+	 */
+	update: async (userId: string, input: { data: PortfolioData; expectedUpdatedAt: Date }): Promise<PortfolioDto> => {
+		await requireEnabled(userId);
+		const next = prepareData(userId, input.data);
+		return db.transaction((tx) => saveVersionedData(tx, userId, input.expectedUpdatedAt, () => next));
+	},
+
+	/**
 	 * Adds works copied from projects of the source resume, in the resume's order. Projects already copied are skipped,
-	 * so asking twice adds nothing twice. Saved like `update`: the same checks, and the version the editor had.
+	 * so asking twice adds nothing twice, and when nothing is added nothing is written (the version stays). Saved like
+	 * `update`: the same checks, and the version the editor had.
 	 */
 	importWorks: async (
 		userId: string,
 		input: { resumeItemIds: readonly string[]; expectedUpdatedAt: Date },
 	): Promise<PortfolioDto> => {
 		await requireEnabled(userId);
-		return db.transaction(async (tx) => {
-			const existing = await lockPortfolio(userId, tx);
-			if (!existing) throw portfolioErrors.notFound();
-			if (existing.updatedAt.getTime() !== input.expectedUpdatedAt.getTime())
-				throw portfolioErrors.conflict(existing.updatedAt);
-			const resume = existing.sourceResumeId ? await findActiveResume(userId, existing.sourceResumeId, tx) : null;
-			if (!resume) throw portfolioErrors.sourceInvalid();
+		return db.transaction((tx) =>
+			saveVersionedData(tx, userId, input.expectedUpdatedAt, async (existing) => {
+				const resume = existing.sourceResumeId ? await findActiveResume(userId, existing.sourceResumeId, tx) : null;
+				if (!resume) throw portfolioErrors.sourceInvalid();
+				const projects = readSourceResume(resume.data).sections.projects.items;
 
-			const current = parsePortfolioData(existing.data);
-			const wanted = new Set(input.resumeItemIds);
-			const imported = new Set(current.works.items.flatMap((work) => work.fromResumeItemId ?? []));
-			const taken = new Set(current.works.items.map((work) => work.slug));
-			const added = parseStoredResumeData(resume.data)
-				.sections.projects.items.filter((project) => wanted.has(project.id) && !imported.has(project.id))
-				.map((project) => workFromResumeProject(project, taken))
-				.filter((work) => work !== null);
-			if (current.works.items.length + added.length > PORTFOLIO_LIMITS.works) throw portfolioErrors.worksLimit();
-
-			const data = await prepareData(
-				userId,
-				parseInput({ ...current, works: { items: [...current.works.items, ...added] } }),
-				tx,
-			);
-			const [row] = await tx
-				.update(schema.portfolio)
-				.set(added.length ? { data } : { data, updatedAt: sql`${schema.portfolio.updatedAt}` })
-				.where(eq(schema.portfolio.userId, userId))
-				.returning(portfolioColumns);
-			if (!row) throw portfolioErrors.notFound();
-			await trackFileUsage(userId, data, tx);
-			return toDto(row, userId, tx);
-		});
+				const current = parsePortfolioData(await readStoredData(tx, userId));
+				const wanted = new Set(input.resumeItemIds);
+				const imported = new Set(current.works.items.flatMap((work) => work.fromResumeItemId ?? []));
+				const taken = new Set(current.works.items.map((work) => work.slug));
+				const added = projects
+					.filter((project) => wanted.has(project.id) && !imported.has(project.id))
+					.map((project) => workFromResumeProject(project, taken))
+					.filter((work) => work !== null);
+				if (!added.length) return null;
+				if (current.works.items.length + added.length > PORTFOLIO_LIMITS.works) throw portfolioErrors.worksLimit();
+				return prepareData(
+					userId,
+					parseBuiltData({ ...current, works: { items: [...current.works.items, ...added] } }),
+				);
+			}),
+		);
 	},
 
 	/**
 	 * Stores a picture the browser already shrank and re-encoded (`02-teknis.md` section 8), with its optional small
 	 * copy for cards. The file's own bytes decide what it is; the size, type and pixel size are checked again here. The
-	 * file is recorded before it's written, so storage never holds a portfolio picture the cleanup job doesn't know of;
-	 * it counts as unused until saved data uses it.
+	 * file is recorded before it's written (`recordUploads`, which also checks the account's storage ceiling), so
+	 * storage never holds a portfolio picture the cleanup job doesn't know of; it counts as unused until saved data
+	 * uses it.
 	 */
 	uploadImage: async (userId: string, input: { file: File; thumbnail?: File | undefined }) => {
 		await requireEnabled(userId);
@@ -478,15 +418,14 @@ export const portfolioService = {
 			...(small ? [{ ...small, key: `${folder}/${id}-sm.${small.extension}` }] : []),
 		];
 
-		await db.insert(schema.portfolioFile).values(
+		await recordUploads(
+			userId,
 			files.map((file) => ({
-				userId,
-				kind: "image" as const,
+				kind: "image",
 				key: file.key,
 				bytes: file.data.byteLength,
 				width: file.width,
 				height: file.height,
-				unusedSince: sql`now()`,
 			})),
 		);
 		await storeRecordedFiles(files);
@@ -505,7 +444,7 @@ export const portfolioService = {
 	 * Stores a PDF for a work's PDF block (`02-teknis.md` section 19). The browser already checked it opens without a
 	 * password and counted its pages; the server checks the size and that the bytes are a PDF, and the public route
 	 * serves it locked down. The picture of its first page goes through `uploadImage`. Recorded before it's written,
-	 * unused until saved data uses it, like pictures.
+	 * within the storage ceiling, unused until saved data uses it, like pictures.
 	 */
 	uploadPdf: async (userId: string, input: { file: File; pages: number }) => {
 		await requireEnabled(userId);
@@ -518,14 +457,7 @@ export const portfolioService = {
 			throw portfolioErrors.pdfInvalid("type");
 
 		const key = `uploads/${userId}/documents/portfolio/${randomUUID()}.pdf`;
-		await db.insert(schema.portfolioFile).values({
-			userId,
-			kind: "pdf",
-			key,
-			bytes: data.byteLength,
-			pages: input.pages,
-			unusedSince: sql`now()`,
-		});
+		await recordUploads(userId, [{ kind: "pdf", key, bytes: data.byteLength, pages: input.pages }]);
 		await storeRecordedFiles([{ key, data, contentType: "application/pdf" }]);
 		return { key, bytes: data.byteLength, pages: input.pages };
 	},
@@ -570,42 +502,44 @@ export const portfolioService = {
 	},
 
 	/**
-	 * Deletes one of the account's portfolio files that saved data no longer uses (an image removed in the editor). A
-	 * file still in use is refused; the editor saves first. Files left behind are deleted by the cleanup job anyway.
+	 * Deletes one of the account's portfolio files that the saved data no longer names (an upload the editor
+	 * discarded). A file still named anywhere in the stored data is refused; the editor saves first. Under the
+	 * portfolio's lock the file is made due, then deleted the way the cleanup job deletes files (`deleteUnusedFiles`),
+	 * storage outside the lock; when that can't happen now (a save holds the portfolio), the job's next run does it.
 	 */
 	deleteFile: async (userId: string, input: { key: string }): Promise<void> => {
 		await requireEnabled(userId);
 		const { key } = input;
 		if (!key.startsWith(`uploads/${userId}/`)) throw portfolioErrors.fileNotFound(key);
 		await db.transaction(async (tx) => {
-			const portfolio = await lockPortfolio(userId, tx);
-			const [file] = await tx
+			const portfolio = await lockPortfolio(tx, userId);
+			const [row] = await tx
 				.select({ id: schema.portfolioFile.id })
 				.from(schema.portfolioFile)
 				.where(and(eq(schema.portfolioFile.userId, userId), eq(schema.portfolioFile.key, key)))
 				.for("update");
-			if (!file) throw portfolioErrors.fileNotFound(key);
-			if (portfolio && portfolioFileKeys(parsePortfolioData(portfolio.data)).includes(key))
+			if (!row) throw portfolioErrors.fileNotFound(key);
+			if (portfolio && portfolioFileKeysInStoredData(await readStoredData(tx, userId)).includes(key))
 				throw portfolioErrors.fileInUse(key);
-			// Storage first: when it fails, the row stays and the cleanup job tries again later.
-			await getStorageService().delete(key);
-			await tx.delete(schema.portfolioFile).where(eq(schema.portfolioFile.id, file.id));
+			await tx.update(schema.portfolioFile).set({ unusedSince: OVERDUE }).where(eq(schema.portfolioFile.id, row.id));
+		});
+		const cutoff = new Date(Date.now() - PORTFOLIO_UNUSED_FILE_GRACE_MS);
+		await deleteUnusedFiles(userId, { cutoff, limit: 1, keys: [key] }).catch((error: unknown) => {
+			console.error("[portfolio] Deleting a file failed; the cleanup job deletes it on its next run.", error);
 		});
 	},
 
 	setPublic: async (userId: string, input: { isPublic: boolean }): Promise<PortfolioDto> => {
 		const account = await requireEnabled(userId);
 		if (input.isPublic && !account.emailVerified) throw portfolioErrors.emailNotVerified();
+		// Settings never move `updatedAt`, the data's version: publishing in one tab never makes an editor open in
+		// another report a conflict.
 		const [row] = await db
 			.update(schema.portfolio)
 			.set(
 				input.isPublic
-					? {
-							isPublic: true,
-							publishedAt: sql`coalesce(${schema.portfolio.publishedAt}, now())`,
-							...keepUpdatedAt,
-						}
-					: { isPublic: false, ...keepUpdatedAt },
+					? { isPublic: true, publishedAt: sql`coalesce(${schema.portfolio.publishedAt}, now())` }
+					: { isPublic: false },
 			)
 			.where(
 				and(
@@ -615,7 +549,7 @@ export const portfolioService = {
 				),
 			)
 			.returning(portfolioColumns);
-		if (row) return toDto(row, userId);
+		if (row) return toDto(row, parsePortfolioData(row.data), userId);
 		const [existing] = await db
 			.select({ id: schema.portfolio.id })
 			.from(schema.portfolio)
@@ -630,39 +564,34 @@ export const portfolioService = {
 		await requireEnabled(userId);
 		if (typeof input.sourceResumeId === "string" && !(await findActiveResume(userId, input.sourceResumeId)))
 			throw portfolioErrors.sourceInvalid();
-		const [row] = await db
-			.update(schema.portfolio)
-			.set({
-				...(input.showInSearchEngines === undefined ? {} : { showInSearchEngines: input.showInSearchEngines }),
-				...(input.sourceResumeId === undefined ? {} : { sourceResumeId: input.sourceResumeId }),
-				...keepUpdatedAt,
-			})
-			.where(eq(schema.portfolio.userId, userId))
-			.returning(portfolioColumns);
+		const changes = {
+			...(input.showInSearchEngines === undefined ? {} : { showInSearchEngines: input.showInSearchEngines }),
+			...(input.sourceResumeId === undefined ? {} : { sourceResumeId: input.sourceResumeId }),
+		};
+		const mine = eq(schema.portfolio.userId, userId);
+		// Like publishing, settings keep `updatedAt`.
+		const [row] = Object.keys(changes).length
+			? await db.update(schema.portfolio).set(changes).where(mine).returning(portfolioColumns)
+			: await db.select(portfolioColumns).from(schema.portfolio).where(mine);
 		if (!row) throw portfolioErrors.notFound();
-		return toDto(row, userId);
+		return toDto(row, parsePortfolioData(row.data), userId);
 	},
 
-	/** Deletes the portfolio and every file uploaded for it. */
+	/**
+	 * Deletes the portfolio, and with it every file uploaded for it: the files are made due at once, and the cleanup
+	 * job deletes them from storage and their rows on its next run (retrying any storage fails on). The public upload
+	 * route stops serving them as soon as no saved data uses them.
+	 */
 	delete: async (userId: string): Promise<void> => {
 		await requireEnabled(userId);
-		const [existing] = await db
-			.select({ id: schema.portfolio.id })
-			.from(schema.portfolio)
-			.where(eq(schema.portfolio.userId, userId));
-		if (!existing) throw portfolioErrors.notFound();
-		// Files first, like account deletion: a failure is logged and the rest still goes.
-		const storage = getStorageService();
-		for (const prefix of portfolioFilePrefixes(userId)) {
-			try {
-				await storage.delete(prefix);
-			} catch (error) {
-				console.error("Failed to delete portfolio files for user %s:", userId, error);
-			}
-		}
 		await db.transaction(async (tx) => {
-			await tx.delete(schema.portfolioFile).where(eq(schema.portfolioFile.userId, userId));
+			// The portfolio's row first, then its files: the order every save, upload and job takes them in.
+			if (!(await lockPortfolio(tx, userId))) throw portfolioErrors.notFound();
 			await tx.delete(schema.portfolio).where(eq(schema.portfolio.userId, userId));
+			await tx
+				.update(schema.portfolioFile)
+				.set({ unusedSince: OVERDUE })
+				.where(eq(schema.portfolioFile.userId, userId));
 		});
 	},
 };

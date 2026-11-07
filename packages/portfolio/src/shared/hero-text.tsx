@@ -1,5 +1,6 @@
 import type { PortfolioView } from "../view";
 import type { ReactNode } from "react";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { useRender } from "./context";
 import { vars } from "./primitives";
 
@@ -8,14 +9,18 @@ type Effect = PortfolioView["design"]["effect"];
 /** Effects drawn word by word: each word is a span the CSS animates in turn. Garis vektor falls back to it on touch. */
 const WORD_EFFECTS = new Set(["fade-up", "vector-hover"]);
 
-/** The phrases the typewriter alternates: the headline first (where it ends), then the person's, at most three. */
+/**
+ * The phrases the typewriter alternates: the headline first (where it ends), then up to
+ * `PORTFOLIO_LIMITS.typewriterPhrases` of the person's roles, without repeats.
+ */
 function typewriterPhrases(headline: string, effect: Effect): string[] {
-	const phrases: string[] = [];
-	for (const phrase of [headline, ...effect.phrases]) {
+	const first = headline.trim();
+	const roles: string[] = [];
+	for (const phrase of effect.phrases) {
 		const text = phrase.trim();
-		if (text && !phrases.includes(text)) phrases.push(text);
+		if (text && text !== first && !roles.includes(text)) roles.push(text);
 	}
-	return phrases.slice(0, 3);
+	return [...(first ? [first] : []), ...roles.slice(0, PORTFOLIO_LIMITS.typewriterPhrases)];
 }
 
 /** Which element plays the intro effect, if any: the typewriter always types the headline. */

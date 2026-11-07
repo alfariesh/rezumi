@@ -89,6 +89,15 @@ describe("createProfileMapper", () => {
 		});
 	});
 
+	it("never gives a new account a username the app answers itself", async () => {
+		const mapper = createProfileMapper({ providerName: "Google", getImage: (profile) => profile.picture });
+
+		const result = await mapper({ email: "api@example.com", name: "Api Person" });
+
+		// `/api` belongs to the server, so the address `rezumi.app/api` could never open this account's page.
+		expect(result.username).toBe("api-1");
+	});
+
 	it("normalizes a matched legacy user email before handing it to Better Auth", async () => {
 		dbMock.selectQueue.push([
 			{

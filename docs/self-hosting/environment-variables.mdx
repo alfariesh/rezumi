@@ -324,6 +324,12 @@ All flags default to `false`.
 | -------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `BILLING_MODE` | `off`   | Paid plans and their limits. `off` keeps every account unlimited, as before plans existed. `admins` applies plans only to accounts with the admin role, for testing before launch. `on` applies them to everyone. |
 
+## Portfolios
+
+| Variable         | Default | Description                                                                                                                                                                                                                                                                                 |
+| ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PORTFOLIO_MODE` | `off`   | Web portfolios at `/<username>`. `off` changes nothing: the short link keeps opening the primary resume and the portfolio menu stays hidden. `admins` lets accounts with the admin role build and publish one, for testing before launch. `on` opens portfolios to every signed-up account. |
+
 ## Development and tooling only
 
 These appear in `.env.example` but are not used by a running server:

@@ -1,6 +1,6 @@
 import type { PublicPortfolio } from "@rezumi/api/features/portfolio/public";
 import { createHash } from "node:crypto";
-import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { PORTFOLIO_PAGE_SCRIPT } from "@rezumi/portfolio/document";
 import { parsePortfolioData } from "@rezumi/schema/portfolio/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
@@ -21,7 +21,8 @@ vi.mock("@rezumi/env/server", async (original) => {
 	return { env: { ...env, APP_URL: "https://rezumi.example" } };
 });
 
-const { servePortfolioOrResume } = await import("./portfolio-page");
+const { configurePortfolioVisitLifetime, portfolioContentSecurityPolicy, portfolioPictureUrl, servePortfolioOrResume } =
+	await import("./portfolio-page");
 
 function portfolio(overrides: Partial<PublicPortfolio> = {}): PublicPortfolio {
 	const data = structuredClone(defaultResumeData);
@@ -99,7 +100,7 @@ describe("servePortfolioOrResume", () => {
 		const policy = response.headers.get("Content-Security-Policy") ?? "";
 		const hash = createHash("sha256").update(PORTFOLIO_PAGE_SCRIPT).digest("base64");
 		expect(policy).toContain(`'sha256-${hash}'`);
-		expect(policy).toContain("frame-src 'self' blob: https://www.youtube-nocookie.com https://player.vimeo.com");
+		expect(policy).toContain("frame-src https://www.youtube-nocookie.com https://player.vimeo.com");
 		expect(policy).not.toContain("'unsafe-inline' 'unsafe-eval'");
 		expect(body).toContain('<link rel="canonical" href="https://rezumi.example/nadia">');
 		expect(body).toContain('<meta property="og:image" content="https://rezumi.example/cards/nadia.png">');
@@ -168,7 +169,207 @@ describe("servePortfolioOrResume", () => {
 	it("still serves the page when counting fails", async () => {
 		mocks.findPublicPortfolio.mockResolvedValue(portfolio());
 		mocks.recordPortfolioVisit.mockRejectedValue(new Error("database down"));
-		vi.spyOn(console, "error").mockImplementation(() => {});
+		const logged = vi.spyOn(console, "error").mockImplementation(() => {});
 		expect((await servePortfolioOrResume(get(), "nadia", "1")).status).toBe(200);
+		await vi.waitFor(() => expect(logged).toHaveBeenCalledWith("Portfolio visit counting failed", expect.any(Error)));
+		logged.mockRestore();
+	});
+});
+
+describe("visits", () => {
+	beforeEach(() => mocks.findPublicPortfolio.mockResolvedValue(portfolio()));
+	afterEach(() => {
+		configurePortfolioVisitLifetime(undefined);
+		vi.unstubAllEnvs();
+	});
+
+	it("count only pages someone opens: no HEAD requests, prefetches or prerenders", async () => {
+		for (const init of [
+			{ method: "HEAD" },
+			{ headers: { "Sec-Purpose": "prefetch" } },
+			{ headers: { "Sec-Purpose": "prefetch;prerender" } },
+			{ headers: { Purpose: "prefetch" } },
+			{ headers: { "X-Purpose": "preview" } },
+			{ headers: { "X-Moz": "prefetch" } },
+		]) {
+			const response = await servePortfolioOrResume(get("/nadia", init), "nadia", "1");
+			expect(response.status, JSON.stringify(init)).toBe(200);
+		}
+		expect(mocks.recordPortfolioVisit).not.toHaveBeenCalled();
+		await servePortfolioOrResume(get(), "nadia", "1");
+		expect(mocks.recordPortfolioVisit).toHaveBeenCalledOnce();
+	});
+
+	it("are counted without holding up the page", async () => {
+		mocks.recordPortfolioVisit.mockReturnValue(new Promise(() => {}));
+		expect((await servePortfolioOrResume(get(), "nadia", "1")).status).toBe(200);
+	});
+
+	it("are waited for on Workers until the platform keeps them going after the response", async () => {
+		vi.stubEnv("CLOUDFLARE", "1");
+		let finish = () => {};
+		mocks.recordPortfolioVisit.mockReturnValue(new Promise<void>((resolve) => (finish = resolve)));
+		let answered = false;
+		const serving = servePortfolioOrResume(get(), "nadia", "1").then((response) => {
+			answered = true;
+			return response;
+		});
+		await new Promise((resolve) => setTimeout(resolve, 20));
+		expect(answered).toBe(false);
+		finish();
+		expect((await serving).status).toBe(200);
+
+		const kept: Promise<unknown>[] = [];
+		configurePortfolioVisitLifetime((work) => kept.push(work));
+		mocks.recordPortfolioVisit.mockReturnValue(new Promise(() => {}));
+		expect((await servePortfolioOrResume(get(), "nadia", "1")).status).toBe(200);
+		expect(kept).toHaveLength(1);
+	});
+});
+
+/** Each directive of a policy header with its sources. */
+const directives = (policy: string) =>
+	new Map(
+		policy.split(";").map((part) => {
+			const [name = "", ...sources] = part.trim().split(/\s+/);
+			return [name, sources] as const;
+		}),
+	);
+
+/** Whether a policy's sources allow loading `url` into a page at `pageOrigin` (enough of CSP for these checks). */
+function allows(sources: readonly string[], url: string, pageOrigin: string): boolean {
+	const target = new URL(url, pageOrigin);
+	return sources.some((source) => {
+		if (source === "'self'") return target.origin === pageOrigin;
+		if (/^[a-z]+:$/.test(source)) return target.protocol === source;
+		return /^https?:\/\//.test(source) && target.origin === new URL(source).origin;
+	});
+}
+
+describe("the page's content security policy", () => {
+	it("allows exactly what the page loads: its script, pictures, fonts and video players", async () => {
+		const data = parsePortfolioData({
+			design: { fonts: { source: "pair", id: "editorial" } },
+			works: {
+				items: [
+					{
+						id: "w1",
+						slug: "kopi",
+						title: "Coffee app",
+						cover: { key: "uploads/user-1/pictures/portfolio/cover.webp", width: 1600, height: 900 },
+						blocks: [
+							{ id: "b1", type: "video", provider: "youtube", videoId: "dQw4w9WgXcQ", title: "Reel" },
+							{ id: "b2", type: "video", provider: "vimeo", videoId: "123456789", title: "Making of" },
+						],
+					},
+				],
+			},
+		});
+		mocks.findPublicPortfolio.mockResolvedValue(portfolio({ data }));
+		for (const pageOrigin of ["https://rezumi.example", "https://nadia.dev"]) {
+			const response = await servePortfolioOrResume(
+				new Request(`${pageOrigin}/`),
+				"nadia",
+				"1",
+				pageOrigin === "https://rezumi.example" ? {} : { customDomain: "nadia.dev" },
+			);
+			const body = await response.text();
+			const policy = directives(response.headers.get("Content-Security-Policy") ?? "");
+
+			const script = /<script>([\s\S]*?)<\/script><\/body>/.exec(body)?.[1] ?? "";
+			const hash = createHash("sha256").update(script).digest("base64");
+			expect(policy.get("script-src")).toContain(`'sha256-${hash}'`);
+
+			const pictures = [...body.matchAll(/<img\b[^>]*\bsrc="([^"]+)"/g)].map(([, src]) => src ?? "");
+			expect(pictures).toContain("https://rezumi.example/uploads/user-1/pictures/portfolio/cover.webp");
+			for (const src of pictures) expect(allows(policy.get("img-src") ?? [], src, pageOrigin), src).toBe(true);
+
+			const fonts = [...body.matchAll(/@font-face\{[^}]*src:url\("([^"]+)"\)/g)].map(([, src]) => src ?? "");
+			expect(fonts.length).toBeGreaterThan(0);
+			for (const src of fonts) expect(allows(policy.get("font-src") ?? [], src, pageOrigin), src).toBe(true);
+
+			const players = [...body.matchAll(/data-embed="([^"]+)"/g)].map(([, src]) =>
+				(src ?? "").replaceAll("&amp;", "&"),
+			);
+			expect(players).toHaveLength(2);
+			for (const src of players) expect(allows(policy.get("frame-src") ?? [], src, pageOrigin), src).toBe(true);
+		}
+	});
+
+	it("frames only the video players, embeds nothing, runs no workers and posts forms only here", () => {
+		const policy = directives(portfolioContentSecurityPolicy("void 0"));
+		expect(policy.get("frame-src")).toEqual(["https://www.youtube-nocookie.com", "https://player.vimeo.com"]);
+		expect(policy.get("object-src")).toEqual(["'none'"]);
+		expect(policy.get("worker-src")).toEqual(["'none'"]);
+		expect(policy.get("form-action")).toEqual(["'self'"]);
+		expect(policy.get("frame-ancestors")).toEqual(["'none'"]);
+		expect(policy.get("base-uri")).toEqual(["'self'"]);
+		expect(policy.get("script-src")).not.toContain("'unsafe-inline'");
+		expect(policy.get("script-src")).not.toContain("'wasm-unsafe-eval'");
+		expect(allows(policy.get("frame-src") ?? [], "https://rezumi.example/", "https://rezumi.example")).toBe(false);
+	});
+
+	it("takes more sources per directive, as Turnstile will need", () => {
+		const policy = directives(
+			portfolioContentSecurityPolicy("void 0", {
+				"script-src": ["https://challenges.cloudflare.com"],
+				"frame-src": ["https://challenges.cloudflare.com"],
+				"worker-src": ["'self'"],
+			}),
+		);
+		expect(policy.get("script-src")).toContain("https://challenges.cloudflare.com");
+		expect(policy.get("frame-src")).toEqual([
+			"https://www.youtube-nocookie.com",
+			"https://player.vimeo.com",
+			"https://challenges.cloudflare.com",
+		]);
+		expect(policy.get("worker-src")).toEqual(["'self'"]);
+	});
+});
+
+describe("pictures", () => {
+	const withPicture = (url: string) => {
+		const page = portfolio();
+		if (page.resume) page.resume.data.picture = { ...page.resume.data.picture, url, hidden: false };
+		return page;
+	};
+
+	it("show a resume photo only when it's one of this app's uploads", async () => {
+		const own = "https://rezumi.example/api/uploads/user-1/pictures/0b1c2d3e-4f50-4617-8293-a4b5c6d7e8f9.jpeg";
+		mocks.findPublicPortfolio.mockResolvedValue(withPicture(own));
+		const shown = await (await servePortfolioOrResume(get(), "nadia", "1")).text();
+		expect(shown).toContain(`src="${own}"`);
+		expect(shown).toContain(`"image":"${own}"`);
+
+		for (const elsewhere of [
+			"https://images.example.test/nadia.jpg",
+			"https://rezumi.example.evil.test/api/uploads/user-1/pictures/a.jpeg",
+			"https://rezumi.example/api/uploads/user-1/pictures/a.jpeg?track=1",
+			"https://rezumi.example/somewhere/else.jpeg",
+			"data:image/png;base64,AAAA",
+		]) {
+			mocks.findPublicPortfolio.mockResolvedValue(withPicture(elsewhere));
+			const body = await (await servePortfolioOrResume(get(), "nadia", "1")).text();
+			expect(body, elsewhere).not.toContain(elsewhere.replaceAll("&", "&amp;"));
+			expect(body).not.toContain('"image":');
+		}
+	});
+
+	it("are this app's own uploads only, whatever the view holds", () => {
+		expect(portfolioPictureUrl("/api/uploads/user-1/pictures/a.webp")).toBe(
+			"https://rezumi.example/api/uploads/user-1/pictures/a.webp",
+		);
+		expect(portfolioPictureUrl("https://rezumi.example/uploads/user-1/pictures/portfolio/a-sm.jpg")).toBe(
+			"https://rezumi.example/uploads/user-1/pictures/portfolio/a-sm.jpg",
+		);
+		for (const source of [
+			"https://cdn.example.test/uploads/user-1/pictures/a.webp",
+			"//cdn.example.test/uploads/user-1/pictures/a.webp",
+			"https://rezumi.example/uploads/user-1/documents/portfolio/a.pdf",
+			"https://rezumi.example/uploads/user-1/pictures/../secret.png",
+			"https://user:pass@rezumi.example/uploads/user-1/pictures/a.webp",
+			"javascript:alert(1)",
+		])
+			expect(portfolioPictureUrl(source), source).toBeUndefined();
 	});
 });

@@ -78,7 +78,12 @@ export function UiIcon(props: UiIconProps) {
 	);
 }
 
-type ResumeIconProps = { name: string | null | undefined; className?: string };
+type ResumeIconProps = {
+	name: string | null | undefined;
+	className?: string;
+	/** What the icon shows, when nothing beside it says so (a client's logo without a name); otherwise it's hidden. */
+	label?: string;
+};
 
 /** An icon from the resume icon set (service icons, metric icons, brand logos), when its shapes were loaded. */
 export function ResumeIcon(props: ResumeIconProps) {
@@ -89,7 +94,7 @@ export function ResumeIcon(props: ResumeIconProps) {
 		<svg
 			className={props.className ?? "pf-icon"}
 			viewBox="0 0 24 24"
-			aria-hidden="true"
+			{...(props.label ? { role: "img", "aria-label": props.label } : { "aria-hidden": "true" as const })}
 			focusable="false"
 			// oxlint-disable-next-line react/no-danger -- shapes from the app's own icon set, never from the portfolio's data.
 			dangerouslySetInnerHTML={{ __html: markup }}

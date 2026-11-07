@@ -1,17 +1,35 @@
+import type { PortfolioViewMessages } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
-import type { PortfolioResumeSection, PortfolioSectionKey } from "@rezumi/schema/portfolio/sections";
+import type {
+	PortfolioResumeSection,
+	PortfolioSectionKey,
+	PortfolioStandardSection,
+} from "@rezumi/schema/portfolio/sections";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Draft } from "immer";
+import { t } from "@lingui/core/macro";
 import { resolveSectionOrder } from "@rezumi/portfolio/view";
-import { PORTFOLIO_RESUME_SECTIONS } from "@rezumi/schema/portfolio/sections";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
+import { PORTFOLIO_RESUME_SECTIONS, PORTFOLIO_STANDARD_SECTIONS } from "@rezumi/schema/portfolio/sections";
 
 // The Content tab's section list, as plain functions on the data so they can be tested apart from the editor.
 
 const RESUME_SECTIONS = new Set<string>(PORTFOLIO_RESUME_SECTIONS);
+const STANDARD_SECTIONS = new Set<string>(PORTFOLIO_STANDARD_SECTIONS);
+
+/** One of the sections every portfolio has (About, Work, Experience…), as opposed to `custom:` and `resume:` ones. */
+export function isStandardSection(key: PortfolioSectionKey): key is PortfolioStandardSection {
+	return STANDARD_SECTIONS.has(key);
+}
+
+/** A custom section of the source resume, shown on the portfolio as it is there. */
+function isResumeCustomSection(key: PortfolioSectionKey): key is `resume:${string}` {
+	return key.startsWith("resume:");
+}
 
 /** Sections whose items come from the source resume, edited there. */
 export function isResumeSection(key: PortfolioSectionKey): key is PortfolioResumeSection | `resume:${string}` {
-	return RESUME_SECTIONS.has(key) || key.startsWith("resume:");
+	return RESUME_SECTIONS.has(key) || isResumeCustomSection(key);
 }
 
 /** Every section in page order, shown or not: the editor lists them all, so a hidden one can come back. */
@@ -21,7 +39,8 @@ export function editorSectionOrder(data: PortfolioData, resume: ResumeData | nul
 
 /**
  * Moves a section to `to` (an index in the full order, as the list shows it) and keeps the whole order, so the theme
- * no longer places any section on its own.
+ * no longer places any section on its own. A resume section the list doesn't show right now (the resume is still
+ * loading, or another one is chosen for a while) keeps its saved place, after the section it followed.
  */
 export function moveSection(
 	draft: Draft<PortfolioData>,
@@ -32,6 +51,13 @@ export function moveSection(
 	const next = order.filter((entry) => entry !== key);
 	if (next.length === order.length) return;
 	next.splice(Math.max(0, Math.min(to, next.length)), 0, key);
+
+	const saved = [...draft.sections.order];
+	saved.forEach((entry, index) => {
+		if (!isResumeCustomSection(entry) || next.includes(entry) || next.length >= PORTFOLIO_LIMITS.sectionKeys) return;
+		const after = saved.slice(0, index).findLast((earlier) => next.includes(earlier));
+		next.splice(after === undefined ? 0 : next.indexOf(after) + 1, 0, entry);
+	});
 	draft.sections.order = next;
 }
 
@@ -45,6 +71,21 @@ export function setSectionTitle(draft: Draft<PortfolioData>, key: PortfolioSecti
 	const trimmed = title.trim();
 	if (trimmed) draft.sections.titles[key] = trimmed;
 	else delete draft.sections.titles[key];
+}
+
+/** A section's name in the editor: its custom title, else the page's default in the page's language. */
+export function sectionLabel(
+	key: PortfolioSectionKey,
+	data: PortfolioData,
+	resume: ResumeData | null,
+	messages: PortfolioViewMessages,
+): string {
+	const custom = data.sections.titles[key]?.trim();
+	if (custom) return custom;
+	if (key.startsWith("custom:"))
+		return data.custom.find((section) => `custom:${section.id}` === key)?.title.trim() || t`Untitled section`;
+	if (isStandardSection(key)) return messages.sections[key];
+	return resumeCustomSectionTitle(resume, key) || t`Resume section`;
 }
 
 /** Hides one resume item on the portfolio only; the resume keeps it. */
@@ -67,33 +108,38 @@ export type ResumeSectionItem = {
 	hiddenOnResume: boolean;
 };
 
-type LooseItem = Record<string, unknown> & { id: string; hidden?: boolean };
+type ResumeItem =
+	| ResumeData["sections"][PortfolioResumeSection]["items"][number]
+	| ResumeData["customSections"][number]["items"][number];
 
-const text = (value: unknown) => (typeof value === "string" ? value.trim() : "");
+/** One of an item's text fields, trimmed; items of different sections name different fields. */
+function textOf(item: ResumeItem, field: string): string {
+	const value: unknown = Reflect.get(item, field);
+	return typeof value === "string" ? value.trim() : "";
+}
 
 /** A resume item's name in the list: the first of its naming fields that has text. */
-function itemLabel(item: LooseItem): string {
-	const name = text(item.name) || text(item.title) || text(item.language) || text(item.network);
-	const place = text(item.company) || text(item.school) || text(item.organization);
-	const role = text(item.position) || text(item.degree);
+function itemLabel(item: ResumeItem): string {
+	const name = textOf(item, "name") || textOf(item, "title") || textOf(item, "language") || textOf(item, "network");
+	const place = textOf(item, "company") || textOf(item, "school") || textOf(item, "organization");
+	const role = textOf(item, "position") || textOf(item, "degree");
 	if (place && role) return `${role} · ${place}`;
-	return name || place || role || text(item.username);
+	return name || place || role || textOf(item, "username");
 }
 
 /** The items of a section read from the resume, for hiding them on the portfolio. */
 export function resumeSectionItems(resume: ResumeData | null, key: PortfolioSectionKey): ResumeSectionItem[] {
 	if (!resume || !isResumeSection(key)) return [];
-	const items: readonly LooseItem[] = key.startsWith("resume:")
-		? ((resume.customSections.find((section) => section.id === key.slice("resume:".length))?.items ??
-				[]) as unknown as LooseItem[])
-		: (resume.sections[key as PortfolioResumeSection].items as unknown as LooseItem[]);
+	const items: readonly ResumeItem[] = isResumeCustomSection(key)
+		? (resume.customSections.find((section) => section.id === key.slice("resume:".length))?.items ?? [])
+		: resume.sections[key].items;
 	return items
-		.map((item) => ({ id: item.id, label: itemLabel(item), hiddenOnResume: item.hidden === true }))
+		.map((item) => ({ id: item.id, label: itemLabel(item), hiddenOnResume: item.hidden }))
 		.filter((item) => item.label);
 }
 
 /** A resume custom section's title, or null when the key isn't one. */
-export function resumeCustomSectionTitle(resume: ResumeData | null, key: PortfolioSectionKey): string | null {
+function resumeCustomSectionTitle(resume: ResumeData | null, key: PortfolioSectionKey): string | null {
 	if (!key.startsWith("resume:")) return null;
 	return resume?.customSections.find((section) => section.id === key.slice("resume:".length))?.title.trim() ?? null;
 }

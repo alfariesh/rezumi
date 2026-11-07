@@ -1,19 +1,20 @@
 import type { PortfolioButton } from "@rezumi/schema/portfolio/data";
-import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
 import { Button, Label, RadioGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useState } from "react";
 import { PORTFOLIO_BUTTON_KINDS } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
+import { ownPictureUrl } from "@rezumi/utils/own-picture";
 import { ImageField } from "../images/image-field";
 import { MetricsEditor } from "../metrics/metric-form";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { ChoiceSelect, ItemToolbar, moveItem, RadioOption, TextInput, UrlInput } from "./fields";
+import { useOwnOrigins } from "./pictures";
 import { setBasicsText } from "./sections";
 import { editPortfolio, usePortfolioData } from "./store";
+import { KEPT_PHOTO_MS, usePortfolioEditorUi } from "./ui";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -124,25 +125,33 @@ export function IntroForm() {
 }
 
 /**
- * The intro's photo: the resume's, one for the portfolio only, or none. A portfolio-only photo is kept when the
- * resume's is chosen again, so switching back doesn't upload it twice.
+ * The intro's photo: the resume's, one for the portfolio only, or none. A portfolio-only photo is kept in the editor
+ * (not in the saved data) when the resume's is chosen, so switching back, even after visiting another tab, doesn't
+ * upload it twice.
  */
 function HeroPhoto() {
 	const data = usePortfolioData();
 	const source = useSourceResume();
 	const owner = usePortfolioOwner();
+	const kept = usePortfolioEditorUi((state) => state.keptPhoto);
+	const keepPhoto = usePortfolioEditorUi((state) => state.keepPhoto);
+	const wantsOwn = usePortfolioEditorUi((state) => state.wantsOwnPhoto);
+	const setWantsOwn = usePortfolioEditorUi((state) => state.setWantsOwnPhoto);
+	const origins = useOwnOrigins();
 	const resume = source.data;
-	const resumePhoto = resume && !resume.picture.hidden && resume.picture.url.trim() ? resume.picture.url : null;
+	// Only a photo uploaded here can show on the page (`./pictures.ts`); one kept on another site isn't offered.
+	const resumePhoto = resume && !resume.picture.hidden ? (ownPictureUrl(resume.picture.url, origins) ?? null) : null;
 	const { basics, hero } = data;
-	const [kept, setKept] = useState<PortfolioImage | null>(basics.picture ?? null);
-	// "A photo for the portfolio only" stays chosen while its photo is still to be uploaded.
-	const [wantsOwn, setWantsOwn] = useState(false);
 	const stored = !hero.showPicture || basics.picture === null ? "none" : basics.picture ? "own" : "resume";
+	// "A photo for the portfolio only" stays chosen while its photo is still to be uploaded.
 	const choice = stored === "resume" && (wantsOwn || !resumePhoto) ? "own" : stored;
 	const name = basics.name?.trim() || resume?.basics.name.trim() || owner.name;
 
 	const choose = (next: string) => {
 		setWantsOwn(next === "own");
+		// The photo in the data right now is the one to bring back, whatever undo or redo did before.
+		if (next === "resume" && basics.picture) keepPhoto(basics.picture);
+		const restore = kept && Date.now() - kept.at < KEPT_PHOTO_MS ? kept.image : null;
 		editPortfolio((draft) => {
 			if (next === "none") {
 				draft.hero.showPicture = false;
@@ -150,7 +159,7 @@ function HeroPhoto() {
 			}
 			draft.hero.showPicture = true;
 			if (next === "resume") delete draft.basics.picture;
-			else if (kept) draft.basics.picture = kept;
+			else if (!draft.basics.picture && restore) draft.basics.picture = restore;
 			else if (draft.basics.picture === null) delete draft.basics.picture;
 		});
 	};
@@ -176,11 +185,14 @@ function HeroPhoto() {
 			{choice === "own" && (
 				<ImageField
 					label={t`Portfolio photo`}
+					// Its small copy is a JPEG, which the share card can draw.
+					kind="portrait"
 					value={basics.picture ?? undefined}
 					altSuggestion={name}
 					description={t`A square photo of your face works best. It's shrunk in your browser before uploading.`}
 					onChange={(image) => {
-						setKept(image ?? null);
+						// A removed photo isn't offered back later.
+						if (!image) keepPhoto(null);
 						editPortfolio((draft) => {
 							draft.hero.showPicture = true;
 							if (image) draft.basics.picture = image;

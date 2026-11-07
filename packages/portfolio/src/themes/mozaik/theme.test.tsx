@@ -2,21 +2,9 @@ import type { BentoTiles, TileSpan } from "./layout";
 import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
-import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
-import { testResume } from "../../fixtures.test-helpers";
-import { portfolioMessages, portfolioViewMessages } from "../../messages";
-import { renderPortfolioPage } from "../../page";
-import { buildPortfolioView } from "../../view";
+import { count, expectSoundPage, testImage as image, renderTestPage, testResume } from "../../fixtures.test-helpers";
 import { bentoAreas, workSpans } from "./layout";
-
-const image = (name: string, width = 1600, height = 1200) => ({
-	key: `uploads/user-1/pictures/portfolio/${name}.webp`,
-	thumbKey: `uploads/user-1/pictures/portfolio/${name}-small.webp`,
-	width,
-	height,
-	alt: `${name} picture`,
-});
 
 const work = (index: number, cover = true) => ({
 	id: `w${index}`,
@@ -160,41 +148,13 @@ function resumeWithSkills(): ResumeData {
 }
 
 function render(data: PortfolioDataInput, resume: ResumeData | null = resumeWithSkills()) {
-	const parsed = parseWritablePortfolioData({ theme: "mozaik", ...data });
-	const messages = portfolioMessages(parsed.locale ?? resume?.metadata.page.locale ?? "en-US");
-	const view = buildPortfolioView({
-		portfolio: { data: parsed },
-		resume: resume ? { data: resume } : null,
-		owner: { name: "Account Name", username: "nadia" },
-		entitlements: { hidePortfolioCredit: false },
-		messages: portfolioViewMessages(messages),
-		fileUrl: (key) => `https://rezumi.example/${key}`,
-		links: { resume: "https://rezumi.example/nadia/cv", resumePdf: null },
-	});
-	const page = renderPortfolioPage({
-		view,
-		messages,
-		year: 2026,
-		creditUrl: "https://rezumi.example",
-		imageUrl: (src) => (src.startsWith("/") ? `https://rezumi.example${src}` : src),
-		icons: {},
-	});
-	return { view, page, html: page.html };
+	return renderTestPage({ theme: "mozaik", ...data }, { resume });
 }
 
-const count = (html: string, pattern: RegExp) => html.match(pattern)?.length ?? 0;
-
-/** Every section element's heading exists and has text; every picture has a text alternative attribute. */
+/** The shared checks, and Mozaik's own main. */
 function expectSoundStructure(html: string) {
-	expect(html).toContain('<div class="pf" data-theme="mozaik">');
-	expect(count(html, /<h1[\s>]/g)).toBe(1);
+	expectSoundPage(html, "mozaik");
 	expect(html).toContain('<main class="pf-wrap mz-main" id="main"');
-	expect(html).not.toMatch(/undefined|NaN|\[object Object\]/);
-	for (const [, id] of html.matchAll(/aria-labelledby="([^"]+)"/g)) {
-		const heading = new RegExp(`<h2[^>]* id="${id}"[^>]*>([^<]+)</h2>`).exec(html);
-		expect(heading?.[1]?.trim(), id).toBeTruthy();
-	}
-	for (const [tag] of html.matchAll(/<img [^>]*>/g)) expect(tag).toMatch(/ alt="/);
 }
 
 /** Whether CSS sparse auto-placement of these spans into `columns` leaves every row it touches full. */
@@ -457,7 +417,7 @@ describe("renderPortfolioPage (Mozaik) with little content", () => {
 		resume.basics.website = { url: "", label: "" };
 		const { html } = render({ ...fullData, contact: { whatsapp: { show: false, number: "" }, note: "" } }, resume);
 		expectSoundStructure(html);
-		expect(html).toContain('<section class="mz-tile mz-loc pf-section" id="contact" aria-labelledby="contact-title">');
+		expect(html).toContain('<section class="mz-tile mz-loc pf-section" id="contact" aria-labelledby="contact--title">');
 		expect(html).not.toContain("mz-contact");
 		expect(count(html, /id="contact"/g)).toBe(1);
 	});

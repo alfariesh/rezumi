@@ -35,25 +35,61 @@ export function applyMetricFormat(metric: PortfolioMetric, choice: MetricFormatC
 	else delete metric.unit;
 }
 
+/**
+ * Numbers in fields are written with Western digits ("latn") in every language: Arabic, Persian, Bengali or Devanagari
+ * digits would read back only if typed the same way, and a field must read back what it shows.
+ */
+const LATIN_DIGITS = { numberingSystem: "latn" } as const;
+
 /** Whether the language writes a decimal comma ("2,8"), as Indonesian does. */
 export function usesDecimalComma(locale: string): boolean {
 	try {
-		return new Intl.NumberFormat(locale).format(1.5).includes(",");
+		const parts = new Intl.NumberFormat(locale, LATIN_DIGITS).formatToParts(1.5);
+		return parts.find((part) => part.type === "decimal")?.value === ",";
 	} catch {
 		return false;
 	}
 }
 
+const DECIMAL_DIGIT = /\p{Nd}/u;
+
+/**
+ * The digit a character stands for in any script ("٣", "۳", "৩", "३" and "3" are all 3). Unicode puts every set of
+ * decimal digits in a row of ten, 0 first, so its value is its distance from the start of its row.
+ */
+function digitValue(char: string): string {
+	const code = char.codePointAt(0) ?? 0;
+	let start = code;
+	while (start > 0 && DECIMAL_DIGIT.test(String.fromCodePoint(start - 1))) start--;
+	return String((code - start) % 10);
+}
+
+/**
+ * Text with any script's digits as Western ones, the Arabic decimal separator (٫) as the decimal point and the Arabic
+ * thousands separator (٬) dropped, without the invisible direction marks right-to-left languages put around numbers.
+ */
+export function westernDigits(text: string): string {
+	return text
+		.replace(/[\u200e\u200f\u061c\u202a-\u202e\u2066-\u2069]/g, "")
+		.replace(/\p{Nd}/gu, (char) => (char >= "0" && char <= "9" ? char : digitValue(char)))
+		.replace(/\u066c/g, "");
+}
+
 /**
  * A number as people type it, in the app's language: "2,8" and "1.200.000" in Indonesian, "2.8" and "1,200,000" in
- * English. With both separators, the last one is the decimal point. Null when it isn't a number.
+ * English, digits of any script ("١٢٫٥" is 12.5). With both separators, the last one is the decimal point. Null when it
+ * isn't a number.
  */
 export function parseMetricNumber(text: string, locale: string): number | null {
-	let value = text
+	const western = westernDigits(text);
+	// The Arabic decimal separator says which mark is the decimal: the others group thousands.
+	const arabicDecimal = western.includes("\u066b");
+	let value = western
 		.trim()
-		.replace(/[\s  ]/g, "")
+		.replace(/[\s\u00a0\u202f]/g, "")
 		.replace(/^\+/, "")
-		.replace(/[−–]/g, "-");
+		.replace(/[\u2212\u2013]/g, "-");
+	if (arabicDecimal) value = value.replace(/[.,]/g, "").replace("\u066b", ".");
 	if (!value || !/^-?[\d.,]+$/.test(value)) return null;
 	const comma = value.lastIndexOf(",");
 	const dot = value.lastIndexOf(".");
@@ -66,7 +102,7 @@ export function parseMetricNumber(text: string, locale: string): number | null {
 		const grouped = /^-?\d{1,3}(?:,\d{3})+$/.test(value);
 		value =
 			grouped && (!decimalComma || value.split(",").length > 2) ? value.replaceAll(",", "") : value.replace(",", ".");
-	} else if (dot !== -1) {
+	} else if (dot !== -1 && !arabicDecimal) {
 		const grouped = /^-?\d{1,3}(?:\.\d{3})+$/.test(value);
 		value = grouped && (decimalComma || value.split(".").length > 2) ? value.replaceAll(".", "") : value;
 	}
@@ -75,10 +111,23 @@ export function parseMetricNumber(text: string, locale: string): number | null {
 	return Number.isFinite(number) && Math.abs(number) <= 1e15 ? number : null;
 }
 
-/** A number for an input, as the app's language writes it, without grouping (so it reads back the same). */
+/** A number for an input, as the app's language writes it with Western digits, ungrouped (so it reads back the same). */
 export function metricNumberText(value: number | undefined, locale: string): string {
 	if (value === undefined) return "";
-	return new Intl.NumberFormat(locale, { useGrouping: false, maximumFractionDigits: 6 }).format(value);
+	return westernDigits(
+		new Intl.NumberFormat(locale, { ...LATIN_DIGITS, useGrouping: false, maximumFractionDigits: 6 }).format(value),
+	).replace(/\u2212/g, "-");
+}
+
+/** The number's text with its sign switched ("12" ↔ "-12"), for keyboards without a minus key (iPhone's number pad). */
+export function toggleMinus(text: string): string {
+	const trimmed = text.trim();
+	return /^[-\u2212\u2013]/.test(trimmed) ? trimmed.slice(1) : `-${trimmed.replace(/^\+/, "")}`;
+}
+
+/** What separates sparkline values: semicolons, line breaks and spaces, and commas unless they're the decimal mark. */
+function seriesSeparator(locale: string): RegExp {
+	return usesDecimalComma(locale) ? /[;\u061b\n]+|\s+/ : /[;,\u060c\u061b\n]+|\s+/;
 }
 
 /**
@@ -86,9 +135,8 @@ export function metricNumberText(value: number | undefined, locale: string): str
  * only semicolons and spaces separate numbers. Null when any value isn't a number or there are too many.
  */
 export function parseMetricSeries(text: string, locale: string): number[] | null {
-	const decimalComma = usesDecimalComma(locale);
-	const parts = text
-		.split(decimalComma ? /[;\n]+|\s+/ : /[;,\n]+|\s+/)
+	const parts = westernDigits(text)
+		.split(seriesSeparator(locale))
 		.map((part) => part.trim())
 		.filter(Boolean);
 	if (!parts.length) return [];

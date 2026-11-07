@@ -2,7 +2,7 @@ import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Locale } from "@rezumi/utils/locale";
 import { useQuery } from "@tanstack/react-query";
-import { defaultLocale, isLocale } from "@rezumi/utils/locale";
+import { portfolioPageLocale } from "@rezumi/portfolio/view";
 import { usePortfolioRecord } from "./store";
 import { authClient } from "@/libs/auth/client";
 import { orpc } from "@/libs/orpc/client";
@@ -26,20 +26,18 @@ export function useSourceResume() {
 /** Whose portfolio this is, for the page's last-resort name and its address. */
 export function usePortfolioOwner() {
 	const { data: session } = authClient.useSession();
-	const user = session?.user as
-		| { name?: string; username?: string | null; createdAt?: Date | string; emailVerified?: boolean; email?: string }
-		| undefined;
+	const user = session?.user;
 	return {
 		name: user?.name ?? "",
 		username: user?.username ?? "",
 		email: user?.email ?? "",
 		emailVerified: user?.emailVerified ?? false,
+		// The session arrives as JSON, so the date may still be text.
 		createdAt: user?.createdAt ? new Date(user.createdAt) : null,
 	};
 }
 
-/** The page's language: the portfolio's own, else the source resume's, as the renderer decides it. */
+/** The page's language, as the renderer decides it (`portfolioPageLocale`). */
 export function pageLocaleOf(data: PortfolioData, resume: ResumeData | null): Locale {
-	const resumeLocale = resume?.metadata.page.locale;
-	return data.locale ?? (isLocale(resumeLocale) ? resumeLocale : defaultLocale);
+	return portfolioPageLocale(data, resume);
 }
