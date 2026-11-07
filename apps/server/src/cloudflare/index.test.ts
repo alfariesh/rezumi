@@ -20,6 +20,8 @@ const mocks = vi.hoisted(() => ({
 	publicOwner: vi.fn(),
 	readPicture: vi.fn(),
 	pictureReader: undefined as ((key: string) => Promise<Uint8Array>) | undefined,
+	publicPortfolioFile: vi.fn(),
+	visitLifetime: undefined as ((promise: Promise<unknown>) => void) | undefined,
 }));
 
 vi.mock("pg", () => ({
@@ -71,6 +73,12 @@ vi.mock("@rezumi/pdf/server", () => ({
 		mocks.pictureReader = reader;
 	},
 }));
+vi.mock("@rezumi/api/features/portfolio/public", () => ({ isPublicPortfolioFile: mocks.publicPortfolioFile }));
+vi.mock("../static/portfolio-page", () => ({
+	configurePortfolioVisitLifetime: (callback: typeof mocks.visitLifetime) => {
+		mocks.visitLifetime = callback;
+	},
+}));
 vi.mock("@rezumi/utils/rate-limit", () => ({ TRUSTED_IP_HEADERS: ["x-real-ip", "x-forwarded-for"] }));
 vi.mock("../http/app", () => ({ createApp: () => ({ fetch: mocks.fetch }) }));
 vi.mock("./coordination", () => ({ Coordination: class {} }));
@@ -120,6 +128,27 @@ describe("Cloudflare invocation lifetime", () => {
 		expect(mocks.publicOwner).toHaveBeenCalledWith("banned");
 		expect(mocks.readPicture).not.toHaveBeenCalled();
 	});
+	it("reads a portfolio picture only while a published portfolio uses it", async () => {
+		mocks.publicOwner.mockResolvedValue(true);
+		mocks.readPicture.mockReset().mockResolvedValue({ data: new Uint8Array([1]), size: 1 });
+		mocks.publicPortfolioFile.mockReset().mockResolvedValue(false);
+		const key = "uploads/member/pictures/portfolio/photo.jpg";
+		await expect(mocks.pictureReader?.(key)).rejects.toThrow("Picture unavailable");
+		expect(mocks.publicPortfolioFile).toHaveBeenCalledWith(key);
+		expect(mocks.readPicture).not.toHaveBeenCalled();
+
+		mocks.publicPortfolioFile.mockResolvedValue(true);
+		await expect(mocks.pictureReader?.(key)).resolves.toEqual(new Uint8Array([1]));
+		// A resume's own picture needs no portfolio check.
+		mocks.publicPortfolioFile.mockClear();
+		await expect(mocks.pictureReader?.("uploads/member/pictures/photo.jpg")).resolves.toEqual(new Uint8Array([1]));
+		expect(mocks.publicPortfolioFile).not.toHaveBeenCalled();
+	});
+
+	it("keeps portfolio visit counting alive past the response", () => {
+		expect(mocks.visitLifetime).toBeTypeOf("function");
+	});
+
 	it("runs scheduled work in its request context and drains nested background work before closing its pool", async () => {
 		const fixture = invocation();
 		const job = Promise.withResolvers<void>();

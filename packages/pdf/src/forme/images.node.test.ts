@@ -35,12 +35,18 @@ it("bounds trusted uploads and rejects private redirects, rebinding, and unrelat
 		const origin = `http://127.0.0.1:${address.port}`;
 		const picture = `${origin}/api/uploads/user/pictures/picture.png`;
 		expect(Buffer.from(await readServerImage(picture, origin)).toString()).toBe("image bytes");
+		// A portfolio's pictures are the app's own too; nothing deeper in its folder is.
+		const portfolioPicture = `${origin}/uploads/user/pictures/portfolio/photo-sm.jpg`;
+		expect(Buffer.from(await readServerImage(portfolioPicture, origin)).toString()).toBe("image bytes");
+		await expect(readServerImage(`${origin}/uploads/user/pictures/portfolio/a/b.jpg`, origin)).rejects.toThrow(
+			/refused/,
+		);
 		await expect(readServerImage(`${origin}/private.png`, origin)).rejects.toThrow(/refused/);
 		await expect(readServerImage(`http://rebound.example:${address.port}/picture.png`)).rejects.toThrow(/Private/);
-		expect(requests).toBe(1);
+		expect(requests).toBe(2);
 		mode = "redirect";
 		await expect(readServerImage(picture, origin)).rejects.toThrow(/refused/);
-		expect(requests).toBe(2);
+		expect(requests).toBe(3);
 		mode = "size";
 		await expect(readServerImage(picture, origin)).rejects.toThrow(/12 MB/);
 		mode = "hang";

@@ -7,7 +7,7 @@ import { serveStatic } from "@hono/node-server/serve-static";
 import { env } from "@rezumi/env/server";
 import { jsonLdScript, socialMetaTags } from "@rezumi/pdf/web-page-document";
 import { templateLineup } from "@rezumi/schema/templates";
-import { isAppSectionPath, RESERVED_SEGMENTS } from "@rezumi/utils/app-paths";
+import { isAppSectionPath, RESERVED_PROFILE_SEGMENTS, RESERVED_SEGMENTS } from "@rezumi/utils/app-paths";
 import { defaultLocale, getLocaleAlternates, isLocale, localizedUrl } from "@rezumi/utils/locale";
 import { escapeHtml } from "@rezumi/utils/string";
 import { CONTEXT7_ASK_DESCRIPTION, CONTEXT7_ASK_URL } from "./seo";
@@ -55,7 +55,7 @@ export function isPublicResumePath(pathname: string): boolean {
 }
 
 // Single-segment addresses the app or the server answer themselves, so they can never be a username's page.
-const reservedProfileSegments = new Set([...reservedPublicResumeSegments, "cards", "sitemaps", "index.html"]);
+const reservedProfileSegments = RESERVED_PROFILE_SEGMENTS;
 
 /** `/<username>`: an account's primary resume. */
 export function isProfilePath(pathname: string): boolean {

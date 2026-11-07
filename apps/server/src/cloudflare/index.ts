@@ -18,6 +18,7 @@ import { configureAgentStreamLifetime } from "@rezumi/api/features/agent/streams
 import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
 import { runCareerJobs } from "@rezumi/api/features/career/jobs";
 import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
+import { isPublicPortfolioFile } from "@rezumi/api/features/portfolio/public";
 import { configureStorageService, getStorageService, isPublicUploadOwner } from "@rezumi/api/features/storage";
 import { initializeAuth } from "@rezumi/auth/config";
 import { withDatabasePool } from "@rezumi/db/client";
@@ -27,6 +28,7 @@ import { env } from "@rezumi/env/server";
 import { configureOwnPictureReader } from "@rezumi/pdf/server";
 import { TRUSTED_IP_HEADERS } from "@rezumi/utils/rate-limit";
 import { createApp } from "../http/app";
+import { configurePortfolioVisitLifetime } from "../static/portfolio-page";
 import { R2StorageService } from "./r2";
 
 export { Coordination } from "./coordination";
@@ -47,9 +49,19 @@ configureAgentStreamLifetime((promise) => {
 	store?.background.push(promise);
 	store?.ctx.waitUntil(promise);
 });
+// Counting a portfolio visit outlives the page's response, like an assistant run.
+configurePortfolioVisitLifetime((promise) => {
+	const store = requests.getStore();
+	store?.background.push(promise);
+	store?.ctx.waitUntil(promise);
+});
 configureOwnPictureReader(async (key) => {
 	const owner = /^uploads\/([^/]+)\/pictures\//.exec(key)?.[1];
 	if (!owner || !(await isPublicUploadOwner(owner))) throw new Error("Picture unavailable");
+	// A portfolio picture is readable here only while the uploads route would serve it to anyone: a published
+	// portfolio uses it. Otherwise a resume or card could draw an unpublished portfolio's picture by its key.
+	if (key.startsWith(`uploads/${owner}/pictures/portfolio/`) && !(await isPublicPortfolioFile(key)))
+		throw new Error("Picture unavailable");
 	const file = await getStorageService().read(key);
 	if (!file || file.size > 12_000_000) throw new Error("Picture unavailable or exceeds 12 MB");
 	return file.data;

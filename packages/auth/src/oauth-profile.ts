@@ -4,6 +4,7 @@ import { BetterAuthError } from "better-auth";
 import { and, eq, gt, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
+import { RESERVED_PROFILE_SEGMENTS } from "@rezumi/utils/app-paths";
 import { generateId, toUsername } from "@rezumi/utils/string";
 
 interface ExistingOAuthUser {
@@ -113,6 +114,8 @@ export async function isUsernameReserved(username: string, userId?: string | nul
 
 async function isUsernameTaken(candidate: string): Promise<boolean> {
 	const normalizedCandidate = candidate.trim().toLowerCase();
+	// A path the app answers itself (`/api`, `/cards`…) is never free, so `api@…` signs up as `api-1`.
+	if (RESERVED_PROFILE_SEGMENTS.has(normalizedCandidate)) return true;
 	if (await isUsernameReserved(normalizedCandidate)) return true;
 
 	// Both columns are stored lowercase (the username plugin normalizes them), so plain equality uses their unique
