@@ -96,6 +96,10 @@ describe("custom domain pages", () => {
 			expect(await visit("/", "127.0.0.1")).toBeNull();
 		});
 
+		it("leaves the app's own subdomains as they were", async () => {
+			expect(await visit("/", "www.rezumi.app")).toBeNull();
+		});
+
 		it("doesn't mistake a domain that starts with 127 for this machine", async () => {
 			expect((await visit("/", "127.example.com"))?.status).toBe(404);
 		});

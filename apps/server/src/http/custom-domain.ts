@@ -51,6 +51,8 @@ export async function handleCustomDomain(request: Request, trustedClient: string
 		// The CNAME target is a place to point records at, not a second address for the app.
 		return automated && url.hostname === env.CUSTOM_DOMAIN_TARGET ? Response.redirect(onAppDomain(url), 301) : null;
 	}
+	// The zone's other names (a wildcard record can send them here) can never be a custom domain; they stay as they were.
+	if ([...ownHosts()].some((own) => url.hostname.endsWith(`.${own}`))) return null;
 	const destination = await destinationOf(url.hostname);
 	if (!destination) return automated && !isLoopback(url.hostname) ? notConnected() : null;
 	const { username } = destination;
