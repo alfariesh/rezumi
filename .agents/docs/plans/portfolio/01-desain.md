@@ -458,3 +458,12 @@ Permintaan pemilik: tema tambahan bergaya neobrutalism, mengacu ke [Neubrutalism
 - PDF, video dan tautan mengikuti gaya kartu attachment: outline tebal, sudut kecil, bayangan keras, informasi file dan tombol yang tetap terbaca. Perilaku video/PDF, detail, lightbox, navigasi keyboard, privasi dan sanitasi memakai jalur bersama.
 - Galeri Inggris/Indonesia memakai persona fiktif **Citra Maharani**. Tidak menyalin contoh isi, logo, kode atau ilustrasi dari situs acuan. Semua perubahan hanya untuk web dan paket bersama.
 - Angka dan tanggal memuat **IBM Plex Mono**. Nama dibatasi minimal 28 px; teks tanpa spasi membungkus, termasuk saat memakai Syne. Judul kartu karya berupa heading dan menjadi nama aksesibel satu tautan kartu.
+
+## 22. Tampilan paket (Phase 07, 2026-11-09)
+
+- Label paket (Gratis, Plus) hanya tampil bila paket berlaku untuk akun; dengan `BILLING_MODE=off` tidak ada label.
+- Tema dan efek intro yang terkunci tetap bisa dilihat, dengan gembok di label Plus. Menekannya membuka dialog paket, bukan memilihnya. Tema atau efek yang sudah dipakai tetap bisa dipilih dan tidak bergembok.
+- Saklar badge ada di Desain → Lencana. Di paket Gratis saklarnya selalu menyala, dan menekannya membuka dialog paket.
+- Tombol Tambah karya saat batas paket tercapai tetap aktif dan membuka dialog paket. Saat batas teknis 50 tercapai tombolnya nonaktif, karena tidak ada paket yang lebih besar.
+- Meteran penyimpanan ada di bawah daftar Karya: "Gambar dan PDF, 1 MB dari 100 MB". File yang dihapus dalam 24 jam terakhir masih terhitung.
+- Domain sendiri: label Plus di kolom domain, tombol Hubungkan membuka dialog paket, dan tawaran membeli domain `.cv` tidak ditampilkan pada akun yang belum bisa menghubungkan domain.

@@ -51,3 +51,8 @@
 
 - Semua butir checklist ✅ atau tercatat dengan keputusan pemilik.
 - Panduan dan halaman pemasaran tayang; saklar `on` dan pemantauan awal bersih.
+
+### Catatan dari Phase 07 (2026-11-09)
+
+- Saat `PORTFOLIO_MODE=on`, domain sendiri mulai berbayar untuk akun Gratis. Perbarui `docs/guides/sharing-your-resume-publicly.mdx` dan `docs/guides/using-the-api.mdx` yang masih menyebutnya tanpa syarat paket.
+- Tambahan S&K soal portfolio sudah disetujui pemilik (2026-11-09); hapus tanda "setelah diluncurkan" dari baris portfolio di `docs/legal/syarat-dan-ketentuan.mdx` dan `docs/legal/terms-of-service.mdx` saat rilis.

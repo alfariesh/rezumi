@@ -90,6 +90,20 @@ Under **Intro**, choose the intro's background (plain, a soft gradient, a subtle
 - **Page language** changes the page's own words (section titles, button labels), not your text. Empty follows your resume.
 - **Source resume** chooses the resume your career sections come from, or none. If it's moved to Trash, your portfolio keeps its own content and asks you to choose another.
 
+### What your plan includes
+
+|                        | Free                       | Plus and Pro AI           |
+| ---------------------- | -------------------------- | ------------------------- |
+| Themes                 | Lugas and Prima            | All themes                |
+| Intro effects          | Gentle fade-in and Shimmer | All effects               |
+| Made with Rezumi badge | Always shown               | Can be hidden             |
+| Works                  | Up to 6                    | Up to 50                  |
+| Pictures and PDFs      | 100 MB                     | 1 GB                      |
+| Your own domain        | No                         | Yes                       |
+| Visitor statistics     | Basic numbers              | Basic numbers and details |
+
+Every kind of block and section is on every plan, and so is the contact form. You can look at every theme before you choose. When a paid plan ends, nothing is deleted: your theme, effect, works and files stay on the page, you can't add more until you're within the limits, and the badge returns. Your own domain stops 7 days after the plan ends and works again when you subscribe again. Pictures you removed count toward your storage for one more day, until they're deleted.
+
 ### Your short link and your resume
 
 While your portfolio is published, `rezumi.app/<username>` (and your custom domain) open the portfolio. Your resume stays at its own address, and the resume's **Share** panel says so. Unpublish the portfolio and the short link opens your primary resume again.
