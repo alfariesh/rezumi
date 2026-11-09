@@ -2,6 +2,7 @@ import type { CloudflareBindings } from "./index";
 import type { ExecutionContext, ScheduledController } from "@cloudflare/workers-types";
 import type { CoordinationService } from "@rezumi/db/coordination";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { writePortfolioEvent } from "@rezumi/api/features/portfolio/analytics";
 import { getPool } from "@rezumi/db/client";
 import worker from "./index";
 
@@ -119,6 +120,21 @@ beforeEach(() => {
 	mocks.auth.mockReset().mockResolvedValue();
 	mocks.wasm.mockReset().mockResolvedValue();
 	mocks.fetch.mockReset().mockResolvedValue(new Response("ok"));
+});
+
+describe("portfolio analytics", () => {
+	it("writes through the running request's binding, with its country", async () => {
+		const { bindings, ctx } = invocation();
+		const points: unknown[] = [];
+		Object.assign(bindings, { PORTFOLIO_EVENTS: { writeDataPoint: (point: unknown) => points.push(point) } });
+		mocks.fetch.mockImplementation(async () => {
+			writePortfolioEvent({ portfolioId: "pf1", event: "view", device: "desktop" });
+			return new Response("ok");
+		});
+		const request = Object.assign(new Request("https://resume.example/nadia"), { cf: { country: "ID" } });
+		await worker.fetch(request, bindings, ctx);
+		expect(points).toEqual([{ indexes: ["pf1"], blobs: ["view", "", "", "", "ID", "desktop"], doubles: [1] }]);
+	});
 });
 
 describe("Cloudflare invocation lifetime", () => {

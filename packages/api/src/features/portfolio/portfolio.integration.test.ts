@@ -547,7 +547,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			expect((await fileRows()).map((row) => row.unusedSince?.getTime())).toEqual([0, 0, 0]);
 			await expect(service.delete("member")).rejects.toMatchObject({ code: "NOT_FOUND" });
 
-			expect(await jobs.runPortfolioJobs()).toEqual({ deletedFiles: 3, checkedPortfolios: 0 });
+			expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 3, checkedPortfolios: 0 });
 			expect(await fileRows()).toEqual([]);
 			expect([...fixture.files.keys()]).toEqual([theirs]);
 			expect(await fileRows("other")).toEqual([{ key: theirs, unusedSince: null }]);
@@ -1040,7 +1040,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			// Recorded before usage was tracked: unused, but not deleted until a day has passed.
 			await markUnused(image("member", "never-tracked").key, null);
 
-			expect(await jobs.runPortfolioJobs(now)).toEqual({ deletedFiles: 1, checkedPortfolios: 1 });
+			expect(await jobs.runPortfolioJobs(now)).toMatchObject({ deletedFiles: 1, checkedPortfolios: 1 });
 			const rows = await fileRows();
 			const state = Object.fromEntries(
 				rows.map((row) => [row.key.split("/").pop(), row.unusedSince ? "unused" : "used"]),
@@ -1060,7 +1060,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			// The check never changes the data's version: an open editor still saves.
 			expect(portfolio?.updatedAt.getTime()).toBe(created.updatedAt.getTime());
 
-			expect(await jobs.runPortfolioJobs(now)).toEqual({ deletedFiles: 0, checkedPortfolios: 0 });
+			expect(await jobs.runPortfolioJobs(now)).toMatchObject({ deletedFiles: 0, checkedPortfolios: 0 });
 			expect(fixture.files.size).toBe(4);
 			// A day later, the file that was never tracked goes too.
 			expect(await jobs.runPortfolioJobs(new Date(now.getTime() + 25 * hour))).toMatchObject({ deletedFiles: 2 });
@@ -1080,7 +1080,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			await markUnused(key, new Date(now.getTime() - 48 * hour));
 
 			await expect(service.deleteFile("member", { key })).rejects.toMatchObject({ code: "PORTFOLIO_FILE_IN_USE" });
-			expect(await jobs.runPortfolioJobs(now)).toEqual({ deletedFiles: 0, checkedPortfolios: 1 });
+			expect(await jobs.runPortfolioJobs(now)).toMatchObject({ deletedFiles: 0, checkedPortfolios: 1 });
 			expect(fixture.files.has(key)).toBe(true);
 			expect(await fileRows()).toEqual([{ key, unusedSince: null }]);
 		});
@@ -1094,7 +1094,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			];
 			for (const key of beside) fixture.files.set(key, new Uint8Array([1]));
 			const stray = stored("member", "stray");
-			expect(await jobs.runPortfolioJobs()).toEqual({ deletedFiles: 0, checkedPortfolios: 1 });
+			expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 0, checkedPortfolios: 1 });
 			expect(fixture.files.has(stray)).toBe(false);
 			expect([...fixture.files.keys()].sort()).toEqual([...beside].sort());
 		});
@@ -1117,7 +1117,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			} finally {
 				hold.open();
 			}
-			expect(await run).toEqual({ deletedFiles: 1, checkedPortfolios: 1 });
+			expect(await run).toMatchObject({ deletedFiles: 1, checkedPortfolios: 1 });
 			expect(fixture.files.has(key)).toBe(false);
 		});
 
@@ -1159,7 +1159,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			const logged = vi.spyOn(console, "error").mockImplementation(() => {});
 			try {
 				// Its row goes (no save can use the file anymore); storage keeps the file, the check can't delete it either.
-				expect(await jobs.runPortfolioJobs(now)).toEqual({ deletedFiles: 1, checkedPortfolios: 1 });
+				expect(await jobs.runPortfolioJobs(now)).toMatchObject({ deletedFiles: 1, checkedPortfolios: 1 });
 				expect(await fileRows()).toEqual([]);
 				expect(fixture.files.has(key)).toBe(true);
 				expect(logged).toHaveBeenCalled();
@@ -1167,7 +1167,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 				logged.mockRestore();
 			}
 			fixture.keepOnDelete.clear();
-			expect(await jobs.runPortfolioJobs(new Date(now.getTime() + 8 * 24 * hour))).toEqual({
+			expect(await jobs.runPortfolioJobs(new Date(now.getTime() + 8 * 24 * hour))).toMatchObject({
 				deletedFiles: 0,
 				checkedPortfolios: 1,
 			});
@@ -1182,7 +1182,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			fixture.failLists.push("uploads/member/");
 			const logged = vi.spyOn(console, "error").mockImplementation(() => {});
 			try {
-				expect(await jobs.runPortfolioJobs()).toEqual({ deletedFiles: 0, checkedPortfolios: 1 });
+				expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 0, checkedPortfolios: 1 });
 			} finally {
 				logged.mockRestore();
 			}
@@ -1191,7 +1191,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 
 			// The failed check is given back, so the next run tries this portfolio again instead of waiting a week.
 			fixture.failLists.length = 0;
-			expect(await jobs.runPortfolioJobs()).toEqual({ deletedFiles: 0, checkedPortfolios: 1 });
+			expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 0, checkedPortfolios: 1 });
 			expect(fixture.files.has(mine)).toBe(false);
 		});
 
@@ -1219,7 +1219,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			await addFile("member", "old");
 			await markUnused(image("member", "old").key, new Date(Date.now() - 48 * hour));
 			fixture.mode = "off";
-			expect(await jobs.runPortfolioJobs()).toEqual({ deletedFiles: 0, checkedPortfolios: 0 });
+			expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 0, checkedPortfolios: 0 });
 			expect(fixture.files.size).toBe(1);
 		});
 	});

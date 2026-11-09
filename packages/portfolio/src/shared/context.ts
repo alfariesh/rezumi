@@ -1,4 +1,5 @@
 import type { PortfolioPageMessages } from "../messages";
+import type { PortfolioPageLive } from "../page";
 import type { PortfolioView } from "../view";
 import { createContext, useContext } from "react";
 
@@ -13,6 +14,8 @@ export type RenderContext = {
 	imageUrl: (src: string) => string | undefined;
 	/** Ids unique within one page (sparkline gradients, headings). */
 	nextId: (prefix: string) => string;
+	/** How a published page talks to the server; the editor's preview has none. */
+	live?: PortfolioPageLive;
 };
 
 export const RenderContextValue = createContext<RenderContext | null>(null);

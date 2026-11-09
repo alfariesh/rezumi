@@ -258,7 +258,7 @@ describe("Prima theme", () => {
 	it("offers a send-message button in the navigation only when there is a contact section", () => {
 		const { html, messages } = render(fullData);
 		expect(html).toContain(
-			`<li class="pr-head__cta"><a class="pf-btn pf-btn--primary" href="#contact">${messages.sendMessage}</a></li>`,
+			`<li class="pr-head__cta"><a class="pf-btn pf-btn--primary" href="#contact" data-pf-event="contact">${messages.sendMessage}</a></li>`,
 		);
 		const { html: without } = render({
 			...fullData,

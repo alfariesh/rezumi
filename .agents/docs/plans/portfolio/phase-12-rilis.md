@@ -56,3 +56,9 @@
 
 - Saat `PORTFOLIO_MODE=on`, domain sendiri mulai berbayar untuk akun Gratis. Perbarui `docs/guides/sharing-your-resume-publicly.mdx` dan `docs/guides/using-the-api.mdx` yang masih menyebutnya tanpa syarat paket.
 - Tambahan S&K soal portfolio sudah disetujui pemilik (2026-11-09); hapus tanda "setelah diluncurkan" dari baris portfolio di `docs/legal/syarat-dan-ketentuan.mdx` dan `docs/legal/terms-of-service.mdx` saat rilis.
+
+### Catatan dari Phase 08 (2026-11-09)
+
+- Buat widget Turnstile dengan hostname `rezumi.app`, lalu isi `TURNSTILE_SITE_KEY` di `vars` `wrangler.jsonc` dan `pnpm exec wrangler secret put TURNSTILE_SECRET_KEY`. Jangan memakai kunci uji di produksi: kunci uji melewatkan cek hostname. Tanpa kedua kunci, form tidak tampil.
+- Rincian Plus (peta negara, perangkat, perujuk, karya per hari) belum pernah dicoba dengan Analytics Engine sungguhan, karena hanya berjalan di Cloudflare. Di mode `admins`, buka portfolio dari HP, tunggu beberapa menit, lalu pastikan rinciannya tampil. Bila tetap tidak tampil, cari `Reading analytics details failed` di log Worker.
+- Pastikan email notifikasi terkirim dengan `Reply-To` pengirim lewat binding `send_email`.

@@ -1,18 +1,25 @@
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
+import type { PortfolioEventKind } from "@rezumi/schema/portfolio/statistics";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { SQL, SQLWrapper } from "drizzle-orm";
 import { and, asc, count, eq, isNotNull, isNull, sql } from "drizzle-orm";
 import { isbot } from "isbot";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
+import { env } from "@rezumi/env/server";
 import { parsePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS } from "@rezumi/schema/portfolio/limits";
+import { rateLimitConfig } from "@rezumi/utils/rate-limit";
+import { createRateLimiter } from "../../redis";
 import { getEntitlements } from "../billing/entitlements";
-import { isCustomDomainsEnabled } from "../custom-domain/service";
+import { isCustomDomainsEnabled, ownHosts } from "../custom-domain/service";
 import { isOwner, ownerIsNotBanned, resolveViewer } from "../resume/access-policy";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
 import { isFirstVisitThisHour } from "../resume/view-dedup";
+import { writePortfolioEvent } from "./analytics";
 import { getPortfolioMode } from "./mode";
+import { countClick, countVisit, countWorkOpen } from "./statistics";
+import { dayInTimeZone, deviceClass, referrerDomain, visitorKey, visitSource } from "./traffic";
 
 /**
  * Who `/<username>` belongs to (`02-teknis.md` section 6), as a query condition on an account id: true when the account
@@ -76,6 +83,8 @@ export type PublicPortfolio = {
 	username: string;
 	/** The account's display name, the last fallback for the page's name. */
 	ownerName: string;
+	/** The owner's time zone: a statistics day is theirs. */
+	timezone: string;
 	data: PortfolioData;
 	updatedAt: Date;
 	/** Listed in search engines: the owner allows it and the account is old enough (owner decision #5). */
@@ -103,6 +112,7 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 			updatedAt: schema.portfolio.updatedAt,
 			username: schema.user.username,
 			ownerName: schema.user.name,
+			timezone: schema.user.timezone,
 			indexable: portfolioIsIndexable(),
 		})
 		.from(schema.portfolio)
@@ -155,6 +165,7 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 		userId: row.userId,
 		username: row.username,
 		ownerName: row.ownerName,
+		timezone: row.timezone,
 		data: parsePortfolioData(row.data),
 		updatedAt: row.updatedAt,
 		indexable: row.indexable === true,
@@ -188,27 +199,121 @@ function readSourceResume(
 	};
 }
 
+/** Anything that isn't a person's browser: crawlers, and clients that don't name themselves. */
+function isCrawler(headers: Headers): boolean {
+	const agent = headers.get("user-agent") ?? "";
+	return !agent || isbot(agent);
+}
+
+/**
+ * Whether the request is the portfolio's owner, to leave them out of the counts. The session is read without the
+ * request's cross-site markers: the guard on them keeps other sites from acting as the owner, and this only decides
+ * whether to count, so an owner following a link to their own page from another site is still the owner.
+ */
+async function isPortfolioOwner(portfolio: { userId: string }, headers: Headers): Promise<boolean> {
+	const sameSite = new Headers(headers);
+	sameSite.delete("origin");
+	sameSite.delete("sec-fetch-site");
+	return isOwner(portfolio, await resolveViewer(sameSite));
+}
+
+const visitLimiter = createRateLimiter("portfolioVisits", rateLimitConfig.portfolioPublic.visits);
+
 /**
  * Counts a visit to a published portfolio: once an hour per visitor, never for its owner or for crawlers. Link
  * previews and the editor's preview never reach here (the card has its own route; the preview renders in the browser).
  */
 export async function recordPortfolioVisit(input: {
-	portfolio: Pick<PublicPortfolio, "id" | "userId">;
+	portfolio: Pick<PublicPortfolio, "id" | "userId" | "timezone">;
+	requestHeaders: Headers;
+	requestUrl: string;
+	trustedClient?: string | undefined;
+}): Promise<void> {
+	if (isCrawler(input.requestHeaders)) return;
+	const address = `ip:${input.trustedClient?.trim() || "unknown"}`;
+	if (!env.FLAG_DISABLE_API_RATE_LIMIT && !(await visitLimiter.limit(`${input.portfolio.id}:${address}`)).success)
+		return;
+	if (await isPortfolioOwner(input.portfolio, input.requestHeaders)) return;
+	const visitor = visitorKey(input.requestHeaders, input.trustedClient);
+	if (!(await isFirstVisitThisHour(`portfolio:${input.portfolio.id}:view:${visitor}`))) return;
+	const url = new URL(input.requestUrl);
+	const hosts = new Set([...ownHosts(), url.hostname]);
+	const referer = input.requestHeaders.get("referer");
+	const source = visitSource({ referer, utmSource: url.searchParams.get("utm_source"), ownHosts: hosts });
+	await countVisit(input.portfolio.id, dayInTimeZone(new Date(), input.portfolio.timezone), source);
+	writePortfolioEvent({
+		portfolioId: input.portfolio.id,
+		event: "view",
+		source,
+		referrerDomain: referrerDomain(referer, hosts),
+		device: deviceClass(input.requestHeaders),
+	});
+}
+
+export type PortfolioEventTarget = Pick<PublicPortfolio, "id" | "userId" | "timezone"> & { hasWork: boolean };
+
+/** What a beacon needs to know about a portfolio, without reading its data: null when the address shows none. */
+export async function findPortfolioEventTarget(
+	username: string,
+	workId?: string | undefined,
+): Promise<PortfolioEventTarget | null> {
+	if (getPortfolioMode() === "off") return null;
+	const [row] = await db
+		.select({
+			id: schema.portfolio.id,
+			userId: schema.portfolio.userId,
+			timezone: schema.user.timezone,
+			hasWork: workId
+				? sql<boolean>`jsonb_path_exists(${schema.portfolio.data}, '$.works.items[*] ? (@.id == $id)', jsonb_build_object('id', ${workId}::text))`
+				: sql<boolean>`false`,
+		})
+		.from(schema.portfolio)
+		.innerJoin(schema.user, eq(schema.portfolio.userId, schema.user.id))
+		.where(
+			and(
+				eq(schema.user.username, username.toLowerCase()),
+				portfolioOwnsProfilePath(schema.user.id),
+				ownerIsNotBanned(),
+			),
+		)
+		.limit(1);
+	return row ? { ...row, hasWork: row.hasWork === true } : null;
+}
+
+const eventLimiter = createRateLimiter("portfolioEvents", rateLimitConfig.portfolioPublic.events);
+
+/**
+ * Counts a beacon from a published page (`02-teknis.md` section 9): a click of one kind, or a work whose detail was
+ * opened. Once an hour per visitor and kind (and per work), never for its owner or crawlers.
+ */
+export async function recordPortfolioEvent(input: {
+	target: PortfolioEventTarget;
+	kind: PortfolioEventKind;
+	workId?: string | undefined;
 	requestHeaders: Headers;
 	trustedClient?: string | undefined;
 }): Promise<void> {
-	if (isbot(input.requestHeaders.get("user-agent") ?? "")) return;
-	const viewer = await resolveViewer(input.requestHeaders);
-	if (isOwner(input.portfolio, viewer)) return;
-	if (!(await isFirstVisitThisHour(`portfolio:${input.portfolio.id}`, input.trustedClient))) return;
-	const today = new Date().toISOString().slice(0, 10);
-	await db
-		.insert(schema.portfolioStatisticsDaily)
-		.values({ portfolioId: input.portfolio.id, date: today, views: 1 })
-		.onConflictDoUpdate({
-			target: [schema.portfolioStatisticsDaily.portfolioId, schema.portfolioStatisticsDaily.date],
-			set: { views: sql`${schema.portfolioStatisticsDaily.views} + 1` },
-		});
+	const { target, kind, workId } = input;
+	if (kind === "work" && (!workId || !target.hasWork)) return;
+	if (isCrawler(input.requestHeaders)) return;
+	if (
+		!env.FLAG_DISABLE_API_RATE_LIMIT &&
+		!(await eventLimiter.limit(`ip:${input.trustedClient?.trim() || "unknown"}`)).success
+	)
+		return;
+	if (await isPortfolioOwner(target, input.requestHeaders)) return;
+	const visitor = visitorKey(input.requestHeaders, input.trustedClient);
+	const subject = kind === "work" ? `work:${workId ?? ""}` : kind;
+	if (!(await isFirstVisitThisHour(`portfolio:${target.id}:${subject}:${visitor}`))) return;
+	const date = dayInTimeZone(new Date(), target.timezone);
+	if (kind === "work") await countWorkOpen(target.id, date, workId ?? "");
+	else await countClick(target.id, date, kind);
+	writePortfolioEvent({
+		portfolioId: target.id,
+		event: kind,
+		workId: kind === "work" ? workId : undefined,
+		device: deviceClass(input.requestHeaders),
+	});
 }
 
 /** A page of the sitemap holds at most this many addresses, the protocol's limit. */

@@ -44,6 +44,7 @@ import { handleCareerJobs } from "./career-jobs";
 import { handleCustomDomain, handleTraefikProvider } from "./custom-domain";
 import { handleHealth } from "./health";
 import { handlePolarPaymentWebhook } from "./polar";
+import { handlePortfolioEvent, handlePortfolioMessage } from "./portfolio";
 import { handlePublicResumePdf } from "./public-resume-pdf";
 import { handleResumePdfDownload } from "./resume-pdf";
 
@@ -141,6 +142,12 @@ export function createApp(options: AppOptions = {}) {
 		handlePublicResumePdf(c.req.raw, c.req.param("username"), c.req.param("slug"), client(c)),
 	);
 	app.get("/api/resumes/:id/pdf", (c) => handleResumePdfDownload(c.req.raw, c.req.param("id")));
+	app.post("/api/portfolio/:username/event", limitBody(2 * 1024), (c) =>
+		handlePortfolioEvent(c.req.raw, c.req.param("username"), client(c)),
+	);
+	app.post("/api/portfolio/:username/message", limitBody(32 * 1024), (c) =>
+		handlePortfolioMessage(c.req.raw, c.req.param("username"), client(c)),
+	);
 	// Outside /api/resumes, which robots.txt keeps crawlers out of: link previews need to fetch these.
 	app.get("/cards/:username/:file{.+\\.png}", (c) =>
 		handleResumeCard(c.req.raw, c.req.param("username"), c.req.param("file").slice(0, -".png".length)),

@@ -799,6 +799,10 @@ msgstr "{kind} അഭിമുഖം"
 msgid "{label} connection"
 msgstr "{label} കണക്ഷൻ"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "{label}: {visits} visits"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr ""
@@ -1229,10 +1233,6 @@ msgstr "സൈൻ ഇൻ ചെയ്യുമ്പോൾ ഒരു ഓതൻ�
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "A comfortable length, and it fits on one page."
 msgstr "ഒരു സുഖപ്രദമായ നീളം, അത് ഒരു പേജിൽ യോജിക്കുന്നു."
-
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "A contact form is coming soon."
-msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
@@ -2471,7 +2471,7 @@ msgid "Anyone who opens the public URL will need this password."
 msgstr "പൊതു URL തുറക്കുന്ന ആർക്കും ഈ പാസ്‌വേഡ് വേണ്ടിവരും."
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "Anyone with the link can see it. Visitor numbers are coming soon."
+msgid "Anyone with the link can see it."
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -3204,6 +3204,10 @@ msgstr "ബുള്ളറ്റ് ലിസ്റ്റ്"
 msgid "Business"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Button clicks"
+msgstr ""
+
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Button link"
 msgstr ""
@@ -3533,6 +3537,10 @@ msgstr "നിങ്ങളുടെ പാസ്‌വേഡ് റീസെറ�
 msgid "Check your email for a link to verify your account."
 msgstr "നിങ്ങളുടെ അക്കൗണ്ട് സ്ഥിരീകരിക്കുന്നതിന് ഒരു ലിങ്കിനായി നിങ്ങളുടെ ഇമെയിൽ പരിശോധിക്കുക."
 
+#: src/features/portfolio/page-text.ts
+msgid "Check your name, email and message, then try again."
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Check your resume’s ATS readability"
 msgstr "നിങ്ങളുടെ സിവിയുടെ ATS റീഡബിലിറ്റി പരിശോധിക്കുക"
@@ -3753,6 +3761,10 @@ msgstr "അഭിസംബോധനയോ സമാപന വാചകമോ ഒ
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Click anything on the page to style it. The rule you're in is outlined on the page."
 msgstr "അത് സ്റ്റൈൽ ചെയ്യാൻ പേജിൽ എന്തെങ്കിലും ക്ലിക്ക് ചെയ്യുക. നിങ്ങൾ ഉള്ള നിയമം പേജിൽ വിവരിച്ചിരിക്കുന്നു."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Clicks"
+msgstr ""
 
 #: src/features/auth/pages/consent.tsx
 msgid "Client ID"
@@ -3979,6 +3991,10 @@ msgstr "അപ്‌ലോഡുകൾ വേഗത്തിലാക്കാ�
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Computer"
 msgstr "കമ്പ്യൂട്ടർ"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Computers"
+msgstr ""
 
 #: src/dialogs/resume/template/data.ts
 msgid "Confident and graphic: a heavy name, and every section opens with its title as a solid accent tag with a rule running to the margin."
@@ -4344,6 +4360,10 @@ msgstr "പാസ്കീ ചേർക്കാനായില്ല. വീണ
 msgid "Couldn't attach the file. Try again."
 msgstr "ഫയൽ അറ്റാച്ച് ചെയ്യാനായില്ല. വീണ്ടും ശ്രമിക്കുക."
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Couldn't change it. Try again."
+msgstr ""
+
 #: src/routes/builder/letter/-components/design-panel.tsx
 msgid "Couldn't change the design. Try again."
 msgstr "ഡിസൈൻ മാറ്റാൻ കഴിഞ്ഞില്ല. വീണ്ടും ശ്രമിക്കുക."
@@ -4427,6 +4447,10 @@ msgstr "നിങ്ങളുടെ അക്കൗണ്ട് സൃഷ്ട�
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Couldn't create your portfolio. Try again."
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Couldn't delete it. Try again."
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
@@ -4940,6 +4964,7 @@ msgid "Counted separately from the parse score. Coverage does not predict anythi
 msgstr "പാഴ്സ് സ്കോറിൽ നിന്ന് വേറിട്ടാണ് ഇത് കണക്കാക്കുന്നത്. കവറേജ് ഒന്നും മുൻകൂട്ടി പറയുന്നില്ല."
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Countries"
 msgstr "രാജ്യങ്ങൾ"
 
@@ -5237,6 +5262,11 @@ msgstr "ദിവസവും {clock}-ന് · അടുത്തത് {next}"
 msgid "Daily views over 30 days, peak {0}"
 msgstr "30 ദിവസത്തിലധികം പ്രതിദിന കാഴ്‌ചകൾ, ഏറ്റവും ഉയർന്ന {0}"
 
+#. placeholder {0}: summary.peak
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Daily visits over 30 days, peak {0}"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Danish"
 msgstr "ഡാനിഷ്"
@@ -5336,6 +5366,7 @@ msgstr "ഡിഗ്രി"
 #: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/saved.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Delete"
@@ -5389,6 +5420,10 @@ msgstr "എൻട്രി ഇല്ലാതാക്കുക"
 msgid "Delete it. Hidden keywords are treated as a deliberate attempt to game the search."
 msgstr "അത് ഡിലീറ്റ് ചെയ്യുക. മറഞ്ഞിരിക്കുന്ന കീവേഡുകൾ തിരയൽ കബളിപ്പിക്കാനുള്ള ബോധപൂർവമായ ശ്രമമായി കണക്കാക്കുന്നു."
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Delete message"
+msgstr ""
+
 #: src/features/documents/document-actions.tsx
 msgid "Delete now…"
 msgstr "ഇപ്പോൾ ഇല്ലാതാക്കുക..."
@@ -5413,6 +5448,10 @@ msgstr "വിഭാഗം ഇല്ലാതാക്കുക"
 #: src/features/career/knowledge/stories.tsx
 msgid "Delete story"
 msgstr "കഥ ഡിലീറ്റ് ചെയ്യുക"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Delete the message from {name}?"
+msgstr ""
 
 #: src/features/applications/components/application-actions-menu.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -5588,6 +5627,10 @@ msgstr "ദാതാവിൽ നിന്നുള്ള വിശദാംശ�
 msgid "Device"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Devices"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Dictation started"
 msgstr "ഡിക്റ്റേഷൻ തുടങ്ങി"
@@ -5607,6 +5650,10 @@ msgstr "വ്യത്യസ്ത കറൻസി, താരതമ്യം �
 #: src/features/career/offers.tsx
 msgid "Different pay period, not compared"
 msgstr "വ്യത്യസ്ത ശമ്പള കാലയളവ്, താരതമ്യം ചെയ്തിട്ടില്ല"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Direct"
+msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Direction"
@@ -5787,6 +5834,10 @@ msgstr "ഡൗൺലോഡ് പരാജയപ്പെട്ടു. വീണ
 #: src/features/resume/share/web-page-text.ts
 msgid "Download PDF"
 msgstr "PDF ഡൗൺലോഡ് ചെയ്യുക"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Download PDF button"
+msgstr ""
 
 #: src/features/resume/share/download-tab.tsx
 msgid "Download PDF instead"
@@ -6175,6 +6226,10 @@ msgstr "ഇമെയിൽ വിലാസം"
 msgid "Email address won't be recognized"
 msgstr "ഇമെയിൽ വിലാസം തിരിച്ചറിയപ്പെടില്ല"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Email button"
+msgstr ""
+
 #: src/features/billing/buy-plans.tsx
 msgid "Email delivery isn't set up on this server, so the address can't be verified."
 msgstr ""
@@ -6391,6 +6446,10 @@ msgstr "പ്രവേശന ഓപ്ഷനുകൾ"
 #: src/features/career/offers.tsx
 msgid "Equity"
 msgstr "ഇക്വിറ്റി"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Estimated"
+msgstr ""
 
 #: src/features/billing/admin/labels.ts
 msgid "Event needs a look by hand"
@@ -8145,6 +8204,10 @@ msgstr "ഇത് തൊഴിൽ അപേക്ഷയുടെ ടൈംലൈ
 msgid "It's copied into your portfolio, so your page never loads pictures from other sites. Use it only if you may show it."
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "It's deleted for good."
+msgstr ""
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "It's removed from the timeline for good."
 msgstr "നല്ലതിനായി ഇത് ടൈംലൈനിൽ നിന്ന് നീക്കംചെയ്‌തു."
@@ -8852,6 +8915,7 @@ msgstr "LinkedIn, റഫറൽ…"
 msgid "Linking…"
 msgstr "ലിങ്ക് ചെയ്യുന്നു..."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "Links"
 msgstr "ലിങ്കുകൾ"
@@ -9180,6 +9244,10 @@ msgstr ""
 msgid "Map around {place}"
 msgstr ""
 
+#: src/features/portfolio/statistics/visitor-map.tsx
+msgid "Map of visitors' countries"
+msgstr ""
+
 #: src/components/input/icon-picker-grid.tsx
 msgid "Maps and places"
 msgstr ""
@@ -9210,8 +9278,13 @@ msgid "Mark as applied"
 msgstr "അപേക്ഷിച്ചതായി അടയാളപ്പെടുത്തുക"
 
 #: src/features/career/today.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
 msgid "Mark as read"
 msgstr "വായിച്ചതായി അടയാളപ്പെടുത്തുക"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Mark as unread"
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "Mark it as applied in Apply first."
@@ -9316,8 +9389,14 @@ msgid "Message the coach"
 msgstr "കോച്ചിന് സന്ദേശം അയയ്ക്കുക"
 
 #: src/features/career/shared.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Messages"
 msgstr "സന്ദേശങ്ങൾ"
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Messages arrive by email and in your dashboard, and are deleted after 90 days."
+msgstr ""
 
 #. placeholder {0}: index + 1
 #: src/features/portfolio/metrics/metric-form.tsx
@@ -9440,6 +9519,10 @@ msgstr "മിക്ക ബുള്ളറ്റുകളും നിങ്ങ�
 #: src/features/ats-checker/messages.ts
 msgid "Most entries have no dates."
 msgstr "മിക്ക എൻട്രികൾക്കും തീയതികളില്ല."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Most opened work"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
@@ -9878,6 +9961,10 @@ msgstr ""
 msgid "No city by that name. Larger towns are listed; type the nearest one, then edit the label."
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No clicks yet."
+msgstr ""
+
 #. Empty-state message when no command palette results match the search query
 #: src/features/command-palette/content.tsx
 msgid "No commands match that search."
@@ -9983,9 +10070,17 @@ msgstr "ഇതുവരെ കീകളൊന്നുമില്ല."
 msgid "No lines look like a job title paired with an employer."
 msgstr "ജോലി പേരും തൊഴിലുടമയും ചേർന്ന വരികളൊന്നും കാണുന്നില്ല."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No links from other sites yet."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No location"
 msgstr "സ്ഥാനമില്ല"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "No messages yet. Turn on the contact form in the editor, under Contact."
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "No new roles. Discovery is paused."
@@ -10142,9 +10237,17 @@ msgstr "ഈ ഫയലിൽ നിന്ന് ടെക്സ്റ്റൊന
 msgid "No timezone matches."
 msgstr "പൊരുത്തപ്പെടുന്ന സമയമേഖലയില്ല."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No visits yet."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No work experience shows"
 msgstr "പ്രവൃത്തി പരിചയം കാണിക്കുന്നില്ല"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No work opened yet."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No work-experience section was found."
@@ -10910,6 +11013,10 @@ msgstr ""
 msgid "Other documents · {0}"
 msgstr "മറ്റ് പ്രമാണങ്ങൾ · {0}"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Other sites"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Other work"
 msgstr ""
@@ -11246,6 +11353,10 @@ msgstr ""
 msgid "PDF, Word or JSON. We'll build a resume from it."
 msgstr "PDF, Word അല്ലെങ്കിൽ JSON. ഞങ്ങൾ അതിൽ നിന്ന് ഒരു റെസ്യൂമെ നിർമ്മിക്കും."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "PDFs opened"
+msgstr ""
+
 #. Icon picker category: people and user icons
 #: src/components/input/icon-picker-grid.tsx
 msgid "People"
@@ -11292,6 +11403,10 @@ msgstr "ഫോൺ"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Phone (optional)"
 msgstr "ഫോൺ (ഓപ്ഷണൽ)"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Phones"
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
@@ -12843,6 +12958,10 @@ msgstr ""
 msgid "Reply"
 msgstr "മറുപടി"
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Reply by email"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "മറുപടി പകർത്തി"
@@ -13773,8 +13892,16 @@ msgstr ""
 msgid "See the live site"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "See visitors' countries on a map, their devices, and which sites link to you with Plus."
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "See what ATS software reads"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "See what's included"
 msgstr ""
 
 #: src/features/applications/components/list-view.tsx
@@ -13840,6 +13967,14 @@ msgstr ""
 msgid "Send a message (to Contact)"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Send a message button"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Send message"
+msgstr ""
+
 #. Primary action button label on forgot-password form
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Send reset link"
@@ -13864,6 +13999,10 @@ msgstr ""
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Sending password reset email..."
 msgstr "പാസ്‌വേഡ് റീസെറ്റ് ഇമെയിൽ അയക്കുന്നു..."
+
+#: src/features/portfolio/page-text.ts
+msgid "Sending your message…"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Sends this application (posting, notes, interview details) and Knowledge that's switched on to {label}."
@@ -13903,6 +14042,10 @@ msgstr "മുതിർന്ന ഉൽപ്പന്ന ഡിസൈനർ"
 msgid "Sent"
 msgstr "അയച്ചു"
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Sent through your contact form. Each one is deleted automatically after 90 days."
+msgstr ""
+
 #. placeholder {0}: version.name
 #: src/features/resume/share/format.ts
 msgid "Sent to {0}"
@@ -13922,6 +14065,10 @@ msgstr "സെർബിയൻ"
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Service orders"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
@@ -14104,6 +14251,10 @@ msgstr "പേജിൽ {title} കാണിക്കുക"
 msgid "Show a change"
 msgstr ""
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Show a contact form"
+msgstr ""
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Show a map on my page"
 msgstr ""
@@ -14175,6 +14326,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Show my website"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Show older messages"
 msgstr ""
 
 #: src/features/billing/payment-history.tsx
@@ -14328,6 +14483,10 @@ msgstr "അവസാന കാഴ്ച മുതൽ"
 
 #: src/features/portfolio/blocks/link-block.tsx
 msgid "Site name (optional)"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Sites that link to you"
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
@@ -14514,6 +14673,7 @@ msgstr ""
 #: src/features/assistant/conversation.tsx
 #: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Sources"
 msgstr "ഉറവിടങ്ങൾ"
 
@@ -15022,6 +15182,10 @@ msgstr "സിസ്റ്റങ്ങൾ നിങ്ങളെ പേജിൻ�
 msgid "Systems look for an experience section. Projects or volunteering can show the same history."
 msgstr "സിസ്റ്റങ്ങൾ ഒരു അനുഭവ വിഭാഗത്തിനായി തിരയുന്നു. പ്രോജക്ടുകൾക്കോ ​​സന്നദ്ധപ്രവർത്തനത്തിനോ സമാന ചരിത്രം കാണിക്കാനാകും."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Tablets"
+msgstr ""
+
 #: src/features/applications/components/list-view.tsx
 msgid "Tag"
 msgstr "ടാഗ് ചെയ്യുക"
@@ -15325,6 +15489,10 @@ msgstr ""
 msgid "Thai"
 msgstr "തായ്"
 
+#: src/features/portfolio/page-text.ts
+msgid "Thank you. Your message was sent."
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/reason-dialog.tsx
 msgid "That didn't work. Try again."
@@ -15454,6 +15622,10 @@ msgstr "നിങ്ങൾ പറയുന്ന വസ്തുതകൾ കോ
 msgid "The connection dropped. Your changes are kept here, and saving tries again by itself."
 msgstr ""
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "The contact form isn't available right now. Visitors can still use your other contact options."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "The copy is linked to the application, so Check and the assistant use its posting."
 msgstr "പകർപ്പ് ജോലി അപേക്ഷയുമായി ലിങ്ക് ചെയ്‌തിരിക്കുന്നു, അതിനാൽ പരിശോധിച്ച് അസിസ്റ്റൻ്റ് അതിൻ്റെ ജോലി പോസ്റ്റിംഗ് ഉപയോഗിക്കുന്നു."
@@ -15517,6 +15689,10 @@ msgstr ""
 #: src/features/settings/ai/providers.tsx
 msgid "The key is encrypted on the server and never shown again. Saving tests the connection."
 msgstr "കീ സെർവറിൽ എൻക്രിപ്റ്റ് ചെയ്‌തിരിക്കുന്നു, ഇനി കാണിക്കില്ല. സംരക്ഷിക്കുന്നത് കണക്ഷൻ പരിശോധിക്കുന്നു."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "The last 30 days. Only you see these, and your own visits aren't counted."
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "The last payment didn't go through. Update your payment method to keep it; access is paused until then."
@@ -16019,6 +16195,14 @@ msgstr "ഈ ഫയൽ Type 3 ഫോണ്ടുകൾ ഉപയോഗിക്�
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr ""
 
+#: src/features/portfolio/page-text.ts
+msgid "This form is closed right now."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "This form needs JavaScript. You can use the other contact options here."
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "This intro effect isn't in your plan"
 msgstr ""
@@ -16377,6 +16561,7 @@ msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Today"
 msgstr "ഇന്ന്"
@@ -16403,6 +16588,10 @@ msgstr "വെള്ള നിറത്തിലുള്ള തലക്കെ�
 
 #: src/features/portfolio/media/remote.ts
 msgid "Too many links read in a short time. Wait a while, or fill the card in by hand."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Too many messages for now. Try again later."
 msgstr ""
 
 #: src/features/portfolio/errors.ts
@@ -16805,6 +16994,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Unpublish your portfolio?"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Unread:"
 msgstr ""
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
@@ -17338,6 +17531,10 @@ msgstr ""
 msgid "Video: it plays on your page when a visitor presses play"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Videos played"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Vietnamese"
 msgstr "വിയറ്റ്നാമീസ്"
@@ -17363,6 +17560,10 @@ msgstr "ജോലി പോസ്റ്റിംഗ് കാണുക"
 msgid "View resume"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "View resume button"
+msgstr ""
+
 #. placeholder {0}: formatVersionTime(viewing.createdAt, i18n.locale)
 #. placeholder {0}: when(selected)
 #. placeholder {1}: getVersionTitle(selected)
@@ -17381,6 +17582,7 @@ msgstr ""
 msgid "views · 30 days"
 msgstr "കാഴ്ചകൾ · 30 ദിവസം"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
 msgstr "സന്ദർശകർ"
@@ -17400,6 +17602,14 @@ msgstr ""
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "സന്ദർശകർ റെസ്യൂമെ കാണുന്നതിന് മുമ്പ് പാസ്‌വേഡ് നൽകുന്നു. നിങ്ങൾ വിശ്വസിക്കുന്ന ആളുകളുമായി മാത്രം ഇത് പങ്കിടുക."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Visits"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Visits per day"
+msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Visits, clicks, messages and sources are included."
@@ -17457,6 +17667,10 @@ msgstr "മുന്നറിയിപ്പ്"
 
 #: src/features/billing/payment-return.tsx
 msgid "We couldn't check this payment"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "We couldn't confirm you're not a robot. Try again."
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
@@ -17738,6 +17952,10 @@ msgstr "എന്താണ് പ്രവർത്തിക്കുന്ന�
 msgid "WhatsApp"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "WhatsApp button"
+msgstr ""
+
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "WhatsApp number"
 msgstr ""
@@ -17765,6 +17983,10 @@ msgstr "അപേക്ഷകൾ എവിടെ നിന്ന് വരുന
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Where it was given (optional)"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Where visitors come from"
 msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
@@ -17895,6 +18117,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Work layout"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Work opened by day"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -18302,6 +18528,10 @@ msgstr "റെസ്യൂമെയിൽ നിങ്ങളുടെ വിശ�
 msgid "Your domain"
 msgstr "നിങ്ങളുടെ ഡൊമെയ്ൻ"
 
+#: src/features/portfolio/page-text.ts
+msgid "Your email"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your email address changed on the resume. The letter updated too."
 msgstr "റെസ്യൂമെയിൽ നിങ്ങളുടെ ഇമെയിൽ വിലാസം മാറി. കത്തും പുതുക്കി."
@@ -18414,8 +18644,21 @@ msgstr "റെസ്യൂമെയിൽ നിങ്ങളുടെ സ്ഥ�
 msgid "Your margins are very narrow."
 msgstr "നിങ്ങളുടെ മാർജിനുകൾ വളരെ ഇടുങ്ങിയതാണ്."
 
+#: src/features/portfolio/page-text.ts
+msgid "Your message"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Your message couldn't be sent. Try again in a moment."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Your message goes to {name}, who will see your email address so they can reply."
+msgstr ""
+
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-effect.tsx
+#: src/features/portfolio/page-text.ts
 msgid "Your name"
 msgstr ""
 

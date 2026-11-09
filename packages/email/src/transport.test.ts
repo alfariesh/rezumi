@@ -110,6 +110,38 @@ describe("sendEmail", () => {
 });
 
 describe("deliverEmail", () => {
+	it("sends a reply address through SMTP and the Cloudflare binding", async () => {
+		resetEnv();
+		envMock.SMTP_HOST = "smtp.example.com";
+		envMock.SMTP_USER = "user";
+		envMock.SMTP_PASS = "pass";
+		envMock.SMTP_FROM = "Rezumi <noreply@example.com>";
+		await deliverEmail({ to: "a@b.com", subject: "New", react: fakeReact, replyTo: "visitor@example.com" });
+		expect(sendMail).toHaveBeenCalledWith(expect.objectContaining({ replyTo: "visitor@example.com" }));
+
+		const send = vi.fn().mockResolvedValue({});
+		configureEmailBinding({ send });
+		try {
+			await deliverEmail({ to: "a@b.com", subject: "New", react: fakeReact, replyTo: "visitor@example.com" });
+			expect(send).toHaveBeenCalledWith(expect.objectContaining({ replyTo: "visitor@example.com" }));
+		} finally {
+			configureEmailBinding(undefined);
+		}
+	});
+
+	it("keeps a private body out of the development log", async () => {
+		resetEnv();
+		const info = vi.spyOn(console, "info").mockImplementation(() => undefined);
+		await expect(
+			deliverEmail({ to: "a@b.com", subject: "New message", react: fakeReact, privateBody: true }),
+		).resolves.toBe("logged");
+		const logged = JSON.stringify(info.mock.calls);
+		expect(logged).toContain("New message");
+		expect(logged).not.toContain("plain text body");
+		expect(logged).not.toContain("a@b.com");
+		info.mockRestore();
+	});
+
 	const originalNodeEnv = process.env.NODE_ENV;
 
 	afterEach(() => {

@@ -8,6 +8,7 @@ import { htmlToText } from "../text";
 import { useRender } from "./context";
 import { RezumiMark, ResumeIcon, UiIcon } from "./icons";
 import { LinkCard, PdfCard, VideoFacade } from "./media";
+import { MessageForm } from "./message-form";
 import { MetricGroup } from "./metric";
 import { headingId, hostOf, linkAttributes, Picture, vars } from "./primitives";
 
@@ -28,22 +29,30 @@ type ButtonProps = { link: PortfolioViewLink; primary?: boolean; icon?: UiIconNa
 function Button({ link, primary, icon }: ButtonProps) {
 	const name = icon ?? (link.kind ? BUTTON_ICONS[link.kind] : undefined);
 	return (
-		<a className={`pf-btn ${primary ? "pf-btn--primary" : "pf-btn--secondary"}`} {...linkAttributes(link.href, link)}>
+		<a
+			className={`pf-btn ${primary ? "pf-btn--primary" : "pf-btn--secondary"}`}
+			{...(link.kind ? { "data-pf-event": link.kind === "profile" ? "link" : link.kind } : {})}
+			{...linkAttributes(link.href, link)}
+		>
 			{name && <UiIcon name={name} />}
 			{link.label}
 		</a>
 	);
 }
 
-type ButtonsProps = { links: readonly PortfolioViewLink[] };
+type ButtonsProps = {
+	links: readonly PortfolioViewLink[];
+	/** None of them is the main action: something next to them already is. */
+	quiet?: boolean;
+};
 
 /** 1–3 buttons; the first is the page's main action. */
-export function Buttons({ links }: ButtonsProps) {
+export function Buttons({ links, quiet = false }: ButtonsProps) {
 	if (!links.length) return null;
 	return (
 		<div className="pf-btns">
 			{links.map((link, index) => (
-				<Button key={`${link.href}-${index}`} link={link} primary={index === 0} />
+				<Button key={`${link.href}-${index}`} link={link} primary={!quiet && index === 0} />
 			))}
 		</div>
 	);
@@ -154,7 +163,14 @@ function WorkDetail({ work, previous, next, total }: WorkDetailProps) {
 	const { messages, view, imageUrl } = useRender();
 	const titleId = headingId(work.anchor);
 	return (
-		<section className="pf-detail" id={work.anchor} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+		<section
+			className="pf-detail"
+			id={work.anchor}
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby={titleId}
+			data-pf-work={work.id}
+		>
 			<article className="pf-detail__panel">
 				<div className="pf-detail__bar">
 					<a href="#work" data-close>
@@ -427,13 +443,15 @@ export function Contact({ section, ctaClassName }: ContactProps) {
 		buttons.push({ label: messages.email, href: `mailto:${contact.email}`, external: false, kind: "email" });
 	if (contact.whatsapp)
 		buttons.push({ label: messages.whatsapp, href: contact.whatsapp.href, external: true, kind: "whatsapp" });
-	const rows: { label: string; value: string; href: string; me?: boolean }[] = [];
-	if (contact.email) rows.push({ label: messages.email, value: contact.email, href: `mailto:${contact.email}` });
+	const rows: { label: string; value: string; href: string; me?: boolean; event?: string }[] = [];
+	if (contact.email)
+		rows.push({ label: messages.email, value: contact.email, href: `mailto:${contact.email}`, event: "email" });
 	if (contact.whatsapp)
 		rows.push({
 			label: messages.whatsapp,
 			value: formatPhoneNumber(contact.whatsapp.number),
 			href: contact.whatsapp.href,
+			event: "whatsapp",
 		});
 	if (contact.phone)
 		rows.push({ label: messages.phone, value: contact.phone, href: `tel:${contact.phone.replace(/[^\d+]/g, "")}` });
@@ -443,21 +461,30 @@ export function Contact({ section, ctaClassName }: ContactProps) {
 			value: contact.website.label.replace(/^https?:\/\//, "").replace(/\/$/, ""),
 			href: contact.website.href,
 			me: true,
+			event: "link",
 		});
 	for (const profile of contact.profiles) {
 		const value = profile.username || profile.href?.replace(/^https?:\/\//, "").replace(/\/$/, "") || "";
-		if (profile.href) rows.push({ label: profile.network || messages.profile, value, href: profile.href, me: true });
+		if (profile.href)
+			rows.push({ label: profile.network || messages.profile, value, href: profile.href, me: true, event: "link" });
 	}
 	return (
 		<>
 			{contact.note && <p className={ctaClassName}>{contact.note}</p>}
-			<Buttons links={buttons} />
+			{contact.form && <MessageForm />}
+			{/* The form's own button is the section's main action; these stay quieter beside it. */}
+			<Buttons links={buttons} quiet={contact.form} />
 			{rows.length > 0 && (
 				<ul className="pf-contact-links">
 					{rows.map((row) => (
 						<li key={`${row.label}-${row.href}`}>
 							<span>{row.label}</span>
-							<a {...linkAttributes(row.href, { me: row.me ?? false })}>{row.value}</a>
+							<a
+								{...(row.event ? { "data-pf-event": row.event } : {})}
+								{...linkAttributes(row.href, { me: row.me ?? false })}
+							>
+								{row.value}
+							</a>
 						</li>
 					))}
 				</ul>

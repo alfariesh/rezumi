@@ -47,7 +47,7 @@ export function Navigation(props: NavigationProps) {
 						{items}
 						{props.message && (
 							<li className={props.message.className}>
-								<a className="pf-btn pf-btn--primary" href={`#${props.message.anchor}`}>
+								<a className="pf-btn pf-btn--primary" href={`#${props.message.anchor}`} data-pf-event="contact">
 									{messages.sendMessage}
 								</a>
 							</li>
@@ -89,9 +89,9 @@ type PageShellProps = {
  * column with the intro and the sections, the footer, then the works' details and the picture viewer.
  */
 export function PageShell({ theme, attributes, navigation, mainClassName, year, creditUrl, children }: PageShellProps) {
-	const { messages } = useRender();
+	const { messages, live } = useRender();
 	return (
-		<div className="pf" data-theme={theme} {...attributes}>
+		<div className="pf" data-theme={theme} {...(live ? { "data-pf-live": live.eventUrl } : {})} {...attributes}>
 			<a className="pf-skip" href="#main">
 				{messages.skipToContent}
 			</a>

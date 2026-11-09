@@ -1,4 +1,5 @@
 import type { PortfolioViewMessages } from "@rezumi/portfolio/view";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
 import { buildPortfolioView } from "@rezumi/portfolio/view";
@@ -6,6 +7,7 @@ import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { useOwnOrigins, withOwnPicture } from "./pictures";
 import { usePortfolioData } from "./store";
 import { usePlanFeature } from "@/features/billing/plan";
+import { orpc } from "@/libs/orpc/client";
 
 /** The page's own words (default section titles, button labels) in its language. */
 export function usePageMessages(): PortfolioViewMessages {
@@ -26,6 +28,8 @@ export function useEditorView() {
 	const messages = usePageMessages();
 	const origins = useOwnOrigins();
 	const canHideCredit = usePlanFeature("hidePortfolioCredit");
+	const { data: portfolio } = useQuery(orpc.portfolio.get.queryOptions());
+	const contactFormAvailable = portfolio?.contactFormAvailable ?? false;
 	return useMemo(
 		() =>
 			buildPortfolioView({
@@ -36,7 +40,8 @@ export function useEditorView() {
 				entitlements: { hidePortfolioCredit: canHideCredit },
 				messages,
 				fileUrl: (key) => `/${key}`,
+				contactFormAvailable,
 			}),
-		[data, source.data, owner.name, owner.username, messages, origins, canHideCredit],
+		[data, source.data, owner.name, owner.username, messages, origins, canHideCredit, contactFormAvailable],
 	);
 }

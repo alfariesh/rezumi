@@ -1,3 +1,4 @@
+import type { PortfolioPageLive } from "./page";
 import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
 import type { CustomSection, ProjectItem, ResumeData } from "@rezumi/schema/resume/data";
 import { expect } from "vite-plus/test";
@@ -307,6 +308,8 @@ export const fullPortfolioData: PortfolioDataInput = {
 };
 
 type RenderTestPageOptions = {
+	contactFormAvailable?: boolean;
+	live?: PortfolioPageLive;
 	/** The source resume; `testResume()` unless given, null for none. */
 	resume?: ResumeData | null;
 	/** The page's language, instead of the resume's. */
@@ -332,6 +335,7 @@ export function renderTestPage(data: PortfolioDataInput, options: RenderTestPage
 		fileUrl: (key) => `https://rezumi.example/${key}`,
 		links: { resume: "https://rezumi.example/nadia/cv", resumePdf: null },
 		...(options.openWorkId ? { openWorkId: options.openWorkId } : {}),
+		...(options.contactFormAvailable ? { contactFormAvailable: true } : {}),
 	});
 	const page = renderPortfolioPage({
 		view,
@@ -340,6 +344,7 @@ export function renderTestPage(data: PortfolioDataInput, options: RenderTestPage
 		creditUrl: "https://rezumi.example",
 		imageUrl: (src) => (src.startsWith("/") ? `https://rezumi.example${src}` : src),
 		icons: options.icons ?? {},
+		...(options.live ? { live: options.live } : {}),
 	});
 	return { view, page, html: page.html, messages };
 }

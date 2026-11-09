@@ -1,4 +1,6 @@
 import type { PortfolioViewSection } from "../view";
+import { fillPortfolioMessage } from "../messages";
+import { useRender } from "./context";
 import { ResumeIcon, UiIcon } from "./icons";
 import { hostOf, linkAttributes, Picture } from "./primitives";
 
@@ -20,13 +22,27 @@ type ServiceListProps = {
 
 /** Services: each one's icon and title, price, description and order button. */
 export function ServiceList({ section, className, variant, classNames = {}, foot }: ServiceListProps) {
+	const { messages, live } = useRender();
 	const priceBelow = foot?.price ?? false;
 	return (
 		<ul className={className} data-variant={variant}>
 			{section.services.map((service) => {
 				const price = service.price && <span className="pf-service__price">{service.price}</span>;
+				// An order through the form opens with the service's name already written in the message.
+				const inquiry =
+					service.cta?.kind === "contact" && live?.form?.kind === "form"
+						? {
+								"data-pf-service": service.id,
+								"data-pf-inquiry": fillPortfolioMessage(messages.serviceInquiry, { service: service.title }),
+							}
+						: {};
 				const cta = service.cta && (
-					<a className="pf-service__cta" {...linkAttributes(service.cta.href, service.cta)}>
+					<a
+						className="pf-service__cta"
+						data-pf-event="service"
+						{...inquiry}
+						{...linkAttributes(service.cta.href, service.cta)}
+					>
 						{service.cta.label}
 						<UiIcon name="arrow-right" flip />
 					</a>

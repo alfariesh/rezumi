@@ -799,6 +799,10 @@ msgstr "{kind}採訪"
 msgid "{label} connection"
 msgstr "{label} 連線"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "{label}: {visits} visits"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr ""
@@ -1229,10 +1233,6 @@ msgstr "登入時來自身份驗證器應用程式的程式碼"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "A comfortable length, and it fits on one page."
 msgstr "長度舒適，適合一頁紙。"
-
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "A contact form is coming soon."
-msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
@@ -2471,7 +2471,7 @@ msgid "Anyone who opens the public URL will need this password."
 msgstr "任何開啟該公開 URL 的人都需要這組密碼。"
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "Anyone with the link can see it. Visitor numbers are coming soon."
+msgid "Anyone with the link can see it."
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -3204,6 +3204,10 @@ msgstr "項目符號清單"
 msgid "Business"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Button clicks"
+msgstr ""
+
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Button link"
 msgstr ""
@@ -3533,6 +3537,10 @@ msgstr "請到電子郵件收件匣查看重設密碼的連結。"
 msgid "Check your email for a link to verify your account."
 msgstr "請到電子郵件收件匣查看用於驗證帳戶的連結。"
 
+#: src/features/portfolio/page-text.ts
+msgid "Check your name, email and message, then try again."
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Check your resume’s ATS readability"
 msgstr "檢查您的履歷的 ATS 可讀性"
@@ -3753,6 +3761,10 @@ msgstr "清除稱呼或結尾敬語即可省略。清除結尾敬語也會移除
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Click anything on the page to style it. The rule you're in is outlined on the page."
 msgstr "點擊頁面上的任何內容以設定其樣式。您所遵循的規則已在頁面上概述。"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Clicks"
+msgstr ""
 
 #: src/features/auth/pages/consent.tsx
 msgid "Client ID"
@@ -3979,6 +3991,10 @@ msgstr "壓縮或移除較大的圖片，以保持上傳速度。"
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Computer"
 msgstr "電腦"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Computers"
+msgstr ""
 
 #: src/dialogs/resume/template/data.ts
 msgid "Confident and graphic: a heavy name, and every section opens with its title as a solid accent tag with a rule running to the margin."
@@ -4344,6 +4360,10 @@ msgstr "無法新增密鑰。再試一次。"
 msgid "Couldn't attach the file. Try again."
 msgstr "無法附加檔案。請再試一次。"
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Couldn't change it. Try again."
+msgstr ""
+
 #: src/routes/builder/letter/-components/design-panel.tsx
 msgid "Couldn't change the design. Try again."
 msgstr "無法改變設計。再試一次。"
@@ -4427,6 +4447,10 @@ msgstr "無法建立您的帳戶。請再試一次。"
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Couldn't create your portfolio. Try again."
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Couldn't delete it. Try again."
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
@@ -4940,6 +4964,7 @@ msgid "Counted separately from the parse score. Coverage does not predict anythi
 msgstr "與解析分數分開計算。涵蓋率並不預測任何事情。"
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Countries"
 msgstr "國家"
 
@@ -5237,6 +5262,11 @@ msgstr "每天 {clock} · 下次 {next}"
 msgid "Daily views over 30 days, peak {0}"
 msgstr "30天內每日觀看次數，高峰 {0}"
 
+#. placeholder {0}: summary.peak
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Daily visits over 30 days, peak {0}"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Danish"
 msgstr "丹麥語"
@@ -5336,6 +5366,7 @@ msgstr "學位"
 #: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/saved.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Delete"
@@ -5389,6 +5420,10 @@ msgstr "刪除條目"
 msgid "Delete it. Hidden keywords are treated as a deliberate attempt to game the search."
 msgstr "刪除它。隱藏關鍵詞會被視為故意操縱搜尋結果的行為。"
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Delete message"
+msgstr ""
+
 #: src/features/documents/document-actions.tsx
 msgid "Delete now…"
 msgstr "立即刪除..."
@@ -5413,6 +5448,10 @@ msgstr "刪除部分"
 #: src/features/career/knowledge/stories.tsx
 msgid "Delete story"
 msgstr "刪除故事"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Delete the message from {name}?"
+msgstr ""
 
 #: src/features/applications/components/application-actions-menu.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -5588,6 +5627,10 @@ msgstr "來自提供者的詳細資訊："
 msgid "Device"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Devices"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Dictation started"
 msgstr "已開始聽寫"
@@ -5607,6 +5650,10 @@ msgstr "幣別不同，不予比較"
 #: src/features/career/offers.tsx
 msgid "Different pay period, not compared"
 msgstr "發薪週期不同，不予比較"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Direct"
+msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Direction"
@@ -5787,6 +5834,10 @@ msgstr "下載失敗。請再試一次。"
 #: src/features/resume/share/web-page-text.ts
 msgid "Download PDF"
 msgstr "下載 PDF"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Download PDF button"
+msgstr ""
 
 #: src/features/resume/share/download-tab.tsx
 msgid "Download PDF instead"
@@ -6175,6 +6226,10 @@ msgstr "電子郵件地址"
 msgid "Email address won't be recognized"
 msgstr "電子郵件地址將無法被識別"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Email button"
+msgstr ""
+
 #: src/features/billing/buy-plans.tsx
 msgid "Email delivery isn't set up on this server, so the address can't be verified."
 msgstr ""
@@ -6391,6 +6446,10 @@ msgstr "參賽選項"
 #: src/features/career/offers.tsx
 msgid "Equity"
 msgstr "股權"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Estimated"
+msgstr ""
 
 #: src/features/billing/admin/labels.ts
 msgid "Event needs a look by hand"
@@ -8145,6 +8204,10 @@ msgstr "它將顯示在工作申請的時間表和日曆上。"
 msgid "It's copied into your portfolio, so your page never loads pictures from other sites. Use it only if you may show it."
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "It's deleted for good."
+msgstr ""
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "It's removed from the timeline for good."
 msgstr "它已從時間軸中永久刪除。"
@@ -8852,6 +8915,7 @@ msgstr "LinkedIn、推薦…"
 msgid "Linking…"
 msgstr "正在連結…"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "Links"
 msgstr "連結"
@@ -9180,6 +9244,10 @@ msgstr ""
 msgid "Map around {place}"
 msgstr ""
 
+#: src/features/portfolio/statistics/visitor-map.tsx
+msgid "Map of visitors' countries"
+msgstr ""
+
 #: src/components/input/icon-picker-grid.tsx
 msgid "Maps and places"
 msgstr ""
@@ -9210,8 +9278,13 @@ msgid "Mark as applied"
 msgstr "標記為已申請"
 
 #: src/features/career/today.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
 msgid "Mark as read"
 msgstr "標記為已讀"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Mark as unread"
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "Mark it as applied in Apply first."
@@ -9316,8 +9389,14 @@ msgid "Message the coach"
 msgstr "傳訊息給教練"
 
 #: src/features/career/shared.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Messages"
 msgstr "訊息"
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Messages arrive by email and in your dashboard, and are deleted after 90 days."
+msgstr ""
 
 #. placeholder {0}: index + 1
 #: src/features/portfolio/metrics/metric-form.tsx
@@ -9440,6 +9519,10 @@ msgstr "大多數重點都以無意義的填充詞開頭，而不是您做過的
 #: src/features/ats-checker/messages.ts
 msgid "Most entries have no dates."
 msgstr "大多數條目沒有日期。"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Most opened work"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
@@ -9878,6 +9961,10 @@ msgstr ""
 msgid "No city by that name. Larger towns are listed; type the nearest one, then edit the label."
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No clicks yet."
+msgstr ""
+
 #. Empty-state message when no command palette results match the search query
 #: src/features/command-palette/content.tsx
 msgid "No commands match that search."
@@ -9983,9 +10070,17 @@ msgstr "還沒有鑰匙。"
 msgid "No lines look like a job title paired with an employer."
 msgstr "沒有看起來像「職稱 + 雇主」這種搭配的行。"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No links from other sites yet."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No location"
 msgstr "沒有位置"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "No messages yet. Turn on the contact form in the editor, under Contact."
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "No new roles. Discovery is paused."
@@ -10142,9 +10237,17 @@ msgstr "無法從該檔案中讀取任何文字。"
 msgid "No timezone matches."
 msgstr "沒有符合的時區。"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No visits yet."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No work experience shows"
 msgstr "沒有工作經驗顯示"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No work opened yet."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No work-experience section was found."
@@ -10910,6 +11013,10 @@ msgstr ""
 msgid "Other documents · {0}"
 msgstr "其他文件·{0}"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Other sites"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Other work"
 msgstr ""
@@ -11246,6 +11353,10 @@ msgstr ""
 msgid "PDF, Word or JSON. We'll build a resume from it."
 msgstr "PDF、Word 或 JSON。我們將根據它建立一份簡歷。"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "PDFs opened"
+msgstr ""
+
 #. Icon picker category: people and user icons
 #: src/components/input/icon-picker-grid.tsx
 msgid "People"
@@ -11292,6 +11403,10 @@ msgstr "電話"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Phone (optional)"
 msgstr "電話（選填）"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Phones"
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
@@ -12843,6 +12958,10 @@ msgstr ""
 msgid "Reply"
 msgstr "回覆"
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Reply by email"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "已複製回覆"
@@ -13773,8 +13892,16 @@ msgstr ""
 msgid "See the live site"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "See visitors' countries on a map, their devices, and which sites link to you with Plus."
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "See what ATS software reads"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "See what's included"
 msgstr ""
 
 #: src/features/applications/components/list-view.tsx
@@ -13840,6 +13967,14 @@ msgstr ""
 msgid "Send a message (to Contact)"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Send a message button"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Send message"
+msgstr ""
+
 #. Primary action button label on forgot-password form
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Send reset link"
@@ -13864,6 +13999,10 @@ msgstr ""
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Sending password reset email..."
 msgstr "正在傳送重設密碼電子郵件…"
+
+#: src/features/portfolio/page-text.ts
+msgid "Sending your message…"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Sends this application (posting, notes, interview details) and Knowledge that's switched on to {label}."
@@ -13903,6 +14042,10 @@ msgstr "高級產品設計師"
 msgid "Sent"
 msgstr "傳送"
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Sent through your contact form. Each one is deleted automatically after 90 days."
+msgstr ""
+
 #. placeholder {0}: version.name
 #: src/features/resume/share/format.ts
 msgid "Sent to {0}"
@@ -13922,6 +14065,10 @@ msgstr "塞爾維亞語"
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Service orders"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
@@ -14104,6 +14251,10 @@ msgstr "頁面顯示{title}"
 msgid "Show a change"
 msgstr ""
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Show a contact form"
+msgstr ""
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Show a map on my page"
 msgstr ""
@@ -14175,6 +14326,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Show my website"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Show older messages"
 msgstr ""
 
 #: src/features/billing/payment-history.tsx
@@ -14328,6 +14483,10 @@ msgstr "自上次查看以來"
 
 #: src/features/portfolio/blocks/link-block.tsx
 msgid "Site name (optional)"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Sites that link to you"
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
@@ -14514,6 +14673,7 @@ msgstr ""
 #: src/features/assistant/conversation.tsx
 #: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Sources"
 msgstr "來源"
 
@@ -15022,6 +15182,10 @@ msgstr "系統會根據頁面頂部的姓名對您進行歸檔。"
 msgid "Systems look for an experience section. Projects or volunteering can show the same history."
 msgstr "系統尋找體驗部分。專案或志願服務可以展示同樣的歷史。"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Tablets"
+msgstr ""
+
 #: src/features/applications/components/list-view.tsx
 msgid "Tag"
 msgstr "標籤"
@@ -15325,6 +15489,10 @@ msgstr ""
 msgid "Thai"
 msgstr "泰文"
 
+#: src/features/portfolio/page-text.ts
+msgid "Thank you. Your message was sent."
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/reason-dialog.tsx
 msgid "That didn't work. Try again."
@@ -15454,6 +15622,10 @@ msgstr "教練會儲存您陳述的事實，並告訴您。您可以撤銷。"
 msgid "The connection dropped. Your changes are kept here, and saving tries again by itself."
 msgstr ""
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "The contact form isn't available right now. Visitors can still use your other contact options."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "The copy is linked to the application, so Check and the assistant use its posting."
 msgstr "該副本連結到職位申請，因此 Check 和助理可以使用其職位發布。"
@@ -15517,6 +15689,10 @@ msgstr ""
 #: src/features/settings/ai/providers.tsx
 msgid "The key is encrypted on the server and never shown again. Saving tests the connection."
 msgstr "密鑰在伺服器上加密並且不會再次顯示。儲存測試連線。"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "The last 30 days. Only you see these, and your own visits aren't counted."
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "The last payment didn't go through. Update your payment method to keep it; access is paused until then."
@@ -16019,6 +16195,14 @@ msgstr "該檔案使用了 Type 3 字體，這種字體攜帶的是圖形而非�
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr ""
 
+#: src/features/portfolio/page-text.ts
+msgid "This form is closed right now."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "This form needs JavaScript. You can use the other contact options here."
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "This intro effect isn't in your plan"
 msgstr ""
@@ -16377,6 +16561,7 @@ msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Today"
 msgstr "今天"
@@ -16403,6 +16588,10 @@ msgstr "對於白色標題來說太亮了。微弱地閱讀和列印可能會很
 
 #: src/features/portfolio/media/remote.ts
 msgid "Too many links read in a short time. Wait a while, or fill the card in by hand."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Too many messages for now. Try again later."
 msgstr ""
 
 #: src/features/portfolio/errors.ts
@@ -16805,6 +16994,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Unpublish your portfolio?"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Unread:"
 msgstr ""
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
@@ -17338,6 +17531,10 @@ msgstr ""
 msgid "Video: it plays on your page when a visitor presses play"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Videos played"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Vietnamese"
 msgstr "越南語"
@@ -17363,6 +17560,10 @@ msgstr "查看職缺發布"
 msgid "View resume"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "View resume button"
+msgstr ""
+
 #. placeholder {0}: formatVersionTime(viewing.createdAt, i18n.locale)
 #. placeholder {0}: when(selected)
 #. placeholder {1}: getVersionTitle(selected)
@@ -17381,6 +17582,7 @@ msgstr ""
 msgid "views · 30 days"
 msgstr "觀看次數 · 30 天"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
 msgstr "訪客"
@@ -17400,6 +17602,14 @@ msgstr ""
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "訪客需要先輸入密碼才能查看履歷。請只與您信任的人分享密碼。"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Visits"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Visits per day"
+msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Visits, clicks, messages and sources are included."
@@ -17457,6 +17667,10 @@ msgstr "警告”"
 
 #: src/features/billing/payment-return.tsx
 msgid "We couldn't check this payment"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "We couldn't confirm you're not a robot. Try again."
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
@@ -17738,6 +17952,10 @@ msgstr "什麼在起作用"
 msgid "WhatsApp"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "WhatsApp button"
+msgstr ""
+
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "WhatsApp number"
 msgstr ""
@@ -17765,6 +17983,10 @@ msgstr "應徵來源"
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Where it was given (optional)"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Where visitors come from"
 msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
@@ -17895,6 +18117,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Work layout"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Work opened by day"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -18302,6 +18528,10 @@ msgstr "您的簡歷上的詳細資訊發生了變化。這封信也更新了。
 msgid "Your domain"
 msgstr "您的網域"
 
+#: src/features/portfolio/page-text.ts
+msgid "Your email"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your email address changed on the resume. The letter updated too."
 msgstr "您的履歷中的電子郵件地址發生了變化。這封信也更新了。"
@@ -18414,8 +18644,21 @@ msgstr "您的履歷上的工作地點發生了變化。這封信也更新了。
 msgid "Your margins are very narrow."
 msgstr "您的頁邊界非常窄。"
 
+#: src/features/portfolio/page-text.ts
+msgid "Your message"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Your message couldn't be sent. Try again in a moment."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Your message goes to {name}, who will see your email address so they can reply."
+msgstr ""
+
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-effect.tsx
+#: src/features/portfolio/page-text.ts
 msgid "Your name"
 msgstr ""
 

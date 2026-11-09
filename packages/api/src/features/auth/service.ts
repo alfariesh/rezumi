@@ -10,6 +10,7 @@ import { endBillingForDeletedUser } from "../billing/deletion";
 import { exportBillingData } from "../billing/export";
 import { careerService } from "../career/service";
 import { coverLetterService } from "../cover-letters/service";
+import { exportPortfolioMessages } from "../portfolio/contact";
 import { getStorageService } from "../storage/service";
 import { revokeAppleAuthorization } from "./apple-revocation";
 
@@ -105,6 +106,7 @@ export const authService = {
 				.where(eq(schema.aiContentReport.userId, input.userId)),
 			career: await careerService.exportData(input.userId),
 			billing: await exportBillingData(input.userId),
+			portfolioMessages: await exportPortfolioMessages(input.userId),
 		};
 	},
 

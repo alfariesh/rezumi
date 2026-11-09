@@ -61,3 +61,9 @@
 - Fitur katalog `customDomain` dan pemeriksaannya saat menghubungkan domain sudah ada (`assertCanConnect` di `packages/api/src/features/custom-domain/service.ts`), berlaku sejak portfolio dibuka untuk akun itu.
 - Yang dikerjakan di sini: masa tenggang 7 hari setelah paket berakhir (aturan turunan #2), lalu domain mengarah ke `rezumi.app/<username>` dan aktif lagi saat berlangganan lagi. Akun Gratis yang sudah punya domain terverifikasi sebelum portfolio dibuka mengikuti jalur yang sama.
 - Perbarui deskripsi OpenAPI `setCustomDomain` dan `pnpm docs:gen`, karena rute itu publik dan kini bisa dijawab `PLAN_FEATURE_REQUIRED`.
+
+### Catatan dari Phase 08 (2026-11-09)
+
+- Form kontak di domain sendiri sudah ditentukan: tombol "Kirim pesan" membuka `rezumi.app/<username>#contact` (`02-teknis.md` bagian 10), karena hostname pelanggan tidak bisa didaftarkan ke widget Turnstile. `live.form` di `apps/server/src/static/portfolio-page.ts` sudah memilihnya lewat `customDomain`; tidak perlu pekerjaan tambahan selain mengeceknya di domain uji.
+- Beacon statistik memakai alamat relatif `/api/portfolio/<username>/event`, dan `handleCustomDomain` sudah meloloskan `/api/portfolio/`. Cek keduanya di domain uji.
+- Domain sendiri tidak punya cookie sesi, jadi kunjungan pemilik di sana masih terhitung. Putuskan apakah perlu diperbaiki.

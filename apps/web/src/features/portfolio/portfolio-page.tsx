@@ -9,6 +9,8 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { CreatePortfolioDialog } from "./create-dialog";
 import { portfolioErrorMessage } from "./errors";
+import { PortfolioMessages } from "./statistics/portfolio-messages";
+import { PortfolioStatistics } from "./statistics/portfolio-statistics";
 import { invalidatePortfolioQueries, isPortfolioLive } from "./status";
 import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
@@ -21,7 +23,7 @@ import { client, orpc } from "@/libs/orpc/client";
 
 /**
  * Portfolio in the dashboard (`01-desain.md` section 8): a way in for an account without one, and the status card
- * (published or not, the address, Edit) for one that has it. Visitors and messages join in Phase 08, the domain in
+ * (published or not, the address, Edit) for one that has it, then its visitors and messages. The domain joins in
  * Phase 09.
  */
 export function PortfolioPage() {
@@ -39,7 +41,16 @@ export function PortfolioPage() {
 					<Spinner size="md" color="current" />
 				</div>
 			) : data?.portfolio ? (
-				<StatusCard />
+				<div className="grid gap-4">
+					<StatusCard />
+					{/* Nothing to count or read before its first publication. */}
+					{data.portfolio.publishedAt && (
+						<>
+							<PortfolioStatistics />
+							<PortfolioMessages />
+						</>
+					)}
+				</div>
 			) : (
 				<EmptyState className="py-16">
 					<EmptyState.Header>
@@ -131,7 +142,7 @@ function StatusCard() {
 				</div>
 				<p className="text-sm text-muted">
 					{live ? (
-						<Trans>Anyone with the link can see it. Visitor numbers are coming soon.</Trans>
+						<Trans>Anyone with the link can see it.</Trans>
 					) : portfolio.suspendedAt ? (
 						<Trans>It was taken down, so visitors can't see it. Contact support to appeal.</Trans>
 					) : (

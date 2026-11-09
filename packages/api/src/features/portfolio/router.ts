@@ -1,6 +1,7 @@
 import z from "zod";
 import { portfolioDataSchema, writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
+import { PORTFOLIO_CLICK_KINDS, PORTFOLIO_DEVICES, PORTFOLIO_VISIT_SOURCES } from "@rezumi/schema/portfolio/statistics";
 import { portfolioThemeSchema } from "@rezumi/schema/portfolio/themes";
 import { VIDEO_PROVIDERS } from "@rezumi/schema/portfolio/video";
 import { protectedProcedure } from "../../context";
@@ -96,7 +97,106 @@ const portfolioSchema = z.object({
 	updatedAt: z.date().describe("Changes with every save of data; send it back with the next save."),
 });
 
+const countsOf = <const K extends string>(keys: readonly K[]) =>
+	z.object(Object.fromEntries(keys.map((key) => [key, z.number().int()])) as Record<K, z.ZodNumber>);
+
+const statisticsSchema = z.object({
+	days: z.array(z.object({ date: z.string(), views: z.number().int() })).describe("30 days, oldest first."),
+	totals: z.object({
+		views: z.number().int(),
+		clicks: countsOf(PORTFOLIO_CLICK_KINDS),
+		messages: z.number().int(),
+	}),
+	sources: countsOf(PORTFOLIO_VISIT_SOURCES),
+	works: z.array(z.object({ id: z.string(), title: z.string(), opens: z.number().int() })),
+	details: z.discriminatedUnion("state", [
+		z.object({ state: z.literal("locked") }),
+		z.object({ state: z.literal("unavailable") }),
+		z.object({
+			state: z.literal("ready"),
+			countries: z.array(z.object({ code: z.string(), views: z.number().int() })),
+			devices: z.array(z.object({ device: z.enum(PORTFOLIO_DEVICES), views: z.number().int() })),
+			referrers: z.array(z.object({ domain: z.string(), views: z.number().int() })),
+			workDays: z.array(z.object({ date: z.string(), workId: z.string(), title: z.string(), opens: z.number().int() })),
+		}),
+	]),
+});
+
+const messageIdSchema = z.string().min(1).max(64);
+
 export const portfolioRouter = {
+	statistics: protectedProcedure
+		.route({
+			...route,
+			method: "GET",
+			path: "/portfolio/statistics",
+			operationId: "getPortfolioStatistics",
+			summary: "The portfolio's numbers for the last 30 days",
+		})
+		.input(z.object({}).optional())
+		.output(statisticsSchema.nullable())
+		.handler(({ context }) => portfolioService.statistics(context.user.id)),
+
+	messages: {
+		list: protectedProcedure
+			.route({
+				...route,
+				method: "GET",
+				path: "/portfolio/messages",
+				operationId: "listPortfolioMessages",
+				summary: "Messages sent through the contact form, newest first",
+			})
+			.input(
+				z
+					.object({ cursor: z.string().max(120).optional(), limit: z.number().int().min(1).max(50).optional() })
+					.optional(),
+			)
+			.output(
+				z.object({
+					items: z.array(
+						z.object({
+							id: z.string(),
+							name: z.string(),
+							email: z.string(),
+							body: z.string(),
+							serviceTitle: z.string().nullable(),
+							createdAt: z.date(),
+							readAt: z.date().nullable(),
+						}),
+					),
+					unread: z.number().int(),
+					nextCursor: z.string().nullable(),
+				}),
+			)
+			.handler(({ context, input }) => portfolioService.messages.list(context.user.id, input ?? {})),
+
+		markRead: protectedProcedure
+			.route({
+				...route,
+				method: "PATCH",
+				path: "/portfolio/messages/{id}",
+				operationId: "markPortfolioMessage",
+				summary: "Mark a message read or unread",
+			})
+			.use(portfolioUpdateRateLimit)
+			.input(z.object({ id: messageIdSchema, read: z.boolean() }))
+			.output(z.object({ ok: z.literal(true) }))
+			.handler(({ context, input }) => portfolioService.messages.markRead(context.user.id, input)),
+
+		delete: protectedProcedure
+			.route({
+				...route,
+				method: "DELETE",
+				path: "/portfolio/messages/{id}",
+				operationId: "deletePortfolioMessage",
+				summary: "Delete a message",
+			})
+			.use(portfolioMutationRateLimit)
+			.input(z.object({ id: messageIdSchema }))
+			.output(z.object({ ok: z.literal(true) }))
+			.handler(({ context, input }) => portfolioService.messages.delete(context.user.id, input)),
+	},
+
 	get: protectedProcedure
 		.route({ ...route, method: "GET", path: "/portfolio", operationId: "getPortfolio", summary: "Get the portfolio" })
 		.input(z.object({}).optional())
@@ -104,6 +204,9 @@ export const portfolioRouter = {
 			z.object({
 				enabled: z.boolean().describe("Whether portfolios are open to this account; false hides the feature."),
 				portfolio: portfolioSchema.nullable(),
+				contactFormAvailable: z
+					.boolean()
+					.describe("Whether the contact form can be turned on: its anti-spam check is set up here."),
 				limits: z.object({
 					works: z.number().int(),
 					storageBytes: z

@@ -53,6 +53,7 @@ function portfolio(picture: { key: string; thumbKey?: string } | null): PublicPo
 		id: "pf1",
 		userId: "user-1",
 		username: "nadia",
+		timezone: "UTC",
 		ownerName: `Nadia ${counter}`,
 		data: parsePortfolioData({
 			basics: { picture: picture ? { ...picture, width: 1600, height: 1600 } : null },

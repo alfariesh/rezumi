@@ -14,6 +14,7 @@ type EmailBinding = {
 		subject: string;
 		html?: string;
 		text?: string;
+		replyTo?: string;
 	}) => Promise<unknown>;
 };
 
@@ -104,26 +105,43 @@ export const sendEmail = async ({ to, subject, react }: SendEmailOptions) => {
 
 export type EmailDelivery = "sent" | "logged" | "unconfigured";
 
+type DeliverEmailOptions = SendEmailOptions & {
+	/** Where a reply goes, instead of the sender. */
+	replyTo?: string | undefined;
+	/** The body holds someone's personal words: without email set up, development logs only the subject. */
+	privateBody?: boolean;
+};
+
 /**
  * Sends an email the caller keeps track of, such as a payment receipt. Unlike sendEmail it says what happened and
  * throws when the provider refuses it, so the caller can try again later. Without email set up, development logs the
  * subject and text (never the recipient) and production answers unconfigured.
  */
-export async function deliverEmail({ to, subject, react }: SendEmailOptions): Promise<EmailDelivery> {
+export async function deliverEmail({
+	to,
+	subject,
+	react,
+	replyTo,
+	privateBody = false,
+}: DeliverEmailOptions): Promise<EmailDelivery> {
 	const html = await render(react);
 	const text = await render(react, { plainText: true });
+	const reply = replyTo ? { replyTo } : {};
 	try {
 		if (emailBinding && env.SMTP_FROM) {
-			await emailBinding.send({ to, from: parseFrom(env.SMTP_FROM), subject, html, text });
+			await emailBinding.send({ to, from: parseFrom(env.SMTP_FROM), subject, html, text, ...reply });
 			return "sent";
 		}
 		const transport = getTransport();
 		if (!transport) {
 			if (process.env.NODE_ENV === "production") return "unconfigured";
-			console.info("SMTP not configured; skipping email send.", { subject, text });
+			console.info("SMTP not configured; skipping email send.", {
+				subject,
+				text: privateBody ? "[not logged: holds a visitor's message]" : text,
+			});
 			return "logged";
 		}
-		await transport.sendMail({ to, from: env.SMTP_FROM, subject, html, text });
+		await transport.sendMail({ to, from: env.SMTP_FROM, subject, html, text, ...reply });
 		return "sent";
 	} catch (error) {
 		const { name, code } = errorSummary(error);

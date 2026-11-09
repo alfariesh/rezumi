@@ -1,3 +1,4 @@
+import type { PortfolioClickKind, PortfolioVisitSource } from "@rezumi/schema/portfolio/statistics";
 import * as pg from "drizzle-orm/pg-core";
 import { generateId } from "@rezumi/utils/string";
 import { user } from "./auth";
@@ -35,6 +36,8 @@ export const portfolio = pg.pgTable(
 		data: pg.jsonb("data").notNull().$type<unknown>(),
 		// When the weekly file sweep last compared this portfolio's files with its data and storage; null = never.
 		filesCheckedAt: pg.timestamp("files_checked_at", { withTimezone: true }),
+		// When the owner was last emailed about new messages, at most once per 10 minutes; messages in between are merged.
+		messageEmailAt: pg.timestamp("message_email_at", { withTimezone: true }),
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 		// The version of `data`: editors send it back with each save to detect a change made elsewhere in the meantime.
 		// Only saves of data move it (the API sets it, never an automatic update), so publishing, settings, an admin's
@@ -81,8 +84,8 @@ export const portfolioFile = pg.pgTable(
 );
 
 /**
- * Visits to a published portfolio per day (`02-teknis.md` section 9): one row per portfolio and day, counted once an
- * hour per visitor, never for its owner or crawlers. Phase 08 adds clicks, opened works, messages and sources.
+ * Numbers of a published portfolio per day (`02-teknis.md` section 9): one row per portfolio and day in its owner's time
+ * zone, counted once an hour per visitor, never for its owner or crawlers. No IP address or visitor ID is kept.
  */
 export const portfolioStatisticsDaily = pg.pgTable(
 	"portfolio_statistics_daily",
@@ -98,6 +101,11 @@ export const portfolioStatisticsDaily = pg.pgTable(
 			.references(() => portfolio.id, { onDelete: "cascade" }),
 		date: pg.date("date", { mode: "string" }).notNull(),
 		views: pg.integer("views").notNull().default(0),
+		// Clicks per kind, works opened per work ID (at most PORTFOLIO_STATISTICS_MAX_WORKS keys), visits per source.
+		clicks: pg.jsonb("clicks").notNull().default({}).$type<Partial<Record<PortfolioClickKind, number>>>(),
+		works: pg.jsonb("works").notNull().default({}).$type<Record<string, number>>(),
+		sources: pg.jsonb("sources").notNull().default({}).$type<Partial<Record<PortfolioVisitSource, number>>>(),
+		messages: pg.integer("messages").notNull().default(0),
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 		updatedAt: pg
 			.timestamp("updated_at", { withTimezone: true })
@@ -106,4 +114,33 @@ export const portfolioStatisticsDaily = pg.pgTable(
 			.$onUpdate(() => /* @__PURE__ */ new Date()),
 	},
 	(t) => [pg.unique("portfolio_statistics_daily_unique").on(t.portfolioId, t.date)],
+);
+
+/**
+ * Messages visitors sent through a portfolio's contact form (`02-teknis.md` section 10). Personal data: only the
+ * portfolio's owner reads them, they are never logged, and the daily job deletes them after 90 days (owner decision #7).
+ */
+export const portfolioMessage = pg.pgTable(
+	"portfolio_message",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		portfolioId: pg
+			.text("portfolio_id")
+			.notNull()
+			.references(() => portfolio.id, { onDelete: "cascade" }),
+		name: pg.text("name").notNull(),
+		email: pg.text("email").notNull(),
+		body: pg.text("body").notNull(),
+		// The service the visitor asked about, when they came from its order button.
+		serviceId: pg.text("service_id"),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+		readAt: pg.timestamp("read_at", { withTimezone: true }),
+		// When the owner was emailed about it; null while it waits for the next merged email.
+		notifiedAt: pg.timestamp("notified_at", { withTimezone: true }),
+	},
+	(t) => [pg.index().on(t.portfolioId, t.createdAt), pg.index().on(t.createdAt)],
 );
