@@ -77,6 +77,7 @@ export function IntroForm() {
 			<TextInput
 				label={t`Greeting`}
 				multiline
+				rewrite="greeting"
 				value={hero.greeting}
 				maxLength={max.greeting}
 				placeholder={t`I design apps people enjoy using, and I'm looking for my next team.`}

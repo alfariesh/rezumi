@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { createRouterClient } from "@orpc/server";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
+import { aiErrors } from "../ai/procedure";
 
 const fixture = vi.hoisted(() => ({ mode: "off" as "off" | "admins" | "on" }));
 
@@ -132,8 +133,8 @@ describe("portfolio input", () => {
 });
 
 describe("the portfolio router", () => {
-	const { messages, ...direct } = portfolioRouter;
-	const procedures = [...Object.entries(direct), ...Object.entries(messages)];
+	const { messages, ai, ...direct } = portfolioRouter;
+	const procedures = [...Object.entries(direct), ...Object.entries(messages), ...Object.entries(ai)];
 
 	it("rate-limits before checking input, so a limited account costs no parsing", () => {
 		for (const [name, procedure] of procedures) {
@@ -146,7 +147,11 @@ describe("the portfolio router", () => {
 	it("declares each refusal from the one shared definition", () => {
 		for (const [name, procedure] of procedures)
 			for (const [code, definition] of Object.entries(procedure["~orpc"].errorMap))
-				expect(definition, `${name} ${code}`).toBe(PORTFOLIO_ERRORS[code as keyof typeof PORTFOLIO_ERRORS]);
+				expect(definition, `${name} ${code}`).toBe(
+					code in aiErrors
+						? aiErrors[code as keyof typeof aiErrors]
+						: PORTFOLIO_ERRORS[code as keyof typeof PORTFOLIO_ERRORS],
+				);
 	});
 });
 

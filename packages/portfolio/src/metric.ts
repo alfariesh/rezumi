@@ -116,3 +116,28 @@ export function sparklinePaths(
 		end: `M${last} Z`,
 	};
 }
+
+const DECIMAL_DIGIT = /\p{Nd}/u;
+
+/**
+ * The digit a character stands for in any script ("٣", "۳", "৩", "३" and "3" are all 3). Unicode puts every set of
+ * decimal digits in a row of ten, 0 first, so its value is its distance from the start of its row.
+ */
+function digitValue(char: string): string {
+	const code = char.codePointAt(0) ?? 0;
+	let start = code;
+	while (start > 0 && DECIMAL_DIGIT.test(String.fromCodePoint(start - 1))) start--;
+	return String((code - start) % 10);
+}
+
+/**
+ * Text with any script's digits as Western ones and the Arabic thousands separator (٬) dropped, without the invisible
+ * direction marks right-to-left languages put around numbers. The Arabic decimal separator (٫) stays, because it says
+ * which mark is the decimal point: readers of the number decide what to do with it.
+ */
+export function westernDigits(text: string): string {
+	return text
+		.replace(/[\u200e\u200f\u061c\u202a-\u202e\u2066-\u2069]/g, "")
+		.replace(/\p{Nd}/gu, (char) => (char >= "0" && char <= "9" ? char : digitValue(char)))
+		.replace(/\u066c/g, "");
+}

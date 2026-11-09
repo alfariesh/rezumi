@@ -45,6 +45,10 @@ export const AI_WORK_LIMITS: Record<CreditAction, AiWorkLimits> = {
 	review: { maxOutputTokens: 16_384, maxInputChars: 150_000, maxSteps: 1 },
 	"tailor-resume": { maxOutputTokens: 4_096, maxInputChars: 150_000, maxSteps: 1 },
 	"import-document": { maxOutputTokens: 32_768, maxInputChars: 6_000_000, maxSteps: 1 },
+	"portfolio-draft": { maxOutputTokens: 16_384, maxInputChars: 120_000, maxSteps: 1 },
+	// A translated Text block, at its 10,000 characters, is the longest answer.
+	"portfolio-rewrite": { maxOutputTokens: 16_384, maxInputChars: 120_000, maxSteps: 1 },
+	"portfolio-metrics": { maxOutputTokens: 8_192, maxInputChars: 120_000, maxSteps: 1 },
 };
 
 export type AiRunRequest = AiSourceRequest & {

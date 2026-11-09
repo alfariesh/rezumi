@@ -37,6 +37,15 @@ export function usePortfolioOwner() {
 	};
 }
 
+/** A language's name in the app's language ("Indonesian", "Bahasa Indonesia" in Indonesian), else its code. */
+export function languageName(locale: string, appLocale: string): string {
+	try {
+		return new Intl.DisplayNames([appLocale, "en"], { type: "language" }).of(locale) ?? locale;
+	} catch {
+		return locale;
+	}
+}
+
 /** The page's language, as the renderer decides it (`portfolioPageLocale`). */
 export function pageLocaleOf(data: PortfolioData, resume: ResumeData | null): Locale {
 	return portfolioPageLocale(data, resume);

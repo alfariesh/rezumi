@@ -99,6 +99,9 @@ const WORST_CASE: Record<CreditAction, { input: number; output: number }> = {
 	review: { input: 50_000, output: 16_384 },
 	"tailor-resume": { input: 50_000, output: 4_096 },
 	"import-document": { input: 60_000, output: 32_768 },
+	"portfolio-draft": { input: 40_000, output: 16_384 },
+	"portfolio-rewrite": { input: 40_000, output: 16_384 },
+	"portfolio-metrics": { input: 40_000, output: 8_192 },
 };
 
 // --- Session ----------------------------------------------------------------------------------------------------

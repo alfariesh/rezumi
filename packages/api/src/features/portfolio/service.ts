@@ -426,6 +426,21 @@ export const portfolioService = {
 	},
 
 	/**
+	 * What AI reads for this account: the saved portfolio and its source resume, null when it has none or that resume
+	 * is in Trash. It writes nothing: AI answers go to the editor, which applies them as edits.
+	 */
+	aiContext: async (userId: string): Promise<{ data: PortfolioData; resume: ResumeData | null }> => {
+		await requireEnabled(userId);
+		const [row] = await db
+			.select({ data: schema.portfolio.data, sourceResumeId: schema.portfolio.sourceResumeId })
+			.from(schema.portfolio)
+			.where(eq(schema.portfolio.userId, userId));
+		if (!row) throw portfolioErrors.notFound();
+		const source = row.sourceResumeId ? await findActiveResume(userId, row.sourceResumeId) : null;
+		return { data: parsePortfolioData(row.data), resume: source ? readSourceResume(source.data) : null };
+	},
+
+	/**
 	 * Saves the editor's data over the version it had. `data` has passed the router's strict schema; it is cleaned and
 	 * size-checked before the portfolio's lock is taken (`saveVersionedData`).
 	 */

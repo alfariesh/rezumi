@@ -13,6 +13,7 @@ import {
 	portfolioUpdateRateLimit,
 	portfolioUploadRateLimit,
 } from "../../middleware/rate-limit";
+import { portfolioAiRouter } from "./ai/router";
 import { portfolioErrorMap, portfolioErrors } from "./errors";
 import { portfolioService } from "./service";
 
@@ -125,6 +126,8 @@ const statisticsSchema = z.object({
 const messageIdSchema = z.string().min(1).max(64);
 
 export const portfolioRouter = {
+	ai: portfolioAiRouter,
+
 	statistics: protectedProcedure
 		.route({
 			...route,

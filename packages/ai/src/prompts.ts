@@ -52,6 +52,9 @@ const improveSystemPrompt = readPrompt("improve-system.md");
 const improveUserPromptTemplate = readPrompt("improve-user.md");
 const letterDraftSystemPrompt = `${safetySystemPrompt}\n\n${readPrompt("letter-draft-system.md")}`;
 const pdfParserUserPrompt = readPrompt("pdf-parser-user.md");
+const portfolioDraftSystemPrompt = readPrompt("portfolio-draft-system.md");
+const portfolioMetricsSystemPrompt = readPrompt("portfolio-metrics-system.md");
+const portfolioRewriteSystemPrompt = readPrompt("portfolio-rewrite-system.md");
 
 export {
 	assistantSystemPromptTemplate,
@@ -64,4 +67,7 @@ export {
 	letterDraftSystemPrompt,
 	pdfParserSystemPrompt,
 	pdfParserUserPrompt,
+	portfolioDraftSystemPrompt,
+	portfolioMetricsSystemPrompt,
+	portfolioRewriteSystemPrompt,
 };

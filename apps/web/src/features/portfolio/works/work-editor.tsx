@@ -117,6 +117,7 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 				<TextInput
 					label={t`Summary`}
 					multiline
+					rewrite="workSummary"
 					value={work.summary}
 					maxLength={max.workSummary}
 					placeholder={t`What you made, for whom, and what changed.`}

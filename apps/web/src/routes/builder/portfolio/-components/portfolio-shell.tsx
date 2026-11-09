@@ -11,6 +11,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
+import { applyPendingDraft } from "@/features/portfolio/ai/apply";
 import { ContentPanel } from "@/features/portfolio/editor/content-panel";
 import { useSourceResume } from "@/features/portfolio/editor/context";
 import { DesignPanel } from "@/features/portfolio/editor/design-panel";
@@ -78,6 +79,7 @@ export function PortfolioShell() {
 	useEffect(() => preloadPortfolioRichTextEditor(), []);
 	// A saved location that shows a map without its pictures gets them, without Contact having to be opened.
 	useEffect(() => mapPictures.watch(), []);
+	useEffect(() => applyPendingDraft(), []);
 	useUnsavedGuard();
 
 	// Opens the place a save problem is in: its tab (the panel, on phones), the work, or the section in Content's list.
