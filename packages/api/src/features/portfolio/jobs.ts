@@ -5,6 +5,7 @@ import { portfolioFileKeysInStoredData } from "@rezumi/portfolio/files";
 import { portfolioFilePrefixes } from "@rezumi/schema/portfolio/files";
 import { PORTFOLIO_UNUSED_FILE_GRACE_MS } from "@rezumi/schema/portfolio/limits";
 import { getStorageService } from "../storage";
+import { deleteExpiredMessages, sendDueMessageEmails } from "./contact";
 import { deleteUnusedFiles, lockPortfolio, markFileUsage, readStoredData, removeStoredFile } from "./file-store";
 import { getPortfolioMode } from "./mode";
 
@@ -118,10 +119,21 @@ async function sweepPortfolioFiles(now: Date): Promise<number> {
 /**
  * Portfolio upkeep, run every minute by the Workers cron and the Node scheduler after billing and career jobs. Runs can
  * overlap or repeat: rows are claimed with `SKIP LOCKED` and every step is safe to run twice. No step holds a
- * portfolio's lock while it talks to storage, so saving never waits on storage. Nothing runs while portfolios are off.
+ * portfolio's lock while it talks to storage, so saving never waits on storage. While portfolios are off only one thing
+ * still runs: deleting expired contact messages, because keeping personal data past its retention isn't an option.
  */
 export async function runPortfolioJobs(now = new Date()) {
-	if (getPortfolioMode() === "off") return { deletedFiles: 0, checkedPortfolios: 0 };
+	const deletedMessages = await task(
+		() => deleteExpiredMessages(now),
+		0,
+		"Deleting expired portfolio messages failed; they are tried again on the next run.",
+	);
+	if (getPortfolioMode() === "off") return { deletedFiles: 0, checkedPortfolios: 0, deletedMessages, messageEmails: 0 };
+	const messageEmails = await task(
+		() => sendDueMessageEmails(now),
+		0,
+		"Sending merged portfolio message emails failed; they are tried again on the next run.",
+	);
 	const deletedFiles = await task(
 		() => deleteUnusedPortfolioFiles(now),
 		0,
@@ -132,5 +144,5 @@ export async function runPortfolioJobs(now = new Date()) {
 		0,
 		"Checking portfolio files failed; they are checked again on the next run.",
 	);
-	return { deletedFiles, checkedPortfolios };
+	return { deletedFiles, checkedPortfolios, deletedMessages, messageEmails };
 }

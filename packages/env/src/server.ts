@@ -240,6 +240,9 @@ export const env = createEnv({
 		// Web portfolios at /<username>: off (nothing changes; the short link keeps opening the primary resume), admins
 		// (only accounts with the admin role can build and publish one), on (every signed-up account).
 		PORTFOLIO_MODE: z.enum(["off", "admins", "on"]).default("off"),
+		// Cloudflare Turnstile keeps bots off the portfolio contact form; without both keys the form isn't offered.
+		TURNSTILE_SITE_KEY: z.string().trim().min(1).optional(),
+		TURNSTILE_SECRET_KEY: z.string().trim().min(1).optional(),
 	},
 	runtimeEnv: deploymentEnvironment(process.env),
 	emptyStringAsUndefined: true,

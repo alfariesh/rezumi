@@ -96,7 +96,7 @@ describe("services", () => {
 			{ data },
 		);
 		expect(html).toContain(
-			'<ul class="x-services" data-variant="list"><li class="pf-service"><div class="pf-service__head"><h3>Audit</h3><span class="pf-service__price">Rp7.5m</span></div><p class="pf-service__desc">Fixes.</p><a class="pf-service__cta" href="#contact">',
+			'<ul class="x-services" data-variant="list"><li class="pf-service"><div class="pf-service__head"><h3>Audit</h3><span class="pf-service__price">Rp7.5m</span></div><p class="pf-service__desc">Fixes.</p><a class="pf-service__cta" data-pf-event="service" href="#contact">',
 		);
 		// No WhatsApp number: the second service has no button.
 		expect(html).toContain('<h3>Workshop</h3><span class="pf-service__price">Rp2m</span></div></li>');
@@ -180,7 +180,9 @@ describe("the navigation", () => {
 		);
 		// Four sections and Contact, in the bar and in the phone menu; the button only in the bar.
 		expect(html.match(/<li><a href="#/g)).toHaveLength(10);
-		expect(html).toContain('<li class="x-cta"><a class="pf-btn pf-btn--primary" href="#contact">');
+		expect(html).toContain(
+			'<li class="x-cta"><a class="pf-btn pf-btn--primary" href="#contact" data-pf-event="contact">',
+		);
 		expect(html.match(/pf-btn--primary/g)).toHaveLength(1);
 	});
 

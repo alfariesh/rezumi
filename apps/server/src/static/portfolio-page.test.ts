@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({
 	findPublicPortfolio: vi.fn(),
 	recordPortfolioVisit: vi.fn(),
 	serveResumePage: vi.fn(),
+	turnstile: { site: undefined as string | undefined, secret: undefined as string | undefined },
 }));
 
 vi.mock("@rezumi/api/features/portfolio/public", () => ({
@@ -18,7 +19,18 @@ vi.mock("@rezumi/api/features/portfolio/public", () => ({
 vi.mock("./resume-page", () => ({ serveResumePage: mocks.serveResumePage }));
 vi.mock("@rezumi/env/server", async (original) => {
 	const { env } = await original<typeof import("@rezumi/env/server")>();
-	return { env: { ...env, APP_URL: "https://rezumi.example" } };
+	return {
+		env: {
+			...env,
+			APP_URL: "https://rezumi.example",
+			get TURNSTILE_SITE_KEY() {
+				return mocks.turnstile.site;
+			},
+			get TURNSTILE_SECRET_KEY() {
+				return mocks.turnstile.secret;
+			},
+		},
+	};
 });
 
 const { configurePortfolioVisitLifetime, portfolioContentSecurityPolicy, portfolioPictureUrl, servePortfolioOrResume } =
@@ -45,6 +57,7 @@ function portfolio(overrides: Partial<PublicPortfolio> = {}): PublicPortfolio {
 		userId: "user-1",
 		username: "nadia",
 		ownerName: "Nadia",
+		timezone: "Asia/Jakarta",
 		data: parsePortfolioData({
 			hero: { greeting: "Hello." },
 			works: { items: [{ id: "w1", slug: "kopi", title: "Coffee app", blocks: [] }] },
@@ -65,6 +78,8 @@ beforeEach(() => {
 	mocks.findPublicPortfolio.mockReset();
 	mocks.recordPortfolioVisit.mockReset().mockResolvedValue(undefined);
 	mocks.serveResumePage.mockReset().mockResolvedValue(resumeResponse);
+	mocks.turnstile.site = undefined;
+	mocks.turnstile.secret = undefined;
 });
 
 describe("servePortfolioOrResume", () => {
@@ -99,7 +114,10 @@ describe("servePortfolioOrResume", () => {
 		expect(response.headers.get("Cache-Control")).toBe("private, no-store");
 		expect(response.headers.get("X-Robots-Tag")).toBeNull();
 		const policy = response.headers.get("Content-Security-Policy") ?? "";
-		const hash = createHash("sha256").update(PORTFOLIO_PAGE_SCRIPT).digest("base64");
+		// The page's one inline script: the shared one, with the published page's beacons after it.
+		const script = /<script>([\s\S]*?)<\/script>/.exec(body)?.[1] ?? "";
+		expect(script.startsWith(PORTFOLIO_PAGE_SCRIPT)).toBe(true);
+		const hash = createHash("sha256").update(script).digest("base64");
 		expect(policy).toContain(`'sha256-${hash}'`);
 		expect(policy).toContain("frame-src https://www.youtube-nocookie.com https://player.vimeo.com");
 		expect(policy).not.toContain("'unsafe-inline' 'unsafe-eval'");
@@ -108,11 +126,11 @@ describe("servePortfolioOrResume", () => {
 		expect(body).toContain('<link rel="me" href="https://linkedin.example.test/in/nadia">');
 		expect(body).toContain('"@type":"ProfilePage"');
 		expect(body).toContain('"@type":"CreativeWork","name":"Coffee app","url":"https://rezumi.example/nadia#work-kopi"');
-		expect(body).toContain(`<script>${PORTFOLIO_PAGE_SCRIPT}</script>`);
 		expect(mocks.serveResumePage).not.toHaveBeenCalled();
 		expect(mocks.recordPortfolioVisit).toHaveBeenCalledWith({
 			portfolio: expect.objectContaining({ id: "pf1" }),
 			requestHeaders: expect.any(Headers),
+			requestUrl: "https://rezumi.example/nadia",
 			trustedClient: "1.1.1.1",
 		});
 	});
@@ -184,6 +202,53 @@ describe("servePortfolioOrResume", () => {
 		expect((await servePortfolioOrResume(get(), "nadia", "1")).status).toBe(200);
 		await vi.waitFor(() => expect(logged).toHaveBeenCalledWith("Portfolio visit counting failed", expect.any(Error)));
 		logged.mockRestore();
+	});
+});
+
+describe("the contact form", () => {
+	const withForm = () =>
+		portfolio({
+			data: parsePortfolioData({
+				contact: { form: true },
+				works: { items: [{ id: "w1", slug: "kopi", title: "Coffee app", blocks: [] }] },
+			}),
+		});
+	const keys = () => {
+		mocks.turnstile.site = "1x00000000000000000000AA";
+		mocks.turnstile.secret = "1x0000000000000000000000000000000AA";
+	};
+	const policyOf = (response: Response) => response.headers.get("Content-Security-Policy") ?? "";
+
+	it("adds Turnstile to the policy only on a page with the form", async () => {
+		keys();
+		mocks.findPublicPortfolio.mockResolvedValue(withForm());
+		const policy = policyOf(await servePortfolioOrResume(get(), "nadia", "1.1.1.1"));
+		expect(policy).toMatch(/script-src [^;]*https:\/\/challenges\.cloudflare\.com/);
+		expect(policy).toMatch(/frame-src [^;]*https:\/\/challenges\.cloudflare\.com/);
+	});
+
+	it("loads nothing from Turnstile without the form, or without its keys", async () => {
+		keys();
+		mocks.findPublicPortfolio.mockResolvedValue(portfolio());
+		expect(policyOf(await servePortfolioOrResume(get(), "nadia", "1.1.1.1"))).not.toContain("challenges.cloudflare");
+		mocks.turnstile.secret = undefined;
+		mocks.findPublicPortfolio.mockResolvedValue(withForm());
+		expect(policyOf(await servePortfolioOrResume(get(), "nadia", "1.1.1.1"))).not.toContain("challenges.cloudflare");
+	});
+
+	it("doesn't load Turnstile on a custom domain, whose hostname the widget can't list", async () => {
+		keys();
+		mocks.findPublicPortfolio.mockResolvedValue(withForm());
+		const response = await servePortfolioOrResume(get("/"), "nadia", "1.1.1.1", { customDomain: "nadia.example" });
+		expect(policyOf(response)).not.toContain("challenges.cloudflare");
+	});
+
+	it("never shows the secret in the page or its headers", async () => {
+		keys();
+		mocks.findPublicPortfolio.mockResolvedValue(withForm());
+		const response = await servePortfolioOrResume(get(), "nadia", "1.1.1.1");
+		expect(await response.text()).not.toContain("1x0000000000000000000000000000000AA");
+		expect(JSON.stringify([...response.headers])).not.toContain("1x0000000000000000000000000000000AA");
 	});
 });
 

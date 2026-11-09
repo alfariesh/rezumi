@@ -1,4 +1,5 @@
 import type {
+	AnalyticsEngineDataset,
 	DurableObjectNamespace,
 	ExecutionContext,
 	Fetcher,
@@ -7,6 +8,7 @@ import type {
 	ScheduledController,
 	SendEmail,
 } from "@cloudflare/workers-types";
+import type { AnalyticsSql } from "@rezumi/api/features/portfolio/analytics";
 import type { CoordinationService } from "@rezumi/db/coordination";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { on } from "node:events";
@@ -17,6 +19,7 @@ import { Pool } from "pg";
 import { configureAgentStreamLifetime } from "@rezumi/api/features/agent/streams";
 import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
 import { runCareerJobs } from "@rezumi/api/features/career/jobs";
+import { configurePortfolioAnalytics } from "@rezumi/api/features/portfolio/analytics";
 import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
 import { isPublicPortfolioFile } from "@rezumi/api/features/portfolio/public";
 import { configureStorageService, getStorageService, isPublicUploadOwner } from "@rezumi/api/features/storage";
@@ -39,10 +42,18 @@ export type CloudflareBindings = {
 	BUCKET: R2Bucket;
 	COORDINATION: DurableObjectNamespace;
 	EMAIL?: SendEmail;
+	PORTFOLIO_EVENTS?: AnalyticsEngineDataset;
+	ANALYTICS_SQL?: AnalyticsSql;
 };
 
 /** `background` holds work that outlives the response, such as assistant runs, and still needs the pool. */
-type RequestStore = { bindings: CloudflareBindings; ctx: ExecutionContext; background: Promise<unknown>[] };
+type RequestStore = {
+	bindings: CloudflareBindings;
+	ctx: ExecutionContext;
+	background: Promise<unknown>[];
+	/** The visitor's country from Cloudflare, for portfolio statistics only. */
+	country?: string | undefined;
+};
 const requests = new AsyncLocalStorage<RequestStore>();
 configureAgentStreamLifetime((promise) => {
 	const store = requests.getStore();
@@ -54,6 +65,11 @@ configurePortfolioVisitLifetime((promise) => {
 	const store = requests.getStore();
 	store?.background.push(promise);
 	store?.ctx.waitUntil(promise);
+});
+configurePortfolioAnalytics({
+	dataset: () => requests.getStore()?.bindings.PORTFOLIO_EVENTS,
+	sql: () => requests.getStore()?.bindings.ANALYTICS_SQL,
+	country: () => requests.getStore()?.country,
 });
 configureOwnPictureReader(async (key) => {
 	const owner = /^uploads\/([^/]+)\/pictures\//.exec(key)?.[1];
@@ -141,7 +157,7 @@ async function closePool(pool: Pool, store: RequestStore) {
 
 const endPool = (pool: Pool, store: RequestStore) => store.ctx.waitUntil(closePool(pool, store));
 
-function createInvocation(bindings: CloudflareBindings, ctx: ExecutionContext) {
+function createInvocation(bindings: CloudflareBindings, ctx: ExecutionContext, country?: string) {
 	if (!env.CLOUDFLARE || env.STORAGE_BACKEND !== "r2" || !env.FLAG_DISABLE_IMAGE_PROCESSING || env.REDIS_URL) {
 		throw new Error("Cloudflare requires CLOUDFLARE=1, R2, disabled image processing and no REDIS_URL.");
 	}
@@ -157,7 +173,7 @@ function createInvocation(bindings: CloudflareBindings, ctx: ExecutionContext) {
 	};
 	pool.on("error", logError);
 	pool.on("connect", (client) => client.on("error", logError));
-	const store: RequestStore = { bindings, ctx, background: [] };
+	const store: RequestStore = { bindings, ctx, background: [], country };
 	return {
 		pool,
 		store,
@@ -227,7 +243,8 @@ export default {
 			headers.set("x-real-ip", ip);
 			headers.set("x-forwarded-for", ip);
 		}
-		const { pool, store, run } = createInvocation(bindings, ctx);
+		const { country } = (request as Request & { cf?: { country?: string } }).cf ?? {};
+		const { pool, store, run } = createInvocation(bindings, ctx, country);
 		try {
 			const response = await run(() => app.fetch(new Request(request, { headers })));
 			return closePoolAfterResponse(response, pool, store);

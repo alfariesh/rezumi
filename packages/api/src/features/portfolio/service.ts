@@ -24,6 +24,7 @@ import { getEntitlements, isBillingAppliedTo } from "../billing/entitlements";
 import { portfolioLimitReached } from "../billing/limits";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
 import { getStorageService } from "../storage";
+import { deletePortfolioMessage, listPortfolioMessages, setPortfolioMessageRead } from "./contact";
 import { portfolioErrors } from "./errors";
 import {
 	deleteUnusedFiles,
@@ -36,6 +37,8 @@ import {
 } from "./file-store";
 import { getPortfolioMode, isPortfolioEnabledFor } from "./mode";
 import { assertPortfolioPlan } from "./plan";
+import { portfolioStatistics } from "./statistics";
+import { isContactFormConfigured } from "./turnstile";
 import {
 	fetchRemoteImage,
 	RemoteImageError,
@@ -297,7 +300,41 @@ async function storeRecordedFiles(files: readonly { key: string; data: Uint8Arra
 
 const PDF_SIGNATURE = "%PDF-";
 
+/** The account's portfolio for its own statistics and inbox; null while it has none. */
+async function ownPortfolio(userId: string) {
+	const account = await requireEnabled(userId);
+	const [row] = await db
+		.select({ id: schema.portfolio.id, data: schema.portfolio.data, timeZone: schema.user.timezone })
+		.from(schema.portfolio)
+		.innerJoin(schema.user, eq(schema.portfolio.userId, schema.user.id))
+		.where(eq(schema.portfolio.userId, userId))
+		.limit(1);
+	return row && account ? { id: row.id, data: parsePortfolioData(row.data), timeZone: row.timeZone } : null;
+}
+
+async function requireOwnPortfolio(userId: string) {
+	const portfolio = await ownPortfolio(userId);
+	if (!portfolio) throw portfolioErrors.notFound();
+	return portfolio;
+}
+
 export const portfolioService = {
+	statistics: async (userId: string) => {
+		const portfolio = await ownPortfolio(userId);
+		return portfolio ? portfolioStatistics({ portfolio, userId, timeZone: portfolio.timeZone }) : null;
+	},
+
+	messages: {
+		list: async (userId: string, input: { cursor?: string | undefined; limit?: number | undefined }) => {
+			const portfolio = await requireOwnPortfolio(userId);
+			return listPortfolioMessages({ id: portfolio.id, services: portfolio.data.services.items }, input);
+		},
+		markRead: async (userId: string, input: { id: string; read: boolean }) =>
+			setPortfolioMessageRead((await requireOwnPortfolio(userId)).id, input.id, input.read),
+		delete: async (userId: string, input: { id: string }) =>
+			deletePortfolioMessage((await requireOwnPortfolio(userId)).id, input.id),
+	},
+
 	get: async (userId: string) => {
 		const technical = {
 			works: PORTFOLIO_LIMITS.works,
@@ -305,7 +342,13 @@ export const portfolioService = {
 			dataBytes: PORTFOLIO_LIMITS.dataBytes,
 		};
 		if (!(await enabledAccount(userId)))
-			return { enabled: false, portfolio: null, limits: technical, usage: { works: 0, storageBytes: 0 } };
+			return {
+				enabled: false,
+				portfolio: null,
+				contactFormAvailable: false,
+				limits: technical,
+				usage: { works: 0, storageBytes: 0 },
+			};
 		const plan = (await getEntitlements(userId)).limits;
 		const limits = {
 			...technical,
@@ -317,6 +360,7 @@ export const portfolioService = {
 		return {
 			enabled: true,
 			portfolio,
+			contactFormAvailable: isContactFormConfigured(),
 			limits,
 			usage: { works: portfolio?.data.works.items.length ?? 0, storageBytes: (await storedFiles(userId)).bytes },
 		};

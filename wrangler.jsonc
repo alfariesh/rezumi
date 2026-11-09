@@ -50,6 +50,9 @@
 		// Web portfolios stay hidden until launch (portfolio plan Phase 12): "admins" lets admin accounts try them, "on"
 		// opens them to everyone. "off" keeps /<username> on the primary resume.
 		"PORTFOLIO_MODE": "off",
+		// The contact form's public Turnstile key; set with its secret (TURNSTILE_SECRET_KEY, a Worker secret) before
+		// launch. Without both, the form isn't offered and Contact falls back to the email button.
+		"TURNSTILE_SITE_KEY": "",
 		// Polar production products (organization "rezumi"). Not secret; POLAR_ACCESS_TOKEN and POLAR_WEBHOOK_SECRET are
 		// Worker secrets, set after these are live (the token without them fails startup).
 		"POLAR_ENVIRONMENT": "production",
@@ -61,6 +64,9 @@
 	"send_email": [{ "name": "EMAIL" }],
 	"hyperdrive": [{ "binding": "HYPERDRIVE", "id": "f2e0cd8d0b084ed5bdbfb8a1de8a80dc" }],
 	"r2_buckets": [{ "binding": "BUCKET", "bucket_name": "vitaekit" }],
+	// Visitor breakdowns for portfolio statistics; the dataset is created on the first write. Read through ANALYTICS_SQL.
+	"analytics_engine_datasets": [{ "binding": "PORTFOLIO_EVENTS", "dataset": "portfolio_events" }],
+	"analytics": { "binding": "ANALYTICS_SQL" },
 	"durable_objects": { "bindings": [{ "name": "COORDINATION", "class_name": "Coordination" }] },
 	"migrations": [{ "tag": "v1", "new_sqlite_classes": ["Coordination"] }],
 	"limits": { "cpu_ms": 30000 },

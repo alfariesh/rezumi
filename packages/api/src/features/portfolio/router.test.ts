@@ -47,6 +47,7 @@ describe("portfolio procedures while PORTFOLIO_MODE is off", () => {
 		await expect(client().get()).resolves.toEqual({
 			enabled: false,
 			portfolio: null,
+			contactFormAvailable: false,
 			limits: { works: 50, storageBytes: PORTFOLIO_UPLOAD.accountBytes, dataBytes: 256 * 1024 },
 			usage: { works: 0, storageBytes: 0 },
 		});
@@ -131,7 +132,8 @@ describe("portfolio input", () => {
 });
 
 describe("the portfolio router", () => {
-	const procedures = Object.entries(portfolioRouter);
+	const { messages, ...direct } = portfolioRouter;
+	const procedures = [...Object.entries(direct), ...Object.entries(messages)];
 
 	it("rate-limits before checking input, so a limited account costs no parsing", () => {
 		for (const [name, procedure] of procedures) {

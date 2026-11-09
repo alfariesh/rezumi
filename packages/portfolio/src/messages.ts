@@ -5,7 +5,7 @@ import portfolioCatalog from "./portfolio-catalog.json";
  * The interface text on a portfolio page, in English. `portfolio-catalog.json` translates it: `pnpm pdf:translations`
  * copies the translations from the app's Lingui catalogs, where `apps/web/src/features/portfolio/page-text.ts`
  * declares the same strings for translators. Keep both lists in step: that file's test compares them, and the generator
- * fails on a missing string. `{service}`, `{count}`, `{place}` and `{site}` are filled in at render time with
+ * fails on a missing string. `{service}`, `{count}`, `{place}`, `{site}` and `{name}` are filled in at render time with
  * `fillPortfolioMessage`, never `String.replace` (a person's text could hold `$&`). The page has no plural rules, so a
  * count goes after a label ("Pages: {count}") rather than into words that change with it.
  */
@@ -70,6 +70,19 @@ const ENGLISH = {
 	credit: "Made with Rezumi",
 	moreOn: "More on {site}",
 	caseStudies: "Case studies",
+	yourName: "Your name",
+	yourEmail: "Your email",
+	yourMessage: "Your message",
+	sendMessageNow: "Send message",
+	messageSending: "Sending your message…",
+	messageSent: "Thank you. Your message was sent.",
+	messageFailed: "Your message couldn't be sent. Try again in a moment.",
+	messageInvalid: "Check your name, email and message, then try again.",
+	messageBlocked: "We couldn't confirm you're not a robot. Try again.",
+	messageLimited: "Too many messages for now. Try again later.",
+	messageClosed: "This form is closed right now.",
+	formNote: "Your message goes to {name}, who will see your email address so they can reply.",
+	formNeedsScript: "This form needs JavaScript. You can use the other contact options here.",
 };
 
 export type PortfolioPageMessages = typeof ENGLISH;

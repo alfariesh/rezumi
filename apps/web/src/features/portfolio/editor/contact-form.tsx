@@ -1,5 +1,5 @@
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { WHATSAPP_NUMBER_PATTERN } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
@@ -9,6 +9,7 @@ import { useDraftText } from "../metrics/use-draft-text";
 import { useSourceResume } from "./context";
 import { TextInput } from "./fields";
 import { editPortfolio, usePortfolioData } from "./store";
+import { orpc } from "@/libs/orpc/client";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -23,12 +24,14 @@ export function normalizeWhatsAppNumber(text: string, defaultCountryCode = "62")
 
 /**
  * Contact: the invitation, which of the resume's details show (email and website on, phone off by default), WhatsApp,
- * profiles, and the Location card with its optional map. The contact form arrives in Phase 08.
+ * profiles, the contact form, and the Location card with its optional map.
  */
 export function ContactForm() {
 	const { contact } = usePortfolioData();
 	const source = useSourceResume();
 	const resume = source.data;
+	const { data: portfolio } = useQuery(orpc.portfolio.get.queryOptions());
+	const formAvailable = portfolio?.contactFormAvailable ?? false;
 	const set = <K extends keyof typeof contact>(field: K, value: (typeof contact)[K]) =>
 		editPortfolio((draft) => {
 			draft.contact[field] = value;
@@ -81,11 +84,20 @@ export function ContactForm() {
 					className="items-start py-1"
 				/>
 			</div>
+			<SwitchRow
+				isSelected={contact.form && formAvailable}
+				isDisabled={!formAvailable}
+				onChange={(checked) => set("form", checked)}
+				label={t`Show a contact form`}
+				description={
+					formAvailable
+						? t`Messages arrive by email and in your dashboard, and are deleted after 90 days.`
+						: t`The contact form isn't available right now. Visitors can still use your other contact options.`
+				}
+				className="items-start py-1"
+			/>
 			<WhatsAppField />
 			<LocationFields />
-			<p className="text-xs text-muted">
-				<Trans>A contact form is coming soon.</Trans>
-			</p>
 		</div>
 	);
 }

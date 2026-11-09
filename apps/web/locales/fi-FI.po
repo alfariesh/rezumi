@@ -799,6 +799,10 @@ msgstr "{kind} haastattelu"
 msgid "{label} connection"
 msgstr "Yhteys: {label}"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "{label}: {visits} visits"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr ""
@@ -1229,10 +1233,6 @@ msgstr "Koodi todennussovelluksesta sisäänkirjautumisen yhteydessä"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "A comfortable length, and it fits on one page."
 msgstr "Mukava pituus ja mahtuu yhdelle sivulle."
-
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "A contact form is coming soon."
-msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
@@ -2471,7 +2471,7 @@ msgid "Anyone who opens the public URL will need this password."
 msgstr "Jokainen, joka avaa julkisen URL-osoitteen, tarvitsee tämän salasanan."
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "Anyone with the link can see it. Visitor numbers are coming soon."
+msgid "Anyone with the link can see it."
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -3204,6 +3204,10 @@ msgstr "Luettelona"
 msgid "Business"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Button clicks"
+msgstr ""
+
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Button link"
 msgstr ""
@@ -3533,6 +3537,10 @@ msgstr "Tarkista sähköpostisi linkin löytämiseksi salasanan palauttamiseksi.
 msgid "Check your email for a link to verify your account."
 msgstr "Tarkista sähköpostisi linkin löytämiseksi tilisi vahvistamiseksi."
 
+#: src/features/portfolio/page-text.ts
+msgid "Check your name, email and message, then try again."
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Check your resume’s ATS readability"
 msgstr "Tarkista CV:si ATS-luetettavuus"
@@ -3753,6 +3761,10 @@ msgstr "Tyhjennä tervehdys tai lopputervehdys, jos haluat jättää sen pois. L
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Click anything on the page to style it. The rule you're in is outlined on the page."
 msgstr "Napsauta mitä tahansa sivulla muokataksesi sitä. Sääntö, johon olet, on esitetty sivulla."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Clicks"
+msgstr ""
 
 #: src/features/auth/pages/consent.tsx
 msgid "Client ID"
@@ -3979,6 +3991,10 @@ msgstr "Pakkaa tai poista suuria kuvia, jotta lataukset pysyvät nopeina."
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Computer"
 msgstr "Tietokone"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Computers"
+msgstr ""
 
 #: src/dialogs/resume/template/data.ts
 msgid "Confident and graphic: a heavy name, and every section opens with its title as a solid accent tag with a rule running to the margin."
@@ -4344,6 +4360,10 @@ msgstr "Salasanaa ei voitu lisätä. Yritä uudelleen."
 msgid "Couldn't attach the file. Try again."
 msgstr "Tiedostoa ei voitu liittää. Yritä uudelleen."
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Couldn't change it. Try again."
+msgstr ""
+
 #: src/routes/builder/letter/-components/design-panel.tsx
 msgid "Couldn't change the design. Try again."
 msgstr "Suunnittelua ei voitu muuttaa. Yritä uudelleen."
@@ -4427,6 +4447,10 @@ msgstr "Tiliäsi ei voitu luoda. Yritä uudelleen."
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Couldn't create your portfolio. Try again."
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Couldn't delete it. Try again."
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
@@ -4940,6 +4964,7 @@ msgid "Counted separately from the parse score. Coverage does not predict anythi
 msgstr "Lasketaan erillään jäsennyspisteistä. Kattavuus ei ennusta mitään."
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Countries"
 msgstr "maat"
 
@@ -5237,6 +5262,11 @@ msgstr "Päivittäin klo {clock} · seuraava {next}"
 msgid "Daily views over 30 days, peak {0}"
 msgstr "Päivittäiset katselukerrat 30 päivän aikana, huippu {0}"
 
+#. placeholder {0}: summary.peak
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Daily visits over 30 days, peak {0}"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Danish"
 msgstr "tanska"
@@ -5336,6 +5366,7 @@ msgstr "Tutkinto"
 #: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/saved.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Delete"
@@ -5389,6 +5420,10 @@ msgstr "Poista merkintä"
 msgid "Delete it. Hidden keywords are treated as a deliberate attempt to game the search."
 msgstr "Poista se. Piilotettuja avainsanoja pidetään tarkoituksellisena yrityksenä huijata hakua."
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Delete message"
+msgstr ""
+
 #: src/features/documents/document-actions.tsx
 msgid "Delete now…"
 msgstr "Poista nyt…"
@@ -5413,6 +5448,10 @@ msgstr "Poista osio"
 #: src/features/career/knowledge/stories.tsx
 msgid "Delete story"
 msgstr "Poista tarina"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Delete the message from {name}?"
+msgstr ""
 
 #: src/features/applications/components/application-actions-menu.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -5588,6 +5627,10 @@ msgstr "Tiedot palveluntarjoajalta:"
 msgid "Device"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Devices"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Dictation started"
 msgstr "Sanelu aloitettu"
@@ -5607,6 +5650,10 @@ msgstr "Eri valuutta, ei vertailtu"
 #: src/features/career/offers.tsx
 msgid "Different pay period, not compared"
 msgstr "Eri palkkajakso, ei vertailtu"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Direct"
+msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Direction"
@@ -5787,6 +5834,10 @@ msgstr "Lataus epäonnistui. Yritä uudelleen."
 #: src/features/resume/share/web-page-text.ts
 msgid "Download PDF"
 msgstr "Lataa PDF"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Download PDF button"
+msgstr ""
 
 #: src/features/resume/share/download-tab.tsx
 msgid "Download PDF instead"
@@ -6175,6 +6226,10 @@ msgstr "Sähköpostiosoite"
 msgid "Email address won't be recognized"
 msgstr "Sähköpostiosoitetta ei tunnisteta"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Email button"
+msgstr ""
+
 #: src/features/billing/buy-plans.tsx
 msgid "Email delivery isn't set up on this server, so the address can't be verified."
 msgstr ""
@@ -6391,6 +6446,10 @@ msgstr "Sisääntulovaihtoehdot"
 #: src/features/career/offers.tsx
 msgid "Equity"
 msgstr "Osakkeet"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Estimated"
+msgstr ""
 
 #: src/features/billing/admin/labels.ts
 msgid "Event needs a look by hand"
@@ -8145,6 +8204,10 @@ msgstr "Se näkyy työhakemuksen aikajanalla ja kalenterissa."
 msgid "It's copied into your portfolio, so your page never loads pictures from other sites. Use it only if you may show it."
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "It's deleted for good."
+msgstr ""
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "It's removed from the timeline for good."
 msgstr "Se on poistettu aikajanalta lopullisesti."
@@ -8852,6 +8915,7 @@ msgstr "LinkedIn, suosittelu…"
 msgid "Linking…"
 msgstr "Linkitetään…"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "Links"
 msgstr "Linkit"
@@ -9180,6 +9244,10 @@ msgstr ""
 msgid "Map around {place}"
 msgstr ""
 
+#: src/features/portfolio/statistics/visitor-map.tsx
+msgid "Map of visitors' countries"
+msgstr ""
+
 #: src/components/input/icon-picker-grid.tsx
 msgid "Maps and places"
 msgstr ""
@@ -9210,8 +9278,13 @@ msgid "Mark as applied"
 msgstr "Merkitse haetuksi"
 
 #: src/features/career/today.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
 msgid "Mark as read"
 msgstr "Merkitse luetuksi"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Mark as unread"
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "Mark it as applied in Apply first."
@@ -9316,8 +9389,14 @@ msgid "Message the coach"
 msgstr "Viesti valmentajalle"
 
 #: src/features/career/shared.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Messages"
 msgstr "Viestit"
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Messages arrive by email and in your dashboard, and are deleted after 90 days."
+msgstr ""
 
 #. placeholder {0}: index + 1
 #: src/features/portfolio/metrics/metric-form.tsx
@@ -9440,6 +9519,10 @@ msgstr "Useimmat luettelokohdat alkavat täytesanoilla sen sijaan, että kertois
 #: src/features/ats-checker/messages.ts
 msgid "Most entries have no dates."
 msgstr "Useimmilla merkinnöillä ei ole päivämääriä."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Most opened work"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
@@ -9878,6 +9961,10 @@ msgstr ""
 msgid "No city by that name. Larger towns are listed; type the nearest one, then edit the label."
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No clicks yet."
+msgstr ""
+
 #. Empty-state message when no command palette results match the search query
 #: src/features/command-palette/content.tsx
 msgid "No commands match that search."
@@ -9983,9 +10070,17 @@ msgstr "Ei vielä avaimia."
 msgid "No lines look like a job title paired with an employer."
 msgstr "Yksikään rivi ei näytä tehtävänimikkeeltä yhdistettynä työnantajaan."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No links from other sites yet."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No location"
 msgstr "Ei sijaintia"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "No messages yet. Turn on the contact form in the editor, under Contact."
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "No new roles. Discovery is paused."
@@ -10142,9 +10237,17 @@ msgstr "Tästä tiedostosta ei voitu lukea tekstiä."
 msgid "No timezone matches."
 msgstr "Ei vastaavia aikavyöhykkeitä."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No visits yet."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No work experience shows"
 msgstr "Työkokemusta ei näy"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No work opened yet."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No work-experience section was found."
@@ -10910,6 +11013,10 @@ msgstr ""
 msgid "Other documents · {0}"
 msgstr "Muut asiakirjat · {0}"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Other sites"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Other work"
 msgstr ""
@@ -11246,6 +11353,10 @@ msgstr ""
 msgid "PDF, Word or JSON. We'll build a resume from it."
 msgstr "PDF, Word tai JSON. Rakennamme siitä ansioluettelon."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "PDFs opened"
+msgstr ""
+
 #. Icon picker category: people and user icons
 #: src/components/input/icon-picker-grid.tsx
 msgid "People"
@@ -11292,6 +11403,10 @@ msgstr "Puhelin"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Phone (optional)"
 msgstr "Puhelin (valinnainen)"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Phones"
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
@@ -12843,6 +12958,10 @@ msgstr ""
 msgid "Reply"
 msgstr "Vastaus"
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Reply by email"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "Vastaus kopioitu"
@@ -13773,8 +13892,16 @@ msgstr ""
 msgid "See the live site"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "See visitors' countries on a map, their devices, and which sites link to you with Plus."
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "See what ATS software reads"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "See what's included"
 msgstr ""
 
 #: src/features/applications/components/list-view.tsx
@@ -13840,6 +13967,14 @@ msgstr ""
 msgid "Send a message (to Contact)"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Send a message button"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Send message"
+msgstr ""
+
 #. Primary action button label on forgot-password form
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Send reset link"
@@ -13864,6 +13999,10 @@ msgstr ""
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Sending password reset email..."
 msgstr "Lähetetään salasanan palautussähköpostia..."
+
+#: src/features/portfolio/page-text.ts
+msgid "Sending your message…"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Sends this application (posting, notes, interview details) and Knowledge that's switched on to {label}."
@@ -13903,6 +14042,10 @@ msgstr "Vanhempi tuotesuunnittelija"
 msgid "Sent"
 msgstr "Lähetetty"
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Sent through your contact form. Each one is deleted automatically after 90 days."
+msgstr ""
+
 #. placeholder {0}: version.name
 #: src/features/resume/share/format.ts
 msgid "Sent to {0}"
@@ -13922,6 +14065,10 @@ msgstr "serbia"
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Service orders"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
@@ -14104,6 +14251,10 @@ msgstr "Näytä sivulla {title}"
 msgid "Show a change"
 msgstr ""
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Show a contact form"
+msgstr ""
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Show a map on my page"
 msgstr ""
@@ -14175,6 +14326,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Show my website"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Show older messages"
 msgstr ""
 
 #: src/features/billing/payment-history.tsx
@@ -14328,6 +14483,10 @@ msgstr "edellisestä katselusta lähtien"
 
 #: src/features/portfolio/blocks/link-block.tsx
 msgid "Site name (optional)"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Sites that link to you"
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
@@ -14514,6 +14673,7 @@ msgstr ""
 #: src/features/assistant/conversation.tsx
 #: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Sources"
 msgstr "Lähteet"
 
@@ -15022,6 +15182,10 @@ msgstr "Systems tiedostot sinulle sivun yläreunassa olevan nimen alla."
 msgid "Systems look for an experience section. Projects or volunteering can show the same history."
 msgstr "Järjestelmät etsivät kokemusosastoa. Projektit tai vapaaehtoistyö voivat näyttää saman historian."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Tablets"
+msgstr ""
+
 #: src/features/applications/components/list-view.tsx
 msgid "Tag"
 msgstr "Tunniste"
@@ -15325,6 +15489,10 @@ msgstr ""
 msgid "Thai"
 msgstr "thai"
 
+#: src/features/portfolio/page-text.ts
+msgid "Thank you. Your message was sent."
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/reason-dialog.tsx
 msgid "That didn't work. Try again."
@@ -15454,6 +15622,10 @@ msgstr "Valmentaja tallentaa kertomasi faktat ja ilmoittaa siitä. Voit kumota s
 msgid "The connection dropped. Your changes are kept here, and saving tries again by itself."
 msgstr ""
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "The contact form isn't available right now. Visitors can still use your other contact options."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "The copy is linked to the application, so Check and the assistant use its posting."
 msgstr "Kopio on linkitetty työhakemukseen, joten Check ja assistentti käyttävät sen työpaikkailmoitusta."
@@ -15517,6 +15689,10 @@ msgstr ""
 #: src/features/settings/ai/providers.tsx
 msgid "The key is encrypted on the server and never shown again. Saving tests the connection."
 msgstr "Avain on salattu palvelimella, eikä sitä koskaan näytetä uudelleen. Tallennus testaa yhteyden."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "The last 30 days. Only you see these, and your own visits aren't counted."
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "The last payment didn't go through. Update your payment method to keep it; access is paused until then."
@@ -16019,6 +16195,14 @@ msgstr "Tämä tiedosto käyttää Type 3 -fontteja, jotka sisältävät piirrok
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr ""
 
+#: src/features/portfolio/page-text.ts
+msgid "This form is closed right now."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "This form needs JavaScript. You can use the other contact options here."
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "This intro effect isn't in your plan"
 msgstr ""
@@ -16377,6 +16561,7 @@ msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Today"
 msgstr "Tänään"
@@ -16403,6 +16588,10 @@ msgstr "Liian vaalea valkoisille otsikoille. Sitä voi olla vaikea lukea ja tulo
 
 #: src/features/portfolio/media/remote.ts
 msgid "Too many links read in a short time. Wait a while, or fill the card in by hand."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Too many messages for now. Try again later."
 msgstr ""
 
 #: src/features/portfolio/errors.ts
@@ -16805,6 +16994,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Unpublish your portfolio?"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Unread:"
 msgstr ""
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
@@ -17338,6 +17531,10 @@ msgstr ""
 msgid "Video: it plays on your page when a visitor presses play"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Videos played"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Vietnamese"
 msgstr "vietnam"
@@ -17363,6 +17560,10 @@ msgstr "Katso työpaikkailmoitus"
 msgid "View resume"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "View resume button"
+msgstr ""
+
 #. placeholder {0}: formatVersionTime(viewing.createdAt, i18n.locale)
 #. placeholder {0}: when(selected)
 #. placeholder {1}: getVersionTitle(selected)
@@ -17381,6 +17582,7 @@ msgstr ""
 msgid "views · 30 days"
 msgstr "katselukerrat · 30 päivää"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
 msgstr "Vierailijat"
@@ -17400,6 +17602,14 @@ msgstr ""
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "Vierailijat syöttävät sen ennen kuin he näkevät ansioluettelon. Jaa se vain luotettavien ihmisten kanssa."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Visits"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Visits per day"
+msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Visits, clicks, messages and sources are included."
@@ -17457,6 +17667,10 @@ msgstr "Varoitus"
 
 #: src/features/billing/payment-return.tsx
 msgid "We couldn't check this payment"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "We couldn't confirm you're not a robot. Try again."
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
@@ -17738,6 +17952,10 @@ msgstr "Mikä toimii"
 msgid "WhatsApp"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "WhatsApp button"
+msgstr ""
+
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "WhatsApp number"
 msgstr ""
@@ -17765,6 +17983,10 @@ msgstr "Mistä hakemukset tulevat"
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Where it was given (optional)"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Where visitors come from"
 msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
@@ -17895,6 +18117,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Work layout"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Work opened by day"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -18302,6 +18528,10 @@ msgstr "Tietosi ovat muuttuneet ansioluettelossa. Myös kirje päivitetty."
 msgid "Your domain"
 msgstr "Verkkotunnuksesi"
 
+#: src/features/portfolio/page-text.ts
+msgid "Your email"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your email address changed on the resume. The letter updated too."
 msgstr "Sähköpostiosoitteesi on muuttunut ansioluettelossa. Myös kirje päivitetty."
@@ -18414,8 +18644,21 @@ msgstr "Sijaintisi muuttui ansioluettelossa. Myös kirje päivitetty."
 msgid "Your margins are very narrow."
 msgstr "Marginaalisi ovat hyvin kapeat."
 
+#: src/features/portfolio/page-text.ts
+msgid "Your message"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Your message couldn't be sent. Try again in a moment."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Your message goes to {name}, who will see your email address so they can reply."
+msgstr ""
+
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-effect.tsx
+#: src/features/portfolio/page-text.ts
 msgid "Your name"
 msgstr ""
 

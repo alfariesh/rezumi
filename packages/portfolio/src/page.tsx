@@ -4,6 +4,7 @@ import type { PortfolioView } from "./view";
 import { renderToStaticMarkup } from "react-dom/server";
 import { designCss, fontFaceCss, portfolioFontFaces, preloadFont } from "./design";
 import { effectAssets } from "./effects";
+import { PORTFOLIO_LIVE_SCRIPT } from "./live-script";
 import { PORTFOLIO_PAGE_SCRIPT } from "./script";
 import { BASE_CSS } from "./shared/base-css";
 import { RenderContextValue } from "./shared/context";
@@ -24,6 +25,29 @@ export type RenderPortfolioPageInput = {
 	year: number;
 	/** Where the "Made with Rezumi" badge links: the app's home. */
 	creditUrl: string;
+	/** How a published page talks to the server. Left out by the editor's preview, so a preview never counts or sends. */
+	live?: PortfolioPageLive;
+};
+
+/** The contact form's wiring on a published page. */
+type PortfolioPageForm =
+	| {
+			kind: "form";
+			/** Where the form posts: `/api/portfolio/<username>/message`. */
+			action: string;
+			/** Turnstile's public site key. */
+			siteKey: string;
+			/** The result of a form sent without the page script, from `?contact=` on the address. */
+			status?: "sent" | "failed";
+	  }
+	/** A custom domain: its hostname can't be on the Turnstile widget, so a button opens the form on the app's domain. */
+	| { kind: "link"; url: string };
+
+export type PortfolioPageLive = {
+	/** Where the page's beacons go: `/api/portfolio/<username>/event`. */
+	eventUrl: string;
+	/** Left out when the view has no form to draw. */
+	form?: PortfolioPageForm;
 };
 
 export type PortfolioPage = {
@@ -91,6 +115,7 @@ export function renderPortfolioPage(input: RenderPortfolioPageInput): PortfolioP
 		},
 		imageUrl: input.imageUrl ?? pageImageUrl,
 		nextId: (prefix) => `${prefix}-${++counter}`,
+		...(input.live ? { live: input.live } : {}),
 	};
 	const markup = renderToStaticMarkup(
 		<RenderContextValue.Provider value={context}>
@@ -117,7 +142,7 @@ export function renderPortfolioPage(input: RenderPortfolioPageInput): PortfolioP
 		]
 			.filter(Boolean)
 			.join("\n"),
-		script: PORTFOLIO_PAGE_SCRIPT + effect.script,
+		script: PORTFOLIO_PAGE_SCRIPT + effect.script + (input.live ? PORTFOLIO_LIVE_SCRIPT : ""),
 		preloadFont: preloadFont(view, faces, theme.nameWeight),
 		themeColors: { light: theme.palette.light.bg, dark: theme.palette.dark.bg },
 	};

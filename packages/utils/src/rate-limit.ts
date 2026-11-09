@@ -59,4 +59,17 @@ export const rateLimitConfig = {
 		portfolioUnfurls: { maxRequests: 30, window: 60 * 60 * 1000 },
 		portfolioRemoteImages: { maxRequests: 30, window: 60 * 60 * 1000 },
 	},
+	// Public portfolio requests, where the caller has no account.
+	portfolioPublic: {
+		// Beacons are deduplicated per visitor; this only bounds the database writes one address can cause.
+		events: { maxRequests: 120, window: 60 * 1000 },
+		// Attempts reach Turnstile; only messages that pass it count toward the two limits below.
+		messageAttempts: { maxRequests: 20, window: 60 * 60 * 1000 },
+		messagesPerIp: { maxRequests: 3, window: 60 * 60 * 1000 },
+		messagesPerPortfolio: { maxRequests: 30, window: 24 * 60 * 60 * 1000 },
+		// One visitor can use only part of a portfolio's day.
+		messagesPerVisitor: { maxRequests: 5, window: 24 * 60 * 60 * 1000 },
+		// Visits are deduplicated per visitor, which a changing browser name gets around; this bounds one address.
+		visits: { maxRequests: 120, window: 60 * 60 * 1000 },
+	},
 } as const;

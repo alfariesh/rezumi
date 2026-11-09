@@ -33,7 +33,12 @@ vi.mock("@rezumi/env/server", async () => {
 });
 vi.mock("../resume/access-policy", async () => {
 	const actual = await vi.importActual<typeof import("../resume/access-policy")>("../resume/access-policy");
-	return { ...actual, resolveViewer: () => Promise.resolve(fixture.viewer) };
+	// Like the real one, a request marked cross-site reads as anonymous.
+	return {
+		...actual,
+		resolveViewer: (headers: Headers) =>
+			Promise.resolve(headers.get("sec-fetch-site") === "cross-site" ? null : fixture.viewer),
+	};
 });
 
 function getDb() {
@@ -342,18 +347,138 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 
 		it("count once an hour per visitor, never the owner or crawlers", async () => {
 			const id = await addPortfolio("member");
-			const portfolio = { id, userId: "member" };
-			await publicPortfolio.recordPortfolioVisit({ portfolio, requestHeaders: visitor(), trustedClient: "10.0.0.1" });
-			await publicPortfolio.recordPortfolioVisit({ portfolio, requestHeaders: visitor(), trustedClient: "10.0.0.1" });
-			await publicPortfolio.recordPortfolioVisit({ portfolio, requestHeaders: visitor(), trustedClient: "10.0.0.2" });
-			await publicPortfolio.recordPortfolioVisit({
-				portfolio,
-				requestHeaders: visitor("Googlebot/2.1 (+http://www.google.com/bot.html)"),
-				trustedClient: "10.0.0.3",
-			});
+			const portfolio = { id, userId: "member", timezone: "Asia/Jakarta" };
+			const requestUrl = "https://rezumi.example/member";
+			const record = (trustedClient: string, requestHeaders = visitor()) =>
+				publicPortfolio.recordPortfolioVisit({ portfolio, requestHeaders, requestUrl, trustedClient });
+			await record("10.0.0.1");
+			await record("10.0.0.1");
+			await record("10.0.0.2");
+			await record("10.0.0.3", visitor("Googlebot/2.1 (+http://www.google.com/bot.html)"));
 			fixture.viewer = { id: "member" };
-			await publicPortfolio.recordPortfolioVisit({ portfolio, requestHeaders: visitor(), trustedClient: "10.0.0.4" });
+			await record("10.0.0.4");
 			expect(await views(id)).toBe(2);
+		});
+
+		it("leave out the owner arriving from another site, and clients that don't name themselves", async () => {
+			const id = await addPortfolio("member");
+			const portfolio = { id, userId: "member", timezone: "UTC" };
+			const requestUrl = "https://rezumi.example/member";
+			const record = (trustedClient: string, requestHeaders: Headers) =>
+				publicPortfolio.recordPortfolioVisit({ portfolio, requestHeaders, requestUrl, trustedClient });
+			fixture.viewer = { id: "member" };
+			const fromLinkedIn = visitor();
+			fromLinkedIn.set("sec-fetch-site", "cross-site");
+			await record("10.0.1.1", fromLinkedIn);
+			fixture.viewer = null;
+			await record("10.0.1.2", new Headers());
+			expect(await views(id)).toBe(0);
+		});
+
+		it("tell people on one carrier-grade NAT address apart by their browser", async () => {
+			const id = await addPortfolio("member");
+			const portfolio = { id, userId: "member", timezone: "UTC" };
+			const requestUrl = "https://rezumi.example/member";
+			const record = (requestHeaders: Headers) =>
+				publicPortfolio.recordPortfolioVisit({ portfolio, requestHeaders, requestUrl, trustedClient: "10.0.0.9" });
+			await record(visitor("Mozilla/5.0 (Linux; Android 14; SM-A15) Mobile"));
+			await record(visitor("Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)"));
+			expect(await views(id)).toBe(2);
+		});
+
+		it("record the day in the owner's time zone and where the visit came from", async () => {
+			const id = await addPortfolio("member");
+			vi.useFakeTimers({ now: new Date("2026-11-09T18:30:00Z"), toFake: ["Date"] });
+			try {
+				await publicPortfolio.recordPortfolioVisit({
+					portfolio: { id, userId: "member", timezone: "Asia/Jakarta" },
+					requestHeaders: new Headers({
+						"user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15",
+						referer: "https://www.linkedin.com/feed",
+					}),
+					requestUrl: "https://rezumi.example/member",
+					trustedClient: "10.0.0.20",
+				});
+			} finally {
+				vi.useRealTimers();
+			}
+			const [row] = await getDb()
+				.select()
+				.from(tables.portfolioStatisticsDaily)
+				.where(eq(tables.portfolioStatisticsDaily.portfolioId, id));
+			expect(row?.date).toBe("2026-11-10");
+			expect(row?.sources).toEqual({ linkedin: 1 });
+		});
+	});
+
+	describe("beacons", () => {
+		const works = (ids: string[]) => ({ version: 1, works: { items: ids.map((id) => ({ id, title: id })) } }) as never;
+		const row = async (portfolioId: string) => {
+			const rows = await getDb()
+				.select()
+				.from(tables.portfolioStatisticsDaily)
+				.where(eq(tables.portfolioStatisticsDaily.portfolioId, portfolioId));
+			return rows[0];
+		};
+
+		it("count a click once an hour per visitor and kind, never the owner or crawlers", async () => {
+			const id = await addPortfolio("member");
+			const target = { id, userId: "member", timezone: "UTC", hasWork: false };
+			const send = (kind: "whatsapp" | "pdf", trustedClient: string, requestHeaders = visitor()) =>
+				publicPortfolio.recordPortfolioEvent({ target, kind, requestHeaders, trustedClient });
+			await send("whatsapp", "10.1.0.1");
+			await send("whatsapp", "10.1.0.1");
+			await send("pdf", "10.1.0.1");
+			await send("whatsapp", "10.1.0.2");
+			await send("whatsapp", "10.1.0.3", visitor("Googlebot/2.1 (+http://www.google.com/bot.html)"));
+			fixture.viewer = { id: "member" };
+			await send("whatsapp", "10.1.0.4");
+			expect((await row(id))?.clicks).toEqual({ whatsapp: 2, pdf: 1 });
+		});
+
+		it("count only works the portfolio has, up to the daily limit of works", async () => {
+			const id = await addPortfolio("member", { data: works(["w1"]) });
+			const name = username("member");
+			const found = await publicPortfolio.findPortfolioEventTarget(name, "w1");
+			const missing = await publicPortfolio.findPortfolioEventTarget(name, "w-gone");
+			expect(found?.hasWork).toBe(true);
+			expect(missing?.hasWork).toBe(false);
+			if (!found || !missing) throw new Error("target expected");
+			await publicPortfolio.recordPortfolioEvent({
+				target: found,
+				kind: "work",
+				workId: "w1",
+				requestHeaders: visitor(),
+				trustedClient: "10.1.1.1",
+			});
+			await publicPortfolio.recordPortfolioEvent({
+				target: missing,
+				kind: "work",
+				workId: "w-gone",
+				requestHeaders: visitor(),
+				trustedClient: "10.1.1.1",
+			});
+			expect((await row(id))?.works).toEqual({ w1: 1 });
+
+			const today = (await row(id))?.date as string;
+			const full = Object.fromEntries(Array.from({ length: 50 }, (_, index) => [`w${index}`, 1]));
+			await getDb()
+				.update(tables.portfolioStatisticsDaily)
+				.set({ works: full })
+				.where(eq(tables.portfolioStatisticsDaily.portfolioId, id));
+			const { countWorkOpen } = await import("./statistics");
+			await countWorkOpen(id, today, "w999");
+			await countWorkOpen(id, today, "w1");
+			const stored = (await row(id))?.works ?? {};
+			expect(Object.keys(stored)).toHaveLength(50);
+			expect(stored.w999).toBeUndefined();
+			expect(stored.w1).toBe(2);
+		});
+
+		it("find no target while the switch is off", async () => {
+			await addPortfolio("member");
+			fixture.mode = "off";
+			expect(await publicPortfolio.findPortfolioEventTarget(username("member"))).toBeNull();
 		});
 	});
 });

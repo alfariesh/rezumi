@@ -1,9 +1,10 @@
 import type { PublicPortfolio } from "@rezumi/api/features/portfolio/public";
-import type { PortfolioPage } from "@rezumi/portfolio";
+import type { PortfolioPage, PortfolioPageLive } from "@rezumi/portfolio";
 import type { PortfolioView } from "@rezumi/portfolio/view";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { createHash } from "node:crypto";
 import { findPublicPortfolio, recordPortfolioVisit } from "@rezumi/api/features/portfolio/public";
+import { isContactFormConfigured } from "@rezumi/api/features/portfolio/turnstile";
 import { env } from "@rezumi/env/server";
 import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
 import { renderPortfolioDocument } from "@rezumi/portfolio/document";
@@ -27,7 +28,7 @@ export type PortfolioPolicyDirectives = Record<string, readonly string[]>;
  * script, plus the intro effect's when the page plays a script effect); Cloudflare Web Analytics may add its beacon.
  * Pictures and fonts load like on the app's other pages. Only the video players may be framed, nothing is embedded or
  * run as a worker, forms post to this site only, and no other site may frame the page. `additions` adds sources to a
- * directive: Phase 08's Turnstile widget adds `https://challenges.cloudflare.com` to `script-src` and `frame-src`.
+ * directive: a page with the contact form adds Turnstile's origin to `script-src` and `frame-src`.
  */
 export function portfolioContentSecurityPolicy(script: string, additions: PortfolioPolicyDirectives = {}): string {
 	const hash = `'sha256-${createHash("sha256").update(script).digest("base64")}'`;
@@ -53,7 +54,19 @@ export function portfolioContentSecurityPolicy(script: string, additions: Portfo
 		.join("; ");
 }
 
-function html(body: string, script: string, headers: Record<string, string> = {}) {
+/** What the Turnstile widget needs on a page that holds the contact form. */
+const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
+const TURNSTILE_POLICY: PortfolioPolicyDirectives = {
+	"script-src": [TURNSTILE_ORIGIN],
+	"frame-src": [TURNSTILE_ORIGIN],
+};
+
+function html(
+	body: string,
+	script: string,
+	headers: Record<string, string> = {},
+	additions: PortfolioPolicyDirectives = {},
+) {
 	return new Response(body, {
 		status: 200,
 		headers: {
@@ -61,7 +74,7 @@ function html(body: string, script: string, headers: Record<string, string> = {}
 			"Content-Type": "text/html; charset=UTF-8",
 			// Visits are counted per request and the page follows every edit, so no cache may keep it.
 			"Cache-Control": "private, no-store",
-			"Content-Security-Policy": portfolioContentSecurityPolicy(script),
+			"Content-Security-Policy": portfolioContentSecurityPolicy(script, additions),
 			...headers,
 		},
 	});
@@ -94,6 +107,7 @@ export function publicPortfolioView(portfolio: PublicPortfolio): PortfolioView {
 		resume: resume ? { data: withOwnPicture(resume.data) } : null,
 		owner: { name: portfolio.ownerName, username: portfolio.username },
 		entitlements: portfolio.entitlements,
+		contactFormAvailable: isContactFormConfigured(),
 		messages: portfolioViewMessages(portfolioMessages(locale)),
 		fileUrl: (key) => `${origin()}/${key}`,
 		links: {
@@ -111,10 +125,10 @@ export function publicPortfolioView(portfolio: PublicPortfolio): PortfolioView {
 // ponytail: per process, cleared at 100 entries, like the resume pages' cache.
 const rendered = new Map<string, PortfolioPage>();
 
-async function renderPage(view: PortfolioView): Promise<PortfolioPage> {
+async function renderPage(view: PortfolioView, live: PortfolioPageLive): Promise<PortfolioPage> {
 	const year = new Date().getUTCFullYear();
 	const key = createHash("sha256")
-		.update(JSON.stringify([view, year]))
+		.update(JSON.stringify([view, year, live]))
 		.digest("hex");
 	const hit = rendered.get(key);
 	if (hit) return hit;
@@ -131,6 +145,7 @@ async function renderPage(view: PortfolioView): Promise<PortfolioPage> {
 		imageUrl: portfolioPictureUrl,
 		year,
 		creditUrl: origin(),
+		live,
 	});
 	if (rendered.size >= 100) rendered.clear();
 	rendered.set(key, page);
@@ -181,7 +196,7 @@ function structuredData(view: PortfolioView, url: string, updatedAt: Date, meLin
  * Requests a browser makes on its own, before anyone opens the page (or without them ever opening it): Chrome's
  * prefetch and prerender (`Sec-Purpose`, formerly `Purpose`), Safari's previews (`X-Purpose`), Firefox's prefetch.
  */
-function isSpeculative(headers: Headers): boolean {
+export function isSpeculative(headers: Headers): boolean {
 	const purpose = ["sec-purpose", "purpose", "x-purpose", "x-moz"].map((name) => headers.get(name) ?? "").join(",");
 	return /\b(?:prefetch|prerender|preview)\b/i.test(purpose);
 }
@@ -198,25 +213,60 @@ export function configurePortfolioVisitLifetime(callback: KeepAlive | undefined)
 }
 
 /**
- * Counts the visit without holding up the page (`02-teknis.md` section 9). Node keeps running it after the response;
- * Workers does only through `configurePortfolioVisitLifetime`, so without that the page waits for it there, as before.
- * Counting that fails is logged, never shown.
+ * Runs work without holding up the response. Node keeps running it afterwards; Workers does only through
+ * `configurePortfolioVisitLifetime`, so without that the caller waits for it there. A failure is logged, never shown.
  */
-function countVisit(request: Request, portfolio: PublicPortfolio, trustedClient: string): Promise<void> {
-	const counting = recordPortfolioVisit({ portfolio, requestHeaders: request.headers, trustedClient }).catch(
-		(error: unknown) => console.error("Portfolio visit counting failed", error),
+export function runAfterResponse(work: Promise<unknown>, failure: string): Promise<void> {
+	const running = work.then(
+		() => undefined,
+		(error: unknown) => console.error(failure, error),
 	);
 	if (keepAlive) {
-		keepAlive(counting);
+		keepAlive(running);
 		return Promise.resolve();
 	}
-	return process.env.CLOUDFLARE === "1" ? counting : Promise.resolve();
+	return process.env.CLOUDFLARE === "1" ? running : Promise.resolve();
+}
+
+/** Counts the visit without holding up the page (`02-teknis.md` section 9). */
+function countVisit(request: Request, portfolio: PublicPortfolio, trustedClient: string): Promise<void> {
+	return runAfterResponse(
+		recordPortfolioVisit({ portfolio, requestHeaders: request.headers, requestUrl: request.url, trustedClient }),
+		"Portfolio visit counting failed",
+	);
 }
 
 type ServeOptions = {
 	/** Set on a custom domain: the page lives at its root there. */
 	customDomain?: string | undefined;
 };
+
+/**
+ * How the page talks back: where its beacons go and, when the view has a form, how the form works here. A custom
+ * domain can't be listed on the Turnstile widget (`02-teknis.md` section 10), so its visitors get a button to the form
+ * on the app's own domain.
+ */
+function liveWiring(
+	request: Request,
+	portfolio: PublicPortfolio,
+	hasForm: boolean,
+	options: ServeOptions,
+): PortfolioPageLive {
+	const path = encodeURIComponent(portfolio.username);
+	const live: PortfolioPageLive = { eventUrl: `/api/portfolio/${path}/event` };
+	if (!hasForm) return live;
+	if (options.customDomain) return { ...live, form: { kind: "link", url: `${origin()}/${path}#contact` } };
+	const status = new URL(request.url).searchParams.get("contact");
+	return {
+		...live,
+		form: {
+			kind: "form",
+			action: `/api/portfolio/${path}/message`,
+			siteKey: env.TURNSTILE_SITE_KEY ?? "",
+			...(status === "sent" || status === "failed" ? { status } : {}),
+		},
+	};
+}
 
 async function showPortfolio(
 	request: Request,
@@ -230,10 +280,11 @@ async function showPortfolio(
 			? countVisit(request, portfolio, trustedClient)
 			: Promise.resolve();
 	const view = publicPortfolioView(portfolio);
-	const page = await renderPage(view);
+	const contact = view.sections.find((section) => section.kind === "contact");
+	const live = liveWiring(request, portfolio, contact?.kind === "contact" && contact.contact.form, options);
+	const page = await renderPage(view, live);
 	const domain = options.customDomain ?? portfolio.customDomain;
 	const canonicalUrl = domain ? `https://${domain}/` : `${origin()}/${encodeURIComponent(portfolio.username)}`;
-	const contact = view.sections.find((section) => section.kind === "contact");
 	const meLinks =
 		contact?.kind === "contact"
 			? [
@@ -256,7 +307,12 @@ async function showPortfolio(
 		},
 	});
 	await counted;
-	return html(body, page.script, portfolio.indexable ? {} : { "X-Robots-Tag": "noindex, follow" });
+	return html(
+		body,
+		page.script,
+		portfolio.indexable ? {} : { "X-Robots-Tag": "noindex, follow" },
+		live.form?.kind === "form" ? TURNSTILE_POLICY : {},
+	);
 }
 
 /**

@@ -135,7 +135,7 @@ describe("renderPortfolioPage (Lugas)", () => {
 		expect(html).toContain("Medium · medium.example.test");
 		expect(html).toContain("Three experiments that mattered most.");
 		expect(html).toContain("uploads/user-1/pictures/portfolio/repo-card.webp");
-		expect(count(html, /data-pf-event="link"/g)).toBe(2);
+		expect(count(html, /class="pf-link"[^>]*data-pf-event="link"/g)).toBe(2);
 		expect(portfolioIconNames(view)).toContain("medium");
 	});
 

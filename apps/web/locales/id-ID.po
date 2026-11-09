@@ -799,6 +799,10 @@ msgstr "Wawancara {kind}"
 msgid "{label} connection"
 msgstr "Koneksi {label}"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "{label}: {visits} visits"
+msgstr "{label}: {visits} kunjungan"
+
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr "{left, plural, other {Sisa #, kedaluwarsa pada {expires}}}"
@@ -1229,10 +1233,6 @@ msgstr "Kode dari aplikasi pengautentikasi saat masuk"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "A comfortable length, and it fits on one page."
 msgstr "Panjangnya nyaman, dan muat di satu halaman."
-
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "A contact form is coming soon."
-msgstr "Formulir kontak segera hadir."
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
@@ -2471,8 +2471,8 @@ msgid "Anyone who opens the public URL will need this password."
 msgstr "Siapa pun yang membuka URL publik akan memerlukan kata sandi ini."
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "Anyone with the link can see it. Visitor numbers are coming soon."
-msgstr "Siapa pun yang punya tautannya bisa melihatnya. Jumlah pengunjung segera hadir."
+msgid "Anyone with the link can see it."
+msgstr "Siapa pun yang punya tautannya bisa melihatnya."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Anyone with the link can see your portfolio. Changes show as soon as they're saved."
@@ -3204,6 +3204,10 @@ msgstr "Daftar berpoin"
 msgid "Business"
 msgstr "Bisnis"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Button clicks"
+msgstr "Klik tombol"
+
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Button link"
 msgstr "Tautan tombol"
@@ -3533,6 +3537,10 @@ msgstr "Periksa email Anda untuk tautan mengatur ulang kata sandi."
 msgid "Check your email for a link to verify your account."
 msgstr "Periksa email Anda untuk tautan memverifikasi akun Anda."
 
+#: src/features/portfolio/page-text.ts
+msgid "Check your name, email and message, then try again."
+msgstr "Periksa nama, email, dan pesan Anda, lalu coba lagi."
+
 #: src/features/templates/gallery.tsx
 msgid "Check your resume’s ATS readability"
 msgstr "Periksa keterbacaan ATS CV Anda"
@@ -3753,6 +3761,10 @@ msgstr "Kosongkan salam pembuka atau salam penutup untuk menghilangkannya. Mengo
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Click anything on the page to style it. The rule you're in is outlined on the page."
 msgstr "Klik apa pun di halaman untuk menatanya. Aturan yang Anda ikuti diuraikan di halaman."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Clicks"
+msgstr "Klik"
 
 #: src/features/auth/pages/consent.tsx
 msgid "Client ID"
@@ -3978,6 +3990,10 @@ msgstr "Kompres atau hapus gambar besar agar pengunggahan tetap cepat."
 #: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Computer"
+msgstr "Komputer"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Computers"
 msgstr "Komputer"
 
 #: src/dialogs/resume/template/data.ts
@@ -4344,6 +4360,10 @@ msgstr "Tidak dapat menambahkan kunci sandi. Coba lagi."
 msgid "Couldn't attach the file. Try again."
 msgstr "Tidak dapat melampirkan file. Coba lagi."
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Couldn't change it. Try again."
+msgstr "Gagal mengubahnya. Coba lagi."
+
 #: src/routes/builder/letter/-components/design-panel.tsx
 msgid "Couldn't change the design. Try again."
 msgstr "Tidak dapat mengubah desain. Coba lagi."
@@ -4428,6 +4448,10 @@ msgstr "Tidak dapat membuat akun Anda. Coba lagi."
 #: src/features/portfolio/create-dialog.tsx
 msgid "Couldn't create your portfolio. Try again."
 msgstr "Gagal membuat portofolio Anda. Coba lagi."
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Couldn't delete it. Try again."
+msgstr "Gagal menghapusnya. Coba lagi."
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Couldn't delete that story. Try again."
@@ -4940,6 +4964,7 @@ msgid "Counted separately from the parse score. Coverage does not predict anythi
 msgstr "Dihitung terpisah dari skor pembacaan. Cakupan tidak memprediksi apa pun."
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Countries"
 msgstr "Negara"
 
@@ -5237,6 +5262,11 @@ msgstr "Setiap hari pukul {clock} · berikutnya {next}"
 msgid "Daily views over 30 days, peak {0}"
 msgstr "Penayangan harian selama 30 hari, puncak {0}"
 
+#. placeholder {0}: summary.peak
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Daily visits over 30 days, peak {0}"
+msgstr "Kunjungan harian selama 30 hari, tertinggi {0}"
+
 #: src/libs/locale.ts
 msgid "Danish"
 msgstr "Denmark"
@@ -5336,6 +5366,7 @@ msgstr "Gelar"
 #: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/saved.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Delete"
@@ -5389,6 +5420,10 @@ msgstr "Hapus entri"
 msgid "Delete it. Hidden keywords are treated as a deliberate attempt to game the search."
 msgstr "Hapus itu. Kata kunci tersembunyi dianggap sebagai upaya sengaja untuk mengakali pencarian."
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Delete message"
+msgstr "Hapus pesan"
+
 #: src/features/documents/document-actions.tsx
 msgid "Delete now…"
 msgstr "Hapus sekarang…"
@@ -5413,6 +5448,10 @@ msgstr "Hapus bagian"
 #: src/features/career/knowledge/stories.tsx
 msgid "Delete story"
 msgstr "Hapus cerita"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Delete the message from {name}?"
+msgstr "Hapus pesan dari {name}?"
 
 #: src/features/applications/components/application-actions-menu.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -5588,6 +5627,10 @@ msgstr "Detail dari penyedia:"
 msgid "Device"
 msgstr "Ikuti perangkat"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Devices"
+msgstr "Perangkat"
+
 #: src/features/career/workspace/practise.tsx
 msgid "Dictation started"
 msgstr "Dikte dimulai"
@@ -5607,6 +5650,10 @@ msgstr "Mata uang berbeda, tidak dibandingkan"
 #: src/features/career/offers.tsx
 msgid "Different pay period, not compared"
 msgstr "Periode pembayaran berbeda, tidak dibandingkan"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Direct"
+msgstr "Langsung"
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Direction"
@@ -5787,6 +5834,10 @@ msgstr "Pengunduhan gagal. Coba lagi."
 #: src/features/resume/share/web-page-text.ts
 msgid "Download PDF"
 msgstr "Unduh PDF"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Download PDF button"
+msgstr "Tombol Unduh PDF"
 
 #: src/features/resume/share/download-tab.tsx
 msgid "Download PDF instead"
@@ -6175,6 +6226,10 @@ msgstr "Alamat email"
 msgid "Email address won't be recognized"
 msgstr "Alamat email tidak akan dikenali"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Email button"
+msgstr "Tombol Email"
+
 #: src/features/billing/buy-plans.tsx
 msgid "Email delivery isn't set up on this server, so the address can't be verified."
 msgstr "Pengiriman email belum diatur di server ini, jadi alamat email belum bisa diverifikasi."
@@ -6391,6 +6446,10 @@ msgstr "Opsi masuk"
 #: src/features/career/offers.tsx
 msgid "Equity"
 msgstr "Ekuitas"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Estimated"
+msgstr "Perkiraan"
 
 #: src/features/billing/admin/labels.ts
 msgid "Event needs a look by hand"
@@ -8145,6 +8204,10 @@ msgstr "Ini akan ditampilkan di timeline lamaran pekerjaan dan di kalender."
 msgid "It's copied into your portfolio, so your page never loads pictures from other sites. Use it only if you may show it."
 msgstr "Gambar ini disalin ke portofolio Anda, jadi halaman Anda tidak pernah memuat gambar dari situs lain. Pakai hanya bila Anda boleh menampilkannya."
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "It's deleted for good."
+msgstr "Pesan ini akan terhapus selamanya."
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "It's removed from the timeline for good."
 msgstr "Itu dihapus dari timeline untuk selamanya."
@@ -8852,6 +8915,7 @@ msgstr "LinkedIn, Referensi…"
 msgid "Linking…"
 msgstr "Menghubungkan…"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "Links"
 msgstr "Tautan"
@@ -9180,6 +9244,10 @@ msgstr "Peta"
 msgid "Map around {place}"
 msgstr "Peta sekitar {place}"
 
+#: src/features/portfolio/statistics/visitor-map.tsx
+msgid "Map of visitors' countries"
+msgstr "Peta negara asal pengunjung"
+
 #: src/components/input/icon-picker-grid.tsx
 msgid "Maps and places"
 msgstr "Peta & tempat"
@@ -9210,8 +9278,13 @@ msgid "Mark as applied"
 msgstr "Tandai sudah melamar"
 
 #: src/features/career/today.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
 msgid "Mark as read"
 msgstr "Tandai sudah dibaca"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Mark as unread"
+msgstr "Tandai belum dibaca"
 
 #: src/features/career/workspace/messages.tsx
 msgid "Mark it as applied in Apply first."
@@ -9316,8 +9389,14 @@ msgid "Message the coach"
 msgstr "Kirim pesan ke coach"
 
 #: src/features/career/shared.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Messages"
 msgstr "Pesan"
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Messages arrive by email and in your dashboard, and are deleted after 90 days."
+msgstr "Pesan masuk ke email dan dashboard kamu, lalu dihapus setelah 90 hari."
 
 #. placeholder {0}: index + 1
 #: src/features/portfolio/metrics/metric-form.tsx
@@ -9440,6 +9519,10 @@ msgstr "Sebagian besar poin dibuka dengan kata pengisi, bukan dengan hal yang be
 #: src/features/ats-checker/messages.ts
 msgid "Most entries have no dates."
 msgstr "Sebagian besar entri tidak memiliki tanggal."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Most opened work"
+msgstr "Karya paling sering dibuka"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
@@ -9878,6 +9961,10 @@ msgstr "Tidak berubah:"
 msgid "No city by that name. Larger towns are listed; type the nearest one, then edit the label."
 msgstr "Tidak ada kota dengan nama itu. Daftar berisi kota yang lebih besar; ketik yang terdekat, lalu ubah labelnya."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No clicks yet."
+msgstr "Belum ada klik."
+
 #. Empty-state message when no command palette results match the search query
 #: src/features/command-palette/content.tsx
 msgid "No commands match that search."
@@ -9983,9 +10070,17 @@ msgstr "Belum ada kunci."
 msgid "No lines look like a job title paired with an employer."
 msgstr "Tidak ada baris yang tampak seperti jabatan yang dipasangkan dengan nama pemberi kerja."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No links from other sites yet."
+msgstr "Belum ada tautan dari situs lain."
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No location"
 msgstr "Tidak ada lokasi"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "No messages yet. Turn on the contact form in the editor, under Contact."
+msgstr "Belum ada pesan. Nyalakan form kontak di editor, pada bagian Kontak."
 
 #: src/features/career/today.tsx
 msgid "No new roles. Discovery is paused."
@@ -10142,9 +10237,17 @@ msgstr "Tidak ada teks yang dapat dibaca dari file ini."
 msgid "No timezone matches."
 msgstr "Tidak ada zona waktu yang cocok."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No visits yet."
+msgstr "Belum ada kunjungan."
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No work experience shows"
 msgstr "Tidak ada pengalaman kerja yang terlihat"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "No work opened yet."
+msgstr "Belum ada karya yang dibuka."
 
 #: src/features/ats-checker/messages.ts
 msgid "No work-experience section was found."
@@ -10910,6 +11013,10 @@ msgstr ""
 msgid "Other documents · {0}"
 msgstr "Dokumen lain · {0}"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Other sites"
+msgstr "Situs lain"
+
 #: src/features/portfolio/page-text.ts
 msgid "Other work"
 msgstr "Karya lain"
@@ -11246,6 +11353,10 @@ msgstr "Judul PDF"
 msgid "PDF, Word or JSON. We'll build a resume from it."
 msgstr "PDF, Word atau JSON. Kami akan membuat resume darinya."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "PDFs opened"
+msgstr "PDF dibuka"
+
 #. Icon picker category: people and user icons
 #: src/components/input/icon-picker-grid.tsx
 msgid "People"
@@ -11292,6 +11403,10 @@ msgstr "Telepon"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Phone (optional)"
 msgstr "Telepon (opsional)"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Phones"
+msgstr "HP"
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
@@ -12843,6 +12958,10 @@ msgstr "Putar ulang intro"
 msgid "Reply"
 msgstr "Balasan"
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Reply by email"
+msgstr "Balas lewat email"
+
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "Balasan disalin"
@@ -13773,9 +13892,17 @@ msgstr "Lihat studi kasus"
 msgid "See the live site"
 msgstr "Lihat situsnya"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "See visitors' countries on a map, their devices, and which sites link to you with Plus."
+msgstr "Lihat negara pengunjung di peta, perangkat mereka, dan situs yang menautkan ke kamu dengan Plus."
+
 #: src/features/homepage/features.tsx
 msgid "See what ATS software reads"
 msgstr "Lihat apa yang dibaca software ATS"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "See what's included"
+msgstr "Lihat isinya"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
@@ -13840,6 +13967,14 @@ msgstr "Kirim pesan"
 msgid "Send a message (to Contact)"
 msgstr "Kirim pesan (ke Kontak)"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Send a message button"
+msgstr "Tombol Kirim pesan"
+
+#: src/features/portfolio/page-text.ts
+msgid "Send message"
+msgstr "Kirim pesan"
+
 #. Primary action button label on forgot-password form
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Send reset link"
@@ -13864,6 +13999,10 @@ msgstr "Mengirim tautan, bukan PDF, berarti recruiter selalu melihat versi terba
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Sending password reset email..."
 msgstr "Mengirim email atur ulang kata sandi..."
+
+#: src/features/portfolio/page-text.ts
+msgid "Sending your message…"
+msgstr "Mengirim pesan Anda…"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Sends this application (posting, notes, interview details) and Knowledge that's switched on to {label}."
@@ -13903,6 +14042,10 @@ msgstr "Desainer Produk Senior"
 msgid "Sent"
 msgstr "Terkirim"
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Sent through your contact form. Each one is deleted automatically after 90 days."
+msgstr "Dikirim lewat form kontak kamu. Setiap pesan terhapus otomatis setelah 90 hari."
+
 #. placeholder {0}: version.name
 #: src/features/resume/share/format.ts
 msgid "Sent to {0}"
@@ -13923,6 +14066,10 @@ msgstr "Serbia"
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
 msgstr "Layanan"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Service orders"
+msgstr "Pesanan layanan"
 
 #: src/features/portfolio/page-text.ts
 msgid "Services"
@@ -14104,6 +14251,10 @@ msgstr "Tampilkan {title} di halaman"
 msgid "Show a change"
 msgstr "Tampilkan perubahan"
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Show a contact form"
+msgstr "Tampilkan form kontak"
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Show a map on my page"
 msgstr "Tampilkan peta di halaman saya"
@@ -14176,6 +14327,10 @@ msgstr "Tampilkan profil saya"
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Show my website"
 msgstr "Tampilkan situs web saya"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Show older messages"
+msgstr "Tampilkan pesan lama"
 
 #: src/features/billing/payment-history.tsx
 msgid "Show older payments"
@@ -14329,6 +14484,10 @@ msgstr "sejak tampilan terakhir"
 #: src/features/portfolio/blocks/link-block.tsx
 msgid "Site name (optional)"
 msgstr "Nama situs (opsional)"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Sites that link to you"
+msgstr "Situs yang menautkan ke kamu"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Situation"
@@ -14514,6 +14673,7 @@ msgstr "CV sumber"
 #: src/features/assistant/conversation.tsx
 #: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Sources"
 msgstr "Sumber"
 
@@ -15022,6 +15182,10 @@ msgstr "Sistem mengarsipkan Anda dengan nama di bagian atas halaman."
 msgid "Systems look for an experience section. Projects or volunteering can show the same history."
 msgstr "Sistem mencari bagian pengalaman. Proyek atau kegiatan sukarela bisa menunjukkan sejarah yang sama."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Tablets"
+msgstr "Tablet"
+
 #: src/features/applications/components/list-view.tsx
 msgid "Tag"
 msgstr "Menandai"
@@ -15325,6 +15489,10 @@ msgstr "Isi, mis. Indonesia"
 msgid "Thai"
 msgstr "Thai"
 
+#: src/features/portfolio/page-text.ts
+msgid "Thank you. Your message was sent."
+msgstr "Terima kasih. Pesan Anda sudah terkirim."
+
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/reason-dialog.tsx
 msgid "That didn't work. Try again."
@@ -15454,6 +15622,10 @@ msgstr "Coach menyimpan fakta yang Anda sebutkan, dan memberi tahu Anda. Anda bi
 msgid "The connection dropped. Your changes are kept here, and saving tries again by itself."
 msgstr "Koneksi terputus. Perubahan Anda tetap ada di sini, dan penyimpanan dicoba lagi otomatis."
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "The contact form isn't available right now. Visitors can still use your other contact options."
+msgstr "Form kontak belum tersedia saat ini. Pengunjung tetap bisa memakai pilihan kontak kamu yang lain."
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "The copy is linked to the application, so Check and the assistant use its posting."
 msgstr "Salinannya ditautkan ke lamaran pekerjaan, jadi Periksa dan asisten menggunakan postingan pekerjaannya."
@@ -15517,6 +15689,10 @@ msgstr "Invoice tidak bisa dibuka. Coba lagi sebentar lagi."
 #: src/features/settings/ai/providers.tsx
 msgid "The key is encrypted on the server and never shown again. Saving tests the connection."
 msgstr "Kuncinya dienkripsi di server dan tidak pernah ditampilkan lagi. Menyimpan menguji koneksi."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "The last 30 days. Only you see these, and your own visits aren't counted."
+msgstr "30 hari terakhir. Hanya kamu yang melihat angka ini, dan kunjunganmu sendiri tidak dihitung."
 
 #: src/features/billing/plan-page.tsx
 msgid "The last payment didn't go through. Update your payment method to keep it; access is paused until then."
@@ -16019,6 +16195,14 @@ msgstr "File ini menggunakan font Type 3, yang memuat gambar, bukan karakter."
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr "Lisensi font ini tidak mengizinkan font disematkan ke dokumen, jadi tidak bisa dipakai di PDF."
 
+#: src/features/portfolio/page-text.ts
+msgid "This form is closed right now."
+msgstr "Form ini sedang ditutup."
+
+#: src/features/portfolio/page-text.ts
+msgid "This form needs JavaScript. You can use the other contact options here."
+msgstr "Form ini membutuhkan JavaScript. Anda bisa memakai pilihan kontak lain di halaman ini."
+
 #: src/features/billing/plan.ts
 msgid "This intro effect isn't in your plan"
 msgstr "Efek intro ini tidak termasuk dalam paketmu"
@@ -16377,6 +16561,7 @@ msgstr "Untuk menampilkan provinsi atau negara bagian Anda, cari kota Anda lagi 
 
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Today"
 msgstr "Hari ini"
@@ -16404,6 +16589,10 @@ msgstr "Terlalu terang untuk judul berwarna putih. Mungkin sulit untuk membaca d
 #: src/features/portfolio/media/remote.ts
 msgid "Too many links read in a short time. Wait a while, or fill the card in by hand."
 msgstr "Terlalu banyak tautan dibaca dalam waktu singkat. Tunggu sebentar, atau isi kartunya secara manual."
+
+#: src/features/portfolio/page-text.ts
+msgid "Too many messages for now. Try again later."
+msgstr "Terlalu banyak pesan untuk saat ini. Coba lagi nanti."
 
 #: src/features/portfolio/errors.ts
 msgid "Too many requests in a short time. Wait a minute, then try again."
@@ -16806,6 +16995,10 @@ msgstr "Matikan"
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Unpublish your portfolio?"
 msgstr "Matikan portofolio Anda?"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Unread:"
+msgstr "Belum dibaca:"
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
 #: src/features/billing/admin/customer.tsx
@@ -17338,6 +17531,10 @@ msgstr "Judul video (opsional)"
 msgid "Video: it plays on your page when a visitor presses play"
 msgstr "Video: diputar di halaman Anda saat pengunjung menekan putar"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Videos played"
+msgstr "Video diputar"
+
 #: src/libs/locale.ts
 msgid "Vietnamese"
 msgstr "Vietnam"
@@ -17363,6 +17560,10 @@ msgstr "Lihat postingan pekerjaan"
 msgid "View resume"
 msgstr "Lihat CV"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "View resume button"
+msgstr "Tombol Lihat CV"
+
 #. placeholder {0}: formatVersionTime(viewing.createdAt, i18n.locale)
 #. placeholder {0}: when(selected)
 #. placeholder {1}: getVersionTitle(selected)
@@ -17381,6 +17582,7 @@ msgstr "Dilihat"
 msgid "views · 30 days"
 msgstr "penayangan · 30 hari"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
 msgstr "Pengunjung"
@@ -17400,6 +17602,14 @@ msgstr "Pengunjung tidak bisa melihatnya selama diturunkan."
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "Pengunjung memasukkannya sebelum mereka melihat resume. Bagikan hanya dengan orang yang Anda percayai."
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Visits"
+msgstr "Kunjungan"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Visits per day"
+msgstr "Kunjungan per hari"
 
 #: src/features/billing/plan.ts
 msgid "Visits, clicks, messages and sources are included."
@@ -17458,6 +17668,10 @@ msgstr "Peringatan"
 #: src/features/billing/payment-return.tsx
 msgid "We couldn't check this payment"
 msgstr "Kami tidak bisa mengecek pembayaran ini"
+
+#: src/features/portfolio/page-text.ts
+msgid "We couldn't confirm you're not a robot. Try again."
+msgstr "Kami belum bisa memastikan Anda bukan robot. Coba lagi."
 
 #: src/features/billing/payment-return.tsx
 msgid "We couldn't find this payment"
@@ -17738,6 +17952,10 @@ msgstr "Apa yang berhasil"
 msgid "WhatsApp"
 msgstr "WhatsApp"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "WhatsApp button"
+msgstr "Tombol WhatsApp"
+
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "WhatsApp number"
 msgstr "Nomor WhatsApp"
@@ -17766,6 +17984,10 @@ msgstr "Dari mana lamaran berasal"
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Where it was given (optional)"
 msgstr "Sumber testimoni (opsional)"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Where visitors come from"
+msgstr "Asal pengunjung"
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Where you want to work"
@@ -17896,6 +18118,10 @@ msgstr "Karya"
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Work layout"
 msgstr "Tata letak Karya"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Work opened by day"
+msgstr "Karya dibuka per hari"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
@@ -18302,6 +18528,10 @@ msgstr "Detail Anda berubah di resume. Surat itu juga diperbarui."
 msgid "Your domain"
 msgstr "Domain Anda"
 
+#: src/features/portfolio/page-text.ts
+msgid "Your email"
+msgstr "Email Anda"
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your email address changed on the resume. The letter updated too."
 msgstr "Alamat email Anda berubah di resume. Surat itu juga diperbarui."
@@ -18414,8 +18644,21 @@ msgstr "Lokasi Anda berubah di resume. Surat itu juga diperbarui."
 msgid "Your margins are very narrow."
 msgstr "Margin Anda sangat sempit."
 
+#: src/features/portfolio/page-text.ts
+msgid "Your message"
+msgstr "Pesan Anda"
+
+#: src/features/portfolio/page-text.ts
+msgid "Your message couldn't be sent. Try again in a moment."
+msgstr "Pesan Anda gagal terkirim. Coba lagi sebentar lagi."
+
+#: src/features/portfolio/page-text.ts
+msgid "Your message goes to {name}, who will see your email address so they can reply."
+msgstr "Pesan Anda dikirim ke {name}, yang akan melihat alamat email Anda agar bisa membalas."
+
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-effect.tsx
+#: src/features/portfolio/page-text.ts
 msgid "Your name"
 msgstr "Nama Anda"
 
