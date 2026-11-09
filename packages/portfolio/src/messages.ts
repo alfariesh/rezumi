@@ -83,6 +83,26 @@ const ENGLISH = {
 	messageClosed: "This form is closed right now.",
 	formNote: "Your message goes to {name}, who will see your email address so they can reply.",
 	formNeedsScript: "This form needs JavaScript. You can use the other contact options here.",
+	report: "Report",
+	reportTitle: "Report this portfolio",
+	reportIntro:
+		"Tell Rezumi what's wrong with {name}'s portfolio. Only the Rezumi team reads reports, and the portfolio's owner is never told who sent one.",
+	reportReason: "What's wrong?",
+	reportReasonFraud: "Fraud or a scam",
+	reportReasonIllegal: "Illegal content",
+	reportReasonRights: "Trademark or copyright, such as a logo or a work",
+	reportReasonFakeTestimonial: "A fake testimonial",
+	reportReasonOther: "Something else",
+	reportDetails: "What should we look at?",
+	reportEmail: "Your email (optional)",
+	reportEmailNote: "Only if you'd like a reply. The portfolio's owner won't see it.",
+	reportSend: "Send report",
+	reportSent: "Thank you. Your report was sent to the Rezumi team.",
+	reportFailed: "Your report couldn't be sent. Check the form and try again in a moment.",
+	reportClosed:
+		"Reports can't be sent from this page right now. Email {email} with this page's address and what's wrong.",
+	reportNeedsScript: "This form needs JavaScript. You can also email {email}.",
+	reportBack: "Back to the portfolio",
 };
 
 export type PortfolioPageMessages = typeof ENGLISH;

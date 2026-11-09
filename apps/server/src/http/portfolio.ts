@@ -1,6 +1,8 @@
 import type { PortfolioEventKind } from "@rezumi/schema/portfolio/statistics";
 import { notifyPortfolioMessages, submitPortfolioMessage } from "@rezumi/api/features/portfolio/contact";
 import { findPortfolioEventTarget, recordPortfolioEvent } from "@rezumi/api/features/portfolio/public";
+import { publicPortfolioRequestAllowed, tooManyPortfolioRequests } from "@rezumi/api/features/portfolio/public-limit";
+import { notifyPortfolioReport, submitPortfolioReport } from "@rezumi/api/features/portfolio/report";
 import { PORTFOLIO_ITEM_ID_PATTERN } from "@rezumi/schema/portfolio/limits";
 import { PORTFOLIO_EVENT_KINDS } from "@rezumi/schema/portfolio/statistics";
 import { isSpeculative, runAfterResponse } from "../static/portfolio-page";
@@ -30,6 +32,7 @@ export async function handlePortfolioEvent(
 	username: string,
 	trustedClient: string,
 ): Promise<Response> {
+	if (!(await publicPortfolioRequestAllowed(trustedClient))) return noContent();
 	const event = parsePortfolioEvent(await request.text());
 	const target = await findPortfolioEventTarget(username, event?.id);
 	if (!target) return notFound();
@@ -77,6 +80,7 @@ export async function handlePortfolioMessage(
 	username: string,
 	trustedClient: string,
 ): Promise<Response> {
+	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
 	const wantsJson = (request.headers.get("accept") ?? "").includes("application/json");
 	const headers = { "Cache-Control": "no-store" };
 	const form = await readForm(request);
@@ -97,5 +101,43 @@ export async function handlePortfolioMessage(
 	return new Response(null, {
 		status: 303,
 		headers: { ...headers, Location: `/${encodeURIComponent(username)}?contact=${outcome}#contact` },
+	});
+}
+
+/** Like the contact form, a report's words never reach a log, and a database error's text would hold them. */
+async function submitReportSafely(username: string, form: Record<string, unknown>, trustedClient: string) {
+	try {
+		return await submitPortfolioReport({ username, form, trustedClient });
+	} catch {
+		console.error("[portfolio] A report could not be saved.");
+		return { ok: false, code: "unavailable" } as const;
+	}
+}
+
+/**
+ * `POST /api/portfolio/<username>/report`, from the report page's plain form: back to that page with the outcome. The
+ * email to the operator goes out after the answer.
+ */
+export async function handlePortfolioReport(
+	request: Request,
+	username: string,
+	trustedClient: string,
+): Promise<Response> {
+	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
+	const form = await readForm(request);
+	const result = form
+		? await submitReportSafely(username, form, trustedClient)
+		: ({ ok: false, code: "invalid" } as const);
+	if (!result) return notFound();
+	if (result.ok && result.reportId) {
+		const { reportId } = result;
+		await runAfterResponse(notifyPortfolioReport(reportId), "Portfolio report notification failed");
+	}
+	return new Response(null, {
+		status: 303,
+		headers: {
+			"Cache-Control": "no-store",
+			Location: `/${encodeURIComponent(username)}?report=${result.ok ? "sent" : "failed"}`,
+		},
 	});
 }

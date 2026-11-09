@@ -46,6 +46,8 @@ type PortfolioPageForm =
 export type PortfolioPageLive = {
 	/** Where the page's beacons go: `/api/portfolio/<username>/event`. */
 	eventUrl: string;
+	/** Where the footer's "Report" link goes: `?report` on this page, or the app's domain from a custom domain. */
+	reportUrl: string;
 	/** Left out when the view has no form to draw. */
 	form?: PortfolioPageForm;
 };

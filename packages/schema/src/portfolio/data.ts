@@ -248,6 +248,9 @@ function createPortfolioSchemas(kit: SchemaKit) {
 			z.object({
 				greeting: kit.field(kit.text(max.greeting), ""),
 				showPicture: kit.field(z.boolean(), true),
+				showLocation: kit
+					.field(z.boolean(), true)
+					.describe("False keeps the resume's location off the page, for someone whose resume holds a street address."),
 				availability: kit.field(
 					z.object({
 						show: kit.field(z.boolean(), false),
@@ -282,6 +285,7 @@ function createPortfolioSchemas(kit: SchemaKit) {
 			{
 				greeting: "",
 				showPicture: true,
+				showLocation: true,
 				availability: { show: false, text: "" },
 				highlights: [],
 				buttons: [],

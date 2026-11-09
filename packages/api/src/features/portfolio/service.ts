@@ -672,7 +672,11 @@ export const portfolioService = {
 		await requireEnabled(userId);
 		await db.transaction(async (tx) => {
 			// The portfolio's row first, then its files: the order every save, upload and job takes them in.
-			if (!(await lockPortfolio(tx, userId))) throw portfolioErrors.notFound();
+			const locked = await lockPortfolio(tx, userId);
+			if (!locked) throw portfolioErrors.notFound();
+			// Only an administrator lifts a takedown, and deleting and recreating would be a way around that. Deleting the
+			// account still removes everything.
+			if (locked.suspendedAt) throw portfolioErrors.suspended();
 			await tx.delete(schema.portfolio).where(eq(schema.portfolio.userId, userId));
 			await tx
 				.update(schema.portfolioFile)

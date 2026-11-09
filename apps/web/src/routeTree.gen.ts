@@ -61,6 +61,8 @@ import { Route as DashboardSettingsPreferencesRouteImport } from "./routes/dashb
 import { Route as DashboardSettingsProfileRouteImport } from "./routes/dashboard/settings/profile";
 import { Route as DashboardAdminBillingIndexRouteImport } from "./routes/dashboard/admin/billing/index";
 import { Route as DashboardAdminBillingUserIdRouteImport } from "./routes/dashboard/admin/billing/$userId";
+import { Route as DashboardAdminPortfoliosIndexRouteImport } from "./routes/dashboard/admin/portfolios/index";
+import { Route as DashboardAdminPortfoliosPortfolioIdRouteImport } from "./routes/dashboard/admin/portfolios/$portfolioId";
 import { Route as DashboardApplicationsApplicationIdChar123TabChar125RouteImport } from "./routes/dashboard/applications/$applicationId.{-$tab}";
 import { Route as DashboardCareerCoachChar123ConversationIdChar125RouteImport } from "./routes/dashboard/career/coach.{-$conversationId}";
 import { Route as DashboardCareerKnowledgeFactsRouteImport } from "./routes/dashboard/career/knowledge/facts";
@@ -341,6 +343,18 @@ const DashboardAdminBillingUserIdRoute =
     path: "/billing/$userId",
     getParentRoute: () => DashboardAdminRouteRoute,
   } as any);
+const DashboardAdminPortfoliosIndexRoute =
+  DashboardAdminPortfoliosIndexRouteImport.update({
+    id: "/portfolios/",
+    path: "/portfolios/",
+    getParentRoute: () => DashboardAdminRouteRoute,
+  } as any);
+const DashboardAdminPortfoliosPortfolioIdRoute =
+  DashboardAdminPortfoliosPortfolioIdRouteImport.update({
+    id: "/portfolios/$portfolioId",
+    path: "/portfolios/$portfolioId",
+    getParentRoute: () => DashboardAdminRouteRoute,
+  } as any);
 const DashboardApplicationsApplicationIdChar123TabChar125Route =
   DashboardApplicationsApplicationIdChar123TabChar125RouteImport.update({
     id: "/applications/$applicationId/{-$tab}",
@@ -441,11 +455,13 @@ export interface FileRoutesByFullPath {
   "/dashboard/resumes/": typeof DashboardResumesIndexRoute;
   "/dashboard/settings/": typeof DashboardSettingsIndexRoute;
   "/dashboard/admin/billing/$userId": typeof DashboardAdminBillingUserIdRoute;
+  "/dashboard/admin/portfolios/$portfolioId": typeof DashboardAdminPortfoliosPortfolioIdRoute;
   "/dashboard/applications/$applicationId/{-$tab}": typeof DashboardApplicationsApplicationIdChar123TabChar125Route;
   "/dashboard/career/coach/{-$conversationId}": typeof DashboardCareerCoachChar123ConversationIdChar125Route;
   "/dashboard/career/knowledge/facts": typeof DashboardCareerKnowledgeFactsRoute;
   "/dashboard/career/knowledge/preferences": typeof DashboardCareerKnowledgePreferencesRoute;
   "/dashboard/admin/billing/": typeof DashboardAdminBillingIndexRoute;
+  "/dashboard/admin/portfolios/": typeof DashboardAdminPortfoliosIndexRoute;
   "/dashboard/settings/authentication/": typeof DashboardSettingsAuthenticationIndexRoute;
   "/dashboard/settings/billing/": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
@@ -495,11 +511,13 @@ export interface FileRoutesByTo {
   "/dashboard/resumes": typeof DashboardResumesIndexRoute;
   "/dashboard/settings": typeof DashboardSettingsIndexRoute;
   "/dashboard/admin/billing/$userId": typeof DashboardAdminBillingUserIdRoute;
+  "/dashboard/admin/portfolios/$portfolioId": typeof DashboardAdminPortfoliosPortfolioIdRoute;
   "/dashboard/applications/$applicationId/{-$tab}": typeof DashboardApplicationsApplicationIdChar123TabChar125Route;
   "/dashboard/career/coach/{-$conversationId}": typeof DashboardCareerCoachChar123ConversationIdChar125Route;
   "/dashboard/career/knowledge/facts": typeof DashboardCareerKnowledgeFactsRoute;
   "/dashboard/career/knowledge/preferences": typeof DashboardCareerKnowledgePreferencesRoute;
   "/dashboard/admin/billing": typeof DashboardAdminBillingIndexRoute;
+  "/dashboard/admin/portfolios": typeof DashboardAdminPortfoliosIndexRoute;
   "/dashboard/settings/authentication": typeof DashboardSettingsAuthenticationIndexRoute;
   "/dashboard/settings/billing": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
@@ -558,11 +576,13 @@ export interface FileRoutesById {
   "/dashboard/resumes/": typeof DashboardResumesIndexRoute;
   "/dashboard/settings/": typeof DashboardSettingsIndexRoute;
   "/dashboard/admin/billing/$userId": typeof DashboardAdminBillingUserIdRoute;
+  "/dashboard/admin/portfolios/$portfolioId": typeof DashboardAdminPortfoliosPortfolioIdRoute;
   "/dashboard/applications/$applicationId/{-$tab}": typeof DashboardApplicationsApplicationIdChar123TabChar125Route;
   "/dashboard/career/coach/{-$conversationId}": typeof DashboardCareerCoachChar123ConversationIdChar125Route;
   "/dashboard/career/knowledge/facts": typeof DashboardCareerKnowledgeFactsRoute;
   "/dashboard/career/knowledge/preferences": typeof DashboardCareerKnowledgePreferencesRoute;
   "/dashboard/admin/billing/": typeof DashboardAdminBillingIndexRoute;
+  "/dashboard/admin/portfolios/": typeof DashboardAdminPortfoliosIndexRoute;
   "/dashboard/settings/authentication/": typeof DashboardSettingsAuthenticationIndexRoute;
   "/dashboard/settings/billing/": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
@@ -621,11 +641,13 @@ export interface FileRouteTypes {
     | "/dashboard/resumes/"
     | "/dashboard/settings/"
     | "/dashboard/admin/billing/$userId"
+    | "/dashboard/admin/portfolios/$portfolioId"
     | "/dashboard/applications/$applicationId/{-$tab}"
     | "/dashboard/career/coach/{-$conversationId}"
     | "/dashboard/career/knowledge/facts"
     | "/dashboard/career/knowledge/preferences"
     | "/dashboard/admin/billing/"
+    | "/dashboard/admin/portfolios/"
     | "/dashboard/settings/authentication/"
     | "/dashboard/settings/billing/"
     | "/dashboard/career/knowledge/stories/{-$storyId}"
@@ -675,11 +697,13 @@ export interface FileRouteTypes {
     | "/dashboard/resumes"
     | "/dashboard/settings"
     | "/dashboard/admin/billing/$userId"
+    | "/dashboard/admin/portfolios/$portfolioId"
     | "/dashboard/applications/$applicationId/{-$tab}"
     | "/dashboard/career/coach/{-$conversationId}"
     | "/dashboard/career/knowledge/facts"
     | "/dashboard/career/knowledge/preferences"
     | "/dashboard/admin/billing"
+    | "/dashboard/admin/portfolios"
     | "/dashboard/settings/authentication"
     | "/dashboard/settings/billing"
     | "/dashboard/career/knowledge/stories/{-$storyId}"
@@ -737,11 +761,13 @@ export interface FileRouteTypes {
     | "/dashboard/resumes/"
     | "/dashboard/settings/"
     | "/dashboard/admin/billing/$userId"
+    | "/dashboard/admin/portfolios/$portfolioId"
     | "/dashboard/applications/$applicationId/{-$tab}"
     | "/dashboard/career/coach/{-$conversationId}"
     | "/dashboard/career/knowledge/facts"
     | "/dashboard/career/knowledge/preferences"
     | "/dashboard/admin/billing/"
+    | "/dashboard/admin/portfolios/"
     | "/dashboard/settings/authentication/"
     | "/dashboard/settings/billing/"
     | "/dashboard/career/knowledge/stories/{-$storyId}"
@@ -1125,6 +1151,20 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof DashboardAdminBillingUserIdRouteImport;
       parentRoute: typeof DashboardAdminRouteRoute;
     };
+    "/dashboard/admin/portfolios/": {
+      id: "/dashboard/admin/portfolios/";
+      path: "/portfolios";
+      fullPath: "/dashboard/admin/portfolios/";
+      preLoaderRoute: typeof DashboardAdminPortfoliosIndexRouteImport;
+      parentRoute: typeof DashboardAdminRouteRoute;
+    };
+    "/dashboard/admin/portfolios/$portfolioId": {
+      id: "/dashboard/admin/portfolios/$portfolioId";
+      path: "/portfolios/$portfolioId";
+      fullPath: "/dashboard/admin/portfolios/$portfolioId";
+      preLoaderRoute: typeof DashboardAdminPortfoliosPortfolioIdRouteImport;
+      parentRoute: typeof DashboardAdminRouteRoute;
+    };
     "/dashboard/applications/$applicationId/{-$tab}": {
       id: "/dashboard/applications/$applicationId/{-$tab}";
       path: "/applications/$applicationId/{-$tab}";
@@ -1248,12 +1288,17 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface DashboardAdminRouteRouteChildren {
   DashboardAdminBillingUserIdRoute: typeof DashboardAdminBillingUserIdRoute;
+  DashboardAdminPortfoliosPortfolioIdRoute: typeof DashboardAdminPortfoliosPortfolioIdRoute;
   DashboardAdminBillingIndexRoute: typeof DashboardAdminBillingIndexRoute;
+  DashboardAdminPortfoliosIndexRoute: typeof DashboardAdminPortfoliosIndexRoute;
 }
 
 const DashboardAdminRouteRouteChildren: DashboardAdminRouteRouteChildren = {
   DashboardAdminBillingUserIdRoute: DashboardAdminBillingUserIdRoute,
+  DashboardAdminPortfoliosPortfolioIdRoute:
+    DashboardAdminPortfoliosPortfolioIdRoute,
   DashboardAdminBillingIndexRoute: DashboardAdminBillingIndexRoute,
+  DashboardAdminPortfoliosIndexRoute: DashboardAdminPortfoliosIndexRoute,
 };
 
 const DashboardAdminRouteRouteWithChildren =

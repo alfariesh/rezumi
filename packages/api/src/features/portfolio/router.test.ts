@@ -133,8 +133,13 @@ describe("portfolio input", () => {
 });
 
 describe("the portfolio router", () => {
-	const { messages, ai, ...direct } = portfolioRouter;
-	const procedures = [...Object.entries(direct), ...Object.entries(messages), ...Object.entries(ai)];
+	const { messages, ai, admin, ...direct } = portfolioRouter;
+	const procedures = [
+		...Object.entries(direct),
+		...Object.entries(messages),
+		...Object.entries(ai),
+		...Object.entries(admin),
+	];
 
 	it("rate-limits before checking input, so a limited account costs no parsing", () => {
 		for (const [name, procedure] of procedures) {

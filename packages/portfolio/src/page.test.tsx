@@ -530,3 +530,22 @@ describe("renderPortfolioPage hardening", () => {
 		}
 	});
 });
+
+describe("links leaving the page", () => {
+	const OWN_SITE = /^https:\/\/rezumi\.example\//;
+
+	it("all carry ugc, nofollow, noopener and noreferrer", () => {
+		const { html } = renderTestPage(fullPortfolioData);
+		const anchors = [...html.matchAll(/<a\b[^>]*>/g)].map(([tag]) => tag);
+		const leaving = anchors.filter((tag) => {
+			const href = /href="([^"]*)"/.exec(tag)?.[1] ?? "";
+			return /^https?:/i.test(href) && !OWN_SITE.test(href);
+		});
+		expect(leaving.length).toBeGreaterThan(3);
+		for (const tag of leaving) {
+			if (tag.includes('class="pf-badge"')) continue;
+			const rel = /rel="([^"]*)"/.exec(tag)?.[1] ?? "";
+			expect(rel.split(" "), tag).toEqual(expect.arrayContaining(["ugc", "nofollow", "noopener", "noreferrer"]));
+		}
+	});
+});

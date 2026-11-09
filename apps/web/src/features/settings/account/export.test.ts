@@ -112,6 +112,7 @@ describe("buildAccountZip", () => {
 					},
 				],
 			},
+			portfolio: { portfolio: null, files: [], messages: [], reports: [] },
 		} as never);
 
 		const files = unzipSync(zip);
@@ -122,6 +123,7 @@ describe("buildAccountZip", () => {
 			"billing.json",
 			"career.json",
 			"letters/product-designer-01a0ec71-a410-71da-9156-b347210cf72b.json",
+			"portfolio.json",
 			"resumes/product-designer-01a0ec71-03e8-77b1-a5e4-ce04be126204.json",
 			"resumes/product-designer-01a0ec71-32c8-728b-b43b-b760a673b825.json",
 		]);

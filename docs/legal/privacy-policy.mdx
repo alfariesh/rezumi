@@ -4,13 +4,13 @@ description: "English translation of the Indonesian draft policy for account, do
 ---
 
 <Warning>
-  Draft dated 2 November 2026 — pending owner approval; not effective as new contractual terms. Support email,
-  resolution deadline, operational retention and providers require confirmation before publication. Paid plans and
-  Rezumi AI credits are not sold while billing remains disabled.
+  Draft dated 9 November 2026 — pending owner approval; not effective as new contractual terms. Operational retention
+  and providers require confirmation before publication. Paid plans and Rezumi AI credits are not sold while billing
+  remains disabled.
 </Warning>
 
 The [Indonesian privacy policy](/legal/kebijakan-privasi) governs. Effective date: **[NOT SET]**.
-Controller: **Salman Alfariesh — Rezumi**, hi@rezumi.app **[CONFIRMATION REQUIRED]**.
+Controller: **Salman Alfariesh — Rezumi**, hi@rezumi.app.
 Mailing address: **Apartement Centerpoint, Tower A, 1211, Jl. Ahmad Yani No.kav20, RT.005/RW.002, Marga Jaya, Kec. Bekasi Sel., Kota Bks, Jawa Barat 17141**. Complaint phone: **08125800097**; see [Contact & complaints](/legal/contact).
 This covers rezumi.app and apps connected to it. Other servers have their own operators and policies.
 
@@ -34,7 +34,7 @@ At draft time the official apps include no third-party advertising analytics; se
 ## Recipients
 
 - **Cloudflare:** Workers, network/security and private R2 uploads, including request metadata.
-- **Neon:** managed PostgreSQL for accounts, documents and service records. Database/backup region: **[OWNER TO CONFIRM]**.
+- **Neon:** managed PostgreSQL for accounts, documents and service records. Database/backup region: **Singapore (AWS ap-southeast-1)**.
 - **Polar (Polar Software, Inc., United States):** the merchant of record for subscriptions. At checkout Rezumi sends your account id,
   name, email, IP address (for currency and tax location) and language; you enter payment details and billing address directly with Polar.
   Polar processes the payment (through Stripe), tax, invoices and disputes as an independent controller under its own privacy policy.
@@ -43,14 +43,14 @@ At draft time the official apps include no third-party advertising analytics; se
   as the law requires. Data may be processed outside Indonesia.
 - **AI providers:** only information needed for requested operations, such as resume/letter text, job descriptions, answers,
   knowledge and conversation context. BYOK uses the selected provider (such as OpenAI, Anthropic, Google Gemini, OpenRouter or compatible endpoints).
-  Rezumi AI will identify provider/model before use; **launch provider, location and retention are undecided**.
+  Rezumi AI will identify provider/model before use; launch provider: **Anthropic (Claude Haiku 5.5)**; location and retention **[OWNER TO CONFIRM]**.
   Spending credits does not authorize model training. Provider retention/training terms must be disclosed before activation;
   Rezumi AI must remain disabled until complete. Saved API keys are encrypted and not exposed to other users.
-- **Transactional email:** email address and necessary account/receipt details; production provider/retention **[OWNER TO CONFIRM]**.
+- **Transactional email:** email address and necessary account/receipt details; production provider: **Cloudflare Email**; retention **[OWNER TO CONFIRM]**.
 - **Social login and connected apps:** login providers receive authentication requests. Authorized OAuth/API/MCP apps may read/change
   profile, resumes, letters, applications, history/statistics and career data within granted scopes. Revoke access in connected apps/API key settings.
   Recipients apply their own policies; revocation stops future access but does not erase prior copies automatically.
-- **Public recipients:** published resumes can be viewed/copied under your link/password choices. Search engines may retain allowed copies.
+- **Public recipients:** published resumes and portfolios can be viewed/copied under your link/password choices. Search engines may retain allowed copies.
   External images/fonts contact their hosts. Law may require limited disclosure to authorities.
 
 Web editor PDFs render locally with Forme; mobile PDF previews/exports render on-device. Public/API PDFs render on our server.
@@ -69,6 +69,33 @@ under its settings until disabled. AI/shared-resume reports send only chosen con
 to the operator, not AI providers. Reports are included in account export and deleted with the account or earlier after review.
 Author blocks are local per account/server; they do not remove website content or affect other devices.
 
+## Web portfolios
+
+This section applies once portfolios launch.
+
+| Data                                                                                      | Purpose                                 | Basis                                               |
+| ----------------------------------------------------------------------------------------- | --------------------------------------- | --------------------------------------------------- |
+| Portfolio content, pictures, PDFs and location written by the user                        | Showing the portfolio to visitors       | Contract; the user's choice to publish              |
+| Contact form messages: name, email, message                                               | Passing messages to the owner           | Contract and visitors' legitimate interests         |
+| Aggregate statistics: visits, clicks, sources, countries, device types, referring domains | Statistics for the portfolio's owner    | Proportionate legitimate interests                  |
+| Reports: reason, details, reporter's email if given                                       | Content moderation and enforcing rights | Legal obligations and security legitimate interests |
+| Moderation records: who acted, when and why                                               | Accountability and handling appeals     | Legitimate interests and legal obligations          |
+
+- **Content users publish** is visible to anyone. Pictures are compressed in the browser, which removes photo location data (EXIF). PDFs are published as they are, including details saved inside the
+  file such as the author's name.
+- **Statistics without tracking cookies.** Visits and clicks are told apart with a hash of IP address, browser and language for one hour; the raw IP address is not stored. Country, device type and
+  referring domain breakdowns are kept as aggregates in **Cloudflare Analytics Engine** for about 3 months.
+- **Contact form.** Messages are kept for **90 days** and then deleted automatically; the portfolio's owner can delete them sooner. The owner sees the sender's email so they can reply.
+  **Cloudflare Turnstile** prevents spam on the contact and report forms and processes visitors' technical data as a third party.
+- **Reports.** Reports are read only by the Rezumi team. Who reported and what they wrote are not shown to the portfolio's owner and are not in their data export, which holds only the reason, status and time.
+  A reporter's email is deleted 90 days after the report is handled. Reports are deleted with the reported portfolio or account. Moderation records are kept after an account is deleted, without naming the account.
+- **Videos** from YouTube and Vimeo load only after a visitor clicks play; until then no request goes to those services.
+- **Pasted links.** When a user pastes a link, Rezumi's server reads that page's title and picture without sending any user data. If the user approves the picture, a copy is stored with their portfolio files.
+- **Location and maps.** Location is shown at city level by default, and a user can choose not to show one. Map pictures are made in the editor, so opening a portfolio sends no request to a map provider.
+  While choosing a location in the editor, the user's browser loads map data from OpenFreeMap.
+- **Custom domains.** A connected domain name is processed by Cloudflare (Cloudflare for SaaS) for certificates and routing.
+- **Export and deletion.** The account export holds the portfolio, its file list, messages, and reports as described above. Deleting the account deletes everything, including files and the Cloudflare custom hostname.
+
 ## Retention and deletion
 
 Account data, documents, uploads and versions remain as needed until deletion. Trash is permanently removed after 30 days unless restored/deleted sooner.
@@ -78,8 +105,7 @@ mobile opens server browser confirmation and may require login. Uninstalling doe
 On deletion, identity links in payment records are removed/anonymized; records must not be called anonymous if re-identification remains possible.
 Non-identifying accounting records are planned for **10 years [OWNER/ADVISER TO CONFIRM OBLIGATION AND SCHEMA]**.
 If law requires identifiable evidence, retain only the necessary portion separately with restricted access and disclose the basis and duration.
-Law or disputes may delay relevant deletion with an explanation. Log, support ticket, AI ledger and backup retention/deletion cycles:
-**[OWNER MUST SET BEFORE PUBLICATION]**. No promise of instant erasure from every backup/provider; completion and residual retention are explained.
+Law or disputes may delay relevant deletion with an explanation. Logs and support tickets are kept for at most **1 year**. AI usage records follow the accounting records above. The database restore history is kept for **6 hours**. No promise of instant erasure from every backup/provider; completion and residual retention are explained.
 
 ## Rights
 

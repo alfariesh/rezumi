@@ -4,13 +4,16 @@ import type { PortfolioView } from "@rezumi/portfolio/view";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { createHash } from "node:crypto";
 import { findPublicPortfolio, recordPortfolioVisit } from "@rezumi/api/features/portfolio/public";
+import { publicPortfolioRequestAllowed, tooManyPortfolioRequests } from "@rezumi/api/features/portfolio/public-limit";
 import { isContactFormConfigured } from "@rezumi/api/features/portfolio/turnstile";
 import { env } from "@rezumi/env/server";
 import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
 import { renderPortfolioDocument } from "@rezumi/portfolio/document";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
+import { renderPortfolioReportPage } from "@rezumi/portfolio/report";
 import { buildPortfolioView, portfolioPageLocale } from "@rezumi/portfolio/view";
 import { publicResumePath } from "@rezumi/resume/sharing";
+import { BILLING_SELLER } from "@rezumi/schema/billing";
 import { ownPictureUrl } from "@rezumi/utils/own-picture";
 import { serveResumePage } from "./resume-page";
 import { BASE_SECURITY_HEADERS } from "./web";
@@ -253,7 +256,11 @@ function liveWiring(
 	options: ServeOptions,
 ): PortfolioPageLive {
 	const path = encodeURIComponent(portfolio.username);
-	const live: PortfolioPageLive = { eventUrl: `/api/portfolio/${path}/event` };
+	const live: PortfolioPageLive = {
+		eventUrl: `/api/portfolio/${path}/event`,
+		// The form lives on the app's domain only, for the same Turnstile reason.
+		reportUrl: `${options.customDomain ? origin() : ""}/${path}?report`,
+	};
 	if (!hasForm) return live;
 	if (options.customDomain) return { ...live, form: { kind: "link", url: `${origin()}/${path}#contact` } };
 	const status = new URL(request.url).searchParams.get("contact");
@@ -316,6 +323,29 @@ async function showPortfolio(
 }
 
 /**
+ * The report form at `/<username>?report` (`02-teknis.md` section 14), on its own plain page so a page of any theme gets
+ * the same form. A portfolio reached over a custom domain sends visitors to the app's domain, where Turnstile works.
+ */
+function showReportForm(request: Request, portfolio: PublicPortfolio, options: ServeOptions): Response {
+	const path = encodeURIComponent(portfolio.username);
+	if (options.customDomain) return Response.redirect(`${origin()}/${path}?report`, 302);
+	const view = publicPortfolioView(portfolio);
+	const status = new URL(request.url).searchParams.get("report");
+	const body = renderPortfolioReportPage({
+		lang: view.locale,
+		dir: view.dir,
+		name: view.basics.name,
+		pageUrl: `/${path}`,
+		action: `/api/portfolio/${path}/report`,
+		siteKey: isContactFormConfigured() ? (env.TURNSTILE_SITE_KEY ?? null) : null,
+		status: status === "sent" || status === "failed" ? status : undefined,
+		supportEmail: BILLING_SELLER.supportEmail,
+		messages: portfolioMessages(view.locale),
+	});
+	return html(body, "", { "X-Robots-Tag": "noindex, nofollow" }, TURNSTILE_POLICY);
+}
+
+/**
  * `/<username>` and a custom domain's root: the account's portfolio when one is published and the switch lets its
  * owner show it, otherwise the primary resume exactly as before (`02-teknis.md` section 6). POST is always the resume's
  * password form; the portfolio's own forms post to `/api/portfolio/…`.
@@ -328,6 +358,9 @@ export async function servePortfolioOrResume(
 ): Promise<Response> {
 	const resume = () => serveResumePage(request, { username, primary: true }, trustedClient, options);
 	if (request.method !== "GET" && request.method !== "HEAD") return resume();
+	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
 	const portfolio = await findPublicPortfolio(username);
-	return portfolio ? showPortfolio(request, portfolio, trustedClient, options) : resume();
+	if (!portfolio) return resume();
+	if (new URL(request.url).searchParams.has("report")) return showReportForm(request, portfolio, options);
+	return showPortfolio(request, portfolio, trustedClient, options);
 }

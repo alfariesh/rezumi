@@ -923,6 +923,10 @@ msgstr "{names} ପାଠ୍ୟରେ ଶେଷରେ ଆସେ | ଅଧିକ�
 msgid "{open, plural, one {# thing to review.} other {# things to review.}}"
 msgstr "{open, plural, one {ସମୀକ୍ଷା କରିବାକୁ # ଜିନିଷ |} other {ସମୀକ୍ଷା କରିବାକୁ # ଜିନିଷଗୁଡିକ |}}"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "{open} open. The portfolio's owner never sees who sent a report."
+msgstr ""
+
 #: src/features/resume/editor/chrome.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "{pageCount, plural, one {# page} other {# pages}}"
@@ -1289,6 +1293,11 @@ msgstr "ଗୋଟିଏ ତଥ୍ୟ ବଦଳିଛି। ଏହି କାହ�
 msgid "A fact you've since forgotten"
 msgstr "ଆପଣ ପରେ ଭୁଲାଇ ଦେଇଥିବା ଏକ ତଥ୍ୟ"
 
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "A fake testimonial"
+msgstr ""
+
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "A fall can be good, such as faster load times."
 msgstr ""
@@ -1550,6 +1559,7 @@ msgid "Accomplishment"
 msgstr "ସଫଳତା"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
@@ -1562,6 +1572,10 @@ msgstr "ଆକାଉଣ୍ଟ"
 #. placeholder {2}: account.timezone
 #: src/features/billing/admin/customer.tsx
 msgid "Account {0} · created {1} · time zone {2}"
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Account banned"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -1579,6 +1593,11 @@ msgstr ""
 
 #: src/features/homepage/hero.tsx
 msgid "achievements"
+msgstr ""
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Acted on"
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
@@ -2290,6 +2309,7 @@ msgstr "ଡାହାଣକୁ ସଜାନ୍ତୁ"
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/saved.tsx
 #: src/features/documents/documents-page.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 #: src/features/resume/editor/design/template-group.tsx
 msgid "All"
 msgstr "ସମସ୍ତ"
@@ -2321,6 +2341,10 @@ msgstr "ସମସ୍ତ ଡକ୍ୟୁମେଣ୍ଟ ଓ ଚାକିରି �
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
 msgid "All fields"
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "All reports"
 msgstr ""
 
 #: src/features/portfolio/works/work-editor.tsx
@@ -2416,6 +2440,10 @@ msgstr ""
 
 #: src/dialogs/resume/template/data.ts
 msgid "An accent band across the top carries the name, headline and contact line in light text, with two columns below and the sidebar on the right."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "An administrator's account can't be banned here."
 msgstr ""
 
 #: src/dialogs/resume/template/data.ts
@@ -2726,6 +2754,10 @@ msgstr "ଅଧ୍ୟୟନର କ୍ଷେତ୍ର |"
 msgid "As software reads it"
 msgstr "ଯେହେତୁ ସଫ୍ଟୱେର୍ ଏହାକୁ ପ .େ |"
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "As visitors would see it."
+msgstr ""
+
 #: src/features/command-palette/pages/ask.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Ask"
@@ -2940,6 +2972,10 @@ msgstr "କାହାଣୀଗୁଡ଼ିକକୁ ଫେରନ୍ତୁ"
 msgid "Back to the chat"
 msgstr ""
 
+#: src/features/portfolio/page-text.ts
+msgid "Back to the portfolio"
+msgstr ""
+
 #: src/features/billing/payment-return.tsx
 msgid "Back to your plan"
 msgstr ""
@@ -2977,6 +3013,14 @@ msgstr ""
 msgid "Badge"
 msgstr ""
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Ban account"
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Ban this account?"
+msgstr ""
+
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a tinted background behind the header"
 msgid "Band"
@@ -2985,6 +3029,10 @@ msgstr ""
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Bandung, Indonesia"
+msgstr ""
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Banned the account"
 msgstr ""
 
 #: src/features/resume/editor/design/entries-group.tsx
@@ -3266,6 +3314,10 @@ msgstr ""
 msgid "Buttons"
 msgstr ""
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed at, and anyone can report one that's used without permission."
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "କ୍ୟାଲେଣ୍ଡର"
@@ -3434,6 +3486,10 @@ msgstr "ରେଜୁମର ଡିଜାଇନ୍ ପରିବର୍ତ୍ତନ 
 #: src/features/command-palette/pages/preferences/index.tsx
 msgid "Change theme to…"
 msgstr "ଥିମ୍‌କୁ… ରେ ପରିବର୍ତ୍ତନ କରନ୍ତୁ"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Change this report's status?"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Change timezone"
@@ -4045,6 +4101,7 @@ msgstr ""
 msgid "Confident and graphic: a heavy name, and every section opens with its title as a solid accent tag with a rule running to the margin."
 msgstr ""
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/hooks/use-confirm.tsx
 msgid "Confirm"
 msgstr "ନିଶ୍ଚିତ କରନ୍ତୁ"
@@ -4635,9 +4692,17 @@ msgstr "ସାକ୍ଷାତକାରଗୁଡ଼ିକ ଲୋଡ୍ କରି�
 msgid "Couldn't load or save web access settings. Try again."
 msgstr "ୱେବ୍ ଆକସେସ୍ ସେଟିଂସ ଲୋଡ୍ କିମ୍ବା ସେଭ୍ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Couldn't load the reports. Try again."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't load the sample file. Try again."
 msgstr "ନମୁନା ଫାଇଲ୍ ଲୋଡ୍ ହୋଇପାରିଲା ନାହିଁ | ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ |"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Couldn't load this portfolio. Try again."
+msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/load-state.tsx
@@ -5687,6 +5752,7 @@ msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
 msgstr "ବିବରଣୀଗୁଡିକ"
@@ -5695,6 +5761,10 @@ msgstr "ବିବରଣୀଗୁଡିକ"
 #: src/features/auth/pages/error.tsx
 msgid "Details from the provider:"
 msgstr "ପ୍ରଦାନକାରୀଙ୍କଠାରୁ ବିବରଣୀ:"
+
+#: src/features/portfolio/blocks/pdf-block.tsx
+msgid "Details saved inside the file, such as the author's name, are published with it."
+msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Device"
@@ -5757,11 +5827,21 @@ msgstr "ଡିସ୍‌କନେକ୍ଟ କରନ୍ତୁ"
 msgid "Disconnecting your {providerName} account…"
 msgstr "ଆପଣଙ୍କ {providerName} ଆକାଉଣ୍ଟ ବିଚ୍ଛିନ୍ନ ହେଉଛି…"
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/resume/editor/write/write-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Dismiss"
 msgstr "ଖାରଜ କରନ୍ତୁ"
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Dismissed"
+msgstr ""
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Dismissed a report"
+msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "DNS is right. HTTPS is being set up, which usually takes a few minutes."
@@ -6869,6 +6949,10 @@ msgstr ""
 msgid "Find numbers in your resume"
 msgstr ""
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Find portfolio"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
 msgstr "ଭୂମିକା ଖୋଜନ୍ତୁ"
@@ -7167,6 +7251,11 @@ msgstr "ଆଜି ମିଳିଲା"
 #: src/features/career/today.tsx
 msgid "Found yesterday"
 msgstr "ଗତକାଲି ମିଳିଲା"
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "Fraud or a scam"
+msgstr ""
 
 #: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
@@ -7710,6 +7799,7 @@ msgid "Hiring team"
 msgstr "ନିଯୁକ୍ତି ଦଳ"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/$resumeId/-components/download-sheet.tsx
@@ -7943,6 +8033,11 @@ msgstr "ଅଣଦେଖା କରନ୍ତୁ |"
 #: src/features/resume/editor/check/actions.ts
 msgid "Ignored issues are back"
 msgstr "ଅବହେଳିତ ପ୍ରସଙ୍ଗଗୁଡିକ ଫେରି ଆସିଛି |"
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "Illegal content"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Images cover most of the page."
@@ -8267,7 +8362,7 @@ msgid "Issues and Job match still work without AI."
 msgstr "ଇସ୍ୟୁ ଏବଂ ଚାକିରି ମ୍ୟାଚ୍ ଏପର୍ଯ୍ୟନ୍ତ AI ବିନା କାମ କରେ |"
 
 #: src/features/portfolio/editor/publish-panel.tsx
-msgid "It can't be published. Contact support to appeal."
+msgid "It can't be published right now."
 msgstr ""
 
 #: src/features/billing/subscription-actions.tsx
@@ -8290,12 +8385,16 @@ msgstr ""
 msgid "It may have been deleted. Choose another story or add a new one."
 msgstr "ଏହା ବିଲୋପ ହୋଇଥାଇପାରେ। ଅନ୍ୟ ଏକ କାହାଣୀ ବାଛନ୍ତୁ କିମ୍ବା ନୂଆ ଗୋଟିଏ ଯୋଡ଼ନ୍ତୁ।"
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "It shows again if the owner still has it published."
+msgstr ""
+
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "It was saved in another tab or on another device after you opened it here. Reload to continue from that version, or keep your version and save it over that one."
 msgstr ""
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "It was taken down, so visitors can't see it. Contact support to appeal."
+msgid "It was taken down, so visitors can't see it. Open the editor to see why and how to appeal."
 msgstr ""
 
 #: src/features/documents/document-actions.tsx
@@ -8883,6 +8982,30 @@ msgstr "5 ରୁ ସ୍ତର {level}"
 msgid "Licenses"
 msgstr ""
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift ban"
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift takedown"
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift the account ban?"
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift the takedown?"
+msgstr ""
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Lifted the account ban"
+msgstr ""
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Lifted the takedown"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "ଲିଗେଚର୍ \"workflow\" ପରି ଶବ୍ଦରୁ ଅକ୍ଷର ଛାଡ଼ି ଦେଇପାରେ।"
@@ -9062,6 +9185,10 @@ msgstr "{0} ରେ ଲାଇଭ୍ କରନ୍ତୁ |"
 msgid "Living gradient"
 msgstr ""
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Load more"
+msgstr ""
+
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -9200,10 +9327,6 @@ msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
-msgstr ""
-
-#: src/features/portfolio/editor/offer-forms.tsx
-msgid "Logos show grey and turn to colour when pointed at. Upload only logos you may show."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -9409,6 +9532,10 @@ msgstr "Markdown (.md)"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Markdown shortcuts on"
 msgstr "Markdown ସର୍ଟକଟ୍ ଅନ୍ ଅଛି |"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Marked a report as acted on"
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Marked as applied. The versions you sent are kept."
@@ -10263,9 +10390,21 @@ msgstr "କ photo ଣସି ଫଟୋ ନାହିଁ | ଅଧିକାଂଶ AT
 msgid "No picture"
 msgstr ""
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "No portfolio matches that."
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "No postings found. Try different keywords."
 msgstr "କୌଣସି ଚାକିରି ବିଜ୍ଞାପନ ମିଳିଲା ନାହିଁ। ଭିନ୍ନ କୀୱାର୍ଡ ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "No reports about this portfolio."
+msgstr ""
+
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "No reports here."
+msgstr ""
 
 #: src/features/applications/stages.ts
 msgid "No response"
@@ -10483,6 +10622,7 @@ msgstr "ଏବେ ନୁହେଁ"
 msgid "Not prepared yet"
 msgstr ""
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Not published"
 msgstr ""
@@ -10567,6 +10707,10 @@ msgstr "ଟିପ୍ପଣୀ"
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Notes and tasks"
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Nothing has been done yet."
 msgstr ""
 
 #: src/features/portfolio/editor/section-forms.tsx
@@ -10819,6 +10963,10 @@ msgstr "ଆପଣ ବିଶ୍ୱାସ କରୁଥିବା ଆପ୍ଲିକ
 msgid "Only applies when the section fits on a single page."
 msgstr "କେବଳ ସେତେବେଳେ ଲାଗୁ ହୁଏ ଯେତେବେଳେ ବିଭାଗଟି ଗୋଟିଏ ପୃଷ୍ଠାରେ ଫିଟ୍ ହୁଏ।"
 
+#: src/features/portfolio/page-text.ts
+msgid "Only if you'd like a reply. The portfolio's owner won't see it."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Only one recognizable section heading was found."
 msgstr "କେବଳ ଗୋଟିଏ ଚିହ୍ନଟଯୋଗ୍ୟ ବିଭାଗ ଶୀର୍ଷକ ମିଳିଲା।"
@@ -10850,6 +10998,10 @@ msgid "Only the first pages were checked."
 msgstr "କେବଳ ପ୍ରଥମ ପୃଷ୍ଠାଗୁଡ଼ିକ ଯାଞ୍ଚ କରାଯାଇଥିଲା।"
 
 #: src/features/portfolio/editor/publish-panel.tsx
+msgid "Only the Rezumi team can lift this. To appeal, email <0>hi@rezumi.app</0>."
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
 msgid "Only you can see it until you publish. After that, changes show as soon as they're saved."
 msgstr ""
 
@@ -10877,6 +11029,8 @@ msgstr ""
 #: src/features/billing/admin/overview.tsx
 #: src/features/career/today.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/admin/reports-page.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Open"
 msgstr "ଖୋଲନ୍ତୁ"
@@ -10937,6 +11091,7 @@ msgstr ""
 msgid "Open navigation"
 msgstr ""
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/portfolio-page.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -11801,6 +11956,8 @@ msgstr "ପୋଲିଶ୍"
 msgid "Polishing"
 msgstr "ପରିମାର୍ଜନ କରୁଛି"
 
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 #: src/routes/builder/portfolio/index.tsx
@@ -11816,8 +11973,15 @@ msgstr ""
 msgid "Portfolio photo"
 msgstr ""
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/editor/preview.tsx
 msgid "Portfolio preview"
+msgstr ""
+
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Portfolio reports"
 msgstr ""
 
 #: src/features/billing/credits.ts
@@ -12293,6 +12457,7 @@ msgstr ""
 msgid "Publish Your Resume"
 msgstr ""
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Published"
@@ -12607,6 +12772,7 @@ msgstr "ପ୍ରସ୍ତୁତ |"
 #: src/features/applications/components/detail/close-dialog.tsx
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/reason-dialog.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 msgid "Reason"
 msgstr "କାରଣ"
 
@@ -12616,6 +12782,10 @@ msgstr "ମନେ ପକାଯାଇଥିବା"
 
 #: src/features/billing/admin/labels.ts
 msgid "Receipt email not delivered"
+msgstr ""
+
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Received"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -13047,8 +13217,13 @@ msgid "Renews yearly on {0}"
 msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/portfolio/admin/review-page.tsx
 msgid "Reopen"
 msgstr "ଖୋଲନ୍ତୁ |"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Reopened a report"
+msgstr ""
 
 #. placeholder {0}: title || t`Untitled`
 #: src/features/resume/editor/write/entry-card.tsx
@@ -13114,6 +13289,27 @@ msgstr ""
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "ଉତ୍ତର କପି ହେଲା"
+
+#: src/features/portfolio/page-text.ts
+msgid "Report"
+msgstr ""
+
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Report status"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Report this portfolio"
+msgstr ""
+
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Reports"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Reports can't be sent from this page right now. Email {email} with this page's address and what's wrong."
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Require a password"
@@ -14149,6 +14345,10 @@ msgstr ""
 msgid "Send message"
 msgstr ""
 
+#: src/features/portfolio/page-text.ts
+msgid "Send report"
+msgstr ""
+
 #. Primary action button label on forgot-password form
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Send reset link"
@@ -14494,6 +14694,10 @@ msgstr ""
 msgid "Show my local time"
 msgstr ""
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Show my location"
+msgstr ""
+
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Show my phone number"
 msgstr ""
@@ -14810,6 +15014,11 @@ msgstr "କିଛି ଟେକ୍ସଟ୍ ପୃଷ୍ଠା ବାହାରେ
 msgid "Some text is rotated."
 msgstr "କିଛି ଟେକ୍ସଟ୍ ଘୂରାଇ ଦିଆଯାଇଛି।"
 
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "Something else"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Something else on your mind? Write to us at"
 msgstr ""
@@ -15052,6 +15261,7 @@ msgstr "ସଂଖ୍ୟାତ୍ମକ ତଥ୍ୟ"
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/career/workspace/fit.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 msgid "Status"
 msgstr "ସ୍ଥିତି"
 
@@ -15450,6 +15660,18 @@ msgstr ""
 msgid "Tailored vs. base resume"
 msgstr "ଆଡାପ୍ଟଟେଡ୍ ବନାମ ବେସ୍ ରେଜୁମ୍ |"
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Take down"
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Take this portfolio down?"
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Takedown reason"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Taken away on {at}"
 msgstr ""
@@ -15459,6 +15681,8 @@ msgstr ""
 msgid "Taken back on {0}"
 msgstr ""
 
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Taken down"
 msgstr ""
@@ -15519,6 +15743,10 @@ msgstr "ଏପରି ଏକ ସମୟ ବିଷୟରେ କୁହନ୍ତୁ �
 
 #: src/features/homepage/features.tsx
 msgid "Tell me about a time you led a redesign."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Tell Rezumi what's wrong with {name}'s portfolio. Only the Rezumi team reads reports, and the portfolio's owner is never told who sent one."
 msgstr ""
 
 #: src/libs/locale.ts
@@ -15691,6 +15919,10 @@ msgstr "ଥାଇ"
 
 #: src/features/portfolio/page-text.ts
 msgid "Thank you. Your message was sent."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Thank you. Your report was sent to the Rezumi team."
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -15977,6 +16209,14 @@ msgstr "ମୂଳ ଲିଙ୍କ୍ ଏହି କାମ ସହିତ ରହି�
 #: src/features/career/knowledge/facts.tsx
 msgid "The original stays in the history."
 msgstr "ମୂଳଟି ଇତିହାସରେ ରହେ।"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "The owner can sign in again, and their public pages come back."
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "The owner is signed out, and all of their public pages and pictures stop being available. Use this for an account that's a problem as a whole."
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "The page had no job details to read. Fill in the role and company."
@@ -16432,6 +16672,10 @@ msgid "This form is closed right now."
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
+msgid "This form needs JavaScript. You can also email {email}."
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
 msgid "This form needs JavaScript. You can use the other contact options here."
 msgstr ""
 
@@ -16493,6 +16737,10 @@ msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "This needs {required} and you have {balance}. Use your own AI connection without credits, or get Pro AI for 100 credits."
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "This only changes the report, not the portfolio."
 msgstr ""
 
 #: src/components/layout/error-screen.tsx
@@ -16574,6 +16822,10 @@ msgstr ""
 
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "This portfolio is already in that state. Reload the page to see what changed."
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -16855,6 +17107,10 @@ msgstr ""
 msgid "Too many uploads in a short time. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/portfolio/admin/labels.ts
+msgid "Took the portfolio down"
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "Tool logos aren't in your plan"
 msgstr ""
@@ -16899,6 +17155,14 @@ msgstr "ଆବେଦନଗୁଡ଼ିକରେ ଟ୍ରାକ୍ କରନ୍�
 #: src/routes/dashboard/applications/index.tsx
 msgid "Track your first job"
 msgstr "ତୁମର ପ୍ରଥମ କାମ ଟ୍ରାକ୍ କର |"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Trademark or copyright"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Trademark or copyright, such as a logo or a work"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Transcribe answers with"
@@ -17053,6 +17317,10 @@ msgstr "ଏକ ଠିକଣା ବାଛିବା ପାଇଁ ଲିଙ୍କ�
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Turn on two-step verification"
 msgstr "ଦୁଇ ସୋପାନ ଯାଞ୍ଚ ଚାଲୁ କରନ୍ତୁ"
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Turn this off to keep your location off the page, including the one on your resume."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Turn this schedule on"
@@ -17321,7 +17589,7 @@ msgid "Up to 25 MB · checked in your browser, never uploaded"
 msgstr "25 MB ପର୍ଯ୍ୟନ୍ତ your ଆପଣଙ୍କର ବ୍ରାଉଜରରେ ଯା ed ୍ଚ ହୋଇଛି, କେବେବି ଅପଲୋଡ୍ ହୋଇନାହିଁ |"
 
 #: src/features/portfolio/editor/intro-form.tsx
-msgid "Up to three, under your greeting. The first one stands out."
+msgid "Up to three, under your greeting. The first one stands out. An Email or WhatsApp button shows that address to visitors, even if Contact hides it."
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
@@ -17621,6 +17889,10 @@ msgstr "ଉପଯୋଗକର୍ତ୍ତା ଗବେଷଣା"
 msgid "Username"
 msgstr "ୟୁଜରନେମ୍"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Username or email"
+msgstr ""
+
 #: src/features/assistant/assistant-panel.tsx
 msgid "Uses facts from your resume"
 msgstr "ତୁମର ରେଜୁମାରୁ ତଥ୍ୟ ବ୍ୟବହାର କରେ |"
@@ -17854,6 +18126,10 @@ msgstr ""
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "ପରିଦର୍ଶକମାନେ ରେଜୁମ୍ ଦେଖିବା ପୂର୍ବରୁ ପାସୱାର୍ଡ ପ୍ରବେଶ କରନ୍ତି | ଆପଣ କେବଳ ବିଶ୍ୱାସ କରୁଥିବା ଲୋକଙ୍କ ସହିତ ଏହାକୁ ଅଂଶୀଦାର କରନ୍ତୁ |"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Visitors stop seeing it right away; nothing is deleted. The owner reads this reason in their editor, so don't mention who reported it."
+msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Visits"
@@ -18129,6 +18405,10 @@ msgstr "କ’ଣ ପରିବର୍ତ୍ତନ ହେବା ଉଚିତ୍?"
 msgid "What should run"
 msgstr "କ'ଣ ଚାଲିବା ଉଚିତ"
 
+#: src/features/portfolio/page-text.ts
+msgid "What should we look at?"
+msgstr ""
+
 #: src/features/assistant/assistant-panel.tsx
 msgid "What should we work on?"
 msgstr "ଆମେ କ’ଣ କାମ କରିବା ଉଚିତ୍?"
@@ -18202,6 +18482,10 @@ msgstr "ଏହା କ’ଣ ପାଇଁ?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "କ’ଣ କାମ କରୁଛି |"
+
+#: src/features/portfolio/page-text.ts
+msgid "What's wrong?"
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
@@ -18831,6 +19115,10 @@ msgstr ""
 msgid "Your email"
 msgstr ""
 
+#: src/features/portfolio/page-text.ts
+msgid "Your email (optional)"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your email address changed on the resume. The letter updated too."
 msgstr "ତୁମର ଇମେଲ୍ ଠିକଣା ରେଜୁମ୍ ରେ ବଦଳିଗଲା | ଚିଠି ମଧ୍ୟ ଅପଡେଟ୍ ହୋଇଛି |"
@@ -19154,7 +19442,7 @@ msgid "Your portfolio still uses this file. Remove it from the portfolio first."
 msgstr ""
 
 #: src/features/portfolio/errors.ts
-msgid "Your portfolio was taken down and can't be published. Contact support to appeal."
+msgid "Your portfolio was taken down, so it can't be published or deleted. Email hi@rezumi.app to appeal."
 msgstr ""
 
 #: src/features/billing/plan.ts
@@ -19185,6 +19473,10 @@ msgstr ""
 #: src/features/career/workspace/practise.tsx
 msgid "Your recording goes to {0} to be transcribed, which may use tokens on that account."
 msgstr "ଟ୍ରାନ୍ସକ୍ରାଇବ୍ ପାଇଁ ଆପଣଙ୍କ ରେକର୍ଡିଂ {0}କୁ ଯାଏ, ଯାହା ସେହି ଆକାଉଣ୍ଟରେ ଟୋକେନ୍ ବ୍ୟବହାର କରିପାରେ।"
+
+#: src/features/portfolio/page-text.ts
+msgid "Your report couldn't be sent. Check the form and try again in a moment."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Your requirements"

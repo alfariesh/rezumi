@@ -72,6 +72,10 @@ export function SettingsRoot() {
 						<Link to="/dashboard/admin/billing" viewTransition={pushTransition} className={rowClass}>
 							<Row icon="shield-check" label={<Trans>Billing admin</Trans>} />
 						</Link>
+						<Separator className="ms-12" />
+						<Link to="/dashboard/admin/portfolios" search={{}} viewTransition={pushTransition} className={rowClass}>
+							<Row icon="warning-circle" label={<Trans>Portfolio reports</Trans>} />
+						</Link>
 					</>
 				)}
 			</nav>

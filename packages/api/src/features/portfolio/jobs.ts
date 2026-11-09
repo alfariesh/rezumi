@@ -8,6 +8,7 @@ import { getStorageService } from "../storage";
 import { deleteExpiredMessages, sendDueMessageEmails } from "./contact";
 import { deleteUnusedFiles, lockPortfolio, markFileUsage, readStoredData, removeStoredFile } from "./file-store";
 import { getPortfolioMode } from "./mode";
+import { clearHandledReporterEmails } from "./report";
 
 /** How often each portfolio's files are compared with its data and with storage. */
 const PORTFOLIO_FILE_SWEEP_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000;
@@ -128,7 +129,13 @@ export async function runPortfolioJobs(now = new Date()) {
 		0,
 		"Deleting expired portfolio messages failed; they are tried again on the next run.",
 	);
-	if (getPortfolioMode() === "off") return { deletedFiles: 0, checkedPortfolios: 0, deletedMessages, messageEmails: 0 };
+	const clearedReporterEmails = await task(
+		() => clearHandledReporterEmails(now),
+		0,
+		"Clearing handled reporters' addresses failed; they are tried again on the next run.",
+	);
+	if (getPortfolioMode() === "off")
+		return { deletedFiles: 0, checkedPortfolios: 0, deletedMessages, messageEmails: 0, clearedReporterEmails };
 	const messageEmails = await task(
 		() => sendDueMessageEmails(now),
 		0,
@@ -144,5 +151,5 @@ export async function runPortfolioJobs(now = new Date()) {
 		0,
 		"Checking portfolio files failed; they are checked again on the next run.",
 	);
-	return { deletedFiles, checkedPortfolios, deletedMessages, messageEmails };
+	return { deletedFiles, checkedPortfolios, deletedMessages, messageEmails, clearedReporterEmails };
 }

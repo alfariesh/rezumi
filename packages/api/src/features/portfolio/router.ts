@@ -13,6 +13,7 @@ import {
 	portfolioUpdateRateLimit,
 	portfolioUploadRateLimit,
 } from "../../middleware/rate-limit";
+import { portfolioAdminRouter } from "./admin-router";
 import { portfolioAiRouter } from "./ai/router";
 import { portfolioErrorMap, portfolioErrors } from "./errors";
 import { portfolioService } from "./service";
@@ -127,6 +128,7 @@ const messageIdSchema = z.string().min(1).max(64);
 
 export const portfolioRouter = {
 	ai: portfolioAiRouter,
+	admin: portfolioAdminRouter,
 
 	statistics: protectedProcedure
 		.route({
@@ -360,7 +362,7 @@ export const portfolioRouter = {
 		})
 		.use(portfolioMutationRateLimit)
 		.input(z.object({}).optional())
-		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND"))
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND", "PORTFOLIO_SUSPENDED"))
 		.output(z.void())
 		.handler(({ context }) => portfolioService.delete(context.user.id)),
 

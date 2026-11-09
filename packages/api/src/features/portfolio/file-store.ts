@@ -35,6 +35,7 @@ export async function lockPortfolio(tx: DbOrTx, userId: string, options: { skipL
 			updatedAt: schema.portfolio.updatedAt,
 			sourceResumeId: schema.portfolio.sourceResumeId,
 			filesCheckedAt: schema.portfolio.filesCheckedAt,
+			suspendedAt: schema.portfolio.suspendedAt,
 		})
 		.from(schema.portfolio)
 		.where(eq(schema.portfolio.userId, userId))

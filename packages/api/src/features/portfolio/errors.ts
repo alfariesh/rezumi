@@ -42,6 +42,11 @@ export const PORTFOLIO_ERRORS = {
 		status: 403,
 		message: "Verify your email address before publishing your portfolio.",
 	},
+	PORTFOLIO_MODERATION_CONFLICT: {
+		status: 409,
+		message: "This portfolio is already in that state. Reload the page to see what changed.",
+	},
+	PORTFOLIO_CANNOT_BAN_ADMIN: { status: 403, message: "An administrator's account can't be banned here." },
 	PORTFOLIO_SUSPENDED: {
 		status: 403,
 		message: "This portfolio was taken down and can't be published. Contact support to appeal.",
@@ -135,6 +140,8 @@ export const portfolioErrors = {
 	fileNotFound: (key: string) => refusal("PORTFOLIO_FILE_NOT_FOUND", { data: { key } }),
 	emailNotVerified: () => refusal("PORTFOLIO_EMAIL_NOT_VERIFIED"),
 	suspended: () => refusal("PORTFOLIO_SUSPENDED"),
+	moderationConflict: () => refusal("PORTFOLIO_MODERATION_CONFLICT"),
+	cannotBanAdmin: () => refusal("PORTFOLIO_CANNOT_BAN_ADMIN"),
 	fileTooLarge: (bytes: number, kind: "picture" | "pdf" | "remote-picture" = "picture") => {
 		const max = {
 			picture: PORTFOLIO_UPLOAD.imageBytes,

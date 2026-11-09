@@ -25,8 +25,9 @@ vi.mock("../cover-letters/service", () => ({ coverLetterService: { getById: mock
 vi.mock("../career/service", () => ({ careerService: { exportData: mocks.exportCareer } }));
 vi.mock("../billing/export", () => ({ exportBillingData: mocks.exportBilling }));
 vi.mock("../billing/deletion", () => ({ endBillingForDeletedUser: vi.fn() }));
-vi.mock("../portfolio/contact", () => ({
-	exportPortfolioMessages: () => Promise.resolve([{ name: "Visitor", body: "Hello" }]),
+vi.mock("../portfolio/export", () => ({
+	exportPortfolioData: () =>
+		Promise.resolve({ portfolio: null, files: [], messages: [{ name: "Visitor", body: "Hello" }], reports: [] }),
 }));
 const { authService } = await import("./service");
 

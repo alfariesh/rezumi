@@ -423,7 +423,7 @@ function LocationCard({ location }: LocationMapProps) {
 					</ul>
 				)}
 				{mapLink && (
-					<a className="pf-loc__open" href={mapLink} target="_blank" rel="noopener noreferrer">
+					<a className="pf-loc__open" href={mapLink} target="_blank" rel="ugc nofollow noopener noreferrer">
 						{messages.openMap}
 					</a>
 				)}
@@ -535,7 +535,7 @@ export function Clients({ section, variant }: ClientsProps) {
 type FooterProps = { year: number; creditUrl: string };
 
 export function Footer({ year, creditUrl }: FooterProps) {
-	const { view, messages } = useRender();
+	const { view, messages, live } = useRender();
 	return (
 		<footer className="pf-foot pf-wrap">
 			<span>
@@ -545,6 +545,11 @@ export function Footer({ year, creditUrl }: FooterProps) {
 				<a className="pf-badge" href={creditUrl}>
 					<RezumiMark />
 					{messages.credit}
+				</a>
+			)}
+			{live && (
+				<a href={live.reportUrl} rel="nofollow">
+					{messages.report}
 				</a>
 			)}
 		</footer>

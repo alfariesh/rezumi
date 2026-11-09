@@ -51,7 +51,7 @@ function loadGlyphs(): Promise<Readonly<Record<string, string>>> {
 }
 
 /** The page a visitor gets, drawn by the server's renderer from the draft, as an inert document. */
-async function renderPortfolioPreview({
+export async function renderPortfolioPreview({
 	data,
 	resume,
 	owner,

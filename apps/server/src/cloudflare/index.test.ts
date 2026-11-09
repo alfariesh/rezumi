@@ -75,6 +75,11 @@ vi.mock("@rezumi/pdf/server", () => ({
 	},
 }));
 vi.mock("@rezumi/api/features/portfolio/public", () => ({ isPublicPortfolioFile: mocks.publicPortfolioFile }));
+vi.mock("@rezumi/api/features/portfolio/public-limit", () => ({
+	configurePortfolioPublicLimiter: vi.fn(),
+	publicPortfolioRequestAllowed: () => Promise.resolve(true),
+	tooManyPortfolioRequests: () => new Response(null, { status: 429 }),
+}));
 vi.mock("../static/portfolio-page", () => ({
 	configurePortfolioVisitLifetime: (callback: typeof mocks.visitLifetime) => {
 		mocks.visitLifetime = callback;

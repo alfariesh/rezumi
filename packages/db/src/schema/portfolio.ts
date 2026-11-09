@@ -1,5 +1,6 @@
 import type { PortfolioClickKind, PortfolioVisitSource } from "@rezumi/schema/portfolio/statistics";
 import * as pg from "drizzle-orm/pg-core";
+import { PORTFOLIO_REPORT_REASONS, PORTFOLIO_REPORT_STATUSES } from "@rezumi/schema/portfolio/moderation";
 import { generateId } from "@rezumi/utils/string";
 import { user } from "./auth";
 import { resume } from "./resume";
@@ -143,4 +144,53 @@ export const portfolioMessage = pg.pgTable(
 		notifiedAt: pg.timestamp("notified_at", { withTimezone: true }),
 	},
 	(t) => [pg.index().on(t.portfolioId, t.createdAt), pg.index().on(t.createdAt)],
+);
+
+/**
+ * Reports visitors sent about a portfolio (`02-teknis.md` section 14). Only administrators read them; who reported is
+ * never shown to the portfolio's owner, and the reporter's address is cleared 90 days after a report is handled.
+ */
+export const portfolioReport = pg.pgTable(
+	"portfolio_report",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		portfolioId: pg
+			.text("portfolio_id")
+			.notNull()
+			.references(() => portfolio.id, { onDelete: "cascade" }),
+		reason: pg.text("reason", { enum: PORTFOLIO_REPORT_REASONS }).notNull(),
+		details: pg.text("details").notNull(),
+		// Given only by a reporter who wants a reply.
+		reporterEmail: pg.text("reporter_email"),
+		status: pg.text("status", { enum: PORTFOLIO_REPORT_STATUSES }).notNull().default("open"),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+		handledAt: pg.timestamp("handled_at", { withTimezone: true }),
+		handledByUserId: pg.text("handled_by_user_id").references(() => user.id, { onDelete: "set null" }),
+	},
+	(t) => [pg.index().on(t.status, t.createdAt), pg.index().on(t.portfolioId, t.createdAt)],
+);
+
+/** Who took which moderation action on a portfolio or its owner, and why. Outlives the portfolio and the account. */
+export const portfolioModerationLog = pg.pgTable(
+	"portfolio_moderation_log",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		portfolioId: pg.text("portfolio_id").references(() => portfolio.id, { onDelete: "set null" }),
+		targetUserId: pg.text("target_user_id").references(() => user.id, { onDelete: "set null" }),
+		actorUserId: pg.text("actor_user_id").references(() => user.id, { onDelete: "set null" }),
+		// suspended, lifted, banned, unbanned, or report.<status>.
+		action: pg.text("action").notNull(),
+		reason: pg.text("reason"),
+		details: pg.jsonb("details").notNull().$type<Record<string, unknown>>().default({}),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+	},
+	(t) => [pg.index().on(t.portfolioId, t.createdAt), pg.index().on(t.targetUserId, t.createdAt)],
 );

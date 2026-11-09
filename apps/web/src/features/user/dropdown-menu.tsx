@@ -105,6 +105,18 @@ export function UserDropdownMenu({ children }: Props) {
 							</Label>
 						</Dropdown.Item>
 					)}
+					{session.user.role === "admin" && (
+						<Dropdown.Item
+							id="portfolio-reports"
+							textValue={t`Portfolio reports`}
+							onAction={() => void router.navigate({ to: "/dashboard/admin/portfolios", search: {} })}
+						>
+							<Icon name="warning-circle" size={16} />
+							<Label>
+								<Trans>Portfolio reports</Trans>
+							</Label>
+						</Dropdown.Item>
+					)}
 
 					<Separator />
 

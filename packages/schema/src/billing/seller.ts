@@ -12,10 +12,10 @@ export const BILLING_SELLER = {
 	supportHours: "Senin–Jumat, 09.00–17.00 WIB",
 	supportTimezone: "Asia/Jakarta",
 	responseDeadline: "3 hari kerja",
-	resolutionDeadline: null,
+	resolutionDeadline: "2 x 24 jam",
 	minimumAge: 18,
 	identityConfirmed: true,
-	supportEmailConfirmed: false,
+	supportEmailConfirmed: true,
 	/** The reseller and merchant of record named at checkout and on invoices. */
 	merchantOfRecord: "Polar Software, Inc.",
 } as const;
