@@ -14,6 +14,8 @@ import { lockBillingAccount } from "./account";
 import { getBillingMode, getEntitlements } from "./entitlements";
 
 export type PlanLimit = "activeResumes" | "activeCoverLetters";
+/** The limits on what a portfolio holds; each has its own refusal message. */
+type PortfolioPlanLimit = "portfolioWorks" | "portfolioStorageBytes";
 export type PlanFeature = keyof PlanFeatures;
 
 /** New documents a write makes: resumes and cover letters that won't be in Trash. */
@@ -85,7 +87,33 @@ function featureMessage(feature: PlanFeature) {
 		case "automationApi":
 			// Only third-party apps see this (never Rezumi's own), so it may point at the plans page on the web.
 			return `Connecting apps through the Rezumi API or MCP needs the Plus or Pro AI plan. Open ${new URL("/dashboard/settings/billing", env.APP_URL).href} to see your plan.`;
+		case "premiumPortfolioThemes":
+			return "This portfolio theme isn't included in your plan. A portfolio that already uses a theme keeps it.";
+		case "premiumHeroEffects":
+			return "This intro effect isn't included in your plan. A portfolio that already uses an effect keeps it.";
+		case "hidePortfolioCredit":
+			return "Hiding the Made with Rezumi badge isn't included in your plan.";
+		case "customDomain":
+			return "Connecting your own domain isn't included in your plan. Your page stays at its address on Rezumi.";
+		case "detailedPortfolioStats":
+			return "Detailed visitor statistics aren't included in your plan. The basic numbers stay available.";
 	}
+}
+
+/**
+ * Going past what the plan lets a portfolio hold. Neutral like the document limits: what's already there stays, and the
+ * way on is removing something. `max` and `used` are works, or bytes for storage.
+ */
+export function portfolioLimitReached(input: { limit: PortfolioPlanLimit; max: number; used: number; planId: PlanId }) {
+	const message =
+		input.limit === "portfolioWorks"
+			? `The limit of ${input.max} works is reached. Works already in the portfolio stay; remove one to add another.`
+			: `The portfolio's files take all the storage your plan includes (${Math.ceil(input.used / 1024 / 1024)} of ${Math.floor(input.max / 1024 / 1024)} MB). Files already uploaded stay; remove pictures or PDFs it no longer uses, which are deleted a day later.`;
+	return new ORPCError("PLAN_LIMIT_REACHED", {
+		status: 403,
+		message,
+		data: { limit: input.limit, max: input.max, used: input.used, planId: input.planId },
+	});
 }
 
 /** Using a feature the account's plan doesn't include. */

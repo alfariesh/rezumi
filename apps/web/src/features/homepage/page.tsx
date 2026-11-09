@@ -16,9 +16,9 @@ import { Testimonials } from "./testimonials";
  * pricing, questions) and a closing call to action. The server prerenders it (prerender.tsx), so every word is in the
  * first response.
  */
-type HomepageProps = { billingEnabled?: boolean };
+type HomepageProps = { billingEnabled?: boolean; portfolioEnabled?: boolean };
 
-export function Homepage({ billingEnabled = false }: HomepageProps) {
+export function Homepage({ billingEnabled = false, portfolioEnabled = false }: HomepageProps) {
 	return (
 		<div id="top" className="relative isolate overflow-x-clip bg-background text-foreground">
 			<a
@@ -34,7 +34,7 @@ export function Homepage({ billingEnabled = false }: HomepageProps) {
 				<Features />
 				<Templates />
 				<Testimonials />
-				<Pricing billingEnabled={billingEnabled} />
+				<Pricing billingEnabled={billingEnabled} portfolioEnabled={portfolioEnabled} />
 				<Faq />
 				<Closing />
 			</main>

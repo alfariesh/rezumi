@@ -1,4 +1,7 @@
+import type { PortfolioHeroEffect } from "../portfolio/themes";
 import { describe, expect, it } from "vite-plus/test";
+import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "../portfolio/limits";
+import { isFreePortfolioTheme, PORTFOLIO_THEMES, portfolioThemeLineup } from "../portfolio/themes";
 import { templateSchema } from "../templates";
 import {
 	BILLING_CATALOG_VERSION,
@@ -9,11 +12,14 @@ import {
 	creditActionSchema,
 	currencyForCountry,
 	DEFAULT_BILLING_CURRENCY,
+	FREE_PORTFOLIO_THEMES,
 	FREE_TEMPLATES,
 	getPlan,
+	isFreePortfolioHeroEffect,
 	isFreeTemplate,
 	isPaidPlan,
 	PLAN_FEATURE_KEYS,
+	PORTFOLIO_PLAN_FEATURE_KEYS,
 	paidPlanIdSchema,
 	planIdSchema,
 	planPrice,
@@ -64,7 +70,7 @@ describe("billing catalog", () => {
 	});
 
 	it("matches the launch decisions", () => {
-		expect(BILLING_CATALOG_VERSION).toBe(6);
+		expect(BILLING_CATALOG_VERSION).toBe(7);
 		// A free week before the first charge, on Plus only (2026-11-05); prices are before tax.
 		expect([PLANS.free.trialDays, PLANS.plus.trialDays, PLANS["pro-ai"].trialDays]).toEqual([null, 7, null]);
 		expect(BILLING_PRICES_INCLUDE_TAX).toBe(false);
@@ -73,9 +79,9 @@ describe("billing catalog", () => {
 			month: { usd: 999, idr: 12_900_000 },
 			year: { usd: 7_900, idr: 99_900_000 },
 		});
-		expect(PLANS.free.limits).toEqual({ activeResumes: 3, activeCoverLetters: 3 });
-		expect(PLANS.plus.limits).toEqual({ activeResumes: 50, activeCoverLetters: 50 });
-		expect(PLANS["pro-ai"].limits).toEqual({ activeResumes: 50, activeCoverLetters: 50 });
+		expect(PLANS.free.limits).toMatchObject({ activeResumes: 3, activeCoverLetters: 3 });
+		expect(PLANS.plus.limits).toMatchObject({ activeResumes: 50, activeCoverLetters: 50 });
+		expect(PLANS["pro-ai"].limits).toMatchObject({ activeResumes: 50, activeCoverLetters: 50 });
 		expect(Object.values(PLANS.free.features).every((enabled) => !enabled)).toBe(true);
 		expect(Object.values(PLANS.plus.features).every(Boolean)).toBe(true);
 		expect(PLANS["pro-ai"].features).toEqual(PLANS.plus.features);
@@ -112,5 +118,33 @@ describe("billing catalog", () => {
 		});
 		for (const cost of Object.values(CREDIT_COSTS)) expect(Number.isInteger(cost) && cost > 0).toBe(true);
 		expect(creditActionSchema.options).toEqual(Object.keys(CREDIT_COSTS));
+	});
+});
+
+describe("portfolio plans", () => {
+	it("sells the free themes and effects the gallery labels", () => {
+		expect(FREE_PORTFOLIO_THEMES.toSorted()).toEqual(PORTFOLIO_THEMES.filter(isFreePortfolioTheme).toSorted());
+		for (const { effects } of portfolioThemeLineup.filter((theme) => theme.plan === "free"))
+			expect(isFreePortfolioHeroEffect(effects[0] as PortfolioHeroEffect)).toBe(true);
+	});
+
+	it("keeps paid limits within the technical limits", () => {
+		for (const plan of Object.values(PLANS)) {
+			expect(plan.limits.portfolioWorks).toBeLessThanOrEqual(PORTFOLIO_LIMITS.works);
+			expect(plan.limits.portfolioStorageBytes).toBeLessThanOrEqual(PORTFOLIO_UPLOAD.accountBytes);
+		}
+		expect(PLANS.free.limits.portfolioWorks).toBe(6);
+		expect(PLANS.free.limits.portfolioStorageBytes).toBe(100 * 1024 * 1024);
+		expect(PLANS.plus.limits.portfolioStorageBytes).toBe(PORTFOLIO_UPLOAD.accountBytes);
+	});
+
+	it("names every portfolio feature for the apps to list", () => {
+		expect(PORTFOLIO_PLAN_FEATURE_KEYS).toHaveLength(5);
+		for (const feature of PORTFOLIO_PLAN_FEATURE_KEYS) {
+			expect(PLAN_FEATURE_KEYS).toContain(feature);
+			expect(PLANS.free.features[feature]).toBe(false);
+			expect(PLANS.plus.features[feature]).toBe(true);
+			expect(PLANS["pro-ai"].features[feature]).toBe(true);
+		}
 	});
 });

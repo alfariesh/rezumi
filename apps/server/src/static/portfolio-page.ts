@@ -93,8 +93,7 @@ export function publicPortfolioView(portfolio: PublicPortfolio): PortfolioView {
 		portfolio: { data: portfolio.data },
 		resume: resume ? { data: withOwnPicture(resume.data) } : null,
 		owner: { name: portfolio.ownerName, username: portfolio.username },
-		// Plans arrive in Phase 07; until then every portfolio shows the credit.
-		entitlements: { hidePortfolioCredit: false },
+		entitlements: portfolio.entitlements,
 		messages: portfolioViewMessages(portfolioMessages(locale)),
 		fileUrl: (key) => `${origin()}/${key}`,
 		links: {

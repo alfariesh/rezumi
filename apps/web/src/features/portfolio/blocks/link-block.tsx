@@ -14,6 +14,7 @@ import { useRequestSignals } from "../images/use-request-signals";
 import { linkBlockFromUnfurl, siteOf, useLinkSuggestions } from "../media/link-blocks";
 import { importRemotePicture, remotePictureErrorMessage, unfurlErrorMessage, unfurlLink } from "../media/remote";
 import { currentBlock, ErrorNote } from "./add-media-block";
+import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -85,7 +86,9 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 			);
 			useLinkSuggestions.getState().dismiss(block.id);
 		} catch (failure) {
-			if (!isAbort(failure, signal)) setError(remotePictureErrorMessage(failure));
+			if (isAbort(failure, signal)) return;
+			openPlanDialogForError(failure);
+			setError(remotePictureErrorMessage(failure));
 		} finally {
 			if (!signal.aborted) setCopying(false);
 		}

@@ -116,7 +116,7 @@ export const PORTFOLIO_UPLOAD = {
 	remoteImageBytes: 10 * 1024 * 1024,
 	/**
 	 * What one account may keep stored for its portfolio, whatever its plan: a technical ceiling, so an account can't
-	 * fill storage while plans are off. Plan quotas (Phase 07, derived rule #9) sit at or below it.
+	 * fill storage while plans are off. Plan quotas (`PlanLimits.portfolioStorageBytes`) sit at or below it.
 	 */
 	accountBytes: 1024 * 1024 * 1024,
 	/** How many files one account may keep stored for its portfolio, for the same reason. */

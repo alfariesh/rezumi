@@ -2,7 +2,7 @@ import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioScheme, PortfolioVariantKey, PortfolioVariantValue } from "@rezumi/schema/portfolio/themes";
 import type { ReactNode } from "react";
 import { Segment } from "@heroui-pro/react";
-import { Radio, RadioGroup } from "@heroui/react";
+import { Chip, Radio, RadioGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId } from "react";
@@ -19,6 +19,7 @@ import {
 	themeVariant,
 } from "@rezumi/schema/portfolio/themes";
 import { Icon } from "@rezumi/ui/components/icon";
+import { SwitchRow } from "@rezumi/ui/components/switch";
 import { rgbaStringToHex } from "@rezumi/utils/color";
 import { cn } from "@rezumi/utils/style";
 import { ImageField } from "../images/image-field";
@@ -29,6 +30,8 @@ import { IntroEffectPicker } from "./intro-effect";
 import { editPortfolio, usePortfolioData } from "./store";
 import { useEditorView } from "./use-view";
 import { ColorPicker } from "@/components/input/color-picker";
+import { hasPlanFeature, usePlan } from "@/features/billing/plan";
+import { openPlanDialog } from "@/features/billing/plan-dialog";
 
 const variantGroupLabel = (key: PortfolioVariantKey) =>
 	({
@@ -83,7 +86,43 @@ export function DesignPanel() {
 			<IntroGroup />
 			<FontsGroup />
 			<LayoutGroup />
+			<BadgeGroup />
 		</div>
+	);
+}
+
+/** The "Made with Rezumi" badge: paid plans can hide it; on other plans the page always shows it. */
+function BadgeGroup() {
+	const { credit } = usePortfolioData();
+	const plan = usePlan();
+	const canHide = hasPlanFeature(plan, "hidePortfolioCredit");
+	return (
+		<PanelGroup icon="seal-check" title={<Trans>Badge</Trans>}>
+			<SwitchRow
+				label={
+					<span className="flex items-center gap-2">
+						<Trans>Show Made with Rezumi</Trans>
+						{!canHide && (
+							<Chip size="sm" variant="soft" color="accent">
+								<Icon name="lock" size={12} aria-hidden />
+								Plus
+							</Chip>
+						)}
+					</span>
+				}
+				description={<Trans>A small badge at the bottom of your page.</Trans>}
+				isSelected={credit.show || !canHide}
+				onChange={(show) => {
+					if (!show && !canHide) {
+						openPlanDialog({ kind: "feature", feature: "hidePortfolioCredit" });
+						return;
+					}
+					editPortfolio((draft) => {
+						draft.credit.show = show;
+					});
+				}}
+			/>
+		</PanelGroup>
 	);
 }
 

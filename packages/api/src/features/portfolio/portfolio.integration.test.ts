@@ -1121,7 +1121,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			expect(fixture.files.has(key)).toBe(false);
 		});
 
-		it("lets no save keep a file it's deleting after the portfolio was deleted", async () => {
+		it("refuses at once a save naming a file of a deleted portfolio, while the job deletes it", async () => {
 			await service.create("member", { sourceResumeId: null });
 			const uploaded = await service.uploadImage("member", { file: await picture(300, 200) });
 			await service.delete("member");
@@ -1130,23 +1130,16 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			const run = jobs.runPortfolioJobs();
 			try {
 				await hold.arrived;
-				// A new portfolio whose save names the file being deleted (an old editor's data, say) waits for the job,
-				// then finds the file gone.
+				// A new portfolio whose save names the file being deleted (an old editor's data, say): an overdue file is
+				// gone as far as saves go, so it's refused without waiting for the job.
 				const fresh = await service.create("member", { sourceResumeId: null });
-				const saving = update(
-					"member",
-					{ basics: { picture: { key: uploaded.key, width: 300, height: 200, alt: "" } } },
-					fresh.updatedAt,
-				);
-				let settled = false;
-				void saving.then(
-					() => (settled = true),
-					() => (settled = true),
-				);
-				await new Promise((resolve) => setTimeout(resolve, 300));
-				expect(settled).toBe(false);
-				hold.open();
-				await expect(saving).rejects.toMatchObject({ code: "PORTFOLIO_FILE_NOT_FOUND", data: { key: uploaded.key } });
+				await expect(
+					update(
+						"member",
+						{ basics: { picture: { key: uploaded.key, width: 300, height: 200, alt: "" } } },
+						fresh.updatedAt,
+					),
+				).rejects.toMatchObject({ code: "PORTFOLIO_FILE_NOT_FOUND", data: { key: uploaded.key } });
 			} finally {
 				hold.open();
 			}

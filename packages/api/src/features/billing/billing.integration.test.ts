@@ -218,6 +218,11 @@ describe.skipIf(!databaseUrl)("billing foundation", () => {
 				customStyles: true,
 				customFonts: true,
 				automationApi: true,
+				premiumPortfolioThemes: true,
+				premiumHeroEffects: true,
+				hidePortfolioCredit: true,
+				customDomain: true,
+				detailedPortfolioStats: true,
 			},
 			credits: null,
 			canPurchase: false,
@@ -238,7 +243,7 @@ describe.skipIf(!databaseUrl)("billing foundation", () => {
 		expect(await getEntitlements("member")).toMatchObject({
 			enabled: true,
 			planId: "free",
-			limits: { activeResumes: 3, activeCoverLetters: 3 },
+			limits: { activeResumes: 3, activeCoverLetters: 3, portfolioWorks: 6 },
 			features: { premiumTemplates: false },
 		});
 		const summary = await as("owner").summary();

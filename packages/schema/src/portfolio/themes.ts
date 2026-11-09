@@ -117,7 +117,7 @@ type VariantSupport = { [K in PortfolioVariantKey]: readonly PortfolioVariantVal
 export type PortfolioThemeInfo = {
 	id: PortfolioTheme;
 	name: string;
-	/** Free themes are open to every plan; Plus themes need a paid plan once billing applies (Phase 07). */
+	/** Free themes are open to every plan; Plus themes need a paid plan where billing applies. */
 	plan: "free" | "plus";
 	defaultScheme: Exclude<PortfolioScheme, "auto">;
 	/** Used only when following a resume with no usable accent (including portfolios without a resume). */

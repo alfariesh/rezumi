@@ -4,7 +4,7 @@ import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { parseVideoUrl, youtubeThumbnailUrl } from "@rezumi/schema/portfolio/video";
 import { generateId } from "@rezumi/utils/string";
-import { portfolioErrorMessage } from "../errors";
+import { portfolioErrorCode, portfolioErrorMessage } from "../errors";
 import { imageUploadErrorMessage, isAbort, stopIfAborted, uploadPortfolioImage } from "../images/upload";
 import { videoBlockFromUnfurl } from "./link-blocks";
 import { client } from "@/libs/orpc/client";
@@ -73,6 +73,8 @@ export async function importVideoThumbnail(
 			return await importRemotePicture(url, block.title ?? "", signal);
 		} catch (error) {
 			if (isAbort(error, signal)) throw error;
+			// No room stays no room for the next picture.
+			if (portfolioErrorCode(error) === "PLAN_LIMIT_REACHED") return undefined;
 			// The next candidate, or none.
 		}
 	}

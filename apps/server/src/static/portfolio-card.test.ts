@@ -58,6 +58,7 @@ function portfolio(picture: { key: string; thumbKey?: string } | null): PublicPo
 			basics: { picture: picture ? { ...picture, width: 1600, height: 1600 } : null },
 		}),
 		updatedAt: new Date("2026-11-06T00:00:00Z"),
+		entitlements: { hidePortfolioCredit: false },
 		indexable: true,
 		customDomain: null,
 		resume: null,

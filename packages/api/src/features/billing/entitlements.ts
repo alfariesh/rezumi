@@ -20,7 +20,12 @@ export type Entitlements = {
 	planId: PlanId;
 	features: PlanFeatures;
 	/** Null when unlimited. */
-	limits: { activeResumes: number | null; activeCoverLetters: number | null };
+	limits: {
+		activeResumes: number | null;
+		activeCoverLetters: number | null;
+		portfolioWorks: number | null;
+		portfolioStorageBytes: number | null;
+	};
 	/**
 	 * When the current plan's access ends (or renews), counting back-to-back periods of the same plan. Null on free.
 	 */
@@ -43,8 +48,13 @@ const unlimited = (): Entitlements => ({
 		customStyles: true,
 		customFonts: true,
 		automationApi: true,
+		premiumPortfolioThemes: true,
+		premiumHeroEffects: true,
+		hidePortfolioCredit: true,
+		customDomain: true,
+		detailedPortfolioStats: true,
 	},
-	limits: { activeResumes: null, activeCoverLetters: null },
+	limits: { activeResumes: null, activeCoverLetters: null, portfolioWorks: null, portfolioStorageBytes: null },
 	currentPeriodEndsAt: null,
 	source: null,
 	renews: false,

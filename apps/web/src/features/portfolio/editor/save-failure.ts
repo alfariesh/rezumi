@@ -10,7 +10,7 @@ export type PortfolioDataPath = readonly (string | number)[];
  * - `field`: a value the server would refuse (`path` leads to it);
  * - `too-large`: the data is over `PORTFOLIO_LIMITS.dataBytes`;
  * - `file-missing`: a picture or file the data uses isn't one of the portfolio's uploads (anymore);
- * - `refused`: any other refusal (a plan limit from Phase 07), worded from its error;
+ * - `refused`: any other refusal (a plan's limit or feature), worded from its error;
  * - `gone`: the portfolio was deleted, or portfolios were switched off for the account. Nothing can be saved.
  */
 export type PortfolioSaveProblem =

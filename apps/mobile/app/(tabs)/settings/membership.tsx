@@ -1,10 +1,9 @@
-import type { PlanFeature } from "@/features/billing/plan";
 import type { IconName } from "@/ui";
 import { useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { Redirect } from "expo-router";
 import { StyleSheet, View } from "react-native";
-import { PLAN_FEATURE_KEYS, TRIAL_CREDITS } from "@rezumi/schema/billing";
+import { DOCUMENT_PLAN_FEATURE_KEYS, TRIAL_CREDITS } from "@rezumi/schema/billing";
 import { orpc } from "@/api/client";
 import { creditCount, describeCreditEntry, useRecentCredits } from "@/features/billing/credits";
 import { canShowPlans, getPlanName, usePlan } from "@/features/billing/plan";
@@ -45,7 +44,7 @@ export default function MembershipScreen() {
 		});
 	const formatDay = (date: Date) =>
 		date.toLocaleDateString(i18n.locale, { day: "numeric", month: "short", year: "numeric", timeZone });
-	const features: Record<PlanFeature, { icon: IconName; label: string }> = {
+	const features: Record<(typeof DOCUMENT_PLAN_FEATURE_KEYS)[number], { icon: IconName; label: string }> = {
 		premiumTemplates: { icon: "squares-four", label: t`Every template` },
 		brandLogos: { icon: "code", label: t`Tool logos in skills` },
 		wordOdtExport: { icon: "file-doc", label: t`Word and ODT downloads` },
@@ -158,7 +157,7 @@ export default function MembershipScreen() {
 						</SettingsGroup>
 					)}
 					<SettingsGroup title={t`What's included`}>
-						{PLAN_FEATURE_KEYS.map((feature, index) => (
+						{DOCUMENT_PLAN_FEATURE_KEYS.map((feature, index) => (
 							<View key={feature}>
 								{/* Android rows have no rules by default; this list keeps the web's, starting under the text. */}
 								{index > 0 ? (

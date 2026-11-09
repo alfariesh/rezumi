@@ -11,8 +11,8 @@ function slugsExcept(data: Pick<PortfolioData, "works">, workId?: string): Set<s
 }
 
 /**
- * How many more works the portfolio can hold: `limit` is the account's (`portfolio.get` → `limits.works`, which plans
- * set from Phase 07), else the technical limit.
+ * How many more works the portfolio can hold: `limit` is the account's (`portfolio.get` → `limits.works`, which its
+ * plan sets), else the technical limit.
  */
 export function workRoom(data: Pick<PortfolioData, "works">, limit: number = PORTFOLIO_LIMITS.works): number {
 	return Math.max(0, Math.min(limit, PORTFOLIO_LIMITS.works) - data.works.items.length);

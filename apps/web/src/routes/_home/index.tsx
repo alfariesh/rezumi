@@ -13,5 +13,5 @@ export const Route = createFileRoute("/_home/")({
 
 function HomepageRoute() {
 	const { flags } = Route.useRouteContext();
-	return <Homepage billingEnabled={flags.billing === true} />;
+	return <Homepage billingEnabled={flags.billing === true} portfolioEnabled={flags.portfolio === true} />;
 }

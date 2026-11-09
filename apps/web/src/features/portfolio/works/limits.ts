@@ -2,18 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { orpc } from "@/libs/orpc/client";
 
-export type PortfolioAccountLimits = {
-	/** How many works the portfolio may hold. */
-	works: number;
-	/** Bytes of pictures and PDFs the account may store; null when the server sets no quota. */
-	storageBytes: number | null;
-};
-
 /**
- * The account's portfolio limits as `portfolio.get` reported them (the editor's route loads it): from Phase 07 a plan
- * may allow fewer works or less storage than the technical limits, which apply until the answer is in.
+ * How many works the portfolio may hold, as `portfolio.get` reported it (the editor's route loads it): a plan may allow
+ * fewer than the technical limit, which applies until the answer is in.
  */
-export function usePortfolioLimits(): PortfolioAccountLimits {
-	const { data } = useQuery(orpc.portfolio.get.queryOptions({ select: (result) => result.limits }));
-	return { works: data?.works ?? PORTFOLIO_LIMITS.works, storageBytes: data?.storageBytes ?? null };
+export function usePortfolioLimits() {
+	const { data } = useQuery(orpc.portfolio.get.queryOptions({ select: (result) => result.limits.works }));
+	return { works: data ?? PORTFOLIO_LIMITS.works };
 }

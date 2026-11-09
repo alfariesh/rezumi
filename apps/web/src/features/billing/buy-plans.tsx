@@ -29,7 +29,7 @@ import { getReadableErrorMessage } from "@/libs/error-message";
 const PAID_PLANS = ["plus", "pro-ai"] as const satisfies readonly PaidPlanId[];
 
 /** What each plan adds, in three lines; numbers come from the catalog the server enforces. */
-function planHighlights(planId: PaidPlanId) {
+function planHighlights(planId: PaidPlanId, portfolioOpen: boolean) {
 	if (planId === "pro-ai") {
 		const proCredits = PLANS["pro-ai"].creditsPerMonth;
 		return [t`Everything in Plus`, t`${proCredits} Rezumi AI credits every month`, t`No API key to set up`];
@@ -39,6 +39,7 @@ function planHighlights(planId: PaidPlanId) {
 		t`${activeResumes} active resumes and ${activeCoverLetters} cover letters`,
 		t`Every template, tool logos, Word and ODT downloads`,
 		t`Custom styles, your own fonts, API and MCP`,
+		...(portfolioOpen ? [t`Every portfolio theme, your own domain, no Rezumi badge`] : []),
 	];
 }
 
@@ -116,6 +117,8 @@ type BuyPlansSectionProps = {
 	plan: PlanSummary;
 	/** The plan a link asked for (`?plan=`), marked and brought into view. */
 	selected: PaidPlanId | undefined;
+	/** Whether portfolios are open to the account: only then do plans sell portfolio features. */
+	portfolioOpen?: boolean;
 };
 
 /**
@@ -123,7 +126,7 @@ type BuyPlansSectionProps = {
  * subscribe, upgrade, switch interval, or switch down from the next renewal. Without a way to subscribe here (guest,
  * unverified email, paused) it explains the step instead; where plans aren't sold at all it shows nothing.
  */
-export function BuyPlansSection({ plan, selected }: BuyPlansSectionProps) {
+export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPlansSectionProps) {
 	const labelId = useId();
 	const subscription = plan.subscription;
 	const live = isLiveSubscription(subscription) ? subscription : null;
@@ -236,7 +239,7 @@ export function BuyPlansSection({ plan, selected }: BuyPlansSectionProps) {
 								)}
 							</div>
 							<ul className="grid gap-2 text-sm">
-								{planHighlights(id).map((line) => (
+								{planHighlights(id, portfolioOpen).map((line) => (
 									<li key={line} className="flex gap-2">
 										<Icon name="check" size={18} className="mt-0.5 shrink-0 text-muted" />
 										<span>{line}</span>

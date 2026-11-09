@@ -11,6 +11,7 @@ import { portfolioErrorMessage } from "../../errors";
 import { usePortfolioLimits } from "../limits";
 import { resumeProjects, workRoom } from "../works";
 import { BackButton, StepAlert } from "./parts";
+import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { client } from "@/libs/orpc/client";
 
 /** The edits waiting to be saved couldn't be saved first, so the server wasn't asked. */
@@ -54,6 +55,7 @@ export function FromResume({ onBack, onClose }: StepProps) {
 			onClose();
 			if (added.length === 1 && added[0]) openWork(added[0].id);
 		} catch (failure) {
+			openPlanDialogForError(failure);
 			setError(importErrorMessage(failure));
 		} finally {
 			setBusy(false);

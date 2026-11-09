@@ -2,6 +2,7 @@ import { Button, Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useState } from "react";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
@@ -12,7 +13,10 @@ import { usePortfolioEditorUi } from "../editor/ui";
 import { portfolioImageSrc } from "../images/image-field";
 import { AddWorkDialog } from "./add-work/add-work-dialog";
 import { usePortfolioLimits } from "./limits";
+import { StorageMeter } from "./storage-meter";
 import { workRoom } from "./works";
+import { usePlan } from "@/features/billing/plan";
+import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useConfirm } from "@/hooks/use-confirm";
 
 /**
@@ -28,6 +32,10 @@ export function WorksForm() {
 	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 	const [adding, setAdding] = useState(false);
 	const items = works.items;
+	const plan = usePlan();
+	const full = workRoom({ works }, limits.works) === 0;
+	// Full because of the plan, not the technical limit: the button explains the plan instead of doing nothing.
+	const planFull = full && Boolean(plan?.enabled) && limits.works < PORTFOLIO_LIMITS.works;
 
 	const remove = async (id: string, title: string) => {
 		const confirmed = await confirm(t`Delete “${title}”?`, {
@@ -148,8 +156,12 @@ export function WorksForm() {
 			<div ref={fallbackRef} className="flex flex-wrap items-center gap-3">
 				<Button
 					variant="secondary"
-					isDisabled={workRoom({ works }, limits.works) === 0}
-					onPress={() => setAdding(true)}
+					isDisabled={full && !planFull}
+					onPress={() =>
+						full && planFull
+							? openPlanDialog({ kind: "limit", limit: "portfolioWorks", max: limits.works, used: items.length })
+							: setAdding(true)
+					}
 				>
 					<Icon name="plus" size={18} />
 					<Trans>Add work</Trans>
@@ -160,6 +172,7 @@ export function WorksForm() {
 					</span>
 				)}
 			</div>
+			<StorageMeter />
 			{adding && <AddWorkDialog onClose={() => setAdding(false)} />}
 		</div>
 	);

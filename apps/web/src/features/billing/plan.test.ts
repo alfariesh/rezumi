@@ -1,4 +1,4 @@
-import type { PlanSummary } from "./plan";
+import type { PlanProblem, PlanSummary } from "./plan";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { ORPCError } from "@orpc/client";
@@ -13,6 +13,8 @@ const {
 	getPlanProblem,
 	hasPlanFeature,
 	isLabelledTemplate,
+	isLockedHeroEffect,
+	isLockedPortfolioTheme,
 	isLockedTemplate,
 } = await import("./plan");
 
@@ -33,6 +35,11 @@ const summary = (enabled: boolean, paid: boolean): PlanSummary => ({
 		customStyles: paid,
 		customFonts: paid,
 		automationApi: paid,
+		premiumPortfolioThemes: paid,
+		premiumHeroEffects: paid,
+		hidePortfolioCredit: paid,
+		customDomain: paid,
+		detailedPortfolioStats: paid,
 	},
 	credits: null,
 	canPurchase: false,
@@ -114,5 +121,53 @@ describe("plan problems", () => {
 		expect(describeImportedDesign(free, { template: "senja", ...logos })).toMatch(/Meridian.*Tool logos/);
 		expect(describeImportedDesign(summary(true, true), { template: "meridian", ...logos })).toBeNull();
 		expect(describeImportedDesign(free, { template: "meridian", design: { icons: { logos: false } } })).toBeNull();
+	});
+});
+
+describe("portfolio plan problems", () => {
+	const refusal = (code: string, data: unknown) => new ORPCError(code, { status: 403, data });
+
+	it("reads a works or storage refusal from the server", () => {
+		expect(getPlanProblem(refusal("PLAN_LIMIT_REACHED", { limit: "portfolioWorks", max: 6, used: 6 }))).toEqual({
+			kind: "limit",
+			limit: "portfolioWorks",
+			max: 6,
+			used: 6,
+		});
+		expect(
+			getPlanProblem(
+				refusal("PLAN_LIMIT_REACHED", { limit: "portfolioStorageBytes", max: 100 * 1024 * 1024, used: 1 }),
+			),
+		).toMatchObject({ limit: "portfolioStorageBytes" });
+	});
+
+	it("words each portfolio problem without a price", () => {
+		const problems: PlanProblem[] = [
+			{ kind: "limit", limit: "portfolioWorks", max: 6, used: 6 },
+			{ kind: "limit", limit: "portfolioStorageBytes", max: 100 * 1024 * 1024, used: 1 },
+			{ kind: "feature", feature: "premiumPortfolioThemes" },
+			{ kind: "feature", feature: "premiumHeroEffects" },
+			{ kind: "feature", feature: "hidePortfolioCredit" },
+			{ kind: "feature", feature: "customDomain" },
+			{ kind: "feature", feature: "detailedPortfolioStats" },
+		];
+		for (const problem of problems) {
+			const { title, description } = describePlanProblem(problem);
+			expect(title).not.toBe("");
+			expect(`${title} ${description}`).not.toMatch(/\$|Rp|buy|upgrade/i);
+		}
+		expect(describePlanProblem(problems[1] as PlanProblem).description).toContain("100 MB");
+	});
+
+	it("locks only premium portfolio themes and effects, only where the plan lacks them", () => {
+		const free = summary(true, false);
+		const paid = summary(true, true);
+		expect(isLockedPortfolioTheme(free, "kanvas")).toBe(true);
+		expect(isLockedPortfolioTheme(free, "lugas")).toBe(false);
+		expect(isLockedPortfolioTheme(paid, "kanvas")).toBe(false);
+		expect(isLockedPortfolioTheme(undefined, "kanvas")).toBe(false);
+		expect(isLockedHeroEffect(free, "typewriter")).toBe(true);
+		expect(isLockedHeroEffect(free, "shimmer")).toBe(false);
+		expect(isLockedHeroEffect(paid, "typewriter")).toBe(false);
 	});
 });

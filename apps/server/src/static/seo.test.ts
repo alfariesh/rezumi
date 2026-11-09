@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 
-vi.mock("@rezumi/env/server", () => ({ env: { APP_URL: "https://rezumi.app/" } }));
+const mockEnv = vi.hoisted(() => ({ APP_URL: "https://rezumi.app/" }) as { APP_URL: string; PORTFOLIO_MODE?: string });
+vi.mock("@rezumi/env/server", () => ({ env: mockEnv }));
 vi.mock("@rezumi/api/features/resume/web-page", () => ({
 	listIndexableResumes: async () => [
 		{ username: "tess", slug: "game-dev", isPrimary: true, updatedAt: new Date("2026-10-01T00:00:00Z") },
@@ -89,4 +90,13 @@ it("lists the docs pages in the pages sitemap, without language alternates", asy
 	const xml = await handlePagesSitemap(["/docs", "/docs/guides/editor-overview"]).text();
 	expect(xml).toContain("<url><loc>https://rezumi.app/docs</loc></url>");
 	expect(xml).toContain("<url><loc>https://rezumi.app/docs/guides/editor-overview</loc></url>");
+});
+
+it("describes portfolios and their plans to AI readers only once portfolios are open to everyone", async () => {
+	expect(await handleLlms().text()).not.toContain("- Portfolio:");
+	mockEnv.PORTFOLIO_MODE = "admins";
+	expect(await handleLlms().text()).not.toContain("- Portfolio:");
+	mockEnv.PORTFOLIO_MODE = "on";
+	expect(await handleLlms().text()).toContain("- Portfolio: every account can publish a web portfolio");
+	delete mockEnv.PORTFOLIO_MODE;
 });

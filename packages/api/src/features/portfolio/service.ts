@@ -1,3 +1,4 @@
+import type { Transaction } from "../billing/account";
 import type { PortfolioUnfurl } from "./unfurl";
 import type { DbOrTx } from "@rezumi/db/client";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
@@ -18,6 +19,9 @@ import {
 	PORTFOLIO_UPLOAD,
 	portfolioDataBytes,
 } from "@rezumi/schema/portfolio/limits";
+import { lockBillingAccount } from "../billing/account";
+import { getEntitlements, isBillingAppliedTo } from "../billing/entitlements";
+import { portfolioLimitReached } from "../billing/limits";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
 import { getStorageService } from "../storage";
 import { portfolioErrors } from "./errors";
@@ -31,6 +35,7 @@ import {
 	storedFiles,
 } from "./file-store";
 import { getPortfolioMode, isPortfolioEnabledFor } from "./mode";
+import { assertPortfolioPlan } from "./plan";
 import {
 	fetchRemoteImage,
 	RemoteImageError,
@@ -177,11 +182,11 @@ type LockedPortfolio = NonNullable<Awaited<ReturnType<typeof lockPortfolio>>>;
 /**
  * The one way data is saved over the version an editor had (`update`, `importWorks`), in the caller's transaction:
  * lock the portfolio's row, compare the version (cheap, so a stale editor costs nothing more), build the new data
- * (`build` returns null when nothing changes: then nothing is written and the version stays), write it with a new
- * version, and mark which files it uses (refusing files that aren't recorded).
+ * (`build` returns null when nothing changes: then nothing is written and the version stays), check it against the
+ * plan, write it with a new version, and mark which files it uses (refusing files that aren't recorded).
  */
 async function saveVersionedData(
-	tx: DbOrTx,
+	tx: Transaction,
 	userId: string,
 	expectedUpdatedAt: Date,
 	build: (existing: LockedPortfolio) => PreparedData | null | Promise<PreparedData | null>,
@@ -198,6 +203,8 @@ async function saveVersionedData(
 		if (!row) throw portfolioErrors.notFound();
 		return toDto(row, parsePortfolioData(row.data), userId, tx);
 	}
+
+	await assertPortfolioPlan(tx, userId, next.data);
 
 	// Always later than the version replaced, even within one millisecond or with a server clock behind another's.
 	const updatedAt = new Date(Math.max(Date.now(), existing.updatedAt.getTime() + 1));
@@ -236,16 +243,28 @@ type NewFile = { key: string; bytes: number } & (
 );
 
 /**
- * Records uploads before they're written, in one transaction under the portfolio's lock with the check of the
- * account's storage ceiling (`PORTFOLIO_UPLOAD.accountBytes` and `accountFiles`), so two uploads at once can't both
- * take the last room. Every recorded file counts, ones waiting for the cleanup job too; plan quotas (Phase 07) decide
- * for themselves. A recorded file is unused until saved data uses it.
+ * Records uploads before they're written, in one transaction under the portfolio's lock with the checks of the plan's
+ * storage quota and the account's ceiling (`PORTFOLIO_UPLOAD.accountBytes` and `accountFiles`), so two uploads at once
+ * can't both take the last room. Every recorded file counts, ones waiting for the cleanup job too: the number the
+ * storage meter shows is the one enforced. Files already over a quota stay; only new ones are refused. Locks are taken
+ * portfolio, then billing account, then file rows. A recorded file is unused until saved data uses it.
  */
 async function recordUploads(userId: string, files: readonly NewFile[]): Promise<void> {
 	await db.transaction(async (tx) => {
 		if (!(await lockPortfolio(tx, userId))) throw portfolioErrors.notFound();
+		if (await isBillingAppliedTo(userId, tx)) await lockBillingAccount(tx, userId);
+		const entitlements = await getEntitlements(userId, new Date(), tx);
 		const stored = await storedFiles(userId, tx);
 		const bytes = files.reduce((sum, file) => sum + file.bytes, 0);
+		const quota = entitlements.limits.portfolioStorageBytes;
+		// A quota at the account's ceiling is the ceiling: no plan offers more, so it's refused as storage being full.
+		if (quota !== null && quota < PORTFOLIO_UPLOAD.accountBytes && stored.bytes + bytes > quota)
+			throw portfolioLimitReached({
+				limit: "portfolioStorageBytes",
+				max: quota,
+				used: stored.bytes,
+				planId: entitlements.planId,
+			});
 		if (
 			stored.bytes + bytes > PORTFOLIO_UPLOAD.accountBytes ||
 			stored.files + files.length > PORTFOLIO_UPLOAD.accountFiles
@@ -280,13 +299,19 @@ const PDF_SIGNATURE = "%PDF-";
 
 export const portfolioService = {
 	get: async (userId: string) => {
-		const limits = {
+		const technical = {
 			works: PORTFOLIO_LIMITS.works,
 			storageBytes: PORTFOLIO_UPLOAD.accountBytes,
 			dataBytes: PORTFOLIO_LIMITS.dataBytes,
 		};
 		if (!(await enabledAccount(userId)))
-			return { enabled: false, portfolio: null, limits, usage: { works: 0, storageBytes: 0 } };
+			return { enabled: false, portfolio: null, limits: technical, usage: { works: 0, storageBytes: 0 } };
+		const plan = (await getEntitlements(userId)).limits;
+		const limits = {
+			...technical,
+			works: Math.min(plan.portfolioWorks ?? technical.works, technical.works),
+			storageBytes: Math.min(plan.portfolioStorageBytes ?? technical.storageBytes, technical.storageBytes),
+		};
 		const [row] = await db.select(portfolioColumns).from(schema.portfolio).where(eq(schema.portfolio.userId, userId));
 		const portfolio = row ? await toDto(row, parsePortfolioData(row.data), userId) : null;
 		return {
@@ -336,12 +361,14 @@ export const portfolioService = {
 			...(headline === undefined ? {} : { headline }),
 			...(location === undefined ? {} : { location }),
 		};
-		const next = prepareData(
-			userId,
-			createInitialPortfolioData({ resume, ...(input.theme ? { theme: input.theme } : {}), basics }),
-		);
+		const initial = createInitialPortfolioData({ resume, ...(input.theme ? { theme: input.theme } : {}), basics });
+		// A resume with more projects than the plan's works starts with the first ones, instead of refusing the portfolio.
+		const maxWorks = (await getEntitlements(userId)).limits.portfolioWorks;
+		if (maxWorks !== null) initial.works.items = initial.works.items.slice(0, maxWorks);
+		const next = prepareData(userId, initial);
 
 		return db.transaction(async (tx) => {
+			await assertPortfolioPlan(tx, userId, next.data, true);
 			// The unique user_id decides between two creates racing each other: one row, the other gets PORTFOLIO_EXISTS.
 			const [row] = await tx
 				.insert(schema.portfolio)

@@ -6,6 +6,9 @@ import { ORPCError } from "@orpc/client";
 import { PortfolioImageError } from "./compress";
 import { imageUploadErrorMessage, MAX_BATCH_PICTURES, uploadImageBatch } from "./upload";
 
+const mocks = vi.hoisted(() => ({ openPlanDialogForError: vi.fn() }));
+vi.mock("@/features/billing/plan-dialog", () => ({ openPlanDialogForError: mocks.openPlanDialogForError }));
+
 beforeEach(() => i18n.loadAndActivate({ locale: "en-US", messages: {} }));
 
 const file = (name: string) => new File(["x"], name, { type: "image/jpeg" });
@@ -67,6 +70,19 @@ describe("uploadImageBatch", () => {
 		expect(outcome.errors).toEqual([
 			"Your portfolio's storage is full. Remove pictures or PDFs you don't need, then try again. 2 pictures weren't uploaded.",
 		]);
+	});
+
+	it("stops at the plan's storage quota and explains the plan once", async () => {
+		mocks.openPlanDialogForError.mockClear();
+		const refusal = new ORPCError("PLAN_LIMIT_REACHED", {
+			status: 403,
+			data: { limit: "portfolioStorageBytes", max: 100 * 1024 * 1024, used: 100 * 1024 * 1024, planId: "free" },
+		});
+		const upload = vi.fn(() => Promise.reject(refusal));
+		const outcome = await uploadImageBatch([file("a.jpg"), file("b.jpg")], { upload });
+		expect(upload).toHaveBeenCalledTimes(1);
+		expect(outcome.stopped).toBe("storage-full");
+		expect(mocks.openPlanDialogForError).toHaveBeenCalledExactlyOnceWith(refusal);
 	});
 
 	it("stops when it's cancelled, without counting the picture on its way as a failure", async () => {

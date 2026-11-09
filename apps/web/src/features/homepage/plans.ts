@@ -1,7 +1,13 @@
 import type { BillingCurrency, PlanId, PlanLimits, PlanPrices } from "@rezumi/schema/billing";
 import type { Template } from "@rezumi/schema/templates";
 import { t } from "@lingui/core/macro";
-import { DEFAULT_BILLING_CURRENCY, FREE_TEMPLATES, PLANS, TRIAL_CREDITS } from "@rezumi/schema/billing";
+import {
+	DEFAULT_BILLING_CURRENCY,
+	FREE_PORTFOLIO_THEMES,
+	FREE_TEMPLATES,
+	PLANS,
+	TRIAL_CREDITS,
+} from "@rezumi/schema/billing";
 import { templateLineup } from "@rezumi/schema/templates";
 
 /**
@@ -32,11 +38,13 @@ export type Plan = {
 const documentLimits = ({ activeResumes, activeCoverLetters }: PlanLimits) =>
 	t`${activeResumes} active resumes and ${activeCoverLetters} cover letters`;
 
-export const getPlans = (): Plan[] => {
+export const getPlans = (portfolioEnabled = false): Plan[] => {
 	const freeTemplateCount = freeTemplates.length;
 	const templateCount = templateLineup.length;
 	const trialCredits = TRIAL_CREDITS.amount;
 	const proCredits = PLANS["pro-ai"].creditsPerMonth;
+	const freeWorks = PLANS.free.limits.portfolioWorks;
+	const freeThemes = FREE_PORTFOLIO_THEMES.length;
 	return [
 		{
 			id: "free",
@@ -50,6 +58,7 @@ export const getPlans = (): Plan[] => {
 				t`ATS check and basic keyword matching`,
 				t`Job tracker with board, calendar and insights`,
 				t`${trialCredits} AI credits to try`,
+				...(portfolioEnabled ? [t`A web portfolio with ${freeWorks} works and ${freeThemes} themes`] : []),
 			],
 			cta: t`Start free`,
 		},
@@ -65,6 +74,7 @@ export const getPlans = (): Plan[] => {
 				t`Word and ODT downloads`,
 				t`Custom styles and your own fonts`,
 				t`MCP and API for your own automations`,
+				...(portfolioEnabled ? [t`Every portfolio theme, your own domain, no Rezumi badge`] : []),
 			],
 			cta: t`Try Plus free`,
 		},

@@ -7,6 +7,7 @@ import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { parsePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS } from "@rezumi/schema/portfolio/limits";
+import { getEntitlements } from "../billing/entitlements";
 import { isCustomDomainsEnabled } from "../custom-domain/service";
 import { isOwner, ownerIsNotBanned, resolveViewer } from "../resume/access-policy";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
@@ -83,6 +84,8 @@ export type PublicPortfolio = {
 	customDomain: string | null;
 	/** The source resume while it exists outside Trash; its sections fill the page. */
 	resume: PublicPortfolioResume | null;
+	/** What the owner's plan lets the page leave out, read on every view: a plan ending shows the badge again. */
+	entitlements: { hidePortfolioCredit: boolean };
 };
 
 /**
@@ -115,7 +118,7 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 		.limit(1);
 	if (!row) return null;
 
-	const [resume, domain] = await Promise.all([
+	const [resume, domain, entitlements] = await Promise.all([
 		row.sourceResumeId
 			? db
 					.select({
@@ -144,6 +147,7 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 					.limit(1)
 					.then(([found]) => found?.hostname ?? null)
 			: null,
+		getEntitlements(row.userId),
 	]);
 
 	return {
@@ -156,6 +160,7 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 		indexable: row.indexable === true,
 		customDomain: domain,
 		resume: resume ? readSourceResume(row.id, resume) : null,
+		entitlements: { hidePortfolioCredit: entitlements.features.hidePortfolioCredit },
 	};
 }
 

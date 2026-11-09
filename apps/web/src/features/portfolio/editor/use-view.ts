@@ -5,6 +5,7 @@ import { buildPortfolioView } from "@rezumi/portfolio/view";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { useOwnOrigins, withOwnPicture } from "./pictures";
 import { usePortfolioData } from "./store";
+import { usePlanFeature } from "@/features/billing/plan";
 
 /** The page's own words (default section titles, button labels) in its language. */
 export function usePageMessages(): PortfolioViewMessages {
@@ -24,6 +25,7 @@ export function useEditorView() {
 	const owner = usePortfolioOwner();
 	const messages = usePageMessages();
 	const origins = useOwnOrigins();
+	const canHideCredit = usePlanFeature("hidePortfolioCredit");
 	return useMemo(
 		() =>
 			buildPortfolioView({
@@ -31,10 +33,10 @@ export function useEditorView() {
 				// A resume photo kept on another site shows no photo, as on the page (`./pictures.ts`).
 				resume: source.data ? { data: withOwnPicture(source.data, origins) } : null,
 				owner: { name: owner.name, username: owner.username },
-				entitlements: { hidePortfolioCredit: false },
+				entitlements: { hidePortfolioCredit: canHideCredit },
 				messages,
 				fileUrl: (key) => `/${key}`,
 			}),
-		[data, source.data, owner.name, owner.username, messages, origins],
+		[data, source.data, owner.name, owner.username, messages, origins, canHideCredit],
 	);
 }

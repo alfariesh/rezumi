@@ -10,6 +10,8 @@ import { writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS, portfolioDataBytes } from "@rezumi/schema/portfolio/limits";
 import { generateId } from "@rezumi/utils/string";
 import { classifySaveError, saveRetryDelay } from "./save-failure";
+import { getPlanProblem } from "@/features/billing/plan";
+import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { client } from "@/libs/orpc/client";
 
 /** The portfolio as the API returns it. */
@@ -146,6 +148,21 @@ let lastEdit: { key: string | undefined; at: number } = { key: undefined, at: 0 
  * and what was sent without an answer. A conflict whose server copy is one of these isn't a real one.
  */
 let known: PortfolioData[] = [];
+/**
+ * The plan problem the dialog last explained: while a refused change stays in the draft, each pause in typing is
+ * refused again, and the save status says so; the dialog opens once, until a save goes through.
+ */
+let explainedPlanProblem: string | null = null;
+
+function explainPlanProblem(error: unknown) {
+	const problem = getPlanProblem(error);
+	if (!problem) return;
+	const key = problem.kind === "feature" ? problem.feature : problem.limit;
+	if (key === explainedPlanProblem) return;
+	explainedPlanProblem = key;
+	openPlanDialog(problem);
+}
+
 /** Data the server refused and why, not sent again until it changes. */
 let refused: { data: PortfolioData; problem: PortfolioSaveProblem } | null = null;
 
@@ -306,6 +323,7 @@ export const usePortfolioEditorStore = create<PortfolioEditorStore>()((set, get)
 				if (problem.kind === "refused" && error instanceof ORPCError && error.code === "BAD_REQUEST")
 					problem = schemaProblem(submitted) ?? problem;
 				refused = { data: submitted, problem };
+				if (problem.kind === "refused") explainPlanProblem(error);
 				set({ dirty: true, status: "invalid", problem, retry: null });
 				return "failed";
 			}
@@ -339,6 +357,7 @@ export const usePortfolioEditorStore = create<PortfolioEditorStore>()((set, get)
 				outcome = "saved";
 				known = [submitted];
 				refused = null;
+				explainedPlanProblem = null;
 				// Only the version: what was typed stays as typed (the server cleans rich text as it stores it), anything
 				// typed meanwhile stays, and so do settings changed while this save was on its way.
 				set((state) =>
@@ -380,6 +399,7 @@ export const usePortfolioEditorStore = create<PortfolioEditorStore>()((set, get)
 			lastEdit = { key: undefined, at: 0 };
 			known = [portfolio.data];
 			refused = null;
+			explainedPlanProblem = null;
 			set((state) => ({ ...initialState(), portfolio, revision: state.revision + 1 }));
 		},
 

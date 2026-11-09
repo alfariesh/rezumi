@@ -73,7 +73,7 @@ function portfolioMessagesByCode(data: ErrorData): Record<string, string> {
 }
 
 /**
- * A portfolio API error in words for the person who caused it. Plan refusals (Phase 07) are worded by the billing
+ * A portfolio API error in words for the person who caused it. Plan refusals are worded by the billing
  * helpers inside `getOrpcErrorMessage`; anything else, including errors that aren't the API's answer at all (a dropped
  * connection's "Failed to fetch", a script error), gets `fallback`, never its own English text.
  */
