@@ -60,6 +60,10 @@
 - Penangguhan tidak boleh mengubah `updated_at` (versi data; editor yang terbuka akan melihat konflik palsu) dan mengikuti urutan kunci baris `portfolio` → `portfolio_file`.
 - Belum ditangani: metadata PDF (Author, Creator, riwayat XMP) dipublikasikan apa adanya, gambar dikodekan ulang tetapi PDF tidak; belum ada pilihan "tanpa lokasi" (lokasi kosong = ikut CV, termasuk alamat jalan di CV); tombol Email/WhatsApp di intro, layanan, dan bagian bebas memuat alamatnya walau kartu Kontak menyembunyikannya (tombol dianggap persetujuan; jelaskan di editor dan S&K).
 
+### Selesai (2026-11-09)
+
+Seluruh kode selesai; rincian di `02-teknis.md` bagian 39. Pemilik menyetujui bagian Portfolio web di teks legal pada 2026-11-09; penerbitannya dijadwalkan bersama Phase 12.
+
 ### Catatan dari Phase 08 (2026-11-09)
 
 - Kebijakan Privasi perlu menyebut: statistik agregat tanpa cookie pelacak (negara, perangkat, perujuk), pesan form kontak disimpan 90 hari dan email pengirim terlihat oleh pemilik portfolio, serta Cloudflare Turnstile sebagai pemroses pihak ketiga.
