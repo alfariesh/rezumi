@@ -74,6 +74,17 @@ export function IntroForm() {
 					editPortfolio((draft) => setBasicsText(draft, "location", value), { key: "basics.location" })
 				}
 			/>
+			<SwitchRow
+				isSelected={hero.showLocation}
+				onChange={(checked) =>
+					editPortfolio((draft) => {
+						draft.hero.showLocation = checked;
+					})
+				}
+				label={t`Show my location`}
+				description={t`Turn this off to keep your location off the page, including the one on your resume.`}
+				className="items-start py-0"
+			/>
 			<TextInput
 				label={t`Greeting`}
 				multiline
@@ -269,7 +280,10 @@ function HeroButtons() {
 					<Trans>Buttons</Trans>
 				</span>
 				<span className="text-xs text-muted">
-					<Trans>Up to three, under your greeting. The first one stands out.</Trans>
+					<Trans>
+						Up to three, under your greeting. The first one stands out. An Email or WhatsApp button shows that address
+						to visitors, even if Contact hides it.
+					</Trans>
 				</span>
 			</div>
 			{buttons.map((button, index) => {

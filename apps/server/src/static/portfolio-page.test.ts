@@ -252,6 +252,66 @@ describe("the contact form", () => {
 	});
 });
 
+describe("the report form", () => {
+	const keys = () => {
+		mocks.turnstile.site = "1x00000000000000000000AA";
+		mocks.turnstile.secret = "1x0000000000000000000000000000000AA";
+	};
+
+	it("is a page of its own, kept out of search engines, that counts no visit", async () => {
+		keys();
+		mocks.findPublicPortfolio.mockResolvedValue(portfolio());
+		const response = await servePortfolioOrResume(get("/nadia?report"), "nadia", "1.1.1.1");
+		const body = await response.text();
+		expect(body).toContain('action="/api/portfolio/nadia/report"');
+		expect(response.headers.get("X-Robots-Tag")).toBe("noindex, nofollow");
+		expect(response.headers.get("Content-Security-Policy")).toMatch(/frame-src [^;]*challenges\.cloudflare\.com/);
+		expect(mocks.recordPortfolioVisit).not.toHaveBeenCalled();
+	});
+
+	it("gives an email address until the Turnstile keys are set", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(portfolio());
+		const body = await (await servePortfolioOrResume(get("/nadia?report"), "nadia", "1.1.1.1")).text();
+		expect(body).not.toContain("<form");
+		expect(body).toContain("mailto:hi@rezumi.app");
+	});
+
+	it("shows the outcome of a send", async () => {
+		keys();
+		mocks.findPublicPortfolio.mockResolvedValue(portfolio());
+		const body = await (await servePortfolioOrResume(get("/nadia?report=sent"), "nadia", "1.1.1.1")).text();
+		expect(body).not.toContain("<form");
+		expect(body).toContain('class="status"');
+	});
+
+	it("moves to the app's own domain from a custom domain, where Turnstile works", async () => {
+		keys();
+		mocks.findPublicPortfolio.mockResolvedValue(portfolio());
+		const response = await servePortfolioOrResume(get("/?report"), "nadia", "1.1.1.1", {
+			customDomain: "nadia.example",
+		});
+		expect(response.status).toBe(302);
+		expect(response.headers.get("location")).toBe("https://rezumi.example/nadia?report");
+	});
+
+	it("is the primary resume's page when the address shows no portfolio", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(null);
+		expect(await (await servePortfolioOrResume(get("/nadia?report"), "nadia", "1.1.1.1")).text()).toContain(
+			"the primary resume",
+		);
+	});
+
+	it("is linked from the page's footer, and from a custom domain to the app's domain", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(portfolio());
+		expect(await (await servePortfolioOrResume(get(), "nadia", "1.1.1.1")).text()).toContain(
+			'href="/nadia?report" rel="nofollow"',
+		);
+		mocks.findPublicPortfolio.mockResolvedValue(portfolio());
+		const onDomain = await servePortfolioOrResume(get("/"), "nadia", "1.1.1.1", { customDomain: "nadia.example" });
+		expect(await onDomain.text()).toContain('href="https://rezumi.example/nadia?report" rel="nofollow"');
+	});
+});
+
 describe("visits", () => {
 	beforeEach(() => mocks.findPublicPortfolio.mockResolvedValue(portfolio()));
 	afterEach(() => {

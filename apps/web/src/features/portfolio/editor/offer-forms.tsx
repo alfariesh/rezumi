@@ -482,7 +482,10 @@ export function ClientsForm() {
 				);
 			})}
 			<p className="text-xs text-muted">
-				<Trans>Logos show grey and turn to colour when pointed at. Upload only logos you may show.</Trans>
+				<Trans>
+					By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed
+					at, and anyone can report one that's used without permission.
+				</Trans>
 			</p>
 			<div className="flex flex-wrap gap-2">
 				{items.length < PORTFOLIO_LIMITS.clients && (

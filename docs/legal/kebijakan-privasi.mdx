@@ -4,13 +4,13 @@ description: "Draf pemrosesan data akun, dokumen, pembayaran lewat Polar dan AI 
 ---
 
 <Warning>
-  Draf 2 November 2026 — belum disetujui pemilik dan belum berlaku sebagai kontrak baru. Email dukungan, tenggat
-  penyelesaian, retensi operasional, dan provider masih perlu dikonfirmasi sebelum publikasi. Paket berbayar dan kredit
-  Rezumi AI belum dijual selama billing belum diaktifkan.
+  Draf 9 November 2026 — belum disetujui pemilik dan belum berlaku sebagai kontrak baru. Retensi operasional, dan
+  provider masih perlu dikonfirmasi sebelum publikasi. Paket berbayar dan kredit Rezumi AI belum dijual selama billing
+  belum diaktifkan.
 </Warning>
 
 Versi Bahasa Indonesia berlaku. [English translation](/legal/privacy-policy). Tanggal berlaku: **[BELUM DITETAPKAN]**.
-Pengendali data: **Salman Alfariesh — Rezumi**, hi@rezumi.app **[PERLU KONFIRMASI]**.
+Pengendali data: **Salman Alfariesh — Rezumi**, hi@rezumi.app.
 Alamat: **Apartement Centerpoint, Tower A, 1211, Jl. Ahmad Yani No.kav20, RT.005/RW.002, Marga Jaya, Kec. Bekasi Sel., Kota Bks, Jawa Barat 17141**. Nomor pengaduan: **08125800097**; lihat [Kontak & Pengaduan](/legal/kontak).
 Kebijakan ini untuk layanan resmi rezumi.app dan app yang terhubung ke sana. Koneksi ke server lain mengikuti operator server tersebut.
 
@@ -34,7 +34,7 @@ Tidak ada analytics iklan pihak ketiga dalam app resmi saat draf ini dibuat; log
 ## Penerima data
 
 - **Cloudflare:** Worker, jaringan, pengamanan dan penyimpanan unggahan privat di R2; termasuk metadata permintaan.
-- **Neon:** basis data PostgreSQL terkelola untuk akun, dokumen dan catatan layanan. Wilayah basis data/backup: **[KONFIRMASI PEMILIK]**.
+- **Neon:** basis data PostgreSQL terkelola untuk akun, dokumen dan catatan layanan. Wilayah basis data/backup: **Singapura (AWS ap-southeast-1)**.
 - **Polar (Polar Software, Inc., Amerika Serikat):** penjual resmi (_Merchant of Record_) langganan. Saat checkout, Rezumi mengirim
   id akun, nama, email, alamat IP (untuk mata uang dan lokasi pajak) dan bahasa; pelanggan mengisi data pembayaran dan alamat tagihan
   langsung di Polar. Polar memproses pembayaran (melalui Stripe), pajak, invoice, dan sengketa sebagai pengendali data sendiri menurut
@@ -43,14 +43,14 @@ Tidak ada analytics iklan pihak ketiga dalam app resmi saat draf ini dibuat; log
   sesuai kewajiban hukumnya. Data dapat diproses di luar Indonesia.
 - **Provider AI:** hanya data yang diperlukan untuk tindakan yang diminta, seperti teks CV/surat, lowongan, jawaban, knowledge atau konteks percakapan.
   BYOK memakai provider yang dipilih (mis. OpenAI, Anthropic, Google Gemini, OpenRouter atau endpoint kompatibel).
-  Rezumi AI akan menunjukkan provider/model sebelum digunakan; **provider peluncuran, lokasi dan retensinya belum diputuskan**.
+  Rezumi AI akan menunjukkan provider/model sebelum digunakan; provider peluncuran: **Anthropic (Claude Haiku 5.5)**; lokasi dan retensinya **[KONFIRMASI PEMILIK]**.
   Pemakaian kredit tidak berarti izin memakai data untuk melatih model. Ketentuan retensi/pelatihan provider harus disampaikan sebelum aktivasi;
   jangan aktifkan Rezumi AI sebelum informasi tersebut lengkap. API key tersimpan dienkripsi, bukan ditampilkan ke pengguna lain.
-- **Email transaksional:** alamat email, informasi akun atau rincian bukti bayar yang diperlukan; provider/retensi produksi **[KONFIRMASI PEMILIK]**.
+- **Email transaksional:** alamat email, informasi akun atau rincian bukti bayar yang diperlukan; provider produksi: **Cloudflare Email**; retensi **[KONFIRMASI PEMILIK]**.
 - **Login sosial dan aplikasi terhubung:** provider login menerima permintaan autentikasi. Aplikasi OAuth/API/MCP yang diizinkan dapat membaca/mengubah
   profil, CV, surat, lamaran, riwayat/statistik dan data karier sesuai scope. Cabut izin lewat pengaturan aplikasi terhubung/API key.
   Setelah diterima, data mengikuti kebijakan pihak itu; pencabutan menghentikan akses berikutnya, tidak otomatis menghapus salinan terdahulu.
-- **Penerima publik:** CV yang dipublikasikan dapat dilihat/disalin sesuai pengaturan tautan dan password; mesin pencari dapat menyimpan salinan bila diizinkan.
+- **Penerima publik:** CV dan portfolio yang dipublikasikan dapat dilihat/disalin sesuai pengaturan tautan dan password; mesin pencari dapat menyimpan salinan bila diizinkan.
   Gambar/font eksternal membuat permintaan ke host terkait. Hukum dapat mewajibkan pengungkapan terbatas kepada otoritas.
 
 PDF editor web dirender di browser dengan Forme; preview/ekspor PDF mobile dirender di perangkat.
@@ -70,6 +70,35 @@ sesuai pengaturannya sampai dimatikan. Laporan AI/CV publik hanya mengirim konte
 identitas akun serta waktu peninjauan ke operator, bukan provider AI. Laporan ikut ekspor akun dan dihapus bersama akun atau lebih awal setelah ditinjau.
 Pemblokiran penulis CV disimpan lokal per akun/server dan tidak menghapus konten web atau perangkat lain.
 
+## Portfolio web
+
+Bagian ini berlaku setelah fitur portfolio diluncurkan.
+
+| Data                                                                               | Tujuan                                  | Dasar pemrosesan                                        |
+| ---------------------------------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------- |
+| Isi portfolio, gambar, PDF, lokasi yang ditulis pengguna                           | Menampilkan portfolio kepada pengunjung | Pelaksanaan perjanjian; pilihan publikasi oleh pengguna |
+| Pesan form kontak: nama, email, isi pesan                                          | Menyampaikan pesan kepada pemilik       | Pelaksanaan perjanjian dan kepentingan sah pengunjung   |
+| Statistik agregat kunjungan, klik, sumber, negara, jenis perangkat, domain perujuk | Statistik bagi pemilik portfolio        | Kepentingan sah yang proporsional                       |
+| Laporan: alasan, rincian, email pelapor bila diisi                                 | Moderasi konten dan pelaksanaan hak     | Kewajiban hukum dan kepentingan sah keamanan            |
+| Catatan tindakan moderasi: siapa bertindak, kapan, alasannya                       | Akuntabilitas dan penanganan keberatan  | Kepentingan sah dan kewajiban hukum                     |
+
+- **Isi yang dipublikasikan pengguna** terlihat oleh siapa saja. Gambar dikompres di browser sehingga data lokasi foto (EXIF) terhapus. PDF diterbitkan apa adanya,
+  termasuk data di dalam berkasnya seperti nama penulis.
+- **Statistik tanpa cookie pelacak.** Kunjungan dan klik dibedakan dengan hash IP, peramban dan bahasa selama satu jam; IP mentah tidak disimpan. Rincian negara, jenis perangkat
+  dan domain perujuk disimpan sebagai data agregat di **Cloudflare Analytics Engine** selama sekitar 3 bulan.
+- **Form kontak.** Pesan disimpan **90 hari** lalu dihapus otomatis, dan pemilik portfolio bisa menghapusnya lebih cepat. Pemilik portfolio melihat email pengirim agar bisa membalas.
+  **Cloudflare Turnstile** dipakai untuk mencegah spam pada form kontak dan form laporan, dan memproses data teknis pengunjung sebagai pihak ketiga.
+- **Laporan.** Laporan hanya dibaca tim Rezumi. Identitas pelapor dan isi rinciannya tidak ditunjukkan kepada pemilik portfolio dan tidak ikut dalam ekspor datanya; ekspor hanya memuat alasan,
+  status dan waktu. Email pelapor dihapus 90 hari setelah laporan ditangani. Laporan dihapus bersama portfolio atau akun yang dilaporkan.
+  Catatan tindakan moderasi tetap disimpan setelah akun dihapus, tanpa menyebut akunnya.
+- **Video** YouTube dan Vimeo baru dimuat setelah pengunjung mengklik putar; sebelum itu tidak ada permintaan ke layanan tersebut.
+- **Tautan yang ditempel.** Saat pengguna menempel tautan, server Rezumi membaca judul dan gambar halaman itu tanpa mengirim data pengguna. Bila pengguna menyetujui gambarnya,
+  salinan gambar disimpan bersama file portfolionya.
+- **Lokasi dan peta.** Lokasi tampil setingkat kota secara bawaan, dan pengguna dapat memilih untuk tidak menampilkan lokasi. Gambar peta dibuat di editor, sehingga membuka portfolio
+  tidak mengirim permintaan ke penyedia peta. Saat memilih lokasi di editor, browser pengguna memuat data peta dari OpenFreeMap.
+- **Domain sendiri.** Nama domain yang dihubungkan diproses Cloudflare (Cloudflare for SaaS) untuk sertifikat dan perutean.
+- **Ekspor dan penghapusan.** Ekspor akun memuat portfolio, daftar file, pesan, dan laporan seperti di atas. Menghapus akun menghapus semuanya, termasuk file dan custom hostname di Cloudflare.
+
 ## Retensi dan penghapusan
 
 Data akun, dokumen, unggahan dan versi disimpan selama diperlukan untuk layanan sampai dihapus pengguna/akun.
@@ -81,7 +110,7 @@ Setelah akun dihapus, hubungan identitas pengguna pada catatan pembayaran dilepa
 Catatan pembukuan transaksi yang tidak mengidentifikasi pengguna direncanakan disimpan **10 tahun [KONFIRMASI KEWAJIBAN DAN SKEMA OLEH PEMILIK/KONSULTAN]**.
 Jika hukum mengharuskan bukti beridentitas tertentu, hanya bagian yang wajib dipisahkan, aksesnya dibatasi dan dasar serta masa simpannya dijelaskan.
 Kewajiban hukum atau sengketa dapat menunda penghapusan data terkait dengan alasan yang diberitahukan.
-Retensi log, tiket dukungan, ledger AI, backup dan siklus penghapusan backup: **[BELUM DITETAPKAN PEMILIK SEBELUM PUBLIKASI]**.
+Log dan tiket dukungan disimpan paling lama **1 tahun**. Catatan pemakaian AI mengikuti masa simpan catatan pembukuan di atas. Riwayat pemulihan basis data disimpan **6 jam**.
 Tidak ada janji penghapusan instan dari seluruh backup/provider; penyelesaian permintaan dan sisa retensi dijelaskan kepada pengguna.
 
 ## Hak dan permintaan data

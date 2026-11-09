@@ -13,17 +13,6 @@ import { requestRefund } from "./refunds";
 import { subscriptionState } from "./subscriptions";
 import { DAY_MS } from "./timeline";
 
-/** Billing tools for the owner: web sessions of accounts with the admin role only. */
-export async function assertBillingAdmin(authentication: { user: { id: string }; method: string } | null | undefined) {
-	if (authentication?.method !== "session")
-		throw new ORPCError("FORBIDDEN", { message: "Billing tools are only available in a web browser." });
-	const [account] = await db
-		.select({ role: schema.user.role })
-		.from(schema.user)
-		.where(eq(schema.user.id, authentication.user.id));
-	if (account?.role !== "admin") throw new ORPCError("FORBIDDEN", { message: "Only administrators can do this." });
-}
-
 async function findUserId(target: { userId?: string | undefined; email?: string | undefined }) {
 	const [account] = await db
 		.select({ id: schema.user.id })

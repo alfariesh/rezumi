@@ -23,6 +23,7 @@ import { runCustomDomainJobs } from "@rezumi/api/features/custom-domain/jobs";
 import { configurePortfolioAnalytics } from "@rezumi/api/features/portfolio/analytics";
 import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
 import { isPublicPortfolioFile } from "@rezumi/api/features/portfolio/public";
+import { configurePortfolioPublicLimiter } from "@rezumi/api/features/portfolio/public-limit";
 import { configureStorageService, getStorageService, isPublicUploadOwner } from "@rezumi/api/features/storage";
 import { initializeAuth } from "@rezumi/auth/config";
 import { withDatabasePool } from "@rezumi/db/client";
@@ -45,6 +46,7 @@ export type CloudflareBindings = {
 	EMAIL?: SendEmail;
 	PORTFOLIO_EVENTS?: AnalyticsEngineDataset;
 	ANALYTICS_SQL?: AnalyticsSql;
+	PORTFOLIO_PUBLIC_LIMITER?: { limit: (options: { key: string }) => Promise<{ success: boolean }> };
 };
 
 /** `background` holds work that outlives the response, such as assistant runs, and still needs the pool. */
@@ -67,6 +69,7 @@ configurePortfolioVisitLifetime((promise) => {
 	store?.background.push(promise);
 	store?.ctx.waitUntil(promise);
 });
+configurePortfolioPublicLimiter(() => requests.getStore()?.bindings.PORTFOLIO_PUBLIC_LIMITER);
 configurePortfolioAnalytics({
 	dataset: () => requests.getStore()?.bindings.PORTFOLIO_EVENTS,
 	sql: () => requests.getStore()?.bindings.ANALYTICS_SQL,

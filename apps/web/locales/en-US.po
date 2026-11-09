@@ -918,6 +918,10 @@ msgstr "{names} come last in the text. Most systems still find them; some don't.
 msgid "{open, plural, one {# thing to review.} other {# things to review.}}"
 msgstr "{open, plural, one {# thing to review.} other {# things to review.}}"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "{open} open. The portfolio's owner never sees who sent a report."
+msgstr "{open} open. The portfolio's owner never sees who sent a report."
+
 #: src/features/resume/editor/chrome.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "{pageCount, plural, one {# page} other {# pages}}"
@@ -1284,6 +1288,11 @@ msgstr "A fact changed. Review this story."
 msgid "A fact you've since forgotten"
 msgstr "A fact you've since forgotten"
 
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "A fake testimonial"
+msgstr "A fake testimonial"
+
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "A fall can be good, such as faster load times."
 msgstr "A fall can be good, such as faster load times."
@@ -1545,6 +1554,7 @@ msgid "Accomplishment"
 msgstr "Accomplishment"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
@@ -1558,6 +1568,10 @@ msgstr "Account"
 #: src/features/billing/admin/customer.tsx
 msgid "Account {0} · created {1} · time zone {2}"
 msgstr "Account {0} · created {1} · time zone {2}"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Account banned"
+msgstr "Account banned"
 
 #: src/features/billing/admin/overview.tsx
 msgid "Account deleted"
@@ -1575,6 +1589,11 @@ msgstr "Achievement numbers"
 #: src/features/homepage/hero.tsx
 msgid "achievements"
 msgstr "achievements"
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Acted on"
+msgstr "Acted on"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Action"
@@ -2285,6 +2304,7 @@ msgstr "Align right"
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/saved.tsx
 #: src/features/documents/documents-page.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 #: src/features/resume/editor/design/template-group.tsx
 msgid "All"
 msgstr "All"
@@ -2317,6 +2337,10 @@ msgstr "All documents and applications as JSON, in one zip"
 #: src/features/templates/gallery.tsx
 msgid "All fields"
 msgstr "All fields"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "All reports"
+msgstr "All reports"
 
 #: src/features/portfolio/works/work-editor.tsx
 msgid "All sections"
@@ -2412,6 +2436,10 @@ msgstr "An academic CV in a quiet serif, with small capital section titles and r
 #: src/dialogs/resume/template/data.ts
 msgid "An accent band across the top carries the name, headline and contact line in light text, with two columns below and the sidebar on the right."
 msgstr "An accent band across the top carries the name, headline and contact line in light text, with two columns below and the sidebar on the right."
+
+#: src/features/portfolio/errors.ts
+msgid "An administrator's account can't be banned here."
+msgstr "An administrator's account can't be banned here."
 
 #: src/dialogs/resume/template/data.ts
 msgid "An editorial single column set like a magazine feature: a small kicker over a large display name and serif section titles between hairlines. For writers, designers and communications roles."
@@ -2721,6 +2749,10 @@ msgstr "Area of study"
 msgid "As software reads it"
 msgstr "As software reads it"
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "As visitors would see it."
+msgstr "As visitors would see it."
+
 #: src/features/command-palette/pages/ask.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Ask"
@@ -2935,6 +2967,10 @@ msgstr "Back to stories"
 msgid "Back to the chat"
 msgstr "Back to the chat"
 
+#: src/features/portfolio/page-text.ts
+msgid "Back to the portfolio"
+msgstr "Back to the portfolio"
+
 #: src/features/billing/payment-return.tsx
 msgid "Back to your plan"
 msgstr "Back to your plan"
@@ -2972,6 +3008,14 @@ msgstr "Bad news (red)"
 msgid "Badge"
 msgstr "Badge"
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Ban account"
+msgstr "Ban account"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Ban this account?"
+msgstr "Ban this account?"
+
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a tinted background behind the header"
 msgid "Band"
@@ -2981,6 +3025,10 @@ msgstr "Band"
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Bandung, Indonesia"
 msgstr "Bandung, Indonesia"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Banned the account"
+msgstr "Banned the account"
 
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a bar beside the header"
@@ -3261,6 +3309,10 @@ msgstr "Button text (optional)"
 msgid "Buttons"
 msgstr "Buttons"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed at, and anyone can report one that's used without permission."
+msgstr "By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed at, and anyone can report one that's used without permission."
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "Calendar"
@@ -3429,6 +3481,10 @@ msgstr "Change the resume's design"
 #: src/features/command-palette/pages/preferences/index.tsx
 msgid "Change theme to…"
 msgstr "Change theme to…"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Change this report's status?"
+msgstr "Change this report's status?"
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Change timezone"
@@ -4040,6 +4096,7 @@ msgstr "Computers"
 msgid "Confident and graphic: a heavy name, and every section opens with its title as a solid accent tag with a rule running to the margin."
 msgstr "Confident and graphic: a heavy name, and every section opens with its title as a solid accent tag with a rule running to the margin."
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/hooks/use-confirm.tsx
 msgid "Confirm"
 msgstr "Confirm"
@@ -4630,9 +4687,17 @@ msgstr "Couldn't load interviews. Retry"
 msgid "Couldn't load or save web access settings. Try again."
 msgstr "Couldn't load or save web access settings. Try again."
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Couldn't load the reports. Try again."
+msgstr "Couldn't load the reports. Try again."
+
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't load the sample file. Try again."
 msgstr "Couldn't load the sample file. Try again."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Couldn't load this portfolio. Try again."
+msgstr "Couldn't load this portfolio. Try again."
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/load-state.tsx
@@ -5682,6 +5747,7 @@ msgstr "Detailed statistics aren't in your plan"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
 msgstr "Details"
@@ -5690,6 +5756,10 @@ msgstr "Details"
 #: src/features/auth/pages/error.tsx
 msgid "Details from the provider:"
 msgstr "Details from the provider:"
+
+#: src/features/portfolio/blocks/pdf-block.tsx
+msgid "Details saved inside the file, such as the author's name, are published with it."
+msgstr "Details saved inside the file, such as the author's name, are published with it."
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Device"
@@ -5752,11 +5822,21 @@ msgstr "Disconnect"
 msgid "Disconnecting your {providerName} account…"
 msgstr "Disconnecting your {providerName} account…"
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/resume/editor/write/write-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Dismiss"
 msgstr "Dismiss"
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Dismissed"
+msgstr "Dismissed"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Dismissed a report"
+msgstr "Dismissed a report"
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "DNS is right. HTTPS is being set up, which usually takes a few minutes."
@@ -6864,6 +6944,10 @@ msgstr "Find numbers"
 msgid "Find numbers in your resume"
 msgstr "Find numbers in your resume"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Find portfolio"
+msgstr "Find portfolio"
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
 msgstr "Find roles"
@@ -7162,6 +7246,11 @@ msgstr "Found today"
 #: src/features/career/today.tsx
 msgid "Found yesterday"
 msgstr "Found yesterday"
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "Fraud or a scam"
+msgstr "Fraud or a scam"
 
 #: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
@@ -7705,6 +7794,7 @@ msgid "Hiring team"
 msgstr "Hiring team"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/$resumeId/-components/download-sheet.tsx
@@ -7937,6 +8027,11 @@ msgstr "Ignore"
 #: src/features/resume/editor/check/actions.ts
 msgid "Ignored issues are back"
 msgstr "Ignored issues are back"
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "Illegal content"
+msgstr "Illegal content"
 
 #: src/features/ats-checker/messages.ts
 msgid "Images cover most of the page."
@@ -8261,8 +8356,8 @@ msgid "Issues and Job match still work without AI."
 msgstr "Issues and Job match still work without AI."
 
 #: src/features/portfolio/editor/publish-panel.tsx
-msgid "It can't be published. Contact support to appeal."
-msgstr "It can't be published. Contact support to appeal."
+msgid "It can't be published right now."
+msgstr "It can't be published right now."
 
 #: src/features/billing/subscription-actions.tsx
 msgid "It couldn't be cancelled. Try again in a moment."
@@ -8284,13 +8379,17 @@ msgstr "It isn't one of this account's payments. If you paid while signed in to 
 msgid "It may have been deleted. Choose another story or add a new one."
 msgstr "It may have been deleted. Choose another story or add a new one."
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "It shows again if the owner still has it published."
+msgstr "It shows again if the owner still has it published."
+
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "It was saved in another tab or on another device after you opened it here. Reload to continue from that version, or keep your version and save it over that one."
 msgstr "It was saved in another tab or on another device after you opened it here. Reload to continue from that version, or keep your version and save it over that one."
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "It was taken down, so visitors can't see it. Contact support to appeal."
-msgstr "It was taken down, so visitors can't see it. Contact support to appeal."
+msgid "It was taken down, so visitors can't see it. Open the editor to see why and how to appeal."
+msgstr "It was taken down, so visitors can't see it. Open the editor to see why and how to appeal."
 
 #: src/features/documents/document-actions.tsx
 msgid "It will be deleted for good and can't be restored."
@@ -8877,6 +8976,30 @@ msgstr "Level {level} of 5"
 msgid "Licenses"
 msgstr "Licenses"
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift ban"
+msgstr "Lift ban"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift takedown"
+msgstr "Lift takedown"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift the account ban?"
+msgstr "Lift the account ban?"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift the takedown?"
+msgstr "Lift the takedown?"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Lifted the account ban"
+msgstr "Lifted the account ban"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Lifted the takedown"
+msgstr "Lifted the takedown"
+
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligatures can drop letters out of words such as \"workflow\"."
@@ -9056,6 +9179,10 @@ msgstr "Live at {0}"
 msgid "Living gradient"
 msgstr "Living gradient"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Load more"
+msgstr "Load more"
+
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -9195,10 +9322,6 @@ msgstr "Logos"
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
 msgstr "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
-
-#: src/features/portfolio/editor/offer-forms.tsx
-msgid "Logos show grey and turn to colour when pointed at. Upload only logos you may show."
-msgstr "Logos show grey and turn to colour when pointed at. Upload only logos you may show."
 
 #: src/features/ats-checker/messages.ts
 msgid "Long stretches are set in capitals."
@@ -9403,6 +9526,10 @@ msgstr "Markdown (.md)"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Markdown shortcuts on"
 msgstr "Markdown shortcuts on"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Marked a report as acted on"
+msgstr "Marked a report as acted on"
 
 #: src/features/career/workspace/apply.tsx
 msgid "Marked as applied. The versions you sent are kept."
@@ -10257,9 +10384,21 @@ msgstr "No photo. Most ATS ignore photos; some regions expect one."
 msgid "No picture"
 msgstr "No picture"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "No portfolio matches that."
+msgstr "No portfolio matches that."
+
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "No postings found. Try different keywords."
 msgstr "No postings found. Try different keywords."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "No reports about this portfolio."
+msgstr "No reports about this portfolio."
+
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "No reports here."
+msgstr "No reports here."
 
 #: src/features/applications/stages.ts
 msgid "No response"
@@ -10477,6 +10616,7 @@ msgstr "Not now"
 msgid "Not prepared yet"
 msgstr "Not prepared yet"
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Not published"
 msgstr "Not published"
@@ -10562,6 +10702,10 @@ msgstr "Notes"
 #: src/components/input/icon-picker-grid.tsx
 msgid "Notes and tasks"
 msgstr "Notes and tasks"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Nothing has been done yet."
+msgstr "Nothing has been done yet."
 
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Nothing here on your resume yet, so the section doesn't show."
@@ -10813,6 +10957,10 @@ msgstr "Only allow applications you trust. This application will be able to:"
 msgid "Only applies when the section fits on a single page."
 msgstr "Only applies when the section fits on a single page."
 
+#: src/features/portfolio/page-text.ts
+msgid "Only if you'd like a reply. The portfolio's owner won't see it."
+msgstr "Only if you'd like a reply. The portfolio's owner won't see it."
+
 #: src/features/ats-checker/messages.ts
 msgid "Only one recognizable section heading was found."
 msgstr "Only one recognizable section heading was found."
@@ -10844,6 +10992,10 @@ msgid "Only the first pages were checked."
 msgstr "Only the first pages were checked."
 
 #: src/features/portfolio/editor/publish-panel.tsx
+msgid "Only the Rezumi team can lift this. To appeal, email <0>hi@rezumi.app</0>."
+msgstr "Only the Rezumi team can lift this. To appeal, email <0>hi@rezumi.app</0>."
+
+#: src/features/portfolio/editor/publish-panel.tsx
 msgid "Only you can see it until you publish. After that, changes show as soon as they're saved."
 msgstr "Only you can see it until you publish. After that, changes show as soon as they're saved."
 
@@ -10871,6 +11023,8 @@ msgstr "Opacity"
 #: src/features/billing/admin/overview.tsx
 #: src/features/career/today.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/admin/reports-page.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Open"
 msgstr "Open"
@@ -10931,6 +11085,7 @@ msgstr "Open link"
 msgid "Open navigation"
 msgstr "Open navigation"
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/portfolio-page.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -11794,6 +11949,8 @@ msgstr "Polish"
 msgid "Polishing"
 msgstr "Polishing"
 
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 #: src/routes/builder/portfolio/index.tsx
@@ -11809,9 +11966,16 @@ msgstr "Portfolio draft"
 msgid "Portfolio photo"
 msgstr "Portfolio photo"
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/editor/preview.tsx
 msgid "Portfolio preview"
 msgstr "Portfolio preview"
+
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Portfolio reports"
+msgstr "Portfolio reports"
 
 #: src/features/billing/credits.ts
 msgid "Portfolio rewrite"
@@ -12286,6 +12450,7 @@ msgstr "Publish your portfolio"
 msgid "Publish Your Resume"
 msgstr "Publish Your Resume"
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Published"
@@ -12600,6 +12765,7 @@ msgstr "Ready"
 #: src/features/applications/components/detail/close-dialog.tsx
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/reason-dialog.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 msgid "Reason"
 msgstr "Reason"
 
@@ -12610,6 +12776,10 @@ msgstr "Recalled"
 #: src/features/billing/admin/labels.ts
 msgid "Receipt email not delivered"
 msgstr "Receipt email not delivered"
+
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Received"
+msgstr "Received"
 
 #: src/features/billing/plan-page.tsx
 msgid "Recent activity"
@@ -13040,8 +13210,13 @@ msgid "Renews yearly on {0}"
 msgstr "Renews yearly on {0}"
 
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/portfolio/admin/review-page.tsx
 msgid "Reopen"
 msgstr "Reopen"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Reopened a report"
+msgstr "Reopened a report"
 
 #. placeholder {0}: title || t`Untitled`
 #: src/features/resume/editor/write/entry-card.tsx
@@ -13107,6 +13282,27 @@ msgstr "Reply by email"
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "Reply copied"
+
+#: src/features/portfolio/page-text.ts
+msgid "Report"
+msgstr "Report"
+
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Report status"
+msgstr "Report status"
+
+#: src/features/portfolio/page-text.ts
+msgid "Report this portfolio"
+msgstr "Report this portfolio"
+
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Reports"
+msgstr "Reports"
+
+#: src/features/portfolio/page-text.ts
+msgid "Reports can't be sent from this page right now. Email {email} with this page's address and what's wrong."
+msgstr "Reports can't be sent from this page right now. Email {email} with this page's address and what's wrong."
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Require a password"
@@ -14142,6 +14338,10 @@ msgstr "Send a message button"
 msgid "Send message"
 msgstr "Send message"
 
+#: src/features/portfolio/page-text.ts
+msgid "Send report"
+msgstr "Send report"
+
 #. Primary action button label on forgot-password form
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Send reset link"
@@ -14487,6 +14687,10 @@ msgstr "Show my email address"
 msgid "Show my local time"
 msgstr "Show my local time"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Show my location"
+msgstr "Show my location"
+
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Show my phone number"
 msgstr "Show my phone number"
@@ -14803,6 +15007,11 @@ msgstr "Some text falls outside the page."
 msgid "Some text is rotated."
 msgstr "Some text is rotated."
 
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "Something else"
+msgstr "Something else"
+
 #: src/features/homepage/faq.tsx
 msgid "Something else on your mind? Write to us at"
 msgstr "Something else on your mind? Write to us at"
@@ -15045,6 +15254,7 @@ msgstr "Statistics"
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/career/workspace/fit.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 msgid "Status"
 msgstr "Status"
 
@@ -15443,6 +15653,18 @@ msgstr "Tailored to the posting"
 msgid "Tailored vs. base resume"
 msgstr "Tailored vs. base resume"
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Take down"
+msgstr "Take down"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Take this portfolio down?"
+msgstr "Take this portfolio down?"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Takedown reason"
+msgstr "Takedown reason"
+
 #: src/features/billing/credits.ts
 msgid "Taken away on {at}"
 msgstr "Taken away on {at}"
@@ -15452,6 +15674,8 @@ msgstr "Taken away on {at}"
 msgid "Taken back on {0}"
 msgstr "Taken back on {0}"
 
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Taken down"
 msgstr "Taken down"
@@ -15513,6 +15737,10 @@ msgstr "Tell me about a time you disagreed with a colleague. How did you resolve
 #: src/features/homepage/features.tsx
 msgid "Tell me about a time you led a redesign."
 msgstr "Tell me about a time you led a redesign."
+
+#: src/features/portfolio/page-text.ts
+msgid "Tell Rezumi what's wrong with {name}'s portfolio. Only the Rezumi team reads reports, and the portfolio's owner is never told who sent one."
+msgstr "Tell Rezumi what's wrong with {name}'s portfolio. Only the Rezumi team reads reports, and the portfolio's owner is never told who sent one."
 
 #: src/libs/locale.ts
 msgid "Telugu"
@@ -15685,6 +15913,10 @@ msgstr "Thai"
 #: src/features/portfolio/page-text.ts
 msgid "Thank you. Your message was sent."
 msgstr "Thank you. Your message was sent."
+
+#: src/features/portfolio/page-text.ts
+msgid "Thank you. Your report was sent to the Rezumi team."
+msgstr "Thank you. Your report was sent to the Rezumi team."
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/reason-dialog.tsx
@@ -15970,6 +16202,14 @@ msgstr "The original link stays with this job."
 #: src/features/career/knowledge/facts.tsx
 msgid "The original stays in the history."
 msgstr "The original stays in the history."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "The owner can sign in again, and their public pages come back."
+msgstr "The owner can sign in again, and their public pages come back."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "The owner is signed out, and all of their public pages and pictures stop being available. Use this for an account that's a problem as a whole."
+msgstr "The owner is signed out, and all of their public pages and pictures stop being available. Use this for an account that's a problem as a whole."
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "The page had no job details to read. Fill in the role and company."
@@ -16425,6 +16665,10 @@ msgid "This form is closed right now."
 msgstr "This form is closed right now."
 
 #: src/features/portfolio/page-text.ts
+msgid "This form needs JavaScript. You can also email {email}."
+msgstr "This form needs JavaScript. You can also email {email}."
+
+#: src/features/portfolio/page-text.ts
 msgid "This form needs JavaScript. You can use the other contact options here."
 msgstr "This form needs JavaScript. You can use the other contact options here."
 
@@ -16487,6 +16731,10 @@ msgstr "This month"
 #: src/features/billing/ai-source-menu.tsx
 msgid "This needs {required} and you have {balance}. Use your own AI connection without credits, or get Pro AI for 100 credits."
 msgstr "This needs {required} and you have {balance}. Use your own AI connection without credits, or get Pro AI for 100 credits."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "This only changes the report, not the portfolio."
+msgstr "This only changes the report, not the portfolio."
 
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
@@ -16568,6 +16816,10 @@ msgstr "This portfolio doesn't exist anymore. It may have been deleted in anothe
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
 msgstr "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
+
+#: src/features/portfolio/errors.ts
+msgid "This portfolio is already in that state. Reload the page to see what changed."
+msgstr "This portfolio is already in that state. Reload the page to see what changed."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "This portfolio was taken down"
@@ -16848,6 +17100,10 @@ msgstr "Too many tries in a row. Wait a few minutes, then try again."
 msgid "Too many uploads in a short time. Wait a minute, then try again."
 msgstr "Too many uploads in a short time. Wait a minute, then try again."
 
+#: src/features/portfolio/admin/labels.ts
+msgid "Took the portfolio down"
+msgstr "Took the portfolio down"
+
 #: src/features/billing/plan.ts
 msgid "Tool logos aren't in your plan"
 msgstr "Tool logos aren't in your plan"
@@ -16892,6 +17148,14 @@ msgstr "Track in Applications"
 #: src/routes/dashboard/applications/index.tsx
 msgid "Track your first job"
 msgstr "Track your first job"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Trademark or copyright"
+msgstr "Trademark or copyright"
+
+#: src/features/portfolio/page-text.ts
+msgid "Trademark or copyright, such as a logo or a work"
+msgstr "Trademark or copyright, such as a logo or a work"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Transcribe answers with"
@@ -17045,6 +17309,10 @@ msgstr "Turn on the link to choose an address."
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Turn on two-step verification"
 msgstr "Turn on two-step verification"
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Turn this off to keep your location off the page, including the one on your resume."
+msgstr "Turn this off to keep your location off the page, including the one on your resume."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Turn this schedule on"
@@ -17313,8 +17581,8 @@ msgid "Up to 25 MB · checked in your browser, never uploaded"
 msgstr "Up to 25 MB · checked in your browser, never uploaded"
 
 #: src/features/portfolio/editor/intro-form.tsx
-msgid "Up to three, under your greeting. The first one stands out."
-msgstr "Up to three, under your greeting. The first one stands out."
+msgid "Up to three, under your greeting. The first one stands out. An Email or WhatsApp button shows that address to visitors, even if Contact hides it."
+msgstr "Up to three, under your greeting. The first one stands out. An Email or WhatsApp button shows that address to visitors, even if Contact hides it."
 
 #: src/features/portfolio/page-text.ts
 msgid "Up, a bad change:"
@@ -17613,6 +17881,10 @@ msgstr "User research"
 msgid "Username"
 msgstr "Username"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Username or email"
+msgstr "Username or email"
+
 #: src/features/assistant/assistant-panel.tsx
 msgid "Uses facts from your resume"
 msgstr "Uses facts from your resume"
@@ -17846,6 +18118,10 @@ msgstr "Visitors can't see it while it's taken down."
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "Visitors enter it before they see the resume. Share it only with people you trust."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Visitors stop seeing it right away; nothing is deleted. The owner reads this reason in their editor, so don't mention who reported it."
+msgstr "Visitors stop seeing it right away; nothing is deleted. The owner reads this reason in their editor, so don't mention who reported it."
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Visits"
@@ -18121,6 +18397,10 @@ msgstr "What should change?"
 msgid "What should run"
 msgstr "What should run"
 
+#: src/features/portfolio/page-text.ts
+msgid "What should we look at?"
+msgstr "What should we look at?"
+
 #: src/features/assistant/assistant-panel.tsx
 msgid "What should we work on?"
 msgstr "What should we work on?"
@@ -18194,6 +18474,10 @@ msgstr "What's it for?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "What's working"
+
+#: src/features/portfolio/page-text.ts
+msgid "What's wrong?"
+msgstr "What's wrong?"
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
@@ -18823,6 +19107,10 @@ msgstr "Your draft is in. Read it through and make it yours."
 msgid "Your email"
 msgstr "Your email"
 
+#: src/features/portfolio/page-text.ts
+msgid "Your email (optional)"
+msgstr "Your email (optional)"
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your email address changed on the resume. The letter updated too."
 msgstr "Your email address changed on the resume. The letter updated too."
@@ -19146,8 +19434,8 @@ msgid "Your portfolio still uses this file. Remove it from the portfolio first."
 msgstr "Your portfolio still uses this file. Remove it from the portfolio first."
 
 #: src/features/portfolio/errors.ts
-msgid "Your portfolio was taken down and can't be published. Contact support to appeal."
-msgstr "Your portfolio was taken down and can't be published. Contact support to appeal."
+msgid "Your portfolio was taken down, so it can't be published or deleted. Email hi@rezumi.app to appeal."
+msgstr "Your portfolio was taken down, so it can't be published or deleted. Email hi@rezumi.app to appeal."
 
 #: src/features/billing/plan.ts
 msgid "Your portfolio's storage is full"
@@ -19177,6 +19465,10 @@ msgstr "Your published portfolio opens at your short link and custom domain. You
 #: src/features/career/workspace/practise.tsx
 msgid "Your recording goes to {0} to be transcribed, which may use tokens on that account."
 msgstr "Your recording goes to {0} to be transcribed, which may use tokens on that account."
+
+#: src/features/portfolio/page-text.ts
+msgid "Your report couldn't be sent. Check the form and try again in a moment."
+msgstr "Your report couldn't be sent. Check the form and try again in a moment."
 
 #: src/features/career/offers.tsx
 msgid "Your requirements"

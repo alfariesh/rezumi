@@ -23,7 +23,7 @@ const ipLimiter = createRateLimiter("portfolioMessagesPerIp", limits.messagesPer
 const portfolioLimiter = createRateLimiter("portfolioMessagesPerPortfolio", limits.messagesPerPortfolio);
 const visitorLimiter = createRateLimiter("portfolioMessagesPerVisitor", limits.messagesPerVisitor);
 
-const passes = async (limiter: typeof ipLimiter, key: string) =>
+export const passesLimit = async (limiter: typeof ipLimiter, key: string) =>
 	env.FLAG_DISABLE_API_RATE_LIMIT || (await limiter.limit(key)).success;
 
 const fieldsSchema = z.object({
@@ -48,7 +48,7 @@ export type PortfolioMessageResult =
 const fail = (code: Extract<PortfolioMessageResult, { ok: false }>["code"]) => ({ ok: false, code }) as const;
 
 // Postgres text can't hold NUL, so a character no person types can't turn a message into a failed insert.
-const text = (form: PortfolioMessageForm, name: string) =>
+export const formField = (form: PortfolioMessageForm, name: string) =>
 	typeof form[name] === "string" ? form[name].replaceAll("\0", "") : "";
 
 /**
@@ -84,23 +84,23 @@ export async function submitPortfolioMessage(input: {
 	const data = parsePortfolioData(row.data);
 	if (!data.contact.form || data.sections.hidden.includes("contact") || !isContactFormConfigured())
 		return fail("unavailable");
-	if (text(input.form, PORTFOLIO_MESSAGE_TRAP_FIELD)) return { ok: true };
+	if (formField(input.form, PORTFOLIO_MESSAGE_TRAP_FIELD)) return { ok: true };
 
 	const parsed = fieldsSchema.safeParse({
-		name: text(input.form, "name"),
-		email: text(input.form, "email"),
-		body: text(input.form, "message"),
-		serviceId: text(input.form, "serviceId") || undefined,
+		name: formField(input.form, "name"),
+		email: formField(input.form, "email"),
+		body: formField(input.form, "message"),
+		serviceId: formField(input.form, "serviceId") || undefined,
 	});
 	if (!parsed.success || countLinks(parsed.data.body) > PORTFOLIO_MESSAGE_LIMITS.links) return fail("invalid");
 
 	const client = `ip:${input.trustedClient?.trim() || "unknown"}`;
-	if (!(await passes(attemptLimiter, client))) return fail("rate_limited");
-	if (!(await verifyTurnstileToken(text(input.form, "cf-turnstile-response"), input.trustedClient)))
+	if (!(await passesLimit(attemptLimiter, client))) return fail("rate_limited");
+	if (!(await verifyTurnstileToken(formField(input.form, "cf-turnstile-response"), input.trustedClient)))
 		return fail("turnstile");
-	if (!(await passes(ipLimiter, client))) return fail("rate_limited");
-	if (!(await passes(visitorLimiter, `${row.id}:${client}`))) return fail("rate_limited");
-	if (!(await passes(portfolioLimiter, row.id))) return fail("rate_limited");
+	if (!(await passesLimit(ipLimiter, client))) return fail("rate_limited");
+	if (!(await passesLimit(visitorLimiter, `${row.id}:${client}`))) return fail("rate_limited");
+	if (!(await passesLimit(portfolioLimiter, row.id))) return fail("rate_limited");
 
 	const { name, email, body, serviceId } = parsed.data;
 	const known = serviceId && data.services.items.some((service) => service.id === serviceId) ? serviceId : null;
@@ -249,7 +249,7 @@ export async function deleteExpiredMessages(now: Date): Promise<number> {
 const DEFAULT_PAGE = 30;
 const MAX_PAGE = 50;
 
-function parseCursor(cursor: string | undefined): { at: Date; id: string } | null {
+export function parseCursor(cursor: string | undefined): { at: Date; id: string } | null {
 	const separator = cursor?.indexOf("|") ?? -1;
 	if (!cursor || separator < 0) return null;
 	const at = new Date(cursor.slice(0, separator));

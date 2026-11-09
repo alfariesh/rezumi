@@ -159,7 +159,7 @@ function StatusCard() {
 					{live ? (
 						<Trans>Anyone with the link can see it.</Trans>
 					) : portfolio.suspendedAt ? (
-						<Trans>It was taken down, so visitors can't see it. Contact support to appeal.</Trans>
+						<Trans>It was taken down, so visitors can't see it. Open the editor to see why and how to appeal.</Trans>
 					) : (
 						<Trans>Only you can see it. Publish it from the editor when it's ready.</Trans>
 					)}
@@ -175,10 +175,12 @@ function StatusCard() {
 							<Trans>Open page</Trans>
 						</a>
 					)}
-					<Button variant="ghost" className="text-danger" onPress={() => void remove()}>
-						<Icon name="trash" size={18} />
-						<Trans>Delete portfolio</Trans>
-					</Button>
+					{!portfolio.suspendedAt && (
+						<Button variant="ghost" className="text-danger" onPress={() => void remove()}>
+							<Icon name="trash" size={18} />
+							<Trans>Delete portfolio</Trans>
+						</Button>
+					)}
 				</div>
 			</Widget.Content>
 		</Widget>

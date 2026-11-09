@@ -5,6 +5,8 @@ const mocks = vi.hoisted(() => ({
 	recordEvent: vi.fn(),
 	submit: vi.fn(),
 	notify: vi.fn(),
+	submitReport: vi.fn(),
+	notifyReport: vi.fn(),
 }));
 
 vi.mock("@rezumi/api/features/portfolio/public", () => ({
@@ -17,9 +19,14 @@ vi.mock("@rezumi/api/features/portfolio/contact", () => ({
 	notifyPortfolioMessages: mocks.notify,
 	submitPortfolioMessage: mocks.submit,
 }));
+vi.mock("@rezumi/api/features/portfolio/report", () => ({
+	notifyPortfolioReport: mocks.notifyReport,
+	submitPortfolioReport: mocks.submitReport,
+}));
 vi.mock("../static/resume-page", () => ({ serveResumePage: vi.fn() }));
 
-const { handlePortfolioEvent, handlePortfolioMessage, parsePortfolioEvent } = await import("./portfolio");
+const { handlePortfolioEvent, handlePortfolioMessage, handlePortfolioReport, parsePortfolioEvent } =
+	await import("./portfolio");
 
 const target = { id: "pf1", userId: "owner", timezone: "UTC", hasWork: true };
 const event = (body: string, headers: Record<string, string> = {}) =>
@@ -182,5 +189,44 @@ describe("POST /api/portfolio/<username>/message", () => {
 		await vi.waitFor(() => expect(logs[0]).toHaveBeenCalled());
 		expect(JSON.stringify(logs.map((log) => log.mock.calls))).not.toContain("Private words");
 		for (const log of logs) log.mockRestore();
+	});
+});
+
+describe("handlePortfolioReport", () => {
+	const report = () =>
+		new Request("https://rezumi.example/api/portfolio/nadia/report", {
+			method: "POST",
+			headers: { "content-type": "application/x-www-form-urlencoded" },
+			body: "reason=fraud&details=x",
+		});
+
+	it("goes back to the report page when sent, and emails the operator", async () => {
+		mocks.submitReport.mockResolvedValue({ ok: true, reportId: "r1" });
+		mocks.notifyReport.mockResolvedValue(true);
+		const response = await handlePortfolioReport(report(), "nadia", "203.0.113.1");
+		expect(response.status).toBe(303);
+		expect(response.headers.get("location")).toBe("/nadia?report=sent");
+		expect(mocks.notifyReport).toHaveBeenCalledWith("r1");
+	});
+
+	it("goes back with the failure when refused, without emailing", async () => {
+		mocks.submitReport.mockResolvedValue({ ok: false, code: "turnstile" });
+		const response = await handlePortfolioReport(report(), "nadia", "203.0.113.1");
+		expect(response.headers.get("location")).toBe("/nadia?report=failed");
+		expect(mocks.notifyReport).not.toHaveBeenCalled();
+	});
+
+	it("is not found for an address with no portfolio", async () => {
+		mocks.submitReport.mockResolvedValue(null);
+		expect((await handlePortfolioReport(report(), "nadia", "203.0.113.1")).status).toBe(404);
+	});
+
+	it("reports a save failure as a failure, logging no words", async () => {
+		const logged = vi.spyOn(console, "error").mockImplementation(() => undefined);
+		mocks.submitReport.mockRejectedValue(new Error("details=secret"));
+		const response = await handlePortfolioReport(report(), "nadia", "203.0.113.1");
+		expect(response.headers.get("location")).toBe("/nadia?report=failed");
+		expect(JSON.stringify(logged.mock.calls)).not.toContain("secret");
+		logged.mockRestore();
 	});
 });

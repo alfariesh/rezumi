@@ -71,5 +71,13 @@ export const rateLimitConfig = {
 		messagesPerVisitor: { maxRequests: 5, window: 24 * 60 * 60 * 1000 },
 		// Visits are deduplicated per visitor, which a changing browser name gets around; this bounds one address.
 		visits: { maxRequests: 120, window: 60 * 60 * 1000 },
+		// Attempts reach Turnstile; only reports that pass it count toward the limits below.
+		reportAttempts: { maxRequests: 20, window: 60 * 60 * 1000 },
+		reportsPerIp: { maxRequests: 5, window: 60 * 60 * 1000 },
+		reportsPerVisitor: { maxRequests: 2, window: 24 * 60 * 60 * 1000 },
+		reportsPerPortfolio: { maxRequests: 30, window: 24 * 60 * 60 * 1000 },
+		// Every public portfolio request from one address, kept above what one page with many pictures needs even when
+		// many people share the address (mobile carriers). Stops floods, not visitors. Wrangler has the same numbers.
+		requests: { maxRequests: 600, window: 60 * 1000 },
 	},
 } as const;

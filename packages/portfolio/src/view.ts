@@ -423,7 +423,9 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 	const name =
 		data.basics.name?.trim() || resume?.basics.name.trim() || input.owner.name.trim() || input.owner.username;
 	const headline = data.basics.headline?.trim() || resume?.basics.headline.trim() || "";
-	const basicsLocation = data.basics.location?.trim() || resume?.basics.location.trim() || "";
+	const basicsLocation = data.hero.showLocation
+		? data.basics.location?.trim() || resume?.basics.location.trim() || ""
+		: "";
 
 	// "No photo" in the intro means no photo anywhere: not on the share card or for search engines either.
 	let picture: PortfolioViewImage | null = null;

@@ -33,6 +33,12 @@ vi.mock("@rezumi/api/context", () => ({
 	},
 }));
 
+vi.mock("@rezumi/api/features/auth/admin-session", () => ({
+	assertAdminSession: async (authentication: { user: { id: string } }) => {
+		if (authentication.user.id !== "admin-1") throw new Error("FORBIDDEN");
+	},
+}));
+
 let storage: ReturnType<typeof import("@rezumi/api/features/storage").getStorageService>;
 let handleUpload: typeof import("./uploads").handleUpload;
 beforeAll(async () => {
@@ -56,6 +62,8 @@ const webpBytes = new Uint8Array([0x52, 0x49, 0x46, 0x46]);
 const get = (key: string, headers: HeadersInit = {}) =>
 	handleUpload(new Request(`${envMock.APP_URL}/${key}`, { headers }));
 const owner = { "x-test-user": "user-1" };
+const administrator = { "x-test-user": "admin-1" };
+const stranger = { "x-test-user": "someone-else" };
 
 describe("portfolio files a published portfolio uses", () => {
 	it("are public PDFs, shown inline by the PDF viewer and locked down, loadable from any site", async () => {
@@ -136,6 +144,15 @@ describe("portfolio files nobody may see yet, or anymore", () => {
 		const cached = await get(pictureKey, { ...owner, "If-None-Match": picture.headers.get("etag") ?? "" });
 		expect(cached.status).toBe(304);
 		expect(cached.headers.get("cache-control")).toBe("private, max-age=3600");
+	});
+
+	it("are readable by an administrator reviewing a taken-down portfolio, in private copies only", async () => {
+		await storage.write({ key: pictureKey, data: webpBytes, contentType: "image/webp" });
+		const picture = await get(pictureKey, administrator);
+		expect(picture.status).toBe(200);
+		expect(picture.headers.get("cache-control")).toBe("private, max-age=3600");
+		expect((await get(pictureKey, stranger)).status).toBe(404);
+		expect((await get(pictureKey)).status).toBe(404);
 	});
 
 	it("are looked up once per request, and not at all when the address can't be a portfolio file", async () => {

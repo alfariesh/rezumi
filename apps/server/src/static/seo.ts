@@ -116,7 +116,10 @@ export async function handleResumesSitemap(page: number) {
 }
 
 /** `/sitemaps/portfolios-<n>.xml`: one page of portfolios listed in search engines, each at `/<username>`. */
-export async function handlePortfoliosSitemap(page: number) {
+export async function handlePortfoliosSitemap(page: number, trustedClient?: string) {
+	const { publicPortfolioRequestAllowed, tooManyPortfolioRequests } =
+		await import("@rezumi/api/features/portfolio/public-limit");
+	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
 	const baseUrl = appUrl();
 	const { listIndexablePortfolios } = await import("@rezumi/api/features/portfolio/public");
 	const portfolios = Number.isInteger(page) && page >= 1 ? await listIndexablePortfolios(page - 1) : [];

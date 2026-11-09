@@ -30708,7 +30708,7 @@
 			"get": {
 				"operationId": "exportAccountData",
 				"summary": "Export user account data",
-				"description": "Returns a JSON-serializable export of the authenticated user's profile, documents, applications, career knowledge, preparation, schedules, coaching conversations, and payments, passes and Rezumi AI credits. Images remain URL references; coaching attachments include storage references. Secrets such as password hashes, tokens, and API keys are never included. Requires authentication.",
+				"description": "Returns a JSON-serializable export of the authenticated user's profile, documents, applications, career knowledge, preparation, schedules, coaching conversations, payments, passes and Rezumi AI credits, and web portfolio (with its file list, contact messages, and reports about it, without who sent them). Images remain URL references; coaching attachments include storage references. Secrets such as password hashes, tokens, and API keys are never included. Requires authentication.",
 				"tags": [
 					"Authentication"
 				],
@@ -38941,7 +38941,7 @@
 										"billing": {
 											"type": "object",
 											"properties": {
-												"payments": {
+												"subscriptions": {
 													"type": "array",
 													"items": {
 														"type": "object",
@@ -38949,10 +38949,13 @@
 															"id": {
 																"type": "string"
 															},
-															"orderId": {
+															"planId": {
 																"type": "string"
 															},
-															"planId": {
+															"interval": {
+																"type": "string"
+															},
+															"status": {
 																"type": "string"
 															},
 															"amount": {
@@ -38963,10 +38966,124 @@
 															"currency": {
 																"type": "string"
 															},
-															"durationDays": {
+															"currentPeriodStart": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															"currentPeriodEnd": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"cancelAtPeriodEnd": {
+																"type": "boolean"
+															},
+															"startedAt": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"endedAt": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															}
+														},
+														"required": [
+															"id",
+															"planId",
+															"interval",
+															"status",
+															"amount",
+															"currency",
+															"currentPeriodStart",
+															"currentPeriodEnd",
+															"cancelAtPeriodEnd",
+															"startedAt",
+															"endedAt"
+														]
+													}
+												},
+												"payments": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"id": {
+																"type": "string"
+															},
+															"orderId": {
+																"anyOf": [
+																	{
+																		"type": "string"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"planId": {
+																"type": "string"
+															},
+															"interval": {
+																"anyOf": [
+																	{
+																		"type": "string"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"billingReason": {
+																"anyOf": [
+																	{
+																		"type": "string"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"amount": {
 																"type": "integer",
 																"minimum": -9007199254740991,
 																"maximum": 9007199254740991
+															},
+															"taxAmount": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															},
+															"totalAmount": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															},
+															"currency": {
+																"type": "string"
 															},
 															"credits": {
 																"type": "integer",
@@ -38976,10 +39093,24 @@
 															"status": {
 																"type": "string"
 															},
-															"paymentType": {
+															"periodStart": {
 																"anyOf": [
 																	{
-																		"type": "string"
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"periodEnd": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
 																	},
 																	{
 																		"type": "null"
@@ -39072,12 +39203,16 @@
 															"id",
 															"orderId",
 															"planId",
+															"interval",
+															"billingReason",
 															"amount",
+															"taxAmount",
+															"totalAmount",
 															"currency",
-															"durationDays",
 															"credits",
 															"status",
-															"paymentType",
+															"periodStart",
+															"periodEnd",
 															"createdAt",
 															"expiresAt",
 															"paidAt",
@@ -39253,10 +39388,271 @@
 												}
 											},
 											"required": [
+												"subscriptions",
 												"payments",
 												"passes",
 												"creditGrants",
 												"creditUsage"
+											]
+										},
+										"portfolio": {
+											"type": "object",
+											"properties": {
+												"portfolio": {
+													"anyOf": [
+														{
+															"type": "object",
+															"properties": {
+																"isPublic": {
+																	"type": "boolean"
+																},
+																"showInSearchEngines": {
+																	"type": "boolean"
+																},
+																"publishedAt": {
+																	"anyOf": [
+																		{
+																			"type": "string",
+																			"format": "date-time",
+																			"x-native-type": "date"
+																		},
+																		{
+																			"type": "null"
+																		}
+																	]
+																},
+																"suspendedAt": {
+																	"anyOf": [
+																		{
+																			"type": "string",
+																			"format": "date-time",
+																			"x-native-type": "date"
+																		},
+																		{
+																			"type": "null"
+																		}
+																	]
+																},
+																"suspendedReason": {
+																	"anyOf": [
+																		{
+																			"type": "string"
+																		},
+																		{
+																			"type": "null"
+																		}
+																	]
+																},
+																"data": {
+																	"description": "The portfolio's content, exported as it's stored."
+																},
+																"createdAt": {
+																	"type": "string",
+																	"format": "date-time",
+																	"x-native-type": "date"
+																},
+																"updatedAt": {
+																	"type": "string",
+																	"format": "date-time",
+																	"x-native-type": "date"
+																}
+															},
+															"required": [
+																"isPublic",
+																"showInSearchEngines",
+																"publishedAt",
+																"suspendedAt",
+																"suspendedReason",
+																"createdAt",
+																"updatedAt"
+															]
+														},
+														{
+															"type": "null"
+														}
+													]
+												},
+												"files": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"key": {
+																"type": "string"
+															},
+															"kind": {
+																"enum": [
+																	"image",
+																	"pdf"
+																],
+																"type": "string"
+															},
+															"bytes": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															},
+															"width": {
+																"anyOf": [
+																	{
+																		"type": "integer",
+																		"minimum": -9007199254740991,
+																		"maximum": 9007199254740991
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"height": {
+																"anyOf": [
+																	{
+																		"type": "integer",
+																		"minimum": -9007199254740991,
+																		"maximum": 9007199254740991
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"pages": {
+																"anyOf": [
+																	{
+																		"type": "integer",
+																		"minimum": -9007199254740991,
+																		"maximum": 9007199254740991
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"createdAt": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															}
+														},
+														"required": [
+															"key",
+															"kind",
+															"bytes",
+															"width",
+															"height",
+															"pages",
+															"createdAt"
+														]
+													}
+												},
+												"messages": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"name": {
+																"type": "string"
+															},
+															"email": {
+																"type": "string"
+															},
+															"body": {
+																"type": "string"
+															},
+															"serviceId": {
+																"anyOf": [
+																	{
+																		"type": "string"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"createdAt": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															"readAt": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															}
+														},
+														"required": [
+															"name",
+															"email",
+															"body",
+															"serviceId",
+															"createdAt",
+															"readAt"
+														]
+													}
+												},
+												"reports": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"reason": {
+																"enum": [
+																	"fraud",
+																	"illegal",
+																	"rights",
+																	"fake_testimonial",
+																	"other"
+																],
+																"type": "string"
+															},
+															"status": {
+																"enum": [
+																	"open",
+																	"actioned",
+																	"dismissed"
+																],
+																"type": "string"
+															},
+															"createdAt": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															"handledAt": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															}
+														},
+														"required": [
+															"reason",
+															"status",
+															"createdAt",
+															"handledAt"
+														]
+													},
+													"description": "Reports about the portfolio: why and when, never who sent them or what they wrote."
+												}
+											},
+											"required": [
+												"portfolio",
+												"files",
+												"messages",
+												"reports"
 											]
 										}
 									},
@@ -39268,7 +39664,8 @@
 										"applications",
 										"aiContentReports",
 										"career",
-										"billing"
+										"billing",
+										"portfolio"
 									]
 								}
 							}

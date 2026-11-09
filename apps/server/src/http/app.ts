@@ -44,7 +44,7 @@ import { handleCareerJobs } from "./career-jobs";
 import { handleCustomDomain, handleTraefikProvider } from "./custom-domain";
 import { handleHealth } from "./health";
 import { handlePolarPaymentWebhook } from "./polar";
-import { handlePortfolioEvent, handlePortfolioMessage } from "./portfolio";
+import { handlePortfolioEvent, handlePortfolioMessage, handlePortfolioReport } from "./portfolio";
 import { handlePublicResumePdf } from "./public-resume-pdf";
 import { handleResumePdfDownload } from "./resume-pdf";
 
@@ -148,16 +148,19 @@ export function createApp(options: AppOptions = {}) {
 	app.post("/api/portfolio/:username/message", limitBody(32 * 1024), (c) =>
 		handlePortfolioMessage(c.req.raw, c.req.param("username"), client(c)),
 	);
+	app.post("/api/portfolio/:username/report", limitBody(16 * 1024), (c) =>
+		handlePortfolioReport(c.req.raw, c.req.param("username"), client(c)),
+	);
 	// Outside /api/resumes, which robots.txt keeps crawlers out of: link previews need to fetch these.
 	app.get("/cards/:username/:file{.+\\.png}", (c) =>
 		handleResumeCard(c.req.raw, c.req.param("username"), c.req.param("file").slice(0, -".png".length)),
 	);
 	// One segment: the preview of whatever `/<username>` shows, a published portfolio (or the generic banner).
 	app.get("/cards/:file{[^/]+\\.png}", (c) =>
-		handlePortfolioCard(c.req.raw, c.req.param("file").slice(0, -".png".length)),
+		handlePortfolioCard(c.req.raw, c.req.param("file").slice(0, -".png".length), client(c)),
 	);
-	app.get("/api/uploads/*", (c) => handleUpload(c.req.raw));
-	app.get("/uploads/*", (c) => handleUpload(c.req.raw));
+	app.get("/api/uploads/*", (c) => handleUpload(c.req.raw, client(c)));
+	app.get("/uploads/*", (c) => handleUpload(c.req.raw, client(c)));
 	app.get("/schema.json", () => handleSchemaJson());
 	app.get("/openapi.json", () => handleOpenApiDocument());
 	// MCP loads on its first request: its tool schemas are built as it loads, which a Worker would otherwise pay for
@@ -186,7 +189,7 @@ export function createApp(options: AppOptions = {}) {
 		handleResumesSitemap(Number(c.req.param("page").slice("resumes-".length, -".xml".length))),
 	);
 	app.get("/sitemaps/:page{portfolios-[0-9]+\\.xml}", (c) =>
-		handlePortfoliosSitemap(Number(c.req.param("page").slice("portfolios-".length, -".xml".length))),
+		handlePortfoliosSitemap(Number(c.req.param("page").slice("portfolios-".length, -".xml".length)), client(c)),
 	);
 	app.get("/llms.txt", () => handleLlms());
 

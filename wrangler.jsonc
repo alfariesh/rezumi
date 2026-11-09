@@ -71,6 +71,10 @@
 	// Visitor breakdowns for portfolio statistics; the dataset is created on the first write. Read through ANALYTICS_SQL.
 	"analytics_engine_datasets": [{ "binding": "PORTFOLIO_EVENTS", "dataset": "portfolio_events" }],
 	"analytics": { "binding": "ANALYTICS_SQL" },
+	// Stops one address flooding the public portfolio routes; same numbers as rateLimitConfig.portfolioPublic.requests.
+	"ratelimits": [
+		{ "name": "PORTFOLIO_PUBLIC_LIMITER", "namespace_id": "1101", "simple": { "limit": 600, "period": 60 } },
+	],
 	"durable_objects": { "bindings": [{ "name": "COORDINATION", "class_name": "Coordination" }] },
 	"migrations": [{ "tag": "v1", "new_sqlite_classes": ["Coordination"] }],
 	"limits": { "cpu_ms": 30000 },

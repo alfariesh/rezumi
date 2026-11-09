@@ -119,7 +119,16 @@ function PublishGroup() {
 							<Trans>This portfolio was taken down</Trans>
 						</Alert.Title>
 						<Alert.Description>
-							{record.suspendedReason ?? t`It can't be published. Contact support to appeal.`}
+							<span className="block">{record.suspendedReason ?? t`It can't be published right now.`}</span>
+							<span className="mt-1 block">
+								<Trans>
+									Only the Rezumi team can lift this. To appeal, email{" "}
+									<a className="underline" href="mailto:hi@rezumi.app">
+										hi@rezumi.app
+									</a>
+									.
+								</Trans>
+							</span>
 						</Alert.Description>
 					</Alert.Content>
 				</Alert>

@@ -11,7 +11,8 @@ import {
 } from "@rezumi/schema/billing";
 import { protectedProcedure } from "../../context";
 import { checkoutRateLimit } from "../../middleware/rate-limit";
-import { assertBillingAdmin, billingAdmin } from "./admin";
+import { assertAdminSession } from "../auth/admin-session";
+import { billingAdmin } from "./admin";
 import { listRecentAlerts } from "./alerts";
 import {
 	CANCELLATION_REASONS,
@@ -181,7 +182,7 @@ function originOf(context: { reqHeaders?: Headers; trustedClient?: string | unde
 }
 
 const adminProcedure = protectedProcedure.use(async ({ context, next }) => {
-	await assertBillingAdmin(context.authentication);
+	await assertAdminSession(context.authentication);
 	return next();
 });
 

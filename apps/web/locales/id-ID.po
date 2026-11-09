@@ -923,6 +923,10 @@ msgstr "{names} berada terakhir dalam teks. Kebanyakan sistem masih menemukannya
 msgid "{open, plural, one {# thing to review.} other {# things to review.}}"
 msgstr "{open, plural, one {# hal yang perlu ditinjau.} other {# hal yang perlu ditinjau.}}"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "{open} open. The portfolio's owner never sees who sent a report."
+msgstr "{open} terbuka. Pemilik portofolio tidak pernah tahu siapa yang melapor."
+
 #: src/features/resume/editor/chrome.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "{pageCount, plural, one {# page} other {# pages}}"
@@ -1289,6 +1293,11 @@ msgstr "Ada fakta yang berubah. Tinjau cerita ini."
 msgid "A fact you've since forgotten"
 msgstr "Fakta yang sudah Anda minta untuk dilupakan"
 
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "A fake testimonial"
+msgstr "Testimoni palsu"
+
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "A fall can be good, such as faster load times."
 msgstr "Turun bisa berarti baik, misalnya waktu muat yang lebih cepat."
@@ -1550,6 +1559,7 @@ msgid "Accomplishment"
 msgstr "Pencapaian"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
@@ -1563,6 +1573,10 @@ msgstr "Akun"
 #: src/features/billing/admin/customer.tsx
 msgid "Account {0} · created {1} · time zone {2}"
 msgstr "Akun {0} · dibuat {1} · zona waktu {2}"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Account banned"
+msgstr "Akun dilarang"
 
 #: src/features/billing/admin/overview.tsx
 msgid "Account deleted"
@@ -1580,6 +1594,11 @@ msgstr "Angka pencapaian"
 #: src/features/homepage/hero.tsx
 msgid "achievements"
 msgstr ""
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Acted on"
+msgstr "Sudah ditindak"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Action"
@@ -2290,6 +2309,7 @@ msgstr "Rata kanan"
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/saved.tsx
 #: src/features/documents/documents-page.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 #: src/features/resume/editor/design/template-group.tsx
 msgid "All"
 msgstr "Semua"
@@ -2322,6 +2342,10 @@ msgstr "Semua dokumen dan lamaran pekerjaan sebagai JSON, dalam satu zip"
 #: src/features/templates/gallery.tsx
 msgid "All fields"
 msgstr "Semua bidang"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "All reports"
+msgstr "Semua laporan"
 
 #: src/features/portfolio/works/work-editor.tsx
 msgid "All sections"
@@ -2417,6 +2441,10 @@ msgstr "CV akademik dengan serif yang tenang, judul bagian kapital kecil, dan ru
 #: src/dialogs/resume/template/data.ts
 msgid "An accent band across the top carries the name, headline and contact line in light text, with two columns below and the sidebar on the right."
 msgstr "Pita aksen di bagian atas memuat nama, headline, dan baris kontak dalam teks terang, dengan dua kolom di bawahnya dan sidebar di kanan."
+
+#: src/features/portfolio/errors.ts
+msgid "An administrator's account can't be banned here."
+msgstr "Akun administrator tidak bisa dilarang di sini."
 
 #: src/dialogs/resume/template/data.ts
 msgid "An editorial single column set like a magazine feature: a small kicker over a large display name and serif section titles between hairlines. For writers, designers and communications roles."
@@ -2726,6 +2754,10 @@ msgstr "Bidang studi"
 msgid "As software reads it"
 msgstr "Saat perangkat lunak membacanya"
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "As visitors would see it."
+msgstr "Seperti yang dilihat pengunjung."
+
 #: src/features/command-palette/pages/ask.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Ask"
@@ -2940,6 +2972,10 @@ msgstr "Kembali ke cerita"
 msgid "Back to the chat"
 msgstr ""
 
+#: src/features/portfolio/page-text.ts
+msgid "Back to the portfolio"
+msgstr "Kembali ke portofolio"
+
 #: src/features/billing/payment-return.tsx
 msgid "Back to your plan"
 msgstr "Kembali ke paketmu"
@@ -2977,6 +3013,14 @@ msgstr "Kabar buruk (merah)"
 msgid "Badge"
 msgstr "Lencana"
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Ban account"
+msgstr "Larang akun"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Ban this account?"
+msgstr "Larang akun ini?"
+
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a tinted background behind the header"
 msgid "Band"
@@ -2986,6 +3030,10 @@ msgstr ""
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Bandung, Indonesia"
 msgstr "Bandung, Indonesia"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Banned the account"
+msgstr "Melarang akun"
 
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a bar beside the header"
@@ -3266,6 +3314,10 @@ msgstr "Teks tombol (opsional)"
 msgid "Buttons"
 msgstr "Tombol"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed at, and anyone can report one that's used without permission."
+msgstr "Dengan menambahkan logo, kamu menyatakan berhak menampilkannya. Logo tampil abu-abu dan berwarna saat diarahkan, dan siapa pun bisa melaporkan logo yang dipakai tanpa izin."
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "Kalender"
@@ -3434,6 +3486,10 @@ msgstr "Ubah desain resume"
 #: src/features/command-palette/pages/preferences/index.tsx
 msgid "Change theme to…"
 msgstr "Ubah tema menjadi…"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Change this report's status?"
+msgstr "Ubah status laporan ini?"
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Change timezone"
@@ -4045,6 +4101,7 @@ msgstr "Komputer"
 msgid "Confident and graphic: a heavy name, and every section opens with its title as a solid accent tag with a rule running to the margin."
 msgstr "Percaya diri dan grafis: nama tebal, dan setiap bagian dibuka dengan judul berupa label aksen solid serta garis yang memanjang hingga margin."
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/hooks/use-confirm.tsx
 msgid "Confirm"
 msgstr "Konfirmasi"
@@ -4635,9 +4692,17 @@ msgstr "Tidak dapat memuat wawancara. Coba lagi"
 msgid "Couldn't load or save web access settings. Try again."
 msgstr "Tidak dapat memuat atau menyimpan setelan akses web. Coba lagi."
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Couldn't load the reports. Try again."
+msgstr "Laporan tidak bisa dimuat. Coba lagi."
+
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't load the sample file. Try again."
 msgstr "Tidak dapat memuat file sampel. Coba lagi."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Couldn't load this portfolio. Try again."
+msgstr "Portofolio ini tidak bisa dimuat. Coba lagi."
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/load-state.tsx
@@ -5687,6 +5752,7 @@ msgstr "Statistik terperinci tidak termasuk dalam paketmu"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
 msgstr "Detail"
@@ -5695,6 +5761,10 @@ msgstr "Detail"
 #: src/features/auth/pages/error.tsx
 msgid "Details from the provider:"
 msgstr "Detail dari penyedia:"
+
+#: src/features/portfolio/blocks/pdf-block.tsx
+msgid "Details saved inside the file, such as the author's name, are published with it."
+msgstr "Data yang tersimpan di dalam berkas, seperti nama penulis, ikut terbit bersama PDF-nya."
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Device"
@@ -5757,11 +5827,21 @@ msgstr "Putuskan"
 msgid "Disconnecting your {providerName} account…"
 msgstr "Memutuskan akun {providerName} Anda…"
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/resume/editor/write/write-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Dismiss"
 msgstr "Membubarkan"
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Dismissed"
+msgstr "Diabaikan"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Dismissed a report"
+msgstr "Mengabaikan laporan"
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "DNS is right. HTTPS is being set up, which usually takes a few minutes."
@@ -6869,6 +6949,10 @@ msgstr "Temukan angka"
 msgid "Find numbers in your resume"
 msgstr "Temukan angka di CV Anda"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Find portfolio"
+msgstr "Cari portofolio"
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
 msgstr "Cari posisi"
@@ -7167,6 +7251,11 @@ msgstr "Ditemukan hari ini"
 #: src/features/career/today.tsx
 msgid "Found yesterday"
 msgstr "Ditemukan kemarin"
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "Fraud or a scam"
+msgstr "Penipuan"
 
 #: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
@@ -7710,6 +7799,7 @@ msgid "Hiring team"
 msgstr "Mempekerjakan tim"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/$resumeId/-components/download-sheet.tsx
@@ -7942,6 +8032,11 @@ msgstr "Mengabaikan"
 #: src/features/resume/editor/check/actions.ts
 msgid "Ignored issues are back"
 msgstr "Masalah yang terabaikan kembali muncul"
+
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "Illegal content"
+msgstr "Konten ilegal"
 
 #: src/features/ats-checker/messages.ts
 msgid "Images cover most of the page."
@@ -8266,8 +8361,8 @@ msgid "Issues and Job match still work without AI."
 msgstr "Masalah dan Pencocokan Pekerjaan tetap berfungsi tanpa AI."
 
 #: src/features/portfolio/editor/publish-panel.tsx
-msgid "It can't be published. Contact support to appeal."
-msgstr "Portofolio ini tidak bisa diterbitkan. Hubungi dukungan untuk mengajukan banding."
+msgid "It can't be published right now."
+msgstr "Portofolio ini tidak bisa diterbitkan untuk saat ini."
 
 #: src/features/billing/subscription-actions.tsx
 msgid "It couldn't be cancelled. Try again in a moment."
@@ -8289,13 +8384,17 @@ msgstr "Pembayaran ini bukan milik akun ini. Bila kamu membayar saat masuk denga
 msgid "It may have been deleted. Choose another story or add a new one."
 msgstr "Mungkin sudah dihapus. Pilih cerita lain atau tambahkan yang baru."
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "It shows again if the owner still has it published."
+msgstr "Portofolio tampil lagi bila pemiliknya masih menerbitkannya."
+
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "It was saved in another tab or on another device after you opened it here. Reload to continue from that version, or keep your version and save it over that one."
 msgstr "Portofolio ini disimpan di tab atau perangkat lain setelah Anda membukanya di sini. Muat ulang untuk melanjutkan dari versi itu, atau pertahankan versi Anda dan simpan di atasnya."
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "It was taken down, so visitors can't see it. Contact support to appeal."
-msgstr "Portofolio ini diturunkan, jadi pengunjung tidak bisa melihatnya. Hubungi dukungan untuk mengajukan banding."
+msgid "It was taken down, so visitors can't see it. Open the editor to see why and how to appeal."
+msgstr "Portofolio ini diturunkan, jadi pengunjung tidak bisa melihatnya. Buka editor untuk melihat alasan dan cara mengajukan keberatan."
 
 #: src/features/documents/document-actions.tsx
 msgid "It will be deleted for good and can't be restored."
@@ -8882,6 +8981,30 @@ msgstr "Tingkat {level} dari 5"
 msgid "Licenses"
 msgstr "Lisensi"
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift ban"
+msgstr "Cabut larangan"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift takedown"
+msgstr "Cabut penurunan"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift the account ban?"
+msgstr "Cabut larangan akun?"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Lift the takedown?"
+msgstr "Cabut penurunan?"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Lifted the account ban"
+msgstr "Mencabut larangan akun"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Lifted the takedown"
+msgstr "Mencabut penurunan"
+
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligatur dapat menghilangkan huruf dari kata seperti \"workflow\"."
@@ -9061,6 +9184,10 @@ msgstr "Langsung di {0}"
 msgid "Living gradient"
 msgstr "Gradien hidup"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Load more"
+msgstr "Muat lagi"
+
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -9200,10 +9327,6 @@ msgstr "Logo"
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
 msgstr "Logo di samping tools yang disebut di keahlian, seperti React, Python, atau Figma. Teksnya tetap tercetak."
-
-#: src/features/portfolio/editor/offer-forms.tsx
-msgid "Logos show grey and turn to colour when pointed at. Upload only logos you may show."
-msgstr "Logo tampil abu-abu dan berwarna saat diarahkan. Unggah hanya logo yang boleh Anda tampilkan."
 
 #: src/features/ats-checker/messages.ts
 msgid "Long stretches are set in capitals."
@@ -9408,6 +9531,10 @@ msgstr "Markdown (.md)"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Markdown shortcuts on"
 msgstr "Pintasan Markdown aktif"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Marked a report as acted on"
+msgstr "Menandai laporan sudah ditindak"
 
 #: src/features/career/workspace/apply.tsx
 msgid "Marked as applied. The versions you sent are kept."
@@ -10262,9 +10389,21 @@ msgstr "Tidak ada foto. Kebanyakan ATS mengabaikan foto; beberapa daerah menghar
 msgid "No picture"
 msgstr "Tanpa gambar"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "No portfolio matches that."
+msgstr "Tidak ada portofolio yang cocok."
+
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "No postings found. Try different keywords."
 msgstr "Tidak ada lowongan pekerjaan yang ditemukan. Coba kata kunci yang berbeda."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "No reports about this portfolio."
+msgstr "Belum ada laporan tentang portofolio ini."
+
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "No reports here."
+msgstr "Tidak ada laporan di sini."
 
 #: src/features/applications/stages.ts
 msgid "No response"
@@ -10482,6 +10621,7 @@ msgstr "Jangan sekarang"
 msgid "Not prepared yet"
 msgstr ""
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Not published"
 msgstr "Belum terbit"
@@ -10567,6 +10707,10 @@ msgstr "Catatan"
 #: src/components/input/icon-picker-grid.tsx
 msgid "Notes and tasks"
 msgstr "Catatan & tugas"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Nothing has been done yet."
+msgstr "Belum ada tindakan."
 
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Nothing here on your resume yet, so the section doesn't show."
@@ -10818,6 +10962,10 @@ msgstr "Hanya izinkan aplikasi yang Anda percayai. Aplikasi ini akan dapat:"
 msgid "Only applies when the section fits on a single page."
 msgstr "Hanya berlaku jika bagian tersebut muat dalam satu halaman."
 
+#: src/features/portfolio/page-text.ts
+msgid "Only if you'd like a reply. The portfolio's owner won't see it."
+msgstr "Isi bila kamu ingin dibalas. Pemilik portofolio tidak akan melihatnya."
+
 #: src/features/ats-checker/messages.ts
 msgid "Only one recognizable section heading was found."
 msgstr "Hanya satu judul bagian yang dapat dikenali ditemukan."
@@ -10849,6 +10997,10 @@ msgid "Only the first pages were checked."
 msgstr "Hanya halaman-halaman pertama yang diperiksa."
 
 #: src/features/portfolio/editor/publish-panel.tsx
+msgid "Only the Rezumi team can lift this. To appeal, email <0>hi@rezumi.app</0>."
+msgstr "Hanya tim Rezumi yang bisa mencabutnya. Untuk mengajukan keberatan, kirim email ke <0>hi@rezumi.app</0>."
+
+#: src/features/portfolio/editor/publish-panel.tsx
 msgid "Only you can see it until you publish. After that, changes show as soon as they're saved."
 msgstr "Hanya Anda yang bisa melihatnya sampai diterbitkan. Setelah itu, perubahan langsung tampil begitu tersimpan."
 
@@ -10876,6 +11028,8 @@ msgstr ""
 #: src/features/billing/admin/overview.tsx
 #: src/features/career/today.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/admin/reports-page.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Open"
 msgstr "Buka"
@@ -10936,6 +11090,7 @@ msgstr "Buka tautan"
 msgid "Open navigation"
 msgstr "Buka navigasi"
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/portfolio-page.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -11799,6 +11954,8 @@ msgstr "Polandia"
 msgid "Polishing"
 msgstr "Memoles"
 
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 #: src/routes/builder/portfolio/index.tsx
@@ -11814,9 +11971,16 @@ msgstr "Draf portofolio"
 msgid "Portfolio photo"
 msgstr "Foto portofolio"
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/editor/preview.tsx
 msgid "Portfolio preview"
 msgstr "Pratinjau portofolio"
+
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Portfolio reports"
+msgstr "Laporan portofolio"
 
 #: src/features/billing/credits.ts
 msgid "Portfolio rewrite"
@@ -12291,6 +12455,7 @@ msgstr "Terbitkan portofolio Anda"
 msgid "Publish Your Resume"
 msgstr ""
 
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Published"
@@ -12605,6 +12770,7 @@ msgstr "Siap"
 #: src/features/applications/components/detail/close-dialog.tsx
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/reason-dialog.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 msgid "Reason"
 msgstr "Alasan"
 
@@ -12615,6 +12781,10 @@ msgstr "Diingat kembali"
 #: src/features/billing/admin/labels.ts
 msgid "Receipt email not delivered"
 msgstr "Email bukti bayar tidak terkirim"
+
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Received"
+msgstr "Diterima"
 
 #: src/features/billing/plan-page.tsx
 msgid "Recent activity"
@@ -13045,8 +13215,13 @@ msgid "Renews yearly on {0}"
 msgstr "Diperpanjang tahunan pada {0}"
 
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/portfolio/admin/review-page.tsx
 msgid "Reopen"
 msgstr "Buka kembali"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Reopened a report"
+msgstr "Membuka kembali laporan"
 
 #. placeholder {0}: title || t`Untitled`
 #: src/features/resume/editor/write/entry-card.tsx
@@ -13112,6 +13287,27 @@ msgstr "Balas lewat email"
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "Balasan disalin"
+
+#: src/features/portfolio/page-text.ts
+msgid "Report"
+msgstr "Laporkan"
+
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Report status"
+msgstr "Status laporan"
+
+#: src/features/portfolio/page-text.ts
+msgid "Report this portfolio"
+msgstr "Laporkan portofolio ini"
+
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Reports"
+msgstr "Laporan"
+
+#: src/features/portfolio/page-text.ts
+msgid "Reports can't be sent from this page right now. Email {email} with this page's address and what's wrong."
+msgstr "Laporan belum bisa dikirim dari halaman ini. Kirim email ke {email} berisi alamat halaman ini dan masalahnya."
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Require a password"
@@ -14147,6 +14343,10 @@ msgstr "Tombol Kirim pesan"
 msgid "Send message"
 msgstr "Kirim pesan"
 
+#: src/features/portfolio/page-text.ts
+msgid "Send report"
+msgstr "Kirim laporan"
+
 #. Primary action button label on forgot-password form
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Send reset link"
@@ -14492,6 +14692,10 @@ msgstr "Tampilkan alamat email saya"
 msgid "Show my local time"
 msgstr "Tampilkan jam lokal saya"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Show my location"
+msgstr "Tampilkan lokasiku"
+
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Show my phone number"
 msgstr "Tampilkan nomor telepon saya"
@@ -14808,6 +15012,11 @@ msgstr "Beberapa teks jatuh di luar halaman."
 msgid "Some text is rotated."
 msgstr "Beberapa teks diputar."
 
+#: src/features/portfolio/admin/labels.ts
+#: src/features/portfolio/page-text.ts
+msgid "Something else"
+msgstr "Lainnya"
+
 #: src/features/homepage/faq.tsx
 msgid "Something else on your mind? Write to us at"
 msgstr "Ada pertanyaan lain? Kirim email ke"
@@ -15050,6 +15259,7 @@ msgstr "Statistik"
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/career/workspace/fit.tsx
+#: src/features/portfolio/admin/reports-page.tsx
 msgid "Status"
 msgstr "Status"
 
@@ -15448,6 +15658,18 @@ msgstr "Disesuaikan dengan lowongan"
 msgid "Tailored vs. base resume"
 msgstr "resume yang diadaptasi vs. resume dasar"
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Take down"
+msgstr "Turunkan"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Take this portfolio down?"
+msgstr "Turunkan portofolio ini?"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Takedown reason"
+msgstr "Alasan penurunan"
+
 #: src/features/billing/credits.ts
 msgid "Taken away on {at}"
 msgstr "Dikurangi pada {at}"
@@ -15457,6 +15679,8 @@ msgstr "Dikurangi pada {at}"
 msgid "Taken back on {0}"
 msgstr "Ditarik pada {0}"
 
+#: src/features/portfolio/admin/reports-page.tsx
+#: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Taken down"
 msgstr "Diturunkan"
@@ -15518,6 +15742,10 @@ msgstr "Ceritakan saat Anda tidak sependapat dengan rekan kerja. Bagaimana Anda 
 #: src/features/homepage/features.tsx
 msgid "Tell me about a time you led a redesign."
 msgstr "Ceritakan saat Anda memimpin sebuah redesain."
+
+#: src/features/portfolio/page-text.ts
+msgid "Tell Rezumi what's wrong with {name}'s portfolio. Only the Rezumi team reads reports, and the portfolio's owner is never told who sent one."
+msgstr "Beri tahu Rezumi apa yang salah dengan portofolio {name}. Hanya tim Rezumi yang membaca laporan, dan pemilik portofolio tidak pernah diberi tahu siapa yang melapor."
 
 #: src/libs/locale.ts
 msgid "Telugu"
@@ -15690,6 +15918,10 @@ msgstr "Thai"
 #: src/features/portfolio/page-text.ts
 msgid "Thank you. Your message was sent."
 msgstr "Terima kasih. Pesan Anda sudah terkirim."
+
+#: src/features/portfolio/page-text.ts
+msgid "Thank you. Your report was sent to the Rezumi team."
+msgstr "Terima kasih. Laporanmu sudah dikirim ke tim Rezumi."
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/reason-dialog.tsx
@@ -15975,6 +16207,14 @@ msgstr "Tautan asli tetap ada pada pekerjaan ini."
 #: src/features/career/knowledge/facts.tsx
 msgid "The original stays in the history."
 msgstr "Versi asli tetap ada di riwayat."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "The owner can sign in again, and their public pages come back."
+msgstr "Pemilik bisa masuk lagi, dan halaman publiknya kembali tampil."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "The owner is signed out, and all of their public pages and pictures stop being available. Use this for an account that's a problem as a whole."
+msgstr "Pemilik dikeluarkan dari akun, dan semua halaman publik serta gambarnya tidak lagi tersedia. Pakai ini untuk akun yang bermasalah secara keseluruhan."
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "The page had no job details to read. Fill in the role and company."
@@ -16430,6 +16670,10 @@ msgid "This form is closed right now."
 msgstr "Form ini sedang ditutup."
 
 #: src/features/portfolio/page-text.ts
+msgid "This form needs JavaScript. You can also email {email}."
+msgstr "Form ini butuh JavaScript. Kamu juga bisa mengirim email ke {email}."
+
+#: src/features/portfolio/page-text.ts
 msgid "This form needs JavaScript. You can use the other contact options here."
 msgstr "Form ini membutuhkan JavaScript. Anda bisa memakai pilihan kontak lain di halaman ini."
 
@@ -16492,6 +16736,10 @@ msgstr "Bulan ini"
 #: src/features/billing/ai-source-menu.tsx
 msgid "This needs {required} and you have {balance}. Use your own AI connection without credits, or get Pro AI for 100 credits."
 msgstr "Tindakan ini butuh {required}, sedangkan kamu punya {balance}. Pakai koneksi AI sendiri tanpa kredit, atau ambil Pro AI untuk 100 kredit."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "This only changes the report, not the portfolio."
+msgstr "Ini hanya mengubah laporannya, bukan portofolionya."
 
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
@@ -16573,6 +16821,10 @@ msgstr "Portofolio ini sudah tidak ada. Mungkin dihapus di tab lain."
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
 msgstr "Portofolio ini tidak punya CV untuk diambil proyeknya. Pilih CV di Terbitkan → CV sumber."
+
+#: src/features/portfolio/errors.ts
+msgid "This portfolio is already in that state. Reload the page to see what changed."
+msgstr "Portofolio ini sudah dalam keadaan itu. Muat ulang halaman untuk melihat perubahannya."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "This portfolio was taken down"
@@ -16853,6 +17105,10 @@ msgstr "Terlalu banyak percobaan berturut-turut. Tunggu beberapa menit, lalu cob
 msgid "Too many uploads in a short time. Wait a minute, then try again."
 msgstr "Terlalu banyak unggahan dalam waktu singkat. Tunggu sebentar, lalu coba lagi."
 
+#: src/features/portfolio/admin/labels.ts
+msgid "Took the portfolio down"
+msgstr "Menurunkan portofolio"
+
 #: src/features/billing/plan.ts
 msgid "Tool logos aren't in your plan"
 msgstr "Logo tools tidak termasuk dalam paketmu"
@@ -16897,6 +17153,14 @@ msgstr "Lacak di Lamaran"
 #: src/routes/dashboard/applications/index.tsx
 msgid "Track your first job"
 msgstr "Lacak pekerjaan pertama Anda"
+
+#: src/features/portfolio/admin/labels.ts
+msgid "Trademark or copyright"
+msgstr "Merek atau hak cipta"
+
+#: src/features/portfolio/page-text.ts
+msgid "Trademark or copyright, such as a logo or a work"
+msgstr "Merek atau hak cipta, seperti logo atau karya"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Transcribe answers with"
@@ -17050,6 +17314,10 @@ msgstr "Aktifkan tautan untuk memilih alamat."
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Turn on two-step verification"
 msgstr "Aktifkan verifikasi dua langkah"
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Turn this off to keep your location off the page, including the one on your resume."
+msgstr "Matikan agar lokasimu tidak tampil di halaman, termasuk lokasi yang ada di CV."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Turn this schedule on"
@@ -17318,8 +17586,8 @@ msgid "Up to 25 MB · checked in your browser, never uploaded"
 msgstr "Hingga 25 MB · diperiksa di browser Anda, tidak pernah diunggah"
 
 #: src/features/portfolio/editor/intro-form.tsx
-msgid "Up to three, under your greeting. The first one stands out."
-msgstr "Maksimal tiga, di bawah sapaan. Tombol pertama paling menonjol."
+msgid "Up to three, under your greeting. The first one stands out. An Email or WhatsApp button shows that address to visitors, even if Contact hides it."
+msgstr "Maksimal tiga, di bawah sapaan. Tombol pertama paling menonjol. Tombol Email atau WhatsApp menampilkan alamat itu kepada pengunjung, walaupun bagian Kontak menyembunyikannya."
 
 #: src/features/portfolio/page-text.ts
 msgid "Up, a bad change:"
@@ -17618,6 +17886,10 @@ msgstr "Riset pengguna"
 msgid "Username"
 msgstr "Nama Pengguna"
 
+#: src/features/portfolio/admin/reports-page.tsx
+msgid "Username or email"
+msgstr "Username atau email"
+
 #: src/features/assistant/assistant-panel.tsx
 msgid "Uses facts from your resume"
 msgstr "Menggunakan fakta dari resume Anda"
@@ -17851,6 +18123,10 @@ msgstr "Pengunjung tidak bisa melihatnya selama diturunkan."
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "Pengunjung memasukkannya sebelum mereka melihat resume. Bagikan hanya dengan orang yang Anda percayai."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "Visitors stop seeing it right away; nothing is deleted. The owner reads this reason in their editor, so don't mention who reported it."
+msgstr "Pengunjung langsung tidak bisa melihatnya; tidak ada data yang dihapus. Pemilik membaca alasan ini di editornya, jadi jangan sebut siapa yang melapor."
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Visits"
@@ -18126,6 +18402,10 @@ msgstr "Apa yang harus diubah?"
 msgid "What should run"
 msgstr "Apa yang dijalankan"
 
+#: src/features/portfolio/page-text.ts
+msgid "What should we look at?"
+msgstr "Bagian mana yang perlu kami periksa?"
+
 #: src/features/assistant/assistant-panel.tsx
 msgid "What should we work on?"
 msgstr "Apa yang harus kita kerjakan?"
@@ -18199,6 +18479,10 @@ msgstr "Untuk apa?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "Apa yang berhasil"
+
+#: src/features/portfolio/page-text.ts
+msgid "What's wrong?"
+msgstr "Apa masalahnya?"
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
@@ -18828,6 +19112,10 @@ msgstr "Draf Anda sudah masuk. Baca lagi dan sesuaikan dengan gaya Anda."
 msgid "Your email"
 msgstr "Email Anda"
 
+#: src/features/portfolio/page-text.ts
+msgid "Your email (optional)"
+msgstr "Emailmu (opsional)"
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your email address changed on the resume. The letter updated too."
 msgstr "Alamat email Anda berubah di resume. Surat itu juga diperbarui."
@@ -19151,8 +19439,8 @@ msgid "Your portfolio still uses this file. Remove it from the portfolio first."
 msgstr "Portofolio Anda masih memakai file ini. Hapus dulu dari portofolio."
 
 #: src/features/portfolio/errors.ts
-msgid "Your portfolio was taken down and can't be published. Contact support to appeal."
-msgstr "Portofolio Anda diturunkan dan tidak bisa diterbitkan. Hubungi dukungan untuk mengajukan banding."
+msgid "Your portfolio was taken down, so it can't be published or deleted. Email hi@rezumi.app to appeal."
+msgstr "Portofoliomu diturunkan, jadi tidak bisa diterbitkan atau dihapus. Kirim email ke hi@rezumi.app untuk mengajukan keberatan."
 
 #: src/features/billing/plan.ts
 msgid "Your portfolio's storage is full"
@@ -19182,6 +19470,10 @@ msgstr "Portofolio Anda yang terbit dibuka di tautan pendek dan domain kustom An
 #: src/features/career/workspace/practise.tsx
 msgid "Your recording goes to {0} to be transcribed, which may use tokens on that account."
 msgstr "Rekaman Anda dikirim ke {0} untuk ditranskripsi, yang mungkin memakai token di akun tersebut."
+
+#: src/features/portfolio/page-text.ts
+msgid "Your report couldn't be sent. Check the form and try again in a moment."
+msgstr "Laporanmu belum terkirim. Periksa isian lalu coba lagi sebentar lagi."
 
 #: src/features/career/offers.tsx
 msgid "Your requirements"

@@ -141,3 +141,10 @@ On the **Portfolio** page, **Delete portfolio** removes its text, work, design a
 - The small **AI** button on long fields (greeting, a work's summary, a service's description, About me, Text blocks and your own sections) makes the text shorter, more professional, or translates it to the page's language, for 1 credit. Testimonials don't have it: they're someone else's words.
 - **Find numbers** beside a metric list reads your jobs and projects and suggests metrics, each with the sentence it comes from, for 1 credit. Only numbers written on your resume are suggested; you pick which to add.
 - Failed or stopped requests give their credits back. On your own AI connection, nothing costs credits.
+
+## Reports and takedowns (Phase 11)
+
+- Every published portfolio has a **Report** link in its footer. A visitor picks a reason, describes the problem, and can leave an email if they'd like a reply. The portfolio's owner never sees who reported it.
+- If the Rezumi team takes your portfolio down, visitors stop seeing it, your short link opens your primary resume if you have one, and you can't publish or delete it. Nothing is deleted. The **Publish** tab shows the reason; to appeal, email hi@rezumi.app.
+- By adding a client logo you confirm you may show it. Testimonials must be genuine and shown with the person's permission.
+- **Intro → Show my location** keeps your location off the page, including the one on your resume. An Email or WhatsApp button shows that address to visitors even if Contact hides it. Details saved inside a PDF, such as the author's name, are published with it.

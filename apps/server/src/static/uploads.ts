@@ -35,7 +35,25 @@ async function isOwnerRequest(request: Request, userId: string): Promise<boolean
 	return authentication?.user.id === userId && authentication.permissions.includes("read");
 }
 
-export async function handleUpload(request: Request) {
+/**
+ * Whether the request may read a portfolio's files privately: their owner (for the editor and its preview), or an
+ * administrator's web session (for the review page, including a portfolio that's taken down).
+ */
+async function canReadPortfolioFiles(request: Request, userId: string): Promise<boolean> {
+	const [{ resolveAuthenticationFromRequestHeaders }, { assertAdminSession }] = await Promise.all([
+		import("@rezumi/api/context"),
+		import("@rezumi/api/features/auth/admin-session"),
+	]);
+	const authentication = await resolveAuthenticationFromRequestHeaders(request.headers).catch(() => null);
+	if (!authentication) return false;
+	if (authentication.user.id === userId && authentication.permissions.includes("read")) return true;
+	return assertAdminSession(authentication).then(
+		() => true,
+		() => false,
+	);
+}
+
+export async function handleUpload(request: Request, trustedClient?: string) {
 	const [userId, ...segments] = new URL(request.url).pathname.split("/uploads/")[1]?.split("/") ?? [];
 	const filePath = segments.join("/");
 
@@ -43,7 +61,12 @@ export async function handleUpload(request: Request) {
 
 	if (![userId, ...segments].every(isValidPath)) return new Response("Forbidden", { status: 403 });
 	if (segments[0] === "agent") return new Response("Not Found", { status: 404 });
-	if (PORTFOLIO_FILE_PATH.test(filePath)) return servePortfolioFile(request, userId, filePath);
+	if (PORTFOLIO_FILE_PATH.test(filePath)) {
+		const { publicPortfolioRequestAllowed, tooManyPortfolioRequests } =
+			await import("@rezumi/api/features/portfolio/public-limit");
+		if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
+		return servePortfolioFile(request, userId, filePath);
+	}
 
 	const filename = filePath.split("/").pop() ?? filePath;
 	const publicPicturePath =
@@ -97,7 +120,7 @@ async function servePortfolioFile(request: Request, userId: string, filePath: st
 	const filename = filePath.split("/").pop() ?? filePath;
 	const pdfPath = PUBLIC_PDF_PATH.test(filePath);
 	let owner: Promise<boolean> | undefined;
-	const isOwner = () => (owner ??= isOwnerRequest(request, userId));
+	const isOwner = () => (owner ??= canReadPortfolioFiles(request, userId));
 	// The lookup comes first, before storage is read or an ETag compared: a file no longer public never answers 304.
 	const { isPublicPortfolioFile } = await import("@rezumi/api/features/portfolio/public");
 	let isPublic = (pdfPath || PORTFOLIO_PICTURE_PATH.test(filePath)) && (await isPublicPortfolioFile(key));

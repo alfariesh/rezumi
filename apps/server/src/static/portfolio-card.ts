@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { initWasm, Resvg } from "@resvg/resvg-wasm";
 import { findPublicPortfolio } from "@rezumi/api/features/portfolio/public";
+import { publicPortfolioRequestAllowed, tooManyPortfolioRequests } from "@rezumi/api/features/portfolio/public-limit";
 import { env } from "@rezumi/env/server";
 import { CARD_WIDTH, resumeCardSvg } from "@rezumi/pdf/web-page-card";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
@@ -49,7 +50,12 @@ function cardPicture(picture: PortfolioViewImage | null): string {
  * address in the portfolio's fonts and accent. An address that doesn't show a portfolio gets the generic banner, so a
  * card never shows what a visitor can't.
  */
-export async function handlePortfolioCard(request: Request, username: string): Promise<Response> {
+export async function handlePortfolioCard(
+	request: Request,
+	username: string,
+	trustedClient?: string,
+): Promise<Response> {
+	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
 	const portfolio = await findPublicPortfolio(username).catch(() => null);
 	if (!portfolio) return banner();
 	const view = publicPortfolioView(portfolio);

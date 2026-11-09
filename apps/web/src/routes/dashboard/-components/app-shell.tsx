@@ -202,7 +202,7 @@ function useCrumbs(): Crumb[] {
 			if (page === "billing") return [{ label: t`Plan` }];
 			return [{ label: t`Settings` }];
 		case "admin":
-			return [{ label: t`Billing admin` }];
+			return [{ label: page === "portfolios" ? t`Portfolio reports` : t`Billing admin` }];
 		default:
 			return [];
 	}
