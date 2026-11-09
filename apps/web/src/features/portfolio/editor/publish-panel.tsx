@@ -17,6 +17,7 @@ import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouteContext } from "@tanstack/react-router";
 import { QRCodeSVG } from "qrcode.react";
 import { useId, useState } from "react";
 import { publicResumeUrl } from "@rezumi/resume/sharing";
@@ -34,6 +35,7 @@ import { useEditorView } from "./use-view";
 import { Combobox } from "@/components/ui/combobox";
 import { getLocaleOptions } from "@/features/locale/locale-options";
 import { CopyLinkButton } from "@/features/resume/share/copy-link-button";
+import { CustomDomainField } from "@/features/resume/share/custom-domain-field";
 import { useShareOrigin } from "@/features/resume/share/use-share-origin";
 import { useConfirm } from "@/hooks/use-confirm";
 import { authClient } from "@/libs/auth/client";
@@ -79,6 +81,7 @@ export function PublishPanel() {
 	return (
 		<div className="grid gap-3 p-3">
 			<PublishGroup />
+			<DomainGroup />
 			<SearchGroup />
 			<LanguageGroup />
 			<SourceGroup />
@@ -178,6 +181,17 @@ function PublishGroup() {
 				</div>
 			)}
 			{dialogOpen && <PublishDialog onClose={() => setDialogOpen(false)} />}
+		</PanelGroup>
+	);
+}
+
+/** The account's own domain, the same control as in a resume's Share panel. */
+function DomainGroup() {
+	const { flags } = useRouteContext({ strict: false });
+	if (!flags?.customDomains) return null;
+	return (
+		<PanelGroup icon="globe" title={<Trans>Your domain</Trans>}>
+			<CustomDomainField suggest={flags.olacvSuggestion ?? false} />
 		</PanelGroup>
 	);
 }

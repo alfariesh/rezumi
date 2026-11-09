@@ -27,6 +27,33 @@ const status = z.object({
 		),
 	verified: z.boolean().describe("Whether DNS proved ownership and the domain opens the primary resume."),
 	lastCheckedAt: z.date().nullable().describe("When DNS was last checked."),
+	managed: z.boolean().describe("Whether this server issues the domain's HTTPS certificate through Cloudflare."),
+	stage: z
+		.enum(["dns", "hostname", "certificate", "active", "problem"])
+		.describe(
+			"How far the domain has come: waiting for its DNS records, being set up, waiting for its HTTPS certificate, working, or stopped by a problem.",
+		),
+	problem: z
+		.enum(["dns_moved", "blocked", "caa", "certificate", "quota", "rejected"])
+		.nullable()
+		.describe("What stopped the domain, when stage is problem."),
+	plan: z
+		.object({
+			state: z
+				.enum(["ok", "grace", "redirecting"])
+				.describe("Whether the plan covers the domain, it's in its grace after the plan ended, or it now redirects."),
+			until: z.date().nullable().describe("When the grace ends."),
+		})
+		.describe("How the account's plan affects the domain."),
+});
+
+const checkedStatus = status.extend({
+	dns: z
+		.object({
+			ownership: z.boolean().describe("Whether the TXT record proving ownership is visible."),
+			routing: z.boolean().describe("Whether the domain points at this server."),
+		})
+		.describe("What this check found in DNS."),
 });
 
 export const customDomainRouter = {
@@ -74,11 +101,15 @@ export const customDomainRouter = {
 			operationId: "setCustomDomain",
 			summary: "Set the custom domain",
 			description:
-				"Sets the account's custom domain, replacing any previous one, and returns the DNS records to add: a TXT record that proves ownership, and a CNAME (or, for a root domain, addresses) pointing at this server. Requires authentication.",
+				"Sets the account's custom domain, replacing any previous one, and returns the DNS records to add: a TXT record that proves ownership, and a CNAME (or, for a root domain on a server without certificate automation, addresses) pointing at this server. Answers PLAN_FEATURE_REQUIRED when the instance has portfolios open to the account and its plan doesn't include custom domains. Requires authentication.",
 		})
 		.input(z.object({ hostname: z.string().max(260).describe("A domain such as resume.example.com.") }))
 		.use(accountRateLimit)
-		.errors({ ...errors, INVALID_DOMAIN: { status: 400, message: "Enter a domain such as resume.example.com." } })
+		.errors({
+			...errors,
+			INVALID_DOMAIN: { status: 400, message: "Enter a domain such as resume.example.com." },
+			PLAN_FEATURE_REQUIRED: { status: 403, message: "Custom domains aren't included in your plan." },
+		})
 		.output(status)
 		.handler(({ context, input }) => customDomainService.set(context.user.id, input.hostname)),
 
@@ -90,12 +121,12 @@ export const customDomainRouter = {
 			operationId: "verifyCustomDomain",
 			summary: "Check the custom domain's DNS",
 			description:
-				"Checks the custom domain's DNS records now. When they're right, the domain is verified and opens the primary resume, moving it from any other account that had it. Requires authentication.",
+				"Checks the custom domain's DNS records now. When they're right, the domain is verified and opens the account's published portfolio or primary resume, moving it from any other account that had it. Requires authentication.",
 		})
 		.input(z.object({}).optional())
 		.use(accountRateLimit)
 		.errors(errors)
-		.output(status)
+		.output(checkedStatus)
 		.handler(({ context }) => customDomainService.verify(context.user.id)),
 
 	remove: protectedProcedure

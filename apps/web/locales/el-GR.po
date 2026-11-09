@@ -486,6 +486,13 @@ msgstr "{0} λεπ."
 msgid "{0} more"
 msgstr "{0} περισσότερα"
 
+#. placeholder {0}: domain.hostname
+#. placeholder {1}: domain.hostname
+#. placeholder {2}: domain.hostname
+#: src/features/resume/share/dns-records-dialog.tsx
+msgid "{0} needs a CNAME at the root, which many providers don't allow. If yours doesn't, connect www.{1} and forward {2} to it where you manage the domain."
+msgstr ""
+
 #. placeholder {0}: kinds.new ?? 0
 #. placeholder {1}: kinds.renewal ?? 0
 #. placeholder {2}: kinds.change ?? 0
@@ -1194,6 +1201,10 @@ msgstr "Ένα αντίγραφο ασφαλείας αυτής της επισ�
 msgid "A bento page: the header is a solid tile of the accent and every section sits on its own soft rounded tile, with skills as chips."
 msgstr ""
 
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "A CAA record on this domain blocks its HTTPS certificate. Remove that record or allow the certificate authority, then check again."
+msgstr ""
+
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "A card that fills itself in"
 msgstr ""
@@ -1260,6 +1271,10 @@ msgstr ""
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "A document up to {limit}"
+msgstr ""
+
+#: src/features/resume/share/dns-records-dialog.tsx
+msgid "A domain without www needs a DNS provider that allows it"
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
@@ -1581,6 +1596,7 @@ msgid "active"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
+#: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Ενεργός"
@@ -3464,6 +3480,7 @@ msgstr "Ελέγξτε ένα δείγμα αρχείου"
 
 #: src/features/billing/payment-return.tsx
 #: src/features/career/workspace/fit.tsx
+#: src/features/resume/share/custom-domain-field.tsx
 msgid "Check again"
 msgstr "Νέος έλεγχος"
 
@@ -4088,6 +4105,10 @@ msgid "Connected applications"
 msgstr "Συνδεδεμένες εφαρμογές"
 
 #: src/features/resume/share/custom-domain-field.tsx
+msgid "Connected. Your domain opens your portfolio."
+msgstr ""
+
+#: src/features/resume/share/custom-domain-field.tsx
 msgid "Connected. Your domain opens your primary resume."
 msgstr "Συνδέθηκε. Ο τομέας σας ανοίγει το κύριο βιογραφικό σας."
 
@@ -4097,6 +4118,10 @@ msgstr "Σύνδεση του λογαριασμού σας {providerName}…"
 
 #: src/features/career/coach.tsx
 msgid "Connection"
+msgstr ""
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Connection progress"
 msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
@@ -5689,6 +5714,14 @@ msgstr "Αποσύνδεση του λογαριασμού σας {providerName}
 #: src/routes/dashboard/applications/index.tsx
 msgid "Dismiss"
 msgstr "Απολύω"
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "DNS is right. HTTPS is being set up, which usually takes a few minutes."
+msgstr ""
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "DNS points to Rezumi"
+msgstr ""
 
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "DNS records"
@@ -7718,6 +7751,10 @@ msgstr ""
 msgid "HR Generalist"
 msgstr ""
 
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "HTTPS certificate"
+msgstr ""
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "https://linkedin.com/in/…"
 msgstr ""
@@ -7828,6 +7865,10 @@ msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "If you've paid, this page updates by itself in a few seconds. The checkout stays open until {deadline}."
+msgstr ""
+
+#: src/features/resume/share/dns-records-dialog.tsx
+msgid "If your DNS is on Cloudflare, set the CNAME record to DNS only (grey cloud)."
 msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
@@ -11037,6 +11078,10 @@ msgstr "Μείωση εσοχής"
 msgid "Outer space"
 msgstr ""
 
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Ownership proven"
+msgstr ""
+
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -13872,6 +13917,7 @@ msgid "See exactly what applicant tracking systems read"
 msgstr ""
 
 #: src/features/billing/plan-dialog.tsx
+#: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "See plans"
 msgstr ""
@@ -14110,6 +14156,10 @@ msgstr "Ρυθμίστε την αναζήτηση ιστού στις Ρυθμ�
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Set up your authenticator app"
 msgstr "Ρυθμίστε την εφαρμογή ελέγχου ταυτότητας"
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Setting up HTTPS. This usually takes a few minutes, and this page updates by itself."
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/page.tsx
@@ -15678,6 +15728,10 @@ msgstr ""
 msgid "The greeting follows the name."
 msgstr "Ο χαιρετισμός ακολουθεί το όνομα."
 
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "The HTTPS certificate couldn't be issued. Make sure the DNS records are still there, then check again."
+msgstr ""
+
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
 msgstr ""
@@ -16117,6 +16171,22 @@ msgstr "Αυτό το έγγραφο"
 #: src/features/assistant/assistant-panel.tsx
 msgid "This document is locked. Unlock it to get suggestions."
 msgstr "Αυτό το έγγραφο είναι κλειδωμένο. Ξεκλειδώστε το για να λάβετε προτάσεις."
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "This domain can't be connected. Try a subdomain such as www."
+msgstr ""
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "This domain has been blocked and can't be connected. Contact support if you think that's wrong."
+msgstr ""
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "This domain needs your attention. See what's below."
+msgstr ""
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "This domain no longer points to Rezumi. Put its CNAME record back, then check again."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "This entry"
@@ -17330,6 +17400,11 @@ msgstr ""
 msgid "Use this provider"
 msgstr "Χρησιμοποιήστε αυτόν τον πάροχο"
 
+#. placeholder {0}: domain.hostname
+#: src/features/resume/share/dns-records-dialog.tsx
+msgid "Use www.{0}"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Use your editor's normal bullet list, so stray glyphs do not land mid-sentence."
 msgstr "Χρησιμοποιήστε την κανονική λίστα κουκκίδων του επεξεργαστή σας, ώστε να μην καταλήγουν τυχαίες γλυφές στη μέση μιας πρότασης."
@@ -17664,6 +17739,10 @@ msgstr ""
 #: src/features/docs/mdx-components.tsx
 msgid "Warning"
 msgstr "Προειδοποίηση"
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "We can't set up more domains right now. The problem is on our side, and your domain connects by itself once it's solved."
+msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "We couldn't check this payment"
@@ -18524,9 +18603,19 @@ msgstr "Οι ημερομηνίες σας είναι γραμμένες με π
 msgid "Your details changed on the resume. The letter updated too."
 msgstr "Τα στοιχεία σας άλλαξαν στο βιογραφικό. Η επιστολή ενημερώθηκε επίσης."
 
+#: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/portfolio-page.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Your domain"
 msgstr "Ο τομέας σας"
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Your domain now goes to your Rezumi address"
+msgstr ""
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Your domain stops working on {until}"
+msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "Your email"
@@ -18782,6 +18871,10 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
 msgstr ""
 
 #: src/features/billing/plan.ts

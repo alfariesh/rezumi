@@ -19,6 +19,7 @@ import { Pool } from "pg";
 import { configureAgentStreamLifetime } from "@rezumi/api/features/agent/streams";
 import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
 import { runCareerJobs } from "@rezumi/api/features/career/jobs";
+import { runCustomDomainJobs } from "@rezumi/api/features/custom-domain/jobs";
 import { configurePortfolioAnalytics } from "@rezumi/api/features/portfolio/analytics";
 import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
 import { isPublicPortfolioFile } from "@rezumi/api/features/portfolio/public";
@@ -263,6 +264,9 @@ export default {
 				return await runCareerJobs();
 			} finally {
 				await runPortfolioJobs().catch(() => console.error("[portfolio] Scheduled work failed; it retries next run."));
+				await runCustomDomainJobs().catch(() =>
+					console.error("[custom-domain] Scheduled work failed; it retries next run."),
+				);
 			}
 		};
 		ctx.waitUntil(run(jobs).finally(() => closePool(pool, store)));

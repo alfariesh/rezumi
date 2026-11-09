@@ -3,7 +3,7 @@ import { Button, buttonVariants, Chip, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
@@ -16,6 +16,7 @@ import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { CopyLinkButton } from "@/features/resume/share/copy-link-button";
+import { CustomDomainField } from "@/features/resume/share/custom-domain-field";
 import { useShareOrigin } from "@/features/resume/share/use-share-origin";
 import { useConfirm } from "@/hooks/use-confirm";
 import { authClient } from "@/libs/auth/client";
@@ -23,8 +24,7 @@ import { client, orpc } from "@/libs/orpc/client";
 
 /**
  * Portfolio in the dashboard (`01-desain.md` section 8): a way in for an account without one, and the status card
- * (published or not, the address, Edit) for one that has it, then its visitors and messages. The domain joins in
- * Phase 09.
+ * (published or not, the address, Edit) for one that has it, its own domain, then its visitors and messages.
  */
 export function PortfolioPage() {
 	const { data, isPending } = useQuery(orpc.portfolio.get.queryOptions());
@@ -43,6 +43,7 @@ export function PortfolioPage() {
 			) : data?.portfolio ? (
 				<div className="grid gap-4">
 					<StatusCard />
+					<DomainCard />
 					{/* Nothing to count or read before its first publication. */}
 					{data.portfolio.publishedAt && (
 						<>
@@ -77,6 +78,20 @@ export function PortfolioPage() {
 			)}
 			{creating && <CreatePortfolioDialog onClose={() => setCreating(false)} />}
 		</Page>
+	);
+}
+
+function DomainCard() {
+	const { flags } = useRouteContext({ strict: false });
+	const titleId = useId();
+	if (!flags?.customDomains) return null;
+	return (
+		<Widget role="region" aria-labelledby={titleId}>
+			<WidgetHeading id={titleId} icon="globe" title={<Trans>Your domain</Trans>} />
+			<Widget.Content className="grid gap-4">
+				<CustomDomainField suggest={flags.olacvSuggestion ?? false} />
+			</Widget.Content>
+		</Widget>
 	);
 }
 

@@ -49,7 +49,11 @@
 		"BILLING_MODE": "admins",
 		// Web portfolios stay hidden until launch (portfolio plan Phase 12): "admins" lets admin accounts try them, "on"
 		// opens them to everyone. "off" keeps /<username> on the primary resume.
-		"PORTFOLIO_MODE": "off",
+		"PORTFOLIO_MODE": "admins",
+		// Custom domains through Cloudflare for SaaS. The token is the Worker secret CLOUDFLARE_SAAS_API_TOKEN; without it
+		// nothing here is active. The target is the zone's fallback origin (docs/self-hosting/sharing-domains.mdx).
+		"CUSTOM_DOMAIN_TARGET": "domains.rezumi.app",
+		"CLOUDFLARE_SAAS_ZONE_ID": "de7723edd44c3c4fc9279b0062d3a49c",
 		// The contact form's public Turnstile key; set with its secret (TURNSTILE_SECRET_KEY, a Worker secret) before
 		// launch. Without both, the form isn't offered and Contact falls back to the email button.
 		"TURNSTILE_SITE_KEY": "",

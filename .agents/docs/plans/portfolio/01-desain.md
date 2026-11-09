@@ -234,7 +234,7 @@ Hanya pemilik yang melihat: kunjungan 30 hari (grafik harian), klik tombol (Liha
 
 ## 11. Domain sendiri (Phase 09)
 
-Di tab Terbitkan dan halaman dashboard: masukkan domain → tampilkan record DNS (CNAME + TXT) dengan tombol salin → "Cek DNS" → status bertahap: DNS ✓ → kepemilikan ✓ → sertifikat HTTPS ✓ → Aktif. Untuk domain utama tanpa `www`, sarankan `www.` atau subdomain dan pengalihan domain utama di registrar. Akun Gratis melihat kontrol terkunci berlabel Plus.
+Di tab Terbitkan dan halaman dashboard: masukkan domain → tampilkan record DNS (CNAME + TXT) dengan tombol salin → "Cek DNS" → status bertahap: DNS ✓ → kepemilikan ✓ → sertifikat HTTPS ✓ → Aktif. Untuk domain utama tanpa `www`, sarankan `www.` atau subdomain dan pengalihan domain utama di registrar. Akun Gratis melihat kontrol terkunci berlabel Plus. Tampilan akhir: empat langkah (DNS mengarah ke Rezumi, kepemilikan terbukti, sertifikat HTTPS, aktif) yang diperbarui sendiri saat Cloudflare bekerja; satu kontrol yang sama di tab Terbitkan, dashboard Portfolio, dan Share CV. Saat paket berakhir tampil peringatan dengan tanggal berhenti, lalu keterangan bahwa domain kini mengarah ke alamat Rezumi. Masalah (DNS berubah, CAA, sertifikat gagal, kuota, domain ditolak) dijelaskan dengan kalimat dan langkah perbaikan.
 
 ## 12. AI (Phase 10)
 

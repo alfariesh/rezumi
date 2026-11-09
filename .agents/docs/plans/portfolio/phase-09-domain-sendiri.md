@@ -8,6 +8,8 @@
 
 **Apa yang dibuat:** pelanggan Plus/Pro AI bisa membuka portfolio di domain sendiri, misalnya `www.namaku.com`. Rezumi mengurus sertifikat HTTPS otomatis lewat Cloudflare for SaaS: pelanggan cukup memasang dua record DNS, lalu statusnya terlihat di editor sampai "Aktif". Domain yang sama membuka CV utama bila akun belum punya portfolio.
 
+**Langkah persisnya** ada di bagian "Panduan dashboard (hasil riset sesi 2026-11-09)" di bawah. Ringkasannya:
+
 **Siapkan (Claude memandu langkah demi langkah di awal sesi):**
 
 1. Di Cloudflare, zona `rezumi.app` → **SSL/TLS → Custom Hostnames** → aktifkan Cloudflare for SaaS. 100 domain pertama gratis, setelahnya US$0,10 per domain per bulan. Akunmu sudah punya metode pembayaran untuk Workers.
@@ -50,6 +52,28 @@
 
 - Domain uji pemilik membuka portfolio lewat HTTPS dan statusnya tampil benar di editor.
 - Dokumen self-hosting dan draf panduan diperbarui.
+
+### Panduan dashboard (hasil riset sesi 2026-11-09)
+
+Cukup dilakukan sekali, setelah kode di-merge atau sebelumnya. Urutan penting: rute tanpa Worker dibuat dulu supaya `rezumi.app` dan `blog.rezumi.app` tidak pernah lewat Worker yang salah.
+
+1. Cloudflare → zona `rezumi.app` → **SSL/TLS → Custom Hostnames** → aktifkan Cloudflare for SaaS.
+2. **DNS → Records** → tambah record `AAAA`, nama `domains`, nilai `100::`, Proxy **menyala** (awan oranye). Kembali ke **Custom Hostnames**, isi **Fallback Origin** dengan `domains.rezumi.app`, tunggu sampai **Active**.
+3. **Workers Routes** di zona `rezumi.app` → tambah rute berikut, berurutan:
+
+   | Rute                             | Worker     |
+   | -------------------------------- | ---------- |
+   | `*/.well-known/acme-challenge/*` | None       |
+   | `*/.well-known/pki-validation/*` | None       |
+   | `rezumi.app/*`                   | None       |
+   | `*.rezumi.app/*`                 | None       |
+   | `domains.rezumi.app/*`           | `vitaekit` |
+   | `*/*`                            | `vitaekit` |
+
+   Sesudahnya buka `rezumi.app` dan `blog.rezumi.app`: keduanya harus tetap normal.
+
+4. **My Profile → API Tokens → Create Token → Custom token**. Izin: **Zone → SSL and Certificates → Edit**. Zone Resources: **Include → Specific zone → rezumi.app**. Simpan sendiri lewat terminal: `pnpm exec wrangler secret put CLOUDFLARE_SAAS_API_TOKEN`. **Jangan kirim token di chat.**
+5. Salin **Zone ID** dari halaman Overview zona `rezumi.app` (ini bukan rahasia), lalu minta Claude mengisinya ke `CLOUDFLARE_SAAS_ZONE_ID` di `wrangler.jsonc`.
 
 ### Catatan dari hardening Phase 01–06 (2026-11-07, `02-teknis.md` bagian 32)
 

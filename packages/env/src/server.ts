@@ -97,6 +97,16 @@ export const env = createEnv({
 			.optional(),
 		// Sent by Traefik's HTTP provider to read the custom domains' routers; at least 32 characters.
 		CUSTOM_DOMAIN_PROVIDER_SECRET: z.string().min(32).optional(),
+		// Cloudflare for SaaS: with both set, a verified custom domain gets its hostname and HTTPS certificate through the
+		// API, and addresses that aren't connected stop showing the app. One without the other leaves it off, so the zone ID
+		// can sit in wrangler.jsonc before the token exists.
+		CLOUDFLARE_SAAS_ZONE_ID: z
+			.string()
+			.trim()
+			.regex(/^[a-f0-9]{32}$/, "Use the 32-character Zone ID from the zone's Overview page")
+			.optional(),
+		// An API token limited to "SSL and Certificates: Edit" on that zone. A secret; never commit it.
+		CLOUDFLARE_SAAS_API_TOKEN: z.string().trim().min(1).optional(),
 		// OlaCV API token: with FLAG_OLACV_SUGGESTION, Share checks which .cv names are free before suggesting one.
 		OLACV_API_KEY: z.string().trim().min(1).optional(),
 		SERVER_PORT: z.coerce.number().int().min(1).max(65535).default(3001),

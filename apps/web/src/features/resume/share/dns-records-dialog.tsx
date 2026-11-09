@@ -1,10 +1,11 @@
 import type { RouterOutput } from "@/libs/orpc/client";
-import { Button, Modal, Spinner, Table } from "@heroui/react";
+import { Alert, Button, Modal, Spinner, Table } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useId } from "react";
 import { formatTimeSince } from "@rezumi/resume/sharing";
 import { CopyText } from "./copy-text";
+import { isRootDomain } from "./domain-progress";
 
 type DnsRecordsDialogProps = {
 	domain: NonNullable<RouterOutput["customDomain"]["get"]>;
@@ -12,10 +13,12 @@ type DnsRecordsDialogProps = {
 	onOpenChange: (open: boolean) => void;
 	checking: boolean;
 	onCheck: () => void;
+	/** Connects `www.<domain>` instead, offered for a root domain when certificates are automated. */
+	onUseWww: () => void;
 };
 
 /** The records that connect a custom domain, each name and value copied with a click, and the DNS check. */
-export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck }: DnsRecordsDialogProps) {
+export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck, onUseWww }: DnsRecordsDialogProps) {
 	const { i18n } = useLingui();
 	const descriptionId = useId();
 	const hasCname = domain.records.some((record) => record.type === "CNAME");
@@ -69,13 +72,41 @@ export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck
 							</Table.ScrollContainer>
 						</Table>
 
-						{hasCname && (
-							<p className="text-xs text-muted">
-								<Trans>
-									For a root domain such as example.com, use A and AAAA records with {domain.target}'s addresses instead
-									of the CNAME.
-								</Trans>
-							</p>
+						{domain.managed ? (
+							<>
+								<p className="text-xs text-muted">
+									<Trans>If your DNS is on Cloudflare, set the CNAME record to DNS only (grey cloud).</Trans>
+								</p>
+								{isRootDomain(domain.hostname) && (
+									<Alert status="warning">
+										<Alert.Indicator />
+										<Alert.Content>
+											<Alert.Title>
+												<Trans>A domain without www needs a DNS provider that allows it</Trans>
+											</Alert.Title>
+											<Alert.Description>
+												<Trans>
+													{domain.hostname} needs a CNAME at the root, which many providers don't allow. If yours
+													doesn't, connect www.{domain.hostname} and forward {domain.hostname} to it where you manage
+													the domain.
+												</Trans>
+											</Alert.Description>
+											<Button size="sm" variant="secondary" className="mt-2 w-fit" onPress={onUseWww}>
+												<Trans>Use www.{domain.hostname}</Trans>
+											</Button>
+										</Alert.Content>
+									</Alert>
+								)}
+							</>
+						) : (
+							hasCname && (
+								<p className="text-xs text-muted">
+									<Trans>
+										For a root domain such as example.com, use A and AAAA records with {domain.target}'s addresses
+										instead of the CNAME.
+									</Trans>
+								</p>
+							)
 						)}
 					</Modal.Body>
 					<Modal.Footer className="items-center">

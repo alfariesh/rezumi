@@ -114,6 +114,16 @@ The Portfolio page in your dashboard shows the last 30 days once your portfolio 
 - The form needs JavaScript in the visitor's browser. Without it, visitors see your other contact options instead.
 - On a custom domain, the form's button opens your portfolio on rezumi.app to send the message.
 
+### Connecting your own domain
+
+Plus and Pro AI accounts can open their portfolio at a domain they own, such as `www.yourname.com`. Go to **Publish → Your domain** in the editor, or **Your domain** on the Portfolio page.
+
+1. Enter your domain. A name with `www` or another subdomain works with every domain company. A domain without `www` only works if your DNS provider allows a CNAME there; if it doesn't, use `www` and forward the plain domain to it where you manage the domain.
+2. Add the two records shown (a CNAME and a TXT) where you manage your domain. If your DNS is on Cloudflare, set the CNAME to **DNS only**.
+3. Select **Check DNS**. The steps tick off as your domain is set up, and HTTPS usually takes a few minutes.
+
+Keep both records in place. You can have one domain per account. When a paid plan ends, your domain keeps working for 7 days, then goes to your rezumi.app address. Renew and it comes back by itself, with no DNS change.
+
 ### Your short link and your resume
 
 While your portfolio is published, `rezumi.app/<username>` (and your custom domain) open the portfolio. Your resume stays at its own address, and the resume's **Share** panel says so. Unpublish the portfolio and the short link opens your primary resume again.
