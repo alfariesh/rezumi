@@ -25,7 +25,7 @@
 	"scripts": {
 		"build": "pnpm pdf:translations && turbo run build",
 		"build:cloudflare": "pnpm pdf:translations && pnpm --filter web build && node tooling/cloudflare/build.mjs",
-		"dev:cloudflare": "CLOUDFLARE_LOAD_DEV_VARS_FROM_DOT_ENV=false wrangler dev",
+		"dev:cloudflare": "CLOUDFLARE_LOAD_DEV_VARS_FROM_DOT_ENV=false wrangler dev --local",
 		"deploy:cloudflare": "pnpm build:cloudflare && wrangler deploy",
 		"deploy:blog": "pnpm --filter blog run deploy",
 		"check:cloudflare": "pnpm build:cloudflare && wrangler deploy --dry-run",

@@ -41,6 +41,8 @@ try {
 	config.main = resolve(root, config.main);
 	config.assets.directory = resolve(root, config.assets.directory);
 	config.hyperdrive[0].localConnectionString = databaseUrl.href;
+	// Analytics SQL has no local version: left in, Wrangler opens a session to Cloudflare, and this test never goes there.
+	delete config.analytics;
 	config.vars.APP_URL = origin;
 	config.vars.AUTH_SECRET = randomBytes(32).toString("hex");
 	config.vars.ENCRYPTION_SECRET = randomBytes(32).toString("hex");
