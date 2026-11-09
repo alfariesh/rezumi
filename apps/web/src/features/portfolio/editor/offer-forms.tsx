@@ -77,6 +77,7 @@ export function ServicesForm() {
 						<TextInput
 							label={t`Description`}
 							multiline
+							rewrite="serviceDescription"
 							value={service.description}
 							maxLength={max.serviceDescription}
 							onChange={(value) =>

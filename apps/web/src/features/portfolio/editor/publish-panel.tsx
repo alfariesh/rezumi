@@ -15,7 +15,7 @@ import {
 } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
-import { Trans } from "@lingui/react/macro";
+import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { QRCodeSVG } from "qrcode.react";
@@ -25,9 +25,10 @@ import { PORTFOLIO_LIMITS, portfolioIndexableFrom } from "@rezumi/schema/portfol
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
+import { countPortfolioPlaceholders } from "../ai/apply";
 import { portfolioErrorMessage } from "../errors";
 import { invalidatePortfolioQueries, isPortfolioLive } from "../status";
-import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
+import { languageName, pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { PanelGroup, TextInput } from "./fields";
 import { changeSetting } from "./settings";
 import { editPortfolio, usePortfolioData, usePortfolioRecord } from "./store";
@@ -241,6 +242,7 @@ function PublishDialog({ onClose }: { onClose: () => void }) {
 	const delay = useIndexingDelay();
 	const { run, pending } = useSettingAction();
 	const [searchable, setSearchable] = useState(record.showInSearchEngines);
+	const placeholders = countPortfolioPlaceholders(record.data);
 	const { data: resumes } = useQuery(orpc.resume.list.queryOptions());
 	const primary = resumes?.find((resume) => resume.isPrimary && resume.isPublic);
 	const resumeUrl = primary ? publicResumeUrl(origin, { username: owner.username, slug: primary.slug }) : null;
@@ -317,6 +319,23 @@ function PublishDialog({ onClose }: { onClose: () => void }) {
 							description={delay ? `${searchDescription()} ${delay}` : searchDescription()}
 							className="items-start py-0"
 						/>
+						{placeholders > 0 && (
+							<Alert status="warning">
+								<Alert.Indicator />
+								<Alert.Content>
+									<Alert.Title>
+										<Trans>Some parts are still to fill in</Trans>
+									</Alert.Title>
+									<Alert.Description>
+										<Plural
+											value={placeholders}
+											one="# place written in [brackets] will show on your page as it is."
+											other="# places written in [brackets] will show on your page as they are."
+										/>
+									</Alert.Description>
+								</Alert.Content>
+							</Alert>
+						)}
 						{!owner.emailVerified && (
 							<Alert status="warning">
 								<Alert.Indicator />
@@ -414,15 +433,6 @@ function SearchGroup() {
 			/>
 		</PanelGroup>
 	);
-}
-
-/** A language's name in the app's language ("Indonesian", "Bahasa Indonesia" in Indonesian), else its code. */
-function languageName(locale: string, appLocale: string): string {
-	try {
-		return new Intl.DisplayNames([appLocale, "en"], { type: "language" }).of(locale) ?? locale;
-	} catch {
-		return locale;
-	}
 }
 
 function LanguageGroup() {

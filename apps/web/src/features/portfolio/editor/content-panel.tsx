@@ -9,6 +9,7 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
+import { AiDraftButton } from "../ai/draft-dialog";
 import { WorkEditor } from "../works/work-editor";
 import { WorksForm } from "../works/works-form";
 import { ContactForm } from "./contact-form";
@@ -65,6 +66,7 @@ export function ContentPanel() {
 	if (openWorkId && exists) return <WorkEditor key={openWorkId} workId={openWorkId} />;
 	return (
 		<div className="grid gap-3 p-3">
+			<AiDraftButton />
 			<PanelGroup icon="user-circle" title={<Trans>Intro</Trans>}>
 				<IntroForm />
 			</PanelGroup>

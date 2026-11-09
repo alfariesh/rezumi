@@ -2,6 +2,7 @@ import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { PortfolioMetric } from "@rezumi/schema/portfolio/metric";
 import { describe, expect, it } from "vite-plus/test";
 import { produce } from "immer";
+import { westernDigits } from "@rezumi/portfolio/metric";
 import {
 	applyMetricFormat,
 	dropMissingHighlight,
@@ -13,7 +14,6 @@ import {
 	parseMetricNumber,
 	parseMetricSeries,
 	toggleMinus,
-	westernDigits,
 	workMetrics,
 } from "./metrics";
 

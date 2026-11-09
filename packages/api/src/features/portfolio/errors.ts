@@ -77,6 +77,10 @@ export const PORTFOLIO_ERRORS = {
 		message: `A portfolio holds at most ${PORTFOLIO_LIMITS.works} works. Remove some before adding more.`,
 		data: z.object({ max: size }),
 	},
+	PORTFOLIO_AI_UNUSABLE: {
+		status: 502,
+		message: "The AI's answer couldn't be used, so nothing changed. Try again; no credits were used.",
+	},
 	PORTFOLIO_STORAGE_FULL: {
 		status: 413,
 		message:
@@ -159,6 +163,8 @@ export const portfolioErrors = {
 			}[reason],
 			data: { reason },
 		}),
+	/** The model answered, but with nothing that can go on the page: the run fails, so its credits come back. */
+	aiUnusable: () => refusal("PORTFOLIO_AI_UNUSABLE"),
 	fileInUse: (key: string) => refusal("PORTFOLIO_FILE_IN_USE", { data: { key } }),
 	worksLimit: () => refusal("PORTFOLIO_WORKS_LIMIT", { data: { max: PORTFOLIO_LIMITS.works } }),
 	storageFull: (stored: { bytes: number; files: number }) => {

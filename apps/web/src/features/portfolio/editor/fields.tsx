@@ -1,4 +1,5 @@
 import type { SlashItem } from "./rich-text-editor";
+import type { PortfolioAiField } from "@rezumi/schema/portfolio/ai";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { Widget } from "@heroui-pro/react";
@@ -19,6 +20,7 @@ import { lazy, Suspense, useId, useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { isAllowedPortfolioUrl, PORTFOLIO_WEB_PROTOCOLS } from "@rezumi/schema/portfolio/links";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { AiRewriteMenu } from "../ai/rewrite-menu";
 import { useDraftText } from "../metrics/use-draft-text";
 import { usePortfolioEditorStore } from "./store";
 import { WidgetHeading } from "@/components/layout/widget-heading";
@@ -63,6 +65,8 @@ type TextInputProps = {
 	type?: "text" | "email" | "tel";
 	inputMode?: "text" | "numeric" | "tel";
 	onBlur?: () => void;
+	/** Offers AI rewriting for this field. */
+	rewrite?: PortfolioAiField | undefined;
 };
 
 /** A labelled text field that saves as it's typed. `maxLength` matches the server's limit, so typing stops there. */
@@ -79,6 +83,7 @@ export function TextInput({
 	type = "text",
 	inputMode,
 	onBlur,
+	rewrite,
 }: TextInputProps) {
 	return (
 		<TextField
@@ -92,7 +97,14 @@ export function TextInput({
 			{...(onBlur ? { onBlur } : {})}
 			className="gap-1.5"
 		>
-			<Label>{label}</Label>
+			{rewrite ? (
+				<div className="flex items-center justify-between gap-2">
+					<Label>{label}</Label>
+					<AiRewriteMenu field={rewrite} value={value} onResult={onChange} />
+				</div>
+			) : (
+				<Label>{label}</Label>
+			)}
 			{multiline ? (
 				<TextArea variant="secondary" className="min-h-20" {...(placeholder ? { placeholder } : {})} />
 			) : (
@@ -193,6 +205,8 @@ type RichTextFieldProps = {
 	slashItems?: readonly SlashItem[] | undefined;
 	/** The label is for screen readers only (the block around it already says what it is). */
 	hideLabel?: boolean;
+	/** Offers AI rewriting for this field. */
+	rewrite?: PortfolioAiField | undefined;
 };
 
 /** A labelled rich text field. The editor loads on first use; it starts over after undo, redo or a reload. */
@@ -205,18 +219,35 @@ export function RichTextField({
 	description,
 	slashItems,
 	hideLabel = false,
+	rewrite,
 }: RichTextFieldProps) {
 	const revision = usePortfolioEditorStore((state) => state.revision);
 	const labelId = useId();
+	// The editor keeps its own document: text from AI starts it over, like undo does.
+	const [rewrites, setRewrites] = useState(0);
 
 	return (
 		<div className="grid gap-1.5">
-			<span id={labelId} className={hideLabel ? "sr-only" : "text-sm font-medium"}>
-				{label}
-			</span>
+			<div className="flex items-center justify-between gap-2">
+				<span id={labelId} className={hideLabel ? "sr-only" : "text-sm font-medium"}>
+					{label}
+				</span>
+				{rewrite && (
+					<span className="ms-auto">
+						<AiRewriteMenu
+							field={rewrite}
+							value={value}
+							onResult={(html) => {
+								onChange(html);
+								setRewrites((count) => count + 1);
+							}}
+						/>
+					</span>
+				)}
+			</div>
 			<Suspense fallback={<Skeleton className="h-44 rounded-2xl" />}>
 				<LazyRichTextEditor
-					key={revision}
+					key={`${revision}-${rewrites}`}
 					label={label}
 					labelledBy={labelId}
 					value={value}

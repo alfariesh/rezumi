@@ -179,10 +179,16 @@ export const TRIAL_CREDITS = { amount: 5, validDays: 14 } as const;
 export const CREDIT_COSTS = {
 	/** Improve one bullet, write a short summary or read a job posting. */
 	"short-text": 1,
+	/** Rewrite one portfolio field: shorter, more professional, or in the page's language. */
+	"portfolio-rewrite": 1,
+	/** Find the results written in a resume, as metrics to pick from. */
+	"portfolio-metrics": 1,
 	/** Draft one application-form answer or recruiter reply from the user's own experience. */
 	"draft-answer": 2,
 	/** Draft one cover letter for one job. */
 	"cover-letter": 3,
+	/** Draft a portfolio from its resume: the greeting, About me and each work's story. */
+	"portfolio-draft": 3,
 	/** One text interview practice answer with feedback, a preparation brief or a debrief. */
 	"interview-practice": 3,
 	/** One Coach turn, with limited steps, context and output. */

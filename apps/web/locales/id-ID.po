@@ -952,6 +952,10 @@ msgstr "{passedRules} dari {totalRules} lulus cek."
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# usulan edit di halaman ini · tidak ada perubahan sampai Anda menerimanya} other {# usulan pengeditan pada halaman ini · tidak ada perubahan sampai Anda menerimanya}}"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "{placeholders, plural, one {# place written in [brackets] will show on your page as it is.} other {# places written in [brackets] will show on your page as they are.}}"
+msgstr "{placeholders, plural, other {# bagian bertanda [kurung siku] akan tampil di halaman Anda apa adanya.}}"
+
 #: src/features/billing/payment-return.tsx
 msgid "{plan} is active, free for now."
 msgstr "{plan} aktif, gratis untuk sementara."
@@ -1968,6 +1972,10 @@ msgstr "Tambahkan panggilan penyaringan dan wawancara teknis untuk melihatnya di
 msgid "Add section"
 msgstr "Tambahkan bagian"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Add selected"
+msgstr "Tambahkan yang dipilih"
+
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add skill"
 msgstr "Tambahkan keterampilan"
@@ -2059,6 +2067,10 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Tambahkan nama Anda"
+
+#: src/features/portfolio/errors.ts
+msgid "Add your own AI connection in Settings, or choose Rezumi AI."
+msgstr "Tambahkan koneksi AI sendiri di Pengaturan, atau pilih Rezumi AI."
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Add your WhatsApp number in Contact, or the button won't show."
@@ -2190,6 +2202,7 @@ msgstr "Dibandingkan dengan persyaratan Anda"
 
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
+#: src/features/portfolio/ai/rewrite-menu.tsx
 msgid "AI"
 msgstr "AI"
 
@@ -2213,6 +2226,10 @@ msgstr "AI tidak dapat mengisi rinciannya. Postingan pekerjaan dipertahankan; le
 msgid "AI edit"
 msgstr "Sunting AI"
 
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "AI only uses what's on your resume and in this note. It won't make up numbers, clients or results."
+msgstr "AI hanya memakai isi CV dan catatan ini. AI tidak mengarang angka, klien, atau hasil."
+
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers"
@@ -2229,6 +2246,10 @@ msgstr "Penyedia AI tidak tersedia di server ini sampai ENCRYPTION_SECRET disete
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers couldn't be loaded. Reload to try again."
 msgstr "Penyedia AI tidak dapat dimuat. Muat ulang untuk mencoba lagi."
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "AI reads your jobs and projects and only suggests numbers written there. You pick which to use."
+msgstr "AI membaca pengalaman dan proyek Anda, lalu hanya menyarankan angka yang tertulis di sana. Anda yang memilih mana yang dipakai."
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "AI review"
@@ -2501,6 +2522,10 @@ msgstr "Siapa pun yang memiliki tautan tersebut akan dapat melihat resume Anda."
 #: src/features/applications/components/application-notes.tsx
 msgid "Anything to remember about this job"
 msgstr "Apa pun yang perlu diingat tentang pekerjaan ini"
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Anything to stress or leave out? (optional)"
+msgstr "Ada yang ingin ditonjolkan atau dilewati? (opsional)"
 
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Anywhere"
@@ -3281,6 +3306,7 @@ msgstr "Bisakah perangkat lunak membaca resume Anda?"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -3820,9 +3846,11 @@ msgstr "Klien"
 #: src/features/docs/layout.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/metrics/find-metrics.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -4218,6 +4246,10 @@ msgstr "Lanjutkan checkout"
 #: src/features/billing/purchase-dialog.tsx
 msgid "Continue to checkout"
 msgstr "Lanjut ke checkout"
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Continue without AI"
+msgstr "Lanjut tanpa AI"
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Contrast on white:"
@@ -4650,6 +4682,10 @@ msgstr "Tidak dapat mengusulkan pengeditan ini: {0}"
 msgid "Couldn't publish. Try again."
 msgstr "Gagal menerbitkan. Coba lagi."
 
+#: src/features/portfolio/errors.ts
+msgid "Couldn't reach the AI provider. Try again in a moment; no credits were used."
+msgstr "Penyedia AI tidak bisa dihubungi. Coba lagi sebentar; kredit tidak terpakai."
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Couldn't reach the AI provider. Try again in a moment."
 msgstr "Tidak dapat menghubungi penyedia AI. Coba lagi sebentar lagi."
@@ -4683,6 +4719,10 @@ msgstr "Tidak dapat membaca halaman ini: {0}"
 #: src/features/auth/pages/error.tsx
 msgid "Couldn't read your profile from the provider. Try again."
 msgstr "Tidak dapat membaca profil Anda dari penyedia. Coba lagi."
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Couldn't read your resume. Nothing changed. Try again."
+msgstr "CV Anda tidak bisa dibaca. Tidak ada yang berubah. Coba lagi."
 
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Couldn't record submission. Try again."
@@ -4732,6 +4772,10 @@ msgstr "Tidak dapat mencabut kunci. Coba lagi."
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Couldn't revoke this connection. Try again."
 msgstr "Tidak dapat mencabut koneksi ini. Coba lagi."
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Couldn't rewrite this. Nothing changed. Try again."
+msgstr "Teks ini gagal ditulis ulang. Tidak ada yang berubah. Coba lagi."
 
 #: src/features/career/hooks.ts
 msgid "Couldn't save that change. Check your connection and try again."
@@ -4971,6 +5015,10 @@ msgstr "Tidak dapat memverifikasi kode cadangan Anda. Periksa kode dan coba lagi
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Couldn't verify your code. Check the code and try again."
 msgstr "Tidak dapat memverifikasi kode Anda. Periksa kode dan coba lagi."
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Couldn't write your draft. Nothing changed. Try again."
+msgstr "Draf gagal ditulis. Tidak ada yang berubah. Coba lagi."
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Count by source"
@@ -6813,6 +6861,14 @@ msgstr "Finance Analyst"
 msgid "Find a customer"
 msgstr "Cari pelanggan"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Find numbers"
+msgstr "Temukan angka"
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Find numbers in your resume"
+msgstr "Temukan angka di CV Anda"
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
 msgstr "Cari posisi"
@@ -7253,6 +7309,10 @@ msgstr "Dari CV Anda; CV belum mengisinya."
 #: src/features/portfolio/location/location-fields.tsx
 msgid "From your resume:"
 msgstr "Dari CV Anda:"
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "From your resume: your greeting, About me, and the story of each work you pick. It replaces what's in those places. You can undo it."
+msgstr "Dari CV Anda: sapaan, Tentang saya, dan cerita setiap karya yang Anda pilih. Isi di bagian itu akan diganti. Anda bisa mengurungkannya."
 
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "From your timezone"
@@ -7793,6 +7853,10 @@ msgstr "Saya mendesain aplikasi yang nyaman dipakai, dan sedang mencari tim beri
 #: src/features/homepage/testimonials.tsx
 msgid "I keep one master resume and a version for every company. The tracker tells me where each one went."
 msgstr "Saya punya satu CV utama dan satu versi untuk setiap perusahaan. Tracker-nya mencatat ke mana masing-masing saya kirim."
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "I want freelance branding work, so lead with my client projects."
+msgstr "Saya mencari kerja lepas di bidang branding, jadi dahulukan proyek klien saya."
 
 #: src/features/applications/stages.ts
 msgid "I withdrew"
@@ -8406,6 +8470,7 @@ msgstr "Tetap jujur"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "Jaga agar tetap di bawah 2,5 MB, biasanya dengan menghapus atau memperkecil gambar."
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Keep mine"
 msgstr "Simpan milikku"
@@ -9196,6 +9261,7 @@ msgid "Make it more specific"
 msgstr "Buatlah lebih spesifik"
 
 #: src/features/assistant/assistant-panel.tsx
+#: src/features/portfolio/ai/rewrite-menu.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Make it shorter"
 msgstr "Buatlah lebih pendek"
@@ -9539,6 +9605,10 @@ msgstr "Halaman lainnya"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "More personal"
 msgstr "Lebih pribadi"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "More professional"
+msgstr "Lebih profesional"
 
 #: src/features/assistant/provider-setup.tsx
 msgid "More providers and options are in <0>Settings</0>. The rest of the app works fully without AI."
@@ -10204,6 +10274,10 @@ msgstr "Tidak ada tanggapan"
 msgid "No results found."
 msgstr "Tidak ada hasil."
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time by 40%”, then try again."
+msgstr "Belum ada hasil berangka di pengalaman dan proyek Anda. Tambahkan di CV, misalnya “memangkas waktu muat 40%”, lalu coba lagi."
+
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No resume"
@@ -10356,6 +10430,10 @@ msgstr "Belum diemail"
 #: src/features/billing/ai-source-menu.tsx
 msgid "Not enough Rezumi AI credits"
 msgstr "Kredit Rezumi AI tidak cukup"
+
+#: src/features/portfolio/errors.ts
+msgid "Not enough Rezumi AI credits. Nothing changed."
+msgstr "Kredit Rezumi AI tidak cukup. Tidak ada yang berubah."
 
 #: src/features/career/today.tsx
 msgid "Not for me"
@@ -10584,6 +10662,10 @@ msgstr "Angka"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Numbered list"
 msgstr "Daftar bernomor"
+
+#: src/features/billing/credits.ts
+msgid "Numbers found for your portfolio"
+msgstr "Temukan angka untuk portofolio"
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Numbers style"
@@ -11506,6 +11588,10 @@ msgstr "Pilih proyek dari CV Anda: judul, ringkasan, tanggal, dan tautannya ikut
 msgid "Pick two examples"
 msgstr "Pilih dua contoh"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Pick up to {room}. Use numbers you can explain in an interview."
+msgstr "Pilih maksimal {room}. Pakai angka yang bisa Anda jelaskan saat wawancara."
+
 #: src/features/career/shared.tsx
 msgid "Picking your stories"
 msgstr "Memilih cerita Anda"
@@ -11720,6 +11806,10 @@ msgstr "Memoles"
 msgid "Portfolio"
 msgstr "Portofolio"
 
+#: src/features/billing/credits.ts
+msgid "Portfolio draft"
+msgstr "Draf portofolio"
+
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Portfolio photo"
 msgstr "Foto portofolio"
@@ -11727,6 +11817,10 @@ msgstr "Foto portofolio"
 #: src/features/portfolio/editor/preview.tsx
 msgid "Portfolio preview"
 msgstr "Pratinjau portofolio"
+
+#: src/features/billing/credits.ts
+msgid "Portfolio rewrite"
+msgstr "Tulis ulang portofolio"
 
 #: src/features/portfolio/errors.ts
 msgid "Portfolios aren't available for your account right now."
@@ -12490,6 +12584,10 @@ msgstr "Membaca jawaban Anda"
 msgid "Reading your notes"
 msgstr "Membaca catatan Anda"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Reading your resume…"
+msgstr "Membaca CV Anda…"
+
 #: src/features/ats-checker/checker.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Reads cleanly"
@@ -12975,6 +13073,10 @@ msgstr "Diulang jauh lebih sering daripada penggunaannya dalam lowongan itu send
 msgid "Replace"
 msgstr "Mengganti"
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Replace anyway"
+msgstr "Tetap ganti"
+
 #: src/features/ats-checker/messages.ts
 msgid "Replace icon fonts with plain text, then re-export."
 msgstr "Ganti font ikon dengan teks biasa, lalu ekspor ulang."
@@ -13300,6 +13402,22 @@ msgstr "Dicabut"
 msgid "Revoked “{name}”. Apps using it stop working now."
 msgstr "Mencabut “{name}”. Aplikasi yang menggunakannya berhenti berfungsi sekarang."
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewrite"
+msgstr "Tulis ulang"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewrite with AI"
+msgstr "Tulis ulang dengan AI"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewriting…"
+msgstr "Menulis ulang…"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewritten."
+msgstr "Sudah ditulis ulang."
+
 #: src/features/docs/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Rezumi - Go to homepage"
@@ -13317,6 +13435,10 @@ msgstr "Rezumi AI · {cost}"
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost} · {0} left"
 msgstr "Rezumi AI · {cost} · sisa {0}"
+
+#: src/features/portfolio/errors.ts
+msgid "Rezumi AI can't do this right now. Use your own AI connection."
+msgstr "Rezumi AI belum bisa melakukan ini. Pakai koneksi AI sendiri."
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/plan-page.tsx
@@ -13735,6 +13857,10 @@ msgstr "Penyaringan"
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Mencari"
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Search again"
+msgstr "Cari lagi"
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Search and enhanced reading"
@@ -14579,6 +14705,7 @@ msgstr "Keahlian, minat, dan profil"
 
 #: src/features/assistant/tool-approvals.tsx
 #: src/features/career/workspace/apply.tsx
+#: src/features/portfolio/create-dialog.tsx
 msgid "Skip"
 msgstr "Lewati"
 
@@ -14660,6 +14787,10 @@ msgstr "Beberapa detail pekerjaan tidak dapat dibaca. Isi posisi dan perusahaan,
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "Beberapa baris disimpan tidak sesuai urutan baca."
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Some parts are still to fill in"
+msgstr "Masih ada bagian yang perlu diisi"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Some systems mishandle images, and photos are discouraged in some countries."
@@ -14943,10 +15074,23 @@ msgid "Step 1 of 2 · What it starts from"
 msgstr "Langkah 1 dari 2 · Dibuat dari apa"
 
 #: src/features/portfolio/create-dialog.tsx
+msgid "Step 1 of 3 · What it starts from"
+msgstr "Langkah 1 dari 3 · Sumber awal"
+
+#: src/features/portfolio/create-dialog.tsx
 msgid "Step 2 of 2 · How it looks"
 msgstr "Langkah 2 dari 2 · Tampilannya"
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Step 2 of 3 · How it looks"
+msgstr "Langkah 2 dari 3 · Tampilan"
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Step 3 of 3 · Start with AI"
+msgstr "Langkah 3 dari 3 · Mulai dengan AI"
+
 #: src/features/assistant/prompt-box.tsx
+#: src/features/portfolio/ai/draft-form.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
 msgstr "Berhenti"
@@ -14971,6 +15115,10 @@ msgstr "Dihentikan"
 #: src/features/career/workspace/practise.tsx
 msgid "Stopped at {0}"
 msgstr "Berhenti di {0}"
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Stopped. Any credits it held come back to you."
+msgstr "Dihentikan. Kredit yang sempat ditahan akan kembali."
 
 #: src/features/assistant/conversation.tsx
 msgid "Stopped. No edits were proposed."
@@ -15604,6 +15752,14 @@ msgstr "File {label} tidak dapat dibuat. Coba lagi, atau unduh PDF."
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "Alamat hanya boleh berisi huruf kecil dan angka, dipisahkan oleh tanda hubung tunggal."
 
+#: src/features/portfolio/errors.ts
+msgid "The AI stopped before finishing. Try again; no credits were used."
+msgstr "AI berhenti sebelum selesai. Coba lagi; kredit tidak terpakai."
+
+#: src/features/portfolio/errors.ts
+msgid "The AI's answer couldn't be used, so nothing changed. Try again; no credits were used."
+msgstr "Jawaban AI tidak bisa dipakai, jadi tidak ada yang berubah. Coba lagi; kredit tidak terpakai."
+
 #: src/features/auth/pages/error.tsx
 msgid "The application that sent you here made an invalid authorization request. Return to the application and try again."
 msgstr "Aplikasi yang mengirim Anda ke sini membuat permintaan otorisasi yang tidak valid. Kembali ke aplikasi tersebut dan coba lagi."
@@ -16022,6 +16178,10 @@ msgstr "Kuota layanan sudah habis. Periksa paket Anda di layanan tersebut, atau 
 msgid "The test didn't run. Try again."
 msgstr "Tes tidak berjalan. Coba lagi."
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "The text changed since you asked, so it wasn't replaced."
+msgstr "Teksnya berubah sejak Anda meminta, jadi tidak diganti."
+
 #: src/features/ats-checker/messages.ts
 msgid "The text comes out unreadable."
 msgstr "Teks yang dihasilkan tidak dapat dibaca."
@@ -16297,6 +16457,10 @@ msgstr "Ini adalah formulir XFA, sehingga sebagian besar perangkat lunak hanya m
 msgid "This is not a common resume page size."
 msgstr "Ini bukan ukuran halaman resume yang umum."
 
+#: src/features/portfolio/errors.ts
+msgid "This is too long for Rezumi AI. Shorten it, or use your own AI connection."
+msgstr "Ini terlalu panjang untuk Rezumi AI. Persingkat, atau pakai koneksi AI sendiri."
+
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "This item can't be hidden here. Hide it on your resume instead."
 msgstr "Item ini tidak bisa disembunyikan di sini. Sembunyikan di CV Anda."
@@ -16513,6 +16677,10 @@ msgstr "Waktu ini tidak ada di zona waktu yang dipilih. Pilih waktu lain."
 #: src/features/career/schedule-sheet.tsx
 msgid "This time does not exist in your timezone. Choose another time."
 msgstr "Waktu ini tidak ada di zona waktu Anda. Pilih waktu lain."
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "This usually takes less than a minute."
+msgstr "Biasanya kurang dari satu menit."
 
 #: src/features/career/workspace/debrief.tsx
 msgid "This week: make your evidence easier to follow"
@@ -16745,6 +16913,10 @@ msgstr "Mentranskripsi dengan {model}…"
 #: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "Transkrip disalin"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Translate to {language}"
+msgstr "Terjemahkan ke {language}"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -16996,6 +17168,7 @@ msgstr "Garis bawahi tautan"
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/portfolio/ai/apply.ts
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
@@ -17112,6 +17285,7 @@ msgstr "Layanan tanpa nama"
 msgid "Untitled testimonial"
 msgstr "Testimoni tanpa nama"
 
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/portfolio/works/works-form.tsx
@@ -18202,6 +18376,10 @@ msgstr "Tata letak Karya"
 msgid "Work opened by day"
 msgstr "Karya dibuka per hari"
 
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Works to write (up to {PORTFOLIO_AI_DRAFT_WORKS})"
+msgstr "Karya yang ditulis (maksimal {PORTFOLIO_AI_DRAFT_WORKS})"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "Berfungsi tanpa AI atau riset baru"
@@ -18232,9 +18410,18 @@ msgstr "Tulis"
 msgid "Write \"Present\" as the end date of your current role."
 msgstr "Tulis \"Present\" sebagai tanggal akhir untuk peran Anda saat ini."
 
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Write a draft with AI"
+msgstr "Tulis draf dengan AI"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."
 msgstr "Catat apa yang mereka tanyakan selagi masih segar. Coach membandingkan jawaban Anda dengan cerita Anda."
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+#: src/features/portfolio/create-dialog.tsx
+msgid "Write draft"
+msgstr "Tulis draf"
 
 #: src/features/ats-checker/messages.ts
 msgid "Write each role as a clear title and company line, with the dates alongside."
@@ -18284,6 +18471,10 @@ msgstr "Tulis apa yang Anda lakukan."
 msgid "Write your answer, or draft one from your Knowledge."
 msgstr "Tulis jawaban Anda, atau buat draf dari Pengetahuan Anda."
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
+msgstr "Tulis intro, Tentang saya, dan cerita karya Anda dari CV, lalu ubah sesuai keinginan. Anda bisa mengurungkannya."
+
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -18298,6 +18489,10 @@ msgstr "Menulis jawaban…"
 #: src/features/settings/ai/providers.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Bantuan menulis, saran yang disesuaikan, dan asisten. Penyedia default dipakai di mana pun Anda tidak memilihnya. Kunci Anda tetap terenkripsi."
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Writing your draft…"
+msgstr "Menulis draf Anda…"
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Written as"
@@ -18486,6 +18681,10 @@ msgstr "Semua sudah terbaru"
 msgid "You're using a guest account"
 msgstr "Anda menggunakan akun tamu"
 
+#: src/features/portfolio/ai/apply.ts
+msgid "You've changed things since. Use Undo at the top of the editor."
+msgstr "Sudah ada perubahan sejak itu. Pakai Urungkan di bagian atas editor."
+
 #: src/features/billing/pending-payment.tsx
 msgid "Your {plan} checkout isn't finished"
 msgstr "Checkout {plan}-mu belum selesai"
@@ -18617,6 +18816,14 @@ msgstr "Domain Anda kini mengarah ke alamat Rezumi Anda"
 msgid "Your domain stops working on {until}"
 msgstr "Domain Anda berhenti bekerja pada {until}"
 
+#: src/features/portfolio/ai/apply.ts
+msgid "Your draft is in. Fill in the parts in [brackets] before you publish."
+msgstr "Draf Anda sudah masuk. Isi bagian bertanda [kurung siku] sebelum menerbitkan."
+
+#: src/features/portfolio/ai/apply.ts
+msgid "Your draft is in. Read it through and make it yours."
+msgstr "Draf Anda sudah masuk. Baca lagi dan sesuaikan dengan gaya Anda."
+
 #: src/features/portfolio/page-text.ts
 msgid "Your email"
 msgstr "Email Anda"
@@ -18708,6 +18915,10 @@ msgstr "Pembayaran terakhirmu gagal. Perbarui dulu metode pembayaran di halaman 
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your latest changes aren't saved yet, so the projects weren't added. Once they're saved, try again."
 msgstr "Perubahan terakhir Anda belum tersimpan, jadi proyek belum ditambahkan. Setelah tersimpan, coba lagi."
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Your latest changes aren't saved yet. Wait for them to save, then try again."
+msgstr "Perubahan terakhir Anda belum tersimpan. Tunggu sampai tersimpan, lalu coba lagi."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your latest changes aren't saved, so nothing was changed. Check the save status at the top, then try again."

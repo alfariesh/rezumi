@@ -952,6 +952,10 @@ msgstr "{totalRules} ଯାଞ୍ଚର {passedRules} ପାସ୍ |"
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# ଏହି ପୃଷ୍ଠାରେ ସମ୍ପାଦନା ପ୍ରସ୍ତାବିତ · ଆପଣ ଗ୍ରହଣ ନକରିବା ପର୍ଯ୍ୟନ୍ତ କିଛି ପରିବର୍ତ୍ତନ ହୁଏ ନାହିଁ |} other {# ଏହି ପୃଷ୍ଠାରେ ପ୍ରସ୍ତାବିତ ସମ୍ପାଦନା · ଆପଣ ଗ୍ରହଣ ନକରିବା ପର୍ଯ୍ୟନ୍ତ କିଛି ପରିବର୍ତ୍ତନ ହୁଏ ନାହିଁ |}}"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "{placeholders, plural, one {# place written in [brackets] will show on your page as it is.} other {# places written in [brackets] will show on your page as they are.}}"
+msgstr ""
+
 #: src/features/billing/payment-return.tsx
 msgid "{plan} is active, free for now."
 msgstr ""
@@ -1968,6 +1972,10 @@ msgstr "ସ୍କ୍ରିନିଂ କଲ୍ ଓ ବୈଷୟିକ ସାକ�
 msgid "Add section"
 msgstr "ବିଭାଗ ଯୋଡନ୍ତୁ |"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Add selected"
+msgstr ""
+
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add skill"
 msgstr "ଦକ୍ଷତା ଯୋଡନ୍ତୁ |"
@@ -2059,6 +2067,10 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "ଆପଣଙ୍କର ନାମ ଯୋଡନ୍ତୁ |"
+
+#: src/features/portfolio/errors.ts
+msgid "Add your own AI connection in Settings, or choose Rezumi AI."
+msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Add your WhatsApp number in Contact, or the button won't show."
@@ -2190,6 +2202,7 @@ msgstr "ଆପଣଙ୍କ ଆବଶ୍ୟକତା ତୁଳନାରେ"
 
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
+#: src/features/portfolio/ai/rewrite-menu.tsx
 msgid "AI"
 msgstr ""
 
@@ -2213,6 +2226,10 @@ msgstr "AI ସବିଶେଷ ତଥ୍ୟ ପୂରଣ କରିପାରିବ
 msgid "AI edit"
 msgstr "AI ସମ୍ପାଦନା |"
 
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "AI only uses what's on your resume and in this note. It won't make up numbers, clients or results."
+msgstr ""
+
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers"
@@ -2229,6 +2246,10 @@ msgstr "ENCRYPTION_SECRET ସେଟ୍ ନହେବା ପର୍ଯ୍ୟନ୍�
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers couldn't be loaded. Reload to try again."
 msgstr "AI ପ୍ରଦାନକାରୀ ଲୋଡ୍ ହୋଇପାରିଲା ନାହିଁ | ପୁନର୍ବାର ଚେଷ୍ଟା କରିବାକୁ ପୁନ elo ଲୋଡ୍ କରନ୍ତୁ |"
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "AI reads your jobs and projects and only suggests numbers written there. You pick which to use."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "AI review"
@@ -2501,6 +2522,10 @@ msgstr "ଲିଙ୍କ୍ ଥିବା ଯେକ your ଣସି ବ୍ୟକ୍
 #: src/features/applications/components/application-notes.tsx
 msgid "Anything to remember about this job"
 msgstr "ଏହି କାର୍ଯ୍ୟ ବିଷୟରେ ମନେ ରଖିବାକୁ କିଛି |"
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Anything to stress or leave out? (optional)"
+msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Anywhere"
@@ -3281,6 +3306,7 @@ msgstr "ସଫ୍ଟୱେର୍ ତୁମର ରେଜୁମ୍ ପ read ି �
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -3820,9 +3846,11 @@ msgstr ""
 #: src/features/docs/layout.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/metrics/find-metrics.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -4217,6 +4245,10 @@ msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Continue to checkout"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Continue without AI"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -4650,6 +4682,10 @@ msgstr "ଏହି ସମ୍ପାଦନାଗୁଡିକ ପ୍ରସ୍ତା�
 msgid "Couldn't publish. Try again."
 msgstr ""
 
+#: src/features/portfolio/errors.ts
+msgid "Couldn't reach the AI provider. Try again in a moment; no credits were used."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Couldn't reach the AI provider. Try again in a moment."
 msgstr "AI ପ୍ରଦାନକାରୀଙ୍କ ପାଖରେ ପହଞ୍ଚି ପାରିଲା ନାହିଁ | ଏକ ମୁହୂର୍ତ୍ତରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ |"
@@ -4683,6 +4719,10 @@ msgstr "ଏହି ପୃଷ୍ଠା ପ read ିପାରିଲା ନାହି
 #: src/features/auth/pages/error.tsx
 msgid "Couldn't read your profile from the provider. Try again."
 msgstr "ପ୍ରଦାନକାରୀଙ୍କଠାରୁ ଆପଣଙ୍କ ପ୍ରୋଫାଇଲ୍ ପଢ଼ିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Couldn't read your resume. Nothing changed. Try again."
+msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Couldn't record submission. Try again."
@@ -4732,6 +4772,10 @@ msgstr "ଚାବିକୁ ପ୍ରତ୍ୟାହାର କରି ପାରି
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Couldn't revoke this connection. Try again."
 msgstr "ଏହି ସଂଯୋଗ ପ୍ରତ୍ୟାହାର କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Couldn't rewrite this. Nothing changed. Try again."
+msgstr ""
 
 #: src/features/career/hooks.ts
 msgid "Couldn't save that change. Check your connection and try again."
@@ -4971,6 +5015,10 @@ msgstr "ଆପଣଙ୍କ ବ୍ୟାକଅପ୍ କୋଡ୍ ଯାଞ୍ଚ
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Couldn't verify your code. Check the code and try again."
 msgstr "ଆପଣଙ୍କ କୋଡ୍ ଯାଞ୍ଚ କରିହେଲା ନାହିଁ। କୋଡ୍ ଯାଞ୍ଚ କରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Couldn't write your draft. Nothing changed. Try again."
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Count by source"
@@ -6813,6 +6861,14 @@ msgstr ""
 msgid "Find a customer"
 msgstr ""
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Find numbers"
+msgstr ""
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Find numbers in your resume"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
 msgstr "ଭୂମିକା ଖୋଜନ୍ତୁ"
@@ -7252,6 +7308,10 @@ msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "From your resume:"
+msgstr ""
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "From your resume: your greeting, About me, and the story of each work you pick. It replaces what's in those places. You can undo it."
 msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
@@ -7792,6 +7852,10 @@ msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "I keep one master resume and a version for every company. The tracker tells me where each one went."
+msgstr ""
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "I want freelance branding work, so lead with my client projects."
 msgstr ""
 
 #: src/features/applications/stages.ts
@@ -8407,6 +8471,7 @@ msgstr "ସତ୍ୟନିଷ୍ଠ ରଖନ୍ତୁ"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "ଏହାକୁ 2.5 MB ତଳେ ରଖନ୍ତୁ, ସାଧାରଣତଃ ଛବିଗୁଡ଼ିକୁ ହଟାଇ କିମ୍ବା ଛୋଟ କରି।"
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Keep mine"
 msgstr "ମୋର ରଖ |"
@@ -9197,6 +9262,7 @@ msgid "Make it more specific"
 msgstr "ଏହାକୁ ଅଧିକ ନିର୍ଦ୍ଦିଷ୍ଟ କରନ୍ତୁ |"
 
 #: src/features/assistant/assistant-panel.tsx
+#: src/features/portfolio/ai/rewrite-menu.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Make it shorter"
 msgstr "ଏହାକୁ ଛୋଟ କର |"
@@ -9540,6 +9606,10 @@ msgstr ""
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "More personal"
 msgstr "ଅଧିକ ବ୍ୟକ୍ତିଗତ |"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "More professional"
+msgstr ""
 
 #: src/features/assistant/provider-setup.tsx
 msgid "More providers and options are in <0>Settings</0>. The rest of the app works fully without AI."
@@ -10205,6 +10275,10 @@ msgstr "କ response ଣସି ପ୍ରତିକ୍ରିୟା ନାହିଁ
 msgid "No results found."
 msgstr "କୌଣସି ଫଳାଫଳ ମିଳିଲା ନାହିଁ।"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time by 40%”, then try again."
+msgstr ""
+
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No resume"
@@ -10356,6 +10430,10 @@ msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Not enough Rezumi AI credits"
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "Not enough Rezumi AI credits. Nothing changed."
 msgstr ""
 
 #: src/features/career/today.tsx
@@ -10585,6 +10663,10 @@ msgstr ""
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Numbered list"
 msgstr "ସଂଖ୍ୟାଯୁକ୍ତ ତାଲିକା |"
+
+#: src/features/billing/credits.ts
+msgid "Numbers found for your portfolio"
+msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Numbers style"
@@ -11508,6 +11590,10 @@ msgstr ""
 msgid "Pick two examples"
 msgstr "ଦୁଇଟି ଉଦାହରଣ ବାଛନ୍ତୁ"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Pick up to {room}. Use numbers you can explain in an interview."
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Picking your stories"
 msgstr "ଆପଣଙ୍କ କାହାଣୀ ବାଛୁଛି"
@@ -11722,12 +11808,20 @@ msgstr "ପରିମାର୍ଜନ କରୁଛି"
 msgid "Portfolio"
 msgstr ""
 
+#: src/features/billing/credits.ts
+msgid "Portfolio draft"
+msgstr ""
+
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Portfolio photo"
 msgstr ""
 
 #: src/features/portfolio/editor/preview.tsx
 msgid "Portfolio preview"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Portfolio rewrite"
 msgstr ""
 
 #: src/features/portfolio/errors.ts
@@ -12492,6 +12586,10 @@ msgstr "ଆପଣଙ୍କ ଉତ୍ତର ପଢ଼ୁଛି"
 msgid "Reading your notes"
 msgstr "ଆପଣଙ୍କ ଟିପ୍ପଣୀ ପଢ଼ୁଛି"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Reading your resume…"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Reads cleanly"
@@ -12977,6 +13075,10 @@ msgstr "ପୋଷ୍ଟିଙ୍ଗ ନିଜେ ବ୍ୟବହାର କରି
 msgid "Replace"
 msgstr "ବଦଳାନ୍ତୁ |"
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Replace anyway"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Replace icon fonts with plain text, then re-export."
 msgstr "ଆଇକନ୍ ଫଣ୍ଟକୁ ସରଳ ଟେକ୍ସଟ୍‌ରେ ବଦଳାନ୍ତୁ, ତାପରେ ପୁନଃ-ରପ୍ତାନି କରନ୍ତୁ।"
@@ -13302,6 +13404,22 @@ msgstr ""
 msgid "Revoked “{name}”. Apps using it stop working now."
 msgstr "“{name}” ପ୍ରତ୍ୟାହାର | ଏହାକୁ ବ୍ୟବହାର କରୁଥିବା ଆପଗୁଡ଼ିକ ବର୍ତ୍ତମାନ କାମ ବନ୍ଦ କରିଦିଏ |"
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewrite"
+msgstr ""
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewrite with AI"
+msgstr ""
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewriting…"
+msgstr ""
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewritten."
+msgstr ""
+
 #: src/features/docs/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Rezumi - Go to homepage"
@@ -13318,6 +13436,10 @@ msgstr ""
 #. placeholder {0}: creditCount(balance)
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost} · {0} left"
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "Rezumi AI can't do this right now. Use your own AI connection."
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -13737,6 +13859,10 @@ msgstr "ସ୍କ୍ରିନିଂ"
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "ଖୋଜନ୍ତୁ"
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Search again"
+msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Search and enhanced reading"
@@ -14581,6 +14707,7 @@ msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
 #: src/features/career/workspace/apply.tsx
+#: src/features/portfolio/create-dialog.tsx
 msgid "Skip"
 msgstr "ଛାଡ଼ନ୍ତୁ"
 
@@ -14662,6 +14789,10 @@ msgstr "କିଛି ଚାକିରି ବିବରଣୀ ପଢ଼ିହେଲ
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "କିଛି ଧାଡ଼ି ପଠନ କ୍ରମ ବାହାରେ ସଂରକ୍ଷିତ ଅଛି।"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Some parts are still to fill in"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Some systems mishandle images, and photos are discouraged in some countries."
@@ -14945,10 +15076,23 @@ msgid "Step 1 of 2 · What it starts from"
 msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
+msgid "Step 1 of 3 · What it starts from"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
 msgid "Step 2 of 2 · How it looks"
 msgstr ""
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Step 2 of 3 · How it looks"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Step 3 of 3 · Start with AI"
+msgstr ""
+
 #: src/features/assistant/prompt-box.tsx
+#: src/features/portfolio/ai/draft-form.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
 msgstr "ବନ୍ଦ କର |"
@@ -14973,6 +15117,10 @@ msgstr "ବନ୍ଦ ହେଲା"
 #: src/features/career/workspace/practise.tsx
 msgid "Stopped at {0}"
 msgstr "{0}ରେ ବନ୍ଦ ହେଲା"
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Stopped. Any credits it held come back to you."
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 msgid "Stopped. No edits were proposed."
@@ -15606,6 +15754,14 @@ msgstr "{label} ଫାଇଲ ସୃଷ୍ଟି ହୋଇପାରିବ ନା�
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "ଠିକଣାରେ କେବଳ ଛୋଟ ଅକ୍ଷର ଏବଂ ସଂଖ୍ୟା ରହିବା ଉଚିତ, ଯାହା ଏକକ ଡ୍ୟାସ୍ ଦ୍ୱାରା ପୃଥକ ହୋଇଥିବ।"
 
+#: src/features/portfolio/errors.ts
+msgid "The AI stopped before finishing. Try again; no credits were used."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "The AI's answer couldn't be used, so nothing changed. Try again; no credits were used."
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "The application that sent you here made an invalid authorization request. Return to the application and try again."
 msgstr "ଆପଣଙ୍କୁ ଏଠାକୁ ପଠାଇଥିବା ଆପ୍ଲିକେସନ ଏକ ଅବୈଧ ପ୍ରାଧିକରଣ ଅନୁରୋଧ କରିଛି। ଆପ୍ଲିକେସନକୁ ଫେରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
@@ -16024,6 +16180,10 @@ msgstr "ସେବାର କୋଟା ସରିଯାଇଛି। ସେବା �
 msgid "The test didn't run. Try again."
 msgstr "ପରୀକ୍ଷା ଚାଲିଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "The text changed since you asked, so it wasn't replaced."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The text comes out unreadable."
 msgstr "ଟେକ୍ସଟ୍ ଅପଠନୀୟ ଭାବରେ ବାହାରକୁ ଆସେ।"
@@ -16299,6 +16459,10 @@ msgstr "ଏହା ଏକ XFA ଫର୍ମ, ତେଣୁ ଅଧିକାଂଶ �
 msgid "This is not a common resume page size."
 msgstr "ଏହା ଏକ ସାଧାରଣ ରେଜ୍ୟୁମେ ପୃଷ୍ଠା ଆକାର ନୁହେଁ।"
 
+#: src/features/portfolio/errors.ts
+msgid "This is too long for Rezumi AI. Shorten it, or use your own AI connection."
+msgstr ""
+
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "This item can't be hidden here. Hide it on your resume instead."
 msgstr ""
@@ -16515,6 +16679,10 @@ msgstr "ଚୟନିତ ସମୟ ଅଞ୍ଚଳରେ ଏହି ସମୟ ନ�
 #: src/features/career/schedule-sheet.tsx
 msgid "This time does not exist in your timezone. Choose another time."
 msgstr "ଆପଣଙ୍କ ସମୟ ଅଞ୍ଚଳରେ ଏହି ସମୟ ନାହିଁ। ଅନ୍ୟ ଏକ ସମୟ ବାଛନ୍ତୁ।"
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "This usually takes less than a minute."
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "This week: make your evidence easier to follow"
@@ -16747,6 +16915,10 @@ msgstr "{model} ସହ ଟ୍ରାନ୍ସକ୍ରାଇବ୍ କରୁଛ�
 #: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "ଟ୍ରାନ୍ସକ୍ରିପ୍ଟ କପି ହୋଇଛି |"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Translate to {language}"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -16999,6 +17171,7 @@ msgstr "ଲିଙ୍କଗୁଡିକ ଅଣ୍ଡରଲାଇନ୍ କରନ�
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/portfolio/ai/apply.ts
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
@@ -17115,6 +17288,7 @@ msgstr ""
 msgid "Untitled testimonial"
 msgstr ""
 
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/portfolio/works/works-form.tsx
@@ -18205,6 +18379,10 @@ msgstr ""
 msgid "Work opened by day"
 msgstr ""
 
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Works to write (up to {PORTFOLIO_AI_DRAFT_WORKS})"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "AI କିମ୍ବା ନୂଆ ଗବେଷଣା ବିନା କାମ କରେ"
@@ -18235,9 +18413,18 @@ msgstr "ଲେଖନ୍ତୁ"
 msgid "Write \"Present\" as the end date of your current role."
 msgstr "ଆପଣଙ୍କ ବର୍ତ୍ତମାନ ଭୂମିକାର ଶେଷ ତାରିଖ ଭାବରେ \"Present\" ଲେଖନ୍ତୁ।"
 
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Write a draft with AI"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."
 msgstr "ମନେ ଥିବା ସମୟରେ ସେମାନେ କ'ଣ ପଚାରିଲେ ଲେଖି ରଖନ୍ତୁ। କୋଚ୍ ଆପଣଙ୍କ ଉତ୍ତରକୁ ଆପଣଙ୍କ କାହାଣୀ ସହ ତୁଳନା କରେ।"
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+#: src/features/portfolio/create-dialog.tsx
+msgid "Write draft"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Write each role as a clear title and company line, with the dates alongside."
@@ -18287,6 +18474,10 @@ msgstr "ଆପଣ କ'ଣ କଲେ ଲେଖନ୍ତୁ।"
 msgid "Write your answer, or draft one from your Knowledge."
 msgstr "ଆପଣଙ୍କ ଉତ୍ତର ଲେଖନ୍ତୁ, କିମ୍ବା ଆପଣଙ୍କ ଜ୍ଞାନରୁ ଗୋଟିଏ ଡ୍ରାଫ୍ଟ କରନ୍ତୁ।"
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -18301,6 +18492,10 @@ msgstr "ଏକ ଉତ୍ତର ଲେଖୁଛି…"
 #: src/features/settings/ai/providers.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "ଲେଖା ସାହାଯ୍ୟ, ଅନୁକୂଳିତ ପରାମର୍ଶ ଓ ସହକାରୀ। ଆପଣ ଯେଉଁଠି ପ୍ରଦାନକାରୀ ବାଛନ୍ତି ନାହିଁ, ସେଠାରେ ଡିଫଲ୍ଟ ପ୍ରଦାନକାରୀ ବ୍ୟବହୃତ ହୁଏ। ଆପଣଙ୍କ କି ଏନକ୍ରିପ୍ଟେଡ୍ ରହେ।"
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Writing your draft…"
+msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Written as"
@@ -18489,6 +18684,10 @@ msgstr "ଆପଣ ଅପ୍-ଟୁ-ଡେଟ୍ ଅଛନ୍ତି"
 msgid "You're using a guest account"
 msgstr "ଆପଣ ଏକ ଅତିଥି ଆକାଉଣ୍ଟ ବ୍ୟବହାର କରୁଛନ୍ତି"
 
+#: src/features/portfolio/ai/apply.ts
+msgid "You've changed things since. Use Undo at the top of the editor."
+msgstr ""
+
 #: src/features/billing/pending-payment.tsx
 msgid "Your {plan} checkout isn't finished"
 msgstr ""
@@ -18620,6 +18819,14 @@ msgstr ""
 msgid "Your domain stops working on {until}"
 msgstr ""
 
+#: src/features/portfolio/ai/apply.ts
+msgid "Your draft is in. Fill in the parts in [brackets] before you publish."
+msgstr ""
+
+#: src/features/portfolio/ai/apply.ts
+msgid "Your draft is in. Read it through and make it yours."
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Your email"
 msgstr ""
@@ -18710,6 +18917,10 @@ msgstr ""
 
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your latest changes aren't saved yet, so the projects weren't added. Once they're saved, try again."
+msgstr ""
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Your latest changes aren't saved yet. Wait for them to save, then try again."
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx

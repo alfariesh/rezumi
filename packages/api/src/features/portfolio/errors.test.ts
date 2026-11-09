@@ -20,6 +20,7 @@ describe("portfolio refusals", () => {
 			PORTFOLIO_IMAGE_INVALID: 400,
 			PORTFOLIO_FILE_IN_USE: 409,
 			PORTFOLIO_WORKS_LIMIT: 400,
+			PORTFOLIO_AI_UNUSABLE: 502,
 			PORTFOLIO_STORAGE_FULL: 413,
 		});
 	});
@@ -46,6 +47,7 @@ describe("portfolio refusals", () => {
 			),
 			portfolioErrors.fileInUse("uploads/u/pictures/portfolio/a.webp"),
 			portfolioErrors.worksLimit(),
+			portfolioErrors.aiUnusable(),
 			portfolioErrors.storageFull({ bytes: 1024, files: 3 }),
 		];
 		expect(new Set(thrown.map((error) => error.code))).toEqual(new Set(Object.keys(PORTFOLIO_ERRORS)));

@@ -13,6 +13,7 @@ import { METRIC_DIRECTIONS, METRIC_DURATION_UNITS } from "@rezumi/schema/portfol
 import { Icon } from "@rezumi/ui/components/icon";
 import { useRemovalFocus } from "../blocks/list-focus";
 import { ChoiceSelect, ItemToolbar, moveItem, TextInput } from "../editor/fields";
+import { FindMetricsButton } from "./find-metrics";
 import {
 	applyMetricFormat,
 	METRIC_FORMAT_CHOICES,
@@ -529,18 +530,25 @@ export function MetricsEditor({
 			})}
 			<div ref={fallbackRef} className="contents">
 				{metrics.length < maxItems && (
-					<Button
-						variant="secondary"
-						className="w-fit"
-						onPress={() =>
-							edit((list) => {
-								list.push(newMetric());
-							})
-						}
-					>
-						<Icon name="plus" size={18} />
-						{addLabel}
-					</Button>
+					<div className="flex flex-wrap gap-2">
+						<Button
+							variant="secondary"
+							className="w-fit"
+							onPress={() =>
+								edit((list) => {
+									list.push(newMetric());
+								})
+							}
+						>
+							<Icon name="plus" size={18} />
+							{addLabel}
+						</Button>
+						<FindMetricsButton
+							room={maxItems - metrics.length}
+							locale={locale}
+							onAdd={(found) => edit((list) => void list.push(...found), { structural: true })}
+						/>
+					</div>
 				)}
 			</div>
 		</div>

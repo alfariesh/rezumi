@@ -68,6 +68,7 @@ function portfolioMessagesByCode(data: ErrorData): Record<string, string> {
 				? t`A portfolio holds at most ${maxWorks} works. Remove some before adding more.`
 				: t`Your portfolio holds as many works as it can. Remove some before adding more.`,
 		PORTFOLIO_STORAGE_FULL: t`Your portfolio's storage is full. Remove pictures or PDFs you don't need, then try again.`,
+		PORTFOLIO_AI_UNUSABLE: t`The AI's answer couldn't be used, so nothing changed. Try again; no credits were used.`,
 		TOO_MANY_REQUESTS: t`Too many requests in a short time. Wait a minute, then try again.`,
 	};
 }
@@ -81,6 +82,24 @@ export function portfolioErrorMessage(error: unknown, options: PortfolioErrorOpt
 	if (!(error instanceof ORPCError)) return options.fallback;
 	const byCode = { ...portfolioMessagesByCode(dataOf(error)), ...options.byCode };
 	return getOrpcErrorMessage(error, { fallback: options.fallback, byCode });
+}
+
+/**
+ * A failed AI action in the person's words. Running out of credits opens its own dialog, so the note beside the action
+ * only says nothing happened.
+ */
+export function portfolioAiErrorMessage(error: unknown, fallback: string): string {
+	return portfolioErrorMessage(error, {
+		fallback,
+		byCode: {
+			INSUFFICIENT_CREDITS: t`Not enough Rezumi AI credits. Nothing changed.`,
+			AI_OUTPUT_LIMIT: t`The AI stopped before finishing. Try again; no credits were used.`,
+			AI_INPUT_TOO_LARGE: t`This is too long for Rezumi AI. Shorten it, or use your own AI connection.`,
+			AI_SOURCE_REQUIRED: t`Add your own AI connection in Settings, or choose Rezumi AI.`,
+			REZUMI_AI_UNAVAILABLE: t`Rezumi AI can't do this right now. Use your own AI connection.`,
+			BAD_GATEWAY: t`Couldn't reach the AI provider. Try again in a moment; no credits were used.`,
+		},
+	});
 }
 
 /** The words for one of the portfolio API's refusal codes, or undefined for a code it doesn't use. */

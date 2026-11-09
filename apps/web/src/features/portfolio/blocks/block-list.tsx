@@ -477,6 +477,7 @@ function TextBlockEditor({ work, block, index }: TextBlockEditorProps) {
 		<>
 			<RichTextField
 				hideLabel
+				rewrite="blockText"
 				label={t`Text block of ${work.title.trim() || t`this work`}`}
 				value={block.html}
 				maxLength={max.blockText}

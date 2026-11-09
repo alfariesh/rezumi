@@ -243,6 +243,7 @@ Di tab Terbitkan dan halaman dashboard: masukkan domain → tampilkan record DNS
 - **Temukan angka**: AI membaca uraian pengalaman dan proyek di CV, lalu menyarankan metrik ("meningkatkan konversi 35%" → metrik "+35% konversi"). Pengguna memilih mana yang dipakai. AI tidak pernah menambah angka yang tidak tertulis.
 - Label biaya kredit, pilihan sumber AI (Rezumi AI atau koneksi sendiri), dan dialog kredit kurang mengikuti pola AI yang sudah ada.
 - AI tidak boleh mengarang fakta (angka, nama klien, hasil) yang tidak ada di CV atau catatan pengguna.
+- Hasil Phase 10: langkah AI hanya muncul untuk portfolio dari CV dan bila ada sumber AI; tombol **Tulis draf dengan AI** juga ada di atas tab Isi (memilih karya, maksimal 12). Tombol AI kecil ada di Salam pembuka, Ringkasan karya, Deskripsi layanan, Tentang saya, blok Teks, dan bagian bebas; **Testimoni sengaja tidak punya tombol AI** karena itu kata-kata orang lain. Bagian yang belum tersedia datanya ditulis AI sebagai `[tambahkan hasil]`; dialog Terbitkan mengingatkan bila masih ada.
 
 ## 13. Teks antarmuka halaman publik
 

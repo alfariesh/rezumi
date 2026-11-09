@@ -26,6 +26,12 @@ export function getCreditActionName(action: string) {
 			return t`Resume tailoring`;
 		case "import-document":
 			return t`Import with AI`;
+		case "portfolio-draft":
+			return t`Portfolio draft`;
+		case "portfolio-rewrite":
+			return t`Portfolio rewrite`;
+		case "portfolio-metrics":
+			return t`Numbers found for your portfolio`;
 		case "admin-adjustment":
 			return t`Correction by Rezumi`;
 		default:

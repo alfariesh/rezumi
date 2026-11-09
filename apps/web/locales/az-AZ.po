@@ -952,6 +952,10 @@ msgstr "{passedRules} {totalRules} çekləri keçir."
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# bu səhifədə təklif edilən redaktə · siz qəbul etməyincə heç nə dəyişmir} other {# bu səhifədə təklif edilən redaktələr · siz qəbul etməyincə heç nə dəyişmir}}"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "{placeholders, plural, one {# place written in [brackets] will show on your page as it is.} other {# places written in [brackets] will show on your page as they are.}}"
+msgstr ""
+
 #: src/features/billing/payment-return.tsx
 msgid "{plan} is active, free for now."
 msgstr ""
@@ -1968,6 +1972,10 @@ msgstr "Burada və təqvimdə görmək üçün yoxlama zəngləri və texniki m�
 msgid "Add section"
 msgstr "Bölmə əlavə edin"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Add selected"
+msgstr ""
+
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add skill"
 msgstr "Bacarıq əlavə edin"
@@ -2059,6 +2067,10 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Adınızı əlavə edin"
+
+#: src/features/portfolio/errors.ts
+msgid "Add your own AI connection in Settings, or choose Rezumi AI."
+msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Add your WhatsApp number in Contact, or the button won't show."
@@ -2190,6 +2202,7 @@ msgstr "Tələblərinizlə müqayisədə"
 
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
+#: src/features/portfolio/ai/rewrite-menu.tsx
 msgid "AI"
 msgstr ""
 
@@ -2213,6 +2226,10 @@ msgstr "AI təfərrüatları doldura bilmədi. İş elanı saxlanılır; sahəl�
 msgid "AI edit"
 msgstr "AI redaktəsi"
 
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "AI only uses what's on your resume and in this note. It won't make up numbers, clients or results."
+msgstr ""
+
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers"
@@ -2229,6 +2246,10 @@ msgstr "ENCRYPTION_SECRET təyin olunana qədər AI təminatçıları bu serverd
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers couldn't be loaded. Reload to try again."
 msgstr "AI provayderlərini yükləmək mümkün olmadı. Yenidən cəhd etmək üçün yenidən yükləyin."
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "AI reads your jobs and projects and only suggests numbers written there. You pick which to use."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "AI review"
@@ -2501,6 +2522,10 @@ msgstr "Linki olan hər kəs rezyumenizə baxa biləcək."
 #: src/features/applications/components/application-notes.tsx
 msgid "Anything to remember about this job"
 msgstr "Bu iş haqqında yadda qalan hər şey var"
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Anything to stress or leave out? (optional)"
+msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Anywhere"
@@ -3281,6 +3306,7 @@ msgstr "Proqram sizin CV-nizi oxuya bilərmi?"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -3820,9 +3846,11 @@ msgstr ""
 #: src/features/docs/layout.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/metrics/find-metrics.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -4217,6 +4245,10 @@ msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Continue to checkout"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Continue without AI"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -4650,6 +4682,10 @@ msgstr "Bu redaktələri təklif etmək mümkün olmadı: {0}"
 msgid "Couldn't publish. Try again."
 msgstr ""
 
+#: src/features/portfolio/errors.ts
+msgid "Couldn't reach the AI provider. Try again in a moment; no credits were used."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Couldn't reach the AI provider. Try again in a moment."
 msgstr "AI provayderi ilə əlaqə saxlamaq mümkün olmadı. Bir an sonra yenidən cəhd edin."
@@ -4683,6 +4719,10 @@ msgstr "Bu səhifəni oxumaq mümkün olmadı: {0}"
 #: src/features/auth/pages/error.tsx
 msgid "Couldn't read your profile from the provider. Try again."
 msgstr "Profilinizi provayderdən oxumaq mümkün olmadı. Yenidən cəhd edin."
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Couldn't read your resume. Nothing changed. Try again."
+msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Couldn't record submission. Try again."
@@ -4732,6 +4772,10 @@ msgstr "Açarı ləğv etmək mümkün olmadı. Yenidən cəhd edin."
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Couldn't revoke this connection. Try again."
 msgstr "Bu əlaqəni ləğv etmək mümkün olmadı. Yenidən cəhd edin."
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Couldn't rewrite this. Nothing changed. Try again."
+msgstr ""
 
 #: src/features/career/hooks.ts
 msgid "Couldn't save that change. Check your connection and try again."
@@ -4971,6 +5015,10 @@ msgstr "Ehtiyat kodunuzu təsdiqləmək mümkün olmadı. Kodu yoxlayın və yen
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Couldn't verify your code. Check the code and try again."
 msgstr "Kodunuzu təsdiqləmək mümkün olmadı. Kodu yoxlayın və yenidən cəhd edin."
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Couldn't write your draft. Nothing changed. Try again."
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Count by source"
@@ -6813,6 +6861,14 @@ msgstr ""
 msgid "Find a customer"
 msgstr ""
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Find numbers"
+msgstr ""
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Find numbers in your resume"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
 msgstr "Vəzifə tap"
@@ -7252,6 +7308,10 @@ msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "From your resume:"
+msgstr ""
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "From your resume: your greeting, About me, and the story of each work you pick. It replaces what's in those places. You can undo it."
 msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
@@ -7792,6 +7852,10 @@ msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "I keep one master resume and a version for every company. The tracker tells me where each one went."
+msgstr ""
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "I want freelance branding work, so lead with my client projects."
 msgstr ""
 
 #: src/features/applications/stages.ts
@@ -8406,6 +8470,7 @@ msgstr "Dürüst olun"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "Adətən şəkilləri silərək və ya kiçildərək 2,5 MB-dan aşağı saxlayın."
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Keep mine"
 msgstr "Mənimkini saxla"
@@ -9196,6 +9261,7 @@ msgid "Make it more specific"
 msgstr "Daha konkretləşdirin"
 
 #: src/features/assistant/assistant-panel.tsx
+#: src/features/portfolio/ai/rewrite-menu.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Make it shorter"
 msgstr "Daha qısa olun"
@@ -9539,6 +9605,10 @@ msgstr ""
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "More personal"
 msgstr "Daha şəxsi"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "More professional"
+msgstr ""
 
 #: src/features/assistant/provider-setup.tsx
 msgid "More providers and options are in <0>Settings</0>. The rest of the app works fully without AI."
@@ -10204,6 +10274,10 @@ msgstr "Cavab yoxdur"
 msgid "No results found."
 msgstr "Nəticə tapılmadı."
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time by 40%”, then try again."
+msgstr ""
+
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No resume"
@@ -10355,6 +10429,10 @@ msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Not enough Rezumi AI credits"
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "Not enough Rezumi AI credits. Nothing changed."
 msgstr ""
 
 #: src/features/career/today.tsx
@@ -10584,6 +10662,10 @@ msgstr ""
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Numbered list"
 msgstr "Nömrələnmiş siyahı"
+
+#: src/features/billing/credits.ts
+msgid "Numbers found for your portfolio"
+msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Numbers style"
@@ -11506,6 +11588,10 @@ msgstr ""
 msgid "Pick two examples"
 msgstr "İki nümunə seçin"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Pick up to {room}. Use numbers you can explain in an interview."
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Picking your stories"
 msgstr "Hekayələriniz seçilir"
@@ -11720,12 +11806,20 @@ msgstr "Cilalanır"
 msgid "Portfolio"
 msgstr ""
 
+#: src/features/billing/credits.ts
+msgid "Portfolio draft"
+msgstr ""
+
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Portfolio photo"
 msgstr ""
 
 #: src/features/portfolio/editor/preview.tsx
 msgid "Portfolio preview"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Portfolio rewrite"
 msgstr ""
 
 #: src/features/portfolio/errors.ts
@@ -12490,6 +12584,10 @@ msgstr "Cavabınız oxunur"
 msgid "Reading your notes"
 msgstr "Qeydləriniz oxunur"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Reading your resume…"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Reads cleanly"
@@ -12975,6 +13073,10 @@ msgstr "Elanın özündən qat-qat çox təkrarlanır: {0}. İşə götürənlə
 msgid "Replace"
 msgstr "Əvəz edin"
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Replace anyway"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Replace icon fonts with plain text, then re-export."
 msgstr "İkon şriftlərini sadə mətnlə əvəz edin, sonra yenidən ixrac edin."
@@ -13300,6 +13402,22 @@ msgstr ""
 msgid "Revoked “{name}”. Apps using it stop working now."
 msgstr "“{name}” ləğv edildi. Ondan istifadə edən proqramlar indi işləməyi dayandırır."
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewrite"
+msgstr ""
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewrite with AI"
+msgstr ""
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewriting…"
+msgstr ""
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewritten."
+msgstr ""
+
 #: src/features/docs/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Rezumi - Go to homepage"
@@ -13316,6 +13434,10 @@ msgstr ""
 #. placeholder {0}: creditCount(balance)
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost} · {0} left"
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "Rezumi AI can't do this right now. Use your own AI connection."
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -13735,6 +13857,10 @@ msgstr "İlkin seçim"
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Axtarış"
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Search again"
+msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Search and enhanced reading"
@@ -14579,6 +14705,7 @@ msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
 #: src/features/career/workspace/apply.tsx
+#: src/features/portfolio/create-dialog.tsx
 msgid "Skip"
 msgstr "Ötür"
 
@@ -14660,6 +14787,10 @@ msgstr "Bəzi iş təfərrüatlarını oxumaq mümkün olmadı. Vəzifəni və �
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "Bəzi sətirlər oxunma ardıcıllığından kənar saxlanılıb."
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Some parts are still to fill in"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Some systems mishandle images, and photos are discouraged in some countries."
@@ -14943,10 +15074,23 @@ msgid "Step 1 of 2 · What it starts from"
 msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
+msgid "Step 1 of 3 · What it starts from"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
 msgid "Step 2 of 2 · How it looks"
 msgstr ""
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Step 2 of 3 · How it looks"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Step 3 of 3 · Start with AI"
+msgstr ""
+
 #: src/features/assistant/prompt-box.tsx
+#: src/features/portfolio/ai/draft-form.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
 msgstr "Dayan"
@@ -14971,6 +15115,10 @@ msgstr "Dayandırıldı"
 #: src/features/career/workspace/practise.tsx
 msgid "Stopped at {0}"
 msgstr "Dayandı: {0}"
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Stopped. Any credits it held come back to you."
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 msgid "Stopped. No edits were proposed."
@@ -15604,6 +15752,14 @@ msgstr "{label} faylı yaradıla bilmədi. Yenidən cəhd edin və ya əvəzinə
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "Ünvan yalnız tək tire ilə ayrılmış kiçik hərflərdən və rəqəmlərdən ibarət olmalıdır."
 
+#: src/features/portfolio/errors.ts
+msgid "The AI stopped before finishing. Try again; no credits were used."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "The AI's answer couldn't be used, so nothing changed. Try again; no credits were used."
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "The application that sent you here made an invalid authorization request. Return to the application and try again."
 msgstr "Sizi bura göndərən tətbiq yanlış avtorizasiya sorğusu göndərdi. Tətbiqə qayıdın və yenidən cəhd edin."
@@ -16022,6 +16178,10 @@ msgstr "Xidmətin kvotası bitib. Xidmətdəki planınızı yoxlayın və ya son
 msgid "The test didn't run. Try again."
 msgstr "Test icra olunmadı. Yenidən cəhd edin."
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "The text changed since you asked, so it wasn't replaced."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The text comes out unreadable."
 msgstr "Mətn oxunmaz şəkildə çıxır."
@@ -16297,6 +16457,10 @@ msgstr "Bu bir XFA formudur, ona görə əksər proqramlar yalnız boş qabığ�
 msgid "This is not a common resume page size."
 msgstr "Bu adi bir CV səhifə ölçüsü deyil."
 
+#: src/features/portfolio/errors.ts
+msgid "This is too long for Rezumi AI. Shorten it, or use your own AI connection."
+msgstr ""
+
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "This item can't be hidden here. Hide it on your resume instead."
 msgstr ""
@@ -16513,6 +16677,10 @@ msgstr "Bu vaxt seçilmiş saat qurşağında mövcud deyil. Başqa vaxt seçin.
 #: src/features/career/schedule-sheet.tsx
 msgid "This time does not exist in your timezone. Choose another time."
 msgstr "Bu vaxt sizin saat qurşağınızda mövcud deyil. Başqa vaxt seçin."
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "This usually takes less than a minute."
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "This week: make your evidence easier to follow"
@@ -16745,6 +16913,10 @@ msgstr "{model} ilə transkripsiya edilir…"
 #: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "Transkript kopyalandı"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Translate to {language}"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -16996,6 +17168,7 @@ msgstr "Bağlantıların altını çəkin"
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/portfolio/ai/apply.ts
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
@@ -17112,6 +17285,7 @@ msgstr ""
 msgid "Untitled testimonial"
 msgstr ""
 
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/portfolio/works/works-form.tsx
@@ -18202,6 +18376,10 @@ msgstr ""
 msgid "Work opened by day"
 msgstr ""
 
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Works to write (up to {PORTFOLIO_AI_DRAFT_WORKS})"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "AI və ya yeni araşdırma olmadan işləyir"
@@ -18232,9 +18410,18 @@ msgstr "Yaz"
 msgid "Write \"Present\" as the end date of your current role."
 msgstr "Hazırkı vəzifənizin bitmə tarixi kimi \"Present\" yazın."
 
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Write a draft with AI"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."
 msgstr "Nə soruşduqlarını hələ yaddaşınızda təzə ikən yazın. Kouç cavablarınızı hekayələrinizlə müqayisə edir."
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+#: src/features/portfolio/create-dialog.tsx
+msgid "Write draft"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Write each role as a clear title and company line, with the dates alongside."
@@ -18284,6 +18471,10 @@ msgstr "Nə etdiyinizi yazın."
 msgid "Write your answer, or draft one from your Knowledge."
 msgstr "Cavabınızı yazın və ya Biliklərinizdən qaralama hazırlayın."
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -18298,6 +18489,10 @@ msgstr "Cavab yazılır…"
 #: src/features/settings/ai/providers.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Yazı köməyi, fərdiləşdirilmiş təkliflər və köməkçi. Seçim etmədiyiniz hər yerdə defolt provayder istifadə olunur. Açarlarınız şifrələnmiş qalır."
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Writing your draft…"
+msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Written as"
@@ -18486,6 +18681,10 @@ msgstr "Hər şeyə baxmısınız"
 msgid "You're using a guest account"
 msgstr "Qonaq hesabından istifadə edirsiniz"
 
+#: src/features/portfolio/ai/apply.ts
+msgid "You've changed things since. Use Undo at the top of the editor."
+msgstr ""
+
 #: src/features/billing/pending-payment.tsx
 msgid "Your {plan} checkout isn't finished"
 msgstr ""
@@ -18617,6 +18816,14 @@ msgstr ""
 msgid "Your domain stops working on {until}"
 msgstr ""
 
+#: src/features/portfolio/ai/apply.ts
+msgid "Your draft is in. Fill in the parts in [brackets] before you publish."
+msgstr ""
+
+#: src/features/portfolio/ai/apply.ts
+msgid "Your draft is in. Read it through and make it yours."
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Your email"
 msgstr ""
@@ -18707,6 +18914,10 @@ msgstr ""
 
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your latest changes aren't saved yet, so the projects weren't added. Once they're saved, try again."
+msgstr ""
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Your latest changes aren't saved yet. Wait for them to save, then try again."
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx

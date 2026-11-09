@@ -947,6 +947,10 @@ msgstr "{passedRules} of {totalRules} checks pass."
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "{placeholders, plural, one {# place written in [brackets] will show on your page as it is.} other {# places written in [brackets] will show on your page as they are.}}"
+msgstr "{placeholders, plural, one {# place written in [brackets] will show on your page as it is.} other {# places written in [brackets] will show on your page as they are.}}"
+
 #: src/features/billing/payment-return.tsx
 msgid "{plan} is active, free for now."
 msgstr "{plan} is active, free for now."
@@ -1963,6 +1967,10 @@ msgstr "Add screening calls and technical interviews to see them here and on the
 msgid "Add section"
 msgstr "Add section"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Add selected"
+msgstr "Add selected"
+
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add skill"
 msgstr "Add skill"
@@ -2054,6 +2062,10 @@ msgstr "Add your first AI provider"
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Add your name"
+
+#: src/features/portfolio/errors.ts
+msgid "Add your own AI connection in Settings, or choose Rezumi AI."
+msgstr "Add your own AI connection in Settings, or choose Rezumi AI."
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Add your WhatsApp number in Contact, or the button won't show."
@@ -2185,6 +2197,7 @@ msgstr "Against your requirements"
 
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
+#: src/features/portfolio/ai/rewrite-menu.tsx
 msgid "AI"
 msgstr "AI"
 
@@ -2208,6 +2221,10 @@ msgstr "AI couldn't fill the details. The posting is retained; complete the fiel
 msgid "AI edit"
 msgstr "AI edit"
 
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "AI only uses what's on your resume and in this note. It won't make up numbers, clients or results."
+msgstr "AI only uses what's on your resume and in this note. It won't make up numbers, clients or results."
+
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers"
@@ -2224,6 +2241,10 @@ msgstr "AI providers aren't available on this server until ENCRYPTION_SECRET is 
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers couldn't be loaded. Reload to try again."
 msgstr "AI providers couldn't be loaded. Reload to try again."
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "AI reads your jobs and projects and only suggests numbers written there. You pick which to use."
+msgstr "AI reads your jobs and projects and only suggests numbers written there. You pick which to use."
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "AI review"
@@ -2496,6 +2517,10 @@ msgstr "Anyone with the link will be able to view your resume."
 #: src/features/applications/components/application-notes.tsx
 msgid "Anything to remember about this job"
 msgstr "Anything to remember about this job"
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Anything to stress or leave out? (optional)"
+msgstr "Anything to stress or leave out? (optional)"
 
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Anywhere"
@@ -3276,6 +3301,7 @@ msgstr "Can software read your resume?"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -3815,9 +3841,11 @@ msgstr "Clients"
 #: src/features/docs/layout.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/metrics/find-metrics.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -4213,6 +4241,10 @@ msgstr "Continue checkout"
 #: src/features/billing/purchase-dialog.tsx
 msgid "Continue to checkout"
 msgstr "Continue to checkout"
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Continue without AI"
+msgstr "Continue without AI"
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Contrast on white:"
@@ -4645,6 +4677,10 @@ msgstr "Couldn't propose these edits: {0}"
 msgid "Couldn't publish. Try again."
 msgstr "Couldn't publish. Try again."
 
+#: src/features/portfolio/errors.ts
+msgid "Couldn't reach the AI provider. Try again in a moment; no credits were used."
+msgstr "Couldn't reach the AI provider. Try again in a moment; no credits were used."
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Couldn't reach the AI provider. Try again in a moment."
 msgstr "Couldn't reach the AI provider. Try again in a moment."
@@ -4678,6 +4714,10 @@ msgstr "Couldn't read this page: {0}"
 #: src/features/auth/pages/error.tsx
 msgid "Couldn't read your profile from the provider. Try again."
 msgstr "Couldn't read your profile from the provider. Try again."
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Couldn't read your resume. Nothing changed. Try again."
+msgstr "Couldn't read your resume. Nothing changed. Try again."
 
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Couldn't record submission. Try again."
@@ -4727,6 +4767,10 @@ msgstr "Couldn't revoke the key. Try again."
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Couldn't revoke this connection. Try again."
 msgstr "Couldn't revoke this connection. Try again."
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Couldn't rewrite this. Nothing changed. Try again."
+msgstr "Couldn't rewrite this. Nothing changed. Try again."
 
 #: src/features/career/hooks.ts
 msgid "Couldn't save that change. Check your connection and try again."
@@ -4966,6 +5010,10 @@ msgstr "Couldn't verify your backup code. Check the code and try again."
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Couldn't verify your code. Check the code and try again."
 msgstr "Couldn't verify your code. Check the code and try again."
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Couldn't write your draft. Nothing changed. Try again."
+msgstr "Couldn't write your draft. Nothing changed. Try again."
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Count by source"
@@ -6808,6 +6856,14 @@ msgstr "Finance Analyst"
 msgid "Find a customer"
 msgstr "Find a customer"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Find numbers"
+msgstr "Find numbers"
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Find numbers in your resume"
+msgstr "Find numbers in your resume"
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
 msgstr "Find roles"
@@ -7248,6 +7304,10 @@ msgstr "From your resume; it has none yet."
 #: src/features/portfolio/location/location-fields.tsx
 msgid "From your resume:"
 msgstr "From your resume:"
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "From your resume: your greeting, About me, and the story of each work you pick. It replaces what's in those places. You can undo it."
+msgstr "From your resume: your greeting, About me, and the story of each work you pick. It replaces what's in those places. You can undo it."
 
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "From your timezone"
@@ -7788,6 +7848,10 @@ msgstr "I design apps people enjoy using, and I'm looking for my next team."
 #: src/features/homepage/testimonials.tsx
 msgid "I keep one master resume and a version for every company. The tracker tells me where each one went."
 msgstr "I keep one master resume and a version for every company. The tracker tells me where each one went."
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "I want freelance branding work, so lead with my client projects."
+msgstr "I want freelance branding work, so lead with my client projects."
 
 #: src/features/applications/stages.ts
 msgid "I withdrew"
@@ -8401,6 +8465,7 @@ msgstr "Keep it honest"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "Keep it under 2.5 MB, usually by removing or shrinking images."
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Keep mine"
 msgstr "Keep mine"
@@ -9191,6 +9256,7 @@ msgid "Make it more specific"
 msgstr "Make it more specific"
 
 #: src/features/assistant/assistant-panel.tsx
+#: src/features/portfolio/ai/rewrite-menu.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Make it shorter"
 msgstr "Make it shorter"
@@ -9534,6 +9600,10 @@ msgstr "More pages"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "More personal"
 msgstr "More personal"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "More professional"
+msgstr "More professional"
 
 #: src/features/assistant/provider-setup.tsx
 msgid "More providers and options are in <0>Settings</0>. The rest of the app works fully without AI."
@@ -10199,6 +10269,10 @@ msgstr "No response"
 msgid "No results found."
 msgstr "No results found."
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time by 40%”, then try again."
+msgstr "No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time by 40%”, then try again."
+
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No resume"
@@ -10351,6 +10425,10 @@ msgstr "Not emailed"
 #: src/features/billing/ai-source-menu.tsx
 msgid "Not enough Rezumi AI credits"
 msgstr "Not enough Rezumi AI credits"
+
+#: src/features/portfolio/errors.ts
+msgid "Not enough Rezumi AI credits. Nothing changed."
+msgstr "Not enough Rezumi AI credits. Nothing changed."
 
 #: src/features/career/today.tsx
 msgid "Not for me"
@@ -10579,6 +10657,10 @@ msgstr "Number"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Numbered list"
 msgstr "Numbered list"
+
+#: src/features/billing/credits.ts
+msgid "Numbers found for your portfolio"
+msgstr "Numbers found for your portfolio"
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Numbers style"
@@ -11501,6 +11583,10 @@ msgstr "Pick projects from your resume: title, summary, dates and link come alon
 msgid "Pick two examples"
 msgstr "Pick two examples"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Pick up to {room}. Use numbers you can explain in an interview."
+msgstr "Pick up to {room}. Use numbers you can explain in an interview."
+
 #: src/features/career/shared.tsx
 msgid "Picking your stories"
 msgstr "Picking your stories"
@@ -11715,6 +11801,10 @@ msgstr "Polishing"
 msgid "Portfolio"
 msgstr "Portfolio"
 
+#: src/features/billing/credits.ts
+msgid "Portfolio draft"
+msgstr "Portfolio draft"
+
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Portfolio photo"
 msgstr "Portfolio photo"
@@ -11722,6 +11812,10 @@ msgstr "Portfolio photo"
 #: src/features/portfolio/editor/preview.tsx
 msgid "Portfolio preview"
 msgstr "Portfolio preview"
+
+#: src/features/billing/credits.ts
+msgid "Portfolio rewrite"
+msgstr "Portfolio rewrite"
 
 #: src/features/portfolio/errors.ts
 msgid "Portfolios aren't available for your account right now."
@@ -12485,6 +12579,10 @@ msgstr "Reading your answer"
 msgid "Reading your notes"
 msgstr "Reading your notes"
 
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Reading your resume…"
+msgstr "Reading your resume…"
+
 #: src/features/ats-checker/checker.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Reads cleanly"
@@ -12970,6 +13068,10 @@ msgstr "Repeated far more often than the posting itself uses them: {0}. Recruite
 msgid "Replace"
 msgstr "Replace"
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Replace anyway"
+msgstr "Replace anyway"
+
 #: src/features/ats-checker/messages.ts
 msgid "Replace icon fonts with plain text, then re-export."
 msgstr "Replace icon fonts with plain text, then re-export."
@@ -13295,6 +13397,22 @@ msgstr "Revoked"
 msgid "Revoked “{name}”. Apps using it stop working now."
 msgstr "Revoked “{name}”. Apps using it stop working now."
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewrite"
+msgstr "Rewrite"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewrite with AI"
+msgstr "Rewrite with AI"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewriting…"
+msgstr "Rewriting…"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Rewritten."
+msgstr "Rewritten."
+
 #: src/features/docs/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Rezumi - Go to homepage"
@@ -13312,6 +13430,10 @@ msgstr "Rezumi AI · {cost}"
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost} · {0} left"
 msgstr "Rezumi AI · {cost} · {0} left"
+
+#: src/features/portfolio/errors.ts
+msgid "Rezumi AI can't do this right now. Use your own AI connection."
+msgstr "Rezumi AI can't do this right now. Use your own AI connection."
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/plan-page.tsx
@@ -13730,6 +13852,10 @@ msgstr "Screening"
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Search"
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Search again"
+msgstr "Search again"
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Search and enhanced reading"
@@ -14574,6 +14700,7 @@ msgstr "Skills, interests and profiles"
 
 #: src/features/assistant/tool-approvals.tsx
 #: src/features/career/workspace/apply.tsx
+#: src/features/portfolio/create-dialog.tsx
 msgid "Skip"
 msgstr "Skip"
 
@@ -14655,6 +14782,10 @@ msgstr "Some job details couldn't be read. Fill in the role and company, or past
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "Some lines are stored out of reading order."
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Some parts are still to fill in"
+msgstr "Some parts are still to fill in"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Some systems mishandle images, and photos are discouraged in some countries."
@@ -14938,10 +15069,23 @@ msgid "Step 1 of 2 · What it starts from"
 msgstr "Step 1 of 2 · What it starts from"
 
 #: src/features/portfolio/create-dialog.tsx
+msgid "Step 1 of 3 · What it starts from"
+msgstr "Step 1 of 3 · What it starts from"
+
+#: src/features/portfolio/create-dialog.tsx
 msgid "Step 2 of 2 · How it looks"
 msgstr "Step 2 of 2 · How it looks"
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Step 2 of 3 · How it looks"
+msgstr "Step 2 of 3 · How it looks"
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Step 3 of 3 · Start with AI"
+msgstr "Step 3 of 3 · Start with AI"
+
 #: src/features/assistant/prompt-box.tsx
+#: src/features/portfolio/ai/draft-form.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
 msgstr "Stop"
@@ -14966,6 +15110,10 @@ msgstr "Stopped"
 #: src/features/career/workspace/practise.tsx
 msgid "Stopped at {0}"
 msgstr "Stopped at {0}"
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Stopped. Any credits it held come back to you."
+msgstr "Stopped. Any credits it held come back to you."
 
 #: src/features/assistant/conversation.tsx
 msgid "Stopped. No edits were proposed."
@@ -15599,6 +15747,14 @@ msgstr "The {label} file couldn't be generated. Try again, or download PDF inste
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "The address must contain only lowercase letters and numbers, separated by single dashes."
 
+#: src/features/portfolio/errors.ts
+msgid "The AI stopped before finishing. Try again; no credits were used."
+msgstr "The AI stopped before finishing. Try again; no credits were used."
+
+#: src/features/portfolio/errors.ts
+msgid "The AI's answer couldn't be used, so nothing changed. Try again; no credits were used."
+msgstr "The AI's answer couldn't be used, so nothing changed. Try again; no credits were used."
+
 #: src/features/auth/pages/error.tsx
 msgid "The application that sent you here made an invalid authorization request. Return to the application and try again."
 msgstr "The application that sent you here made an invalid authorization request. Return to the application and try again."
@@ -16017,6 +16173,10 @@ msgstr "The service's quota is used up. Check your plan with the service, or try
 msgid "The test didn't run. Try again."
 msgstr "The test didn't run. Try again."
 
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "The text changed since you asked, so it wasn't replaced."
+msgstr "The text changed since you asked, so it wasn't replaced."
+
 #: src/features/ats-checker/messages.ts
 msgid "The text comes out unreadable."
 msgstr "The text comes out unreadable."
@@ -16292,6 +16452,10 @@ msgstr "This is an XFA form, so most software reads only the empty shell."
 msgid "This is not a common resume page size."
 msgstr "This is not a common resume page size."
 
+#: src/features/portfolio/errors.ts
+msgid "This is too long for Rezumi AI. Shorten it, or use your own AI connection."
+msgstr "This is too long for Rezumi AI. Shorten it, or use your own AI connection."
+
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "This item can't be hidden here. Hide it on your resume instead."
 msgstr "This item can't be hidden here. Hide it on your resume instead."
@@ -16508,6 +16672,10 @@ msgstr "This time does not exist in the selected timezone. Choose another time."
 #: src/features/career/schedule-sheet.tsx
 msgid "This time does not exist in your timezone. Choose another time."
 msgstr "This time does not exist in your timezone. Choose another time."
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "This usually takes less than a minute."
+msgstr "This usually takes less than a minute."
 
 #: src/features/career/workspace/debrief.tsx
 msgid "This week: make your evidence easier to follow"
@@ -16740,6 +16908,10 @@ msgstr "Transcribing with {model}…"
 #: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "Transcript copied"
+
+#: src/features/portfolio/ai/rewrite-menu.tsx
+msgid "Translate to {language}"
+msgstr "Translate to {language}"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -16991,6 +17163,7 @@ msgstr "Underline links"
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/portfolio/ai/apply.ts
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
@@ -17107,6 +17280,7 @@ msgstr "Untitled service"
 msgid "Untitled testimonial"
 msgstr "Untitled testimonial"
 
+#: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/portfolio/works/works-form.tsx
@@ -18197,6 +18371,10 @@ msgstr "Work layout"
 msgid "Work opened by day"
 msgstr "Work opened by day"
 
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Works to write (up to {PORTFOLIO_AI_DRAFT_WORKS})"
+msgstr "Works to write (up to {PORTFOLIO_AI_DRAFT_WORKS})"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "Works without AI or new research"
@@ -18227,9 +18405,18 @@ msgstr "Write"
 msgid "Write \"Present\" as the end date of your current role."
 msgstr "Write \"Present\" as the end date of your current role."
 
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Write a draft with AI"
+msgstr "Write a draft with AI"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."
 msgstr "Write down what they asked while it's fresh. The coach compares your answers with your stories."
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+#: src/features/portfolio/create-dialog.tsx
+msgid "Write draft"
+msgstr "Write draft"
 
 #: src/features/ats-checker/messages.ts
 msgid "Write each role as a clear title and company line, with the dates alongside."
@@ -18279,6 +18466,10 @@ msgstr "Write what you did."
 msgid "Write your answer, or draft one from your Knowledge."
 msgstr "Write your answer, or draft one from your Knowledge."
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
+msgstr "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
+
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -18293,6 +18484,10 @@ msgstr "Writing an answer…"
 #: src/features/settings/ai/providers.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
+
+#: src/features/portfolio/ai/draft-form.tsx
+msgid "Writing your draft…"
+msgstr "Writing your draft…"
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Written as"
@@ -18481,6 +18676,10 @@ msgstr "You're up to date"
 msgid "You're using a guest account"
 msgstr "You're using a guest account"
 
+#: src/features/portfolio/ai/apply.ts
+msgid "You've changed things since. Use Undo at the top of the editor."
+msgstr "You've changed things since. Use Undo at the top of the editor."
+
 #: src/features/billing/pending-payment.tsx
 msgid "Your {plan} checkout isn't finished"
 msgstr "Your {plan} checkout isn't finished"
@@ -18612,6 +18811,14 @@ msgstr "Your domain now goes to your Rezumi address"
 msgid "Your domain stops working on {until}"
 msgstr "Your domain stops working on {until}"
 
+#: src/features/portfolio/ai/apply.ts
+msgid "Your draft is in. Fill in the parts in [brackets] before you publish."
+msgstr "Your draft is in. Fill in the parts in [brackets] before you publish."
+
+#: src/features/portfolio/ai/apply.ts
+msgid "Your draft is in. Read it through and make it yours."
+msgstr "Your draft is in. Read it through and make it yours."
+
 #: src/features/portfolio/page-text.ts
 msgid "Your email"
 msgstr "Your email"
@@ -18703,6 +18910,10 @@ msgstr "Your last payment didn't go through. Update your payment method in billi
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your latest changes aren't saved yet, so the projects weren't added. Once they're saved, try again."
 msgstr "Your latest changes aren't saved yet, so the projects weren't added. Once they're saved, try again."
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Your latest changes aren't saved yet. Wait for them to save, then try again."
+msgstr "Your latest changes aren't saved yet. Wait for them to save, then try again."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your latest changes aren't saved, so nothing was changed. Check the save status at the top, then try again."

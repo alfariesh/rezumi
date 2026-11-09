@@ -20,6 +20,7 @@ export function AboutForm() {
 	return (
 		<RichTextField
 			label={t`About me`}
+			rewrite="about"
 			value={about.content}
 			maxLength={max.about}
 			placeholder={t`Who you are, what you do best, and what you're looking for.`}
@@ -85,6 +86,7 @@ export function CustomSectionForm({ id }: { id: string }) {
 			/>
 			<RichTextField
 				label={t`Text`}
+				rewrite="customContent"
 				value={section.content}
 				maxLength={max.customContent}
 				onChange={(html) =>

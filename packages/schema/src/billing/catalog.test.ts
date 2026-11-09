@@ -108,8 +108,11 @@ describe("billing catalog", () => {
 	it("prices every kind of Rezumi AI work in whole credits, with the launch weights", () => {
 		expect(CREDIT_COSTS).toEqual({
 			"short-text": 1,
+			"portfolio-rewrite": 1,
+			"portfolio-metrics": 1,
 			"draft-answer": 2,
 			"cover-letter": 3,
+			"portfolio-draft": 3,
 			"interview-practice": 3,
 			"coach-turn": 3,
 			review: 4,
