@@ -2,7 +2,7 @@ import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioEventKind } from "@rezumi/schema/portfolio/statistics";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { SQL, SQLWrapper } from "drizzle-orm";
-import { and, asc, count, eq, isNotNull, isNull, sql } from "drizzle-orm";
+import { and, asc, count, eq, isNull, sql } from "drizzle-orm";
 import { isbot } from "isbot";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
@@ -12,7 +12,7 @@ import { PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS } from "@rezumi/schema/portfolio/lim
 import { rateLimitConfig } from "@rezumi/utils/rate-limit";
 import { createRateLimiter } from "../../redis";
 import { getEntitlements } from "../billing/entitlements";
-import { isCustomDomainsEnabled, ownHosts } from "../custom-domain/service";
+import { domainIsLive, isCustomDomainsEnabled, ownHosts } from "../custom-domain/service";
 import { isOwner, ownerIsNotBanned, resolveViewer } from "../resume/access-policy";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
 import { isFirstVisitThisHour } from "../resume/view-dedup";
@@ -153,7 +153,7 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 			? db
 					.select({ hostname: schema.customDomain.hostname })
 					.from(schema.customDomain)
-					.where(and(eq(schema.customDomain.userId, row.userId), isNotNull(schema.customDomain.verifiedAt)))
+					.where(and(eq(schema.customDomain.userId, row.userId), domainIsLive()))
 					.limit(1)
 					.then(([found]) => found?.hostname ?? null)
 			: null,
@@ -327,7 +327,7 @@ const indexablePortfolioWhere = () =>
 	and(
 		portfolioIsIndexable(),
 		isCustomDomainsEnabled()
-			? sql`not exists (select 1 from ${schema.customDomain} verified_domain where verified_domain.user_id = ${schema.portfolio.userId} and verified_domain.verified_at is not null)`
+			? sql`not exists (select 1 from ${schema.customDomain} where ${schema.customDomain.userId} = ${schema.portfolio.userId} and ${domainIsLive()})`
 			: undefined,
 	);
 

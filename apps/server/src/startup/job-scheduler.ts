@@ -1,10 +1,12 @@
 import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
 import { runCareerJobs } from "@rezumi/api/features/career/jobs";
+import { runCustomDomainJobs } from "@rezumi/api/features/custom-domain/jobs";
 import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
 
 /**
  * The long-running Node server owns ticks; PostgreSQL coordinates work across server instances. Each tick runs billing
- * first (its work is short), then career, then portfolio file cleanup, and a failure in one never skips the others.
+ * first (its work is short), then career, portfolio file cleanup and custom domains, and a failure in one never skips
+ * the others.
  */
 export function startJobScheduler() {
 	let stopped = false;
@@ -19,6 +21,9 @@ export function startJobScheduler() {
 		});
 		await runPortfolioJobs().catch(() => {
 			console.error("[portfolio] Scheduled work failed. It retries on a later tick.");
+		});
+		await runCustomDomainJobs().catch(() => {
+			console.error("[custom-domain] Scheduled work failed. It retries on a later tick.");
 		});
 	};
 

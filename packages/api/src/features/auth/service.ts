@@ -10,6 +10,7 @@ import { endBillingForDeletedUser } from "../billing/deletion";
 import { exportBillingData } from "../billing/export";
 import { careerService } from "../career/service";
 import { coverLetterService } from "../cover-letters/service";
+import { queueHostnameRemoval } from "../custom-domain/hostnames";
 import { exportPortfolioMessages } from "../portfolio/contact";
 import { getStorageService } from "../storage/service";
 import { revokeAppleAuthorization } from "./apple-revocation";
@@ -142,7 +143,16 @@ export const authService = {
 		}
 
 		try {
-			await db.delete(schema.user).where(eq(schema.user.id, input.userId));
+			await db.transaction(async (tx) => {
+				// Queued first: deleting the account takes the custom_domain row with it.
+				const domains = await tx
+					.select({ cfHostnameId: schema.customDomain.cfHostnameId, hostname: schema.customDomain.hostname })
+					.from(schema.customDomain)
+					.where(eq(schema.customDomain.userId, input.userId))
+					.for("update");
+				for (const domain of domains) await queueHostnameRemoval(tx, domain);
+				await tx.delete(schema.user).where(eq(schema.user.id, input.userId));
+			});
 		} catch (err) {
 			console.error("Failed to delete user record:", err);
 

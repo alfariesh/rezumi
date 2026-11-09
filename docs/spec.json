@@ -58929,6 +58929,72 @@
 														}
 													],
 													"description": "When DNS was last checked."
+												},
+												"managed": {
+													"type": "boolean",
+													"description": "Whether this server issues the domain's HTTPS certificate through Cloudflare."
+												},
+												"stage": {
+													"enum": [
+														"dns",
+														"hostname",
+														"certificate",
+														"active",
+														"problem"
+													],
+													"type": "string",
+													"description": "How far the domain has come: waiting for its DNS records, being set up, waiting for its HTTPS certificate, working, or stopped by a problem."
+												},
+												"problem": {
+													"anyOf": [
+														{
+															"enum": [
+																"dns_moved",
+																"blocked",
+																"caa",
+																"certificate",
+																"quota",
+																"rejected"
+															],
+															"type": "string"
+														},
+														{
+															"type": "null"
+														}
+													],
+													"description": "What stopped the domain, when stage is problem."
+												},
+												"plan": {
+													"type": "object",
+													"properties": {
+														"state": {
+															"enum": [
+																"ok",
+																"grace",
+																"redirecting"
+															],
+															"type": "string",
+															"description": "Whether the plan covers the domain, it's in its grace after the plan ended, or it now redirects."
+														},
+														"until": {
+															"anyOf": [
+																{
+																	"type": "string",
+																	"format": "date-time",
+																	"x-native-type": "date"
+																},
+																{
+																	"type": "null"
+																}
+															],
+															"description": "When the grace ends."
+														}
+													},
+													"required": [
+														"state",
+														"until"
+													],
+													"description": "How the account's plan affects the domain."
 												}
 											},
 											"required": [
@@ -58938,7 +59004,11 @@
 												"txtValue",
 												"records",
 												"verified",
-												"lastCheckedAt"
+												"lastCheckedAt",
+												"managed",
+												"stage",
+												"problem",
+												"plan"
 											]
 										},
 										{
@@ -59063,7 +59133,7 @@
 			"put": {
 				"operationId": "setCustomDomain",
 				"summary": "Set the custom domain",
-				"description": "Sets the account's custom domain, replacing any previous one, and returns the DNS records to add: a TXT record that proves ownership, and a CNAME (or, for a root domain, addresses) pointing at this server. Requires authentication.",
+				"description": "Sets the account's custom domain, replacing any previous one, and returns the DNS records to add: a TXT record that proves ownership, and a CNAME (or, for a root domain on a server without certificate automation, addresses) pointing at this server. Answers PLAN_FEATURE_REQUIRED when the instance has portfolios open to the account and its plan doesn't include custom domains. Requires authentication.",
 				"tags": [
 					"Custom Domain"
 				],
@@ -59157,6 +59227,72 @@
 												}
 											],
 											"description": "When DNS was last checked."
+										},
+										"managed": {
+											"type": "boolean",
+											"description": "Whether this server issues the domain's HTTPS certificate through Cloudflare."
+										},
+										"stage": {
+											"enum": [
+												"dns",
+												"hostname",
+												"certificate",
+												"active",
+												"problem"
+											],
+											"type": "string",
+											"description": "How far the domain has come: waiting for its DNS records, being set up, waiting for its HTTPS certificate, working, or stopped by a problem."
+										},
+										"problem": {
+											"anyOf": [
+												{
+													"enum": [
+														"dns_moved",
+														"blocked",
+														"caa",
+														"certificate",
+														"quota",
+														"rejected"
+													],
+													"type": "string"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "What stopped the domain, when stage is problem."
+										},
+										"plan": {
+											"type": "object",
+											"properties": {
+												"state": {
+													"enum": [
+														"ok",
+														"grace",
+														"redirecting"
+													],
+													"type": "string",
+													"description": "Whether the plan covers the domain, it's in its grace after the plan ended, or it now redirects."
+												},
+												"until": {
+													"anyOf": [
+														{
+															"type": "string",
+															"format": "date-time",
+															"x-native-type": "date"
+														},
+														{
+															"type": "null"
+														}
+													],
+													"description": "When the grace ends."
+												}
+											},
+											"required": [
+												"state",
+												"until"
+											],
+											"description": "How the account's plan affects the domain."
 										}
 									},
 									"required": [
@@ -59166,7 +59302,11 @@
 										"txtValue",
 										"records",
 										"verified",
-										"lastCheckedAt"
+										"lastCheckedAt",
+										"managed",
+										"stage",
+										"problem",
+										"plan"
 									]
 								}
 							}
@@ -59193,6 +59333,66 @@
 												"message": {
 													"type": "string",
 													"default": "Enter a domain such as resume.example.com."
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": false
+												},
+												"code": {
+													"type": "string"
+												},
+												"status": {
+													"type": "number"
+												},
+												"message": {
+													"type": "string"
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										}
+									]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "403",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": true
+												},
+												"code": {
+													"const": "PLAN_FEATURE_REQUIRED"
+												},
+												"status": {
+													"const": 403
+												},
+												"message": {
+													"type": "string",
+													"default": "Custom domains aren't included in your plan."
 												},
 												"data": {}
 											},
@@ -59480,7 +59680,7 @@
 			"post": {
 				"operationId": "verifyCustomDomain",
 				"summary": "Check the custom domain's DNS",
-				"description": "Checks the custom domain's DNS records now. When they're right, the domain is verified and opens the primary resume, moving it from any other account that had it. Requires authentication.",
+				"description": "Checks the custom domain's DNS records now. When they're right, the domain is verified and opens the account's published portfolio or primary resume, moving it from any other account that had it. Requires authentication.",
 				"tags": [
 					"Custom Domain"
 				],
@@ -59564,6 +59764,90 @@
 												}
 											],
 											"description": "When DNS was last checked."
+										},
+										"managed": {
+											"type": "boolean",
+											"description": "Whether this server issues the domain's HTTPS certificate through Cloudflare."
+										},
+										"stage": {
+											"enum": [
+												"dns",
+												"hostname",
+												"certificate",
+												"active",
+												"problem"
+											],
+											"type": "string",
+											"description": "How far the domain has come: waiting for its DNS records, being set up, waiting for its HTTPS certificate, working, or stopped by a problem."
+										},
+										"problem": {
+											"anyOf": [
+												{
+													"enum": [
+														"dns_moved",
+														"blocked",
+														"caa",
+														"certificate",
+														"quota",
+														"rejected"
+													],
+													"type": "string"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "What stopped the domain, when stage is problem."
+										},
+										"plan": {
+											"type": "object",
+											"properties": {
+												"state": {
+													"enum": [
+														"ok",
+														"grace",
+														"redirecting"
+													],
+													"type": "string",
+													"description": "Whether the plan covers the domain, it's in its grace after the plan ended, or it now redirects."
+												},
+												"until": {
+													"anyOf": [
+														{
+															"type": "string",
+															"format": "date-time",
+															"x-native-type": "date"
+														},
+														{
+															"type": "null"
+														}
+													],
+													"description": "When the grace ends."
+												}
+											},
+											"required": [
+												"state",
+												"until"
+											],
+											"description": "How the account's plan affects the domain."
+										},
+										"dns": {
+											"type": "object",
+											"properties": {
+												"ownership": {
+													"type": "boolean",
+													"description": "Whether the TXT record proving ownership is visible."
+												},
+												"routing": {
+													"type": "boolean",
+													"description": "Whether the domain points at this server."
+												}
+											},
+											"required": [
+												"ownership",
+												"routing"
+											],
+											"description": "What this check found in DNS."
 										}
 									},
 									"required": [
@@ -59573,7 +59857,12 @@
 										"txtValue",
 										"records",
 										"verified",
-										"lastCheckedAt"
+										"lastCheckedAt",
+										"managed",
+										"stage",
+										"problem",
+										"plan",
+										"dns"
 									]
 								}
 							}

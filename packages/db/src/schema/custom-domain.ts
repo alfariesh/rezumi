@@ -21,6 +21,18 @@ export const customDomain = pg.pgTable(
 		lastCheckedAt: pg.timestamp("last_checked_at", { withTimezone: true }),
 		// Since when DNS has stopped pointing here; a domain failing for a week loses its verification.
 		failingSince: pg.timestamp("failing_since", { withTimezone: true }),
+		// Cloudflare for SaaS: the custom hostname made for this domain, and what Cloudflare last said about it. All empty
+		// on an installation without the automation.
+		cfHostnameId: pg.text("cf_hostname_id"),
+		cfHostnameStatus: pg.text("cf_hostname_status"),
+		cfSslStatus: pg.text("cf_ssl_status"),
+		// What's stopping the domain, in words the app explains; null while it's working or simply waiting.
+		cfProblem: pg.text("cf_problem"),
+		// When the job looks at this hostname next; null means as soon as it can.
+		cfNextCheckAt: pg.timestamp("cf_next_check_at", { withTimezone: true }),
+		// Since when the account's plan hasn't included custom domains (`00-keputusan.md` rule #2).
+		planLapsedAt: pg.timestamp("plan_lapsed_at", { withTimezone: true }),
+		planCheckedAt: pg.timestamp("plan_checked_at", { withTimezone: true }),
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 	},
 	(t) => [
@@ -30,3 +42,15 @@ export const customDomain = pg.pgTable(
 			.where(sql`${t.verifiedAt} is not null`),
 	],
 );
+
+/**
+ * Cloudflare custom hostnames waiting to be deleted. Has no link to the account on purpose: the row has to outlive the
+ * `custom_domain` row and the account it came from, and each hostname costs money until it's gone.
+ */
+export const customDomainRemoval = pg.pgTable("custom_domain_removal", {
+	cfHostnameId: pg.text("cf_hostname_id").primaryKey(),
+	hostname: pg.text("hostname").notNull(),
+	attempts: pg.integer("attempts").notNull().default(0),
+	nextAttemptAt: pg.timestamp("next_attempt_at", { withTimezone: true }).notNull().defaultNow(),
+	createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});

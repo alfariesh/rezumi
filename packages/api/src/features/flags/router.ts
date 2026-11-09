@@ -3,7 +3,7 @@ import { env } from "@rezumi/env/server";
 import { publicProcedure } from "../../context";
 import { getBillingMode } from "../billing/entitlements";
 import { isCareerSchedulingEnabled } from "../career/runner";
-import { isCustomDomainsEnabled } from "../custom-domain/service";
+import { isCustomDomainOffered } from "../custom-domain/service";
 import { getPortfolioMode } from "../portfolio/mode";
 
 export type FeatureFlags = {
@@ -68,7 +68,7 @@ export const flagsRouter = {
 			careerSchedulingEnabled: isCareerSchedulingEnabled(),
 			appUrl: new URL(env.APP_URL).origin,
 			...(env.APP_ALIAS_URL ? { aliasUrl: new URL(env.APP_ALIAS_URL).origin } : {}),
-			customDomains: isCustomDomainsEnabled(),
+			customDomains: isCustomDomainOffered(),
 			olacvSuggestion: env.FLAG_OLACV_SUGGESTION,
 			billing: getBillingMode() === "on",
 			// Only "on": while admins test portfolios, public pages don't mention them.

@@ -12,7 +12,7 @@ their own domains. Ordinary public resume links work with `APP_URL` alone. Domai
 | ------------------------------------------------------------ | --------------------------------------------- | ------------------------------------------------------------------------------- |
 | `APP_URL`, such as `https://resume.example.com`              | Your main application address                 | Sign-in, editor, public pages and API                                           |
 | `APP_ALIAS_URL`, such as `https://cv.example.com`            | One shorter address for everyone              | The same public pages; sign-in and editor redirect to `APP_URL`                 |
-| A user's verified domain, such as `https://jane.example.net` | One account's personal resume site            | That account's primary resume at `/`                                            |
+| A user's verified domain, such as `https://www.jane.example` | One account's personal site                   | That account's published portfolio at `/`, or else its primary resume           |
 | `ROOT_RESUME_ID`                                             | Turn your instance's homepage into one resume | The selected public resume at `/`, while the application keeps its usual routes |
 
 An alias doesn't move accounts or create another database. A custom domain doesn't host the editor. Choose
@@ -45,72 +45,82 @@ verified custom domain. Keep `APP_URL` as the sign-in origin; cookies, passkeys 
 
 ### Before you start
 
-- Have a hostname such as `domains.example.com` on a Cloudflare-managed zone, attached to the Worker as a **Custom
-  Domain**. This is the CNAME target users will see; it isn't itself a user's custom domain.
-- Have a way to deliver each verified user hostname to the Worker with a valid certificate. On Cloudflare this is
-  [Cloudflare for SaaS custom hostnames](https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/),
-  with the target hostname above as the fallback origin. The app verifies ownership and serves the right resume by
-  hostname, but it does not call the Cloudflare API: you add each hostname to Cloudflare yourself, or with your own
-  automation. Environment variables alone don't configure DNS or TLS.
+Users' domains reach your Worker through [Cloudflare for SaaS](https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/). You need a zone on Cloudflare, here `example.com`, with the Worker's main domain attached as a **Custom Domain**. Cloudflare includes 100 custom hostnames and bills the ones after that per month; check the current [plans](https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/plans/).
 
-<Note>
-  The app's built-in router endpoint (`/api/internal/traefik`) returns Traefik-format configuration and is not used on
-  Cloudflare. Without a provider polling it, the background DNS rechecks described under [Keep domains
-  working](#keep-domains-working) do not run, so check a domain with **Check DNS** after DNS changes.
-</Note>
+When both the zone ID and the API token below are set, the app creates each hostname through the API once DNS proves who owns the domain, follows its certificate until it's active, and deletes it when the domain goes. Without them it verifies DNS only, and you add each hostname to Cloudflare yourself.
+
+### Set up Cloudflare for SaaS
+
+1. Open the zone, then **SSL/TLS → Custom Hostnames**, and enable Cloudflare for SaaS.
+2. Create a target hostname that has no origin server: in **DNS → Records** add a proxied `AAAA` record for `domains` with the value `100::`. Back in **Custom Hostnames**, enter `domains.example.com` as the **Fallback Origin** and wait until it's **Active**. Users point their CNAME records here.
+3. In **Workers Routes** on the zone, add these routes **in this order**. The ones without a Worker come first so your own subdomains never pass through this Worker, not even for a moment:
+
+   | Route                            | Worker   | Why                                                              |
+   | -------------------------------- | -------- | ---------------------------------------------------------------- |
+   | `*/.well-known/acme-challenge/*` | None     | Certificate validation has to reach Cloudflare, not the app      |
+   | `*/.well-known/pki-validation/*` | None     | Certificate validation has to reach Cloudflare, not the app      |
+   | `example.com/*`                  | None     | The Worker's own Custom Domain already serves this               |
+   | `*.example.com/*`                | None     | Leaves your blog and other subdomains as they are                |
+   | `domains.example.com/*`          | Your app | Users whose DNS is also on Cloudflare arrive under this hostname |
+   | `*/*`                            | Your app | Every other hostname: your users' domains                        |
+
+   Keep these routes in the dashboard rather than in `wrangler.jsonc`, so the deploy token needs no zone permissions. After adding them, open your main domain and your subdomains to check they still work.
+
+4. Create an API token under **My Profile → API Tokens** with one permission, **Zone → SSL and Certificates → Edit**, limited to this zone. Store it yourself:
+
+   ```bash
+   pnpm exec wrangler secret put CLOUDFLARE_SAAS_API_TOKEN
+   ```
 
 ### Set the app's environment
 
-Add the target to `vars` in `wrangler.jsonc`, then store a secret for the controls to unlock:
+Add the target and the zone ID from the zone's **Overview** page to `vars` in `wrangler.jsonc`, then redeploy:
 
 ```jsonc
-"vars": { "CUSTOM_DOMAIN_TARGET": "domains.example.com" }
+"vars": {
+  "CUSTOM_DOMAIN_TARGET": "domains.example.com",
+  "CLOUDFLARE_SAAS_ZONE_ID": "<32-character zone ID>"
+}
 ```
 
-```bash
-openssl rand -hex 32 | pnpm exec wrangler secret put CUSTOM_DOMAIN_PROVIDER_SECRET
-```
+Use a hostname for `CUSTOM_DOMAIN_TARGET`, without a scheme, path or port. Apply database migrations before deploying. Until the token exists, the zone ID does nothing.
 
-Use a hostname for `CUSTOM_DOMAIN_TARGET`, without a scheme, path or port. Redeploy after changing `vars`. Both settings
-must be present before the custom-domain controls become available on web and mobile. The secret is only checked on the
-Traefik-format endpoint, which Cloudflare doesn't use; keep it out of URLs, public configuration and logs anyway.
+With the automation on, custom domains are offered only to accounts that `PORTFOLIO_MODE` lets in, because each hostname can cost money: `off` hides them, `admins` shows them to admins, and `on` shows them to everyone, with the plan rule below.
+
+<Note>
+  Addresses that aren't connected answer `404` once the automation is on, instead of showing the app. Direct visits to
+  the target hostname redirect to `APP_URL`.
+</Note>
 
 ### Verify one domain end to end
 
-1. Publish a test resume and turn on **Primary resume** in **Share**.
+1. Publish a test portfolio, or a test resume with **Primary resume** turned on in **Share**.
 2. Under **Your domain**, enter a domain you control and select **Connect**.
-3. At the domain's DNS provider, add the exact ownership TXT record shown in Share, plus its routing record:
+3. At the domain's DNS provider, add both records shown:
 
-   | Record | Name                                                    | Value                                                   |
-   | ------ | ------------------------------------------------------- | ------------------------------------------------------- |
-   | CNAME  | The chosen subdomain, such as `resume.jane.example.net` | Your `CUSTOM_DOMAIN_TARGET`                             |
-   | TXT    | `_rx-verify.resume.jane.example.net`                    | The account-specific `rx-verify=…` value shown in Share |
+   | Record | Name                                        | Value                                          |
+   | ------ | ------------------------------------------- | ---------------------------------------------- |
+   | CNAME  | The chosen name, such as `www.jane.example` | Your `CUSTOM_DOMAIN_TARGET`                    |
+   | TXT    | `_rx-verify.www.jane.example`               | The account-specific `rx-verify=…` value shown |
 
-   For a root domain, use A and/or AAAA records instead of CNAME. Every address returned for the custom domain must
-   be among the target hostname's current addresses. Keep the TXT record too. If a DNS service proxies the record
-   and hides the target addresses, use DNS-only records for this check.
+   If that DNS is also on Cloudflare, set the CNAME to **DNS only**.
 
-4. Select **Check DNS**. Wait for DNS propagation and try again if the records aren't visible yet.
-5. After verification, add the hostname to Cloudflare for SaaS (see above), then allow the app's hostname cache (up to a
-   minute) and certificate issuance to complete. Open `https://<custom-domain>/` from a signed-out browser.
-6. Check that the primary resume appears, its password and contact settings apply, and its PDF downloads follow
-   **Visitors can download the PDF**. Check HTTPS separately: successful DNS verification doesn't prove a certificate
-   was issued.
+4. Select **Check DNS**. The status then moves through **DNS points here**, **Ownership proven** and **HTTPS certificate** to **Active**, usually within minutes. The page updates by itself.
+5. Open `https://<custom-domain>/` from a signed-out browser. Check that the padlock appears and the right page opens. Remove the domain and check that the hostname disappears from **Custom Hostnames** within a couple of minutes.
 
-Each account stores one domain. Verification proves ownership using the TXT record and routing using CNAME or
-addresses. A verified domain can move to another account only after that account supplies its own valid DNS proof.
-Paths other than `/`, public PDF routes and favicons redirect to the main application, except `/robots.txt`.
+A domain without `www` needs a CNAME at the root, which only some DNS providers allow (Cloudflare calls this flattening). Proxying a root domain with static addresses is an Enterprise feature, so suggest `www` or another subdomain and forwarding the root at the registrar. Without the automation, a root domain uses `A` and/or `AAAA` records instead, and every address returned must be among the target hostname's current addresses.
+
+Each account stores one domain. Verification proves ownership using the TXT record and routing using CNAME or addresses. A verified domain can move to another account only after that account supplies its own valid DNS proof, and its hostname moves with it. Paths other than `/`, public PDF routes, portfolio requests and favicons redirect to the main application, except `/robots.txt`.
 
 ### Keep domains working
 
-Leave the ownership TXT and routing records in place. With a router provider polling the app, background rechecks run for verified
-domains not checked within a day. After a domain's DNS fails verification continuously for seven days, its verification
-and router are removed. Restoring DNS and choosing **Check DNS** reconnects it. Without provider polling, those
-background rechecks don't run.
+Leave the ownership TXT and routing records in place. A job checks every verified domain daily, and follows new hostnames every couple of minutes. After a domain's DNS fails continuously for seven days, its verification is removed and its hostname deleted; restoring DNS and choosing **Check DNS** connects it again.
 
-Turning off a resume's public link keeps the domain connected but shows an unavailable page. Changing the primary
-resume moves the domain's homepage to that resume. Removing the domain in Share removes the connection; normal
-public resume addresses keep working. A hostname may remain in the app's cache for up to a minute.
+With the automation, where portfolios are on and a plan includes custom domains, a domain keeps working for seven days after the plan ends, then redirects to the account's address on `APP_URL`. Thirty days after that its hostname is deleted, while the domain stays on the account. Renewing brings it back without any DNS change.
+
+Without the automation, the job doesn't touch DNS or hostnames, and rechecks only run while something polls the app's Traefik-format endpoint (`/api/internal/traefik`, which Cloudflare doesn't use). Check a domain with **Check DNS** after DNS changes.
+
+Turning off a resume's public link or unpublishing a portfolio keeps the domain connected. Removing the domain removes the connection and its hostname; normal public addresses keep working. A hostname may remain in the app's cache for up to a minute.
 
 ## Upgrade an existing installation
 
@@ -130,14 +140,17 @@ their `/api/resumes/…` requests to the app. If you maintain an API client, see
 
 ## Troubleshoot
 
-| Symptom                                   | Check                                                                                                                                                    |
-| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Your domain** is missing                | Set both custom-domain settings and redeploy the Worker.                                                                                                 |
-| **Check DNS** says records aren't visible | Verify the exact TXT name/value, the CNAME target or all A/AAAA addresses, and DNS propagation. Keep DNS-only routing where a proxy hides those records. |
-| Domain is connected but HTTPS fails       | Check that the hostname is added in Cloudflare for SaaS, its certificate status, and that the fallback origin is your target hostname.                   |
-| Domain opens an unavailable page          | Publish a resume and make it primary; also check whether it is in Trash.                                                                                 |
-| Alias opens the wrong site                | Attach the alias as a Custom Domain on the same Worker and check its certificate.                                                                        |
-| Owner visit is counted                    | Sign-in cookies belong to the main origin; an alias or custom domain can see an anonymous visitor.                                                       |
+| Symptom                                   | Check                                                                                                                                                                      |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Your domain** is missing                | Set `CUSTOM_DOMAIN_TARGET` and either the Cloudflare for SaaS settings or `CUSTOM_DOMAIN_PROVIDER_SECRET`, and redeploy. With the automation, also check `PORTFOLIO_MODE`. |
+| **Check DNS** says records aren't visible | Verify the exact TXT name and value, the CNAME target, and DNS propagation. Set the CNAME to DNS only where a proxy hides it.                                              |
+| Status stays on **HTTPS certificate**     | Look at the hostname in **Custom Hostnames**. Check that the two `/.well-known/` routes have no Worker, and look for CAA records on the domain.                            |
+| HTTPS fails for every domain              | Check that the fallback origin is **Active** and that the `*/*` route points at your Worker.                                                                               |
+| Hostnames aren't created                  | Search the Worker's logs for `[custom-domain]`. An `auth` failure means the token is wrong; `quota` means the zone's custom hostname limit.                                |
+| Your own subdomain shows the app or a 404 | Add a route for it with no Worker, as in the setup table.                                                                                                                  |
+| Domain opens an unavailable page          | Publish a portfolio, or publish a resume and make it primary; also check whether it is in Trash.                                                                           |
+| Alias opens the wrong site                | Attach the alias as a Custom Domain on the same Worker and check its certificate.                                                                                          |
+| Owner visit is counted                    | Sign-in cookies belong to the main origin; an alias or custom domain can see an anonymous visitor.                                                                         |
 
 ## Related pages
 
