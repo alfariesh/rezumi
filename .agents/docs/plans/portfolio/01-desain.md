@@ -224,7 +224,7 @@ Setiap tema hanya membaca token ini (CSS custom properties), sehingga kustomisas
 
 - Kolom: nama, email, pesan (≤2.000 karakter). Teks kecil di bawah form: pesan dikirim ke pemilik portfolio dan email pengirim terlihat olehnya agar bisa membalas.
 - Anti-spam: Cloudflare Turnstile, kolom jebakan tersembunyi, batas per pengunjung dan per portfolio.
-- Setelah kirim: pesan sukses di tempat. Tanpa JavaScript, form tetap terkirim (POST biasa, kembali dengan tanda terkirim).
+- Setelah kirim: pesan sukses di tempat. Turnstile butuh JavaScript, jadi tanpa JavaScript form disembunyikan dan catatan mengarahkan ke pilihan kontak lain di halaman itu (keputusan 2026-11-09; mengizinkan kirim tanpa token membuka celah spam). Server tetap menerima POST biasa dan kembali dengan tanda terkirim atau gagal, untuk peramban yang mengirim form tanpa skrip penanganan.
 - Tombol layanan "Pesan lewat form" mengisi pesan awal dengan nama layanan.
 - Pemilik portfolio menerima email notifikasi (membalas email = membalas pengirim) dan melihat pesan di dashboard; bisa menandai dibaca, menghapus, dan mematikan form.
 

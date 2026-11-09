@@ -104,6 +104,16 @@ Under **Intro**, choose the intro's background (plain, a soft gradient, a subtle
 
 Every kind of block and section is on every plan, and so is the contact form. You can look at every theme before you choose. When a paid plan ends, nothing is deleted: your theme, effect, works and files stay on the page, you can't add more until you're within the limits, and the badge returns. Your own domain stops 7 days after the plan ends and works again when you subscribe again. Pictures you removed count toward your storage for one more day, until they're deleted.
 
+### Visitors and messages
+
+The Portfolio page in your dashboard shows the last 30 days once your portfolio has been published. Only you can see these numbers.
+
+- **Visitors**: visits per day, clicks on your buttons, messages, where visits came from (LinkedIn, WhatsApp, Google, direct, other sites) and your most opened work. A visitor counts once an hour. Your own visits, search engines and previews don't count, and no tracking cookie is used.
+- **With Plus**: visitors' countries on a map, their devices, the sites that link to you, and work opened per day. These figures are estimates.
+- **Contact form**: turn on **Show a contact form** in the editor, under **Contact**. Visitors pass a quick anti-spam check. Each message arrives by email (reply to that email to answer the sender) and in **Messages** on the Portfolio page, where you can mark it as read or delete it. Messages are deleted automatically after 90 days. If several arrive close together, one email sums them up.
+- The form needs JavaScript in the visitor's browser. Without it, visitors see your other contact options instead.
+- On a custom domain, the form's button opens your portfolio on rezumi.app to send the message.
+
 ### Your short link and your resume
 
 While your portfolio is published, `rezumi.app/<username>` (and your custom domain) open the portfolio. Your resume stays at its own address, and the resume's **Share** panel says so. Unpublish the portfolio and the short link opens your primary resume again.
