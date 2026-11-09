@@ -20,6 +20,8 @@
 
 **Yang bisa kamu cek di akhir:** daftar uji dengan tanda ✅/❌, tautan panduan, dan portfolio contoh yang bisa kamu bagikan.
 
+**Daftar singkat pemilik (2026-11-09):** PR #54 sudah di-merge, secret Turnstile sudah tersimpan, legal sudah dicek, TDPSE ditunda (keputusan pemilik) → uji ±1 jam → tulis "nyalakan". Isi legal soal Anthropic mengasumsikan `AI_PROVIDER` produksi langsung ke Anthropic; bila lewat perantara, perbarui Kebijakan Privasi.
+
 ## Untuk agent
 
 ### Langkah
