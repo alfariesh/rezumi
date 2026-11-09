@@ -8,7 +8,9 @@ import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/lim
 import { generateId } from "@rezumi/utils/string";
 import { portfolioErrorMessage } from "../errors";
 import { discardUploadedImages, isAbort, stopIfAborted, uploadPortfolioImage } from "../images/upload";
+import { refreshPortfolioUsage } from "../works/storage-meter";
 import { titleFromFileName } from "../works/works";
+import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { client } from "@/libs/orpc/client";
 
 type PdfProblem = "type" | "too-large" | "password" | "unreadable";
@@ -162,8 +164,10 @@ export async function uploadPortfolioPdf(
 		);
 	} catch (error) {
 		if (picture) void discardUploadedImages([picture]);
+		openPlanDialogForError(error);
 		throw error;
 	}
+	refreshPortfolioUsage();
 	if (signal?.aborted) {
 		void discardUploadedImages(picture ? [picture, { key: uploaded.key }] : [{ key: uploaded.key }]);
 		stopIfAborted(signal);

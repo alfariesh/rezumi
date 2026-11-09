@@ -21,6 +21,9 @@ export const OVERDUE = new Date(0);
 
 const file = schema.portfolioFile;
 
+/** The files that still count: used, or waiting out the grace period. A file past `OVERDUE` is only waiting to go. */
+const isNotOverdue = () => or(isNull(file.unusedSince), gt(file.unusedSince, OVERDUE));
+
 /**
  * Locks the account's portfolio row for this transaction. Saves, uploads and deletions take it and wait their turn;
  * the upkeep jobs pass `skipLocked` and leave a portfolio being saved for a later run. Null when the account has no
@@ -62,7 +65,8 @@ export async function readStoredData(tx: DbOrTx, userId: string): Promise<unknow
  * the cleanup job deletes them once the grace period has passed. `required` (the files a save refers to, a subset of
  * `used`) must be recorded, or the save is refused with `PORTFOLIO_FILE_NOT_FOUND`. They are looked up only after
  * being marked: a file the cleanup job is deleting at that moment is then either kept (marked first) or found
- * missing (deleted first), never saved as used while it's being deleted.
+ * missing (deleted first), never saved as used while it's being deleted. A file already `OVERDUE` counts as gone: it no
+ * longer counts toward storage, so using it again would let an account hold more than its quota.
  */
 export async function markFileUsage(
 	tx: DbOrTx,
@@ -75,13 +79,13 @@ export async function markFileUsage(
 		await tx
 			.update(file)
 			.set({ unusedSince: null })
-			.where(and(mine, inArray(file.key, [...used]), isNotNull(file.unusedSince)));
+			.where(and(mine, inArray(file.key, [...used]), gt(file.unusedSince, OVERDUE)));
 	const required = options.required ?? [];
 	if (required.length) {
 		const rows = await tx
 			.select({ key: file.key })
 			.from(file)
-			.where(and(mine, inArray(file.key, [...required])));
+			.where(and(mine, inArray(file.key, [...required]), isNotOverdue()));
 		const recorded = new Set(rows.map((row) => row.key));
 		const missing = required.find((key) => !recorded.has(key));
 		if (missing) throw portfolioErrors.fileNotFound(missing);
@@ -104,7 +108,7 @@ export async function storedFiles(userId: string, client: DbOrTx = db): Promise<
 			files: sql`count(*)`.mapWith(Number),
 		})
 		.from(file)
-		.where(and(eq(file.userId, userId), or(isNull(file.unusedSince), gt(file.unusedSince, OVERDUE))));
+		.where(and(eq(file.userId, userId), isNotOverdue()));
 	return { bytes: row?.bytes ?? 0, files: row?.files ?? 0 };
 }
 

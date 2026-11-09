@@ -737,6 +737,10 @@ msgstr "{done} dari {count} selesai"
 msgid "{doneMinutes} of {total} min"
 msgstr "{doneMinutes} dari {total} mnt"
 
+#: src/features/billing/plan.ts
+msgid "{effects} are included, and a portfolio that already uses another effect keeps it."
+msgstr "{effects} sudah termasuk, dan portfolio yang sudah memakai efek lain tetap memakainya."
+
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{entries, plural, one {# entry} other {# entries}}"
 msgstr "{entries, plural, one {Entri #} other {Entri #}}"
@@ -982,6 +986,10 @@ msgstr "{sections, plural, one {Bagian #} other {Bagian #}}"
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "{since, plural, =0 {since today} one {for # day} other {for # days}}"
 msgstr "{since, plural, =0 {sejak hari ini} one {untuk hari #} other {selama # hari}}"
+
+#: src/features/portfolio/works/storage-meter.tsx
+msgid "{size} of {total}"
+msgstr "{size} dari {total}"
 
 #: src/features/resume/editor/design/fit.ts
 msgid "{size} pt"
@@ -1402,6 +1410,10 @@ msgstr "Tindak lanjut singkat biasanya baik-baik saja sekarang"
 msgid "A slim stripe of the accent runs down the page edge on the sidebar's side, the sidebar sits behind a hairline and main titles open with a short accent dash."
 msgstr "Garis aksen ramping membentang di tepi halaman pada sisi sidebar, sidebar dipisah garis tipis, dan judul utama dibuka dengan tanda pisah aksen pendek."
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "A small badge at the bottom of your page."
+msgstr "Lencana kecil di bagian bawah halamanmu."
+
 #: src/dialogs/resume/template/data.ts
 msgid "A soft rounded panel floats in the left column with your portrait, name and contact lines above the supporting sections, beside an open white main column."
 msgstr "Panel lembut bersudut membulat di kolom kiri memuat foto, nama, dan kontak di atas bagian pendukung, di samping kolom utama putih yang lapang."
@@ -1441,6 +1453,10 @@ msgstr "Rencana berwaktu, pembuka Anda, cerita yang perlu dibawa, dan pertanyaan
 #: src/features/ats-checker/messages.ts
 msgid "A web address is written without https://."
 msgstr "Alamat web ditulis tanpa https://."
+
+#: src/features/homepage/plans.ts
+msgid "A web portfolio with {freeWorks} works and {freeThemes} themes"
+msgstr "Portfolio web dengan {freeWorks} karya dan {freeThemes} tema"
 
 #: src/features/homepage/features.tsx
 msgid "A/B testing"
@@ -2916,6 +2932,10 @@ msgstr "Kode cadangan disalin"
 msgid "Bad news (red)"
 msgstr "Kabar buruk (merah)"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Badge"
+msgstr "Lencana"
+
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a tinted background behind the header"
 msgid "Band"
@@ -3068,6 +3088,10 @@ msgstr "Teks isi disetel ke {minimum} pt"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Bold"
 msgstr "Tebal"
+
+#: src/features/portfolio/themes.ts
+msgid "Bold type, solid colours, thick outlines and hard offset shadows."
+msgstr "Huruf tebal, warna tegas, garis tebal, dan bayangan keras yang bergeser."
 
 #: src/features/career/offers.tsx
 msgid "Bonus"
@@ -5541,6 +5565,14 @@ msgstr "Desain sistem"
 msgid "Detail"
 msgstr "Detail"
 
+#: src/features/billing/plan-page.tsx
+msgid "Detailed portfolio statistics"
+msgstr "Statistik portfolio terperinci"
+
+#: src/features/billing/plan.ts
+msgid "Detailed statistics aren't in your plan"
+msgstr "Statistik terperinci tidak termasuk dalam paketmu"
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -6392,6 +6424,19 @@ msgstr "Setiap entri memiliki tanggal dalam sistem formulir yang dibaca, berurut
 msgid "Every other icon is included: contact, section titles, skills, interests and profile logos. Documents that already show tool logos keep them."
 msgstr "Semua ikon lain sudah termasuk: kontak, judul bagian, keahlian, minat, dan logo profil. Dokumen yang sudah menampilkan logo tools tetap menampilkannya."
 
+#: src/features/billing/plan-page.tsx
+msgid "Every portfolio intro effect"
+msgstr "Semua efek intro portfolio"
+
+#: src/features/billing/plan-page.tsx
+msgid "Every portfolio theme"
+msgstr "Semua tema portfolio"
+
+#: src/features/billing/buy-plans.tsx
+#: src/features/homepage/plans.ts
+msgid "Every portfolio theme, your own domain, no Rezumi badge"
+msgstr "Semua tema portfolio, domain sendiri, tanpa lencana Rezumi"
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Setiap peran menunjukkan apa yang Anda lakukan. Pendapat tentang susunan kata langsung di tab Menulis."
@@ -6859,8 +6904,16 @@ msgid "For a root domain such as example.com, use A and AAAA records with {0}'s 
 msgstr "Untuk domain root seperti example.com, gunakan record A dan AAAA dengan alamat {0}, bukan CNAME."
 
 #: src/features/portfolio/themes.ts
+msgid "For creatives, developers and makers with a bold point of view."
+msgstr "Untuk kreator, developer, dan pembuat yang ingin tampil berani."
+
+#: src/features/portfolio/themes.ts
 msgid "For creators, freelancers and students."
 msgstr "Untuk kreator, freelancer, dan mahasiswa."
+
+#: src/features/portfolio/themes.ts
+msgid "For designers, design engineers and thoughtful makers."
+msgstr "Untuk desainer, design engineer, dan pembuat yang mengutamakan detail."
 
 #: src/features/portfolio/themes.ts
 msgid "For designers, photographers, architects and content creators."
@@ -7473,6 +7526,10 @@ msgstr "Sembunyikan kata sandi"
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Hide photo"
 msgstr "Sembunyikan foto"
+
+#: src/features/billing/plan-page.tsx
+msgid "Hide the Made with Rezumi badge"
+msgstr "Sembunyikan lencana Made with Rezumi"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Hide the photo"
@@ -10032,6 +10089,10 @@ msgstr "Tidak ada ruang untuk surat lamaran baru"
 msgid "No room for another resume"
 msgstr "Tidak ada ruang untuk CV baru"
 
+#: src/features/billing/plan.ts
+msgid "No room for another work"
+msgstr "Tidak ada ruang untuk karya baru"
+
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
 msgstr "Tidak ditemukan bagian keahlian."
@@ -11311,6 +11372,10 @@ msgstr "Penampil gambar"
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Pictures"
 msgstr "Gambar"
+
+#: src/features/portfolio/works/storage-meter.tsx
+msgid "Pictures and PDFs"
+msgstr "Gambar dan PDF"
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Pipeline flow"
@@ -14080,6 +14145,10 @@ msgstr "Tampilkan di mesin pencari"
 msgid "Show link in title"
 msgstr "Tampilkan tautan di judul"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Show Made with Rezumi"
+msgstr "Tampilkan Made with Rezumi"
+
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Show me"
 msgstr "Tunjukkan"
@@ -14696,6 +14765,10 @@ msgstr "Berhenti di {0}"
 #: src/features/assistant/conversation.tsx
 msgid "Stopped. No edits were proposed."
 msgstr "Berhenti. Tidak ada pengeditan yang diusulkan."
+
+#: src/features/portfolio/works/storage-meter.tsx
+msgid "Storage for pictures and PDFs"
+msgstr "Penyimpanan gambar dan PDF"
 
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
@@ -15329,6 +15402,10 @@ msgstr "Asisten belum disiapkan di server ini. Siapa pun yang menjalankannya per
 msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
 msgstr "Asisten menggunakan kunci Anda sendiri. Tidak ada yang dikirim ke mana pun sampai Anda menghubungkannya."
 
+#: src/features/billing/plan.ts
+msgid "The badge stays on your plan"
+msgstr "Lencana tetap tampil pada paketmu"
+
 #: src/features/settings/ai/web-access.tsx
 msgid "The built-in reader remains active."
 msgstr "Pembaca internal tetap aktif."
@@ -15942,6 +16019,10 @@ msgstr "File ini menggunakan font Type 3, yang memuat gambar, bukan karakter."
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr "Lisensi font ini tidak mengizinkan font disematkan ke dokumen, jadi tidak bisa dipakai di PDF."
 
+#: src/features/billing/plan.ts
+msgid "This intro effect isn't in your plan"
+msgstr "Efek intro ini tidak termasuk dalam paketmu"
+
 #: src/features/billing/invoice-button.tsx
 msgid "This invoice isn't available here. Open billing to find all your invoices."
 msgstr "Invoice ini tidak tersedia di sini. Buka halaman tagihan untuk melihat semua invoice-mu."
@@ -16166,6 +16247,10 @@ msgstr "Template ini tidak termasuk dalam paketmu"
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "This testimonial is genuine, and the person who gave it agreed to show it on my portfolio."
 msgstr "Testimoni ini asli, dan pemberinya setuju testimoni ini ditampilkan di portofolio saya."
+
+#: src/features/billing/plan.ts
+msgid "This theme isn't in your plan"
+msgstr "Tema ini tidak termasuk dalam paketmu"
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
@@ -17316,6 +17401,10 @@ msgstr "Pengunjung tidak bisa melihatnya selama diturunkan."
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "Pengunjung memasukkannya sebelum mereka melihat resume. Bagikan hanya dengan orang yang Anda percayai."
 
+#: src/features/billing/plan.ts
+msgid "Visits, clicks, messages and sources are included."
+msgstr "Kunjungan, klik, pesan, dan sumber sudah termasuk."
+
 #: src/features/career/workspace/practise.tsx
 msgid "Voice settings"
 msgstr "Pengaturan suara"
@@ -17356,6 +17445,10 @@ msgstr "Menunggu untuk mendengarnya kembali"
 #: src/features/homepage/features.tsx
 msgid "Walk in ready"
 msgstr "Datang dengan siap"
+
+#: src/features/portfolio/themes.ts
+msgid "Warm paper, fine borders, folded corners and alternating stories of your work."
+msgstr "Kertas hangat, garis tipis, sudut terlipat, dan cerita karya yang tersusun berselang."
 
 #: src/features/ats-checker/messages.ts
 #: src/features/docs/mdx-components.tsx
@@ -18008,6 +18101,10 @@ msgstr "Anda dapat menyimpan hingga 30 pertanyaan lamaran."
 msgid "You can link a resume later in Publish."
 msgstr "Anda bisa menghubungkan CV nanti di Terbitkan."
 
+#: src/features/billing/plan.ts
+msgid "You can look at every theme. {themes} are included, and a portfolio that already uses another theme keeps it."
+msgstr "Kamu bisa melihat semua tema. {themes} sudah termasuk, dan portfolio yang sudah memakai tema lain tetap memakainya."
+
 #: src/features/settings/account/security.tsx
 msgid "You can no longer sign in with this passkey."
 msgstr "Anda tidak dapat lagi masuk dengan kunci sandi ini."
@@ -18374,6 +18471,14 @@ msgstr "Pembuka Anda, cerita yang perlu dibawa, dan pertanyaan yang perlu diajuk
 msgid "Your own color"
 msgstr "Warna pilihan sendiri"
 
+#: src/features/billing/plan-page.tsx
+msgid "Your own domain"
+msgstr "Domain sendiri"
+
+#: src/features/billing/plan.ts
+msgid "Your own domain isn't in your plan"
+msgstr "Domain sendiri tidak termasuk dalam paketmu"
+
 #: src/features/assistant/provider-setup.tsx
 msgid "Your own endpoint"
 msgstr ""
@@ -18393,6 +18498,10 @@ msgstr "Font sendiri tidak termasuk dalam paketmu, jadi dokumen hasil impor mema
 #: src/features/resume/editor/design/uploaded-fonts.tsx
 msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr "Font sendiri tidak termasuk dalam paketmu. Font yang sudah ditambahkan tetap tampil di halaman."
+
+#: src/features/billing/plan.ts
+msgid "Your page keeps its address on Rezumi."
+msgstr "Halamanmu tetap memakai alamatnya di Rezumi."
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Your page shows this map as a picture, in light and dark mode. © OpenStreetMap contributors."
@@ -18431,6 +18540,14 @@ msgstr "Paketmu menyimpan hingga {max} surat lamaran di luar Sampah. Pindahkan y
 #: src/features/billing/plan.ts
 msgid "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
 msgstr "Paketmu menyimpan hingga {max} CV di luar Sampah. Pindahkan yang tidak kamu perlukan ke Sampah untuk memberi ruang; kamu bisa memulihkannya nanti."
+
+#: src/features/billing/plan.ts
+msgid "Your plan shows up to {max} works. The works you already have stay. Remove one to add another."
+msgstr "Paketmu menampilkan hingga {max} karya. Karya yang sudah ada tetap tampil. Hapus satu untuk menambah yang lain."
+
+#: src/features/billing/plan.ts
+msgid "Your plan stores up to {megabytes} MB of pictures and PDFs. Files you already uploaded stay. Remove ones you no longer use; they're deleted a day later."
+msgstr "Paketmu menyimpan hingga {megabytes} MB gambar dan PDF. File yang sudah diunggah tetap ada. Hapus yang tidak lagi dipakai; file itu terhapus sehari kemudian."
 
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Your portfolio"
@@ -18474,6 +18591,10 @@ msgstr "Portofolio Anda terlalu besar untuk disimpan ({0} KB dari {1} KB). Persi
 msgid "Your portfolio is too large to save. Shorten some text or remove a few blocks."
 msgstr "Portofolio Anda terlalu besar untuk disimpan. Persingkat sebagian teks atau hapus beberapa blok."
 
+#: src/features/billing/plan.ts
+msgid "Your portfolio shows a small Made with Rezumi badge at the bottom of the page."
+msgstr "Portfoliomu menampilkan lencana kecil Made with Rezumi di bagian bawah halaman."
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your portfolio still shows its own content. Choose another resume to fill Experience, Education and the other sections again."
 msgstr "Portofolio Anda tetap menampilkan isinya sendiri. Pilih CV lain untuk mengisi lagi Pengalaman, Pendidikan, dan bagian lainnya."
@@ -18485,6 +18606,10 @@ msgstr "Portofolio Anda masih memakai file ini. Hapus dulu dari portofolio."
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio was taken down and can't be published. Contact support to appeal."
 msgstr "Portofolio Anda diturunkan dan tidak bisa diterbitkan. Hubungi dukungan untuk mengajukan banding."
+
+#: src/features/billing/plan.ts
+msgid "Your portfolio's storage is full"
+msgstr "Penyimpanan portfoliomu penuh"
 
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio's storage is full. Remove pictures or PDFs you don't need, then try again."

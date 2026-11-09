@@ -6,7 +6,9 @@ import { portfolioFileKeys } from "@rezumi/portfolio/files";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { usePortfolioEditorStore } from "../editor/store";
 import { portfolioErrorCode, portfolioErrorMessage } from "../errors";
+import { refreshPortfolioUsage } from "../works/storage-meter";
 import { compressImage, MAX_SOURCE_BYTES, MAX_SOURCE_PIXELS, PortfolioImageError } from "./compress";
+import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { client } from "@/libs/orpc/client";
 
 const EXTENSIONS: Record<string, string> = { "image/webp": "webp", "image/png": "png", "image/jpeg": "jpg" };
@@ -68,6 +70,7 @@ function imageProblemMessage(error: unknown): string {
 const BATCH_STOPPERS = new Map<string | undefined, NonNullable<UploadOutcome["stopped"]>>([
 	["TOO_MANY_REQUESTS", "rate-limited"],
 	["PORTFOLIO_STORAGE_FULL", "storage-full"],
+	["PLAN_LIMIT_REACHED", "storage-full"],
 ]);
 
 export type UploadImageOptions = {
@@ -93,6 +96,7 @@ export async function uploadPortfolioImage(file: File, options: UploadImageOptio
 		},
 		signal ? { signal } : undefined,
 	);
+	refreshPortfolioUsage();
 	const image: PortfolioImage = {
 		key: uploaded.key,
 		...(uploaded.thumbKey ? { thumbKey: uploaded.thumbKey } : {}),
@@ -115,8 +119,8 @@ export async function uploadPortfolioImage(file: File, options: UploadImageOptio
  */
 export function discardUploadedImages(images: readonly Pick<PortfolioImage, "key" | "thumbKey">[]): Promise<void> {
 	const keys = images.flatMap((image) => (image.thumbKey ? [image.key, image.thumbKey] : [image.key]));
-	return Promise.all(keys.map((key) => client.portfolio.deleteFile({ key }).catch(() => undefined))).then(
-		() => undefined,
+	return Promise.all(keys.map((key) => client.portfolio.deleteFile({ key }).catch(() => undefined))).then(() =>
+		refreshPortfolioUsage(),
 	);
 }
 
@@ -190,6 +194,7 @@ export async function uploadImageBatch(files: readonly File[], options: BatchOpt
 			const stopper = BATCH_STOPPERS.get(portfolioErrorCode(error));
 			if (stopper) {
 				stopped = stopper;
+				openPlanDialogForError(error);
 				const left = batch.length - index;
 				const problem = imageProblemMessage(error);
 				const notUploaded = plural(left, { one: "# picture wasn't uploaded.", other: "# pictures weren't uploaded." });

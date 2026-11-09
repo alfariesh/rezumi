@@ -19,6 +19,7 @@ import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { useOwnOrigins, withOwnPicture } from "./pictures";
 import { usePortfolioData } from "./store";
 import { usePortfolioEditorUi } from "./ui";
+import { usePlanFeature } from "@/features/billing/plan";
 // The page's own text, declared for translators; see the module.
 import "../page-text";
 
@@ -34,6 +35,8 @@ type PreviewInput = {
 	openWorkId?: string | null;
 	/** Where this app's uploads are served from: the only pictures the page shows (`./pictures.ts`). */
 	origins: readonly string[];
+	/** Whether the plan lets the page leave the badge out; the page itself decides from the plan on every view. */
+	canHideCredit: boolean;
 };
 
 let glyphs: Promise<Readonly<Record<string, string>>> | undefined;
@@ -55,6 +58,7 @@ async function renderPortfolioPreview({
 	links,
 	openWorkId,
 	origins,
+	canHideCredit,
 }: PreviewInput): Promise<string> {
 	const origin = window.location.origin;
 	const locale = pageLocaleOf(data, resume);
@@ -64,8 +68,7 @@ async function renderPortfolioPreview({
 		// A resume photo kept on another site shows no photo, as on the page.
 		resume: resume ? { data: withOwnPicture(resume, origins) } : null,
 		owner,
-		// Plans arrive in Phase 07; until then every portfolio shows the credit.
-		entitlements: { hidePortfolioCredit: false },
+		entitlements: { hidePortfolioCredit: canHideCredit },
 		messages: portfolioViewMessages(messages),
 		fileUrl: (key) => `${origin}/${key}`,
 		links: { resume: links.resume ? "#" : null, resumePdf: links.resumePdf ? "#" : null },
@@ -119,6 +122,7 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	// What scroll positions are kept for: the open work's detail, by its address.
 	const openAnchor = openWork ? `work-${openWork.slug}` : null;
 	const origins = useOwnOrigins();
+	const canHideCredit = usePlanFeature("hidePortfolioCredit");
 	const frame = useRef<HTMLIFrameElement>(null);
 	const effectReplay = usePortfolioEditorUi((state) => state.effectReplay);
 	const replayEffect = usePortfolioEditorUi((state) => state.replayEffect);
@@ -144,6 +148,7 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 			links: { resume: showResume, resumePdf: showPdf },
 			openWorkId: openWorkKey,
 			origins,
+			canHideCredit,
 		})
 			.then((html) => {
 				if (!current) return;
@@ -177,6 +182,7 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 		openWorkKey,
 		openAnchor,
 		origins,
+		canHideCredit,
 		attempt,
 	]);
 

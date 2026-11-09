@@ -1,12 +1,21 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { PlanFeatures, PlanId } from "@rezumi/schema/billing";
+import type { PortfolioHeroEffect, PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import type { Template } from "@rezumi/schema/templates";
 import { i18n } from "@lingui/core";
 import { plural, t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { useQuery } from "@tanstack/react-query";
-import { FREE_TEMPLATES, isFreeTemplate } from "@rezumi/schema/billing";
+import {
+	FREE_PORTFOLIO_HERO_EFFECTS,
+	FREE_PORTFOLIO_THEMES,
+	FREE_TEMPLATES,
+	isFreePortfolioHeroEffect,
+	isFreeTemplate,
+} from "@rezumi/schema/billing";
+import { isFreePortfolioTheme, PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
 import { templates } from "@/dialogs/resume/template/data";
+import { effectLabel } from "@/features/portfolio/themes";
 import { orpc } from "@/libs/orpc/client";
 
 export type PlanSummary = RouterOutput["billing"]["summary"];
@@ -33,9 +42,19 @@ export const isLockedTemplate = (plan: PlanSummary | undefined, template: Templa
 export const isLabelledTemplate = (plan: PlanSummary | undefined, template: Template) =>
 	Boolean(plan?.enabled) && !isFreeTemplate(template);
 
+/** A portfolio theme the plan doesn't open for choosing; one the portfolio already uses stays usable. */
+export const isLockedPortfolioTheme = (plan: PlanSummary | undefined, theme: PortfolioTheme) =>
+	!isFreePortfolioTheme(theme) && !hasPlanFeature(plan, "premiumPortfolioThemes");
+
+/** An intro effect the plan doesn't open for choosing; one the portfolio already uses stays usable. */
+export const isLockedHeroEffect = (plan: PlanSummary | undefined, effect: PortfolioHeroEffect) =>
+	!isFreePortfolioHeroEffect(effect) && !hasPlanFeature(plan, "premiumHeroEffects");
+
 export const getPlanName = (planId: PlanId) => (planId === "free" ? t`Free` : planId === "plus" ? "Plus" : "Pro AI");
 
 const freeTemplateNames = () => FREE_TEMPLATES.map((id) => templates[id].name);
+const listNames = (names: string[]) => new Intl.ListFormat(i18n.locale, { type: "conjunction" }).format(names);
+const MEGABYTE = 1024 * 1024;
 
 /** What a plan refusal was about: a document limit, or a feature. */
 export type PlanProblem =
@@ -46,6 +65,8 @@ export type PlanProblem =
 			used: number;
 			requested: { resumes: number; coverLetters: number };
 	  }
+	| { kind: "limit"; limit: "portfolioWorks"; max: number; used: number }
+	| { kind: "limit"; limit: "portfolioStorageBytes"; max: number; used: number }
 	| { kind: "feature"; feature: PlanFeature };
 
 /** The plan problem behind a server error (PLAN_LIMIT_REACHED or PLAN_FEATURE_REQUIRED), else null. */
@@ -53,6 +74,13 @@ export function getPlanProblem(error: unknown): PlanProblem | null {
 	if (!(error instanceof ORPCError)) return null;
 	const data = (error.data ?? {}) as Record<string, unknown>;
 	if (error.code === "PLAN_LIMIT_REACHED") {
+		if (data.limit === "portfolioWorks" || data.limit === "portfolioStorageBytes")
+			return {
+				kind: "limit",
+				limit: data.limit,
+				max: typeof data.max === "number" ? data.max : 0,
+				used: typeof data.used === "number" ? data.used : 0,
+			};
 		const requested = (data.requested ?? {}) as { resumes?: unknown; coverLetters?: unknown };
 		return {
 			kind: "limit",
@@ -73,6 +101,20 @@ export function getPlanProblem(error: unknown): PlanProblem | null {
 /** A plan problem in the user's words: what happened and the free way on. Never a price. */
 export function describePlanProblem(problem: PlanProblem): { title: string; description: string } {
 	if (problem.kind === "limit") {
+		if (problem.limit === "portfolioWorks") {
+			const { max } = problem;
+			return {
+				title: t`No room for another work`,
+				description: t`Your plan shows up to ${max} works. The works you already have stay. Remove one to add another.`,
+			};
+		}
+		if (problem.limit === "portfolioStorageBytes") {
+			const megabytes = Math.round(problem.max / MEGABYTE);
+			return {
+				title: t`Your portfolio's storage is full`,
+				description: t`Your plan stores up to ${megabytes} MB of pictures and PDFs. Files you already uploaded stay. Remove ones you no longer use; they're deleted a day later.`,
+			};
+		}
 		const { max, requested } = problem;
 		const several = requested.resumes > 0 && requested.coverLetters > 0;
 		const adds = several
@@ -90,7 +132,7 @@ export function describePlanProblem(problem: PlanProblem): { title: string; desc
 			description: [adds, room].filter(Boolean).join(" "),
 		};
 	}
-	const free = new Intl.ListFormat(i18n.locale, { type: "conjunction" }).format(freeTemplateNames());
+	const free = listNames(freeTemplateNames());
 	switch (problem.feature) {
 		case "premiumTemplates":
 			return {
@@ -121,6 +163,35 @@ export function describePlanProblem(problem: PlanProblem): { title: string; desc
 			return {
 				title: t`API and MCP access isn't in your plan`,
 				description: t`Rezumi on the web and on your phone always works. Other apps and assistants that connect with an API key or OAuth need a paid plan.`,
+			};
+		case "premiumPortfolioThemes": {
+			const themes = listNames(FREE_PORTFOLIO_THEMES.map((id) => PORTFOLIO_THEME_INFO[id].name));
+			return {
+				title: t`This theme isn't in your plan`,
+				description: t`You can look at every theme. ${themes} are included, and a portfolio that already uses another theme keeps it.`,
+			};
+		}
+		case "premiumHeroEffects": {
+			const effects = listNames(FREE_PORTFOLIO_HERO_EFFECTS.filter((id) => id !== "none").map((id) => effectLabel(id)));
+			return {
+				title: t`This intro effect isn't in your plan`,
+				description: t`${effects} are included, and a portfolio that already uses another effect keeps it.`,
+			};
+		}
+		case "hidePortfolioCredit":
+			return {
+				title: t`The badge stays on your plan`,
+				description: t`Your portfolio shows a small Made with Rezumi badge at the bottom of the page.`,
+			};
+		case "customDomain":
+			return {
+				title: t`Your own domain isn't in your plan`,
+				description: t`Your page keeps its address on Rezumi.`,
+			};
+		case "detailedPortfolioStats":
+			return {
+				title: t`Detailed statistics aren't in your plan`,
+				description: t`Visits, clicks, messages and sources are included.`,
 			};
 	}
 }

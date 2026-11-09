@@ -19,6 +19,8 @@ import { buildPortfolioView } from "./view";
  * of its own colour.
  */
 const ACCENTS = [
+	"#FFD23F",
+	"#F54E00",
 	...Object.values(PORTFOLIO_ACCENTS).map((accent) => accent.color),
 	"#FFD60A",
 	"#111111",

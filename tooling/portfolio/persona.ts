@@ -106,6 +106,8 @@ export const THEME_PERSONAS: Record<PortfolioTheme, PersonaId> = {
 	prima: "anindya",
 	kanvas: "bayu",
 	mozaik: "citra",
+	paper: "nadia",
+	brutal: "citra",
 };
 
 /** A stored file the persona's portfolio uses. */

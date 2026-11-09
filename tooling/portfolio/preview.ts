@@ -2,7 +2,7 @@
  * Renders a portfolio persona to an HTML file, for checking a theme by eye (`02-teknis.md` section 22).
  *
  *   pnpm --filter @rezumi/tooling portfolio:preview --out <dir> [--persona nadia|anindya|bayu|citra] [--lang id|en]
- *     [--variant full|minimal|long|rtl] [--scheme light|dark|auto] [--theme lugas|prima|kanvas|mozaik]
+ *     [--variant full|minimal|long|rtl] [--scheme light|dark|auto] [--theme lugas|prima|kanvas|mozaik|paper|brutal]
  *     [--accent <#rrggbb>] [--effect none|fade-up|…] [--set work=grid-2] [--name <file>]
  *
  * Nadia (Lugas) in Indonesian is the default; each persona renders in its own theme unless `--theme` says otherwise

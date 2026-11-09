@@ -1,11 +1,12 @@
 import type { PortfolioHeroEffect } from "@rezumi/schema/portfolio/themes";
 import type { CSSProperties } from "react";
-import { Radio, RadioGroup } from "@heroui/react";
+import { Chip, Radio, RadioGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { effectDemoColors } from "@rezumi/portfolio/editor";
 import { EFFECT_CSS, EFFECT_SHARED_CSS } from "@rezumi/portfolio/effects";
+import { isFreePortfolioHeroEffect } from "@rezumi/schema/billing";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -16,6 +17,8 @@ import { ChoiceSelect, TextInput } from "./fields";
 import { editPortfolio, usePortfolioData } from "./store";
 import { usePortfolioEditorUi } from "./ui";
 import { useEditorView } from "./use-view";
+import { isLockedHeroEffect, usePlan } from "@/features/billing/plan";
+import { openPlanDialog } from "@/features/billing/plan-dialog";
 
 /** The effects' rules, once, for the demos in this panel (they only match `[data-pfx]` elements). */
 const DEMO_CSS = [EFFECT_SHARED_CSS, ...Object.values(EFFECT_CSS)].join("\n");
@@ -43,6 +46,7 @@ const roleLabel = (index: number) => (index === 0 ? t`Second role` : t`Third rol
 export function IntroEffectPicker() {
 	const data = usePortfolioData();
 	const view = useEditorView();
+	const plan = usePlan();
 	const replay = usePortfolioEditorUi((state) => state.replayEffect);
 	const [plays, setPlays] = useState<Partial<Record<PortfolioHeroEffect, number>>>({});
 	const id = useId();
@@ -70,6 +74,10 @@ export function IntroEffectPicker() {
 	const choose = (value: string) => {
 		const effect = effects.find((candidate) => candidate === value);
 		if (!effect) return;
+		if (isLockedHeroEffect(plan, effect) && effect !== current) {
+			openPlanDialog({ kind: "feature", feature: "premiumHeroEffects" });
+			return;
+		}
 		editPortfolio((draft) => {
 			draft.hero.effect.id = effect;
 		});
@@ -90,7 +98,7 @@ export function IntroEffectPicker() {
 					<Radio
 						key={effect}
 						value={effect}
-						aria-labelledby={`${id}-${effect}-name`}
+						aria-labelledby={`${id}-${effect}-name${plan?.enabled && !isFreePortfolioHeroEffect(effect) ? ` ${id}-${effect}-plan` : ""}`}
 						aria-describedby={`${id}-${effect}-description`}
 						onFocus={() => playDemo(effect)}
 						className="w-full"
@@ -108,6 +116,14 @@ export function IntroEffectPicker() {
 							<span className="flex items-center gap-2 text-sm font-semibold">
 								<span id={`${id}-${effect}-name`}>{effectLabel(effect)}</span>
 								{index === 0 && <span className="text-xs font-normal text-muted">{t`(theme default)`}</span>}
+								{plan?.enabled && !isFreePortfolioHeroEffect(effect) && (
+									<Chip size="sm" variant="soft" color="accent">
+										{isLockedHeroEffect(plan, effect) && effect !== current && (
+											<Icon name="lock" size={12} aria-hidden />
+										)}
+										<span id={`${id}-${effect}-plan`}>Plus</span>
+									</Chip>
+								)}
 								{effect === current && <Icon name="check-circle" size={18} className="ms-auto text-accent" />}
 							</span>
 							<span

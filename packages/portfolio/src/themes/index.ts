@@ -2,13 +2,24 @@ import type { ThemePalette } from "../design";
 import type { FontWeight } from "@rezumi/fonts";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import type { ComponentType } from "react";
+import { BRUTAL_CSS } from "./brutal/css";
+import { BrutalPage } from "./brutal/theme";
 import { KANVAS_CSS } from "./kanvas/css";
 import { KanvasPage } from "./kanvas/theme";
 import { LUGAS_CSS } from "./lugas/css";
 import { LugasPage } from "./lugas/theme";
 import { MOZAIK_CSS } from "./mozaik/css";
 import { MozaikPage } from "./mozaik/theme";
-import { KANVAS_PALETTE, LUGAS_PALETTE, MOZAIK_PALETTE, PRIMA_PALETTE } from "./palettes";
+import {
+	BRUTAL_PALETTE,
+	KANVAS_PALETTE,
+	LUGAS_PALETTE,
+	MOZAIK_PALETTE,
+	PAPER_PALETTE,
+	PRIMA_PALETTE,
+} from "./palettes";
+import { PAPER_CSS } from "./paper/css";
+import { PaperPage } from "./paper/theme";
 import { PRIMA_CSS } from "./prima/css";
 import { PrimaPage } from "./prima/theme";
 
@@ -49,6 +60,15 @@ const RENDERERS: Record<PortfolioTheme, ThemeRenderer> = {
 		nameWeight: "800",
 	},
 	mozaik: { id: "mozaik", Page: MozaikPage, css: MOZAIK_CSS, palette: MOZAIK_PALETTE },
+	paper: {
+		id: "paper",
+		Page: PaperPage,
+		css: PAPER_CSS,
+		palette: PAPER_PALETTE,
+		headingWeights: ["500", "700"],
+		nameWeight: "700",
+	},
+	brutal: { id: "brutal", Page: BrutalPage, css: BRUTAL_CSS, palette: BRUTAL_PALETTE, headingWeights: ["700", "800"] },
 };
 
 /** The themes with a renderer, all of them; `@rezumi/portfolio/editor` lists the same ones without loading them. */

@@ -8,6 +8,8 @@ export const themeDescription = (theme: PortfolioTheme) =>
 		prima: t`Formal and structured: a timeline, case studies and numbers in neat cards.`,
 		kanvas: t`Big pictures first, with your name across the page.`,
 		mozaik: t`Playful tiles that fit your intro, numbers and work together.`,
+		paper: t`Warm paper, fine borders, folded corners and alternating stories of your work.`,
+		brutal: t`Bold type, solid colours, thick outlines and hard offset shadows.`,
 	})[theme];
 
 /** Whom each theme suits (`01-desain.md` section 5). */
@@ -17,6 +19,8 @@ export const themeAudience = (theme: PortfolioTheme) =>
 		prima: t`For finance, consulting, state companies, managers and formal fresh graduates.`,
 		kanvas: t`For designers, photographers, architects and content creators.`,
 		mozaik: t`For creators, freelancers and students.`,
+		paper: t`For designers, design engineers and thoughtful makers.`,
+		brutal: t`For creatives, developers and makers with a bold point of view.`,
 	})[theme];
 
 /** The intro effects' names and what they do (`01-desain.md` section 18). */

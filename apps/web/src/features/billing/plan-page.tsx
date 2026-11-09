@@ -8,7 +8,7 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useId } from "react";
-import { PLAN_FEATURE_KEYS, TRIAL_CREDITS } from "@rezumi/schema/billing";
+import { DOCUMENT_PLAN_FEATURE_KEYS, PLAN_FEATURE_KEYS, TRIAL_CREDITS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { BuyPlansSection } from "./buy-plans";
@@ -30,6 +30,11 @@ const featureCopy = (): Record<PlanFeature, { icon: IconName; label: string }> =
 	customStyles: { icon: "palette", label: t`Custom styles` },
 	customFonts: { icon: "text-aa", label: t`Your own fonts` },
 	automationApi: { icon: "plugs-connected", label: t`API and MCP for other apps` },
+	premiumPortfolioThemes: { icon: "squares-four", label: t`Every portfolio theme` },
+	premiumHeroEffects: { icon: "sparkle", label: t`Every portfolio intro effect` },
+	hidePortfolioCredit: { icon: "seal-check", label: t`Hide the Made with Rezumi badge` },
+	customDomain: { icon: "globe", label: t`Your own domain` },
+	detailedPortfolioStats: { icon: "chart-line-up", label: t`Detailed portfolio statistics` },
 });
 
 type UsageRowProps = { icon: IconName; label: string; usage: PlanSummary["limits"]["activeResumes"] };
@@ -283,6 +288,7 @@ type PlanSettingsProps = {
  */
 export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 	const { data: plan, isPending } = useQuery(orpc.billing.summary.queryOptions());
+	const { data: portfolioStatus } = useQuery(orpc.portfolio.status.queryOptions());
 	const { formatDate, formatDay } = usePlanDates();
 
 	if (isPending) return <Skeleton role="status" aria-label={t`Loading your plan…`} className="h-64 rounded-2xl" />;
@@ -300,6 +306,7 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 		);
 
 	const features = featureCopy();
+	const listedFeatures = portfolioStatus?.enabled ? PLAN_FEATURE_KEYS : DOCUMENT_PLAN_FEATURE_KEYS;
 
 	return (
 		<>
@@ -322,7 +329,7 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 				</p>
 			</div>
 
-			<BuyPlansSection plan={plan} selected={selectedPlan} />
+			<BuyPlansSection plan={plan} selected={selectedPlan} portfolioOpen={portfolioStatus?.enabled === true} />
 
 			<SettingsSection
 				icon="file-text"
@@ -347,7 +354,7 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 			>
 				{/* Plain icons, no tiles; rules start under the text (20px icon + 12px gap). */}
 				<ul className="grid gap-4 [&>*+*]:relative [&>*+*]:before:absolute [&>*+*]:before:inset-s-8 [&>*+*]:before:inset-e-0 [&>*+*]:before:-top-2 [&>*+*]:before:h-px [&>*+*]:before:bg-separator">
-					{PLAN_FEATURE_KEYS.map((feature) => {
+					{listedFeatures.map((feature) => {
 						const included = plan.features[feature];
 						return (
 							<li key={feature} className="flex items-center gap-3 py-0.5 text-sm">

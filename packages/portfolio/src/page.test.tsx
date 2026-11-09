@@ -1,6 +1,7 @@
 import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
+import { PORTFOLIO_THEMES } from "@rezumi/schema/portfolio/themes";
 import { renderPortfolioDocument } from "./document";
 import {
 	count,
@@ -312,7 +313,7 @@ describe("renderPortfolioPage edge cases", () => {
 	});
 
 	it("draws every release theme as itself", () => {
-		for (const theme of ["lugas", "prima", "kanvas", "mozaik"] as const)
+		for (const theme of PORTFOLIO_THEMES)
 			expect(render({ ...fullData, theme }).html).toContain(`data-theme="${theme}"`);
 	});
 
@@ -326,7 +327,7 @@ describe("renderPortfolioPage edge cases", () => {
 
 describe("renderPortfolioPage hardening", () => {
 	it("publishes no work, detail or picture viewer while the Work section is hidden, in every theme", () => {
-		for (const theme of ["lugas", "prima", "kanvas", "mozaik"] as const) {
+		for (const theme of PORTFOLIO_THEMES) {
 			const { html, view } = render({ ...fullData, theme, sections: { hidden: ["work"] } });
 			expectSoundPage(html, theme);
 			expect(view.works).toEqual([]);
@@ -345,7 +346,7 @@ describe("renderPortfolioPage hardening", () => {
 				{ id: "w3", slug: "brand-title", title: "Brand Title" },
 			],
 		};
-		for (const theme of ["lugas", "prima", "kanvas", "mozaik"] as const) {
+		for (const theme of PORTFOLIO_THEMES) {
 			const { html } = render({ ...fullData, theme, works });
 			expectSoundPage(html, theme);
 			expect(html).toContain('id="work-brand-title"');
@@ -355,7 +356,7 @@ describe("renderPortfolioPage hardening", () => {
 	});
 
 	it("draws a resume custom section like the standard section of its type, keywords included, in every theme", () => {
-		for (const theme of ["lugas", "prima", "kanvas", "mozaik"] as const) {
+		for (const theme of PORTFOLIO_THEMES) {
 			const { html } = render({ ...fullData, theme, design: { variants: { skills: "groups" } } }, fullTestResume());
 			expectSoundPage(html, theme);
 			const tools = /<section[^>]* id="resume-tools"[\s\S]*?<\/section>/.exec(html)?.[0] ?? "";

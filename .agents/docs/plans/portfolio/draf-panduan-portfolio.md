@@ -73,9 +73,13 @@ Pictures you remove or replace are deleted a day later, so **Undo** can still br
 
 #### Design
 
-Choose the theme (the same gallery as when you created the portfolio), light, dark, or **Device** (each visitor's own setting), an accent colour (the same as your resume, one of eight, or your own; a colour that's hard to read as text is darkened or lightened for text automatically), a font pair, and the layout of each section the theme supports.
+Choose the theme (Lugas, Prima, Kanvas, Mozaik, Paper or Brutal, in the same gallery as when you created the portfolio), light, dark, or **Device** (each visitor's own setting), an accent colour (the same as your resume, one of eight, or your own; a colour that's hard to read as text is darkened or lightened for text automatically), a font pair, and the layout of each section the theme supports.
 
-Under **Intro**, choose the intro's background (plain, a soft gradient, a subtle pattern, or a picture of your own under a darker layer) and an **intro effect** for your name or headline. Each card shows a live sample; point at it to play it again. The effects are **Gentle fade-in** (words appear one by one), **Shimmer** (a light in your accent colour sweeps across), **Living gradient** (your accent colours drift, then rest), **Typewriter** (your headline types itself, then up to two more roles you add, and ends on the headline), **Tech scramble** (random letters settle into your name) and **Vector outline** (letters turn into design-app outlines under the mouse; phones get the gentle fade-in). Each theme offers the ones that suit it and starts with its own (Lugas: Gentle fade-in, Prima: none, Kanvas: Vector outline, Mozaik: Living gradient). Effects stop by themselves within five seconds, never hide your name from search engines or screen readers, and stay still for visitors who ask their device for less motion. The preview holds still while you edit; **Replay intro** above it plays the effect again.
+**Paper** uses a visible paper-fibre texture, fine borders, folded corners and alternating work stories. It starts with Google Sans and uses JetBrains Mono for figures and dates. Its accent follows your resume or your chosen colour; without a resume it starts in orange. Its default intro places a small optional portrait above the text and an isometric paper drawing beside it; you can also choose a larger portrait on either side.
+
+**Brutal** uses bold headings, flat colour, thick outlines and hard offset shadows. Its default fonts are Space Grotesk and Inter, with work in two columns and a framed black-and-white portrait (or your initials). Without a resume it starts in yellow; your chosen accent and section order still apply. PDF and link cards use the same bold attachment style.
+
+Under **Intro**, choose the intro's background (plain, a soft gradient, a subtle pattern, or a picture of your own under a darker layer) and an **intro effect** for your name or headline. Each card shows a live sample; point at it to play it again. The effects are **Gentle fade-in** (words appear one by one), **Shimmer** (a light in your accent colour sweeps across), **Living gradient** (your accent colours drift, then rest), **Typewriter** (your headline types itself, then up to two more roles you add, and ends on the headline), **Tech scramble** (random letters settle into your name) and **Vector outline** (letters turn into design-app outlines under the mouse; phones get the gentle fade-in). Each theme offers the ones that suit it and starts with its own (Lugas: Gentle fade-in, Prima: none, Kanvas: Vector outline, Mozaik: Living gradient, Paper and Brutal: none). Effects stop by themselves within five seconds, never hide your name from search engines or screen readers, and stay still for visitors who ask their device for less motion. The preview holds still while you edit; **Replay intro** above it plays the effect again.
 
 #### Publish
 
@@ -85,6 +89,20 @@ Under **Intro**, choose the intro's background (plain, a soft gradient, a subtle
 - **Search engines**: turn listing on or off, and set the title and description search results show. New accounts are kept out of search engines for their first seven days, even with this on.
 - **Page language** changes the page's own words (section titles, button labels), not your text. Empty follows your resume.
 - **Source resume** chooses the resume your career sections come from, or none. If it's moved to Trash, your portfolio keeps its own content and asks you to choose another.
+
+### What your plan includes
+
+|                        | Free                       | Plus and Pro AI           |
+| ---------------------- | -------------------------- | ------------------------- |
+| Themes                 | Lugas and Prima            | All themes                |
+| Intro effects          | Gentle fade-in and Shimmer | All effects               |
+| Made with Rezumi badge | Always shown               | Can be hidden             |
+| Works                  | Up to 6                    | Up to 50                  |
+| Pictures and PDFs      | 100 MB                     | 1 GB                      |
+| Your own domain        | No                         | Yes                       |
+| Visitor statistics     | Basic numbers              | Basic numbers and details |
+
+Every kind of block and section is on every plan, and so is the contact form. You can look at every theme before you choose. When a paid plan ends, nothing is deleted: your theme, effect, works and files stay on the page, you can't add more until you're within the limits, and the badge returns. Your own domain stops 7 days after the plan ends and works again when you subscribe again. Pictures you removed count toward your storage for one more day, until they're deleted.
 
 ### Your short link and your resume
 

@@ -24,6 +24,9 @@ type PortfolioEditorUi = {
 	revealed: () => void;
 	/** Bumped to play the intro effect again in the preview ("Replay", or a newly chosen effect). */
 	effectReplay: number;
+	/** Goes up after every upload: the storage meter reads the usage again. */
+	uploads: number;
+	noteUpload: () => void;
 	replayEffect: () => void;
 	/**
 	 * A portfolio-only photo taken out of the data when the resume's photo was chosen, and when: choosing "A photo for
@@ -44,6 +47,7 @@ const initialUi = {
 	openSectionKey: null,
 	revealing: null,
 	effectReplay: 0,
+	uploads: 0,
 	keptPhoto: null,
 	wantsOwnPhoto: false,
 } satisfies Partial<PortfolioEditorUi>;
@@ -56,6 +60,7 @@ export const usePortfolioEditorUi = create<PortfolioEditorUi>()((set) => ({
 	revealSection: (key) => set({ openSectionKey: key, revealing: key }),
 	revealed: () => set({ revealing: null }),
 	replayEffect: () => set((state) => ({ effectReplay: state.effectReplay + 1 })),
+	noteUpload: () => set((state) => ({ uploads: state.uploads + 1 })),
 	keepPhoto: (image) => set({ keptPhoto: image ? { image, at: Date.now() } : null }),
 	setWantsOwnPhoto: (wantsOwnPhoto) => set({ wantsOwnPhoto }),
 	reset: () => set(initialUi),

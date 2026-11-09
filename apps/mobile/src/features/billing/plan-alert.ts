@@ -100,6 +100,16 @@ export function describePlanProblem(problem: PlanProblem): { title: string; mess
 				title: ios ? t`API and MCP access isn't available` : t`API and MCP access isn't in your plan`,
 				message: t`This app always works. Other apps and assistants that connect with an API key need more.`,
 			};
+		// The web's portfolio features; the app only meets one when connecting a domain on the Share screen.
+		case "customDomain":
+		case "premiumPortfolioThemes":
+		case "premiumHeroEffects":
+		case "hidePortfolioCredit":
+		case "detailedPortfolioStats":
+			return {
+				title: ios ? t`Your own domain isn't available` : t`Your own domain isn't in your plan`,
+				message: t`Your page keeps its address on Rezumi.`,
+			};
 	}
 }
 

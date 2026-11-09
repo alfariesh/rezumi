@@ -53,6 +53,7 @@ function portfolio(overrides: Partial<PublicPortfolio> = {}): PublicPortfolio {
 		indexable: true,
 		customDomain: null,
 		resume: { data, slug: "cv", isPublic: true, hasPassword: false, showDownloadButtons: true },
+		entitlements: { hidePortfolioCredit: false },
 		...overrides,
 	};
 }
@@ -114,6 +115,16 @@ describe("servePortfolioOrResume", () => {
 			requestHeaders: expect.any(Headers),
 			trustedClient: "1.1.1.1",
 		});
+	});
+
+	it("follows the owner's plan for the badge, whatever the portfolio has stored", async () => {
+		const hidden = parsePortfolioData({ credit: { show: false } });
+		const page = async (hidePortfolioCredit: boolean) => {
+			mocks.findPublicPortfolio.mockResolvedValue(portfolio({ data: hidden, entitlements: { hidePortfolioCredit } }));
+			return (await servePortfolioOrResume(get(), "nadia", "1.1.1.1")).text();
+		};
+		expect(await page(false)).toContain('class="pf-badge"');
+		expect(await page(true)).not.toContain('class="pf-badge"');
 	});
 
 	it("allows a script intro effect by the hash of the page's whole script", async () => {

@@ -35,6 +35,18 @@ export const MOZAIK_PALETTE: ThemePalette = {
 	dark: { bg: "#0B1110", surface: "#141C1B", text: "#E7EFED", muted: "#9BADA9", border: "#24302E" },
 };
 
+/** Paper: warm white sheets, olive ink, with an equivalent charcoal sheet in dark mode. */
+export const PAPER_PALETTE: ThemePalette = {
+	light: { bg: "#FEFEFC", surface: "#F6F7F3", text: "#23251D", muted: "#65675E", border: "#D8DAD1" },
+	dark: { bg: "#191B16", surface: "#22251E", text: "#F3F4EC", muted: "#ADB0A3", border: "#3B3F34" },
+};
+
+/** Brutal: creamy paper, white cards and strong ink outlines; charcoal and chalk in dark mode. */
+export const BRUTAL_PALETTE: ThemePalette = {
+	light: { bg: "#FFFDF5", surface: "#FFFFFF", text: "#171717", muted: "#545454", border: "#171717" },
+	dark: { bg: "#171717", surface: "#242424", text: "#FAFAF5", muted: "#C0C0B7", border: "#FAFAF5" },
+};
+
 /**
  * Every theme's neutral colours, apart from their CSS so the editor can read them without loading the themes. Like
  * the renderers (`themes/index.ts`), it holds every theme: a theme without one doesn't build.
@@ -44,4 +56,6 @@ export const THEME_PALETTES: Record<PortfolioTheme, ThemePalette> = {
 	prima: PRIMA_PALETTE,
 	kanvas: KANVAS_PALETTE,
 	mozaik: MOZAIK_PALETTE,
+	paper: PAPER_PALETTE,
+	brutal: BRUTAL_PALETTE,
 };

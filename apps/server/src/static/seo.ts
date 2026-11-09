@@ -154,6 +154,11 @@ export function handleLlms() {
 			: ["- Plus, Pro AI and Rezumi AI trial credits are coming soon. Paid plan limits are not active yet."]),
 		"",
 		"- Plans (US dollars, or Rupiah for visitors from Indonesia; before tax, which the checkout adds): Free ($0: 3 active resumes and 3 cover letters, 8 templates, every icon style, PDF without a watermark, ATS check, job tracker, 5 AI credits to try); Plus ($4.99 a month or $39 a year: 50 resumes and letters, every template, tool logos in skills, Word and ODT, custom styles, MCP and API); Pro AI ($9.99 a month or $79 a year: everything in Plus and 100 AI credits every month, no API key needed). Paid plans are subscriptions you can cancel any time; access lasts until the paid period ends. A first Plus subscription starts with a 7-day free trial.",
+		...(env.PORTFOLIO_MODE === "on"
+			? [
+					"- Portfolio: every account can publish a web portfolio at rezumi.app/<username>. Free: 1 portfolio, 2 themes, up to 6 works, 100 MB of pictures and PDFs, and a Made with Rezumi badge. Plus and Pro AI: every theme and intro effect, hide the badge, your own domain, up to 50 works, 1 GB of pictures and PDFs.",
+				]
+			: []),
 		"- Export: PDF, Markdown and JSON on every plan; Word (DOCX) and ODT with Plus and Pro AI.",
 		"- Import: PDF, LinkedIn data export, JSON Resume, Rezumi JSON; Word files with an AI provider.",
 		"- Sharing: private by default; a public link or a password-protected link, changeable at any time.",

@@ -560,17 +560,18 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 		if (accent.source === "custom") return accent.color.toUpperCase();
 		if (accent.source === "preset") return PORTFOLIO_ACCENTS[accent.id].color;
 		const fromResume = resume ? toHex(resume.metadata.design.colors.primary) : null;
-		return fromResume ?? PORTFOLIO_ACCENTS[fallbackPortfolioAccent].color;
+		return fromResume ?? PORTFOLIO_THEME_INFO[theme].fallbackAccent ?? PORTFOLIO_ACCENTS[fallbackPortfolioAccent].color;
 	}
 
 	function resolveFonts(): PortfolioView["design"]["fonts"] {
+		const mono = PORTFOLIO_THEME_INFO[theme].monoFont ?? PORTFOLIO_MONO_FONT;
 		const pairFonts = (id: PortfolioFontPairId) => {
 			const pair: { heading: string; body: string; nameStretch?: string; nameUppercase?: boolean } =
 				PORTFOLIO_FONT_PAIRS[id];
 			return {
 				heading: pair.heading,
 				body: pair.body,
-				mono: PORTFOLIO_MONO_FONT,
+				mono,
 				pair: id,
 				nameStretch: pair.nameStretch ?? null,
 				nameUppercase: pair.nameUppercase ?? false,
@@ -585,7 +586,7 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 			const heading = resume.metadata.typography.heading.fontFamily;
 			const body = resume.metadata.typography.body.fontFamily;
 			if (usable(heading) && usable(body))
-				return { heading, body, mono: PORTFOLIO_MONO_FONT, pair: null, nameStretch: null, nameUppercase: false };
+				return { heading, body, mono, pair: null, nameStretch: null, nameUppercase: false };
 		}
 		return pairFonts(themeFontPair(theme, undefined));
 	}

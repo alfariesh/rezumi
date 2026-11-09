@@ -55,3 +55,9 @@
 
 - Host yang bukan host aplikasi dan bukan domain sendiri terverifikasi saat ini jatuh ke seluruh aplikasi (masuk, dasbor, API) di `apps/server/src/http/custom-domain.ts`. Dengan Cloudflare for SaaS, domain yang belum terverifikasi atau sudah dihapus akan menyajikan aplikasi di domain milik pengguna: jawab 404/421 atau alihkan ke `APP_URL` untuk host seperti itu.
 - File portfolio yang dipakai halaman terbit sudah dikirim dengan `Cross-Origin-Resource-Policy: cross-origin`, jadi gambar tampil di domain sendiri.
+
+### Catatan dari Phase 07 (2026-11-09)
+
+- Fitur katalog `customDomain` dan pemeriksaannya saat menghubungkan domain sudah ada (`assertCanConnect` di `packages/api/src/features/custom-domain/service.ts`), berlaku sejak portfolio dibuka untuk akun itu.
+- Yang dikerjakan di sini: masa tenggang 7 hari setelah paket berakhir (aturan turunan #2), lalu domain mengarah ke `rezumi.app/<username>` dan aktif lagi saat berlangganan lagi. Akun Gratis yang sudah punya domain terverifikasi sebelum portfolio dibuka mengikuti jalur yang sama.
+- Perbarui deskripsi OpenAPI `setCustomDomain` dan `pnpm docs:gen`, karena rute itu publik dan kini bisa dijawab `PLAN_FEATURE_REQUIRED`.

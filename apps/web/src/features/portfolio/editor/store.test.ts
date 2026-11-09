@@ -5,8 +5,9 @@ import { ORPCError } from "@orpc/client";
 import { parsePortfolioData, writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS, portfolioDataBytes } from "@rezumi/schema/portfolio/limits";
 
-const mocks = vi.hoisted(() => ({ update: vi.fn(), get: vi.fn() }));
-vi.mock("@/libs/orpc/client", () => ({ client: { portfolio: { update: mocks.update, get: mocks.get } } }));
+const mocks = vi.hoisted(() => ({ update: vi.fn(), get: vi.fn(), openPlanDialog: vi.fn() }));
+vi.mock("@/libs/orpc/client", () => ({ client: { portfolio: { update: mocks.update, get: mocks.get } }, orpc: {} }));
+vi.mock("@/features/billing/plan-dialog", () => ({ openPlanDialog: mocks.openPlanDialog }));
 
 const { PORTFOLIO_SAVE_DELAY_MS, usePortfolioEditorStore } = await import("./store");
 
@@ -354,6 +355,32 @@ describe("data the server won't take", () => {
 		type("Hello again");
 		await store().flush();
 		expect(store().problem).toMatchObject({ kind: "refused" });
+	});
+
+	it("explains a plan refusal once, however many pauses in typing are refused, until a save goes through", async () => {
+		vi.useFakeTimers();
+		mocks.openPlanDialog.mockClear();
+		store().load(record());
+		const refusal = new ORPCError("PLAN_FEATURE_REQUIRED", {
+			status: 403,
+			data: { feature: "premiumPortfolioThemes" },
+		});
+		mocks.update.mockRejectedValue(refusal);
+		for (const text of ["a", "ab", "abc"]) {
+			type(text);
+			await vi.advanceTimersByTimeAsync(PORTFOLIO_SAVE_DELAY_MS + 1);
+		}
+		expect(mocks.update).toHaveBeenCalledTimes(3);
+		expect(mocks.openPlanDialog).toHaveBeenCalledTimes(1);
+		expect(mocks.openPlanDialog).toHaveBeenCalledWith({ kind: "feature", feature: "premiumPortfolioThemes" });
+
+		acceptSaves();
+		type("abcd");
+		await vi.advanceTimersByTimeAsync(PORTFOLIO_SAVE_DELAY_MS + 1);
+		mocks.update.mockRejectedValue(refusal);
+		type("abcde");
+		await vi.advanceTimersByTimeAsync(PORTFOLIO_SAVE_DELAY_MS + 1);
+		expect(mocks.openPlanDialog).toHaveBeenCalledTimes(2);
 	});
 
 	it("keeps any other refusal (a plan limit) to word it from its error", async () => {

@@ -66,3 +66,8 @@ Untuk statistik tidak ada yang perlu disiapkan: Cloudflare Analytics Engine suda
 - Putuskan batas hari statistik: `recordPortfolioVisit` (`packages/api/src/features/portfolio/public.ts`) masih memakai tanggal UTC, jadi kunjungan 00:00–06:59 WIB masuk hari sebelumnya. Putuskan juga deduplikasi per IP (CGNAT, `ip:unknown` bila klien tidak dipercaya).
 - Turnstile ditambahkan ke CSP halaman lewat `portfolioContentSecurityPolicy(script, additions)` (`apps/server/src/static/portfolio-page.ts`), bukan dengan mengedit string CSP.
 - Skrip halaman + satu efek dibatasi 6 KB tanpa spasi (uji di `packages/portfolio`); skrip form, beacon, dan salin-email perlu ruang di anggaran itu atau anggaran baru yang disepakati. Mozaik sudah menghitung form kontak sebagai isi Kontak.
+
+### Catatan dari Phase 07 (2026-11-09)
+
+- Aturan turunan #16 sudah disetujui: `portfolio.statistics` hanya mengirim rincian Analytics Engine (negara pada peta, perangkat, perujuk, karya per hari) bila `entitlements.features.detailedPortfolioStats`; statistik dasar untuk semua paket. Prosedurnya dibuat di phase ini; fitur katalognya sudah ada.
+- Aturan turunan #1: form kontak untuk semua paket.

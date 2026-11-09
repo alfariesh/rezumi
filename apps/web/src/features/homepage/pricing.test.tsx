@@ -9,12 +9,12 @@ import { Pricing } from "./pricing";
 beforeEach(() => i18n.loadAndActivate({ locale: "en-US", messages: {} }));
 afterEach(cleanup);
 
-function renderPricing(billingEnabled?: boolean) {
+function renderPricing(billingEnabled?: boolean, portfolioEnabled = false) {
 	const router = createRouter({ routeTree: createRootRoute(), history: createMemoryHistory() });
 	return render(
 		<RouterContextProvider router={router}>
 			<I18nProvider i18n={i18n}>
-				<Pricing {...(billingEnabled === undefined ? {} : { billingEnabled })} />
+				<Pricing {...(billingEnabled === undefined ? {} : { billingEnabled })} portfolioEnabled={portfolioEnabled} />
 			</I18nProvider>
 		</RouterContextProvider>,
 	);
@@ -35,6 +35,15 @@ describe("public pricing availability", () => {
 		expect(screen.getByText("per month, or $39 a year")).toBeTruthy();
 		expect(screen.getByText("per month, or $79 a year")).toBeTruthy();
 		expect(screen.getByText(/Paid plan limits are not active yet/)).toBeTruthy();
+	});
+
+	it("sells portfolio features only once portfolios are open to everyone", () => {
+		renderPricing(true);
+		expect(screen.queryByText(/portfolio/i)).toBeNull();
+		cleanup();
+		renderPricing(true, true);
+		expect(screen.getByText("A web portfolio with 6 works and 2 themes")).toBeTruthy();
+		expect(screen.getAllByText("Every portfolio theme, your own domain, no Rezumi badge").length).toBeGreaterThan(0);
 	});
 
 	it("shows Rupiah on the Indonesian page", () => {

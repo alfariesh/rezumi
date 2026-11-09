@@ -1,4 +1,5 @@
 import type { GenerateTask } from "../career";
+import type { PortfolioHeroEffect, PortfolioTheme } from "../portfolio/themes";
 import type { Template } from "../templates";
 import z from "zod";
 
@@ -60,6 +61,16 @@ export type PlanFeatures = {
 	customFonts: boolean;
 	/** API keys and third-party OAuth/MCP clients. Rezumi's own web and mobile apps never need it. */
 	automationApi: boolean;
+	/** Portfolio themes outside FREE_PORTFOLIO_THEMES. */
+	premiumPortfolioThemes: boolean;
+	/** Portfolio intro effects outside FREE_PORTFOLIO_HERO_EFFECTS. */
+	premiumHeroEffects: boolean;
+	/** Hiding the "Made with Rezumi" badge on the portfolio. */
+	hidePortfolioCredit: boolean;
+	/** Connecting the account's own domain, whether it opens the portfolio or the primary resume. */
+	customDomain: boolean;
+	/** The portfolio's statistics by country, device, referrer and work; every plan has the basic numbers. */
+	detailedPortfolioStats: boolean;
 };
 
 export type PlanLimits = {
@@ -67,6 +78,10 @@ export type PlanLimits = {
 	activeResumes: number;
 	/** Cover letters not in Trash. */
 	activeCoverLetters: number;
+	/** Works in the portfolio. Never above PORTFOLIO_LIMITS.works, the technical limit. */
+	portfolioWorks: number;
+	/** Bytes of pictures and PDFs stored for the portfolio. Never above PORTFOLIO_UPLOAD.accountBytes. */
+	portfolioStorageBytes: number;
 };
 
 /** A paid plan's price per renewal, in each currency's smallest unit. Prices include tax where tax is inclusive. */
@@ -89,7 +104,7 @@ export type PlanDefinition = {
 	trialDays: number | null;
 };
 
-export const BILLING_CATALOG_VERSION = 6;
+export const BILLING_CATALOG_VERSION = 7;
 
 /**
  * Prices are before tax: Polar adds the tax for the buyer's location at checkout and on every renewal. Polar's
@@ -117,8 +132,21 @@ export function isFreeTemplate(template: Template): boolean {
 	return (FREE_TEMPLATES as readonly Template[]).includes(template);
 }
 
-/** The billing features a plan names, in the order the apps list them. */
-export const PLAN_FEATURE_KEYS = [
+/** The portfolio themes on the free plan; the others need `premiumPortfolioThemes`. */
+export const FREE_PORTFOLIO_THEMES = ["lugas", "prima"] as const satisfies readonly PortfolioTheme[];
+
+/** The portfolio intro effects on the free plan; the others need `premiumHeroEffects`. */
+export const FREE_PORTFOLIO_HERO_EFFECTS = [
+	"none",
+	"fade-up",
+	"shimmer",
+] as const satisfies readonly PortfolioHeroEffect[];
+
+export const isFreePortfolioHeroEffect = (effect: PortfolioHeroEffect): boolean =>
+	(FREE_PORTFOLIO_HERO_EFFECTS as readonly PortfolioHeroEffect[]).includes(effect);
+
+/** The features about documents and automation, the ones every app lists. */
+export const DOCUMENT_PLAN_FEATURE_KEYS = [
 	"premiumTemplates",
 	"brandLogos",
 	"wordOdtExport",
@@ -126,6 +154,18 @@ export const PLAN_FEATURE_KEYS = [
 	"customFonts",
 	"automationApi",
 ] as const satisfies readonly (keyof PlanFeatures)[];
+
+/** The features about the portfolio; apps list them only where portfolios are open to the account. */
+export const PORTFOLIO_PLAN_FEATURE_KEYS = [
+	"premiumPortfolioThemes",
+	"premiumHeroEffects",
+	"hidePortfolioCredit",
+	"customDomain",
+	"detailedPortfolioStats",
+] as const satisfies readonly (keyof PlanFeatures)[];
+
+/** The billing features a plan names, in the order the apps list them. */
+export const PLAN_FEATURE_KEYS = [...DOCUMENT_PLAN_FEATURE_KEYS, ...PORTFOLIO_PLAN_FEATURE_KEYS] as const;
 
 /** The one-time Rezumi AI trial: granted on first use to a registered account with a verified email. */
 export const TRIAL_CREDITS = { amount: 5, validDays: 14 } as const;
@@ -187,14 +227,24 @@ const paidFeatures: PlanFeatures = {
 	customStyles: true,
 	customFonts: true,
 	automationApi: true,
+	premiumPortfolioThemes: true,
+	premiumHeroEffects: true,
+	hidePortfolioCredit: true,
+	customDomain: true,
+	detailedPortfolioStats: true,
 };
+
+const MEGABYTE = 1024 * 1024;
+
+/** What every paid plan may keep in its portfolio: the technical limits of works and storage. */
+const paidPortfolioLimits = { portfolioWorks: 50, portfolioStorageBytes: 1024 * MEGABYTE };
 
 export const PLANS = {
 	free: {
 		id: "free",
 		rank: 0,
 		prices: null,
-		limits: { activeResumes: 3, activeCoverLetters: 3 },
+		limits: { activeResumes: 3, activeCoverLetters: 3, portfolioWorks: 6, portfolioStorageBytes: 100 * MEGABYTE },
 		features: {
 			premiumTemplates: false,
 			brandLogos: false,
@@ -202,6 +252,11 @@ export const PLANS = {
 			customStyles: false,
 			customFonts: false,
 			automationApi: false,
+			premiumPortfolioThemes: false,
+			premiumHeroEffects: false,
+			hidePortfolioCredit: false,
+			customDomain: false,
+			detailedPortfolioStats: false,
 		},
 		creditsPerMonth: 0,
 		trialDays: null,
@@ -213,7 +268,7 @@ export const PLANS = {
 			month: { usd: 499, idr: 5_900_000 },
 			year: { usd: 3_900, idr: 45_900_000 },
 		},
-		limits: { activeResumes: 50, activeCoverLetters: 50 },
+		limits: { activeResumes: 50, activeCoverLetters: 50, ...paidPortfolioLimits },
 		features: paidFeatures,
 		creditsPerMonth: 0,
 		trialDays: 7,
@@ -225,7 +280,7 @@ export const PLANS = {
 			month: { usd: 999, idr: 12_900_000 },
 			year: { usd: 7_900, idr: 99_900_000 },
 		},
-		limits: { activeResumes: 50, activeCoverLetters: 50 },
+		limits: { activeResumes: 50, activeCoverLetters: 50, ...paidPortfolioLimits },
 		features: paidFeatures,
 		creditsPerMonth: 100,
 		trialDays: null,

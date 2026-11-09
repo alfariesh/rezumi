@@ -125,10 +125,10 @@ function PlanCard({ plan, billingEnabled }: PlanCardProps) {
 }
 
 /** 04 Pricing: three plans in one panel, Pro AI raised on the accent. Paid plans are monthly or yearly subscriptions. */
-type PricingProps = { billingEnabled?: boolean };
+type PricingProps = { billingEnabled?: boolean; portfolioEnabled?: boolean };
 
-export function Pricing({ billingEnabled = false }: PricingProps) {
-	const plans = getPlans();
+export function Pricing({ billingEnabled = false, portfolioEnabled = false }: PricingProps) {
+	const plans = getPlans(portfolioEnabled);
 
 	return (
 		<section

@@ -1,5 +1,5 @@
 import type { RouterOutput } from "@/libs/orpc/client";
-import { Button, Input, Label, Spinner, TextField } from "@heroui/react";
+import { Button, Chip, Input, Label, Spinner, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -8,6 +8,8 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { CvDomainCard } from "./cv-domain-card";
 import { DnsRecordsDialog } from "./dns-records-dialog";
+import { hasPlanFeature, usePlan } from "@/features/billing/plan";
+import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
 
@@ -20,9 +22,15 @@ type CustomDomainFieldProps = {
 export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 	const queryClient = useQueryClient();
 	const { data: domain, isPending: loading } = useQuery(orpc.customDomain.get.queryOptions());
+	const plan = usePlan();
+	// Connecting needs the plan from the day portfolios open to the account; the server decides the same way.
+	const { data: portfolioStatus } = useQuery(orpc.portfolio.status.queryOptions());
+	const locked = Boolean(portfolioStatus?.enabled) && !hasPlanFeature(plan, "customDomain");
+	// No offer to buy a domain the plan can't connect.
+	const offerDomain = suggest && !locked;
 	const { data: suggestion } = useQuery({
 		...orpc.customDomain.suggestion.queryOptions(),
-		enabled: suggest && !loading && !domain,
+		enabled: offerDomain && !loading && !domain,
 		staleTime: 15 * 60_000,
 	});
 	const [hostname, setHostname] = useState("");
@@ -63,12 +71,19 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 					className="flex items-end gap-2"
 					onSubmit={(event) => {
 						event.preventDefault();
-						set.mutate({ hostname }, { onError });
+						if (locked) openPlanDialog({ kind: "feature", feature: "customDomain" });
+						else set.mutate({ hostname }, { onError });
 					}}
 				>
 					<TextField variant="secondary" value={hostname} onChange={setHostname} className="min-w-0 flex-1 gap-1.5">
-						<Label>
+						<Label className="flex items-center gap-2">
 							<Trans>Your domain</Trans>
+							{locked && (
+								<Chip size="sm" variant="soft" color="accent">
+									<Icon name="lock" size={12} aria-hidden />
+									Plus
+								</Chip>
+							)}
 						</Label>
 						<Input
 							variant="secondary"
@@ -85,7 +100,7 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 						<Trans>Connect</Trans>
 					</Button>
 				</form>
-				{suggest && suggestion && (
+				{offerDomain && suggestion && (
 					<CvDomainCard
 						suggestion={suggestion}
 						connecting={set.isPending}

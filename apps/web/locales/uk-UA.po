@@ -737,6 +737,10 @@ msgstr "Виконано {done} з {count}"
 msgid "{doneMinutes} of {total} min"
 msgstr "{doneMinutes} з {total} хв"
 
+#: src/features/billing/plan.ts
+msgid "{effects} are included, and a portfolio that already uses another effect keeps it."
+msgstr ""
+
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{entries, plural, one {# entry} other {# entries}}"
 msgstr "{entries, plural, one {Запис #} other {Записи #}}"
@@ -982,6 +986,10 @@ msgstr "{sections, plural, one {Розділ #} other {Розділи #}}"
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "{since, plural, =0 {since today} one {for # day} other {for # days}}"
 msgstr "{since, plural, =0 {з сьогоднішнього дня} one {за день #} other {протягом # днів}}"
+
+#: src/features/portfolio/works/storage-meter.tsx
+msgid "{size} of {total}"
+msgstr ""
 
 #: src/features/resume/editor/design/fit.ts
 msgid "{size} pt"
@@ -1402,6 +1410,10 @@ msgstr "Короткий контроль зараз зазвичай підхо
 msgid "A slim stripe of the accent runs down the page edge on the sidebar's side, the sidebar sits behind a hairline and main titles open with a short accent dash."
 msgstr ""
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "A small badge at the bottom of your page."
+msgstr ""
+
 #: src/dialogs/resume/template/data.ts
 msgid "A soft rounded panel floats in the left column with your portrait, name and contact lines above the supporting sections, beside an open white main column."
 msgstr ""
@@ -1441,6 +1453,10 @@ msgstr "План за часом, ваш вступ, розповіді, які 
 #: src/features/ats-checker/messages.ts
 msgid "A web address is written without https://."
 msgstr "Веб-адреса записана без https://."
+
+#: src/features/homepage/plans.ts
+msgid "A web portfolio with {freeWorks} works and {freeThemes} themes"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "A/B testing"
@@ -2916,6 +2932,10 @@ msgstr "Резервні коди скопійовано"
 msgid "Bad news (red)"
 msgstr ""
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Badge"
+msgstr ""
+
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a tinted background behind the header"
 msgid "Band"
@@ -3068,6 +3088,10 @@ msgstr "Основний текст встановлено на {minimum} пт"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Bold"
 msgstr "Жирний"
+
+#: src/features/portfolio/themes.ts
+msgid "Bold type, solid colours, thick outlines and hard offset shadows."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Bonus"
@@ -5541,6 +5565,14 @@ msgstr "Дизайн-системи"
 msgid "Detail"
 msgstr ""
 
+#: src/features/billing/plan-page.tsx
+msgid "Detailed portfolio statistics"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Detailed statistics aren't in your plan"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -6392,6 +6424,19 @@ msgstr "Кожний запис має дати у системі форми, я
 msgid "Every other icon is included: contact, section titles, skills, interests and profile logos. Documents that already show tool logos keep them."
 msgstr ""
 
+#: src/features/billing/plan-page.tsx
+msgid "Every portfolio intro effect"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "Every portfolio theme"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+#: src/features/homepage/plans.ts
+msgid "Every portfolio theme, your own domain, no Rezumi badge"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Кожна роль говорить про те, що ти зробив. Думки щодо формулювання живуть у вкладці Написання."
@@ -6859,7 +6904,15 @@ msgid "For a root domain such as example.com, use A and AAAA records with {0}'s 
 msgstr "Для кореневого домену, як-от example.com, замість CNAME використовуйте записи A та AAAA з адресами {0}."
 
 #: src/features/portfolio/themes.ts
+msgid "For creatives, developers and makers with a bold point of view."
+msgstr ""
+
+#: src/features/portfolio/themes.ts
 msgid "For creators, freelancers and students."
+msgstr ""
+
+#: src/features/portfolio/themes.ts
+msgid "For designers, design engineers and thoughtful makers."
 msgstr ""
 
 #: src/features/portfolio/themes.ts
@@ -7473,6 +7526,10 @@ msgstr "Приховати пароль"
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Hide photo"
 msgstr "Приховати фото"
+
+#: src/features/billing/plan-page.tsx
+msgid "Hide the Made with Rezumi badge"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Hide the photo"
@@ -10032,6 +10089,10 @@ msgstr ""
 msgid "No room for another resume"
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "No room for another work"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
 msgstr "Розділ навичок не знайдено."
@@ -11310,6 +11371,10 @@ msgstr ""
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Pictures"
+msgstr ""
+
+#: src/features/portfolio/works/storage-meter.tsx
+msgid "Pictures and PDFs"
 msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
@@ -14080,6 +14145,10 @@ msgstr "Показувати в пошукових системах"
 msgid "Show link in title"
 msgstr "Показати посилання в заголовку"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Show Made with Rezumi"
+msgstr ""
+
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Show me"
 msgstr ""
@@ -14696,6 +14765,10 @@ msgstr "Зупинено на {0}"
 #: src/features/assistant/conversation.tsx
 msgid "Stopped. No edits were proposed."
 msgstr "Зупинився. Не було запропоновано жодних змін."
+
+#: src/features/portfolio/works/storage-meter.tsx
+msgid "Storage for pictures and PDFs"
+msgstr ""
 
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
@@ -15329,6 +15402,10 @@ msgstr "Помічник не налаштований на цьому серв�
 msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
 msgstr "Помічник використовує ваш власний ключ. Нічого нікуди не надсилається, поки ви не підключите один."
 
+#: src/features/billing/plan.ts
+msgid "The badge stays on your plan"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "The built-in reader remains active."
 msgstr "Вбудований рідер залишається активним."
@@ -15942,6 +16019,10 @@ msgstr "Цей файл використовує шрифти Type 3, які м�
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "This intro effect isn't in your plan"
+msgstr ""
+
 #: src/features/billing/invoice-button.tsx
 msgid "This invoice isn't available here. Open billing to find all your invoices."
 msgstr ""
@@ -16165,6 +16246,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "This testimonial is genuine, and the person who gave it agreed to show it on my portfolio."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "This theme isn't in your plan"
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -17316,6 +17401,10 @@ msgstr ""
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "Відвідувачі вводять пароль, перш ніж побачать резюме. Діліться ним лише з людьми, яким довіряєте."
 
+#: src/features/billing/plan.ts
+msgid "Visits, clicks, messages and sources are included."
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Voice settings"
 msgstr "Налаштування голосу"
@@ -17355,6 +17444,10 @@ msgstr "Чекаю на відповідь"
 
 #: src/features/homepage/features.tsx
 msgid "Walk in ready"
+msgstr ""
+
+#: src/features/portfolio/themes.ts
+msgid "Warm paper, fine borders, folded corners and alternating stories of your work."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -18008,6 +18101,10 @@ msgstr "Можна зберегти до 30 запитань заявки."
 msgid "You can link a resume later in Publish."
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "You can look at every theme. {themes} are included, and a portfolio that already uses another theme keeps it."
+msgstr ""
+
 #: src/features/settings/account/security.tsx
 msgid "You can no longer sign in with this passkey."
 msgstr "Ви більше не зможете входити за допомогою цього ключа доступу."
@@ -18374,6 +18471,14 @@ msgstr "Ваш вступ, розповіді, які варто взяти, і 
 msgid "Your own color"
 msgstr ""
 
+#: src/features/billing/plan-page.tsx
+msgid "Your own domain"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your own domain isn't in your plan"
+msgstr ""
+
 #: src/features/assistant/provider-setup.tsx
 msgid "Your own endpoint"
 msgstr ""
@@ -18392,6 +18497,10 @@ msgstr ""
 
 #: src/features/resume/editor/design/uploaded-fonts.tsx
 msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your page keeps its address on Rezumi."
 msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
@@ -18430,6 +18539,14 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan shows up to {max} works. The works you already have stay. Remove one to add another."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan stores up to {megabytes} MB of pictures and PDFs. Files you already uploaded stay. Remove ones you no longer use; they're deleted a day later."
 msgstr ""
 
 #: src/features/portfolio/portfolio-page.tsx
@@ -18474,6 +18591,10 @@ msgstr ""
 msgid "Your portfolio is too large to save. Shorten some text or remove a few blocks."
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "Your portfolio shows a small Made with Rezumi badge at the bottom of the page."
+msgstr ""
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your portfolio still shows its own content. Choose another resume to fill Experience, Education and the other sections again."
 msgstr ""
@@ -18484,6 +18605,10 @@ msgstr ""
 
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio was taken down and can't be published. Contact support to appeal."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your portfolio's storage is full"
 msgstr ""
 
 #: src/features/portfolio/errors.ts

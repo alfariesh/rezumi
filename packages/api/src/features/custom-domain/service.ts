@@ -6,6 +6,8 @@ import { and, eq, isNotNull, isNull, lt, ne, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
+import { assertFeature } from "../billing/limits";
+import { getPortfolioMode, isPortfolioEnabledFor } from "../portfolio/mode";
 import { ownerIsNotBanned } from "../resume/access-policy";
 
 const TXT_PREFIX = "_rx-verify";
@@ -113,6 +115,20 @@ async function dnsPointsHere(hostname: string, token: string): Promise<boolean> 
 	return addresses.length > 0 && addresses.every((address) => targets.has(address));
 }
 
+/**
+ * Connecting a domain is a paid feature from the day portfolios open to the account (`00-keputusan.md` rule #3); until
+ * then accounts connect one as before, so `PORTFOLIO_MODE=off` changes nothing. Reads nothing while it's off.
+ */
+async function assertCanConnect(userId: string) {
+	const mode = getPortfolioMode();
+	if (mode === "off") return;
+	const [account] = await db
+		.select({ role: schema.user.role, isAnonymous: schema.user.isAnonymous })
+		.from(schema.user)
+		.where(eq(schema.user.id, userId));
+	if (account && isPortfolioEnabledFor(account, mode)) await assertFeature(userId, "customDomain");
+}
+
 export const customDomainService = {
 	get: async (userId: string) => {
 		assertEnabled();
@@ -129,6 +145,7 @@ export const customDomainService = {
 
 		const [existing] = await db.select().from(schema.customDomain).where(eq(schema.customDomain.userId, userId));
 		if (existing?.hostname === hostname) return toStatus(existing);
+		await assertCanConnect(userId);
 
 		const values = {
 			hostname,
@@ -151,6 +168,8 @@ export const customDomainService = {
 		assertEnabled();
 		const [domain] = await db.select().from(schema.customDomain).where(eq(schema.customDomain.userId, userId));
 		if (!domain) throw new ORPCError("NOT_FOUND");
+		// Connecting needs the plan; checking a domain that's already connected doesn't (Phase 09 decides when it stops).
+		if (!domain.verifiedAt) await assertCanConnect(userId);
 
 		const valid = await dnsPointsHere(domain.hostname, domain.verificationToken);
 		const now = new Date();
