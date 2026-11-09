@@ -17,7 +17,10 @@ Your portfolio is a one-page website at `rezumi.app/<your-username>`. It shows y
    - **A resume** (your primary resume is picked). Your name, photo, experience, education, skills and contact details follow that resume as it changes. Its summary becomes **About me** and its projects become your **work**; after that you edit both freely in the portfolio.
    - **Without a resume**: type your name and headline. You can link a resume later in **Publish → Source resume**.
 3. Choose a theme from the gallery: **Lugas** (one calm column, suits every field), **Prima** (formal and structured, for finance, consulting and management), **Kanvas** (big pictures first, for designers, photographers and architects) or **Mozaik** (playful tiles, for creators, freelancers and students). Kanvas and Mozaik are marked **Plus**. You can change the theme any time in **Design**; your content stays as it is.
-4. Select **Create portfolio**. The editor opens with your content already filled in.
+4. From a resume, you can then **start with AI**: Rezumi writes your greeting, About me and the story of each work from your resume (3 credits on Rezumi AI, free on your own AI connection). Add a note if there's something to stress or leave out, or choose **Skip**.
+5. Select **Write draft** or **Create portfolio**. The editor opens with your content already filled in. A draft goes in as one change, so **Undo** puts back what came from your resume.
+
+AI only uses what's on your resume and in your note: it won't make up numbers, clients or results. Where a story needs a result it doesn't have, it writes a place for you to fill in, in square brackets, such as `[add the result]`. Publishing reminds you if any are left.
 
 ### The editor
 
@@ -131,3 +134,10 @@ While your portfolio is published, `rezumi.app/<username>` (and your custom doma
 ### Delete it
 
 On the **Portfolio** page, **Delete portfolio** removes its text, work, design and settings for good. Your resumes stay as they are.
+
+#### Writing with AI
+
+- **Write a draft with AI** at the top of **Content** writes your greeting, About me and the works you pick from your resume. It replaces what's in those places; **Undo** takes it back.
+- The small **AI** button on long fields (greeting, a work's summary, a service's description, About me, Text blocks and your own sections) makes the text shorter, more professional, or translates it to the page's language, for 1 credit. Testimonials don't have it: they're someone else's words.
+- **Find numbers** beside a metric list reads your jobs and projects and suggests metrics, each with the sentence it comes from, for 1 credit. Only numbers written on your resume are suggested; you pick which to add.
+- Failed or stopped requests give their credits back. On your own AI connection, nothing costs credits.

@@ -62,3 +62,7 @@
 - Buat widget Turnstile dengan hostname `rezumi.app`, lalu isi `TURNSTILE_SITE_KEY` di `vars` `wrangler.jsonc` dan `pnpm exec wrangler secret put TURNSTILE_SECRET_KEY`. Jangan memakai kunci uji di produksi: kunci uji melewatkan cek hostname. Tanpa kedua kunci, form tidak tampil.
 - Rincian Plus (peta negara, perangkat, perujuk, karya per hari) belum pernah dicoba dengan Analytics Engine sungguhan, karena hanya berjalan di Cloudflare. Di mode `admins`, buka portfolio dari HP, tunggu beberapa menit, lalu pastikan rinciannya tampil. Bila tetap tidak tampil, cari `Reading analytics details failed` di log Worker.
 - Pastikan email notifikasi terkirim dengan `Reply-To` pengirim lewat binding `send_email`.
+
+### Catatan dari Phase 10 (2026-11-09)
+
+- Tombol Stop pada fitur AI memutus koneksi, tetapi `wrangler.jsonc` belum menyalakan `enable_request_signal`, jadi di produksi kredit yang ditahan kembali lewat job billing dalam 15 menit, bukan seketika. Cloudflare menjadikan sinyal itu bawaan untuk tanggal kompatibilitas `2026-11-17` ke atas. Tanggal itu berlaku untuk seluruh Worker: sebelum menaikkannya, periksa alur streaming Asisten dan cek Stop di `wrangler dev`, lalu pastikan sinyal ikut melewati `new Request(request, { headers })` di `apps/server/src/cloudflare/index.ts`.
