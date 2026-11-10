@@ -3,17 +3,19 @@ import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 
 /**
- * The account's own billing records for its data export: subscriptions, payments and their refunds, granted periods,
- * and Rezumi AI credits in and out. Checkout addresses stay out, as do the internal retry counters. Invoices and the
- * billing details Dodo Payments holds are in its customer portal.
+ * The account's own billing records for its data export: subscriptions, payments (cards and QRIS passes) and their
+ * refunds, granted periods, and Rezumi AI credits in and out. Checkout addresses stay out, as do the internal retry
+ * counters. Invoices and the billing details Dodo Payments holds are in its customer portal.
  */
 export async function exportBillingData(userId: string) {
 	const payments = await db
 		.select({
 			id: schema.billingPayment.id,
+			provider: schema.billingPayment.provider,
 			providerPaymentId: schema.billingPayment.providerPaymentId,
 			planId: schema.billingPayment.planId,
 			interval: schema.billingPayment.interval,
+			durationDays: schema.billingPayment.durationDays,
 			billingReason: schema.billingPayment.billingReason,
 			amount: schema.billingPayment.amount,
 			taxAmount: schema.billingPayment.taxAmount,

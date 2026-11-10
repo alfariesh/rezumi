@@ -29,14 +29,17 @@ export const billingAccount = pg.pgTable("billing_account", {
 		.$onUpdate(() => /* @__PURE__ */ new Date()),
 });
 
-/** `payment` is a 30-day pass bought before subscriptions; new paid access comes from `billing_subscription`. */
+/**
+ * `payment` is a prepaid pass someone paid for: a QRIS pass (Sumopod, 30 or 365 days), or a 30-day pass from before
+ * subscriptions. Card subscriptions don't make periods; they live in `billing_subscription`.
+ */
 export type MembershipPeriodSource = "payment" | "admin" | "promo";
 
 /**
- * One stretch of paid access granted outside a subscription: by an administrator, a promotion, or a 30-day pass bought
- * before subscriptions. An account's unrevoked periods never overlap: they queue one after another, higher plans first.
- * A revoked period is out of the schedule; one revoked while running ends at the moment it was revoked. A subscription
- * runs beside them, and the higher plan of the two applies.
+ * One stretch of paid access outside a subscription: a prepaid QRIS pass, an administrator's grant, a promotion, or a
+ * 30-day pass bought before subscriptions. An account's unrevoked periods never overlap: they queue one after another,
+ * higher plans first. A revoked period is out of the schedule; one revoked while running ends at the moment it was
+ * revoked. A subscription runs beside them, and the higher plan of the two applies.
  */
 export const membershipPeriod = pg.pgTable(
 	"membership_period",
@@ -108,7 +111,7 @@ export const aiCreditGrant = pg.pgTable(
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),
 		source: pg.text("source").notNull().$type<CreditSource>(),
-		// The Pro AI payment that bought them.
+		// The Pro AI payment that bought them: a subscription's charge, or a QRIS pass (one grant per pass per month).
 		paymentId: pg.text("payment_id").references((): pg.AnyPgColumn => billingPayment.id, { onDelete: "set null" }),
 		// The subscription they came with: one grant per subscription per month, whatever orders a plan change makes.
 		subscriptionId: pg
@@ -126,6 +129,11 @@ export const aiCreditGrant = pg.pgTable(
 		pg.index().on(t.userId, t.expiresAt),
 		pg.index().on(t.paymentId),
 		pg.uniqueIndex("ai_credit_grant_subscription_month").on(t.subscriptionId, t.expiresAt),
+		// A pass's month of credits, once: the billing job and the payment that starts the pass may both try.
+		pg
+			.uniqueIndex("ai_credit_grant_pass_month")
+			.on(t.paymentId, t.expiresAt)
+			.where(sql`${t.subscriptionId} is null and ${t.paymentId} is not null`),
 		pg.check("ai_credit_grant_amount_positive", sql`${t.amount} > 0`),
 		pg.check("ai_credit_grant_source", sql`${t.source} IN ('trial', 'plan', 'admin')`),
 		pg.check("ai_credit_grant_remaining_in_range", sql`${t.remaining} >= 0 AND ${t.remaining} <= ${t.amount}`),
@@ -277,9 +285,13 @@ export const BILLING_PAYMENT_STATUSES = [
  */
 export type BillingPaymentStatus = (typeof BILLING_PAYMENT_STATUSES)[number];
 
+/** Who took a payment: Dodo Payments (cards), Sumopod (QRIS), or a provider used before them. */
+export type BillingPaymentProvider = "dodo" | "sumopod" | "polar" | "midtrans";
+
 /**
- * Why a payment was made: a one-time purchase, a subscription's first payment, a renewal, or a plan change (Dodo's
- * charge types new, renewal and plan_change).
+ * Why a payment was made: a subscription's first payment, a renewal, or a plan change (Dodo's charge types new,
+ * renewal and plan_change). A QRIS pass is a `purchase` when it starts paid access or waits behind a higher plan,
+ * `subscription_cycle` when it adds time to the same plan, and `subscription_update` when it moves up from a lower one.
  */
 export type BillingReason =
 	| "purchase"
@@ -303,10 +315,13 @@ export const billingPayment = pg.pgTable(
 			.primaryKey()
 			.$defaultFn(() => generateId()),
 		userId: pg.text("user_id").references(() => user.id, { onDelete: "set null" }),
-		provider: pg.text("provider").notNull().default("dodo").$type<"dodo" | "polar" | "midtrans">(),
-		// The checkout session the customer pays on; null for renewals.
+		// dodo: a card subscription's payment; sumopod: a QRIS pass. Older rows keep polar or midtrans.
+		provider: pg.text("provider").notNull().default("dodo").$type<BillingPaymentProvider>(),
+		// The checkout the customer pays on: a Dodo checkout session, or a Sumopod payment link's payment id. Null for
+		// renewals.
 		providerCheckoutId: pg.text("provider_checkout_id").unique(),
-		// The provider's payment once there is one: a Dodo payment id (a Polar order id on older rows, hence the column).
+		// The provider's payment once it is paid or charging: a Dodo payment id, or the Sumopod payment id once paid (a
+		// Polar order id on older rows, hence the column).
 		providerPaymentId: pg.text("provider_order_id").unique(),
 		// The key the checkout request carried; repeating it returns this payment instead of a second one.
 		idempotencyKey: pg.text("idempotency_key"),
@@ -314,7 +329,8 @@ export const billingPayment = pg.pgTable(
 			.text("subscription_id")
 			.references((): pg.AnyPgColumn => billingSubscription.id, { onDelete: "set null" }),
 		planId: pg.text("plan_id").notNull().$type<PaidPlanId>(),
-		// Null on 30-day passes from before subscriptions.
+		// Monthly or yearly: a subscription's interval, or a QRIS pass's length (durationDays). Null on 30-day passes from
+		// before subscriptions.
 		interval: pg.text("interval").$type<BillingInterval>(),
 		catalogVersion: pg.integer("catalog_version").notNull(),
 		billingReason: pg.text("billing_reason").$type<BillingReason>(),
@@ -327,7 +343,7 @@ export const billingPayment = pg.pgTable(
 		currency: pg.text("currency").notNull().default("usd"),
 		// Rezumi AI credits it granted when it was paid.
 		credits: pg.integer("credits").notNull().default(0),
-		// The length of a 30-day pass from before subscriptions; null for subscriptions.
+		// How many days a prepaid pass lasts (a QRIS pass: 30 or 365; older passes: 30); null for subscriptions.
 		durationDays: pg.integer("duration_days"),
 		// The free trial its checkout offered, in days; null without one. A paid $0 payment is the trial starting (Dodo
 		// saves the card with a $0 authorization); the first charge is the renewal when the trial ends.
@@ -341,7 +357,8 @@ export const billingPayment = pg.pgTable(
 		expiresAt: pg.timestamp("expires_at", { withTimezone: true }),
 		// The provider's last status for it: the checkout's, then the payment's.
 		providerStatus: pg.text("provider_status"),
-		// The subscription period the payment pays for.
+		// The subscription period the payment pays for, or where its pass was placed when it was paid (a later refund of
+		// an earlier pass can move it up).
 		periodStart: pg.timestamp("period_start", { withTimezone: true }),
 		periodEnd: pg.timestamp("period_end", { withTimezone: true }),
 		paidAt: pg.timestamp("paid_at", { withTimezone: true }),

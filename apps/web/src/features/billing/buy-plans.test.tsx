@@ -55,6 +55,8 @@ const summary = (patch: Partial<PlanSummary>): PlanSummary => ({
 	renews: false,
 	subscription: null,
 	currency: "usd",
+	paymentMethods: ["card"],
+	paymentMethod: null,
 	upcoming: [],
 	limits: { activeResumes: { used: 0, max: 3 }, activeCoverLetters: { used: 0, max: 3 } },
 	features: {
@@ -86,8 +88,8 @@ function renderSection(plan: PlanSummary, selected?: "plus" | "pro-ai") {
 	);
 }
 
-// The plan buttons only: the monthly/yearly switch is a segmented control.
-const PLAN_BUTTON = /^(Get|Try|Upgrade|Switch|Resend)/;
+// The plan buttons and the way-to-pay switch: the monthly/yearly switch is a segmented control.
+const PLAN_BUTTON = /^(Get|Try|Upgrade|Switch|Resend|Add|Pay)/;
 const buttons = () =>
 	screen
 		.queryAllByRole("button")
@@ -115,10 +117,30 @@ describe("subscribing", () => {
 		expect(screen.getByText(/Prices are before tax/)).toBeTruthy();
 	});
 
-	it("prices in Rupiah for visitors from Indonesia", () => {
-		renderSection(summary({ currency: "idr" }));
+	it("sells QRIS passes in Rupiah to visitors from Indonesia, with a card as the other choice", () => {
+		renderSection(summary({ currency: "idr", paymentMethods: ["qris", "card"], trialAvailable: true }));
+		expect(screen.getByText(/IDR\s29,000/)).toBeTruthy();
 		expect(screen.getByText(/IDR\s59,000/)).toBeTruthy();
-		expect(screen.getByText(/IDR\s129,000/)).toBeTruthy();
+		expect(screen.getAllByText("/ 30 days")).toHaveLength(2);
+		expect(screen.getByText(/Prices are final/)).toBeTruthy();
+		// No trial with QRIS: that comes with a card.
+		expect(screen.queryByText("First 7 days free")).toBeNull();
+		expect(buttons()).toEqual(["Get Plus", "Get Pro AI", "Pay by card in US dollars"]);
+		fireEvent.click(screen.getByRole("button", { name: "Pay by card in US dollars" }));
+		expect(screen.getByText("$4.99")).toBeTruthy();
+		expect(screen.getAllByText("First 7 days free")).toHaveLength(1);
+		expect(buttons()).toEqual(["Try Plus free", "Get Pro AI", "Pay with QRIS in Rupiah"]);
+	});
+
+	it("adds time or moves up for an account on a QRIS pass", () => {
+		renderSection(
+			summary({ currency: "idr", planId: "plus", source: "period", paymentMethods: ["qris"], paymentMethod: "qris" }),
+		);
+		expect(screen.getByText("Current")).toBeTruthy();
+		expect(buttons()).toEqual(["Add 30 days", "Upgrade to Pro AI"]);
+		fireEvent.click(screen.getByRole("button", { name: "Add 30 days" }));
+		expect(dialog.choice).toEqual({ planId: "plus", interval: "month" });
+		expect(screen.queryByRole("button", { name: "Pay by card in US dollars" })).toBeNull();
 	});
 
 	it("marks the current plan and offers the upgrade while subscribed to Plus", () => {

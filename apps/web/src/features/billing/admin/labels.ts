@@ -105,12 +105,15 @@ export const formatUsdMicros = (micros: number | null) =>
 
 type HistoryTone = "success" | "warning" | "danger" | "default" | "muted";
 
-/** A payment provider event in words: what Dodo Payments (or Polar, on older rows) reported and what Rezumi did. */
+/**
+ * A payment provider event in words: what Dodo Payments or Sumopod (or Polar, on older rows) reported and what Rezumi
+ * did.
+ */
 export function describeEvent(event: AdminCustomer["events"][number]): { title: string; tone: HistoryTone } {
 	const type = event.eventType;
 	switch (event.outcome) {
 		case "applied":
-			return type === "payment.succeeded" || type === "order.paid"
+			return type === "payment.succeeded" || type === "payment.completed" || type === "order.paid"
 				? { title: t`Provider: payment received`, tone: "success" }
 				: type.startsWith("refund.") || type === "order.refunded"
 					? { title: t`Provider: refund`, tone: "warning" }
@@ -180,6 +183,8 @@ export function describeAudit(entry: { action: string; details?: unknown }): { t
 			return { title: t`Refund requested`, tone: "warning" };
 		case "refund.failed":
 			return { title: t`Refund refused`, tone: "danger" };
+		case "refund.recorded":
+			return { title: t`QRIS refund recorded by an admin`, tone: "warning" };
 		case "subscription.changed":
 			return { title: describeSubscriptionChange(entry.details), tone: "default" };
 		case "subscription.revoked":

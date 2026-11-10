@@ -1,6 +1,7 @@
 import { detectBillingProblems, queueDailySummary } from "./alerts";
 import { releaseStaleReservations } from "./credits";
 import { queueExpiryReminders, sendBillingNotifications } from "./notifications";
+import { grantPassCredits } from "./passes";
 import {
 	endDeletedAccountSubscriptions,
 	grantYearlyCredits,
@@ -8,6 +9,7 @@ import {
 	reconcileSubscriptions,
 } from "./reconcile";
 import { reconcileRefunds } from "./refunds";
+import { reconcileQrisPayments } from "./sumopod/reconcile";
 
 /** Runs one task, logging its failure instead of throwing, so the next task still runs. */
 async function task<T>(work: () => Promise<T>, fallback: T, failure: string): Promise<T> {
@@ -22,15 +24,21 @@ async function task<T>(work: () => Promise<T>, fallback: T, failure: string): Pr
 /**
  * Billing's scheduled work, run every minute by the Workers cron and the Node scheduler before career jobs. Cron
  * triggers can overlap or repeat, so every task claims its rows and is safe to run twice; each task's failure stays
- * its own. Payments first (a customer may be waiting for one), then subscriptions Dodo's news didn't reach, refunds
- * still waiting, the months of yearly Pro AI credits, and subscriptions of deleted accounts. Then the emails: the
- * owner's alerts and daily summary, and reminders that granted access ends soon.
+ * its own. Payments first (a customer may be waiting for one: card checkouts, then QRIS payments), then subscriptions
+ * Dodo's news didn't reach, refunds still waiting, the months of Pro AI credits (yearly subscriptions, and passes that
+ * started or reached a new month), and subscriptions of deleted accounts. Then the emails: the owner's alerts and daily
+ * summary, QRIS receipts, and reminders that a pass or granted access ends soon.
  */
 export async function runBillingJobs(now = new Date()) {
 	const checkedPayments = await task(
 		() => reconcilePayments(now),
 		0,
 		"Reconciling payments failed; they are checked again on the next run.",
+	);
+	const checkedQrisPayments = await task(
+		() => reconcileQrisPayments(now),
+		0,
+		"Reconciling QRIS payments failed; they are checked again on the next run.",
 	);
 	const checkedSubscriptions = await task(
 		() => reconcileSubscriptions(now),
@@ -46,6 +54,11 @@ export async function runBillingJobs(now = new Date()) {
 		() => grantYearlyCredits(now),
 		0,
 		"Granting yearly Pro AI credits failed; they are granted on the next run.",
+	);
+	const grantedPassCredits = await task(
+		() => grantPassCredits(now),
+		0,
+		"Granting Pro AI pass credits failed; they are granted on the next run.",
 	);
 	const endedSubscriptions = await task(
 		() => endDeletedAccountSubscriptions(now),
@@ -67,9 +80,11 @@ export async function runBillingJobs(now = new Date()) {
 	);
 	return {
 		checkedPayments,
+		checkedQrisPayments,
 		checkedSubscriptions,
 		checkedRefunds,
 		grantedCredits,
+		grantedPassCredits,
 		endedSubscriptions,
 		releasedReservations,
 		sentNotifications,

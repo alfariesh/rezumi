@@ -7,15 +7,19 @@ i18n.loadAndActivate({ locale: "en", messages: {} });
 
 const {
 	formatPrice,
+	getPassKind,
+	getPassLabel,
 	getPaymentReasonLabel,
 	getPurchaseKind,
 	getPurchaseLabel,
 	getReturnState,
 	hasInvoice,
+	hasReceipt,
 	isLiveSubscription,
 	isPaymentFailed,
 	isOpenPayment,
 	monthlyOfYearly,
+	passSuffix,
 	planTimeZone,
 	priceLabel,
 	yearlySaving,
@@ -76,17 +80,18 @@ describe("prices", () => {
 	it("writes amounts in the currency's way, dropping decimals that are zero", () => {
 		expect(formatPrice(499, "usd")).toBe("$4.99");
 		expect(formatPrice(3_900, "usd")).toBe("$39");
-		expect(formatPrice(5_900_000, "idr")).toMatch(/^IDR\s59,000$/);
+		expect(formatPrice(2_900_000, "idr")).toMatch(/^IDR\s29,000$/);
 		expect(priceLabel("pro-ai", "month", "usd")).toBe("$9.99");
-		expect(priceLabel("pro-ai", "year", "idr")).toMatch(/^IDR\s999,000$/);
+		expect(priceLabel("pro-ai", "year", "idr")).toMatch(/^IDR\s499,000$/);
 	});
 
 	it("shows what a year saves and costs a month", () => {
 		expect(yearlySaving("plus", "usd")).toBe(35);
 		expect(yearlySaving("pro-ai", "usd")).toBe(34);
-		expect(yearlySaving("plus", "idr")).toBe(35);
+		expect(yearlySaving("plus", "idr")).toBe(28);
+		expect(yearlySaving("pro-ai", "idr")).toBe(30);
 		expect(monthlyOfYearly("plus", "usd")).toBe("$3.25");
-		expect(monthlyOfYearly("plus", "idr")).toMatch(/^IDR\s38,250$/);
+		expect(monthlyOfYearly("plus", "idr")).toMatch(/^IDR\s20,750$/);
 	});
 });
 
@@ -114,7 +119,7 @@ describe("payments", () => {
 	});
 
 	it("names what a payment was for and offers invoices for orders that went through", () => {
-		const paid = { totalAmount: 499, paidAt: now, trialDays: null };
+		const paid = { method: "card" as const, durationDays: null, totalAmount: 499, paidAt: now, trialDays: null };
 		expect(getPaymentReasonLabel({ ...paid, billingReason: "subscription_create", interval: "month" })).toBe(
 			"New subscription",
 		);
@@ -125,6 +130,8 @@ describe("payments", () => {
 		expect(getPaymentReasonLabel({ ...paid, billingReason: null, interval: null })).toBe("30-day pass");
 		// A trial's $0 start; without a trial (a repeat customer), the full price is a new subscription.
 		const trial = {
+			method: "card" as const,
+			durationDays: null,
 			billingReason: "subscription_create" as const,
 			interval: "month" as const,
 			paidAt: now,
@@ -132,11 +139,46 @@ describe("payments", () => {
 		};
 		expect(getPaymentReasonLabel({ ...trial, totalAmount: 0 })).toBe("Free trial");
 		expect(getPaymentReasonLabel({ ...trial, totalAmount: 549 })).toBe("New subscription");
-		const order = { trialDays: null, totalAmount: 499 };
+		const order = { method: "card" as const, trialDays: null, totalAmount: 499 };
 		expect(hasInvoice({ ...order, paidAt: now, providerPaymentId: "pay_1" })).toBe(true);
 		expect(hasInvoice({ ...order, paidAt: now, providerPaymentId: null })).toBe(false);
 		expect(hasInvoice({ ...order, paidAt: null, providerPaymentId: "pay_1" })).toBe(false);
-		expect(hasInvoice({ trialDays: 7, totalAmount: 0, paidAt: now, providerPaymentId: "pay_1" })).toBe(false);
+		expect(hasInvoice({ method: "card", trialDays: 7, totalAmount: 0, paidAt: now, providerPaymentId: "pay_1" })).toBe(
+			false,
+		);
+	});
+
+	it("names QRIS passes and gives them Rezumi's receipt instead of an invoice", () => {
+		const pass = {
+			method: "qris" as const,
+			interval: "month" as const,
+			durationDays: 30,
+			totalAmount: 2_900_000,
+			paidAt: now,
+			trialDays: null,
+		};
+		expect(getPaymentReasonLabel({ ...pass, billingReason: "purchase" })).toBe("30 days, QRIS");
+		expect(getPaymentReasonLabel({ ...pass, billingReason: "subscription_cycle" })).toBe("30 more days, QRIS");
+		expect(
+			getPaymentReasonLabel({ ...pass, billingReason: "subscription_update", interval: "year", durationDays: 365 }),
+		).toBe("Upgrade, 365 days, QRIS");
+		expect(hasInvoice({ ...pass, providerPaymentId: "p_1" })).toBe(false);
+		expect(hasReceipt(pass)).toBe(true);
+		expect(hasReceipt({ ...pass, paidAt: null })).toBe(false);
+		expect(hasReceipt({ method: "card", paidAt: now })).toBe(false);
+	});
+
+	it("tells what a QRIS pass does from where the account stands", () => {
+		expect(getPassKind("free", "plus")).toBe("buy");
+		expect(getPassKind("plus", "plus")).toBe("extend");
+		expect(getPassKind("plus", "pro-ai")).toBe("upgrade");
+		expect(getPassKind("pro-ai", "plus")).toBe("later");
+		expect(getPassLabel("extend", { planId: "plus", interval: "month" })).toBe("Add 30 days");
+		expect(getPassLabel("extend", { planId: "pro-ai", interval: "year" })).toBe("Add a year");
+		expect(getPassLabel("upgrade", { planId: "pro-ai", interval: "month" })).toBe("Upgrade to Pro AI");
+		expect(getPassLabel("buy", { planId: "plus", interval: "year" })).toBe("Get Plus");
+		expect(passSuffix("month")).toBe("/ 30 days");
+		expect(passSuffix("year")).toBe("/ year");
 	});
 
 	it("shows dates in the browser's zone until the account picks one", () => {

@@ -57,8 +57,16 @@ function PlanCard({ plan, billingEnabled }: PlanCardProps) {
 	const featured = plan.featured === true;
 	const currency = currencyForLocale(i18n.locale);
 	const yearly = useYearly(plan.prices?.year[currency] ?? 0, currency);
-	const period = plan.prices === null ? t`No card needed` : t`per month, or ${yearly} a year`;
-	const trialDays = PLANS[plan.id].trialDays;
+	// Rupiah is paid by QRIS: a pass for 30 days or a year, with no free trial (that comes with a card).
+	const qris = currency === "idr";
+	const period =
+		plan.prices === null
+			? t`No card needed`
+			: qris
+				? t`for 30 days, or ${yearly} a year`
+				: t`per month, or ${yearly} a year`;
+	const trialDays = qris ? null : PLANS[plan.id].trialDays;
+	const cta = qris && plan.id === "plus" ? t`Choose Plus` : plan.cta;
 
 	return (
 		<div
@@ -116,7 +124,7 @@ function PlanCard({ plan, billingEnabled }: PlanCardProps) {
 						search={plan.id === "free" ? {} : { callbackURL: `/dashboard/settings/billing?plan=${plan.id}` }}
 						className={cn(buttonVariants({ variant: featured ? "secondary" : "primary", fullWidth: true }), "mt-8")}
 					>
-						{plan.cta}
+						{cta}
 					</Link>
 				)}
 			</div>
@@ -129,6 +137,8 @@ type PricingProps = { billingEnabled?: boolean; portfolioEnabled?: boolean };
 
 export function Pricing({ billingEnabled = false, portfolioEnabled = false }: PricingProps) {
 	const plans = getPlans(portfolioEnabled);
+	const { i18n } = useLingui();
+	const qris = currencyForLocale(i18n.locale) === "idr";
 
 	return (
 		<section
@@ -140,7 +150,9 @@ export function Pricing({ billingEnabled = false, portfolioEnabled = false }: Pr
 				<SectionHeading section="pricing" id="pricing-title" />
 				<SectionTitle>{t`Pay only while you are applying.`}</SectionTitle>
 				<p className="mt-4 max-w-2xl text-lg text-pretty text-muted">
-					{t`Start free. When you need more versions, formats or AI help, subscribe monthly or yearly, and cancel any time.`}
+					{qris
+						? t`Start free. When you need more versions, formats or AI help, pay with QRIS for 30 days or a year at a time. Nothing renews on its own.`
+						: t`Start free. When you need more versions, formats or AI help, subscribe monthly or yearly, and cancel any time.`}
 				</p>
 				{!billingEnabled && (
 					<p className="mt-3 text-sm text-muted">{t`Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet.`}</p>
@@ -154,7 +166,9 @@ export function Pricing({ billingEnabled = false, portfolioEnabled = false }: Pr
 					))}
 				</div>
 				<p className="mx-auto mt-6 max-w-3xl px-4 text-center text-sm text-pretty text-muted">
-					{t`Prices in US dollars, or in Rupiah for visitors from Indonesia, before tax: the checkout adds the tax for where you live. A first Plus subscription starts with 7 free days. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan.`}
+					{qris
+						? t`Prices in Rupiah, paid with QRIS from any bank or e-wallet app. They are final: no tax is added. A plan runs for 30 days or a year and doesn't renew on its own: pay again whenever you like and the time is added after your current plan. Prefer a card that renews by itself? Pay in US dollars by card instead, with 7 free days on a first Plus subscription. When a plan ends, your account returns to Free and your documents stay. Your own AI key works on every plan.`
+						: t`Prices in US dollars, or in Rupiah for visitors from Indonesia, before tax: the checkout adds the tax for where you live. A first Plus subscription starts with 7 free days. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan.`}
 				</p>
 			</div>
 		</section>

@@ -12,13 +12,18 @@ import {
 	getPaymentStatusColor,
 	getPaymentStatusLabel,
 	hasInvoice,
+	hasReceipt,
 } from "./purchase";
+import { ReceiptLink } from "./receipt-link";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
 
 type PaymentHistorySectionProps = { formatDay: (date: Date) => string };
 
-/** Every payment the account made or started, newest first, with its invoice once paid. Hidden until there is one. */
+/**
+ * Every payment the account made or started, newest first, with its invoice (card, from Dodo Payments) or receipt
+ * (QRIS, from Rezumi) once paid. Hidden until there is one.
+ */
 export function PaymentHistorySection({ formatDay }: PaymentHistorySectionProps) {
 	const history = useInfiniteQuery(
 		orpc.billing.payments.infiniteOptions({
@@ -39,7 +44,15 @@ export function PaymentHistorySection({ formatDay }: PaymentHistorySectionProps)
 				icon="clipboard-text"
 				id={titleId}
 				title={<Trans>Payments</Trans>}
-				description={<Trans>Invoices come from Dodo Payments, which sells the subscription and handles tax.</Trans>}
+				description={
+					payments.some((payment) => payment.method === "qris") ? (
+						<Trans>
+							QRIS plans come with a receipt from Rezumi; card subscriptions with an invoice from Dodo Payments.
+						</Trans>
+					) : (
+						<Trans>Invoices come from Dodo Payments, which sells the subscription and handles tax.</Trans>
+					)
+				}
 			/>
 			<Widget.Content className="flex flex-col gap-0 p-0">
 				<Table variant="secondary">
@@ -88,7 +101,13 @@ export function PaymentHistorySection({ formatDay }: PaymentHistorySectionProps)
 												<Chip.Label>{getPaymentStatusLabel(payment.status)}</Chip.Label>
 											</Chip>
 										</Table.Cell>
-										<Table.Cell>{hasInvoice(payment) && <InvoiceButton paymentId={payment.id} />}</Table.Cell>
+										<Table.Cell>
+											{hasInvoice(payment) ? (
+												<InvoiceButton paymentId={payment.id} />
+											) : (
+												hasReceipt(payment) && <ReceiptLink paymentId={payment.id} />
+											)}
+										</Table.Cell>
 									</Table.Row>
 								))}
 							</Table.Body>

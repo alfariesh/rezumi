@@ -81,6 +81,10 @@ msgstr "“{written}” ditambahkan ke Keterampilan"
 msgid "“I tailored my resume for three roles in one evening and had two interview calls that week.”"
 msgstr "“Saya menyesuaikan CV untuk tiga posisi dalam satu malam, dan minggu itu juga dapat dua panggilan interview.”"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "(already yours)"
+msgstr "(sudah milikmu)"
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "(no header)"
 msgstr "(tidak ada tajuk)"
@@ -88,6 +92,10 @@ msgstr "(tidak ada tajuk)"
 #: src/features/portfolio/editor/intro-effect.tsx
 msgid "(theme default)"
 msgstr "(bawaan tema)"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "(this payment)"
+msgstr "(pembayaran ini)"
 
 #. placeholder {0}: chosen.size
 #: src/features/portfolio/works/add-work/from-resume.tsx
@@ -345,6 +353,13 @@ msgstr "{0, plural, one {Font yang Anda pilih tidak dapat menampilkan {list}. Ka
 msgid "{0} · {providerLabel}. Sends this application and your Knowledge; your provider may charge."
 msgstr "{0} · {providerLabel}. Mengirim lamaran ini dan Pengetahuan Anda; penyedia Anda mungkin mengenakan biaya."
 
+#. placeholder {0}: BILLING_SELLER.name
+#. placeholder {1}: BILLING_SELLER.brand
+#. placeholder {2}: BILLING_SELLER.qrisProcessor
+#: src/features/billing/purchase-dialog.tsx
+msgid "{0} ({1}) sells this plan; {2} processes the QRIS payment. By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
+msgstr "{0} ({1}) menjual paket ini; {2} memproses pembayaran QRIS-nya. Dengan melanjutkan, kamu menyetujui <0>Syarat layanan</0> dan <1>Kebijakan pengembalian dana</1>."
+
 #. placeholder {0}: document.name
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
@@ -359,6 +374,11 @@ msgstr "{0} (bawaan tema)"
 #: src/features/billing/buy-plans.tsx
 msgid "{0} a month, billed yearly"
 msgstr "{0} per bulan, ditagih tahunan"
+
+#. placeholder {0}: monthlyOfYearly(id, currency)
+#: src/features/billing/buy-plans.tsx
+msgid "{0} a month, paid once for 365 days"
+msgstr "{0} sebulan, bayar sekali untuk 365 hari"
 
 #. placeholder {0}: creditCount(payment.credits)
 #: src/features/billing/payment-return.tsx
@@ -387,6 +407,11 @@ msgstr "{0} kamu dapatkan saat pertama kali memakai Rezumi AI, berlaku {1} hari.
 msgid "{0} credits"
 msgstr "{0} kredit"
 
+#. placeholder {0}: passDays(target.interval)
+#: src/features/billing/purchase-dialog.tsx
+msgid "{0} days"
+msgstr "{0} hari"
+
 #. placeholder {0}: payment.trialDays
 #: src/features/billing/pending-payment.tsx
 msgid "{0} days free"
@@ -408,6 +433,11 @@ msgstr "{0} berakhir {1}"
 #: src/features/billing/plan-page.tsx
 msgid "{0} expire on {1}"
 msgstr "{0} kedaluwarsa pada {1}"
+
+#. placeholder {0}: creditCount(perMonth)
+#: src/features/billing/receipt.tsx
+msgid "{0} for each month of access"
+msgstr "{0} untuk setiap bulan masa aktif"
 
 #. placeholder {0}: creditCount(credits)
 #: src/features/billing/purchase-dialog.tsx
@@ -601,6 +631,12 @@ msgstr "{0} didukung, {1} didukung sebagian, {2} belum ada bukti. {3}"
 msgid "{0} to fix"
 msgstr "{0} untuk diperbaiki"
 
+#. placeholder {0}: formatDate(payment.periodStart)
+#. placeholder {1}: formatDate(payment.periodEnd)
+#: src/features/billing/receipt.tsx
+msgid "{0} until {1}"
+msgstr "{0} sampai {1}"
+
 #. placeholder {0}: metrics.signups.verified
 #: src/features/billing/admin/overview.tsx
 msgid "{0} verified their email"
@@ -726,6 +762,14 @@ msgstr "{days, plural, other {# hari di kantor, di bawah batas Anda}}"
 #: src/features/career/offers.tsx
 msgid "{days, plural, one {# office day, your limit} other {# office days, your limit}}"
 msgstr "{days, plural, other {# hari di kantor, sesuai batas Anda}}"
+
+#: src/features/billing/purchase.ts
+msgid "{days} days, QRIS"
+msgstr "{days} hari, QRIS"
+
+#: src/features/billing/purchase.ts
+msgid "{days} more days, QRIS"
+msgstr "Tambah {days} hari, QRIS"
 
 #: src/features/documents/document-actions.tsx
 msgid "{done, plural, one {# document updated} other {# documents updated}}"
@@ -900,12 +944,24 @@ msgid "{name} sits in the sidebar"
 msgstr "{name} berada di sidebar"
 
 #: src/features/billing/purchase-dialog.tsx
+msgid "{name} starts as soon as the payment is confirmed, usually within seconds."
+msgstr "{name} aktif begitu pembayaran terkonfirmasi, biasanya dalam hitungan detik."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{name} starts as soon as the payment is confirmed. The rest of your current plan waits and continues after it."
+msgstr "{name} aktif begitu pembayaran terkonfirmasi. Sisa paketmu yang sekarang menunggu dan berlanjut setelahnya."
+
+#: src/features/billing/purchase-dialog.tsx
 msgid "{name} starts now. You're charged the difference for the rest of this period with your saved payment method, then the new price at each renewal."
 msgstr "{name} mulai sekarang. Selisih untuk sisa periode ini ditagih ke metode pembayaran tersimpanmu, lalu harga baru di setiap perpanjangan."
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "{name} starts today. You're charged its price, less the unused part of your current period, with your saved payment method; it then renews from today."
 msgstr "{name} mulai hari ini. Kamu ditagih harganya dikurangi sisa periode berjalan yang belum terpakai, dengan metode pembayaran tersimpanmu; lalu diperpanjang mulai hari ini."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{name} starts when your current, higher plan ends."
+msgstr "{name} mulai saat paketmu yang lebih tinggi sekarang berakhir."
 
 #: src/features/resume/editor/design/template-group.tsx
 msgid "{name} style"
@@ -964,6 +1020,11 @@ msgstr "{pendingOnPage, plural, one {# usulan edit di halaman ini · tidak ada p
 msgid "{placeholders, plural, one {# place written in [brackets] will show on your page as it is.} other {# places written in [brackets] will show on your page as they are.}}"
 msgstr "{placeholders, plural, other {# bagian bertanda [kurung siku] akan tampil di halaman Anda apa adanya.}}"
 
+#. placeholder {0}: formatDate(payment.periodEnd)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} is active until {0}. It doesn't renew on its own."
+msgstr "{plan} aktif sampai {0}. Paket ini tidak diperpanjang otomatis."
+
 #: src/features/billing/payment-return.tsx
 msgid "{plan} is active, free for now."
 msgstr "{plan} aktif, gratis untuk sementara."
@@ -981,6 +1042,12 @@ msgstr "{plan} aktif. Diperpanjang pada {0} kecuali kamu membatalkannya."
 #: src/features/billing/payment-return.tsx
 msgid "{plan} is free until {0}. Then your card is charged {price} plus tax, unless you cancel before."
 msgstr "{plan} gratis sampai {0}. Setelah itu kartumu ditagih {price} ditambah pajak, kecuali kamu membatalkannya sebelum itu."
+
+#. placeholder {0}: formatDate(payment.periodStart)
+#. placeholder {1}: formatDate(payment.periodEnd)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} starts on {0}, after your current plan, and runs until {1}."
+msgstr "{plan} mulai {0}, setelah paketmu yang sekarang, dan berlaku sampai {1}."
 
 #: src/features/billing/pending-payment.tsx
 msgid "{price}, open until {deadline}."
@@ -1093,6 +1160,11 @@ msgstr "{words, plural, one {Kata #} other {kata-kata #}}"
 msgid "{words}. {reason}"
 msgstr "{words}. {reason}"
 
+#. placeholder {0}: PASS_DAYS.month
+#: src/features/billing/purchase.ts
+msgid "/ {0} days"
+msgstr "/ {0} hari"
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ hour"
 msgstr "/ jam"
@@ -1128,6 +1200,10 @@ msgstr "1 kolom, sebaris"
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "1 to {most} pictures with captions"
 msgstr "1–{most} gambar dengan keterangan"
+
+#: src/features/billing/buy-plans.tsx
+msgid "1 year"
+msgstr "1 tahun"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "10-minute briefing"
@@ -1176,6 +1252,7 @@ msgid "3 of 5 keywords on your resume"
 msgstr "3 dari 5 kata kunci ada di CV Anda"
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/billing/buy-plans.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 hari"
@@ -1550,6 +1627,10 @@ msgstr "Akses"
 msgid "Access is sent to"
 msgstr "Akses diberikan kepada"
 
+#: src/features/billing/receipt.tsx
+msgid "Access period"
+msgstr "Masa aktif"
+
 #: src/features/auth/pages/consent.tsx
 msgid "Access your account through the API, including reading, changing and deleting your documents and job applications."
 msgstr "Akses akun Anda melalui API, termasuk membaca, mengubah dan menghapus dokumen dan lamaran pekerjaan Anda."
@@ -1665,6 +1746,15 @@ msgstr "Tambah"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Add “{0}”"
 msgstr "Tambahkan “{0}”"
+
+#. placeholder {0}: PASS_DAYS.month
+#: src/features/billing/purchase.ts
+msgid "Add {0} days"
+msgstr "Tambah {0} hari"
+
+#: src/features/billing/purchase.ts
+msgid "Add {name} for later"
+msgstr "Tambah {name} untuk nanti"
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Add a block"
@@ -1819,6 +1909,10 @@ msgstr "Tambah testimoni"
 #: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Add a video"
 msgstr "Tambah video"
+
+#: src/features/billing/purchase.ts
+msgid "Add a year"
+msgstr "Tambah setahun"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -2030,6 +2124,10 @@ msgstr "Tambahkan akhiran domain, seperti {domain}.com"
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "Add these records where you manage the domain, then check. Changes can take a few hours to reach everyone."
 msgstr "Tambahkan record ini di tempat Anda mengelola domain, lalu periksa. Perubahan bisa memerlukan beberapa jam untuk menjangkau semua orang."
+
+#: src/features/billing/buy-plans.tsx
+msgid "Add time or upgrade"
+msgstr "Tambah masa aktif atau upgrade"
 
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/workspace/debrief.tsx
@@ -2415,6 +2513,10 @@ msgid "Also end the subscription now (access stops at once)"
 msgstr "Sekaligus hentikan langganan sekarang (akses langsung berhenti)"
 
 #: src/features/billing/admin/customer.tsx
+msgid "Also take back the pass and its remaining credits"
+msgstr "Cabut juga paketnya dan sisa kreditnya"
+
+#: src/features/billing/admin/customer.tsx
 msgid "Also take back the remaining credits from this payment"
 msgstr "Sekaligus tarik sisa kredit dari pembayaran ini"
 
@@ -2437,6 +2539,12 @@ msgstr "Jumlah sebelum pajak ({0}), maksimal {1}"
 #: src/features/billing/admin/labels.ts
 msgid "Amount doesn't match the order"
 msgstr "Nominal tidak cocok dengan pesanan"
+
+#. placeholder {0}: currency.toUpperCase()
+#. placeholder {1}: formatPrice(left, currency)
+#: src/features/billing/admin/customer.tsx
+msgid "Amount sent back ({0}), up to {1}"
+msgstr "Jumlah yang dikembalikan ({0}), maksimal {1}"
 
 #: src/dialogs/resume/template/data.ts
 msgid "An academic CV in a quiet serif, with small capital section titles and room for long lists of publications, grants and teaching. Suits research and scholarship applications."
@@ -2981,6 +3089,7 @@ msgid "Back to the portfolio"
 msgstr "Kembali ke portofolio"
 
 #: src/features/billing/payment-return.tsx
+#: src/features/billing/receipt.tsx
 msgid "Back to your plan"
 msgstr "Kembali ke paketmu"
 
@@ -3322,6 +3431,11 @@ msgstr "Tombol"
 msgid "By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed at, and anyone can report one that's used without permission."
 msgstr "Dengan menambahkan logo, kamu menyatakan berhak menampilkannya. Logo tampil abu-abu dan berwarna saat diarahkan, dan siapa pun bisa melaporkan logo yang dipakai tanpa izin."
 
+#. placeholder {0}: qris.payments
+#: src/features/billing/admin/overview.tsx
+msgid "By QRIS · {0} paid"
+msgstr "Lewat QRIS · {0} dibayar"
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "Kalender"
@@ -3337,6 +3451,10 @@ msgstr "Tenang dan formal."
 #: src/features/homepage/faq.tsx
 msgid "Can I import a resume I already have?"
 msgstr "Bisakah saya mengimpor resume yang sudah saya miliki?"
+
+#: src/features/homepage/faq.tsx
+msgid "Can I pay with QRIS?"
+msgstr "Bisakah saya bayar dengan QRIS?"
 
 #: src/features/homepage/faq.tsx
 msgid "Can I use my own AI key?"
@@ -3789,6 +3907,10 @@ msgstr "Pilih salah satu CV Anda yang tidak ada di Sampah."
 #: src/features/portfolio/images/image-field.tsx
 msgid "Choose pictures"
 msgstr "Pilih gambar"
+
+#: src/features/homepage/pricing.tsx
+msgid "Choose Plus"
+msgstr "Pilih Plus"
 
 #: src/features/homepage/plans.ts
 msgid "Choose Pro AI"
@@ -4303,6 +4425,11 @@ msgstr "Lanjutkan sebagai tamu"
 #: src/features/billing/pending-payment.tsx
 msgid "Continue checkout"
 msgstr "Lanjutkan checkout"
+
+#: src/features/billing/payment-return.tsx
+#: src/features/billing/pending-payment.tsx
+msgid "Continue paying"
+msgstr "Lanjutkan pembayaran"
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Continue to checkout"
@@ -7154,6 +7281,10 @@ msgstr "Makanan & minuman"
 msgid "For"
 msgstr "Untuk"
 
+#: src/features/homepage/pricing.tsx
+msgid "for 30 days, or {yearly} a year"
+msgstr "untuk 30 hari, atau {yearly} setahun"
+
 #. placeholder {0}: domain.target
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "For a root domain such as example.com, use A and AAAA records with {0}'s addresses instead of the CNAME."
@@ -7477,6 +7608,10 @@ msgstr "Ambil {name}"
 #: src/features/settings/ai/web-access.tsx
 msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
 msgstr "Dapatkan kunci di <0>{0}</0>. Itu disimpan terenkripsi dan hanya digunakan untuk permintaan Anda."
+
+#: src/features/billing/buy-plans.tsx
+msgid "Get a plan"
+msgstr "Pilih paket"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Get feedback"
@@ -8045,6 +8180,10 @@ msgstr "Bila sudah membayar, halaman ini diperbarui sendiri dalam beberapa detik
 msgid "If you've paid, this page updates by itself in a few seconds. The checkout stays open until {deadline}."
 msgstr "Bila sudah membayar, halaman ini berubah sendiri dalam beberapa detik. Checkout tetap terbuka sampai {deadline}."
 
+#: src/features/billing/payment-return.tsx
+msgid "If you've paid, this page updates by itself in a few seconds. The QRIS page stays open until {deadline}."
+msgstr "Kalau sudah bayar, halaman ini berubah sendiri dalam beberapa detik. Halaman QRIS tetap terbuka sampai {deadline}."
+
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "If your DNS is on Cloudflare, set the CNAME record to DNS only (grey cloud)."
 msgstr "Bila DNS Anda ada di Cloudflare, setel record CNAME ke DNS only (awan abu-abu)."
@@ -8151,6 +8290,10 @@ msgstr "Meningkatkan…"
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "In color"
 msgstr "Berwarna"
+
+#: src/features/billing/buy-plans.tsx
+msgid "In Indonesia? <0>Pay with QRIS in Rupiah</0>"
+msgstr "Di Indonesia? <0>Bayar dengan QRIS dalam Rupiah</0>"
 
 #: src/features/billing/credits.ts
 msgid "In progress"
@@ -8448,6 +8591,10 @@ msgstr "Italia"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Italic"
 msgstr "Miring"
+
+#: src/features/billing/receipt.tsx
+msgid "Item"
+msgstr "Produk"
 
 #. placeholder {0}: providers[0]?.label ?? ""
 #: src/features/career/schedule-sheet.tsx
@@ -9279,6 +9426,10 @@ msgstr "Memuat versi tersimpan…"
 msgid "Loading stylesheet editor…"
 msgstr "Memuat editor stylesheet…"
 
+#: src/features/billing/receipt.tsx
+msgid "Loading the receipt…"
+msgstr "Memuat bukti bayar…"
+
 #: src/features/career/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "Memuat ruang kerja…"
@@ -10019,8 +10170,8 @@ msgid "Nepali"
 msgstr "Nepali"
 
 #: src/features/billing/admin/overview.tsx
-msgid "Net, before tax and Dodo Payments' fees"
-msgstr "Bersih, sebelum pajak dan fee Dodo Payments"
+msgid "Net, before tax and payment fees"
+msgstr "Bersih, sebelum pajak dan biaya pembayaran"
 
 #: src/features/resume/editor/write/entries.tsx
 msgid "Network"
@@ -10114,8 +10265,8 @@ msgid "New subscription"
 msgstr "Langganan baru"
 
 #: src/features/billing/admin/customer.tsx
-msgid "Newest first. The menu at the end of a row checks with Dodo Payments or refunds."
-msgstr "Terbaru di atas. Menu di ujung baris untuk cek ulang ke Dodo Payments atau refund."
+msgid "Newest first. The menu at the end of a row checks with the provider (Dodo Payments or Sumopod) or refunds."
+msgstr "Terbaru di atas. Menu di ujung baris untuk cek ulang ke penyedia (Dodo Payments atau Sumopod) atau refund."
 
 #: src/features/billing/admin/overview.tsx
 msgid "Newest payments started in this period. Search finds any customer."
@@ -10420,6 +10571,10 @@ msgstr "Tidak ada portofolio yang cocok."
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "No postings found. Try different keywords."
 msgstr "Tidak ada lowongan pekerjaan yang ditemukan. Coba kata kunci yang berbeda."
+
+#: src/features/billing/buy-plans.tsx
+msgid "No QRIS app, or want it to renew on its own? <0>Pay by card in US dollars</0>"
+msgstr "Tidak punya aplikasi QRIS, atau mau diperpanjang otomatis? <0>Bayar dengan kartu dalam dolar AS</0>"
 
 #: src/features/portfolio/admin/review-page.tsx
 msgid "No reports about this portfolio."
@@ -10961,6 +11116,10 @@ msgstr "Satu atau dua kalimat di kartu. {0}/{1}"
 msgid "One or two sentences under your name. {0}/{1}"
 msgstr "Satu atau dua kalimat di bawah nama Anda. {0}/{1}"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "One payment by QRIS. It doesn't renew: we email you 3 days before it ends."
+msgstr "Sekali bayar dengan QRIS. Tidak diperpanjang otomatis: kami mengirim email 3 hari sebelum berakhir."
+
 #: src/features/portfolio/works/work-editor.tsx
 msgid "One result from this work's Metrics blocks, shown as a chip on its card."
 msgstr "Satu hasil dari blok Metrik karya ini, tampil sebagai chip di kartunya."
@@ -11276,6 +11435,10 @@ msgstr "Tombol pesan"
 msgid "Order link"
 msgstr "Tautan pemesanan"
 
+#: src/features/billing/receipt.tsx
+msgid "Order number"
+msgstr "Nomor pesanan"
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Organization"
 msgstr "Organisasi"
@@ -11402,9 +11565,21 @@ msgstr "Halaman: {count}"
 msgid "Paid"
 msgstr "Lunas"
 
+#: src/features/billing/receipt.tsx
+msgid "Paid by"
+msgstr "Dibayar oleh"
+
 #: src/features/billing/admin/customer.tsx
 msgid "Paid in total"
 msgstr "Total dibayar"
+
+#: src/features/billing/receipt.tsx
+msgid "Paid on"
+msgstr "Dibayar pada"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Paid once; doesn't renew on its own"
+msgstr "Sekali bayar; tidak diperpanjang otomatis"
 
 #: src/features/billing/admin/overview.tsx
 msgid "Paid payments"
@@ -11413,6 +11588,11 @@ msgstr "Pembayaran berhasil"
 #: src/features/billing/admin/customer.tsx
 msgid "Paid through"
 msgstr "Lunas sampai"
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Paid with QRIS; active until {0}. It doesn't renew on its own."
+msgstr "Dibayar dengan QRIS; aktif sampai {0}. Tidak diperpanjang otomatis."
 
 #: src/features/billing/admin/labels.ts
 msgid "Paid, not active here"
@@ -11589,8 +11769,16 @@ msgid "Paused schedules keep their settings."
 msgstr "Jadwal yang dijeda tetap menyimpan pengaturannya."
 
 #: src/features/billing/purchase-dialog.tsx
+msgid "Pay {price} with QRIS"
+msgstr "Bayar {price} dengan QRIS"
+
+#: src/features/billing/purchase-dialog.tsx
 msgid "Pay on the secure checkout by Dodo Payments with a card, Apple Pay or Google Pay. {name} starts as soon as the payment goes through."
 msgstr "Bayar di checkout aman Dodo Payments dengan kartu, Apple Pay, atau Google Pay. {name} aktif begitu pembayarannya berhasil."
+
+#: src/features/billing/buy-plans.tsx
+msgid "Pay once with QRIS from any bank or e-wallet app. A plan lasts 30 days or a year and doesn't renew on its own: pay again whenever you like, and the time is added after your current plan."
+msgstr "Sekali bayar dengan QRIS dari aplikasi bank atau e-wallet apa pun. Paket berlaku 30 hari atau setahun dan tidak diperpanjang otomatis: bayar lagi kapan saja, dan masa aktifnya ditambahkan setelah paketmu yang sekarang."
 
 #: src/features/homepage/pricing.tsx
 msgid "Pay only while you are applying."
@@ -11614,6 +11802,10 @@ msgstr "Pembayaran diterapkan"
 msgid "Payment failed"
 msgstr "Pembayaran gagal"
 
+#: src/features/billing/receipt.tsx
+msgid "Payment method"
+msgstr "Metode pembayaran"
+
 #: src/features/billing/admin/labels.ts
 msgid "Payment provider API kept failing"
 msgstr "API penyedia pembayaran gagal berulang kali"
@@ -11621,6 +11813,10 @@ msgstr "API penyedia pembayaran gagal berulang kali"
 #: src/features/billing/admin/customer.tsx
 msgid "Payment provider events and admin actions, newest first."
 msgstr "Kejadian dari penyedia pembayaran dan tindakan admin, terbaru di atas."
+
+#: src/features/billing/receipt.tsx
+msgid "Payment receipt"
+msgstr "Bukti pembayaran"
 
 #: src/features/billing/payment-return.tsx
 msgid "Payment received"
@@ -12210,6 +12406,15 @@ msgstr "Harga (opsional)"
 msgid "Prices are before tax: the checkout adds the tax that applies where you live."
 msgstr "Harga belum termasuk pajak: checkout menambahkan pajak yang berlaku di tempatmu."
 
+#: src/features/billing/buy-plans.tsx
+#: src/features/billing/purchase-dialog.tsx
+msgid "Prices are final: no tax is added."
+msgstr "Harga sudah final: tidak ada pajak tambahan."
+
+#: src/features/homepage/pricing.tsx
+msgid "Prices in Rupiah, paid with QRIS from any bank or e-wallet app. They are final: no tax is added. A plan runs for 30 days or a year and doesn't renew on its own: pay again whenever you like and the time is added after your current plan. Prefer a card that renews by itself? Pay in US dollars by card instead, with 7 free days on a first Plus subscription. When a plan ends, your account returns to Free and your documents stay. Your own AI key works on every plan."
+msgstr "Harga dalam Rupiah, dibayar dengan QRIS dari aplikasi bank atau e-wallet apa pun. Harga sudah final: tidak ada pajak tambahan. Paket berlaku 30 hari atau setahun dan tidak diperpanjang otomatis: bayar lagi kapan saja dan masa aktifnya ditambahkan setelah paketmu yang sekarang. Lebih suka kartu yang diperpanjang sendiri? Bayar dengan kartu dalam dolar AS, dengan 7 hari gratis untuk langganan Plus pertama. Saat paket berakhir, akunmu kembali ke Gratis dan dokumenmu tetap ada. Kunci AI milikmu sendiri berfungsi di semua paket."
+
 #: src/features/homepage/pricing.tsx
 msgid "Prices in US dollars, or in Rupiah for visitors from Indonesia, before tax: the checkout adds the tax for where you live. A first Plus subscription starts with 7 free days. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan."
 msgstr "Harga dalam dolar AS, atau Rupiah untuk pengunjung dari Indonesia, belum termasuk pajak: checkout menambahkan pajak yang berlaku di tempatmu. Langganan Plus pertama dimulai dengan 7 hari gratis. Langganan diperpanjang sampai kamu membatalkannya, dan akses tetap ada sampai periode yang sudah dibayar berakhir. Setelah itu akunmu kembali ke Gratis dan dokumenmu tetap ada. API key AI milikmu sendiri bisa dipakai di semua paket."
@@ -12234,6 +12439,10 @@ msgstr "Mencetak"
 #: src/features/ats-checker/messages.ts
 msgid "Print or export the form to a flat PDF before sending it."
 msgstr "Cetak atau ekspor formulir menjadi PDF datar sebelum mengirimkannya."
+
+#: src/features/billing/receipt.tsx
+msgid "Print or save as PDF"
+msgstr "Cetak atau simpan sebagai PDF"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Privacy"
@@ -12490,6 +12699,27 @@ msgstr "Kode QR untuk {url}"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "QR code for two-step verification"
 msgstr "Kode QR untuk verifikasi dua langkah"
+
+#: src/features/billing/admin/customer.tsx
+msgid "QRIS passes, time given by an admin or a promotion, and 30-day passes from before, newest first."
+msgstr "Paket QRIS, masa aktif dari admin atau promosi, dan paket 30 hari dari dulu, yang terbaru di atas."
+
+#: src/features/billing/payment-history.tsx
+msgid "QRIS plans come with a receipt from Rezumi; card subscriptions with an invoice from Dodo Payments."
+msgstr "Paket QRIS mendapat bukti bayar dari Rezumi; langganan kartu mendapat invoice dari Dodo Payments."
+
+#: src/features/billing/admin/overview.tsx
+msgid "QRIS plans running now"
+msgstr "Paket QRIS yang aktif sekarang"
+
+#: src/features/billing/admin/labels.ts
+msgid "QRIS refund recorded by an admin"
+msgstr "Refund QRIS dicatat oleh admin"
+
+#. placeholder {0}: BILLING_SELLER.qrisProcessor
+#: src/features/billing/receipt.tsx
+msgid "QRIS, processed by {0}"
+msgstr "QRIS, diproses oleh {0}"
 
 #: src/features/career/workspace/apply.tsx
 msgid "Question {index}"
@@ -12777,6 +13007,11 @@ msgstr "Alasan"
 msgid "Recalled"
 msgstr "Diingat kembali"
 
+#: src/features/billing/receipt-link.tsx
+#: src/features/billing/receipt.tsx
+msgid "Receipt"
+msgstr "Bukti bayar"
+
 #: src/features/billing/admin/labels.ts
 msgid "Receipt email not delivered"
 msgstr "Email bukti bayar tidak terkirim"
@@ -12800,6 +13035,15 @@ msgstr "Penerima"
 #: src/features/homepage/pricing.tsx
 msgid "Recommended"
 msgstr "Rekomendasi"
+
+#. placeholder {0}: formatPrice(refundAmount, currency)
+#: src/features/billing/admin/customer.tsx
+msgid "Record {0} refunded"
+msgstr "Catat {0} dikembalikan"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Record a QRIS refund"
+msgstr "Catat refund QRIS"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Record again"
@@ -12930,6 +13174,7 @@ msgstr "Refund lewat Dodo Payments"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/purchase.ts
+#: src/features/billing/receipt.tsx
 msgid "Refunded"
 msgstr "Dikembalikan"
 
@@ -13618,6 +13863,11 @@ msgstr "Rezumi - Pergi ke beranda"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
+#. placeholder {0}: getPlanName(payment.planId)
+#: src/features/billing/receipt.tsx
+msgid "Rezumi {0}, {days} days of access"
+msgstr "Rezumi {0}, akses {days} hari"
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost}"
 msgstr "Rezumi AI · {cost}"
@@ -13633,6 +13883,7 @@ msgstr "Rezumi AI belum bisa melakukan ini. Pakai koneksi AI sendiri."
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/plan-page.tsx
+#: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
 msgstr "Kredit Rezumi AI"
 
@@ -13998,6 +14249,10 @@ msgstr "Penghematan membutuhkan waktu lebih lama dari yang diperkirakan. Perubah
 msgid "Saving…"
 msgstr "Menyimpan…"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Scan the QR code on the next page with any bank or e-wallet app (GoPay, OVO, DANA, ShopeePay, mobile banking). The page stays open for an hour."
+msgstr "Pindai kode QR di halaman berikutnya dengan aplikasi bank atau e-wallet apa pun (GoPay, OVO, DANA, ShopeePay, mobile banking). Halamannya terbuka selama satu jam."
+
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Scan the QR code with your authenticator app, or copy the secret and paste it into the app."
 msgstr "Pindai kode QR dengan aplikasi autentikator Anda, atau salin rahasianya dan tempelkan ke aplikasi."
@@ -14308,6 +14563,10 @@ msgstr "Dokumen terpilih"
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 msgid "Selection"
 msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Seller"
+msgstr "Penjual"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Semantic CSS stylesheet"
@@ -15163,6 +15422,10 @@ msgid "Start free trial"
 msgstr "Mulai masa coba gratis"
 
 #: src/features/homepage/pricing.tsx
+msgid "Start free. When you need more versions, formats or AI help, pay with QRIS for 30 days or a year at a time. Nothing renews on its own."
+msgstr "Mulai gratis. Saat butuh lebih banyak versi, format, atau bantuan AI, bayar dengan QRIS untuk 30 hari atau setahun sekaligus. Tidak ada yang diperpanjang otomatis."
+
+#: src/features/homepage/pricing.tsx
 msgid "Start free. When you need more versions, formats or AI help, subscribe monthly or yearly, and cancel any time."
 msgstr "Mulai gratis. Saat kamu butuh lebih banyak versi, format, atau bantuan AI, berlangganan bulanan atau tahunan, dan batalkan kapan saja."
 
@@ -15253,6 +15516,7 @@ msgstr "Statistik"
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
+#: src/features/billing/receipt.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Status"
@@ -15487,6 +15751,15 @@ msgstr "Ringkasan lamaran Anda yang masih terbuka"
 #: src/libs/resume/section.tsx
 msgid "Summary"
 msgstr "Ringkasan"
+
+#. placeholder {0}: getPaymentStatusLabel(result.status)
+#: src/features/billing/admin/customer.tsx
+msgid "Sumopod can't be asked about a payment; it reports by webhook. Here: {0}. If Sumopod shows it paid, resend its webhook from the Webhooks tab there."
+msgstr "Sumopod tidak bisa ditanya soal pembayaran; kabarnya datang lewat webhook. Di sini: {0}. Bila di Sumopod sudah lunas, kirim ulang webhook-nya dari tab Webhooks di sana."
+
+#: src/features/billing/admin/customer.tsx
+msgid "Sumopod can't send refunds. Send the money back yourself first (bank transfer or e-wallet), then record it here. A full refund takes the pass back (later passes move up) and its remaining credits."
+msgstr "Sumopod tidak bisa mengirim refund. Kembalikan uangnya sendiri dulu (transfer bank atau e-wallet), lalu catat di sini. Refund penuh mencabut paketnya (paket setelahnya maju) dan sisa kreditnya."
 
 #: src/features/career/shared.tsx
 #: src/features/career/workspace/debrief.tsx
@@ -15769,7 +16042,7 @@ msgstr "Template"
 
 #: src/features/homepage/faq.tsx
 msgid "Templates export text-based PDFs. Parsing varies between applicant tracking systems (ATS), so check the exported file for your chosen layout. To test any PDF, including one made elsewhere, the free ATS checker shows the text software extracts and what to fix."
-msgstr ""
+msgstr "Template menghasilkan PDF berbasis teks. Cara membaca tiap applicant tracking system (ATS) berbeda, jadi periksa file hasil ekspor untuk tata letak pilihanmu. Untuk menguji PDF apa pun, termasuk yang dibuat di tempat lain, pemeriksa ATS gratis menampilkan teks yang dibaca perangkat lunak dan apa yang perlu diperbaiki."
 
 #: src/features/templates/gallery.tsx
 msgid "Templates for a field of work"
@@ -15970,6 +16243,11 @@ msgstr "Penyedia masuk tersebut tidak lagi tersedia di server ini. Gunakan metod
 #: src/features/portfolio/blocks/add-media-block.tsx
 msgid "That's a video, so it was added as a Video block."
 msgstr "Itu video, jadi ditambahkan sebagai blok Video."
+
+#. placeholder {0}: passDays(target.interval)
+#: src/features/billing/purchase-dialog.tsx
+msgid "The {0} days are added after your current {name}, so no day is lost."
+msgstr "{0} hari ini ditambahkan setelah {name}-mu yang sekarang, jadi tidak ada hari yang hilang."
 
 #: src/features/resume/share/download-tab.tsx
 msgid "The {label} file couldn't be generated. Try again, or download PDF instead."
@@ -16283,6 +16561,10 @@ msgstr "Pratinjau tidak bisa ditampilkan. Perubahan Anda tetap tersimpan selagi 
 msgid "The preview couldn't be updated, so it shows an earlier version."
 msgstr "Pratinjau tidak bisa diperbarui, jadi yang tampil versi sebelumnya."
 
+#: src/features/billing/receipt.tsx
+msgid "The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax invoice."
+msgstr "Harga sudah final. Penjual tidak terdaftar sebagai Pengusaha Kena Pajak, jadi tidak ada PPN dan bukti bayar ini bukan faktur pajak."
+
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "The problem"
 msgstr "Masalah"
@@ -16480,6 +16762,10 @@ msgstr "Tidak ada tautan ke profil, portofolio, atau repositori."
 #: src/features/ats-checker/messages.ts
 msgid "There is no summary paragraph."
 msgstr "Tidak ada paragraf ringkasan."
+
+#: src/features/billing/receipt.tsx
+msgid "There's no receipt here: this payment isn't a paid QRIS plan."
+msgstr "Tidak ada bukti bayar di sini: pembayaran ini bukan paket QRIS yang sudah dibayar."
 
 #: src/features/career/workspace/apply.tsx
 msgid "These are the answers saved when you applied."
@@ -16825,6 +17111,10 @@ msgstr "Portofolio ini sudah dalam keadaan itu. Muat ulang halaman untuk melihat
 msgid "This portfolio was taken down"
 msgstr "Portofolio ini diturunkan"
 
+#: src/features/billing/receipt.tsx
+msgid "This receipt isn't available. It may belong to another account."
+msgstr "Bukti bayar ini tidak tersedia. Mungkin milik akun lain."
+
 #: src/features/portfolio/errors.ts
 msgid "This resume can't be read. Choose another resume."
 msgstr "CV ini tidak bisa dibaca. Pilih CV lain."
@@ -16969,10 +17259,6 @@ msgstr "Waktu · {0}"
 #: src/features/career/schedule-sheet.tsx
 msgid "Time · {timeZone}"
 msgstr "Waktu · {timeZone}"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Time given by an admin or a promotion, and 30-day passes from before, newest first."
-msgstr "Masa aktif dari admin atau promo, dan pass 30 hari dari sebelumnya, terbaru di atas."
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Time zone"
@@ -17128,6 +17414,10 @@ msgstr ""
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Top 3"
 msgstr "Top 3"
+
+#: src/features/billing/receipt.tsx
+msgid "Total paid"
+msgstr "Total dibayar"
 
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up on purpose."
@@ -17627,6 +17917,10 @@ msgstr "Upgrade diminta"
 #: src/features/billing/purchase.ts
 msgid "Upgrade to {name}"
 msgstr "Upgrade ke {name}"
+
+#: src/features/billing/purchase.ts
+msgid "Upgrade, {days} days, QRIS"
+msgstr "Upgrade, {days} hari, QRIS"
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Upload .csv"
@@ -18233,6 +18527,10 @@ msgstr "Kami mengirimkan tautan verifikasi baru ke {0}."
 msgid "We sent a new verification link to {email}."
 msgstr "Kami sudah mengirim tautan verifikasi baru ke {email}."
 
+#: src/features/billing/payment-return.tsx
+msgid "We've emailed you the receipt. We'll remind you 3 days before the plan ends."
+msgstr "Bukti bayar sudah kami kirim ke emailmu. Kami mengingatkanmu 3 hari sebelum paket berakhir."
+
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
@@ -18615,6 +18913,10 @@ msgid "With the country code. Numbers starting with 0 are read as Indonesian (+6
 msgstr "Dengan kode negara. Nomor yang diawali 0 dibaca sebagai nomor Indonesia (+62)."
 
 #: src/features/billing/purchase-dialog.tsx
+msgid "Within 7 days of paying you can ask for a full refund if you used no more than 10 Rezumi AI credits from it; it is sent back to your bank account or e-wallet. Double payments and technical problems are always sorted out."
+msgstr "Dalam 7 hari sejak membayar, kamu bisa meminta pengembalian dana penuh bila kredit Rezumi AI yang terpakai darinya tidak lebih dari 10; uangnya dikirim ke rekening bank atau e-wallet-mu. Pembayaran ganda dan masalah teknis selalu diselesaikan."
+
+#: src/features/billing/purchase-dialog.tsx
 msgid "Within 7 days of your first charge you can ask for a full refund if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
 msgstr "Dalam 7 hari sejak tagihan pertamamu, kamu bisa meminta pengembalian dana penuh bila kredit Rezumi AI yang terpakai dari tagihan itu tidak lebih dari 10. Pembayaran ganda dan masalah teknis selalu diselesaikan."
 
@@ -18817,6 +19119,10 @@ msgid "Yearly saves up to {saving}%"
 msgstr "Tahunan hemat sampai {saving}%"
 
 #: src/features/homepage/faq.tsx
+msgid "Yes, from Indonesia: pay in Rupiah with QRIS from any bank or e-wallet app, at a final price with no tax added. A QRIS plan runs for {passDays} days or a year and doesn't renew on its own. Pay again whenever you like and the time is added after your current plan, so no day is lost; moving up to Pro AI starts it at once and the rest of Plus continues after it. You get an email three days before it ends."
+msgstr "Bisa, dari Indonesia: bayar dalam Rupiah dengan QRIS dari aplikasi bank atau e-wallet apa pun, dengan harga final tanpa pajak tambahan. Paket QRIS berlaku {passDays} hari atau setahun dan tidak diperpanjang otomatis. Bayar lagi kapan saja dan masa aktifnya ditambahkan setelah paketmu yang sekarang, jadi tidak ada hari yang hilang; upgrade ke Pro AI langsung aktif dan sisa Plus berlanjut setelahnya. Kamu mendapat email tiga hari sebelum paket berakhir."
+
+#: src/features/homepage/faq.tsx
 msgid "Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, OpenRouter or another provider and you pay that provider directly; it doesn’t use Rezumi credits. Without a key or credits, nothing is sent to an AI service."
 msgstr "Ya, di semua paket. Tambahkan API key dari OpenAI, Anthropic, Google Gemini, OpenRouter, atau penyedia lain dan Anda membayar penyedia itu langsung; tidak memakai kredit Rezumi. Tanpa API key atau kredit, tidak ada yang dikirim ke layanan AI."
 
@@ -18971,6 +19277,10 @@ msgstr "Sudah ada perubahan sejak itu. Pakai Urungkan di bagian atas editor."
 #: src/features/billing/pending-payment.tsx
 msgid "Your {plan} checkout isn't finished"
 msgstr "Checkout {plan}-mu belum selesai"
+
+#: src/features/billing/pending-payment.tsx
+msgid "Your {plan} QRIS payment isn't finished"
+msgstr "Pembayaran QRIS {plan}-mu belum selesai"
 
 #: src/features/portfolio/themes.ts
 msgid "Your accent colours drift slowly, then rest."

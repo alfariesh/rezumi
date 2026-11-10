@@ -47,6 +47,7 @@ import { handleHealth } from "./health";
 import { handlePortfolioEvent, handlePortfolioMessage, handlePortfolioReport } from "./portfolio";
 import { handlePublicResumePdf } from "./public-resume-pdf";
 import { handleResumePdfDownload } from "./resume-pdf";
+import { handleSumopodPaymentWebhook } from "./sumopod";
 
 type ServerEnvironment = { Bindings: HttpBindings | Http2Bindings };
 
@@ -126,8 +127,9 @@ export function createApp(options: AppOptions = {}) {
 	app.use("/api/rpc/*", limitBody(160 * 1024 * 1024));
 	app.use("/api/auth/*", limitBody(1024 * 1024));
 	app.use("/api/storage/stage", limitBody(64 * 1024));
-	// Dodo payments and subscriptions are a few KB; 256 KB leaves plenty of room.
+	// Dodo payments and subscriptions are a few KB; 256 KB leaves plenty of room. Sumopod's are smaller still.
 	app.use("/api/payments/dodo/webhook", limitBody(256 * 1024));
+	app.use("/api/payments/sumopod/webhook", limitBody(64 * 1024));
 
 	app.post("/api/storage/stage", (c) => prepareStagedBody(c.req.raw));
 	app.all("/api/rpc/*", (c) => withStagedBody(c.req.raw, (request) => handleRpc(request, client(c))));
@@ -136,6 +138,7 @@ export function createApp(options: AppOptions = {}) {
 	app.all("/api/auth/*", (c) => handleAuth(c.req.raw, client(c)));
 	app.get("/api/health", () => handleHealth());
 	app.post("/api/payments/dodo/webhook", (c) => handleDodoPaymentWebhook(c.req.raw));
+	app.post("/api/payments/sumopod/webhook", (c) => handleSumopodPaymentWebhook(c.req.raw));
 	app.get("/api/internal/traefik", (c) => handleTraefikProvider(c.req.raw));
 	app.on(["GET", "POST"], "/api/career/run", (c) => handleCareerJobs(c.req.raw));
 	app.get("/api/resumes/:username/:slug/pdf", (c) =>

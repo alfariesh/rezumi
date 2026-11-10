@@ -421,7 +421,7 @@ describe.skipIf(!databaseUrl)("Dodo Payments billing", () => {
 			expect((await paymentsOf("buyer"))[0]).toMatchObject({ amount: 999, taxAmount: 190, totalAmount: 1189 });
 		});
 
-		it("opens a checkout for its own customer and links the paid payment to it", async () => {
+		it("opens a checkout for its own customer, in US dollars even from Indonesia, and links the paid payment to it", async () => {
 			dodo().checkoutSessions.create.mockResolvedValue(session("cks_1"));
 			const opened = await as("buyer", { "cf-ipcountry": "ID" }).checkout({
 				planId: "plus",
@@ -442,8 +442,8 @@ describe.skipIf(!databaseUrl)("Dodo Payments billing", () => {
 			expect(call).toMatchObject({
 				product_cart: [{ product_id: PRODUCTS.plusYearly, quantity: 1 }],
 				customer: { customer_id: "cus_1" },
-				billing_currency: "IDR",
-				billing_address: { country: "ID" },
+				// Cards pay in US dollars: Rupiah is paid by QRIS (not set up in this test, so a card is the only way).
+				billing_currency: "USD",
 				feature_flags: { allow_currency_selection: false, allow_discount_code: true },
 				subscription_data: { trial_period_days: 7 },
 				metadata: { rezumi_payment_id: opened.paymentId, rezumi_user_id: "buyer" },
@@ -457,19 +457,20 @@ describe.skipIf(!databaseUrl)("Dodo Payments billing", () => {
 				as("buyer", { "cf-ipcountry": "ID" }).checkout({ planId: "plus", interval: "year", idempotencyKey: "click-2" }),
 			).resolves.toMatchObject({ paymentId: opened.paymentId, reused: true });
 			expect(dodo().checkoutSessions.create).toHaveBeenCalledOnce();
+			expect(call).not.toHaveProperty("billing_address");
 			const [account] = await getDb().select().from(tables.billingAccount);
 			expect(account?.providerCustomerId).toBe("cus_1");
 
 			const sub = subscription({ product: PRODUCTS.plusYearly, end: new Date(Date.now() + 365 * day) });
-			await pay({ sub, checkoutId: "cks_1", total: 45_900_000, currency: "IDR" });
+			await pay({ sub, checkoutId: "cks_1", total: 3_900, currency: "USD" });
 			const payments = await paymentsOf("buyer");
 			expect(payments).toHaveLength(1);
 			expect(payments[0]).toMatchObject({
 				id: opened.paymentId,
 				status: "paid",
 				providerPaymentId: "pay_1",
-				amount: 45_900_000,
-				currency: "idr",
+				amount: 3_900,
+				currency: "usd",
 				credits: 0,
 			});
 			// Subscribed now: a second checkout is refused; the plan changes instead.

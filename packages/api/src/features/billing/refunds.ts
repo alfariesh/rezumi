@@ -10,11 +10,14 @@ import { cancelProviderSubscription } from "./deletion";
 import { dodoApi, dodoErrorCode, dodoErrorDetail, dodoStatus, isTransientDodoError } from "./dodo/client";
 import { getDodoConfig } from "./dodo/config";
 import { applyDodoRefund, nextRefundSequence, refundKeyFor } from "./fulfillment";
+import { revokePass } from "./passes";
+import { nextPaymentStatus } from "./subscription-access";
 
 /**
- * Giving money back, from the admin page, through Dodo Payments' refund API. Rezumi asks for amounts **before tax**
- * (Dodo gives the tax on them back itself) and keeps its own fees; a refund alone never ends a subscription: the admin
- * chooses to end it too. Refunds made in Dodo's dashboard arrive through the refund webhooks and the same bookkeeping.
+ * Giving money back, from the admin page. Card payments go through Dodo Payments' refund API: Rezumi asks for amounts
+ * **before tax** (Dodo gives the tax on them back itself) and keeps its own fees; a refund alone never ends a
+ * subscription: the admin chooses to end it too. Refunds made in Dodo's dashboard arrive through the refund webhooks
+ * and the same bookkeeping. QRIS passes are refunded by the owner by hand and recorded here (recordQrisRefund).
  */
 
 type PaymentRow = typeof schema.billingPayment.$inferSelect;
@@ -302,4 +305,79 @@ export async function reconcileRefunds(now = new Date()): Promise<number> {
 		}
 	}
 	return checked;
+}
+
+/**
+ * Records money the owner gave back by hand for a QRIS pass: Sumopod has no refund API, so the owner sends it (bank
+ * transfer or e-wallet) and then records it here. The refund is settled at once (`manual`). A full refund takes the
+ * pass back (each period it placed ends now or leaves the queue; later ones move up) and its unspent credits; a partial
+ * one does that only with `revokeBenefits`. Holding the payment, two clicks make one refund.
+ */
+export async function recordQrisRefund(input: {
+	actorUserId: string;
+	paymentId: string;
+	/** In Rupiah's smallest unit (two decimals); the rest of the payment when left out. */
+	amount?: number | undefined;
+	reason: string;
+	revokeBenefits?: boolean | undefined;
+	now?: Date;
+}): Promise<RefundResult> {
+	const now = input.now ?? new Date();
+	const refundId = await db.transaction(async (tx) => {
+		const [owner] = await tx
+			.select({ userId: schema.billingPayment.userId })
+			.from(schema.billingPayment)
+			.where(eq(schema.billingPayment.id, input.paymentId));
+		if (!owner) throw new ORPCError("NOT_FOUND", { message: "No payment has that ID." });
+		if (owner.userId) await lockBillingAccount(tx, owner.userId);
+		const [payment] = await tx
+			.select()
+			.from(schema.billingPayment)
+			.where(eq(schema.billingPayment.id, input.paymentId))
+			.for("update");
+		if (!payment) throw new ORPCError("NOT_FOUND", { message: "No payment has that ID." });
+		if (payment.provider !== "sumopod")
+			throw new ORPCError("BAD_REQUEST", { message: "Only QRIS payments are refunded by hand here." });
+		if (payment.status !== "paid" && payment.status !== "partially_refunded")
+			throw new ORPCError("BAD_REQUEST", { message: "Only a paid payment can be refunded." });
+		const amount = input.amount ?? payment.amount - payment.refundedAmount;
+		assertAmount(payment, amount);
+		const sequence = await nextRefundSequence(tx, payment.id);
+		const [refund] = await tx
+			.insert(schema.billingRefund)
+			.values({
+				paymentId: payment.id,
+				sequence,
+				refundKey: refundKeyFor(payment.id, sequence),
+				method: "manual",
+				status: "succeeded",
+				amount,
+				reason: input.reason,
+				revokeBenefits: input.revokeBenefits ?? false,
+				actorUserId: input.actorUserId,
+				settledAt: now,
+			})
+			.returning({ id: schema.billingRefund.id });
+		if (!refund) throw new Error("The refund was not saved.");
+		const refundedAmount = payment.refundedAmount + amount;
+		const full = refundedAmount >= payment.amount;
+		const transition = nextPaymentStatus(payment.status, full ? "refunded" : "partially_refunded");
+		await tx
+			.update(schema.billingPayment)
+			.set({ refundedAmount, ...(transition.outcome === "applied" && { status: transition.status }) })
+			.where(eq(schema.billingPayment.id, payment.id));
+		const revoked =
+			full || input.revokeBenefits
+				? await revokePass(tx, payment, full ? "payment.refunded" : "payment.partially_refunded", now)
+				: 0;
+		await tx.insert(schema.billingAuditLog).values({
+			actorUserId: input.actorUserId,
+			targetUserId: payment.userId,
+			action: "refund.recorded",
+			reason: input.reason,
+			details: { paymentId: payment.id, refundId: refund.id, amount, refundedAmount, method: "manual", revoked },
+		});
+		return refund.id;
+	});
+	return resultOf(refundId, false);
 }

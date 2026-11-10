@@ -12,9 +12,10 @@ import { templateLineup } from "@rezumi/schema/templates";
 
 /**
  * The hosted plans as the landing page sells them. Prices, limits and credits come from the catalog the server
- * enforces (@rezumi/schema/billing); the copy stays here. Paid plans are subscriptions, monthly or yearly, that renew
- * until cancelled. The pages are prerendered per language, so the Indonesian one shows Rupiah (what visitors from
- * Indonesia pay) and the others US dollars; the plan page and checkout use the visitor's country.
+ * enforces (@rezumi/schema/billing); the copy stays here. By card, paid plans are subscriptions, monthly or yearly,
+ * that renew until cancelled; from Indonesia they are QRIS passes in Rupiah for 30 days or a year that don't renew. The
+ * pages are prerendered per language, so the Indonesian one shows the Rupiah QRIS prices and the others US dollars; the
+ * plan page and checkout use the visitor's country.
  */
 
 /** The templates on the free plan: seven one-column, ATS-safe layouts and one two-column. */

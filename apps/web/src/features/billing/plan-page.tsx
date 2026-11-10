@@ -126,6 +126,8 @@ function YourPlanSection({ plan, formatDate }: YourPlanSectionProps) {
 		)
 	) : subscription ? (
 		<Trans>Cancelled; active until {formatDate(plan.currentPeriodEndsAt)}</Trans>
+	) : plan.paymentMethod === "qris" ? (
+		<Trans>Paid with QRIS; active until {formatDate(plan.currentPeriodEndsAt)}. It doesn't renew on its own.</Trans>
 	) : (
 		<Trans>Active until {formatDate(plan.currentPeriodEndsAt)}</Trans>
 	);

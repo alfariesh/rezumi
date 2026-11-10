@@ -51,9 +51,9 @@ type PaymentRow = typeof schema.billingPayment.$inferSelect;
 /** Where a Dodo object came from: a signed webhook, the billing job or a customer's page asking, or an admin. */
 export type EventContext = {
 	source: BillingPaymentEventSource;
-	/** The webhook's event type (payment.succeeded), or what asked (status_check). */
+	/** The webhook's event type (payment.succeeded, payment.completed), or what asked (status_check). */
 	eventType: string;
-	/** The `webhook-id` of Standard Webhooks, unique per event; redeliveries carry the same one. */
+	/** The `webhook-id` (Dodo) or `svix-id` (Sumopod) of the delivery, unique per event; redeliveries carry the same one. */
 	webhookId?: string | null | undefined;
 	now?: Date | undefined;
 };
@@ -66,7 +66,7 @@ export type AppliedChange = {
 	fulfilled: boolean;
 };
 
-const ignored = (outcome: BillingPaymentEventOutcome = "ignored"): AppliedChange => ({
+export const ignored = (outcome: BillingPaymentEventOutcome = "ignored"): AppliedChange => ({
 	outcome,
 	paymentId: null,
 	status: null,
@@ -87,7 +87,7 @@ function requireConfig() {
 }
 
 /** Reports an event that is about something Rezumi doesn't sell or know, outside any account's lock. */
-async function recordUnrelated(
+export async function recordUnrelated(
 	context: EventContext,
 	providerObjectId: string,
 	outcome: BillingPaymentEventOutcome,
@@ -113,7 +113,7 @@ async function recordUnrelated(
  * Takes the webhook's id inside the transaction: the event row goes in first, so a redelivery racing this one waits on
  * the unique index and then finds it taken. Null when this event was handled before. Status checks have no id.
  */
-async function claimEvent(tx: Transaction, context: EventContext, providerObjectId: string) {
+export async function claimEvent(tx: Transaction, context: EventContext, providerObjectId: string) {
 	if (!context.webhookId) return { id: null as string | null };
 	const [claimed] = await tx
 		.insert(schema.billingPaymentEvent)
@@ -131,7 +131,7 @@ async function claimEvent(tx: Transaction, context: EventContext, providerObject
 }
 
 /** Writes what the event did: onto the claimed row for a webhook, or a new row for a check that changed something. */
-async function finishEvent(
+export async function finishEvent(
 	tx: Transaction,
 	claim: { id: string | null },
 	context: EventContext,
@@ -199,7 +199,11 @@ async function accountFor(signs: {
 }
 
 /** Takes back the Rezumi AI credits a payment granted (a full refund, a lost dispute, or a partial refund asked to). */
-async function revokePaymentCredits(tx: Transaction, payment: Pick<PaymentRow, "id" | "userId">, reason: string) {
+export async function revokePaymentCredits(
+	tx: Transaction,
+	payment: Pick<PaymentRow, "id" | "userId">,
+	reason: string,
+) {
 	const now = new Date();
 	const grants = await tx
 		.update(schema.aiCreditGrant)

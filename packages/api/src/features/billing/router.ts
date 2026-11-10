@@ -7,7 +7,11 @@ import {
 	billingIntervalSchema,
 	creditSourceSchema,
 	paidPlanIdSchema,
+	PASS_DAYS,
+	paymentMethodSchema,
 	planIdSchema,
+	planPrice,
+	PLANS,
 } from "@rezumi/schema/billing";
 import { protectedProcedure } from "../../context";
 import { checkoutRateLimit } from "../../middleware/rate-limit";
@@ -25,6 +29,7 @@ import {
 	hasTrialAvailable,
 	listPayments,
 	openBillingPortal,
+	paymentOptions,
 	purchaseBlocker,
 	setSubscriptionCancellation,
 	toSubscriptionView,
@@ -32,6 +37,7 @@ import {
 import { getCreditBalance, listCreditHistory } from "./credits";
 import { getEntitlements, isBillingAppliedTo } from "./entitlements";
 import { countActiveDocuments } from "./limits";
+import { previewPass } from "./passes";
 import { billingDailySeries, billingMetrics, exportPaymentsCsv, listRecentPayments, previousRange } from "./reports";
 import { getCurrentSubscription } from "./subscriptions";
 
@@ -86,15 +92,28 @@ const creditHistoryEntry = z.discriminatedUnion("type", [
 
 const payment = z.object({
 	id: z.string(),
-	providerPaymentId: z.string().nullable().describe("Dodo Payments' payment id, once there is one."),
+	method: paymentMethodSchema.describe(
+		"card: a subscription's payment through Dodo Payments; qris: a prepaid pass paid through Sumopod.",
+	),
+	providerPaymentId: z
+		.string()
+		.nullable()
+		.describe("Dodo Payments' or Sumopod's payment id, once it is paid or charging."),
 	planId: paidPlanIdSchema,
 	interval: billingIntervalSchema
 		.nullable()
-		.describe("Monthly or yearly; null for a 30-day pass from before subscriptions."),
+		.describe("Monthly or yearly (a QRIS pass: 30 or 365 days); null for a 30-day pass from before subscriptions."),
+	durationDays: z
+		.number()
+		.int()
+		.nullable()
+		.describe("How many days the pass it bought lasts; null for a subscription."),
 	billingReason: z
 		.enum(["purchase", "subscription_create", "subscription_cycle", "subscription_update", "subscription_meter_cycle"])
 		.nullable()
-		.describe("A new subscription, a renewal, or a plan change."),
+		.describe(
+			"A new subscription, a renewal, or a plan change. For a QRIS pass: purchase (new), subscription_cycle (more of the same plan) or subscription_update (a move up).",
+		),
 	amount: z
 		.number()
 		.int()
@@ -139,7 +158,9 @@ const subscription = z.object({
 
 const checkoutResult = z.object({
 	paymentId: z.string(),
-	redirectUrl: z.string().describe("Dodo Payments' checkout page to send the browser to."),
+	redirectUrl: z
+		.string()
+		.describe("The page to send the browser to: Dodo Payments' checkout, or Sumopod's QRIS payment page."),
 	expiresAt: z.date(),
 	reused: z.boolean().describe("Whether this is an open checkout from before rather than a new one."),
 });
@@ -200,7 +221,17 @@ export const billingRouter = {
 					.describe("Where the current plan comes from: a subscription, or access granted outside one."),
 				renews: z.boolean(),
 				subscription: subscription.nullable().describe("The account's subscription, live or the last one."),
-				currency: billingCurrencySchema.describe("The currency this visitor is charged in."),
+				currency: billingCurrencySchema.describe(
+					"The currency this visitor is shown prices in: its default way of paying's.",
+				),
+				paymentMethods: z
+					.array(paymentMethodSchema)
+					.describe(
+						"How this account can pay for a plan now, the default first: qris (Rupiah, a prepaid pass) and card (US dollars, a subscription) from Indonesia, card elsewhere. A card subscriber only changes plan; a QRIS pass holder only pays by QRIS.",
+					),
+				paymentMethod: paymentMethodSchema
+					.nullable()
+					.describe("How the current paid access is paid: a card subscription or a QRIS pass; null otherwise."),
 				upcoming: z.array(z.object({ planId: paidPlanIdSchema, startsAt: z.date(), endsAt: z.date() })),
 				limits: z.object({ activeResumes: usage, activeCoverLetters: usage }),
 				features: z.object({
@@ -233,12 +264,13 @@ export const billingRouter = {
 		.handler(async ({ context }) => {
 			const now = new Date();
 			const authentication = authenticationOf(context);
-			const [entitlements, used, blocker, current] = await Promise.all([
+			const [entitlements, used, current] = await Promise.all([
 				getEntitlements(context.user.id, now),
 				countActiveDocuments(context.user.id),
-				purchaseBlocker(authentication),
 				getCurrentSubscription(context.user.id),
 			]);
+			const options = await paymentOptions(context.user.id, originOf(context), now, current);
+			const blocker = await purchaseBlocker(authentication, options.methods);
 			return {
 				enabled: entitlements.enabled,
 				planId: entitlements.planId,
@@ -246,7 +278,9 @@ export const billingRouter = {
 				source: entitlements.source,
 				renews: entitlements.renews,
 				subscription: entitlements.enabled && current ? toSubscriptionView(current) : null,
-				currency: currencyOf(originOf(context)),
+				currency: currencyOf(options),
+				paymentMethods: entitlements.enabled ? options.methods : [],
+				paymentMethod: entitlements.enabled ? options.current : null,
 				upcoming: entitlements.upcoming,
 				limits: {
 					activeResumes: { used: used.activeResumes, max: entitlements.limits.activeResumes },
@@ -257,14 +291,28 @@ export const billingRouter = {
 				canPurchase: blocker === null,
 				purchaseBlockedBy: blocker,
 				pendingPayment: entitlements.enabled ? await getPendingPayment(authentication, now) : null,
-				trialAvailable: entitlements.enabled && !current && (await hasTrialAvailable(context.user.id)),
+				// The trial comes with a card subscription only.
+				trialAvailable:
+					entitlements.enabled &&
+					!current &&
+					options.methods.includes("card") &&
+					(await hasTrialAvailable(context.user.id)),
 			};
 		}),
 
 	checkout: protectedProcedure
 		.route({ ...route, method: "POST", path: "/billing/checkout" })
 		.use(checkoutRateLimit)
-		.input(z.object({ planId: paidPlanIdSchema, interval: billingIntervalSchema, idempotencyKey }))
+		.input(
+			z.object({
+				planId: paidPlanIdSchema,
+				interval: billingIntervalSchema,
+				idempotencyKey,
+				method: paymentMethodSchema
+					.optional()
+					.describe("qris or card, one of summary.paymentMethods; the first of them when left out."),
+			}),
+		)
 		.output(checkoutResult)
 		.handler(({ context, input }) =>
 			checkout({
@@ -272,10 +320,40 @@ export const billingRouter = {
 				planId: input.planId,
 				interval: input.interval,
 				idempotencyKey: input.idempotencyKey,
+				method: input.method,
 				origin: originOf(context),
 				locale: context.locale,
 			}),
 		),
+
+	previewPass: protectedProcedure
+		.route({ ...route, method: "GET", path: "/billing/passes/preview" })
+		.input(z.object({ planId: paidPlanIdSchema, interval: billingIntervalSchema }))
+		.output(
+			z.object({
+				amount: z.number().int().describe("The pass's price in Rupiah's smallest unit (two decimals); final."),
+				currency: z.literal("idr"),
+				days: z.number().int(),
+				creditsPerMonth: z.number().int().describe("Rezumi AI credits for each month of the pass."),
+				stretches: z
+					.array(
+						z.object({
+							planId: paidPlanIdSchema,
+							startsAt: z.date(),
+							endsAt: z.date(),
+							purchase: z.boolean().describe("Whether this stretch is the pass being bought."),
+						}),
+					)
+					.describe("The paid time the account would have after paying, in the order it is used."),
+			}),
+		)
+		.handler(async ({ context, input }) => ({
+			amount: planPrice(input.planId, input.interval, "idr"),
+			currency: "idr" as const,
+			days: PASS_DAYS[input.interval],
+			creditsPerMonth: PLANS[input.planId].creditsPerMonth,
+			stretches: await previewPass(context.user.id, input.planId, input.interval),
+		})),
 
 	changePlan: protectedProcedure
 		.route({ ...route, method: "POST", path: "/billing/subscription/plan" })
@@ -509,7 +587,9 @@ export const billingRouter = {
 			.input(paymentIdInput)
 			.output(
 				z.object({
-					found: z.boolean().describe("Whether Dodo Payments has a checkout session or payment for it."),
+					found: z
+						.boolean()
+						.describe("Whether its provider (Dodo Payments or Sumopod) has a checkout or payment for it."),
 					status: z.enum(BILLING_PAYMENT_STATUSES),
 					changed: z.boolean(),
 				}),
@@ -526,9 +606,14 @@ export const billingRouter = {
 						.min(1)
 						.max(10_000_000_000)
 						.optional()
-						.describe("Before tax, in the currency's smallest unit; the rest when left out."),
+						.describe(
+							"Before tax, in the currency's smallest unit; the rest when left out. For a QRIS pass: what the owner sent back by hand.",
+						),
 					reason: refundReason,
-					revokeBenefits: z.boolean().optional().describe("Also take the payment's credits back on a partial refund."),
+					revokeBenefits: z
+						.boolean()
+						.optional()
+						.describe("Also take the payment's credits (and a QRIS pass's time) back on a partial refund."),
 					endSubscription: z.boolean().optional().describe("Also end the subscription now (access stops at once)."),
 				}),
 			)

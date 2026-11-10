@@ -65,6 +65,10 @@
 		"DODO_PAYMENTS_PRODUCT_PLUS_YEARLY": "pdt_0NrcLxH3dG9NbNzj3GL0U",
 		"DODO_PAYMENTS_PRODUCT_PRO_AI_MONTHLY": "pdt_0NrcLxLNpsfqo3e2jP7zY",
 		"DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY": "pdt_0NrcLxOnM7iDIBRvf4zQN",
+		// Sumopod (QRIS passes for Indonesia) in live mode. Not secret. SUMOPOD_API_KEY (the live project's key) and
+		// SUMOPOD_WEBHOOK_SECRET (whsec_…, made when the webhook URL is saved in Sumopod) are Worker secrets; without the
+		// key QRIS isn't offered and visitors from Indonesia pay by card.
+		"SUMOPOD_ENVIRONMENT": "live",
 	},
 	"send_email": [{ "name": "EMAIL" }],
 	"hyperdrive": [{ "binding": "HYPERDRIVE", "id": "f2e0cd8d0b084ed5bdbfb8a1de8a80dc" }],

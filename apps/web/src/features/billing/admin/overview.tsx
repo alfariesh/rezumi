@@ -173,13 +173,14 @@ function tooltipFor(format: (value: number) => string) {
 const CountTooltip = tooltipFor((value) => new Intl.NumberFormat(i18n.locale).format(value));
 
 /**
- * Paid payments day by day, Plus and Pro AI stacked, with the period's money above: per currency and before tax,
- * since Dodo Payments collects the tax and the currencies never add up.
+ * Paid payments day by day, Plus and Pro AI stacked, with the period's money above: per currency (card payments before
+ * tax, since Dodo Payments collects it; QRIS in Rupiah, final), since the currencies never add up.
  */
 function SalesCard({ metrics }: MetricsProps) {
 	const plan = (id: "plus" | "pro-ai") =>
 		metrics.sales.byPlan.find((row) => row.planId === id) ?? { payments: 0, revenue: {} };
 	const kinds = Object.fromEntries(metrics.sales.byKind.map((row) => [row.kind, row.payments]));
+	const qris = metrics.sales.byMethod.find((row) => row.method === "qris") ?? { payments: 0, revenue: {} };
 	const proAi = plan("pro-ai");
 	const plus = plan("plus");
 	return (
@@ -197,7 +198,8 @@ function SalesCard({ metrics }: MetricsProps) {
 				<MiniStat value={formatMoney(proAi.revenue)} label={t`Pro AI · ${proAi.payments} paid`} />
 				<MiniStat value={formatMoney(plus.revenue)} label={t`Plus · ${plus.payments} paid`} />
 				<MiniStat value={formatMoney(metrics.refunds.amount)} label={t`Refunded · ${metrics.refunds.refunds}`} />
-				<MiniStat value={formatMoney(metrics.net)} label={t`Net, before tax and Dodo Payments' fees`} />
+				<MiniStat value={formatMoney(metrics.net)} label={t`Net, before tax and payment fees`} />
+				<MiniStat value={formatMoney(qris.revenue)} label={t`By QRIS · ${qris.payments} paid`} />
 			</div>
 			<p className="text-xs text-muted">
 				{t`${kinds.new ?? 0} new · ${kinds.renewal ?? 0} renewals · ${kinds.change ?? 0} plan changes`}
@@ -267,7 +269,7 @@ function CheckoutCard({ metrics }: MetricsProps) {
 	);
 }
 
-/** The subscriptions running now, by plan and interval, and what they bring in a month. */
+/** The card subscriptions running now, by plan and interval, and what they bring in a month; and QRIS passes running. */
 function SubscriptionsCard({ metrics }: MetricsProps) {
 	const { subscriptions } = metrics;
 	const rows = subscriptions.byPlan.toSorted((a, b) => b.subscriptions - a.subscriptions);
@@ -285,6 +287,7 @@ function SubscriptionsCard({ metrics }: MetricsProps) {
 				<MiniStat value={subscriptions.started} label={t`Started`} />
 				<MiniStat value={subscriptions.trialsStarted} label={t`Free trials started`} />
 				<MiniStat value={subscriptions.ended} label={t`Ended`} />
+				<MiniStat value={metrics.passes.active} label={t`QRIS plans running now`} />
 			</div>
 			{rows.length === 0 ? (
 				<p className="py-10 text-center text-sm text-muted">
@@ -525,10 +528,20 @@ function PaymentsCard({ range, query }: PaymentsCardProps) {
 			isRowHeader: true,
 			cell: (row) => (
 				<span className="grid gap-0.5 whitespace-nowrap">
-					<span className="font-mono text-xs whitespace-nowrap" title={row.providerPaymentId ?? row.id}>
-						{row.providerPaymentId ? `…${row.providerPaymentId.slice(-8)}` : t`checkout only`}
+					<span
+						className="font-mono text-xs whitespace-nowrap"
+						title={row.method === "qris" ? `RZ-${row.id}` : (row.providerPaymentId ?? row.id)}
+					>
+						{row.method === "qris"
+							? `RZ-…${row.id.slice(-8)}`
+							: row.providerPaymentId
+								? `…${row.providerPaymentId.slice(-8)}`
+								: t`checkout only`}
 					</span>
-					<span className="text-xs text-muted">{formatShort(row.createdAt)}</span>
+					<span className="text-xs text-muted">
+						{row.method === "qris" ? "QRIS · " : ""}
+						{formatShort(row.createdAt)}
+					</span>
 				</span>
 			),
 		},

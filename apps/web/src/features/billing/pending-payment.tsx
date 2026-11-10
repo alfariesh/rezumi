@@ -9,7 +9,10 @@ import { formatPrice } from "./purchase";
 
 type PendingPaymentBannerProps = { payment: Payment; formatDate: (date: Date) => string };
 
-/** A checkout that's started and can still be paid: what it's for, until when, and the way back to its page. */
+/**
+ * A checkout that's started and can still be paid (a card checkout, or a QRIS payment page): what it's for, until when,
+ * and the way back to its page.
+ */
 export function PendingPaymentBanner({ payment, formatDate }: PendingPaymentBannerProps) {
 	const plan = getPlanName(payment.planId);
 	// A trial checkout charges nothing today; say so rather than the price it renews at.
@@ -25,7 +28,11 @@ export function PendingPaymentBanner({ payment, formatDate }: PendingPaymentBann
 			</Alert.Indicator>
 			<Alert.Content className="grid gap-2">
 				<Alert.Title>
-					<Trans>Your {plan} checkout isn't finished</Trans>
+					{payment.method === "qris" ? (
+						<Trans>Your {plan} QRIS payment isn't finished</Trans>
+					) : (
+						<Trans>Your {plan} checkout isn't finished</Trans>
+					)}
 				</Alert.Title>
 				<Alert.Description>
 					{deadline ? (
@@ -39,7 +46,7 @@ export function PendingPaymentBanner({ payment, formatDate }: PendingPaymentBann
 				{payment.redirectUrl && (
 					<div className="flex flex-wrap gap-2">
 						<a href={payment.redirectUrl} className={cn(buttonVariants({ size: "sm" }))}>
-							<Trans>Continue checkout</Trans>
+							{payment.method === "qris" ? <Trans>Continue paying</Trans> : <Trans>Continue checkout</Trans>}
 						</a>
 					</div>
 				)}

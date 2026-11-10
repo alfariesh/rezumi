@@ -8,8 +8,10 @@ import { deductCredits, getCreditBalance, grantCredits } from "./credits";
 import { isBillingAppliedTo, resolveEntitlements } from "./entitlements";
 import { grantMembershipPeriod, revokeMembershipPeriod } from "./periods";
 import { syncPaymentWithProvider } from "./reconcile";
-import { requestRefund } from "./refunds";
+import { recordQrisRefund, requestRefund } from "./refunds";
 import { subscriptionState } from "./subscriptions";
+import { paymentIdFromOrder } from "./sumopod/mapping";
+import { syncQrisPaymentWithProvider } from "./sumopod/reconcile";
 import { DAY_MS } from "./timeline";
 
 async function findUserId(target: { userId?: string | undefined; email?: string | undefined }) {
@@ -48,6 +50,9 @@ const adminPayment = (payment: PaymentRow) => ({
 	id: payment.id,
 	userId: payment.userId,
 	provider: payment.provider,
+	// QRIS through Sumopod, a card for every other provider.
+	method: payment.provider === "sumopod" ? ("qris" as const) : ("card" as const),
+	durationDays: payment.durationDays,
 	providerPaymentId: payment.providerPaymentId,
 	checkoutId: payment.providerCheckoutId,
 	subscriptionId: payment.subscriptionId,
@@ -70,8 +75,11 @@ const adminPayment = (payment: PaymentRow) => ({
 	refundedAmount: payment.refundedAmount,
 	trialDays: payment.trialDays,
 	failureReason: payment.failureReason,
-	// Only Dodo payments can be refunded from the admin page; older Polar and Midtrans ones were refunded elsewhere.
-	refundable: payment.provider === "dodo" && Boolean(payment.providerPaymentId),
+	// Dodo payments are refunded through Dodo; paid QRIS passes are refunded by hand and recorded. Older Polar and
+	// Midtrans ones were refunded elsewhere.
+	refundable:
+		(payment.provider === "dodo" && Boolean(payment.providerPaymentId)) ||
+		(payment.provider === "sumopod" && (payment.status === "paid" || payment.status === "partially_refunded")),
 });
 
 type SubscriptionRow = typeof schema.billingSubscription.$inferSelect;
@@ -103,10 +111,11 @@ const customerSummary = {
 
 /**
  * Where an admin's search lands: an email (or part of one), a Dodo Payments payment, checkout session, subscription or
- * customer id, a payment or account id.
+ * customer id, a Sumopod payment id, an order number (RZ-<payment id>, as receipts and Sumopod show it), a payment or
+ * account id.
  */
 async function search(input: { query: string }) {
-	const query = input.query.trim();
+	const query = paymentIdFromOrder(input.query) ?? input.query.trim();
 	const id = UUID.test(query) ? query.toLowerCase() : PROVIDER_ID.test(query) ? query : null;
 	const payments = id
 		? await db
@@ -312,7 +321,11 @@ function audit(input: {
 
 async function paymentOwner(paymentId: string) {
 	const [payment] = await db
-		.select({ userId: schema.billingPayment.userId, status: schema.billingPayment.status })
+		.select({
+			userId: schema.billingPayment.userId,
+			status: schema.billingPayment.status,
+			provider: schema.billingPayment.provider,
+		})
 		.from(schema.billingPayment)
 		.where(eq(schema.billingPayment.id, paymentId));
 	if (!payment) throw new ORPCError("NOT_FOUND", { message: "No payment has that ID." });
@@ -323,10 +336,13 @@ export const billingAdmin = {
 	search,
 	customer,
 
-	/** Asks Dodo Payments where a payment stands now and applies it: the "check again" button. */
+	/** Asks the payment's provider (Dodo Payments or Sumopod) where it stands now and applies it: "check again". */
 	syncPayment: async (input: { actorUserId: string; paymentId: string }) => {
 		const before = await paymentOwner(input.paymentId);
-		const found = await syncPaymentWithProvider(input.paymentId);
+		const found =
+			before.provider === "sumopod"
+				? await syncQrisPaymentWithProvider(input.paymentId)
+				: await syncPaymentWithProvider(input.paymentId);
 		const after = await paymentOwner(input.paymentId);
 		await audit({
 			actorUserId: input.actorUserId,
@@ -337,14 +353,18 @@ export const billingAdmin = {
 		return { found, status: after.status, changed: before.status !== after.status };
 	},
 
-	refund: (input: {
+	/** Card payments are refunded through Dodo; a QRIS payment's refund, sent by hand, is recorded. */
+	refund: async (input: {
 		actorUserId: string;
 		paymentId: string;
 		amount?: number | undefined;
 		reason: string;
 		revokeBenefits?: boolean | undefined;
 		endSubscription?: boolean | undefined;
-	}) => requestRefund(input),
+	}) => {
+		const { provider } = await paymentOwner(input.paymentId);
+		return provider === "sumopod" ? recordQrisRefund(input) : requestRefund(input);
+	},
 
 	/** Gives an account a pass by hand, queued like a purchase. For support and testing before payments exist. */
 	grantPeriod: async (input: {

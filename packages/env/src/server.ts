@@ -252,6 +252,20 @@ export const env = createEnv({
 		DODO_PAYMENTS_PRODUCT_PLUS_YEARLY: dodoProductId.optional(),
 		DODO_PAYMENTS_PRODUCT_PRO_AI_MONTHLY: dodoProductId.optional(),
 		DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY: dodoProductId.optional(),
+		// Sumopod (sumopod.com → Managed Payment) takes QRIS payments for the prepaid passes sold in Indonesia. Without the
+		// API key QRIS isn't offered; visitors from Indonesia can still pay by card. Sandbox and live keep separate keys,
+		// webhook settings and API addresses.
+		SUMOPOD_ENVIRONMENT: z.enum(["sandbox", "live"]).optional(),
+		// The project's API key from the same mode (Managed Payment → Settings → API Key).
+		SUMOPOD_API_KEY: z.string().trim().min(1).optional(),
+		// The webhook signing secret (whsec_…) made when the webhook URL https://<app>/api/payments/sumopod/webhook is
+		// saved (Managed Payment → Settings → Webhook). Without it the endpoint answers 404 and QRIS payments only arrive
+		// through the billing job's status checks.
+		SUMOPOD_WEBHOOK_SECRET: z
+			.string()
+			.trim()
+			.regex(/^whsec_[A-Za-z0-9+/=]+$/, "Expected Sumopod's webhook signing secret (whsec_…).")
+			.optional(),
 
 		// Web portfolios at /<username>: off (nothing changes; the short link keeps opening the primary resume), admins
 		// (only accounts with the admin role can build and publish one), on (every signed-up account).
@@ -317,6 +331,12 @@ if (env.DODO_PAYMENTS_API_KEY) {
 } else if (env.DODO_PAYMENTS_WEBHOOK_KEY) {
 	throw new Error("DODO_PAYMENTS_WEBHOOK_KEY is set without DODO_PAYMENTS_API_KEY.");
 }
+
+// Sumopod's sandbox and live modes answer at different addresses: a key without its mode would reach the wrong one.
+if (env.SUMOPOD_API_KEY && !env.SUMOPOD_ENVIRONMENT)
+	throw new Error("SUMOPOD_API_KEY needs SUMOPOD_ENVIRONMENT set to sandbox or live.");
+if (env.SUMOPOD_WEBHOOK_SECRET && !env.SUMOPOD_API_KEY)
+	throw new Error("SUMOPOD_WEBHOOK_SECRET is set without SUMOPOD_API_KEY.");
 
 if (env.AI_PROVIDER === "openai-compatible" && !env.AI_BASE_URL) {
 	throw new Error("The openai-compatible server AI provider requires AI_BASE_URL.");
