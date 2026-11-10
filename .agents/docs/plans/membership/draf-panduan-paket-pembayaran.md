@@ -1,6 +1,6 @@
 # Draf panduan pengguna: langganan, pembayaran, dan refund
 
-Dibuat di Phase 07 (2026-11-03), ditulis ulang untuk langganan di Phase 12 (2026-11-05) dan untuk Dodo Payments di Phase 13 (2026-11-10). **Jangan terbitkan sebelum go-live** (Phase 11): selama `BILLING_MODE=off`, pengguna tidak bisa berlangganan, jadi panduan publik di `docs/` belum boleh menyebutnya. Saat go-live:
+Dibuat di Phase 07 (2026-11-03), ditulis ulang untuk langganan di Phase 12 (2026-11-05), untuk Dodo Payments di Phase 13 (2026-11-10), dan ditambah QRIS Indonesia di Phase 14 (2026-11-10). **Jangan terbitkan sebelum go-live** (Phase 11): selama `BILLING_MODE=off`, pengguna tidak bisa berlangganan, jadi panduan publik di `docs/` belum boleh menyebutnya. Saat go-live:
 
 1. Buat `docs/guides/plans.mdx` dari teks di bawah, sesuaikan dengan UI saat itu (cek label di kode `apps/web/src/features/billing/`), dan buat screenshot baru dengan data fiktif (aturan `docs/contributing/career-platform.mdx` → **Keep product guides current**).
 2. Daftarkan `guides/plans` di grup **Account** pada `docs/docs.json`, sebelum `guides/exporting-your-data`.
@@ -19,7 +19,7 @@ description: "Subscribe to Plus or Pro AI monthly or yearly on the Rezumi websit
 
 Rezumi has a Free plan and two paid plans, **Plus** and **Pro AI**. Each is a **subscription, billed monthly or yearly**, that renews until you cancel. Cancel any time: you keep the plan until the end of the period you paid for, and nothing more is charged. When a plan ends your account returns to Free. Your documents are never locked or deleted: every resume and cover letter stays open to edit, share and download as a PDF.
 
-See the [pricing on the home page](https://rezumi.app/#pricing) for what each plan includes and costs. Prices are in US dollars, or in Rupiah for visitors from Indonesia, and are before tax: the checkout adds the tax for where you live and shows the total before you pay.
+See the [pricing on the home page](https://rezumi.app/#pricing) for what each plan includes and costs. Card prices are in US dollars and are before tax (from Indonesia you can also pay in Rupiah with QRIS, below): the checkout adds the tax for where you live and shows the total before you pay.
 
 <Tip>
   Your first Plus subscription starts with **7 days free**. You add a card at checkout, but nothing is charged until the
@@ -29,6 +29,26 @@ See the [pricing on the home page](https://rezumi.app/#pricing) for what each pl
 <Note>
   Subscriptions are bought on the Rezumi website only. The Android app shows your plan and credits, and the iPhone app
   shows what your account can use.
+</Note>
+
+## Paying with QRIS (Indonesia)
+
+From Indonesia, **Settings → Plan** shows prices in Rupiah, paid with **QRIS** from any bank or e-wallet app. A QRIS plan is
+paid once and lasts **30 days or a year**; it doesn't renew on its own, and you get an email three days before it ends. The
+prices are final: no tax is added.
+
+1. Choose **30 days** or **1 year**, then select **Get Plus** or **Get Pro AI**.
+2. Check the summary and select **Pay with QRIS**. Scan the QR code with your banking or e-wallet app; the page stays open for an
+   hour.
+3. Back on Rezumi, the page changes to **Payment received** by itself. Your receipt is emailed to you and is in **Payments**.
+
+To keep going, pay again at any time: **Add 30 days** or **Add a year** adds the time after your current plan, so no day is lost.
+**Upgrade to Pro AI** starts Pro AI at once; the rest of your Plus waits and continues after it. Prefer a card that renews by
+itself, or have no QRIS app? Select **Pay by card in US dollars** under the plans.
+
+<Note>
+  QRIS plans have no free trial and no discount codes. Refunds of a QRIS payment are sent back to your bank account or
+  e-wallet: write to hi@rezumi.app with your order number (it starts with RZ-).
 </Note>
 
 ## Before you subscribe

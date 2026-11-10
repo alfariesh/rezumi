@@ -12,15 +12,15 @@ This covers rezumi.app and apps connected to it. Other servers have their own op
 
 ## Data, purposes and legal bases
 
-| Data                                                                                                                       | Purpose                                               | Basis                                                                   |
-| -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------- |
-| Name, email, username, optional photo, verification status                                                                 | Accounts, profiles and service delivery               | Contract                                                                |
-| Password hash, sessions/tokens, IP/user agent, verification, 2FA/passkeys, social login identifiers/tokens                 | Authentication and abuse prevention                   | Contract and security legitimate interests balanced against user rights |
-| Resumes, letters, uploads, versions, private notes, applications, contacts/interviews, knowledge, offers, career schedules | Storage, sync, exports and requested features         | Contract; user choices to publish/connect                               |
-| Order reference, amount, method/status/time, access periods, refunds, credit usage ledger                                  | Payment verification, access, disputes and accounting | Contract and legal obligations                                          |
-| Document/text, job context, prompts, AI results and action costs                                                           | Requested AI operations                               | User request/contract and consent where required                        |
-| Session/preference cookies, device storage, security logs, resume view/download counts                                     | Functionality, security, resume statistics            | Contract and proportionate legitimate interests                         |
-| Submitted complaints and content reports                                                                                   | Support, moderation, rights                           | Contract, legal obligations and security legitimate interests           |
+| Data                                                                                                                                       | Purpose                                               | Basis                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------- | ----------------------------------------------------------------------- |
+| Name, email, username, optional photo, verification status                                                                                 | Accounts, profiles and service delivery               | Contract                                                                |
+| Password hash, sessions/tokens, IP/user agent, verification, 2FA/passkeys, social login identifiers/tokens                                 | Authentication and abuse prevention                   | Contract and security legitimate interests balanced against user rights |
+| Resumes, letters, uploads, versions, private notes, applications, contacts/interviews, knowledge, offers, career schedules                 | Storage, sync, exports and requested features         | Contract; user choices to publish/connect                               |
+| Order number, Dodo or SumoPod payment/subscription ids, amount, currency, method/status/time, access periods, refunds, credit usage ledger | Payment verification, access, disputes and accounting | Contract and legal obligations                                          |
+| Document/text, job context, prompts, AI results and action costs                                                                           | Requested AI operations                               | User request/contract and consent where required                        |
+| Session/preference cookies, device storage, security logs, resume view/download counts                                                     | Functionality, security, resume statistics            | Contract and proportionate legitimate interests                         |
+| Submitted complaints, refund requests (including the bank or e-wallet account for a QRIS refund) and content reports                       | Support, refunds, moderation, rights                  | Contract, legal obligations and security legitimate interests           |
 
 Avoid unnecessary identity numbers, health data, children's data and sensitive information in documents/prompts.
 Only provide others' data with a lawful basis. We do not sell data or use resumes for advertising.
@@ -31,13 +31,18 @@ At draft time the official apps include no third-party advertising analytics; se
 
 - **Cloudflare:** Workers, network/security and private R2 uploads, including request metadata.
 - **Neon:** managed PostgreSQL for accounts, documents and service records. Database/backup region: **Singapore (AWS ap-southeast-1)**.
-- **Dodo Payments (Dodo Payments, Inc. and its group companies, United States and India):** the merchant of record for
-  subscriptions. At checkout Rezumi sends your account id, name, email, language and country (Indonesia, for Rupiah prices); you enter
-  payment details and billing address directly with Dodo Payments. Dodo Payments processes the payment (through its processing
+- **Dodo Payments (Dodo Payments, Inc. and its group companies, United States and India):** the merchant of record for card
+  subscriptions. At checkout Rezumi sends your account id, name, email and language; you enter payment details and billing address
+  directly with Dodo Payments. The country you visit from, estimated from your IP address, is used only by Rezumi to choose between
+  QRIS and a card, and is not sent to Dodo Payments. Dodo Payments processes the payment (through its processing
   partners), tax, invoices and disputes as an independent controller under its own privacy policy. Rezumi receives
   payment/subscription/refund/dispute ids and statuses, amounts and periods; it never stores card numbers, CVCs or billing addresses.
   When you delete your account, Rezumi ends its subscriptions at Dodo Payments; Dodo Payments keeps transaction records as the law
   requires. Data may be processed outside Indonesia.
+- **SumoPod (PT Koding Kreasi Indonesia, Indonesia):** processes QRIS payments for plans Rezumi sells directly to visitors from
+  Indonesia. Rezumi sends only the order number (starting with RZ-) and the amount, never your name or email. You pay on SumoPod's
+  payment page with your bank or e-wallet app; SumoPod and that bank or e-wallet provider process the payment under their own
+  policies. Rezumi receives the payment's id, status, method, amount and times from SumoPod.
 - **AI providers:** only information needed for requested operations, such as resume/letter text, job descriptions, answers,
   knowledge and conversation context. BYOK uses the selected provider (such as OpenAI, Anthropic, Google Gemini, OpenRouter or compatible endpoints).
   Rezumi AI will identify provider/model before use; launch provider: **Anthropic (Claude Haiku 5.5, United States)**. Anthropic deletes inputs and outputs within **30 days**, except content flagged under its usage policy (up to 2 years) or where the law requires otherwise, and does not use them to train models.

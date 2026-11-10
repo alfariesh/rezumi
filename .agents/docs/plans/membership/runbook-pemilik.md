@@ -44,6 +44,16 @@ Pelanggan menerima email dari **Dodo Payments** (bukti bayar, invoice, pengingat
 
 **Prompt:** `Pelanggan <email> sudah bayar di Dodo Payments tapi paket belum aktif. Ikuti runbook-pemilik.md bagian 1 dan cek datanya.`
 
+**Pembayaran QRIS (Sumopod) belum aktif:**
+
+1. Minta nomor pesanan (`RZ-…`, ada di halaman pembayaran Sumopod dan di bukti bayar) atau email akun. Cari di halaman admin.
+2. Di dashboard Sumopod (mode **Live**) → Managed Payment → **Payments**: cari nomor pesanan itu. Status harus **completed**.
+3. Halaman admin → menu ⋯ di pembayaran QRIS → **Cek ulang status**. Bila belum berubah: Sumopod → **Webhooks** → cari kiriman
+   pesanan itu → **Resend**. Webhook yang ditolak 403 berarti `SUMOPOD_WEBHOOK_SECRET` di server berbeda dengan secret di Sumopod
+   (lihat bagian 9).
+4. Bila nominal di Sumopod lebih kecil dari harga paket, Rezumi sengaja tidak mengaktifkan paket (peringatan "perlu dicek manual"):
+   kembalikan uangnya (bagian 3) atau beri paket manual dengan alasan.
+
 ## 2. Pelanggan membayar dua kali
 
 Rezumi menolak checkout baru selama langganan akun masih hidup (termasuk yang "on hold"), jadi ini jarang. Bila terjadi (misalnya dua checkout dibuka bersamaan): refund pembayaran yang dobel dari halaman admin dengan centang **Sekaligus hentikan langganan sekarang**, atau dari dashboard Dodo (Payments → Refund, lalu Subscriptions → Cancel). Lalu tekan **Cek ulang status** di halaman admin untuk kedua pembayaran.
@@ -65,6 +75,11 @@ Rezumi menolak checkout baru selama langganan akun masih hidup (termasuk yang "o
 2. Bila pelanggan juga ingin berhenti: halaman admin tidak bisa menghentikan langganan tanpa refund, jadi minta pelanggan menekan **Batalkan langganan** di halaman Paket, atau batalkan di dashboard Dodo (Subscriptions → Cancel).
 3. Setelah Dodo memprosesnya, refund tercatat otomatis lewat webhook (kredit ikut ditarik). Bila belum muncul, tekan **Cek ulang status** di pembayarannya.
 4. Atau tunggu saldo cukup dari penjualan berikutnya (Payouts → Balances), lalu ulangi refund dari halaman admin. Jangan lewat dari batas waktu refund.
+
+**Refund pembayaran QRIS (Sumopod):** Sumopod tidak bisa mengembalikan dana. Minta nomor rekening/e-wallet pembeli (lewat email
+akun), transfer sendiri jumlahnya, lalu halaman admin → pelanggan → menu ⋯ di pembayaran QRIS → **Catat refund QRIS** (kosongkan
+jumlah untuk refund penuh; isi alasan, misalnya "Transfer BCA 12 Nov"). Refund penuh langsung mencabut paket QRIS itu (paket
+berikutnya maju) dan sisa kreditnya; refund sebagian hanya mencabut bila kotaknya dicentang. Fee QRIS (0,7% + Rp300) tidak kembali.
 
 **Catatan:** fee Dodo tidak dikembalikan ke kamu, dan Dodo menarik $1 per refund. Refund penuh otomatis menarik sisa kredit dari pembayaran itu. Bila status "Menunggu Dodo Payments" lebih dari 1 jam, tekan **Cek ulang status**; Rezumi menandainya gagal bila Dodo tidak pernah menerimanya. Refund yang kamu buat langsung di dashboard Dodo juga tercatat otomatis di halaman admin.
 
@@ -88,10 +103,15 @@ Dodo mengirim email ke pelanggan ("Subscription Renewal Failed", lalu rangkaian 
 
 ## 7. Mengubah harga atau isi paket
 
-1. Ubah harga di **dua tempat**: produk di dashboard Dodo (harga USD dan harga lokal IDR per produk; "tax inclusive" tetap mati) **dan** katalog Rezumi (`@rezumi/schema/billing`, lewat Claude). Langganan yang sudah berjalan tetap di harga lama (Dodo tidak memindahkannya).
-2. **Prompt:** `Ubah harga Plus bulanan menjadi $5.99 dan Rp69.000 mengikuti katalog di .agents/docs/plans/membership; jelaskan juga apa yang harus saya ubah di dashboard Dodo Payments.`
+1. Harga kartu (dolar AS) diubah di **dua tempat**: produk di dashboard Dodo ("tax inclusive" tetap mati) **dan** katalog Rezumi (`@rezumi/schema/billing`, lewat Claude). Langganan yang sudah berjalan tetap di harga lama (Dodo tidak memindahkannya).
+2. Harga QRIS (Rupiah) **hanya di katalog Rezumi**: Sumopod tidak menyimpan produk, Rezumi mengirim nominal setiap pembayaran. Paket QRIS yang sudah dibayar tidak berubah.
+3. **Prompt:** `Ubah harga Plus QRIS 30 hari menjadi Rp35.000 mengikuti katalog di .agents/docs/plans/membership` (atau harga kartu: `… menjadi $5.99; jelaskan juga apa yang harus saya ubah di dashboard Dodo Payments.`)
 
 ## 8. Kejadian perlu dicek manual / webhook gagal
+
+Untuk QRIS: Sumopod → Managed Payment → **Webhooks** menampilkan setiap kiriman beserta jawaban Rezumi; kiriman gagal bisa
+**Resend**. Peringatan "Banyak webhook pembayaran ditolak" untuk QRIS hampir selalu berarti `SUMOPOD_WEBHOOK_SECRET` belum sama
+dengan Webhook Signing Secret di Sumopod Settings → Webhook.
 
 1. Halaman admin → pelanggan terkait → **Cek ulang status** di pembayarannya.
 2. Di Dodo **Developer → Webhooks → endpoint**: lihat **Logs/Activity**. Perbaiki penyebabnya dulu (lihat bagian 9), lalu **Replay** pesan yang gagal (bisa sekaligus lewat **Bulk replay**). Dodo tidak punya email peringatan per endpoint; peringatan datang dari Rezumi (`BILLING_ALERT_EMAIL`) dan angka **Error rate** di daftar endpoint.
@@ -104,6 +124,10 @@ Dodo mengirim email ke pelanggan ("Subscription Renewal Failed", lalu rangkaian 
 1. **Secret webhook:** Dodo → Developer → Webhooks → endpoint → rotate signing secret. Lalu di terminal: `pnpm exec wrangler secret put DODO_PAYMENTS_WEBHOOK_KEY` dan tempel secret baru (jangan di chat). Webhook yang ditolak selama jeda akan diulang Dodo, atau replay dari Logs.
 2. **API key:** Dodo → Developer → API Keys → buat key baru di mode yang sama (Live Mode nyala untuk produksi), pasang dengan `pnpm exec wrangler secret put DODO_PAYMENTS_API_KEY`, lalu hapus key lama.
 3. Cek: halaman Paket bisa membuka checkout, dan tidak ada email peringatan baru.
+4. **Sumopod (QRIS):** API key → Managed Payment → Settings → API Key → **Roll API Key**, lalu
+   `pnpm exec wrangler secret put SUMOPOD_API_KEY`. Secret webhook → Settings → Webhook (secret baru dibuat saat URL disimpan ulang),
+   lalu `pnpm exec wrangler secret put SUMOPOD_WEBHOOK_SECRET` (`whsec_…`). Selama ±1 hari Sumopod menandatangani dengan secret lama
+   dan baru, jadi kiriman tidak hilang. Cek dengan Settings → Webhook → **Save & Test**.
 
 ## 10. Pelanggan hapus akun saat masih berlangganan
 
