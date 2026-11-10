@@ -244,6 +244,8 @@ function RouteComponent() {
 					<>
 						<Segment
 							aria-label={t`View`}
+							// On a phone the switch spans the row, its two items sharing it.
+							className="max-sm:w-full"
 							selectedKey={shown}
 							onSelectionChange={(key) => {
 								setViewSwitched(true);
