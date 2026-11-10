@@ -59,7 +59,14 @@ Rezumi menolak checkout baru selama langganan akun masih hidup (termasuk yang "o
 3. Centang **Sekaligus hentikan langganan sekarang** bila pelanggan tidak ingin melanjutkan (akses langsung berhenti). Tanpa centang, langganan tetap berjalan dan diperpanjang.
 4. Isi alasan → kirim. Status refund menjadi **Selesai** dalam beberapa detik, atau **Menunggu Dodo Payments** bila Dodo masih memproses/meninjau; dana sampai ke kartu pelanggan dalam beberapa hari kerja (tergantung bank).
 
-**Catatan:** fee Dodo tidak dikembalikan ke kamu. Refund penuh otomatis menarik sisa kredit dari pembayaran itu. Bila status "Menunggu Dodo Payments" lebih dari 1 jam, tekan **Cek ulang status**; Rezumi menandainya gagal bila Dodo tidak pernah menerimanya. Refund yang kamu buat langsung di dashboard Dodo juga tercatat otomatis di halaman admin.
+**Bila Dodo menolak dengan "insufficient funds in wallet":** Dodo membayar refund dari **saldo wallet-mu**, bukan dari pembayaran aslinya. Saldo dari satu pembayaran selalu lebih kecil dari yang dibayar pelanggan (sudah dipotong fee), jadi saat penjualan masih sedikit atau tepat setelah payout, refund penuh bisa ditolak. Di halaman admin refund tercatat **Ditolak** dan email peringatan "Refund belum berhasil" terkirim; tidak ada uang yang bergerak dan langganan tidak dihentikan. Langkahnya:
+
+1. Kirim email dari email terdaftar di Dodo ke `support@dodopayments.com`: minta refund penuh, sebutkan id pembayaran (`pay_…`, ada di halaman admin) dan bahwa refund gagal karena saldo wallet kurang.
+2. Bila pelanggan juga ingin berhenti: halaman admin tidak bisa menghentikan langganan tanpa refund, jadi minta pelanggan menekan **Batalkan langganan** di halaman Paket, atau batalkan di dashboard Dodo (Subscriptions → Cancel).
+3. Setelah Dodo memprosesnya, refund tercatat otomatis lewat webhook (kredit ikut ditarik). Bila belum muncul, tekan **Cek ulang status** di pembayarannya.
+4. Atau tunggu saldo cukup dari penjualan berikutnya (Payouts → Balances), lalu ulangi refund dari halaman admin. Jangan lewat dari batas waktu refund.
+
+**Catatan:** fee Dodo tidak dikembalikan ke kamu, dan Dodo menarik $1 per refund. Refund penuh otomatis menarik sisa kredit dari pembayaran itu. Bila status "Menunggu Dodo Payments" lebih dari 1 jam, tekan **Cek ulang status**; Rezumi menandainya gagal bila Dodo tidak pernah menerimanya. Refund yang kamu buat langsung di dashboard Dodo juga tercatat otomatis di halaman admin.
 
 ## 4. Pelanggan ingin berhenti (batal langganan)
 
@@ -87,7 +94,7 @@ Dodo mengirim email ke pelanggan ("Subscription Renewal Failed", lalu rangkaian 
 ## 8. Kejadian perlu dicek manual / webhook gagal
 
 1. Halaman admin → pelanggan terkait → **Cek ulang status** di pembayarannya.
-2. Di Dodo **Developer → Webhooks → endpoint**: lihat **Logs/Activity**. Perbaiki penyebabnya dulu (lihat bagian 9), lalu **Replay** pesan yang gagal (bisa sekaligus lewat **Bulk replay**). Di tab **Settings** endpoint, isi email untuk diberi tahu bila pengiriman mulai gagal.
+2. Di Dodo **Developer → Webhooks → endpoint**: lihat **Logs/Activity**. Perbaiki penyebabnya dulu (lihat bagian 9), lalu **Replay** pesan yang gagal (bisa sekaligus lewat **Bulk replay**). Dodo tidak punya email peringatan per endpoint; peringatan datang dari Rezumi (`BILLING_ALERT_EMAIL`) dan angka **Error rate** di daftar endpoint.
 3. Selama webhook gagal, Rezumi tetap menyusul lewat pengecekan berkala tiap menit, hanya lebih lambat.
 
 **Prompt:** `Ada peringatan "Kejadian pembayaran perlu dicek manual". Ikuti runbook-pemilik.md bagian 8.`
@@ -109,7 +116,7 @@ Set `BILLING_CHECKOUT_PAUSED=true` di Cloudflare (Variables and Secrets) lalu de
 ## 12. Rekap bulanan untuk pembukuan/pajak
 
 1. Halaman admin → pilih periode → **Unduh CSV**: satu baris per pembayaran dan refund, per mata uang, jumlah **sebelum pajak**, pajak, dan total yang dibayar pelanggan.
-2. Dashboard Dodo → **Balances / Payouts**: saldo, fee Dodo, dan **payout** ke rekeningmu. Payout standar gratis; $5 bila payout di bawah $1.000; payout USD lewat SWIFT untuk bisnis non-AS dikenai $25.
+2. Dashboard Dodo → **Balances / Payouts**: saldo, fee Dodo, dan **payout** ke rekeningmu. Pembayaran Rupiah dicatat Dodo dalam USD: "Gross" sudah dipotong biaya kurs ±4%, "Net" sudah dipotong fee transaksi. Payout standar gratis; $5 bila payout di bawah $1.000; payout USD lewat SWIFT untuk bisnis non-AS dikenai $25.
 3. ⚖️ Penghasilanmu adalah payout dari Dodo, bukan total yang dibayar pelanggan. Konsultasikan pencatatan PPh dengan konsultan pajak.
 
 ## Lain-lain
