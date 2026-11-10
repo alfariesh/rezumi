@@ -139,7 +139,13 @@ function YourPlanSection({ plan, formatDate }: YourPlanSectionProps) {
 					className="pointer-events-none absolute -top-16 -right-10 size-56 rounded-full bg-fuchsia-400/30 blur-3xl"
 				/>
 			)}
-			<WidgetHeading id={titleId} icon="seal-check" title={<Trans>Your plan</Trans>} titleClassName={style.title} />
+			<WidgetHeading
+				id={titleId}
+				icon="seal-check"
+				title={<Trans>Your plan</Trans>}
+				titleClassName={style.title}
+				iconClassName={style.title}
+			/>
 			<Widget.Content className={cn("relative grid gap-4", style.content)}>
 				{paid ? (
 					<div className="grid gap-6 [&>*+*]:relative [&>*+*]:before:absolute [&>*+*]:before:inset-s-15 [&>*+*]:before:inset-e-0 [&>*+*]:before:-top-3 [&>*+*]:before:h-px [&>*+*]:before:bg-white/20">

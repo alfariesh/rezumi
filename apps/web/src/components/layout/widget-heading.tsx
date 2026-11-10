@@ -27,6 +27,8 @@ type WidgetHeadingProps = {
 	className?: string | undefined;
 	/** Extra classes for the title, e.g. a color on a tinted widget. */
 	titleClassName?: string | undefined;
+	/** Extra classes for the icon, which is muted unless this sets a color: white on a tinted widget. */
+	iconClassName?: string | undefined;
 };
 
 /**
@@ -43,12 +45,13 @@ export function WidgetHeading({
 	action,
 	className,
 	titleClassName,
+	iconClassName,
 }: WidgetHeadingProps) {
 	return (
 		<Widget.Header className={className}>
 			<div className="grid min-w-0 flex-1">
 				<span className="flex min-w-0 items-center gap-2">
-					<Icon name={icon} size={ICON_SIZE} className="shrink-0 text-muted [&_*]:stroke-2" />
+					<Icon name={icon} size={ICON_SIZE} className={cn("shrink-0 text-muted [&_*]:stroke-2", iconClassName)} />
 					<Widget.Title id={id} role="heading" aria-level={2} className={cn("truncate", titleClassName)}>
 						{title}
 					</Widget.Title>
