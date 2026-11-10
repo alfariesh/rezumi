@@ -1,18 +1,7 @@
 import type { Application, ApplicationSummary } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { Sheet, Widget } from "@heroui-pro/react";
-import {
-	Button,
-	ButtonGroup,
-	Checkbox,
-	Chip,
-	Dropdown,
-	Input,
-	Label,
-	Modal,
-	ScrollShadow,
-	Separator,
-} from "@heroui/react";
+import { Button, Checkbox, Chip, Dropdown, Input, Label, Modal, ScrollShadow, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -80,7 +69,7 @@ export function ApplicationDetailSheet({ application, onOpenChange, onEditDetail
 		>
 			<Sheet.Backdrop>
 				<Sheet.Content className={phone ? "h-svh" : "w-full sm:max-w-[480px]"}>
-					<Sheet.Dialog className="bg-background">
+					<Sheet.Dialog className="bg-surface">
 						{phone && <Sheet.Handle />}
 						<Sheet.CloseTrigger aria-label={t`Close`} />
 						{current ? (
@@ -334,31 +323,29 @@ function Detail({ variant, application, onEditDetails, onDeleted }: DetailProps)
 				<div className="min-h-0 flex-1 overflow-hidden">{body}</div>
 			)}
 
-			<footer className="shrink-0 bg-background px-4 pt-2 pb-4">
+			<footer className="shrink-0 bg-surface px-4 pt-2 pb-4">
 				{!closed ? (
-					<ButtonGroup variant="secondary" fullWidth>
-						<Button isIconOnly aria-label={t`Close application…`} onPress={() => setClosing(true)}>
+					<div className="flex items-center gap-2">
+						<Button isIconOnly variant="secondary" aria-label={t`Close application…`} onPress={() => setClosing(true)}>
 							<Icon name="prohibit" size={18} />
 						</Button>
 						{application.sourceUrl && (
 							<Button
 								isIconOnly
+								variant="secondary"
 								aria-label={t`Open the posting`}
 								onPress={() => window.open(application.sourceUrl ?? "", "_blank", "noopener,noreferrer")}
 							>
-								<ButtonGroup.Separator />
 								<Icon name="arrow-square-out" size={18} />
 							</Button>
 						)}
 						<OpenWorkspaceButton application={application} />
-					</ButtonGroup>
+					</div>
 				) : (
-					<ButtonGroup variant="secondary" fullWidth>
-						<Button className="min-w-0 flex-1 px-3" onPress={() => moveTo(application, "applied")}>
-							<Icon name="arrow-counter-clockwise" size={16} />
-							<Trans>Reopen</Trans>
-						</Button>
-					</ButtonGroup>
+					<Button variant="secondary" fullWidth className="min-w-0 px-3" onPress={() => moveTo(application, "applied")}>
+						<Icon name="arrow-counter-clockwise" size={16} />
+						<Trans>Reopen</Trans>
+					</Button>
 				)}
 			</footer>
 
@@ -744,7 +731,6 @@ function OpenWorkspaceButton({ application }: { application: Application }) {
 				})
 			}
 		>
-			<ButtonGroup.Separator />
 			<Icon name="arrow-right" size={16} />
 			<Trans>Open workspace</Trans>
 		</Button>

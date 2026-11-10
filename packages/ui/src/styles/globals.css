@@ -243,12 +243,20 @@
  * sitting on a `background` block (a widget's header, the message box) steps down once more to `default`. Controls read
  * their resting fill from `--control-fill` so the step follows where they sit; `bg-control` is the same for a tile.
  * `surface-secondary` (HeroUI's gray block) is `background` here, so a Widget's shell, a tile, an empty state or a table
- * head on white reads as one level and nothing is drawn in a third gray. A dialog or sheet is white too, so its controls
- * take the same step (one that paints itself `background` is left out); the editors keep HeroUI's own, since their
- * panels are already `background`.
+ * head on white reads as one level and nothing is drawn in a third gray. A dialog or sheet is white too, so it follows the
+ * same rules; the editors keep HeroUI's own, since their panels are already `background`.
  */
-.dashboard-shell {
+.dashboard-shell,
+[role="dialog"] {
 	--surface-secondary: var(--background);
+	--control-fill: var(--background);
+	--control-fill-hover: var(--default);
+}
+
+:is(.dashboard-shell, [role="dialog"])
+	:is(.widget__header, .widget__footer, .prompt-input__shell, .empty-state[class*="bg-surface-secondary"]) {
+	--control-fill: var(--default);
+	--control-fill-hover: var(--default-hover);
 }
 
 /* A KPI group is a block on white like a Widget's shell: `background`, with no shadow (HeroUI draws it white and raised). */
@@ -258,36 +266,24 @@
 	}
 }
 
-.dashboard-shell,
-[role="dialog"]:not(.bg-background) {
-	--control-fill: var(--background);
-	--control-fill-hover: var(--default);
-}
-
-:is(.dashboard-shell, [role="dialog"]:not(.bg-background))
-	:is(.widget__header, .widget__footer, .prompt-input__shell, .empty-state[class*="bg-surface-secondary"]) {
-	--control-fill: var(--default);
-	--control-fill-hover: var(--default-hover);
-}
-
 @utility bg-control {
 	background-color: var(--control-fill, var(--default));
 }
 
 @layer components {
 	/* Segmented control and tabs: the track is one step below the white surface; the selected item stays white. */
-	:is(.dashboard-shell, [role="dialog"]:not(.bg-background)) :is(.segment:not(.segment--ghost), .tabs__list-container) {
+	:is(.dashboard-shell, [role="dialog"]) :is(.segment:not(.segment--ghost), .tabs__list-container) {
 		background-color: var(--control-fill);
 	}
 
 	/* Secondary and tertiary buttons (the navbar's Search, "New", "Add"…). */
-	:is(.dashboard-shell, [role="dialog"]:not(.bg-background)) :is(.button--secondary, .button--tertiary) {
+	:is(.dashboard-shell, [role="dialog"]) :is(.button--secondary, .button--tertiary) {
 		--button-bg: var(--control-fill);
 		--button-bg-hover: var(--control-fill-hover);
 		--button-bg-pressed: var(--control-fill-hover);
 	}
 
-	:is(.dashboard-shell, [role="dialog"]:not(.bg-background)) .empty-state__media {
+	:is(.dashboard-shell, [role="dialog"]) .empty-state__media {
 		background-color: var(--control-fill);
 	}
 }
