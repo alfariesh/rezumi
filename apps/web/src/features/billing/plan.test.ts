@@ -26,6 +26,8 @@ const summary = (enabled: boolean, paid: boolean): PlanSummary => ({
 	renews: false,
 	subscription: null,
 	currency: "usd",
+	paymentMethods: [],
+	paymentMethod: null,
 	upcoming: [],
 	limits: { activeResumes: { used: 0, max: 3 }, activeCoverLetters: { used: 0, max: 3 } },
 	features: {

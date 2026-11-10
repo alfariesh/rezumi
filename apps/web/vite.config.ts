@@ -146,11 +146,16 @@ const serverPaths = [
 	publicResumeProxyPattern,
 ] as const;
 
+// Local development only: DEV_COUNTRY=ID makes every proxied request look like it comes from Indonesia (Cloudflare's
+// CF-IPCountry header), so the plan page offers QRIS as it does there.
+const devCountry = process.env.DEV_COUNTRY?.trim().toUpperCase();
+
 const serverProxy = serverPaths.reduce(
 	(acc, path) => {
 		acc[path] = {
 			target: `http://localhost:${process.env.SERVER_PORT ?? "3001"}`,
 			changeOrigin: true,
+			...(devCountry && { headers: { "cf-ipcountry": devCountry } }),
 		};
 		return acc;
 	},

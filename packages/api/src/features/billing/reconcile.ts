@@ -23,9 +23,9 @@ import { readPayment } from "./webhook";
 /** Someone looking at a payment checks Dodo at most this often. */
 export const SYNC_INTERVAL_MS = 10_000;
 // The billing job checks payments older than this, up to this age, this many per run, within this time.
-const RECONCILE_MIN_AGE_MS = 2 * 60 * 1000;
+export const RECONCILE_MIN_AGE_MS = 2 * 60 * 1000;
 const RECONCILE_MAX_AGE_MS = 3 * 24 * 60 * 60 * 1000;
-const RECONCILE_BATCH = 20;
+export const RECONCILE_BATCH = 20;
 const RECONCILE_BUDGET_MS = 20_000;
 /** A subscription whose period ended this long ago without news is asked about, then at most this often. */
 const SUBSCRIPTION_OVERDUE_MS = 30 * 60 * 1000;

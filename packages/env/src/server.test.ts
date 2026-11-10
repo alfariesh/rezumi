@@ -24,6 +24,9 @@ beforeEach(() => {
 		"DODO_PAYMENTS_PRODUCT_PLUS_YEARLY",
 		"DODO_PAYMENTS_PRODUCT_PRO_AI_MONTHLY",
 		"DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY",
+		"SUMOPOD_ENVIRONMENT",
+		"SUMOPOD_API_KEY",
+		"SUMOPOD_WEBHOOK_SECRET",
 		"BILLING_CHECKOUT_PAUSED",
 		"BILLING_ALERT_EMAIL",
 	])
@@ -263,6 +266,46 @@ describe("Dodo Payments configuration", () => {
 			"must be a different product",
 		],
 		[{ DODO_PAYMENTS_WEBHOOK_KEY: "whsec_test" }, "without DODO_PAYMENTS_API_KEY"],
+	])("refuses to start with an incomplete setup: %j", async (settings, message) => {
+		for (const [name, value] of Object.entries(settings)) vi.stubEnv(name, value);
+		await expect(import("./server")).rejects.toThrow(message);
+	});
+});
+
+describe("Sumopod configuration", () => {
+	it("leaves QRIS off by default", async () => {
+		const { env } = await import("./server");
+		expect(env.SUMOPOD_API_KEY).toBeUndefined();
+		expect(env.SUMOPOD_ENVIRONMENT).toBeUndefined();
+		expect(env.SUMOPOD_WEBHOOK_SECRET).toBeUndefined();
+	});
+
+	it("accepts a key with its mode and a webhook signing secret", async () => {
+		vi.stubEnv("SUMOPOD_ENVIRONMENT", "sandbox");
+		vi.stubEnv("SUMOPOD_API_KEY", "sandbox-key");
+		vi.stubEnv("SUMOPOD_WEBHOOK_SECRET", "whsec_dGVzdC1zZWNyZXQ=");
+		const { env } = await import("./server");
+		expect(env.SUMOPOD_ENVIRONMENT).toBe("sandbox");
+		expect(env.SUMOPOD_WEBHOOK_SECRET).toBe("whsec_dGVzdC1zZWNyZXQ=");
+	});
+
+	it.each(["sandbox-mode", "production"])("rejects the mode %s", async (mode) => {
+		vi.stubEnv("SUMOPOD_ENVIRONMENT", mode);
+		vi.spyOn(console, "error").mockImplementation(() => {});
+		await expect(import("./server")).rejects.toThrow("Invalid environment variables");
+	});
+
+	it("rejects a webhook token where the signing secret belongs", async () => {
+		vi.stubEnv("SUMOPOD_API_KEY", "sandbox-key");
+		vi.stubEnv("SUMOPOD_ENVIRONMENT", "sandbox");
+		vi.stubEnv("SUMOPOD_WEBHOOK_SECRET", "whtok_abc");
+		vi.spyOn(console, "error").mockImplementation(() => {});
+		await expect(import("./server")).rejects.toThrow("Invalid environment variables");
+	});
+
+	it.each([
+		[{ SUMOPOD_API_KEY: "sandbox-key" }, "needs SUMOPOD_ENVIRONMENT"],
+		[{ SUMOPOD_WEBHOOK_SECRET: "whsec_dGVzdA==" }, "without SUMOPOD_API_KEY"],
 	])("refuses to start with an incomplete setup: %j", async (settings, message) => {
 		for (const [name, value] of Object.entries(settings)) vi.stubEnv(name, value);
 		await expect(import("./server")).rejects.toThrow(message);

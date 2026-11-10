@@ -3,7 +3,7 @@ import type { DbOrTx } from "@rezumi/db/client";
 import type { CreditAllocation, CreditUsageStatus } from "@rezumi/db/schema";
 import type { CreditAction, CreditSource } from "@rezumi/schema/billing";
 import { ORPCError } from "@orpc/server";
-import { and, asc, desc, eq, gt, inArray, isNull, lt, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, inArray, isNull, lt, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { CREDIT_COSTS, TRIAL_CREDITS } from "@rezumi/schema/billing";
@@ -223,6 +223,62 @@ export async function grantSubscriptionMonth(
 			createdAt: now,
 		})
 		.onConflictDoNothing({ target: [schema.aiCreditGrant.subscriptionId, schema.aiCreditGrant.expiresAt] })
+		.returning();
+	return grant ?? null;
+}
+
+/**
+ * A month of Pro AI credits for a prepaid pass: at most one grant per pass per month (its end), whoever asks first (the
+ * payment that starts the pass, or the billing job when a later month begins), and none while another of the pass's
+ * grants still runs into that month. Null when nothing was granted. Runs inside the caller's transaction, holding the
+ * account's billing lock.
+ */
+export async function grantPassMonth(
+	tx: Transaction,
+	input: {
+		userId: string;
+		paymentId: string;
+		amount: number;
+		/** The start of the month the credits are for. */
+		startsAt: Date;
+		/** The end of the month the credits are for; they expire then. */
+		expiresAt: Date;
+		now?: Date;
+	},
+): Promise<GrantRow | null> {
+	const now = input.now ?? new Date();
+	if (!Number.isInteger(input.amount) || input.amount <= 0)
+		throw new Error("A credit grant needs a positive whole amount.");
+	if (input.expiresAt <= now) return null;
+	await lockBillingAccount(tx, input.userId);
+	const [running] = await tx
+		.select({ id: schema.aiCreditGrant.id })
+		.from(schema.aiCreditGrant)
+		.where(
+			and(
+				eq(schema.aiCreditGrant.paymentId, input.paymentId),
+				isNull(schema.aiCreditGrant.subscriptionId),
+				or(
+					eq(schema.aiCreditGrant.expiresAt, input.expiresAt),
+					and(isNull(schema.aiCreditGrant.revokedAt), gt(schema.aiCreditGrant.expiresAt, input.startsAt)),
+				),
+			),
+		)
+		.limit(1);
+	if (running) return null;
+	const [grant] = await tx
+		.insert(schema.aiCreditGrant)
+		.values({
+			userId: input.userId,
+			source: "plan",
+			amount: input.amount,
+			remaining: input.amount,
+			expiresAt: input.expiresAt,
+			paymentId: input.paymentId,
+			createdAt: now,
+		})
+		// The pass's month is unique (ai_credit_grant_pass_month): a racing grant leaves this one out.
+		.onConflictDoNothing()
 		.returning();
 	return grant ?? null;
 }

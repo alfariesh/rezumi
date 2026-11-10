@@ -1,14 +1,20 @@
 import type { DodoApi } from "./dodo/client";
 import type { SubscriptionRow } from "./subscriptions";
-import type { BillingPaymentStatus, BillingReason } from "@rezumi/db/schema";
-import type { BillingCurrency, BillingInterval, PaidPlanId } from "@rezumi/schema/billing";
+import type { BillingPaymentProvider, BillingPaymentStatus, BillingReason } from "@rezumi/db/schema";
+import type { BillingCurrency, BillingInterval, PaidPlanId, PaymentMethod } from "@rezumi/schema/billing";
 import type DodoPayments from "dodopayments";
 import { ORPCError } from "@orpc/server";
-import { and, desc, eq, gt, isNotNull, isNull, lt, or, sql } from "drizzle-orm";
+import { and, desc, eq, gt, inArray, isNotNull, isNull, lt, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
-import { BILLING_CATALOG_VERSION, currencyForCountry, PLANS, planPrice } from "@rezumi/schema/billing";
+import {
+	BILLING_CATALOG_VERSION,
+	PAYMENT_METHOD_CURRENCY,
+	paymentMethodsForCountry,
+	PLANS,
+	planPrice,
+} from "@rezumi/schema/billing";
 import { generateId } from "@rezumi/utils/string";
 import { lockBillingAccount } from "./account";
 import { raiseBillingAlertQuietly } from "./alerts";
@@ -17,8 +23,12 @@ import { getDodoConfig, planForProduct, productFor } from "./dodo/config";
 import { CHECKOUT_LIFETIME_MS, dodoLocale } from "./dodo/mapping";
 import { isBillingAppliedTo } from "./entitlements";
 import { applyDodoSubscription } from "./fulfillment";
+import { hasQrisPass } from "./passes";
 import { applyRecentPayments, syncPaymentStatus } from "./reconcile";
 import { CHANGE_REQUESTED_ACTION, getCurrentSubscription, LIVE_SUBSCRIPTION_STATUSES } from "./subscriptions";
+import { openQrisCheckout } from "./sumopod/checkout";
+import { getSumopodConfig } from "./sumopod/config";
+import { syncQrisPaymentStatus } from "./sumopod/reconcile";
 
 type PaymentRow = typeof schema.billingPayment.$inferSelect;
 type Authentication = { user: { id: string }; method: "apiKey" | "bearer" | "session" };
@@ -30,12 +40,15 @@ const REUSE_MIN_REMAINING_MS = 10 * 60 * 1000;
 export type PurchaseBlocker = "unavailable" | "paused" | "web_only" | "guest" | "email_not_verified";
 
 /**
- * What stops an account from buying: plans not applying to it or Dodo Payments not set up, purchases paused, a request
- * that isn't a web session (the apps, API keys and OAuth/MCP clients never buy), a guest account, or an unverified
- * email. Null when it can buy.
+ * What stops an account from buying: plans not applying to it or no way to pay set up for it (`methods`, from
+ * paymentOptions), purchases paused, a request that isn't a web session (the apps, API keys and OAuth/MCP clients never
+ * buy), a guest account, or an unverified email. Null when it can buy.
  */
-export async function purchaseBlocker(authentication: Authentication): Promise<PurchaseBlocker | null> {
-	if (!getDodoConfig() || !(await isBillingAppliedTo(authentication.user.id))) return "unavailable";
+export async function purchaseBlocker(
+	authentication: Authentication,
+	methods: readonly PaymentMethod[],
+): Promise<PurchaseBlocker | null> {
+	if (!methods.length || !(await isBillingAppliedTo(authentication.user.id))) return "unavailable";
 	if (env.BILLING_CHECKOUT_PAUSED) return "paused";
 	if (authentication.method !== "session") return "web_only";
 	const [owner] = await db
@@ -58,8 +71,8 @@ const BLOCKER_ERRORS: Record<PurchaseBlocker, () => ORPCError<string, unknown>> 
 		new ORPCError("EMAIL_NOT_VERIFIED", { status: 403, message: "Verify your email address first." }),
 };
 
-async function assertCanPurchase(authentication: Authentication) {
-	const blocker = await purchaseBlocker(authentication);
+async function assertCanPurchase(authentication: Authentication, methods: readonly PaymentMethod[]) {
+	const blocker = await purchaseBlocker(authentication, methods);
 	if (blocker) throw BLOCKER_ERRORS[blocker]();
 }
 
@@ -75,10 +88,14 @@ const unavailable = () =>
 /** A payment as its owner sees it. The checkout address is only for a web session, and only while it can be paid. */
 export type PaymentView = {
 	id: string;
+	/** How it was paid: `card` through Dodo Payments (a subscription), `qris` through Sumopod (a prepaid pass). */
+	method: PaymentMethod;
 	/** The provider's payment id, once there is one. */
 	providerPaymentId: string | null;
 	planId: PaidPlanId;
 	interval: BillingInterval | null;
+	/** How many days the pass it bought lasts; null for a subscription's payment. */
+	durationDays: number | null;
 	billingReason: BillingReason | null;
 	/** Before tax, in the currency's smallest unit. */
 	amount: number;
@@ -98,6 +115,9 @@ export type PaymentView = {
 	trialDays: number | null;
 };
 
+/** How a payment was made, by who took it: QRIS through Sumopod, a card for every other provider. */
+const methodOf = (provider: BillingPaymentProvider): PaymentMethod => (provider === "sumopod" ? "qris" : "card");
+
 function toPaymentView(payment: PaymentRow, authentication: Authentication, now = new Date()): PaymentView {
 	const payable =
 		authentication.method === "session" &&
@@ -107,9 +127,11 @@ function toPaymentView(payment: PaymentRow, authentication: Authentication, now 
 		payment.expiresAt > now;
 	return {
 		id: payment.id,
+		method: methodOf(payment.provider),
 		providerPaymentId: payment.providerPaymentId,
 		planId: payment.planId,
 		interval: payment.interval,
+		durationDays: payment.durationDays,
 		billingReason: payment.billingReason,
 		amount: payment.amount,
 		taxAmount: payment.taxAmount,
@@ -186,8 +208,38 @@ export async function hasTrialAvailable(userId: string): Promise<boolean> {
 	return !paid;
 }
 
-/** The currency a request is charged in: Rupiah from Indonesia, US dollars elsewhere. */
-export const currencyOf = (origin: RequestOrigin): BillingCurrency => currencyForCountry(origin.country);
+/**
+ * How an account can pay, and how its current paid access is paid (owner decision 2026-11-10). An account keeps paying
+ * the way it already does, wherever it browses from: a live card subscription changes plan at Dodo Payments; a QRIS
+ * pass (running or waiting) gets more time or a higher plan by QRIS. Otherwise the visitor's country decides: from
+ * Indonesia QRIS in Rupiah first, with a card in US dollars as the other choice; elsewhere a card. Ways not set up on
+ * this server are left out.
+ */
+export type PaymentOptions = {
+	/** The ways the account can pay for a plan now, the default first; empty when none is set up for it. */
+	methods: PaymentMethod[];
+	/** How the account's current paid access is paid, or null on Free (or with access an admin gave). */
+	current: PaymentMethod | null;
+};
+
+const configured = (method: PaymentMethod) =>
+	method === "card" ? Boolean(getDodoConfig()) : Boolean(getSumopodConfig());
+
+export async function paymentOptions(
+	userId: string,
+	origin: RequestOrigin,
+	now = new Date(),
+	subscription?: SubscriptionRow | null,
+): Promise<PaymentOptions> {
+	const current = subscription === undefined ? await getCurrentSubscription(userId) : subscription;
+	if (isLive(current)) return { methods: configured("card") ? ["card"] : [], current: "card" };
+	if (await hasQrisPass(userId, now)) return { methods: configured("qris") ? ["qris"] : [], current: "qris" };
+	return { methods: paymentMethodsForCountry(origin.country).filter(configured), current: null };
+}
+
+/** The currency an account is shown prices in: its default way of paying's, US dollars when it can't pay. */
+export const currencyOf = (options: PaymentOptions): BillingCurrency =>
+	PAYMENT_METHOD_CURRENCY[options.methods[0] ?? options.current ?? "card"];
 
 /**
  * The account's customer at Dodo: made once, before its first checkout, with the account id in its metadata, then
@@ -225,29 +277,68 @@ async function customerFor(
 export type CheckoutResult = { paymentId: string; redirectUrl: string; expiresAt: Date; reused: boolean };
 
 /**
- * Starts a subscription on the web. The same request key returns the same payment, and an open checkout for the same
- * plan, interval and currency is offered again rather than doubled. Otherwise a `creating` row (catalog copy and all)
- * is committed before Dodo is called, so a failed or lost call still leaves a record; the checkout page is saved once
- * it exists. An account that already subscribes changes its plan instead (`changePlan`).
+ * Starts paying for a plan on the web, the way `method` asks (the account's default when left out): a QRIS pass
+ * (openQrisCheckout) or a card subscription. Both answer with a page to send the browser to. A way the account can't
+ * pay (paymentOptions) is refused: a card subscriber changes plan instead (`changePlan`), a QRIS pass holder keeps
+ * paying by QRIS, and only visitors from Indonesia may pay by QRIS.
  */
 export async function checkout(input: {
 	authentication: Authentication;
 	planId: PaidPlanId;
 	interval: BillingInterval;
 	idempotencyKey: string;
+	method?: PaymentMethod | undefined;
 	origin?: RequestOrigin;
 	/** The app language: the checkout page's and the customer's emails', and kept for later emails. */
 	locale?: string | undefined;
 	now?: Date;
 }): Promise<CheckoutResult> {
-	await assertCanPurchase(input.authentication);
-	const config = requireDodo();
 	const userId = input.authentication.user.id;
 	const now = input.now ?? new Date();
-	const currency = currencyOf(input.origin ?? {});
-	const amount = planPrice(input.planId, input.interval, currency);
-	if (isLive(await getCurrentSubscription(userId)))
+	const current = await getCurrentSubscription(userId);
+	const options = await paymentOptions(userId, input.origin ?? {}, now, current);
+	await assertCanPurchase(input.authentication, options.methods);
+	if (isLive(current))
 		throw new ORPCError("CONFLICT", { message: "You already have a subscription. Change its plan instead." });
+	const method = input.method ?? options.methods[0];
+	if (!method || !options.methods.includes(method))
+		throw new ORPCError("BAD_REQUEST", {
+			message:
+				options.current === "qris"
+					? "Your plan is paid by QRIS. Pay by QRIS to add time or move up."
+					: "This way of paying isn't available here.",
+		});
+	if (method === "qris")
+		return openQrisCheckout({
+			userId,
+			planId: input.planId,
+			interval: input.interval,
+			idempotencyKey: input.idempotencyKey,
+			locale: input.locale,
+			now,
+		});
+	return openCardCheckout({ ...input, now });
+}
+
+/**
+ * Starts a card subscription at Dodo Payments, in US dollars. The same request key returns the same payment, and an
+ * open checkout for the same plan, interval and currency is offered again rather than doubled. Otherwise a `creating`
+ * row (catalog copy and all) is committed before Dodo is called, so a failed or lost call still leaves a record; the
+ * checkout page is saved once it exists.
+ */
+async function openCardCheckout(input: {
+	authentication: Authentication;
+	planId: PaidPlanId;
+	interval: BillingInterval;
+	idempotencyKey: string;
+	locale?: string | undefined;
+	now: Date;
+}): Promise<CheckoutResult> {
+	const config = requireDodo();
+	const userId = input.authentication.user.id;
+	const { now } = input;
+	const currency = PAYMENT_METHOD_CURRENCY.card;
+	const amount = planPrice(input.planId, input.interval, currency);
 	const trialDays =
 		PLANS[input.planId].trialDays && (await hasTrialAvailable(userId)) ? PLANS[input.planId].trialDays : null;
 
@@ -333,9 +424,8 @@ export async function checkout(input: {
 		session = await api.checkoutSessions.create({
 			product_cart: [{ product_id: productFor(config, input.planId, input.interval), quantity: 1 }],
 			customer: { customer_id: customerId },
-			// The price list's currency, pinned: the Rupiah price is a fixed one, not a conversion.
+			// Cards are charged in US dollars, pinned, wherever the buyer is: Rupiah is paid by QRIS (Sumopod) instead.
 			billing_currency: currency.toUpperCase() as DodoPayments.Currency,
-			...(currency === "idr" && { billing_address: { country: "ID" } }),
 			feature_flags: { allow_currency_selection: false, allow_discount_code: true },
 			// Set here rather than on the products, so only a first subscription gets it, the same in every mode.
 			subscription_data: { trial_period_days: trialDays ?? 0 },
@@ -445,7 +535,8 @@ export async function changePlan(input: {
 	interval: BillingInterval;
 	now?: Date;
 }): Promise<PlanChangeResult> {
-	await assertCanPurchase(input.authentication);
+	// Plan changes are for card subscriptions only: a QRIS pass moves up by buying the higher plan's pass.
+	await assertCanPurchase(input.authentication, getDodoConfig() ? ["card"] : []);
 	const config = requireDodo();
 	const current = await liveSubscriptionOf(input.authentication.user.id);
 	if (current.status === "past_due" || current.status === "on_hold")
@@ -655,12 +746,16 @@ async function ownPayment(userId: string, paymentId: string) {
 	return payment;
 }
 
-/** One of the account's payments, checked with Dodo first while it is still open (at most every 10 seconds). */
+/**
+ * One of the account's payments, checked with its provider first (Dodo Payments or Sumopod) while it is still open,
+ * at most every 10 seconds.
+ */
 export async function getPayment(authentication: Authentication, paymentId: string): Promise<PaymentView> {
 	const payment = await ownPayment(authentication.user.id, paymentId);
-	if (payment.provider !== "dodo" || (payment.status !== "pending" && payment.status !== "creating"))
-		return toPaymentView(payment, authentication);
-	await syncPaymentStatus(payment.id);
+	if (payment.status !== "pending" && payment.status !== "creating") return toPaymentView(payment, authentication);
+	if (payment.provider === "dodo") await syncPaymentStatus(payment.id);
+	else if (payment.provider === "sumopod") await syncQrisPaymentStatus(payment.id);
+	else return toPaymentView(payment, authentication);
 	return toPaymentView(await ownPayment(authentication.user.id, paymentId), authentication);
 }
 
@@ -723,7 +818,10 @@ export async function listPayments(
 	return { items, nextCursor: rows.length > page.limit ? (items.at(-1)?.id ?? null) : null };
 }
 
-/** The account's newest checkout that can still be paid, for the web to offer to continue; null for the apps. */
+/**
+ * The account's newest checkout (a card checkout or a QRIS payment link) that can still be paid, for the web to offer
+ * to continue; null for the apps.
+ */
 export async function getPendingPayment(authentication: Authentication, now = new Date()): Promise<PaymentView | null> {
 	if (authentication.method !== "session") return null;
 	const [payment] = await db
@@ -732,7 +830,7 @@ export async function getPendingPayment(authentication: Authentication, now = ne
 		.where(
 			and(
 				eq(schema.billingPayment.userId, authentication.user.id),
-				eq(schema.billingPayment.provider, "dodo"),
+				inArray(schema.billingPayment.provider, ["dodo", "sumopod"]),
 				eq(schema.billingPayment.status, "pending"),
 				isNotNull(schema.billingPayment.redirectUrl),
 				isNull(schema.billingPayment.providerPaymentId),

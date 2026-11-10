@@ -40,9 +40,11 @@ const paidAt = new Date("2026-11-03T01:10:00Z");
 
 const payment = (patch: Partial<PaymentDetail>): PaymentDetail => ({
 	id: ID,
+	method: "card",
 	providerPaymentId: null,
 	planId: "pro-ai",
 	interval: "month",
+	durationDays: null,
 	billingReason: "subscription_create",
 	amount: 999,
 	taxAmount: 0,
@@ -113,6 +115,45 @@ describe("returning from the checkout", () => {
 		expect(await screen.findByText("Your free trial has started")).toBeTruthy();
 		expect(screen.getByText(/Plus is free until November 10, 2026.*\$4\.99 \/ month plus tax/)).toBeTruthy();
 		expect(screen.queryByText("Payment received")).toBeNull();
+	});
+
+	it("shows a paid QRIS pass: until when, that it doesn't renew, and Rezumi's receipt", async () => {
+		api.payment.mockResolvedValue(
+			paid({
+				method: "qris",
+				durationDays: 30,
+				billingReason: "purchase",
+				amount: 5_900_000,
+				totalAmount: 5_900_000,
+				currency: "idr",
+				providerPaymentId: "6f1c2a4e-0000-4000-8000-000000000001",
+			}),
+		);
+		renderPage();
+		expect(await screen.findByText("Payment received")).toBeTruthy();
+		expect(screen.getByText(/Pro AI is active until December 3, 2026.*It doesn't renew on its own/)).toBeTruthy();
+		expect(screen.getByRole("link", { name: "Receipt" }).getAttribute("href")).toBe(
+			`/dashboard/settings/billing/receipt/${ID}`,
+		);
+		expect(screen.queryByRole("button", { name: "Invoice" })).toBeNull();
+	});
+
+	it("says when a QRIS pass bought for later starts", async () => {
+		// Queued behind the current plan: it starts in the future.
+		const later = new Date(Date.now() + 10 * 86_400_000);
+		api.payment.mockResolvedValue(
+			paid({
+				method: "qris",
+				planId: "plus",
+				credits: 0,
+				durationDays: 30,
+				currency: "idr",
+				periodStart: later,
+				periodEnd: new Date(+later + 30 * 86_400_000),
+			}),
+		);
+		renderPage();
+		expect(await screen.findByText(/Plus starts on .*after your current plan/)).toBeTruthy();
 	});
 
 	it("leaves the credits line out for Plus", async () => {

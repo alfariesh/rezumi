@@ -46,11 +46,15 @@ describe("public pricing availability", () => {
 		expect(screen.getAllByText("Every portfolio theme, your own domain, no Rezumi badge").length).toBeGreaterThan(0);
 	});
 
-	it("shows Rupiah on the Indonesian page", () => {
+	it("shows the QRIS prices in Rupiah on the Indonesian page, without the card trial", () => {
 		i18n.loadAndActivate({ locale: "id-ID", messages: {} });
-		renderPricing();
+		renderPricing(true);
+		expect(screen.getByText("29.000")).toBeTruthy();
 		expect(screen.getByText("59.000")).toBeTruthy();
-		expect(screen.getByText("129.000")).toBeTruthy();
+		expect(screen.getByText("for 30 days, or Rp 249.000 a year")).toBeTruthy();
+		expect(screen.queryByText("First 7 days free")).toBeNull();
+		expect(screen.getByRole("link", { name: "Choose Plus" })).toBeTruthy();
+		expect(screen.getByText(/paid with QRIS from any bank or e-wallet app/)).toBeTruthy();
 	});
 
 	it("sends paid plans through sign-up to the Plan page with the plan marked, only when billing is enabled", () => {

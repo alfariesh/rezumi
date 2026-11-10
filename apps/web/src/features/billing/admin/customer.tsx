@@ -106,6 +106,9 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 	const partial = refundAmount < (payment?.amount ?? 0);
 	const amountOk = refundAmount > 0 && refundAmount <= left && (amount.trim() === "" || typed !== null);
 
+	// A QRIS pass is refunded by hand (Sumopod has no refund API): the owner sends the money, then records it here.
+	const qris = payment?.method === "qris";
+
 	const revokeBox = partial && (
 		<Checkbox variant="secondary" isSelected={revoke} onChange={setRevoke}>
 			<Checkbox.Content>
@@ -113,7 +116,11 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 					<Checkbox.Indicator />
 				</Checkbox.Control>
 				<span className="text-sm">
-					<Trans>Also take back the remaining credits from this payment</Trans>
+					{qris ? (
+						<Trans>Also take back the pass and its remaining credits</Trans>
+					) : (
+						<Trans>Also take back the remaining credits from this payment</Trans>
+					)}
 				</span>
 			</Checkbox.Content>
 		</Checkbox>
@@ -124,16 +131,23 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 			<ReasonDialog
 				{...props("refund")}
 				danger
-				title={<Trans>Refund through Dodo Payments</Trans>}
+				title={qris ? <Trans>Record a QRIS refund</Trans> : <Trans>Refund through Dodo Payments</Trans>}
 				description={
 					payment && (
 						<>
-							{payment.providerPaymentId} · {formatPrice(payment.amount, currency)} · {getPaymentReasonLabel(payment)}
+							{qris ? `RZ-${payment.id}` : payment.providerPaymentId} · {formatPrice(payment.amount, currency)} ·{" "}
+							{getPaymentReasonLabel(payment)}
 						</>
 					)
 				}
 				canSubmit={amountOk}
-				submitLabel={<Trans>Refund {formatPrice(refundAmount, currency)}</Trans>}
+				submitLabel={
+					qris ? (
+						<Trans>Record {formatPrice(refundAmount, currency)} refunded</Trans>
+					) : (
+						<Trans>Refund {formatPrice(refundAmount, currency)}</Trans>
+					)
+				}
 				onSubmit={async (reason) => {
 					if (!payment) return;
 					const result = await client.billing.admin.refund({
@@ -153,13 +167,24 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 				{payment && (
 					<div className="grid gap-3">
 						<p className="rounded-xl bg-surface-secondary px-3 py-2 text-sm">
-							<Trans>
-								Enter the amount before tax: Dodo Payments gives the tax on it back itself, and its fees aren't
-								returned. A full refund takes back the remaining credits. A refund alone doesn't end the subscription.
-							</Trans>
+							{qris ? (
+								<Trans>
+									Sumopod can't send refunds. Send the money back yourself first (bank transfer or e-wallet), then
+									record it here. A full refund takes the pass back (later passes move up) and its remaining credits.
+								</Trans>
+							) : (
+								<Trans>
+									Enter the amount before tax: Dodo Payments gives the tax on it back itself, and its fees aren't
+									returned. A full refund takes back the remaining credits. A refund alone doesn't end the subscription.
+								</Trans>
+							)}
 						</p>
 						<NumberInput
-							label={t`Amount before tax (${currency.toUpperCase()}), up to ${formatPrice(left, currency)}`}
+							label={
+								qris
+									? t`Amount sent back (${currency.toUpperCase()}), up to ${formatPrice(left, currency)}`
+									: t`Amount before tax (${currency.toUpperCase()}), up to ${formatPrice(left, currency)}`
+							}
 							value={amount}
 							onChange={setAmount}
 							placeholder={t`Empty: the rest, ${formatPrice(left, currency)}`}
@@ -261,7 +286,7 @@ type PaymentActionsProps = {
 	onDone: () => void;
 };
 
-/** One payment's menu: ask Dodo Payments again, or refund it. */
+/** One payment's menu: ask its provider (Dodo Payments or Sumopod) again, or refund it (a QRIS one by hand). */
 function PaymentActions({ payment, onDialog, onDone }: PaymentActionsProps) {
 	const [busy, setBusy] = useState(false);
 	const refundable = payment.refundable && (payment.status === "paid" || payment.status === "partially_refunded");
@@ -272,9 +297,12 @@ function PaymentActions({ payment, onDialog, onDone }: PaymentActionsProps) {
 			const result = await client.billing.admin.syncPayment({ paymentId: payment.id });
 			toast.add({
 				type: "success",
-				description: result.found
-					? t`Checked with Dodo Payments. Here: ${getPaymentStatusLabel(result.status)}.`
-					: t`Dodo Payments has nothing for this payment yet.`,
+				description:
+					payment.method === "qris"
+						? t`Sumopod can't be asked about a payment; it reports by webhook. Here: ${getPaymentStatusLabel(result.status)}. If Sumopod shows it paid, resend its webhook from the Webhooks tab there.`
+						: result.found
+							? t`Checked with Dodo Payments. Here: ${getPaymentStatusLabel(result.status)}.`
+							: t`Dodo Payments has nothing for this payment yet.`,
 			});
 			onDone();
 		} catch (error) {
@@ -311,10 +339,18 @@ function PaymentActions({ payment, onDialog, onDone }: PaymentActionsProps) {
 							<Trans>Check status</Trans>
 						</Label>
 					</Dropdown.Item>
-					<Dropdown.Item id="refund" textValue={t`Refund through Dodo Payments`} variant="danger">
+					<Dropdown.Item
+						id="refund"
+						textValue={payment.method === "qris" ? t`Record a QRIS refund` : t`Refund through Dodo Payments`}
+						variant="danger"
+					>
 						<Icon name="arrow-counter-clockwise" size={16} />
 						<Label>
-							<Trans>Refund through Dodo Payments</Trans>
+							{payment.method === "qris" ? (
+								<Trans>Record a QRIS refund</Trans>
+							) : (
+								<Trans>Refund through Dodo Payments</Trans>
+							)}
 						</Label>
 					</Dropdown.Item>
 				</Dropdown.Menu>
@@ -395,11 +431,22 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 				<span className="grid gap-0.5 whitespace-nowrap">
 					<span
 						className="font-mono text-xs whitespace-nowrap"
-						title={payment.providerPaymentId ?? payment.checkoutId ?? payment.id}
+						title={
+							payment.method === "qris"
+								? `RZ-${payment.id}`
+								: (payment.providerPaymentId ?? payment.checkoutId ?? payment.id)
+						}
 					>
-						{payment.providerPaymentId ? `…${payment.providerPaymentId.slice(-8)}` : t`checkout only`}
+						{payment.method === "qris"
+							? `RZ-…${payment.id.slice(-8)}`
+							: payment.providerPaymentId
+								? `…${payment.providerPaymentId.slice(-8)}`
+								: t`checkout only`}
 					</span>
-					<span className="text-xs text-muted">{formatShort(payment.createdAt)}</span>
+					<span className="text-xs text-muted">
+						{payment.method === "qris" ? "QRIS · " : ""}
+						{formatShort(payment.createdAt)}
+					</span>
 				</span>
 			),
 		},
@@ -527,7 +574,11 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 						</Chip>
 					</span>
 				}
-				description={<Trans>Newest first. The menu at the end of a row checks with Dodo Payments or refunds.</Trans>}
+				description={
+					<Trans>
+						Newest first. The menu at the end of a row checks with the provider (Dodo Payments or Sumopod) or refunds.
+					</Trans>
+				}
 			>
 				<DataGrid
 					aria-label={t`Payments`}
@@ -700,7 +751,9 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 					icon="tag"
 					title={<Trans>Granted periods</Trans>}
 					description={
-						<Trans>Time given by an admin or a promotion, and 30-day passes from before, newest first.</Trans>
+						<Trans>
+							QRIS passes, time given by an admin or a promotion, and 30-day passes from before, newest first.
+						</Trans>
 					}
 				>
 					{data.periods.length === 0 ? (

@@ -1,7 +1,23 @@
-import type { BillingPaymentStatus } from "@rezumi/db/schema";
-import type { BillingInterval, PaidPlanId } from "@rezumi/schema/billing";
+import type { BillingPaymentProvider, BillingPaymentStatus } from "@rezumi/db/schema";
+import type { BillingInterval, PaidPlanId, PaymentMethod } from "@rezumi/schema/billing";
 import { ORPCError } from "@orpc/server";
-import { and, asc, count, countDistinct, eq, gt, gte, inArray, isNotNull, lt, ne, sql, sum } from "drizzle-orm";
+import {
+	and,
+	asc,
+	count,
+	countDistinct,
+	eq,
+	gt,
+	gte,
+	inArray,
+	isNotNull,
+	isNull,
+	lt,
+	lte,
+	ne,
+	sql,
+	sum,
+} from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { toMajorUnits } from "@rezumi/schema/billing";
@@ -9,10 +25,11 @@ import { ADMIN_ADJUSTMENT_ACTION } from "./credits";
 import { LIVE_SUBSCRIPTION_STATUSES } from "./subscriptions";
 
 /**
- * The owner's numbers: sign-ups, checkouts, sales and refunds per currency, subscriptions, Rezumi AI use and cost for a
- * period, and the CSV for the books. Amounts are before tax (Dodo Payments collects and remits tax as the merchant of record)
- * and in each currency's smallest unit; currencies are never added together. Counts only; no names or email addresses
- * leave the database here, except the admin payment list's buyer email.
+ * The owner's numbers: sign-ups, checkouts, sales and refunds per currency, subscriptions and QRIS passes, Rezumi AI use
+ * and cost for a period, and the CSV for the books. Card amounts are before tax (Dodo Payments collects and remits tax
+ * as the merchant of record); QRIS amounts (Rupiah) are final, with no tax. All in each currency's smallest unit;
+ * currencies are never added together. Counts only; no names or email addresses leave the database here, except the
+ * admin payment list's buyer email.
  */
 
 export type ReportRange = { from: Date; to: Date };
@@ -56,6 +73,9 @@ export type SaleKind = "new" | "renewal" | "change";
 const saleKind = (reason: string | null): SaleKind =>
 	reason === "subscription_cycle" ? "renewal" : reason === "subscription_update" ? "change" : "new";
 
+/** How a payment was made, by who took it: QRIS through Sumopod, a card for every other provider. */
+const methodOf = (provider: BillingPaymentProvider): PaymentMethod => (provider === "sumopod" ? "qris" : "card");
+
 /** The numbers for a period: [from, to). Hanging checkouts and live subscriptions are counted as of `now`. */
 export async function billingMetrics(range: ReportRange, now = new Date()) {
 	assertRange(range);
@@ -91,13 +111,14 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 			planId: payment.planId,
 			interval: payment.interval,
 			reason: payment.billingReason,
+			provider: payment.provider,
 			currency: payment.currency,
 			payments: count(),
 			revenue: sum(payment.amount),
 		})
 		.from(payment)
 		.where(and(isNotNull(payment.paidAt), within(payment.paidAt, range), sql`not ${trialStart}`))
-		.groupBy(payment.planId, payment.interval, payment.billingReason, payment.currency);
+		.groupBy(payment.planId, payment.interval, payment.billingReason, payment.provider, payment.currency);
 	const [trialStarts] = await db
 		.select({ started: count() })
 		.from(payment)
@@ -145,6 +166,23 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 		.select({ subscriptions: count() })
 		.from(subscription)
 		.where(within(subscription.createdAt, range));
+
+	// QRIS passes running now: accounts on a pass paid through Sumopod, by plan. They don't renew, so they're no MRR.
+	const period = schema.membershipPeriod;
+	const passRows = await db
+		.select({ planId: period.planId, accounts: countDistinct(period.userId) })
+		.from(period)
+		.innerJoin(payment, eq(period.paymentId, payment.id))
+		.where(
+			and(
+				eq(period.source, "payment"),
+				isNull(period.revokedAt),
+				lte(period.startsAt, now),
+				gt(period.endsAt, now),
+				eq(payment.provider, "sumopod"),
+			),
+		)
+		.groupBy(period.planId);
 	const [ended] = await db
 		.select({ subscriptions: count() })
 		.from(subscription)
@@ -203,6 +241,7 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 	const byPlan = new Map<PaidPlanId, { payments: number; revenue: Money }>();
 	const byInterval = new Map<BillingInterval | "pass", { payments: number; revenue: Money }>();
 	const byKind = new Map<SaleKind, { payments: number; revenue: Money }>();
+	const byMethod = new Map<PaymentMethod, { payments: number; revenue: Money }>();
 	let payments = 0;
 	for (const row of paidRows) {
 		const amount = toNumber(row.revenue);
@@ -213,6 +252,7 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 			[byPlan, row.planId],
 			[byInterval, row.interval ?? "pass"],
 			[byKind, saleKind(row.reason)],
+			[byMethod, methodOf(row.provider)],
 		] as const) {
 			const entry = (map as Map<string, { payments: number; revenue: Money }>).get(key) ?? { payments: 0, revenue: {} };
 			entry.payments += counted;
@@ -273,6 +313,11 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 				payments: byKind.get(kind)?.payments ?? 0,
 				revenue: byKind.get(kind)?.revenue ?? {},
 			})),
+			byMethod: (["card", "qris"] as const).map((method) => ({
+				method,
+				payments: byMethod.get(method)?.payments ?? 0,
+				revenue: byMethod.get(method)?.revenue ?? {},
+			})),
 		},
 		refunds: { refunds: refundCount, amount: refunded },
 		net: subtract(revenue, refunded),
@@ -286,6 +331,10 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 			ended: toNumber(ended?.subscriptions),
 			mrr,
 			byPlan: [...livePlans.values()],
+		},
+		passes: {
+			active: passRows.reduce((total, row) => total + toNumber(row.accounts), 0),
+			byPlan: passRows.map((row) => ({ planId: row.planId, accounts: toNumber(row.accounts) })),
 		},
 		hangingPayments: toNumber(hanging?.payments),
 		credits: {
@@ -425,14 +474,16 @@ export async function listRecentPayments(
 		within(payment.createdAt, range),
 		page.status ? inArray(payment.status, [...PAYMENT_STATUS_GROUPS[page.status]]) : undefined,
 	);
-	const items = await db
+	const rows = await db
 		.select({
 			id: payment.id,
 			userId: payment.userId,
 			email: schema.user.email,
+			provider: payment.provider,
 			providerPaymentId: payment.providerPaymentId,
 			planId: payment.planId,
 			interval: payment.interval,
+			durationDays: payment.durationDays,
 			billingReason: payment.billingReason,
 			amount: payment.amount,
 			totalAmount: payment.totalAmount,
@@ -449,6 +500,7 @@ export async function listRecentPayments(
 		.orderBy(sql`${payment.createdAt} desc`, sql`${payment.id} desc`)
 		.limit(page.limit)
 		.offset(page.offset);
+	const items = rows.map((row) => ({ ...row, method: methodOf(row.provider) }));
 	const [total] = await db.select({ count: count() }).from(payment).where(where);
 	return { items, total: toNumber(total?.count) };
 }
@@ -472,7 +524,9 @@ const decimal = (amount: number, currency: string) => toMajorUnits(amount, curre
 const CSV_COLUMNS = [
 	"jenis",
 	"tanggal_wib",
-	"pembayaran_dodo",
+	"penyedia",
+	"id_pembayaran",
+	"no_pesanan",
 	"paket",
 	"periode",
 	"alasan",
@@ -486,8 +540,9 @@ const CSV_COLUMNS = [
 
 /**
  * Payments made and refunds given in a period, oldest first, for the books: one line per payment (amounts positive)
- * and per refund (negative), so each currency's column sums to the period's net before tax and Dodo's fees. Dodo's
- * payment and refund ids only; no names, email addresses or account ids. Payouts and fees are in Dodo's dashboard.
+ * and per refund (negative), so each currency's column sums to the period's net (card payments before tax) before the
+ * providers' fees. The provider's payment id and Rezumi's order number (RZ-…, what Sumopod shows) only; no names, email
+ * addresses or account ids. Payouts and fees are in Dodo's and Sumopod's dashboards.
  */
 export async function exportPaymentsCsv(range: ReportRange) {
 	assertRange(range);
@@ -496,6 +551,8 @@ export async function exportPaymentsCsv(range: ReportRange) {
 	const payments = await db
 		.select({
 			at: payment.paidAt,
+			id: payment.id,
+			provider: payment.provider,
 			providerPaymentId: payment.providerPaymentId,
 			planId: payment.planId,
 			interval: payment.interval,
@@ -512,6 +569,8 @@ export async function exportPaymentsCsv(range: ReportRange) {
 	const refunds = await db
 		.select({
 			at: refund.settledAt,
+			id: payment.id,
+			provider: payment.provider,
 			providerPaymentId: payment.providerPaymentId,
 			planId: payment.planId,
 			interval: payment.interval,
@@ -529,7 +588,9 @@ export async function exportPaymentsCsv(range: ReportRange) {
 			cells: [
 				"pembayaran",
 				formatWibTime(row.at ?? range.from),
+				row.provider,
 				row.providerPaymentId,
+				`RZ-${row.id}`,
 				row.planId,
 				row.interval ?? "pass",
 				saleKind(row.reason),
@@ -546,7 +607,9 @@ export async function exportPaymentsCsv(range: ReportRange) {
 			cells: [
 				"refund",
 				formatWibTime(row.at ?? range.from),
+				row.provider,
 				row.providerPaymentId,
+				`RZ-${row.id}`,
 				row.planId,
 				row.interval ?? "pass",
 				null,

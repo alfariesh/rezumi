@@ -1,6 +1,7 @@
 /**
- * Who runs Rezumi, for support and the legal pages. Null means owner confirmation is still required. Purchases are sold
- * by Dodo Payments as the merchant of record: it charges, invoices, and handles sales tax.
+ * Who runs Rezumi, for support and the legal pages. Null means owner confirmation is still required. Card subscriptions
+ * are sold by Dodo Payments as the merchant of record: it charges, invoices, and handles sales tax. QRIS passes (Indonesia)
+ * are sold by the owner directly, an individual who isn't VAT-registered; Sumopod only processes the QRIS payment.
  */
 export const BILLING_SELLER = {
 	name: "Salman Alfariesh",
@@ -16,8 +17,10 @@ export const BILLING_SELLER = {
 	minimumAge: 18,
 	identityConfirmed: true,
 	supportEmailConfirmed: true,
-	/** The reseller and merchant of record named at checkout and on invoices. */
+	/** The reseller and merchant of record of card subscriptions, named at checkout and on invoices. */
 	merchantOfRecord: "Dodo Payments, Inc.",
+	/** Who processes QRIS payments for passes the owner sells: SumoPod, run by this company. */
+	qrisProcessor: "SumoPod (PT Koding Kreasi Indonesia)",
 } as const;
 
 /** Indonesian legal text governs; English translations remain available from each legal page. */

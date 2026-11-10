@@ -81,12 +81,20 @@ msgstr "“{written}” adicionado às Skills"
 msgid "“I tailored my resume for three roles in one evening and had two interview calls that week.”"
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "(already yours)"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "(no header)"
 msgstr "(sem cabeçalho)"
 
 #: src/features/portfolio/editor/intro-effect.tsx
 msgid "(theme default)"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "(this payment)"
 msgstr ""
 
 #. placeholder {0}: chosen.size
@@ -345,6 +353,13 @@ msgstr "{0, plural, one {A fonte selecionada não consegue apresentar {list}. Ap
 msgid "{0} · {providerLabel}. Sends this application and your Knowledge; your provider may charge."
 msgstr "{0} · {providerLabel}. Envia esta candidatura e o seu Conhecimento; o seu fornecedor pode cobrar."
 
+#. placeholder {0}: BILLING_SELLER.name
+#. placeholder {1}: BILLING_SELLER.brand
+#. placeholder {2}: BILLING_SELLER.qrisProcessor
+#: src/features/billing/purchase-dialog.tsx
+msgid "{0} ({1}) sells this plan; {2} processes the QRIS payment. By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
+msgstr ""
+
 #. placeholder {0}: document.name
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
@@ -358,6 +373,11 @@ msgstr ""
 #. placeholder {0}: monthlyOfYearly(id, currency)
 #: src/features/billing/buy-plans.tsx
 msgid "{0} a month, billed yearly"
+msgstr ""
+
+#. placeholder {0}: monthlyOfYearly(id, currency)
+#: src/features/billing/buy-plans.tsx
+msgid "{0} a month, paid once for 365 days"
 msgstr ""
 
 #. placeholder {0}: creditCount(payment.credits)
@@ -387,6 +407,11 @@ msgstr ""
 msgid "{0} credits"
 msgstr ""
 
+#. placeholder {0}: passDays(target.interval)
+#: src/features/billing/purchase-dialog.tsx
+msgid "{0} days"
+msgstr ""
+
 #. placeholder {0}: payment.trialDays
 #: src/features/billing/pending-payment.tsx
 msgid "{0} days free"
@@ -407,6 +432,11 @@ msgstr ""
 #. placeholder {1}: formatDate(nextExpiry.at)
 #: src/features/billing/plan-page.tsx
 msgid "{0} expire on {1}"
+msgstr ""
+
+#. placeholder {0}: creditCount(perMonth)
+#: src/features/billing/receipt.tsx
+msgid "{0} for each month of access"
 msgstr ""
 
 #. placeholder {0}: creditCount(credits)
@@ -601,6 +631,12 @@ msgstr "{0} comprovados, {1} parcialmente comprovados, {2} ainda sem provas. {3}
 msgid "{0} to fix"
 msgstr "{0} para corrigir"
 
+#. placeholder {0}: formatDate(payment.periodStart)
+#. placeholder {1}: formatDate(payment.periodEnd)
+#: src/features/billing/receipt.tsx
+msgid "{0} until {1}"
+msgstr ""
+
 #. placeholder {0}: metrics.signups.verified
 #: src/features/billing/admin/overview.tsx
 msgid "{0} verified their email"
@@ -726,6 +762,14 @@ msgstr "{days, plural, one {# dia no escritório, abaixo do seu limite} other {#
 #: src/features/career/offers.tsx
 msgid "{days, plural, one {# office day, your limit} other {# office days, your limit}}"
 msgstr "{days, plural, one {# dia no escritório, o seu limite} other {# dias no escritório, o seu limite}}"
+
+#: src/features/billing/purchase.ts
+msgid "{days} days, QRIS"
+msgstr ""
+
+#: src/features/billing/purchase.ts
+msgid "{days} more days, QRIS"
+msgstr ""
 
 #: src/features/documents/document-actions.tsx
 msgid "{done, plural, one {# document updated} other {# documents updated}}"
@@ -900,11 +944,23 @@ msgid "{name} sits in the sidebar"
 msgstr "{name} fica na barra lateral"
 
 #: src/features/billing/purchase-dialog.tsx
+msgid "{name} starts as soon as the payment is confirmed, usually within seconds."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{name} starts as soon as the payment is confirmed. The rest of your current plan waits and continues after it."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
 msgid "{name} starts now. You're charged the difference for the rest of this period with your saved payment method, then the new price at each renewal."
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "{name} starts today. You're charged its price, less the unused part of your current period, with your saved payment method; it then renews from today."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{name} starts when your current, higher plan ends."
 msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
@@ -964,6 +1020,11 @@ msgstr "{pendingOnPage, plural, one {# edição proposta nesta página · nada m
 msgid "{placeholders, plural, one {# place written in [brackets] will show on your page as it is.} other {# places written in [brackets] will show on your page as they are.}}"
 msgstr ""
 
+#. placeholder {0}: formatDate(payment.periodEnd)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} is active until {0}. It doesn't renew on its own."
+msgstr ""
+
 #: src/features/billing/payment-return.tsx
 msgid "{plan} is active, free for now."
 msgstr ""
@@ -980,6 +1041,12 @@ msgstr ""
 #. placeholder {0}: formatDate(payment.periodEnd)
 #: src/features/billing/payment-return.tsx
 msgid "{plan} is free until {0}. Then your card is charged {price} plus tax, unless you cancel before."
+msgstr ""
+
+#. placeholder {0}: formatDate(payment.periodStart)
+#. placeholder {1}: formatDate(payment.periodEnd)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} starts on {0}, after your current plan, and runs until {1}."
 msgstr ""
 
 #: src/features/billing/pending-payment.tsx
@@ -1093,6 +1160,11 @@ msgstr "{words, plural, one {Palavra #} other {Palavras #}}"
 msgid "{words}. {reason}"
 msgstr ""
 
+#. placeholder {0}: PASS_DAYS.month
+#: src/features/billing/purchase.ts
+msgid "/ {0} days"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ hour"
 msgstr "/ hora"
@@ -1127,6 +1199,10 @@ msgstr "1 coluna, embutida"
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "1 to {most} pictures with captions"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "1 year"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -1176,6 +1252,7 @@ msgid "3 of 5 keywords on your resume"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/billing/buy-plans.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 dias"
@@ -1550,6 +1627,10 @@ msgstr "Acesso"
 msgid "Access is sent to"
 msgstr "O acesso é concedido a"
 
+#: src/features/billing/receipt.tsx
+msgid "Access period"
+msgstr ""
+
 #: src/features/auth/pages/consent.tsx
 msgid "Access your account through the API, including reading, changing and deleting your documents and job applications."
 msgstr "Aceda à sua conta através do API, incluindo a leitura, alteração e eliminação dos seus documentos e formulários de emprego."
@@ -1665,6 +1746,15 @@ msgstr "Adicionar"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Add “{0}”"
 msgstr "Adicione “{0}”"
+
+#. placeholder {0}: PASS_DAYS.month
+#: src/features/billing/purchase.ts
+msgid "Add {0} days"
+msgstr ""
+
+#: src/features/billing/purchase.ts
+msgid "Add {name} for later"
+msgstr ""
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Add a block"
@@ -1818,6 +1908,10 @@ msgstr ""
 
 #: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Add a video"
+msgstr ""
+
+#: src/features/billing/purchase.ts
+msgid "Add a year"
 msgstr ""
 
 #: src/features/resume/editor/write/fields.tsx
@@ -2030,6 +2124,10 @@ msgstr "Adicione a terminação do domínio, como {domain}.com"
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "Add these records where you manage the domain, then check. Changes can take a few hours to reach everyone."
 msgstr "Adicione estes registos onde gere o domínio e depois verifique. As alterações podem demorar algumas horas a chegar a todos."
+
+#: src/features/billing/buy-plans.tsx
+msgid "Add time or upgrade"
+msgstr ""
 
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/workspace/debrief.tsx
@@ -2415,6 +2513,10 @@ msgid "Also end the subscription now (access stops at once)"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
+msgid "Also take back the pass and its remaining credits"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
 msgid "Also take back the remaining credits from this payment"
 msgstr ""
 
@@ -2436,6 +2538,12 @@ msgstr ""
 
 #: src/features/billing/admin/labels.ts
 msgid "Amount doesn't match the order"
+msgstr ""
+
+#. placeholder {0}: currency.toUpperCase()
+#. placeholder {1}: formatPrice(left, currency)
+#: src/features/billing/admin/customer.tsx
+msgid "Amount sent back ({0}), up to {1}"
 msgstr ""
 
 #: src/dialogs/resume/template/data.ts
@@ -2981,6 +3089,7 @@ msgid "Back to the portfolio"
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
+#: src/features/billing/receipt.tsx
 msgid "Back to your plan"
 msgstr ""
 
@@ -3322,6 +3431,11 @@ msgstr ""
 msgid "By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed at, and anyone can report one that's used without permission."
 msgstr ""
 
+#. placeholder {0}: qris.payments
+#: src/features/billing/admin/overview.tsx
+msgid "By QRIS · {0} paid"
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "Calendário"
@@ -3337,6 +3451,10 @@ msgstr ""
 #: src/features/homepage/faq.tsx
 msgid "Can I import a resume I already have?"
 msgstr "Posso importar um currículo que já possuo?"
+
+#: src/features/homepage/faq.tsx
+msgid "Can I pay with QRIS?"
+msgstr ""
 
 #: src/features/homepage/faq.tsx
 msgid "Can I use my own AI key?"
@@ -3788,6 +3906,10 @@ msgstr ""
 
 #: src/features/portfolio/images/image-field.tsx
 msgid "Choose pictures"
+msgstr ""
+
+#: src/features/homepage/pricing.tsx
+msgid "Choose Plus"
 msgstr ""
 
 #: src/features/homepage/plans.ts
@@ -4302,6 +4424,11 @@ msgstr "Continuar como convidado"
 #: src/features/billing/payment-return.tsx
 #: src/features/billing/pending-payment.tsx
 msgid "Continue checkout"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+#: src/features/billing/pending-payment.tsx
+msgid "Continue paying"
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -7154,6 +7281,10 @@ msgstr ""
 msgid "For"
 msgstr "Para"
 
+#: src/features/homepage/pricing.tsx
+msgid "for 30 days, or {yearly} a year"
+msgstr ""
+
 #. placeholder {0}: domain.target
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "For a root domain such as example.com, use A and AAAA records with {0}'s addresses instead of the CNAME."
@@ -7477,6 +7608,10 @@ msgstr ""
 #: src/features/settings/ai/web-access.tsx
 msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
 msgstr "Obtenha uma chave em <0>{0}</0>. É guardada de forma encriptada e utilizada apenas para os seus pedidos."
+
+#: src/features/billing/buy-plans.tsx
+msgid "Get a plan"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Get feedback"
@@ -8045,6 +8180,10 @@ msgstr ""
 msgid "If you've paid, this page updates by itself in a few seconds. The checkout stays open until {deadline}."
 msgstr ""
 
+#: src/features/billing/payment-return.tsx
+msgid "If you've paid, this page updates by itself in a few seconds. The QRIS page stays open until {deadline}."
+msgstr ""
+
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "If your DNS is on Cloudflare, set the CNAME record to DNS only (grey cloud)."
 msgstr ""
@@ -8150,6 +8289,10 @@ msgstr "Melhorando…"
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "In color"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "In Indonesia? <0>Pay with QRIS in Rupiah</0>"
 msgstr ""
 
 #: src/features/billing/credits.ts
@@ -8448,6 +8591,10 @@ msgstr "Italiano"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Italic"
 msgstr "Itálico"
+
+#: src/features/billing/receipt.tsx
+msgid "Item"
+msgstr ""
 
 #. placeholder {0}: providers[0]?.label ?? ""
 #: src/features/career/schedule-sheet.tsx
@@ -9279,6 +9426,10 @@ msgstr "A carregar versão guardada…"
 msgid "Loading stylesheet editor…"
 msgstr "A carregar o editor de estilos…"
 
+#: src/features/billing/receipt.tsx
+msgid "Loading the receipt…"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "A carregar espaço de trabalho…"
@@ -10019,7 +10170,7 @@ msgid "Nepali"
 msgstr "Nepalês"
 
 #: src/features/billing/admin/overview.tsx
-msgid "Net, before tax and Dodo Payments' fees"
+msgid "Net, before tax and payment fees"
 msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
@@ -10114,7 +10265,7 @@ msgid "New subscription"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
-msgid "Newest first. The menu at the end of a row checks with Dodo Payments or refunds."
+msgid "Newest first. The menu at the end of a row checks with the provider (Dodo Payments or Sumopod) or refunds."
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -10420,6 +10571,10 @@ msgstr ""
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "No postings found. Try different keywords."
 msgstr "Nenhuma vaga de emprego encontrada. Experimente palavras-chave diferentes."
+
+#: src/features/billing/buy-plans.tsx
+msgid "No QRIS app, or want it to renew on its own? <0>Pay by card in US dollars</0>"
+msgstr ""
 
 #: src/features/portfolio/admin/review-page.tsx
 msgid "No reports about this portfolio."
@@ -10961,6 +11116,10 @@ msgstr ""
 msgid "One or two sentences under your name. {0}/{1}"
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "One payment by QRIS. It doesn't renew: we email you 3 days before it ends."
+msgstr ""
+
 #: src/features/portfolio/works/work-editor.tsx
 msgid "One result from this work's Metrics blocks, shown as a chip on its card."
 msgstr ""
@@ -11276,6 +11435,10 @@ msgstr ""
 msgid "Order link"
 msgstr ""
 
+#: src/features/billing/receipt.tsx
+msgid "Order number"
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Organization"
 msgstr "Organização"
@@ -11402,8 +11565,20 @@ msgstr ""
 msgid "Paid"
 msgstr ""
 
+#: src/features/billing/receipt.tsx
+msgid "Paid by"
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 msgid "Paid in total"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Paid on"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Paid once; doesn't renew on its own"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -11412,6 +11587,11 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Paid through"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Paid with QRIS; active until {0}. It doesn't renew on its own."
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
@@ -11589,7 +11769,15 @@ msgid "Paused schedules keep their settings."
 msgstr "Os agendamentos em pausa mantêm as suas definições."
 
 #: src/features/billing/purchase-dialog.tsx
+msgid "Pay {price} with QRIS"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
 msgid "Pay on the secure checkout by Dodo Payments with a card, Apple Pay or Google Pay. {name} starts as soon as the payment goes through."
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Pay once with QRIS from any bank or e-wallet app. A plan lasts 30 days or a year and doesn't renew on its own: pay again whenever you like, and the time is added after your current plan."
 msgstr ""
 
 #: src/features/homepage/pricing.tsx
@@ -11614,12 +11802,20 @@ msgstr ""
 msgid "Payment failed"
 msgstr ""
 
+#: src/features/billing/receipt.tsx
+msgid "Payment method"
+msgstr ""
+
 #: src/features/billing/admin/labels.ts
 msgid "Payment provider API kept failing"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Payment provider events and admin actions, newest first."
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Payment receipt"
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
@@ -12210,6 +12406,15 @@ msgstr ""
 msgid "Prices are before tax: the checkout adds the tax that applies where you live."
 msgstr ""
 
+#: src/features/billing/buy-plans.tsx
+#: src/features/billing/purchase-dialog.tsx
+msgid "Prices are final: no tax is added."
+msgstr ""
+
+#: src/features/homepage/pricing.tsx
+msgid "Prices in Rupiah, paid with QRIS from any bank or e-wallet app. They are final: no tax is added. A plan runs for 30 days or a year and doesn't renew on its own: pay again whenever you like and the time is added after your current plan. Prefer a card that renews by itself? Pay in US dollars by card instead, with 7 free days on a first Plus subscription. When a plan ends, your account returns to Free and your documents stay. Your own AI key works on every plan."
+msgstr ""
+
 #: src/features/homepage/pricing.tsx
 msgid "Prices in US dollars, or in Rupiah for visitors from Indonesia, before tax: the checkout adds the tax for where you live. A first Plus subscription starts with 7 free days. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan."
 msgstr ""
@@ -12234,6 +12439,10 @@ msgstr "Imprimir"
 #: src/features/ats-checker/messages.ts
 msgid "Print or export the form to a flat PDF before sending it."
 msgstr "Imprima ou exporte o formulário para um PDF plano antes de o enviar."
+
+#: src/features/billing/receipt.tsx
+msgid "Print or save as PDF"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Privacy"
@@ -12490,6 +12699,27 @@ msgstr "Código QR para {url}"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "QR code for two-step verification"
 msgstr "Código QR para a verificação em duas etapas"
+
+#: src/features/billing/admin/customer.tsx
+msgid "QRIS passes, time given by an admin or a promotion, and 30-day passes from before, newest first."
+msgstr ""
+
+#: src/features/billing/payment-history.tsx
+msgid "QRIS plans come with a receipt from Rezumi; card subscriptions with an invoice from Dodo Payments."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "QRIS plans running now"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "QRIS refund recorded by an admin"
+msgstr ""
+
+#. placeholder {0}: BILLING_SELLER.qrisProcessor
+#: src/features/billing/receipt.tsx
+msgid "QRIS, processed by {0}"
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Question {index}"
@@ -12777,6 +13007,11 @@ msgstr "Razão"
 msgid "Recalled"
 msgstr "De memória"
 
+#: src/features/billing/receipt-link.tsx
+#: src/features/billing/receipt.tsx
+msgid "Receipt"
+msgstr ""
+
 #: src/features/billing/admin/labels.ts
 msgid "Receipt email not delivered"
 msgstr ""
@@ -12799,6 +13034,15 @@ msgstr "Destinatário"
 
 #: src/features/homepage/pricing.tsx
 msgid "Recommended"
+msgstr ""
+
+#. placeholder {0}: formatPrice(refundAmount, currency)
+#: src/features/billing/admin/customer.tsx
+msgid "Record {0} refunded"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Record a QRIS refund"
 msgstr ""
 
 #: src/features/career/workspace/practise.tsx
@@ -12930,6 +13174,7 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/purchase.ts
+#: src/features/billing/receipt.tsx
 msgid "Refunded"
 msgstr ""
 
@@ -13618,6 +13863,11 @@ msgstr "Rezumi - Ir para a página inicial"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
+#. placeholder {0}: getPlanName(payment.planId)
+#: src/features/billing/receipt.tsx
+msgid "Rezumi {0}, {days} days of access"
+msgstr ""
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost}"
 msgstr ""
@@ -13633,6 +13883,7 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/plan-page.tsx
+#: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -13998,6 +14249,10 @@ msgstr "A gravação está a demorar mais do que o esperado. As suas alteraçõe
 msgid "Saving…"
 msgstr "Guardar…"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Scan the QR code on the next page with any bank or e-wallet app (GoPay, OVO, DANA, ShopeePay, mobile banking). The page stays open for an hour."
+msgstr ""
+
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Scan the QR code with your authenticator app, or copy the secret and paste it into the app."
 msgstr "Digitalize o código QR com a sua aplicação de autenticação ou copie o segredo e cole-o na aplicação."
@@ -14307,6 +14562,10 @@ msgstr "Documentos selecionados"
 
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 msgid "Selection"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Seller"
 msgstr ""
 
 #: src/features/resume/stylesheet/editor.tsx
@@ -15163,6 +15422,10 @@ msgid "Start free trial"
 msgstr ""
 
 #: src/features/homepage/pricing.tsx
+msgid "Start free. When you need more versions, formats or AI help, pay with QRIS for 30 days or a year at a time. Nothing renews on its own."
+msgstr ""
+
+#: src/features/homepage/pricing.tsx
 msgid "Start free. When you need more versions, formats or AI help, subscribe monthly or yearly, and cancel any time."
 msgstr ""
 
@@ -15253,6 +15516,7 @@ msgstr "Estatísticas"
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
+#: src/features/billing/receipt.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Status"
@@ -15487,6 +15751,15 @@ msgstr "Resumos das suas candidaturas em curso"
 #: src/libs/resume/section.tsx
 msgid "Summary"
 msgstr "Resumo"
+
+#. placeholder {0}: getPaymentStatusLabel(result.status)
+#: src/features/billing/admin/customer.tsx
+msgid "Sumopod can't be asked about a payment; it reports by webhook. Here: {0}. If Sumopod shows it paid, resend its webhook from the Webhooks tab there."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Sumopod can't send refunds. Send the money back yourself first (bank transfer or e-wallet), then record it here. A full refund takes the pass back (later passes move up) and its remaining credits."
+msgstr ""
 
 #: src/features/career/shared.tsx
 #: src/features/career/workspace/debrief.tsx
@@ -15971,6 +16244,11 @@ msgstr "Esse fornecedor de início de sessão já não está disponível neste s
 msgid "That's a video, so it was added as a Video block."
 msgstr ""
 
+#. placeholder {0}: passDays(target.interval)
+#: src/features/billing/purchase-dialog.tsx
+msgid "The {0} days are added after your current {name}, so no day is lost."
+msgstr ""
+
 #: src/features/resume/share/download-tab.tsx
 msgid "The {label} file couldn't be generated. Try again, or download PDF instead."
 msgstr "O ficheiro {label} não pôde ser gerado. Tente novamente ou descarregue o PDF."
@@ -16283,6 +16561,10 @@ msgstr ""
 msgid "The preview couldn't be updated, so it shows an earlier version."
 msgstr ""
 
+#: src/features/billing/receipt.tsx
+msgid "The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax invoice."
+msgstr ""
+
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "The problem"
 msgstr ""
@@ -16480,6 +16762,10 @@ msgstr "Não há nenhum link para um perfil, portefólio ou repositório."
 #: src/features/ats-checker/messages.ts
 msgid "There is no summary paragraph."
 msgstr "Não há nenhum parágrafo de resumo."
+
+#: src/features/billing/receipt.tsx
+msgid "There's no receipt here: this payment isn't a paid QRIS plan."
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "These are the answers saved when you applied."
@@ -16825,6 +17111,10 @@ msgstr ""
 msgid "This portfolio was taken down"
 msgstr ""
 
+#: src/features/billing/receipt.tsx
+msgid "This receipt isn't available. It may belong to another account."
+msgstr ""
+
 #: src/features/portfolio/errors.ts
 msgid "This resume can't be read. Choose another resume."
 msgstr ""
@@ -16969,10 +17259,6 @@ msgstr "Hora · {0}"
 #: src/features/career/schedule-sheet.tsx
 msgid "Time · {timeZone}"
 msgstr "Hora · {timeZone}"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Time given by an admin or a promotion, and 30-day passes from before, newest first."
-msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Time zone"
@@ -17127,6 +17413,10 @@ msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Top 3"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Total paid"
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -17626,6 +17916,10 @@ msgstr ""
 
 #: src/features/billing/purchase.ts
 msgid "Upgrade to {name}"
+msgstr ""
+
+#: src/features/billing/purchase.ts
+msgid "Upgrade, {days} days, QRIS"
 msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -18233,6 +18527,10 @@ msgstr "Enviámos um novo link de verificação para {0}."
 msgid "We sent a new verification link to {email}."
 msgstr ""
 
+#: src/features/billing/payment-return.tsx
+msgid "We've emailed you the receipt. We'll remind you 3 days before the plan ends."
+msgstr ""
+
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
@@ -18615,6 +18913,10 @@ msgid "With the country code. Numbers starting with 0 are read as Indonesian (+6
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
+msgid "Within 7 days of paying you can ask for a full refund if you used no more than 10 Rezumi AI credits from it; it is sent back to your bank account or e-wallet. Double payments and technical problems are always sorted out."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
 msgid "Within 7 days of your first charge you can ask for a full refund if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
 msgstr ""
 
@@ -18817,6 +19119,10 @@ msgid "Yearly saves up to {saving}%"
 msgstr ""
 
 #: src/features/homepage/faq.tsx
+msgid "Yes, from Indonesia: pay in Rupiah with QRIS from any bank or e-wallet app, at a final price with no tax added. A QRIS plan runs for {passDays} days or a year and doesn't renew on its own. Pay again whenever you like and the time is added after your current plan, so no day is lost; moving up to Pro AI starts it at once and the rest of Plus continues after it. You get an email three days before it ends."
+msgstr ""
+
+#: src/features/homepage/faq.tsx
 msgid "Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, OpenRouter or another provider and you pay that provider directly; it doesn’t use Rezumi credits. Without a key or credits, nothing is sent to an AI service."
 msgstr ""
 
@@ -18970,6 +19276,10 @@ msgstr ""
 
 #: src/features/billing/pending-payment.tsx
 msgid "Your {plan} checkout isn't finished"
+msgstr ""
+
+#: src/features/billing/pending-payment.tsx
+msgid "Your {plan} QRIS payment isn't finished"
 msgstr ""
 
 #: src/features/portfolio/themes.ts
