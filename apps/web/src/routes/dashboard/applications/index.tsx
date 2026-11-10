@@ -43,13 +43,12 @@ type View = (typeof VIEWS)[number];
 const searchSchema = z.object({
 	q: z.string().default("").catch(""),
 	view: z.enum(VIEWS).default("list").catch("list"),
-	closed: z.boolean().default(false).catch(false),
 	// Deep links: open Add, or one application.
 	create: z.boolean().default(false).catch(false),
 	applicationId: z.string().optional().catch(undefined),
 });
 type Search = z.output<typeof searchSchema>;
-const defaultSearch: Search = { q: "", view: "list", closed: false, create: false };
+const defaultSearch: Search = { q: "", view: "list", create: false };
 
 export const Route = createFileRoute("/dashboard/applications/")({
 	component: RouteComponent,
@@ -73,7 +72,7 @@ function matches(application: ApplicationSummary, query: string) {
 }
 
 function RouteComponent() {
-	const { q, view, closed, create, applicationId } = Route.useSearch();
+	const { q, view, create, applicationId } = Route.useSearch();
 	const navigate = useNavigate({ from: Route.fullPath });
 	const phone = useBreakpoint() === "mobile";
 	// Typing filters at once; the URL only seeds the search.
@@ -275,7 +274,7 @@ function RouteComponent() {
 							)}
 						</Segment>
 
-						<div className="relative max-w-72 min-w-40 flex-1">
+						<div className="relative ms-auto max-w-72 min-w-40 flex-1 max-sm:ms-0 max-sm:max-w-none max-sm:basis-full">
 							<Icon
 								name="magnifying-glass"
 								size={18}
@@ -292,18 +291,6 @@ function RouteComponent() {
 								onChange={(event) => setQuery(event.target.value)}
 							/>
 						</div>
-
-						{shown !== "insights" && (
-							<Button
-								variant="secondary"
-								aria-pressed={closed}
-								onPress={() => setSearch({ closed: !closed })}
-								className={cn(closed && "bg-default")}
-							>
-								<Icon name={closed ? "check-square" : "square"} size={18} />
-								<Trans>Show closed</Trans>
-							</Button>
-						)}
 					</>
 				)}
 			</PageHeader>
@@ -358,12 +345,7 @@ function RouteComponent() {
 						>
 							{shown === "list" && (
 								<div className={cn(split && "grid grid-cols-[minmax(0,1fr)_420px] items-start gap-6")}>
-									<ApplicationList
-										applications={filtered}
-										showClosed={closed}
-										selectedId={selectedId}
-										onOpen={openApplication}
-									/>
+									<ApplicationList applications={filtered} selectedId={selectedId} onOpen={openApplication} />
 									{split &&
 										(selected ? (
 											<ApplicationDetailPane
@@ -378,13 +360,13 @@ function RouteComponent() {
 							)}
 							{shown === "board" && (
 								<div className="h-[calc(100svh-230px)] min-h-96">
-									<ApplicationBoard applications={filtered} showClosed={closed} onOpen={openApplication} />
+									<ApplicationBoard applications={filtered} onOpen={openApplication} />
 								</div>
 							)}
 							{shown === "insights" && <ApplicationInsights applications={applications ?? []} />}
 							{shown === "calendar" && (
 								<ApplicationCalendar
-									applications={filtered.filter((application) => closed || application.status !== "closed")}
+									applications={filtered}
 									allApplications={applications ?? []}
 									onOpen={openApplication}
 								/>
@@ -405,7 +387,7 @@ function RouteComponent() {
 				open={exporting}
 				onOpenChange={setExporting}
 				applications={fullApplications ?? []}
-				filtered={filteredFullApplications.filter((application) => closed || application.status !== "closed")}
+				filtered={filteredFullApplications}
 			/>
 			<ApplicationDetailSheet
 				application={split ? null : selected}
