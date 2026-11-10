@@ -31,6 +31,7 @@ import {
 	getPaymentReasonLabel,
 	getPaymentStatusColor,
 	getPaymentStatusLabel,
+	isPaymentFailed,
 	usePlanDates,
 } from "../purchase";
 import { describeAudit, describeEvent, formatMoney, getSubscriptionStatusLabel } from "./labels";
@@ -123,11 +124,11 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 			<ReasonDialog
 				{...props("refund")}
 				danger
-				title={<Trans>Refund through Polar</Trans>}
+				title={<Trans>Refund through Dodo Payments</Trans>}
 				description={
 					payment && (
 						<>
-							{payment.orderId} · {formatPrice(payment.amount, currency)} · {getPaymentReasonLabel(payment)}
+							{payment.providerPaymentId} · {formatPrice(payment.amount, currency)} · {getPaymentReasonLabel(payment)}
 						</>
 					)
 				}
@@ -145,7 +146,7 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 					done(
 						result.status === "succeeded"
 							? t`Refunded ${formatPrice(result.amount, currency)}.`
-							: t`Polar hasn't confirmed it yet. Check the status in a moment.`,
+							: t`Dodo Payments hasn't confirmed it yet. Check the status in a moment.`,
 					);
 				}}
 			>
@@ -153,8 +154,8 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 					<div className="grid gap-3">
 						<p className="rounded-xl bg-surface-secondary px-3 py-2 text-sm">
 							<Trans>
-								Polar refunds the amount before tax and gives the tax back itself; its fees aren't returned. A full
-								refund takes back the remaining credits. A refund alone doesn't end the subscription.
+								Enter the amount before tax: Dodo Payments gives the tax on it back itself, and its fees aren't
+								returned. A full refund takes back the remaining credits. A refund alone doesn't end the subscription.
 							</Trans>
 						</p>
 						<NumberInput
@@ -260,7 +261,7 @@ type PaymentActionsProps = {
 	onDone: () => void;
 };
 
-/** One payment's menu: ask Polar again, or refund it. */
+/** One payment's menu: ask Dodo Payments again, or refund it. */
 function PaymentActions({ payment, onDialog, onDone }: PaymentActionsProps) {
 	const [busy, setBusy] = useState(false);
 	const refundable = payment.refundable && (payment.status === "paid" || payment.status === "partially_refunded");
@@ -272,8 +273,8 @@ function PaymentActions({ payment, onDialog, onDone }: PaymentActionsProps) {
 			toast.add({
 				type: "success",
 				description: result.found
-					? t`Checked with Polar. Here: ${getPaymentStatusLabel(result.status)}.`
-					: t`Polar has nothing for this payment yet.`,
+					? t`Checked with Dodo Payments. Here: ${getPaymentStatusLabel(result.status)}.`
+					: t`Dodo Payments has nothing for this payment yet.`,
 			});
 			onDone();
 		} catch (error) {
@@ -291,7 +292,7 @@ function PaymentActions({ payment, onDialog, onDone }: PaymentActionsProps) {
 				isIconOnly
 				size="sm"
 				variant="ghost"
-				aria-label={t`Actions for ${payment.orderId ?? payment.id}`}
+				aria-label={t`Actions for ${payment.providerPaymentId ?? payment.id}`}
 				isPending={busy}
 			>
 				{busy ? <Spinner size="sm" color="current" aria-hidden /> : <Icon name="dots-three" size={18} />}
@@ -310,10 +311,10 @@ function PaymentActions({ payment, onDialog, onDone }: PaymentActionsProps) {
 							<Trans>Check status</Trans>
 						</Label>
 					</Dropdown.Item>
-					<Dropdown.Item id="refund" textValue={t`Refund through Polar`} variant="danger">
+					<Dropdown.Item id="refund" textValue={t`Refund through Dodo Payments`} variant="danger">
 						<Icon name="arrow-counter-clockwise" size={16} />
 						<Label>
-							<Trans>Refund through Polar</Trans>
+							<Trans>Refund through Dodo Payments</Trans>
 						</Label>
 					</Dropdown.Item>
 				</Dropdown.Menu>
@@ -362,7 +363,11 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 		if (payment.refundedAmount)
 			totalRefunded[payment.currency] = (totalRefunded[payment.currency] ?? 0) + payment.refundedAmount;
 	const refunds = data.payments.flatMap((payment) =>
-		payment.refunds.map((refund) => ({ ...refund, orderId: payment.orderId, currency: payment.currency })),
+		payment.refunds.map((refund) => ({
+			...refund,
+			providerPaymentId: payment.providerPaymentId,
+			currency: payment.currency,
+		})),
 	);
 	const history = [
 		...data.events.map((event) => ({
@@ -384,15 +389,15 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 	const paymentColumns: DataGridColumn<AdminPayment>[] = [
 		{
 			id: "order",
-			header: t`Order`,
+			header: t`Payment`,
 			isRowHeader: true,
 			cell: (payment) => (
 				<span className="grid gap-0.5 whitespace-nowrap">
 					<span
 						className="font-mono text-xs whitespace-nowrap"
-						title={payment.orderId ?? payment.checkoutId ?? payment.id}
+						title={payment.providerPaymentId ?? payment.checkoutId ?? payment.id}
 					>
-						{payment.orderId ? `…${payment.orderId.slice(-8)}` : t`checkout only`}
+						{payment.providerPaymentId ? `…${payment.providerPaymentId.slice(-8)}` : t`checkout only`}
 					</span>
 					<span className="text-xs text-muted">{formatShort(payment.createdAt)}</span>
 				</span>
@@ -522,7 +527,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 						</Chip>
 					</span>
 				}
-				description={<Trans>Newest first. The menu at the end of a row checks with Polar or refunds.</Trans>}
+				description={<Trans>Newest first. The menu at the end of a row checks with Dodo Payments or refunds.</Trans>}
 			>
 				<DataGrid
 					aria-label={t`Payments`}
@@ -548,10 +553,12 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 						columns={[
 							{
 								id: "order",
-								header: t`Order`,
+								header: t`Payment`,
 								isRowHeader: true,
 								cell: (refund) => (
-									<span className="font-mono text-xs whitespace-nowrap">…{(refund.orderId ?? "").slice(-8)}</span>
+									<span className="font-mono text-xs whitespace-nowrap">
+										…{(refund.providerPaymentId ?? "").slice(-8)}
+									</span>
 								),
 							},
 							{
@@ -564,7 +571,13 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 								id: "how",
 								header: t`How`,
 								cell: (refund) =>
-									refund.method === "manual" ? t`Manual transfer` : refund.method === "midtrans" ? "Midtrans" : "Polar",
+									refund.method === "manual"
+										? t`Manual transfer`
+										: refund.method === "midtrans"
+											? "Midtrans"
+											: refund.method === "polar"
+												? "Polar"
+												: "Dodo Payments",
 							},
 							{
 								id: "status",
@@ -581,7 +594,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 											{refund.status === "succeeded"
 												? t`Done`
 												: refund.status === "requesting"
-													? t`Waiting for Polar`
+													? t`Waiting for Dodo Payments`
 													: t`Refused (${refund.failureReason ?? "—"})`}
 										</Chip.Label>
 									</Chip>
@@ -640,7 +653,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 												? subscription.cancelAtPeriodEnd
 													? "warning"
 													: "success"
-												: subscription.status === "past_due"
+												: isPaymentFailed(subscription)
 													? "danger"
 													: "default"
 										}
@@ -669,8 +682,8 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 								),
 							},
 							{
-								id: "polar",
-								header: t`Polar id`,
+								id: "provider",
+								header: t`Dodo id`,
 								cell: (subscription) => (
 									<span className="font-mono text-xs" title={subscription.providerSubscriptionId}>
 										…{subscription.providerSubscriptionId.slice(-8)}
@@ -743,7 +756,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 				<AdminCard
 					icon="clock-counter-clockwise"
 					title={<Trans>History</Trans>}
-					description={<Trans>Polar events and admin actions, newest first.</Trans>}
+					description={<Trans>Payment provider events and admin actions, newest first.</Trans>}
 				>
 					{history.length === 0 ? (
 						<p className="py-6 text-center text-sm text-muted">

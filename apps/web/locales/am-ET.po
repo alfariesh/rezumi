@@ -903,6 +903,10 @@ msgstr "{name} በጎን አሞሌው ላይ ተቀምጧል"
 msgid "{name} starts now. You're charged the difference for the rest of this period with your saved payment method, then the new price at each renewal."
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "{name} starts today. You're charged its price, less the unused part of your current period, with your saved payment method; it then renews from today."
+msgstr ""
+
 #: src/features/resume/editor/design/template-group.tsx
 msgid "{name} style"
 msgstr ""
@@ -1609,7 +1613,7 @@ msgstr "እርምጃ"
 msgid "Actions"
 msgstr "ድርጊቶች"
 
-#. placeholder {0}: payment.orderId ?? payment.id
+#. placeholder {0}: payment.providerPaymentId ?? payment.id
 #: src/features/billing/admin/customer.tsx
 msgid "Actions for {0}"
 msgstr ""
@@ -1675,7 +1679,7 @@ msgid "Add a button"
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "Add a card, Apple Pay or Google Pay on Polar's secure checkout. Nothing is charged today: the first charge comes after {trialDays} days, and cancelling before then costs nothing."
+msgid "Add a card, Apple Pay or Google Pay on the secure checkout by Dodo Payments. Nothing is charged today: the first charge comes after {trialDays} days, and cancelling before then costs nothing."
 msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
@@ -3405,6 +3409,10 @@ msgstr ""
 msgid "Card"
 msgstr ""
 
+#: src/features/billing/admin/labels.ts
+msgid "Card dispute"
+msgstr ""
+
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Cards"
 msgstr ""
@@ -3646,7 +3654,7 @@ msgstr "የእርስዎ ሲቪ በATS ሊነበብ መቻሉን ያረጋግጡ"
 
 #. placeholder {0}: getPaymentStatusLabel(result.status)
 #: src/features/billing/admin/customer.tsx
-msgid "Checked with Polar. Here: {0}."
+msgid "Checked with Dodo Payments. Here: {0}."
 msgstr ""
 
 #. placeholder {0}: file.name
@@ -3665,10 +3673,6 @@ msgstr "አቀማመጥ እና ይዘት በመፈተሽ ላይ"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Checking the exported PDF…"
 msgstr "ወደ ውጭ የተላከውን PDF በመፈተሽ ላይ…"
-
-#: src/features/billing/payment-return.tsx
-msgid "Checking with Polar…"
-msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "Checking your payment…"
@@ -5897,6 +5901,26 @@ msgstr ""
 msgid "Documents you move here stay for 30 days."
 msgstr "ወደዚህ የሚያዛውሯቸው ሰነዶች ለ30 ቀናት ይቆያሉ።"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Dodo id"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "Dodo Payments emails you a reminder a few days before the first charge."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "Dodo Payments emails you the receipt, and your invoices are in billing."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Dodo Payments has nothing for this payment yet."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Dodo Payments hasn't confirmed it yet. Check the status in a moment."
+msgstr ""
+
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Dollar ($1.2M)"
 msgstr ""
@@ -6408,7 +6432,7 @@ msgid "Email the recruiter"
 msgstr "ለቀጣሪው ኢሜል ያድርጉ"
 
 #: src/features/billing/admin/overview.tsx
-msgid "Email, RZ-… or ID"
+msgid "Email, pay_… or ID"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -6462,10 +6486,6 @@ msgstr "መጨረሻ"
 #: src/features/billing/admin/labels.ts
 #: src/features/billing/admin/overview.tsx
 msgid "Ended"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Ended, unpaid"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -6553,6 +6573,10 @@ msgstr "ወደ መለያዎ ለመግባት ከተቀመጡት የመከላከ�
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Enter the 6-digit code."
 msgstr "ባለ 6 አሃዝ ኮዱን ያስገቡ።"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Enter the amount before tax: Dodo Payments gives the tax on it back itself, and its fees aren't returned. A full refund takes back the remaining credits. A refund alone doesn't end the subscription."
+msgstr ""
 
 #: src/features/resume/share/web-page-text.ts
 msgid "Enter the password the resume owner shared with you."
@@ -8288,7 +8312,7 @@ msgid "Invoice"
 msgstr ""
 
 #: src/features/billing/payment-history.tsx
-msgid "Invoices come from Polar, which sells the subscription and handles tax."
+msgid "Invoices come from Dodo Payments, which sells the subscription and handles tax."
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -9995,7 +10019,7 @@ msgid "Nepali"
 msgstr "ኔፓሊኛ"
 
 #: src/features/billing/admin/overview.tsx
-msgid "Net, before tax and Polar's fees"
+msgid "Net, before tax and Dodo Payments' fees"
 msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
@@ -10090,7 +10114,7 @@ msgid "New subscription"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
-msgid "Newest first. The menu at the end of a row checks with Polar or refunds."
+msgid "Newest first. The menu at the end of a row checks with Dodo Payments or refunds."
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -11244,11 +11268,6 @@ msgstr "ወይም የሪዙሜ PDF ይስቀሉ"
 msgid "Orange"
 msgstr "ብርቱካናማ"
 
-#: src/features/billing/admin/customer.tsx
-#: src/features/billing/admin/overview.tsx
-msgid "Order"
-msgstr ""
-
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Order button"
 msgstr ""
@@ -11383,10 +11402,6 @@ msgstr ""
 msgid "Paid"
 msgstr ""
 
-#: src/features/billing/admin/labels.ts
-msgid "Paid at Polar, not active here"
-msgstr ""
-
 #: src/features/billing/admin/customer.tsx
 msgid "Paid in total"
 msgstr ""
@@ -11397,6 +11412,10 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Paid through"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Paid, not active here"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -11570,7 +11589,7 @@ msgid "Paused schedules keep their settings."
 msgstr "የቆሙ መርሐ ግብሮች ቅንብሮቻቸውን ይይዛሉ።"
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "Pay on Polar's secure checkout with a card, Apple Pay or Google Pay. {name} starts as soon as the payment goes through."
+msgid "Pay on the secure checkout by Dodo Payments with a card, Apple Pay or Google Pay. {name} starts as soon as the payment goes through."
 msgstr ""
 
 #: src/features/homepage/pricing.tsx
@@ -11581,6 +11600,8 @@ msgstr ""
 msgid "Pay period"
 msgstr "የክፍያ ጊዜ"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-return.tsx
 msgid "Payment"
 msgstr ""
@@ -11591,6 +11612,14 @@ msgstr ""
 
 #: src/features/billing/admin/labels.ts
 msgid "Payment failed"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Payment provider API kept failing"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Payment provider events and admin actions, newest first."
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
@@ -11886,66 +11915,6 @@ msgstr ""
 msgid "PNG or WebP with a clear background. By uploading it, you confirm you may show it."
 msgstr ""
 
-#: src/features/billing/admin/labels.ts
-msgid "Polar API kept failing"
-msgstr ""
-
-#: src/features/billing/payment-return.tsx
-msgid "Polar emails you a reminder a few days before the first charge."
-msgstr ""
-
-#: src/features/billing/payment-return.tsx
-msgid "Polar emails you the receipt, and your invoices are in billing."
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Polar event needs a look: {type}"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Polar events and admin actions, newest first."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Polar has nothing for this payment yet."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Polar hasn't confirmed it yet. Check the status in a moment."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Polar id"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Polar refunds the amount before tax and gives the tax back itself; its fees aren't returned. A full refund takes back the remaining credits. A refund alone doesn't end the subscription."
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Polar: {type}"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Polar: {type} (already handled)"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Polar: {type}, not for this payment"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Polar: older {type}, ignored"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Polar: order paid"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Polar: refund"
-msgstr ""
-
 #: src/libs/locale.ts
 msgid "Polish"
 msgstr "ፖላንድኛ"
@@ -11979,6 +11948,7 @@ msgstr ""
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Portfolio reports"
 msgstr ""
 
@@ -12235,11 +12205,8 @@ msgstr ""
 msgid "Price (optional)"
 msgstr ""
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "Prices are before tax: Polar adds the tax that applies where you live."
-msgstr ""
-
 #: src/features/billing/buy-plans.tsx
+#: src/features/billing/purchase-dialog.tsx
 msgid "Prices are before tax: the checkout adds the tax that applies where you live."
 msgstr ""
 
@@ -12390,6 +12357,38 @@ msgstr "አቅራቢ"
 
 #: src/features/billing/admin/overview.tsx
 msgid "Provider cost"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Provider event needs a look: {type}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Provider: {type}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Provider: {type} (already handled)"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Provider: {type}, not for this payment"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Provider: card dispute"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Provider: older {type}, ignored"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Provider: payment received"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Provider: refund"
 msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
@@ -12905,10 +12904,6 @@ msgid "Refund {0}"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
-msgid "Refund asked of Polar"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
 msgid "Refund not confirmed"
 msgstr ""
 
@@ -12922,11 +12917,15 @@ msgid "Refund recorded"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
-msgid "Refund refused by Polar"
+msgid "Refund refused"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Refund requested"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
-msgid "Refund through Polar"
+msgid "Refund through Dodo Payments"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -12942,10 +12941,6 @@ msgstr ""
 #. placeholder {0}: formatPrice(result.amount, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Refunded {0}."
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Refunded by Polar to prevent a dispute"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -15268,7 +15263,7 @@ msgid "status check"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
-msgid "Status checked with Polar"
+msgid "Status checked with the provider"
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -17625,6 +17620,10 @@ msgstr "የየታሪክዎን በመዘመን ላይ…"
 msgid "Upgrade now"
 msgstr ""
 
+#: src/features/billing/admin/labels.ts
+msgid "Upgrade requested"
+msgstr ""
+
 #: src/features/billing/purchase.ts
 msgid "Upgrade to {name}"
 msgstr ""
@@ -18152,13 +18151,13 @@ msgstr "በጎ ፈቃደኝነት"
 msgid "Volunteering"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "Waiting for Dodo Payments"
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/purchase.ts
 msgid "Waiting for payment"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Waiting for Polar"
 msgstr ""
 
 #: src/features/career/workspace/messages.tsx
@@ -18608,7 +18607,7 @@ msgid "Will my resume get past applicant tracking systems?"
 msgstr "የሥራ ዘመኔ የአመልካች መከታተያ ሥርዓቶችን ያልፋል?"
 
 #: src/features/homepage/faq.tsx
-msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live."
+msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Dodo Payments, our merchant of record. Dodo Payments handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live."
 msgstr ""
 
 #: src/features/portfolio/editor/contact-form.tsx
@@ -18802,7 +18801,7 @@ msgid "Yearly"
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "Yearly billing starts now. You're charged the difference for the rest of this period with your saved payment method, then the yearly price at each renewal."
+msgid "Yearly billing starts today. You're charged the yearly price, less the unused part of your current month, with your saved payment method; it then renews every year from today."
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -18822,7 +18821,7 @@ msgid "Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, Open
 msgstr ""
 
 #: src/features/homepage/faq.tsx
-msgid "Yes: a first Plus subscription starts with {plusTrialDays} free days. Polar takes a card at checkout but charges nothing until the trial ends, and emails you a reminder a few days before. Cancel during the trial and you pay nothing."
+msgid "Yes: a first Plus subscription starts with {plusTrialDays} free days. Dodo Payments takes a card at checkout but charges nothing until the trial ends, and emails you a reminder a few days before. Cancel during the trial and you pay nothing."
 msgstr ""
 
 #: src/features/homepage/faq.tsx
@@ -19157,11 +19156,11 @@ msgid "Your fonts are ready. Choose them under Font family."
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "Your free trial ends now. Your saved payment method is charged today for this month of {currentName}, then the difference for {name}; after that, {name}'s price at each renewal."
+msgid "Your free trial ends now. Your saved payment method is charged {name}'s full price today, and it renews at that price from today."
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "Your free trial ends now. Your saved payment method is charged today for this month, then the difference for yearly billing; after that, the yearly price at each renewal."
+msgid "Your free trial ends now. Your saved payment method is charged the yearly price today, and it renews every year from today."
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
@@ -19186,10 +19185,6 @@ msgstr ""
 
 #: src/features/portfolio/themes.ts
 msgid "Your headline types itself, then up to two more roles."
-msgstr ""
-
-#: src/features/billing/invoice-button.tsx
-msgid "Your invoice is still being made. Try again in a moment."
 msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
@@ -19336,6 +19331,10 @@ msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Your page shows this map as a picture, in light and dark mode. © OpenStreetMap contributors."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your payment is being processed. Your new plan shows here within a minute or two."
 msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx

@@ -2,7 +2,7 @@
 
 Dokumen acuan teknis untuk semua phase. Aturan bisnis (harga, isi paket, kebijakan) ada di [00-keputusan-produk.md](00-keputusan-produk.md); dokumen ini menjelaskan cara membangunnya.
 
-Jika kode, script, atau konfigurasi berbeda dengan dokumen ini, ikuti kode dan konfigurasi (aturan `CLAUDE.md`), lalu catat perbedaannya di laporan phase dan perbarui bagian yang relevan di sini. **Sejak 2026-11-05 pembayaran memakai Polar** ([phase-12-polar.md](phase-12-polar.md)); fakta Polar diverifikasi ulang lewat MCP docs Polar (`search_docs`/`read_docs_page`) atau `https://polar.sh/docs/llms.txt` setiap kali menyentuh kode pembayaran; dokumen resmi menang atas dokumen ini. Bagian yang masih menyebut Midtrans adalah sejarah Phase 06–09.
+Jika kode, script, atau konfigurasi berbeda dengan dokumen ini, ikuti kode dan konfigurasi (aturan `CLAUDE.md`), lalu catat perbedaannya di laporan phase dan perbarui bagian yang relevan di sini. **Sejak 2026-11-10 pembayaran memakai Dodo Payments** ([phase-13-dodo.md](phase-13-dodo.md), dengan tabel pemetaan Polar → Dodo): baca setiap "Polar" di bawah sebagai Dodo Payments, "order" sebagai payment, dan `providerOrderId` sebagai `providerPaymentId`; aturan langganan, kredit, dan akses tidak berubah. Sebelumnya, **sejak 2026-11-05 pembayaran memakai Polar** ([phase-12-polar.md](phase-12-polar.md)); fakta Polar diverifikasi ulang lewat MCP docs Polar (`search_docs`/`read_docs_page`) atau `https://polar.sh/docs/llms.txt` setiap kali menyentuh kode pembayaran; dokumen resmi menang atas dokumen ini. Bagian yang masih menyebut Midtrans adalah sejarah Phase 06–09.
 
 ## 1. Gambaran besar
 

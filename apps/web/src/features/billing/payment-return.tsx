@@ -18,6 +18,7 @@ import { getPlanName } from "./plan";
 import {
 	formatPrice,
 	getReturnState,
+	hasInvoice,
 	intervalSuffix,
 	isOpenPayment,
 	isTrialStart,
@@ -74,7 +75,7 @@ function TrialResult({ payment, formatDate }: Omit<ResultProps, "state">) {
 					)}
 				</li>
 				<li className="text-muted">
-					<Trans>Polar emails you a reminder a few days before the first charge.</Trans>
+					<Trans>Dodo Payments emails you a reminder a few days before the first charge.</Trans>
 				</li>
 			</ul>
 			<div className="flex flex-wrap gap-2">
@@ -107,14 +108,14 @@ function PaidResult({ payment, formatDate }: Omit<ResultProps, "state">) {
 					</li>
 				)}
 				<li className="text-muted">
-					<Trans>Polar emails you the receipt, and your invoices are in billing.</Trans>
+					<Trans>Dodo Payments emails you the receipt, and your invoices are in billing.</Trans>
 				</li>
 			</ul>
 			<div className="flex flex-wrap gap-2">
 				<Link to="/dashboard/settings/billing" className={buttonVariants()}>
 					<Trans>Go to your plan</Trans>
 				</Link>
-				{payment.orderId && <InvoiceButton paymentId={payment.id} variant="secondary" />}
+				{hasInvoice(payment) && <InvoiceButton paymentId={payment.id} variant="secondary" />}
 			</div>
 		</ResultCard>
 	);
@@ -154,7 +155,7 @@ function WaitingResult({ payment, state, formatDate, polling, onCheckAgain, chec
 				{polling && (
 					<p role="status" className="flex items-center gap-2 text-muted">
 						<Spinner size="sm" color="current" aria-hidden />
-						<Trans>Checking with Polar…</Trans>
+						<Trans>Checking your payment…</Trans>
 					</p>
 				)}
 			</div>
@@ -212,7 +213,7 @@ function ClosedResult({ payment, state }: Omit<ResultProps, "formatDate">) {
 			</p>
 			<div className="flex flex-wrap gap-2">
 				{refunded ? (
-					payment.orderId && <InvoiceButton paymentId={payment.id} variant="secondary" />
+					hasInvoice(payment) && <InvoiceButton paymentId={payment.id} variant="secondary" />
 				) : (
 					<Link to="/dashboard/settings/billing" search={{ plan: payment.planId }} className={buttonVariants()}>
 						<Trans>Try again</Trans>
@@ -232,8 +233,8 @@ type PaymentReturnPageProps = {
 };
 
 /**
- * Where Polar sends the customer back after paying. Getting here only says the browser was redirected, so the page asks
- * the server, which checks with Polar: every 3 seconds for up to 2 minutes while the payment is open and the tab is
+ * Where the checkout sends the customer back after paying. Getting here only says the browser was redirected, so the
+ * page asks the server, which checks with Dodo Payments: every 3 seconds for up to 2 minutes while the payment is open and the tab is
  * visible, then on request. The webhook usually lands first.
  */
 export function PaymentReturnPage({ paymentId }: PaymentReturnPageProps) {

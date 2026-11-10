@@ -83,7 +83,7 @@ describe("account backup", () => {
 				transcripts: [{ id: "transcript", original: "I lead the migration.", edited: "I led the migration." }],
 			};
 			mocks.exportCareer.mockResolvedValue(career);
-			const billing = { payments: [{ id: "payment", orderId: "RZ-payment", refunds: [] }], passes: [] };
+			const billing = { payments: [{ id: "payment", providerPaymentId: "pay_payment", refunds: [] }], passes: [] };
 			mocks.exportBilling.mockResolvedValue(billing);
 			const application = { id: "application", userId: "owner", company: "Lumen", role: "Designer" };
 			for (const rows of [

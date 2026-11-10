@@ -32,7 +32,6 @@ import {
 import { getCreditBalance, listCreditHistory } from "./credits";
 import { getEntitlements, isBillingAppliedTo } from "./entitlements";
 import { countActiveDocuments } from "./limits";
-import { REFUND_REASONS } from "./refunds";
 import { billingDailySeries, billingMetrics, exportPaymentsCsv, listRecentPayments, previousRange } from "./reports";
 import { getCurrentSubscription } from "./subscriptions";
 
@@ -87,7 +86,7 @@ const creditHistoryEntry = z.discriminatedUnion("type", [
 
 const payment = z.object({
 	id: z.string(),
-	orderId: z.string().nullable().describe("Polar's order id, once the payment has an order."),
+	providerPaymentId: z.string().nullable().describe("Dodo Payments' payment id, once there is one."),
 	planId: paidPlanIdSchema,
 	interval: billingIntervalSchema
 		.nullable()
@@ -140,7 +139,7 @@ const subscription = z.object({
 
 const checkoutResult = z.object({
 	paymentId: z.string(),
-	redirectUrl: z.string().describe("Polar's checkout page to send the browser to."),
+	redirectUrl: z.string().describe("Dodo Payments' checkout page to send the browser to."),
 	expiresAt: z.date(),
 	reused: z.boolean().describe("Whether this is an open checkout from before rather than a new one."),
 });
@@ -173,7 +172,7 @@ function authenticationOf(context: { authentication?: RequestAuthentication | nu
 	return context.authentication;
 }
 
-/** The visitor's country (Cloudflare's CF-IPCountry) and address, for their currency and Polar's tax location. */
+/** The visitor's country (Cloudflare's CF-IPCountry) and address, for their currency. */
 function originOf(context: { reqHeaders?: Headers; trustedClient?: string | undefined }) {
 	return {
 		country: context.reqHeaders?.get("cf-ipcountry") ?? null,
@@ -282,7 +281,14 @@ export const billingRouter = {
 		.route({ ...route, method: "POST", path: "/billing/subscription/plan" })
 		.use(checkoutRateLimit)
 		.input(z.object({ planId: paidPlanIdSchema, interval: billingIntervalSchema }))
-		.output(z.object({ effective: z.enum(["now", "renewal"]), subscription }))
+		.output(
+			z.object({
+				effective: z
+					.enum(["now", "processing", "renewal"])
+					.describe("processing: the charge for an upgrade is still settling; the new plan applies once it succeeds."),
+				subscription,
+			}),
+		)
 		.handler(({ context, input }) =>
 			changePlan({ authentication: authenticationOf(context), planId: input.planId, interval: input.interval }),
 		),
@@ -321,7 +327,7 @@ export const billingRouter = {
 		.route({ ...route, method: "POST", path: "/billing/portal" })
 		.use(checkoutRateLimit)
 		.input(z.object({}).optional())
-		.output(z.object({ url: z.string().describe("Polar's customer portal, signed in as this account; it expires.") }))
+		.output(z.object({ url: z.string().describe("Dodo Payments' customer portal for this account; it expires.") }))
 		.handler(({ context }) => openBillingPortal(authenticationOf(context))),
 
 	invoice: protectedProcedure
@@ -330,8 +336,11 @@ export const billingRouter = {
 		.input(z.object({ id: z.string().min(1).max(100) }))
 		.output(
 			z.discriminatedUnion("status", [
-				z.object({ status: z.literal("ready"), url: z.string() }),
-				z.object({ status: z.enum(["generating", "unavailable"]) }),
+				z.object({
+					status: z.literal("ready"),
+					file: z.file().describe("The invoice PDF from Dodo Payments, the seller."),
+				}),
+				z.object({ status: z.literal("unavailable") }),
 			]),
 		)
 		.handler(({ context, input }) => getInvoice(authenticationOf(context), input.id)),
@@ -500,7 +509,7 @@ export const billingRouter = {
 			.input(paymentIdInput)
 			.output(
 				z.object({
-					found: z.boolean().describe("Whether Polar has a checkout or order for it."),
+					found: z.boolean().describe("Whether Dodo Payments has a checkout session or payment for it."),
 					status: z.enum(BILLING_PAYMENT_STATUSES),
 					changed: z.boolean(),
 				}),
@@ -519,10 +528,6 @@ export const billingRouter = {
 						.optional()
 						.describe("Before tax, in the currency's smallest unit; the rest when left out."),
 					reason: refundReason,
-					polarReason: z
-						.enum(REFUND_REASONS)
-						.optional()
-						.describe("The reason Polar records; customer_request by default."),
 					revokeBenefits: z.boolean().optional().describe("Also take the payment's credits back on a partial refund."),
 					endSubscription: z.boolean().optional().describe("Also end the subscription now (access stops at once)."),
 				}),

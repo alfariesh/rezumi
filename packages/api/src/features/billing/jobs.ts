@@ -22,7 +22,7 @@ async function task<T>(work: () => Promise<T>, fallback: T, failure: string): Pr
 /**
  * Billing's scheduled work, run every minute by the Workers cron and the Node scheduler before career jobs. Cron
  * triggers can overlap or repeat, so every task claims its rows and is safe to run twice; each task's failure stays
- * its own. Payments first (a customer may be waiting for one), then subscriptions Polar's news didn't reach, refunds
+ * its own. Payments first (a customer may be waiting for one), then subscriptions Dodo's news didn't reach, refunds
  * still waiting, the months of yearly Pro AI credits, and subscriptions of deleted accounts. Then the emails: the
  * owner's alerts and daily summary, and reminders that granted access ends soon.
  */

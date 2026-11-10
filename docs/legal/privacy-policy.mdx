@@ -31,12 +31,13 @@ At draft time the official apps include no third-party advertising analytics; se
 
 - **Cloudflare:** Workers, network/security and private R2 uploads, including request metadata.
 - **Neon:** managed PostgreSQL for accounts, documents and service records. Database/backup region: **Singapore (AWS ap-southeast-1)**.
-- **Polar (Polar Software, Inc., United States):** the merchant of record for subscriptions. At checkout Rezumi sends your account id,
-  name, email, IP address (for currency and tax location) and language; you enter payment details and billing address directly with Polar.
-  Polar processes the payment (through Stripe), tax, invoices and disputes as an independent controller under its own privacy policy.
-  Rezumi receives order/subscription/refund ids and statuses, amounts and periods; it never receives or stores card numbers, CVCs or
-  billing addresses. When you delete your account, Rezumi asks Polar to delete and anonymize your customer data; Polar keeps order records
-  as the law requires. Data may be processed outside Indonesia.
+- **Dodo Payments (Dodo Payments, Inc. and its group companies, United States and India):** the merchant of record for
+  subscriptions. At checkout Rezumi sends your account id, name, email, language and country (Indonesia, for Rupiah prices); you enter
+  payment details and billing address directly with Dodo Payments. Dodo Payments processes the payment (through its processing
+  partners), tax, invoices and disputes as an independent controller under its own privacy policy. Rezumi receives
+  payment/subscription/refund/dispute ids and statuses, amounts and periods; it never stores card numbers, CVCs or billing addresses.
+  When you delete your account, Rezumi ends its subscriptions at Dodo Payments; Dodo Payments keeps transaction records as the law
+  requires. Data may be processed outside Indonesia.
 - **AI providers:** only information needed for requested operations, such as resume/letter text, job descriptions, answers,
   knowledge and conversation context. BYOK uses the selected provider (such as OpenAI, Anthropic, Google Gemini, OpenRouter or compatible endpoints).
   Rezumi AI will identify provider/model before use; launch provider: **Anthropic (Claude Haiku 5.5, United States)**. Anthropic deletes inputs and outputs within **30 days**, except content flagged under its usage policy (up to 2 years) or where the law requires otherwise, and does not use them to train models.
@@ -120,7 +121,7 @@ including affected data, timing/circumstances and response measures; public noti
 
 Cloudflare, Neon, email and AI providers may process data outside Indonesia. Before transfer, assess equivalent protection;
 otherwise ensure adequate binding safeguards, and if those conditions cannot be met obtain consent as required by law.
-Processing locations: Singapore (Neon), the United States (Polar, Anthropic) and Cloudflare's global network. Transfers follow the data processing agreement with each provider.
+Processing locations: Singapore (Neon), the United States (Dodo Payments, Anthropic), India (Dodo Payments) and Cloudflare's global network. Transfers follow the data processing agreement with each provider.
 
 ## Children and changes
 

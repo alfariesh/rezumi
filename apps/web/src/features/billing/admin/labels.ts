@@ -15,18 +15,18 @@ export type AdminSubscription = AdminCustomer["subscriptions"][number];
 export function getAlertLabel(kind: string) {
 	switch (kind) {
 		case "paid_not_applied":
-			return t`Paid at Polar, not active here`;
+			return t`Paid, not active here`;
 		case "payment_reversed":
-			return t`Refunded by Polar to prevent a dispute`;
+			return t`Card dispute`;
 		case "needs_review":
 			return t`Event needs a look by hand`;
 		case "rejected_signatures":
 			return t`Webhooks with a bad signature`;
 		case "provider_errors":
-			return t`Polar API kept failing`;
+			return t`Payment provider API kept failing`;
 		case "refund_failed":
 			return t`Refund not confirmed`;
-		// Kinds from before Polar, still in old alert rows.
+		// Kinds from before Dodo Payments, still in old alert rows.
 		case "amount_mismatch":
 			return t`Amount doesn't match the order`;
 		case "midtrans_errors":
@@ -38,7 +38,7 @@ export function getAlertLabel(kind: string) {
 	}
 }
 
-/** A Polar subscription status in words. */
+/** A subscription status in words. */
 export function getSubscriptionStatusLabel(subscription: Pick<AdminSubscription, "status" | "cancelAtPeriodEnd">) {
 	switch (subscription.status) {
 		case "active":
@@ -46,15 +46,16 @@ export function getSubscriptionStatusLabel(subscription: Pick<AdminSubscription,
 		case "trialing":
 			return t`Trial`;
 		case "past_due":
+		case "on_hold":
 			return t`Payment failed`;
 		case "paused":
 			return t`Paused`;
-		case "canceled":
+		case "cancelled":
+			return subscription.cancelAtPeriodEnd ? t`Active, ends at period end` : t`Ended`;
+		case "expired":
 			return t`Ended`;
-		case "unpaid":
-			return t`Ended, unpaid`;
-		case "incomplete":
-		case "incomplete_expired":
+		case "pending":
+		case "failed":
 			return t`Never paid`;
 	}
 }
@@ -104,28 +105,30 @@ export const formatUsdMicros = (micros: number | null) =>
 
 type HistoryTone = "success" | "warning" | "danger" | "default" | "muted";
 
-/** A Polar event in words: what Polar reported and what Rezumi did with it. */
+/** A payment provider event in words: what Dodo Payments (or Polar, on older rows) reported and what Rezumi did. */
 export function describeEvent(event: AdminCustomer["events"][number]): { title: string; tone: HistoryTone } {
 	const type = event.eventType;
 	switch (event.outcome) {
 		case "applied":
-			return type === "order.paid"
-				? { title: t`Polar: order paid`, tone: "success" }
-				: type === "order.refunded" || type.startsWith("refund.")
-					? { title: t`Polar: refund`, tone: "warning" }
-					: { title: t`Polar: ${type}`, tone: "default" };
+			return type === "payment.succeeded" || type === "order.paid"
+				? { title: t`Provider: payment received`, tone: "success" }
+				: type.startsWith("refund.") || type === "order.refunded"
+					? { title: t`Provider: refund`, tone: "warning" }
+					: type.startsWith("dispute.")
+						? { title: t`Provider: card dispute`, tone: "danger" }
+						: { title: t`Provider: ${type}`, tone: "default" };
 		case "duplicate":
-			return { title: t`Polar: ${type} (already handled)`, tone: "muted" };
+			return { title: t`Provider: ${type} (already handled)`, tone: "muted" };
 		case "stale":
-			return { title: t`Polar: older ${type}, ignored`, tone: "muted" };
+			return { title: t`Provider: older ${type}, ignored`, tone: "muted" };
 		case "ignored":
 		case "unknown_product":
 		case "unknown_customer":
-			return { title: t`Polar: ${type}, not for this payment`, tone: "muted" };
+			return { title: t`Provider: ${type}, not for this payment`, tone: "muted" };
 		case "error":
-			return { title: t`Polar event needs a look: ${type}`, tone: "danger" };
+			return { title: t`Provider event needs a look: ${type}`, tone: "danger" };
 		default:
-			return { title: t`Polar: ${type}`, tone: "default" };
+			return { title: t`Provider: ${type}`, tone: "default" };
 	}
 }
 
@@ -172,15 +175,19 @@ export function describeAudit(entry: { action: string; details?: unknown }): { t
 		case "payment.refund_recorded":
 			return { title: t`Refund recorded`, tone: "warning" };
 		case "payment.synced":
-			return { title: t`Status checked with Polar`, tone: "muted" };
+			return { title: t`Status checked with the provider`, tone: "muted" };
 		case "refund.requested":
-			return { title: t`Refund asked of Polar`, tone: "warning" };
+			return { title: t`Refund requested`, tone: "warning" };
 		case "refund.failed":
-			return { title: t`Refund refused by Polar`, tone: "danger" };
+			return { title: t`Refund refused`, tone: "danger" };
 		case "subscription.changed":
 			return { title: describeSubscriptionChange(entry.details), tone: "default" };
 		case "subscription.revoked":
 			return { title: t`Subscription ended by an admin`, tone: "danger" };
+		case "payment.dispute":
+			return { title: t`Card dispute`, tone: "danger" };
+		case "subscription.change_requested":
+			return { title: t`Upgrade requested`, tone: "muted" };
 		case "period.granted":
 			return { title: t`Pass given by an admin`, tone: "success" };
 		case "period.revoked":

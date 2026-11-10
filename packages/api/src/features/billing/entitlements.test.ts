@@ -1,5 +1,5 @@
 import type { BillingMode } from "./entitlements";
-import type { SubscriptionState } from "./polar/mapping";
+import type { SubscriptionState } from "./subscription-access";
 import type { DbOrTx } from "@rezumi/db/client";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { PLANS } from "@rezumi/schema/billing";
@@ -192,18 +192,24 @@ describe("resolveEntitlements", () => {
 		expect(resolveEntitlements([], now, [longAgo]).planId).toBe("free");
 	});
 
-	it("stops a past_due subscription at the last paid period, and the others at once", () => {
-		expect(resolveEntitlements([], now, [subscription({ status: "past_due", paidThrough: at(-1) })]).planId).toBe(
-			"free",
-		);
-		expect(resolveEntitlements([], now, [subscription({ status: "past_due", paidThrough: at(2) })])).toMatchObject({
-			planId: "plus",
-			currentPeriodEndsAt: at(2),
-			renews: false,
-		});
-		for (const status of ["canceled", "unpaid", "incomplete", "incomplete_expired", "paused"] as const)
+	it("stops a past_due or on_hold subscription at the last paid period, and the others at once", () => {
+		for (const status of ["past_due", "on_hold"] as const) {
+			expect(resolveEntitlements([], now, [subscription({ status, paidThrough: at(-1) })]).planId).toBe("free");
+			expect(resolveEntitlements([], now, [subscription({ status, paidThrough: at(2) })])).toMatchObject({
+				planId: "plus",
+				currentPeriodEndsAt: at(2),
+				renews: false,
+			});
+		}
+		for (const status of ["cancelled", "pending", "failed", "expired", "paused"] as const)
 			expect(resolveEntitlements([], now, [subscription({ status })]).planId).toBe("free");
 		expect(resolveEntitlements([], now, [subscription({ endedAt: at(-1) })]).planId).toBe("free");
+	});
+
+	it("runs a subscription cancelled for its period end until then, without renewing", () => {
+		expect(
+			resolveEntitlements([], now, [subscription({ status: "cancelled", cancelAtPeriodEnd: true, endedAt: at(20) })]),
+		).toMatchObject({ planId: "plus", currentPeriodEndsAt: at(20), renews: false });
 	});
 
 	it("takes the higher plan of a granted period and a subscription", () => {

@@ -1,16 +1,46 @@
 import type { Transaction } from "./account";
-import type { PlanProduct } from "./polar/config";
-import type { PolarSubscriptionLike, SubscriptionState } from "./polar/mapping";
+import type { PlanProduct } from "./dodo/config";
+import type { SubscriptionState } from "./subscription-access";
 import type { DbOrTx } from "@rezumi/db/client";
+import type { BillingSubscriptionStatus } from "@rezumi/db/schema";
 import { and, desc, eq, inArray } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
-import { parseDate, providerModifiedAt } from "./polar/mapping";
 
 export type SubscriptionRow = typeof schema.billingSubscription.$inferSelect;
 
-/** Statuses a subscription can still bill or give access in; the others are over or never started. */
-export const LIVE_SUBSCRIPTION_STATUSES = ["trialing", "active", "past_due", "paused"] as const;
+/**
+ * Statuses a subscription can still bill or give access in; the others are over or never started. An on-hold one
+ * waits for a new payment method (the billing portal), so it still counts: the account doesn't start a second one.
+ */
+export const LIVE_SUBSCRIPTION_STATUSES = ["trialing", "active", "past_due", "on_hold", "paused"] as const;
+
+/**
+ * The audit action that marks an upgrade waiting for its charge (`details.subscriptionId`, `details.productId`): the
+ * billing job checks the subscription until it is on that product or the request is half an hour old.
+ */
+export const CHANGE_REQUESTED_ACTION = "subscription.change_requested";
+
+/** A provider's subscription as Rezumi keeps it, read at `observedAt` (see dodo/mapping.ts). */
+export type SubscriptionSnapshot = {
+	providerSubscriptionId: string;
+	providerCustomerId: string | null;
+	providerProductId: string;
+	status: BillingSubscriptionStatus;
+	/** The recurring price before tax and discounts, in the currency's smallest unit. */
+	amount: number;
+	currency: string;
+	currentPeriodStart: Date;
+	currentPeriodEnd: Date | null;
+	cancelAtPeriodEnd: boolean;
+	canceledAt: Date | null;
+	startedAt: Date | null;
+	endsAt: Date | null;
+	endedAt: Date | null;
+	/** The product a change scheduled for the next renewal moves it to (a downgrade). */
+	pendingProductId: string | null;
+	observedAt: Date;
+};
 
 export function subscriptionState(row: SubscriptionRow): SubscriptionState {
 	return {
@@ -26,52 +56,52 @@ export function subscriptionState(row: SubscriptionRow): SubscriptionState {
 }
 
 export type SubscriptionUpsert = {
-	subscription: PolarSubscriptionLike;
+	subscription: SubscriptionSnapshot;
 	plan: PlanProduct;
 	/** The account it belongs to; null once that account is deleted. */
 	userId: string | null;
 	externalCustomerId: string;
-	/** The end of a period an order just paid for; paid_through only moves forward. */
+	/** The end of a period a payment just paid for; paid_through only moves forward. */
 	paidThrough?: Date | null;
 };
 
 const later = (a: Date | null, b: Date | null | undefined) => (!b ? a : !a || b > a ? b : a);
 
 /**
- * Brings Rezumi's copy of a Polar subscription up to date, holding its row. Polar doesn't deliver webhooks in order,
- * so a state older than the one kept (by Polar's `modified_at`) is skipped; a newer one replaces it. `paid_through`
- * is merged either way, since an order's payment is news whatever order the events came in. Call it inside the
- * transaction that holds the account's billing lock.
+ * Brings Rezumi's copy of a subscription up to date, holding its row. Webhooks don't arrive in order and two reads can
+ * race, so a state read earlier than the one kept is skipped; a later one replaces it. `paid_through` is merged either
+ * way, since a payment is news whatever order the events came in. Call it inside the transaction that holds the
+ * account's billing lock.
  */
 export async function upsertSubscription(
 	tx: Transaction,
 	input: SubscriptionUpsert,
 ): Promise<{ row: SubscriptionRow; outcome: "applied" | "stale" | "duplicate" }> {
 	const { subscription, plan } = input;
-	const modifiedAt = providerModifiedAt(subscription);
+	const modifiedAt = subscription.observedAt;
 	const fields = {
-		providerProductId: subscription.product_id,
-		providerCustomerId: subscription.customer_id,
+		provider: "dodo" as const,
+		providerProductId: subscription.providerProductId,
+		providerCustomerId: subscription.providerCustomerId,
 		planId: plan.planId,
 		interval: plan.interval,
 		status: subscription.status,
 		amount: subscription.amount,
-		currency: subscription.currency.toLowerCase(),
-		currentPeriodStart: parseDate(subscription.current_period_start) ?? modifiedAt,
-		currentPeriodEnd: parseDate(subscription.current_period_end),
-		cancelAtPeriodEnd: subscription.cancel_at_period_end,
-		canceledAt: parseDate(subscription.canceled_at),
-		startedAt: parseDate(subscription.started_at),
-		endsAt: parseDate(subscription.ends_at),
-		endedAt: parseDate(subscription.ended_at),
-		// Only full subscriptions carry pending_update; the copy inside an order leaves the scheduled change as it is.
-		...("pending_update" in subscription && { pendingProductId: subscription.pending_update?.product_id ?? null }),
+		currency: subscription.currency,
+		currentPeriodStart: subscription.currentPeriodStart,
+		currentPeriodEnd: subscription.currentPeriodEnd,
+		cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+		canceledAt: subscription.canceledAt,
+		startedAt: subscription.startedAt,
+		endsAt: subscription.endsAt,
+		endedAt: subscription.endedAt,
+		pendingProductId: subscription.pendingProductId,
 		providerModifiedAt: modifiedAt,
 	};
 	const [existing] = await tx
 		.select()
 		.from(schema.billingSubscription)
-		.where(eq(schema.billingSubscription.providerSubscriptionId, subscription.id))
+		.where(eq(schema.billingSubscription.providerSubscriptionId, subscription.providerSubscriptionId))
 		.for("update");
 	if (!existing) {
 		const [row] = await tx
@@ -80,7 +110,7 @@ export async function upsertSubscription(
 				...fields,
 				userId: input.userId,
 				externalCustomerId: input.externalCustomerId,
-				providerSubscriptionId: subscription.id,
+				providerSubscriptionId: subscription.providerSubscriptionId,
 				paidThrough: input.paidThrough ?? null,
 			})
 			.returning();
@@ -109,8 +139,8 @@ export async function upsertSubscription(
 }
 
 /**
- * The account's subscription that matters now: the newest one still live (trialing, active, past_due or paused), or
- * else the newest ended one. Accounts hold one subscription at a time at Polar, but an ended one stays as history.
+ * The account's subscription that matters now: the newest one still live (trialing, active, past_due, on_hold or
+ * paused), or else the newest ended one. Accounts hold one subscription at a time, but an ended one stays as history.
  */
 export async function getCurrentSubscription(userId: string, database: DbOrTx = db): Promise<SubscriptionRow | null> {
 	const rows = await database

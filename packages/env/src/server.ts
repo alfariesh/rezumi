@@ -36,6 +36,12 @@ const commaList = (item: z.ZodType<string, string>) =>
 		.pipe(z.array(item))
 		.default([]);
 
+/** A Dodo Payments product id, e.g. `pdt_0NrbytD9Enu0PTffpt7KM`. */
+const dodoProductId = z
+	.string()
+	.trim()
+	.regex(/^pdt_[A-Za-z0-9]+$/, "A Dodo Payments product id starts with pdt_.");
+
 const REDIS_URL_USERINFO_MESSAGE =
 	"REDIS_URL userinfo has no password field. For password-only auth (redis --requirepass) use " +
 	"redis://:<password>@<host>; for ACL users use redis://<user>:<password>@<host> (default is the built-in user; " +
@@ -234,18 +240,18 @@ export const env = createEnv({
 		// Where billing alerts and the daily sales summary go: the owner's address. Without it they are only kept for the
 		// admin page.
 		BILLING_ALERT_EMAIL: z.email().optional(),
-		// Polar (merchant of record) sells the subscriptions. Without the access token checkout is unavailable; without the
-		// webhook secret the webhook endpoint is a 404 and payments only arrive through the billing job's checks.
-		POLAR_ENVIRONMENT: z.enum(["sandbox", "production"]).optional(),
-		// An organization access token from the same environment (Settings → General → Developers).
-		POLAR_ACCESS_TOKEN: z.string().trim().min(1).optional(),
-		// The secret of the webhook endpoint pointed at /api/payments/polar/webhook (Settings → Webhooks).
-		POLAR_WEBHOOK_SECRET: z.string().trim().min(1).optional(),
-		// The four products Rezumi sells, one per plan and interval; each has a USD and an IDR price.
-		POLAR_PRODUCT_PLUS_MONTHLY: z.uuid().optional(),
-		POLAR_PRODUCT_PLUS_YEARLY: z.uuid().optional(),
-		POLAR_PRODUCT_PRO_AI_MONTHLY: z.uuid().optional(),
-		POLAR_PRODUCT_PRO_AI_YEARLY: z.uuid().optional(),
+		// Dodo Payments (merchant of record) sells the subscriptions. Without the API key checkout is unavailable; without
+		// the webhook key the webhook endpoint is a 404 and payments only arrive through the billing job's checks.
+		DODO_PAYMENTS_ENVIRONMENT: z.enum(["test_mode", "live_mode"]).optional(),
+		// An API key from the same mode (Developer → API Keys).
+		DODO_PAYMENTS_API_KEY: z.string().trim().min(1).optional(),
+		// The signing secret of the webhook endpoint pointed at /api/payments/dodo/webhook (Developer → Webhooks).
+		DODO_PAYMENTS_WEBHOOK_KEY: z.string().trim().min(1).optional(),
+		// The four products Rezumi sells, one per plan and interval; each has a USD price and a fixed IDR price.
+		DODO_PAYMENTS_PRODUCT_PLUS_MONTHLY: dodoProductId.optional(),
+		DODO_PAYMENTS_PRODUCT_PLUS_YEARLY: dodoProductId.optional(),
+		DODO_PAYMENTS_PRODUCT_PRO_AI_MONTHLY: dodoProductId.optional(),
+		DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY: dodoProductId.optional(),
 
 		// Web portfolios at /<username>: off (nothing changes; the short link keeps opening the primary resume), admins
 		// (only accounts with the admin role can build and publish one), on (every signed-up account).
@@ -288,23 +294,28 @@ if (process.env.NODE_ENV === "production") {
 	}
 }
 
-// A token without its environment, or a half-listed catalog, fails payments one by one; stop at startup instead.
-if (env.POLAR_ACCESS_TOKEN) {
-	if (!env.POLAR_ENVIRONMENT)
-		throw new Error("POLAR_ACCESS_TOKEN needs POLAR_ENVIRONMENT set to sandbox or production.");
+// A key without its mode, or a half-listed catalog, fails payments one by one; stop at startup instead.
+if (env.DODO_PAYMENTS_API_KEY) {
+	const mode = env.DODO_PAYMENTS_ENVIRONMENT;
+	if (!mode) throw new Error("DODO_PAYMENTS_API_KEY needs DODO_PAYMENTS_ENVIRONMENT set to test_mode or live_mode.");
+	// Keys that name their mode must match it: a test key never reaches live mode, nor the other way round.
+	const keyMode = /^dodo_(test|live)_/.exec(env.DODO_PAYMENTS_API_KEY)?.[1];
+	if (keyMode && `${keyMode}_mode` !== mode)
+		throw new Error(`DODO_PAYMENTS_API_KEY is a ${keyMode} key, but DODO_PAYMENTS_ENVIRONMENT is ${mode}.`);
 	const products = [
-		env.POLAR_PRODUCT_PLUS_MONTHLY,
-		env.POLAR_PRODUCT_PLUS_YEARLY,
-		env.POLAR_PRODUCT_PRO_AI_MONTHLY,
-		env.POLAR_PRODUCT_PRO_AI_YEARLY,
+		env.DODO_PAYMENTS_PRODUCT_PLUS_MONTHLY,
+		env.DODO_PAYMENTS_PRODUCT_PLUS_YEARLY,
+		env.DODO_PAYMENTS_PRODUCT_PRO_AI_MONTHLY,
+		env.DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY,
 	];
 	if (products.some((id) => !id))
 		throw new Error(
-			"POLAR_ACCESS_TOKEN needs all four POLAR_PRODUCT_* ids (plus and pro-ai, monthly and yearly) from the same environment.",
+			"DODO_PAYMENTS_API_KEY needs all four DODO_PAYMENTS_PRODUCT_* ids (plus and pro-ai, monthly and yearly) from the same mode.",
 		);
-	if (new Set(products).size !== products.length) throw new Error("Each POLAR_PRODUCT_* must be a different product.");
-} else if (env.POLAR_WEBHOOK_SECRET) {
-	throw new Error("POLAR_WEBHOOK_SECRET is set without POLAR_ACCESS_TOKEN.");
+	if (new Set(products).size !== products.length)
+		throw new Error("Each DODO_PAYMENTS_PRODUCT_* must be a different product.");
+} else if (env.DODO_PAYMENTS_WEBHOOK_KEY) {
+	throw new Error("DODO_PAYMENTS_WEBHOOK_KEY is set without DODO_PAYMENTS_API_KEY.");
 }
 
 if (env.AI_PROVIDER === "openai-compatible" && !env.AI_BASE_URL) {

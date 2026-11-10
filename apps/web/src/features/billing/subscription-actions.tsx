@@ -5,7 +5,7 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@rezumi/ui/components/toast";
 import { getPlanName } from "./plan";
-import { isLiveSubscription } from "./purchase";
+import { isLiveSubscription, isPaymentFailed } from "./purchase";
 import { useConfirm } from "@/hooks/use-confirm";
 import { orpc } from "@/libs/orpc/client";
 
@@ -17,7 +17,7 @@ type SubscriptionActionsProps = {
 };
 
 /**
- * What the owner can do with a subscription: open Polar's billing portal (payment method, invoices, billing details),
+ * What the owner can do with a subscription: open the billing portal of Dodo Payments (payment method, invoices),
  * set it to end at the period close, or keep it after all. Plan changes are on the plan cards.
  */
 export function SubscriptionActions({ subscription, formatDate, canManage }: SubscriptionActionsProps) {
@@ -78,7 +78,7 @@ export function SubscriptionActions({ subscription, formatDate, canManage }: Sub
 						<Trans>Keep subscription</Trans>
 					</Button>
 				) : (
-					subscription.status !== "past_due" && (
+					!isPaymentFailed(subscription) && (
 						<Button size="sm" variant="ghost" isPending={cancel.isPending} onPress={() => void cancelAtEnd()}>
 							{cancel.isPending && <Spinner size="sm" color="current" aria-hidden />}
 							<Trans>Cancel subscription</Trans>

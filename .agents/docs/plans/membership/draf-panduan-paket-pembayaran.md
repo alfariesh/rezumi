@@ -1,6 +1,6 @@
 # Draf panduan pengguna: langganan, pembayaran, dan refund
 
-Dibuat di Phase 07 (2026-11-03), ditulis ulang untuk Polar dan langganan di Phase 12 (2026-11-05). **Jangan terbitkan sebelum go-live** (Phase 11): selama `BILLING_MODE=off`, pengguna tidak bisa berlangganan, jadi panduan publik di `docs/` belum boleh menyebutnya. Saat go-live:
+Dibuat di Phase 07 (2026-11-03), ditulis ulang untuk langganan di Phase 12 (2026-11-05) dan untuk Dodo Payments di Phase 13 (2026-11-10). **Jangan terbitkan sebelum go-live** (Phase 11): selama `BILLING_MODE=off`, pengguna tidak bisa berlangganan, jadi panduan publik di `docs/` belum boleh menyebutnya. Saat go-live:
 
 1. Buat `docs/guides/plans.mdx` dari teks di bawah, sesuaikan dengan UI saat itu (cek label di kode `apps/web/src/features/billing/`), dan buat screenshot baru dengan data fiktif (aturan `docs/contributing/career-platform.mdx` → **Keep product guides current**).
 2. Daftarkan `guides/plans` di grup **Account** pada `docs/docs.json`, sebelum `guides/exporting-your-data`.
@@ -23,7 +23,7 @@ See the [pricing on the home page](https://rezumi.app/#pricing) for what each pl
 
 <Tip>
   Your first Plus subscription starts with **7 days free**. You add a card at checkout, but nothing is charged until the
-  trial ends; Polar emails you a reminder a few days before. Cancel during the trial and you pay nothing.
+  trial ends; Dodo Payments emails you a reminder a few days before. Cancel during the trial and you pay nothing.
 </Tip>
 
 <Note>
@@ -34,7 +34,7 @@ See the [pricing on the home page](https://rezumi.app/#pricing) for what each pl
 ## Before you subscribe
 
 - Use a registered account. A guest account first needs to [create an account](/guides/creating-an-account); your guest work moves with you.
-- Verify your email address. Polar sends your receipts and invoices there. If the link expired, open **Settings → Plan** and select **Resend the link**.
+- Verify your email address. Dodo Payments sends your receipts and invoices there. If the link expired, open **Settings → Plan** and select **Resend the link**.
 
 ## Subscribe
 
@@ -50,9 +50,9 @@ See the [pricing on the home page](https://rezumi.app/#pricing) for what each pl
     The panel shows the price, how often it renews, the Rezumi AI credits that come with Pro AI, how to cancel, and the
     refund policy in brief. Select **Continue to checkout**.
   </Step>
-  <Step title="Pay on Polar">
-    Rezumi's subscriptions are sold by Polar, our merchant of record, on its secure checkout. Pay with a debit or credit
-    card, Apple Pay or Google Pay.
+  <Step title="Pay on Dodo Payments">
+    Rezumi's subscriptions are sold by Dodo Payments, our merchant of record, on its secure checkout. Pay with a debit
+    or credit card, Apple Pay or Google Pay.
   </Step>
   <Step title="Come back to Rezumi">
     After paying you return to Rezumi. The page checks the payment by itself and shows **Payment received** with your
@@ -72,9 +72,9 @@ See the [pricing on the home page](https://rezumi.app/#pricing) for what each pl
 
 ## Payment method, invoices and billing details
 
-Select **Billing and invoices** under **Your plan** to open Polar's billing portal, already signed in. There you can update your card, download invoices and receipts, and change billing details. Each paid row under **Payments** also has an **Invoice** button.
+Select **Billing and invoices** under **Your plan** to open the billing portal of Dodo Payments, already signed in. There you can update your card, download invoices and receipts, and change billing details. Each paid row under **Payments** also has an **Invoice** button.
 
-If a renewal payment fails, Polar emails you and tries again over the next weeks. Your plan pauses until the payment goes through; update your card in **Billing and invoices** to restore it.
+If a renewal payment fails, Dodo Payments emails you and may try again. Your plan pauses until the payment goes through; update your card in **Billing and invoices** to restore it.
 
 ## Rezumi AI credits
 

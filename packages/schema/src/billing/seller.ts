@@ -1,6 +1,6 @@
 /**
  * Who runs Rezumi, for support and the legal pages. Null means owner confirmation is still required. Purchases are sold
- * by Polar as the merchant of record: it charges, invoices, and handles sales tax.
+ * by Dodo Payments as the merchant of record: it charges, invoices, and handles sales tax.
  */
 export const BILLING_SELLER = {
 	name: "Salman Alfariesh",
@@ -17,7 +17,7 @@ export const BILLING_SELLER = {
 	identityConfirmed: true,
 	supportEmailConfirmed: true,
 	/** The reseller and merchant of record named at checkout and on invoices. */
-	merchantOfRecord: "Polar Software, Inc.",
+	merchantOfRecord: "Dodo Payments, Inc.",
 } as const;
 
 /** Indonesian legal text governs; English translations remain available from each legal page. */

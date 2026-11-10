@@ -23,8 +23,8 @@ export const billingIntervalSchema = z.enum(BILLING_INTERVALS);
 export type BillingInterval = z.infer<typeof billingIntervalSchema>;
 
 /**
- * The currencies prices are set in (Polar's lowercase codes). Visitors from Indonesia pay in Rupiah; everyone else in
- * US dollars, the default.
+ * The currencies prices are set in (lowercase ISO codes). Visitors from Indonesia pay in Rupiah (a fixed price, not a
+ * conversion); everyone else in US dollars, the default.
  */
 export const BILLING_CURRENCIES = ["usd", "idr"] as const;
 export const billingCurrencySchema = z.enum(BILLING_CURRENCIES);
@@ -37,8 +37,8 @@ export function currencyForCountry(country: string | null | undefined): BillingC
 }
 
 /**
- * Amounts are integers in the currency's smallest unit, as Polar takes them: US cents, and for the Rupiah also two
- * decimals (Rp59.000 is 5_900_000; checked on Polar's sandbox checkout, 2026-11-05).
+ * Amounts are integers in the currency's smallest unit, as Dodo Payments takes them: US cents, and for the Rupiah also
+ * two decimals (Rp59.000 is 5_900_000; checked on Dodo's test-mode checkout preview, 2026-11-10).
  */
 export const CURRENCY_DECIMALS: Record<BillingCurrency, number> = { usd: 2, idr: 2 };
 
@@ -107,8 +107,8 @@ export type PlanDefinition = {
 export const BILLING_CATALOG_VERSION = 7;
 
 /**
- * Prices are before tax: Polar adds the tax for the buyer's location at checkout and on every renewal. Polar's
- * "Default tax behavior" (or each price's) must be Exclusive to match; the apps say so next to prices.
+ * Prices are before tax: Dodo Payments adds the tax for the buyer's location at checkout and on every renewal. Each
+ * product's price must have "tax inclusive" off to match; the apps say so next to prices.
  */
 export const BILLING_PRICES_INCLUDE_TAX = false;
 

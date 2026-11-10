@@ -10,7 +10,7 @@ import { LIVE_SUBSCRIPTION_STATUSES } from "./subscriptions";
 
 /**
  * The owner's numbers: sign-ups, checkouts, sales and refunds per currency, subscriptions, Rezumi AI use and cost for a
- * period, and the CSV for the books. Amounts are before tax (Polar collects and remits tax as the merchant of record)
+ * period, and the CSV for the books. Amounts are before tax (Dodo Payments collects and remits tax as the merchant of record)
  * and in each currency's smallest unit; currencies are never added together. Counts only; no names or email addresses
  * leave the database here, except the admin payment list's buyer email.
  */
@@ -50,7 +50,7 @@ const subtract = (a: Money, b: Money): Money => {
 	return result;
 };
 
-/** What an order was for, as the owner reads it: a new subscription, a renewal, or a plan change. */
+/** What a payment was for, as the owner reads it: a new subscription, a renewal, or a plan change. */
 export type SaleKind = "new" | "renewal" | "change";
 
 const saleKind = (reason: string | null): SaleKind =>
@@ -84,7 +84,7 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 		.from(payment)
 		.where(and(within(payment.createdAt, range), isNotNull(payment.idempotencyKey)));
 
-	// A free trial starting is a paid $0 order its checkout offered a trial for: counted apart, not as a sale.
+	// A free trial starting is a paid $0 payment its checkout offered a trial for: counted apart, not as a sale.
 	const trialStart = sql`(${payment.trialDays} is not null and ${payment.totalAmount} = 0)`;
 	const paidRows = await db
 		.select({
@@ -116,7 +116,7 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 		.where(
 			and(
 				inArray(payment.status, ["creating", "pending"]),
-				sql`${payment.providerOrderId} is null`,
+				sql`${payment.providerPaymentId} is null`,
 				lt(payment.createdAt, new Date(+now - HANGING_AFTER_MS)),
 				gt(payment.expiresAt, now),
 			),
@@ -309,7 +309,7 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 
 export type BillingMetrics = Awaited<ReturnType<typeof billingMetrics>>;
 
-/** One WIB day of the admin charts: paid orders per plan, and counts. */
+/** One WIB day of the admin charts: paid payments per plan, and counts. */
 type DayTotals = {
 	day: string;
 	plus: number;
@@ -327,7 +327,7 @@ const wibDate = (column: Parameters<typeof gte>[0]) =>
 	sql<string>`to_char(${column} at time zone 'Asia/Jakarta', 'YYYY-MM-DD')`;
 
 /**
- * Day by day (WIB) for the admin charts: paid orders by plan, refunds, checkouts started and paid, sign-ups, and
+ * Day by day (WIB) for the admin charts: paid payments by plan, refunds, checkouts started and paid, sign-ups, and
  * Rezumi AI credits charged. Counts, so currencies never mix. Every day of the period is there, empty ones as zeros.
  */
 export async function billingDailySeries(range: ReportRange) {
@@ -430,7 +430,7 @@ export async function listRecentPayments(
 			id: payment.id,
 			userId: payment.userId,
 			email: schema.user.email,
-			orderId: payment.providerOrderId,
+			providerPaymentId: payment.providerPaymentId,
 			planId: payment.planId,
 			interval: payment.interval,
 			billingReason: payment.billingReason,
@@ -472,7 +472,7 @@ const decimal = (amount: number, currency: string) => toMajorUnits(amount, curre
 const CSV_COLUMNS = [
 	"jenis",
 	"tanggal_wib",
-	"order_polar",
+	"pembayaran_dodo",
 	"paket",
 	"periode",
 	"alasan",
@@ -485,9 +485,9 @@ const CSV_COLUMNS = [
 ] as const;
 
 /**
- * Orders paid and refunds made in a period, oldest first, for the books: one line per order (amounts positive) and per
- * refund (negative), so each currency's column sums to the period's net before tax and Polar's fees. Polar's order and
- * refund ids only; no names, email addresses or account ids. Payouts and fees are in Polar's dashboard.
+ * Payments made and refunds given in a period, oldest first, for the books: one line per payment (amounts positive)
+ * and per refund (negative), so each currency's column sums to the period's net before tax and Dodo's fees. Dodo's
+ * payment and refund ids only; no names, email addresses or account ids. Payouts and fees are in Dodo's dashboard.
  */
 export async function exportPaymentsCsv(range: ReportRange) {
 	assertRange(range);
@@ -496,7 +496,7 @@ export async function exportPaymentsCsv(range: ReportRange) {
 	const payments = await db
 		.select({
 			at: payment.paidAt,
-			orderId: payment.providerOrderId,
+			providerPaymentId: payment.providerPaymentId,
 			planId: payment.planId,
 			interval: payment.interval,
 			reason: payment.billingReason,
@@ -512,7 +512,7 @@ export async function exportPaymentsCsv(range: ReportRange) {
 	const refunds = await db
 		.select({
 			at: refund.settledAt,
-			orderId: payment.providerOrderId,
+			providerPaymentId: payment.providerPaymentId,
 			planId: payment.planId,
 			interval: payment.interval,
 			currency: payment.currency,
@@ -529,7 +529,7 @@ export async function exportPaymentsCsv(range: ReportRange) {
 			cells: [
 				"pembayaran",
 				formatWibTime(row.at ?? range.from),
-				row.orderId,
+				row.providerPaymentId,
 				row.planId,
 				row.interval ?? "pass",
 				saleKind(row.reason),
@@ -546,7 +546,7 @@ export async function exportPaymentsCsv(range: ReportRange) {
 			cells: [
 				"refund",
 				formatWibTime(row.at ?? range.from),
-				row.orderId,
+				row.providerPaymentId,
 				row.planId,
 				row.interval ?? "pass",
 				null,

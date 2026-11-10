@@ -9,7 +9,7 @@ import { formatPrice } from "./purchase";
 
 type PendingPaymentBannerProps = { payment: Payment; formatDate: (date: Date) => string };
 
-/** A checkout that's started and can still be paid: what it's for, until when, and the way back to Polar's page. */
+/** A checkout that's started and can still be paid: what it's for, until when, and the way back to its page. */
 export function PendingPaymentBanner({ payment, formatDate }: PendingPaymentBannerProps) {
 	const plan = getPlanName(payment.planId);
 	// A trial checkout charges nothing today; say so rather than the price it renews at.

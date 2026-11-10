@@ -1,6 +1,6 @@
 ---
 title: "Kebijakan Privasi"
-description: "Pemrosesan data akun, dokumen, pembayaran lewat Polar dan AI pada layanan Rezumi."
+description: "Pemrosesan data akun, dokumen, pembayaran lewat Dodo Payments dan AI pada layanan Rezumi."
 ---
 
 <Note>Paket berbayar dan kredit Rezumi AI belum dijual selama billing belum diaktifkan.</Note>
@@ -17,7 +17,7 @@ Kebijakan ini untuk layanan resmi rezumi.app dan app yang terhubung ke sana. Kon
 | Nama, email, username, foto opsional, status verifikasi                                                           | Akun, profil dan pemberian layanan                           | Pelaksanaan perjanjian                                                     |
 | Hash password, sesi/token, IP/user agent, verifikasi, 2FA dan passkey; identitas/token login sosial               | Autentikasi dan pencegahan penyalahgunaan                    | Perjanjian dan kepentingan sah keamanan yang dinilai terhadap hak pengguna |
 | CV, surat, unggahan, riwayat versi, catatan privat, lamaran, kontak/interview, knowledge, offer dan jadwal karier | Penyimpanan, sinkronisasi, ekspor dan fitur yang diminta     | Pelaksanaan perjanjian; pilihan publikasi/koneksi oleh pengguna            |
-| Id order/langganan Polar, nilai, mata uang, status/waktu, periode langganan, refund, ledger pemakaian kredit      | Verifikasi pembayaran, akses, penanganan sengketa, pembukuan | Perjanjian dan kewajiban hukum                                             |
+| Id pembayaran/langganan Dodo, nilai, mata uang, status/waktu, periode langganan, refund, ledger pemakaian kredit  | Verifikasi pembayaran, akses, penanganan sengketa, pembukuan | Perjanjian dan kewajiban hukum                                             |
 | Teks/dokumen, konteks lowongan, prompt, hasil AI dan catatan biaya tindakan                                       | Menjalankan tindakan AI yang dipilih                         | Permintaan pengguna/perjanjian dan persetujuan bila diwajibkan             |
 | Cookie sesi/preferensi, penyimpanan perangkat, log keamanan dan hitungan tayangan/unduhan CV                      | Fungsi app, keamanan dan statistik CV                        | Perjanjian dan kepentingan sah yang proporsional                           |
 | Pengaduan dan laporan konten yang dikirim                                                                         | Dukungan, moderasi, pelaksanaan hak                          | Perjanjian, kewajiban hukum dan kepentingan sah keamanan                   |
@@ -31,12 +31,13 @@ Tidak ada analytics iklan pihak ketiga dalam app resmi saat draf ini dibuat; log
 
 - **Cloudflare:** Worker, jaringan, pengamanan dan penyimpanan unggahan privat di R2; termasuk metadata permintaan.
 - **Neon:** basis data PostgreSQL terkelola untuk akun, dokumen dan catatan layanan. Wilayah basis data/backup: **Singapura (AWS ap-southeast-1)**.
-- **Polar (Polar Software, Inc., Amerika Serikat):** penjual resmi (_Merchant of Record_) langganan. Saat checkout, Rezumi mengirim
-  id akun, nama, email, alamat IP (untuk mata uang dan lokasi pajak) dan bahasa; pelanggan mengisi data pembayaran dan alamat tagihan
-  langsung di Polar. Polar memproses pembayaran (melalui Stripe), pajak, invoice, dan sengketa sebagai pengendali data sendiri menurut
-  kebijakan privasinya. Rezumi menerima id dan status order/langganan/refund, nilai dan periode; tidak menerima atau menyimpan nomor kartu,
-  CVC, atau alamat tagihan. Saat akun dihapus, Rezumi meminta Polar menghapus dan menganonimkan data pelanggan; Polar menyimpan catatan order
-  sesuai kewajiban hukumnya. Data dapat diproses di luar Indonesia.
+- **Dodo Payments (Dodo Payments, Inc. dan grup perusahaannya, Amerika Serikat dan India):** penjual resmi (_Merchant of Record_)
+  langganan. Saat checkout, Rezumi mengirim id akun, nama, email, bahasa dan negara (Indonesia, untuk harga Rupiah); pelanggan mengisi
+  data pembayaran dan alamat tagihan langsung di Dodo Payments. Dodo Payments memproses pembayaran (melalui mitra pemrosesnya), pajak,
+  invoice, dan sengketa sebagai pengendali data sendiri menurut kebijakan privasinya. Rezumi menerima id dan status
+  pembayaran/langganan/refund/sengketa, nilai dan periode; tidak menyimpan nomor kartu, CVC, atau alamat tagihan. Saat akun dihapus,
+  Rezumi menghentikan langganannya di Dodo Payments; Dodo Payments menyimpan catatan transaksi sesuai kewajiban hukumnya. Data dapat
+  diproses di luar Indonesia.
 - **Provider AI:** hanya data yang diperlukan untuk tindakan yang diminta, seperti teks CV/surat, lowongan, jawaban, knowledge atau konteks percakapan.
   BYOK memakai provider yang dipilih (mis. OpenAI, Anthropic, Google Gemini, OpenRouter atau endpoint kompatibel).
   Rezumi AI akan menunjukkan provider/model sebelum digunakan; provider peluncuran: **Anthropic (Claude Haiku 5.5, Amerika Serikat)**. Anthropic menghapus masukan dan hasil dalam **30 hari**, kecuali konten yang ditandai melanggar kebijakan penggunaannya (hingga 2 tahun) atau bila hukum mewajibkan, dan tidak memakainya untuk melatih model.
@@ -127,7 +128,7 @@ paling lambat **3 × 24 jam** sesuai UU PDP, memuat data terdampak, waktu/cara k
 
 Cloudflare, Neon, email dan provider AI dapat memproses data di luar Indonesia. Sebelum transfer kami menilai tingkat pelindungan negara penerima;
 bila tidak setara, memastikan pelindungan memadai dan mengikat; bila syarat itu tidak terpenuhi, meminta persetujuan sesuai hukum.
-Lokasi pemrosesan: Singapura (Neon), Amerika Serikat (Polar, Anthropic) dan jaringan global Cloudflare. Transfer mengikuti perjanjian pemrosesan data dengan masing-masing penyedia.
+Lokasi pemrosesan: Singapura (Neon), Amerika Serikat (Dodo Payments, Anthropic), India (Dodo Payments) dan jaringan global Cloudflare. Transfer mengikuti perjanjian pemrosesan data dengan masing-masing penyedia.
 
 ## Anak dan perubahan
 

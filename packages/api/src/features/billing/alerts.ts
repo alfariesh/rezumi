@@ -12,17 +12,17 @@ import { getBillingMode } from "./entitlements";
  */
 
 const BILLING_ALERT_KINDS = [
-	// Polar says an order is paid but it isn't granted here (its account is gone, or applying it failed).
+	// Dodo says a payment succeeded but it isn't granted here (its account is gone, or applying it failed).
 	"paid_not_applied",
-	// Money taken back after it was paid: a refund Polar made to head off a dispute, or a dispute.
+	// A card dispute: opened (evidence needed), or lost and the money taken back.
 	"payment_reversed",
 	// An event that needs a look by hand: one that couldn't be applied, or a state the code doesn't expect.
 	"needs_review",
 	// Webhooks with a bad signature: a wrong secret after a change, or someone probing the endpoint.
 	"rejected_signatures",
-	// Polar's API kept failing: checkout pages or status checks.
+	// Dodo's API kept failing: checkout pages or status checks.
 	"provider_errors",
-	// Polar refused a refund, or never confirmed one.
+	// Dodo refused a refund, or never confirmed one.
 	"refund_failed",
 ] as const;
 
@@ -44,7 +44,7 @@ const MAX_ALERT_PAYMENTS = 20;
 const SWEEP_WINDOW_MS = 60 * 60 * 1000;
 /** A paid payment without its pass this long after it changed has failed, not raced. */
 const FULFILMENT_GRACE_MS = 5 * 60 * 1000;
-/** A refund Polar hasn't settled this long after it was asked needs a look. */
+/** A refund Dodo hasn't settled this long after it was asked needs a look. */
 const REFUND_CONFIRM_MS = 30 * 60 * 1000;
 /** The daily summary goes out from this hour, Western Indonesian Time. */
 const SUMMARY_HOUR_WIB = 8;
@@ -104,7 +104,7 @@ export function raiseBillingAlertQuietly(input: Parameters<typeof raiseBillingAl
 
 /**
  * The billing job's look for problems that are states rather than events: paid payments without their access and
- * credits, refunds Polar never settled. Each is caught in the hour after it starts, so the owner hears about it once
+ * credits, refunds Dodo never settled. Each is caught in the hour after it starts, so the owner hears about it once
  * (or twice, across an hour boundary) rather than every hour it lasts.
  */
 export async function detectBillingProblems(now = new Date()) {
