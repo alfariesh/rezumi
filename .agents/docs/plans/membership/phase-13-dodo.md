@@ -46,12 +46,23 @@ diskon di checkout, Pro AI 100 kredit per bulan, upgrade langsung dan downgrade 
 $5 bila payout di bawah $1.000; payout USD lewat SWIFT untuk bisnis non-AS $25. Cek metode payout ke rekening Indonesia saat
 onboarding.
 
+**Biaya nyata pembeli Rupiah** (uji produksi 2026-11-10): harga lokal IDR selalu "fees inclusive", jadi Rezumi juga menanggung
+**biaya kurs Adaptive Currency ±4%**. Pro AI bulanan Rp129.000 ≈ $7.14 → biaya kurs −$0.27 → Gross $6.87 → fee 6% × $7.14 +
+$0.40 = −$0.83 → **Net $6.04** (potongan ±15%). Perkiraan dengan kurs yang sama:
+
+| Paket IDR                | Potongan Dodo |
+| ------------------------ | ------------- |
+| Plus bulanan Rp59.000    | ±22%          |
+| Pro AI bulanan Rp129.000 | ±15%          |
+| Plus tahunan Rp459.000   | ±12%          |
+| Pro AI tahunan Rp999.000 | ±11%          |
+
 **Tugasmu** (Claude memandu; semua kunci kamu ketik sendiri, tidak pernah di chat):
 
 | Kapan                            | Tugas                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ✅ Sudah (mode test, 2026-11-10) | Dashboard Dodo, **mode Test** (saklar Live Mode mati): Developer → API Keys → buat key. Tulis di `.env.local`: `DODO_PAYMENTS_ENVIRONMENT="test_mode"`, `DODO_PAYMENTS_API_KEY="…"`, dan empat id produk test di bagian "Untuk agent". Hapus baris `POLAR_*` lama                                                                                                                                                                                                |
-| ✅ Sudah (mode test, 2026-11-10) | Settings → Pricing → nyalakan **Adaptive Currency** (wajib agar checkout bisa menagih Rupiah). Harga Rupiah tetap memakai harga lokal yang sudah dibuat, tanpa biaya kurs                                                                                                                                                                                                                                                                                        |
+| ✅ Sudah (mode test, 2026-11-10) | Settings → Pricing → nyalakan **Adaptive Currency** (wajib agar checkout bisa menagih Rupiah). Harga Rupiah tetap memakai harga lokal yang sudah dibuat; biaya kurs ±4% ditanggung Rezumi (harga lokal selalu "fees inclusive")                                                                                                                                                                                                                                  |
 | ✅ Sudah (mode test, 2026-11-10) | Settings → Subscriptions: **Prevent Trial Misuse ON**; Settings → Revenue Recovery: **Payment retries ON**. Jangan membuat "product collection" untuk portal (ganti paket lewat Rezumi saja)                                                                                                                                                                                                                                                                     |
 | ✅ Sudah (mode test, 2026-11-10) | Settings → Communication → Customer emails: nyalakan **Payment Failed**, **Subscription Renewal Failed**, dan **Upcoming Renewal Reminder** (bawaannya mati; Rezumi tidak mengirim email itu sendiri). **Ulangi semua setelan ini di mode Live** sebelum go-live: setelan mode test dan live terpisah                                                                                                                                                            |
 | Sebelum uji webhook              | Developer → Webhooks → Add endpoint ke `https://<staging atau rezumi.app>/api/payments/dodo/webhook` dengan event: semua `payment.*`, semua `subscription.*`, `refund.succeeded`, `refund.failed`, semua `dispute.*`. Salin **signing secret** ke `DODO_PAYMENTS_WEBHOOK_KEY` (lokal: `.env.local`; produksi: `pnpm exec wrangler secret put DODO_PAYMENTS_WEBHOOK_KEY`). Uji lokal bisa juga dengan `dodo wh listen`                                            |
@@ -106,17 +117,17 @@ metode refund `dodo`, default provider `dodo`.
 
 ### Langkah dan status
 
-| #   | Langkah                                                                                                                                                                   | Status |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 1   | Riset Dodo (docs, SDK 2.61.1) dan produk test (4 produk, USD + IDR, pajak di atas harga)                                                                                  | ✅     |
-| 2   | Env, skema DB + migrasi                                                                                                                                                   | ✅     |
-| 3   | Backend: client, webhook, checkout/ganti paket/batal/portal/invoice, rekonsiliasi, refund, sengketa, hapus akun, admin, laporan, notifikasi                               | ✅     |
-| 4   | Web: teks, status on hold, invoice PDF, admin; terjemahan Indonesia                                                                                                       | ✅     |
-| 5   | Tes unit + DB nyata (27 skenario Dodo), tes web, tes e2e diperbarui                                                                                                       | ✅     |
-| 6   | Legal ID/EN, dokumen rencana, runbook                                                                                                                                     | ✅     |
-| 7   | Verifikasi perilaku di API mode test (parameter checkout, pembayaran trial $0, metadata, batal di akhir periode, downgrade terjadwal, upgrade saat trial, batal seketika) | ✅     |
-| 8   | Uji end-to-end lewat server lokal dengan kartu uji 4242, lalu webhook asli lewat relay `dodo wh listen` (2026-11-10)                                                      | ✅     |
-| 9   | Go-live: verifikasi live (✅), produk live (✅), setelan live (✅), `wrangler.jsonc` live; sisa: secret Worker, webhook live, uji pembelian kecil + refund                | 🟡     |
+| #   | Langkah                                                                                                                                                                                                       | Status |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 1   | Riset Dodo (docs, SDK 2.61.1) dan produk test (4 produk, USD + IDR, pajak di atas harga)                                                                                                                      | ✅     |
+| 2   | Env, skema DB + migrasi                                                                                                                                                                                       | ✅     |
+| 3   | Backend: client, webhook, checkout/ganti paket/batal/portal/invoice, rekonsiliasi, refund, sengketa, hapus akun, admin, laporan, notifikasi                                                                   | ✅     |
+| 4   | Web: teks, status on hold, invoice PDF, admin; terjemahan Indonesia                                                                                                                                           | ✅     |
+| 5   | Tes unit + DB nyata (27 skenario Dodo), tes web, tes e2e diperbarui                                                                                                                                           | ✅     |
+| 6   | Legal ID/EN, dokumen rencana, runbook                                                                                                                                                                         | ✅     |
+| 7   | Verifikasi perilaku di API mode test (parameter checkout, pembayaran trial $0, metadata, batal di akhir periode, downgrade terjadwal, upgrade saat trial, batal seketika)                                     | ✅     |
+| 8   | Uji end-to-end lewat server lokal dengan kartu uji 4242, lalu webhook asli lewat relay `dodo wh listen` (2026-11-10)                                                                                          | ✅     |
+| 9   | Go-live: verifikasi live (✅), produk live (✅), setelan live (✅), `wrangler.jsonc` live; secret Worker (✅), webhook live (✅), uji pembelian (✅); sisa: refund lewat support Dodo, lalu `BILLING_MODE=on` | 🟡     |
 
 ### Hasil verifikasi mode test (2026-11-10, lewat MCP, tanpa server Rezumi)
 
@@ -205,8 +216,35 @@ Setelan dashboard ternyata berlaku untuk kedua mode: di live semuanya sudah sepe
    dengan key yang benar.
 3. Developer → Webhooks → Add endpoint `https://rezumi.app/api/payments/dodo/webhook`, event: semua `payment.*`,
    `subscription.*`, `refund.*`, `dispute.*`. Salin signing secret → `pnpm exec wrangler secret put DODO_PAYMENTS_WEBHOOK_KEY`.
-   Di tab Settings endpoint, isi email pemilik untuk peringatan pengiriman gagal.
-4. Disarankan: Settings → Business → isi support email brand `hi@rezumi.app` (masih kosong), tampil di email dan invoice Dodo.
+   Dodo tidak punya email peringatan per endpoint (dicek 2026-11-10); peringatan datang dari Rezumi (`BILLING_ALERT_EMAIL`).
+4. ✅ Settings → Business → brand Rezumi: support email `hi@rezumi.app` (2026-11-10). Settings → Communication → Your Emails:
+   notifikasi Payments, Payouts, Refunds, Disputes, Subscription Started untuk email pemilik menyala.
 5. Uji di produksi dengan akun admin (`BILLING_MODE=admins`): satu pembelian kecil sungguhan (Plus bulanan $4.99, atau Rp59.000)
    lalu refund penuh dari halaman admin; cek webhook masuk di Developer → Webhooks → Logs dan di riwayat pelanggan admin.
 6. Go-live: `BILLING_MODE=on` (Phase 11).
+
+### Uji pembelian produksi (2026-11-10)
+
+Akun admin pemilik di rezumi.app (`BILLING_MODE=admins`), kartu Mastercard kredit Indonesia, Pro AI bulanan (Plus pertama akan
+memberi masa coba $0, jadi tidak menguji tagihan sungguhan).
+
+| Cek                     | Hasil                                                                                                            |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Checkout                | `cks_0NrcQu9s22CepVGkRod5A` → `pay_0NrcRE2m6DYTZFL4kNweT`, Rp129.000, pajak 0, metadata Rezumi ikut              |
+| Langganan               | `sub_0NrcRE30SeWKXuMsGvLEm` aktif, perpanjangan 10 Des 2026                                                      |
+| Webhook produksi        | `payment.succeeded`, `subscription.active`, `subscription.renewed`, `subscription.updated`; error rate 0%        |
+| Rezumi                  | Paket Pro AI, 100 kredit, riwayat "New subscription · Paid", halaman admin lengkap                               |
+| Saldo Dodo              | Gross $6.87, fee $0.83, Net $6.04 (lihat "Biaya nyata pembeli Rupiah")                                           |
+| Refund penuh dari admin | **Ditolak Dodo: "insufficient funds in wallet"** (HTTP 409); tercatat Ditolak + email peringatan, tak ada efek   |
+| Tindak lanjut           | Pemilik meminta refund lewat support Dodo; langganan dibatalkan di akhir periode (`cancel_at_next_billing_date`) |
+
+Temuan:
+
+- **Refund dibayar dari saldo wallet**, bukan dari pembayaran aslinya. Satu pembayaran hanya menambah saldo sebesar Net-nya,
+  jadi refund penuh atas pembayaran pertama (atau tepat setelah payout) selalu ditolak. Penanganan Rezumi sudah benar (refund
+  `failed`, alert `refund_failed`, langganan tidak dihentikan); langkah pemilik ada di runbook bagian 3.
+- **Langganan Rupiah tercatat dalam USD** di Dodo (`currency: USD`, `recurring_pre_tax_amount: 714`), walau pembayarannya IDR
+  dan perpanjangan tetap memakai harga lokal (docs Localized Pricing: "Renewals keep the localized price"). Akibatnya halaman
+  admin menampilkan langganan sebagai "Monthly · $7.14" dan laporan MRR memakai angka USD itu. Belum diubah.
+- Langganan baru Dodo juga mengirim `subscription.renewed` saat dibuat; Rezumi membaca ulang langganan, jadi tidak ada efek ganda.
+- Sisa: pastikan refund dari support Dodo tercatat lewat webhook (`refund.succeeded`, pembayaran Refunded, kredit ditarik).
