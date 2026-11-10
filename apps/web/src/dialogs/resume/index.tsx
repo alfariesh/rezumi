@@ -130,6 +130,7 @@ export function ResumeDialog({ mode, data }: ResumeDialogProps) {
 										<FormControl
 											render={
 												<Input
+													variant="secondary"
 													fullWidth
 													minLength={1}
 													maxLength={64}

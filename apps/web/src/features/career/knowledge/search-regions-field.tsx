@@ -14,6 +14,7 @@ import {
 	shownSearchRegions,
 } from "@rezumi/utils/region";
 import { Token, TokenFrame } from "./token-field";
+import { FlagIcon } from "@/components/flag-icon";
 
 export type SearchRegionsFieldProps = {
 	value: string[] | null | undefined;
@@ -68,6 +69,7 @@ export function SearchRegionsField({ value, accountTimeZone, onChange }: SearchR
 					const country = name(code);
 					return (
 						<Token key={code} removeLabel={t`Remove ${country}`} onRemove={() => apply({ type: "remove", code })}>
+							<FlagIcon code={code} size={14} />
 							<span>{country}</span>
 							{shown.automatic && (
 								<span className="flex items-center gap-0.5 text-xs font-normal opacity-70">
@@ -108,6 +110,7 @@ export function SearchRegionsField({ value, accountTimeZone, onChange }: SearchR
 						>
 							{countries.map((country) => (
 								<ListBox.Item key={country.value} id={country.value} textValue={`${country.label} ${country.value}`}>
+									<FlagIcon code={country.value} />
 									{country.label}
 								</ListBox.Item>
 							))}

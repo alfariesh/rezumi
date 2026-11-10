@@ -3,7 +3,7 @@ import type { LetterDraft } from "@/features/letters/store";
 import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { CSSProperties, ReactElement, ReactNode } from "react";
-import { NativeSelect, Widget } from "@heroui-pro/react";
+import { Widget } from "@heroui-pro/react";
 import { Button, Chip, Description, Dropdown, Input, Label, Link, Separator, TextArea, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -11,12 +11,14 @@ import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { useReducedMotion } from "motion/react";
-import { useId, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@rezumi/resume/cover-letter";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
+import { DatePickerField } from "@/components/input/date-time-fields";
+import { SelectField } from "@/components/input/select-field";
 import { WidgetHeading, WidgetAction } from "@/components/layout/widget-heading";
 import { templates } from "@/dialogs/resume/template/data";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
@@ -288,19 +290,12 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 					</Label>
 					<Input />
 				</TextField>
-				<TextField
-					fullWidth
-					variant="secondary"
-					type="date"
+				<DatePickerField
+					label={<Trans>Date</Trans>}
 					value={letter.letterDate ?? ""}
 					isDisabled={disabled}
 					onChange={(letterDate) => edit({ letterDate: letterDate || null })}
-				>
-					<Label>
-						<Trans>Date</Trans>
-					</Label>
-					<Input />
-				</TextField>
+				/>
 			</div>
 		</LetterWidget>
 	);
@@ -308,7 +303,6 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 
 /** FROM: the resume the sender's details come from, and whether they stay live or are copied into the letter. */
 function FromSection({ letter, disabled }: { letter: CoverLetter; disabled: boolean }) {
-	const id = useId();
 	const { data: resumes } = useQuery(orpc.resume.list.queryOptions({ input: {} }));
 	const resume = resumes?.find((item) => item.id === letter.sourceResumeId);
 
@@ -330,26 +324,16 @@ function FromSection({ letter, disabled }: { letter: CoverLetter; disabled: bool
 
 	return (
 		<LetterWidget id="letter-from" icon="user-circle" title={<Trans>From</Trans>}>
-			<NativeSelect fullWidth variant="secondary">
-				<Label htmlFor={`${id}-resume`}>
-					<Trans>Resume</Trans>
-				</Label>
-				<NativeSelect.Trigger
-					id={`${id}-resume`}
-					className="pointer-coarse:min-h-11"
-					value={letter.sourceResumeId ?? ""}
-					disabled={disabled}
-					onChange={(event) => setResume(event.target.value || null)}
-				>
-					<NativeSelect.Option value="">{t`No resume`}</NativeSelect.Option>
-					{resumes?.map((item) => (
-						<NativeSelect.Option key={item.id} value={item.id}>
-							{item.name}
-						</NativeSelect.Option>
-					))}
-					<NativeSelect.Indicator />
-				</NativeSelect.Trigger>
-			</NativeSelect>
+			<SelectField
+				label={<Trans>Resume</Trans>}
+				value={letter.sourceResumeId ?? ""}
+				isDisabled={disabled}
+				onChange={(value) => setResume(value || null)}
+				options={[
+					{ value: "", label: t`No resume` },
+					...(resumes ?? []).map((item) => ({ value: item.id, label: item.name })),
+				]}
+			/>
 			{letter.sourceResumeId ? (
 				<SwitchRow
 					label={t`Use details from “${resume?.name ?? t`the resume`}”`}

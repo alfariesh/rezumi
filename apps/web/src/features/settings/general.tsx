@@ -10,6 +10,7 @@ import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { SettingsRow, SettingsSection } from "./section";
+import { timeZoneOption } from "@/components/input/time-zone-options";
 import { Combobox } from "@/components/ui/combobox";
 import { LocaleCombobox } from "@/features/locale/combobox";
 import { useTheme } from "@/features/theme/provider";
@@ -58,7 +59,7 @@ export function GeneralSection() {
 	);
 }
 
-const timeZones = Intl.supportedValuesOf("timeZone").map((zone) => ({ value: zone, label: zone }));
+const timeZones = Intl.supportedValuesOf("timeZone").map(timeZoneOption);
 
 /** The account's timezone, which interview times, reminders and schedules use. Saved as soon as it's chosen. */
 function TimezoneSetting() {

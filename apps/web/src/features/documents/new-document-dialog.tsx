@@ -662,6 +662,7 @@ function CopyForJob({ initialSourceId, initialJobId, onBack, onCreated }: CopyFo
 					<Trans>Name</Trans>
 				</label>
 				<Input
+					variant="secondary"
 					fullWidth
 					id={nameId}
 					value={name ?? suggested}

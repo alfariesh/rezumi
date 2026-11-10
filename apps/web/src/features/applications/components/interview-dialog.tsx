@@ -15,6 +15,8 @@ import { cn } from "@rezumi/utils/style";
 import { fromZonedDateTime } from "@rezumi/utils/timezone";
 import { dayKey } from "../interviews";
 import { applicationsListQueryKey } from "../queries";
+import { DatePickerField, TimePickerField } from "@/components/input/date-time-fields";
+import { timeZoneOption } from "@/components/input/time-zone-options";
 import { Combobox } from "@/components/ui/combobox";
 import { useCareerTime, withUndo } from "@/features/career/shared";
 import { useClosingValue } from "@/hooks/use-closing-value";
@@ -357,29 +359,20 @@ export function InterviewDialog({
 						</Field>
 
 						<div className="grid gap-2.5 sm:grid-cols-3">
-							<Field label={t`Date`} htmlFor={`${id}-date`}>
-								<Input
-									fullWidth
-									id={`${id}-date`}
-									type="date"
-									required
-									aria-invalid={!draft.date}
-									value={draft.date}
-									onChange={(event) => set("date", event.target.value)}
-								/>
-							</Field>
-							<Field label={t`Time · ${draft.timezone}`} htmlFor={`${id}-time`}>
-								<Input
-									fullWidth
-									id={`${id}-time`}
-									type="time"
-									required
-									aria-invalid={!draft.time || (!!draft.date && !at)}
-									aria-describedby={draft.date && draft.time && !at ? `${id}-time-error` : undefined}
-									value={draft.time}
-									onChange={(event) => set("time", event.target.value)}
-								/>
-							</Field>
+							<DatePickerField
+								label={t`Date`}
+								isRequired
+								isInvalid={!draft.date}
+								value={draft.date}
+								onChange={(value) => set("date", value)}
+							/>
+							<TimePickerField
+								label={t`Time · ${draft.timezone}`}
+								isRequired
+								isInvalid={!draft.time || (!!draft.date && !at)}
+								value={draft.time}
+								onChange={(value) => set("time", value)}
+							/>
 							<Field label={t`Length · minutes`}>
 								<Segments
 									label={t`Length in minutes`}
@@ -403,7 +396,7 @@ export function InterviewDialog({
 										id={`${id}-timezone`}
 										className="w-full"
 										value={draft.timezone}
-										options={zones.map((zone) => ({ value: zone, label: zone.replaceAll("_", " ") }))}
+										options={zones.map(timeZoneOption)}
 										onValueChange={(value) => value && set("timezone", value)}
 									/>
 								</Field>
@@ -430,6 +423,7 @@ export function InterviewDialog({
 
 						<Field label={t`Location`} htmlFor={`${id}-location`}>
 							<Input
+								variant="secondary"
 								fullWidth
 								id={`${id}-location`}
 								value={draft.location}
@@ -446,6 +440,7 @@ export function InterviewDialog({
 							{draft.participants.map((participant, index) => (
 								<div key={participant.id} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_32px] gap-2">
 									<Input
+										variant="secondary"
 										fullWidth
 										aria-label={t`Name of person ${index + 1}`}
 										placeholder={t`Name`}
@@ -454,6 +449,7 @@ export function InterviewDialog({
 										onChange={(event) => setParticipant(participant.id, { name: event.target.value })}
 									/>
 									<Input
+										variant="secondary"
 										fullWidth
 										aria-label={t`Role of person ${index + 1}`}
 										placeholder={t`Role`}
@@ -474,6 +470,7 @@ export function InterviewDialog({
 										}
 									/>
 									<Input
+										variant="secondary"
 										fullWidth
 										type="url"
 										aria-label={t`Profile link of person ${index + 1}`}
@@ -509,6 +506,7 @@ export function InterviewDialog({
 
 						<Field label={t`What they asked you to prepare`} htmlFor={`${id}-notes`}>
 							<TextArea
+								variant="secondary"
 								fullWidth
 								id={`${id}-notes`}
 								rows={2}

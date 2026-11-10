@@ -2,7 +2,6 @@
 import type { IconName } from "@rezumi/schema/icons";
 import type { IconStyle } from "@rezumi/schema/resume/data";
 import type { RowComponentProps } from "react-window";
-import { NativeSelect } from "@heroui-pro/react";
 import { Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { List } from "react-window";
@@ -10,6 +9,7 @@ import { iconPickerGroups, searchIcons } from "@rezumi/resume/icon-picker";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 import { useIconGlyphs } from "./resume-icon";
+import { SelectField } from "./select-field";
 
 const COLUMNS = 8;
 const ICON_ROW_HEIGHT = 36;
@@ -179,21 +179,16 @@ export function IconPickerGrid({
 			/>
 
 			<div className="flex shrink-0 items-center gap-1 px-2 pt-2 pb-1">
-				<NativeSelect variant="secondary" fullWidth className="min-w-0 flex-1">
-					<NativeSelect.Trigger
-						aria-label={t`Icon category`}
-						value={group}
-						onChange={(event) => onGroupChange(event.target.value)}
-					>
-						<NativeSelect.Option value="all">{t`All categories`}</NativeSelect.Option>
-						{iconPickerGroups.map((candidate) => (
-							<NativeSelect.Option key={candidate.id} value={candidate.id}>
-								{labelOf(labels, candidate.id)}
-							</NativeSelect.Option>
-						))}
-						<NativeSelect.Indicator />
-					</NativeSelect.Trigger>
-				</NativeSelect>
+				<SelectField
+					aria-label={t`Icon category`}
+					value={group}
+					onChange={onGroupChange}
+					className="min-w-0 flex-1"
+					options={[
+						{ value: "all", label: t`All categories` },
+						...iconPickerGroups.map((candidate) => ({ value: candidate.id, label: labelOf(labels, candidate.id) })),
+					]}
+				/>
 				<IconButton icon="prohibit" label={t`No icon`} size="sm" onPress={() => onChange("")} />
 			</div>
 

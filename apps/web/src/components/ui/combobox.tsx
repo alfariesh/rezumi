@@ -11,6 +11,8 @@ type ComboboxOption<TValue extends string | number = string> = {
 	// Without it, a JSX label falls back to String(value) (e.g. a raw enum or locale code) in the trigger.
 	textValue?: string;
 	keywords?: string[];
+	/** Shown before the label, in the list and in the trigger (which repeats the chosen item): a flag, say. */
+	icon?: React.ReactNode;
 	disabled?: boolean;
 };
 
@@ -147,7 +149,14 @@ function Combobox<TValue extends string | number = string>(props: ComboboxProps<
 								textValue={textOf(item)}
 								isDisabled={Boolean(item.disabled)}
 							>
-								{item.label}
+								{item.icon ? (
+									<span className="flex min-w-0 items-center gap-2">
+										{item.icon}
+										{item.label}
+									</span>
+								) : (
+									item.label
+								)}
 								<ListBox.ItemIndicator />
 							</ListBox.Item>
 						))}

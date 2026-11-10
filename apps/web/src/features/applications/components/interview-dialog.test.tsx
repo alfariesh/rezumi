@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import type { Application } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
@@ -119,17 +119,33 @@ afterEach(() => {
 	clients.splice(0).forEach((client) => client.clear());
 });
 
+/** Types digits into a date or time segment, as the keyboard does. */
+function typeInto(segment: HTMLElement, digits: string) {
+	fireEvent.focus(segment);
+	for (const data of digits) {
+		fireEvent(
+			segment,
+			new InputEvent("beforeinput", { data, inputType: "insertText", bubbles: true, cancelable: true }),
+		);
+	}
+}
+
 it.each([false, true])(
 	"rejects nonexistent Berlin DST time before sending an interview mutation (editing: %s)",
 	async (editing) => {
 		mount(editing);
-		fireEvent.change(await screen.findByLabelText("Date"), { target: { value: "2027-03-28" } });
-		const time = screen.getByLabelText("Time · Europe/Berlin");
-		fireEvent.change(time, { target: { value: "02:30" } });
+		const date = within(await screen.findByRole("group", { name: "Date" }));
+		typeInto(date.getByRole("spinbutton", { name: /^month/ }), "3");
+		typeInto(date.getByRole("spinbutton", { name: /^day/ }), "28");
+		typeInto(date.getByRole("spinbutton", { name: /^year/ }), "2027");
+		const time = within(screen.getAllByRole("group", { name: "Time · Europe/Berlin" }).at(0) as HTMLElement);
+		typeInto(time.getByRole("spinbutton", { name: /^hour/ }), "2");
+		typeInto(time.getByRole("spinbutton", { name: /^minute/ }), "30");
+		const hour = time.getByRole("spinbutton", { name: /^hour/ });
 		expect((await screen.findByRole("alert")).textContent).toContain(
 			"This time does not exist in the selected timezone",
 		);
-		expect(time.getAttribute("aria-invalid")).toBe("true");
+		expect(hour.getAttribute("aria-invalid")).toBe("true");
 		const save = screen.getByRole("button", { name: "Save interview" }) as HTMLButtonElement;
 		expect(save.disabled).toBe(true);
 		fireEvent.click(save);

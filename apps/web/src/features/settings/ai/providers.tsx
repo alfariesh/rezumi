@@ -6,9 +6,11 @@ import {
 	Button,
 	buttonVariants,
 	Chip,
+	ComboBox,
 	Description,
 	Input,
 	Label,
+	ListBox,
 	Modal,
 	Spinner,
 	Switch,
@@ -359,7 +361,6 @@ type ProviderFieldsProps = {
 };
 
 function ProviderFieldsForm({ provider, value, onChange, keyOptional, keyAgain }: ProviderFieldsProps) {
-	const id = useId();
 	const set = (patch: Partial<ProviderFields>) => onChange({ ...value, ...patch });
 	const defaults = providerDefaults(provider);
 	const catalogId = modelsDevProviderIds[provider];
@@ -410,23 +411,33 @@ function ProviderFieldsForm({ provider, value, onChange, keyOptional, keyAgain }
 					</Description>
 				)}
 			</TextField>
-			<TextField fullWidth value={value.model} onChange={(model) => set({ model })} className="gap-1.5">
+			<ComboBox
+				fullWidth
+				allowsCustomValue
+				variant="secondary"
+				items={models}
+				inputValue={value.model}
+				onInputChange={(model) => set({ model })}
+				className="gap-1.5"
+			>
 				<Label>
 					<Trans>Model</Trans>
 				</Label>
-				<Input
-					variant="secondary"
-					list={`${id}-models`}
-					placeholder={defaults.model || "gpt-4.1"}
-					{...secretInputProps}
-				/>
-				<datalist id={`${id}-models`}>
-					{models.map((model) => (
-						<option key={model.id} value={model.id}>
-							{model.name}
-						</option>
-					))}
-				</datalist>
+				<ComboBox.InputGroup>
+					<Input placeholder={defaults.model || "gpt-4.1"} {...secretInputProps} />
+					<ComboBox.Trigger />
+				</ComboBox.InputGroup>
+				<ComboBox.Popover>
+					<ListBox>
+						{(model: (typeof models)[number]) => (
+							<ListBox.Item id={model.id} textValue={model.id}>
+								{model.id}
+								{model.name !== model.id && <span className="text-xs text-muted">{model.name}</span>}
+								<ListBox.ItemIndicator />
+							</ListBox.Item>
+						)}
+					</ListBox>
+				</ComboBox.Popover>
 				<Description>
 					{!catalogId ? (
 						<Trans>Enter any model ID supported by your endpoint.</Trans>
@@ -451,7 +462,7 @@ function ProviderFieldsForm({ provider, value, onChange, keyOptional, keyAgain }
 						</Trans>
 					)}
 				</Description>
-			</TextField>
+			</ComboBox>
 			<TextField fullWidth value={value.label} onChange={(label) => set({ label })} className="gap-1.5">
 				<Label>
 					<Trans>Name</Trans>

@@ -294,7 +294,7 @@ function PartTiles({ story }: { story: Story }) {
 					title={part.label}
 					className={cn(
 						"grid size-7 place-items-center rounded-lg text-sm font-semibold",
-						story.data[part.key].trim() ? [FILLED_TILE, TILE_BACKGROUNDS[index]] : "bg-default text-muted",
+						story.data[part.key].trim() ? [FILLED_TILE, TILE_BACKGROUNDS[index]] : "bg-control text-muted",
 					)}
 				>
 					{part.letter}
@@ -309,7 +309,7 @@ function PartTiles({ story }: { story: Story }) {
 const partTile = (filled: boolean, index: number) =>
 	cn(
 		"grid size-9 place-items-center rounded-xl text-base font-semibold",
-		filled ? [FILLED_TILE, TILE_BACKGROUNDS[index]] : "bg-default text-muted",
+		filled ? [FILLED_TILE, TILE_BACKGROUNDS[index]] : "bg-control text-muted",
 	);
 
 type StoryReaderProps = { story: Story; facts: Map<string, Fact> };

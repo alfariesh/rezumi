@@ -12,6 +12,8 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { applicationsListQueryKey } from "../queries";
 import { FileAttachmentField } from "./file-attachment-field";
+import { DatePickerField } from "@/components/input/date-time-fields";
+import { SuggestInput } from "@/components/input/suggest-input";
 import { Combobox } from "@/components/ui/combobox";
 import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
@@ -19,8 +21,9 @@ import { useClosingValue } from "@/hooks/use-closing-value";
 import { isImeComposing } from "@/libs/keyboard";
 import { orpc } from "@/libs/orpc/client";
 
-// Preset source suggestions surfaced via a <datalist>; the field itself stays free-text.
+// Preset suggestions for the free-text Source and Location fields.
 const SOURCE_OPTIONS = ["LinkedIn", "Indeed", "Company Website", "Referral", "Recruiter", "Other"];
+const LOCATION_OPTIONS = ["Remote", "Hybrid", "In-office"];
 // Mirrors the server-side cap on `applications.ai.autofill`.
 const MAX_JOB_DESCRIPTION_CHARS = 20_000;
 // ponytail: a paste shorter than this is a snippet, not a posting — don't burn an AI call on it.
@@ -157,6 +160,7 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 							</Trans>
 						</p>
 						<TextArea
+							variant="secondary"
 							fullWidth
 							// Fixed height: the accordion panel measures its content once, so a textarea that
 							// grew with the pasted text would overflow the clipped panel.
@@ -312,6 +316,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 								<Field label={t`Job description`}>
 									{(id) => (
 										<TextArea
+											variant="secondary"
 											fullWidth
 											id={id}
 											rows={6}
@@ -341,6 +346,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							<Field label={t`Company`} required>
 								{(id) => (
 									<Input
+										variant="secondary"
 										fullWidth
 										id={id}
 										value={form.company}
@@ -350,33 +356,32 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							</Field>
 							<Field label={t`Role / title`} required>
 								{(id) => (
-									<Input fullWidth id={id} value={form.role} onChange={(event) => set("role", event.target.value)} />
+									<Input
+										variant="secondary"
+										fullWidth
+										id={id}
+										value={form.role}
+										onChange={(event) => set("role", event.target.value)}
+									/>
 								)}
 							</Field>
 
 							<div className="grid grid-cols-2 gap-3">
 								<Field label={t`Location`}>
 									{(id) => (
-										<>
-											<Input
-												fullWidth
-												id={id}
-												value={form.location}
-												list="application-locations"
-												placeholder={t`Remote, Hybrid, a city…`}
-												onChange={(event) => set("location", event.target.value)}
-											/>
-											<datalist id="application-locations">
-												<option value="Remote" />
-												<option value="Hybrid" />
-												<option value="In-office" />
-											</datalist>
-										</>
+										<SuggestInput
+											id={id}
+											value={form.location}
+											suggestions={LOCATION_OPTIONS}
+											placeholder={t`Remote, Hybrid, a city…`}
+											onChange={(location) => set("location", location)}
+										/>
 									)}
 								</Field>
 								<Field label={t`Salary range`}>
 									{(id) => (
 										<Input
+											variant="secondary"
 											fullWidth
 											id={id}
 											value={form.salary}
@@ -389,21 +394,13 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							<div className="grid grid-cols-2 gap-3">
 								<Field label={t`Source`}>
 									{(id) => (
-										<>
-											<Input
-												fullWidth
-												id={id}
-												value={form.source}
-												list="application-sources"
-												placeholder={t`LinkedIn, Referral…`}
-												onChange={(event) => set("source", event.target.value)}
-											/>
-											<datalist id="application-sources">
-												{SOURCE_OPTIONS.map((option) => (
-													<option key={option} value={option} />
-												))}
-											</datalist>
-										</>
+										<SuggestInput
+											id={id}
+											value={form.source}
+											suggestions={SOURCE_OPTIONS}
+											placeholder={t`LinkedIn, Referral…`}
+											onChange={(source) => set("source", source)}
+										/>
 									)}
 								</Field>
 								<Field label={t`Stage`}>
@@ -422,6 +419,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							<Field label={t`Job posting link`}>
 								{(id) => (
 									<Input
+										variant="secondary"
 										fullWidth
 										id={id}
 										type="url"
@@ -433,17 +431,11 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							</Field>
 
 							{!isEditing && (
-								<Field label={t`Stage date`}>
-									{(id) => (
-										<Input
-											fullWidth
-											id={id}
-											type="date"
-											value={form.stageEnteredAt}
-											onChange={(event) => set("stageEnteredAt", event.target.value)}
-										/>
-									)}
-								</Field>
+								<DatePickerField
+									label={t`Stage date`}
+									value={form.stageEnteredAt}
+									onChange={(value) => set("stageEnteredAt", value)}
+								/>
 							)}
 
 							{/* Resume: link a live Rezumi (unlocks AI) or upload the exact PDF you sent. */}
@@ -495,20 +487,15 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							</Field>
 
 							<div className="grid grid-cols-2 gap-3">
-								<Field label={t`Follow-up date`}>
-									{(id) => (
-										<Input
-											fullWidth
-											id={id}
-											type="date"
-											value={form.followUpAt}
-											onChange={(event) => set("followUpAt", event.target.value)}
-										/>
-									)}
-								</Field>
+								<DatePickerField
+									label={t`Follow-up date`}
+									value={form.followUpAt}
+									onChange={(value) => set("followUpAt", value)}
+								/>
 								<Field label={t`Follow-up note`}>
 									{(id) => (
 										<Input
+											variant="secondary"
 											fullWidth
 											id={id}
 											value={form.followUpNote}
@@ -521,6 +508,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							<Field label={t`Notes`}>
 								{(id) => (
 									<TextArea
+										variant="secondary"
 										fullWidth
 										id={id}
 										value={form.notes}
@@ -574,7 +562,7 @@ type TagsFieldProps = {
 	onChange: (tags: string[]) => void;
 };
 
-// Type-and-Enter tag input with chips + an autocomplete datalist of the user's existing tags.
+// Type-and-Enter tag input with chips + suggestions from the user's existing tags.
 function TagsField({ id, value, suggestions, onChange }: TagsFieldProps) {
 	const [draft, setDraft] = useState("");
 
@@ -590,13 +578,12 @@ function TagsField({ id, value, suggestions, onChange }: TagsFieldProps) {
 
 	return (
 		<div className="flex flex-col gap-2">
-			<Input
-				fullWidth
+			<SuggestInput
 				id={id}
 				value={draft}
-				list="application-tags"
+				suggestions={suggestions}
 				placeholder={t`Add a tag and press Enter…`}
-				onChange={(event) => setDraft(event.target.value)}
+				onChange={setDraft}
 				onKeyDown={(event) => {
 					if (isImeComposing(event)) return;
 					if (event.key === "Enter") {
@@ -606,11 +593,6 @@ function TagsField({ id, value, suggestions, onChange }: TagsFieldProps) {
 				}}
 				onBlur={add}
 			/>
-			<datalist id="application-tags">
-				{suggestions.map((tag) => (
-					<option key={tag} value={tag} />
-				))}
-			</datalist>
 			{value.length > 0 && (
 				<div className="flex flex-wrap gap-1.5">
 					{value.map((tag) => (

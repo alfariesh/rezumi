@@ -64,6 +64,7 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
 								{state.description && <p>{state.description}</p>}
 								{state.withInput && (
 									<Input
+										variant="secondary"
 										fullWidth
 										value={value}
 										aria-label={state.title}

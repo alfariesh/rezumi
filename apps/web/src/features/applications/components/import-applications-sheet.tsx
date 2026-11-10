@@ -6,11 +6,11 @@ import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { autoMapHeaders, CSV_FIELDS, mapCsvToApplications, parseCsv, rowsToCsv } from "../csv";
 import { useInvalidateApplications } from "../use-application-actions";
+import { SelectField } from "@/components/input/select-field";
 import { orpc } from "@/libs/orpc/client";
 
 const MAX_IMPORT = 500;
@@ -155,6 +155,7 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 									<Trans>CSV data</Trans>
 								</Label>
 								<TextArea
+									variant="secondary"
 									fullWidth
 									id="import-csv-text"
 									value={text}
@@ -181,23 +182,20 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 											>
 												<span className="truncate font-mono text-xs">{header || t`(no header)`}</span>
 												<Icon name="arrow-right" size={16} className="text-muted" />
-												<NativeSelect
+												<SelectField
 													aria-label={t`Column ${header} goes to`}
 													value={mapping[index] ?? ""}
-													onChange={(event) =>
+													onChange={(value) =>
 														setOverrides((current) => ({
 															...current,
-															[index]: (event.target.value || null) as CsvField | null,
+															[index]: (value || null) as CsvField | null,
 														}))
 													}
-												>
-													<option value="">{t`Leave out`}</option>
-													{CSV_FIELDS.map((field) => (
-														<option key={field} value={field}>
-															{fieldLabel(field)}
-														</option>
-													))}
-												</NativeSelect>
+													options={[
+														{ value: "", label: t`Leave out` },
+														...CSV_FIELDS.map((field) => ({ value: field, label: fieldLabel(field) })),
+													]}
+												/>
 											</li>
 										))}
 									</ul>

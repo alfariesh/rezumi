@@ -123,7 +123,7 @@ export function RecentDocuments({ className }: RecentDocumentsProps) {
 						>
 							<span
 								className={cn(
-									"grid aspect-page place-items-center rounded-lg bg-default text-muted transition-colors duration-quick group-hover/new:bg-default-hover group-hover/new:text-foreground",
+									"grid aspect-page place-items-center rounded-lg bg-control text-muted transition-colors duration-quick group-hover/new:bg-default group-hover/new:text-foreground",
 								)}
 							>
 								<Icon name="plus" size={24} />

@@ -1,6 +1,13 @@
 import type { Locale } from "@rezumi/utils/locale";
 import { i18n } from "@lingui/core";
+import { FlagIcon } from "@/components/flag-icon";
 import { localeMap } from "@/libs/locale";
+
+/** The country a locale's region names. Serbian's "SP" is not an ISO code: Serbia is "RS". */
+const localeFlagCode = (locale: string) => {
+	const region = locale.split("-")[1] ?? "";
+	return region === "SP" ? "RS" : region;
+};
 
 export const getLocaleOptions = () => {
 	return Object.entries(localeMap).map(([value, label]) => {
@@ -8,6 +15,7 @@ export const getLocaleOptions = () => {
 
 		return {
 			value: value as Locale,
+			icon: <FlagIcon code={localeFlagCode(value)} />,
 			label: (
 				<span className="flex items-center gap-x-2">
 					<span className="font-mono text-xs text-muted">{value}</span>

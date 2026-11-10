@@ -15,6 +15,7 @@ import { buildIcs } from "../../ics";
 import { dayKey } from "../../interviews";
 import { describeNextStep, getNextStep } from "../../next-step";
 import { useInvalidateApplications } from "../../use-application-actions";
+import { DatePickerField } from "@/components/input/date-time-fields";
 import { RowIcon } from "@/components/layout/icon-row";
 import { WidgetAction, WidgetHeading } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
@@ -180,23 +181,13 @@ function FollowUpDialog({ application, open, onOpenChange }: FollowUpDialogProps
 								update.mutate({ id: application.id, followUpAt: at, followUpNote: note.trim() || null });
 							}}
 						>
-							<div className="grid gap-1.5">
-								<Label htmlFor={`${id}-date`}>
-									<Trans>Date</Trans>
-								</Label>
-								<Input
-									fullWidth
-									id={`${id}-date`}
-									type="date"
-									value={date}
-									onChange={(event) => setDate(event.target.value)}
-								/>
-							</div>
+							<DatePickerField label={<Trans>Date</Trans>} value={date} onChange={setDate} />
 							<div className="grid gap-1.5">
 								<Label htmlFor={`${id}-note`}>
 									<Trans>What to do</Trans>
 								</Label>
 								<Input
+									variant="secondary"
 									fullWidth
 									id={`${id}-note`}
 									value={note}

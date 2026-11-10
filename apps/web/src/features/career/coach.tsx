@@ -335,7 +335,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 			>
 				{notSetUp ? (
 					<>
-						<p className="m-4 rounded-xl bg-default p-4 text-sm text-muted">
+						<p className="m-4 rounded-xl bg-control p-4 text-sm text-muted">
 							<Trans>
 								The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers
 								and your applications work without it.
@@ -435,7 +435,7 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 							key={starter.icon}
 							isDisabled={disabled}
 							onPress={() => onPick(starter.text)}
-							className="w-fit max-w-full justify-center gap-2 rounded-full border-0 bg-surface px-4 py-2.5 text-start"
+							className="w-fit max-w-full justify-center gap-2 rounded-full border-0 bg-control px-4 py-2.5 text-start"
 						>
 							<Icon name={starter.icon} size={18} className="me-1 shrink-0 text-accent" />
 							<span className="min-w-0 text-pretty">{starter.text}</span>
@@ -472,7 +472,7 @@ function ModelSelect({ open, onOpenChange, providers, current, label, onChoose }
 				else if (typeof key === "string") onChoose(key);
 			}}
 		>
-			<Select.Trigger className="h-8 min-h-8 items-center rounded-full bg-default ps-3 pe-8 text-sm shadow-none">
+			<Select.Trigger className="h-8 min-h-8 items-center rounded-full bg-surface ps-3 pe-8 text-sm shadow-none hover:bg-default">
 				<Select.Value className="leading-none" />
 				<Select.Indicator />
 			</Select.Trigger>
@@ -565,7 +565,13 @@ function ConversationList({
 		>
 			<div className="flex items-center gap-2">
 				<IconButton icon="arrow-left" label={t`Back to the chat`} size="sm" className="lg:hidden" onPress={onClose} />
-				<SearchField aria-label={t`Search conversations`} className="min-w-0 flex-1" value={query} onChange={setQuery}>
+				<SearchField
+					aria-label={t`Search conversations`}
+					variant="secondary"
+					className="min-w-0 flex-1"
+					value={query}
+					onChange={setQuery}
+				>
 					<SearchField.Group>
 						<SearchField.SearchIcon />
 						<SearchField.Input placeholder={t`Search…`} />
@@ -585,7 +591,7 @@ function ConversationList({
 			<ScrollShadow hideScrollBar className="min-h-0 flex-1 overflow-y-auto">
 				{currentId === null && !needle && (
 					<ul className="mb-3">
-						<li aria-current="page" className="rounded-xl bg-default px-3 py-2 text-sm leading-5 font-medium">
+						<li aria-current="page" className="rounded-xl bg-control px-3 py-2 text-sm leading-5 font-medium">
 							<Trans>New conversation</Trans>
 						</li>
 					</ul>
@@ -687,7 +693,7 @@ function ConversationItem({
 						onClick={onNavigate}
 						className={cn(
 							"flex items-center gap-2 rounded-xl py-2 ps-3 pe-9 text-sm leading-5",
-							current ? "bg-default font-medium" : "hover:bg-default/60",
+							current ? "bg-control font-medium" : "hover:bg-default/60",
 						)}
 					>
 						<span className="truncate">{title}</span>

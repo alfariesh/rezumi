@@ -1,12 +1,13 @@
 import type { ApplicationExportOptions } from "../csv";
 import type { Application } from "../types";
 import { Sheet } from "@heroui-pro/react";
-import { Button, Input, Label } from "@heroui/react";
+import { Button, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { exportApplicationsCsv, selectApplicationsForExport } from "../csv";
+import { DatePickerField } from "@/components/input/date-time-fields";
 import { Combobox } from "@/components/ui/combobox";
 
 type ExportApplicationsSheetProps = {
@@ -65,32 +66,18 @@ export function ExportApplicationsSheet({ open, onOpenChange, applications, filt
 									/>
 								</div>
 								<div className="grid grid-cols-2 items-end gap-3">
-									<div className="space-y-1.5">
-										<Label htmlFor={`${id}-from`}>
-											<Trans>Application date from</Trans>
-										</Label>
-										<Input
-											fullWidth
-											id={`${id}-from`}
-											type="date"
-											value={from}
-											max={to || undefined}
-											onChange={(event) => setFrom(event.target.value)}
-										/>
-									</div>
-									<div className="space-y-1.5">
-										<Label htmlFor={`${id}-to`}>
-											<Trans>Application date to</Trans>
-										</Label>
-										<Input
-											fullWidth
-											id={`${id}-to`}
-											type="date"
-											value={to}
-											min={from || undefined}
-											onChange={(event) => setTo(event.target.value)}
-										/>
-									</div>
+									<DatePickerField
+										label={<Trans>Application date from</Trans>}
+										value={from}
+										max={to || undefined}
+										onChange={setFrom}
+									/>
+									<DatePickerField
+										label={<Trans>Application date to</Trans>}
+										value={to}
+										min={from || undefined}
+										onChange={setTo}
+									/>
 								</div>
 								{!validRange && (
 									<p role="alert" className="text-sm text-danger-soft-foreground">

@@ -1,5 +1,5 @@
 import type { DataGridColumn } from "@heroui-pro/react";
-import { DataGrid, EmptyState, NativeSelect, Segment } from "@heroui-pro/react";
+import { DataGrid, EmptyState, Segment } from "@heroui-pro/react";
 import {
 	Alert,
 	Button,
@@ -24,6 +24,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { SettingsSection } from "../section";
+import { SelectField } from "@/components/input/select-field";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { usePlanFeature } from "@/features/billing/plan";
 import { authClient } from "@/libs/auth/client";
@@ -363,23 +364,15 @@ function NewKeyDialog({ open, onOpenChange, onCreated }: NewKeyDialogProps) {
 									</Label>
 									<Input variant="secondary" maxLength={64} placeholder={t`Claude Desktop`} />
 								</TextField>
-								<div className="grid gap-1.5">
-									<Label htmlFor={`${id}-access`}>
-										<Trans>Access</Trans>
-									</Label>
-									<NativeSelect variant="secondary" fullWidth>
-										<NativeSelect.Trigger
-											id={`${id}-access`}
-											value={access}
-											onChange={(event) => setAccess(event.target.value === "read" ? "read" : "full")}
-											className="pointer-coarse:min-h-11"
-										>
-											<option value="read">{t`Read only`}</option>
-											<option value="full">{t`Read, write and delete`}</option>
-											<NativeSelect.Indicator />
-										</NativeSelect.Trigger>
-									</NativeSelect>
-								</div>
+								<SelectField
+									label={<Trans>Access</Trans>}
+									value={access}
+									onChange={(next) => setAccess(next === "read" ? "read" : "full")}
+									options={[
+										{ value: "read", label: t`Read only` },
+										{ value: "full", label: t`Read, write and delete` },
+									]}
+								/>
 								<div className="grid gap-1.5">
 									<span id={`${id}-expiry`} className="text-sm font-medium">
 										<Trans>Expires</Trans>

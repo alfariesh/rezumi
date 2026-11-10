@@ -282,6 +282,7 @@ function RouteComponent() {
 								className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-muted"
 							/>
 							<Input
+								variant="secondary"
 								fullWidth
 								type="search"
 								aria-label={t`Search applications`}

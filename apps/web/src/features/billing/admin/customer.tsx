@@ -1,7 +1,7 @@
 import type { AdminCustomer, AdminPayment } from "./labels";
 import type { DataGridColumn } from "@heroui-pro/react";
 import type { PaidPlanId } from "@rezumi/schema/billing";
-import { DataGrid, NativeSelect, Timeline } from "@heroui-pro/react";
+import { DataGrid, Timeline } from "@heroui-pro/react";
 import {
 	Avatar,
 	Button,
@@ -20,7 +20,7 @@ import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { getInitials } from "@rezumi/utils/string";
@@ -36,6 +36,7 @@ import {
 import { describeAudit, describeEvent, formatMoney, getSubscriptionStatusLabel } from "./labels";
 import { AdminCard, StatWidget } from "./parts";
 import { ReasonDialog } from "./reason-dialog";
+import { SelectField } from "@/components/input/select-field";
 import { getReadableErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 import { renderAsH1 } from "@/libs/typography";
@@ -69,7 +70,6 @@ type Dialog =
 type DialogsProps = { userId: string; dialog: Dialog; onClose: () => void; onDone: () => void };
 
 function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
-	const id = useId();
 	const [amount, setAmount] = useState("");
 	const [revoke, setRevoke] = useState(false);
 	const [endSubscription, setEndSubscription] = useState(false);
@@ -204,22 +204,15 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 					done(t`Pass given.`);
 				}}
 			>
-				<div className="grid gap-1.5">
-					<Label htmlFor={`${id}-plan`}>
-						<Trans>Plan</Trans>
-					</Label>
-					<NativeSelect variant="secondary" fullWidth>
-						<NativeSelect.Trigger
-							id={`${id}-plan`}
-							value={planId}
-							onChange={(event) => setPlanId(event.target.value === "pro-ai" ? "pro-ai" : "plus")}
-						>
-							<option value="plus">Plus</option>
-							<option value="pro-ai">Pro AI</option>
-							<NativeSelect.Indicator />
-						</NativeSelect.Trigger>
-					</NativeSelect>
-				</div>
+				<SelectField
+					label={<Trans>Plan</Trans>}
+					value={planId}
+					onChange={(next) => setPlanId(next === "pro-ai" ? "pro-ai" : "plus")}
+					options={[
+						{ value: "plus", label: "Plus" },
+						{ value: "pro-ai", label: "Pro AI" },
+					]}
+				/>
 				<NumberInput label={t`Days (1–366)`} value={days} onChange={setDays} />
 			</ReasonDialog>
 

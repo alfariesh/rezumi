@@ -139,7 +139,7 @@ export function PromptBox(props: PromptBoxProps) {
 								<PromptInput.Action
 									aria-label={t`Attach a file`}
 									tooltip={t`Attach a file`}
-									className="size-8 min-w-0"
+									className="size-8 min-w-0 bg-surface hover:bg-default"
 									isDisabled={attach.isDisabled || attach.isPending}
 									onPress={() => fileInput.current?.click()}
 								>
