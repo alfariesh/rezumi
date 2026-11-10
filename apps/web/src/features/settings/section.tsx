@@ -28,6 +28,8 @@ type SettingsSectionProps = {
 	footer?: ReactNode;
 	/** Split the children, usually `SettingsRow`s, by a rule. */
 	divided?: boolean;
+	/** Extra classes for the content area, e.g. `py-0` when its rows carry their own padding. */
+	contentClassName?: string;
 };
 
 /**
@@ -44,13 +46,14 @@ export function SettingsSection({
 	children,
 	footer,
 	divided = false,
+	contentClassName,
 }: SettingsSectionProps) {
 	const titleId = useId();
 
 	return (
 		<Widget id={id} role="region" aria-labelledby={titleId} className="scroll-mt-16">
 			<WidgetHeading id={titleId} icon={icon} title={title} description={description} action={action} />
-			<Widget.Content className={cn("grid gap-3", divided && DIVIDED)}>{children}</Widget.Content>
+			<Widget.Content className={cn("grid gap-3", divided && DIVIDED, contentClassName)}>{children}</Widget.Content>
 			{footer && <Widget.Footer>{footer}</Widget.Footer>}
 		</Widget>
 	);

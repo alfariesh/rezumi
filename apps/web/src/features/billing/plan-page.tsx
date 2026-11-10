@@ -352,6 +352,7 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 			<SettingsSection
 				icon="list-checks"
 				title={<Trans>What's included</Trans>}
+				contentClassName="py-0"
 				action={
 					<a href="/#pricing" className={widgetActionClass}>
 						<Trans>Compare plans</Trans>
