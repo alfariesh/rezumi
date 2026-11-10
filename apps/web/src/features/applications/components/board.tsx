@@ -13,7 +13,6 @@ import { ApplicationCard } from "./application-card";
 
 type BoardProps = {
 	applications: ApplicationSummary[];
-	showClosed: boolean;
 	onOpen: (application: ApplicationSummary) => void;
 };
 
@@ -21,11 +20,11 @@ type BoardProps = {
 const DRAG_TYPE = "application/x-rezumi-application-id";
 
 /**
- * A column per stage (Closed only when shown). Dropping a card on a column moves it, with the same toast as the
+ * A column per stage, Closed last. Dropping a card on a column moves it, with the same toast as the
  * other ways to change stage; dropping it on Closed asks for the reason first. Each card's menu has Move to… for the
  * keyboard, and its drag handle starts a keyboard drag. Ordering inside a column isn't stored. Desktop and tablet only.
  */
-export function ApplicationBoard({ applications, showClosed, onOpen }: BoardProps) {
+export function ApplicationBoard({ applications, onOpen }: BoardProps) {
 	const { moveTo, close } = useApplicationActions();
 	const closeDescriptionId = useId();
 	const [closing, setClosing] = useState<ApplicationSummary | null>(null);
@@ -50,7 +49,7 @@ export function ApplicationBoard({ applications, showClosed, onOpen }: BoardProp
 	const statusOf = (application: ApplicationSummary) =>
 		pendingMove?.id === application.id ? pendingMove.to : application.status;
 
-	const stages: ApplicationStatus[] = showClosed ? [...PIPELINE, "closed"] : [...PIPELINE];
+	const stages: ApplicationStatus[] = [...PIPELINE, "closed"];
 
 	const byStage = new Map<ApplicationStatus, ApplicationSummary[]>(stages.map((stage) => [stage, []]));
 	for (const application of applications) byStage.get(statusOf(application))?.push(application);

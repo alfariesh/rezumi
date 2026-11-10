@@ -117,13 +117,13 @@ afterEach(() => {
 	clients.splice(0).forEach((client) => client.clear());
 });
 
-it("removes hidden closed applications from bulk selection before deleting visible rows", async () => {
+it("drops a collapsed group's rows from bulk selection before deleting the visible ones", async () => {
 	const rows = [application("open", "saved"), application("closed", "closed")];
-	const view = mount(<ApplicationList applications={rows} showClosed selectedId={null} onOpen={vi.fn()} />);
+	mount(<ApplicationList applications={rows} selectedId={null} onOpen={vi.fn()} />);
 	fireEvent.click(screen.getByRole("checkbox", { name: "Select Engineer at Open Co" }));
 	fireEvent.click(screen.getByRole("checkbox", { name: "Select Engineer at Closed Co" }));
 	expect(screen.getByText("2 selected")).toBeTruthy();
-	view.rerender(<ApplicationList applications={rows} showClosed={false} selectedId={null} onOpen={vi.fn()} />);
+	fireEvent.click(screen.getByRole("button", { name: /^Closed\s*1$/ }));
 	expect(screen.queryByRole("checkbox", { name: "Select Engineer at Closed Co" })).toBeNull();
 	expect(screen.getByText("1 selected")).toBeTruthy();
 	fireEvent.click(screen.getByRole("button", { name: "Delete…" }));
@@ -133,8 +133,8 @@ it("removes hidden closed applications from bulk selection before deleting visib
 it("opens a board card on click or Enter, keeps its options menu separate, and offers a keyboard drag handle", async () => {
 	const row = application("open", "saved");
 	const onOpen = vi.fn();
-	const view = mount(<ApplicationBoard applications={[row]} showClosed={false} onOpen={onOpen} />);
-	expect(screen.queryByRole("grid", { name: "Closed" })).toBeNull();
+	const view = mount(<ApplicationBoard applications={[row]} onOpen={onOpen} />);
+	expect(screen.getByRole("grid", { name: "Closed" })).toBeTruthy();
 	const card = screen.getByRole("row", { name: "Engineer at Open Co" });
 	const options = screen.getByRole("button", { name: "Options for Engineer at Open Co" });
 	expect(screen.getByRole("button", { name: "Drag Engineer at Open Co" })).toBeTruthy();
