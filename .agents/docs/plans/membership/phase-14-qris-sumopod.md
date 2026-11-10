@@ -127,3 +127,23 @@ admin (badge QRIS, Catat refund QRIS, angka QRIS). Env: `SUMOPOD_ENVIRONMENT`, `
 3. Refund QRIS ditransfer dalam tenggat 2 × 24 jam sejak data lengkap (termasuk rekening tujuan), tanpa potongan biaya.
 4. Privasi: SumoPod (PT Koding Kreasi Indonesia) hanya menerima nomor pesanan dan nominal; rekening tujuan refund masuk data
    pengaduan.
+
+### Uji pembelian produksi (2026-11-10)
+
+PR #59 di-merge dan ter-deploy (CI, autofix, Deploy to Cloudflare sukses). Pemilik memasang webhook Live
+`https://rezumi.app/api/payments/sumopod/webhook`, secret Worker `SUMOPOD_API_KEY` (live) dan `SUMOPOD_WEBHOOK_SECRET`; Save &
+Test: `payment.test` **200** (dua 404 sebelumnya terjadi sebelum secret terpasang). Akun uji kedua `suraunusantara@gmail.com`
+dijadikan admin lewat `POST /api/auth/admin/update-user` dari sesi admin pemilik (akun utama tetap hanya kartu sampai langganan
+Dodo uji berakhir 10 Des).
+
+| Cek        | Hasil                                                                                                                   |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Rute       | Dari Indonesia: `paymentMethods ["qris","card"]`, Rupiah, Plus Rp29.000 / 30 hari                                       |
+| Sumopod    | `RZ-01a1c42d-…` Completed, Rp29.000, fee Rp503, bersih Rp28.497 (Pending Balance, cair 12 Nov 14.00)                    |
+| Webhook    | `payment.completed` 1 kali, **200**                                                                                     |
+| Rezumi     | Pembayaran `paid` (dibayar 13.38.25 WIB, paket aktif 13.38.26), event `applied` dari webhook, audit `payment.fulfilled` |
+| Paket      | Plus sampai 10 Des 2026 13.38 WIB, `renews: false`                                                                      |
+| Peringatan | Tidak ada                                                                                                               |
+
+Sisa: email bukti bayar dicek pemilik di kotak masuk akun uji. Refund uji (opsional): transfer balik Rp29.000 lalu **Catat refund
+QRIS** di halaman admin.
