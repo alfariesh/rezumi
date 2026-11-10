@@ -16,6 +16,7 @@ import {
 	getPurchaseLabel,
 	intervalSuffix,
 	isLiveSubscription,
+	isPaymentFailed,
 	monthlyOfYearly,
 	priceLabel,
 	trialDaysFor,
@@ -256,7 +257,7 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 									fullWidth
 									className="mt-auto"
 									variant={isSelected || (!selected && id === "pro-ai") ? "primary" : "secondary"}
-									isDisabled={live?.cancelAtPeriodEnd === true || live?.status === "past_due"}
+									isDisabled={live?.cancelAtPeriodEnd === true || isPaymentFailed(live)}
 									onPress={() => setChoice(target)}
 								>
 									{getPurchaseLabel(kind, target, live, trialDays)}
@@ -271,7 +272,7 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 					<Trans>Your subscription is set to end. Keep it first to change the plan.</Trans>
 				</p>
 			)}
-			{live?.status === "past_due" && (
+			{isPaymentFailed(live) && (
 				<p className="text-xs text-muted">
 					<Trans>Your last payment didn't go through. Update your payment method in billing first.</Trans>
 				</p>

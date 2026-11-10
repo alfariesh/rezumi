@@ -13,6 +13,7 @@ const {
 	getReturnState,
 	hasInvoice,
 	isLiveSubscription,
+	isPaymentFailed,
 	isOpenPayment,
 	monthlyOfYearly,
 	planTimeZone,
@@ -39,7 +40,7 @@ const subscription = (overrides: Partial<Subscription> = {}): Subscription => ({
 describe("plan buttons", () => {
 	it("subscribes without a live subscription, and changes it with one", () => {
 		expect(getPurchaseKind(null, { planId: "plus", interval: "month" })).toBe("subscribe");
-		expect(getPurchaseKind(subscription({ status: "canceled" }), { planId: "plus", interval: "month" })).toBe(
+		expect(getPurchaseKind(subscription({ status: "cancelled" }), { planId: "plus", interval: "month" })).toBe(
 			"subscribe",
 		);
 		const plus = subscription();
@@ -51,7 +52,12 @@ describe("plan buttons", () => {
 		expect(getPurchaseKind(pro, { planId: "plus", interval: "year" })).toBe("downgrade");
 		expect(getPurchaseKind(pro, { planId: "pro-ai", interval: "month" })).toBe("downgrade");
 		expect(isLiveSubscription(subscription({ status: "past_due" }))).toBe(true);
-		expect(isLiveSubscription(subscription({ status: "unpaid" }))).toBe(false);
+		expect(isLiveSubscription(subscription({ status: "expired" }))).toBe(false);
+		// On hold waits for a new payment method: still the account's subscription, but its payment failed.
+		expect(isLiveSubscription(subscription({ status: "on_hold" }))).toBe(true);
+		expect(isPaymentFailed(subscription({ status: "on_hold" }))).toBe(true);
+		expect(isPaymentFailed(subscription({ status: "past_due" }))).toBe(true);
+		expect(isPaymentFailed(subscription())).toBe(false);
 	});
 
 	it("labels each button", () => {
@@ -117,7 +123,7 @@ describe("payments", () => {
 			"Plan change",
 		);
 		expect(getPaymentReasonLabel({ ...paid, billingReason: null, interval: null })).toBe("30-day pass");
-		// A trial's $0 start; once Polar dropped the trial (a repeat customer), the full price is a new subscription.
+		// A trial's $0 start; without a trial (a repeat customer), the full price is a new subscription.
 		const trial = {
 			billingReason: "subscription_create" as const,
 			interval: "month" as const,
@@ -127,10 +133,10 @@ describe("payments", () => {
 		expect(getPaymentReasonLabel({ ...trial, totalAmount: 0 })).toBe("Free trial");
 		expect(getPaymentReasonLabel({ ...trial, totalAmount: 549 })).toBe("New subscription");
 		const order = { trialDays: null, totalAmount: 499 };
-		expect(hasInvoice({ ...order, paidAt: now, orderId: "order" })).toBe(true);
-		expect(hasInvoice({ ...order, paidAt: now, orderId: null })).toBe(false);
-		expect(hasInvoice({ ...order, paidAt: null, orderId: "order" })).toBe(false);
-		expect(hasInvoice({ trialDays: 7, totalAmount: 0, paidAt: now, orderId: "order" })).toBe(false);
+		expect(hasInvoice({ ...order, paidAt: now, providerPaymentId: "pay_1" })).toBe(true);
+		expect(hasInvoice({ ...order, paidAt: now, providerPaymentId: null })).toBe(false);
+		expect(hasInvoice({ ...order, paidAt: null, providerPaymentId: "pay_1" })).toBe(false);
+		expect(hasInvoice({ trialDays: 7, totalAmount: 0, paidAt: now, providerPaymentId: "pay_1" })).toBe(false);
 	});
 
 	it("shows dates in the browser's zone until the account picks one", () => {

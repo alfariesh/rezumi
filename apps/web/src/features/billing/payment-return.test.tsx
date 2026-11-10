@@ -40,7 +40,7 @@ const paidAt = new Date("2026-11-03T01:10:00Z");
 
 const payment = (patch: Partial<PaymentDetail>): PaymentDetail => ({
 	id: ID,
-	orderId: null,
+	providerPaymentId: null,
 	planId: "pro-ai",
 	interval: "month",
 	billingReason: "subscription_create",
@@ -56,7 +56,7 @@ const payment = (patch: Partial<PaymentDetail>): PaymentDetail => ({
 	periodStart: null,
 	periodEnd: null,
 	refundedAmount: 0,
-	redirectUrl: "https://sandbox.polar.sh/checkout/polar_c_test",
+	redirectUrl: "https://test.checkout.dodopayments.com/session/cks_test",
 	trialDays: null,
 	...patch,
 });
@@ -65,7 +65,7 @@ const paid = (patch: Partial<PaymentDetail> = {}) =>
 	payment({
 		status: "paid",
 		paidAt,
-		orderId: "order_1",
+		providerPaymentId: "pay_1",
 		credits: 100,
 		redirectUrl: null,
 		periodStart: paidAt,
@@ -83,7 +83,7 @@ function renderPage(paymentId: string | null = ID) {
 	);
 }
 
-describe("returning from Polar", () => {
+describe("returning from the checkout", () => {
 	// A fresh mock per test: mockReset() leaves a rejecting implementation reported as an unhandled error.
 	beforeEach(() => {
 		api.payment = vi.fn();
@@ -122,7 +122,7 @@ describe("returning from Polar", () => {
 		expect(screen.queryByText(/added for Rezumi AI/)).toBeNull();
 	});
 
-	it("waits for an open checkout, with the way back to Polar, and turns paid by itself", async () => {
+	it("waits for an open checkout, with the way back to the checkout, and turns paid by itself", async () => {
 		api.payment.mockResolvedValueOnce(payment({}));
 		api.payment.mockResolvedValue(paid());
 		vi.useFakeTimers({ shouldAdvanceTime: true });
@@ -130,7 +130,7 @@ describe("returning from Polar", () => {
 			renderPage();
 			expect(await screen.findByText("Waiting for your payment")).toBeTruthy();
 			expect(screen.getByRole("link", { name: "Continue checkout" }).getAttribute("href")).toContain(
-				"sandbox.polar.sh",
+				"test.checkout.dodopayments.com",
 			);
 			expect(screen.getByText(/The checkout stays open until/)).toBeTruthy();
 			await vi.advanceTimersByTimeAsync(3500);

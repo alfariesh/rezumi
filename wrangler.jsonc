@@ -57,13 +57,9 @@
 		// The contact form's public Turnstile key; set with its secret (TURNSTILE_SECRET_KEY, a Worker secret) before
 		// launch. Without both, the form isn't offered and Contact falls back to the email button.
 		"TURNSTILE_SITE_KEY": "0x4AAAAAAF5qNivhOg0kkz1u",
-		// Polar production products (organization "rezumi"). Not secret; POLAR_ACCESS_TOKEN and POLAR_WEBHOOK_SECRET are
-		// Worker secrets, set after these are live (the token without them fails startup).
-		"POLAR_ENVIRONMENT": "production",
-		"POLAR_PRODUCT_PLUS_MONTHLY": "ead42ea7-c6cd-49fd-a44e-0badb050c6b1",
-		"POLAR_PRODUCT_PLUS_YEARLY": "0947661b-03eb-4d83-96cc-6cdda965145b",
-		"POLAR_PRODUCT_PRO_AI_MONTHLY": "0b30a314-9c0f-4bf5-af18-7153a64c9b79",
-		"POLAR_PRODUCT_PRO_AI_YEARLY": "3209453f-776c-4a7b-950e-76acff06cdb6",
+		// Dodo Payments sells the plans. The live-mode product ids (DODO_PAYMENTS_PRODUCT_*, not secret) and
+		// "DODO_PAYMENTS_ENVIRONMENT": "live_mode" go here at go-live, before the Worker secrets DODO_PAYMENTS_API_KEY and
+		// DODO_PAYMENTS_WEBHOOK_KEY (the key without them fails startup). Until then buying is unavailable.
 	},
 	"send_email": [{ "name": "EMAIL" }],
 	"hyperdrive": [{ "binding": "HYPERDRIVE", "id": "f2e0cd8d0b084ed5bdbfb8a1de8a80dc" }],

@@ -173,8 +173,8 @@ function tooltipFor(format: (value: number) => string) {
 const CountTooltip = tooltipFor((value) => new Intl.NumberFormat(i18n.locale).format(value));
 
 /**
- * Paid orders day by day, Plus and Pro AI stacked, with the period's money above: per currency and before tax, since
- * Polar collects the tax and the currencies never add up.
+ * Paid payments day by day, Plus and Pro AI stacked, with the period's money above: per currency and before tax,
+ * since Dodo Payments collects the tax and the currencies never add up.
  */
 function SalesCard({ metrics }: MetricsProps) {
 	const plan = (id: "plus" | "pro-ai") =>
@@ -197,7 +197,7 @@ function SalesCard({ metrics }: MetricsProps) {
 				<MiniStat value={formatMoney(proAi.revenue)} label={t`Pro AI · ${proAi.payments} paid`} />
 				<MiniStat value={formatMoney(plus.revenue)} label={t`Plus · ${plus.payments} paid`} />
 				<MiniStat value={formatMoney(metrics.refunds.amount)} label={t`Refunded · ${metrics.refunds.refunds}`} />
-				<MiniStat value={formatMoney(metrics.net)} label={t`Net, before tax and Polar's fees`} />
+				<MiniStat value={formatMoney(metrics.net)} label={t`Net, before tax and Dodo Payments' fees`} />
 			</div>
 			<p className="text-xs text-muted">
 				{t`${kinds.new ?? 0} new · ${kinds.renewal ?? 0} renewals · ${kinds.change ?? 0} plan changes`}
@@ -435,10 +435,10 @@ function AttentionCard() {
 												<Link
 													key={id}
 													to="/dashboard/admin/billing"
-													search={{ query: `RZ-${id}` }}
+													search={{ query: id }}
 													className="ms-2 font-mono text-xs text-accent hover:underline"
 												>
-													RZ-…{id.slice(-6)}
+													…{id.slice(-6)}
 												</Link>
 											))}
 										</Table.Cell>
@@ -521,12 +521,12 @@ function PaymentsCard({ range, query }: PaymentsCardProps) {
 	const columns: DataGridColumn<AdminPaymentRow>[] = [
 		{
 			id: "order",
-			header: t`Order`,
+			header: t`Payment`,
 			isRowHeader: true,
 			cell: (row) => (
 				<span className="grid gap-0.5 whitespace-nowrap">
-					<span className="font-mono text-xs whitespace-nowrap" title={row.orderId ?? row.id}>
-						{row.orderId ? `…${row.orderId.slice(-8)}` : t`checkout only`}
+					<span className="font-mono text-xs whitespace-nowrap" title={row.providerPaymentId ?? row.id}>
+						{row.providerPaymentId ? `…${row.providerPaymentId.slice(-8)}` : t`checkout only`}
 					</span>
 					<span className="text-xs text-muted">{formatShort(row.createdAt)}</span>
 				</span>
@@ -646,7 +646,7 @@ function PaymentsCard({ range, query }: PaymentsCardProps) {
 						>
 							<SearchField.Group>
 								<SearchField.SearchIcon />
-								<SearchField.Input placeholder={t`Email, RZ-… or ID`} spellCheck={false} />
+								<SearchField.Input placeholder={t`Email, pay_… or ID`} spellCheck={false} />
 								<SearchField.ClearButton />
 							</SearchField.Group>
 						</SearchField>

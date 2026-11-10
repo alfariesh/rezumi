@@ -2,88 +2,16 @@ import type { BillingPaymentStatus, BillingSubscriptionStatus } from "@rezumi/db
 import type { BillingInterval, PaidPlanId } from "@rezumi/schema/billing";
 
 /**
- * Pure translations between Polar's objects and Rezumi's billing rows: statuses, periods, access and the months a
- * subscription's credits come in. No database, no network; the webhook handler and the billing job share them.
+ * Pure rules for paid access, whoever sells it: which way a payment's status may move, how long a subscription gives
+ * access, and the months its credits come in. No database, no network; the webhook handler, the billing job and the
+ * entitlement checks share them.
  */
-
-/** The fields of a Polar subscription Rezumi keeps, from a Subscription or the one embedded in an Order. */
-export type PolarSubscriptionLike = {
-	id: string;
-	status: BillingSubscriptionStatus;
-	product_id: string;
-	customer_id: string;
-	amount: number;
-	currency: string;
-	current_period_start: string;
-	current_period_end: string | null;
-	cancel_at_period_end: boolean;
-	canceled_at: string | null;
-	started_at: string | null;
-	ends_at: string | null;
-	ended_at: string | null;
-	created_at: string;
-	modified_at: string | null;
-	pending_update?: { product_id?: string | null } | null;
-};
-
-/** The fields of a Polar order Rezumi keeps. */
-export type PolarOrderLike = {
-	id: string;
-	status: "draft" | "pending" | "paid" | "refunded" | "partially_refunded" | "void";
-	billing_reason: string;
-	net_amount: number;
-	tax_amount: number;
-	total_amount: number;
-	refunded_amount: number;
-	currency: string;
-	product_id: string | null;
-	checkout_id: string | null;
-	subscription_id: string | null;
-	created_at: string;
-	modified_at: string | null;
-	items: readonly { start_timestamp: string | null; end_timestamp: string | null }[];
-};
 
 export const parseDate = (value: string | null | undefined): Date | null => {
 	if (!value) return null;
 	const date = new Date(value);
 	return Number.isNaN(+date) ? null : date;
 };
-
-/** When Polar last changed an object: what orders its events, newest wins. */
-export const providerModifiedAt = (object: { created_at: string; modified_at: string | null }) =>
-	parseDate(object.modified_at) ?? parseDate(object.created_at) ?? new Date(0);
-
-/** A Polar order's status, as a payment's. A draft or pending order is still being charged. */
-export function orderPaymentStatus(status: PolarOrderLike["status"]): BillingPaymentStatus {
-	switch (status) {
-		case "draft":
-		case "pending":
-			return "pending";
-		case "paid":
-			return "paid";
-		case "partially_refunded":
-			return "partially_refunded";
-		case "refunded":
-			return "refunded";
-		case "void":
-			return "cancelled";
-	}
-}
-
-/** A checkout session's status, as its payment's while no order exists yet. A succeeded checkout waits for its order. */
-export function checkoutPaymentStatus(status: "open" | "expired" | "confirmed" | "succeeded" | "failed") {
-	switch (status) {
-		case "open":
-		case "confirmed":
-		case "succeeded":
-			return "pending" as const;
-		case "expired":
-			return "expired" as const;
-		case "failed":
-			return "failed" as const;
-	}
-}
 
 const ENDED: ReadonlySet<BillingPaymentStatus> = new Set(["refunded", "reversed"]);
 const PAID: ReadonlySet<BillingPaymentStatus> = new Set(["paid", "partially_refunded", "refunded", "reversed"]);
@@ -102,22 +30,9 @@ export function nextPaymentStatus(current: BillingPaymentStatus, incoming: Billi
 	if (current === incoming) return { outcome: "duplicate", status: current };
 	if (ENDED.has(current)) return { outcome: "stale", status: current };
 	if (PAID.has(current) && !PAID.has(incoming)) return { outcome: "stale", status: current };
-	// A partly refunded order reported as just paid is an older event.
+	// A partly refunded payment reported as just paid is an older state.
 	if (current === "partially_refunded" && incoming === "paid") return { outcome: "stale", status: current };
 	return { outcome: "applied", status: incoming };
-}
-
-/** The stretch an order pays for: its items' first start and last end, or none (a one-time order). */
-export function orderPeriod(order: Pick<PolarOrderLike, "items">): { start: Date | null; end: Date | null } {
-	let start: Date | null = null;
-	let end: Date | null = null;
-	for (const item of order.items ?? []) {
-		const from = parseDate(item.start_timestamp);
-		const to = parseDate(item.end_timestamp);
-		if (from && (!start || from < start)) start = from;
-		if (to && (!end || to > end)) end = to;
-	}
-	return { start, end };
 }
 
 /** A subscription row as the entitlement and credit code read it. */
@@ -133,16 +48,16 @@ export type SubscriptionState = {
 };
 
 /**
- * How long an active subscription keeps access past its period end while the renewal's news is on its way: Polar
- * renews at the period end and its webhooks can lag or need a retry. A failed renewal turns it past_due, which ends
- * access at the last paid period at once.
+ * How long an active subscription keeps access past its period end while the renewal's news is on its way: renewals
+ * happen at the period end and their webhooks can lag or need a retry. A failed renewal turns it past_due or on_hold,
+ * which ends access at the last paid period at once.
  */
 export const RENEWAL_GRACE_MS = 6 * 60 * 60 * 1000;
 
 /**
  * The paid access a subscription gives at `now`, or null. Active and trialing subscriptions run to their period end
- * (a little past it while the renewal arrives); past_due ones only to the end of the last period an order paid for;
- * the rest (canceled, unpaid, paused, never paid) give none.
+ * (a little past it while the renewal arrives); past_due and on_hold ones only to the end of the last period a payment
+ * paid for; one cancelled for the period end runs to it; the rest (cancelled now, paused, never paid, over) give none.
  */
 export function subscriptionAccess(
 	subscription: SubscriptionState,
@@ -158,7 +73,11 @@ export function subscriptionAccess(
 			break;
 		}
 		case "past_due":
+		case "on_hold":
 			endsAt = subscription.paidThrough;
+			break;
+		case "cancelled":
+			endsAt = subscription.cancelAtPeriodEnd ? subscription.currentPeriodEnd : null;
 			break;
 		default:
 			return null;
@@ -205,32 +124,4 @@ export function creditMonth(
 		if (at < end) return { start, end };
 	}
 	return null;
-}
-
-/** The fields kept from a Polar object in an event's payload: ids, statuses and amounts, never names or emails. */
-export function safeObjectFields(object: Record<string, unknown>): Record<string, unknown> {
-	const allowed = [
-		"id",
-		"status",
-		"billing_reason",
-		"net_amount",
-		"tax_amount",
-		"total_amount",
-		"refunded_amount",
-		"amount",
-		"currency",
-		"product_id",
-		"checkout_id",
-		"subscription_id",
-		"order_id",
-		"reason",
-		"recurring_interval",
-		"current_period_start",
-		"current_period_end",
-		"cancel_at_period_end",
-		"ended_at",
-		"expires_at",
-		"modified_at",
-	];
-	return Object.fromEntries(allowed.filter((key) => key in object).map((key) => [key, object[key]]));
 }

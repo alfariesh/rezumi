@@ -2,12 +2,12 @@ import { mockRpc } from "../fixtures/rpc";
 import { expect, test } from "../fixtures/test";
 
 const PAYMENT_ID = "01a19ef4-a65a-7256-91f4-54f7c9b40fbf";
-const CHECKOUT_URL = "https://sandbox.polar.sh/checkout/polar_c_e2e";
+const CHECKOUT_URL = "https://test.checkout.dodopayments.com/session/cks_e2e";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-// Billing stays off on the test server: the browser answers the billing procedures itself, and Polar's checkout is
-// stood in for, so nothing here reaches Polar.
-test("subscribes to Pro AI: confirm, pay on Polar, come back to an active plan", async ({
+// Billing stays off on the test server: the browser answers the billing procedures itself, and Dodo Payments' checkout
+// is stood in for, so nothing here reaches Dodo.
+test("subscribes to Pro AI: confirm, pay on Dodo Payments, come back to an active plan", async ({
 	authPage: page,
 	baseURL,
 }) => {
@@ -19,7 +19,7 @@ test("subscribes to Pro AI: confirm, pay on Polar, come back to an active plan",
 
 	const payment = () => ({
 		id: PAYMENT_ID,
-		orderId: paid ? "order_e2e" : null,
+		providerPaymentId: paid ? "pay_e2e" : null,
 		planId: "pro-ai",
 		interval: "month",
 		billingReason: "subscription_create",
@@ -89,16 +89,17 @@ test("subscribes to Pro AI: confirm, pay on Polar, come back to an active plan",
 			return { paymentId: PAYMENT_ID, redirectUrl: CHECKOUT_URL, expiresAt: new Date(+now + DAY_MS), reused: false };
 		},
 		"billing/payment": () => {
-			// Still pending on the first look, as when the customer is back before Polar's webhook lands.
+			// Still pending on the first look, as when the customer is back before Dodo's webhook lands.
 			paymentChecks += 1;
 			if (paymentChecks > 1) paid = true;
 			return payment();
 		},
 	});
 
-	// Polar sends the customer back to the success URL with the checkout id in the query; the page asks the server.
-	const returnUrl = `${baseURL}/dashboard/settings/billing/return/${PAYMENT_ID}?checkout_id=polar_c_e2e`;
-	await page.route("https://sandbox.polar.sh/**", (route) =>
+	// Dodo sends the customer back to the return URL with the payment's id and status in the query; the page asks the
+	// server.
+	const returnUrl = `${baseURL}/dashboard/settings/billing/return/${PAYMENT_ID}?subscription_id=sub_e2e&status=active`;
+	await page.route("https://test.checkout.dodopayments.com/**", (route) =>
 		route.fulfill({ contentType: "text/html", body: `<a href="${returnUrl}">Back to Rezumi</a>` }),
 	);
 
@@ -113,7 +114,7 @@ test("subscribes to Pro AI: confirm, pay on Polar, come back to an active plan",
 	await expect(dialog.getByRole("link", { name: "Refund policy" })).toBeVisible();
 	await dialog.getByRole("button", { name: "Continue to checkout" }).dblclick();
 
-	await page.waitForURL(/sandbox\.polar\.sh/);
+	await page.waitForURL(/test\.checkout\.dodopayments\.com/);
 	expect(checkouts).toHaveLength(1);
 	expect(checkouts[0]).toMatchObject({ planId: "pro-ai", interval: "month", idempotencyKey: expect.any(String) });
 

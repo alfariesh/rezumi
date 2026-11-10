@@ -18,7 +18,7 @@ import { orpc } from "@/libs/orpc/client";
 
 type PaymentHistorySectionProps = { formatDay: (date: Date) => string };
 
-/** Every payment the account made or started, newest first, with Polar's invoice once paid. Hidden until there is one. */
+/** Every payment the account made or started, newest first, with its invoice once paid. Hidden until there is one. */
 export function PaymentHistorySection({ formatDay }: PaymentHistorySectionProps) {
 	const history = useInfiniteQuery(
 		orpc.billing.payments.infiniteOptions({
@@ -39,7 +39,7 @@ export function PaymentHistorySection({ formatDay }: PaymentHistorySectionProps)
 				icon="clipboard-text"
 				id={titleId}
 				title={<Trans>Payments</Trans>}
-				description={<Trans>Invoices come from Polar, which sells the subscription and handles tax.</Trans>}
+				description={<Trans>Invoices come from Dodo Payments, which sells the subscription and handles tax.</Trans>}
 			/>
 			<Widget.Content className="flex flex-col gap-0 p-0">
 				<Table variant="secondary">

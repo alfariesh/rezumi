@@ -10,8 +10,8 @@ import { env } from "@rezumi/env/server";
 import { FREE_TEMPLATES, PLANS, toMajorUnits } from "@rezumi/schema/billing";
 import { alertDue, wibMidnight } from "./alerts";
 import { getBillingMode, isBillingAppliedTo } from "./entitlements";
-import { subscriptionAccess } from "./polar/mapping";
 import { billingMetrics, formatWibTime } from "./reports";
+import { subscriptionAccess } from "./subscription-access";
 import { getCurrentSubscription, subscriptionState } from "./subscriptions";
 import { DAY_MS } from "./timeline";
 
@@ -70,27 +70,27 @@ function formatMoney(money: Money) {
 const ALERT_TEXT: Record<BillingAlertKind, { title: string; body: string }> = {
 	paid_not_applied: {
 		title: "Pelanggan sudah bayar, tetapi paket belum aktif",
-		body: "Polar menyatakan order lunas, tetapi aktivasi di Rezumi gagal atau akunnya sudah dihapus. Buka pembayarannya di halaman admin dan tekan Cek ulang status; bila akunnya sudah tidak ada, refund lewat halaman admin.",
+		body: "Dodo Payments menyatakan pembayaran berhasil, tetapi aktivasi di Rezumi gagal atau akunnya sudah dihapus. Buka pembayarannya di halaman admin dan tekan Cek ulang status; bila akunnya sudah tidak ada, refund lewat halaman admin.",
 	},
 	payment_reversed: {
 		title: "Uang pembayaran ditarik kembali",
-		body: "Polar me-refund sebuah order untuk mencegah sengketa kartu (dispute), atau ada sengketa. Polar sekaligus membatalkan langganannya; kredit dari order itu sudah dicabut otomatis. Cek riwayatnya di dashboard Polar.",
+		body: "Ada sengketa kartu (dispute) atas sebuah pembayaran. Saat baru dibuka: kirim bukti (riwayat pemakaian, email, syarat layanan) lewat dashboard Dodo Payments → Disputes dalam beberapa hari. Bila sengketa kalah atau diterima, Rezumi sudah mencabut kredit dari pembayaran itu dan membatalkan langganannya otomatis.",
 	},
 	needs_review: {
 		title: "Kejadian pembayaran perlu dicek manual",
-		body: "Ada webhook Polar yang tidak bisa diproses otomatis. Datanya tidak diubah. Cek pembayarannya di halaman admin (Cek ulang status), dan setelah diperbaiki kamu bisa mengirim ulang event itu dari dashboard Polar (Settings → Webhooks → Deliveries).",
+		body: "Ada webhook Dodo Payments yang tidak bisa diproses otomatis. Datanya tidak diubah. Cek pembayarannya di halaman admin (Cek ulang status), dan setelah diperbaiki kamu bisa mengirim ulang event itu dari dashboard Dodo Payments (Developer → Webhooks → pilih endpoint → Logs).",
 	},
 	rejected_signatures: {
-		title: "Banyak webhook Polar ditolak",
-		body: "Lima atau lebih webhook dengan tanda tangan salah dalam satu jam. Biasanya secret webhook di Polar diganti tetapi POLAR_WEBHOOK_SECRET di server belum. Pembayaran tetap masuk lewat pengecekan berkala, hanya lebih lambat.",
+		title: "Banyak webhook Dodo Payments ditolak",
+		body: "Lima atau lebih webhook dengan tanda tangan salah dalam satu jam. Biasanya secret webhook di Dodo Payments diganti tetapi DODO_PAYMENTS_WEBHOOK_KEY di server belum. Pembayaran tetap masuk lewat pengecekan berkala, hanya lebih lambat.",
 	},
 	provider_errors: {
-		title: "API Polar gagal berulang kali",
-		body: "Pembuatan halaman checkout atau pengecekan status ke Polar gagal beberapa kali. Cek status.polar.sh dan apakah POLAR_ACCESS_TOKEN di server masih berlaku.",
+		title: "API Dodo Payments gagal berulang kali",
+		body: "Pembuatan halaman checkout atau pengecekan status ke Dodo Payments gagal beberapa kali. Cek status.dodopayments.com dan apakah DODO_PAYMENTS_API_KEY di server masih berlaku (dan dari mode yang sama).",
 	},
 	refund_failed: {
 		title: "Refund belum berhasil",
-		body: "Polar menolak refund atau belum mengonfirmasinya. Buka pembayarannya di halaman admin, tekan Cek ulang status, dan lihat alasannya.",
+		body: "Dodo Payments menolak refund atau belum mengonfirmasinya (refund bisa berstatus review). Buka pembayarannya di halaman admin, tekan Cek ulang status, dan lihat alasannya.",
 	},
 };
 
@@ -125,7 +125,7 @@ function summaryNotice(day: string, metrics: BillingMetrics): { subject: string;
 			preview: `${metrics.sales.payments} pembayaran, ${formatMoney(metrics.sales.revenue)}`,
 			heading: `Ringkasan ${day}`,
 			paragraphs: [
-				`Penjualan kemarin (WIB): ${metrics.sales.payments} pembayaran berhasil (${kinds.new ?? 0} langganan baru, ${kinds.renewal ?? 0} perpanjangan, ${kinds.change ?? 0} ganti paket), total ${formatMoney(metrics.sales.revenue)} sebelum pajak dan fee Polar.`,
+				`Penjualan kemarin (WIB): ${metrics.sales.payments} pembayaran berhasil (${kinds.new ?? 0} langganan baru, ${kinds.renewal ?? 0} perpanjangan, ${kinds.change ?? 0} ganti paket), total ${formatMoney(metrics.sales.revenue)} sebelum pajak dan fee Dodo Payments.`,
 				metrics.hangingPayments
 					? `${metrics.hangingPayments} checkout dibuka lebih dari satu jam lalu tetapi belum dibayar.`
 					: "Tidak ada checkout yang menggantung.",
@@ -224,7 +224,7 @@ function reminderNotice(input: { locale: string | null; planId: PaidPlanId; ends
 
 /**
  * Queues a reminder for each account whose granted access (an admin grant, a promotion, an old pass) ends within three
- * days, once per end time: a later grant moves the end and gets its own reminder. Subscriptions are left out: Polar
+ * days, once per end time: a later grant moves the end and gets its own reminder. Subscriptions are left out: Dodo
  * emails about renewals and cancellations. Only while plans apply to the account.
  */
 export async function queueExpiryReminders(now = new Date()): Promise<number> {

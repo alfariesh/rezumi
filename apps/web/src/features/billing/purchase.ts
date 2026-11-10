@@ -96,9 +96,16 @@ export function monthlyOfYearly(planId: PaidPlanId, currency: BillingCurrency) {
 	return formatPrice(Math.round(planPrice(planId, "year", currency) / 12 / unit) * unit, currency);
 }
 
-/** A subscription that still bills or gives access, so a new checkout isn't the way to a plan: changing it is. */
+/**
+ * A subscription that still bills or gives access, so a new checkout isn't the way to a plan: changing it is. One on
+ * hold waits for a new payment method in the billing portal.
+ */
 export const isLiveSubscription = (subscription: Subscription | null | undefined): subscription is Subscription =>
-	!!subscription && ["trialing", "active", "past_due", "paused"].includes(subscription.status);
+	!!subscription && ["trialing", "active", "past_due", "on_hold", "paused"].includes(subscription.status);
+
+/** A subscription whose last charge failed: it needs a new payment method (billing portal) before anything else. */
+export const isPaymentFailed = (subscription: Pick<Subscription, "status"> | null | undefined) =>
+	subscription?.status === "past_due" || subscription?.status === "on_hold";
 
 /**
  * What choosing a plan and interval does from where the account stands: a first subscription, the plan it is on, a
@@ -174,7 +181,7 @@ export function getPaymentStatusColor(status: PaymentStatus): "success" | "warni
 }
 
 /** What a payment was for, in a few words: a new subscription, a renewal, a plan change, or a 30-day pass. */
-/** A paid $0 order whose checkout offered a free trial: the trial starting, not a charge. */
+/** A paid $0 payment whose checkout offered a free trial: the trial starting, not a charge. */
 export const isTrialStart = (payment: Pick<Payment, "trialDays" | "totalAmount" | "paidAt">) =>
 	payment.trialDays !== null && payment.totalAmount === 0 && payment.paidAt !== null;
 
@@ -193,12 +200,14 @@ export function getPaymentReasonLabel(
 	}
 }
 
-/** Whether a payment has an invoice at Polar: an order that went through (refunded ones keep theirs). */
-/** An order that went through and charged something: a trial's $0 start has nothing to invoice. */
-export const hasInvoice = (payment: Pick<Payment, "paidAt" | "orderId" | "trialDays" | "totalAmount">) =>
-	payment.paidAt !== null && payment.orderId !== null && !isTrialStart(payment);
+/**
+ * Whether a payment has an invoice: one that went through (refunded ones keep theirs) and charged something; a trial's
+ * $0 start has nothing to invoice.
+ */
+export const hasInvoice = (payment: Pick<Payment, "paidAt" | "providerPaymentId" | "trialDays" | "totalAmount">) =>
+	payment.paidAt !== null && payment.providerPaymentId !== null && !isTrialStart(payment);
 
-/** Where a payment stands for the page Polar sends the customer back to. */
+/** Where a payment stands for the page the checkout sends the customer back to. */
 export type ReturnState = "paid" | "waiting" | "closed" | "failed" | "expired" | "refunded";
 
 export function getReturnState(payment: Pick<Payment, "status" | "expiresAt">, now = new Date()): ReturnState {

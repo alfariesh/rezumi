@@ -1,4 +1,4 @@
-import type { SubscriptionState } from "./polar/mapping";
+import type { SubscriptionState } from "./subscription-access";
 import type { DbOrTx } from "@rezumi/db/client";
 import type { PaidPlanId, PlanFeatures, PlanId } from "@rezumi/schema/billing";
 import { and, asc, eq, gt, isNull } from "drizzle-orm";
@@ -6,7 +6,7 @@ import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
 import { PLANS } from "@rezumi/schema/billing";
-import { subscriptionAccess } from "./polar/mapping";
+import { subscriptionAccess } from "./subscription-access";
 import { liveSubscriptions, subscriptionState } from "./subscriptions";
 
 export type BillingMode = "off" | "admins" | "on";

@@ -122,7 +122,7 @@ export const aiRequestRateLimit = createRatelimitMiddleware<ContextWithHeaders, 
 	key: ({ context }) => `ai-request:${getUserKey(context)}`,
 });
 
-// Each checkout or plan change calls Polar; ten in ten minutes is plenty for a person.
+// Each checkout or plan change calls Dodo Payments; ten in ten minutes is plenty for a person.
 export const checkoutRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
 	limiter: productionLimiter(checkoutLimiter),
 	key: ({ context }) => `checkout:${getUserKey(context)}`,

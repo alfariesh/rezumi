@@ -5,13 +5,13 @@ import * as schema from "@rezumi/db/schema";
 /**
  * The account's own billing records for its data export: subscriptions, payments and their refunds, granted periods,
  * and Rezumi AI credits in and out. Checkout addresses stay out, as do the internal retry counters. Invoices and the
- * billing details Polar holds are in Polar's customer portal.
+ * billing details Dodo Payments holds are in its customer portal.
  */
 export async function exportBillingData(userId: string) {
 	const payments = await db
 		.select({
 			id: schema.billingPayment.id,
-			orderId: schema.billingPayment.providerOrderId,
+			providerPaymentId: schema.billingPayment.providerPaymentId,
 			planId: schema.billingPayment.planId,
 			interval: schema.billingPayment.interval,
 			billingReason: schema.billingPayment.billingReason,

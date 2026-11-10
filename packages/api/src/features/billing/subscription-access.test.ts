@@ -1,85 +1,24 @@
-import type { SubscriptionState } from "./mapping";
+import type { SubscriptionState } from "./subscription-access";
 import { describe, expect, it } from "vite-plus/test";
-import {
-	addMonths,
-	checkoutPaymentStatus,
-	creditMonth,
-	nextPaymentStatus,
-	orderPaymentStatus,
-	orderPeriod,
-	providerModifiedAt,
-	RENEWAL_GRACE_MS,
-	safeObjectFields,
-	subscriptionAccess,
-} from "./mapping";
+import { addMonths, creditMonth, nextPaymentStatus, RENEWAL_GRACE_MS, subscriptionAccess } from "./subscription-access";
 
 const at = (iso: string) => new Date(iso);
 
-describe("payment statuses", () => {
-	it("maps Polar's order and checkout statuses", () => {
-		expect(orderPaymentStatus("draft")).toBe("pending");
-		expect(orderPaymentStatus("pending")).toBe("pending");
-		expect(orderPaymentStatus("paid")).toBe("paid");
-		expect(orderPaymentStatus("partially_refunded")).toBe("partially_refunded");
-		expect(orderPaymentStatus("refunded")).toBe("refunded");
-		expect(orderPaymentStatus("void")).toBe("cancelled");
-		expect(checkoutPaymentStatus("open")).toBe("pending");
-		expect(checkoutPaymentStatus("confirmed")).toBe("pending");
-		expect(checkoutPaymentStatus("succeeded")).toBe("pending");
-		expect(checkoutPaymentStatus("expired")).toBe("expired");
-		expect(checkoutPaymentStatus("failed")).toBe("failed");
-	});
-
-	it("lets anything become paid, never paid go back, and ends at a full refund", () => {
+describe("payment status transitions", () => {
+	it("lets anything become paid, never paid go back, and ends at a full refund or a reversal", () => {
 		expect(nextPaymentStatus("pending", "paid")).toEqual({ outcome: "applied", status: "paid" });
 		expect(nextPaymentStatus("expired", "paid")).toEqual({ outcome: "applied", status: "paid" });
 		expect(nextPaymentStatus("failed", "paid")).toEqual({ outcome: "applied", status: "paid" });
 		expect(nextPaymentStatus("paid", "paid")).toEqual({ outcome: "duplicate", status: "paid" });
 		expect(nextPaymentStatus("paid", "pending")).toEqual({ outcome: "stale", status: "paid" });
-		expect(nextPaymentStatus("paid", "expired")).toEqual({ outcome: "stale", status: "paid" });
+		expect(nextPaymentStatus("paid", "failed")).toEqual({ outcome: "stale", status: "paid" });
 		expect(nextPaymentStatus("paid", "partially_refunded").outcome).toBe("applied");
+		expect(nextPaymentStatus("paid", "reversed").outcome).toBe("applied");
 		expect(nextPaymentStatus("partially_refunded", "paid").outcome).toBe("stale");
 		expect(nextPaymentStatus("partially_refunded", "refunded").outcome).toBe("applied");
 		expect(nextPaymentStatus("refunded", "paid").outcome).toBe("stale");
-		expect(nextPaymentStatus("refunded", "partially_refunded").outcome).toBe("stale");
+		expect(nextPaymentStatus("reversed", "refunded").outcome).toBe("stale");
 		expect(nextPaymentStatus("pending", "expired").outcome).toBe("applied");
-	});
-});
-
-describe("orders and objects", () => {
-	it("reads the period an order pays for from its items", () => {
-		expect(orderPeriod({ items: [] })).toEqual({ start: null, end: null });
-		expect(
-			orderPeriod({
-				items: [
-					{ start_timestamp: "2026-11-05T10:00:00Z", end_timestamp: "2026-12-05T10:00:00Z" },
-					{ start_timestamp: "2026-11-20T00:00:00Z", end_timestamp: "2026-12-05T10:00:00Z" },
-				],
-			}),
-		).toEqual({ start: at("2026-11-05T10:00:00Z"), end: at("2026-12-05T10:00:00Z") });
-	});
-
-	it("orders states by Polar's modification time, falling back to creation", () => {
-		expect(providerModifiedAt({ created_at: "2026-11-01T00:00:00Z", modified_at: "2026-11-02T00:00:00Z" })).toEqual(
-			at("2026-11-02T00:00:00Z"),
-		);
-		expect(providerModifiedAt({ created_at: "2026-11-01T00:00:00Z", modified_at: null })).toEqual(
-			at("2026-11-01T00:00:00Z"),
-		);
-	});
-
-	it("keeps only safe fields of a Polar object", () => {
-		expect(
-			safeObjectFields({
-				id: "o",
-				status: "paid",
-				net_amount: 499,
-				currency: "usd",
-				customer: { email: "someone@example.test" },
-				billing_name: "Someone",
-				billing_address: { line1: "Street" },
-			}),
-		).toEqual({ id: "o", status: "paid", net_amount: 499, currency: "usd" });
 	});
 });
 
@@ -112,16 +51,27 @@ describe("subscription access", () => {
 		expect(subscriptionAccess({ ...base, currentPeriodEnd: at("2026-11-05T05:00:00Z") }, now)).toBeNull();
 	});
 
-	it("gives a past_due subscription only its last paid period, and the rest nothing", () => {
-		expect(
-			subscriptionAccess({ ...base, status: "past_due", paidThrough: at("2026-11-05T11:00:00Z") }, now),
-		).toBeNull();
-		expect(
-			subscriptionAccess({ ...base, status: "past_due", paidThrough: at("2026-11-06T00:00:00Z") }, now)?.endsAt,
-		).toEqual(at("2026-11-06T00:00:00Z"));
-		for (const status of ["canceled", "unpaid", "incomplete", "incomplete_expired", "paused"] as const)
+	it("gives a past_due or on_hold subscription only its last paid period, and the rest nothing", () => {
+		for (const status of ["past_due", "on_hold"] as const) {
+			expect(subscriptionAccess({ ...base, status, paidThrough: at("2026-11-05T11:00:00Z") }, now)).toBeNull();
+			expect(subscriptionAccess({ ...base, status, paidThrough: at("2026-11-06T00:00:00Z") }, now)?.endsAt).toEqual(
+				at("2026-11-06T00:00:00Z"),
+			);
+		}
+		for (const status of ["cancelled", "pending", "failed", "expired", "paused"] as const)
 			expect(subscriptionAccess({ ...base, status }, now)).toBeNull();
 		expect(subscriptionAccess({ ...base, endedAt: at("2026-11-05T00:00:00Z") }, now)).toBeNull();
+	});
+
+	it("runs a subscription cancelled for its period end to that end, without the renewal grace", () => {
+		const cancelled = {
+			...base,
+			status: "cancelled" as const,
+			cancelAtPeriodEnd: true,
+			endedAt: base.currentPeriodEnd,
+		};
+		expect(subscriptionAccess(cancelled, now)).toMatchObject({ endsAt: base.currentPeriodEnd, renews: false });
+		expect(subscriptionAccess(cancelled, at("2026-11-20T01:00:00Z"))).toBeNull();
 	});
 
 	it("runs a free trial like a paid period: into its first charge, a few hours past its end", () => {

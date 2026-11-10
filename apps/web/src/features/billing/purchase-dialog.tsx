@@ -54,10 +54,13 @@ type PurchaseDialogProps = {
 	onClose: () => void;
 };
 
+/** When to look at the plan again after an upgrade whose charge was still settling. */
+const PROCESSING_REFRESH_MS = [5_000, 15_000, 30_000, 45_000, 60_000, 90_000, 120_000];
+
 /**
  * Confirms a subscription or a plan change, in a drawer (right on desktop, from the bottom on phones): the plan, its
  * price and how often it renews, what changes when, the refund policy in brief and the terms it agrees to. A new
- * subscription continues on Polar's checkout page; a change is made here at once.
+ * subscription continues on Dodo Payments' checkout page; a change is made here at once.
  */
 export function PurchaseDialog({ choice, subscription, currency, trialAvailable, onClose }: PurchaseDialogProps) {
 	const queryClient = useQueryClient();
@@ -69,8 +72,10 @@ export function PurchaseDialog({ choice, subscription, currency, trialAvailable,
 	// The same plan, billed monthly instead of yearly or the other way round.
 	const billingOnly = subscription?.planId === target.planId;
 	const trialDays = kind === "subscribe" ? trialDaysFor(target.planId, trialAvailable) : null;
-	// An upgrade ends a running free trial: the new plan has none (Polar starts its billing at once).
+	// An upgrade ends a running free trial: the new plan has none, so its billing starts at once.
 	const endsTrial = kind === "upgrade" && subscription?.status === "trialing";
+	// An upgrade to another billing interval starts a new period today; one within the interval keeps the renewal date.
+	const newPeriod = kind === "upgrade" && !!subscription && subscription.interval !== target.interval;
 	// One key per attempt: a double click or a retried request returns the same checkout instead of a second one.
 	const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID());
 	const [redirecting, setRedirecting] = useState(false);
@@ -82,7 +87,7 @@ export function PurchaseDialog({ choice, subscription, currency, trialAvailable,
 	const started = useRef(false);
 
 	useEffect(() => {
-		// Back from Polar, the browser can restore this page as it was left: still on its way out.
+		// Back from the checkout, the browser can restore this page as it was left: still on its way out.
 		const restore = (event: PageTransitionEvent) => {
 			if (!event.persisted) return;
 			started.current = false;
@@ -123,15 +128,24 @@ export function PurchaseDialog({ choice, subscription, currency, trialAvailable,
 			{
 				onSuccess: ({ effective }) => {
 					void queryClient.invalidateQueries({ queryKey: orpc.billing.key() });
-					toast.add({
-						type: "success",
-						description:
-							effective !== "now"
-								? t`Your plan changes at your next renewal.`
-								: billingOnly
-									? t`You're now billed yearly.`
-									: t`Your plan is now ${getPlanName(target.planId)}.`,
-					});
+					if (effective === "processing") {
+						// The charge is still settling at Dodo: the new plan shows once it succeeds, usually within a minute.
+						for (const delay of PROCESSING_REFRESH_MS)
+							setTimeout(() => void queryClient.invalidateQueries({ queryKey: orpc.billing.key() }), delay);
+						toast.add({
+							type: "info",
+							description: t`Your payment is being processed. Your new plan shows here within a minute or two.`,
+						});
+					} else
+						toast.add({
+							type: "success",
+							description:
+								effective === "renewal"
+									? t`Your plan changes at your next renewal.`
+									: billingOnly
+										? t`You're now billed yearly.`
+										: t`Your plan is now ${getPlanName(target.planId)}.`,
+						});
 					reset();
 					onClose();
 				},
@@ -149,7 +163,6 @@ export function PurchaseDialog({ choice, subscription, currency, trialAvailable,
 	};
 
 	const name = getPlanName(target.planId);
-	const currentName = subscription ? getPlanName(subscription.planId) : name;
 	const price = priceLabel(target.planId, target.interval, currency);
 	const credits = PLANS[target.planId].creditsPerMonth;
 	const renewal = subscription?.currentPeriodEnd ? formatDate(subscription.currentPeriodEnd) : null;
@@ -189,7 +202,7 @@ export function PurchaseDialog({ choice, subscription, currency, trialAvailable,
 								)}
 							</p>
 							<p className="text-xs text-muted">
-								<Trans>Prices are before tax: Polar adds the tax that applies where you live.</Trans>
+								<Trans>Prices are before tax: the checkout adds the tax that applies where you live.</Trans>
 							</p>
 						</div>
 
@@ -199,8 +212,8 @@ export function PurchaseDialog({ choice, subscription, currency, trialAvailable,
 									<Icon name="calendar-blank" size={18} className="mt-0.5 shrink-0 text-muted" />
 									<span>
 										<Trans>
-											Add a card, Apple Pay or Google Pay on Polar's secure checkout. Nothing is charged today: the
-											first charge comes after {trialDays} days, and cancelling before then costs nothing.
+											Add a card, Apple Pay or Google Pay on the secure checkout by Dodo Payments. Nothing is charged
+											today: the first charge comes after {trialDays} days, and cancelling before then costs nothing.
 										</Trans>
 									</span>
 								</li>
@@ -209,8 +222,8 @@ export function PurchaseDialog({ choice, subscription, currency, trialAvailable,
 									<Icon name="lock" size={18} className="mt-0.5 shrink-0 text-muted" />
 									<span>
 										<Trans>
-											Pay on Polar's secure checkout with a card, Apple Pay or Google Pay. {name} starts as soon as the
-											payment goes through.
+											Pay on the secure checkout by Dodo Payments with a card, Apple Pay or Google Pay. {name} starts as
+											soon as the payment goes through.
 										</Trans>
 									</span>
 								</li>
@@ -221,19 +234,24 @@ export function PurchaseDialog({ choice, subscription, currency, trialAvailable,
 										{endsTrial ? (
 											billingOnly ? (
 												<Trans>
-													Your free trial ends now. Your saved payment method is charged today for this month, then the
-													difference for yearly billing; after that, the yearly price at each renewal.
+													Your free trial ends now. Your saved payment method is charged the yearly price today, and it
+													renews every year from today.
 												</Trans>
 											) : (
 												<Trans>
-													Your free trial ends now. Your saved payment method is charged today for this month of{" "}
-													{currentName}, then the difference for {name}; after that, {name}'s price at each renewal.
+													Your free trial ends now. Your saved payment method is charged {name}'s full price today, and
+													it renews at that price from today.
 												</Trans>
 											)
 										) : billingOnly ? (
 											<Trans>
-												Yearly billing starts now. You're charged the difference for the rest of this period with your
-												saved payment method, then the yearly price at each renewal.
+												Yearly billing starts today. You're charged the yearly price, less the unused part of your
+												current month, with your saved payment method; it then renews every year from today.
+											</Trans>
+										) : newPeriod ? (
+											<Trans>
+												{name} starts today. You're charged its price, less the unused part of your current period, with
+												your saved payment method; it then renews from today.
 											</Trans>
 										) : (
 											<Trans>

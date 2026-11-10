@@ -1,4 +1,3 @@
-import type { RefundReason } from "./refunds";
 import type { PaidPlanId } from "@rezumi/schema/billing";
 import { ORPCError } from "@orpc/server";
 import { desc, eq, inArray, or, sql } from "drizzle-orm";
@@ -8,7 +7,7 @@ import { lockBillingAccount } from "./account";
 import { deductCredits, getCreditBalance, grantCredits } from "./credits";
 import { isBillingAppliedTo, resolveEntitlements } from "./entitlements";
 import { grantMembershipPeriod, revokeMembershipPeriod } from "./periods";
-import { syncPaymentWithPolar } from "./reconcile";
+import { syncPaymentWithProvider } from "./reconcile";
 import { requestRefund } from "./refunds";
 import { subscriptionState } from "./subscriptions";
 import { DAY_MS } from "./timeline";
@@ -39,6 +38,8 @@ const VIEW_LIMIT = 50;
 const SEARCH_LIMIT = 20;
 
 const UUID = /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i;
+/** A Dodo Payments id: pay_…, sub_…, cks_… (checkout session) or cus_… (customer). */
+const PROVIDER_ID = /^[a-z]{2,4}_[A-Za-z0-9]{6,}$/;
 
 type PaymentRow = typeof schema.billingPayment.$inferSelect;
 
@@ -47,7 +48,7 @@ const adminPayment = (payment: PaymentRow) => ({
 	id: payment.id,
 	userId: payment.userId,
 	provider: payment.provider,
-	orderId: payment.providerOrderId,
+	providerPaymentId: payment.providerPaymentId,
 	checkoutId: payment.providerCheckoutId,
 	subscriptionId: payment.subscriptionId,
 	planId: payment.planId,
@@ -69,8 +70,8 @@ const adminPayment = (payment: PaymentRow) => ({
 	refundedAmount: payment.refundedAmount,
 	trialDays: payment.trialDays,
 	failureReason: payment.failureReason,
-	// Only Polar orders can be refunded from the admin page; old Midtrans passes were refunded by hand.
-	refundable: payment.provider === "polar" && Boolean(payment.providerOrderId),
+	// Only Dodo payments can be refunded from the admin page; older Polar and Midtrans ones were refunded elsewhere.
+	refundable: payment.provider === "dodo" && Boolean(payment.providerPaymentId),
 });
 
 type SubscriptionRow = typeof schema.billingSubscription.$inferSelect;
@@ -101,12 +102,12 @@ const customerSummary = {
 };
 
 /**
- * Where an admin's search lands: an email (or part of one), a Polar order, checkout or subscription id, a payment or
- * account id.
+ * Where an admin's search lands: an email (or part of one), a Dodo Payments payment, checkout session, subscription or
+ * customer id, a payment or account id.
  */
 async function search(input: { query: string }) {
 	const query = input.query.trim();
-	const id = UUID.test(query) ? query.toLowerCase() : null;
+	const id = UUID.test(query) ? query.toLowerCase() : PROVIDER_ID.test(query) ? query : null;
 	const payments = id
 		? await db
 				.select()
@@ -114,7 +115,7 @@ async function search(input: { query: string }) {
 				.where(
 					or(
 						eq(schema.billingPayment.id, id),
-						eq(schema.billingPayment.providerOrderId, id),
+						eq(schema.billingPayment.providerPaymentId, id),
 						eq(schema.billingPayment.providerCheckoutId, id),
 						eq(schema.billingPayment.userId, id),
 						inArray(
@@ -123,7 +124,11 @@ async function search(input: { query: string }) {
 								.select({ id: schema.billingSubscription.id })
 								.from(schema.billingSubscription)
 								.where(
-									or(eq(schema.billingSubscription.id, id), eq(schema.billingSubscription.providerSubscriptionId, id)),
+									or(
+										eq(schema.billingSubscription.id, id),
+										eq(schema.billingSubscription.providerSubscriptionId, id),
+										eq(schema.billingSubscription.providerCustomerId, id),
+									),
 								),
 						),
 					),
@@ -139,7 +144,18 @@ async function search(input: { query: string }) {
 		.where(
 			or(
 				sql`lower(${schema.user.email}) like ${pattern}`,
-				...(id ? [eq(schema.user.id, id)] : []),
+				...(id
+					? [
+							eq(schema.user.id, id),
+							inArray(
+								schema.user.id,
+								db
+									.select({ id: schema.billingAccount.userId })
+									.from(schema.billingAccount)
+									.where(eq(schema.billingAccount.providerCustomerId, id)),
+							),
+						]
+					: []),
 				...(ownerIds.length ? [inArray(schema.user.id, ownerIds)] : []),
 			),
 		)
@@ -307,10 +323,10 @@ export const billingAdmin = {
 	search,
 	customer,
 
-	/** Asks Polar where a payment stands now and applies it: the "check again" button. */
+	/** Asks Dodo Payments where a payment stands now and applies it: the "check again" button. */
 	syncPayment: async (input: { actorUserId: string; paymentId: string }) => {
 		const before = await paymentOwner(input.paymentId);
-		const found = await syncPaymentWithPolar(input.paymentId);
+		const found = await syncPaymentWithProvider(input.paymentId);
 		const after = await paymentOwner(input.paymentId);
 		await audit({
 			actorUserId: input.actorUserId,
@@ -326,7 +342,6 @@ export const billingAdmin = {
 		paymentId: string;
 		amount?: number | undefined;
 		reason: string;
-		polarReason?: RefundReason | undefined;
 		revokeBenefits?: boolean | undefined;
 		endSubscription?: boolean | undefined;
 	}) => requestRefund(input),
