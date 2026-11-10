@@ -168,12 +168,6 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 						/>
 					))}
 				</AnimatePresence>
-				<p className="px-2 pt-2 pb-1 text-xs text-muted">
-					<Trans>
-						Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown
-						outcomes blank.
-					</Trans>
-				</p>
 			</CareerWidget>
 
 			{storyId && !selected ? (

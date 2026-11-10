@@ -39,7 +39,7 @@ function RouteComponent() {
 			)}
 			<Outlet />
 			<p className="mt-auto text-xs text-muted max-sm:hidden">
-				<Trans>Rezumi {__APP_VERSION__} · MIT</Trans>
+				<Trans>Rezumi {__APP_VERSION__}</Trans>
 				{" · "}
 				{getProjectLinks().map((link, index) => (
 					<Fragment key={link.href}>
