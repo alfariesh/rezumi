@@ -57,9 +57,14 @@
 		// The contact form's public Turnstile key; set with its secret (TURNSTILE_SECRET_KEY, a Worker secret) before
 		// launch. Without both, the form isn't offered and Contact falls back to the email button.
 		"TURNSTILE_SITE_KEY": "0x4AAAAAAF5qNivhOg0kkz1u",
-		// Dodo Payments sells the plans. The live-mode product ids (DODO_PAYMENTS_PRODUCT_*, not secret) and
-		// "DODO_PAYMENTS_ENVIRONMENT": "live_mode" go here at go-live, before the Worker secrets DODO_PAYMENTS_API_KEY and
-		// DODO_PAYMENTS_WEBHOOK_KEY (the key without them fails startup). Until then buying is unavailable.
+		// Dodo Payments live-mode products (business "Rezumi"). Not secret. DODO_PAYMENTS_API_KEY (a key made in live mode)
+		// and DODO_PAYMENTS_WEBHOOK_KEY are Worker secrets, set after these are deployed: the key without them, or a test-mode
+		// key here, fails startup.
+		"DODO_PAYMENTS_ENVIRONMENT": "live_mode",
+		"DODO_PAYMENTS_PRODUCT_PLUS_MONTHLY": "pdt_0NrcLxDOzozrbdcuNkIZz",
+		"DODO_PAYMENTS_PRODUCT_PLUS_YEARLY": "pdt_0NrcLxH3dG9NbNzj3GL0U",
+		"DODO_PAYMENTS_PRODUCT_PRO_AI_MONTHLY": "pdt_0NrcLxLNpsfqo3e2jP7zY",
+		"DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY": "pdt_0NrcLxOnM7iDIBRvf4zQN",
 	},
 	"send_email": [{ "name": "EMAIL" }],
 	"hyperdrive": [{ "binding": "HYPERDRIVE", "id": "f2e0cd8d0b084ed5bdbfb8a1de8a80dc" }],

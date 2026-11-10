@@ -115,8 +115,8 @@ metode refund `dodo`, default provider `dodo`.
 | 5   | Tes unit + DB nyata (27 skenario Dodo), tes web, tes e2e diperbarui                                                                                                       | ✅     |
 | 6   | Legal ID/EN, dokumen rencana, runbook                                                                                                                                     | ✅     |
 | 7   | Verifikasi perilaku di API mode test (parameter checkout, pembayaran trial $0, metadata, batal di akhir periode, downgrade terjadwal, upgrade saat trial, batal seketika) | ✅     |
-| 8   | Uji end-to-end lewat server lokal dengan kartu uji 4242 (2026-11-10, tanpa webhook: semua lewat cek status dan job). Webhook asli: di staging                             | 🟡     |
-| 9   | Go-live: produk live, secret Worker, webhook live, uji pembelian kecil + refund                                                                                           | ⬜     |
+| 8   | Uji end-to-end lewat server lokal dengan kartu uji 4242, lalu webhook asli lewat relay `dodo wh listen` (2026-11-10)                                                      | ✅     |
+| 9   | Go-live: verifikasi live (✅), produk live (✅), setelan live (✅), `wrangler.jsonc` live; sisa: secret Worker, webhook live, uji pembelian kecil + refund                | 🟡     |
 
 ### Hasil verifikasi mode test (2026-11-10, lewat MCP, tanpa server Rezumi)
 
@@ -165,3 +165,48 @@ test pemilik), akun uji `dodo-sandbox@rezumi.app` (admin, terverifikasi; kata sa
      placeholder pencarian dan judul kolom "Order" diganti.
 - Data uji di mode test Dodo: pelanggan `cus_0Nrc7vnztLn0GhaQUErgy` dengan langganan Pro AI tahunan aktif (downgrade terjadwal),
   plus dua pembayaran $0 dari klik ganda dan uji diagnosis.
+
+### Uji webhook asli (2026-11-10, setelah PR #56 di-merge)
+
+Relay Dodo CLI v3.7.4 (`dodo wh listen http://localhost:3141/api/payments/dodo/webhook`, tanpa alamat publik; terowongan
+`cloudflared` ditolak pengaman Claude Code). CLI membuat endpoint relay di mode test; secret-nya diambil lewat API
+(`webhooks.retrieveSecret`) langsung ke `.env.local` worktree, lalu endpoint dan secret dihapus setelah uji.
+
+- **9 webhook diterima, semua 200, tanda tangan valid** (relay tidak merusak isi kiriman), 0 error, 0 peringatan.
+- Akun lama: batal di akhir periode lalu lanjut → `subscription.updated` ×2, hasil `duplicate` (sudah diterapkan Rezumi sendiri).
+- Akun baru `dodo-sandbox2@rezumi.app` beli Pro AI bulanan: `payment.succeeded` dan `subscription.active` **diterapkan dari
+  webhook** (sebelum cek status halaman kembali); `subscription.updated`/`renewed` yang datang bersamaan tercatat `stale`.
+- Refund penuh + hentikan langganan dari admin → `refund.succeeded`, `subscription.cancelled`, `subscription.updated` tercatat
+  `duplicate`; kredit dicabut, akun kembali Gratis.
+- Belum bisa diuji di mode test: sengketa kartu (dispute). Logikanya dicakup tes DB nyata.
+
+### Mode live (2026-11-10)
+
+Verifikasi bisnis Dodo disetujui; plugin MCP `dodopayments` dihubungkan ulang ke mode **live** (Dodo CLI tetap mode test).
+Atas persetujuan pemilik, Claude membuat empat produk live dengan isi sama seperti produk test (USD, harga lokal IDR
+`by_currency`, `tax_inclusive: false`, `saas`, periode 20 tahun, metadata `rezumi_plan`/`rezumi_interval`). Pratinjau checkout
+live: Rupiah tetap tanpa pajak untuk Indonesia, USD + VAT 19% untuk Jerman.
+
+| Env (`wrangler.jsonc`)                 | Id produk live              |
+| -------------------------------------- | --------------------------- |
+| `DODO_PAYMENTS_PRODUCT_PLUS_MONTHLY`   | `pdt_0NrcLxDOzozrbdcuNkIZz` |
+| `DODO_PAYMENTS_PRODUCT_PLUS_YEARLY`    | `pdt_0NrcLxH3dG9NbNzj3GL0U` |
+| `DODO_PAYMENTS_PRODUCT_PRO_AI_MONTHLY` | `pdt_0NrcLxLNpsfqo3e2jP7zY` |
+| `DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY`  | `pdt_0NrcLxOnM7iDIBRvf4zQN` |
+
+Setelan dashboard ternyata berlaku untuk kedua mode: di live semuanya sudah seperti mode test (dicek 2026-11-10).
+
+**Urutan menyalakan produksi** (salah urutan menjatuhkan situs, karena pemeriksaan env berjalan saat Worker start):
+
+1. Merge PR yang mengisi `wrangler.jsonc` (id produk live + `DODO_PAYMENTS_ENVIRONMENT: live_mode`). Tanpa API key, pembelian
+   tetap tidak tersedia; situs aman.
+2. Dashboard Dodo, **Live Mode nyala**: Developer → API Keys → buat key. Lalu `pnpm exec wrangler secret put DODO_PAYMENTS_API_KEY`
+   dan tempel key itu. **Harus key mode live**: key mode test di sini membuat Worker gagal start. Bila salah, ulangi perintah
+   dengan key yang benar.
+3. Developer → Webhooks → Add endpoint `https://rezumi.app/api/payments/dodo/webhook`, event: semua `payment.*`,
+   `subscription.*`, `refund.*`, `dispute.*`. Salin signing secret → `pnpm exec wrangler secret put DODO_PAYMENTS_WEBHOOK_KEY`.
+   Di tab Settings endpoint, isi email pemilik untuk peringatan pengiriman gagal.
+4. Disarankan: Settings → Business → isi support email brand `hi@rezumi.app` (masih kosong), tampil di email dan invoice Dodo.
+5. Uji di produksi dengan akun admin (`BILLING_MODE=admins`): satu pembelian kecil sungguhan (Plus bulanan $4.99, atau Rp59.000)
+   lalu refund penuh dari halaman admin; cek webhook masuk di Developer → Webhooks → Logs dan di riwayat pelanggan admin.
+6. Go-live: `BILLING_MODE=on` (Phase 11).
