@@ -1,7 +1,7 @@
 import type { Application, ApplicationSummary } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { Sheet, Widget } from "@heroui-pro/react";
-import { Button, ButtonGroup, Chip, Dropdown, Input, Label, Modal, ScrollShadow, Separator } from "@heroui/react";
+import { Button, Checkbox, Chip, Dropdown, Input, Label, Modal, ScrollShadow, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -13,6 +13,7 @@ import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
+import { documentOptions } from "../document-options";
 import { daysInStage } from "../next-step";
 import { applicationDetailQueryOptions, getInitialApplicationDetail } from "../queries";
 import { getClosedReasonLabel, getNextStage, getStageColor, getStageLabel } from "../stages";
@@ -26,6 +27,8 @@ import { NextStepCard } from "./detail/next-step-card";
 import { SentDocuments } from "./detail/sent-documents";
 import { StageStepper } from "./detail/stage-stepper";
 import { InterviewDialog } from "./interview-dialog";
+import { DatePickerField } from "@/components/input/date-time-fields";
+import { SelectField } from "@/components/input/select-field";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -66,7 +69,7 @@ export function ApplicationDetailSheet({ application, onOpenChange, onEditDetail
 		>
 			<Sheet.Backdrop>
 				<Sheet.Content className={phone ? "h-svh" : "w-full sm:max-w-[480px]"}>
-					<Sheet.Dialog className="bg-background">
+					<Sheet.Dialog className="bg-surface">
 						{phone && <Sheet.Handle />}
 						<Sheet.CloseTrigger aria-label={t`Close`} />
 						{current ? (
@@ -320,31 +323,29 @@ function Detail({ variant, application, onEditDetails, onDeleted }: DetailProps)
 				<div className="min-h-0 flex-1 overflow-hidden">{body}</div>
 			)}
 
-			<footer className="shrink-0 bg-background px-4 pt-2 pb-4">
+			<footer className="shrink-0 bg-surface px-4 pt-2 pb-4">
 				{!closed ? (
-					<ButtonGroup variant="secondary" fullWidth>
-						<Button isIconOnly aria-label={t`Close application…`} onPress={() => setClosing(true)}>
+					<div className="flex items-center gap-2">
+						<Button isIconOnly variant="secondary" aria-label={t`Close application…`} onPress={() => setClosing(true)}>
 							<Icon name="prohibit" size={18} />
 						</Button>
 						{application.sourceUrl && (
 							<Button
 								isIconOnly
+								variant="secondary"
 								aria-label={t`Open the posting`}
 								onPress={() => window.open(application.sourceUrl ?? "", "_blank", "noopener,noreferrer")}
 							>
-								<ButtonGroup.Separator />
 								<Icon name="arrow-square-out" size={18} />
 							</Button>
 						)}
 						<OpenWorkspaceButton application={application} />
-					</ButtonGroup>
+					</div>
 				) : (
-					<ButtonGroup variant="secondary" fullWidth>
-						<Button className="min-w-0 flex-1 px-3" onPress={() => moveTo(application, "applied")}>
-							<Icon name="arrow-counter-clockwise" size={16} />
-							<Trans>Reopen</Trans>
-						</Button>
-					</ButtonGroup>
+					<Button variant="secondary" fullWidth className="min-w-0 px-3" onPress={() => moveTo(application, "applied")}>
+						<Icon name="arrow-counter-clockwise" size={16} />
+						<Trans>Reopen</Trans>
+					</Button>
 				)}
 			</footer>
 
@@ -594,78 +595,38 @@ function MarkAppliedDialog({ application, onClose }: MarkAppliedDialogProps) {
 							</p>
 						</Modal.Header>
 						<Modal.Body className="grid gap-4 p-1">
-							<div className="grid gap-1.5">
-								<label htmlFor={`${id}-date`}>
-									<Trans>Application date</Trans>
-								</label>
-								<Input
-									fullWidth
-									id={`${id}-date`}
-									type="date"
-									required
-									value={date}
-									onChange={(event) => setDate(event.target.value)}
-								/>
-							</div>
-							<div className="grid gap-1.5">
-								<label htmlFor={`${id}-resume`}>
-									<Trans>Resume submitted (optional)</Trans>
-								</label>
-								<select
-									id={`${id}-resume`}
-									value={resumeId}
-									onChange={(event) => setResumeId(event.target.value)}
-									className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
-								>
-									<option value="">{t`None`}</option>
-									{documents
-										?.filter((document) => document.type === "resume")
-										.map((document) => (
-											<option key={document.id} value={document.id}>
-												{document.name}
-											</option>
-										))}
-								</select>
-							</div>
-							<div className="grid gap-1.5">
-								<label htmlFor={`${id}-letter`}>
-									<Trans>Cover letter submitted (optional)</Trans>
-								</label>
-								<select
-									id={`${id}-letter`}
-									value={coverLetterId}
-									onChange={(event) => setCoverLetterId(event.target.value)}
-									className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
-								>
-									<option value="">{t`None`}</option>
-									{documents
-										?.filter((document) => document.type === "letter")
-										.map((document) => (
-											<option key={document.id} value={document.id}>
-												{document.name}
-											</option>
-										))}
-								</select>
-							</div>
+							<DatePickerField label={<Trans>Application date</Trans>} isRequired value={date} onChange={setDate} />
+							<SelectField
+								label={<Trans>Resume submitted (optional)</Trans>}
+								value={resumeId}
+								onChange={setResumeId}
+								options={documentOptions(documents, "resume")}
+							/>
+							<SelectField
+								label={<Trans>Cover letter submitted (optional)</Trans>}
+								value={coverLetterId}
+								onChange={setCoverLetterId}
+								options={documentOptions(documents, "letter")}
+							/>
 							{application.resumeFileUrl && (
-								<label className="flex items-center gap-2 text-sm">
-									<input
-										type="checkbox"
-										checked={resumeFileSent}
-										onChange={(event) => setResumeFileSent(event.target.checked)}
-									/>
-									<Trans>Submitted attached resume: {application.resumeFileName ?? "PDF"}</Trans>
-								</label>
+								<Checkbox isSelected={resumeFileSent} onChange={setResumeFileSent} className="text-sm">
+									<Checkbox.Content>
+										<Checkbox.Control>
+											<Checkbox.Indicator />
+										</Checkbox.Control>
+										<Trans>Submitted attached resume: {application.resumeFileName ?? "PDF"}</Trans>
+									</Checkbox.Content>
+								</Checkbox>
 							)}
 							{application.coverLetterUrl && (
-								<label className="flex items-center gap-2 text-sm">
-									<input
-										type="checkbox"
-										checked={letterFileSent}
-										onChange={(event) => setLetterFileSent(event.target.checked)}
-									/>
-									<Trans>Submitted attached cover letter: {application.coverLetterName ?? "PDF"}</Trans>
-								</label>
+								<Checkbox isSelected={letterFileSent} onChange={setLetterFileSent} className="text-sm">
+									<Checkbox.Content>
+										<Checkbox.Control>
+											<Checkbox.Indicator />
+										</Checkbox.Control>
+										<Trans>Submitted attached cover letter: {application.coverLetterName ?? "PDF"}</Trans>
+									</Checkbox.Content>
+								</Checkbox>
 							)}
 							{update.error && (
 								<p role="alert" className="text-sm text-danger-soft-foreground">
@@ -770,7 +731,6 @@ function OpenWorkspaceButton({ application }: { application: Application }) {
 				})
 			}
 		>
-			<ButtonGroup.Separator />
 			<Icon name="arrow-right" size={16} />
 			<Trans>Open workspace</Trans>
 		</Button>

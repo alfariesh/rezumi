@@ -2,7 +2,7 @@ import type { ThumbnailContent } from "./thumbnails";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CareerField, Template } from "@rezumi/schema/templates";
 import type { FocusEvent, KeyboardEvent, PointerEvent } from "react";
-import { NativeSelect, Segment } from "@heroui-pro/react";
+import { Segment } from "@heroui-pro/react";
 import { Button, Label, Slider, Tag, TagGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -24,6 +24,7 @@ import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { SEGMENT_ITEM } from "./style-groups";
 import { thumbnailContent, useTemplateThumbnail } from "./thumbnails";
+import { SelectField } from "@/components/input/select-field";
 import { careerFieldNames, templateSample, templates } from "@/dialogs/resume/template/data";
 import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
@@ -118,21 +119,15 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 
 	return (
 		<div className="grid gap-3">
-			<NativeSelect variant="secondary" fullWidth>
-				<NativeSelect.Trigger
-					aria-label={t`Field of work`}
-					value={field}
-					onChange={(event) => setField(event.target.value as CareerField | "all")}
-				>
-					<NativeSelect.Option value="all">{t`All fields`}</NativeSelect.Option>
-					{careerFields.map((id) => (
-						<NativeSelect.Option key={id} value={id}>
-							{i18n._(careerFieldNames[id])}
-						</NativeSelect.Option>
-					))}
-					<NativeSelect.Indicator />
-				</NativeSelect.Trigger>
-			</NativeSelect>
+			<SelectField
+				aria-label={t`Field of work`}
+				value={field}
+				onChange={(value) => setField(value as CareerField | "all")}
+				options={[
+					{ value: "all", label: t`All fields` },
+					...careerFields.map((id) => ({ value: id, label: i18n._(careerFieldNames[id]) })),
+				]}
+			/>
 
 			{/* Chips rather than a segmented control: they wrap, so the four filters fit a 300px panel in any language. */}
 			<div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">

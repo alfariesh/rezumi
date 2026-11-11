@@ -2,7 +2,7 @@ import type { Fact } from "../hooks";
 import type { FactCategory } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { KeyboardEvent } from "react";
-import { EmptyState, NativeSelect } from "@heroui-pro/react";
+import { EmptyState } from "@heroui-pro/react";
 import {
 	Button,
 	Chip,
@@ -26,6 +26,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { CareerLoadError } from "../load-state";
 import { CareerWidget, CollapseRow, FilterChip, flash, useCareerTime, withUndo } from "../shared";
+import { SelectField } from "@/components/input/select-field";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { toastError } from "@/libs/error-message";
 import { D2, EASE, EXIT } from "@/libs/motion";
@@ -140,7 +141,7 @@ export function FactsPage({ highlight }: FactsPageProps) {
 						</FilterChip>
 					))}
 				</div>
-				<InputGroup className="w-full sm:ms-auto sm:w-72">
+				<InputGroup variant="secondary" className="w-full sm:ms-auto sm:w-72">
 					<InputGroup.Prefix>
 						<Icon name="magnifying-glass" size={18} />
 					</InputGroup.Prefix>
@@ -299,26 +300,12 @@ function AddFactDialog({ open, onOpenChange, onAdded }: AddFactDialogProps) {
 									}}
 								/>
 							</TextField>
-							<div className="grid gap-1.5">
-								<Label htmlFor={`${id}-type`}>
-									<Trans>Type</Trans>
-								</Label>
-								<NativeSelect variant="secondary" fullWidth>
-									<NativeSelect.Trigger
-										id={`${id}-type`}
-										value={category}
-										onChange={(event) => setCategory(event.target.value as FactCategory)}
-										className="pointer-coarse:min-h-11"
-									>
-										{CATEGORIES.map((option) => (
-											<option key={option} value={option}>
-												{categoryLabel(option)}
-											</option>
-										))}
-										<NativeSelect.Indicator />
-									</NativeSelect.Trigger>
-								</NativeSelect>
-							</div>
+							<SelectField
+								label={<Trans>Type</Trans>}
+								value={category}
+								onChange={(next) => setCategory(CATEGORIES.find((option) => option === next) ?? category)}
+								options={CATEGORIES.map((option) => ({ value: option, label: categoryLabel(option) }))}
+							/>
 							<Modal.Footer className="p-0">
 								<Button variant="secondary" onPress={() => onOpenChange(false)}>
 									<Trans>Cancel</Trans>

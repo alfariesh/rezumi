@@ -1,8 +1,8 @@
 import type { DateFormat } from "@rezumi/schema/resume/dates";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode, RefObject } from "react";
-import { NativeSelect, Segment, Widget } from "@heroui-pro/react";
-import { Button, Disclosure, Label, Tabs, Tooltip } from "@heroui/react";
+import { Segment, Widget } from "@heroui-pro/react";
+import { Button, Disclosure, Tabs, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useEffect, useRef, useState } from "react";
@@ -15,6 +15,7 @@ import { DesignSectionBuilder } from "../-sidebar/right/sections/design";
 import { LayoutSectionBuilder } from "../-sidebar/right/sections/layout";
 import { PageSectionBuilder } from "../-sidebar/right/sections/page";
 import { TypographySectionBuilder } from "../-sidebar/right/sections/typography";
+import { SelectField } from "@/components/input/select-field";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useIsResumeLocked, useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { ExpandingLabel } from "@/features/resume/editor/chrome/mode-switch";
@@ -366,30 +367,19 @@ function DateFormatSelect() {
 	const updateResumeData = useUpdateResumeData();
 
 	return (
-		<NativeSelect variant="secondary" fullWidth>
-			<Label htmlFor="design-date-format">
-				<Trans>Date format</Trans>
-			</Label>
-			<NativeSelect.Trigger
-				id="design-date-format"
-				value={data?.metadata.page.dateFormat ?? "short"}
-				onChange={(event) =>
-					updateResumeData(
-						(draft) => {
-							draft.metadata.page.dateFormat = event.target.value as DateFormat;
-						},
-						{ newStep: true },
-					)
-				}
-			>
-				{DATE_FORMATS.map((format) => (
-					<NativeSelect.Option key={format.value} value={format.value}>
-						{format.label}
-					</NativeSelect.Option>
-				))}
-				<NativeSelect.Indicator />
-			</NativeSelect.Trigger>
-		</NativeSelect>
+		<SelectField
+			label={<Trans>Date format</Trans>}
+			value={data?.metadata.page.dateFormat ?? "short"}
+			onChange={(value) =>
+				updateResumeData(
+					(draft) => {
+						draft.metadata.page.dateFormat = value as DateFormat;
+					},
+					{ newStep: true },
+				)
+			}
+			options={DATE_FORMATS.map((format) => ({ value: format.value, label: format.label }))}
+		/>
 	);
 }
 

@@ -55,7 +55,7 @@ function renderList(applications: Application[], breakpoint = "desktop", onOpen 
 	return render(
 		<QueryClientProvider client={new QueryClient()}>
 			<I18nProvider i18n={i18n}>
-				<ApplicationList applications={applications} showClosed selectedId={null} onOpen={onOpen} />
+				<ApplicationList applications={applications} selectedId={null} onOpen={onOpen} />
 			</I18nProvider>
 		</QueryClientProvider>,
 	);

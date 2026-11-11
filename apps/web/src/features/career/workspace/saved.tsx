@@ -155,7 +155,7 @@ function SavedRow({ item, applicationId, expanded, onToggle, onOpen, onDelete }:
 
 	return (
 		<div className="grid grid-cols-[36px_minmax(0,1fr)] items-start gap-x-3 px-4 py-3.5 sm:grid-cols-[36px_minmax(0,1fr)_auto]">
-			<span className="grid size-9 place-items-center rounded-xl bg-default text-muted">
+			<span className="grid size-9 place-items-center rounded-xl bg-control text-muted">
 				<Icon name={meta?.icon ?? "file-text"} size={18} />
 			</span>
 			<div className="grid min-w-0 gap-0.5">

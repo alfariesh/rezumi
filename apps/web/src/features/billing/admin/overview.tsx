@@ -652,6 +652,7 @@ function PaymentsCard({ range, query }: PaymentsCardProps) {
 					>
 						<SearchField
 							aria-label={t`Find a customer`}
+							variant="secondary"
 							fullWidth
 							value={text}
 							onChange={setText}

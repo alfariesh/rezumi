@@ -227,7 +227,7 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 									{totpUri && secret && (
 										<>
 											<div className="flex items-center gap-x-2">
-												<Input fullWidth readOnly value={secret} className="font-mono text-sm" />
+												<Input fullWidth readOnly variant="secondary" value={secret} className="font-mono text-sm" />
 												<Button isIconOnly variant="ghost" onPress={() => handleCopySecret()}>
 													<span className="sr-only">
 														{t({

@@ -318,18 +318,30 @@ export function InfoChip({ tone, children }: { tone: "match" | "unknown"; childr
 	);
 }
 
+/**
+ * One look for every chip: a white pill with a hairline (0.5px) border, text in the foreground, accent when it is on.
+ * `hover` is the tone the pill takes under the pointer, one step below the tone it sits on.
+ */
+const chipClass = (pressed: boolean, hover: "background" | "default") =>
+	cn(
+		"touch-target rounded-full border-[0.5px] border-border bg-surface",
+		hover === "default" ? "hover:bg-default" : "hover:bg-background",
+		pressed ? "text-accent" : "text-foreground",
+	);
+
 type FilterChipProps = { pressed: boolean; onClick: () => void; children: ReactNode; className?: string };
 
-/** A pill toggle for filters and single choices; selected sits on the surface tone, the rest stay quiet. */
+/** A pill toggle for filters and single choices; the selected one turns accent. */
 export function FilterChip({ pressed, onClick, children, className }: FilterChipProps) {
 	return (
 		<Button
 			size="sm"
-			variant={pressed ? "secondary" : "ghost"}
+			variant="outline"
 			aria-pressed={pressed}
 			onPress={onClick}
-			className={cn("touch-target rounded-full", pressed ? "font-semibold" : "text-muted", className)}
+			className={cn(chipClass(pressed, "background"), "gap-1", pressed && "font-semibold", className)}
 		>
+			{pressed && <Icon name="check" size={14} />}
 			{children}
 		</Button>
 	);
@@ -344,16 +356,16 @@ type ContextChipProps = {
 	offIcon?: IconName;
 };
 
-/** Composer context switches: on is sunken with a check, off is quiet with add. */
+/** Composer context switches: on turns accent with a check, off shows add. The composer is `background`, so hover is `default`. */
 export function ContextChip({ pressed, onPressedChange, label, tooltip, offIcon = "plus" }: ContextChipProps) {
 	return (
 		<Tooltip>
 			<Button
 				size="sm"
-				variant={pressed ? "secondary" : "outline"}
+				variant="outline"
 				aria-pressed={pressed}
 				onPress={() => onPressedChange(!pressed)}
-				className="touch-target h-7 min-h-0 gap-1 px-2 text-xs"
+				className={cn(chipClass(pressed, "default"), "h-7 min-h-0 gap-1 px-2 text-xs")}
 			>
 				<Icon name={pressed ? "check" : offIcon} size={14} />
 				{label}

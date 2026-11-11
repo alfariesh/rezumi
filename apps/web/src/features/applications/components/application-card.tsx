@@ -22,7 +22,7 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
 			<div className="flex items-start gap-2.5">
 				<span
 					aria-hidden="true"
-					className="grid size-7 shrink-0 place-items-center rounded-lg bg-default text-xs font-semibold text-muted"
+					className="grid size-7 shrink-0 place-items-center rounded-lg bg-control text-xs font-semibold text-muted"
 				>
 					{application.company.slice(0, 1).toUpperCase()}
 				</span>

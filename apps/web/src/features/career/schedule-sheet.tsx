@@ -3,7 +3,7 @@ import type { careerScheduleInputSchema } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import type z from "zod";
-import { NativeSelect, Segment, Sheet } from "@heroui-pro/react";
+import { Segment, Sheet } from "@heroui-pro/react";
 import { Alert, Button, buttonVariants, Input, Label, Link as HeroLink, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -16,6 +16,8 @@ import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { fromZonedDateTime } from "@rezumi/utils/timezone";
 import { PrivacyLine, Swap, useCareerTime, useNow } from "./shared";
+import { DatePickerField, TimePickerField } from "@/components/input/date-time-fields";
+import { SelectField } from "@/components/input/select-field";
 import { collectInterviews, interviewKindOf } from "@/features/applications/interviews";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -323,9 +325,9 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 
 									{draft.kind === "prepare" && (
 										<>
-											<Field
+											<SelectField
 												label={t`Interview`}
-												hint={
+												description={
 													choices.length === 0
 														? t`Add an interview in an application first`
 														: runAt && runAt <= now
@@ -334,30 +336,18 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 																: t`Starts in under ${draft.lead === "24h" ? 24 : 2} hours, so the briefing runs now.`
 															: undefined
 												}
-											>
-												{(props) => (
-													<NativeSelect variant="secondary" fullWidth>
-														<NativeSelect.Trigger
-															{...props}
-															disabled={choices.length === 0}
-															value={draft.interviewId}
-															onChange={(event) => set({ interviewId: event.target.value })}
-															className="pointer-coarse:min-h-11 pointer-coarse:text-base"
-														>
-															{choices.map((item) => (
-																<option key={item.interview.id} value={item.interview.id}>
-																	{[
-																		item.application.company,
-																		interviewKindOf(item.interview.kind)?.label ?? item.interview.kind,
-																		when(item.start),
-																	].join(" · ")}
-																</option>
-															))}
-															<NativeSelect.Indicator />
-														</NativeSelect.Trigger>
-													</NativeSelect>
-												)}
-											</Field>
+												isDisabled={choices.length === 0}
+												value={draft.interviewId}
+												onChange={(interviewId) => set({ interviewId })}
+												options={choices.map((item) => ({
+													value: item.interview.id,
+													label: [
+														item.application.company,
+														interviewKindOf(item.interview.kind)?.label ?? item.interview.kind,
+														when(item.start),
+													].join(" · "),
+												}))}
+											/>
 											<Segments
 												label={t`Prepare a briefing`}
 												value={draft.lead}
@@ -368,33 +358,26 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 													{ value: "morning", label: t`Morning of` },
 												]}
 											/>
-											<Field label={t`AI connection`}>
-												{(props) =>
-													providerState.isUnavailable ? (
-														<AiProviderLoadState state={providerState} />
-													) : providers.length === 0 ? (
-														<HeroLink href="/dashboard/settings/app#ai-providers" className="w-fit">
-															<Trans>Connect an AI provider in Settings</Trans>
-														</HeroLink>
-													) : (
-														<NativeSelect variant="secondary" fullWidth>
-															<NativeSelect.Trigger
-																{...props}
-																value={draft.aiProviderId}
-																onChange={(event) => set({ aiProviderId: event.target.value })}
-																className="pointer-coarse:min-h-11 pointer-coarse:text-base"
-															>
-																{providers.map((provider) => (
-																	<option key={provider.id} value={provider.id}>
-																		{provider.label}
-																	</option>
-																))}
-																<NativeSelect.Indicator />
-															</NativeSelect.Trigger>
-														</NativeSelect>
-													)
-												}
-											</Field>
+											{providerState.isUnavailable || providers.length === 0 ? (
+												<Field label={t`AI connection`}>
+													{() =>
+														providerState.isUnavailable ? (
+															<AiProviderLoadState state={providerState} />
+														) : (
+															<HeroLink href="/dashboard/settings/app#ai-providers" className="w-fit">
+																<Trans>Connect an AI provider in Settings</Trans>
+															</HeroLink>
+														)
+													}
+												</Field>
+											) : (
+												<SelectField
+													label={t`AI connection`}
+													value={draft.aiProviderId}
+													onChange={(aiProviderId) => set({ aiProviderId })}
+													options={providers.map((provider) => ({ value: provider.id, label: provider.label }))}
+												/>
+											)}
 											{/* The run itself falls back to the default the same way, so this says what will happen. */}
 											{form?.existing?.kind === "prepare" &&
 												providers.length > 0 &&
@@ -413,61 +396,36 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 									)}
 
 									{draft.kind === "follow-up" && (
-										<Field label={t`Application`} hint={open.length === 0 ? t`Add an application first` : undefined}>
-											{(props) => (
-												<NativeSelect variant="secondary" fullWidth>
-													<NativeSelect.Trigger
-														{...props}
-														disabled={open.length === 0}
-														value={draft.applicationId}
-														onChange={(event) => set({ applicationId: event.target.value })}
-														className="pointer-coarse:min-h-11 pointer-coarse:text-base"
-													>
-														{open.map((application) => (
-															<option key={application.id} value={application.id}>
-																{`${application.company} · ${application.role}`}
-															</option>
-														))}
-														<NativeSelect.Indicator />
-													</NativeSelect.Trigger>
-												</NativeSelect>
-											)}
-										</Field>
+										<SelectField
+											label={t`Application`}
+											description={open.length === 0 ? t`Add an application first` : undefined}
+											isDisabled={open.length === 0}
+											value={draft.applicationId}
+											onChange={(applicationId) => set({ applicationId })}
+											options={open.map((application) => ({
+												value: application.id,
+												label: `${application.company} · ${application.role}`,
+											}))}
+										/>
 									)}
 
 									{draft.kind !== "prepare" && (
 										<div className="grid gap-1.5">
 											<div className="grid grid-cols-2 gap-3">
-												<Field label={dateLabel}>
-													{(props) => (
-														<Input
-															fullWidth
-															variant="secondary"
-															{...props}
-															type="date"
-															aria-invalid={Boolean(shownError("when")) || undefined}
-															value={draft.date}
-															onChange={(event) => set({ date: event.target.value })}
-															onBlur={() => touch("when")}
-															className="pointer-coarse:text-base"
-														/>
-													)}
-												</Field>
-												<Field label={t`Time · ${timeZone}`}>
-													{(props) => (
-														<Input
-															fullWidth
-															variant="secondary"
-															{...props}
-															type="time"
-															aria-invalid={Boolean(shownError("when")) || undefined}
-															value={draft.time}
-															onChange={(event) => set({ time: event.target.value })}
-															onBlur={() => touch("when")}
-															className="pointer-coarse:text-base"
-														/>
-													)}
-												</Field>
+												<DatePickerField
+													label={dateLabel}
+													isInvalid={Boolean(shownError("when"))}
+													value={draft.date}
+													onChange={(date) => set({ date })}
+													onBlur={() => touch("when")}
+												/>
+												<TimePickerField
+													label={t`Time · ${timeZone}`}
+													isInvalid={Boolean(shownError("when"))}
+													value={draft.time}
+													onChange={(time) => set({ time })}
+													onBlur={() => touch("when")}
+												/>
 											</div>
 											<FieldError>{shownError("when")}</FieldError>
 										</div>

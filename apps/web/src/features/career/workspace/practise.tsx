@@ -8,7 +8,6 @@ import {
 	Button,
 	Checkbox,
 	Chip,
-	Label,
 	ProgressBar,
 	Skeleton,
 	Spinner,
@@ -25,7 +24,6 @@ import { useEffect, useId, useRef, useState } from "react";
 import { z } from "zod";
 import { AI_VOICE_MODELS } from "@rezumi/ai/types";
 import { Icon } from "@rezumi/ui/components/icon";
-import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { useCoachKnowledge } from "../coach-thread";
@@ -43,6 +41,7 @@ import {
 	speakAloud,
 	writeNumbersAsDigits,
 } from "./recorder";
+import { SelectField } from "@/components/input/select-field";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -933,7 +932,6 @@ function useVoiceSettings() {
 type VoiceSettingsPanelProps = { voice: VoiceSettings; audio: Audio | null; disabled: boolean };
 
 function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps) {
-	const id = useId();
 	const [open, setOpen] = useState(false);
 	const { settings, update, transcribers, readers } = voice;
 	const browserTranscribes = settings.transcribe.providerId === BROWSER;
@@ -960,7 +958,6 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 						<div className="mt-2 grid gap-4 rounded-2xl bg-surface-secondary p-4">
 							<div className="grid gap-3 sm:grid-cols-2">
 								<VoiceSelect
-									id={`${id}-transcribe`}
 									label={t`Transcribe answers with`}
 									choice={settings.transcribe}
 									connections={transcribers}
@@ -969,7 +966,6 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 									onChange={(transcribeWith, transcribeModel) => update({ transcribeWith, transcribeModel })}
 								/>
 								<VoiceSelect
-									id={`${id}-speak`}
 									label={t`Read questions with`}
 									choice={settings.speak}
 									connections={readers}
@@ -1015,7 +1011,6 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 }
 
 type VoiceSelectProps = {
-	id: string;
 	label: string;
 	choice: VoiceChoice;
 	connections: ReturnType<typeof useHasUsableAiProvider>["usableProviders"];
@@ -1026,36 +1021,27 @@ type VoiceSelectProps = {
 };
 
 /** A connection (or the browser) for one kind of speech, and its model when the connection offers several. */
-function VoiceSelect({ id, label, choice, connections, browser, disabled, onChange }: VoiceSelectProps) {
+function VoiceSelect({ label, choice, connections, browser, disabled, onChange }: VoiceSelectProps) {
 	return (
 		<div className="grid content-start gap-1.5">
-			<Label htmlFor={id}>{label}</Label>
-			<NativeSelect
-				id={id}
+			<SelectField
+				label={label}
 				value={choice.providerId}
-				disabled={disabled}
-				onChange={(event) => onChange(event.target.value, undefined)}
-			>
-				{connections.map((provider) => (
-					<option key={provider.id} value={provider.id}>
-						{provider.label}
-					</option>
-				))}
-				{(browser || choice.providerId === BROWSER) && <option value={BROWSER}>{t`Your browser`}</option>}
-			</NativeSelect>
+				isDisabled={disabled}
+				onChange={(providerId) => onChange(providerId, undefined)}
+				options={[
+					...connections.map((provider) => ({ value: provider.id, label: provider.label })),
+					...(browser || choice.providerId === BROWSER ? [{ value: BROWSER, label: t`Your browser` }] : []),
+				]}
+			/>
 			{choice.models.length > 1 && (
-				<NativeSelect
+				<SelectField
 					aria-label={t`Model for ${label}`}
 					value={choice.model}
-					disabled={disabled}
-					onChange={(event) => onChange(choice.providerId, event.target.value)}
-				>
-					{choice.models.map((model) => (
-						<option key={model} value={model}>
-							{model}
-						</option>
-					))}
-				</NativeSelect>
+					isDisabled={disabled}
+					onChange={(model) => onChange(choice.providerId, model)}
+					options={choice.models.map((model) => ({ value: model, label: model }))}
+				/>
 			)}
 		</div>
 	);

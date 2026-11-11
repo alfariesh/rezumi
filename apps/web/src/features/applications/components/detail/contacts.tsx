@@ -62,6 +62,7 @@ function ContactsWidget({ contacts, disabled, onChange }: ContactsProps) {
 
 	const field = (key: keyof typeof EMPTY_CONTACT, label: string, type = "text") => (
 		<Input
+			variant="secondary"
 			fullWidth
 			aria-label={label}
 			placeholder={label}

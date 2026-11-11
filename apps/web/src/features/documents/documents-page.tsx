@@ -19,7 +19,6 @@ import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { cn } from "@rezumi/utils/style";
 import { LinkApplicationDialog, TagsDialog, useBatchActions } from "./document-actions";
 import { DocumentCard } from "./document-card";
@@ -27,6 +26,7 @@ import { DocumentList, documentKey } from "./document-list";
 import { collectTags, filterDocuments } from "./filter";
 import { LibraryError } from "./library-error";
 import { useStartDocument } from "./use-start-document";
+import { SelectField } from "@/components/input/select-field";
 import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { useDialogStore } from "@/dialogs/store";
@@ -153,7 +153,7 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 						</Segment>
 
 						<div className="ms-auto flex flex-wrap items-center gap-2 max-sm:ms-0 max-sm:w-full">
-							<InputGroup className="w-60 max-sm:w-full">
+							<InputGroup variant="secondary" className="w-60 max-sm:w-full">
 								<InputGroup.Prefix>
 									<Icon name="magnifying-glass" size={18} />
 								</InputGroup.Prefix>
@@ -170,15 +170,16 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 								</InputGroup.Suffix>
 							</InputGroup>
 							<div className="w-[150px] max-sm:w-auto max-sm:flex-1">
-								<NativeSelect
+								<SelectField
 									aria-label={t`Sort`}
 									value={search.sort}
-									onChange={(event) => onSearchChange({ sort: event.target.value as DocumentSort })}
-								>
-									<option value="edited">{t`Last edited`}</option>
-									<option value="name">{t`Name`}</option>
-									<option value="created">{t`Created`}</option>
-								</NativeSelect>
+									onChange={(sort) => onSearchChange({ sort: sort as DocumentSort })}
+									options={[
+										{ value: "edited", label: t`Last edited` },
+										{ value: "name", label: t`Name` },
+										{ value: "created", label: t`Created` },
+									]}
+								/>
 							</div>
 							<Segment
 								aria-label={t`View`}
@@ -373,6 +374,10 @@ type TagFilterProps = {
 const PUBLIC_KEY = "public:";
 const tagKey = (tag: string) => `tag:${tag}`;
 
+/** The same chip as the filters elsewhere: a white pill with a hairline border; accent with a check when it is on. */
+const TAG_FILTER_CLASS =
+	"gap-1 rounded-full border-[0.5px] border-border bg-surface text-foreground hover:bg-background data-[selected=true]:bg-surface data-[selected=true]:font-semibold data-[selected=true]:text-accent";
+
 function TagFilter({ tags, active, onChange, showPublic, publicOnly, onPublicChange }: TagFilterProps) {
 	const selectedKeys = new Set([...(publicOnly ? [PUBLIC_KEY] : []), ...active.map(tagKey)]);
 
@@ -392,14 +397,22 @@ function TagFilter({ tags, active, onChange, showPublic, publicOnly, onPublicCha
 			{/* On a phone the chips stay on one row that scrolls sideways, edge to edge past the page's 16px padding. */}
 			<TagGroup.List className="max-sm:-mx-4 max-sm:-my-1 max-sm:[scrollbar-width:none] max-sm:flex-nowrap max-sm:overflow-x-auto max-sm:px-4 max-sm:py-1 max-sm:*:shrink-0">
 				{showPublic && (
-					<Tag id={PUBLIC_KEY} textValue={t`Public`}>
-						<Icon name="globe" size={16} />
-						<Trans>Public</Trans>
+					<Tag id={PUBLIC_KEY} textValue={t`Public`} className={TAG_FILTER_CLASS}>
+						{({ isSelected }) => (
+							<>
+								{isSelected ? <Icon name="check" size={14} /> : <Icon name="globe" size={14} />}
+								<Trans>Public</Trans>
+							</>
+						)}
 					</Tag>
 				)}
 				{tags.map((tag) => (
-					<Tag key={tag} id={tagKey(tag)} textValue={tag}>
-						#{tag}
+					<Tag key={tag} id={tagKey(tag)} textValue={tag} className={TAG_FILTER_CLASS}>
+						{({ isSelected }) => (
+							<>
+								{isSelected && <Icon name="check" size={14} />}#{tag}
+							</>
+						)}
 					</Tag>
 				))}
 			</TagGroup.List>

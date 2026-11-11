@@ -216,12 +216,12 @@
 /*
  * One header for every Widget. HeroUI's own header is 32px tall with 8px above the title and 6px below it, which reads
  * crowded next to the 16px at its start and end, and it grows a few pixels whenever an action or a description
- * joins. Here the header is at least 48px (a lone title is centred with 12px above and below; 16px at its start and end); the title is Typography `h6` (16/24 semibold tight) and the description `body-sm` (14/24, muted).
+ * joins. Here the header is at least 56px (a lone title is centred with 16px above and below, a longer one has 12px; 16px at its start and end); the title is Typography `h6` (16/24 semibold tight) and the description `body-sm` (14/24, muted).
  * The trailing action is 32px tall (`WidgetAction`), so it never changes the header's height.
  */
 @layer components {
 	.widget .widget__header {
-		@apply mt-0 min-h-12 items-center gap-x-3 gap-y-1 px-4 py-2;
+		@apply mt-0 min-h-14 items-center gap-x-3 gap-y-1 px-4 py-3;
 	}
 
 	/* A chip in a header sits on the gray shell, so it takes the white surface to stand out. */
@@ -235,6 +235,95 @@
 
 	.widget .widget__description {
 		@apply text-sm leading-6 text-muted;
+	}
+}
+
+/*
+ * Fill hierarchy in the dashboard. The root is `surface` (white); a block resting on it takes `background`; a control
+ * sitting on a `background` block (a widget's header, the message box) steps down once more to `default`. Controls read
+ * their resting fill from `--control-fill` so the step follows where they sit; `bg-control` is the same for a tile.
+ * `surface-secondary` (HeroUI's gray block) is `background` here, so a Widget's shell, a tile, an empty state or a table
+ * head on white reads as one level and nothing is drawn in a third gray. A dialog or sheet is white too, so it follows the
+ * same rules; the editors keep HeroUI's own, since their panels are already `background`.
+ */
+.dashboard-shell,
+[role="dialog"] {
+	--surface-secondary: var(--background);
+	--control-fill: var(--background);
+	--control-fill-hover: var(--default);
+}
+
+:is(.dashboard-shell, [role="dialog"])
+	:is(.widget__header, .widget__footer, .prompt-input__shell, .empty-state[class*="bg-surface-secondary"]) {
+	--control-fill: var(--default);
+	--control-fill-hover: var(--default-hover);
+}
+
+/* A KPI group is a block on white like a Widget's shell: `background`, with no shadow (HeroUI draws it white and raised). */
+@layer components {
+	.dashboard-shell .kpi-group {
+		@apply bg-background shadow-none;
+	}
+}
+
+@utility bg-control {
+	background-color: var(--control-fill, var(--default));
+}
+
+@layer components {
+	/* Segmented control and tabs: the track is one step below the white surface; the selected item stays white. */
+	:is(.dashboard-shell, [role="dialog"]) :is(.segment:not(.segment--ghost), .tabs__list-container) {
+		background-color: var(--control-fill);
+	}
+
+	/* Secondary and tertiary buttons (the navbar's Search, "New", "Add"…). */
+	:is(.dashboard-shell, [role="dialog"]) :is(.button--secondary, .button--tertiary) {
+		--button-bg: var(--control-fill);
+		--button-bg-hover: var(--control-fill-hover);
+		--button-bg-pressed: var(--control-fill-hover);
+	}
+
+	:is(.dashboard-shell, [role="dialog"]) .empty-state__media {
+		background-color: var(--control-fill);
+	}
+}
+
+/*
+ * The coach's message box (PromptInput `primary`) is filled with the page `background` rather than the gray `default`,
+ * in the rest and focus states alike. The assistant dock's `secondary` box is unchanged.
+ */
+@layer components {
+	.dashboard-shell .prompt-input .prompt-input__shell--primary,
+	.dashboard-shell .prompt-input:focus-within .prompt-input__shell--primary {
+		background-color: var(--background);
+	}
+}
+
+/*
+ * The sidebar's current page: a soft accent fill under accent text and icon (HeroUI uses the gray `default` fill and
+ * foreground text). The extra `.sidebar__menu` keeps it above HeroUI's hover and current rules.
+ */
+@layer components {
+	.sidebar__menu .sidebar__menu-item[data-current="true"] .sidebar__menu-item-content {
+		@apply bg-accent-soft;
+	}
+
+	.sidebar__menu
+		.sidebar__menu-item[data-current="true"]
+		:is(.sidebar__menu-icon, .sidebar__menu-label, .sidebar__menu-chip) {
+		@apply text-accent;
+	}
+}
+
+/*
+ * An unchecked checkbox is filled like a `secondary` field, with the page `background` (or `--field-fill` on a gray
+ * card), not HeroUI's white: white on a white dialog or page leaves only a faint border. One that sets its own fill
+ * (`bg-default`, `bg-surface`) keeps it.
+ */
+@layer components {
+	.checkbox:not(.checkbox--secondary) .checkbox__control {
+		background-color: var(--field-fill, var(--background));
+		box-shadow: none;
 	}
 }
 

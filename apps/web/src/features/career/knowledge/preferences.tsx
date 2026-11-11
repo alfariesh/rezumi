@@ -16,6 +16,8 @@ import { CareerWidget, useCareerTime, useNow } from "../shared";
 import { parseAmount } from "./amount";
 import { SearchRegionsField } from "./search-regions-field";
 import { Token, TokenFrame, tokenInputClass } from "./token-field";
+import { FlagIcon, currencyFlagCode } from "@/components/flag-icon";
+import { SelectField } from "@/components/input/select-field";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { toastError } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
@@ -263,8 +265,15 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 	);
 }
 
-const bareSelect =
-	"field-sizing-content cursor-pointer appearance-none bg-transparent text-muted outline-none hover:text-foreground focus-visible:text-foreground";
+/** A select that sits inside an input group's prefix or suffix: no frame of its own, as wide as its value. */
+const bareSelectField = "w-auto";
+// The chevron sits in the flow after the value (HeroUI floats it at the end, over a trigger this narrow).
+const bareSelectTrigger =
+	"h-auto min-h-0 w-auto items-center gap-1 border-0 bg-transparent px-1 py-0 text-muted shadow-none hover:text-foreground pointer-coarse:min-h-0 [&_svg]:static [&_svg]:my-0 [&_svg]:size-3.5 [&_[data-list-only]]:hidden";
+const bareSelectPopover = "min-w-28";
+// A hairline between a select and the amount, so the two ends read as controls and not as text.
+const prefixDivider = "me-1 border-e border-separator pe-2";
+const suffixDivider = "ms-1 border-s border-separator ps-2";
 
 type ChipFieldProps = { label: string; placeholder: string; value: string[]; onChange: (value: string[]) => void };
 
@@ -354,22 +363,32 @@ function SalaryField({ locale, value, onChange }: SalaryFieldProps) {
 			</Label>
 			<InputGroup variant="secondary">
 				<InputGroup.Prefix>
-					<select
+					<SelectField
 						aria-label={t`Currency`}
 						value={value.currency}
-						onChange={(event) => onChange({ ...value, currency: event.target.value })}
-						className={bareSelect}
-					>
-						{currencies.map((currency) => (
-							<option key={currency} value={currency}>
-								{symbol(currency)}
-							</option>
-						))}
-					</select>
+						onChange={(currency) => onChange({ ...value, currency })}
+						options={currencies.map((currency) => ({
+							value: currency,
+							// The trigger shows the symbol; the list adds the code, so "NT$" and "$" can be told apart and searched.
+							label: (
+								<>
+									<FlagIcon code={currencyFlagCode(currency)} size={14} className="me-1.5 inline-block align-middle" />
+									<span className="tabular-nums">{symbol(currency)}</span>
+									<span data-list-only className="ms-2 text-muted">
+										{currency}
+									</span>
+								</>
+							),
+							textValue: `${currency} ${symbol(currency)}`,
+						}))}
+						className={bareSelectField}
+						triggerClassName={cn(bareSelectTrigger, prefixDivider)}
+						popoverClassName={bareSelectPopover}
+					/>
 				</InputGroup.Prefix>
 				<InputGroup.Input
 					inputMode="decimal"
-					className="tabular-nums"
+					className="text-end tabular-nums"
 					onFocus={() => setTyping(typing ?? formatted)}
 					onBlur={() => {
 						const amount = parseAmount(typing ?? formatted, locale);
@@ -380,18 +399,17 @@ function SalaryField({ locale, value, onChange }: SalaryFieldProps) {
 					}}
 				/>
 				<InputGroup.Suffix>
-					<select
+					<SelectField
 						aria-label={t`Pay period`}
 						value={value.period}
-						onChange={(event) => onChange({ ...value, period: event.target.value as keyof typeof periods })}
-						className={cn(bareSelect, "text-end text-xs")}
-					>
-						{Object.entries(periods).map(([period, label]) => (
-							<option key={period} value={period}>
-								{label}
-							</option>
-						))}
-					</select>
+						onChange={(period) => {
+							if (period in periods) onChange({ ...value, period: period as keyof typeof periods });
+						}}
+						options={Object.entries(periods).map(([period, label]) => ({ value: period, label }))}
+						className={bareSelectField}
+						triggerClassName={cn(bareSelectTrigger, suffixDivider, "text-xs")}
+						popoverClassName={bareSelectPopover}
+					/>
 				</InputGroup.Suffix>
 			</InputGroup>
 			<FieldError>

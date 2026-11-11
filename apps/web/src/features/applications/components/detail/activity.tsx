@@ -13,6 +13,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { interviewKindOf } from "../../interviews";
 import { getStageColor, getStageLabel } from "../../stages";
 import { useInvalidateApplications } from "../../use-application-actions";
+import { DatePickerField } from "@/components/input/date-time-fields";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -267,15 +268,10 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 											}}
 										/>
 									)}
-									<Input
-										fullWidth
-										type="date"
+									<DatePickerField
 										aria-label={t`Date`}
 										value={shownEdit.date}
-										onChange={(event) => {
-											const date = event.target.value;
-											setEditing((current) => current && { ...current, date });
-										}}
+										onChange={(date) => setEditing((current) => current && { ...current, date })}
 									/>
 								</form>
 							)}

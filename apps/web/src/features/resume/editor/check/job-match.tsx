@@ -1,7 +1,7 @@
 import type { Key, Selection } from "@heroui/react";
 import type { JdTermMatch } from "@rezumi/resume/ats-pdf";
 import type { ResumeData, SkillItem } from "@rezumi/schema/resume/data";
-import { NativeSelect, Widget } from "@heroui-pro/react";
+import { Widget } from "@heroui-pro/react";
 import {
 	Avatar,
 	Button,
@@ -28,6 +28,7 @@ import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { checkStateOf, editWithUndo } from "./actions";
 import { CheckWidget } from "./check-widget";
+import { SelectField } from "@/components/input/select-field";
 import { applicationsListQueryKey, applicationsListQueryOptions } from "@/features/applications/queries";
 import { openAssistantFrom } from "@/features/assistant/open";
 import { useCurrentBuilderResumeSelector, useIsResumeLocked, usePatchResume } from "@/features/resume/builder/draft";
@@ -418,24 +419,23 @@ function ApplicationPicker({ value, onChange }: { value: string | null; onChange
 	const locked = useIsResumeLocked();
 
 	return (
-		<NativeSelect fullWidth variant="secondary">
-			<NativeSelect.Trigger
-				aria-label={t`Link an application`}
-				disabled={locked}
-				value={value ?? ""}
-				onChange={(event) => event.target.value && onChange(event.target.value)}
-			>
-				<NativeSelect.Option value="" disabled>
-					{choices.length > 0 ? t`Link an application…` : t`No applications yet`}
-				</NativeSelect.Option>
-				{choices.map((application) => (
-					<NativeSelect.Option key={application.id} value={application.id}>
-						{application.role} · {application.company}
-					</NativeSelect.Option>
-				))}
-				<NativeSelect.Indicator />
-			</NativeSelect.Trigger>
-		</NativeSelect>
+		<SelectField
+			aria-label={t`Link an application`}
+			isDisabled={locked}
+			value={value ?? ""}
+			onChange={(id) => id && onChange(id)}
+			options={[
+				{
+					value: "",
+					label: choices.length > 0 ? t`Link an application…` : t`No applications yet`,
+					isDisabled: true,
+				},
+				...choices.map((application) => ({
+					value: application.id,
+					label: `${application.role} · ${application.company}`,
+				})),
+			]}
+		/>
 	);
 }
 

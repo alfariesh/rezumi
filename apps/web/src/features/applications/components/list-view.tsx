@@ -1,6 +1,6 @@
 import type { ApplicationSummary } from "../types";
 import type { ApplicationStatus } from "@rezumi/schema/applications/data";
-import { ActionBar, EmptyState } from "@heroui-pro/react";
+import { ActionBar } from "@heroui-pro/react";
 import { Button, Checkbox, Chip, Dropdown, Input, Label, Popover, Separator } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -43,17 +43,16 @@ const compareValues = (a: string | number, b: string | number) =>
 
 type ListViewProps = {
 	applications: ApplicationSummary[];
-	showClosed: boolean;
 	selectedId: string | null;
 	onOpen: (application: ApplicationSummary) => void;
 };
 
 /**
  * The default view: applications grouped by stage in the order that needs you first (Interview, Offer, Screening,
- * Applied, Saved, then Closed when shown). Groups collapse, headers sort within groups, and row checkboxes select
+ * Applied, Saved, then Closed). Groups collapse, headers sort within groups, and row checkboxes select
  * for bulk moves, tags, closing and deleting. Phones get two-line rows.
  */
-export function ApplicationList({ applications, showClosed, selectedId, onOpen }: ListViewProps) {
+export function ApplicationList({ applications, selectedId, onOpen }: ListViewProps) {
 	const breakpoint = useBreakpoint();
 	const phone = breakpoint === "mobile";
 	const [collapsed, setCollapsed] = useState<ReadonlySet<ApplicationStatus>>(new Set());
@@ -62,12 +61,7 @@ export function ApplicationList({ applications, showClosed, selectedId, onOpen }
 
 	// Selections only cover what's on screen.
 	const checkedIds = applications
-		.filter(
-			(application) =>
-				checked.has(application.id) &&
-				(application.status !== "closed" || showClosed) &&
-				!collapsed.has(application.status),
-		)
+		.filter((application) => checked.has(application.id) && !collapsed.has(application.status))
 		.map((application) => application.id);
 	if (checkedIds.length !== checked.size) setChecked(new Set(checkedIds));
 
@@ -75,19 +69,17 @@ export function ApplicationList({ applications, showClosed, selectedId, onOpen }
 		const sign = sort.direction === "asc" ? 1 : -1;
 		const keys = new Map(applications.map((application) => [application.id, sortValue[sort.key](application)]));
 		const key = (application: ApplicationSummary) => keys.get(application.id) ?? 0;
-		return LIST_ORDER.filter((status) => status !== "closed" || showClosed)
-			.map((status) => ({
-				status,
-				rows: applications
-					.filter((application) => application.status === status)
-					.sort(
-						(a, b) =>
-							sign * compareValues(key(a), key(b)) ||
-							(sort.key === "role" ? sign * a.company.localeCompare(b.company) : 0),
-					),
-			}))
-			.filter((group) => group.rows.length > 0);
-	}, [applications, showClosed, sort]);
+		return LIST_ORDER.map((status) => ({
+			status,
+			rows: applications
+				.filter((application) => application.status === status)
+				.sort(
+					(a, b) =>
+						sign * compareValues(key(a), key(b)) ||
+						(sort.key === "role" ? sign * a.company.localeCompare(b.company) : 0),
+				),
+		})).filter((group) => group.rows.length > 0);
+	}, [applications, sort]);
 
 	const toggleGroup = (status: ApplicationStatus) =>
 		setCollapsed((current) => {
@@ -128,23 +120,6 @@ export function ApplicationList({ applications, showClosed, selectedId, onOpen }
 			</button>
 		</th>
 	);
-
-	if (groups.length === 0)
-		return (
-			<EmptyState size="sm" className="rounded-2xl border border-dashed border-border py-6">
-				<EmptyState.Header>
-					<EmptyState.Media variant="icon">
-						<Icon name="rows" size={20} />
-					</EmptyState.Media>
-					<EmptyState.Title>
-						<Trans>No open applications</Trans>
-					</EmptyState.Title>
-					<EmptyState.Description className="max-w-sm text-pretty">
-						<Trans>Closed applications are hidden. Turn on Show closed to see them.</Trans>
-					</EmptyState.Description>
-				</EmptyState.Header>
-			</EmptyState>
-		);
 
 	return (
 		<div className="grid min-w-0 content-start gap-3">
@@ -251,7 +226,7 @@ const ApplicationRow = memo(function ApplicationRow({
 	const initial = (
 		<span
 			aria-hidden="true"
-			className="grid size-8 shrink-0 place-items-center rounded-xl bg-default text-sm font-semibold text-muted"
+			className="grid size-8 shrink-0 place-items-center rounded-xl bg-control text-sm font-semibold text-muted"
 		>
 			{application.company.slice(0, 1).toUpperCase()}
 		</span>
@@ -438,6 +413,7 @@ function BulkBar({ ids, onDone }: BulkBarProps) {
 								}}
 							>
 								<Input
+									variant="secondary"
 									fullWidth
 									aria-label={t`Tag`}
 									value={tag}

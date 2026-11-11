@@ -10,7 +10,7 @@ type RowIconProps = { children: ReactNode; className?: string };
  */
 export function RowIcon({ children, className }: RowIconProps) {
 	return (
-		<span aria-hidden className={cn("grid size-10 shrink-0 place-items-center rounded-xl bg-default", className)}>
+		<span aria-hidden className={cn("grid size-10 shrink-0 place-items-center rounded-xl bg-control", className)}>
 			{children}
 		</span>
 	);

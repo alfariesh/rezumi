@@ -141,7 +141,13 @@ function YourPlanSection({ plan, formatDate }: YourPlanSectionProps) {
 					className="pointer-events-none absolute -top-16 -right-10 size-56 rounded-full bg-fuchsia-400/30 blur-3xl"
 				/>
 			)}
-			<WidgetHeading id={titleId} icon="seal-check" title={<Trans>Your plan</Trans>} titleClassName={style.title} />
+			<WidgetHeading
+				id={titleId}
+				icon="seal-check"
+				title={<Trans>Your plan</Trans>}
+				titleClassName={style.title}
+				iconClassName={style.title}
+			/>
 			<Widget.Content className={cn("relative grid gap-4", style.content)}>
 				{paid ? (
 					<div className="grid gap-6 [&>*+*]:relative [&>*+*]:before:absolute [&>*+*]:before:inset-s-15 [&>*+*]:before:inset-e-0 [&>*+*]:before:-top-3 [&>*+*]:before:h-px [&>*+*]:before:bg-white/20">
@@ -348,6 +354,7 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 			<SettingsSection
 				icon="list-checks"
 				title={<Trans>What's included</Trans>}
+				contentClassName="py-1"
 				action={
 					<a href="/#pricing" className={widgetActionClass}>
 						<Trans>Compare plans</Trans>
@@ -355,11 +362,11 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 				}
 			>
 				{/* Plain icons, no tiles; rules start under the text (20px icon + 12px gap). */}
-				<ul className="grid gap-4 [&>*+*]:relative [&>*+*]:before:absolute [&>*+*]:before:inset-s-8 [&>*+*]:before:inset-e-0 [&>*+*]:before:-top-2 [&>*+*]:before:h-px [&>*+*]:before:bg-separator">
+				<ul className="grid [&>*+*]:relative [&>*+*]:before:absolute [&>*+*]:before:inset-s-8 [&>*+*]:before:inset-e-0 [&>*+*]:before:top-0 [&>*+*]:before:h-px [&>*+*]:before:bg-separator">
 					{listedFeatures.map((feature) => {
 						const included = plan.features[feature];
 						return (
-							<li key={feature} className="flex items-center gap-3 py-0.5 text-sm">
+							<li key={feature} className="flex items-center gap-3 py-3 text-sm">
 								<Icon name={features[feature].icon} size={20} className="text-muted" />
 								<span className="flex-1">{features[feature].label}</span>
 								<span className={included ? "text-success" : "text-muted"}>

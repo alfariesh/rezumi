@@ -417,8 +417,6 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 		);
 	};
 
-	const note = t`Nothing is applied for or created until you choose.`;
-
 	return (
 		<div ref={ref} className={className}>
 			<CareerWidget
@@ -487,7 +485,6 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 								<Trans>Show {visible.length - shown.length} more</Trans>
 							</Button>
 						)}
-						<p className="mt-2 text-xs text-muted">{note}</p>
 					</div>
 				)}
 			</CareerWidget>
@@ -835,9 +832,6 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 					</AnimatePresence>
 				</div>
 			)}
-			<p className="text-xs text-muted">
-				<Trans>Reminders appear here. Email copies are optional and need a verified address.</Trans>
-			</p>
 		</CareerWidget>
 	);
 }

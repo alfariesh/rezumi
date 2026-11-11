@@ -122,13 +122,14 @@ export function AppShell({ children }: AppShellProps) {
 
 	return (
 		<AppLayout
+			className="dashboard-shell bg-surface"
 			defaultSidebarOpen={initialSidebarOpen()}
 			sidebarCollapsible="icon"
 			sidebar={
 				<>
 					<Sidebar
 						aria-label={t`App navigation`}
-						className="[--sidebar-edge-outline:transparent]! [view-transition-name:app-nav]"
+						className="bg-surface [--sidebar-edge-outline:transparent]! [view-transition-name:app-nav]"
 					>
 						<NavigationContent />
 					</Sidebar>
@@ -227,7 +228,7 @@ function AppNavbar() {
 	const crumbs = useCrumbs();
 
 	return (
-		<Navbar maxWidth="full" size="sm" aria-label={t`Toolbar`} className="[view-transition-name:app-bar]">
+		<Navbar maxWidth="full" size="sm" aria-label={t`Toolbar`} className="bg-surface [view-transition-name:app-bar]">
 			<Navbar.Header className={PAGE_GUTTER}>
 				<AppLayout.MenuToggle aria-label={t`Open navigation`} />
 				<Sidebar.Trigger aria-label={t`Toggle sidebar`} />

@@ -8,7 +8,10 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
+import { documentOptions } from "../document-options";
 import { useInvalidateApplications } from "../use-application-actions";
+import { DatePickerField } from "@/components/input/date-time-fields";
+import { SelectField } from "@/components/input/select-field";
 import { useDialogStore } from "@/dialogs/store";
 import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
@@ -473,62 +476,26 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 					</div>
 				</div>
 				{stage !== "saved" && (
-					<div className="grid gap-1.5">
-						<Label htmlFor={`${id}-date`}>
-							<Trans>Application date</Trans>
-						</Label>
-						<Input
-							variant="secondary"
-							fullWidth
-							id={`${id}-date`}
-							type="date"
-							value={stageDate}
-							required
-							onChange={(event) => setStageDate(event.target.value)}
-						/>
-					</div>
+					<DatePickerField
+						label={<Trans>Application date</Trans>}
+						value={stageDate}
+						isRequired
+						onChange={setStageDate}
+					/>
 				)}
-				<div className="grid gap-1.5">
-					<Label htmlFor={`${id}-resume`}>
-						{stage === "saved" ? <Trans>Resume (optional)</Trans> : <Trans>Resume submitted (optional)</Trans>}
-					</Label>
-					<select
-						id={`${id}-resume`}
-						value={resumeId}
-						onChange={(event) => setResumeId(event.target.value)}
-						className="h-9 rounded-xl border-0 bg-default px-2 text-sm"
-					>
-						<option value="">{t`None`}</option>
-						{documents
-							?.filter((document) => document.type === "resume")
-							.map((document) => (
-								<option key={document.id} value={document.id}>
-									{document.name}
-								</option>
-							))}
-					</select>
-				</div>
+				<SelectField
+					label={stage === "saved" ? <Trans>Resume (optional)</Trans> : <Trans>Resume submitted (optional)</Trans>}
+					value={resumeId}
+					onChange={setResumeId}
+					options={documentOptions(documents, "resume")}
+				/>
 				{stage !== "saved" && (
-					<div className="grid gap-1.5">
-						<Label htmlFor={`${id}-letter`}>
-							<Trans>Cover letter submitted (optional)</Trans>
-						</Label>
-						<select
-							id={`${id}-letter`}
-							value={coverLetterId}
-							onChange={(event) => setCoverLetterId(event.target.value)}
-							className="h-9 rounded-xl border-0 bg-default px-2 text-sm"
-						>
-							<option value="">{t`None`}</option>
-							{documents
-								?.filter((document) => document.type === "letter")
-								.map((document) => (
-									<option key={document.id} value={document.id}>
-										{document.name}
-									</option>
-								))}
-						</select>
-					</div>
+					<SelectField
+						label={<Trans>Cover letter submitted (optional)</Trans>}
+						value={coverLetterId}
+						onChange={setCoverLetterId}
+						options={documentOptions(documents, "letter")}
+					/>
 				)}
 			</Modal.Body>
 			<Modal.Footer>
