@@ -118,6 +118,8 @@ If your client can't read files from your computer, attach the PDF in the app in
 
 ## Use AI on an application
 
+AI procedures and tools take an optional `aiSource`: `"rezumi"` runs on Rezumi AI and uses the account's credits (each tool's description gives its cost), `"own"` uses one of the account's own AI connections. Without `aiSource`, requests use your own connection; if Rezumi AI is the only one, they fail with `AI_SOURCE_REQUIRED` instead of using credits. Send a new `idempotencyKey` (any unique string up to 100 characters) per action and reuse it when retrying, so a retry doesn't use credits twice.
+
 These tools need a tested default AI provider. Scoring and tailoring also need a job description and a linked resume on the application. Drafting uses them when they're there.
 
 ```text

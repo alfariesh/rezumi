@@ -275,6 +275,10 @@ The installed SDK uses its supported MCP 1.x protocol negotiation, including `20
 
 Browser requests must use the configured application Origin; native clients normally omit Origin. Responses are private and uncached. Request/user rate limits supplement each API operation's own limits; signed PDF downloads share the renderer limit with REST exports.
 
+## Rezumi AI and credits
+
+AI procedures and tools take an optional `aiSource`: `"rezumi"` runs on Rezumi AI and uses the account's credits (each tool's description gives its cost), `"own"` uses one of the account's own AI connections. Without `aiSource`, requests use your own connection; if Rezumi AI is the only one, they fail with `AI_SOURCE_REQUIRED` instead of using credits. Send a new `idempotencyKey` (any unique string up to 100 characters) per action and reuse it when retrying, so a retry doesn't use credits twice.
+
 ## Prompts
 
 Prompts are ready-made instructions your client can start from. Each takes a resume `id` and includes that resume and the schema.

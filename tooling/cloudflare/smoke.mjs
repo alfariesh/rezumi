@@ -46,6 +46,8 @@ try {
 	config.vars.APP_URL = origin;
 	config.vars.AUTH_SECRET = randomBytes(32).toString("hex");
 	config.vars.ENCRYPTION_SECRET = randomBytes(32).toString("hex");
+	// This test checks the Worker runs, not billing: plans stay off so its user's AI goes to the provider below.
+	config.vars.BILLING_MODE = "off";
 	// Minimal external provider boundary; the real AI SDK and Worker stream stay under test.
 	const provider = createServer((request, response) => {
 		let body = "";

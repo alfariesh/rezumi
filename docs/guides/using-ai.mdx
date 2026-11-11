@@ -1,13 +1,38 @@
 ---
-title: "Connecting an AI provider"
-description: "Add your own AI provider key in Rezumi, test the connection, and choose which provider the assistant and other AI features use."
+title: "Using AI in Rezumi"
+description: "Use Rezumi AI with credits, or connect your own AI provider key, and choose which one the assistant and other AI features use."
 ---
 
-Rezumi doesn't include an AI model of its own. To use the assistant, AI imports, drafting and the other AI features, connect a provider such as OpenAI, Anthropic or Google Gemini. Everything else in the app works without AI.
+Rezumi's AI features (the assistant, AI imports, drafting, tailoring and the career coach) run on one of two sources:
 
-On a self-hosted instance, the administrator can [configure a shared provider](/self-hosting/job-search-and-ai).
-Settings then show that AI is enabled globally, and personal provider controls are hidden. You can use AI features
-without entering your own key. The steps below apply when personal providers are available.
+- **Rezumi AI**: no API key needed. Each action shows its cost in credits before it runs, and credits come back when an action fails. You get 5 trial credits the first time you use it (verified email required), and Pro AI adds 100 credits every month.
+- **Your own AI connection**: connect a provider such as OpenAI, Anthropic or Google Gemini with your own key. You pay the provider directly and no credits are used.
+
+Everything else in the app works without AI.
+
+## Rezumi AI and credits
+
+Next to each AI button, a small label shows where the action runs and what it costs, for example **Rezumi AI · 4 credits**. Select it to switch between Rezumi AI and your own connection; the choice applies to every AI action in this browser. The default connection in **Settings → AI providers** decides when you haven't chosen.
+
+| Action                                                                                           | Credits |
+| ------------------------------------------------------------------------------------------------ | ------: |
+| Improve one line, fill an application from a posting, read a job posting                         |       1 |
+| Rewrite a portfolio field, find results in a resume as portfolio metrics                         |       1 |
+| Draft a form answer or a recruiter reply                                                         |       2 |
+| Draft a cover letter, draft a portfolio, interview practice feedback, preparation brief, debrief |       3 |
+| One Coach or assistant reply                                                                     |       3 |
+| Writing review, job match score, fit check                                                       |       4 |
+| Tailor a resume, import a PDF or Word file with AI                                               |       5 |
+
+- Credits are used only when the action gives a result. If it fails, times out, stops before finishing its answer, or you stop it, they come back.
+- Each assistant or Coach reply costs one turn, including the reply after you answer its question or approve saving a story.
+- Credits expire with the pass they came with (trial credits after 14 days) and the soonest-expiring credits are used first. See [Plans and payments](/guides/plans); your balance and history are under **Settings → Plan**.
+- Voice practice, scheduled preparation and web search in the assistant run only on your own connection.
+- If you don't have enough credits, Rezumi offers your own connection instead. Nothing runs and nothing is charged.
+
+## Use your own AI provider
+
+To use your own connection, add a provider below.
 
 ## Before you start
 
