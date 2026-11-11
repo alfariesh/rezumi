@@ -38,6 +38,9 @@ type PortfolioEditorUi = {
 	/** "A photo for the portfolio only" is chosen and its photo is still to be uploaded. */
 	wantsOwnPhoto: boolean;
 	setWantsOwnPhoto: (wants: boolean) => void;
+	/** The preview's width: a computer's, or a phone's. The bar switches it. */
+	previewDevice: "desktop" | "phone";
+	setPreviewDevice: (device: "desktop" | "phone") => void;
 	/** Leaving the editor: the next visit starts with nothing open. */
 	reset: () => void;
 };
@@ -50,6 +53,7 @@ const initialUi = {
 	uploads: 0,
 	keptPhoto: null,
 	wantsOwnPhoto: false,
+	previewDevice: "desktop",
 } satisfies Partial<PortfolioEditorUi>;
 
 /** What the editor shows, apart from the data: kept outside the data store so it never becomes an undo step. */
@@ -63,5 +67,6 @@ export const usePortfolioEditorUi = create<PortfolioEditorUi>()((set) => ({
 	noteUpload: () => set((state) => ({ uploads: state.uploads + 1 })),
 	keepPhoto: (image) => set({ keptPhoto: image ? { image, at: Date.now() } : null }),
 	setWantsOwnPhoto: (wantsOwnPhoto) => set({ wantsOwnPhoto }),
+	setPreviewDevice: (previewDevice) => set({ previewDevice }),
 	reset: () => set(initialUi),
 }));

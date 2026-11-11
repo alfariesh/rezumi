@@ -24,6 +24,7 @@ import { AiRewriteMenu } from "../ai/rewrite-menu";
 import { useDraftText } from "../metrics/use-draft-text";
 import { usePortfolioEditorStore } from "./store";
 import { WidgetHeading } from "@/components/layout/widget-heading";
+import { GroupSection, useInGroupPanel } from "@/features/resume/editor/chrome/group-nav";
 
 const LazyRichTextEditor = lazy(() => import("./rich-text-editor"));
 
@@ -33,6 +34,8 @@ export function preloadPortfolioRichTextEditor() {
 }
 
 type PanelGroupProps = {
+	/** The group's anchor in a group panel (Design), which its chip jumps to. */
+	id?: string;
 	icon: IconName;
 	title: ReactNode;
 	/** Sits at the end of the header: a switch or a short note. */
@@ -40,9 +43,19 @@ type PanelGroupProps = {
 	children: ReactNode;
 };
 
-/** One group of the editor's panel: a labelled region with an icon and title, its fields on a card. */
-export function PanelGroup({ icon, title, action, children }: PanelGroupProps) {
+/**
+ * One group of the editor's panel: a labelled region with an icon and title, its fields on a card. Inside a group panel
+ * (Design) it is a section of the panel card instead.
+ */
+export function PanelGroup({ id, icon, title, action, children }: PanelGroupProps) {
 	const titleId = useId();
+	const inGroupPanel = useInGroupPanel();
+	if (inGroupPanel && id)
+		return (
+			<GroupSection id={id} icon={icon} title={title} action={action}>
+				{children}
+			</GroupSection>
+		);
 	return (
 		<Widget role="region" aria-labelledby={titleId}>
 			<WidgetHeading id={titleId} icon={icon} title={title} action={action} />

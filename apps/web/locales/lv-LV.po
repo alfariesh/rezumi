@@ -567,6 +567,11 @@ msgstr ""
 msgid "{0} per reply"
 msgstr ""
 
+#. placeholder {0}: theme.name
+#: src/features/homepage/portfolio.tsx
+msgid "{0} portfolio theme preview"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/conversation.tsx
 msgid "{0} posting"
@@ -1252,6 +1257,10 @@ msgstr "Kods no autentifikācijas lietotnes pierakstīšanās laikā"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "A comfortable length, and it fits on one page."
 msgstr "Ērts garums, un tas ietilpst vienā lapā."
+
+#: src/features/homepage/portfolio.tsx
+msgid "A contact form, and how many people visited"
+msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
@@ -2222,6 +2231,8 @@ msgstr "Salīdzinot ar jūsu prasībām"
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
 #: src/features/portfolio/ai/rewrite-menu.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 msgid "AI"
 msgstr ""
 
@@ -2836,7 +2847,6 @@ msgstr ""
 msgid "Aspect ratio"
 msgstr "Malu attiecība"
 
-#: src/features/assistant/assistant-button.tsx
 #: src/features/assistant/assistant-panel.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -3417,6 +3427,10 @@ msgstr ""
 msgid "Case studies"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Case studies with pictures, video, PDFs and results in numbers"
+msgstr ""
+
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Case study (public version)"
 msgstr ""
@@ -3913,6 +3927,7 @@ msgstr ""
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
 #: src/features/resume/editor/chrome/download-sheet.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
 #: src/features/resume/stylesheet/editor.tsx
@@ -4084,8 +4099,8 @@ msgstr "Pilnīga datu dublēšana. Importē atpakaļ Rezumi vai JSON Resume rīk
 msgid "Compress or remove large images to keep uploads quick."
 msgstr "Saspiediet vai noņemiet lielus attēlus, lai augšupielāde būtu ātra."
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Computer"
 msgstr "Dators"
 
@@ -5118,7 +5133,6 @@ msgstr "Aizpildīt"
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Motivācijas vēstule"
 
@@ -5717,6 +5731,7 @@ msgstr "{0} lomas apraksts"
 msgid "Design"
 msgstr "Dizains"
 
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Design groups"
 msgstr "Dizaina grupas"
@@ -5860,6 +5875,10 @@ msgstr "Dokumentācija"
 msgid "Document menu: {name}"
 msgstr "Dokumentu izvēlne: {name}"
 
+#: src/features/resume/editor/chrome.tsx
+msgid "Document name"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Document type"
 msgstr "Dokumenta veids"
@@ -5946,8 +5965,7 @@ msgstr ""
 #: src/features/career/workspace/apply.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/resume/editor/chrome/bar.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
+#: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download"
 msgstr "Lejupielādēt"
 
@@ -5958,10 +5976,6 @@ msgstr "Lejupielādēt {label}"
 #: src/features/templates/gallery.tsx
 msgid "Download {name} sample PDF"
 msgstr "Lejupielādējiet {name} PDF paraugu"
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Download & history"
-msgstr "Lejupielāde un vēsture"
 
 #: src/features/billing/plan.ts
 msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
@@ -7255,6 +7269,7 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
+#: src/features/homepage/portfolio.tsx
 #: src/features/homepage/templates.tsx
 #: src/features/portfolio/theme-gallery.tsx
 #: src/features/templates/gallery.tsx
@@ -7796,10 +7811,9 @@ msgstr "Pieņemšanas komanda"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/portfolio/admin/review-page.tsx
-#: src/features/resume/editor/chrome/bar.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "History"
 msgstr "Vēsture"
 
@@ -9300,6 +9314,7 @@ msgstr "Bloķēt rediģēšanu"
 
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Locked"
 msgstr "Bloķēts"
 
@@ -9344,10 +9359,6 @@ msgstr "Zaudējāt piekļuvi autentifikatoram?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Low"
 msgstr "Zems"
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Lower the design sheet"
-msgstr "Nolaidiet dizaina lapu"
 
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/share/web-page-text.ts
@@ -10499,9 +10510,8 @@ msgstr ""
 msgid "No work-experience section was found."
 msgstr "Darba pieredzes sadaļa nav atrasta."
 
-#: src/features/applications/components/add-application-dialog.tsx
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/applications/document-options.ts
 #: src/features/portfolio/works/work-editor.tsx
 msgid "None"
 msgstr "Nav"
@@ -10711,10 +10721,6 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Nothing here should cost you a match."
 msgstr "Nekam šeit nevajadzētu maksāt maču."
-
-#: src/features/career/today.tsx
-msgid "Nothing is applied for or created until you choose."
-msgstr "Nekas netiek pieteikts vai izveidots, kamēr neizvēlaties."
 
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
@@ -11313,9 +11319,7 @@ msgstr ""
 
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
-#: src/routes/builder/$resumeId/-components/editor-shell.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx
-#: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Page"
 msgstr "Lapa"
 
@@ -11665,12 +11669,12 @@ msgstr "Neatgriezeniski noņem visu. Vispirms eksportējiet, ja vēlaties kopiju
 msgid "Persian"
 msgstr "Persiešu"
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Phone"
 msgstr "Tālrunis"
 
@@ -11946,6 +11950,7 @@ msgstr "Poļu"
 msgid "Polishing"
 msgstr "Pulē"
 
+#: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
@@ -11971,6 +11976,7 @@ msgstr ""
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Portfolio reports"
 msgstr ""
 
@@ -12171,10 +12177,6 @@ msgstr "Nospiediet <0>{RETURN_KEY}</0>, lai pievienotu vai saglabātu pašreizē
 msgid "Press <0>Enter</0> to open"
 msgstr "Nospiediet <0>Enter</0>, lai atvērtu"
 
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
-msgid "Preview"
-msgstr ""
-
 #: src/features/templates/gallery.tsx
 msgid "Preview {name} sample PDF"
 msgstr "Priekšskatiet {name} PDF paraugu"
@@ -12187,8 +12189,8 @@ msgstr ""
 msgid "Preview every template before you sign up. The Free plan includes {freeCount} templates and PDF downloads without a watermark. Plus and Pro AI unlock every template, plus Word and ODT downloads."
 msgstr ""
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Preview size"
 msgstr "Priekšskatījuma izmērs"
 
@@ -12423,6 +12425,10 @@ msgstr "Publikācijas"
 msgid "Publish"
 msgstr "Publicēt"
 
+#: src/features/homepage/portfolio.tsx
+msgid "Publish a one-page website at rezumi.app/your-name. Start from a resume, add your work, and choose a theme that suits your field."
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish it to share a link that opens on any screen. Only you can see it until then."
 msgstr "Publicējiet to, lai kopīgotu saiti, kas atveras jebkurā ekrānā. Līdz tam to redzat tikai jūs."
@@ -12523,10 +12529,6 @@ msgstr ""
 #: src/features/portfolio/editor/rich-text-editor.tsx
 msgid "Quote"
 msgstr ""
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Raise the design sheet"
-msgstr "Paceliet dizaina lapu"
 
 #: src/features/portfolio/themes.ts
 msgid "Random letters settle into your name."
@@ -12851,7 +12853,7 @@ msgid "Red"
 msgstr "Sarkana"
 
 #: src/features/portfolio/editor/rich-text-editor.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Redo"
 msgstr ""
 
@@ -13015,10 +13017,6 @@ msgstr "Atgādināt"
 #: src/features/career/schedule-sheet.tsx
 msgid "Remind me on"
 msgstr "Atgādināt datumā"
-
-#: src/features/career/today.tsx
-msgid "Reminders appear here. Email copies are optional and need a verified address."
-msgstr "Atgādinājumi parādās šeit. E-pasta kopijas nav obligātas, un tām nepieciešama verificēta adrese."
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/career/offers.tsx
@@ -13391,7 +13389,6 @@ msgstr "CV"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "CV"
@@ -13612,8 +13609,8 @@ msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - doties uz sākumlapu"
 
 #: src/routes/dashboard/settings/route.tsx
-msgid "Rezumi {__APP_VERSION__} · MIT"
-msgstr "Rezumi {__APP_VERSION__} · MIT"
+msgid "Rezumi {__APP_VERSION__}"
+msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost}"
@@ -14230,6 +14227,10 @@ msgstr "Skatīt zemāk"
 msgid "See exactly what applicant tracking systems read"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "See how a portfolio works"
+msgstr ""
+
 #: src/features/billing/plan-dialog.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -14503,17 +14504,12 @@ msgstr "Ēnas platums"
 #: src/features/resume/share/web-page-text.ts
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Share"
 msgstr "Dalīties"
 
 #: src/features/homepage/introduction.tsx
 msgid "Share a live link that is always the latest version"
 msgstr ""
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Share sections"
-msgstr "Kopīgojiet sadaļas"
 
 #: src/features/resume/share/address-field.tsx
 msgid "Share via…"
@@ -14731,6 +14727,10 @@ msgstr "Rādīt veidnes"
 msgid "Show the {name} logo"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Show the work behind your resume."
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "Parādiet tos vēlreiz"
@@ -14864,10 +14864,6 @@ msgstr "Situācija"
 #: src/features/career/workspace/prepare.tsx
 msgid "Situation, action, result"
 msgstr "Situācija, darbība, rezultāts"
-
-#: src/features/career/knowledge/stories.tsx
-msgid "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
-msgstr "Situācija, uzdevums, darbība, rezultāts, refleksija. Piesaistiet katru stāstu faktiem, kurus varat pamatot; nezināmus rezultātus atstājiet tukšus."
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Size"
@@ -17428,6 +17424,7 @@ msgstr "Pasvītrot saites"
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
+#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/resume/editor/proposals/proposals.ts
@@ -17438,7 +17435,6 @@ msgstr "Pasvītrot saites"
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Undo"
 msgstr "Atsaukt"
 
@@ -19040,6 +19036,10 @@ msgstr "Jūsu aizzīmes ir veidotas ar neparastām rakstzīmēm."
 msgid "Your career as a path: experience and education hang from a fine line with an accent dot at each step, beside a left sidebar."
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Your career details stay in step with your resume"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/use-editor-hotkeys.ts
 #: src/routes/builder/letter/-components/letter-shell.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -19568,7 +19568,6 @@ msgstr ""
 msgid "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
 msgstr ""
 
-#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"
 msgstr "Tālummaiņa"

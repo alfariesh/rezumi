@@ -1,3 +1,4 @@
+import type { GroupItem } from "@/features/resume/editor/chrome/group-nav";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioScheme, PortfolioVariantKey, PortfolioVariantValue } from "@rezumi/schema/portfolio/themes";
 import type { ReactNode } from "react";
@@ -32,6 +33,7 @@ import { useEditorView } from "./use-view";
 import { ColorPicker } from "@/components/input/color-picker";
 import { hasPlanFeature, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
+import { GroupPanel, useGroupSpy } from "@/features/resume/editor/chrome/group-nav";
 
 const variantGroupLabel = (key: PortfolioVariantKey) =>
 	({
@@ -79,15 +81,33 @@ const backgroundLabel = (kind: PortfolioData["hero"]["background"]["kind"]) =>
  * Only what the theme supports is offered; every change shows in the preview at once.
  */
 export function DesignPanel() {
-	return (
-		<div className="grid gap-3 p-3">
+	const groups = [
+		{ id: "theme", icon: "squares-four", label: t`Theme` },
+		{ id: "colors", icon: "palette", label: t`Colors` },
+		{ id: "intro", icon: "sparkle", label: t`Intro` },
+		{ id: "fonts", icon: "text-aa", label: t`Fonts` },
+		{ id: "layouts", icon: "sliders-horizontal", label: t`Layouts` },
+		{ id: "badge", icon: "seal-check", label: t`Badge` },
+	] as const satisfies readonly GroupItem<string>[];
+	const { navRef, active, jump } = useGroupSpy(
+		groups.map((group) => group.id),
+		"portfolio-design-",
+	);
+	const content = (
+		<>
 			<ThemeGroup />
 			<ColorsGroup />
 			<IntroGroup />
 			<FontsGroup />
 			<LayoutGroup />
 			<BadgeGroup />
-		</div>
+		</>
+	);
+
+	return (
+		<GroupPanel label={t`Design groups`} items={groups} active={active} onJump={jump} navRef={navRef}>
+			{content}
+		</GroupPanel>
 	);
 }
 
@@ -97,7 +117,7 @@ function BadgeGroup() {
 	const plan = usePlan();
 	const canHide = hasPlanFeature(plan, "hidePortfolioCredit");
 	return (
-		<PanelGroup icon="seal-check" title={<Trans>Badge</Trans>}>
+		<PanelGroup id="portfolio-design-badge" icon="seal-check" title={<Trans>Badge</Trans>}>
 			<SwitchRow
 				label={
 					<span className="flex items-center gap-2">
@@ -129,7 +149,7 @@ function BadgeGroup() {
 function ThemeGroup() {
 	const { theme } = usePortfolioData();
 	return (
-		<PanelGroup icon="squares-four" title={<Trans>Theme</Trans>}>
+		<PanelGroup id="portfolio-design-theme" icon="squares-four" title={<Trans>Theme</Trans>}>
 			<ThemeGallery
 				value={theme}
 				onChange={(id) =>
@@ -175,7 +195,7 @@ function ColorsGroup() {
 		});
 
 	return (
-		<PanelGroup icon="palette" title={<Trans>Colors</Trans>}>
+		<PanelGroup id="portfolio-design-colors" icon="palette" title={<Trans>Colors</Trans>}>
 			<div className="grid gap-1.5">
 				<span className="text-sm font-medium">
 					<Trans>Mode</Trans>
@@ -300,7 +320,7 @@ function AccentSwatch({ value, label, color, children }: AccentSwatchProps) {
 function IntroGroup() {
 	const data = usePortfolioData();
 	return (
-		<PanelGroup icon="sparkle" title={<Trans>Intro</Trans>}>
+		<PanelGroup id="portfolio-design-intro" icon="sparkle" title={<Trans>Intro</Trans>}>
 			<ChoiceSelect
 				label={t`Intro background`}
 				value={data.hero.background.kind}
@@ -346,7 +366,7 @@ function FontsGroup() {
 	];
 
 	return (
-		<PanelGroup icon="text-aa" title={<Trans>Fonts</Trans>}>
+		<PanelGroup id="portfolio-design-fonts" icon="text-aa" title={<Trans>Fonts</Trans>}>
 			<ChoiceSelect
 				label={t`Font pair`}
 				value={value}
@@ -377,7 +397,7 @@ function LayoutGroup() {
 	if (keys.length === 0) return null;
 
 	return (
-		<PanelGroup icon="sliders-horizontal" title={<Trans>Layouts</Trans>}>
+		<PanelGroup id="portfolio-design-layouts" icon="sliders-horizontal" title={<Trans>Layouts</Trans>}>
 			{keys.map((key) => {
 				const supported = PORTFOLIO_THEME_INFO[theme].variants[key] as readonly PortfolioVariantValue[];
 				return (

@@ -15,7 +15,7 @@ import {
 	usePatchResume,
 	useResumeStore,
 } from "@/features/resume/builder/draft";
-import { DocumentMenuTrigger } from "@/features/resume/editor/chrome";
+import { DocumentMenuTrigger, DocumentTitle } from "@/features/resume/editor/chrome";
 import { SaveStatus } from "@/features/resume/editor/save-status";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { useResumeExport } from "@/features/resume/export/use-resume-export";
@@ -25,19 +25,21 @@ import { orpc } from "@/libs/orpc/client";
 type DocumentDialog = "notes" | "details" | null;
 
 /**
- * The document name in the editor bar opens the document menu: rename, duplicate, lock, notes,
- * details, print and delete.
+ * The document's name in the editor bar, renamed in place, then the ▾ that opens the document menu (rename and tags,
+ * duplicate, lock, notes, details, print and delete) and the save state.
  */
 export function DocumentMenu() {
 	const name = useCurrentBuilderResumeSelector((resume) => resume.name);
 	const isLocked = useCurrentBuilderResumeSelector((resume) => resume.isLocked);
 	const [dialog, setDialog] = useState<DocumentDialog>(null);
 	const detailsDescriptionId = useId();
+	const rename = useRenameResume();
 
 	return (
 		<>
+			<DocumentTitle name={name} isLocked={isLocked} onRename={rename} />
 			<Dropdown>
-				<DocumentMenuTrigger name={name} isLocked={isLocked} />
+				<DocumentMenuTrigger name={name} />
 				<DocumentMenuItems onOpenDialog={setDialog} />
 			</Dropdown>
 			<SaveStatus />
@@ -68,6 +70,32 @@ export function DocumentMenu() {
 			</Modal.Backdrop>
 		</>
 	);
+}
+
+/** Renames the resume at once on screen; a refusal puts the old name back and says why. */
+function useRenameResume() {
+	const id = useCurrentBuilderResumeSelector((resume) => resume.id);
+	const patchResume = usePatchResume();
+	const { mutate } = useMutation(orpc.resume.update.mutationOptions());
+
+	return (next: string) => {
+		const previous = useResumeStore.getState().resume?.name;
+		patchResume((draft) => {
+			draft.name = next;
+		});
+		mutate(
+			{ id, name: next },
+			{
+				onError: (error) => {
+					if (previous !== undefined)
+						patchResume((draft) => {
+							draft.name = previous;
+						});
+					toast.add({ type: "error", description: getResumeErrorMessage(error) });
+				},
+			},
+		);
+	};
 }
 
 type DocumentMenuItemsProps = {

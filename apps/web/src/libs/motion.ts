@@ -20,12 +20,6 @@ export const D3 = 0.32;
 export const EXIT = 0.7;
 
 /**
- * The mobile tab bar's marker hopping to the new tab: a spring, so a quick second tap redirects it mid-flight with its
- * speed kept. A small bounce: tabs change many times a day, so the overshoot stays a hint.
- */
-export const TAB_SPRING = { type: "spring", duration: 0.35, bounce: 0.15 } as const;
-
-/**
  * Hotkey mode switches land at once: the editor's mode-switch indicator skips its slide for this one change
  * (keyboard shortcuts are used too often to animate). The flag stays two frames, until the new position has painted.
  */

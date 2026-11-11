@@ -43,11 +43,11 @@ export async function openSidebarSection(page: Page, title: string) {
 	await expect(row).toHaveAttribute("aria-expanded", "true");
 }
 
-/** Opens Download & history on its Download tab, from the ▾ next to Download PDF. */
+/** Opens the Download sheet from the ▾ next to the floating Download PDF. */
 export async function openDownloadDialog(page: Page) {
 	await page.getByRole("button", { name: "More download formats", exact: true }).click();
-	const sheet = page.getByRole("dialog", { name: "Download & history" });
-	await expect(sheet.getByRole("tab", { name: "Download", exact: true })).toHaveAttribute("aria-selected", "true");
+	const sheet = page.getByRole("dialog", { name: "Download" });
+	await expect(sheet).toBeVisible();
 	return sheet;
 }
 

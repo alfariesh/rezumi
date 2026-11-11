@@ -67,6 +67,8 @@ type ConversationProps = {
 	initialContext: MessageContext;
 	onPromptSent: () => void;
 	onSwitchModel: () => void;
+	/** The connection picker, in the composer's toolbar. */
+	model?: ReactNode;
 };
 
 /** One conversation: the thread (role="log"), change sets and questions in it, and the composer. */
@@ -328,6 +330,7 @@ export function Conversation(props: ConversationProps) {
 				disabled={readOnly}
 				threadId={threadId}
 				providerId={props.providerId}
+				model={props.model}
 				onSend={send}
 				onStop={stopReply}
 			/>
@@ -764,6 +767,8 @@ type ComposerProps = {
 	initialText?: string | undefined;
 	/** The connection replies run on, for their Rezumi AI cost. */
 	providerId?: string | undefined;
+	/** The connection picker, in the toolbar after attach (as in the coach). */
+	model?: ReactNode;
 };
 
 /**
@@ -860,6 +865,7 @@ export function Composer(props: ComposerProps) {
 				variant="primary"
 				chips={chips}
 				files={files}
+				toolbar={props.model}
 				attach={
 					props.threadId || props.ensureThread
 						? {

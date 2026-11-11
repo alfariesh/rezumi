@@ -39,14 +39,14 @@
 
 	/* Layout constants */
 	--editor-bar: 56px;
-	/* The editor's side panel: 420px on laptops, growing with the window to 520px on large screens. */
-	--editor-panel: clamp(420px, 32vw, 520px);
-	/* With the assistant open (≥1280), the panel and the assistant share the room equally, each this wide. */
-	--editor-side: clamp(320px, 25vw, 420px);
+	/*
+	 * The editor's panel card: its 72px rail of modes plus the panel. 448px on laptops (a 376px panel, as wide as the
+	 * old panel without a rail), growing with the window to 560px on large screens.
+	 */
+	--editor-panel: clamp(448px, 34vw, 560px);
 	--app-sidebar: 240px;
 	--sheet-share: 440px;
 	--sheet-detail: 480px;
-	--assistant: 400px;
 
 	/* Rezumi's tooltips open after 400ms, not HeroUI's 1.5s. */
 	--tooltip-delay: 400ms;
@@ -239,6 +239,24 @@
 }
 
 /*
+ * Widgets in the editors' panels (`[data-editor-panel]`: the side panel, the tablet drawer, the phone sheet) are denser:
+ * a 48px header with 12px insets, a 14px title beside the 20px icon 8px away, and a 12px description under it.
+ */
+@layer components {
+	[data-editor-panel] .widget .widget__header {
+		@apply min-h-12 gap-x-2 px-3 py-2;
+	}
+
+	[data-editor-panel] .widget .widget__title {
+		@apply text-sm leading-5;
+	}
+
+	[data-editor-panel] .widget .widget__description {
+		@apply text-xs leading-5;
+	}
+}
+
+/*
  * Fill hierarchy in the dashboard. The root is `surface` (white); a block resting on it takes `background`; a control
  * sitting on a `background` block (a widget's header, the message box) steps down once more to `default`. Controls read
  * their resting fill from `--control-fill` so the step follows where they sit; `bg-control` is the same for a tile.
@@ -263,6 +281,15 @@
 @layer components {
 	.dashboard-shell .kpi-group {
 		@apply bg-background shadow-none;
+	}
+}
+
+/* A scroller with no visible scrollbar (the editor's panel, chip rows): it still scrolls by wheel, touch and keyboard. */
+@utility scrollbar-none {
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
 	}
 }
 
@@ -513,10 +540,11 @@
 }
 
 /*
- * A keyboard mode switch lands at once: the editor's tab indicator and the selected tab's label skip their motion
- * (switchModeInstantly in apps/web/src/libs/motion.ts, ExpandingLabel in the editor's mode switch).
+ * A keyboard mode switch lands at once: the editor's rail marker and the selected tab's label skip their motion
+ * (switchModeInstantly in apps/web/src/libs/motion.ts).
  */
-[data-mode-switch][data-instant] :is(.tabs__indicator, [data-expanding-label], [data-expanding-label] > *) {
+[data-mode-switch][data-instant]
+	:is(.tabs__indicator, [data-rail-indicator], [data-expanding-label], [data-expanding-label] > *) {
 	transition: none !important;
 }
 

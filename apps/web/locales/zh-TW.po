@@ -567,6 +567,11 @@ msgstr ""
 msgid "{0} per reply"
 msgstr ""
 
+#. placeholder {0}: theme.name
+#: src/features/homepage/portfolio.tsx
+msgid "{0} portfolio theme preview"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/conversation.tsx
 msgid "{0} posting"
@@ -1252,6 +1257,10 @@ msgstr "登入時來自身份驗證器應用程式的程式碼"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "A comfortable length, and it fits on one page."
 msgstr "長度舒適，適合一頁紙。"
+
+#: src/features/homepage/portfolio.tsx
+msgid "A contact form, and how many people visited"
+msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
@@ -2222,6 +2231,8 @@ msgstr "對照您的條件"
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
 #: src/features/portfolio/ai/rewrite-menu.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 msgid "AI"
 msgstr ""
 
@@ -2836,7 +2847,6 @@ msgstr ""
 msgid "Aspect ratio"
 msgstr "顯示比例"
 
-#: src/features/assistant/assistant-button.tsx
 #: src/features/assistant/assistant-panel.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -3417,6 +3427,10 @@ msgstr ""
 msgid "Case studies"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Case studies with pictures, video, PDFs and results in numbers"
+msgstr ""
+
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Case study (public version)"
 msgstr ""
@@ -3913,6 +3927,7 @@ msgstr ""
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
 #: src/features/resume/editor/chrome/download-sheet.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
 #: src/features/resume/stylesheet/editor.tsx
@@ -4084,8 +4099,8 @@ msgstr "完整的資料備份。匯入回 Rezumi 或 JSON Resume 工具。"
 msgid "Compress or remove large images to keep uploads quick."
 msgstr "壓縮或移除較大的圖片，以保持上傳速度。"
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Computer"
 msgstr "電腦"
 
@@ -5118,7 +5133,6 @@ msgstr "裁切填滿"
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "求職信"
 
@@ -5717,6 +5731,7 @@ msgstr "角色描述 {0}"
 msgid "Design"
 msgstr "設計"
 
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Design groups"
 msgstr "設計組"
@@ -5860,6 +5875,10 @@ msgstr "說明文件"
 msgid "Document menu: {name}"
 msgstr "文件選單：{name}"
 
+#: src/features/resume/editor/chrome.tsx
+msgid "Document name"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Document type"
 msgstr "文件類型"
@@ -5946,8 +5965,7 @@ msgstr ""
 #: src/features/career/workspace/apply.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/resume/editor/chrome/bar.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
+#: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download"
 msgstr "下載"
 
@@ -5958,10 +5976,6 @@ msgstr "下載{label}"
 #: src/features/templates/gallery.tsx
 msgid "Download {name} sample PDF"
 msgstr "下載 {name} 範本 PDF"
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Download & history"
-msgstr "下載與歷史記錄"
 
 #: src/features/billing/plan.ts
 msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
@@ -7255,6 +7269,7 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
+#: src/features/homepage/portfolio.tsx
 #: src/features/homepage/templates.tsx
 #: src/features/portfolio/theme-gallery.tsx
 #: src/features/templates/gallery.tsx
@@ -7796,10 +7811,9 @@ msgstr "招募團隊"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/portfolio/admin/review-page.tsx
-#: src/features/resume/editor/chrome/bar.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "History"
 msgstr "歷史記錄"
 
@@ -9300,6 +9314,7 @@ msgstr "鎖定編輯"
 
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Locked"
 msgstr "鎖定"
 
@@ -9344,10 +9359,6 @@ msgstr "無法使用驗證器了嗎？"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Low"
 msgstr "低的"
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Lower the design sheet"
-msgstr "降低設計表"
 
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/share/web-page-text.ts
@@ -10499,9 +10510,8 @@ msgstr ""
 msgid "No work-experience section was found."
 msgstr "未找到工作經歷部分。"
 
-#: src/features/applications/components/add-application-dialog.tsx
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/applications/document-options.ts
 #: src/features/portfolio/works/work-editor.tsx
 msgid "None"
 msgstr "沒有任何"
@@ -10711,10 +10721,6 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Nothing here should cost you a match."
 msgstr "這裡沒有任何事情會讓你輸掉一場比賽。"
-
-#: src/features/career/today.tsx
-msgid "Nothing is applied for or created until you choose."
-msgstr "在您做出選擇之前，不會應徵任何職缺，也不會建立任何內容。"
 
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
@@ -11313,9 +11319,7 @@ msgstr ""
 
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
-#: src/routes/builder/$resumeId/-components/editor-shell.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx
-#: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Page"
 msgstr "頁"
 
@@ -11665,12 +11669,12 @@ msgstr "永久刪除所有內容。如果您想要副本，請先匯出。"
 msgid "Persian"
 msgstr "波斯語"
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Phone"
 msgstr "電話"
 
@@ -11946,6 +11950,7 @@ msgstr "波蘭語"
 msgid "Polishing"
 msgstr "正在潤飾"
 
+#: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
@@ -11971,6 +11976,7 @@ msgstr ""
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Portfolio reports"
 msgstr ""
 
@@ -12171,10 +12177,6 @@ msgstr "按 <0>{RETURN_KEY}</0> 新增或儲存目前的關鍵字。"
 msgid "Press <0>Enter</0> to open"
 msgstr "按<0>Enter</0>開啟"
 
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
-msgid "Preview"
-msgstr ""
-
 #: src/features/templates/gallery.tsx
 msgid "Preview {name} sample PDF"
 msgstr "預覽 {name} 範例 PDF"
@@ -12187,8 +12189,8 @@ msgstr ""
 msgid "Preview every template before you sign up. The Free plan includes {freeCount} templates and PDF downloads without a watermark. Plus and Pro AI unlock every template, plus Word and ODT downloads."
 msgstr ""
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Preview size"
 msgstr "預覽大小"
 
@@ -12423,6 +12425,10 @@ msgstr "出版品"
 msgid "Publish"
 msgstr "發布"
 
+#: src/features/homepage/portfolio.tsx
+msgid "Publish a one-page website at rezumi.app/your-name. Start from a resume, add your work, and choose a theme that suits your field."
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish it to share a link that opens on any screen. Only you can see it until then."
 msgstr "發布後即可分享在任何螢幕上都能開啟的連結。在此之前，只有您能看到。"
@@ -12523,10 +12529,6 @@ msgstr ""
 #: src/features/portfolio/editor/rich-text-editor.tsx
 msgid "Quote"
 msgstr ""
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Raise the design sheet"
-msgstr "升起設計單"
 
 #: src/features/portfolio/themes.ts
 msgid "Random letters settle into your name."
@@ -12851,7 +12853,7 @@ msgid "Red"
 msgstr "紅色"
 
 #: src/features/portfolio/editor/rich-text-editor.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Redo"
 msgstr ""
 
@@ -13015,10 +13017,6 @@ msgstr "提醒我"
 #: src/features/career/schedule-sheet.tsx
 msgid "Remind me on"
 msgstr "提醒日期"
-
-#: src/features/career/today.tsx
-msgid "Reminders appear here. Email copies are optional and need a verified address."
-msgstr "提醒會顯示在這裡。電子郵件副本為選用功能，需要已驗證的電子郵件地址。"
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/career/offers.tsx
@@ -13391,7 +13389,6 @@ msgstr "恢復"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "履歷"
@@ -13612,8 +13609,8 @@ msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - 前往首頁"
 
 #: src/routes/dashboard/settings/route.tsx
-msgid "Rezumi {__APP_VERSION__} · MIT"
-msgstr "Rezumi {__APP_VERSION__} · MIT"
+msgid "Rezumi {__APP_VERSION__}"
+msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost}"
@@ -14230,6 +14227,10 @@ msgstr "請見下方"
 msgid "See exactly what applicant tracking systems read"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "See how a portfolio works"
+msgstr ""
+
 #: src/features/billing/plan-dialog.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -14503,17 +14504,12 @@ msgstr "陰影寬度"
 #: src/features/resume/share/web-page-text.ts
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Share"
 msgstr "分享"
 
 #: src/features/homepage/introduction.tsx
 msgid "Share a live link that is always the latest version"
 msgstr ""
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Share sections"
-msgstr "分享部分"
 
 #: src/features/resume/share/address-field.tsx
 msgid "Share via…"
@@ -14731,6 +14727,10 @@ msgstr "顯示模板"
 msgid "Show the {name} logo"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Show the work behind your resume."
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "再次向他們展示"
@@ -14864,10 +14864,6 @@ msgstr "情境"
 #: src/features/career/workspace/prepare.tsx
 msgid "Situation, action, result"
 msgstr "情境、行動、結果"
-
-#: src/features/career/knowledge/stories.tsx
-msgid "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
-msgstr "情境、任務、行動、結果、反思。將每個故事連結到您能佐證的事實；未知的結果請留空。"
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Size"
@@ -17428,6 +17424,7 @@ msgstr "底線連結"
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
+#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/resume/editor/proposals/proposals.ts
@@ -17438,7 +17435,6 @@ msgstr "底線連結"
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Undo"
 msgstr "撤銷"
 
@@ -19040,6 +19036,10 @@ msgstr "您的項目符號使用了不常見的字元。"
 msgid "Your career as a path: experience and education hang from a fine line with an accent dot at each step, beside a left sidebar."
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Your career details stay in step with your resume"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/use-editor-hotkeys.ts
 #: src/routes/builder/letter/-components/letter-shell.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -19568,7 +19568,6 @@ msgstr ""
 msgid "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
 msgstr ""
 
-#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"
 msgstr "飛漲"

@@ -1,72 +1,95 @@
+import type { PanelView } from "@/features/resume/editor/store";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
+import { SelectionIndicator, Tab, TabList, Tabs } from "react-aria-components";
 import { Icon } from "@rezumi/ui/components/icon";
+import { cn } from "@rezumi/utils/style";
+import { loadAssistantPanel } from "@/features/assistant/dock";
+import { selectPanelView, useEditorStore } from "@/features/resume/editor/store";
 
 type Mode<M extends string> = {
 	id: M;
 	icon: IconName;
 	label: string;
-	/** A count or dot after the label. */
+	/** A count or dot at the icon's corner. */
 	extra?: ReactNode;
 };
+
+type View = Exclude<PanelView, null>;
 
 type ModeSwitchProps<M extends string> = {
 	modes: Mode<M>[];
 	selected: M;
 	onChange: (mode: M) => void;
+	/** The assistant and History, under the modes: each shows in the panel in place of the mode. */
+	views?: readonly View[];
 };
 
-/**
- * A label that opens beside its icon while `shown` and folds to nothing otherwise (still read out: it's only
- * clipped). The "icon expand" pattern from HeroUI Pro's Segment, shared by the mode switch and Design's group nav.
- * The tab grows while the indicator slides to it, so both share the indicator's timing (`--d2` on the movement
- * curve); a keyboard switch skips it (`data-expanding-label`, see globals.css).
- */
-export function ExpandingLabel({ shown, children }: { shown: boolean; children: ReactNode }) {
-	return (
-		<span
-			data-expanding-label=""
-			className="inline-grid min-w-0 transition-[grid-template-columns,opacity] duration-standard ease-in-out-strong motion-reduce:transition-none"
-			style={{ gridTemplateColumns: shown ? "1fr" : "0fr", opacity: shown ? 1 : 0 }}
-		>
-			<span
-				className="min-w-0 overflow-hidden whitespace-nowrap transition-[padding] duration-standard ease-in-out-strong motion-reduce:transition-none"
-				style={{ paddingInlineStart: shown ? "0.375rem" : 0 }}
-			>
-				{children}
-			</span>
-		</span>
-	);
-}
+const viewItem = (view: View): Mode<View> =>
+	view === "assistant"
+		? { id: "assistant", icon: "sparkle", label: t`AI` }
+		: { id: "history", icon: "clock-counter-clockwise", label: t`History` };
 
 /**
- * The editor's modes, across the top of the panel column. Every tab shows its icon (and Check's count, Share's dot);
- * the selected one also its label, so four modes fit the 300px column the assistant leaves as well as 400px. The
- * tabs share the column's width.
+ * The editor's modes down the left of the panel card, its header turned on its side: Write · Design · Check · Share,
+ * then (apart, under a hairline) AI and History, each an icon over its name (as on a phone's tab bar), with Check's
+ * count and Share's dot at the icon's corner. The gray marker slides to the picked item; a keyboard switch skips the
+ * slide (`data-mode-switch`, see globals.css). Arrow keys move between items.
  */
-export function ModeSwitch<M extends string>({ modes, selected, onChange }: ModeSwitchProps<M>) {
-	// Only the list sits in Tabs: React Aria renders everything inside Tabs a second time to collect the tabs.
+export function ModeSwitch<M extends string>({ modes, selected, onChange, views = [] }: ModeSwitchProps<M>) {
+	const view = useEditorStore(selectPanelView);
+	const items: Mode<string>[] = [...modes, ...views.map(viewItem)];
+	const firstView = views[0];
+
 	return (
-		<Tabs selectedKey={selected} onSelectionChange={(key) => onChange(String(key) as M)}>
-			<Tabs.ListContainer>
-				<Tabs.List aria-label={t`Editor mode`} data-mode-switch="" className="w-full">
-					{modes.map((mode) => (
-						<Tabs.Tab key={mode.id} id={mode.id} className="w-auto min-w-0 flex-auto gap-0 px-2.5">
-							<Icon
-								name={mode.icon}
-								size={18}
-								variant={mode.id === selected ? "duotone" : "stroke"}
-								className="shrink-0"
-							/>
-							<ExpandingLabel shown={mode.id === selected}>{mode.label}</ExpandingLabel>
-							{mode.extra ? <span className="ms-1.5 flex shrink-0 items-center">{mode.extra}</span> : null}
-							<Tabs.Indicator />
-						</Tabs.Tab>
-					))}
-				</Tabs.List>
-			</Tabs.ListContainer>
+		// Only the list sits in Tabs: each mode's panel is the card's content, mounted by the editor itself.
+		<Tabs
+			orientation="vertical"
+			selectedKey={view ?? selected}
+			onSelectionChange={(key) => {
+				const picked = String(key);
+				if (picked === "assistant" || picked === "history") {
+					useEditorStore.getState().setPanelView(picked);
+					return;
+				}
+				useEditorStore.getState().setPanelView(null);
+				onChange(picked as M);
+			}}
+			className="min-h-0 p-1.5"
+		>
+			<TabList aria-label={t`Editor mode`} data-mode-switch="" className="grid gap-1 outline-none">
+				{items.map((item) => (
+					<Tab
+						key={item.id}
+						id={item.id}
+						{...(item.id === "assistant" ? { onHoverStart: () => void loadAssistantPanel() } : {})}
+						className={({ isSelected }) =>
+							cn(
+								"relative flex h-14 cursor-(--cursor-interactive) flex-col items-center justify-center gap-1 rounded-xl text-[11px] leading-none font-medium transition-[color,scale] duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus active:scale-95",
+								isSelected ? "text-foreground" : "text-muted hover:text-foreground",
+								// A hairline sets the assistant and History apart from the modes.
+								item.id === firstView &&
+									"mt-3 before:absolute before:inset-x-3 before:-top-2 before:h-px before:bg-separator",
+							)
+						}
+					>
+						{({ isSelected }) => (
+							<>
+								<SelectionIndicator
+									data-rail-indicator=""
+									className="absolute inset-0 rounded-xl bg-default transition-[translate,width,height] duration-standard ease-in-out-strong motion-reduce:transition-none"
+								/>
+								<span className="relative flex">
+									<Icon name={item.icon} size={20} variant={isSelected ? "duotone" : "stroke"} />
+									{item.extra ? <span className="absolute -end-2 -top-1.5 flex">{item.extra}</span> : null}
+								</span>
+								<span className="relative max-w-full truncate px-1">{item.label}</span>
+							</>
+						)}
+					</Tab>
+				))}
+			</TabList>
 		</Tabs>
 	);
 }

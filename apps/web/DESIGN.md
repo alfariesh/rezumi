@@ -111,7 +111,7 @@ Icons inside resumes are Phosphor names stored in resume data, drawn by the Phos
 - **Page widths:** every dashboard page sits in `Page` (`apps/web/src/components/layout/page.tsx`), centred and capped by what it holds: `narrow` 720px for forms and Settings; `default` 1440px for pages of widgets (Home's main column beside its side column, Knowledge, Offers); `wide` 1920px for data that uses the room it gets (Documents, Trash, Applications with its board, calendar and insights). Text-heavy parts inside a wide page cap their own measure (Preferences at 820px). A page keeps one width across its views, so switching List, Board or Insights never moves the header. Full-height tools (Coach, the application workspace) lay out their own panes.
 - **Radius:** HeroUI's. `--radius` is 0.5rem; fields use 1.5× that (`rounded-field`); cards, popovers and dialogs use the surface radii. Nested rounded boxes follow outer = inner + padding. `Segment` and pill `Tabs` take the field radius (`globals.css`).
 - **Controls:** the default size of every component; omit `size` unless a layout asks otherwise. Icon-only and badge-carrying buttons keep the minimum touch target; `touch-target` grows a smaller control's hit area to 44×44px on coarse pointers.
-- **Layout variables:** `--editor-bar: 56px`, `--editor-panel` (420px, growing to 520px on large screens), `--editor-side`, `--app-sidebar: 240px`, `--sheet-share: 440px`, `--sheet-detail: 480px`, `--assistant: 400px`, `--tooltip-delay: 400ms`.
+- **Layout variables:** `--editor-bar: 56px`, `--editor-panel` (the panel card with its 72px rail: 448px, growing to 560px on large screens), `--app-sidebar: 240px`, `--sheet-share: 440px`, `--sheet-detail: 480px`, `--tooltip-delay: 400ms`.
 - **Scrollbars:** one thin thumb in the default fill (`--scrollbar-thumb`), a step darker while the pointer is over its area.
 
 ## Motion
@@ -120,7 +120,7 @@ Icons inside resumes are Phosphor names stored in resume data, drawn by the Phos
 | --------------------- | -------- | ------------------------------------------------------ |
 | `duration-quick`      | 120ms    | Hover, press, toggles, checkboxes, and focus           |
 | `duration-standard`   | 200ms    | Menus, popovers, expansion, content swaps, and dialogs |
-| `duration-emphasized` | 320ms    | Sheets, toasts, and the assistant column               |
+| `duration-emphasized` | 320ms    | Sheets, toasts and drawers                             |
 
 - Entering and changing state use `ease-enter` (`cubic-bezier(0.23, 1, 0.32, 1)`), a strong ease-out: it moves most in the first frames and spends the rest settling. Never ease-in. Exits take 70% of the entry duration. Bare `transition-*` utilities already use these. `ease-out-strong`, the marketing pages' name, is the same curve.
 - Sliding indicators (HeroUI's tab indicator included), reordering and settling use `ease-in-out-strong` (`cubic-bezier(0.77, 0, 0.175, 1)`). A label that grows with its tab (the editor's mode switch) shares the indicator's `duration-standard` and curve.

@@ -66,21 +66,11 @@ function RouteComponent() {
 		initializeResumeStore(resume);
 	}, [initializeResumeStore, isInitialized, resume]);
 
+	// Each fetch of the resume brings its name, sharing and lock state to the open draft; the query hands over a new
+	// object only when one of them changed.
 	useEffect(() => {
 		mergeResumeMetadata(resume);
-	}, [
-		mergeResumeMetadata,
-		resume.id,
-		resume.name,
-		resume.slug,
-		resume.tags,
-		resume.isLocked,
-		resume.isPublic,
-		resume.showDownloadButtons,
-		resume.hasPassword,
-		resume.updatedAt,
-		resume,
-	]);
+	}, [mergeResumeMetadata, resume]);
 
 	if (!isInitialized) return null;
 

@@ -15,7 +15,7 @@ import { templates } from "@/dialogs/resume/template/data";
 import { useCurrentBuilderResumeSelector, useResumeData } from "@/features/resume/builder/draft";
 import { CheckPageLayer, PageViewToggle } from "@/features/resume/editor/check/page-layer";
 import { ParserView } from "@/features/resume/editor/check/parser-view";
-import { CanvasStatusPill, usePageScale, ZoomBar } from "@/features/resume/editor/chrome";
+import { CanvasStatusPill, usePageScale } from "@/features/resume/editor/chrome";
 import { measureOverflow, runFit } from "@/features/resume/editor/design/fit";
 import { PageOverlay } from "@/features/resume/editor/page-overlay";
 import { markProposals, pendingProposals } from "@/features/resume/editor/proposals/proposals";
@@ -69,7 +69,7 @@ function ResumePageCanvas() {
 	const setRendered = useEditorStore((state) => state.setRendered);
 	const breakpoint = useBreakpoint();
 	const [mode] = useEditorMode();
-	const { canvasRef, fitScale, pageScale } = usePageScale(format);
+	const { canvasRef, pageScale } = usePageScale(format);
 	const isPhone = breakpoint === "mobile";
 
 	// History: the picked version is drawn on the page, read-only, until the user restores it or goes back to now.
@@ -164,7 +164,6 @@ function ResumePageCanvas() {
 			</section>
 
 			{mode === "check" && !viewing && <PageViewToggle />}
-			{!parser && <ZoomBar fitScale={fitScale} pageCount={Math.max(1, rendered.pageCount)} />}
 		</div>
 	);
 }
