@@ -29,7 +29,9 @@ test("fresh account prepares a linked blank resume and selects only submitted at
 	await page.getByText("Engineer", { exact: true }).first().click();
 	await page.getByRole("button", { name: "Mark as applied", exact: true }).click();
 	const confirm = page.getByRole("dialog", { name: "Mark as applied", exact: true });
-	await confirm.getByLabel("Submitted attached resume: Draft.pdf").uncheck();
+	// HeroUI's checkbox keeps its input visually hidden, so the label is what gets clicked.
+	await confirm.getByText("Submitted attached resume: Draft.pdf").click();
+	await expect(confirm.getByRole("checkbox", { name: "Submitted attached resume: Draft.pdf" })).not.toBeChecked();
 	await confirm.getByRole("button", { name: "Confirm applied" }).click();
 	await expect(confirm).not.toBeVisible();
 	const applied = await (await page.request.get(`/api/openapi/applications/${job.id}`)).json();
@@ -52,7 +54,8 @@ test("save, manually prepare a copy, and confirm submitted documents without ser
 		.fill("Engineer at Example. Build accessible web applications with TypeScript.");
 	await save.getByLabel("Role", { exact: true }).fill("Engineer");
 	await save.getByLabel("Company", { exact: true }).fill("Example");
-	await save.getByLabel("Resume (optional)").selectOption(baseId);
+	await save.getByRole("button", { name: /Resume \(optional\)$/ }).click();
+	await page.getByRole("option", { name: baseName, exact: true }).click();
 	await save.getByRole("button", { name: "Save and prepare resume", exact: true }).click();
 	const copy = page.getByRole("dialog", { name: "Copy a resume for a job", exact: true });
 	await expect(copy.getByText(baseName, { exact: true })).toBeVisible();
@@ -77,8 +80,12 @@ test("save, manually prepare a copy, and confirm submitted documents without ser
 	await page.getByText("Engineer", { exact: true }).first().click();
 	await page.getByRole("button", { name: "Mark as applied", exact: true }).click();
 	const confirm = page.getByRole("dialog", { name: "Mark as applied", exact: true });
-	await confirm.getByLabel("Application date").fill("2026-09-25");
-	await confirm.getByLabel("Resume submitted (optional)").selectOption(copyId);
+	// HeroUI's date field is typed segment by segment: month, day, year, moving on as each one fills.
+	await confirm.getByRole("spinbutton", { name: /^month/ }).click();
+	await page.keyboard.type("09252026");
+	await confirm.getByRole("button", { name: /Resume submitted \(optional\)$/ }).click();
+	const copyName = (await (await page.request.get(`/api/openapi/resumes/${copyId}`)).json()).name;
+	await page.getByRole("option", { name: copyName, exact: true }).click();
 	await confirm.getByRole("button", { name: "Confirm applied" }).click();
 	await expect(confirm).not.toBeVisible();
 	const applied = await (await page.request.get(`/api/openapi/applications/${job.id}`)).json();
