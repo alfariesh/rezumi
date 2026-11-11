@@ -48,6 +48,10 @@ Without a web connection, the assistant can choose `read_page` to fetch a suppli
 
 The source list combines successful search/read results, deduplicates links, and survives reopening the conversation. Links invented in the reply text are not added as retrieved sources. Failed or interrupted web tools show that outcome; they do not show a successful search. Existing conversations retain source evidence from historical native searches.
 
+## Rezumi AI and credits
+
+AI procedures and tools take an optional `aiSource`: `"rezumi"` runs on Rezumi AI and uses the account's credits (each tool's description gives its cost), `"own"` uses one of the account's own AI connections. Without `aiSource`, requests use your own connection; if Rezumi AI is the only one, they fail with `AI_SOURCE_REQUIRED` instead of using credits. Send a new `idempotencyKey` (any unique string up to 100 characters) per action and reuse it when retrying, so a retry doesn't use credits twice.
+
 ## Limits
 
 | Limit                                       | Value                                                                                   |
