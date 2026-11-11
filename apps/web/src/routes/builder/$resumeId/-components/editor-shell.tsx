@@ -5,8 +5,9 @@ import { Trans } from "@lingui/react/macro";
 import { getRouteApi, Outlet } from "@tanstack/react-router";
 import { Suspense, useEffect } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { DocumentMenu } from "./document-menu";
 import { DownloadSheet } from "./download-sheet";
-import { EditorBar, ModeTabs, ResumeDownload } from "./editor-bar";
+import { EditorBar, ModeTabs, ResumeControls, ResumeDownload } from "./editor-bar";
 import { DesignPanel, DesignSheet, ModePanel } from "./mode-panels";
 import { useEditorHotkeys } from "./use-editor-hotkeys";
 import { ResumeAssistant } from "@/features/assistant/dock";
@@ -24,8 +25,9 @@ import { whenIdle } from "@/features/resume/preview/resume-thumbnail.shared";
 import { HistoryTab } from "@/features/resume/share/history-tab";
 
 /**
- * The editor: a 56px bar (undo and zoom in its middle) over the panel card (the modes, AI and History down its left)
- * and the page canvas with Download floating over it (desktop). On tablets the panel is a 380px drawer over the page, pinnable beside it in
+ * The editor: the rail (modes, History, AI) beside one wrapper of sections, each with its own header: the panel (the
+ * name over the mode's widgets), the canvas (undo and zoom over the page, Download floating on it) and, while open, the
+ * assistant. On tablets the panel is a 380px drawer over the page, pinnable beside it in
  * landscape; on phones the page shows with Write · Design · Check · Share floating over it, each opening a sheet.
  */
 export function EditorShell() {
@@ -53,6 +55,8 @@ export function EditorShell() {
 				bar={<EditorBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
 				mode={mode}
 				modes={<ModeTabs />}
+				title={<DocumentMenu />}
+				controls={<ResumeControls compact={editorLayout.layout === "tablet"} />}
 				panelLabel={panelLabel(mode)}
 				panel={<ModePanel mode={mode} />}
 				page={<Outlet />}

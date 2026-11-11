@@ -109,9 +109,14 @@ type EditorStore = {
 	setZoom: (zoom: number | "fit") => void;
 	/** Opens the Download sheet (or, for "history", History in the panel), or closes the sheet. */
 	setSheetTab: (tab: SheetTab | null) => void;
-	/** The assistant in the panel, in place of the mode (and of History). */
+	/** The assistant: a column at the editor's right (a drawer below 1280px, the sheet on phones). */
 	setAssistantOpen: (open: boolean, instant?: boolean) => void;
-	/** Shows the assistant, History or (null) the mode in the panel. Leaving History returns the page to now. */
+	/** History in the panel, in place of the mode; closing it returns the page to now. */
+	setHistoryOpen: (open: boolean) => void;
+	/**
+	 * Phones show one sheet at a time: the assistant, History or (null) the mode. Elsewhere "history" shows History in
+	 * the panel and null closes it; the assistant's column is apart. Leaving History returns the page to now.
+	 */
 	setPanelView: (view: PanelView) => void;
 	setSectionOpen: (sectionId: string, open: boolean) => void;
 	markSectionAdded: (sectionId: string) => void;
@@ -175,17 +180,10 @@ export const useEditorStore = create<EditorStore>()((set) => ({
 	...initialState,
 	setZoom: (zoom) => set({ zoom: zoom === "fit" ? "fit" : clampZoom(zoom) }),
 	setSheetTab: (sheetTab) =>
-		set(
-			sheetTab === "history"
-				? { historyOpen: true, assistantOpen: false, sheetTab: null, drawerOpen: true }
-				: { sheetTab },
-		),
-	setAssistantOpen: (assistantOpen, instant = false) =>
-		set(
-			assistantOpen
-				? { assistantOpen, assistantInstant: instant, historyOpen: false, historyVersionId: null, drawerOpen: true }
-				: { assistantOpen, assistantInstant: instant },
-		),
+		set(sheetTab === "history" ? { historyOpen: true, sheetTab: null, drawerOpen: true } : { sheetTab }),
+	setAssistantOpen: (assistantOpen, instant = false) => set({ assistantOpen, assistantInstant: instant }),
+	setHistoryOpen: (historyOpen) =>
+		set(historyOpen ? { historyOpen, drawerOpen: true } : { historyOpen, historyVersionId: null }),
 	setPanelView: (view) =>
 		set({
 			assistantOpen: view === "assistant",

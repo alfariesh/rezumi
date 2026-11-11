@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { toast } from "@rezumi/ui/components/toast";
 import { LetterDesignPanel } from "./design-panel";
 import { LetterDownloadSheet, LetterHistory } from "./download-sheet";
-import { LetterBar, LetterDownload, LetterModeTabs, useDownloadLetter } from "./letter-bar";
+import { LetterBar, LetterDownload, LetterMenu, LetterModeTabs, useDownloadLetter } from "./letter-bar";
 import { LetterPage } from "./letter-page";
 import { LetterWritePanel } from "./write-panel";
 import { LetterAssistant } from "@/features/assistant/dock";
@@ -19,6 +19,7 @@ import {
 } from "@/features/letters/use-letter-mode";
 import { useLetterWebMcpTools } from "@/features/letters/webmcp";
 import { usePreviewPausedStore } from "@/features/resume/builder/draft";
+import { ZoomControls } from "@/features/resume/editor/chrome";
 import {
 	EditorFrame,
 	KeptModes,
@@ -55,6 +56,8 @@ export function LetterShell() {
 				bar={<LetterBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
 				mode={mode}
 				modes={<LetterModeTabs />}
+				title={<LetterMenu />}
+				controls={<ZoomControls compact={editorLayout.layout === "tablet"} />}
 				panelLabel={mode === "design" ? t`Design` : t`Letter details`}
 				panel={<ModePanel mode={mode} />}
 				page={<LetterPage />}

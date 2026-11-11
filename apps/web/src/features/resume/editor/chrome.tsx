@@ -191,7 +191,7 @@ export function BackLink() {
 					<Icon name="arrow-left" />
 				</Link>
 			</Tooltip.Trigger>
-			<Tooltip.Content placement="bottom">{label}</Tooltip.Content>
+			<Tooltip.Content placement="right">{label}</Tooltip.Content>
 		</Tooltip>
 	);
 }

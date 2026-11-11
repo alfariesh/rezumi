@@ -12,7 +12,7 @@ import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { useLetterMode } from "@/features/letters/use-letter-mode";
-import { DocumentMenuTrigger, DocumentTitle, ZoomControls } from "@/features/resume/editor/chrome";
+import { DocumentMenuTrigger, DocumentTitle } from "@/features/resume/editor/chrome";
 import { DownloadButtons, EditorBarFrame } from "@/features/resume/editor/chrome/bar";
 import { ModeSwitch } from "@/features/resume/editor/chrome/mode-switch";
 import { STATUS_WORDS } from "@/features/resume/editor/save-status";
@@ -27,7 +27,7 @@ type LetterBarProps = {
 	pinnable: boolean;
 };
 
-/** Write · Design, then AI and History, down the left of the panel card. */
+/** Write · Design down the rail, History and AI at its foot. */
 export function LetterModeTabs() {
 	const [mode, setMode] = useLetterMode();
 
@@ -35,7 +35,8 @@ export function LetterModeTabs() {
 		<ModeSwitch
 			selected={mode}
 			onChange={setMode}
-			views={["assistant", "history"]}
+			history
+			assistant
 			modes={[
 				{ id: "write", icon: "pencil-simple", label: t`Write` },
 				{ id: "design", icon: "palette", label: t`Design` },
@@ -44,19 +45,11 @@ export function LetterModeTabs() {
 	);
 }
 
-/**
- * The 56px bar: back, the letter's name, menu and save state · zoom. Phones keep Download PDF at its end; elsewhere
- * it floats over the page (`LetterDownload`).
- */
+/** Phones: the 56px bar over the letter, with back, the name, its menu and save state, and Download PDF. */
 export function LetterBar({ layout, pinnable }: LetterBarProps) {
 	return (
-		<EditorBarFrame
-			layout={layout}
-			pinnable={pinnable}
-			menu={<LetterMenu />}
-			center={<ZoomControls compact={layout === "tablet"} />}
-		>
-			{layout === "mobile" && <LetterDownload compact />}
+		<EditorBarFrame layout={layout} pinnable={pinnable} menu={<LetterMenu />} center={null}>
+			<LetterDownload compact />
 		</EditorBarFrame>
 	);
 }
@@ -101,7 +94,7 @@ const failed = (error: unknown) =>
 	});
 
 /** The letter's name, renamed in place, then the ▾ menu (rename, duplicate, lock and Move to Trash) and the save state. */
-function LetterMenu() {
+export function LetterMenu() {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const prompt = usePrompt();

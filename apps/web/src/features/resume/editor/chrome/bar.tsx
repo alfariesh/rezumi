@@ -16,7 +16,7 @@ type EditorBarFrameProps = {
 	menu: ReactNode;
 	/** Controls for the canvas under it, centered: undo and redo, zoom, the page count. Phones leave them out. */
 	center: ReactNode;
-	/** Leaving the editor: "Back to documents" unless the editor has its own place to go back to. */
+	/** Leaving the editor, on phones (elsewhere it tops the rail): "Back to documents" unless it has its own place. */
 	back?: ReactNode;
 	/** At the end: the phone's Download, the portfolio's published page. */
 	children?: ReactNode;
@@ -39,7 +39,8 @@ export function EditorBarFrame({ layout, pinnable, menu, center, back, children 
 			)}
 		>
 			<div className="flex min-w-0 items-center gap-1">
-				{back ?? <BackLink />}
+				{/* Elsewhere back tops the rail, in the window corner. */}
+				{phone && (back ?? <BackLink />)}
 				{layout === "tablet" && <DrawerControls pinnable={pinnable} />}
 				<div className="flex min-w-0 items-center gap-1 ps-1">{menu}</div>
 			</div>

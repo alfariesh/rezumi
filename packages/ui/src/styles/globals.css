@@ -39,11 +39,10 @@
 
 	/* Layout constants */
 	--editor-bar: 56px;
-	/*
-	 * The editor's panel card: its 72px rail of modes plus the panel. 448px on laptops (a 376px panel, as wide as the
-	 * old panel without a rail), growing with the window to 560px on large screens.
-	 */
-	--editor-panel: clamp(448px, 34vw, 560px);
+	/* The editor's panel section, beside the 72px rail: 384px on laptops, growing with the window to 488px. */
+	--editor-panel: clamp(384px, 28vw, 488px);
+	/* The assistant's section at the editor's right (≥1280px). */
+	--editor-assistant: clamp(360px, 26vw, 440px);
 	--app-sidebar: 240px;
 	--sheet-share: 440px;
 	--sheet-detail: 480px;

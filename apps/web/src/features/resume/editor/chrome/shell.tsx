@@ -7,15 +7,17 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Activity, useLayoutEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { WidgetHeading } from "@/components/layout/widget-heading";
-import { useIsLandscape } from "@/features/resume/editor/chrome";
+import { loadAssistantPanel } from "@/features/assistant/dock";
+import { BackLink, DrawerControls, useIsLandscape } from "@/features/resume/editor/chrome";
 import { selectPanelView, useEditorStore } from "@/features/resume/editor/store";
 
-// The editor shell resumes, letters and the portfolio share: the layout for the screen, the panel card beside or over
-// the page (the modes, AI and History down its left), the floating Download over the page and, on phones, the
-// floating dock with its sheet. Each editor brings its own bar, panels, page and phone body.
+// The editor shell resumes, letters and the portfolio share: the layout for the screen, the rail down the window's
+// left edge (the modes, AI and History), the panel card beside or over the page, the floating Download over the page
+// and, on phones, the floating dock with its sheet. Each editor brings its own bar, panels, page and phone body.
 
 /** Desktop, tablet (the panel is a drawer, pinnable beside the page in landscape) or phone. */
 export function useEditorLayout() {
@@ -32,19 +34,28 @@ type EditorLayout = ReturnType<typeof useEditorLayout>;
 
 type EditorFrameProps = {
 	editorLayout: EditorLayout;
+	/** Phones only: the bar over the page (back, the name, Download). */
 	bar: ReactNode;
-	mode: string;
-	/** The rail down the left of the panel card; phones switch from the dock over the page instead. */
+	/** Leaving the editor, at the top of the rail: "Back to documents" unless the editor has its own place. */
+	back?: ReactNode;
+	/** The rail down the window's left edge; phones switch from the dock instead. */
 	modes: ReactNode;
+	/** The panel section's header: the document's name, its menu and save state. */
+	title: ReactNode;
+	/** The canvas section's header, centered: undo, redo, zoom, the page count. */
+	controls: ReactNode;
+	/** The canvas section's header, at its end: the portfolio's published page. */
+	actions?: ReactNode;
+	mode: string;
 	/** The panel's accessible name in this mode. */
 	panelLabel: string;
 	panel: ReactNode;
 	page: ReactNode;
-	/** The assistant, shown in the panel while AI is picked. */
+	/** The assistant, in its own section at the right (a drawer below 1280px); editors without one leave it out. */
 	assistant?: ReactNode;
 	/** History, shown in the panel while it's picked. */
 	history?: ReactNode;
-	/** Floating over the page's lower end corner: Download. */
+	/** Floating over the canvas's lower end corner: Download. */
 	floating?: ReactNode;
 	/** Phones show the page with the mode dock over it; each editor brings its own. */
 	mobile: ReactNode;
@@ -53,74 +64,215 @@ type EditorFrameProps = {
 };
 
 /**
- * The window: a 56px bar over the panel card and the page. The card holds the mode's panel, or the assistant or
- * History in its place, so the page keeps its room whatever the panel shows.
+ * The window, on the white surface. One header row runs across the top, its parts over the sections they belong to
+ * (as in ChatGPT): back over the rail, the document's name over the panel, undo and zoom over the canvas, the
+ * assistant's own header over its column. Under it: the rail down the left edge (the modes, then History and AI at its
+ * foot), one bordered wrapper holding the panel (white) and the canvas (gray, the page on it), and while open the
+ * assistant's column. Below 1024px the panel is a drawer over the canvas, and below 1280px the assistant comes over
+ * the canvas from the right. Phones show the bar over their own body.
  */
-export function EditorFrame({ editorLayout, bar, mobile, children, page, floating, ...panel }: EditorFrameProps) {
+export function EditorFrame({ editorLayout, bar, back, modes, mobile, children, ...sections }: EditorFrameProps) {
 	const { layout, pinned } = editorLayout;
-	const body = { ...panel, page, floating };
+	const wide = useBreakpoint() === "wide";
+	const assistantOpen = useEditorStore((state) => state.assistantOpen);
+	const assistantInstant = useEditorStore((state) => state.assistantInstant);
+
+	if (layout === "mobile")
+		return (
+			<div className="grid h-svh grid-rows-[var(--editor-bar)_minmax(0,1fr)] overflow-hidden bg-background">
+				<SkipLink />
+				{bar}
+				{mobile}
+				{children}
+			</div>
+		);
+
+	const docked = layout === "desktop" || pinned;
+	// ≥1280 the assistant takes a column of its own; narrower, it comes over the canvas.
+	const column = wide && sections.assistant !== undefined;
+	const columns = `4.5rem ${docked ? (pinned ? "380px" : "var(--editor-panel)") : "0px"} minmax(0,1fr) ${column && assistantOpen ? "var(--editor-assistant)" : "0px"}`;
 
 	return (
-		<div className="grid h-svh grid-rows-[var(--editor-bar)_minmax(0,1fr)] overflow-hidden bg-background">
-			<a
-				href="#main-content"
-				className="sr-only rounded-xl bg-overlay px-4 py-2 text-sm shadow-overlay focus:not-sr-only focus:absolute focus:inset-s-2 focus:top-2 focus:z-[100]"
-			>
-				<Trans>Skip to the page</Trans>
-			</a>
+		<div
+			className={cn(
+				"grid h-svh grid-rows-[var(--editor-bar)_minmax(0,1fr)] overflow-hidden bg-surface pe-2 pb-2",
+				assistantInstant
+					? "transition-none"
+					: "transition-[grid-template-columns] duration-emphasized ease-enter motion-reduce:transition-none",
+			)}
+			style={{ gridTemplateColumns: columns }}
+		>
+			<SkipLink />
 
-			{bar}
+			{/* The header row. */}
+			<div className="col-start-1 row-start-1 flex items-center justify-center">{back ?? <BackLink />}</div>
+			<header className="col-start-2 row-start-1 flex min-w-0 items-center gap-1 overflow-hidden px-3">
+				{docked && sections.title}
+			</header>
+			<CanvasHeader {...sections} layout={layout} pinnable={editorLayout.pinnable} pinned={pinned} />
 
-			{(layout === "desktop" || pinned) && <DesktopBody {...body} pinned={pinned} />}
-			{layout === "tablet" && !pinned && <TabletBody {...body} />}
-			{layout === "mobile" && mobile}
+			<div className="col-start-1 row-start-2 scrollbar-none min-h-0 overflow-y-auto">{modes}</div>
+
+			<div className="relative col-span-2 col-start-2 row-start-2 grid min-h-0 min-w-0 grid-cols-subgrid overflow-hidden rounded-[calc(var(--radius)*2.5)] border border-separator">
+				{docked ? <PanelSection {...sections} className="border-e border-separator" /> : <span aria-hidden="true" />}
+				<CanvasSection {...sections} />
+
+				{!docked && <PanelDrawer {...sections} />}
+				{!column && sections.assistant !== undefined && (
+					<AssistantDrawer open={assistantOpen}>{sections.assistant}</AssistantDrawer>
+				)}
+			</div>
+
+			{column && <AssistantSection open={assistantOpen}>{sections.assistant}</AssistantSection>}
 
 			{children}
 		</div>
 	);
 }
 
-type BodyProps = Omit<EditorFrameProps, "editorLayout" | "bar" | "mobile" | "children">;
+function SkipLink() {
+	return (
+		<a
+			href="#main-content"
+			className="sr-only rounded-xl bg-overlay px-4 py-2 text-sm shadow-overlay focus:not-sr-only focus:absolute focus:inset-s-2 focus:top-2 focus:z-[100]"
+		>
+			<Trans>Skip to the page</Trans>
+		</a>
+	);
+}
 
-type PanelCardProps = Omit<BodyProps, "page" | "floating"> & { className?: string };
+type SectionProps = Omit<EditorFrameProps, "editorLayout" | "bar" | "back" | "modes" | "mobile" | "children">;
+
+type PanelSectionProps = SectionProps & { className?: string };
 
 /**
- * The panel as one white card with its header down the left: the rail beside the mode's widgets (or the assistant, or
- * History), which scroll straight on the card (no scrollbar drawn) inside its rounded corners, so the corners stay as
- * it scrolls. The mode's panel stays mounted, hidden, while the assistant or History shows.
+ * The panel section (white): the mode's widgets, or History in their place, scrolling with no scrollbar drawn. The
+ * mode's panel stays mounted, hidden, while History shows. Its name sits in the header row above it.
  */
-function PanelCard({ mode, modes, panelLabel, panel, assistant, history, className }: PanelCardProps) {
-	const view = useEditorStore(selectPanelView);
-	const scroll = useModeScroll(view ?? mode);
+function PanelSection({ mode, panelLabel, panel, history, className }: PanelSectionProps) {
+	const historyOpen = useEditorStore((state) => state.historyOpen) && history !== undefined;
+	const scroll = useModeScroll(historyOpen ? "history" : mode);
 
 	return (
-		<div
+		<section
+			{...scroll}
+			data-editor-panel
+			aria-label={historyOpen ? t`History` : panelLabel}
+			// `relative`: absolutely positioned descendants (sr-only text, say) stay inside this scroller instead of
+			// stretching the document, which would let scrollIntoView shift the whole editor. No scroll anchoring,
+			// which yanked the Design panel back while scrolling it.
 			className={cn(
-				"grid min-h-0 grid-cols-[4.5rem_minmax(0,1fr)] overflow-hidden rounded-[calc(var(--radius)*2)] bg-surface shadow-surface",
+				"relative scrollbar-none min-h-0 min-w-0 overflow-y-auto bg-surface [overflow-anchor:none]",
 				className,
 			)}
 		>
-			{modes}
-			<section
-				{...scroll}
-				data-editor-panel
-				aria-label={view === "assistant" ? t`AI` : view === "history" ? t`History` : panelLabel}
-				// `relative`: absolutely positioned descendants (sr-only text, say) stay inside this scroller instead of
-				// stretching the document, which would let scrollIntoView shift the whole editor. No scroll anchoring,
-				// which yanked the Design panel back while scrolling it.
-				className="relative scrollbar-none min-h-0 min-w-0 overflow-y-auto [overflow-anchor:none]"
-			>
-				<Activity mode={view === null ? "visible" : "hidden"}>{panel}</Activity>
-				{view === "assistant" && <AssistantView>{assistant}</AssistantView>}
-				{view === "history" && <HistoryView>{history}</HistoryView>}
-			</section>
+			<Activity mode={historyOpen ? "hidden" : "visible"}>{panel}</Activity>
+			{historyOpen && <HistoryView>{history}</HistoryView>}
+		</section>
+	);
+}
+
+type CanvasHeaderProps = SectionProps & {
+	layout: EditorLayout["layout"];
+	pinnable: boolean;
+	pinned: boolean;
+};
+
+/**
+ * The header row over the canvas: undo, zoom and the page count centered, the assistant's toggle at its end. Tablets
+ * start it with the panel drawer's controls and the document's name, since the panel isn't beside the page there.
+ */
+function CanvasHeader({ title, controls, actions, assistant, layout, pinnable, pinned }: CanvasHeaderProps) {
+	const assistantOpen = useEditorStore((state) => state.assistantOpen);
+	const tablet = layout === "tablet";
+
+	return (
+		<header className="col-start-3 row-start-1 grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 px-3">
+			<div className="flex min-w-0 items-center gap-1">
+				{tablet && <DrawerControls pinnable={pinnable} />}
+				{tablet && !pinned && title}
+			</div>
+			<div className="flex items-center justify-center gap-0.5">{controls}</div>
+			<div className="flex items-center justify-end gap-1">
+				{actions}
+				{assistant !== undefined && (
+					<IconButton
+						icon="sparkle"
+						label={t`AI`}
+						shortcut="⌘J"
+						aria-pressed={assistantOpen}
+						className={cn("text-muted", assistantOpen && "bg-default text-foreground")}
+						onPointerEnter={() => void loadAssistantPanel()}
+						onPress={() => useEditorStore.getState().setAssistantOpen(!assistantOpen)}
+					/>
+				)}
+			</div>
+		</header>
+	);
+}
+
+/** The canvas section (gray): the page, with Download floating at its lower end corner. */
+function CanvasSection({ page, floating }: SectionProps) {
+	return (
+		<main id="main-content" className="relative min-h-0 min-w-0 bg-background">
+			{page}
+			{floating && (
+				<div className="pointer-events-none absolute end-5 bottom-5 z-10 flex transition-[opacity,translate] duration-standard ease-enter starting:translate-y-2 starting:opacity-0">
+					<div className="pointer-events-auto rounded-full shadow-overlay">{floating}</div>
+				</div>
+			)}
+		</main>
+	);
+}
+
+/** Tablets: the panel section as a 380px drawer over the canvas, from the wrapper's start edge. */
+function PanelDrawer(props: SectionProps) {
+	const drawerOpen = useEditorStore((state) => state.drawerOpen);
+
+	return (
+		<div
+			inert={!drawerOpen}
+			className={cn(
+				"absolute inset-y-0 start-0 z-20 flex w-[380px] max-w-[calc(100%-3rem)] flex-col border-e border-separator shadow-overlay transition-[translate,opacity] duration-emphasized ease-drawer",
+				!drawerOpen && "pointer-events-none -translate-x-4 opacity-0 rtl:translate-x-4",
+			)}
+		>
+			<PanelSection {...props} className="h-full" />
 		</div>
 	);
 }
 
-/** The assistant fills the panel's height: its conversation scrolls inside it, the composer stays at the bottom. */
-function AssistantView({ children }: { children: ReactNode }) {
-	return <div className={cn("h-full px-3 pb-3", MODE_ENTER_CLASS)}>{children}</div>;
+type AssistantPlaceProps = { open: boolean; children: ReactNode };
+
+/**
+ * ≥1280: the assistant's column on the window, from the top (its own header in the header row) to the bottom, as wide
+ * as `--editor-assistant` while open; its content fades in.
+ */
+function AssistantSection({ open, children }: AssistantPlaceProps) {
+	return (
+		<div inert={!open} className="col-start-4 row-span-2 row-start-1 min-h-0 min-w-0 overflow-hidden">
+			{open && (
+				<div className={cn("h-full w-full min-w-[var(--editor-assistant)] ps-3 pe-1", MODE_ENTER_CLASS)}>
+					{children}
+				</div>
+			)}
+		</div>
+	);
+}
+
+/** Below 1280: the assistant as a drawer over the canvas from the wrapper's end edge. */
+function AssistantDrawer({ open, children }: AssistantPlaceProps) {
+	return (
+		<div
+			inert={!open}
+			className={cn(
+				"absolute inset-y-0 end-0 z-30 flex w-[400px] max-w-[calc(100%-3rem)] flex-col border-s border-separator bg-surface px-3 pb-3 shadow-overlay transition-[translate,opacity] duration-emphasized ease-drawer",
+				!open && "pointer-events-none translate-x-4 opacity-0 rtl:-translate-x-4",
+			)}
+		>
+			{open && children}
+		</div>
+	);
 }
 
 /** History in the panel: the versions in a widget, the picked one shown read-only on the page. */
@@ -175,57 +327,6 @@ export function KeptModes<M extends string>({ mode, children }: KeptModesProps<M
 			<div className={MODE_ENTER_CLASS}>{children(kept)}</div>
 		</Activity>
 	));
-}
-
-/** The panel card beside the page: `--editor-panel` wide (400px when pinned on a tablet), Download over the page. */
-function DesktopBody({ page, floating, pinned, ...panel }: BodyProps & { pinned: boolean }) {
-	return (
-		<div
-			className={cn(
-				"grid min-h-0",
-				pinned ? "grid-cols-[400px_minmax(0,1fr)]" : "grid-cols-[var(--editor-panel)_minmax(0,1fr)]",
-			)}
-		>
-			<PanelCard {...panel} className="ms-3 mb-3" />
-			<Page floating={floating}>{page}</Page>
-		</div>
-	);
-}
-
-/** Tablets: the page, with the panel card as a 420px drawer over it, shown and hidden from the bar. */
-function TabletBody({ page, floating, ...panel }: BodyProps) {
-	const drawerOpen = useEditorStore((state) => state.drawerOpen);
-
-	return (
-		<div className="relative min-h-0">
-			<Page floating={floating}>{page}</Page>
-			<div
-				inert={!drawerOpen}
-				className={cn(
-					"absolute start-2 top-0 bottom-2 z-20 flex w-[420px] max-w-[calc(100%-3rem)] flex-col rounded-[calc(var(--radius)*2)] shadow-overlay transition-[translate] duration-emphasized ease-drawer",
-					!drawerOpen && "-translate-x-[calc(100%+1rem)] rtl:translate-x-[calc(100%+1rem)]",
-				)}
-			>
-				<PanelCard {...panel} className="h-full" />
-			</div>
-		</div>
-	);
-}
-
-type PageProps = { floating: ReactNode; children: ReactNode };
-
-/** The page, with Download floating at its lower end corner. */
-function Page({ floating, children }: PageProps) {
-	return (
-		<main id="main-content" className="relative h-full min-h-0 min-w-0">
-			{children}
-			{floating && (
-				<div className="pointer-events-none absolute end-5 bottom-5 z-10 flex transition-[opacity,translate] duration-standard ease-enter starting:translate-y-2 starting:opacity-0">
-					<div className="pointer-events-auto rounded-full shadow-overlay">{floating}</div>
-				</div>
-			)}
-		</main>
-	);
 }
 
 export type DockItem<M extends string> = {

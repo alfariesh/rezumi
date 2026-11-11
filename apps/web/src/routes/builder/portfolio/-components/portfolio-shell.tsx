@@ -97,7 +97,21 @@ export function PortfolioShell() {
 		<>
 			<EditorFrame
 				editorLayout={editorLayout}
-				bar={<PortfolioBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} onReveal={reveal} />}
+				bar={
+					<EditorBarFrame
+						layout={editorLayout.layout}
+						pinnable={editorLayout.pinnable}
+						back={<PortfolioBackLink />}
+						menu={<PortfolioTitle onReveal={reveal} />}
+						center={null}
+					>
+						<OpenPage compact />
+					</EditorBarFrame>
+				}
+				back={<PortfolioBackLink />}
+				title={<PortfolioTitle onReveal={reveal} />}
+				controls={<PortfolioControls compact={editorLayout.layout === "tablet"} />}
+				actions={<OpenPage compact={false} />}
 				mode={mode}
 				modes={
 					<ModeSwitch
@@ -113,7 +127,6 @@ export function PortfolioShell() {
 				panelLabel={modeLabel(mode)}
 				panel={<ModePanel mode={mode} />}
 				page={<Preview />}
-				assistant={null}
 				mobile={<MobileBody onModeChange={setMode} />}
 			>
 				<PortfolioHotkeys />
@@ -181,83 +194,83 @@ function MobileBody({ onModeChange }: MobileBodyProps) {
 	);
 }
 
-type PortfolioBarProps = {
-	layout: "desktop" | "tablet" | "mobile";
-	pinnable: boolean;
+/** Leaving the portfolio editor goes back to the Portfolio page. */
+function PortfolioBackLink() {
+	return (
+		<Tooltip>
+			<Tooltip.Trigger>
+				<Link
+					to="/dashboard/portfolio"
+					aria-label={t`Back to Portfolio`}
+					className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
+				>
+					<Icon name="arrow-left" />
+				</Link>
+			</Tooltip.Trigger>
+			<Tooltip.Content placement="right">
+				<Trans>Back to Portfolio</Trans>
+			</Tooltip.Content>
+		</Tooltip>
+	);
+}
+
+type PortfolioTitleProps = {
 	/** Opens the place a save problem is in. */
 	onReveal: (place: PortfolioReveal) => void;
 };
 
-/**
- * The resume editor's bar: back to Portfolio, the title and save state · undo, redo and the preview's width · the
- * published page.
- */
-function PortfolioBar({ layout, pinnable, onReveal }: PortfolioBarProps) {
-	const live = usePortfolioEditorStore((state) => isPortfolioLive(state.portfolio));
+/** The panel section's header (and the phone's bar): the title and the save state. */
+function PortfolioTitle({ onReveal }: PortfolioTitleProps) {
+	return (
+		<>
+			<span className="truncate px-1.5 text-sm font-semibold">
+				<Trans>Portfolio</Trans>
+			</span>
+			<SaveStatus onReveal={onReveal} />
+		</>
+	);
+}
+
+/** The canvas section's header: undo and redo, and the preview's width (tablets: icons only). */
+function PortfolioControls({ compact }: { compact: boolean }) {
 	const canUndo = usePortfolioEditorStore((state) => state.undoStack.length > 0);
 	const canRedo = usePortfolioEditorStore((state) => state.redoStack.length > 0);
-	const url = usePortfolioUrl();
-	const phone = layout === "mobile";
 
 	return (
-		<EditorBarFrame
-			layout={layout}
-			pinnable={pinnable}
-			back={
-				<Tooltip>
-					<Tooltip.Trigger>
-						<Link
-							to="/dashboard/portfolio"
-							aria-label={t`Back to Portfolio`}
-							className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
-						>
-							<Icon name="arrow-left" />
-						</Link>
-					</Tooltip.Trigger>
-					<Tooltip.Content placement="bottom">
-						<Trans>Back to Portfolio</Trans>
-					</Tooltip.Content>
-				</Tooltip>
-			}
-			menu={
-				<>
-					<span className="truncate px-1.5 text-sm font-semibold">
-						<Trans>Portfolio</Trans>
-					</span>
-					<SaveStatus onReveal={onReveal} />
-				</>
-			}
-			center={
-				<>
-					<UndoRedo
-						canUndo={canUndo}
-						canRedo={canRedo}
-						onUndo={() => usePortfolioEditorStore.getState().undo()}
-						onRedo={() => usePortfolioEditorStore.getState().redo()}
-					/>
-					<BarDivider />
-					<PreviewWidth compact={layout === "tablet"} />
-				</>
-			}
+		<>
+			<UndoRedo
+				canUndo={canUndo}
+				canRedo={canRedo}
+				onUndo={() => usePortfolioEditorStore.getState().undo()}
+				onRedo={() => usePortfolioEditorStore.getState().redo()}
+			/>
+			<BarDivider />
+			<PreviewWidth compact={compact} />
+		</>
+	);
+}
+
+/** Once published, the page in a new tab: a labelled button over the canvas, an icon in the phone's bar. */
+function OpenPage({ compact }: { compact: boolean }) {
+	const live = usePortfolioEditorStore((state) => isPortfolioLive(state.portfolio));
+	const url = usePortfolioUrl();
+	if (!live) return null;
+
+	return compact ? (
+		<a
+			href={url}
+			target="_blank"
+			rel="noopener"
+			aria-label={t`Open page`}
+			className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
 		>
-			{live &&
-				(phone ? (
-					<a
-						href={url}
-						target="_blank"
-						rel="noopener"
-						aria-label={t`Open page`}
-						className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
-					>
-						<Icon name="arrow-square-out" />
-					</a>
-				) : (
-					<a href={url} target="_blank" rel="noopener" className={buttonVariants({ variant: "secondary" })}>
-						<Icon name="arrow-square-out" size={18} />
-						<Trans>Open page</Trans>
-					</a>
-				))}
-		</EditorBarFrame>
+			<Icon name="arrow-square-out" />
+		</a>
+	) : (
+		<a href={url} target="_blank" rel="noopener" className={buttonVariants({ variant: "secondary", size: "sm" })}>
+			<Icon name="arrow-square-out" size={16} />
+			<Trans>Open page</Trans>
+		</a>
 	);
 }
 

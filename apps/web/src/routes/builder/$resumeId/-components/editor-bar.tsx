@@ -16,34 +16,31 @@ type EditorBarProps = {
 	pinnable: boolean;
 };
 
-/**
- * The 56px editor bar: back, the name, its menu and save state · undo, redo and zoom. Phones keep Download PDF at its
- * end; elsewhere it floats over the page (`ResumeDownload`).
- */
+/** Phones: the 56px bar over the page, with back, the name, its menu and save state, and Download PDF. */
 export function EditorBar({ layout, pinnable }: EditorBarProps) {
+	return (
+		<EditorBarFrame layout={layout} pinnable={pinnable} menu={<DocumentMenu />} center={null}>
+			<ResumeDownload compact />
+		</EditorBarFrame>
+	);
+}
+
+/** Undo, redo and zoom in the canvas section's header (tablets leave out the page count). */
+export function ResumeControls({ compact = false }: { compact?: boolean }) {
 	const canUndo = useResumeStore((state) => state.undoStack.length > 0);
 	const canRedo = useResumeStore((state) => state.redoStack.length > 0);
 
 	return (
-		<EditorBarFrame
-			layout={layout}
-			pinnable={pinnable}
-			menu={<DocumentMenu />}
-			center={
-				<>
-					<UndoRedo
-						canUndo={canUndo}
-						canRedo={canRedo}
-						onUndo={() => useResumeStore.getState().undo()}
-						onRedo={() => useResumeStore.getState().redo()}
-					/>
-					<BarDivider />
-					<ZoomControls compact={layout === "tablet"} />
-				</>
-			}
-		>
-			{layout === "mobile" && <ResumeDownload compact />}
-		</EditorBarFrame>
+		<>
+			<UndoRedo
+				canUndo={canUndo}
+				canRedo={canRedo}
+				onUndo={() => useResumeStore.getState().undo()}
+				onRedo={() => useResumeStore.getState().redo()}
+			/>
+			<BarDivider />
+			<ZoomControls compact={compact} />
+		</>
 	);
 }
 
@@ -66,7 +63,7 @@ export function ResumeDownload({ compact = false }: { compact?: boolean }) {
 	);
 }
 
-/** Write · Design · Check · Share, then AI and History, down the left of the panel card. */
+/** Write · Design · Check · Share down the rail, History and AI at its foot. */
 export function ModeTabs() {
 	const [current, setMode] = useEditorMode();
 	const issueCount = useOpenIssueCount();
@@ -76,7 +73,8 @@ export function ModeTabs() {
 		<ModeSwitch
 			selected={current}
 			onChange={setMode}
-			views={["assistant", "history"]}
+			history
+			assistant
 			modes={[
 				{ id: "write", icon: "pencil-simple", label: t`Write` },
 				{ id: "design", icon: "palette", label: t`Design` },
