@@ -13,10 +13,9 @@ import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/mess
 import { buildPortfolioView } from "@rezumi/portfolio/view";
 import { themeEffect } from "@rezumi/schema/portfolio/themes";
 import { Icon } from "@rezumi/ui/components/icon";
-import { ownPictureUrl } from "@rezumi/utils/own-picture";
 import { cn } from "@rezumi/utils/style";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
-import { useOwnOrigins, withOwnPicture } from "./pictures";
+import { ownFileUrl, useOwnOrigins, withOwnPicture } from "./pictures";
 import { usePortfolioData, usePortfolioEditorStore } from "./store";
 import { usePortfolioEditorUi } from "./ui";
 import { useResumeLinks } from "./use-view";
@@ -89,7 +88,8 @@ export async function renderPortfolioPreview({
 		view,
 		messages,
 		icons,
-		imageUrl: (source) => ownPictureUrl(source, origins),
+		// Pictures and the PDF card's file, by the published page's rule (`portfolioFileAddress`).
+		imageUrl: (source) => ownFileUrl(source, origins),
 		year: new Date().getFullYear(),
 		creditUrl: origin,
 	});

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ownPictureUrl } from "@rezumi/utils/own-picture";
-import { withOwnPicture } from "./pictures";
+import { ownFileUrl, withOwnPicture } from "./pictures";
 
 const app = "https://rezumi.app";
 const alias = "https://rx.cv";
@@ -36,5 +36,17 @@ describe("pictures the preview shows", () => {
 		const uploaded = structuredClone(defaultResumeData);
 		uploaded.picture.url = `${app}/uploads/u1/pictures/nadia.webp`;
 		expect(withOwnPicture(uploaded, origins)).toBe(uploaded);
+	});
+
+	it("link a portfolio's own PDF too, as the published page does", () => {
+		expect(ownFileUrl(`${app}/uploads/u1/documents/portfolio/deck-1.pdf`, origins)).toBe(
+			`${app}/uploads/u1/documents/portfolio/deck-1.pdf`,
+		);
+		expect(ownFileUrl("/uploads/u1/pictures/portfolio/a-1.webp", origins)).toBe(
+			`${app}/uploads/u1/pictures/portfolio/a-1.webp`,
+		);
+		expect(ownFileUrl("https://evil.example/uploads/u1/documents/portfolio/deck.pdf", origins)).toBeUndefined();
+		expect(ownFileUrl(`${app}/uploads/u1/documents/other/deck.pdf`, origins)).toBeUndefined();
+		expect(ownFileUrl(`${app}/uploads/u1/documents/portfolio/deck.pdf?download=1`, origins)).toBeUndefined();
 	});
 });

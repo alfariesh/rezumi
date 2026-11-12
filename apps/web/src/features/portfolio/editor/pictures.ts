@@ -7,6 +7,29 @@ import { ownPictureUrl } from "@rezumi/utils/own-picture";
 // section 20): only this app's own uploads. A resume photo kept on another site shows no photo, in the preview as on
 // the page.
 
+/** A portfolio's PDF on this app (`documents/portfolio/<id>.pdf`), the one other stored file a page links to. */
+const OWN_PORTFOLIO_PDF_PATH = /^\/(?:api\/)?uploads\/[\w-]+\/documents\/portfolio\/[\w-]+\.pdf$/;
+
+/**
+ * The address the preview may use for one of this app's stored files: a picture (`ownPictureUrl`) or a portfolio's
+ * PDF, which the PDF card links to. The published page decides with the same rule (`portfolioFileAddress` on the
+ * server), so the preview's PDF card has its link as the page's does.
+ */
+export function ownFileUrl(source: string, origins: readonly string[]): string | undefined {
+	const picture = ownPictureUrl(source, origins);
+	if (picture) return picture;
+	const [base] = origins;
+	if (!base) return undefined;
+	let url: URL;
+	try {
+		url = new URL(source.trim(), base);
+	} catch {
+		return undefined;
+	}
+	if (!origins.includes(url.origin) || url.search || url.hash || url.username || url.password) return undefined;
+	return OWN_PORTFOLIO_PDF_PATH.test(url.pathname) ? url.href : undefined;
+}
+
 /** The resume as the page may use it: its photo only when it's one of this app's uploads. */
 export function withOwnPicture(resume: ResumeData, origins: readonly string[]): ResumeData {
 	const { url } = resume.picture;

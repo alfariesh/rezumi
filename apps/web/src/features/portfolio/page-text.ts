@@ -125,4 +125,4 @@ msg`Enter the password you were given to see it.`;
 msg`Password`;
 msg`Open portfolio`;
 msg`That password isn't right. Check it and try again.`;
-msg`Too many tries. Wait 10 minutes, then try again.`;
+msg`Too many tries. Try again later.`;

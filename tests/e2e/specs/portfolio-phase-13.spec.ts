@@ -101,7 +101,7 @@ test("a work has its own page, Back returns home, and an old address forwards to
 	await expect(row).toContainText("1");
 	await row.getByRole("button", { name: "Details for Kopi Senja" }).click();
 	const details = page.getByRole("dialog", { name: "Kopi Senja" });
-	await expect(details.getByText("Times opened")).toBeVisible();
+	await expect(details.getByText("Times opened", { exact: true })).toBeVisible();
 });
 
 test("a password locks the portfolio and its works until it's entered once", async ({
@@ -116,7 +116,8 @@ test("a password locks the portfolio and its works until it's entered once", asy
 	await page.getByRole("tab", { name: "Publish" }).click();
 	await page.getByText("Protect with a password", { exact: true }).click();
 	const dialog = page.getByRole("dialog");
-	await dialog.getByLabel("Password").fill(PASSWORD);
+	// Exact: the field's "Show password" button is labelled too.
+	await dialog.getByLabel("Password", { exact: true }).fill(PASSWORD);
 	await dialog.getByRole("button", { name: "Set password" }).click();
 	await expect(page.getByText("Password set")).toBeVisible();
 	await expect(page.getByText("Off while your portfolio has a password.")).toBeVisible();
@@ -171,7 +172,12 @@ test("visitors save a contact card, and the business card's code carries utm_sou
 	expect(value).toMatch(new RegExp(`/${account.username}\\?utm_source=qr$`));
 	const download = page.waitForEvent("download");
 	await card.getByRole("button", { name: "Download QR (SVG)" }).click();
-	expect((await download).suggestedFilename()).toBe(`${account.username.toLowerCase()}-qr.svg`);
+	// The file is named from the username as letters, digits and dashes (`cardFileName`).
+	const base = account.username
+		.toLowerCase()
+		.replace(/[^\da-z-]+/g, "-")
+		.replace(/^-+|-+$/g, "");
+	expect((await download).suggestedFilename()).toBe(`${base}-qr.svg`);
 });
 
 test("an Embed block is saved and shows on the work's page as a button, not a frame", async ({
@@ -185,7 +191,8 @@ test("an Embed block is saved and shows on the work's page as a button, not a fr
 
 	await page.getByRole("button", { name: "Add a block", exact: true }).click();
 	await page.getByRole("menuitem", { name: /Embed/ }).click();
-	const prompt = page.getByRole("dialog");
+	// The link is asked for in the app's prompt, an alert dialog.
+	const prompt = page.getByRole("alertdialog");
 	await prompt.getByRole("textbox").fill(LOOM);
 	await prompt.getByRole("button", { name: "Add embed" }).click();
 	await expect(page.getByRole("textbox", { name: "Link" }).last()).toHaveValue(LOOM);
