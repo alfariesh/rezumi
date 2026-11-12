@@ -5,11 +5,12 @@
  * without the parts later phases add (contact form, intro effects). Phase 05 added the video, PDF and link cards and
  * the map picture.
  */
-export const BASE_CSS = String.raw`
+const SOURCE = String.raw`
 *,*::before,*::after{box-sizing:border-box}
 :root{--pf-text-xs:.8125rem;--pf-text-sm:.9375rem;--pf-text-md:1.0625rem;--pf-text-lg:1.25rem;--pf-text-xl:1.625rem;--pf-text-2xl:clamp(1.875rem,1.4rem + 1.8vw,2.5rem);--pf-text-name:clamp(2.5rem,1.6rem + 4.2vw,4.5rem);--pf-leading-tight:1.08;--pf-leading-body:1.6;--pf-radius:12px;--pf-radius-sm:8px;--pf-max-width:1120px;--pf-space-1:4px;--pf-space-2:8px;--pf-space-3:12px;--pf-space-4:16px;--pf-space-5:24px;--pf-space-6:32px;--pf-space-7:48px;--pf-space-8:72px;--pf-space-9:112px;--pf-gutter:max(16px,env(safe-area-inset-left,0px))}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.pf :is(:hover,:focus-visible) img,.pf-video__open:is(:hover,:focus-visible) .pf-video__play>span{transform:none!important}}
+.pf{overflow-wrap:anywhere}
 body{margin:0;background:var(--pf-bg);color:var(--pf-text);font-family:var(--pf-font-body);font-size:var(--pf-text-md);line-height:var(--pf-leading-body);overflow-wrap:break-word;text-rendering:optimizeLegibility}
 img{display:block;max-width:100%;height:auto}
 [hidden]{display:none!important}
@@ -29,7 +30,7 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 [dir="rtl"] .pf-flip{transform:scaleX(-1)}
 .pf-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:44px;padding:.65em 1.2em;border:1.5px solid transparent;border-radius:999px;font:600 var(--pf-text-sm)/1.2 var(--pf-font-body);text-decoration:none;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
 .pf-btn--primary{background:var(--pf-accent);color:var(--pf-on-accent);border-color:var(--pf-accent-edge)}
-.pf-btn--primary:hover{background:color-mix(in oklab,var(--pf-accent) 86%,var(--pf-text))}
+.pf-btn--primary:hover{background:var(--pf-accent-hover)}
 .pf-btn--secondary{border-color:var(--pf-border);color:var(--pf-text);background:transparent}
 .pf-btn--secondary:hover{border-color:var(--pf-text)}
 .pf-btns{display:flex;flex-wrap:wrap;gap:var(--pf-space-3)}
@@ -44,7 +45,7 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-nav__links{display:flex;align-items:center;gap:var(--pf-space-5);margin:0;padding:0;list-style:none;font-size:var(--pf-text-sm)}
 .pf-nav__links a{color:var(--pf-muted);text-decoration:none;white-space:nowrap}
 .pf-nav__links a:hover{color:var(--pf-text)}
-.pf-menu{display:none;position:relative}
+.pf-menu{display:none;position:relative;flex:none}
 .pf-menu>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border:1px solid var(--pf-border);border-radius:999px;font-size:var(--pf-text-sm);font-weight:600}
 .pf-menu>summary::-webkit-details-marker{display:none}
 .pf-menu__list{position:absolute;inset-inline-end:0;top:calc(100% + 8px);z-index:30;display:grid;min-width:200px;padding:8px;margin:0;list-style:none;background:var(--pf-bg);border:1px solid var(--pf-border);border-radius:var(--pf-radius);box-shadow:0 12px 32px rgb(0 0 0/.14)}
@@ -126,7 +127,6 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-zoom{display:block;border-radius:var(--pf-radius-sm);cursor:zoom-in}
 .pf-zoom:focus-visible{outline:2px solid var(--pf-accent-text);outline-offset:3px}
 .pf-lightbox{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:64px 12px;background:rgba(8,10,14,.96);color:#fff;touch-action:pan-y;overscroll-behavior:contain}
-.pf-lightbox[hidden]{display:none}
 .pf-lightbox__stage{margin:0;display:grid;gap:12px;justify-items:center;max-width:100%}
 .pf-lightbox__stage img{display:block;width:auto;height:auto;max-width:min(100%,1600px);max-height:calc(100dvh - 160px);object-fit:contain;border-radius:6px}
 .pf-lightbox__stage figcaption{max-width:60ch;color:rgba(255,255,255,.84);font-size:var(--pf-text-sm);text-align:center}
@@ -134,7 +134,6 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-lightbox__btn{position:absolute;display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);color:#fff;cursor:pointer}
 .pf-lightbox__btn:hover{background:rgba(255,255,255,.18)}
 .pf-lightbox__btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
-.pf-lightbox__btn[hidden]{display:none}
 .pf-lightbox__btn .pf-icon{width:22px;height:22px}
 .pf-lightbox__close{top:max(12px,env(safe-area-inset-top,0px));inset-inline-end:12px}
 .pf-lightbox__prev,.pf-lightbox__next{top:50%;transform:translateY(-50%)}
@@ -181,7 +180,7 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 /* The intro's background, drawn by the element with data-bg through background:var(--pf-hero-bg): the accent's soft gradient over the theme's ground, a dot pattern, or the picture under a shade with light text on it. Themes set --pf-hero-ground and --pf-hero-shade (two stops). */
 [data-bg="soft-gradient"]{--pf-hero-bg:radial-gradient(120% 90% at 0% 0%,var(--pf-accent-soft),transparent 70%),radial-gradient(90% 80% at 100% 100%,color-mix(in oklab,var(--pf-accent-soft) 70%,transparent),transparent 70%),var(--pf-hero-ground,var(--pf-bg))}
 [data-bg="pattern"]{--pf-hero-bg:radial-gradient(color-mix(in oklab,var(--pf-accent) 22%,transparent) 1.2px,transparent 1.4px) 0 0/18px 18px,var(--pf-surface)}
-[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.62),rgb(8 10 14/.7))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-text:#fff;--pf-muted:rgb(255 255 255/.82);--pf-border:rgb(255 255 255/.28);--pf-surface:rgb(255 255 255/.14);--pf-accent-text:var(--pf-accent-text-dark);color:var(--pf-text)}
+[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.62),rgb(8 10 14/.7))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-bg:#111;--pf-text:#fff;--pf-muted:rgb(255 255 255/.82);--pf-border:rgb(255 255 255/.28);--pf-surface:rgb(255 255 255/.14);--pf-accent-text:var(--pf-accent-text-dark);color:var(--pf-text)}
 /* An intro on the soft gradient draws accent text on the accent's tint: the tone made for it. */
 [data-bg="soft-gradient"]{--pf-accent-text:var(--pf-accent-text-soft)}
 .pf-person{display:flex;align-items:center;gap:12px;min-width:0}
@@ -239,7 +238,8 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-form__trap{position:absolute;inset-inline-start:-9999px;width:1px;height:1px;overflow:hidden}
 .pf-form__turnstile{min-height:65px}
 .pf-form__status{margin:0;font-size:var(--pf-text-sm);font-weight:600}
-.pf-form__status:empty{display:none}
+/* Empty, the status takes no room but stays a live region, so screen readers announce the first message written into it. */
+.pf-form__status:empty{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 .pf-form__note{margin:0;color:var(--pf-muted);font-size:var(--pf-text-xs)}
 .pf-form .pf-btn{justify-self:start}
 .pf-form .pf-btn:disabled{opacity:.55;cursor:not-allowed}
@@ -251,4 +251,9 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-foot a:not(.pf-badge){color:var(--pf-muted);text-underline-offset:3px}
 .pf-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 8px;border:1px solid var(--pf-border);border-radius:999px;color:var(--pf-text);text-decoration:none;font-weight:600}
 .pf-badge svg{width:20px;height:20px}
+/* Printing: the page as one light, still sheet (the dark tokens are for screens; designCss). The skip link, navigation links, menu, contact form and picture viewer do nothing on paper; a sticky header would sit on top of every page; a work whose detail is open prints alone, in the flow. Theme rules come after these, so they win with !important. */
+@media print{.pf-skip,.pf-nav__links,.pf-menu,.pf-form,.pf-lightbox,.pf-detail__bar{display:none!important}.pf header{position:static!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}.pf:has(>.pf-detail:target)>:not(.pf-detail:target),.pf:has(>.pf-detail.pf-open)>:not(.pf-detail.pf-open){display:none!important}.pf-detail{position:static!important;overflow:visible!important;padding:0!important;background:none!important}.pf-detail__panel{max-width:none;padding:0;border-radius:0}figure,blockquote,.pf-detail__head{break-inside:avoid}}
 `;
+
+/** The rules as pages ship them: the comments above are for whoever edits them, not for every visitor's download. */
+export const BASE_CSS = SOURCE.replace(/\/\*[^]*?\*\/\n?/g, "");

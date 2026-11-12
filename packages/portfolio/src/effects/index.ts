@@ -20,7 +20,9 @@ export function effectScript(id: PortfolioHeroEffect): string {
 	const source = compact(String(runner));
 	// A transpiler that keeps function names (tsx) may still call its `__name` helper: give it a harmless one.
 	const run = source.includes("__name") ? `((__name)=>(${source}))((f)=>f)` : `(${source})`;
-	return `${run}(document);`;
+	// An effect that fails leaves the real text as it is; it must not stop the script that follows it (click counts and
+	// the contact form, `PORTFOLIO_LIVE_SCRIPT`).
+	return `try{${run}(document)}catch{}`;
 }
 
 /** What a page adds for its intro effect: the effect's rules (and colours) and, for script effects, its script. */

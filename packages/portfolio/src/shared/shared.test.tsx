@@ -7,6 +7,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { fullPortfolioData, fullTestResume, renderTestPage, testImage } from "../fixtures.test-helpers";
 import { RenderContextValue } from "./context";
 import { IntroChips, introLocation, useIntroBackground } from "./intro";
+import { formatFileSize } from "./media";
 import { ServiceList, TestimonialList } from "./offers";
 import { WorkDetails } from "./parts";
 import { ResumeSectionBody } from "./resume";
@@ -58,6 +59,13 @@ describe("the intro's background", () => {
 		expect(draw(() => <Background />, { data: image, imageUrl: (src) => `${src}?x="y"` })).toBe(
 			'<div data-bg="image" style="--pf-hero-image:url(&quot;https://rezumi.example/uploads/user-1/pictures/portfolio/hero-bg.webp?x=%22y%22&quot;)"></div>',
 		);
+	});
+
+	it("keeps an address already encoded as it is, and encodes a backslash or line break that would end the CSS", () => {
+		const image = withBackground({ kind: "image", image: testImage("hero-bg") });
+		const style = (src: string) => draw(() => <Background />, { data: image, imageUrl: () => src });
+		expect(style("/uploads/my%20photo.webp")).toContain("url(&quot;/uploads/my%20photo.webp&quot;)");
+		expect(style("/uploads/a\\b\nc.webp")).toContain("url(&quot;/uploads/a%5Cb%0Ac.webp&quot;)");
 	});
 
 	it("leaves the intro plain when the page may not load its picture", () => {
@@ -232,5 +240,14 @@ describe("sections from the resume", () => {
 		expect(tools).toBe(
 			'<div class="pf-skillgroups" data-variant="groups"><div class="pf-skillgroup"><b>Design tools</b><ul class="pf-tags"><li>Figma</li><li>Sketch</li></ul></div></div>',
 		);
+	});
+});
+
+describe("a PDF's size", () => {
+	it("picks the unit after rounding, so just under a megabyte reads 1 MB", () => {
+		expect(formatFileSize(820_400, "en-US")).toBe("820 kB");
+		expect(formatFileSize(999_600, "en-US")).toBe("1 MB");
+		expect(formatFileSize(2_400_000, "id-ID")).toBe("2,4 MB");
+		expect(formatFileSize(10, "en-US")).toBe("1 kB");
 	});
 });

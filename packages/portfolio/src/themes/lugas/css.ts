@@ -19,7 +19,7 @@ export const LUGAS_CSS = String.raw`
 .pf[data-theme="lugas"] .lg-stats.pf-metrics{--pf-metric-value:clamp(2rem,1.5rem + 2vw,2.75rem);grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:24px}
 @media (max-width:560px){.pf[data-theme="lugas"] .lg-stats.pf-metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;--pf-metric-value:1.7rem}.pf[data-theme="lugas"] .lg-stats .pf-metric__label{font-size:var(--pf-text-xs)}}
 .pf[data-theme="lugas"] .lg-hero[data-variant="photo-left"]{grid-template-columns:auto minmax(0,1fr);column-gap:28px;align-items:center}
-.pf[data-theme="lugas"] .lg-hero[data-variant="photo-left"] .lg-photo{width:120px;height:120px;grid-row:span 1}
+.pf[data-theme="lugas"] .lg-hero[data-variant="photo-left"] .lg-photo{width:120px;height:120px}
 .pf[data-theme="lugas"] .lg-hero[data-variant="photo-left"]>:not(.lg-photo):not(.lg-hero__text){grid-column:1/-1}
 @media (max-width:520px){.pf[data-theme="lugas"] .lg-hero[data-variant="photo-left"]{grid-template-columns:minmax(0,1fr)}.pf[data-theme="lugas"] .lg-hero[data-variant="photo-left"] .lg-photo{width:88px;height:88px}}
 .pf[data-theme="lugas"] .lg-hero[data-bg]:not([data-bg="plain"]){position:relative;padding:clamp(24px,5vw,40px);border-radius:calc(var(--pf-radius) + 6px);overflow:hidden;background:var(--pf-hero-bg)}

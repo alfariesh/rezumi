@@ -1,6 +1,6 @@
 /** Neobrutalism's flat fills, heavy outlines and hard offset depth, scoped entirely to Brutal. */
 export const BRUTAL_CSS = String.raw`
-.pf[data-theme="brutal"]{overflow-wrap:anywhere;--pf-max-width:1160px;--pf-radius:4px;--pf-radius-sm:3px;--br-stroke:3px;--br-shadow:6px 6px 0 var(--pf-border);--br-pad:clamp(22px,3.5vw,40px);background:var(--pf-bg);padding-bottom:20px}
+.pf[data-theme="brutal"]{--pf-max-width:1160px;--pf-radius:4px;--pf-radius-sm:3px;--br-stroke:3px;--br-shadow:6px 6px 0 var(--pf-border);--br-pad:clamp(22px,3.5vw,40px);background:var(--pf-bg);padding-bottom:20px}
 .pf[data-theme="brutal"] .br-top{padding-block:24px}
 .pf[data-theme="brutal"] .pf-nav{gap:24px}
 .pf[data-theme="brutal"] .br-brand{font-weight:800;font-size:20px;letter-spacing:-.04em}

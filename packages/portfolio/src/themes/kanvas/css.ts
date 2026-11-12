@@ -148,4 +148,5 @@ ${K} .pf-blocks>.pf-prose{font-size:var(--pf-text-lg)}
 ${K} .pf-gallery:not([data-layout="carousel"]){grid-template-columns:minmax(0,1fr)}
 ${K} .pf-gallery[data-layout="carousel"] figure{flex-basis:min(85%,720px)}
 ${K} .pf-gallery img{max-height:min(88vh,1100px);object-fit:contain;border-radius:var(--pf-radius);background:none}
+@media print{${K} .kv-cap{opacity:1;transform:none}}
 `;

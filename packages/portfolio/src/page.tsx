@@ -8,6 +8,7 @@ import { PORTFOLIO_LIVE_SCRIPT } from "./live-script";
 import { PORTFOLIO_PAGE_SCRIPT } from "./script";
 import { BASE_CSS } from "./shared/base-css";
 import { RenderContextValue } from "./shared/context";
+import { isPlainUrl } from "./shared/primitives";
 import { themeRenderer } from "./themes";
 
 export type RenderPortfolioPageInput = {
@@ -76,7 +77,7 @@ export type PortfolioPage = {
 const PAGE_IMAGE = /^(?:https?:\/\/|\/(?![/\\])|(?![a-z][\d+.a-z-]*:)[^/\\])/i;
 
 /** The default `imageUrl`: allowed addresses (`PAGE_IMAGE`) as given, others left out. */
-const pageImageUrl = (src: string) => (PAGE_IMAGE.test(src) ? src : undefined);
+const pageImageUrl = (src: string) => (isPlainUrl(src) && PAGE_IMAGE.test(src) ? src : undefined);
 
 /**
  * The resume icons a view draws (service, metric and client icons, link cards' brands), for the caller to load before

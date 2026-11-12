@@ -17,11 +17,10 @@ export function useIntroBackground(): IntroBackground {
 	const src = background.image ? imageUrl(background.image.src) : undefined;
 	if (background.kind !== "image") return { "data-bg": background.kind };
 	if (!src) return { "data-bg": "plain" };
-	// The address goes into CSS inside quotes: encoded, and with no quote left to end the string early.
-	return {
-		"data-bg": "image",
-		style: vars({ "--pf-hero-image": `url("${encodeURI(src).replaceAll('"', "%22")}")` }),
-	};
+	// The address goes into CSS inside quotes: what could end the string or the declaration early (a quote, a backslash,
+	// a line break) is percent-encoded; the rest stays as given, so an address already encoded isn't encoded twice.
+	const safe = src.replace(/["\\\n\r\f]/g, (char) => encodeURIComponent(char));
+	return { "data-bg": "image", style: vars({ "--pf-hero-image": `url("${safe}")` }) };
 }
 
 /** Where the intro says the person is: the location's own label, else the resume's. */

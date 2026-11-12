@@ -57,7 +57,10 @@ describe("renderPortfolioPage (Lugas)", () => {
 		expect(html).toContain("Naik, perubahan baik:");
 		expect(html).toMatch(/Sebelum 2,1%/);
 		expect(html).toContain('class="pf-metric__chart"');
-		expect(html).toMatch(/role="img" aria-label="Progres: 80%"/);
+		// The bar reads as text: a `dd` takes no role.
+		expect(html).toContain(
+			'<dd class="pf-metric__progress"><i style="--w:80%"></i><span class="sr-only">Progres: 80%</span></dd>',
+		);
 		expect(html).toContain("3 months after launch");
 		// The work card's highlighted metric.
 		expect(html).toMatch(/<span class="pf-work-metric"><b>2,8%<\/b><span>Checkout conversion<\/span><\/span>/);
@@ -326,9 +329,18 @@ describe("renderPortfolioPage edge cases", () => {
 
 	it("draws dark and device-following modes", () => {
 		expect(render({ design: { scheme: "dark" } }).page.scheme).toBe("dark");
-		expect(render({ design: { scheme: "auto" } }).page.css).toContain(
-			'@media (prefers-color-scheme:dark){:root[data-pf-scheme="auto"]',
-		);
+		const { css } = render({ design: { scheme: "auto" } }).page;
+		expect(css).toContain('@media screen and (prefers-color-scheme:dark){:root[data-pf-scheme="auto"]');
+		// Dark is for screens: printed on white paper without backgrounds, every mode keeps the light tokens.
+		expect(css).toContain('@media screen{:root[data-pf-scheme="dark"]{color-scheme:dark;');
+		expect(css).not.toMatch(/(?:^|\n|\})[^@{}]*:root\[data-pf-scheme="dark"\]\{/);
+	});
+
+	it("prints without the navigation, form or picture viewer, and an open work's detail alone", () => {
+		const print = /@media print\{(.*)\}\n/.exec(render(fullData).page.css)?.[1] ?? "";
+		expect(print).toMatch(/\.pf-nav__links,\.pf-menu,\.pf-form,\.pf-lightbox[^{]*\{display:none!important\}/);
+		expect(print).toContain(".pf:has(>.pf-detail:target)>:not(.pf-detail:target)");
+		expect(print).toContain(".pf-detail{position:static!important");
 	});
 });
 
@@ -479,6 +491,11 @@ describe("renderPortfolioPage hardening", () => {
 		expect(linkAttributes("/\\evil.example.test")).toEqual({});
 		expect(linkAttributes("\\\\evil.example.test")).toEqual({});
 		expect(linkAttributes("data:text/html,hi")).toEqual({});
+		// Browsers drop tabs and line breaks anywhere and spaces in front, so these become `//host` and `javascript:`.
+		expect(linkAttributes("/\t/evil.example.test")).toEqual({});
+		expect(linkAttributes("/\n/evil.example.test")).toEqual({});
+		expect(linkAttributes(" //evil.example.test")).toEqual({});
+		expect(linkAttributes("java\tscript:alert(1)")).toEqual({});
 		expect(linkAttributes("#contact")).toEqual({ href: "#contact" });
 		expect(linkAttributes("mailto:nadia@example.test")).toEqual({ href: "mailto:nadia@example.test" });
 		expect(linkAttributes("https://example.test")).toMatchObject({ target: "_blank" });
@@ -502,6 +519,9 @@ describe("renderPortfolioPage hardening", () => {
 		expect(withPicture("/\\evil.example.test/me.png")).not.toContain("evil.example.test");
 		expect(withPicture("\\\\evil.example.test/me.png")).not.toContain("evil.example.test");
 		expect(withPicture("javascript:alert(1)")).not.toContain("javascript:");
+		expect(withPicture("/\t/evil.example.test/me.png")).not.toContain("evil.example.test");
+		expect(withPicture("da\tta:image/png,x")).not.toContain("image/png");
+		expect(withPicture(" data:image/png,x")).not.toContain("image/png");
 	});
 
 	it("keeps a Mozaik Contact whose only content is the place's name, so its buttons land", () => {

@@ -52,6 +52,23 @@ describe("resumeEntries", () => {
 		]);
 	});
 
+	it("skips roles that aren't objects, as older or imported data may hold", () => {
+		const item = {
+			id: "e1",
+			hidden: false,
+			company: "Tokopedia",
+			position: "Designer",
+			location: "",
+			period: "",
+			website: website(""),
+			description: "",
+			roles: [null, "Lead", { id: "r1", position: "Lead", period: "", description: "" }],
+		} as unknown as Items<"experience">[number];
+		expect(resumeEntries("experience", [item])[0]?.roles).toEqual([
+			{ id: "r1", title: "Lead", when: "", description: "" },
+		]);
+	});
+
 	it("reads a degree and its field as the title and the school under it, else the school alone", () => {
 		const school = {
 			hidden: false,

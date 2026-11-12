@@ -1,24 +1,13 @@
 import type { PortfolioPageMessages } from "../../messages";
+import type { SectionBodyStyle } from "../../shared/section-body";
 import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
-import type { ReactNode } from "react";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { HeroHeadline, HeroName } from "../../shared/hero-text";
 import { introLocation, IntroChips, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
-import { ServiceList, TestimonialList } from "../../shared/offers";
-import {
-	Buttons,
-	Clients,
-	Contact,
-	CustomSectionBody,
-	ExtraSection,
-	Picture,
-	Prose,
-	Section,
-	vars,
-} from "../../shared/parts";
-import { ResumeSectionBody } from "../../shared/resume";
+import { Buttons, ExtraSection, Picture, Section, vars } from "../../shared/parts";
+import { SectionBody } from "../../shared/section-body";
 import { EXTRA_KINDS, groupSections } from "../../shared/sections";
 import { Navigation, PageShell } from "../../shared/shell";
 
@@ -123,32 +112,17 @@ function WorkList({ works }: WorkListProps) {
 
 type SectionProps = { section: PortfolioViewSection };
 
-function SectionBody({ section }: SectionProps): ReactNode {
-	const { view } = useRender();
-	const variant = (key: Parameters<typeof themeVariant>[1]) => themeVariant("prima", key, view.design.variants[key]);
-	switch (section.kind) {
-		case "about":
-			return <Prose html={section.html} className="pr-lead" />;
-		case "work":
-			return <WorkList works={section.works} />;
-		case "services":
-			return <ServiceList section={section} className="pr-services" variant={variant("services")} />;
-		case "testimonials":
-			return <TestimonialList section={section} className="pr-quotes" variant={variant("testimonials")} />;
-		case "clients":
-			return <Clients section={section} variant={variant("clients")} />;
-		case "custom":
-			return <CustomSectionBody section={section} imageClassName="pr-custom__image" />;
-		case "contact":
-			return (
-				<div className="pr-contact" {...(section.contact.location ? { "data-loc": "" } : {})}>
-					<Contact section={section} ctaClassName="pr-cta" />
-				</div>
-			);
-		default:
-			return <ResumeSectionBody section={section} listClassName="pr-list" />;
-	}
-}
+const SECTION_STYLE: SectionBodyStyle = {
+	theme: "prima",
+	prefix: "pr",
+	work: (works) => <WorkList works={works} />,
+	resumeListClassName: "pr-list",
+	wrapContact: (body, section) => (
+		<div className="pr-contact" {...(section.contact.location ? { "data-loc": "" } : {})}>
+			{body}
+		</div>
+	),
+};
 
 /** One section as a Prima row: the serif title in a 220 px rail, the content beside it, a rule above. */
 function Row({ section }: SectionProps) {
@@ -159,7 +133,7 @@ function Row({ section }: SectionProps) {
 			className={`pf-section pr-row${section.kind === "custom" ? " pr-custom" : ""}`}
 		>
 			<div className="pr-row__body">
-				<SectionBody section={section} />
+				<SectionBody section={section} style={SECTION_STYLE} />
 			</div>
 		</Section>
 	);
@@ -200,7 +174,7 @@ export function PrimaPage({ year, creditUrl }: PrimaPageProps) {
 							<div className="pf-extras">
 								{group.map((section) => (
 									<ExtraSection key={section.key} section={section}>
-										<SectionBody section={section} />
+										<SectionBody section={section} style={SECTION_STYLE} />
 									</ExtraSection>
 								))}
 							</div>

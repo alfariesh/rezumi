@@ -320,7 +320,7 @@ describe("renderPortfolioPage (Mozaik)", () => {
 		expect(count(html, /class="mz-work__cap"/g)).toBe(view.works.length);
 		expect(html).toContain('<li class="mz-work" style="--c:1;--r:1;--ct:1;--rt:1" data-noimg="">');
 		expect(html).toMatch(/<li class="mz-more"[^>]*><a href="https:\/\/behance\.example\.test\/nadia"/);
-		expect(html).toContain("Lebih banyak di Behance");
+		expect(html).toContain("Selengkapnya di Behance");
 		expect(html).toMatch(/<span class="pf-work-metric"><b>2,8%<\/b><span>Checkout conversion<\/span><\/span>/);
 	});
 

@@ -21,7 +21,6 @@ export const MOZAIK_CSS = String.raw`
 .pf[data-theme="mozaik"] .mz-dot::before{inset-inline-start:8px;background:var(--pf-accent-soft);box-shadow:var(--mz-rim)}
 .pf[data-theme="mozaik"] .mz-dot::after{inset-inline-start:0;background:var(--pf-accent);box-shadow:var(--mz-rim)}
 .pf[data-theme="mozaik"] .pf-nav__links .pf-btn--primary{color:var(--pf-on-accent);min-height:40px;padding:.55em 1.1em}
-.pf[data-theme="mozaik"] .pf-nav__links a{white-space:nowrap}
 @media (max-width:900px){.pf[data-theme="mozaik"] .pf-nav__links li:has(>.pf-btn){display:none}}
 .pf[data-theme="mozaik"] .mz-main{display:grid;gap:clamp(48px,7vw,88px);padding-block:12px 40px}
 .pf[data-theme="mozaik"] .mz-main>*{min-width:0}

@@ -1,5 +1,6 @@
 import type { PortfolioViewBlock } from "../view";
 import { fillPortfolioMessage } from "../messages";
+import { formatMetricNumber } from "../metric";
 import { useRender } from "./context";
 import { ResumeIcon, UiIcon } from "./icons";
 import { hostOf, linkAttributes, Picture } from "./primitives";
@@ -49,17 +50,26 @@ export function VideoFacade({ block }: VideoFacadeProps) {
 	);
 }
 
-/** A file size as people read it, in the page's language: "2.4 MB", "820 kB". */
-function formatFileSize(bytes: number, locale: string): string {
-	const megabytes = bytes / 1_000_000;
-	const unit = megabytes >= 1 ? "megabyte" : "kilobyte";
-	const value = megabytes >= 1 ? megabytes : Math.max(1, Math.round(bytes / 1000));
+/**
+ * A file size as people read it, in the page's language: "2.4 MB", "820 kB". The unit follows the rounded size, so
+ * 999.6 kB reads "1 MB", not "1,000 kB".
+ */
+export function formatFileSize(bytes: number, locale: string): string {
+	const kilobytes = Math.max(1, Math.round(bytes / 1000));
+	const mega = kilobytes >= 1000;
+	const value = mega ? Math.round(bytes / 100_000) / 10 : kilobytes;
 	try {
-		return new Intl.NumberFormat(locale, { style: "unit", unit, maximumFractionDigits: 1 }).format(value);
+		return new Intl.NumberFormat(locale, {
+			style: "unit",
+			unit: mega ? "megabyte" : "kilobyte",
+			maximumFractionDigits: 1,
+		}).format(value);
 	} catch {
-		return `${value.toFixed(1)} ${megabytes >= 1 ? "MB" : "kB"}`;
+		return `${value} ${mega ? "MB" : "kB"}`;
 	}
 }
+
+const PLAIN = { format: "plain" } as const;
 
 type PdfCardProps = { block: PdfBlock };
 
@@ -68,8 +78,11 @@ type PdfCardProps = { block: PdfBlock };
  * the file in a new tab. The server sends it locked down (inline PDF only, sandboxed, never sniffed).
  */
 export function PdfCard({ block }: PdfCardProps) {
-	const { messages, locale } = useRender();
-	const pages = fillPortfolioMessage(messages.pages, { count: block.pages });
+	const { messages, locale, imageUrl } = useRender();
+	// The count in the page's digits, as the size beside it.
+	const pages = fillPortfolioMessage(messages.pages, { count: formatMetricNumber(block.pages, PLAIN, locale) });
+	// A stored file, held to the same addresses as the pictures beside it.
+	const href = imageUrl(block.href);
 	const details = ["PDF", pages, block.bytes ? formatFileSize(block.bytes, locale) : ""].filter(Boolean).join(" · ");
 	return (
 		<div className="pf-pdf">
@@ -83,18 +96,20 @@ export function PdfCard({ block }: PdfCardProps) {
 			<div className="pf-pdf__text">
 				{block.title && <b>{block.title}</b>}
 				<span>{details}</span>
-				<a
-					className="pf-btn pf-btn--secondary"
-					href={block.href}
-					target="_blank"
-					rel="noopener"
-					data-pf-event="document"
-					data-pf-block={block.id}
-				>
-					<UiIcon name="document" />
-					{messages.openPdf}
-					{block.title && <span className="sr-only">: {block.title}</span>}
-				</a>
+				{href && (
+					<a
+						className="pf-btn pf-btn--secondary"
+						href={href}
+						target="_blank"
+						rel="noopener"
+						data-pf-event="document"
+						data-pf-block={block.id}
+					>
+						<UiIcon name="document" />
+						{messages.openPdf}
+						{block.title && <span className="sr-only">: {block.title}</span>}
+					</a>
+				)}
 			</div>
 		</div>
 	);

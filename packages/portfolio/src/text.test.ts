@@ -35,6 +35,12 @@ describe("truncateText", () => {
 		expect(truncateText("Short", 24)).toBe("Short");
 	});
 
+	it("never cuts a letter as readers see it: an emoji sequence or an accent stays whole or goes", () => {
+		expect(truncateText("Halo 👩‍💻👩‍💻 dunia", 9)).toBe("Halo…");
+		expect(truncateText("Halo👩‍💻👩‍💻dunia", 9)).toBe("Halo…");
+		expect(truncateText("Café\u0301\u0301 bar baz", 6)).toBe("Caf…");
+	});
+
 	it("never splits a character made of two UTF-16 units", () => {
 		// Titles without spaces (Japanese, Chinese) are cut exactly at the limit.
 		const cut = truncateText(`${"日".repeat(98)}😀😀`, 100);

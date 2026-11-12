@@ -8,6 +8,16 @@ import { useRender } from "./context";
 const LINKABLE = /^(?:https?:\/\/|mailto:|tel:|#|\/(?![/\\]))/i;
 
 /**
+ * Whether a browser reads the address as written. Its URL parser drops a leading space or control character and every
+ * tab and line break anywhere, so `/\t/host` would become `//host` (another site) and `java\tscript:` a scheme after
+ * the checks here had passed it; such an address is refused instead.
+ */
+export function isPlainUrl(url: string): boolean {
+	// oxlint-disable-next-line no-control-regex -- these control characters are exactly what the check looks for.
+	return !/^[\0-\x20]|[\t\n\r]/.test(url);
+}
+
+/**
  * Attributes for a link: outside links open in a new tab and aren't credited by search engines (user content).
  * Anything else (`javascript:`, `data:`, `//host`, a bare word) gets no `href`, so it never becomes a link; the view
  * already makes every address safe, this keeps a slip from turning into one.
@@ -16,7 +26,7 @@ export function linkAttributes(
 	href: string,
 	options: { external?: boolean; me?: boolean } = {},
 ): AnchorHTMLAttributes<HTMLAnchorElement> {
-	if (!LINKABLE.test(href)) return {};
+	if (!isPlainUrl(href) || !LINKABLE.test(href)) return {};
 	const external = options.external ?? /^https?:/i.test(href);
 	if (!external) return { href };
 	return {

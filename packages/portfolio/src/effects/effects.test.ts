@@ -186,7 +186,8 @@ describe("intro effects", () => {
 	it("ships self-contained scripts: every name they read is their own or the browser's", () => {
 		for (const effect of SCRIPT_EFFECTS) {
 			const script = effectScript(effect);
-			expect(script).toMatch(/\(document\);$/);
+			// Called in a try, so an effect that fails can't stop the script after it.
+			expect(script).toMatch(/^try\{.*\(document\)\}catch\{\}$/s);
 			expect(script).not.toMatch(/\bimport\b|\brequire\(|<\/script/i);
 			expect(
 				freeNames(script).filter((name) => !GLOBALS.has(name)),
@@ -236,6 +237,15 @@ describe("intro effects", () => {
 			expect(Math.max(...delays), phrases.join("|").slice(0, 40)).toBeLessThanOrEqual(5000);
 			expect(delays.length).toBeGreaterThan(phrases.length);
 		}
+	});
+
+	it("shows Gradien hidup over a headline whose theme sets its colour (Paper, Mozaik)", () => {
+		// A theme's `color` on the headline outranks `[data-pfx]`; the text fill doesn't depend on it.
+		expect(EFFECT_CSS.gradient).toContain("-webkit-text-fill-color:transparent");
+		expect(EFFECT_CSS.gradient).not.toMatch(/[{;]color:transparent/);
+		expect(EFFECT_CSS.gradient).toContain(
+			'@media (forced-colors:active){[data-pfx="gradient"]{-webkit-text-fill-color:currentColor}}',
+		);
 	});
 
 	it("ends Kilau's sweep on the text's own colour, as it looks without motion", () => {

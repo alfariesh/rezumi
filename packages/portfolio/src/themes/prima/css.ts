@@ -19,7 +19,6 @@ export const PRIMA_CSS = String.raw`
 .pf[data-theme="prima"] .pr-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in oklab,var(--pf-bg) 92%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--pf-border)}
 .pf[data-theme="prima"] .pr-brand{font-size:1.125rem;font-weight:600;letter-spacing:-.005em}
 .pf[data-theme="prima"] .pf-nav__links{gap:22px}
-.pf[data-theme="prima"] .pf-nav__links a{white-space:nowrap}
 .pf[data-theme="prima"] .pf-nav__links .pr-head__cta a{min-height:38px;padding:.45em 1em;font-size:var(--pf-text-xs);color:var(--pf-on-accent)}
 @media (max-width:960px){.pf[data-theme="prima"] .pr-head__cta{display:none}}
 .pf[data-theme="prima"] .pr-hero{--pr-pad:0px;--pr-inner:calc(min(100vw - 32px,1160px) - 2 * var(--pr-pad));--pr-col:calc((var(--pr-inner) - clamp(32px,6vw,88px)) * .66);display:grid;gap:clamp(40px,6vw,64px);min-width:0;padding-block:clamp(40px,7vw,96px) clamp(40px,6vw,72px)}
@@ -60,9 +59,7 @@ export const PRIMA_CSS = String.raw`
 .pf[data-theme="prima"] .pr-row__body>.pr-list li span{color:var(--pf-muted);font-size:var(--pf-text-xs)}
 .pf[data-theme="prima"] .pr-list li a{text-underline-offset:3px}
 .pf[data-theme="prima"] .pr-lead{font-size:var(--pf-text-lg);line-height:1.6}
-.pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]{gap:0}
-.pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem{margin:0;padding:0;border:0}
-.pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem{position:relative;display:grid;grid-template-columns:150px 16px minmax(0,1fr);gap:4px 18px;padding-bottom:28px}
+.pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem{position:relative;display:grid;grid-template-columns:150px 16px minmax(0,1fr);gap:4px 18px;margin:0;padding:0 0 28px;border:0}
 .pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem:last-child{padding-bottom:0}
 .pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem>.pf-cvitem__head{display:contents}
 .pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem>.pf-cvitem__head>.pf-cvitem__when{grid-column:1;grid-row:1;padding-top:3px}

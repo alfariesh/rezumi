@@ -51,8 +51,11 @@ export function formatMetricNumber(value: number, metric: NumberFormat, locale: 
 				unitDisplay: "short",
 				maximumFractionDigits: 1,
 			}).format(value);
-		case "rating":
-			return `${numberFormat(locale, { maximumFractionDigits: 1 }).format(value)}/5`;
+		case "rating": {
+			// The scale's 5 in the same digits as the score: "٤٫٥/٥", not "٤٫٥/5".
+			const digits = numberFormat(locale, { maximumFractionDigits: 1 });
+			return `${digits.format(value)}/${digits.format(5)}`;
+		}
 		case "plain":
 			break;
 	}
@@ -73,16 +76,19 @@ export function formatMetricBefore(metric: PortfolioMetric, locale: string): str
 }
 
 /**
- * Bar lengths for before → after, as percentages of the larger value (at least 4%, so a tiny value still shows a
- * mark). Null when the metric has no before value or its values aren't comparable numbers.
+ * Bar lengths for before → after, as percentages along the range from zero (or the lower value, when one is below
+ * zero) to the larger value, at least 4% so a tiny value still shows a mark. The larger value always draws the longer
+ * bar: -20 → 10 grows, as the numbers do. Null when the metric has no before value or its values aren't comparable
+ * numbers.
  */
 export function beforeAfterBars(metric: PortfolioMetric): { before: number; after: number } | null {
 	if (metric.before === undefined || metric.value.kind !== "number") return null;
-	const before = Math.abs(metric.before);
-	const after = Math.abs(metric.value.number);
-	const largest = Math.max(before, after);
-	if (largest === 0) return { before: 4, after: 4 };
-	const share = (value: number) => Math.max(4, Math.round((value / largest) * 1000) / 10);
+	const before = metric.before;
+	const after = metric.value.number;
+	const low = Math.min(0, before, after);
+	const span = Math.max(0, before, after) - low;
+	if (span === 0) return { before: 4, after: 4 };
+	const share = (value: number) => Math.max(4, Math.round(((value - low) / span) * 1000) / 10);
 	return { before: share(before), after: share(after) };
 }
 

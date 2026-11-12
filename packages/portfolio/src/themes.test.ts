@@ -91,8 +91,10 @@ describe("shared and theme rules", () => {
 
 	it("draws the intro's backgrounds from one set of rules, each theme choosing its ground and shade", () => {
 		expect(BASE_CSS).toContain(
-			'[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.62),rgb(8 10 14/.7))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-text:#fff;',
+			'[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.62),rgb(8 10 14/.7))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-bg:#111;--pf-text:#fff;',
 		);
+		// The picture's area is dark in both modes: its ground is too, so a fill drawn in the page colour (Paper's primary
+		// button, white text on `--pf-bg`) stays readable on it.
 		expect(BASE_CSS).toContain("var(--pf-hero-ground,var(--pf-bg))}");
 		for (const css of [LUGAS_CSS, PRIMA_CSS, KANVAS_CSS, MOZAIK_CSS, PAPER_CSS, BRUTAL_CSS]) {
 			expect(css).toMatch(/\[data-bg\]:not\(\[data-bg="plain"\]\)\{[^}]*background:var\(--pf-hero-bg\)\}/);
@@ -107,8 +109,28 @@ describe("shared and theme rules", () => {
 		);
 	});
 
+	it("breaks a long word anywhere in every theme, so it never pushes the page sideways", () => {
+		expect(BASE_CSS).toContain(".pf{overflow-wrap:anywhere}");
+	});
+
+	it("keeps pictures still under the pointer for visitors who ask for less motion", () => {
+		expect(BASE_CSS).toMatch(
+			/@media \(prefers-reduced-motion:reduce\)\{[^\n]*\.pf :is\(:hover,:focus-visible\) img,[^{]*\{transform:none!important\}\}/,
+		);
+	});
+
+	it("ships the shared rules without their comments, and keeps an empty form status a live region", () => {
+		expect(BASE_CSS).not.toContain("/*");
+		expect(BASE_CSS).not.toContain(".pf-form__status:empty{display:none}");
+		expect(BASE_CSS).toContain(".pf-form__status:empty{position:absolute;");
+	});
+
 	it("keeps no rule that another one already makes, and no !important fight with the footer", () => {
 		expect(KANVAS_CSS).not.toContain(".pf-video .pf-cover");
+		expect(BASE_CSS).not.toMatch(/\.pf-lightbox(?:__btn)?\[hidden\]/);
+		expect(PRIMA_CSS).not.toContain(".pf-nav__links a{white-space:nowrap}");
+		expect(MOZAIK_CSS).not.toContain(".pf-nav__links a{white-space:nowrap}");
+		expect(PRIMA_CSS).not.toContain('.pf-cvlist[data-variant="timeline"]{gap:0}');
 		expect(KANVAS_CSS).not.toContain("clip:rect");
 		expect(LUGAS_CSS).not.toContain(".lg-stats .pf-metric__label{order:2");
 		expect(BASE_CSS).not.toMatch(/\.pf-badge\{[^}]*!important/);

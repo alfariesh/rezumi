@@ -74,13 +74,15 @@ const pageOptions: sanitizeHtml.IOptions = {
 	allowedAttributes: { a: ["href", "rel", "target"], ol: ["start"] },
 	transformTags: {
 		...options.transformTags,
-		// Links visitors follow leave the page in a new tab, and search engines don't credit them to Rezumi.
-		a: (tagName, attribs) => ({
-			tagName,
-			attribs: attribs.href?.startsWith("mailto:")
-				? { href: attribs.href }
-				: { href: attribs.href ?? "", rel: "ugc nofollow noopener noreferrer", target: "_blank" },
-		}),
+		// Links visitors follow leave the page in a new tab, and search engines don't credit them to Rezumi. Mail and
+		// places on this page open where they are; a link without an address stays plain text (no `href=""`, which would
+		// open the page itself in a new tab). The address is checked against the allowed schemes after this.
+		a: (tagName, attribs) => {
+			const href = attribs.href?.trim() ?? "";
+			if (!href) return { tagName, attribs: {} };
+			if (/^(?:mailto:|#)/i.test(href)) return { tagName, attribs: { href } };
+			return { tagName, attribs: { href, rel: "ugc nofollow noopener noreferrer", target: "_blank" } };
+		},
 	},
 };
 

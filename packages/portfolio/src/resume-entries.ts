@@ -92,12 +92,15 @@ const ENTRY_PARTS: { [K in ResumeEntryKind]: (item: EntryItems[K]) => EntryParts
 			when: text(item.period),
 			description: text(item.description),
 			url: urlOf(item),
-			roles: (Array.isArray(item.roles) ? item.roles : []).map((role) => ({
-				id: role.id,
-				title: text(role.position),
-				when: text(role.period),
-				description: text(role.description),
-			})),
+			// Older or imported data may hold anything in the list: only objects are roles.
+			roles: (Array.isArray(item.roles) ? item.roles : [])
+				.filter((role): role is NonNullable<typeof role> => !!role && typeof role === "object")
+				.map((role) => ({
+					id: role.id,
+					title: text(role.position),
+					when: text(role.period),
+					description: text(role.description),
+				})),
 		}),
 	education: (item) => {
 		const degree = [text(item.degree), text(item.area)].filter(Boolean).join(", ");

@@ -1,6 +1,6 @@
 /**
- * The fictional people of the portfolio themes (`01-desain.md` sections 5 and 14), one per theme, in English and
- * Indonesian: Nadia Rahmawati (Lugas), Anindya Dewi (Prima), Bayu Saputra (Kanvas) and Citra Maharani (Mozaik). Their
+ * The fictional people of the portfolio themes (`01-desain.md` sections 5 and 14), in English and Indonesian: Nadia
+ * Rahmawati (Lugas, Paper), Anindya Dewi (Prima), Bayu Saputra (Kanvas) and Citra Maharani (Mozaik, Brutal). Their
  * careers are the gallery's resume personas (`tooling/templates/personas`), their portfolios follow the Phase 00
  * mockups (`.agents/docs/plans/portfolio/mockups/<theme>.html`). Every name, company, client, testimonial, number and
  * link is made up. Pictures are the mockups' own drawings and photos (`mockups/img`); client logos and the sample PDFs
