@@ -15,7 +15,6 @@ import { on } from "node:events";
 import { isIP } from "node:net";
 import wasm from "@formepdf/core/pkg-web/forme_bg.wasm";
 import { init } from "@formepdf/core/worker";
-import resvgWasm from "@resvg/resvg-wasm/index_bg.wasm";
 import { Pool } from "pg";
 import { configureAgentStreamLifetime } from "@rezumi/api/features/agent/streams";
 import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
@@ -72,8 +71,9 @@ configurePortfolioVisitLifetime((promise) => {
 	store?.ctx.waitUntil(promise);
 });
 configurePortfolioPublicLimiter(() => requests.getStore()?.bindings.PORTFOLIO_PUBLIC_LIMITER);
-// Link-preview cards draw with resvg, whose WebAssembly ships beside the script.
-configureResvgWasm(resvgWasm);
+// Link-preview cards draw with resvg, whose WebAssembly ships beside the script. It loads when the first card is drawn:
+// imported at the top it counts toward the Worker's startup CPU limit, which the upload then failed.
+configureResvgWasm(() => import("@resvg/resvg-wasm/index_bg.wasm").then((module) => module.default));
 configurePortfolioAnalytics({
 	dataset: () => requests.getStore()?.bindings.PORTFOLIO_EVENTS,
 	sql: () => requests.getStore()?.bindings.ANALYTICS_SQL,
