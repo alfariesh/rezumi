@@ -9,7 +9,7 @@ export const EDITOR_MODES = ["write", "design", "check", "share"] as const;
 export type EditorMode = (typeof EDITOR_MODES)[number];
 
 /** The Download & history sheet's tabs; each entry point opens its own. */
-export type SheetTab = "download" | "history";
+type SheetTab = "download" | "history";
 
 export type CheckTab = "issues" | "match" | "writing";
 

@@ -333,7 +333,7 @@ export function KeptModes<M extends string>({ mode, children }: KeptModesProps<M
 	));
 }
 
-export type DockItem<M extends string> = {
+type DockItem<M extends string> = {
 	mode: M;
 	icon: IconName;
 	label: string;
