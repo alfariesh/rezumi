@@ -172,3 +172,96 @@ Changes made after looking:
 
 - **The editor preview's default card links (`#work-<slug>`) lead nowhere**, because no dialog exists any more. pf-web's preview draws `page: { kind: "work" }` when a work is open (contract 3.1). Clicking a card inside the inert preview is pf-web's to handle if wanted.
 - **The two Sintaks/Warta Open to work tests** belong to pf-themes. I left them failing rather than touching their files.
+
+## Integration (render side)
+
+### Done
+
+- **`themes.test.ts`:** `SINTAKS_CSS` and `WARTA_CSS` are now in `THEME_CSS`, and the intro-background check loops over all eight theme CSS files.
+- **Persona header comments** (`tooling/portfolio/persona.ts`, `previews.ts`): Raka (Sintaks) and Laras (Warta) are listed, and the comments say their portraits are illustrations, not photos.
+- **Visual matrix:** `portfolio:matrix --personas own --parts pages,details --lang en`.
+  - Eight themes × variants A/B/C/D × light/dark × 390/1440, plus each theme's first work page in A and D (RTL). That is 192 shots, and none scrolls sideways.
+  - Seen with my own eyes, at a readable size: Sintaks and Warta home and work pages in A, B, C and D, phone and desktop, light and dark. The other six themes were checked in the work-page round above.
+- **Fix: the metric change text keeps its own direction (`<bdi>` in `shared/metric.tsx`).** On RTL pages, "4× the site" used to read "the site ×4". This affects all eight themes.
+- **Reading time (Warta cover story):** the rule is sound, since `readingMinutes` counts the work's own text on the portfolio. The contradiction came from the persona: its highlighted metric "Average reading time 11:40" was the magazine's figure. In Laras' persona, "Shares in the first week" is now the card's highlight, and the time metric is labelled "Time spent on the magazine's story".
+- **Embeds:**
+  - Raka gained Loom and Figma embeds; he already had Google Slides.
+  - Laras already had Spotify and SoundCloud.
+  - Every provider renders inside Sintaks or Warta.
+- **Tooling:** `writePersonaPage` takes `background: "soft-gradient" | "pattern" | "image"` (`image` uses the first work's cover), so intro backgrounds can be drawn on demand.
+- **Checks:**
+  - `@rezumi/portfolio` typecheck passes, and 485/485 tests pass.
+  - `@rezumi/tooling` typecheck passes.
+  - Lint and format are clean on the changed files.
+
+### Second pass (after the limit reset)
+
+**Looked at, with my own eyes, in Chrome:**
+
+- **Intro backgrounds on Sintaks and Warta:** soft gradient, pattern and picture, light and dark, 1440 and 390 px.
+- **Embed close-ups in all eight themes:** Raka's Loom, Figma and Google Slides and Laras' Spotify, light at 1440 and dark at 390. SoundCloud, which uses the same audio-shape markup as Spotify, was seen earlier on Kanvas.
+- **The lock page:** light and dark, English and Arabic, with the wrong-password message.
+- **Chrome PDF prints:** Sintaks (dark) and Warta (light), home and work page.
+- **Matrix crops of Lugas, Prima, Kanvas, Mozaik, Paper and Brutal:**
+  - minimal at 390 light;
+  - long at 390 dark and 1440 light;
+  - RTL at 1440 dark and 390 light;
+  - the RTL work page at 390 dark.
+- **Sintaks and Warta** in all four variants, home and work page (first pass).
+
+**Fixed:**
+
+1. **Accent text over a picture intro was unreadable on light pictures.** Measured 1.8:1, for example Warta's kicker and "Open to …" line.
+   - The default picture shade is now `rgb(8 10 14/.7)` → `.78`, as Mozaik already used.
+   - Accent text over a picture is the dark accent mixed 45% with white, giving about 4.4:1 even on a white picture and 5:1 on the persona's.
+   - Affects every theme that draws a picture intro; no persona uses one, so the gallery pictures don't change.
+2. **"Open to work" and trend colours over a picture kept their light-mode tones.** Sintaks' chip text was almost invisible over a picture in light mode.
+   - `designCss` now emits `--pf-positive-dark` and `--pf-negative-dark`.
+   - `[data-bg="image"]` switches to them, as it already did for text and accent.
+3. **Printed primary buttons lost their fill.** Browsers drop backgrounds on paper, which made Warta's "Commission a story" white on white.
+   - Primary buttons and `.pf-chip--open` now keep their fill in print (`print-color-adjust: exact`).
+   - Checked on Warta's PDF.
+4. **RTL work cards: an English summary's full stop jumped to the line start** (Lugas, Brutal, Mozaik; the themes draw summaries as spans).
+   - The per-block direction rule now also covers `[class$="__title"]`, `[class$="__summary"]`, `[class$="__desc"]` and `[class$="__dek"]`.
+   - Checked on Lugas and Brutal RTL.
+5. **Lock page on an Arabic page: untranslated English sentences put their full stop at the start.**
+   - `h1`, `p` and `label` take their own direction there (`unicode-bidi: plaintext`).
+
+New assertions sit in `themes.test.ts` (fixes 1, 2 and 4), `page.test.tsx` (fix 3) and `gate.test.ts` (fix 5).
+
+**Tried and reverted:**
+
+- `overflow-wrap: break-word` on metric values, to stop Paper's narrow RTL stat cell splitting "مليون".
+- Arabic compact numbers join the digit and the word with a no-break space, so the value then overflowed into its neighbour, which is worse.
+- Values keep `anywhere`. A mid-word break of a long Arabic unit in a three-column phone strip is the remaining cosmetic issue.
+
+**Not regenerated:** gallery pictures. No theme's top of page changed:
+
+- the picture shade applies only to picture intros, which no persona uses;
+- the print rules apply only on paper;
+- the direction rule doesn't change left-to-right pages;
+- Laras' metric order sits below the fold.
+
+**Checks:**
+
+- `@rezumi/portfolio`: typecheck passes; 485/485 tests pass in 31 files.
+- `@rezumi/tooling`: typecheck passes.
+- `vp lint --deny-warnings` and `vp fmt --check`: clean on the 12 changed files.
+
+### Still open
+
+- **Arabic persona pages show untranslated interface strings,** for example "Pages:" and the lock page text. That is catalog work (`pnpm pdf:translations` and the Arabic `.po` file), not render code.
+- **Mozaik's long variant on a phone:** Save contact sits alone in the location tile, because Mozaik places Contact's parts in separate tiles. This is by design, and the button is labelled.
+
+### Superseded first-pass note (all items above were later done)
+
+- **Rendered but not looked at.** A scratch script rendered these into my scratchpad, and no page scrolled sideways, but I didn't review them by eye:
+  - Sintaks and Warta intro backgrounds (gradient, pattern, picture);
+  - embed close-ups in both themes;
+  - the lock page (light/dark, LTR/RTL);
+  - Chrome PDF prints of both new themes' home and work pages.
+
+  To redo: `writePersonaPage(..., { background })`, then `portfolio:preview --theme sintaks --persona raka --works`, and Chrome print.
+
+- **Gallery pictures weren't regenerated.** No top-of-page look changed: the `<bdi>` fix and the persona metric order sit below the fold.
+- **Arabic persona pages show the "Pages:" label in English next to Arabic digits** in the PDF card. This is a catalog translation gap, not a render bug.
