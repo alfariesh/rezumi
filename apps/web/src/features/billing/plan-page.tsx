@@ -16,7 +16,7 @@ import { creditCount, describeCreditEntry } from "./credits";
 import { PaymentHistorySection } from "./payment-history";
 import { PendingPaymentBanner } from "./pending-payment";
 import { getPlanName } from "./plan";
-import { isLiveSubscription, usePlanDates } from "./purchase";
+import { isLiveSubscription, isPaymentFailed, usePlanDates } from "./purchase";
 import { SubscriptionActions } from "./subscription-actions";
 import { PageHeader } from "@/components/layout/page-header";
 import { WidgetHeading, widgetActionClass } from "@/components/layout/widget-heading";
@@ -104,7 +104,7 @@ function YourPlanSection({ plan, formatDate }: YourPlanSectionProps) {
 	const pending = subscription?.pendingChange;
 	const activeUntil = !plan.currentPeriodEndsAt ? (
 		<Trans>No end date</Trans>
-	) : subscription?.status === "past_due" ? (
+	) : isPaymentFailed(subscription) ? (
 		<Trans>
 			The last payment didn't go through. Update your payment method to keep it; access is paused until then.
 		</Trans>
@@ -126,6 +126,8 @@ function YourPlanSection({ plan, formatDate }: YourPlanSectionProps) {
 		)
 	) : subscription ? (
 		<Trans>Cancelled; active until {formatDate(plan.currentPeriodEndsAt)}</Trans>
+	) : plan.paymentMethod === "qris" ? (
+		<Trans>Paid with QRIS; active until {formatDate(plan.currentPeriodEndsAt)}. It doesn't renew on its own.</Trans>
 	) : (
 		<Trans>Active until {formatDate(plan.currentPeriodEndsAt)}</Trans>
 	);

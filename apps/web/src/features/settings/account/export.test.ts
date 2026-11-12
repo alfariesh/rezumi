@@ -78,7 +78,7 @@ describe("buildAccountZip", () => {
 			applications: [{ id: "app-1", company: "Lumen", role: "Designer" }],
 			aiContentReports: [{ id: "report-1", content: "Unsafe generated content", reason: "dangerous" }],
 			billing: {
-				payments: [{ id: "pay-1", orderId: "RZ-pay-1", amount: 79_000, status: "paid", refunds: [] }],
+				payments: [{ id: "pay-1", providerPaymentId: "pay_1", amount: 79_000, status: "paid", refunds: [] }],
 				passes: [{ planId: "pro-ai", startsAt: "2026-09-29T00:00:00.000Z", endsAt: "2026-10-29T00:00:00.000Z" }],
 				creditGrants: [],
 				creditUsage: [],
@@ -136,7 +136,7 @@ describe("buildAccountZip", () => {
 		]);
 		// Payments, passes and credits sit in one file of records.
 		expect(JSON.parse(strFromU8(files["billing.json"] as Uint8Array))).toMatchObject({
-			payments: [{ orderId: "RZ-pay-1", status: "paid" }],
+			payments: [{ providerPaymentId: "pay_1", status: "paid" }],
 			passes: [{ planId: "pro-ai" }],
 		});
 		const career = JSON.parse(strFromU8(files["career.json"] as Uint8Array));

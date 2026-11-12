@@ -226,6 +226,19 @@ REST data responses use `Cache-Control: no-store`. Uploaded profile images are p
 
 Procedure limits apply in production. When you hit a limit, the API responds with `429`. On a self-hosted installation, `FLAG_DISABLE_API_RATE_LIMIT` turns off the per-key limit together with the sign-in limits; the procedure limits also turn off (see [Environment variables](/self-hosting/environment-variables)).
 
+## Rezumi AI and credits
+
+AI procedures and tools take an optional `aiSource`: `"rezumi"` runs on Rezumi AI and uses the account's credits (each tool's description gives its cost), `"own"` uses one of the account's own AI connections. Without `aiSource`, requests use your own connection; if Rezumi AI is the only one, they fail with `AI_SOURCE_REQUIRED` instead of using credits. Send a new `idempotencyKey` (any unique string up to 100 characters) per action and reuse it when retrying, so a retry doesn't use credits twice.
+
+AI requests can fail with these codes:
+
+| Code                    | Status | Meaning                                                            |
+| ----------------------- | -----: | ------------------------------------------------------------------ |
+| `INSUFFICIENT_CREDITS`  |    403 | Not enough Rezumi AI credits; `data` has `required` and `balance`. |
+| `AI_SOURCE_REQUIRED`    |    409 | Rezumi AI is the only connection and no `aiSource` was sent.       |
+| `REZUMI_AI_UNAVAILABLE` |    409 | Rezumi AI can't run this action right now.                         |
+| `AI_INPUT_TOO_LARGE`    |    413 | The input is longer than Rezumi AI accepts.                        |
+
 ## Errors
 
 Errors come back as JSON with a machine-readable `code`, the HTTP `status` and a `message`. Validation errors also include the failing fields in `data.issues`.

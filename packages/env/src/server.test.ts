@@ -17,13 +17,16 @@ beforeEach(() => {
 		"REDIS_URL",
 		"WEB_FONT_BASE_URL",
 		"STORAGE_HEALTHCHECK_TIMEOUT_MS",
-		"POLAR_ENVIRONMENT",
-		"POLAR_ACCESS_TOKEN",
-		"POLAR_WEBHOOK_SECRET",
-		"POLAR_PRODUCT_PLUS_MONTHLY",
-		"POLAR_PRODUCT_PLUS_YEARLY",
-		"POLAR_PRODUCT_PRO_AI_MONTHLY",
-		"POLAR_PRODUCT_PRO_AI_YEARLY",
+		"DODO_PAYMENTS_ENVIRONMENT",
+		"DODO_PAYMENTS_API_KEY",
+		"DODO_PAYMENTS_WEBHOOK_KEY",
+		"DODO_PAYMENTS_PRODUCT_PLUS_MONTHLY",
+		"DODO_PAYMENTS_PRODUCT_PLUS_YEARLY",
+		"DODO_PAYMENTS_PRODUCT_PRO_AI_MONTHLY",
+		"DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY",
+		"SUMOPOD_ENVIRONMENT",
+		"SUMOPOD_API_KEY",
+		"SUMOPOD_WEBHOOK_SECRET",
 		"BILLING_CHECKOUT_PAUSED",
 		"BILLING_ALERT_EMAIL",
 	])
@@ -207,58 +210,102 @@ describe("billing alert address", () => {
 	});
 });
 
-describe("Polar configuration", () => {
+describe("Dodo Payments configuration", () => {
 	const products = {
-		POLAR_PRODUCT_PLUS_MONTHLY: "1eed6e9a-623e-4773-9f35-dbec17a0a0d4",
-		POLAR_PRODUCT_PLUS_YEARLY: "1dd73112-6f2c-43f1-a546-48454c07a588",
-		POLAR_PRODUCT_PRO_AI_MONTHLY: "5e164955-b367-4f38-90ff-1f07715d8833",
-		POLAR_PRODUCT_PRO_AI_YEARLY: "1aa24a00-f999-49cc-b1c2-c21ebe69a917",
+		DODO_PAYMENTS_PRODUCT_PLUS_MONTHLY: "pdt_0NrbytD9Enu0PTffpt7KM",
+		DODO_PAYMENTS_PRODUCT_PLUS_YEARLY: "pdt_0NrbytGSj7f6FeVzY3YT1",
+		DODO_PAYMENTS_PRODUCT_PRO_AI_MONTHLY: "pdt_0NrbytKkgbAgXP4kJQEtp",
+		DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY: "pdt_0NrbytOIWHFnsqvo3Vzu1",
 	};
 
-	it("leaves Polar off and checkout open by default", async () => {
+	it("leaves Dodo Payments off and checkout open by default", async () => {
 		const { env } = await import("./server");
-		expect(env.POLAR_ACCESS_TOKEN).toBeUndefined();
-		expect(env.POLAR_ENVIRONMENT).toBeUndefined();
+		expect(env.DODO_PAYMENTS_API_KEY).toBeUndefined();
+		expect(env.DODO_PAYMENTS_ENVIRONMENT).toBeUndefined();
 		expect(env.BILLING_CHECKOUT_PAUSED).toBe(false);
 	});
 
-	it("accepts a token with its environment and all four products", async () => {
+	it("accepts a key with its mode and all four products", async () => {
 		for (const [name, value] of Object.entries(products)) vi.stubEnv(name, value);
-		vi.stubEnv("POLAR_ENVIRONMENT", "sandbox");
-		vi.stubEnv("POLAR_ACCESS_TOKEN", "polar_oat_test");
-		vi.stubEnv("POLAR_WEBHOOK_SECRET", "whsec_test");
+		vi.stubEnv("DODO_PAYMENTS_ENVIRONMENT", "test_mode");
+		vi.stubEnv("DODO_PAYMENTS_API_KEY", "test-key");
+		vi.stubEnv("DODO_PAYMENTS_WEBHOOK_KEY", "whsec_test");
 		const { env } = await import("./server");
-		expect(env.POLAR_ENVIRONMENT).toBe("sandbox");
-		expect(env.POLAR_PRODUCT_PRO_AI_YEARLY).toBe(products.POLAR_PRODUCT_PRO_AI_YEARLY);
+		expect(env.DODO_PAYMENTS_ENVIRONMENT).toBe("test_mode");
+		expect(env.DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY).toBe(products.DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY);
 	});
 
-	it("rejects a product id that isn't a UUID", async () => {
-		vi.stubEnv("POLAR_PRODUCT_PLUS_MONTHLY", "plus-monthly");
+	it("rejects a product id that isn't one of Dodo's", async () => {
+		vi.stubEnv("DODO_PAYMENTS_PRODUCT_PLUS_MONTHLY", "plus-monthly");
 		vi.spyOn(console, "error").mockImplementation(() => {});
 		await expect(import("./server")).rejects.toThrow("Invalid environment variables");
 	});
 
 	it.each([
-		[{ POLAR_ACCESS_TOKEN: "polar_oat_test", ...products }, "needs POLAR_ENVIRONMENT"],
+		[{ DODO_PAYMENTS_API_KEY: "test-key", ...products }, "needs DODO_PAYMENTS_ENVIRONMENT"],
 		[
-			{
-				POLAR_ACCESS_TOKEN: "polar_oat_test",
-				POLAR_ENVIRONMENT: "sandbox",
-				...products,
-				POLAR_PRODUCT_PRO_AI_YEARLY: "",
-			},
-			"needs all four POLAR_PRODUCT_*",
+			{ DODO_PAYMENTS_API_KEY: "dodo_test_abc", DODO_PAYMENTS_ENVIRONMENT: "live_mode", ...products },
+			"is a test key, but DODO_PAYMENTS_ENVIRONMENT is live_mode",
 		],
 		[
 			{
-				POLAR_ACCESS_TOKEN: "polar_oat_test",
-				POLAR_ENVIRONMENT: "production",
+				DODO_PAYMENTS_API_KEY: "test-key",
+				DODO_PAYMENTS_ENVIRONMENT: "test_mode",
 				...products,
-				POLAR_PRODUCT_PLUS_YEARLY: products.POLAR_PRODUCT_PLUS_MONTHLY,
+				DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY: "",
+			},
+			"needs all four DODO_PAYMENTS_PRODUCT_*",
+		],
+		[
+			{
+				DODO_PAYMENTS_API_KEY: "live-key",
+				DODO_PAYMENTS_ENVIRONMENT: "live_mode",
+				...products,
+				DODO_PAYMENTS_PRODUCT_PLUS_YEARLY: products.DODO_PAYMENTS_PRODUCT_PLUS_MONTHLY,
 			},
 			"must be a different product",
 		],
-		[{ POLAR_WEBHOOK_SECRET: "whsec_test" }, "without POLAR_ACCESS_TOKEN"],
+		[{ DODO_PAYMENTS_WEBHOOK_KEY: "whsec_test" }, "without DODO_PAYMENTS_API_KEY"],
+	])("refuses to start with an incomplete setup: %j", async (settings, message) => {
+		for (const [name, value] of Object.entries(settings)) vi.stubEnv(name, value);
+		await expect(import("./server")).rejects.toThrow(message);
+	});
+});
+
+describe("Sumopod configuration", () => {
+	it("leaves QRIS off by default", async () => {
+		const { env } = await import("./server");
+		expect(env.SUMOPOD_API_KEY).toBeUndefined();
+		expect(env.SUMOPOD_ENVIRONMENT).toBeUndefined();
+		expect(env.SUMOPOD_WEBHOOK_SECRET).toBeUndefined();
+	});
+
+	it("accepts a key with its mode and a webhook signing secret", async () => {
+		vi.stubEnv("SUMOPOD_ENVIRONMENT", "sandbox");
+		vi.stubEnv("SUMOPOD_API_KEY", "sandbox-key");
+		vi.stubEnv("SUMOPOD_WEBHOOK_SECRET", "whsec_dGVzdC1zZWNyZXQ=");
+		const { env } = await import("./server");
+		expect(env.SUMOPOD_ENVIRONMENT).toBe("sandbox");
+		expect(env.SUMOPOD_WEBHOOK_SECRET).toBe("whsec_dGVzdC1zZWNyZXQ=");
+	});
+
+	it.each(["sandbox-mode", "production"])("rejects the mode %s", async (mode) => {
+		vi.stubEnv("SUMOPOD_ENVIRONMENT", mode);
+		vi.spyOn(console, "error").mockImplementation(() => {});
+		await expect(import("./server")).rejects.toThrow("Invalid environment variables");
+	});
+
+	it("rejects a webhook token where the signing secret belongs", async () => {
+		vi.stubEnv("SUMOPOD_API_KEY", "sandbox-key");
+		vi.stubEnv("SUMOPOD_ENVIRONMENT", "sandbox");
+		vi.stubEnv("SUMOPOD_WEBHOOK_SECRET", "whtok_abc");
+		vi.spyOn(console, "error").mockImplementation(() => {});
+		await expect(import("./server")).rejects.toThrow("Invalid environment variables");
+	});
+
+	it.each([
+		[{ SUMOPOD_API_KEY: "sandbox-key" }, "needs SUMOPOD_ENVIRONMENT"],
+		[{ SUMOPOD_WEBHOOK_SECRET: "whsec_dGVzdA==" }, "without SUMOPOD_API_KEY"],
 	])("refuses to start with an incomplete setup: %j", async (settings, message) => {
 		for (const [name, value] of Object.entries(settings)) vi.stubEnv(name, value);
 		await expect(import("./server")).rejects.toThrow(message);

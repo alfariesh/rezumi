@@ -18,12 +18,15 @@ import { getPlanName } from "./plan";
 import {
 	formatPrice,
 	getReturnState,
+	hasInvoice,
+	hasReceipt,
 	intervalSuffix,
 	isOpenPayment,
 	isTrialStart,
 	priceLabel,
 	usePlanDates,
 } from "./purchase";
+import { ReceiptLink } from "./receipt-link";
 import { PageHeader } from "@/components/layout/page-header";
 import { orpc } from "@/libs/orpc/client";
 import { renderAsH2 } from "@/libs/typography";
@@ -74,7 +77,7 @@ function TrialResult({ payment, formatDate }: Omit<ResultProps, "state">) {
 					)}
 				</li>
 				<li className="text-muted">
-					<Trans>Polar emails you a reminder a few days before the first charge.</Trans>
+					<Trans>Dodo Payments emails you a reminder a few days before the first charge.</Trans>
 				</li>
 			</ul>
 			<div className="flex flex-wrap gap-2">
@@ -86,9 +89,53 @@ function TrialResult({ payment, formatDate }: Omit<ResultProps, "state">) {
 	);
 }
 
+/** A paid QRIS pass: when it runs (now, or after the current plan), its credits, and its receipt. */
+function PassResult({ payment, formatDate }: Omit<ResultProps, "state">) {
+	const plan = getPlanName(payment.planId);
+	// Waiting behind the current plan: it starts in the future. (Sumopod's paid time can be a little earlier than the
+	// moment the pass was granted, so it isn't the measure.) The time is read once, when the result first shows.
+	const [shownAt] = useState(() => Date.now());
+	const startsLater = payment.periodStart !== null && +payment.periodStart > shownAt;
+	return (
+		<ResultCard icon="check-circle" tone="bg-success/15 text-success" title={<Trans>Payment received</Trans>}>
+			<ul className="grid gap-1.5 text-sm">
+				<li>
+					{payment.periodStart && payment.periodEnd && startsLater ? (
+						<Trans>
+							{plan} starts on {formatDate(payment.periodStart)}, after your current plan, and runs until{" "}
+							{formatDate(payment.periodEnd)}.
+						</Trans>
+					) : payment.periodEnd ? (
+						<Trans>
+							{plan} is active until {formatDate(payment.periodEnd)}. It doesn't renew on its own.
+						</Trans>
+					) : (
+						<Trans>{plan} is active.</Trans>
+					)}
+				</li>
+				{payment.credits > 0 && (
+					<li>
+						<Trans>{creditCount(payment.credits)} added for Rezumi AI.</Trans>
+					</li>
+				)}
+				<li className="text-muted">
+					<Trans>We've emailed you the receipt. We'll remind you 3 days before the plan ends.</Trans>
+				</li>
+			</ul>
+			<div className="flex flex-wrap gap-2">
+				<Link to="/dashboard/settings/billing" className={buttonVariants()}>
+					<Trans>Go to your plan</Trans>
+				</Link>
+				{hasReceipt(payment) && <ReceiptLink paymentId={payment.id} variant="secondary" />}
+			</div>
+		</ResultCard>
+	);
+}
+
 function PaidResult({ payment, formatDate }: Omit<ResultProps, "state">) {
 	const plan = getPlanName(payment.planId);
 	if (isTrialStart(payment)) return <TrialResult payment={payment} formatDate={formatDate} />;
+	if (payment.method === "qris") return <PassResult payment={payment} formatDate={formatDate} />;
 	return (
 		<ResultCard icon="check-circle" tone="bg-success/15 text-success" title={<Trans>Payment received</Trans>}>
 			<ul className="grid gap-1.5 text-sm">
@@ -107,14 +154,14 @@ function PaidResult({ payment, formatDate }: Omit<ResultProps, "state">) {
 					</li>
 				)}
 				<li className="text-muted">
-					<Trans>Polar emails you the receipt, and your invoices are in billing.</Trans>
+					<Trans>Dodo Payments emails you the receipt, and your invoices are in billing.</Trans>
 				</li>
 			</ul>
 			<div className="flex flex-wrap gap-2">
 				<Link to="/dashboard/settings/billing" className={buttonVariants()}>
 					<Trans>Go to your plan</Trans>
 				</Link>
-				{payment.orderId && <InvoiceButton paymentId={payment.id} variant="secondary" />}
+				{hasInvoice(payment) && <InvoiceButton paymentId={payment.id} variant="secondary" />}
 			</div>
 		</ResultCard>
 	);
@@ -142,7 +189,11 @@ function WaitingResult({ payment, state, formatDate, polling, onCheckAgain, chec
 					</p>
 				) : (
 					<p className="text-muted">
-						{deadline ? (
+						{deadline && payment.method === "qris" ? (
+							<Trans>
+								If you've paid, this page updates by itself in a few seconds. The QRIS page stays open until {deadline}.
+							</Trans>
+						) : deadline ? (
 							<Trans>
 								If you've paid, this page updates by itself in a few seconds. The checkout stays open until {deadline}.
 							</Trans>
@@ -154,7 +205,7 @@ function WaitingResult({ payment, state, formatDate, polling, onCheckAgain, chec
 				{polling && (
 					<p role="status" className="flex items-center gap-2 text-muted">
 						<Spinner size="sm" color="current" aria-hidden />
-						<Trans>Checking with Polar…</Trans>
+						<Trans>Checking your payment…</Trans>
 					</p>
 				)}
 			</div>
@@ -166,7 +217,7 @@ function WaitingResult({ payment, state, formatDate, polling, onCheckAgain, chec
 				) : (
 					payment.redirectUrl && (
 						<a href={payment.redirectUrl} className={buttonVariants()}>
-							<Trans>Continue checkout</Trans>
+							{payment.method === "qris" ? <Trans>Continue paying</Trans> : <Trans>Continue checkout</Trans>}
 						</a>
 					)
 				)}
@@ -212,7 +263,11 @@ function ClosedResult({ payment, state }: Omit<ResultProps, "formatDate">) {
 			</p>
 			<div className="flex flex-wrap gap-2">
 				{refunded ? (
-					payment.orderId && <InvoiceButton paymentId={payment.id} variant="secondary" />
+					hasInvoice(payment) ? (
+						<InvoiceButton paymentId={payment.id} variant="secondary" />
+					) : (
+						hasReceipt(payment) && <ReceiptLink paymentId={payment.id} variant="secondary" />
+					)
 				) : (
 					<Link to="/dashboard/settings/billing" search={{ plan: payment.planId }} className={buttonVariants()}>
 						<Trans>Try again</Trans>
@@ -232,8 +287,8 @@ type PaymentReturnPageProps = {
 };
 
 /**
- * Where Polar sends the customer back after paying. Getting here only says the browser was redirected, so the page asks
- * the server, which checks with Polar: every 3 seconds for up to 2 minutes while the payment is open and the tab is
+ * Where the checkout sends the customer back after paying. Getting here only says the browser was redirected, so the
+ * page asks the server, which checks with Dodo Payments: every 3 seconds for up to 2 minutes while the payment is open and the tab is
  * visible, then on request. The webhook usually lands first.
  */
 export function PaymentReturnPage({ paymentId }: PaymentReturnPageProps) {

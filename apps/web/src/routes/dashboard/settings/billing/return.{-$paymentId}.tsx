@@ -2,9 +2,9 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { PaymentReturnPage } from "@/features/billing/payment-return";
 
 /**
- * Polar's success URL: `return/<payment id>?checkout_id=…`. The page asks the server about the payment in the path and
- * reads nothing from the query, which Polar also fills with a customer portal session: the query leaves the address
- * bar and the history at once, so it isn't shared or reopened from there.
+ * The checkout's return URL: `return/<payment id>`, to which Dodo Payments adds the payment's id, status and the
+ * customer's email. The page asks the server about the payment in the path and reads nothing from the query: the query
+ * leaves the address bar and the history at once, so it isn't shared or reopened from there.
  */
 export const Route = createFileRoute("/dashboard/settings/billing/return/{-$paymentId}")({
 	beforeLoad: ({ location, params }) => {

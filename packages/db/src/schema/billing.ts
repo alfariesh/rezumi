@@ -17,6 +17,10 @@ export const billingAccount = pg.pgTable("billing_account", {
 	trialGrantedAt: pg.timestamp("trial_granted_at", { withTimezone: true }),
 	// The app language at the last checkout, for emails sent later (the pass ending soon). Null until then.
 	locale: pg.text("locale"),
+	// The account's customer at Dodo Payments, made before its first checkout so every later checkout and the billing
+	// portal use the same one (not whichever customer shares its email). Gone with the account; its subscriptions keep
+	// their own copy.
+	providerCustomerId: pg.text("provider_customer_id").unique(),
 	createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 	updatedAt: pg
 		.timestamp("updated_at", { withTimezone: true })
@@ -25,14 +29,17 @@ export const billingAccount = pg.pgTable("billing_account", {
 		.$onUpdate(() => /* @__PURE__ */ new Date()),
 });
 
-/** `payment` is a 30-day pass bought before subscriptions; new paid access comes from `billing_subscription`. */
+/**
+ * `payment` is a prepaid pass someone paid for: a QRIS pass (Sumopod, 30 or 365 days), or a 30-day pass from before
+ * subscriptions. Card subscriptions don't make periods; they live in `billing_subscription`.
+ */
 export type MembershipPeriodSource = "payment" | "admin" | "promo";
 
 /**
- * One stretch of paid access granted outside a subscription: by an administrator, a promotion, or a 30-day pass bought
- * before subscriptions. An account's unrevoked periods never overlap: they queue one after another, higher plans first.
- * A revoked period is out of the schedule; one revoked while running ends at the moment it was revoked. A subscription
- * runs beside them, and the higher plan of the two applies.
+ * One stretch of paid access outside a subscription: a prepaid QRIS pass, an administrator's grant, a promotion, or a
+ * 30-day pass bought before subscriptions. An account's unrevoked periods never overlap: they queue one after another,
+ * higher plans first. A revoked period is out of the schedule; one revoked while running ends at the moment it was
+ * revoked. A subscription runs beside them, and the higher plan of the two applies.
  */
 export const membershipPeriod = pg.pgTable(
 	"membership_period",
@@ -104,7 +111,7 @@ export const aiCreditGrant = pg.pgTable(
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),
 		source: pg.text("source").notNull().$type<CreditSource>(),
-		// The Pro AI payment that bought them.
+		// The Pro AI payment that bought them: a subscription's charge, or a QRIS pass (one grant per pass per month).
 		paymentId: pg.text("payment_id").references((): pg.AnyPgColumn => billingPayment.id, { onDelete: "set null" }),
 		// The subscription they came with: one grant per subscription per month, whatever orders a plan change makes.
 		subscriptionId: pg
@@ -122,6 +129,11 @@ export const aiCreditGrant = pg.pgTable(
 		pg.index().on(t.userId, t.expiresAt),
 		pg.index().on(t.paymentId),
 		pg.uniqueIndex("ai_credit_grant_subscription_month").on(t.subscriptionId, t.expiresAt),
+		// A pass's month of credits, once: the billing job and the payment that starts the pass may both try.
+		pg
+			.uniqueIndex("ai_credit_grant_pass_month")
+			.on(t.paymentId, t.expiresAt)
+			.where(sql`${t.subscriptionId} is null and ${t.paymentId} is not null`),
 		pg.check("ai_credit_grant_amount_positive", sql`${t.amount} > 0`),
 		pg.check("ai_credit_grant_source", sql`${t.source} IN ('trial', 'plan', 'admin')`),
 		pg.check("ai_credit_grant_remaining_in_range", sql`${t.remaining} >= 0 AND ${t.remaining} <= ${t.amount}`),
@@ -173,16 +185,21 @@ export const aiCreditUsage = pg.pgTable(
 	],
 );
 
-/** Polar's subscription statuses, kept as Polar reports them. */
+/**
+ * Dodo Payments' subscription statuses, plus `trialing`: an active subscription still in its free trial (Dodo reports
+ * it as active). `pending` hasn't started; `on_hold` failed a charge and waits for a new payment method; `cancelled`,
+ * `failed` and `expired` are over.
+ */
 export const BILLING_SUBSCRIPTION_STATUSES = [
-	"incomplete",
-	"incomplete_expired",
+	"pending",
 	"trialing",
 	"active",
 	"past_due",
-	"canceled",
-	"unpaid",
+	"on_hold",
 	"paused",
+	"cancelled",
+	"failed",
+	"expired",
 ] as const;
 
 export type BillingSubscriptionStatus = (typeof BILLING_SUBSCRIPTION_STATUSES)[number];
@@ -190,11 +207,11 @@ export type BillingSubscriptionStatus = (typeof BILLING_SUBSCRIPTION_STATUSES)[n
 const statusList = (values: readonly string[]) => sql.raw(values.map((value) => `'${value}'`).join(", "));
 
 /**
- * A subscription at Polar, mirrored from its webhooks and status checks: the plan and interval its product stands for,
- * where it stands, and the period it is in. `paid_through` is the end of the last period an order paid for, so a renewal
- * that failed (past_due) stops access there. `provider_modified_at` keeps an older event from undoing a newer one;
- * Polar doesn't deliver webhooks in order. Kept, without its owner, after the account is deleted; the billing job
- * cancels one that was still running.
+ * A subscription at Dodo Payments, mirrored from its webhooks and status checks: the plan and interval its product
+ * stands for, where it stands, and the period it is in. `paid_through` is the end of the last period a payment paid for,
+ * so a renewal that failed (past_due, on_hold) stops access there. `provider_modified_at` is when that state was read
+ * from Dodo, which keeps an older read from undoing a newer one; webhooks don't arrive in order. Kept, without its
+ * owner, after the account is deleted; the billing job cancels one that was still running.
  */
 export const billingSubscription = pg.pgTable(
 	"billing_subscription",
@@ -205,9 +222,9 @@ export const billingSubscription = pg.pgTable(
 			.primaryKey()
 			.$defaultFn(() => generateId()),
 		userId: pg.text("user_id").references(() => user.id, { onDelete: "set null" }),
-		// The account it was bought for, kept as text after the account is gone: Polar knows the customer by it.
+		// The account it was bought for, kept as text after the account is gone.
 		externalCustomerId: pg.text("external_customer_id").notNull(),
-		provider: pg.text("provider").notNull().default("polar").$type<"polar">(),
+		provider: pg.text("provider").notNull().default("dodo").$type<"dodo" | "polar">(),
 		providerSubscriptionId: pg.text("provider_subscription_id").notNull().unique(),
 		providerCustomerId: pg.text("provider_customer_id"),
 		providerProductId: pg.text("provider_product_id").notNull(),
@@ -227,11 +244,11 @@ export const billingSubscription = pg.pgTable(
 		endedAt: pg.timestamp("ended_at", { withTimezone: true }),
 		// A plan or interval change scheduled for the next renewal (a downgrade), by product.
 		pendingProductId: pg.text("pending_product_id"),
-		// Polar's `modified_at` (or creation time) of the newest state applied.
+		// When the newest state applied was read from Dodo Payments.
 		providerModifiedAt: pg.timestamp("provider_modified_at", { withTimezone: true }).notNull(),
-		// When the billing job last asked Polar about it.
+		// When the billing job last asked Dodo Payments about it.
 		lastCheckedAt: pg.timestamp("last_checked_at", { withTimezone: true }),
-		// Set once the billing job revoked it at Polar because its account was deleted.
+		// Set once it was cancelled at Dodo Payments because its account was deleted.
 		revokedForDeletionAt: pg.timestamp("revoked_for_deletion_at", { withTimezone: true }),
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 		updatedAt: pg
@@ -262,13 +279,20 @@ export const BILLING_PAYMENT_STATUSES = [
 ] as const;
 
 /**
- * Where a payment stands. `creating` is committed before Polar's checkout is created; `pending` has a checkout page to
- * pay on (or an order Polar is still charging). Only Polar's own state moves it on from there, and `paid` never goes
- * back: only to a refund or a reversal (a lost card dispute, or a refund Polar made to prevent one).
+ * Where a payment stands. `creating` is committed before the checkout session is created; `pending` has a checkout page
+ * to pay on (or a payment Dodo Payments is still charging). Only the provider's own state moves it on from there, and
+ * `paid` never goes back: only to a refund or a reversal (a lost card dispute).
  */
 export type BillingPaymentStatus = (typeof BILLING_PAYMENT_STATUSES)[number];
 
-/** Why Polar made an order: a first purchase, a subscription's first payment, a renewal, or a plan change. */
+/** Who took a payment: Dodo Payments (cards), Sumopod (QRIS), or a provider used before them. */
+export type BillingPaymentProvider = "dodo" | "sumopod" | "polar" | "midtrans";
+
+/**
+ * Why a payment was made: a subscription's first payment, a renewal, or a plan change (Dodo's charge types new,
+ * renewal and plan_change). A QRIS pass is a `purchase` when it starts paid access or waits behind a higher plan,
+ * `subscription_cycle` when it adds time to the same plan, and `subscription_update` when it moves up from a lower one.
+ */
 export type BillingReason =
 	| "purchase"
 	| "subscription_create"
@@ -277,10 +301,10 @@ export type BillingReason =
 	| "subscription_meter_cycle";
 
 /**
- * Money for a plan: a checkout opened on the website (until it is paid), or one Polar order. A subscription's renewals
- * are orders without a checkout, so each adds a row. The plan, interval and catalog version are copied when the row is
- * made, so a later price change never touches it. Kept, without its owner, after the account is deleted: it is a
- * bookkeeping record. Rows from before Polar (30-day passes through Midtrans) keep `provider` midtrans.
+ * Money for a plan: a checkout opened on the website (until it is paid), or one payment at Dodo Payments. A
+ * subscription's renewals and plan changes are payments without a checkout, so each adds a row. The plan, interval and
+ * catalog version are copied when the row is made, so a later price change never touches it. Kept, without its owner,
+ * after the account is deleted: it is a bookkeeping record. Older rows keep their `provider` (polar, midtrans).
  */
 export const billingPayment = pg.pgTable(
 	"billing_payment",
@@ -291,18 +315,22 @@ export const billingPayment = pg.pgTable(
 			.primaryKey()
 			.$defaultFn(() => generateId()),
 		userId: pg.text("user_id").references(() => user.id, { onDelete: "set null" }),
-		provider: pg.text("provider").notNull().default("polar").$type<"polar" | "midtrans">(),
-		// The checkout session the customer pays on; null for renewals.
+		// dodo: a card subscription's payment; sumopod: a QRIS pass. Older rows keep polar or midtrans.
+		provider: pg.text("provider").notNull().default("dodo").$type<BillingPaymentProvider>(),
+		// The checkout the customer pays on: a Dodo checkout session, or a Sumopod payment link's payment id. Null for
+		// renewals.
 		providerCheckoutId: pg.text("provider_checkout_id").unique(),
-		// Polar's order, once there is one.
-		providerOrderId: pg.text("provider_order_id").unique(),
+		// The provider's payment once it is paid or charging: a Dodo payment id, or the Sumopod payment id once paid (a
+		// Polar order id on older rows, hence the column).
+		providerPaymentId: pg.text("provider_order_id").unique(),
 		// The key the checkout request carried; repeating it returns this payment instead of a second one.
 		idempotencyKey: pg.text("idempotency_key"),
 		subscriptionId: pg
 			.text("subscription_id")
 			.references((): pg.AnyPgColumn => billingSubscription.id, { onDelete: "set null" }),
 		planId: pg.text("plan_id").notNull().$type<PaidPlanId>(),
-		// Null on 30-day passes from before subscriptions.
+		// Monthly or yearly: a subscription's interval, or a QRIS pass's length (durationDays). Null on 30-day passes from
+		// before subscriptions.
 		interval: pg.text("interval").$type<BillingInterval>(),
 		catalogVersion: pg.integer("catalog_version").notNull(),
 		billingReason: pg.text("billing_reason").$type<BillingReason>(),
@@ -315,21 +343,22 @@ export const billingPayment = pg.pgTable(
 		currency: pg.text("currency").notNull().default("usd"),
 		// Rezumi AI credits it granted when it was paid.
 		credits: pg.integer("credits").notNull().default(0),
-		// The length of a 30-day pass from before subscriptions; null for subscriptions.
+		// How many days a prepaid pass lasts (a QRIS pass: 30 or 365; older passes: 30); null for subscriptions.
 		durationDays: pg.integer("duration_days"),
-		// The free trial its checkout offered, in days; null without one. Polar can still drop the trial for a customer
-		// who had one: the order then charges the full price, and a $0 order is the trial starting.
+		// The free trial its checkout offered, in days; null without one. A paid $0 payment is the trial starting (Dodo
+		// saves the card with a $0 authorization); the first charge is the renewal when the trial ends.
 		trialDays: pg.integer("trial_days"),
 		status: pg.text("status").notNull().$type<BillingPaymentStatus>(),
 		// Where it was bought: the website, for now.
 		channel: pg.text("channel").notNull().default("web").$type<"web">(),
-		// Polar's checkout page, to go back to after a refresh. Never logged.
+		// The checkout page, to go back to after a refresh. Never logged.
 		redirectUrl: pg.text("redirect_url"),
 		// When the checkout page closes.
 		expiresAt: pg.timestamp("expires_at", { withTimezone: true }),
-		// Polar's last status for it: the checkout's, then the order's.
+		// The provider's last status for it: the checkout's, then the payment's.
 		providerStatus: pg.text("provider_status"),
-		// The subscription period the order pays for.
+		// The subscription period the payment pays for, or where its pass was placed when it was paid (a later refund of
+		// an earlier pass can move it up).
 		periodStart: pg.timestamp("period_start", { withTimezone: true }),
 		periodEnd: pg.timestamp("period_end", { withTimezone: true }),
 		paidAt: pg.timestamp("paid_at", { withTimezone: true }),
@@ -372,9 +401,9 @@ export type BillingPaymentEventOutcome =
 	| "error";
 
 /**
- * Every Polar webhook and every status check that found something, with what it did. The record for support and
- * investigations: Workers keep only a sample of logs. `webhook_id` (Polar's `webhook-id` header) is unique, so a
- * redelivered event is recognized and skipped. `payload` holds an allowlist of safe fields.
+ * Every payment webhook and every status check that found something, with what it did. The record for support and
+ * investigations: Workers keep only a sample of logs. `webhook_id` (the `webhook-id` header of Standard Webhooks) is
+ * unique, so a redelivered event is recognized and skipped. `payload` holds an allowlist of safe fields.
  */
 export const billingPaymentEvent = pg.pgTable(
 	"billing_payment_event",
@@ -388,9 +417,9 @@ export const billingPaymentEvent = pg.pgTable(
 		subscriptionId: pg.text("subscription_id").references(() => billingSubscription.id, { onDelete: "set null" }),
 		// Webhooks only; a redelivery carries the same id.
 		webhookId: pg.text("webhook_id").unique(),
-		// For example order.paid or subscription.updated; `status_check` for the billing job's own look.
+		// For example payment.succeeded or subscription.renewed; `status_check` for the billing job's own look.
 		eventType: pg.text("event_type").notNull(),
-		// The Polar object the event is about (an order, subscription, checkout or refund id).
+		// The provider object the event is about (a payment, subscription, checkout session, refund or dispute id).
 		providerObjectId: pg.text("provider_object_id"),
 		source: pg.text("source").notNull().$type<BillingPaymentEventSource>(),
 		outcome: pg.text("outcome").notNull().$type<BillingPaymentEventOutcome>(),
@@ -405,18 +434,18 @@ export const billingPaymentEvent = pg.pgTable(
 	],
 );
 
-export type BillingRefundMethod = "polar" | "midtrans" | "manual";
+export type BillingRefundMethod = "dodo" | "polar" | "midtrans" | "manual";
 
 /**
- * `requesting`: saved before Polar is asked, and still there while Polar processes it (its `pending`). `succeeded`
- * once Polar confirmed the money went back; `failed` when it refused or canceled the refund.
+ * `requesting`: saved before Dodo Payments is asked, and still there while it processes or reviews the refund. `succeeded`
+ * once Dodo confirmed the money went back; `failed` when it refused the refund.
  */
 export type BillingRefundStatus = "requesting" | "succeeded" | "failed";
 
 /**
- * Money given back for a payment: through Polar's refund API from the admin page, or by Polar itself (from its
- * dashboard, or to prevent a dispute), picked up from its webhooks. The payment's `refunded_amount` is the sum of its
- * succeeded refunds. Kept after the account is deleted.
+ * Money given back for a payment: through Dodo Payments' refund API from the admin page, or from Dodo's dashboard,
+ * picked up from its webhooks. The payment's `refunded_amount` is the sum of its succeeded refunds. Kept after the
+ * account is deleted.
  */
 export const billingRefund = pg.pgTable(
 	"billing_refund",
@@ -432,7 +461,7 @@ export const billingRefund = pg.pgTable(
 			.references(() => billingPayment.id, { onDelete: "cascade" }),
 		// The payment's nth refund.
 		sequence: pg.integer("sequence").notNull(),
-		// Polar's refund id once Polar has one; before that, Rezumi's own key (RF-<payment id>-<sequence>).
+		// The provider's refund id once it has one; before that, Rezumi's own key (RF-<payment id>-<sequence>).
 		refundKey: pg.text("refund_key").notNull().unique(),
 		method: pg.text("method").notNull().$type<BillingRefundMethod>(),
 		status: pg.text("status").notNull().$type<BillingRefundStatus>(),
@@ -441,7 +470,7 @@ export const billingRefund = pg.pgTable(
 		reason: pg.text("reason").notNull(),
 		// Whether the admin also took the plan's access and credits back.
 		revokeBenefits: pg.boolean("revoke_benefits").notNull().default(false),
-		// The admin who asked; null for one Polar made.
+		// The admin who asked; null for one made at the provider.
 		actorUserId: pg.text("actor_user_id").references(() => user.id, { onDelete: "set null" }),
 		// A short code that is safe to show: why it failed.
 		failureReason: pg.text("failure_reason"),
@@ -457,7 +486,7 @@ export const billingRefund = pg.pgTable(
 		pg.uniqueIndex().on(t.paymentId, t.sequence),
 		pg.index().on(t.status, t.createdAt),
 		pg.check("billing_refund_amount_positive", sql`${t.amount} > 0`),
-		pg.check("billing_refund_method", sql`${t.method} IN ('polar', 'midtrans', 'manual')`),
+		pg.check("billing_refund_method", sql`${t.method} IN ('dodo', 'polar', 'midtrans', 'manual')`),
 		pg.check("billing_refund_status", sql`${t.status} IN ('requesting', 'succeeded', 'failed')`),
 	],
 );

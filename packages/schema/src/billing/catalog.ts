@@ -23,22 +23,49 @@ export const billingIntervalSchema = z.enum(BILLING_INTERVALS);
 export type BillingInterval = z.infer<typeof billingIntervalSchema>;
 
 /**
- * The currencies prices are set in (Polar's lowercase codes). Visitors from Indonesia pay in Rupiah; everyone else in
- * US dollars, the default.
+ * The currencies prices are set in (lowercase ISO codes). Each belongs to one way of paying (PAYMENT_METHOD_CURRENCY):
+ * US dollars by card, Rupiah (a fixed price, not a conversion) by QRIS in Indonesia.
  */
 export const BILLING_CURRENCIES = ["usd", "idr"] as const;
 export const billingCurrencySchema = z.enum(BILLING_CURRENCIES);
 export type BillingCurrency = z.infer<typeof billingCurrencySchema>;
 export const DEFAULT_BILLING_CURRENCY: BillingCurrency = "usd";
 
-/** The currency a visitor from a country (ISO 3166 alpha-2, as Cloudflare's CF-IPCountry gives it) is charged in. */
+/**
+ * How a plan is paid for. `card`: a subscription through Dodo Payments (the merchant of record), in US dollars, that
+ * renews on its own and may start with a free trial. `qris`: a prepaid pass through Sumopod's QRIS, in Rupiah, for
+ * Indonesia only: it lasts PASS_DAYS and doesn't renew; paying again adds the time after the current pass.
+ */
+export const PAYMENT_METHODS = ["card", "qris"] as const;
+export const paymentMethodSchema = z.enum(PAYMENT_METHODS);
+export type PaymentMethod = z.infer<typeof paymentMethodSchema>;
+
+/** The currency each way of paying charges in. */
+export const PAYMENT_METHOD_CURRENCY = { card: "usd", qris: "idr" } as const satisfies Record<
+	PaymentMethod,
+	BillingCurrency
+>;
+
+/** Whether a visitor's country (ISO 3166 alpha-2, as Cloudflare's CF-IPCountry gives it) is Indonesia. */
+export const isIndonesia = (country: string | null | undefined) => country?.trim().toUpperCase() === "ID";
+
+/**
+ * The ways a visitor from a country can start paying, the default first (owner decision 2026-11-10): QRIS in Rupiah
+ * from Indonesia, with a card in US dollars as the other choice; a card everywhere else. Nobody outside Indonesia is
+ * offered Rupiah prices.
+ */
+export function paymentMethodsForCountry(country: string | null | undefined): PaymentMethod[] {
+	return isIndonesia(country) ? ["qris", "card"] : ["card"];
+}
+
+/** The currency a visitor from a country is shown first: its default way of paying's. */
 export function currencyForCountry(country: string | null | undefined): BillingCurrency {
-	return country?.trim().toUpperCase() === "ID" ? "idr" : DEFAULT_BILLING_CURRENCY;
+	return isIndonesia(country) ? PAYMENT_METHOD_CURRENCY.qris : PAYMENT_METHOD_CURRENCY.card;
 }
 
 /**
- * Amounts are integers in the currency's smallest unit, as Polar takes them: US cents, and for the Rupiah also two
- * decimals (Rp59.000 is 5_900_000; checked on Polar's sandbox checkout, 2026-11-05).
+ * Amounts are integers in the currency's smallest unit: US cents, and for the Rupiah also two decimals (Rp29.000 is
+ * 2_900_000), as Dodo Payments takes them. Sumopod takes whole Rupiah; its client divides.
  */
 export const CURRENCY_DECIMALS: Record<BillingCurrency, number> = { usd: 2, idr: 2 };
 
@@ -84,7 +111,10 @@ export type PlanLimits = {
 	portfolioStorageBytes: number;
 };
 
-/** A paid plan's price per renewal, in each currency's smallest unit. Prices include tax where tax is inclusive. */
+/**
+ * A paid plan's price per renewal (a card subscription, in US dollars) or per pass (QRIS, in Rupiah), in each
+ * currency's smallest unit. PRICES_INCLUDE_TAX says which include tax.
+ */
 export type PlanPrices = Record<BillingInterval, Record<BillingCurrency, number>>;
 
 export type PlanDefinition = {
@@ -98,19 +128,28 @@ export type PlanDefinition = {
 	/** Rezumi AI credits granted for each month of the plan, yearly subscriptions included; they don't roll over. */
 	creditsPerMonth: number;
 	/**
-	 * Free days before the first charge of an account's first subscription to this plan (a card is still taken at
-	 * checkout); null for none. Plan changes into a plan without one end a running trial.
+	 * Free days before the first charge of an account's first card subscription to this plan (a card is still taken
+	 * at checkout); null for none. Plan changes into a plan without one end a running trial. QRIS passes never have one
+	 * (owner decision 2026-11-10).
 	 */
 	trialDays: number | null;
 };
 
-export const BILLING_CATALOG_VERSION = 7;
+export const BILLING_CATALOG_VERSION = 8;
 
 /**
- * Prices are before tax: Polar adds the tax for the buyer's location at checkout and on every renewal. Polar's
- * "Default tax behavior" (or each price's) must be Exclusive to match; the apps say so next to prices.
+ * Whether a currency's prices already include tax. US-dollar prices are before tax: Dodo Payments adds the tax for the
+ * buyer's location at checkout and on every renewal (each product's price has "tax inclusive" off to match). Rupiah
+ * prices are final: QRIS passes are sold by the owner as an individual who isn't VAT-registered, so nothing is added.
+ * The apps say which next to prices.
  */
-export const BILLING_PRICES_INCLUDE_TAX = false;
+export const PRICES_INCLUDE_TAX: Record<BillingCurrency, boolean> = { usd: false, idr: true };
+
+/**
+ * How many days one QRIS pass lasts. A pass isn't a calendar month: it is a fixed length, so passes can queue one after
+ * another (a higher plan pauses a lower one) without losing a day.
+ */
+export const PASS_DAYS: Record<BillingInterval, number> = { month: 30, year: 365 };
 
 /**
  * The templates on the free plan: seven one-column, ATS-safe layouts and one two-column. Meridian comes first: an
@@ -270,9 +309,10 @@ export const PLANS = {
 	plus: {
 		id: "plus",
 		rank: 1,
+		// US dollars by card (before tax); Rupiah by QRIS (final): Rp29.000 for 30 days, Rp249.000 for 365.
 		prices: {
-			month: { usd: 499, idr: 5_900_000 },
-			year: { usd: 3_900, idr: 45_900_000 },
+			month: { usd: 499, idr: 2_900_000 },
+			year: { usd: 3_900, idr: 24_900_000 },
 		},
 		limits: { activeResumes: 50, activeCoverLetters: 50, ...paidPortfolioLimits },
 		features: paidFeatures,
@@ -282,9 +322,10 @@ export const PLANS = {
 	"pro-ai": {
 		id: "pro-ai",
 		rank: 2,
+		// Rp59.000 for 30 days, Rp499.000 for 365 by QRIS.
 		prices: {
-			month: { usd: 999, idr: 12_900_000 },
-			year: { usd: 7_900, idr: 99_900_000 },
+			month: { usd: 999, idr: 5_900_000 },
+			year: { usd: 7_900, idr: 49_900_000 },
 		},
 		limits: { activeResumes: 50, activeCoverLetters: 50, ...paidPortfolioLimits },
 		features: paidFeatures,
@@ -301,7 +342,7 @@ export function isPaidPlan(id: PlanId): id is PaidPlanId {
 	return PLANS[id].prices !== null;
 }
 
-/** What one renewal of a paid plan costs, in the currency's smallest unit. */
+/** What one renewal (or one QRIS pass) of a paid plan costs, in the currency's smallest unit. */
 export function planPrice(planId: PaidPlanId, interval: BillingInterval, currency: BillingCurrency): number {
 	return PLANS[planId].prices[interval][currency];
 }

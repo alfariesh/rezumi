@@ -40,9 +40,11 @@ const paidAt = new Date("2026-11-03T01:10:00Z");
 
 const payment = (patch: Partial<PaymentDetail>): PaymentDetail => ({
 	id: ID,
-	orderId: null,
+	method: "card",
+	providerPaymentId: null,
 	planId: "pro-ai",
 	interval: "month",
+	durationDays: null,
 	billingReason: "subscription_create",
 	amount: 999,
 	taxAmount: 0,
@@ -56,7 +58,7 @@ const payment = (patch: Partial<PaymentDetail>): PaymentDetail => ({
 	periodStart: null,
 	periodEnd: null,
 	refundedAmount: 0,
-	redirectUrl: "https://sandbox.polar.sh/checkout/polar_c_test",
+	redirectUrl: "https://test.checkout.dodopayments.com/session/cks_test",
 	trialDays: null,
 	...patch,
 });
@@ -65,7 +67,7 @@ const paid = (patch: Partial<PaymentDetail> = {}) =>
 	payment({
 		status: "paid",
 		paidAt,
-		orderId: "order_1",
+		providerPaymentId: "pay_1",
 		credits: 100,
 		redirectUrl: null,
 		periodStart: paidAt,
@@ -83,7 +85,7 @@ function renderPage(paymentId: string | null = ID) {
 	);
 }
 
-describe("returning from Polar", () => {
+describe("returning from the checkout", () => {
 	// A fresh mock per test: mockReset() leaves a rejecting implementation reported as an unhandled error.
 	beforeEach(() => {
 		api.payment = vi.fn();
@@ -115,6 +117,45 @@ describe("returning from Polar", () => {
 		expect(screen.queryByText("Payment received")).toBeNull();
 	});
 
+	it("shows a paid QRIS pass: until when, that it doesn't renew, and Rezumi's receipt", async () => {
+		api.payment.mockResolvedValue(
+			paid({
+				method: "qris",
+				durationDays: 30,
+				billingReason: "purchase",
+				amount: 5_900_000,
+				totalAmount: 5_900_000,
+				currency: "idr",
+				providerPaymentId: "6f1c2a4e-0000-4000-8000-000000000001",
+			}),
+		);
+		renderPage();
+		expect(await screen.findByText("Payment received")).toBeTruthy();
+		expect(screen.getByText(/Pro AI is active until December 3, 2026.*It doesn't renew on its own/)).toBeTruthy();
+		expect(screen.getByRole("link", { name: "Receipt" }).getAttribute("href")).toBe(
+			`/dashboard/settings/billing/receipt/${ID}`,
+		);
+		expect(screen.queryByRole("button", { name: "Invoice" })).toBeNull();
+	});
+
+	it("says when a QRIS pass bought for later starts", async () => {
+		// Queued behind the current plan: it starts in the future.
+		const later = new Date(Date.now() + 10 * 86_400_000);
+		api.payment.mockResolvedValue(
+			paid({
+				method: "qris",
+				planId: "plus",
+				credits: 0,
+				durationDays: 30,
+				currency: "idr",
+				periodStart: later,
+				periodEnd: new Date(+later + 30 * 86_400_000),
+			}),
+		);
+		renderPage();
+		expect(await screen.findByText(/Plus starts on .*after your current plan/)).toBeTruthy();
+	});
+
 	it("leaves the credits line out for Plus", async () => {
 		api.payment.mockResolvedValue(paid({ planId: "plus", credits: 0 }));
 		renderPage();
@@ -122,7 +163,7 @@ describe("returning from Polar", () => {
 		expect(screen.queryByText(/added for Rezumi AI/)).toBeNull();
 	});
 
-	it("waits for an open checkout, with the way back to Polar, and turns paid by itself", async () => {
+	it("waits for an open checkout, with the way back to the checkout, and turns paid by itself", async () => {
 		api.payment.mockResolvedValueOnce(payment({}));
 		api.payment.mockResolvedValue(paid());
 		vi.useFakeTimers({ shouldAdvanceTime: true });
@@ -130,7 +171,7 @@ describe("returning from Polar", () => {
 			renderPage();
 			expect(await screen.findByText("Waiting for your payment")).toBeTruthy();
 			expect(screen.getByRole("link", { name: "Continue checkout" }).getAttribute("href")).toContain(
-				"sandbox.polar.sh",
+				"test.checkout.dodopayments.com",
 			);
 			expect(screen.getByText(/The checkout stays open until/)).toBeTruthy();
 			await vi.advanceTimersByTimeAsync(3500);

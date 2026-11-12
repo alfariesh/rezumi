@@ -2,7 +2,7 @@
 
 Dokumen acuan teknis untuk semua phase. Aturan bisnis (harga, isi paket, kebijakan) ada di [00-keputusan-produk.md](00-keputusan-produk.md); dokumen ini menjelaskan cara membangunnya.
 
-Jika kode, script, atau konfigurasi berbeda dengan dokumen ini, ikuti kode dan konfigurasi (aturan `CLAUDE.md`), lalu catat perbedaannya di laporan phase dan perbarui bagian yang relevan di sini. **Sejak 2026-11-05 pembayaran memakai Polar** ([phase-12-polar.md](phase-12-polar.md)); fakta Polar diverifikasi ulang lewat MCP docs Polar (`search_docs`/`read_docs_page`) atau `https://polar.sh/docs/llms.txt` setiap kali menyentuh kode pembayaran; dokumen resmi menang atas dokumen ini. Bagian yang masih menyebut Midtrans adalah sejarah Phase 06–09.
+Jika kode, script, atau konfigurasi berbeda dengan dokumen ini, ikuti kode dan konfigurasi (aturan `CLAUDE.md`), lalu catat perbedaannya di laporan phase dan perbarui bagian yang relevan di sini. **Sejak 2026-11-10 pembayaran memakai Dodo Payments** ([phase-13-dodo.md](phase-13-dodo.md), dengan tabel pemetaan Polar → Dodo): baca setiap "Polar" di bawah sebagai Dodo Payments, "order" sebagai payment, dan `providerOrderId` sebagai `providerPaymentId`; aturan langganan, kredit, dan akses tidak berubah. Sebelumnya, **sejak 2026-11-05 pembayaran memakai Polar** ([phase-12-polar.md](phase-12-polar.md)); fakta Polar diverifikasi ulang lewat MCP docs Polar (`search_docs`/`read_docs_page`) atau `https://polar.sh/docs/llms.txt` setiap kali menyentuh kode pembayaran; dokumen resmi menang atas dokumen ini. Bagian yang masih menyebut Midtrans adalah sejarah Phase 06–09.
 
 ## 1. Gambaran besar
 
@@ -592,3 +592,54 @@ Saat checkout: user id (sebagai `external_customer_id`), email dan nama akun, IP
 | Browser E2E         | `tests/e2e/specs/billing.spec.ts`: prosedur dijawab di browser, checkout Polar distub, halaman kembali menunggu lalu lunas, paket diperpanjang, tombol tagihan dan invoice                                                                                                                                                                                                                                                                                                                                                       |
 
 Tes yang `--passWithNoTests` dan lolos tanpa tes tidak membuktikan apa pun; laporkan jumlah tes yang benar-benar berjalan.
+
+## 13. QRIS Indonesia lewat Sumopod (Phase 14)
+
+Dua penyedia berdampingan; mata uang menentukan penyedia: **`usd` = kartu = Dodo** (langganan, `billing_subscription`), **`idr` =
+QRIS = Sumopod** (paket prabayar, `membership_period` dengan `source = 'payment'`). Detail keputusan: [Phase 14](phase-14-qris-sumopod.md).
+
+**Aturan rute** (`paymentOptions` di `checkout.ts`, dipakai `billing.summary` dan `billing.checkout`):
+
+1. Langganan kartu hidup (`LIVE_SUBSCRIPTION_STATUSES`) → `{ methods: ["card"], current: "card" }`; `checkout` menolak `CONFLICT`
+   (pakai `changePlan`).
+2. Paket QRIS berjalan/menunggu (`hasQrisPass`: periode `source = payment` yang belum dicabut dan belum berakhir, pembayarannya
+   `provider = sumopod`) → `{ methods: ["qris"], current: "qris" }`, dari negara mana pun.
+3. Selain itu negara `CF-IPCountry`: `ID` → `["qris", "card"]`, lainnya → `["card"]` (`paymentMethodsForCountry`).
+4. Penyedia tanpa konfigurasi dibuang dari daftar; daftar kosong = `purchaseBlockedBy: "unavailable"`.
+
+`summary.currency` = mata uang metode pertama (kompatibel dengan app lama); `summary.paymentMethods`/`paymentMethod` baru.
+`trialAvailable` hanya bila `card` ada di daftar. `checkout({ method? })`: metode yang tidak ada di daftar → `BAD_REQUEST`.
+
+**Alur QRIS:**
+
+```text
+billing.checkout(method qris) → baris billing_payment (provider sumopod, creating, amount Rupiah ×100, duration_days 30/365)
+  → POST api-pay[-sandbox].sumopod.com/api/v1/payments (order_id RZ-<payment id>, amount Rupiah utuh, expires 1 jam,
+    alamat kembali hanya bila APP_URL https)
+  → provider_checkout_id = payment_id Sumopod, redirect_url = pay.sumopod.com/pay/<id>, status pending
+Pembeli scan QRIS → Sumopod → webhook payment.completed (Svix) → applySumopodPayment (satu transaksi, kunci akun + baris):
+  nominal < harga → tidak diberikan, failure_reason amount_mismatch, alert needs_review
+  paid pertama → fulfilPass: grantMembershipPeriod (antrean timeline.ts) + kredit bulan berjalan Pro AI (grantPassMonth)
+               → billing_reason purchase | subscription_cycle (tambah plan sama) | subscription_update (upgrade)
+               → billing_notification receipt:<payment id> (email bukti bayar dari job)
+runBillingJobs: reconcileQrisPayments (Sumopod tidak punya API status: link tak dibuat → failed, link tutup + 30 menit → expired),
+                grantPassCredits (bulan berikut paket tahunan, paket Pro AI yang mulai setelah antre)
+Refund: admin.refund pada pembayaran sumopod → recordQrisRefund (method manual, langsung succeeded; penuh → revokePass)
+```
+
+- `provider_checkout_id` dan `provider_order_id` (kolom `providerPaymentId`) sama-sama berisi `payment_id` Sumopod; yang kedua baru
+  diisi saat lunas, sehingga logika "checkout belum dibayar" (`providerPaymentId IS NULL`) tetap sama untuk kedua penyedia.
+- Kredit paket: `ai_credit_grant` dengan `payment_id` dan `subscription_id NULL`; indeks unik parsial
+  `ai_credit_grant_pass_month (payment_id, expires_at)` menjamin satu grant per bulan paket. Bulan = `creditMonth` atas periode
+  paket (30 hari = satu bulan; 365 hari = bulan kalender, yang terakhir berakhir di akhir paket). Pro AI tidak pernah terdorong
+  oleh paket lain (peringkat tertinggi), jadi periodenya satu baris.
+- Pengingat H-3 (`queueExpiryReminders`) sudah mencakup periode; teks membedakan paket QRIS (bisa diperpanjang dengan QRIS) dari
+  akses pemberian admin.
+- Laporan: `sales.byMethod` (card/qris), `passes.active` (akun dengan paket QRIS berjalan), CSV kolom `penyedia`, `id_pembayaran`,
+  `no_pesanan` (RZ-…). Harga QRIS final: `PRICES_INCLUDE_TAX.idr = true`, `tax_amount` 0.
+- Env: `SUMOPOD_ENVIRONMENT` (`sandbox`|`live`, menentukan alamat API), `SUMOPOD_API_KEY`, `SUMOPOD_WEBHOOK_SECRET` (`whsec_…`);
+  start gagal bila key tanpa mode atau secret tanpa key. Endpoint `POST /api/payments/sumopod/webhook` (64 KB), 404 tanpa secret.
+- Data yang dikirim ke Sumopod: `order_id` (RZ-<payment id>), nominal, alamat kembali. Tidak ada nama atau email.
+- Tes: `sumopod/sumopod.test.ts` (tanda tangan Svix, mapping), `sumopod.integration.test.ts` (16 skenario DB nyata: rute negara,
+  kunci metode, checkout dan pemakaian ulang link, webhook valid/palsu/duplikat/kurang bayar/kedaluwarsa lalu lunas, kredit Pro AI
+  per bulan, upgrade menjeda Plus, pratinjau, cek status dari halaman kembali, kedaluwarsa lokal, refund manual penuh/sebagian).

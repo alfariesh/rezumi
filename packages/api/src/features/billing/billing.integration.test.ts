@@ -209,6 +209,8 @@ describe.skipIf(!databaseUrl)("billing foundation", () => {
 			renews: false,
 			subscription: null,
 			currency: "usd",
+			paymentMethods: [],
+			paymentMethod: null,
 			upcoming: [],
 			limits: { activeResumes: { used: 1, max: null }, activeCoverLetters: { used: 0, max: null } },
 			features: {

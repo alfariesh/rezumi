@@ -21,7 +21,7 @@ type ReasonDialogProps = {
 	onSubmit: (reason: string) => Promise<unknown>;
 };
 
-/** Every admin action that changes billing asks why; the reason goes to the audit log (and to Polar for refunds). */
+/** Every admin action that changes billing asks why; the reason goes to the audit log (and to Dodo Payments for refunds). */
 export function ReasonDialog({
 	isOpen,
 	onOpenChange,

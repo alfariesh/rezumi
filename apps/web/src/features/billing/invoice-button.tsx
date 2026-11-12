@@ -5,40 +5,34 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "@rezumi/ui/components/toast";
 import { orpc } from "@/libs/orpc/client";
 
-/** How long Polar takes to make an invoice the first time it is asked for, before asking again. */
-const GENERATING_RETRY_MS = 3000;
+/** How long the opened invoice's address stays valid in the new tab before it is let go. */
+const REVOKE_AFTER_MS = 60_000;
 
 type InvoiceButtonProps = { paymentId: string; variant?: "ghost" | "secondary" };
 
 /**
- * Opens a paid order's invoice from Polar, the seller, in a new tab. Polar makes an invoice the first time it is
- * asked for, so the first click may wait a few seconds; when there is none to give, the billing portal has them all.
+ * Opens a paid payment's invoice in a new tab: the PDF Dodo Payments (the seller) issues, fetched through the server so
+ * no Dodo key ever reaches the browser. When there is none to give, the billing portal has them all.
  */
 export function InvoiceButton({ paymentId, variant = "ghost" }: InvoiceButtonProps) {
 	const invoice = useMutation(orpc.billing.invoice.mutationOptions({ meta: { noInvalidate: true } }));
 
 	const open = async () => {
-		// Opened on the click itself, so the browser doesn't block it as a pop-up; the address follows.
+		// Opened on the click itself, so the browser doesn't block it as a pop-up; the document follows.
 		const tab = window.open("about:blank", "_blank");
-		const ask = () => invoice.mutateAsync({ id: paymentId });
 		try {
-			let result = await ask();
-			if (result.status === "generating") {
-				await new Promise((resolve) => setTimeout(resolve, GENERATING_RETRY_MS));
-				result = await ask();
-			}
+			const result = await invoice.mutateAsync({ id: paymentId });
 			if (result.status === "ready") {
-				if (tab) tab.location.href = result.url;
-				else window.location.assign(result.url);
+				const url = URL.createObjectURL(result.file);
+				if (tab) tab.location.href = url;
+				else window.location.assign(url);
+				setTimeout(() => URL.revokeObjectURL(url), REVOKE_AFTER_MS);
 				return;
 			}
 			tab?.close();
 			toast.add({
 				type: "info",
-				description:
-					result.status === "generating"
-						? t`Your invoice is still being made. Try again in a moment.`
-						: t`This invoice isn't available here. Open billing to find all your invoices.`,
+				description: t`This invoice isn't available here. Open billing to find all your invoices.`,
 			});
 		} catch {
 			tab?.close();

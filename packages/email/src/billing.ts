@@ -6,8 +6,8 @@ import { deliverEmail } from "./transport";
 export type { BillingNoticeEmailProps } from "./templates/billing";
 
 /**
- * Sends a billing alert, the daily summary or a plan reminder and says what happened; see deliverEmail. Receipts and
- * invoices come from Polar, the merchant of record.
+ * Sends a billing alert, the daily summary, a plan reminder or a QRIS pass receipt and says what happened; see
+ * deliverEmail. Card subscriptions' receipts and invoices come from Dodo Payments, the merchant of record.
  */
 export function deliverBillingNotice(input: { to: string; subject: string; notice: BillingNoticeEmailProps }) {
 	return deliverEmail({

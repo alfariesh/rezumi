@@ -1,22 +1,26 @@
 import type { PlanSummary } from "./plan";
-import type { BillingInterval, PaidPlanId } from "@rezumi/schema/billing";
+import type { BillingInterval, PaidPlanId, PaymentMethod } from "@rezumi/schema/billing";
 import { Segment, TextShimmer } from "@heroui-pro/react";
 import { Alert, Button, buttonVariants, Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
-import { PLANS } from "@rezumi/schema/billing";
+import { PAYMENT_METHOD_CURRENCY, PLANS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { getPlanName } from "./plan";
 import {
+	getPassKind,
+	getPassLabel,
 	getPurchaseKind,
 	getPurchaseLabel,
 	intervalSuffix,
 	isLiveSubscription,
+	isPaymentFailed,
 	monthlyOfYearly,
+	passSuffix,
 	priceLabel,
 	trialDaysFor,
 	yearlySaving,
@@ -121,10 +125,45 @@ type BuyPlansSectionProps = {
 	portfolioOpen?: boolean;
 };
 
+type PaymentMethodSwitchProps = { method: PaymentMethod; onChange: (method: PaymentMethod) => void };
+
+/** The other way to pay, for visitors from Indonesia: a card in US dollars instead of QRIS in Rupiah, or back. */
+function PaymentMethodSwitch({ method, onChange }: PaymentMethodSwitchProps) {
+	return (
+		<p className="text-body-xs text-muted">
+			{method === "qris" ? (
+				<Trans>
+					No QRIS app, or want it to renew on its own?{" "}
+					<button
+						type="button"
+						className="font-medium text-foreground underline underline-offset-2"
+						onClick={() => onChange("card")}
+					>
+						Pay by card in US dollars
+					</button>
+				</Trans>
+			) : (
+				<Trans>
+					In Indonesia?{" "}
+					<button
+						type="button"
+						className="font-medium text-foreground underline underline-offset-2"
+						onClick={() => onChange("qris")}
+					>
+						Pay with QRIS in Rupiah
+					</button>
+				</Trans>
+			)}
+		</p>
+	);
+}
+
 /**
- * The two plans, monthly or yearly, at the visitor's price, with a button that fits where the account stands:
- * subscribe, upgrade, switch interval, or switch down from the next renewal. Without a way to subscribe here (guest,
- * unverified email, paused) it explains the step instead; where plans aren't sold at all it shows nothing.
+ * The two plans at the visitor's price, with a button that fits where the account stands. By card (Dodo Payments,
+ * US dollars): monthly or yearly subscriptions to subscribe to, upgrade, switch interval, or switch down from the next
+ * renewal. By QRIS (Indonesia, Rupiah): 30-day or yearly passes to buy, add time to, or move up with. Visitors from
+ * Indonesia see QRIS first and may switch to a card. Without a way to buy here (guest, unverified email, paused) it
+ * explains the step instead; where plans aren't sold at all it shows nothing.
  */
 export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPlansSectionProps) {
 	const labelId = useId();
@@ -132,9 +171,14 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 	const live = isLiveSubscription(subscription) ? subscription : null;
 	const [interval, setInterval] = useState<BillingInterval>(live?.interval ?? "month");
 	const [choice, setChoice] = useState<{ planId: PaidPlanId; interval: BillingInterval } | null>(null);
+	const [picked, setPicked] = useState<PaymentMethod | null>(null);
 	const selectedRef = useRef<HTMLDivElement>(null);
 	const blocker = plan.purchaseBlockedBy;
-	const currency = plan.currency;
+	const methods = plan.paymentMethods;
+	// The way the visitor picked while it is still offered; else the default.
+	const method: PaymentMethod = picked && methods.includes(picked) ? picked : (methods[0] ?? "card");
+	const qris = method === "qris";
+	const currency = PAYMENT_METHOD_CURRENCY[method];
 	const saving = Math.max(...PAID_PLANS.map((id) => yearlySaving(id, currency)));
 
 	useEffect(() => {
@@ -146,11 +190,30 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 	return (
 		<SettingsSection
 			icon="tag"
-			title={live ? <Trans>Change your plan</Trans> : <Trans>Subscribe</Trans>}
+			title={
+				qris ? (
+					plan.planId === "free" ? (
+						<Trans>Get a plan</Trans>
+					) : (
+						<Trans>Add time or upgrade</Trans>
+					)
+				) : live ? (
+					<Trans>Change your plan</Trans>
+				) : (
+					<Trans>Subscribe</Trans>
+				)
+			}
 			description={
-				<Trans>
-					Billed monthly or yearly until you cancel. Cancel any time; you keep access until the period ends.
-				</Trans>
+				qris ? (
+					<Trans>
+						Pay once with QRIS from any bank or e-wallet app. A plan lasts 30 days or a year and doesn't renew on its
+						own: pay again whenever you like, and the time is added after your current plan.
+					</Trans>
+				) : (
+					<Trans>
+						Billed monthly or yearly until you cancel. Cancel any time; you keep access until the period ends.
+					</Trans>
+				)
 			}
 		>
 			{blocker && <PurchaseStep blocker={blocker} />}
@@ -164,10 +227,10 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 					onSelectionChange={(key) => setInterval(key === "year" ? "year" : "month")}
 				>
 					<Segment.Item id="month" className="px-3">
-						<Trans>Monthly</Trans>
+						{qris ? <Trans>30 days</Trans> : <Trans>Monthly</Trans>}
 					</Segment.Item>
 					<Segment.Item id="year" className="px-3">
-						<Trans>Yearly</Trans>
+						{qris ? <Trans>1 year</Trans> : <Trans>Yearly</Trans>}
 					</Segment.Item>
 				</Segment>
 				{saving > 0 && (
@@ -180,9 +243,11 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 				{PAID_PLANS.map((id) => {
 					const target = { planId: id, interval };
 					const kind = getPurchaseKind(live, target);
+					const passKind = getPassKind(plan.planId, id);
+					const current = qris ? plan.planId === id : kind === "current";
 					const isSelected = id === selected;
-					const pending = live?.pendingChange?.planId === id && live.pendingChange.interval === interval;
-					const trialDays = kind === "subscribe" ? trialDaysFor(id, plan.trialAvailable) : null;
+					const pending = !qris && live?.pendingChange?.planId === id && live.pendingChange.interval === interval;
+					const trialDays = !qris && kind === "subscribe" ? trialDaysFor(id, plan.trialAvailable) : null;
 					return (
 						<div
 							key={id}
@@ -205,7 +270,7 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 									) : (
 										<h3 className="text-base font-semibold">{getPlanName(id)}</h3>
 									)}
-									{kind === "current" ? (
+									{current ? (
 										<Chip size="sm" variant="soft" color="success">
 											<Chip.Label>
 												<Trans>Current</Trans>
@@ -223,10 +288,18 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 								</div>
 								<span className="text-2xl font-semibold tracking-tight tabular-nums">
 									{priceLabel(id, interval, currency)}{" "}
-									<span className="text-sm font-normal text-muted">{intervalSuffix(interval)}</span>
+									<span className="text-sm font-normal text-muted">
+										{qris ? passSuffix(interval) : intervalSuffix(interval)}
+									</span>
 								</span>
 								<span className="text-xs text-muted">
-									{interval === "year" ? (
+									{qris ? (
+										interval === "year" ? (
+											<Trans>{monthlyOfYearly(id, currency)} a month, paid once for 365 days</Trans>
+										) : (
+											<Trans>Paid once; doesn't renew on its own</Trans>
+										)
+									) : interval === "year" ? (
 										<Trans>{monthlyOfYearly(id, currency)} a month, billed yearly</Trans>
 									) : (
 										<Trans>Renews monthly until you cancel</Trans>
@@ -251,12 +324,22 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 									<Trans>Starts at your next renewal.</Trans>
 								</p>
 							)}
-							{plan.canPurchase && kind !== "current" && !pending && (
+							{plan.canPurchase && qris && (
 								<Button
 									fullWidth
 									className="mt-auto"
 									variant={isSelected || (!selected && id === "pro-ai") ? "primary" : "secondary"}
-									isDisabled={live?.cancelAtPeriodEnd === true || live?.status === "past_due"}
+									onPress={() => setChoice(target)}
+								>
+									{getPassLabel(passKind, target)}
+								</Button>
+							)}
+							{plan.canPurchase && !qris && kind !== "current" && !pending && (
+								<Button
+									fullWidth
+									className="mt-auto"
+									variant={isSelected || (!selected && id === "pro-ai") ? "primary" : "secondary"}
+									isDisabled={live?.cancelAtPeriodEnd === true || isPaymentFailed(live)}
 									onPress={() => setChoice(target)}
 								>
 									{getPurchaseLabel(kind, target, live, trialDays)}
@@ -266,21 +349,28 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 					);
 				})}
 			</div>
-			{live?.cancelAtPeriodEnd && (
+			{!qris && live?.cancelAtPeriodEnd && (
 				<p className="text-body-xs text-muted">
 					<Trans>Your subscription is set to end. Keep it first to change the plan.</Trans>
 				</p>
 			)}
-			{live?.status === "past_due" && (
+			{!qris && isPaymentFailed(live) && (
 				<p className="text-body-xs text-muted">
 					<Trans>Your last payment didn't go through. Update your payment method in billing first.</Trans>
 				</p>
 			)}
 			<p className="text-body-xs text-muted">
-				<Trans>Prices are before tax: the checkout adds the tax that applies where you live.</Trans>
+				{qris ? (
+					<Trans>Prices are final: no tax is added.</Trans>
+				) : (
+					<Trans>Prices are before tax: the checkout adds the tax that applies where you live.</Trans>
+				)}
 			</p>
+			{methods.length > 1 && <PaymentMethodSwitch method={method} onChange={setPicked} />}
 			<PurchaseDialog
 				choice={choice}
+				method={method}
+				currentPlanId={plan.planId}
 				subscription={live}
 				currency={currency}
 				trialAvailable={plan.trialAvailable}

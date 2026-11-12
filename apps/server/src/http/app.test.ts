@@ -26,7 +26,8 @@ const mocks = vi.hoisted(() => ({
 	handleLlms: vi.fn(),
 	serveWebDistStatic: vi.fn(),
 	handleWebApp: vi.fn(),
-	handlePolarPaymentWebhook: vi.fn(),
+	handleDodoPaymentWebhook: vi.fn(),
+	handleSumopodPaymentWebhook: vi.fn(),
 }));
 
 vi.mock("@rezumi/env/server", async (original) => {
@@ -92,8 +93,12 @@ vi.mock("./public-resume-pdf", () => ({
 	handlePublicResumePdf: mocks.handlePublicResumePdf,
 }));
 
-vi.mock("./polar", () => ({
-	handlePolarPaymentWebhook: mocks.handlePolarPaymentWebhook,
+vi.mock("./dodo", () => ({
+	handleDodoPaymentWebhook: mocks.handleDodoPaymentWebhook,
+}));
+
+vi.mock("./sumopod", () => ({
+	handleSumopodPaymentWebhook: mocks.handleSumopodPaymentWebhook,
 }));
 
 const transportEnv = (remoteAddress: string) =>
@@ -290,7 +295,8 @@ it.each([
 	{ path: "/api/openapi/files", limit: 40 * 1024 * 1024, handler: mocks.handleOpenApi },
 	{ path: "/api/rpc/resume/import", limit: 160 * 1024 * 1024, handler: mocks.handleRpc },
 	{ path: "/api/auth/oauth2/register", limit: 1024 * 1024, handler: mocks.handleAuth },
-	{ path: "/api/payments/polar/webhook", limit: 256 * 1024, handler: mocks.handlePolarPaymentWebhook },
+	{ path: "/api/payments/dodo/webhook", limit: 256 * 1024, handler: mocks.handleDodoPaymentWebhook },
+	{ path: "/api/payments/sumopod/webhook", limit: 64 * 1024, handler: mocks.handleSumopodPaymentWebhook },
 ])("rejects oversized bodies for $path before parsing them", async ({ path, limit, handler }) => {
 	const { createApp } = await import("./app");
 	const response = await createApp().request(`http://localhost:3000${path}`, {
@@ -304,19 +310,36 @@ it.each([
 	expect(handler).not.toHaveBeenCalled();
 });
 
-it("hands Polar webhooks to the billing handler with their raw body and signature headers", async () => {
-	mocks.handlePolarPaymentWebhook.mockResolvedValue(new Response(null, { status: 200 }));
+it("hands Dodo Payments webhooks to the billing handler with their raw body and signature headers", async () => {
+	mocks.handleDodoPaymentWebhook.mockResolvedValue(new Response(null, { status: 200 }));
 	const { createApp } = await import("./app");
-	const body = JSON.stringify({ type: "order.paid", data: { id: "order" } });
-	const response = await createApp().request("http://localhost:3000/api/payments/polar/webhook", {
+	const body = JSON.stringify({ type: "payment.succeeded", data: { payment_id: "pay_1" } });
+	const response = await createApp().request("http://localhost:3000/api/payments/dodo/webhook", {
 		method: "POST",
 		headers: { "Content-Type": "application/json", "webhook-id": "msg_1", "webhook-signature": "v1,abc" },
 		body,
 	});
 	expect(response.status).toBe(200);
-	expect(mocks.handlePolarPaymentWebhook).toHaveBeenCalledOnce();
-	const [request] = mocks.handlePolarPaymentWebhook.mock.calls[0] as [Request];
+	expect(mocks.handleDodoPaymentWebhook).toHaveBeenCalledOnce();
+	const [request] = mocks.handleDodoPaymentWebhook.mock.calls[0] as [Request];
 	expect(await request.text()).toBe(body);
 	expect(request.headers.get("webhook-id")).toBe("msg_1");
 	expect(request.headers.get("webhook-signature")).toBe("v1,abc");
+});
+
+it("hands Sumopod webhooks to the billing handler with their raw body and Svix headers", async () => {
+	mocks.handleSumopodPaymentWebhook.mockResolvedValue(new Response(null, { status: 200 }));
+	const { createApp } = await import("./app");
+	const body = JSON.stringify({ event_type: "payment.completed", data: { payment_id: "11111111" } });
+	const response = await createApp().request("http://localhost:3000/api/payments/sumopod/webhook", {
+		method: "POST",
+		headers: { "Content-Type": "application/json", "svix-id": "msg_2", "svix-signature": "v1,def" },
+		body,
+	});
+	expect(response.status).toBe(200);
+	expect(mocks.handleSumopodPaymentWebhook).toHaveBeenCalledOnce();
+	const [request] = mocks.handleSumopodPaymentWebhook.mock.calls[0] as [Request];
+	expect(await request.text()).toBe(body);
+	expect(request.headers.get("svix-id")).toBe("msg_2");
+	expect(request.headers.get("svix-signature")).toBe("v1,def");
 });

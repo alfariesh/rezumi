@@ -5,7 +5,6 @@ import { isFreePortfolioTheme, PORTFOLIO_THEMES, portfolioThemeLineup } from "..
 import { templateSchema } from "../templates";
 import {
 	BILLING_CATALOG_VERSION,
-	BILLING_PRICES_INCLUDE_TAX,
 	BILLING_CURRENCIES,
 	BILLING_INTERVALS,
 	CREDIT_COSTS,
@@ -20,10 +19,14 @@ import {
 	isPaidPlan,
 	PLAN_FEATURE_KEYS,
 	PORTFOLIO_PLAN_FEATURE_KEYS,
+	PASS_DAYS,
+	PAYMENT_METHOD_CURRENCY,
 	paidPlanIdSchema,
+	paymentMethodsForCountry,
 	planIdSchema,
 	planPrice,
 	PLANS,
+	PRICES_INCLUDE_TAX,
 	toMajorUnits,
 	TRIAL_CREDITS,
 } from "./catalog";
@@ -70,14 +73,16 @@ describe("billing catalog", () => {
 	});
 
 	it("matches the launch decisions", () => {
-		expect(BILLING_CATALOG_VERSION).toBe(7);
-		// A free week before the first charge, on Plus only (2026-11-05); prices are before tax.
+		expect(BILLING_CATALOG_VERSION).toBe(8);
+		// A free week before the first card charge, on Plus only (2026-11-05). Card prices are before tax; QRIS prices
+		// (2026-11-10) are final, for 30 or 365 days.
 		expect([PLANS.free.trialDays, PLANS.plus.trialDays, PLANS["pro-ai"].trialDays]).toEqual([null, 7, null]);
-		expect(BILLING_PRICES_INCLUDE_TAX).toBe(false);
-		expect(PLANS.plus.prices).toEqual({ month: { usd: 499, idr: 5_900_000 }, year: { usd: 3_900, idr: 45_900_000 } });
+		expect(PRICES_INCLUDE_TAX).toEqual({ usd: false, idr: true });
+		expect(PASS_DAYS).toEqual({ month: 30, year: 365 });
+		expect(PLANS.plus.prices).toEqual({ month: { usd: 499, idr: 2_900_000 }, year: { usd: 3_900, idr: 24_900_000 } });
 		expect(PLANS["pro-ai"].prices).toEqual({
-			month: { usd: 999, idr: 12_900_000 },
-			year: { usd: 7_900, idr: 99_900_000 },
+			month: { usd: 999, idr: 5_900_000 },
+			year: { usd: 7_900, idr: 49_900_000 },
 		});
 		expect(PLANS.free.limits).toMatchObject({ activeResumes: 3, activeCoverLetters: 3 });
 		expect(PLANS.plus.limits).toMatchObject({ activeResumes: 50, activeCoverLetters: 50 });
@@ -90,7 +95,15 @@ describe("billing catalog", () => {
 		expect(TRIAL_CREDITS).toEqual({ amount: 5, validDays: 14 });
 	});
 
-	it("charges visitors from Indonesia in Rupiah and everyone else in US dollars", () => {
+	it("offers QRIS in Rupiah first in Indonesia, with a card as the other choice, and only a card elsewhere", () => {
+		expect(paymentMethodsForCountry("ID")).toEqual(["qris", "card"]);
+		expect(paymentMethodsForCountry(" id ")).toEqual(["qris", "card"]);
+		expect(paymentMethodsForCountry("SG")).toEqual(["card"]);
+		expect(paymentMethodsForCountry(null)).toEqual(["card"]);
+		expect(PAYMENT_METHOD_CURRENCY).toEqual({ card: "usd", qris: "idr" });
+	});
+
+	it("shows visitors from Indonesia Rupiah first and everyone else US dollars", () => {
 		expect(currencyForCountry("ID")).toBe("idr");
 		expect(currencyForCountry(" id ")).toBe("idr");
 		expect(currencyForCountry("US")).toBe("usd");
@@ -101,8 +114,8 @@ describe("billing catalog", () => {
 
 	it("reads amounts in each currency's smallest unit", () => {
 		expect(toMajorUnits(499, "usd")).toBe(4.99);
-		expect(toMajorUnits(5_900_000, "idr")).toBe(59_000);
-		expect(toMajorUnits(12_900_000, "IDR")).toBe(129_000);
+		expect(toMajorUnits(2_900_000, "idr")).toBe(29_000);
+		expect(toMajorUnits(49_900_000, "IDR")).toBe(499_000);
 	});
 
 	it("prices every kind of Rezumi AI work in whole credits, with the launch weights", () => {

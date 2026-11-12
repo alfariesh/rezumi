@@ -1,13 +1,19 @@
 import type { Transaction } from "./account";
-import type { PolarOrderLike, PolarSubscriptionLike } from "./polar/mapping";
+import type {
+	DodoCheckoutLike,
+	DodoDisputeLike,
+	DodoPaymentLike,
+	DodoRefundLike,
+	DodoSubscriptionLike,
+} from "./dodo/mapping";
 import type { SubscriptionRow } from "./subscriptions";
 import type {
 	BillingPaymentEventOutcome,
 	BillingPaymentEventSource,
 	BillingPaymentStatus,
 	BillingRefundStatus,
-	BillingReason,
 } from "@rezumi/db/schema";
+import type { BillingInterval, PaidPlanId } from "@rezumi/schema/billing";
 import { and, eq, isNull, max, or } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
@@ -15,34 +21,39 @@ import { BILLING_CATALOG_VERSION, PLANS } from "@rezumi/schema/billing";
 import { lockBillingAccount } from "./account";
 import { raiseBillingAlert } from "./alerts";
 import { grantSubscriptionMonth } from "./credits";
-import { getPolarConfig, planForProduct } from "./polar/config";
+import { getDodoConfig, planForProduct } from "./dodo/config";
 import {
-	checkoutPaymentStatus,
-	creditMonth,
-	nextPaymentStatus,
-	orderPaymentStatus,
-	orderPeriod,
-	parseDate,
+	billingReasonOf,
+	CHECKOUT_LIFETIME_MS,
+	isLostDispute,
+	netAmountOf,
+	netShare,
+	paymentPeriod,
+	paymentStatusOf,
+	refundedNetOf,
 	safeObjectFields,
-} from "./polar/mapping";
+	subscriptionSnapshot,
+} from "./dodo/mapping";
+import { creditMonth, nextPaymentStatus, parseDate } from "./subscription-access";
 import { upsertSubscription } from "./subscriptions";
 
 /**
- * The one door every change Polar reports goes through: orders (paid, refunded), subscriptions (renewed, changed,
- * canceled), checkout sessions (expired) and refunds. Each runs in one transaction holding the account's billing lock
- * and the rows it changes, records the event, and is safe to repeat: a webhook redelivered (same `webhook-id`) does
- * nothing, and a state older than the one kept is skipped. Access and credits are granted exactly once per order.
- * Never call these from inside another transaction; they open their own.
+ * The one door every change Dodo Payments reports goes through: payments (succeeded, failed, refunded, disputed),
+ * subscriptions (renewed, changed, cancelled, on hold), checkout sessions (expired), refunds and disputes. Each runs in
+ * one transaction holding the account's billing lock and the rows it changes, records the event, and is safe to
+ * repeat: a webhook redelivered (same `webhook-id`) does nothing, and a state older than the one kept is skipped.
+ * Access and credits are granted exactly once per payment. Never call these from inside another transaction; they open
+ * their own, and they make no Dodo calls: the callers read what they need first.
  */
 
 type PaymentRow = typeof schema.billingPayment.$inferSelect;
 
-/** Where a Polar object came from: a signed webhook, the billing job or a customer's page asking, or an admin. */
+/** Where a Dodo object came from: a signed webhook, the billing job or a customer's page asking, or an admin. */
 export type EventContext = {
 	source: BillingPaymentEventSource;
-	/** The webhook's event type (order.paid), or what asked (status_check). */
+	/** The webhook's event type (payment.succeeded, payment.completed), or what asked (status_check). */
 	eventType: string;
-	/** Polar's `webhook-id`, unique per event; redeliveries carry the same one. */
+	/** The `webhook-id` (Dodo) or `svix-id` (Sumopod) of the delivery, unique per event; redeliveries carry the same one. */
 	webhookId?: string | null | undefined;
 	now?: Date | undefined;
 };
@@ -51,19 +62,32 @@ export type AppliedChange = {
 	outcome: BillingPaymentEventOutcome;
 	paymentId: string | null;
 	status: BillingPaymentStatus | null;
-	/** Whether this call granted the order's access and credits. */
+	/** Whether this call granted the payment's access and credits. */
 	fulfilled: boolean;
 };
 
-const ignored = (outcome: BillingPaymentEventOutcome = "ignored"): AppliedChange => ({
+export const ignored = (outcome: BillingPaymentEventOutcome = "ignored"): AppliedChange => ({
 	outcome,
 	paymentId: null,
 	status: null,
 	fulfilled: false,
 });
 
+const PAID_AT_SOME_POINT: ReadonlySet<BillingPaymentStatus> = new Set([
+	"paid",
+	"partially_refunded",
+	"refunded",
+	"reversed",
+]);
+
+function requireConfig() {
+	const config = getDodoConfig();
+	if (!config) throw new Error("Dodo Payments isn't set up on this server.");
+	return config;
+}
+
 /** Reports an event that is about something Rezumi doesn't sell or know, outside any account's lock. */
-async function recordUnrelated(
+export async function recordUnrelated(
 	context: EventContext,
 	providerObjectId: string,
 	outcome: BillingPaymentEventOutcome,
@@ -89,7 +113,7 @@ async function recordUnrelated(
  * Takes the webhook's id inside the transaction: the event row goes in first, so a redelivery racing this one waits on
  * the unique index and then finds it taken. Null when this event was handled before. Status checks have no id.
  */
-async function claimEvent(tx: Transaction, context: EventContext, providerObjectId: string) {
+export async function claimEvent(tx: Transaction, context: EventContext, providerObjectId: string) {
 	if (!context.webhookId) return { id: null as string | null };
 	const [claimed] = await tx
 		.insert(schema.billingPaymentEvent)
@@ -107,7 +131,7 @@ async function claimEvent(tx: Transaction, context: EventContext, providerObject
 }
 
 /** Writes what the event did: onto the claimed row for a webhook, or a new row for a check that changed something. */
-async function finishEvent(
+export async function finishEvent(
 	tx: Transaction,
 	claim: { id: string | null },
 	context: EventContext,
@@ -139,15 +163,47 @@ async function finishEvent(
 	});
 }
 
-/** The account a Polar customer stands for: its external id is the user id Rezumi gave at checkout. */
-async function accountFor(externalId: string | null | undefined): Promise<string | null> {
-	if (!externalId) return null;
-	const [owner] = await db.select({ id: schema.user.id }).from(schema.user).where(eq(schema.user.id, externalId));
+/** An account that still exists, or null. */
+async function existingUser(id: unknown): Promise<string | null> {
+	if (typeof id !== "string" || !id) return null;
+	const [owner] = await db.select({ id: schema.user.id }).from(schema.user).where(eq(schema.user.id, id));
 	return owner?.id ?? null;
 }
 
-/** Takes back the Rezumi AI credits a payment granted (a full refund, or a partial one the admin asked to). */
-async function revokePaymentCredits(tx: Transaction, payment: Pick<PaymentRow, "id" | "userId">, reason: string) {
+/**
+ * The account a Dodo object belongs to, from the surest sign to the least: the subscription Rezumi already keeps, the
+ * user id Rezumi put in the checkout's (and the customer's) metadata, then the customer Rezumi made for the account.
+ * `userId` is null when the account is gone; `externalCustomerId` still names it for a subscription kept before.
+ */
+async function accountFor(signs: {
+	subscriptionId?: string | null | undefined;
+	metadata?: Record<string, unknown> | undefined;
+	customer: { customer_id: string; metadata?: Record<string, unknown> | undefined };
+}): Promise<{ userId: string | null; externalCustomerId: string | null }> {
+	if (signs.subscriptionId) {
+		const [kept] = await db
+			.select({ userId: schema.billingSubscription.userId, external: schema.billingSubscription.externalCustomerId })
+			.from(schema.billingSubscription)
+			.where(eq(schema.billingSubscription.providerSubscriptionId, signs.subscriptionId));
+		if (kept) return { userId: kept.userId, externalCustomerId: kept.external };
+	}
+	const fromMetadata =
+		(await existingUser(signs.metadata?.rezumi_user_id)) ??
+		(await existingUser(signs.customer.metadata?.rezumi_user_id));
+	if (fromMetadata) return { userId: fromMetadata, externalCustomerId: fromMetadata };
+	const [account] = await db
+		.select({ userId: schema.billingAccount.userId })
+		.from(schema.billingAccount)
+		.where(eq(schema.billingAccount.providerCustomerId, signs.customer.customer_id));
+	return { userId: account?.userId ?? null, externalCustomerId: account?.userId ?? null };
+}
+
+/** Takes back the Rezumi AI credits a payment granted (a full refund, a lost dispute, or a partial refund asked to). */
+export async function revokePaymentCredits(
+	tx: Transaction,
+	payment: Pick<PaymentRow, "id" | "userId">,
+	reason: string,
+) {
 	const now = new Date();
 	const grants = await tx
 		.update(schema.aiCreditGrant)
@@ -174,22 +230,30 @@ export async function nextRefundSequence(tx: Transaction, paymentId: string) {
 	return (last?.sequence ?? 0) + 1;
 }
 
-/** Rezumi's own key for a refund before Polar gives it an id: RF-<payment id>-<sequence>. */
+/** Rezumi's own key for a refund before Dodo gives it an id: RF-<payment id>-<sequence>. */
 export const refundKeyFor = (paymentId: string, sequence: number) => `RF-${paymentId}-${sequence}`;
 
 /**
- * The month of credits a paid Pro AI order brings: the month of its subscription period that is running now (the
- * whole period for a monthly subscription). Granted once per subscription per month, so a plan change's order doesn't
- * add another. Returns the credits granted.
+ * The month of credits a paid Pro AI payment brings: the month of its subscription period that is running now (the
+ * whole period for a monthly subscription). Granted once per subscription per month, so a plan change's payment
+ * doesn't add another. Returns the credits granted.
  */
-async function grantOrderCredits(
+async function grantPaymentCredits(
 	tx: Transaction,
-	input: { userId: string; payment: PaymentRow; subscription: SubscriptionRow | null; now: Date },
+	input: {
+		userId: string;
+		planId: PaidPlanId;
+		paymentId: string;
+		subscription: SubscriptionRow | null;
+		/** A plan change that charged nothing bought nothing new: the paid charge for the change brings the month. */
+		freePlanChange: boolean;
+		now: Date;
+	},
 ) {
 	const { subscription } = input;
-	const perMonth = PLANS[input.payment.planId].creditsPerMonth;
-	if (!perMonth || !subscription || subscription.planId !== input.payment.planId || !subscription.currentPeriodEnd)
-		return 0;
+	const perMonth = PLANS[input.planId].creditsPerMonth;
+	if (input.freePlanChange) return 0;
+	if (!perMonth || !subscription || subscription.planId !== input.planId || !subscription.currentPeriodEnd) return 0;
 	const month = creditMonth(
 		{ start: subscription.currentPeriodStart, end: subscription.currentPeriodEnd },
 		subscription.interval,
@@ -199,7 +263,7 @@ async function grantOrderCredits(
 	const grant = await grantSubscriptionMonth(tx, {
 		userId: input.userId,
 		subscriptionId: subscription.id,
-		paymentId: input.payment.id,
+		paymentId: input.paymentId,
 		amount: perMonth,
 		startsAt: month.start,
 		expiresAt: month.end,
@@ -208,125 +272,177 @@ async function grantOrderCredits(
 	return grant?.amount ?? 0;
 }
 
-/** A Polar order, with the customer and subscription it carries, as the webhook and the order API give it. */
-export type PolarOrderInput = PolarOrderLike & {
-	customer: { external_id?: string | null };
-	subscription: PolarSubscriptionLike | null;
-};
+/** The row Rezumi already keeps for a payment, or the checkout row it opened for it. */
+async function knownPaymentRow(payment: DodoPaymentLike) {
+	const columns = {
+		id: schema.billingPayment.id,
+		userId: schema.billingPayment.userId,
+		planId: schema.billingPayment.planId,
+		interval: schema.billingPayment.interval,
+	};
+	const [byPayment] = await db
+		.select(columns)
+		.from(schema.billingPayment)
+		.where(eq(schema.billingPayment.providerPaymentId, payment.payment_id));
+	if (byPayment || !payment.checkout_session_id) return byPayment ?? null;
+	const [byCheckout] = await db
+		.select(columns)
+		.from(schema.billingPayment)
+		.where(eq(schema.billingPayment.providerCheckoutId, payment.checkout_session_id));
+	return byCheckout ?? null;
+}
+
+/** What a payment is applied with: the subscription it charges, as read from Dodo just before (null for none). */
+export type PaymentRead = { subscription: DodoSubscriptionLike | null; observedAt: Date };
 
 /**
- * Applies a Polar order: links it to the checkout Rezumi opened (or records a renewal or plan change as a new payment),
- * keeps its amounts, moves its status along the allowed transitions, and on the first paid state grants its month of
- * Pro AI credits and moves the subscription's paid_through. A full refund takes the order's credits back; access
- * follows the subscription, which a refund alone doesn't end.
+ * Applies a Dodo payment: links it to the checkout Rezumi opened (or records a renewal or plan change as a new
+ * payment), keeps its amounts, moves its status along the allowed transitions, and on the first paid state grants its
+ * month of Pro AI credits and moves the subscription's paid_through. A full refund or a lost dispute takes the
+ * payment's credits back; access follows the subscription, which a refund alone doesn't end. A payment that only saved
+ * a new card is no sale and is skipped.
  */
-export async function applyPolarOrder(order: PolarOrderInput, context: EventContext): Promise<AppliedChange> {
-	const config = getPolarConfig();
-	if (!config) throw new Error("Polar isn't set up on this server.");
+export async function applyDodoPayment(
+	payment: DodoPaymentLike,
+	context: EventContext,
+	read: PaymentRead,
+): Promise<AppliedChange> {
+	const config = requireConfig();
 	const now = context.now ?? new Date();
-	const plan = planForProduct(config, order.product_id);
-	const payload = safeObjectFields(order as unknown as Record<string, unknown>);
+	const payload = safeObjectFields(payment as unknown as Record<string, unknown>);
+	if (payment.is_update_payment_method) {
+		await recordUnrelated(context, payment.payment_id, "ignored", payload);
+		return ignored();
+	}
+	const known = await knownPaymentRow(payment);
+	const { subscription } = read;
+	const subscriptionPlan = planForProduct(config, subscription?.product_id);
+	const plan: { planId: PaidPlanId; interval: BillingInterval | null } | null =
+		subscriptionPlan ?? planForProduct(config, payment.product_cart?.[0]?.product_id) ?? known;
 	if (!plan) {
-		await recordUnrelated(context, order.id, "unknown_product", payload);
+		await recordUnrelated(context, payment.payment_id, "unknown_product", payload);
 		return ignored("unknown_product");
 	}
-	let userId = await accountFor(order.customer.external_id);
-	if (!userId && order.checkout_id) {
-		const [opened] = await db
-			.select({ userId: schema.billingPayment.userId })
-			.from(schema.billingPayment)
-			.where(eq(schema.billingPayment.providerCheckoutId, order.checkout_id));
-		userId = opened?.userId ?? null;
-	}
-	const externalCustomerId = order.customer.external_id ?? userId;
+	const owner = await accountFor({
+		subscriptionId: payment.subscription_id,
+		metadata: payment.metadata,
+		customer: payment.customer,
+	});
+	const userId = known?.userId ?? owner.userId;
+	const externalCustomerId = owner.externalCustomerId ?? userId;
 
 	return db.transaction(async (tx) => {
 		if (userId) await lockBillingAccount(tx, userId);
-		const claim = await claimEvent(tx, context, order.id);
+		const claim = await claimEvent(tx, context, payment.payment_id);
 		if (!claim) return ignored("duplicate");
 
-		const incoming = orderPaymentStatus(order.status);
+		const incoming = paymentStatusOf(payment);
 		const paid = incoming === "paid" || incoming === "partially_refunded";
-		const period = orderPeriod(order);
-		let subscription: SubscriptionRow | null = null;
-		if (order.subscription && externalCustomerId) {
-			const subscriptionPlan = planForProduct(config, order.subscription.product_id) ?? plan;
-			subscription = (
+		const period = paymentPeriod(payment, payment.subscription_id);
+		let subscriptionRow: SubscriptionRow | null = null;
+		if (subscription && subscriptionPlan && externalCustomerId) {
+			const snapshot = subscriptionSnapshot(subscription, read.observedAt);
+			subscriptionRow = (
 				await upsertSubscription(tx, {
-					subscription: order.subscription,
+					subscription: snapshot,
 					plan: subscriptionPlan,
 					userId,
 					externalCustomerId,
-					paidThrough: paid ? (period.end ?? parseDate(order.subscription.current_period_end)) : null,
+					paidThrough: paid ? (period.end ?? snapshot.currentPeriodEnd) : null,
 				})
 			).row;
 		}
 
-		let [payment] = await tx
+		let [row] = await tx
 			.select()
 			.from(schema.billingPayment)
-			.where(eq(schema.billingPayment.providerOrderId, order.id))
+			.where(eq(schema.billingPayment.providerPaymentId, payment.payment_id))
 			.for("update");
-		if (!payment && order.checkout_id)
-			[payment] = await tx
+		if (!row && payment.checkout_session_id) {
+			// The checkout's row: still waiting for its payment, or holding an attempt that failed before this one.
+			[row] = await tx
 				.select()
 				.from(schema.billingPayment)
-				.where(
-					and(
-						eq(schema.billingPayment.providerCheckoutId, order.checkout_id),
-						isNull(schema.billingPayment.providerOrderId),
-					),
-				)
+				.where(eq(schema.billingPayment.providerCheckoutId, payment.checkout_session_id))
 				.for("update");
-		if (!payment) {
-			[payment] = await tx
+			if (row?.providerPaymentId && nextPaymentStatus(row.status, incoming).outcome !== "applied") {
+				// An earlier attempt on the same checkout, after a later one settled it: nothing to change.
+				await finishEvent(tx, claim, context, {
+					providerObjectId: payment.payment_id,
+					outcome: "stale",
+					paymentId: row.id,
+					payload,
+				});
+				return { outcome: "stale" as const, paymentId: row.id, status: row.status, fulfilled: false };
+			}
+		}
+		const amount = netAmountOf(payment);
+		const totalAmount = payment.total_amount;
+		const currency = payment.currency.toLowerCase();
+		if (!row) {
+			if (!plan.interval) throw new Error("A new payment needs its subscription's plan.");
+			[row] = await tx
 				.insert(schema.billingPayment)
 				.values({
 					userId,
-					provider: "polar",
-					providerOrderId: order.id,
-					providerCheckoutId: order.checkout_id,
-					subscriptionId: subscription?.id ?? null,
+					provider: "dodo",
+					providerPaymentId: payment.payment_id,
+					providerCheckoutId: payment.checkout_session_id ?? null,
+					subscriptionId: subscriptionRow?.id ?? null,
 					planId: plan.planId,
 					interval: plan.interval,
 					catalogVersion: BILLING_CATALOG_VERSION,
-					billingReason: order.billing_reason as BillingReason,
-					amount: order.net_amount,
-					taxAmount: order.tax_amount,
-					totalAmount: order.total_amount,
-					currency: order.currency.toLowerCase(),
+					billingReason: billingReasonOf(payment.charge_type),
+					amount,
+					taxAmount: payment.tax ?? 0,
+					totalAmount,
+					currency,
 					status: "pending",
-					createdAt: parseDate(order.created_at) ?? now,
+					createdAt: parseDate(payment.created_at) ?? now,
 				})
 				.returning();
-			if (!payment) throw new Error("The payment was not saved.");
+			if (!row) throw new Error("The payment was not saved.");
 		}
 
-		const transition = nextPaymentStatus(payment.status, incoming);
-		const refundedAmount = Math.min(order.net_amount, Math.max(payment.refundedAmount, order.refunded_amount));
+		const transition = nextPaymentStatus(row.status, incoming);
+		const refundedAmount = Math.min(
+			amount,
+			Math.max(row.refundedAmount, refundedNetOf(payment, { amount, totalAmount })),
+		);
+		const planId = subscriptionPlan?.planId ?? row.planId;
 		const changes: Partial<typeof schema.billingPayment.$inferInsert> = {
-			providerOrderId: order.id,
-			subscriptionId: subscription?.id ?? payment.subscriptionId,
-			billingReason: order.billing_reason as BillingReason,
-			amount: order.net_amount,
-			taxAmount: order.tax_amount,
-			totalAmount: order.total_amount,
-			currency: order.currency.toLowerCase(),
-			providerStatus: order.status,
-			periodStart: period.start ?? payment.periodStart,
-			periodEnd: period.end ?? payment.periodEnd,
+			providerPaymentId: payment.payment_id,
+			subscriptionId: subscriptionRow?.id ?? row.subscriptionId,
+			billingReason: payment.charge_type ? billingReasonOf(payment.charge_type) : row.billingReason,
+			amount,
+			taxAmount: payment.tax ?? 0,
+			totalAmount,
+			currency,
+			providerStatus: payment.status ?? row.providerStatus,
+			periodStart: period.start ?? row.periodStart,
+			periodEnd: period.end ?? row.periodEnd,
 			refundedAmount,
-			planId: plan.planId,
-			interval: plan.interval,
+			planId,
+			...(subscriptionPlan && { interval: subscriptionPlan.interval }),
 		};
+		if (transition.outcome === "applied") {
+			changes.status = transition.status;
+			if (transition.status === "failed" || transition.status === "cancelled")
+				changes.failureReason = payment.error_code ? `payment_${payment.error_code}`.slice(0, 80) : "payment_failed";
+		}
+		const nextStatus = changes.status ?? row.status;
+		if (PAID_AT_SOME_POINT.has(nextStatus) && !row.paidAt) changes.paidAt = now;
 		let fulfilled = false;
-		if (transition.outcome === "applied") changes.status = transition.status;
-		const nextStatus = changes.status ?? payment.status;
-		if (paid && !payment.paidAt) changes.paidAt = now;
-		let refundChanged = false;
-		if (paid && transition.outcome !== "stale" && !payment.fulfilledAt) {
+		if (paid && transition.outcome !== "stale" && !row.fulfilledAt) {
 			if (userId) {
-				const credits = await grantOrderCredits(tx, { userId, payment, subscription, now });
+				const credits = await grantPaymentCredits(tx, {
+					userId,
+					planId,
+					paymentId: row.id,
+					subscription: subscriptionRow,
+					freePlanChange: payment.charge_type === "plan_change" && payment.total_amount === 0,
+					now,
+				});
 				changes.credits = credits;
 				changes.fulfilledAt = now;
 				fulfilled = true;
@@ -334,80 +450,86 @@ export async function applyPolarOrder(order: PolarOrderInput, context: EventCont
 					targetUserId: userId,
 					action: "payment.fulfilled",
 					details: {
-						paymentId: payment.id,
-						orderId: order.id,
-						planId: plan.planId,
-						interval: plan.interval,
-						billingReason: order.billing_reason,
-						amount: order.net_amount,
-						currency: order.currency.toLowerCase(),
+						paymentId: row.id,
+						providerPaymentId: payment.payment_id,
+						planId,
+						interval: changes.interval ?? row.interval,
+						billingReason: changes.billingReason,
+						amount,
+						currency,
 						credits,
-						...(subscription && { subscriptionId: subscription.id, paidThrough: subscription.paidThrough }),
+						...(subscriptionRow && { subscriptionId: subscriptionRow.id, paidThrough: subscriptionRow.paidThrough }),
 					},
 				});
 			} else if (transition.outcome === "applied") {
 				// Paid for an account that is gone: nobody to give it to, so the money should go back. Said once.
-				await raiseBillingAlert(tx, { kind: "paid_not_applied", paymentId: payment.id, now });
+				await raiseBillingAlert(tx, { kind: "paid_not_applied", paymentId: row.id, now });
 			}
 		}
-		if (refundedAmount > payment.refundedAmount) {
-			refundChanged = true;
-			const full = nextStatus === "refunded" || refundedAmount >= order.net_amount;
+		let moneyChanged = false;
+		if (nextStatus === "reversed" && row.status !== "reversed") {
+			moneyChanged = true;
+			await revokePaymentCredits(tx, row, "payment.reversed");
+			await raiseBillingAlert(tx, { kind: "payment_reversed", paymentId: row.id, now });
+		} else if (refundedAmount > row.refundedAmount) {
+			moneyChanged = true;
+			const full = nextStatus === "refunded" || refundedAmount >= amount;
 			const revokeAsked = await tx
 				.select({ id: schema.billingRefund.id })
 				.from(schema.billingRefund)
-				.where(and(eq(schema.billingRefund.paymentId, payment.id), eq(schema.billingRefund.revokeBenefits, true)))
+				.where(and(eq(schema.billingRefund.paymentId, row.id), eq(schema.billingRefund.revokeBenefits, true)))
 				.limit(1);
 			if (full || revokeAsked.length)
-				await revokePaymentCredits(tx, payment, full ? "payment.refunded" : "payment.partially_refunded");
+				await revokePaymentCredits(tx, row, full ? "payment.refunded" : "payment.partially_refunded");
 			await tx.insert(schema.billingAuditLog).values({
-				targetUserId: payment.userId,
+				targetUserId: row.userId,
 				action: "payment.refund_recorded",
-				details: { paymentId: payment.id, refundedAmount, source: context.source },
+				details: { paymentId: row.id, refundedAmount, source: context.source },
 			});
 		}
-		await tx.update(schema.billingPayment).set(changes).where(eq(schema.billingPayment.id, payment.id));
-		const outcome = fulfilled || refundChanged ? "applied" : transition.outcome;
+		await tx.update(schema.billingPayment).set(changes).where(eq(schema.billingPayment.id, row.id));
+		const outcome = fulfilled || moneyChanged ? "applied" : transition.outcome;
 		await finishEvent(tx, claim, context, {
-			providerObjectId: order.id,
+			providerObjectId: payment.payment_id,
 			outcome,
-			paymentId: payment.id,
-			subscriptionId: subscription?.id ?? null,
+			paymentId: row.id,
+			subscriptionId: subscriptionRow?.id ?? null,
 			payload,
 		});
-		return { outcome, paymentId: payment.id, status: nextStatus, fulfilled };
+		return { outcome, paymentId: row.id, status: nextStatus, fulfilled };
 	});
 }
 
-/** A Polar subscription with its customer, as subscription webhooks and the subscription API give it. */
-export type PolarSubscriptionInput = PolarSubscriptionLike & { customer: { external_id?: string | null } };
-
 /**
- * Applies a Polar subscription's state: created, renewed, changed plan, set to cancel, canceled, past due. Access is
- * read from it (entitlements); credits and paid_through come with its orders. An older state than the one kept is
- * skipped.
+ * Applies a Dodo subscription's state, read from Dodo at `observedAt`: started, renewed, changed plan, set to cancel,
+ * cancelled, on hold. Access is read from it (entitlements); credits and paid_through come with its payments. A state
+ * read earlier than the one kept is skipped.
  */
-export async function applyPolarSubscription(
-	subscription: PolarSubscriptionInput,
+export async function applyDodoSubscription(
+	subscription: DodoSubscriptionLike,
 	context: EventContext,
+	observedAt: Date = context.now ?? new Date(),
 ): Promise<AppliedChange & { subscriptionId: string | null }> {
-	const config = getPolarConfig();
-	if (!config) throw new Error("Polar isn't set up on this server.");
+	const config = requireConfig();
 	const plan = planForProduct(config, subscription.product_id);
 	const payload = safeObjectFields(subscription as unknown as Record<string, unknown>);
 	if (!plan) {
-		await recordUnrelated(context, subscription.id, "unknown_product", payload);
+		await recordUnrelated(context, subscription.subscription_id, "unknown_product", payload);
 		return { ...ignored("unknown_product"), subscriptionId: null };
 	}
-	const externalCustomerId = subscription.customer.external_id ?? null;
-	const userId = await accountFor(externalCustomerId);
+	const { userId, externalCustomerId } = await accountFor({
+		subscriptionId: subscription.subscription_id,
+		metadata: subscription.metadata,
+		customer: subscription.customer,
+	});
 	if (!externalCustomerId) {
-		await recordUnrelated(context, subscription.id, "unknown_customer", payload);
+		await recordUnrelated(context, subscription.subscription_id, "unknown_customer", payload);
 		return { ...ignored("unknown_customer"), subscriptionId: null };
 	}
+	const snapshot = subscriptionSnapshot(subscription, observedAt);
 	return db.transaction(async (tx) => {
 		if (userId) await lockBillingAccount(tx, userId);
-		const claim = await claimEvent(tx, context, subscription.id);
+		const claim = await claimEvent(tx, context, subscription.subscription_id);
 		if (!claim) return { ...ignored("duplicate"), subscriptionId: null };
 		const before = (
 			await tx
@@ -419,9 +541,9 @@ export async function applyPolarSubscription(
 					pendingProductId: schema.billingSubscription.pendingProductId,
 				})
 				.from(schema.billingSubscription)
-				.where(eq(schema.billingSubscription.providerSubscriptionId, subscription.id))
+				.where(eq(schema.billingSubscription.providerSubscriptionId, subscription.subscription_id))
 		)[0];
-		const { row, outcome } = await upsertSubscription(tx, { subscription, plan, userId, externalCustomerId });
+		const { row, outcome } = await upsertSubscription(tx, { subscription: snapshot, plan, userId, externalCustomerId });
 		// What support asks about: a new plan or billing period, a cancellation set or undone, a change for the renewal.
 		const changed =
 			!before ||
@@ -455,7 +577,7 @@ export async function applyPolarSubscription(
 				},
 			});
 		await finishEvent(tx, claim, context, {
-			providerObjectId: subscription.id,
+			providerObjectId: subscription.subscription_id,
 			outcome,
 			subscriptionId: row.id,
 			payload,
@@ -464,21 +586,16 @@ export async function applyPolarSubscription(
 	});
 }
 
-/** A Polar checkout session, as checkout webhooks and the checkout API give it. */
-export type PolarCheckoutInput = {
-	id: string;
-	status: "open" | "expired" | "confirmed" | "succeeded" | "failed";
-	expires_at: string;
-	created_at: string;
-	modified_at: string | null;
-};
+/** How long after a checkout session closes an unpaid payment is ended. */
+const EXPIRY_GRACE_MS = 30 * 60 * 1000;
 
 /**
- * Applies a checkout session's state to the payment Rezumi opened for it: an expired or failed checkout ends a payment
- * still waiting; a succeeded one waits for its order. Checkouts Rezumi didn't open (checkout links, the dashboard)
- * are left alone.
+ * Applies a checkout session that has no payment yet to the payment Rezumi opened for it: once the session has closed
+ * (24 hours, and a little more), the payment still waiting expires. A session with a payment is settled by that
+ * payment instead. Sessions Rezumi didn't open are left alone.
  */
-export async function applyPolarCheckout(checkout: PolarCheckoutInput, context: EventContext): Promise<AppliedChange> {
+export async function applyDodoCheckout(checkout: DodoCheckoutLike, context: EventContext): Promise<AppliedChange> {
+	const now = context.now ?? new Date();
 	const [opened] = await db
 		.select({ id: schema.billingPayment.id, userId: schema.billingPayment.userId })
 		.from(schema.billingPayment)
@@ -498,16 +615,19 @@ export async function applyPolarCheckout(checkout: PolarCheckoutInput, context: 
 			.where(eq(schema.billingPayment.id, opened.id))
 			.for("update");
 		if (!payment) throw new Error("No payment has that ID.");
-		const waiting = payment.status === "creating" || payment.status === "pending";
-		const target = checkoutPaymentStatus(checkout.status);
-		const transition = waiting && !payment.providerOrderId ? nextPaymentStatus(payment.status, target) : null;
+		const closesAt =
+			payment.expiresAt ?? new Date(+(parseDate(checkout.created_at) ?? payment.createdAt) + CHECKOUT_LIFETIME_MS);
+		const waiting = (payment.status === "creating" || payment.status === "pending") && !payment.providerPaymentId;
+		const closed = +now > +closesAt + EXPIRY_GRACE_MS;
+		const transition = waiting && closed ? nextPaymentStatus(payment.status, "expired") : null;
 		const changes: Partial<typeof schema.billingPayment.$inferInsert> = {
-			providerStatus: payment.providerOrderId ? payment.providerStatus : `checkout_${checkout.status}`,
-			expiresAt: parseDate(checkout.expires_at) ?? payment.expiresAt,
+			providerStatus: payment.providerPaymentId
+				? payment.providerStatus
+				: `checkout_${checkout.payment_status ?? (closed ? "expired" : "open")}`,
 		};
 		if (transition?.outcome === "applied") {
 			changes.status = transition.status;
-			if (transition.status !== "pending") changes.failureReason = `checkout_${checkout.status}`;
+			changes.failureReason = "checkout_expired";
 		}
 		await tx.update(schema.billingPayment).set(changes).where(eq(schema.billingPayment.id, payment.id));
 		const outcome = transition?.outcome ?? "stale";
@@ -516,39 +636,26 @@ export async function applyPolarCheckout(checkout: PolarCheckoutInput, context: 
 	});
 }
 
-/** A Polar refund, as refund webhooks and the refund API give it. */
-export type PolarRefundInput = {
-	id: string;
-	status: "pending" | "succeeded" | "failed" | "canceled";
-	reason: string;
-	amount: number;
-	order_id: string;
-	metadata: Record<string, string | number | boolean>;
-	dispute?: unknown;
-	created_at: string;
-	modified_at: string | null;
-};
-
-const refundStatus = (status: PolarRefundInput["status"]): BillingRefundStatus =>
-	status === "succeeded" ? "succeeded" : status === "pending" ? "requesting" : "failed";
+const refundStatus = (status: DodoRefundLike["status"]): BillingRefundStatus =>
+	status === "succeeded" ? "succeeded" : status === "failed" ? "failed" : "requesting";
 
 /**
- * Applies a Polar refund to its payment: Rezumi's own request (found by the id it put in the refund's metadata) takes
- * Polar's id and status; one made in Polar's dashboard, or by Polar to head off a dispute, is added. The payment's
- * refunded amount never goes down, and a full refund takes its credits back. Null when the refund's order isn't one
- * of Rezumi's payments yet (the caller applies the order first).
+ * Applies a Dodo refund to its payment: Rezumi's own request (found by the id it put in the refund's metadata) takes
+ * Dodo's id and status; one made in Dodo's dashboard is added, its amount (tax included) turned into the payment's net
+ * share. The payment's refunded amount never goes down, and a full refund takes its credits back. Null when the
+ * refund's payment isn't one of Rezumi's yet (the caller applies the payment first).
  */
-export async function applyPolarRefund(refund: PolarRefundInput, context: EventContext): Promise<AppliedChange | null> {
+export async function applyDodoRefund(refund: DodoRefundLike, context: EventContext): Promise<AppliedChange | null> {
 	const now = context.now ?? new Date();
 	const [known] = await db
 		.select({ id: schema.billingPayment.id, userId: schema.billingPayment.userId })
 		.from(schema.billingPayment)
-		.where(eq(schema.billingPayment.providerOrderId, refund.order_id));
+		.where(eq(schema.billingPayment.providerPaymentId, refund.payment_id));
 	if (!known) return null;
 	const payload = safeObjectFields(refund as unknown as Record<string, unknown>);
 	return db.transaction(async (tx) => {
 		if (known.userId) await lockBillingAccount(tx, known.userId);
-		const claim = await claimEvent(tx, context, refund.id);
+		const claim = await claimEvent(tx, context, refund.refund_id);
 		if (!claim) return ignored("duplicate");
 		const [payment] = await tx
 			.select()
@@ -557,7 +664,7 @@ export async function applyPolarRefund(refund: PolarRefundInput, context: EventC
 			.for("update");
 		if (!payment) throw new Error("No payment has that ID.");
 		const status = refundStatus(refund.status);
-		const localId = typeof refund.metadata.rezumi_refund_id === "string" ? refund.metadata.rezumi_refund_id : null;
+		const localId = typeof refund.metadata?.rezumi_refund_id === "string" ? refund.metadata.rezumi_refund_id : null;
 		const [existing] = await tx
 			.select()
 			.from(schema.billingRefund)
@@ -565,45 +672,45 @@ export async function applyPolarRefund(refund: PolarRefundInput, context: EventC
 				localId
 					? or(
 							and(eq(schema.billingRefund.paymentId, payment.id), eq(schema.billingRefund.id, localId)),
-							eq(schema.billingRefund.refundKey, refund.id),
+							eq(schema.billingRefund.refundKey, refund.refund_id),
 						)
-					: eq(schema.billingRefund.refundKey, refund.id),
+					: eq(schema.billingRefund.refundKey, refund.refund_id),
 			)
 			.for("update");
 		const settledAt = status === "requesting" ? null : now;
+		const failureReason = status === "failed" ? `refund_${refund.status}` : null;
 		let outcome: BillingPaymentEventOutcome = "applied";
 		if (existing) {
 			// A settled refund doesn't go back to waiting.
 			if (existing.status !== "requesting" && status === "requesting") outcome = "stale";
-			else if (existing.status === status && existing.refundKey === refund.id) outcome = "duplicate";
+			else if (existing.status === status && existing.refundKey === refund.refund_id) outcome = "duplicate";
 			else
 				await tx
 					.update(schema.billingRefund)
-					.set({
-						refundKey: refund.id,
-						status,
-						settledAt,
-						failureReason: status === "failed" ? `refund_${refund.status}` : null,
-					})
+					.set({ refundKey: refund.refund_id, status, settledAt, failureReason })
 					.where(eq(schema.billingRefund.id, existing.id));
 		} else {
-			await tx.insert(schema.billingRefund).values({
-				paymentId: payment.id,
-				sequence: await nextRefundSequence(tx, payment.id),
-				refundKey: refund.id,
-				method: "polar",
-				status,
-				amount: refund.amount,
-				reason:
-					refund.reason === "dispute_prevention"
-						? "Refunded by Polar to prevent a dispute"
-						: `Refunded at Polar (${refund.reason})`,
-				failureReason: status === "failed" ? `refund_${refund.status}` : null,
-				settledAt,
-			});
+			// Made at Dodo, not here: the net share of what it gave back, or the rest of the payment for a full refund.
+			const settled = await tx
+				.select({ amount: schema.billingRefund.amount })
+				.from(schema.billingRefund)
+				.where(and(eq(schema.billingRefund.paymentId, payment.id), eq(schema.billingRefund.status, "succeeded")));
+			const left = payment.amount - settled.reduce((sum, row) => sum + row.amount, 0);
+			const amount = Math.min(left, refund.is_partial ? netShare(refund.amount ?? 0, payment) : left);
+			if (amount > 0)
+				await tx.insert(schema.billingRefund).values({
+					paymentId: payment.id,
+					sequence: await nextRefundSequence(tx, payment.id),
+					refundKey: refund.refund_id,
+					method: "dodo",
+					status,
+					amount,
+					reason: refund.reason?.trim().slice(0, 500) || "Refunded at Dodo Payments",
+					failureReason,
+					settledAt,
+				});
+			else outcome = "ignored";
 		}
-		if (refund.reason === "dispute_prevention" || refund.dispute)
-			await raiseBillingAlert(tx, { kind: "payment_reversed", paymentId: payment.id, now });
 
 		const succeeded = await tx
 			.select({ amount: schema.billingRefund.amount, revokeBenefits: schema.billingRefund.revokeBenefits })
@@ -614,19 +721,90 @@ export async function applyPolarRefund(refund: PolarRefundInput, context: EventC
 		const changes: Partial<typeof schema.billingPayment.$inferInsert> = { refundedAmount };
 		if (refundedAmount > payment.refundedAmount) {
 			const full = refundedAmount >= payment.amount;
-			const target = full ? "refunded" : "partially_refunded";
-			const transition = nextPaymentStatus(payment.status, target);
+			const transition = nextPaymentStatus(payment.status, full ? "refunded" : "partially_refunded");
 			if (transition.outcome === "applied") changes.status = transition.status;
 			if (full || succeeded.some((row) => row.revokeBenefits))
 				await revokePaymentCredits(tx, payment, full ? "payment.refunded" : "payment.partially_refunded");
 			await tx.insert(schema.billingAuditLog).values({
 				targetUserId: payment.userId,
 				action: "payment.refund_recorded",
-				details: { paymentId: payment.id, refundId: refund.id, refundedAmount, source: context.source },
+				details: { paymentId: payment.id, refundId: refund.refund_id, refundedAmount, source: context.source },
 			});
 		}
 		await tx.update(schema.billingPayment).set(changes).where(eq(schema.billingPayment.id, payment.id));
-		await finishEvent(tx, claim, context, { providerObjectId: refund.id, outcome, paymentId: payment.id, payload });
+		await finishEvent(tx, claim, context, {
+			providerObjectId: refund.refund_id,
+			outcome,
+			paymentId: payment.id,
+			payload,
+		});
 		return { outcome, paymentId: payment.id, status: changes.status ?? payment.status, fulfilled: false };
+	});
+}
+
+/**
+ * Applies a card dispute to its payment. Opening one alerts the owner (evidence goes in through Dodo's dashboard within
+ * days); losing or accepting one reverses the payment and takes its credits back. Returns the subscription the payment
+ * belongs to when the dispute was lost, so the caller can end it at Dodo: a customer who took the money back shouldn't
+ * be charged again. Null when the payment isn't one of Rezumi's yet.
+ */
+export async function applyDodoDispute(
+	dispute: DodoDisputeLike,
+	context: EventContext,
+): Promise<(AppliedChange & { endSubscription: string | null }) | null> {
+	const now = context.now ?? new Date();
+	const [known] = await db
+		.select({ id: schema.billingPayment.id, userId: schema.billingPayment.userId })
+		.from(schema.billingPayment)
+		.where(eq(schema.billingPayment.providerPaymentId, dispute.payment_id));
+	if (!known) return null;
+	const payload = safeObjectFields(dispute as unknown as Record<string, unknown>);
+	return db.transaction(async (tx) => {
+		if (known.userId) await lockBillingAccount(tx, known.userId);
+		const claim = await claimEvent(tx, context, dispute.dispute_id);
+		if (!claim) return { ...ignored("duplicate"), endSubscription: null };
+		const [payment] = await tx
+			.select()
+			.from(schema.billingPayment)
+			.where(eq(schema.billingPayment.id, known.id))
+			.for("update");
+		if (!payment) throw new Error("No payment has that ID.");
+		let outcome: BillingPaymentEventOutcome = "applied";
+		let status = payment.status;
+		let endSubscription: string | null = null;
+		if (dispute.dispute_status === "dispute_opened") {
+			await raiseBillingAlert(tx, { kind: "payment_reversed", paymentId: payment.id, now });
+		} else if (isLostDispute(dispute.dispute_status)) {
+			const transition = nextPaymentStatus(payment.status, "reversed");
+			outcome = transition.outcome;
+			if (transition.outcome === "applied") {
+				status = "reversed";
+				await tx
+					.update(schema.billingPayment)
+					.set({ status, failureReason: dispute.dispute_status })
+					.where(eq(schema.billingPayment.id, payment.id));
+				await revokePaymentCredits(tx, payment, "payment.reversed");
+				await raiseBillingAlert(tx, { kind: "payment_reversed", paymentId: payment.id, now });
+				if (payment.subscriptionId) {
+					const [subscription] = await tx
+						.select({ providerId: schema.billingSubscription.providerSubscriptionId })
+						.from(schema.billingSubscription)
+						.where(eq(schema.billingSubscription.id, payment.subscriptionId));
+					endSubscription = subscription?.providerId ?? null;
+				}
+			}
+		} else outcome = "ignored";
+		await tx.insert(schema.billingAuditLog).values({
+			targetUserId: payment.userId,
+			action: "payment.dispute",
+			details: { paymentId: payment.id, disputeId: dispute.dispute_id, status: dispute.dispute_status },
+		});
+		await finishEvent(tx, claim, context, {
+			providerObjectId: dispute.dispute_id,
+			outcome,
+			paymentId: payment.id,
+			payload,
+		});
+		return { outcome, paymentId: payment.id, status, fulfilled: false, endSubscription };
 	});
 }

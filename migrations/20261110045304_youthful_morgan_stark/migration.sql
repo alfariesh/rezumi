@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "ai_credit_grant_pass_month" ON "ai_credit_grant" ("payment_id","expires_at") WHERE "subscription_id" is null and "payment_id" is not null;

@@ -1,0 +1,10 @@
+{
+	"extends": ["//"],
+	"tags": ["app:extension", "runtime:browser"],
+	"tasks": {
+		"build": {
+			"outputs": ["dist/**"],
+			"env": ["REZUMI_URL", "EXTENSION_KEY"]
+		}
+	}
+}

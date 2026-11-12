@@ -1,6 +1,6 @@
 # Draf panduan pengguna: langganan, pembayaran, dan refund
 
-Dibuat di Phase 07 (2026-11-03), ditulis ulang untuk Polar dan langganan di Phase 12 (2026-11-05). **Jangan terbitkan sebelum go-live** (Phase 11): selama `BILLING_MODE=off`, pengguna tidak bisa berlangganan, jadi panduan publik di `docs/` belum boleh menyebutnya. Saat go-live:
+Dibuat di Phase 07 (2026-11-03), ditulis ulang untuk langganan di Phase 12 (2026-11-05), untuk Dodo Payments di Phase 13 (2026-11-10), dan ditambah QRIS Indonesia di Phase 14 (2026-11-10). **Jangan terbitkan sebelum go-live** (Phase 11): selama `BILLING_MODE=off`, pengguna tidak bisa berlangganan, jadi panduan publik di `docs/` belum boleh menyebutnya. Saat go-live:
 
 1. Buat `docs/guides/plans.mdx` dari teks di bawah, sesuaikan dengan UI saat itu (cek label di kode `apps/web/src/features/billing/`), dan buat screenshot baru dengan data fiktif (aturan `docs/contributing/career-platform.mdx` → **Keep product guides current**).
 2. Daftarkan `guides/plans` di grup **Account** pada `docs/docs.json`, sebelum `guides/exporting-your-data`.
@@ -19,11 +19,11 @@ description: "Subscribe to Plus or Pro AI monthly or yearly on the Rezumi websit
 
 Rezumi has a Free plan and two paid plans, **Plus** and **Pro AI**. Each is a **subscription, billed monthly or yearly**, that renews until you cancel. Cancel any time: you keep the plan until the end of the period you paid for, and nothing more is charged. When a plan ends your account returns to Free. Your documents are never locked or deleted: every resume and cover letter stays open to edit, share and download as a PDF.
 
-See the [pricing on the home page](https://rezumi.app/#pricing) for what each plan includes and costs. Prices are in US dollars, or in Rupiah for visitors from Indonesia, and are before tax: the checkout adds the tax for where you live and shows the total before you pay.
+See the [pricing on the home page](https://rezumi.app/#pricing) for what each plan includes and costs. Card prices are in US dollars and are before tax (from Indonesia you can also pay in Rupiah with QRIS, below): the checkout adds the tax for where you live and shows the total before you pay.
 
 <Tip>
   Your first Plus subscription starts with **7 days free**. You add a card at checkout, but nothing is charged until the
-  trial ends; Polar emails you a reminder a few days before. Cancel during the trial and you pay nothing.
+  trial ends; Dodo Payments emails you a reminder a few days before. Cancel during the trial and you pay nothing.
 </Tip>
 
 <Note>
@@ -31,10 +31,30 @@ See the [pricing on the home page](https://rezumi.app/#pricing) for what each pl
   shows what your account can use.
 </Note>
 
+## Paying with QRIS (Indonesia)
+
+From Indonesia, **Settings → Plan** shows prices in Rupiah, paid with **QRIS** from any bank or e-wallet app. A QRIS plan is
+paid once and lasts **30 days or a year**; it doesn't renew on its own, and you get an email three days before it ends. The
+prices are final: no tax is added.
+
+1. Choose **30 days** or **1 year**, then select **Get Plus** or **Get Pro AI**.
+2. Check the summary and select **Pay with QRIS**. Scan the QR code with your banking or e-wallet app; the page stays open for an
+   hour.
+3. Back on Rezumi, the page changes to **Payment received** by itself. Your receipt is emailed to you and is in **Payments**.
+
+To keep going, pay again at any time: **Add 30 days** or **Add a year** adds the time after your current plan, so no day is lost.
+**Upgrade to Pro AI** starts Pro AI at once; the rest of your Plus waits and continues after it. Prefer a card that renews by
+itself, or have no QRIS app? Select **Pay by card in US dollars** under the plans.
+
+<Note>
+  QRIS plans have no free trial and no discount codes. Refunds of a QRIS payment are sent back to your bank account or
+  e-wallet: write to hi@rezumi.app with your order number (it starts with RZ-).
+</Note>
+
 ## Before you subscribe
 
 - Use a registered account. A guest account first needs to [create an account](/guides/creating-an-account); your guest work moves with you.
-- Verify your email address. Polar sends your receipts and invoices there. If the link expired, open **Settings → Plan** and select **Resend the link**.
+- Verify your email address. Dodo Payments sends your receipts and invoices there. If the link expired, open **Settings → Plan** and select **Resend the link**.
 
 ## Subscribe
 
@@ -50,9 +70,9 @@ See the [pricing on the home page](https://rezumi.app/#pricing) for what each pl
     The panel shows the price, how often it renews, the Rezumi AI credits that come with Pro AI, how to cancel, and the
     refund policy in brief. Select **Continue to checkout**.
   </Step>
-  <Step title="Pay on Polar">
-    Rezumi's subscriptions are sold by Polar, our merchant of record, on its secure checkout. Pay with a debit or credit
-    card, Apple Pay or Google Pay.
+  <Step title="Pay on Dodo Payments">
+    Rezumi's subscriptions are sold by Dodo Payments, our merchant of record, on its secure checkout. Pay with a debit
+    or credit card, Apple Pay or Google Pay.
   </Step>
   <Step title="Come back to Rezumi">
     After paying you return to Rezumi. The page checks the payment by itself and shows **Payment received** with your
@@ -72,9 +92,9 @@ See the [pricing on the home page](https://rezumi.app/#pricing) for what each pl
 
 ## Payment method, invoices and billing details
 
-Select **Billing and invoices** under **Your plan** to open Polar's billing portal, already signed in. There you can update your card, download invoices and receipts, and change billing details. Each paid row under **Payments** also has an **Invoice** button.
+Select **Billing and invoices** under **Your plan** to open the billing portal of Dodo Payments, already signed in. There you can update your card, download invoices and receipts, and change billing details. Each paid row under **Payments** also has an **Invoice** button.
 
-If a renewal payment fails, Polar emails you and tries again over the next weeks. Your plan pauses until the payment goes through; update your card in **Billing and invoices** to restore it.
+If a renewal payment fails, Dodo Payments emails you and may try again. Your plan pauses until the payment goes through; update your card in **Billing and invoices** to restore it.
 
 ## Rezumi AI credits
 

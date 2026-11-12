@@ -45,8 +45,8 @@ export type BillingNoticeEmailProps = {
 };
 
 /**
- * A plain billing message: an alert or the daily summary for the owner, or a plan ending soon for a customer. Text
- * first, so the plain-text version reads as well as the HTML one; no countdowns or urgency.
+ * A plain billing message: an alert or the daily summary for the owner, or a plan ending soon or a QRIS pass receipt
+ * for a customer. Text first, so the plain-text version reads as well as the HTML one; no countdowns or urgency.
  */
 export function BillingNoticeEmail(props: BillingNoticeEmailProps) {
 	return (

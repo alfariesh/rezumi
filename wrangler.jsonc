@@ -45,8 +45,8 @@
 		"DEPLOYMENT_NAMESPACE": "production",
 		"APP_URL": "https://rezumi.app",
 		"SMTP_FROM": "Rezumi <noreply@rezumi.app>",
-		// Plans apply to admin accounts only until launch (Phase 11): "on" opens them to everyone, "off" hides them.
-		"BILLING_MODE": "admins",
+		// Plans are open to everyone since the launch (Phase 11). "admins" limits them to admin accounts, "off" hides them.
+		"BILLING_MODE": "on",
 		// Web portfolios stay hidden until launch (portfolio plan Phase 12): "admins" lets admin accounts try them, "on"
 		// opens them to everyone. "off" keeps /<username> on the primary resume.
 		"PORTFOLIO_MODE": "admins",
@@ -57,13 +57,18 @@
 		// The contact form's public Turnstile key; set with its secret (TURNSTILE_SECRET_KEY, a Worker secret) before
 		// launch. Without both, the form isn't offered and Contact falls back to the email button.
 		"TURNSTILE_SITE_KEY": "0x4AAAAAAF5qNivhOg0kkz1u",
-		// Polar production products (organization "rezumi"). Not secret; POLAR_ACCESS_TOKEN and POLAR_WEBHOOK_SECRET are
-		// Worker secrets, set after these are live (the token without them fails startup).
-		"POLAR_ENVIRONMENT": "production",
-		"POLAR_PRODUCT_PLUS_MONTHLY": "ead42ea7-c6cd-49fd-a44e-0badb050c6b1",
-		"POLAR_PRODUCT_PLUS_YEARLY": "0947661b-03eb-4d83-96cc-6cdda965145b",
-		"POLAR_PRODUCT_PRO_AI_MONTHLY": "0b30a314-9c0f-4bf5-af18-7153a64c9b79",
-		"POLAR_PRODUCT_PRO_AI_YEARLY": "3209453f-776c-4a7b-950e-76acff06cdb6",
+		// Dodo Payments live-mode products (business "Rezumi"). Not secret. DODO_PAYMENTS_API_KEY (a key made in live mode)
+		// and DODO_PAYMENTS_WEBHOOK_KEY are Worker secrets, set after these are deployed: the key without them, or a test-mode
+		// key here, fails startup.
+		"DODO_PAYMENTS_ENVIRONMENT": "live_mode",
+		"DODO_PAYMENTS_PRODUCT_PLUS_MONTHLY": "pdt_0NrcLxDOzozrbdcuNkIZz",
+		"DODO_PAYMENTS_PRODUCT_PLUS_YEARLY": "pdt_0NrcLxH3dG9NbNzj3GL0U",
+		"DODO_PAYMENTS_PRODUCT_PRO_AI_MONTHLY": "pdt_0NrcLxLNpsfqo3e2jP7zY",
+		"DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY": "pdt_0NrcLxOnM7iDIBRvf4zQN",
+		// Sumopod (QRIS passes for Indonesia) in live mode. Not secret. SUMOPOD_API_KEY (the live project's key) and
+		// SUMOPOD_WEBHOOK_SECRET (whsec_…, made when the webhook URL is saved in Sumopod) are Worker secrets; without the
+		// key QRIS isn't offered and visitors from Indonesia pay by card.
+		"SUMOPOD_ENVIRONMENT": "live",
 	},
 	"send_email": [{ "name": "EMAIL" }],
 	"hyperdrive": [{ "binding": "HYPERDRIVE", "id": "f2e0cd8d0b084ed5bdbfb8a1de8a80dc" }],

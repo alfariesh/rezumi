@@ -1,10 +1,10 @@
 import type { PlanSummary } from "./plan";
 import type { RouterOutput } from "@/libs/orpc/client";
-import type { BillingCurrency, BillingInterval, PaidPlanId } from "@rezumi/schema/billing";
+import type { BillingCurrency, BillingInterval, PaidPlanId, PlanId } from "@rezumi/schema/billing";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { useRouteContext } from "@tanstack/react-router";
-import { PLANS, planPrice, toMajorUnits } from "@rezumi/schema/billing";
+import { PASS_DAYS, PLANS, planPrice, toMajorUnits } from "@rezumi/schema/billing";
 import { getPlanName } from "./plan";
 
 export type Payment = RouterOutput["billing"]["payments"]["items"][number];
@@ -96,9 +96,16 @@ export function monthlyOfYearly(planId: PaidPlanId, currency: BillingCurrency) {
 	return formatPrice(Math.round(planPrice(planId, "year", currency) / 12 / unit) * unit, currency);
 }
 
-/** A subscription that still bills or gives access, so a new checkout isn't the way to a plan: changing it is. */
+/**
+ * A subscription that still bills or gives access, so a new checkout isn't the way to a plan: changing it is. One on
+ * hold waits for a new payment method in the billing portal.
+ */
 export const isLiveSubscription = (subscription: Subscription | null | undefined): subscription is Subscription =>
-	!!subscription && ["trialing", "active", "past_due", "paused"].includes(subscription.status);
+	!!subscription && ["trialing", "active", "past_due", "on_hold", "paused"].includes(subscription.status);
+
+/** A subscription whose last charge failed: it needs a new payment method (billing portal) before anything else. */
+export const isPaymentFailed = (subscription: Pick<Subscription, "status"> | null | undefined) =>
+	subscription?.status === "past_due" || subscription?.status === "on_hold";
 
 /**
  * What choosing a plan and interval does from where the account stands: a first subscription, the plan it is on, a
@@ -118,7 +125,6 @@ export function getPurchaseKind(
 	return up ? "upgrade" : "downgrade";
 }
 
-/** The button's words for a plan and interval, from where the account stands. */
 /**
  * The free trial a new subscription to this plan starts with, in days: the plan's, while the account hasn't had a
  * subscription (`summary.trialAvailable`). Null otherwise.
@@ -126,6 +132,7 @@ export function getPurchaseKind(
 export const trialDaysFor = (planId: PaidPlanId, trialAvailable: boolean) =>
 	trialAvailable ? PLANS[planId].trialDays : null;
 
+/** The button's words for a plan and interval, from where the account stands. */
 export function getPurchaseLabel(
 	kind: PurchaseKind,
 	target: { planId: PaidPlanId; interval: BillingInterval },
@@ -142,6 +149,35 @@ export function getPurchaseLabel(
 
 /** How often a plan renews, for a price: "/ month", "/ year". */
 export const intervalSuffix = (interval: BillingInterval) => (interval === "year" ? t`/ year` : t`/ month`);
+
+/** How long a QRIS pass lasts, in days: 30 or 365. */
+export const passDays = (interval: BillingInterval) => PASS_DAYS[interval];
+
+/** What a QRIS pass covers, for a price: "/ 30 days", "/ year". */
+export const passSuffix = (interval: BillingInterval) =>
+	interval === "year" ? t`/ year` : t`/ ${PASS_DAYS.month} days`;
+
+/**
+ * What buying a QRIS pass does from where the account stands: a first plan, more of the plan it has (the days are
+ * added after it), a higher plan (it starts now; the rest of the lower one waits behind it), or a lower plan (it waits
+ * behind the higher one).
+ */
+export type PassKind = "buy" | "extend" | "upgrade" | "later";
+
+export function getPassKind(currentPlanId: PlanId, targetPlanId: PaidPlanId): PassKind {
+	if (currentPlanId === "free") return "buy";
+	if (currentPlanId === targetPlanId) return "extend";
+	return PLANS[targetPlanId].rank > PLANS[currentPlanId].rank ? "upgrade" : "later";
+}
+
+/** The button's words for a QRIS pass. */
+export function getPassLabel(kind: PassKind, target: { planId: PaidPlanId; interval: BillingInterval }) {
+	const name = getPlanName(target.planId);
+	if (kind === "extend") return target.interval === "year" ? t`Add a year` : t`Add ${PASS_DAYS.month} days`;
+	if (kind === "upgrade") return t`Upgrade to ${name}`;
+	if (kind === "later") return t`Add ${name} for later`;
+	return t`Get ${name}`;
+}
 
 export function getPaymentStatusLabel(status: PaymentStatus) {
 	switch (status) {
@@ -173,15 +209,27 @@ export function getPaymentStatusColor(status: PaymentStatus): "success" | "warni
 	return "default";
 }
 
-/** What a payment was for, in a few words: a new subscription, a renewal, a plan change, or a 30-day pass. */
-/** A paid $0 order whose checkout offered a free trial: the trial starting, not a charge. */
+/** A paid $0 payment whose checkout offered a free trial: the trial starting, not a charge. */
 export const isTrialStart = (payment: Pick<Payment, "trialDays" | "totalAmount" | "paidAt">) =>
 	payment.trialDays !== null && payment.totalAmount === 0 && payment.paidAt !== null;
 
+/**
+ * What a payment was for, in a few words: a new subscription, a renewal, a plan change, a QRIS pass (new, more time, or
+ * a move up), or a 30-day pass from before subscriptions.
+ */
 export function getPaymentReasonLabel(
-	payment: Pick<Payment, "billingReason" | "interval" | "trialDays" | "totalAmount" | "paidAt">,
+	payment: Pick<
+		Payment,
+		"method" | "billingReason" | "interval" | "durationDays" | "trialDays" | "totalAmount" | "paidAt"
+	>,
 ) {
 	if (payment.interval === null) return t`30-day pass`;
+	if (payment.method === "qris") {
+		const days = payment.durationDays ?? PASS_DAYS[payment.interval];
+		if (payment.billingReason === "subscription_cycle") return t`${days} more days, QRIS`;
+		if (payment.billingReason === "subscription_update") return t`Upgrade, ${days} days, QRIS`;
+		return t`${days} days, QRIS`;
+	}
 	if (isTrialStart(payment)) return t`Free trial`;
 	switch (payment.billingReason) {
 		case "subscription_cycle":
@@ -193,12 +241,20 @@ export function getPaymentReasonLabel(
 	}
 }
 
-/** Whether a payment has an invoice at Polar: an order that went through (refunded ones keep theirs). */
-/** An order that went through and charged something: a trial's $0 start has nothing to invoice. */
-export const hasInvoice = (payment: Pick<Payment, "paidAt" | "orderId" | "trialDays" | "totalAmount">) =>
-	payment.paidAt !== null && payment.orderId !== null && !isTrialStart(payment);
+/**
+ * Whether a payment has an invoice from Dodo Payments: a card payment that went through (refunded ones keep theirs)
+ * and charged something; a trial's $0 start has nothing to invoice.
+ */
+export const hasInvoice = (
+	payment: Pick<Payment, "method" | "paidAt" | "providerPaymentId" | "trialDays" | "totalAmount">,
+) =>
+	payment.method === "card" && payment.paidAt !== null && payment.providerPaymentId !== null && !isTrialStart(payment);
 
-/** Where a payment stands for the page Polar sends the customer back to. */
+/** Whether a payment has Rezumi's own receipt: a QRIS pass that was paid (refunded ones keep theirs). */
+export const hasReceipt = (payment: Pick<Payment, "method" | "paidAt">) =>
+	payment.method === "qris" && payment.paidAt !== null;
+
+/** Where a payment stands for the page the checkout sends the customer back to. */
 export type ReturnState = "paid" | "waiting" | "closed" | "failed" | "expired" | "refunded";
 
 export function getReturnState(payment: Pick<Payment, "status" | "expiresAt">, now = new Date()): ReturnState {

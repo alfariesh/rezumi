@@ -1,33 +1,26 @@
 import type { Transaction } from "./account";
+import type DodoPayments from "dodopayments";
 import { ORPCError } from "@orpc/server";
 import { and, eq, inArray, lt } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { lockBillingAccount } from "./account";
 import { raiseBillingAlertQuietly } from "./alerts";
-import { applyPolarRefund, applyPolarSubscription, nextRefundSequence, refundKeyFor } from "./fulfillment";
-import { isTransientPolarError, polarApi, polarErrorCode, polarErrorDetail, polarStatus } from "./polar/client";
-import { getPolarConfig } from "./polar/config";
+import { cancelProviderSubscription } from "./deletion";
+import { dodoApi, dodoErrorCode, dodoErrorDetail, dodoStatus, isTransientDodoError } from "./dodo/client";
+import { getDodoConfig } from "./dodo/config";
+import { applyDodoRefund, nextRefundSequence, refundKeyFor } from "./fulfillment";
+import { revokePass } from "./passes";
+import { nextPaymentStatus } from "./subscription-access";
 
 /**
- * Giving money back, from the admin page, through Polar's refund API. Polar refunds amounts **before tax** (it works
- * out the tax to give back itself), keeps its own fees, and a refund alone never ends a subscription: the admin
- * chooses to end it too. Refunds Polar makes on its own (from its dashboard, or to head off a dispute) arrive through
- * the refund webhooks and the same bookkeeping.
+ * Giving money back, from the admin page. Card payments go through Dodo Payments' refund API: Rezumi asks for amounts
+ * **before tax** (Dodo gives the tax on them back itself) and keeps its own fees; a refund alone never ends a
+ * subscription: the admin chooses to end it too. Refunds made in Dodo's dashboard arrive through the refund webhooks
+ * and the same bookkeeping. QRIS passes are refunded by the owner by hand and recorded here (recordQrisRefund).
  */
 
 type PaymentRow = typeof schema.billingPayment.$inferSelect;
-
-/** Polar's reasons for a refund the admin can pick. */
-export const REFUND_REASONS = [
-	"customer_request",
-	"duplicate",
-	"service_disruption",
-	"satisfaction_guarantee",
-	"fraudulent",
-	"other",
-] as const;
-export type RefundReason = (typeof REFUND_REASONS)[number];
 
 /** Holds the payment for a refund: its account's billing lock first, as everywhere, then the row. */
 async function lockPayment(tx: Transaction, paymentId: string) {
@@ -43,11 +36,11 @@ async function lockPayment(tx: Transaction, paymentId: string) {
 		.where(eq(schema.billingPayment.id, paymentId))
 		.for("update");
 	if (!payment) throw new ORPCError("NOT_FOUND", { message: "No payment has that ID." });
-	if (payment.provider !== "polar" || !payment.providerOrderId)
-		throw new ORPCError("BAD_REQUEST", { message: "Only Polar orders can be refunded here." });
+	if (payment.provider !== "dodo" || !payment.providerPaymentId)
+		throw new ORPCError("BAD_REQUEST", { message: "Only Dodo Payments payments can be refunded here." });
 	if (payment.status !== "paid" && payment.status !== "partially_refunded")
 		throw new ORPCError("BAD_REQUEST", { message: "Only a paid payment can be refunded." });
-	return payment as PaymentRow & { providerOrderId: string };
+	return payment as PaymentRow & { providerPaymentId: string };
 }
 
 function assertAmount(payment: PaymentRow, amount: number) {
@@ -85,22 +78,44 @@ async function resultOf(refundId: string, subscriptionEnded: boolean): Promise<R
 	return { ...row, subscriptionEnded };
 }
 
-/** What a refusal from Polar means, for the admin. */
+/** What a refusal from Dodo means, for the admin. */
 function refusalMessage(error: unknown) {
-	const status = polarStatus(error);
-	if (status === 422 || status === 400)
-		return `Polar refused the refund: ${polarErrorDetail(error) ?? "the amount or order isn't refundable"}.`;
+	const status = dodoStatus(error);
+	if (status === 422 || status === 400 || status === 409)
+		return `Dodo Payments refused the refund: ${dodoErrorDetail(error) ?? "the amount or payment isn't refundable"}.`;
 	if (status === 401 || status === 403)
-		return "Polar didn't allow the refund: check that the access token has the refunds scope.";
-	if (status === 404) return "Polar doesn't know this order.";
-	return `Polar refused the refund (${polarErrorCode("refund.create", error)}).`;
+		return "Dodo Payments didn't allow the refund: check that the API key is from the right mode and still active.";
+	if (status === 404) return "Dodo Payments doesn't know this payment.";
+	return `Dodo Payments refused the refund (${dodoErrorCode("refund.create", error)}).`;
 }
 
 /**
- * Refunds a paid order through Polar. The refund is saved (as `requesting`) before Polar is asked, with the payment
- * held so two clicks can't make two refunds, and its id goes to Polar in the refund's metadata so the webhook finds
- * it. A refund still waiting blocks a second one. With `endSubscription`, the subscription the order belongs to is
- * revoked at once (access ends now); otherwise it carries on.
+ * What Dodo is asked to give back: the whole payment when nothing was refunded before and the whole rest is asked for
+ * (Dodo then returns the tax too); otherwise the amount before tax on the payment's line, Dodo adding its tax.
+ */
+async function refundRequest(
+	api: DodoPayments,
+	payment: PaymentRow & { providerPaymentId: string },
+	amount: number,
+): Promise<Pick<DodoPayments.RefundCreateParams, "items" | "currency">> {
+	if (payment.refundedAmount === 0 && amount >= payment.amount) return {};
+	const lines = await api.payments.retrieveLineItems(payment.providerPaymentId);
+	const line = lines.items[0];
+	if (!line || !lines.partial_refund_allowed)
+		throw new ORPCError("BAD_REQUEST", {
+			message: "Dodo Payments doesn't allow a partial refund of this payment. Refund it in full instead.",
+		});
+	return {
+		currency: payment.currency.toUpperCase() as DodoPayments.Currency,
+		items: [{ item_id: line.items_id, amount, tax_inclusive: false }],
+	};
+}
+
+/**
+ * Refunds a paid payment through Dodo Payments. The refund is saved (as `requesting`) before Dodo is asked, with the
+ * payment held so two clicks can't make two refunds, and its id goes to Dodo in the refund's metadata so the webhook
+ * finds it. A refund still waiting blocks a second one. With `endSubscription`, the subscription the payment belongs
+ * to is cancelled at once (access ends now); otherwise it carries on.
  */
 export async function requestRefund(input: {
 	actorUserId: string;
@@ -108,16 +123,15 @@ export async function requestRefund(input: {
 	/** Before tax, in the currency's smallest unit; the rest of the payment when left out. */
 	amount?: number | undefined;
 	reason: string;
-	polarReason?: RefundReason | undefined;
 	/** Also take the payment's credits back on a partial refund. A full refund always does. */
 	revokeBenefits?: boolean | undefined;
 	/** End the subscription now as well. */
 	endSubscription?: boolean | undefined;
 	now?: Date;
 }): Promise<RefundResult> {
-	const config = getPolarConfig();
+	const config = getDodoConfig();
 	if (!config)
-		throw new ORPCError("BILLING_UNAVAILABLE", { status: 403, message: "Polar isn't set up on this server." });
+		throw new ORPCError("BILLING_UNAVAILABLE", { status: 403, message: "Dodo Payments isn't set up on this server." });
 	const now = input.now ?? new Date();
 	const claimed = await db.transaction(async (tx) => {
 		const payment = await lockPayment(tx, input.paymentId);
@@ -128,7 +142,7 @@ export async function requestRefund(input: {
 			.where(and(eq(schema.billingRefund.paymentId, payment.id), eq(schema.billingRefund.status, "requesting")));
 		if (open)
 			throw new ORPCError("CONFLICT", {
-				message: "A refund for this payment is still being processed by Polar. Check the status first.",
+				message: "A refund for this payment is still being processed by Dodo Payments. Check the status first.",
 			});
 		assertAmount(payment, amount);
 		const sequence = await nextRefundSequence(tx, payment.id);
@@ -138,7 +152,7 @@ export async function requestRefund(input: {
 				paymentId: payment.id,
 				sequence,
 				refundKey: refundKeyFor(payment.id, sequence),
-				method: "polar",
+				method: "dodo",
 				status: "requesting",
 				amount,
 				reason: input.reason,
@@ -158,32 +172,38 @@ export async function requestRefund(input: {
 	});
 
 	const { payment, refund } = claimed;
-	const api = polarApi(config);
-	try {
-		const created = await api.refunds.create({
-			order_id: payment.providerOrderId,
-			reason: input.polarReason ?? "customer_request",
-			amount: refund.amount,
-			comment: input.reason.slice(0, 500),
-			metadata: { rezumi_refund_id: refund.id },
-		});
-		await applyPolarRefund(created, { source: "admin", eventType: "refund.create", now });
-	} catch (error) {
-		if (isTransientPolarError(error)) {
-			// No answer: the refund may have gone through. The refund job asks Polar until it knows.
-			console.warn("[billing] A Polar refund got no answer; it is checked again.", {
-				refundId: refund.id,
-				error: polarErrorCode("refund.create", error),
-			});
-			throw new ORPCError("BAD_GATEWAY", {
-				message: "Polar didn't answer. The refund is checked again automatically; don't send it twice.",
-			});
-		}
+	const api = dodoApi(config);
+	const fail = async (code: string) => {
 		await db
 			.update(schema.billingRefund)
-			.set({ status: "failed", failureReason: polarErrorCode("refund.create", error), settledAt: now })
+			.set({ status: "failed", failureReason: code, settledAt: now })
 			.where(and(eq(schema.billingRefund.id, refund.id), eq(schema.billingRefund.status, "requesting")));
 		await raiseBillingAlertQuietly({ kind: "refund_failed", paymentId: payment.id, now });
+	};
+	try {
+		const created = await api.refunds.create({
+			payment_id: payment.providerPaymentId,
+			...(await refundRequest(api, payment, refund.amount)),
+			reason: input.reason.slice(0, 3000),
+			metadata: { rezumi_refund_id: refund.id },
+		});
+		await applyDodoRefund(created, { source: "admin", eventType: "refund.create", now });
+	} catch (error) {
+		if (error instanceof ORPCError) {
+			await fail("refund_not_partial");
+			throw error;
+		}
+		if (isTransientDodoError(error)) {
+			// No answer: the refund may have gone through. The refund job asks Dodo until it knows.
+			console.warn("[billing] A Dodo Payments refund got no answer; it is checked again.", {
+				refundId: refund.id,
+				error: dodoErrorCode("refund.create", error),
+			});
+			throw new ORPCError("BAD_GATEWAY", {
+				message: "Dodo Payments didn't answer. The refund is checked again automatically; don't send it twice.",
+			});
+		}
+		await fail(dodoErrorCode("refund.create", error));
 		throw new ORPCError("BAD_REQUEST", { message: refusalMessage(error) });
 	}
 
@@ -195,8 +215,7 @@ export async function requestRefund(input: {
 			.where(eq(schema.billingSubscription.id, payment.subscriptionId));
 		if (subscription) {
 			try {
-				const revoked = await api.subscriptions.revoke(subscription.providerId);
-				await applyPolarSubscription(revoked, { source: "admin", eventType: "subscription.revoke", now });
+				await cancelProviderSubscription(config, subscription.providerId, now);
 				subscriptionEnded = true;
 				await db.insert(schema.billingAuditLog).values({
 					actorUserId: input.actorUserId,
@@ -208,7 +227,7 @@ export async function requestRefund(input: {
 			} catch (error) {
 				console.warn("[billing] Ending a subscription after a refund failed.", {
 					paymentId: payment.id,
-					error: polarErrorCode("subscription.revoke", error),
+					error: dodoErrorCode("subscription.cancel", error),
 				});
 			}
 		}
@@ -216,40 +235,45 @@ export async function requestRefund(input: {
 	return resultOf(refund.id, subscriptionEnded);
 }
 
-/** A refund saved but not settled this long after it was asked: the job asks Polar about it. */
+/** A refund saved but not settled this long after it was asked: the job asks Dodo about it. */
 const REFUND_RECHECK_MS = 2 * 60 * 1000;
-/** A refund Polar still doesn't list this long after it was asked never reached Polar. */
+/** A refund Dodo still doesn't list this long after it was asked never reached Dodo. */
 const REFUND_LOST_MS = 60 * 60 * 1000;
 
 /**
  * The billing job's look at refunds still waiting: Rezumi's requests without a settled answer (a lost reply, a refund
- * Polar is still processing). Lists the order's refunds at Polar and applies them. Returns how many orders it checked.
+ * Dodo is still processing or reviewing). Reads the payment's refunds at Dodo and applies them. Returns how many
+ * payments it checked.
  */
 export async function reconcileRefunds(now = new Date()): Promise<number> {
-	const config = getPolarConfig();
+	const config = getDodoConfig();
 	if (!config) return 0;
-	const api = polarApi(config);
+	const api = dodoApi(config);
 	const waiting = await db
-		.selectDistinct({ orderId: schema.billingPayment.providerOrderId })
+		.selectDistinct({ providerPaymentId: schema.billingPayment.providerPaymentId })
 		.from(schema.billingRefund)
 		.innerJoin(schema.billingPayment, eq(schema.billingRefund.paymentId, schema.billingPayment.id))
 		.where(
 			and(
 				eq(schema.billingRefund.status, "requesting"),
-				eq(schema.billingRefund.method, "polar"),
+				eq(schema.billingRefund.method, "dodo"),
 				lt(schema.billingRefund.updatedAt, new Date(+now - REFUND_RECHECK_MS)),
 				inArray(schema.billingPayment.status, ["paid", "partially_refunded", "refunded"]),
 			),
 		)
 		.limit(10);
 	let checked = 0;
-	for (const { orderId } of waiting) {
-		if (!orderId) continue;
+	for (const { providerPaymentId } of waiting) {
+		if (!providerPaymentId) continue;
 		try {
-			const refunds = await api.refunds.list({ order_id: orderId, limit: 20 });
-			for (const refund of refunds.items)
-				await applyPolarRefund(refund, { source: "status_check", eventType: "status_check", now });
-			const known = new Set(refunds.items.map((refund) => refund.metadata.rezumi_refund_id).filter(Boolean));
+			const payment = await api.payments.retrieve(providerPaymentId);
+			const known = new Set<string>();
+			for (const listed of payment.refunds) {
+				const refund = await api.refunds.retrieve(listed.refund_id);
+				const local = refund.metadata?.rezumi_refund_id;
+				if (typeof local === "string") known.add(local);
+				await applyDodoRefund(refund, { source: "status_check", eventType: "status_check", now });
+			}
 			const stillWaiting = await db
 				.select({
 					id: schema.billingRefund.id,
@@ -258,9 +282,14 @@ export async function reconcileRefunds(now = new Date()): Promise<number> {
 				})
 				.from(schema.billingRefund)
 				.innerJoin(schema.billingPayment, eq(schema.billingRefund.paymentId, schema.billingPayment.id))
-				.where(and(eq(schema.billingRefund.status, "requesting"), eq(schema.billingPayment.providerOrderId, orderId)));
+				.where(
+					and(
+						eq(schema.billingRefund.status, "requesting"),
+						eq(schema.billingPayment.providerPaymentId, providerPaymentId),
+					),
+				);
 			for (const refund of stillWaiting) {
-				// Polar has no refund carrying this id a good while after it was asked: the request never reached it.
+				// Dodo has no refund carrying this id a good while after it was asked: the request never reached it.
 				const lost = !known.has(refund.id) && +now - +refund.createdAt > REFUND_LOST_MS;
 				await db
 					.update(schema.billingRefund)
@@ -270,10 +299,85 @@ export async function reconcileRefunds(now = new Date()): Promise<number> {
 			}
 			checked++;
 		} catch (error) {
-			console.warn("[billing] Checking refunds with Polar failed; they are checked again later.", {
-				error: polarErrorCode("refund.list", error),
+			console.warn("[billing] Checking refunds with Dodo Payments failed; they are checked again later.", {
+				error: dodoErrorCode("refund.get", error),
 			});
 		}
 	}
 	return checked;
+}
+
+/**
+ * Records money the owner gave back by hand for a QRIS pass: Sumopod has no refund API, so the owner sends it (bank
+ * transfer or e-wallet) and then records it here. The refund is settled at once (`manual`). A full refund takes the
+ * pass back (each period it placed ends now or leaves the queue; later ones move up) and its unspent credits; a partial
+ * one does that only with `revokeBenefits`. Holding the payment, two clicks make one refund.
+ */
+export async function recordQrisRefund(input: {
+	actorUserId: string;
+	paymentId: string;
+	/** In Rupiah's smallest unit (two decimals); the rest of the payment when left out. */
+	amount?: number | undefined;
+	reason: string;
+	revokeBenefits?: boolean | undefined;
+	now?: Date;
+}): Promise<RefundResult> {
+	const now = input.now ?? new Date();
+	const refundId = await db.transaction(async (tx) => {
+		const [owner] = await tx
+			.select({ userId: schema.billingPayment.userId })
+			.from(schema.billingPayment)
+			.where(eq(schema.billingPayment.id, input.paymentId));
+		if (!owner) throw new ORPCError("NOT_FOUND", { message: "No payment has that ID." });
+		if (owner.userId) await lockBillingAccount(tx, owner.userId);
+		const [payment] = await tx
+			.select()
+			.from(schema.billingPayment)
+			.where(eq(schema.billingPayment.id, input.paymentId))
+			.for("update");
+		if (!payment) throw new ORPCError("NOT_FOUND", { message: "No payment has that ID." });
+		if (payment.provider !== "sumopod")
+			throw new ORPCError("BAD_REQUEST", { message: "Only QRIS payments are refunded by hand here." });
+		if (payment.status !== "paid" && payment.status !== "partially_refunded")
+			throw new ORPCError("BAD_REQUEST", { message: "Only a paid payment can be refunded." });
+		const amount = input.amount ?? payment.amount - payment.refundedAmount;
+		assertAmount(payment, amount);
+		const sequence = await nextRefundSequence(tx, payment.id);
+		const [refund] = await tx
+			.insert(schema.billingRefund)
+			.values({
+				paymentId: payment.id,
+				sequence,
+				refundKey: refundKeyFor(payment.id, sequence),
+				method: "manual",
+				status: "succeeded",
+				amount,
+				reason: input.reason,
+				revokeBenefits: input.revokeBenefits ?? false,
+				actorUserId: input.actorUserId,
+				settledAt: now,
+			})
+			.returning({ id: schema.billingRefund.id });
+		if (!refund) throw new Error("The refund was not saved.");
+		const refundedAmount = payment.refundedAmount + amount;
+		const full = refundedAmount >= payment.amount;
+		const transition = nextPaymentStatus(payment.status, full ? "refunded" : "partially_refunded");
+		await tx
+			.update(schema.billingPayment)
+			.set({ refundedAmount, ...(transition.outcome === "applied" && { status: transition.status }) })
+			.where(eq(schema.billingPayment.id, payment.id));
+		const revoked =
+			full || input.revokeBenefits
+				? await revokePass(tx, payment, full ? "payment.refunded" : "payment.partially_refunded", now)
+				: 0;
+		await tx.insert(schema.billingAuditLog).values({
+			actorUserId: input.actorUserId,
+			targetUserId: payment.userId,
+			action: "refund.recorded",
+			reason: input.reason,
+			details: { paymentId: payment.id, refundId: refund.id, amount, refundedAmount, method: "manual", revoked },
+		});
+		return refund.id;
+	});
+	return resultOf(refundId, false);
 }

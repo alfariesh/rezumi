@@ -1,73 +1,74 @@
-import type { PolarApi } from "./polar/client";
-import type { PolarConfig } from "./polar/config";
+import type { DodoApi } from "./dodo/client";
+import type { DodoConfig } from "./dodo/config";
 import { and, asc, eq, gt, inArray, isNotNull, isNull, lt, notExists, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { PLANS } from "@rezumi/schema/billing";
 import { raiseBillingAlertQuietly } from "./alerts";
 import { grantSubscriptionMonth } from "./credits";
-import { deletePolarCustomer } from "./deletion";
-import { applyPolarCheckout, applyPolarOrder, applyPolarSubscription } from "./fulfillment";
-import { isTransientPolarError, polarApi, polarErrorCode, polarStatus } from "./polar/client";
-import { getPolarConfig } from "./polar/config";
-import { creditMonth } from "./polar/mapping";
-import { LIVE_SUBSCRIPTION_STATUSES } from "./subscriptions";
+import { cancelProviderSubscription } from "./deletion";
+import { dodoApi, dodoErrorCode, dodoStatus, isTransientDodoError } from "./dodo/client";
+import { getDodoConfig } from "./dodo/config";
+import { applyDodoCheckout, applyDodoPayment, applyDodoSubscription } from "./fulfillment";
+import { creditMonth } from "./subscription-access";
+import { CHANGE_REQUESTED_ACTION, LIVE_SUBSCRIPTION_STATUSES } from "./subscriptions";
+import { readPayment } from "./webhook";
 
 /**
- * Asking Polar where things stand, for the webhooks that never arrive or arrive late: when someone looks at an open
- * payment, and from the billing job with backoff. Every Polar call happens outside a transaction; the functions in
+ * Asking Dodo Payments where things stand, for the webhooks that never arrive or arrive late: when someone looks at an
+ * open payment, and from the billing job with backoff. Every Dodo call happens outside a transaction; the functions in
  * fulfillment.ts apply the answers, exactly as they apply webhooks.
  */
 
-/** How long after a checkout page closes an unpaid payment is ended: Polar has expired the session by then. */
-export const EXPIRY_GRACE_MS = 30 * 60 * 1000;
-/** Someone looking at a payment checks Polar at most this often. */
+/** Someone looking at a payment checks Dodo at most this often. */
 export const SYNC_INTERVAL_MS = 10_000;
 // The billing job checks payments older than this, up to this age, this many per run, within this time.
-const RECONCILE_MIN_AGE_MS = 2 * 60 * 1000;
+export const RECONCILE_MIN_AGE_MS = 2 * 60 * 1000;
 const RECONCILE_MAX_AGE_MS = 3 * 24 * 60 * 60 * 1000;
-const RECONCILE_BATCH = 20;
+export const RECONCILE_BATCH = 20;
 const RECONCILE_BUDGET_MS = 20_000;
 /** A subscription whose period ended this long ago without news is asked about, then at most this often. */
 const SUBSCRIPTION_OVERDUE_MS = 30 * 60 * 1000;
 const SUBSCRIPTION_RECHECK_MS = 60 * 60 * 1000;
+/** An upgrade whose charge was still settling is checked this often, for this long after it was asked. */
+const CHANGE_RECHECK_MS = 45 * 1000;
+const CHANGE_WINDOW_MS = 30 * 60 * 1000;
 
 const OPEN_STATUSES = ["creating", "pending"] as const;
 
 type OpenPayment = {
 	id: string;
 	providerCheckoutId: string | null;
-	providerOrderId: string | null;
-	expiresAt: Date | null;
+	providerPaymentId: string | null;
 	createdAt: Date;
 };
 
 const paymentColumns = {
 	id: schema.billingPayment.id,
 	providerCheckoutId: schema.billingPayment.providerCheckoutId,
-	providerOrderId: schema.billingPayment.providerOrderId,
-	expiresAt: schema.billingPayment.expiresAt,
+	providerPaymentId: schema.billingPayment.providerPaymentId,
 	createdAt: schema.billingPayment.createdAt,
 };
 
-/** Applies every order a checkout made (one, normally). */
-async function applyCheckoutOrders(api: PolarApi, checkoutId: string, now: Date) {
-	const orders = await api.orders.list({ checkout_id: checkoutId, limit: 10 });
-	for (const order of orders.items)
-		await applyPolarOrder(order, { source: "status_check", eventType: "status_check", now });
-	return orders.items.length;
+/** Reads one payment and the subscription it charges from Dodo, and applies them. */
+async function applyPaymentFromDodo(api: DodoApi, paymentId: string, now: Date) {
+	const payment = await api.payments.retrieve(paymentId);
+	return applyDodoPayment(
+		payment,
+		{ source: "status_check", eventType: "status_check", now },
+		await readPayment(api, payment),
+	);
 }
 
 /**
- * Checks one open payment with Polar and applies the answer: its order once there is one, else its checkout session.
- * A session still open long after it should have closed is treated as expired.
+ * Checks one open payment with Dodo and applies the answer: its payment once there is one, else its checkout session
+ * (a session closed long ago without a payment expires it).
  */
-async function checkPayment(config: PolarConfig, payment: OpenPayment, now: Date) {
-	const api = polarApi(config);
-	const context = { source: "status_check", eventType: "status_check", now } as const;
-	if (payment.providerOrderId) return applyPolarOrder(await api.orders.get(payment.providerOrderId), context);
+async function checkPayment(config: DodoConfig, payment: OpenPayment, now: Date) {
+	const api = dodoApi(config);
+	if (payment.providerPaymentId) return applyPaymentFromDodo(api, payment.providerPaymentId, now);
 	if (!payment.providerCheckoutId) {
-		// Polar never answered the checkout request (a lost call): nothing to pay on. A younger one may still be opening.
+		// Dodo never answered the checkout request (a lost call): nothing to pay on. A younger one may still be opening.
 		if (+now - +payment.createdAt > RECONCILE_MIN_AGE_MS)
 			await db
 				.update(schema.billingPayment)
@@ -75,11 +76,9 @@ async function checkPayment(config: PolarConfig, payment: OpenPayment, now: Date
 				.where(and(eq(schema.billingPayment.id, payment.id), eq(schema.billingPayment.status, "creating")));
 		return null;
 	}
-	const session = await api.checkouts.get(payment.providerCheckoutId);
-	if (session.status === "succeeded" || session.status === "confirmed")
-		if (await applyCheckoutOrders(api, session.id, now)) return null;
-	const closed = +now > +new Date(session.expires_at) + EXPIRY_GRACE_MS;
-	return applyPolarCheckout(closed && session.status === "open" ? { ...session, status: "expired" } : session, context);
+	const session = await api.checkoutSessions.retrieve(payment.providerCheckoutId);
+	if (session.payment_id) return applyPaymentFromDodo(api, session.payment_id, now);
+	return applyDodoCheckout(session, { source: "status_check", eventType: "status_check", now });
 }
 
 /**
@@ -87,7 +86,7 @@ async function checkPayment(config: PolarConfig, payment: OpenPayment, now: Date
  * Concurrent lookers make one call between them. Errors leave the payment as it was.
  */
 export async function syncPaymentStatus(paymentId: string, now = new Date()): Promise<void> {
-	const config = getPolarConfig();
+	const config = getDodoConfig();
 	if (!config) return;
 	const [claimed] = await db
 		.update(schema.billingPayment)
@@ -95,7 +94,7 @@ export async function syncPaymentStatus(paymentId: string, now = new Date()): Pr
 		.where(
 			and(
 				eq(schema.billingPayment.id, paymentId),
-				eq(schema.billingPayment.provider, "polar"),
+				eq(schema.billingPayment.provider, "dodo"),
 				inArray(schema.billingPayment.status, OPEN_STATUSES),
 				or(
 					isNull(schema.billingPayment.lastCheckedAt),
@@ -108,25 +107,25 @@ export async function syncPaymentStatus(paymentId: string, now = new Date()): Pr
 	try {
 		await checkPayment(config, claimed, now);
 	} catch (error) {
-		console.warn("[billing] Checking a payment with Polar failed; it is checked again later.", {
+		console.warn("[billing] Checking a payment with Dodo Payments failed; it is checked again later.", {
 			paymentId,
-			error: polarErrorCode("checkout.get", error),
+			error: dodoErrorCode("checkout.get", error),
 		});
 	}
 }
 
 /**
- * Asks Polar about one payment now, whatever its status here, and applies the answer: a missed webhook, a refund
- * made in Polar's dashboard. The admin page's "check again". Returns false when Polar has nothing for it yet.
+ * Asks Dodo about one payment now, whatever its status here, and applies the answer: a missed webhook, a refund made in
+ * Dodo's dashboard. The admin page's "check again". Returns false when Dodo has nothing for it yet.
  */
-export async function syncPaymentWithPolar(paymentId: string, now = new Date()): Promise<boolean> {
-	const config = getPolarConfig();
+export async function syncPaymentWithProvider(paymentId: string, now = new Date()): Promise<boolean> {
+	const config = getDodoConfig();
 	if (!config) return false;
 	const [payment] = await db
 		.select(paymentColumns)
 		.from(schema.billingPayment)
-		.where(eq(schema.billingPayment.id, paymentId));
-	if (!payment || (!payment.providerOrderId && !payment.providerCheckoutId)) return false;
+		.where(and(eq(schema.billingPayment.id, paymentId), eq(schema.billingPayment.provider, "dodo")));
+	if (!payment || (!payment.providerPaymentId && !payment.providerCheckoutId)) return false;
 	await checkPayment(config, payment, now);
 	return true;
 }
@@ -144,11 +143,11 @@ const due = (
 
 /**
  * The billing job's safety net for missed webhooks: claims open payments due for a check (skipping rows another run
- * holds), marks them checked, then asks Polar about each within a time budget. Safe to run twice at once. Returns how
+ * holds), marks them checked, then asks Dodo about each within a time budget. Safe to run twice at once. Returns how
  * many it checked.
  */
 export async function reconcilePayments(now = new Date()): Promise<number> {
-	const config = getPolarConfig();
+	const config = getDodoConfig();
 	if (!config) return 0;
 	const started = Date.now();
 	const claimed = await db.transaction(async (tx) => {
@@ -157,7 +156,7 @@ export async function reconcilePayments(now = new Date()): Promise<number> {
 			.from(schema.billingPayment)
 			.where(
 				and(
-					eq(schema.billingPayment.provider, "polar"),
+					eq(schema.billingPayment.provider, "dodo"),
 					inArray(schema.billingPayment.status, OPEN_STATUSES),
 					lt(schema.billingPayment.createdAt, new Date(+now - RECONCILE_MIN_AGE_MS)),
 					gt(schema.billingPayment.createdAt, new Date(+now - RECONCILE_MAX_AGE_MS)),
@@ -188,39 +187,55 @@ export async function reconcilePayments(now = new Date()): Promise<number> {
 			await checkPayment(config, payment, now);
 			checked++;
 		} catch (error) {
-			if (isTransientPolarError(error) || polarStatus(error)) failures++;
+			if (isTransientDodoError(error) || dodoStatus(error)) failures++;
 			console.warn("[billing] Reconciling a payment failed; it is checked again later.", {
 				paymentId: payment.id,
-				error: polarErrorCode("checkout.get", error),
+				error: dodoErrorCode("checkout.get", error),
 			});
 		}
 	}
-	// Every check failing at Polar, run after run, is an outage or a revoked token: the alert adds them up.
+	// Every check failing at Dodo, run after run, is an outage or a revoked key: the alert adds them up.
 	if (failures && !checked) await raiseBillingAlertQuietly({ kind: "provider_errors", count: failures, now });
 	return checked;
 }
 
+/** How many of a subscription's latest payments a check applies. */
+const RECENT_PAYMENTS = 3;
+
 /**
- * Applies a subscription's latest orders, oldest first: a renewal, a plan change or a refund whose webhook hasn't
- * arrived yet. Orders applied already change nothing. Returns how many Polar listed.
+ * Applies a subscription's latest payments, oldest first: a renewal, a plan change or a refund whose webhook hasn't
+ * arrived yet. Payments applied already change nothing. `since` leaves out older ones. Returns how many it applied.
  */
-export async function applyRecentOrders(api: PolarApi, providerSubscriptionId: string, now: Date): Promise<number> {
-	const context = { source: "status_check", eventType: "status_check", now } as const;
-	const orders = await api.orders.list({ subscription_id: providerSubscriptionId, limit: 3, sorting: ["-created_at"] });
-	for (const order of orders.items.toReversed()) await applyPolarOrder(order, context);
-	return orders.items.length;
+export async function applyRecentPayments(
+	api: DodoApi,
+	providerSubscriptionId: string,
+	now: Date,
+	since?: Date,
+): Promise<number> {
+	const page = await api.payments.list({
+		subscription_id: providerSubscriptionId,
+		page_size: 10,
+		...(since && { created_at_gte: since.toISOString() }),
+	});
+	const recent = page.items
+		.toSorted((a, b) => +new Date(b.created_at) - +new Date(a.created_at))
+		.slice(0, RECENT_PAYMENTS)
+		.toReversed();
+	for (const item of recent) await applyPaymentFromDodo(api, item.payment_id, now);
+	return recent.length;
 }
 
 /**
- * Asks Polar about subscriptions whose webhooks seem lost, and applies the answers (latest orders, then the
+ * Asks Dodo about subscriptions whose webhooks seem lost, and applies the answers (latest payments, then the
  * subscription): a period that ended a while ago without a renewal, cancellation or failure arriving, and a monthly
- * Pro AI subscription paid through now without credits for now, whose plan-change order hasn't arrived. Yearly ones
- * get their months from grantYearlyCredits. Returns how many it checked.
+ * Pro AI subscription paid through now without credits for now, whose plan-change payment hasn't arrived, and an
+ * upgrade asked for in the last half hour that hasn't reached its new product here (its charge was still settling when
+ * the customer got their answer). Yearly ones get their months from grantYearlyCredits. Returns how many it checked.
  */
 export async function reconcileSubscriptions(now = new Date()): Promise<number> {
-	const config = getPolarConfig();
+	const config = getDodoConfig();
 	if (!config) return 0;
-	const api = polarApi(config);
+	const api = dodoApi(config);
 	const started = Date.now();
 	const overdue = and(
 		isNotNull(schema.billingSubscription.currentPeriodEnd),
@@ -242,11 +257,12 @@ export async function reconcileSubscriptions(now = new Date()): Promise<number> 
 				),
 		),
 	);
-	const due = await db
+	const dueRows = await db
 		.select({ id: schema.billingSubscription.id, providerId: schema.billingSubscription.providerSubscriptionId })
 		.from(schema.billingSubscription)
 		.where(
 			and(
+				eq(schema.billingSubscription.provider, "dodo"),
 				inArray(schema.billingSubscription.status, [...LIVE_SUBSCRIPTION_STATUSES]),
 				or(overdue, uncredited),
 				or(
@@ -257,22 +273,50 @@ export async function reconcileSubscriptions(now = new Date()): Promise<number> 
 		)
 		.orderBy(asc(schema.billingSubscription.currentPeriodEnd))
 		.limit(RECONCILE_BATCH);
+	const awaited = await db
+		.selectDistinct({
+			id: schema.billingSubscription.id,
+			providerId: schema.billingSubscription.providerSubscriptionId,
+		})
+		.from(schema.billingSubscription)
+		.innerJoin(
+			schema.billingAuditLog,
+			and(
+				eq(schema.billingAuditLog.action, CHANGE_REQUESTED_ACTION),
+				gt(schema.billingAuditLog.createdAt, new Date(+now - CHANGE_WINDOW_MS)),
+				sql`${schema.billingAuditLog.details}->>'subscriptionId' = ${schema.billingSubscription.id}`,
+				sql`${schema.billingAuditLog.details}->>'productId' <> ${schema.billingSubscription.providerProductId}`,
+			),
+		)
+		.where(
+			and(
+				eq(schema.billingSubscription.provider, "dodo"),
+				inArray(schema.billingSubscription.status, [...LIVE_SUBSCRIPTION_STATUSES]),
+				or(
+					isNull(schema.billingSubscription.lastCheckedAt),
+					lt(schema.billingSubscription.lastCheckedAt, new Date(+now - CHANGE_RECHECK_MS)),
+				),
+			),
+		)
+		.limit(RECONCILE_BATCH);
+	const rows = [...awaited, ...dueRows.filter((row) => !awaited.some((other) => other.id === row.id))];
 	let checked = 0;
-	for (const row of due) {
+	for (const row of rows) {
 		if (Date.now() - started > RECONCILE_BUDGET_MS) break;
 		await db
 			.update(schema.billingSubscription)
 			.set({ lastCheckedAt: now })
 			.where(eq(schema.billingSubscription.id, row.id));
 		try {
-			const context = { source: "status_check", eventType: "status_check", now } as const;
-			await applyRecentOrders(api, row.providerId, now);
-			await applyPolarSubscription(await api.subscriptions.get(row.providerId), context);
+			await applyRecentPayments(api, row.providerId, now);
+			const observedAt = new Date();
+			const current = await api.subscriptions.retrieve(row.providerId);
+			await applyDodoSubscription(current, { source: "status_check", eventType: "status_check", now }, observedAt);
 			checked++;
 		} catch (error) {
-			console.warn("[billing] Checking a subscription with Polar failed; it is checked again later.", {
+			console.warn("[billing] Checking a subscription with Dodo Payments failed; it is checked again later.", {
 				subscriptionId: row.id,
-				error: polarErrorCode("subscription.get", error),
+				error: dodoErrorCode("subscription.get", error),
 			});
 		}
 	}
@@ -282,7 +326,7 @@ export async function reconcileSubscriptions(now = new Date()): Promise<number> 
 /**
  * Credits for the months of a yearly Pro AI subscription after its first: when a month starts, its 100 credits are
  * granted (once per subscription per month, so two runs never double them). Monthly subscriptions get theirs with
- * each renewal's order. Returns how many grants it made.
+ * each renewal's payment. Returns how many grants it made.
  */
 export async function grantYearlyCredits(now = new Date()): Promise<number> {
 	const perMonth = PLANS["pro-ai"].creditsPerMonth;
@@ -333,7 +377,7 @@ export async function grantYearlyCredits(now = new Date()): Promise<number> {
 			)
 			.orderBy(sql`${schema.billingPayment.createdAt} desc`)
 			.limit(1);
-		// No paid order behind it here yet: the order brings the first month itself.
+		// No paid payment behind it here yet: the payment brings the first month itself.
 		if (!payment) continue;
 		const grant = await db.transaction((tx) =>
 			grantSubscriptionMonth(tx, {
@@ -352,23 +396,18 @@ export async function grantYearlyCredits(now = new Date()): Promise<number> {
 }
 
 /**
- * Subscriptions whose account was deleted while they still billed: deletes (and anonymizes) the customer at Polar,
- * which cancels them at once, or revokes the subscription itself when Polar no longer knows the customer. The delete
- * hook tries this first; this catches what it couldn't. Returns how many it ended.
+ * Subscriptions whose account was deleted while they still billed: cancels each at Dodo at once. The delete hook tries
+ * this first; this catches what it couldn't. Returns how many it ended.
  */
 export async function endDeletedAccountSubscriptions(now = new Date()): Promise<number> {
-	const config = getPolarConfig();
+	const config = getDodoConfig();
 	if (!config) return 0;
-	const api = polarApi(config);
 	const rows = await db
-		.select({
-			id: schema.billingSubscription.id,
-			providerId: schema.billingSubscription.providerSubscriptionId,
-			externalCustomerId: schema.billingSubscription.externalCustomerId,
-		})
+		.select({ id: schema.billingSubscription.id, providerId: schema.billingSubscription.providerSubscriptionId })
 		.from(schema.billingSubscription)
 		.where(
 			and(
+				eq(schema.billingSubscription.provider, "dodo"),
 				isNull(schema.billingSubscription.userId),
 				isNull(schema.billingSubscription.revokedForDeletionAt),
 				inArray(schema.billingSubscription.status, [...LIVE_SUBSCRIPTION_STATUSES]),
@@ -378,14 +417,7 @@ export async function endDeletedAccountSubscriptions(now = new Date()): Promise<
 	let ended = 0;
 	for (const row of rows) {
 		try {
-			await deletePolarCustomer(config, row.externalCustomerId);
-			try {
-				await api.subscriptions.revoke(row.providerId);
-			} catch (error) {
-				// Deleting the customer canceled it already, or it had ended.
-				const status = polarStatus(error);
-				if (status !== 403 && status !== 404 && status !== 409 && status !== 422) throw error;
-			}
+			await cancelProviderSubscription(config, row.providerId, now);
 			await db
 				.update(schema.billingSubscription)
 				.set({ revokedForDeletionAt: now })
@@ -394,7 +426,7 @@ export async function endDeletedAccountSubscriptions(now = new Date()): Promise<
 		} catch (error) {
 			console.warn("[billing] Ending a deleted account's subscription failed; it is tried again later.", {
 				subscriptionId: row.id,
-				error: polarErrorCode("subscription.revoke", error),
+				error: dodoErrorCode("subscription.cancel", error),
 			});
 		}
 	}

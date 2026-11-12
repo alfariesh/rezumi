@@ -34,7 +34,7 @@
 		"db:generate": "dotenvx run --ignore=MISSING_ENV_FILE -f .env.local -- turbo run db:generate --filter=@rezumi/db",
 		"db:migrate": "dotenvx run --ignore=MISSING_ENV_FILE -f .env.local -- turbo run db:migrate --filter=@rezumi/db",
 		"db:studio": "dotenvx run --ignore=MISSING_ENV_FILE -f .env.local -- turbo run db:studio --filter=@rezumi/db",
-		"lingui:extract": "turbo run lingui:extract --filter=web && pnpm pdf:translations",
+		"lingui:extract": "turbo run lingui:extract --filter=web --filter=extension && pnpm pdf:translations",
 		"dev": "dotenvx run --ignore=MISSING_ENV_FILE -f .env.local -- turbo run dev --filter=!blog",
 		"dev:blog": "pnpm --filter blog dev",
 		"seed:dev": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling seed:dev",

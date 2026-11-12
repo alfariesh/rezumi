@@ -1,5 +1,7 @@
 # Phase 12 — Go global: Midtrans diganti Polar, paket menjadi langganan
 
+> **Polar diganti Dodo Payments pada 2026-11-10** ([phase-13-dodo.md](phase-13-dodo.md)). Skema langganan, harga, pajak, masa coba, dan kredit di bawah tetap berlaku; semua yang khusus Polar (token, produk, webhook, portal, setelan, trik mengakhiri trial) hanya sejarah.
+
 | Dikerjakan                  | Ukuran           | Bergantung pada                       | Perlu dari pemilik                                                                                      |
 | --------------------------- | ---------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | Claude (+ pemilik di akhir) | Besar (2–3 sesi) | Phase 01–10 (fondasi billing, kredit) | Akun Polar sandbox + produksi, token akses sandbox di `.env.local`, keputusan harga (sudah, 2026-11-05) |

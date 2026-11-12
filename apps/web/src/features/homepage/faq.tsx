@@ -1,9 +1,10 @@
 import { Accordion } from "@heroui/react";
 import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
-import { PLANS, TRIAL_CREDITS } from "@rezumi/schema/billing";
+import { PASS_DAYS, PLANS, TRIAL_CREDITS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
-import { freeTemplates } from "./plans";
+import { currencyForLocale, freeTemplates } from "./plans";
 import { Container, SectionHeading, SectionTitle } from "./ui";
 import { serializeJsonLd } from "@/libs/seo";
 
@@ -15,7 +16,11 @@ type Question = {
 	link?: { label: string; to: "/ats-checker" };
 };
 
-const getQuestions = (): Question[] => {
+/**
+ * The questions, in order. `qris` (the Indonesian page, which shows Rupiah) asks about QRIS before the card questions;
+ * elsewhere it comes after them.
+ */
+const getQuestions = (qris = false): Question[] => {
 	const freeTemplateCount = freeTemplates.length;
 	const freeResumes = PLANS.free.limits.activeResumes;
 	const freeCoverLetters = PLANS.free.limits.activeCoverLetters;
@@ -23,7 +28,13 @@ const getQuestions = (): Question[] => {
 	const trialCredits = TRIAL_CREDITS.amount;
 	const trialDays = TRIAL_CREDITS.validDays;
 	const plusTrialDays = PLANS.plus.trialDays;
-	return [
+	const passDays = PASS_DAYS.month;
+	const qrisQuestion: Question = {
+		id: "qris",
+		question: t`Can I pay with QRIS?`,
+		answer: t`Yes, from Indonesia: pay in Rupiah with QRIS from any bank or e-wallet app, at a final price with no tax added. A QRIS plan runs for ${passDays} days or a year and doesn't renew on its own. Pay again whenever you like and the time is added after your current plan, so no day is lost; moving up to Pro AI starts it at once and the rest of Plus continues after it. You get an email three days before it ends.`,
+	};
+	const questions: Question[] = [
 		{
 			id: "free",
 			question: t`Is there a free plan?`,
@@ -37,12 +48,12 @@ const getQuestions = (): Question[] => {
 		{
 			id: "payment",
 			question: t`How can I pay?`,
-			answer: t`With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live.`,
+			answer: t`With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Dodo Payments, our merchant of record. Dodo Payments handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live.`,
 		},
 		{
 			id: "trial",
 			question: t`Is there a free trial?`,
-			answer: t`Yes: a first Plus subscription starts with ${plusTrialDays} free days. Polar takes a card at checkout but charges nothing until the trial ends, and emails you a reminder a few days before. Cancel during the trial and you pay nothing.`,
+			answer: t`Yes: a first Plus subscription starts with ${plusTrialDays} free days. Dodo Payments takes a card at checkout but charges nothing until the trial ends, and emails you a reminder a few days before. Cancel during the trial and you pay nothing.`,
 		},
 		{
 			id: "credits",
@@ -76,6 +87,11 @@ const getQuestions = (): Question[] => {
 			answer: t`PDF on every plan, along with Markdown and JSON. Word (DOCX) and ODT come with Plus and Pro AI. You can export all of your data at any time, whatever your plan.`,
 		},
 	];
+	// After "How does a subscription work?" on the Indonesian page (QRIS is how it pays there); after the card questions
+	// elsewhere.
+	const after = questions.findIndex((item) => item.id === (qris ? "access" : "trial"));
+	questions.splice(after + 1, 0, qrisQuestion);
+	return questions;
 };
 
 /**
@@ -83,7 +99,8 @@ const getQuestions = (): Question[] => {
  * structured data, so search engines and assistants can quote them.
  */
 export function Faq() {
-	const questions = getQuestions();
+	const { i18n } = useLingui();
+	const questions = getQuestions(currencyForLocale(i18n.locale) === "idr");
 	const structuredData = {
 		"@context": "https://schema.org",
 		"@type": "FAQPage",

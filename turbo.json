@@ -17,6 +17,11 @@
 					"deny": ["app:web", "runtime:browser"]
 				}
 			},
+			"app:extension": {
+				"dependencies": {
+					"deny": ["app:server", "app:web", "app:mobile", "runtime:server", "runtime:native"]
+				}
+			},
 			"app:mobile": {
 				"dependencies": {
 					"deny": ["app:server", "app:web", "runtime:server", "runtime:browser"]
@@ -107,7 +112,8 @@
 				"TURNSTILE_SITE_KEY",
 				"TURNSTILE_SECRET_KEY",
 				"BILLING_ALERT_EMAIL",
-				"POLAR_*",
+				"DODO_PAYMENTS_*",
+				"SUMOPOD_*",
 				"CRON_SECRET",
 				"STRICT_SCHEMA_CHECK",
 				"CLOUDFLARE",
@@ -159,7 +165,8 @@
 				"TURNSTILE_SITE_KEY",
 				"TURNSTILE_SECRET_KEY",
 				"BILLING_ALERT_EMAIL",
-				"POLAR_*",
+				"DODO_PAYMENTS_*",
+				"SUMOPOD_*",
 				"CRON_SECRET",
 				"STRICT_SCHEMA_CHECK",
 				"CLOUDFLARE",
@@ -212,7 +219,8 @@
 				"TURNSTILE_SITE_KEY",
 				"TURNSTILE_SECRET_KEY",
 				"BILLING_ALERT_EMAIL",
-				"POLAR_*",
+				"DODO_PAYMENTS_*",
+				"SUMOPOD_*",
 				"CRON_SECRET",
 				"STRICT_SCHEMA_CHECK",
 				"CLOUDFLARE",
@@ -325,13 +333,17 @@
 		"TURNSTILE_SITE_KEY",
 		"TURNSTILE_SECRET_KEY",
 		"BILLING_ALERT_EMAIL",
-		"POLAR_ENVIRONMENT",
-		"POLAR_ACCESS_TOKEN",
-		"POLAR_WEBHOOK_SECRET",
-		"POLAR_PRODUCT_PLUS_MONTHLY",
-		"POLAR_PRODUCT_PLUS_YEARLY",
-		"POLAR_PRODUCT_PRO_AI_MONTHLY",
-		"POLAR_PRODUCT_PRO_AI_YEARLY",
+		"DODO_PAYMENTS_ENVIRONMENT",
+		"DODO_PAYMENTS_API_KEY",
+		"DODO_PAYMENTS_WEBHOOK_KEY",
+		"DODO_PAYMENTS_PRODUCT_PLUS_MONTHLY",
+		"DODO_PAYMENTS_PRODUCT_PLUS_YEARLY",
+		"DODO_PAYMENTS_PRODUCT_PRO_AI_MONTHLY",
+		"DODO_PAYMENTS_PRODUCT_PRO_AI_YEARLY",
+		"SUMOPOD_ENVIRONMENT",
+		"SUMOPOD_API_KEY",
+		"SUMOPOD_WEBHOOK_SECRET",
+		"DEV_COUNTRY",
 		"OLACV_API_KEY",
 		"AI_TEST_TIMEOUT_MS",
 		"AI_REQUEST_TIMEOUT_MS",

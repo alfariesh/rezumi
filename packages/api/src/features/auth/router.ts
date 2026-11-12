@@ -277,7 +277,7 @@ export const authRouter = {
 					payments: z.array(
 						z.object({
 							id: z.string(),
-							orderId: z.string().nullable(),
+							providerPaymentId: z.string().nullable(),
 							planId: z.string(),
 							interval: z.string().nullable(),
 							billingReason: z.string().nullable(),

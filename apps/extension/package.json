@@ -1,0 +1,48 @@
+{
+	"name": "extension",
+	"version": "0.1.0",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "node scripts/build.ts --dev --watch",
+		"build": "node scripts/build.ts",
+		"build:dev": "node scripts/build.ts --dev",
+		"zip": "node scripts/build.ts && node scripts/zip.ts",
+		"typecheck": "tsrs --noEmit",
+		"test": "vp test run --passWithNoTests",
+		"test:coverage": "vp test run --coverage --passWithNoTests",
+		"test:ci": "vp test run --reporter=default --reporter=github-actions --reporter=json --reporter=junit --outputFile.json=reports/vitest-results.json --outputFile.junit=reports/vitest-junit.xml --passWithNoTests",
+		"test:e2e": "node scripts/build.ts --dev && playwright test",
+		"lingui:extract": "lingui extract --clean --overwrite"
+	},
+	"dependencies": {
+		"@heroui/react": "catalog:",
+		"@lingui/core": "^6.10.1",
+		"@lingui/react": "^6.10.1",
+		"@rezumi/job-sites": "workspace:*",
+		"@rezumi/ui": "workspace:*",
+		"react": "catalog:",
+		"react-dom": "19.3.1",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.29.7",
+		"@lingui/cli": "^6.10.1",
+		"@lingui/format-po": "^6.10.1",
+		"@lingui/vite-plugin": "^6.10.1",
+		"@playwright/test": "^1.64.1",
+		"@rezumi/config": "workspace:*",
+		"@rolldown/plugin-babel": "^0.2.4",
+		"@tailwindcss/vite": "^4.3.3",
+		"@types/chrome": "^0.1.32",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"@vitejs/plugin-react": "^6.1.2",
+		"babel-plugin-react-compiler": "^1.0.0",
+		"fflate": "catalog:",
+		"tailwindcss": "catalog:",
+		"tsrs": "catalog:",
+		"typescript": "catalog:",
+		"vite-plus": "catalog:"
+	}
+}

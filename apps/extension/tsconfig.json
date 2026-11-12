@@ -1,0 +1,12 @@
+{
+	"extends": "@rezumi/config/tsconfig.base.json",
+	"include": ["**/*.ts", "**/*.tsx"],
+	"exclude": ["dist", "release", "node_modules"],
+	"compilerOptions": {
+		"target": "ES2022",
+		"jsx": "react-jsx",
+		"lib": ["ES2023", "DOM", "DOM.Iterable"],
+		"types": ["node", "chrome", "vite-plus/client"],
+		"noEmit": true
+	}
+}

@@ -27,7 +27,7 @@ const inputOf = (body: unknown) => (body && typeof body === "object" && "json" i
 const procedureOf = (url: string) => new URL(url).pathname.replace(/^\/api\/rpc\//, "");
 
 /**
- * Answers the given procedures in the browser instead of the server, so a test never reaches Polar or needs billing
+ * Answers the given procedures in the browser instead of the server, so a test never reaches Dodo Payments or needs billing
  * switched on. Everything else still goes to the server. The web client batches calls made together, so a batch is
  * split: mocked items are answered here and the rest are sent on one by one.
  */
