@@ -22,7 +22,7 @@ Kebijakan ini untuk layanan resmi rezumi.app dan app yang terhubung ke sana. Kon
 
 Jangan memasukkan NIK, data kesehatan, data anak atau informasi sensitif yang tidak diperlukan dalam CV/prompt.
 Data pihak lain hanya boleh dimasukkan dengan dasar yang sah. Kami tidak menjual data atau memakai CV untuk iklan.
-Cookie diperlukan untuk login, tema dan bahasa; penyimpanan lokal dapat berisi draf dan preferensi.
+Cookie diperlukan untuk login, tema dan bahasa, dan untuk akses ke portfolio yang berkata sandi (12 jam); penyimpanan lokal dapat berisi draf dan preferensi.
 Tidak ada analytics iklan pihak ketiga dalam app resmi saat draf ini dibuat; log keamanan dan statistik CV tetap diproses.
 
 ## Penerima data
@@ -75,24 +75,37 @@ Pemblokiran penulis CV disimpan lokal per akun/server dan tidak menghapus konten
 
 Bagian ini berlaku setelah fitur portfolio diluncurkan.
 
-| Data                                                                               | Tujuan                                  | Dasar pemrosesan                                        |
-| ---------------------------------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------- |
-| Isi portfolio, gambar, PDF, lokasi yang ditulis pengguna                           | Menampilkan portfolio kepada pengunjung | Pelaksanaan perjanjian; pilihan publikasi oleh pengguna |
-| Pesan form kontak: nama, email, isi pesan                                          | Menyampaikan pesan kepada pemilik       | Pelaksanaan perjanjian dan kepentingan sah pengunjung   |
-| Statistik agregat kunjungan, klik, sumber, negara, jenis perangkat, domain perujuk | Statistik bagi pemilik portfolio        | Kepentingan sah yang proporsional                       |
-| Laporan: alasan, rincian, email pelapor bila diisi                                 | Moderasi konten dan pelaksanaan hak     | Kewajiban hukum dan kepentingan sah keamanan            |
-| Catatan tindakan moderasi: siapa bertindak, kapan, alasannya                       | Akuntabilitas dan penanganan keberatan  | Kepentingan sah dan kewajiban hukum                     |
+| Data                                                                               | Tujuan                                                  | Dasar pemrosesan                                        |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| Isi portfolio, gambar, PDF, lokasi yang ditulis pengguna                           | Menampilkan portfolio kepada pengunjung                 | Pelaksanaan perjanjian; pilihan publikasi oleh pengguna |
+| Hash kata sandi portfolio dan cookie akses portfolio                               | Membatasi akses ke portfolio yang dilindungi pemiliknya | Pelaksanaan perjanjian; pilihan pemilik portfolio       |
+| Pesan form kontak: nama, email, isi pesan                                          | Menyampaikan pesan kepada pemilik                       | Pelaksanaan perjanjian dan kepentingan sah pengunjung   |
+| Statistik agregat kunjungan, klik, sumber, negara, jenis perangkat, domain perujuk | Statistik bagi pemilik portfolio                        | Kepentingan sah yang proporsional                       |
+| Laporan: alasan, rincian, email pelapor bila diisi                                 | Moderasi konten dan pelaksanaan hak                     | Kewajiban hukum dan kepentingan sah keamanan            |
+| Catatan tindakan moderasi: siapa bertindak, kapan, alasannya                       | Akuntabilitas dan penanganan keberatan                  | Kepentingan sah dan kewajiban hukum                     |
 
 - **Isi yang dipublikasikan pengguna** terlihat oleh siapa saja. Gambar dikompres di browser sehingga data lokasi foto (EXIF) terhapus. PDF diterbitkan apa adanya,
   termasuk data di dalam berkasnya seperti nama penulis.
 - **Statistik tanpa cookie pelacak.** Kunjungan dan klik dibedakan dengan hash IP, peramban dan bahasa selama satu jam; IP mentah tidak disimpan. Rincian negara, jenis perangkat
   dan domain perujuk disimpan sebagai data agregat di **Cloudflare Analytics Engine** selama sekitar 3 bulan.
+  Statistik juga menghitung halaman karya yang dibuka, dan bila pengunjung datang lewat kode QR pada kartu nama pemilik (alamatnya memuat `utm_source=qr`) sumbernya dicatat sebagai "QR".
 - **Form kontak.** Pesan disimpan **90 hari** lalu dihapus otomatis, dan pemilik portfolio bisa menghapusnya lebih cepat. Pemilik portfolio melihat email pengirim agar bisa membalas.
   **Cloudflare Turnstile** dipakai untuk mencegah spam pada form kontak dan form laporan, dan memproses data teknis pengunjung sebagai pihak ketiga.
 - **Laporan.** Laporan hanya dibaca tim Rezumi. Identitas pelapor dan isi rinciannya tidak ditunjukkan kepada pemilik portfolio dan tidak ikut dalam ekspor datanya; ekspor hanya memuat alasan,
   status dan waktu. Email pelapor dihapus 90 hari setelah laporan ditangani. Laporan dihapus bersama portfolio atau akun yang dilaporkan.
   Catatan tindakan moderasi tetap disimpan setelah akun dihapus, tanpa menyebut akunnya.
 - **Video** YouTube dan Vimeo baru dimuat setelah pengunjung mengklik putar; sebelum itu tidak ada permintaan ke layanan tersebut.
+- **Sematan.** Konten dari Figma, Loom, Spotify, SoundCloud, dan Google Slides baru dimuat setelah pengunjung menekan tombolnya; sebelum itu tidak ada permintaan ke layanan tersebut
+  (gambar pratinjau adalah salinan di penyimpanan portfolio). Setelah ditekan, browser pengunjung memuat konten langsung dari layanan itu, yang dapat menerima alamat IP dan data browser
+  pengunjung, memasang atau membaca cookie sendiri, dan memprosesnya menurut kebijakan privasinya sendiri sebagai pihak ketiga. Di bawah tombol ada catatan "Memuat konten dari …".
+- **Kata sandi portfolio.** Pemilik dapat melindungi portfolionya dengan satu kata sandi. Kata sandi hanya disimpan sebagai hash, bukan teks asli, dan tidak masuk log atau ekspor data.
+  Pengunjung yang memasukkan kata sandi yang benar menerima cookie akses yang berlaku 12 jam di browser itu (hanya penanda portfolio dan masa berlaku yang ditandatangani, tanpa data pribadi),
+  dan alamat file portfolio (gambar, PDF) yang mereka terima memuat token yang berlaku 12 sampai 24 jam. Percobaan kata sandi yang salah dibatasi menurut alamat IP pengunjung (alamat IPv6
+  dihitung per blok /64) dan menurut portfolio; hitungan itu hanya disimpan sementara dan tidak memuat kata sandi yang dicoba. Selama portfolio berkata sandi, isinya tidak ditunjukkan kepada
+  pengunjung tanpa kata sandi, tidak diindeks mesin pencari, dan tidak masuk peta situs. Mengganti atau menghapus kata sandi mencabut akses yang ada.
+- **Simpan kontak.** Halaman portfolio dapat menawarkan tombol Simpan kontak yang mengunduh kartu kontak (vCard) ke perangkat pengunjung. Kartu dibuat saat diunduh dari data yang sudah tampil
+  di halaman: nama, headline, alamat portfolio, dan email, nomor WhatsApp, telepon, situs, profil, serta kota hanya bila pemilik menampilkannya; tanpa foto dan alamat jalan. Rezumi tidak
+  menyimpan data pengunjung untuk ini; unduhan hanya dihitung sebagai angka agregat.
 - **Tautan yang ditempel.** Saat pengguna menempel tautan, server Rezumi membaca judul dan gambar halaman itu tanpa mengirim data pengguna. Bila pengguna menyetujui gambarnya,
   salinan gambar disimpan bersama file portfolionya.
 - **Lokasi dan peta.** Lokasi tampil setingkat kota secara bawaan, dan pengguna dapat memilih untuk tidak menampilkan lokasi. Gambar peta dibuat di editor, sehingga membuka portfolio

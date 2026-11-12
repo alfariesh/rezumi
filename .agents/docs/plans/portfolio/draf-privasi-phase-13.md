@@ -1,6 +1,6 @@
-# Draf Kebijakan Privasi — fitur Phase 13 (menunggu persetujuan pemilik)
+# Draf Kebijakan Privasi — fitur Phase 13 (disetujui pemilik 2026-11-13, sudah masuk `docs/legal/`)
 
-Usulan paragraf untuk `docs/legal/kebijakan-privasi.mdx` (Indonesia, yang berlaku) dan `docs/legal/privacy-policy.mdx` (terjemahan Inggris), bagian **Portfolio web** / **Web portfolios**. Ditulis 2026-11-12 oleh sesi dokumentasi Phase 13 (`phase-13-fitur-lanjutan.md` bagian 10). **Belum dimasukkan ke `docs/legal/`.**
+Usulan paragraf untuk `docs/legal/kebijakan-privasi.mdx` (Indonesia, yang berlaku) dan `docs/legal/privacy-policy.mdx` (terjemahan Inggris), bagian **Portfolio web** / **Web portfolios**. Ditulis 2026-11-12 oleh sesi dokumentasi Phase 13 (`phase-13-fitur-lanjutan.md` bagian 10). **Disetujui pemilik pada 2026-11-13 dan dimasukkan ke kedua berkas apa adanya; tanggal berlaku tidak diubah.**
 
 ## Kenapa belum dimasukkan
 

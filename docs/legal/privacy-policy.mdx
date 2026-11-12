@@ -22,7 +22,7 @@ This covers rezumi.app and apps connected to it. Other servers have their own op
 
 Avoid unnecessary identity numbers, health data, children's data and sensitive information in documents/prompts.
 Only provide others' data with a lawful basis. We do not sell data or use resumes for advertising.
-Cookies support login, theme and language; device storage may hold drafts/preferences.
+Cookies support login, theme and language, and access to a portfolio protected by a password (12 hours); device storage may hold drafts/preferences.
 At draft time the official apps include no third-party advertising analytics; security logs and resume statistics still operate.
 
 ## Recipients
@@ -73,23 +73,36 @@ Author blocks are local per account/server; they do not remove website content o
 
 This section applies once portfolios launch.
 
-| Data                                                                                      | Purpose                                 | Basis                                               |
-| ----------------------------------------------------------------------------------------- | --------------------------------------- | --------------------------------------------------- |
-| Portfolio content, pictures, PDFs and location written by the user                        | Showing the portfolio to visitors       | Contract; the user's choice to publish              |
-| Contact form messages: name, email, message                                               | Passing messages to the owner           | Contract and visitors' legitimate interests         |
-| Aggregate statistics: visits, clicks, sources, countries, device types, referring domains | Statistics for the portfolio's owner    | Proportionate legitimate interests                  |
-| Reports: reason, details, reporter's email if given                                       | Content moderation and enforcing rights | Legal obligations and security legitimate interests |
-| Moderation records: who acted, when and why                                               | Accountability and handling appeals     | Legitimate interests and legal obligations          |
+| Data                                                                                      | Purpose                                           | Basis                                               |
+| ----------------------------------------------------------------------------------------- | ------------------------------------------------- | --------------------------------------------------- |
+| Portfolio content, pictures, PDFs and location written by the user                        | Showing the portfolio to visitors                 | Contract; the user's choice to publish              |
+| Portfolio password hash and portfolio access cookie                                       | Limiting access to a portfolio its owner protects | Contract; the portfolio owner's choice              |
+| Contact form messages: name, email, message                                               | Passing messages to the owner                     | Contract and visitors' legitimate interests         |
+| Aggregate statistics: visits, clicks, sources, countries, device types, referring domains | Statistics for the portfolio's owner              | Proportionate legitimate interests                  |
+| Reports: reason, details, reporter's email if given                                       | Content moderation and enforcing rights           | Legal obligations and security legitimate interests |
+| Moderation records: who acted, when and why                                               | Accountability and handling appeals               | Legitimate interests and legal obligations          |
 
 - **Content users publish** is visible to anyone. Pictures are compressed in the browser, which removes photo location data (EXIF). PDFs are published as they are, including details saved inside the
   file such as the author's name.
 - **Statistics without tracking cookies.** Visits and clicks are told apart with a hash of IP address, browser and language for one hour; the raw IP address is not stored. Country, device type and
   referring domain breakdowns are kept as aggregates in **Cloudflare Analytics Engine** for about 3 months.
+  Statistics also count the work pages opened, and when a visitor arrives through the QR code on the owner's business card (its address carries `utm_source=qr`) the source is recorded as "QR".
 - **Contact form.** Messages are kept for **90 days** and then deleted automatically; the portfolio's owner can delete them sooner. The owner sees the sender's email so they can reply.
   **Cloudflare Turnstile** prevents spam on the contact and report forms and processes visitors' technical data as a third party.
 - **Reports.** Reports are read only by the Rezumi team. Who reported and what they wrote are not shown to the portfolio's owner and are not in their data export, which holds only the reason, status and time.
   A reporter's email is deleted 90 days after the report is handled. Reports are deleted with the reported portfolio or account. Moderation records are kept after an account is deleted, without naming the account.
 - **Videos** from YouTube and Vimeo load only after a visitor clicks play; until then no request goes to those services.
+- **Embeds.** Content from Figma, Loom, Spotify, SoundCloud and Google Slides loads only after a visitor presses its button; until then no request goes to those services (the preview
+  picture is a copy stored with the portfolio). After the press, the visitor's browser loads the content straight from that service, which may receive the visitor's IP address and browser
+  data, may set or read its own cookies, and processes them under its own privacy policy as a third party. A note under the button says "Loads content from …".
+- **Portfolio password.** A portfolio's owner can protect it with one password. The password is stored only as a hash, never as plain text, and is not written to logs or data exports.
+  A visitor who enters the right password receives an access cookie that lasts 12 hours in that browser (only a signed portfolio marker and expiry, no personal data), and the portfolio file
+  addresses (pictures, PDFs) they are given carry a token that lasts 12 to 24 hours. Wrong password attempts are limited by the visitor's IP address (an IPv6 address by its /64 block) and by
+  portfolio; those counts are kept only briefly and never hold the password tried. While a portfolio has a password, its content isn't shown to visitors without it, isn't indexed by
+  search engines and isn't in the sitemap. Changing or removing the password ends existing access.
+- **Save contact.** A portfolio page can offer a Save contact button that downloads a contact card (vCard) to the visitor's device. The card is made when it's downloaded, from what the page
+  already shows: name, headline, portfolio address, and email, WhatsApp number, phone, website, profiles and city only when the owner shows them; no photo and no street address. Rezumi
+  stores no visitor data for this; downloads are only counted as aggregate numbers.
 - **Pasted links.** When a user pastes a link, Rezumi's server reads that page's title and picture without sending any user data. If the user approves the picture, a copy is stored with their portfolio files.
 - **Location and maps.** Location is shown at city level by default, and a user can choose not to show one. Map pictures are made in the editor, so opening a portfolio sends no request to a map provider.
   While choosing a location in the editor, the user's browser loads map data from OpenFreeMap.
