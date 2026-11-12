@@ -39,7 +39,7 @@ const ENGLISH = {
 	pageNavigation: "Page navigation",
 	menu: "Menu",
 	intro: "Intro",
-	role: "Role",
+	role: "My role",
 	year: "Year",
 	close: "Close",
 	previous: "Previous",

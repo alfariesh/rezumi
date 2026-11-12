@@ -1,9 +1,10 @@
 import { EFFECT_RUNNERS } from "./runtime";
 
 // What the editor needs to show and replay intro effects without loading the page renderer: the effects' rules, their
-// colours and their scripts (the same functions the page inlines).
+// colours, their scripts (the same functions the page inlines), and what the typewriter types (`typewriterPhrases`).
 
 export { EFFECT_CSS, EFFECT_SHARED_CSS } from "./css";
+export { typewriterPhrases } from "./phrases";
 export { EFFECT_RUNNERS } from "./runtime";
 
 /**
