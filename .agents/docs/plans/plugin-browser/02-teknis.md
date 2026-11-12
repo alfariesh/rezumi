@@ -20,7 +20,7 @@ rezumi.app /api/rpc  (oRPC yang sama dengan app mobile)
 Panel samping (React + HeroUI + TanStack Query) ── meminta data lewat service worker
 ```
 
-Panel samping boleh memanggil API langsung dengan token yang diberikan service worker, atau lewat service worker; pilih satu pola di Phase 01 dan pakai konsisten. Token tidak pernah masuk ke content script.
+**Pola dipilih di Phase 01:** service worker memegang login (OAuth, refresh token, perbarui token). Panel memanggil API **langsung** dengan klien oRPC + TanStack Query, memakai access token dari `chrome.storage.session` (konteks tepercaya; content script tidak bisa membacanya), dan meminta service worker memperbarui token saat 401. Pesan panel ↔ service worker hanya untuk hal yang bukan panggilan API (status login, keadaan per tab, badge). Token tidak pernah masuk ke content script.
 
 ## 2. Kode yang dipakai ulang
 
@@ -68,7 +68,8 @@ packages/job-sites/                 # @rezumi/job-sites, runtime:universal, role
 
 ## 4. Build dan tooling
 
-- **Vite lewat `vp`**, tanpa framework plugin tambahan, supaya versi Vite tetap satu sesuai override workspace. WXT atau CRXJS hanya boleh dipakai bila terbukti tidak membawa Vite kedua; catat alasannya di sini.
+- **Vite lewat `vp`**, tanpa framework plugin tambahan, supaya versi Vite tetap satu sesuai override workspace. WXT atau CRXJS hanya boleh dipakai bila terbukti tidak membawa Vite kedua; catat alasannya di sini. **Phase 01:** tanpa WXT/CRXJS. `scripts/build.ts` memanggil `build` dari `vite-plus` dua kali (konfigurasi di `scripts/build-config.ts`), lalu menulis `dist/manifest.json` dari `manifest.config.ts`. Plugin Vite yang sama dengan web: Tailwind, React, Lingui, React Compiler.
+- **Versi minimum: Chrome/Edge 116** (`minimum_chrome_version: "116"`). Dasar (dokumentasi resmi, dicek 2026-11-12): `chrome.sidePanel` ada sejak Chrome 114, `sidePanel.open()` sejak 116 dan hanya dalam gestur pengguna (klik ikon, pintasan, menu klik kanan, atau gestur di halaman ekstensi/content script). Edge memakai API `chrome.sidePanel` dan kunci manifest `side_panel.default_path` yang sama; halaman Edge tidak menyebut versi. Edge mendukung `identity.launchWebAuthFlow` (bukan `getAuthToken`); format redirect `https://<id>.chromiumapp.org/` di Edge belum tertulis di dokumentasinya, dicek di Phase 02. `minimum_chrome_version` hanya membatasi pemasangan dari toko. Catatan Edge: panel tidak otomatis tampil lagi saat pengguna kembali ke tab tempat panel tadinya terbuka (isu Edge #142).
 - **Dua keluaran:** (a) halaman panel + service worker sebagai ES module (`"background": { "service_worker": "background.js", "type": "module" }`); (b) content script sebagai satu file IIFE (content script tidak bisa memakai `import`). Manifest ditulis skrip build dari `manifest.config.ts`.
 - **Target server saat build:** `REZUMI_URL` (bawaan `https://rezumi.app`; build dev `http://localhost:3000`). Izin host dan `resource` OAuth mengikuti nilai ini. Tidak ada pemilih server di rilis pertama (backlog B6).
 - **ID stabil:** manifest build dev memuat `key` = public key item Chrome Web Store (dari pemilik di akhir Phase 01), supaya ID plugin saat dikembangkan sama dengan ID di toko. ID Edge berbeda dan dicatat terpisah (bagian 15).
@@ -98,7 +99,7 @@ Tambahkan `"extension"` ke `postingSourceSchema.method` (`packages/schema/src/ap
 ### 6.2 Kunci loker
 
 - Kolom baru `application.source_key text` + indeks `(user_id, source_key)`. Diisi server dari `sourceUrl` dengan `jobKey()` dari `@rezumi/job-sites` di `create`, `update`, dan `import`.
-- Format: `linkedin:<id>`, `indeed:<jk>`, `jobstreet:<id>`, `glints:<uuid>`; situs lain `url:<host><path>` (host huruf kecil, tanpa `www.`, tanpa parameter pelacak, tanpa garis miring akhir).
+- Format: `linkedin:<id>`, `indeed:<jk>`, `jobstreet:<id>`, `glints:<uuid>`; situs lain `url:<host><path>[?query]` (host huruf kecil, tanpa `www.`, tanpa garis miring akhir; query tanpa parameter pelacak, diurutkan, ikut dalam kunci karena banyak halaman karier menamai loker lewat query seperti `?gh_jid=`). Perubahan Phase 01, lihat bagian 16.
 - Baris lama diisi lewat skrip sekali jalan di `tooling/` (dijalankan di produksi pada Phase 07 dengan izin pemilik). SQL tidak menyalin logika `jobKey`.
 
 ### 6.3 Prosedur baru
@@ -158,13 +159,13 @@ LinkedIn, Glints, dan JobStreet berganti lowongan tanpa memuat ulang halaman. Co
 
 Pola ini dari pengetahuan umum; **verifikasi dengan halaman nyata di Phase 03** sebelum dipakai, dan catat hasilnya di bagian baru di akhir dokumen ini.
 
-| Situs     | Contoh URL yang dikenali                                                                       | Kanonik                                     | Kunci              |
-| --------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------- | ------------------ |
-| LinkedIn  | `/jobs/view/<id>/`, `/jobs/search/?currentJobId=<id>`, `/jobs/collections/…?currentJobId=<id>` | `https://www.linkedin.com/jobs/view/<id>/`  | `linkedin:<id>`    |
-| Indeed    | `<sub>.indeed.com/viewjob?jk=<id>`, `…/jobs?…&vjk=<id>`                                        | `https://<sub>.indeed.com/viewjob?jk=<id>`  | `indeed:<id>`      |
-| JobStreet | `<sub>.jobstreet.com/<lang>/job/<id>`, `…?jobId=<id>`                                          | `https://<sub>.jobstreet.com/job/<id>`      | `jobstreet:<id>`   |
-| Glints    | `glints.com/<negara>/opportunities/jobs/<slug>/<uuid>`                                         | URL tanpa query                             | `glints:<uuid>`    |
-| Lainnya   | apa pun                                                                                        | tanpa parameter pelacak (`utm_*`, `ref`, …) | `url:<host><path>` |
+| Situs     | Contoh URL yang dikenali                                                                       | Kanonik                                     | Kunci                      |
+| --------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------- | -------------------------- |
+| LinkedIn  | `/jobs/view/<id>/`, `/jobs/search/?currentJobId=<id>`, `/jobs/collections/…?currentJobId=<id>` | `https://www.linkedin.com/jobs/view/<id>/`  | `linkedin:<id>`            |
+| Indeed    | `<sub>.indeed.com/viewjob?jk=<id>`, `…/jobs?…&vjk=<id>`                                        | `https://<sub>.indeed.com/viewjob?jk=<id>`  | `indeed:<id>`              |
+| JobStreet | `<sub>.jobstreet.com/<lang>/job/<id>`, `…?jobId=<id>`                                          | `https://<sub>.jobstreet.com/job/<id>`      | `jobstreet:<id>`           |
+| Glints    | `glints.com/<negara>/opportunities/jobs/<slug>/<uuid>`                                         | URL tanpa query                             | `glints:<uuid>`            |
+| Lainnya   | apa pun                                                                                        | tanpa parameter pelacak (`utm_*`, `ref`, …) | `url:<host><path>[?query]` |
 
 ### 7.5 Data yang dikirim (`CapturedPosting`, skema Zod di `@rezumi/job-sites`)
 
@@ -248,7 +249,21 @@ Inggris (sumber) dan Indonesia saat rilis (aturan turunan #9). Bahasa plugin men
 - **Edge Add-ons:** Partner Center (gratis), zip yang sama, listing sendiri.
 - Review bisa beberapa hari sampai ±2 minggu; izin host membuat review lebih teliti.
 - **ID item** (diisi setelah pemilik mengunggah draf di akhir Phase 01):
-  - Chrome Web Store: _belum ada_
-  - Edge Add-ons: _belum ada_
-  - Public key Chrome (untuk `key` manifest dev): _belum ada_
+  - Chrome Web Store: `fiogmglhgeiaaeajahbpmmehgmojbjjo` (draf diunggah pemilik 2026-11-12; isian toko di `materi-toko/chrome-web-store.md`)
+  - Edge Add-ons: CRX ID `jnemleffcmnbkcmmjnkbicdhidedffnd` (Store ID `0RDCKG7TD477`, Product ID `1c977fab-c810-43c6-8dd8-ac733e7a3bac`; draf diunggah 2026-11-12, paket terverifikasi, visibilitas Public, 241 pasar). Redirect OAuth Edge: `https://jnemleffcmnbkcmmjnkbicdhidedffnd.chromiumapp.org/`; Chrome: `https://fiogmglhgeiaaeajahbpmmehgmojbjjo.chromiumapp.org/` (keduanya masuk `firstPartyRedirectUris` di Phase 02)
+  - Public key Chrome (untuk `key` manifest dev): terpasang di `CHROME_STORE_PUBLIC_KEY` (`apps/extension/manifest.config.ts`) 2026-11-12; build dev hasil "Load unpacked" ber-ID `fiogmglhgeiaaeajahbpmmehgmojbjjo`, sama dengan toko (dicek tes Playwright)
+- Zip: `pnpm --filter extension zip` → `apps/extension/release/rezumi-extension-<versi>.zip` (build produksi, tanpa `key`; skrip menolak `dist/` hasil build dev).
 - Setelah tayang: URL toko diisi di konstanta ajakan pasang di web (Phase 06/07), `chrome.runtime.setUninstallURL` ke halaman aturan turunan #10.
+
+## 16. Catatan implementasi Phase 01 (2026-11-12)
+
+- **`@rezumi/job-sites`** (`packages/job-sites`, `runtime:universal`, `role:domain`), tiga ekspor terpisah supaya content script tidak ikut membawa Zod:
+  - `./sites`: `JOB_SITES`, `detectSite`, `canonicalJobUrl`, `jobKey` (tanpa DOM, tanpa Zod). Pola URL di 7.4 dipakai apa adanya plus LinkedIn `/jobs/view/<judul>-at-<perusahaan>-<id>/`, Indeed `/m/viewjob`, Glints dengan segmen bahasa (`/id/en/opportunities/…`). Masih pola dari pengetahuan umum: **verifikasi di Phase 03**.
+  - `./json-ld`: `jobPostingsIn` (HTML), `jobPostingsInJson` (blok JSON-LD yang sudah di-parse, untuk plugin), `toPagePosting`, `readJobPosting`; `htmlToText` disuntikkan. `packages/api/src/features/applications/posting.ts` memakainya; perilaku dan tes lamanya tidak berubah. Tes baru menjaga `MAX_POSTING_CHARS` = `MAX_CAPTURE_TEXT_CHARS` (20.000).
+  - `./capture`: skema Zod `capturedPostingSchema` (7.5) dengan batas panjang per kolom, `site` = salah satu dari empat situs atau `null`.
+- **Kunci situs lain menyertakan query** (tanpa parameter pelacak, diurutkan): `url:acme.example/careers?gh_jid=42`. Tanpa ini dua loker berbeda di satu halaman karier akan dianggap sama dan ditandai "sudah disimpan" keliru.
+- **`apps/extension`**: `app:extension` + `runtime:browser`; aturan Turbo `app:extension` menolak `app:server`, `app:web`, `app:mobile`, `runtime:server`, `runtime:native`; lint menolak impor nilai dari `@rezumi/api` (tipe boleh, seperti mobile). Pesan antarbagian: `src/shared/messages.ts` (Zod), router `src/background/router.ts` memeriksa `sender.id`, frame atas untuk content script, dan origin halaman ekstensi untuk panel. Content script melapor `{ type: "page", url, site, key }`; service worker menyimpannya di `chrome.storage.session` (`tabPage:<tabId>`), dihapus saat tab ditutup. Alarm `sync-saved-keys` (30 menit) dan `follow-ups` (60 menit) sudah terdaftar, isinya menyusul Phase 04/05.
+- **Bahasa panel:** `chrome.i18n.getUILanguage()` berawalan `id`/`in` → Indonesia, selain itu Inggris (pengaturan plugin menyusul Phase 04). Katalog `apps/extension/locales/{en,id}.po`; `pnpm lingui:extract` di root kini juga mengekstrak plugin.
+- **Ukuran:** content script produksi ±3 KB (anggaran 50 KB dicek build dan `src/content/size.test.ts`). CSS panel ±1 MB karena `@rezumi/ui/globals.css` memindai kelas Tailwind dari semua app; cukup untuk halaman lokal, dipangkas bila panel terasa lambat.
+- **Playwright:** `apps/extension/playwright.config.ts`, Chromium bawaan Playwright (Chrome/Edge bermerek tidak lagi memuat ekstensi lewat `--load-extension`). Fixtures sintetis di `src/content/sites/__fixtures__`. Belum masuk CI (perlu `playwright install chromium`); tes unit ikut CI lewat `test:ci`.
+- **Ikon:** PNG 16/32/48/128 dibuat dari `apps/web/public/pwa-512x512.png` dengan sudut membulat; 128 px memakai bantalan transparan 16 px sesuai panduan Chrome Web Store.

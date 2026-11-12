@@ -59,20 +59,20 @@ Semua butir di bawah keluar bersama di rilis pertama:
 
 Agent menanyakan setiap aturan di phase yang disebut, dengan usulan sebagai pilihan pertama, lalu mencatat jawabannya di log.
 
-| #   | Aturan                                     | Usulan                                                                                                                                         | Dikonfirmasi di |
-| --- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| 1   | Nama di toko                               | ID: "Rezumi: Simpan Loker & Lacak Lamaran"; EN: "Rezumi – Save Jobs & Track Applications"                                                      | Phase 00        |
-| 2   | Status bawaan saat menyimpan               | Disimpan (Saved); pilihan "Sudah dilamar" mengisi tanggal hari ini                                                                             | Phase 04        |
-| 3   | Baca dengan AI                             | Bawaan mati; pilihan terakhir diingat di perangkat; tanpa AI kolom diisi dari data halaman                                                     | Phase 04        |
-| 4   | Loker yang sama disimpan lagi              | Panel menampilkan lamaran yang sudah ada; ada tombol kecil "Simpan sebagai lamaran baru"                                                       | Phase 04        |
-| 5   | Tombol di halaman saat belum masuk         | Tetap tampil; diklik membuka panel "Hubungkan ke Rezumi". Bisa dimatikan di pengaturan plugin                                                  | Phase 04        |
-| 6   | Pengingat bawaan                           | 2 hari sebelum batas waktu loker bila tercantum; bila tidak, kosong                                                                            | Phase 05        |
-| 7   | Notifikasi desktop                         | Bawaan mati; izin browser diminta saat pengguna menyalakannya; paling banyak satu notifikasi per lamaran per hari, pukul 09.00 waktu perangkat | Phase 05        |
-| 8   | Isi laporan halaman gagal                  | Alamat halaman, situs, versi plugin, kolom yang gagal terbaca; tanpa isi halaman; dikirim hanya setelah pengguna mengklik                      | Phase 03        |
-| 9   | Bahasa plugin saat rilis                   | Inggris dan Indonesia; bahasa lain memakai Inggris dan menyusul                                                                                | Phase 01        |
-| 10  | Halaman setelah plugin dicopot             | Buka halaman singkat "Kenapa berhenti?" di rezumi.app, isian opsional tanpa data pribadi                                                       | Phase 06        |
-| 11  | CV untuk skor kecocokan                    | CV utama akun (yang dibuka alamat pendek); bisa diganti di panel; pilihan diingat                                                              | Phase 05        |
-| 12  | Email dukungan di toko dan laporan halaman | `hi@rezumi.app` untuk toko; laporan halaman ke `BILLING_ALERT_EMAIL`                                                                           | Phase 00        |
+| #   | Aturan                                     | Usulan                                                                                                                                         | Dikonfirmasi di        |
+| --- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| 1   | Nama di toko                               | ID: "Rezumi: Simpan Loker & Lacak Lamaran"; EN: "Rezumi – Save Jobs & Track Applications"                                                      | Phase 00 ✅ 2026-11-11 |
+| 2   | Status bawaan saat menyimpan               | Disimpan (Saved); pilihan "Sudah dilamar" mengisi tanggal hari ini                                                                             | Phase 04               |
+| 3   | Baca dengan AI                             | Bawaan mati; pilihan terakhir diingat di perangkat; tanpa AI kolom diisi dari data halaman                                                     | Phase 04               |
+| 4   | Loker yang sama disimpan lagi              | Panel menampilkan lamaran yang sudah ada; ada tombol kecil "Simpan sebagai lamaran baru"                                                       | Phase 04               |
+| 5   | Tombol di halaman saat belum masuk         | Tetap tampil; diklik membuka panel "Hubungkan ke Rezumi". Bisa dimatikan di pengaturan plugin                                                  | Phase 04               |
+| 6   | Pengingat bawaan                           | 2 hari sebelum batas waktu loker bila tercantum; bila tidak, kosong                                                                            | Phase 05               |
+| 7   | Notifikasi desktop                         | Bawaan mati; izin browser diminta saat pengguna menyalakannya; paling banyak satu notifikasi per lamaran per hari, pukul 09.00 waktu perangkat | Phase 05               |
+| 8   | Isi laporan halaman gagal                  | Alamat halaman, situs, versi plugin, kolom yang gagal terbaca; tanpa isi halaman; dikirim hanya setelah pengguna mengklik                      | Phase 03               |
+| 9   | Bahasa plugin saat rilis                   | Inggris dan Indonesia; bahasa lain memakai Inggris dan menyusul                                                                                | Phase 01 ✅ 2026-11-12 |
+| 10  | Halaman setelah plugin dicopot             | Buka halaman singkat "Kenapa berhenti?" di rezumi.app, isian opsional tanpa data pribadi                                                       | Phase 06               |
+| 11  | CV untuk skor kecocokan                    | CV utama akun (yang dibuka alamat pendek); bisa diganti di panel; pilihan diingat                                                              | Phase 05               |
+| 12  | Email dukungan di toko dan laporan halaman | `hi@rezumi.app` untuk toko; laporan halaman ke `BILLING_ALERT_EMAIL`                                                                           | Phase 00 ✅ 2026-11-11 |
 
 ## 8. Mutu yang dijanjikan
 
@@ -87,3 +87,5 @@ Agent menanyakan setiap aturan di phase yang disebut, dengan usulan sebagai pili
 | Tanggal    | Keputusan                                                                                                                                                                                           | Oleh    |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | 2026-11-11 | Rencana dibuat. Plugin gratis untuk semua paket (AI tetap memakai kredit); pembaca khusus LinkedIn, Indeed, JobStreet, Glints; rilis lengkap sekaligus kecuali isi formulir otomatis; Chrome + Edge | Pemilik |
+| 2026-11-11 | Aturan turunan #1 (nama toko: usulan ID dan EN dipakai) dan #12 (email dukungan `hi@rezumi.app`) dikonfirmasi di Phase 00                                                                           | Pemilik |
+| 2026-11-12 | Aturan turunan #9 (bahasa saat rilis: Inggris dan Indonesia, bahasa lain memakai Inggris) dikonfirmasi di Phase 01                                                                                  | Pemilik |

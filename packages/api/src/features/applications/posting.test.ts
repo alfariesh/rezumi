@@ -1,6 +1,14 @@
 import { describe, expect, it, vi } from "vite-plus/test";
+import { MAX_CAPTURE_TEXT_CHARS } from "@rezumi/job-sites/capture";
 import { readPage, searchWeb } from "../web-access/service";
-import { fetchJobPosting, htmlToText, readJobPosting, readOpenPosting, searchJobPostings } from "./posting";
+import {
+	fetchJobPosting,
+	htmlToText,
+	MAX_POSTING_CHARS,
+	readJobPosting,
+	readOpenPosting,
+	searchJobPostings,
+} from "./posting";
 
 vi.mock("../web-access/service", () => ({
 	readPage: vi.fn(),
@@ -187,5 +195,11 @@ describe("posting retrieval", () => {
 			},
 		]);
 		expect(searchWeb).toHaveBeenCalledWith("designer Berlin job posting", context, expect.any(Function));
+	});
+});
+
+describe("MAX_POSTING_CHARS", () => {
+	it("matches the most text the browser extension captures", () => {
+		expect(MAX_POSTING_CHARS).toBe(MAX_CAPTURE_TEXT_CHARS);
 	});
 });

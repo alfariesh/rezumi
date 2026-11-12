@@ -17,6 +17,11 @@
 					"deny": ["app:web", "runtime:browser"]
 				}
 			},
+			"app:extension": {
+				"dependencies": {
+					"deny": ["app:server", "app:web", "app:mobile", "runtime:server", "runtime:native"]
+				}
+			},
 			"app:mobile": {
 				"dependencies": {
 					"deny": ["app:server", "app:web", "runtime:server", "runtime:browser"]

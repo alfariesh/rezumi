@@ -120,13 +120,33 @@ export default defineConfig({
 				},
 			},
 			{
+				files: ["apps/extension/**"],
+				rules: {
+					"no-restricted-imports": [
+						"error",
+						{
+							patterns: [
+								...workspaceImportPatterns,
+								{
+									group: ["@rezumi/api", "@rezumi/api/*"],
+									allowTypeImports: true,
+									message:
+										"The extension may only import types from the server API; it calls the API over HTTP from its service worker.",
+								},
+							],
+						},
+					],
+				},
+			},
+			{
 				files: ["**/*.test.{ts,tsx,mts,mjs}", "**/*.spec.{ts,tsx,mts,mjs}"],
 				rules: {
 					"require-await": "off",
 				},
 			},
 			{
-				files: ["tests/e2e/fixtures/test.ts"],
+				// Playwright fixture callbacks named `use` are not React hooks.
+				files: ["tests/e2e/fixtures/test.ts", "apps/extension/tests/fixtures.ts"],
 				rules: {
 					"react/rules-of-hooks": "off",
 				},
