@@ -26,6 +26,8 @@ vi.mock("@rezumi/env/server", async () => {
 		...actual,
 		env: {
 			...actual.env,
+			// CI switches rate limits off for every suite; the password limits are what this file tests.
+			FLAG_DISABLE_API_RATE_LIMIT: false,
 			get PORTFOLIO_MODE() {
 				return fixture.mode;
 			},
