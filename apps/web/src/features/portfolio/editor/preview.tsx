@@ -86,7 +86,7 @@ export async function renderPortfolioPreview({
 		creditUrl: origin,
 	});
 	// The intro effect holds still while the draft is edited; "Replay" plays it from the editor (`replayIntroEffect`).
-	const html = renderPortfolioDocument({ page }).replace("</head>", `${PREVIEW_STILL_CSS}</head>`);
+	const html = renderPortfolioDocument({ page, inert: true }).replace("</head>", `${PREVIEW_STILL_CSS}</head>`);
 	// The page opens a detail by its address (`:target`); an inert preview has no address to change, so the detail of
 	// the work being edited is shown by a rule instead. Anchors are `work-<slug>`, letters, digits and dashes only.
 	const openAnchor = view.works.find((work) => work.id === openWorkId)?.anchor;

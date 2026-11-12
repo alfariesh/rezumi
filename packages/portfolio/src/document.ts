@@ -20,6 +20,8 @@ export type PortfolioDocumentOptions = {
 	page: PortfolioPage;
 	/** Absent in the editor's preview, which nothing indexes or shares. */
 	head?: PortfolioHead | undefined;
+	/** A document that runs nothing (the editor's sandboxed preview): the page's script is left out. */
+	inert?: boolean | undefined;
 };
 
 /** Structured data for search engines, safe inside a `<script>`. */
@@ -62,7 +64,7 @@ function themeColor(page: PortfolioPage): string {
 }
 
 /** A portfolio's whole page, ready to send: the document around `renderPortfolioPage`'s output. */
-export function renderPortfolioDocument({ page, head }: PortfolioDocumentOptions): string {
+export function renderPortfolioDocument({ page, head, inert = false }: PortfolioDocumentOptions): string {
 	const preload = page.preloadFont
 		? `<link rel="preload" href="${escapeHtml(page.preloadFont)}" as="font" type="font/ttf" crossorigin>`
 		: "";
@@ -75,6 +77,6 @@ export function renderPortfolioDocument({ page, head }: PortfolioDocumentOptions
 		preload,
 		page.head,
 		`<style>${page.css}</style></head>`,
-		`<body>${page.html}<script>${page.script}</script></body></html>`,
+		`<body>${page.html}${inert ? "" : `<script>${page.script}</script>`}</body></html>`,
 	].join("");
 }
