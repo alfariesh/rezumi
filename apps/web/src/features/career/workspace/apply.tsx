@@ -338,7 +338,6 @@ function AnswerCard({
 					variant="secondary"
 					// oxlint-disable-next-line jsx-a11y/no-autofocus -- opened by the user's click on Add a question or Edit question
 					autoFocus
-					rows={1}
 					value={question}
 					maxLength={2000}
 					disabled={disabled}
@@ -357,7 +356,7 @@ function AnswerCard({
 						flushQuestion();
 						if (question.trim()) setEditingQuestion(false);
 					}}
-					className="field-sizing-content min-h-0 w-full min-w-0 resize-none text-base font-semibold"
+					className="w-full min-w-0 text-base font-semibold"
 				/>
 			) : (
 				<Typography type="h6" render={renderAsH2} className="min-w-0">
@@ -415,7 +414,6 @@ function AnswerCard({
 						placeholder={t`Write your answer, or draft one from your Knowledge.`}
 						onChange={(event) => setText(event.target.value)}
 						onBlur={flushAnswer}
-						className="min-h-[88px]"
 					/>
 				)}
 			</Swap>

@@ -172,7 +172,7 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 					<Label>
 						<Trans>What matters to you</Trans>
 					</Label>
-					<TextArea variant="secondary" rows={3} className="min-h-[84px]" />
+					<TextArea variant="secondary" />
 				</TextField>
 			</CareerWidget>
 

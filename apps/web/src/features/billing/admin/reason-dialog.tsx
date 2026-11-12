@@ -86,7 +86,7 @@ export function ReasonDialog({
 								<Label>
 									<Trans>Reason</Trans>
 								</Label>
-								<TextArea variant="secondary" maxLength={255} className="min-h-20" />
+								<TextArea variant="secondary" maxLength={255} />
 							</TextField>
 							<p className="text-body-xs text-muted">
 								<Trans>Kept in the audit log with your name. At least 3 characters.</Trans>

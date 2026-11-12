@@ -217,7 +217,7 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 					<Label>
 						<Trans>What did you say, as close as you remember?</Trans>
 					</Label>
-					<TextArea variant="secondary" className="min-h-24" />
+					<TextArea variant="secondary" />
 				</TextField>
 				<div className="grid gap-1.5">
 					<p id={`${id}-landed`} className="text-sm font-medium">

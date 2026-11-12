@@ -273,6 +273,18 @@
 }
 
 /*
+ * A text area is as tall as its text (`field-sizing: content`), grows as you type and has no resize grip. `rows` and
+ * `min-h-*` stay as its minimum. The assistant's message box is a PromptInput with its own sizing, not a `.textarea`.
+ */
+@layer components {
+	.textarea,
+	.input-group [data-slot="input-group-textarea"] {
+		field-sizing: content;
+		resize: none;
+	}
+}
+
+/*
  * HeroUI sets `tracking-tight` on every Typography heading. That suits the large steps (h1 to h4), but at 18px and
  * below (h5, h6) it crowds the letters, so those keep the font's normal spacing.
  */

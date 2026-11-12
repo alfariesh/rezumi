@@ -544,7 +544,6 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 				<TextArea
 					fullWidth
 					variant="secondary"
-					rows={1}
 					value={draft.title}
 					maxLength={200}
 					placeholder={t`Name the story`}
@@ -554,7 +553,7 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					onKeyDown={(event) => {
 						if (event.key === "Enter") event.preventDefault();
 					}}
-					className="min-h-0 resize-none text-xl font-semibold"
+					className="text-xl font-semibold"
 				/>
 				<Input
 					fullWidth
@@ -580,13 +579,11 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 									<TextArea
 										fullWidth
 										variant="secondary"
-										rows={2}
 										value={text}
 										maxLength={part.key === "action" ? 6000 : 4000}
 										placeholder={part.placeholder}
 										aria-invalid={tried && REQUIRED.includes(part.key) && !text.trim() ? true : undefined}
 										onChange={(event) => setDraft({ ...draft, [part.key]: event.target.value })}
-										className="min-h-[60px]"
 									/>
 								</span>
 							</label>

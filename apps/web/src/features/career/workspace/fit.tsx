@@ -330,7 +330,6 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 				fullWidth
 				// oxlint-disable-next-line jsx-a11y/no-autofocus -- opened by the user's click on Add evidence
 				autoFocus
-				rows={2}
 				value={text}
 				aria-label={t`What you did: ${requirement.text}`}
 				aria-invalid={touched && empty}
@@ -340,7 +339,6 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 				onKeyDown={(event) => {
 					if (event.key === "Escape") onCancel();
 				}}
-				className="min-h-14"
 			/>
 			{touched && empty && (
 				<p role="alert" className="text-body-xs text-danger">

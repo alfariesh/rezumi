@@ -249,7 +249,6 @@ function Idle({ error, posting, onPosting, onFile }: IdleProps) {
 					</Trans>
 				</Label>
 				<TextArea
-					rows={3}
 					maxLength={MAX_POSTING}
 					placeholder={t`Paste the posting to see which of its terms your resume already has.`}
 				/>

@@ -429,7 +429,6 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 			maxLength={6000}
 			placeholder={t`About 90 seconds when spoken`}
 			onChange={(event) => setAnswer(event.target.value)}
-			className="min-h-28"
 		/>
 	);
 

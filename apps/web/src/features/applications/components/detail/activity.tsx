@@ -260,7 +260,6 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 										<TextArea
 											fullWidth
 											aria-label={t`Note`}
-											rows={3}
 											value={shownEdit.text}
 											onChange={(event) => {
 												const text = event.target.value;

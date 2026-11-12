@@ -164,9 +164,7 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 							fullWidth
 							// Fixed height: the accordion panel measures its content once, so a textarea that
 							// grew with the pasted text would overflow the clipped panel.
-							className="field-sizing-fixed h-40"
 							value={value}
-							rows={8}
 							maxLength={MAX_JOB_DESCRIPTION_CHARS}
 							placeholder={t`Paste the full job description here…`}
 							onChange={(event) => onChange(event.target.value)}
@@ -319,7 +317,6 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 											variant="secondary"
 											fullWidth
 											id={id}
-											rows={6}
 											maxLength={MAX_JOB_DESCRIPTION_CHARS}
 											value={form.jobDescription}
 											onChange={(event) => set("jobDescription", event.target.value)}
@@ -512,7 +509,6 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 										fullWidth
 										id={id}
 										value={form.notes}
-										rows={3}
 										placeholder={t`Referred by…, things to emphasize, etc.`}
 										onChange={(event) => set("notes", event.target.value)}
 									/>

@@ -509,7 +509,6 @@ export function InterviewDialog({
 								variant="secondary"
 								fullWidth
 								id={`${id}-notes`}
-								rows={2}
 								value={draft.notes}
 								maxLength={5000}
 								onChange={(event) => set("notes", event.target.value)}

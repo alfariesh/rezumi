@@ -159,7 +159,6 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 									fullWidth
 									id="import-csv-text"
 									value={text}
-									rows={6}
 									placeholder="Company,Role,Stage,…"
 									className="font-mono text-xs"
 									onChange={(event) => {

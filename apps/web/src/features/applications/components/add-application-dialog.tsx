@@ -287,7 +287,6 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						variant="secondary"
 						fullWidth
 						id={`${id}-posting`}
-						rows={4}
 						value={input}
 						maxLength={100_000}
 						placeholder="https://…"
@@ -321,7 +320,6 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 								variant="secondary"
 								fullWidth
 								id={`${id}-recovery`}
-								rows={5}
 								value={pastedText}
 								maxLength={100_000}
 								onChange={(event) => {
@@ -369,7 +367,6 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 								variant="secondary"
 								fullWidth
 								id={`${id}-description`}
-								rows={5}
 								maxLength={MAX_POSTING_CHARS}
 								value={description}
 								onChange={(event) => setDescription(event.target.value)}

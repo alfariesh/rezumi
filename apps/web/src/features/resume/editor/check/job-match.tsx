@@ -474,19 +474,15 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 				<p className="text-body-sm text-muted">
 					<Trans>This application has no posting saved yet. Paste it to match against it.</Trans>
 				</p>
-				<WithInputIcon icon="note" iconClassName="top-3 translate-y-0">
-					<TextArea
-						className={INPUT_WITH_ICON}
-						fullWidth
-						variant="secondary"
-						aria-label={t`Job posting`}
-						rows={5}
-						maxLength={MAX_POSTING_CHARS}
-						value={draft}
-						placeholder={t`Paste a job posting…`}
-						onChange={(event) => setDraft(event.target.value)}
-					/>
-				</WithInputIcon>
+				<TextArea
+					fullWidth
+					variant="secondary"
+					aria-label={t`Job posting`}
+					maxLength={MAX_POSTING_CHARS}
+					value={draft}
+					placeholder={t`Paste a job posting…`}
+					onChange={(event) => setDraft(event.target.value)}
+				/>
 				<Button
 					size="sm"
 					className="w-fit"
@@ -516,19 +512,15 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 				<Trans>or</Trans>
 				<Separator className="flex-1" />
 			</div>
-			<WithInputIcon icon="note" iconClassName="top-3 translate-y-0">
-				<TextArea
-					className={INPUT_WITH_ICON}
-					fullWidth
-					variant="secondary"
-					aria-label={t`Job posting`}
-					rows={4}
-					maxLength={MAX_POSTING_CHARS}
-					value={draft}
-					placeholder={t`Paste a job posting…`}
-					onChange={(event) => setDraft(event.target.value)}
-				/>
-			</WithInputIcon>
+			<TextArea
+				fullWidth
+				variant="secondary"
+				aria-label={t`Job posting`}
+				maxLength={MAX_POSTING_CHARS}
+				value={draft}
+				placeholder={t`Paste a job posting…`}
+				onChange={(event) => setDraft(event.target.value)}
+			/>
 			<Button
 				size="sm"
 				className="w-fit"

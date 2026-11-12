@@ -292,7 +292,6 @@ function AddFactDialog({ open, onOpenChange, onAdded }: AddFactDialogProps) {
 								</Label>
 								<TextArea
 									variant="secondary"
-									rows={3}
 									maxLength={2000}
 									onKeyDown={(event: KeyboardEvent<HTMLTextAreaElement>) => {
 										if (event.key === "Enter" && (event.metaKey || event.ctrlKey) && !event.nativeEvent.isComposing)
@@ -519,7 +518,6 @@ function Correction({ text, onSave, onCancel }: CorrectionProps) {
 					element.setSelectionRange(element.value.length, element.value.length);
 				}}
 				aria-label={t`Correct this fact`}
-				rows={3}
 				maxLength={2000}
 				value={draft}
 				onChange={(event) => setDraft(event.target.value)}

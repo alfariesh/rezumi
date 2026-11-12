@@ -88,7 +88,6 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 				placeholder={t`Paste the email or message, without the signature.`}
 				onChange={(event) => setMessage(event.target.value)}
 				onBlur={flush}
-				className="min-h-[92px]"
 			/>
 			{!readOnly && (
 				<div className="grid justify-items-start gap-2.5">
@@ -160,7 +159,6 @@ function ReplyCard({ reply, readOnly }: ReplyCardProps) {
 							readOnly={readOnly}
 							maxLength={4000}
 							onChange={(event) => draft.setValue(event.target.value)}
-							className="min-h-[110px]"
 						/>
 					</div>
 					<div className="flex flex-wrap items-center gap-x-3 gap-y-2">
