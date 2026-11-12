@@ -2,8 +2,9 @@ import type { ReactNode } from "react";
 import { Button, Label, Modal, Spinner, TextArea, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { ORPCError } from "@orpc/client";
 import { useId, useState } from "react";
-import { getReadableErrorMessage } from "@/libs/error-message";
+import { getOrpcErrorMessage } from "@/libs/error-message";
 
 type ReasonDialogProps = {
 	isOpen: boolean;
@@ -19,7 +20,29 @@ type ReasonDialogProps = {
 	canSubmit?: boolean;
 	/** Runs the action with the reason; a thrown error is shown in the dialog, which stays open. */
 	onSubmit: (reason: string) => Promise<unknown>;
+	/** The words for a thrown error; by default its code's wording here, never the server's own (English) message. */
+	describeError?: (error: unknown) => string;
 };
+
+/** A billing admin action's refusal in the admin's language, by its code. */
+function describeAdminError(error: unknown): string {
+	const worded = getOrpcErrorMessage(error, {
+		fallback: t`That didn't work. Try again.`,
+		byCode: {
+			NOT_FOUND: t`It doesn't exist anymore. Reload the page.`,
+			CONFLICT: t`Something is still in progress, or changed meanwhile. Reload the page, check its status, then try again.`,
+			BAD_GATEWAY: t`The payment provider didn't answer. It's checked again automatically, so don't send it twice.`,
+			BILLING_UNAVAILABLE: t`Payments aren't set up on this server.`,
+			BAD_REQUEST: t`This can't be done as entered. Check the amount and the current state of the payment or account, then try again.`,
+		},
+	});
+	// A refusal's specifics (what is left to refund, the provider's own reason, the credit balance) exist only in the
+	// server's message, and the admin needs them to decide what to enter next.
+	if (error instanceof ORPCError && error.code === "BAD_REQUEST" && error.message && error.message !== "Bad Request") {
+		return `${worded} (${error.message})`;
+	}
+	return worded;
+}
 
 /** Every admin action that changes billing asks why; the reason goes to the audit log (and to Dodo Payments for refunds). */
 export function ReasonDialog({
@@ -32,6 +55,7 @@ export function ReasonDialog({
 	danger = false,
 	canSubmit = true,
 	onSubmit,
+	describeError = describeAdminError,
 }: ReasonDialogProps) {
 	const descriptionId = useId();
 	const [reason, setReason] = useState("");
@@ -54,7 +78,7 @@ export function ReasonDialog({
 			await onSubmit(reason.trim());
 			close(false);
 		} catch (error) {
-			setFailure(getReadableErrorMessage(error, t`That didn't work. Try again.`));
+			setFailure(describeError(error));
 		} finally {
 			setPending(false);
 		}

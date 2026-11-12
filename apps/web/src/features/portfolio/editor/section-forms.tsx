@@ -124,6 +124,12 @@ export function CustomSectionForm({ id }: { id: string }) {
 					}, "button.url")
 				}
 			/>
+			{section.button?.label?.trim() && !section.button.url && (
+				// The page shows a button only with somewhere to go, as for services and intro buttons.
+				<p className="-mt-2 px-1 text-body-xs text-warning">
+					<Trans>Not on the page: add the address the button opens.</Trans>
+				</p>
+			)}
 			<ImageField
 				label={t`Picture (optional)`}
 				value={section.image}

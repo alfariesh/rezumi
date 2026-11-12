@@ -25,6 +25,7 @@ import { CreditsDialog } from "@/features/billing/ai-source-menu";
 import { PlanDialog } from "@/features/billing/plan-dialog";
 import { CommandPalette } from "@/features/command-palette";
 import { useDocumentWebMcpTools } from "@/features/documents/webmcp";
+import { adoptDeviceTimeZone } from "@/features/settings/timezone";
 import { ThemeProvider } from "@/features/theme/provider";
 import { ConfirmDialogProvider } from "@/hooks/use-confirm";
 import { loadRootContext } from "@/libs/root-context";
@@ -69,6 +70,12 @@ function RootComponent() {
 
 	// WebMCP: browser agents can list and open the signed-in user's documents from any page.
 	useDocumentWebMcpTools(session !== null);
+
+	// A new account takes this device's timezone instead of the default UTC (`adoptDeviceTimeZone`).
+	const user = session?.user;
+	useEffect(() => {
+		adoptDeviceTimeZone(user, queryClient, () => router.invalidate());
+	}, [user, queryClient, router]);
 
 	// The theme class is owned by ThemeProvider, which also follows the system appearance.
 	useEffect(() => {

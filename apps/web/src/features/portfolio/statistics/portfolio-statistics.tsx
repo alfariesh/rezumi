@@ -6,19 +6,22 @@ import { KPI } from "@heroui-pro/react/kpi";
 import { Button, Chip, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { useQuery } from "@tanstack/react-query";
-import { Link, useRouteContext } from "@tanstack/react-router";
-import { lazy, Suspense, useId } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
+import { Suspense, useId, useState } from "react";
 import { summarizeViews } from "@rezumi/resume/sharing";
 import { PORTFOLIO_CLICK_KINDS, PORTFOLIO_DEVICES, PORTFOLIO_VISIT_SOURCES } from "@rezumi/schema/portfolio/statistics";
 import { Icon } from "@rezumi/ui/components/icon";
+import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
+import { ChunkBoundary, retryableLazy } from "../editor/chunk-boundary";
 import { countryNames } from "../location/cities";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
+import { deviceTimeZone, saveAccountTimeZone } from "@/features/settings/timezone";
 import { orpc } from "@/libs/orpc/client";
 
-const VisitorMap = lazy(() => import("./visitor-map"));
+const visitorMap = retryableLazy(() => import("./visitor-map"));
 
 type Statistics = NonNullable<Awaited<ReturnType<typeof client.portfolio.statistics>>>;
 type ReadyDetails = Extract<Statistics["details"], { state: "ready" }>;
@@ -100,14 +103,42 @@ const WORK_DAYS_SHOWN = 10;
  */
 function DayZoneNote() {
 	const { session } = useRouteContext({ strict: false });
+	const queryClient = useQueryClient();
+	const router = useRouter();
+	const [saving, setSaving] = useState(false);
 	const timeZone = session?.user.timezone ?? "UTC";
+	const device = deviceTimeZone();
+
+	// This device is somewhere else: one press counts the days in its zone (the server reads the new zone at once).
+	const switchToDevice = async (zone: string) => {
+		setSaving(true);
+		const saved = await saveAccountTimeZone(zone, queryClient, () => router.invalidate());
+		setSaving(false);
+		if (!saved) {
+			toast.add({ type: "error", description: t`Couldn't save the timezone. Try again.` });
+			return;
+		}
+		await queryClient.invalidateQueries({ queryKey: orpc.portfolio.statistics.key() });
+	};
+
 	return (
-		<p className="text-body-xs text-muted">
-			<Trans>Days are counted in {timeZone}.</Trans>{" "}
-			<Link to="/dashboard/settings/app" hash="timezone" className="underline underline-offset-2 hover:text-foreground">
-				<Trans>Change timezone</Trans>
-			</Link>
-		</p>
+		<div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-body-xs text-muted">
+			<p>
+				<Trans>Days are counted in {timeZone}.</Trans>{" "}
+				<Link
+					to="/dashboard/settings/app"
+					hash="timezone"
+					className="underline underline-offset-2 hover:text-foreground"
+				>
+					<Trans>Change timezone</Trans>
+				</Link>
+			</p>
+			{device && device !== timeZone && (
+				<Button size="sm" variant="secondary" isPending={saving} onPress={() => void switchToDevice(device)}>
+					<Trans>Use {device}</Trans>
+				</Button>
+			)}
+		</div>
 	);
 }
 
@@ -179,15 +210,22 @@ function ReadyStatisticsDetails({ details }: DetailsProps) {
 				</Chip>
 			</div>
 			{details.countries.length > 0 && (
-				<Suspense
-					fallback={
-						<div className="grid aspect-5/2 place-items-center rounded-xl border border-border">
-							<Spinner size="sm" color="current" />
-						</div>
-					}
-				>
-					<VisitorMap countries={details.countries} />
-				</Suspense>
+				<ChunkBoundary>
+					{(attempt) => {
+						const VisitorMap = visitorMap(attempt);
+						return (
+							<Suspense
+								fallback={
+									<div className="grid aspect-5/2 place-items-center rounded-xl border border-border">
+										<Spinner size="sm" color="current" />
+									</div>
+								}
+							>
+								<VisitorMap countries={details.countries} />
+							</Suspense>
+						);
+					}}
+				</ChunkBoundary>
 			)}
 			<div className="grid gap-6 @lg:grid-cols-3">
 				<RankList
@@ -230,11 +268,14 @@ function ReadyStatisticsDetails({ details }: DetailsProps) {
 	);
 }
 
-/** The details couldn't be read (Analytics Engine isn't set up here, or didn't answer); the counts above still are. */
+/**
+ * Reading the details failed this time (Analytics Engine didn't answer); the counts above still show. Where Analytics
+ * Engine isn't set up at all (`not-configured`: Node, local development), nothing is said: there's nothing to wait for.
+ */
 function UnavailableDetails() {
 	return (
 		<p className="border-t border-border pt-4 text-body-sm text-muted">
-			<Trans>Countries, devices and linking sites aren't available right now.</Trans>
+			<Trans>Countries, devices and linking sites can't be shown right now. Try again later.</Trans>
 		</p>
 	);
 }

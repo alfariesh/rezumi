@@ -8,12 +8,13 @@ import { Button, FieldError, Input, InputGroup, Label, Skeleton, TextField } fro
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { lazy, Suspense, useState } from "react";
+import { Suspense, useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { METRIC_DIRECTIONS, METRIC_DURATION_UNITS } from "@rezumi/schema/portfolio/metric";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { useRemovalFocus } from "../blocks/list-focus";
+import { ChunkBoundary, retryableLazy } from "../editor/chunk-boundary";
 import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput } from "../editor/fields";
 import { FindMetricsButton } from "./find-metrics";
 import {
@@ -33,7 +34,7 @@ import { useDraftText } from "./use-draft-text";
 import { IconPicker } from "@/components/input/icon-picker";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 
-const LazyMetricPreview = lazy(() => import("./metric-preview"));
+const metricPreview = retryableLazy(() => import("./metric-preview"));
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -344,9 +345,16 @@ function MetricFields({ metric, edit, locale, compact = false }: MetricFieldsPro
 					<Trans>Change, before → after, chart, context</Trans>
 				</Button>
 			)}
-			<Suspense fallback={<Skeleton className="h-20 rounded-2xl" />}>
-				<LazyMetricPreview metric={metric} locale={locale} />
-			</Suspense>
+			<ChunkBoundary>
+				{(attempt) => {
+					const LazyMetricPreview = metricPreview(attempt);
+					return (
+						<Suspense fallback={<Skeleton className="h-20 rounded-2xl" />}>
+							<LazyMetricPreview metric={metric} locale={locale} />
+						</Suspense>
+					);
+				}}
+			</ChunkBoundary>
 		</div>
 	);
 }

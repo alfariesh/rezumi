@@ -14,6 +14,7 @@ import { ImageField } from "../images/image-field";
 import { renameClient } from "./clients";
 import { useSourceResume } from "./context";
 import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
+import { removeWithUndo } from "./list-undo";
 import { editPortfolio, usePortfolioData } from "./store";
 import { IconPicker } from "@/components/input/icon-picker";
 
@@ -39,15 +40,20 @@ function editOffer<L extends OfferList>(list: L, id: string, change: (item: Offe
 	);
 }
 
-function removeOffer(list: OfferList, id: string) {
-	editPortfolio(
-		(draft) => {
-			const items = draft[list].items as { id: string }[];
-			const index = items.findIndex((entry) => entry.id === id);
-			if (index !== -1) items.splice(index, 1);
-		},
-		{ structural: true },
-	);
+/** Removes an item of a list, with Undo in a toast. */
+function removeOffer<L extends OfferList>(
+	list: L,
+	item: PortfolioData[L]["items"][number],
+	index: number,
+	name: string,
+) {
+	removeWithUndo({
+		list: (draft) => draft[list].items as PortfolioData[L]["items"][number][],
+		item,
+		index,
+		most: PORTFOLIO_LIMITS[list],
+		name,
+	});
 }
 
 /** Services: what you offer, a starting price and how to order. */
@@ -83,7 +89,7 @@ export function ServicesForm() {
 							itemProps={itemProps}
 							onRemove={() => {
 								removed(index);
-								removeOffer("services", service.id);
+								removeOffer("services", service, index, name);
 							}}
 						>
 							<div className="flex items-end gap-2">
@@ -227,7 +233,7 @@ export function TestimonialsForm() {
 							itemProps={itemProps}
 							onRemove={() => {
 								removed(index);
-								removeOffer("testimonials", item.id);
+								removeOffer("testimonials", item, index, name);
 							}}
 						>
 							<TestimonialFields
@@ -439,7 +445,7 @@ export function ClientsForm() {
 							itemProps={itemProps}
 							onRemove={() => {
 								removed(index);
-								removeOffer("clients", client.id);
+								removeOffer("clients", client, index, name);
 							}}
 						>
 							<TextInput

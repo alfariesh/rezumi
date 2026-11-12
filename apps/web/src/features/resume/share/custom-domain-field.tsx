@@ -16,7 +16,8 @@ import { domainSteps, isDomainSettling } from "./domain-progress";
 import { portfolioHoldsShortLink } from "./short-link";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { hasPlanFeature, usePlan } from "@/features/billing/plan";
-import { openPlanDialog } from "@/features/billing/plan-dialog";
+import { openPlanDialog, openPlanDialogForError } from "@/features/billing/plan-dialog";
+import { useConfirm } from "@/hooks/use-confirm";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
 
@@ -30,6 +31,7 @@ const SETTLING_REFRESH_MS = 15_000;
 /** Connects the account's own domain: the domain, the DNS records to add in a dialog, a check, and the result. */
 export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 	const queryClient = useQueryClient();
+	const confirm = useConfirm();
 	const {
 		data: domain,
 		isPending: loading,
@@ -72,8 +74,30 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 			setDns(null);
 		},
 	});
-	const onError = (error: unknown) =>
-		toastError(error, t`Couldn't update sharing. Try again.`, { allowServerMessage: true });
+	// The server's own words are English; each refusal has its wording here. A plan refusal explains the plan instead.
+	const onError = (error: unknown) => {
+		if (openPlanDialogForError(error)) return;
+		toastError(error, t`Couldn't update sharing. Try again.`, {
+			byCode: {
+				INVALID_DOMAIN: t`Enter a domain such as resume.example.com.`,
+				PRECONDITION_FAILED: t`Custom domains aren't available here.`,
+				CONFLICT: t`The domain changed while it was being checked. Check it again.`,
+				NOT_FOUND: t`No domain is connected anymore. Reload the page.`,
+			},
+		});
+	};
+
+	const removeDomain = async () => {
+		// A connected domain stops working at once, and coming back means checking DNS and waiting for HTTPS again.
+		if (domain?.verified) {
+			const confirmed = await confirm(t`Disconnect ${domain.hostname}?`, {
+				description: t`Your domain stops opening your page right away. To connect it again, its DNS is checked and HTTPS is set up again, which can take a while.`,
+				confirmText: t`Disconnect`,
+			});
+			if (!confirmed) return;
+		}
+		remove.mutate(undefined, { onError });
+	};
 
 	const check = () =>
 		verify.mutate(undefined, {
@@ -158,12 +182,7 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 				<span className="min-w-0 flex-1 truncate font-mono text-sm font-medium" dir="ltr">
 					{domain.hostname}
 				</span>
-				<Button
-					variant="danger-soft"
-					size="sm"
-					isPending={remove.isPending}
-					onPress={() => remove.mutate(undefined, { onError })}
-				>
+				<Button variant="danger-soft" size="sm" isPending={remove.isPending} onPress={() => void removeDomain()}>
 					{remove.isPending && <Spinner size="sm" color="current" aria-hidden />}
 					<Trans>Remove</Trans>
 				</Button>

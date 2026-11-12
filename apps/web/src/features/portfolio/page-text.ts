@@ -40,7 +40,7 @@ msg`Skip to content`;
 msg`Page navigation`;
 msg`Menu`;
 msg`Intro`;
-msg`Role`;
+msg`My role`;
 msg`Year`;
 msg`Close`;
 msg`Picture viewer`;

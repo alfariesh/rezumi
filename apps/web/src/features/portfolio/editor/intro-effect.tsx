@@ -5,7 +5,7 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { effectDemoColors } from "@rezumi/portfolio/editor";
-import { EFFECT_CSS, EFFECT_SHARED_CSS } from "@rezumi/portfolio/effects";
+import { EFFECT_CSS, EFFECT_SHARED_CSS, typewriterPhrases } from "@rezumi/portfolio/effects";
 import { isFreePortfolioHeroEffect } from "@rezumi/schema/billing";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
@@ -23,19 +23,6 @@ import { openPlanDialog } from "@/features/billing/plan-dialog";
 
 /** The effects' rules, once, for the demos in this panel (they only match `[data-pfx]` elements). */
 const DEMO_CSS = [EFFECT_SHARED_CSS, ...Object.values(EFFECT_CSS)].join("\n");
-
-/**
- * What the typewriter types, as the page decides it: the headline, then the roles, without blanks or repeats, the
- * headline and at most `PORTFOLIO_LIMITS.typewriterPhrases` roles.
- */
-export function typewriterPhrases(headline: string, roles: readonly string[]): string[] {
-	const phrases: string[] = [];
-	for (const phrase of [headline, ...roles]) {
-		const text = phrase.trim();
-		if (text && !phrases.includes(text)) phrases.push(text);
-	}
-	return phrases.slice(0, 1 + PORTFOLIO_LIMITS.typewriterPhrases);
-}
 
 /** The label of the typewriter's role field `index` (0 for the first role after the headline; at most two). */
 const roleLabel = (index: number) => (index === 0 ? t`Second role` : t`Third role`);

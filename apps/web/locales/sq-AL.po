@@ -955,6 +955,10 @@ msgstr "{name} u zhvendos në kolonën kryesore"
 msgid "{name} never prints"
 msgstr "{name} nuk printon kurrë"
 
+#: src/features/portfolio/editor/list-undo.ts
+msgid "{name} removed"
+msgstr ""
+
 #: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
 msgid "{name} resume template preview"
@@ -4981,6 +4985,7 @@ msgstr "Historia nuk mund të ruhej. Provoni përsëri."
 msgid "Couldn't save the tags. Try again."
 msgstr "Etiketat nuk mund të ruheshin. Provoni përsëri."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Zona kohore nuk mund të ruhej. Provoni përsëri."
@@ -5195,7 +5200,7 @@ msgid "Countries"
 msgstr "shtetet"
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
-msgid "Countries, devices and linking sites aren't available right now."
+msgid "Countries, devices and linking sites can't be shown right now. Try again later."
 msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
@@ -5429,6 +5434,10 @@ msgstr "Ngjyra e personalizuar (hex)"
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Custom CSS"
+msgstr ""
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Custom domains aren't available here."
 msgstr ""
 
 #. Authentication provider display name in account settings
@@ -5919,9 +5928,15 @@ msgstr "Të hidhen poshtë ndryshimet?"
 msgid "Discard unsaved changes?"
 msgstr "Të hidhen ndryshimet e paruajtura?"
 
+#: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/account/security.tsx
 msgid "Disconnect"
 msgstr "Shkëput"
+
+#. placeholder {0}: domain.hostname
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Disconnect {0}?"
+msgstr ""
 
 #: src/features/settings/account/auth-hooks.ts
 msgid "Disconnecting your {providerName} account…"
@@ -6579,6 +6594,10 @@ msgstr ""
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Enter a backup code."
 msgstr "Vendosni një kod rezervë."
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Enter a domain such as resume.example.com."
+msgstr ""
 
 #: src/features/portfolio/editor/fields.tsx
 msgid "Enter a full address, such as https://example.com or mailto:you@example.com."
@@ -8440,6 +8459,10 @@ msgstr ""
 msgid "It couldn't be resumed. Try again in a moment."
 msgstr ""
 
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "It doesn't exist anymore. Reload the page."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "It has entries but isn't placed on a page."
 msgstr "Ka hyrje, por nuk vendoset në një faqe."
@@ -9908,8 +9931,9 @@ msgid "My internships and campus projects finally read like real experience. The
 msgstr ""
 
 #: src/features/portfolio/blocks/block-list.tsx
+#: src/features/portfolio/page-text.ts
 msgid "My role"
-msgstr ""
+msgstr "Roli im"
 
 #. Label for full name input on registration form
 #: src/dialogs/resume/index.tsx
@@ -10251,6 +10275,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "Nuk u gjetën data."
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "No domain is connected anymore. Reload the page."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10622,6 +10650,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Not on the page: add the address below."
+msgstr ""
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Not on the page: add the address the button opens."
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
@@ -11613,6 +11645,10 @@ msgstr ""
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 msgid "Payments"
+msgstr ""
+
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "Payments aren't set up on this server."
 msgstr ""
 
 #: src/features/portfolio/blocks/block-list.tsx
@@ -13660,7 +13696,6 @@ msgstr "Pikërisht tani"
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/applications/components/list-view.tsx
-#: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "Pozicioni"
@@ -15017,6 +15052,10 @@ msgstr ""
 msgid "Something in your portfolio needs fixing before it saves, so nothing was written. The save status at the top says where."
 msgstr ""
 
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "Something is still in progress, or changed meanwhile. Reload the page, check its status, then try again."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
 msgstr ""
@@ -16079,6 +16118,10 @@ msgstr "Kopja është e lidhur me aplikimin për punë, kështu që Check dhe as
 msgid "The creative page: a block of the accent anchors the top corner, framing your portrait, beside an oversized name; two columns follow."
 msgstr ""
 
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "The domain changed while it was being checked. Check it again."
+msgstr ""
+
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "The end is before the start."
 msgstr "Fundi është para fillimit."
@@ -16233,6 +16276,10 @@ msgstr "Faqet janë imazhe, pa tekst pas tyre."
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "The payment for this change didn't go through. Update your payment method in billing and try again."
+msgstr ""
+
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "The payment provider didn't answer. It's checked again automatically, so don't send it twice."
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -16542,6 +16589,10 @@ msgstr "Ky shfletues nuk mund të regjistrojë këtu. Zgjidhni një skedar audio
 msgid "This browser can't take dictation, and none of your AI connections can transcribe speech (OpenAI, Google Gemini, Mistral, xAI, Groq or Vercel AI Gateway can). <0>Add one in Settings</0>, or type your answer."
 msgstr "Ky shfletues nuk mund të marrë diktim dhe asnjë nga lidhjet tuaja AI nuk mund ta transkriptojë të folurën (OpenAI, Google Gemini, Mistral, xAI, Groq ose Vercel AI Gateway mundin). <0>Shtoni një te Parametrat</0> ose shkruani përgjigjen."
 
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "This can't be done as entered. Check the amount and the current state of the payment or account, then try again."
+msgstr ""
+
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "This change is"
 msgstr ""
@@ -16772,6 +16823,10 @@ msgstr "Kjo faqe është shumë e ngjeshur."
 msgid "This page may have moved. Search the list of pages, or start from the introduction."
 msgstr ""
 
+#: src/features/portfolio/editor/chunk-boundary.tsx
+msgid "This part didn't load. Check your connection, then try again."
+msgstr ""
+
 #: src/features/billing/payment-return.tsx
 msgid "This payment didn't go through"
 msgstr ""
@@ -16847,6 +16902,10 @@ msgstr ""
 
 #: src/features/billing/receipt.tsx
 msgid "This receipt isn't available. It may belong to another account."
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "This report already has that status. Reload the page to see what changed."
 msgstr ""
 
 #: src/features/portfolio/admin/review-page.tsx
@@ -17271,6 +17330,7 @@ msgstr "Provoni një mostër"
 #: src/features/career/workspace/practise.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/features/documents/library-error.tsx
+#: src/features/portfolio/editor/chunk-boundary.tsx
 #: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/statistics/portfolio-messages.tsx
@@ -17452,6 +17512,7 @@ msgstr "Nënvizoni lidhjet"
 #: src/features/documents/document-actions.tsx
 #: src/features/portfolio/ai/apply.ts
 #: src/features/portfolio/blocks/block-list.tsx
+#: src/features/portfolio/editor/list-undo.ts
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
 #: src/features/resume/editor/chrome.tsx
@@ -17681,6 +17742,10 @@ msgstr ""
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "URL"
 msgstr "Linku"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Use {device}"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Use {minimum}"
@@ -19095,6 +19160,10 @@ msgstr "Domeni juaj"
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Your domain now goes to your Rezumi address"
+msgstr ""
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Your domain stops opening your page right away. To connect it again, its DNS is checked and HTTPS is set up again, which can take a while."
 msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx

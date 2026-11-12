@@ -12,6 +12,7 @@ import { ImageField } from "../images/image-field";
 import { MetricsEditor } from "../metrics/metric-form";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
+import { removeWithUndo } from "./list-undo";
 import { useOwnOrigins } from "./pictures";
 import { setBasicsText } from "./sections";
 import { editPortfolio, usePortfolioData } from "./store";
@@ -309,12 +310,13 @@ function HeroButtons() {
 							itemProps={itemProps}
 							onRemove={() => {
 								removed(index);
-								editPortfolio(
-									(draft) => {
-										draft.hero.buttons.splice(index, 1);
-									},
-									{ structural: true },
-								);
+								removeWithUndo({
+									list: (draft) => draft.hero.buttons,
+									item: button,
+									index,
+									most: PORTFOLIO_LIMITS.heroButtons,
+									name,
+								});
 							}}
 						>
 							<ChoiceSelect

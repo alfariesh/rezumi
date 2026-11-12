@@ -803,7 +803,7 @@ msgstr "{doneMinutes} dari {total} mnt"
 
 #: src/features/billing/plan.ts
 msgid "{effects} are included, and a portfolio that already uses another effect keeps it."
-msgstr "{effects} sudah termasuk, dan portfolio yang sudah memakai efek lain tetap memakainya."
+msgstr "{effects} sudah termasuk, dan portofolio yang sudah memakai efek lain tetap memakainya."
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{entries, plural, one {# entry} other {# entries}}"
@@ -954,6 +954,10 @@ msgstr "{name} dipindahkan ke kolom utama"
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} never prints"
 msgstr "{name} tidak pernah mencetak"
+
+#: src/features/portfolio/editor/list-undo.ts
+msgid "{name} removed"
+msgstr "{name} dihapus"
 
 #: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
@@ -1570,7 +1574,7 @@ msgstr "Alamat web ditulis tanpa https://."
 
 #: src/features/homepage/plans.ts
 msgid "A web portfolio with {freeWorks} works and {freeThemes} themes"
-msgstr "Portfolio web dengan {freeWorks} karya dan {freeThemes} tema"
+msgstr "Portofolio web dengan {freeWorks} karya dan {freeThemes} tema"
 
 #: src/features/homepage/features.tsx
 msgid "A/B testing"
@@ -4274,7 +4278,7 @@ msgstr "Aplikasi yang terhubung"
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Connected. Your domain opens your portfolio."
-msgstr "Terhubung. Domain Anda membuka portfolio Anda."
+msgstr "Terhubung. Domain Anda membuka portofolio Anda."
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Connected. Your domain opens your primary resume."
@@ -4981,6 +4985,7 @@ msgstr "Tidak dapat menyimpan cerita. Coba lagi."
 msgid "Couldn't save the tags. Try again."
 msgstr "Tidak dapat menyimpan tag. Coba lagi."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Tidak dapat menyimpan zona waktu. Coba lagi."
@@ -5195,8 +5200,8 @@ msgid "Countries"
 msgstr "Negara"
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
-msgid "Countries, devices and linking sites aren't available right now."
-msgstr "Negara, perangkat, dan situs yang menautkan belum bisa ditampilkan saat ini."
+msgid "Countries, devices and linking sites can't be shown right now. Try again later."
+msgstr "Negara, perangkat, dan situs yang menautkan belum bisa ditampilkan saat ini. Coba lagi nanti."
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Country"
@@ -5430,6 +5435,10 @@ msgstr "Warna khusus (hex)"
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Custom CSS"
 msgstr ""
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Custom domains aren't available here."
+msgstr "Domain sendiri belum tersedia di sini."
 
 #. Authentication provider display name in account settings
 #: src/features/settings/account/auth-hooks.ts
@@ -5844,7 +5853,7 @@ msgstr "Detail"
 
 #: src/features/billing/plan-page.tsx
 msgid "Detailed portfolio statistics"
-msgstr "Statistik portfolio terperinci"
+msgstr "Statistik portofolio terperinci"
 
 #: src/features/billing/plan.ts
 msgid "Detailed statistics aren't in your plan"
@@ -5919,9 +5928,15 @@ msgstr "Buang perubahan?"
 msgid "Discard unsaved changes?"
 msgstr "Buang perubahan yang belum disimpan?"
 
+#: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/account/security.tsx
 msgid "Disconnect"
 msgstr "Putuskan"
+
+#. placeholder {0}: domain.hostname
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Disconnect {0}?"
+msgstr "Putuskan {0}?"
 
 #: src/features/settings/account/auth-hooks.ts
 msgid "Disconnecting your {providerName} account…"
@@ -6580,6 +6595,10 @@ msgstr "Masukkan 7 sampai 15 angka, dengan kode negara."
 msgid "Enter a backup code."
 msgstr "Masukkan kode cadangan."
 
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Enter a domain such as resume.example.com."
+msgstr "Masukkan domain seperti resume.example.com."
+
 #: src/features/portfolio/editor/fields.tsx
 msgid "Enter a full address, such as https://example.com or mailto:you@example.com."
 msgstr "Masukkan alamat lengkap, seperti https://example.com atau mailto:anda@example.com."
@@ -6729,16 +6748,16 @@ msgstr "Semua ikon lain sudah termasuk: kontak, judul bagian, keahlian, minat, d
 
 #: src/features/billing/plan-page.tsx
 msgid "Every portfolio intro effect"
-msgstr "Semua efek intro portfolio"
+msgstr "Semua efek intro portofolio"
 
 #: src/features/billing/plan-page.tsx
 msgid "Every portfolio theme"
-msgstr "Semua tema portfolio"
+msgstr "Semua tema portofolio"
 
 #: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "Every portfolio theme, your own domain, no Rezumi badge"
-msgstr "Semua tema portfolio, domain sendiri, tanpa lencana Rezumi"
+msgstr "Semua tema portofolio, domain sendiri, tanpa lencana Rezumi"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
@@ -8440,6 +8459,10 @@ msgstr "Langganan tidak bisa dibatalkan. Coba lagi sebentar lagi."
 msgid "It couldn't be resumed. Try again in a moment."
 msgstr "Langganan tidak bisa dilanjutkan. Coba lagi sebentar lagi."
 
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "It doesn't exist anymore. Reload the page."
+msgstr "Data ini sudah tidak ada. Muat ulang halaman."
+
 #: src/features/resume/editor/check/issues.ts
 msgid "It has entries but isn't placed on a page."
 msgstr "Ini memiliki entri tetapi tidak ditempatkan pada halaman."
@@ -9908,6 +9931,7 @@ msgid "My internships and campus projects finally read like real experience. The
 msgstr "Magang dan proyek kampus saya akhirnya terbaca seperti pengalaman sungguhan. Cek ATS menunjukkan apa yang perlu diperbaiki."
 
 #: src/features/portfolio/blocks/block-list.tsx
+#: src/features/portfolio/page-text.ts
 msgid "My role"
 msgstr "Peran saya"
 
@@ -10251,6 +10275,10 @@ msgstr "Belum ada kredit yang bisa dipakai"
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "Tidak ditemukan tanggal."
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "No domain is connected anymore. Reload the page."
+msgstr "Tidak ada domain yang terhubung lagi. Muat ulang halaman."
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10623,6 +10651,10 @@ msgstr "Belum tampil di halaman sampai punya label dan nilai."
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Not on the page: add the address below."
 msgstr "Belum tampil di halaman: isi alamatnya di bawah."
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Not on the page: add the address the button opens."
+msgstr "Belum tampil di halaman: isi alamat yang dibuka tombol ini."
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Not on the page: add your WhatsApp number in Contact."
@@ -11614,6 +11646,10 @@ msgstr "Pembayaran diterima"
 #: src/features/billing/payment-history.tsx
 msgid "Payments"
 msgstr "Pembayaran"
+
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "Payments aren't set up on this server."
+msgstr "Pembayaran belum diatur di server ini."
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "PDF"
@@ -13660,7 +13696,6 @@ msgstr "Sekarang"
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/applications/components/list-view.tsx
-#: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "Posisi"
@@ -15017,6 +15052,10 @@ msgstr "Ada isi portofolio Anda yang tidak bisa disimpan apa adanya. Urungkan pe
 msgid "Something in your portfolio needs fixing before it saves, so nothing was written. The save status at the top says where."
 msgstr "Ada yang perlu diperbaiki di portofolio Anda sebelum bisa tersimpan, jadi belum ada yang ditulis. Status simpan di atas menunjukkan letaknya."
 
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "Something is still in progress, or changed meanwhile. Reload the page, check its status, then try again."
+msgstr "Ada proses yang masih berjalan, atau ada yang berubah sementara itu. Muat ulang halaman, periksa statusnya, lalu coba lagi."
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
 msgstr ""
@@ -16079,6 +16118,10 @@ msgstr "Salinannya ditautkan ke lamaran pekerjaan, jadi Periksa dan asisten meng
 msgid "The creative page: a block of the accent anchors the top corner, framing your portrait, beside an oversized name; two columns follow."
 msgstr "Halaman kreatif: blok warna aksen di pojok atas membingkai fotomu, di samping nama berukuran besar; dua kolom menyusul di bawahnya."
 
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "The domain changed while it was being checked. Check it again."
+msgstr "Domain berubah saat sedang diperiksa. Periksa lagi."
+
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "The end is before the start."
 msgstr "Akhir adalah sebelum permulaan."
@@ -16234,6 +16277,10 @@ msgstr "Halaman-halaman berupa gambar, tanpa teks di baliknya."
 #: src/features/billing/purchase-dialog.tsx
 msgid "The payment for this change didn't go through. Update your payment method in billing and try again."
 msgstr "Pembayaran untuk perubahan ini gagal. Perbarui metode pembayaran di halaman tagihan, lalu coba lagi."
+
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "The payment provider didn't answer. It's checked again automatically, so don't send it twice."
+msgstr "Penyedia pembayaran tidak menjawab. Statusnya diperiksa lagi otomatis, jadi jangan kirim dua kali."
 
 #: src/features/billing/admin/overview.tsx
 msgid "The payments couldn't load."
@@ -16542,6 +16589,10 @@ msgstr "Browser ini tidak dapat merekam di sini. Pilih file audio, atau ketik ja
 msgid "This browser can't take dictation, and none of your AI connections can transcribe speech (OpenAI, Google Gemini, Mistral, xAI, Groq or Vercel AI Gateway can). <0>Add one in Settings</0>, or type your answer."
 msgstr "Browser ini tidak mendukung dikte, dan tidak satu pun koneksi AI Anda dapat mentranskripsi ucapan (OpenAI, Google Gemini, Mistral, xAI, Groq, atau Vercel AI Gateway bisa). <0>Tambahkan di Pengaturan</0>, atau ketik jawaban Anda."
 
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "This can't be done as entered. Check the amount and the current state of the payment or account, then try again."
+msgstr "Ini tidak bisa dilakukan seperti yang diisi. Periksa jumlahnya dan status pembayaran atau akun saat ini, lalu coba lagi."
+
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "This change is"
 msgstr "Perubahan ini"
@@ -16772,6 +16823,10 @@ msgstr "Halaman ini sangat padat."
 msgid "This page may have moved. Search the list of pages, or start from the introduction."
 msgstr "Halaman ini mungkin sudah dipindahkan. Cari di daftar halaman, atau mulai dari pengantar."
 
+#: src/features/portfolio/editor/chunk-boundary.tsx
+msgid "This part didn't load. Check your connection, then try again."
+msgstr "Bagian ini gagal dimuat. Periksa koneksi Anda, lalu coba lagi."
+
 #: src/features/billing/payment-return.tsx
 msgid "This payment didn't go through"
 msgstr "Pembayaran ini tidak berhasil"
@@ -16848,6 +16903,10 @@ msgstr "Portofolio ini diturunkan"
 #: src/features/billing/receipt.tsx
 msgid "This receipt isn't available. It may belong to another account."
 msgstr "Bukti bayar ini tidak tersedia. Mungkin milik akun lain."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "This report already has that status. Reload the page to see what changed."
+msgstr "Laporan ini sudah berstatus itu. Muat ulang halaman untuk melihat perubahannya."
 
 #: src/features/portfolio/admin/review-page.tsx
 msgid "This report doesn't exist anymore. Reload the page."
@@ -17271,6 +17330,7 @@ msgstr "Coba sampel"
 #: src/features/career/workspace/practise.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/features/documents/library-error.tsx
+#: src/features/portfolio/editor/chunk-boundary.tsx
 #: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/statistics/portfolio-messages.tsx
@@ -17452,6 +17512,7 @@ msgstr "Garis bawahi tautan"
 #: src/features/documents/document-actions.tsx
 #: src/features/portfolio/ai/apply.ts
 #: src/features/portfolio/blocks/block-list.tsx
+#: src/features/portfolio/editor/list-undo.ts
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
 #: src/features/resume/editor/chrome.tsx
@@ -17681,6 +17742,10 @@ msgstr "Mengunggah gambar"
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "URL"
 msgstr "URL"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Use {device}"
+msgstr "Pakai {device}"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Use {minimum}"
@@ -18884,7 +18949,7 @@ msgstr "Anda bisa menghubungkan CV nanti di Terbitkan."
 
 #: src/features/billing/plan.ts
 msgid "You can look at every theme. {themes} are included, and a portfolio that already uses another theme keeps it."
-msgstr "Kamu bisa melihat semua tema. {themes} sudah termasuk, dan portfolio yang sudah memakai tema lain tetap memakainya."
+msgstr "Anda bisa melihat semua tema. {themes} sudah termasuk, dan portofolio yang sudah memakai tema lain tetap memakainya."
 
 #: src/features/settings/account/security.tsx
 msgid "You can no longer sign in with this passkey."
@@ -19096,6 +19161,10 @@ msgstr "Domain Anda"
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Your domain now goes to your Rezumi address"
 msgstr "Domain Anda kini mengarah ke alamat Rezumi Anda"
+
+#: src/features/resume/share/custom-domain-field.tsx
+msgid "Your domain stops opening your page right away. To connect it again, its DNS is checked and HTTPS is set up again, which can take a while."
+msgstr "Domain Anda langsung berhenti membuka halaman Anda. Untuk menghubungkannya lagi, DNS-nya diperiksa dan HTTPS diatur ulang, yang bisa memakan waktu."
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Your domain stops working on {until}"
@@ -19425,7 +19494,7 @@ msgstr "Portofolio Anda terlalu besar untuk disimpan. Persingkat sebagian teks a
 
 #: src/features/billing/plan.ts
 msgid "Your portfolio shows a small Made with Rezumi badge at the bottom of the page."
-msgstr "Portfoliomu menampilkan lencana kecil Made with Rezumi di bagian bawah halaman."
+msgstr "Portofolio Anda menampilkan lencana kecil “Dibuat dengan Rezumi” di bagian bawah halaman."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your portfolio still shows its own content. Choose another resume to fill Experience, Education and the other sections again."
@@ -19449,7 +19518,7 @@ msgstr "Portofolio Anda diturunkan, jadi tidak bisa diterbitkan atau dihapus. Ki
 
 #: src/features/billing/plan.ts
 msgid "Your portfolio's storage is full"
-msgstr "Penyimpanan portfoliomu penuh"
+msgstr "Penyimpanan portofolio Anda penuh"
 
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio's storage is full. Remove pictures or PDFs you don't need, then try again."

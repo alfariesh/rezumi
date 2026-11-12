@@ -99,27 +99,27 @@ function ActionDialog({ action, isOpen, onClose, review }: ActionDialogProps) {
 			await client.portfolio.admin.setReportStatus({ reportId: action.reportId, status: action.status, reason });
 	};
 
-	// The dialog shows an error's message as it is: it gets this feature's wording, not the server's English.
 	const run = async (reason: string) => {
 		try {
 			await send(reason);
-		} catch (error) {
-			const gone =
-				action?.kind === "report"
-					? t`This report doesn't exist anymore. Reload the page.`
-					: t`This portfolio doesn't exist anymore. Its owner may have deleted it.`;
-			throw new Error(
-				portfolioErrorMessage(error, {
-					fallback: t`That didn't work. Reload the page and try again.`,
-					byCode: { NOT_FOUND: gone },
-				}),
-				{ cause: error },
-			);
 		} finally {
 			// A conflict means someone else changed it meanwhile: either way the page shows what's true now.
 			await queryClient.invalidateQueries({ queryKey: orpc.portfolio.admin.key() });
 		}
 	};
+
+	// In this feature's words, never the server's English.
+	const describeError = (error: unknown) =>
+		portfolioErrorMessage(error, {
+			fallback: t`That didn't work. Reload the page and try again.`,
+			byCode:
+				action?.kind === "report"
+					? {
+							NOT_FOUND: t`This report doesn't exist anymore. Reload the page.`,
+							PORTFOLIO_MODERATION_CONFLICT: t`This report already has that status. Reload the page to see what changed.`,
+						}
+					: { NOT_FOUND: t`This portfolio doesn't exist anymore. Its owner may have deleted it.` },
+		});
 
 	const title = {
 		suspend: <Trans>Take this portfolio down?</Trans>,
@@ -158,14 +158,19 @@ function ActionDialog({ action, isOpen, onClose, review }: ActionDialogProps) {
 			danger={action?.kind === "suspend" || action?.kind === "ban"}
 			submitLabel={<Trans>Confirm</Trans>}
 			onSubmit={run}
+			describeError={describeError}
 		/>
 	);
 }
 
-type PortfolioReviewPageProps = { portfolioId: string };
+type PortfolioReviewPageProps = {
+	portfolioId: string;
+	/** The reports list's filter this page was opened from; "All reports" goes back to it. */
+	from?: PortfolioReportStatus | "all" | undefined;
+};
 
 /** One portfolio under review: what it shows, the reports about it, what's been done, and the actions. */
-export function PortfolioReviewPage({ portfolioId }: PortfolioReviewPageProps) {
+export function PortfolioReviewPage({ portfolioId, from }: PortfolioReviewPageProps) {
 	const query = useQuery(orpc.portfolio.admin.get.queryOptions({ input: { portfolioId } }));
 	const [action, setPendingAction] = useState<PendingAction | null>(null);
 	const [actionOpen, setActionOpen] = useState(false);
@@ -190,7 +195,11 @@ export function PortfolioReviewPage({ portfolioId }: PortfolioReviewPageProps) {
 		<div className="flex flex-col gap-4">
 			<header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
 				<div className="grid min-w-0 gap-1">
-					<Link to="/dashboard/admin/portfolios" search={{}} className="text-sm text-muted hover:underline">
+					<Link
+						to="/dashboard/admin/portfolios"
+						search={from ? { status: from } : {}}
+						className="text-sm text-muted hover:underline"
+					>
 						<Trans>All reports</Trans>
 					</Link>
 					<Typography type="h2" render={renderAsH1}>

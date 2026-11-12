@@ -34,7 +34,7 @@ export function Homepage({ billingEnabled = false, portfolioEnabled = false }: H
 				<SectionNav />
 				<Features />
 				<Templates />
-				{portfolioEnabled && <PortfolioShowcase />}
+				{portfolioEnabled && <PortfolioShowcase billingEnabled={billingEnabled} />}
 				<Testimonials />
 				<Pricing billingEnabled={billingEnabled} portfolioEnabled={portfolioEnabled} />
 				<Faq />

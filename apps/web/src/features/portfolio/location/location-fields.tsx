@@ -5,11 +5,12 @@ import { Alert, Button, Spinner } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { Suspense, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { PORTFOLIO_WORK_MODES } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
+import { ChunkBoundary, retryableLazy } from "../editor/chunk-boundary";
 import { pageLocaleOf, useSourceResume } from "../editor/context";
 import { ChoiceSelect, TextInput } from "../editor/fields";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "../editor/store";
@@ -24,7 +25,7 @@ import {
 } from "./map-pictures";
 import { identifyPlace, placeAtPrecision, useChosenCity } from "./place";
 
-const LocationMap = lazy(() => import("./location-map"));
+const locationMap = retryableLazy(() => import("./location-map"));
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -333,25 +334,34 @@ export function LocationFields() {
 
 			{location.showMap && location.point && (
 				<div className="grid gap-2">
-					<Suspense
-						fallback={
-							<div className="grid aspect-5/3 place-items-center rounded-xl border border-separator">
-								<Spinner size="sm" />
-							</div>
-						}
-					>
-						<LocationMap
-							point={location.point}
-							precision={precision}
-							label={location.label}
-							onMove={(point) =>
-								editPortfolio((draft) => {
-									const current = draft.location.point;
-									if (current) setLocationPoint(draft.location, { ...point, precision: current.precision });
-								})
-							}
-						/>
-					</Suspense>
+					<ChunkBoundary>
+						{(attempt) => {
+							const LocationMap = locationMap(attempt);
+							const shown = location.point;
+							if (!shown) return null;
+							return (
+								<Suspense
+									fallback={
+										<div className="grid aspect-5/3 place-items-center rounded-xl border border-separator">
+											<Spinner size="sm" />
+										</div>
+									}
+								>
+									<LocationMap
+										point={shown}
+										precision={precision}
+										label={location.label}
+										onMove={(point) =>
+											editPortfolio((draft) => {
+												const current = draft.location.point;
+												if (current) setLocationPoint(draft.location, { ...point, precision: current.precision });
+											})
+										}
+									/>
+								</Suspense>
+							);
+						}}
+					</ChunkBoundary>
 					{precision === "city" && (
 						<Alert status="warning">
 							<Alert.Indicator>

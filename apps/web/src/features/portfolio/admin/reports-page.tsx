@@ -37,7 +37,11 @@ export function PortfolioReportsPage({ status }: PortfolioReportsPageProps) {
 		setFinding(true);
 		try {
 			const { portfolioId } = await client.portfolio.admin.find({ query: query.trim() });
-			await navigate({ to: "/dashboard/admin/portfolios/$portfolioId", params: { portfolioId } });
+			await navigate({
+				to: "/dashboard/admin/portfolios/$portfolioId",
+				params: { portfolioId },
+				search: { from: status },
+			});
 		} catch (error) {
 			toast.add({
 				type: "error",
@@ -133,6 +137,7 @@ export function PortfolioReportsPage({ status }: PortfolioReportsPageProps) {
 												<Link
 													to="/dashboard/admin/portfolios/$portfolioId"
 													params={{ portfolioId: report.portfolioId }}
+													search={{ from: status }}
 													className="font-medium text-accent hover:underline"
 												>
 													@{report.username}
