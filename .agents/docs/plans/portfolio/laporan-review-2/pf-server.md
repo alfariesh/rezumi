@@ -157,3 +157,80 @@ Scope: `packages/schema/src/portfolio/**`, `packages/api/src/features/portfolio/
 - A one-URL sitemap and a `Sitemap:` line in `robots.txt` on custom domains.
 - An account-level moderation history on the admin page, showing `deleted`, `banned` and other entries whose portfolio is gone.
 - Durable report notifications with retry, and a small "notification health" counter on the admin page.
+
+## Follow-up round (2026-11-12)
+
+### Fixed
+
+1. **Statistics details status (done first).**
+   - `details.state` is now `locked`, `not-configured`, `unavailable` or `ready`:
+     - `not-configured`: Analytics Engine isn't bound (Node, local development).
+     - `unavailable`: reading it failed.
+   - The list is `PORTFOLIO_STATISTICS_DETAIL_STATES` in `@rezumi/schema/portfolio/statistics`.
+   - `readPortfolioDetails` returns the two cases separately; the router's output schema has both.
+   - Files: `analytics.ts`, `statistics.ts`, `router.ts`.
+2. **`view` beacon for prerendered or prefetched pages.**
+   - `PORTFOLIO_EVENT_KINDS` gains `"view"`; the beacon has the same payload as the other events, with no id.
+   - `recordPortfolioEvent` counts it through `countPortfolioVisit`, the one path the server's own page count also uses: same limiter, same owner and crawler checks, same once-an-hour key `portfolio:<id>:view:<visitor>`. A normal load that also sends the beacon counts once.
+   - The source comes from the page address in the beacon's `Referer` (its `utm_source`). Where the visitor came from before the page isn't known, so it otherwise counts as `direct`.
+   - A beacon without a page address is ignored.
+   - File: `public.ts`.
+3. **Share cards on Workers.**
+   - `tooling/cloudflare/build.mjs` ships resvg's WebAssembly as `resvg.wasm`, with its own resolve rule ahead of the forme rule.
+   - The Worker entry imports it and hands it over with `configureResvgWasm`.
+   - New `apps/server/src/static/resvg.ts` (`initializeResvg`) serves both cards: on Workers it uses the bundled module; on Node it reads the package's file; a failed start is retried on the next card.
+   - Both `portfolio-card.ts` and `resume-card.ts` use it.
+   - `tooling/cloudflare/smoke.mjs` now:
+     - sets `PORTFOLIO_MODE=on`;
+     - asserts that `/cards/workersmoke/<slug>.png` and `/cards/workersmoke.png` answer 200 `image/png` with PNG bytes, not the banner redirect;
+     - publishes a portfolio for that (after marking the smoke user's email verified in its disposable database).
+4. **Workers odd status, fixed at the source.**
+   - `fetchPublic` in `packages/utils/src/url-security.node.ts` now refuses a status outside 200–599 on Workers with the same `Invalid response status` error as on Node, cancelling the body, instead of the `Response` constructor's `RangeError`.
+   - The extra mapping in `remote.ts` is gone.
+   - Its comment no longer calls `global_fetch_strictly_public` an address filter.
+   - Verified under workerd by the smoke test: the module loads (it builds its `BlockList`s at import), and `portfolio.unfurl` on `http://127.0.0.1/admin` answers `PORTFOLIO_LINK_UNREADABLE`.
+5. **One custom-domain liveness rule.**
+   - `domainIsConnected` (verified, and with the automation the hostname and certificate active) is now used by `customDomainDestination`.
+   - `domainIsLive` is `domainIsConnected` plus the plan grace.
+   - A verified domain whose certificate is still pending now answers like an unknown host (404 with the automation) instead of serving pages with a self-canonical while the app page and sitemap point to the app address.
+   - File: `packages/api/src/features/custom-domain/service.ts`.
+6. **Resume item ids.**
+   - The resume write schema (`packages/schema/src/resume/write.ts`) refuses an empty id, or one over `RESUME_ITEM_ID_MAX_LENGTH` (64), on section items, roles, custom sections and their items, with the path to the bad id.
+   - Every resume item can therefore be hidden on, and copied to, a portfolio (`isResumeReferenceId` takes the same range, and a test keeps the two equal).
+   - The check is write-only, so stored resumes still load.
+   - The id descriptions say "1 to 64 characters"; the regenerated schema guide and spec show it.
+   - Generated ids (UUIDs, `generateId`) are far below the cap. The importers, MCP and resume patch suites pass unchanged.
+
+### Tests added
+
+- `analytics.test.ts`, `contact.integration.test.ts`: `not-configured` versus `unavailable`.
+- `public.integration.test.ts`: a page plus its beacon counts once; a beacon alone counts; the source comes from the page address; nothing for the owner or a beacon without an address.
+- `apps/server/src/http/portfolio.test.ts`: `view` is accepted.
+- `resvg.test.ts` (new): the Node file read (WebAssembly magic number), the bundled module, and a retry after a failed start.
+- `cloudflare/index.test.ts`: mocks the new wasm import.
+- `url-security.node.test.ts`: status 999 on Workers.
+- `custom-domain.integration.test.ts`: a verified domain with a pending certificate neither serves pages nor counts as live.
+- `write.test.ts`: empty and overlong ids are refused with their path; ids up to 64 characters of any text are accepted.
+
+### Checks run
+
+- Typecheck (`pnpm --filter <pkg> typecheck`): `@rezumi/schema`, `@rezumi/api`, `@rezumi/db`, `@rezumi/email`, `@rezumi/utils`, `server`, `@rezumi/tooling` and `web` — all clean.
+- Tests, with `PORTFOLIO_TEST_DATABASE_URL` on `rezumi_billing_test` (`pnpm --filter <pkg> exec vp test run`):
+  - `@rezumi/schema`: 190 passed.
+  - `@rezumi/api`: 1146 passed, 192 skipped (other databases' suites).
+  - `@rezumi/db`: 1 passed, 3 skipped.
+  - `@rezumi/email`: 10 passed.
+  - `@rezumi/utils`: 141 passed.
+  - `server`: 291 passed, 4 skipped.
+- Other packages that write resumes: `@rezumi/resume` 230 passed, `@rezumi/import` 84, `@rezumi/mcp` 21, `@rezumi/ai` 8.
+- `@rezumi/tooling` `semantic-css`: 2 passed.
+- `pnpm exec vp lint --fix`, `vp fmt`, then `lint --deny-warnings --format=agent` and `fmt --check` on every changed path: clean.
+- `pnpm exec turbo boundaries`: no issues in 2215 files.
+- `pnpm docs:gen`: `docs/spec.json`, `docs/guides/json-resume-schema.mdx` and `plugins/rezumi/skills/resume-builder/references/schema.md` regenerated (detail states, id descriptions).
+- `pnpm check:cloudflare`: dry run exit 0; the bundle holds `forme.wasm` and `resvg.wasm`.
+- `pnpm test:cloudflare` (local disposable database, no deploy): passed twice, the second time after the final formatting, including the new card and link-check assertions.
+
+### Left, with the reason
+
+- **A prerendered visit's original referrer isn't known.** The beacon payload agreed with pf-render carries no referrer, so such visits count as `direct` unless the page address has `utm_source`. A later `ref: document.referrer` field could fix it.
+- **No database migration of resume ids.** There are no real users; a stored resume with an unusual id loads, but has to be given a new id before its next save.

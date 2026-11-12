@@ -124,3 +124,32 @@ Tests went from 376 to 390, all passing.
 - Serve Paper's 29 KB inline fibre texture as one cached static file instead of inlining it in every Paper page.
 - A shared quote carousel and service CTA with per-theme tokens, once a sixth or seventh theme makes the copies costly.
 - A "print this portfolio" link that opens the print view with every work's detail included.
+
+## Follow-up round
+
+1. **`typewriterPhrases` is now one shared rule.** Import it from `@rezumi/portfolio/effects`; no new subpath was needed.
+   - Signature: `typewriterPhrases(headline: string, roles: readonly string[]): string[]`. It returns the headline first, then at most `PORTFOLIO_LIMITS.typewriterPhrases` roles, trimmed, without blanks or repeats. The typewriter plays only when this gives two or more phrases.
+   - It lives in `src/effects/phrases.ts`, has no React import, and the page's `effectTarget` and `HeroHeadline` use it.
+   - It differs from the editor's copy in one case: with an empty headline, the page types at most 2 roles; the editor's copy allowed 3. The page's rule wins, so pf-web's switch to it also fixes that mismatch.
+   - Tests: `src/effects/phrases.test.ts`.
+2. **A prerendered page now counts its visit when it is opened** (`src/live-script.ts`).
+   - When the page loads with `document.prerendering`, the live script waits for `prerenderingchange`. It then sends one `{ "kind": "view" }` beacon to the existing event address, plus the work beacon if the address opens a work.
+   - A normal load sends no `view`, and still sends the work beacon at once.
+   - Size: the live script is 1,784 B, under its 1,792 B cap, and page plus live script is 5,288 B, under the 5.5 KB cap. The 6 KB cap for the page script plus one effect is not touched by this change. To fit, I made the script shorter without changing what it does:
+     - `JSON.stringify` drops an absent id by itself;
+     - `closest?.` on the click target;
+     - the bare `turnstile` global;
+     - `form.action`, so no form field may be named `action` (noted in the doc comment);
+     - `disabled=1/0`.
+   - Tests in `src/live-script.test.ts` (happy-dom):
+     - a normal load sends nothing, and a click sends its kind;
+     - a prerendered page sends `view`, then the work, only on activation;
+     - the form posts to its own address and shows the result.
+3. Paper's "View case study" text is left for the Phase 13 scaffold, as asked.
+
+Checks after this round:
+
+- `pnpm --filter @rezumi/portfolio typecheck`: pass.
+- `pnpm --filter @rezumi/portfolio test`: 395 passed.
+- `vp lint --deny-warnings packages/portfolio`: clean.
+- `vp fmt --check packages/portfolio`: clean.

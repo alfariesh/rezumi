@@ -208,3 +208,89 @@ Method: four read-only reviewers covered media/works/blocks, publish/statistics/
 - Retry button for pictures that failed in a batch (keep the `File`s that failed).
 - Undo toast for removed services, testimonials, clients and buttons, as blocks already have.
 - Accept "35%" or "Rp1.200.000" in metric numbers and pick the format from the sign.
+
+## Follow-up round
+
+Summary: all 13 items are done, including both that depended on the other sessions. `web` and `@rezumi/portfolio` typecheck clean. Tests pass: 51 files and 306 tests in the touched web features, and 395 in `@rezumi/portfolio`. Lint and format are clean on the changed paths. `lingui:extract` was run, and every new string has an id-ID translation. Nothing is committed.
+
+### Items
+
+1. **Homepage plan chips:** `features/homepage/page.tsx` now passes `billingEnabled` to `<PortfolioShowcase />`.
+2. **Custom domain** (`features/resume/share/custom-domain-field.tsx`):
+   - Remove now asks first ("Disconnect <domain>?") when the domain is verified. Removing an unverified one stays immediate.
+   - Errors use code-based wording (`INVALID_DOMAIN`, `PRECONDITION_FAILED`, `CONFLICT`, `NOT_FOUND`) instead of `allowServerMessage`.
+   - A plan refusal opens the plan dialog.
+3. **Timezone:**
+   - Today it is stored only as Better Auth's additional field `user.timezone` (column `NOT NULL DEFAULT 'UTC'`). It is updated only by `authClient.updateUser` in Settings → Timezone.
+   - There is no "chosen" flag, so "never chose one" is taken as: the account is under 30 minutes old and still on UTC. No one can have picked UTC on purpose that soon, so no schema change was needed.
+   - New file `features/settings/timezone.ts` holds `deviceTimeZone`, `saveAccountTimeZone`, `shouldAdoptDeviceTimeZone` and `adoptDeviceTimeZone`.
+   - `routes/__root.tsx` calls `adoptDeviceTimeZone` once the session is known. That covers email and Google/GitHub sign-up alike.
+   - The statistics card shows "Use <device zone>" when the zones differ. It saves the zone and reloads the statistics.
+   - No files outside `apps/web` were touched for this.
+4. **`features/billing/admin/reason-dialog.tsx`:**
+   - The raw `error.message` is gone. A new `describeError` prop defaults to code-based wording: `NOT_FOUND`, `CONFLICT`, `BAD_GATEWAY`, `BILLING_UNAVAILABLE`, `BAD_REQUEST`, plan problems, then a fallback.
+   - Portfolio admin passes its own `portfolioErrorMessage` wording, and no longer rethrows.
+   - Trade-off: billing refund refusals lose the server's specifics (for example "At most X is left to refund"). Cross-area below.
+5. **Billing strings about portfolios in id-ID:** 10 entries now use "portofolio" and "Anda", and the badge is “Dibuat dengan Rezumi”. That includes the plan page, the plan dialog, buy-plans and the custom-domain "Connected" line.
+6. **Reports, and replacing a work:**
+   - `setReportStatus` `NOT_FOUND` and `PORTFOLIO_MODERATION_CONFLICT` now have report-specific wording on the review page, where the action runs; the reports list itself never calls it.
+   - "Replace a work": none exists. Works are only added through the Add work dialog (whose buttons open the plan dialog when there's no room) or removed.
+   - A save that still trips `PLAN_LIMIT_REACHED` `portfolioWorks` (for example deleting one work and adding another while over the limit after a downgrade) is classified as `invalid`/`refused`. That opens the plan dialog once (`explainPlanProblem`), and the save status shows the plan wording.
+7. **Lazy chunks:**
+   - A failed chunk load used to replace the whole editor with the route's error page (TanStack `CatchBoundary`); the console logs from round one show this happening.
+   - New `editor/chunk-boundary.tsx` adds `ChunkBoundary` and `retryableLazy`. React keeps a failed `lazy` failed, so each retry builds a new lazy component.
+   - The boundary now wraps the rich text editor (`editor/fields.tsx`), the location map (`location/location-fields.tsx`), the metric preview (`metrics/metric-form.tsx`) and the statistics visitor map.
+   - A failure shows "This part didn't load… Try again" in place; the rest of the editor keeps working.
+8. **Admin "All reports" link:**
+   - The review route takes `?from=<status>`. The reports list and "Find portfolio" pass it along.
+   - "All reports" goes back to `/dashboard/admin/portfolios?status=<from>`.
+   - Files: `routes/dashboard/admin/portfolios/$portfolioId.tsx`, `admin/{reports-page,review-page}.tsx`.
+9. **Custom section button:** a label without an address shows "Not on the page: add the address the button opens." File: `editor/section-forms.tsx`.
+10. **Undo toast for removals:**
+    - New `editor/list-undo.ts` adds `removeWithUndo` and `restoreListItem`.
+    - Services, testimonials, clients and intro buttons now show "<name> removed · Undo".
+    - Undo is the editor's own Undo while nothing else changed since. Otherwise the item alone goes back to its place, unless it's already back or the list is full.
+    - Focus-after-remove from round one is kept.
+11. **"Role" on the public page:**
+    - The page-message generator (`tooling/locales/section-titles.ts`) skips messages that have a Lingui context and keys translations by the English text, so a context can't separate the two uses.
+    - The page string is now the existing msgid "My role" (`packages/portfolio/src/messages.ts` `role`, and its twin in `page-text.ts`). It is first person like "About me", and id-ID already had "Peran saya".
+    - Before this, the other 53 locales had "Role" translated as "position". After the switch they fell back to English "My role", so "My role" is now translated in all 54 `.po` files. Example: de "Meine Rolle", ja "担当".
+    - `pnpm pdf:translations` regenerated `portfolio-catalog.json`.
+    - The public page now shows "Peran saya <b>Senior PM · tim 11 orang</b>".
+12. **Statistics details** (pf-server's states landed):
+    - `not-configured` shows nothing.
+    - `unavailable` says "…can't be shown right now. Try again later."
+13. **`typewriterPhrases`** (pf-render's export landed): the editor's copy is removed. `editor/intro-effect.tsx` imports it from `@rezumi/portfolio/effects`, so the editor's "only one line" warning follows the page's own rule.
+
+### Tests added
+
+- `editor/list-undo.test.ts`: the item goes back to its old place or the end, never twice, never into a full list; items without an id are matched by content.
+- `editor/chunk-boundary.test.tsx`: a failed load shows the message, the rest stays, and Try again loads the part.
+- `features/settings/timezone.test.ts`: a new UTC account on a device elsewhere adopts the device zone; older accounts, chosen zones, UTC devices and an unknown zone don't.
+
+### Checks run
+
+- `pnpm --filter web typecheck`: clean. `pnpm --filter @rezumi/portfolio typecheck`: clean.
+- `pnpm --filter web test src/features/portfolio src/features/settings src/features/billing src/features/resume/share src/features/homepage`: 51 files, 306 tests passed.
+- `pnpm --filter @rezumi/portfolio test`: 26 files, 395 tests passed, including the Indonesian page-string tests.
+- `vp lint --deny-warnings` and `vp fmt --check` on every changed path (including `packages/portfolio/src/messages.ts`): clean.
+- `pnpm lingui:extract` and `pnpm pdf:translations` were run. No id-ID portfolio, billing, custom-domain or admin string is left empty, and placeholders match.
+- Browser (`rezumi-portfolio-12`):
+  - The statistics card showed "Use Asia/Jakarta"; pressing it changed the note to "Days are counted in Asia/Jakarta".
+  - A throwaway account `pf-web-tz@example.test` was signed up and opened the dashboard; its timezone became Asia/Jakarta by itself. I then signed back into the seeded account.
+  - Removing an intro button showed "Send a message (to Contact) removed · Undo", and Undo restored it.
+  - The public page `/raniprw2` shows "Peran saya".
+  - On the admin review page opened with `?from=all`, "All reports" links to `?status=all`.
+  - No console errors.
+- **Not checked in the browser:**
+  - The custom-domain disconnect confirmation: a verified domain needs real DNS, so it is checked by code only.
+  - The chunk boundary: checked by the unit test.
+
+### Cross-area
+
+1. **Billing refund refusals** (`packages/api/src/features/billing/refunds.ts`, `credits.ts`): the `BAD_REQUEST` messages carry facts the admin needs, such as the amount left to refund, Dodo's own reason, or the credits balance. With raw messages gone, those facts are lost. Send them as `data` (`{ left, currency }`, `{ balance }`, `{ reason: "partial-not-allowed" | "already-refunded" | … }`) so the dialog can word them.
+2. **`tooling/locales/section-titles.ts`** skips catalog entries with a Lingui context. If page strings ever need a context, the generator should match `message` and `context` together.
+
+### Not done
+
+None.

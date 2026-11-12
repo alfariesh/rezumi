@@ -916,3 +916,18 @@ Dikerjakan langkah integrasi, bukan sesi gelombang 1:
 - Semua uji wajib di bagian 3 lulus, cek seluruh workspace di langkah integrasi lulus, E2E Phase 13 lulus.
 - Matriks visual 8 tema (halaman utama + karya) dilihat dan temuan diperbaiki; pemilik menilai Sintaks dan Warta.
 - Dokumen bagian 10 diperbarui; draf legal menunggu persetujuan pemilik.
+
+### 12. Selisih setelah tinjauan kedua (2026-11-12)
+
+Dokumen ini ditulis saat tinjauan kedua masih berjalan. Butir di bawah **mengalahkan** teks di atas bila berbeda.
+
+1. **Nama modul kata sandi.** `packages/api/src/features/portfolio/access.ts` sudah ada sejak tinjauan kedua (siapa yang boleh memakai portfolio: `enabledAccount`, `requireEnabled`). Modul akses pengunjung berkata sandi (bagian 3.4) bernama `visitor-access.ts`, diekspor sebagai `@rezumi/api/features/portfolio/visitor-access`. Di mana pun dokumen ini menulis `access.ts` untuk B16, baca `visitor-access.ts`.
+2. **Jenis peristiwa `view`** sudah ada di `PORTFOLIO_EVENT_KINDS` (halaman prerender yang diaktifkan mengirim satu `view`, server menghitungnya sebagai kunjungan tanpa dobel). B9 mempertahankannya saat menghapus `work`.
+3. **Status rincian statistik** kini `"not-configured"` (Analytics Engine tidak terpasang) dan `"unavailable"` (kueri gagal). Bentuk keluaran B9 memakai keduanya.
+4. **String tambahan di Langkah 0** (bagian 4.4): `viewWork` = "View work" / "Lihat karya". `pf-render` memakainya untuk ajakan di kartu karya Paper (`pp-work__cta`, sekarang menampilkan judul bagian) dan boleh memakainya di tema lain; `pf-themes` memakainya di Sintaks dan Warta bila kartu punya ajakan.
+5. **Istilah Indonesia.** Katalog memakai "portofolio" dan "Anda", bukan "kamu". Usulan `lockedIntro` menjadi "Masukkan kata sandi yang diberikan kepada Anda untuk melihatnya." Semua terjemahan baru mengikuti istilah itu.
+6. **String "Role" halaman publik** sudah dipisah dari "Role" milik Applications pada tinjauan kedua; ikuti cara yang dipakai di `messages.ts`/`page-text.ts` bila string baru bentrok dengan msgid fitur lain.
+7. **Kartu share di Workers** diperbaiki pada tinjauan kedua (wasm resvg ikut dibundel, diuji `tooling/cloudflare/smoke.mjs`). Kartu per karya (B2) memakai jalur yang sama dan menambah satu pemeriksaan smoke untuk `/cards/<username>/work/<slug>.png`.
+8. **Zona waktu statistik**: akun kini mendapat zona waktu peramban bila belum pernah memilih; rentang 7/30/90 hari B9 memakai zona waktu akun yang sama dengan kartu statistik sekarang.
+9. **Laporan sesi** ditulis ke `.agents/docs/plans/portfolio/laporan-phase-13/<nama sesi>.md` (bahasa Inggris): yang dikerjakan, uji dengan hasil persis, selisih dari kontrak, yang tidak dikerjakan beserta alasannya.
+10. **Perujuk kunjungan prerender.** Beacon `view` sekarang tanpa perujuk, jadi kunjungan seperti itu tercatat `direct`. Di B9: `pf-render` menambah `ref: document.referrer` (dipotong 300 karakter) pada beacon `view`, dan `pf-server` memakainya di `traffic.ts` seperti header `Referer`.
