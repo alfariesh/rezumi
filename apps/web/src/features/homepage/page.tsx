@@ -5,6 +5,7 @@ import { Features } from "./features";
 import { LandingFooter } from "./footer";
 import { Hero } from "./hero";
 import { Introduction } from "./introduction";
+import { PortfolioShowcase } from "./portfolio";
 import { Pricing } from "./pricing";
 import { SectionNav } from "./section-nav";
 import { Templates } from "./templates";
@@ -33,6 +34,7 @@ export function Homepage({ billingEnabled = false, portfolioEnabled = false }: H
 				<SectionNav />
 				<Features />
 				<Templates />
+				{portfolioEnabled && <PortfolioShowcase />}
 				<Testimonials />
 				<Pricing billingEnabled={billingEnabled} portfolioEnabled={portfolioEnabled} />
 				<Faq />

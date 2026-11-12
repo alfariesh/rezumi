@@ -23,8 +23,15 @@ import { Header } from "@/routes/_home/-sections/header";
 
 export const locales = localeSchema.options;
 
+/** What the build knows about the deployment; the live route reads the same from the flags. */
+export type PrerenderOptions = { portfolioEnabled: boolean };
+
 const pages = {
-	home: { path: "/", meta: getHomepageMeta, render: () => <Homepage /> },
+	home: {
+		path: "/",
+		meta: getHomepageMeta,
+		render: ({ portfolioEnabled }: PrerenderOptions) => <Homepage portfolioEnabled={portfolioEnabled} />,
+	},
 	"resume-templates": {
 		path: "/resume-templates",
 		meta: getTemplatesMeta,
@@ -48,13 +55,13 @@ const pages = {
 	},
 } satisfies Record<
 	string,
-	{ path: string; meta: () => { title: string; description: string }; render: () => ReactNode }
+	{ path: string; meta: () => { title: string; description: string }; render: (options: PrerenderOptions) => ReactNode }
 >;
 
 type PrerenderedPage = keyof typeof pages;
 export const prerenderedPages = Object.keys(pages) as PrerenderedPage[];
 
-export async function renderPage(name: PrerenderedPage, locale: Locale) {
+export async function renderPage(name: PrerenderedPage, locale: Locale, options: PrerenderOptions) {
 	const page = pages[name];
 	const { messages } = await getLocaleMessages(locale);
 	i18n.loadAndActivate({ locale, messages });
@@ -71,7 +78,7 @@ export async function renderPage(name: PrerenderedPage, locale: Locale) {
 			<QueryClientProvider client={new QueryClient()}>
 				<I18nProvider i18n={i18n}>
 					<ThemeProvider theme="system">
-						<AriaI18nProvider locale={locale}>{page.render()}</AriaI18nProvider>
+						<AriaI18nProvider locale={locale}>{page.render(options)}</AriaI18nProvider>
 					</ThemeProvider>
 				</I18nProvider>
 			</QueryClientProvider>

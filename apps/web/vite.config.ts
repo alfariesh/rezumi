@@ -41,6 +41,9 @@ async function prerenderPages() {
 	const { docsSlugs, renderDocsPage }: DocsPrerenderModule = await import(
 		pathToFileURL(`${prerenderBundleDir}/docs-prerender.js`).href
 	);
+	// Production's switch lives in wrangler.jsonc and every change to it deploys a new build, so the first response can
+	// match what the live route shows.
+	const portfolioEnabled = /"PORTFOLIO_MODE":\s*"on"/.test(await readFile(`${webRoot}../../wrangler.jsonc`, "utf8"));
 	const shell = await readFile(`${webRoot}dist/index.html`, "utf8");
 
 	// The page is readable before any script runs, so the app's JavaScript starts after the first contentful paint: the
@@ -89,7 +92,7 @@ async function prerenderPages() {
 		await mkdir(`${prerenderOutDir}/${name}`, { recursive: true });
 
 		for (const locale of locales) {
-			const page = await renderPage(name, locale);
+			const page = await renderPage(name, locale, { portfolioEnabled });
 			await writeFile(`${prerenderOutDir}/${name}/${locale}.html`, fillShell({ ...page, locale }));
 		}
 	}

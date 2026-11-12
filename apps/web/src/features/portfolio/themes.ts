@@ -1,6 +1,13 @@
 import type { PortfolioHeroEffect, PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import { t } from "@lingui/core/macro";
 
+/**
+ * A theme's gallery picture (`pnpm --filter @rezumi/tooling portfolio:previews`): the top of its sample page with a
+ * fictional persona. Indonesian pages show the Indonesian one, every other language the English one.
+ */
+export const themePicture = (theme: PortfolioTheme, locale: string) =>
+	`/portfolio-themes/thumb/${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.webp`;
+
 /** What each theme looks like, in the theme gallery (create dialog and Design). */
 export const themeDescription = (theme: PortfolioTheme) =>
 	({

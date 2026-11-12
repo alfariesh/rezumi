@@ -8,16 +8,9 @@ import { RENDERED_PORTFOLIO_THEMES } from "@rezumi/portfolio/editor";
 import { PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
-import { themeAudience, themeDescription } from "./themes";
+import { themeAudience, themeDescription, themePicture } from "./themes";
 import { isLockedPortfolioTheme, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
-
-/**
- * A theme's gallery picture (`pnpm --filter @rezumi/tooling portfolio:previews`): the top of its sample page with a
- * fictional persona. Indonesian pages show the Indonesian one, every other language the English one.
- */
-const themePicture = (theme: PortfolioTheme, locale: string) =>
-	`/portfolio-themes/thumb/${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.webp`;
 
 type ThemeGalleryProps = {
 	value: PortfolioTheme;
