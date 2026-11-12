@@ -93,3 +93,33 @@ describe("the theme gallery", () => {
 		expect(screen.queryByText("Plus")).toBeNull();
 	});
 });
+
+describe("arrowing through the themes on Free", () => {
+	it("passes a Plus theme without the plan dialog, and explains it once it's chosen on purpose", async () => {
+		mocks.plan = planWith(false);
+		mocks.openPlanDialog.mockClear();
+		const index = RENDERED_PORTFOLIO_THEMES.findIndex(
+			(theme, at) =>
+				PORTFOLIO_THEME_INFO[theme].plan === "plus" &&
+				PORTFOLIO_THEME_INFO[RENDERED_PORTFOLIO_THEMES[at - 1] ?? theme].plan === "free",
+		);
+		const before = RENDERED_PORTFOLIO_THEMES[index - 1];
+		const locked = RENDERED_PORTFOLIO_THEMES[index];
+		if (!before || !locked) throw new Error("Expected a Plus theme right after a free one.");
+		const onChange = vi.fn();
+		render(
+			<I18nProvider i18n={i18n}>
+				<ThemeGallery value={before} onChange={onChange} />
+			</I18nProvider>,
+		);
+
+		const user = userEvent.setup();
+		await user.tab();
+		await user.keyboard("{ArrowDown}");
+		expect(mocks.openPlanDialog).not.toHaveBeenCalled();
+		expect(onChange).not.toHaveBeenCalled();
+
+		await user.click(screen.getByRole("radio", { name: new RegExp(PORTFOLIO_THEME_INFO[locked].name) }));
+		expect(mocks.openPlanDialog).toHaveBeenCalledWith({ kind: "feature", feature: "premiumPortfolioThemes" });
+	});
+});

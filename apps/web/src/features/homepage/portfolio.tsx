@@ -6,8 +6,13 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { Container, SectionTitle } from "./ui";
 import { themePicture } from "@/features/portfolio/themes";
 
+type PortfolioShowcaseProps = {
+	/** Plans apply to accounts: each theme shows its plan. Without plans every theme is open, so none is labelled. */
+	billingEnabled?: boolean;
+};
+
 /** The portfolio, between Templates and Testimonials once portfolios are open: what it is and every theme with its plan. */
-export function PortfolioShowcase() {
+export function PortfolioShowcase({ billingEnabled = true }: PortfolioShowcaseProps) {
 	const { i18n } = useLingui();
 	const included = [
 		t`Case studies with pictures, video, PDFs and results in numbers`,
@@ -51,9 +56,11 @@ export function PortfolioShowcase() {
 							/>
 							<div className="mt-3 flex items-center justify-between gap-2">
 								<p className="font-medium">{theme.name}</p>
-								<Chip size="sm" variant="soft" color={theme.plan === "free" ? "success" : "accent"}>
-									{theme.plan === "free" ? t`Free` : "Plus"}
-								</Chip>
+								{billingEnabled && (
+									<Chip size="sm" variant="soft" color={theme.plan === "free" ? "success" : "accent"}>
+										{theme.plan === "free" ? t`Free` : "Plus"}
+									</Chip>
+								)}
 							</div>
 						</li>
 					))}

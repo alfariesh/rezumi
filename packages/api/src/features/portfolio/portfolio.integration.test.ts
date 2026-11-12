@@ -458,6 +458,47 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			await expect(update("member", { hero: { greeting: "Still mine" } }, created.updatedAt)).resolves.toBeDefined();
 		});
 
+		it("asks visitors for a password and stops again, without moving the data's version or showing the hash", async () => {
+			const created = await service.create("member", { sourceResumeId: null });
+			expect(created.hasPassword).toBe(false);
+			const locked = await service.setPassword("member", { password: "rahasia-123" });
+			expect(locked.hasPassword).toBe(true);
+			expect(locked.updatedAt.getTime()).toBe(created.updatedAt.getTime());
+			expect(JSON.stringify(locked)).not.toContain("$2");
+			const [row] = await getDb().select().from(tables.portfolio).where(eq(tables.portfolio.userId, "member"));
+			expect(row?.password).toMatch(/^\$2[aby]\$10\$/);
+			expect((await service.get("member")).portfolio?.hasPassword).toBe(true);
+			const opened = await service.removePassword("member");
+			expect(opened.hasPassword).toBe(false);
+			expect(opened.updatedAt.getTime()).toBe(created.updatedAt.getTime());
+			await expect(service.setPassword("unverified", { password: "rahasia-123" })).rejects.toMatchObject({
+				code: "NOT_FOUND",
+			});
+			fixture.mode = "off";
+			await expect(service.setPassword("member", { password: "rahasia-123" })).rejects.toMatchObject({
+				code: "PORTFOLIO_DISABLED",
+			});
+		});
+
+		it("reads only the account's own works' numbers", async () => {
+			const created = await service.create("member", { sourceResumeId: null });
+			const saved = await update(
+				"member",
+				{ works: { items: [{ id: "w1", slug: "kopi", title: "Kopi" }] } },
+				created.updatedAt,
+			);
+			expect(saved.data.works.items).toHaveLength(1);
+			expect((await service.workStatistics("member", { workId: "w1" })).work).toMatchObject({ id: "w1" });
+			// Another account's work is simply not in its portfolio.
+			await service.create("other", { sourceResumeId: null });
+			await expect(service.workStatistics("other", { workId: "w1" })).rejects.toMatchObject({
+				code: "PORTFOLIO_WORK_NOT_FOUND",
+			});
+			await expect(service.workStatistics("unverified", { workId: "w1" })).rejects.toMatchObject({
+				code: "NOT_FOUND",
+			});
+		});
+
 		it("can't publish a portfolio an admin took down, but can unpublish it", async () => {
 			await service.create("member", { sourceResumeId: null });
 			await service.setPublic("member", { isPublic: true });
@@ -551,6 +592,16 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			expect(await fileRows()).toEqual([]);
 			expect([...fixture.files.keys()]).toEqual([theirs]);
 			expect(await fileRows("other")).toEqual([{ key: theirs, unusedSince: null }]);
+		});
+
+		it("still deletes a deleted portfolio's files while portfolios are off", async () => {
+			await service.create("member", { sourceResumeId: null });
+			await service.uploadImage("member", { file: await picture(300, 200) });
+			await service.delete("member");
+			fixture.mode = "off";
+			expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 1, checkedPortfolios: 0, messageEmails: 0 });
+			expect(await fileRows()).toEqual([]);
+			expect(fixture.files.size).toBe(0);
 		});
 
 		it("tries again later for files storage can't delete once the portfolio is gone", async () => {
@@ -1213,14 +1264,16 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			expect(await fileRows("member")).toHaveLength(1);
 		});
 
-		it("leaves files alone while portfolios are off", async () => {
+		it("still deletes unused files while portfolios are off, but skips the weekly check", async () => {
 			await service.create("member", { sourceResumeId: null });
 			stored("member", "old");
 			await addFile("member", "old");
 			await markUnused(image("member", "old").key, new Date(Date.now() - 48 * hour));
+			// A stray only the weekly check would find stays until portfolios are back.
+			const stray = stored("member", "stray");
 			fixture.mode = "off";
-			expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 0, checkedPortfolios: 0 });
-			expect(fixture.files.size).toBe(1);
+			expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 1, checkedPortfolios: 0 });
+			expect([...fixture.files.keys()]).toEqual([stray]);
 		});
 	});
 

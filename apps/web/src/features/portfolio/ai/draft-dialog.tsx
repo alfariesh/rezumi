@@ -57,7 +57,15 @@ function AiDraftDialog({ onClose }: AiDraftDialogProps) {
 		const saved = await usePortfolioEditorStore.getState().flush();
 		setSaving(false);
 		if (!saved) {
-			setFailure(t`Your latest changes aren't saved yet. Wait for them to save, then try again.`);
+			// A conflict or a deleted portfolio has its own dialog; other failures pass, or name what to fix.
+			const { status } = usePortfolioEditorStore.getState();
+			setFailure(
+				status === "conflict" || status === "gone"
+					? t`Your portfolio can't be saved right now, so nothing was written. Close this and follow the message about saving.`
+					: status === "invalid"
+						? t`Something in your portfolio needs fixing before it saves, so nothing was written. The save status at the top says where.`
+						: t`Your latest changes aren't saved yet. Wait for them to save, then try again.`,
+			);
 			return;
 		}
 		try {

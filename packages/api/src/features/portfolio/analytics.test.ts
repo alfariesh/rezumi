@@ -8,6 +8,7 @@ const {
 	configurePortfolioAnalytics,
 	portfolioDataPoint,
 	portfolioDetailQueries,
+	portfolioWorkDetailQueries,
 	readPortfolioDetails,
 	writePortfolioEvent,
 } = await import("./analytics");
@@ -86,8 +87,15 @@ describe("portfolioDetailQueries", () => {
 		for (const { query, params } of queries) {
 			expect(query).toContain("index1 = $portfolio");
 			expect(query).toContain("timestamp >= $start");
-			expect(params).toEqual({ portfolio: "pf-mine", start: "2026-10-10T00:00:00.000Z" });
+			// The start of the oldest of the 30 days the daily counts show.
+			expect(params).toEqual({ portfolio: "pf-mine", start: "2026-10-11T00:00:00.000Z" });
 		}
+	});
+
+	it("starts at the beginning of the owner's oldest day", () => {
+		expect(portfolioDetailQueries("pf-mine", now, "Asia/Jakarta").countries.params.start).toBe(
+			"2026-10-10T17:00:00.000Z",
+		);
 	});
 
 	it("reads the dataset through the binding's names, without account scope or a format", () => {
@@ -121,7 +129,7 @@ describe("work days", () => {
 		);
 		configurePortfolioAnalytics({ dataset: () => undefined, sql: () => ({ query }), country: () => undefined });
 		const rows = await readPortfolioDetails(`pf-${day}`, "Asia/Jakarta");
-		expect(rows?.workDays).toEqual([{ date: "2026-11-08", workId: "w1", opens: 3 }]);
+		expect(typeof rows === "string" ? rows : rows.workDays).toEqual([{ date: "2026-11-08", workId: "w1", opens: 3 }]);
 	});
 });
 
@@ -129,17 +137,17 @@ describe("readPortfolioDetails", () => {
 	beforeEach(() => vi.spyOn(console, "error").mockImplementation(() => undefined));
 	afterEach(() => vi.restoreAllMocks());
 
-	it("is null without the binding", async () => {
-		expect(await readPortfolioDetails("pf-none")).toBeNull();
+	it("is not configured without the binding", async () => {
+		expect(await readPortfolioDetails("pf-none")).toBe("not-configured");
 	});
 
-	it("is null when the query fails", async () => {
+	it("is unavailable when the query fails", async () => {
 		configurePortfolioAnalytics({
 			dataset: () => undefined,
 			sql: () => ({ query: () => Promise.reject(new Error("no")) }),
 			country: () => undefined,
 		});
-		expect(await readPortfolioDetails("pf-fail")).toBeNull();
+		expect(await readPortfolioDetails("pf-fail")).toBe("unavailable");
 	});
 
 	it("reads rows, rounding weighted sums and dropping what isn't a known value, then caches them", async () => {
@@ -170,5 +178,28 @@ describe("readPortfolioDetails", () => {
 		});
 		expect(await readPortfolioDetails("pf-read")).toEqual(first);
 		expect(query).toHaveBeenCalledTimes(4);
+	});
+});
+
+describe("ranges and one work's breakdown (Phase 13, B9)", () => {
+	const now = new Date("2026-11-09T00:00:00Z");
+
+	it("starts at the beginning of the oldest day of 7 or 90 days", () => {
+		expect(portfolioDetailQueries("pf-mine", now, "UTC", 7).countries.params.start).toBe("2026-11-03T00:00:00.000Z");
+		expect(portfolioDetailQueries("pf-mine", now, "UTC", 90).countries.params.start).toBe("2026-08-12T00:00:00.000Z");
+	});
+
+	it("limits every query to the portfolio and the work, with the work as a parameter", () => {
+		const queries = Object.values(portfolioWorkDetailQueries("pf-mine", "w1", now, "UTC", 30));
+		expect(queries).toHaveLength(5);
+		for (const { query, params } of queries) {
+			expect(query).toContain("index1 = $portfolio");
+			expect(query).toContain("blob2 = $work");
+			expect(query).not.toContain("w1");
+			expect(params).toMatchObject({ portfolio: "pf-mine", work: "w1" });
+		}
+		const { sources, clicks } = portfolioWorkDetailQueries("pf-mine", "w1", now);
+		expect(sources.query).toContain("blob1 = 'work'");
+		expect(clicks.query).toContain("blob1 NOT IN ('view', 'work')");
 	});
 });

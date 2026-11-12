@@ -1,27 +1,26 @@
-import type { PortfolioViewImage } from "@rezumi/portfolio/view";
+import type { PortfolioView, PortfolioViewImage } from "@rezumi/portfolio/view";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
-import { initWasm, Resvg } from "@resvg/resvg-wasm";
+import { Resvg } from "@resvg/resvg-wasm";
 import { findPublicPortfolio } from "@rezumi/api/features/portfolio/public";
 import { publicPortfolioRequestAllowed, tooManyPortfolioRequests } from "@rezumi/api/features/portfolio/public-limit";
 import { env } from "@rezumi/env/server";
 import { CARD_WIDTH, resumeCardSvg } from "@rezumi/pdf/web-page-card";
+import { resolvePortfolioWork } from "@rezumi/portfolio/view";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { matchesIfNoneMatch } from "@rezumi/utils/http";
 import { publicPortfolioView } from "./portfolio-page";
-
-let ready: Promise<void> | undefined;
-const initialize = () =>
-	(ready ??= readFile(fileURLToPath(import.meta.resolve("@resvg/resvg-wasm/index_bg.wasm"))).then((bytes) =>
-		initWasm(bytes),
-	));
+import { initializeResvg } from "./resvg";
 
 // Recent cards by what they draw; crawlers fetch a card once per share, so a small cache covers bursts.
 const cache = new Map<string, Uint8Array>();
 const CACHE_LIMIT = 200;
 
-const banner = () => Response.redirect(new URL("/opengraph/banner.jpg", env.APP_URL), 302);
+/** The generic banner, never cached: once the portfolio shows again, its own card should. */
+const banner = () =>
+	new Response(null, {
+		status: 302,
+		headers: { Location: new URL("/opengraph/banner.jpg", env.APP_URL).href, "Cache-Control": "no-store" },
+	});
 
 /** Formats the card's renderer (resvg) draws. It can't draw WebP, which the editor uploads pictures as. */
 const DRAWABLE_PICTURE = /\.(?:jpe?g|png)$/i;
@@ -48,7 +47,7 @@ function cardPicture(picture: PortfolioViewImage | null): string {
 /**
  * `GET /cards/<username>.png`: a published portfolio's link preview (WhatsApp, LinkedIn): name, headline, photo and
  * address in the portfolio's fonts and accent. An address that doesn't show a portfolio gets the generic banner, so a
- * card never shows what a visitor can't.
+ * card never shows what a visitor can't. HEAD answers with the headers only.
  */
 export async function handlePortfolioCard(
 	request: Request,
@@ -57,19 +56,65 @@ export async function handlePortfolioCard(
 ): Promise<Response> {
 	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
 	const portfolio = await findPublicPortfolio(username).catch(() => null);
-	if (!portfolio) return banner();
+	// Behind a password (Phase 13, B16) the card shows the generic banner: a preview never shows what a visitor can't.
+	if (!portfolio || portfolio.passwordHash) return banner();
 	const view = publicPortfolioView(portfolio);
+	const address = portfolio.customDomain ?? `${appHost()}/${portfolio.username}`;
+	return drawCard(request, view, { name: view.basics.name, headline: view.basics.headline, address });
+}
 
-	const address = portfolio.customDomain ?? `${new URL(env.APP_ALIAS_URL ?? env.APP_URL).host}/${portfolio.username}`;
-	const text = { name: view.basics.name, headline: view.basics.headline, address, color: view.design.accent };
+/**
+ * `GET /cards/<username>/work/<slug>.png` (Phase 13, B2): a work's link preview, drawn like the portfolio's: the work's
+ * title as the name, the person (and their role in it) underneath, the work's address, the person's photo (the cover
+ * is WebP, which the renderer can't draw). A work the page doesn't list, a moved address, or a portfolio behind a
+ * password gets the generic banner.
+ */
+export async function handlePortfolioWorkCard(
+	request: Request,
+	username: string,
+	slug: string,
+	trustedClient?: string,
+): Promise<Response> {
+	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
+	const portfolio = await findPublicPortfolio(username).catch(() => null);
+	if (!portfolio || portfolio.passwordHash) return banner();
+	const view = publicPortfolioView(portfolio);
+	const found = resolvePortfolioWork(view, slug);
+	if (found?.status !== "ok") return banner();
+	const { work } = found;
+	const address = portfolio.customDomain
+		? `${portfolio.customDomain}/work/${work.slug}`
+		: `${appHost()}/${portfolio.username}/work/${work.slug}`;
+	const role = work.role.trim();
+	return drawCard(request, view, {
+		name: work.title,
+		headline: role ? `${view.basics.name} · ${role}` : view.basics.name,
+		address,
+	});
+}
+
+/** The host link previews name: the alias domain when there is one, else the app's own. */
+const appHost = () => new URL(env.APP_ALIAS_URL ?? env.APP_URL).host;
+
+/** Draws a card in the portfolio's fonts and accent, with the person's photo, or answers from the browser's copy. */
+async function drawCard(
+	request: Request,
+	view: PortfolioView,
+	lines: { name: string; headline: string; address: string },
+): Promise<Response> {
+	const text = { ...lines, color: view.design.accent };
 	const picture = cardPicture(view.basics.picture);
 	const fonts = { heading: view.design.fonts.heading, body: view.design.fonts.body };
 	const key = createHash("sha256")
 		.update(JSON.stringify([text, fonts, picture, view.locale]))
 		.digest("hex");
-	const headers = { "Cache-Control": "public, max-age=3600", ETag: `"${key.slice(0, 32)}"` };
+	// Checked again on every use (`no-cache`, answered with 304 while it's the same card), so a card stops showing as
+	// soon as its portfolio is unpublished, taken down or locked, instead of an hour later.
+	const headers = { "Cache-Control": "public, no-cache", ETag: `"${key.slice(0, 32)}"` };
 	if (matchesIfNoneMatch(request.headers.get("if-none-match"), headers.ETag))
 		return new Response(null, { status: 304, headers });
+	// A crawler checking the link needs no picture drawn.
+	if (request.method === "HEAD") return new Response(null, { headers: { ...headers, "Content-Type": "image/png" } });
 
 	let png = cache.get(key);
 	if (!png) {
@@ -93,7 +138,7 @@ export async function handlePortfolioCard(
 				bodyFamily: assets.bodyFamily,
 				picture: photo,
 			});
-			await initialize();
+			await initializeResvg();
 			const resvg = new Resvg(svg, {
 				fitTo: { mode: "width", value: CARD_WIDTH },
 				font: { fontBuffers: assets.fonts, defaultFontFamily: assets.bodyFamily, loadSystemFonts: false },

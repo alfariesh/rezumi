@@ -22,8 +22,16 @@ function render(data: PortfolioDataInput, resume: ResumeData | null = testResume
 	return renderTestPage(data, { resume, ...(locale ? { locale } : {}) });
 }
 
+/** A work's own page, as the server draws it at `/<username>/work/<slug>`. */
+function renderWork(data: PortfolioDataInput, workId: string, resume: ResumeData | null = testResume()) {
+	return renderTestPage(data, { resume, page: { kind: "work", workId } });
+}
+
 describe("renderPortfolioPage (Lugas)", () => {
 	const { view, page, html } = render(fullData);
+	// The first work's page holds every block type.
+	const work = renderWork(fullData, "w1");
+	const workHtml = work.html;
 
 	it("draws every section with its anchor and heading, and no undefined or NaN", () => {
 		expectSoundPage(html, "lugas");
@@ -40,11 +48,13 @@ describe("renderPortfolioPage (Lugas)", () => {
 		expect(html).not.toContain("Someone Else");
 	});
 
-	it("opens each shown work's detail by its anchor, as a modal dialog, with previous and next", () => {
-		expect(html).toContain('href="#work-kopi-app"');
-		expect(html).toContain('id="work-kopi-app" role="dialog" aria-modal="true" aria-labelledby="work-kopi-app--title"');
-		expect(html).toContain('href="#work-no-cover" aria-label="Berikutnya: Work without pictures"');
-		expect(count(html, /class="pf-detail"/g)).toBe(view.works.length);
+	it("links each shown work's card to the work's own page, and holds no detail dialog", () => {
+		expect(html).toContain('<a href="/nadia/work/kopi-app">');
+		expect(html).toContain('<a href="/nadia/work/no-cover">');
+		expect(html).not.toMatch(/pf-detail|role="dialog"|pf-lightbox|pf-blocks/);
+		expect(view.works.map((item) => item.href)).toEqual(["/nadia/work/kopi-app", "/nadia/work/no-cover"]);
+		expectSoundPage(workHtml, "lugas");
+		expect(workHtml).toContain('rel="next"');
 	});
 
 	it("draws metrics as definition lists with every part as text", () => {
@@ -52,18 +62,23 @@ describe("renderPortfolioPage (Lugas)", () => {
 		expect(html).toMatch(/4\sjt/);
 		expect(html).toContain("97,5%");
 		expect(html).toContain("Top 3");
-		// The block's metrics: value, change for screen readers, before and after, sparkline, progress, context.
-		expect(html).toContain("2,8%");
-		expect(html).toContain("Naik, perubahan baik:");
-		expect(html).toMatch(/Sebelum 2,1%/);
-		expect(html).toContain('class="pf-metric__chart"');
-		expect(html).toMatch(/role="img" aria-label="Progres: 80%"/);
-		expect(html).toContain("3 months after launch");
+		// The block's metrics, on the work's page: value, change for screen readers, before and after, sparkline, progress,
+		// context.
+		expect(workHtml).toContain("2,8%");
+		expect(workHtml).toContain("Naik, perubahan baik:");
+		expect(workHtml).toMatch(/Sebelum 2,1%/);
+		expect(workHtml).toContain('class="pf-metric__chart"');
+		// The bar reads as text: a `dd` takes no role.
+		expect(workHtml).toContain(
+			'<dd class="pf-metric__progress"><i style="--w:80%"></i><span class="sr-only">Progres: 80%</span></dd>',
+		);
+		expect(workHtml).toContain("3 months after launch");
 		// The work card's highlighted metric.
 		expect(html).toMatch(/<span class="pf-work-metric"><b>2,8%<\/b><span>Checkout conversion<\/span><\/span>/);
 	});
 
 	it("opens gallery pictures full size, in one viewer the page script fills (a new tab without it)", () => {
+		const html = workHtml;
 		expect(html).toContain(
 			'<a class="pf-zoom" href="https://rezumi.example/uploads/user-1/pictures/portfolio/shot-1.webp" target="_blank" rel="noopener" data-lightbox="" data-caption="Home screen">',
 		);
@@ -84,9 +99,11 @@ describe("renderPortfolioPage (Lugas)", () => {
 		expect(html).toMatch(
 			/<img class="lg-photo" src="https:\/\/rezumi.example\/uploads\/user-1\/pictures\/formal.webp"[^>]*loading="eager"/,
 		);
-		expect(html).toContain('alt="shot-1 picture" width="1600" height="1200" loading="lazy" decoding="async"');
+		expect(workHtml).toContain('alt="shot-1 picture" width="1600" height="1200" loading="lazy" decoding="async"');
 		expect(html).toContain("object-position:30% 60%");
-		expect(html).toContain('srcSet="https://rezumi.example/uploads/user-1/pictures/portfolio/shot-1-small.webp 800w');
+		expect(workHtml).toContain(
+			'srcSet="https://rezumi.example/uploads/user-1/pictures/portfolio/shot-1-small.webp 800w',
+		);
 	});
 
 	it("cleans rich text and marks outgoing links as user content", () => {
@@ -103,6 +120,7 @@ describe("renderPortfolioPage (Lugas)", () => {
 	});
 
 	it("draws videos as a thumbnail and play button that load nothing from YouTube or Vimeo", () => {
+		const html = workHtml;
 		// The player only arrives through the page script after a click.
 		expect(html).not.toContain("<iframe");
 		expect(html).not.toMatch(/ytimg|vimeocdn/);
@@ -119,7 +137,8 @@ describe("renderPortfolioPage (Lugas)", () => {
 	});
 
 	it("draws a PDF card with its first page, page count, size and an Open PDF button", () => {
-		const { messages } = render(fullData);
+		const { messages } = work;
+		const html = workHtml;
 		expect(html).toContain("uploads/user-1/pictures/portfolio/case-study-page.webp");
 		expect(html).toContain(`PDF · ${fillPortfolioMessage(messages.pages, { count: 12 })} · 2,4 MB`);
 		expect(html).toMatch(
@@ -129,6 +148,7 @@ describe("renderPortfolioPage (Lugas)", () => {
 	});
 
 	it("draws link cards with the site and an outgoing user-content link", () => {
+		const html = workHtml;
 		expect(html).toContain(
 			'class="pf-link" href="https://medium.example.test/@nadia/fewer-failed-payments" target="_blank" rel="ugc nofollow noopener noreferrer"',
 		);
@@ -313,7 +333,9 @@ describe("renderPortfolioPage edge cases", () => {
 			metric: ["big", "kpi", "ba"],
 		}))
 			for (const value of values) {
-				const { html } = render({ ...fullData, design: { variants: { [key]: value } } }, resume);
+				const data = { ...fullData, design: { variants: { [key]: value } } };
+				// A work's metrics, which take the metric variant, are on its own page.
+				const { html } = key === "metric" ? renderWork(data, "w1", resume) : render(data, resume);
 				expect(html).toContain(`data-variant="${value}"`);
 				expect(html).not.toMatch(/undefined|NaN/);
 			}
@@ -326,8 +348,23 @@ describe("renderPortfolioPage edge cases", () => {
 
 	it("draws dark and device-following modes", () => {
 		expect(render({ design: { scheme: "dark" } }).page.scheme).toBe("dark");
-		expect(render({ design: { scheme: "auto" } }).page.css).toContain(
-			'@media (prefers-color-scheme:dark){:root[data-pf-scheme="auto"]',
+		const { css } = render({ design: { scheme: "auto" } }).page;
+		expect(css).toContain('@media screen and (prefers-color-scheme:dark){:root[data-pf-scheme="auto"]');
+		// Dark is for screens: printed on white paper without backgrounds, every mode keeps the light tokens.
+		expect(css).toContain('@media screen{:root[data-pf-scheme="dark"]{color-scheme:dark;');
+		expect(css).not.toMatch(/(?:^|\n|\})[^@{}]*:root\[data-pf-scheme="dark"\]\{/);
+	});
+
+	it("prints without the navigation, form or picture viewer, and a work's page without the links around it", () => {
+		const print = /@media print\{(.*)\}\n/.exec(render(fullData).page.css)?.[1] ?? "";
+		expect(print).toMatch(
+			/\.pf-nav__links,\.pf-menu,\.pf-form,\.pf-lightbox,\.pf-workpage__back,\.pf-workpage__more[^{]*\{display:none!important\}/,
+		);
+		expect(print).toContain(".pf-workpage{max-width:none;padding-block:0}");
+		expect(print).not.toContain("pf-detail{");
+		// Light text on a fill keeps the fill on paper, where backgrounds are left out by default.
+		expect(print).toContain(
+			".pf-btn--primary,.pf-chip--open{-webkit-print-color-adjust:exact;print-color-adjust:exact}",
 		);
 	});
 });
@@ -338,14 +375,14 @@ describe("renderPortfolioPage hardening", () => {
 			const { html, view } = render({ ...fullData, theme, sections: { hidden: ["work"] } });
 			expectSoundPage(html, theme);
 			expect(view.works).toEqual([]);
-			expect(html).not.toContain("pf-detail");
+			expect(html).not.toContain("/work/");
 			expect(html).not.toContain("pf-lightbox");
 			expect(html).not.toContain("Coffee ordering app");
 			expect(html).not.toContain("Orders took too long");
 		}
 	});
 
-	it("names heading ids apart from every work anchor, in every theme", () => {
+	it("names heading ids apart from every work anchor, in every theme, on the home page and every work's page", () => {
 		const works = {
 			items: [
 				{ id: "w1", slug: "title", title: "Title" },
@@ -354,11 +391,10 @@ describe("renderPortfolioPage hardening", () => {
 			],
 		};
 		for (const theme of PORTFOLIO_THEMES) {
-			const { html } = render({ ...fullData, theme, works });
-			expectSoundPage(html, theme);
-			expect(html).toContain('id="work-brand-title"');
-			expect(html).toContain('id="work-brand--title"');
-			expect(html).toContain('id="work--title"');
+			const data = { ...fullData, theme, works };
+			expectSoundPage(render(data).html, theme);
+			for (const id of ["w1", "w2", "w3"]) expectSoundPage(renderWork(data, id).html, theme);
+			expect(renderWork(data, "w2").html).toContain('<h1 class="pf-detail__title" id="work-brand--title">Brand</h1>');
 		}
 	});
 
@@ -380,9 +416,18 @@ describe("renderPortfolioPage hardening", () => {
 		expect(html).toMatch(/<section class="pf-section lg-sec" id="profiles"[^>]*>[\s\S]*?<ul class="pf-extralist">/);
 	});
 
-	it("puts headings in rich text under the section's or the work's own", () => {
-		const { html } = render(fullData);
-		expect(html).toContain("<h3>Problem</h3><h4>Why</h4>");
+	it("puts headings in rich text under the section's own, and right under a work page's h1", () => {
+		const { html } = renderWork(fullData, "w1");
+		expect(html).toContain("<h2>Problem</h2><h3>Why</h3>");
+		const only = renderWork(
+			{
+				works: {
+					items: [{ id: "w", slug: "w", title: "W", blocks: [{ id: "t", type: "text", html: "<h3>Only</h3>" }] }],
+				},
+			},
+			"w",
+		);
+		expect(only.html).toContain("<h2>Only</h2>");
 		expect(render({ ...fullData, about: { content: "<h2>Hi</h2><p>There</p>" } }).html).toContain("<h3>Hi</h3>");
 		expect(render(fullData).page.css).toContain(".pf-prose h3,.pf-prose h4{");
 		// A text that starts at H3 keeps it: nothing to make room for.
@@ -390,29 +435,32 @@ describe("renderPortfolioPage hardening", () => {
 	});
 
 	it("names every gallery picture's link, even a picture without its own text", () => {
-		const { html } = render({
-			...fullData,
-			works: {
-				items: [
-					{
-						id: "w1",
-						slug: "a",
-						title: "Coffee app",
-						blocks: [
-							{
-								id: "b1",
-								type: "images",
-								layout: "grid",
-								images: [
-									{ ...image("one"), alt: "" },
-									{ ...image("two"), alt: "", caption: "Checkout" },
-								],
-							},
-						],
-					},
-				],
+		const { html } = renderWork(
+			{
+				...fullData,
+				works: {
+					items: [
+						{
+							id: "w1",
+							slug: "a",
+							title: "Coffee app",
+							blocks: [
+								{
+									id: "b1",
+									type: "images",
+									layout: "grid",
+									images: [
+										{ ...image("one"), alt: "" },
+										{ ...image("two"), alt: "", caption: "Checkout" },
+									],
+								},
+							],
+						},
+					],
+				},
 			},
-		});
+			"w1",
+		);
 		expect(html).toMatch(/<a class="pf-zoom"[^>]*><img [^>]*alt="Coffee app \(1\/2\)"/);
 		expect(html).toMatch(/<a class="pf-zoom"[^>]*data-caption="Checkout"><img [^>]*alt="Checkout"/);
 	});
@@ -463,7 +511,9 @@ describe("renderPortfolioPage hardening", () => {
 		expect(html).toMatch(
 			/<span class="pf-loc__time" data-tz="Asia\/Jakarta" data-lang="id-ID" hidden=""><span class="sr-only">[^<]+: <\/span><span><\/span><\/span>/,
 		);
-		expect(html).toMatch(/<dd class="pf-metric__chart"><span class="sr-only">1,9%\W+2,1%\W+2,4%\W+2,8%<\/span><svg/);
+		expect(renderWork(fullData, "w1").html).toMatch(
+			/<dd class="pf-metric__chart"><span class="sr-only">1,9%\W+2,1%\W+2,4%\W+2,8%<\/span><svg/,
+		);
 	});
 
 	it("fills text in a person's words as written, never as a replacement pattern", () => {
@@ -479,6 +529,11 @@ describe("renderPortfolioPage hardening", () => {
 		expect(linkAttributes("/\\evil.example.test")).toEqual({});
 		expect(linkAttributes("\\\\evil.example.test")).toEqual({});
 		expect(linkAttributes("data:text/html,hi")).toEqual({});
+		// Browsers drop tabs and line breaks anywhere and spaces in front, so these become `//host` and `javascript:`.
+		expect(linkAttributes("/\t/evil.example.test")).toEqual({});
+		expect(linkAttributes("/\n/evil.example.test")).toEqual({});
+		expect(linkAttributes(" //evil.example.test")).toEqual({});
+		expect(linkAttributes("java\tscript:alert(1)")).toEqual({});
 		expect(linkAttributes("#contact")).toEqual({ href: "#contact" });
 		expect(linkAttributes("mailto:nadia@example.test")).toEqual({ href: "mailto:nadia@example.test" });
 		expect(linkAttributes("https://example.test")).toMatchObject({ target: "_blank" });
@@ -502,6 +557,9 @@ describe("renderPortfolioPage hardening", () => {
 		expect(withPicture("/\\evil.example.test/me.png")).not.toContain("evil.example.test");
 		expect(withPicture("\\\\evil.example.test/me.png")).not.toContain("evil.example.test");
 		expect(withPicture("javascript:alert(1)")).not.toContain("javascript:");
+		expect(withPicture("/\t/evil.example.test/me.png")).not.toContain("evil.example.test");
+		expect(withPicture("da\tta:image/png,x")).not.toContain("image/png");
+		expect(withPicture(" data:image/png,x")).not.toContain("image/png");
 	});
 
 	it("keeps a Mozaik Contact whose only content is the place's name, so its buttons land", () => {
@@ -533,8 +591,86 @@ describe("renderPortfolioPage hardening", () => {
 		};
 		for (const theme of ["kanvas", "mozaik"] as const) {
 			const { html } = render({ ...fullData, theme, works });
-			expect(html.indexOf('href="#work-chosen"'), theme).toBeLessThan(html.indexOf('href="#work-first"'));
+			expect(html.indexOf('href="/nadia/work/chosen"'), theme).toBeLessThan(html.indexOf('href="/nadia/work/first"'));
 		}
+	});
+});
+
+describe("renderPortfolioPage for Phase 13", () => {
+	it("offers Save contact in Contact as a quiet download after Email and WhatsApp, and as an intro button", () => {
+		const { html } = render({
+			...fullData,
+			hero: { ...fullData.hero, buttons: [{ kind: "vcard" }, { kind: "contact" }] },
+		});
+		const contact = /<section[^>]* id="contact"[\s\S]*?<\/section>/.exec(html)?.[0] ?? "";
+		expect(contact).toMatch(
+			/data-pf-event="whatsapp"[^>]*>[\s\S]*?<a class="pf-btn pf-btn--secondary" data-pf-event="vcard" href="\/api\/portfolio\/nadia\/vcard" download=""><svg[^>]*>[\s\S]*?<\/svg>Simpan kontak<\/a>/,
+		);
+		const intro = /<section class="lg-hero"[\s\S]*?<\/section>/.exec(html)?.[0] ?? "";
+		expect(intro).toContain(
+			'<a class="pf-btn pf-btn--primary" data-pf-event="vcard" href="/api/portfolio/nadia/vcard" download="">',
+		);
+		// Without the card's address (the editor's preview gives `#contact`), no download; without any, no button.
+		const preview = renderTestPage(fullData, { links: { vcard: "#contact" } }).html;
+		expect(preview).toContain('data-pf-event="vcard" href="#contact">');
+		expect(preview).not.toContain("download=");
+		expect(renderTestPage(fullData, { links: null }).html).not.toContain('data-pf-event="vcard"');
+		// Alone, it's never the section's main action.
+		const alone = render({ ...fullData, contact: { whatsapp: { show: false }, email: false, saveContact: true } });
+		expect(alone.html).toContain('<a class="pf-btn pf-btn--secondary" data-pf-event="vcard"');
+	});
+
+	it("draws every embed as its own picture and a button, loading nothing from the provider", () => {
+		const { html } = renderWork(fullData, "w1");
+		expect(html).not.toContain("<iframe");
+		expect(html).not.toMatch(/src="https:\/\/(?!rezumi\.example)/);
+		for (const [provider, shape] of [
+			["figma", "wide"],
+			["loom", "wide"],
+			["spotify", "audio"],
+			["soundcloud", "audio-tall"],
+			["google-slides", "wide"],
+		])
+			expect(html).toContain(`<div class="pf-embed" data-provider="${provider}" data-shape="${shape}">`);
+		expect(html).toContain(
+			'href="https://www.figma.com/design/AbCdEf0123456789?node-id=1-2" target="_blank" rel="ugc nofollow noopener noreferrer" data-embed="https://embed.figma.com/design/AbCdEf0123456789?embed-host=rezumi&amp;node-id=1-2" data-title="Checkout flow" data-pf-event="embed" data-pf-block="e1" aria-label="Tampilkan Figma di sini: Checkout flow"',
+		);
+		expect(html).toContain('<p class="pf-embed__note">Memuat konten dari Figma</p>');
+		// No picture of its own: the provider's name stands in, and the label names the provider.
+		expect(html).toMatch(
+			/aria-label="Tampilkan Google Slides di sini"><span class="pf-embed__media"><span class="pf-embed__provider">Google Slides<\/span>/,
+		);
+		expect(html).toContain("uploads/user-1/pictures/portfolio/spotify-thumb.webp");
+	});
+
+	it("says how long a work takes to read, and loads only the icons the page draws", () => {
+		const { view } = render(fullData);
+		expect(view.works[0]?.readingMinutes).toBe(1);
+		expect(view.works[1]?.readingMinutes).toBeNull();
+		expect(portfolioIconNames(view, { kind: "home" })).toEqual([]);
+		expect(portfolioIconNames(view, { kind: "work", workId: "w1" })).toEqual(["medium"]);
+		expect(portfolioIconNames(view, { kind: "work", workId: "w2" })).toEqual([]);
+		expect(portfolioIconNames(view)).toEqual(["medium"]);
+	});
+
+	it("draws a work's page as an article named by its title, without the intro, its effect or the home's sections", () => {
+		const { html, page } = renderWork({ ...fullData, hero: { ...fullData.hero, effect: { id: "fade-up" } } }, "w1");
+		expect(page.css).not.toContain("pfx");
+		expect(page.script).not.toContain("pfx");
+		expect(html).toMatch(
+			/<main [^>]*aria-labelledby="work-kopi-app--title"><article class="pf-workpage"><a class="pf-workpage__back" href="\/nadia#work">/,
+		);
+		expect(html).not.toMatch(/lg-hero|id="about"|id="contact"|pf-opento/);
+		// A published work page tells its beacons which work they come from.
+		const live = renderTestPage(fullData, {
+			page: { kind: "work", workId: "w1" },
+			live: { eventUrl: "/api/portfolio/nadia/event", reportUrl: "/nadia?report" },
+		});
+		expect(live.html).toMatch(
+			/^<div class="pf" data-theme="lugas" data-pf-live="\/api\/portfolio\/nadia\/event" data-pf-work="w1">/,
+		);
+		expect(render(fullData).html).not.toContain("data-pf-work");
+		expect(() => renderWork(fullData, "w3")).toThrow();
 	});
 });
 

@@ -4,9 +4,11 @@ import type {
 	PORTFOLIO_BUTTON_KINDS,
 	PortfolioButton,
 	PortfolioData,
+	PortfolioJobType,
 	PortfolioLocation,
 	PortfolioWork,
 } from "@rezumi/schema/portfolio/data";
+import type { EmbedProvider, EmbedShape } from "@rezumi/schema/portfolio/embed";
 import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
 import type { PortfolioMetric } from "@rezumi/schema/portfolio/metric";
 import type {
@@ -25,6 +27,8 @@ import type {
 import type { CustomSectionItem, ResumeData } from "@rezumi/schema/resume/data";
 import type { Locale } from "@rezumi/utils/locale";
 import { getWebFont } from "@rezumi/fonts";
+import { isListedWork } from "@rezumi/schema/portfolio/data";
+import { EMBED_PROVIDER_NAMES, embedPageUrl, embedPlayerUrl, embedShape } from "@rezumi/schema/portfolio/embed";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { isAllowedPortfolioUrl, PORTFOLIO_WEB_PROTOCOLS } from "@rezumi/schema/portfolio/links";
 import { isPortfolioSectionKey } from "@rezumi/schema/portfolio/sections";
@@ -72,8 +76,19 @@ export type PortfolioViewInput = {
 	messages: PortfolioViewMessages;
 	/** The public address of a stored file (an image or PDF key). */
 	fileUrl: (key: string) => string;
-	/** The source resume's web page and PDF, when they are shared; buttons to them are left out otherwise. */
-	links?: { resume?: string | null; resumePdf?: string | null };
+	/** Addresses the page links to; buttons to one that's missing are left out. */
+	links?: {
+		/** The source resume's web page, when it's shared. */
+		resume?: string | null;
+		/** The source resume's PDF, when it's shared. */
+		resumePdf?: string | null;
+		/** The portfolio's home, for links back from a work page. Default "#main". */
+		home?: string;
+		/** A work's own page. Default (slug) => `#work-${slug}`. */
+		work?: (slug: string) => string;
+		/** "Save contact" (vCard); null or absent leaves the buttons off. */
+		vcard?: string | null;
+	};
 	/** Whether the contact form can work here (Turnstile is set up). */
 	contactFormAvailable?: boolean;
 	/**
@@ -123,6 +138,7 @@ export type PortfolioViewBlock =
 			/** The thumbnail's copy in the portfolio's storage; the page never loads YouTube's or Vimeo's. */
 			thumbnail: PortfolioViewImage | null;
 	  }
+	| PortfolioViewEmbedBlock
 	| {
 			id: string;
 			type: "pdf";
@@ -143,9 +159,32 @@ export type PortfolioViewBlock =
 			brandIcon: string | null;
 	  };
 
+/** Content from another service (`@rezumi/schema/portfolio/embed`), loaded only after the visitor presses it. */
+export type PortfolioViewEmbedBlock = {
+	id: string;
+	type: "embed";
+	provider: EmbedProvider;
+	/** The provider's name, such as "Figma". */
+	providerName: string;
+	shape: EmbedShape;
+	title: string;
+	/** The content's page on the provider's site (`embedPageUrl`), for visitors without JavaScript. */
+	href: string;
+	/** The provider's player (`embedPlayerUrl`), loaded only after the visitor presses it. */
+	embedUrl: string;
+	/** The picture's copy in the portfolio's storage; the page never loads the provider's. */
+	thumbnail: PortfolioViewImage | null;
+};
+
 export type PortfolioViewWork = {
 	id: string;
 	slug: string;
+	/** The work's own page (`links.work`); `#work-<slug>` by default. */
+	href: string;
+	/** Addresses the work had before, each forwarding to `slug`. */
+	previousSlugs: string[];
+	/** Minutes to read the work's text blocks and summary at 200 words a minute, at least 1; null with no text. */
+	readingMinutes: number | null;
 	/** The detail's anchor: #work-<slug>. Slugs never hold `--`, so heading ids (`<anchor>--title`) can't match one. */
 	anchor: string;
 	title: string;
@@ -179,6 +218,8 @@ export type PortfolioViewContact = {
 	profiles: { id: string; network: string; username: string; icon: string; href: string | null }[];
 	form: boolean;
 	location: PortfolioViewLocation | null;
+	/** "Save contact": the vCard's address, when the button shows. */
+	vcard: string | null;
 };
 
 type ResumeSectionItem<K extends PortfolioResumeSection> = ResumeData["sections"][K]["items"][number];
@@ -246,6 +287,8 @@ export type PortfolioViewSection =
 
 export type PortfolioView = {
 	theme: PortfolioTheme;
+	/** The portfolio's home (`links.home`), for links back from a work page; "#main" by default. */
+	homeUrl: string;
 	locale: Locale;
 	dir: "ltr" | "rtl";
 	design: {
@@ -279,6 +322,8 @@ export type PortfolioView = {
 		/** The photo, unless the intro hides it. */
 		picture: PortfolioViewImage | null;
 		availability: string | null;
+		/** What the person is looking for, under "Open to work": null when it's off or says nothing. */
+		openTo: { roles: string[]; types: PortfolioJobType[] } | null;
 		highlights: PortfolioMetric[];
 		buttons: PortfolioViewLink[];
 		background: { kind: PortfolioData["hero"]["background"]["kind"]; image: PortfolioViewImage | null };
@@ -471,12 +516,14 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 			case "profile":
 			case "link":
 				return button.url ? { label, href: button.url, external: !button.url.startsWith("mailto:"), kind } : null;
+			case "vcard":
+				return input.links?.vcard ? { label, href: input.links.vcard, external: false, kind } : null;
 		}
 	};
 
 	// Works the page lists: shown and titled (an untitled work is still being written). Layouts that draw the first work
 	// larger put featured works first, keeping their order.
-	const listed = data.works.items.filter((work) => !work.hidden && work.title.trim()).map((work) => buildWork(work));
+	const listed = data.works.items.filter(isListedWork).map((work) => buildWork(work));
 	const works = FEATURED_WORK_VARIANTS.has(themeVariant(theme, "work", data.design.variants.work))
 		? [...listed.filter((work) => work.featured), ...listed.filter((work) => !work.featured)]
 		: listed;
@@ -506,8 +553,12 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 	const accent = resolveAccent();
 	const effect = themeEffect(theme, data.hero.effect.id);
 
+	const openToRoles = data.hero.availability.roles.map((role) => role.trim()).filter(Boolean);
+	const openToTypes = data.hero.availability.types;
+
 	return {
 		theme,
+		homeUrl: input.links?.home ?? "#main",
 		locale,
 		dir: isRTL(locale) ? "rtl" : "ltr",
 		design: {
@@ -535,6 +586,10 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 			greeting: data.hero.greeting.trim(),
 			picture,
 			availability: data.hero.availability.show ? data.hero.availability.text.trim() || messages.openToWork : null,
+			openTo:
+				data.hero.availability.show && (openToRoles.length || openToTypes.length)
+					? { roles: openToRoles, types: [...openToTypes] }
+					: null,
 			highlights: data.hero.highlights.filter(isMetricComplete),
 			buttons: data.hero.buttons.map((button) => link(button)).filter((item): item is PortfolioViewLink => !!item),
 			background: {
@@ -598,9 +653,16 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 			.flatMap((block) => (block.type === "metrics" ? block.items : []))
 			.filter(isMetricComplete);
 		const cover = image(work.cover, work.title);
+		const words = [work.summary, ...work.blocks.map((block) => (block.type === "text" ? htmlToText(block.html) : ""))]
+			.join(" ")
+			.split(/\s+/)
+			.filter(Boolean).length;
 		return {
 			id: work.id,
 			slug: work.slug,
+			href: input.links?.work ? input.links.work(work.slug) : `#work-${work.slug}`,
+			previousSlugs: [...work.previousSlugs],
+			readingMinutes: words ? Math.max(1, Math.round(words / 200)) : null,
 			anchor: `work-${work.slug}`,
 			title: work.title.trim(),
 			summary: work.summary,
@@ -655,6 +717,20 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 					thumbnail: image(block.thumbnail, block.title),
 				};
 			}
+			case "embed": {
+				const embed = { provider: block.provider, ref: block.ref };
+				return {
+					id: block.id,
+					type: "embed",
+					provider: block.provider,
+					providerName: EMBED_PROVIDER_NAMES[block.provider],
+					shape: embedShape(embed),
+					title: block.title?.trim() ?? "",
+					href: embedPageUrl(embed),
+					embedUrl: embedPlayerUrl(embed),
+					thumbnail: image(block.thumbnail, block.title),
+				};
+			}
 			case "pdf":
 				return {
 					id: block.id,
@@ -706,6 +782,8 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 			profiles,
 			form: contact.form && (input.contactFormAvailable ?? false),
 			location,
+			// Saving a contact doesn't make Contact show on its own: `empty` below leaves it out.
+			vcard: contact.saveContact && input.links?.vcard ? input.links.vcard : null,
 		};
 		// A profile without an address draws nothing in Contact, so it doesn't keep an otherwise empty section.
 		const empty =
@@ -861,6 +939,20 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
  * The order sections appear in: the portfolio's own order, with sections it doesn't mention placed where the theme
  * puts them (after the nearest earlier one), and its free sections and the resume's custom sections before Contact.
  */
+/**
+ * A work's page by an address: the current slug, else a previous one (`moved`, to forward to the current), else null.
+ * Only the works the page lists are searched, so a hidden work never has a page. Current slugs win over previous ones.
+ */
+export function resolvePortfolioWork(
+	view: PortfolioView,
+	slug: string,
+): { status: "ok"; work: PortfolioViewWork } | { status: "moved"; slug: string } | null {
+	const current = view.works.find((work) => work.slug === slug);
+	if (current) return { status: "ok", work: current };
+	const moved = view.works.find((work) => work.previousSlugs.includes(slug));
+	return moved ? { status: "moved", slug: moved.slug } : null;
+}
+
 export function resolveSectionOrder(
 	data: PortfolioData,
 	theme: PortfolioTheme,

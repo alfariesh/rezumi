@@ -4,7 +4,17 @@ import { produce } from "immer";
 import { parsePortfolioData, parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
-import { newWork, resumeProjects, retitleWork, titleFromFileName, workRoom, worksFromImages } from "./works";
+import {
+	changeWorkSlug,
+	cleanSlugHistory,
+	newWork,
+	resumeProjects,
+	retitleWork,
+	titleFromFileName,
+	workRoom,
+	worksFromImages,
+	workSlugProblem,
+} from "./works";
 
 const empty = (): PortfolioData => parsePortfolioData({});
 
@@ -104,5 +114,63 @@ describe("works", () => {
 			{ id: "p1", name: "Kopi app", period: "2024", imported: true },
 		]);
 		expect(resumeProjects(null, [])).toEqual([]);
+	});
+});
+
+describe("work page addresses", () => {
+	const twoWorks = () =>
+		produce(empty(), (draft) => {
+			draft.works.items.push(newWork(draft, "Kopi Senja"), newWork(draft, "Batik"));
+		});
+
+	it("keeps a saved address as an old one when it changes, newest first", () => {
+		const saved = twoWorks();
+		const next = produce(saved, (draft) => {
+			const [work] = draft.works.items;
+			if (!work) throw new Error("no work");
+			changeWorkSlug(draft, work, "kopi-senja-app", saved);
+		});
+		expect(next.works.items[0]?.slug).toBe("kopi-senja-app");
+		expect(next.works.items[0]?.previousSlugs).toEqual(["kopi-senja"]);
+		expect(() => parseWritablePortfolioData(next)).not.toThrow();
+	});
+
+	it("doesn't keep the letters of a title being typed, only addresses that were saved", () => {
+		const saved = twoWorks();
+		const typed = produce(saved, (draft) => {
+			const [work] = draft.works.items;
+			if (!work) throw new Error("no work");
+			retitleWork(draft, work, "Kopi Senj", saved);
+			retitleWork(draft, work, "Kopi Senja App", saved);
+		});
+		expect(typed.works.items[0]?.slug).toBe("kopi-senja-app");
+		expect(typed.works.items[0]?.previousSlugs).toEqual(["kopi-senja"]);
+	});
+
+	it("drops an old address another work now uses, and never holds more than the limit", () => {
+		const saved = twoWorks();
+		const next = produce(saved, (draft) => {
+			const [first, second] = draft.works.items;
+			if (!first || !second) throw new Error("no works");
+			changeWorkSlug(draft, first, "kopi", saved);
+			changeWorkSlug(draft, second, "kopi-senja", saved);
+		});
+		expect(next.works.items[0]?.previousSlugs).toEqual([]);
+		expect(next.works.items[1]?.previousSlugs).toEqual(["batik"]);
+		const many = ["a", "b", "c", "d", "e", "f", "a"];
+		expect(cleanSlugHistory(many, new Set(["b"]))).toEqual(
+			["a", "c", "d", "e", "f"].slice(0, PORTFOLIO_LIMITS.previousSlugs),
+		);
+	});
+
+	it("says why a typed address can't be used", () => {
+		const data = twoWorks();
+		const id = data.works.items[0]?.id ?? "";
+		expect(workSlugProblem(data, id, "kopi-senja")).toBeNull();
+		expect(workSlugProblem(data, id, "batik")).toBe("taken");
+		expect(workSlugProblem(data, id, "Kopi Senja")).toBe("pattern");
+		expect(workSlugProblem(data, id, "kopi--senja")).toBe("pattern");
+		expect(workSlugProblem(data, id, "")).toBe("pattern");
+		expect(workSlugProblem(data, id, "a".repeat(65))).toBe("pattern");
 	});
 });

@@ -1,26 +1,15 @@
+import type { SectionBodyStyle } from "../../shared/section-body";
 import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
-import type { ReactNode } from "react";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { effectTarget, HeroHeadline, HeroName } from "../../shared/hero-text";
-import { introLocation, IntroChips, useIntroBackground } from "../../shared/intro";
+import { introLocation, IntroChips, OpenToWork, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
-import { ServiceList, TestimonialList } from "../../shared/offers";
-import {
-	Buttons,
-	Clients,
-	Contact,
-	CustomSectionBody,
-	ExtraSection,
-	Picture,
-	Prose,
-	Section,
-} from "../../shared/parts";
-import { isResumeSection, ResumeSectionBody } from "../../shared/resume";
+import { Buttons, ExtraSection, Picture, Section } from "../../shared/parts";
+import { isResumeSection } from "../../shared/resume";
+import { SectionBody } from "../../shared/section-body";
 import { groupSections } from "../../shared/sections";
 import { Navigation, PageShell } from "../../shared/shell";
-
-type VariantKey = Parameters<typeof themeVariant>[1];
 
 /**
  * The "big name" intro: the name across the page, then under a thin rule three columns (photo and headline, greeting,
@@ -54,6 +43,7 @@ function Hero() {
 					{side && (
 						<div className="kv-hero__side">
 							<IntroChips location={location} availability={hero.availability} />
+							<OpenToWork />
 							<Buttons links={hero.buttons} />
 						</div>
 					)}
@@ -89,7 +79,7 @@ function WorkGrid({ works, first }: WorkGridProps) {
 				const meta = [work.date, ...work.tags.slice(0, 2)].filter(Boolean).join(" · ");
 				return (
 					<li key={work.id} className="kv-tile" {...(work.cover ? {} : { "data-noimg": "" })}>
-						<a href={`#${work.anchor}`}>
+						<a href={work.href}>
 							{work.cover && (
 								<div className="pf-cover kv-tile__img">
 									<Picture
@@ -113,37 +103,15 @@ function WorkGrid({ works, first }: WorkGridProps) {
 	);
 }
 
-type SectionProps = { section: Exclude<PortfolioViewSection, { kind: "work" }> };
-
 /** A section's content beside its label. The page draws the work section itself, as a grid without a label column. */
-function SectionBody({ section }: SectionProps): ReactNode {
-	const { view } = useRender();
-	const variant = (key: VariantKey) => themeVariant("kanvas", key, view.design.variants[key]);
-	switch (section.kind) {
-		case "about":
-			return <Prose html={section.html} className="kv-lead" />;
-		case "services":
-			return <ServiceList section={section} className="kv-services" variant={variant("services")} />;
-		case "testimonials":
-			return <TestimonialList section={section} className="kv-quotes" variant={variant("testimonials")} />;
-		case "clients":
-			return <Clients section={section} variant={variant("clients")} />;
-		case "custom":
-			return (
-				<div className="kv-custom">
-					<CustomSectionBody section={section} imageClassName="kv-custom__image" proseClassName="kv-lead" />
-				</div>
-			);
-		case "contact":
-			return (
-				<div className="kv-contact">
-					<Contact section={section} ctaClassName="kv-cta" />
-				</div>
-			);
-		default:
-			return <ResumeSectionBody section={section} listClassName="pf-extra" />;
-	}
-}
+const SECTION_STYLE: SectionBodyStyle = {
+	theme: "kanvas",
+	prefix: "kv",
+	customProseClassName: "kv-lead",
+	wrapCustom: (body) => <div className="kv-custom">{body}</div>,
+	wrapContact: (body) => <div className="kv-contact">{body}</div>,
+	resumeListClassName: "pf-extra",
+};
 
 type KanvasPageProps = { year: number; creditUrl: string };
 
@@ -191,7 +159,7 @@ export function KanvasPage({ year, creditUrl }: KanvasPageProps) {
 							<div className="kv-sec__body kv-extras">
 								{group.filter(isResumeSection).map((section) => (
 									<ExtraSection key={section.key} section={section} className="pf-section">
-										<SectionBody section={section} />
+										<SectionBody section={section} style={SECTION_STYLE} />
 									</ExtraSection>
 								))}
 							</div>
@@ -205,7 +173,7 @@ export function KanvasPage({ year, creditUrl }: KanvasPageProps) {
 						titleClassName="kv-label"
 					>
 						<div className="kv-sec__body">
-							<SectionBody section={first} />
+							<SectionBody section={first} style={SECTION_STYLE} />
 						</div>
 					</Section>
 				);

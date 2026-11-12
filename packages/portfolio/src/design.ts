@@ -22,6 +22,9 @@ const TEXT_CONTRAST = 4.5;
 /** The accent's share of `--pf-accent-soft`, the tint under work metrics, avatars, Mozaik's soft tiles and the soft intro. */
 export const ACCENT_SOFT_AMOUNT = 0.11;
 
+/** The accent's share of `--pf-accent-hover`, a primary button under the pointer. */
+const ACCENT_HOVER_AMOUNT = 0.86;
+
 /** A trend colour's share of its chip's background (`.pf-trend`), laid over the page or a card. */
 export const TREND_TINT_AMOUNT = 0.13;
 
@@ -52,6 +55,7 @@ function schemeTokens(accent: string, neutrals: ThemeNeutrals, mode: "light" | "
 	// Mixed here rather than with color-mix(): a token built from var() on :root would keep the other mode's value
 	// wherever a section switches mode (`02-teknis.md` section 25).
 	const accentSoft = mixColors(accent, neutrals.bg, ACCENT_SOFT_AMOUNT);
+	const onAccent = readableOn(accent, "#111111");
 	return {
 		"--pf-bg": neutrals.bg,
 		"--pf-surface": neutrals.surface,
@@ -60,7 +64,10 @@ function schemeTokens(accent: string, neutrals: ThemeNeutrals, mode: "light" | "
 		"--pf-border": neutrals.border,
 		"--pf-accent": accent,
 		"--pf-accent-text": accentText,
-		"--pf-on-accent": readableOn(accent, "#111111"),
+		"--pf-on-accent": onAccent,
+		// A primary button under the pointer: the accent moved away from its text (darker under white text, lighter under
+		// dark), so the label only gains contrast.
+		"--pf-accent-hover": mixColors(accent, onAccent === "#111111" ? "#ffffff" : "#000000", ACCENT_HOVER_AMOUNT),
 		// A primary button's edge: the accent itself, unless it nearly matches the page (a near-black accent in dark
 		// mode), where the edge moves to a 3:1 shade so the button keeps its shape (WCAG 1.4.11).
 		"--pf-accent-edge": contrastRatio(accent, neutrals.bg) >= 3 ? accent : readableAccent(accent, neutrals.bg, 3),
@@ -93,7 +100,8 @@ function fontStack(family: string): string {
 
 /**
  * The page's colour and type tokens: light and dark sets, the chosen mode on `<html data-pf-scheme>`, and "follow the
- * device" through `prefers-color-scheme`. Every accent shade is computed here, on the server, for both modes.
+ * device" through `prefers-color-scheme`. Every accent shade is computed here, on the server, for both modes. Dark
+ * applies on screens only; a printout is always light.
  */
 export function designCss(view: PortfolioView, palette: ThemePalette): string {
 	const { fonts, accent } = view.design;
@@ -103,6 +111,8 @@ export function designCss(view: PortfolioView, palette: ThemePalette): string {
 	const type = declarations({
 		// For areas that stay dark in either mode, such as an intro over a picture.
 		"--pf-accent-text-dark": darkTokens["--pf-accent-text"] as string,
+		"--pf-positive-dark": darkTokens["--pf-positive"] as string,
+		"--pf-negative-dark": darkTokens["--pf-negative"] as string,
 		"--pf-font-heading": fontStack(fonts.heading),
 		"--pf-font-body": fontStack(fonts.body),
 		"--pf-font-mono": fontStack(fonts.mono),
@@ -111,8 +121,9 @@ export function designCss(view: PortfolioView, palette: ThemePalette): string {
 	});
 	return [
 		`:root{color-scheme:light;${light};${type}}`,
-		`:root[data-pf-scheme="dark"]{color-scheme:dark;${dark}}`,
-		`@media (prefers-color-scheme:dark){:root[data-pf-scheme="auto"]{color-scheme:dark;${dark}}}`,
+		// Dark on screens only: paper is white and browsers leave backgrounds out, so a printout keeps the light set.
+		`@media screen{:root[data-pf-scheme="dark"]{color-scheme:dark;${dark}}}`,
+		`@media screen and (prefers-color-scheme:dark){:root[data-pf-scheme="auto"]{color-scheme:dark;${dark}}}`,
 	].join("\n");
 }
 

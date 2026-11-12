@@ -4,13 +4,14 @@ import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { FieldError, Input, Label, Skeleton, TextArea, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
-import { lazy, Suspense, useId, useState } from "react";
+import { Suspense, useId, useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { isAllowedPortfolioUrl, PORTFOLIO_WEB_PROTOCOLS } from "@rezumi/schema/portfolio/links";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 import { AiRewriteMenu } from "../ai/rewrite-menu";
 import { useDraftText } from "../metrics/use-draft-text";
+import { ChunkBoundary, retryableLazy } from "./chunk-boundary";
 import { usePortfolioEditorStore } from "./store";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { CellSelectField } from "@/components/input/select-field";
@@ -18,7 +19,7 @@ import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from 
 import { GroupSection, useInGroupPanel } from "@/features/resume/editor/chrome/group-nav";
 import { PanelSection } from "@/features/resume/editor/chrome/panel-section";
 
-const LazyRichTextEditor = lazy(() => import("./rich-text-editor"));
+const richTextEditor = retryableLazy(() => import("./rich-text-editor"));
 
 /** Starts loading the rich text editor before a field needs it. */
 export function preloadPortfolioRichTextEditor() {
@@ -140,11 +141,16 @@ type UrlInputProps = {
 	onBlur?: () => void;
 };
 
-/** Adds https:// to an address typed without one ("linkedin.com/in/nadia"). */
+/**
+ * Adds https:// to an address typed without one ("linkedin.com/in/nadia"). A bare email address becomes a mailto:
+ * link: with https:// in front it would read as a web address at the email's domain. Fields for web pages only refuse
+ * it then, with their message.
+ */
 export function normalizePortfolioUrl(text: string): string {
 	const trimmed = text.trim();
 	if (!trimmed) return "";
 	if (/^[a-z][\d+.a-z-]*:/i.test(trimmed)) return trimmed;
+	if (/^[^\s/:@]+@[^\s/:@]+\.[^\s/:@]+$/.test(trimmed)) return `mailto:${trimmed}`;
 	return `https://${trimmed}`;
 }
 
@@ -253,18 +259,25 @@ export function RichTextField({
 					</span>
 				)}
 			</div>
-			<Suspense fallback={<Skeleton className="h-44 rounded-2xl" />}>
-				<LazyRichTextEditor
-					key={`${revision}-${rewrites}`}
-					label={label}
-					labelledBy={labelId}
-					value={value}
-					onChange={onChange}
-					maxLength={maxLength}
-					placeholder={placeholder}
-					slashItems={slashItems}
-				/>
-			</Suspense>
+			<ChunkBoundary>
+				{(attempt) => {
+					const LazyRichTextEditor = richTextEditor(attempt);
+					return (
+						<Suspense fallback={<Skeleton className="h-44 rounded-2xl" />}>
+							<LazyRichTextEditor
+								key={`${revision}-${rewrites}`}
+								label={label}
+								labelledBy={labelId}
+								value={value}
+								onChange={onChange}
+								maxLength={maxLength}
+								placeholder={placeholder}
+								slashItems={slashItems}
+							/>
+						</Suspense>
+					);
+				}}
+			</ChunkBoundary>
 		</div>
 	);
 }

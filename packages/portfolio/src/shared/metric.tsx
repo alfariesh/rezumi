@@ -35,7 +35,8 @@ function Trend({ change }: TrendProps) {
 				className=""
 			/>
 			<span className="sr-only">{spoken} </span>
-			{change.text}
+			{/* The person's words keep their own direction: "4× the site" on an Arabic page isn't "the site ×4". */}
+			<bdi>{change.text}</bdi>
 		</span>
 	);
 }
@@ -122,12 +123,10 @@ function Metric({ metric, compact }: MetricProps) {
 				</dd>
 			)}
 			{!compact && metric.progress !== undefined && (
-				<dd
-					className="pf-metric__progress"
-					role="img"
-					aria-label={`${messages.progress}: ${Math.round(metric.progress)}%`}
-				>
+				// A `dd` takes no role: the bar is drawn, its value read from text beside it.
+				<dd className="pf-metric__progress">
 					<i style={width(Math.max(0, Math.min(100, metric.progress)))} />
+					<span className="sr-only">{`${messages.progress}: ${Math.round(metric.progress)}%`}</span>
 				</dd>
 			)}
 			{!compact && metric.series && <Sparkline metric={metric} series={metric.series} />}

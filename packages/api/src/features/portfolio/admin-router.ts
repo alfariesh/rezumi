@@ -158,7 +158,7 @@ export const portfolioAdminRouter = {
 			operationId: "setPortfolioReportStatus",
 		})
 		.input(z.object({ reportId: idSchema, status: z.enum(PORTFOLIO_REPORT_STATUSES), reason: reasonSchema }))
-		.errors(portfolioErrorMap("PORTFOLIO_DISABLED"))
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND", "PORTFOLIO_MODERATION_CONFLICT"))
 		.output(okSchema)
 		.handler(({ context, input }) => setPortfolioReportStatus(context.user.id, input)),
 };

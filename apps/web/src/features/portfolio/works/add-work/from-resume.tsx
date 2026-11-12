@@ -10,7 +10,7 @@ import { usePortfolioEditorUi } from "../../editor/ui";
 import { portfolioErrorMessage } from "../../errors";
 import { usePortfolioLimits } from "../limits";
 import { resumeProjects, workRoom } from "../works";
-import { BackButton, StepAlert } from "./parts";
+import { BackButton, StepAlert, useReportBusy } from "./parts";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { client } from "@/libs/orpc/client";
 
@@ -26,7 +26,7 @@ function importErrorMessage(error: unknown): string {
 }
 
 /** Resume projects as works: copied through the server, which checks the resume and saves the new works. */
-export function FromResume({ onBack, onClose }: StepProps) {
+export function FromResume({ onBack, onClose, onBusy }: StepProps) {
 	const data = usePortfolioData();
 	const record = usePortfolioRecord();
 	const source = useSourceResume();
@@ -37,6 +37,7 @@ export function FromResume({ onBack, onClose }: StepProps) {
 	const [busy, setBusy] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const room = workRoom(data, limits.works);
+	useReportBusy(busy, onBusy);
 
 	const add = async () => {
 		setBusy(true);
@@ -113,7 +114,7 @@ export function FromResume({ onBack, onClose }: StepProps) {
 				{error && <StepAlert status="danger" message={error} />}
 			</Modal.Body>
 			<Modal.Footer>
-				<BackButton onPress={onBack} />
+				<BackButton isDisabled={busy} onPress={onBack} />
 				<Button isDisabled={chosen.size === 0 || busy} onPress={() => void add()}>
 					{busy && <Spinner size="sm" color="current" />}
 					<Plural value={chosen.size} _0="Add work" one="Add # work" other="Add # works" />

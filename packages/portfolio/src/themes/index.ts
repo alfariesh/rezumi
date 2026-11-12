@@ -22,6 +22,8 @@ import { PAPER_CSS } from "./paper/css";
 import { PaperPage } from "./paper/theme";
 import { PRIMA_CSS } from "./prima/css";
 import { PrimaPage } from "./prima/theme";
+import { SINTAKS_RENDERER } from "./sintaks";
+import { WARTA_RENDERER } from "./warta";
 
 /** A theme as the renderer uses it: its page component, its rules, and its neutral colours per mode. */
 export type ThemeRenderer = {
@@ -69,6 +71,9 @@ const RENDERERS: Record<PortfolioTheme, ThemeRenderer> = {
 		nameWeight: "700",
 	},
 	brutal: { id: "brutal", Page: BrutalPage, css: BRUTAL_CSS, palette: BRUTAL_PALETTE, headingWeights: ["700", "800"] },
+	// Each new theme's options live in its own folder (`themes/<id>/index.ts`), so this record needn't change again.
+	sintaks: SINTAKS_RENDERER,
+	warta: WARTA_RENDERER,
 };
 
 /** The themes with a renderer, all of them; `@rezumi/portfolio/editor` lists the same ones without loading them. */

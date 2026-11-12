@@ -24,6 +24,7 @@ const titles = { problem: "Masalah", role: "Peran saya", process: "Proses", resu
 const work = (blocks: PortfolioWork["blocks"] = []): PortfolioWork => ({
 	id: "w1",
 	slug: "w1",
+	previousSlugs: [],
 	title: "Work",
 	summary: "",
 	role: "",

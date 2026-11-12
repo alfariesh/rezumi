@@ -1,4 +1,4 @@
-import type { PortfolioView, PortfolioViewLink, PortfolioViewSection, PortfolioViewWork } from "../view";
+import type { PortfolioView, PortfolioViewLink, PortfolioViewSection } from "../view";
 import type { UiIconName } from "./icons";
 import type { ReactNode } from "react";
 import { PORTFOLIO_MAP_ZOOM } from "@rezumi/schema/portfolio/data";
@@ -7,9 +7,7 @@ import { renderPortfolioHtml } from "../rich-text";
 import { htmlToText } from "../text";
 import { useRender } from "./context";
 import { RezumiMark, ResumeIcon, UiIcon } from "./icons";
-import { LinkCard, PdfCard, VideoFacade } from "./media";
 import { MessageForm } from "./message-form";
-import { MetricGroup } from "./metric";
 import { headingId, hostOf, linkAttributes, Picture, vars } from "./primitives";
 
 export { headingId, hostOf, linkAttributes, Picture, vars };
@@ -22,17 +20,20 @@ const BUTTON_ICONS: Partial<Record<NonNullable<PortfolioViewLink["kind"]>, UiIco
 	whatsapp: "whatsapp",
 	link: "link",
 	profile: "link",
+	vcard: "user-plus",
 };
 
 type ButtonProps = { link: PortfolioViewLink; primary?: boolean; icon?: UiIconName };
 
-function Button({ link, primary, icon }: ButtonProps) {
+export function Button({ link, primary, icon }: ButtonProps) {
 	const name = icon ?? (link.kind ? BUTTON_ICONS[link.kind] : undefined);
 	return (
 		<a
 			className={`pf-btn ${primary ? "pf-btn--primary" : "pf-btn--secondary"}`}
 			{...(link.kind ? { "data-pf-event": link.kind === "profile" ? "link" : link.kind } : {})}
 			{...linkAttributes(link.href, link)}
+			// "Save contact" downloads the card; the editor's preview points it at `#contact` instead, which stays a link.
+			{...(link.kind === "vcard" && !link.href.startsWith("#") ? { download: "" } : {})}
 		>
 			{name && <UiIcon name={name} />}
 			{link.label}
@@ -58,7 +59,12 @@ export function Buttons({ links, quiet = false }: ButtonsProps) {
 	);
 }
 
-type ProseProps = { html: string; className?: string };
+type ProseProps = {
+	html: string;
+	className?: string;
+	/** The text sits right under the page's `h1` (a work's page), so its own H2 and H3 stay `h2` and `h3`. */
+	topLevel?: boolean;
+};
 
 /**
  * Rich text's own headings, under the heading of the section or work they sit in: when the text uses H2, its H2 and
@@ -69,9 +75,14 @@ const demoteHeadings = (html: string) =>
 		? html.replace(/<(\/?)h([23])>/g, (_tag, slash: string, level: string) => `<${slash}h${Number(level) + 1}>`)
 		: html;
 
+/** Rich text right under the page's `h1`: H2 and H3 stay as they are, and H3 alone becomes `h2`, so no level is skipped. */
+const promoteHeadings = (html: string) =>
+	html.includes("<h2>") ? html : html.replace(/<(\/?)h3>/g, (_tag, slash: string) => `<${slash}h2>`);
+
 /** Rich text, cleaned once more at render (`02-teknis.md` section 15). */
-export function Prose({ html, className }: ProseProps) {
-	const clean = demoteHeadings(renderPortfolioHtml(html));
+export function Prose({ html, className, topLevel = false }: ProseProps) {
+	const cleaned = renderPortfolioHtml(html);
+	const clean = topLevel ? promoteHeadings(cleaned) : demoteHeadings(cleaned);
 	if (!htmlToText(clean)) return null;
 	return (
 		<div
@@ -152,147 +163,12 @@ export function CustomSectionBody({ section, imageClassName, proseClassName }: C
 	);
 }
 
-type WorkDetailProps = { work: PortfolioViewWork; previous: PortfolioViewWork; next: PortfolioViewWork; total: number };
-
 /**
- * A work's detail, opened by its anchor (`#work-<slug>`) through `:target`, so it reads without JavaScript and each work
- * can be shared. The bar closes back to the list and steps to the previous and next work. It's modal: the page script
- * makes everything behind it inert while it's open.
+ * The full-screen picture viewer the page script fills from a gallery: one per work page that has one, hidden until a
+ * gallery picture is opened. It stays a child of the page's root, after the footer: the page script makes the root's
+ * other children inert while it's open. Escape, the arrow keys and swiping step through the gallery; closing returns focus to the picture.
  */
-function WorkDetail({ work, previous, next, total }: WorkDetailProps) {
-	const { messages, view, imageUrl } = useRender();
-	const titleId = headingId(work.anchor);
-	return (
-		<section
-			className="pf-detail"
-			id={work.anchor}
-			role="dialog"
-			aria-modal="true"
-			aria-labelledby={titleId}
-			data-pf-work={work.id}
-		>
-			<article className="pf-detail__panel">
-				<div className="pf-detail__bar">
-					<a href="#work" data-close>
-						<UiIcon name="arrow-left" flip />
-						{messages.close}
-					</a>
-					{total > 1 && (
-						<nav aria-label={messages.otherWork}>
-							<a href={`#${previous.anchor}`} aria-label={`${messages.previous}: ${previous.title}`} data-previous>
-								<UiIcon name="arrow-left" flip />
-							</a>
-							<a href={`#${next.anchor}`} aria-label={`${messages.next}: ${next.title}`} data-next>
-								<UiIcon name="arrow-right" flip />
-							</a>
-						</nav>
-					)}
-				</div>
-				<header className="pf-detail__head">
-					<h2 className="pf-detail__title" id={titleId}>
-						{work.title}
-					</h2>
-					{work.summary && <p className="pf-detail__summary">{work.summary}</p>}
-					{(work.role || work.date) && (
-						<div className="pf-detail__meta">
-							{work.role && (
-								<span>
-									{messages.role} <b>{work.role}</b>
-								</span>
-							)}
-							{work.date && (
-								<span>
-									{messages.year} <b>{work.date}</b>
-								</span>
-							)}
-						</div>
-					)}
-					{work.tags.length > 0 && (
-						<ul className="pf-tags">
-							{work.tags.map((tag) => (
-								<li key={tag}>{tag}</li>
-							))}
-						</ul>
-					)}
-				</header>
-				{work.cover && (
-					<div className="pf-cover pf-detail__hero">
-						<Picture image={work.cover} sizes="(min-width: 860px) 820px, 100vw" />
-					</div>
-				)}
-				{work.blocks.length > 0 && (
-					<div className="pf-blocks">
-						{work.blocks.map((block) => {
-							switch (block.type) {
-								case "text":
-									return <Prose key={block.id} html={block.html} />;
-								case "images":
-									return (
-										<div key={block.id} className="pf-gallery" data-layout={block.layout}>
-											{block.images.map((image, index) => {
-												const full = imageUrl(image.src);
-												if (!full) return null;
-												// The picture names its link: its own text, else its caption, else the work and its place.
-												const alt =
-													image.alt ||
-													image.caption ||
-													(block.images.length > 1
-														? `${work.title} (${index + 1}/${block.images.length})`
-														: work.title);
-												return (
-													<figure key={`${image.src}-${index}`}>
-														{/* The full picture: the page script opens it in the viewer; without it (or in the
-														editor's inert preview) the link opens the file in a new tab. */}
-														<a
-															className="pf-zoom"
-															href={full}
-															target="_blank"
-															rel="noopener"
-															data-lightbox=""
-															{...(image.caption ? { "data-caption": image.caption } : {})}
-														>
-															<Picture
-																image={{ ...image, alt }}
-																sizes={
-																	block.layout === "grid"
-																		? "(min-width: 860px) 400px, 100vw"
-																		: "(min-width: 860px) 820px, 100vw"
-																}
-															/>
-														</a>
-														{image.caption && <figcaption>{image.caption}</figcaption>}
-													</figure>
-												);
-											})}
-										</div>
-									);
-								case "metrics":
-									return <MetricGroup key={block.id} metrics={block.items} variant={view.design.variants.metric} />;
-								case "video":
-									return <VideoFacade key={block.id} block={block} />;
-								case "pdf":
-									return <PdfCard key={block.id} block={block} />;
-								case "link":
-									return <LinkCard key={block.id} block={block} />;
-							}
-						})}
-					</div>
-				)}
-				{work.primaryLink && (
-					<div className="pf-btns">
-						<Button link={work.primaryLink} primary icon="link" />
-					</div>
-				)}
-			</article>
-		</section>
-	);
-}
-
-/**
- * The full-screen picture viewer the page script fills from a gallery: one per page, hidden until a gallery picture
- * is opened. Escape, the arrow keys and swiping step through the gallery; closing returns focus to the picture.
- */
-function Lightbox() {
+export function Lightbox() {
 	const { messages } = useRender();
 	return (
 		<div className="pf-lightbox" role="dialog" aria-modal="true" aria-label={messages.pictureViewer} hidden>
@@ -316,29 +192,6 @@ function Lightbox() {
 				<UiIcon name="arrow-right" flip />
 			</button>
 		</div>
-	);
-}
-
-/**
- * Every work's detail the page holds (`view.works`), each stepping to the one before and after it, and the picture
- * viewer when a detail has a gallery. They stay children of the page's root, after the footer: the page script makes
- * the root's other children inert while one is open.
- */
-export function WorkDetails() {
-	const { works } = useRender().view;
-	return (
-		<>
-			{works.map((work, index) => (
-				<WorkDetail
-					key={work.id}
-					work={work}
-					previous={works[(index - 1 + works.length) % works.length] ?? work}
-					next={works[(index + 1) % works.length] ?? work}
-					total={works.length}
-				/>
-			))}
-			{works.some((work) => work.blocks.some((block) => block.type === "images")) && <Lightbox />}
-		</>
 	);
 }
 
@@ -443,6 +296,7 @@ export function Contact({ section, ctaClassName }: ContactProps) {
 		buttons.push({ label: messages.email, href: `mailto:${contact.email}`, external: false, kind: "email" });
 	if (contact.whatsapp)
 		buttons.push({ label: messages.whatsapp, href: contact.whatsapp.href, external: true, kind: "whatsapp" });
+	if (contact.vcard) buttons.push({ label: messages.saveContact, href: contact.vcard, external: false, kind: "vcard" });
 	const rows: { label: string; value: string; href: string; me?: boolean; event?: string }[] = [];
 	if (contact.email)
 		rows.push({ label: messages.email, value: contact.email, href: `mailto:${contact.email}`, event: "email" });
@@ -472,8 +326,9 @@ export function Contact({ section, ctaClassName }: ContactProps) {
 		<>
 			{contact.note && <p className={ctaClassName}>{contact.note}</p>}
 			{contact.form && <MessageForm />}
-			{/* The form's own button is the section's main action; these stay quieter beside it. */}
-			<Buttons links={buttons} quiet={contact.form} />
+			{/* The form's own button is the section's main action; these stay quieter beside it. Save contact alone is never
+			the main action either. */}
+			<Buttons links={buttons} quiet={contact.form || buttons[0]?.kind === "vcard"} />
 			{rows.length > 0 && (
 				<ul className="pf-contact-links">
 					{rows.map((row) => (

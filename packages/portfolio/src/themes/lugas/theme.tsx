@@ -1,22 +1,12 @@
+import type { SectionBodyStyle } from "../../shared/section-body";
 import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
-import type { ReactNode } from "react";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { HeroHeadline, HeroName } from "../../shared/hero-text";
-import { introLocation, IntroChips, useIntroBackground } from "../../shared/intro";
+import { introLocation, IntroChips, OpenToWork, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
-import { ServiceList, TestimonialList } from "../../shared/offers";
-import {
-	Buttons,
-	Clients,
-	Contact,
-	CustomSectionBody,
-	ExtraSection,
-	Picture,
-	Prose,
-	Section,
-} from "../../shared/parts";
-import { ResumeSectionBody } from "../../shared/resume";
+import { Buttons, ExtraSection, Picture, Section } from "../../shared/parts";
+import { SectionBody } from "../../shared/section-body";
 import { EXTRA_KINDS, groupSections } from "../../shared/sections";
 import { Navigation, PageShell } from "../../shared/shell";
 
@@ -39,6 +29,7 @@ function Hero() {
 			</div>
 			{hero.greeting && <p className="lg-greeting">{hero.greeting}</p>}
 			<IntroChips location={introLocation(view)} availability={hero.availability} />
+			<OpenToWork />
 			{hero.highlights.length > 0 && (
 				<MetricGroup metrics={hero.highlights} variant="big" className="lg-stats" compact />
 			)}
@@ -56,7 +47,7 @@ function WorkList({ works }: WorkListProps) {
 		<ul className="lg-works" data-variant={variant}>
 			{works.map((work, index) => (
 				<li key={work.id} className="lg-work" {...(work.cover ? {} : { "data-noimg": "" })}>
-					<a href={`#${work.anchor}`}>
+					<a href={work.href}>
 						{work.cover && (
 							<div className="pf-cover lg-work__cover">
 								<Picture
@@ -83,30 +74,11 @@ function WorkList({ works }: WorkListProps) {
 	);
 }
 
-type SectionProps = { section: PortfolioViewSection };
-
-function SectionBody({ section }: SectionProps): ReactNode {
-	const { view } = useRender();
-	const variant = (key: Parameters<typeof themeVariant>[1]) => themeVariant("lugas", key, view.design.variants[key]);
-	switch (section.kind) {
-		case "about":
-			return <Prose html={section.html} className="lg-lead" />;
-		case "work":
-			return <WorkList works={section.works} />;
-		case "services":
-			return <ServiceList section={section} className="lg-services" variant={variant("services")} />;
-		case "testimonials":
-			return <TestimonialList section={section} className="lg-quotes" variant={variant("testimonials")} />;
-		case "clients":
-			return <Clients section={section} variant={variant("clients")} />;
-		case "custom":
-			return <CustomSectionBody section={section} imageClassName="lg-custom__image" />;
-		case "contact":
-			return <Contact section={section} ctaClassName="lg-cta" />;
-		default:
-			return <ResumeSectionBody section={section} />;
-	}
-}
+const SECTION_STYLE: SectionBodyStyle = {
+	theme: "lugas",
+	prefix: "lg",
+	work: (works) => <WorkList works={works} />,
+};
 
 type LugasPageProps = { year: number; creditUrl: string };
 
@@ -139,7 +111,7 @@ export function LugasPage({ year, creditUrl }: LugasPageProps) {
 						<div key={first.key} className="lg-sec pf-extras">
 							{group.map((section) => (
 								<ExtraSection key={section.key} section={section}>
-									<SectionBody section={section} />
+									<SectionBody section={section} style={SECTION_STYLE} />
 								</ExtraSection>
 							))}
 						</div>
@@ -150,7 +122,7 @@ export function LugasPage({ year, creditUrl }: LugasPageProps) {
 						section={first}
 						className={`pf-section lg-sec${first.kind === "custom" ? " lg-custom" : ""}`}
 					>
-						<SectionBody section={first} />
+						<SectionBody section={first} style={SECTION_STYLE} />
 					</Section>
 				);
 			})}

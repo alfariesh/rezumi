@@ -6,6 +6,8 @@ const mocks = vi.hoisted(() => ({
 	traefikConfiguration: vi.fn(async () => ({})),
 	customDomainDestination: vi.fn(async (_host: string): Promise<Destination> => null),
 	servePortfolioOrResume: vi.fn(async (..._args: unknown[]) => new Response("page")),
+	servePortfolioWork: vi.fn(async (..._args: unknown[]) => new Response("work page")),
+	routesOn: true,
 	automated: false,
 }));
 
@@ -24,7 +26,15 @@ vi.mock("@rezumi/api/features/custom-domain", () => ({
 	traefikConfiguration: mocks.traefikConfiguration,
 }));
 
-vi.mock("../static/portfolio-page", () => ({ servePortfolioOrResume: mocks.servePortfolioOrResume }));
+vi.mock("../static/portfolio-page", async (original) => {
+	const { customDomainWorkSlug } = await original<typeof import("../static/portfolio-page")>();
+	return {
+		servePortfolioOrResume: mocks.servePortfolioOrResume,
+		servePortfolioWork: mocks.servePortfolioWork,
+		portfolioRoutesEnabled: () => mocks.routesOn,
+		customDomainWorkSlug,
+	};
+});
 
 const { handleCustomDomain, handleTraefikProvider } = await import("./custom-domain");
 
@@ -35,6 +45,7 @@ const uniqueHost = () => `site${(hosts += 1)}.test`;
 
 beforeEach(() => {
 	mocks.automated = false;
+	mocks.routesOn = true;
 	mocks.customDomainDestination.mockReset();
 	mocks.customDomainDestination.mockResolvedValue(null);
 });
@@ -49,6 +60,19 @@ describe("custom domain pages", () => {
 		expect(mocks.servePortfolioOrResume).toHaveBeenCalledWith(expect.any(Request), "nadia", "1.1.1.1", {
 			customDomain: "nadia.dev",
 		});
+	});
+
+	it("shows a work's own page at /work/<slug>, unless portfolios are off (Phase 13, B2)", async () => {
+		mocks.customDomainDestination.mockResolvedValue(nadia);
+		expect(await (await visit("/work/kopi", "nadia.dev"))?.text()).toBe("work page");
+		expect(mocks.servePortfolioWork).toHaveBeenCalledWith(expect.any(Request), "nadia", "kopi", "1.1.1.1", {
+			customDomain: "nadia.dev",
+		});
+		expect((await visit("/work/Not-A-Slug"))?.status).toBe(301);
+		mocks.routesOn = false;
+		mocks.servePortfolioWork.mockClear();
+		expect((await visit("/work/kopi"))?.status).toBe(301);
+		expect(mocks.servePortfolioWork).not.toHaveBeenCalled();
 	});
 
 	it("lets the resume PDF and the portfolio's own requests through, and sends everything else to the app", async () => {

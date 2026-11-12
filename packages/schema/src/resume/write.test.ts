@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vite-plus/test";
+import { PORTFOLIO_LIMITS } from "../portfolio/limits";
 import { resumeDataSchema } from "./data";
 import { defaultResumeData } from "./default";
 import { sampleResumeData } from "./sample";
-import { parseResumeDataForWrite, writableResumeDataSchema } from "./write";
+import { parseResumeDataForWrite, RESUME_ITEM_ID_MAX_LENGTH, writableResumeDataSchema } from "./write";
 
 describe("writableResumeDataSchema", () => {
 	it("rejects deep extension data including objects hidden under a URL key", () => {
@@ -99,5 +100,35 @@ describe("writableResumeDataSchema", () => {
 		expect(parseResumeDataForWrite(withTemplate("sterling")).metadata.template).toBe("sterling");
 		for (const unknown of ["nosepass", "", 7, null])
 			expect(writableResumeDataSchema.safeParse(withTemplate(unknown)).success).toBe(false);
+	});
+});
+
+describe("resume item ids", () => {
+	const withProject = (id: string) => {
+		const data = structuredClone(sampleResumeData);
+		const [project] = data.sections.projects.items;
+		if (!project) throw new Error("The sample has no project.");
+		project.id = id;
+		return data;
+	};
+
+	it("refuses an empty or overlong id anywhere a portfolio can refer to it", () => {
+		for (const id of ["", "x".repeat(RESUME_ITEM_ID_MAX_LENGTH + 1)]) {
+			const result = writableResumeDataSchema.safeParse(withProject(id));
+			expect(result.success).toBe(false);
+			expect(result.error?.issues[0]?.path).toEqual(["sections", "projects", "items", 0, "id"]);
+		}
+		const data = structuredClone(sampleResumeData);
+		const section = data.customSections[0];
+		if (section) {
+			section.id = "";
+			expect(writableResumeDataSchema.safeParse(data).success).toBe(false);
+		}
+	});
+
+	it("accepts any id up to the limit, which a portfolio can refer to", () => {
+		expect(() => parseResumeDataForWrite(withProject("x".repeat(RESUME_ITEM_ID_MAX_LENGTH)))).not.toThrow();
+		expect(() => parseResumeDataForWrite(withProject("project one: ü"))).not.toThrow();
+		expect(RESUME_ITEM_ID_MAX_LENGTH).toBe(PORTFOLIO_LIMITS.text.id);
 	});
 });

@@ -124,6 +124,7 @@ describe("highlighted metric", () => {
 	const work = (highlightMetricId?: string): PortfolioWork => ({
 		id: "w",
 		slug: "w",
+		previousSlugs: [],
 		title: "W",
 		summary: "",
 		role: "",

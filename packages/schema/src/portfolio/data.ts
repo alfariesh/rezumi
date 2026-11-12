@@ -9,7 +9,7 @@ import { createSchemaKit, itemIdSchema, resumeItemIdSchema } from "./kit";
 import { PORTFOLIO_LIMITS } from "./limits";
 import { portfolioUrlSchema, webUrlSchema } from "./links";
 import { createMetricSchema, portfolioIconSchema } from "./metric";
-import { isPortfolioSectionKey, portfolioSectionKeySchema } from "./sections";
+import { isPortfolioSectionKey, PORTFOLIO_STANDARD_SECTIONS, portfolioSectionKeySchema } from "./sections";
 import {
 	defaultPortfolioTheme,
 	isPortfolioVariant,
@@ -23,7 +23,19 @@ import {
 
 const { text: max } = PORTFOLIO_LIMITS;
 
-export const PORTFOLIO_BUTTON_KINDS = ["resume", "pdf", "contact", "whatsapp", "email", "profile", "link"] as const;
+export const PORTFOLIO_BUTTON_KINDS = [
+	"resume",
+	"pdf",
+	"contact",
+	"whatsapp",
+	"email",
+	"profile",
+	"link",
+	"vcard",
+] as const;
+/** Kinds of work an "Open to work" line names (Phase 13, B19). */
+export const PORTFOLIO_JOB_TYPES = ["full-time", "part-time", "contract", "freelance", "internship"] as const;
+export type PortfolioJobType = (typeof PORTFOLIO_JOB_TYPES)[number];
 export const PORTFOLIO_WORK_MODES = ["remote", "hybrid", "onsite"] as const;
 export const PORTFOLIO_MAP_PRECISIONS = ["city", "region", "country"] as const;
 /**
@@ -85,10 +97,16 @@ function createPortfolioSchemas(kit: SchemaKit) {
 		url: kit.optional(portfolioUrlSchema).describe("The address, for profile and link buttons."),
 	});
 
+	// A work's address; reading stored data, a broken one in a list is dropped on its own.
+	const slugSchema = z.string().max(max.slug).regex(PORTFOLIO_SLUG_PATTERN);
+
 	const work = kit.whole(
 		z.object({
 			id: itemIdSchema,
-			slug: kit.lenient ? z.string().catch("") : z.string().max(max.slug).regex(PORTFOLIO_SLUG_PATTERN),
+			slug: kit.lenient ? z.string().catch("") : slugSchema,
+			previousSlugs: kit
+				.list(slugSchema, PORTFOLIO_LIMITS.previousSlugs, { id: (slug) => slug })
+				.describe("Addresses this work had before, newest first; each forwards to the current one."),
 			title: kit.field(kit.text(max.workTitle), ""),
 			summary: kit.field(kit.text(max.workSummary), ""),
 			role: kit.field(kit.text(max.workRole), ""),
@@ -107,16 +125,20 @@ function createPortfolioSchemas(kit: SchemaKit) {
 			primaryLink: kit.optional(z.object({ label: kit.field(kit.text(max.buttonLabel), ""), url: portfolioUrlSchema })),
 			blocks: kit.list(block, PORTFOLIO_LIMITS.blocksPerWork, { id: (item) => item.id }),
 			featured: kit.field(z.boolean(), false),
-			hidden: kit.field(z.boolean(), false),
+			hidden: kit.field(z.boolean(), false, true),
 			fromResumeItemId: kit.optional(resumeItemIdSchema).describe("The resume project this work was copied from."),
 		}),
 		(value, issue) => {
 			if (value.highlightMetricId && !workMetricIds(value).has(value.highlightMetricId))
 				issue("Highlight a metric from this work's Metrics blocks.", ["highlightMetricId"]);
+			const own = value.previousSlugs.indexOf(value.slug);
+			if (own >= 0) issue("A previous address can't be the current one.", ["previousSlugs", own]);
 		},
 		(value) => {
-			if (!value.highlightMetricId || workMetricIds(value).has(value.highlightMetricId)) return value;
-			const { highlightMetricId: _dropped, ...rest } = value;
+			const previousSlugs = value.previousSlugs.filter((slug) => slug !== value.slug);
+			const repaired = previousSlugs.length === value.previousSlugs.length ? value : { ...value, previousSlugs };
+			if (!repaired.highlightMetricId || workMetricIds(repaired).has(repaired.highlightMetricId)) return repaired;
+			const { highlightMetricId: _dropped, ...rest } = repaired;
 			return rest;
 		},
 	);
@@ -157,7 +179,7 @@ function createPortfolioSchemas(kit: SchemaKit) {
 		content: kit.field(kit.richText(max.customContent), ""),
 		image: kit.optional(image),
 		button: kit.optional(button),
-		hidden: kit.field(z.boolean(), false),
+		hidden: kit.field(z.boolean(), false, true),
 	});
 
 	const variants = (kit.lenient
@@ -247,9 +269,9 @@ function createPortfolioSchemas(kit: SchemaKit) {
 		hero: kit.field(
 			z.object({
 				greeting: kit.field(kit.text(max.greeting), ""),
-				showPicture: kit.field(z.boolean(), true),
+				showPicture: kit.field(z.boolean(), true, false),
 				showLocation: kit
-					.field(z.boolean(), true)
+					.field(z.boolean(), true, false)
 					.describe("False keeps the resume's location off the page, for someone whose resume holds a street address."),
 				availability: kit.field(
 					z.object({
@@ -257,8 +279,12 @@ function createPortfolioSchemas(kit: SchemaKit) {
 						text: kit
 							.field(kit.text(max.availability), "")
 							.describe("Empty shows 'Open to work' in the page's language."),
+						roles: kit
+							.list(kit.text(max.availabilityRole), PORTFOLIO_LIMITS.availabilityRoles)
+							.describe("Roles the person is looking for."),
+						types: kit.list(z.enum(PORTFOLIO_JOB_TYPES), PORTFOLIO_JOB_TYPES.length, { id: (type) => type }),
 					}),
-					{ show: false, text: "" },
+					{ show: false, text: "", roles: [], types: [] },
 				),
 				highlights: kit.list(metric, PORTFOLIO_LIMITS.highlights, { id: (item) => item.id }),
 				buttons: kit.list(button, PORTFOLIO_LIMITS.heroButtons),
@@ -286,7 +312,17 @@ function createPortfolioSchemas(kit: SchemaKit) {
 				greeting: "",
 				showPicture: true,
 				showLocation: true,
-				availability: { show: false, text: "" },
+				availability: { show: false, text: "", roles: [], types: [] },
+				highlights: [],
+				buttons: [],
+				effect: { target: "name", phrases: [] },
+				background: { kind: "plain" },
+			},
+			{
+				greeting: "",
+				showPicture: false,
+				showLocation: false,
+				availability: { show: false, text: "", roles: [], types: [] },
 				highlights: [],
 				buttons: [],
 				effect: { target: "name", phrases: [] },
@@ -317,6 +353,8 @@ function createPortfolioSchemas(kit: SchemaKit) {
 					.describe("Resume items hidden on the portfolio only, by section, with their ids as the resume has them."),
 			}),
 			{ order: [], hidden: [], titles: {}, hiddenItems: {} },
+			// Broken, which sections were hidden is unknown: hide them all rather than show what was hidden.
+			{ order: [], hidden: [...PORTFOLIO_STANDARD_SECTIONS], titles: {}, hiddenItems: {} },
 		),
 		custom: kit
 			.list(customSection, PORTFOLIO_LIMITS.customSections, { id: (item) => item.id })
@@ -342,9 +380,9 @@ function createPortfolioSchemas(kit: SchemaKit) {
 		),
 		contact: kit.field(
 			z.object({
-				email: kit.field(z.boolean(), true).describe("Show the resume's email address."),
+				email: kit.field(z.boolean(), true, false).describe("Show the resume's email address."),
 				phone: kit.field(z.boolean(), false).describe("Show the resume's phone number."),
-				website: kit.field(z.boolean(), true).describe("Show the resume's website."),
+				website: kit.field(z.boolean(), true, false).describe("Show the resume's website."),
 				whatsapp: kit.field(
 					z.object({
 						show: kit.field(z.boolean(), false),
@@ -356,7 +394,8 @@ function createPortfolioSchemas(kit: SchemaKit) {
 					{ show: false, number: "" },
 				),
 				form: kit.field(z.boolean(), false),
-				profiles: kit.field(z.boolean(), true).describe("Show the resume's profile links."),
+				saveContact: kit.field(z.boolean(), true, false).describe("Show a Save contact button in Contact."),
+				profiles: kit.field(z.boolean(), true, false).describe("Show the resume's profile links."),
 				note: kit.field(kit.text(max.contactNote), "").describe("The invitation above the contact options."),
 			}),
 			{
@@ -365,7 +404,18 @@ function createPortfolioSchemas(kit: SchemaKit) {
 				website: true,
 				whatsapp: { show: false, number: "" },
 				form: false,
+				saveContact: true,
 				profiles: true,
+				note: "",
+			},
+			{
+				email: false,
+				phone: false,
+				website: false,
+				whatsapp: { show: false, number: "" },
+				form: false,
+				saveContact: false,
+				profiles: false,
 				note: "",
 			},
 		),
@@ -432,14 +482,25 @@ export type PortfolioLocation = PortfolioData["location"];
 export type PortfolioContact = PortfolioData["contact"];
 export type PortfolioDesign = PortfolioData["design"];
 
+/** A work the page lists: shown and titled. The one rule the view, the sitemap query and the editor use. */
+export function isListedWork(work: Pick<PortfolioWork, "hidden" | "title">): boolean {
+	return !work.hidden && work.title.trim() !== "";
+}
+
+/** Slugs of the works that have a page: none while the Work section is hidden. */
+export function listedWorkSlugs(data: Pick<PortfolioData, "works" | "sections">): string[] {
+	if (data.sections.hidden.includes("work")) return [];
+	return data.works.items.filter(isListedWork).map((work) => work.slug);
+}
+
 /**
- * Reads stored portfolio data without failing: broken fields fall back to defaults, broken or repeated items are
- * dropped, and data that isn't a portfolio at all reads as an empty one.
+ * Reads stored portfolio data without failing: broken fields fall back to defaults (privacy settings to their safe
+ * value), broken or repeated items are dropped, and data that isn't a portfolio at all reads as an empty one that hides
+ * every section and the resume's photo, location and contact details.
  */
-export const portfolioDataSchema = storedSchema.catch(() => storedSchema.parse({})) as unknown as z.ZodType<
-	PortfolioData,
-	unknown
->;
+export const portfolioDataSchema = storedSchema.catch(() =>
+	storedSchema.parse({ sections: null, hero: null, contact: null }),
+) as unknown as z.ZodType<PortfolioData, unknown>;
 
 export function parsePortfolioData(data: unknown): PortfolioData {
 	return portfolioDataSchema.parse(data);

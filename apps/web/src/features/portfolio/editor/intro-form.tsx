@@ -1,20 +1,25 @@
-import type { PortfolioButton } from "@rezumi/schema/portfolio/data";
-import { Button } from "@heroui/react";
+import type { PortfolioButton, PortfolioJobType } from "@rezumi/schema/portfolio/data";
+import { Button, Checkbox, CheckboxGroup, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { PORTFOLIO_BUTTON_KINDS } from "@rezumi/schema/portfolio/data";
+import { useId } from "react";
+import { PORTFOLIO_BUTTON_KINDS, PORTFOLIO_JOB_TYPES } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { ownPictureUrl } from "@rezumi/utils/own-picture";
+import { useRemovalFocus } from "../blocks/list-focus";
 import { ImageField } from "../images/image-field";
 import { MetricsEditor } from "../metrics/metric-form";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
+import { removeWithUndo } from "./list-undo";
 import { useOwnOrigins } from "./pictures";
 import { setBasicsText } from "./sections";
 import { editPortfolio, usePortfolioData } from "./store";
 import { KEPT_PHOTO_MS, usePortfolioEditorUi } from "./ui";
+import { useEditorView, usePageMessages } from "./use-view";
+import { ChipInput } from "@/components/input/chip-input";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -27,6 +32,7 @@ const buttonKindLabel = (kind: PortfolioButton["kind"]) =>
 		email: t`Email`,
 		profile: t`A profile (LinkedIn, GitHub…)`,
 		link: t`Another link`,
+		vcard: t`Save contact`,
 	})[kind];
 
 /**
@@ -105,22 +111,28 @@ export function IntroForm() {
 				}
 				label={t`Show “Open to work”`}
 			/>
+			<p className="-mt-2 px-1 text-body-xs text-muted">
+				<Trans>Anyone who opens your page sees this, your current employer too.</Trans>
+			</p>
 			{hero.availability.show && (
-				<TextInput
-					label={t`Label text`}
-					value={hero.availability.text}
-					maxLength={max.availability}
-					icon="pencil-line"
-					placeholder={t`Open to work`}
-					onChange={(value) =>
-						editPortfolio(
-							(draft) => {
-								draft.hero.availability.text = value;
-							},
-							{ key: "hero.availability" },
-						)
-					}
-				/>
+				<>
+					<TextInput
+						label={t`Label text`}
+						value={hero.availability.text}
+						maxLength={max.availability}
+						icon="pencil-line"
+						placeholder={t`Open to work`}
+						onChange={(value) =>
+							editPortfolio(
+								(draft) => {
+									draft.hero.availability.text = value;
+								},
+								{ key: "hero.availability" },
+							)
+						}
+					/>
+					<OpenToFields />
+				</>
 			)}
 			<HeroHighlights />
 			<HeroButtons />
@@ -187,14 +199,17 @@ function HeroPhoto() {
 					kind="portrait"
 					value={basics.picture ?? undefined}
 					altSuggestion={name}
-					onChange={(image) => {
+					onChange={(image, typing) => {
 						// A removed photo isn't offered back later.
 						if (!image) keepPhoto(null);
-						editPortfolio((draft) => {
-							draft.hero.showPicture = true;
-							if (image) draft.basics.picture = image;
-							else delete draft.basics.picture;
-						});
+						editPortfolio(
+							(draft) => {
+								draft.hero.showPicture = true;
+								if (image) draft.basics.picture = image;
+								else delete draft.basics.picture;
+							},
+							typing ? { key: "basics.picture.alt" } : undefined,
+						);
 					}}
 				/>
 			)}
@@ -229,13 +244,135 @@ function HeroHighlights() {
 	);
 }
 
-const ADD_ORDER: PortfolioButton["kind"][] = ["contact", "resume", "whatsapp", "email", "pdf", "profile", "link"];
+/** Why the page leaves a button off, and what makes it show. */
+function hiddenButtonReason(kind: PortfolioButton["kind"]): string {
+	switch (kind) {
+		case "resume":
+			return t`Not on the page: your source resume isn't public. Make it public in the resume's Share settings.`;
+		case "pdf":
+			return t`Not on the page: your source resume isn't public, or doesn't offer its PDF.`;
+		case "contact":
+			return t`Not on the page: the Contact section is hidden or has nothing in it.`;
+		case "whatsapp":
+			return t`Not on the page: add your WhatsApp number in Contact.`;
+		case "email":
+			return t`Not on the page: your source resume has no email address.`;
+		case "profile":
+		case "link":
+			return t`Not on the page: add the address below.`;
+		case "vcard":
+			return t`Shown on your published page.`;
+	}
+}
+
+const jobTypeLabel = (type: PortfolioJobType) =>
+	({
+		"full-time": t`Full-time`,
+		"part-time": t`Part-time`,
+		contract: t`Contract`,
+		freelance: t`Freelance`,
+		internship: t`Internship`,
+	})[type];
+
+/**
+ * What "Open to work" is open to (Phase 13 3.6): the roles looked for and the kinds of work. The page shows them as
+ * one line under the label ("Looking for: Product Designer · UI Designer — Full-time, Contract").
+ */
+function OpenToFields() {
+	const { hero } = usePortfolioData();
+	const { roles, types } = hero.availability;
+	const most = PORTFOLIO_LIMITS.availabilityRoles;
+	const rolesId = useId();
+
+	return (
+		<>
+			<div className="grid gap-1.5">
+				<span id={rolesId} className="text-sm font-medium">
+					<Trans>Roles you're looking for</Trans>
+				</span>
+				<ChipInput
+					allowCommas
+					aria-labelledby={rolesId}
+					placeholder={t`Add a role…`}
+					value={roles}
+					onChange={(next) =>
+						editPortfolio(
+							(draft) => {
+								draft.hero.availability.roles = [
+									...new Set(next.map((role) => role.trim().slice(0, max.availabilityRole)).filter(Boolean)),
+								].slice(0, most);
+							},
+							{ key: "hero.availability" },
+						)
+					}
+				/>
+				<p className="px-1 text-body-xs text-muted">
+					{roles.length >= most ? (
+						<Trans>That's the most: remove one to add another.</Trans>
+					) : (
+						<Trans>Up to 5, such as Product Designer.</Trans>
+					)}
+				</p>
+			</div>
+			<CheckboxGroup
+				value={types}
+				onChange={(next) =>
+					editPortfolio(
+						(draft) => {
+							// In the list's own order, so the page reads the same whatever was ticked first.
+							draft.hero.availability.types = PORTFOLIO_JOB_TYPES.filter((type) => next.includes(type));
+						},
+						{ key: "hero.availability" },
+					)
+				}
+				className="grid gap-1.5"
+			>
+				<Label className="text-sm font-medium">
+					<Trans>Kinds of work</Trans>
+				</Label>
+				<div className="flex flex-wrap gap-x-4 gap-y-2">
+					{PORTFOLIO_JOB_TYPES.map((type) => (
+						<Checkbox key={type} value={type}>
+							<Checkbox.Content>
+								<Checkbox.Control>
+									<Checkbox.Indicator />
+								</Checkbox.Control>
+								<Label className="text-sm">{jobTypeLabel(type)}</Label>
+							</Checkbox.Content>
+						</Checkbox>
+					))}
+				</div>
+			</CheckboxGroup>
+		</>
+	);
+}
+
+const ADD_ORDER: PortfolioButton["kind"][] = [
+	"contact",
+	"resume",
+	"whatsapp",
+	"email",
+	"pdf",
+	"vcard",
+	"profile",
+	"link",
+];
 
 /** Up to three buttons under the intro. Ones that can't work yet (no WhatsApp number, say) are left off the page. */
 function HeroButtons() {
 	const { hero } = usePortfolioData();
 	const buttons = hero.buttons;
 	const kindOptions = PORTFOLIO_BUTTON_KINDS.map((kind) => ({ id: kind, label: buttonKindLabel(kind) }));
+	const { itemProps, fallbackRef, removed } = useRemovalFocus();
+	const view = useEditorView();
+	const messages = usePageMessages();
+	// Whether the page shows the button: it leaves off ones that can't work yet, and says nothing about it.
+	const shows = (button: PortfolioButton) => {
+		const label = button.label?.trim() || messages.buttons[button.kind];
+		return view.hero.buttons.some(
+			(shown) => shown.kind === button.kind && shown.label === label && (!button.url || shown.href === button.url),
+		);
+	};
 
 	const update = (index: number, change: (button: PortfolioButton) => void, key?: string) =>
 		editPortfolio(
@@ -272,19 +409,23 @@ function HeroButtons() {
 							list="hero-buttons"
 							index={index}
 							name={name}
-							onRemove={() =>
-								editPortfolio(
-									(draft) => {
-										draft.hero.buttons.splice(index, 1);
-									},
-									{ structural: true },
-								)
-							}
+							itemProps={itemProps}
+							onRemove={() => {
+								removed(index);
+								removeWithUndo({
+									list: (draft) => draft.hero.buttons,
+									item: button,
+									index,
+									most: PORTFOLIO_LIMITS.heroButtons,
+									name,
+								});
+							}}
 						>
 							<ChoiceSelect
 								label={t`Opens`}
 								value={button.kind}
 								options={kindOptions}
+								warning={shows(button) ? undefined : hiddenButtonReason(button.kind)}
 								onChange={(kind) =>
 									update(index, (draft) => {
 										draft.kind = kind;
@@ -314,10 +455,14 @@ function HeroButtons() {
 									label={t`Address`}
 									value={button.url}
 									onChange={(url) =>
-										update(index, (draft) => {
-											if (url) draft.url = url;
-											else delete draft.url;
-										})
+										update(
+											index,
+											(draft) => {
+												if (url) draft.url = url;
+												else delete draft.url;
+											},
+											"url",
+										)
 									}
 								/>
 							)}
@@ -330,12 +475,14 @@ function HeroButtons() {
 					<Trans>An Email or WhatsApp button shows that address to visitors, even if Contact hides it.</Trans>
 				</p>
 			)}
-			{buttons.length < PORTFOLIO_LIMITS.heroButtons && (
-				<Button variant="secondary" className="w-fit" onPress={add}>
-					<Icon name="plus" size={18} />
-					<Trans>Add a button</Trans>
-				</Button>
-			)}
+			<div ref={fallbackRef} className="contents">
+				{buttons.length < PORTFOLIO_LIMITS.heroButtons && (
+					<Button variant="secondary" className="w-fit" onPress={add}>
+						<Icon name="plus" size={18} />
+						<Trans>Add a button</Trans>
+					</Button>
+				)}
+			</div>
 		</div>
 	);
 }

@@ -7,11 +7,15 @@ const envMock = vi.hoisted(() => ({
 	APP_URL: "https://resume.example.com",
 	STORAGE_BACKEND: "local",
 	LOCAL_STORAGE_PATH: "",
+	AUTH_SECRET: "uploads-test-secret-uploads-test-secret",
 }));
 const state = vi.hoisted(() => ({
 	banned: new Set<string>(),
-	/** Keys a published portfolio uses: what `isPublicPortfolioFile` answers from the database. */
+	/** Keys a published portfolio uses: what `portfolioFileAccess` answers `public` for from the database. */
 	publicFiles: new Set<string>(),
+	/** Keys of a portfolio behind a visitor password: `protected`, with its current password's hash. */
+	protectedFiles: new Set<string>(),
+	passwordHash: "$2a$10$current-hash",
 	lookups: 0,
 }));
 vi.mock("@rezumi/env/server", () => ({ env: envMock }));
@@ -20,9 +24,10 @@ vi.mock("@rezumi/api/features/storage", async (original) => ({
 	isPublicUploadOwner: async (userId: string) => !state.banned.has(userId),
 }));
 vi.mock("@rezumi/api/features/portfolio/public", () => ({
-	isPublicPortfolioFile: async (key: string) => {
+	portfolioFileGate: async (key: string) => {
 		state.lookups++;
-		return state.publicFiles.has(key);
+		if (state.protectedFiles.has(key)) return { access: "protected", passwordHash: state.passwordHash };
+		return { access: state.publicFiles.has(key) ? "public" : "none" };
 	},
 }));
 // Visitors have no session; `x-test-user` stands in for a signed-in account's cookie.
@@ -52,6 +57,8 @@ afterAll(async () => {
 beforeEach(() => {
 	state.banned.clear();
 	state.publicFiles.clear();
+	state.protectedFiles.clear();
+	state.passwordHash = "$2a$10$current-hash";
 	state.lookups = 0;
 });
 
@@ -225,5 +232,64 @@ describe("other pictures", () => {
 		state.banned.add("user-1");
 		expect((await get(key)).status).toBe(404);
 		expect(state.lookups).toBe(0);
+	});
+});
+
+describe("files of a portfolio behind a password (Phase 13, B16, security review)", () => {
+	const withToken = async (key: string, token: string) => get(`${key}?access=${token}`);
+	const tokenFor = async (key: string, hash = state.passwordHash, now = Date.now()) =>
+		(await import("@rezumi/api/features/portfolio/visitor-access")).portfolioFileToken(key, hash, now);
+
+	it("are served with a valid token, never cached publicly, and not without one", async () => {
+		await storage.write({ key: pictureKey, data: webpBytes, contentType: "image/webp" });
+		state.protectedFiles.add(pictureKey);
+		const response = await withToken(pictureKey, await tokenFor(pictureKey));
+		expect(response.status).toBe(200);
+		expect(response.headers.get("cache-control")).toBe("private, max-age=3600");
+		expect(response.headers.get("x-robots-tag")).toBe("noindex, nofollow");
+		// A custom domain's page loads them from here, the token in the address.
+		expect(response.headers.get("cross-origin-resource-policy")).toBe("cross-origin");
+		const cached = await get(`${pictureKey}?access=${await tokenFor(pictureKey)}`, {
+			"If-None-Match": response.headers.get("etag") ?? "",
+		});
+		expect(cached.status).toBe(304);
+		expect(cached.headers.get("cache-control")).toBe("private, max-age=3600");
+		// No token: the address alone, crawled or kept, isn't enough.
+		const bare = await get(pictureKey);
+		expect(bare.status).toBe(404);
+		expect(bare.headers.get("cache-control")).toBe("no-store");
+	});
+
+	it("refuse a token that's expired, for another file, broken, or from before a password change", async () => {
+		await storage.write({ key: pdfKey, data: pdfBytes, contentType: "application/pdf" });
+		state.protectedFiles.add(pdfKey);
+		expect(
+			(await withToken(pdfKey, await tokenFor(pdfKey, state.passwordHash, Date.now() - 2 * 86_400_000))).status,
+		).toBe(404);
+		expect((await withToken(pdfKey, await tokenFor(pictureKey))).status).toBe(404);
+		expect((await withToken(pdfKey, `9${"9".repeat(15)}.${"a".repeat(64)}`)).status).toBe(404);
+		expect((await withToken(pdfKey, "nope")).status).toBe(404);
+		const before = await tokenFor(pdfKey);
+		expect((await withToken(pdfKey, before)).status).toBe(200);
+		state.passwordHash = "$2a$10$new-hash";
+		expect((await withToken(pdfKey, before)).status).toBe(404);
+	});
+
+	it("are public again, without a token, once the password is removed", async () => {
+		await storage.write({ key: pictureKey, data: webpBytes, contentType: "image/webp" });
+		state.publicFiles.add(pictureKey);
+		const response = await get(pictureKey);
+		expect(response.status).toBe(200);
+		expect(response.headers.get("cache-control")).toBe("public, max-age=3600");
+	});
+
+	it("stay readable by their owner without a token, for the editor's preview", async () => {
+		await storage.write({ key: pictureKey, data: webpBytes, contentType: "image/webp" });
+		state.protectedFiles.add(pictureKey);
+		const response = await get(pictureKey, owner);
+		expect(response.status).toBe(200);
+		expect(response.headers.get("cache-control")).toBe("private, max-age=3600");
+		expect(response.headers.get("cross-origin-resource-policy")).toBe("same-site");
+		expect((await get(pictureKey, stranger)).status).toBe(404);
 	});
 });

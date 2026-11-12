@@ -1,5 +1,6 @@
 import type { PortfolioViewBlock } from "../view";
 import { fillPortfolioMessage } from "../messages";
+import { formatMetricNumber } from "../metric";
 import { useRender } from "./context";
 import { ResumeIcon, UiIcon } from "./icons";
 import { hostOf, linkAttributes, Picture } from "./primitives";
@@ -7,6 +8,7 @@ import { hostOf, linkAttributes, Picture } from "./primitives";
 type VideoBlock = Extract<PortfolioViewBlock, { type: "video" }>;
 type PdfBlock = Extract<PortfolioViewBlock, { type: "pdf" }>;
 type LinkBlock = Extract<PortfolioViewBlock, { type: "link" }>;
+type EmbedBlock = Extract<PortfolioViewBlock, { type: "embed" }>;
 
 const PROVIDER_NAMES = { youtube: "YouTube", vimeo: "Vimeo" } as const;
 
@@ -49,17 +51,74 @@ export function VideoFacade({ block }: VideoFacadeProps) {
 	);
 }
 
-/** A file size as people read it, in the page's language: "2.4 MB", "820 kB". */
-function formatFileSize(bytes: number, locale: string): string {
-	const megabytes = bytes / 1_000_000;
-	const unit = megabytes >= 1 ? "megabyte" : "kilobyte";
-	const value = megabytes >= 1 ? megabytes : Math.max(1, Math.round(bytes / 1000));
+type EmbedFacadeProps = { block: EmbedBlock };
+
+/**
+ * Content from Figma, Loom, Spotify, SoundCloud or Google Slides as a picture and a button (Phase 13 B17), the way a
+ * video waits: nothing from the provider loads with the page, the picture is the portfolio's own copy, and the page
+ * script swaps in the provider's player (`data-embed`) only when the visitor presses it. The note under it says where
+ * the content comes from. Without JavaScript the link opens the content on the provider's site. A wide shape (a design,
+ * a video, slides) draws the picture across; an audio shape draws a row: a square picture, the title and the button.
+ */
+export function EmbedFacade({ block }: EmbedFacadeProps) {
+	const { messages } = useRender();
+	const provider = { provider: block.providerName };
+	const show = fillPortfolioMessage(messages.showEmbed, provider);
+	return (
+		<div className="pf-embed" data-provider={block.provider} data-shape={block.shape}>
+			<a
+				className="pf-embed__open"
+				{...linkAttributes(block.href)}
+				data-embed={block.embedUrl}
+				data-title={block.title || block.providerName}
+				data-pf-event="embed"
+				data-pf-block={block.id}
+				aria-label={block.title ? `${show}: ${block.title}` : show}
+			>
+				<span className="pf-embed__media">
+					{block.thumbnail ? (
+						<Picture
+							image={block.thumbnail}
+							decorative
+							sizes={block.shape === "wide" ? "(min-width: 860px) 820px, 100vw" : "120px"}
+						/>
+					) : (
+						<span className="pf-embed__provider">{block.providerName}</span>
+					)}
+				</span>
+				<span className="pf-embed__text" aria-hidden="true">
+					{block.title && <b>{block.title}</b>}
+					<span className="pf-embed__action">
+						<UiIcon name="play" />
+						{show}
+					</span>
+				</span>
+			</a>
+			<p className="pf-embed__note">{fillPortfolioMessage(messages.embedNote, provider)}</p>
+		</div>
+	);
+}
+
+/**
+ * A file size as people read it, in the page's language: "2.4 MB", "820 kB". The unit follows the rounded size, so
+ * 999.6 kB reads "1 MB", not "1,000 kB".
+ */
+export function formatFileSize(bytes: number, locale: string): string {
+	const kilobytes = Math.max(1, Math.round(bytes / 1000));
+	const mega = kilobytes >= 1000;
+	const value = mega ? Math.round(bytes / 100_000) / 10 : kilobytes;
 	try {
-		return new Intl.NumberFormat(locale, { style: "unit", unit, maximumFractionDigits: 1 }).format(value);
+		return new Intl.NumberFormat(locale, {
+			style: "unit",
+			unit: mega ? "megabyte" : "kilobyte",
+			maximumFractionDigits: 1,
+		}).format(value);
 	} catch {
-		return `${value.toFixed(1)} ${megabytes >= 1 ? "MB" : "kB"}`;
+		return `${value} ${mega ? "MB" : "kB"}`;
 	}
 }
+
+const PLAIN = { format: "plain" } as const;
 
 type PdfCardProps = { block: PdfBlock };
 
@@ -68,8 +127,11 @@ type PdfCardProps = { block: PdfBlock };
  * the file in a new tab. The server sends it locked down (inline PDF only, sandboxed, never sniffed).
  */
 export function PdfCard({ block }: PdfCardProps) {
-	const { messages, locale } = useRender();
-	const pages = fillPortfolioMessage(messages.pages, { count: block.pages });
+	const { messages, locale, imageUrl } = useRender();
+	// The count in the page's digits, as the size beside it.
+	const pages = fillPortfolioMessage(messages.pages, { count: formatMetricNumber(block.pages, PLAIN, locale) });
+	// A stored file, held to the same addresses as the pictures beside it.
+	const href = imageUrl(block.href);
 	const details = ["PDF", pages, block.bytes ? formatFileSize(block.bytes, locale) : ""].filter(Boolean).join(" · ");
 	return (
 		<div className="pf-pdf">
@@ -83,18 +145,20 @@ export function PdfCard({ block }: PdfCardProps) {
 			<div className="pf-pdf__text">
 				{block.title && <b>{block.title}</b>}
 				<span>{details}</span>
-				<a
-					className="pf-btn pf-btn--secondary"
-					href={block.href}
-					target="_blank"
-					rel="noopener"
-					data-pf-event="document"
-					data-pf-block={block.id}
-				>
-					<UiIcon name="document" />
-					{messages.openPdf}
-					{block.title && <span className="sr-only">: {block.title}</span>}
-				</a>
+				{href && (
+					<a
+						className="pf-btn pf-btn--secondary"
+						href={href}
+						target="_blank"
+						rel="noopener"
+						data-pf-event="document"
+						data-pf-block={block.id}
+					>
+						<UiIcon name="document" />
+						{messages.openPdf}
+						{block.title && <span className="sr-only">: {block.title}</span>}
+					</a>
+				)}
 			</div>
 		</div>
 	);

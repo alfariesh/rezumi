@@ -71,7 +71,8 @@ export function gradientTokens(accent: string, palette: ThemePalette): string {
 	const dark = colours(palette.dark);
 	return [
 		`:root{${declare(light)};${declare(dark, "-dark")}}`,
-		`:root[data-pf-scheme="dark"]{${declare(dark)}}`,
-		`@media (prefers-color-scheme:dark){:root[data-pf-scheme="auto"]{${declare(dark)}}}`,
+		// On screens only, as the page's own dark tokens (`designCss`).
+		`@media screen{:root[data-pf-scheme="dark"]{${declare(dark)}}}`,
+		`@media screen and (prefers-color-scheme:dark){:root[data-pf-scheme="auto"]{${declare(dark)}}}`,
 	].join("\n");
 }

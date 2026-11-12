@@ -5,6 +5,7 @@ import {
 	lastDays,
 	normalizeCountry,
 	referrerDomain,
+	startOfDayInTimeZone,
 	visitorKey,
 	visitSource,
 } from "./traffic";
@@ -102,5 +103,34 @@ describe("normalizeCountry", () => {
 		expect(normalizeCountry("XX")).toBe("");
 		expect(normalizeCountry("T1")).toBe("");
 		expect(normalizeCountry(undefined)).toBe("");
+	});
+});
+
+describe("startOfDayInTimeZone", () => {
+	it("finds local midnight, daylight saving included", () => {
+		expect(startOfDayInTimeZone("2026-11-09", "UTC").toISOString()).toBe("2026-11-09T00:00:00.000Z");
+		expect(startOfDayInTimeZone("2026-11-09", "Asia/Jakarta").toISOString()).toBe("2026-11-08T17:00:00.000Z");
+		expect(startOfDayInTimeZone("2026-07-01", "America/New_York").toISOString()).toBe("2026-07-01T04:00:00.000Z");
+		expect(startOfDayInTimeZone("2026-12-01", "America/New_York").toISOString()).toBe("2026-12-01T05:00:00.000Z");
+		expect(startOfDayInTimeZone("2026-11-09", "Not/AZone").toISOString()).toBe("2026-11-09T00:00:00.000Z");
+	});
+});
+
+describe("the QR code's visits", () => {
+	it("read utm_source=qr as the QR source, whatever site referred them", () => {
+		const own = new Set(["rezumi.app"]);
+		expect(visitSource({ referer: null, utmSource: "qr", ownHosts: own })).toBe("qr");
+		expect(visitSource({ referer: "https://www.google.com/", utmSource: "QR", ownHosts: own })).toBe("qr");
+		expect(visitSource({ referer: null, utmSource: "qrcode", ownHosts: own })).toBe("other");
+	});
+});
+
+describe("visitors on IPv6", () => {
+	it("are one visitor across the addresses of one /64, and two across two /64s", () => {
+		const headers = new Headers({ "user-agent": "Mozilla/5.0", "accept-language": "id" });
+		const a = visitorKey(headers, "2001:db8:1:2::1");
+		expect(visitorKey(headers, "2001:db8:1:2:ffff::9")).toBe(a);
+		expect(visitorKey(headers, "2001:db8:1:3::1")).not.toBe(a);
+		expect(visitorKey(headers, "203.0.113.1")).not.toBe(visitorKey(headers, "203.0.113.2"));
 	});
 });

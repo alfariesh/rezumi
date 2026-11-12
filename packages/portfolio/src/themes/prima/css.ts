@@ -11,7 +11,7 @@ export const PRIMA_CSS = String.raw`
 .pf[data-theme="prima"] .pf-chip{border-radius:var(--pf-radius-sm);background:var(--pf-surface);border:1px solid var(--pf-border)}
 .pf[data-theme="prima"] .pf-tags li{border-radius:var(--pf-radius-sm);background:var(--pf-surface)}
 .pf[data-theme="prima"] :is(.pf-trend,.pf-work-metric){border-radius:var(--pf-radius-sm)}
-.pf[data-theme="prima"] :is(.pf-skip,.pf-badge,.pf-menu>summary,.pf-detail__bar a){border-radius:var(--pf-radius)}
+.pf[data-theme="prima"] :is(.pf-skip,.pf-badge,.pf-menu>summary,.pf-workpage__back){border-radius:var(--pf-radius)}
 .pf[data-theme="prima"] .pf-menu__list{border-radius:var(--pf-radius);background:var(--pf-surface)}
 .pf[data-theme="prima"] .pf-menu__list a{border-radius:var(--pf-radius-sm)}
 .pf[data-theme="prima"] .pf-menu__list a:hover{background:var(--pf-bg)}
@@ -19,7 +19,6 @@ export const PRIMA_CSS = String.raw`
 .pf[data-theme="prima"] .pr-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in oklab,var(--pf-bg) 92%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--pf-border)}
 .pf[data-theme="prima"] .pr-brand{font-size:1.125rem;font-weight:600;letter-spacing:-.005em}
 .pf[data-theme="prima"] .pf-nav__links{gap:22px}
-.pf[data-theme="prima"] .pf-nav__links a{white-space:nowrap}
 .pf[data-theme="prima"] .pf-nav__links .pr-head__cta a{min-height:38px;padding:.45em 1em;font-size:var(--pf-text-xs);color:var(--pf-on-accent)}
 @media (max-width:960px){.pf[data-theme="prima"] .pr-head__cta{display:none}}
 .pf[data-theme="prima"] .pr-hero{--pr-pad:0px;--pr-inner:calc(min(100vw - 32px,1160px) - 2 * var(--pr-pad));--pr-col:calc((var(--pr-inner) - clamp(32px,6vw,88px)) * .66);display:grid;gap:clamp(40px,6vw,64px);min-width:0;padding-block:clamp(40px,7vw,96px) clamp(40px,6vw,72px)}
@@ -60,9 +59,7 @@ export const PRIMA_CSS = String.raw`
 .pf[data-theme="prima"] .pr-row__body>.pr-list li span{color:var(--pf-muted);font-size:var(--pf-text-xs)}
 .pf[data-theme="prima"] .pr-list li a{text-underline-offset:3px}
 .pf[data-theme="prima"] .pr-lead{font-size:var(--pf-text-lg);line-height:1.6}
-.pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]{gap:0}
-.pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem{margin:0;padding:0;border:0}
-.pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem{position:relative;display:grid;grid-template-columns:150px 16px minmax(0,1fr);gap:4px 18px;padding-bottom:28px}
+.pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem{position:relative;display:grid;grid-template-columns:150px 16px minmax(0,1fr);gap:4px 18px;margin:0;padding:0 0 28px;border:0}
 .pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem:last-child{padding-bottom:0}
 .pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem>.pf-cvitem__head{display:contents}
 .pf[data-theme="prima"] .pf-cvlist[data-variant="timeline"]>.pf-cvitem>.pf-cvitem__head>.pf-cvitem__when{grid-column:1;grid-row:1;padding-top:3px}
@@ -128,9 +125,8 @@ export const PRIMA_CSS = String.raw`
 @media (max-width:900px){.pf[data-theme="prima"] .pr-contact[data-loc]{grid-template-columns:minmax(0,1fr);grid-template-rows:none}.pf[data-theme="prima"] .pr-contact[data-loc]>.pf-loc{grid-column:1;grid-row:auto;max-width:420px;margin-top:24px}}
 .pf[data-theme="prima"] .pr-cta{max-width:32ch;font:600 var(--pf-text-xl)/1.3 var(--pf-font-heading);letter-spacing:-.01em}
 .pf[data-theme="prima"] .pf-loc{background:var(--pf-surface)}
-.pf[data-theme="prima"] .pf-detail__panel{max-width:920px;border-radius:calc(var(--pf-radius) + 2px)}
-.pf[data-theme="prima"] .pf-detail__bar{border-radius:calc(var(--pf-radius) + 2px) calc(var(--pf-radius) + 2px) 0 0}
+.pf[data-theme="prima"] .pf-workpage{max-width:920px}
+.pf[data-theme="prima"] .pf-workpage__step{background:var(--pf-surface)}
 .pf[data-theme="prima"] .pf-detail__title{font-weight:600}
 .pf[data-theme="prima"] .pf-detail__hero{border:1px solid var(--pf-border)}
-@media (max-width:640px){.pf[data-theme="prima"] :is(.pf-detail__panel,.pf-detail__bar){border-radius:0}}
 `;

@@ -17,6 +17,8 @@ export const themeDescription = (theme: PortfolioTheme) =>
 		mozaik: t`Playful tiles that fit your intro, numbers and work together.`,
 		paper: t`Warm paper, fine borders, folded corners and alternating stories of your work.`,
 		brutal: t`Bold type, solid colours, thick outlines and hard offset shadows.`,
+		sintaks: t`A terminal window for your intro, repositories for your work and a git log of your career.`,
+		warta: t`A magazine: your name as the masthead, a cover story and articles with reading times.`,
 	})[theme];
 
 /** Whom each theme suits (`01-desain.md` section 5). */
@@ -28,6 +30,8 @@ export const themeAudience = (theme: PortfolioTheme) =>
 		mozaik: t`For creators, freelancers and students.`,
 		paper: t`For designers, design engineers and thoughtful makers.`,
 		brutal: t`For creatives, developers and makers with a bold point of view.`,
+		sintaks: t`For developers, data people and IT.`,
+		warta: t`For writers, PR, marketing and researchers.`,
 	})[theme];
 
 /** The intro effects' names and what they do (`01-desain.md` section 18). */

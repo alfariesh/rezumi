@@ -48,6 +48,8 @@ try {
 	config.vars.ENCRYPTION_SECRET = randomBytes(32).toString("hex");
 	// This test checks the Worker runs, not billing: plans stay off so its user's AI goes to the provider below.
 	config.vars.BILLING_MODE = "off";
+	// Portfolios open to everyone, so the smoke user can publish one and its share card can be checked.
+	config.vars.PORTFOLIO_MODE = "on";
 	// Minimal external provider boundary; the real AI SDK and Worker stream stay under test.
 	const provider = createServer((request, response) => {
 		let body = "";
@@ -209,6 +211,81 @@ try {
 	const pdf = Buffer.from(await response.arrayBuffer());
 	assert.equal(pdf.subarray(0, 5).toString(), "%PDF-");
 	assert(pdf.includes(Buffer.from("/Subtype /Image")), "Uploaded picture must be embedded in PDF");
+	// Link-preview cards draw with resvg's WebAssembly, bundled beside the script: a PNG, never the banner fallback.
+	const assertCard = async (path) => {
+		const card = await request(path, { redirect: "manual" });
+		assert.equal(card.status, 200, `${path} answered ${card.status} ${card.headers.get("location") ?? ""}`);
+		assert.equal(card.headers.get("content-type"), "image/png");
+		const bytes = Buffer.from(await card.arrayBuffer());
+		assert.equal(bytes.subarray(1, 4).toString(), "PNG");
+	};
+	await assertCard(`/cards/workersmoke/${resume.slug}.png`);
+	const verified = new Pool({ connectionString: databaseUrl.href });
+	try {
+		await verified.query(`UPDATE "user" SET email_verified = true WHERE username = 'workersmoke'`);
+	} finally {
+		await verified.end();
+	}
+	await client.portfolio.create({ sourceResumeId: id });
+	await client.portfolio.setPublic({ isPublic: true });
+	await assertCard("/cards/workersmoke.png");
+	// A work's own page and its card (Phase 13, B2), then the password gate in front of both (B16).
+	const work = (await client.portfolio.get({})).portfolio?.data.works.items.find(
+		(item) => !item.hidden && item.title.trim(),
+	);
+	assert(work, "The sample resume's projects must give the portfolio a work");
+	response = await request(`/workersmoke/work/${work.slug}`);
+	assert.equal(response.status, 200, await response.clone().text());
+	assert.match(
+		await response.text(),
+		new RegExp(`<link rel="canonical" href="${origin}/workersmoke/work/${work.slug}">`),
+	);
+	await assertCard(`/cards/workersmoke/work/${work.slug}.png`);
+	// The portfolio's own photo, so the locked portfolio has a file to protect.
+	const photo = await client.portfolio.uploadImage({ file: new File([png], "me.png", { type: "image/png" }) });
+	const saved = (await client.portfolio.get({})).portfolio;
+	assert(saved);
+	await client.portfolio.update({
+		expectedUpdatedAt: saved.updatedAt,
+		data: {
+			...saved.data,
+			basics: { ...saved.data.basics, picture: { key: photo.key, width: 64, height: 64, alt: "" } },
+		},
+	});
+	assert.equal((await request(`/${photo.key}`)).status, 200, "A published portfolio's photo is public");
+	await client.portfolio.setPassword({ password: "smoke-password" });
+	response = await request("/workersmoke", { headers: { "user-agent": "smoke" } });
+	assert.equal(response.status, 401);
+	assert.doesNotMatch(await response.text(), /Cloudflare Native|workersmoke resume/);
+	assert.equal((await request(`/workersmoke/work/${work.slug}`)).status, 401);
+	const locked = await request(`/cards/workersmoke/work/${work.slug}.png`, { redirect: "manual" });
+	assert.equal(locked.status, 302, "A locked portfolio's work card is the banner");
+	response = await request("/api/portfolio/workersmoke/unlock", {
+		method: "POST",
+		body: new URLSearchParams({ password: "smoke-password", next: `work:${work.slug}` }),
+		redirect: "manual",
+	});
+	assert.equal(response.status, 303);
+	assert.equal(response.headers.get("location"), `/workersmoke/work/${work.slug}`);
+	const access = response.headers.get("set-cookie")?.split(";")[0] ?? "";
+	assert.match(access, /^portfolio_access_/);
+	assert.equal((await request(`/workersmoke/work/${work.slug}`, { headers: { cookie: access } })).status, 200);
+	// Locked, the photo's bare address no longer works; the page opened with the cookie hands out a tokened one.
+	assert.equal((await request(`/${photo.key}`)).status, 404);
+	const unlocked = await (await request("/workersmoke", { headers: { cookie: access, "user-agent": "smoke" } })).text();
+	const tokened = new RegExp(`/${photo.key.replaceAll("/", "\\/").replaceAll(".", "\\.")}\\?access=[\\d.a-f]+`).exec(
+		unlocked,
+	)?.[0];
+	assert(tokened, "An unlocked page's photo carries its file token");
+	response = await request(tokened);
+	assert.equal(response.status, 200);
+	assert.equal(response.headers.get("cache-control"), "private, max-age=3600");
+	await client.portfolio.removePassword({});
+	// The address checks behind link reading load and run under workerd (node:net BlockList).
+	await assert.rejects(client.portfolio.unfurl({ url: "http://127.0.0.1/admin" }), (error) => {
+		assert.equal(error.code, "PORTFOLIO_LINK_UNREADABLE");
+		return true;
+	});
 	const updated = (await client.resume.getById({ id })).data;
 	assert.equal(updated.basics.name, "Cloudflare Native");
 	// Icon drawings load from Text modules beside the script; the same resume without icons draws less.
@@ -297,7 +374,7 @@ try {
 		null,
 	);
 	console.log(
-		"Cloudflare smoke passed: auth, native cron, transactions, R2 privacy, live updates, PDF pictures and icons, assistant streaming/stop, atomic limits, expiry.",
+		"Cloudflare smoke passed: auth, native cron, transactions, R2 privacy, live updates, PDF pictures and icons, share cards, portfolio work pages and password gate, link checks, assistant streaming/stop, atomic limits, expiry.",
 	);
 } catch (error) {
 	for (const log of harness?.getLogs() ?? []) {

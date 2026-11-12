@@ -53,10 +53,13 @@ const USER_AGENT = "Mozilla/5.0 (compatible; Rezumi; link preview)";
 const BLOCKED_STATUSES = new Set([401, 403, 407, 429, 451]);
 
 /**
- * The real request: `fetchPublic` connects to public addresses only (checked again at connection time on Node; on
- * Workers `global_fetch_strictly_public` refuses private destinations), and Workers also resolves the host first, as
- * `fetchWorkerPublicUrl` does. A name that resolves to a private address fails like one that doesn't resolve at all
- * (see `toRemoteError`), so the answer never tells which internal names exist.
+ * The real request. On Node, `fetchPublic` checks every address a name resolves to when it connects, so DNS can't
+ * swap in a private one after the check. On Workers the guard is resolving the host first (as `fetchWorkerPublicUrl`
+ * does) and refusing private answers; `fetch` then resolves again on its own, which a rebinding name could exploit,
+ * but a Worker's outbound requests can't reach private networks in the first place. (`global_fetch_strictly_public`
+ * only sends requests for the app's own zone out through the public front door; it isn't an address filter.) A name
+ * that resolves to a private address fails like one that doesn't resolve at all (see `toRemoteError`), so the answer
+ * never tells which internal names exist.
  */
 const publicHop: RemoteHop = async (url, init) => {
 	if (process.env.CLOUDFLARE === "1") {
@@ -133,7 +136,7 @@ function toRemoteError(error: unknown, signal: AbortSignal): unknown {
 	// resolved to a private address. It reads as a name that doesn't resolve, which says nothing about the network.
 	if (error instanceof Error && error.cause === "unsafe-url")
 		return new RemoteFetchError("unreachable", { cause: error });
-	// fetchPublic refuses statuses a Response can't hold (LinkedIn answers bots with 999).
+	// fetchPublic refuses statuses a Response can't hold (LinkedIn answers bots with 999), on Node and on Workers alike.
 	if (error instanceof Error && error.message.startsWith("Invalid response status"))
 		return new RemoteFetchError("blocked");
 	return new RemoteFetchError("unreachable");

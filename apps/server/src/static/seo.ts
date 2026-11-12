@@ -28,6 +28,8 @@ export function handleRobots() {
 		"Disallow: /.well-known",
 		// A resume's PDF duplicates its web page, and each crawl would render one.
 		"Disallow: /api/resumes/",
+		// A portfolio's contact card, beacons and forms: nothing there is a page.
+		"Disallow: /api/portfolio/",
 		// Discovery documents meant for agents and API directories.
 		"Allow: /.well-known/integrations.json",
 		"Allow: /.well-known/api-catalog",
@@ -126,10 +128,14 @@ export async function handlePortfoliosSitemap(page: number, trustedClient?: stri
 	if (portfolios.length === 0) return new Response("Not Found", { status: 404 });
 	return xmlResponse(
 		'urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
-		portfolios.map(
-			(portfolio) =>
-				`  <url><loc>${escapeXml(`${baseUrl}/${encodeURIComponent(portfolio.username)}`)}</loc><lastmod>${portfolio.updatedAt.toISOString()}</lastmod></url>`,
-		),
+		// Each portfolio's home, then its works' own pages (Phase 13, B2), with the portfolio's last change.
+		portfolios.flatMap((portfolio) => {
+			const home = `${baseUrl}/${encodeURIComponent(portfolio.username)}`;
+			const lastmod = portfolio.updatedAt.toISOString();
+			return [home, ...portfolio.workSlugs.map((slug) => `${home}/work/${encodeURIComponent(slug)}`)].map(
+				(loc) => `  <url><loc>${escapeXml(loc)}</loc><lastmod>${lastmod}</lastmod></url>`,
+			);
+		}),
 	);
 }
 

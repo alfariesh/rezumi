@@ -1,21 +1,33 @@
 import type { PublicPortfolio } from "@rezumi/api/features/portfolio/public";
-import type { PortfolioPage, PortfolioPageLive } from "@rezumi/portfolio";
-import type { PortfolioView } from "@rezumi/portfolio/view";
+import type { PortfolioPage, PortfolioPageKind, PortfolioPageLive } from "@rezumi/portfolio";
+import type { PortfolioView, PortfolioViewWork } from "@rezumi/portfolio/view";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { createHash } from "node:crypto";
+import { getPortfolioMode } from "@rezumi/api/features/portfolio/mode";
 import { findPublicPortfolio, recordPortfolioVisit } from "@rezumi/api/features/portfolio/public";
 import { publicPortfolioRequestAllowed, tooManyPortfolioRequests } from "@rezumi/api/features/portfolio/public-limit";
 import { isContactFormConfigured } from "@rezumi/api/features/portfolio/turnstile";
+import {
+	PORTFOLIO_FILE_TOKEN_PARAM,
+	portfolioAccess,
+	portfolioFileToken,
+} from "@rezumi/api/features/portfolio/visitor-access";
 import { env } from "@rezumi/env/server";
 import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
 import { renderPortfolioDocument } from "@rezumi/portfolio/document";
+import { renderPortfolioLockPage, renderPortfolioMissingWorkPage } from "@rezumi/portfolio/gate";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
 import { renderPortfolioReportPage } from "@rezumi/portfolio/report";
-import { buildPortfolioView, portfolioPageLocale } from "@rezumi/portfolio/view";
+import { htmlToText, truncateText } from "@rezumi/portfolio/text";
+import { buildPortfolioView, portfolioPageLocale, resolvePortfolioWork } from "@rezumi/portfolio/view";
 import { publicResumePath } from "@rezumi/resume/sharing";
 import { BILLING_SELLER } from "@rezumi/schema/billing";
+import { PORTFOLIO_SLUG_PATTERN } from "@rezumi/schema/portfolio/data";
+import { embedFrameOrigins } from "@rezumi/schema/portfolio/embed";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
+import { RESERVED_PROFILE_SEGMENTS } from "@rezumi/utils/app-paths";
 import { ownPictureUrl } from "@rezumi/utils/own-picture";
-import { serveResumePage } from "./resume-page";
+import { serveResumePage, unavailableResponse } from "./resume-page";
 import { BASE_SECURITY_HEADERS } from "./web";
 
 const origin = () => new URL(env.APP_URL).origin;
@@ -91,7 +103,48 @@ function html(
 export function portfolioPictureUrl(source: string): string | undefined {
 	// The app's own origin first: a relative address resolves against it.
 	const origins = [env.APP_URL, env.APP_ALIAS_URL].flatMap((address) => (address ? [new URL(address).origin] : []));
-	return ownPictureUrl(source, origins);
+	// A locked portfolio's picture carries its file token (`signedFileUrl`) and nothing else in its query.
+	const [path = "", query] = source.split("?");
+	const token = query === undefined ? null : new URLSearchParams(query);
+	if (token && ([...token.keys()].join() !== PORTFOLIO_FILE_TOKEN_PARAM || !token.get(PORTFOLIO_FILE_TOKEN_PARAM)))
+		return undefined;
+	const own = ownPictureUrl(path, origins);
+	return own && token ? `${own}?${token.toString()}` : own;
+}
+
+/** A portfolio PDF on the app (`documents/portfolio/<id>.pdf`), the one other kind of stored file a page links to. */
+const OWN_PORTFOLIO_PDF_PATH = /^\/(?:api\/)?uploads\/[\w-]+\/documents\/portfolio\/[\w-]+\.pdf$/;
+
+/**
+ * The address a page may use for one of this app's stored files: a picture (`portfolioPictureUrl`), or a portfolio's
+ * PDF, which the PDF card links to through the same filter. Either may carry a locked portfolio's file token.
+ */
+export function portfolioFileAddress(source: string): string | undefined {
+	const picture = portfolioPictureUrl(source);
+	if (picture) return picture;
+	let url: URL;
+	try {
+		url = new URL(source.trim(), origin());
+	} catch {
+		return undefined;
+	}
+	const own = [env.APP_URL, env.APP_ALIAS_URL].some((address) => address && new URL(address).origin === url.origin);
+	const query = [...url.searchParams.keys()];
+	const tokenOnly =
+		query.length === 0 || (query.join() === PORTFOLIO_FILE_TOKEN_PARAM && url.searchParams.get(query[0] ?? ""));
+	if (!own || !tokenOnly || url.hash || url.username || url.password || !OWN_PORTFOLIO_PDF_PATH.test(url.pathname))
+		return undefined;
+	return url.href;
+}
+
+/**
+ * A stored file's address on the app. Behind a visitor password, it carries a file token bound to the file and the
+ * current password (`portfolioFileToken`): only pages rendered for a visitor who opened the portfolio hand these out,
+ * and the uploads route refuses a locked portfolio's file without one.
+ */
+function signedFileUrl(key: string, passwordHash: string | null): string {
+	const url = `${origin()}/${key}`;
+	return passwordHash ? `${url}?${PORTFOLIO_FILE_TOKEN_PARAM}=${portfolioFileToken(key, passwordHash)}` : url;
 }
 
 /** The resume as the page may use it: its photo only when it's one of this app's uploads. */
@@ -100,8 +153,32 @@ function withOwnPicture(data: ResumeData): ResumeData {
 	return { ...data, picture: { ...data.picture, url: "" } };
 }
 
-/** The view of a published portfolio as every visitor sees it, with addresses on this app. */
-export function publicPortfolioView(portfolio: PublicPortfolio): PortfolioView {
+type ServeOptions = {
+	/** Set on a custom domain: the page lives at its root there. */
+	customDomain?: string | undefined;
+};
+
+/** The portfolio's home on the domain being served: `/<username>`, or `/` on a custom domain. */
+const homePath = (portfolio: Pick<PublicPortfolio, "username">, options: ServeOptions) =>
+	options.customDomain ? "/" : `/${encodeURIComponent(portfolio.username)}`;
+
+/** A work's page on the domain being served: `/<username>/work/<slug>`, or `/work/<slug>` on a custom domain. */
+const workPath = (portfolio: Pick<PublicPortfolio, "username">, options: ServeOptions, slug: string) =>
+	`${options.customDomain ? "" : `/${encodeURIComponent(portfolio.username)}`}/work/${encodeURIComponent(slug)}`;
+
+/** Where search engines are sent: the portfolio's live custom domain, else its address on the app. */
+function canonicalBase(portfolio: Pick<PublicPortfolio, "username" | "customDomain">, options: ServeOptions) {
+	const domain = options.customDomain ?? portfolio.customDomain;
+	const home = domain ? `https://${domain}/` : `${origin()}/${encodeURIComponent(portfolio.username)}`;
+	const workBase = domain ? `https://${domain}` : home;
+	return { home, work: (slug: string) => `${workBase}/work/${encodeURIComponent(slug)}` };
+}
+
+/**
+ * The view of a published portfolio as every visitor sees it, with addresses on this app, or on the custom domain it's
+ * served at: the home, each work's own page (Phase 13, B2) and the "Save contact" card (B14).
+ */
+export function publicPortfolioView(portfolio: PublicPortfolio, options: ServeOptions = {}): PortfolioView {
 	const { resume } = portfolio;
 	const locale = portfolioPageLocale(portfolio.data, resume?.data);
 	const resumePath = resume ? publicResumePath({ username: portfolio.username, slug: resume.slug }) : null;
@@ -112,7 +189,7 @@ export function publicPortfolioView(portfolio: PublicPortfolio): PortfolioView {
 		entitlements: portfolio.entitlements,
 		contactFormAvailable: isContactFormConfigured(),
 		messages: portfolioViewMessages(portfolioMessages(locale)),
-		fileUrl: (key) => `${origin()}/${key}`,
+		fileUrl: (key) => signedFileUrl(key, portfolio.passwordHash),
 		links: {
 			resume: resume?.isPublic && resumePath ? `${origin()}${resumePath}` : null,
 			// A password-protected PDF needs the visitor to unlock the resume first, so the button goes there instead.
@@ -120,6 +197,10 @@ export function publicPortfolioView(portfolio: PublicPortfolio): PortfolioView {
 				resume?.isPublic && resume.showDownloadButtons && !resume.hasPassword && resumePath
 					? `${origin()}/api/resumes${resumePath}/pdf?download`
 					: null,
+			home: homePath(portfolio, options),
+			work: (slug) => workPath(portfolio, options, slug),
+			// Relative: a custom domain passes `/api/portfolio/` through to the app.
+			vcard: `/api/portfolio/${encodeURIComponent(portfolio.username)}/vcard`,
 		},
 	});
 }
@@ -128,10 +209,14 @@ export function publicPortfolioView(portfolio: PublicPortfolio): PortfolioView {
 // ponytail: per process, cleared at 100 entries, like the resume pages' cache.
 const rendered = new Map<string, PortfolioPage>();
 
-async function renderPage(view: PortfolioView, live: PortfolioPageLive): Promise<PortfolioPage> {
+async function renderPage(
+	view: PortfolioView,
+	live: PortfolioPageLive,
+	kind: PortfolioPageKind = { kind: "home" },
+): Promise<PortfolioPage> {
 	const year = new Date().getUTCFullYear();
 	const key = createHash("sha256")
-		.update(JSON.stringify([view, year, live]))
+		.update(JSON.stringify([view, year, live, kind]))
 		.digest("hex");
 	const hit = rendered.get(key);
 	if (hit) return hit;
@@ -145,10 +230,11 @@ async function renderPage(view: PortfolioView, live: PortfolioPageLive): Promise
 		view,
 		messages: portfolioMessages(view.locale),
 		icons,
-		imageUrl: portfolioPictureUrl,
+		imageUrl: portfolioFileAddress,
 		year,
 		creditUrl: origin(),
 		live,
+		page: kind,
 	});
 	if (rendered.size >= 100) rendered.clear();
 	rendered.set(key, page);
@@ -156,7 +242,13 @@ async function renderPage(view: PortfolioView, live: PortfolioPageLive): Promise
 }
 
 /** The person and their work, for search engines (`02-teknis.md` 5.3); testimonials stay out (not reviews). */
-function structuredData(view: PortfolioView, url: string, updatedAt: Date, meLinks: readonly string[]) {
+function structuredData(
+	view: PortfolioView,
+	url: string,
+	updatedAt: Date,
+	meLinks: readonly string[],
+	workUrl: (slug: string) => string,
+) {
 	const work = view.sections.find((section) => section.kind === "work");
 	const services = view.sections.find((section) => section.kind === "services");
 	const picture = view.basics.picture ? portfolioPictureUrl(view.basics.picture.src) : undefined;
@@ -165,7 +257,7 @@ function structuredData(view: PortfolioView, url: string, updatedAt: Date, meLin
 			? work.works.map((item) => ({
 					"@type": "CreativeWork",
 					name: item.title,
-					url: `${url}#${item.anchor}`,
+					url: workUrl(item.slug),
 					...(item.summary ? { description: item.summary } : {}),
 				}))
 			: []),
@@ -231,18 +323,23 @@ export function runAfterResponse(work: Promise<unknown>, failure: string): Promi
 	return process.env.CLOUDFLARE === "1" ? running : Promise.resolve();
 }
 
-/** Counts the visit without holding up the page (`02-teknis.md` section 9). */
-function countVisit(request: Request, portfolio: PublicPortfolio, trustedClient: string): Promise<void> {
+/**
+ * Counts the visit without holding up the page (`02-teknis.md` section 9): a page someone opens, not a HEAD request,
+ * a prefetch or a prerender (which reports itself with a `view` beacon once shown). A work's page counts its work too.
+ */
+function countVisit(request: Request, portfolio: PublicPortfolio, trustedClient: string, workId?: string) {
+	if (request.method !== "GET" || isSpeculative(request.headers)) return Promise.resolve();
 	return runAfterResponse(
-		recordPortfolioVisit({ portfolio, requestHeaders: request.headers, requestUrl: request.url, trustedClient }),
+		recordPortfolioVisit({
+			portfolio,
+			requestHeaders: request.headers,
+			requestUrl: request.url,
+			trustedClient,
+			...(workId ? { workId } : {}),
+		}),
 		"Portfolio visit counting failed",
 	);
 }
-
-type ServeOptions = {
-	/** Set on a custom domain: the page lives at its root there. */
-	customDomain?: string | undefined;
-};
 
 /**
  * How the page talks back: where its beacons go and, when the view has a form, how the form works here. A custom
@@ -281,17 +378,13 @@ async function showPortfolio(
 	trustedClient: string,
 	options: ServeOptions,
 ) {
-	// A visit is a page someone opens: not a HEAD request, a prefetch or a prerender.
-	const counted =
-		request.method === "GET" && !isSpeculative(request.headers)
-			? countVisit(request, portfolio, trustedClient)
-			: Promise.resolve();
-	const view = publicPortfolioView(portfolio);
+	const counted = countVisit(request, portfolio, trustedClient);
+	const view = publicPortfolioView(portfolio, options);
 	const contact = view.sections.find((section) => section.kind === "contact");
 	const live = liveWiring(request, portfolio, contact?.kind === "contact" && contact.contact.form, options);
 	const page = await renderPage(view, live);
-	const domain = options.customDomain ?? portfolio.customDomain;
-	const canonicalUrl = domain ? `https://${domain}/` : `${origin()}/${encodeURIComponent(portfolio.username)}`;
+	const canonical = canonicalBase(portfolio, options);
+	const canonicalUrl = canonical.home;
 	const meLinks =
 		contact?.kind === "contact"
 			? [
@@ -309,7 +402,7 @@ async function showPortfolio(
 			imageUrl: `${origin()}/cards/${encodeURIComponent(portfolio.username)}.png`,
 			meLinks,
 			structuredData: portfolio.indexable
-				? structuredData(view, canonicalUrl, portfolio.updatedAt, meLinks)
+				? structuredData(view, canonicalUrl, portfolio.updatedAt, meLinks, canonical.work)
 				: undefined,
 		},
 	});
@@ -326,7 +419,12 @@ async function showPortfolio(
  * The report form at `/<username>?report` (`02-teknis.md` section 14), on its own plain page so a page of any theme gets
  * the same form. A portfolio reached over a custom domain sends visitors to the app's domain, where Turnstile works.
  */
-function showReportForm(request: Request, portfolio: PublicPortfolio, options: ServeOptions): Response {
+function showReportForm(
+	request: Request,
+	portfolio: PublicPortfolio,
+	options: ServeOptions,
+	locked: boolean,
+): Response {
 	const path = encodeURIComponent(portfolio.username);
 	if (options.customDomain) return Response.redirect(`${origin()}/${path}?report`, 302);
 	const view = publicPortfolioView(portfolio);
@@ -334,7 +432,8 @@ function showReportForm(request: Request, portfolio: PublicPortfolio, options: S
 	const body = renderPortfolioReportPage({
 		lang: view.locale,
 		dir: view.dir,
-		name: view.basics.name,
+		// Behind a password, a visitor who can't open the portfolio learns nothing from its report form, not even the name.
+		name: locked ? `@${portfolio.username}` : view.basics.name,
 		pageUrl: `/${path}`,
 		action: `/api/portfolio/${path}/report`,
 		siteKey: isContactFormConfigured() ? (env.TURNSTILE_SITE_KEY ?? null) : null,
@@ -361,6 +460,157 @@ export async function servePortfolioOrResume(
 	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
 	const portfolio = await findPublicPortfolio(username);
 	if (!portfolio) return resume();
-	if (new URL(request.url).searchParams.has("report")) return showReportForm(request, portfolio, options);
+	const access = await portfolioAccess(portfolio, request.headers);
+	// Not behind the password: whoever is shown a fake lock page must still be able to report it.
+	if (new URL(request.url).searchParams.has("report"))
+		return showReportForm(request, portfolio, options, access === "locked");
+	if (access === "locked") return lockedPage(request, portfolio, options, "home");
 	return showPortfolio(request, portfolio, trustedClient, options);
+}
+
+/** The password page (`@rezumi/portfolio/gate`, Phase 13 B16): nothing of the portfolio, no script, never cached. */
+function lockedPage(request: Request, portfolio: PublicPortfolio, options: ServeOptions, next: string): Response {
+	const path = encodeURIComponent(portfolio.username);
+	const view = publicPortfolioView(portfolio, options);
+	const status = new URL(request.url).searchParams.get("unlock");
+	const body = renderPortfolioLockPage({
+		lang: view.locale,
+		dir: view.dir,
+		// Relative: a custom domain passes `/api/portfolio/` through, and the cookie must be set on its own host.
+		action: `/api/portfolio/${path}/unlock`,
+		next,
+		status: status === "wrong" || status === "limited" ? status : undefined,
+		reportUrl: `${options.customDomain ? origin() : ""}/${path}?report`,
+		messages: portfolioMessages(view.locale),
+	});
+	return plainPage(body, 401, { "X-Robots-Tag": "noindex, nofollow" });
+}
+
+/** A page with no script at all (the password page, a missing work): no cache, nothing to run. */
+function plainPage(body: string, status: number, headers: Record<string, string> = {}) {
+	return new Response(body, {
+		status,
+		headers: {
+			...BASE_SECURITY_HEADERS,
+			"Content-Type": "text/html; charset=UTF-8",
+			"Cache-Control": "private, no-store",
+			"Content-Security-Policy": portfolioContentSecurityPolicy("", {}),
+			...headers,
+		},
+	});
+}
+
+const isWorkSlug = (slug: string) => slug.length <= PORTFOLIO_LIMITS.text.slug && PORTFOLIO_SLUG_PATTERN.test(slug);
+
+/** `/<username>/work/<slug>` (Phase 13, B2): exactly three segments, a possible username, `work`, and a work's slug. */
+export function isPortfolioWorkPath(pathname: string): boolean {
+	const segments = pathname.split("/");
+	if (segments.length !== 4 || segments[0] !== "") return false;
+	const [, username = "", work, slug = ""] = segments;
+	return (
+		username !== "" && !RESERVED_PROFILE_SEGMENTS.has(username.toLowerCase()) && work === "work" && isWorkSlug(slug)
+	);
+}
+
+/** A custom domain's `/work/<slug>`: the slug, or null for any other path. */
+export function customDomainWorkSlug(pathname: string): string | null {
+	const match = /^\/work\/([^/]+)$/.exec(pathname);
+	return match?.[1] && isWorkSlug(match[1]) ? match[1] : null;
+}
+
+/** Whether the routes Phase 13 adds answer at all: while portfolios are off, their paths fall through as before. */
+export const portfolioRoutesEnabled = () => getPortfolioMode() !== "off";
+
+/**
+ * A work's own page (Phase 13, B2): `/<username>/work/<slug>`, or `/work/<slug>` on a custom domain. The password gate
+ * comes before the work is looked up, so a locked page doesn't tell whether a work exists. A previous address forwards
+ * (301) to the current one; a work the page doesn't list (hidden, untitled, or the Work section hidden) is a 404 that
+ * links back to the portfolio; an address with no portfolio is the same 404 as a resume that isn't shared.
+ */
+export async function servePortfolioWork(
+	request: Request,
+	username: string,
+	slug: string,
+	trustedClient: string,
+	options: ServeOptions = {},
+): Promise<Response> {
+	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
+	const portfolio = await findPublicPortfolio(username);
+	if (!portfolio) return unavailableResponse(request);
+	if ((await portfolioAccess(portfolio, request.headers)) === "locked")
+		return lockedPage(request, portfolio, options, `work:${slug}`);
+	const view = publicPortfolioView(portfolio, options);
+	const found = resolvePortfolioWork(view, slug);
+	if (!found) {
+		const body = renderPortfolioMissingWorkPage({
+			lang: view.locale,
+			dir: view.dir,
+			homeUrl: homePath(portfolio, options),
+			messages: portfolioMessages(view.locale),
+		});
+		return plainPage(body, 404, { "X-Robots-Tag": "noindex, follow" });
+	}
+	if (found.status === "moved")
+		return new Response(null, {
+			status: 301,
+			headers: { Location: workPath(portfolio, options, found.slug), "Cache-Control": "private, no-store" },
+		});
+	return showWork(request, portfolio, found.work, view, trustedClient, options);
+}
+
+/** A work's description for search engines and previews: its summary, else its first text, else the portfolio's. */
+function workDescription(work: PortfolioViewWork, view: PortfolioView): string {
+	if (work.summary.trim()) return work.summary.trim();
+	const text = work.blocks.find((block) => block.type === "text");
+	const words = text?.type === "text" ? htmlToText(text.html) : "";
+	return words ? truncateText(words, PORTFOLIO_LIMITS.text.seoDescription) : view.seo.description;
+}
+
+async function showWork(
+	request: Request,
+	portfolio: PublicPortfolio,
+	work: PortfolioViewWork,
+	view: PortfolioView,
+	trustedClient: string,
+	options: ServeOptions,
+) {
+	const counted = countVisit(request, portfolio, trustedClient, work.id);
+	const live = liveWiring(request, portfolio, false, options);
+	const page = await renderPage(view, live, { kind: "work", workId: work.id });
+	const canonical = canonicalBase(portfolio, options);
+	const canonicalUrl = canonical.work(work.slug);
+	const description = workDescription(work, view);
+	const cover = work.cover ? portfolioPictureUrl(work.cover.src) : undefined;
+	const body = renderPortfolioDocument({
+		page,
+		head: {
+			title: `${work.title} — ${view.basics.name}`,
+			description,
+			canonicalUrl,
+			indexable: portfolio.indexable,
+			type: "article",
+			imageUrl: `${origin()}/cards/${encodeURIComponent(portfolio.username)}/work/${encodeURIComponent(work.slug)}.png`,
+			structuredData: portfolio.indexable
+				? {
+						"@context": "https://schema.org",
+						"@type": "CreativeWork",
+						name: work.title,
+						...(description ? { description } : {}),
+						url: canonicalUrl,
+						...(cover ? { image: cover } : {}),
+						...(work.tags.length ? { keywords: work.tags.join(", ") } : {}),
+						inLanguage: view.locale,
+						dateModified: portfolio.updatedAt.toISOString(),
+						author: { "@type": "Person", name: view.basics.name, url: canonical.home },
+						isPartOf: { "@type": "ProfilePage", url: canonical.home },
+					}
+				: undefined,
+		},
+	});
+	await counted;
+	// Only the providers this work embeds may be framed (Phase 13, B17); a work page has no form, so no Turnstile.
+	const providers = new Set(work.blocks.flatMap((block) => (block.type === "embed" ? [block.provider] : [])));
+	return html(body, page.script, portfolio.indexable ? {} : { "X-Robots-Tag": "noindex, follow" }, {
+		"frame-src": embedFrameOrigins(providers),
+	});
 }

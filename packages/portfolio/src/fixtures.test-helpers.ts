@@ -1,4 +1,5 @@
-import type { PortfolioPageLive } from "./page";
+import type { PortfolioPageKind, PortfolioPageLive } from "./page";
+import type { PortfolioViewInput } from "./view";
 import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
 import type { CustomSection, ProjectItem, ResumeData } from "@rezumi/schema/resume/data";
 import { expect } from "vite-plus/test";
@@ -165,7 +166,12 @@ export const testImage = (name: string, width = 1600, height = 1200) => ({
 export const fullPortfolioData: PortfolioDataInput = {
 	hero: {
 		greeting: "I design calm apps for busy people.",
-		availability: { show: true, text: "" },
+		availability: {
+			show: true,
+			text: "",
+			roles: ["Product Designer", " UI Designer ", ""],
+			types: ["full-time", "contract"],
+		},
 		highlights: [
 			{ id: "h1", label: "Monthly users", value: { kind: "number", number: 4_000_000 }, format: "compact" },
 			{ id: "h2", label: "Successful payments", value: { kind: "number", number: 97.5 }, format: "percent" },
@@ -179,6 +185,7 @@ export const fullPortfolioData: PortfolioDataInput = {
 			{
 				id: "w1",
 				slug: "kopi-app",
+				previousSlugs: ["coffee-app", "kopi"],
 				title: "Coffee ordering app",
 				summary: "Ordering in three taps.",
 				role: "Lead designer",
@@ -233,6 +240,25 @@ export const fullPortfolioData: PortfolioDataInput = {
 						thumbnail: testImage("video-thumb", 480, 360),
 					},
 					{ id: "b5", type: "video", provider: "vimeo", videoId: "76979871", hash: "9f2c1a7b3d" },
+					{
+						id: "e1",
+						type: "embed",
+						provider: "figma",
+						ref: "design/AbCdEf0123456789?node-id=1-2",
+						title: "Checkout flow",
+						thumbnail: testImage("figma-thumb", 1200, 630),
+					},
+					{ id: "e2", type: "embed", provider: "loom", ref: "0123456789abcdef0123456789abcdef", title: "Walkthrough" },
+					{
+						id: "e3",
+						type: "embed",
+						provider: "spotify",
+						ref: "episode/4rOoJ6Egrf8K2IrywzwOMk",
+						title: "Design podcast",
+						thumbnail: testImage("spotify-thumb", 640, 640),
+					},
+					{ id: "e4", type: "embed", provider: "soundcloud", ref: "nadia/sets/interviews" },
+					{ id: "e5", type: "embed", provider: "google-slides", ref: "1AbCdEfGhIjKlMnOpQrStUvWxYz0123456789" },
 					{
 						id: "b6",
 						type: "pdf",
@@ -304,7 +330,7 @@ export const fullPortfolioData: PortfolioDataInput = {
 		timezone: "Asia/Jakarta",
 		showLocalTime: true,
 	},
-	contact: { whatsapp: { show: true, number: "6281255501824" }, note: "Let's talk." },
+	contact: { whatsapp: { show: true, number: "6281255501824" }, note: "Let's talk.", saveContact: true },
 };
 
 type RenderTestPageOptions = {
@@ -319,21 +345,40 @@ type RenderTestPageOptions = {
 	/** Resume icon shapes by name. */
 	icons?: Record<string, string>;
 	username?: string;
+	/** Which page to draw (`RenderPortfolioPageInput.page`): the home page by default. */
+	page?: PortfolioPageKind;
+	/**
+	 * The page's links. By default the server's on the app's domain: home `/<username>`, works at
+	 * `/<username>/work/<slug>`, Save contact at `/api/portfolio/<username>/vcard`. `null` leaves the view's defaults
+	 * (the editor's preview: `#main` and `#work-<slug>`, no Save contact).
+	 */
+	links?: PortfolioViewInput["links"] | null;
 };
 
 /** Renders test data as the server would: its own catalog, uploads on a test origin, the resume button public. */
 export function renderTestPage(data: PortfolioDataInput, options: RenderTestPageOptions = {}) {
 	const resume = options.resume === undefined ? testResume() : options.resume;
+	const username = options.username ?? "nadia";
 	const parsed = parseWritablePortfolioData(options.locale ? { ...data, locale: options.locale } : data);
 	const messages = portfolioMessages(portfolioPageLocale(parsed, resume));
 	const view = buildPortfolioView({
 		portfolio: { data: parsed },
 		resume: resume ? { data: resume } : null,
-		owner: { name: "Account Name", username: options.username ?? "nadia" },
+		owner: { name: "Account Name", username },
 		entitlements: { hidePortfolioCredit: false },
 		messages: portfolioViewMessages(messages),
 		fileUrl: (key) => `https://rezumi.example/${key}`,
-		links: { resume: "https://rezumi.example/nadia/cv", resumePdf: null },
+		links: {
+			resume: "https://rezumi.example/nadia/cv",
+			resumePdf: null,
+			...(options.links === null
+				? {}
+				: (options.links ?? {
+						home: `/${username}`,
+						work: (slug: string) => `/${username}/work/${slug}`,
+						vcard: `/api/portfolio/${username}/vcard`,
+					})),
+		},
 		...(options.openWorkId ? { openWorkId: options.openWorkId } : {}),
 		...(options.contactFormAvailable ? { contactFormAvailable: true } : {}),
 	});
@@ -345,6 +390,7 @@ export function renderTestPage(data: PortfolioDataInput, options: RenderTestPage
 		imageUrl: (src) => (src.startsWith("/") ? `https://rezumi.example${src}` : src),
 		icons: options.icons ?? {},
 		...(options.live ? { live: options.live } : {}),
+		...(options.page ? { page: options.page } : {}),
 	});
 	return { view, page, html: page.html, messages };
 }

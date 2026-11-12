@@ -5,13 +5,14 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { effectDemoColors } from "@rezumi/portfolio/editor";
-import { EFFECT_CSS, EFFECT_SHARED_CSS } from "@rezumi/portfolio/effects";
+import { EFFECT_CSS, EFFECT_SHARED_CSS, typewriterPhrases } from "@rezumi/portfolio/effects";
 import { isFreePortfolioHeroEffect } from "@rezumi/schema/billing";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { effectLabel } from "../themes";
+import { useArrowKeyChoice } from "./arrow-keys";
 import { EffectDemo } from "./effect-demo";
 import { ChoiceSelect, TextInput } from "./fields";
 import { editPortfolio, usePortfolioData } from "./store";
@@ -22,19 +23,6 @@ import { openPlanDialog } from "@/features/billing/plan-dialog";
 
 /** The effects' rules, once, for the demos in this panel (they only match `[data-pfx]` elements). */
 const DEMO_CSS = [EFFECT_SHARED_CSS, ...Object.values(EFFECT_CSS)].join("\n");
-
-/**
- * What the typewriter types, as the page decides it: the headline, then the roles, without blanks or repeats, the
- * headline and at most `PORTFOLIO_LIMITS.typewriterPhrases` roles.
- */
-function typewriterPhrases(headline: string, roles: readonly string[]): string[] {
-	const phrases: string[] = [];
-	for (const phrase of [headline, ...roles]) {
-		const text = phrase.trim();
-		if (text && !phrases.includes(text)) phrases.push(text);
-	}
-	return phrases.slice(0, 1 + PORTFOLIO_LIMITS.typewriterPhrases);
-}
 
 /** The label of the typewriter's role field `index` (0 for the first role after the headline; at most two). */
 const roleLabel = (index: number) => (index === 0 ? t`Second role` : t`Third role`);
@@ -50,6 +38,7 @@ export function IntroEffectPicker() {
 	const replay = usePortfolioEditorUi((state) => state.replayEffect);
 	const [plays, setPlays] = useState<Partial<Record<PortfolioHeroEffect, number>>>({});
 	const id = useId();
+	const arrows = useArrowKeyChoice();
 	const { theme } = data;
 	const effects = PORTFOLIO_THEME_INFO[theme].effects;
 	const current = view.design.effect.id;
@@ -75,7 +64,8 @@ export function IntroEffectPicker() {
 		const effect = effects.find((candidate) => candidate === value);
 		if (!effect) return;
 		if (isLockedHeroEffect(plan, effect) && effect !== current) {
-			openPlanDialog({ kind: "feature", feature: "premiumHeroEffects" });
+			// Arrowing past a Plus effect plays its sample and says "Plus" without stopping there with a dialog.
+			if (!arrows.byArrow()) openPlanDialog({ kind: "feature", feature: "premiumHeroEffects" });
 			return;
 		}
 		editPortfolio((draft) => {
@@ -88,59 +78,61 @@ export function IntroEffectPicker() {
 	return (
 		<div className="grid gap-3">
 			<style>{DEMO_CSS}</style>
-			<RadioGroup
-				aria-label={t`Intro effect`}
-				value={current}
-				onChange={choose}
-				className="grid gap-2 **:data-[slot=radio]:mt-0"
-			>
-				{effects.map((effect, index) => (
-					<Radio
-						key={effect}
-						value={effect}
-						aria-labelledby={`${id}-${effect}-name${plan?.enabled && !isFreePortfolioHeroEffect(effect) ? ` ${id}-${effect}-plan` : ""}`}
-						onFocus={() => playDemo(effect)}
-						className="w-full"
-					>
-						<Radio.Content
-							onHoverStart={() => playDemo(effect)}
-							className={({ isSelected, isFocusVisible }) =>
-								cn(
-									"grid w-full gap-2 rounded-xl border p-3 text-start",
-									isSelected ? "border-accent bg-accent-soft" : "border-separator hover:bg-default",
-									isFocusVisible && "ring-2 ring-focus",
-								)
-							}
+			<div {...arrows.props} className="contents">
+				<RadioGroup
+					aria-label={t`Intro effect`}
+					value={current}
+					onChange={choose}
+					className="grid gap-2 **:data-[slot=radio]:mt-0"
+				>
+					{effects.map((effect, index) => (
+						<Radio
+							key={effect}
+							value={effect}
+							aria-labelledby={`${id}-${effect}-name${plan?.enabled && !isFreePortfolioHeroEffect(effect) ? ` ${id}-${effect}-plan` : ""}`}
+							onFocus={() => playDemo(effect)}
+							className="w-full"
 						>
-							<span className="flex items-center gap-2 text-sm font-semibold">
-								<span id={`${id}-${effect}-name`}>{effectLabel(effect)}</span>
-								{index === 0 && <span className="text-xs font-normal text-muted">{t`(theme default)`}</span>}
-								{plan?.enabled && !isFreePortfolioHeroEffect(effect) && (
-									<Chip size="sm" variant="soft" color="accent">
-										{isLockedHeroEffect(plan, effect) && effect !== current && (
-											<Icon name="lock" size={12} aria-hidden />
-										)}
-										<span id={`${id}-${effect}-plan`}>Plus</span>
-									</Chip>
-								)}
-								{effect === current && <Icon name="check-circle" size={18} className="ms-auto text-accent" />}
-							</span>
-							<span
-								className="block truncate rounded-xl border border-separator px-3 py-2 text-lg leading-tight"
-								style={demoStyle}
-								aria-hidden="true"
+							<Radio.Content
+								onHoverStart={() => playDemo(effect)}
+								className={({ isSelected, isFocusVisible }) =>
+									cn(
+										"grid w-full gap-2 rounded-xl border p-3 text-start",
+										isSelected ? "border-accent bg-accent-soft" : "border-separator hover:bg-default",
+										isFocusVisible && "ring-2 ring-focus",
+									)
+								}
 							>
-								<EffectDemo
-									effect={effect}
-									name={name}
-									phrases={typed.length ? typed : [t`Product designer`]}
-									play={plays[effect] ?? 0}
-								/>
-							</span>
-						</Radio.Content>
-					</Radio>
-				))}
-			</RadioGroup>
+								<span className="flex items-center gap-2 text-sm font-semibold">
+									<span id={`${id}-${effect}-name`}>{effectLabel(effect)}</span>
+									{index === 0 && <span className="text-xs font-normal text-muted">{t`(theme default)`}</span>}
+									{plan?.enabled && !isFreePortfolioHeroEffect(effect) && (
+										<Chip size="sm" variant="soft" color="accent">
+											{isLockedHeroEffect(plan, effect) && effect !== current && (
+												<Icon name="lock" size={12} aria-hidden />
+											)}
+											<span id={`${id}-${effect}-plan`}>Plus</span>
+										</Chip>
+									)}
+									{effect === current && <Icon name="check-circle" size={18} className="ms-auto text-accent" />}
+								</span>
+								<span
+									className="block truncate rounded-xl border border-separator px-3 py-2 text-lg leading-tight"
+									style={demoStyle}
+									aria-hidden="true"
+								>
+									<EffectDemo
+										effect={effect}
+										name={name}
+										phrases={typed.length ? typed : [t`Product designer`]}
+										play={plays[effect] ?? 0}
+									/>
+								</span>
+							</Radio.Content>
+						</Radio>
+					))}
+				</RadioGroup>
+			</div>
 
 			{current !== "none" && current !== "typewriter" && Boolean(view.basics.headline) && (
 				<ChoiceSelect
@@ -181,10 +173,17 @@ export function IntroEffectPicker() {
 							}
 						/>
 					))}
-					{typed.length === 0 && (
+					{typed.length === 0 ? (
 						<p className="text-body-xs text-warning">
 							<Trans>Add a headline or a role so there is something to type.</Trans>
 						</p>
+					) : (
+						// The page plays the typewriter only when it has something to switch to (`effectTarget`).
+						typed.length === 1 && (
+							<p className="text-body-xs text-warning">
+								<Trans>Add a role to switch to. With only one line, the page shows it without the effect.</Trans>
+							</p>
+						)
 					)}
 				</div>
 			)}

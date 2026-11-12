@@ -1,3 +1,4 @@
+import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import { EmptyState, Widget } from "@heroui-pro/react";
 import { Button, buttonVariants, Chip, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
@@ -5,9 +6,14 @@ import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { useId, useState } from "react";
+import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
+import { buildPortfolioView } from "@rezumi/portfolio/view";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
+import { BusinessCardButton } from "./card/business-card-dialog";
+import { usePortfolioPageUrl } from "./card/use-page-url";
 import { CreatePortfolioDialog } from "./create-dialog";
+import { pageLocaleOf } from "./editor/context";
 import { portfolioErrorMessage } from "./errors";
 import { PortfolioMessages } from "./statistics/portfolio-messages";
 import { PortfolioStatistics } from "./statistics/portfolio-statistics";
@@ -95,6 +101,40 @@ function DomainCard() {
 	);
 }
 
+type DashboardBusinessCardProps = {
+	data: PortfolioData;
+	sourceResumeId: string | null;
+	username: string;
+};
+
+/** The business card from the dashboard: the name and headline as the page shows them (the resume fills the gaps). */
+function DashboardBusinessCard({ data, sourceResumeId, username }: DashboardBusinessCardProps) {
+	const { data: session } = authClient.useSession();
+	const { data: resume } = useQuery({
+		...orpc.resume.getById.queryOptions({ input: { id: sourceResumeId ?? "" } }),
+		enabled: sourceResumeId !== null,
+	});
+	const pageUrl = usePortfolioPageUrl(username);
+	const resumeData = resume?.data ?? null;
+	const view = buildPortfolioView({
+		portfolio: { data },
+		resume: resumeData ? { data: resumeData } : null,
+		owner: { name: session?.user.name ?? "", username },
+		entitlements: { hidePortfolioCredit: false },
+		messages: portfolioViewMessages(portfolioMessages(pageLocaleOf(data, resumeData))),
+		fileUrl: (key) => `/${key}`,
+	});
+	return (
+		<BusinessCardButton
+			className="w-auto"
+			name={view.basics.name}
+			headline={view.basics.headline}
+			username={username}
+			pageUrl={pageUrl}
+		/>
+	);
+}
+
 function StatusCard() {
 	const { data } = useQuery(orpc.portfolio.get.queryOptions());
 	const { data: session } = authClient.useSession();
@@ -102,6 +142,7 @@ function StatusCard() {
 	const confirm = useConfirm();
 	const origin = useShareOrigin();
 	const titleId = useId();
+	const [deleting, setDeleting] = useState(false);
 	const portfolio = data?.portfolio;
 	if (!portfolio) return null;
 	const username = session?.user.username ?? "";
@@ -115,14 +156,22 @@ function StatusCard() {
 			hold: true,
 		});
 		if (!confirmed) return;
+		setDeleting(true);
 		try {
 			await client.portfolio.delete();
-			await invalidatePortfolioQueries(queryClient);
+			toast.add({ type: "success", description: t`Your portfolio was deleted.` });
 		} catch (error) {
 			toast.add({
 				type: "error",
-				description: portfolioErrorMessage(error, { fallback: t`Couldn't delete your portfolio. Try again.` }),
+				description: portfolioErrorMessage(error, {
+					fallback: t`Couldn't delete your portfolio. Try again.`,
+					// Deleted in another tab meanwhile: the page catches up below.
+					byCode: { NOT_FOUND: t`Your portfolio was already deleted.` },
+				}),
 			});
+		} finally {
+			await invalidatePortfolioQueries(queryClient);
+			setDeleting(false);
 		}
 	};
 
@@ -134,9 +183,17 @@ function StatusCard() {
 				title={<Trans>Your portfolio</Trans>}
 				action={
 					live ? (
-						<Chip size="sm" color="success" variant="soft">
-							<Trans>Published</Trans>
-						</Chip>
+						<span className="flex flex-wrap items-center gap-1.5">
+							<Chip size="sm" color="success" variant="soft">
+								<Trans>Published</Trans>
+							</Chip>
+							{portfolio.hasPassword && (
+								<Chip size="sm" variant="soft">
+									<Icon name="lock" size={12} aria-hidden />
+									<Trans>Password</Trans>
+								</Chip>
+							)}
+						</span>
 					) : portfolio.suspendedAt ? (
 						<Chip size="sm" color="danger" variant="soft">
 							<Trans>Taken down</Trans>
@@ -156,7 +213,9 @@ function StatusCard() {
 					<CopyLinkButton url={url} />
 				</div>
 				<p className="text-body-sm text-muted">
-					{live ? (
+					{live && portfolio.hasPassword ? (
+						<Trans>Only people with the password can see it.</Trans>
+					) : live ? (
 						<Trans>Anyone with the link can see it.</Trans>
 					) : portfolio.suspendedAt ? (
 						<Trans>It was taken down, so visitors can't see it. Open the editor to see why and how to appeal.</Trans>
@@ -175,8 +234,15 @@ function StatusCard() {
 							<Trans>Open page</Trans>
 						</a>
 					)}
+					{live && (
+						<DashboardBusinessCard
+							data={portfolio.data}
+							sourceResumeId={portfolio.sourceResumeId}
+							username={username}
+						/>
+					)}
 					{!portfolio.suspendedAt && (
-						<Button variant="ghost" className="text-danger" onPress={() => void remove()}>
+						<Button variant="ghost" className="text-danger" isPending={deleting} onPress={() => void remove()}>
 							<Icon name="trash" size={18} />
 							<Trans>Delete portfolio</Trans>
 						</Button>

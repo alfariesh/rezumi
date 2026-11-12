@@ -1,4 +1,5 @@
 import type { RemoteHop } from "./remote";
+import type { EmbedProvider, ParsedEmbed } from "@rezumi/schema/portfolio/embed";
 import type { VideoProvider } from "@rezumi/schema/portfolio/video";
 import { createHash } from "node:crypto";
 import z from "zod";
@@ -6,6 +7,13 @@ import { getCoordination } from "@rezumi/db/coordination";
 import { getRedis, redisKey } from "@rezumi/db/redis";
 import { readPortfolioImageHeader } from "@rezumi/portfolio/image-header";
 import { truncateText } from "@rezumi/portfolio/text";
+import {
+	EMBED_OEMBED_ENDPOINTS,
+	EMBED_PROVIDERS,
+	embedPageUrl,
+	isEmbedRef,
+	parseEmbedUrl,
+} from "@rezumi/schema/portfolio/embed";
 import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import {
 	isVideoThumbnailUrl,
@@ -17,7 +25,10 @@ import { brandIconForUrl } from "./brand";
 import { decodePage, parseLinkMeta } from "./link-meta";
 import { fetchRemote, RemoteFetchError, remoteDeadline, remoteUrl } from "./remote";
 
-/** What a pasted link becomes (`02-teknis.md` section 20): a video block for YouTube and Vimeo, a link card otherwise. */
+/**
+ * What a pasted link becomes (`02-teknis.md` section 20): a video block for YouTube and Vimeo, an embed for Figma, Loom,
+ * Spotify, SoundCloud and Google Slides (Phase 13, B17), a link card otherwise.
+ */
 export type PortfolioUnfurl =
 	| {
 			kind: "video";
@@ -27,6 +38,16 @@ export type PortfolioUnfurl =
 			videoId: string;
 			hash?: string;
 			title?: string;
+			thumbnailUrl?: string;
+	  }
+	| {
+			kind: "embed";
+			/** The page on the provider's site (`embedPageUrl`). */
+			url: string;
+			provider: EmbedProvider;
+			ref: string;
+			title?: string;
+			/** The provider's picture on its own site: copied with `fetchRemoteImage` + `uploadImage` once approved. */
 			thumbnailUrl?: string;
 	  }
 	| {
@@ -78,17 +99,13 @@ function toUnfurlError(error: unknown): unknown {
 	}
 }
 
-/** A video's title and picture from its site's oEmbed answer; nothing when the site won't say. */
-async function videoDetails(
-	pageUrl: string,
-	provider: VideoProvider,
+/** A title and picture from an oEmbed endpoint; nothing when the site won't say (a failure never fails the link). */
+async function oembedDetails(
+	endpoint: string,
 	signal: AbortSignal,
 	options: UnfurlOptions,
+	isAllowedThumbnail: (url: string) => boolean,
 ): Promise<{ title?: string; thumbnailUrl?: string }> {
-	const endpoint =
-		provider === "youtube"
-			? `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(pageUrl)}`
-			: `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(pageUrl)}`;
 	try {
 		const { bytes } = await fetchRemote(new URL(endpoint), {
 			signal,
@@ -99,18 +116,47 @@ async function videoDetails(
 			hop: options.hop,
 			isAllowedHost: options.isAllowedHost,
 		});
-		const answer = JSON.parse(new TextDecoder().decode(bytes)) as { title?: unknown; thumbnail_url?: unknown };
+		const parsed: unknown = JSON.parse(new TextDecoder().decode(bytes));
+		// `null` or a list is valid JSON too, and holds no title.
+		if (typeof parsed !== "object" || parsed === null) return {};
+		const answer = parsed as { title?: unknown; thumbnail_url?: unknown };
 		const title = typeof answer.title === "string" ? answer.title.replace(/\s+/g, " ").trim() : "";
 		const thumbnail = typeof answer.thumbnail_url === "string" ? answer.thumbnail_url : "";
 		return {
 			...(title ? { title: truncateText(title, PORTFOLIO_LIMITS.text.mediaTitle) } : {}),
-			...(thumbnail && isVideoThumbnailUrl(thumbnail) ? { thumbnailUrl: thumbnail } : {}),
+			...(thumbnail && isAllowedThumbnail(thumbnail) ? { thumbnailUrl: thumbnail } : {}),
 		};
 	} catch (error) {
-		// The caller went away: stop. Anything else only costs the video its title.
+		// The caller went away: stop. Anything else only costs the title.
 		if (!(error instanceof RemoteFetchError) && !(error instanceof SyntaxError)) throw error;
 		return {};
 	}
+}
+
+/** A video's title and picture from its site's oEmbed answer; nothing when the site won't say. */
+function videoDetails(pageUrl: string, provider: VideoProvider, signal: AbortSignal, options: UnfurlOptions) {
+	const endpoint =
+		provider === "youtube"
+			? `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(pageUrl)}`
+			: `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(pageUrl)}`;
+	return oembedDetails(endpoint, signal, options, isVideoThumbnailUrl);
+}
+
+/** A public picture address an oEmbed answer may suggest: http(s), short enough to store and to copy later. */
+const isSuggestedPicture = (url: string) =>
+	url.length <= PORTFOLIO_LIMITS.text.url && remoteUrl(url) !== null && /^https?:\/\//i.test(url);
+
+/**
+ * An embed (Phase 13, B17) with the provider's title and picture, from its oEmbed answer when it has one (Google
+ * Slides doesn't): the same safe fetch, deadline and size cap as any link; a failed answer leaves them out.
+ */
+async function embedResult(embed: ParsedEmbed, signal: AbortSignal, options: UnfurlOptions): Promise<PortfolioUnfurl> {
+	const url = embedPageUrl(embed);
+	const endpoint = EMBED_OEMBED_ENDPOINTS[embed.provider];
+	const details = endpoint
+		? await oembedDetails(`${endpoint}${encodeURIComponent(url)}`, signal, options, isSuggestedPicture)
+		: {};
+	return { kind: "embed", url, provider: embed.provider, ref: embed.ref, ...details };
 }
 
 /**
@@ -142,6 +188,10 @@ export async function unfurlUrl(input: string, options: UnfurlOptions = {}): Pro
 		};
 	}
 
+	// A provider's own address is read from its form alone; a short link (`on.soundcloud.com/…`) is followed first.
+	const direct = parseEmbedUrl(url.href);
+	if (direct) return embedResult(direct, signal, options);
+
 	try {
 		const page = await fetchRemote(url, {
 			signal,
@@ -152,11 +202,14 @@ export async function unfurlUrl(input: string, options: UnfurlOptions = {}): Pro
 			hop: options.hop,
 			isAllowedHost: options.isAllowedHost,
 		});
+		const landed = parseEmbedUrl(page.url.href);
+		if (landed) return await embedResult(landed, signal, options);
 		const meta = parseLinkMeta(decodePage(page.bytes, page.headers.get("content-type")), page.url);
 		const brandIcon = brandIconForUrl(page.url);
 		return {
 			kind: "link",
-			url: page.url.href,
+			// Redirects can end at an address longer than a link may be; the pasted one then stands for it.
+			url: page.url.href.length <= PORTFOLIO_LIMITS.text.url ? page.url.href : url.href,
 			title: meta.title ?? truncateText(page.url.hostname.replace(/^www\./, ""), PORTFOLIO_LIMITS.text.linkTitle),
 			...(meta.description ? { description: meta.description } : {}),
 			...(meta.siteName ? { siteName: meta.siteName } : {}),
@@ -196,14 +249,45 @@ const u32be = (bytes: Uint8Array, at: number) =>
 	(((bytes[at] ?? 0) << 24) >>> 0) + ((bytes[at + 1] ?? 0) << 16) + ((bytes[at + 2] ?? 0) << 8) + (bytes[at + 3] ?? 0);
 
 /**
+ * A GIF's size as a browser draws it: its logical screen, grown to hold every frame, since browsers enlarge the canvas
+ * for a frame that reaches past the screen (a 1×1 screen can hold a 30000×30000 frame). Frames are found by walking the
+ * blocks; a file that ends early is measured by what it has.
+ */
+function gifSize(bytes: Uint8Array): { width: number; height: number } {
+	let width = u16le(bytes, 6);
+	let height = u16le(bytes, 8);
+	const tableSize = (packed: number) => (packed & 0x80 ? 3 * 2 ** ((packed & 0x07) + 1) : 0);
+	/** The offset after a run of data sub-blocks starting at `at`. */
+	const skipSubBlocks = (at: number) => {
+		let offset = at;
+		while (offset < bytes.length) {
+			const size = bytes[offset] ?? 0;
+			offset += 1 + size;
+			if (size === 0) break;
+		}
+		return offset;
+	};
+	let offset = 13 + tableSize(bytes[10] ?? 0);
+	while (offset < bytes.length) {
+		const block = bytes[offset];
+		if (block === 0x21) offset = skipSubBlocks(offset + 2);
+		else if (block === 0x2c) {
+			width = Math.max(width, u16le(bytes, offset + 1) + u16le(bytes, offset + 5));
+			height = Math.max(height, u16le(bytes, offset + 3) + u16le(bytes, offset + 7));
+			// Past the descriptor, its colour table and the LZW code size, then the image data.
+			offset = skipSubBlocks(offset + 10 + tableSize(bytes[offset + 9] ?? 0) + 1);
+		} else break;
+	}
+	return { width, height };
+}
+
+/**
  * What a fetched picture is and its pixel size, from its header: a still JPEG, PNG or WebP, an animated PNG or WebP
  * (its first frame is still a picture the browser can use), or a GIF (the browser refuses animated ones, as for
  * uploads). Null for anything else.
  */
 function rasterKind(bytes: Uint8Array): RasterKind | null {
-	if (GIF_SIGNATURE.test(ascii(bytes, 0, 6)))
-		// The logical screen: every frame is drawn inside it.
-		return { contentType: "image/gif", extension: "gif", width: u16le(bytes, 6), height: u16le(bytes, 8) };
+	if (GIF_SIGNATURE.test(ascii(bytes, 0, 6))) return { contentType: "image/gif", extension: "gif", ...gifSize(bytes) };
 	const header = readPortfolioImageHeader(bytes);
 	if (header.ok) return header.image;
 	if (header.reason !== "animated") return null;
@@ -259,7 +343,7 @@ const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const MEMORY_CACHE_LIMIT = 500;
 const memoryCache = new Map<string, { value: PortfolioUnfurl; expires: number }>();
 /** Part of every cache key: a change to what a result holds bumps it, so results in the old shape are never read. */
-const CACHE_VERSION = "v2";
+const CACHE_VERSION = "v3";
 
 const cachedText = (max: number) => z.string().max(max).optional();
 const cachedUrl = z
@@ -279,6 +363,16 @@ const cachedUnfurlSchema = z.discriminatedUnion("kind", [
 		title: z.string().min(1).max(PORTFOLIO_LIMITS.text.mediaTitle),
 		thumbnailUrl: cachedUrl.optional(),
 	}),
+	z
+		.object({
+			kind: z.literal("embed"),
+			url: cachedUrl,
+			provider: z.enum(EMBED_PROVIDERS),
+			ref: z.string().max(PORTFOLIO_LIMITS.text.embedRef),
+			title: cachedText(PORTFOLIO_LIMITS.text.mediaTitle),
+			thumbnailUrl: cachedUrl.optional(),
+		})
+		.refine((value) => isEmbedRef(value.provider, value.ref)),
 	z.object({
 		kind: z.literal("link"),
 		url: cachedUrl,
@@ -295,7 +389,7 @@ const cachedUnfurlSchema = z.discriminatedUnion("kind", [
  * no title; it's still shown, but the next paste asks again instead of keeping it title-less for a day.
  */
 function isCompleteUnfurl(value: PortfolioUnfurl): boolean {
-	return value.kind === "link" || Boolean(value.title);
+	return value.kind !== "video" || Boolean(value.title);
 }
 
 function cacheKey(input: string): string | null {

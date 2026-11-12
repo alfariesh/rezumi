@@ -157,10 +157,18 @@ export async function fetchPublic(input: RequestInfo | URL, init?: RequestInit):
 	const url = new URL(request.url);
 	if (!/^https?:$/.test(url.protocol) || url.username || url.password || isPrivateOrLoopbackHost(url.hostname))
 		throw unsafeUrl();
-	// Workers' global_fetch_strictly_public refuses private destinations, including after DNS changes.
+	// On Workers, `fetch` resolves the name itself, so the caller checks DNS answers first; a Worker's outbound requests
+	// can't reach private networks anyway. (`global_fetch_strictly_public` only sends requests for the app's own zone
+	// out through the public front door; it isn't an address filter.)
 	if (process.env.CLOUDFLARE === "1") {
 		const response = await fetch(request, { redirect: "manual" });
 		const { status, statusText, headers } = response;
+		// A Response can't hold a status outside 200–599 (LinkedIn answers bots with 999): refuse it the way Node does,
+		// instead of the constructor's RangeError.
+		if (status < 200 || status > 599) {
+			await response.body?.cancel();
+			throw new Error(`Invalid response status ${status}`);
+		}
 		return new Response(response.body ? capped(response.body) : null, { status, statusText, headers });
 	}
 

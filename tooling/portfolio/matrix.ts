@@ -3,7 +3,8 @@
  *
  * - pages: every theme with three personas (its own and the next two in the lineup), light and dark, at 390 and
  *   1440 px, in variants A–D, full page;
- * - details: each theme's first work open (`#work-<slug>`), light and dark, at 390 and 1440 px, the whole panel;
+ * - details: each theme's first work on its own page (`<page>.work-<slug>.html`, Phase 13 B2), in variants A and D (right
+ *   to left), light and dark, at 390 and 1440 px, full page;
  * - effects: each intro effect the theme supports (`PORTFOLIO_THEME_INFO[theme].effects`) on the theme's persona at
  *   its start, middle and end (5.5 s), the middle again with reduced motion, and Garis vektor on a touch phone, each
  *   cut to the intro around the name. Garis vektor's middle frame points the mouse at the name's first letter.
@@ -20,7 +21,7 @@
  * pictures load, and every shot is checked for sideways scrolling (`scrollWidth` past the page's width).
  *
  * Writes under `--out` (default `<tmp>/rezumi-portfolio-matrix`): `html/` (the pages and their pictures),
- * `shots/<theme>/<persona>-<variant>-<scheme>-<width>.jpg`, `shots/<theme>/detail-<scheme>-<width>.jpg`,
+ * `shots/<theme>/<persona>-<variant>-<scheme>-<width>.jpg`, `shots/<theme>/detail-<a|d>-<scheme>-<width>.jpg`,
  * `effects/<theme>/<effect>-<frame>.jpg`, `sheets/<theme>.jpg`, `sheets/<theme>-effects.jpg` and `report.json` (counts
  * and the sideways-scrolling list, which is also printed). `--only-sheets` rebuilds the sheets from the shots on disk.
  */
@@ -31,7 +32,6 @@ import type { OverlayOptions } from "sharp";
 import { mkdir, readdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { setTimeout as sleep } from "node:timers/promises";
 import { parseArgs } from "node:util";
 import sharp from "sharp";
 import { PORTFOLIO_THEME_INFO, PORTFOLIO_THEMES, portfolioThemeSchema } from "@rezumi/schema/portfolio/themes";
@@ -179,35 +179,28 @@ async function photograph(camera: Camera) {
 		}
 
 		if (parts.has("details")) {
+			// Each theme's first work on its own page (Phase 13 B2), left to right (A) and right to left (D).
 			const tasks = [];
-			for (const scheme of SCHEMES) {
-				const page = await writePersonaPage(folders.html, `${theme}-${THEME_PERSONAS[theme]}-a-${scheme}.html`, {
-					persona: THEME_PERSONAS[theme],
-					lang,
-					theme,
-					scheme,
-				});
-				if (!page.firstWork) continue;
-				for (const width of WIDTHS)
-					tasks.push({ file: page.file, anchor: page.firstWork, name: `detail-${scheme}-${width}`, width });
-			}
-			await pool(tasks, async ({ file, anchor, name, width }) => {
-				const tab = await camera.open(device(width), file, anchor);
-				const panel = `#${anchor}`;
-				await tab.clock.runFor(6000);
-				await loadPictures(tab, panel);
-				noteOverflow(`${theme}/${name}`, await horizontalOverflow(tab, panel));
-				// The detail scrolls inside a fixed panel: make the window as tall as the panel's content to take it whole.
-				for (let round = 0; round < 2; round++) {
-					const height = await tab.evaluate((selector) => document.querySelector(selector)?.scrollHeight ?? 0, panel);
-					await tab.setViewportSize({ width, height: Math.min(Math.max(height, 400), Math.floor(16_000 / scale)) });
-					await sleep(100);
+			for (const letter of ["a", "d"] as const)
+				for (const scheme of SCHEMES) {
+					const options = { persona: THEME_PERSONAS[theme], lang, variant: VARIANTS[letter], theme, scheme };
+					const home = `${theme}-${THEME_PERSONAS[theme]}-${letter}-${scheme}.html`;
+					const page = await writePersonaPage(folders.html, home, options);
+					if (!page.firstWork) continue;
+					const work = await writePersonaPage(folders.html, home, { ...options, work: page.firstWork });
+					for (const width of WIDTHS)
+						tasks.push({ file: work.file, name: `detail-${letter}-${scheme}-${width}`, width });
 				}
-				await saveJpeg(await tab.screenshot({ animations: "disabled" }), join(folders.shots, theme, `${name}.jpg`));
+			await pool(tasks, async ({ file, name, width }) => {
+				const tab = await camera.open(device(width), file);
+				await loadPictures(tab);
+				await tab.clock.runFor(6000);
+				noteOverflow(`${theme}/${name}`, await horizontalOverflow(tab));
+				await saveJpeg(await fullPageShot(tab, scale), join(folders.shots, theme, `${name}.jpg`));
 				await closePage(tab);
 				counts.details++;
 			});
-			console.log(`${theme}: ${tasks.length} details`);
+			console.log(`${theme}: ${tasks.length} work pages`);
 		}
 
 		if (parts.has("effects")) {
@@ -390,7 +383,8 @@ async function sheets() {
 		const order = [...personasFor(theme), ...PERSONA_IDS];
 		const pageShots = shots
 			.map((file) => /^([a-z]+)-([a-d])-(light|dark)-(\d+)\.jpg$/.exec(file))
-			.filter((match): match is RegExpExecArray => match !== null);
+			// Work pages (`detail-<letter>-…`) have rows of their own.
+			.filter((match): match is RegExpExecArray => match !== null && match[1] !== "detail");
 		const keys = [...new Set(pageShots.map(([, persona, letter]) => `${persona}-${letter}`))].sort(
 			(a, b) =>
 				order.indexOf(a.split("-")[0] as PersonaId) - order.indexOf(b.split("-")[0] as PersonaId) || a.localeCompare(b),
@@ -414,8 +408,14 @@ async function sheets() {
 			const [persona, letter] = key.split("-") as [string, VariantLetter];
 			rows.push({ title: `${theme} · ${persona} · ${VARIANT_LABELS[letter]} · ${lang}`, cells: cellsOf(key) });
 		}
-		const details = cellsOf("detail");
-		if (details.length) rows.push({ title: `${theme} · ${THEME_PERSONAS[theme]} · first work open`, cells: details });
+		for (const letter of ["a", "d"] as const) {
+			const details = cellsOf(`detail-${letter}`);
+			if (details.length)
+				rows.push({
+					title: `${theme} · ${THEME_PERSONAS[theme]} · first work's page · ${VARIANT_LABELS[letter]}`,
+					cells: details,
+				});
+		}
 		if (rows.length) await contactSheet(rows, join(folders.sheets, `${theme}.jpg`), 1400);
 
 		const frames = await readdir(join(folders.effects, theme)).catch(() => [] as string[]);

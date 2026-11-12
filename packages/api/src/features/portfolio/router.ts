@@ -1,7 +1,13 @@
 import z from "zod";
 import { portfolioDataSchema, writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
-import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
-import { PORTFOLIO_CLICK_KINDS, PORTFOLIO_DEVICES, PORTFOLIO_VISIT_SOURCES } from "@rezumi/schema/portfolio/statistics";
+import { EMBED_PROVIDERS } from "@rezumi/schema/portfolio/embed";
+import { PORTFOLIO_ITEM_ID_PATTERN, PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
+import {
+	PORTFOLIO_CLICK_KINDS,
+	PORTFOLIO_DEVICES,
+	PORTFOLIO_VISIT_SOURCES,
+	PORTFOLIO_WORK_SOURCES,
+} from "@rezumi/schema/portfolio/statistics";
 import { portfolioThemeSchema } from "@rezumi/schema/portfolio/themes";
 import { VIDEO_PROVIDERS } from "@rezumi/schema/portfolio/video";
 import { protectedProcedure } from "../../context";
@@ -80,6 +86,17 @@ const unfurlSchema = z.discriminatedUnion("kind", [
 			.describe("The page's preview picture on its own site; copy it with fetchRemoteImage + uploadImage."),
 		brandIcon: z.string().optional().describe("The site's logo in the resume icon set, for known sites."),
 	}),
+	z.object({
+		kind: z.literal("embed"),
+		url: z.string().describe("The page on the provider's site."),
+		provider: z.enum(EMBED_PROVIDERS),
+		ref: z.string(),
+		title: z.string().optional(),
+		thumbnailUrl: z
+			.string()
+			.optional()
+			.describe("The provider's picture; copy it with fetchRemoteImage + uploadImage."),
+	}),
 ]);
 
 const portfolioSchema = z.object({
@@ -94,6 +111,7 @@ const portfolioSchema = z.object({
 	publishedAt: z.date().nullable().describe("When it was first published."),
 	suspendedAt: z.date().nullable().describe("When an admin took it down; it can't be published until lifted."),
 	suspendedReason: z.string().nullable(),
+	hasPassword: z.boolean().describe("Whether visitors need a password to see it."),
 	data: portfolioDataSchema,
 	createdAt: z.date(),
 	updatedAt: z.date().describe("Changes with every save of data; send it back with the next save."),
@@ -102,24 +120,79 @@ const portfolioSchema = z.object({
 const countsOf = <const K extends string>(keys: readonly K[]) =>
 	z.object(Object.fromEntries(keys.map((key) => [key, z.number().int()])) as Record<K, z.ZodNumber>);
 
+const rangeSchema = z.coerce
+	.number()
+	.pipe(z.union([z.literal(7), z.literal(30), z.literal(90)]))
+	.describe("How many days, ending today in the owner's time zone: 7, 30 (the default) or 90.");
+
+const statisticsRangeSchema = z.object({
+	days: z.union([z.literal(7), z.literal(30), z.literal(90)]),
+	from: z.string().describe("The first day, YYYY-MM-DD."),
+	to: z.string().describe("The last day (today), YYYY-MM-DD."),
+});
+
+/** The breakdown's states other than `ready`: no plan feature, no Analytics Engine here, or reading it failed. */
+const detailsUnready = [
+	z.object({ state: z.literal("locked") }),
+	z.object({ state: z.literal("not-configured") }).describe("Analytics Engine isn't set up on this server."),
+	z.object({ state: z.literal("unavailable") }).describe("Reading the breakdown failed; try again later."),
+] as const;
+
+const countrySchema = z.object({ code: z.string(), views: z.number().int() });
+const deviceSchema = z.object({ device: z.enum(PORTFOLIO_DEVICES), views: z.number().int() });
+const referrerSchema = z.object({ domain: z.string(), views: z.number().int() });
+
 const statisticsSchema = z.object({
-	days: z.array(z.object({ date: z.string(), views: z.number().int() })).describe("30 days, oldest first."),
+	range: statisticsRangeSchema,
+	days: z
+		.array(
+			z.object({
+				date: z.string(),
+				views: z.number().int(),
+				messages: z.number().int(),
+				workOpens: z.number().int(),
+				clicks: countsOf(PORTFOLIO_CLICK_KINDS),
+				sources: countsOf(PORTFOLIO_VISIT_SOURCES),
+			}),
+		)
+		.describe("Every day of the range, oldest first."),
 	totals: z.object({
 		views: z.number().int(),
 		clicks: countsOf(PORTFOLIO_CLICK_KINDS),
 		messages: z.number().int(),
 	}),
 	sources: countsOf(PORTFOLIO_VISIT_SOURCES),
-	works: z.array(z.object({ id: z.string(), title: z.string(), opens: z.number().int() })),
+	works: z
+		.array(z.object({ id: z.string(), title: z.string(), opens: z.number().int() }))
+		.describe("Every work still in the portfolio that was opened, most opened first."),
 	details: z.discriminatedUnion("state", [
-		z.object({ state: z.literal("locked") }),
-		z.object({ state: z.literal("unavailable") }),
+		...detailsUnready,
 		z.object({
 			state: z.literal("ready"),
-			countries: z.array(z.object({ code: z.string(), views: z.number().int() })),
-			devices: z.array(z.object({ device: z.enum(PORTFOLIO_DEVICES), views: z.number().int() })),
-			referrers: z.array(z.object({ domain: z.string(), views: z.number().int() })),
+			countries: z.array(countrySchema),
+			devices: z.array(deviceSchema),
+			referrers: z.array(referrerSchema),
 			workDays: z.array(z.object({ date: z.string(), workId: z.string(), title: z.string(), opens: z.number().int() })),
+		}),
+	]),
+});
+
+const workStatisticsSchema = z.object({
+	range: statisticsRangeSchema,
+	work: z.object({ id: z.string(), title: z.string(), slug: z.string() }),
+	days: z
+		.array(z.object({ date: z.string(), opens: z.number().int() }))
+		.describe("Every day of the range, oldest first."),
+	totals: z.object({ opens: z.number().int() }),
+	details: z.discriminatedUnion("state", [
+		...detailsUnready,
+		z.object({
+			state: z.literal("ready"),
+			sources: z.array(z.object({ source: z.enum(PORTFOLIO_WORK_SOURCES), views: z.number().int() })),
+			referrers: z.array(referrerSchema),
+			countries: z.array(countrySchema),
+			devices: z.array(deviceSchema),
+			clicks: countsOf(PORTFOLIO_CLICK_KINDS).describe("Clicks on the work's own page."),
 		}),
 	]),
 });
@@ -136,11 +209,24 @@ export const portfolioRouter = {
 			method: "GET",
 			path: "/portfolio/statistics",
 			operationId: "getPortfolioStatistics",
-			summary: "The portfolio's numbers for the last 30 days",
+			summary: "The portfolio's numbers for the last 7, 30 or 90 days",
 		})
-		.input(z.object({}).optional())
+		.input(z.object({ range: rangeSchema.optional() }).optional())
 		.output(statisticsSchema.nullable())
-		.handler(({ context }) => portfolioService.statistics(context.user.id)),
+		.handler(({ context, input }) => portfolioService.statistics(context.user.id, { range: input?.range })),
+
+	workStatistics: protectedProcedure
+		.route({
+			...route,
+			method: "GET",
+			path: "/portfolio/statistics/works/{workId}",
+			operationId: "getPortfolioWorkStatistics",
+			summary: "One work's numbers for the last 7, 30 or 90 days",
+		})
+		.input(z.object({ workId: z.string().regex(PORTFOLIO_ITEM_ID_PATTERN), range: rangeSchema.optional() }))
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND", "PORTFOLIO_WORK_NOT_FOUND"))
+		.output(workStatisticsSchema)
+		.handler(({ context, input }) => portfolioService.workStatistics(context.user.id, input)),
 
 	messages: {
 		list: protectedProcedure
@@ -328,6 +414,35 @@ export const portfolioRouter = {
 		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND", "PORTFOLIO_EMAIL_NOT_VERIFIED", "PORTFOLIO_SUSPENDED"))
 		.output(portfolioSchema)
 		.handler(({ context, input }) => portfolioService.setPublic(context.user.id, input)),
+
+	setPassword: protectedProcedure
+		.route({
+			...route,
+			method: "PUT",
+			path: "/portfolio/password",
+			operationId: "setPortfolioPassword",
+			summary: "Ask visitors for a password",
+			description: "Never moves the data's version; allowed while unpublished or taken down.",
+		})
+		.use(portfolioMutationRateLimit)
+		.input(z.object({ password: z.string().min(6).max(64) }))
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND"))
+		.output(portfolioSchema)
+		.handler(({ context, input }) => portfolioService.setPassword(context.user.id, input)),
+
+	removePassword: protectedProcedure
+		.route({
+			...route,
+			method: "DELETE",
+			path: "/portfolio/password",
+			operationId: "removePortfolioPassword",
+			summary: "Stop asking visitors for a password",
+		})
+		.use(portfolioMutationRateLimit)
+		.input(z.object({}).optional())
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND"))
+		.output(portfolioSchema)
+		.handler(({ context }) => portfolioService.removePassword(context.user.id)),
 
 	updateSettings: protectedProcedure
 		.route({

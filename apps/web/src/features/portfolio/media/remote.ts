@@ -9,7 +9,10 @@ import { imageUploadErrorMessage, isAbort, stopIfAborted, uploadPortfolioImage }
 import { videoBlockFromUnfurl } from "./link-blocks";
 import { client } from "@/libs/orpc/client";
 
-/** What `portfolio.unfurl` read from a pasted link: a video (YouTube, Vimeo) or any other page. */
+/**
+ * What `portfolio.unfurl` read from a pasted link: a video (YouTube, Vimeo), something another service lets pages
+ * embed (Figma, Loom, Spotify, SoundCloud, Google Slides), or any other page.
+ */
 export type UnfurledLink = Awaited<ReturnType<typeof client.portfolio.unfurl>>;
 
 const signalOption = (signal: AbortSignal | undefined) => (signal ? { signal } : undefined);
@@ -63,21 +66,31 @@ export function videoThumbnailCandidates(
 	return block.thumbnailUrl ? [block.thumbnailUrl] : [];
 }
 
-/** Copies a video's thumbnail into storage, trying each candidate; undefined when none could be copied. */
+/** Errors after which no other picture would fit either. */
+const NO_ROOM = new Set(["PLAN_LIMIT_REACHED", "PORTFOLIO_STORAGE_FULL"]);
+
+/**
+ * Copies a video's thumbnail into storage, trying each candidate; undefined when none could be copied. `onFailure`
+ * gets the last error then, for copies the person asked for (background copies stay quiet).
+ */
 export async function importVideoThumbnail(
 	block: Pick<PortfolioBlockOf<"video">, "provider" | "videoId" | "thumbnailUrl" | "title">,
 	signal?: AbortSignal,
+	onFailure?: (error: unknown) => void,
 ): Promise<PortfolioImage | undefined> {
+	let last: unknown;
 	for (const url of videoThumbnailCandidates(block)) {
 		try {
 			return await importRemotePicture(url, block.title ?? "", signal);
 		} catch (error) {
 			if (isAbort(error, signal)) throw error;
+			last = error;
 			// No room stays no room for the next picture.
-			if (portfolioErrorCode(error) === "PLAN_LIMIT_REACHED") return undefined;
+			if (NO_ROOM.has(portfolioErrorCode(error) ?? "")) break;
 			// The next candidate, or none.
 		}
 	}
+	if (last !== undefined) onFailure?.(last);
 	return undefined;
 }
 

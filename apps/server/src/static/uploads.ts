@@ -122,8 +122,20 @@ async function servePortfolioFile(request: Request, userId: string, filePath: st
 	let owner: Promise<boolean> | undefined;
 	const isOwner = () => (owner ??= canReadPortfolioFiles(request, userId));
 	// The lookup comes first, before storage is read or an ETag compared: a file no longer public never answers 304.
-	const { isPublicPortfolioFile } = await import("@rezumi/api/features/portfolio/public");
-	let isPublic = (pdfPath || PORTFOLIO_PICTURE_PATH.test(filePath)) && (await isPublicPortfolioFile(key));
+	const [{ portfolioFileGate }, { isValidPortfolioFileToken, PORTFOLIO_FILE_TOKEN_PARAM }] = await Promise.all([
+		import("@rezumi/api/features/portfolio/public"),
+		import("@rezumi/api/features/portfolio/visitor-access"),
+	]);
+	const gate =
+		pdfPath || PORTFOLIO_PICTURE_PATH.test(filePath) ? await portfolioFileGate(key) : ({ access: "none" } as const);
+	const { access } = gate;
+	// A portfolio behind a password (Phase 13, B16) serves its files only with the token a visitor got by opening it:
+	// bound to this file and the current password, and expiring, so an address kept or crawled before stops working.
+	// Its owner (and an administrator) still read it through their session below.
+	const token = new URL(request.url).searchParams.get(PORTFOLIO_FILE_TOKEN_PARAM);
+	let isPublic =
+		gate.access === "public" ||
+		(gate.access === "protected" && isValidPortfolioFileToken(key, gate.passwordHash, token));
 	if (!isPublic && !(await isOwner())) return notFound();
 
 	const storedFile = await getStorageService().read(key);
@@ -138,7 +150,9 @@ async function servePortfolioFile(request: Request, userId: string, filePath: st
 	}
 
 	const etag = createEtag(storedFile);
-	const cacheControl = isPublic ? PUBLIC_PICTURE_CACHE_CONTROL : OWNER_PORTFOLIO_FILE_CACHE_CONTROL;
+	// A locked portfolio's file, even with a valid token: no shared cache keeps it.
+	const cacheControl =
+		isPublic && access === "public" ? PUBLIC_PICTURE_CACHE_CONTROL : OWNER_PORTFOLIO_FILE_CACHE_CONTROL;
 	const resourcePolicy = isPublic ? "cross-origin" : "same-site";
 	if ((asPdf || asPicture) && matchesIfNoneMatch(request.headers.get("If-None-Match"), etag))
 		return new Response(null, {

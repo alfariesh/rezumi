@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { richTextLength } from "@rezumi/schema/portfolio/limits";
-import { sanitizePortfolioData, sanitizePortfolioHtml } from "./rich-text";
+import { renderPortfolioHtml, sanitizePortfolioData, sanitizePortfolioHtml } from "./rich-text";
 
 describe("sanitizePortfolioHtml", () => {
 	it("keeps the formats the editor offers", () => {
@@ -59,6 +59,27 @@ describe("sanitizePortfolioHtml", () => {
 			'<p><a href="https://example.com/?a>b">link</a></p>',
 		])
 			expect(richTextLength(html)).toBeGreaterThanOrEqual(richTextLength(sanitizePortfolioHtml(html)));
+	});
+});
+
+describe("renderPortfolioHtml", () => {
+	it("opens outside links in a new tab as user content, and keeps mail and in-page links where they are", () => {
+		expect(renderPortfolioHtml('<p><a href="https://example.com">x</a></p>')).toBe(
+			'<p><a href="https://example.com" rel="ugc nofollow noopener noreferrer" target="_blank">x</a></p>',
+		);
+		expect(renderPortfolioHtml('<a href="MAILTO:me@example.com">m</a>')).toBe('<a href="MAILTO:me@example.com">m</a>');
+		expect(renderPortfolioHtml('<a href="#contact">c</a>')).toBe('<a href="#contact">c</a>');
+	});
+
+	it("never turns a link without a safe address into a link to the page itself", () => {
+		expect(renderPortfolioHtml("<a>x</a>")).toBe("<a>x</a>");
+		expect(renderPortfolioHtml('<a href="  ">x</a>')).toBe("<a>x</a>");
+		expect(renderPortfolioHtml('<a href="javascript:alert(1)" target="_self" rel="opener">x</a>')).toBe(
+			'<a rel="ugc nofollow noopener noreferrer" target="_blank">x</a>',
+		);
+		expect(renderPortfolioHtml('<a href="https://example.com" onclick="x()" style="color:red">x</a>')).not.toMatch(
+			/onclick|style/,
+		);
 	});
 });
 

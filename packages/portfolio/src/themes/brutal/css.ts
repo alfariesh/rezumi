@@ -1,6 +1,6 @@
 /** Neobrutalism's flat fills, heavy outlines and hard offset depth, scoped entirely to Brutal. */
 export const BRUTAL_CSS = String.raw`
-.pf[data-theme="brutal"]{overflow-wrap:anywhere;--pf-max-width:1160px;--pf-radius:4px;--pf-radius-sm:3px;--br-stroke:3px;--br-shadow:6px 6px 0 var(--pf-border);--br-pad:clamp(22px,3.5vw,40px);background:var(--pf-bg);padding-bottom:20px}
+.pf[data-theme="brutal"]{--pf-max-width:1160px;--pf-radius:4px;--pf-radius-sm:3px;--br-stroke:3px;--br-shadow:6px 6px 0 var(--pf-border);--br-pad:clamp(22px,3.5vw,40px);background:var(--pf-bg);padding-bottom:20px}
 .pf[data-theme="brutal"] .br-top{padding-block:24px}
 .pf[data-theme="brutal"] .pf-nav{gap:24px}
 .pf[data-theme="brutal"] .br-brand{font-weight:800;font-size:20px;letter-spacing:-.04em}
@@ -97,13 +97,12 @@ export const BRUTAL_CSS = String.raw`
 .pf[data-theme="brutal"] .pf-work-metric{border:2px solid var(--pf-border);border-radius:3px;font-weight:600}
 .pf[data-theme="brutal"] .pf-metrics:not(.br-stats) .pf-metric{padding:20px;border:var(--br-stroke) solid var(--pf-border);border-radius:3px;box-shadow:4px 4px 0 var(--pf-border);background:var(--pf-bg)}
 .pf[data-theme="brutal"] .pf-trend,.pf[data-theme="brutal"] .pf-metric__bar i,.pf[data-theme="brutal"] .pf-metric__progress{border-radius:2px}
-.pf[data-theme="brutal"] .pf-video,.pf[data-theme="brutal"] .pf-pdf,.pf[data-theme="brutal"] .pf-link{border:var(--br-stroke) solid var(--pf-border);border-radius:3px;box-shadow:4px 4px 0 var(--pf-border);background:var(--pf-bg)}
+.pf[data-theme="brutal"] .pf-video,.pf[data-theme="brutal"] .pf-pdf,.pf[data-theme="brutal"] .pf-link,.pf[data-theme="brutal"] .pf-embed__open,.pf[data-theme="brutal"] .pf-embed iframe{border:var(--br-stroke) solid var(--pf-border);border-radius:3px;box-shadow:4px 4px 0 var(--pf-border);background:var(--pf-bg)}
 .pf[data-theme="brutal"] .pf-video__play>span{border:var(--br-stroke) solid var(--pf-border);border-radius:3px;box-shadow:4px 4px 0 var(--pf-border)}
 .pf[data-theme="brutal"] .pf-pdf__page{border:2px solid var(--pf-border);border-radius:2px;box-shadow:3px 3px 0 var(--pf-border)}
 .pf[data-theme="brutal"] .pf-link__site{border-radius:3px;border:2px solid var(--pf-border)}
-.pf[data-theme="brutal"] .pf-detail__panel{max-width:1040px;border:var(--br-stroke) solid var(--pf-border);border-radius:3px;box-shadow:8px 8px 0 var(--pf-border)}
-.pf[data-theme="brutal"] .pf-detail__bar{border-bottom:var(--br-stroke) solid var(--pf-border);border-radius:0;backdrop-filter:none;background:var(--pf-bg)}
-.pf[data-theme="brutal"] .pf-detail__bar a{border:2px solid var(--pf-border);border-radius:3px;background:var(--pf-surface)}
+.pf[data-theme="brutal"] .pf-workpage{max-width:1040px}
+.pf[data-theme="brutal"] :is(.pf-workpage__back,.pf-workpage__step){border:var(--br-stroke) solid var(--pf-border);border-radius:3px;background:var(--pf-surface);box-shadow:4px 4px 0 var(--pf-border)}
 .pf[data-theme="brutal"] .pf-detail__title{font-weight:800;letter-spacing:-.045em}
 .pf[data-theme="brutal"] .pf-loc{border:var(--br-stroke) solid var(--pf-border);border-radius:3px;background:var(--pf-bg);box-shadow:4px 4px 0 var(--pf-border);max-width:480px}
 .pf[data-theme="brutal"] .br-custom__image{border:var(--br-stroke) solid var(--pf-border);border-radius:3px;max-height:560px;object-fit:contain;background:var(--pf-bg)}

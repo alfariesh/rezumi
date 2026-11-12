@@ -64,6 +64,7 @@ function portfolioMessagesByCode(data: ErrorData): Record<string, string> {
 		PORTFOLIO_PDF_INVALID: t`This file isn't a PDF. Upload a PDF file.`,
 		PORTFOLIO_LINK_UNREADABLE: t`This site can't be read automatically. Fill in the details yourself.`,
 		PORTFOLIO_IMAGE_INVALID: imageInvalidMessage(data.reason),
+		PORTFOLIO_WORK_NOT_FOUND: t`This work isn't in your portfolio anymore. Reload the page to see the current list.`,
 		PORTFOLIO_FILE_IN_USE: t`Your portfolio still uses this file. Remove it from the portfolio first.`,
 		PORTFOLIO_WORKS_LIMIT:
 			maxWorks !== undefined

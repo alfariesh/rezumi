@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import {
+	isListedWork,
+	listedWorkSlugs,
 	parsePortfolioData,
 	parseWritablePortfolioData,
 	slugifyPortfolioTitle,
@@ -8,6 +10,7 @@ import {
 } from "./data";
 import { createDefaultPortfolioData } from "./default";
 import { fitsRichText, PORTFOLIO_LIMITS, portfolioDataBytes, richTextLength } from "./limits";
+import { PORTFOLIO_STANDARD_SECTIONS } from "./sections";
 
 const image = (name = "a") => ({
 	key: `uploads/user-1/pictures/portfolio/${name}.webp`,
@@ -69,9 +72,59 @@ describe("reading stored portfolio data", () => {
 		expect(data.design.accent).toEqual({ source: "resume" });
 		expect(data.design.scheme).toBeUndefined();
 		expect(data.hero.greeting).toBe("");
-		expect(data.hero.showPicture).toBe(true);
+		// A broken privacy setting hides: "yes" isn't a boolean, so the photo stays off.
+		expect(data.hero.showPicture).toBe(false);
 		expect(data.hero.effect.id).toBeUndefined();
 		expect(data.contact.whatsapp).toEqual({ show: true, number: "" });
+	});
+
+	it("hides what a broken privacy setting or section list might have hidden, but keeps missing ones at their defaults", () => {
+		const broken = parsePortfolioData({
+			hero: { showLocation: "no" },
+			contact: { email: 0, website: null, profiles: "x" },
+			sections: "broken",
+			works: { items: [{ id: "w1", slug: "w1", title: "Work", hidden: "maybe" }] },
+			custom: [{ id: "c1", title: "Custom", hidden: 1 }],
+		});
+		expect(broken.hero.showLocation).toBe(false);
+		expect(broken.contact).toMatchObject({ email: false, website: false, profiles: false });
+		expect(broken.sections.hidden).toEqual([...PORTFOLIO_STANDARD_SECTIONS]);
+		expect(broken.works.items[0]?.hidden).toBe(true);
+		expect(broken.custom[0]?.hidden).toBe(true);
+
+		const missing = parsePortfolioData({ works: { items: [{ id: "w1", slug: "w1", title: "Work" }] } });
+		expect(missing.hero).toMatchObject({ showPicture: true, showLocation: true });
+		expect(missing.contact).toMatchObject({ email: true, website: true, profiles: true });
+		expect(missing.sections.hidden).toEqual([]);
+		expect(missing.works.items[0]?.hidden).toBe(false);
+	});
+
+	it("reads data that isn't a portfolio as one that shows nothing private", () => {
+		const data = parsePortfolioData("not a portfolio");
+		expect(data.sections.hidden).toEqual([...PORTFOLIO_STANDARD_SECTIONS]);
+		expect(data.hero).toMatchObject({ showPicture: false, showLocation: false });
+		expect(data.contact).toMatchObject({ email: false, website: false, profiles: false });
+	});
+
+	it("drops an Images or Metrics block left without items, so the next save isn't refused", () => {
+		const data = parsePortfolioData({
+			works: {
+				items: [
+					{
+						id: "w1",
+						slug: "w1",
+						title: "Work",
+						blocks: [
+							{ id: "b1", type: "images", images: [{ key: 42 }] },
+							{ id: "b2", type: "metrics", items: [] },
+							{ id: "b3", type: "text", html: "<p>Kept</p>" },
+						],
+					},
+				],
+			},
+		});
+		expect(data.works.items[0]?.blocks.map((block) => block.id)).toEqual(["b3"]);
+		expect(() => parseWritablePortfolioData(data)).not.toThrow();
 	});
 
 	it("drops broken, repeated and unknown items but keeps the rest", () => {
@@ -391,5 +444,56 @@ describe("work addresses", () => {
 		const long = uniquePortfolioSlug("x".repeat(80), new Set(["x".repeat(64)]));
 		expect(long).toHaveLength(64);
 		expect(long.endsWith("-2")).toBe(true);
+	});
+});
+
+describe("work addresses (Phase 13)", () => {
+	const work = (overrides: Record<string, unknown> = {}) => ({
+		id: "w1",
+		slug: "coffee-app",
+		title: "Coffee app",
+		...overrides,
+	});
+
+	it("keeps previous addresses, refusing the current one and bad ones when writing", () => {
+		const saved = parseWritablePortfolioData({ works: { items: [work({ previousSlugs: ["kopi-app", "coffee"] })] } });
+		expect(saved.works.items[0]?.previousSlugs).toEqual(["kopi-app", "coffee"]);
+		expect(() => parseWritablePortfolioData({ works: { items: [work({ previousSlugs: ["coffee-app"] })] } })).toThrow();
+		expect(() => parseWritablePortfolioData({ works: { items: [work({ previousSlugs: ["Bad Slug"] })] } })).toThrow();
+		expect(() =>
+			parseWritablePortfolioData({ works: { items: [work({ previousSlugs: ["a", "b", "c", "d", "e", "f"] })] } }),
+		).toThrow();
+	});
+
+	it("drops bad and current previous addresses when reading", () => {
+		const read = parsePortfolioData({
+			works: { items: [work({ previousSlugs: ["coffee-app", "Bad Slug", "kopi", "kopi", 42] })] },
+		});
+		expect(read.works.items[0]?.previousSlugs).toEqual(["kopi"]);
+	});
+
+	it("lists shown, titled works, and none while the Work section is hidden", () => {
+		expect(isListedWork({ hidden: false, title: "Coffee" })).toBe(true);
+		expect(isListedWork({ hidden: true, title: "Coffee" })).toBe(false);
+		expect(isListedWork({ hidden: false, title: "   " })).toBe(false);
+		const data = parsePortfolioData({
+			works: {
+				items: [
+					work(),
+					work({ id: "w2", slug: "secret", hidden: true }),
+					work({ id: "w3", slug: "blank", title: " " }),
+				],
+			},
+		});
+		expect(listedWorkSlugs(data)).toEqual(["coffee-app"]);
+		expect(listedWorkSlugs({ ...data, sections: { ...data.sections, hidden: ["work"] } })).toEqual([]);
+	});
+
+	it("reads Open to work roles and kinds of work, and Save contact on by default", () => {
+		const data = parsePortfolioData({
+			hero: { availability: { show: true, roles: ["Designer"], types: ["contract", "contract", "gig"] } },
+		});
+		expect(data.hero.availability).toEqual({ show: true, text: "", roles: ["Designer"], types: ["contract"] });
+		expect(data.contact.saveContact).toBe(true);
 	});
 });

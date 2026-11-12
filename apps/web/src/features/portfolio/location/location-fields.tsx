@@ -3,13 +3,14 @@ import type { MapPrecision } from "./map-config";
 import type { PortfolioLocation } from "@rezumi/schema/portfolio/data";
 import { Alert, Button, Spinner } from "@heroui/react";
 import { i18n } from "@lingui/core";
-import { t } from "@lingui/core/macro";
+import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { Suspense, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { PORTFOLIO_WORK_MODES } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
+import { ChunkBoundary, retryableLazy } from "../editor/chunk-boundary";
 import { pageLocaleOf, useSourceResume } from "../editor/context";
 import { ChoiceSelect, TextInput } from "../editor/fields";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "../editor/store";
@@ -24,7 +25,7 @@ import {
 } from "./map-pictures";
 import { identifyPlace, placeAtPrecision, useChosenCity } from "./place";
 
-const LocationMap = lazy(() => import("./location-map"));
+const locationMap = retryableLazy(() => import("./location-map"));
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -183,6 +184,7 @@ export function LocationFields() {
 	};
 
 	const noResults = searching && search.trim() !== "" && cities !== null && results.length === 0;
+	const listed = searching && search.trim() !== "" && cities !== null;
 
 	return (
 		<div className="grid gap-4">
@@ -190,7 +192,17 @@ export function LocationFields() {
 				<Trans>Location card</Trans>
 			</span>
 
-			<div className="grid gap-2">
+			{/* Escape puts the list of cities away, as in any search. */}
+			<div
+				role="search"
+				className="grid gap-2"
+				onKeyDown={(event) => {
+					if (event.key === "Escape" && searching) {
+						event.stopPropagation();
+						setSearching(false);
+					}
+				}}
+			>
 				<TextInput
 					label={location.point ? t`Change the city` : t`Find your city`}
 					icon="magnifying-glass"
@@ -208,7 +220,11 @@ export function LocationFields() {
 						<Trans>The city list didn't load. Check your connection, then type again.</Trans>
 					</p>
 				)}
-				{searching && search.trim() && cities && (
+				{/* Screen readers hear how many cities match as the person types. */}
+				<span role="status" className="sr-only">
+					{listed ? plural(results.length, { 0: "No cities found", one: "# city found", other: "# cities found" }) : ""}
+				</span>
+				{listed && (
 					<ul className="grid gap-1" aria-label={t`Cities`}>
 						{results.map((result) => (
 							<li key={`${result.name}-${result.country}-${result.lat}-${result.lng}`}>
@@ -318,25 +334,34 @@ export function LocationFields() {
 
 			{location.showMap && location.point && (
 				<div className="grid gap-2">
-					<Suspense
-						fallback={
-							<div className="grid aspect-5/3 place-items-center rounded-xl border border-separator">
-								<Spinner size="sm" />
-							</div>
-						}
-					>
-						<LocationMap
-							point={location.point}
-							precision={precision}
-							label={location.label}
-							onMove={(point) =>
-								editPortfolio((draft) => {
-									const current = draft.location.point;
-									if (current) setLocationPoint(draft.location, { ...point, precision: current.precision });
-								})
-							}
-						/>
-					</Suspense>
+					<ChunkBoundary>
+						{(attempt) => {
+							const LocationMap = locationMap(attempt);
+							const shown = location.point;
+							if (!shown) return null;
+							return (
+								<Suspense
+									fallback={
+										<div className="grid aspect-5/3 place-items-center rounded-xl border border-separator">
+											<Spinner size="sm" />
+										</div>
+									}
+								>
+									<LocationMap
+										point={shown}
+										precision={precision}
+										label={location.label}
+										onMove={(point) =>
+											editPortfolio((draft) => {
+												const current = draft.location.point;
+												if (current) setLocationPoint(draft.location, { ...point, precision: current.precision });
+											})
+										}
+									/>
+								</Suspense>
+							);
+						}}
+					</ChunkBoundary>
 					{precision === "city" && (
 						<Alert status="warning">
 							<Alert.Indicator>

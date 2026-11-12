@@ -1,134 +1,93 @@
+import type { StatisticsCsvKind } from "./csv";
 import type { client } from "@/libs/orpc/client";
-import type { PortfolioClickKind, PortfolioDevice, PortfolioVisitSource } from "@rezumi/schema/portfolio/statistics";
-import type { ReactNode } from "react";
-import { KPIGroup, Widget } from "@heroui-pro/react";
+import type { PortfolioStatisticsRange } from "@rezumi/schema/portfolio/statistics";
+import { KPIGroup, Segment, Widget } from "@heroui-pro/react";
 import { KPI } from "@heroui-pro/react/kpi";
-import { Button, Chip, Spinner } from "@heroui/react";
+import { Button, Chip, Dropdown, Label, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { useQuery } from "@tanstack/react-query";
-import { lazy, Suspense, useId } from "react";
-import { summarizeViews } from "@rezumi/resume/sharing";
-import { PORTFOLIO_CLICK_KINDS, PORTFOLIO_DEVICES, PORTFOLIO_VISIT_SOURCES } from "@rezumi/schema/portfolio/statistics";
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getRouteApi, Link, useRouteContext, useRouter } from "@tanstack/react-router";
+import { Suspense, useId, useState } from "react";
+import {
+	PORTFOLIO_CLICK_KINDS,
+	PORTFOLIO_DEVICES,
+	PORTFOLIO_STATISTICS_DAYS,
+	PORTFOLIO_STATISTICS_RANGES,
+	PORTFOLIO_VISIT_SOURCES,
+} from "@rezumi/schema/portfolio/statistics";
 import { Icon } from "@rezumi/ui/components/icon";
+import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
+import { ChunkBoundary, retryableLazy } from "../editor/chunk-boundary";
 import { countryNames } from "../location/cities";
+import { saveFile } from "../save-file";
+import { dailyCsv, detailsCsv, statisticsCsvName, worksCsv } from "./csv";
+import {
+	clickLabels,
+	DailyBars,
+	deviceLabels,
+	LockedDetails,
+	RankList,
+	sourceLabels,
+	UnavailableDetails,
+} from "./parts";
+import { WorkStatisticsDialog } from "./work-statistics";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
+import { deviceTimeZone, saveAccountTimeZone } from "@/features/settings/timezone";
+import { authClient } from "@/libs/auth/client";
 import { orpc } from "@/libs/orpc/client";
 
-const VisitorMap = lazy(() => import("./visitor-map"));
+const visitorMap = retryableLazy(() => import("./visitor-map"));
 
 type Statistics = NonNullable<Awaited<ReturnType<typeof client.portfolio.statistics>>>;
 type ReadyDetails = Extract<Statistics["details"], { state: "ready" }>;
 
-const clickLabels = (): Record<PortfolioClickKind, string> => ({
-	resume: t`View resume button`,
-	pdf: t`Download PDF button`,
-	whatsapp: t`WhatsApp button`,
-	email: t`Email button`,
-	link: t`Links`,
-	contact: t`Send a message button`,
-	service: t`Service orders`,
-	video: t`Videos played`,
-	document: t`PDFs opened`,
-});
+/** How many days of "Work opened by day" show: the most recent ones. */
+const WORK_DAYS_SHOWN = 10;
 
-const sourceLabels = (): Record<PortfolioVisitSource, string> => ({
-	linkedin: "LinkedIn",
-	whatsapp: "WhatsApp",
-	google: "Google",
-	direct: t`Direct`,
-	other: t`Other sites`,
-});
+/**
+ * Days are counted in the account's timezone (Settings → Timezone, UTC until it's set), which the person may never
+ * have chosen: say which, and where to change it.
+ */
+function DayZoneNote() {
+	const { session } = useRouteContext({ strict: false });
+	const queryClient = useQueryClient();
+	const router = useRouter();
+	const [saving, setSaving] = useState(false);
+	const timeZone = session?.user.timezone ?? "UTC";
+	const device = deviceTimeZone();
 
-const deviceLabels = (): Record<PortfolioDevice, string> => ({
-	mobile: t`Phones`,
-	tablet: t`Tablets`,
-	desktop: t`Computers`,
-});
+	// This device is somewhere else: one press counts the days in its zone (the server reads the new zone at once).
+	const switchToDevice = async (zone: string) => {
+		setSaving(true);
+		const saved = await saveAccountTimeZone(zone, queryClient, () => router.invalidate());
+		setSaving(false);
+		if (!saved) {
+			toast.add({ type: "error", description: t`Couldn't save the timezone. Try again.` });
+			return;
+		}
+		await queryClient.invalidateQueries({ queryKey: orpc.portfolio.statistics.key() });
+	};
 
-type RankRow = { key: string; label: string; value: number };
-
-type RankListProps = { title: ReactNode; rows: readonly RankRow[]; empty: ReactNode };
-
-/** A titled list, largest first, each row's bar against the largest: one measure, so the bars need no legend. */
-function RankList({ title, rows, empty }: RankListProps) {
-	const { i18n } = useLingui();
-	const shown = rows.filter((row) => row.value > 0).sort((a, b) => b.value - a.value);
-	const peak = Math.max(1, ...shown.map((row) => row.value));
 	return (
-		<section className="grid content-start gap-2">
-			<h3 className="text-sm font-semibold">{title}</h3>
-			{shown.length === 0 ? (
-				<p className="text-body-sm text-muted">{empty}</p>
-			) : (
-				<ul className="grid gap-2">
-					{shown.map((row) => (
-						<li key={row.key} className="grid gap-1 text-sm">
-							<div className="flex items-baseline justify-between gap-3">
-								<span className="min-w-0 truncate">{row.label}</span>
-								<span className="text-muted tabular-nums">{row.value.toLocaleString(i18n.locale)}</span>
-							</div>
-							<div className="h-1 rounded-full bg-surface-secondary" aria-hidden="true">
-								<div className="h-full rounded-full bg-accent" style={{ width: `${(row.value / peak) * 100}%` }} />
-							</div>
-						</li>
-					))}
-				</ul>
+		<div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-body-xs text-muted">
+			<p>
+				<Trans>Days are counted in {timeZone}.</Trans>{" "}
+				<Link
+					to="/dashboard/settings/app"
+					hash="timezone"
+					className="underline underline-offset-2 hover:text-foreground"
+				>
+					<Trans>Change timezone</Trans>
+				</Link>
+			</p>
+			{device && device !== timeZone && (
+				<Button size="sm" variant="secondary" isPending={saving} onPress={() => void switchToDevice(device)}>
+					<Trans>Use {device}</Trans>
+				</Button>
 			)}
-		</section>
-	);
-}
-
-type DailyVisitsProps = { days: Statistics["days"] };
-
-/** Visits per day, as in Share's Visitors: each bar's whole column answers the pointer. */
-function DailyVisits({ days }: DailyVisitsProps) {
-	const { i18n } = useLingui();
-	const summary = summarizeViews(days.map((day) => ({ ...day, downloads: 0 })));
-	const dayLabel = (date: string) =>
-		new Date(`${date}T00:00:00`).toLocaleDateString(i18n.locale, { month: "short", day: "numeric" });
-	const firstDay = days[0]?.date;
-	return (
-		<div className="grid gap-1">
-			<div
-				role="img"
-				aria-label={t`Daily visits over 30 days, peak ${summary.peak}`}
-				className="flex h-20 items-end gap-0.5"
-			>
-				{summary.bars.map((bar) => {
-					const label = dayLabel(bar.date);
-					const visits = bar.views;
-					return (
-						<span key={bar.date} title={t`${label}: ${visits} visits`} className="group flex h-full flex-1 items-end">
-							<span
-								className={cn("w-full rounded-t-sm", visits > 0 ? "bg-accent/70 group-hover:bg-accent" : "bg-border")}
-								style={{ height: `${Math.max(5, Math.round(bar.height * 100))}%` }}
-							/>
-						</span>
-					);
-				})}
-			</div>
-			<div className="flex justify-between text-xs text-muted tabular-nums">
-				<span>{firstDay ? dayLabel(firstDay) : ""}</span>
-				<span>
-					<Trans>Today</Trans>
-				</span>
-			</div>
-			<table className="sr-only">
-				<caption>
-					<Trans>Visits per day</Trans>
-				</caption>
-				<tbody>
-					{days.map((day) => (
-						<tr key={day.date}>
-							<th scope="row">{dayLabel(day.date)}</th>
-							<td>{day.views}</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
 		</div>
 	);
 }
@@ -151,15 +110,22 @@ function ReadyStatisticsDetails({ details }: DetailsProps) {
 				</Chip>
 			</div>
 			{details.countries.length > 0 && (
-				<Suspense
-					fallback={
-						<div className="grid aspect-5/2 place-items-center rounded-xl border border-border">
-							<Spinner size="sm" color="current" />
-						</div>
-					}
-				>
-					<VisitorMap countries={details.countries} />
-				</Suspense>
+				<ChunkBoundary>
+					{(attempt) => {
+						const VisitorMap = visitorMap(attempt);
+						return (
+							<Suspense
+								fallback={
+									<div className="grid aspect-5/2 place-items-center rounded-xl border border-border">
+										<Spinner size="sm" color="current" />
+									</div>
+								}
+							>
+								<VisitorMap countries={details.countries} />
+							</Suspense>
+						);
+					}}
+				</ChunkBoundary>
 			)}
 			<div className="grid gap-6 @lg:grid-cols-3">
 				<RankList
@@ -185,11 +151,16 @@ function ReadyStatisticsDetails({ details }: DetailsProps) {
 			{details.workDays.length > 0 && (
 				<RankList
 					title={<Trans>Work opened by day</Trans>}
-					rows={details.workDays.map((row) => ({
-						key: `${row.date}-${row.workId}`,
-						label: `${new Date(`${row.date}T00:00:00`).toLocaleDateString(i18n.locale, { month: "short", day: "numeric" })} · ${row.title}`,
-						value: row.opens,
-					}))}
+					keepOrder
+					// The latest days first, the most opened work first within a day; older days are summed in "Most opened work".
+					rows={details.workDays
+						.toSorted((a, b) => b.date.localeCompare(a.date) || b.opens - a.opens)
+						.slice(0, WORK_DAYS_SHOWN)
+						.map((row) => ({
+							key: `${row.date}-${row.workId}`,
+							label: `${new Date(`${row.date}T00:00:00`).toLocaleDateString(i18n.locale, { month: "short", day: "numeric" })} · ${row.title}`,
+							value: row.opens,
+						}))}
 					empty={null}
 				/>
 			)}
@@ -197,28 +168,18 @@ function ReadyStatisticsDetails({ details }: DetailsProps) {
 	);
 }
 
-/** What the free plan sees in place of the details (owner decision #16). */
-function LockedDetails() {
-	return (
-		<section className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-surface-secondary p-4">
-			<p className="min-w-0 flex-1 basis-60 text-sm text-pretty">
-				<Trans>See visitors' countries on a map, their devices, and which sites link to you with Plus.</Trans>
-			</p>
-			<Button
-				size="sm"
-				variant="secondary"
-				onPress={() => openPlanDialog({ kind: "feature", feature: "detailedPortfolioStats" })}
-			>
-				<Icon name="lock" size={16} />
-				<Trans>See what's included</Trans>
-			</Button>
-		</section>
-	);
-}
-
-/** The portfolio's numbers over the last 30 days (`01-desain.md` section 10). Only its owner can read them. */
+/**
+ * The portfolio's numbers for the last 7, 30 or 90 days (`01-desain.md` section 10, Phase 13 3.7), the range kept in
+ * the address (`?range=`). Only its owner can read them.
+ */
 export function PortfolioStatistics() {
-	const { data, isPending } = useQuery(orpc.portfolio.statistics.queryOptions());
+	const [range, setRange] = useStatisticsRange();
+	const { data, isPending, isError, isPlaceholderData, refetch, isRefetching } = useQuery({
+		...orpc.portfolio.statistics.queryOptions({ input: { range } }),
+		// Another range keeps the numbers shown until its own arrive, instead of a spinner over the page.
+		placeholderData: keepPreviousData,
+	});
+	const [openWork, setOpenWork] = useState<{ id: string; title: string } | null>(null);
 	const titleId = useId();
 	const clicks = clickLabels();
 	const sources = sourceLabels();
@@ -228,65 +189,304 @@ export function PortfolioStatistics() {
 				<Spinner size="md" color="current" />
 			</div>
 		);
+	if (isError && !data)
+		return (
+			<Widget role="region" aria-labelledby={titleId}>
+				<WidgetHeading id={titleId} icon="chart-line-up" title={<Trans>Visitors</Trans>} />
+				<Widget.Content className="flex flex-wrap items-center gap-3">
+					<p className="min-w-0 flex-1 text-body-sm text-muted">
+						<Trans>The numbers couldn't be loaded.</Trans>
+					</p>
+					<Button size="sm" variant="secondary" isPending={isRefetching} onPress={() => void refetch()}>
+						<Trans>Try again</Trans>
+					</Button>
+				</Widget.Content>
+			</Widget>
+		);
 	if (!data) return null;
 	const totalClicks = PORTFOLIO_CLICK_KINDS.reduce((sum, kind) => sum + data.totals.clicks[kind], 0);
 	const tiles = [
 		{ key: "visits", title: t`Visits`, value: data.totals.views },
-		{ key: "clicks", title: t`Button clicks`, value: totalClicks },
+		// Buttons, links, videos played and PDFs opened: the Clicks list below names each.
+		{ key: "clicks", title: t`Clicks`, value: totalClicks },
 		{ key: "messages", title: t`Messages`, value: data.totals.messages },
 	];
 
 	return (
-		<Widget role="region" aria-labelledby={titleId} className="@container">
+		<Widget role="region" aria-labelledby={titleId} aria-busy={isPlaceholderData} className="@container">
 			<WidgetHeading
 				id={titleId}
 				icon="chart-line-up"
 				title={<Trans>Visitors</Trans>}
-				description={<Trans>The last 30 days. Only you see these, and your own visits aren't counted.</Trans>}
+				description={<Trans>Only you see these, and your own visits aren't counted.</Trans>}
 			/>
 			<Widget.Content className="grid gap-5">
-				<KPIGroup>
-					{tiles.flatMap((tile, index) => [
-						...(index > 0 ? [<KPIGroup.Separator key={`${tile.key}-separator`} />] : []),
-						<KPI key={tile.key}>
-							<KPI.Header>
-								<KPI.Title>{tile.title}</KPI.Title>
-							</KPI.Header>
-							<KPI.Content>
-								<KPI.Value maximumFractionDigits={0} value={tile.value} />
-							</KPI.Content>
-						</KPI>,
-					])}
-				</KPIGroup>
-				<DailyVisits days={data.days} />
-				<div className="grid gap-6 @lg:grid-cols-3">
-					<RankList
-						title={<Trans>Clicks</Trans>}
-						rows={PORTFOLIO_CLICK_KINDS.map((kind) => ({
-							key: kind,
-							label: clicks[kind],
-							value: data.totals.clicks[kind],
-						}))}
-						empty={<Trans>No clicks yet.</Trans>}
-					/>
-					<RankList
-						title={<Trans>Sources</Trans>}
-						rows={PORTFOLIO_VISIT_SOURCES.map((source) => ({
-							key: source,
-							label: sources[source],
-							value: data.sources[source],
-						}))}
-						empty={<Trans>No visits yet.</Trans>}
-					/>
-					<RankList
-						title={<Trans>Most opened work</Trans>}
-						rows={data.works.map((work) => ({ key: work.id, label: work.title, value: work.opens }))}
-						empty={<Trans>No work opened yet.</Trans>}
-					/>
+				<div className="flex flex-wrap items-center justify-between gap-2">
+					<RangeSwitch value={range} onChange={setRange} />
+					<CsvMenu statistics={data} />
 				</div>
-				{data.details.state === "ready" && <ReadyStatisticsDetails details={data.details} />}
-				{data.details.state === "locked" && <LockedDetails />}
+				{isError && (
+					// The numbers below are still the earlier range's: say so, rather than show them as this one's.
+					<div role="alert" className="flex flex-wrap items-center gap-3 rounded-xl bg-surface-secondary p-3">
+						<p className="min-w-0 flex-1 text-body-sm">
+							<Trans>The numbers for these days couldn't be loaded. The ones below are from before.</Trans>
+						</p>
+						<Button size="sm" variant="secondary" isPending={isRefetching} onPress={() => void refetch()}>
+							<Trans>Try again</Trans>
+						</Button>
+					</div>
+				)}
+				<div className={cn("grid gap-5 transition-opacity", isPlaceholderData && "opacity-60")}>
+					<KPIGroup>
+						{tiles.flatMap((tile, index) => [
+							...(index > 0 ? [<KPIGroup.Separator key={`${tile.key}-separator`} />] : []),
+							<KPI key={tile.key}>
+								<KPI.Header>
+									<KPI.Title>{tile.title}</KPI.Title>
+								</KPI.Header>
+								<KPI.Content>
+									<KPI.Value maximumFractionDigits={0} value={tile.value} />
+								</KPI.Content>
+							</KPI>,
+						])}
+					</KPIGroup>
+					<div className="grid gap-1">
+						<DailyBars
+							days={data.days.map((day) => ({ date: day.date, value: day.views }))}
+							describe={(label, visits) => t`${label}: ${visits} visits`}
+							summary={(days, peak) => t`Daily visits over ${days} days, peak ${peak}`}
+							caption={<Trans>Visits per day</Trans>}
+						/>
+						<DayZoneNote />
+					</div>
+					<div className="grid gap-6 @lg:grid-cols-2">
+						<RankList
+							title={<Trans>Clicks</Trans>}
+							rows={PORTFOLIO_CLICK_KINDS.map((kind) => ({
+								key: kind,
+								label: clicks[kind],
+								value: data.totals.clicks[kind],
+							}))}
+							empty={<Trans>No clicks yet.</Trans>}
+						/>
+						<RankList
+							title={<Trans>Sources</Trans>}
+							rows={PORTFOLIO_VISIT_SOURCES.map((source) => ({
+								key: source,
+								label: sources[source],
+								value: data.sources[source],
+							}))}
+							empty={<Trans>No visits yet.</Trans>}
+						/>
+					</div>
+					<WorksTable works={data.works} onDetails={setOpenWork} />
+					{data.details.state === "ready" && <ReadyStatisticsDetails details={data.details} />}
+					{data.details.state === "locked" && <LockedDetails />}
+					{data.details.state === "unavailable" && <UnavailableDetails />}
+				</div>
 			</Widget.Content>
+			{openWork && (
+				<WorkStatisticsDialog
+					workId={openWork.id}
+					title={openWork.title}
+					range={range}
+					onClose={() => setOpenWork(null)}
+				/>
+			)}
 		</Widget>
+	);
+}
+
+const routeApi = getRouteApi("/dashboard/portfolio/");
+
+/** The range in the address, 30 days when it says none; changing it replaces the address, not a new history step. */
+function useStatisticsRange(): [PortfolioStatisticsRange, (range: PortfolioStatisticsRange) => void] {
+	const { range } = routeApi.useSearch();
+	const navigate = routeApi.useNavigate();
+	return [
+		range ?? PORTFOLIO_STATISTICS_DAYS,
+		(next) =>
+			void navigate({
+				to: ".",
+				search: (search: ReturnType<typeof routeApi.useSearch>) => ({
+					...search,
+					range: next === PORTFOLIO_STATISTICS_DAYS ? undefined : next,
+				}),
+				replace: true,
+				resetScroll: false,
+			}),
+	];
+}
+
+type RangeSwitchProps = { value: PortfolioStatisticsRange; onChange: (range: PortfolioStatisticsRange) => void };
+
+const rangeLabel = (days: PortfolioStatisticsRange) =>
+	({ 7: t`Last 7 days`, 30: t`Last 30 days`, 90: t`Last 90 days` })[days];
+
+/** Last 7, 30 or 90 days. */
+function RangeSwitch({ value, onChange }: RangeSwitchProps) {
+	return (
+		<Segment
+			aria-label={t`Days shown`}
+			size="sm"
+			selectedKey={String(value)}
+			onSelectionChange={(key) => {
+				const next = PORTFOLIO_STATISTICS_RANGES.find((days) => String(days) === String(key));
+				if (next) onChange(next);
+			}}
+		>
+			{PORTFOLIO_STATISTICS_RANGES.map((days) => (
+				<Segment.Item key={days} id={String(days)} className="w-auto px-2.5">
+					{rangeLabel(days)}
+				</Segment.Item>
+			))}
+		</Segment>
+	);
+}
+
+type WorksTableProps = {
+	works: Statistics["works"];
+	onDetails: (work: { id: string; title: string }) => void;
+};
+
+/** Every work opened in the range: how often, its share of all openings, and its own numbers behind Details. */
+export function WorksTable({ works, onDetails }: WorksTableProps) {
+	const { i18n } = useLingui();
+	const total = works.reduce((sum, work) => sum + work.opens, 0);
+	const percent = new Intl.NumberFormat(i18n.locale, { style: "percent", maximumFractionDigits: 0 });
+	return (
+		<section className="grid gap-2">
+			<h3 className="text-sm font-semibold">
+				<Trans>Per work</Trans>
+			</h3>
+			{works.length === 0 ? (
+				<p className="text-body-sm text-muted">
+					<Trans>No work opened yet.</Trans>
+				</p>
+			) : (
+				<div className="overflow-x-auto">
+					<table className="w-full text-sm">
+						<thead className="text-xs text-muted">
+							<tr>
+								<th scope="col" className="py-1.5 pe-3 text-start font-medium">
+									<Trans>Work</Trans>
+								</th>
+								<th scope="col" className="py-1.5 pe-3 text-end font-medium">
+									<Trans>Opened</Trans>
+								</th>
+								<th scope="col" className="py-1.5 pe-3 text-end font-medium">
+									<Trans>Of total</Trans>
+								</th>
+								<th scope="col" className="py-1.5">
+									<span className="sr-only">
+										<Trans>Details</Trans>
+									</span>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{works.map((work) => (
+								<tr key={work.id} className="border-t border-border">
+									<th scope="row" className="max-w-0 py-1.5 pe-3 text-start font-normal">
+										<span className="block truncate" title={work.title}>
+											{work.title}
+										</span>
+									</th>
+									<td className="py-1.5 pe-3 text-end tabular-nums">{work.opens.toLocaleString(i18n.locale)}</td>
+									<td className="py-1.5 pe-3 text-end text-muted tabular-nums">
+										{percent.format(total ? work.opens / total : 0)}
+									</td>
+									<td className="py-1 text-end">
+										<Button
+											size="sm"
+											variant="ghost"
+											aria-label={t`Details for ${work.title}`}
+											onPress={() => onDetails({ id: work.id, title: work.title })}
+										>
+											<Trans>Details</Trans>
+										</Button>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			)}
+		</section>
+	);
+}
+
+/** Download CSV: the days and the works for every plan, the breakdown with Plus (owner decision #1). */
+function CsvMenu({ statistics }: { statistics: Statistics }) {
+	const { data: session } = authClient.useSession();
+	const username = session?.user.username ?? "";
+	const { details } = statistics;
+
+	const download = (kind: StatisticsCsvKind) => {
+		if (kind === "details" && details.state === "locked") {
+			openPlanDialog({ kind: "feature", feature: "detailedPortfolioStats" });
+			return;
+		}
+		const text =
+			kind === "daily" ? dailyCsv(statistics) : kind === "works" ? worksCsv(statistics) : detailsCsv(statistics);
+		if (text === null) return;
+		saveFile(new Blob([text], { type: "text/csv;charset=utf-8" }), statisticsCsvName(username, statistics.range, kind));
+	};
+
+	return (
+		<Dropdown>
+			<Button size="sm" variant="secondary">
+				<Icon name="download-simple" size={16} />
+				<Trans>Download CSV</Trans>
+			</Button>
+			<Dropdown.Popover placement="bottom end" className="w-72">
+				<Dropdown.Menu
+					aria-label={t`Download CSV`}
+					disabledKeys={details.state === "ready" || details.state === "locked" ? [] : ["details"]}
+					onAction={(key) => download(key as StatisticsCsvKind)}
+				>
+					<Dropdown.Item id="daily" textValue={t`Daily numbers`}>
+						<div className="grid">
+							<Label>
+								<Trans>Daily numbers</Trans>
+							</Label>
+							<span className="text-xs text-muted">
+								<Trans>Visits, messages, clicks and sources per day</Trans>
+							</span>
+						</div>
+					</Dropdown.Item>
+					<Dropdown.Item id="works" textValue={t`Works`}>
+						<div className="grid">
+							<Label>
+								<Trans>Works</Trans>
+							</Label>
+							<span className="text-xs text-muted">
+								<Trans>How often each work was opened</Trans>
+							</span>
+						</div>
+					</Dropdown.Item>
+					<Dropdown.Item id="details" textValue={t`Breakdown`}>
+						<div className="grid">
+							<Label className="flex items-center gap-1.5">
+								<Trans>Breakdown</Trans>
+								{details.state === "locked" && (
+									<Chip size="sm" variant="soft" color="accent">
+										<Icon name="lock" size={12} aria-hidden />
+										Plus
+									</Chip>
+								)}
+							</Label>
+							<span className="text-xs text-muted">
+								{details.state === "ready" || details.state === "locked" ? (
+									<Trans>Countries, devices, linking sites and works by day</Trans>
+								) : (
+									<Trans>Not available right now</Trans>
+								)}
+							</span>
+						</div>
+					</Dropdown.Item>
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 }

@@ -37,7 +37,12 @@ export const bayu: PersonaDefinition = {
 				"Saya membangun merek dari moodboard pertama sampai retouch terakhir, dan masih memotret sendiri kampanyenya.",
 			]),
 			showPicture: true,
-			availability: { show: true, text: t(["Taking campaign projects for 2026", "Menerima proyek kampanye 2026"]) },
+			availability: {
+				show: true,
+				text: t(["Taking campaign projects for 2026", "Menerima proyek kampanye 2026"]),
+				roles: ["Creative Director", "Campaign Photographer"],
+				types: ["freelance", "contract"],
+			},
 			highlights: [
 				metric("hl-1", ["pitches won", "pitch dimenangkan"], "21/36"),
 				metric("hl-2", ["magazine covers", "sampul majalah"], 14),
@@ -129,6 +134,21 @@ export const bayu: PersonaDefinition = {
 							videoId: "918273645",
 							title: t(["Behind the scenes: three farms, one morning", "Di balik layar: tiga kebun, satu pagi"]),
 							thumbnail: picture("kanvas-video.svg", ["Video: behind the scenes", "Video: di balik layar"]),
+						},
+						{
+							id: "w-kopi-spotify",
+							type: "embed",
+							provider: "spotify",
+							ref: "episode/3Vt8KmQ2xRb7Lp4Nw9Zc1H",
+							title: t(["Podcast: shooting coffee at dawn", "Podcast: memotret kopi saat subuh"]),
+							thumbnail: picture("kanvas-g1.svg", ["Podcast cover", "Sampul podcast"], { width: 600, height: 600 }),
+						},
+						{
+							id: "w-kopi-soundcloud",
+							type: "embed",
+							provider: "soundcloud",
+							ref: "bayu-saputra/sets/kopi-tanah-tinggi-sound",
+							title: t(["Campaign sound, three takes", "Musik kampanye, tiga versi"]),
 						},
 						{
 							id: "w-slopes-pdf",

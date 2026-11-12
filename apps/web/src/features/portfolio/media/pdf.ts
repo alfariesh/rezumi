@@ -7,7 +7,14 @@ import { ORPCError } from "@orpc/client";
 import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import { generateId } from "@rezumi/utils/string";
 import { portfolioErrorMessage } from "../errors";
-import { discardUploadedImages, isAbort, stopIfAborted, uploadPortfolioImage } from "../images/upload";
+import {
+	discardUploadedImages,
+	fileReadErrorMessage,
+	isAbort,
+	isFileReadError,
+	stopIfAborted,
+	uploadPortfolioImage,
+} from "../images/upload";
 import { refreshPortfolioUsage } from "../works/storage-meter";
 import { titleFromFileName } from "../works/works";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
@@ -47,6 +54,8 @@ export const pdfLimitText = () => formatFileSize(PORTFOLIO_UPLOAD.pdfBytes);
 
 /** The first page's width in the picture: sharp in the 96 px card at any screen density, and on the cover. */
 const PREVIEW_WIDTH = 800;
+/** A very tall page (a long strip) is drawn smaller, so its canvas stays a few megabytes. */
+const PREVIEW_MAX_HEIGHT = 2000;
 
 /**
  * A picture of the PDF's first page, or null when it can't be drawn (memory, an odd page): the PDF still goes up,
@@ -58,7 +67,9 @@ async function firstPagePicture(document: PDFDocumentProxy): Promise<Blob | null
 	try {
 		const page = await document.getPage(1);
 		const base = page.getViewport({ scale: 1 });
-		const viewport = page.getViewport({ scale: PREVIEW_WIDTH / base.width });
+		const viewport = page.getViewport({
+			scale: Math.min(PREVIEW_WIDTH / base.width, PREVIEW_MAX_HEIGHT / base.height),
+		});
 		canvas.width = Math.round(viewport.width);
 		canvas.height = Math.round(viewport.height);
 		const context = canvas.getContext("2d");
@@ -85,7 +96,7 @@ async function firstPagePicture(document: PDFDocumentProxy): Promise<Blob | null
  * count and, when it can be drawn, a picture of its first page. Refuses what isn't a PDF, files over the limit, and
  * password-protected files.
  */
-async function readPdf(file: File): Promise<{ pages: number; preview: Blob | null }> {
+async function readPdf(file: File, signal?: AbortSignal): Promise<{ pages: number; preview: Blob | null }> {
 	if (file.size > PORTFOLIO_UPLOAD.pdfBytes) throw new PortfolioPdfError("too-large");
 	const bytes = new Uint8Array(await file.arrayBuffer());
 	if (!looksLikePdf(bytes)) throw new PortfolioPdfError("type");
@@ -97,6 +108,8 @@ async function readPdf(file: File): Promise<{ pages: number; preview: Blob | nul
 				error instanceof Error && error.name === "PasswordException" ? "password" : "unreadable",
 			);
 		});
+		// Cancelled while the file was read: the page isn't drawn for nothing.
+		stopIfAborted(signal);
 		return { pages: document.numPages, preview: await firstPagePicture(document) };
 	} finally {
 		await task.destroy();
@@ -118,6 +131,7 @@ export function pdfErrorMessage(error: unknown): string {
 				return t`This PDF can't be read. Save it again as a PDF, then try again.`;
 		}
 	}
+	if (isFileReadError(error)) return fileReadErrorMessage();
 	const fallback = t`The PDF couldn't be uploaded. Check your connection and try again.`;
 	if (!(error instanceof ORPCError)) return fallback;
 	const tooLarge = t`This PDF is larger than ${limit}. Make it smaller, then try again.`;
@@ -143,7 +157,7 @@ export async function uploadPortfolioPdf(
 	title: string,
 	signal?: AbortSignal,
 ): Promise<Pick<PortfolioBlockOf<"pdf">, "file" | "pages" | "bytes" | "preview">> {
-	const { pages, preview } = await readPdf(file);
+	const { pages, preview } = await readPdf(file, signal);
 	stopIfAborted(signal);
 	let picture: PortfolioImage | undefined;
 	if (preview) {

@@ -151,6 +151,11 @@ function render(data: PortfolioDataInput, resume: ResumeData | null = resumeWith
 	return renderTestPage({ theme: "mozaik", ...data }, { resume });
 }
 
+/** A work's own page (`/nadia/work/<slug>`). */
+function renderWork(data: PortfolioDataInput, workId: string, resume: ResumeData | null = resumeWithSkills()) {
+	return renderTestPage({ theme: "mozaik", ...data }, { resume, page: { kind: "work", workId } });
+}
+
 /** The shared checks, and Mozaik's own main. */
 function expectSoundStructure(html: string) {
 	expectSoundPage(html, "mozaik");
@@ -320,19 +325,20 @@ describe("renderPortfolioPage (Mozaik)", () => {
 		expect(count(html, /class="mz-work__cap"/g)).toBe(view.works.length);
 		expect(html).toContain('<li class="mz-work" style="--c:1;--r:1;--ct:1;--rt:1" data-noimg="">');
 		expect(html).toMatch(/<li class="mz-more"[^>]*><a href="https:\/\/behance\.example\.test\/nadia"/);
-		expect(html).toContain("Lebih banyak di Behance");
+		expect(html).toContain("Selengkapnya di Behance");
 		expect(html).toMatch(/<span class="pf-work-metric"><b>2,8%<\/b><span>Checkout conversion<\/span><\/span>/);
 	});
 
-	it("opens each work's detail with every block type", () => {
-		expect(count(html, /class="pf-detail"/g)).toBe(view.works.length);
-		const detail = html.slice(html.indexOf('id="work-kopi-app" role="dialog"'));
+	it("opens each work on its own page with every block type", () => {
+		expect(html).not.toMatch(/pf-detail|pf-lightbox/);
+		for (const item of view.works) expectSoundPage(renderWork(fullData, item.id).html, "mozaik");
+		const detail = renderWork(fullData, "w1").html;
 		expect(detail).toContain('class="pf-gallery"');
 		expect(detail).toContain('class="pf-metrics" data-variant="kpi"');
 		expect(detail).toContain('data-embed="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1"');
 		expect(detail).toContain('class="pf-pdf"');
 		expect(detail).toContain('class="pf-link"');
-		expect(count(html, /class="pf-lightbox"/g)).toBe(1);
+		expect(count(detail, /class="pf-lightbox"/g)).toBe(1);
 	});
 
 	it("draws every Mozaik variant in light and dark", () => {
@@ -340,7 +346,9 @@ describe("renderPortfolioPage (Mozaik)", () => {
 		for (const scheme of ["light", "dark"] as const)
 			for (const [key, values] of Object.entries(variants))
 				for (const value of values) {
-					const { html: variantHtml, page } = render({ ...fullData, design: { scheme, variants: { [key]: value } } });
+					const data = { ...fullData, design: { scheme, variants: { [key]: value } } };
+					// A work's metrics, which take the metric variant, are on its own page.
+					const { html: variantHtml, page } = key === "metric" ? renderWork(data, "w1") : render(data);
 					expect(page.scheme).toBe(scheme);
 					expectSoundStructure(variantHtml);
 					if (key !== "hero") expect(variantHtml, `${key}=${value}`).toContain(`data-variant="${value}"`);

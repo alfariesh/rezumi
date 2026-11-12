@@ -32,7 +32,7 @@ const ACCENTS = [
 
 const MODES = [
 	["light", ":root"],
-	["dark", ':root[data-pf-scheme="dark"]'],
+	["dark", '@media screen{:root[data-pf-scheme="dark"]'],
 ] as const;
 
 function tokens(css: string, selector: string): Record<string, string> {
@@ -77,6 +77,11 @@ describe("accent contrast", () => {
 						expect(ratio("--pf-accent-text-soft", background), `${mode} soft accent text`).toBeGreaterThanOrEqual(4.5);
 					// Text on an accent fill (primary buttons, Mozaik's first number tile).
 					expect(contrastRatio(set["--pf-on-accent"] ?? "", accent), `${mode} on accent`).toBeGreaterThanOrEqual(4.5);
+					// The same under the pointer: hovering never lowers the label's contrast.
+					expect(
+						contrastRatio(set["--pf-on-accent"] ?? "", set["--pf-accent-hover"] ?? ""),
+						`${mode} on accent, hovered`,
+					).toBeGreaterThanOrEqual(contrastRatio(set["--pf-on-accent"] ?? "", accent));
 					// A primary button's edge stands out from the page (non-text contrast, 3:1).
 					expect(ratio("--pf-accent-edge", neutrals.bg), `${mode} button edge`).toBeGreaterThanOrEqual(3);
 					// Trend chips: the colour on the page, on cards, and on the chip's tint of itself over either.

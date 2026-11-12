@@ -39,6 +39,8 @@ export const anindya: PersonaDefinition = {
 			availability: {
 				show: true,
 				text: t(["Open to Head of Private Banking roles", "Terbuka untuk peran Head of Private Banking"]),
+				roles: ["Head of Private Banking", "Wealth Advisory Lead"],
+				types: ["full-time"],
 			},
 			highlights: [
 				metric("hl-1", ["Assets managed", "Aset dikelola"], 4_600_000_000_000, {
@@ -151,6 +153,13 @@ export const anindya: PersonaDefinition = {
 								"Video: preparing the next generation",
 								"Video: menyiapkan generasi penerus",
 							]),
+						},
+						{
+							id: "w-fam-slides",
+							type: "embed",
+							provider: "google-slides",
+							ref: "1Kq8ZtR4mVn2Lc7Pw9Xb3Hy6Jd0Fs5Ga1Te",
+							title: t(["Family succession workshop slides", "Slide lokakarya suksesi keluarga"]),
 						},
 						{
 							id: "w-succession-pdf",

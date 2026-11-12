@@ -354,11 +354,14 @@ function IntroGroup() {
 					label={t`Background picture`}
 					value={data.hero.background.image}
 					altSuggestion=""
-					onChange={(image) =>
-						editPortfolio((draft) => {
-							if (image) draft.hero.background.image = image;
-							else delete draft.hero.background.image;
-						})
+					onChange={(image, typing) =>
+						editPortfolio(
+							(draft) => {
+								if (image) draft.hero.background.image = image;
+								else delete draft.hero.background.image;
+							},
+							typing ? { key: "hero.background.image.alt" } : undefined,
+						)
 					}
 				/>
 			)}

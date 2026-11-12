@@ -35,6 +35,43 @@ function findOversizedText(
 	return undefined;
 }
 
+/**
+ * The longest ID a resume item, role or custom section may have when written, and an ID may not be empty. Generated IDs
+ * are far shorter; the cap lets every item be referred to elsewhere, such as a portfolio hiding it or copying a project
+ * (`isResumeReferenceId` takes the same range). Write-only, so stored resumes with other IDs still load.
+ */
+export const RESUME_ITEM_ID_MAX_LENGTH = 64;
+
+type Identified = { id: string };
+
+/** The first item, role or custom section whose ID is empty or too long, with its path. */
+function findUnreferenceableId(data: ResumeData): { path: PropertyKey[]; message: string } | undefined {
+	const check = (item: Identified, path: PropertyKey[]) =>
+		item.id.length === 0 || item.id.length > RESUME_ITEM_ID_MAX_LENGTH
+			? { path: [...path, "id"], message: `Use an id of 1 to ${RESUME_ITEM_ID_MAX_LENGTH} characters.` }
+			: undefined;
+	for (const [key, section] of Object.entries(data.sections)) {
+		for (const [index, item] of (section.items as Identified[]).entries()) {
+			const found = check(item, ["sections", key, "items", index]);
+			if (found) return found;
+			const roles = (item as { roles?: Identified[] }).roles ?? [];
+			for (const [roleIndex, role] of roles.entries()) {
+				const roleProblem = check(role, ["sections", key, "items", index, "roles", roleIndex]);
+				if (roleProblem) return roleProblem;
+			}
+		}
+	}
+	for (const [index, section] of data.customSections.entries()) {
+		const found = check(section, ["customSections", index]);
+		if (found) return found;
+		for (const [itemIndex, item] of (section.items as Identified[]).entries()) {
+			const inner = check(item, ["customSections", index, "items", itemIndex]);
+			if (inner) return inner;
+		}
+	}
+	return undefined;
+}
+
 /** Validate submitted values before tolerant read-time fallbacks can replace them. */
 export const writableResumeDataSchema = z.transform<z.input<typeof resumeDataSchema>, ResumeData>((input, ctx) => {
 	const oversized = findOversizedText(input);
@@ -64,6 +101,12 @@ export const writableResumeDataSchema = z.transform<z.input<typeof resumeDataSch
 	});
 	if (!submitted.success) {
 		for (const issue of submitted.error.issues) ctx.addIssue({ ...issue });
+		return z.NEVER;
+	}
+
+	const badId = findUnreferenceableId(canonical.data);
+	if (badId) {
+		ctx.addIssue({ code: "custom", ...badId, input });
 		return z.NEVER;
 	}
 

@@ -24,6 +24,8 @@ describe("formatMetric", () => {
 		expect(format({ value: number(250_000), format: "currency", currency: "IDR" }, "id-ID")).toBe("Rp 250.000");
 		expect(format({ value: number(3), format: "multiplier" }, "id-ID")).toBe("3×");
 		expect(format({ value: number(4.8), format: "rating" }, "id-ID")).toBe("4,8/5");
+		// The scale in the score's own digits.
+		expect(format({ value: number(4.5), format: "rating" }, "ar-SA")).toBe("٤٫٥/٥");
 		expect(format({ value: number(2), format: "duration", unit: "week" }, "id-ID")).toMatch(/^2 mgg/);
 		expect(format({ value: number(1234.5) }, "id-ID")).toBe("1.234,5");
 	});
@@ -67,6 +69,13 @@ describe("before → after", () => {
 		expect(beforeAfterBars(metric({ value: number(38), before: 66 }))).toEqual({ before: 100, after: 57.6 });
 		expect(beforeAfterBars(metric({ value: number(1000), before: 1 }))).toEqual({ before: 4, after: 100 });
 		expect(beforeAfterBars(metric({ value: number(5) }))).toBeNull();
+	});
+
+	it("draws the larger value longer when a value is below zero", () => {
+		expect(beforeAfterBars(metric({ value: number(10), before: -20 }))).toEqual({ before: 4, after: 100 });
+		expect(beforeAfterBars(metric({ value: number(-10), before: 10 }))).toEqual({ before: 100, after: 4 });
+		expect(beforeAfterBars(metric({ value: number(-10), before: -20 }))).toEqual({ before: 4, after: 50 });
+		expect(beforeAfterBars(metric({ value: number(0), before: 0 }))).toEqual({ before: 4, after: 4 });
 	});
 });
 

@@ -13,17 +13,28 @@ describe("Brutal", () => {
 		expect(html.indexOf('id="about"')).toBeLessThan(html.indexOf('id="work"'));
 		expect(html).toContain("Selected work");
 		expect(html).toContain("Coffee ordering app");
-		expect(html).toContain("Orders took too long.");
+		// The work's own text is on its page; its card links there.
+		expect(html).toContain('href="/nadia/work/kopi-app"');
+		const work = renderTestPage(
+			{ ...fullPortfolioData, theme: "brutal", locale: "id-ID" },
+			{ page: { kind: "work", workId: "w1" } },
+		).html;
+		expectSoundPage(work, "brutal");
+		expect(work).toContain("Orders took too long.");
 	});
 
 	it("renders all existing sections and attachment blocks through the shared renderer", () => {
 		const { html } = renderTestPage({ ...fullPortfolioData, theme: "brutal" }, { resume: fullTestResume() });
 		expectSoundPage(html, "brutal");
+		// The blocks are on the work's own page, every kind of them, embeds included.
+		const work = renderTestPage(
+			{ ...fullPortfolioData, theme: "brutal" },
+			{ resume: fullTestResume(), page: { kind: "work", workId: "w1" } },
+		).html;
+		expectSoundPage(work, "brutal");
+		for (const marker of ["pf-gallery", "pf-video", "pf-embed", "pf-pdf", "pf-link", "pf-workpage__more"])
+			expect(work, marker).toContain(marker);
 		for (const marker of [
-			"pf-gallery",
-			"pf-video",
-			"pf-pdf",
-			"pf-link",
 			"pf-loc",
 			"pf-service",
 			"pf-quote",

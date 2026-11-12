@@ -93,6 +93,7 @@ export const PORTFOLIO_ERRORS = {
 		// What the account stores already (files waiting for the cleanup job too) and its ceiling.
 		data: z.object({ bytes: size, maxBytes: size, files: size, maxFiles: size }),
 	},
+	PORTFOLIO_WORK_NOT_FOUND: { status: 404, message: "This work isn't in the portfolio." },
 } as const;
 
 type PortfolioErrorCode = keyof typeof PORTFOLIO_ERRORS;
@@ -119,6 +120,7 @@ export const portfolioErrors = {
 	disabled: () => refusal("PORTFOLIO_DISABLED"),
 	exists: () => refusal("PORTFOLIO_EXISTS"),
 	notFound: () => refusal("NOT_FOUND"),
+	workNotFound: () => refusal("PORTFOLIO_WORK_NOT_FOUND"),
 	sourceInvalid: (reason: "unavailable" | "unreadable" = "unavailable", cause?: unknown) =>
 		refusal("PORTFOLIO_SOURCE_INVALID", {
 			data: { reason },

@@ -238,6 +238,20 @@ describe("createApp", () => {
 		expect(mocks.handleWellKnownFallback).not.toHaveBeenCalled();
 	});
 
+	it("leaves the Phase 13 portfolio addresses to the app while portfolios are off", async () => {
+		const { env } = await import("@rezumi/env/server");
+		expect(env.PORTFOLIO_MODE ?? "off").toBe("off");
+		// Like the real static middleware: no file there, so on to the next route.
+		mocks.serveWebDistStatic.mockImplementation((_context: unknown, next: () => Promise<void>) => next());
+		const { createApp } = await import("./app");
+		const app = createApp();
+		for (const path of ["/api/portfolio/nadia/vcard", "/nadia/work/kopi"]) {
+			mocks.handleWebApp.mockResolvedValueOnce(new Response(`web ${path}`));
+			const response = await app.fetch(new Request(`http://localhost:3001${path}`));
+			expect(await response.text(), path).toBe(`web ${path}`);
+		}
+	}, 30_000);
+
 	it("routes GET / to the web app before static files", async () => {
 		const { createApp } = await import("./app");
 		const app = createApp();

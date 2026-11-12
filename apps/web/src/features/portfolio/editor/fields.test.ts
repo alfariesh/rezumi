@@ -9,6 +9,12 @@ describe("addresses typed without https://", () => {
 		expect(normalizePortfolioUrl("mailto:nadia@example.com")).toBe("mailto:nadia@example.com");
 		expect(normalizePortfolioUrl("   ")).toBe("");
 	});
+
+	it("turn a bare email address into a mailto: link, not a web address at its domain", () => {
+		expect(normalizePortfolioUrl(" nadia@example.com ")).toBe("mailto:nadia@example.com");
+		expect(normalizePortfolioUrl("https://user@example.com/page")).toBe("https://user@example.com/page");
+		expect(normalizePortfolioUrl("example.com/@nadia")).toBe("https://example.com/@nadia");
+	});
 });
 
 describe("WhatsApp numbers", () => {
@@ -16,6 +22,8 @@ describe("WhatsApp numbers", () => {
 		expect(normalizeWhatsAppNumber("0812-5550-1824")).toBe("6281255501824");
 		expect(normalizeWhatsAppNumber("+62 812 5550 1824")).toBe("6281255501824");
 		expect(normalizeWhatsAppNumber("+1 (415) 555-0100")).toBe("14155550100");
+		expect(normalizeWhatsAppNumber("+44 (0)20 7946 0018")).toBe("442079460018");
+		expect(normalizeWhatsAppNumber("812 5550 1824")).toBe("81255501824");
 		expect(normalizeWhatsAppNumber("")).toBe("");
 	});
 });

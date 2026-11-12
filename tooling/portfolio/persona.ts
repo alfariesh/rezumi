@@ -1,6 +1,8 @@
 /**
- * The fictional people of the portfolio themes (`01-desain.md` sections 5 and 14), one per theme, in English and
- * Indonesian: Nadia Rahmawati (Lugas), Anindya Dewi (Prima), Bayu Saputra (Kanvas) and Citra Maharani (Mozaik). Their
+ * The fictional people of the portfolio themes (`01-desain.md` sections 5 and 14), in English and Indonesian: Nadia
+ * Rahmawati (Lugas, Paper), Anindya Dewi (Prima), Bayu Saputra (Kanvas), Citra Maharani (Mozaik, Brutal), Raka
+ * Mahendra (Sintaks) and Laras Kusumawardhani (Warta). Raka's and Laras' portraits (`raka.jpg`, `laras.jpg`) are
+ * illustrations, not photos. Their
  * careers are the gallery's resume personas (`tooling/templates/personas`), their portfolios follow the Phase 00
  * mockups (`.agents/docs/plans/portfolio/mockups/<theme>.html`). Every name, company, client, testimonial, number and
  * link is made up. Pictures are the mockups' own drawings and photos (`mockups/img`); client logos and the sample PDFs
@@ -22,11 +24,13 @@ import { buildPersonaResume } from "../templates/personas/persona";
 import { anindya } from "./personas/anindya";
 import { bayu } from "./personas/bayu";
 import { citra } from "./personas/citra";
+import { laras } from "./personas/laras";
 import { nadia } from "./personas/nadia";
+import { raka } from "./personas/raka";
 
 const MOCKUP_IMAGES = new URL("../../.agents/docs/plans/portfolio/mockups/img/", import.meta.url);
 
-export const PERSONA_IDS = ["nadia", "anindya", "bayu", "citra"] as const;
+export const PERSONA_IDS = ["nadia", "anindya", "bayu", "citra", "raka", "laras"] as const;
 export type PersonaId = (typeof PERSONA_IDS)[number];
 export const PERSONA_LANGS = ["en", "id"] as const;
 export type PersonaLang = (typeof PERSONA_LANGS)[number];
@@ -98,7 +102,7 @@ export type PersonaDefinition = {
 	portfolio: (kit: PersonaKit) => PortfolioDataInput;
 };
 
-const DEFINITIONS: Record<PersonaId, PersonaDefinition> = { nadia, anindya, bayu, citra };
+const DEFINITIONS: Record<PersonaId, PersonaDefinition> = { nadia, anindya, bayu, citra, raka, laras };
 
 /** The persona each theme's gallery picture, mockup and default matrix rows show. */
 export const THEME_PERSONAS: Record<PortfolioTheme, PersonaId> = {
@@ -108,6 +112,8 @@ export const THEME_PERSONAS: Record<PortfolioTheme, PersonaId> = {
 	mozaik: "citra",
 	paper: "nadia",
 	brutal: "citra",
+	sintaks: "raka",
+	warta: "laras",
 };
 
 /** A stored file the persona's portfolio uses. */
@@ -390,7 +396,7 @@ export function buildPersona(id: PersonaId, options: { lang?: PersonaLang; varia
 			hero: {
 				...portfolio.hero,
 				greeting: definition.arabic.greeting,
-				availability: { show: true, text: definition.arabic.availability },
+				availability: { ...portfolio.hero?.availability, show: true, text: definition.arabic.availability },
 			},
 		};
 	}

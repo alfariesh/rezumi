@@ -25,6 +25,8 @@ describe("portfolio themes", () => {
 			"mozaik",
 			"paper",
 			"brutal",
+			"sintaks",
+			"warta",
 		]);
 		expect(PORTFOLIO_THEMES.filter(isFreePortfolioTheme)).toEqual(["lugas", "prima"]);
 		expect(defaultPortfolioTheme).toBe("lugas");
@@ -44,6 +46,8 @@ describe("portfolio themes", () => {
 			mozaik: ["light", "gradient", "kpi", "bricolage-onest"],
 			paper: ["light", "none", "big", "google-sans"],
 			brutal: ["light", "none", "kpi", "space-inter"],
+			sintaks: ["dark", "scramble", "kpi", "geist"],
+			warta: ["light", "fade-up", "big", "newsreader-franklin"],
 		});
 	});
 

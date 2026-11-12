@@ -8,6 +8,7 @@ import { PORTFOLIO_LIVE_SCRIPT } from "./live-script";
 import { PORTFOLIO_PAGE_SCRIPT } from "./script";
 import { BASE_CSS } from "./shared/base-css";
 import { RenderContextValue } from "./shared/context";
+import { isPlainUrl } from "./shared/primitives";
 import { themeRenderer } from "./themes";
 
 export type RenderPortfolioPageInput = {
@@ -27,7 +28,16 @@ export type RenderPortfolioPageInput = {
 	creditUrl: string;
 	/** How a published page talks to the server. Left out by the editor's preview, so a preview never counts or sends. */
 	live?: PortfolioPageLive;
+	/**
+	 * Which page to draw: the home page (the default) or one work's own page, by the work's id, which must be one of
+	 * `view.works` (an unknown id throws). A work's page is the theme's shell around the shared `WorkArticle`, without
+	 * the intro or its effect.
+	 */
+	page?: PortfolioPageKind;
 };
+
+/** The portfolio's home page, or one work's own page (`/<username>/work/<slug>`). */
+export type PortfolioPageKind = { kind: "home" } | { kind: "work"; workId: string };
 
 /** The contact form's wiring on a published page. */
 type PortfolioPageForm =
@@ -76,25 +86,42 @@ export type PortfolioPage = {
 const PAGE_IMAGE = /^(?:https?:\/\/|\/(?![/\\])|(?![a-z][\d+.a-z-]*:)[^/\\])/i;
 
 /** The default `imageUrl`: allowed addresses (`PAGE_IMAGE`) as given, others left out. */
-const pageImageUrl = (src: string) => (PAGE_IMAGE.test(src) ? src : undefined);
+const pageImageUrl = (src: string) => (isPlainUrl(src) && PAGE_IMAGE.test(src) ? src : undefined);
 
 /**
- * The resume icons a view draws (service, metric and client icons, link cards' brands), for the caller to load before
- * rendering. The intro's highlights are drawn compact, without their icons, so theirs aren't loaded.
+ * The resume icons a page draws (service, metric and client icons, link cards' brands), for the caller to load before
+ * rendering. The intro's highlights are drawn compact, without their icons, so theirs aren't loaded. Given the page,
+ * only what it draws: the home page's sections, or one work's blocks; without it, both, for every work.
  */
-export function portfolioIconNames(view: PortfolioView): string[] {
+export function portfolioIconNames(view: PortfolioView, page?: PortfolioPageKind): string[] {
 	const names = new Set<string>();
-	for (const work of view.works)
-		for (const block of work.blocks)
+	const works = !page ? view.works : page.kind === "work" ? view.works.filter((work) => work.id === page.workId) : [];
+	for (const work of works)
+		for (const block of work.blocks) {
 			if (block.type === "metrics") for (const metric of block.items) if (metric.icon) names.add(metric.icon);
-	for (const work of view.works)
-		for (const block of work.blocks) if (block.type === "link" && block.brandIcon) names.add(block.brandIcon);
+			if (block.type === "link" && block.brandIcon) names.add(block.brandIcon);
+		}
+	if (page?.kind === "work") return [...names];
 	for (const section of view.sections) {
 		if (section.kind === "services") for (const service of section.services) if (service.icon) names.add(service.icon);
 		if (section.kind === "clients")
 			for (const client of section.clients) if (client.brandIcon) names.add(client.brandIcon);
 	}
 	return [...names];
+}
+
+/** The page to draw: a work's page finds the work and its neighbours in `view.works`, the order the page lists them. */
+function resolvePage(view: PortfolioView, page: PortfolioPageKind): RenderContext["page"] {
+	if (page.kind === "home") return page;
+	const index = view.works.findIndex((work) => work.id === page.workId);
+	const work = view.works[index];
+	if (!work) throw new Error(`The view has no work ${page.workId}.`);
+	return {
+		kind: "work",
+		work,
+		previous: index > 0 ? (view.works[index - 1] ?? null) : null,
+		next: view.works[index + 1] ?? null,
+	};
 }
 
 /**
@@ -104,6 +131,7 @@ export function portfolioIconNames(view: PortfolioView): string[] {
 export function renderPortfolioPage(input: RenderPortfolioPageInput): PortfolioPage {
 	const { view } = input;
 	const theme = themeRenderer(view.theme);
+	const page = resolvePage(view, input.page ?? { kind: "home" });
 	let counter = 0;
 	const icons = input.icons ?? {};
 	const context: RenderContext = {
@@ -118,6 +146,7 @@ export function renderPortfolioPage(input: RenderPortfolioPageInput): PortfolioP
 		imageUrl: input.imageUrl ?? pageImageUrl,
 		nextId: (prefix) => `${prefix}-${++counter}`,
 		...(input.live ? { live: input.live } : {}),
+		page,
 	};
 	const markup = renderToStaticMarkup(
 		<RenderContextValue.Provider value={context}>
@@ -128,7 +157,8 @@ export function renderPortfolioPage(input: RenderPortfolioPageInput): PortfolioP
 	const hoisted = /^(?:<link [^>]*\/?>)+/.exec(markup)?.[0] ?? "";
 	const html = markup.slice(hoisted.length);
 	const faces = portfolioFontFaces(view, theme.headingWeights);
-	const effect = effectAssets(view, theme.palette);
+	// A work's page has no intro, so it plays no intro effect.
+	const effect = page.kind === "home" ? effectAssets(view, theme.palette) : { css: "", script: "" };
 	return {
 		lang: view.locale,
 		dir: view.dir,

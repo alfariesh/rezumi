@@ -1,6 +1,6 @@
 import type { PortfolioReportStatus } from "@rezumi/schema/portfolio/moderation";
 import { ORPCError } from "@orpc/server";
-import { and, desc, eq, isNotNull, isNull, lt, or, sql } from "drizzle-orm";
+import { and, desc, eq, isNotNull, isNull, lt, ne, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { parsePortfolioData } from "@rezumi/schema/portfolio/data";
@@ -243,9 +243,13 @@ export async function setPortfolioReportStatus(
 				handledAt: handled ? new Date() : null,
 				handledByUserId: handled ? actorUserId : null,
 			})
-			.where(eq(report.id, input.reportId))
+			// Setting the status a report already has would overwrite who handled it first and when.
+			.where(and(eq(report.id, input.reportId), ne(report.status, input.status)))
 			.returning({ portfolioId: report.portfolioId });
-		if (!row) throw new ORPCError("NOT_FOUND");
+		if (!row) {
+			const [existing] = await tx.select({ id: report.id }).from(report).where(eq(report.id, input.reportId));
+			throw existing ? portfolioErrors.moderationConflict() : new ORPCError("NOT_FOUND");
+		}
 		await recordAction(tx, {
 			actorUserId,
 			action: `report.${input.status}`,
@@ -267,14 +271,19 @@ export async function setPortfolioOwnerBanned(
 ) {
 	await db.transaction(async (tx) => {
 		const [target] = await tx
-			.select({ userId: schema.portfolio.userId, role: schema.user.role, banned: schema.user.banned })
+			.select({
+				userId: schema.portfolio.userId,
+				role: schema.user.role,
+				// Banned as `ownerIsNotBanned` sees it: a ban past its expiry no longer counts.
+				banned: sql<boolean>`coalesce(${schema.user.banned}, false) and (${schema.user.banExpires} is null or ${schema.user.banExpires} > now())`,
+			})
 			.from(schema.portfolio)
 			.innerJoin(schema.user, eq(schema.portfolio.userId, schema.user.id))
 			.where(eq(schema.portfolio.id, input.portfolioId))
 			.for("update", { of: schema.user });
 		if (!target) throw portfolioErrors.notFound();
 		if (target.role === "admin") throw portfolioErrors.cannotBanAdmin();
-		if ((target.banned === true) === input.banned) throw portfolioErrors.moderationConflict();
+		if (target.banned === input.banned) throw portfolioErrors.moderationConflict();
 		await tx
 			.update(schema.user)
 			.set({ banned: input.banned, banReason: input.banned ? input.reason : null, banExpires: null })

@@ -10,10 +10,11 @@ import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { BlockList, editWork } from "../blocks/block-list";
 import { pageLocaleOf, useSourceResume } from "../editor/context";
 import { ChoiceSelect, PanelGroup, TextInput, UrlInput } from "../editor/fields";
-import { editPortfolio, usePortfolioData } from "../editor/store";
+import { editPortfolio, lastSavedData, usePortfolioData } from "../editor/store";
 import { usePortfolioEditorUi } from "../editor/ui";
 import { ImageField } from "../images/image-field";
 import { workMetrics } from "../metrics/metrics";
+import { WorkAddress } from "./work-address";
 import { retitleWork } from "./works";
 import { ChipInput } from "@/components/input/chip-input";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -35,6 +36,11 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 	const data = usePortfolioData();
 	const source = useSourceResume();
 	const openWork = usePortfolioEditorUi((state) => state.openWork);
+	// Back to the list, with focus on the Work section instead of lost with the editor that closed.
+	const close = () => {
+		openWork(null);
+		usePortfolioEditorUi.getState().revealSection("work");
+	};
 	const confirm = useConfirm();
 	const work = data.works.items.find((entry) => entry.id === workId);
 	if (!work) return null;
@@ -51,7 +57,7 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 			confirmText: t`Delete work`,
 		});
 		if (!confirmed) return;
-		openWork(null);
+		close();
 		editPortfolio(
 			(draft) => {
 				draft.works.items = draft.works.items.filter((entry) => entry.id !== workId);
@@ -63,7 +69,7 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 	return (
 		<div ref={top} className="grid scroll-mt-3 gap-6 p-3">
 			<div className="flex items-center gap-2">
-				<Button size="sm" variant="ghost" onPress={() => openWork(null)}>
+				<Button size="sm" variant="ghost" onPress={close}>
 					<Icon name="arrow-left" size={16} />
 					<Trans>All sections</Trans>
 				</Button>
@@ -80,11 +86,14 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 					label={t`Cover picture`}
 					value={work.cover}
 					altSuggestion={work.title.trim()}
-					onChange={(image) =>
-						update((draft) => {
-							if (image) draft.cover = image;
-							else delete draft.cover;
-						})
+					onChange={(image, typing) =>
+						update(
+							(draft) => {
+								if (image) draft.cover = image;
+								else delete draft.cover;
+							},
+							typing ? "cover.alt" : undefined,
+						)
 					}
 					focus={{
 						value: work.cover?.focus,
@@ -104,12 +113,13 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 						editPortfolio(
 							(draft) => {
 								const target = draft.works.items.find((entry) => entry.id === workId);
-								if (target) retitleWork(draft, target as PortfolioWork, value);
+								if (target) retitleWork(draft, target as PortfolioWork, value, lastSavedData());
 							},
 							{ key: `works.${workId}.title` },
 						)
 					}
 				/>
+				<WorkAddress work={work} />
 				<TextInput
 					label={t`Summary`}
 					multiline
@@ -192,7 +202,7 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 							update((draft) => {
 								if (url) draft.primaryLink = { label: draft.primaryLink?.label ?? "", url };
 								else delete draft.primaryLink;
-							})
+							}, "primaryLink.url")
 						}
 					/>
 					<TextInput

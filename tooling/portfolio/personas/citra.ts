@@ -41,6 +41,8 @@ export const citra: PersonaDefinition = {
 			availability: {
 				show: true,
 				text: t(["Project slots open for January 2026", "Slot proyek Januari 2026 tersedia"]),
+				roles: ["Brand Designer", "Packaging Designer"],
+				types: ["freelance", "part-time"],
 			},
 			highlights: [
 				metric("hl-1", ["identity clients", "klien identitas"], 25, { suffix: "+" }),
@@ -129,6 +131,14 @@ export const citra: PersonaDefinition = {
 							videoId: "Vq7nLm3RkTe",
 							title: t(["Process: from motif to logo", "Proses: dari motif ke logo"]),
 							thumbnail: picture("mozaik-video.svg", ["Video: from motif to logo", "Video: dari motif ke logo"]),
+						},
+						{
+							id: "w-motif-figma",
+							type: "embed",
+							provider: "figma",
+							ref: "board/Mt4Vq9Lc2Rk7Pz8Xw3Nb?node-id=4-120",
+							title: t(["Motif board in Figma", "Papan motif di Figma"]),
+							thumbnail: picture("mozaik-2.svg", ["Figma: the motif board", "Figma: papan motif"]),
 						},
 						{
 							id: "w-tenun-pdf",

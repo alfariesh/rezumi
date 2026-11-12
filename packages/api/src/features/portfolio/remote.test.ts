@@ -94,3 +94,20 @@ describe("remoteUrl", () => {
 		expect(remoteUrl("studio.example.test/work#top")?.href).toBe("https://studio.example.test/work");
 	});
 });
+
+describe("fetchRemote's answer about odd statuses", () => {
+	it("reads a status a Response can't hold as a site turning bots away", async () => {
+		const failing = (error: Error) => () => Promise.reject(error);
+		for (const error of [new TypeError("Invalid response status code 999"), new Error("Invalid response status 999")])
+			await expect(
+				fetchRemote(new URL("https://site.example.test/"), {
+					signal: AbortSignal.timeout(5000),
+					accept: "text/html",
+					acceptsType: () => true,
+					maxBytes: 1024,
+					overflow: "truncate",
+					hop: failing(error),
+				}),
+			).rejects.toMatchObject({ name: "RemoteFetchError", reason: "blocked" });
+	});
+});

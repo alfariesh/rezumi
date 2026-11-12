@@ -49,6 +49,7 @@ vi.mock("@rezumi/env/server", () => ({
 	},
 }));
 vi.mock("@formepdf/core/pkg-web/forme_bg.wasm", () => ({ default: new Uint8Array() }));
+vi.mock("@resvg/resvg-wasm/index_bg.wasm", () => ({ default: new Uint8Array() }));
 vi.mock("@formepdf/core/worker", () => ({ init: mocks.wasm }));
 vi.mock("@rezumi/auth/config", () => ({ initializeAuth: mocks.auth }));
 vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: mocks.run }));
@@ -74,7 +75,7 @@ vi.mock("@rezumi/pdf/server", () => ({
 		mocks.pictureReader = reader;
 	},
 }));
-vi.mock("@rezumi/api/features/portfolio/public", () => ({ isPublicPortfolioFile: mocks.publicPortfolioFile }));
+vi.mock("@rezumi/api/features/portfolio/public", () => ({ portfolioFileAccess: mocks.publicPortfolioFile }));
 vi.mock("@rezumi/api/features/portfolio/public-limit", () => ({
 	configurePortfolioPublicLimiter: vi.fn(),
 	publicPortfolioRequestAllowed: () => Promise.resolve(true),
@@ -152,13 +153,16 @@ describe("Cloudflare invocation lifetime", () => {
 	it("reads a portfolio picture only while a published portfolio uses it", async () => {
 		mocks.publicOwner.mockResolvedValue(true);
 		mocks.readPicture.mockReset().mockResolvedValue({ data: new Uint8Array([1]), size: 1 });
-		mocks.publicPortfolioFile.mockReset().mockResolvedValue(false);
+		mocks.publicPortfolioFile.mockReset().mockResolvedValue("none");
 		const key = "uploads/member/pictures/portfolio/photo.jpg";
 		await expect(mocks.pictureReader?.(key)).rejects.toThrow("Picture unavailable");
 		expect(mocks.publicPortfolioFile).toHaveBeenCalledWith(key);
 		expect(mocks.readPicture).not.toHaveBeenCalled();
 
-		mocks.publicPortfolioFile.mockResolvedValue(true);
+		// Behind a visitor password, a picture is never drawn into a card or resume either.
+		mocks.publicPortfolioFile.mockResolvedValue("protected");
+		await expect(mocks.pictureReader?.(key)).rejects.toThrow("Picture unavailable");
+		mocks.publicPortfolioFile.mockResolvedValue("public");
 		await expect(mocks.pictureReader?.(key)).resolves.toEqual(new Uint8Array([1]));
 		// A resume's own picture needs no portfolio check.
 		mocks.publicPortfolioFile.mockClear();

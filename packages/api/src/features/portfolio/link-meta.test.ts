@@ -194,5 +194,8 @@ describe("decodePage", () => {
 		expect(decodePage(declared, "text/html")).toContain("Café");
 		expect(decodePage(new TextEncoder().encode("<title>Kopi ☕</title>"), null)).toBe("<title>Kopi ☕</title>");
 		expect(decodePage(new TextEncoder().encode("ok"), "text/html; charset=made-up")).toBe("ok");
+		// A page that declares UTF-16 in its own ASCII markup is UTF-8, as browsers read it.
+		const utf16 = new TextEncoder().encode('<meta charset="utf-16"><title>Kopi ☕</title>');
+		expect(decodePage(utf16, "text/html")).toContain("Kopi ☕");
 	});
 });

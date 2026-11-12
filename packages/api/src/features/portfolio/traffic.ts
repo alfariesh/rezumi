@@ -1,5 +1,7 @@
 import type { PortfolioDevice, PortfolioVisitSource } from "@rezumi/schema/portfolio/statistics";
 import { createHash } from "node:crypto";
+import { PORTFOLIO_QR_UTM_SOURCE } from "@rezumi/schema/portfolio/statistics";
+import { rateLimitAddress } from "./client-address";
 
 /**
  * Who a visit is, for one hour's deduplication: a hash of the client's address and browser. A hash so no address is
@@ -7,7 +9,9 @@ import { createHash } from "node:crypto";
  * networks) aren't merged into one visitor.
  */
 export function visitorKey(headers: Headers, trustedClient?: string): string {
-	const parts = [trustedClient?.trim() ?? "", headers.get("user-agent") ?? "", headers.get("accept-language") ?? ""];
+	// An IPv6 address by its /64: one host rotating addresses inside it stays one visitor.
+	const address = rateLimitAddress(trustedClient) ?? trustedClient?.trim() ?? "";
+	const parts = [address, headers.get("user-agent") ?? "", headers.get("accept-language") ?? ""];
 	return createHash("sha256").update(parts.join("\n")).digest("hex").slice(0, 32);
 }
 
@@ -37,6 +41,7 @@ const WHATSAPP = /(?:^|\.)whatsapp\.com$|^wa\.me$|^com\.whatsapp(?:\.w4b)?$/;
 const GOOGLE = /(?:^|\.)google\.[a-z.]+$|^com\.google\.android\.(?:googlequicksearchbox|gm)$/;
 
 function sourceOfName(name: string): PortfolioVisitSource | null {
+	if (name === PORTFOLIO_QR_UTM_SOURCE) return "qr";
 	if (name.includes("linkedin") || name === "lnkd") return "linkedin";
 	if (name.includes("whatsapp") || name === "wa") return "whatsapp";
 	if (name.includes("google")) return "google";
@@ -89,4 +94,34 @@ export function lastDays(at: Date, timeZone: string, count: number): string[] {
 	return Array.from({ length: count }, (_, index) =>
 		new Date(end - (count - 1 - index) * 86_400_000).toISOString().slice(0, 10),
 	);
+}
+
+/** How far a time zone's clock is ahead of UTC at a moment, in milliseconds; an unknown zone counts as UTC. */
+function zoneOffset(at: number, timeZone: string): number {
+	let parts: Intl.DateTimeFormatPart[];
+	try {
+		parts = new Intl.DateTimeFormat("en-US", {
+			timeZone,
+			hourCycle: "h23",
+			year: "numeric",
+			month: "numeric",
+			day: "numeric",
+			hour: "numeric",
+			minute: "numeric",
+			second: "numeric",
+		}).formatToParts(at);
+	} catch {
+		return 0;
+	}
+	const part = (type: string) => Number(parts.find((item) => item.type === type)?.value ?? 0);
+	const wall = Date.UTC(part("year"), part("month") - 1, part("day"), part("hour"), part("minute"), part("second"));
+	return wall - Math.floor(at / 1000) * 1000;
+}
+
+/** The moment a calendar date (`YYYY-MM-DD`) begins in a time zone, daylight saving included. */
+export function startOfDayInTimeZone(date: string, timeZone: string): Date {
+	const midnight = Date.parse(`${date}T00:00:00Z`);
+	// The offset at midnight local time can differ from the one at midnight UTC; a second pass settles it.
+	const first = midnight - zoneOffset(midnight, timeZone);
+	return new Date(midnight - zoneOffset(first, timeZone));
 }

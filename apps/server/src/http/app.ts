@@ -22,8 +22,13 @@ import {
 } from "../openapi/metadata";
 import { handleRpc } from "../rpc/handler";
 import { handleAgentSkillArchive, handleAgentSkillsIndex } from "../static/agent-skills";
-import { handlePortfolioCard } from "../static/portfolio-card";
-import { servePortfolioOrResume } from "../static/portfolio-page";
+import { handlePortfolioCard, handlePortfolioWorkCard } from "../static/portfolio-card";
+import {
+	isPortfolioWorkPath,
+	portfolioRoutesEnabled,
+	servePortfolioOrResume,
+	servePortfolioWork,
+} from "../static/portfolio-page";
 import { handleResumeCard } from "../static/resume-card";
 import { serveResumePage } from "../static/resume-page";
 import { handleSchemaJson } from "../static/schema";
@@ -44,7 +49,13 @@ import { handleCareerJobs } from "./career-jobs";
 import { handleCustomDomain, handleTraefikProvider } from "./custom-domain";
 import { handleDodoPaymentWebhook } from "./dodo";
 import { handleHealth } from "./health";
-import { handlePortfolioEvent, handlePortfolioMessage, handlePortfolioReport } from "./portfolio";
+import {
+	handlePortfolioEvent,
+	handlePortfolioMessage,
+	handlePortfolioReport,
+	handlePortfolioUnlock,
+	handlePortfolioVcard,
+} from "./portfolio";
 import { handlePublicResumePdf } from "./public-resume-pdf";
 import { handleResumePdfDownload } from "./resume-pdf";
 import { handleSumopodPaymentWebhook } from "./sumopod";
@@ -154,6 +165,25 @@ export function createApp(options: AppOptions = {}) {
 	app.post("/api/portfolio/:username/report", limitBody(16 * 1024), (c) =>
 		handlePortfolioReport(c.req.raw, c.req.param("username"), client(c)),
 	);
+	// Phase 13: the password page's form, "Save contact" and a work's link preview. While portfolios are off, none of
+	// them answers: the addresses fall through as before. The work card comes before the resume cards' route, whose
+	// `.+` would take it otherwise.
+	app.post("/api/portfolio/:username/unlock", limitBody(16 * 1024), (c, next) =>
+		portfolioRoutesEnabled() ? handlePortfolioUnlock(c.req.raw, c.req.param("username"), client(c)) : next(),
+	);
+	app.get("/api/portfolio/:username/vcard", (c, next) =>
+		portfolioRoutesEnabled() ? handlePortfolioVcard(c.req.raw, c.req.param("username"), client(c)) : next(),
+	);
+	app.get("/cards/:username/work/:file{[^/]+\\.png}", (c, next) =>
+		portfolioRoutesEnabled()
+			? handlePortfolioWorkCard(
+					c.req.raw,
+					c.req.param("username"),
+					c.req.param("file").slice(0, -".png".length),
+					client(c),
+				)
+			: next(),
+	);
 	// Outside /api/resumes, which robots.txt keeps crawlers out of: link previews need to fetch these.
 	app.get("/cards/:username/:file{.+\\.png}", (c) =>
 		handleResumeCard(c.req.raw, c.req.param("username"), c.req.param("file").slice(0, -".png".length)),
@@ -216,6 +246,12 @@ export function createApp(options: AppOptions = {}) {
 	// A resume's web page, rendered here, and its password form; files with the same shape of address were served
 	// just above. `/<username>` is the account's published portfolio, or else its primary resume, on every domain the
 	// app answers.
+	// A portfolio work's own page (Phase 13, B2); while portfolios are off the address falls through as before.
+	app.get("/:username/work/:slug", (c, next) =>
+		isPortfolioWorkPath(c.req.path) && portfolioRoutesEnabled()
+			? servePortfolioWork(c.req.raw, c.req.param("username"), c.req.param("slug"), client(c))
+			: next(),
+	);
 	app.on(["GET", "POST"], "/:username/:slug", limitBody(16 * 1024), (c, next) =>
 		isPublicResumePath(c.req.path)
 			? serveResumePage(c.req.raw, { username: c.req.param("username"), slug: c.req.param("slug") }, client(c))

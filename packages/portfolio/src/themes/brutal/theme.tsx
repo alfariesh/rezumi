@@ -1,14 +1,13 @@
-import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
-import type { ReactNode } from "react";
+import type { SectionBodyStyle } from "../../shared/section-body";
+import type { PortfolioViewWork } from "../../view";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { HeroHeadline, HeroName } from "../../shared/hero-text";
 import { UiIcon } from "../../shared/icons";
-import { introLocation, IntroChips, useIntroBackground } from "../../shared/intro";
+import { introLocation, IntroChips, OpenToWork, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
-import { ServiceList, TestimonialList } from "../../shared/offers";
-import { Buttons, Clients, Contact, CustomSectionBody, Picture, Prose, Section } from "../../shared/parts";
-import { ResumeSectionBody } from "../../shared/resume";
+import { Buttons, Picture, Section } from "../../shared/parts";
+import { SectionBody } from "../../shared/section-body";
 import { Navigation, PageShell } from "../../shared/shell";
 
 /** A decorative print-style burst, drawn here rather than borrowed from the reference sites. */
@@ -34,6 +33,7 @@ function Hero() {
 			>
 				<div className="br-intro">
 					<IntroChips location={introLocation(view)} availability={hero.availability} availabilityFirst />
+					<OpenToWork />
 					<HeroName className="br-name" />
 					<HeroHeadline className="br-headline" />
 					{hero.greeting && <p className="br-greeting">{hero.greeting}</p>}
@@ -74,7 +74,7 @@ function WorkGrid({ works }: WorkGridProps) {
 		<ul className="br-works" data-variant={variant}>
 			{works.map((work, index) => (
 				<li key={work.id} className="br-work" data-image={Boolean(work.cover)}>
-					<a className="br-work__link" href={`#${work.anchor}`} aria-labelledby={`${work.anchor}--card-title`}>
+					<a className="br-work__link" href={work.href} aria-labelledby={`${work.anchor}--card-title`}>
 						{work.cover && (
 							<span className="pf-cover br-work__cover">
 								<Picture
@@ -112,30 +112,11 @@ function WorkGrid({ works }: WorkGridProps) {
 	);
 }
 
-type SectionBodyProps = { section: PortfolioViewSection };
-
-function SectionBody({ section }: SectionBodyProps): ReactNode {
-	const { view } = useRender();
-	const variant = (key: Parameters<typeof themeVariant>[1]) => themeVariant("brutal", key, view.design.variants[key]);
-	switch (section.kind) {
-		case "about":
-			return <Prose html={section.html} className="br-lead" />;
-		case "work":
-			return <WorkGrid works={section.works} />;
-		case "services":
-			return <ServiceList section={section} className="br-services" variant={variant("services")} />;
-		case "testimonials":
-			return <TestimonialList section={section} className="br-quotes" variant={variant("testimonials")} />;
-		case "clients":
-			return <Clients section={section} variant={variant("clients")} />;
-		case "custom":
-			return <CustomSectionBody section={section} imageClassName="br-custom__image" />;
-		case "contact":
-			return <Contact section={section} ctaClassName="br-cta" />;
-		default:
-			return <ResumeSectionBody section={section} />;
-	}
-}
+const SECTION_STYLE: SectionBodyStyle = {
+	theme: "brutal",
+	prefix: "br",
+	work: (works) => <WorkGrid works={works} />,
+};
 
 type BrutalPageProps = { year: number; creditUrl: string };
 
@@ -164,7 +145,7 @@ export function BrutalPage({ year, creditUrl }: BrutalPageProps) {
 			{view.sections.map((section, index) => (
 				<Section key={section.key} section={section} className={`pf-section br-section br-section--${section.kind}`}>
 					<div className="br-section__body">
-						<SectionBody section={section} />
+						<SectionBody section={section} style={SECTION_STYLE} />
 					</div>
 					<span className="br-section__number" aria-hidden="true">
 						{String(index + 1).padStart(2, "0")}

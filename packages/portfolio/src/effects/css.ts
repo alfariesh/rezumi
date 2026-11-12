@@ -22,8 +22,11 @@ export const EFFECT_CSS: Record<Exclude<PortfolioHeroEffect, "none">, string> = 
 @media (forced-colors:active){[data-pfx="shimmer"]{-webkit-text-fill-color:currentColor}}
 @keyframes pfx-shimmer{from{background-position:100% 0}to{background-position:0 0}}
 `,
+	// The glyphs turn transparent through `-webkit-text-fill-color`, which a theme's own `color` on the headline (Paper's
+	// muted, Mozaik's accent) doesn't undo, as `color:transparent` was.
 	gradient: String.raw`
-[data-pfx="gradient"]{background:linear-gradient(90deg,var(--pf-fx-a),var(--pf-fx-b),var(--pf-fx-c),var(--pf-fx-a)) 0 0/300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+[data-pfx="gradient"]{background:linear-gradient(90deg,var(--pf-fx-a),var(--pf-fx-b),var(--pf-fx-c),var(--pf-fx-a)) 0 0/300% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+@media (forced-colors:active){[data-pfx="gradient"]{-webkit-text-fill-color:currentColor}}
 [data-bg="image"] [data-pfx="gradient"]{--pf-fx-a:var(--pf-fx-a-dark);--pf-fx-b:var(--pf-fx-b-dark);--pf-fx-c:var(--pf-fx-c-dark)}
 @media (prefers-reduced-motion:no-preference){[data-pfx="gradient"]{animation:pfx-gradient 5s ease-in-out both}}
 @keyframes pfx-gradient{from{background-position:0 0}to{background-position:100% 0}}
@@ -31,7 +34,7 @@ export const EFFECT_CSS: Record<Exclude<PortfolioHeroEffect, "none">, string> = 
 	typewriter: String.raw`
 .pfx-type{display:inline-grid;vertical-align:top;max-width:100%}
 .pfx-type>*{grid-area:1/1}
-.pfx-type__ghost{visibility:hidden}
+.pfx-type__ghost{visibility:hidden;white-space:pre-wrap}
 .pfx-type__out{white-space:pre-wrap}
 @media (prefers-reduced-motion:no-preference){.pfx-on .pfx-type__out::after{content:"";display:inline-block;width:2px;height:1em;margin-inline:2px -4px;vertical-align:-.12em;background:var(--pf-accent-text);animation:pfx-caret 1s steps(1) infinite}.pfx-on.pfx-done .pfx-type__out::after{animation:none;opacity:0;transition:opacity .4s}}
 @keyframes pfx-caret{50%{opacity:0}}
@@ -46,6 +49,7 @@ export const EFFECT_CSS: Record<Exclude<PortfolioHeroEffect, "none">, string> = 
 	"vector-hover": String.raw`
 @media (prefers-reduced-motion:no-preference) and ((hover:none) or (pointer:coarse) or (max-width:760px)){${WORDS}}
 .pfx-c{position:relative;transition:color .35s}
+.pfx-c>i{display:inline-block;width:0;height:0;vertical-align:baseline}
 .pfx-c.pfx-on{color:transparent}
 .pfx-vx{position:absolute;inset-inline-start:0;top:0;pointer-events:none;opacity:0;transition:opacity .25s;outline:1px solid var(--pf-accent-text);outline-offset:.02em;direction:ltr;text-transform:none}
 .pfx-on>.pfx-vx{opacity:1}

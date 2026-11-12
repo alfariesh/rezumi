@@ -18,24 +18,28 @@ type EffectRunner = (d: Document) => void;
 /**
  * Types the headline's phrases in turn and back to the first one, done within five seconds however long they are:
  * the pauses take at most 1.7 seconds, and the typing shares the 2.9 seconds left, as fast as it needs (no lower
- * limit on a letter's time).
+ * limit on a letter's time). It types whole letters as readers see them (graphemes, where the browser can tell), so
+ * a conjunct or an emoji never shows half made.
  */
 const typewriter: EffectRunner = (d) => {
 	const w = d.defaultView;
 	if (!w || w.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 	d.querySelectorAll<HTMLElement>('[data-pfx="typewriter"]').forEach((el) => {
 		const out = el.querySelector<HTMLElement>(".pfx-type__out");
-		let list: string[] = [];
+		let list: unknown = [];
 		try {
 			list = JSON.parse(el.dataset.pfxPhrases || "[]");
 		} catch {
 			return;
 		}
-		if (!out || list.length < 2) return;
+		const phrases = Array.isArray(list) ? list.filter((phrase): phrase is string => typeof phrase === "string") : [];
+		if (!out || phrases.length < 2) return;
 		(el as HTMLElement & { pfxStop?: () => void }).pfxStop?.();
 		const timers: number[] = [];
-		const first = [...(list[0] as string)];
-		const order = [...list.slice(1), list[0] as string].map((phrase) => [...phrase]);
+		const graphemes = Intl.Segmenter ? new Intl.Segmenter(undefined, { granularity: "grapheme" }) : null;
+		const [first = [], ...order] = [...phrases, phrases[0] as string].map((phrase) =>
+			graphemes ? Array.from(graphemes.segment(phrase), (part) => part.segment) : [...phrase],
+		);
 		const pause = Math.min(600, 1200 / (order.length - 1));
 		let count = 0;
 		order.reduce((current, next) => ((count += current.length + next.length), next), first);
@@ -99,7 +103,7 @@ const scramble: EffectRunner = (d) => {
 					const r = range.getBoundingClientRect();
 					const cell = d.createElement("span");
 					cell.textContent = ch;
-					cell.style.cssText = `left:${r.left - box.left}px;top:${r.top - box.top}px;width:${r.width}px;height:${r.height}px;line-height:${r.height}px`;
+					cell.style.cssText = `left:${r.left - box.left - el.clientLeft}px;top:${r.top - box.top - el.clientTop}px;width:${r.width}px;height:${r.height}px;line-height:${r.height}px`;
 					layer.append(cell);
 					cells.push([cell, ch]);
 				}
@@ -139,7 +143,9 @@ const scramble: EffectRunner = (d) => {
 /**
  * On a desktop with a mouse, the letter under the pointer turns into a dashed outline inside a selection box with
  * handles and its size, like a design app; it returns 0.65 seconds after the pointer leaves. On touch screens and phones
- * the CSS plays the gentle fade-up instead. Hebrew and Arabic text, whose letters join, isn't split and stays still.
+ * the CSS plays the gentle fade-up instead. Text whose letters join or combine (Hebrew, Arabic, the Indic scripts,
+ * Thai, Lao, Myanmar, Khmer) isn't split and stays still; elsewhere a letter is a grapheme, so an accent or an emoji
+ * stays whole.
  * Screen readers read a hidden copy of the text, not the wrapped letters (naming a paragraph with `aria-label` isn't
  * allowed).
  */
@@ -150,8 +156,9 @@ const vector: EffectRunner = (d) => {
 	d.querySelectorAll<HTMLElement>('[data-pfx="vector-hover"]').forEach((el) => {
 		if (el.dataset.pfxReady) return;
 		const text = (el.textContent || "").trim();
-		if (/[֐-ࣿ]/.test(text)) return;
+		if (/[\u0590-\u0eff\u1000-\u109f\u1780-\u17ff]/.test(text)) return;
 		el.dataset.pfxReady = "1";
+		const graphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" });
 		const copy = d.createElement("span");
 		copy.className = "sr-only";
 		copy.textContent = text;
@@ -164,7 +171,7 @@ const vector: EffectRunner = (d) => {
 		for (let node = walker.nextNode(); node; node = walker.nextNode()) nodes.push(node);
 		for (const node of nodes) {
 			const parts = d.createDocumentFragment();
-			for (const ch of node.textContent || "") {
+			for (const { segment: ch } of graphemes.segment(node.textContent || "")) {
 				if (/\s/.test(ch)) parts.append(ch);
 				else {
 					const letter = d.createElement("span");
@@ -184,7 +191,6 @@ const vector: EffectRunner = (d) => {
 			if (!letter.querySelector(".pfx-vx")) {
 				const r = letter.getBoundingClientRect();
 				const probe = d.createElement("i");
-				probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
 				letter.append(probe);
 				const baseline = probe.getBoundingClientRect().top - r.top;
 				probe.remove();

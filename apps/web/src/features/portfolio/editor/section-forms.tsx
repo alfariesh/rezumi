@@ -121,18 +121,27 @@ export function CustomSectionForm({ id }: { id: string }) {
 							if (url) target.button.url = url;
 							else delete target.button.url;
 						}
-					})
+					}, "button.url")
 				}
 			/>
+			{section.button?.label?.trim() && !section.button.url && (
+				// The page shows a button only with somewhere to go, as for services and intro buttons.
+				<p className="-mt-2 px-1 text-body-xs text-warning">
+					<Trans>Not on the page: add the address the button opens.</Trans>
+				</p>
+			)}
 			<ImageField
 				label={t`Picture (optional)`}
 				value={section.image}
 				altSuggestion={section.title.trim()}
-				onChange={(image) =>
-					update((target) => {
-						if (image) target.image = image;
-						else delete target.image;
-					})
+				onChange={(image, typing) =>
+					update(
+						(target) => {
+							if (image) target.image = image;
+							else delete target.image;
+						},
+						typing ? "image.alt" : undefined,
+					)
 				}
 			/>
 			<Button variant="danger-soft" className="w-fit" onPress={() => void remove()}>

@@ -15,13 +15,18 @@ import {
  */
 export type SchemaKit = {
 	lenient: boolean;
-	/** A value with a default: used when it's missing, and (reading stored data) when it's broken. */
-	field<T extends z.ZodType>(schema: T, fallback: z.output<T>): z.ZodDefault<T>;
+	/**
+	 * A value with a default: used when it's missing, and (reading stored data) when it's broken, unless `broken` gives
+	 * another value for that case. A privacy setting passes the safe value there, so a broken one hides rather than shows.
+	 */
+	field<T extends z.ZodType>(schema: T, fallback: z.output<T>, broken?: z.output<T>): z.ZodDefault<T>;
 	/** An optional value; reading stored data, a broken one reads as missing. */
 	optional<T extends z.ZodType>(schema: T): z.ZodOptional<T>;
 	/**
 	 * A list of at most `max` items, empty by default. Writing, every item must be valid and, with `id`, have its own
-	 * id; reading stored data, broken and repeated items are dropped and the rest cut at `max`.
+	 * id; reading stored data, broken and repeated items are dropped and the rest cut at `max`. With `min`, a stored list
+	 * left shorter than that is itself broken, so the item holding it (a block) is dropped too, instead of reading as
+	 * data the next save would refuse.
 	 */
 	list<T extends z.ZodType>(
 		item: T,
@@ -43,10 +48,11 @@ export type SchemaKit = {
 export function createSchemaKit(lenient: boolean): SchemaKit {
 	return {
 		lenient,
-		field: (schema, fallback) => {
+		field: (schema, fallback, broken) => {
 			const value = () => structuredClone(fallback) as never;
+			const repaired = broken === undefined ? value : () => structuredClone(broken) as never;
 			// Typed as the write schema: both produce the same output, and the input of either may leave it out.
-			return (lenient ? schema.catch(value).default(value) : schema.default(value)) as never;
+			return (lenient ? schema.catch(repaired).default(value) : schema.default(value)) as never;
 		},
 		optional: (schema) => (lenient ? schema.optional().catch(undefined) : schema.optional()) as never,
 		list: (item, max, options = {}) => {
@@ -68,6 +74,7 @@ export function createSchemaKit(lenient: boolean): SchemaKit {
 						}
 						return kept;
 					})
+					.refine((kept) => kept.length >= (options.min ?? 0), "Too few items are left.")
 					.default([]) as never;
 			}
 			const array = z

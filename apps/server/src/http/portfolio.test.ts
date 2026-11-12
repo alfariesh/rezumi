@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const mocks = vi.hoisted(() => ({
 	findTarget: vi.fn(),
@@ -7,11 +8,20 @@ const mocks = vi.hoisted(() => ({
 	notify: vi.fn(),
 	submitReport: vi.fn(),
 	notifyReport: vi.fn(),
+	allowed: vi.fn(),
+	findPortfolio: vi.fn(),
+	access: vi.fn(),
+	verify: vi.fn(),
+}));
+
+vi.mock("@rezumi/api/features/portfolio/public-limit", () => ({
+	publicPortfolioRequestAllowed: mocks.allowed,
+	tooManyPortfolioRequests: () => new Response("Too Many Requests", { status: 429 }),
 }));
 
 vi.mock("@rezumi/api/features/portfolio/public", () => ({
 	findPortfolioEventTarget: mocks.findTarget,
-	findPublicPortfolio: vi.fn(),
+	findPublicPortfolio: mocks.findPortfolio,
 	recordPortfolioEvent: mocks.recordEvent,
 	recordPortfolioVisit: vi.fn(),
 }));
@@ -23,12 +33,28 @@ vi.mock("@rezumi/api/features/portfolio/report", () => ({
 	notifyPortfolioReport: mocks.notifyReport,
 	submitPortfolioReport: mocks.submitReport,
 }));
-vi.mock("../static/resume-page", () => ({ serveResumePage: vi.fn() }));
+vi.mock("../static/resume-page", () => ({ serveResumePage: vi.fn(), unavailableResponse: vi.fn() }));
+vi.mock("@rezumi/api/features/portfolio/visitor-access", async (original) => ({
+	...(await original<typeof import("@rezumi/api/features/portfolio/visitor-access")>()),
+	portfolioAccess: mocks.access,
+	verifyPortfolioPassword: mocks.verify,
+}));
+vi.mock("@rezumi/env/server", async (original) => {
+	const { env } = await original<typeof import("@rezumi/env/server")>();
+	return { env: { ...env, APP_URL: "https://rezumi.example", APP_ALIAS_URL: undefined } };
+});
 
-const { handlePortfolioEvent, handlePortfolioMessage, handlePortfolioReport, parsePortfolioEvent } =
-	await import("./portfolio");
+const {
+	handlePortfolioEvent,
+	handlePortfolioMessage,
+	handlePortfolioReport,
+	handlePortfolioUnlock,
+	handlePortfolioVcard,
+	parsePortfolioEvent,
+	unlockTarget,
+} = await import("./portfolio");
 
-const target = { id: "pf1", userId: "owner", timezone: "UTC", hasWork: true };
+const target = { id: "pf1", userId: "owner", timezone: "UTC", hasWork: true, passwordHash: null };
 const event = (body: string, headers: Record<string, string> = {}) =>
 	new Request("https://rezumi.example/api/portfolio/nadia/event", { method: "POST", body, headers });
 
@@ -37,18 +63,32 @@ beforeEach(() => {
 	mocks.findTarget.mockResolvedValue(target);
 	mocks.recordEvent.mockResolvedValue(undefined);
 	mocks.notify.mockResolvedValue(true);
+	mocks.allowed.mockResolvedValue(true);
+	mocks.access.mockResolvedValue("open");
 });
 
 describe("parsePortfolioEvent", () => {
-	it("accepts the known kinds, and a work only with a valid id", () => {
+	it("accepts the known kinds, a click's work id when it's valid, and a view's referrer", () => {
 		expect(parsePortfolioEvent('{"kind":"whatsapp"}')).toEqual({ kind: "whatsapp" });
-		expect(parsePortfolioEvent('{"kind":"work","id":"w1"}')).toEqual({ kind: "work", id: "w1" });
-		expect(parsePortfolioEvent('{"kind":"work"}')).toBeNull();
-		expect(parsePortfolioEvent('{"kind":"work","id":"../x"}')).toBeNull();
+		expect(parsePortfolioEvent('{"kind":"pdf","id":"w1"}')).toEqual({ kind: "pdf", id: "w1" });
+		expect(parsePortfolioEvent('{"kind":"pdf","id":"../x"}')).toEqual({ kind: "pdf" });
+		expect(parsePortfolioEvent('{"kind":"embed"}')).toEqual({ kind: "embed" });
+		expect(parsePortfolioEvent('{"kind":"vcard"}')).toEqual({ kind: "vcard" });
+		expect(parsePortfolioEvent('{"kind":"view"}')).toEqual({ kind: "view" });
+		expect(parsePortfolioEvent(`{"kind":"view","ref":"${"x".repeat(400)}"}`)?.ref).toHaveLength(300);
+		// A prerendered work page's view names its work, and where the visitor came from.
+		expect(parsePortfolioEvent('{"kind":"view","id":"w1","ref":"https://www.google.com/"}')).toEqual({
+			kind: "view",
+			id: "w1",
+			ref: "https://www.google.com/",
+		});
+		expect(parsePortfolioEvent('{"kind":"pdf","ref":"https://x.example"}')).toEqual({ kind: "pdf" });
+		// Opening a work is counted by its page now, not by a beacon.
+		expect(parsePortfolioEvent('{"kind":"work","id":"w1"}')).toBeNull();
 	});
 
 	it("refuses anything else", () => {
-		for (const body of ["", "nope", "null", "[]", '{"kind":"view"}', '{"kind":"constructor"}'])
+		for (const body of ["", "nope", "null", "[]", '{"kind":"visit"}', '{"kind":"constructor"}'])
 			expect(parsePortfolioEvent(body), body).toBeNull();
 	});
 });
@@ -73,6 +113,12 @@ describe("POST /api/portfolio/<username>/event", () => {
 		expect((await handlePortfolioEvent(event("nope"), "nadia", "1.1.1.1")).status).toBe(204);
 		const prefetch = event('{"kind":"email"}', { "sec-purpose": "prefetch" });
 		expect((await handlePortfolioEvent(prefetch, "nadia", "1.1.1.1")).status).toBe(204);
+		expect(mocks.recordEvent).not.toHaveBeenCalled();
+	});
+
+	it("counts nothing for a visitor who can't open a portfolio behind a password", async () => {
+		mocks.access.mockResolvedValue("locked");
+		expect((await handlePortfolioEvent(event('{"kind":"email"}'), "nadia", "1.1.1.1")).status).toBe(204);
 		expect(mocks.recordEvent).not.toHaveBeenCalled();
 	});
 
@@ -145,6 +191,20 @@ describe("POST /api/portfolio/<username>/message", () => {
 		expect(response.status).toBe(status);
 		expect(await response.json()).toEqual({ ok: false, code });
 		expect(mocks.notify).not.toHaveBeenCalled();
+	});
+
+	it("answers past the flood limit in the form's own shape, without reading it", async () => {
+		mocks.allowed.mockResolvedValue(false);
+		const json = await handlePortfolioMessage(message(asJson), "nadia", "1.1.1.1");
+		expect(json.status).toBe(429);
+		expect(await json.json()).toEqual({ ok: false, code: "rate_limited" });
+		const plain = await handlePortfolioMessage(message(), "nadia", "1.1.1.1");
+		expect(plain.status).toBe(303);
+		expect(plain.headers.get("Location")).toBe("/nadia?contact=failed#contact");
+		const report = await handlePortfolioReport(message(), "nadia", "1.1.1.1");
+		expect(report.headers.get("Location")).toBe("/nadia?report=failed");
+		expect(mocks.submit).not.toHaveBeenCalled();
+		expect(mocks.submitReport).not.toHaveBeenCalled();
 	});
 
 	it("answers a trapped bot like a success, without an email", async () => {
@@ -228,5 +288,163 @@ describe("handlePortfolioReport", () => {
 		expect(response.headers.get("location")).toBe("/nadia?report=failed");
 		expect(JSON.stringify(logged.mock.calls)).not.toContain("secret");
 		logged.mockRestore();
+	});
+});
+
+describe("POST /api/portfolio/<username>/unlock (Phase 13, B16)", () => {
+	const unlock = (fields: Record<string, string>, host = "rezumi.example") => {
+		const body = new FormData();
+		for (const [name, value] of Object.entries(fields)) body.set(name, value);
+		return new Request(`https://${host}/api/portfolio/nadia/unlock`, { method: "POST", body });
+	};
+
+	it("returns only to a page the server builds, never an address from the form", () => {
+		expect(unlockTarget("home", "nadia", true)).toBe("/nadia");
+		expect(unlockTarget("report", "nadia", true)).toBe("/nadia?report");
+		expect(unlockTarget("work:kopi", "nadia", true)).toBe("/nadia/work/kopi");
+		expect(unlockTarget("work:kopi", "nadia", false)).toBe("/work/kopi");
+		expect(unlockTarget("home", "nadia", false)).toBe("/");
+		for (const next of ["https://evil.example", "//evil.example", "work:../x", "work:Kopi", "work:", "anything"])
+			expect(unlockTarget(next, "nadia", true), next).toBe("/nadia");
+	});
+
+	it("sets the access cookie on success, and says why on failure, without caching", async () => {
+		mocks.findPortfolio.mockResolvedValue({ id: "pf1" });
+		mocks.verify.mockImplementation(async (input: { responseHeaders: Headers }) => {
+			input.responseHeaders.append("Set-Cookie", "portfolio_access_pf1=1.abc; Path=/");
+			return "ok";
+		});
+		const ok = await handlePortfolioUnlock(unlock({ password: "rahasia-123", next: "work:kopi" }), "nadia", "1.1.1.1");
+		expect(ok.status).toBe(303);
+		expect(ok.headers.get("Location")).toBe("/nadia/work/kopi");
+		expect(ok.headers.get("Set-Cookie")).toContain("portfolio_access_pf1=");
+		expect(ok.headers.get("Cache-Control")).toBe("no-store");
+
+		mocks.verify.mockResolvedValue("wrong");
+		const wrong = await handlePortfolioUnlock(unlock({ password: "x", next: "report" }), "nadia", "1.1.1.1");
+		expect(wrong.headers.get("Location")).toBe("/nadia?report&unlock=wrong");
+		expect(wrong.headers.get("Set-Cookie")).toBeNull();
+		mocks.verify.mockResolvedValue("limited");
+		// On a custom domain, back to its own root.
+		const limited = await handlePortfolioUnlock(unlock({ password: "x" }, "nadia.example"), "nadia", "1.1.1.1");
+		expect(limited.headers.get("Location")).toBe("/?unlock=limited");
+	});
+
+	it("refuses a post from another site, which could spend a visitor's tries", async () => {
+		mocks.findPortfolio.mockResolvedValue({ id: "pf1" });
+		const post = (headers: Record<string, string>, host = "rezumi.example") => {
+			const body = new FormData();
+			body.set("password", "x");
+			return new Request(`https://${host}/api/portfolio/nadia/unlock`, { method: "POST", body, headers });
+		};
+		for (const headers of [
+			{ "sec-fetch-site": "cross-site" },
+			{ "sec-fetch-site": "same-site" },
+			{ origin: "https://evil.example" },
+			{ origin: "https://rezumi.example", "sec-fetch-site": "cross-site" },
+			{ origin: "null" },
+		]) {
+			const response = await handlePortfolioUnlock(post(headers), "nadia", "1.1.1.1");
+			expect(response.status, JSON.stringify(headers)).toBe(403);
+		}
+		expect(mocks.verify).not.toHaveBeenCalled();
+		mocks.verify.mockResolvedValue("wrong");
+		// The page's own form: same origin, on the app or on a custom domain.
+		const own = await handlePortfolioUnlock(
+			post({ origin: "https://rezumi.example", "sec-fetch-site": "same-origin" }),
+			"nadia",
+			"1.1.1.1",
+		);
+		expect(own.status).toBe(303);
+		const domain = await handlePortfolioUnlock(
+			post({ origin: "https://nadia.example", "sec-fetch-site": "same-origin" }, "nadia.example"),
+			"nadia",
+			"1.1.1.1",
+		);
+		expect(domain.status).toBe(303);
+	});
+
+	it("is a 404 for an address with no portfolio, checking no password", async () => {
+		mocks.findPortfolio.mockResolvedValue(null);
+		expect((await handlePortfolioUnlock(unlock({ password: "x" }), "ghost", "1.1.1.1")).status).toBe(404);
+		expect(mocks.verify).not.toHaveBeenCalled();
+	});
+});
+
+describe("GET /api/portfolio/<username>/vcard (Phase 13, B14)", () => {
+	const shown = async () => {
+		const { parsePortfolioData } = await import("@rezumi/schema/portfolio/data");
+		return {
+			id: "pf1",
+			userId: "owner",
+			username: "nadia",
+			ownerName: "Nadia Rahmawati",
+			timezone: "UTC",
+			data: parsePortfolioData({
+				basics: { name: "Nadia Rahmawati", headline: "Product Designer" },
+				hero: { buttons: [{ kind: "vcard" }] },
+			}),
+			updatedAt: new Date(),
+			indexable: true,
+			customDomain: null,
+			resume: null,
+			entitlements: { hidePortfolioCredit: false },
+			passwordHash: null,
+		};
+	};
+	const vcard = () => new Request("https://rezumi.example/api/portfolio/nadia/vcard");
+
+	it("downloads a contact card of what the page shows, kept out of caches and search engines", async () => {
+		mocks.findPortfolio.mockResolvedValue(await shown());
+		const response = await handlePortfolioVcard(vcard(), "nadia", "1.1.1.1");
+		expect(response.status).toBe(200);
+		expect(Object.fromEntries(response.headers)).toMatchObject({
+			"content-type": "text/vcard; charset=utf-8",
+			"content-disposition": 'attachment; filename="nadia.vcf"',
+			"cache-control": "private, no-store",
+			"x-robots-tag": "noindex",
+		});
+		const body = await response.text();
+		expect(body).toContain("FN:Nadia Rahmawati");
+		expect(body).toContain("URL:https://rezumi.example/nadia");
+	});
+
+	it("is a 404 while the page doesn't offer it: Save contact off and no Save contact button", async () => {
+		const portfolio = await shown();
+		const { parsePortfolioData } = await import("@rezumi/schema/portfolio/data");
+		mocks.findPortfolio.mockResolvedValue({
+			...portfolio,
+			data: parsePortfolioData({ basics: { name: "Nadia Rahmawati" }, contact: { saveContact: false } }),
+		});
+		expect((await handlePortfolioVcard(vcard(), "nadia", "1.1.1.1")).status).toBe(404);
+		// Save contact on in a Contact section that shows (an email to save): offered.
+		const withContact = structuredClone(defaultResumeData);
+		withContact.basics.email = "nadia@example.test";
+		mocks.findPortfolio.mockResolvedValue({
+			...portfolio,
+			data: parsePortfolioData({ basics: { name: "Nadia Rahmawati" } }),
+			resume: { data: withContact, slug: "cv", isPublic: true, hasPassword: false, showDownloadButtons: true },
+		});
+		expect((await handlePortfolioVcard(vcard(), "nadia", "1.1.1.1")).status).toBe(200);
+	});
+
+	it("is a 404 for a portfolio that isn't shown or that the visitor can't open", async () => {
+		mocks.findPortfolio.mockResolvedValue(null);
+		expect((await handlePortfolioVcard(vcard(), "ghost", "1.1.1.1")).status).toBe(404);
+		mocks.findPortfolio.mockResolvedValue({ ...(await shown()), passwordHash: "$2a$10$x" });
+		mocks.access.mockResolvedValue("locked");
+		const locked = await handlePortfolioVcard(vcard(), "nadia", "1.1.1.1");
+		expect(locked.status).toBe(404);
+		expect(await locked.text()).not.toContain("Nadia");
+	});
+});
+
+describe("a contact message to a portfolio behind a password", () => {
+	it("passes the visitor's request on, so the gate can close the form to them", async () => {
+		mocks.submit.mockResolvedValue({ ok: false, code: "unavailable" });
+		const request = message(asJson);
+		const response = await handlePortfolioMessage(request, "nadia", "1.1.1.1");
+		expect(response.status).toBe(503);
+		expect(mocks.submit).toHaveBeenCalledWith(expect.objectContaining({ requestHeaders: request.headers }));
 	});
 });

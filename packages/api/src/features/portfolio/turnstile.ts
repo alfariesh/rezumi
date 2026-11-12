@@ -1,10 +1,16 @@
 import { env } from "@rezumi/env/server";
+import { isIpAddress } from "./client-address";
 
 const SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 const TOKEN_MAX_LENGTH = 2048;
 
-/** Cloudflare's published test secrets; they always answer with the hostname `example.com`. */
+/**
+ * Cloudflare's published test secrets; they always answer with the hostname `example.com`, so the hostname check is
+ * skipped for them, but only outside production: a test secret deployed by mistake passes every token, so in
+ * production it fails the hostname check instead, and the form refuses messages rather than letting bots through.
+ */
 const TEST_SECRET = /^[123]x0+/;
+const acceptsTestSecret = () => process.env.NODE_ENV !== "production";
 
 /** Whether the contact form can work here: both Turnstile keys are set. */
 export const isContactFormConfigured = () => Boolean(env.TURNSTILE_SITE_KEY && env.TURNSTILE_SECRET_KEY);
@@ -19,7 +25,12 @@ const appHosts = () =>
 export async function verifyTurnstileToken(token: string, remoteIp?: string): Promise<boolean> {
 	const secret = env.TURNSTILE_SECRET_KEY;
 	if (!secret || !token || token.length > TOKEN_MAX_LENGTH) return false;
-	const body = new URLSearchParams({ secret, response: token, ...(remoteIp ? { remoteip: remoteIp } : {}) });
+	// Only a real address: a proxy that hides it leaves `unknown`, which Turnstile shouldn't weigh.
+	const body = new URLSearchParams({
+		secret,
+		response: token,
+		...(isIpAddress(remoteIp) ? { remoteip: remoteIp.trim() } : {}),
+	});
 	try {
 		const response = await fetch(SITEVERIFY_URL, {
 			method: "POST",
@@ -30,7 +41,7 @@ export async function verifyTurnstileToken(token: string, remoteIp?: string): Pr
 		if (!response.ok) return false;
 		const result = (await response.json()) as { success?: unknown; hostname?: unknown };
 		if (result.success !== true) return false;
-		if (TEST_SECRET.test(secret)) return true;
+		if (TEST_SECRET.test(secret) && acceptsTestSecret()) return true;
 		return typeof result.hostname === "string" && appHosts().has(result.hostname);
 	} catch {
 		console.error("[portfolio] The Turnstile check could not be completed.");

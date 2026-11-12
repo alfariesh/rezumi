@@ -10,10 +10,12 @@ import { PORTFOLIO_MESSAGE_LIMITS, PORTFOLIO_MESSAGE_TRAP_FIELD } from "@rezumi/
 import { rateLimitConfig } from "@rezumi/utils/rate-limit";
 import { createRateLimiter } from "../../redis";
 import { ownerIsNotBanned } from "../resume/access-policy";
+import { rateLimitAddress } from "./client-address";
 import { portfolioOwnsProfilePath } from "./public";
 import { countMessage } from "./statistics";
 import { dayInTimeZone } from "./traffic";
 import { isContactFormConfigured, verifyTurnstileToken } from "./turnstile";
+import { portfolioAccess } from "./visitor-access";
 
 const message = schema.portfolioMessage;
 const limits = rateLimitConfig.portfolioPublic;
@@ -61,13 +63,17 @@ export async function submitPortfolioMessage(input: {
 	username: string;
 	form: PortfolioMessageForm;
 	trustedClient?: string | undefined;
+	/** The visitor's request, for the password gate: a portfolio they can't open takes no message. */
+	requestHeaders?: Headers | undefined;
 	now?: Date;
 }): Promise<PortfolioMessageResult | null> {
 	const [row] = await db
 		.select({
 			id: schema.portfolio.id,
+			userId: schema.portfolio.userId,
 			data: schema.portfolio.data,
 			timeZone: schema.user.timezone,
+			passwordHash: schema.portfolio.password,
 		})
 		.from(schema.portfolio)
 		.innerJoin(schema.user, eq(schema.portfolio.userId, schema.user.id))
@@ -81,6 +87,8 @@ export async function submitPortfolioMessage(input: {
 		.limit(1);
 	if (!row) return null;
 
+	// Behind a password, only a visitor who opened the portfolio can write to it (no new code: the form is just closed).
+	if ((await portfolioAccess(row, input.requestHeaders ?? new Headers())) === "locked") return fail("unavailable");
 	const data = parsePortfolioData(row.data);
 	if (!data.contact.form || data.sections.hidden.includes("contact") || !isContactFormConfigured())
 		return fail("unavailable");
@@ -94,7 +102,8 @@ export async function submitPortfolioMessage(input: {
 	});
 	if (!parsed.success || countLinks(parsed.data.body) > PORTFOLIO_MESSAGE_LIMITS.links) return fail("invalid");
 
-	const client = `ip:${input.trustedClient?.trim() || "unknown"}`;
+	// Per address (an IPv6 address by its /64); clients without one share a bucket.
+	const client = `ip:${rateLimitAddress(input.trustedClient) ?? "unknown"}`;
 	if (!(await passesLimit(attemptLimiter, client))) return fail("rate_limited");
 	if (!(await verifyTurnstileToken(formField(input.form, "cf-turnstile-response"), input.trustedClient)))
 		return fail("turnstile");
@@ -143,7 +152,9 @@ const releaseMessageEmail = (portfolioId: string, claim: Date) =>
  * Sends the email for a portfolio's messages not told about yet, if the 10-minute window allows it. One message goes
  * out in full with Reply-To set to its sender; several are merged into a count. A failed send keeps its claim, so the
  * job tries again when the 10 minutes are up, rather than every minute. Email that isn't set up leaves the messages
- * waiting the same way. Messages sent while the window is shut wait for the job.
+ * waiting the same way. Messages sent while the window is shut wait for the job. Delivery is at least once: when the
+ * email went out but marking the messages failed (or the Worker stopped in between), the next window emails them again,
+ * which beats an owner never hearing of a message.
  */
 export async function notifyPortfolioMessages(portfolioId: string, now = new Date()): Promise<boolean> {
 	if (!(await claimMessageEmail(portfolioId, now))) return false;

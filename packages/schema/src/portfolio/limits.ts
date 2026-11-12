@@ -12,6 +12,10 @@ export const PORTFOLIO_LIMITS = {
 	metricsPerBlock: 4,
 	highlights: 4,
 	heroButtons: 3,
+	/** Addresses a work had before, each forwarding to its current one (owner decision #3, Phase 13). */
+	previousSlugs: 5,
+	/** Roles an "Open to work" line names. */
+	availabilityRoles: 5,
 	/**
 	 * Roles the typewriter effect types after the headline, which it types first and stops on: at most two (owner
 	 * decision 2026-11-06, `00-keputusan.md` log).
@@ -41,6 +45,7 @@ export const PORTFOLIO_LIMITS = {
 		location: 60,
 		greeting: 160,
 		availability: 60,
+		availabilityRole: 60,
 		about: 5000,
 		blockText: 10_000,
 		customContent: 5000,
@@ -73,6 +78,8 @@ export const PORTFOLIO_LIMITS = {
 		linkDescription: 300,
 		siteName: 60,
 		mediaTitle: 140,
+		/** An embedded provider's reference (`@rezumi/schema/portfolio/embed`), such as `design/<key>?node-id=1-2`. */
+		embedRef: 200,
 		contactNote: 200,
 		seoTitle: 70,
 		seoDescription: 160,

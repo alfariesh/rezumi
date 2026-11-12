@@ -5,11 +5,12 @@
  * without the parts later phases add (contact form, intro effects). Phase 05 added the video, PDF and link cards and
  * the map picture.
  */
-export const BASE_CSS = String.raw`
+const SOURCE = String.raw`
 *,*::before,*::after{box-sizing:border-box}
 :root{--pf-text-xs:.8125rem;--pf-text-sm:.9375rem;--pf-text-md:1.0625rem;--pf-text-lg:1.25rem;--pf-text-xl:1.625rem;--pf-text-2xl:clamp(1.875rem,1.4rem + 1.8vw,2.5rem);--pf-text-name:clamp(2.5rem,1.6rem + 4.2vw,4.5rem);--pf-leading-tight:1.08;--pf-leading-body:1.6;--pf-radius:12px;--pf-radius-sm:8px;--pf-max-width:1120px;--pf-space-1:4px;--pf-space-2:8px;--pf-space-3:12px;--pf-space-4:16px;--pf-space-5:24px;--pf-space-6:32px;--pf-space-7:48px;--pf-space-8:72px;--pf-space-9:112px;--pf-gutter:max(16px,env(safe-area-inset-left,0px))}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.pf :is(:hover,:focus-visible) img,.pf-video__open:is(:hover,:focus-visible) .pf-video__play>span{transform:none!important}}
+.pf{overflow-wrap:anywhere}
 body{margin:0;background:var(--pf-bg);color:var(--pf-text);font-family:var(--pf-font-body);font-size:var(--pf-text-md);line-height:var(--pf-leading-body);overflow-wrap:break-word;text-rendering:optimizeLegibility}
 img{display:block;max-width:100%;height:auto}
 [hidden]{display:none!important}
@@ -17,8 +18,8 @@ a{color:inherit}
 h1,h2,h3,h4,p,ul,ol,dl,dd,figure,blockquote{margin:0}
 h1,h2,h3,h4{font-family:var(--pf-font-heading);text-wrap:balance;line-height:var(--pf-leading-tight)}
 p{text-wrap:pretty}
-/* User text may be written in another direction than the page (Latin on an Arabic page): each block takes its own. */
-p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
+/* User text may be written in another direction than the page (Latin on an Arabic page): each block takes its own, the work cards' titles and summaries too (themes draw them as spans). */
+p,li,blockquote,h1,h2,h3,h4,dt,dd,[class$="__title"],[class$="__summary"],[class$="__desc"],[class$="__dek"]{unicode-bidi:plaintext}
 :focus-visible{outline:2px solid var(--pf-accent-text);outline-offset:3px;border-radius:4px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .pf-skip{position:absolute;inset-inline-start:12px;top:-60px;z-index:80;padding:10px 16px;border-radius:999px;background:var(--pf-text);color:var(--pf-bg);font-weight:600;text-decoration:none}
@@ -29,13 +30,15 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 [dir="rtl"] .pf-flip{transform:scaleX(-1)}
 .pf-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:44px;padding:.65em 1.2em;border:1.5px solid transparent;border-radius:999px;font:600 var(--pf-text-sm)/1.2 var(--pf-font-body);text-decoration:none;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
 .pf-btn--primary{background:var(--pf-accent);color:var(--pf-on-accent);border-color:var(--pf-accent-edge)}
-.pf-btn--primary:hover{background:color-mix(in oklab,var(--pf-accent) 86%,var(--pf-text))}
+.pf-btn--primary:hover{background:var(--pf-accent-hover)}
 .pf-btn--secondary{border-color:var(--pf-border);color:var(--pf-text);background:transparent}
 .pf-btn--secondary:hover{border-color:var(--pf-text)}
 .pf-btns{display:flex;flex-wrap:wrap;gap:var(--pf-space-3)}
 .pf-chip{display:inline-flex;align-items:center;gap:.45em;padding:.3em .75em;border-radius:999px;background:var(--pf-surface);color:var(--pf-text);font-size:var(--pf-text-xs);font-weight:500;line-height:1.4}
 .pf-chip--open::before{content:"";width:.55em;height:.55em;border-radius:50%;background:var(--pf-positive);box-shadow:0 0 0 3px color-mix(in oklab,var(--pf-positive) 22%,transparent)}
 .pf-chips{display:flex;flex-wrap:wrap;gap:var(--pf-space-2);padding:0;list-style:none}
+.pf-opento{margin:0;color:var(--pf-muted);font-size:var(--pf-text-sm);line-height:1.5}
+.pf-opento__label{color:var(--pf-text);font-weight:600}
 .pf-tags{display:flex;flex-wrap:wrap;gap:6px;padding:0;list-style:none}
 .pf-tags li{padding:2px 8px;border:1px solid var(--pf-border);border-radius:999px;color:var(--pf-muted);font-size:var(--pf-text-xs)}
 .pf-nav{display:flex;align-items:center;justify-content:space-between;gap:var(--pf-space-4);min-height:64px}
@@ -44,7 +47,7 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-nav__links{display:flex;align-items:center;gap:var(--pf-space-5);margin:0;padding:0;list-style:none;font-size:var(--pf-text-sm)}
 .pf-nav__links a{color:var(--pf-muted);text-decoration:none;white-space:nowrap}
 .pf-nav__links a:hover{color:var(--pf-text)}
-.pf-menu{display:none;position:relative}
+.pf-menu{display:none;position:relative;flex:none}
 .pf-menu>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border:1px solid var(--pf-border);border-radius:999px;font-size:var(--pf-text-sm);font-weight:600}
 .pf-menu>summary::-webkit-details-marker{display:none}
 .pf-menu__list{position:absolute;inset-inline-end:0;top:calc(100% + 8px);z-index:30;display:grid;min-width:200px;padding:8px;margin:0;list-style:none;background:var(--pf-bg);border:1px solid var(--pf-border);border-radius:var(--pf-radius);box-shadow:0 12px 32px rgb(0 0 0/.14)}
@@ -101,20 +104,25 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-work-metric b{color:var(--pf-accent-text-soft);font-size:var(--pf-text-sm);font-variant-numeric:tabular-nums}
 .pf-cover{display:block;position:relative;overflow:hidden;background:var(--pf-surface);aspect-ratio:var(--pf-cover-ratio,4/3);max-width:100%}
 .pf-cover img{width:100%;height:100%;object-fit:cover}
-.pf-detail{display:none;position:fixed;inset:0;z-index:60;overflow-y:auto;overscroll-behavior:contain;background:color-mix(in oklab,#000 55%,transparent);padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
-.pf-detail:target,.pf-detail.pf-open{display:block}
-.pf-detail__panel{position:relative;max-width:960px;margin:0 auto;background:var(--pf-bg);color:var(--pf-text);border-radius:calc(var(--pf-radius) + 6px);--pf-detail-pad:clamp(20px,4vw,48px);padding:var(--pf-detail-pad);display:grid;gap:var(--pf-space-6)}
-.pf-detail__bar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:calc(-1 * var(--pf-detail-pad)) calc(-1 * var(--pf-detail-pad)) 0;padding:12px var(--pf-detail-pad);background:color-mix(in oklab,var(--pf-bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--pf-border);border-radius:calc(var(--pf-radius) + 6px) calc(var(--pf-radius) + 6px) 0 0;font-size:var(--pf-text-sm)}
-.pf-detail__bar nav{display:flex;gap:6px}
-.pf-detail__bar a{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--pf-border);text-decoration:none;font-weight:600}
 .pf-detail__head{display:grid;gap:var(--pf-space-3)}
-.pf-detail__title{font-size:var(--pf-text-2xl);letter-spacing:-.02em}
-.pf-detail__title:focus{outline:none}
+.pf-detail__title{font-size:clamp(2rem,1.4rem + 2.4vw,3.25rem);letter-spacing:-.02em}
 .pf-detail__summary{color:var(--pf-muted);font-size:var(--pf-text-lg);line-height:1.5}
 .pf-detail__meta{display:flex;flex-wrap:wrap;gap:6px 20px;color:var(--pf-muted);font-size:var(--pf-text-sm)}
 .pf-detail__meta b{color:var(--pf-text);font-weight:600}
 .pf-detail__hero{border-radius:var(--pf-radius);--pf-cover-ratio:16/9}
-@media (max-width:640px){.pf-detail{padding:0;background:var(--pf-bg)}.pf-detail__panel{border-radius:0;min-height:100%}.pf-detail__bar{border-radius:0;padding-top:max(12px,env(safe-area-inset-top,0px))}}
+/* A work's own page (Phase 13 B2): the back link, the work's head and blocks in one readable column, then the works before and after it. Themes restyle it under .pf[data-theme="<id>"] .pf-workpage. */
+.pf-workpage{display:grid;gap:var(--pf-space-6);width:100%;max-width:960px;margin-inline:auto;padding-block:var(--pf-space-5) var(--pf-space-7)}
+.pf-workpage>*{min-width:0}
+.pf-workpage__back{display:inline-flex;align-items:center;gap:6px;justify-self:start;min-height:44px;padding:0 14px;border:1px solid var(--pf-border);border-radius:999px;color:var(--pf-text);font-size:var(--pf-text-sm);font-weight:600;text-decoration:none}
+.pf-workpage__back:hover{background:var(--pf-surface)}
+.pf-workpage__more{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:var(--pf-space-3);padding-top:var(--pf-space-6);border-top:1px solid var(--pf-border)}
+.pf-workpage__step{display:grid;gap:6px;align-content:start;padding:18px 20px;border:1px solid var(--pf-border);border-radius:var(--pf-radius);color:var(--pf-text);text-decoration:none}
+.pf-workpage__step:hover{background:var(--pf-surface)}
+.pf-workpage__step span{display:inline-flex;align-items:center;gap:6px;color:var(--pf-muted);font-size:var(--pf-text-xs);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.pf-workpage__step b{font-family:var(--pf-font-heading);font-size:var(--pf-text-lg);font-weight:700;line-height:1.25}
+.pf-workpage__step--next{text-align:end}
+.pf-workpage__step--next span{justify-self:end}
+.pf-workpage__step--next:only-child{grid-column:-2/-1}
 .pf-blocks{display:grid;gap:var(--pf-space-6)}
 .pf-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:var(--pf-space-3)}
 .pf-gallery[data-layout="full"]{grid-template-columns:minmax(0,1fr)}
@@ -126,7 +134,6 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-zoom{display:block;border-radius:var(--pf-radius-sm);cursor:zoom-in}
 .pf-zoom:focus-visible{outline:2px solid var(--pf-accent-text);outline-offset:3px}
 .pf-lightbox{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:64px 12px;background:rgba(8,10,14,.96);color:#fff;touch-action:pan-y;overscroll-behavior:contain}
-.pf-lightbox[hidden]{display:none}
 .pf-lightbox__stage{margin:0;display:grid;gap:12px;justify-items:center;max-width:100%}
 .pf-lightbox__stage img{display:block;width:auto;height:auto;max-width:min(100%,1600px);max-height:calc(100dvh - 160px);object-fit:contain;border-radius:6px}
 .pf-lightbox__stage figcaption{max-width:60ch;color:rgba(255,255,255,.84);font-size:var(--pf-text-sm);text-align:center}
@@ -134,7 +141,6 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-lightbox__btn{position:absolute;display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);color:#fff;cursor:pointer}
 .pf-lightbox__btn:hover{background:rgba(255,255,255,.18)}
 .pf-lightbox__btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
-.pf-lightbox__btn[hidden]{display:none}
 .pf-lightbox__btn .pf-icon{width:22px;height:22px}
 .pf-lightbox__close{top:max(12px,env(safe-area-inset-top,0px));inset-inline-end:12px}
 .pf-lightbox__prev,.pf-lightbox__next{top:50%;transform:translateY(-50%)}
@@ -156,6 +162,27 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-video__open:focus-visible{outline:none}
 .pf-video:has(.pf-video__open:focus-visible){outline:2px solid var(--pf-accent-text);outline-offset:3px}
 .pf-video iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}
+/* Another service's content waiting for a press (Phase 13 B17): a wide picture, or a row with a square one for audio; the note says where it loads from. The player replaces the link at its shape's height. */
+.pf-embed{display:grid;gap:6px}
+.pf-embed__open{display:grid;overflow:hidden;border:1px solid var(--pf-border);border-radius:var(--pf-radius);background:var(--pf-surface);color:var(--pf-text);text-decoration:none}
+.pf-embed__media{display:grid;place-items:center;overflow:hidden;aspect-ratio:16/9;background:color-mix(in oklab,var(--pf-accent) 14%,var(--pf-surface))}
+.pf-embed__media img{width:100%;height:100%;object-fit:cover}
+.pf-embed__provider{padding:12px;color:var(--pf-accent-text);font:700 var(--pf-text-lg)/1.2 var(--pf-font-heading);text-align:center}
+.pf-embed[data-shape="wide"] .pf-embed__media:not(:has(img)){aspect-ratio:auto;min-height:120px}
+.pf-embed__text{display:grid;gap:6px;justify-items:start;padding:14px 18px;min-width:0}
+.pf-embed__text b{font-weight:600;line-height:1.3}
+.pf-embed__action{display:inline-flex;align-items:center;gap:6px;color:var(--pf-accent-text);font-size:var(--pf-text-sm);font-weight:600}
+.pf-embed__action svg{width:1em;height:1em}
+.pf-embed__open:hover{border-color:var(--pf-text)}
+.pf-embed__open:hover .pf-embed__action{text-decoration:underline;text-underline-offset:3px}
+.pf-embed[data-shape^="audio"] .pf-embed__open{grid-template-columns:96px minmax(0,1fr);align-items:center}
+.pf-embed[data-shape^="audio"] .pf-embed__media{aspect-ratio:1;height:100%}
+.pf-embed[data-shape^="audio"] .pf-embed__provider{font-size:var(--pf-text-xs)}
+.pf-embed__note{margin:0;color:var(--pf-muted);font-size:var(--pf-text-xs)}
+.pf-embed iframe{display:block;width:100%;border:0;border-radius:var(--pf-radius);background:var(--pf-surface)}
+.pf-embed[data-shape="wide"] iframe{aspect-ratio:16/9}
+.pf-embed[data-shape="audio"] iframe{height:166px}
+.pf-embed[data-shape="audio-tall"] iframe{height:380px}
 @media (max-width:520px){.pf-video__play>span{width:56px;height:56px}.pf-video__icon{width:24px;height:24px}.pf-video__meta{padding:28px 14px 10px;font-size:var(--pf-text-xs)}.pf-video__meta b{-webkit-line-clamp:1;font-size:var(--pf-text-sm)}}
 .pf-pdf,.pf-link{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;padding:14px;border:1px solid var(--pf-border);border-radius:var(--pf-radius);background:var(--pf-surface);color:var(--pf-text)}
 .pf-pdf__page{display:grid;place-items:center;width:84px;aspect-ratio:800/1131;border-radius:4px;box-shadow:0 2px 8px rgb(0 0 0/.16);overflow:hidden;background:#fff;color:#8a8f98}
@@ -181,7 +208,7 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 /* The intro's background, drawn by the element with data-bg through background:var(--pf-hero-bg): the accent's soft gradient over the theme's ground, a dot pattern, or the picture under a shade with light text on it. Themes set --pf-hero-ground and --pf-hero-shade (two stops). */
 [data-bg="soft-gradient"]{--pf-hero-bg:radial-gradient(120% 90% at 0% 0%,var(--pf-accent-soft),transparent 70%),radial-gradient(90% 80% at 100% 100%,color-mix(in oklab,var(--pf-accent-soft) 70%,transparent),transparent 70%),var(--pf-hero-ground,var(--pf-bg))}
 [data-bg="pattern"]{--pf-hero-bg:radial-gradient(color-mix(in oklab,var(--pf-accent) 22%,transparent) 1.2px,transparent 1.4px) 0 0/18px 18px,var(--pf-surface)}
-[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.62),rgb(8 10 14/.7))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-text:#fff;--pf-muted:rgb(255 255 255/.82);--pf-border:rgb(255 255 255/.28);--pf-surface:rgb(255 255 255/.14);--pf-accent-text:var(--pf-accent-text-dark);color:var(--pf-text)}
+[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.7),rgb(8 10 14/.78))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-bg:#111;--pf-text:#fff;--pf-muted:rgb(255 255 255/.82);--pf-border:rgb(255 255 255/.28);--pf-surface:rgb(255 255 255/.14);--pf-accent-text:color-mix(in oklab,var(--pf-accent-text-dark) 45%,#fff);--pf-positive:var(--pf-positive-dark);--pf-negative:var(--pf-negative-dark);color:var(--pf-text)}
 /* An intro on the soft gradient draws accent text on the accent's tint: the tone made for it. */
 [data-bg="soft-gradient"]{--pf-accent-text:var(--pf-accent-text-soft)}
 .pf-person{display:flex;align-items:center;gap:12px;min-width:0}
@@ -239,7 +266,8 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-form__trap{position:absolute;inset-inline-start:-9999px;width:1px;height:1px;overflow:hidden}
 .pf-form__turnstile{min-height:65px}
 .pf-form__status{margin:0;font-size:var(--pf-text-sm);font-weight:600}
-.pf-form__status:empty{display:none}
+/* Empty, the status takes no room but stays a live region, so screen readers announce the first message written into it. */
+.pf-form__status:empty{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 .pf-form__note{margin:0;color:var(--pf-muted);font-size:var(--pf-text-xs)}
 .pf-form .pf-btn{justify-self:start}
 .pf-form .pf-btn:disabled{opacity:.55;cursor:not-allowed}
@@ -251,4 +279,9 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-foot a:not(.pf-badge){color:var(--pf-muted);text-underline-offset:3px}
 .pf-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 8px;border:1px solid var(--pf-border);border-radius:999px;color:var(--pf-text);text-decoration:none;font-weight:600}
 .pf-badge svg{width:20px;height:20px}
+/* Printing: the page as one light, still sheet (the dark tokens are for screens; designCss). The skip link, navigation links, menu, contact form and picture viewer do nothing on paper; a sticky header would sit on top of every page; a work's page prints its content without the links around it. Paper drops backgrounds by default, so what draws light text on a fill (primary buttons, a theme's filled Open to work chip) keeps its fill. Theme rules come after these, so they win with !important. */
+@media print{.pf-skip,.pf-nav__links,.pf-menu,.pf-form,.pf-lightbox,.pf-workpage__back,.pf-workpage__more,.pf-embed__note{display:none!important}.pf header{position:static!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}.pf-workpage{max-width:none;padding-block:0}figure,blockquote,.pf-detail__head,.pf-embed{break-inside:avoid}.pf-btn--primary,.pf-chip--open{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 `;
+
+/** The rules as pages ship them: the comments above are for whoever edits them, not for every visitor's download. */
+export const BASE_CSS = SOURCE.replace(/\/\*[^]*?\*\/\n?/g, "");
