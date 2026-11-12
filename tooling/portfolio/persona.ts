@@ -22,11 +22,13 @@ import { buildPersonaResume } from "../templates/personas/persona";
 import { anindya } from "./personas/anindya";
 import { bayu } from "./personas/bayu";
 import { citra } from "./personas/citra";
+import { laras } from "./personas/laras";
 import { nadia } from "./personas/nadia";
+import { raka } from "./personas/raka";
 
 const MOCKUP_IMAGES = new URL("../../.agents/docs/plans/portfolio/mockups/img/", import.meta.url);
 
-export const PERSONA_IDS = ["nadia", "anindya", "bayu", "citra"] as const;
+export const PERSONA_IDS = ["nadia", "anindya", "bayu", "citra", "raka", "laras"] as const;
 export type PersonaId = (typeof PERSONA_IDS)[number];
 export const PERSONA_LANGS = ["en", "id"] as const;
 export type PersonaLang = (typeof PERSONA_LANGS)[number];
@@ -98,7 +100,7 @@ export type PersonaDefinition = {
 	portfolio: (kit: PersonaKit) => PortfolioDataInput;
 };
 
-const DEFINITIONS: Record<PersonaId, PersonaDefinition> = { nadia, anindya, bayu, citra };
+const DEFINITIONS: Record<PersonaId, PersonaDefinition> = { nadia, anindya, bayu, citra, raka, laras };
 
 /** The persona each theme's gallery picture, mockup and default matrix rows show. */
 export const THEME_PERSONAS: Record<PortfolioTheme, PersonaId> = {
@@ -108,6 +110,8 @@ export const THEME_PERSONAS: Record<PortfolioTheme, PersonaId> = {
 	mozaik: "citra",
 	paper: "nadia",
 	brutal: "citra",
+	sintaks: "raka",
+	warta: "laras",
 };
 
 /** A stored file the persona's portfolio uses. */

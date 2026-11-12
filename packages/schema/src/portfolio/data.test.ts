@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import {
+	isListedWork,
+	listedWorkSlugs,
 	parsePortfolioData,
 	parseWritablePortfolioData,
 	slugifyPortfolioTitle,
@@ -442,5 +444,56 @@ describe("work addresses", () => {
 		const long = uniquePortfolioSlug("x".repeat(80), new Set(["x".repeat(64)]));
 		expect(long).toHaveLength(64);
 		expect(long.endsWith("-2")).toBe(true);
+	});
+});
+
+describe("work addresses (Phase 13)", () => {
+	const work = (overrides: Record<string, unknown> = {}) => ({
+		id: "w1",
+		slug: "coffee-app",
+		title: "Coffee app",
+		...overrides,
+	});
+
+	it("keeps previous addresses, refusing the current one and bad ones when writing", () => {
+		const saved = parseWritablePortfolioData({ works: { items: [work({ previousSlugs: ["kopi-app", "coffee"] })] } });
+		expect(saved.works.items[0]?.previousSlugs).toEqual(["kopi-app", "coffee"]);
+		expect(() => parseWritablePortfolioData({ works: { items: [work({ previousSlugs: ["coffee-app"] })] } })).toThrow();
+		expect(() => parseWritablePortfolioData({ works: { items: [work({ previousSlugs: ["Bad Slug"] })] } })).toThrow();
+		expect(() =>
+			parseWritablePortfolioData({ works: { items: [work({ previousSlugs: ["a", "b", "c", "d", "e", "f"] })] } }),
+		).toThrow();
+	});
+
+	it("drops bad and current previous addresses when reading", () => {
+		const read = parsePortfolioData({
+			works: { items: [work({ previousSlugs: ["coffee-app", "Bad Slug", "kopi", "kopi", 42] })] },
+		});
+		expect(read.works.items[0]?.previousSlugs).toEqual(["kopi"]);
+	});
+
+	it("lists shown, titled works, and none while the Work section is hidden", () => {
+		expect(isListedWork({ hidden: false, title: "Coffee" })).toBe(true);
+		expect(isListedWork({ hidden: true, title: "Coffee" })).toBe(false);
+		expect(isListedWork({ hidden: false, title: "   " })).toBe(false);
+		const data = parsePortfolioData({
+			works: {
+				items: [
+					work(),
+					work({ id: "w2", slug: "secret", hidden: true }),
+					work({ id: "w3", slug: "blank", title: " " }),
+				],
+			},
+		});
+		expect(listedWorkSlugs(data)).toEqual(["coffee-app"]);
+		expect(listedWorkSlugs({ ...data, sections: { ...data.sections, hidden: ["work"] } })).toEqual([]);
+	});
+
+	it("reads Open to work roles and kinds of work, and Save contact on by default", () => {
+		const data = parsePortfolioData({
+			hero: { availability: { show: true, roles: ["Designer"], types: ["contract", "contract", "gig"] } },
+		});
+		expect(data.hero.availability).toEqual({ show: true, text: "", roles: ["Designer"], types: ["contract"] });
+		expect(data.contact.saveContact).toBe(true);
 	});
 });

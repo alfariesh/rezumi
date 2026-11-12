@@ -1,6 +1,6 @@
 import type { PortfolioPageMessages } from "../messages";
 import type { PortfolioPageLive } from "../page";
-import type { PortfolioView } from "../view";
+import type { PortfolioView, PortfolioViewWork } from "../view";
 import { createContext, useContext } from "react";
 
 /** What every part of a page needs besides the view: its text, language, icons and pictures' addresses. */
@@ -16,6 +16,10 @@ export type RenderContext = {
 	nextId: (prefix: string) => string;
 	/** How a published page talks to the server; the editor's preview has none. */
 	live?: PortfolioPageLive;
+	/** Which page this is: the portfolio's home, or one work's own page with its neighbours in the Work section. */
+	page:
+		| { kind: "home" }
+		| { kind: "work"; work: PortfolioViewWork; previous: PortfolioViewWork | null; next: PortfolioViewWork | null };
 };
 
 export const RenderContextValue = createContext<RenderContext | null>(null);

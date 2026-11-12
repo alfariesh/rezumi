@@ -1,7 +1,12 @@
 import type { Transaction } from "../billing/account";
 import type { DbOrTx } from "@rezumi/db/client";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
-import type { PortfolioClickKind, PortfolioDevice, PortfolioVisitSource } from "@rezumi/schema/portfolio/statistics";
+import type {
+	PortfolioClickKind,
+	PortfolioDevice,
+	PortfolioStatisticsRange,
+	PortfolioVisitSource,
+} from "@rezumi/schema/portfolio/statistics";
 import { and, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
@@ -82,17 +87,21 @@ type PortfolioDetails =
 	  };
 
 /**
- * The owner's numbers for the last 30 days (`01-desain.md` section 10), in their own time zone. The basic numbers are
- * for every plan; the breakdown from Analytics Engine is for plans with `detailedPortfolioStats` (owner decision #16).
+ * The owner's numbers for the last `range` days (7, 30 or 90; `01-desain.md` section 10), in their own time zone. The
+ * basic numbers, day by day, are for every plan; the breakdown from Analytics Engine is for plans with
+ * `detailedPortfolioStats` (owner decision #16). Phase 13 Langkah 0: the day-by-day numbers and the range come from the
+ * daily rows; the breakdown still covers the default 30 days until `pf-server` gives it the range.
  */
 export async function portfolioStatistics(input: {
 	portfolio: { id: string; data: PortfolioData };
 	userId: string;
 	timeZone: string;
+	range?: PortfolioStatisticsRange;
 	now?: Date;
 }) {
 	const now = input.now ?? new Date();
-	const dates = lastDays(now, input.timeZone, PORTFOLIO_STATISTICS_DAYS);
+	const range = input.range ?? PORTFOLIO_STATISTICS_DAYS;
+	const dates = lastDays(now, input.timeZone, range);
 	const rows = await db
 		.select({
 			date: daily.date,
@@ -118,24 +127,41 @@ export async function portfolioStatistics(input: {
 	const opened = new Map<string, number>();
 	let views = 0;
 	let messages = 0;
-	const viewsByDay = new Map<string, number>();
+	const byDay = new Map<string, (typeof rows)[number]>();
 	for (const row of rows) {
 		views += row.views;
 		messages += row.messages;
-		viewsByDay.set(row.date, row.views);
+		byDay.set(row.date, row);
 		addTo(clicks, PORTFOLIO_CLICK_KINDS, row.clicks);
 		addTo(sources, PORTFOLIO_VISIT_SOURCES, row.sources);
 		for (const [workId, opens] of Object.entries(row.works)) opened.set(workId, (opened.get(workId) ?? 0) + opens);
 	}
 
 	const titles = new Map(input.portfolio.data.works.items.map((work) => [work.id, work.title.trim()]));
+	// Every work that still exists and was opened, most opened first.
 	const works = [...opened]
 		.flatMap(([id, opens]) => (titles.has(id) ? [{ id, title: titles.get(id) ?? "", opens }] : []))
-		.sort((a, b) => b.opens - a.opens)
-		.slice(0, 10);
+		.sort((a, b) => b.opens - a.opens);
 
 	return {
-		days: dates.map((date) => ({ date, views: viewsByDay.get(date) ?? 0 })),
+		range: { days: range, from: dates[0] ?? "", to: dates.at(-1) ?? "" },
+		days: dates.map((date) => {
+			const row = byDay.get(date);
+			const dayClicks = zeroed(PORTFOLIO_CLICK_KINDS);
+			const daySources = zeroed(PORTFOLIO_VISIT_SOURCES);
+			if (row) {
+				addTo(dayClicks, PORTFOLIO_CLICK_KINDS, row.clicks);
+				addTo(daySources, PORTFOLIO_VISIT_SOURCES, row.sources);
+			}
+			return {
+				date,
+				views: row?.views ?? 0,
+				messages: row?.messages ?? 0,
+				workOpens: Object.values(row?.works ?? {}).reduce((sum, value) => sum + value, 0),
+				clicks: dayClicks,
+				sources: daySources,
+			};
+		}),
 		totals: { views, clicks, messages },
 		sources,
 		works,

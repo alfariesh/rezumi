@@ -5,7 +5,7 @@ import portfolioCatalog from "./portfolio-catalog.json";
  * The interface text on a portfolio page, in English. `portfolio-catalog.json` translates it: `pnpm pdf:translations`
  * copies the translations from the app's Lingui catalogs, where `apps/web/src/features/portfolio/page-text.ts`
  * declares the same strings for translators. Keep both lists in step: that file's test compares them, and the generator
- * fails on a missing string. `{service}`, `{count}`, `{place}`, `{site}` and `{name}` are filled in at render time with
+ * fails on a missing string. `{service}`, `{count}`, `{place}`, `{site}`, `{name}` and `{provider}` are filled in at render time with
  * `fillPortfolioMessage`, never `String.replace` (a person's text could hold `$&`). The page has no plural rules, so a
  * count goes after a label ("Pages: {count}") rather than into words that change with it.
  */
@@ -103,6 +103,26 @@ const ENGLISH = {
 		"Reports can't be sent from this page right now. Email {email} with this page's address and what's wrong.",
 	reportNeedsScript: "This form needs JavaScript. You can also email {email}.",
 	reportBack: "Back to the portfolio",
+	// Phase 13: work pages, Save contact, Open to work, embeds and the password page.
+	allWork: "All work",
+	viewWork: "View work",
+	saveContact: "Save contact",
+	lookingFor: "Looking for",
+	fullTime: "Full-time",
+	partTime: "Part-time",
+	contractWork: "Contract",
+	freelance: "Freelance",
+	internship: "Internship",
+	readingTime: "{count} min read",
+	showEmbed: "Show {provider} here",
+	embedNote: "Loads content from {provider}",
+	workMissing: "This work isn't on this portfolio anymore.",
+	lockedTitle: "This portfolio is private",
+	lockedIntro: "Enter the password you were given to see it.",
+	password: "Password",
+	unlock: "Open portfolio",
+	wrongPassword: "That password isn't right. Check it and try again.",
+	tooManyTries: "Too many tries. Wait 10 minutes, then try again.",
 };
 
 export type PortfolioPageMessages = typeof ENGLISH;
@@ -159,6 +179,7 @@ export function portfolioViewMessages(messages: PortfolioPageMessages): Portfoli
 			email: messages.email,
 			profile: messages.profile,
 			link: messages.openLink,
+			vcard: messages.saveContact,
 		},
 		openToWork: messages.openToWork,
 		serviceInquiry: (service) => fillPortfolioMessage(messages.serviceInquiry, { service }),

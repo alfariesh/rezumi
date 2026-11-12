@@ -1,6 +1,8 @@
 import type { ThemePalette } from "../design";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import { readableAccent } from "@rezumi/utils/contrast";
+import { SINTAKS_PALETTE } from "./sintaks/palette";
+import { WARTA_PALETTE } from "./warta/palette";
 
 /**
  * A colour as small text on one mode of a theme: shifted until it reaches `minimum` against the page background and
@@ -58,4 +60,6 @@ export const THEME_PALETTES: Record<PortfolioTheme, ThemePalette> = {
 	mozaik: MOZAIK_PALETTE,
 	paper: PAPER_PALETTE,
 	brutal: BRUTAL_PALETTE,
+	sintaks: SINTAKS_PALETTE,
+	warta: WARTA_PALETTE,
 };

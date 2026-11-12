@@ -10,7 +10,7 @@ import { videoBlockFromUnfurl } from "./link-blocks";
 import { client } from "@/libs/orpc/client";
 
 /** What `portfolio.unfurl` read from a pasted link: a video (YouTube, Vimeo) or any other page. */
-export type UnfurledLink = Awaited<ReturnType<typeof client.portfolio.unfurl>>;
+export type UnfurledLink = Exclude<Awaited<ReturnType<typeof client.portfolio.unfurl>>, { kind: "embed" }>;
 
 const signalOption = (signal: AbortSignal | undefined) => (signal ? { signal } : undefined);
 
@@ -30,8 +30,18 @@ export function unfurlErrorMessage(error: unknown): string {
 }
 
 /** Reads a pasted link through the server (safe fetch, no cookies, no user data); the result is only a suggestion. */
-export function unfurlLink(url: string, signal?: AbortSignal): Promise<UnfurledLink> {
-	return client.portfolio.unfurl({ url }, signalOption(signal));
+export async function unfurlLink(url: string, signal?: AbortSignal): Promise<UnfurledLink> {
+	const result = await client.portfolio.unfurl({ url }, signalOption(signal));
+	// Phase 13 Langkah 0: the editor has no Embed block yet, so an embeddable page reads as a link card for now
+	// (`pf-web` replaces this with the Embed block and its offer).
+	if (result.kind === "embed")
+		return {
+			kind: "link",
+			url: result.url,
+			title: result.title ?? "",
+			...(result.thumbnailUrl ? { imageUrl: result.thumbnailUrl } : {}),
+		};
+	return result;
 }
 
 /**

@@ -34,6 +34,7 @@ const EMPTY_CONTACT: PortfolioViewContact = {
 	profiles: [],
 	form: false,
 	location: null,
+	vcard: null,
 };
 
 const contactSection = (contact: Partial<PortfolioViewContact>): ContactSection => ({

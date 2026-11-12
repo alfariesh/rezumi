@@ -59,6 +59,7 @@ export function workFromResumeProject(project: ProjectItem, taken: Set<string>):
 	return {
 		id: generateId(),
 		slug,
+		previousSlugs: [],
 		title,
 		summary: truncateText(htmlToText(description), max.workSummary),
 		role: "",

@@ -19,6 +19,7 @@ const record = (patch: Partial<PortfolioRecord> = {}): PortfolioRecord => ({
 	publishedAt: null,
 	suspendedAt: null,
 	suspendedReason: null,
+	hasPassword: false,
 	data: parsePortfolioData({}),
 	createdAt: opened,
 	updatedAt: opened,

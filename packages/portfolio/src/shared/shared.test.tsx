@@ -28,6 +28,7 @@ function draw(
 		icon: () => null,
 		imageUrl,
 		nextId: (prefix) => `${prefix}-1`,
+		page: { kind: "home" },
 	};
 	return renderToStaticMarkup(<RenderContextValue.Provider value={context}>{part(view)}</RenderContextValue.Provider>);
 }

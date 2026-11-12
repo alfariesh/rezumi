@@ -143,8 +143,21 @@ function blockTypeInfo(type: PortfolioBlockType): BlockTypeInfo {
 				description: t`A card that fills itself in`,
 				keywords: ["link", "tautan", "url", "behance", "github"],
 			};
+		case "embed":
+			return {
+				icon: "link-simple-horizontal",
+				title: t`Embed`,
+				description: t`Figma, Loom, Spotify, SoundCloud or Google Slides`,
+				keywords: ["embed", "sematan", "figma", "loom", "spotify", "soundcloud", "slides"],
+			};
 	}
 }
+
+/**
+ * The block types the editor can add. Phase 13 Langkah 0: Embed is left out until `pf-web` builds its editor
+ * (`blocks/embed-block.tsx`); then this is `PORTFOLIO_BLOCK_TYPES` again.
+ */
+const ADDABLE_BLOCK_TYPES = PORTFOLIO_BLOCK_TYPES.filter((type) => type !== "embed");
 
 /** The words for a block that arrived when its work had no room left. */
 const fullWorkMessage = () =>
@@ -247,7 +260,7 @@ function AddBlockMenu({ work, index, last = false, quiet = false }: AddBlockMenu
 				)}
 				<Dropdown.Popover placement="bottom" className="w-72">
 					<Dropdown.Menu onAction={(key) => add(key as PortfolioBlockType)}>
-						{PORTFOLIO_BLOCK_TYPES.map((type) => {
+						{ADDABLE_BLOCK_TYPES.map((type) => {
 							const info = blockTypeInfo(type);
 							return (
 								<Dropdown.Item key={type} id={type} textValue={info.title}>
@@ -456,6 +469,13 @@ function BlockBody({ work, block, index, locale, onRemove }: BlockBodyProps) {
 					edit={(recipe, options) => editBlock(work.id, block.id, "link", recipe, options)}
 				/>
 			);
+		case "embed":
+			// Phase 13 Langkah 0: shown, not editable yet (`pf-web` adds `EmbedBlockEditor`).
+			return (
+				<p className="text-body-sm text-muted">
+					<Trans>Embed: this block can't be edited here yet.</Trans>
+				</p>
+			);
 	}
 }
 
@@ -464,7 +484,7 @@ type TextBlockEditorProps = { work: PortfolioWork; block: PortfolioBlockOf<"text
 /** Rich text; typing "/" adds a block after this one. */
 function TextBlockEditor({ work, block, index }: TextBlockEditorProps) {
 	const { add, busy, status } = useAddBlock(work, index + 1);
-	const slashItems: SlashItem[] = PORTFOLIO_BLOCK_TYPES.map((type) => {
+	const slashItems: SlashItem[] = ADDABLE_BLOCK_TYPES.map((type) => {
 		const info = blockTypeInfo(type);
 		return { ...info, onSelect: () => add(type) };
 	});

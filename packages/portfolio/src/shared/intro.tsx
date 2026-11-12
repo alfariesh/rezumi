@@ -1,5 +1,5 @@
 import type { PortfolioView } from "../view";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { useRender } from "./context";
 import { UiIcon } from "./icons";
 import { vars } from "./primitives";
@@ -35,6 +35,16 @@ type IntroChipsProps = {
 	/** Mozaik reads "open to work" first. */
 	availabilityFirst?: boolean;
 };
+
+type OpenToWorkProps = { className?: string };
+
+/**
+ * What the person is looking for, under "Open to work" (`view.hero.openTo`): "Looking for: <roles> — <kinds of work>".
+ * Every theme draws it in the intro after `IntroChips`. Phase 13 Langkah 0 stub: draws nothing until `pf-render` does.
+ */
+export function OpenToWork(_props: OpenToWorkProps): ReactNode {
+	return null;
+}
 
 /** The intro's chips: where the person is, and that they're open to work. */
 export function IntroChips({ location, availability, availabilityFirst = false }: IntroChipsProps) {

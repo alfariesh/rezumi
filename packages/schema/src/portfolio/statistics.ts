@@ -3,7 +3,7 @@
  * server that counts them and the dashboard that shows them all read these lists.
  */
 
-/** Clicks counted per day: buttons, service orders, videos played and PDFs opened. */
+/** Clicks counted per day: buttons, service orders, videos played, PDFs opened, embeds opened and contacts saved. */
 export const PORTFOLIO_CLICK_KINDS = [
 	"resume",
 	"pdf",
@@ -14,6 +14,8 @@ export const PORTFOLIO_CLICK_KINDS = [
 	"service",
 	"video",
 	"document",
+	"embed",
+	"vcard",
 ] as const;
 
 export type PortfolioClickKind = (typeof PORTFOLIO_CLICK_KINDS)[number];
@@ -28,9 +30,17 @@ export const PORTFOLIO_EVENT_KINDS = [...PORTFOLIO_CLICK_KINDS, "work", "view"] 
 export type PortfolioEventKind = (typeof PORTFOLIO_EVENT_KINDS)[number];
 
 /** Where a visit came from, from its `Referer` and `utm_source`. */
-export const PORTFOLIO_VISIT_SOURCES = ["linkedin", "whatsapp", "google", "direct", "other"] as const;
+export const PORTFOLIO_VISIT_SOURCES = ["linkedin", "whatsapp", "google", "qr", "direct", "other"] as const;
 
 export type PortfolioVisitSource = (typeof PORTFOLIO_VISIT_SOURCES)[number];
+
+/** Where a work page's visit came from, in Analytics Engine: a visit's sources, or `portfolio` (from the portfolio itself). */
+export const PORTFOLIO_WORK_SOURCES = [...PORTFOLIO_VISIT_SOURCES, "portfolio"] as const;
+
+export type PortfolioWorkSource = (typeof PORTFOLIO_WORK_SOURCES)[number];
+
+/** The `utm_source` the business card's QR code adds, read as the source `qr`. */
+export const PORTFOLIO_QR_UTM_SOURCE = "qr";
 
 /** Visitor devices, as Analytics Engine records them. */
 export const PORTFOLIO_DEVICES = ["mobile", "tablet", "desktop"] as const;
@@ -46,7 +56,12 @@ export const PORTFOLIO_STATISTICS_DETAIL_STATES = ["locked", "not-configured", "
 
 export type PortfolioStatisticsDetailState = (typeof PORTFOLIO_STATISTICS_DETAIL_STATES)[number];
 
-/** The days the dashboard shows. */
+/** The spans of days the dashboard offers. */
+export const PORTFOLIO_STATISTICS_RANGES = [7, 30, 90] as const;
+
+export type PortfolioStatisticsRange = (typeof PORTFOLIO_STATISTICS_RANGES)[number];
+
+/** The days the dashboard shows by default. */
 export const PORTFOLIO_STATISTICS_DAYS = 30;
 
 /** Different works one day's row counts; more are dropped, so a row can't grow without limit. */

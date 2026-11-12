@@ -22,6 +22,8 @@ const BUTTON_ICONS: Partial<Record<NonNullable<PortfolioViewLink["kind"]>, UiIco
 	whatsapp: "whatsapp",
 	link: "link",
 	profile: "link",
+	// Phase 13 stub: `pf-render` gives "Save contact" its own `user-plus` icon.
+	vcard: "link",
 };
 
 type ButtonProps = { link: PortfolioViewLink; primary?: boolean; icon?: UiIconName };

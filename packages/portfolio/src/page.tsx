@@ -28,7 +28,16 @@ export type RenderPortfolioPageInput = {
 	creditUrl: string;
 	/** How a published page talks to the server. Left out by the editor's preview, so a preview never counts or sends. */
 	live?: PortfolioPageLive;
+	/**
+	 * Which page to draw: the home page (the default) or one work's own page, by the work's id, which must be one of
+	 * `view.works` (an unknown id throws). Phase 13 Langkah 0: a work page still draws the home page until `pf-render`
+	 * adds `WorkArticle`.
+	 */
+	page?: PortfolioPageKind;
 };
+
+/** The portfolio's home page, or one work's own page (`/<username>/work/<slug>`). */
+export type PortfolioPageKind = { kind: "home" } | { kind: "work"; workId: string };
 
 /** The contact form's wiring on a published page. */
 type PortfolioPageForm =
@@ -98,6 +107,20 @@ export function portfolioIconNames(view: PortfolioView): string[] {
 	return [...names];
 }
 
+/** The page to draw: a work's page finds the work and its neighbours in `view.works`, the order the page lists them. */
+function resolvePage(view: PortfolioView, page: PortfolioPageKind): RenderContext["page"] {
+	if (page.kind === "home") return page;
+	const index = view.works.findIndex((work) => work.id === page.workId);
+	const work = view.works[index];
+	if (!work) throw new Error(`The view has no work ${page.workId}.`);
+	return {
+		kind: "work",
+		work,
+		previous: index > 0 ? (view.works[index - 1] ?? null) : null,
+		next: view.works[index + 1] ?? null,
+	};
+}
+
 /**
  * Renders a portfolio page from its view (`02-teknis.md` 5.1): plain React to static HTML, CSS as text, no request to
  * any other service. Runs on the server and in the browser (the editor's preview, Phase 03).
@@ -105,6 +128,7 @@ export function portfolioIconNames(view: PortfolioView): string[] {
 export function renderPortfolioPage(input: RenderPortfolioPageInput): PortfolioPage {
 	const { view } = input;
 	const theme = themeRenderer(view.theme);
+	const page = resolvePage(view, input.page ?? { kind: "home" });
 	let counter = 0;
 	const icons = input.icons ?? {};
 	const context: RenderContext = {
@@ -119,6 +143,7 @@ export function renderPortfolioPage(input: RenderPortfolioPageInput): PortfolioP
 		imageUrl: input.imageUrl ?? pageImageUrl,
 		nextId: (prefix) => `${prefix}-${++counter}`,
 		...(input.live ? { live: input.live } : {}),
+		page,
 	};
 	const markup = renderToStaticMarkup(
 		<RenderContextValue.Provider value={context}>

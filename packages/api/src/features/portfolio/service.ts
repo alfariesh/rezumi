@@ -1,6 +1,7 @@
 import type { Transaction } from "../billing/account";
 import type { DbOrTx } from "@rezumi/db/client";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
+import type { PortfolioStatisticsRange } from "@rezumi/schema/portfolio/statistics";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
@@ -31,6 +32,8 @@ const rowColumns = {
 	publishedAt: schema.portfolio.publishedAt,
 	suspendedAt: schema.portfolio.suspendedAt,
 	suspendedReason: schema.portfolio.suspendedReason,
+	// Whether visitors need a password; the hash itself never leaves the server.
+	hasPassword: sql<boolean>`${schema.portfolio.password} is not null`,
 	createdAt: schema.portfolio.createdAt,
 	updatedAt: schema.portfolio.updatedAt,
 };
@@ -44,6 +47,7 @@ type PortfolioRow = {
 	publishedAt: Date | null;
 	suspendedAt: Date | null;
 	suspendedReason: string | null;
+	hasPassword: boolean;
 	createdAt: Date;
 	updatedAt: Date;
 };
@@ -193,9 +197,16 @@ export const portfolioService = {
 	// Uploads, links and file deletion (`media.ts`).
 	...portfolioMedia,
 
-	statistics: async (userId: string) => {
+	statistics: async (userId: string, input: { range?: PortfolioStatisticsRange | undefined } = {}) => {
 		const portfolio = await ownPortfolio(userId);
-		return portfolio ? portfolioStatistics({ portfolio, userId, timeZone: portfolio.timeZone }) : null;
+		return portfolio
+			? portfolioStatistics({
+					portfolio,
+					userId,
+					timeZone: portfolio.timeZone,
+					...(input.range ? { range: input.range } : {}),
+				})
+			: null;
 	},
 
 	messages: {

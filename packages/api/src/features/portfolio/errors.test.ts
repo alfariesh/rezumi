@@ -24,6 +24,7 @@ describe("portfolio refusals", () => {
 			PORTFOLIO_WORKS_LIMIT: 400,
 			PORTFOLIO_AI_UNUSABLE: 502,
 			PORTFOLIO_STORAGE_FULL: 413,
+			PORTFOLIO_WORK_NOT_FOUND: 404,
 		});
 	});
 
@@ -32,6 +33,7 @@ describe("portfolio refusals", () => {
 			portfolioErrors.disabled(),
 			portfolioErrors.exists(),
 			portfolioErrors.notFound(),
+			portfolioErrors.workNotFound(),
 			portfolioErrors.sourceInvalid(),
 			portfolioErrors.sourceInvalid("unreadable", new Error("Stored resume data does not match")),
 			portfolioErrors.conflict(new Date("2026-11-07T08:00:00Z")),

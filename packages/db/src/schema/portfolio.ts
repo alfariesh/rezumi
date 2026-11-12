@@ -33,6 +33,9 @@ export const portfolio = pg.pgTable(
 		// An admin took it down (Phase 11): it is treated as unpublished and can't be published until lifted.
 		suspendedAt: pg.timestamp("suspended_at", { withTimezone: true }),
 		suspendedReason: pg.text("suspended_reason"),
+		// A visitor password (Phase 13, B16): bcrypt hash (bcryptjs, cost 10, like resumes); null = open to everyone. A
+		// column, not `data`, so saves, AI drafts and imports never change it. Never logged, exported or sent anywhere.
+		password: pg.text("password"),
 		// Saved by the strict write schema, but read it only through `parsePortfolioData`: stored JSON may predate today's
 		// schema, and the lenient read repairs what it can.
 		data: pg.jsonb("data").notNull().$type<unknown>(),

@@ -36,12 +36,15 @@ const clickLabels = (): Record<PortfolioClickKind, string> => ({
 	service: t`Service orders`,
 	video: t`Videos played`,
 	document: t`PDFs opened`,
+	embed: t`Embeds opened`,
+	vcard: t`Contacts saved`,
 });
 
 const sourceLabels = (): Record<PortfolioVisitSource, string> => ({
 	linkedin: "LinkedIn",
 	whatsapp: "WhatsApp",
 	google: "Google",
+	qr: t`QR code`,
 	direct: t`Direct`,
 	other: t`Other sites`,
 });

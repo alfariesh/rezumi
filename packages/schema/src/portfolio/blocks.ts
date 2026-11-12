@@ -1,5 +1,6 @@
 import type { SchemaKit } from "./kit";
 import z from "zod";
+import { EMBED_PROVIDERS, isEmbedRef } from "./embed";
 import { createImageSchema, portfolioPdfKeySchema } from "./files";
 import { itemIdSchema } from "./kit";
 import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "./limits";
@@ -16,7 +17,7 @@ import {
 const { text: max } = PORTFOLIO_LIMITS;
 
 /** The kinds of block a work's detail is made of (`02-teknis.md` section 16), in the order the editor offers them. */
-export const PORTFOLIO_BLOCK_TYPES = ["text", "images", "metrics", "video", "pdf", "link"] as const;
+export const PORTFOLIO_BLOCK_TYPES = ["text", "images", "metrics", "video", "embed", "pdf", "link"] as const;
 export type PortfolioBlockType = (typeof PORTFOLIO_BLOCK_TYPES)[number];
 
 export const IMAGE_BLOCK_LAYOUTS = ["full", "grid", "carousel"] as const;
@@ -73,6 +74,24 @@ export function createBlockSchema(kit: SchemaKit) {
 			.refine((block) => (block.provider === "youtube" ? YOUTUBE_ID_PATTERN : VIMEO_ID_PATTERN).test(block.videoId), {
 				message: "This isn't a YouTube or Vimeo video ID.",
 				path: ["videoId"],
+			}),
+		z
+			.object({
+				id: itemIdSchema,
+				type: z.literal("embed"),
+				provider: z.enum(EMBED_PROVIDERS),
+				ref: z.string(),
+				title: kit.optional(kit.text(max.mediaTitle)),
+				thumbnail: kit
+					.optional(image)
+					.describe(
+						"The provider's picture copied to the portfolio's storage, or one the person uploaded. The page shows only this.",
+					),
+			})
+			// Like video: a reference no player can be built from is dropped from stored data too.
+			.refine((block) => isEmbedRef(block.provider, block.ref), {
+				message: "This isn't a link this service can embed.",
+				path: ["ref"],
 			}),
 		z.object({
 			id: itemIdSchema,

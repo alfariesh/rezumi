@@ -2,11 +2,11 @@ import type { PortfolioStandardSection } from "./sections";
 import z from "zod";
 
 /** Lugas and Prima are free; the creative themes belong to Plus. */
-export const PORTFOLIO_THEMES = ["lugas", "prima", "kanvas", "mozaik", "paper", "brutal"] as const;
+export const PORTFOLIO_THEMES = ["lugas", "prima", "kanvas", "mozaik", "paper", "brutal", "sintaks", "warta"] as const;
 export type PortfolioTheme = (typeof PORTFOLIO_THEMES)[number];
 export const portfolioThemeSchema = z
 	.enum(PORTFOLIO_THEMES)
-	.describe("The portfolio theme: lugas, prima (free), kanvas, mozaik, paper or brutal (Plus).");
+	.describe("The portfolio theme: lugas, prima (free), kanvas, mozaik, paper, brutal, sintaks or warta (Plus).");
 export const defaultPortfolioTheme: PortfolioTheme = "lugas";
 
 export const PORTFOLIO_SCHEMES = ["light", "dark", "auto"] as const;
@@ -107,6 +107,10 @@ export const PORTFOLIO_FONT_PAIRS = {
 	"sora-dm": { label: "Sora + DM Sans", heading: "Sora", body: "DM Sans" },
 	rethink: { label: "Rethink Sans", heading: "Rethink Sans", body: "Rethink Sans" },
 	"redhat-albert": { label: "Red Hat Display + Albert Sans", heading: "Red Hat Display", body: "Albert Sans" },
+	geist: { label: "Geist", heading: "Geist", body: "Geist" },
+	"jetbrains-hanken": { label: "JetBrains Mono + Hanken Grotesk", heading: "JetBrains Mono", body: "Hanken Grotesk" },
+	"newsreader-franklin": { label: "Newsreader + Libre Franklin", heading: "Newsreader", body: "Libre Franklin" },
+	"spectral-public": { label: "Spectral + Public Sans", heading: "Spectral", body: "Public Sans" },
 } as const satisfies Record<string, FontPair>;
 export type PortfolioFontPairId = keyof typeof PORTFOLIO_FONT_PAIRS;
 export const PORTFOLIO_FONT_PAIR_IDS = Object.keys(PORTFOLIO_FONT_PAIRS) as PortfolioFontPairId[];
@@ -359,6 +363,83 @@ export const PORTFOLIO_THEME_INFO: Record<PortfolioTheme, PortfolioThemeInfo> = 
 			"awards",
 			"languages",
 			"publications",
+			"volunteer",
+			"interests",
+			"profiles",
+			"contact",
+		],
+	},
+	sintaks: {
+		id: "sintaks",
+		name: "Sintaks",
+		plan: "plus",
+		defaultScheme: "dark",
+		fallbackAccent: "#22C55E",
+		monoFont: "JetBrains Mono",
+		effects: ["scramble", "none", "fade-up", "typewriter", "shimmer"],
+		fontPairs: ["geist", "jetbrains-hanken", "space-inter", "dm-sans", "manrope"],
+		variants: {
+			hero: ["photo-right", "photo-left", "big-name"],
+			work: ["grid-2", "list", "grid-3"],
+			services: ["list", "cards"],
+			testimonials: ["cards", "carousel"],
+			clients: ["grayscale", "color"],
+			experience: ["timeline", "compact"],
+			education: ["compact", "timeline"],
+			skills: ["chips", "groups"],
+			metric: allMetricVariants("kpi"),
+		},
+		sectionOrder: [
+			"about",
+			"work",
+			"skills",
+			"experience",
+			"services",
+			"testimonials",
+			"clients",
+			"education",
+			"certifications",
+			"awards",
+			"publications",
+			"languages",
+			"volunteer",
+			"interests",
+			"profiles",
+			"contact",
+		],
+	},
+	warta: {
+		id: "warta",
+		name: "Warta",
+		plan: "plus",
+		defaultScheme: "light",
+		fallbackAccent: "#B42318",
+		effects: ["fade-up", "none", "shimmer", "typewriter"],
+		fontPairs: ["newsreader-franklin", "spectral-public", "source-serif-sans", "caslon-public", "literata-work"],
+		variants: {
+			hero: ["big-name", "photo-top", "photo-left"],
+			work: ["featured-grid", "list", "grid-2"],
+			services: ["list", "cards"],
+			testimonials: ["cards", "carousel"],
+			clients: ["grayscale", "color"],
+			experience: ["compact", "timeline"],
+			education: ["compact", "timeline"],
+			skills: ["groups", "chips"],
+			metric: allMetricVariants("big"),
+		},
+		sectionOrder: [
+			"about",
+			"work",
+			"publications",
+			"experience",
+			"services",
+			"testimonials",
+			"clients",
+			"awards",
+			"education",
+			"skills",
+			"certifications",
+			"languages",
 			"volunteer",
 			"interests",
 			"profiles",

@@ -14,6 +14,8 @@ export type PortfolioHead = {
 	structuredData?: Record<string, unknown> | undefined;
 	/** The person's own profiles and website, as `rel="me"` links. */
 	meLinks?: readonly string[] | undefined;
+	/** `og:type`: `profile` for the home page (the default), `article` for a work's page. */
+	type?: "profile" | "article" | undefined;
 };
 
 export type PortfolioDocumentOptions = {
@@ -39,7 +41,7 @@ function headTags(head: PortfolioHead | undefined): string {
 		`<meta name="description" content="${description}">`,
 		`<link rel="canonical" href="${url}">`,
 		head.indexable ? "" : `<meta name="robots" content="noindex, follow">`,
-		`<meta property="og:type" content="profile">`,
+		`<meta property="og:type" content="${head.type ?? "profile"}">`,
 		`<meta property="og:site_name" content="Rezumi">`,
 		`<meta property="og:title" content="${title}">`,
 		`<meta property="og:description" content="${description}">`,

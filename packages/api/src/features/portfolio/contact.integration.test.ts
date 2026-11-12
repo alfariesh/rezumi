@@ -487,13 +487,51 @@ describe.skipIf(!databaseUrl)("portfolio contact form", () => {
 				]);
 			const result = await read(id, "i1");
 			expect(result.days).toHaveLength(30);
-			expect(result.days.at(-1)).toEqual({ date: "2026-11-10", views: 4 });
-			expect(result.days[0]).toEqual({ date: "2026-10-12", views: 1 });
+			expect(result.range).toEqual({ days: 30, from: "2026-10-12", to: "2026-11-10" });
+			expect(result.days.at(-1)).toMatchObject({
+				date: "2026-11-10",
+				views: 4,
+				messages: 1,
+				workOpens: 12,
+				clicks: { whatsapp: 2, pdf: 1, email: 0 },
+				sources: { linkedin: 3, direct: 1, qr: 0 },
+			});
+			expect(result.days[0]).toMatchObject({ date: "2026-10-12", views: 1, workOpens: 0 });
 			expect(result.totals.views).toBe(5);
 			expect(result.totals.clicks).toMatchObject({ whatsapp: 2, pdf: 1, email: 0 });
 			expect(result.totals.messages).toBe(1);
 			expect(result.sources).toMatchObject({ linkedin: 3, direct: 1, google: 0 });
 			expect(result.works).toEqual([{ id: "w1", title: "Coffee app", opens: 3 }]);
+		});
+
+		it("cover 7 or 90 days when asked", async () => {
+			const id = await addPortfolio("i3");
+			await getDb()
+				.insert(tables.portfolioStatisticsDaily)
+				.values([
+					{ portfolioId: id, date: "2026-11-04", views: 2 },
+					{ portfolioId: id, date: "2026-11-03", views: 5 },
+					{ portfolioId: id, date: "2026-08-13", views: 7 },
+				]);
+			const week = await statistics.portfolioStatistics({
+				portfolio: { id, data: { works: { items: [] } } as never },
+				userId: "i3",
+				timeZone: "Asia/Jakarta",
+				range: 7,
+				now: new Date("2026-11-09T18:30:00Z"),
+			});
+			expect(week.range).toEqual({ days: 7, from: "2026-11-04", to: "2026-11-10" });
+			expect(week.days).toHaveLength(7);
+			expect(week.totals.views).toBe(2);
+			const quarter = await statistics.portfolioStatistics({
+				portfolio: { id, data: { works: { items: [] } } as never },
+				userId: "i3",
+				timeZone: "Asia/Jakarta",
+				range: 90,
+				now: new Date("2026-11-09T18:30:00Z"),
+			});
+			expect(quarter.days).toHaveLength(90);
+			expect(quarter.totals.views).toBe(14);
 		});
 
 		it("keep the breakdown for plans with detailed statistics, and report a missing binding", async () => {

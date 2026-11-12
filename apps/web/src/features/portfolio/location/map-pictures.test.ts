@@ -37,6 +37,7 @@ const record = (data: PortfolioData): PortfolioRecord => ({
 	publishedAt: null,
 	suspendedAt: null,
 	suspendedReason: null,
+	hasPassword: false,
 	data,
 	createdAt: new Date(0),
 	updatedAt: new Date(0),

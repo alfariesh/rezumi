@@ -23,6 +23,7 @@ export function newWork(data: Pick<PortfolioData, "works">, title = ""): Portfol
 	return {
 		id: generateId(),
 		slug: uniquePortfolioSlug(title, slugsExcept(data)),
+		previousSlugs: [],
 		title,
 		summary: "",
 		role: "",
@@ -77,6 +78,7 @@ export function worksFromImages(
 		return {
 			id: generateId(),
 			slug,
+			previousSlugs: [],
 			title: workTitle,
 			summary: "",
 			role: "",

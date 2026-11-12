@@ -30,6 +30,7 @@ const buttonKindLabel = (kind: PortfolioButton["kind"]) =>
 		email: t`Email`,
 		profile: t`A profile (LinkedIn, GitHub…)`,
 		link: t`Another link`,
+		vcard: t`Save contact`,
 	})[kind];
 
 /**
@@ -251,10 +252,21 @@ function hiddenButtonReason(kind: PortfolioButton["kind"]): string {
 		case "profile":
 		case "link":
 			return t`Not on the page: add the address below.`;
+		case "vcard":
+			return t`Shown on your published page.`;
 	}
 }
 
-const ADD_ORDER: PortfolioButton["kind"][] = ["contact", "resume", "whatsapp", "email", "pdf", "profile", "link"];
+const ADD_ORDER: PortfolioButton["kind"][] = [
+	"contact",
+	"resume",
+	"whatsapp",
+	"email",
+	"pdf",
+	"vcard",
+	"profile",
+	"link",
+];
 
 /** Up to three buttons under the intro. Ones that can't work yet (no WhatsApp number, say) are left off the page. */
 function HeroButtons() {
