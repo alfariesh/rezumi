@@ -38,7 +38,7 @@ describe("renderPortfolioLockPage", () => {
 		expect(lock("wrong")).toContain(
 			'aria-invalid="true" aria-describedby="pf-password-alert"><p class="alert" id="pf-password-alert" role="alert">That password isn&#39;t right. Check it and try again.</p>',
 		);
-		expect(lock("limited")).toContain('role="alert">Too many tries. Wait 10 minutes, then try again.</p>');
+		expect(lock("limited")).toContain('role="alert">Too many tries. Try again later.</p>');
 	});
 
 	it("escapes everything it writes, and gives a right-to-left page its direction", () => {
@@ -53,6 +53,8 @@ describe("renderPortfolioLockPage", () => {
 		// Text stays text: no tag or attribute escapes its place.
 		expect(html).not.toMatch(/<script|<img|<b>|\son[a-z]+="/);
 		expect(html).toContain('dir="rtl"');
+		// A sentence in another direction than the page keeps its own (its full stop stays at its end).
+		expect(html).toContain("h1,p,label{unicode-bidi:plaintext}");
 		expect(html).toContain("&lt;b&gt;Private&lt;/b&gt;");
 	});
 });

@@ -18,8 +18,8 @@ a{color:inherit}
 h1,h2,h3,h4,p,ul,ol,dl,dd,figure,blockquote{margin:0}
 h1,h2,h3,h4{font-family:var(--pf-font-heading);text-wrap:balance;line-height:var(--pf-leading-tight)}
 p{text-wrap:pretty}
-/* User text may be written in another direction than the page (Latin on an Arabic page): each block takes its own. */
-p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
+/* User text may be written in another direction than the page (Latin on an Arabic page): each block takes its own, the work cards' titles and summaries too (themes draw them as spans). */
+p,li,blockquote,h1,h2,h3,h4,dt,dd,[class$="__title"],[class$="__summary"],[class$="__desc"],[class$="__dek"]{unicode-bidi:plaintext}
 :focus-visible{outline:2px solid var(--pf-accent-text);outline-offset:3px;border-radius:4px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .pf-skip{position:absolute;inset-inline-start:12px;top:-60px;z-index:80;padding:10px 16px;border-radius:999px;background:var(--pf-text);color:var(--pf-bg);font-weight:600;text-decoration:none}
@@ -208,7 +208,7 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 /* The intro's background, drawn by the element with data-bg through background:var(--pf-hero-bg): the accent's soft gradient over the theme's ground, a dot pattern, or the picture under a shade with light text on it. Themes set --pf-hero-ground and --pf-hero-shade (two stops). */
 [data-bg="soft-gradient"]{--pf-hero-bg:radial-gradient(120% 90% at 0% 0%,var(--pf-accent-soft),transparent 70%),radial-gradient(90% 80% at 100% 100%,color-mix(in oklab,var(--pf-accent-soft) 70%,transparent),transparent 70%),var(--pf-hero-ground,var(--pf-bg))}
 [data-bg="pattern"]{--pf-hero-bg:radial-gradient(color-mix(in oklab,var(--pf-accent) 22%,transparent) 1.2px,transparent 1.4px) 0 0/18px 18px,var(--pf-surface)}
-[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.62),rgb(8 10 14/.7))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-bg:#111;--pf-text:#fff;--pf-muted:rgb(255 255 255/.82);--pf-border:rgb(255 255 255/.28);--pf-surface:rgb(255 255 255/.14);--pf-accent-text:var(--pf-accent-text-dark);color:var(--pf-text)}
+[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.7),rgb(8 10 14/.78))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-bg:#111;--pf-text:#fff;--pf-muted:rgb(255 255 255/.82);--pf-border:rgb(255 255 255/.28);--pf-surface:rgb(255 255 255/.14);--pf-accent-text:color-mix(in oklab,var(--pf-accent-text-dark) 45%,#fff);--pf-positive:var(--pf-positive-dark);--pf-negative:var(--pf-negative-dark);color:var(--pf-text)}
 /* An intro on the soft gradient draws accent text on the accent's tint: the tone made for it. */
 [data-bg="soft-gradient"]{--pf-accent-text:var(--pf-accent-text-soft)}
 .pf-person{display:flex;align-items:center;gap:12px;min-width:0}
@@ -279,8 +279,8 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-foot a:not(.pf-badge){color:var(--pf-muted);text-underline-offset:3px}
 .pf-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 8px;border:1px solid var(--pf-border);border-radius:999px;color:var(--pf-text);text-decoration:none;font-weight:600}
 .pf-badge svg{width:20px;height:20px}
-/* Printing: the page as one light, still sheet (the dark tokens are for screens; designCss). The skip link, navigation links, menu, contact form and picture viewer do nothing on paper; a sticky header would sit on top of every page; a work's page prints its content without the links around it. Theme rules come after these, so they win with !important. */
-@media print{.pf-skip,.pf-nav__links,.pf-menu,.pf-form,.pf-lightbox,.pf-workpage__back,.pf-workpage__more,.pf-embed__note{display:none!important}.pf header{position:static!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}.pf-workpage{max-width:none;padding-block:0}figure,blockquote,.pf-detail__head,.pf-embed{break-inside:avoid}}
+/* Printing: the page as one light, still sheet (the dark tokens are for screens; designCss). The skip link, navigation links, menu, contact form and picture viewer do nothing on paper; a sticky header would sit on top of every page; a work's page prints its content without the links around it. Paper drops backgrounds by default, so what draws light text on a fill (primary buttons, a theme's filled Open to work chip) keeps its fill. Theme rules come after these, so they win with !important. */
+@media print{.pf-skip,.pf-nav__links,.pf-menu,.pf-form,.pf-lightbox,.pf-workpage__back,.pf-workpage__more,.pf-embed__note{display:none!important}.pf header{position:static!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}.pf-workpage{max-width:none;padding-block:0}figure,blockquote,.pf-detail__head,.pf-embed{break-inside:avoid}.pf-btn--primary,.pf-chip--open{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 `;
 
 /** The rules as pages ship them: the comments above are for whoever edits them, not for every visitor's download. */

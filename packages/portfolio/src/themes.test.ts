@@ -22,6 +22,8 @@ import { LUGAS_CSS } from "./themes/lugas/css";
 import { MOZAIK_CSS } from "./themes/mozaik/css";
 import { PAPER_CSS } from "./themes/paper/css";
 import { PRIMA_CSS } from "./themes/prima/css";
+import { SINTAKS_CSS } from "./themes/sintaks/css";
+import { WARTA_CSS } from "./themes/warta/css";
 
 describe("portfolio font pairs", () => {
 	it("only pair fonts the page can load on the web", () => {
@@ -116,7 +118,17 @@ describe("every theme says what the person is looking for", () => {
 });
 
 describe("shared and theme rules", () => {
-	const THEME_CSS = [BASE_CSS, LUGAS_CSS, PRIMA_CSS, KANVAS_CSS, MOZAIK_CSS, PAPER_CSS, BRUTAL_CSS];
+	const THEME_CSS = [
+		BASE_CSS,
+		LUGAS_CSS,
+		PRIMA_CSS,
+		KANVAS_CSS,
+		MOZAIK_CSS,
+		PAPER_CSS,
+		BRUTAL_CSS,
+		SINTAKS_CSS,
+		WARTA_CSS,
+	];
 
 	it("draws the timeline on a list's own items only, so a job's roles get no dots or second rail", () => {
 		for (const css of THEME_CSS) expect(css).not.toMatch(/\[data-variant="timeline"\] \.pf-cvitem/);
@@ -141,12 +153,17 @@ describe("shared and theme rules", () => {
 
 	it("draws the intro's backgrounds from one set of rules, each theme choosing its ground and shade", () => {
 		expect(BASE_CSS).toContain(
-			'[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.62),rgb(8 10 14/.7))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-bg:#111;--pf-text:#fff;',
+			'[data-bg="image"]{--pf-hero-bg:linear-gradient(var(--pf-hero-shade,rgb(8 10 14/.7),rgb(8 10 14/.78))),var(--pf-hero-image) center/cover no-repeat,#111;color-scheme:dark;--pf-bg:#111;--pf-text:#fff;',
 		);
+		// Accent text over a picture is the dark mode's accent lifted towards white: over a light picture under the shade
+		// it still reads (about 4.4:1 at worst, against 1.8:1 before).
+		expect(BASE_CSS).toContain("--pf-accent-text:color-mix(in oklab,var(--pf-accent-text-dark) 45%,#fff);");
 		// The picture's area is dark in both modes: its ground is too, so a fill drawn in the page colour (Paper's primary
 		// button, white text on `--pf-bg`) stays readable on it.
 		expect(BASE_CSS).toContain("var(--pf-hero-ground,var(--pf-bg))}");
-		for (const css of [LUGAS_CSS, PRIMA_CSS, KANVAS_CSS, MOZAIK_CSS, PAPER_CSS, BRUTAL_CSS]) {
+		// Over a picture, "open to work" and trend colours take their dark-mode tones too, as text and accent do.
+		expect(BASE_CSS).toContain("--pf-positive:var(--pf-positive-dark);--pf-negative:var(--pf-negative-dark);");
+		for (const css of THEME_CSS.slice(1)) {
 			expect(css).toMatch(/\[data-bg\]:not\(\[data-bg="plain"\]\)\{[^}]*background:var\(--pf-hero-bg\)\}/);
 			expect(css).not.toMatch(/\[data-bg="(?:soft-gradient|pattern)"\]|--pf-text:#fff/);
 		}
@@ -161,6 +178,10 @@ describe("shared and theme rules", () => {
 
 	it("breaks a long word anywhere in every theme, so it never pushes the page sideways", () => {
 		expect(BASE_CSS).toContain(".pf{overflow-wrap:anywhere}");
+		// A card's English summary on an Arabic page keeps its full stop at its end.
+		expect(BASE_CSS).toContain(
+			'[class$="__title"],[class$="__summary"],[class$="__desc"],[class$="__dek"]{unicode-bidi:plaintext}',
+		);
 	});
 
 	it("keeps pictures still under the pointer for visitors who ask for less motion", () => {

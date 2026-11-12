@@ -145,6 +145,24 @@ export const raka: PersonaDefinition = {
 								]),
 							},
 							{
+								id: "w-raka-loom",
+								type: "embed",
+								provider: "loom",
+								ref: "8c1e4f02b7a94d3e9f6a1b5c2d7e0f48",
+								title: t([
+									"Walkthrough: the metrics layer in five minutes",
+									"Penjelasan: lapisan metrik dalam lima menit",
+								]),
+							},
+							{
+								id: "w-raka-figma",
+								type: "embed",
+								provider: "figma",
+								ref: "design/Rk4Zq8Lc2Vt7Pm9Xw3Nb?node-id=2-48",
+								title: t(["Dashboard layout in Figma", "Tata letak dasbor di Figma"]),
+								thumbnail: picture("sintaks-2.svg", ["Figma: the dashboard layout", "Figma: tata letak dasbor"]),
+							},
+							{
 								id: "w-metrics-s",
 								type: "embed",
 								provider: "google-slides",

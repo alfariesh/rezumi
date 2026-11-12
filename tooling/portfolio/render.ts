@@ -31,6 +31,8 @@ export type PageOptions = {
 	variants?: Record<string, string>;
 	/** Draw this work's own page (by its slug) instead of the home page, at `workPageFile(name, slug)`. */
 	work?: string;
+	/** The intro's background instead of the persona's own (plain); `image` uses the first work's cover. */
+	background?: "soft-gradient" | "pattern" | "image";
 };
 
 /** The file a work's own page is written to, beside its home page `home`: `<home>.work-<slug>.html`. */
@@ -93,6 +95,17 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 			variants: { ...(data.design?.variants as Record<string, string> | undefined), ...options.variants },
 		},
 	};
+
+	if (options.background) {
+		const cover = data.works?.items?.[0]?.cover;
+		data = {
+			...data,
+			hero: {
+				...data.hero,
+				background: { kind: options.background, ...(options.background === "image" && cover ? { image: cover } : {}) },
+			},
+		};
+	}
 
 	const names = new Map(persona.files.map((file) => [file.key, file.name]));
 	const parsed = parseWritablePortfolioData(data);

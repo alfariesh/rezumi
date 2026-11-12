@@ -362,6 +362,10 @@ describe("renderPortfolioPage edge cases", () => {
 		);
 		expect(print).toContain(".pf-workpage{max-width:none;padding-block:0}");
 		expect(print).not.toContain("pf-detail{");
+		// Light text on a fill keeps the fill on paper, where backgrounds are left out by default.
+		expect(print).toContain(
+			".pf-btn--primary,.pf-chip--open{-webkit-print-color-adjust:exact;print-color-adjust:exact}",
+		);
 	});
 });
 

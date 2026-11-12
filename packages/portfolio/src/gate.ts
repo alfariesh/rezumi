@@ -13,6 +13,8 @@ const CSS = `:root{color-scheme:light dark;--bg:#f7f7f5;--card:#fff;--text:#1c1c
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
 main{width:100%;max-width:440px;padding:32px 16px 48px;overflow-wrap:anywhere}
+/* Text in another direction than the page (an English fallback on an Arabic page) keeps its own: each block takes it from its first letter. */
+h1,p,label{unicode-bidi:plaintext}
 h1{font-size:1.5rem;line-height:1.25;margin:0 0 8px}
 p{margin:0}
 .intro{color:var(--muted);margin-bottom:24px}

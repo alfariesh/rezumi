@@ -86,13 +86,15 @@ export const laras: PersonaDefinition = {
 						cover: "warta-1.svg",
 						featured: true,
 						metrics: [
-							metric("m-read", ["Average reading time", "Rata-rata waktu baca"], "11:40", {
-								change: { direction: "up", text: ["4× the site", "4× situs"], good: true },
-								context: ["minutes, on a 4,200-word story", "menit, untuk tulisan 4.200 kata"],
-							}),
+							// The card's highlight. Time spent on the published story is the magazine's figure, not this page's
+							// reading time ("1 min read" counts the portfolio's own text), so it comes second and says so.
 							metric("m-shares", ["Shares in the first week", "Dibagikan di minggu pertama"], 12_400, {
 								format: "compact",
 								series: [1200, 3900, 6800, 8700, 10_300, 11_600, 12_400],
+							}),
+							metric("m-read", ["Time spent on the magazine's story", "Waktu baca di situs majalah"], "11:40", {
+								change: { direction: "up", text: ["4× the site", "4× situs"], good: true },
+								context: ["minutes, on a 4,200-word story", "menit, untuk tulisan 4.200 kata"],
 							}),
 							metric("m-council", ["Cited in council hearings", "Dikutip di rapat DPRD"], 2, {
 								context: ["Semarang and Pekalongan", "Semarang dan Pekalongan"],

@@ -1,6 +1,6 @@
 /**
  * Renders the theme gallery pictures: each theme with its fictional persona (`THEME_PERSONAS` in `persona.ts`: Lugas and
- * Paper Nadia, Prima Anindya, Kanvas Bayu, Mozaik and Brutal Citra), in English and Indonesian, photographed in the
+ * Paper Nadia, Prima Anindya, Kanvas Bayu, Mozaik and Brutal Citra, Sintaks Raka, Warta Laras), in English and Indonesian, photographed in the
  * system Chrome at twice the pixels. The picture is the top of the page on a 1440×900 desktop screen, in the theme's
  * own mode (`defaultScheme`) and accent (`fallbackAccent`), with the intro effect finished.
  *

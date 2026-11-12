@@ -35,7 +35,8 @@ function Trend({ change }: TrendProps) {
 				className=""
 			/>
 			<span className="sr-only">{spoken} </span>
-			{change.text}
+			{/* The person's words keep their own direction: "4× the site" on an Arabic page isn't "the site ×4". */}
+			<bdi>{change.text}</bdi>
 		</span>
 	);
 }

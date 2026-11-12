@@ -111,6 +111,8 @@ export function designCss(view: PortfolioView, palette: ThemePalette): string {
 	const type = declarations({
 		// For areas that stay dark in either mode, such as an intro over a picture.
 		"--pf-accent-text-dark": darkTokens["--pf-accent-text"] as string,
+		"--pf-positive-dark": darkTokens["--pf-positive"] as string,
+		"--pf-negative-dark": darkTokens["--pf-negative"] as string,
 		"--pf-font-heading": fontStack(fonts.heading),
 		"--pf-font-body": fontStack(fonts.body),
 		"--pf-font-mono": fontStack(fonts.mono),

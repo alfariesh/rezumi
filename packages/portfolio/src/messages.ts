@@ -122,7 +122,7 @@ const ENGLISH = {
 	password: "Password",
 	unlock: "Open portfolio",
 	wrongPassword: "That password isn't right. Check it and try again.",
-	tooManyTries: "Too many tries. Wait 10 minutes, then try again.",
+	tooManyTries: "Too many tries. Try again later.",
 };
 
 export type PortfolioPageMessages = typeof ENGLISH;
