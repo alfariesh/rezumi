@@ -23,7 +23,7 @@ const TEXT_CONTRAST = 4.5;
 export const ACCENT_SOFT_AMOUNT = 0.11;
 
 /** The accent's share of `--pf-accent-hover`, a primary button under the pointer. */
-export const ACCENT_HOVER_AMOUNT = 0.86;
+const ACCENT_HOVER_AMOUNT = 0.86;
 
 /** A trend colour's share of its chip's background (`.pf-trend`), laid over the page or a card. */
 export const TREND_TINT_AMOUNT = 0.13;

@@ -44,7 +44,7 @@ export const deviceLabels = (): Record<PortfolioDevice, string> => ({
 	desktop: t`Computers`,
 });
 
-export type RankRow = { key: string; label: string; value: number };
+type RankRow = { key: string; label: string; value: number };
 
 type RankListProps = {
 	title: ReactNode;

@@ -40,7 +40,7 @@ const LINKEDIN = /(?:^|\.)linkedin\.[a-z.]+$|^lnkd\.in$|^com\.linkedin\.android$
 const WHATSAPP = /(?:^|\.)whatsapp\.com$|^wa\.me$|^com\.whatsapp(?:\.w4b)?$/;
 const GOOGLE = /(?:^|\.)google\.[a-z.]+$|^com\.google\.android\.(?:googlequicksearchbox|gm)$/;
 
-export function sourceOfName(name: string): PortfolioVisitSource | null {
+function sourceOfName(name: string): PortfolioVisitSource | null {
 	if (name === PORTFOLIO_QR_UTM_SOURCE) return "qr";
 	if (name.includes("linkedin") || name === "lnkd") return "linkedin";
 	if (name.includes("whatsapp") || name === "wa") return "whatsapp";

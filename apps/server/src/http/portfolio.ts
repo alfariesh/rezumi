@@ -184,7 +184,7 @@ export function unlockTarget(next: string, username: string, onAppHost: boolean)
  * browser send wrong passwords and spend their tries. A request with neither header (an old browser, a script) passes:
  * it can only spend its own tries.
  */
-export function isCrossSitePost(request: Request): boolean {
+function isCrossSitePost(request: Request): boolean {
 	const site = request.headers.get("sec-fetch-site");
 	if (site !== null && site !== "same-origin") return true;
 	const origin = request.headers.get("origin");

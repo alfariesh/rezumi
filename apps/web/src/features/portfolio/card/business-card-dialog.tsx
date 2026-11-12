@@ -13,7 +13,7 @@ import { businessCardAddress, businessCardPrintSheet, cardFileName } from "./qr"
 /** The PNG's width and height: sharp when printed large or placed in a design. */
 const PNG_SIZE = 1024;
 
-export type BusinessCardIdentity = {
+type BusinessCardIdentity = {
 	name: string;
 	headline: string;
 	username: string;

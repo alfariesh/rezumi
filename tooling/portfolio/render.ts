@@ -36,7 +36,7 @@ export type PageOptions = {
 };
 
 /** The file a work's own page is written to, beside its home page `home`: `<home>.work-<slug>.html`. */
-export function workPageFile(home: string, slug: string): string {
+function workPageFile(home: string, slug: string): string {
 	return `${home.replace(/\.html$/, "")}.work-${slug}.html`;
 }
 
