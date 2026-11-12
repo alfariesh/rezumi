@@ -4,7 +4,7 @@ import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { HeroHeadline, HeroName } from "../../shared/hero-text";
-import { introLocation, IntroChips, useIntroBackground } from "../../shared/intro";
+import { introLocation, IntroChips, OpenToWork, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
 import { Buttons, ExtraSection, Picture, Section, vars } from "../../shared/parts";
 import { SectionBody } from "../../shared/section-body";
@@ -51,6 +51,7 @@ function Hero() {
 					<HeroHeadline className="pr-headline" />
 					{hero.greeting && <p className="pr-greeting">{hero.greeting}</p>}
 					<IntroChips location={introLocation(view)} availability={hero.availability} />
+					<OpenToWork />
 					<Buttons links={hero.buttons} />
 				</div>
 				{hero.picture && (
@@ -85,7 +86,7 @@ function WorkList({ works }: WorkListProps) {
 		<ul className="pr-works" data-variant={variant}>
 			{works.map((work) => (
 				<li key={work.id} className="pr-work" {...(work.cover ? {} : { "data-noimg": "" })}>
-					<a className="pr-card" href={`#${work.anchor}`}>
+					<a className="pr-card" href={work.href}>
 						{work.cover && (
 							<div className="pf-cover pr-card__cover">
 								<Picture

@@ -3,8 +3,10 @@ import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import type { ReactNode } from "react";
 import { useRender } from "./context";
 import { UiIcon } from "./icons";
-import { Footer, WorkDetails } from "./parts";
+import { Footer, Lightbox } from "./parts";
+import { headingId } from "./primitives";
 import { navSections } from "./sections";
+import { hasGallery, homeLink, WorkArticle } from "./work-page";
 
 type NavigationProps = {
 	/** The header's class: `pf-wrap` and the theme's own. */
@@ -25,19 +27,22 @@ type NavigationProps = {
 
 /**
  * The page's navigation: the person's name back to the top, then links to the first sections and Contact
- * (`navSections`), which phones get in a `<details>` menu that works without the page script.
+ * (`navSections`), which phones get in a `<details>` menu that works without the page script. On a work's page the
+ * name and the links lead back to the home page and its sections (`homeLink`).
  */
 export function Navigation(props: NavigationProps) {
-	const { view, messages } = useRender();
+	const { view, messages, page } = useRender();
+	const onWork = page.kind === "work";
+	const target = (anchor: string) => (onWork ? homeLink(view, anchor) : `#${anchor}`);
 	const links = navSections(props.sections ?? view.sections);
 	const items = links.map((section) => (
 		<li key={section.key}>
-			<a href={`#${section.anchor}`}>{props.label ? props.label(section) : section.title}</a>
+			<a href={target(section.anchor)}>{props.label ? props.label(section) : section.title}</a>
 		</li>
 	));
 	const nav = (
 		<nav className="pf-nav" aria-label={messages.pageNavigation}>
-			<a className={`pf-nav__brand ${props.brandClassName}`} href="#main">
+			<a className={`pf-nav__brand ${props.brandClassName}`} href={onWork ? homeLink(view) : "#main"}>
 				{props.brandMark}
 				<span>{view.basics.name}</span>
 			</a>
@@ -47,7 +52,7 @@ export function Navigation(props: NavigationProps) {
 						{items}
 						{props.message && (
 							<li className={props.message.className}>
-								<a className="pf-btn pf-btn--primary" href={`#${props.message.anchor}`} data-pf-event="contact">
+								<a className="pf-btn pf-btn--primary" href={target(props.message.anchor)} data-pf-event="contact">
 									{messages.sendMessage}
 								</a>
 							</li>
@@ -86,21 +91,36 @@ type PageShellProps = {
 
 /**
  * What every theme's page is made of (`01-desain.md` section 5): a link past the navigation, the navigation, the main
- * column with the intro and the sections, the footer, then the works' details and the picture viewer.
+ * column, and the footer. On the home page the main column holds the theme's intro and sections (`children`); on a
+ * work's page it holds the shared `WorkArticle`, named by the work's title, and the picture viewer follows the footer
+ * when the work has a gallery. A published work page's root carries the work's id (`data-pf-work`), which the page's
+ * beacons send with every click.
  */
 export function PageShell({ theme, attributes, navigation, mainClassName, year, creditUrl, children }: PageShellProps) {
-	const { messages, live } = useRender();
+	const { messages, live, page } = useRender();
+	const work = page.kind === "work" ? page.work : null;
 	return (
-		<div className="pf" data-theme={theme} {...(live ? { "data-pf-live": live.eventUrl } : {})} {...attributes}>
+		<div
+			className="pf"
+			data-theme={theme}
+			{...(live ? { "data-pf-live": live.eventUrl } : {})}
+			{...(live && work ? { "data-pf-work": work.id } : {})}
+			{...attributes}
+		>
 			<a className="pf-skip" href="#main">
 				{messages.skipToContent}
 			</a>
 			{navigation}
-			<main className={`pf-wrap ${mainClassName}`} id="main" tabIndex={-1}>
-				{children}
+			<main
+				className={`pf-wrap ${mainClassName}`}
+				id="main"
+				tabIndex={-1}
+				{...(work ? { "aria-labelledby": headingId(work.anchor) } : {})}
+			>
+				{work ? <WorkArticle /> : children}
 			</main>
 			<Footer year={year} creditUrl={creditUrl} />
-			<WorkDetails />
+			{work && hasGallery(work) && <Lightbox />}
 		</div>
 	);
 }

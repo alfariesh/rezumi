@@ -4,7 +4,7 @@ import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { HeroHeadline, HeroName } from "../../shared/hero-text";
 import { UiIcon } from "../../shared/icons";
-import { introLocation, IntroChips, useIntroBackground } from "../../shared/intro";
+import { introLocation, IntroChips, OpenToWork, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
 import { Buttons, Picture, Section } from "../../shared/parts";
 import { SectionBody } from "../../shared/section-body";
@@ -54,6 +54,7 @@ function Hero() {
 						<Picture image={hero.picture} className="pp-avatar" eager sizes="56px" />
 					)}
 					<IntroChips location={introLocation(view)} availability={hero.availability} />
+					<OpenToWork />
 					<HeroName className="pp-name" />
 					<HeroHeadline className="pp-headline" />
 					{hero.greeting && <p className="pp-greeting">{hero.greeting}</p>}
@@ -84,7 +85,7 @@ function WorkList({ works }: WorkListProps) {
 		<ul className="pp-works" data-variant={variant}>
 			{works.map((work, index) => (
 				<li key={work.id} className="pp-work" data-image={Boolean(work.cover)}>
-					<a className="pp-work__card" href={`#${work.anchor}`} aria-labelledby={`${work.anchor}--card-title`}>
+					<a className="pp-work__card" href={work.href} aria-labelledby={`${work.anchor}--card-title`}>
 						{work.cover && (
 							<span className="pp-work__art pf-cover">
 								<Picture image={work.cover} decorative sizes="(min-width: 761px) 540px, 100vw" />
@@ -110,7 +111,7 @@ function WorkList({ works }: WorkListProps) {
 								</ul>
 							)}
 							<span className="pp-work__cta" aria-hidden="true">
-								{messages.caseStudies}
+								{messages.viewWork}
 								<UiIcon name="arrow-right" flip />
 							</span>
 						</div>

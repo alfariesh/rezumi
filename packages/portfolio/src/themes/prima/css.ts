@@ -11,7 +11,7 @@ export const PRIMA_CSS = String.raw`
 .pf[data-theme="prima"] .pf-chip{border-radius:var(--pf-radius-sm);background:var(--pf-surface);border:1px solid var(--pf-border)}
 .pf[data-theme="prima"] .pf-tags li{border-radius:var(--pf-radius-sm);background:var(--pf-surface)}
 .pf[data-theme="prima"] :is(.pf-trend,.pf-work-metric){border-radius:var(--pf-radius-sm)}
-.pf[data-theme="prima"] :is(.pf-skip,.pf-badge,.pf-menu>summary,.pf-detail__bar a){border-radius:var(--pf-radius)}
+.pf[data-theme="prima"] :is(.pf-skip,.pf-badge,.pf-menu>summary,.pf-workpage__back){border-radius:var(--pf-radius)}
 .pf[data-theme="prima"] .pf-menu__list{border-radius:var(--pf-radius);background:var(--pf-surface)}
 .pf[data-theme="prima"] .pf-menu__list a{border-radius:var(--pf-radius-sm)}
 .pf[data-theme="prima"] .pf-menu__list a:hover{background:var(--pf-bg)}
@@ -125,9 +125,8 @@ export const PRIMA_CSS = String.raw`
 @media (max-width:900px){.pf[data-theme="prima"] .pr-contact[data-loc]{grid-template-columns:minmax(0,1fr);grid-template-rows:none}.pf[data-theme="prima"] .pr-contact[data-loc]>.pf-loc{grid-column:1;grid-row:auto;max-width:420px;margin-top:24px}}
 .pf[data-theme="prima"] .pr-cta{max-width:32ch;font:600 var(--pf-text-xl)/1.3 var(--pf-font-heading);letter-spacing:-.01em}
 .pf[data-theme="prima"] .pf-loc{background:var(--pf-surface)}
-.pf[data-theme="prima"] .pf-detail__panel{max-width:920px;border-radius:calc(var(--pf-radius) + 2px)}
-.pf[data-theme="prima"] .pf-detail__bar{border-radius:calc(var(--pf-radius) + 2px) calc(var(--pf-radius) + 2px) 0 0}
+.pf[data-theme="prima"] .pf-workpage{max-width:920px}
+.pf[data-theme="prima"] .pf-workpage__step{background:var(--pf-surface)}
 .pf[data-theme="prima"] .pf-detail__title{font-weight:600}
 .pf[data-theme="prima"] .pf-detail__hero{border:1px solid var(--pf-border)}
-@media (max-width:640px){.pf[data-theme="prima"] :is(.pf-detail__panel,.pf-detail__bar){border-radius:0}}
 `;

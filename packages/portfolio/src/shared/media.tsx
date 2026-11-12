@@ -8,6 +8,7 @@ import { hostOf, linkAttributes, Picture } from "./primitives";
 type VideoBlock = Extract<PortfolioViewBlock, { type: "video" }>;
 type PdfBlock = Extract<PortfolioViewBlock, { type: "pdf" }>;
 type LinkBlock = Extract<PortfolioViewBlock, { type: "link" }>;
+type EmbedBlock = Extract<PortfolioViewBlock, { type: "embed" }>;
 
 const PROVIDER_NAMES = { youtube: "YouTube", vimeo: "Vimeo" } as const;
 
@@ -46,6 +47,54 @@ export function VideoFacade({ block }: VideoFacadeProps) {
 					{provider}
 				</span>
 			</a>
+		</div>
+	);
+}
+
+type EmbedFacadeProps = { block: EmbedBlock };
+
+/**
+ * Content from Figma, Loom, Spotify, SoundCloud or Google Slides as a picture and a button (Phase 13 B17), the way a
+ * video waits: nothing from the provider loads with the page, the picture is the portfolio's own copy, and the page
+ * script swaps in the provider's player (`data-embed`) only when the visitor presses it. The note under it says where
+ * the content comes from. Without JavaScript the link opens the content on the provider's site. A wide shape (a design,
+ * a video, slides) draws the picture across; an audio shape draws a row: a square picture, the title and the button.
+ */
+export function EmbedFacade({ block }: EmbedFacadeProps) {
+	const { messages } = useRender();
+	const provider = { provider: block.providerName };
+	const show = fillPortfolioMessage(messages.showEmbed, provider);
+	return (
+		<div className="pf-embed" data-provider={block.provider} data-shape={block.shape}>
+			<a
+				className="pf-embed__open"
+				{...linkAttributes(block.href)}
+				data-embed={block.embedUrl}
+				data-title={block.title || block.providerName}
+				data-pf-event="embed"
+				data-pf-block={block.id}
+				aria-label={block.title ? `${show}: ${block.title}` : show}
+			>
+				<span className="pf-embed__media">
+					{block.thumbnail ? (
+						<Picture
+							image={block.thumbnail}
+							decorative
+							sizes={block.shape === "wide" ? "(min-width: 860px) 820px, 100vw" : "120px"}
+						/>
+					) : (
+						<span className="pf-embed__provider">{block.providerName}</span>
+					)}
+				</span>
+				<span className="pf-embed__text" aria-hidden="true">
+					{block.title && <b>{block.title}</b>}
+					<span className="pf-embed__action">
+						<UiIcon name="play" />
+						{show}
+					</span>
+				</span>
+			</a>
+			<p className="pf-embed__note">{fillPortfolioMessage(messages.embedNote, provider)}</p>
 		</div>
 	);
 }

@@ -30,8 +30,8 @@ export type RenderPortfolioPageInput = {
 	live?: PortfolioPageLive;
 	/**
 	 * Which page to draw: the home page (the default) or one work's own page, by the work's id, which must be one of
-	 * `view.works` (an unknown id throws). Phase 13 Langkah 0: a work page still draws the home page until `pf-render`
-	 * adds `WorkArticle`.
+	 * `view.works` (an unknown id throws). A work's page is the theme's shell around the shared `WorkArticle`, without
+	 * the intro or its effect.
 	 */
 	page?: PortfolioPageKind;
 };
@@ -89,16 +89,19 @@ const PAGE_IMAGE = /^(?:https?:\/\/|\/(?![/\\])|(?![a-z][\d+.a-z-]*:)[^/\\])/i;
 const pageImageUrl = (src: string) => (isPlainUrl(src) && PAGE_IMAGE.test(src) ? src : undefined);
 
 /**
- * The resume icons a view draws (service, metric and client icons, link cards' brands), for the caller to load before
- * rendering. The intro's highlights are drawn compact, without their icons, so theirs aren't loaded.
+ * The resume icons a page draws (service, metric and client icons, link cards' brands), for the caller to load before
+ * rendering. The intro's highlights are drawn compact, without their icons, so theirs aren't loaded. Given the page,
+ * only what it draws: the home page's sections, or one work's blocks; without it, both, for every work.
  */
-export function portfolioIconNames(view: PortfolioView): string[] {
+export function portfolioIconNames(view: PortfolioView, page?: PortfolioPageKind): string[] {
 	const names = new Set<string>();
-	for (const work of view.works)
-		for (const block of work.blocks)
+	const works = !page ? view.works : page.kind === "work" ? view.works.filter((work) => work.id === page.workId) : [];
+	for (const work of works)
+		for (const block of work.blocks) {
 			if (block.type === "metrics") for (const metric of block.items) if (metric.icon) names.add(metric.icon);
-	for (const work of view.works)
-		for (const block of work.blocks) if (block.type === "link" && block.brandIcon) names.add(block.brandIcon);
+			if (block.type === "link" && block.brandIcon) names.add(block.brandIcon);
+		}
+	if (page?.kind === "work") return [...names];
 	for (const section of view.sections) {
 		if (section.kind === "services") for (const service of section.services) if (service.icon) names.add(service.icon);
 		if (section.kind === "clients")
@@ -154,7 +157,8 @@ export function renderPortfolioPage(input: RenderPortfolioPageInput): PortfolioP
 	const hoisted = /^(?:<link [^>]*\/?>)+/.exec(markup)?.[0] ?? "";
 	const html = markup.slice(hoisted.length);
 	const faces = portfolioFontFaces(view, theme.headingWeights);
-	const effect = effectAssets(view, theme.palette);
+	// A work's page has no intro, so it plays no intro effect.
+	const effect = page.kind === "home" ? effectAssets(view, theme.palette) : { css: "", script: "" };
 	return {
 		lang: view.locale,
 		dir: view.dir,

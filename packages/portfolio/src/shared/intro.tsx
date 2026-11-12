@@ -1,4 +1,6 @@
+import type { PortfolioPageMessages } from "../messages";
 import type { PortfolioView } from "../view";
+import type { PortfolioJobType } from "@rezumi/schema/portfolio/data";
 import type { CSSProperties, ReactNode } from "react";
 import { useRender } from "./context";
 import { UiIcon } from "./icons";
@@ -38,12 +40,31 @@ type IntroChipsProps = {
 
 type OpenToWorkProps = { className?: string };
 
+const JOB_TYPE_LABELS = {
+	"full-time": "fullTime",
+	"part-time": "partTime",
+	contract: "contractWork",
+	freelance: "freelance",
+	internship: "internship",
+} as const satisfies Record<PortfolioJobType, keyof PortfolioPageMessages>;
+
 /**
- * What the person is looking for, under "Open to work" (`view.hero.openTo`): "Looking for: <roles> — <kinds of work>".
- * Every theme draws it in the intro after `IntroChips`. Phase 13 Langkah 0 stub: draws nothing until `pf-render` does.
+ * What the person is looking for, under "Open to work" (`view.hero.openTo`, Phase 13 B19): "Looking for: Product
+ * Designer · UI Designer — Full-time, Contract", in words rather than colour alone. Every theme draws it in the intro
+ * after `IntroChips`; nothing when the person shows neither roles nor kinds of work.
  */
-export function OpenToWork(_props: OpenToWorkProps): ReactNode {
-	return null;
+export function OpenToWork({ className }: OpenToWorkProps): ReactNode {
+	const { view, messages } = useRender();
+	const { openTo } = view.hero;
+	if (!openTo) return null;
+	const roles = openTo.roles.join(" · ");
+	const types = openTo.types.map((type) => messages[JOB_TYPE_LABELS[type]]).join(", ");
+	if (!roles && !types) return null;
+	return (
+		<p className={["pf-opento", className].filter(Boolean).join(" ")}>
+			<span className="pf-opento__label">{messages.lookingFor}:</span> {[roles, types].filter(Boolean).join(" — ")}
+		</p>
+	);
 }
 
 /** The intro's chips: where the person is, and that they're open to work. */

@@ -37,6 +37,8 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-chip{display:inline-flex;align-items:center;gap:.45em;padding:.3em .75em;border-radius:999px;background:var(--pf-surface);color:var(--pf-text);font-size:var(--pf-text-xs);font-weight:500;line-height:1.4}
 .pf-chip--open::before{content:"";width:.55em;height:.55em;border-radius:50%;background:var(--pf-positive);box-shadow:0 0 0 3px color-mix(in oklab,var(--pf-positive) 22%,transparent)}
 .pf-chips{display:flex;flex-wrap:wrap;gap:var(--pf-space-2);padding:0;list-style:none}
+.pf-opento{margin:0;color:var(--pf-muted);font-size:var(--pf-text-sm);line-height:1.5}
+.pf-opento__label{color:var(--pf-text);font-weight:600}
 .pf-tags{display:flex;flex-wrap:wrap;gap:6px;padding:0;list-style:none}
 .pf-tags li{padding:2px 8px;border:1px solid var(--pf-border);border-radius:999px;color:var(--pf-muted);font-size:var(--pf-text-xs)}
 .pf-nav{display:flex;align-items:center;justify-content:space-between;gap:var(--pf-space-4);min-height:64px}
@@ -102,20 +104,25 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-work-metric b{color:var(--pf-accent-text-soft);font-size:var(--pf-text-sm);font-variant-numeric:tabular-nums}
 .pf-cover{display:block;position:relative;overflow:hidden;background:var(--pf-surface);aspect-ratio:var(--pf-cover-ratio,4/3);max-width:100%}
 .pf-cover img{width:100%;height:100%;object-fit:cover}
-.pf-detail{display:none;position:fixed;inset:0;z-index:60;overflow-y:auto;overscroll-behavior:contain;background:color-mix(in oklab,#000 55%,transparent);padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
-.pf-detail:target,.pf-detail.pf-open{display:block}
-.pf-detail__panel{position:relative;max-width:960px;margin:0 auto;background:var(--pf-bg);color:var(--pf-text);border-radius:calc(var(--pf-radius) + 6px);--pf-detail-pad:clamp(20px,4vw,48px);padding:var(--pf-detail-pad);display:grid;gap:var(--pf-space-6)}
-.pf-detail__bar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:calc(-1 * var(--pf-detail-pad)) calc(-1 * var(--pf-detail-pad)) 0;padding:12px var(--pf-detail-pad);background:color-mix(in oklab,var(--pf-bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--pf-border);border-radius:calc(var(--pf-radius) + 6px) calc(var(--pf-radius) + 6px) 0 0;font-size:var(--pf-text-sm)}
-.pf-detail__bar nav{display:flex;gap:6px}
-.pf-detail__bar a{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--pf-border);text-decoration:none;font-weight:600}
 .pf-detail__head{display:grid;gap:var(--pf-space-3)}
-.pf-detail__title{font-size:var(--pf-text-2xl);letter-spacing:-.02em}
-.pf-detail__title:focus{outline:none}
+.pf-detail__title{font-size:clamp(2rem,1.4rem + 2.4vw,3.25rem);letter-spacing:-.02em}
 .pf-detail__summary{color:var(--pf-muted);font-size:var(--pf-text-lg);line-height:1.5}
 .pf-detail__meta{display:flex;flex-wrap:wrap;gap:6px 20px;color:var(--pf-muted);font-size:var(--pf-text-sm)}
 .pf-detail__meta b{color:var(--pf-text);font-weight:600}
 .pf-detail__hero{border-radius:var(--pf-radius);--pf-cover-ratio:16/9}
-@media (max-width:640px){.pf-detail{padding:0;background:var(--pf-bg)}.pf-detail__panel{border-radius:0;min-height:100%}.pf-detail__bar{border-radius:0;padding-top:max(12px,env(safe-area-inset-top,0px))}}
+/* A work's own page (Phase 13 B2): the back link, the work's head and blocks in one readable column, then the works before and after it. Themes restyle it under .pf[data-theme="<id>"] .pf-workpage. */
+.pf-workpage{display:grid;gap:var(--pf-space-6);width:100%;max-width:960px;margin-inline:auto;padding-block:var(--pf-space-5) var(--pf-space-7)}
+.pf-workpage>*{min-width:0}
+.pf-workpage__back{display:inline-flex;align-items:center;gap:6px;justify-self:start;min-height:44px;padding:0 14px;border:1px solid var(--pf-border);border-radius:999px;color:var(--pf-text);font-size:var(--pf-text-sm);font-weight:600;text-decoration:none}
+.pf-workpage__back:hover{background:var(--pf-surface)}
+.pf-workpage__more{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:var(--pf-space-3);padding-top:var(--pf-space-6);border-top:1px solid var(--pf-border)}
+.pf-workpage__step{display:grid;gap:6px;align-content:start;padding:18px 20px;border:1px solid var(--pf-border);border-radius:var(--pf-radius);color:var(--pf-text);text-decoration:none}
+.pf-workpage__step:hover{background:var(--pf-surface)}
+.pf-workpage__step span{display:inline-flex;align-items:center;gap:6px;color:var(--pf-muted);font-size:var(--pf-text-xs);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.pf-workpage__step b{font-family:var(--pf-font-heading);font-size:var(--pf-text-lg);font-weight:700;line-height:1.25}
+.pf-workpage__step--next{text-align:end}
+.pf-workpage__step--next span{justify-self:end}
+.pf-workpage__step--next:only-child{grid-column:-2/-1}
 .pf-blocks{display:grid;gap:var(--pf-space-6)}
 .pf-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:var(--pf-space-3)}
 .pf-gallery[data-layout="full"]{grid-template-columns:minmax(0,1fr)}
@@ -155,6 +162,27 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-video__open:focus-visible{outline:none}
 .pf-video:has(.pf-video__open:focus-visible){outline:2px solid var(--pf-accent-text);outline-offset:3px}
 .pf-video iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}
+/* Another service's content waiting for a press (Phase 13 B17): a wide picture, or a row with a square one for audio; the note says where it loads from. The player replaces the link at its shape's height. */
+.pf-embed{display:grid;gap:6px}
+.pf-embed__open{display:grid;overflow:hidden;border:1px solid var(--pf-border);border-radius:var(--pf-radius);background:var(--pf-surface);color:var(--pf-text);text-decoration:none}
+.pf-embed__media{display:grid;place-items:center;overflow:hidden;aspect-ratio:16/9;background:color-mix(in oklab,var(--pf-accent) 14%,var(--pf-surface))}
+.pf-embed__media img{width:100%;height:100%;object-fit:cover}
+.pf-embed__provider{padding:12px;color:var(--pf-accent-text);font:700 var(--pf-text-lg)/1.2 var(--pf-font-heading);text-align:center}
+.pf-embed[data-shape="wide"] .pf-embed__media:not(:has(img)){aspect-ratio:auto;min-height:120px}
+.pf-embed__text{display:grid;gap:6px;justify-items:start;padding:14px 18px;min-width:0}
+.pf-embed__text b{font-weight:600;line-height:1.3}
+.pf-embed__action{display:inline-flex;align-items:center;gap:6px;color:var(--pf-accent-text);font-size:var(--pf-text-sm);font-weight:600}
+.pf-embed__action svg{width:1em;height:1em}
+.pf-embed__open:hover{border-color:var(--pf-text)}
+.pf-embed__open:hover .pf-embed__action{text-decoration:underline;text-underline-offset:3px}
+.pf-embed[data-shape^="audio"] .pf-embed__open{grid-template-columns:96px minmax(0,1fr);align-items:center}
+.pf-embed[data-shape^="audio"] .pf-embed__media{aspect-ratio:1;height:100%}
+.pf-embed[data-shape^="audio"] .pf-embed__provider{font-size:var(--pf-text-xs)}
+.pf-embed__note{margin:0;color:var(--pf-muted);font-size:var(--pf-text-xs)}
+.pf-embed iframe{display:block;width:100%;border:0;border-radius:var(--pf-radius);background:var(--pf-surface)}
+.pf-embed[data-shape="wide"] iframe{aspect-ratio:16/9}
+.pf-embed[data-shape="audio"] iframe{height:166px}
+.pf-embed[data-shape="audio-tall"] iframe{height:380px}
 @media (max-width:520px){.pf-video__play>span{width:56px;height:56px}.pf-video__icon{width:24px;height:24px}.pf-video__meta{padding:28px 14px 10px;font-size:var(--pf-text-xs)}.pf-video__meta b{-webkit-line-clamp:1;font-size:var(--pf-text-sm)}}
 .pf-pdf,.pf-link{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;padding:14px;border:1px solid var(--pf-border);border-radius:var(--pf-radius);background:var(--pf-surface);color:var(--pf-text)}
 .pf-pdf__page{display:grid;place-items:center;width:84px;aspect-ratio:800/1131;border-radius:4px;box-shadow:0 2px 8px rgb(0 0 0/.16);overflow:hidden;background:#fff;color:#8a8f98}
@@ -251,8 +279,8 @@ p,li,blockquote,h1,h2,h3,h4,dt,dd{unicode-bidi:plaintext}
 .pf-foot a:not(.pf-badge){color:var(--pf-muted);text-underline-offset:3px}
 .pf-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 8px;border:1px solid var(--pf-border);border-radius:999px;color:var(--pf-text);text-decoration:none;font-weight:600}
 .pf-badge svg{width:20px;height:20px}
-/* Printing: the page as one light, still sheet (the dark tokens are for screens; designCss). The skip link, navigation links, menu, contact form and picture viewer do nothing on paper; a sticky header would sit on top of every page; a work whose detail is open prints alone, in the flow. Theme rules come after these, so they win with !important. */
-@media print{.pf-skip,.pf-nav__links,.pf-menu,.pf-form,.pf-lightbox,.pf-detail__bar{display:none!important}.pf header{position:static!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}.pf:has(>.pf-detail:target)>:not(.pf-detail:target),.pf:has(>.pf-detail.pf-open)>:not(.pf-detail.pf-open){display:none!important}.pf-detail{position:static!important;overflow:visible!important;padding:0!important;background:none!important}.pf-detail__panel{max-width:none;padding:0;border-radius:0}figure,blockquote,.pf-detail__head{break-inside:avoid}}
+/* Printing: the page as one light, still sheet (the dark tokens are for screens; designCss). The skip link, navigation links, menu, contact form and picture viewer do nothing on paper; a sticky header would sit on top of every page; a work's page prints its content without the links around it. Theme rules come after these, so they win with !important. */
+@media print{.pf-skip,.pf-nav__links,.pf-menu,.pf-form,.pf-lightbox,.pf-workpage__back,.pf-workpage__more,.pf-embed__note{display:none!important}.pf header{position:static!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}.pf-workpage{max-width:none;padding-block:0}figure,blockquote,.pf-detail__head,.pf-embed{break-inside:avoid}}
 `;
 
 /** The rules as pages ship them: the comments above are for whoever edits them, not for every visitor's download. */

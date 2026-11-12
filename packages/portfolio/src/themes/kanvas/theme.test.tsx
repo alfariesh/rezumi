@@ -170,6 +170,11 @@ function render(data: PortfolioDataInput, resume: ResumeData | null = fullResume
 	return renderTestPage(data, { resume, username: "bayu" });
 }
 
+/** A work's own page (`/bayu/work/<slug>`). */
+function renderWork(data: PortfolioDataInput, workId: string, resume: ResumeData | null = fullResume()) {
+	return renderTestPage(data, { resume, username: "bayu", page: { kind: "work", workId } });
+}
+
 /** The text of every `h2` with an id, keyed by id. */
 function headings(html: string): Map<string, string> {
 	const found = new Map<string, string>();
@@ -221,14 +226,14 @@ describe("Kanvas", () => {
 		expect(count(html, /class="kv-tile"/g)).toBe(4);
 		// The first, biggest picture loads at once; the rest wait.
 		expect(html).toMatch(
-			/<li class="kv-tile"><a href="#work-dari-lereng"><div class="pf-cover kv-tile__img"><img [^>]*alt=""[^>]*loading="eager"/,
+			/<li class="kv-tile"><a href="\/bayu\/work\/dari-lereng"><div class="pf-cover kv-tile__img"><img [^>]*alt=""[^>]*loading="eager"/,
 		);
 		// Caption: title, year and tags, highlighted metric.
 		expect(html).toContain('<span class="kv-cap__meta">2025 · Campaign · Photography</span>');
 		expect(html).toMatch(/<span class="pf-work-metric"><b>\+40%<\/b><span>Online sales<\/span><\/span>/);
 		// A work without a picture is a plain tile with its title.
 		expect(html).toMatch(
-			/<li class="kv-tile" data-noimg=""><a href="#work-work-4"><span class="kv-cap"><span class="kv-cap__title">Campaign 4</,
+			/<li class="kv-tile" data-noimg=""><a href="\/bayu\/work\/work-4"><span class="kv-cap"><span class="kv-cap__title">Campaign 4</,
 		);
 	});
 
@@ -242,9 +247,10 @@ describe("Kanvas", () => {
 		expect(html).toContain('data-font-pair="archivo"');
 	});
 
-	it("opens every work in a detail with every block type", () => {
-		expect(count(html, /class="pf-detail"/g)).toBe(view.works.length);
-		const detail = html.slice(html.indexOf('id="work-dari-lereng" role="dialog"'));
+	it("opens every work on its own page with every block type", () => {
+		expect(html).not.toMatch(/pf-detail|pf-lightbox/);
+		for (const item of view.works) expectSound(renderWork(fullData, item.id).html);
+		const detail = renderWork(fullData, "w1").html;
 		for (const part of [
 			'class="pf-prose"',
 			'class="pf-gallery" data-layout="grid"',
@@ -255,8 +261,8 @@ describe("Kanvas", () => {
 			'class="pf-cover pf-detail__hero"',
 		])
 			expect(detail, part).toContain(part);
-		expect(count(html, /class="pf-lightbox"/g)).toBe(1);
-		expect(html).toContain('data-embed="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1"');
+		expect(count(detail, /class="pf-lightbox"/g)).toBe(1);
+		expect(detail).toContain('data-embed="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1"');
 	});
 
 	it("shares one row between short lists that follow each other, each keeping its own heading", () => {
@@ -278,7 +284,9 @@ describe("Kanvas", () => {
 		for (const scheme of ["light", "dark"] as const)
 			for (const [key, values] of Object.entries(variants) as [PortfolioVariantKey, readonly string[]][])
 				for (const value of values) {
-					const rendered = render({ ...fullData, design: { scheme, variants: { [key]: value } } });
+					const data = { ...fullData, design: { scheme, variants: { [key]: value } } };
+					// A work's metrics, which take the metric variant, are on its own page.
+					const rendered = key === "metric" ? renderWork(data, "w1") : render(data);
 					expectSound(rendered.html);
 					expect(rendered.page.scheme).toBe(scheme);
 					expect(rendered.html, `${key}=${value}`).toContain(`data-variant="${value}"`);

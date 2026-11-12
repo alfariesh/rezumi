@@ -195,8 +195,11 @@ function primaResume(): ResumeData {
 	return resume;
 }
 
-function render(data: PortfolioDataInput, resume: ResumeData | null = primaResume()) {
-	const rendered = renderTestPage({ theme: "prima", ...data }, { resume });
+function render(data: PortfolioDataInput, resume: ResumeData | null = primaResume(), workId?: string) {
+	const rendered = renderTestPage(
+		{ theme: "prima", ...data },
+		{ resume, ...(workId ? { page: { kind: "work" as const, workId } } : {}) },
+	);
 	expectSoundPage(rendered.html, "prima");
 	return rendered;
 }
@@ -282,17 +285,20 @@ describe("Prima theme", () => {
 		expect(html).toContain('<li class="pr-work" data-noimg="">');
 		expect(html).toMatch(/<span class="pr-card__meta">2024 · Lead designer<\/span>/);
 		expect(html).toMatch(/<span class="pf-work-metric"><b>2,8%<\/b>/);
-		expect(count(html, /class="pf-detail"/g)).toBe(view.works.length);
-		// Text (its heading under the work's), images, metrics, video, PDF and link blocks inside the detail.
-		expect(html).toContain("<h3>Problem</h3>");
-		expect(html).toContain('class="pf-gallery" data-layout="grid"');
-		expect(html).toContain('class="pf-metric__chart"');
-		expect(html).toContain('data-embed="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1"');
-		expect(html).toContain('data-pf-event="document"');
-		expect(html).toContain('class="pf-link"');
-		expect(count(html, /class="pf-lightbox"/g)).toBe(1);
+		expect(html).not.toMatch(/pf-detail|pf-lightbox/);
+		expect(view.works.map((item) => item.href)).toEqual(view.works.map((item) => `/nadia/work/${item.slug}`));
+		for (const item of view.works) expect(html).toContain(`href="${item.href}"`);
+		// Text (its heading right under the page's h1), images, metrics, video, PDF and link blocks on the work's page.
+		const detail = render(fullData, primaResume(), "w1").html;
+		expect(detail).toContain("<h2>Problem</h2>");
+		expect(detail).toContain('class="pf-gallery" data-layout="grid"');
+		expect(detail).toContain('class="pf-metric__chart"');
+		expect(detail).toContain('data-embed="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1"');
+		expect(detail).toContain('data-pf-event="document"');
+		expect(detail).toContain('class="pf-link"');
+		expect(count(detail, /class="pf-lightbox"/g)).toBe(1);
 		// Every picture has its text alternative or is marked decorative.
-		for (const tag of html.match(/<img [^>]*>/g) ?? []) expect(tag).toMatch(/ alt="/);
+		for (const tag of detail.match(/<img [^>]*>/g) ?? []) expect(tag).toMatch(/ alt="/);
 	});
 
 	it("groups consecutive short lists in one row and keeps lone ones as rows", () => {
@@ -321,7 +327,9 @@ describe("Prima theme", () => {
 		for (const scheme of SCHEMES)
 			for (const [key, values] of Object.entries(variants))
 				for (const value of values) {
-					const { html } = render({ ...fullData, design: { scheme, variants: { [key]: value } } });
+					const data = { ...fullData, design: { scheme, variants: { [key]: value } } };
+					// A work's metrics, which take the metric variant, are on its own page.
+					const { html } = key === "metric" ? render(data, primaResume(), "w1") : render(data);
 					expect(html).toContain(`data-variant="${value}"`);
 					expect(html).not.toMatch(/undefined|NaN/);
 				}

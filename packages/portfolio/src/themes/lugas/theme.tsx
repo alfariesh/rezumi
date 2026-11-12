@@ -3,7 +3,7 @@ import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { HeroHeadline, HeroName } from "../../shared/hero-text";
-import { introLocation, IntroChips, useIntroBackground } from "../../shared/intro";
+import { introLocation, IntroChips, OpenToWork, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
 import { Buttons, ExtraSection, Picture, Section } from "../../shared/parts";
 import { SectionBody } from "../../shared/section-body";
@@ -29,6 +29,7 @@ function Hero() {
 			</div>
 			{hero.greeting && <p className="lg-greeting">{hero.greeting}</p>}
 			<IntroChips location={introLocation(view)} availability={hero.availability} />
+			<OpenToWork />
 			{hero.highlights.length > 0 && (
 				<MetricGroup metrics={hero.highlights} variant="big" className="lg-stats" compact />
 			)}
@@ -46,7 +47,7 @@ function WorkList({ works }: WorkListProps) {
 		<ul className="lg-works" data-variant={variant}>
 			{works.map((work, index) => (
 				<li key={work.id} className="lg-work" {...(work.cover ? {} : { "data-noimg": "" })}>
-					<a href={`#${work.anchor}`}>
+					<a href={work.href}>
 						{work.cover && (
 							<div className="pf-cover lg-work__cover">
 								<Picture

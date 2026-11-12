@@ -3,7 +3,7 @@ import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { effectTarget, HeroHeadline, HeroName } from "../../shared/hero-text";
-import { introLocation, IntroChips, useIntroBackground } from "../../shared/intro";
+import { introLocation, IntroChips, OpenToWork, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
 import { Buttons, ExtraSection, Picture, Section } from "../../shared/parts";
 import { isResumeSection } from "../../shared/resume";
@@ -43,6 +43,7 @@ function Hero() {
 					{side && (
 						<div className="kv-hero__side">
 							<IntroChips location={location} availability={hero.availability} />
+							<OpenToWork />
 							<Buttons links={hero.buttons} />
 						</div>
 					)}
@@ -78,7 +79,7 @@ function WorkGrid({ works, first }: WorkGridProps) {
 				const meta = [work.date, ...work.tags.slice(0, 2)].filter(Boolean).join(" · ");
 				return (
 					<li key={work.id} className="kv-tile" {...(work.cover ? {} : { "data-noimg": "" })}>
-						<a href={`#${work.anchor}`}>
+						<a href={work.href}>
 							{work.cover && (
 								<div className="pf-cover kv-tile__img">
 									<Picture

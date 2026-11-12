@@ -6,7 +6,7 @@ import { fillPortfolioMessage } from "../../messages";
 import { useRender } from "../../shared/context";
 import { HeroHeadline, HeroName } from "../../shared/hero-text";
 import { UiIcon } from "../../shared/icons";
-import { IntroChips, introLocation, useIntroBackground } from "../../shared/intro";
+import { IntroChips, OpenToWork, introLocation, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
 import { ServiceList, TestimonialList } from "../../shared/offers";
 import {
@@ -102,6 +102,7 @@ function Bento({ about, contact, locationIsContact, links, profiles }: BentoProp
 		>
 			<div className="mz-tile mz-intro" {...background}>
 				<IntroChips location={location ? "" : introLocation(view)} availability={hero.availability} availabilityFirst />
+				<OpenToWork />
 				<HeroName className="mz-name" />
 				<HeroHeadline className="mz-headline" />
 				{hero.greeting && <p className="mz-greeting">{hero.greeting}</p>}
@@ -206,7 +207,7 @@ function Works({ works, more }: WorksProps) {
 			<ul className="mz-works" data-variant="grid-2">
 				{works.map((work) => (
 					<li key={work.id} className="mz-work" {...(work.cover ? {} : { "data-noimg": "" })}>
-						<a className="mz-card" href={`#${work.anchor}`}>
+						<a className="mz-card" href={work.href}>
 							{work.cover && (
 								<div className="pf-cover">
 									<Picture
@@ -242,7 +243,7 @@ function Works({ works, more }: WorksProps) {
 		<ul className="mz-works" data-variant="bento">
 			{works.map((work, index) => (
 				<li key={work.id} className="mz-work" style={style(index)} {...(work.cover ? {} : { "data-noimg": "" })}>
-					<a href={`#${work.anchor}`}>
+					<a href={work.href}>
 						{work.cover && (
 							<div className="pf-cover mz-work__img">
 								<Picture

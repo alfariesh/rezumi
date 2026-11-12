@@ -36,7 +36,12 @@ export const nadia: PersonaDefinition = {
 				"Saya membangun produk pembayaran yang dipakai jutaan orang setiap hari, dan memastikan setiap rilis bisa diukur.",
 			]),
 			showPicture: true,
-			availability: { show: true, text: t(["Open to Lead PM roles", "Terbuka untuk peran Lead PM"]) },
+			availability: {
+				show: true,
+				text: t(["Open to Lead PM roles", "Terbuka untuk peran Lead PM"]),
+				roles: ["Lead Product Manager", "Head of Payments Product"],
+				types: ["full-time"],
+			},
 			highlights: [
 				metric("hl-1", ["QR users a month", "pengguna QR per bulan"], 4_000_000, { format: "compact" }),
 				metric("hl-2", ["payments succeed", "pembayaran berhasil"], 97.5, { format: "percent" }),
@@ -131,6 +136,21 @@ export const nadia: PersonaDefinition = {
 							videoId: "nRzPq7Lk2Xa",
 							title: t(["Demo of the new QR checkout", "Demo alur QR checkout baru"]),
 							thumbnail: picture("lugas-video.svg", ["Video: the new QR checkout", "Video: alur QR checkout baru"]),
+						},
+						{
+							id: "w-qr-figma",
+							type: "embed",
+							provider: "figma",
+							ref: "design/Qx7RkP2mVt9LcN4wZb8H?node-id=12-408",
+							title: t(["QR checkout flow in Figma", "Alur QR checkout di Figma"]),
+							thumbnail: picture("lugas-2.svg", ["Figma: the QR checkout flow", "Figma: alur QR checkout"]),
+						},
+						{
+							id: "w-qr-loom",
+							type: "embed",
+							provider: "loom",
+							ref: "5f2c8a71d04e4b93a6e1c07d8b25f3a9",
+							title: t(["Walkthrough for the risk team", "Penjelasan untuk tim risiko"]),
 						},
 						{
 							id: "w-qr-pdf",

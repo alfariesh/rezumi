@@ -8,6 +8,7 @@ import {
 	PORTFOLIO_THEMES,
 } from "@rezumi/schema/portfolio/themes";
 import {
+	count,
 	expectSoundPage,
 	fullPortfolioData,
 	fullTestResume,
@@ -68,6 +69,52 @@ describe("every theme draws a sound page (`expectSoundPage`)", () => {
 		});
 });
 
+describe("every theme draws a sound work page", () => {
+	for (const theme of PORTFOLIO_THEMES)
+		it(`${theme}: each work's own page, left to right and right to left`, () => {
+			for (const locale of [undefined, "ar-SA"]) {
+				const data = { ...fullPortfolioData, theme } as PortfolioDataInput;
+				const options = { resume: fullTestResume(), ...(locale ? { locale } : {}) };
+				const { view } = renderTestPage(data, options);
+				expect(view.works.length).toBeGreaterThan(1);
+				for (const work of view.works) {
+					const { html, page } = renderTestPage(data, { ...options, page: { kind: "work", workId: work.id } });
+					expectSoundPage(html, theme);
+					// The work's title is the page's one h1; the picture viewer, when there is one, is the only dialog.
+					expect(html).toContain(`<h1 class="pf-detail__title" id="${work.anchor}--title">`);
+					expect(count(html, /role="dialog"/g)).toBe(work.blocks.some((block) => block.type === "images") ? 1 : 0);
+					expect(html).not.toMatch(/data-pfx|pf-detail"/);
+					expect(page.script).not.toMatch(/pfx/);
+				}
+			}
+		});
+});
+
+describe("every theme says what the person is looking for", () => {
+	for (const theme of PORTFOLIO_THEMES)
+		it(`${theme}: in the intro, right after its chips, and nothing when there's nothing to say`, () => {
+			const { html } = renderTestPage({ ...fullPortfolioData, theme }, { locale: "en-US" });
+			const line =
+				'<p class="pf-opento"><span class="pf-opento__label">Looking for:</span> Product Designer · UI Designer — Full-time, Contract</p>';
+			expect(html).toContain(line);
+			expect(html.indexOf(line)).toBeGreaterThan(html.indexOf('class="pf-chips"'));
+			expect(html.indexOf(line)).toBeLessThan(html.indexOf("</main>"));
+			const off = renderTestPage({
+				...fullPortfolioData,
+				theme,
+				hero: {
+					...fullPortfolioData.hero,
+					availability: { show: false, text: "", roles: ["Designer"], types: ["contract"] },
+				},
+			}).html;
+			expect(off).not.toContain("pf-opento");
+			const rtl = renderTestPage({ ...fullPortfolioData, theme }, { locale: "ar-SA" }).html;
+			expect(rtl).toMatch(
+				/<p class="pf-opento"><span class="pf-opento__label">[^<]+:<\/span> Product Designer · UI Designer — /,
+			);
+		});
+});
+
 describe("shared and theme rules", () => {
 	const THEME_CSS = [BASE_CSS, LUGAS_CSS, PRIMA_CSS, KANVAS_CSS, MOZAIK_CSS, PAPER_CSS, BRUTAL_CSS];
 
@@ -83,8 +130,11 @@ describe("shared and theme rules", () => {
 		);
 	});
 
-	it("shows an open detail without waiting for :target, and styles every short list by its own class", () => {
-		expect(BASE_CSS).toContain(".pf-detail:target,.pf-detail.pf-open{display:block}");
+	it("styles a work's own page in shared rules, keeps no rule for the old detail dialog, and styles every short list by its own class", () => {
+		expect(BASE_CSS).toContain(".pf-workpage{display:grid;");
+		expect(BASE_CSS).toContain(".pf-workpage__more{");
+		// A theme rule scoped to the old dialog would silently style nothing on the work's page.
+		for (const css of THEME_CSS) expect(css).not.toMatch(/\.pf-detail(?:\{|:target|__panel|__bar)|\.pf-open\b/);
 		expect(BASE_CSS).toContain(".pf-extralist{");
 		for (const css of THEME_CSS) expect(css).not.toMatch(/\.pf-extra (?:ul|li)\b/);
 	});

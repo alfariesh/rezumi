@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 
-import { describe, expect, it } from "vite-plus/test";
+import { afterEach, describe, expect, it } from "vite-plus/test";
 import { PORTFOLIO_LIVE_SCRIPT } from "./live-script";
 import { PORTFOLIO_PAGE_SCRIPT } from "./script";
 
@@ -25,12 +25,34 @@ describe("the published page's script", () => {
 
 type Sent = { url: string; body: unknown };
 
+/** Listeners each run adds, removed after every test so one page's script never answers for the next. */
+const cleanups: (() => void)[] = [];
+
+function trackListeners(target: EventTarget) {
+	const original = target.addEventListener;
+	target.addEventListener = function add(type, listener, options) {
+		cleanups.push(() => target.removeEventListener(type, listener, options));
+		original.call(this, type, listener, options);
+	};
+	cleanups.push(() => {
+		target.addEventListener = original;
+	});
+}
+
+afterEach(() => {
+	for (const cleanup of cleanups.splice(0).reverse()) cleanup();
+});
+
 /** Runs the live script in a page whose root sends beacons to `/event`, collecting what it sends. */
-function runLive(html: string, { prerendering = false, hash = "" } = {}): Sent[] {
+/**
+ * Runs the live script in a page whose root sends beacons to `/event` (a work's page when `work` is given), collecting
+ * what it sends.
+ */
+function runLive(html: string, { prerendering = false, work = "", referrer = "" } = {}): Sent[] {
 	const sent: Sent[] = [];
-	document.body.innerHTML = `<div class="pf" data-pf-live="/event">${html}</div>`;
-	history.replaceState(null, "", hash || location.pathname);
+	document.body.innerHTML = `<div class="pf" data-pf-live="/event"${work ? ` data-pf-work="${work}"` : ""}>${html}</div>`;
 	Object.defineProperty(document, "prerendering", { configurable: true, value: prerendering });
+	Object.defineProperty(document, "referrer", { configurable: true, value: referrer });
 	Object.defineProperty(navigator, "sendBeacon", {
 		configurable: true,
 		value: (url: string, body: string) => {
@@ -38,6 +60,9 @@ function runLive(html: string, { prerendering = false, hash = "" } = {}): Sent[]
 			return true;
 		},
 	});
+	for (const cleanup of cleanups.splice(0).reverse()) cleanup();
+	trackListeners(document);
+	trackListeners(window);
 	// oxlint-disable-next-line no-new-func -- runs the inlined script against the test page.
 	new Function(PORTFOLIO_LIVE_SCRIPT)();
 	return sent;
@@ -66,16 +91,32 @@ describe("the published page's script in a page", () => {
 		expect(document.querySelector("[role=status]")?.textContent).toBe("Sent");
 	});
 
-	it("counts a prerendered page once, when the visitor opens it, with the work its address opens", () => {
-		const sent = runLive('<section id="work-kopi" data-pf-work="w1"></section>', {
-			prerendering: true,
-			hash: "#work-kopi",
-		});
+	it("counts a prerendered page once, when the visitor opens it, with where they came from", () => {
+		const sent = runLive("", { prerendering: true, referrer: `https://www.linkedin.com/feed/${"x".repeat(400)}` });
 		expect(sent).toEqual([]);
 		document.dispatchEvent(new Event("prerenderingchange"));
+		expect(sent).toHaveLength(1);
+		const [view] = sent as [Sent];
+		expect(view.body).toMatchObject({ kind: "view" });
+		expect((view.body as { ref: string }).ref).toHaveLength(300);
+		expect((view.body as { ref: string }).ref.startsWith("https://www.linkedin.com/feed/")).toBe(true);
+		// Without a referrer the beacon says nothing about one.
+		const direct = runLive("", { prerendering: true });
+		document.dispatchEvent(new Event("prerenderingchange"));
+		expect(direct).toEqual([{ url: "/event", body: { kind: "view" } }]);
+	});
+
+	it("sends the work's id with every beacon on a work's page, and never a work beacon of its own", () => {
+		expect(PORTFOLIO_LIVE_SCRIPT).not.toContain('"work"');
+		const sent = runLive('<a href="https://example.test" data-pf-event="embed">x</a>', {
+			work: "w1",
+			prerendering: true,
+		});
+		document.querySelector("a")?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+		document.dispatchEvent(new Event("prerenderingchange"));
 		expect(sent).toEqual([
-			{ url: "/event", body: { kind: "view" } },
-			{ url: "/event", body: { kind: "work", id: "w1" } },
+			{ url: "/event", body: { kind: "embed", id: "w1" } },
+			{ url: "/event", body: { kind: "view", id: "w1" } },
 		]);
 	});
 });

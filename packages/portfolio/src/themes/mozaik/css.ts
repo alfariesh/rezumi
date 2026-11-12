@@ -164,16 +164,15 @@ export const MOZAIK_CSS = String.raw`
 .pf[data-theme="mozaik"] .mz-contact__main>.pf-contact-links li+li{border-top:1px solid var(--pf-border);padding-top:8px}
 @media (min-width:901px){.pf[data-theme="mozaik"] .mz-contact__main:has(>.pf-contact-links){grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-rows:auto auto auto 1fr;column-gap:clamp(24px,4vw,56px)}.pf[data-theme="mozaik"] .mz-contact__main>.pf-contact-links{grid-column:2;grid-row:1/span 4;align-self:start}}
 
-.pf[data-theme="mozaik"] .pf-detail__panel{background:var(--pf-surface)}
-.pf[data-theme="mozaik"] .pf-detail__bar{background:color-mix(in oklab,var(--pf-surface) 92%,transparent)}
-.pf[data-theme="mozaik"] .pf-detail__bar a{border-color:transparent;background:var(--pf-bg)}
+.pf[data-theme="mozaik"] .pf-workpage{max-width:1000px}
+.pf[data-theme="mozaik"] :is(.pf-workpage__back,.pf-workpage__step){border-color:transparent;background:var(--pf-surface);border-radius:20px}
 .pf[data-theme="mozaik"] .pf-detail__hero,.pf[data-theme="mozaik"] .pf-video{border-radius:20px}
 .pf[data-theme="mozaik"] .pf-gallery img,.pf[data-theme="mozaik"] .pf-zoom{border-radius:var(--pf-radius-sm)}
 .pf[data-theme="mozaik"] .pf-metrics[data-variant="kpi"] .pf-metric{border-color:transparent;border-radius:20px;background:var(--pf-bg)}
-.pf[data-theme="mozaik"] .pf-pdf,.pf[data-theme="mozaik"] .pf-link{border-color:transparent;border-radius:20px;background:var(--pf-bg)}
-.pf[data-theme="mozaik"] .pf-link:hover{border-color:var(--pf-border)}
-.pf[data-theme="mozaik"] .pf-link__site{background:var(--pf-surface);border-color:transparent}
-.pf[data-theme="mozaik"] .pf-pdf .pf-btn{background:var(--pf-surface)}
-@media (max-width:640px){.pf[data-theme="mozaik"] .pf-detail{background:var(--pf-surface)}}
+.pf[data-theme="mozaik"] .pf-pdf,.pf[data-theme="mozaik"] .pf-link,.pf[data-theme="mozaik"] .pf-embed__open{border-color:transparent;border-radius:20px;background:var(--pf-surface)}
+.pf[data-theme="mozaik"] .pf-embed iframe{border-radius:20px}
+.pf[data-theme="mozaik"] :is(.pf-link,.pf-embed__open):hover{border-color:var(--pf-border)}
+.pf[data-theme="mozaik"] .pf-link__site{background:var(--pf-bg);border-color:transparent}
+.pf[data-theme="mozaik"] .pf-pdf .pf-btn{background:var(--pf-bg)}
 @media (hover:none){.pf[data-theme="mozaik"] .mz-work>a .mz-work__img img{transform:none}}
 `;

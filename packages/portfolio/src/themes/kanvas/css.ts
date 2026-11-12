@@ -24,7 +24,7 @@ ${K}[data-font-pair="bodoni-work"]{--kv-display:600;--kv-strong:600;--kv-track:-
 ${K}[data-font-pair="instrument"]{--kv-display:400;--kv-strong:400;--kv-track:-.02em;--kv-k:.48}
 ${K}[data-font-pair="syne-dm"]{--kv-k:1.1}
 ${K}[data-font-pair="bricolage-dm"]{--kv-k:.64}
-${K} .pf-btn,${K} .pf-menu>summary,${K} .pf-menu__list,${K} .pf-detail__bar a{border-radius:var(--pf-radius)}
+${K} .pf-btn,${K} .pf-menu>summary,${K} .pf-menu__list,${K} .pf-workpage__back,${K} .pf-workpage__step{border-radius:var(--pf-radius)}
 ${K} .pf-menu__list a{border-radius:var(--pf-radius-sm)}
 ${K} .pf-btn--primary{border-color:color-mix(in oklab,var(--pf-accent) 82%,var(--pf-text))}
 ${K} .kv-top{padding-block:8px}
@@ -138,10 +138,7 @@ ${K} .kv-contact{display:grid;gap:22px;align-items:start;min-width:0}
 ${K} .kv-cta{font:var(--kv-display) clamp(1.75rem,1.2rem + 2.4vw,3.25rem)/1 var(--pf-font-heading);text-transform:var(--pf-name-transform);letter-spacing:-.015em;max-width:18ch}
 @media (min-width:901px){${K} .kv-contact:has(>.pf-loc){grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);grid-template-rows:repeat(6,auto) 1fr;gap:0 32px}${K} .kv-contact:has(>.pf-loc)>:not(.pf-loc)+:not(.pf-loc){margin-top:22px}${K} .kv-contact>:not(.pf-loc){grid-column:1}${K} .kv-contact>.pf-loc{grid-column:2;grid-row:1/-1}}
 
-${K} .pf-detail{padding:0 env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px);background:var(--pf-bg)}
-${K} .pf-detail__panel{max-width:none;min-height:100%;border-radius:0;background:var(--pf-bg);--pf-detail-pad:clamp(16px,4vw,48px)}
-${K} .pf-detail__panel>*{width:100%;max-width:1200px;justify-self:center}
-${K} .pf-detail__panel>.pf-detail__bar{width:auto;max-width:none;justify-self:stretch;border-radius:0;padding-top:max(12px,env(safe-area-inset-top,0px));padding-inline:calc(var(--pf-detail-pad) + max(0px,(100% - 1200px) / 2))}
+${K} .pf-workpage{max-width:1200px}
 ${K} .pf-detail__title{font:var(--kv-display) clamp(2.25rem,1.2rem + 4vw,4.5rem)/.92 var(--pf-font-heading);text-transform:var(--pf-name-transform);letter-spacing:var(--kv-track)}
 ${K} .pf-detail__hero{border-radius:var(--pf-radius)}
 ${K} .pf-blocks>.pf-prose{font-size:var(--pf-text-lg)}

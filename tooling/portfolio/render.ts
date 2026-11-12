@@ -1,7 +1,9 @@
 /**
  * Renders a persona's portfolio to an HTML file exactly as the server renders the public page (`apps/server/src/
  * static/portfolio-page.ts`), with the persona's pictures, logos and PDFs copied next to it under `img/`. Shared by
- * `preview.ts`, `previews.ts` and `matrix.ts`.
+ * `preview.ts`, `previews.ts` and `matrix.ts`. A work's own page (Phase 13 B2) lands beside its home page as
+ * `<home>.work-<slug>.html` (`workPageFile`), and the pages link to each other by those names, as the server's
+ * `/<username>` and `/<username>/work/<slug>` do.
  */
 import type { PersonaId, PersonaLang, PersonaVariant } from "./persona";
 import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
@@ -27,11 +29,18 @@ export type PageOptions = {
 	effect?: PortfolioHeroEffect;
 	/** Section variants, such as `{ work: "grid-2" }`. */
 	variants?: Record<string, string>;
+	/** Draw this work's own page (by its slug) instead of the home page, at `workPageFile(name, slug)`. */
+	work?: string;
 };
+
+/** The file a work's own page is written to, beside its home page `home`: `<home>.work-<slug>.html`. */
+export function workPageFile(home: string, slug: string): string {
+	return `${home.replace(/\.html$/, "")}.work-${slug}.html`;
+}
 
 export type RenderedPage = {
 	file: string;
-	/** The first visible work's detail anchor (`work-<slug>`), if the page has works. */
+	/** The first listed work's slug, whose own page `work` draws; null when the page lists no work. */
 	firstWork: string | null;
 	theme: PortfolioTheme;
 	scheme: PortfolioScheme;
@@ -95,9 +104,22 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 		entitlements: { hidePortfolioCredit: false },
 		messages: portfolioViewMessages(messages),
 		fileUrl: (key) => `img/${names.get(key) ?? "missing.png"}`,
-		links: { resume: "#cv", resumePdf: "#pdf" },
+		links: {
+			resume: "#cv",
+			resumePdf: "#pdf",
+			home: name,
+			work: (slug) => workPageFile(name, slug),
+			// There is no server to download the card from; the button shows, pointing at Contact.
+			vcard: "#contact",
+		},
 	});
-	const iconNames = portfolioIconNames(view);
+	const work = options.work ? view.works.find((item) => item.slug === options.work) : undefined;
+	if (options.work && !work)
+		throw new Error(
+			`${persona.id} has no listed work "${options.work}": ${view.works.map((item) => item.slug).join(", ")}.`,
+		);
+	const pageKind = work ? ({ kind: "work", workId: work.id } as const) : ({ kind: "home" } as const);
+	const iconNames = portfolioIconNames(view, pageKind);
 	if (iconNames.length && !glyphs)
 		glyphs = import("@rezumi/pdf/icon-glyphs").then(({ loadIconGlyphs }) => loadIconGlyphs("standard"));
 	const shapes = iconNames.length && glyphs ? await glyphs : {};
@@ -107,22 +129,24 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 		icons: Object.fromEntries(iconNames.flatMap((icon) => (shapes[icon] ? [[icon, shapes[icon]]] : []))),
 		year: 2026,
 		creditUrl: "https://rezumi.app",
+		page: pageKind,
 	});
 	const document = renderPortfolioDocument({
 		page,
 		head: {
-			title: view.seo.title,
-			description: view.seo.description,
-			canonicalUrl: `https://rezumi.app/${persona.owner.username}`,
+			title: work ? `${work.title} — ${view.basics.name}` : view.seo.title,
+			description: (work?.summary || view.seo.description).slice(0, 160),
+			canonicalUrl: `https://rezumi.app/${persona.owner.username}${work ? `/work/${work.slug}` : ""}`,
 			indexable: false,
+			type: work ? "article" : "profile",
 		},
 	});
-	const file = join(dir, name);
+	const file = join(dir, work ? workPageFile(name, work.slug) : name);
 	await writeFile(file, document);
 	const first = view.works[0];
 	return {
 		file,
-		firstWork: first ? first.anchor : null,
+		firstWork: first ? first.slug : null,
 		theme: view.theme,
 		scheme: view.design.scheme,
 		effect: view.design.effect.id,

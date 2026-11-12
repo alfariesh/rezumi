@@ -7,7 +7,7 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { isPortfolioSectionKey } from "@rezumi/schema/portfolio/sections";
 import { testResume } from "./fixtures.test-helpers";
 import { portfolioMessages, portfolioViewMessages } from "./messages";
-import { buildPortfolioView, resolveSectionOrder } from "./view";
+import { buildPortfolioView, resolvePortfolioWork, resolveSectionOrder } from "./view";
 
 const englishMessages = portfolioViewMessages(portfolioMessages("en-US"));
 
@@ -501,5 +501,74 @@ describe("buildPortfolioView choices", () => {
 		const description = view({ about: { content: `<p>${"word ".repeat(100)}</p>` } }).seo.description;
 		expect(description.length).toBeLessThanOrEqual(PORTFOLIO_LIMITS.text.seoDescription);
 		expect(description.endsWith("…")).toBe(true);
+	});
+});
+
+describe("buildPortfolioView for Phase 13", () => {
+	const works = {
+		items: [
+			{ id: "w1", slug: "kopi-app", title: "Coffee app", previousSlugs: ["coffee-app", "shared"], blocks: [] },
+			{ id: "w2", slug: "shared", title: "Second", previousSlugs: ["old-second"], blocks: [] },
+			{ id: "w3", slug: "secret", title: "Hidden", hidden: true, previousSlugs: ["old-secret"], blocks: [] },
+			{ id: "w4", slug: "untitled", title: "  ", blocks: [] },
+		],
+	};
+
+	it("gives each listed work its page's address, the view's default or the server's", () => {
+		expect(view({ works }).works.map((work) => work.href)).toEqual(["#work-kopi-app", "#work-shared"]);
+		expect(view({ works }).homeUrl).toBe("#main");
+		const served = view({ works }, { links: { home: "/nadia", work: (slug) => `/nadia/work/${slug}` } });
+		expect(served.works.map((work) => work.href)).toEqual(["/nadia/work/kopi-app", "/nadia/work/shared"]);
+		expect(served.homeUrl).toBe("/nadia");
+	});
+
+	it("finds a work's page by its address: the current one, an old one that moved, never a hidden work's", () => {
+		const built = view({ works });
+		expect(resolvePortfolioWork(built, "kopi-app")).toMatchObject({ status: "ok", work: { id: "w1" } });
+		expect(resolvePortfolioWork(built, "coffee-app")).toEqual({ status: "moved", slug: "kopi-app" });
+		// A slug in use wins over another work's old one.
+		expect(resolvePortfolioWork(built, "shared")).toMatchObject({ status: "ok", work: { id: "w2" } });
+		expect(resolvePortfolioWork(built, "secret")).toBeNull();
+		expect(resolvePortfolioWork(built, "old-secret")).toBeNull();
+		expect(resolvePortfolioWork(built, "untitled")).toBeNull();
+		expect(resolvePortfolioWork(view({ works, sections: { hidden: ["work"] } }), "kopi-app")).toBeNull();
+	});
+
+	it("says what the person is looking for only while Open to work is on and says something", () => {
+		const hero = (availability: object) => view({ hero: { availability } }).hero.openTo;
+		expect(hero({ show: true, roles: [" Designer ", ""], types: ["contract"] })).toEqual({
+			roles: ["Designer"],
+			types: ["contract"],
+		});
+		expect(hero({ show: false, roles: ["Designer"], types: ["contract"] })).toBeNull();
+		expect(hero({ show: true, roles: [" "], types: [] })).toBeNull();
+	});
+
+	it("offers Save contact only where the page has the card's address, and never keeps Contact for it alone", () => {
+		const vcard = "/api/portfolio/nadia/vcard";
+		const data = { hero: { buttons: [{ kind: "vcard" as const }] }, contact: { email: true, saveContact: true } };
+		const withCard = view(data, { links: { vcard } });
+		expect(withCard.hero.buttons).toEqual([{ label: "Save contact", href: vcard, external: false, kind: "vcard" }]);
+		expect(section(withCard.sections, "contact")?.contact.vcard).toBe(vcard);
+		expect(view(data).hero.buttons).toEqual([]);
+		expect(
+			section(
+				view({ ...data, contact: { ...data.contact, saveContact: false } }, { links: { vcard } }).sections,
+				"contact",
+			)?.contact.vcard,
+		).toBeNull();
+		const bare = testResume();
+		bare.basics.email = "";
+		bare.basics.phone = "";
+		bare.basics.website = { url: "", label: "" };
+		bare.basics.location = "";
+		bare.sections.profiles.items = [];
+		expect(
+			section(
+				view({ contact: { saveContact: true, whatsapp: { show: false } } }, { links: { vcard }, resume: bare })
+					.sections,
+				"contact",
+			),
+		).toBeUndefined();
 	});
 });

@@ -394,7 +394,7 @@ export function buildPersona(id: PersonaId, options: { lang?: PersonaLang; varia
 			hero: {
 				...portfolio.hero,
 				greeting: definition.arabic.greeting,
-				availability: { show: true, text: definition.arabic.availability },
+				availability: { ...portfolio.hero?.availability, show: true, text: definition.arabic.availability },
 			},
 		};
 	}

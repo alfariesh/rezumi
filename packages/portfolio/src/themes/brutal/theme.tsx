@@ -4,7 +4,7 @@ import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { HeroHeadline, HeroName } from "../../shared/hero-text";
 import { UiIcon } from "../../shared/icons";
-import { introLocation, IntroChips, useIntroBackground } from "../../shared/intro";
+import { introLocation, IntroChips, OpenToWork, useIntroBackground } from "../../shared/intro";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
 import { Buttons, Picture, Section } from "../../shared/parts";
 import { SectionBody } from "../../shared/section-body";
@@ -33,6 +33,7 @@ function Hero() {
 			>
 				<div className="br-intro">
 					<IntroChips location={introLocation(view)} availability={hero.availability} availabilityFirst />
+					<OpenToWork />
 					<HeroName className="br-name" />
 					<HeroHeadline className="br-headline" />
 					{hero.greeting && <p className="br-greeting">{hero.greeting}</p>}
@@ -73,7 +74,7 @@ function WorkGrid({ works }: WorkGridProps) {
 		<ul className="br-works" data-variant={variant}>
 			{works.map((work, index) => (
 				<li key={work.id} className="br-work" data-image={Boolean(work.cover)}>
-					<a className="br-work__link" href={`#${work.anchor}`} aria-labelledby={`${work.anchor}--card-title`}>
+					<a className="br-work__link" href={work.href} aria-labelledby={`${work.anchor}--card-title`}>
 						{work.cover && (
 							<span className="pf-cover br-work__cover">
 								<Picture

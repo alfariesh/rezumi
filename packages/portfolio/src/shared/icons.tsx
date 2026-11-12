@@ -38,6 +38,12 @@ const UI_ICONS = {
 		</>
 	),
 	link: <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />,
+	"user-plus": (
+		<>
+			<circle cx="9.5" cy="8" r="3.5" />
+			<path d="M3 20c.7-3.6 3.3-5.6 6.5-5.6 1.5 0 2.9.4 4 1.3M18.5 13v7M15 16.5h7" />
+		</>
+	),
 	play: <path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="none" />,
 	document: (
 		<>

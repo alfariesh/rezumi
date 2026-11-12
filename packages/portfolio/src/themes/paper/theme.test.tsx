@@ -13,7 +13,14 @@ describe("Paper", () => {
 		expect(html.indexOf('id="work"')).toBeLessThan(html.indexOf('id="about"'));
 		expect(html).toContain("Pilihan karya");
 		expect(html).toContain("Coffee ordering app");
-		expect(html).toContain("Orders took too long.");
+		// The work's own text is on its page; its card links there.
+		expect(html).toContain('href="/nadia/work/kopi-app"');
+		const work = renderTestPage(
+			{ ...fullPortfolioData, theme: "paper", locale: "id-ID" },
+			{ page: { kind: "work", workId: "w1" } },
+		).html;
+		expectSoundPage(work, "paper");
+		expect(work).toContain("Orders took too long.");
 		expect(html).not.toContain("Salman");
 	});
 
@@ -35,18 +42,15 @@ describe("Paper", () => {
 	it("keeps every section and media block when switched from another theme", () => {
 		const { html } = renderTestPage({ ...fullPortfolioData, theme: "paper" }, { resume: fullTestResume() });
 		expectSoundPage(html, "paper");
-		for (const marker of [
-			"pf-gallery",
-			"pf-video",
-			"pf-pdf",
-			"pf-link",
-			"pf-loc",
-			"pf-service",
-			"pf-quote",
-			"pf-logos",
-			"pf-skillgroups",
-			"resume-tools",
-		])
+		// The blocks are on the work's own page, every kind of them, embeds included.
+		const work = renderTestPage(
+			{ ...fullPortfolioData, theme: "paper" },
+			{ resume: fullTestResume(), page: { kind: "work", workId: "w1" } },
+		).html;
+		expectSoundPage(work, "paper");
+		for (const marker of ["pf-gallery", "pf-video", "pf-embed", "pf-pdf", "pf-link", "pf-workpage__more"])
+			expect(work, marker).toContain(marker);
+		for (const marker of ["pf-loc", "pf-service", "pf-quote", "pf-logos", "pf-skillgroups", "resume-tools"])
 			expect(html, marker).toContain(marker);
 	});
 

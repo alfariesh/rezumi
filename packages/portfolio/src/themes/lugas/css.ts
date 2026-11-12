@@ -67,5 +67,5 @@ export const LUGAS_CSS = String.raw`
 .pf[data-theme="lugas"] .lg-cta{font:800 clamp(1.5rem,1.1rem + 1.6vw,2.25rem)/1.15 var(--pf-font-heading);letter-spacing:-.025em;max-width:22ch}
 .pf[data-theme="lugas"] #contact{gap:24px}
 .pf[data-theme="lugas"] #contact .pf-loc{max-width:420px}
-.pf[data-theme="lugas"] .pf-detail__panel{max-width:820px}
+.pf[data-theme="lugas"] .pf-workpage{max-width:820px}
 `;

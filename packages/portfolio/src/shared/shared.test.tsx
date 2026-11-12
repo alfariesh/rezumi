@@ -9,7 +9,6 @@ import { RenderContextValue } from "./context";
 import { IntroChips, introLocation, useIntroBackground } from "./intro";
 import { formatFileSize } from "./media";
 import { ServiceList, TestimonialList } from "./offers";
-import { WorkDetails } from "./parts";
 import { ResumeSectionBody } from "./resume";
 import { Navigation } from "./shell";
 
@@ -204,29 +203,56 @@ describe("the navigation", () => {
 	});
 });
 
-describe("the works' details", () => {
-	it("steps from each work to the one before and after it, around, and adds the viewer for galleries", () => {
-		const data: PortfolioDataInput = {
-			...fullPortfolioData,
-			works: {
-				items: [
-					...(fullPortfolioData.works?.items ?? []),
-					{ id: "w4", slug: "third", title: "Third work", blocks: [] },
-				],
-			},
-		};
-		const html = draw(() => <WorkDetails />, { data });
-		expect(html.match(/<section class="pf-detail"/g)).toHaveLength(3);
-		expect(html).toMatch(
-			/id="work-kopi-app"[^]*?href="#work-third"[^]*?data-previous[^]*?href="#work-no-cover"[^]*?data-next/,
+describe("a work's own page", () => {
+	const data: PortfolioDataInput = {
+		...fullPortfolioData,
+		works: {
+			items: [...(fullPortfolioData.works?.items ?? []), { id: "w4", slug: "third", title: "Third work", blocks: [] }],
+		},
+	};
+	const workPage = (workId: string, input: PortfolioDataInput = data) =>
+		renderTestPage(input, { resume: fullTestResume(), page: { kind: "work", workId } }).html;
+
+	it("steps to the works before and after it by title, without going around, and adds the viewer for galleries", () => {
+		const first = workPage("w1");
+		expect(first).toContain('<a class="pf-workpage__back" href="/nadia#work">');
+		expect(first).not.toContain("pf-workpage__step--previous");
+		expect(first).toMatch(
+			/<nav class="pf-workpage__more" aria-label="Karya lain"><a class="pf-workpage__step pf-workpage__step--next" href="\/nadia\/work\/no-cover" rel="next">[^]*<b>Work without pictures<\/b><\/a><\/nav>/,
 		);
-		expect(html).toContain('class="pf-lightbox"');
-		expect(
-			draw(() => <WorkDetails />, {
-				data: { ...data, works: { items: [{ id: "w", slug: "w", title: "Only", blocks: [] }] } },
-			}),
-		).not.toMatch(/pf-lightbox|data-previous/);
-		expect(draw(() => <WorkDetails />, { data: { works: { items: [] } } })).toBe("");
+		expect(first).toContain('class="pf-lightbox"');
+		const middle = workPage("w2");
+		expect(middle).toMatch(/href="\/nadia\/work\/kopi-app" rel="prev"[^]*href="\/nadia\/work\/third" rel="next"/);
+		expect(middle).not.toContain("pf-lightbox");
+		const only = workPage("w", { ...data, works: { items: [{ id: "w", slug: "w", title: "Only", blocks: [] }] } });
+		expect(only).not.toMatch(/pf-workpage__more|pf-lightbox/);
+	});
+
+	it("takes the place of the intro and sections, named by the work's title as the page's one h1", () => {
+		const html = workPage("w1");
+		expect(html).toContain(
+			'<main class="pf-wrap lg-main" id="main" tabindex="-1" aria-labelledby="work-kopi-app--title">',
+		);
+		expect(html).toContain('<h1 class="pf-detail__title" id="work-kopi-app--title">Coffee ordering app</h1>');
+		expect(html).not.toMatch(/lg-hero|pf-section|data-pfx/);
+		// The picture viewer is the only dialog left.
+		expect(html.match(/role="dialog"/g)).toHaveLength(1);
+		// Rich text right under the h1 keeps its levels; the navigation and the name lead back to the home page.
+		expect(html).toContain("<h2>Problem</h2><h3>Why</h3>");
+		expect(html).toContain('<a class="pf-nav__brand lg-brand" href="/nadia">');
+		expect(html).toContain('<li><a href="/nadia#about">');
+		expect(html).toMatch(/<img [^>]*loading="eager"[^>]*fetchPriority="high"/);
+	});
+
+	it("leads back to the same document's sections in the editor's preview, which keeps the default home", () => {
+		const { html } = renderTestPage(data, {
+			resume: fullTestResume(),
+			page: { kind: "work", workId: "w1" },
+			links: null,
+		});
+		expect(html).toContain('<a class="pf-workpage__back" href="#work">');
+		expect(html).toContain('<li><a href="#about">');
+		expect(html).toContain('class="pf-nav__brand lg-brand" href="#main"');
 	});
 });
 
