@@ -21,7 +21,12 @@ const initialize = () =>
 const cache = new Map<string, Uint8Array>();
 const CACHE_LIMIT = 200;
 
-const banner = () => Response.redirect(new URL("/opengraph/banner.jpg", env.APP_URL), 302);
+/** The generic banner, never cached: once the portfolio shows again, its own card should. */
+const banner = () =>
+	new Response(null, {
+		status: 302,
+		headers: { Location: new URL("/opengraph/banner.jpg", env.APP_URL).href, "Cache-Control": "no-store" },
+	});
 
 /** Formats the card's renderer (resvg) draws. It can't draw WebP, which the editor uploads pictures as. */
 const DRAWABLE_PICTURE = /\.(?:jpe?g|png)$/i;
@@ -48,7 +53,7 @@ function cardPicture(picture: PortfolioViewImage | null): string {
 /**
  * `GET /cards/<username>.png`: a published portfolio's link preview (WhatsApp, LinkedIn): name, headline, photo and
  * address in the portfolio's fonts and accent. An address that doesn't show a portfolio gets the generic banner, so a
- * card never shows what a visitor can't.
+ * card never shows what a visitor can't. HEAD answers with the headers only.
  */
 export async function handlePortfolioCard(
 	request: Request,
@@ -67,9 +72,13 @@ export async function handlePortfolioCard(
 	const key = createHash("sha256")
 		.update(JSON.stringify([text, fonts, picture, view.locale]))
 		.digest("hex");
-	const headers = { "Cache-Control": "public, max-age=3600", ETag: `"${key.slice(0, 32)}"` };
+	// Checked again on every use (`no-cache`, answered with 304 while it's the same card), so a card stops showing as
+	// soon as its portfolio is unpublished or taken down, instead of an hour later.
+	const headers = { "Cache-Control": "public, no-cache", ETag: `"${key.slice(0, 32)}"` };
 	if (matchesIfNoneMatch(request.headers.get("if-none-match"), headers.ETag))
 		return new Response(null, { status: 304, headers });
+	// A crawler checking the link needs no picture drawn.
+	if (request.method === "HEAD") return new Response(null, { headers: { ...headers, "Content-Type": "image/png" } });
 
 	let png = cache.get(key);
 	if (!png) {

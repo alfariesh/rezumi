@@ -131,3 +131,31 @@ describe("the portfolio card's photo", () => {
 		expect(drawnPicture()).toBeUndefined();
 	});
 });
+
+describe("the portfolio card's answer", () => {
+	it("is checked again on every use, so it stops once the portfolio no longer shows", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(portfolio(null));
+		const response = await card();
+		expect(response.headers.get("Cache-Control")).toBe("public, no-cache");
+		expect(response.headers.get("ETag")).toMatch(/^"[0-9a-f]{32}"$/);
+	});
+
+	it("sends the banner without letting it be cached", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(null);
+		const response = await card();
+		expect(response.status).toBe(302);
+		expect(response.headers.get("Location")).toBe("https://rezumi.example/opengraph/banner.jpg");
+		expect(response.headers.get("Cache-Control")).toBe("no-store");
+	});
+
+	it("draws nothing for HEAD", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(portfolio(null));
+		const response = await handlePortfolioCard(
+			new Request("https://rezumi.example/cards/nadia.png", { method: "HEAD" }),
+			"nadia",
+		);
+		expect(response.status).toBe(200);
+		expect(response.headers.get("Content-Type")).toBe("image/png");
+		expect(resumeCardSvg).not.toHaveBeenCalled();
+	});
+});

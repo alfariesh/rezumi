@@ -27,7 +27,14 @@ vi.mock("../billing/export", () => ({ exportBillingData: mocks.exportBilling }))
 vi.mock("../billing/deletion", () => ({ endBillingForDeletedUser: vi.fn() }));
 vi.mock("../portfolio/export", () => ({
 	exportPortfolioData: () =>
-		Promise.resolve({ portfolio: null, files: [], messages: [{ name: "Visitor", body: "Hello" }], reports: [] }),
+		Promise.resolve({
+			portfolio: null,
+			files: [],
+			messages: [{ name: "Visitor", body: "Hello" }],
+			reports: [],
+			statistics: [],
+			moderation: [],
+		}),
 }));
 const { authService } = await import("./service");
 

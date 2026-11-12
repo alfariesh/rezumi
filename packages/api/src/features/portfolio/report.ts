@@ -11,6 +11,7 @@ import { PORTFOLIO_MESSAGE_TRAP_FIELD } from "@rezumi/schema/portfolio/statistic
 import { rateLimitConfig } from "@rezumi/utils/rate-limit";
 import { createRateLimiter } from "../../redis";
 import { ownerIsNotBanned } from "../resume/access-policy";
+import { rateLimitAddress } from "./client-address";
 import { formField, passesLimit } from "./contact";
 import { portfolioOwnsProfilePath } from "./public";
 import { isContactFormConfigured, verifyTurnstileToken } from "./turnstile";
@@ -69,7 +70,8 @@ export async function submitPortfolioReport(input: {
 	});
 	if (!parsed.success) return fail("invalid");
 
-	const client = `ip:${input.trustedClient?.trim() || "unknown"}`;
+	// Per address (an IPv6 address by its /64); clients without one share a bucket.
+	const client = `ip:${rateLimitAddress(input.trustedClient) ?? "unknown"}`;
 	if (!(await passesLimit(attemptLimiter, client))) return fail("rate_limited");
 	if (!(await verifyTurnstileToken(formField(input.form, "cf-turnstile-response"), input.trustedClient)))
 		return fail("turnstile");

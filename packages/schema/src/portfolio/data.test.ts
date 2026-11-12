@@ -8,6 +8,7 @@ import {
 } from "./data";
 import { createDefaultPortfolioData } from "./default";
 import { fitsRichText, PORTFOLIO_LIMITS, portfolioDataBytes, richTextLength } from "./limits";
+import { PORTFOLIO_STANDARD_SECTIONS } from "./sections";
 
 const image = (name = "a") => ({
 	key: `uploads/user-1/pictures/portfolio/${name}.webp`,
@@ -69,9 +70,59 @@ describe("reading stored portfolio data", () => {
 		expect(data.design.accent).toEqual({ source: "resume" });
 		expect(data.design.scheme).toBeUndefined();
 		expect(data.hero.greeting).toBe("");
-		expect(data.hero.showPicture).toBe(true);
+		// A broken privacy setting hides: "yes" isn't a boolean, so the photo stays off.
+		expect(data.hero.showPicture).toBe(false);
 		expect(data.hero.effect.id).toBeUndefined();
 		expect(data.contact.whatsapp).toEqual({ show: true, number: "" });
+	});
+
+	it("hides what a broken privacy setting or section list might have hidden, but keeps missing ones at their defaults", () => {
+		const broken = parsePortfolioData({
+			hero: { showLocation: "no" },
+			contact: { email: 0, website: null, profiles: "x" },
+			sections: "broken",
+			works: { items: [{ id: "w1", slug: "w1", title: "Work", hidden: "maybe" }] },
+			custom: [{ id: "c1", title: "Custom", hidden: 1 }],
+		});
+		expect(broken.hero.showLocation).toBe(false);
+		expect(broken.contact).toMatchObject({ email: false, website: false, profiles: false });
+		expect(broken.sections.hidden).toEqual([...PORTFOLIO_STANDARD_SECTIONS]);
+		expect(broken.works.items[0]?.hidden).toBe(true);
+		expect(broken.custom[0]?.hidden).toBe(true);
+
+		const missing = parsePortfolioData({ works: { items: [{ id: "w1", slug: "w1", title: "Work" }] } });
+		expect(missing.hero).toMatchObject({ showPicture: true, showLocation: true });
+		expect(missing.contact).toMatchObject({ email: true, website: true, profiles: true });
+		expect(missing.sections.hidden).toEqual([]);
+		expect(missing.works.items[0]?.hidden).toBe(false);
+	});
+
+	it("reads data that isn't a portfolio as one that shows nothing private", () => {
+		const data = parsePortfolioData("not a portfolio");
+		expect(data.sections.hidden).toEqual([...PORTFOLIO_STANDARD_SECTIONS]);
+		expect(data.hero).toMatchObject({ showPicture: false, showLocation: false });
+		expect(data.contact).toMatchObject({ email: false, website: false, profiles: false });
+	});
+
+	it("drops an Images or Metrics block left without items, so the next save isn't refused", () => {
+		const data = parsePortfolioData({
+			works: {
+				items: [
+					{
+						id: "w1",
+						slug: "w1",
+						title: "Work",
+						blocks: [
+							{ id: "b1", type: "images", images: [{ key: 42 }] },
+							{ id: "b2", type: "metrics", items: [] },
+							{ id: "b3", type: "text", html: "<p>Kept</p>" },
+						],
+					},
+				],
+			},
+		});
+		expect(data.works.items[0]?.blocks.map((block) => block.id)).toEqual(["b3"]);
+		expect(() => parseWritablePortfolioData(data)).not.toThrow();
 	});
 
 	it("drops broken, repeated and unknown items but keeps the rest", () => {

@@ -304,6 +304,22 @@ describe.skipIf(!databaseUrl)("portfolio plans", () => {
 			await expect(withWorks(10)).rejects.toMatchObject({ code: "PLAN_LIMIT_REACHED" });
 			expect((await withWorks(8)).data.works.items).toHaveLength(8);
 			await expect(withWorks(9)).rejects.toMatchObject({ code: "PLAN_LIMIT_REACHED" });
+			// Swapping a work for a new one adds a work: over the limit, that's refused too.
+			await expect(
+				edit((data) => {
+					data.works.items[7] = parseWritablePortfolioData({ works: { items: [work(20)] } }).works.items[0] as never;
+				}),
+			).rejects.toMatchObject({ code: "PLAN_LIMIT_REACHED", data: { limit: "portfolioWorks", max: 6, used: 8 } });
+			expect((await current()).data.works.items.map((item) => item.id)).not.toContain("w20");
+		});
+
+		it("lets a portfolio within its limit swap a work for a new one", async () => {
+			await service.create("member", { sourceResumeId: null });
+			await withWorks(6);
+			const saved = await edit((data) => {
+				data.works.items[5] = parseWritablePortfolioData({ works: { items: [work(20)] } }).works.items[0] as never;
+			});
+			expect(saved.data.works.items.map((item) => item.id)).toContain("w20");
 		});
 
 		it("starts a new portfolio with the first projects the plan can hold", async () => {

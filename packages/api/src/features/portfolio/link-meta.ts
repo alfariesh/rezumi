@@ -289,7 +289,11 @@ function declaredCharset(bytes: Uint8Array): string | undefined {
 /** Page bytes as text, in the declared character set when this runtime knows it, else UTF-8. */
 export function decodePage(bytes: Uint8Array, contentTypeHeader: string | null): string {
 	const fromHeader = /charset\s*=\s*["']?([\w:.-]+)/i.exec(contentTypeHeader ?? "")?.[1];
-	const label = (fromHeader ?? declaredCharset(bytes) ?? "utf-8").toLowerCase();
+	// A page can't declare UTF-16 about itself in ASCII; HTML reads such a declaration as UTF-8.
+	const declared = declaredCharset(bytes)
+		?.toLowerCase()
+		.replace(/^utf-16(?:[bl]e)?$/, "utf-8");
+	const label = (fromHeader ?? declared ?? "utf-8").toLowerCase();
 	try {
 		return new TextDecoder(label).decode(bytes);
 	} catch {

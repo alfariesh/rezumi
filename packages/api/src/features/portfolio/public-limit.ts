@@ -1,6 +1,7 @@
 import { MemoryRatelimiter } from "@orpc/experimental-ratelimit/memory";
 import { env } from "@rezumi/env/server";
 import { rateLimitConfig } from "@rezumi/utils/rate-limit";
+import { rateLimitAddress } from "./client-address";
 import { getPortfolioMode } from "./mode";
 
 type PublicLimiter = { limit: (options: { key: string }) => Promise<{ success: boolean }> };
@@ -22,9 +23,9 @@ const memory = new MemoryRatelimiter(rateLimitConfig.portfolioPublic.requests);
  */
 export async function publicPortfolioRequestAllowed(client: string | undefined): Promise<boolean> {
 	if (getPortfolioMode() === "off" || env.FLAG_DISABLE_API_RATE_LIMIT) return true;
-	const address = client?.trim();
-	// Without an address, everyone would share one bucket.
-	if (!address || address === "unknown") return true;
+	// Per address, an IPv6 address by its /64. Without an address, everyone would share one bucket.
+	const address = rateLimitAddress(client);
+	if (!address) return true;
 	try {
 		const binding = readBinding?.();
 		const { success } = binding ? await binding.limit({ key: address }) : await memory.limit(address);

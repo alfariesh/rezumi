@@ -2,7 +2,7 @@ import type { Transaction } from "../billing/account";
 import type { DbOrTx } from "@rezumi/db/client";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioClickKind, PortfolioDevice, PortfolioVisitSource } from "@rezumi/schema/portfolio/statistics";
-import { and, eq, gte, sql } from "drizzle-orm";
+import { and, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import {
@@ -102,7 +102,15 @@ export async function portfolioStatistics(input: {
 			sources: daily.sources,
 		})
 		.from(daily)
-		.where(and(eq(daily.portfolioId, input.portfolio.id), gte(daily.date, dates[0] ?? "")));
+		// Bounded on both ends: rows dated after today in the owner's current zone (written before they moved it west)
+		// would otherwise count in the totals but not in the days.
+		.where(
+			and(
+				eq(daily.portfolioId, input.portfolio.id),
+				gte(daily.date, dates[0] ?? ""),
+				lte(daily.date, dates.at(-1) ?? ""),
+			),
+		);
 
 	const clicks = zeroed(PORTFOLIO_CLICK_KINDS);
 	const sources = zeroed(PORTFOLIO_VISIT_SOURCES);

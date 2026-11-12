@@ -300,6 +300,15 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			expect(await publicPortfolio.listIndexablePortfolios(0)).toEqual([]);
 		});
 
+		it("keeps admins' test portfolios out of search engines until portfolios open to everyone", async () => {
+			await addPortfolio("chief");
+			fixture.mode = "admins";
+			expect(await publicPortfolio.findPublicPortfolio(username("chief"))).toMatchObject({ indexable: false });
+			expect(await publicPortfolio.countIndexablePortfolios()).toBe(0);
+			fixture.mode = "on";
+			expect(await publicPortfolio.findPublicPortfolio(username("chief"))).toMatchObject({ indexable: true });
+		});
+
 		it("agrees with the page on what search engines may list", async () => {
 			const portfolioId = await addPortfolio("member");
 			const listed = async () => ({

@@ -38,9 +38,11 @@ export function portfolioOwnsProfilePath(userId: SQLWrapper): SQL<boolean> {
  * Whether search engines may list a portfolio (`02-teknis.md` section 5.3), as one condition on a query that joins
  * `portfolio` and its owner (`user`): it shows at `/<username>` (published, not suspended, switched on for its owner),
  * the owner isn't banned and allows it ("Show in search engines"), and the account is at least a week old (owner
- * decision #5). The page's robots tag and the sitemap both read this one rule.
+ * decision #5). The page's robots tag and the sitemap both read this one rule. Only once portfolios are open to everyone:
+ * while only admins have them (`PORTFOLIO_MODE=admins`), their pages are tests, kept out of search engines.
  */
 function portfolioIsIndexable(): SQL<boolean> {
+	if (getPortfolioMode() !== "on") return sql<boolean>`false`;
 	return sql<boolean>`(${schema.portfolio.showInSearchEngines} and ${schema.user.createdAt} <= now() - make_interval(days => ${PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS}) and ${portfolioOwnsProfilePath(schema.portfolio.userId)} and ${ownerIsNotBanned()})`;
 }
 

@@ -1,52 +1,26 @@
 import type { Transaction } from "../billing/account";
-import type { PortfolioUnfurl } from "./unfurl";
 import type { DbOrTx } from "@rezumi/db/client";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import { randomUUID } from "node:crypto";
-import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { portfolioFileKeys, portfolioFileKeysInStoredData } from "@rezumi/portfolio/files";
-import { readPortfolioImageHeader } from "@rezumi/portfolio/image-header";
 import { createInitialPortfolioData, workFromResumeProject } from "@rezumi/portfolio/initial";
 import { sanitizePortfolioData } from "@rezumi/portfolio/rich-text";
 import { parsePortfolioData, parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
-import {
-	PORTFOLIO_LIMITS,
-	PORTFOLIO_UNUSED_FILE_GRACE_MS,
-	PORTFOLIO_UPLOAD,
-	portfolioDataBytes,
-} from "@rezumi/schema/portfolio/limits";
-import { lockBillingAccount } from "../billing/account";
-import { getEntitlements, isBillingAppliedTo } from "../billing/entitlements";
-import { portfolioLimitReached } from "../billing/limits";
+import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD, portfolioDataBytes } from "@rezumi/schema/portfolio/limits";
+import { getEntitlements } from "../billing/entitlements";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
-import { getStorageService } from "../storage";
+import { enabledAccount, requireEnabled } from "./access";
 import { deletePortfolioMessage, listPortfolioMessages, setPortfolioMessageRead } from "./contact";
 import { portfolioErrors } from "./errors";
-import {
-	deleteUnusedFiles,
-	lockPortfolio,
-	markFileUsage,
-	OVERDUE,
-	readStoredData,
-	removeStoredFile,
-	storedFiles,
-} from "./file-store";
-import { getPortfolioMode, isPortfolioEnabledFor } from "./mode";
+import { lockPortfolio, markFileUsage, OVERDUE, readStoredData, storedFiles } from "./file-store";
+import { portfolioMedia } from "./media";
 import { assertPortfolioPlan } from "./plan";
 import { portfolioStatistics } from "./statistics";
 import { isContactFormConfigured } from "./turnstile";
-import {
-	fetchRemoteImage,
-	RemoteImageError,
-	readUnfurlCache,
-	unfurlUrl,
-	UnfurlError,
-	writeUnfurlCache,
-} from "./unfurl";
 
 /** The portfolio's columns but its data, which a save already has and a read parses. */
 const rowColumns = {
@@ -81,30 +55,6 @@ export type PortfolioDto = PortfolioRow & {
 	/** The source resume, or null when there is none. One in Trash still shows here, so the editor can ask for another. */
 	sourceResume: SourceResume | null;
 };
-
-type Account = { role: string | null; isAnonymous: boolean; emailVerified: boolean };
-
-async function loadAccount(userId: string, client: DbOrTx = db): Promise<Account | null> {
-	const [account] = await client
-		.select({ role: schema.user.role, isAnonymous: schema.user.isAnonymous, emailVerified: schema.user.emailVerified })
-		.from(schema.user)
-		.where(eq(schema.user.id, userId));
-	return account ?? null;
-}
-
-/** The account, when portfolios are open to it. Reads nothing while the mode is off. */
-async function enabledAccount(userId: string): Promise<Account | null> {
-	const mode = getPortfolioMode();
-	if (mode === "off") return null;
-	const account = await loadAccount(userId);
-	return account && isPortfolioEnabledFor(account, mode) ? account : null;
-}
-
-async function requireEnabled(userId: string): Promise<Account> {
-	const account = await enabledAccount(userId);
-	if (!account) throw portfolioErrors.disabled();
-	return account;
-}
 
 /** A resume the account owns that isn't in Trash, with its data. */
 async function findActiveResume(userId: string, resumeId: string, client: DbOrTx = db) {
@@ -221,85 +171,6 @@ async function saveVersionedData(
 	return toDto(row, next.data, userId, tx);
 }
 
-/** A picture's bytes and what it really is, or the error saying why it can't be stored. */
-async function readUploadedPicture(file: File, maxSide: number) {
-	if (file.size > PORTFOLIO_UPLOAD.imageBytes) throw portfolioErrors.fileTooLarge(file.size);
-	const data = new Uint8Array(await file.arrayBuffer());
-	if (data.byteLength > PORTFOLIO_UPLOAD.imageBytes) throw portfolioErrors.fileTooLarge(data.byteLength);
-	const header = readPortfolioImageHeader(data);
-	if (!header.ok) throw portfolioErrors.imageInvalid(header.reason);
-	if (Math.max(header.image.width, header.image.height) > maxSide) throw portfolioErrors.imageInvalid("dimensions");
-	return { data, ...header.image };
-}
-
-async function requirePortfolio(userId: string): Promise<void> {
-	const [portfolio] = await db
-		.select({ id: schema.portfolio.id })
-		.from(schema.portfolio)
-		.where(eq(schema.portfolio.userId, userId));
-	if (!portfolio) throw portfolioErrors.notFound();
-}
-
-type NewFile = { key: string; bytes: number } & (
-	| { kind: "image"; width: number; height: number }
-	| { kind: "pdf"; pages: number }
-);
-
-/**
- * Records uploads before they're written, in one transaction under the portfolio's lock with the checks of the plan's
- * storage quota and the account's ceiling (`PORTFOLIO_UPLOAD.accountBytes` and `accountFiles`), so two uploads at once
- * can't both take the last room. Every recorded file counts, ones waiting for the cleanup job too: the number the
- * storage meter shows is the one enforced. Files already over a quota stay; only new ones are refused. Locks are taken
- * portfolio, then billing account, then file rows. A recorded file is unused until saved data uses it.
- */
-async function recordUploads(userId: string, files: readonly NewFile[]): Promise<void> {
-	await db.transaction(async (tx) => {
-		if (!(await lockPortfolio(tx, userId))) throw portfolioErrors.notFound();
-		if (await isBillingAppliedTo(userId, tx)) await lockBillingAccount(tx, userId);
-		const entitlements = await getEntitlements(userId, new Date(), tx);
-		const stored = await storedFiles(userId, tx);
-		const bytes = files.reduce((sum, file) => sum + file.bytes, 0);
-		const quota = entitlements.limits.portfolioStorageBytes;
-		// A quota at the account's ceiling is the ceiling: no plan offers more, so it's refused as storage being full.
-		if (quota !== null && quota < PORTFOLIO_UPLOAD.accountBytes && stored.bytes + bytes > quota)
-			throw portfolioLimitReached({
-				limit: "portfolioStorageBytes",
-				max: quota,
-				used: stored.bytes,
-				planId: entitlements.planId,
-			});
-		if (
-			stored.bytes + bytes > PORTFOLIO_UPLOAD.accountBytes ||
-			stored.files + files.length > PORTFOLIO_UPLOAD.accountFiles
-		)
-			throw portfolioErrors.storageFull(stored);
-		await tx.insert(schema.portfolioFile).values(files.map((file) => ({ ...file, userId, unusedSince: sql`now()` })));
-	});
-}
-
-/**
- * Writes files already recorded in `portfolio_file`, after their transaction committed. When storage fails, what was
- * written is deleted again and the rows go, so storage never keeps a file without a row for long (a stray left by a
- * failed delete is the weekly check's).
- */
-async function storeRecordedFiles(files: readonly { key: string; data: Uint8Array; contentType: string }[]) {
-	const storage = getStorageService();
-	try {
-		for (const file of files) await storage.write({ key: file.key, data: file.data, contentType: file.contentType });
-	} catch (error) {
-		for (const file of files) await removeStoredFile(file.key, storage);
-		await db.delete(schema.portfolioFile).where(
-			inArray(
-				schema.portfolioFile.key,
-				files.map((file) => file.key),
-			),
-		);
-		throw error;
-	}
-}
-
-const PDF_SIGNATURE = "%PDF-";
-
 /** The account's portfolio for its own statistics and inbox; null while it has none. */
 async function ownPortfolio(userId: string) {
 	const account = await requireEnabled(userId);
@@ -319,6 +190,9 @@ async function requireOwnPortfolio(userId: string) {
 }
 
 export const portfolioService = {
+	// Uploads, links and file deletion (`media.ts`).
+	...portfolioMedia,
+
 	statistics: async (userId: string) => {
 		const portfolio = await ownPortfolio(userId);
 		return portfolio ? portfolioStatistics({ portfolio, userId, timeZone: portfolio.timeZone }) : null;
@@ -484,137 +358,6 @@ export const portfolioService = {
 		);
 	},
 
-	/**
-	 * Stores a picture the browser already shrank and re-encoded (`02-teknis.md` section 8), with its optional small
-	 * copy for cards. The file's own bytes decide what it is; the size, type and pixel size are checked again here. The
-	 * file is recorded before it's written (`recordUploads`, which also checks the account's storage ceiling), so
-	 * storage never holds a portfolio picture the cleanup job doesn't know of; it counts as unused until saved data
-	 * uses it.
-	 */
-	uploadImage: async (userId: string, input: { file: File; thumbnail?: File | undefined }) => {
-		await requireEnabled(userId);
-		await requirePortfolio(userId);
-
-		const main = await readUploadedPicture(input.file, PORTFOLIO_UPLOAD.imageSide);
-		const small = input.thumbnail ? await readUploadedPicture(input.thumbnail, PORTFOLIO_UPLOAD.thumbSide) : null;
-		const id = randomUUID();
-		const folder = `uploads/${userId}/pictures/portfolio`;
-		const files = [
-			{ ...main, key: `${folder}/${id}.${main.extension}` },
-			...(small ? [{ ...small, key: `${folder}/${id}-sm.${small.extension}` }] : []),
-		];
-
-		await recordUploads(
-			userId,
-			files.map((file) => ({
-				kind: "image",
-				key: file.key,
-				bytes: file.data.byteLength,
-				width: file.width,
-				height: file.height,
-			})),
-		);
-		await storeRecordedFiles(files);
-
-		const [first, second] = files;
-		return {
-			key: first?.key as string,
-			...(second ? { thumbKey: second.key } : {}),
-			width: main.width,
-			height: main.height,
-			bytes: files.reduce((sum, file) => sum + file.data.byteLength, 0),
-		};
-	},
-
-	/**
-	 * Stores a PDF for a work's PDF block (`02-teknis.md` section 19). The browser already checked it opens without a
-	 * password and counted its pages; the server checks the size and that the bytes are a PDF, and the public route
-	 * serves it locked down. The picture of its first page goes through `uploadImage`. Recorded before it's written,
-	 * within the storage ceiling, unused until saved data uses it, like pictures.
-	 */
-	uploadPdf: async (userId: string, input: { file: File; pages: number }) => {
-		await requireEnabled(userId);
-		await requirePortfolio(userId);
-		const max = PORTFOLIO_UPLOAD.pdfBytes;
-		if (input.file.size > max) throw portfolioErrors.fileTooLarge(input.file.size, "pdf");
-		const data = new Uint8Array(await input.file.arrayBuffer());
-		if (data.byteLength > max) throw portfolioErrors.fileTooLarge(data.byteLength, "pdf");
-		if (String.fromCharCode(...data.subarray(0, PDF_SIGNATURE.length)) !== PDF_SIGNATURE)
-			throw portfolioErrors.pdfInvalid("type");
-
-		const key = `uploads/${userId}/documents/portfolio/${randomUUID()}.pdf`;
-		await recordUploads(userId, [{ kind: "pdf", key, bytes: data.byteLength, pages: input.pages }]);
-		await storeRecordedFiles([{ key, data, contentType: "application/pdf" }]);
-		return { key, bytes: data.byteLength, pages: input.pages };
-	},
-
-	/**
-	 * Reads a pasted link into a video or a link card (`02-teknis.md` section 20), remembered for a day per link. A
-	 * site that can't be read is `PORTFOLIO_LINK_UNREADABLE`, and the editor lets the owner fill the card in.
-	 */
-	unfurl: async (userId: string, input: { url: string }, signal?: AbortSignal): Promise<PortfolioUnfurl> => {
-		await requireEnabled(userId);
-		const cached = await readUnfurlCache(input.url);
-		if (cached) return cached;
-		try {
-			const result = await unfurlUrl(input.url, { signal });
-			await writeUnfurlCache(input.url, result);
-			return result;
-		} catch (error) {
-			if (error instanceof UnfurlError) throw portfolioErrors.linkUnreadable(error.reason);
-			throw error;
-		}
-	},
-
-	/**
-	 * Fetches a link's preview picture once the owner approves it, for the browser to shrink and store through
-	 * `uploadImage`: the portfolio keeps its own copy and the page never loads pictures from other sites.
-	 */
-	fetchRemoteImage: async (userId: string, input: { url: string }, signal?: AbortSignal): Promise<File> => {
-		await requireEnabled(userId);
-		await requirePortfolio(userId);
-		try {
-			const picture = await fetchRemoteImage(input.url, { signal });
-			return new File([picture.bytes as Uint8Array<ArrayBuffer>], `picture.${picture.extension}`, {
-				type: picture.contentType,
-			});
-		} catch (error) {
-			if (!(error instanceof RemoteImageError)) throw error;
-			if (error.reason === "too-large")
-				throw portfolioErrors.fileTooLarge(PORTFOLIO_UPLOAD.remoteImageBytes + 1, "remote-picture");
-			if (error.reason === "type") throw portfolioErrors.imageInvalid("type");
-			throw portfolioErrors.linkUnreadable(error.reason);
-		}
-	},
-
-	/**
-	 * Deletes one of the account's portfolio files that the saved data no longer names (an upload the editor
-	 * discarded). A file still named anywhere in the stored data is refused; the editor saves first. Under the
-	 * portfolio's lock the file is made due, then deleted the way the cleanup job deletes files (`deleteUnusedFiles`),
-	 * storage outside the lock; when that can't happen now (a save holds the portfolio), the job's next run does it.
-	 */
-	deleteFile: async (userId: string, input: { key: string }): Promise<void> => {
-		await requireEnabled(userId);
-		const { key } = input;
-		if (!key.startsWith(`uploads/${userId}/`)) throw portfolioErrors.fileNotFound(key);
-		await db.transaction(async (tx) => {
-			const portfolio = await lockPortfolio(tx, userId);
-			const [row] = await tx
-				.select({ id: schema.portfolioFile.id })
-				.from(schema.portfolioFile)
-				.where(and(eq(schema.portfolioFile.userId, userId), eq(schema.portfolioFile.key, key)))
-				.for("update");
-			if (!row) throw portfolioErrors.fileNotFound(key);
-			if (portfolio && portfolioFileKeysInStoredData(await readStoredData(tx, userId)).includes(key))
-				throw portfolioErrors.fileInUse(key);
-			await tx.update(schema.portfolioFile).set({ unusedSince: OVERDUE }).where(eq(schema.portfolioFile.id, row.id));
-		});
-		const cutoff = new Date(Date.now() - PORTFOLIO_UNUSED_FILE_GRACE_MS);
-		await deleteUnusedFiles(userId, { cutoff, limit: 1, keys: [key] }).catch((error: unknown) => {
-			console.error("[portfolio] Deleting a file failed; the cleanup job deletes it on its next run.", error);
-		});
-	},
-
 	setPublic: async (userId: string, input: { isPublic: boolean }): Promise<PortfolioDto> => {
 		const account = await requireEnabled(userId);
 		if (input.isPublic && !account.emailVerified) throw portfolioErrors.emailNotVerified();
@@ -677,6 +420,25 @@ export const portfolioService = {
 			// Only an administrator lifts a takedown, and deleting and recreating would be a way around that. Deleting the
 			// account still removes everything.
 			if (locked.suspendedAt) throw portfolioErrors.suspended();
+			// Reports go with the portfolio. The ones still open stay on record in the moderation log, which outlives it,
+			// so deleting and recreating a portfolio leaves a trace of what it was reported for (never who reported it).
+			const open = await tx
+				.select({
+					id: schema.portfolioReport.id,
+					reason: schema.portfolioReport.reason,
+					createdAt: schema.portfolioReport.createdAt,
+				})
+				.from(schema.portfolioReport)
+				.innerJoin(schema.portfolio, eq(schema.portfolioReport.portfolioId, schema.portfolio.id))
+				.where(and(eq(schema.portfolio.userId, userId), eq(schema.portfolioReport.status, "open")));
+			if (open.length)
+				await tx.insert(schema.portfolioModerationLog).values({
+					actorUserId: userId,
+					targetUserId: userId,
+					action: "deleted",
+					reason: null,
+					details: { openReports: open.map((item) => ({ ...item, createdAt: item.createdAt.toISOString() })) },
+				});
 			await tx.delete(schema.portfolio).where(eq(schema.portfolio.userId, userId));
 			await tx
 				.update(schema.portfolioFile)

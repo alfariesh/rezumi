@@ -86,8 +86,15 @@ describe("portfolioDetailQueries", () => {
 		for (const { query, params } of queries) {
 			expect(query).toContain("index1 = $portfolio");
 			expect(query).toContain("timestamp >= $start");
-			expect(params).toEqual({ portfolio: "pf-mine", start: "2026-10-10T00:00:00.000Z" });
+			// The start of the oldest of the 30 days the daily counts show.
+			expect(params).toEqual({ portfolio: "pf-mine", start: "2026-10-11T00:00:00.000Z" });
 		}
+	});
+
+	it("starts at the beginning of the owner's oldest day", () => {
+		expect(portfolioDetailQueries("pf-mine", now, "Asia/Jakarta").countries.params.start).toBe(
+			"2026-10-10T17:00:00.000Z",
+		);
 	});
 
 	it("reads the dataset through the binding's names, without account scope or a format", () => {

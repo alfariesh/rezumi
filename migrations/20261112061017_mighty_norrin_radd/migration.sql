@@ -1,0 +1,3 @@
+CREATE INDEX "portfolio_files_checked_at_index" ON "portfolio" ("files_checked_at" NULLS FIRST);--> statement-breakpoint
+CREATE INDEX "portfolio_message_unnotified_index" ON "portfolio_message" ("portfolio_id","created_at") WHERE "notified_at" is null;--> statement-breakpoint
+CREATE INDEX "portfolio_report_reporter_email_index" ON "portfolio_report" ("handled_at") WHERE "reporter_email" is not null;

@@ -120,8 +120,10 @@ async function sweepPortfolioFiles(now: Date): Promise<number> {
 /**
  * Portfolio upkeep, run every minute by the Workers cron and the Node scheduler after billing and career jobs. Runs can
  * overlap or repeat: rows are claimed with `SKIP LOCKED` and every step is safe to run twice. No step holds a
- * portfolio's lock while it talks to storage, so saving never waits on storage. While portfolios are off only one thing
- * still runs: deleting expired contact messages, because keeping personal data past its retention isn't an option.
+ * portfolio's lock while it talks to storage, so saving never waits on storage. While portfolios are off, what removes
+ * personal data still runs (expired contact messages, handled reporters' addresses, and files of deleted portfolios or
+ * files no saved data uses), because keeping it past its retention isn't an option; sending emails and the weekly check
+ * wait until portfolios are back.
  */
 export async function runPortfolioJobs(now = new Date()) {
 	const deletedMessages = await task(
@@ -134,17 +136,17 @@ export async function runPortfolioJobs(now = new Date()) {
 		0,
 		"Clearing handled reporters' addresses failed; they are tried again on the next run.",
 	);
-	if (getPortfolioMode() === "off")
-		return { deletedFiles: 0, checkedPortfolios: 0, deletedMessages, messageEmails: 0, clearedReporterEmails };
-	const messageEmails = await task(
-		() => sendDueMessageEmails(now),
-		0,
-		"Sending merged portfolio message emails failed; they are tried again on the next run.",
-	);
 	const deletedFiles = await task(
 		() => deleteUnusedPortfolioFiles(now),
 		0,
 		"Deleting unused portfolio files failed; they are tried again on the next run.",
+	);
+	if (getPortfolioMode() === "off")
+		return { deletedFiles, checkedPortfolios: 0, deletedMessages, messageEmails: 0, clearedReporterEmails };
+	const messageEmails = await task(
+		() => sendDueMessageEmails(now),
+		0,
+		"Sending merged portfolio message emails failed; they are tried again on the next run.",
 	);
 	const checkedPortfolios = await task(
 		() => sweepPortfolioFiles(now),

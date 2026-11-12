@@ -159,6 +159,12 @@ export const authService = {
 			throw new ORPCError("INTERNAL_SERVER_ERROR");
 		}
 
+		// Once more now the account is gone: an upload already recorded when the first pass ran (a portfolio file between
+		// its row and its write) can land after it, and with the account's rows gone no job would ever find it.
+		await storageService.delete(`uploads/${input.userId}`).catch((err: unknown) => {
+			console.error("Failed to delete storage for user %s:", input.userId, err);
+		});
+
 		// A subscription stops billing with the account; the billing job retries what fails here.
 		await endBillingForDeletedUser(input.userId);
 	},

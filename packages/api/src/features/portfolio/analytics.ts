@@ -2,7 +2,7 @@ import type { PortfolioDevice, PortfolioVisitSource } from "@rezumi/schema/portf
 import { getCoordination } from "@rezumi/db/coordination";
 import { getRedis, redisKey } from "@rezumi/db/redis";
 import { PORTFOLIO_DEVICES, PORTFOLIO_STATISTICS_DAYS } from "@rezumi/schema/portfolio/statistics";
-import { dayInTimeZone, normalizeCountry } from "./traffic";
+import { dayInTimeZone, lastDays, normalizeCountry, startOfDayInTimeZone } from "./traffic";
 
 /**
  * Visitor breakdowns from Cloudflare Workers Analytics Engine (`02-teknis.md` section 9): country, device, referring
@@ -80,7 +80,6 @@ export type PortfolioDetailRows = {
 };
 
 const DATASET = 'events.analyticsEngine."portfolio_events"';
-const DAY_MS = 86_400_000;
 
 /** A time zone safe to write into a query, which can't take it as a parameter; anything unusual is read as UTC. */
 const queryTimeZone = (timeZone: string) => (/^[A-Za-z0-9_+/-]+$/.test(timeZone) ? timeZone : "UTC");
@@ -91,10 +90,9 @@ const queryTimeZone = (timeZone: string) => (/^[A-Za-z0-9_+/-]+$/.test(timeZone)
  * are the owner's, like the daily counts'.
  */
 export function portfolioDetailQueries(portfolioId: string, now: Date, timeZone = "UTC") {
-	const params = {
-		portfolio: portfolioId,
-		start: new Date(now.getTime() - PORTFOLIO_STATISTICS_DAYS * DAY_MS).toISOString(),
-	};
+	// From the start of the oldest of the 30 days the daily counts show, in the owner's zone, so both cover one span.
+	const [first = dayInTimeZone(now, timeZone)] = lastDays(now, timeZone, PORTFOLIO_STATISTICS_DAYS);
+	const params = { portfolio: portfolioId, start: startOfDayInTimeZone(first, timeZone).toISOString() };
 	const scope = "index1 = $portfolio AND timestamp >= $start";
 	return {
 		countries: {
@@ -138,7 +136,9 @@ function bucketDay(value: unknown, timeZone: string): string {
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const MEMORY_CACHE_LIMIT = 500;
 const memoryCache = new Map<string, { value: string; expires: number }>();
-const cacheKey = (portfolioId: string) => redisKey("portfolio-details", "v1", portfolioId);
+// The zone is part of the key: days bucketed in an old zone shouldn't outlive the owner moving.
+const cacheKey = (portfolioId: string, timeZone: string) =>
+	redisKey("portfolio-details", "v2", portfolioId, queryTimeZone(timeZone));
 
 async function readCache(key: string, now: number): Promise<string | null> {
 	try {
@@ -190,7 +190,7 @@ export async function readPortfolioDetails(
 ): Promise<PortfolioDetailRows | null> {
 	const sql = adapter?.sql();
 	if (!sql) return null;
-	const key = cacheKey(portfolioId);
+	const key = cacheKey(portfolioId, timeZone);
 	const cached = await readCache(key, now.getTime());
 	const parsed = cached ? parseRows(cached) : null;
 	if (parsed) return parsed;

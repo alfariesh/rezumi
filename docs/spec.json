@@ -39034,7 +39034,7 @@
 															"id": {
 																"type": "string"
 															},
-															"orderId": {
+															"providerPaymentId": {
 																"anyOf": [
 																	{
 																		"type": "string"
@@ -39201,7 +39201,7 @@
 														},
 														"required": [
 															"id",
-															"orderId",
+															"providerPaymentId",
 															"planId",
 															"interval",
 															"billingReason",
@@ -39646,13 +39646,104 @@
 														]
 													},
 													"description": "Reports about the portfolio: why and when, never who sent them or what they wrote."
+												},
+												"statistics": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"date": {
+																"type": "string"
+															},
+															"views": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															},
+															"clicks": {
+																"type": "object",
+																"propertyNames": {
+																	"type": "string"
+																},
+																"additionalProperties": {
+																	"type": "number"
+																}
+															},
+															"works": {
+																"type": "object",
+																"propertyNames": {
+																	"type": "string"
+																},
+																"additionalProperties": {
+																	"type": "number"
+																}
+															},
+															"sources": {
+																"type": "object",
+																"propertyNames": {
+																	"type": "string"
+																},
+																"additionalProperties": {
+																	"type": "number"
+																}
+															},
+															"messages": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															}
+														},
+														"required": [
+															"date",
+															"views",
+															"clicks",
+															"works",
+															"sources",
+															"messages"
+														]
+													},
+													"description": "The portfolio's daily numbers, in the owner's time zone."
+												},
+												"moderation": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"action": {
+																"type": "string"
+															},
+															"reason": {
+																"anyOf": [
+																	{
+																		"type": "string"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"createdAt": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															}
+														},
+														"required": [
+															"action",
+															"reason",
+															"createdAt"
+														]
+													},
+													"description": "Takedowns and bans of this account and their lifting, with the reason given."
 												}
 											},
 											"required": [
 												"portfolio",
 												"files",
 												"messages",
-												"reports"
+												"reports",
+												"statistics",
+												"moderation"
 											]
 										}
 									},

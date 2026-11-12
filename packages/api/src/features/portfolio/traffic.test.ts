@@ -5,6 +5,7 @@ import {
 	lastDays,
 	normalizeCountry,
 	referrerDomain,
+	startOfDayInTimeZone,
 	visitorKey,
 	visitSource,
 } from "./traffic";
@@ -102,5 +103,15 @@ describe("normalizeCountry", () => {
 		expect(normalizeCountry("XX")).toBe("");
 		expect(normalizeCountry("T1")).toBe("");
 		expect(normalizeCountry(undefined)).toBe("");
+	});
+});
+
+describe("startOfDayInTimeZone", () => {
+	it("finds local midnight, daylight saving included", () => {
+		expect(startOfDayInTimeZone("2026-11-09", "UTC").toISOString()).toBe("2026-11-09T00:00:00.000Z");
+		expect(startOfDayInTimeZone("2026-11-09", "Asia/Jakarta").toISOString()).toBe("2026-11-08T17:00:00.000Z");
+		expect(startOfDayInTimeZone("2026-07-01", "America/New_York").toISOString()).toBe("2026-07-01T04:00:00.000Z");
+		expect(startOfDayInTimeZone("2026-12-01", "America/New_York").toISOString()).toBe("2026-12-01T05:00:00.000Z");
+		expect(startOfDayInTimeZone("2026-11-09", "Not/AZone").toISOString()).toBe("2026-11-09T00:00:00.000Z");
 	});
 });

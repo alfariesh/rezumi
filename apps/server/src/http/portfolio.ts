@@ -1,7 +1,7 @@
 import type { PortfolioEventKind } from "@rezumi/schema/portfolio/statistics";
 import { notifyPortfolioMessages, submitPortfolioMessage } from "@rezumi/api/features/portfolio/contact";
 import { findPortfolioEventTarget, recordPortfolioEvent } from "@rezumi/api/features/portfolio/public";
-import { publicPortfolioRequestAllowed, tooManyPortfolioRequests } from "@rezumi/api/features/portfolio/public-limit";
+import { publicPortfolioRequestAllowed } from "@rezumi/api/features/portfolio/public-limit";
 import { notifyPortfolioReport, submitPortfolioReport } from "@rezumi/api/features/portfolio/report";
 import { PORTFOLIO_ITEM_ID_PATTERN } from "@rezumi/schema/portfolio/limits";
 import { PORTFOLIO_EVENT_KINDS } from "@rezumi/schema/portfolio/statistics";
@@ -80,11 +80,16 @@ export async function handlePortfolioMessage(
 	username: string,
 	trustedClient: string,
 ): Promise<Response> {
-	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
 	const wantsJson = (request.headers.get("accept") ?? "").includes("application/json");
 	const headers = { "Cache-Control": "no-store" };
-	const form = await readForm(request);
-	const result = form ? await submitSafely(username, form, trustedClient) : ({ ok: false, code: "invalid" } as const);
+	// Past the flood limit, the answer has the form's own shape (JSON, or back to the page), not a bare 429 page.
+	const allowed = await publicPortfolioRequestAllowed(trustedClient);
+	const form = allowed ? await readForm(request) : null;
+	const result = !allowed
+		? ({ ok: false, code: "rate_limited" } as const)
+		: form
+			? await submitSafely(username, form, trustedClient)
+			: ({ ok: false, code: "invalid" } as const);
 	if (!result)
 		return wantsJson ? Response.json({ ok: false, code: "unavailable" }, { status: 404, headers }) : notFound();
 
@@ -123,11 +128,13 @@ export async function handlePortfolioReport(
 	username: string,
 	trustedClient: string,
 ): Promise<Response> {
-	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
-	const form = await readForm(request);
-	const result = form
-		? await submitReportSafely(username, form, trustedClient)
-		: ({ ok: false, code: "invalid" } as const);
+	const allowed = await publicPortfolioRequestAllowed(trustedClient);
+	const form = allowed ? await readForm(request) : null;
+	const result = !allowed
+		? ({ ok: false, code: "rate_limited" } as const)
+		: form
+			? await submitReportSafely(username, form, trustedClient)
+			: ({ ok: false, code: "invalid" } as const);
 	if (!result) return notFound();
 	if (result.ok && result.reportId) {
 		const { reportId } = result;

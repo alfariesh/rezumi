@@ -329,6 +329,23 @@ describe.skipIf(!databaseUrl)("portfolio reports and moderation", () => {
 			expect(await row(id)).toBeDefined();
 		});
 
+		it("keeps a trace of open reports when the owner deletes a reported portfolio", async () => {
+			const { id } = await addPortfolio("b10");
+			await submit("b10");
+			await service.portfolioService.delete("b10");
+			const entries = await getDb()
+				.select()
+				.from(tables.portfolioModerationLog)
+				.where(eq(tables.portfolioModerationLog.targetUserId, "b10"));
+			expect(entries).toMatchObject([
+				{ action: "deleted", actorUserId: "b10", details: { openReports: [{ reason: "rights" }] } },
+			]);
+			// What the reporter wrote and who they are stay out of it.
+			expect(JSON.stringify(entries)).not.toContain("pelapor@example.test");
+			expect(JSON.stringify(entries)).not.toContain("Logo ini");
+			expect(await row(id)).toBeUndefined();
+		});
+
 		it("still lets its owner unpublish", async () => {
 			const { id } = await addPortfolio("b4");
 			await moderation.suspendPortfolio(actor, { portfolioId: id, reason });
@@ -386,6 +403,15 @@ describe.skipIf(!databaseUrl)("portfolio reports and moderation", () => {
 			const reportId = item?.id as string;
 			await moderation.setPortfolioReportStatus(actor, { reportId, status: "dismissed", reason: "Tidak terbukti." });
 			expect((await reportsOf(id))[0]).toMatchObject({ status: "dismissed", handledByUserId: actor });
+			// The same status again changes nothing: who handled it first, and when, stays.
+			const handledAt = (await reportsOf(id))[0]?.handledAt;
+			await expect(
+				moderation.setPortfolioReportStatus(actor, { reportId, status: "dismissed", reason: "Lagi." }),
+			).rejects.toMatchObject({ code: "PORTFOLIO_MODERATION_CONFLICT" });
+			expect((await reportsOf(id))[0]?.handledAt).toEqual(handledAt);
+			await expect(
+				moderation.setPortfolioReportStatus(actor, { reportId: "missing", status: "open", reason: "Lagi." }),
+			).rejects.toMatchObject({ code: "NOT_FOUND" });
 			await moderation.setPortfolioReportStatus(actor, { reportId, status: "open", reason: "Ada bukti baru." });
 			expect((await reportsOf(id))[0]).toMatchObject({ status: "open", handledAt: null });
 			expect(await logOf(id)).toHaveLength(2);
@@ -417,6 +443,19 @@ describe.skipIf(!databaseUrl)("portfolio reports and moderation", () => {
 			expect(await publicApi.findPublicPortfolio(username("c1"))).not.toBeNull();
 		});
 
+		it("treats a ban past its expiry as no ban", async () => {
+			const { id } = await addPortfolio("c3");
+			await getDb()
+				.update(tables.user)
+				.set({ banned: true, banExpires: new Date(Date.now() - 60_000) })
+				.where(eq(tables.user.id, "c3"));
+			await expect(
+				moderation.setPortfolioOwnerBanned(actor, { portfolioId: id, banned: false, reason: "Sudah lewat." }),
+			).rejects.toMatchObject({ code: "PORTFOLIO_MODERATION_CONFLICT" });
+			await moderation.setPortfolioOwnerBanned(actor, { portfolioId: id, banned: true, reason: "Lagi." });
+			expect(await publicApi.findPublicPortfolio(username("c3"))).toBeNull();
+		});
+
 		it("refuses an administrator, which also stops banning oneself", async () => {
 			const { id } = await addPortfolio("c2", { role: "admin" });
 			await expect(
@@ -433,11 +472,24 @@ describe.skipIf(!databaseUrl)("portfolio reports and moderation", () => {
 				.insert(tables.portfolioMessage)
 				.values({ portfolioId: id, name: "Budi", email: "budi@example.test", body: "Halo" });
 			await submit("d1");
+			await getDb()
+				.insert(tables.portfolioStatisticsDaily)
+				.values({ portfolioId: id, date: "2026-11-01", views: 3, clicks: { email: 1 } });
+			await moderation.suspendPortfolio(actor, { portfolioId: id, reason: "Konten menyesatkan." });
+			// A block type a newer editor wrote: the export keeps it, as stored.
+			await getDb()
+				.update(tables.portfolio)
+				.set({ data: { works: { items: [{ id: "w", blocks: [{ id: "b", type: "future-block" }] }] } } })
+				.where(eq(tables.portfolio.id, id));
 			const data = await exporter.exportPortfolioData("d1");
 			expect(data.portfolio?.isPublic).toBe(true);
+			expect(JSON.stringify(data.portfolio?.data)).toContain("future-block");
+			expect(data.portfolio).not.toHaveProperty("id");
+			expect(data.statistics).toMatchObject([{ date: "2026-11-01", views: 3, clicks: { email: 1 } }]);
+			expect(data.moderation).toMatchObject([{ action: "suspended", reason: "Konten menyesatkan." }]);
 			expect(data.files).toMatchObject([{ key, kind: "image" }]);
 			expect(data.messages).toMatchObject([{ name: "Budi", body: "Halo" }]);
-			expect(data.reports).toMatchObject([{ reason: "rights", status: "open" }]);
+			expect(data.reports).toMatchObject([{ reason: "rights", status: "actioned" }]);
 			const written = JSON.stringify(data.reports);
 			expect(written).not.toContain("pelapor@example.test");
 			expect(written).not.toContain("Logo ini");
@@ -450,6 +502,8 @@ describe.skipIf(!databaseUrl)("portfolio reports and moderation", () => {
 				files: [],
 				messages: [],
 				reports: [],
+				statistics: [],
+				moderation: [],
 			});
 		});
 

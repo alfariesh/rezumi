@@ -9,7 +9,7 @@ import { createSchemaKit, itemIdSchema, resumeItemIdSchema } from "./kit";
 import { PORTFOLIO_LIMITS } from "./limits";
 import { portfolioUrlSchema, webUrlSchema } from "./links";
 import { createMetricSchema, portfolioIconSchema } from "./metric";
-import { isPortfolioSectionKey, portfolioSectionKeySchema } from "./sections";
+import { isPortfolioSectionKey, PORTFOLIO_STANDARD_SECTIONS, portfolioSectionKeySchema } from "./sections";
 import {
 	defaultPortfolioTheme,
 	isPortfolioVariant,
@@ -107,7 +107,7 @@ function createPortfolioSchemas(kit: SchemaKit) {
 			primaryLink: kit.optional(z.object({ label: kit.field(kit.text(max.buttonLabel), ""), url: portfolioUrlSchema })),
 			blocks: kit.list(block, PORTFOLIO_LIMITS.blocksPerWork, { id: (item) => item.id }),
 			featured: kit.field(z.boolean(), false),
-			hidden: kit.field(z.boolean(), false),
+			hidden: kit.field(z.boolean(), false, true),
 			fromResumeItemId: kit.optional(resumeItemIdSchema).describe("The resume project this work was copied from."),
 		}),
 		(value, issue) => {
@@ -157,7 +157,7 @@ function createPortfolioSchemas(kit: SchemaKit) {
 		content: kit.field(kit.richText(max.customContent), ""),
 		image: kit.optional(image),
 		button: kit.optional(button),
-		hidden: kit.field(z.boolean(), false),
+		hidden: kit.field(z.boolean(), false, true),
 	});
 
 	const variants = (kit.lenient
@@ -247,9 +247,9 @@ function createPortfolioSchemas(kit: SchemaKit) {
 		hero: kit.field(
 			z.object({
 				greeting: kit.field(kit.text(max.greeting), ""),
-				showPicture: kit.field(z.boolean(), true),
+				showPicture: kit.field(z.boolean(), true, false),
 				showLocation: kit
-					.field(z.boolean(), true)
+					.field(z.boolean(), true, false)
 					.describe("False keeps the resume's location off the page, for someone whose resume holds a street address."),
 				availability: kit.field(
 					z.object({
@@ -292,6 +292,16 @@ function createPortfolioSchemas(kit: SchemaKit) {
 				effect: { target: "name", phrases: [] },
 				background: { kind: "plain" },
 			},
+			{
+				greeting: "",
+				showPicture: false,
+				showLocation: false,
+				availability: { show: false, text: "" },
+				highlights: [],
+				buttons: [],
+				effect: { target: "name", phrases: [] },
+				background: { kind: "plain" },
+			},
 		),
 		about: kit.field(z.object({ content: kit.field(kit.richText(max.about), "") }), { content: "" }),
 		works: kit.field(z.object({ items: kit.list(work, PORTFOLIO_LIMITS.works, { id: (item) => item.id }) }), {
@@ -317,6 +327,8 @@ function createPortfolioSchemas(kit: SchemaKit) {
 					.describe("Resume items hidden on the portfolio only, by section, with their ids as the resume has them."),
 			}),
 			{ order: [], hidden: [], titles: {}, hiddenItems: {} },
+			// Broken, which sections were hidden is unknown: hide them all rather than show what was hidden.
+			{ order: [], hidden: [...PORTFOLIO_STANDARD_SECTIONS], titles: {}, hiddenItems: {} },
 		),
 		custom: kit
 			.list(customSection, PORTFOLIO_LIMITS.customSections, { id: (item) => item.id })
@@ -342,9 +354,9 @@ function createPortfolioSchemas(kit: SchemaKit) {
 		),
 		contact: kit.field(
 			z.object({
-				email: kit.field(z.boolean(), true).describe("Show the resume's email address."),
+				email: kit.field(z.boolean(), true, false).describe("Show the resume's email address."),
 				phone: kit.field(z.boolean(), false).describe("Show the resume's phone number."),
-				website: kit.field(z.boolean(), true).describe("Show the resume's website."),
+				website: kit.field(z.boolean(), true, false).describe("Show the resume's website."),
 				whatsapp: kit.field(
 					z.object({
 						show: kit.field(z.boolean(), false),
@@ -356,7 +368,7 @@ function createPortfolioSchemas(kit: SchemaKit) {
 					{ show: false, number: "" },
 				),
 				form: kit.field(z.boolean(), false),
-				profiles: kit.field(z.boolean(), true).describe("Show the resume's profile links."),
+				profiles: kit.field(z.boolean(), true, false).describe("Show the resume's profile links."),
 				note: kit.field(kit.text(max.contactNote), "").describe("The invitation above the contact options."),
 			}),
 			{
@@ -366,6 +378,15 @@ function createPortfolioSchemas(kit: SchemaKit) {
 				whatsapp: { show: false, number: "" },
 				form: false,
 				profiles: true,
+				note: "",
+			},
+			{
+				email: false,
+				phone: false,
+				website: false,
+				whatsapp: { show: false, number: "" },
+				form: false,
+				profiles: false,
 				note: "",
 			},
 		),
@@ -433,13 +454,13 @@ export type PortfolioContact = PortfolioData["contact"];
 export type PortfolioDesign = PortfolioData["design"];
 
 /**
- * Reads stored portfolio data without failing: broken fields fall back to defaults, broken or repeated items are
- * dropped, and data that isn't a portfolio at all reads as an empty one.
+ * Reads stored portfolio data without failing: broken fields fall back to defaults (privacy settings to their safe
+ * value), broken or repeated items are dropped, and data that isn't a portfolio at all reads as an empty one that hides
+ * every section and the resume's photo, location and contact details.
  */
-export const portfolioDataSchema = storedSchema.catch(() => storedSchema.parse({})) as unknown as z.ZodType<
-	PortfolioData,
-	unknown
->;
+export const portfolioDataSchema = storedSchema.catch(() =>
+	storedSchema.parse({ sections: null, hero: null, contact: null }),
+) as unknown as z.ZodType<PortfolioData, unknown>;
 
 export function parsePortfolioData(data: unknown): PortfolioData {
 	return portfolioDataSchema.parse(data);

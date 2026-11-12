@@ -7,6 +7,12 @@ const mocks = vi.hoisted(() => ({
 	notify: vi.fn(),
 	submitReport: vi.fn(),
 	notifyReport: vi.fn(),
+	allowed: vi.fn(),
+}));
+
+vi.mock("@rezumi/api/features/portfolio/public-limit", () => ({
+	publicPortfolioRequestAllowed: mocks.allowed,
+	tooManyPortfolioRequests: () => new Response("Too Many Requests", { status: 429 }),
 }));
 
 vi.mock("@rezumi/api/features/portfolio/public", () => ({
@@ -37,6 +43,7 @@ beforeEach(() => {
 	mocks.findTarget.mockResolvedValue(target);
 	mocks.recordEvent.mockResolvedValue(undefined);
 	mocks.notify.mockResolvedValue(true);
+	mocks.allowed.mockResolvedValue(true);
 });
 
 describe("parsePortfolioEvent", () => {
@@ -145,6 +152,20 @@ describe("POST /api/portfolio/<username>/message", () => {
 		expect(response.status).toBe(status);
 		expect(await response.json()).toEqual({ ok: false, code });
 		expect(mocks.notify).not.toHaveBeenCalled();
+	});
+
+	it("answers past the flood limit in the form's own shape, without reading it", async () => {
+		mocks.allowed.mockResolvedValue(false);
+		const json = await handlePortfolioMessage(message(asJson), "nadia", "1.1.1.1");
+		expect(json.status).toBe(429);
+		expect(await json.json()).toEqual({ ok: false, code: "rate_limited" });
+		const plain = await handlePortfolioMessage(message(), "nadia", "1.1.1.1");
+		expect(plain.status).toBe(303);
+		expect(plain.headers.get("Location")).toBe("/nadia?contact=failed#contact");
+		const report = await handlePortfolioReport(message(), "nadia", "1.1.1.1");
+		expect(report.headers.get("Location")).toBe("/nadia?report=failed");
+		expect(mocks.submit).not.toHaveBeenCalled();
+		expect(mocks.submitReport).not.toHaveBeenCalled();
 	});
 
 	it("answers a trapped bot like a success, without an email", async () => {

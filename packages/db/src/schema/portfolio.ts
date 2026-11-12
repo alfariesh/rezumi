@@ -1,4 +1,5 @@
 import type { PortfolioClickKind, PortfolioVisitSource } from "@rezumi/schema/portfolio/statistics";
+import { sql } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
 import { PORTFOLIO_REPORT_REASONS, PORTFOLIO_REPORT_STATUSES } from "@rezumi/schema/portfolio/moderation";
 import { generateId } from "@rezumi/utils/string";
@@ -45,7 +46,11 @@ export const portfolio = pg.pgTable(
 		// takedown or the file checks never make an open editor report a conflict.
 		updatedAt: pg.timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 	},
-	(t) => [pg.index().on(t.sourceResumeId)],
+	(t) => [
+		pg.index().on(t.sourceResumeId),
+		// The weekly file check picks the portfolios checked longest ago, every minute.
+		pg.index().on(t.filesCheckedAt.asc().nullsFirst()),
+	],
 );
 
 export const PORTFOLIO_FILE_KINDS = ["image", "pdf"] as const;
@@ -143,7 +148,15 @@ export const portfolioMessage = pg.pgTable(
 		// When the owner was emailed about it; null while it waits for the next merged email.
 		notifiedAt: pg.timestamp("notified_at", { withTimezone: true }),
 	},
-	(t) => [pg.index().on(t.portfolioId, t.createdAt), pg.index().on(t.createdAt)],
+	(t) => [
+		pg.index().on(t.portfolioId, t.createdAt),
+		pg.index().on(t.createdAt),
+		// The minute job looks for messages not emailed yet; without this it reads every message kept for 90 days.
+		pg
+			.index("portfolio_message_unnotified_index")
+			.on(t.portfolioId, t.createdAt)
+			.where(sql`${t.notifiedAt} is null`),
+	],
 );
 
 /**
@@ -171,7 +184,15 @@ export const portfolioReport = pg.pgTable(
 		handledAt: pg.timestamp("handled_at", { withTimezone: true }),
 		handledByUserId: pg.text("handled_by_user_id").references(() => user.id, { onDelete: "set null" }),
 	},
-	(t) => [pg.index().on(t.status, t.createdAt), pg.index().on(t.portfolioId, t.createdAt)],
+	(t) => [
+		pg.index().on(t.status, t.createdAt),
+		pg.index().on(t.portfolioId, t.createdAt),
+		// The minute job clears reporters' addresses 90 days after handling; this keeps it from reading every report.
+		pg
+			.index("portfolio_report_reporter_email_index")
+			.on(t.handledAt)
+			.where(sql`${t.reporterEmail} is not null`),
+	],
 );
 
 /** Who took which moderation action on a portfolio or its owner, and why. Outlives the portfolio and the account. */

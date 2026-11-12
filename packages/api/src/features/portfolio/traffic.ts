@@ -90,3 +90,33 @@ export function lastDays(at: Date, timeZone: string, count: number): string[] {
 		new Date(end - (count - 1 - index) * 86_400_000).toISOString().slice(0, 10),
 	);
 }
+
+/** How far a time zone's clock is ahead of UTC at a moment, in milliseconds; an unknown zone counts as UTC. */
+function zoneOffset(at: number, timeZone: string): number {
+	let parts: Intl.DateTimeFormatPart[];
+	try {
+		parts = new Intl.DateTimeFormat("en-US", {
+			timeZone,
+			hourCycle: "h23",
+			year: "numeric",
+			month: "numeric",
+			day: "numeric",
+			hour: "numeric",
+			minute: "numeric",
+			second: "numeric",
+		}).formatToParts(at);
+	} catch {
+		return 0;
+	}
+	const part = (type: string) => Number(parts.find((item) => item.type === type)?.value ?? 0);
+	const wall = Date.UTC(part("year"), part("month") - 1, part("day"), part("hour"), part("minute"), part("second"));
+	return wall - Math.floor(at / 1000) * 1000;
+}
+
+/** The moment a calendar date (`YYYY-MM-DD`) begins in a time zone, daylight saving included. */
+export function startOfDayInTimeZone(date: string, timeZone: string): Date {
+	const midnight = Date.parse(`${date}T00:00:00Z`);
+	// The offset at midnight local time can differ from the one at midnight UTC; a second pass settles it.
+	const first = midnight - zoneOffset(midnight, timeZone);
+	return new Date(midnight - zoneOffset(first, timeZone));
+}

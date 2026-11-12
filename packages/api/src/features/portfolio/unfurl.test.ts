@@ -123,7 +123,10 @@ beforeAll(async () => {
 	routes.set("www.youtube.com/oembed", (request, response) => {
 		const url = new URL(request.url ?? "/", "http://x");
 		const video = url.searchParams.get("url") ?? "";
-		if (video.includes("dQw4w9WgXcQ")) {
+		if (video.includes("nullanswer1")) {
+			response.writeHead(200, { "content-type": "application/json" });
+			response.end("null");
+		} else if (video.includes("dQw4w9WgXcQ")) {
 			response.writeHead(200, { "content-type": "application/json" });
 			response.end(
 				JSON.stringify({ title: "  Kopi   Senja — making of  ", thumbnail_url: "https://evil.example.test/x.jpg" }),
@@ -305,6 +308,16 @@ describe("unfurlUrl: videos", () => {
 		});
 	});
 
+	it("still makes the video when oEmbed answers with something that isn't an object", async () => {
+		await expect(unfurlUrl("https://www.youtube.com/watch?v=nullanswer1", options)).resolves.toEqual({
+			kind: "video",
+			url: "https://www.youtube.com/watch?v=nullanswer1",
+			provider: "youtube",
+			videoId: "nullanswer1",
+			thumbnailUrl: "https://i.ytimg.com/vi/nullanswer1/hqdefault.jpg",
+		});
+	});
+
 	it("reads Vimeo's title and picture, keeping an unlisted video's hash", async () => {
 		requests.length = 0;
 		await expect(unfurlUrl("https://vimeo.com/123456789/abcdef1234", options)).resolves.toEqual({
@@ -362,6 +375,41 @@ describe("fetchRemoteImage", () => {
 			response.end(new TextEncoder().encode("GIF89a"));
 		});
 		await expect(fetchRemoteImage("https://cdn.example.test/empty.gif", options)).rejects.toEqual(problem("type"));
+		// A 1×1 screen holding one huge frame: browsers grow the canvas to the frame, so the frame's size counts.
+		const le = (value: number) => [value & 0xff, value >> 8];
+		const framed = new Uint8Array([
+			...new TextEncoder().encode("GIF89a"),
+			...le(1),
+			...le(1),
+			0,
+			0,
+			0,
+			// A graphic control extension, then the image descriptor.
+			0x21,
+			0xf9,
+			4,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0x2c,
+			...le(0),
+			...le(0),
+			...le(side),
+			...le(side),
+			0,
+			2,
+			0,
+			0x3b,
+		]);
+		routes.set("cdn.example.test/framed.gif", (_request, response) => {
+			response.writeHead(200, { "content-type": "image/gif" });
+			response.end(framed);
+		});
+		await expect(fetchRemoteImage("https://cdn.example.test/framed.gif", options)).rejects.toEqual(
+			problem("too-large"),
+		);
 	});
 
 	it("refuses anything else, too large pictures, and private addresses", async () => {

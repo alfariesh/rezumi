@@ -24,6 +24,7 @@ const respond = (body: unknown, status = 200) =>
 
 afterEach(() => {
 	vi.unstubAllGlobals();
+	vi.unstubAllEnvs();
 	fixture.secret = "0x4AAAArealSecretValue";
 	fixture.site = "0x4AAAAsite";
 });
@@ -62,6 +63,21 @@ describe("verifyTurnstileToken", () => {
 		fixture.secret = "1x0000000000000000000000000000000AA";
 		vi.stubGlobal("fetch", respond({ success: true, hostname: "example.com" }));
 		expect(await verifyTurnstileToken("XXXX.DUMMY.TOKEN.XXXX")).toBe(true);
+	});
+
+	it("refuses Cloudflare's test secrets in production, where they would pass every bot", async () => {
+		vi.stubEnv("NODE_ENV", "production");
+		fixture.secret = "1x0000000000000000000000000000000AA";
+		vi.stubGlobal("fetch", respond({ success: true, hostname: "example.com" }));
+		expect(await verifyTurnstileToken("XXXX.DUMMY.TOKEN.XXXX")).toBe(false);
+	});
+
+	it("sends the address only when it is one", async () => {
+		const fetchMock = respond({ success: true, hostname: "rezumi.app" });
+		vi.stubGlobal("fetch", fetchMock);
+		await verifyTurnstileToken("the-token", "unknown");
+		const [, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+		expect((init.body as URLSearchParams).has("remoteip")).toBe(false);
 	});
 
 	it("doesn't ask Cloudflare about an empty or oversized token", async () => {

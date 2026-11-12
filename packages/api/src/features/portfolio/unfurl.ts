@@ -99,7 +99,10 @@ async function videoDetails(
 			hop: options.hop,
 			isAllowedHost: options.isAllowedHost,
 		});
-		const answer = JSON.parse(new TextDecoder().decode(bytes)) as { title?: unknown; thumbnail_url?: unknown };
+		const parsed: unknown = JSON.parse(new TextDecoder().decode(bytes));
+		// `null` or a list is valid JSON too, and holds no title.
+		if (typeof parsed !== "object" || parsed === null) return {};
+		const answer = parsed as { title?: unknown; thumbnail_url?: unknown };
 		const title = typeof answer.title === "string" ? answer.title.replace(/\s+/g, " ").trim() : "";
 		const thumbnail = typeof answer.thumbnail_url === "string" ? answer.thumbnail_url : "";
 		return {
@@ -156,7 +159,8 @@ export async function unfurlUrl(input: string, options: UnfurlOptions = {}): Pro
 		const brandIcon = brandIconForUrl(page.url);
 		return {
 			kind: "link",
-			url: page.url.href,
+			// Redirects can end at an address longer than a link may be; the pasted one then stands for it.
+			url: page.url.href.length <= PORTFOLIO_LIMITS.text.url ? page.url.href : url.href,
 			title: meta.title ?? truncateText(page.url.hostname.replace(/^www\./, ""), PORTFOLIO_LIMITS.text.linkTitle),
 			...(meta.description ? { description: meta.description } : {}),
 			...(meta.siteName ? { siteName: meta.siteName } : {}),
@@ -196,14 +200,45 @@ const u32be = (bytes: Uint8Array, at: number) =>
 	(((bytes[at] ?? 0) << 24) >>> 0) + ((bytes[at + 1] ?? 0) << 16) + ((bytes[at + 2] ?? 0) << 8) + (bytes[at + 3] ?? 0);
 
 /**
+ * A GIF's size as a browser draws it: its logical screen, grown to hold every frame, since browsers enlarge the canvas
+ * for a frame that reaches past the screen (a 1×1 screen can hold a 30000×30000 frame). Frames are found by walking the
+ * blocks; a file that ends early is measured by what it has.
+ */
+function gifSize(bytes: Uint8Array): { width: number; height: number } {
+	let width = u16le(bytes, 6);
+	let height = u16le(bytes, 8);
+	const tableSize = (packed: number) => (packed & 0x80 ? 3 * 2 ** ((packed & 0x07) + 1) : 0);
+	/** The offset after a run of data sub-blocks starting at `at`. */
+	const skipSubBlocks = (at: number) => {
+		let offset = at;
+		while (offset < bytes.length) {
+			const size = bytes[offset] ?? 0;
+			offset += 1 + size;
+			if (size === 0) break;
+		}
+		return offset;
+	};
+	let offset = 13 + tableSize(bytes[10] ?? 0);
+	while (offset < bytes.length) {
+		const block = bytes[offset];
+		if (block === 0x21) offset = skipSubBlocks(offset + 2);
+		else if (block === 0x2c) {
+			width = Math.max(width, u16le(bytes, offset + 1) + u16le(bytes, offset + 5));
+			height = Math.max(height, u16le(bytes, offset + 3) + u16le(bytes, offset + 7));
+			// Past the descriptor, its colour table and the LZW code size, then the image data.
+			offset = skipSubBlocks(offset + 10 + tableSize(bytes[offset + 9] ?? 0) + 1);
+		} else break;
+	}
+	return { width, height };
+}
+
+/**
  * What a fetched picture is and its pixel size, from its header: a still JPEG, PNG or WebP, an animated PNG or WebP
  * (its first frame is still a picture the browser can use), or a GIF (the browser refuses animated ones, as for
  * uploads). Null for anything else.
  */
 function rasterKind(bytes: Uint8Array): RasterKind | null {
-	if (GIF_SIGNATURE.test(ascii(bytes, 0, 6)))
-		// The logical screen: every frame is drawn inside it.
-		return { contentType: "image/gif", extension: "gif", width: u16le(bytes, 6), height: u16le(bytes, 8) };
+	if (GIF_SIGNATURE.test(ascii(bytes, 0, 6))) return { contentType: "image/gif", extension: "gif", ...gifSize(bytes) };
 	const header = readPortfolioImageHeader(bytes);
 	if (header.ok) return header.image;
 	if (header.reason !== "animated") return null;

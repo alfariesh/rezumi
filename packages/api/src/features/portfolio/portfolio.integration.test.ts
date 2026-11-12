@@ -553,6 +553,16 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			expect(await fileRows("other")).toEqual([{ key: theirs, unusedSince: null }]);
 		});
 
+		it("still deletes a deleted portfolio's files while portfolios are off", async () => {
+			await service.create("member", { sourceResumeId: null });
+			await service.uploadImage("member", { file: await picture(300, 200) });
+			await service.delete("member");
+			fixture.mode = "off";
+			expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 1, checkedPortfolios: 0, messageEmails: 0 });
+			expect(await fileRows()).toEqual([]);
+			expect(fixture.files.size).toBe(0);
+		});
+
 		it("tries again later for files storage can't delete once the portfolio is gone", async () => {
 			await service.create("member", { sourceResumeId: null });
 			const kept = await service.uploadImage("member", { file: await picture(300, 200) });
@@ -1213,14 +1223,16 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			expect(await fileRows("member")).toHaveLength(1);
 		});
 
-		it("leaves files alone while portfolios are off", async () => {
+		it("still deletes unused files while portfolios are off, but skips the weekly check", async () => {
 			await service.create("member", { sourceResumeId: null });
 			stored("member", "old");
 			await addFile("member", "old");
 			await markUnused(image("member", "old").key, new Date(Date.now() - 48 * hour));
+			// A stray only the weekly check would find stays until portfolios are back.
+			const stray = stored("member", "stray");
 			fixture.mode = "off";
-			expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 0, checkedPortfolios: 0 });
-			expect(fixture.files.size).toBe(1);
+			expect(await jobs.runPortfolioJobs()).toMatchObject({ deletedFiles: 1, checkedPortfolios: 0 });
+			expect([...fixture.files.keys()]).toEqual([stray]);
 		});
 	});
 
