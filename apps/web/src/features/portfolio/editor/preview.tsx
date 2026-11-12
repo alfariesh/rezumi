@@ -216,7 +216,7 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	};
 
 	return (
-		<div className="flex h-full min-h-0 flex-col items-center gap-3 bg-background p-3 md:p-4">
+		<div className="flex h-full min-h-0 flex-col items-center gap-3 p-3 md:p-4">
 			{hasEffect && (
 				<Button size="sm" variant="tertiary" className="shrink-0" onPress={replayEffect}>
 					<Icon name="arrow-counter-clockwise" size={16} />
