@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Button, Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -15,6 +16,7 @@ import { AddWorkDialog } from "./add-work/add-work-dialog";
 import { usePortfolioLimits } from "./limits";
 import { StorageMeter } from "./storage-meter";
 import { workRoom } from "./works";
+import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
 import { usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -56,95 +58,85 @@ export function WorksForm() {
 
 	return (
 		<div className="grid gap-3">
-			<ul className="grid gap-2">
-				{items.map((work, index) => {
-					const title = work.title.trim() || t`Untitled work`;
-					return (
-						<li key={work.id} {...itemProps} className="flex items-center gap-2 rounded-xl border border-separator p-2">
-							<button
-								type="button"
-								onClick={() => openWork(work.id)}
-								className="flex min-w-0 flex-1 cursor-(--cursor-interactive) items-center gap-3 rounded-xl text-start outline-none focus-visible:ring-2 focus-visible:ring-focus"
-							>
-								{work.cover ? (
-									<img
-										src={portfolioImageSrc(work.cover)}
-										alt=""
-										className="size-12 shrink-0 rounded-lg object-cover"
-										style={
-											work.cover.focus
-												? { objectPosition: `${work.cover.focus.x * 100}% ${work.cover.focus.y * 100}%` }
-												: undefined
+			<SortableProvider
+				onMove={(id, target) => {
+					const from = items.findIndex((work) => work.id === id);
+					if (from !== -1)
+						editPortfolio((draft) => moveItem(draft.works.items, from, target.index), { structural: true });
+				}}
+			>
+				<ul className="grid gap-2">
+					{items.map((work, index) => {
+						const title = work.title.trim() || t`Untitled work`;
+						return (
+							<WorkRow key={work.id} id={work.id} index={index} title={title} itemProps={itemProps}>
+								<button
+									type="button"
+									onClick={() => openWork(work.id)}
+									className="flex min-w-0 flex-1 cursor-(--cursor-interactive) items-center gap-3 rounded-xl text-start outline-none focus-visible:ring-2 focus-visible:ring-focus"
+								>
+									{work.cover ? (
+										<img
+											src={portfolioImageSrc(work.cover)}
+											alt=""
+											className="size-12 shrink-0 rounded-lg object-cover"
+											style={
+												work.cover.focus
+													? { objectPosition: `${work.cover.focus.x * 100}% ${work.cover.focus.y * 100}%` }
+													: undefined
+											}
+										/>
+									) : (
+										<span className="grid size-12 shrink-0 place-items-center rounded-lg bg-default text-muted">
+											<Icon name="image" size={20} />
+										</span>
+									)}
+									<span className="grid min-w-0 gap-0.5">
+										<span className={cn("truncate text-sm font-medium", work.hidden && "text-muted line-through")}>
+											{title}
+										</span>
+										<span className="flex flex-wrap items-center gap-1 text-xs text-muted">
+											{work.featured && (
+												<Chip size="sm" variant="soft" color="accent">
+													<Trans>Featured</Trans>
+												</Chip>
+											)}
+											{work.hidden && (
+												<Chip size="sm" variant="soft">
+													<Trans>Hidden</Trans>
+												</Chip>
+											)}
+											<Plural value={work.blocks.length} _0="No blocks yet" one="# block" other="# blocks" />
+										</span>
+									</span>
+								</button>
+								<div className="flex shrink-0 items-center">
+									<IconButton
+										icon={work.hidden ? "eye-slash" : "eye"}
+										size="sm"
+										aria-pressed={work.hidden}
+										label={work.hidden ? t`Show ${title} on the page` : t`Hide ${title} from the page`}
+										className={cn(work.hidden && "text-muted")}
+										onPress={() =>
+											editPortfolio((draft) => {
+												const target = draft.works.items[index];
+												if (target) target.hidden = !target.hidden;
+											})
 										}
 									/>
-								) : (
-									<span className="grid size-12 shrink-0 place-items-center rounded-lg bg-default text-muted">
-										<Icon name="image" size={20} />
-									</span>
-								)}
-								<span className="grid min-w-0 gap-0.5">
-									<span className={cn("truncate text-sm font-medium", work.hidden && "text-muted line-through")}>
-										{title}
-									</span>
-									<span className="flex flex-wrap items-center gap-1 text-xs text-muted">
-										{work.featured && (
-											<Chip size="sm" variant="soft" color="accent">
-												<Trans>Featured</Trans>
-											</Chip>
-										)}
-										{work.hidden && (
-											<Chip size="sm" variant="soft">
-												<Trans>Hidden</Trans>
-											</Chip>
-										)}
-										<Plural value={work.blocks.length} _0="No blocks yet" one="# block" other="# blocks" />
-									</span>
-								</span>
-							</button>
-							<div className="flex shrink-0 items-center">
-								<IconButton
-									icon={work.hidden ? "eye-slash" : "eye"}
-									size="sm"
-									aria-pressed={work.hidden}
-									label={work.hidden ? t`Show ${title} on the page` : t`Hide ${title} from the page`}
-									className={cn(work.hidden && "text-muted")}
-									onPress={() =>
-										editPortfolio((draft) => {
-											const target = draft.works.items[index];
-											if (target) target.hidden = !target.hidden;
-										})
-									}
-								/>
-								<IconButton
-									icon="arrow-up"
-									size="sm"
-									label={t`Move ${title} up`}
-									isDisabled={index === 0}
-									onPress={() =>
-										editPortfolio((draft) => moveItem(draft.works.items, index, index - 1), { structural: true })
-									}
-								/>
-								<IconButton
-									icon="arrow-down"
-									size="sm"
-									label={t`Move ${title} down`}
-									isDisabled={index === items.length - 1}
-									onPress={() =>
-										editPortfolio((draft) => moveItem(draft.works.items, index, index + 1), { structural: true })
-									}
-								/>
-								<IconButton
-									icon="trash"
-									size="sm"
-									label={t`Delete ${title}`}
-									className="text-danger"
-									onPress={() => void remove(work.id, title)}
-								/>
-							</div>
-						</li>
-					);
-				})}
-			</ul>
+									<IconButton
+										icon="trash"
+										size="sm"
+										label={t`Delete ${title}`}
+										className="text-danger"
+										onPress={() => void remove(work.id, title)}
+									/>
+								</div>
+							</WorkRow>
+						);
+					})}
+				</ul>
+			</SortableProvider>
 			<div ref={fallbackRef} className="flex flex-wrap items-center gap-3">
 				<Button
 					variant="secondary"
@@ -167,5 +159,34 @@ export function WorksForm() {
 			<StorageMeter />
 			{adding && <AddWorkDialog onClose={() => setAdding(false)} />}
 		</div>
+	);
+}
+
+type WorkRowProps = {
+	id: string;
+	index: number;
+	title: string;
+	/** Marks the row for `useRemovalFocus`. */
+	itemProps: Record<string, string>;
+	children: ReactNode;
+};
+
+/** One work in the list: a drag handle, then what opens the work and its buttons. */
+function WorkRow({ id, index, title, itemProps, children }: WorkRowProps) {
+	const sortable = useSortableItem({ id, list: "works", index, label: title });
+	return (
+		<li {...itemProps}>
+			<div
+				{...sortable.dropTargetProps}
+				className={cn(
+					"relative flex items-center gap-1 rounded-xl border border-separator p-2",
+					sortable.isDragging && "opacity-50",
+				)}
+			>
+				<SortableEdge edge={sortable.edge} />
+				<SortableHandle item={sortable} label={t`Reorder ${title}`} className="h-12 w-6" />
+				{children}
+			</div>
+		</li>
 	);
 }

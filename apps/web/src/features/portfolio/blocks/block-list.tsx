@@ -337,9 +337,6 @@ type BlockCardProps = {
 function BlockCard({ work, block, index, list, locale, itemProps, onRemoved }: BlockCardProps) {
 	const info = blockTypeInfo(block.type);
 	const sortable = useSortableItem({ id: block.id, list, index, label: info.title });
-	const count = work.blocks.length;
-
-	const move = (to: number) => editWork(work.id, (draft) => moveItem(draft.blocks, index, to), { structural: true });
 	const remove = () => {
 		onRemoved(index);
 		removeBlockWithUndo(work, block, index, info.title);
@@ -356,20 +353,6 @@ function BlockCard({ work, block, index, list, locale, itemProps, onRemoved }: B
 				<SortableHandle item={sortable} label={t`Reorder the ${info.title} block`} className="h-8 w-6" />
 				<Icon name={info.icon} size={16} className="text-muted" />
 				<span className="flex-1 text-sm font-medium">{info.title}</span>
-				<IconButton
-					icon="arrow-up"
-					size="sm"
-					label={t`Move the ${info.title} block up`}
-					isDisabled={index === 0}
-					onPress={() => move(index - 1)}
-				/>
-				<IconButton
-					icon="arrow-down"
-					size="sm"
-					label={t`Move the ${info.title} block down`}
-					isDisabled={index === count - 1}
-					onPress={() => move(index + 1)}
-				/>
 				<IconButton
 					icon="trash"
 					size="sm"

@@ -10,7 +10,7 @@ import { ownPictureUrl } from "@rezumi/utils/own-picture";
 import { ImageField } from "../images/image-field";
 import { MetricsEditor } from "../metrics/metric-form";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
-import { ChoiceSelect, ItemToolbar, moveItem, TextInput, UrlInput } from "./fields";
+import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
 import { useOwnOrigins } from "./pictures";
 import { setBasicsText } from "./sections";
 import { editPortfolio, usePortfolioData } from "./store";
@@ -259,56 +259,20 @@ function HeroButtons() {
 			<span className="text-sm font-medium">
 				<Trans>Buttons</Trans>
 			</span>
-			{buttons.map((button, index) => {
-				const name = button.label?.trim() || buttonKindLabel(button.kind);
-				return (
-					// oxlint-disable-next-line react/no-array-index-key -- buttons have no id; their place is who they are
-					<div key={index} className="grid gap-3 rounded-xl border border-separator p-3">
-						<ChoiceSelect
-							label={t`Opens`}
-							value={button.kind}
-							options={kindOptions}
-							onChange={(kind) =>
-								update(index, (draft) => {
-									draft.kind = kind;
-									if (kind !== "profile" && kind !== "link") delete draft.url;
-								})
-							}
-						/>
-						<TextInput
-							label={t`Button text`}
-							value={button.label ?? ""}
-							maxLength={max.buttonLabel}
-							icon="text-t"
-							placeholder={t`Empty uses a default`}
-							onChange={(value) =>
-								update(
-									index,
-									(draft) => {
-										if (value.trim()) draft.label = value;
-										else delete draft.label;
-									},
-									"label",
-								)
-							}
-						/>
-						{(button.kind === "profile" || button.kind === "link") && (
-							<UrlInput
-								label={t`Address`}
-								value={button.url}
-								onChange={(url) =>
-									update(index, (draft) => {
-										if (url) draft.url = url;
-										else delete draft.url;
-									})
-								}
-							/>
-						)}
-						<ItemToolbar
-							name={name}
+			<SortableList
+				ids={buttons.map((_, index) => String(index))}
+				onMove={(from, to) => editPortfolio((draft) => moveItem(draft.hero.buttons, from, to), { structural: true })}
+			>
+				{buttons.map((button, index) => {
+					const name = button.label?.trim() || buttonKindLabel(button.kind);
+					return (
+						// oxlint-disable-next-line react/no-array-index-key -- buttons have no id; their place is who they are
+						<SortableCard
+							key={index}
+							id={String(index)}
+							list="hero-buttons"
 							index={index}
-							count={buttons.length}
-							onMove={(to) => editPortfolio((draft) => moveItem(draft.hero.buttons, index, to), { structural: true })}
+							name={name}
 							onRemove={() =>
 								editPortfolio(
 									(draft) => {
@@ -317,10 +281,51 @@ function HeroButtons() {
 									{ structural: true },
 								)
 							}
-						/>
-					</div>
-				);
-			})}
+						>
+							<ChoiceSelect
+								label={t`Opens`}
+								value={button.kind}
+								options={kindOptions}
+								onChange={(kind) =>
+									update(index, (draft) => {
+										draft.kind = kind;
+										if (kind !== "profile" && kind !== "link") delete draft.url;
+									})
+								}
+							/>
+							<TextInput
+								label={t`Button text`}
+								value={button.label ?? ""}
+								maxLength={max.buttonLabel}
+								icon="text-t"
+								placeholder={t`Empty uses a default`}
+								onChange={(value) =>
+									update(
+										index,
+										(draft) => {
+											if (value.trim()) draft.label = value;
+											else delete draft.label;
+										},
+										"label",
+									)
+								}
+							/>
+							{(button.kind === "profile" || button.kind === "link") && (
+								<UrlInput
+									label={t`Address`}
+									value={button.url}
+									onChange={(url) =>
+										update(index, (draft) => {
+											if (url) draft.url = url;
+											else delete draft.url;
+										})
+									}
+								/>
+							)}
+						</SortableCard>
+					);
+				})}
+			</SortableList>
 			{buttons.some((button) => button.kind === "email" || button.kind === "whatsapp") && (
 				<p className="px-1 text-body-xs text-muted">
 					<Trans>An Email or WhatsApp button shows that address to visitors, even if Contact hides it.</Trans>

@@ -98,13 +98,11 @@ function SectionsGroup() {
 							key={key}
 							sectionKey={key}
 							index={index}
-							count={order.length}
 							title={sectionLabel(key, data, source.data, messages)}
 							hidden={data.sections.hidden.includes(key)}
 							empty={!data.sections.hidden.includes(key) && !shown.has(key)}
 							open={open === key}
 							onOpenChange={(next) => setOpen(next ? key : null)}
-							onMove={(to) => move(key, to)}
 						>
 							<SectionForm sectionKey={key} />
 						</SectionRow>
@@ -152,29 +150,16 @@ function SectionForm({ sectionKey }: { sectionKey: PortfolioSectionKey }) {
 type SectionRowProps = {
 	sectionKey: PortfolioSectionKey;
 	index: number;
-	count: number;
 	title: string;
 	hidden: boolean;
 	/** Shown, but with nothing in it yet, so the page leaves it out. */
 	empty: boolean;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
-	onMove: (to: number) => void;
 	children: ReactNode;
 };
 
-function SectionRow({
-	sectionKey,
-	index,
-	count,
-	title,
-	hidden,
-	empty,
-	open,
-	onOpenChange,
-	onMove,
-	children,
-}: SectionRowProps) {
+function SectionRow({ sectionKey, index, title, hidden, empty, open, onOpenChange, children }: SectionRowProps) {
 	const prompt = usePrompt();
 	const titleId = useId();
 	const detailsId = useId();
@@ -254,22 +239,6 @@ function SectionRow({
 						onPress={() => void rename()}
 					/>
 				)}
-				<IconButton
-					icon="arrow-up"
-					label={t`Move ${title} up`}
-					size="sm"
-					className="text-muted"
-					isDisabled={index === 0}
-					onPress={() => onMove(index - 1)}
-				/>
-				<IconButton
-					icon="arrow-down"
-					label={t`Move ${title} down`}
-					size="sm"
-					className="text-muted"
-					isDisabled={index === count - 1}
-					onPress={() => onMove(index + 1)}
-				/>
 			</div>
 			{open && <div className="grid gap-3 px-1 pt-2 pb-4">{children}</div>}
 		</div>

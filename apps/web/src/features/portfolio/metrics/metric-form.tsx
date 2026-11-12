@@ -14,7 +14,7 @@ import { METRIC_DIRECTIONS, METRIC_DURATION_UNITS } from "@rezumi/schema/portfol
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { useRemovalFocus } from "../blocks/list-focus";
-import { ChoiceSelect, ItemToolbar, moveItem, TextInput } from "../editor/fields";
+import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput } from "../editor/fields";
 import { FindMetricsButton } from "./find-metrics";
 import {
 	applyMetricFormat,
@@ -224,6 +224,7 @@ function MetricFields({ metric, edit, locale, compact = false }: MetricFieldsPro
 		<div className="grid gap-3">
 			<TextInput
 				label={t`Label`}
+				icon="text-t"
 				value={metric.label}
 				maxLength={max.metricLabel}
 				placeholder={t`Checkout conversion`}
@@ -517,29 +518,19 @@ export function MetricsEditor({
 	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 	return (
 		<div className="grid gap-3">
-			{metrics.map((metric, index) => {
-				const name = metric.label.trim() || t`Metric ${index + 1}`;
-				return (
-					<div key={metric.id} {...itemProps} className="grid gap-3 rounded-xl border border-separator p-3">
-						<MetricFields
-							metric={metric}
-							compact={compact}
-							locale={locale}
-							edit={(recipe, key) =>
-								edit(
-									(list) => {
-										const target = list.find((entry) => entry.id === metric.id);
-										if (target) recipe(target);
-									},
-									key ? { key: `${keyPrefix}.${metric.id}.${key}` } : undefined,
-								)
-							}
-						/>
-						<ItemToolbar
-							name={name}
+			<SortableList
+				ids={metrics.map((metric) => metric.id)}
+				onMove={(from, to) => edit((list) => moveItem(list, from, to), { structural: true })}
+			>
+				{metrics.map((metric, index) => {
+					const name = metric.label.trim() || t`Metric ${index + 1}`;
+					return (
+						<SortableCard
+							key={metric.id}
+							id={metric.id}
+							list="metrics"
 							index={index}
-							count={metrics.length}
-							onMove={(to) => edit((list) => moveItem(list, index, to), { structural: true })}
+							name={name}
 							onRemove={() => {
 								if (metrics.length <= minItems) {
 									onRemoveLast?.();
@@ -553,10 +544,26 @@ export function MetricsEditor({
 									{ structural: true },
 								);
 							}}
-						/>
-					</div>
-				);
-			})}
+							itemProps={itemProps}
+						>
+							<MetricFields
+								metric={metric}
+								compact={compact}
+								locale={locale}
+								edit={(recipe, key) =>
+									edit(
+										(list) => {
+											const target = list.find((entry) => entry.id === metric.id);
+											if (target) recipe(target);
+										},
+										key ? { key: `${keyPrefix}.${metric.id}.${key}` } : undefined,
+									)
+								}
+							/>
+						</SortableCard>
+					);
+				})}
+			</SortableList>
 			<div ref={fallbackRef} className="contents">
 				{metrics.length < maxItems && (
 					<div className="flex flex-wrap gap-2">

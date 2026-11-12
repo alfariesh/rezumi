@@ -14,6 +14,7 @@ import { useDraftText } from "../metrics/use-draft-text";
 import { usePortfolioEditorStore } from "./store";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { CellSelectField } from "@/components/input/select-field";
+import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
 import { GroupSection, useInGroupPanel } from "@/features/resume/editor/chrome/group-nav";
 import { PanelSection } from "@/features/resume/editor/chrome/panel-section";
 
@@ -300,37 +301,57 @@ export function ChoiceSelect<T extends string>({ label, value, options, onChange
 	);
 }
 
-type ItemToolbarProps = {
-	/** Names the item in the buttons' labels: "Move Branding up". */
-	name: string;
-	index: number;
-	count: number;
-	onMove: (to: number) => void;
-	onRemove: () => void;
-	/** Extra buttons before Move up. */
-	children?: ReactNode;
+type SortableListProps = {
+	/** The ids of the items in order, so a drop's target can be turned into a place in the list. */
+	ids: readonly string[];
+	/** Moves the item at `from` to `to`. */
+	onMove: (from: number, to: number) => void;
+	children: ReactNode;
 };
 
-/** Move up, move down and remove, for one item of a list (the keyboard and screen-reader way to reorder). */
-export function ItemToolbar({ name, index, count, onMove, onRemove, children }: ItemToolbarProps) {
+/** A list whose cards can be dragged into a new order (each card is a {@link SortableCard}). */
+export function SortableList({ ids, onMove, children }: SortableListProps) {
 	return (
-		<div className="flex items-center justify-end gap-0.5">
+		<SortableProvider
+			onMove={(id, target) => {
+				const from = ids.indexOf(id);
+				if (from !== -1) onMove(from, target.index);
+			}}
+		>
 			{children}
-			<IconButton
-				icon="arrow-up"
-				size="sm"
-				label={t`Move ${name} up`}
-				isDisabled={index === 0}
-				onPress={() => onMove(index - 1)}
-			/>
-			<IconButton
-				icon="arrow-down"
-				size="sm"
-				label={t`Move ${name} down`}
-				isDisabled={index === count - 1}
-				onPress={() => onMove(index + 1)}
-			/>
-			<IconButton icon="trash" size="sm" label={t`Remove ${name}`} className="text-danger" onPress={onRemove} />
+		</SortableProvider>
+	);
+}
+
+type SortableCardProps = {
+	/** The item's id in its {@link SortableList}'s `ids`. */
+	id: string;
+	/** Names the list, so items only drop within their own. */
+	list: string;
+	index: number;
+	/** Names the item in the buttons' labels: "Reorder Branding". */
+	name: string;
+	onRemove: () => void;
+	/** Marks the card for `useRemovalFocus`. */
+	itemProps?: Record<string, string>;
+	children: ReactNode;
+};
+
+/** One item of a list as a bordered card: its fields, then a row with the drag handle and Remove. */
+export function SortableCard({ id, list, index, name, onRemove, itemProps, children }: SortableCardProps) {
+	const sortable = useSortableItem({ id, list, index, label: name });
+	return (
+		<div
+			{...itemProps}
+			{...sortable.dropTargetProps}
+			className={cn("relative grid gap-3 rounded-xl border border-separator p-3", sortable.isDragging && "opacity-50")}
+		>
+			<SortableEdge edge={sortable.edge} />
+			{children}
+			<div className="flex items-center justify-between">
+				<SortableHandle item={sortable} label={t`Reorder ${name}`} className="size-8" />
+				<IconButton icon="trash" size="sm" label={t`Remove ${name}`} className="text-danger" onPress={onRemove} />
+			</div>
 		</div>
 	);
 }
