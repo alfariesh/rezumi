@@ -338,7 +338,7 @@ function MoreMetricFields({ metric, edit }: Pick<MetricFieldsProps, "metric" | "
 				}
 			>
 				<Switch.Content className="w-full justify-between">
-					<span className="text-sm">
+					<span className="text-body-sm">
 						<Trans>Show a change</Trans>
 					</span>
 					<Switch.Control>
@@ -485,7 +485,7 @@ export function MetricsEditor({
 	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 	return (
 		<div className="grid gap-3">
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>Use numbers you can explain in an interview, and say where they come from.</Trans>
 			</p>
 			{metrics.map((metric, index) => {

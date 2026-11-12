@@ -164,7 +164,7 @@ export function IntroEffectPicker() {
 
 			{current === "typewriter" && (
 				<div className="grid gap-2">
-					<p className="text-xs text-muted">
+					<p className="text-body-xs text-muted">
 						<Trans>
 							Your headline types first and is where it stops. Add up to two more roles it switches to, in about five
 							seconds.
@@ -191,14 +191,14 @@ export function IntroEffectPicker() {
 						/>
 					))}
 					{typed.length === 0 && (
-						<p className="text-xs text-warning">
+						<p className="text-body-xs text-warning">
 							<Trans>Add a headline or a role so there is something to type.</Trans>
 						</p>
 					)}
 				</div>
 			)}
 
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>
 					Effects stop by themselves within five seconds and stay still for visitors who ask their device for less
 					motion.

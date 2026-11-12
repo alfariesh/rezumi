@@ -481,7 +481,7 @@ export function ClientsForm() {
 					</div>
 				);
 			})}
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>
 					By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed
 					at, and anyone can report one that's used without permission.

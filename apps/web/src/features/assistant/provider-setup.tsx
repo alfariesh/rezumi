@@ -33,7 +33,7 @@ export function ProviderSetup() {
 				<Typography type="h6" render={renderAsH3}>
 					<Trans>Connect an AI provider</Trans>
 				</Typography>
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>The assistant uses your own key. Nothing is sent anywhere until you connect one.</Trans>
 				</p>
 			</div>
@@ -71,7 +71,7 @@ export function ProviderSetup() {
 				))}
 			</Accordion>
 
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>
 					More providers and options are in{" "}
 					<Link

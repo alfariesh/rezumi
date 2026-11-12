@@ -44,7 +44,7 @@ export function AdminCard({
 				<div className="flex flex-row flex-wrap items-end justify-between gap-x-4 gap-y-2">
 					<div className="grid min-w-0 gap-0.5">
 						<h2 className="text-base font-semibold">{title}</h2>
-						{description && <p className="text-xs text-muted">{description}</p>}
+						{description && <p className="text-body-xs text-muted">{description}</p>}
 					</div>
 					{action}
 				</div>
@@ -206,7 +206,7 @@ export function StatWidget({
 						/>
 					</AreaChart>
 				)}
-				{footer && <p className="text-xs text-muted">{footer}</p>}
+				{footer && <p className="text-body-xs text-muted">{footer}</p>}
 			</Widget.Content>
 		</Widget>
 	);

@@ -177,7 +177,7 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 					{domain.plan.state === "grace" && <PlanNotice plan={domain.plan} />}
 					{domain.stage === "problem" && domain.problem && <ProblemNotice problem={domain.problem} />}
 					{domain.stage === "active" ? (
-						<p className="text-xs text-muted">
+						<p className="text-body-xs text-muted">
 							{portfolioHolds ? (
 								<Trans>Connected. Your domain opens your portfolio.</Trans>
 							) : (
@@ -186,7 +186,7 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 						</p>
 					) : domain.stage === "dns" ? (
 						<>
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								<Trans>Not connected yet. Add its DNS records where you manage the domain, then check.</Trans>
 							</p>
 							<div className="flex flex-wrap gap-2">
@@ -202,7 +202,7 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 					) : (
 						<>
 							{domain.stage !== "problem" && (
-								<p className="text-xs text-muted">
+								<p className="text-body-xs text-muted">
 									<Trans>Setting up HTTPS. This usually takes a few minutes, and this page updates by itself.</Trans>
 								</p>
 							)}

@@ -315,7 +315,7 @@ export function ChipInput({
 				</div>
 			</SortableProvider>
 
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				{allowCommas ? (
 					<Trans>
 						Press <Kbd>{RETURN_KEY}</Kbd> to add or save the current keyword.

@@ -101,7 +101,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 				<strong className="text-sm font-semibold">
 					<Trans>A second opinion on your wording</Trans>
 				</strong>
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>
 						Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job
 						match need no provider.
@@ -161,7 +161,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 						<Trans>Open AI settings</Trans>
 					</Link>
 				</div>
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>Issues and Job match still work without AI.</Trans>
 				</p>
 			</ReviewWidget>
@@ -174,7 +174,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 				<strong className="text-sm font-semibold">
 					<Trans>A second opinion on your wording</Trans>
 				</strong>
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>
 						The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests
 						rewrites. It isn't part of the score.
@@ -220,7 +220,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 					<AiCostNote action="review" providerId={provider?.id} className="text-center" />
 				</div>
 				{passages.length === 0 && (
-					<p className="text-xs text-muted">
+					<p className="text-body-xs text-muted">
 						<Trans>Add a summary or describe a role first; there's nothing to review yet.</Trans>
 					</p>
 				)}
@@ -232,7 +232,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 		<div className="grid gap-6">
 			{(review.summary || review.strengths.length > 0) && (
 				<ReviewWidget>
-					{review.summary && <p className="text-sm text-muted">{review.summary}</p>}
+					{review.summary && <p className="text-body-sm text-muted">{review.summary}</p>}
 
 					{review.strengths.length > 0 && (
 						<section aria-labelledby="writing-strengths" className="grid gap-2">
@@ -259,7 +259,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 				</CheckWidget>
 			)}
 
-			<p className="px-2 text-xs leading-4 text-muted">
+			<p className="px-2 text-body-xs text-muted">
 				<Trans>A model's opinion, not a verdict. It can be wrong.</Trans>{" "}
 				<button
 					type="button"
@@ -302,7 +302,7 @@ function WritingNoteCard({ note }: { note: WritingNote }) {
 					{impactLabel(note.impact)}
 				</Chip>
 			</div>
-			<p className="text-sm">
+			<p className="text-body-sm">
 				{note.quote && <i className="text-muted">“{note.quote}”</i>} {note.note}
 			</p>
 			{note.target && (

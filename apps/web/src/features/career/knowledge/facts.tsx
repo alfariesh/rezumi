@@ -274,7 +274,7 @@ function AddFactDialog({ open, onOpenChange, onAdded }: AddFactDialogProps) {
 						<Modal.Heading>
 							<Trans>Add a fact</Trans>
 						</Modal.Heading>
-						<p id={`${id}-description`} className="text-sm text-muted">
+						<p id={`${id}-description`} className="text-body-sm text-muted">
 							<Trans>Something true you can support, such as “I mentored two associate PMs in 2025”.</Trans>
 						</p>
 					</Modal.Header>
@@ -400,7 +400,7 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 							{categoryLabel(categoryOf(fact))}
 						</Chip>
 						{company === null ? (
-							<span className="text-xs text-muted">{t`All applications`}</span>
+							<span className="text-body-xs text-muted">{t`All applications`}</span>
 						) : (
 							<Chip size="sm" variant="soft" color="accent">
 								{t`${company} only`}
@@ -534,7 +534,7 @@ function Correction({ text, onSave, onCancel }: CorrectionProps) {
 				<Button variant="ghost" size="sm" onPress={onCancel}>
 					<Trans>Cancel</Trans>
 				</Button>
-				<span className="text-xs text-muted">
+				<span className="text-body-xs text-muted">
 					<Trans>The original stays in the history.</Trans>
 				</span>
 			</div>

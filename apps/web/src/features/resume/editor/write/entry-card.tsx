@@ -85,7 +85,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 	};
 	const fields = (
 		<>
-			{hint && <p className="col-span-full text-xs text-muted">{i18n._(hint)}</p>}
+			{hint && <p className="col-span-full text-body-xs text-muted">{i18n._(hint)}</p>}
 			<EntryFields type={section.type} entry={entry} write={write} page={page} autoFocus={autoFocus} />
 		</>
 	);

@@ -165,7 +165,7 @@ export function ResumeItemsForm({ sectionKey }: { sectionKey: PortfolioSectionKe
 
 	if (!source.data)
 		return (
-			<p className="text-sm text-muted">
+			<p className="text-body-sm text-muted">
 				<Trans>This section comes from a resume. Choose one in Publish → Source resume to fill it.</Trans>
 			</p>
 		);
@@ -173,7 +173,7 @@ export function ResumeItemsForm({ sectionKey }: { sectionKey: PortfolioSectionKe
 	return (
 		<div className="grid gap-3">
 			{items.length === 0 ? (
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>Nothing here on your resume yet, so the section doesn't show.</Trans>
 				</p>
 			) : (
@@ -193,12 +193,12 @@ export function ResumeItemsForm({ sectionKey }: { sectionKey: PortfolioSectionKe
 										<span className="grid min-w-0">
 											<span className="truncate text-sm">{item.label}</span>
 											{item.hiddenOnResume ? (
-												<span className="text-xs text-muted">
+												<span className="text-body-xs text-muted">
 													<Trans>Hidden on your resume</Trans>
 												</span>
 											) : (
 												!hideable && (
-													<span className="text-xs text-muted">
+													<span className="text-body-xs text-muted">
 														<Trans>This item can't be hidden here. Hide it on your resume instead.</Trans>
 													</span>
 												)

@@ -133,7 +133,7 @@ export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEd
 						onFiles={(files) => void add(files)}
 					/>
 				) : (
-					<p className="text-xs text-muted">
+					<p className="text-body-xs text-muted">
 						<Trans>A Pictures block holds up to {most} pictures. Add another block for more.</Trans>
 					</p>
 				)}

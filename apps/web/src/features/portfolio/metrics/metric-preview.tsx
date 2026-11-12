@@ -41,7 +41,7 @@ export default function MetricPreview({ metric, locale }: MetricPreviewProps) {
 					)}
 				</div>
 				{(before || metric.context) && (
-					<p className="text-xs text-muted" dir="auto">
+					<p className="text-body-xs text-muted" dir="auto">
 						{[before ? t`Before: ${before}` : "", metric.context?.trim() ?? ""].filter(Boolean).join(" · ")}
 					</p>
 				)}

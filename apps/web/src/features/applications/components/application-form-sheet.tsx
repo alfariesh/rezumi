@@ -153,7 +153,7 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 				</Accordion.Heading>
 				<Accordion.Panel>
 					<Accordion.Body className="flex flex-col gap-2">
-						<p className="text-xs text-muted">
+						<p className="text-body-xs text-muted">
 							<Trans>
 								Copy the entire job description from the posting and paste it below. We'll fill in the fields for you
 								and keep the text with this application for match scoring and tailoring.
@@ -175,7 +175,7 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 							}}
 						/>
 						<div className="flex items-center justify-between gap-2">
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								{autofill.isPending ? (
 									<Trans>Reading the posting…</Trans>
 								) : fillsOnPaste ? (
@@ -301,7 +301,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							<Sheet.Heading>
 								{isEditing ? <Trans>Edit application</Trans> : <Trans>Add application</Trans>}
 							</Sheet.Heading>
-							<p className="text-sm text-muted">
+							<p className="text-body-sm text-muted">
 								{isEditing ? (
 									<Trans>Update this application's details.</Trans>
 								) : (
@@ -457,7 +457,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 											attachLabel={t`Or upload a resume PDF`}
 											onChange={(value) => set("resumeFile", value)}
 										/>
-										<p className="text-xs text-muted">
+										<p className="text-body-xs text-muted">
 											<Trans>Link a Rezumi to use AI match scoring and tailoring.</Trans>
 										</p>
 									</div>

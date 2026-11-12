@@ -84,7 +84,7 @@ export function OAuthConsentPage({ oauthQuery, email }: OAuthConsentPageProps) {
 				<Typography type="h3" align="center" render={renderAsH1}>
 					<Trans>Connect an application</Trans>
 				</Typography>
-				<p className="text-sm wrap-anywhere text-muted">
+				<p className="text-body-sm wrap-anywhere text-muted">
 					<Trans>Signed in as {email}</Trans>
 				</p>
 			</div>
@@ -108,16 +108,16 @@ export function OAuthConsentPage({ oauthQuery, email }: OAuthConsentPageProps) {
 				<div className={cn(ENTER_CLASS, "space-y-4")}>
 					<div className="space-y-1 rounded-2xl bg-surface-secondary p-4 wrap-anywhere">
 						<p className="font-medium">{client.client_name || clientId}</p>
-						<p className="text-xs text-muted">
+						<p className="text-body-xs text-muted">
 							<Trans>Client ID</Trans>: {clientId}
 						</p>
 						{destination && (
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								<Trans>Access is sent to</Trans>: <span className="font-medium text-foreground">{destination}</span>
 							</p>
 						)}
 					</div>
-					<p className="text-sm">
+					<p className="text-body-sm">
 						<Trans>Only allow applications you trust. This application will be able to:</Trans>
 					</p>
 					<ul className="list-disc space-y-2 pl-5 text-sm">

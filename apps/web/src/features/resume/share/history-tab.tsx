@@ -198,12 +198,12 @@ export function HistoryTimeline({ source }: { source: HistorySource }) {
 			</Timeline>
 
 			{!loading && (versions?.length ?? 0) <= 1 && (
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>Only one version so far. Every editing session adds one automatically.</Trans>
 				</p>
 			)}
 
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>
 					Autosaves are grouped by session and kept for 90 days. Named versions are kept until you delete them.
 					Restoring saves the current state first.

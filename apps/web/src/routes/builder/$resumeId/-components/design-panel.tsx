@@ -1,7 +1,7 @@
 import type { DateFormat } from "@rezumi/schema/resume/dates";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, Disclosure, Tabs, Typography } from "@heroui/react";
+import { Button, Disclosure, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
@@ -23,7 +23,6 @@ import { TemplateGroup } from "@/features/resume/editor/design/template-group";
 import { OfflineBanner } from "@/features/resume/editor/save-status";
 import { getScrollBehavior } from "@/features/resume/editor/write/reveal";
 import { D2 } from "@/libs/motion";
-import { renderAsSpan } from "@/libs/typography";
 
 const GROUPS = [
 	{ id: "template", icon: "squares-four", label: () => t`Template` },
@@ -327,14 +326,9 @@ function AdvancedWidget({ open, onOpenChange }: AdvancedWidgetProps) {
 		<Disclosure.Heading level={2} className="min-w-0 flex-1">
 			<Disclosure.Trigger className="flex min-h-8 w-full items-center gap-2 rounded-lg text-start">
 				<Icon name={icon} size={20} className="shrink-0 text-muted [&_*]:stroke-2" />
-				<Typography
-					type="h6"
-					render={renderAsSpan}
-					id="design-advanced-title"
-					className="min-w-0 flex-1 truncate text-sm leading-5"
-				>
+				<span id="design-advanced-title" className="min-w-0 flex-1 truncate text-sm font-semibold">
 					{label()}
-				</Typography>
+				</span>
 				<Disclosure.Indicator className="text-muted" />
 			</Disclosure.Trigger>
 		</Disclosure.Heading>

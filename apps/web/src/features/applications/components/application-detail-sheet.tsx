@@ -83,7 +83,7 @@ export function ApplicationDetailSheet({ application, onOpenChange, onEditDetail
 						) : (
 							<div className="grid gap-2 p-5">
 								<Sheet.Heading>{shown?.role}</Sheet.Heading>
-								<p className="text-sm text-muted" aria-live="polite">
+								<p className="text-body-sm text-muted" aria-live="polite">
 									{isError ? t`Couldn't load this. Your saved data hasn't changed.` : t`Loading…`}
 								</p>
 								{isError && (
@@ -125,7 +125,7 @@ export function ApplicationDetailPane({ application, onClose, onEditDetails }: D
 			) : (
 				<div className="grid gap-2 p-5">
 					<h2 className="pe-8 text-lg leading-6 font-semibold">{application.role}</h2>
-					<p className="text-sm text-muted" aria-live="polite">
+					<p className="text-body-sm text-muted" aria-live="polite">
 						{isError ? t`Couldn't load this. Your saved data hasn't changed.` : t`Loading…`}
 					</p>
 					{isError && (
@@ -147,7 +147,7 @@ export function ApplicationDetailPanePlaceholder() {
 				<span aria-hidden="true" className="grid size-12 place-items-center rounded-2xl bg-default text-muted">
 					<Icon name="briefcase" size={22} />
 				</span>
-				<p className="text-sm text-pretty text-muted">
+				<p className="text-body-sm text-pretty text-muted">
 					<Trans>Choose an application to see its next step, what you sent and its activity here.</Trans>
 				</p>
 			</div>
@@ -588,7 +588,7 @@ function MarkAppliedDialog({ application, onClose }: MarkAppliedDialogProps) {
 							<Modal.Heading>
 								<Trans>Mark as applied</Trans>
 							</Modal.Heading>
-							<p id={`${id}-description`} className="text-sm text-muted">
+							<p id={`${id}-description`} className="text-body-sm text-muted">
 								<Trans>
 									Confirm submission and choose the documents you actually sent. Their current versions will be saved.
 								</Trans>
@@ -629,7 +629,7 @@ function MarkAppliedDialog({ application, onClose }: MarkAppliedDialogProps) {
 								</Checkbox>
 							)}
 							{update.error && (
-								<p role="alert" className="text-sm text-danger-soft-foreground">
+								<p role="alert" className="text-body-sm text-danger-soft-foreground">
 									{getOrpcErrorMessage(update.error, { fallback: t`Couldn't record submission. Try again.` })}
 								</p>
 							)}
@@ -675,7 +675,7 @@ function PostingDialog({ application, open, onOpenChange }: PostingDialogProps) 
 					</Modal.Header>
 					<Modal.Body className="grid gap-4 p-1">
 						{application.postingSource && (
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								{application.postingSource.method === "paste" ? (
 									<Trans>Pasted description</Trans>
 								) : (
@@ -687,7 +687,7 @@ function PostingDialog({ application, open, onOpenChange }: PostingDialogProps) 
 							</p>
 						)}
 						{(application.postingSource?.truncated || application.postingSource?.completeness === "incomplete") && (
-							<p className="text-xs text-warning-soft-foreground" role="alert">
+							<p className="text-body-xs text-warning-soft-foreground" role="alert">
 								<Trans>This saved description is clipped or incomplete. Review before preparing documents.</Trans>
 							</p>
 						)}
@@ -708,7 +708,7 @@ function PostingDialog({ application, open, onOpenChange }: PostingDialogProps) 
 							</section>
 						)}
 						{application.jobDescription && (
-							<p className="text-sm leading-6 whitespace-pre-wrap text-muted">{application.jobDescription}</p>
+							<p className="text-body-sm whitespace-pre-wrap text-muted">{application.jobDescription}</p>
 						)}
 					</Modal.Body>
 				</Modal.Dialog>

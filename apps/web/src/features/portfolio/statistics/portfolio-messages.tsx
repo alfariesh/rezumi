@@ -72,7 +72,7 @@ function MessageRow({ message }: MessageRowProps) {
 					{message.serviceTitle}
 				</Chip>
 			)}
-			<p className="text-sm wrap-anywhere whitespace-pre-wrap">{message.body}</p>
+			<p className="text-body-sm wrap-anywhere whitespace-pre-wrap">{message.body}</p>
 			<div className="flex flex-wrap gap-1">
 				<a href={`mailto:${message.email}`} className={buttonVariants({ size: "sm", variant: "secondary" })}>
 					<Icon name="envelope-simple" size={16} />
@@ -124,7 +124,7 @@ export function PortfolioMessages() {
 			/>
 			<Widget.Content className="grid gap-3">
 				{items.length === 0 ? (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>No messages yet. Turn on the contact form in the editor, under Contact.</Trans>
 					</p>
 				) : (

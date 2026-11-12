@@ -294,7 +294,7 @@ export function NewDocumentDialog({ data }: { data?: NewDocumentDialogData | und
 								<span className="text-base font-semibold">
 									<Trans>Import a resume</Trans>
 								</span>
-								<span className="text-sm text-muted">
+								<span className="text-body-sm text-muted">
 									<Trans>
 										Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section and flag
 										anything we're unsure of.
@@ -587,7 +587,7 @@ function CopyForJob({ initialSourceId, initialJobId, onBack, onCreated }: CopyFo
 					<Trans>Start from</Trans>
 				</legend>
 				{documents && resumes.length === 0 && (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>
 							You don't have a resume to copy yet. Import or create a resume first, then return to copy it for this job.
 						</Trans>
@@ -651,7 +651,7 @@ function CopyForJob({ initialSourceId, initialJobId, onBack, onCreated }: CopyFo
 					</TagGroup.List>
 				</TagGroup>
 				{job && (
-					<span className="text-xs text-muted">
+					<span className="text-body-xs text-muted">
 						<Trans>The copy is linked to the application, so Check and the assistant use its posting.</Trans>
 					</span>
 				)}
@@ -669,7 +669,7 @@ function CopyForJob({ initialSourceId, initialJobId, onBack, onCreated }: CopyFo
 					maxLength={100}
 					onChange={(event) => setName(event.target.value)}
 				/>
-				<span className="text-xs text-muted">
+				<span className="text-body-xs text-muted">
 					<Trans>Suggested from the source and the job. Change it anytime.</Trans>
 				</span>
 			</div>

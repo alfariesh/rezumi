@@ -91,7 +91,7 @@ function FindMetricsDialog({ resumeId, room, locale, onAdd, onClose }: FindMetri
 						<Modal.Heading id={`${id}-title`}>
 							<Trans>Find numbers in your resume</Trans>
 						</Modal.Heading>
-						<p className="text-sm text-muted">
+						<p className="text-body-sm text-muted">
 							<Trans>
 								AI reads your jobs and projects and only suggests numbers written there. You pick which to use.
 							</Trans>
@@ -106,7 +106,7 @@ function FindMetricsDialog({ resumeId, room, locale, onAdd, onClose }: FindMetri
 								</p>
 							</div>
 						) : found === null ? null : found.length === 0 ? (
-							<p className="text-sm">
+							<p className="text-body-sm">
 								<Trans>
 									No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time
 									by 40%”, then try again.
@@ -148,7 +148,7 @@ function FindMetricsDialog({ resumeId, room, locale, onAdd, onClose }: FindMetri
 							</div>
 						)}
 						{found && found.length > 0 && (
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								<Trans>Pick up to {room}. Use numbers you can explain in an interview.</Trans>
 							</p>
 						)}

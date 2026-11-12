@@ -382,7 +382,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 											{form?.existing?.kind === "prepare" &&
 												providers.length > 0 &&
 												!providers.some((provider) => provider.id === form.existing?.aiProviderId) && (
-													<p className="-mt-3 text-xs text-warning-soft-foreground">
+													<p className="-mt-3 text-body-xs text-warning-soft-foreground">
 														{t`Its connection was switched off or removed, so it runs on ${providers[0]?.label ?? ""} until you choose another.`}
 													</p>
 												)}
@@ -548,7 +548,7 @@ function Field({ label, hint, error, children }: FieldProps) {
 				<FieldError id={`${id}-note`}>{error}</FieldError>
 			) : (
 				hint && (
-					<p id={`${id}-note`} className="text-xs text-muted">
+					<p id={`${id}-note`} className="text-body-xs text-muted">
 						{hint}
 					</p>
 				)

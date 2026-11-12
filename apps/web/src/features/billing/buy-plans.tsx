@@ -171,7 +171,7 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 					</Segment.Item>
 				</Segment>
 				{saving > 0 && (
-					<span className="text-xs text-muted">
+					<span className="text-body-xs text-muted">
 						<Trans>Yearly saves up to {saving}%</Trans>
 					</span>
 				)}
@@ -247,7 +247,7 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 								))}
 							</ul>
 							{pending && (
-								<p className="text-xs text-muted">
+								<p className="text-body-xs text-muted">
 									<Trans>Starts at your next renewal.</Trans>
 								</p>
 							)}
@@ -267,16 +267,16 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 				})}
 			</div>
 			{live?.cancelAtPeriodEnd && (
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>Your subscription is set to end. Keep it first to change the plan.</Trans>
 				</p>
 			)}
 			{live?.status === "past_due" && (
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>Your last payment didn't go through. Update your payment method in billing first.</Trans>
 				</p>
 			)}
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>Prices are before tax: the checkout adds the tax that applies where you live.</Trans>
 			</p>
 			<PurchaseDialog

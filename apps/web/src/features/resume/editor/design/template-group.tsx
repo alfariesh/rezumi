@@ -182,7 +182,7 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 				))}
 			</div>
 			{shown.length === 0 && (
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>No template matches both filters. Try All.</Trans>
 				</p>
 			)}
@@ -273,7 +273,7 @@ function TemplateCard({ id, data, content, selected, labelled, locked, onPreview
 				{labelled && !selected && <PlanBadge locked={locked} />}
 			</span>
 			<span className="text-sm leading-4 font-medium">{metadata.name}</span>
-			<span className="text-xs leading-4 text-muted">{layoutTags(id)}</span>
+			<span className="text-xs text-muted">{layoutTags(id)}</span>
 		</button>
 	);
 }
@@ -283,7 +283,7 @@ type PlanBadgeProps = { locked: boolean };
 /** "Plus" on a premium template's corner, with a lock while the plan doesn't open it. */
 export function PlanBadge({ locked }: PlanBadgeProps) {
 	return (
-		<span className="absolute end-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full bg-black/70 px-1.5 py-0.5 text-xs leading-4 font-medium text-white">
+		<span className="absolute end-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full bg-black/70 px-1.5 py-0.5 text-xs font-medium text-white">
 			{locked && <Icon name="lock" size={12} aria-hidden />}
 			Plus
 			{locked && <span className="sr-only">{t`Not in your plan`}</span>}

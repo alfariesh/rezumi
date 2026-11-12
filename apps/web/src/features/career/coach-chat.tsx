@@ -431,7 +431,7 @@ function UsedChips({ used, applications, knowledge }: UsedChipsProps) {
 									{fact.text}
 								</Link>
 							) : (
-								<span className="text-sm text-muted">
+								<span className="text-body-sm text-muted">
 									<Trans>A fact you've since forgotten</Trans>
 								</span>
 							)}
@@ -460,7 +460,7 @@ function UsedChips({ used, applications, knowledge }: UsedChipsProps) {
 									{story.data.title}
 								</Link>
 							) : (
-								<span className="text-sm text-muted">
+								<span className="text-body-sm text-muted">
 									<Trans>A story you've since deleted</Trans>
 								</span>
 							)}

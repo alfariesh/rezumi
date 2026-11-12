@@ -235,7 +235,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 							/>
 							<InputGroup.Suffix>°</InputGroup.Suffix>
 						</InputGroup>
-						<p className="text-xs text-muted">
+						<p className="text-body-xs text-muted">
 							<Trans>Rotation isn't supported by PDF rendering.</Trans>
 						</p>
 					</FormItem>
@@ -557,7 +557,7 @@ function PictureCropDialog({ cropState, aspect, onClose, onUpload }: PictureCrop
 						<Modal.Heading>
 							<Trans>Crop photo</Trans>
 						</Modal.Heading>
-						<p id={descriptionId} className="text-sm text-muted">
+						<p id={descriptionId} className="text-body-sm text-muted">
 							<Trans>Drag to reposition and use the slider to zoom before uploading.</Trans>
 						</p>
 					</Modal.Header>

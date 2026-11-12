@@ -149,7 +149,7 @@ export function FromLink({ onBack, onClose }: StepProps) {
 						<Trans>Read the link</Trans>
 					</Button>
 					{full && (
-						<p className="text-xs text-danger">
+						<p className="text-body-xs text-danger">
 							<Trans>This portfolio already holds {limits.works} works.</Trans>
 						</p>
 					)}
@@ -195,7 +195,7 @@ export function FromLink({ onBack, onClose }: StepProps) {
 										</Label>
 									</Checkbox.Content>
 								</Checkbox>
-								<span className="text-xs text-muted">
+								<span className="text-body-xs text-muted">
 									<Trans>Use it only if you may show it. Your page never loads pictures from other sites.</Trans>
 								</span>
 							</div>

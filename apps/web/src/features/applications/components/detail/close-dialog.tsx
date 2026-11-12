@@ -25,7 +25,7 @@ export function CloseDialog({ open, onOpenChange, onClose }: CloseDialogProps) {
 						<Modal.Heading>
 							<Trans>Close this application</Trans>
 						</Modal.Heading>
-						<p id={descriptionId} className="text-sm text-muted">
+						<p id={descriptionId} className="text-body-sm text-muted">
 							<Trans>The reason is kept for Insights. Linked documents aren't touched.</Trans>
 						</p>
 					</Modal.Header>

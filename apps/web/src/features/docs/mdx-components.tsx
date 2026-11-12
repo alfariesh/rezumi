@@ -78,7 +78,7 @@ function CodeBlock({ children, className, style: _style, ...props }: ComponentPr
 					{button}
 				</div>
 			)}
-			<pre ref={ref} dir="ltr" className={cn("overflow-x-auto p-4 font-mono text-sm leading-6", className)} {...props}>
+			<pre ref={ref} dir="ltr" className={cn("overflow-x-auto p-4 font-mono text-body-sm", className)} {...props}>
 				{children}
 			</pre>
 			{!title && button}
@@ -90,7 +90,7 @@ function CodeBlock({ children, className, style: _style, ...props }: ComponentPr
 function Table({ className, ...props }: ComponentProps<"table">) {
 	return (
 		<div className="overflow-x-auto rounded-xl bg-surface shadow-surface">
-			<table className={cn("w-full border-collapse text-start text-sm leading-6", className)} {...props} />
+			<table className={cn("w-full border-collapse text-start text-body-sm", className)} {...props} />
 		</div>
 	);
 }
@@ -198,7 +198,7 @@ function DocsCard({ title, icon, href, children }: DocsCardProps) {
 			</div>
 			<Card.Header className="gap-1">
 				<Card.Title className="text-base font-semibold">{title}</Card.Title>
-				{children && <div className="docs-flow text-sm leading-6 text-muted">{children}</div>}
+				{children && <div className="docs-flow text-body-sm text-muted">{children}</div>}
 			</Card.Header>
 		</Card>
 	);
@@ -256,7 +256,7 @@ function callout(status: "accent" | "default" | "success" | "warning", icon: Ico
 					<Icon name={icon} />
 				</Alert.Indicator>
 				<Alert.Content>
-					<div className="docs-flow text-sm leading-6 text-foreground">{children}</div>
+					<div className="docs-flow text-body-sm text-foreground">{children}</div>
 				</Alert.Content>
 			</Alert>
 		);
@@ -290,7 +290,7 @@ function DocsAccordion({ title, children }: DocsAccordionProps) {
 			</Accordion.Heading>
 			<Accordion.Panel>
 				<Accordion.Body>
-					<div className="docs-flow text-base leading-7 text-foreground">{children}</div>
+					<div className="docs-flow text-body text-foreground">{children}</div>
 				</Accordion.Body>
 			</Accordion.Panel>
 		</Accordion.Item>

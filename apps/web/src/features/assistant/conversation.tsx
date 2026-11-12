@@ -517,12 +517,12 @@ function stepOf(part: ToolPart, streaming: boolean): Step | null {
 				note: (
 					<>
 						{page?.success && (page.data.truncated || page.data.completeness === "incomplete") && (
-							<span className="block text-xs text-muted">
+							<span className="block text-body-xs text-muted">
 								<Trans>This page is clipped or incomplete. Check the original before using it.</Trans>
 							</span>
 						)}
 						{page?.success && page.data.fallbackReason && (
-							<span className="block text-xs text-muted">
+							<span className="block text-body-xs text-muted">
 								<Trans>Enhanced reading unavailable; used the built-in reader.</Trans>
 							</span>
 						)}
@@ -666,7 +666,7 @@ function ToolPartView({
 						/>
 					)}
 					{output.skipped.length > 0 && (
-						<p className="text-xs text-muted">
+						<p className="text-body-xs text-muted">
 							<Plural
 								value={output.skipped.length}
 								one="# edit couldn't be placed: its text changed. Ask again to redo it."
@@ -704,7 +704,7 @@ function QuestionCard({ part, readOnly, onAnswer }: QuestionCardProps) {
 		<div className="grid gap-2.5 rounded-xl bg-accent-soft p-3 text-accent-soft-foreground">
 			<p className="text-sm font-medium">{question}</p>
 			{answer !== null ? (
-				<p className="text-sm opacity-80">
+				<p className="text-body-sm opacity-80">
 					<Trans>You answered: {answer}</Trans>
 				</p>
 			) : readOnly || !toolCallId ? null : (

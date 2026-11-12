@@ -385,7 +385,7 @@ function ModelSelect({ open, onOpenChange, providers, current, label, onChoose }
 }
 
 function Notice({ children }: { children: ReactNode }) {
-	return <p className="m-4 rounded-xl bg-default p-4 text-sm text-muted">{children}</p>;
+	return <p className="m-4 rounded-xl bg-default p-4 text-body-sm text-muted">{children}</p>;
 }
 
 type Suggestion = { icon: IconName; label: string; hint: string };
@@ -446,7 +446,7 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 				<Typography type="h4" align="center" render={renderAsH3}>
 					<Trans>What should we work on?</Trans>
 				</Typography>
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					{document.posting ? (
 						<Trans>
 							I can see this {kind} and the {document.posting.company} posting. Suggestions come back as edits you can
@@ -457,7 +457,7 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 					)}
 				</p>
 				{document.locked && (
-					<p className="text-xs text-warning-soft-foreground">
+					<p className="text-body-xs text-warning-soft-foreground">
 						<Trans>This document is locked. Unlock it to get suggestions.</Trans>
 					</p>
 				)}
@@ -580,7 +580,7 @@ function PastConversations({ threads, document, currentId, onOpen }: PastConvers
 						(thread) => `${formatVersionTime(new Date(thread.lastMessageAt), i18n.locale)} · ${outcome(thread)}`,
 					)
 				) : (
-					<p className="px-3 text-sm text-muted">
+					<p className="px-3 text-body-sm text-muted">
 						<Trans>No conversations about this document yet.</Trans>
 					</p>
 				)}

@@ -202,7 +202,7 @@ export function ApplyTab({ application, version }: WorkspaceTabProps) {
 							<Trans>Add a question from the form</Trans>
 						</Button>
 						{live.length >= 30 && (
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								<Trans>You can keep up to 30 application questions.</Trans>
 							</p>
 						)}
@@ -368,7 +368,7 @@ function AnswerCard({
 			<Swap id={proposal ? "diff" : "text"}>
 				{proposal ? (
 					<div className="grid gap-3">
-						<p className="rounded-xl bg-surface-secondary px-3.5 py-3 text-sm leading-relaxed">
+						<p className="rounded-xl bg-surface-secondary px-3.5 py-3 text-body-sm">
 							{diffWords(text, proposal.text).map((part, index) => (
 								<span
 									key={index}
@@ -401,7 +401,7 @@ function AnswerCard({
 						</div>
 					</div>
 				) : readOnly ? (
-					<p className="rounded-xl bg-surface-secondary px-3.5 py-3 text-sm leading-relaxed whitespace-pre-wrap text-muted">
+					<p className="rounded-xl bg-surface-secondary px-3.5 py-3 text-body-sm whitespace-pre-wrap text-muted">
 						{text}
 					</p>
 				) : (
@@ -625,7 +625,7 @@ function Checklist({
 						<li key={label}>
 							<Checkbox
 								variant="secondary"
-								className="text-sm leading-5"
+								className="text-sm"
 								isSelected={ticked.includes(index)}
 								isDisabled={readOnly || submitting}
 								onChange={(checked) => toggle(index, checked)}
@@ -649,7 +649,7 @@ function Checklist({
 				)}
 			</ul>
 			{!canSubmit && !readOnly && (
-				<p role="alert" className="text-xs text-danger">
+				<p role="alert" className="text-body-xs text-danger">
 					<Trans>
 						Shorten questions to 2,000 characters and answers to 6,000 characters before marking this applied.
 					</Trans>
@@ -681,7 +681,7 @@ function Checklist({
 					</Dropdown.Popover>
 				</Dropdown>
 			</div>
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent.</Trans>
 			</p>
 		</CareerWidget>

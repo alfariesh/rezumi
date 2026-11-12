@@ -98,7 +98,7 @@ export function PdfBlockEditor({ work, block, edit }: PdfBlockEditorProps) {
 					<Icon name="arrows-clockwise" size={16} />
 					<Trans>Replace the PDF</Trans>
 				</Button>
-				<span className="text-xs text-muted">
+				<span className="text-body-xs text-muted">
 					<Trans>Up to {limit}, without a password. Visitors open it in a new tab.</Trans>{" "}
 					<Trans>Details saved inside the file, such as the author's name, are published with it.</Trans>
 				</span>

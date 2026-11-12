@@ -159,7 +159,7 @@ function IssuesTab({ check }: { check: CheckResult }) {
 
 			<DeepCheck data={data} />
 
-			<p className="px-2 text-xs leading-4 text-muted">
+			<p className="px-2 text-body-xs text-muted">
 				<Trans>
 					The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted.
 				</Trans>{" "}
@@ -223,7 +223,7 @@ function IssueCard({ issue, selected, locked }: IssueCardProps) {
 					</span>
 					{issue.title}
 				</h3>
-				<p className="text-sm text-muted">{issue.body}</p>
+				<p className="text-body-sm text-muted">{issue.body}</p>
 			</div>
 
 			{/* Default size: 40px on phones (B1), 36px from tablets up. The picked card's fix is the primary action. */}
@@ -368,7 +368,7 @@ function DeepCheck({ data }: { data: ResumeData }) {
 							<Modal.Heading>
 								<Trans>The exported PDF</Trans>
 							</Modal.Heading>
-							<p id={reportDescriptionId} className="text-sm text-muted">
+							<p id={reportDescriptionId} className="text-body-sm text-muted">
 								<Trans>
 									What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded.
 								</Trans>

@@ -110,7 +110,7 @@ export function ApiKeysSection() {
 					<span className="grid min-w-0 gap-0.5">
 						<span className="truncate font-medium">{keyName(key)}</span>
 						{phone && (
-							<span className="text-xs text-muted">
+							<span className="text-body-xs text-muted">
 								{t`Created ${created}`} · {t`Last used ${used}`} · {t`Expires ${expiry}`}
 							</span>
 						)}
@@ -391,7 +391,7 @@ function NewKeyDialog({ open, onOpenChange, onCreated }: NewKeyDialogProps) {
 									</Segment>
 								</div>
 								{failure && (
-									<p role="alert" className="text-sm text-danger">
+									<p role="alert" className="text-body-sm text-danger">
 										{failure}
 									</p>
 								)}

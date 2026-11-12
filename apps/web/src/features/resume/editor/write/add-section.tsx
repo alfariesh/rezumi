@@ -143,7 +143,7 @@ export function StartSuggestions({ onImport }: { onImport: () => void }) {
 	return (
 		<PanelSection icon="rows" title={<Trans>Sections</Trans>}>
 			<div className="grid gap-3">
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>Start with the sections most resumes have.</Trans>
 				</p>
 				<div className="flex flex-wrap gap-2">
@@ -154,7 +154,7 @@ export function StartSuggestions({ onImport }: { onImport: () => void }) {
 						</Button>
 					))}
 				</div>
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>
 						Have a resume already?{" "}
 						<Link className="text-xs font-medium" onPress={onImport}>

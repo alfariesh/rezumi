@@ -99,8 +99,8 @@ export function ProvidersSection() {
 					</RowIcon>
 					<div className="grid min-w-0 gap-1">
 						<p className="text-sm font-medium">{providerLabel(managed.provider)}</p>
-						<p className="text-xs break-all text-muted">{managed.model}</p>
-						<p className="text-xs text-muted">
+						<p className="text-body-xs break-all text-muted">{managed.model}</p>
+						<p className="text-body-xs text-muted">
 							<Trans>Managed by your server</Trans>
 						</p>
 					</div>
@@ -288,7 +288,7 @@ function ProviderRow({ provider, balance, isDefault, onMakeDefault, makingDefaul
 						)}
 					</span>
 					{rezumi ? (
-						<span className="text-xs text-muted">
+						<span className="text-body-xs text-muted">
 							<Trans>
 								No API key needed. Each action shows its cost in credits first · {creditCount(balance)} left
 							</Trans>
@@ -297,7 +297,7 @@ function ProviderRow({ provider, balance, isDefault, onMakeDefault, makingDefaul
 						<span className="text-xs break-all text-muted">{provider.model}</span>
 					)}
 					{ending && (
-						<span className="text-xs text-muted">
+						<span className="text-body-xs text-muted">
 							<Trans>Key ends in {ending}</Trans>
 						</span>
 					)}
@@ -340,7 +340,7 @@ function ProviderRow({ provider, balance, isDefault, onMakeDefault, makingDefaul
 				</div>
 			</div>
 			{error && (
-				<p role="alert" className="ms-row-indent text-xs text-danger">
+				<p role="alert" className="ms-row-indent text-body-xs text-danger">
 					{error}
 				</p>
 			)}
@@ -561,7 +561,7 @@ function AddProviderDialog({ open, onOpenChange }: AddProviderDialogProps) {
 						<Modal.Heading>
 							<Trans>Add provider</Trans>
 						</Modal.Heading>
-						<p id={descriptionId} className="text-sm text-muted">
+						<p id={descriptionId} className="text-body-sm text-muted">
 							<Trans>The key is encrypted on the server and never shown again. Saving tests the connection.</Trans>
 						</p>
 					</Modal.Header>
@@ -602,7 +602,7 @@ function AddProviderDialog({ open, onOpenChange }: AddProviderDialogProps) {
 							</div>
 							<ProviderFieldsForm provider={provider} value={fields} onChange={setFields} />
 							{failure && (
-								<p role="alert" className="text-sm text-danger">
+								<p role="alert" className="text-body-sm text-danger">
 									{failure}
 								</p>
 							)}
@@ -709,7 +709,7 @@ function EditProviderForm({ provider, descriptionId, onClose }: EditProviderForm
 		<>
 			<Modal.Header>
 				<Modal.Heading>{provider.label}</Modal.Heading>
-				<p id={descriptionId} className="text-sm text-muted">
+				<p id={descriptionId} className="text-body-sm text-muted">
 					{providerLabel(provider.provider)}
 				</p>
 			</Modal.Header>
@@ -752,7 +752,7 @@ function EditProviderForm({ provider, descriptionId, onClose }: EditProviderForm
 						</Switch>
 					</div>
 					{failure && (
-						<p role="alert" className="text-sm text-danger">
+						<p role="alert" className="text-body-sm text-danger">
 							{failure}
 						</p>
 					)}

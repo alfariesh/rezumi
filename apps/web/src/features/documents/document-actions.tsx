@@ -392,7 +392,7 @@ export function TagsDialog({ documents: requested, onClose }: TagsDialogProps) {
 								<Trans>Tags</Trans>
 							)}
 						</Modal.Heading>
-						<p id={descriptionId} className="text-sm text-muted">
+						<p id={descriptionId} className="text-body-sm text-muted">
 							{documents && documents.length > 1 ? (
 								<Trans>
 									Shows the tags they all share. Tags you add go on every document; tags you remove come off every one.
@@ -454,7 +454,7 @@ export function LinkApplicationDialog({ document: requested, onClose }: LinkAppl
 						<Modal.Heading>
 							<Trans>Link to application</Trans>
 						</Modal.Heading>
-						<p id={descriptionId} className="text-sm text-muted">
+						<p id={descriptionId} className="text-body-sm text-muted">
 							<Trans>The application this letter is for.</Trans>
 						</p>
 					</Modal.Header>
@@ -476,7 +476,7 @@ export function LinkApplicationDialog({ document: requested, onClose }: LinkAppl
 								</Button>
 							))}
 							{jobs.length === 0 && (
-								<p className="text-sm text-muted">
+								<p className="text-body-sm text-muted">
 									<Trans>No applications yet. Add one in Applications first.</Trans>
 								</p>
 							)}

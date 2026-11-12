@@ -92,12 +92,12 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 					<p role="status" className="w-fit rounded-sm bg-accent-soft px-1 py-0.5 text-sm">
 						{improve.data.text}
 					</p>
-					<p className="text-xs text-muted">
+					<p className="text-body-xs text-muted">
 						{improve.data.why}
 						{improve.data.addsFacts && <> {t`Check it's accurate.`}</>}
 					</p>
 					{changed && (
-						<p role="alert" className="text-xs text-danger">
+						<p role="alert" className="text-body-xs text-danger">
 							<Trans>The line changed since you asked, so it wasn't replaced.</Trans>
 						</p>
 					)}
@@ -166,7 +166,7 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 
 			{improve.error && (
 				<div className="grid gap-2 px-2 pb-1">
-					<p role="alert" className="text-xs text-danger">
+					<p role="alert" className="text-body-xs text-danger">
 						{getOrpcErrorMessage(improve.error, { fallback: t`Couldn't get a suggestion. Nothing changed.` })}
 					</p>
 					<Button size="sm" variant="outline" className="w-fit" onPress={() => improve.reset()}>

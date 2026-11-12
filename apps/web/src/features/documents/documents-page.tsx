@@ -321,7 +321,7 @@ export function FirstRun({ onChooseFile }: FirstRunProps) {
 			<Typography type="h3" render={renderAsH2}>
 				<Trans>Let's start with what you have</Trans>
 			</Typography>
-			<p className="leading-6 text-muted">
+			<p className="text-muted">
 				<Trans>
 					Import your current resume and we'll lay out every section for you to refine. Or start fresh. Start with your
 					name. Build from there.
@@ -624,7 +624,7 @@ export function DropToImport() {
 				<p className="text-lg font-semibold">
 					<Trans>Drop to import</Trans>
 				</p>
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>PDF, Word or JSON. We'll build a resume from it.</Trans>
 				</p>
 			</div>

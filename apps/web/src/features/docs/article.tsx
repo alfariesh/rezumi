@@ -59,7 +59,7 @@ export function DocsArticle({ page, module }: DocsArticleProps) {
 					</div>
 				)}
 
-				<div className="docs-flow text-base leading-7">
+				<div className="docs-flow text-body">
 					<Content components={docsComponents} />
 				</div>
 
@@ -106,7 +106,7 @@ export function DocsNotFound() {
 			<Typography type="h4" render={renderAsH1} className="mt-5">
 				<Trans>Page not found</Trans>
 			</Typography>
-			<p className="mt-2 text-sm text-pretty text-muted">
+			<p className="mt-2 text-body-sm text-pretty text-muted">
 				<Trans>This page may have moved. Search the list of pages, or start from the introduction.</Trans>
 			</p>
 			<Link to="/docs" className={cn(buttonVariants({ variant: "secondary" }), "mt-6")}>

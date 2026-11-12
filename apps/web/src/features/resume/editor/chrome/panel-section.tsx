@@ -24,12 +24,7 @@ export function PanelHeading({ id, icon, title, action, className }: PanelHeadin
 	return (
 		<div className={cn("flex min-h-8 min-w-0 items-center gap-2", className)}>
 			<Icon name={icon} size={20} className="shrink-0 text-muted [&_*]:stroke-2" />
-			<Typography
-				type="h6"
-				render={renderAsH2}
-				{...(id && { id })}
-				className="min-w-0 flex-1 truncate text-sm leading-5"
-			>
+			<Typography type="h6" render={renderAsH2} {...(id && { id })} className="min-w-0 flex-1 truncate text-sm">
 				{title}
 			</Typography>
 			{action}

@@ -188,7 +188,7 @@ export function PurchaseDialog({ choice, subscription, currency, trialAvailable,
 									<Trans>Renews every month until you cancel.</Trans>
 								)}
 							</p>
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								<Trans>Prices are before tax: Polar adds the tax that applies where you live.</Trans>
 							</p>
 						</div>
@@ -315,7 +315,7 @@ export function PurchaseDialog({ choice, subscription, currency, trialAvailable,
 							</Alert>
 						)}
 
-						<p className="text-xs text-muted">
+						<p className="text-body-xs text-muted">
 							<Trans>
 								{BILLING_SELLER.merchantOfRecord} sells the subscription as the merchant of record and handles payment,
 								invoices and tax. By continuing, you agree to the{" "}

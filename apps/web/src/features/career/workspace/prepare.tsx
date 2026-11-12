@@ -238,7 +238,7 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 					<Typography type="h4" render={renderAsH2}>
 						{data.headline}
 					</Typography>
-					<p className="text-sm text-muted">{data.summary}</p>
+					<p className="text-body-sm text-muted">{data.summary}</p>
 				</div>
 
 				<CareerWidget
@@ -310,7 +310,7 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 												<Trans>{row.minutes} min</Trans>
 											</span>
 										</p>
-										<p className="text-sm text-muted">{row.detail}</p>
+										<p className="text-body-sm text-muted">{row.detail}</p>
 									</div>
 									<div className="col-start-2 sm:col-start-auto">{action(row)}</div>
 								</div>
@@ -323,12 +323,10 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 					<CareerWidget title={t`Questions to ask`} icon="question" count={questions.length}>
 						<ol ref={questionsRef} className="-m-2 grid gap-1 rounded-xl p-2">
 							{questions.map((question, index) => (
-								<li key={`${question.text}-${index}`} className="flex gap-3 py-1.5 text-sm leading-5">
-									<span className="w-4 shrink-0 text-xs leading-5 font-medium text-muted tabular-nums">
-										{index + 1}
-									</span>
+								<li key={`${question.text}-${index}`} className="flex gap-3 py-1.5 text-sm">
+									<span className="w-4 shrink-0 text-body-xs font-medium text-muted tabular-nums">{index + 1}</span>
 									<span className="min-w-0 flex-1">{question.text}</span>
-									<span className="shrink-0 text-xs leading-5 text-muted">{question.origin}</span>
+									<span className="shrink-0 text-body-xs text-muted">{question.origin}</span>
 								</li>
 							))}
 						</ol>
@@ -346,7 +344,7 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 						</Chip>
 					}
 				>
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>
 							Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the
 							call.
@@ -463,14 +461,14 @@ function StoriesToBring({ application, briefing }: StoriesToBringProps) {
 					key={story.id}
 					to="/dashboard/career/knowledge/stories/{-$storyId}"
 					params={{ storyId: story.id }}
-					className="flex items-start gap-2 text-sm leading-5 hover:underline"
+					className="flex items-start gap-2 text-sm hover:underline"
 				>
 					<Icon name="book-open" size={18} className="shrink-0 text-muted" />
 					{story.data.title}
 				</Link>
 			))}
 			{briefing.data.missingStory && (
-				<p className="flex items-start gap-1.5 text-xs leading-4 text-warning-soft-foreground">
+				<p className="flex items-start gap-1.5 text-xs text-warning-soft-foreground">
 					<Icon name="question" size={16} className="shrink-0" />
 					{briefing.data.missingStory}
 				</p>
@@ -631,7 +629,7 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 						<Eyebrow>
 							<Trans>Your opening</Trans>
 						</Eyebrow>
-						<p className="text-base leading-6">“{briefing.data.opening}”</p>
+						<p className="text-base">“{briefing.data.opening}”</p>
 					</div>
 				)}
 				{/* The workspace is full screen on phones (no app tab bar), so the bar pads for the safe area itself. */}
@@ -676,7 +674,7 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 					title={t`Right now`}
 					icon="clock"
 					trailing={
-						<span className="text-xs text-muted">
+						<span className="text-body-xs text-muted">
 							<Trans>Works without AI or new research</Trans>
 						</span>
 					}

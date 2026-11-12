@@ -57,7 +57,7 @@ export function WorksForm() {
 	return (
 		<div className="grid gap-3">
 			{items.length === 0 && (
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>
 						Show what you made: a project, a design, an article. Each work has a card in the list and a detail built
 						from text, pictures and results.

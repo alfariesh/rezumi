@@ -270,7 +270,7 @@ export function RichTextField({
 					slashItems={slashItems}
 				/>
 			</Suspense>
-			{description && <p className="text-xs text-muted">{description}</p>}
+			{description && <p className="text-body-xs text-muted">{description}</p>}
 		</div>
 	);
 }

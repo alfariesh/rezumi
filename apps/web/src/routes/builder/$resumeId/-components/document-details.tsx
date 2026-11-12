@@ -43,13 +43,13 @@ export function DocumentDetails({ descriptionId }: DocumentDetailsProps) {
 		<>
 			<Modal.Header>
 				<Modal.Heading className="break-words">{resume.name}</Modal.Heading>
-				<p id={descriptionId} className="text-sm text-muted">
+				<p id={descriptionId} className="text-body-sm text-muted">
 					<Trans>Resume details</Trans>
 				</p>
 			</Modal.Header>
 
 			<Modal.Body>
-				<dl className="text-sm leading-5">
+				<dl className="text-sm">
 					<Row label={<Trans>Created</Trans>}>
 						<time dateTime={new Date(resume.createdAt).toISOString()}>
 							{i18n.date(resume.createdAt, { dateStyle: "long" })}

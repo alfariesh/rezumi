@@ -42,7 +42,7 @@ export function AtsPdfReportView({ report, className }: ReportViewProps) {
 			<ScoreHeader report={report} />
 
 			{report.document.truncated && (
-				<p className="text-xs leading-normal text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>
 						Only the first {report.document.pageCount} pages were checked, so this report does not cover the whole file.
 					</Trans>
@@ -63,7 +63,7 @@ export function AtsPdfReportView({ report, className }: ReportViewProps) {
 
 			{report.jd && <JdCoverage jd={report.jd} />}
 
-			<p className="text-xs leading-normal text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>
 					This measures how faithfully software can extract this file's text. It does not predict whether an application
 					will be rejected, and no tool can. Your file was read in this browser and never uploaded.
@@ -100,7 +100,7 @@ function CategorySection({ category, findings }: CategorySectionProps) {
 
 			<Accordion.Panel>
 				<Accordion.Body className="space-y-3">
-					<p className="text-xs leading-normal text-muted">
+					<p className="text-body-xs text-muted">
 						{getPdfCategoryDescription(category.category)}{" "}
 						<Trans>
 							{category.passedChecks} of {category.applicableChecks} applicable checks passed.
@@ -110,7 +110,7 @@ function CategorySection({ category, findings }: CategorySectionProps) {
 					{findings.length === 0 ? (
 						<div className="flex items-center gap-2 rounded-md border border-dashed p-2.5">
 							<Icon name="check-circle" size={16} className="shrink-0 text-accent-soft-foreground" />
-							<span className="text-xs leading-normal text-muted">
+							<span className="text-body-xs text-muted">
 								<Trans>Nothing to fix here.</Trans>
 							</span>
 						</div>
@@ -149,12 +149,12 @@ function WritingSection({ tips }: WritingSectionProps) {
 
 			<Accordion.Panel>
 				<Accordion.Body className="space-y-3">
-					<p className="text-xs leading-normal text-muted">{getPdfCategoryDescription("content")}</p>
+					<p className="text-body-xs text-muted">{getPdfCategoryDescription("content")}</p>
 
 					{tips.length === 0 ? (
 						<div className="flex items-center gap-2 rounded-md border border-dashed p-2.5">
 							<Icon name="check-circle" size={16} className="shrink-0 text-accent-soft-foreground" />
-							<span className="text-xs leading-normal text-muted">
+							<span className="text-body-xs text-muted">
 								<Trans>Nothing to suggest.</Trans>
 							</span>
 						</div>

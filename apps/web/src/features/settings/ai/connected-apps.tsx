@@ -60,7 +60,7 @@ export function ConnectedAppsSection() {
 					<Trans>Loading connections...</Trans>
 				</p>
 			) : connections.length === 0 ? (
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>No connected applications yet. Apps you allow to access your account appear here.</Trans>
 				</p>
 			) : (

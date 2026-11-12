@@ -199,7 +199,7 @@ function SalesCard({ metrics }: MetricsProps) {
 				<MiniStat value={formatMoney(metrics.refunds.amount)} label={t`Refunded · ${metrics.refunds.refunds}`} />
 				<MiniStat value={formatMoney(metrics.net)} label={t`Net, before tax and Polar's fees`} />
 			</div>
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				{t`${kinds.new ?? 0} new · ${kinds.renewal ?? 0} renewals · ${kinds.change ?? 0} plan changes`}
 			</p>
 			<BarChart data={metrics.daily} height={200}>
@@ -287,7 +287,7 @@ function SubscriptionsCard({ metrics }: MetricsProps) {
 				<MiniStat value={subscriptions.ended} label={t`Ended`} />
 			</div>
 			{rows.length === 0 ? (
-				<p className="py-10 text-center text-sm text-muted">
+				<p className="py-10 text-center text-body-sm text-muted">
 					<Trans>No subscriptions yet.</Trans>
 				</p>
 			) : (
@@ -310,7 +310,7 @@ function SubscriptionsCard({ metrics }: MetricsProps) {
 						</PieChart>
 						<div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
 							<span className="text-lg font-semibold tabular-nums">{subscriptions.active}</span>
-							<span className="text-xs text-muted">
+							<span className="text-body-xs text-muted">
 								<Trans>active</Trans>
 							</span>
 						</div>
@@ -352,7 +352,7 @@ function AiCard({ metrics }: MetricsProps) {
 				/>
 			</div>
 			{rows.length === 0 ? (
-				<p className="py-6 text-center text-sm text-muted">
+				<p className="py-6 text-center text-body-sm text-muted">
 					<Trans>No Rezumi AI work in this period.</Trans>
 				</p>
 			) : (
@@ -671,7 +671,7 @@ function PaymentsCard({ range, query }: PaymentsCardProps) {
 				</div>
 			)}
 			{error ? (
-				<p role="alert" className="text-sm text-danger">
+				<p role="alert" className="text-body-sm text-danger">
 					{getReadableErrorMessage(error, t`The payments couldn't load.`)}
 				</p>
 			) : loading ? (
@@ -688,7 +688,7 @@ function PaymentsCard({ range, query }: PaymentsCardProps) {
 						if (userId) void navigate({ to: "/dashboard/admin/billing/$userId", params: { userId } });
 					}}
 					renderEmptyState={() => (
-						<p className="py-10 text-center text-sm text-muted">
+						<p className="py-10 text-center text-body-sm text-muted">
 							{searching ? t`Nothing matches.` : t`No payments in this period.`}
 						</p>
 					)}
@@ -758,7 +758,7 @@ export function BillingAdminPage({ query }: BillingAdminPageProps) {
 					<Typography type="h2" render={renderAsH1}>
 						<Trans>Billing</Trans>
 					</Typography>
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>Days in WIB. Trends compare with the period just before.</Trans>
 					</p>
 				</div>
@@ -815,7 +815,7 @@ export function BillingAdminPage({ query }: BillingAdminPageProps) {
 					</div>
 				</>
 			) : metrics.error ? (
-				<p role="alert" className="text-sm text-danger">
+				<p role="alert" className="text-body-sm text-danger">
 					{getReadableErrorMessage(metrics.error, t`The numbers couldn't load.`)}
 				</p>
 			) : (

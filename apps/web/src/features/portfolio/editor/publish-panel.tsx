@@ -153,7 +153,7 @@ function PublishGroup() {
 						<p className="text-sm font-medium">
 							<Trans>Not published yet</Trans>
 						</p>
-						<p className="text-xs text-muted">
+						<p className="text-body-xs text-muted">
 							<Trans>Only you can see it until you publish. After that, changes show as soon as they're saved.</Trans>
 						</p>
 					</div>
@@ -474,7 +474,7 @@ function LanguageGroup() {
 						})
 					}
 				/>
-				<span className="text-xs text-muted">
+				<span className="text-body-xs text-muted">
 					<Trans>
 						Changes section titles and button labels such as “View resume”, not your own text. Empty follows your
 						resume.
@@ -546,7 +546,7 @@ function SourceGroup() {
 					</ListBox>
 				</Select.Popover>
 			</Select>
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>
 					Your name, photo, experience, education, skills and contact details follow this resume as it changes. Your
 					portfolio's own text, work and design stay as they are.

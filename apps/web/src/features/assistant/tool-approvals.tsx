@@ -19,7 +19,7 @@ export function ToolApprovals({ message, disabled, onDecision }: ToolApprovalsPr
 					<Trans>Save this story to Knowledge?</Trans>
 				)}
 			</p>
-			<p className="text-sm wrap-anywhere whitespace-pre-wrap">{text}</p>
+			<p className="text-body-sm wrap-anywhere whitespace-pre-wrap">{text}</p>
 			<div className="flex gap-2">
 				<Button size="sm" isDisabled={disabled} onPress={() => onDecision({ id, approved: true })}>
 					{kind === "search" ? <Trans>Search the web</Trans> : <Trans>Save story</Trans>}

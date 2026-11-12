@@ -552,13 +552,13 @@ function ContextColumn({ application, interview, now, onEdit }: ContextColumnPro
 					</p>
 					{upcoming ? (
 						<>
-							<p className="text-sm text-muted">
+							<p className="text-body-sm text-muted">
 								{day(upcoming.at)} · {time(upcoming.at)} · {formatDuration(upcoming.durationMinutes, i18n.locale)}
 							</p>
-							{upcoming.location && <p className="text-xs text-muted">{upcoming.location}</p>}
+							{upcoming.location && <p className="text-body-xs text-muted">{upcoming.location}</p>}
 						</>
 					) : (
-						text.sub && <p className="text-sm text-muted">{text.sub}</p>
+						text.sub && <p className="text-body-sm text-muted">{text.sub}</p>
 					)}
 				</div>
 				{upcoming && <CountdownChip at={new Date(upcoming.at)} now={now} />}
@@ -596,7 +596,7 @@ function ContextColumn({ application, interview, now, onEdit }: ContextColumnPro
 						<Eyebrow>
 							<Trans>Interview notes</Trans>
 						</Eyebrow>
-						<p className="rounded-xl bg-surface-secondary px-3 py-2.5 text-sm leading-5 whitespace-pre-wrap text-muted">
+						<p className="rounded-xl bg-surface-secondary px-3 py-2.5 text-body-sm whitespace-pre-wrap text-muted">
 							{upcoming.notes}
 						</p>
 					</section>
@@ -612,12 +612,12 @@ function ContextColumn({ application, interview, now, onEdit }: ContextColumnPro
 					contentClassName="grid-cols-[minmax(0,1fr)] gap-1 p-2"
 				>
 					{documentsPending ? (
-						<p role="status" className="px-2 py-1 text-xs text-muted">
+						<p role="status" className="px-2 py-1 text-body-xs text-muted">
 							<Trans>Loading linked documents…</Trans>
 						</p>
 					) : documentsFailed ? (
 						<div className="grid justify-items-start gap-1.5 px-2 py-1">
-							<p role="alert" className="text-xs text-muted">
+							<p role="alert" className="text-body-xs text-muted">
 								<Trans>Linked documents couldn't be loaded.</Trans>
 							</p>
 							<Button
@@ -689,7 +689,7 @@ function ContextColumn({ application, interview, now, onEdit }: ContextColumnPro
 
 			<section className="grid gap-1.5">
 				<ApplicationNotes key={application.id} application={application} />
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>The coach reads these for this application only.</Trans>
 				</p>
 			</section>

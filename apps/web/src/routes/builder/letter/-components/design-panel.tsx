@@ -121,7 +121,7 @@ export function LetterDesignPanel() {
 						)}
 					</>
 				) : (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>Choose a resume in Write to match its design. Until then, the letter has its own.</Trans>
 					</p>
 				)}

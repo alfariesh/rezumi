@@ -48,7 +48,7 @@ export function CvDomainCard({ suggestion: { domain, checked, price }, connectin
 					)}
 				</p>
 			</div>
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>
 					Your name as your address, from OlaCV, the .cv registry. Code{" "}
 					<CopyText value="RX" className="mx-0 bg-surface font-mono font-medium text-foreground" /> takes 50% off the

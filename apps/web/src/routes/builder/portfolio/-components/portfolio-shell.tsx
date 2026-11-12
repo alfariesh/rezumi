@@ -448,7 +448,7 @@ function ConflictDialog() {
 						</Modal.Heading>
 					</Modal.Header>
 					<Modal.Body>
-						<p className="text-sm text-muted">
+						<p className="text-body-sm text-muted">
 							<Trans>
 								It was saved in another tab or on another device after you opened it here. Reload to continue from that
 								version, or keep your version and save it over that one.

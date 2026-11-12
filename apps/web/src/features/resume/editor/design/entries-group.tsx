@@ -156,7 +156,7 @@ export function EntriesGroup() {
 								<span aria-hidden="true" className="flex h-7.5 flex-col justify-center gap-1 px-0.5">
 									{option.wireframe}
 								</span>
-								<span className="text-center text-xs leading-4 text-muted group-data-selected/layout:font-semibold group-data-selected/layout:text-foreground">
+								<span className="text-center text-xs text-muted group-data-selected/layout:font-semibold group-data-selected/layout:text-foreground">
 									{option.label()}
 								</span>
 							</RadioButtonGroup.ItemContent>

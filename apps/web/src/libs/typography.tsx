@@ -12,5 +12,3 @@ type TypographyRender = NonNullable<TypographyProps["render"]>;
 export const renderAsH1: TypographyRender = ({ children, ...props }) => <h1 {...props}>{children}</h1>;
 export const renderAsH2: TypographyRender = ({ children, ...props }) => <h2 {...props}>{children}</h2>;
 export const renderAsH3: TypographyRender = ({ children, ...props }) => <h3 {...props}>{children}</h3>;
-
-export const renderAsSpan: TypographyRender = ({ children, ...props }) => <span {...props}>{children}</span>;

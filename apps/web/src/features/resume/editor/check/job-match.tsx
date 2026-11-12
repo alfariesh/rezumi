@@ -159,11 +159,11 @@ export function JobMatchTab({ match }: JobMatchTabProps) {
 				contentClassName="gap-5"
 			>
 				{!result ? (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>Reading the posting…</Trans>
 					</p>
 				) : result.total === 0 ? (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>No terms stood out in this posting.</Trans>
 					</p>
 				) : (
@@ -214,7 +214,7 @@ export function JobMatchTab({ match }: JobMatchTabProps) {
 										aria-label={t`Add “${open.label}”`}
 										className={cn(ENTER_CLASS, "grid gap-3 rounded-xl bg-surface-secondary p-4 fields-on-card")}
 									>
-										<p className="text-sm text-muted">
+										<p className="text-body-sm text-muted">
 											<Plural
 												value={open.jdCount}
 												one={`“${open.label}” appears once in the posting.`}
@@ -272,7 +272,7 @@ export function JobMatchTab({ match }: JobMatchTabProps) {
 				)}
 
 				{hiddenTerms.length > 0 && (
-					<p className="text-xs text-muted">
+					<p className="text-body-xs text-muted">
 						<Trans>Hidden: {hiddenList}</Trans> ·{" "}
 						{/* An inline text action inside the sentence; a HeroUI Button would break the line. */}
 						<button
@@ -355,7 +355,7 @@ function PostingSource({ application }: { application: JobMatch["application"] }
 						<b className="text-sm font-semibold">
 							<Trans>Pasted posting</Trans>
 						</b>
-						<span className="text-xs text-muted">
+						<span className="text-body-xs text-muted">
 							<Trans>For this visit only</Trans>
 						</span>
 					</span>
@@ -378,7 +378,7 @@ function PostingSource({ application }: { application: JobMatch["application"] }
 					<b className="truncate text-sm font-semibold">
 						{application.role} · {application.company}
 					</b>
-					<span className="text-xs text-muted">
+					<span className="text-body-xs text-muted">
 						<Trans>Posting from the linked application</Trans>
 					</span>
 				</span>
@@ -471,7 +471,7 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 				}
 				contentClassName="gap-3"
 			>
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>This application has no posting saved yet. Paste it to match against it.</Trans>
 				</p>
 				<WithInputIcon icon="note" iconClassName="top-3 translate-y-0">
@@ -501,12 +501,12 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 
 	return (
 		<CheckWidget icon="briefcase" title={<Trans>Match against a job</Trans>} contentClassName="gap-3">
-			<p className="text-sm text-muted">
+			<p className="text-body-sm text-muted">
 				<Trans>This resume isn't linked to an application yet.</Trans>
 			</p>
 			<ApplicationPicker value={null} onChange={(id) => void link(id)} />
 			{isPending && (
-				<span className="text-xs text-muted">
+				<span className="text-body-xs text-muted">
 					<Trans>Linking…</Trans>
 				</span>
 			)}
@@ -537,7 +537,7 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 			>
 				<Trans>Match this posting</Trans>
 			</Button>
-			<span className="text-xs text-muted">
+			<span className="text-body-xs text-muted">
 				<Trans>A pasted posting can be saved as an application afterwards.</Trans>
 			</span>
 		</CheckWidget>

@@ -177,7 +177,7 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 			</CareerWidget>
 
 			<CareerWidget icon="list-checks" title={<Trans>Requirements</Trans>} contentClassName="gap-5 p-4">
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>Used to check roles and offers. Each is a number, so the coach can compare without guessing.</Trans>
 				</p>
 
@@ -229,7 +229,7 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 					</div>
 				</div>
 
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>Times are shown in {timeZone}.</Trans>{" "}
 					<Link
 						to="/dashboard/settings/app"
@@ -259,7 +259,7 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 						))}
 					</Segment>
 				</div>
-				<p className="text-sm text-muted">{memoryHints[draft.memoryMode]}</p>
+				<p className="text-body-sm text-muted">{memoryHints[draft.memoryMode]}</p>
 			</CareerWidget>
 		</div>
 	);

@@ -35,7 +35,7 @@ export function ExportApplicationsSheet({ open, onOpenChange, applications, filt
 							<Sheet.Heading>
 								<Trans>Export applications</Trans>
 							</Sheet.Heading>
-							<p className="text-sm text-muted">
+							<p className="text-body-sm text-muted">
 								<Trans>Download application details, contacts, notes, and timeline history as CSV.</Trans>
 							</p>
 						</Sheet.Header>
@@ -80,11 +80,11 @@ export function ExportApplicationsSheet({ open, onOpenChange, applications, filt
 									/>
 								</div>
 								{!validRange && (
-									<p role="alert" className="text-sm text-danger-soft-foreground">
+									<p role="alert" className="text-body-sm text-danger-soft-foreground">
 										<Trans>Start date must be on or before end date.</Trans>
 									</p>
 								)}
-								<p className="text-sm text-muted">
+								<p className="text-body-sm text-muted">
 									<Plural value={selected.length} one="# application to export" other="# applications to export" />
 								</p>
 							</Sheet.Body>

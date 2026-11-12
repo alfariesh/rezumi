@@ -335,7 +335,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 			>
 				{notSetUp ? (
 					<>
-						<p className="m-4 rounded-xl bg-control p-4 text-sm text-muted">
+						<p className="m-4 rounded-xl bg-control p-4 text-body-sm text-muted">
 							<Trans>
 								The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers
 								and your applications work without it.
@@ -591,7 +591,7 @@ function ConversationList({
 			<ScrollShadow hideScrollBar className="min-h-0 flex-1 overflow-y-auto">
 				{currentId === null && !needle && (
 					<ul className="mb-3">
-						<li aria-current="page" className="rounded-xl bg-control px-3 py-2 text-sm leading-5 font-medium">
+						<li aria-current="page" className="rounded-xl bg-control px-3 py-2 text-sm font-medium">
 							<Trans>New conversation</Trans>
 						</li>
 					</ul>
@@ -619,12 +619,12 @@ function ConversationList({
 					</section>
 				))}
 				{threads.length > 0 && shown.length === 0 && (
-					<p className="px-3 py-10 text-center text-sm text-muted">
+					<p className="px-3 py-10 text-center text-body-sm text-muted">
 						<Trans>No conversations match.</Trans>
 					</p>
 				)}
 				{threads.length === 0 && currentId !== null && (
-					<p className="px-3 py-10 text-center text-sm text-muted">
+					<p className="px-3 py-10 text-center text-body-sm text-muted">
 						<Trans>Your conversations appear here.</Trans>
 					</p>
 				)}
@@ -692,7 +692,7 @@ function ConversationItem({
 						aria-current={current ? "page" : undefined}
 						onClick={onNavigate}
 						className={cn(
-							"flex items-center gap-2 rounded-xl py-2 ps-3 pe-9 text-sm leading-5",
+							"flex items-center gap-2 rounded-xl py-2 ps-3 pe-9 text-sm",
 							current ? "bg-control font-medium" : "hover:bg-default/60",
 						)}
 					>

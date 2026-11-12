@@ -65,7 +65,7 @@ export function DraftProgress({ onStop }: DraftProgressProps) {
 				<p className="text-sm font-medium">
 					<Trans>Writing your draft…</Trans>
 				</p>
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>This usually takes less than a minute.</Trans>
 				</p>
 			</div>

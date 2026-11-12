@@ -417,7 +417,7 @@ function LayoutGroup() {
 					/>
 				);
 			})}
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>The numbers style applies to results in your work once you add them.</Trans>
 			</p>
 		</PanelGroup>

@@ -65,7 +65,7 @@ export function WebAccessSection() {
 			title={<Trans>Web access</Trans>}
 			description={<Trans>Read the job links you save. Saving and preparing jobs works without a connection.</Trans>}
 			footer={
-				<div className="flex items-start gap-2 text-xs leading-5 text-muted">
+				<div className="flex items-start gap-2 text-body-xs text-muted">
 					<Icon name="sparkle" size={16} className="mt-0.5 shrink-0" />
 					<div>
 						<span className="font-medium text-foreground">
@@ -114,7 +114,7 @@ export function WebAccessSection() {
 							</Chip.Label>
 						</Chip>
 					</div>
-					<p className="text-sm leading-5 text-muted">
+					<p className="text-body-sm text-muted">
 						{connectedProvider ? (
 							<Trans>Used when {connectedProvider} can't read a page. No account needed.</Trans>
 						) : (
@@ -148,7 +148,7 @@ export function WebAccessSection() {
 								</Chip>
 							)}
 						</div>
-						<p className="max-w-[58ch] text-sm leading-5 text-muted">
+						<p className="max-w-[58ch] text-body-sm text-muted">
 							{serverSearch ? (
 								<Trans>
 									Your server provides search for Applications and the assistant. Connect a service to read pages the
@@ -272,7 +272,7 @@ export function WebAccessSection() {
 							</Button>
 						)}
 						{test.isPending && (
-							<p role="status" className="text-sm text-muted">
+							<p role="status" className="text-body-sm text-muted">
 								{!serverSearch ? (
 									<Trans>Testing search and reading with {connectedProvider}…</Trans>
 								) : connectedProvider ? (
@@ -283,7 +283,7 @@ export function WebAccessSection() {
 							</p>
 						)}
 						{test.data && (
-							<div role="status" className="grid gap-2 text-sm leading-5">
+							<div role="status" className="grid gap-2 text-sm">
 								{[
 									{ result: test.data.search, label: test.data.search.success ? t`Search works` : t`Search failed` },
 									// Without a connection only the built-in reader reads, and the test doesn't cover it.
@@ -315,7 +315,7 @@ export function WebAccessSection() {
 										<Trans>The built-in reader remains active.</Trans>
 									</p>
 								)}
-								<p className="text-xs text-muted">
+								<p className="text-body-xs text-muted">
 									{!serverSearch ? (
 										<Trans>Tested with {connectedProvider}. Only this service was tested.</Trans>
 									) : connectedProvider ? (
@@ -415,7 +415,7 @@ export function WebAccessSection() {
 									</Description>
 								</TextField>
 								<div className="flex flex-wrap items-center justify-between gap-3 border-t border-separator pt-3">
-									<p className="max-w-[34ch] text-xs leading-5 text-muted">
+									<p className="max-w-[34ch] text-body-xs text-muted">
 										<Trans>Save first, then test search and reading. No test runs automatically.</Trans>
 									</p>
 									<div className="ms-auto flex gap-1">

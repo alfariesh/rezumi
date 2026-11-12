@@ -91,7 +91,7 @@ function SectionsGroup() {
 
 	return (
 		<PanelGroup icon="list-bullets" title={<Trans>Sections</Trans>}>
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>
 					Drag a section, or use its arrows, to change the order. Empty sections don't show on the page until they have
 					something in them.

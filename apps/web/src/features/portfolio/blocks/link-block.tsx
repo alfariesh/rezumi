@@ -169,7 +169,7 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 						referrerPolicy="no-referrer"
 						className="max-h-40 w-auto max-w-full justify-self-start rounded-lg"
 					/>
-					<span className="text-xs text-muted">
+					<span className="text-body-xs text-muted">
 						<Trans>
 							It's copied into your portfolio, so your page never loads pictures from other sites. Use it only if you
 							may show it.

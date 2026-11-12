@@ -352,7 +352,7 @@ function NavigationContent() {
 							{expanded && (
 								<span className="grid min-w-0">
 									<span className="truncate text-sm font-medium">{session.user.name}</span>
-									<span className="text-xs text-muted">
+									<span className="text-body-xs text-muted">
 										<Trans>Account</Trans>
 									</span>
 								</span>

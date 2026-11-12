@@ -141,7 +141,7 @@ export function OffersPage({ a, b }: OffersPageProps) {
 				}
 				contentClassName="gap-0 p-0"
 			>
-				<p className="px-5 pt-4 pb-3 text-sm text-muted">
+				<p className="px-5 pt-4 pb-3 text-body-sm text-muted">
 					<Trans>
 						Compared in their original currency and pay period. Comparing doesn't share anything with the coach.
 					</Trans>
@@ -229,7 +229,7 @@ function ComparisonTable({ offers, left, right, onChoose }: ComparisonTableProps
 											<p className="text-sm font-semibold">
 												<Trans>Save another offer to compare</Trans>
 											</p>
-											<p className="text-sm font-normal text-muted">
+											<p className="text-body-sm font-normal text-muted">
 												<Trans>Paste an offer into an application's Messages tab.</Trans>
 											</p>
 											{offers.length > 1 && (
@@ -584,12 +584,12 @@ function OpenQuestions({ offers }: OpenQuestionsProps) {
 	return (
 		<CareerWidget icon="question" title={<Trans>Not in either offer yet</Trans>} contentClassName="gap-3 p-4">
 			{questions.length === 0 ? (
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>Both offers cover everything compared here.</Trans>
 				</p>
 			) : (
 				<>
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						{said
 							? offers.length > 1
 								? t`You said: “${said}” Ask both companies before deciding.`

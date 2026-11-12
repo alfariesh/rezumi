@@ -301,7 +301,7 @@ export function IssueStepper() {
 				className="absolute inset-x-3 bottom-3 z-10 grid gap-2 rounded-2xl bg-overlay p-4 shadow-overlay"
 			>
 				<strong className="text-base font-semibold">{issue.title}</strong>
-				<p className="text-sm text-muted">{issue.body}</p>
+				<p className="text-body-sm text-muted">{issue.body}</p>
 				<Button className="mt-1" onPress={() => fix(issue)}>
 					{issue.fix.kind === "apply" ? (
 						<Icon name={issue.fix.icon} size={18} />

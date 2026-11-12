@@ -36,7 +36,7 @@ export function TemplateGallery() {
 							{t`How to choose a template`}
 						</a>
 					</div>
-					<p className="mt-3 text-sm text-muted">
+					<p className="mt-3 text-body-sm text-muted">
 						{t`Create a free account, then choose a template included in your plan in Design. Switch layouts without rewriting your content.`}
 					</p>
 				</div>
@@ -117,7 +117,7 @@ export function TemplateGallery() {
 									<span aria-hidden="true"> · </span>
 									{isFree ? t`Free` : t`Plus / Pro AI`}
 								</p>
-								<p className="mt-3 leading-relaxed text-muted">{i18n._(template.description)}</p>
+								<p className="mt-3 text-body text-muted">{i18n._(template.description)}</p>
 							</article>
 						);
 					})}
@@ -125,18 +125,18 @@ export function TemplateGallery() {
 
 				<section aria-labelledby="layout-advice" className="my-10 border-y border-separator py-6">
 					<Typography type="h2" id="layout-advice" className="text-3xl">{t`One column or two?`}</Typography>
-					<p className="mt-3 max-w-3xl leading-relaxed text-muted">
+					<p className="mt-3 max-w-3xl text-body text-muted">
 						{t`One-column templates give hiring software a simple top-to-bottom reading order. Two-column templates put supporting details in a sidebar and leave more room for visual hierarchy. Choose for your content, then check the exported PDF.`}
 					</p>
 					<Link to="/ats-checker" className="mt-3 inline-block text-link underline underline-offset-4">
 						{t`Check your resume’s ATS readability`}
 					</Link>
-					<p className="mt-2 text-sm text-muted">{t`Readability does not guarantee an interview or a particular ATS result.`}</p>
+					<p className="mt-2 text-body-sm text-muted">{t`Readability does not guarantee an interview or a particular ATS result.`}</p>
 				</section>
 
 				<section className="mt-16 border-t border-separator pt-8" aria-labelledby="make-it-yours">
 					<Typography type="h2" id="make-it-yours">{t`Make it yours, then take it with you.`}</Typography>
-					<p className="mt-3 max-w-2xl leading-relaxed text-muted">{t`Adjust fonts, colors, spacing and sections in the resume builder. Download a PDF without a watermark on every plan, or share a link. Word and ODT downloads are included with Plus and Pro AI. The PDFs above are examples to help you compare designs.`}</p>
+					<p className="mt-3 max-w-2xl text-body text-muted">{t`Adjust fonts, colors, spacing and sections in the resume builder. Download a PDF without a watermark on every plan, or share a link. Word and ODT downloads are included with Plus and Pro AI. The PDFs above are examples to help you compare designs.`}</p>
 					<Link to="/auth/register" className={buttonVariants({ className: "mt-5" })}>
 						{t`Build your resume`}
 					</Link>

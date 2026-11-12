@@ -233,7 +233,7 @@ function LetterSaveStatus() {
 			role="status"
 			aria-live="polite"
 			title={words}
-			className="flex min-w-0 shrink-0 items-center gap-1.5 text-xs leading-4 whitespace-nowrap text-muted"
+			className="flex min-w-0 shrink-0 items-center gap-1.5 text-xs whitespace-nowrap text-muted"
 		>
 			{status === "saving" && (
 				<>

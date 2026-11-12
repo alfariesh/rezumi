@@ -1,5 +1,5 @@
 import type { Basics, CustomField } from "@rezumi/schema/resume/data";
-import { Button, ButtonGroup, Disclosure, Input, Popover, Tooltip, Typography } from "@heroui/react";
+import { Button, ButtonGroup, Disclosure, Input, Popover, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
@@ -15,7 +15,6 @@ import {
 	useResumeIconStyle,
 	useUpdateResumeData,
 } from "@/features/resume/builder/draft";
-import { renderAsSpan } from "@/libs/typography";
 
 type TextKey = "name" | "headline" | "email" | "phone" | "location";
 
@@ -48,9 +47,9 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 				<Disclosure.Heading className="min-w-0">
 					<Disclosure.Trigger className="flex min-h-8 w-full cursor-(--cursor-interactive) items-center gap-2 rounded-lg text-start outline-none focus-visible:ring-2 focus-visible:ring-focus">
 						<Icon name="user-circle" size={20} className="shrink-0 text-muted [&_*]:stroke-2" />
-						<Typography type="h6" render={renderAsSpan} className="shrink-0 text-sm leading-5">
+						<span className="shrink-0 text-sm font-semibold">
 							<Trans>About</Trans>
-						</Typography>
+						</span>
 						<Disclosure.Indicator className="ms-auto text-muted" />
 					</Disclosure.Trigger>
 				</Disclosure.Heading>
@@ -120,7 +119,7 @@ function PhotoRow({ locked }: { locked: boolean }) {
 					<Icon name="camera-plus" />
 				</span>
 			)}
-			<p className="min-w-0 flex-1 text-xs leading-4 text-muted">
+			<p className="min-w-0 flex-1 text-xs text-muted">
 				{!hasPhoto ? (
 					<Trans>No photo. Most ATS ignore photos; some regions expect one.</Trans>
 				) : picture.hidden ? (

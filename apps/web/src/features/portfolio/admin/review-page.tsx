@@ -135,7 +135,7 @@ export function PortfolioReviewPage({ portfolioId }: PortfolioReviewPageProps) {
 	if (query.isPending) return <Spinner size="sm" />;
 	if (query.isError)
 		return (
-			<p className="text-sm text-danger" role="alert">
+			<p className="text-body-sm text-danger" role="alert">
 				{portfolioErrorMessage(query.error, { fallback: t`Couldn't load this portfolio. Try again.` })}
 			</p>
 		);
@@ -154,7 +154,7 @@ export function PortfolioReviewPage({ portfolioId }: PortfolioReviewPageProps) {
 					<Typography type="h2" render={renderAsH1}>
 						@{review.username}
 					</Typography>
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						{review.ownerName} · {review.ownerEmail}
 					</p>
 					<div className="flex flex-wrap gap-2">
@@ -225,7 +225,7 @@ export function PortfolioReviewPage({ portfolioId }: PortfolioReviewPageProps) {
 					title={<Trans>Takedown reason</Trans>}
 					description={formatModerationTime(review.suspendedAt)}
 				>
-					<p className="text-sm whitespace-pre-wrap">{review.suspendedReason}</p>
+					<p className="text-body-sm whitespace-pre-wrap">{review.suspendedReason}</p>
 				</AdminCard>
 			)}
 
@@ -237,7 +237,7 @@ export function PortfolioReviewPage({ portfolioId }: PortfolioReviewPageProps) {
 				<div className="flex flex-col gap-4">
 					<AdminCard icon="warning-circle" title={<Trans>Reports</Trans>}>
 						{review.reports.length === 0 ? (
-							<p className="text-sm text-muted">
+							<p className="text-body-sm text-muted">
 								<Trans>No reports about this portfolio.</Trans>
 							</p>
 						) : (
@@ -251,7 +251,7 @@ export function PortfolioReviewPage({ portfolioId }: PortfolioReviewPageProps) {
 											</Chip>
 										</div>
 										<p className="break-words whitespace-pre-wrap">{report.details}</p>
-										<p className="text-xs text-muted">
+										<p className="text-body-xs text-muted">
 											{formatModerationTime(report.createdAt)}
 											{report.reporterEmail ? ` · ${report.reporterEmail}` : ""}
 										</p>
@@ -283,7 +283,7 @@ export function PortfolioReviewPage({ portfolioId }: PortfolioReviewPageProps) {
 
 					<AdminCard icon="clock-counter-clockwise" title={<Trans>History</Trans>}>
 						{review.history.length === 0 ? (
-							<p className="text-sm text-muted">
+							<p className="text-body-sm text-muted">
 								<Trans>Nothing has been done yet.</Trans>
 							</p>
 						) : (

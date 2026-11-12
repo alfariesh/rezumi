@@ -93,7 +93,7 @@ export function ApplicationBoard({ applications, onOpen }: BoardProps) {
 							<Modal.Heading>
 								<Trans>Close application</Trans>
 							</Modal.Heading>
-							<p id={closeDescriptionId} className="text-sm text-muted">
+							<p id={closeDescriptionId} className="text-body-sm text-muted">
 								{closing?.role} · {closing?.company}
 							</p>
 						</Modal.Header>

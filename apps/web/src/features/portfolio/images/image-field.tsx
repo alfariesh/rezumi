@@ -337,7 +337,7 @@ function FocusPicker({ image, focus, onChange }: FocusPickerProps) {
 					style={{ objectPosition: position }}
 				/>
 			</div>
-			<span className="text-xs text-muted">
+			<span className="text-body-xs text-muted">
 				<Trans>Tap the part to keep in view when a card crops the cover. Arrow keys move it too.</Trans>
 			</span>
 		</div>

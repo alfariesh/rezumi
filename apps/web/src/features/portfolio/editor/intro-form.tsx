@@ -228,7 +228,7 @@ function HeroHighlights() {
 				<span className="text-sm font-medium">
 					<Trans>Achievement numbers</Trans>
 				</span>
-				<span className="text-xs text-muted">
+				<span className="text-body-xs text-muted">
 					<Trans>Two to four of your strongest results, such as “8 years” or “+35% conversion”.</Trans>
 				</span>
 			</div>
@@ -279,7 +279,7 @@ function HeroButtons() {
 				<span className="text-sm font-medium">
 					<Trans>Buttons</Trans>
 				</span>
-				<span className="text-xs text-muted">
+				<span className="text-body-xs text-muted">
 					<Trans>
 						Up to three, under your greeting. The first one stands out. An Email or WhatsApp button shows that address
 						to visitors, even if Contact hides it.

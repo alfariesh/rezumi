@@ -261,7 +261,7 @@ const StoryCard = memo(function StoryCard({ story, selected, changed }: StoryCar
 					selected ? "bg-surface-secondary" : "hover:bg-default/60",
 				)}
 			>
-				<span className="text-sm leading-5 font-semibold">{story.data.title}</span>
+				<span className="text-sm font-semibold">{story.data.title}</span>
 				<span className="text-xs text-muted tabular-nums">
 					<Trans>{filled} of 5 parts</Trans> · {plural(factCount, { one: "# fact", other: "# facts" })}
 				</span>
@@ -326,7 +326,7 @@ function StoryReader({ story, facts }: StoryReaderProps) {
 						))}
 					</div>
 				) : (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>No tags yet</Trans>
 					</p>
 				)}
@@ -346,7 +346,7 @@ function StoryReader({ story, facts }: StoryReaderProps) {
 									{text ? (
 										<p className="text-base text-pretty whitespace-pre-line">{text}</p>
 									) : (
-										<p className="text-sm text-muted italic">
+										<p className="text-body-sm text-muted italic">
 											<Trans>Not recorded yet. Leave it blank until you can support it.</Trans>
 										</p>
 									)}
@@ -366,7 +366,7 @@ function StoryReader({ story, facts }: StoryReaderProps) {
 						key={fact.id}
 						to="/dashboard/career/knowledge/facts"
 						search={{ highlight: fact.id }}
-						className="flex items-start gap-2.5 rounded-xl px-3 py-2.5 text-sm leading-5 hover:bg-default"
+						className="flex items-start gap-2.5 rounded-xl px-3 py-2.5 text-sm hover:bg-default"
 					>
 						<Icon name="link-simple-horizontal" size={16} className="mt-0.5 shrink-0 text-accent" />
 						<span className={cn(fact.status !== "active" && "text-muted")}>{fact.text}</span>
@@ -554,7 +554,7 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					onKeyDown={(event) => {
 						if (event.key === "Enter") event.preventDefault();
 					}}
-					className="min-h-0 resize-none text-xl leading-7 font-semibold"
+					className="min-h-0 resize-none text-xl font-semibold"
 				/>
 				<Input
 					fullWidth
@@ -609,7 +609,7 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 							isDisabled={disabled}
 							onChange={(value) => toggleFact(fact.id, value)}
 							className={cn(
-								"flex items-start gap-2.5 rounded-xl px-3 py-2.5 text-sm leading-5 transition-colors duration-quick",
+								"flex items-start gap-2.5 rounded-xl px-3 py-2.5 text-sm transition-colors duration-quick",
 								checked ? "bg-accent-soft" : "bg-default",
 								disabled ? "cursor-not-allowed text-muted" : "cursor-pointer",
 							)}
@@ -621,7 +621,7 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 								<span className="min-w-0 flex-1">
 									{fact.text}
 									{disabled && (
-										<span className="block text-xs text-muted">
+										<span className="block text-body-xs text-muted">
 											<Trans>Not used in coaching, so it can't back a story.</Trans>
 										</span>
 									)}
@@ -631,7 +631,7 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					);
 				})}
 				{shared.length === 0 && (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>No facts to link yet. Add them in Facts.</Trans>
 					</p>
 				)}

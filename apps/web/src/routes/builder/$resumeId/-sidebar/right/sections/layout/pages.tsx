@@ -342,7 +342,7 @@ function LayoutColumn({
 				))}
 
 				{items.length === 0 && (
-					<div className="p-2 text-xs text-muted">
+					<div className="p-2 text-body-xs text-muted">
 						<Trans>Drag and drop sections here to move them between columns</Trans>
 					</div>
 				)}

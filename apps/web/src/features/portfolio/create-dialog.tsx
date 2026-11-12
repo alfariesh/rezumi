@@ -133,7 +133,7 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 						<Modal.Heading id={`${id}-title`}>
 							<Trans>Create your portfolio</Trans>
 						</Modal.Heading>
-						<p id={`${id}-step`} className="text-sm text-muted">
+						<p id={`${id}-step`} className="text-body-sm text-muted">
 							{stepLabel()}
 						</p>
 					</Modal.Header>
@@ -171,7 +171,7 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 											</Radio>
 										))}
 									</RadioGroup>
-									<p className="text-xs text-muted">
+									<p className="text-body-xs text-muted">
 										{withoutResume ? (
 											<Trans>You can link a resume later in Publish.</Trans>
 										) : (
@@ -196,7 +196,7 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 												placeholder={t`Product designer`}
 												onChange={setHeadline}
 											/>
-											<p className="text-xs text-muted">
+											<p className="text-body-xs text-muted">
 												<Trans>A photo can be added later.</Trans>
 											</p>
 										</div>
@@ -213,7 +213,7 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 								/>
 							) : (
 								<div className="grid gap-4">
-									<p className="text-sm">
+									<p className="text-body-sm">
 										<Trans>
 											Write your intro, About me and the story of your work from your resume, then edit it however you
 											like. You can undo it.
@@ -233,7 +233,7 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 						) : (
 							<div className="grid gap-3">
 								<ThemeGallery value={theme} onChange={setTheme} columns={2} />
-								<p className="text-xs text-muted">
+								<p className="text-body-xs text-muted">
 									<Trans>You can change the theme any time in Design.</Trans>
 								</p>
 							</div>

@@ -75,6 +75,15 @@
 	--aspect-page: 210 / 297;
 
 	/*
+	 * Google Sans is set tight at small sizes (the font file has a weight axis and no optical size), so the three steps
+	 * the interface reads at most get letter spacing: 0.02em at 12 and 14px, 0.01em at 16px. An explicit `tracking-*`
+	 * on an element still wins.
+	 */
+	--text-xs--letter-spacing: 0.02em;
+	--text-sm--letter-spacing: 0.02em;
+	--text-base--letter-spacing: 0.01em;
+
+	/*
 	 * The one place the app's font families are named. Google Sans sets the interface and Google Sans Code the shortcuts,
 	 * URLs, slugs and code. Scripts the fonts do not draw (Arabic, CJK) fall through to the system stack. The weights
 	 * the interface uses are 400, 500, 600 and 700: Google Sans has no lighter or heavier ones.
@@ -229,11 +238,52 @@
 	}
 
 	.widget .widget__title {
-		@apply text-base font-semibold tracking-tight;
+		@apply text-base font-semibold;
 	}
 
 	.widget .widget__description {
 		@apply text-sm leading-6 text-muted;
+	}
+}
+
+/*
+ * Multi-line text. The scale's own line heights (20px at 14px, 16px at 12px) suit one line; a paragraph needs the leading
+ * HeroUI's `Typography` body types use (28px at 16px, 24px at 14px, 20px at 12px). These three utilities are those, for any element,
+ * so a paragraph inside a colored or boxed container keeps the color it inherits (Typography sets its own).
+ */
+@utility text-body {
+	@apply text-base leading-7;
+}
+
+@utility text-body-sm {
+	@apply text-sm leading-6;
+}
+
+@utility text-body-xs {
+	@apply text-xs leading-5;
+}
+
+/* HeroUI's field text (a description, a validation message) is a sentence or two under a control: paragraph leading. */
+@layer components {
+	.description,
+	.field-error,
+	.error-message {
+		@apply text-body-xs;
+	}
+}
+
+/*
+ * HeroUI sets `tracking-tight` on every Typography heading. That suits the large steps (h1 to h4), but at 18px and
+ * below (h5, h6) it crowds the letters, so those keep the font's normal spacing.
+ */
+@layer components {
+	.typography--h5,
+	.typography--h6,
+	.typography-prose h5,
+	.typography-prose h6 {
+		/* `--tw-tracking` too: a `text-sm` on the heading reads it, and would otherwise bring the tight value back. */
+		--tw-tracking: var(--tracking-normal);
+		letter-spacing: var(--tracking-normal);
 	}
 }
 

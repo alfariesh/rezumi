@@ -60,7 +60,7 @@ export function RecentDocuments({ className }: RecentDocumentsProps) {
 			<Widget.Content className="@container p-4">
 				{isError && !data ? (
 					<div className="flex flex-wrap items-center justify-between gap-2 px-1 py-1.5">
-						<p className="text-sm text-muted">
+						<p className="text-body-sm text-muted">
 							<Trans>Couldn't load documents</Trans>
 						</p>
 						<Button size="sm" variant="secondary" isDisabled={isFetching} onPress={() => void refetch()}>

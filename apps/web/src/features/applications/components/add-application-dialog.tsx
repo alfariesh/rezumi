@@ -222,19 +222,19 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 							</Button>
 						</div>
 						{search.isPending && (
-							<p className="text-xs text-muted" role="status">
+							<p className="text-body-xs text-muted" role="status">
 								<Trans>Searching job postings…</Trans>
 							</p>
 						)}
 						{search.error && (
-							<p className="text-xs text-danger-soft-foreground" role="alert">
+							<p className="text-body-xs text-danger-soft-foreground" role="alert">
 								{getOrpcErrorMessage(search.error, {
 									fallback: t`Job search failed. Try again or paste a posting link.`,
 								})}
 							</p>
 						)}
 						{search.data?.length === 0 && (
-							<p className="text-xs text-muted" role="status">
+							<p className="text-body-xs text-muted" role="status">
 								<Trans>No postings found. Try different keywords.</Trans>
 							</p>
 						)}
@@ -330,7 +330,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 									resetRead();
 								}}
 							/>
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								<Trans>The original link stays with this job.</Trans>
 							</p>
 						</div>
@@ -344,19 +344,19 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						</div>
 					)}
 					{(clipped || parsed?.postingSource.completeness === "incomplete") && (
-						<p className="text-xs text-warning-soft-foreground" role="alert">
+						<p className="text-body-xs text-warning-soft-foreground" role="alert">
 							<Trans>
 								This description is clipped or incomplete. Review it or paste the full description before preparing.
 							</Trans>
 						</p>
 					)}
 					{parsed?.enrichmentWarning && (
-						<p className="text-xs text-warning-soft-foreground" role="status">
+						<p className="text-body-xs text-warning-soft-foreground" role="status">
 							<Trans>AI couldn't fill the details. The posting is retained; complete the fields manually.</Trans>
 						</p>
 					)}
 					{parsed?.postingSource.fallbackReason && (
-						<p className="text-xs text-warning-soft-foreground" role="status">
+						<p className="text-body-xs text-warning-soft-foreground" role="status">
 							<Trans>Enhanced reading was unavailable. The built-in reader retrieved this posting.</Trans>
 						</p>
 					)}
@@ -375,7 +375,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 								onChange={(event) => setDescription(event.target.value)}
 							/>
 							{parsed.postingSource.retrievedAt && (
-								<p className="text-xs text-muted">
+								<p className="text-body-xs text-muted">
 									<Trans>
 										Retrieved {parsed.postingSource.retrievedAt}. Origin freshness is unknown unless reported.
 									</Trans>

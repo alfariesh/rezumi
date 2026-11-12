@@ -203,7 +203,7 @@ export function LocationFields() {
 					}}
 				/>
 				{failed && (
-					<p className="text-xs text-danger">
+					<p className="text-body-xs text-danger">
 						<Trans>The city list didn't load. Check your connection, then type again.</Trans>
 					</p>
 				)}
@@ -252,7 +252,7 @@ export function LocationFields() {
 						</Button>
 					</div>
 				)}
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>
 						City list from{" "}
 						<a className="underline" href="https://www.geonames.org" target="_blank" rel="noreferrer">
@@ -298,7 +298,7 @@ export function LocationFields() {
 				</RadioGroup>
 			)}
 			{wanted && wanted !== precision && location.point && (
-				<p className="text-xs text-warning" role="status">
+				<p className="text-body-xs text-warning" role="status">
 					{wanted === "city" ? (
 						<Trans>To show your city, find it again above. The page keeps what it shows until then.</Trans>
 					) : (
@@ -464,7 +464,7 @@ function MapPictureNote({ state, onRetry }: MapPictureNoteProps) {
 		);
 	if (state === "saved")
 		return (
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>Your page shows this map as a picture, in light and dark mode. © OpenStreetMap contributors.</Trans>
 			</p>
 		);

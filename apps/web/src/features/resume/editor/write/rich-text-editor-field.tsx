@@ -227,7 +227,9 @@ export function RichTextEditor({
 				role: "textbox",
 				spellcheck: "true",
 				class: cn(
-					"typeset typeset-field overflow-y-auto px-3 py-2 text-sm outline-none",
+					// `text-sm` fixes the size on phones too; its own 20px line height would override the preset's, so the preset's is
+					// put back.
+					"typeset typeset-field overflow-y-auto px-3 py-2 text-sm leading-(--typeset-leading) outline-none",
 					heightClassName,
 					"[&_[data-resume-whitespace=preserve]]:whitespace-pre-wrap",
 				),
@@ -409,7 +411,7 @@ export function RichTextEditor({
 				)}
 
 			{readOnlyTable && (
-				<p role="status" className="border-b border-separator px-3 py-2 text-xs text-muted">
+				<p role="status" className="border-b border-separator px-3 py-2 text-body-xs text-muted">
 					<Trans>
 						Original table formatting is preserved. This content is read-only because it cannot be edited safely.
 					</Trans>

@@ -68,7 +68,7 @@ export function ReasonDialog({
 					<Modal.Header>
 						<Modal.Heading>{title}</Modal.Heading>
 						{description && (
-							<p id={descriptionId} className="text-sm text-muted">
+							<p id={descriptionId} className="text-body-sm text-muted">
 								{description}
 							</p>
 						)}
@@ -88,11 +88,11 @@ export function ReasonDialog({
 								</Label>
 								<TextArea variant="secondary" maxLength={255} className="min-h-20" />
 							</TextField>
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								<Trans>Kept in the audit log with your name. At least 3 characters.</Trans>
 							</p>
 							{failure && (
-								<p role="alert" className="text-sm text-danger">
+								<p role="alert" className="text-body-sm text-danger">
 									{failure}
 								</p>
 							)}

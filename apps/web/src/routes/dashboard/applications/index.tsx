@@ -304,7 +304,7 @@ function RouteComponent() {
 					role="alert"
 					className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-separator p-4"
 				>
-					<p className="text-sm text-danger-soft-foreground">
+					<p className="text-body-sm text-danger-soft-foreground">
 						<Trans>Couldn't load applications. Try again.</Trans>
 					</p>
 					<Button variant="secondary" isDisabled={isFetching} onPress={() => void refetch()}>

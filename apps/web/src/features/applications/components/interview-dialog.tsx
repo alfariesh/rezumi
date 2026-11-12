@@ -318,7 +318,7 @@ export function InterviewDialog({
 						<Modal.Heading>
 							{editing ? <Trans>Edit interview</Trans> : <Trans>Schedule an interview</Trans>}
 						</Modal.Heading>
-						<p id={`${id}-description`} className="text-sm text-muted">
+						<p id={`${id}-description`} className="text-body-sm text-muted">
 							{application ? (
 								<>
 									{application.role} · {application.company}
@@ -384,7 +384,7 @@ export function InterviewDialog({
 						</div>
 
 						{draft.date && draft.time && !at && (
-							<p id={`${id}-time-error`} role="alert" className="text-xs text-danger-soft-foreground">
+							<p id={`${id}-time-error`} role="alert" className="text-body-xs text-danger-soft-foreground">
 								<Trans>This time does not exist in the selected timezone. Choose another time.</Trans>
 							</p>
 						)}
@@ -401,7 +401,7 @@ export function InterviewDialog({
 									/>
 								</Field>
 								{at && draft.timezone !== preferredZone && (
-									<p className="text-xs text-muted">
+									<p className="text-body-xs text-muted">
 										<Trans>
 											{draft.time} in {draft.timezone} is {when(at)} in your timezone ({preferredZone}).
 										</Trans>
@@ -409,7 +409,7 @@ export function InterviewDialog({
 								)}
 							</div>
 						) : (
-							<p className="-mt-2 text-xs text-muted">
+							<p className="-mt-2 text-body-xs text-muted">
 								<Trans>Shown in your timezone.</Trans>{" "}
 								<button
 									type="button"
@@ -483,7 +483,7 @@ export function InterviewDialog({
 								</div>
 							))}
 							{participantsInvalid && (
-								<p role="status" className="text-xs text-danger-soft-foreground">
+								<p role="status" className="text-body-xs text-danger-soft-foreground">
 									<Trans>Profile links must be public HTTPS addresses.</Trans>
 								</p>
 							)}
@@ -499,7 +499,7 @@ export function InterviewDialog({
 								<Icon name="user-plus" size={18} />
 								<Trans>Add a person</Trans>
 							</Button>
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								<Trans>Public profile links are optional and only used if Web research is on.</Trans>
 							</p>
 						</fieldset>
