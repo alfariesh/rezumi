@@ -36,6 +36,19 @@ export function imageUploadErrorMessage(error: unknown, fileName?: string): stri
 	return fileName ? t`“${fileName}”: ${message}` : message;
 }
 
+/**
+ * The browser couldn't read the chosen file itself: it was moved or deleted after it was chosen, or it's a cloud
+ * placeholder (iCloud, Google Drive) not downloaded yet. No connection problem, so retrying the same file won't help.
+ */
+export function isFileReadError(error: unknown): boolean {
+	return error instanceof DOMException && (error.name === "NotReadableError" || error.name === "NotFoundError");
+}
+
+/** The words for `isFileReadError`. */
+export function fileReadErrorMessage(): string {
+	return t`This file can't be opened. If it's stored in the cloud, download it to your device first, then choose it again.`;
+}
+
 function imageProblemMessage(error: unknown): string {
 	if (error instanceof PortfolioImageError) {
 		switch (error.problem) {
@@ -52,6 +65,7 @@ function imageProblemMessage(error: unknown): string {
 				return t`This file isn't a picture your browser can read. Use a JPG, PNG or WebP file.`;
 		}
 	}
+	if (isFileReadError(error)) return fileReadErrorMessage();
 	const fallback = t`The picture couldn't be uploaded. Check your connection and try again.`;
 	if (!(error instanceof ORPCError)) return fallback;
 	const tooLarge = t`The picture is still too large after shrinking it. Try a smaller picture.`;

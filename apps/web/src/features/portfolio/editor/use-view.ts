@@ -17,6 +17,13 @@ export function usePageMessages(): PortfolioViewMessages {
 	return useMemo(() => portfolioViewMessages(portfolioMessages(locale)), [locale]);
 }
 
+/** Which resume buttons the page would show: the resume's web page while it's public, its PDF unless it's locked. */
+export function useResumeLinks(): { resume: boolean; resumePdf: boolean } {
+	const { resume } = useSourceResume();
+	const shown = Boolean(resume?.isPublic);
+	return { resume: shown, resumePdf: shown && resume?.showDownloadButtons !== false && !resume?.hasPassword };
+}
+
 /**
  * The page as the renderer sees it, from the draft: which sections show, the accent and fonts "follow the resume"
  * resolves to, the title search engines get. Panels read it; the preview draws its own, debounced.
@@ -30,6 +37,9 @@ export function useEditorView() {
 	const canHideCredit = usePlanFeature("hidePortfolioCredit");
 	const { data: portfolio } = useQuery(orpc.portfolio.get.queryOptions());
 	const contactFormAvailable = portfolio?.contactFormAvailable ?? false;
+	const links = useResumeLinks();
+	const showResume = links.resume;
+	const showPdf = links.resumePdf;
 	return useMemo(
 		() =>
 			buildPortfolioView({
@@ -40,8 +50,21 @@ export function useEditorView() {
 				entitlements: { hidePortfolioCredit: canHideCredit },
 				messages,
 				fileUrl: (key) => `/${key}`,
+				// Placeholders: panels only ask whether the buttons show.
+				links: { resume: showResume ? "#" : null, resumePdf: showPdf ? "#" : null },
 				contactFormAvailable,
 			}),
-		[data, source.data, owner.name, owner.username, messages, origins, canHideCredit, contactFormAvailable],
+		[
+			data,
+			source.data,
+			owner.name,
+			owner.username,
+			messages,
+			origins,
+			canHideCredit,
+			contactFormAvailable,
+			showResume,
+			showPdf,
+		],
 	);
 }

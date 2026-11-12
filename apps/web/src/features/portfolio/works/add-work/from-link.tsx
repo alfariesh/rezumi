@@ -19,13 +19,15 @@ import { linkBlockFromUnfurl, readLinkAddress, videoBlockFromUnfurl, workFromLin
 import {
 	importRemotePicture,
 	importVideoThumbnail,
+	remotePictureErrorMessage,
 	unfurlErrorMessage,
 	unfurlLink,
 	videoThumbnailCandidates,
 } from "../../media/remote";
 import { usePortfolioLimits } from "../limits";
 import { workRoom } from "../works";
-import { BackButton, StepAlert } from "./parts";
+import { BackButton, StepAlert, useReportBusy } from "./parts";
+import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 
 type LinkPreview = { picture: string | null; block: PortfolioBlockOf<"link"> | PortfolioBlockOf<"video"> };
 
@@ -43,7 +45,7 @@ function previewOf(result: UnfurledLink, pasted: string): LinkPreview {
  * be changed), and its picture becomes the cover only if the person agrees, copied into the portfolio first. A site
  * that can't be read still makes a work: the person fills it in. Closing the dialog stops what's still on its way.
  */
-export function FromLink({ onBack, onClose }: StepProps) {
+export function FromLink({ onBack, onClose, onBusy }: StepProps) {
 	const data = usePortfolioData();
 	const limits = usePortfolioLimits();
 	const openWork = usePortfolioEditorUi((state) => state.openWork);
@@ -58,6 +60,7 @@ export function FromLink({ onBack, onClose }: StepProps) {
 	const [adding, setAdding] = useState(false);
 	const address = readLinkAddress(text);
 	const full = workRoom(data, limits.works) === 0;
+	useReportBusy(adding, onBusy);
 
 	const read = async () => {
 		if (!address.ok) return;
@@ -66,6 +69,9 @@ export function FromLink({ onBack, onClose }: StepProps) {
 		setReading(true);
 		setFailure(null);
 		setPreview(null);
+		// What was read from another link doesn't carry over to this one.
+		setTitle("");
+		setSummary("");
 		try {
 			const result = await unfurlLink(url, signal);
 			setPreview(previewOf(result, url));
@@ -88,14 +94,30 @@ export function FromLink({ onBack, onClose }: StepProps) {
 			const block = { ...preview.block };
 			let cover: PortfolioImage | undefined;
 			if (useCover && preview.picture) {
+				// The work is added anyway; the toast says why it has no cover (storage full needs more than a retry).
+				let failure: unknown;
+				const noted = (error: unknown) => {
+					failure = error;
+				};
 				cover =
 					block.type === "video"
-						? await importVideoThumbnail({ ...block, title: title.trim() }, signal)
+						? await importVideoThumbnail({ ...block, title: title.trim() }, signal, noted)
 						: await importRemotePicture(preview.picture, title.trim(), signal).catch((error: unknown) => {
 								if (isAbort(error, signal)) throw error;
+								noted(error);
 								return undefined;
 							});
-				if (!cover) toast.add({ description: t`The picture couldn't be copied. Add a cover yourself.` });
+				if (!cover) {
+					const planProblem = failure !== undefined && openPlanDialogForError(failure);
+					if (!planProblem)
+						toast.add({
+							type: "warning",
+							description:
+								failure === undefined
+									? t`The picture couldn't be copied. Add a cover yourself.`
+									: remotePictureErrorMessage(failure),
+						});
+				}
 			}
 			if (cover && block.type === "video") block.thumbnail = cover;
 			if (cover && block.type === "link") block.image = cover;

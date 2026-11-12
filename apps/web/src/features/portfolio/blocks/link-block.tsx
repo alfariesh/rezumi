@@ -38,19 +38,24 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 
 	const readAgain = async () => {
 		const signal = requests.next("read");
+		// Editing the address cancels the read (`changeUrl`); this also covers an Undo that brings back another one.
+		const url = block.url;
 		setReading(true);
 		setError(null);
 		try {
-			const result = await unfurlLink(block.url, signal);
+			const result = await unfurlLink(url, signal);
 			if (result.kind === "video") {
 				setError(t`This is a video. Add it as a Video block to play it on the page.`);
 				return;
 			}
-			const fresh = linkBlockFromUnfurl(result, block.url);
+			const fresh = linkBlockFromUnfurl(result, url);
+			const now = currentBlock(work.id, block.id);
+			if (now?.type !== "link" || now.url !== url) return;
 			edit(
 				(draft) => {
 					draft.url = fresh.url;
-					draft.title = fresh.title;
+					// A page without a title keeps the one typed here.
+					if (fresh.title) draft.title = fresh.title;
 					if (fresh.description) draft.description = fresh.description;
 					if (fresh.siteName) draft.siteName = fresh.siteName;
 					if (fresh.brandIcon) draft.brandIcon = fresh.brandIcon;
@@ -99,6 +104,8 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 		// The suggested picture belongs to the page the card pointed at.
 		useLinkSuggestions.getState().dismiss(block.id);
 		requests.cancel("picture");
+		requests.cancel("read");
+		setReading(false);
 		edit((draft) => {
 			draft.url = url;
 			delete draft.brandIcon;
@@ -192,13 +199,13 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 				label={t`Picture (optional)`}
 				value={block.image}
 				altSuggestion={block.title}
-				onChange={(image) =>
+				onChange={(image, typing) =>
 					edit(
 						(draft) => {
 							if (image) draft.image = image;
 							else delete draft.image;
 						},
-						{ structural: true },
+						typing ? key("image.alt") : { structural: true },
 					)
 				}
 			/>

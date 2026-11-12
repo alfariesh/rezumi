@@ -16,7 +16,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { moveItem, RichTextField } from "../editor/fields";
 import { editPortfolio, usePortfolioEditorStore } from "../editor/store";
-import { UploadStatus, useFilePicker, useImageUploads } from "../images/image-field";
+import { leftOutMessage, UploadStatus, useFilePicker, useImageUploads } from "../images/image-field";
 import { discardUnplacedImages } from "../images/upload";
 import { pdfLimitText } from "../media/pdf";
 import { MetricsEditor } from "../metrics/metric-form";
@@ -146,6 +146,10 @@ function blockTypeInfo(type: PortfolioBlockType): BlockTypeInfo {
 	}
 }
 
+/** The words for a block that arrived when its work had no room left. */
+const fullWorkMessage = () =>
+	t`This work already holds ${PORTFOLIO_LIMITS.blocksPerWork} blocks, so the new block wasn't added.`;
+
 /**
  * Adds a block at a place in a work: text and metrics at once, pictures after they're chosen and uploaded (a Pictures
  * block always holds one), a video or link once its address is given, a PDF once it's uploaded. A block that arrives
@@ -155,8 +159,17 @@ function blockTypeInfo(type: PortfolioBlockType): BlockTypeInfo {
 function useAddBlock(work: PortfolioWork, index: number, last = false) {
 	const uploads = useImageUploads();
 	// The place is read when the action starts; the block may only arrive after an upload.
-	const inserter = (place: BlockPlace) => (block: PortfolioBlock) =>
-		editWork(work.id, (draft) => insertBlocksAt(draft as PortfolioWork, place, [block], index));
+	const inserter =
+		(place: BlockPlace) =>
+		(block: PortfolioBlock): boolean => {
+			let added = 0;
+			editWork(work.id, (draft) => {
+				added = insertBlocksAt(draft as PortfolioWork, place, [block], index);
+			});
+			// The work filled up while the block was on its way (another upload, another tab).
+			if (!added) toast.add({ type: "warning", description: fullWorkMessage() });
+			return added > 0;
+		};
 	const media = useAddMediaBlock(work.id, (workId, blockId, recipe) =>
 		editWork(workId, (draft) => {
 			const block = draft.blocks.find((entry) => entry.id === blockId);
@@ -171,6 +184,8 @@ function useAddBlock(work: PortfolioWork, index: number, last = false) {
 			alt: () => work.title.trim(),
 		});
 		if (!images.length) return;
+		const left = files.length - PORTFOLIO_LIMITS.imagesPerBlock;
+		if (left > 0) uploads.addError(leftOutMessage(left, PORTFOLIO_LIMITS.imagesPerBlock));
 		inserter(place)(newImagesBlock(images));
 		discardUnplacedImages(images);
 	}
@@ -188,7 +203,7 @@ function useAddBlock(work: PortfolioWork, index: number, last = false) {
 	const status = (
 		<>
 			{picker.element}
-			<UploadStatus progress={uploads.progress} errors={uploads.errors} />
+			<UploadStatus progress={uploads.progress} errors={uploads.errors} onDismiss={uploads.clearErrors} />
 			{media.status}
 		</>
 	);
@@ -200,13 +215,16 @@ type AddBlockMenuProps = {
 	work: PortfolioWork;
 	index: number;
 	/** The last one, under every block: a full button. */ last?: boolean;
+	/** No button, only the progress and messages of what it started (it's after the last block now). */
+	quiet?: boolean;
 };
 
 /** "+ Add block" between blocks: Text, Pictures, Metrics, Video, PDF, Link. */
-function AddBlockMenu({ work, index, last = false }: AddBlockMenuProps) {
+function AddBlockMenu({ work, index, last = false, quiet = false }: AddBlockMenuProps) {
 	const { add, busy, status } = useAddBlock(work, index, last);
 	const full = blockRoom(work) === 0;
 
+	if (quiet) return status;
 	return (
 		<div className={cn("grid gap-2", !last && "justify-items-center")}>
 			<Dropdown>
@@ -295,8 +313,10 @@ export function BlockList({ work, locale }: BlockListProps) {
 			>
 				<div className="grid gap-1">
 					{blocks.map((block, index) => (
+						// The menu after a block belongs to that block, so a block that arrives late (an upload) still has its
+						// menu, and its progress, when the blocks around it move or go. After the last block it only shows
+						// what it's doing: the full button below adds there.
 						<div key={block.id} className="grid gap-1">
-							{index > 0 && <AddBlockMenu work={work} index={index} />}
 							<BlockCard
 								work={work}
 								block={block}
@@ -306,6 +326,7 @@ export function BlockList({ work, locale }: BlockListProps) {
 								itemProps={itemProps}
 								onRemoved={removed}
 							/>
+							<AddBlockMenu work={work} index={index + 1} quiet={index === blocks.length - 1} />
 						</div>
 					))}
 				</div>

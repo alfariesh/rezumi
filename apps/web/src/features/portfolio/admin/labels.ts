@@ -33,6 +33,8 @@ export function moderationActionLabel(action: string): string {
 		"report.open": t`Reopened a report`,
 		"report.actioned": t`Marked a report as acted on`,
 		"report.dismissed": t`Dismissed a report`,
+		// The owner deleted their portfolio (logged against the account).
+		deleted: t`Deleted the portfolio`,
 	};
 	return labels[action] ?? action;
 }

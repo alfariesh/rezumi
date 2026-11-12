@@ -46,6 +46,8 @@ export function AddWorkDialog({ onClose }: AddWorkDialogProps) {
 	const data = usePortfolioData();
 	const openWork = usePortfolioEditorUi((state) => state.openWork);
 	const [way, setWay] = useState<Way | null>(null);
+	// A step in the middle of an upload or import: closing would cut it short, so only its own buttons end it.
+	const [busy, setBusy] = useState(false);
 
 	const addEmpty = () => {
 		const work = newWork(data);
@@ -60,10 +62,15 @@ export function AddWorkDialog({ onClose }: AddWorkDialogProps) {
 	};
 
 	return (
-		<Modal.Backdrop isOpen onOpenChange={(open) => !open && onClose()}>
+		<Modal.Backdrop
+			isOpen
+			isDismissable={!busy}
+			isKeyboardDismissDisabled={busy}
+			onOpenChange={(open) => !open && onClose()}
+		>
 			<Modal.Container size="md">
 				<Modal.Dialog aria-labelledby={`${id}-title`}>
-					<Modal.CloseTrigger aria-label={t`Close`} />
+					{!busy && <Modal.CloseTrigger aria-label={t`Close`} />}
 					<Modal.Header>
 						<Modal.Heading id={`${id}-title`}>
 							{way === "resume" ? (
@@ -78,11 +85,11 @@ export function AddWorkDialog({ onClose }: AddWorkDialogProps) {
 						</Modal.Heading>
 					</Modal.Header>
 					{way === "resume" ? (
-						<FromResume onBack={() => setWay(null)} onClose={onClose} />
+						<FromResume onBack={() => setWay(null)} onClose={onClose} onBusy={setBusy} />
 					) : way === "pictures" ? (
-						<FromPictures onBack={() => setWay(null)} onClose={onClose} />
+						<FromPictures onBack={() => setWay(null)} onClose={onClose} onBusy={setBusy} />
 					) : way === "link" ? (
-						<FromLink onBack={() => setWay(null)} onClose={onClose} />
+						<FromLink onBack={() => setWay(null)} onClose={onClose} onBusy={setBusy} />
 					) : (
 						<Modal.Body className="grid gap-2">
 							<WayCard

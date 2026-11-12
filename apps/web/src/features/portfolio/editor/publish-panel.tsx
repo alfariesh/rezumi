@@ -20,7 +20,7 @@ import { invalidatePortfolioQueries, isPortfolioLive } from "../status";
 import { languageName, pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { PanelGroup, TextInput } from "./fields";
 import { changeSetting } from "./settings";
-import { editPortfolio, usePortfolioData, usePortfolioRecord } from "./store";
+import { editPortfolio, usePortfolioData, usePortfolioEditorStore, usePortfolioRecord } from "./store";
 import { useEditorView } from "./use-view";
 import { CellSelectField } from "@/components/input/select-field";
 import { getLocaleOptions } from "@/features/locale/locale-options";
@@ -222,11 +222,16 @@ function PublishDialog({ onClose }: { onClose: () => void }) {
 	const primary = resumes?.find((resume) => resume.isPrimary && resume.isPublic);
 	const resumeUrl = primary ? publicResumeUrl(origin, { username: owner.username, slug: primary.slug }) : null;
 
+	// One more link per dialog is enough; a second press while it's on its way sends nothing.
+	const [resent, setResent] = useState<"no" | "sending" | "sent">("no");
 	const resend = async () => {
+		if (resent !== "no") return;
+		setResent("sending");
 		const { error } = await authClient.sendVerificationEmail({
 			email: owner.email,
 			callbackURL: "/builder/portfolio?mode=share",
 		});
+		setResent(error ? "no" : "sent");
 		toast.add(
 			error
 				? { type: "error", description: t`Couldn't send the email. Try again.` }
@@ -237,8 +242,11 @@ function PublishDialog({ onClose }: { onClose: () => void }) {
 	const publish = async () => {
 		const done = await run(
 			async () => {
-				if (searchable !== record.showInSearchEngines)
-					await client.portfolio.updateSettings({ showInSearchEngines: searchable });
+				if (searchable !== record.showInSearchEngines) {
+					// Taken at once: when publishing then fails (email not verified, a plan), this switch has changed anyway.
+					const updated = await client.portfolio.updateSettings({ showInSearchEngines: searchable });
+					usePortfolioEditorStore.getState().applySettings(updated);
+				}
 				return client.portfolio.setPublic({ isPublic: true });
 			},
 			t`Couldn't publish. Try again.`,
@@ -306,7 +314,7 @@ function PublishDialog({ onClose }: { onClose: () => void }) {
 								</Alert.Content>
 							</Alert>
 						)}
-						{!owner.emailVerified && (
+						{owner.loaded && !owner.emailVerified && (
 							<Alert status="warning">
 								<Alert.Indicator />
 								<Alert.Content>
@@ -314,12 +322,21 @@ function PublishDialog({ onClose }: { onClose: () => void }) {
 										<Trans>Verify your email address first</Trans>
 									</Alert.Title>
 									<Alert.Description>
-										<Trans>
-											We sent a link to {owner.email}.{" "}
-											<button type="button" className="underline" onClick={() => void resend()}>
-												Send it again
-											</button>
-										</Trans>
+										{resent === "sent" ? (
+											<Trans>We sent a new link to {owner.email}. Open it, then publish.</Trans>
+										) : (
+											<Trans>
+												We sent a link to {owner.email}.{" "}
+												<button
+													type="button"
+													className="underline disabled:opacity-60"
+													disabled={resent === "sending"}
+													onClick={() => void resend()}
+												>
+													Send it again
+												</button>
+											</Trans>
+										)}
 									</Alert.Description>
 								</Alert.Content>
 							</Alert>

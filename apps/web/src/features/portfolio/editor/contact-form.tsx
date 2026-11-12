@@ -13,9 +13,12 @@ import { orpc } from "@/libs/orpc/client";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
-/** Digits only, without a leading 0 or +: "0812-5550-1824" in Indonesia becomes "6281255501824". */
+/**
+ * Digits only, without a leading 0 or +: "0812-5550-1824" in Indonesia becomes "6281255501824". A trunk "(0)" written
+ * after the country code ("+44 (0)20…") is left out.
+ */
 export function normalizeWhatsAppNumber(text: string, defaultCountryCode = "62"): string {
-	const digits = text.replace(/\D/g, "");
+	const digits = text.replace(/\(0\)/g, "").replace(/\D/g, "");
 	if (!digits) return "";
 	if (text.trim().startsWith("+")) return digits;
 	if (digits.startsWith("0")) return `${defaultCountryCode}${digits.replace(/^0+/, "")}`;
@@ -29,7 +32,8 @@ export function normalizeWhatsAppNumber(text: string, defaultCountryCode = "62")
 export function ContactForm() {
 	const { contact } = usePortfolioData();
 	const { data: portfolio } = useQuery(orpc.portfolio.get.queryOptions());
-	const formAvailable = portfolio?.contactFormAvailable ?? false;
+	// Until the answer is in (the editor's route loads it first), the switch isn't greyed out for nothing.
+	const formAvailable = portfolio?.contactFormAvailable ?? true;
 	const set = <K extends keyof typeof contact>(field: K, value: (typeof contact)[K]) =>
 		editPortfolio((draft) => {
 			draft.contact[field] = value;
@@ -95,6 +99,8 @@ function WhatsAppField() {
 	const [touched, setTouched] = useState(false);
 	const number = normalizeWhatsAppNumber(text);
 	const valid = WHATSAPP_NUMBER_PATTERN.test(number);
+	// A number starting with 0 is read as Indonesian; say so, since another country's would be read wrong.
+	const assumesIndonesia = /^\s*0/.test(text) && valid;
 
 	return (
 		<div className="grid gap-4">
@@ -130,6 +136,11 @@ function WhatsAppField() {
 						);
 				}}
 			/>
+			{assumesIndonesia && (
+				<p className="-mt-2 px-1 text-body-xs text-muted">
+					<Trans>Read as an Indonesian number (+62). For another country, start with + and its code.</Trans>
+				</p>
+			)}
 		</div>
 	);
 }

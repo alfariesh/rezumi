@@ -18,6 +18,7 @@ import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput } from ".
 import { FindMetricsButton } from "./find-metrics";
 import {
 	applyMetricFormat,
+	isMetricComplete,
 	METRIC_FORMAT_CHOICES,
 	metricFormatChoice,
 	metricNumberText,
@@ -107,6 +108,9 @@ function NumberText({
 	};
 
 	const input = { inputMode: "decimal", dir: "ltr", ...(placeholder ? { placeholder } : {}) } as const;
+	// Examples in the app language's own way of writing numbers ("2,8" in Indonesian).
+	const decimal = metricNumberText(2.8, locale);
+	const whole = metricNumberText(1200, locale);
 
 	return (
 		<TextField
@@ -146,7 +150,7 @@ function NumberText({
 			<FieldError>
 				{min !== undefined && upper !== undefined
 					? t`Enter a number from ${min} to ${upper}.`
-					: t`Enter a number, such as 2.8 or 1200.`}
+					: t`Enter a number, such as ${decimal} or ${whole}, without % or a currency: “Written as” adds those.`}
 			</FieldError>
 		</TextField>
 	);
@@ -262,7 +266,9 @@ function MetricFields({ metric, edit, locale, compact = false }: MetricFieldsPro
 						isRequired
 						allowNegative
 						value={metric.value.number}
-						placeholder="2,8"
+						placeholder={metricNumberText(2.8, i18n.locale)}
+						// A rating is out of 5 on the page ("4,8/5").
+						{...(metric.format === "rating" ? { min: 0, max: 5 } : {})}
 						onChange={(value) =>
 							edit((draft) => {
 								if (value !== undefined) draft.value = { kind: "number", number: value };
@@ -539,7 +545,8 @@ export function MetricsEditor({
 								removed(index);
 								edit(
 									(list) => {
-										list.splice(index, 1);
+										const at = list.findIndex((entry) => entry.id === metric.id);
+										if (at !== -1) list.splice(at, 1);
 									},
 									{ structural: true },
 								);
@@ -560,6 +567,11 @@ export function MetricsEditor({
 									)
 								}
 							/>
+							{!isMetricComplete(metric) && (
+								<p className="text-body-xs text-muted">
+									<Trans>Not on the page until it has a label and a value.</Trans>
+								</p>
+							)}
 						</SortableCard>
 					);
 				})}

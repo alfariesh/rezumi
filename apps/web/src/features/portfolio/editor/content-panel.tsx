@@ -8,6 +8,7 @@ import { useEffect, useId, useRef } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { AiDraftButton } from "../ai/draft-dialog";
 import { WorkEditor } from "../works/work-editor";
@@ -184,7 +185,13 @@ function SectionRow({ sectionKey, index, title, hidden, empty, open, onOpenChang
 			confirmText: t`Rename`,
 		});
 		if (value === null) return;
-		editPortfolio((draft) => setSectionTitle(draft, sectionKey, value.slice(0, PORTFOLIO_LIMITS.text.sectionTitle)));
+		const most = PORTFOLIO_LIMITS.text.sectionTitle;
+		if (value.trim().length > most)
+			toast.add({
+				type: "warning",
+				description: t`A section title holds ${most} characters, so the rest was left out.`,
+			});
+		editPortfolio((draft) => setSectionTitle(draft, sectionKey, value.slice(0, most)));
 	};
 
 	return (

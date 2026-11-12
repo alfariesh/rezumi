@@ -28,6 +28,8 @@ export function usePortfolioOwner() {
 	const { data: session } = authClient.useSession();
 	const user = session?.user;
 	return {
+		/** The session has arrived: until then the fields below are empty, not the person's. */
+		loaded: user !== undefined,
 		name: user?.name ?? "",
 		username: user?.username ?? "",
 		email: user?.email ?? "",

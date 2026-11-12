@@ -8,6 +8,7 @@ import { RENDERED_PORTFOLIO_THEMES } from "@rezumi/portfolio/editor";
 import { PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
+import { useArrowKeyChoice } from "./editor/arrow-keys";
 import { themeAudience, themeDescription, themePicture } from "./themes";
 import { isLockedPortfolioTheme, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
@@ -29,69 +30,73 @@ export function ThemeGallery({ value, onChange, columns = 1 }: ThemeGalleryProps
 	const { i18n } = useLingui();
 	const id = useId();
 	const plan = usePlan();
+	const arrows = useArrowKeyChoice();
 
 	return (
-		<RadioGroup
-			aria-label={t`Theme`}
-			value={value}
-			onChange={(next) => {
-				const theme = RENDERED_PORTFOLIO_THEMES.find((candidate) => candidate === next);
-				if (!theme) return;
-				if (isLockedPortfolioTheme(plan, theme) && theme !== value)
-					openPlanDialog({ kind: "feature", feature: "premiumPortfolioThemes" });
-				else onChange(theme);
-			}}
-			className={cn("grid gap-3 **:data-[slot=radio]:mt-0", columns === 2 && "sm:grid-cols-2")}
-		>
-			{RENDERED_PORTFOLIO_THEMES.map((theme) => {
-				const info = PORTFOLIO_THEME_INFO[theme];
-				const locked = isLockedPortfolioTheme(plan, theme) && theme !== value;
-				return (
-					<Radio
-						key={theme}
-						value={theme}
-						aria-labelledby={`${id}-${theme}-name${plan?.enabled ? ` ${id}-${theme}-plan` : ""}`}
-						aria-describedby={`${id}-${theme}-description`}
-						className="w-full"
-					>
-						<Radio.Content
-							className={({ isSelected, isFocusVisible }) =>
-								cn(
-									"group grid w-full content-start gap-2 overflow-hidden rounded-2xl border p-2 text-start",
-									isSelected ? "border-accent bg-accent-soft" : "border-separator hover:bg-default",
-									isFocusVisible && "ring-2 ring-focus",
-								)
-							}
+		<div {...arrows.props}>
+			<RadioGroup
+				aria-label={t`Theme`}
+				value={value}
+				onChange={(next) => {
+					const theme = RENDERED_PORTFOLIO_THEMES.find((candidate) => candidate === next);
+					if (!theme) return;
+					// Arrowing past a Plus theme says "Plus" (its label) without stopping there with a dialog.
+					if (isLockedPortfolioTheme(plan, theme) && theme !== value) {
+						if (!arrows.byArrow()) openPlanDialog({ kind: "feature", feature: "premiumPortfolioThemes" });
+					} else onChange(theme);
+				}}
+				className={cn("grid gap-3 **:data-[slot=radio]:mt-0", columns === 2 && "sm:grid-cols-2")}
+			>
+				{RENDERED_PORTFOLIO_THEMES.map((theme) => {
+					const info = PORTFOLIO_THEME_INFO[theme];
+					const locked = isLockedPortfolioTheme(plan, theme) && theme !== value;
+					return (
+						<Radio
+							key={theme}
+							value={theme}
+							aria-labelledby={`${id}-${theme}-name${plan?.enabled ? ` ${id}-${theme}-plan` : ""}`}
+							aria-describedby={`${id}-${theme}-description`}
+							className="w-full"
 						>
-							<img
-								src={themePicture(theme, i18n.locale)}
-								alt=""
-								width={640}
-								height={400}
-								loading="lazy"
-								decoding="async"
-								className="aspect-[16/10] w-full rounded-xl border border-separator bg-default object-cover object-top"
-							/>
-							<span className="grid gap-1 px-1 pb-1">
-								<span className="flex items-center gap-2 text-sm font-semibold">
-									<span id={`${id}-${theme}-name`}>{info.name}</span>
-									{plan?.enabled && (
-										<Chip size="sm" variant="soft" color={info.plan === "plus" ? "accent" : "default"}>
-											{locked && <Icon name="lock" size={12} aria-hidden />}
-											<span id={`${id}-${theme}-plan`}>{info.plan === "plus" ? "Plus" : <Trans>Free</Trans>}</span>
-										</Chip>
-									)}
-									{theme === value && <Icon name="check-circle" size={18} className="ms-auto text-accent" />}
+							<Radio.Content
+								className={({ isSelected, isFocusVisible }) =>
+									cn(
+										"group grid w-full content-start gap-2 overflow-hidden rounded-2xl border p-2 text-start",
+										isSelected ? "border-accent bg-accent-soft" : "border-separator hover:bg-default",
+										isFocusVisible && "ring-2 ring-focus",
+									)
+								}
+							>
+								<img
+									src={themePicture(theme, i18n.locale)}
+									alt=""
+									width={640}
+									height={400}
+									loading="lazy"
+									decoding="async"
+									className="aspect-[16/10] w-full rounded-xl border border-separator bg-default object-cover object-top"
+								/>
+								<span className="grid gap-1 px-1 pb-1">
+									<span className="flex items-center gap-2 text-sm font-semibold">
+										<span id={`${id}-${theme}-name`}>{info.name}</span>
+										{plan?.enabled && (
+											<Chip size="sm" variant="soft" color={info.plan === "plus" ? "accent" : "default"}>
+												{locked && <Icon name="lock" size={12} aria-hidden />}
+												<span id={`${id}-${theme}-plan`}>{info.plan === "plus" ? "Plus" : <Trans>Free</Trans>}</span>
+											</Chip>
+										)}
+										{theme === value && <Icon name="check-circle" size={18} className="ms-auto text-accent" />}
+									</span>
+									<span id={`${id}-${theme}-description`} className="grid gap-1">
+										<span className="text-xs text-foreground">{themeDescription(theme)}</span>
+										<span className="text-xs text-muted">{themeAudience(theme)}</span>
+									</span>
 								</span>
-								<span id={`${id}-${theme}-description`} className="grid gap-1">
-									<span className="text-xs text-foreground">{themeDescription(theme)}</span>
-									<span className="text-xs text-muted">{themeAudience(theme)}</span>
-								</span>
-							</span>
-						</Radio.Content>
-					</Radio>
-				);
-			})}
-		</RadioGroup>
+							</Radio.Content>
+						</Radio>
+					);
+				})}
+			</RadioGroup>
+		</div>
 	);
 }

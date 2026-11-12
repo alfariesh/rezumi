@@ -6,7 +6,14 @@ import { Trans } from "@lingui/react/macro";
 import { IMAGE_BLOCK_LAYOUTS } from "@rezumi/schema/portfolio/blocks";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput } from "../editor/fields";
-import { AltTextInput, ImageDrop, portfolioImageSrc, UploadStatus, useImageUploads } from "../images/image-field";
+import {
+	AltTextInput,
+	ImageDrop,
+	leftOutMessage,
+	portfolioImageSrc,
+	UploadStatus,
+	useImageUploads,
+} from "../images/image-field";
 import { discardUnplacedImages } from "../images/upload";
 import { pictureKeys } from "./blocks";
 import { useRemovalFocus } from "./list-focus";
@@ -36,6 +43,8 @@ export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEd
 
 	const add = async (files: File[]) => {
 		const added = await uploads.upload(files.slice(0, room), { alt: () => work.title.trim() });
+		const left = files.length - Math.max(0, room);
+		if (left > 0 && added.length) uploads.addError(leftOutMessage(left, most));
 		if (!added.length) return;
 		edit((draft) => {
 			draft.images.push(...added.slice(0, most - draft.images.length));
@@ -143,7 +152,7 @@ export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEd
 					</p>
 				)}
 			</div>
-			<UploadStatus progress={uploads.progress} errors={uploads.errors} />
+			<UploadStatus progress={uploads.progress} errors={uploads.errors} onDismiss={uploads.clearErrors} />
 		</div>
 	);
 }

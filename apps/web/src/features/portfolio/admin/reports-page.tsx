@@ -41,7 +41,10 @@ export function PortfolioReportsPage({ status }: PortfolioReportsPageProps) {
 		} catch (error) {
 			toast.add({
 				type: "error",
-				description: portfolioErrorMessage(error, { fallback: t`No portfolio matches that.` }),
+				description: portfolioErrorMessage(error, {
+					fallback: t`No portfolio matches that.`,
+					byCode: { NOT_FOUND: t`No portfolio matches that.` },
+				}),
 			});
 		} finally {
 			setFinding(false);

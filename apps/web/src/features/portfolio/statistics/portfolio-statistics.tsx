@@ -7,6 +7,7 @@ import { Button, Chip, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { lazy, Suspense, useId } from "react";
 import { summarizeViews } from "@rezumi/resume/sharing";
 import { PORTFOLIO_CLICK_KINDS, PORTFOLIO_DEVICES, PORTFOLIO_VISIT_SOURCES } from "@rezumi/schema/portfolio/statistics";
@@ -50,12 +51,19 @@ const deviceLabels = (): Record<PortfolioDevice, string> => ({
 
 type RankRow = { key: string; label: string; value: number };
 
-type RankListProps = { title: ReactNode; rows: readonly RankRow[]; empty: ReactNode };
+type RankListProps = {
+	title: ReactNode;
+	rows: readonly RankRow[];
+	empty: ReactNode;
+	/** Keeps the rows in the order given (by date, say) instead of largest first. */
+	keepOrder?: boolean;
+};
 
 /** A titled list, largest first, each row's bar against the largest: one measure, so the bars need no legend. */
-function RankList({ title, rows, empty }: RankListProps) {
+function RankList({ title, rows, empty, keepOrder = false }: RankListProps) {
 	const { i18n } = useLingui();
-	const shown = rows.filter((row) => row.value > 0).sort((a, b) => b.value - a.value);
+	const positive = rows.filter((row) => row.value > 0);
+	const shown = keepOrder ? positive : positive.sort((a, b) => b.value - a.value);
 	const peak = Math.max(1, ...shown.map((row) => row.value));
 	return (
 		<section className="grid content-start gap-2">
@@ -82,6 +90,26 @@ function RankList({ title, rows, empty }: RankListProps) {
 }
 
 type DailyVisitsProps = { days: Statistics["days"] };
+
+/** How many days of "Work opened by day" show: the most recent ones. */
+const WORK_DAYS_SHOWN = 10;
+
+/**
+ * Days are counted in the account's timezone (Settings → Timezone, UTC until it's set), which the person may never
+ * have chosen: say which, and where to change it.
+ */
+function DayZoneNote() {
+	const { session } = useRouteContext({ strict: false });
+	const timeZone = session?.user.timezone ?? "UTC";
+	return (
+		<p className="text-body-xs text-muted">
+			<Trans>Days are counted in {timeZone}.</Trans>{" "}
+			<Link to="/dashboard/settings/app" hash="timezone" className="underline underline-offset-2 hover:text-foreground">
+				<Trans>Change timezone</Trans>
+			</Link>
+		</p>
+	);
+}
 
 /** Visits per day, as in Share's Visitors: each bar's whole column answers the pointer. */
 function DailyVisits({ days }: DailyVisitsProps) {
@@ -185,15 +213,29 @@ function ReadyStatisticsDetails({ details }: DetailsProps) {
 			{details.workDays.length > 0 && (
 				<RankList
 					title={<Trans>Work opened by day</Trans>}
-					rows={details.workDays.map((row) => ({
-						key: `${row.date}-${row.workId}`,
-						label: `${new Date(`${row.date}T00:00:00`).toLocaleDateString(i18n.locale, { month: "short", day: "numeric" })} · ${row.title}`,
-						value: row.opens,
-					}))}
+					keepOrder
+					// The latest days first, the most opened work first within a day; older days are summed in "Most opened work".
+					rows={details.workDays
+						.toSorted((a, b) => b.date.localeCompare(a.date) || b.opens - a.opens)
+						.slice(0, WORK_DAYS_SHOWN)
+						.map((row) => ({
+							key: `${row.date}-${row.workId}`,
+							label: `${new Date(`${row.date}T00:00:00`).toLocaleDateString(i18n.locale, { month: "short", day: "numeric" })} · ${row.title}`,
+							value: row.opens,
+						}))}
 					empty={null}
 				/>
 			)}
 		</section>
+	);
+}
+
+/** The details couldn't be read (Analytics Engine isn't set up here, or didn't answer); the counts above still are. */
+function UnavailableDetails() {
+	return (
+		<p className="border-t border-border pt-4 text-body-sm text-muted">
+			<Trans>Countries, devices and linking sites aren't available right now.</Trans>
+		</p>
 	);
 }
 
@@ -218,7 +260,7 @@ function LockedDetails() {
 
 /** The portfolio's numbers over the last 30 days (`01-desain.md` section 10). Only its owner can read them. */
 export function PortfolioStatistics() {
-	const { data, isPending } = useQuery(orpc.portfolio.statistics.queryOptions());
+	const { data, isPending, isError, refetch, isRefetching } = useQuery(orpc.portfolio.statistics.queryOptions());
 	const titleId = useId();
 	const clicks = clickLabels();
 	const sources = sourceLabels();
@@ -228,11 +270,26 @@ export function PortfolioStatistics() {
 				<Spinner size="md" color="current" />
 			</div>
 		);
+	if (isError)
+		return (
+			<Widget role="region" aria-labelledby={titleId}>
+				<WidgetHeading id={titleId} icon="chart-line-up" title={<Trans>Visitors</Trans>} />
+				<Widget.Content className="flex flex-wrap items-center gap-3">
+					<p className="min-w-0 flex-1 text-body-sm text-muted">
+						<Trans>The numbers couldn't be loaded.</Trans>
+					</p>
+					<Button size="sm" variant="secondary" isPending={isRefetching} onPress={() => void refetch()}>
+						<Trans>Try again</Trans>
+					</Button>
+				</Widget.Content>
+			</Widget>
+		);
 	if (!data) return null;
 	const totalClicks = PORTFOLIO_CLICK_KINDS.reduce((sum, kind) => sum + data.totals.clicks[kind], 0);
 	const tiles = [
 		{ key: "visits", title: t`Visits`, value: data.totals.views },
-		{ key: "clicks", title: t`Button clicks`, value: totalClicks },
+		// Buttons, links, videos played and PDFs opened: the Clicks list below names each.
+		{ key: "clicks", title: t`Clicks`, value: totalClicks },
 		{ key: "messages", title: t`Messages`, value: data.totals.messages },
 	];
 
@@ -258,7 +315,10 @@ export function PortfolioStatistics() {
 						</KPI>,
 					])}
 				</KPIGroup>
-				<DailyVisits days={data.days} />
+				<div className="grid gap-1">
+					<DailyVisits days={data.days} />
+					<DayZoneNote />
+				</div>
 				<div className="grid gap-6 @lg:grid-cols-3">
 					<RankList
 						title={<Trans>Clicks</Trans>}
@@ -286,6 +346,7 @@ export function PortfolioStatistics() {
 				</div>
 				{data.details.state === "ready" && <ReadyStatisticsDetails details={data.details} />}
 				{data.details.state === "locked" && <LockedDetails />}
+				{data.details.state === "unavailable" && <UnavailableDetails />}
 			</Widget.Content>
 		</Widget>
 	);

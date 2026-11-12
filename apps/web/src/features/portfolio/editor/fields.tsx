@@ -140,11 +140,16 @@ type UrlInputProps = {
 	onBlur?: () => void;
 };
 
-/** Adds https:// to an address typed without one ("linkedin.com/in/nadia"). */
+/**
+ * Adds https:// to an address typed without one ("linkedin.com/in/nadia"). A bare email address becomes a mailto:
+ * link: with https:// in front it would read as a web address at the email's domain. Fields for web pages only refuse
+ * it then, with their message.
+ */
 export function normalizePortfolioUrl(text: string): string {
 	const trimmed = text.trim();
 	if (!trimmed) return "";
 	if (/^[a-z][\d+.a-z-]*:/i.test(trimmed)) return trimmed;
+	if (/^[^\s/:@]+@[^\s/:@]+\.[^\s/:@]+$/.test(trimmed)) return `mailto:${trimmed}`;
 	return `https://${trimmed}`;
 }
 

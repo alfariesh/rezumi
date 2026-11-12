@@ -119,7 +119,8 @@ export function WorksForm() {
 										className={cn(work.hidden && "text-muted")}
 										onPress={() =>
 											editPortfolio((draft) => {
-												const target = draft.works.items[index];
+												// By id: the list may have moved since this row was drawn (a drop, Undo).
+												const target = draft.works.items.find((item) => item.id === work.id);
 												if (target) target.hidden = !target.hidden;
 											})
 										}

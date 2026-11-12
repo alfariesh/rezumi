@@ -102,6 +102,7 @@ function StatusCard() {
 	const confirm = useConfirm();
 	const origin = useShareOrigin();
 	const titleId = useId();
+	const [deleting, setDeleting] = useState(false);
 	const portfolio = data?.portfolio;
 	if (!portfolio) return null;
 	const username = session?.user.username ?? "";
@@ -115,14 +116,22 @@ function StatusCard() {
 			hold: true,
 		});
 		if (!confirmed) return;
+		setDeleting(true);
 		try {
 			await client.portfolio.delete();
-			await invalidatePortfolioQueries(queryClient);
+			toast.add({ type: "success", description: t`Your portfolio was deleted.` });
 		} catch (error) {
 			toast.add({
 				type: "error",
-				description: portfolioErrorMessage(error, { fallback: t`Couldn't delete your portfolio. Try again.` }),
+				description: portfolioErrorMessage(error, {
+					fallback: t`Couldn't delete your portfolio. Try again.`,
+					// Deleted in another tab meanwhile: the page catches up below.
+					byCode: { NOT_FOUND: t`Your portfolio was already deleted.` },
+				}),
 			});
+		} finally {
+			await invalidatePortfolioQueries(queryClient);
+			setDeleting(false);
 		}
 	};
 
@@ -176,7 +185,7 @@ function StatusCard() {
 						</a>
 					)}
 					{!portfolio.suspendedAt && (
-						<Button variant="ghost" className="text-danger" onPress={() => void remove()}>
+						<Button variant="ghost" className="text-danger" isPending={deleting} onPress={() => void remove()}>
 							<Icon name="trash" size={18} />
 							<Trans>Delete portfolio</Trans>
 						</Button>

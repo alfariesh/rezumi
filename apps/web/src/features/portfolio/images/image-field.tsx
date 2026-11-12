@@ -5,12 +5,13 @@ import type { KeyboardEvent, PointerEvent, ReactNode } from "react";
 import type { DropEvent } from "react-aria";
 import { DropZone, useDropZonePickerContext } from "@heroui-pro/react";
 import { Alert, Button, FieldError, Input, Label, ProgressBar, TextField } from "@heroui/react";
-import { t } from "@lingui/core/macro";
+import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useEffect, useRef, useState } from "react";
 import { isFileDropItem } from "react-aria-components";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 import { pictureFiles } from "./compress";
 import { discardUploadedImages, MAX_BATCH_PICTURES, uploadImageBatch } from "./upload";
@@ -105,10 +106,15 @@ function PickerButton({ compact, isDisabled, children }: PickerButtonProps) {
 	);
 }
 
-type UploadStatusProps = { progress: UploadProgress | null; errors: readonly string[] };
+type UploadStatusProps = {
+	progress: UploadProgress | null;
+	errors: readonly string[];
+	/** Puts the messages away; they also go when the next batch starts. */
+	onDismiss?: () => void;
+};
 
 /** Progress of a batch of uploads, and what went wrong with any picture in it. */
-export function UploadStatus({ progress, errors }: UploadStatusProps) {
+export function UploadStatus({ progress, errors, onDismiss }: UploadStatusProps) {
 	return (
 		<>
 			{progress && progress.done < progress.total && (
@@ -143,10 +149,28 @@ export function UploadStatus({ progress, errors }: UploadStatusProps) {
 							<Alert.Description key={`${index}:${error}`}>{error}</Alert.Description>
 						))}
 					</Alert.Content>
+					{onDismiss && (
+						<IconButton
+							icon="x"
+							size="sm"
+							variant="ghost"
+							label={t`Dismiss`}
+							className="-my-1 shrink-0"
+							onPress={onDismiss}
+						/>
+					)}
 				</Alert>
 			)}
 		</>
 	);
+}
+
+/** Pictures a block had no room for: they weren't uploaded. */
+export function leftOutMessage(left: number, most: number): string {
+	return plural(left, {
+		one: `# picture wasn't added: a Pictures block holds ${most}.`,
+		other: `# pictures weren't added: a Pictures block holds ${most}.`,
+	});
 }
 
 type UploadOptions = {
@@ -202,6 +226,8 @@ export function useImageUploads() {
 		progress,
 		errors,
 		clearErrors: () => setErrors([]),
+		/** Adds a message of the caller's own (pictures it left out) to the batch's. */
+		addError: (message: string) => setErrors((previous) => [...previous, message]),
 		cancel: () => running.current?.abort(),
 	};
 }
@@ -343,7 +369,11 @@ function FocusPicker({ image, focus, onChange }: FocusPickerProps) {
 type ImageFieldProps = {
 	label: string;
 	value: PortfolioImage | undefined;
-	onChange: (image: PortfolioImage | undefined) => void;
+	/**
+	 * A new picture, none, or the same one described differently. `typing` is true for the description: give that edit
+	 * a key, so a sentence typed in it undoes as one step.
+	 */
+	onChange: (image: PortfolioImage | undefined, typing: boolean) => void;
 	kind?: PortfolioImageKind;
 	/** The alternative text a new picture starts with (the work's title, the client's name…). */
 	altSuggestion: string;
@@ -370,7 +400,7 @@ export function ImageField({
 
 	const choose = async (files: File[]) => {
 		const [image] = await uploads.upload(files.slice(0, 1), { kind, alt: () => altSuggestion });
-		if (image) onChange(image);
+		if (image) onChange(image, false);
 	};
 
 	return (
@@ -393,11 +423,15 @@ export function ImageField({
 							)}
 						/>
 					)}
-					<AltTextInput value={value.alt} fallback={altSuggestion} onChange={(alt) => onChange({ ...value, alt })} />
+					<AltTextInput
+						value={value.alt}
+						fallback={altSuggestion}
+						onChange={(alt) => onChange({ ...value, alt }, true)}
+					/>
 					{children}
 					<div className="flex flex-wrap gap-2">
 						<ReplaceButton isDisabled={uploads.busy} onFiles={(files) => void choose(files)} />
-						<Button size="sm" variant="danger-soft" onPress={() => onChange(undefined)}>
+						<Button size="sm" variant="danger-soft" onPress={() => onChange(undefined, false)}>
 							<Icon name="trash" size={16} />
 							<Trans>Remove picture</Trans>
 						</Button>
@@ -406,7 +440,7 @@ export function ImageField({
 			) : (
 				<ImageDrop compact label={label} isDisabled={uploads.busy} onFiles={(files) => void choose(files)} />
 			)}
-			<UploadStatus progress={uploads.progress} errors={uploads.errors} />
+			<UploadStatus progress={uploads.progress} errors={uploads.errors} onDismiss={uploads.clearErrors} />
 		</div>
 	);
 }

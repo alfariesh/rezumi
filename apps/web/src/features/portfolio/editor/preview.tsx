@@ -18,6 +18,7 @@ import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { useOwnOrigins, withOwnPicture } from "./pictures";
 import { usePortfolioData } from "./store";
 import { usePortfolioEditorUi } from "./ui";
+import { useResumeLinks } from "./use-view";
 import { usePlanFeature } from "@/features/billing/plan";
 // The page's own text, declared for translators; see the module.
 import "../page-text";
@@ -131,9 +132,7 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	// Where the reader was, so a redrawn preview opens at the same place instead of the top.
 	const scroll = useRef({ page: 0, detail: 0, anchor: null as string | null });
 
-	const resume = source.resume;
-	const showResume = Boolean(resume?.isPublic);
-	const showPdf = showResume && resume?.showDownloadButtons !== false && !resume?.hasPassword;
+	const { resume: showResume, resumePdf: showPdf } = useResumeLinks();
 
 	useEffect(() => {
 		if (source.isLoading) return;

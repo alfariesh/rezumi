@@ -7,6 +7,7 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { ownPictureUrl } from "@rezumi/utils/own-picture";
+import { useRemovalFocus } from "../blocks/list-focus";
 import { ImageField } from "../images/image-field";
 import { MetricsEditor } from "../metrics/metric-form";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
@@ -15,6 +16,7 @@ import { useOwnOrigins } from "./pictures";
 import { setBasicsText } from "./sections";
 import { editPortfolio, usePortfolioData } from "./store";
 import { KEPT_PHOTO_MS, usePortfolioEditorUi } from "./ui";
+import { useEditorView, usePageMessages } from "./use-view";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -187,14 +189,17 @@ function HeroPhoto() {
 					kind="portrait"
 					value={basics.picture ?? undefined}
 					altSuggestion={name}
-					onChange={(image) => {
+					onChange={(image, typing) => {
 						// A removed photo isn't offered back later.
 						if (!image) keepPhoto(null);
-						editPortfolio((draft) => {
-							draft.hero.showPicture = true;
-							if (image) draft.basics.picture = image;
-							else delete draft.basics.picture;
-						});
+						editPortfolio(
+							(draft) => {
+								draft.hero.showPicture = true;
+								if (image) draft.basics.picture = image;
+								else delete draft.basics.picture;
+							},
+							typing ? { key: "basics.picture.alt" } : undefined,
+						);
 					}}
 				/>
 			)}
@@ -229,6 +234,25 @@ function HeroHighlights() {
 	);
 }
 
+/** Why the page leaves a button off, and what makes it show. */
+function hiddenButtonReason(kind: PortfolioButton["kind"]): string {
+	switch (kind) {
+		case "resume":
+			return t`Not on the page: your source resume isn't public. Make it public in the resume's Share settings.`;
+		case "pdf":
+			return t`Not on the page: your source resume isn't public, or doesn't offer its PDF.`;
+		case "contact":
+			return t`Not on the page: the Contact section is hidden or has nothing in it.`;
+		case "whatsapp":
+			return t`Not on the page: add your WhatsApp number in Contact.`;
+		case "email":
+			return t`Not on the page: your source resume has no email address.`;
+		case "profile":
+		case "link":
+			return t`Not on the page: add the address below.`;
+	}
+}
+
 const ADD_ORDER: PortfolioButton["kind"][] = ["contact", "resume", "whatsapp", "email", "pdf", "profile", "link"];
 
 /** Up to three buttons under the intro. Ones that can't work yet (no WhatsApp number, say) are left off the page. */
@@ -236,6 +260,16 @@ function HeroButtons() {
 	const { hero } = usePortfolioData();
 	const buttons = hero.buttons;
 	const kindOptions = PORTFOLIO_BUTTON_KINDS.map((kind) => ({ id: kind, label: buttonKindLabel(kind) }));
+	const { itemProps, fallbackRef, removed } = useRemovalFocus();
+	const view = useEditorView();
+	const messages = usePageMessages();
+	// Whether the page shows the button: it leaves off ones that can't work yet, and says nothing about it.
+	const shows = (button: PortfolioButton) => {
+		const label = button.label?.trim() || messages.buttons[button.kind];
+		return view.hero.buttons.some(
+			(shown) => shown.kind === button.kind && shown.label === label && (!button.url || shown.href === button.url),
+		);
+	};
 
 	const update = (index: number, change: (button: PortfolioButton) => void, key?: string) =>
 		editPortfolio(
@@ -272,19 +306,22 @@ function HeroButtons() {
 							list="hero-buttons"
 							index={index}
 							name={name}
-							onRemove={() =>
+							itemProps={itemProps}
+							onRemove={() => {
+								removed(index);
 								editPortfolio(
 									(draft) => {
 										draft.hero.buttons.splice(index, 1);
 									},
 									{ structural: true },
-								)
-							}
+								);
+							}}
 						>
 							<ChoiceSelect
 								label={t`Opens`}
 								value={button.kind}
 								options={kindOptions}
+								warning={shows(button) ? undefined : hiddenButtonReason(button.kind)}
 								onChange={(kind) =>
 									update(index, (draft) => {
 										draft.kind = kind;
@@ -314,10 +351,14 @@ function HeroButtons() {
 									label={t`Address`}
 									value={button.url}
 									onChange={(url) =>
-										update(index, (draft) => {
-											if (url) draft.url = url;
-											else delete draft.url;
-										})
+										update(
+											index,
+											(draft) => {
+												if (url) draft.url = url;
+												else delete draft.url;
+											},
+											"url",
+										)
 									}
 								/>
 							)}
@@ -330,12 +371,14 @@ function HeroButtons() {
 					<Trans>An Email or WhatsApp button shows that address to visitors, even if Contact hides it.</Trans>
 				</p>
 			)}
-			{buttons.length < PORTFOLIO_LIMITS.heroButtons && (
-				<Button variant="secondary" className="w-fit" onPress={add}>
-					<Icon name="plus" size={18} />
-					<Trans>Add a button</Trans>
-				</Button>
-			)}
+			<div ref={fallbackRef} className="contents">
+				{buttons.length < PORTFOLIO_LIMITS.heroButtons && (
+					<Button variant="secondary" className="w-fit" onPress={add}>
+						<Icon name="plus" size={18} />
+						<Trans>Add a button</Trans>
+					</Button>
+				)}
+			</div>
 		</div>
 	);
 }

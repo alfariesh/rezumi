@@ -38,7 +38,8 @@ export function usePdfPicker(onFile: (file: File) => void) {
 	return useFilePicker(([file]) => file && onFile(file), { accept: "application/pdf,.pdf", filter: pdfFiles });
 }
 
-export type InsertBlock = (block: PortfolioBlock) => void;
+/** Puts a block in at the chosen place; false when the work had no room left for it (the person was told). */
+export type InsertBlock = (block: PortfolioBlock) => boolean;
 type SetBlock = (workId: string, blockId: string, recipe: (block: Draft<PortfolioBlock>) => void) => void;
 
 /**
@@ -90,7 +91,7 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 				setError(t`That isn't a YouTube or Vimeo video link. Copy the address from the video's page.`);
 				return;
 			}
-			insert(block);
+			if (!insert(block)) return;
 			setBusy(t`Copying the thumbnail…`);
 			await copyThumbnail(block, signal);
 		});
@@ -115,14 +116,14 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 				const result = await unfurlLink(url, signal);
 				if (result.kind === "video") {
 					const block = videoBlockFromUnfurl(result);
-					insert(block);
+					if (!insert(block)) return;
 					toast.add({ description: t`That's a video, so it was added as a Video block.` });
 					setBusy(t`Copying the thumbnail…`);
 					await copyThumbnail(block, signal);
 					return;
 				}
 				const block = linkBlockFromUnfurl(result, url);
-				insert(block);
+				if (!insert(block)) return;
 				if (result.imageUrl) useLinkSuggestions.getState().suggest(block.id, result.imageUrl);
 			} catch (failure) {
 				if (isAbort(failure, signal)) throw failure;
@@ -137,9 +138,8 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 		await run(t`Reading and uploading the PDF…`, async (signal) => {
 			try {
 				const block = await newPdfBlock(file, signal);
-				insert(block);
 				// No room for it any more (the work filled up meanwhile): its files aren't kept.
-				if (!currentBlock(workId, block.id))
+				if (!insert(block))
 					void discardUploadedImages(block.preview ? [block.preview, { key: block.file }] : [{ key: block.file }]);
 			} catch (failure) {
 				if (isAbort(failure, signal)) throw failure;

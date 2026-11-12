@@ -89,6 +89,10 @@ msgstr ""
 msgid "(no header)"
 msgstr "(គ្មានចំណងជើង)"
 
+#: src/features/portfolio/blocks/pdf-block.tsx
+msgid "(opens in a new tab)"
+msgstr ""
+
 #: src/features/portfolio/editor/intro-effect.tsx
 msgid "(theme default)"
 msgstr ""
@@ -105,6 +109,11 @@ msgstr ""
 #. placeholder {0}: work.blocks.length
 #: src/features/portfolio/works/works-form.tsx
 msgid "{0, plural, =0 {No blocks yet} one {# block} other {# blocks}}"
+msgstr ""
+
+#. placeholder {0}: results.length
+#: src/features/portfolio/location/location-fields.tsx
+msgid "{0, plural, =0 {No cities found} one {# city found} other {# cities found}}"
 msgstr ""
 
 #. placeholder {0}: proposals.length
@@ -365,6 +374,11 @@ msgstr ""
 msgid "{0} (copy)"
 msgstr "{0} (ចម្លង)"
 
+#. placeholder {0}: item.label
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "{0} (hidden on your resume)"
+msgstr ""
+
 #. placeholder {0}: variantLabel(value)
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "{0} (theme default)"
@@ -585,12 +599,6 @@ msgstr "{0} នៃ {1} ពាក្យសុំការងារដែលបា
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "{0} of {1} terms found"
 msgstr "{0} នៃ {1} ពាក្យត្រូវបានរកឃើញ"
-
-#. placeholder {0}: images.length
-#. placeholder {1}: PORTFOLIO_LIMITS.imagesPerBlock
-#: src/features/portfolio/blocks/images-block.tsx
-msgid "{0} of {1}. Drop, choose or paste them."
-msgstr ""
 
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
@@ -863,6 +871,18 @@ msgstr ""
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr ""
 
+#: src/features/portfolio/images/image-field.tsx
+msgid "{left, plural, one {# picture wasn't added: a Pictures block holds {most}.} other {# pictures weren't added: a Pictures block holds {most}.}}"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-pictures.tsx
+msgid "{left, plural, one {# picture wasn't added: there's no room for it in these works.} other {# pictures weren't added: there's no room for them in these works.}}"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-pictures.tsx
+msgid "{left, plural, one {# picture wasn't added: your portfolio has no room for another work.} other {# pictures weren't added: your portfolio has no room for more works.}}"
+msgstr ""
+
 #: src/features/portfolio/images/upload.ts
 msgid "{left, plural, one {# picture wasn't uploaded.} other {# pictures weren't uploaded.}}"
 msgstr ""
@@ -874,10 +894,6 @@ msgstr "{length} នាទី"
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
 msgstr "{lines, plural, one {ដំណើរការលើទំព័រ {next} ដោយបន្ទាត់ #} other {ដំណើរការលើទំព័រ {next} ដោយបន្ទាត់ #}}"
-
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "{min} to {most} values in order, oldest first. The page draws them as a small line."
-msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "{minimum} minimum"
@@ -1214,10 +1230,6 @@ msgstr ""
 msgid "10-minute briefing"
 msgstr "ឯកសារសង្ខេប 10 នាទី"
 
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "10–11 recommended"
-msgstr "10-11 បានណែនាំ"
-
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "2 files"
 msgstr "2 ឯកសារ"
@@ -1343,10 +1355,6 @@ msgstr "ប្រវែងដ៏មានផាសុកភាព ហើយវ�
 msgid "A contact form, and how many people visited"
 msgstr ""
 
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
-msgstr ""
-
 #: src/features/ats-checker/messages.ts
 msgid "A date is in the future."
 msgstr "កាលបរិច្ឆេទមួយស្ថិតនៅពេលអនាគត។"
@@ -1388,10 +1396,6 @@ msgstr "ការពិតដែលអ្នកបានឱ្យបំភ្ល
 msgid "A fake testimonial"
 msgstr ""
 
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "A fall can be good, such as faster load times."
-msgstr ""
-
 #: src/features/career/workspace/prepare.tsx
 msgid "A focused plan for this round"
 msgstr "ផែនការផ្តោតសម្រាប់ជុំនេះ"
@@ -1411,10 +1415,6 @@ msgstr "ចន្លោះពេញកម្ពស់មួយបំបែកទ
 #: src/features/ats-checker/messages.ts
 msgid "A gap is not a problem. Add a one-line explanation if you want to; many strong resumes simply do not."
 msgstr "ចន្លោះមួយមិនមែនជាបញ្ហាទេ។ បន្ថែមការពន្យល់មួយបន្ទាត់ប្រសិនបើអ្នកចង់; ប្រវត្តិរូបសង្ខេបល្អៗជាច្រើនគ្មានការពន្យល់នេះទេ។"
-
-#: src/features/portfolio/themes.ts
-msgid "A light in your accent colour sweeps across a few times."
-msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "A link"
@@ -1520,16 +1520,16 @@ msgstr "ការផ្តល់ការងារដែលបានរក្ស
 msgid "A second opinion on your wording"
 msgstr "មតិទីពីរលើពាក្យរបស់អ្នក។"
 
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "A section title holds {most} characters, so the rest was left out."
+msgstr ""
+
 #: src/features/applications/next-step.ts
 msgid "A short follow-up is usually fine now"
 msgstr "ការតាមដានរយៈពេលខ្លីជាធម្មតាល្អឥឡូវនេះ"
 
 #: src/dialogs/resume/template/data.ts
 msgid "A slim stripe of the accent runs down the page edge on the sidebar's side, the sidebar sits behind a hairline and main titles open with a short accent dash."
-msgstr ""
-
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "A small badge at the bottom of your page."
 msgstr ""
 
 #: src/dialogs/resume/template/data.ts
@@ -1546,10 +1546,6 @@ msgstr ""
 
 #: src/dialogs/resume/template/data.ts
 msgid "A split header with your name on one side and the contact lines stacked behind a hairline on the other, accent-barred titles and dates above each entry."
-msgstr ""
-
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "A square photo of your face works best. It's shrunk in your browser before uploading."
 msgstr ""
 
 #: src/features/career/coach-chat.tsx
@@ -1606,10 +1602,6 @@ msgstr ""
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Accent color"
 msgstr "ពណ៌សង្កត់សំឡេង"
-
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Accent is used for headings, icons and the header band. Body text stays near-black for print and ATS."
-msgstr "ការសង្កត់សំឡេងត្រូវបានប្រើសម្រាប់ចំណងជើង រូបតំណាង និងក្រុមតន្រ្តីបឋមកថា។ តួអត្ថបទស្ថិតនៅជិតខ្មៅសម្រាប់ការបោះពុម្ព និង ATS ។"
 
 #: src/features/career/workspace/apply.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
@@ -1805,6 +1797,10 @@ msgstr ""
 msgid "Add a keyword..."
 msgstr "បន្ថែមពាក្យគន្លឹះ..."
 
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Add a label"
+msgstr ""
+
 #. Tooltip for action button that opens URL label editor
 #: src/components/input/url-input.tsx
 msgid "Add a label to the URL"
@@ -1821,10 +1817,6 @@ msgstr "បន្ថែមទីតាំង"
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Add a metric"
-msgstr ""
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Add a Metrics block below to show a result on the card."
 msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
@@ -1862,6 +1854,10 @@ msgstr "បន្ថែមលទ្ធផល"
 #: src/features/career/schedule-sheet.tsx
 msgid "Add a role or company to look for."
 msgstr "បន្ថែមតួនាទី ឬក្រុមហ៊ុនដែលត្រូវស្វែងរក។"
+
+#: src/features/portfolio/editor/intro-effect.tsx
+msgid "Add a role to switch to. With only one line, the page shows it without the effect."
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Add a role, then Enter"
@@ -2130,6 +2126,10 @@ msgstr "បន្ថែមដែនបន្ទាប់ពី @ ដូចជា
 msgid "Add the domain ending, like {domain}.com"
 msgstr "បន្ថែមការបញ្ចប់ដែន ដូចជា {domain}.com"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Add the order link, or the button won't show."
+msgstr ""
+
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "Add these records where you manage the domain, then check. Changes can take a few hours to reach everyone."
 msgstr "បន្ថែមកំណត់ត្រាទាំងនេះនៅកន្លែងដែលអ្នកគ្រប់គ្រងដែន រួចពិនិត្យ។ ការផ្លាស់ប្ដូរអាចចំណាយពេលពីរបីម៉ោងដើម្បីទៅដល់អ្នកទាំងអស់គ្នា។"
@@ -2251,13 +2251,6 @@ msgstr "បានបន្ថែមទៅ “រៀបចំ”"
 msgid "Address"
 msgstr "អាស័យដ្ឋាន"
 
-#. placeholder {0}: window.location.host
-#. placeholder {1}: owner.username
-#. placeholder {2}: work.slug
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Address: {0}/{1}#work-{2}"
-msgstr ""
-
 #: src/features/career/workspace/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "បន្ថែមការរំលឹកទៅ “ថ្ងៃនេះ” ប្រសិនបើអ្នកមិនទាន់ទទួលបានការឆ្លើយតបនៅពេលនោះ។"
@@ -2333,7 +2326,6 @@ msgstr "ធៀបនឹងតម្រូវការរបស់អ្នក"
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
 #: src/features/portfolio/ai/rewrite-menu.tsx
-#: src/features/resume/editor/chrome/mode-switch.tsx
 #: src/features/resume/editor/chrome/shell.tsx
 msgid "AI"
 msgstr ""
@@ -2573,6 +2565,10 @@ msgstr ""
 msgid "An editorial single column set like a magazine feature: a small kicker over a large display name and serif section titles between hairlines. For writers, designers and communications roles."
 msgstr ""
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "An Email or WhatsApp button shows that address to visitors, even if Contact hides it."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
 msgstr "ពុម្ពអក្សរដែលបានបង្កប់មិនអាចអានបានទេ។"
@@ -2650,20 +2646,12 @@ msgstr ""
 msgid "Any"
 msgstr "ណាមួយក៏បាន"
 
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Any font, in Advanced"
-msgstr "ពុម្ពអក្សរណាមួយនៅក្នុងកម្រិតខ្ពស់"
-
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Anyone who opens the public URL will need this password."
 msgstr "អ្នកណាដែលបើក URL សាធារណៈនឹងត្រូវការពាក្យសម្ងាត់នេះ។"
 
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Anyone with the link can see it."
-msgstr ""
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Anyone with the link can see your portfolio. Changes show as soon as they're saved."
 msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
@@ -2760,6 +2748,7 @@ msgstr "ប្រព័ន្ធតាមដានអ្នកដាក់ពា
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/resume/editor/check/job-match.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "ការដាក់ពាក្យ"
@@ -3192,24 +3181,12 @@ msgstr "មុនពេលស្តារឡើងវិញ"
 msgid "Before the value"
 msgstr ""
 
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Before titles such as Education, Skills and Certifications."
-msgstr ""
-
 #: src/features/career/workspace/apply.tsx
 msgid "Before you submit"
 msgstr "មុនពេលអ្នកដាក់ស្នើ"
 
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Before your email, phone, location, website and custom fields."
-msgstr ""
-
 #: src/features/portfolio/metrics/metric-preview.tsx
 msgid "Before: {before}"
-msgstr ""
-
-#: src/features/portfolio/works/add-work/from-link.tsx
-msgid "Behance, Dribbble, GitHub, Figma, Medium, YouTube, Vimeo or any public page."
 msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
@@ -3341,10 +3318,6 @@ msgstr ""
 msgid "Break the resume into the usual sections so it can be segmented."
 msgstr "បំបែកប្រវត្តិរូបសង្ខេបជាផ្នែកធម្មតា ដើម្បីឱ្យវាអាចត្រូវបានបែងចែក។"
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
-msgid "Breaks long words between syllables, using the language set in Page."
-msgstr "បំបែកពាក្យវែងរវាងព្យាង្គ ដោយប្រើភាសាដែលបានកំណត់ក្នុងទំព័រ។"
-
 #: src/features/career/workspace/prepare.tsx
 #: src/features/career/workspace/saved.tsx
 msgid "Briefing"
@@ -3416,10 +3389,6 @@ msgstr "បញ្ជីចំណុច"
 msgid "Business"
 msgstr ""
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
-msgid "Button clicks"
-msgstr ""
-
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Button link"
 msgstr ""
@@ -3438,7 +3407,7 @@ msgid "Buttons"
 msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
-msgid "By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed at, and anyone can report one that's used without permission."
+msgid "By adding a logo, you confirm you have the right to show it."
 msgstr ""
 
 #. placeholder {0}: qris.payments
@@ -3452,10 +3421,6 @@ msgstr "ប្រតិទិន"
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Calendar view"
-msgstr ""
-
-#: src/features/portfolio/themes.ts
-msgid "Calm and formal."
 msgstr ""
 
 #: src/features/homepage/faq.tsx
@@ -3545,10 +3510,6 @@ msgstr ""
 msgid "Cards"
 msgstr ""
 
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Career sections come from"
-msgstr ""
-
 #: src/features/portfolio/page-text.ts
 msgid "Case studies"
 msgstr ""
@@ -3632,6 +3593,7 @@ msgid "Change this report's status?"
 msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Change timezone"
 msgstr "ប្តូរតំបន់ពេលវេលា"
 
@@ -3659,14 +3621,6 @@ msgstr "ផ្លាស់ប្តូរប្រវត្តិរូបដោ
 #: src/dialogs/resume/index.tsx
 msgid "Changed your mind? Rename your resume to something more descriptive."
 msgstr "ប្តូរ​ចិត្ត​ហើយ​ឬ​អត់? ប្ដូរ​ឈ្មោះ​ប្រវត្តិរូប​របស់​អ្នក​ឲ្យ​មាន​អត្ថន័យ​ច្បាស់​លាស់​ជាង​មុន។"
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Changes section titles and button labels such as “View resume”, not your own text. Empty follows your resume."
-msgstr ""
-
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Changes section titles and date words only, not your content."
-msgstr "ផ្លាស់ប្តូរចំណងជើងផ្នែក និងពាក្យកាលបរិច្ឆេទតែប៉ុណ្ណោះ មិនមែនខ្លឹមសាររបស់អ្នកទេ។"
 
 #. placeholder {0}: getPlanName(pending.planId)
 #. placeholder {1}: formatDate(plan.currentPeriodEndsAt)
@@ -3855,10 +3809,6 @@ msgstr "Chinese (Traditional)"
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Chips"
-msgstr ""
-
-#: src/features/portfolio/location/location-fields.tsx
-msgid "Choose a city first."
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -4062,10 +4012,6 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Close"
 msgstr "បិទ"
-
-#: src/features/resume/editor/write/section-row.tsx
-msgid "Close {title}"
-msgstr "បិទ {title}"
 
 #: src/features/applications/components/board.tsx
 #: src/features/applications/components/detail/close-dialog.tsx
@@ -5248,6 +5194,10 @@ msgstr "រាប់ដាច់ដោយឡែកពីពិន្ទុវិ
 msgid "Countries"
 msgstr "ប្រទេស"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Countries, devices and linking sites aren't available right now."
+msgstr ""
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Country"
 msgstr ""
@@ -5614,6 +5564,10 @@ msgstr ""
 msgid "Days (1–366)"
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Days are counted in {timeZone}."
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 msgid "Days in WIB. Trends compare with the period just before."
 msgstr ""
@@ -5807,6 +5761,10 @@ msgstr "បានលុបចេញពី “បានរក្សាទុក�
 msgid "Deleted in"
 msgstr "បានលុបនៅក្នុង"
 
+#: src/features/portfolio/admin/labels.ts
+msgid "Deleted the portfolio"
+msgstr ""
+
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Density"
 msgstr "ដង់ស៊ីតេ"
@@ -5970,6 +5928,7 @@ msgid "Disconnecting your {providerName} account…"
 msgstr "កំពុងផ្ដាច់គណនី {providerName} របស់អ្នក…"
 
 #: src/features/portfolio/admin/review-page.tsx
+#: src/features/portfolio/images/image-field.tsx
 #: src/features/resume/editor/write/write-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 #: src/routes/dashboard/applications/index.tsx
@@ -6177,10 +6136,6 @@ msgstr "ទាញយកគំរូ PDF"
 msgid "Download them"
 msgstr "ទាញយកពួកវា"
 
-#: src/features/resume/share/share-panel.tsx
-msgid "Download totals can include repeat clicks."
-msgstr "ការទាញយកសរុបអាចរួមបញ្ចូលការចុចម្តងទៀត។"
-
 #: src/features/resume/share/download-tab.tsx
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "Downloaded {file}"
@@ -6273,17 +6228,13 @@ msgid "Drafting…"
 msgstr "សេចក្តីព្រាង…"
 
 #: src/features/resume/editor/write/outline.tsx
-msgid "drag · ⌥↑↓"
-msgstr "អូស · ⌥↑↓"
+msgid "drag"
+msgstr ""
 
 #. placeholder {0}: application.role
 #. placeholder {1}: application.company
 #: src/features/applications/components/application-card.tsx
 msgid "Drag {0} at {1}"
-msgstr ""
-
-#: src/features/portfolio/editor/content-panel.tsx
-msgid "Drag a section, or use its arrows, to change the order. Empty sections don't show on the page until they have something in them."
 msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -6514,14 +6465,6 @@ msgstr "ការ​សិក្សា"
 msgid "Education layout"
 msgstr ""
 
-#: src/features/resume/editor/design/entries-group.tsx
-msgid "Education swaps school and field of study the same way."
-msgstr ""
-
-#: src/features/portfolio/editor/intro-effect.tsx
-msgid "Effects stop by themselves within five seconds and stay still for visitors who ask their device for less motion."
-msgstr ""
-
 #: src/features/billing/admin/overview.tsx
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
@@ -6586,28 +6529,7 @@ msgid "Empty"
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
-msgid "Empty shows “Open to work” in the page's language."
-msgstr ""
-
-#: src/features/portfolio/editor/intro-form.tsx
 msgid "Empty uses a default"
-msgstr ""
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Empty uses your greeting or About me."
-msgstr ""
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Empty uses your name and headline."
-msgstr ""
-
-#. placeholder {0}: value || "—"
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "Empty uses your resume's: {0}"
-msgstr ""
-
-#: src/features/portfolio/location/location-fields.tsx
-msgid "Empty uses your resume's: {resumeLocation}"
 msgstr ""
 
 #. placeholder {0}: formatPrice(left, currency)
@@ -6684,7 +6606,7 @@ msgid "Enter a number from {min} to {upper}."
 msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
-msgid "Enter a number, such as 2.8 or 1200."
+msgid "Enter a number, such as {decimal} or {whole}, without % or a currency: “Written as” adds those."
 msgstr ""
 
 #: src/features/applications/components/detail/contacts.tsx
@@ -6837,10 +6759,6 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Every term the posting stresses is already there."
 msgstr "រាល់​ពាក្យ​ដែល​ប្រកាស​ការងារ​សង្កត់​ធ្ងន់​មាន​រួច​ហើយ។"
-
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "Every visitor sees this mode."
-msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Every week"
@@ -7243,8 +7161,8 @@ msgstr "កំណត់ចំណាំតាមដាន"
 msgid "Follow-up reminder"
 msgstr "ការរំលឹកតាមដាន"
 
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "Follows each visitor's light or dark setting."
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Font"
 msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
@@ -7258,10 +7176,6 @@ msgstr ""
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Font pair"
 msgstr ""
-
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Font pairing"
-msgstr "ការផ្គូផ្គងពុម្ពអក្សរ"
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Font size"
@@ -7344,10 +7258,6 @@ msgstr "សម្រាប់ LibreOffice និងកម្មវិធីក�
 #: src/features/resume/share/download-tab.tsx
 msgid "For portals or recruiters who ask for Word. Layout is simplified."
 msgstr "សម្រាប់វិបផតថល ឬអ្នកជ្រើសរើសបុគ្គលិកដែលស្នើសុំ Word ។ ប្លង់ត្រូវបានធ្វើឱ្យសាមញ្ញ។"
-
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "For results that aren't a number, such as “Top 3” or “#1”."
-msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "For scripts, extensions and MCP clients. Keys act as you and can read and edit your documents."
@@ -7497,12 +7407,6 @@ msgstr ""
 msgid "From"
 msgstr "ពី"
 
-#. placeholder {0}: PROGRESS.min
-#. placeholder {1}: PROGRESS.max
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "From {0} to {1}, drawn as a bar."
-msgstr ""
-
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
 #: src/features/billing/plan-page.tsx
@@ -7556,10 +7460,6 @@ msgstr "ពីសាររបស់អ្នក"
 #: src/features/career/knowledge/facts.tsx
 msgid "From your resume"
 msgstr "ពីប្រវត្តិរូបសង្ខេបរបស់អ្នក"
-
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "From your resume; it has none yet."
-msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "From your resume:"
@@ -7871,11 +7771,8 @@ msgstr "ជំនួយ និងឯកសារ"
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "ជួយខ្ញុំបំប្លែងសមិទ្ធផលមួយទៅជារឿងដែលមាន ស្ថានការណ៍ ភារកិច្ច សកម្មភាព លទ្ធផល និងការឆ្លុះបញ្ចាំង។"
 
-#: src/features/portfolio/location/location-fields.tsx
-msgid "Helps recruiters in other time zones know when to reach you."
-msgstr ""
-
 #: src/components/input/color-picker.tsx
+#: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Hex color"
 msgstr ""
 
@@ -7890,14 +7787,6 @@ msgstr "លាក់"
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "បានលាក់ពី “តួនាទីថ្មី”"
-
-#: src/features/portfolio/editor/section-forms.tsx
-msgid "Hidden on your resume"
-msgstr ""
-
-#: src/features/resume/editor/write/write-panel.tsx
-msgid "Hidden sections keep their content but aren't printed or shared. Fields save as you type."
-msgstr "ផ្នែកដែលបានលាក់ទុកមាតិការបស់ពួកគេ ប៉ុន្តែមិនត្រូវបានបោះពុម្ព ឬចែករំលែកទេ។ វាលរក្សាទុកនៅពេលអ្នកវាយ។"
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Hidden terms are back"
@@ -8079,7 +7968,9 @@ msgid "https://linkedin.com/in/…"
 msgstr ""
 
 #: src/components/input/color-picker.tsx
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/design/style-groups.tsx
+#: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Hue"
 msgstr ""
 
@@ -8695,10 +8586,6 @@ msgstr "ចន ដូ"
 msgid "john.doe"
 msgstr "john.doe"
 
-#: src/features/portfolio/works/add-work/from-pictures.tsx
-msgid "JPG, PNG or WebP. Each is shrunk in your browser before it's uploaded, and its location data is removed."
-msgstr ""
-
 #: src/features/resume/import/read-file.ts
 msgid "JSON read"
 msgstr "JSON អាន"
@@ -8808,10 +8695,6 @@ msgstr "រក្សាផ្នែកជាក់លាក់បំផុត។
 msgid "Kept as it is"
 msgstr "រក្សា​ទុក​ដូច​ជា"
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Kept here, but visitors don't see it."
-msgstr ""
-
 #: src/features/billing/admin/reason-dialog.tsx
 msgid "Kept in the audit log with your name. At least 3 characters."
 msgstr ""
@@ -8878,10 +8761,6 @@ msgstr ""
 msgid "Label"
 msgstr "ស្លាក"
 
-#: src/features/resume/editor/write/basics-card.tsx
-msgid "Label (optional)"
-msgstr ""
-
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Label for field {0}"
@@ -8889,6 +8768,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Label text"
+msgstr ""
+
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Label, e.g. Languages"
 msgstr ""
 
 #. Preset button for setting picture aspect ratio to landscape orientation
@@ -8899,16 +8782,13 @@ msgstr "ផ្ទៃ​ទេសភាព"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "ភាសា"
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Language of the page's own words"
-msgstr ""
 
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
@@ -8970,10 +8850,6 @@ msgstr "ប្លង់"
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Layouts"
-msgstr ""
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Layouts that make room for it show this work larger."
 msgstr ""
 
 #: src/features/portfolio/works/work-editor.tsx
@@ -9085,10 +8961,6 @@ msgstr "អនុញ្ញាតឱ្យអតិថិជន AI ដូចជ�
 msgid "Let's start with what you have"
 msgstr "ចូរចាប់ផ្តើមជាមួយនឹងអ្វីដែលអ្នកមាន"
 
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Lets Google and other search engines list your portfolio, so recruiters can find you by name. It can take weeks to appear, or to disappear after you turn this off."
-msgstr ""
-
 #: src/features/career/coach.tsx
 msgid "Lets the coach search public pages through your web search service"
 msgstr "អនុញ្ញាតឱ្យគ្រូបង្វឹកស្វែងរកទំព័រសាធារណៈ តាមរយៈសេវាស្វែងរកតាមអ៊ីនធឺណិតរបស់អ្នក"
@@ -9141,10 +9013,6 @@ msgstr "លិខិត"
 
 #: src/features/homepage/features.tsx
 msgid "Letters share your resume's design and live beside the job they are for."
-msgstr ""
-
-#: src/features/portfolio/themes.ts
-msgid "Letters turn into design-app outlines under the mouse. Phones get the gentle fade-in."
 msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
@@ -9247,7 +9115,6 @@ msgstr "ភ្ជាប់ Rezumi ដើម្បីប្រើការវា�
 msgid "Link address"
 msgstr "អាសយដ្ឋានភ្ជាប់"
 
-#: src/features/resume/editor/check/job-match.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Link an application"
 msgstr "ភ្ជាប់ពាក្យសុំការងារ"
@@ -9313,10 +9180,6 @@ msgstr "ភ្ជាប់។ ឈ្មោះ អ៊ីមែល ទូរសព
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "LinkedIn, GitHub and other profiles from your resume."
-msgstr ""
-
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "LinkedIn, Referral…"
 msgstr "LinkedIn, ការណែនាំ…"
@@ -9355,11 +9218,6 @@ msgstr "Lithuanian"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Live · updates as you edit"
 msgstr "ផ្សាយផ្ទាល់ · ធ្វើបច្ចុប្បន្នភាពនៅពេលអ្នកកែសម្រួល"
-
-#. placeholder {0}: url.replace(/^https?:\/\//, "")
-#: src/features/resume/share/address-field.tsx
-msgid "Live at {0}"
-msgstr "រស់នៅ {0}"
 
 #: src/features/portfolio/themes.ts
 msgid "Living gradient"
@@ -9508,10 +9366,6 @@ msgstr ""
 #. Icon picker category: brand and network logos
 #: src/components/input/icon-picker-grid.tsx
 msgid "Logos"
-msgstr ""
-
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -9810,10 +9664,6 @@ msgstr "ផ្ញើសារទៅគ្រូបង្វឹក"
 msgid "Messages"
 msgstr "សារ"
 
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "Messages arrive by email and in your dashboard, and are deleted after 90 days."
-msgstr ""
-
 #. placeholder {0}: index + 1
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Metric {0}"
@@ -9961,24 +9811,6 @@ msgstr "ប្រព័ន្ធភាគច្រើនដាក់បេក្
 msgid "Mostly readable"
 msgstr "ភាគច្រើនអាចអានបាន។"
 
-#: src/features/portfolio/editor/fields.tsx
-msgid "Move {name} down"
-msgstr ""
-
-#: src/features/portfolio/editor/fields.tsx
-msgid "Move {name} up"
-msgstr ""
-
-#: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
-msgid "Move {title} down"
-msgstr ""
-
-#: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
-msgid "Move {title} up"
-msgstr ""
-
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "ផ្លាស់ទីមាតិកាទាំងអស់ទៅក្នុងព្រំដែនទំព័រ ហើយនាំចេញម្តងទៀត។"
@@ -10014,16 +9846,6 @@ msgstr "ផ្លាស់ប្តូរតួនាទី"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Move section to another column or page"
 msgstr "ផ្លាស់ទីផ្នែកទៅជួរឈរ ឬទំព័រផ្សេងទៀត"
-
-#. placeholder {0}: info.title
-#: src/features/portfolio/blocks/block-list.tsx
-msgid "Move the {0} block down"
-msgstr ""
-
-#. placeholder {0}: info.title
-#: src/features/portfolio/blocks/block-list.tsx
-msgid "Move the {0} block up"
-msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Move to"
@@ -10731,10 +10553,6 @@ msgstr "មិនបានអនុវត្ត"
 msgid "Not applied yet"
 msgstr "មិនទាន់បានដាក់ពាក្យ"
 
-#: src/features/resume/share/share-panel.tsx
-msgid "Not available while the resume needs a password."
-msgstr "មិនអាចប្រើបានទេ ខណៈពេលដែលប្រវត្តិរូបសង្ខេបត្រូវការពាក្យសម្ងាត់។"
-
 #: src/features/settings/account/security.tsx
 msgid "Not connected"
 msgstr "មិនបានភ្ជាប់"
@@ -10798,6 +10616,34 @@ msgstr ""
 msgid "Not now"
 msgstr "មិនមែនពេលនេះ"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Not on the page until it has a label and a value."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: add the address below."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: add your WhatsApp number in Contact."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: the Contact section is hidden or has nothing in it."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: your source resume has no email address."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: your source resume isn't public, or doesn't offer its PDF."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: your source resume isn't public. Make it public in the resume's Share settings."
+msgstr ""
+
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Not prepared yet"
 msgstr ""
@@ -10805,10 +10651,6 @@ msgstr ""
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Not published"
-msgstr ""
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Not published yet"
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
@@ -11004,18 +10846,6 @@ msgstr "Odia"
 msgid "Off"
 msgstr "បិទ"
 
-#: src/features/portfolio/location/location-fields.tsx
-msgid "Off by default. The page shows a picture of the map, so visitors aren't tracked by a map service."
-msgstr ""
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Off. Let recruiters find you on Google by turning this on."
-msgstr "បិទ។ បើកជម្រើសនេះ ដើម្បីឱ្យអ្នកជ្រើសរើសបុគ្គលិកអាចរកឃើញអ្នកនៅលើ Google។"
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Off. Search engines won't list your portfolio, but anyone with the link can still open it."
-msgstr ""
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Off. The letter keeps its own copy of your details."
 msgstr "បិទ។ លិខិតនោះរក្សាច្បាប់ចម្លងនៃព័ត៌មានលម្អិតរបស់អ្នក។"
@@ -11060,10 +10890,6 @@ msgstr ""
 msgid "On-site"
 msgstr ""
 
-#: src/features/resume/share/share-panel.tsx
-msgid "On. Anyone with the link can see your web page."
-msgstr "បើក។ អ្នកណាដែលមានតំណអាចមើលទំព័រវេបរបស់អ្នកបាន។"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
 msgstr "នៅពេលជុំសម្ភាសន៍ត្រូវបានកំណត់ពេល “រៀបចំ” នឹងបង្កើតផែនការកំណត់ពេល សេចក្ដីផ្ដើមរបស់អ្នក និងសំណួរដែលត្រូវសួរ។"
@@ -11093,37 +10919,17 @@ msgstr "មួយជួរ ឬពីរ?"
 msgid "One column with your career as a track: experience and education hang from a fine line with a ringed dot at each step, and section titles sit on the same axis."
 msgstr ""
 
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "One for headings, one for text."
-msgstr ""
-
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header layout"
 msgid "One line"
-msgstr ""
-
-#. placeholder {0}: work.summary.length
-#. placeholder {1}: max.workSummary
-#: src/features/portfolio/works/work-editor.tsx
-msgid "One or two sentences on the card. {0}/{1}"
-msgstr ""
-
-#. placeholder {0}: hero.greeting.length
-#. placeholder {1}: max.greeting
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "One or two sentences under your name. {0}/{1}"
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "One payment by QRIS. It doesn't renew: we email you 3 days before it ends."
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "One result from this work's Metrics blocks, shown as a chip on its card."
-msgstr ""
-
 #: src/features/portfolio/works/add-work/from-pictures.tsx
-msgid "One work per picture (photographers, illustrators)"
+msgid "One work per picture"
 msgstr ""
 
 #: src/features/portfolio/works/add-work/from-pictures.tsx
@@ -11181,17 +10987,9 @@ msgstr "មានតែទំព័រដំបូងប៉ុណ្ណោះដ
 msgid "Only the Rezumi team can lift this. To appeal, email <0>hi@rezumi.app</0>."
 msgstr ""
 
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Only you can see it until you publish. After that, changes show as soon as they're saved."
-msgstr ""
-
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Only you can see it. Publish it from the editor when it's ready."
 msgstr ""
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Only you see these"
-msgstr "មានតែអ្នកទេដែលឃើញទាំងនេះ"
 
 #: src/features/homepage/faq.tsx
 msgid "Only you, until you share it. A resume can stay private, go live at a public link, or be protected with a password, and you can change that at any time. Deleting your account deletes your resumes with it."
@@ -11202,6 +11000,7 @@ msgid "Onsite"
 msgstr "នៅទីតាំង"
 
 #: src/components/input/color-picker.tsx
+#: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Opacity"
 msgstr ""
 
@@ -11214,10 +11013,6 @@ msgstr ""
 #: src/routes/dashboard/applications/index.tsx
 msgid "Open"
 msgstr "បើក"
-
-#: src/features/resume/editor/write/section-row.tsx
-msgid "Open {title}"
-msgstr "បើក {title}"
 
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -11359,10 +11154,6 @@ msgstr "បើក​ក្នុង​ផ្ទាំង​ថ្មី"
 #: src/features/documents/new-document-dialog.tsx
 msgid "Opens the editor on your name. Nothing else to fill in first."
 msgstr "បើកកម្មវិធីនិពន្ធលើឈ្មោះរបស់អ្នក។ គ្មានអ្វីផ្សេងទៀតដែលត្រូវបំពេញជាមុនទេ។"
-
-#: src/features/resume/share/short-link.ts
-msgid "Opens your portfolio."
-msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
@@ -12103,10 +11894,6 @@ msgstr ""
 msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
 msgstr ""
 
-#: src/features/portfolio/editor/offer-forms.tsx
-msgid "PNG or WebP with a clear background. By uploading it, you confirm you may show it."
-msgstr ""
-
 #: src/libs/locale.ts
 msgid "Polish"
 msgstr "Polish"
@@ -12515,12 +12302,9 @@ msgstr "ប្រវត្តិ​សង្ខេប​បណ្ដាញ​ស
 msgid "Programming"
 msgstr ""
 
+#: src/features/portfolio/metrics/metric-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Progress"
-msgstr ""
-
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "Progress (optional)"
 msgstr ""
 
 #: src/components/level/combobox.tsx
@@ -12609,10 +12393,6 @@ msgstr "សាធារណៈ"
 msgid "Public link"
 msgstr "តំណសាធារណៈ"
 
-#: src/features/resume/share/share-panel.tsx
-msgid "Public Link"
-msgstr ""
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Public profile links are optional and only used if Web research is on."
 msgstr "តំណកម្រងព័ត៌មានសាធារណៈគឺស្រេចចិត្ត ហើយប្រើតែនៅពេលការស្រាវជ្រាវតាមអ៊ីនធឺណិតត្រូវបានបើកប៉ុណ្ណោះ។"
@@ -12627,7 +12407,6 @@ msgid "Publications"
 msgstr "អត្ថបទផ្សព្វផ្សាយ"
 
 #: src/features/portfolio/editor/publish-panel.tsx
-#: src/features/resume/share/share-panel.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Publish"
 msgstr "បោះពុម្ពផ្សាយ"
@@ -12636,28 +12415,8 @@ msgstr "បោះពុម្ពផ្សាយ"
 msgid "Publish a one-page website at rezumi.app/your-name. Start from a resume, add your work, and choose a theme that suits your field."
 msgstr ""
 
-#: src/features/resume/share/share-panel.tsx
-msgid "Publish it to share a link that opens on any screen. Only you can see it until then."
-msgstr "បោះពុម្ពផ្សាយវា ដើម្បីចែករំលែកតំណដែលបើកបាននៅលើអេក្រង់ណាក៏ដោយ។ រហូតដល់ពេលនោះ មានតែអ្នកទេដែលអាចមើលវាបាន។"
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Publish the web page first."
-msgstr "សូមបោះពុម្ពផ្សាយទំព័រវេបជាមុនសិន។"
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Publish the web page to count views and downloads. Counts are anonymous, and search engines aren't counted."
-msgstr "បោះពុម្ពផ្សាយទំព័រវេប ដើម្បីរាប់ចំនួនការមើល និងការទាញយក។ ការរាប់គឺអនាមិក ហើយម៉ាស៊ីនស្វែងរកមិនត្រូវបានរាប់ទេ។"
-
-#: src/features/resume/share/short-link.ts
-msgid "Publish this resume to open it at your short link and custom domain."
-msgstr "បោះពុម្ពផ្សាយប្រវត្តិរូបសង្ខេបនេះ ដើម្បីបើកវានៅតំណខ្លី និងដែនផ្ទាល់ខ្លួនរបស់អ្នក។"
-
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Publish your portfolio"
-msgstr ""
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Publish Your Resume"
 msgstr ""
 
 #: src/features/portfolio/admin/review-page.tsx
@@ -12758,10 +12517,6 @@ msgstr ""
 msgid "Quote"
 msgstr ""
 
-#: src/features/portfolio/themes.ts
-msgid "Random letters settle into your name."
-msgstr ""
-
 #: src/features/homepage/hero.tsx
 msgid "Rated 5 out of 5"
 msgstr ""
@@ -12803,14 +12558,6 @@ msgstr ""
 msgid "Read aloud by {0}, which may use tokens on that account."
 msgstr "អានឮៗដោយ {0} ដែលអាចប្រើ token ក្នុងគណនីនោះ។"
 
-#: src/features/portfolio/images/image-field.tsx
-msgid "Read aloud by screen readers and read by search engines."
-msgstr ""
-
-#: src/features/portfolio/images/image-field.tsx
-msgid "Read aloud by screen readers. Until you write one, the page uses “{fallback}”."
-msgstr ""
-
 #: src/features/career/workspace/practise.tsx
 msgid "Read aloud by your browser's voice."
 msgstr "អានឮៗដោយសំឡេងរបស់កម្មវិធីរុករករបស់អ្នក។"
@@ -12819,6 +12566,10 @@ msgstr "អានឮៗដោយសំឡេងរបស់កម្មវិធ
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "Read as “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "បានអានជា “{0}”។ ជ្រើសរើសខែ ដើម្បីឱ្យវាតម្រៀប និងបោះពុម្ពបានជាប់លាប់។"
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Read as an Indonesian number (+62). For another country, start with + and its code."
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Read briefing"
@@ -13330,6 +13081,10 @@ msgstr "យកឯកសារចេញ"
 msgid "Remove font"
 msgstr ""
 
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Remove label"
+msgstr ""
+
 #: src/features/settings/account/security.tsx
 msgid "Remove passkey"
 msgstr "ដកកូនសោកំណត់អត្តសញ្ញាណចេញ"
@@ -13457,7 +13212,12 @@ msgstr ""
 msgid "Reorder {0}"
 msgstr "បញ្ជាទិញ {0} ឡើងវិញ"
 
+#: src/features/portfolio/editor/fields.tsx
+msgid "Reorder {name}"
+msgstr ""
+
 #: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/works/works-form.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
@@ -13628,6 +13388,7 @@ msgstr "ប្រវត្តិរូបសង្ខេប"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/recent-documents.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "ប្រវត្តិរូបសង្ខេប"
@@ -14028,16 +13789,14 @@ msgstr ""
 msgid "Same as my resume ({resumeLocale})"
 msgstr ""
 
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "Same as your resume, so both look like a set."
-msgstr ""
-
 #: src/features/documents/use-start-document.ts
 msgid "Sample resume added. Delete it anytime."
 msgstr "ប្រវត្តិរូបសង្ខេបបន្ថែម។ លុបវានៅពេលណាក៏បាន។"
 
 #: src/components/input/color-picker.tsx
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/design/style-groups.tsx
+#: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Saturation and brightness"
 msgstr ""
 
@@ -14329,10 +14088,6 @@ msgstr "ស្វែងរកឯកសារ"
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Search engines"
 msgstr ""
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
-msgstr "ម៉ាស៊ីនស្វែងរកដូចជា Google អាចដាក់បញ្ជីទំព័រវេបរបស់អ្នក។ វាអាចចំណាយពេលច្រើនសប្ដាហ៍ដើម្បីបង្ហាញ ឬដើម្បីបាត់វិញបន្ទាប់ពីអ្នកបិទជម្រើសនេះ។"
 
 #: src/features/career/knowledge/facts.tsx
 msgid "Search facts"
@@ -14807,7 +14562,7 @@ msgid "Short link"
 msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Short Link and Domain"
+msgid "Short link and domain"
 msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
@@ -14972,6 +14727,10 @@ msgstr "បង្ហាញពាក្យសម្ងាត់"
 msgid "Show photo"
 msgstr "បង្ហាញរូបថត"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Show progress"
+msgstr ""
+
 #: src/features/resume/editor/design/template-group.tsx
 msgid "Show templates"
 msgstr "បង្ហាញគំរូ"
@@ -14992,25 +14751,13 @@ msgstr "បង្ហាញពួកគេម្តងទៀត"
 msgid "Show up. Apply. Repeat."
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
-msgid "Show what you made: a project, a design, an article. Each work has a card in the list and a detail built from text, pictures and results."
-msgstr ""
-
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Show your work, results and services on one page that looks good on any phone, at rezumi.app/your-username."
-msgstr ""
-
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "Shown as before → after bars, in the same format."
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
 msgstr "បង្ហាញតាមតំបន់ពេលវេលារបស់អ្នក។"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Shown on the card and atop the detail. Landscape pictures fit best."
-msgstr ""
 
 #: src/features/documents/document-actions.tsx
 msgid "Shows the tags they all share. Tags you add go on every document; tags you remove come off every one. Locked documents are left as they are."
@@ -15264,6 +15011,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Something in your portfolio can't be saved as it is. Undo your last change, or contact support if this keeps happening."
+msgstr ""
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Something in your portfolio needs fixing before it saves, so nothing was written. The save status at the top says where."
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -15940,10 +15691,6 @@ msgstr ""
 msgid "Tamil"
 msgstr "Tamil"
 
-#: src/features/portfolio/images/image-field.tsx
-msgid "Tap the part to keep in view when a card crops the cover. Arrow keys move it too."
-msgstr ""
-
 #: src/features/career/knowledge/preferences.tsx
 msgid "Target roles"
 msgstr "តួនាទីគោលដៅ"
@@ -16174,6 +15921,10 @@ msgstr ""
 msgid "Thank you. Your report was sent to the Rezumi team."
 msgstr ""
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "That didn't work. Reload the page and try again."
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/reason-dialog.tsx
 msgid "That didn't work. Try again."
@@ -16328,10 +16079,6 @@ msgstr "ច្បាប់ចម្លងត្រូវបានភ្ជាប
 msgid "The creative page: a block of the accent anchors the top corner, framing your portrait, beside an oversized name; two columns follow."
 msgstr ""
 
-#: src/features/portfolio/blocks/block-list.tsx
-msgid "The detail opens when a visitor taps this work. Build it from blocks: text, pictures and results as numbers."
-msgstr ""
-
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "The end is before the start."
 msgstr "ចុងបញ្ចប់គឺមុនពេលចាប់ផ្តើម។"
@@ -16360,10 +16107,6 @@ msgstr ""
 msgid "The file couldn't be read as a resume."
 msgstr "ឯកសារមិនអាចអានជាប្រវត្តិរូបសង្ខេបបានទេ។"
 
-#: src/features/resume/editor/design/template-group.tsx
-msgid "The fonts, accent color, entry layout, skill keywords and photo shape {name} was designed with. Your content stays."
-msgstr ""
-
 #: src/dialogs/resume/template/data.ts
 msgid "The formal Indonesian CV: a portrait beside the name and a column of personal details, with firm ruled section titles. Fits state-owned companies, civil service and local employers."
 msgstr ""
@@ -16374,10 +16117,6 @@ msgstr "ការសួរសុខទុក្ខតាមឈ្មោះ។"
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The HTTPS certificate couldn't be issued. Make sure the DNS records are still there, then check again."
-msgstr ""
-
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
 msgstr ""
 
 #: src/features/billing/invoice-button.tsx
@@ -16440,12 +16179,12 @@ msgstr "ព្រឹកថ្ងៃសម្ភាសន៍បានកន្ល
 msgid "The name leads the main column from the top of the page, and the right column stands beside it behind a firm accent rule, with small capital titles."
 msgstr ""
 
-#: src/features/billing/admin/overview.tsx
-msgid "The numbers couldn't load."
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "The numbers couldn't be loaded."
 msgstr ""
 
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "The numbers style applies to results in your work once you add them."
+#: src/features/billing/admin/overview.tsx
+msgid "The numbers couldn't load."
 msgstr ""
 
 #: src/features/career/coach.tsx
@@ -16535,6 +16274,10 @@ msgstr "ការប្រកាសការងារមិនអាចអាន
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "The posting saved with this application."
 msgstr "ការប្រកាសការងារដែលបានរក្សាទុកជាមួយពាក្យសុំការងារនេះ។"
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "The preview couldn't be drawn. Reload the page to try again."
+msgstr ""
 
 #: src/features/portfolio/editor/preview.tsx
 msgid "The preview couldn't be drawn. Your changes are still saved as you edit."
@@ -16856,6 +16599,10 @@ msgstr ""
 msgid "This entry"
 msgstr "ធាតុនេះ។"
 
+#: src/features/portfolio/images/upload.ts
+msgid "This file can't be opened. If it's stored in the cloud, download it to your device first, then choose it again."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file contains form fields."
 msgstr "ឯកសារនេះមានវាលទម្រង់។"
@@ -16969,10 +16716,6 @@ msgstr "នេះមិនមែនជាទំហំទំព័រប្រវ
 msgid "This is too long for Rezumi AI. Shorten it, or use your own AI connection."
 msgstr ""
 
-#: src/features/portfolio/editor/section-forms.tsx
-msgid "This item can't be hidden here. Hide it on your resume instead."
-msgstr ""
-
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "This letter and “{resumeName}” as two PDFs, named to match."
 msgstr "សំបុត្រនេះ និង “{resumeName}” ជា PDFs ពីរ ដែលដាក់ឈ្មោះឱ្យត្រូវគ្នា។"
@@ -16992,6 +16735,10 @@ msgstr ""
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "នេះវាស់ថាតើកម្មវិធីអាចទាញយកអត្ថបទរបស់ឯកសារនេះបានត្រឹមត្រូវប៉ុណ្ណា។ វាមិនព្យាករណ៍ថាតើពាក្យសុំនឹងត្រូវបានបដិសេធឬអត់នោះទេ ហើយគ្មានឧបករណ៍ណាអាចធ្វើបានដែរ។ ឯកសាររបស់អ្នកត្រូវបានអាននៅក្នុងកម្មវិធីរុករកនេះ ហើយមិនដែលត្រូវបានផ្ទុកឡើងទេ។"
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "This message was already deleted."
+msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "This month"
@@ -17082,6 +16829,10 @@ msgstr ""
 msgid "This portfolio doesn't exist anymore. It may have been deleted in another tab."
 msgstr ""
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "This portfolio doesn't exist anymore. Its owner may have deleted it."
+msgstr ""
+
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
 msgstr ""
@@ -17096,6 +16847,10 @@ msgstr ""
 
 #: src/features/billing/receipt.tsx
 msgid "This receipt isn't available. It may belong to another account."
+msgstr ""
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "This report doesn't exist anymore. Reload the page."
 msgstr ""
 
 #: src/features/portfolio/errors.ts
@@ -17208,6 +16963,11 @@ msgstr "សប្តាហ៍នេះ៖ ធ្វើឱ្យភស្តុ�
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "this work"
+msgstr ""
+
+#. placeholder {0}: PORTFOLIO_LIMITS.blocksPerWork
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "This work already holds {0} blocks, so the new block wasn't added."
 msgstr ""
 
 #: src/features/career/workspace/shell.tsx
@@ -17513,6 +17273,8 @@ msgstr "សាកល្បងគំរូមួយ។"
 #: src/features/documents/library-error.tsx
 #: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/location/location-fields.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/editor/write/improve.tsx
 #: src/features/resume/preview/preview.browser.tsx
 #: src/features/resume/share/download-tab.tsx
@@ -17562,10 +17324,6 @@ msgstr "Turkish"
 msgid "Turn off discretionary ligatures when exporting."
 msgstr "បិទតួអក្សរភ្ជាប់ស្រេចចិត្តនៅពេលនាំចេញ។"
 
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Turn off for a text-only resume."
-msgstr ""
-
 #. Destructive action button to turn off two-factor authentication
 #: src/dialogs/auth/disable-two-factor.tsx
 msgid "Turn off two-step verification"
@@ -17575,17 +17333,9 @@ msgstr "បិទការផ្ទៀងផ្ទាត់ពីរជំហា
 msgid "Turn off two-step verification?"
 msgstr "បិទការផ្ទៀងផ្ទាត់ពីរជំហាន?"
 
-#: src/features/resume/share/address-field.tsx
-msgid "Turn on the link to choose an address."
-msgstr "បើកតំណដើម្បីជ្រើសរើសអាសយដ្ឋាន។"
-
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Turn on two-step verification"
 msgstr "បើកការផ្ទៀងផ្ទាត់ពីរជំហាន"
-
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "Turn this off to keep your location off the page, including the one on your resume."
-msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Turn this schedule on"
@@ -17615,10 +17365,6 @@ msgstr "ជួរឈរពីរ"
 #: src/features/career/workspace/prepare.tsx
 msgid "Two stories"
 msgstr "រឿងពីរ"
-
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "Two to four of your strongest results, such as “8 years” or “+35% conversion”."
-msgstr ""
 
 #: src/features/auth/pages/verify-2fa.tsx
 #: src/features/command-palette/pages/navigation.tsx
@@ -17828,15 +17574,6 @@ msgstr ""
 msgid "Untitled work"
 msgstr ""
 
-#. placeholder {0}: PORTFOLIO_LIMITS.tagsPerWork
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Up to {0}, such as “UX research” or “Figma”. Press Enter or a comma after each."
-msgstr ""
-
-#: src/features/portfolio/blocks/pdf-block.tsx
-msgid "Up to {limit}, without a password. Visitors open it in a new tab."
-msgstr ""
-
 #: src/features/portfolio/images/upload.ts
 msgid "Up to {MAX_BATCH_PICTURES} pictures are uploaded at a time. Add the others afterwards."
 msgstr ""
@@ -17852,10 +17589,6 @@ msgstr "រហូតដល់ 2 នាទី។ ពាក្យរបស់អ�
 #: src/features/ats-checker/checker.tsx
 msgid "Up to 25 MB · checked in your browser, never uploaded"
 msgstr "រហូតដល់ទៅ 25 MB · បានពិនិត្យនៅក្នុងកម្មវិធីរុករករបស់អ្នក មិនដែលបង្ហោះទេ។"
-
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "Up to three, under your greeting. The first one stands out. An Email or WhatsApp button shows that address to visitors, even if Contact hides it."
-msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "Up, a bad change:"
@@ -18062,10 +17795,6 @@ msgstr ""
 msgid "Use my timezone"
 msgstr "ប្រើតំបន់ពេលវេលារបស់ខ្ញុំ"
 
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "Use numbers you can explain in an interview, and say where they come from."
-msgstr ""
-
 #: src/features/resume/editor/check/issues.ts
 msgid "Use one column"
 msgstr "ប្រើជួរឈរមួយ។"
@@ -18178,18 +17907,9 @@ msgstr "ប្រើពាក្យសុំការងារដែលបាន
 msgid "Uses the web search service set up in Settings. Results wait in Today for your review; applications and documents are never created for you."
 msgstr "ប្រើសេវាស្វែងរកតាមអ៊ីនធឺណិតដែលបានរៀបចំក្នុងការកំណត់។ លទ្ធផលរង់ចាំនៅក្នុង “ថ្ងៃនេះ” សម្រាប់ការពិនិត្យរបស់អ្នក; ពាក្យសុំ និងឯកសារមិនដែលត្រូវបានបង្កើតជំនួសអ្នកទេ។"
 
-#. placeholder {0}: templates[template].name
-#: src/features/resume/share/share-panel.tsx
-msgid "Uses your {0} template and Design, and fits any screen. Change them in Design."
-msgstr "ប្រើគំរូ {0} និងការរចនារបស់អ្នក ហើយសមនឹងអេក្រង់ណាក៏ដោយ។ ផ្លាស់ប្ដូរវានៅក្នុង “រចនា”។"
-
 #: src/features/settings/ai/web-access.tsx
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "ប្រើការស្វែងរកគេហទំព័រផ្ទាល់ខ្លួនរបស់អ្នកផ្តល់សេវា AI ដែលជាកន្លែងដែលត្រូវបានគាំទ្រ និងអានតំណភ្ជាប់ជាមួយអ្នកអានដែលភ្ជាប់មកជាមួយ។"
-
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "Uses your resume's fonts when they're available on the web; otherwise the theme's."
-msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "UX Designer"
@@ -18392,14 +18112,6 @@ msgstr "អ្នកទស្សនាអាចទាញយក PDF"
 msgid "Visitors can't see it anymore. Your short link opens your primary resume again, if you have a published one."
 msgstr ""
 
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Visitors can't see it while it's taken down."
-msgstr ""
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Visitors enter it before they see the resume. Share it only with people you trust."
-msgstr "អ្នកទស្សនាបញ្ចូលវាមុនពេលពួកគេឃើញប្រវត្តិរូបសង្ខេប។ ចែករំលែកវាតែជាមួយមនុស្សដែលអ្នកទុកចិត្តប៉ុណ្ណោះ។"
-
 #: src/features/portfolio/admin/review-page.tsx
 msgid "Visitors stop seeing it right away; nothing is deleted. The owner reads this reason in their editor, so don't mention who reported it."
 msgstr ""
@@ -18500,6 +18212,11 @@ msgid "We sent a link to {currentEmail} to approve the change. Then open the lin
 msgstr "យើងបានផ្ញើតំណទៅ {currentEmail} ដើម្បីយល់ព្រមលើការផ្លាស់ប្តូរ។ បន្ទាប់មក បើកតំណដែលយើងផ្ញើទៅ {email}។"
 
 #. placeholder {0}: owner.email
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "We sent a new link to {0}. Open it, then publish."
+msgstr ""
+
+#. placeholder {0}: owner.email
 #. placeholder {0}: user.email
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/settings/account/profile.tsx
@@ -18520,7 +18237,7 @@ msgid "Web access"
 msgstr "ការចូលប្រើគេហទំព័រ"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Web Page"
+msgid "Web page"
 msgstr ""
 
 #: src/features/resume/share/web-page-preview.tsx
@@ -18891,10 +18608,6 @@ msgstr "តើប្រវត្តិរូបសង្ខេបរបស់ខ
 msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Dodo Payments, our merchant of record. Dodo Payments handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live."
 msgstr ""
 
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "With the country code. Numbers starting with 0 are read as Indonesian (+62)."
-msgstr ""
-
 #: src/features/billing/purchase-dialog.tsx
 msgid "Within 7 days of paying you can ask for a full refund if you used no more than 10 Rezumi AI credits from it; it is sent back to your bank account or e-wallet. Double payments and technical problems are always sorted out."
 msgstr ""
@@ -18922,10 +18635,6 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Word and ODT downloads aren't in your plan"
-msgstr ""
-
-#: src/features/portfolio/themes.ts
-msgid "Words appear one by one, once."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -19265,10 +18974,6 @@ msgstr ""
 msgid "Your {plan} QRIS payment isn't finished"
 msgstr ""
 
-#: src/features/portfolio/themes.ts
-msgid "Your accent colours drift slowly, then rest."
-msgstr ""
-
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your account is new, so search engines are kept away until {date}, even with this on. It keeps fake pages out of Google."
 msgstr ""
@@ -19424,10 +19129,6 @@ msgstr "អាសយដ្ឋានអ៊ីមែលរបស់អ្នកត
 msgid "Your email address isn't verified with the provider. Verify it there, then try again."
 msgstr "អាសយដ្ឋានអ៊ីមែលរបស់អ្នកមិនត្រូវបានផ្ទៀងផ្ទាត់ជាមួយអ្នកផ្តល់សេវាទេ។ ផ្ទៀងផ្ទាត់វានៅទីនោះ បន្ទាប់មកព្យាយាមម្តងទៀត។"
 
-#: src/features/resume/share/share-panel.tsx
-msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
-msgstr "អ៊ីមែល ទូរស័ព្ទ ទីតាំង និងព័ត៌មានផ្សេងទៀតនៅក្នុងបឋមកថារបស់អ្នក ព្រមទាំងលេខទូរស័ព្ទរបស់អ្នកយោង មិនត្រូវបានដាក់បញ្ចូលក្នុងទំព័រវេប PDF របស់វា និងលទ្ធផលស្វែងរកទេ។"
-
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"
 msgstr "ភស្តុតាងរបស់អ្នក"
@@ -19475,14 +19176,6 @@ msgstr ""
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your headline changed on the resume. The letter updated too."
 msgstr "ចំណងជើងរបស់អ្នកបានផ្លាស់ប្តូរនៅលើប្រវត្តិរូបសង្ខេប។ លិខិត​ក៏​បាន​ធ្វើ​បច្ចុប្បន្នភាព​ដែរ។"
-
-#: src/features/portfolio/editor/intro-effect.tsx
-msgid "Your headline types first and is where it stops. Add up to two more roles it switches to, in about five seconds."
-msgstr ""
-
-#: src/features/portfolio/themes.ts
-msgid "Your headline types itself, then up to two more roles."
-msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "your Knowledge"
@@ -19536,6 +19229,10 @@ msgstr ""
 msgid "Your message goes to {name}, who will see your email address so they can reply."
 msgstr ""
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Your messages couldn't be loaded."
+msgstr ""
+
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-effect.tsx
 #: src/features/portfolio/page-text.ts
@@ -19566,10 +19263,6 @@ msgstr "ឈ្មោះរបស់អ្នកបាត់"
 msgid "Your name, photo, experience, education and skills follow this resume as it changes. Its summary becomes About me and its projects become your work, to edit freely."
 msgstr ""
 
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Your name, photo, experience, education, skills and contact details follow this resume as it changes. Your portfolio's own text, work and design stay as they are."
-msgstr ""
-
 #: src/components/layout/loading-screen.tsx
 msgid "Your next opportunity is already looking for you."
 msgstr ""
@@ -19592,6 +19285,10 @@ msgstr "សេចក្ដីផ្ដើមរបស់អ្នក រឿង�
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Your own color"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Your own color (hex)"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -19688,6 +19385,10 @@ msgstr ""
 msgid "Your portfolio can't be saved"
 msgstr ""
 
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Your portfolio can't be saved right now, so nothing was written. Close this and follow the message about saving."
+msgstr ""
+
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio changed in another tab or device. Reload it to see the latest version."
 msgstr ""
@@ -19734,6 +19435,14 @@ msgstr ""
 msgid "Your portfolio still uses this file. Remove it from the portfolio first."
 msgstr ""
 
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Your portfolio was already deleted."
+msgstr ""
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Your portfolio was deleted."
+msgstr ""
+
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio was taken down, so it can't be published or deleted. Email hi@rezumi.app to appeal."
 msgstr ""
@@ -19753,14 +19462,6 @@ msgstr ""
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
 msgstr "អ្នកផ្តល់សេវារបស់អ្នក។"
-
-#: src/features/resume/share/short-link.ts
-msgid "Your published portfolio opens at your short link and custom domain. This resume opens there again if you unpublish the portfolio."
-msgstr ""
-
-#: src/features/resume/share/short-link.ts
-msgid "Your published portfolio opens at your short link and custom domain. Your primary resume opens there again if you unpublish the portfolio."
-msgstr ""
 
 #. placeholder {0}: voice.settings.transcribe.label
 #: src/features/career/workspace/practise.tsx
@@ -19811,19 +19512,6 @@ msgstr "ពុម្ពអក្សរដែលអ្នកបានជ្រើ
 msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
 msgstr "ម៉ាស៊ីនមេរបស់អ្នកផ្តល់នូវការស្វែងរកតាមអ៊ីនធឺណិតនៅក្នុងផ្នែក ពាក្យសុំ និងសម្រាប់ជំនួយការ។ ភ្ជាប់សេវាកម្មដើម្បីអានគេហទំព័រដែលអ្នកអានដែលភ្ជាប់មកជាមួយមិនអាចអានបានទេ។"
 
-#. placeholder {0}: current.name
-#: src/features/resume/share/short-link.ts
-msgid "Your short link and custom domain open “{0}”."
-msgstr "តំណខ្លី និងដែនផ្ទាល់ខ្លួនរបស់អ្នកបើក “{0}”។"
-
-#: src/features/resume/share/short-link.ts
-msgid "Your short link and custom domain open this resume."
-msgstr "តំណខ្លី និងដែនផ្ទាល់ខ្លួនរបស់អ្នកបើកប្រវត្តិរូបសង្ខេបនេះ។"
-
-#: src/features/resume/share/short-link.ts
-msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
-msgstr "តំណខ្លី និងដែនផ្ទាល់ខ្លួនរបស់អ្នកបង្ហាញថា ប្រវត្តិរូបសង្ខេបនេះមិនត្រូវបានចែករំលែកទេ រហូតដល់អ្នកបោះពុម្ពផ្សាយវាម្ដងទៀត។"
-
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your source resume is in Trash"
 msgstr ""
@@ -19870,10 +19558,6 @@ msgstr "ការងាររបស់អ្នកនឹងបាត់បង់
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "YouTube or Vimeo, loaded when played"
-msgstr ""
-
-#: src/features/portfolio/blocks/video-block.tsx
-msgid "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
 msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx

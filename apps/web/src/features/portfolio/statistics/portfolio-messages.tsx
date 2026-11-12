@@ -1,13 +1,12 @@
 import { Widget } from "@heroui-pro/react";
-import { Button, buttonVariants, Chip } from "@heroui/react";
+import { Button, buttonVariants, Chip, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
-import { portfolioErrorMessage } from "../errors";
-import { invalidatePortfolioQueries } from "../status";
+import { portfolioErrorCode, portfolioErrorMessage } from "../errors";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useConfirm } from "@/hooks/use-confirm";
 import { client, orpc } from "@/libs/orpc/client";
@@ -25,13 +24,28 @@ function MessageRow({ message }: MessageRowProps) {
 	const unread = message.readAt === null;
 	const { name } = message;
 
-	const run = async (action: () => Promise<unknown>, failure: string) => {
+	/** Only the inbox (and, after a delete, the message count) is read again, not the whole portfolio. */
+	const refresh = (deleted: boolean) =>
+		Promise.all([
+			queryClient.invalidateQueries({ queryKey: orpc.portfolio.messages.key() }),
+			deleted ? queryClient.invalidateQueries({ queryKey: orpc.portfolio.statistics.key() }) : null,
+		]);
+
+	const run = async (action: () => Promise<unknown>, failure: string, deleted = false) => {
 		setBusy(true);
 		try {
 			await action();
-			await invalidatePortfolioQueries(queryClient);
+			await refresh(deleted);
 		} catch (error) {
-			toast.add({ type: "error", description: portfolioErrorMessage(error, { fallback: failure }) });
+			toast.add({
+				type: "error",
+				description: portfolioErrorMessage(error, {
+					fallback: failure,
+					// Deleted in another tab, or by the 90-day cleanup: the list catches up.
+					byCode: { NOT_FOUND: t`This message was already deleted.` },
+				}),
+			});
+			if (portfolioErrorCode(error) === "NOT_FOUND") await refresh(true);
 		} finally {
 			setBusy(false);
 		}
@@ -43,7 +57,7 @@ function MessageRow({ message }: MessageRowProps) {
 			confirmText: t`Delete message`,
 		});
 		if (confirmed)
-			await run(() => client.portfolio.messages.delete({ id: message.id }), t`Couldn't delete it. Try again.`);
+			await run(() => client.portfolio.messages.delete({ id: message.id }), t`Couldn't delete it. Try again.`, true);
 	};
 
 	return (
@@ -123,7 +137,25 @@ export function PortfolioMessages() {
 				description={<Trans>Sent through your contact form. Each one is deleted automatically after 90 days.</Trans>}
 			/>
 			<Widget.Content className="grid gap-3">
-				{items.length === 0 ? (
+				{messages.isPending ? (
+					<div className="grid place-items-center py-6">
+						<Spinner size="md" color="current" />
+					</div>
+				) : messages.isError && items.length === 0 ? (
+					<div className="flex flex-wrap items-center gap-3">
+						<p className="min-w-0 flex-1 text-body-sm text-muted">
+							<Trans>Your messages couldn't be loaded.</Trans>
+						</p>
+						<Button
+							size="sm"
+							variant="secondary"
+							isPending={messages.isRefetching}
+							onPress={() => void messages.refetch()}
+						>
+							<Trans>Try again</Trans>
+						</Button>
+					</div>
+				) : items.length === 0 ? (
 					<p className="text-body-sm text-muted">
 						<Trans>No messages yet. Turn on the contact form in the editor, under Contact.</Trans>
 					</p>

@@ -132,6 +132,12 @@ describe("imageUploadErrorMessage", () => {
 		);
 	});
 
+	it("tells a file the browser couldn't open (moved, or still in the cloud) from a connection problem", () => {
+		expect(imageUploadErrorMessage(new DOMException("Can't read", "NotReadableError"), "photo.heic")).toBe(
+			"“photo.heic”: This file can't be opened. If it's stored in the cloud, download it to your device first, then choose it again.",
+		);
+	});
+
 	it("names the limits a picture is over", () => {
 		expect(imageUploadErrorMessage(new PortfolioImageError("too-large"))).toBe(
 			"This picture is too large to prepare. Use one under 50 MB and 100 megapixels.",

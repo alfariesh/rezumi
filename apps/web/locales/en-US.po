@@ -84,6 +84,10 @@ msgstr "(already yours)"
 msgid "(no header)"
 msgstr "(no header)"
 
+#: src/features/portfolio/blocks/pdf-block.tsx
+msgid "(opens in a new tab)"
+msgstr "(opens in a new tab)"
+
 #: src/features/portfolio/editor/intro-effect.tsx
 msgid "(theme default)"
 msgstr "(theme default)"
@@ -101,6 +105,11 @@ msgstr "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
 #: src/features/portfolio/works/works-form.tsx
 msgid "{0, plural, =0 {No blocks yet} one {# block} other {# blocks}}"
 msgstr "{0, plural, =0 {No blocks yet} one {# block} other {# blocks}}"
+
+#. placeholder {0}: results.length
+#: src/features/portfolio/location/location-fields.tsx
+msgid "{0, plural, =0 {No cities found} one {# city found} other {# cities found}}"
+msgstr "{0, plural, =0 {No cities found} one {# city found} other {# cities found}}"
 
 #. placeholder {0}: proposals.length
 #: src/features/resume/editor/proposals/proposals.ts
@@ -360,6 +369,11 @@ msgstr "{0} ({1}) sells this plan; {2} processes the QRIS payment. By continuing
 msgid "{0} (copy)"
 msgstr "{0} (copy)"
 
+#. placeholder {0}: item.label
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "{0} (hidden on your resume)"
+msgstr "{0} (hidden on your resume)"
+
 #. placeholder {0}: variantLabel(value)
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "{0} (theme default)"
@@ -580,12 +594,6 @@ msgstr "{0} of {1} tailored applications got a reply; {2} of {3} sent with anoth
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "{0} of {1} terms found"
 msgstr "{0} of {1} terms found"
-
-#. placeholder {0}: images.length
-#. placeholder {1}: PORTFOLIO_LIMITS.imagesPerBlock
-#: src/features/portfolio/blocks/images-block.tsx
-msgid "{0} of {1}. Drop, choose or paste them."
-msgstr "{0} of {1}. Drop, choose or paste them."
 
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
@@ -858,6 +866,18 @@ msgstr "{label}: {visits} visits"
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 
+#: src/features/portfolio/images/image-field.tsx
+msgid "{left, plural, one {# picture wasn't added: a Pictures block holds {most}.} other {# pictures weren't added: a Pictures block holds {most}.}}"
+msgstr "{left, plural, one {# picture wasn't added: a Pictures block holds {most}.} other {# pictures weren't added: a Pictures block holds {most}.}}"
+
+#: src/features/portfolio/works/add-work/from-pictures.tsx
+msgid "{left, plural, one {# picture wasn't added: there's no room for it in these works.} other {# pictures weren't added: there's no room for them in these works.}}"
+msgstr "{left, plural, one {# picture wasn't added: there's no room for it in these works.} other {# pictures weren't added: there's no room for them in these works.}}"
+
+#: src/features/portfolio/works/add-work/from-pictures.tsx
+msgid "{left, plural, one {# picture wasn't added: your portfolio has no room for another work.} other {# pictures weren't added: your portfolio has no room for more works.}}"
+msgstr "{left, plural, one {# picture wasn't added: your portfolio has no room for another work.} other {# pictures weren't added: your portfolio has no room for more works.}}"
+
 #: src/features/portfolio/images/upload.ts
 msgid "{left, plural, one {# picture wasn't uploaded.} other {# pictures weren't uploaded.}}"
 msgstr "{left, plural, one {# picture wasn't uploaded.} other {# pictures weren't uploaded.}}"
@@ -869,10 +889,6 @@ msgstr "{length}m"
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
 msgstr "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
-
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "{min} to {most} values in order, oldest first. The page draws them as a small line."
-msgstr "{min} to {most} values in order, oldest first. The page draws them as a small line."
 
 #: src/features/career/offers.tsx
 msgid "{minimum} minimum"
@@ -1209,10 +1225,6 @@ msgstr "1 year"
 msgid "10-minute briefing"
 msgstr "10-minute briefing"
 
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "10–11 recommended"
-msgstr "10–11 recommended"
-
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "2 files"
 msgstr "2 files"
@@ -1338,10 +1350,6 @@ msgstr "A comfortable length, and it fits on one page."
 msgid "A contact form, and how many people visited"
 msgstr "A contact form, and how many people visited"
 
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
-msgstr "A darker layer goes over it so the text stays readable. Wide pictures fit best."
-
 #: src/features/ats-checker/messages.ts
 msgid "A date is in the future."
 msgstr "A date is in the future."
@@ -1383,10 +1391,6 @@ msgstr "A fact you've since forgotten"
 msgid "A fake testimonial"
 msgstr "A fake testimonial"
 
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "A fall can be good, such as faster load times."
-msgstr "A fall can be good, such as faster load times."
-
 #: src/features/career/workspace/prepare.tsx
 msgid "A focused plan for this round"
 msgstr "A focused plan for this round"
@@ -1406,10 +1410,6 @@ msgstr "A full-height gap splits this page into two columns."
 #: src/features/ats-checker/messages.ts
 msgid "A gap is not a problem. Add a one-line explanation if you want to; many strong resumes simply do not."
 msgstr "A gap is not a problem. Add a one-line explanation if you want to; many strong resumes simply do not."
-
-#: src/features/portfolio/themes.ts
-msgid "A light in your accent colour sweeps across a few times."
-msgstr "A light in your accent colour sweeps across a few times."
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "A link"
@@ -1515,6 +1515,10 @@ msgstr "A saved offer"
 msgid "A second opinion on your wording"
 msgstr "A second opinion on your wording"
 
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "A section title holds {most} characters, so the rest was left out."
+msgstr "A section title holds {most} characters, so the rest was left out."
+
 #: src/features/applications/next-step.ts
 msgid "A short follow-up is usually fine now"
 msgstr "A short follow-up is usually fine now"
@@ -1522,10 +1526,6 @@ msgstr "A short follow-up is usually fine now"
 #: src/dialogs/resume/template/data.ts
 msgid "A slim stripe of the accent runs down the page edge on the sidebar's side, the sidebar sits behind a hairline and main titles open with a short accent dash."
 msgstr "A slim stripe of the accent runs down the page edge on the sidebar's side, the sidebar sits behind a hairline and main titles open with a short accent dash."
-
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "A small badge at the bottom of your page."
-msgstr "A small badge at the bottom of your page."
 
 #: src/dialogs/resume/template/data.ts
 msgid "A soft rounded panel floats in the left column with your portrait, name and contact lines above the supporting sections, beside an open white main column."
@@ -1542,10 +1542,6 @@ msgstr "A soft wash of the accent fills the top of the page edge to edge behind 
 #: src/dialogs/resume/template/data.ts
 msgid "A split header with your name on one side and the contact lines stacked behind a hairline on the other, accent-barred titles and dates above each entry."
 msgstr "A split header with your name on one side and the contact lines stacked behind a hairline on the other, accent-barred titles and dates above each entry."
-
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "A square photo of your face works best. It's shrunk in your browser before uploading."
-msgstr "A square photo of your face works best. It's shrunk in your browser before uploading."
 
 #: src/features/career/coach-chat.tsx
 msgid "A story you've since deleted"
@@ -1601,10 +1597,6 @@ msgstr "Accent"
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Accent color"
 msgstr "Accent color"
-
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Accent is used for headings, icons and the header band. Body text stays near-black for print and ATS."
-msgstr "Accent is used for headings, icons and the header band. Body text stays near-black for print and ATS."
 
 #: src/features/career/workspace/apply.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
@@ -1800,6 +1792,10 @@ msgstr "Add a headline or a role so there is something to type."
 msgid "Add a keyword..."
 msgstr "Add a keyword..."
 
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Add a label"
+msgstr "Add a label"
+
 #. Tooltip for action button that opens URL label editor
 #: src/components/input/url-input.tsx
 msgid "Add a label to the URL"
@@ -1817,10 +1813,6 @@ msgstr "Add a location"
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Add a metric"
 msgstr "Add a metric"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Add a Metrics block below to show a result on the card."
-msgstr "Add a Metrics block below to show a result on the card."
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Add a note"
@@ -1857,6 +1849,10 @@ msgstr "Add a result"
 #: src/features/career/schedule-sheet.tsx
 msgid "Add a role or company to look for."
 msgstr "Add a role or company to look for."
+
+#: src/features/portfolio/editor/intro-effect.tsx
+msgid "Add a role to switch to. With only one line, the page shows it without the effect."
+msgstr "Add a role to switch to. With only one line, the page shows it without the effect."
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Add a role, then Enter"
@@ -2125,6 +2121,10 @@ msgstr "Add the domain after the @, like {name}@example.com"
 msgid "Add the domain ending, like {domain}.com"
 msgstr "Add the domain ending, like {domain}.com"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Add the order link, or the button won't show."
+msgstr "Add the order link, or the button won't show."
+
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "Add these records where you manage the domain, then check. Changes can take a few hours to reach everyone."
 msgstr "Add these records where you manage the domain, then check. Changes can take a few hours to reach everyone."
@@ -2246,13 +2246,6 @@ msgstr "Added to Prepare"
 msgid "Address"
 msgstr "Address"
 
-#. placeholder {0}: window.location.host
-#. placeholder {1}: owner.username
-#. placeholder {2}: work.slug
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Address: {0}/{1}#work-{2}"
-msgstr "Address: {0}/{1}#work-{2}"
-
 #: src/features/career/workspace/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "Adds a reminder to Today if you haven't heard back by then."
@@ -2328,7 +2321,6 @@ msgstr "Against your requirements"
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
 #: src/features/portfolio/ai/rewrite-menu.tsx
-#: src/features/resume/editor/chrome/mode-switch.tsx
 #: src/features/resume/editor/chrome/shell.tsx
 msgid "AI"
 msgstr "AI"
@@ -2568,6 +2560,10 @@ msgstr "An administrator's account can't be banned here."
 msgid "An editorial single column set like a magazine feature: a small kicker over a large display name and serif section titles between hairlines. For writers, designers and communications roles."
 msgstr "An editorial single column set like a magazine feature: a small kicker over a large display name and serif section titles between hairlines. For writers, designers and communications roles."
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "An Email or WhatsApp button shows that address to visitors, even if Contact hides it."
+msgstr "An Email or WhatsApp button shows that address to visitors, even if Contact hides it."
+
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
 msgstr "An embedded font could not be read."
@@ -2645,10 +2641,6 @@ msgstr "Anthropic, Gemini, Ollama, OpenAI-compatible"
 msgid "Any"
 msgstr "Any"
 
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Any font, in Advanced"
-msgstr "Any font, in Advanced"
-
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Anyone who opens the public URL will need this password."
 msgstr "Anyone who opens the public URL will need this password."
@@ -2656,10 +2648,6 @@ msgstr "Anyone who opens the public URL will need this password."
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Anyone with the link can see it."
 msgstr "Anyone with the link can see it."
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Anyone with the link can see your portfolio. Changes show as soon as they're saved."
-msgstr "Anyone with the link can see your portfolio. Changes show as soon as they're saved."
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Anyone with the link will be able to view your resume."
@@ -2755,6 +2743,7 @@ msgstr "Applicant tracking systems turn your PDF into plain text before anyone r
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/resume/editor/check/job-match.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "Application"
@@ -3187,25 +3176,13 @@ msgstr "Before restore"
 msgid "Before the value"
 msgstr "Before the value"
 
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Before titles such as Education, Skills and Certifications."
-msgstr "Before titles such as Education, Skills and Certifications."
-
 #: src/features/career/workspace/apply.tsx
 msgid "Before you submit"
 msgstr "Before you submit"
 
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Before your email, phone, location, website and custom fields."
-msgstr "Before your email, phone, location, website and custom fields."
-
 #: src/features/portfolio/metrics/metric-preview.tsx
 msgid "Before: {before}"
 msgstr "Before: {before}"
-
-#: src/features/portfolio/works/add-work/from-link.tsx
-msgid "Behance, Dribbble, GitHub, Figma, Medium, YouTube, Vimeo or any public page."
-msgstr "Behance, Dribbble, GitHub, Figma, Medium, YouTube, Vimeo or any public page."
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Behance, Dribbble, GitHub, YouTube or any site fills in the card."
@@ -3336,10 +3313,6 @@ msgstr "Brand Designer"
 msgid "Break the resume into the usual sections so it can be segmented."
 msgstr "Break the resume into the usual sections so it can be segmented."
 
-#: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
-msgid "Breaks long words between syllables, using the language set in Page."
-msgstr "Breaks long words between syllables, using the language set in Page."
-
 #: src/features/career/workspace/prepare.tsx
 #: src/features/career/workspace/saved.tsx
 msgid "Briefing"
@@ -3411,10 +3384,6 @@ msgstr "Bulleted list"
 msgid "Business"
 msgstr "Business"
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
-msgid "Button clicks"
-msgstr "Button clicks"
-
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Button link"
 msgstr "Button link"
@@ -3433,8 +3402,8 @@ msgid "Buttons"
 msgstr "Buttons"
 
 #: src/features/portfolio/editor/offer-forms.tsx
-msgid "By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed at, and anyone can report one that's used without permission."
-msgstr "By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed at, and anyone can report one that's used without permission."
+msgid "By adding a logo, you confirm you have the right to show it."
+msgstr "By adding a logo, you confirm you have the right to show it."
 
 #. placeholder {0}: qris.payments
 #: src/features/billing/admin/overview.tsx
@@ -3448,10 +3417,6 @@ msgstr "Calendar"
 #: src/features/applications/components/calendar-view.tsx
 msgid "Calendar view"
 msgstr "Calendar view"
-
-#: src/features/portfolio/themes.ts
-msgid "Calm and formal."
-msgstr "Calm and formal."
 
 #: src/features/homepage/faq.tsx
 msgid "Can I import a resume I already have?"
@@ -3540,10 +3505,6 @@ msgstr "Card dispute"
 msgid "Cards"
 msgstr "Cards"
 
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Career sections come from"
-msgstr "Career sections come from"
-
 #: src/features/portfolio/page-text.ts
 msgid "Case studies"
 msgstr "Case studies"
@@ -3627,6 +3588,7 @@ msgid "Change this report's status?"
 msgstr "Change this report's status?"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Change timezone"
 msgstr "Change timezone"
 
@@ -3654,14 +3616,6 @@ msgstr "Changed the resume directly (an earlier conversation)"
 #: src/dialogs/resume/index.tsx
 msgid "Changed your mind? Rename your resume to something more descriptive."
 msgstr "Changed your mind? Rename your resume to something more descriptive."
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Changes section titles and button labels such as “View resume”, not your own text. Empty follows your resume."
-msgstr "Changes section titles and button labels such as “View resume”, not your own text. Empty follows your resume."
-
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Changes section titles and date words only, not your content."
-msgstr "Changes section titles and date words only, not your content."
 
 #. placeholder {0}: getPlanName(pending.planId)
 #. placeholder {1}: formatDate(plan.currentPeriodEndsAt)
@@ -3851,10 +3805,6 @@ msgstr "Chinese (Traditional)"
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Chips"
 msgstr "Chips"
-
-#: src/features/portfolio/location/location-fields.tsx
-msgid "Choose a city first."
-msgstr "Choose a city first."
 
 #: src/features/ats-checker/checker.tsx
 #: src/features/documents/documents-page.tsx
@@ -4057,10 +4007,6 @@ msgstr "Clients"
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Close"
 msgstr "Close"
-
-#: src/features/resume/editor/write/section-row.tsx
-msgid "Close {title}"
-msgstr "Close {title}"
 
 #: src/features/applications/components/board.tsx
 #: src/features/applications/components/detail/close-dialog.tsx
@@ -5243,6 +5189,10 @@ msgstr "Counted separately from the parse score. Coverage does not predict anyth
 msgid "Countries"
 msgstr "Countries"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Countries, devices and linking sites aren't available right now."
+msgstr "Countries, devices and linking sites aren't available right now."
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Country"
 msgstr "Country"
@@ -5609,6 +5559,10 @@ msgstr "Days"
 msgid "Days (1–366)"
 msgstr "Days (1–366)"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Days are counted in {timeZone}."
+msgstr "Days are counted in {timeZone}."
+
 #: src/features/billing/admin/overview.tsx
 msgid "Days in WIB. Trends compare with the period just before."
 msgstr "Days in WIB. Trends compare with the period just before."
@@ -5802,6 +5756,10 @@ msgstr "Deleted from Saved"
 msgid "Deleted in"
 msgstr "Deleted in"
 
+#: src/features/portfolio/admin/labels.ts
+msgid "Deleted the portfolio"
+msgstr "Deleted the portfolio"
+
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Density"
 msgstr "Density"
@@ -5965,6 +5923,7 @@ msgid "Disconnecting your {providerName} account…"
 msgstr "Disconnecting your {providerName} account…"
 
 #: src/features/portfolio/admin/review-page.tsx
+#: src/features/portfolio/images/image-field.tsx
 #: src/features/resume/editor/write/write-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 #: src/routes/dashboard/applications/index.tsx
@@ -6172,10 +6131,6 @@ msgstr "Download sample PDF"
 msgid "Download them"
 msgstr "Download them"
 
-#: src/features/resume/share/share-panel.tsx
-msgid "Download totals can include repeat clicks."
-msgstr "Download totals can include repeat clicks."
-
 #: src/features/resume/share/download-tab.tsx
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "Downloaded {file}"
@@ -6268,18 +6223,14 @@ msgid "Drafting…"
 msgstr "Drafting…"
 
 #: src/features/resume/editor/write/outline.tsx
-msgid "drag · ⌥↑↓"
-msgstr "drag · ⌥↑↓"
+msgid "drag"
+msgstr "drag"
 
 #. placeholder {0}: application.role
 #. placeholder {1}: application.company
 #: src/features/applications/components/application-card.tsx
 msgid "Drag {0} at {1}"
 msgstr "Drag {0} at {1}"
-
-#: src/features/portfolio/editor/content-panel.tsx
-msgid "Drag a section, or use its arrows, to change the order. Empty sections don't show on the page until they have something in them."
-msgstr "Drag a section, or use its arrows, to change the order. Empty sections don't show on the page until they have something in them."
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Drag and drop sections here to move them between columns"
@@ -6509,14 +6460,6 @@ msgstr "Education"
 msgid "Education layout"
 msgstr "Education layout"
 
-#: src/features/resume/editor/design/entries-group.tsx
-msgid "Education swaps school and field of study the same way."
-msgstr "Education swaps school and field of study the same way."
-
-#: src/features/portfolio/editor/intro-effect.tsx
-msgid "Effects stop by themselves within five seconds and stay still for visitors who ask their device for less motion."
-msgstr "Effects stop by themselves within five seconds and stay still for visitors who ask their device for less motion."
-
 #: src/features/billing/admin/overview.tsx
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
@@ -6581,29 +6524,8 @@ msgid "Empty"
 msgstr "Empty"
 
 #: src/features/portfolio/editor/intro-form.tsx
-msgid "Empty shows “Open to work” in the page's language."
-msgstr "Empty shows “Open to work” in the page's language."
-
-#: src/features/portfolio/editor/intro-form.tsx
 msgid "Empty uses a default"
 msgstr "Empty uses a default"
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Empty uses your greeting or About me."
-msgstr "Empty uses your greeting or About me."
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Empty uses your name and headline."
-msgstr "Empty uses your name and headline."
-
-#. placeholder {0}: value || "—"
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "Empty uses your resume's: {0}"
-msgstr "Empty uses your resume's: {0}"
-
-#: src/features/portfolio/location/location-fields.tsx
-msgid "Empty uses your resume's: {resumeLocation}"
-msgstr "Empty uses your resume's: {resumeLocation}"
 
 #. placeholder {0}: formatPrice(left, currency)
 #: src/features/billing/admin/customer.tsx
@@ -6679,8 +6601,8 @@ msgid "Enter a number from {min} to {upper}."
 msgstr "Enter a number from {min} to {upper}."
 
 #: src/features/portfolio/metrics/metric-form.tsx
-msgid "Enter a number, such as 2.8 or 1200."
-msgstr "Enter a number, such as 2.8 or 1200."
+msgid "Enter a number, such as {decimal} or {whole}, without % or a currency: “Written as” adds those."
+msgstr "Enter a number, such as {decimal} or {whole}, without % or a currency: “Written as” adds those."
 
 #: src/features/applications/components/detail/contacts.tsx
 #: src/features/auth/pages/forgot-password.tsx
@@ -6832,10 +6754,6 @@ msgstr "Every template, tool logos, Word and ODT downloads"
 #: src/features/ats-checker/checker.tsx
 msgid "Every term the posting stresses is already there."
 msgstr "Every term the posting stresses is already there."
-
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "Every visitor sees this mode."
-msgstr "Every visitor sees this mode."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Every week"
@@ -7238,9 +7156,9 @@ msgstr "Follow-up note"
 msgid "Follow-up reminder"
 msgstr "Follow-up reminder"
 
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "Follows each visitor's light or dark setting."
-msgstr "Follows each visitor's light or dark setting."
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Font"
+msgstr "Font"
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Font family"
@@ -7253,10 +7171,6 @@ msgstr "Font limit reached"
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Font pair"
 msgstr "Font pair"
-
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Font pairing"
-msgstr "Font pairing"
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Font size"
@@ -7339,10 +7253,6 @@ msgstr "For LibreOffice and other open-source editors. Layout is simplified."
 #: src/features/resume/share/download-tab.tsx
 msgid "For portals or recruiters who ask for Word. Layout is simplified."
 msgstr "For portals or recruiters who ask for Word. Layout is simplified."
-
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "For results that aren't a number, such as “Top 3” or “#1”."
-msgstr "For results that aren't a number, such as “Top 3” or “#1”."
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "For scripts, extensions and MCP clients. Keys act as you and can read and edit your documents."
@@ -7492,12 +7402,6 @@ msgstr "Friendly but formal: your portrait and name open the page, the contact d
 msgid "From"
 msgstr "From"
 
-#. placeholder {0}: PROGRESS.min
-#. placeholder {1}: PROGRESS.max
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "From {0} to {1}, drawn as a bar."
-msgstr "From {0} to {1}, drawn as a bar."
-
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
 #: src/features/billing/plan-page.tsx
@@ -7551,10 +7455,6 @@ msgstr "From your message"
 #: src/features/career/knowledge/facts.tsx
 msgid "From your resume"
 msgstr "From your resume"
-
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "From your resume; it has none yet."
-msgstr "From your resume; it has none yet."
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "From your resume:"
@@ -7866,11 +7766,8 @@ msgstr "Help & docs"
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 
-#: src/features/portfolio/location/location-fields.tsx
-msgid "Helps recruiters in other time zones know when to reach you."
-msgstr "Helps recruiters in other time zones know when to reach you."
-
 #: src/components/input/color-picker.tsx
+#: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Hex color"
 msgstr "Hex color"
 
@@ -7885,14 +7782,6 @@ msgstr "Hidden"
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "Hidden from New roles"
-
-#: src/features/portfolio/editor/section-forms.tsx
-msgid "Hidden on your resume"
-msgstr "Hidden on your resume"
-
-#: src/features/resume/editor/write/write-panel.tsx
-msgid "Hidden sections keep their content but aren't printed or shared. Fields save as you type."
-msgstr "Hidden sections keep their content but aren't printed or shared. Fields save as you type."
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Hidden terms are back"
@@ -8074,7 +7963,9 @@ msgid "https://linkedin.com/in/…"
 msgstr "https://linkedin.com/in/…"
 
 #: src/components/input/color-picker.tsx
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/design/style-groups.tsx
+#: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Hue"
 msgstr "Hue"
 
@@ -8690,10 +8581,6 @@ msgstr "John Doe"
 msgid "john.doe"
 msgstr "john.doe"
 
-#: src/features/portfolio/works/add-work/from-pictures.tsx
-msgid "JPG, PNG or WebP. Each is shrunk in your browser before it's uploaded, and its location data is removed."
-msgstr "JPG, PNG or WebP. Each is shrunk in your browser before it's uploaded, and its location data is removed."
-
 #: src/features/resume/import/read-file.ts
 msgid "JSON read"
 msgstr "JSON read"
@@ -8803,10 +8690,6 @@ msgstr "Keeps the most specific parts"
 msgid "Kept as it is"
 msgstr "Kept as it is"
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Kept here, but visitors don't see it."
-msgstr "Kept here, but visitors don't see it."
-
 #: src/features/billing/admin/reason-dialog.tsx
 msgid "Kept in the audit log with your name. At least 3 characters."
 msgstr "Kept in the audit log with your name. At least 3 characters."
@@ -8873,10 +8756,6 @@ msgstr "KPI cards"
 msgid "Label"
 msgstr "Label"
 
-#: src/features/resume/editor/write/basics-card.tsx
-msgid "Label (optional)"
-msgstr "Label (optional)"
-
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Label for field {0}"
@@ -8886,6 +8765,10 @@ msgstr "Label for field {0}"
 msgid "Label text"
 msgstr "Label text"
 
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Label, e.g. Languages"
+msgstr "Label, e.g. Languages"
+
 #. Preset button for setting picture aspect ratio to landscape orientation
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Landscape"
@@ -8894,16 +8777,13 @@ msgstr "Landscape"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "Language"
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Language of the page's own words"
-msgstr "Language of the page's own words"
 
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
@@ -8966,10 +8846,6 @@ msgstr "Layout"
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Layouts"
 msgstr "Layouts"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Layouts that make room for it show this work larger."
-msgstr "Layouts that make room for it show this work larger."
 
 #: src/features/portfolio/works/work-editor.tsx
 msgid "Lead designer"
@@ -9080,10 +8956,6 @@ msgstr "Let AI clients like Claude or Cursor read and edit your resumes, using a
 msgid "Let's start with what you have"
 msgstr "Let's start with what you have"
 
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Lets Google and other search engines list your portfolio, so recruiters can find you by name. It can take weeks to appear, or to disappear after you turn this off."
-msgstr "Lets Google and other search engines list your portfolio, so recruiters can find you by name. It can take weeks to appear, or to disappear after you turn this off."
-
 #: src/features/career/coach.tsx
 msgid "Lets the coach search public pages through your web search service"
 msgstr "Lets the coach search public pages through your web search service"
@@ -9137,10 +9009,6 @@ msgstr "Letters"
 #: src/features/homepage/features.tsx
 msgid "Letters share your resume's design and live beside the job they are for."
 msgstr "Letters share your resume's design and live beside the job they are for."
-
-#: src/features/portfolio/themes.ts
-msgid "Letters turn into design-app outlines under the mouse. Phones get the gentle fade-in."
-msgstr "Letters turn into design-app outlines under the mouse. Phones get the gentle fade-in."
 
 #: src/features/resume/editor/write/entries.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
@@ -9242,7 +9110,6 @@ msgstr "Link a Rezumi to use AI match scoring and tailoring."
 msgid "Link address"
 msgstr "Link address"
 
-#: src/features/resume/editor/check/job-match.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Link an application"
 msgstr "Link an application"
@@ -9308,10 +9175,6 @@ msgstr "Linked. Name, email, phone and city update when the resume does."
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "LinkedIn, GitHub and other profiles from your resume."
-msgstr "LinkedIn, GitHub and other profiles from your resume."
-
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "LinkedIn, Referral…"
 msgstr "LinkedIn, Referral…"
@@ -9350,11 +9213,6 @@ msgstr "Lithuanian"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Live · updates as you edit"
 msgstr "Live · updates as you edit"
-
-#. placeholder {0}: url.replace(/^https?:\/\//, "")
-#: src/features/resume/share/address-field.tsx
-msgid "Live at {0}"
-msgstr "Live at {0}"
 
 #: src/features/portfolio/themes.ts
 msgid "Living gradient"
@@ -9504,10 +9362,6 @@ msgstr "Logo design"
 #: src/components/input/icon-picker-grid.tsx
 msgid "Logos"
 msgstr "Logos"
-
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
-msgstr "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
 
 #: src/features/ats-checker/messages.ts
 msgid "Long stretches are set in capitals."
@@ -9805,10 +9659,6 @@ msgstr "Message the coach"
 msgid "Messages"
 msgstr "Messages"
 
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "Messages arrive by email and in your dashboard, and are deleted after 90 days."
-msgstr "Messages arrive by email and in your dashboard, and are deleted after 90 days."
-
 #. placeholder {0}: index + 1
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Metric {0}"
@@ -9956,24 +9806,6 @@ msgstr "Most systems file candidates by email address."
 msgid "Mostly readable"
 msgstr "Mostly readable"
 
-#: src/features/portfolio/editor/fields.tsx
-msgid "Move {name} down"
-msgstr "Move {name} down"
-
-#: src/features/portfolio/editor/fields.tsx
-msgid "Move {name} up"
-msgstr "Move {name} up"
-
-#: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
-msgid "Move {title} down"
-msgstr "Move {title} down"
-
-#: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
-msgid "Move {title} up"
-msgstr "Move {title} up"
-
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "Move all content inside the page boundaries and re-export."
@@ -10009,16 +9841,6 @@ msgstr "Move role up"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Move section to another column or page"
 msgstr "Move section to another column or page"
-
-#. placeholder {0}: info.title
-#: src/features/portfolio/blocks/block-list.tsx
-msgid "Move the {0} block down"
-msgstr "Move the {0} block down"
-
-#. placeholder {0}: info.title
-#: src/features/portfolio/blocks/block-list.tsx
-msgid "Move the {0} block up"
-msgstr "Move the {0} block up"
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Move to"
@@ -10726,10 +10548,6 @@ msgstr "Not applied"
 msgid "Not applied yet"
 msgstr "Not applied yet"
 
-#: src/features/resume/share/share-panel.tsx
-msgid "Not available while the resume needs a password."
-msgstr "Not available while the resume needs a password."
-
 #: src/features/settings/account/security.tsx
 msgid "Not connected"
 msgstr "Not connected"
@@ -10793,6 +10611,34 @@ msgstr "Not included"
 msgid "Not now"
 msgstr "Not now"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Not on the page until it has a label and a value."
+msgstr "Not on the page until it has a label and a value."
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: add the address below."
+msgstr "Not on the page: add the address below."
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: add your WhatsApp number in Contact."
+msgstr "Not on the page: add your WhatsApp number in Contact."
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: the Contact section is hidden or has nothing in it."
+msgstr "Not on the page: the Contact section is hidden or has nothing in it."
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: your source resume has no email address."
+msgstr "Not on the page: your source resume has no email address."
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: your source resume isn't public, or doesn't offer its PDF."
+msgstr "Not on the page: your source resume isn't public, or doesn't offer its PDF."
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Not on the page: your source resume isn't public. Make it public in the resume's Share settings."
+msgstr "Not on the page: your source resume isn't public. Make it public in the resume's Share settings."
+
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Not prepared yet"
 msgstr "Not prepared yet"
@@ -10801,10 +10647,6 @@ msgstr "Not prepared yet"
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Not published"
 msgstr "Not published"
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Not published yet"
-msgstr "Not published yet"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Not recorded yet. Leave it blank until you can support it."
@@ -10999,18 +10841,6 @@ msgstr "Odia"
 msgid "Off"
 msgstr "Off"
 
-#: src/features/portfolio/location/location-fields.tsx
-msgid "Off by default. The page shows a picture of the map, so visitors aren't tracked by a map service."
-msgstr "Off by default. The page shows a picture of the map, so visitors aren't tracked by a map service."
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Off. Let recruiters find you on Google by turning this on."
-msgstr "Off. Let recruiters find you on Google by turning this on."
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Off. Search engines won't list your portfolio, but anyone with the link can still open it."
-msgstr "Off. Search engines won't list your portfolio, but anyone with the link can still open it."
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Off. The letter keeps its own copy of your details."
 msgstr "Off. The letter keeps its own copy of your details."
@@ -11055,10 +10885,6 @@ msgstr "On this page"
 msgid "On-site"
 msgstr "On-site"
 
-#: src/features/resume/share/share-panel.tsx
-msgid "On. Anyone with the link can see your web page."
-msgstr "On. Anyone with the link can see your web page."
-
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
 msgstr "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
@@ -11088,38 +10914,18 @@ msgstr "One column or two?"
 msgid "One column with your career as a track: experience and education hang from a fine line with a ringed dot at each step, and section titles sit on the same axis."
 msgstr "One column with your career as a track: experience and education hang from a fine line with a ringed dot at each step, and section titles sit on the same axis."
 
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "One for headings, one for text."
-msgstr "One for headings, one for text."
-
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header layout"
 msgid "One line"
 msgstr "One line"
 
-#. placeholder {0}: work.summary.length
-#. placeholder {1}: max.workSummary
-#: src/features/portfolio/works/work-editor.tsx
-msgid "One or two sentences on the card. {0}/{1}"
-msgstr "One or two sentences on the card. {0}/{1}"
-
-#. placeholder {0}: hero.greeting.length
-#. placeholder {1}: max.greeting
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "One or two sentences under your name. {0}/{1}"
-msgstr "One or two sentences under your name. {0}/{1}"
-
 #: src/features/billing/purchase-dialog.tsx
 msgid "One payment by QRIS. It doesn't renew: we email you 3 days before it ends."
 msgstr "One payment by QRIS. It doesn't renew: we email you 3 days before it ends."
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "One result from this work's Metrics blocks, shown as a chip on its card."
-msgstr "One result from this work's Metrics blocks, shown as a chip on its card."
-
 #: src/features/portfolio/works/add-work/from-pictures.tsx
-msgid "One work per picture (photographers, illustrators)"
-msgstr "One work per picture (photographers, illustrators)"
+msgid "One work per picture"
+msgstr "One work per picture"
 
 #: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "One work with all the pictures"
@@ -11176,17 +10982,9 @@ msgstr "Only the first pages were checked."
 msgid "Only the Rezumi team can lift this. To appeal, email <0>hi@rezumi.app</0>."
 msgstr "Only the Rezumi team can lift this. To appeal, email <0>hi@rezumi.app</0>."
 
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Only you can see it until you publish. After that, changes show as soon as they're saved."
-msgstr "Only you can see it until you publish. After that, changes show as soon as they're saved."
-
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Only you can see it. Publish it from the editor when it's ready."
 msgstr "Only you can see it. Publish it from the editor when it's ready."
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Only you see these"
-msgstr "Only you see these"
 
 #: src/features/homepage/faq.tsx
 msgid "Only you, until you share it. A resume can stay private, go live at a public link, or be protected with a password, and you can change that at any time. Deleting your account deletes your resumes with it."
@@ -11197,6 +10995,7 @@ msgid "Onsite"
 msgstr "Onsite"
 
 #: src/components/input/color-picker.tsx
+#: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Opacity"
 msgstr "Opacity"
 
@@ -11209,10 +11008,6 @@ msgstr "Opacity"
 #: src/routes/dashboard/applications/index.tsx
 msgid "Open"
 msgstr "Open"
-
-#: src/features/resume/editor/write/section-row.tsx
-msgid "Open {title}"
-msgstr "Open {title}"
 
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -11354,10 +11149,6 @@ msgstr "opens in new tab"
 #: src/features/documents/new-document-dialog.tsx
 msgid "Opens the editor on your name. Nothing else to fill in first."
 msgstr "Opens the editor on your name. Nothing else to fill in first."
-
-#: src/features/resume/share/short-link.ts
-msgid "Opens your portfolio."
-msgstr "Opens your portfolio."
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
@@ -12098,10 +11889,6 @@ msgstr "Plus and Pro AI are billed monthly or yearly and renew until you cancel.
 msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
 msgstr "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
 
-#: src/features/portfolio/editor/offer-forms.tsx
-msgid "PNG or WebP with a clear background. By uploading it, you confirm you may show it."
-msgstr "PNG or WebP with a clear background. By uploading it, you confirm you may show it."
-
 #: src/libs/locale.ts
 msgid "Polish"
 msgstr "Polish"
@@ -12510,13 +12297,10 @@ msgstr "Profiles"
 msgid "Programming"
 msgstr "Programming"
 
+#: src/features/portfolio/metrics/metric-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Progress"
 msgstr "Progress"
-
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "Progress (optional)"
-msgstr "Progress (optional)"
 
 #: src/components/level/combobox.tsx
 msgid "Progress bar"
@@ -12604,10 +12388,6 @@ msgstr "Public"
 msgid "Public link"
 msgstr "Public link"
 
-#: src/features/resume/share/share-panel.tsx
-msgid "Public Link"
-msgstr "Public Link"
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Public profile links are optional and only used if Web research is on."
 msgstr "Public profile links are optional and only used if Web research is on."
@@ -12622,7 +12402,6 @@ msgid "Publications"
 msgstr "Publications"
 
 #: src/features/portfolio/editor/publish-panel.tsx
-#: src/features/resume/share/share-panel.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Publish"
 msgstr "Publish"
@@ -12631,29 +12410,9 @@ msgstr "Publish"
 msgid "Publish a one-page website at rezumi.app/your-name. Start from a resume, add your work, and choose a theme that suits your field."
 msgstr "Publish a one-page website at rezumi.app/your-name. Start from a resume, add your work, and choose a theme that suits your field."
 
-#: src/features/resume/share/share-panel.tsx
-msgid "Publish it to share a link that opens on any screen. Only you can see it until then."
-msgstr "Publish it to share a link that opens on any screen. Only you can see it until then."
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Publish the web page first."
-msgstr "Publish the web page first."
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Publish the web page to count views and downloads. Counts are anonymous, and search engines aren't counted."
-msgstr "Publish the web page to count views and downloads. Counts are anonymous, and search engines aren't counted."
-
-#: src/features/resume/share/short-link.ts
-msgid "Publish this resume to open it at your short link and custom domain."
-msgstr "Publish this resume to open it at your short link and custom domain."
-
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Publish your portfolio"
 msgstr "Publish your portfolio"
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Publish Your Resume"
-msgstr "Publish Your Resume"
 
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -12753,10 +12512,6 @@ msgstr "Queued like a purchase. No payment and no credits come with it."
 msgid "Quote"
 msgstr "Quote"
 
-#: src/features/portfolio/themes.ts
-msgid "Random letters settle into your name."
-msgstr "Random letters settle into your name."
-
 #: src/features/homepage/hero.tsx
 msgid "Rated 5 out of 5"
 msgstr "Rated 5 out of 5"
@@ -12798,14 +12553,6 @@ msgstr "Reached"
 msgid "Read aloud by {0}, which may use tokens on that account."
 msgstr "Read aloud by {0}, which may use tokens on that account."
 
-#: src/features/portfolio/images/image-field.tsx
-msgid "Read aloud by screen readers and read by search engines."
-msgstr "Read aloud by screen readers and read by search engines."
-
-#: src/features/portfolio/images/image-field.tsx
-msgid "Read aloud by screen readers. Until you write one, the page uses “{fallback}”."
-msgstr "Read aloud by screen readers. Until you write one, the page uses “{fallback}”."
-
 #: src/features/career/workspace/practise.tsx
 msgid "Read aloud by your browser's voice."
 msgstr "Read aloud by your browser's voice."
@@ -12814,6 +12561,10 @@ msgstr "Read aloud by your browser's voice."
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "Read as “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "Read as “{0}”. Pick a month so it sorts and prints consistently."
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Read as an Indonesian number (+62). For another country, start with + and its code."
+msgstr "Read as an Indonesian number (+62). For another country, start with + and its code."
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Read briefing"
@@ -13325,6 +13076,10 @@ msgstr "Remove file"
 msgid "Remove font"
 msgstr "Remove font"
 
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Remove label"
+msgstr "Remove label"
+
 #: src/features/settings/account/security.tsx
 msgid "Remove passkey"
 msgstr "Remove passkey"
@@ -13452,7 +13207,12 @@ msgstr "Reopened a report"
 msgid "Reorder {0}"
 msgstr "Reorder {0}"
 
+#: src/features/portfolio/editor/fields.tsx
+msgid "Reorder {name}"
+msgstr "Reorder {name}"
+
 #: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/works/works-form.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
@@ -13623,6 +13383,7 @@ msgstr "resume"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/recent-documents.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "Resume"
@@ -14023,16 +13784,14 @@ msgstr "Same as my resume"
 msgid "Same as my resume ({resumeLocale})"
 msgstr "Same as my resume ({resumeLocale})"
 
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "Same as your resume, so both look like a set."
-msgstr "Same as your resume, so both look like a set."
-
 #: src/features/documents/use-start-document.ts
 msgid "Sample resume added. Delete it anytime."
 msgstr "Sample resume added. Delete it anytime."
 
 #: src/components/input/color-picker.tsx
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/design/style-groups.tsx
+#: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Saturation and brightness"
 msgstr "Saturation and brightness"
 
@@ -14324,10 +14083,6 @@ msgstr "Search documents"
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Search engines"
 msgstr "Search engines"
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
-msgstr "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
 
 #: src/features/career/knowledge/facts.tsx
 msgid "Search facts"
@@ -14802,8 +14557,8 @@ msgid "Short link"
 msgstr "Short link"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Short Link and Domain"
-msgstr "Short Link and Domain"
+msgid "Short link and domain"
+msgstr "Short link and domain"
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Short number (1.2k, 1.2m)"
@@ -14967,6 +14722,10 @@ msgstr "Show password"
 msgid "Show photo"
 msgstr "Show photo"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Show progress"
+msgstr "Show progress"
+
 #: src/features/resume/editor/design/template-group.tsx
 msgid "Show templates"
 msgstr "Show templates"
@@ -14987,25 +14746,13 @@ msgstr "Show them again"
 msgid "Show up. Apply. Repeat."
 msgstr "Show up. Apply. Repeat."
 
-#: src/features/portfolio/works/works-form.tsx
-msgid "Show what you made: a project, a design, an article. Each work has a card in the list and a detail built from text, pictures and results."
-msgstr "Show what you made: a project, a design, an article. Each work has a card in the list and a detail built from text, pictures and results."
-
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Show your work, results and services on one page that looks good on any phone, at rezumi.app/your-username."
 msgstr "Show your work, results and services on one page that looks good on any phone, at rezumi.app/your-username."
 
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "Shown as before → after bars, in the same format."
-msgstr "Shown as before → after bars, in the same format."
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
 msgstr "Shown in your timezone."
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Shown on the card and atop the detail. Landscape pictures fit best."
-msgstr "Shown on the card and atop the detail. Landscape pictures fit best."
 
 #: src/features/documents/document-actions.tsx
 msgid "Shows the tags they all share. Tags you add go on every document; tags you remove come off every one. Locked documents are left as they are."
@@ -15260,6 +15007,10 @@ msgstr "Something in {where} can't be saved as it is. Change or remove it, or un
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Something in your portfolio can't be saved as it is. Undo your last change, or contact support if this keeps happening."
 msgstr "Something in your portfolio can't be saved as it is. Undo your last change, or contact support if this keeps happening."
+
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Something in your portfolio needs fixing before it saves, so nothing was written. The save status at the top says where."
+msgstr "Something in your portfolio needs fixing before it saves, so nothing was written. The save status at the top says where."
 
 #: src/features/career/knowledge/facts.tsx
 msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
@@ -15935,10 +15686,6 @@ msgstr "Taken down"
 msgid "Tamil"
 msgstr "Tamil"
 
-#: src/features/portfolio/images/image-field.tsx
-msgid "Tap the part to keep in view when a card crops the cover. Arrow keys move it too."
-msgstr "Tap the part to keep in view when a card crops the cover. Arrow keys move it too."
-
 #: src/features/career/knowledge/preferences.tsx
 msgid "Target roles"
 msgstr "Target roles"
@@ -16169,6 +15916,10 @@ msgstr "Thank you. Your message was sent."
 msgid "Thank you. Your report was sent to the Rezumi team."
 msgstr "Thank you. Your report was sent to the Rezumi team."
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "That didn't work. Reload the page and try again."
+msgstr "That didn't work. Reload the page and try again."
+
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/reason-dialog.tsx
 msgid "That didn't work. Try again."
@@ -16323,10 +16074,6 @@ msgstr "The copy is linked to the application, so Check and the assistant use it
 msgid "The creative page: a block of the accent anchors the top corner, framing your portrait, beside an oversized name; two columns follow."
 msgstr "The creative page: a block of the accent anchors the top corner, framing your portrait, beside an oversized name; two columns follow."
 
-#: src/features/portfolio/blocks/block-list.tsx
-msgid "The detail opens when a visitor taps this work. Build it from blocks: text, pictures and results as numbers."
-msgstr "The detail opens when a visitor taps this work. Build it from blocks: text, pictures and results as numbers."
-
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "The end is before the start."
 msgstr "The end is before the start."
@@ -16355,10 +16102,6 @@ msgstr "The facts, stories and preferences the coach works from."
 msgid "The file couldn't be read as a resume."
 msgstr "The file couldn't be read as a resume."
 
-#: src/features/resume/editor/design/template-group.tsx
-msgid "The fonts, accent color, entry layout, skill keywords and photo shape {name} was designed with. Your content stays."
-msgstr "The fonts, accent color, entry layout, skill keywords and photo shape {name} was designed with. Your content stays."
-
 #: src/dialogs/resume/template/data.ts
 msgid "The formal Indonesian CV: a portrait beside the name and a column of personal details, with firm ruled section titles. Fits state-owned companies, civil service and local employers."
 msgstr "The formal Indonesian CV: a portrait beside the name and a column of personal details, with firm ruled section titles. Fits state-owned companies, civil service and local employers."
@@ -16370,10 +16113,6 @@ msgstr "The greeting follows the name."
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The HTTPS certificate couldn't be issued. Make sure the DNS records are still there, then check again."
 msgstr "The HTTPS certificate couldn't be issued. Make sure the DNS records are still there, then check again."
-
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
-msgstr "The icons you pick, and network logos such as LinkedIn and GitHub."
 
 #: src/features/billing/invoice-button.tsx
 msgid "The invoice couldn't be opened. Try again in a moment."
@@ -16435,13 +16174,13 @@ msgstr "The morning of the interview has passed, so the briefing runs now."
 msgid "The name leads the main column from the top of the page, and the right column stands beside it behind a firm accent rule, with small capital titles."
 msgstr "The name leads the main column from the top of the page, and the right column stands beside it behind a firm accent rule, with small capital titles."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "The numbers couldn't be loaded."
+msgstr "The numbers couldn't be loaded."
+
 #: src/features/billing/admin/overview.tsx
 msgid "The numbers couldn't load."
 msgstr "The numbers couldn't load."
-
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "The numbers style applies to results in your work once you add them."
-msgstr "The numbers style applies to results in your work once you add them."
 
 #: src/features/career/coach.tsx
 msgid "The offers you chose to compare, with their terms"
@@ -16530,6 +16269,10 @@ msgstr "The posting couldn't be read. Fill in the role and company."
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "The posting saved with this application."
 msgstr "The posting saved with this application."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "The preview couldn't be drawn. Reload the page to try again."
+msgstr "The preview couldn't be drawn. Reload the page to try again."
 
 #: src/features/portfolio/editor/preview.tsx
 msgid "The preview couldn't be drawn. Your changes are still saved as you edit."
@@ -16851,6 +16594,10 @@ msgstr "This domain no longer points to Rezumi. Put its CNAME record back, then 
 msgid "This entry"
 msgstr "This entry"
 
+#: src/features/portfolio/images/upload.ts
+msgid "This file can't be opened. If it's stored in the cloud, download it to your device first, then choose it again."
+msgstr "This file can't be opened. If it's stored in the cloud, download it to your device first, then choose it again."
+
 #: src/features/ats-checker/messages.ts
 msgid "This file contains form fields."
 msgstr "This file contains form fields."
@@ -16964,10 +16711,6 @@ msgstr "This is not a common resume page size."
 msgid "This is too long for Rezumi AI. Shorten it, or use your own AI connection."
 msgstr "This is too long for Rezumi AI. Shorten it, or use your own AI connection."
 
-#: src/features/portfolio/editor/section-forms.tsx
-msgid "This item can't be hidden here. Hide it on your resume instead."
-msgstr "This item can't be hidden here. Hide it on your resume instead."
-
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "This letter and “{resumeName}” as two PDFs, named to match."
 msgstr "This letter and “{resumeName}” as two PDFs, named to match."
@@ -16987,6 +16730,10 @@ msgstr "This link doesn't say which payment it is. Your plan page lists every pa
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
+
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "This message was already deleted."
+msgstr "This message was already deleted."
 
 #: src/features/billing/admin/overview.tsx
 msgid "This month"
@@ -17077,6 +16824,10 @@ msgstr "This portfolio already holds {0} works."
 msgid "This portfolio doesn't exist anymore. It may have been deleted in another tab."
 msgstr "This portfolio doesn't exist anymore. It may have been deleted in another tab."
 
+#: src/features/portfolio/admin/review-page.tsx
+msgid "This portfolio doesn't exist anymore. Its owner may have deleted it."
+msgstr "This portfolio doesn't exist anymore. Its owner may have deleted it."
+
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
 msgstr "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
@@ -17092,6 +16843,10 @@ msgstr "This portfolio was taken down"
 #: src/features/billing/receipt.tsx
 msgid "This receipt isn't available. It may belong to another account."
 msgstr "This receipt isn't available. It may belong to another account."
+
+#: src/features/portfolio/admin/review-page.tsx
+msgid "This report doesn't exist anymore. Reload the page."
+msgstr "This report doesn't exist anymore. Reload the page."
 
 #: src/features/portfolio/errors.ts
 msgid "This resume can't be read. Choose another resume."
@@ -17204,6 +16959,11 @@ msgstr "This week: make your evidence easier to follow"
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "this work"
 msgstr "this work"
+
+#. placeholder {0}: PORTFOLIO_LIMITS.blocksPerWork
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "This work already holds {0} blocks, so the new block wasn't added."
+msgstr "This work already holds {0} blocks, so the new block wasn't added."
 
 #: src/features/career/workspace/shell.tsx
 msgid "This workspace couldn't be loaded."
@@ -17508,6 +17268,8 @@ msgstr "Try a sample"
 #: src/features/documents/library-error.tsx
 #: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/location/location-fields.tsx
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/resume/editor/write/improve.tsx
 #: src/features/resume/preview/preview.browser.tsx
 #: src/features/resume/share/download-tab.tsx
@@ -17557,10 +17319,6 @@ msgstr "Turkish"
 msgid "Turn off discretionary ligatures when exporting."
 msgstr "Turn off discretionary ligatures when exporting."
 
-#: src/features/resume/editor/design/style-groups.tsx
-msgid "Turn off for a text-only resume."
-msgstr "Turn off for a text-only resume."
-
 #. Destructive action button to turn off two-factor authentication
 #: src/dialogs/auth/disable-two-factor.tsx
 msgid "Turn off two-step verification"
@@ -17570,17 +17328,9 @@ msgstr "Turn off two-step verification"
 msgid "Turn off two-step verification?"
 msgstr "Turn off two-step verification?"
 
-#: src/features/resume/share/address-field.tsx
-msgid "Turn on the link to choose an address."
-msgstr "Turn on the link to choose an address."
-
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Turn on two-step verification"
 msgstr "Turn on two-step verification"
-
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "Turn this off to keep your location off the page, including the one on your resume."
-msgstr "Turn this off to keep your location off the page, including the one on your resume."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Turn this schedule on"
@@ -17610,10 +17360,6 @@ msgstr "Two columns"
 #: src/features/career/workspace/prepare.tsx
 msgid "Two stories"
 msgstr "Two stories"
-
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "Two to four of your strongest results, such as “8 years” or “+35% conversion”."
-msgstr "Two to four of your strongest results, such as “8 years” or “+35% conversion”."
 
 #: src/features/auth/pages/verify-2fa.tsx
 #: src/features/command-palette/pages/navigation.tsx
@@ -17823,15 +17569,6 @@ msgstr "Untitled testimonial"
 msgid "Untitled work"
 msgstr "Untitled work"
 
-#. placeholder {0}: PORTFOLIO_LIMITS.tagsPerWork
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Up to {0}, such as “UX research” or “Figma”. Press Enter or a comma after each."
-msgstr "Up to {0}, such as “UX research” or “Figma”. Press Enter or a comma after each."
-
-#: src/features/portfolio/blocks/pdf-block.tsx
-msgid "Up to {limit}, without a password. Visitors open it in a new tab."
-msgstr "Up to {limit}, without a password. Visitors open it in a new tab."
-
 #: src/features/portfolio/images/upload.ts
 msgid "Up to {MAX_BATCH_PICTURES} pictures are uploaded at a time. Add the others afterwards."
 msgstr "Up to {MAX_BATCH_PICTURES} pictures are uploaded at a time. Add the others afterwards."
@@ -17847,10 +17584,6 @@ msgstr "Up to 2 minutes. Your words appear as you speak."
 #: src/features/ats-checker/checker.tsx
 msgid "Up to 25 MB · checked in your browser, never uploaded"
 msgstr "Up to 25 MB · checked in your browser, never uploaded"
-
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "Up to three, under your greeting. The first one stands out. An Email or WhatsApp button shows that address to visitors, even if Contact hides it."
-msgstr "Up to three, under your greeting. The first one stands out. An Email or WhatsApp button shows that address to visitors, even if Contact hides it."
 
 #: src/features/portfolio/page-text.ts
 msgid "Up, a bad change:"
@@ -18057,10 +17790,6 @@ msgstr "Use my connection"
 msgid "Use my timezone"
 msgstr "Use my timezone"
 
-#: src/features/portfolio/metrics/metric-form.tsx
-msgid "Use numbers you can explain in an interview, and say where they come from."
-msgstr "Use numbers you can explain in an interview, and say where they come from."
-
 #: src/features/resume/editor/check/issues.ts
 msgid "Use one column"
 msgstr "Use one column"
@@ -18173,18 +17902,9 @@ msgstr "Uses the linked application"
 msgid "Uses the web search service set up in Settings. Results wait in Today for your review; applications and documents are never created for you."
 msgstr "Uses the web search service set up in Settings. Results wait in Today for your review; applications and documents are never created for you."
 
-#. placeholder {0}: templates[template].name
-#: src/features/resume/share/share-panel.tsx
-msgid "Uses your {0} template and Design, and fits any screen. Change them in Design."
-msgstr "Uses your {0} template and Design, and fits any screen. Change them in Design."
-
 #: src/features/settings/ai/web-access.tsx
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
-
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "Uses your resume's fonts when they're available on the web; otherwise the theme's."
-msgstr "Uses your resume's fonts when they're available on the web; otherwise the theme's."
 
 #: src/features/homepage/features.tsx
 msgid "UX Designer"
@@ -18387,14 +18107,6 @@ msgstr "Visitors can download the PDF"
 msgid "Visitors can't see it anymore. Your short link opens your primary resume again, if you have a published one."
 msgstr "Visitors can't see it anymore. Your short link opens your primary resume again, if you have a published one."
 
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Visitors can't see it while it's taken down."
-msgstr "Visitors can't see it while it's taken down."
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Visitors enter it before they see the resume. Share it only with people you trust."
-msgstr "Visitors enter it before they see the resume. Share it only with people you trust."
-
 #: src/features/portfolio/admin/review-page.tsx
 msgid "Visitors stop seeing it right away; nothing is deleted. The owner reads this reason in their editor, so don't mention who reported it."
 msgstr "Visitors stop seeing it right away; nothing is deleted. The owner reads this reason in their editor, so don't mention who reported it."
@@ -18495,6 +18207,11 @@ msgid "We sent a link to {currentEmail} to approve the change. Then open the lin
 msgstr "We sent a link to {currentEmail} to approve the change. Then open the link we send to {email}."
 
 #. placeholder {0}: owner.email
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "We sent a new link to {0}. Open it, then publish."
+msgstr "We sent a new link to {0}. Open it, then publish."
+
+#. placeholder {0}: owner.email
 #. placeholder {0}: user.email
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/settings/account/profile.tsx
@@ -18515,8 +18232,8 @@ msgid "Web access"
 msgstr "Web access"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Web Page"
-msgstr "Web Page"
+msgid "Web page"
+msgstr "Web page"
 
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Web page preview"
@@ -18886,10 +18603,6 @@ msgstr "Will my resume get past applicant tracking systems?"
 msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Dodo Payments, our merchant of record. Dodo Payments handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live."
 msgstr "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Dodo Payments, our merchant of record. Dodo Payments handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live."
 
-#: src/features/portfolio/editor/contact-form.tsx
-msgid "With the country code. Numbers starting with 0 are read as Indonesian (+62)."
-msgstr "With the country code. Numbers starting with 0 are read as Indonesian (+62)."
-
 #: src/features/billing/purchase-dialog.tsx
 msgid "Within 7 days of paying you can ask for a full refund if you used no more than 10 Rezumi AI credits from it; it is sent back to your bank account or e-wallet. Double payments and technical problems are always sorted out."
 msgstr "Within 7 days of paying you can ask for a full refund if you used no more than 10 Rezumi AI credits from it; it is sent back to your bank account or e-wallet. Double payments and technical problems are always sorted out."
@@ -18918,10 +18631,6 @@ msgstr "Word and ODT downloads"
 #: src/features/billing/plan.ts
 msgid "Word and ODT downloads aren't in your plan"
 msgstr "Word and ODT downloads aren't in your plan"
-
-#: src/features/portfolio/themes.ts
-msgid "Words appear one by one, once."
-msgstr "Words appear one by one, once."
 
 #: src/features/ats-checker/messages.ts
 msgid "Words run together when the text is extracted."
@@ -19260,10 +18969,6 @@ msgstr "Your {plan} checkout isn't finished"
 msgid "Your {plan} QRIS payment isn't finished"
 msgstr "Your {plan} QRIS payment isn't finished"
 
-#: src/features/portfolio/themes.ts
-msgid "Your accent colours drift slowly, then rest."
-msgstr "Your accent colours drift slowly, then rest."
-
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your account is new, so search engines are kept away until {date}, even with this on. It keeps fake pages out of Google."
 msgstr "Your account is new, so search engines are kept away until {date}, even with this on. It keeps fake pages out of Google."
@@ -19419,10 +19124,6 @@ msgstr "Your email address is broken across pieces of text."
 msgid "Your email address isn't verified with the provider. Verify it there, then try again."
 msgstr "Your email address isn't verified with the provider. Verify it there, then try again."
 
-#: src/features/resume/share/share-panel.tsx
-msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
-msgstr "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
-
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"
 msgstr "Your evidence"
@@ -19470,14 +19171,6 @@ msgstr "Your headline"
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your headline changed on the resume. The letter updated too."
 msgstr "Your headline changed on the resume. The letter updated too."
-
-#: src/features/portfolio/editor/intro-effect.tsx
-msgid "Your headline types first and is where it stops. Add up to two more roles it switches to, in about five seconds."
-msgstr "Your headline types first and is where it stops. Add up to two more roles it switches to, in about five seconds."
-
-#: src/features/portfolio/themes.ts
-msgid "Your headline types itself, then up to two more roles."
-msgstr "Your headline types itself, then up to two more roles."
 
 #: src/features/career/workspace/debrief.tsx
 msgid "your Knowledge"
@@ -19531,6 +19224,10 @@ msgstr "Your message couldn't be sent. Try again in a moment."
 msgid "Your message goes to {name}, who will see your email address so they can reply."
 msgstr "Your message goes to {name}, who will see your email address so they can reply."
 
+#: src/features/portfolio/statistics/portfolio-messages.tsx
+msgid "Your messages couldn't be loaded."
+msgstr "Your messages couldn't be loaded."
+
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-effect.tsx
 #: src/features/portfolio/page-text.ts
@@ -19561,10 +19258,6 @@ msgstr "Your name is missing"
 msgid "Your name, photo, experience, education and skills follow this resume as it changes. Its summary becomes About me and its projects become your work, to edit freely."
 msgstr "Your name, photo, experience, education and skills follow this resume as it changes. Its summary becomes About me and its projects become your work, to edit freely."
 
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Your name, photo, experience, education, skills and contact details follow this resume as it changes. Your portfolio's own text, work and design stay as they are."
-msgstr "Your name, photo, experience, education, skills and contact details follow this resume as it changes. Your portfolio's own text, work and design stay as they are."
-
 #: src/components/layout/loading-screen.tsx
 msgid "Your next opportunity is already looking for you."
 msgstr "Your next opportunity is already looking for you."
@@ -19588,6 +19281,10 @@ msgstr "Your opening, the stories to bring and questions to ask. It becomes your
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Your own color"
 msgstr "Your own color"
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Your own color (hex)"
+msgstr "Your own color (hex)"
 
 #: src/features/billing/plan-page.tsx
 msgid "Your own domain"
@@ -19683,6 +19380,10 @@ msgstr "Your portfolio"
 msgid "Your portfolio can't be saved"
 msgstr "Your portfolio can't be saved"
 
+#: src/features/portfolio/ai/draft-dialog.tsx
+msgid "Your portfolio can't be saved right now, so nothing was written. Close this and follow the message about saving."
+msgstr "Your portfolio can't be saved right now, so nothing was written. Close this and follow the message about saving."
+
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio changed in another tab or device. Reload it to see the latest version."
 msgstr "Your portfolio changed in another tab or device. Reload it to see the latest version."
@@ -19729,6 +19430,14 @@ msgstr "Your portfolio still shows its own content. Choose another resume to fil
 msgid "Your portfolio still uses this file. Remove it from the portfolio first."
 msgstr "Your portfolio still uses this file. Remove it from the portfolio first."
 
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Your portfolio was already deleted."
+msgstr "Your portfolio was already deleted."
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Your portfolio was deleted."
+msgstr "Your portfolio was deleted."
+
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio was taken down, so it can't be published or deleted. Email hi@rezumi.app to appeal."
 msgstr "Your portfolio was taken down, so it can't be published or deleted. Email hi@rezumi.app to appeal."
@@ -19748,14 +19457,6 @@ msgstr "Your primary resume"
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
 msgstr "your provider"
-
-#: src/features/resume/share/short-link.ts
-msgid "Your published portfolio opens at your short link and custom domain. This resume opens there again if you unpublish the portfolio."
-msgstr "Your published portfolio opens at your short link and custom domain. This resume opens there again if you unpublish the portfolio."
-
-#: src/features/resume/share/short-link.ts
-msgid "Your published portfolio opens at your short link and custom domain. Your primary resume opens there again if you unpublish the portfolio."
-msgstr "Your published portfolio opens at your short link and custom domain. Your primary resume opens there again if you unpublish the portfolio."
 
 #. placeholder {0}: voice.settings.transcribe.label
 #: src/features/career/workspace/practise.tsx
@@ -19806,19 +19507,6 @@ msgstr "Your selected font can't display some characters. They show as “?”. 
 msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
 msgstr "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
 
-#. placeholder {0}: current.name
-#: src/features/resume/share/short-link.ts
-msgid "Your short link and custom domain open “{0}”."
-msgstr "Your short link and custom domain open “{0}”."
-
-#: src/features/resume/share/short-link.ts
-msgid "Your short link and custom domain open this resume."
-msgstr "Your short link and custom domain open this resume."
-
-#: src/features/resume/share/short-link.ts
-msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
-msgstr "Your short link and custom domain say this resume isn't shared until you publish it again."
-
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your source resume is in Trash"
 msgstr "Your source resume is in Trash"
@@ -19866,10 +19554,6 @@ msgstr "Your work is lost when you sign out or the session ends. Create an accou
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "YouTube or Vimeo, loaded when played"
 msgstr "YouTube or Vimeo, loaded when played"
-
-#: src/features/portfolio/blocks/video-block.tsx
-msgid "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
-msgstr "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"

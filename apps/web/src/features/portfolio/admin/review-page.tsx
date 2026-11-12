@@ -32,6 +32,9 @@ type PendingAction =
 function ReviewPreview({ review }: { review: Review }) {
 	const origins = useOwnOrigins();
 	const [document, setDocument] = useState<string | null>(null);
+	// The review whose preview couldn't be drawn: a newer one (after an action) tries again.
+	const [failedFor, setFailedFor] = useState<Review | null>(null);
+	const failed = failedFor === review;
 
 	useEffect(() => {
 		let current = true;
@@ -42,14 +45,25 @@ function ReviewPreview({ review }: { review: Review }) {
 			links: { resume: false, resumePdf: false },
 			origins,
 			canHideCredit: true,
-		}).then((html) => {
-			if (current) setDocument(html);
-		});
+		})
+			.then((html) => {
+				if (current) setDocument(html);
+			})
+			.catch((error: unknown) => {
+				console.error("Portfolio review preview failed", error);
+				if (current) setFailedFor(review);
+			});
 		return () => {
 			current = false;
 		};
-	}, [review.data, review.resumeData, review.ownerName, review.username, origins]);
+	}, [review, origins]);
 
+	if (failed)
+		return (
+			<p className="text-body-sm text-danger" role="alert">
+				<Trans>The preview couldn't be drawn. Reload the page to try again.</Trans>
+			</p>
+		);
 	if (!document) return <Spinner size="sm" />;
 	return (
 		<iframe
@@ -63,17 +77,19 @@ function ReviewPreview({ review }: { review: Review }) {
 }
 
 type ActionDialogProps = {
+	/** The last action asked for: it stays while the dialog closes, so the title doesn't change on the way out. */
 	action: PendingAction | null;
+	isOpen: boolean;
 	onClose: () => void;
 	review: Review;
 };
 
 /** Every moderation action asks why. The reason for a takedown is shown to the owner, so the dialog says so. */
-function ActionDialog({ action, onClose, review }: ActionDialogProps) {
+function ActionDialog({ action, isOpen, onClose, review }: ActionDialogProps) {
 	const queryClient = useQueryClient();
 	const portfolioId = review.id;
 
-	const run = async (reason: string) => {
+	const send = async (reason: string) => {
 		if (!action) return;
 		if (action.kind === "suspend") await client.portfolio.admin.suspend({ portfolioId, reason });
 		if (action.kind === "lift") await client.portfolio.admin.lift({ portfolioId, reason });
@@ -81,7 +97,28 @@ function ActionDialog({ action, onClose, review }: ActionDialogProps) {
 		if (action.kind === "unban") await client.portfolio.admin.setBanned({ portfolioId, banned: false, reason });
 		if (action.kind === "report")
 			await client.portfolio.admin.setReportStatus({ reportId: action.reportId, status: action.status, reason });
-		await queryClient.invalidateQueries({ queryKey: orpc.portfolio.admin.key() });
+	};
+
+	// The dialog shows an error's message as it is: it gets this feature's wording, not the server's English.
+	const run = async (reason: string) => {
+		try {
+			await send(reason);
+		} catch (error) {
+			const gone =
+				action?.kind === "report"
+					? t`This report doesn't exist anymore. Reload the page.`
+					: t`This portfolio doesn't exist anymore. Its owner may have deleted it.`;
+			throw new Error(
+				portfolioErrorMessage(error, {
+					fallback: t`That didn't work. Reload the page and try again.`,
+					byCode: { NOT_FOUND: gone },
+				}),
+				{ cause: error },
+			);
+		} finally {
+			// A conflict means someone else changed it meanwhile: either way the page shows what's true now.
+			await queryClient.invalidateQueries({ queryKey: orpc.portfolio.admin.key() });
+		}
 	};
 
 	const title = {
@@ -112,7 +149,7 @@ function ActionDialog({ action, onClose, review }: ActionDialogProps) {
 
 	return (
 		<ReasonDialog
-			isOpen={action !== null}
+			isOpen={isOpen}
 			onOpenChange={(open) => {
 				if (!open) onClose();
 			}}
@@ -130,7 +167,12 @@ type PortfolioReviewPageProps = { portfolioId: string };
 /** One portfolio under review: what it shows, the reports about it, what's been done, and the actions. */
 export function PortfolioReviewPage({ portfolioId }: PortfolioReviewPageProps) {
 	const query = useQuery(orpc.portfolio.admin.get.queryOptions({ input: { portfolioId } }));
-	const [action, setAction] = useState<PendingAction | null>(null);
+	const [action, setPendingAction] = useState<PendingAction | null>(null);
+	const [actionOpen, setActionOpen] = useState(false);
+	const setAction = (next: PendingAction) => {
+		setPendingAction(next);
+		setActionOpen(true);
+	};
 
 	if (query.isPending) return <Spinner size="sm" />;
 	if (query.isError)
@@ -304,7 +346,7 @@ export function PortfolioReviewPage({ portfolioId }: PortfolioReviewPageProps) {
 				</div>
 			</div>
 
-			<ActionDialog action={action} onClose={() => setAction(null)} review={review} />
+			<ActionDialog action={action} isOpen={actionOpen} onClose={() => setActionOpen(false)} review={review} />
 		</div>
 	);
 }

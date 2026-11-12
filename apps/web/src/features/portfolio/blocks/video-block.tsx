@@ -13,9 +13,10 @@ import { portfolioImageSrc } from "../images/image-field";
 import { discardUploadedImages, isAbort } from "../images/upload";
 import { useRequestSignals } from "../images/use-request-signals";
 import { samePlayedVideo, stillPlays, videoAddress } from "../media/link-blocks";
-import { importVideoThumbnail, videoBlockFromUrl } from "../media/remote";
+import { importVideoThumbnail, remotePictureErrorMessage, videoBlockFromUrl } from "../media/remote";
 import { useDraftText } from "../metrics/use-draft-text";
-import { currentBlock } from "./add-media-block";
+import { currentBlock, ErrorNote } from "./add-media-block";
+import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -37,6 +38,8 @@ type VideoBlockEditorProps = { work: PortfolioWork; block: PortfolioBlockOf<"vid
 export function VideoBlockEditor({ work, block, edit }: VideoBlockEditorProps) {
 	const [text, setText] = useDraftText(videoAddress(block));
 	const [copying, setCopying] = useState(false);
+	// Why "Copy the thumbnail" didn't work, when the person pressed it.
+	const [copyError, setCopyError] = useState<string | null>(null);
 	const requests = useRequestSignals();
 	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 	useEffect(() => () => clearTimeout(timer.current), []);
@@ -47,8 +50,12 @@ export function VideoBlockEditor({ work, block, edit }: VideoBlockEditorProps) {
 		: (block.thumbnailUrl ?? (block.provider === "youtube" ? youtubeThumbnailUrl(block.videoId) : null));
 
 	/** Copies the thumbnail of the video the block plays now; dropped when the block moved on to another one. */
-	const copyThumbnail = async (video: PortfolioBlockOf<"video">, signal: AbortSignal) => {
-		const image = await importVideoThumbnail(video, signal);
+	const copyThumbnail = async (
+		video: PortfolioBlockOf<"video">,
+		signal: AbortSignal,
+		onFailure?: (error: unknown) => void,
+	) => {
+		const image = await importVideoThumbnail(video, signal, onFailure);
 		if (!image) return;
 		if (!stillPlays(currentBlock(work.id, block.id), video)) {
 			void discardUploadedImages([image]);
@@ -62,8 +69,12 @@ export function VideoBlockEditor({ work, block, edit }: VideoBlockEditorProps) {
 	const copyNow = async () => {
 		const signal = requests.next("details");
 		setCopying(true);
+		setCopyError(null);
 		try {
-			await copyThumbnail(block, signal);
+			await copyThumbnail(block, signal, (failure) => {
+				openPlanDialogForError(failure);
+				setCopyError(remotePictureErrorMessage(failure));
+			});
 		} catch (error) {
 			if (!isAbort(error, signal)) throw error;
 		} finally {
@@ -112,6 +123,7 @@ export function VideoBlockEditor({ work, block, edit }: VideoBlockEditorProps) {
 		);
 		requests.cancel("details");
 		setCopying(false);
+		setCopyError(null);
 		clearTimeout(timer.current);
 		timer.current = setTimeout(() => void fetchDetails(value), DETAILS_DELAY_MS);
 	};
@@ -169,6 +181,7 @@ export function VideoBlockEditor({ work, block, edit }: VideoBlockEditorProps) {
 					</div>
 				)
 			)}
+			{copyError && <ErrorNote message={copyError} />}
 		</div>
 	);
 }

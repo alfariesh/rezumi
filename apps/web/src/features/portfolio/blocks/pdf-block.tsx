@@ -73,8 +73,17 @@ export function PdfBlockEditor({ work, block, edit }: PdfBlockEditorProps) {
 				</div>
 				<div className="grid gap-1 text-sm">
 					<span className="text-muted">PDF · {details.join(" · ")}</span>
-					<a className="text-xs underline" href={`/${block.file}`} target="_blank" rel="noopener">
+					<a
+						className="inline-flex w-fit items-center gap-1 text-xs underline"
+						href={`/${block.file}`}
+						target="_blank"
+						rel="noopener"
+					>
 						<Trans>Open the PDF</Trans>
+						<Icon name="arrow-square-out" size={12} />
+						<span className="sr-only">
+							<Trans>(opens in a new tab)</Trans>
+						</span>
 					</a>
 				</div>
 			</div>

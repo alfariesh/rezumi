@@ -1,14 +1,17 @@
-import type { PortfolioService } from "@rezumi/schema/portfolio/data";
+import type { PortfolioData, PortfolioService } from "@rezumi/schema/portfolio/data";
+import type { Draft } from "immer";
 import { Button, Checkbox, Label, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { getBrandIcon } from "@rezumi/resume/icons";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { generateId } from "@rezumi/utils/string";
+import { useRemovalFocus } from "../blocks/list-focus";
 import { ImageField } from "../images/image-field";
+import { renameClient } from "./clients";
 import { useSourceResume } from "./context";
 import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
 import { editPortfolio, usePortfolioData } from "./store";
@@ -18,24 +21,45 @@ const { text: max } = PORTFOLIO_LIMITS;
 
 type ServiceAction = "whatsapp" | "contact" | "link";
 
+type OfferList = "services" | "testimonials" | "clients";
+type OfferItem<L extends OfferList> = Draft<PortfolioData[L]["items"][number]>;
+
+/**
+ * Changes one item of a list, found by its id: an upload, an AI rewrite or a late answer then lands on the item it
+ * started from, even after the list was reordered or an item before it removed.
+ */
+function editOffer<L extends OfferList>(list: L, id: string, change: (item: OfferItem<L>) => void, key?: string) {
+	editPortfolio(
+		(draft) => {
+			const items = draft[list].items as OfferItem<L>[];
+			const target = items.find((entry) => entry.id === id);
+			if (target) change(target);
+		},
+		key ? { key: `${list}.${id}.${key}` } : undefined,
+	);
+}
+
+function removeOffer(list: OfferList, id: string) {
+	editPortfolio(
+		(draft) => {
+			const items = draft[list].items as { id: string }[];
+			const index = items.findIndex((entry) => entry.id === id);
+			if (index !== -1) items.splice(index, 1);
+		},
+		{ structural: true },
+	);
+}
+
 /** Services: what you offer, a starting price and how to order. */
 export function ServicesForm() {
 	const { services, contact } = usePortfolioData();
 	const items = services.items;
+	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 	const actions = [
 		{ id: "whatsapp", label: t`WhatsApp, with a message naming the service` },
 		{ id: "contact", label: t`Go to Contact` },
 		{ id: "link", label: t`A link` },
 	] as const satisfies readonly { id: ServiceAction; label: string }[];
-
-	const update = (index: number, change: (service: PortfolioService) => void, key?: string) =>
-		editPortfolio(
-			(draft) => {
-				const target = draft.services.items[index];
-				if (target) change(target);
-			},
-			key ? { key: `services.${index}.${key}` } : undefined,
-		);
 
 	return (
 		<div className="grid gap-3">
@@ -47,6 +71,8 @@ export function ServicesForm() {
 					const name = service.title.trim() || t`Untitled service`;
 					const action: ServiceAction =
 						service.cta.kind === "whatsapp" || service.cta.kind === "link" ? service.cta.kind : "contact";
+					const update = (change: (target: PortfolioService) => void, key?: string) =>
+						editOffer("services", service.id, change, key);
 					return (
 						<SortableCard
 							key={service.id}
@@ -54,14 +80,11 @@ export function ServicesForm() {
 							list="services"
 							index={index}
 							name={name}
-							onRemove={() =>
-								editPortfolio(
-									(draft) => {
-										draft.services.items.splice(index, 1);
-									},
-									{ structural: true },
-								)
-							}
+							itemProps={itemProps}
+							onRemove={() => {
+								removed(index);
+								removeOffer("services", service.id);
+							}}
 						>
 							<div className="flex items-end gap-2">
 								<div className="min-w-0 flex-1">
@@ -72,13 +95,9 @@ export function ServicesForm() {
 										maxLength={max.serviceTitle}
 										placeholder={t`Logo design`}
 										onChange={(value) =>
-											update(
-												index,
-												(target) => {
-													target.title = value;
-												},
-												"title",
-											)
+											update((target) => {
+												target.title = value;
+											}, "title")
 										}
 									/>
 								</div>
@@ -86,7 +105,7 @@ export function ServicesForm() {
 									aria-label={t`Icon for ${name}`}
 									value={service.icon ?? ""}
 									onChange={(icon) =>
-										update(index, (target) => {
+										update((target) => {
 											if (icon) target.icon = icon;
 											else delete target.icon;
 										})
@@ -100,13 +119,9 @@ export function ServicesForm() {
 								value={service.description}
 								maxLength={max.serviceDescription}
 								onChange={(value) =>
-									update(
-										index,
-										(target) => {
-											target.description = value;
-										},
-										"description",
-									)
+									update((target) => {
+										target.description = value;
+									}, "description")
 								}
 							/>
 							<TextInput
@@ -116,14 +131,10 @@ export function ServicesForm() {
 								maxLength={max.servicePrice}
 								placeholder={t`From Rp1.5m`}
 								onChange={(value) =>
-									update(
-										index,
-										(target) => {
-											if (value.trim()) target.price = value;
-											else delete target.price;
-										},
-										"price",
-									)
+									update((target) => {
+										if (value.trim()) target.price = value;
+										else delete target.price;
+									}, "price")
 								}
 							/>
 							<ChoiceSelect
@@ -133,10 +144,12 @@ export function ServicesForm() {
 								warning={
 									action === "whatsapp" && !contact.whatsapp.number
 										? t`Add your WhatsApp number in Contact, or the button won't show.`
-										: undefined
+										: action === "link" && !service.cta.url
+											? t`Add the order link, or the button won't show.`
+											: undefined
 								}
 								onChange={(kind) =>
-									update(index, (target) => {
+									update((target) => {
 										target.cta = { kind, ...(target.cta.label ? { label: target.cta.label } : {}) };
 									})
 								}
@@ -146,10 +159,10 @@ export function ServicesForm() {
 									label={t`Order link`}
 									value={service.cta.url}
 									onChange={(url) =>
-										update(index, (target) => {
+										update((target) => {
 											if (url) target.cta.url = url;
 											else delete target.cta.url;
-										})
+										}, "cta.url")
 									}
 								/>
 							)}
@@ -157,25 +170,27 @@ export function ServicesForm() {
 					);
 				})}
 			</SortableList>
-			{items.length < PORTFOLIO_LIMITS.services && (
-				<Button
-					variant="secondary"
-					className="w-fit"
-					onPress={() =>
-						editPortfolio((draft) => {
-							draft.services.items.push({
-								id: generateId(),
-								title: "",
-								description: "",
-								cta: { kind: contact.whatsapp.number ? "whatsapp" : "contact" },
-							});
-						})
-					}
-				>
-					<Icon name="plus" size={18} />
-					<Trans>Add a service</Trans>
-				</Button>
-			)}
+			<div ref={fallbackRef} className="contents">
+				{items.length < PORTFOLIO_LIMITS.services && (
+					<Button
+						variant="secondary"
+						className="w-fit"
+						onPress={() =>
+							editPortfolio((draft) => {
+								draft.services.items.push({
+									id: generateId(),
+									title: "",
+									description: "",
+									cta: { kind: contact.whatsapp.number ? "whatsapp" : "contact" },
+								});
+							})
+						}
+					>
+						<Icon name="plus" size={18} />
+						<Trans>Add a service</Trans>
+					</Button>
+				)}
+			</div>
 		</div>
 	);
 }
@@ -188,6 +203,7 @@ export function TestimonialsForm() {
 	const { testimonials } = usePortfolioData();
 	const items = testimonials.items;
 	const [adding, setAdding] = useState(false);
+	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 
 	return (
 		<div className="grid gap-3">
@@ -199,14 +215,8 @@ export function TestimonialsForm() {
 			>
 				{items.map((item, index) => {
 					const name = item.name.trim() || t`Untitled testimonial`;
-					const update = (change: (target: typeof item) => void, key?: string) =>
-						editPortfolio(
-							(draft) => {
-								const target = draft.testimonials.items[index];
-								if (target) change(target);
-							},
-							key ? { key: `testimonials.${item.id}.${key}` } : undefined,
-						);
+					const update = (change: (target: OfferItem<"testimonials">) => void, key?: string) =>
+						editOffer("testimonials", item.id, change, key);
 					return (
 						<SortableCard
 							key={item.id}
@@ -214,14 +224,11 @@ export function TestimonialsForm() {
 							list="testimonials"
 							index={index}
 							name={name}
-							onRemove={() =>
-								editPortfolio(
-									(draft) => {
-										draft.testimonials.items.splice(index, 1);
-									},
-									{ structural: true },
-								)
-							}
+							itemProps={itemProps}
+							onRemove={() => {
+								removed(index);
+								removeOffer("testimonials", item.id);
+							}}
 						>
 							<TestimonialFields
 								value={item}
@@ -235,11 +242,14 @@ export function TestimonialsForm() {
 								label={t`Their photo (optional)`}
 								value={item.photo}
 								altSuggestion={item.name.trim()}
-								onChange={(image) =>
-									update((target) => {
-										if (image) target.photo = image;
-										else delete target.photo;
-									})
+								onChange={(image, typing) =>
+									update(
+										(target) => {
+											if (image) target.photo = image;
+											else delete target.photo;
+										},
+										typing ? "photo.alt" : undefined,
+									)
 								}
 							/>
 							<UrlInput
@@ -251,19 +261,21 @@ export function TestimonialsForm() {
 									update((target) => {
 										if (url) target.sourceUrl = url;
 										else delete target.sourceUrl;
-									})
+									}, "sourceUrl")
 								}
 							/>
 						</SortableCard>
 					);
 				})}
 			</SortableList>
-			{items.length < PORTFOLIO_LIMITS.testimonials && (
-				<Button variant="secondary" className="w-fit" onPress={() => setAdding(true)}>
-					<Icon name="plus" size={18} />
-					<Trans>Add a testimonial</Trans>
-				</Button>
-			)}
+			<div ref={fallbackRef} className="contents">
+				{items.length < PORTFOLIO_LIMITS.testimonials && (
+					<Button variant="secondary" className="w-fit" onPress={() => setAdding(true)}>
+						<Icon name="plus" size={18} />
+						<Trans>Add a testimonial</Trans>
+					</Button>
+				)}
+			</div>
 			{adding && <AddTestimonialDialog onClose={() => setAdding(false)} />}
 		</div>
 	);
@@ -392,6 +404,9 @@ export function ClientsForm() {
 	const { clients } = usePortfolioData();
 	const source = useSourceResume();
 	const items = clients.items;
+	const { itemProps, fallbackRef, removed } = useRemovalFocus();
+	// Clients whose brand logo was switched on, while their name is being typed (read in handlers only).
+	const brandWanted = useRef(new Set<string>());
 
 	const companies = [
 		...new Set((source.data?.sections.experience.items ?? []).map((item) => item.company.trim()).filter(Boolean)),
@@ -412,6 +427,8 @@ export function ClientsForm() {
 					const name = client.name.trim() || t`Untitled client`;
 					const brandIcon = getBrandIcon(client.name);
 					const showsBrand = Boolean(client.logo && "brandIcon" in client.logo);
+					const update = (change: (target: OfferItem<"clients">) => void, key?: string) =>
+						editOffer("clients", client.id, change, key);
 					return (
 						<SortableCard
 							key={client.id}
@@ -419,66 +436,53 @@ export function ClientsForm() {
 							list="clients"
 							index={index}
 							name={name}
-							onRemove={() =>
-								editPortfolio(
-									(draft) => {
-										draft.clients.items.splice(index, 1);
-									},
-									{ structural: true },
-								)
-							}
+							itemProps={itemProps}
+							onRemove={() => {
+								removed(index);
+								removeOffer("clients", client.id);
+							}}
 						>
 							<TextInput
 								label={t`Name`}
 								icon="briefcase"
 								value={client.name}
 								maxLength={max.clientName}
-								onChange={(value) =>
-									editPortfolio(
-										(draft) => {
-											const target = draft.clients.items[index];
-											if (!target) return;
-											target.name = value;
-											// A brand logo follows the name; an uploaded logo stays.
-											if (!target.logo || "brandIcon" in target.logo) {
-												const next = getBrandIcon(value);
-												if (next && target.logo) target.logo = { brandIcon: next };
-												else if (!next) delete target.logo;
-											}
-										},
-										{ key: `clients.${client.id}.name` },
-									)
-								}
+								onChange={(value) => {
+									if (showsBrand) brandWanted.current.add(client.id);
+									const wanted = brandWanted.current.has(client.id);
+									update((target) => renameClient(target, value, wanted), "name");
+								}}
 							/>
 							<ImageField
 								label={t`Logo (optional)`}
 								kind="logo"
 								value={client.logo && "key" in client.logo ? client.logo : undefined}
 								altSuggestion={client.name.trim() ? t`${client.name.trim()} logo` : ""}
-								onChange={(image) =>
-									editPortfolio((draft) => {
-										const target = draft.clients.items[index];
-										if (!target) return;
-										if (image) target.logo = image;
-										else {
-											const brand = getBrandIcon(target.name);
-											if (brand) target.logo = { brandIcon: brand };
-											else delete target.logo;
-										}
-									})
+								onChange={(image, typing) =>
+									update(
+										(target) => {
+											if (image) target.logo = image;
+											else {
+												const brand = getBrandIcon(target.name);
+												if (brand) target.logo = { brandIcon: brand };
+												else delete target.logo;
+											}
+										},
+										typing ? "logo.alt" : undefined,
+									)
 								}
 							/>
 							{brandIcon && !(client.logo && "key" in client.logo) && (
 								<CellSwitchRow
 									isSelected={showsBrand}
-									onChange={(checked) =>
-										editPortfolio((draft) => {
-											const target = draft.clients.items[index];
-											if (!target) return;
+									onChange={(checked) => {
+										if (checked) brandWanted.current.add(client.id);
+										else brandWanted.current.delete(client.id);
+										update((target) => {
 											if (checked) target.logo = { brandIcon };
 											else delete target.logo;
-										})
-									}
+										});
+									}}
 									label={t`Show the ${name} logo`}
 								/>
 							)}
@@ -487,12 +491,10 @@ export function ClientsForm() {
 								value={client.url}
 								webOnly
 								onChange={(url) =>
-									editPortfolio((draft) => {
-										const target = draft.clients.items[index];
-										if (!target) return;
+									update((target) => {
 										if (url) target.url = url;
 										else delete target.url;
-									})
+									}, "url")
 								}
 							/>
 						</SortableCard>
@@ -502,7 +504,7 @@ export function ClientsForm() {
 			<p className="px-1 text-body-xs text-muted">
 				<Trans>By adding a logo, you confirm you have the right to show it.</Trans>
 			</p>
-			<div className="flex flex-wrap gap-2">
+			<div ref={fallbackRef} className="flex flex-wrap gap-2">
 				{items.length < PORTFOLIO_LIMITS.clients && (
 					<Button
 						variant="secondary"
