@@ -1,5 +1,6 @@
 import type { Entry } from "./model";
 import type { Website } from "@rezumi/schema/resume/data";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { ComponentProps, ReactNode } from "react";
 import { Checkbox, Description, Disclosure, FieldError, Input, Label, TextField as FieldRoot } from "@heroui/react";
 import { t } from "@lingui/core/macro";
@@ -8,6 +9,7 @@ import { useCallback, useState } from "react";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { cn } from "@rezumi/utils/style";
 import { findEntry } from "./model";
+import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { URLInput } from "@/components/input/url-input";
 import { useCurrentBuilderResumeSelector, useUpdateResumeData } from "@/features/resume/builder/draft";
 
@@ -73,6 +75,8 @@ type TextFieldProps = Omit<ComponentProps<"input">, "value" | "onChange"> & {
 	validate?: Validator;
 	hint?: ReactNode;
 	wide?: boolean | undefined;
+	/** Drawn at the start of the field. */
+	icon?: IconName | undefined;
 };
 
 /** A labelled text field. Errors appear after the first blur and say how to fix them. */
@@ -83,6 +87,7 @@ export function TextField({
 	validate,
 	hint,
 	wide,
+	icon,
 	className,
 	onBlur,
 	...props
@@ -100,15 +105,17 @@ export function TextField({
 			className={cn("gap-1.5", wide && "col-span-full")}
 		>
 			<Label>{label}</Label>
-			<Input
-				fullWidth
-				onBlur={(event) => {
-					setTouched(true);
-					onBlur?.(event);
-				}}
-				{...(className && { className })}
-				{...(props as ComponentProps<typeof Input>)}
-			/>
+			<WithInputIcon icon={icon}>
+				<Input
+					fullWidth
+					onBlur={(event) => {
+						setTouched(true);
+						onBlur?.(event);
+					}}
+					className={cn(icon && INPUT_WITH_ICON, className)}
+					{...(props as ComponentProps<typeof Input>)}
+				/>
+			</WithInputIcon>
 			<FieldError>{error}</FieldError>
 			{hint && !error && <Description>{hint}</Description>}
 		</FieldRoot>
@@ -136,6 +143,7 @@ export function WebsiteField({ label, value, onChange, allowInlineLink = true }:
 					render={
 						<URLInput
 							variant="secondary"
+							icon="globe"
 							value={value}
 							onChange={onChange}
 							hideLabelButton={inline}
@@ -180,7 +188,7 @@ export function MoreOptions({ children }: MoreOptionsProps) {
 			</Disclosure.Heading>
 			<Disclosure.Content>
 				<Disclosure.Body>
-					<div className="grid gap-y-2.5 pt-3 fields-on-background">{children}</div>
+					<div className="grid gap-y-2.5 pt-3">{children}</div>
 				</Disclosure.Body>
 			</Disclosure.Content>
 		</Disclosure>

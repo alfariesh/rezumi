@@ -107,7 +107,7 @@ function ResumePageCanvas() {
 	};
 
 	return (
-		<div className="relative h-full min-h-0 bg-background">
+		<div className="relative h-full min-h-0">
 			<section
 				ref={canvasRef}
 				// The scroll area takes focus so the page can be scrolled from the keyboard even before its lines load.
@@ -227,7 +227,7 @@ function ResumePageCaption(props: ResumePageCaptionProps) {
 	if (overflow && pageNumber > overflow.authored) {
 		return (
 			<figcaption className="relative mb-2.5 border-t-[1.5px] border-dashed border-warning">
-				<span className="absolute end-0 -top-2.5 rounded-full bg-background px-2 text-xs font-semibold text-warning tabular-nums">
+				<span className="absolute end-0 -top-2.5 rounded-full bg-background-secondary px-2 text-xs font-semibold text-warning tabular-nums">
 					<Trans>Page {pageNumber}</Trans>
 				</span>
 			</figcaption>

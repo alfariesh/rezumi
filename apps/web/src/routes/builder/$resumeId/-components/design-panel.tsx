@@ -1,30 +1,29 @@
 import type { DateFormat } from "@rezumi/schema/resume/dates";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Widget } from "@heroui-pro/react";
-import { Button, Disclosure, Tabs } from "@heroui/react";
+import { Button, Disclosure, Tabs, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
-import { cn } from "@rezumi/utils/style";
 import { CustomStylesSectionBuilder } from "../-sidebar/right/sections/custom-styles";
 import { DesignSectionBuilder } from "../-sidebar/right/sections/design";
 import { LayoutSectionBuilder } from "../-sidebar/right/sections/layout";
 import { PageSectionBuilder } from "../-sidebar/right/sections/page";
 import { TypographySectionBuilder } from "../-sidebar/right/sections/typography";
-import { SelectField } from "@/components/input/select-field";
-import { WidgetHeading } from "@/components/layout/widget-heading";
+import { CellSelectField } from "@/components/input/select-field";
 import { useIsResumeLocked, useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { GroupPanel, GroupSection, useGroupSpy, useInGroupPanel } from "@/features/resume/editor/chrome/group-nav";
+import { PanelSection } from "@/features/resume/editor/chrome/panel-section";
 import { EntriesGroup } from "@/features/resume/editor/design/entries-group";
 import { ColorGroup, IconsGroup, PageGroup, TypeGroup } from "@/features/resume/editor/design/style-groups";
 import { TemplateGroup } from "@/features/resume/editor/design/template-group";
 import { OfflineBanner } from "@/features/resume/editor/save-status";
 import { getScrollBehavior } from "@/features/resume/editor/write/reveal";
 import { D2 } from "@/libs/motion";
+import { renderAsSpan } from "@/libs/typography";
 
 const GROUPS = [
 	{ id: "template", icon: "squares-four", label: () => t`Template` },
@@ -49,7 +48,6 @@ type DesignWidgetProps = { group: GroupId; children: ReactNode };
 function DesignWidget({ group, children }: DesignWidgetProps) {
 	const inGroupPanel = useInGroupPanel();
 	const { icon, label } = groupOf(group);
-	const titleId = `design-${group}-title`;
 
 	if (inGroupPanel)
 		return (
@@ -59,11 +57,9 @@ function DesignWidget({ group, children }: DesignWidgetProps) {
 		);
 
 	return (
-		<Widget id={`design-${group}`} role="region" aria-labelledby={titleId} className="scroll-mt-12">
-			<WidgetHeading id={titleId} icon={icon} title={label()} />
-			{/* A size container, so groups lay out by the panel's width rather than the window's. */}
-			<Widget.Content className="@container grid min-w-0 gap-4">{children}</Widget.Content>
-		</Widget>
+		<PanelSection id={`design-${group}`} icon={icon} title={label()} className="scroll-mt-12" contentClassName="gap-4">
+			{children}
+		</PanelSection>
 	);
 }
 
@@ -251,8 +247,8 @@ function DateFormatSelect() {
 	const updateResumeData = useUpdateResumeData();
 
 	return (
-		<SelectField
-			label={<Trans>Date format</Trans>}
+		<CellSelectField
+			label={t`Date format`}
 			value={data?.metadata.page.dateFormat ?? "short"}
 			onChange={(value) =>
 				updateResumeData(
@@ -331,9 +327,14 @@ function AdvancedWidget({ open, onOpenChange }: AdvancedWidgetProps) {
 		<Disclosure.Heading level={2} className="min-w-0 flex-1">
 			<Disclosure.Trigger className="flex min-h-8 w-full items-center gap-2 rounded-lg text-start">
 				<Icon name={icon} size={20} className="shrink-0 text-muted [&_*]:stroke-2" />
-				<Widget.Title id="design-advanced-title" className="flex-1 truncate">
+				<Typography
+					type="h6"
+					render={renderAsSpan}
+					id="design-advanced-title"
+					className="min-w-0 flex-1 truncate text-sm leading-5"
+				>
 					{label()}
-				</Widget.Title>
+				</Typography>
 				<Disclosure.Indicator className="text-muted" />
 			</Disclosure.Trigger>
 		</Disclosure.Heading>
@@ -357,22 +358,16 @@ function AdvancedWidget({ open, onOpenChange }: AdvancedWidgetProps) {
 		);
 
 	return (
-		<Widget
-			id="design-advanced"
-			role="region"
-			aria-labelledby="design-advanced-title"
-			className={cn("scroll-mt-3", !open && "pb-0.5")}
-		>
+		<section id="design-advanced" aria-labelledby="design-advanced-title" className="scroll-mt-3 px-1">
 			<Disclosure isExpanded={open} onExpandedChange={onOpenChange}>
-				<Widget.Header>{trigger}</Widget.Header>
-				{/* `*:p-0`: Disclosure.Body pads an outer wrapper its className doesn't reach; the widget's own insets apply. */}
+				{trigger}
+				{/* `*:p-0`: Disclosure.Body pads an outer wrapper its className doesn't reach. */}
 				<Disclosure.Content className="*:p-0">
-					{/* `pt-px`: room for the content's hairline under the header, which the panel's clip would cut. */}
-					<Disclosure.Body className="p-0 pt-px">
-						{opened && <Widget.Content className="mt-0 min-w-0">{content}</Widget.Content>}
+					<Disclosure.Body className="p-0 pt-3">
+						{opened && <div className="min-w-0 px-0.5">{content}</div>}
 					</Disclosure.Body>
 				</Disclosure.Content>
 			</Disclosure>
-		</Widget>
+		</section>
 	);
 }

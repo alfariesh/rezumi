@@ -2,13 +2,13 @@ import type { ThumbnailContent } from "./thumbnails";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CareerField, Template } from "@rezumi/schema/templates";
 import type { FocusEvent, KeyboardEvent, PointerEvent } from "react";
-import { Segment } from "@heroui-pro/react";
-import { Button, Label, Slider, Tag, TagGroup } from "@heroui/react";
+import { CellSlider, Segment } from "@heroui-pro/react";
+import { Button, Tag, TagGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useInView } from "motion/react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { applyTemplatePreset, hasTemplatePreset } from "@rezumi/resume/template-preset";
 import {
 	careerFields,
@@ -24,7 +24,7 @@ import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { SEGMENT_ITEM } from "./style-groups";
 import { thumbnailContent, useTemplateThumbnail } from "./thumbnails";
-import { SelectField } from "@/components/input/select-field";
+import { CellSelectField } from "@/components/input/select-field";
 import { careerFieldNames, templateSample, templates } from "@/dialogs/resume/template/data";
 import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
@@ -119,8 +119,8 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 
 	return (
 		<div className="grid gap-3">
-			<SelectField
-				aria-label={t`Field of work`}
+			<CellSelectField
+				label={t`Field of work`}
 				value={field}
 				onChange={(value) => setField(value as CareerField | "all")}
 				options={[
@@ -330,12 +330,6 @@ function PresetPanel({ data, template }: PresetPanelProps) {
 					<p className="truncate text-xs text-muted">{fonts}</p>
 				</div>
 			</div>
-			<p className="text-xs leading-4 text-muted">
-				<Trans>
-					The fonts, accent color, entry layout, skill keywords and photo shape {name} was designed with. Your content
-					stays.
-				</Trans>
-			</p>
 			<Button variant="secondary" size="sm" className="w-fit" isDisabled={inUse} onPress={apply}>
 				<Icon name={inUse ? "check" : "palette"} size={16} />
 				{inUse ? <Trans>Style in use</Trans> : <Trans>Use {name} style</Trans>}
@@ -354,11 +348,10 @@ function SidebarPanel({ data, template }: SidebarPanelProps) {
 	const shownOwnSide = isRTL(data.metadata.page.locale) ? (ownSide === "left" ? "right" : "left") : ownSide;
 	const side = data.metadata.layout.sidebarSide ?? shownOwnSide;
 	const width = data.metadata.layout.sidebarWidth;
-	const titleId = useId();
 
 	return (
 		<div className="grid gap-4 rounded-xl bg-surface-secondary p-4">
-			<p id={titleId} className="text-sm font-medium">
+			<p className="text-sm font-medium">
 				<Trans>Sidebar</Trans>
 			</p>
 			<Segment
@@ -381,8 +374,8 @@ function SidebarPanel({ data, template }: SidebarPanelProps) {
 					<Trans>Right</Trans>
 				</Segment.Item>
 			</Segment>
-			<Slider
-				aria-labelledby={titleId}
+			<CellSlider
+				aria-label={t`Width`}
 				minValue={10}
 				maxValue={50}
 				step={1}
@@ -396,16 +389,16 @@ function SidebarPanel({ data, template }: SidebarPanelProps) {
 					)
 				}
 			>
-				<Label>
-					<Trans>Width</Trans>
-				</Label>
-				{/* The stored width: Advanced allows fractions the 1% steps here round away. */}
-				<Slider.Output className="text-muted">{width}%</Slider.Output>
-				<Slider.Track>
-					<Slider.Fill />
-					<Slider.Thumb />
-				</Slider.Track>
-			</Slider>
+				<CellSlider.Track>
+					<CellSlider.Fill />
+					<CellSlider.Thumb />
+					<CellSlider.Label>
+						<Trans>Width</Trans>
+					</CellSlider.Label>
+					{/* The stored width: Advanced allows fractions the 1% steps here round away. */}
+					<CellSlider.Output>{width}%</CellSlider.Output>
+				</CellSlider.Track>
+			</CellSlider>
 		</div>
 	);
 }

@@ -315,13 +315,66 @@
 }
 
 /*
- * The coach's message box (PromptInput `primary`) is filled with the page `background` rather than the gray `default`,
- * in the rest and focus states alike. The assistant dock's `secondary` box is unchanged.
+ * The coach's and the editor assistant's message box (PromptInput `primary`) is filled with the page `background`
+ * rather than the gray `default`, in the rest and focus states alike.
  */
 @layer components {
-	.dashboard-shell .prompt-input .prompt-input__shell--primary,
-	.dashboard-shell .prompt-input:focus-within .prompt-input__shell--primary {
+	:is(.dashboard-shell, [data-assistant]) .prompt-input .prompt-input__shell--primary,
+	:is(.dashboard-shell, [data-assistant]) .prompt-input:focus-within .prompt-input__shell--primary {
 		background-color: var(--background);
+	}
+}
+
+/*
+ * Fields on the editors' gray panel (`.panel-fields`: the desktop panel and the tablet drawer) take the white `primary`
+ * look, so they read against the panel's own `background`: the field fill and a hairline shadow in place of the
+ * `secondary` gray. A phone's sheet, a popover, a dialog and a Widget's white content (the letter editor still has
+ * them) are white, so they keep `secondary`. The rule reassigns the tokens its component's `--secondary` variant reads.
+ */
+@layer components {
+	.panel-fields
+		:is(
+			.input--secondary,
+			.textarea--secondary,
+			.input-group--secondary,
+			.color-input-group--secondary,
+			.date-input-group--secondary,
+			.number-field--secondary .number-field__group,
+			.search-field--secondary .search-field__group,
+			.select--secondary .select__trigger,
+			.autocomplete--secondary .autocomplete__trigger,
+			[data-field-frame]
+		):not(.widget *) {
+		--input-bg: var(--field-background);
+		--input-bg-hover: var(--field-hover);
+		--input-bg-focus: var(--field-focus);
+		--textarea-bg: var(--field-background);
+		--textarea-bg-hover: var(--field-hover);
+		--textarea-bg-focus: var(--field-focus);
+		--input-group-bg: var(--field-background);
+		--input-group-bg-hover: var(--field-hover);
+		--input-group-bg-focus: var(--field-focus);
+		--color-input-group-bg: var(--field-background);
+		--color-input-group-bg-hover: var(--field-hover);
+		--color-input-group-bg-focus: var(--field-focus);
+		--date-input-group-bg: var(--field-background);
+		--date-input-group-bg-hover: var(--field-hover);
+		--date-input-group-bg-focus: var(--field-focus);
+		--number-field-group-bg: var(--field-background);
+		--number-field-group-bg-hover: var(--field-hover);
+		--number-field-group-bg-focus: var(--field-focus);
+		--search-field-group-bg: var(--field-background);
+		--search-field-group-bg-hover: var(--field-hover);
+		--search-field-group-bg-focus: var(--field-focus);
+		--select-trigger-bg: var(--field-background);
+		--select-trigger-bg-hover: var(--field-hover);
+		--select-trigger-bg-focus: var(--field-focus);
+		--autocomplete-trigger-bg: var(--field-background);
+		--autocomplete-trigger-bg-hover: var(--field-hover);
+		--autocomplete-trigger-bg-focus: var(--field-focus);
+		--frame-bg: var(--field-background);
+		--frame-bg-hover: var(--field-hover);
+		@apply shadow-field;
 	}
 }
 

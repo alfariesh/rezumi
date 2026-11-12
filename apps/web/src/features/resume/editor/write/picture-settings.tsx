@@ -23,6 +23,7 @@ import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import "react-easy-crop/react-easy-crop.css";
 import { ColorPicker } from "@/components/input/color-picker";
+import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { NumberInput } from "@/components/input/number-input";
 import { useCurrentBuilderResumeSelector, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { useClosingValue } from "@/hooks/use-closing-value";
@@ -91,21 +92,24 @@ function PicturePreviewControls({
 							<Trans>URL</Trans>
 						</FormLabel>
 						<div className="flex items-center gap-x-2">
-							<FormControl
-								render={
-									<Input
-										fullWidth
-										variant="secondary"
-										name={field.name}
-										value={field.state.value}
-										onBlur={field.handleBlur}
-										onChange={(event) => {
-											field.handleChange(event.target.value);
-											onAutoSave();
-										}}
-									/>
-								}
-							/>
+							<WithInputIcon icon="image" className="flex-1">
+								<FormControl
+									render={
+										<Input
+											fullWidth
+											className={INPUT_WITH_ICON}
+											variant="secondary"
+											name={field.name}
+											value={field.state.value}
+											onBlur={field.handleBlur}
+											onChange={(event) => {
+												field.handleChange(event.target.value);
+												onAutoSave();
+											}}
+										/>
+									}
+								/>
+							</WithInputIcon>
 
 							<IconButton
 								icon={picture.hidden ? "eye-slash" : "eye"}
@@ -175,6 +179,9 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 							<Trans>Size</Trans>
 						</FormLabel>
 						<InputGroup fullWidth variant="secondary">
+							<InputGroup.Prefix>
+								<Icon name="arrows-out-simple" size={18} className="text-muted" />
+							</InputGroup.Prefix>
 							<FormControl
 								render={
 									<NumberInput
@@ -206,6 +213,9 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 							<Trans>Rotation</Trans>
 						</FormLabel>
 						<InputGroup fullWidth variant="secondary">
+							<InputGroup.Prefix>
+								<Icon name="arrow-clockwise" size={18} className="text-muted" />
+							</InputGroup.Prefix>
 							<FormControl
 								render={
 									<NumberInput
@@ -240,6 +250,9 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 						</FormLabel>
 						<div className="flex items-center gap-x-2">
 							<InputGroup fullWidth variant="secondary">
+								<InputGroup.Prefix>
+									<Icon name="square" size={18} className="text-muted" />
+								</InputGroup.Prefix>
 								<FormControl
 									render={
 										<NumberInput
@@ -315,6 +328,9 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 						</FormLabel>
 						<div className="flex items-center gap-x-2">
 							<InputGroup fullWidth variant="secondary">
+								<InputGroup.Prefix>
+									<Icon name="circle-half" size={18} className="text-muted" />
+								</InputGroup.Prefix>
 								<FormControl
 									render={
 										<NumberInput
@@ -661,6 +677,9 @@ function ColorWidthFields(props: ColorWidthFieldsProps) {
 					<FormItem className="flex-1" hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
 						<FormLabel>{widthLabel}</FormLabel>
 						<InputGroup fullWidth variant="secondary">
+							<InputGroup.Prefix>
+								<Icon name="minus" size={18} className="text-muted" />
+							</InputGroup.Prefix>
 							<FormControl
 								render={
 									<NumberInput

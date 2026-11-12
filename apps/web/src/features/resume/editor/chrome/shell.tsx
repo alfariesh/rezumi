@@ -1,7 +1,7 @@
 import type { MobileView, PanelView } from "@/features/resume/editor/store";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode, UIEvent } from "react";
-import { Sheet, Widget } from "@heroui-pro/react";
+import { Sheet } from "@heroui-pro/react";
 import { Button, Toolbar } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -10,9 +10,9 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
-import { WidgetHeading } from "@/components/layout/widget-heading";
 import { loadAssistantPanel } from "@/features/assistant/dock";
 import { BackLink, DrawerControls, useIsLandscape } from "@/features/resume/editor/chrome";
+import { PanelSection as TitledSection } from "@/features/resume/editor/chrome/panel-section";
 import { selectPanelView, useEditorStore } from "@/features/resume/editor/store";
 
 // The editor shell resumes, letters and the portfolio share: the layout for the screen, the rail down the window's
@@ -67,7 +67,8 @@ type EditorFrameProps = {
  * The window, on the white surface. One header row runs across the top, its parts over the sections they belong to
  * (as in ChatGPT): back over the rail, the document's name over the panel, undo and zoom over the canvas, the
  * assistant's own header over its column. Under it: the rail down the left edge (the modes, then History and AI at its
- * foot), one bordered wrapper holding the panel (white) and the canvas (gray, the page on it), and while open the
+ * foot), one wrapper with a hairline border holding the panel (`background`, light gray) and the canvas
+ * (`background-secondary`, a step darker, the page on it), and while open the
  * assistant's column. Below 1024px the panel is a drawer over the canvas, and below 1280px the assistant comes over
  * the canvas from the right. Phones show the bar over their own body.
  */
@@ -113,8 +114,12 @@ export function EditorFrame({ editorLayout, bar, back, modes, mobile, children, 
 
 			<div className="col-start-1 row-start-2 scrollbar-none min-h-0 overflow-y-auto">{modes}</div>
 
-			<div className="relative col-span-2 col-start-2 row-start-2 grid min-h-0 min-w-0 grid-cols-subgrid overflow-hidden rounded-[calc(var(--radius)*2.5)] border border-separator">
-				{docked ? <PanelSection {...sections} className="border-e border-separator" /> : <span aria-hidden="true" />}
+			<div className="relative col-span-2 col-start-2 row-start-2 grid min-h-0 min-w-0 grid-cols-subgrid overflow-hidden rounded-[calc(var(--radius)*2.5)] border-[0.5px] border-separator">
+				{docked ? (
+					<PanelSection {...sections} className="border-e-[0.5px] border-separator" />
+				) : (
+					<span aria-hidden="true" />
+				)}
 				<CanvasSection {...sections} />
 
 				{!docked && <PanelDrawer {...sections} />}
@@ -146,7 +151,7 @@ type SectionProps = Omit<EditorFrameProps, "editorLayout" | "bar" | "back" | "mo
 type PanelSectionProps = SectionProps & { className?: string };
 
 /**
- * The panel section (white): the mode's widgets, or History in their place, scrolling with no scrollbar drawn. The
+ * The panel section (`background`): the mode's widgets, or History in their place, scrolling with no scrollbar drawn. The
  * mode's panel stays mounted, hidden, while History shows. Its name sits in the header row above it.
  */
 function PanelSection({ mode, panelLabel, panel, history, className }: PanelSectionProps) {
@@ -162,7 +167,7 @@ function PanelSection({ mode, panelLabel, panel, history, className }: PanelSect
 			// stretching the document, which would let scrollIntoView shift the whole editor. No scroll anchoring,
 			// which yanked the Design panel back while scrolling it.
 			className={cn(
-				"relative scrollbar-none min-h-0 min-w-0 overflow-y-auto bg-surface [overflow-anchor:none]",
+				"panel-fields relative scrollbar-none min-h-0 min-w-0 overflow-y-auto bg-background [overflow-anchor:none]",
 				className,
 			)}
 		>
@@ -211,10 +216,10 @@ function CanvasHeader({ title, controls, actions, assistant, layout, pinnable, p
 	);
 }
 
-/** The canvas section (gray): the page, with Download floating at its lower end corner. */
+/** The canvas section (`background-secondary`, a step darker than the window): the page, with Download floating at its lower end corner. */
 function CanvasSection({ page, floating }: SectionProps) {
 	return (
-		<main id="main-content" className="relative min-h-0 min-w-0 bg-background">
+		<main id="main-content" className="relative min-h-0 min-w-0 bg-background-secondary">
 			{page}
 			{floating && (
 				<div className="pointer-events-none absolute end-5 bottom-5 z-10 flex transition-[opacity,translate] duration-standard ease-enter starting:translate-y-2 starting:opacity-0">
@@ -279,10 +284,9 @@ function AssistantDrawer({ open, children }: AssistantPlaceProps) {
 function HistoryView({ children }: { children: ReactNode }) {
 	return (
 		<div className={cn("p-3", MODE_ENTER_CLASS)}>
-			<Widget role="region" aria-labelledby="editor-history-title">
-				<WidgetHeading id="editor-history-title" icon="clock-counter-clockwise" title={t`History`} />
-				<Widget.Content className="@container min-w-0">{children}</Widget.Content>
-			</Widget>
+			<TitledSection icon="clock-counter-clockwise" title={t`History`}>
+				{children}
+			</TitledSection>
 		</div>
 	);
 }
@@ -475,7 +479,7 @@ function MobileDock<M extends string>({ items, hidden, onOpen }: DockProps<M>) {
 					<Button
 						key={item.mode}
 						variant="ghost"
-						className="relative h-12 w-12 min-w-0 flex-col gap-0.5 rounded-full px-0 text-[11px] leading-none font-medium text-muted active:scale-95"
+						className="relative h-12 w-12 min-w-0 flex-col gap-0.5 rounded-full px-0 text-xs leading-none font-medium text-muted active:scale-95"
 						onPress={() => onOpen(item.mode)}
 					>
 						<Icon name={item.icon} size={20} />

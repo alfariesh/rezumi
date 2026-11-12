@@ -27,7 +27,7 @@ type LetterBarProps = {
 	pinnable: boolean;
 };
 
-/** Write · Design down the rail, History and AI at its foot. */
+/** Write · Design down the rail, History at its foot. */
 export function LetterModeTabs() {
 	const [mode, setMode] = useLetterMode();
 
@@ -36,7 +36,6 @@ export function LetterModeTabs() {
 			selected={mode}
 			onChange={setMode}
 			history
-			assistant
 			modes={[
 				{ id: "write", icon: "pencil-simple", label: t`Write` },
 				{ id: "design", icon: "palette", label: t`Design` },

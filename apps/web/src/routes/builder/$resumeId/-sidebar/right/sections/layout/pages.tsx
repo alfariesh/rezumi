@@ -245,7 +245,7 @@ function PageContainer({
 	const isFullWidth = page.fullWidth;
 
 	return (
-		<div className="space-y-3 rounded-xl bg-surface-secondary">
+		<div className="space-y-3 rounded-xl bg-surface">
 			<div className="@container px-4 pt-3">
 				<div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 @max-[22rem]:grid-cols-1">
 					<div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2">
@@ -557,7 +557,7 @@ function LayoutItem({ id, list, index, pageIndex, columnId }: LayoutItemProps) {
 			{...mergeProps(sortable.dropTargetProps, sortable.dragProps)}
 			data-dragging={sortable.isDragging ? "true" : undefined}
 			className={cn(
-				"group/item relative flex cursor-grab items-center gap-x-2 rounded-lg bg-surface px-2 py-1.5 text-sm font-medium select-none",
+				"group/item relative flex cursor-grab items-center gap-x-2 rounded-lg bg-background px-2 py-1.5 text-sm font-medium select-none",
 				"hover:bg-default active:cursor-grabbing active:bg-default",
 				"data-[dragging=true]:opacity-40",
 			)}

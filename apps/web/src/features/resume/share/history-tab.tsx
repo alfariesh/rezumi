@@ -12,6 +12,7 @@ import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { formatVersionMoment, formatVersionTime, getVersionDetail, getVersionTitle } from "./format";
+import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { savePendingChanges, useCurrentResume, useResumeStore } from "@/features/resume/builder/draft";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { useConfirm, usePrompt } from "@/hooks/use-confirm";
@@ -139,15 +140,18 @@ export function HistoryTimeline({ source }: { source: HistorySource }) {
 					save();
 				}}
 			>
-				<Input
-					variant="secondary"
-					fullWidth
-					value={name}
-					maxLength={80}
-					aria-label={t`Name this version`}
-					placeholder={t`Sent to Lumen`}
-					onChange={(event) => setName(event.target.value)}
-				/>
+				<WithInputIcon icon="tag" className="flex-1">
+					<Input
+						variant="secondary"
+						fullWidth
+						className={INPUT_WITH_ICON}
+						value={name}
+						maxLength={80}
+						aria-label={t`Name this version`}
+						placeholder={t`Sent to Lumen`}
+						onChange={(event) => setName(event.target.value)}
+					/>
+				</WithInputIcon>
 				<Button type="submit" variant="secondary" isDisabled={!name.trim() || busy}>
 					<Trans>Save</Trans>
 				</Button>

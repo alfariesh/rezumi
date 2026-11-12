@@ -1,11 +1,12 @@
 import type { DateFormat, ResumeDates, YearMonth } from "@rezumi/schema/resume/dates";
-import { Input, Switch } from "@heroui/react";
+import { Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { formatYearMonth, getPresentLabel, toYearMonth } from "@rezumi/schema/resume/dates";
 import { readSingleDate } from "@rezumi/schema/resume/period";
 import { Icon } from "@rezumi/ui/components/icon";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
 
 type DateSettings = { locale: string; format?: DateFormat | undefined };
@@ -139,20 +140,11 @@ export function DatesField({ dates, single = false, locale, format, onChange, cl
 			</div>
 
 			{!single && (
-				<>
-					<Switch
-						isSelected={dates.present}
-						onChange={(present) => onChange({ ...current, present, end: present ? null : dates.end })}
-						className="w-fit p-1 text-sm"
-					>
-						<Switch.Content>
-							<Switch.Control>
-								<Switch.Thumb />
-							</Switch.Control>
-							<Trans>Present</Trans>
-						</Switch.Content>
-					</Switch>
-				</>
+				<CellSwitchRow
+					label={<Trans>Present</Trans>}
+					isSelected={dates.present}
+					onChange={(present) => onChange({ ...current, present, end: present ? null : dates.end })}
+				/>
 			)}
 
 			<div id={`${id}-note`}>

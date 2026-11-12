@@ -42,11 +42,11 @@ function RichTextPreview({
 	const editable = !disabled && !readOnlyTable;
 
 	return (
-		// Matches the loaded editor's frame: a secondary HeroUI field.
+		// Matches the loaded editor's frame: a primary HeroUI field (the panel is gray).
 		<div
 			className={cn(
-				"rounded-field bg-background text-field-foreground",
-				disabled ? "opacity-(--disabled-opacity)" : "hover:bg-default",
+				"rounded-field bg-field text-field-foreground shadow-field",
+				disabled ? "opacity-(--disabled-opacity)" : "hover:bg-field-hover",
 				className,
 			)}
 		>

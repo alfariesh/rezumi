@@ -4,6 +4,7 @@ import { createContext, use, useEffect, useRef, useState } from "react";
 import { SelectionIndicator, ToggleButton, ToggleButtonGroup } from "react-aria-components";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
+import { PanelHeading } from "./panel-section";
 import { getScrollBehavior } from "@/features/resume/editor/write/reveal";
 
 // A long settings panel (resume and portfolio Design) as sections of the panel card, with a row of chips stuck to the
@@ -89,13 +90,12 @@ export function GroupSection({ id, icon, title, action, children }: GroupSection
 			aria-labelledby={titleId}
 			className="grid min-w-0 scroll-mt-12 gap-3 border-t border-separator p-4 first:border-t-0"
 		>
-			<div className="flex min-h-8 items-center gap-2">
-				<Icon name={icon} size={20} className="shrink-0 text-muted [&_*]:stroke-2" />
-				<h2 id={titleId} className="min-w-0 flex-1 truncate text-sm font-semibold tracking-tight">
-					{title}
-				</h2>
-				{action && <div className="flex shrink-0 items-center gap-2">{action}</div>}
-			</div>
+			<PanelHeading
+				id={titleId}
+				icon={icon}
+				title={title}
+				action={action && <div className="flex shrink-0 items-center gap-2">{action}</div>}
+			/>
 			{/* A size container, so groups lay out by the card's width rather than the window's. */}
 			<div className="@container grid min-w-0 gap-4">{children}</div>
 		</section>

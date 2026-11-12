@@ -6,6 +6,7 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { getOrpcErrorMessage } from "@/libs/error-message";
@@ -124,15 +125,18 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 						if (request.trim()) run("custom");
 					}}
 				>
-					<Input
-						fullWidth
-						autoFocus
-						aria-label={t`What should change?`}
-						placeholder={t`What should change?`}
-						value={request}
-						maxLength={500}
-						onChange={(event) => setRequest(event.target.value)}
-					/>
+					<WithInputIcon icon="magic-wand" className="flex-1">
+						<Input
+							fullWidth
+							autoFocus
+							className={INPUT_WITH_ICON}
+							aria-label={t`What should change?`}
+							placeholder={t`What should change?`}
+							value={request}
+							maxLength={500}
+							onChange={(event) => setRequest(event.target.value)}
+						/>
+					</WithInputIcon>
 					<Button type="submit" size="sm" isDisabled={!request.trim()}>
 						<Trans>Ask</Trans>
 					</Button>

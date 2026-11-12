@@ -103,7 +103,7 @@ export function LetterPage() {
 	const shifted = sheetOpen && (breakpoint === "desktop" || breakpoint === "wide");
 
 	return (
-		<div className="relative h-full min-h-0 bg-background">
+		<div className="relative h-full min-h-0">
 			{/* The page has nothing to tab to, so the scroll area itself takes focus for keyboard scrolling. */}
 			<section
 				ref={canvasRef}

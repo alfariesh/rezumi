@@ -148,7 +148,7 @@ export function ChangeSet(props: ChangeSetProps) {
 
 	if (widget)
 		return (
-			<CheckWidget icon="pencil-line" title={heading} trailing={acceptAll} contentClassName="gap-2 p-2">
+			<CheckWidget icon="pencil-line" title={heading} trailing={acceptAll} contentClassName="gap-2">
 				{list}
 			</CheckWidget>
 		);

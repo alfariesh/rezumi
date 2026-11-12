@@ -68,7 +68,8 @@ describe("AddressField", () => {
 	it.each(["Legacy_Slug", "a".repeat(70)])("accepts unchanged legacy address %s", (slug) => {
 		const input = renderAddress(slug);
 		expect(input.getAttribute("aria-invalid")).toBe("false");
-		expect(screen.getByRole("status").textContent).toBe(`Live at test.example/testuser/${slug}`);
+		// A live address needs no note under it.
+		expect(screen.queryByRole("status")).toBeNull();
 	});
 
 	it.each([

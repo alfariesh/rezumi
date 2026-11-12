@@ -14,6 +14,7 @@ import { CvDomainCard } from "./cv-domain-card";
 import { DnsRecordsDialog } from "./dns-records-dialog";
 import { domainSteps, isDomainSettling } from "./domain-progress";
 import { portfolioHoldsShortLink } from "./short-link";
+import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { hasPlanFeature, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { toastError } from "@/libs/error-message";
@@ -115,15 +116,17 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 								</Chip>
 							)}
 						</Label>
-						<Input
-							variant="secondary"
-							fullWidth
-							placeholder="www.example.com"
-							spellCheck={false}
-							autoCapitalize="none"
-							dir="ltr"
-							className="font-mono text-sm"
-						/>
+						<WithInputIcon icon="globe">
+							<Input
+								variant="secondary"
+								fullWidth
+								placeholder="www.example.com"
+								spellCheck={false}
+								autoCapitalize="none"
+								dir="ltr"
+								className={cn("font-mono text-sm", INPUT_WITH_ICON)}
+							/>
+						</WithInputIcon>
 					</TextField>
 					<Button type="submit" variant="secondary" isPending={set.isPending} isDisabled={!hostname.trim()}>
 						{set.isPending && <Spinner size="sm" color="current" aria-hidden />}

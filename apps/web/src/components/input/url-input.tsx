@@ -1,10 +1,13 @@
 import type { InputGroupInputProps } from "@heroui/react";
 import type { Website } from "@rezumi/schema/resume/data";
+import type { IconName } from "@rezumi/ui/components/icon";
 import { Input, InputGroup, Label, Popover, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
+import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 
 const DEFAULT_PREFIX = "https://";
 const HTTP_PREFIX = /^https?:\/\//i;
@@ -24,6 +27,8 @@ type Props<TValue extends Website = Website> = Omit<InputGroupInputProps, "value
 	hideLabelButton?: boolean;
 	/** HeroUI field variant: "secondary" on an elevated surface (a panel, sheet or dialog). */
 	variant?: "primary" | "secondary";
+	/** Drawn before the address's `https://`. */
+	icon?: IconName;
 };
 
 export function URLInput<TValue extends Website>({
@@ -31,6 +36,7 @@ export function URLInput<TValue extends Website>({
 	onChange,
 	hideLabelButton,
 	variant,
+	icon,
 	...props
 }: Props<TValue>) {
 	const prefix = value.url.match(HTTP_PREFIX)?.[0] ?? DEFAULT_PREFIX;
@@ -45,7 +51,8 @@ export function URLInput<TValue extends Website>({
 
 	return (
 		<InputGroup fullWidth {...(variant && { variant })}>
-			<InputGroup.Prefix>
+			<InputGroup.Prefix className="gap-2">
+				{icon && <Icon name={icon} size={18} className="shrink-0 text-muted" />}
 				<span>{prefix}</span>
 			</InputGroup.Prefix>
 
@@ -82,7 +89,9 @@ export function URLInput<TValue extends Website>({
 									<Label>
 										<Trans comment="Short field label for custom display text associated with a URL">Label</Trans>
 									</Label>
-									<Input fullWidth />
+									<WithInputIcon icon="tag">
+										<Input fullWidth className={INPUT_WITH_ICON} />
+									</WithInputIcon>
 								</TextField>
 							</Popover.Dialog>
 						</Popover.Content>

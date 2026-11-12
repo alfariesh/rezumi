@@ -159,7 +159,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 		) : null;
 
 	return (
-		<section aria-label={t`Assistant`} className="flex h-full min-h-0 flex-col">
+		<section aria-label={t`Assistant`} data-assistant="" className="flex h-full min-h-0 flex-col">
 			{/* As tall as the editor's bar, with no fill of its own, so the two read as one header across the window. */}
 			<header className="flex h-(--editor-bar) shrink-0 items-center gap-1 ps-1">
 				<Icon name="sparkle" size={20} className="shrink-0 text-accent" />
@@ -441,9 +441,9 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 	const prepare = useEditorStore((state) => state.assistantSuggestions === "prepare");
 
 	return (
-		<div className="grid min-h-0 flex-1 content-start gap-4 overflow-y-auto p-4">
+		<div className="grid min-h-0 flex-1 content-start justify-items-center gap-4 overflow-y-auto p-4 text-center">
 			<div className="grid gap-1.5">
-				<Typography type="h4" render={renderAsH3}>
+				<Typography type="h4" align="center" render={renderAsH3}>
 					<Trans>What should we work on?</Trans>
 				</Typography>
 				<p className="text-sm text-muted">
@@ -463,23 +463,21 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 				)}
 			</div>
 			<PromptSuggestion>
-				<PromptSuggestion.Items className="grid-cols-1">
+				<PromptSuggestion.Items className="flex flex-wrap justify-center gap-2">
 					{suggestionsFor(document, prepare).map((suggestion, index) => (
 						<PromptSuggestion.Item
 							key={suggestion.label}
 							isDisabled={disabled}
 							showEndIcon={false}
 							style={stagger(index)}
-							className={ENTER_CLASS}
+							className={cn(
+								ENTER_CLASS,
+								"w-fit items-center justify-center border-transparent bg-default px-3 py-1.5 text-xs hover:bg-default-hover",
+							)}
 							onPress={() => onPick(suggestion.label)}
 						>
-							<Icon name={suggestion.icon} size={20} className="shrink-0 text-muted" />
-							<span className="grid min-w-0 flex-1">
-								<PromptSuggestion.ItemTitle className="truncate">{suggestion.label}</PromptSuggestion.ItemTitle>
-								<PromptSuggestion.ItemDescription className="truncate">
-									{suggestion.hint}
-								</PromptSuggestion.ItemDescription>
-							</span>
+							<Icon name={suggestion.icon} size={16} className="me-2 shrink-0 text-accent" />
+							{suggestion.label}
 						</PromptSuggestion.Item>
 					))}
 				</PromptSuggestion.Items>
@@ -559,7 +557,6 @@ function PastConversations({ threads, document, currentId, onOpen }: PastConvers
 							<IconButton
 								icon="x"
 								label={t`Delete ${thread.title}`}
-								size="sm"
 								className="text-muted"
 								onPress={() => void remove(thread)}
 							/>

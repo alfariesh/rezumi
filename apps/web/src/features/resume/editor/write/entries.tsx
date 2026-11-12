@@ -2,12 +2,14 @@ import type { EntryWriter } from "./fields";
 import type { Entry } from "./model";
 import type { CustomSectionType, RoleItem, Website } from "@rezumi/schema/resume/data";
 import type { DateFormat, ResumeDates } from "@rezumi/schema/resume/dates";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, Label, Slider } from "@heroui/react";
+import { CellSlider } from "@heroui-pro/react";
+import { Button, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
-import { FormControl, FormDescription, FormItem, FormLabel } from "@rezumi/ui/components/form";
+import { FormControl, FormItem, FormLabel } from "@rezumi/ui/components/form";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { generateId } from "@rezumi/utils/string";
 import { DatesField } from "./dates-field";
@@ -33,6 +35,29 @@ type Values = Record<string, unknown> & {
 const valuesOf = (entry: Entry) => entry as unknown as Values;
 const str = (value: unknown) => (typeof value === "string" ? value : "");
 
+/** The icon each entry field wears; a field with none (an unknown one) is left plain. */
+const FIELD_ICONS: Record<string, IconName> = {
+	position: "user-circle",
+	company: "briefcase",
+	location: "map-pin",
+	school: "graduation-cap",
+	degree: "scroll",
+	area: "book-open",
+	grade: "star",
+	name: "text-t",
+	proficiency: "chart-line-up",
+	language: "translate",
+	fluency: "chart-line-up",
+	title: "text-t",
+	awarder: "seal-check",
+	issuer: "seal-check",
+	publisher: "books",
+	organization: "house",
+	phone: "phone",
+	network: "share-network",
+	username: "user-circle",
+};
+
 /** A text field bound to one entry field. */
 function Text({
 	entry,
@@ -45,6 +70,7 @@ function Text({
 	return (
 		<TextField
 			label={label}
+			icon={FIELD_ICONS[field]}
 			value={str(valuesOf(entry)[field])}
 			wide={wide}
 			autoFocus={autoFocus}
@@ -135,11 +161,8 @@ function Keywords({ entry, write, label }: FieldSetProps & { label: ReactNode })
 function Level({ entry, write }: FieldSetProps) {
 	const level = Number(valuesOf(entry).level ?? 0);
 	return (
-		<FormItem className="col-span-full gap-3">
-			<FormLabel>
-				<Trans>Level</Trans>
-			</FormLabel>
-			<Slider
+		<div className="col-span-full">
+			<CellSlider
 				aria-label={t`Level`}
 				minValue={0}
 				maxValue={5}
@@ -152,13 +175,16 @@ function Level({ entry, write }: FieldSetProps) {
 					});
 				}}
 			>
-				<Slider.Track>
-					<Slider.Fill />
-					<Slider.Thumb />
-				</Slider.Track>
-			</Slider>
-			<FormDescription>{level === 0 ? t`Hidden` : `${level} / 5`}</FormDescription>
-		</FormItem>
+				<CellSlider.Track>
+					<CellSlider.Fill />
+					<CellSlider.Thumb />
+					<CellSlider.Label>
+						<Trans>Level</Trans>
+					</CellSlider.Label>
+					<CellSlider.Output>{level === 0 ? t`Hidden` : `${level} / 5`}</CellSlider.Output>
+				</CellSlider.Track>
+			</CellSlider>
+		</div>
 	);
 }
 

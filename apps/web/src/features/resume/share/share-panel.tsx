@@ -1,27 +1,22 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Widget } from "@heroui-pro/react";
-import { Button, buttonVariants, Description, InputGroup, Label, Popover, Switch, TextField } from "@heroui/react";
+import { Button, buttonVariants, InputGroup, Label, Popover, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { QRCodeSVG } from "qrcode.react";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { formatTimeSince, publicResumeUrl, summarizeViews } from "@rezumi/resume/sharing";
-import { defaultTemplate } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { AddressField } from "./address-field";
 import { CopyLinkButton } from "./copy-link-button";
 import { CustomDomainField } from "./custom-domain-field";
-import { portfolioHoldsShortLink, primaryResumeDescription, shortLinkDescription } from "./short-link";
 import { useShareOrigin } from "./use-share-origin";
-import { WidgetHeading } from "@/components/layout/widget-heading";
-import { templates } from "@/dialogs/resume/template/data";
 import {
 	useCurrentResume,
 	useIsResumeLocked,
@@ -30,6 +25,7 @@ import {
 	useUpdateResumeData,
 } from "@/features/resume/builder/draft";
 import { ResumePasswordDialog } from "@/features/resume/builder/password-dialog";
+import { PanelSection } from "@/features/resume/editor/chrome/panel-section";
 import { useConfirm } from "@/hooks/use-confirm";
 import { authClient } from "@/libs/auth/client";
 import { toastError } from "@/libs/error-message";
@@ -58,51 +54,15 @@ export function SharePanel() {
 		if (done) toast.add({ description: checked ? t`Your web page is live` : t`Link turned off. The address is kept` });
 	};
 
-	const descriptionId = useId();
-
 	return (
-		<div className="grid gap-3 p-3">
-			<ShareWidget
-				icon="globe-hemisphere-west"
-				title={<Trans>Public Link</Trans>}
-				trailing={
-					isPublic && (
-						<Switch
-							isSelected
-							isDisabled={isPending || resume.isLocked}
-							onChange={(checked) => void setPublic(checked)}
-							aria-label={t`Public link`}
-							aria-describedby={descriptionId}
-						>
-							<Switch.Content>
-								<Switch.Control>
-									<Switch.Thumb />
-								</Switch.Control>
-							</Switch.Content>
-						</Switch>
-					)
-				}
-			>
-				{isPublic ? (
-					<p id={descriptionId} className="text-xs text-muted">
-						{t`On. Anyone with the link can see your web page.`}
-					</p>
-				) : (
-					<div className="grid gap-3">
-						<div className="grid gap-1">
-							<p className="text-sm font-medium">
-								<Trans>Publish Your Resume</Trans>
-							</p>
-							<p className="text-xs text-muted">
-								<Trans>Publish it to share a link that opens on any screen. Only you can see it until then.</Trans>
-							</p>
-						</div>
-						<Button className="w-fit" isDisabled={isPending || resume.isLocked} onPress={() => void setPublic(true)}>
-							<Icon name="globe-hemisphere-west" size={18} />
-							<Trans>Publish</Trans>
-						</Button>
-					</div>
-				)}
+		<div className="grid gap-6 p-3">
+			<ShareWidget icon="globe-hemisphere-west" title={<Trans>Public link</Trans>}>
+				<CellSwitchRow
+					label={t`Public link`}
+					isSelected={isPublic}
+					isDisabled={isPending || resume.isLocked}
+					onChange={(checked) => void setPublic(checked)}
+				/>
 
 				<AddressField url={url} username={username} update={update} />
 
@@ -125,7 +85,8 @@ export function SharePanel() {
 			<AddressesSection origin={origin} username={username} setting={setting} />
 			<WebPageSettings />
 			<PrivacySettings setting={setting} />
-			<ViewsAndDownloads isPublic={isPublic} />
+			{/* Nothing to count until the page is published. */}
+			{isPublic && <ViewsAndDownloads />}
 		</div>
 	);
 }
@@ -133,20 +94,15 @@ export function SharePanel() {
 type ShareWidgetProps = {
 	icon: IconName;
 	title: ReactNode;
-	/** Sits at the end of the header: a switch or a short note. */
-	trailing?: ReactNode;
 	children: ReactNode;
 };
 
-/** One Share group: a labelled region with an icon and title on the gray shell, its content on the white card. */
-function ShareWidget({ icon, title, trailing, children }: ShareWidgetProps) {
-	const titleId = useId();
-
+/** One Share group: an icon and title, its content under it on the panel. */
+function ShareWidget({ icon, title, children }: ShareWidgetProps) {
 	return (
-		<Widget role="region" aria-labelledby={titleId}>
-			<WidgetHeading id={titleId} icon={icon} title={title} action={trailing} />
-			<Widget.Content className="@container grid gap-4">{children}</Widget.Content>
-		</Widget>
+		<PanelSection icon={icon} title={title} contentClassName="gap-4">
+			{children}
+		</PanelSection>
 	);
 }
 
@@ -196,33 +152,28 @@ function useShareSetting() {
 
 type AddressesSectionProps = { origin: string; username: string; setting: ShareSetting };
 
-/** Whether a published portfolio holds the short link and custom domain (portfolio plan Phase 03). */
-function usePortfolioHoldsShortLink() {
-	const { data } = useQuery(orpc.portfolio.status.queryOptions());
-	return portfolioHoldsShortLink(data);
-}
-
 /** The short link (`/<username>`) and custom domain, both opening the primary resume, or the published portfolio. */
 function AddressesSection({ origin, username, setting }: AddressesSectionProps) {
 	const resume = useCurrentResume();
 	const { flags } = useRouteContext({ strict: false });
 	const shortLink = publicResumeUrl(origin, { username, slug: resume.slug, isPrimary: true });
-	const shortLinkNote = shortLinkDescription(usePortfolioHoldsShortLink());
 
 	return (
-		<ShareWidget icon="link-simple-horizontal" title={<Trans>Short Link and Domain</Trans>}>
+		<ShareWidget icon="link-simple-horizontal" title={<Trans>Short link and domain</Trans>}>
 			<PrimaryRow setting={setting} />
 			<TextField variant="secondary" isReadOnly value={shortLink.replace(/^https?:\/\//, "")}>
 				<Label>
 					<Trans>Short link</Trans>
 				</Label>
 				<InputGroup variant="secondary" fullWidth>
+					<InputGroup.Prefix>
+						<Icon name="link-simple-horizontal" size={18} className="text-muted" />
+					</InputGroup.Prefix>
 					<InputGroup.Input dir="ltr" className="font-mono text-sm" />
 					<InputGroup.Suffix className="pe-1">
 						<CopyLinkButton url={shortLink} />
 					</InputGroup.Suffix>
 				</InputGroup>
-				{shortLinkNote && <Description>{shortLinkNote}</Description>}
 			</TextField>
 			{flags?.customDomains && <CustomDomainField suggest={flags.olacvSuggestion ?? false} />}
 		</ShareWidget>
@@ -238,7 +189,6 @@ function PrimaryRow({ setting: { update, isPending } }: ShareSettingProps) {
 	const { data: resumes } = useQuery(orpc.resume.list.queryOptions());
 	const current = resumes?.find((item) => item.isPrimary && item.id !== resume.id);
 	const isPublic = resume.isPublic ?? false;
-	const portfolioHolds = usePortfolioHoldsShortLink();
 
 	const setPrimary = async (checked: boolean) => {
 		if (checked && current) {
@@ -252,18 +202,11 @@ function PrimaryRow({ setting: { update, isPending } }: ShareSettingProps) {
 	};
 
 	return (
-		<SwitchRow
+		<CellSwitchRow
 			isSelected={resume.isPrimary ?? false}
 			isDisabled={isPending || resume.isLocked || (!isPublic && !resume.isPrimary)}
 			onChange={(checked) => void setPrimary(checked)}
 			label={t`Primary resume`}
-			description={primaryResumeDescription({
-				portfolioHolds,
-				isPrimary: resume.isPrimary ?? false,
-				isPublic,
-				current: current ?? null,
-			})}
-			className="items-start py-0"
 		/>
 	);
 }
@@ -273,16 +216,10 @@ function WebPageSettings() {
 	const data = useResumeData();
 	const updateResumeData = useUpdateResumeData();
 	const locked = useIsResumeLocked();
-	const template = data?.metadata.template ?? defaultTemplate;
 
 	return (
-		<ShareWidget icon="desktop" title={<Trans>Web Page</Trans>}>
-			<p className="text-xs text-muted">
-				<Trans>
-					Uses your {templates[template].name} template and Design, and fits any screen. Change them in Design.
-				</Trans>
-			</p>
-			<SwitchRow
+		<ShareWidget icon="desktop" title={<Trans>Web page</Trans>}>
+			<CellSwitchRow
 				isSelected={data?.metadata.web?.showCredit !== false}
 				isDisabled={locked}
 				onChange={(checked) =>
@@ -291,7 +228,6 @@ function WebPageSettings() {
 					})
 				}
 				label={t`Show “Made with Rezumi”`}
-				className="py-0"
 			/>
 		</ShareWidget>
 	);
@@ -307,36 +243,23 @@ function PrivacySettings({ setting: { update, isPending } }: ShareSettingProps) 
 	return (
 		<ShareWidget icon="lock" title={<Trans>Privacy</Trans>}>
 			<PasswordRow />
-			<SwitchRow
+			<CellSwitchRow
 				isSelected={resume.hideContactDetails ?? false}
 				isDisabled={disabled}
 				onChange={(checked) => void update({ hideContactDetails: checked })}
 				label={t`Hide contact details`}
-				description={t`Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results.`}
-				className="items-start py-0"
 			/>
-			<SwitchRow
+			<CellSwitchRow
 				isSelected={(resume.showInSearchEngines ?? false) && !searchBlocked}
 				isDisabled={disabled || searchBlocked}
 				onChange={(checked) => void update({ showInSearchEngines: checked })}
 				label={t`Show in search engines`}
-				description={
-					searchBlocked
-						? resume.hasPassword
-							? t`Not available while the resume needs a password.`
-							: t`Publish the web page first.`
-						: resume.showInSearchEngines
-							? t`Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off.`
-							: t`Off. Let recruiters find you on Google by turning this on.`
-				}
-				className="items-start py-0"
 			/>
-			<SwitchRow
+			<CellSwitchRow
 				isSelected={resume.showDownloadButtons !== false}
 				isDisabled={disabled}
 				onChange={(checked) => void update({ showDownloadButtons: checked })}
 				label={t`Visitors can download the PDF`}
-				className="py-0"
 			/>
 		</ShareWidget>
 	);
@@ -370,17 +293,11 @@ function PasswordRow() {
 
 	return (
 		<>
-			<SwitchRow
+			<CellSwitchRow
 				isSelected={resume.hasPassword ?? false}
 				isDisabled={resume.isLocked}
 				onChange={(checked) => (checked ? setDialogOpen(true) : void turnOff())}
 				label={t`Require a password`}
-				description={
-					resume.hasPassword
-						? t`Visitors enter it before they see the resume. Share it only with people you trust.`
-						: undefined
-				}
-				className="py-0"
 			/>
 			{dialogOpen && (
 				<ResumePasswordDialog
@@ -415,69 +332,47 @@ function QrCodeButton({ url }: { url: string }) {
 }
 
 /** Only the owner sees these; downloads count successful clicks, including repeats. */
-function ViewsAndDownloads({ isPublic }: { isPublic: boolean }) {
+function ViewsAndDownloads() {
 	const resume = useCurrentResume();
 	const { i18n } = useLingui();
 	const { data: statistics } = useQuery(orpc.resume.statistics.getById.queryOptions({ input: { id: resume.id } }));
-	const { data: daily } = useQuery({
-		...orpc.resume.statistics.getDailyById.queryOptions({ input: { id: resume.id, days: 30 } }),
-		enabled: isPublic,
-	});
+	const { data: daily } = useQuery(
+		orpc.resume.statistics.getDailyById.queryOptions({ input: { id: resume.id, days: 30 } }),
+	);
 	const summary = summarizeViews(daily ?? []);
 	const lastView = statistics?.lastViewedAt ? formatTimeSince(statistics.lastViewedAt, i18n.locale) : "—";
 	const firstDay = daily?.[0]?.date;
 
 	return (
-		<ShareWidget
-			icon="chart-line-up"
-			title={<Trans>Visitors</Trans>}
-			trailing={
-				<Widget.Description className="truncate">
-					<Trans>Only you see these</Trans>
-				</Widget.Description>
-			}
-		>
-			{isPublic ? (
-				<>
-					<dl className="grid grid-cols-2 gap-2 @xs:grid-cols-3">
-						<Stat value={summary.views} label={t`views · 30 days`} />
-						<Stat value={summary.downloads} label={t`downloads`} />
-						<Stat value={lastView} label={t`since last view`} className="col-span-2 @xs:col-span-1" />
-					</dl>
-					<div
-						role="img"
-						aria-label={t`Daily views over 30 days, peak ${summary.peak}`}
-						className="flex h-14 items-end gap-[3px] pt-1"
-					>
-						{summary.bars.map((bar) => (
-							<span
-								key={bar.date}
-								className="flex-1 rounded-t-sm bg-border"
-								style={{ height: `${Math.max(6, Math.round(bar.height * 100))}%` }}
-							/>
-						))}
-					</div>
-					<div className="flex justify-between text-xs text-muted tabular-nums">
-						<span>
-							{firstDay
-								? new Date(`${firstDay}T00:00:00`).toLocaleDateString(i18n.locale, { month: "short", day: "numeric" })
-								: ""}
-						</span>
-						<span>
-							<Trans>Today</Trans>
-						</span>
-					</div>
-				</>
-			) : (
-				<p className="text-sm text-muted">
-					<Trans>
-						Publish the web page to count views and downloads. Counts are anonymous, and search engines aren't counted.
-					</Trans>
-				</p>
-			)}
-			<p className="text-xs text-muted">
-				<Trans>Download totals can include repeat clicks.</Trans>
-			</p>
+		<ShareWidget icon="chart-line-up" title={<Trans>Visitors</Trans>}>
+			<dl className="grid grid-cols-2 gap-2 @xs:grid-cols-3">
+				<Stat value={summary.views} label={t`views · 30 days`} />
+				<Stat value={summary.downloads} label={t`downloads`} />
+				<Stat value={lastView} label={t`since last view`} className="col-span-2 @xs:col-span-1" />
+			</dl>
+			<div
+				role="img"
+				aria-label={t`Daily views over 30 days, peak ${summary.peak}`}
+				className="flex h-14 items-end gap-[3px] pt-1"
+			>
+				{summary.bars.map((bar) => (
+					<span
+						key={bar.date}
+						className="flex-1 rounded-t-sm bg-border"
+						style={{ height: `${Math.max(6, Math.round(bar.height * 100))}%` }}
+					/>
+				))}
+			</div>
+			<div className="flex justify-between text-xs text-muted tabular-nums">
+				<span>
+					{firstDay
+						? new Date(`${firstDay}T00:00:00`).toLocaleDateString(i18n.locale, { month: "short", day: "numeric" })
+						: ""}
+				</span>
+				<span>
+					<Trans>Today</Trans>
+				</span>
+			</div>
 		</ShareWidget>
 	);
 }

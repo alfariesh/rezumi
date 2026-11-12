@@ -140,18 +140,11 @@ export function SectionRow({ section, index, locked, onMove, children }: Section
 					className={rowButtonClassName}
 					onPress={toggleHidden}
 				/>
-				<IconButton
-					icon="caret-down"
-					label={open ? t`Close ${title}` : t`Open ${title}`}
-					size="sm"
-					className={cn(rowButtonClassName, "transition-transform duration-standard ease-enter", open && "rotate-180")}
-					onPress={() => setOpen(section.id, !open)}
-				/>
 				{!locked && <SectionMenu section={section} title={title} onMove={onMove} />}
 			</div>
 
 			<LazyDisclosure open={open}>
-				<div className="grid gap-2 ps-[26px] pt-1 pb-3">{children}</div>
+				<div className="grid gap-2 pt-1 pb-3">{children}</div>
 			</LazyDisclosure>
 		</div>
 	);

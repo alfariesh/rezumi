@@ -35,7 +35,7 @@ export function WritePanel() {
 	const openDialog = useDialogStore((state) => state.openDialog);
 
 	return (
-		<div className="grid gap-3 p-3">
+		<div className="grid gap-6 p-3">
 			{locked && <LockedNote />}
 			<ImportedNote />
 
@@ -48,10 +48,6 @@ export function WritePanel() {
 			)}
 
 			{!locked && <AddSectionMenu />}
-
-			<p className="px-2 text-xs leading-4 text-muted">
-				<Trans>Hidden sections keep their content but aren't printed or shared. Fields save as you type.</Trans>
-			</p>
 		</div>
 	);
 }

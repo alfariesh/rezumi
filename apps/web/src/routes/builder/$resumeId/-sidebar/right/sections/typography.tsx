@@ -6,7 +6,7 @@ import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { typographySchema } from "@rezumi/schema/resume/data";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { SectionBase } from "../shared/section-base";
 import { NumberInput } from "@/components/input/number-input";
 import { FontFamilyCombobox, FontWeightCombobox } from "@/components/typography/combobox";
@@ -60,7 +60,7 @@ function TypographySectionForm() {
 	};
 
 	return (
-		<div className="grid grid-cols-1 gap-4 @md:grid-cols-2">
+		<div className="grid grid-cols-2 gap-x-3 gap-y-4">
 			<UploadedFonts faces={typography.customFonts} />
 			<TypographyFieldGroup label={<Trans context="Body Text (paragraphs, lists, etc.)">Body</Trans>} />
 			<TypographyGroupFields form={form} prefix="body" handleAutoSave={handleAutoSave} />
@@ -68,10 +68,9 @@ function TypographySectionForm() {
 			<TypographyGroupFields form={form} prefix="heading" handleAutoSave={handleAutoSave} />
 			<form.Field name="hyphenation">
 				{(field) => (
-					<SwitchRow
+					<CellSwitchRow
 						className="col-span-full"
 						label={t`Hyphenation`}
-						description={t`Breaks long words between syllables, using the language set in Page.`}
 						isSelected={field.state.value === true}
 						onChange={(checked) => {
 							field.handleChange(checked);
@@ -98,10 +97,7 @@ function TypographyGroupFields({ form, prefix, handleAutoSave }: TypographyGroup
 		<>
 			<form.Field name={`${prefix}.fontFamily`}>
 				{(field) => (
-					<FormItem
-						className="col-span-full"
-						hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}
-					>
+					<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
 						<FormLabel>
 							<Trans>Font family</Trans>
 						</FormLabel>
@@ -129,10 +125,7 @@ function TypographyGroupFields({ form, prefix, handleAutoSave }: TypographyGroup
 
 			<form.Field name={`${prefix}.fontWeights`}>
 				{(field) => (
-					<FormItem
-						className="col-span-full"
-						hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}
-					>
+					<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
 						<FormLabel>{prefix === "body" ? <Trans>Font weights</Trans> : <Trans>Font weight</Trans>}</FormLabel>
 						<FormControl
 							render={

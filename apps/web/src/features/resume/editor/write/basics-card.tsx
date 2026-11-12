@@ -1,21 +1,21 @@
 import type { Basics, CustomField } from "@rezumi/schema/resume/data";
-import { Widget } from "@heroui-pro/react";
-import { Button, Disclosure, Input, Popover } from "@heroui/react";
+import { Button, ButtonGroup, Disclosure, Input, Popover, Tooltip, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { IconButton } from "@rezumi/ui/components/icon-button";
 import { generateId } from "@rezumi/utils/string";
-import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { TextField, validateEmail, WebsiteField } from "./fields";
 import { PictureSettings } from "./picture-settings";
 import { IconPicker } from "@/components/input/icon-picker";
+import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import {
 	useCurrentBuilderResumeSelector,
 	useResumeIconStyle,
 	useUpdateResumeData,
 } from "@/features/resume/builder/draft";
+import { renderAsSpan } from "@/libs/typography";
 
 type TextKey = "name" | "headline" | "email" | "phone" | "location";
 
@@ -32,7 +32,6 @@ function useBasicsWriter() {
 export function BasicsCard({ locked }: { locked: boolean }) {
 	const basics = useCurrentBuilderResumeSelector((resume) => resume.data.basics);
 	const open = useEditorStore((state) => state.basicsOpen);
-	const selected = useEditorStore((state) => state.selection?.kind === "header");
 	const write = useBasicsWriter();
 
 	const text = (key: TextKey) => ({
@@ -44,39 +43,22 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 	});
 
 	return (
-		<Widget
-			id="sidebar-basics"
-			role="region"
-			aria-label={t`About`}
-			className={cn(
-				"scroll-mt-[60px] transition-shadow duration-quick",
-				selected && "ring-2 ring-accent",
-				!open && "pb-0.5",
-			)}
-		>
+		<section id="sidebar-basics" aria-label={t`About`} className="scroll-mt-[60px] px-1">
 			<Disclosure isExpanded={open} onExpandedChange={(next) => useEditorStore.setState({ basicsOpen: next })}>
-				{/* The trigger sits in Widget.Header, so a folded widget keeps HeroUI's header size and padding. */}
-				<Widget.Header>
-					<Disclosure.Heading className="min-w-0 flex-1">
-						<Disclosure.Trigger className="flex min-h-8 w-full cursor-(--cursor-interactive) items-center gap-2 rounded-lg text-start outline-none focus-visible:ring-2 focus-visible:ring-focus">
-							<Icon name="user-circle" size={20} className="shrink-0 text-muted" />
-							<Widget.Title className="shrink-0">
-								<Trans>About</Trans>
-							</Widget.Title>
-							{/* Closed, the header still says whose resume this is. */}
-							<Widget.Description className={cn("min-w-0 flex-1 truncate", open && "invisible")}>
-								{[basics.name, basics.headline].filter((part) => part.trim()).join(" · ")}
-							</Widget.Description>
-							<Disclosure.Indicator className="ms-auto text-muted" />
-						</Disclosure.Trigger>
-					</Disclosure.Heading>
-				</Widget.Header>
+				<Disclosure.Heading className="min-w-0">
+					<Disclosure.Trigger className="flex min-h-8 w-full cursor-(--cursor-interactive) items-center gap-2 rounded-lg text-start outline-none focus-visible:ring-2 focus-visible:ring-focus">
+						<Icon name="user-circle" size={20} className="shrink-0 text-muted [&_*]:stroke-2" />
+						<Typography type="h6" render={renderAsSpan} className="shrink-0 text-sm leading-5">
+							<Trans>About</Trans>
+						</Typography>
+						<Disclosure.Indicator className="ms-auto text-muted" />
+					</Disclosure.Trigger>
+				</Disclosure.Heading>
 
-				{/* `*:p-0`: Disclosure.Body pads an outer wrapper its className doesn't reach; the widget's own insets apply. */}
+				{/* `*:p-0`: Disclosure.Body pads an outer wrapper its className doesn't reach. */}
 				<Disclosure.Content className="*:p-0">
-					{/* `pt-px`: room for the content's hairline under the header, which the panel's clip would cut. */}
-					<Disclosure.Body className="p-0 pt-px">
-						<Widget.Content className="@container mt-0 fields-on-background">
+					<Disclosure.Body className="p-0 pt-3">
+						<div className="@container px-0.5">
 							<fieldset
 								disabled={locked}
 								className="m-0 grid min-w-0 grid-cols-1 gap-x-3 gap-y-4 border-0 p-0 @xs:grid-cols-2"
@@ -84,22 +66,24 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 								<PhotoRow locked={locked} />
 								<TextField
 									label={<Trans>Full name</Trans>}
+									icon="user-circle"
 									wide
 									autoComplete="name"
 									// A blank resume opens straight into the name field.
 									autoFocus={!locked && !basics.name}
 									{...text("name")}
 								/>
-								<TextField label={<Trans>Headline</Trans>} wide {...text("headline")} />
+								<TextField label={<Trans>Headline</Trans>} icon="briefcase" wide {...text("headline")} />
 								<TextField
 									label={<Trans>Email</Trans>}
+									icon="envelope"
 									type="email"
 									autoComplete="email"
 									validate={validateEmail}
 									{...text("email")}
 								/>
-								<TextField label={<Trans>Phone</Trans>} type="tel" autoComplete="tel" {...text("phone")} />
-								<TextField label={<Trans>Location</Trans>} wide {...text("location")} />
+								<TextField label={<Trans>Phone</Trans>} icon="phone" type="tel" autoComplete="tel" {...text("phone")} />
+								<TextField label={<Trans>Location</Trans>} icon="map-pin" wide {...text("location")} />
 								<WebsiteField
 									label={<Trans>Website</Trans>}
 									value={basics.website}
@@ -112,11 +96,11 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 								/>
 								<CustomFields fields={basics.customFields} locked={locked} />
 							</fieldset>
-						</Widget.Content>
+						</div>
 					</Disclosure.Body>
 				</Disclosure.Content>
 			</Disclosure>
-		</Widget>
+		</section>
 	);
 }
 
@@ -127,7 +111,7 @@ function PhotoRow({ locked }: { locked: boolean }) {
 	return (
 		<div
 			id="sidebar-picture"
-			className="col-span-full flex items-center gap-3 rounded-xl bg-background p-2.5 fields-on-card"
+			className="col-span-full flex items-center gap-3 rounded-xl border border-separator bg-surface p-2.5"
 		>
 			{hasPhoto ? (
 				<img src={picture.url} alt="" className="size-10 shrink-0 rounded-lg object-cover" />
@@ -174,50 +158,7 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 	return (
 		<div className="col-span-full grid gap-3">
 			{fields.map((field, index) => (
-				<div key={field.id} className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-1.5 gap-y-1.5">
-					<IconPicker
-						isDisabled={locked}
-						value={field.icon}
-						iconStyle={iconStyle}
-						popoverProps={{ modal: true }}
-						onChange={(icon) =>
-							edit(`${field.id}.icon`, (list) => {
-								const target = list[index];
-								if (target) target.icon = icon;
-							})
-						}
-					/>
-					<Input
-						fullWidth
-						variant="secondary"
-						disabled={locked}
-						aria-label={t`Label for field ${index + 1}`}
-						placeholder={t`Label (optional)`}
-						value={field.label ?? ""}
-						onChange={(event) =>
-							edit(`${field.id}.label`, (list) => {
-								const target = list[index];
-								if (target) target.label = event.target.value;
-							})
-						}
-					/>
-					<FieldActions field={field} index={index} locked={locked} edit={edit} />
-					<Input
-						fullWidth
-						variant="secondary"
-						disabled={locked}
-						aria-label={t`Field ${index + 1}`}
-						placeholder={t`Text, e.g. Indonesian`}
-						value={field.text}
-						onChange={(event) =>
-							edit(`${field.id}.text`, (list) => {
-								const target = list[index];
-								if (target) target.text = event.target.value;
-							})
-						}
-						className="col-span-2 col-start-2"
-					/>
-				</div>
+				<CustomFieldRow key={field.id} field={field} index={index} locked={locked} iconStyle={iconStyle} edit={edit} />
 			))}
 			<Button
 				variant="ghost"
@@ -232,59 +173,167 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 	);
 }
 
-type FieldActionsProps = {
+type CustomFieldRowProps = {
 	field: CustomField;
 	index: number;
 	locked: boolean;
+	iconStyle: ReturnType<typeof useResumeIconStyle>;
 	edit: (key: string, mutate: (list: CustomField[]) => void) => void;
 };
 
-/** A custom field's link, move up and remove buttons. */
-function FieldActions({ field, index, locked, edit }: FieldActionsProps) {
+/**
+ * One custom field: its icon, its text, and a group of buttons (label, link, move up, remove). The label's own field
+ * shows under the text only once it's asked for, or when the field already has one.
+ */
+function CustomFieldRow({ field, index, locked, iconStyle, edit }: CustomFieldRowProps) {
+	const [labelOpen, setLabelOpen] = useState(Boolean(field.label));
+	// A label that appears from elsewhere (an undo, a restore) shows its field too.
+	if (field.label && !labelOpen) setLabelOpen(true);
+
+	// Hiding the label field drops its text, so what shows is what prints.
+	const toggleLabel = () => {
+		if (labelOpen && field.label)
+			edit(`${field.id}.label`, (list) => {
+				const target = list[index];
+				if (target) target.label = "";
+			});
+		setLabelOpen(!labelOpen);
+	};
+
 	return (
-		<div className="flex items-center gap-1.5">
-			<Popover>
-				<IconButton
-					icon={field.link ? "link-simple-horizontal" : "link-simple-horizontal-break"}
-					label={field.link ? t`Edit link` : t`Add a link`}
-					size="sm"
-					isDisabled={locked}
-					className={field.link ? "text-accent" : "text-muted"}
-				/>
-				<Popover.Content placement="bottom end" className="w-72">
-					<Popover.Dialog>
-						<Input
-							fullWidth
-							variant="secondary"
-							disabled={locked}
-							type="url"
-							aria-label={t`Link address`}
-							placeholder="https://"
-							value={field.link}
-							onChange={(event) =>
-								edit(`${field.id}.link`, (list) => {
-									const target = list[index];
-									if (target) target.link = event.target.value;
-								})
-							}
-						/>
-					</Popover.Dialog>
-				</Popover.Content>
-			</Popover>
-			<IconButton
-				icon="arrow-up"
-				label={t`Move field up`}
-				size="sm"
-				isDisabled={locked || index === 0}
-				onPress={() => edit(`${field.id}.move`, (list) => list.splice(index - 1, 0, ...list.splice(index, 1)))}
-			/>
-			<IconButton
-				icon="x"
-				label={t`Remove field`}
+		<div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-1.5 gap-y-1.5">
+			<IconPicker
 				isDisabled={locked}
-				size="sm"
-				onPress={() => edit(`${field.id}.remove`, (list) => list.splice(index, 1))}
+				// The same fill and radius as the text field beside it.
+				className="rounded-field shadow-field [--button-bg-hover:var(--field-hover)] [--button-bg-pressed:var(--field-hover)] [--button-bg:var(--field-background)]"
+				value={field.icon}
+				iconStyle={iconStyle}
+				popoverProps={{ modal: true }}
+				onChange={(icon) =>
+					edit(`${field.id}.icon`, (list) => {
+						const target = list[index];
+						if (target) target.icon = icon;
+					})
+				}
 			/>
+			<WithInputIcon icon="text-t">
+				<Input
+					className={INPUT_WITH_ICON}
+					fullWidth
+					variant="secondary"
+					disabled={locked}
+					aria-label={t`Field ${index + 1}`}
+					placeholder={t`Text, e.g. Indonesian`}
+					value={field.text}
+					onChange={(event) =>
+						edit(`${field.id}.text`, (list) => {
+							const target = list[index];
+							if (target) target.text = event.target.value;
+						})
+					}
+				/>
+			</WithInputIcon>
+			<ButtonGroup variant="tertiary">
+				<Tooltip>
+					<Button
+						isIconOnly
+						variant="tertiary"
+						aria-label={labelOpen ? t`Remove label` : t`Add a label`}
+						aria-pressed={labelOpen}
+						isDisabled={locked}
+						className={labelOpen ? "text-accent" : "text-muted"}
+						onPress={toggleLabel}
+					>
+						<Icon name="tag" size={16} />
+					</Button>
+					<Tooltip.Content>{labelOpen ? t`Remove label` : t`Add a label`}</Tooltip.Content>
+				</Tooltip>
+				<Popover>
+					<Tooltip>
+						<Button
+							isIconOnly
+							variant="tertiary"
+							aria-label={field.link ? t`Edit link` : t`Add a link`}
+							isDisabled={locked}
+							className={field.link ? "text-accent" : "text-muted"}
+						>
+							<ButtonGroup.Separator />
+							<Icon name={field.link ? "link-simple-horizontal" : "link-simple-horizontal-break"} size={16} />
+						</Button>
+						<Tooltip.Content>{field.link ? t`Edit link` : t`Add a link`}</Tooltip.Content>
+					</Tooltip>
+					<Popover.Content placement="bottom end" className="w-72">
+						<Popover.Dialog>
+							<WithInputIcon icon="link-simple-horizontal">
+								<Input
+									className={INPUT_WITH_ICON}
+									fullWidth
+									variant="secondary"
+									disabled={locked}
+									type="url"
+									aria-label={t`Link address`}
+									placeholder="https://"
+									value={field.link}
+									onChange={(event) =>
+										edit(`${field.id}.link`, (list) => {
+											const target = list[index];
+											if (target) target.link = event.target.value;
+										})
+									}
+								/>
+							</WithInputIcon>
+						</Popover.Dialog>
+					</Popover.Content>
+				</Popover>
+				<Tooltip>
+					<Button
+						isIconOnly
+						variant="tertiary"
+						aria-label={t`Move field up`}
+						isDisabled={locked || index === 0}
+						className="text-muted"
+						onPress={() => edit(`${field.id}.move`, (list) => list.splice(index - 1, 0, ...list.splice(index, 1)))}
+					>
+						<ButtonGroup.Separator />
+						<Icon name="arrow-up" size={16} />
+					</Button>
+					<Tooltip.Content>{t`Move field up`}</Tooltip.Content>
+				</Tooltip>
+				<Tooltip>
+					<Button
+						isIconOnly
+						variant="tertiary"
+						aria-label={t`Remove field`}
+						isDisabled={locked}
+						className="text-muted"
+						onPress={() => edit(`${field.id}.remove`, (list) => list.splice(index, 1))}
+					>
+						<ButtonGroup.Separator />
+						<Icon name="x" size={16} />
+					</Button>
+					<Tooltip.Content>{t`Remove field`}</Tooltip.Content>
+				</Tooltip>
+			</ButtonGroup>
+			{labelOpen && (
+				<WithInputIcon icon="tag" className="col-span-2 col-start-2">
+					<Input
+						className={INPUT_WITH_ICON}
+						fullWidth
+						variant="secondary"
+						disabled={locked}
+						autoFocus={!field.label}
+						aria-label={t`Label for field ${index + 1}`}
+						placeholder={t`Label, e.g. Languages`}
+						value={field.label ?? ""}
+						onChange={(event) =>
+							edit(`${field.id}.label`, (list) => {
+								const target = list[index];
+								if (target) target.label = event.target.value;
+							})
+						}
+					/>
+				</WithInputIcon>
+			)}
 		</div>
 	);
 }

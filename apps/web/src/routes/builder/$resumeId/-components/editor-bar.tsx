@@ -63,7 +63,7 @@ export function ResumeDownload({ compact = false }: { compact?: boolean }) {
 	);
 }
 
-/** Write · Design · Check · Share down the rail, History and AI at its foot. */
+/** Write · Design · Check · Share down the rail, History at its foot. */
 export function ModeTabs() {
 	const [current, setMode] = useEditorMode();
 	const issueCount = useOpenIssueCount();
@@ -74,7 +74,6 @@ export function ModeTabs() {
 			selected={current}
 			onChange={setMode}
 			history
-			assistant
 			modes={[
 				{ id: "write", icon: "pencil-simple", label: t`Write` },
 				{ id: "design", icon: "palette", label: t`Design` },
@@ -84,7 +83,7 @@ export function ModeTabs() {
 					icon: "globe-hemisphere-west",
 					label: t`Share`,
 					extra: isPublic && (
-						<span className="size-2 rounded-full bg-accent ring-2 ring-surface" title={t`Public`}>
+						<span className="size-2 rounded-full bg-accent ring-2 ring-background" title={t`Public`}>
 							<span className="sr-only">
 								<Trans>Public</Trans>
 							</span>
@@ -100,7 +99,7 @@ export function ModeTabs() {
 function CheckBadge({ count }: { count: number }) {
 	if (count === 0) {
 		return (
-			<span className="grid size-4 place-items-center rounded-full bg-success text-success-foreground ring-2 ring-surface">
+			<span className="grid size-4 place-items-center rounded-full bg-success text-success-foreground ring-2 ring-background">
 				<Icon name="check" size={10} />
 				<span className="sr-only">
 					<Trans>No open issues</Trans>
@@ -110,7 +109,7 @@ function CheckBadge({ count }: { count: number }) {
 	}
 
 	return (
-		<span className="grid h-4 min-w-4 place-items-center rounded-full bg-warning px-1 text-[10px] leading-none font-semibold text-warning-foreground tabular-nums ring-2 ring-surface">
+		<span className="grid h-4 min-w-4 place-items-center rounded-full bg-warning px-1 text-xs leading-none font-semibold text-warning-foreground tabular-nums ring-2 ring-background">
 			<span aria-hidden="true">{count}</span>
 			<span className="sr-only">
 				<Plural value={count} one="# open issue" other="# open issues" />

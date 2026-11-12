@@ -90,7 +90,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 	if (providerState.isUnavailable)
 		return (
 			// The load state brings its own padding.
-			<ReviewWidget contentClassName="p-1.5">
+			<ReviewWidget>
 				<AiProviderLoadState state={providerState} />
 			</ReviewWidget>
 		);
@@ -229,7 +229,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 	}
 
 	return (
-		<div className="grid gap-3">
+		<div className="grid gap-6">
 			{(review.summary || review.strengths.length > 0) && (
 				<ReviewWidget>
 					{review.summary && <p className="text-sm text-muted">{review.summary}</p>}
@@ -252,7 +252,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 			{proposals.length > 0 && <ProposalList proposals={proposals} data={data} onSuggestAgain={run} />}
 
 			{review.notes.length > 0 && (
-				<CheckWidget icon="note" title={<Trans>Notes</Trans>} contentClassName="gap-2 p-2">
+				<CheckWidget icon="note" title={<Trans>Notes</Trans>} contentClassName="gap-2">
 					{review.notes.map((note) => (
 						<WritingNoteCard key={`${note.location}:${note.note}`} note={note} />
 					))}

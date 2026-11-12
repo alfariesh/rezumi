@@ -65,11 +65,12 @@ export function AddressField({ url, username, update }: AddressFieldProps) {
 	const invalid = isPublic && (!slug || (changed && !wellFormed) || result?.status === "taken");
 	const canShare = typeof navigator.share === "function";
 
-	// The hint under the field, when the address isn't taken (that block has its own text).
+	// What the field says under it while the address isn't taken (that block has its own text): only what needs fixing
+	// or is still happening, nothing once the address is simply live.
 	const hint = () => {
-		if (!isPublic) return t`Turn on the link to choose an address.`;
+		if (!isPublic) return undefined;
 		if (!slug) return t`Add an address.`;
-		if (!changed) return t`Live at ${url.replace(/^https?:\/\//, "")}`;
+		if (!changed) return undefined;
 		if (slug.length > MAX_SLUG_LENGTH) return t`Use at most 64 characters.`;
 		if (!wellFormed) return t`Use lowercase letters, numbers and single dashes.`;
 		if (result?.status === "available")
@@ -118,7 +119,8 @@ export function AddressField({ url, username, update }: AddressFieldProps) {
 				</Label>
 				<InputGroup variant="secondary" fullWidth>
 					{/* A long host or username truncates, so the part being edited stays visible. */}
-					<InputGroup.Prefix className="max-w-[55%] pe-0">
+					<InputGroup.Prefix className="max-w-[55%] gap-2 pe-0">
+						<Icon name="globe" size={18} className="shrink-0 text-muted" />
 						<span className="truncate font-mono text-sm text-muted" dir="ltr">
 							{new URL(url).host}/{username}/
 						</span>
@@ -141,9 +143,11 @@ export function AddressField({ url, username, update }: AddressFieldProps) {
 					</InputGroup.Suffix>
 				</InputGroup>
 				{/* HeroUI hides a field's Description while it's invalid; this one carries the reason too, so it stays. */}
-				<Description role="status" className={cn("block break-all", invalid && "text-danger")}>
-					{note}
-				</Description>
+				{note && (
+					<Description role="status" className={cn("block break-all", invalid && "text-danger")}>
+						{note}
+					</Description>
+				)}
 			</TextField>
 			{isPublic && canShare && (
 				<Button

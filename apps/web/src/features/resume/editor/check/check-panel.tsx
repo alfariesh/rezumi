@@ -1,13 +1,14 @@
 import type { CheckTab } from "../store";
 import type { CheckIssue } from "./issues";
 import type { CheckResult } from "./use-check";
-import type { AtsCategory, AtsReport } from "@rezumi/resume/ats";
+import type { AtsReport } from "@rezumi/resume/ats";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { Segment } from "@heroui-pro/react";
-import { Button, Chip, Disclosure, Modal, ProgressCircle, Spinner } from "@heroui/react";
+import { Button, Chip, Modal, ProgressCircle, Spinner, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
+import { Focusable } from "react-aria-components";
 import { ATS_CATEGORIES } from "@rezumi/resume/ats";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
@@ -134,12 +135,8 @@ function IssuesTab({ check }: { check: CheckResult }) {
 	const locked = useIsResumeLocked();
 
 	return (
-		<div className="grid gap-3">
-			<CheckWidget
-				icon="list-checks"
-				title={<Trans>Issues</Trans>}
-				contentClassName={issues.length > 0 ? "p-2" : undefined}
-			>
+		<div className="grid gap-6">
+			<CheckWidget icon="list-checks" title={<Trans>Issues</Trans>}>
 				{issues.length === 0 ? (
 					<div className="flex gap-2.5 rounded-xl bg-success-soft p-3 text-sm text-success-soft-foreground">
 						<Icon name="check-circle" className="shrink-0" />
@@ -271,32 +268,26 @@ function IssueCard({ issue, selected, locked }: IssueCardProps) {
 	);
 }
 
-/** Contact details, Dates, Layout, Section headings, Writing: "n of m", open when something needs attention. */
+/** Contact details, Dates, Layout, Section headings, Writing: one white row each, "n of m" or how many to review. */
 function CategoryRows({ report }: { report: AtsReport }) {
-	const [toggled, setToggled] = useState<Partial<Record<AtsCategory, boolean>>>({});
 	const categories = ATS_CATEGORIES.filter((category) => report.categories[category].total > 0);
 
 	return (
-		<CheckWidget icon="squares-four" title={<Trans>Checks by category</Trans>} contentClassName="gap-0.5 p-1.5">
+		<CheckWidget icon="squares-four" title={<Trans>Checks by category</Trans>} contentClassName="gap-2">
 			{categories.map((category) => {
 				const { total, passed } = report.categories[category];
 				const failing = total - passed;
-				const open = toggled[category] ?? failing > 0;
 
 				return (
-					<Disclosure
-						key={category}
-						isExpanded={open}
-						onExpandedChange={(next) => setToggled((current) => ({ ...current, [category]: next }))}
-					>
-						<Disclosure.Heading>
-							<Disclosure.Trigger className="flex h-11 w-full cursor-(--cursor-interactive) items-center gap-2.5 rounded-xl px-2.5 text-start text-sm font-medium outline-none hover:bg-default focus-visible:ring-2 focus-visible:ring-focus">
+					<Tooltip key={category}>
+						<Focusable>
+							<div className="flex h-11 items-center gap-2.5 rounded-xl bg-surface px-3 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-focus">
 								<Icon
 									name={failing > 0 ? "warning-circle" : "check-circle"}
 									className={cn("shrink-0", failing > 0 ? "text-warning" : "text-accent")}
 								/>
 								{getCategoryName(category)}
-								<span className="text-xs font-normal text-muted tabular-nums">
+								<span className="ms-auto text-xs font-normal text-muted tabular-nums">
 									{failing > 0 ? (
 										<Plural value={failing} one="# to review" other="# to review" />
 									) : (
@@ -305,15 +296,12 @@ function CategoryRows({ report }: { report: AtsReport }) {
 										</Trans>
 									)}
 								</span>
-								<Disclosure.Indicator className="ms-auto text-muted" />
-							</Disclosure.Trigger>
-						</Disclosure.Heading>
-						<Disclosure.Content>
-							<Disclosure.Body>
-								<p className="ps-10 pe-2.5 pb-2.5 text-sm text-muted">{getCategoryDescription(category)}</p>
-							</Disclosure.Body>
-						</Disclosure.Content>
-					</Disclosure>
+							</div>
+						</Focusable>
+						<Tooltip.Content placement="top" className="max-w-64">
+							{getCategoryDescription(category)}
+						</Tooltip.Content>
+					</Tooltip>
 				);
 			})}
 		</CheckWidget>
