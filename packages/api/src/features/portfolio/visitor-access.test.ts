@@ -5,7 +5,13 @@ vi.mock("@rezumi/env/server", async (original) => {
 	return { env: { ...env, AUTH_SECRET: "test-secret-test-secret-test-secret", APP_URL: "https://rezumi.example" } };
 });
 
-const { grantPortfolioAccess, hasPortfolioAccess, PORTFOLIO_ACCESS_TTL_SECONDS } = await import("./visitor-access");
+const {
+	grantPortfolioAccess,
+	hasPortfolioAccess,
+	isValidPortfolioFileToken,
+	PORTFOLIO_ACCESS_TTL_SECONDS,
+	portfolioFileToken,
+} = await import("./visitor-access");
 
 /** The request headers a browser sends back after `grantPortfolioAccess`. */
 function cookieFor(portfolioId: string, passwordHash: string): Headers {
@@ -51,5 +57,24 @@ describe("the access cookie", () => {
 		const [, signature] = real.split("=")[1]?.split(".") ?? [];
 		const stretched = new Headers({ cookie: `portfolio_access_pf1=${future + 10 ** 9}.${signature}` });
 		expect(hasPortfolioAccess(stretched, "pf1", "hash-a")).toBe(false);
+	});
+});
+
+describe("file tokens", () => {
+	const key = "uploads/u1/pictures/portfolio/a.webp";
+
+	it("hold for 12 to 24 hours, the same within a 12-hour window, for one file and one password", () => {
+		const now = Date.UTC(2026, 10, 12, 3);
+		const token = portfolioFileToken(key, "hash-a", now);
+		const expires = Number(token.split(".")[0]);
+		expect(expires - now).toBeGreaterThanOrEqual(12 * 3_600_000);
+		expect(expires - now).toBeLessThanOrEqual(24 * 3_600_000);
+		expect(portfolioFileToken(key, "hash-a", now + 3_600_000)).toBe(token);
+		expect(isValidPortfolioFileToken(key, "hash-a", token, now)).toBe(true);
+		expect(isValidPortfolioFileToken("uploads/u1/pictures/portfolio/b.webp", "hash-a", token, now)).toBe(false);
+		expect(isValidPortfolioFileToken(key, "hash-b", token, now)).toBe(false);
+		expect(isValidPortfolioFileToken(key, "hash-a", token, expires)).toBe(false);
+		expect(isValidPortfolioFileToken(key, "hash-a", null, now)).toBe(false);
+		expect(isValidPortfolioFileToken(key, "hash-a", `${expires + 1}.${token.split(".")[1]}`, now)).toBe(false);
 	});
 });

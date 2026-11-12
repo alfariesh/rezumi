@@ -17,6 +17,7 @@ import { isOwner, ownerIsNotBanned, resolveViewer } from "../resume/access-polic
 import { parseStoredResumeData } from "../resume/resume-data-validation";
 import { isFirstVisitThisHour } from "../resume/view-dedup";
 import { writePortfolioEvent } from "./analytics";
+import { rateLimitAddress } from "./client-address";
 import { getPortfolioMode } from "./mode";
 import { countClick, countVisit, countWorkOpen } from "./statistics";
 import { dayInTimeZone, deviceClass, referrerDomain, visitorKey, visitSource } from "./traffic";
@@ -50,16 +51,17 @@ function portfolioIsIndexable(): SQL<boolean> {
 /**
  * Who may load one of the portfolio's files (a `pictures/portfolio/` or `documents/portfolio/` storage key): `public`
  * when saved data uses it (`unused_since` is null) and its owner's portfolio shows at `/<username>` (the rule above) to
- * an owner who isn't banned; `protected` for such a file of a portfolio with a visitor password, which is still served
- * to whoever has its (random) address, because a custom domain's pictures load from the app's domain where its access
- * cookie isn't sent, but never cached publicly or indexed (contract section 3.4, an accepted risk); `none` otherwise:
- * uploads not saved yet, files the portfolio stopped using, and every file of an unpublished, suspended or switched-off
- * portfolio stay with their owner. One lookup by the key's unique index.
+ * an owner who isn't banned; `protected` for such a file of a portfolio with a visitor password, which is served only
+ * with a valid file token (`isValidPortfolioFileToken`, given to visitors who opened it) or to its owner, never cached
+ * publicly; `none` otherwise: uploads not saved yet, files the portfolio stopped using, and every file of an
+ * unpublished, suspended or switched-off portfolio stay with their owner. One lookup by the key's unique index.
  */
-export async function portfolioFileAccess(key: string): Promise<"public" | "protected" | "none"> {
-	if (getPortfolioMode() === "off") return "none";
+export async function portfolioFileGate(
+	key: string,
+): Promise<{ access: "public" } | { access: "protected"; passwordHash: string } | { access: "none" }> {
+	if (getPortfolioMode() === "off") return { access: "none" };
 	const [row] = await db
-		.select({ locked: sql<boolean>`${schema.portfolio.password} is not null` })
+		.select({ passwordHash: schema.portfolio.password })
 		.from(schema.portfolioFile)
 		.innerJoin(schema.user, eq(schema.portfolioFile.userId, schema.user.id))
 		.innerJoin(schema.portfolio, eq(schema.portfolio.userId, schema.portfolioFile.userId))
@@ -72,8 +74,13 @@ export async function portfolioFileAccess(key: string): Promise<"public" | "prot
 			),
 		)
 		.limit(1);
-	if (!row) return "none";
-	return row.locked ? "protected" : "public";
+	if (!row) return { access: "none" };
+	return row.passwordHash ? { access: "protected", passwordHash: row.passwordHash } : { access: "public" };
+}
+
+/** `portfolioFileGate` without the hash, for callers that only need to know who may load the file. */
+export async function portfolioFileAccess(key: string): Promise<"public" | "protected" | "none"> {
+	return (await portfolioFileGate(key)).access;
 }
 
 /** Whether anyone may load one of the portfolio's files: `portfolioFileAccess` other than `none`. */
@@ -248,7 +255,8 @@ type VisitInput = {
  */
 async function countedVisitor(input: VisitInput): Promise<string | null> {
 	if (isCrawler(input.requestHeaders)) return null;
-	const address = `ip:${input.trustedClient?.trim() || "unknown"}`;
+	// An IPv6 address by its /64, like the form posts: rotating inside it gains nothing.
+	const address = `ip:${rateLimitAddress(input.trustedClient) ?? "unknown"}`;
 	if (!env.FLAG_DISABLE_API_RATE_LIMIT && !(await visitLimiter.limit(`${input.portfolio.id}:${address}`)).success)
 		return null;
 	if (await isPortfolioOwner(input.portfolio, input.requestHeaders)) return null;
@@ -401,7 +409,7 @@ export async function recordPortfolioEvent(input: {
 	if (isCrawler(input.requestHeaders)) return;
 	if (
 		!env.FLAG_DISABLE_API_RATE_LIMIT &&
-		!(await eventLimiter.limit(`ip:${input.trustedClient?.trim() || "unknown"}`)).success
+		!(await eventLimiter.limit(`ip:${rateLimitAddress(input.trustedClient) ?? "unknown"}`)).success
 	)
 		return;
 	if (await isPortfolioOwner(target, input.requestHeaders)) return;

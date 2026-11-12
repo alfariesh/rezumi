@@ -1,6 +1,7 @@
 import type { PortfolioDevice, PortfolioVisitSource } from "@rezumi/schema/portfolio/statistics";
 import { createHash } from "node:crypto";
 import { PORTFOLIO_QR_UTM_SOURCE } from "@rezumi/schema/portfolio/statistics";
+import { rateLimitAddress } from "./client-address";
 
 /**
  * Who a visit is, for one hour's deduplication: a hash of the client's address and browser. A hash so no address is
@@ -8,7 +9,9 @@ import { PORTFOLIO_QR_UTM_SOURCE } from "@rezumi/schema/portfolio/statistics";
  * networks) aren't merged into one visitor.
  */
 export function visitorKey(headers: Headers, trustedClient?: string): string {
-	const parts = [trustedClient?.trim() ?? "", headers.get("user-agent") ?? "", headers.get("accept-language") ?? ""];
+	// An IPv6 address by its /64: one host rotating addresses inside it stays one visitor.
+	const address = rateLimitAddress(trustedClient) ?? trustedClient?.trim() ?? "";
+	const parts = [address, headers.get("user-agent") ?? "", headers.get("accept-language") ?? ""];
 	return createHash("sha256").update(parts.join("\n")).digest("hex").slice(0, 32);
 }
 

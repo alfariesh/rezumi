@@ -241,6 +241,18 @@ try {
 		new RegExp(`<link rel="canonical" href="${origin}/workersmoke/work/${work.slug}">`),
 	);
 	await assertCard(`/cards/workersmoke/work/${work.slug}.png`);
+	// The portfolio's own photo, so the locked portfolio has a file to protect.
+	const photo = await client.portfolio.uploadImage({ file: new File([png], "me.png", { type: "image/png" }) });
+	const saved = (await client.portfolio.get({})).portfolio;
+	assert(saved);
+	await client.portfolio.update({
+		expectedUpdatedAt: saved.updatedAt,
+		data: {
+			...saved.data,
+			basics: { ...saved.data.basics, picture: { key: photo.key, width: 64, height: 64, alt: "" } },
+		},
+	});
+	assert.equal((await request(`/${photo.key}`)).status, 200, "A published portfolio's photo is public");
 	await client.portfolio.setPassword({ password: "smoke-password" });
 	response = await request("/workersmoke", { headers: { "user-agent": "smoke" } });
 	assert.equal(response.status, 401);
@@ -258,6 +270,16 @@ try {
 	const access = response.headers.get("set-cookie")?.split(";")[0] ?? "";
 	assert.match(access, /^portfolio_access_/);
 	assert.equal((await request(`/workersmoke/work/${work.slug}`, { headers: { cookie: access } })).status, 200);
+	// Locked, the photo's bare address no longer works; the page opened with the cookie hands out a tokened one.
+	assert.equal((await request(`/${photo.key}`)).status, 404);
+	const unlocked = await (await request("/workersmoke", { headers: { cookie: access, "user-agent": "smoke" } })).text();
+	const tokened = new RegExp(`/${photo.key.replaceAll("/", "\\/").replaceAll(".", "\\.")}\\?access=[\\d.a-f]+`).exec(
+		unlocked,
+	)?.[0];
+	assert(tokened, "An unlocked page's photo carries its file token");
+	response = await request(tokened);
+	assert.equal(response.status, 200);
+	assert.equal(response.headers.get("cache-control"), "private, max-age=3600");
 	await client.portfolio.removePassword({});
 	// The address checks behind link reading load and run under workerd (node:net BlockList).
 	await assert.rejects(client.portfolio.unfurl({ url: "http://127.0.0.1/admin" }), (error) => {

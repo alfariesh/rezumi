@@ -301,3 +301,87 @@ Other server tests
 | `pnpm check:cloudflare`                                                            | dry run passed           |
 
 The contact test "takes no message for a portfolio behind a password…" now has a 30-second timeout. Its first owner check imports the session code, which took 5.5 s once while every suite ran in parallel; it passes in 3 s alone.
+
+## Security review (2026-11-12)
+
+All five items are fixed and tested. No change was needed in `packages/portfolio/src/**`: the renderer builds no file address itself (they come from the server's `fileUrl`) and parses none.
+
+### 1. Password guessing spread over many addresses (medium)
+
+- `visitor-access.ts` keeps the existing per-client budget (5 per 10 minutes per /64 and portfolio) and adds a per-portfolio budget: `PORTFOLIO_PASSWORD_FAILURES_PER_HOUR` = 100 wrong tries per hour from all addresses together (limiter `portfolioPasswordFailures`).
+- Only a wrong try spends it. The 100th wrong try marks the portfolio spent for an hour, in Redis, else the coordination store, else this process's memory, like the limiters.
+- While it's spent, every try answers `limited` before bcrypt runs, a right one too. `FLAG_DISABLE_API_RATE_LIMIT` turns both budgets off.
+- Real-database test: from a fresh /64 each time (so the per-client budget never stops it), 50 wrong tries, then the right password (`ok`), then 50 more wrong tries, then the right password and a wrong one, both `limited`. The per-client test stays.
+
+### 2. File addresses survive locking and password changes (medium)
+
+- **File tokens** (`visitor-access.ts`):
+  - `portfolioFileToken(key, passwordHash)` = `<expires>.<hmac>`, keyed with purpose `rezumi:portfolio-file:v1` over `[fileKey, passwordHash, expires]`;
+  - `expires` is the end of the next 12-hour window, so a token lives 12–24 hours and stays the same for everyone within a window (rendered pages remain cacheable in memory);
+  - `isValidPortfolioFileToken` checks it; `PORTFOLIO_FILE_TOKEN_PARAM` = `access`.
+- **`public.ts`**: new `portfolioFileGate(key)` → `{ access: "public" } | { access: "protected"; passwordHash } | { access: "none" }`. `portfolioFileAccess` and `isPublicPortfolioFile` wrap it.
+- **`uploads.ts`**: a `protected` file needs a valid `?access=` token. Otherwise it is only readable by its owner or an administrator, through their session; for anyone else it's 404 `no-store`, the same as a file that doesn't exist. With a token, the answer is `private, max-age=3600` with `Cross-Origin-Resource-Policy: cross-origin` (custom domains load files from the app domain, token in the URL).
+- **`portfolio-page.ts`**:
+  - `publicPortfolioView`'s `fileUrl` signs every file address when the portfolio has a password. A view is rendered only for a visitor who opened it; the password page renders no file at all.
+  - `portfolioPictureUrl` accepts an own picture with exactly one query parameter, `access`.
+  - New `portfolioFileAddress` (the renderer's `imageUrl` on the server) also accepts the portfolio's own PDFs.
+- **Pre-existing bug fixed alongside: PDF links on published pages.** Since review 2 the PDF card sends its link through `imageUrl`, which on the server accepted pictures only, so published pages showed the PDF card without its link. `portfolioFileAddress` fixes that.
+  - Cross-area for pf-web: if the editor preview's `imageUrl` is picture-only too, the preview's PDF card has no link either; it's inert there, so this is cosmetic.
+- **Behaviour now:**
+
+| Case                                          | Answer                                                                 |
+| --------------------------------------------- | ---------------------------------------------------------------------- |
+| No token                                      | 404                                                                    |
+| Expired token                                 | 404                                                                    |
+| Token for another file                        | 404                                                                    |
+| Broken token                                  | 404                                                                    |
+| Token from before a password change           | 404 (bound to the hash)                                                |
+| Password removed                              | Files public again with no token (`public, max-age=3600`)              |
+| Owner, no token (editor preview)              | Readable (`private`, `same-site`)                                      |
+| Worker picture reader (`cloudflare/index.ts`) | Draws only `public` files; `protected` and `none` are refused (tested) |
+| Server-drawn cards                            | Banner for a locked portfolio, so its picture is never read            |
+
+- **Accepted-risk note (contract section 3.4/9), updated:** a locked portfolio's files are no longer served to whoever has their address. Only a valid file token, which ends with a password change or within 24 hours, or the owner's session, opens them. What remains: someone who opened the portfolio can pass a tokened address on, and it works until it expires (at most 24 hours), or until the password changes or is removed.
+
+### 3. Cross-site unlock posts (low)
+
+- `handlePortfolioUnlock` answers 403 `no-store` before anything else when `Sec-Fetch-Site` is present and not `same-origin`, or when `Origin` is present and isn't the request's own host, which covers custom domains (`isCrossSitePost`).
+- A request with neither header passes, since it can only spend its own tries.
+- Tested:
+  - refused: `cross-site`, `same-site`, a foreign `Origin`, `Origin: null`, a same-host `Origin` with `cross-site`;
+  - allowed: same-origin on the app host and on a custom domain;
+  - no password check runs on a refused post.
+
+### 4. Counters keyed on the full IPv6 address (low)
+
+- `traffic.ts` `visitorKey` hashes `rateLimitAddress(trustedClient)`, an IPv6 address by its /64.
+- `public.ts` `countedVisitor` (visit limiter) and the event limiter key on it too, as the unlock and message paths do.
+- Tests:
+  - unit: two addresses in one /64 give one key, two /64s give two;
+  - real database: three addresses in one /64 count one visit, a second /64 counts another.
+
+### 5. vCard without Save contact (low)
+
+- `handlePortfolioVcard` answers 404 unless the page offers it: `contact.vcard` set in a shown Contact section (Save contact on), or an intro button of kind `vcard`.
+- This reads the view, so it's slightly stricter than "`saveContact` on": Save contact in a hidden or empty Contact section doesn't count.
+- Tests: off with no button → 404; Save contact on in a Contact section that shows → 200; an intro `vcard` button → 200.
+
+### Checks (re-run)
+
+| Check                                                                         | Result                                             |
+| ----------------------------------------------------------------------------- | -------------------------------------------------- |
+| `@rezumi/schema` tests                                                        | 224 passed                                         |
+| `@rezumi/api` `src/features/portfolio` (real database)                        | 378 passed                                         |
+| `@rezumi/api` whole package                                                   | 1170 passed, 192 skipped (other databases' suites) |
+| `server` tests (real-database work-page test included)                        | 322 passed, 4 skipped                              |
+| Typechecks for `@rezumi/schema`, `@rezumi/api`, `server`, `@rezumi/portfolio` | clean                                              |
+| `turbo boundaries`                                                            | no issues, 2257 files                              |
+| Lint and format on the changed paths                                          | clean                                              |
+| `pnpm check:cloudflare`                                                       | dry run passed                                     |
+| `pnpm test:cloudflare` (local workerd)                                        | passed                                             |
+
+The smoke test now gives the portfolio its own uploaded photo, then locks it:
+
+- the photo's bare address answers 404;
+- the page opened with the access cookie holds a `?access=` address;
+- that address answers 200 with `private, max-age=3600`.

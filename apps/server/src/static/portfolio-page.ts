@@ -7,7 +7,11 @@ import { getPortfolioMode } from "@rezumi/api/features/portfolio/mode";
 import { findPublicPortfolio, recordPortfolioVisit } from "@rezumi/api/features/portfolio/public";
 import { publicPortfolioRequestAllowed, tooManyPortfolioRequests } from "@rezumi/api/features/portfolio/public-limit";
 import { isContactFormConfigured } from "@rezumi/api/features/portfolio/turnstile";
-import { portfolioAccess } from "@rezumi/api/features/portfolio/visitor-access";
+import {
+	PORTFOLIO_FILE_TOKEN_PARAM,
+	portfolioAccess,
+	portfolioFileToken,
+} from "@rezumi/api/features/portfolio/visitor-access";
 import { env } from "@rezumi/env/server";
 import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
 import { renderPortfolioDocument } from "@rezumi/portfolio/document";
@@ -99,7 +103,48 @@ function html(
 export function portfolioPictureUrl(source: string): string | undefined {
 	// The app's own origin first: a relative address resolves against it.
 	const origins = [env.APP_URL, env.APP_ALIAS_URL].flatMap((address) => (address ? [new URL(address).origin] : []));
-	return ownPictureUrl(source, origins);
+	// A locked portfolio's picture carries its file token (`signedFileUrl`) and nothing else in its query.
+	const [path = "", query] = source.split("?");
+	const token = query === undefined ? null : new URLSearchParams(query);
+	if (token && ([...token.keys()].join() !== PORTFOLIO_FILE_TOKEN_PARAM || !token.get(PORTFOLIO_FILE_TOKEN_PARAM)))
+		return undefined;
+	const own = ownPictureUrl(path, origins);
+	return own && token ? `${own}?${token.toString()}` : own;
+}
+
+/** A portfolio PDF on the app (`documents/portfolio/<id>.pdf`), the one other kind of stored file a page links to. */
+const OWN_PORTFOLIO_PDF_PATH = /^\/(?:api\/)?uploads\/[\w-]+\/documents\/portfolio\/[\w-]+\.pdf$/;
+
+/**
+ * The address a page may use for one of this app's stored files: a picture (`portfolioPictureUrl`), or a portfolio's
+ * PDF, which the PDF card links to through the same filter. Either may carry a locked portfolio's file token.
+ */
+export function portfolioFileAddress(source: string): string | undefined {
+	const picture = portfolioPictureUrl(source);
+	if (picture) return picture;
+	let url: URL;
+	try {
+		url = new URL(source.trim(), origin());
+	} catch {
+		return undefined;
+	}
+	const own = [env.APP_URL, env.APP_ALIAS_URL].some((address) => address && new URL(address).origin === url.origin);
+	const query = [...url.searchParams.keys()];
+	const tokenOnly =
+		query.length === 0 || (query.join() === PORTFOLIO_FILE_TOKEN_PARAM && url.searchParams.get(query[0] ?? ""));
+	if (!own || !tokenOnly || url.hash || url.username || url.password || !OWN_PORTFOLIO_PDF_PATH.test(url.pathname))
+		return undefined;
+	return url.href;
+}
+
+/**
+ * A stored file's address on the app. Behind a visitor password, it carries a file token bound to the file and the
+ * current password (`portfolioFileToken`): only pages rendered for a visitor who opened the portfolio hand these out,
+ * and the uploads route refuses a locked portfolio's file without one.
+ */
+function signedFileUrl(key: string, passwordHash: string | null): string {
+	const url = `${origin()}/${key}`;
+	return passwordHash ? `${url}?${PORTFOLIO_FILE_TOKEN_PARAM}=${portfolioFileToken(key, passwordHash)}` : url;
 }
 
 /** The resume as the page may use it: its photo only when it's one of this app's uploads. */
@@ -144,7 +189,7 @@ export function publicPortfolioView(portfolio: PublicPortfolio, options: ServeOp
 		entitlements: portfolio.entitlements,
 		contactFormAvailable: isContactFormConfigured(),
 		messages: portfolioViewMessages(portfolioMessages(locale)),
-		fileUrl: (key) => `${origin()}/${key}`,
+		fileUrl: (key) => signedFileUrl(key, portfolio.passwordHash),
 		links: {
 			resume: resume?.isPublic && resumePath ? `${origin()}${resumePath}` : null,
 			// A password-protected PDF needs the visitor to unlock the resume first, so the button goes there instead.
@@ -185,7 +230,7 @@ async function renderPage(
 		view,
 		messages: portfolioMessages(view.locale),
 		icons,
-		imageUrl: portfolioPictureUrl,
+		imageUrl: portfolioFileAddress,
 		year,
 		creditUrl: origin(),
 		live,

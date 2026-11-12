@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const mocks = vi.hoisted(() => ({
 	findTarget: vi.fn(),
@@ -33,7 +34,8 @@ vi.mock("@rezumi/api/features/portfolio/report", () => ({
 	submitPortfolioReport: mocks.submitReport,
 }));
 vi.mock("../static/resume-page", () => ({ serveResumePage: vi.fn(), unavailableResponse: vi.fn() }));
-vi.mock("@rezumi/api/features/portfolio/visitor-access", () => ({
+vi.mock("@rezumi/api/features/portfolio/visitor-access", async (original) => ({
+	...(await original<typeof import("@rezumi/api/features/portfolio/visitor-access")>()),
 	portfolioAccess: mocks.access,
 	verifyPortfolioPassword: mocks.verify,
 }));
@@ -328,6 +330,40 @@ describe("POST /api/portfolio/<username>/unlock (Phase 13, B16)", () => {
 		expect(limited.headers.get("Location")).toBe("/?unlock=limited");
 	});
 
+	it("refuses a post from another site, which could spend a visitor's tries", async () => {
+		mocks.findPortfolio.mockResolvedValue({ id: "pf1" });
+		const post = (headers: Record<string, string>, host = "rezumi.example") => {
+			const body = new FormData();
+			body.set("password", "x");
+			return new Request(`https://${host}/api/portfolio/nadia/unlock`, { method: "POST", body, headers });
+		};
+		for (const headers of [
+			{ "sec-fetch-site": "cross-site" },
+			{ "sec-fetch-site": "same-site" },
+			{ origin: "https://evil.example" },
+			{ origin: "https://rezumi.example", "sec-fetch-site": "cross-site" },
+			{ origin: "null" },
+		]) {
+			const response = await handlePortfolioUnlock(post(headers), "nadia", "1.1.1.1");
+			expect(response.status, JSON.stringify(headers)).toBe(403);
+		}
+		expect(mocks.verify).not.toHaveBeenCalled();
+		mocks.verify.mockResolvedValue("wrong");
+		// The page's own form: same origin, on the app or on a custom domain.
+		const own = await handlePortfolioUnlock(
+			post({ origin: "https://rezumi.example", "sec-fetch-site": "same-origin" }),
+			"nadia",
+			"1.1.1.1",
+		);
+		expect(own.status).toBe(303);
+		const domain = await handlePortfolioUnlock(
+			post({ origin: "https://nadia.example", "sec-fetch-site": "same-origin" }, "nadia.example"),
+			"nadia",
+			"1.1.1.1",
+		);
+		expect(domain.status).toBe(303);
+	});
+
 	it("is a 404 for an address with no portfolio, checking no password", async () => {
 		mocks.findPortfolio.mockResolvedValue(null);
 		expect((await handlePortfolioUnlock(unlock({ password: "x" }), "ghost", "1.1.1.1")).status).toBe(404);
@@ -344,7 +380,10 @@ describe("GET /api/portfolio/<username>/vcard (Phase 13, B14)", () => {
 			username: "nadia",
 			ownerName: "Nadia Rahmawati",
 			timezone: "UTC",
-			data: parsePortfolioData({ basics: { name: "Nadia Rahmawati", headline: "Product Designer" } }),
+			data: parsePortfolioData({
+				basics: { name: "Nadia Rahmawati", headline: "Product Designer" },
+				hero: { buttons: [{ kind: "vcard" }] },
+			}),
 			updatedAt: new Date(),
 			indexable: true,
 			customDomain: null,
@@ -368,6 +407,25 @@ describe("GET /api/portfolio/<username>/vcard (Phase 13, B14)", () => {
 		const body = await response.text();
 		expect(body).toContain("FN:Nadia Rahmawati");
 		expect(body).toContain("URL:https://rezumi.example/nadia");
+	});
+
+	it("is a 404 while the page doesn't offer it: Save contact off and no Save contact button", async () => {
+		const portfolio = await shown();
+		const { parsePortfolioData } = await import("@rezumi/schema/portfolio/data");
+		mocks.findPortfolio.mockResolvedValue({
+			...portfolio,
+			data: parsePortfolioData({ basics: { name: "Nadia Rahmawati" }, contact: { saveContact: false } }),
+		});
+		expect((await handlePortfolioVcard(vcard(), "nadia", "1.1.1.1")).status).toBe(404);
+		// Save contact on in a Contact section that shows (an email to save): offered.
+		const withContact = structuredClone(defaultResumeData);
+		withContact.basics.email = "nadia@example.test";
+		mocks.findPortfolio.mockResolvedValue({
+			...portfolio,
+			data: parsePortfolioData({ basics: { name: "Nadia Rahmawati" } }),
+			resume: { data: withContact, slug: "cv", isPublic: true, hasPassword: false, showDownloadButtons: true },
+		});
+		expect((await handlePortfolioVcard(vcard(), "nadia", "1.1.1.1")).status).toBe(200);
 	});
 
 	it("is a 404 for a portfolio that isn't shown or that the visitor can't open", async () => {

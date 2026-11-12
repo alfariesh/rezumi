@@ -387,6 +387,22 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			expect(await views(id)).toBe(0);
 		});
 
+		it("count one visitor across the addresses of one IPv6 /64", async () => {
+			const id = await addPortfolio("member");
+			const portfolio = { id, userId: "member", timezone: "UTC" };
+			const requestUrl = "https://rezumi.example/member";
+			for (const trustedClient of ["2001:db8:aa:1::1", "2001:db8:aa:1::2", "2001:db8:aa:1:ffff::9"])
+				await publicPortfolio.recordPortfolioVisit({ portfolio, requestHeaders: visitor(), requestUrl, trustedClient });
+			expect(await views(id)).toBe(1);
+			await publicPortfolio.recordPortfolioVisit({
+				portfolio,
+				requestHeaders: visitor(),
+				requestUrl,
+				trustedClient: "2001:db8:aa:2::1",
+			});
+			expect(await views(id)).toBe(2);
+		});
+
 		it("tell people on one carrier-grade NAT address apart by their browser", async () => {
 			const id = await addPortfolio("member");
 			const portfolio = { id, userId: "member", timezone: "UTC" };
@@ -713,6 +729,11 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			});
 			expect(await publicPortfolio.countIndexablePortfolios()).toBe(0);
 			expect(await publicPortfolio.portfolioFileAccess("uploads/member/pictures/portfolio/a.webp")).toBe("protected");
+			// The gate hands the uploads route the current password's hash, to check a file token against.
+			expect(await publicPortfolio.portfolioFileGate("uploads/member/pictures/portfolio/a.webp")).toEqual({
+				access: "protected",
+				passwordHash: expect.stringMatching(/^\$2/),
+			});
 			expect(await publicPortfolio.isPublicPortfolioFile("uploads/member/pictures/portfolio/a.webp")).toBe(true);
 			fixture.mode = "off";
 			expect(await publicPortfolio.portfolioFileAccess("uploads/member/pictures/portfolio/a.webp")).toBe("none");
@@ -759,6 +780,26 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			const changed = await lock(id, "kata-baru-456");
 			expect(await visitorAccess.portfolioAccess({ ...portfolio, passwordHash: changed }, withCookie)).toBe("locked");
 		});
+
+		it("allows 100 wrong tries per hour per portfolio from all addresses together, then none", async () => {
+			const id = await addPortfolio("member");
+			await lock(id);
+			const attempt = (password: string, index: number) =>
+				visitorAccess.verifyPortfolioPassword({
+					username: username("member"),
+					password,
+					// A fresh /64 each time: the per-address budget never runs out.
+					trustedClient: `2001:db8:${(index + 1).toString(16)}::1`,
+					responseHeaders: new Headers(),
+				});
+			// The right password, among wrong ones, still opens it while the budget lasts.
+			for (let index = 0; index < 50; index++) expect(await attempt("salah-sekali", index)).toBe("wrong");
+			expect(await attempt("rahasia-123", 50)).toBe("ok");
+			for (let index = 51; index < 101; index++) expect(await attempt("salah-sekali", index)).toBe("wrong");
+			// Spent: every try is `limited` now, the right one too, from any address.
+			expect(await attempt("rahasia-123", 200)).toBe("limited");
+			expect(await attempt("salah-sekali", 201)).toBe("limited");
+		}, 60_000);
 
 		it("allows 5 tries in 10 minutes per address and portfolio, and answers a missing one like a wrong password", async () => {
 			const id = await addPortfolio("member");

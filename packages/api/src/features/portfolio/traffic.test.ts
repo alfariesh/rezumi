@@ -124,3 +124,13 @@ describe("the QR code's visits", () => {
 		expect(visitSource({ referer: null, utmSource: "qrcode", ownHosts: own })).toBe("other");
 	});
 });
+
+describe("visitors on IPv6", () => {
+	it("are one visitor across the addresses of one /64, and two across two /64s", () => {
+		const headers = new Headers({ "user-agent": "Mozilla/5.0", "accept-language": "id" });
+		const a = visitorKey(headers, "2001:db8:1:2::1");
+		expect(visitorKey(headers, "2001:db8:1:2:ffff::9")).toBe(a);
+		expect(visitorKey(headers, "2001:db8:1:3::1")).not.toBe(a);
+		expect(visitorKey(headers, "203.0.113.1")).not.toBe(visitorKey(headers, "203.0.113.2"));
+	});
+});

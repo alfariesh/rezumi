@@ -178,6 +178,24 @@ export function unlockTarget(next: string, username: string, onAppHost: boolean)
 	return home;
 }
 
+/**
+ * Whether a form post came from another site: a browser's `Sec-Fetch-Site` other than `same-origin`, or an `Origin` that
+ * isn't this host (a custom domain's own page posts to its own host). Another site could otherwise make a visitor's
+ * browser send wrong passwords and spend their tries. A request with neither header (an old browser, a script) passes:
+ * it can only spend its own tries.
+ */
+export function isCrossSitePost(request: Request): boolean {
+	const site = request.headers.get("sec-fetch-site");
+	if (site !== null && site !== "same-origin") return true;
+	const origin = request.headers.get("origin");
+	if (origin === null) return false;
+	try {
+		return new URL(origin).host !== new URL(request.url).host;
+	} catch {
+		return true;
+	}
+}
+
 /** Whether a request came to the app's own host (or its alias), not a custom domain. */
 function isAppHost(request: Request): boolean {
 	const host = new URL(request.url).hostname.toLowerCase();
@@ -196,6 +214,8 @@ export async function handlePortfolioUnlock(
 	username: string,
 	trustedClient: string,
 ): Promise<Response> {
+	if (isCrossSitePost(request))
+		return new Response("Forbidden", { status: 403, headers: { "Cache-Control": "no-store" } });
 	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
 	const form = await readForm(request);
 	const password = typeof form?.password === "string" ? form.password : "";
@@ -218,7 +238,8 @@ export async function handlePortfolioUnlock(
 
 /**
  * `GET /api/portfolio/<username>/vcard` (Phase 13, B14): "Save contact", a vCard of what the page shows. Only for a
- * portfolio the visitor may open: a locked one, an unpublished one or the switch off answers 404.
+ * portfolio the visitor may open and that offers it (Save contact on in a shown Contact section, or a Save contact
+ * button): otherwise, a locked one, an unpublished one or the switch off, it answers 404.
  */
 export async function handlePortfolioVcard(
 	request: Request,
@@ -229,6 +250,12 @@ export async function handlePortfolioVcard(
 	const portfolio = await findPublicPortfolio(username);
 	if (!portfolio || (await portfolioAccess(portfolio, request.headers)) === "locked") return notFound();
 	const view = publicPortfolioView(portfolio);
+	// Only while the page offers it: "Save contact" in a shown Contact section, or as an intro button.
+	const contact = view.sections.find((section) => section.kind === "contact");
+	const offered =
+		(contact?.kind === "contact" && contact.contact.vcard !== null) ||
+		view.hero.buttons.some((button) => button.kind === "vcard");
+	if (!offered) return notFound();
 	const url = portfolio.customDomain
 		? `https://${portfolio.customDomain}/`
 		: `${new URL(env.APP_URL).origin}/${encodeURIComponent(portfolio.username)}`;

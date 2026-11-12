@@ -22,7 +22,8 @@ vi.mock("./resume-page", () => ({
 	serveResumePage: mocks.serveResumePage,
 	unavailableResponse: () => new Response("not shared", { status: 404 }),
 }));
-vi.mock("@rezumi/api/features/portfolio/visitor-access", () => ({
+vi.mock("@rezumi/api/features/portfolio/visitor-access", async (original) => ({
+	...(await original<typeof import("@rezumi/api/features/portfolio/visitor-access")>()),
 	portfolioAccess: (portfolio: { passwordHash: string | null }) =>
 		Promise.resolve(portfolio.passwordHash ? mocks.access : "open"),
 }));
@@ -47,6 +48,7 @@ const {
 	customDomainWorkSlug,
 	isPortfolioWorkPath,
 	portfolioContentSecurityPolicy,
+	portfolioFileAddress,
 	portfolioPictureUrl,
 	servePortfolioOrResume,
 	servePortfolioWork,
@@ -701,5 +703,71 @@ describe("a portfolio behind a password (Phase 13, B16)", () => {
 		expect(response.status).toBe(200);
 		expect(await response.text()).toContain("Hello.");
 		// Still kept out of search engines: the finder reads it as not indexable.
+	});
+});
+
+describe("a locked portfolio's files (security review)", () => {
+	it("link a work's PDF on the published page, a picture or PDF of this app only", () => {
+		const pdf = "https://rezumi.example/uploads/user-1/documents/portfolio/deck.pdf";
+		expect(portfolioFileAddress(pdf)).toBe(pdf);
+		expect(portfolioFileAddress(`${pdf}?access=1.${"a".repeat(64)}`)).toBe(`${pdf}?access=1.${"a".repeat(64)}`);
+		expect(portfolioFileAddress(`${pdf}?download=1`)).toBeUndefined();
+		expect(portfolioFileAddress("https://evil.example/uploads/user-1/documents/portfolio/deck.pdf")).toBeUndefined();
+		expect(portfolioFileAddress("https://rezumi.example/uploads/user-1/documents/other/deck.pdf")).toBeUndefined();
+	});
+
+	const lockedWithFiles = () =>
+		portfolio({
+			passwordHash: "$2a$10$secret-hash",
+			data: parsePortfolioData({
+				basics: {
+					picture: { key: "uploads/user-1/pictures/portfolio/me.webp", width: 800, height: 800, alt: "Nadia" },
+				},
+				works: {
+					items: [
+						{
+							id: "w1",
+							slug: "kopi",
+							title: "Coffee app",
+							blocks: [
+								{
+									id: "p",
+									type: "pdf",
+									file: "uploads/user-1/documents/portfolio/deck.pdf",
+									title: "Deck",
+									pages: 2,
+								},
+							],
+						},
+					],
+				},
+			}),
+		});
+
+	it("carry a file token in a page rendered for a visitor who opened it, and only there", async () => {
+		mocks.access = "open";
+		mocks.findPublicPortfolio.mockResolvedValue(lockedWithFiles());
+		const home = await (await servePortfolioOrResume(get(), "nadia", "1.1.1.1")).text();
+		expect(home).toMatch(/uploads\/user-1\/pictures\/portfolio\/me\.webp\?access=\d+\.[\da-f]{64}/);
+		const work = await (await servePortfolioWork(get("/nadia/work/kopi"), "nadia", "kopi", "1.1.1.1")).text();
+		expect(work).toMatch(/uploads\/user-1\/documents\/portfolio\/deck\.pdf\?access=\d+\.[\da-f]{64}/);
+		// Without a password, the same files have plain addresses.
+		mocks.findPublicPortfolio.mockResolvedValue({ ...lockedWithFiles(), passwordHash: null });
+		const open = await (await servePortfolioOrResume(get(), "nadia", "1.1.1.1")).text();
+		expect(open).toContain("uploads/user-1/pictures/portfolio/me.webp");
+		expect(open).not.toContain("?access=");
+		// The password page hands out none.
+		mocks.access = "locked";
+		mocks.findPublicPortfolio.mockResolvedValue(lockedWithFiles());
+		expect(await (await servePortfolioOrResume(get(), "nadia", "1.1.1.1")).text()).not.toContain("uploads/");
+	});
+
+	it("let a picture address carry the token and nothing else in its query", () => {
+		const base = "https://rezumi.example/uploads/user-1/pictures/portfolio/me.webp";
+		expect(portfolioPictureUrl(`${base}?access=1.${"a".repeat(64)}`)).toBe(`${base}?access=1.${"a".repeat(64)}`);
+		expect(portfolioPictureUrl(`${base}?access=1&x=2`)).toBeUndefined();
+		expect(portfolioPictureUrl(`${base}?other=1`)).toBeUndefined();
+		expect(portfolioPictureUrl(`${base}?access=`)).toBeUndefined();
+		expect(portfolioPictureUrl(base)).toBe(base);
 	});
 });
