@@ -4,6 +4,8 @@
 | ------------------------------------------------------------------------------- | ------------ | ----------------------------------------------------------------------------- | -------------------------------------------- |
 | Claude: Langkah 0, lalu 4 sesi paralel per lapisan, lalu satu langkah integrasi | Sangat besar | Phase 12 dan pass tinjauan di `feat/portfolio-review-2` sudah masuk ke `main` | Jawaban "Perlu keputusan pemilik" (bagian 8) |
 
+**Status (2026-11-12): 🟡 langkah integrasi berjalan.** Langkah 0 dan keempat sesi gelombang 1 selesai (laporan di `laporan-phase-13/`); jawaban bagian 8 sudah ada (#1 dan #2 dipilih pemilik, #3–#8 bawaan koordinator). Tinjauan keamanan atas build menghasilkan lima perbaikan (`laporan-phase-13/pf-server.md`, "Security review"; ringkasan di `02-teknis.md` bagian 41.5), termasuk file portfolio terkunci yang kini hanya dilayani dengan token, yang menggantikan "risiko yang diterima" di bagian 3.4 dan 9. Dokumen internal bagian 10 diperbarui (butir yang tercentang). **Belum:** E2E `portfolio-phase-13.spec.ts` dijalankan, matriks visual 8 tema dan penilaian pemilik atas Sintaks dan Warta, panduan publik `docs/guides/creating-a-portfolio.mdx` (dikerjakan agent lain), teks Kebijakan Privasi (usulan di `draf-privasi-phase-13.md`, menunggu persetujuan pemilik), catatan paritas mobile.
+
 Dipilih pemilik 2026-11-12 dari `backlog-lanjutan.md`: B2, B14, B1, B16, B17, B19, B9. Belum ada pengguna sungguhan, jadi data tersimpan, skema DB, dan bentuk API boleh berubah. Web saja; `apps/mobile` tidak disentuh (aturan `CLAUDE.md`). Dokumen ini adalah **kontrak**: empat sesi bekerja bersamaan tanpa saling bicara, jadi nama field, prosedur, rute, string, dan pemilik setiap file ditulis persis di sini. Bila kode yang ditemui berbeda dari yang ditulis (nama simbol bergeser karena pass tinjauan), pakai konsep yang sama dan catat selisihnya di laporan; jangan mengubah kontrak sepihak.
 
 ## Untuk pemilik
@@ -900,11 +902,11 @@ Tidak disentuh siapa pun di fase ini: `packages/schema/src/billing/catalog.ts` (
 
 Dikerjakan langkah integrasi, bukan sesi gelombang 1:
 
-- [ ] `00-keputusan.md`: tabel paket bagian 4 (baris Tema: 8 tema; baris baru halaman karya, kartu nama, kata sandi, sematan bila perlu; baris Statistik: rentang dan CSV); bagian 1/2 (halaman karya `/<username>/work/<slug>`); bagian 3b (jenis blok + Sematan); bagian 3d/Intro (Open to work + posisi/jenis); log keputusan untuk jawaban #1–#8.
-- [ ] `backlog-lanjutan.md`: tandai B1, B2, B9, B14, B16, B17, B19 "dikerjakan di Phase 13"; tambahkan sisa yang ditunda (B19 bagian Applications, `sandbox` sematan, kata sandi per karya, QR publik).
-- [ ] `README.md`: baris Phase 13 di tabel phase (status), baris "Catatan sesi", isi folder.
-- [ ] `01-desain.md`: bagian 3 (aturan detail karya diganti halaman karya; jangkar `#work-<slug>` tidak ada lagi), bagian 4 (kontrol baru), bagian baru untuk Sintaks, Warta, halaman karya, halaman kunci, kartu nama.
-- [ ] `02-teknis.md`: bagian baru di akhir (41) dengan catatan implementasi Phase 13; rujukan dari bagian 6 (rute), 9 (statistik), 18 (video → sematan).
+- [x] `00-keputusan.md`: tabel paket bagian 4 (baris Tema: 8 tema; baris baru halaman karya, kartu nama, kata sandi, sematan bila perlu; baris Statistik: rentang dan CSV); bagian 1/2 (halaman karya `/<username>/work/<slug>`); bagian 3b (jenis blok + Sematan); bagian 3d/Intro (Open to work + posisi/jenis); log keputusan untuk jawaban #1–#8.
+- [x] `backlog-lanjutan.md`: tandai B1, B2, B9, B14, B16, B17, B19 "dikerjakan di Phase 13"; tambahkan sisa yang ditunda (B19 bagian Applications, `sandbox` sematan, kata sandi per karya, QR publik).
+- [x] `README.md`: baris Phase 13 di tabel phase (status), baris "Catatan sesi", isi folder.
+- [x] `01-desain.md`: bagian 3 (aturan detail karya diganti halaman karya; jangkar `#work-<slug>` tidak ada lagi), bagian 4 (kontrol baru), bagian baru untuk Sintaks, Warta, halaman karya, halaman kunci, kartu nama.
+- [x] `02-teknis.md`: bagian baru di akhir (41) dengan catatan implementasi Phase 13; rujukan dari bagian 6 (rute), 9 (statistik), 18 (video → sematan).
 - [ ] `docs/guides/creating-a-portfolio.mdx`: halaman karya dan alamatnya, kartu nama dan QR, kata sandi, sematan, Open to work, statistik dan CSV, dua tema; tangkapan layar persona fiktif baru; `pnpm --filter web test src/features/docs`.
 - [ ] `docs/legal/privacy-policy.mdx` dan `kebijakan-privasi.mdx`: kelima penyedia sematan (dimuat setelah klik), vCard, kata sandi portfolio; **perlu persetujuan pemilik** sebelum terbit.
 - [ ] `draf-panduan-portfolio.md`, `checklist-rilis.md` (uji halaman karya, kata sandi, sematan), `.agents/docs/mobile-release-handoff.md` (Feature parity exceptions).
