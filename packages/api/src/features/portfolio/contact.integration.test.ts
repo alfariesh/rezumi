@@ -277,6 +277,29 @@ describe.skipIf(!databaseUrl)("portfolio contact form", () => {
 			expect((await stored(id))[0]?.body).toBe("halo dunia");
 		});
 
+		// The owner check loads the session code on first use, which is slow when every suite runs at once.
+		it("takes no message for a portfolio behind a password unless the visitor opened it", async () => {
+			const id = await addPortfolio("pw1");
+			const { hash } = await import("bcryptjs");
+			const passwordHash = await hash("rahasia-123", 4);
+			await getDb().update(tables.portfolio).set({ password: passwordHash }).where(eq(tables.portfolio.id, id));
+			expect(await submit("pw1")).toEqual({ ok: false, code: "unavailable" });
+			expect(await stored(id)).toEqual([]);
+			const { grantPortfolioAccess } = await import("./visitor-access");
+			const granted = new Headers();
+			grantPortfolioAccess(granted, id, passwordHash);
+			const requestHeaders = new Headers({ cookie: (granted.get("set-cookie") ?? "").split(";")[0] ?? "" });
+			expect(
+				await contact.submitPortfolioMessage({
+					username: username("pw1"),
+					form: form(),
+					trustedClient: ip(),
+					requestHeaders,
+				}),
+			).toMatchObject({ ok: true });
+			expect(await stored(id)).toHaveLength(1);
+		}, 30_000);
+
 		it("is unavailable when the Contact section is hidden", async () => {
 			await addPortfolio("n2", data({ sections: { hidden: ["contact"] } }));
 			expect(await submit("n2")).toEqual({ ok: false, code: "unavailable" });
@@ -502,6 +525,38 @@ describe.skipIf(!databaseUrl)("portfolio contact form", () => {
 			expect(result.totals.messages).toBe(1);
 			expect(result.sources).toMatchObject({ linkedin: 3, direct: 1, google: 0 });
 			expect(result.works).toEqual([{ id: "w1", title: "Coffee app", opens: 3 }]);
+		});
+
+		it("give one work's openings day by day, only for a work the portfolio has", async () => {
+			const id = await addPortfolio("ws1");
+			await getDb()
+				.insert(tables.portfolioStatisticsDaily)
+				.values([
+					{ portfolioId: id, date: "2026-11-10", works: { w1: 3, w2: 9 } },
+					{ portfolioId: id, date: "2026-11-08", works: { w1: 1 } },
+					{ portfolioId: id, date: "2026-10-01", works: { w1: 50 } },
+				]);
+			const portfolio = {
+				id,
+				data: { works: { items: [{ id: "w1", slug: "kopi", title: " Kopi " }] } } as never,
+			};
+			const result = await statistics.portfolioWorkStatistics({
+				portfolio,
+				userId: "ws1",
+				timeZone: "Asia/Jakarta",
+				workId: "w1",
+				range: 7,
+				now: new Date("2026-11-09T18:30:00Z"),
+			});
+			expect(result.range).toEqual({ days: 7, from: "2026-11-04", to: "2026-11-10" });
+			expect(result.work).toEqual({ id: "w1", title: "Kopi", slug: "kopi" });
+			expect(result.days).toHaveLength(7);
+			expect(result.days.at(-1)).toEqual({ date: "2026-11-10", opens: 3 });
+			expect(result.totals.opens).toBe(4);
+			expect(result.details).toEqual({ state: "not-configured" });
+			await expect(
+				statistics.portfolioWorkStatistics({ portfolio, userId: "ws1", timeZone: "UTC", workId: "w2" }),
+			).rejects.toMatchObject({ code: "PORTFOLIO_WORK_NOT_FOUND" });
 		});
 
 		it("cover 7 or 90 days when asked", async () => {

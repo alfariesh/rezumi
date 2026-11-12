@@ -9,6 +9,8 @@ const mocks = vi.hoisted(() => ({
 	findPublicPortfolio: vi.fn(),
 	recordPortfolioVisit: vi.fn(),
 	serveResumePage: vi.fn(),
+	/** What the password gate answers for a portfolio with a password. */
+	access: "locked" as "open" | "locked",
 	turnstile: { site: undefined as string | undefined, secret: undefined as string | undefined },
 }));
 
@@ -16,7 +18,14 @@ vi.mock("@rezumi/api/features/portfolio/public", () => ({
 	findPublicPortfolio: mocks.findPublicPortfolio,
 	recordPortfolioVisit: mocks.recordPortfolioVisit,
 }));
-vi.mock("./resume-page", () => ({ serveResumePage: mocks.serveResumePage }));
+vi.mock("./resume-page", () => ({
+	serveResumePage: mocks.serveResumePage,
+	unavailableResponse: () => new Response("not shared", { status: 404 }),
+}));
+vi.mock("@rezumi/api/features/portfolio/visitor-access", () => ({
+	portfolioAccess: (portfolio: { passwordHash: string | null }) =>
+		Promise.resolve(portfolio.passwordHash ? mocks.access : "open"),
+}));
 vi.mock("@rezumi/env/server", async (original) => {
 	const { env } = await original<typeof import("@rezumi/env/server")>();
 	return {
@@ -33,8 +42,15 @@ vi.mock("@rezumi/env/server", async (original) => {
 	};
 });
 
-const { configurePortfolioVisitLifetime, portfolioContentSecurityPolicy, portfolioPictureUrl, servePortfolioOrResume } =
-	await import("./portfolio-page");
+const {
+	configurePortfolioVisitLifetime,
+	customDomainWorkSlug,
+	isPortfolioWorkPath,
+	portfolioContentSecurityPolicy,
+	portfolioPictureUrl,
+	servePortfolioOrResume,
+	servePortfolioWork,
+} = await import("./portfolio-page");
 
 function portfolio(overrides: Partial<PublicPortfolio> = {}): PublicPortfolio {
 	const data = structuredClone(defaultResumeData);
@@ -67,6 +83,7 @@ function portfolio(overrides: Partial<PublicPortfolio> = {}): PublicPortfolio {
 		customDomain: null,
 		resume: { data, slug: "cv", isPublic: true, hasPassword: false, showDownloadButtons: true },
 		entitlements: { hidePortfolioCredit: false },
+		passwordHash: null,
 		...overrides,
 	};
 }
@@ -80,6 +97,7 @@ beforeEach(() => {
 	mocks.serveResumePage.mockReset().mockResolvedValue(resumeResponse);
 	mocks.turnstile.site = undefined;
 	mocks.turnstile.secret = undefined;
+	mocks.access = "locked";
 });
 
 describe("servePortfolioOrResume", () => {
@@ -125,7 +143,7 @@ describe("servePortfolioOrResume", () => {
 		expect(body).toContain('<meta property="og:image" content="https://rezumi.example/cards/nadia.png">');
 		expect(body).toContain('<link rel="me" href="https://linkedin.example.test/in/nadia">');
 		expect(body).toContain('"@type":"ProfilePage"');
-		expect(body).toContain('"@type":"CreativeWork","name":"Coffee app","url":"https://rezumi.example/nadia#work-kopi"');
+		expect(body).toContain('"@type":"CreativeWork","name":"Coffee app","url":"https://rezumi.example/nadia/work/kopi"');
 		expect(mocks.serveResumePage).not.toHaveBeenCalled();
 		expect(mocks.recordPortfolioVisit).toHaveBeenCalledWith({
 			portfolio: expect.objectContaining({ id: "pf1" }),
@@ -424,11 +442,20 @@ describe("the page's content security policy", () => {
 			expect(fonts.length).toBeGreaterThan(0);
 			for (const src of fonts) expect(allows(policy.get("font-src") ?? [], src, pageOrigin), src).toBe(true);
 
-			const players = [...body.matchAll(/data-embed="([^"]+)"/g)].map(([, src]) =>
+			// The players live on the work's own page (Phase 13, B2), under that page's policy.
+			const workPage = await servePortfolioWork(
+				new Request(`${pageOrigin}/${pageOrigin === "https://rezumi.example" ? "nadia/" : ""}work/kopi`),
+				"nadia",
+				"kopi",
+				"1",
+				pageOrigin === "https://rezumi.example" ? {} : { customDomain: "nadia.dev" },
+			);
+			const workPolicy = directives(workPage.headers.get("Content-Security-Policy") ?? "");
+			const players = [...(await workPage.text()).matchAll(/data-embed="([^"]+)"/g)].map(([, src]) =>
 				(src ?? "").replaceAll("&amp;", "&"),
 			);
 			expect(players).toHaveLength(2);
-			for (const src of players) expect(allows(policy.get("frame-src") ?? [], src, pageOrigin), src).toBe(true);
+			for (const src of players) expect(allows(workPolicy.get("frame-src") ?? [], src, pageOrigin), src).toBe(true);
 		}
 	});
 
@@ -507,5 +534,172 @@ describe("pictures", () => {
 			"javascript:alert(1)",
 		])
 			expect(portfolioPictureUrl(source), source).toBeUndefined();
+	});
+});
+
+describe("work pages (Phase 13, B2)", () => {
+	const works = {
+		items: [
+			{ id: "w1", slug: "kopi", previousSlugs: ["coffee-app"], title: "Coffee app", summary: "A café's ordering app." },
+			{
+				id: "w2",
+				slug: "deck",
+				title: "Pitch deck",
+				tags: ["Figma"],
+				blocks: [
+					{ id: "t", type: "text", html: "<p>The story behind the deck.</p>" },
+					{ id: "e", type: "embed", provider: "figma", ref: "deck/AbCdEf0123456789xyz" },
+				],
+			},
+			{ id: "w3", slug: "secret", title: "Secret", hidden: true },
+		],
+	};
+	const withWorks = (overrides: Partial<PublicPortfolio> = {}) =>
+		portfolio({ data: parsePortfolioData({ works }), ...overrides });
+
+	it("answer only `/<username>/work/<slug>`, and on a custom domain `/work/<slug>`", () => {
+		expect(isPortfolioWorkPath("/nadia/work/kopi")).toBe(true);
+		for (const path of [
+			"/nadia/work",
+			"/nadia/work/Kopi",
+			"/nadia/work/kopi/",
+			"/dashboard/work/kopi",
+			"/nadia/works/kopi",
+			"//work/kopi",
+			`/nadia/work/${"a".repeat(65)}`,
+		])
+			expect(isPortfolioWorkPath(path), path).toBe(false);
+		expect(customDomainWorkSlug("/work/kopi")).toBe("kopi");
+		expect(customDomainWorkSlug("/work/kopi/x")).toBeNull();
+		expect(customDomainWorkSlug("/nadia/work/kopi")).toBeNull();
+	});
+
+	it("draw a work's page with its own address, preview, title and structured data, and count it", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(withWorks());
+		const response = await servePortfolioWork(get("/nadia/work/deck"), "nadia", "deck", "1.1.1.1");
+		const body = await response.text();
+		expect(response.status).toBe(200);
+		expect(response.headers.get("Cache-Control")).toBe("private, no-store");
+		expect(body).toContain('<link rel="canonical" href="https://rezumi.example/nadia/work/deck">');
+		expect(body).toContain('<meta property="og:type" content="article">');
+		expect(body).toContain("https://rezumi.example/cards/nadia/work/deck.png");
+		expect(body).toContain("<title>Pitch deck — ");
+		// No summary: the first text stands for it.
+		expect(body).toContain('content="The story behind the deck."');
+		const data = JSON.parse(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(body)?.[1] ?? "{}");
+		expect(data).toMatchObject({
+			"@type": "CreativeWork",
+			name: "Pitch deck",
+			url: "https://rezumi.example/nadia/work/deck",
+			keywords: "Figma",
+			isPartOf: { "@type": "ProfilePage", url: "https://rezumi.example/nadia" },
+		});
+		// Only the providers this work embeds may be framed, next to the video players.
+		const frames = /frame-src ([^;]*)/.exec(response.headers.get("Content-Security-Policy") ?? "")?.[1] ?? "";
+		expect(frames.split(" ").sort()).toEqual(
+			[
+				"https://embed.figma.com",
+				"https://player.vimeo.com",
+				"https://www.figma.com",
+				"https://www.youtube-nocookie.com",
+			].sort(),
+		);
+		expect(mocks.recordPortfolioVisit).toHaveBeenCalledWith(expect.objectContaining({ workId: "w2" }));
+	});
+
+	it("forward a previous address to the current one, and answer 404 for a work the page doesn't list", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(withWorks());
+		const moved = await servePortfolioWork(get("/nadia/work/coffee-app?x=1"), "nadia", "coffee-app", "1.1.1.1");
+		expect(moved.status).toBe(301);
+		expect(moved.headers.get("Location")).toBe("/nadia/work/kopi");
+		for (const slug of ["secret", "nothing"]) {
+			const missing = await servePortfolioWork(get(`/nadia/work/${slug}`), "nadia", slug, "1.1.1.1");
+			expect(missing.status).toBe(404);
+			const body = await missing.text();
+			expect(body).toContain('href="/nadia"');
+			expect(body).not.toContain("Secret");
+			expect(body).not.toContain("<script");
+		}
+		mocks.findPublicPortfolio.mockResolvedValue(null);
+		const none = await servePortfolioWork(get("/ghost/work/kopi"), "ghost", "kopi", "1.1.1.1");
+		expect(none.status).toBe(404);
+		expect(await none.text()).toBe("not shared");
+		expect(mocks.recordPortfolioVisit).not.toHaveBeenCalled();
+	});
+
+	it("live at the custom domain's address there, and point search engines to it", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(withWorks({ customDomain: "nadia.example" }));
+		const app = await (await servePortfolioWork(get("/nadia/work/kopi"), "nadia", "kopi", "1.1.1.1")).text();
+		expect(app).toContain('<link rel="canonical" href="https://nadia.example/work/kopi">');
+		const own = await servePortfolioWork(
+			new Request("https://nadia.example/work/coffee-app"),
+			"nadia",
+			"coffee-app",
+			"1.1.1.1",
+			{ customDomain: "nadia.example" },
+		);
+		expect(own.headers.get("Location")).toBe("/work/kopi");
+	});
+
+	it("link the home page's works to their pages in its structured data", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(withWorks());
+		const body = await (await servePortfolioOrResume(get(), "nadia", "1.1.1.1")).text();
+		expect(body).toContain('"url":"https://rezumi.example/nadia/work/kopi"');
+		expect(body).not.toContain('#work-kopi"');
+	});
+});
+
+describe("a portfolio behind a password (Phase 13, B16)", () => {
+	const locked = () =>
+		portfolio({
+			passwordHash: "$2a$10$secret-hash",
+			data: parsePortfolioData({
+				works: { items: [{ id: "w1", slug: "kopi", title: "Coffee app" }] },
+				hero: { greeting: "Hello." },
+			}),
+		});
+
+	it("shows the password page at its home: nothing of the portfolio, no script, never cached or indexed", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(locked());
+		const response = await servePortfolioOrResume(get("/nadia?unlock=wrong"), "nadia", "1.1.1.1");
+		const body = await response.text();
+		expect(response.status).toBe(401);
+		expect(response.headers.get("Cache-Control")).toBe("private, no-store");
+		expect(response.headers.get("X-Robots-Tag")).toBe("noindex, nofollow");
+		expect(response.headers.get("Content-Security-Policy")).toContain(
+			"script-src 'self' https://static.cloudflareinsights.com 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='",
+		);
+		expect(body).toContain('action="/api/portfolio/nadia/unlock"');
+		expect(body).toContain('name="next" value="home"');
+		expect(body).toContain('role="alert"');
+		for (const leak of ["Nadia", "Hello.", "Coffee app", "secret-hash", "<script"]) expect(body).not.toContain(leak);
+		expect(mocks.recordPortfolioVisit).not.toHaveBeenCalled();
+	});
+
+	it("asks for it on a work's page before looking the work up, so a locked page tells nothing", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(locked());
+		const real = await servePortfolioWork(get("/nadia/work/kopi"), "nadia", "kopi", "1.1.1.1");
+		const fake = await servePortfolioWork(get("/nadia/work/nothing"), "nadia", "nothing", "1.1.1.1");
+		expect([real.status, fake.status]).toEqual([401, 401]);
+		const body = await real.text();
+		expect(body).toContain('name="next" value="work:kopi"');
+		expect(body).not.toContain("Coffee app");
+		expect(mocks.recordPortfolioVisit).not.toHaveBeenCalled();
+	});
+
+	it("still takes reports, without naming the person to someone who can't open it", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(locked());
+		const body = await (await servePortfolioOrResume(get("/nadia?report"), "nadia", "1.1.1.1")).text();
+		expect(body).toContain("@nadia");
+		expect(body).not.toContain("Nadia Rahmawati");
+	});
+
+	it("opens for a visitor with access, and for its owner", async () => {
+		mocks.access = "open";
+		mocks.findPublicPortfolio.mockResolvedValue(locked());
+		const response = await servePortfolioOrResume(get(), "nadia", "1.1.1.1");
+		expect(response.status).toBe(200);
+		expect(await response.text()).toContain("Hello.");
+		// Still kept out of search engines: the finder reads it as not indexable.
 	});
 });

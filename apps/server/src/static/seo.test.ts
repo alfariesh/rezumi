@@ -12,9 +12,11 @@ vi.mock("@rezumi/api/features/resume/web-page", () => ({
 }));
 vi.mock("@rezumi/api/features/portfolio/public", () => ({
 	listIndexablePortfolios: async (page: number) =>
-		page === 0 ? [{ username: "nadia.r", updatedAt: new Date("2026-11-06T00:00:00Z") }] : [],
+		page === 0
+			? [{ username: "nadia.r", updatedAt: new Date("2026-11-06T00:00:00Z"), workSlugs: ["kopi-app", "toko"] }]
+			: [],
 	countIndexablePortfolios: async () => 1,
-	PORTFOLIO_SITEMAP_PAGE_SIZE: 50_000,
+	PORTFOLIO_SITEMAP_PAGE_SIZE: 980,
 }));
 
 const { handlePagesSitemap, handlePortfoliosSitemap, handleResumesSitemap, handleSitemap, handleLlms } =
@@ -26,6 +28,11 @@ it("lists published portfolios at /<username>, on pages of their own in the site
 	expect(index).toContain("<loc>https://rezumi.app/sitemaps/portfolios-1.xml</loc>");
 	const xml = await (await handlePortfoliosSitemap(1)).text();
 	expect(xml).toContain("<url><loc>https://rezumi.app/nadia.r</loc><lastmod>2026-11-06T00:00:00.000Z</lastmod></url>");
+	// Then each work's own page, with the portfolio's last change.
+	expect(xml).toContain(
+		"<url><loc>https://rezumi.app/nadia.r/work/kopi-app</loc><lastmod>2026-11-06T00:00:00.000Z</lastmod></url>",
+	);
+	expect(xml).toContain("<loc>https://rezumi.app/nadia.r/work/toko</loc>");
 	expect((await handlePortfoliosSitemap(2)).status).toBe(404);
 	expect((await handlePortfoliosSitemap(0)).status).toBe(404);
 });
@@ -99,4 +106,9 @@ it("describes portfolios and their plans to AI readers only once portfolios are 
 	mockEnv.PORTFOLIO_MODE = "on";
 	expect(await handleLlms().text()).toContain("- Portfolio: every account can publish a web portfolio");
 	delete mockEnv.PORTFOLIO_MODE;
+});
+
+it("keeps crawlers out of the portfolio's contact card, beacons and forms", async () => {
+	const { handleRobots } = await import("./seo");
+	expect(await handleRobots().text()).toContain("Disallow: /api/portfolio/");
 });

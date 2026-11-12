@@ -21,11 +21,12 @@ export const PORTFOLIO_CLICK_KINDS = [
 export type PortfolioClickKind = (typeof PORTFOLIO_CLICK_KINDS)[number];
 
 /**
- * What a beacon may report: a click, a work whose detail was opened, or `view`, the visit of a page that was prerendered
- * or prefetched and then shown (the server skips speculative requests, so such a page reports its own visit). A `view`
- * counts like the server's own visit count, once an hour per visitor, so a normal load is never counted twice.
+ * What a beacon may report: a click (on a work's page it carries the work's id), or `view`, the visit of a page that was
+ * prerendered or prefetched and then shown (the server skips speculative requests, so such a page reports its own
+ * visit, with `ref`: where the visitor came from). A `view` counts like the server's own visit count, once an hour per
+ * visitor, so a normal load is never counted twice. Opening a work is counted by the work's page (Phase 13), not here.
  */
-export const PORTFOLIO_EVENT_KINDS = [...PORTFOLIO_CLICK_KINDS, "work", "view"] as const;
+export const PORTFOLIO_EVENT_KINDS = [...PORTFOLIO_CLICK_KINDS, "view"] as const;
 
 export type PortfolioEventKind = (typeof PORTFOLIO_EVENT_KINDS)[number];
 

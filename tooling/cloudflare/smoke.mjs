@@ -229,6 +229,36 @@ try {
 	await client.portfolio.create({ sourceResumeId: id });
 	await client.portfolio.setPublic({ isPublic: true });
 	await assertCard("/cards/workersmoke.png");
+	// A work's own page and its card (Phase 13, B2), then the password gate in front of both (B16).
+	const work = (await client.portfolio.get({})).portfolio?.data.works.items.find(
+		(item) => !item.hidden && item.title.trim(),
+	);
+	assert(work, "The sample resume's projects must give the portfolio a work");
+	response = await request(`/workersmoke/work/${work.slug}`);
+	assert.equal(response.status, 200, await response.clone().text());
+	assert.match(
+		await response.text(),
+		new RegExp(`<link rel="canonical" href="${origin}/workersmoke/work/${work.slug}">`),
+	);
+	await assertCard(`/cards/workersmoke/work/${work.slug}.png`);
+	await client.portfolio.setPassword({ password: "smoke-password" });
+	response = await request("/workersmoke", { headers: { "user-agent": "smoke" } });
+	assert.equal(response.status, 401);
+	assert.doesNotMatch(await response.text(), /Cloudflare Native|workersmoke resume/);
+	assert.equal((await request(`/workersmoke/work/${work.slug}`)).status, 401);
+	const locked = await request(`/cards/workersmoke/work/${work.slug}.png`, { redirect: "manual" });
+	assert.equal(locked.status, 302, "A locked portfolio's work card is the banner");
+	response = await request("/api/portfolio/workersmoke/unlock", {
+		method: "POST",
+		body: new URLSearchParams({ password: "smoke-password", next: `work:${work.slug}` }),
+		redirect: "manual",
+	});
+	assert.equal(response.status, 303);
+	assert.equal(response.headers.get("location"), `/workersmoke/work/${work.slug}`);
+	const access = response.headers.get("set-cookie")?.split(";")[0] ?? "";
+	assert.match(access, /^portfolio_access_/);
+	assert.equal((await request(`/workersmoke/work/${work.slug}`, { headers: { cookie: access } })).status, 200);
+	await client.portfolio.removePassword({});
 	// The address checks behind link reading load and run under workerd (node:net BlockList).
 	await assert.rejects(client.portfolio.unfurl({ url: "http://127.0.0.1/admin" }), (error) => {
 		assert.equal(error.code, "PORTFOLIO_LINK_UNREADABLE");
@@ -322,7 +352,7 @@ try {
 		null,
 	);
 	console.log(
-		"Cloudflare smoke passed: auth, native cron, transactions, R2 privacy, live updates, PDF pictures and icons, share cards, portfolio link checks, assistant streaming/stop, atomic limits, expiry.",
+		"Cloudflare smoke passed: auth, native cron, transactions, R2 privacy, live updates, PDF pictures and icons, share cards, portfolio work pages and password gate, link checks, assistant streaming/stop, atomic limits, expiry.",
 	);
 } catch (error) {
 	for (const log of harness?.getLogs() ?? []) {

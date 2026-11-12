@@ -36,7 +36,7 @@ vi.mock("@rezumi/pdf/web-page-card", async (original) => {
 });
 
 const { resumeCardSvg } = await import("@rezumi/pdf/web-page-card");
-const { handlePortfolioCard } = await import("./portfolio-card");
+const { handlePortfolioCard, handlePortfolioWorkCard } = await import("./portfolio-card");
 
 const upload = (name: string) => `uploads/user-1/pictures/portfolio/${name}`;
 const url = (name: string) => `https://rezumi.example/${upload(name)}`;
@@ -60,6 +60,7 @@ function portfolio(picture: { key: string; thumbKey?: string } | null): PublicPo
 		}),
 		updatedAt: new Date("2026-11-06T00:00:00Z"),
 		entitlements: { hidePortfolioCredit: false },
+		passwordHash: null,
 		indexable: true,
 		customDomain: null,
 		resume: null,
@@ -156,6 +157,49 @@ describe("the portfolio card's answer", () => {
 		);
 		expect(response.status).toBe(200);
 		expect(response.headers.get("Content-Type")).toBe("image/png");
+		expect(resumeCardSvg).not.toHaveBeenCalled();
+	});
+});
+
+describe("cards in Phase 13", () => {
+	const withWork = (overrides: Partial<PublicPortfolio> = {}) => ({
+		...portfolio(null),
+		data: parsePortfolioData({
+			works: {
+				items: [
+					{ id: "w1", slug: "kopi", previousSlugs: ["coffee"], title: "Coffee app", role: "Lead designer" },
+					{ id: "w2", slug: "secret", title: "Secret", hidden: true },
+				],
+			},
+		}),
+		...overrides,
+	});
+	const workCard = (slug: string) =>
+		handlePortfolioWorkCard(new Request(`https://rezumi.example/cards/nadia/work/${slug}.png`), "nadia", slug);
+
+	it("draw a work's card: its title, the person and their role, and the work's address", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(withWork());
+		const response = await workCard("kopi");
+		expect(response.status).toBe(200);
+		expect(response.headers.get("Content-Type")).toBe("image/png");
+		expect(vi.mocked(resumeCardSvg).mock.lastCall?.[0]).toMatchObject({
+			name: "Coffee app",
+			headline: expect.stringMatching(/ · Lead designer$/),
+			address: "rezumi.example/nadia/work/kopi",
+		});
+	});
+
+	it("show the generic banner for a work the page doesn't list, a moved address, or a portfolio behind a password", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(withWork());
+		for (const slug of ["secret", "nothing", "coffee"]) {
+			const response = await workCard(slug);
+			expect(response.status, slug).toBe(302);
+			expect(response.headers.get("Cache-Control")).toBe("no-store");
+		}
+		mocks.findPublicPortfolio.mockResolvedValue(withWork({ passwordHash: "$2a$10$x" }));
+		vi.mocked(resumeCardSvg).mockClear();
+		expect((await workCard("kopi")).status).toBe(302);
+		expect((await card()).status).toBe(302);
 		expect(resumeCardSvg).not.toHaveBeenCalled();
 	});
 });

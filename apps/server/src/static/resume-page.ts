@@ -74,8 +74,8 @@ type PageOptions = {
 	customDomain?: string | undefined;
 };
 
-/** Off, unknown or trashed resumes read the same, in the visitor's language. */
-function unavailableResponse(request: Request) {
+/** Off, unknown or trashed resumes read the same, in the visitor's language; so does a portfolio address that has none. */
+export function unavailableResponse(request: Request) {
 	const lang = localeFromAcceptLanguage(request.headers.get("accept-language"));
 	return html(renderUnavailableDocument({ lang, messages: webPageMessages(lang) }), 404);
 }

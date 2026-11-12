@@ -23,7 +23,7 @@ import { runCareerJobs } from "@rezumi/api/features/career/jobs";
 import { runCustomDomainJobs } from "@rezumi/api/features/custom-domain/jobs";
 import { configurePortfolioAnalytics } from "@rezumi/api/features/portfolio/analytics";
 import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
-import { isPublicPortfolioFile } from "@rezumi/api/features/portfolio/public";
+import { portfolioFileAccess } from "@rezumi/api/features/portfolio/public";
 import { configurePortfolioPublicLimiter } from "@rezumi/api/features/portfolio/public-limit";
 import { configureStorageService, getStorageService, isPublicUploadOwner } from "@rezumi/api/features/storage";
 import { initializeAuth } from "@rezumi/auth/config";
@@ -82,9 +82,10 @@ configurePortfolioAnalytics({
 configureOwnPictureReader(async (key) => {
 	const owner = /^uploads\/([^/]+)\/pictures\//.exec(key)?.[1];
 	if (!owner || !(await isPublicUploadOwner(owner))) throw new Error("Picture unavailable");
-	// A portfolio picture is readable here only while the uploads route would serve it to anyone: a published
-	// portfolio uses it. Otherwise a resume or card could draw an unpublished portfolio's picture by its key.
-	if (key.startsWith(`uploads/${owner}/pictures/portfolio/`) && !(await isPublicPortfolioFile(key)))
+	// A portfolio picture is readable here only while the uploads route serves it to anyone and caches may keep it: a
+	// published portfolio without a visitor password uses it. Otherwise a resume or card could draw an unpublished or
+	// locked portfolio's picture by its key.
+	if (key.startsWith(`uploads/${owner}/pictures/portfolio/`) && (await portfolioFileAccess(key)) !== "public")
 		throw new Error("Picture unavailable");
 	const file = await getStorageService().read(key);
 	if (!file || file.size > 12_000_000) throw new Error("Picture unavailable or exceeds 12 MB");

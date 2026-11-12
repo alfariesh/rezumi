@@ -122,8 +122,9 @@ async function servePortfolioFile(request: Request, userId: string, filePath: st
 	let owner: Promise<boolean> | undefined;
 	const isOwner = () => (owner ??= canReadPortfolioFiles(request, userId));
 	// The lookup comes first, before storage is read or an ETag compared: a file no longer public never answers 304.
-	const { isPublicPortfolioFile } = await import("@rezumi/api/features/portfolio/public");
-	let isPublic = (pdfPath || PORTFOLIO_PICTURE_PATH.test(filePath)) && (await isPublicPortfolioFile(key));
+	const { portfolioFileAccess } = await import("@rezumi/api/features/portfolio/public");
+	const access = pdfPath || PORTFOLIO_PICTURE_PATH.test(filePath) ? await portfolioFileAccess(key) : "none";
+	let isPublic = access !== "none";
 	if (!isPublic && !(await isOwner())) return notFound();
 
 	const storedFile = await getStorageService().read(key);
@@ -138,7 +139,10 @@ async function servePortfolioFile(request: Request, userId: string, filePath: st
 	}
 
 	const etag = createEtag(storedFile);
-	const cacheControl = isPublic ? PUBLIC_PICTURE_CACHE_CONTROL : OWNER_PORTFOLIO_FILE_CACHE_CONTROL;
+	// A portfolio behind a password (Phase 13, B16) still serves its files to whoever has their (random) address, as a
+	// custom domain loads them from here without its access cookie, but no shared cache keeps them.
+	const cacheControl =
+		isPublic && access === "public" ? PUBLIC_PICTURE_CACHE_CONTROL : OWNER_PORTFOLIO_FILE_CACHE_CONTROL;
 	const resourcePolicy = isPublic ? "cross-origin" : "same-site";
 	if ((asPdf || asPicture) && matchesIfNoneMatch(request.headers.get("If-None-Match"), etag))
 		return new Response(null, {

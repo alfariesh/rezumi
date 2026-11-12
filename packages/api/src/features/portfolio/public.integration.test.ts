@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import * as tables from "@rezumi/db/schema";
+import { listedWorkSlugs, parsePortfolioData } from "@rezumi/schema/portfolio/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const fixture = vi.hoisted(() => ({
@@ -60,6 +61,7 @@ const visitor = (userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac O
 // Opt-in real PostgreSQL tests: all tables live in an isolated schema that the suite drops afterwards.
 describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 	let publicPortfolio: typeof import("./public");
+	let visitorAccess: typeof import("./visitor-access");
 	let webPage: typeof import("../resume/web-page");
 	let socialMeta: typeof import("../resume/social-meta");
 	let admin: Pool;
@@ -113,6 +115,7 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			if (existsSync(file)) await pool.query((await readFile(file, "utf8")).replaceAll('"public".', ""));
 		}
 		publicPortfolio = await import("./public");
+		visitorAccess = await import("./visitor-access");
 		webPage = await import("../resume/web-page");
 		socialMeta = await import("../resume/social-meta");
 	}, 30_000);
@@ -419,10 +422,62 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			expect(row?.sources).toEqual({ linkedin: 1 });
 		});
 
+		it("count a prerendered work page's view beacon as that work opened, once with the page's own count", async () => {
+			const id = await addPortfolio("member", {
+				data: { version: 1, works: { items: [{ id: "w1", title: "Coffee app" }] } } as never,
+			});
+			const target = await publicPortfolio.findPortfolioEventTarget(username("member"), "w1");
+			if (!target) throw new Error("target expected");
+			const beacon = (trustedClient: string, workId = "w1") => {
+				const requestHeaders = visitor();
+				requestHeaders.set("referer", "https://rezumi.example/member/work/w1");
+				return publicPortfolio.recordPortfolioEvent({
+					target,
+					kind: "view",
+					workId,
+					ref: "https://www.linkedin.com/feed",
+					requestHeaders,
+					trustedClient,
+				});
+			};
+			const row = async () =>
+				(
+					await getDb()
+						.select()
+						.from(tables.portfolioStatisticsDaily)
+						.where(eq(tables.portfolioStatisticsDaily.portfolioId, id))
+				)[0];
+			// Prerendered, then shown: the beacon counts the visit and the work, with the source from `ref`.
+			await beacon("10.3.0.1");
+			await beacon("10.3.0.1");
+			// The same visitor's later normal load of the page adds nothing.
+			await publicPortfolio.recordPortfolioVisit({
+				portfolio: { id, userId: "member", timezone: "UTC" },
+				requestHeaders: visitor(),
+				requestUrl: "https://rezumi.example/member/work/w1",
+				trustedClient: "10.3.0.1",
+				workId: "w1",
+			});
+			expect(await row()).toMatchObject({ views: 1, works: { w1: 1 }, sources: { linkedin: 1 } });
+			// A work the portfolio doesn't have counts as a visit only.
+			const missing = await publicPortfolio.findPortfolioEventTarget(username("member"), "w-gone");
+			if (!missing) throw new Error("target expected");
+			const requestHeaders = visitor();
+			requestHeaders.set("referer", "https://rezumi.example/member/work/x");
+			await publicPortfolio.recordPortfolioEvent({
+				target: missing,
+				kind: "view",
+				workId: "w-gone",
+				requestHeaders,
+				trustedClient: "10.3.0.2",
+			});
+			expect(await row()).toMatchObject({ views: 2, works: { w1: 1 } });
+		});
+
 		it("count a prerendered page's view beacon as its visit, once with the server's own count", async () => {
 			const id = await addPortfolio("member");
 			const portfolio = { id, userId: "member", timezone: "UTC" };
-			const target = { ...portfolio, hasWork: false };
+			const target = { ...portfolio, hasWork: false, passwordHash: null };
 			const beacon = (trustedClient: string, referer = "https://rezumi.example/member?utm_source=linkedin") => {
 				const requestHeaders = visitor();
 				requestHeaders.set("referer", referer);
@@ -446,11 +501,26 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 				.from(tables.portfolioStatisticsDaily)
 				.where(eq(tables.portfolioStatisticsDaily.portfolioId, id));
 			expect(row?.sources).toEqual({ direct: 1, linkedin: 1 });
+			// Where the visitor came from before the page, sent along as `ref`.
+			const fromGoogle = visitor();
+			fromGoogle.set("referer", "https://rezumi.example/member");
+			await publicPortfolio.recordPortfolioEvent({
+				target,
+				kind: "view",
+				ref: "https://www.google.com/",
+				requestHeaders: fromGoogle,
+				trustedClient: "10.2.0.5",
+			});
+			const [after] = await getDb()
+				.select()
+				.from(tables.portfolioStatisticsDaily)
+				.where(eq(tables.portfolioStatisticsDaily.portfolioId, id));
+			expect(after?.sources).toEqual({ direct: 1, linkedin: 1, google: 1 });
 			// Never the owner, and nothing without the page's address.
 			await beacon("10.2.0.3", "not an address");
 			fixture.viewer = { id: "member" };
 			await beacon("10.2.0.4");
-			expect(await views(id)).toBe(2);
+			expect(await views(id)).toBe(3);
 		});
 	});
 
@@ -466,7 +536,7 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 
 		it("count a click once an hour per visitor and kind, never the owner or crawlers", async () => {
 			const id = await addPortfolio("member");
-			const target = { id, userId: "member", timezone: "UTC", hasWork: false };
+			const target = { id, userId: "member", timezone: "UTC", hasWork: false, passwordHash: null };
 			const send = (kind: "whatsapp" | "pdf", trustedClient: string, requestHeaders = visitor()) =>
 				publicPortfolio.recordPortfolioEvent({ target, kind, requestHeaders, trustedClient });
 			await send("whatsapp", "10.1.0.1");
@@ -479,7 +549,7 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			expect((await row(id))?.clicks).toEqual({ whatsapp: 2, pdf: 1 });
 		});
 
-		it("count only works the portfolio has, up to the daily limit of works", async () => {
+		it("count a work's page as that work opened, and its clicks with the work, never a work beacon", async () => {
 			const id = await addPortfolio("member", { data: works(["w1"]) });
 			const name = username("member");
 			const found = await publicPortfolio.findPortfolioEventTarget(name, "w1");
@@ -487,21 +557,61 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			expect(found?.hasWork).toBe(true);
 			expect(missing?.hasWork).toBe(false);
 			if (!found || !missing) throw new Error("target expected");
+			const portfolio = { id, userId: "member", timezone: "UTC" };
+			const open = (trustedClient: string, workId: string, referer?: string) => {
+				const requestHeaders = visitor();
+				if (referer) requestHeaders.set("referer", referer);
+				return publicPortfolio.recordPortfolioVisit({
+					portfolio,
+					requestHeaders,
+					requestUrl: `https://rezumi.example/member/work/${workId}`,
+					trustedClient,
+					workId,
+				});
+			};
+			// From the portfolio's home to the work: one portfolio visit, one work opened.
+			await publicPortfolio.recordPortfolioVisit({
+				portfolio,
+				requestHeaders: visitor(),
+				requestUrl: "https://rezumi.example/member",
+				trustedClient: "10.1.1.1",
+			});
+			await open("10.1.1.1", "w1", "https://rezumi.example/member");
+			await open("10.1.1.1", "w1", "https://rezumi.example/member");
+			expect((await row(id))?.views).toBe(1);
+			expect((await row(id))?.works).toEqual({ w1: 1 });
+			// Another visitor straight to the work: a visit and an opening; crawlers and the owner count nothing.
+			await open("10.1.1.2", "w1");
+			fixture.viewer = { id: "member" };
+			await open("10.1.1.4", "w1");
+			fixture.viewer = null;
+			const bot = visitor("Googlebot/2.1 (+http://www.google.com/bot.html)");
+			await publicPortfolio.recordPortfolioVisit({
+				portfolio,
+				requestHeaders: bot,
+				requestUrl: "https://rezumi.example/member/work/w1",
+				trustedClient: "10.1.1.5",
+				workId: "w1",
+			});
+			expect((await row(id))?.works).toEqual({ w1: 2 });
+			expect((await row(id))?.views).toBe(2);
+			// A click on the work's page counts per portfolio, whether or not the work exists.
 			await publicPortfolio.recordPortfolioEvent({
 				target: found,
-				kind: "work",
+				kind: "pdf",
 				workId: "w1",
 				requestHeaders: visitor(),
-				trustedClient: "10.1.1.1",
+				trustedClient: "10.1.1.6",
 			});
 			await publicPortfolio.recordPortfolioEvent({
 				target: missing,
-				kind: "work",
+				kind: "pdf",
 				workId: "w-gone",
 				requestHeaders: visitor(),
-				trustedClient: "10.1.1.1",
+				trustedClient: "10.1.1.7",
 			});
-			expect((await row(id))?.works).toEqual({ w1: 1 });
+			expect((await row(id))?.clicks).toEqual({ pdf: 2 });
+			expect((await row(id))?.works).toEqual({ w1: 2 });
 
 			const today = (await row(id))?.date as string;
 			const full = Object.fromEntries(Array.from({ length: 50 }, (_, index) => [`w${index}`, 1]));
@@ -522,6 +632,148 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			await addPortfolio("member");
 			fixture.mode = "off";
 			expect(await publicPortfolio.findPortfolioEventTarget(username("member"))).toBeNull();
+		});
+	});
+
+	describe("the work pages in the sitemap", () => {
+		it("lists exactly the works listedWorkSlugs lists, worked out in SQL", async () => {
+			const fixtures = [
+				{
+					works: {
+						items: [
+							{ id: "a", slug: "shown", title: "Shown" },
+							{ id: "b", slug: "hidden", title: "Hidden", hidden: true },
+							{ id: "c", slug: "untitled", title: "" },
+							{ id: "d", slug: "spaces", title: " \u00a0\u3000\t " },
+							{ id: "e", slug: "second", title: "  Second  " },
+							{ id: "f", slug: "visible-false", title: "Shown too", hidden: false },
+						],
+					},
+				},
+				{
+					sections: { hidden: ["work"] },
+					works: { items: [{ id: "a", slug: "shown", title: "Shown" }] },
+				},
+				{ works: { items: [] } },
+				{},
+			];
+			for (const [index, data] of fixtures.entries()) {
+				const id = `parity-${index}`;
+				await getDb()
+					.insert(tables.user)
+					.values({
+						id,
+						name: id,
+						email: `${id}@example.test`,
+						username: username(id),
+						displayUsername: username(id),
+						emailVerified: true,
+						createdAt: new Date(Date.now() - 30 * 86_400_000),
+					});
+				await addPortfolio(id, { data: { version: 1, ...data } as never });
+			}
+			const listed = await publicPortfolio.listIndexablePortfolios(0);
+			for (const [index, data] of fixtures.entries()) {
+				const row = listed.find((item) => item.username === username(`parity-${index}`));
+				expect(row?.workSlugs, `fixture ${index}`).toEqual(
+					listedWorkSlugs(parsePortfolioData({ version: 1, ...data })),
+				);
+			}
+			expect(listed.find((item) => item.username === username("parity-0"))?.workSlugs).toEqual([
+				"shown",
+				"second",
+				"visible-false",
+			]);
+			expect(publicPortfolio.PORTFOLIO_SITEMAP_PAGE_SIZE).toBe(980);
+		});
+	});
+
+	describe("a portfolio behind a password", () => {
+		const lock = async (portfolioId: string, password = "rahasia-123") => {
+			const { hash } = await import("bcryptjs");
+			const passwordHash = await hash(password, 4);
+			await getDb()
+				.update(tables.portfolio)
+				.set({ password: passwordHash })
+				.where(eq(tables.portfolio.id, portfolioId));
+			return passwordHash;
+		};
+
+		it("is never indexed or in the sitemap, and its files are served but not cached publicly", async () => {
+			const id = await addPortfolio("member");
+			await getDb()
+				.insert(tables.portfolioFile)
+				.values({ userId: "member", kind: "image", key: "uploads/member/pictures/portfolio/a.webp", bytes: 1 });
+			expect(await publicPortfolio.portfolioFileAccess("uploads/member/pictures/portfolio/a.webp")).toBe("public");
+			expect(await publicPortfolio.countIndexablePortfolios()).toBe(1);
+			await lock(id);
+			expect(await publicPortfolio.findPublicPortfolio(username("member"))).toMatchObject({
+				indexable: false,
+				passwordHash: expect.stringMatching(/^\$2/),
+			});
+			expect(await publicPortfolio.countIndexablePortfolios()).toBe(0);
+			expect(await publicPortfolio.portfolioFileAccess("uploads/member/pictures/portfolio/a.webp")).toBe("protected");
+			expect(await publicPortfolio.isPublicPortfolioFile("uploads/member/pictures/portfolio/a.webp")).toBe(true);
+			fixture.mode = "off";
+			expect(await publicPortfolio.portfolioFileAccess("uploads/member/pictures/portfolio/a.webp")).toBe("none");
+		});
+
+		it("opens for the right password, for 12 hours on this host, and for its owner", async () => {
+			const id = await addPortfolio("member");
+			const passwordHash = await lock(id);
+			const portfolio = { id, userId: "member", passwordHash };
+			expect(await visitorAccess.portfolioAccess(portfolio, visitor())).toBe("locked");
+			fixture.viewer = { id: "member" };
+			expect(await visitorAccess.portfolioAccess(portfolio, visitor())).toBe("open");
+			fixture.viewer = null;
+
+			const wrong = new Headers();
+			expect(
+				await visitorAccess.verifyPortfolioPassword({
+					username: username("member"),
+					password: "salah-sekali",
+					trustedClient: "10.9.0.1",
+					responseHeaders: wrong,
+				}),
+			).toBe("wrong");
+			expect(wrong.get("set-cookie")).toBeNull();
+
+			const right = new Headers();
+			expect(
+				await visitorAccess.verifyPortfolioPassword({
+					username: username("member"),
+					password: "rahasia-123",
+					trustedClient: "10.9.0.1",
+					responseHeaders: right,
+				}),
+			).toBe("ok");
+			const cookie = right.get("set-cookie") ?? "";
+			expect(cookie).toMatch(
+				new RegExp(`^portfolio_access_${id}=\\d+\\.[\\da-f]{64}; Path=/; Max-Age=43200; SameSite=Lax; HttpOnly`),
+			);
+			expect(cookie).not.toMatch(/Domain=/i);
+			const withCookie = visitor();
+			withCookie.set("cookie", cookie.split(";")[0] ?? "");
+			expect(await visitorAccess.portfolioAccess(portfolio, withCookie)).toBe("open");
+			// A new password takes the access away.
+			const changed = await lock(id, "kata-baru-456");
+			expect(await visitorAccess.portfolioAccess({ ...portfolio, passwordHash: changed }, withCookie)).toBe("locked");
+		});
+
+		it("allows 5 tries in 10 minutes per address and portfolio, and answers a missing one like a wrong password", async () => {
+			const id = await addPortfolio("member");
+			await lock(id);
+			const attempt = (password: string, name = username("member")) =>
+				visitorAccess.verifyPortfolioPassword({
+					username: name,
+					password,
+					trustedClient: "10.9.1.1",
+					responseHeaders: new Headers(),
+				});
+			for (let index = 0; index < 5; index++) expect(await attempt("salah-sekali")).toBe("wrong");
+			expect(await attempt("rahasia-123")).toBe("limited");
+			// No portfolio there, or one without a password: wrong, after the same work.
+			expect(await attempt("rahasia-123", username("nobody"))).toBe("wrong");
 		});
 	});
 });

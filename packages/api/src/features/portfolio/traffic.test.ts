@@ -115,3 +115,12 @@ describe("startOfDayInTimeZone", () => {
 		expect(startOfDayInTimeZone("2026-11-09", "Not/AZone").toISOString()).toBe("2026-11-09T00:00:00.000Z");
 	});
 });
+
+describe("the QR code's visits", () => {
+	it("read utm_source=qr as the QR source, whatever site referred them", () => {
+		const own = new Set(["rezumi.app"]);
+		expect(visitSource({ referer: null, utmSource: "qr", ownHosts: own })).toBe("qr");
+		expect(visitSource({ referer: "https://www.google.com/", utmSource: "QR", ownHosts: own })).toBe("qr");
+		expect(visitSource({ referer: null, utmSource: "qrcode", ownHosts: own })).toBe("other");
+	});
+});

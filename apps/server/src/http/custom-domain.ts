@@ -8,7 +8,12 @@ import {
 	traefikConfiguration,
 } from "@rezumi/api/features/custom-domain";
 import { env } from "@rezumi/env/server";
-import { servePortfolioOrResume } from "../static/portfolio-page";
+import {
+	customDomainWorkSlug,
+	portfolioRoutesEnabled,
+	servePortfolioOrResume,
+	servePortfolioWork,
+} from "../static/portfolio-page";
 import { onAppDomain } from "./alias";
 
 type Destination = Awaited<ReturnType<typeof customDomainDestination>>;
@@ -37,8 +42,8 @@ const notConnected = () =>
 	});
 
 /**
- * A verified custom domain shows the account's published portfolio at `/`, or else its primary resume, and nothing
- * else of the app: the resume PDF downloads and the portfolio's own requests pass through, and any other address goes
+ * A verified custom domain shows the account's published portfolio at `/` (and its works at `/work/<slug>`), or else
+ * its primary resume, and nothing else of the app: the resume PDF downloads and the portfolio's own requests pass through, and any other address goes
  * to the app's own domain. Once the plan's grace is over, the whole domain redirects to the account's address on the
  * app. With Cloudflare for SaaS, traffic for any hostname can reach this Worker, so an address that isn't connected
  * (not verified, or just removed) gets a 404 rather than the app; without it, unknown hosts are left alone.
@@ -67,6 +72,10 @@ export async function handleCustomDomain(request: Request, trustedClient: string
 		return null;
 	if (url.pathname === "/robots.txt")
 		return new Response("User-agent: *\nAllow: /\n", { headers: { "Content-Type": "text/plain; charset=UTF-8" } });
+	// A work's own page (Phase 13, B2) lives on the domain too, at `/work/<slug>`.
+	const workSlug = customDomainWorkSlug(url.pathname);
+	if (workSlug && portfolioRoutesEnabled() && (request.method === "GET" || request.method === "HEAD"))
+		return servePortfolioWork(request, username, workSlug, trustedClient, { customDomain: url.hostname });
 	if (url.pathname !== "/") return Response.redirect(onAppDomain(url), 301);
 
 	// Without a portfolio or a primary resume, the page says it isn't shared, as for any address that isn't.

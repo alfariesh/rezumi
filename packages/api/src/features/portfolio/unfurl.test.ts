@@ -178,6 +178,85 @@ afterAll(async () => {
 
 const unreadable = (reason: string) => expect.objectContaining({ name: "UnfurlError", reason });
 
+describe("unfurlUrl: embeds (Phase 13, B17)", () => {
+	const LOOM = "0123456789abcdef0123456789abcdef";
+
+	it("turns a provider's link into an embed with its oEmbed title and picture, without reading the page", async () => {
+		routes.set("www.loom.com/v1/oembed", (request, response) => {
+			const asked = new URL(request.url ?? "/", "http://x").searchParams.get("url");
+			response.writeHead(200, { "content-type": "application/json" });
+			response.end(
+				JSON.stringify(
+					asked === `https://www.loom.com/share/${LOOM}`
+						? { title: "  Walkthrough   of the app ", thumbnail_url: "https://cdn.loom.com/sessions/thumb.gif" }
+						: {},
+				),
+			);
+		});
+		requests.length = 0;
+		await expect(unfurlUrl(`https://www.loom.com/share/${LOOM}?sid=1`, options)).resolves.toEqual({
+			kind: "embed",
+			url: `https://www.loom.com/share/${LOOM}`,
+			provider: "loom",
+			ref: LOOM,
+			title: "Walkthrough of the app",
+			thumbnailUrl: "https://cdn.loom.com/sessions/thumb.gif",
+		});
+		expect(requests.map((request) => request.host)).toEqual(["www.loom.com"]);
+	});
+
+	it("still makes the embed when oEmbed fails, and asks nobody for Google Slides", async () => {
+		routes.set("open.spotify.com/oembed", (_request, response) => {
+			response.writeHead(500);
+			response.end();
+		});
+		await expect(unfurlUrl("https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC", options)).resolves.toEqual({
+			kind: "embed",
+			url: "https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC",
+			provider: "spotify",
+			ref: "track/4uLU6hMCjMI75M1A2tKUQC",
+		});
+		requests.length = 0;
+		const slides = "1AbCdEfGhIjKlMnOpQrStUvWxYz_0123456789";
+		await expect(unfurlUrl(`https://docs.google.com/presentation/d/${slides}/edit`, options)).resolves.toMatchObject({
+			kind: "embed",
+			provider: "google-slides",
+			ref: slides,
+		});
+		expect(requests).toEqual([]);
+	});
+
+	it("follows a short SoundCloud link to the track it names", async () => {
+		routes.set("on.soundcloud.com/abc", (_request, response) => {
+			response.writeHead(302, { location: "https://soundcloud.com/nadia-sound/first-track?si=x" });
+			response.end();
+		});
+		routes.set("soundcloud.com/nadia-sound/first-track", html("<title>Track</title>"));
+		routes.set("soundcloud.com/oembed", (_request, response) => {
+			response.writeHead(200, { "content-type": "application/json" });
+			response.end(JSON.stringify({ title: "First track", thumbnail_url: "javascript:alert(1)" }));
+		});
+		await expect(unfurlUrl("https://on.soundcloud.com/abc", options)).resolves.toEqual({
+			kind: "embed",
+			url: "https://soundcloud.com/nadia-sound/first-track",
+			provider: "soundcloud",
+			ref: "nadia-sound/first-track",
+			title: "First track",
+		});
+	});
+
+	it("keeps an embed for a day, reading back only a playable one", async () => {
+		const value = {
+			kind: "embed" as const,
+			url: `https://www.loom.com/share/${LOOM}`,
+			provider: "loom" as const,
+			ref: LOOM,
+		};
+		await writeUnfurlCache(`https://www.loom.com/share/${LOOM}`, value);
+		await expect(readUnfurlCache(`https://www.loom.com/share/${LOOM}`)).resolves.toEqual(value);
+	});
+});
+
 describe("unfurlUrl: links", () => {
 	it("reads a page's card: title, description, site, picture as a suggestion", async () => {
 		await expect(unfurlUrl("https://studio.example.test/work/kopi#top", options)).resolves.toEqual({
@@ -475,7 +554,7 @@ describe("the shared unfurl cache", () => {
 		const value = { kind: "link" as const, url: "https://shared.example.test/a", title: "Shared", siteName: "Site" };
 		await cache.writeUnfurlCache("https://shared.example.test/a", value);
 		const [key] = [...store.keys()];
-		expect(key).toMatch(/^portfolio-unfurl:v2:[\da-f]{64}$/);
+		expect(key).toMatch(/^portfolio-unfurl:v3:[\da-f]{64}$/);
 		await expect(cache.readUnfurlCache("https://shared.example.test/a")).resolves.toEqual(value);
 
 		// Broken JSON, an older shape, or values no result can hold read as a miss, not as a result.

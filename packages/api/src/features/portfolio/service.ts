@@ -4,6 +4,7 @@ import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioStatisticsRange } from "@rezumi/schema/portfolio/statistics";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import type { ResumeData } from "@rezumi/schema/resume/data";
+import { hash } from "bcryptjs";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
@@ -20,7 +21,7 @@ import { portfolioErrors } from "./errors";
 import { lockPortfolio, markFileUsage, OVERDUE, readStoredData, storedFiles } from "./file-store";
 import { portfolioMedia } from "./media";
 import { assertPortfolioPlan } from "./plan";
-import { portfolioStatistics } from "./statistics";
+import { portfolioStatistics, portfolioWorkStatistics } from "./statistics";
 import { isContactFormConfigured } from "./turnstile";
 
 /** The portfolio's columns but its data, which a save already has and a read parses. */
@@ -193,6 +194,16 @@ async function requireOwnPortfolio(userId: string) {
 	return portfolio;
 }
 
+async function setVisitorPassword(userId: string, password: string | null): Promise<PortfolioDto> {
+	const [row] = await db
+		.update(schema.portfolio)
+		.set({ password })
+		.where(eq(schema.portfolio.userId, userId))
+		.returning(portfolioColumns);
+	if (!row) throw portfolioErrors.notFound();
+	return toDto(row, parsePortfolioData(row.data), userId);
+}
+
 export const portfolioService = {
 	// Uploads, links and file deletion (`media.ts`).
 	...portfolioMedia,
@@ -207,6 +218,17 @@ export const portfolioService = {
 					...(input.range ? { range: input.range } : {}),
 				})
 			: null;
+	},
+
+	workStatistics: async (userId: string, input: { workId: string; range?: PortfolioStatisticsRange | undefined }) => {
+		const portfolio = await requireOwnPortfolio(userId);
+		return portfolioWorkStatistics({
+			portfolio,
+			userId,
+			timeZone: portfolio.timeZone,
+			workId: input.workId,
+			...(input.range ? { range: input.range } : {}),
+		});
 	},
 
 	messages: {
@@ -395,6 +417,22 @@ export const portfolioService = {
 			.from(schema.portfolio)
 			.where(eq(schema.portfolio.userId, userId));
 		throw existing ? portfolioErrors.suspended() : portfolioErrors.notFound();
+	},
+
+	/**
+	 * Asks visitors for a password (Phase 13, B16): stores its bcrypt hash, which never leaves the server. Like publishing,
+	 * a setting: the data's version stays. Allowed while unpublished or taken down. A new password signs every visitor
+	 * out, since their access is bound to the hash (`visitor-access.ts`).
+	 */
+	setPassword: async (userId: string, input: { password: string }): Promise<PortfolioDto> => {
+		await requireEnabled(userId);
+		return setVisitorPassword(userId, await hash(input.password, 10));
+	},
+
+	/** Opens the portfolio to every visitor again; the data's version stays. */
+	removePassword: async (userId: string): Promise<PortfolioDto> => {
+		await requireEnabled(userId);
+		return setVisitorPassword(userId, null);
 	},
 
 	updateSettings: async (

@@ -1,5 +1,6 @@
 import type { PortfolioDevice, PortfolioVisitSource } from "@rezumi/schema/portfolio/statistics";
 import { createHash } from "node:crypto";
+import { PORTFOLIO_QR_UTM_SOURCE } from "@rezumi/schema/portfolio/statistics";
 
 /**
  * Who a visit is, for one hour's deduplication: a hash of the client's address and browser. A hash so no address is
@@ -36,7 +37,8 @@ const LINKEDIN = /(?:^|\.)linkedin\.[a-z.]+$|^lnkd\.in$|^com\.linkedin\.android$
 const WHATSAPP = /(?:^|\.)whatsapp\.com$|^wa\.me$|^com\.whatsapp(?:\.w4b)?$/;
 const GOOGLE = /(?:^|\.)google\.[a-z.]+$|^com\.google\.android\.(?:googlequicksearchbox|gm)$/;
 
-function sourceOfName(name: string): PortfolioVisitSource | null {
+export function sourceOfName(name: string): PortfolioVisitSource | null {
+	if (name === PORTFOLIO_QR_UTM_SOURCE) return "qr";
 	if (name.includes("linkedin") || name === "lnkd") return "linkedin";
 	if (name.includes("whatsapp") || name === "wa") return "whatsapp";
 	if (name.includes("google")) return "google";

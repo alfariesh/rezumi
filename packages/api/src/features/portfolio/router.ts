@@ -1,4 +1,3 @@
-import { ORPCError } from "@orpc/server";
 import z from "zod";
 import { portfolioDataSchema, writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
 import { EMBED_PROVIDERS } from "@rezumi/schema/portfolio/embed";
@@ -198,11 +197,6 @@ const workStatisticsSchema = z.object({
 	]),
 });
 
-/** A procedure whose contract is in place and whose work is still to come (Phase 13, Langkah 0). */
-const notImplemented = (): never => {
-	throw new ORPCError("NOT_IMPLEMENTED", { status: 501, message: "This isn't available yet." });
-};
-
 const messageIdSchema = z.string().min(1).max(64);
 
 export const portfolioRouter = {
@@ -232,7 +226,7 @@ export const portfolioRouter = {
 		.input(z.object({ workId: z.string().regex(PORTFOLIO_ITEM_ID_PATTERN), range: rangeSchema.optional() }))
 		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND", "PORTFOLIO_WORK_NOT_FOUND"))
 		.output(workStatisticsSchema)
-		.handler(notImplemented),
+		.handler(({ context, input }) => portfolioService.workStatistics(context.user.id, input)),
 
 	messages: {
 		list: protectedProcedure
@@ -434,7 +428,7 @@ export const portfolioRouter = {
 		.input(z.object({ password: z.string().min(6).max(64) }))
 		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND"))
 		.output(portfolioSchema)
-		.handler(notImplemented),
+		.handler(({ context, input }) => portfolioService.setPassword(context.user.id, input)),
 
 	removePassword: protectedProcedure
 		.route({
@@ -448,7 +442,7 @@ export const portfolioRouter = {
 		.input(z.object({}).optional())
 		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND"))
 		.output(portfolioSchema)
-		.handler(notImplemented),
+		.handler(({ context }) => portfolioService.removePassword(context.user.id)),
 
 	updateSettings: protectedProcedure
 		.route({

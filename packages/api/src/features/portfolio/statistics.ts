@@ -17,7 +17,8 @@ import {
 	PORTFOLIO_VISIT_SOURCES,
 } from "@rezumi/schema/portfolio/statistics";
 import { getEntitlements } from "../billing/entitlements";
-import { readPortfolioDetails } from "./analytics";
+import { readPortfolioDetails, readPortfolioWorkDetails } from "./analytics";
+import { portfolioErrors } from "./errors";
 import { lastDays } from "./traffic";
 
 const daily = schema.portfolioStatisticsDaily;
@@ -89,8 +90,7 @@ type PortfolioDetails =
 /**
  * The owner's numbers for the last `range` days (7, 30 or 90; `01-desain.md` section 10), in their own time zone. The
  * basic numbers, day by day, are for every plan; the breakdown from Analytics Engine is for plans with
- * `detailedPortfolioStats` (owner decision #16). Phase 13 Langkah 0: the day-by-day numbers and the range come from the
- * daily rows; the breakdown still covers the default 30 days until `pf-server` gives it the range.
+ * `detailedPortfolioStats` (owner decision #16), over the same span of days.
  */
 export async function portfolioStatistics(input: {
 	portfolio: { id: string; data: PortfolioData };
@@ -165,7 +165,7 @@ export async function portfolioStatistics(input: {
 		totals: { views, clicks, messages },
 		sources,
 		works,
-		details: await details(input.portfolio.id, input.userId, input.timeZone, titles, now),
+		details: await details(input.portfolio.id, input.userId, input.timeZone, titles, now, range),
 	};
 }
 
@@ -175,10 +175,11 @@ async function details(
 	timeZone: string,
 	titles: ReadonlyMap<string, string>,
 	now: Date,
+	days: number,
 ): Promise<PortfolioDetails> {
 	const entitlements = await getEntitlements(userId);
 	if (!entitlements.features.detailedPortfolioStats) return { state: "locked" };
-	const rows = await readPortfolioDetails(portfolioId, timeZone, now);
+	const rows = await readPortfolioDetails(portfolioId, timeZone, now, days);
 	if (typeof rows === "string") return { state: rows };
 	return {
 		state: "ready",
@@ -189,4 +190,60 @@ async function details(
 			titles.has(row.workId) ? [{ ...row, title: titles.get(row.workId) ?? "" }] : [],
 		),
 	};
+}
+
+/**
+ * One work's numbers for the last `range` days (Phase 13, B9): how often its page was opened, day by day, for every
+ * plan; where its visits came from, referrers, countries, devices and the clicks on its page for plans with
+ * `detailedPortfolioStats`. Only a work the portfolio still has: any other id is `PORTFOLIO_WORK_NOT_FOUND`.
+ */
+export async function portfolioWorkStatistics(input: {
+	portfolio: { id: string; data: PortfolioData };
+	userId: string;
+	timeZone: string;
+	workId: string;
+	range?: PortfolioStatisticsRange;
+	now?: Date;
+}) {
+	const work = input.portfolio.data.works.items.find((item) => item.id === input.workId);
+	if (!work) throw portfolioErrors.workNotFound();
+	const now = input.now ?? new Date();
+	const range = input.range ?? PORTFOLIO_STATISTICS_DAYS;
+	const dates = lastDays(now, input.timeZone, range);
+	const rows = await db
+		.select({ date: daily.date, opens: sql<number>`coalesce((${daily.works}->>${work.id})::int, 0)` })
+		.from(daily)
+		.where(
+			and(
+				eq(daily.portfolioId, input.portfolio.id),
+				gte(daily.date, dates[0] ?? ""),
+				lte(daily.date, dates.at(-1) ?? ""),
+			),
+		);
+	const byDay = new Map(rows.map((row) => [row.date, Number(row.opens) || 0]));
+	const days = dates.map((date) => ({ date, opens: byDay.get(date) ?? 0 }));
+	return {
+		range: { days: range, from: dates[0] ?? "", to: dates.at(-1) ?? "" },
+		work: { id: work.id, title: work.title.trim(), slug: work.slug },
+		days,
+		totals: { opens: days.reduce((sum, day) => sum + day.opens, 0) },
+		details: await workDetails(input.portfolio.id, work.id, input.userId, input.timeZone, now, range),
+	};
+}
+
+async function workDetails(
+	portfolioId: string,
+	workId: string,
+	userId: string,
+	timeZone: string,
+	now: Date,
+	days: number,
+) {
+	const entitlements = await getEntitlements(userId);
+	if (!entitlements.features.detailedPortfolioStats) return { state: "locked" as const };
+	const rows = await readPortfolioWorkDetails(portfolioId, workId, timeZone, now, days);
+	if (typeof rows === "string") return { state: rows };
+	const clicks = zeroed(PORTFOLIO_CLICK_KINDS);
+	addTo(clicks, PORTFOLIO_CLICK_KINDS, rows.clicks);
+	return { state: "ready" as const, ...rows, clicks };
 }

@@ -10,8 +10,10 @@ const envMock = vi.hoisted(() => ({
 }));
 const state = vi.hoisted(() => ({
 	banned: new Set<string>(),
-	/** Keys a published portfolio uses: what `isPublicPortfolioFile` answers from the database. */
+	/** Keys a published portfolio uses: what `portfolioFileAccess` answers `public` for from the database. */
 	publicFiles: new Set<string>(),
+	/** Keys of a portfolio behind a visitor password: `protected`. */
+	protectedFiles: new Set<string>(),
 	lookups: 0,
 }));
 vi.mock("@rezumi/env/server", () => ({ env: envMock }));
@@ -20,9 +22,10 @@ vi.mock("@rezumi/api/features/storage", async (original) => ({
 	isPublicUploadOwner: async (userId: string) => !state.banned.has(userId),
 }));
 vi.mock("@rezumi/api/features/portfolio/public", () => ({
-	isPublicPortfolioFile: async (key: string) => {
+	portfolioFileAccess: async (key: string) => {
 		state.lookups++;
-		return state.publicFiles.has(key);
+		if (state.protectedFiles.has(key)) return "protected";
+		return state.publicFiles.has(key) ? "public" : "none";
 	},
 }));
 // Visitors have no session; `x-test-user` stands in for a signed-in account's cookie.
@@ -52,6 +55,7 @@ afterAll(async () => {
 beforeEach(() => {
 	state.banned.clear();
 	state.publicFiles.clear();
+	state.protectedFiles.clear();
 	state.lookups = 0;
 });
 
@@ -225,5 +229,21 @@ describe("other pictures", () => {
 		state.banned.add("user-1");
 		expect((await get(key)).status).toBe(404);
 		expect(state.lookups).toBe(0);
+	});
+});
+
+describe("files of a portfolio behind a password (Phase 13, B16)", () => {
+	it("are served to whoever has their address, but kept out of shared caches and search engines", async () => {
+		await storage.write({ key: pictureKey, data: webpBytes, contentType: "image/webp" });
+		state.protectedFiles.add(pictureKey);
+		const response = await get(pictureKey);
+		expect(response.status).toBe(200);
+		expect(response.headers.get("cache-control")).toBe("private, max-age=3600");
+		expect(response.headers.get("x-robots-tag")).toBe("noindex, nofollow");
+		// A custom domain loads them from here, without its access cookie.
+		expect(response.headers.get("cross-origin-resource-policy")).toBe("cross-origin");
+		const cached = await get(pictureKey, { "If-None-Match": response.headers.get("etag") ?? "" });
+		expect(cached.status).toBe(304);
+		expect(cached.headers.get("cache-control")).toBe("private, max-age=3600");
 	});
 });

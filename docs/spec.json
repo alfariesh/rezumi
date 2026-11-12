@@ -39443,6 +39443,10 @@
 																		}
 																	]
 																},
+																"hasPassword": {
+																	"type": "boolean",
+																	"description": "Whether visitors need a password; the password itself is never exported."
+																},
 																"data": {
 																	"description": "The portfolio's content, exported as it's stored."
 																},
@@ -39463,6 +39467,7 @@
 																"publishedAt",
 																"suspendedAt",
 																"suspendedReason",
+																"hasPassword",
 																"createdAt",
 																"updatedAt"
 															]

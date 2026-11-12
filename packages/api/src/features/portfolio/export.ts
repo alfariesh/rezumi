@@ -1,4 +1,4 @@
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, inArray, sql } from "drizzle-orm";
 import z from "zod";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
@@ -17,6 +17,7 @@ export const portfolioExportSchema = z.object({
 			publishedAt: z.date().nullable(),
 			suspendedAt: z.date().nullable(),
 			suspendedReason: z.string().nullable(),
+			hasPassword: z.boolean().describe("Whether visitors need a password; the password itself is never exported."),
 			data: z.unknown().describe("The portfolio's content, exported as it's stored."),
 			createdAt: z.date(),
 			updatedAt: z.date(),
@@ -80,6 +81,7 @@ export async function exportPortfolioData(userId: string): Promise<z.infer<typeo
 			publishedAt: schema.portfolio.publishedAt,
 			suspendedAt: schema.portfolio.suspendedAt,
 			suspendedReason: schema.portfolio.suspendedReason,
+			hasPassword: sql<boolean>`${schema.portfolio.password} is not null`,
 			data: schema.portfolio.data,
 			createdAt: schema.portfolio.createdAt,
 			updatedAt: schema.portfolio.updatedAt,

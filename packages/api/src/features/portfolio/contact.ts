@@ -15,6 +15,7 @@ import { portfolioOwnsProfilePath } from "./public";
 import { countMessage } from "./statistics";
 import { dayInTimeZone } from "./traffic";
 import { isContactFormConfigured, verifyTurnstileToken } from "./turnstile";
+import { portfolioAccess } from "./visitor-access";
 
 const message = schema.portfolioMessage;
 const limits = rateLimitConfig.portfolioPublic;
@@ -62,13 +63,17 @@ export async function submitPortfolioMessage(input: {
 	username: string;
 	form: PortfolioMessageForm;
 	trustedClient?: string | undefined;
+	/** The visitor's request, for the password gate: a portfolio they can't open takes no message. */
+	requestHeaders?: Headers | undefined;
 	now?: Date;
 }): Promise<PortfolioMessageResult | null> {
 	const [row] = await db
 		.select({
 			id: schema.portfolio.id,
+			userId: schema.portfolio.userId,
 			data: schema.portfolio.data,
 			timeZone: schema.user.timezone,
+			passwordHash: schema.portfolio.password,
 		})
 		.from(schema.portfolio)
 		.innerJoin(schema.user, eq(schema.portfolio.userId, schema.user.id))
@@ -82,6 +87,8 @@ export async function submitPortfolioMessage(input: {
 		.limit(1);
 	if (!row) return null;
 
+	// Behind a password, only a visitor who opened the portfolio can write to it (no new code: the form is just closed).
+	if ((await portfolioAccess(row, input.requestHeaders ?? new Headers())) === "locked") return fail("unavailable");
 	const data = parsePortfolioData(row.data);
 	if (!data.contact.form || data.sections.hidden.includes("contact") || !isContactFormConfigured())
 		return fail("unavailable");

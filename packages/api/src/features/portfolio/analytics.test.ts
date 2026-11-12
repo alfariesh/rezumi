@@ -8,6 +8,7 @@ const {
 	configurePortfolioAnalytics,
 	portfolioDataPoint,
 	portfolioDetailQueries,
+	portfolioWorkDetailQueries,
 	readPortfolioDetails,
 	writePortfolioEvent,
 } = await import("./analytics");
@@ -177,5 +178,28 @@ describe("readPortfolioDetails", () => {
 		});
 		expect(await readPortfolioDetails("pf-read")).toEqual(first);
 		expect(query).toHaveBeenCalledTimes(4);
+	});
+});
+
+describe("ranges and one work's breakdown (Phase 13, B9)", () => {
+	const now = new Date("2026-11-09T00:00:00Z");
+
+	it("starts at the beginning of the oldest day of 7 or 90 days", () => {
+		expect(portfolioDetailQueries("pf-mine", now, "UTC", 7).countries.params.start).toBe("2026-11-03T00:00:00.000Z");
+		expect(portfolioDetailQueries("pf-mine", now, "UTC", 90).countries.params.start).toBe("2026-08-12T00:00:00.000Z");
+	});
+
+	it("limits every query to the portfolio and the work, with the work as a parameter", () => {
+		const queries = Object.values(portfolioWorkDetailQueries("pf-mine", "w1", now, "UTC", 30));
+		expect(queries).toHaveLength(5);
+		for (const { query, params } of queries) {
+			expect(query).toContain("index1 = $portfolio");
+			expect(query).toContain("blob2 = $work");
+			expect(query).not.toContain("w1");
+			expect(params).toMatchObject({ portfolio: "pf-mine", work: "w1" });
+		}
+		const { sources, clicks } = portfolioWorkDetailQueries("pf-mine", "w1", now);
+		expect(sources.query).toContain("blob1 = 'work'");
+		expect(clicks.query).toContain("blob1 NOT IN ('view', 'work')");
 	});
 });
