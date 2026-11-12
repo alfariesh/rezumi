@@ -151,7 +151,7 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 					<Typography type="h4" render={renderAsH2}>
 						{item.data.headline}
 					</Typography>
-					<p className="max-w-[560px] text-sm leading-5 text-muted">{item.data.summary}</p>
+					<p className="max-w-[560px] text-body-sm text-muted">{item.data.summary}</p>
 					{item.outdated && !readOnly && <AiNotice task="fit" className="mt-1" />}
 				</div>
 				<div className="flex flex-wrap items-center gap-1.5">
@@ -218,7 +218,7 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 						<CareerWidget icon="list-checks" title={<Trans>Against your requirements</Trans>}>
 							<ul className="grid gap-2.5">
 								{item.data.checks.map((entry) => (
-									<li key={entry.label} className="flex gap-2 text-sm leading-5">
+									<li key={entry.label} className="flex gap-2 text-sm">
 										<Icon
 											name={entry.met === true ? "check-circle" : entry.met === false ? "x-circle" : "question"}
 											size={18}
@@ -264,20 +264,20 @@ function RequirementRow({ requirement, status, evidence, readOnly, onSaved }: Re
 			className="grid gap-x-4 gap-y-2 px-4 py-4 @xl:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] @3xl:grid-cols-[minmax(0,1.1fr)_90px_170px_minmax(0,1.6fr)]"
 		>
 			<div role="cell" className="grid content-start gap-2">
-				<p className="text-sm leading-5 font-semibold">{requirement.text}</p>
+				<p className="text-sm font-semibold">{requirement.text}</p>
 				<div className="flex flex-wrap items-center gap-2 @3xl:hidden">
 					<StatusPill status={status} />
 					<span className="text-sm text-muted">{from}</span>
 				</div>
 			</div>
-			<p role="cell" className="hidden text-sm leading-5 text-muted @3xl:block">
+			<p role="cell" className="hidden text-body-sm text-muted @3xl:block">
 				{from}
 			</p>
 			<div role="cell" className="hidden @3xl:block">
 				<StatusPill status={status} />
 			</div>
 			<div role="cell" className="grid content-start justify-items-start gap-2.5">
-				<p className={cn("text-sm leading-5", status === "missing" ? "text-muted" : "text-foreground")}>{evidence}</p>
+				<p className={cn("text-body-sm", status === "missing" ? "text-muted" : "text-foreground")}>{evidence}</p>
 				{canAdd && (
 					<Swap id={editing ? "editor" : "action"} className="w-full">
 						{editing ? (
@@ -330,7 +330,6 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 				fullWidth
 				// oxlint-disable-next-line jsx-a11y/no-autofocus -- opened by the user's click on Add evidence
 				autoFocus
-				rows={2}
 				value={text}
 				aria-label={t`What you did: ${requirement.text}`}
 				aria-invalid={touched && empty}
@@ -340,10 +339,9 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 				onKeyDown={(event) => {
 					if (event.key === "Escape") onCancel();
 				}}
-				className="min-h-14"
 			/>
 			{touched && empty && (
-				<p role="alert" className="text-xs text-danger">
+				<p role="alert" className="text-body-xs text-danger">
 					<Trans>Write what you did.</Trans>
 				</p>
 			)}
@@ -373,7 +371,7 @@ function WorthAsking({ ask, applicationId, readOnly }: WorthAskingProps) {
 			title={ask.person ? t`Worth asking ${ask.person}` : t`Worth asking`}
 			contentClassName="justify-items-start"
 		>
-			<p className="text-sm leading-5 text-muted">{ask.text}</p>
+			<p className="text-body-sm text-muted">{ask.text}</p>
 			{!readOnly && (
 				<Button
 					size="sm"

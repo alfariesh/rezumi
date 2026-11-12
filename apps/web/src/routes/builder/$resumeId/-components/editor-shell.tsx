@@ -5,27 +5,30 @@ import { Trans } from "@lingui/react/macro";
 import { getRouteApi, Outlet } from "@tanstack/react-router";
 import { Suspense, useEffect } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { cn } from "@rezumi/utils/style";
+import { DocumentMenu } from "./document-menu";
 import { DownloadSheet } from "./download-sheet";
-import { EditorBar, ModeTabs } from "./editor-bar";
+import { EditorBar, ModeTabs, ResumeControls, ResumeDownload } from "./editor-bar";
 import { DesignPanel, DesignSheet, ModePanel } from "./mode-panels";
 import { useEditorHotkeys } from "./use-editor-hotkeys";
 import { ResumeAssistant } from "@/features/assistant/dock";
 import { openAssistantFrom } from "@/features/assistant/open";
 import { usePreviewPausedStore } from "@/features/resume/builder/draft";
 import { IssueStepper } from "@/features/resume/editor/check/page-layer";
-import { EditorFrame, MobilePanel, MobileTabBar, useEditorLayout } from "@/features/resume/editor/chrome/shell";
-import { useEditorStore } from "@/features/resume/editor/store";
+import { useOpenIssueCount } from "@/features/resume/editor/check/use-check";
+import { EditorFrame, MobileEditor, useEditorLayout, useMobileSheet } from "@/features/resume/editor/chrome/shell";
+import { EDITOR_MODES, selectPanelView, useEditorStore } from "@/features/resume/editor/store";
 import { useEditorMode } from "@/features/resume/editor/use-editor-mode";
 import { useResumeWebMcpTools } from "@/features/resume/editor/webmcp";
 import { revealSelectionInPanel } from "@/features/resume/editor/write/reveal";
 import { preloadRichTextEditor } from "@/features/resume/editor/write/rich-text-editor";
 import { whenIdle } from "@/features/resume/preview/resume-thumbnail.shared";
+import { HistoryTab } from "@/features/resume/share/history-tab";
 
 /**
- * The editor: a 56px bar over a 400px panel and the page canvas (desktop). On tablets the panel is a 380px
- * drawer over the page, pinnable beside it in landscape; on phones one view shows at a time, switched by
- * Write · Page · Design · Check · Share tabs.
+ * The editor: the rail (modes, History, AI) beside one wrapper of sections, each with its own header: the panel (the
+ * name over the mode's widgets), the canvas (undo and zoom over the page, Download floating on it) and, while open, the
+ * assistant. On tablets the panel is a 380px drawer over the page, pinnable beside it in
+ * landscape; on phones the page shows with Write · Design · Check · Share floating over it, each opening a sheet.
  */
 export function EditorShell() {
 	const [mode, setMode] = useEditorMode();
@@ -52,10 +55,14 @@ export function EditorShell() {
 				bar={<EditorBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
 				mode={mode}
 				modes={<ModeTabs />}
+				title={<DocumentMenu />}
+				controls={<ResumeControls compact={editorLayout.layout === "tablet"} />}
 				panelLabel={panelLabel(mode)}
 				panel={<ModePanel mode={mode} />}
 				page={<Outlet />}
 				assistant={<ResumeAssistant />}
+				history={<HistoryTab />}
+				floating={<ResumeDownload />}
 				mobile={<MobileBody mode={mode} onModeChange={setMode} />}
 			>
 				<EditorHotkeys onModeChange={setMode} />
@@ -118,58 +125,61 @@ type MobileBodyProps = {
 	onModeChange: (mode: EditorMode) => void;
 };
 
+/**
+ * Phones: the page, with the modes floating over it. Each opens its panel in a sheet; Design's rests at half height so
+ * the page stays in view above it. Tapping a line on the page offers to edit its entry, and Check steps through the
+ * issues on the page while no sheet is open.
+ */
 function MobileBody({ mode, onModeChange }: MobileBodyProps) {
-	const view = useEditorStore((state) => state.mobileView) ?? mode;
+	const open = useMobileSheet(EDITOR_MODES);
+	const view = useEditorStore(selectPanelView);
+	const issueCount = useOpenIssueCount();
 	const setPreviewPaused = usePreviewPausedStore((state) => state.setPaused);
 
-	// The page stays mounted so zoom survives switching views; it doesn't re-render while hidden. Design keeps
-	// it in view above its sheet.
-	const pageVisible = view === "page" || view === "design";
+	// A full-height sheet hides the page, so it stops re-rendering until the sheet goes; Design's and History's half
+	// sheets leave it in view.
+	const covered = view === "assistant" || (view === null && open !== null && open !== "design");
 	useEffect(() => {
 		// oxlint-disable-next-line react/set-state-in-effect -- a shared store the preview renderer reads, reset on unmount
-		setPreviewPaused(!pageVisible);
+		setPreviewPaused(covered);
 		return () => setPreviewPaused(false);
-	}, [pageVisible, setPreviewPaused]);
+	}, [covered, setPreviewPaused]);
+
+	const openSheet = (next: EditorMode | null) => {
+		useEditorStore.setState({ mobileView: next ?? "page" });
+		if (next) onModeChange(next);
+	};
 
 	return (
-		<div className="grid min-h-0 grid-rows-[minmax(0,1fr)_auto]">
-			{/* Clip, not hidden: the lowered Design sheet overflows it, and scrolling into the sheet mustn't scroll it. */}
-			<div className="relative min-h-0 overflow-clip">
-				<main id="main-content" className={cn("h-full", !pageVisible && "invisible")}>
-					<Outlet />
-				</main>
-				{view === "page" && mode === "check" && <IssueStepper />}
-				{view === "page" && mode !== "check" && (
-					<SelectionBar
-						onEdit={() => {
-							useEditorStore.setState({ mobileView: "write" });
-							onModeChange("write");
-						}}
-					/>
-				)}
-				{view === "design" && (
-					<Suspense>
-						<DesignSheet />
-					</Suspense>
-				)}
-				{/* Shown only in Write, Check and Share, so Design here means the panel was left in Write. */}
-				<MobilePanel mode={mode} visible={view !== "page" && view !== "design"}>
-					<ModePanel mode={mode === "design" ? "write" : mode} />
-				</MobilePanel>
-			</div>
-
-			<MobileTabBar
-				tabs={[
-					{ view: "write", icon: "pencil-simple", label: t`Write` },
-					{ view: "page", icon: "file-text", label: t`Page` },
-					{ view: "design", icon: "palette", label: t`Design` },
-					{ view: "check", icon: "list-checks", label: t`Check` },
-					{ view: "share", icon: "globe-hemisphere-west", label: t`Share` },
-				]}
-				view={view}
-				onModeChange={onModeChange}
-			/>
-		</div>
+		<MobileEditor
+			items={[
+				{ mode: "write", icon: "pencil-simple", label: t`Write` },
+				{ mode: "design", icon: "palette", label: t`Design` },
+				{
+					mode: "check",
+					icon: "list-checks",
+					label: t`Check`,
+					extra: issueCount > 0 && <span className="size-2 rounded-full bg-warning" aria-hidden="true" />,
+				},
+				{ mode: "share", icon: "globe-hemisphere-west", label: t`Share` },
+			]}
+			views={["assistant", "history"]}
+			assistant={<ResumeAssistant />}
+			history={<HistoryTab />}
+			open={open}
+			onOpenChange={openSheet}
+			halfModes={["design"]}
+			page={<Outlet />}
+			overlay={mode === "check" ? <IssueStepper /> : <SelectionBar onEdit={() => openSheet("write")} />}
+		>
+			{open === "design" ? (
+				<Suspense>
+					<DesignSheet />
+				</Suspense>
+			) : open ? (
+				<ModePanel mode={open} />
+			) : null}
+		</MobileEditor>
 	);
 }
 
@@ -182,7 +192,7 @@ function SelectionBar({ onEdit }: { onEdit: () => void }) {
 		<Toolbar
 			isAttached
 			aria-label={t`Selection`}
-			className="absolute bottom-[76px] left-1/2 z-10 -translate-x-1/2 transition-[opacity,translate] duration-standard ease-enter starting:translate-y-2 starting:opacity-0"
+			className="absolute bottom-[calc(env(safe-area-inset-bottom)+5.25rem)] left-1/2 z-10 -translate-x-1/2 transition-[opacity,translate] duration-standard ease-enter starting:translate-y-2 starting:opacity-0"
 		>
 			<Button
 				variant="primary"

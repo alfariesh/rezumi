@@ -140,7 +140,7 @@ export function PractiseTab({ application, version, interview, speak, story, now
 			)}
 			<CareerWidget title={t`Your attempts`} icon="clock" count={attempts.length > 0 ? attempts.length : undefined}>
 				{attempts.length === 0 ? (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>Each answer you get feedback on is kept here, newest first.</Trans>
 					</p>
 				) : (
@@ -157,7 +157,7 @@ export function PractiseTab({ application, version, interview, speak, story, now
 						))}
 					</ul>
 				)}
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>
 						Compare attempts to see what improved. Practice questions are simulated, not from {application.company}.
 					</Trans>
@@ -184,7 +184,7 @@ function AttemptRow({ item, now, current, onOpen }: AttemptRowProps) {
 				<Icon name={item.data.mode === "spoken" ? "microphone" : "keyboard"} size={15} />
 				{at} · {item.data.mode === "spoken" ? t`spoken` : t`typed`}
 			</span>
-			<q className="line-clamp-2 text-sm leading-5">{item.data.answer}</q>
+			<q className="line-clamp-2 text-sm">{item.data.answer}</q>
 			{item.data.note && (
 				<Chip size="sm" variant="soft" color="warning" className="w-fit">
 					{item.data.note}
@@ -429,7 +429,6 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 			maxLength={6000}
 			placeholder={t`About 90 seconds when spoken`}
 			onChange={(event) => setAnswer(event.target.value)}
-			className="min-h-28"
 		/>
 	);
 
@@ -456,7 +455,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 				<Typography type="h4" render={renderAsH2}>
 					{question.text}
 				</Typography>
-				{storyTitle && <p className="text-sm text-muted">{t`Practicing your story: ${storyTitle}`}</p>}
+				{storyTitle && <p className="text-body-sm text-muted">{t`Practicing your story: ${storyTitle}`}</p>}
 			</CareerWidget>
 
 			{/* Space starts and stops recording while focus is in this card (the record button handles it natively). */}
@@ -586,7 +585,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 											<p className="text-sm font-semibold text-danger-soft-foreground">
 												<Trans>Recording · {elapsed}</Trans>
 											</p>
-											<p className="text-sm text-muted">
+											<p className="text-body-sm text-muted">
 												{browserDictation ? (
 													heard || <Trans>Listening… Stop when you're done.</Trans>
 												) : (
@@ -599,7 +598,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 											<p className="text-sm font-semibold">
 												<Trans>Record your answer</Trans>
 											</p>
-											<p className="text-sm text-muted">
+											<p className="text-body-sm text-muted">
 												{browserDictation ? (
 													<Trans>Up to 2 minutes. Your words appear as you speak.</Trans>
 												) : (
@@ -683,7 +682,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 								{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
 								{generate.isPending ? <Working steps={workingSteps("practice")} /> : <Trans>Get feedback</Trans>}
 							</Button>
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								<Trans>Compared with your stories and the posting.</Trans>
 							</p>
 						</div>
@@ -996,7 +995,7 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 									)}
 								</div>
 							)}
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								<Trans>
 									Connections bill speech separately and may use tokens on your account. Your browser's speech is free,
 									but its maker may process the audio. The server keeps transcripts, never recordings.
@@ -1064,21 +1063,21 @@ function FeedbackCard({ data, children }: FeedbackCardProps) {
 						<Icon name="thumbs-up" size={16} />
 						<Trans>What works</Trans>
 					</p>
-					<p className="text-sm">{data.works}</p>
+					<p className="text-body-sm">{data.works}</p>
 				</div>
 				<div className="grid content-start gap-1.5 rounded-xl bg-warning-soft p-4">
 					<p className="flex items-center gap-1.5 text-xs font-semibold text-warning-soft-foreground">
 						<Icon name="wrench" size={16} />
 						<Trans>Strengthen</Trans>
 					</p>
-					<p className="text-sm">{data.strengthen}</p>
+					<p className="text-body-sm">{data.strengthen}</p>
 				</div>
 			</div>
 			<div className="grid gap-1.5 rounded-xl bg-surface-secondary p-4">
 				<p className="text-xs font-semibold text-muted">
 					<Trans>Try this opening</Trans>
 				</p>
-				<q className="text-base leading-6">{data.opening}</q>
+				<q className="text-base">{data.opening}</q>
 			</div>
 			{children}
 		</CareerWidget>

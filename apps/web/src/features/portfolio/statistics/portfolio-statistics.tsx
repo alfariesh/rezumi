@@ -61,7 +61,7 @@ function RankList({ title, rows, empty }: RankListProps) {
 		<section className="grid content-start gap-2">
 			<h3 className="text-sm font-semibold">{title}</h3>
 			{shown.length === 0 ? (
-				<p className="text-sm text-muted">{empty}</p>
+				<p className="text-body-sm text-muted">{empty}</p>
 			) : (
 				<ul className="grid gap-2">
 					{shown.map((row) => (

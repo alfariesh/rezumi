@@ -56,8 +56,8 @@ const sectionIcon = (key: PortfolioSectionKey): IconName =>
 	isStandardSection(key) ? SECTION_ICONS[key] : key.startsWith("custom:") ? "note-pencil" : "file-text";
 
 /**
- * Content: the intro, which is always first, then every section in page order. Drag a section (or use its arrows) to
- * reorder, the eye hides it, the pencil renames it; opening one shows its fields.
+ * Content: the intro, which is always first, then every section in page order. Drag a section to reorder, the eye
+ * hides it, the pencil renames it; opening one shows its fields.
  */
 export function ContentPanel() {
 	const openWorkId = usePortfolioEditorUi((state) => state.openWorkId);
@@ -65,7 +65,7 @@ export function ContentPanel() {
 	// A work removed elsewhere (undo, another tab) closes its editor.
 	if (openWorkId && exists) return <WorkEditor key={openWorkId} workId={openWorkId} />;
 	return (
-		<div className="grid gap-3 p-3">
+		<div className="grid gap-6 p-3">
 			<AiDraftButton />
 			<PanelGroup icon="user-circle" title={<Trans>Intro</Trans>}>
 				<IntroForm />
@@ -91,12 +91,6 @@ function SectionsGroup() {
 
 	return (
 		<PanelGroup icon="list-bullets" title={<Trans>Sections</Trans>}>
-			<p className="text-xs text-muted">
-				<Trans>
-					Drag a section, or use its arrows, to change the order. Empty sections don't show on the page until they have
-					something in them.
-				</Trans>
-			</p>
 			<SortableProvider onMove={(id, target) => move(id as PortfolioSectionKey, target.index)}>
 				<div className="grid gap-1">
 					{order.map((key, index) => (
@@ -104,13 +98,11 @@ function SectionsGroup() {
 							key={key}
 							sectionKey={key}
 							index={index}
-							count={order.length}
 							title={sectionLabel(key, data, source.data, messages)}
 							hidden={data.sections.hidden.includes(key)}
 							empty={!data.sections.hidden.includes(key) && !shown.has(key)}
 							open={open === key}
 							onOpenChange={(next) => setOpen(next ? key : null)}
-							onMove={(to) => move(key, to)}
 						>
 							<SectionForm sectionKey={key} />
 						</SectionRow>
@@ -158,29 +150,16 @@ function SectionForm({ sectionKey }: { sectionKey: PortfolioSectionKey }) {
 type SectionRowProps = {
 	sectionKey: PortfolioSectionKey;
 	index: number;
-	count: number;
 	title: string;
 	hidden: boolean;
 	/** Shown, but with nothing in it yet, so the page leaves it out. */
 	empty: boolean;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
-	onMove: (to: number) => void;
 	children: ReactNode;
 };
 
-function SectionRow({
-	sectionKey,
-	index,
-	count,
-	title,
-	hidden,
-	empty,
-	open,
-	onOpenChange,
-	onMove,
-	children,
-}: SectionRowProps) {
+function SectionRow({ sectionKey, index, title, hidden, empty, open, onOpenChange, children }: SectionRowProps) {
 	const prompt = usePrompt();
 	const titleId = useId();
 	const detailsId = useId();
@@ -209,10 +188,7 @@ function SectionRow({
 	};
 
 	return (
-		<div
-			{...sortable.dropTargetProps}
-			className={cn("relative rounded-xl", sortable.isDragging && "opacity-50", open && "bg-default/40")}
-		>
+		<div {...sortable.dropTargetProps} className={cn("relative rounded-xl", sortable.isDragging && "opacity-50")}>
 			<SortableEdge edge={sortable.edge} />
 			<div className="group/row flex h-11 items-center gap-0.5 rounded-xl pe-1 hover:bg-default">
 				<SortableHandle
@@ -263,24 +239,8 @@ function SectionRow({
 						onPress={() => void rename()}
 					/>
 				)}
-				<IconButton
-					icon="arrow-up"
-					label={t`Move ${title} up`}
-					size="sm"
-					className="text-muted"
-					isDisabled={index === 0}
-					onPress={() => onMove(index - 1)}
-				/>
-				<IconButton
-					icon="arrow-down"
-					label={t`Move ${title} down`}
-					size="sm"
-					className="text-muted"
-					isDisabled={index === count - 1}
-					onPress={() => onMove(index + 1)}
-				/>
 			</div>
-			{open && <div className="grid gap-3 px-2 pt-2 pb-4">{children}</div>}
+			{open && <div className="grid gap-3 px-1 pt-2 pb-4">{children}</div>}
 		</div>
 	);
 }

@@ -80,7 +80,7 @@ export function ParserView() {
 	return (
 		<div className="mx-auto grid min-h-[792px] w-[612px] max-w-full content-start gap-[18px] rounded-2xl bg-surface px-8 py-7 font-mono text-xs leading-relaxed shadow-surface max-sm:px-4">
 			{isError ? (
-				<p className="font-sans text-sm text-danger">
+				<p className="font-sans text-body-sm text-danger">
 					<Trans>The page's PDF couldn't be read. Edit anything to render it again.</Trans>
 				</p>
 			) : !data ? (
@@ -102,7 +102,7 @@ function ParsedText({ parsed, issues }: { parsed: Parsed; issues: readonly Check
 
 	if (doc.charCount === 0) {
 		return (
-			<p className="font-sans text-sm text-warning-soft-foreground">
+			<p className="font-sans text-body-sm text-warning-soft-foreground">
 				<Trans>This PDF has no text layer, so a parser reads nothing from it.</Trans>
 			</p>
 		);

@@ -257,7 +257,7 @@ export function PurchaseDialog({
 								<p className="text-muted">
 									<Trans>One payment by QRIS. It doesn't renew: we email you 3 days before it ends.</Trans>
 								</p>
-								<p className="text-xs text-muted">
+								<p className="text-body-xs text-muted">
 									<Trans>Prices are final: no tax is added.</Trans>
 								</p>
 							</div>
@@ -284,7 +284,7 @@ export function PurchaseDialog({
 										<Trans>Renews every month until you cancel.</Trans>
 									)}
 								</p>
-								<p className="text-xs text-muted">
+								<p className="text-body-xs text-muted">
 									<Trans>Prices are before tax: the checkout adds the tax that applies where you live.</Trans>
 								</p>
 							</div>
@@ -460,7 +460,7 @@ export function PurchaseDialog({
 							</Alert>
 						)}
 
-						<p className="text-xs text-muted">
+						<p className="text-body-xs text-muted">
 							{qris ? (
 								<Trans>
 									{BILLING_SELLER.name} ({BILLING_SELLER.brand}) sells this plan; {BILLING_SELLER.qrisProcessor}{" "}

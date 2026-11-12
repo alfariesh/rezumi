@@ -251,7 +251,7 @@ function CreditsSection({ credits, formatDate, formatDay }: CreditsSectionProps)
 				{!history ? (
 					<Skeleton className="h-12 rounded-xl" />
 				) : history.items.length === 0 ? (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>No credit activity yet.</Trans>
 					</p>
 				) : (
@@ -274,7 +274,7 @@ function CreditsSection({ credits, formatDate, formatDay }: CreditsSectionProps)
 					</SettingsRows>
 				)}
 			</SettingsSection>
-			<p className="px-1 text-sm text-muted">
+			<p className="px-1 text-body-sm text-muted">
 				<Trans>
 					Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your
 					own AI connection never uses credits.
@@ -306,7 +306,7 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 			<>
 				<PageHeader title={<Trans>Plan</Trans>} />
 				<SettingsSection icon="seal-check" title={<Trans>Your plan</Trans>}>
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>Plans don't apply to your account yet, so everything is open.</Trans>
 					</p>
 				</SettingsSection>
@@ -329,7 +329,7 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 					formatDate={formatDate}
 					canManage={plan.purchaseBlockedBy !== "unavailable" && plan.purchaseBlockedBy !== "web_only"}
 				/>
-				<p className="px-1 text-sm text-muted">
+				<p className="px-1 text-body-sm text-muted">
 					<Trans>
 						When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a
 						PDF.

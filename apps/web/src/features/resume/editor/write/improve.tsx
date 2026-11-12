@@ -6,6 +6,7 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { getOrpcErrorMessage } from "@/libs/error-message";
@@ -91,12 +92,12 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 					<p role="status" className="w-fit rounded-sm bg-accent-soft px-1 py-0.5 text-sm">
 						{improve.data.text}
 					</p>
-					<p className="text-xs text-muted">
+					<p className="text-body-xs text-muted">
 						{improve.data.why}
 						{improve.data.addsFacts && <> {t`Check it's accurate.`}</>}
 					</p>
 					{changed && (
-						<p role="alert" className="text-xs text-danger">
+						<p role="alert" className="text-body-xs text-danger">
 							<Trans>The line changed since you asked, so it wasn't replaced.</Trans>
 						</p>
 					)}
@@ -124,15 +125,18 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 						if (request.trim()) run("custom");
 					}}
 				>
-					<Input
-						fullWidth
-						autoFocus
-						aria-label={t`What should change?`}
-						placeholder={t`What should change?`}
-						value={request}
-						maxLength={500}
-						onChange={(event) => setRequest(event.target.value)}
-					/>
+					<WithInputIcon icon="magic-wand" className="flex-1">
+						<Input
+							fullWidth
+							autoFocus
+							className={INPUT_WITH_ICON}
+							aria-label={t`What should change?`}
+							placeholder={t`What should change?`}
+							value={request}
+							maxLength={500}
+							onChange={(event) => setRequest(event.target.value)}
+						/>
+					</WithInputIcon>
 					<Button type="submit" size="sm" isDisabled={!request.trim()}>
 						<Trans>Ask</Trans>
 					</Button>
@@ -162,7 +166,7 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 
 			{improve.error && (
 				<div className="grid gap-2 px-2 pb-1">
-					<p role="alert" className="text-xs text-danger">
+					<p role="alert" className="text-body-xs text-danger">
 						{getOrpcErrorMessage(improve.error, { fallback: t`Couldn't get a suggestion. Nothing changed.` })}
 					</p>
 					<Button size="sm" variant="outline" className="w-fit" onPress={() => improve.reset()}>

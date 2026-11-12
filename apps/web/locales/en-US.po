@@ -592,6 +592,11 @@ msgstr "{0} of {1}. Drop, choose or paste them."
 msgid "{0} per reply"
 msgstr "{0} per reply"
 
+#. placeholder {0}: theme.name
+#: src/features/homepage/portfolio.tsx
+msgid "{0} portfolio theme preview"
+msgstr "{0} portfolio theme preview"
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/conversation.tsx
 msgid "{0} posting"
@@ -1328,6 +1333,10 @@ msgstr "A code from an authenticator app at sign-in"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "A comfortable length, and it fits on one page."
 msgstr "A comfortable length, and it fits on one page."
+
+#: src/features/homepage/portfolio.tsx
+msgid "A contact form, and how many people visited"
+msgstr "A contact form, and how many people visited"
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
@@ -2319,6 +2328,8 @@ msgstr "Against your requirements"
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
 #: src/features/portfolio/ai/rewrite-menu.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 msgid "AI"
 msgstr "AI"
 
@@ -2943,7 +2954,6 @@ msgstr "Asked and answered."
 msgid "Aspect ratio"
 msgstr "Aspect ratio"
 
-#: src/features/assistant/assistant-button.tsx
 #: src/features/assistant/assistant-panel.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -3538,6 +3548,10 @@ msgstr "Career sections come from"
 msgid "Case studies"
 msgstr "Case studies"
 
+#: src/features/homepage/portfolio.tsx
+msgid "Case studies with pictures, video, PDFs and results in numbers"
+msgstr "Case studies with pictures, video, PDFs and results in numbers"
+
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Case study (public version)"
 msgstr "Case study (public version)"
@@ -4034,6 +4048,7 @@ msgstr "Clients"
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
 #: src/features/resume/editor/chrome/download-sheet.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
 #: src/features/resume/stylesheet/editor.tsx
@@ -4205,8 +4220,8 @@ msgstr "Complete data backup. Imports back into Rezumi or JSON Resume tools."
 msgid "Compress or remove large images to keep uploads quick."
 msgstr "Compress or remove large images to keep uploads quick."
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Computer"
 msgstr "Computer"
 
@@ -5244,7 +5259,6 @@ msgstr "Cover"
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Cover letter"
 
@@ -5843,6 +5857,7 @@ msgstr "Description of role {0}"
 msgid "Design"
 msgstr "Design"
 
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Design groups"
 msgstr "Design groups"
@@ -5986,6 +6001,10 @@ msgstr "Docs"
 msgid "Document menu: {name}"
 msgstr "Document menu: {name}"
 
+#: src/features/resume/editor/chrome.tsx
+msgid "Document name"
+msgstr "Document name"
+
 #: src/features/documents/documents-page.tsx
 msgid "Document type"
 msgstr "Document type"
@@ -6092,8 +6111,7 @@ msgstr "Down, a good change:"
 #: src/features/career/workspace/apply.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/resume/editor/chrome/bar.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
+#: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download"
 msgstr "Download"
 
@@ -6104,10 +6122,6 @@ msgstr "Download {label}"
 #: src/features/templates/gallery.tsx
 msgid "Download {name} sample PDF"
 msgstr "Download {name} sample PDF"
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Download & history"
-msgstr "Download & history"
 
 #: src/features/billing/plan.ts
 msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
@@ -7405,6 +7419,7 @@ msgstr "Fraud or a scam"
 
 #: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
+#: src/features/homepage/portfolio.tsx
 #: src/features/homepage/templates.tsx
 #: src/features/portfolio/theme-gallery.tsx
 #: src/features/templates/gallery.tsx
@@ -7950,10 +7965,9 @@ msgstr "Hiring team"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/portfolio/admin/review-page.tsx
-#: src/features/resume/editor/chrome/bar.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "History"
 msgstr "History"
 
@@ -9470,6 +9484,7 @@ msgstr "Lock editing"
 
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Locked"
 msgstr "Locked"
 
@@ -9514,10 +9529,6 @@ msgstr "Lost access to your authenticator?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Low"
 msgstr "Low"
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Lower the design sheet"
-msgstr "Lower the design sheet"
 
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/share/web-page-text.ts
@@ -10673,9 +10684,8 @@ msgstr "No work opened yet."
 msgid "No work-experience section was found."
 msgstr "No work-experience section was found."
 
-#: src/features/applications/components/add-application-dialog.tsx
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/applications/document-options.ts
 #: src/features/portfolio/works/work-editor.tsx
 msgid "None"
 msgstr "None"
@@ -10885,10 +10895,6 @@ msgstr "Nothing here on your resume yet, so the section doesn't show."
 #: src/features/ats-checker/checker.tsx
 msgid "Nothing here should cost you a match."
 msgstr "Nothing here should cost you a match."
-
-#: src/features/career/today.tsx
-msgid "Nothing is applied for or created until you choose."
-msgstr "Nothing is applied for or created until you choose."
 
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
@@ -11490,9 +11496,7 @@ msgstr "Ownership proven"
 
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
-#: src/routes/builder/$resumeId/-components/editor-shell.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx
-#: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Page"
 msgstr "Page"
 
@@ -11885,12 +11889,12 @@ msgstr "Permanently removes everything. Export first if you want a copy."
 msgid "Persian"
 msgstr "Persian"
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Phone"
 msgstr "Phone"
 
@@ -12106,6 +12110,7 @@ msgstr "Polish"
 msgid "Polishing"
 msgstr "Polishing"
 
+#: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
@@ -12332,10 +12337,6 @@ msgstr "Press <0>{RETURN_KEY}</0> to add or save the current keyword."
 msgid "Press <0>Enter</0> to open"
 msgstr "Press <0>Enter</0> to open"
 
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
-msgid "Preview"
-msgstr "Preview"
-
 #: src/features/templates/gallery.tsx
 msgid "Preview {name} sample PDF"
 msgstr "Preview {name} sample PDF"
@@ -12348,8 +12349,8 @@ msgstr "Preview every resume template and download sample PDFs. Start with 8 tem
 msgid "Preview every template before you sign up. The Free plan includes {freeCount} templates and PDF downloads without a watermark. Plus and Pro AI unlock every template, plus Word and ODT downloads."
 msgstr "Preview every template before you sign up. The Free plan includes {freeCount} templates and PDF downloads without a watermark. Plus and Pro AI unlock every template, plus Word and ODT downloads."
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Preview size"
 msgstr "Preview size"
 
@@ -12626,6 +12627,10 @@ msgstr "Publications"
 msgid "Publish"
 msgstr "Publish"
 
+#: src/features/homepage/portfolio.tsx
+msgid "Publish a one-page website at rezumi.app/your-name. Start from a resume, add your work, and choose a theme that suits your field."
+msgstr "Publish a one-page website at rezumi.app/your-name. Start from a resume, add your work, and choose a theme that suits your field."
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish it to share a link that opens on any screen. Only you can see it until then."
 msgstr "Publish it to share a link that opens on any screen. Only you can see it until then."
@@ -12747,10 +12752,6 @@ msgstr "Queued like a purchase. No payment and no credits come with it."
 #: src/features/portfolio/editor/rich-text-editor.tsx
 msgid "Quote"
 msgstr "Quote"
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Raise the design sheet"
-msgstr "Raise the design sheet"
 
 #: src/features/portfolio/themes.ts
 msgid "Random letters settle into your name."
@@ -13089,7 +13090,7 @@ msgid "Red"
 msgstr "Red"
 
 #: src/features/portfolio/editor/rich-text-editor.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Redo"
 msgstr "Redo"
 
@@ -13250,10 +13251,6 @@ msgstr "Remind me"
 #: src/features/career/schedule-sheet.tsx
 msgid "Remind me on"
 msgstr "Remind me on"
-
-#: src/features/career/today.tsx
-msgid "Reminders appear here. Email copies are optional and need a verified address."
-msgstr "Reminders appear here. Email copies are optional and need a verified address."
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/career/offers.tsx
@@ -13626,7 +13623,6 @@ msgstr "resume"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "Resume"
@@ -13847,8 +13843,8 @@ msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - Go to homepage"
 
 #: src/routes/dashboard/settings/route.tsx
-msgid "Rezumi {__APP_VERSION__} · MIT"
-msgstr "Rezumi {__APP_VERSION__} · MIT"
+msgid "Rezumi {__APP_VERSION__}"
+msgstr "Rezumi {__APP_VERSION__}"
 
 #. placeholder {0}: getPlanName(payment.planId)
 #: src/features/billing/receipt.tsx
@@ -14475,6 +14471,10 @@ msgstr "See below"
 msgid "See exactly what applicant tracking systems read"
 msgstr "See exactly what applicant tracking systems read"
 
+#: src/features/homepage/portfolio.tsx
+msgid "See how a portfolio works"
+msgstr "See how a portfolio works"
+
 #: src/features/billing/plan-dialog.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -14752,17 +14752,12 @@ msgstr "Shadow width"
 #: src/features/resume/share/web-page-text.ts
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Share"
 msgstr "Share"
 
 #: src/features/homepage/introduction.tsx
 msgid "Share a live link that is always the latest version"
 msgstr "Share a live link that is always the latest version"
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Share sections"
-msgstr "Share sections"
 
 #: src/features/resume/share/address-field.tsx
 msgid "Share via…"
@@ -14980,6 +14975,10 @@ msgstr "Show templates"
 msgid "Show the {name} logo"
 msgstr "Show the {name} logo"
 
+#: src/features/homepage/portfolio.tsx
+msgid "Show the work behind your resume."
+msgstr "Show the work behind your resume."
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "Show them again"
@@ -15113,10 +15112,6 @@ msgstr "Situation"
 #: src/features/career/workspace/prepare.tsx
 msgid "Situation, action, result"
 msgstr "Situation, action, result"
-
-#: src/features/career/knowledge/stories.tsx
-msgid "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
-msgstr "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Size"
@@ -17708,6 +17703,7 @@ msgstr "Underline links"
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
+#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/resume/editor/proposals/proposals.ts
@@ -17718,7 +17714,6 @@ msgstr "Underline links"
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Undo"
 msgstr "Undo"
 
@@ -19344,6 +19339,10 @@ msgstr "Your bullets are drawn with unusual characters."
 msgid "Your career as a path: experience and education hang from a fine line with an accent dot at each step, beside a left sidebar."
 msgstr "Your career as a path: experience and education hang from a fine line with an accent dot at each step, beside a left sidebar."
 
+#: src/features/homepage/portfolio.tsx
+msgid "Your career details stay in step with your resume"
+msgstr "Your career details stay in step with your resume"
+
 #: src/routes/builder/$resumeId/-components/use-editor-hotkeys.ts
 #: src/routes/builder/letter/-components/letter-shell.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -19872,7 +19871,6 @@ msgstr "YouTube or Vimeo, loaded when played"
 msgid "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
 msgstr "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
 
-#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"
 msgstr "Zoom"

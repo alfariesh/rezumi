@@ -39,14 +39,13 @@
 
 	/* Layout constants */
 	--editor-bar: 56px;
-	/* The editor's side panel: 420px on laptops, growing with the window to 520px on large screens. */
-	--editor-panel: clamp(420px, 32vw, 520px);
-	/* With the assistant open (≥1280), the panel and the assistant share the room equally, each this wide. */
-	--editor-side: clamp(320px, 25vw, 420px);
+	/* The editor's panel section, beside the 72px rail: 384px on laptops, growing with the window to 488px. */
+	--editor-panel: clamp(384px, 28vw, 488px);
+	/* The assistant's section at the editor's right (≥1280px). */
+	--editor-assistant: clamp(360px, 26vw, 440px);
 	--app-sidebar: 240px;
 	--sheet-share: 440px;
 	--sheet-detail: 480px;
-	--assistant: 400px;
 
 	/* Rezumi's tooltips open after 400ms, not HeroUI's 1.5s. */
 	--tooltip-delay: 400ms;
@@ -74,6 +73,15 @@
 
 @theme {
 	--aspect-page: 210 / 297;
+
+	/*
+	 * Google Sans is set tight at small sizes (the font file has a weight axis and no optical size), so the three steps
+	 * the interface reads at most get letter spacing: 0.02em at 12 and 14px, 0.01em at 16px. An explicit `tracking-*`
+	 * on an element still wins.
+	 */
+	--text-xs--letter-spacing: 0.02em;
+	--text-sm--letter-spacing: 0.02em;
+	--text-base--letter-spacing: 0.01em;
 
 	/*
 	 * The one place the app's font families are named. Google Sans sets the interface and Google Sans Code the shortcuts,
@@ -230,11 +238,82 @@
 	}
 
 	.widget .widget__title {
-		@apply text-base font-semibold tracking-tight;
+		@apply text-base font-semibold;
 	}
 
 	.widget .widget__description {
 		@apply text-sm leading-6 text-muted;
+	}
+}
+
+/*
+ * Multi-line text. The scale's own line heights (20px at 14px, 16px at 12px) suit one line; a paragraph needs the leading
+ * HeroUI's `Typography` body types use (28px at 16px, 24px at 14px, 20px at 12px). These three utilities are those, for any element,
+ * so a paragraph inside a colored or boxed container keeps the color it inherits (Typography sets its own).
+ */
+@utility text-body {
+	@apply text-base leading-7;
+}
+
+@utility text-body-sm {
+	@apply text-sm leading-6;
+}
+
+@utility text-body-xs {
+	@apply text-xs leading-5;
+}
+
+/* HeroUI's field text (a description, a validation message) is a sentence or two under a control: paragraph leading. */
+@layer components {
+	.description,
+	.field-error,
+	.error-message {
+		@apply text-body-xs;
+	}
+}
+
+/*
+ * A text area is as tall as its text (`field-sizing: content`), grows as you type and has no resize grip. `rows` and
+ * `min-h-*` stay as its minimum. The assistant's message box is a PromptInput with its own sizing, not a `.textarea`.
+ */
+@layer components {
+	.textarea,
+	.input-group [data-slot="input-group-textarea"] {
+		field-sizing: content;
+		resize: none;
+	}
+}
+
+/*
+ * HeroUI sets `tracking-tight` on every Typography heading. That suits the large steps (h1 to h4), but at 18px and
+ * below (h5, h6) it crowds the letters, so those keep the font's normal spacing.
+ */
+@layer components {
+	.typography--h5,
+	.typography--h6,
+	.typography-prose h5,
+	.typography-prose h6 {
+		/* `--tw-tracking` too: a `text-sm` on the heading reads it, and would otherwise bring the tight value back. */
+		--tw-tracking: var(--tracking-normal);
+		letter-spacing: var(--tracking-normal);
+	}
+}
+
+/*
+ * Widgets in the editors' panels (`[data-editor-panel]`: the side panel, the tablet drawer, the phone sheet) are denser:
+ * a 48px header with 12px insets, a 14px title beside the 20px icon 8px away, and a 12px description under it.
+ */
+@layer components {
+	[data-editor-panel] .widget .widget__header {
+		@apply min-h-12 gap-x-2 px-3 py-2;
+	}
+
+	[data-editor-panel] .widget .widget__title {
+		@apply text-sm leading-5;
+	}
+
+	[data-editor-panel] .widget .widget__description {
+		@apply text-xs leading-5;
 	}
 }
 
@@ -266,6 +345,15 @@
 	}
 }
 
+/* A scroller with no visible scrollbar (the editor's panel, chip rows): it still scrolls by wheel, touch and keyboard. */
+@utility scrollbar-none {
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
 @utility bg-control {
 	background-color: var(--control-fill, var(--default));
 }
@@ -289,13 +377,66 @@
 }
 
 /*
- * The coach's message box (PromptInput `primary`) is filled with the page `background` rather than the gray `default`,
- * in the rest and focus states alike. The assistant dock's `secondary` box is unchanged.
+ * The coach's and the editor assistant's message box (PromptInput `primary`) is filled with the page `background`
+ * rather than the gray `default`, in the rest and focus states alike.
  */
 @layer components {
-	.dashboard-shell .prompt-input .prompt-input__shell--primary,
-	.dashboard-shell .prompt-input:focus-within .prompt-input__shell--primary {
+	:is(.dashboard-shell, [data-assistant]) .prompt-input .prompt-input__shell--primary,
+	:is(.dashboard-shell, [data-assistant]) .prompt-input:focus-within .prompt-input__shell--primary {
 		background-color: var(--background);
+	}
+}
+
+/*
+ * Fields on the editors' gray panel (`.panel-fields`: the desktop panel and the tablet drawer) take the white `primary`
+ * look, so they read against the panel's own `background`: the field fill and a hairline shadow in place of the
+ * `secondary` gray. A phone's sheet, a popover, a dialog and a Widget's white content (the letter editor still has
+ * them) are white, so they keep `secondary`. The rule reassigns the tokens its component's `--secondary` variant reads.
+ */
+@layer components {
+	.panel-fields
+		:is(
+			.input--secondary,
+			.textarea--secondary,
+			.input-group--secondary,
+			.color-input-group--secondary,
+			.date-input-group--secondary,
+			.number-field--secondary .number-field__group,
+			.search-field--secondary .search-field__group,
+			.select--secondary .select__trigger,
+			.autocomplete--secondary .autocomplete__trigger,
+			[data-field-frame]
+		):not(.widget *) {
+		--input-bg: var(--field-background);
+		--input-bg-hover: var(--field-hover);
+		--input-bg-focus: var(--field-focus);
+		--textarea-bg: var(--field-background);
+		--textarea-bg-hover: var(--field-hover);
+		--textarea-bg-focus: var(--field-focus);
+		--input-group-bg: var(--field-background);
+		--input-group-bg-hover: var(--field-hover);
+		--input-group-bg-focus: var(--field-focus);
+		--color-input-group-bg: var(--field-background);
+		--color-input-group-bg-hover: var(--field-hover);
+		--color-input-group-bg-focus: var(--field-focus);
+		--date-input-group-bg: var(--field-background);
+		--date-input-group-bg-hover: var(--field-hover);
+		--date-input-group-bg-focus: var(--field-focus);
+		--number-field-group-bg: var(--field-background);
+		--number-field-group-bg-hover: var(--field-hover);
+		--number-field-group-bg-focus: var(--field-focus);
+		--search-field-group-bg: var(--field-background);
+		--search-field-group-bg-hover: var(--field-hover);
+		--search-field-group-bg-focus: var(--field-focus);
+		--select-trigger-bg: var(--field-background);
+		--select-trigger-bg-hover: var(--field-hover);
+		--select-trigger-bg-focus: var(--field-focus);
+		--autocomplete-trigger-bg: var(--field-background);
+		--autocomplete-trigger-bg-hover: var(--field-hover);
+		--autocomplete-trigger-bg-focus: var(--field-focus);
+		--frame-bg: var(--field-background);
+		--frame-bg-hover: var(--field-hover);
+		@apply shadow-field;
 	}
 }
 
@@ -513,10 +654,11 @@
 }
 
 /*
- * A keyboard mode switch lands at once: the editor's tab indicator and the selected tab's label skip their motion
- * (switchModeInstantly in apps/web/src/libs/motion.ts, ExpandingLabel in the editor's mode switch).
+ * A keyboard mode switch lands at once: the editor's rail marker and the selected tab's label skip their motion
+ * (switchModeInstantly in apps/web/src/libs/motion.ts).
  */
-[data-mode-switch][data-instant] :is(.tabs__indicator, [data-expanding-label], [data-expanding-label] > *) {
+[data-mode-switch][data-instant]
+	:is(.tabs__indicator, [data-rail-indicator], [data-expanding-label], [data-expanding-label] > *) {
 	transition: none !important;
 }
 

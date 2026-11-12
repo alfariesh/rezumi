@@ -1,6 +1,13 @@
 import type { PortfolioHeroEffect, PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import { t } from "@lingui/core/macro";
 
+/**
+ * A theme's gallery picture (`pnpm --filter @rezumi/tooling portfolio:previews`): the top of its sample page with a
+ * fictional persona. Indonesian pages show the Indonesian one, every other language the English one.
+ */
+export const themePicture = (theme: PortfolioTheme, locale: string) =>
+	`/portfolio-themes/thumb/${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.webp`;
+
 /** What each theme looks like, in the theme gallery (create dialog and Design). */
 export const themeDescription = (theme: PortfolioTheme) =>
 	({
@@ -33,15 +40,4 @@ export const effectLabel = (effect: PortfolioHeroEffect) =>
 		typewriter: t`Typewriter`,
 		scramble: t`Tech scramble`,
 		"vector-hover": t`Vector outline`,
-	})[effect];
-
-export const effectDescription = (effect: PortfolioHeroEffect) =>
-	({
-		none: t`Calm and formal.`,
-		"fade-up": t`Words appear one by one, once.`,
-		shimmer: t`A light in your accent colour sweeps across a few times.`,
-		gradient: t`Your accent colours drift slowly, then rest.`,
-		typewriter: t`Your headline types itself, then up to two more roles.`,
-		scramble: t`Random letters settle into your name.`,
-		"vector-hover": t`Letters turn into design-app outlines under the mouse. Phones get the gentle fade-in.`,
 	})[effect];

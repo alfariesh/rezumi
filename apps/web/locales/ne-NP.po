@@ -597,6 +597,11 @@ msgstr ""
 msgid "{0} per reply"
 msgstr ""
 
+#. placeholder {0}: theme.name
+#: src/features/homepage/portfolio.tsx
+msgid "{0} portfolio theme preview"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/conversation.tsx
 msgid "{0} posting"
@@ -1333,6 +1338,10 @@ msgstr "साइन-इनमा प्रमाणक एपबाट आए�
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "A comfortable length, and it fits on one page."
 msgstr "एक आरामदायक लम्बाइ, र यो एक पृष्ठ मा फिट हुन्छ।"
+
+#: src/features/homepage/portfolio.tsx
+msgid "A contact form, and how many people visited"
+msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
@@ -2324,6 +2333,8 @@ msgstr "तपाईंका आवश्यकताहरूसँग तु�
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
 #: src/features/portfolio/ai/rewrite-menu.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 msgid "AI"
 msgstr ""
 
@@ -2948,7 +2959,6 @@ msgstr ""
 msgid "Aspect ratio"
 msgstr "आकार अनुपात (Aspect Ratio)"
 
-#: src/features/assistant/assistant-button.tsx
 #: src/features/assistant/assistant-panel.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -3543,6 +3553,10 @@ msgstr ""
 msgid "Case studies"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Case studies with pictures, video, PDFs and results in numbers"
+msgstr ""
+
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Case study (public version)"
 msgstr ""
@@ -4039,6 +4053,7 @@ msgstr ""
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
 #: src/features/resume/editor/chrome/download-sheet.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
 #: src/features/resume/stylesheet/editor.tsx
@@ -4210,8 +4225,8 @@ msgstr "डाटा ब्याकअप पूरा गर्नुहोस
 msgid "Compress or remove large images to keep uploads quick."
 msgstr "अपलोड छिटो राख्न ठूला तस्बिरहरू कम्प्रेस गर्नुहोस् वा हटाउनुहोस्।"
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Computer"
 msgstr "कम्प्युटर"
 
@@ -5249,7 +5264,6 @@ msgstr "फ्रेम भर्नुहोस्"
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "आवरण पत्र"
 
@@ -5848,6 +5862,7 @@ msgstr "भूमिकाको विवरण {0}"
 msgid "Design"
 msgstr "डिजाइन"
 
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Design groups"
 msgstr "डिजाइन समूहहरू"
@@ -5991,6 +6006,10 @@ msgstr "कागजातहरू"
 msgid "Document menu: {name}"
 msgstr "कागजात मेनु: {name}"
 
+#: src/features/resume/editor/chrome.tsx
+msgid "Document name"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Document type"
 msgstr "कागजात प्रकार"
@@ -6097,8 +6116,7 @@ msgstr ""
 #: src/features/career/workspace/apply.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/resume/editor/chrome/bar.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
+#: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download"
 msgstr "डाउनलोड गर्नुहोस्"
 
@@ -6109,10 +6127,6 @@ msgstr "{label} डाउनलोड गर्नुहोस्"
 #: src/features/templates/gallery.tsx
 msgid "Download {name} sample PDF"
 msgstr "{name} नमूना PDF डाउनलोड गर्नुहोस्"
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Download & history"
-msgstr "डाउनलोड र इतिहास"
 
 #: src/features/billing/plan.ts
 msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
@@ -7410,6 +7424,7 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
+#: src/features/homepage/portfolio.tsx
 #: src/features/homepage/templates.tsx
 #: src/features/portfolio/theme-gallery.tsx
 #: src/features/templates/gallery.tsx
@@ -7955,10 +7970,9 @@ msgstr "भर्ती टोली"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/portfolio/admin/review-page.tsx
-#: src/features/resume/editor/chrome/bar.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "History"
 msgstr "इतिहास"
 
@@ -9475,6 +9489,7 @@ msgstr "सम्पादन लक गर्नुहोस्"
 
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Locked"
 msgstr "ताला लगाइएको"
 
@@ -9519,10 +9534,6 @@ msgstr "authenticator मा पहुँच गुमाउनुभयो?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Low"
 msgstr "कम"
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Lower the design sheet"
-msgstr "डिजाइन पाना तल्लो"
 
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/share/web-page-text.ts
@@ -10678,9 +10689,8 @@ msgstr ""
 msgid "No work-experience section was found."
 msgstr "कुनै कार्य-अनुभव खण्ड फेला परेन।"
 
-#: src/features/applications/components/add-application-dialog.tsx
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/applications/document-options.ts
 #: src/features/portfolio/works/work-editor.tsx
 msgid "None"
 msgstr "कुनै पनि छैन"
@@ -10890,10 +10900,6 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Nothing here should cost you a match."
 msgstr "यहाँ कुनै पनि कुराले तपाइँलाई एक खेल खर्च गर्नु पर्दैन।"
-
-#: src/features/career/today.tsx
-msgid "Nothing is applied for or created until you choose."
-msgstr "तपाईंले नछानेसम्म कुनै आवेदन गरिँदैन वा केही बनाइँदैन।"
 
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
@@ -11495,9 +11501,7 @@ msgstr ""
 
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
-#: src/routes/builder/$resumeId/-components/editor-shell.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx
-#: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Page"
 msgstr "पृष्ठ"
 
@@ -11890,12 +11894,12 @@ msgstr "स्थायी रूपमा सबै हटाउँछ। य�
 msgid "Persian"
 msgstr "फारसी"
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Phone"
 msgstr "फोन"
 
@@ -12111,6 +12115,7 @@ msgstr "पोलिस"
 msgid "Polishing"
 msgstr "निखार्दै"
 
+#: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
@@ -12337,10 +12342,6 @@ msgstr "हालको कीवर्ड थप्न वा सुरक्�
 msgid "Press <0>Enter</0> to open"
 msgstr "खोल्न <0>Enter</0> थिच्नुहोस्"
 
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
-msgid "Preview"
-msgstr ""
-
 #: src/features/templates/gallery.tsx
 msgid "Preview {name} sample PDF"
 msgstr "पूर्वावलोकन {name} नमूना PDF"
@@ -12353,8 +12354,8 @@ msgstr ""
 msgid "Preview every template before you sign up. The Free plan includes {freeCount} templates and PDF downloads without a watermark. Plus and Pro AI unlock every template, plus Word and ODT downloads."
 msgstr ""
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Preview size"
 msgstr "पूर्वावलोकन आकार"
 
@@ -12631,6 +12632,10 @@ msgstr "प्रकाशनहरू"
 msgid "Publish"
 msgstr "प्रकाशित गर्नुहोस्"
 
+#: src/features/homepage/portfolio.tsx
+msgid "Publish a one-page website at rezumi.app/your-name. Start from a resume, add your work, and choose a theme that suits your field."
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish it to share a link that opens on any screen. Only you can see it until then."
 msgstr "कुनै पनि स्क्रिनमा खुल्ने लिङ्क सेयर गर्न यसलाई प्रकाशित गर्नुहोस्। त्यसअघि यो तपाईंले मात्र देख्न सक्नुहुन्छ।"
@@ -12752,10 +12757,6 @@ msgstr ""
 #: src/features/portfolio/editor/rich-text-editor.tsx
 msgid "Quote"
 msgstr ""
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Raise the design sheet"
-msgstr "डिजाइन पाना उठाउनुहोस्"
 
 #: src/features/portfolio/themes.ts
 msgid "Random letters settle into your name."
@@ -13094,7 +13095,7 @@ msgid "Red"
 msgstr "रातो"
 
 #: src/features/portfolio/editor/rich-text-editor.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Redo"
 msgstr ""
 
@@ -13255,10 +13256,6 @@ msgstr "मलाई सम्झाउनुहोस्"
 #: src/features/career/schedule-sheet.tsx
 msgid "Remind me on"
 msgstr "यो दिन सम्झाउनुहोस्"
-
-#: src/features/career/today.tsx
-msgid "Reminders appear here. Email copies are optional and need a verified address."
-msgstr "रिमाइन्डरहरू यहाँ देखिन्छन्। इमेल प्रतिहरू वैकल्पिक हुन् र प्रमाणित ठेगाना चाहिन्छ।"
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/career/offers.tsx
@@ -13631,7 +13628,6 @@ msgstr "पुन: सुरु"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "बायोडाटा"
@@ -13852,8 +13848,8 @@ msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - गृहपृष्ठमा जानुहोस्"
 
 #: src/routes/dashboard/settings/route.tsx
-msgid "Rezumi {__APP_VERSION__} · MIT"
-msgstr "Rezumi {__APP_VERSION__} · MIT"
+msgid "Rezumi {__APP_VERSION__}"
+msgstr ""
 
 #. placeholder {0}: getPlanName(payment.planId)
 #: src/features/billing/receipt.tsx
@@ -14480,6 +14476,10 @@ msgstr "तल हेर्नुहोस्"
 msgid "See exactly what applicant tracking systems read"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "See how a portfolio works"
+msgstr ""
+
 #: src/features/billing/plan-dialog.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -14757,17 +14757,12 @@ msgstr "छायाँ चौडाइ"
 #: src/features/resume/share/web-page-text.ts
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Share"
 msgstr "सेयर गर्नुहोस्"
 
 #: src/features/homepage/introduction.tsx
 msgid "Share a live link that is always the latest version"
 msgstr ""
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Share sections"
-msgstr "खण्डहरू साझेदारी गर्नुहोस्"
 
 #: src/features/resume/share/address-field.tsx
 msgid "Share via…"
@@ -14985,6 +14980,10 @@ msgstr "टेम्प्लेटहरू देखाउनुहोस्"
 msgid "Show the {name} logo"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Show the work behind your resume."
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "तिनीहरूलाई फेरि देखाउनुहोस्"
@@ -15118,10 +15117,6 @@ msgstr "स्थिति"
 #: src/features/career/workspace/prepare.tsx
 msgid "Situation, action, result"
 msgstr "स्थिति, कदम, नतिजा"
-
-#: src/features/career/knowledge/stories.tsx
-msgid "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
-msgstr "स्थिति, कार्य, कदम, नतिजा, प्रतिबिम्ब। प्रत्येक कथालाई तपाईंले समर्थन गर्न सक्ने तथ्यहरूसँग लिङ्क गर्नुहोस्; अज्ञात नतिजाहरू खाली छोड्नुहोस्।"
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Size"
@@ -17713,6 +17708,7 @@ msgstr "अधोरेखित लिङ्कहरू"
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
+#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/resume/editor/proposals/proposals.ts
@@ -17723,7 +17719,6 @@ msgstr "अधोरेखित लिङ्कहरू"
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Undo"
 msgstr "पूर्ववत गर्नुहोस्"
 
@@ -19349,6 +19344,10 @@ msgstr "तपाईंका बुलेट असामान्य अक्
 msgid "Your career as a path: experience and education hang from a fine line with an accent dot at each step, beside a left sidebar."
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Your career details stay in step with your resume"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/use-editor-hotkeys.ts
 #: src/routes/builder/letter/-components/letter-shell.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -19877,7 +19876,6 @@ msgstr ""
 msgid "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
 msgstr ""
 
-#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"
 msgstr "जुम गर्नुहोस्"

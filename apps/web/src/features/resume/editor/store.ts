@@ -9,12 +9,15 @@ export const EDITOR_MODES = ["write", "design", "check", "share"] as const;
 export type EditorMode = (typeof EDITOR_MODES)[number];
 
 /** The Download & history sheet's tabs; each entry point opens its own. */
-export type SheetTab = "download" | "history";
+type SheetTab = "download" | "history";
 
 export type CheckTab = "issues" | "match" | "writing";
 
 /** Phones show one view at a time: the page, or one mode's panel. */
 export type MobileView = "page" | EditorMode;
+
+/** What the panel shows over the editor's mode: the assistant or History; null shows the mode. */
+export type PanelView = "assistant" | "history" | null;
 
 /** A writing note that isn't a rewrite: where it is, how much it matters, the words and what to consider. */
 export type WritingNote = {
@@ -41,12 +44,16 @@ type EditorStore = {
 	selection: EditorSelection | null;
 	/** "fit" fits the page width to the canvas; otherwise an explicit scale between 60% and 150%. */
 	zoom: number | "fit";
+	/** The scale that fits the page to the canvas now, which the bar's zoom steps from. */
+	fitScale: number;
 	/** Tablet only: the panel is a drawer over the page. */
 	drawerOpen: boolean;
 	/** Tablet in landscape: the panel sits beside the page instead of over it. */
 	drawerPinned: boolean;
-	/** The open tab of the Download & history sheet, or null while it's closed. */
+	/** The Download sheet while it's open, or null. ("history" opens History in the panel instead.) */
 	sheetTab: SheetTab | null;
+	/** History shows in the panel, in place of the mode. */
+	historyOpen: boolean;
 	/** History: the version shown on the page, read-only, instead of the current resume. */
 	historyVersionId: string | null;
 	assistantOpen: boolean;
@@ -100,15 +107,27 @@ type EditorStore = {
 	exportCheck: { report: PdfAtsReport; data: ResumeData } | null;
 	exportReportOpen: boolean;
 	setZoom: (zoom: number | "fit") => void;
-	/** Opens the sheet on a tab, or closes it (which also returns the page to now). */
+	/** Opens the Download sheet (or, for "history", History in the panel), or closes the sheet. */
 	setSheetTab: (tab: SheetTab | null) => void;
+	/** The assistant: a column at the editor's right (a drawer below 1280px, the sheet on phones). */
 	setAssistantOpen: (open: boolean, instant?: boolean) => void;
+	/** History in the panel, in place of the mode; closing it returns the page to now. */
+	setHistoryOpen: (open: boolean) => void;
+	/**
+	 * Phones show one sheet at a time: the assistant, History or (null) the mode. Elsewhere "history" shows History in
+	 * the panel and null closes it; the assistant's column is apart. Leaving History returns the page to now.
+	 */
+	setPanelView: (view: PanelView) => void;
 	setSectionOpen: (sectionId: string, open: boolean) => void;
 	markSectionAdded: (sectionId: string) => void;
 	setRendered: (render: { pageCount: number; pageMap: PageMap | undefined; file: Blob }) => void;
 	setProposalStatus: (ids: readonly string[], status: Proposal["status"]) => void;
 	reset: () => void;
 };
+
+/** The panel's view: the assistant, History, or (null) the editor's mode. */
+export const selectPanelView = (state: Pick<EditorStore, "assistantOpen" | "historyOpen">): PanelView =>
+	state.assistantOpen ? "assistant" : state.historyOpen ? "history" : null;
 
 const clampZoom = (zoom: number) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(zoom * 100) / 100));
 
@@ -125,9 +144,11 @@ const initialState = {
 	pendingMode: null,
 	selection: null,
 	zoom: "fit",
+	fitScale: 1,
 	drawerOpen: false,
 	drawerPinned: false,
 	sheetTab: null,
+	historyOpen: false,
 	historyVersionId: null,
 	assistantOpen: false,
 	assistantInstant: false,
@@ -158,8 +179,19 @@ const initialState = {
 export const useEditorStore = create<EditorStore>()((set) => ({
 	...initialState,
 	setZoom: (zoom) => set({ zoom: zoom === "fit" ? "fit" : clampZoom(zoom) }),
-	setSheetTab: (sheetTab) => set(sheetTab ? { sheetTab } : { sheetTab, historyVersionId: null }),
+	setSheetTab: (sheetTab) =>
+		set(sheetTab === "history" ? { historyOpen: true, sheetTab: null, drawerOpen: true } : { sheetTab }),
 	setAssistantOpen: (assistantOpen, instant = false) => set({ assistantOpen, assistantInstant: instant }),
+	setHistoryOpen: (historyOpen) =>
+		set(historyOpen ? { historyOpen, drawerOpen: true } : { historyOpen, historyVersionId: null }),
+	setPanelView: (view) =>
+		set({
+			assistantOpen: view === "assistant",
+			assistantInstant: false,
+			historyOpen: view === "history",
+			...(view === "history" ? {} : { historyVersionId: null }),
+			...(view ? { drawerOpen: true } : {}),
+		}),
 	setSectionOpen: (sectionId, open) =>
 		set((state) => {
 			const isOpen = state.openSections.includes(sectionId);

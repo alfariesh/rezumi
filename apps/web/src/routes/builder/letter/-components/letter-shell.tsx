@@ -5,10 +5,9 @@ import { useHotkey } from "@tanstack/react-hotkeys";
 import { getRouteApi } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { toast } from "@rezumi/ui/components/toast";
-import { cn } from "@rezumi/utils/style";
 import { LetterDesignPanel } from "./design-panel";
-import { LetterDownloadSheet } from "./download-sheet";
-import { LetterBar, LetterModeTabs, useDownloadLetter } from "./letter-bar";
+import { LetterDownloadSheet, LetterHistory } from "./download-sheet";
+import { LetterBar, LetterDownload, LetterMenu, LetterModeTabs, useDownloadLetter } from "./letter-bar";
 import { LetterPage } from "./letter-page";
 import { LetterWritePanel } from "./write-panel";
 import { LetterAssistant } from "@/features/assistant/dock";
@@ -20,14 +19,15 @@ import {
 } from "@/features/letters/use-letter-mode";
 import { useLetterWebMcpTools } from "@/features/letters/webmcp";
 import { usePreviewPausedStore } from "@/features/resume/builder/draft";
+import { ZoomControls } from "@/features/resume/editor/chrome";
 import {
 	EditorFrame,
 	KeptModes,
-	MobilePanel,
-	MobileTabBar,
+	MobileEditor,
 	useEditorLayout,
+	useMobileSheet,
 } from "@/features/resume/editor/chrome/shell";
-import { useEditorStore } from "@/features/resume/editor/store";
+import { selectPanelView, useEditorStore } from "@/features/resume/editor/store";
 import { switchModeInstantly } from "@/libs/motion";
 
 const routeApi = getRouteApi("/builder/letter/$coverLetterId");
@@ -56,10 +56,14 @@ export function LetterShell() {
 				bar={<LetterBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
 				mode={mode}
 				modes={<LetterModeTabs />}
+				title={<LetterMenu />}
+				controls={<ZoomControls compact={editorLayout.layout === "tablet"} />}
 				panelLabel={mode === "design" ? t`Design` : t`Letter details`}
 				panel={<ModePanel mode={mode} />}
 				page={<LetterPage />}
 				assistant={<LetterAssistant />}
+				history={<LetterHistory />}
+				floating={<LetterDownload />}
 				mobile={<MobileBody mode={mode} onModeChange={setMode} />}
 			>
 				<LetterHotkeys onModeChange={setMode} />
@@ -75,43 +79,43 @@ function ModePanel({ mode }: { mode: LetterMode }) {
 	);
 }
 
-type MobileView = "write" | "page" | "design";
+const LETTER_MODES = ["write", "design"] as const;
 
 type MobileBodyProps = { mode: LetterMode; onModeChange: (mode: LetterMode) => void };
 
-/** Phones: one view at a time, Write · Page · Design. The page stays mounted so zoom survives switching. */
-function MobileBody({ mode, onModeChange }: MobileBodyProps) {
-	const stored = useEditorStore((state) => state.mobileView);
-	const view: MobileView = stored === "page" || stored === "design" || stored === "write" ? stored : mode;
+/** Phones: the letter, with Write · Design floating over it, each opening a sheet; Design's rests at half height. */
+function MobileBody({ onModeChange }: MobileBodyProps) {
+	const open = useMobileSheet(LETTER_MODES);
+	const view = useEditorStore(selectPanelView);
 	const setPreviewPaused = usePreviewPausedStore((state) => state.setPaused);
+	// Full-height sheets (Write, AI) hide the letter, so it stops re-rendering until they go.
+	const covered = view === "assistant" || (view === null && open === "write");
 
 	useEffect(() => {
 		// oxlint-disable-next-line react/set-state-in-effect -- a shared store the preview renderer reads, reset on unmount
-		setPreviewPaused(view !== "page");
+		setPreviewPaused(covered);
 		return () => setPreviewPaused(false);
-	}, [view, setPreviewPaused]);
+	}, [covered, setPreviewPaused]);
 
 	return (
-		<div className="grid min-h-0 grid-rows-[minmax(0,1fr)_auto]">
-			<div className="relative min-h-0">
-				<main id="main-content" className={cn("h-full", view !== "page" && "invisible")}>
-					<LetterPage />
-				</main>
-				<MobilePanel mode={mode} visible={view !== "page"}>
-					<ModePanel mode={mode} />
-				</MobilePanel>
-			</div>
-
-			<MobileTabBar
-				tabs={[
-					{ view: "write", icon: "pencil-simple", label: t`Write` },
-					{ view: "page", icon: "file-text", label: t`Page` },
-					{ view: "design", icon: "palette", label: t`Design` },
-				]}
-				view={view}
-				onModeChange={onModeChange}
-			/>
-		</div>
+		<MobileEditor
+			items={[
+				{ mode: "write", icon: "pencil-simple", label: t`Write` },
+				{ mode: "design", icon: "palette", label: t`Design` },
+			]}
+			views={["assistant", "history"]}
+			assistant={<LetterAssistant />}
+			history={<LetterHistory />}
+			open={open}
+			onOpenChange={(next) => {
+				useEditorStore.setState({ mobileView: next ?? "page" });
+				if (next) onModeChange(next);
+			}}
+			halfModes={["design"]}
+			page={<LetterPage />}
+		>
+			{open && <ModePanel mode={open} />}
+		</MobileEditor>
 	);
 }
 

@@ -33,7 +33,7 @@ export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck
 						<Modal.Heading>
 							<Trans>Connect {domain.hostname}</Trans>
 						</Modal.Heading>
-						<p id={descriptionId} className="text-sm text-muted">
+						<p id={descriptionId} className="text-body-sm text-muted">
 							<Trans>
 								Add these records where you manage the domain, then check. Changes can take a few hours to reach
 								everyone.
@@ -74,7 +74,7 @@ export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck
 
 						{domain.managed ? (
 							<>
-								<p className="text-xs text-muted">
+								<p className="text-body-xs text-muted">
 									<Trans>If your DNS is on Cloudflare, set the CNAME record to DNS only (grey cloud).</Trans>
 								</p>
 								{isRootDomain(domain.hostname) && (
@@ -100,7 +100,7 @@ export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck
 							</>
 						) : (
 							hasCname && (
-								<p className="text-xs text-muted">
+								<p className="text-body-xs text-muted">
 									<Trans>
 										For a root domain such as example.com, use A and AAAA records with {domain.target}'s addresses
 										instead of the CNAME.
@@ -111,7 +111,7 @@ export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck
 					</Modal.Body>
 					<Modal.Footer className="items-center">
 						{lastChecked && (
-							<p className="me-auto text-xs text-muted">
+							<p className="me-auto text-body-xs text-muted">
 								<Trans>Last checked {lastChecked} ago</Trans>
 							</p>
 						)}

@@ -206,6 +206,13 @@ describe("renderPortfolioPage (Lugas)", () => {
 		expect(document).toContain('<link rel="me" href="https://linkedin.example.test/in/nadia">');
 		expect(document).not.toContain("</script><script>alert");
 		expect(document).toContain('<meta name="theme-color" content="#FFFFFF">');
+		expect(document).toContain(`<script>${page.script}</script>`);
+	});
+
+	it("leaves the page's script out of an inert document, so a sandboxed preview has nothing to block", () => {
+		const document = renderPortfolioDocument({ page, inert: true });
+		expect(document).not.toContain("<script");
+		expect(document).toMatch(/<\/body><\/html>$/);
 	});
 });
 

@@ -1,16 +1,16 @@
 import type { PortfolioButton } from "@rezumi/schema/portfolio/data";
-import { Button, Label, RadioGroup } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { PORTFOLIO_BUTTON_KINDS } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { ownPictureUrl } from "@rezumi/utils/own-picture";
 import { ImageField } from "../images/image-field";
 import { MetricsEditor } from "../metrics/metric-form";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
-import { ChoiceSelect, ItemToolbar, moveItem, RadioOption, TextInput, UrlInput } from "./fields";
+import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
 import { useOwnOrigins } from "./pictures";
 import { setBasicsText } from "./sections";
 import { editPortfolio, usePortfolioData } from "./store";
@@ -38,11 +38,7 @@ export function IntroForm() {
 	const source = useSourceResume();
 	const owner = usePortfolioOwner();
 	const resume = source.data;
-	const fromResume = resume !== null;
 	const { basics, hero } = data;
-
-	const followsResume = (value: string | undefined) =>
-		fromResume ? t`Empty uses your resume's: ${value || "—"}` : undefined;
 
 	return (
 		<div className="grid gap-4">
@@ -50,16 +46,16 @@ export function IntroForm() {
 				label={t`Name`}
 				value={basics.name ?? ""}
 				maxLength={max.name}
+				icon="user-circle"
 				placeholder={resume?.basics.name || owner.name}
-				description={followsResume(resume?.basics.name)}
 				onChange={(value) => editPortfolio((draft) => setBasicsText(draft, "name", value), { key: "basics.name" })}
 			/>
 			<TextInput
 				label={t`Headline`}
 				value={basics.headline ?? ""}
 				maxLength={max.headline}
+				icon="briefcase"
 				placeholder={resume?.basics.headline || t`Product designer`}
-				description={followsResume(resume?.basics.headline)}
 				onChange={(value) =>
 					editPortfolio((draft) => setBasicsText(draft, "headline", value), { key: "basics.headline" })
 				}
@@ -68,13 +64,13 @@ export function IntroForm() {
 				label={t`Location`}
 				value={basics.location ?? ""}
 				maxLength={max.location}
+				icon="map-pin"
 				placeholder={resume?.basics.location || t`Bandung, Indonesia`}
-				description={followsResume(resume?.basics.location)}
 				onChange={(value) =>
 					editPortfolio((draft) => setBasicsText(draft, "location", value), { key: "basics.location" })
 				}
 			/>
-			<SwitchRow
+			<CellSwitchRow
 				isSelected={hero.showLocation}
 				onChange={(checked) =>
 					editPortfolio((draft) => {
@@ -82,8 +78,6 @@ export function IntroForm() {
 					})
 				}
 				label={t`Show my location`}
-				description={t`Turn this off to keep your location off the page, including the one on your resume.`}
-				className="items-start py-0"
 			/>
 			<TextInput
 				label={t`Greeting`}
@@ -92,7 +86,6 @@ export function IntroForm() {
 				value={hero.greeting}
 				maxLength={max.greeting}
 				placeholder={t`I design apps people enjoy using, and I'm looking for my next team.`}
-				description={t`One or two sentences under your name. ${hero.greeting.length}/${max.greeting}`}
 				onChange={(value) =>
 					editPortfolio(
 						(draft) => {
@@ -103,7 +96,7 @@ export function IntroForm() {
 				}
 			/>
 			<HeroPhoto />
-			<SwitchRow
+			<CellSwitchRow
 				isSelected={hero.availability.show}
 				onChange={(checked) =>
 					editPortfolio((draft) => {
@@ -111,15 +104,14 @@ export function IntroForm() {
 					})
 				}
 				label={t`Show “Open to work”`}
-				className="py-0"
 			/>
 			{hero.availability.show && (
 				<TextInput
 					label={t`Label text`}
 					value={hero.availability.text}
 					maxLength={max.availability}
+					icon="pencil-line"
 					placeholder={t`Open to work`}
-					description={t`Empty shows “Open to work” in the page's language.`}
 					onChange={(value) =>
 						editPortfolio(
 							(draft) => {
@@ -177,23 +169,17 @@ function HeroPhoto() {
 	};
 
 	return (
-		<div className="grid gap-3">
-			<RadioGroup value={choice} onChange={choose}>
-				<Label>
-					<Trans>Photo</Trans>
-				</Label>
-				{resumePhoto && (
-					<RadioOption value="resume">
-						<Trans>The photo on my resume</Trans>
-					</RadioOption>
-				)}
-				<RadioOption value="own">
-					<Trans>A photo for the portfolio only</Trans>
-				</RadioOption>
-				<RadioOption value="none">
-					<Trans>No photo</Trans>
-				</RadioOption>
-			</RadioGroup>
+		<div className="grid gap-4">
+			<ChoiceSelect
+				label={t`Photo`}
+				value={choice}
+				options={[
+					...(resumePhoto ? [{ id: "resume", label: t`The photo on my resume` }] : []),
+					{ id: "own", label: t`A photo for the portfolio only` },
+					{ id: "none", label: t`No photo` },
+				]}
+				onChange={choose}
+			/>
 			{choice === "own" && (
 				<ImageField
 					label={t`Portfolio photo`}
@@ -201,7 +187,6 @@ function HeroPhoto() {
 					kind="portrait"
 					value={basics.picture ?? undefined}
 					altSuggestion={name}
-					description={t`A square photo of your face works best. It's shrunk in your browser before uploading.`}
 					onChange={(image) => {
 						// A removed photo isn't offered back later.
 						if (!image) keepPhoto(null);
@@ -224,14 +209,9 @@ function HeroHighlights() {
 	const locale = pageLocaleOf(data, source.data);
 	return (
 		<div className="grid gap-3">
-			<div className="grid gap-0.5">
-				<span className="text-sm font-medium">
-					<Trans>Achievement numbers</Trans>
-				</span>
-				<span className="text-xs text-muted">
-					<Trans>Two to four of your strongest results, such as “8 years” or “+35% conversion”.</Trans>
-				</span>
-			</div>
+			<span className="text-sm font-medium">
+				<Trans>Achievement numbers</Trans>
+			</span>
 			<MetricsEditor
 				compact
 				metrics={data.hero.highlights}
@@ -275,66 +255,23 @@ function HeroButtons() {
 
 	return (
 		<div className="grid gap-3">
-			<div className="grid gap-0.5">
-				<span className="text-sm font-medium">
-					<Trans>Buttons</Trans>
-				</span>
-				<span className="text-xs text-muted">
-					<Trans>
-						Up to three, under your greeting. The first one stands out. An Email or WhatsApp button shows that address
-						to visitors, even if Contact hides it.
-					</Trans>
-				</span>
-			</div>
-			{buttons.map((button, index) => {
-				const name = button.label?.trim() || buttonKindLabel(button.kind);
-				return (
-					// oxlint-disable-next-line react/no-array-index-key -- buttons have no id; their place is who they are
-					<div key={index} className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
-						<ChoiceSelect
-							label={t`Opens`}
-							value={button.kind}
-							options={kindOptions}
-							onChange={(kind) =>
-								update(index, (draft) => {
-									draft.kind = kind;
-									if (kind !== "profile" && kind !== "link") delete draft.url;
-								})
-							}
-						/>
-						<TextInput
-							label={t`Button text`}
-							value={button.label ?? ""}
-							maxLength={max.buttonLabel}
-							placeholder={t`Empty uses a default`}
-							onChange={(value) =>
-								update(
-									index,
-									(draft) => {
-										if (value.trim()) draft.label = value;
-										else delete draft.label;
-									},
-									"label",
-								)
-							}
-						/>
-						{(button.kind === "profile" || button.kind === "link") && (
-							<UrlInput
-								label={t`Address`}
-								value={button.url}
-								onChange={(url) =>
-									update(index, (draft) => {
-										if (url) draft.url = url;
-										else delete draft.url;
-									})
-								}
-							/>
-						)}
-						<ItemToolbar
-							name={name}
+			<span className="text-sm font-medium">
+				<Trans>Buttons</Trans>
+			</span>
+			<SortableList
+				ids={buttons.map((_, index) => String(index))}
+				onMove={(from, to) => editPortfolio((draft) => moveItem(draft.hero.buttons, from, to), { structural: true })}
+			>
+				{buttons.map((button, index) => {
+					const name = button.label?.trim() || buttonKindLabel(button.kind);
+					return (
+						// oxlint-disable-next-line react/no-array-index-key -- buttons have no id; their place is who they are
+						<SortableCard
+							key={index}
+							id={String(index)}
+							list="hero-buttons"
 							index={index}
-							count={buttons.length}
-							onMove={(to) => editPortfolio((draft) => moveItem(draft.hero.buttons, index, to), { structural: true })}
+							name={name}
 							onRemove={() =>
 								editPortfolio(
 									(draft) => {
@@ -343,10 +280,56 @@ function HeroButtons() {
 									{ structural: true },
 								)
 							}
-						/>
-					</div>
-				);
-			})}
+						>
+							<ChoiceSelect
+								label={t`Opens`}
+								value={button.kind}
+								options={kindOptions}
+								onChange={(kind) =>
+									update(index, (draft) => {
+										draft.kind = kind;
+										if (kind !== "profile" && kind !== "link") delete draft.url;
+									})
+								}
+							/>
+							<TextInput
+								label={t`Button text`}
+								value={button.label ?? ""}
+								maxLength={max.buttonLabel}
+								icon="text-t"
+								placeholder={t`Empty uses a default`}
+								onChange={(value) =>
+									update(
+										index,
+										(draft) => {
+											if (value.trim()) draft.label = value;
+											else delete draft.label;
+										},
+										"label",
+									)
+								}
+							/>
+							{(button.kind === "profile" || button.kind === "link") && (
+								<UrlInput
+									label={t`Address`}
+									value={button.url}
+									onChange={(url) =>
+										update(index, (draft) => {
+											if (url) draft.url = url;
+											else delete draft.url;
+										})
+									}
+								/>
+							)}
+						</SortableCard>
+					);
+				})}
+			</SortableList>
+			{buttons.some((button) => button.kind === "email" || button.kind === "whatsapp") && (
+				<p className="px-1 text-body-xs text-muted">
+					<Trans>An Email or WhatsApp button shows that address to visitors, even if Contact hides it.</Trans>
+				</p>
+			)}
 			{buttons.length < PORTFOLIO_LIMITS.heroButtons && (
 				<Button variant="secondary" className="w-fit" onPress={add}>
 					<Icon name="plus" size={18} />

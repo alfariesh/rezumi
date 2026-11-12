@@ -27,7 +27,7 @@ export function ScoreHeader({ report }: ScoreHeaderProps) {
 				<span className={cn("text-4xl leading-none font-bold tabular-nums", tone.text)}>
 					<RollingNumber value={report.score} />
 				</span>
-				<span className="text-sm text-muted">
+				<span className="text-body-sm text-muted">
 					<Trans>out of 100</Trans>
 				</span>
 			</div>
@@ -69,7 +69,7 @@ export function ScoreHeader({ report }: ScoreHeaderProps) {
 			</div>
 
 			{cap && (
-				<p className="rounded-md bg-default/60 p-2 text-xs leading-normal text-muted">
+				<p className="rounded-md bg-default/60 p-2 text-body-xs text-muted">
 					<Trans>The score is capped because of a blocking problem: {getPdfFindingMessage(cap).title}</Trans>
 				</p>
 			)}

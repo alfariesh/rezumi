@@ -75,7 +75,7 @@ export function AuthErrorPage({ code, description }: AuthErrorPageProps) {
 					<Alert.Title>{getErrorMessage(code)}</Alert.Title>
 					{description && (
 						<Alert.Description>
-							<span className="mb-1 block text-xs">
+							<span className="mb-1 block text-body-xs">
 								<Trans comment="Label above the raw error text forwarded by the identity provider">
 									Details from the provider:
 								</Trans>

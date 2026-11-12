@@ -59,7 +59,7 @@ function TocList({ entries, active, onNavigate }: TocListProps) {
 							aria-current={current ? "location" : undefined}
 							onClick={onNavigate}
 							className={cn(
-								"-ms-px block border-s-2 border-transparent py-1 ps-3 text-sm leading-5 text-pretty text-muted transition-colors hover:text-foreground",
+								"-ms-px block border-s-2 border-transparent py-1 ps-3 text-sm text-pretty text-muted transition-colors hover:text-foreground",
 								entry.depth === 3 && "ps-6",
 								current && "border-accent font-medium text-foreground",
 							)}

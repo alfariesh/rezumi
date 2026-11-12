@@ -162,7 +162,7 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 											) : (
 												<span className="min-w-0 flex-1 break-words whitespace-pre-wrap">{text}</span>
 											)}
-											<time className="shrink-0 text-xs leading-5 text-muted">
+											<time className="shrink-0 text-body-xs text-muted">
 												{formatDate(entry.at, entry.type === "interview")}
 											</time>
 											<Dropdown>
@@ -260,7 +260,6 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 										<TextArea
 											fullWidth
 											aria-label={t`Note`}
-											rows={3}
 											value={shownEdit.text}
 											onChange={(event) => {
 												const text = event.target.value;

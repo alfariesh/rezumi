@@ -1,24 +1,21 @@
-import { Button, Dropdown, Label, Separator, Spinner } from "@heroui/react";
+import { Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
-import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { useLetterMode } from "@/features/letters/use-letter-mode";
-import { DocumentMenuTrigger } from "@/features/resume/editor/chrome";
+import { DocumentMenuTrigger, DocumentTitle } from "@/features/resume/editor/chrome";
 import { DownloadButtons, EditorBarFrame } from "@/features/resume/editor/chrome/bar";
 import { ModeSwitch } from "@/features/resume/editor/chrome/mode-switch";
 import { STATUS_WORDS } from "@/features/resume/editor/save-status";
-import { useEditorStore } from "@/features/resume/editor/store";
 import { usePrompt } from "@/hooks/use-confirm";
 import { getOrpcErrorMessage, getReadableErrorMessage } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
@@ -30,8 +27,7 @@ type LetterBarProps = {
 	pinnable: boolean;
 };
 
-/** The 56px bar: back and "Cover letter" · the letter's name and save state · History, Share and Download PDF. */
-/** Write · Design, above the panel. */
+/** Write · Design down the rail, History at its foot. */
 export function LetterModeTabs() {
 	const [mode, setMode] = useLetterMode();
 
@@ -39,6 +35,7 @@ export function LetterModeTabs() {
 		<ModeSwitch
 			selected={mode}
 			onChange={setMode}
+			history
 			modes={[
 				{ id: "write", icon: "pencil-simple", label: t`Write` },
 				{ id: "design", icon: "palette", label: t`Design` },
@@ -47,34 +44,20 @@ export function LetterModeTabs() {
 	);
 }
 
+/** Phones: the 56px bar over the letter, with back, the name, its menu and save state, and Download PDF. */
 export function LetterBar({ layout, pinnable }: LetterBarProps) {
-	const setSheetTab = useEditorStore((state) => state.setSheetTab);
-	// Below 1280 the bar is too narrow for Share's label next to everything else.
-	const wide = useBreakpoint() === "wide";
-	const download = useDownloadLetter();
-
 	return (
-		<EditorBarFrame
-			layout={layout}
-			pinnable={pinnable}
-			menu={<LetterMenu />}
-			kind={{ icon: "envelope-simple", label: t`Cover letter` }}
-		>
-			{layout === "desktop" && wide ? (
-				<Button variant="secondary" className="gap-1.5" onPress={() => setSheetTab("download")}>
-					<Icon name="export" />
-					<Trans>Share</Trans>
-				</Button>
-			) : (
-				<IconButton icon="export" label={t`Share`} onPress={() => setSheetTab("download")} />
-			)}
-			<DownloadButtons
-				busy={download.busy}
-				onDownload={() => void download.run()}
-				compact={layout === "mobile"}
-				iconOnly={layout === "tablet"}
-			/>
+		<EditorBarFrame layout={layout} pinnable={pinnable} menu={<LetterMenu />} center={null}>
+			<LetterDownload compact />
 		</EditorBarFrame>
+	);
+}
+
+/** Download PDF and the ▾ for every format: floating over the page, or (`compact`) one icon in the phone's bar. */
+export function LetterDownload({ compact = false }: { compact?: boolean }) {
+	const download = useDownloadLetter();
+	return (
+		<DownloadButtons busy={download.busy} onDownload={() => void download.run()} compact={compact} iconOnly={false} />
 	);
 }
 
@@ -109,8 +92,8 @@ const failed = (error: unknown) =>
 		description: getOrpcErrorMessage(error, { fallback: t`Couldn't update the letter. Try again.` }),
 	});
 
-/** The name opens the letter's menu: rename, duplicate, lock and Move to Trash. The save state sits under it. */
-function LetterMenu() {
+/** The letter's name, renamed in place, then the ▾ menu (rename, duplicate, lock and Move to Trash) and the save state. */
+export function LetterMenu() {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const prompt = usePrompt();
@@ -175,8 +158,13 @@ function LetterMenu() {
 
 	return (
 		<>
+			<DocumentTitle
+				name={name}
+				isLocked={isLocked}
+				onRename={(next) => useLetterEditorStore.getState().edit({ name: next })}
+			/>
 			<Dropdown>
-				<DocumentMenuTrigger name={name} isLocked={isLocked} />
+				<DocumentMenuTrigger name={name} />
 				<Dropdown.Popover placement="bottom start" className="w-60">
 					<Dropdown.Menu>
 						<Dropdown.Item id="rename" textValue={t`Rename…`} isDisabled={isLocked} onAction={() => void rename()}>
@@ -245,7 +233,7 @@ function LetterSaveStatus() {
 			role="status"
 			aria-live="polite"
 			title={words}
-			className="flex min-w-0 shrink-0 items-center gap-1.5 text-xs leading-4 whitespace-nowrap text-muted"
+			className="flex min-w-0 shrink-0 items-center gap-1.5 text-xs whitespace-nowrap text-muted"
 		>
 			{status === "saving" && (
 				<>

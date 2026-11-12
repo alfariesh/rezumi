@@ -15,7 +15,7 @@ import { templates } from "@/dialogs/resume/template/data";
 import { letterPageData, useLetterWords } from "@/features/letters/compose";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { useLetterMode } from "@/features/letters/use-letter-mode";
-import { CanvasStatusPill, usePageScale, ZoomBar } from "@/features/resume/editor/chrome";
+import { CanvasStatusPill, usePageScale } from "@/features/resume/editor/chrome";
 import { markChange } from "@/features/resume/editor/proposals/proposals";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { getScrollBehavior } from "@/features/resume/editor/write/reveal";
@@ -53,7 +53,6 @@ export function LetterPage() {
 	const previewTemplate = useEditorStore((state) => state.previewTemplate);
 	const historyVersionId = useEditorStore((state) => state.historyVersionId);
 	const sheetOpen = useEditorStore((state) => state.sheetTab !== null);
-	const rendered = useEditorStore((state) => state.rendered);
 	const setRendered = useEditorStore((state) => state.setRendered);
 	const breakpoint = useBreakpoint();
 
@@ -66,9 +65,7 @@ export function LetterPage() {
 	const viewing = historyVersionId !== null && version?.id === historyVersionId ? version : null;
 	const words = useLetterWords((viewing?.data.style ?? letter?.style)?.metadata.page.locale ?? "en-US");
 	// A viewed version keeps its own page format.
-	const { canvasRef, fitScale, pageScale } = usePageScale(
-		(viewing?.data.style ?? letter?.style)?.metadata.page.format ?? "a4",
-	);
+	const { canvasRef, pageScale } = usePageScale((viewing?.data.style ?? letter?.style)?.metadata.page.format ?? "a4");
 
 	// Reduced motion puts the whole draft on the page at once.
 	const draftText =
@@ -106,7 +103,7 @@ export function LetterPage() {
 	const shifted = sheetOpen && (breakpoint === "desktop" || breakpoint === "wide");
 
 	return (
-		<div className="relative h-full min-h-0 bg-background">
+		<div className="relative h-full min-h-0">
 			{/* The page has nothing to tab to, so the scroll area itself takes focus for keyboard scrolling. */}
 			<section
 				ref={canvasRef}
@@ -163,8 +160,6 @@ export function LetterPage() {
 					}
 				/>
 			</section>
-
-			<ZoomBar fitScale={fitScale} pageCount={Math.max(1, rendered.pageCount)} />
 		</div>
 	);
 }

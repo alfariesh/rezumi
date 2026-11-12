@@ -69,7 +69,8 @@ supported. Renames preserve an old address for 30 days.
 Authenticated custom-domain operations live under `/api/openapi`: `GET /custom-domain`, `PUT /custom-domain` with
 `{ "hostname": "resume.example.com" }`, `POST /custom-domain/verify`, and `DELETE /custom-domain`.
 The status includes the DNS target, ownership TXT name/value, verification status and last check time. These routes
-return `PRECONDITION_FAILED` (HTTP 412) when the operator hasn't enabled custom domains. Use the
+return `PRECONDITION_FAILED` (HTTP 412) when the operator hasn't enabled custom domains. On rezumi.app, connecting a new
+domain needs a plan that includes it, and returns `PLAN_FEATURE_REQUIRED` (HTTP 403) otherwise. Use the
 API Reference tab for full request and response schemas, and
 [Sharing domains](/self-hosting/sharing-domains) for server prerequisites.
 

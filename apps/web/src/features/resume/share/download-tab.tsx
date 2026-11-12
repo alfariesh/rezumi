@@ -157,6 +157,9 @@ export function FileNameField({ value, extension, hint, onChange }: FileNameFiel
 				<Trans>File name</Trans>
 			</Label>
 			<InputGroup variant="secondary" fullWidth>
+				<InputGroup.Prefix>
+					<Icon name="file-text" size={18} className="text-muted" />
+				</InputGroup.Prefix>
 				<InputGroup.Input spellCheck={false} className="font-mono text-sm" />
 				<InputGroup.Suffix className="font-mono text-sm text-muted">{extension}</InputGroup.Suffix>
 			</InputGroup>

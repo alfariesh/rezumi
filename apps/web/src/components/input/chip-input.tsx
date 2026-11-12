@@ -6,6 +6,7 @@ import { mergeProps } from "react-aria";
 import { useFormControl } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
+import { WithInputIcon } from "@/components/input/input-icon";
 import { SortableEdge, SortableProvider, useSortableItem } from "@/components/input/sortable";
 import { useControlledState } from "@/hooks/use-controlled-state";
 import { isImeComposing } from "@/libs/keyboard";
@@ -253,10 +254,11 @@ export function ChipInput({
 			>
 				<div
 					role="none"
+					data-field-frame=""
 					onClick={() => inputRef.current?.focus()}
 					// Looks like a secondary HeroUI field: its fill, radius, hover and focus ring.
 					className={cn(
-						"overflow-hidden rounded-field bg-default text-field-foreground transition-[background-color,box-shadow] duration-quick focus-within:bg-default focus-within:ring-2 focus-within:ring-focus hover:bg-default-hover",
+						"overflow-hidden rounded-field bg-(--frame-bg,var(--default)) text-field-foreground transition-[background-color,box-shadow] duration-quick focus-within:bg-(--frame-bg,var(--default)) focus-within:ring-2 focus-within:ring-focus hover:bg-(--frame-bg-hover,var(--default-hover))",
 						(invalid === true || invalid === "true") && "ring-1 ring-danger focus-within:ring-danger",
 					)}
 				>
@@ -277,25 +279,27 @@ export function ChipInput({
 							</div>
 						</div>
 						<div className="flex items-center gap-1.5 pe-1">
-							<Input
-								ref={inputRef}
-								type="text"
-								id={controlId}
-								value={input}
-								autoComplete="off"
-								// A resolvable aria-labelledby outranks aria-label, so a rendered FormLabel still wins;
-								// when the FormControl has no FormLabel the reference dangles and the accessible name
-								// falls back to aria-label instead of going empty.
-								aria-label={isEditingKeyword ? t`Edit keyword` : t`Add keyword`}
-								aria-labelledby={labelId}
-								aria-describedby={describedBy}
-								aria-invalid={invalid}
-								placeholder={isEditingKeyword ? t`Editing keyword...` : t`Add a keyword...`}
-								onKeyDown={handleKeyDown}
-								onChange={handleInputChange}
-								// The frame is the field; the input inside it stays bare.
-								className="h-9 flex-1 border-none bg-transparent px-3 py-0 shadow-none ring-0 hover:bg-transparent focus:bg-transparent focus:ring-0"
-							/>
+							<WithInputIcon icon="tag" className="flex-1">
+								<Input
+									ref={inputRef}
+									type="text"
+									id={controlId}
+									value={input}
+									autoComplete="off"
+									// A resolvable aria-labelledby outranks aria-label, so a rendered FormLabel still wins;
+									// when the FormControl has no FormLabel the reference dangles and the accessible name
+									// falls back to aria-label instead of going empty.
+									aria-label={isEditingKeyword ? t`Edit keyword` : t`Add keyword`}
+									aria-labelledby={labelId}
+									aria-describedby={describedBy}
+									aria-invalid={invalid}
+									placeholder={isEditingKeyword ? t`Editing keyword...` : t`Add a keyword...`}
+									onKeyDown={handleKeyDown}
+									onChange={handleInputChange}
+									// The frame is the field; the input inside it stays bare.
+									className="h-9 w-full border-none bg-transparent py-0 ps-9 pe-3 shadow-none ring-0 hover:bg-transparent focus:bg-transparent focus:ring-0"
+								/>
+							</WithInputIcon>
 							{chips.length > 0 && (
 								<Chip
 									size="sm"
@@ -311,7 +315,7 @@ export function ChipInput({
 				</div>
 			</SortableProvider>
 
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				{allowCommas ? (
 					<Trans>
 						Press <Kbd>{RETURN_KEY}</Kbd> to add or save the current keyword.

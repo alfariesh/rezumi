@@ -153,7 +153,7 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 				</Accordion.Heading>
 				<Accordion.Panel>
 					<Accordion.Body className="flex flex-col gap-2">
-						<p className="text-xs text-muted">
+						<p className="text-body-xs text-muted">
 							<Trans>
 								Copy the entire job description from the posting and paste it below. We'll fill in the fields for you
 								and keep the text with this application for match scoring and tailoring.
@@ -164,9 +164,7 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 							fullWidth
 							// Fixed height: the accordion panel measures its content once, so a textarea that
 							// grew with the pasted text would overflow the clipped panel.
-							className="field-sizing-fixed h-40"
 							value={value}
-							rows={8}
 							maxLength={MAX_JOB_DESCRIPTION_CHARS}
 							placeholder={t`Paste the full job description here…`}
 							onChange={(event) => onChange(event.target.value)}
@@ -175,7 +173,7 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 							}}
 						/>
 						<div className="flex items-center justify-between gap-2">
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								{autofill.isPending ? (
 									<Trans>Reading the posting…</Trans>
 								) : fillsOnPaste ? (
@@ -301,7 +299,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							<Sheet.Heading>
 								{isEditing ? <Trans>Edit application</Trans> : <Trans>Add application</Trans>}
 							</Sheet.Heading>
-							<p className="text-sm text-muted">
+							<p className="text-body-sm text-muted">
 								{isEditing ? (
 									<Trans>Update this application's details.</Trans>
 								) : (
@@ -319,7 +317,6 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 											variant="secondary"
 											fullWidth
 											id={id}
-											rows={6}
 											maxLength={MAX_JOB_DESCRIPTION_CHARS}
 											value={form.jobDescription}
 											onChange={(event) => set("jobDescription", event.target.value)}
@@ -457,7 +454,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 											attachLabel={t`Or upload a resume PDF`}
 											onChange={(value) => set("resumeFile", value)}
 										/>
-										<p className="text-xs text-muted">
+										<p className="text-body-xs text-muted">
 											<Trans>Link a Rezumi to use AI match scoring and tailoring.</Trans>
 										</p>
 									</div>
@@ -512,7 +509,6 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 										fullWidth
 										id={id}
 										value={form.notes}
-										rows={3}
 										placeholder={t`Referred by…, things to emphasize, etc.`}
 										onChange={(event) => set("notes", event.target.value)}
 									/>

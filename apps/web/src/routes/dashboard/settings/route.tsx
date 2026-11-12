@@ -38,7 +38,7 @@ function RouteComponent() {
 				</Link>
 			)}
 			<Outlet />
-			<p className="mt-auto text-xs text-muted max-sm:hidden">
+			<p className="mt-auto text-body-xs text-muted max-sm:hidden">
 				<Trans>Rezumi {__APP_VERSION__}</Trans>
 				{" · "}
 				{getProjectLinks().map((link, index) => (

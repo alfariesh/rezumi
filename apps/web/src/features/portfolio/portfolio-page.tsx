@@ -155,7 +155,7 @@ function StatusCard() {
 					</span>
 					<CopyLinkButton url={url} />
 				</div>
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					{live ? (
 						<Trans>Anyone with the link can see it.</Trans>
 					) : portfolio.suspendedAt ? (

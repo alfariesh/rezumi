@@ -204,7 +204,7 @@ export function IconPickerGrid({
 					rowProps={{ rows, glyphs, value, onChange }}
 				/>
 			) : (
-				<p className="px-3 py-6 text-center text-sm text-muted">{t`No icons match.`}</p>
+				<p className="px-3 py-6 text-center text-body-sm text-muted">{t`No icons match.`}</p>
 			)}
 		</div>
 	);

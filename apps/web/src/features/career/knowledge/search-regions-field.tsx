@@ -103,7 +103,7 @@ export function SearchRegionsField({ value, accountTimeZone, onChange }: SearchR
 					<ComboBox.Popover aria-label={t`Countries`}>
 						<ListBox
 							renderEmptyState={() => (
-								<p className="p-2 text-sm text-muted">
+								<p className="p-2 text-body-sm text-muted">
 									<Trans>No country matches.</Trans>
 								</p>
 							)}

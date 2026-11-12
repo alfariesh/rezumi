@@ -6,11 +6,11 @@ import { useId, useState } from "react";
 import { getBrandIcon } from "@rezumi/resume/icons";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { generateId } from "@rezumi/utils/string";
 import { ImageField } from "../images/image-field";
 import { useSourceResume } from "./context";
-import { ChoiceSelect, ItemToolbar, moveItem, TextInput, UrlInput } from "./fields";
+import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
 import { editPortfolio, usePortfolioData } from "./store";
 import { IconPicker } from "@/components/input/icon-picker";
 
@@ -39,105 +39,21 @@ export function ServicesForm() {
 
 	return (
 		<div className="grid gap-3">
-			{items.map((service, index) => {
-				const name = service.title.trim() || t`Untitled service`;
-				const action: ServiceAction =
-					service.cta.kind === "whatsapp" || service.cta.kind === "link" ? service.cta.kind : "contact";
-				return (
-					<div key={service.id} className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
-						<div className="flex items-end gap-2">
-							<div className="min-w-0 flex-1">
-								<TextInput
-									label={t`Service`}
-									value={service.title}
-									maxLength={max.serviceTitle}
-									placeholder={t`Logo design`}
-									onChange={(value) =>
-										update(
-											index,
-											(target) => {
-												target.title = value;
-											},
-											"title",
-										)
-									}
-								/>
-							</div>
-							<IconPicker
-								aria-label={t`Icon for ${name}`}
-								value={service.icon ?? ""}
-								onChange={(icon) =>
-									update(index, (target) => {
-										if (icon) target.icon = icon;
-										else delete target.icon;
-									})
-								}
-							/>
-						</div>
-						<TextInput
-							label={t`Description`}
-							multiline
-							rewrite="serviceDescription"
-							value={service.description}
-							maxLength={max.serviceDescription}
-							onChange={(value) =>
-								update(
-									index,
-									(target) => {
-										target.description = value;
-									},
-									"description",
-								)
-							}
-						/>
-						<TextInput
-							label={t`Price (optional)`}
-							value={service.price ?? ""}
-							maxLength={max.servicePrice}
-							placeholder={t`From Rp1.5m`}
-							onChange={(value) =>
-								update(
-									index,
-									(target) => {
-										if (value.trim()) target.price = value;
-										else delete target.price;
-									},
-									"price",
-								)
-							}
-						/>
-						<ChoiceSelect
-							label={t`Order button`}
-							value={action}
-							options={actions}
-							description={
-								action === "whatsapp" && !contact.whatsapp.number
-									? t`Add your WhatsApp number in Contact, or the button won't show.`
-									: undefined
-							}
-							onChange={(kind) =>
-								update(index, (target) => {
-									target.cta = { kind, ...(target.cta.label ? { label: target.cta.label } : {}) };
-								})
-							}
-						/>
-						{action === "link" && (
-							<UrlInput
-								label={t`Order link`}
-								value={service.cta.url}
-								onChange={(url) =>
-									update(index, (target) => {
-										if (url) target.cta.url = url;
-										else delete target.cta.url;
-									})
-								}
-							/>
-						)}
-						<ItemToolbar
-							name={name}
+			<SortableList
+				ids={items.map((item) => item.id)}
+				onMove={(from, to) => editPortfolio((draft) => moveItem(draft.services.items, from, to), { structural: true })}
+			>
+				{items.map((service, index) => {
+					const name = service.title.trim() || t`Untitled service`;
+					const action: ServiceAction =
+						service.cta.kind === "whatsapp" || service.cta.kind === "link" ? service.cta.kind : "contact";
+					return (
+						<SortableCard
+							key={service.id}
+							id={service.id}
+							list="services"
 							index={index}
-							count={items.length}
-							onMove={(to) => editPortfolio((draft) => moveItem(draft.services.items, index, to), { structural: true })}
+							name={name}
 							onRemove={() =>
 								editPortfolio(
 									(draft) => {
@@ -146,10 +62,101 @@ export function ServicesForm() {
 									{ structural: true },
 								)
 							}
-						/>
-					</div>
-				);
-			})}
+						>
+							<div className="flex items-end gap-2">
+								<div className="min-w-0 flex-1">
+									<TextInput
+										label={t`Service`}
+										icon="tag"
+										value={service.title}
+										maxLength={max.serviceTitle}
+										placeholder={t`Logo design`}
+										onChange={(value) =>
+											update(
+												index,
+												(target) => {
+													target.title = value;
+												},
+												"title",
+											)
+										}
+									/>
+								</div>
+								<IconPicker
+									aria-label={t`Icon for ${name}`}
+									value={service.icon ?? ""}
+									onChange={(icon) =>
+										update(index, (target) => {
+											if (icon) target.icon = icon;
+											else delete target.icon;
+										})
+									}
+								/>
+							</div>
+							<TextInput
+								label={t`Description`}
+								multiline
+								rewrite="serviceDescription"
+								value={service.description}
+								maxLength={max.serviceDescription}
+								onChange={(value) =>
+									update(
+										index,
+										(target) => {
+											target.description = value;
+										},
+										"description",
+									)
+								}
+							/>
+							<TextInput
+								label={t`Price (optional)`}
+								icon="tag"
+								value={service.price ?? ""}
+								maxLength={max.servicePrice}
+								placeholder={t`From Rp1.5m`}
+								onChange={(value) =>
+									update(
+										index,
+										(target) => {
+											if (value.trim()) target.price = value;
+											else delete target.price;
+										},
+										"price",
+									)
+								}
+							/>
+							<ChoiceSelect
+								label={t`Order button`}
+								value={action}
+								options={actions}
+								warning={
+									action === "whatsapp" && !contact.whatsapp.number
+										? t`Add your WhatsApp number in Contact, or the button won't show.`
+										: undefined
+								}
+								onChange={(kind) =>
+									update(index, (target) => {
+										target.cta = { kind, ...(target.cta.label ? { label: target.cta.label } : {}) };
+									})
+								}
+							/>
+							{action === "link" && (
+								<UrlInput
+									label={t`Order link`}
+									value={service.cta.url}
+									onChange={(url) =>
+										update(index, (target) => {
+											if (url) target.cta.url = url;
+											else delete target.cta.url;
+										})
+									}
+								/>
+							)}
+						</SortableCard>
+					);
+				})}
+			</SortableList>
 			{items.length < PORTFOLIO_LIMITS.services && (
 				<Button
 					variant="secondary"
@@ -184,56 +191,29 @@ export function TestimonialsForm() {
 
 	return (
 		<div className="grid gap-3">
-			{items.map((item, index) => {
-				const name = item.name.trim() || t`Untitled testimonial`;
-				const update = (change: (target: typeof item) => void, key?: string) =>
-					editPortfolio(
-						(draft) => {
-							const target = draft.testimonials.items[index];
-							if (target) change(target);
-						},
-						key ? { key: `testimonials.${item.id}.${key}` } : undefined,
-					);
-				return (
-					<div key={item.id} className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
-						<TestimonialFields
-							value={item}
-							onChange={(field, value) =>
-								update((target) => {
-									target[field] = value;
-								}, field)
-							}
-						/>
-						<ImageField
-							label={t`Their photo (optional)`}
-							value={item.photo}
-							altSuggestion={item.name.trim()}
-							onChange={(image) =>
-								update((target) => {
-									if (image) target.photo = image;
-									else delete target.photo;
-								})
-							}
-						/>
-						<UrlInput
-							label={t`Where it was given (optional)`}
-							value={item.sourceUrl}
-							webOnly
-							placeholder={t`https://linkedin.com/in/…`}
-							onChange={(url) =>
-								update((target) => {
-									if (url) target.sourceUrl = url;
-									else delete target.sourceUrl;
-								})
-							}
-						/>
-						<ItemToolbar
-							name={name}
+			<SortableList
+				ids={items.map((item) => item.id)}
+				onMove={(from, to) =>
+					editPortfolio((draft) => moveItem(draft.testimonials.items, from, to), { structural: true })
+				}
+			>
+				{items.map((item, index) => {
+					const name = item.name.trim() || t`Untitled testimonial`;
+					const update = (change: (target: typeof item) => void, key?: string) =>
+						editPortfolio(
+							(draft) => {
+								const target = draft.testimonials.items[index];
+								if (target) change(target);
+							},
+							key ? { key: `testimonials.${item.id}.${key}` } : undefined,
+						);
+					return (
+						<SortableCard
+							key={item.id}
+							id={item.id}
+							list="testimonials"
 							index={index}
-							count={items.length}
-							onMove={(to) =>
-								editPortfolio((draft) => moveItem(draft.testimonials.items, index, to), { structural: true })
-							}
+							name={name}
 							onRemove={() =>
 								editPortfolio(
 									(draft) => {
@@ -242,10 +222,42 @@ export function TestimonialsForm() {
 									{ structural: true },
 								)
 							}
-						/>
-					</div>
-				);
-			})}
+						>
+							<TestimonialFields
+								value={item}
+								onChange={(field, value) =>
+									update((target) => {
+										target[field] = value;
+									}, field)
+								}
+							/>
+							<ImageField
+								label={t`Their photo (optional)`}
+								value={item.photo}
+								altSuggestion={item.name.trim()}
+								onChange={(image) =>
+									update((target) => {
+										if (image) target.photo = image;
+										else delete target.photo;
+									})
+								}
+							/>
+							<UrlInput
+								label={t`Where it was given (optional)`}
+								value={item.sourceUrl}
+								webOnly
+								placeholder={t`https://linkedin.com/in/…`}
+								onChange={(url) =>
+									update((target) => {
+										if (url) target.sourceUrl = url;
+										else delete target.sourceUrl;
+									})
+								}
+							/>
+						</SortableCard>
+					);
+				})}
+			</SortableList>
 			{items.length < PORTFOLIO_LIMITS.testimonials && (
 				<Button variant="secondary" className="w-fit" onPress={() => setAdding(true)}>
 					<Icon name="plus" size={18} />
@@ -276,12 +288,14 @@ function TestimonialFields({ value, onChange }: TestimonialFieldsProps) {
 			/>
 			<TextInput
 				label={t`Their name`}
+				icon="user-circle"
 				value={value.name}
 				maxLength={max.personName}
 				onChange={(text) => onChange("name", text)}
 			/>
 			<TextInput
 				label={t`Their role and company`}
+				icon="briefcase"
 				value={value.role}
 				maxLength={max.personRole}
 				placeholder={t`Head of Marketing, Kopi Senja`}
@@ -390,85 +404,21 @@ export function ClientsForm() {
 
 	return (
 		<div className="grid gap-3">
-			{items.map((client, index) => {
-				const name = client.name.trim() || t`Untitled client`;
-				const brandIcon = getBrandIcon(client.name);
-				const showsBrand = Boolean(client.logo && "brandIcon" in client.logo);
-				return (
-					<div key={client.id} className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
-						<TextInput
-							label={t`Name`}
-							value={client.name}
-							maxLength={max.clientName}
-							onChange={(value) =>
-								editPortfolio(
-									(draft) => {
-										const target = draft.clients.items[index];
-										if (!target) return;
-										target.name = value;
-										// A brand logo follows the name; an uploaded logo stays.
-										if (!target.logo || "brandIcon" in target.logo) {
-											const next = getBrandIcon(value);
-											if (next && target.logo) target.logo = { brandIcon: next };
-											else if (!next) delete target.logo;
-										}
-									},
-									{ key: `clients.${client.id}.name` },
-								)
-							}
-						/>
-						<ImageField
-							label={t`Logo (optional)`}
-							kind="logo"
-							value={client.logo && "key" in client.logo ? client.logo : undefined}
-							altSuggestion={client.name.trim() ? t`${client.name.trim()} logo` : ""}
-							description={t`PNG or WebP with a clear background. By uploading it, you confirm you may show it.`}
-							onChange={(image) =>
-								editPortfolio((draft) => {
-									const target = draft.clients.items[index];
-									if (!target) return;
-									if (image) target.logo = image;
-									else {
-										const brand = getBrandIcon(target.name);
-										if (brand) target.logo = { brandIcon: brand };
-										else delete target.logo;
-									}
-								})
-							}
-						/>
-						{brandIcon && !(client.logo && "key" in client.logo) && (
-							<SwitchRow
-								isSelected={showsBrand}
-								onChange={(checked) =>
-									editPortfolio((draft) => {
-										const target = draft.clients.items[index];
-										if (!target) return;
-										if (checked) target.logo = { brandIcon };
-										else delete target.logo;
-									})
-								}
-								label={t`Show the ${name} logo`}
-								className="py-0"
-							/>
-						)}
-						<UrlInput
-							label={t`Link (optional)`}
-							value={client.url}
-							webOnly
-							onChange={(url) =>
-								editPortfolio((draft) => {
-									const target = draft.clients.items[index];
-									if (!target) return;
-									if (url) target.url = url;
-									else delete target.url;
-								})
-							}
-						/>
-						<ItemToolbar
-							name={name}
+			<SortableList
+				ids={items.map((item) => item.id)}
+				onMove={(from, to) => editPortfolio((draft) => moveItem(draft.clients.items, from, to), { structural: true })}
+			>
+				{items.map((client, index) => {
+					const name = client.name.trim() || t`Untitled client`;
+					const brandIcon = getBrandIcon(client.name);
+					const showsBrand = Boolean(client.logo && "brandIcon" in client.logo);
+					return (
+						<SortableCard
+							key={client.id}
+							id={client.id}
+							list="clients"
 							index={index}
-							count={items.length}
-							onMove={(to) => editPortfolio((draft) => moveItem(draft.clients.items, index, to), { structural: true })}
+							name={name}
 							onRemove={() =>
 								editPortfolio(
 									(draft) => {
@@ -477,15 +427,80 @@ export function ClientsForm() {
 									{ structural: true },
 								)
 							}
-						/>
-					</div>
-				);
-			})}
-			<p className="text-xs text-muted">
-				<Trans>
-					By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed
-					at, and anyone can report one that's used without permission.
-				</Trans>
+						>
+							<TextInput
+								label={t`Name`}
+								icon="briefcase"
+								value={client.name}
+								maxLength={max.clientName}
+								onChange={(value) =>
+									editPortfolio(
+										(draft) => {
+											const target = draft.clients.items[index];
+											if (!target) return;
+											target.name = value;
+											// A brand logo follows the name; an uploaded logo stays.
+											if (!target.logo || "brandIcon" in target.logo) {
+												const next = getBrandIcon(value);
+												if (next && target.logo) target.logo = { brandIcon: next };
+												else if (!next) delete target.logo;
+											}
+										},
+										{ key: `clients.${client.id}.name` },
+									)
+								}
+							/>
+							<ImageField
+								label={t`Logo (optional)`}
+								kind="logo"
+								value={client.logo && "key" in client.logo ? client.logo : undefined}
+								altSuggestion={client.name.trim() ? t`${client.name.trim()} logo` : ""}
+								onChange={(image) =>
+									editPortfolio((draft) => {
+										const target = draft.clients.items[index];
+										if (!target) return;
+										if (image) target.logo = image;
+										else {
+											const brand = getBrandIcon(target.name);
+											if (brand) target.logo = { brandIcon: brand };
+											else delete target.logo;
+										}
+									})
+								}
+							/>
+							{brandIcon && !(client.logo && "key" in client.logo) && (
+								<CellSwitchRow
+									isSelected={showsBrand}
+									onChange={(checked) =>
+										editPortfolio((draft) => {
+											const target = draft.clients.items[index];
+											if (!target) return;
+											if (checked) target.logo = { brandIcon };
+											else delete target.logo;
+										})
+									}
+									label={t`Show the ${name} logo`}
+								/>
+							)}
+							<UrlInput
+								label={t`Link (optional)`}
+								value={client.url}
+								webOnly
+								onChange={(url) =>
+									editPortfolio((draft) => {
+										const target = draft.clients.items[index];
+										if (!target) return;
+										if (url) target.url = url;
+										else delete target.url;
+									})
+								}
+							/>
+						</SortableCard>
+					);
+				})}
+			</SortableList>
+			<p className="px-1 text-body-xs text-muted">
+				<Trans>By adding a logo, you confirm you have the right to show it.</Trans>
 			</p>
 			<div className="flex flex-wrap gap-2">
 				{items.length < PORTFOLIO_LIMITS.clients && (

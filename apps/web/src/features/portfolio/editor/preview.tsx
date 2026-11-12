@@ -1,6 +1,5 @@
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import { Segment } from "@heroui-pro/react";
 import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -22,8 +21,6 @@ import { usePortfolioEditorUi } from "./ui";
 import { usePlanFeature } from "@/features/billing/plan";
 // The page's own text, declared for translators; see the module.
 import "../page-text";
-
-type Device = "desktop" | "phone";
 
 type PreviewInput = {
 	data: PortfolioData;
@@ -89,7 +86,7 @@ export async function renderPortfolioPreview({
 		creditUrl: origin,
 	});
 	// The intro effect holds still while the draft is edited; "Replay" plays it from the editor (`replayIntroEffect`).
-	const html = renderPortfolioDocument({ page }).replace("</head>", `${PREVIEW_STILL_CSS}</head>`);
+	const html = renderPortfolioDocument({ page, inert: true }).replace("</head>", `${PREVIEW_STILL_CSS}</head>`);
 	// The page opens a detail by its address (`:target`); an inert preview has no address to change, so the detail of
 	// the work being edited is shown by a rule instead. Anchors are `work-<slug>`, letters, digits and dashes only.
 	const openAnchor = view.works.find((work) => work.id === openWorkId)?.anchor;
@@ -98,7 +95,7 @@ export async function renderPortfolioPreview({
 }
 
 type PortfolioPreviewProps = {
-	/** Phones show the preview full screen, so the size switch is left out there. */
+	/** Phones show the preview full screen, so the width the bar picks doesn't apply there. */
 	showDeviceSwitch?: boolean;
 };
 
@@ -110,7 +107,7 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	const data = usePortfolioData();
 	const owner = usePortfolioOwner();
 	const source = useSourceResume();
-	const [device, setDevice] = useState<Device>("desktop");
+	const device = usePortfolioEditorUi((state) => state.previewDevice);
 	const [document, setDocument] = useState<string>();
 	// The last draw failed: the preview says so (over the previous one, when there is one) and offers to try again.
 	const [failed, setFailed] = useState(false);
@@ -219,33 +216,12 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	};
 
 	return (
-		<div className="flex h-full min-h-0 flex-col items-center gap-3 bg-background p-3 md:p-4">
-			{(showDeviceSwitch || hasEffect) && (
-				<div className="flex shrink-0 flex-wrap items-center justify-center gap-2">
-					{showDeviceSwitch && (
-						<Segment
-							aria-label={t`Preview size`}
-							selectedKey={device}
-							onSelectionChange={(key) => setDevice(key as Device)}
-							className="shrink-0"
-						>
-							<Segment.Item id="desktop">
-								<Icon name="desktop" size={16} variant={device === "desktop" ? "duotone" : "stroke"} />
-								<Trans>Computer</Trans>
-							</Segment.Item>
-							<Segment.Item id="phone">
-								<Icon name="device-mobile" size={16} variant={device === "phone" ? "duotone" : "stroke"} />
-								<Trans>Phone</Trans>
-							</Segment.Item>
-						</Segment>
-					)}
-					{hasEffect && (
-						<Button size="sm" variant="tertiary" onPress={replayEffect}>
-							<Icon name="arrow-counter-clockwise" size={16} />
-							<Trans>Replay intro</Trans>
-						</Button>
-					)}
-				</div>
+		<div className="flex h-full min-h-0 flex-col items-center gap-3 p-3 md:p-4">
+			{hasEffect && (
+				<Button size="sm" variant="tertiary" className="shrink-0" onPress={replayEffect}>
+					<Icon name="arrow-counter-clockwise" size={16} />
+					<Trans>Replay intro</Trans>
+				</Button>
 			)}
 			<div
 				className={cn(

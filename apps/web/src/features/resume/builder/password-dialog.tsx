@@ -57,7 +57,7 @@ export function ResumePasswordDialog({ onSubmit, onClose }: ResumePasswordDialog
 						<Modal.Heading>
 							<Trans>Protect your resume with a password</Trans>
 						</Modal.Heading>
-						<p id={`${id}-description`} className="text-sm text-muted">
+						<p id={`${id}-description`} className="text-body-sm text-muted">
 							<Trans>Anyone who opens the public URL will need this password.</Trans>
 						</p>
 					</Modal.Header>
@@ -113,7 +113,7 @@ export function ResumePasswordDialog({ onSubmit, onClose }: ResumePasswordDialog
 							</TextField>
 							{error && (
 								// A plain alert: HeroUI's ErrorMessage renders only inside a field that offers its slot.
-								<p id={`${id}-error`} role="alert" className="text-sm text-danger">
+								<p id={`${id}-error`} role="alert" className="text-body-sm text-danger">
 									{error}
 								</p>
 							)}

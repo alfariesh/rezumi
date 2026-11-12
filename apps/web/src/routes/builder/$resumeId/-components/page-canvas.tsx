@@ -15,7 +15,7 @@ import { templates } from "@/dialogs/resume/template/data";
 import { useCurrentBuilderResumeSelector, useResumeData } from "@/features/resume/builder/draft";
 import { CheckPageLayer, PageViewToggle } from "@/features/resume/editor/check/page-layer";
 import { ParserView } from "@/features/resume/editor/check/parser-view";
-import { CanvasStatusPill, usePageScale, ZoomBar } from "@/features/resume/editor/chrome";
+import { CanvasStatusPill, usePageScale } from "@/features/resume/editor/chrome";
 import { measureOverflow, runFit } from "@/features/resume/editor/design/fit";
 import { PageOverlay } from "@/features/resume/editor/page-overlay";
 import { markProposals, pendingProposals } from "@/features/resume/editor/proposals/proposals";
@@ -69,7 +69,7 @@ function ResumePageCanvas() {
 	const setRendered = useEditorStore((state) => state.setRendered);
 	const breakpoint = useBreakpoint();
 	const [mode] = useEditorMode();
-	const { canvasRef, fitScale, pageScale } = usePageScale(format);
+	const { canvasRef, pageScale } = usePageScale(format);
 	const isPhone = breakpoint === "mobile";
 
 	// History: the picked version is drawn on the page, read-only, until the user restores it or goes back to now.
@@ -107,7 +107,7 @@ function ResumePageCanvas() {
 	};
 
 	return (
-		<div className="relative h-full min-h-0 bg-background">
+		<div className="relative h-full min-h-0">
 			<section
 				ref={canvasRef}
 				// The scroll area takes focus so the page can be scrolled from the keyboard even before its lines load.
@@ -164,7 +164,6 @@ function ResumePageCanvas() {
 			</section>
 
 			{mode === "check" && !viewing && <PageViewToggle />}
-			{!parser && <ZoomBar fitScale={fitScale} pageCount={Math.max(1, rendered.pageCount)} />}
 		</div>
 	);
 }
@@ -228,7 +227,7 @@ function ResumePageCaption(props: ResumePageCaptionProps) {
 	if (overflow && pageNumber > overflow.authored) {
 		return (
 			<figcaption className="relative mb-2.5 border-t-[1.5px] border-dashed border-warning">
-				<span className="absolute end-0 -top-2.5 rounded-full bg-background px-2 text-xs font-semibold text-warning tabular-nums">
+				<span className="absolute end-0 -top-2.5 rounded-full bg-background-secondary px-2 text-xs font-semibold text-warning tabular-nums">
 					<Trans>Page {pageNumber}</Trans>
 				</span>
 			</figcaption>

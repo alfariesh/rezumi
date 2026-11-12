@@ -142,7 +142,7 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 			<Dropdown.Popover placement="bottom end" className="max-h-80 w-72 overflow-y-auto">
 				<Dropdown.Menu
 					renderEmptyState={() => (
-						<p className="px-2 py-1.5 text-sm text-muted">
+						<p className="px-2 py-1.5 text-body-sm text-muted">
 							<Trans>No applications yet. Add one in Applications first.</Trans>
 						</p>
 					)}
@@ -220,7 +220,7 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 							<Icon name="caret-down" className="ms-auto text-muted" />
 						</Button>,
 					)}
-					<p className="text-xs text-muted">
+					<p className="text-body-xs text-muted">
 						<Trans>Without one, you fill in the recipient yourself and drafting uses only your resume.</Trans>
 					</p>
 				</>
@@ -245,7 +245,7 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 					heightClassName="min-h-[64px] max-h-[200px]"
 					onChange={(recipient) => edit({ recipient })}
 				/>
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>This letter keeps its recipient as written.</Trans>
 				</p>
 			</LetterWidget>
@@ -347,7 +347,7 @@ function FromSection({ letter, disabled }: { letter: CoverLetter; disabled: bool
 					onChange={setLinked}
 				/>
 			) : (
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>Your name and contact details come from a resume.</Trans>
 				</p>
 			)}
@@ -421,7 +421,7 @@ function BodySection({ letter, application, disabled }: LetterSectionProps) {
 						defaultValue={defaultCoverLetterSignOff(letter, words)}
 						disabled={disabled}
 					/>
-					<p className="text-xs text-muted">
+					<p className="text-body-xs text-muted">
 						<Trans>
 							Clear the greeting or sign-off to omit it. Clearing the sign-off also removes the automatic signature.
 						</Trans>
@@ -491,7 +491,7 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 
 	return (
 		<div className="grid justify-items-start gap-3 rounded-xl bg-surface-secondary p-4 fields-on-card">
-			<p className="text-sm text-muted">
+			<p className="text-body-sm text-muted">
 				{company && hasResume ? (
 					<Trans>Start typing, or draft from what we know: the {company} posting and your resume.</Trans>
 				) : company ? (
@@ -517,7 +517,7 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 			</div>
 			{canDraft && <AiProviderLoadState state={providerState} />}
 			{canDraft && !providerState.isUnavailable && !hasUsableProvider && (
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>Drafting needs an AI provider.</Trans>{" "}
 					<RouterLink to="/dashboard/settings/app" hash="ai-providers" className="link text-xs">
 						<Trans>Open AI settings</Trans>
@@ -586,7 +586,7 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 				aria-live="polite"
 				aria-busy={streaming}
 				className={cn(
-					"min-h-[120px] rounded-xl bg-accent-soft px-3 py-2.5 text-sm leading-relaxed whitespace-pre-wrap outline-[1.5px] transition-[outline-color] duration-standard outline-solid",
+					"min-h-[120px] rounded-xl bg-accent-soft px-3 py-2.5 text-body-sm whitespace-pre-wrap outline-[1.5px] transition-[outline-color] duration-standard outline-solid",
 					draft.phase === "ready" ? "outline-accent" : "outline-transparent",
 				)}
 			>
@@ -672,7 +672,7 @@ function LengthSection({ content }: { content: string }) {
 					}
 				/>
 			</div>
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				{length === "empty" ? (
 					<Trans>Most recruiters read 180–320 words. The shaded band shows the range.</Trans>
 				) : length === "short" ? (
@@ -697,7 +697,7 @@ function DesignNote({ letter }: { letter: CoverLetter }) {
 
 	return (
 		<LetterWidget id="letter-design" icon="palette" title={<Trans>Design</Trans>}>
-			<p className="text-sm text-muted">
+			<p className="text-body-sm text-muted">
 				{letter.designLinked ? (
 					<Trans>Matches the resume ({summary}).</Trans>
 				) : (

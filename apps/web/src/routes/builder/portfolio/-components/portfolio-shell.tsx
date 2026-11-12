@@ -1,5 +1,6 @@
 import type { PortfolioReveal } from "@/features/portfolio/editor/save-problem";
 import type { PortfolioSaveStatus } from "@/features/portfolio/editor/store";
+import { Segment } from "@heroui-pro/react";
 import { Button, buttonVariants, Modal, Spinner, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -8,7 +9,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getRouteApi, Link, useNavigate } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { applyPendingDraft } from "@/features/portfolio/ai/apply";
@@ -25,13 +25,15 @@ import { portfolioRefusalMessage } from "@/features/portfolio/errors";
 import { mapPictures } from "@/features/portfolio/location/map-pictures";
 import { isPortfolioLive } from "@/features/portfolio/status";
 import { isEditableElementFocused } from "@/features/resume/builder/draft";
-import { DrawerControls } from "@/features/resume/editor/chrome";
+import { BarDivider, UndoRedo } from "@/features/resume/editor/chrome";
+import { EditorBarFrame } from "@/features/resume/editor/chrome/bar";
 import { ModeSwitch } from "@/features/resume/editor/chrome/mode-switch";
 import {
 	EditorFrame,
-	MobileTabBar,
-	useEditorColumnsTransition,
+	MODE_ENTER_CLASS,
+	MobileEditor,
 	useEditorLayout,
+	useMobileSheet,
 } from "@/features/resume/editor/chrome/shell";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -95,7 +97,21 @@ export function PortfolioShell() {
 		<>
 			<EditorFrame
 				editorLayout={editorLayout}
-				bar={<PortfolioBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} onReveal={reveal} />}
+				bar={
+					<EditorBarFrame
+						layout={editorLayout.layout}
+						pinnable={editorLayout.pinnable}
+						back={<PortfolioBackLink />}
+						menu={<PortfolioTitle onReveal={reveal} />}
+						center={null}
+					>
+						<OpenPage compact />
+					</EditorBarFrame>
+				}
+				back={<PortfolioBackLink />}
+				title={<PortfolioTitle onReveal={reveal} />}
+				controls={<PortfolioControls compact={editorLayout.layout === "tablet"} />}
+				actions={<OpenPage compact={false} />}
 				mode={mode}
 				modes={
 					<ModeSwitch
@@ -111,8 +127,7 @@ export function PortfolioShell() {
 				panelLabel={modeLabel(mode)}
 				panel={<ModePanel mode={mode} />}
 				page={<Preview />}
-				assistant={null}
-				mobile={<MobileBody mode={mode} onModeChange={setMode} />}
+				mobile={<MobileBody onModeChange={setMode} />}
 			>
 				<PortfolioHotkeys />
 			</EditorFrame>
@@ -127,12 +142,14 @@ type ModePanelProps = { mode: PortfolioMode };
 /**
  * Only the open tab is mounted. The resume editor keeps hidden tabs mounted (`KeptModes`), but HeroUI Pro's rich text
  * editor reads its Tiptap editor after a hidden `<Activity>` has destroyed it, so the portfolio's panels can't be kept.
- * Everything they show lives in the editor's stores, so switching back loses nothing but the scroll position.
+ * Everything they show lives in the editor's stores, and the panel's scroller puts each tab back where it was left.
  */
 function ModePanel({ mode }: ModePanelProps) {
-	if (mode === "design") return <DesignPanel />;
-	if (mode === "share") return <PublishPanel />;
-	return <ContentPanel />;
+	return (
+		<div key={mode} className={MODE_ENTER_CLASS}>
+			{mode === "design" ? <DesignPanel /> : mode === "share" ? <PublishPanel /> : <ContentPanel />}
+		</div>
+	);
 }
 
 function Preview({ showDeviceSwitch = true }: { showDeviceSwitch?: boolean }) {
@@ -149,125 +166,136 @@ function Preview({ showDeviceSwitch = true }: { showDeviceSwitch?: boolean }) {
 	);
 }
 
-type MobileBodyProps = { mode: PortfolioMode; onModeChange: (mode: PortfolioMode) => void };
+const PORTFOLIO_MODES = ["write", "design", "share"] as const;
 
-/**
- * Phones (≤768 px): the panel or the preview, switched from the tab bar. One is mounted at a time, for the reason
- * `ModePanel` gives.
- */
-function MobileBody({ mode, onModeChange }: MobileBodyProps) {
-	const stored = useEditorStore((state) => state.mobileView);
-	const view = stored === "page" || stored === "write" || stored === "design" || stored === "share" ? stored : mode;
+type MobileBodyProps = { onModeChange: (mode: PortfolioMode) => void };
+
+/** Phones (≤768 px): the live page, with Content · Design · Publish floating over it, each opening a sheet. */
+function MobileBody({ onModeChange }: MobileBodyProps) {
+	const open = useMobileSheet(PORTFOLIO_MODES);
 
 	return (
-		<div className="grid min-h-0 grid-rows-[minmax(0,1fr)_auto]">
-			<div className="relative min-h-0">
-				{view === "page" ? (
-					<main id="main-content" className="h-full">
-						<Preview showDeviceSwitch={false} />
-					</main>
-				) : (
-					<section
-						data-editor-panel
-						aria-label={modeLabel(mode)}
-						className="absolute inset-0 overflow-y-auto bg-background [overflow-anchor:none]"
-					>
-						<ModePanel mode={mode} />
-					</section>
-				)}
-			</div>
-			<MobileTabBar
-				tabs={[
-					{ view: "write", icon: "pencil-simple", label: modeLabel("write") },
-					{ view: "page", icon: "eye", label: t`Preview` },
-					{ view: "design", icon: "palette", label: modeLabel("design") },
-					{ view: "share", icon: "globe-hemisphere-west", label: modeLabel("share") },
-				]}
-				view={view}
-				onModeChange={onModeChange}
-			/>
-		</div>
+		<MobileEditor
+			items={[
+				{ mode: "write", icon: "pencil-simple", label: modeLabel("write") },
+				{ mode: "design", icon: "palette", label: modeLabel("design") },
+				{ mode: "share", icon: "globe-hemisphere-west", label: modeLabel("share") },
+			]}
+			open={open}
+			onOpenChange={(next) => {
+				useEditorStore.setState({ mobileView: next ?? "page" });
+				if (next) onModeChange(next);
+			}}
+			halfModes={["design"]}
+			page={<Preview showDeviceSwitch={false} />}
+		>
+			{open && <ModePanel mode={open} />}
+		</MobileEditor>
 	);
 }
 
-type PortfolioBarProps = {
-	layout: "desktop" | "tablet" | "mobile";
-	pinnable: boolean;
+/** Leaving the portfolio editor goes back to the Portfolio page. */
+function PortfolioBackLink() {
+	return (
+		<Tooltip>
+			<Tooltip.Trigger>
+				<Link
+					to="/dashboard/portfolio"
+					aria-label={t`Back to Portfolio`}
+					className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
+				>
+					<Icon name="arrow-left" />
+				</Link>
+			</Tooltip.Trigger>
+			<Tooltip.Content placement="right">
+				<Trans>Back to Portfolio</Trans>
+			</Tooltip.Content>
+		</Tooltip>
+	);
+}
+
+type PortfolioTitleProps = {
 	/** Opens the place a save problem is in. */
 	onReveal: (place: PortfolioReveal) => void;
 };
 
-/** Back, the save state, undo and redo, and the published page. */
-function PortfolioBar({ layout, pinnable, onReveal }: PortfolioBarProps) {
-	const transition = useEditorColumnsTransition();
-	const live = usePortfolioEditorStore((state) => isPortfolioLive(state.portfolio));
+/** The panel section's header (and the phone's bar): the title and the save state. */
+function PortfolioTitle({ onReveal }: PortfolioTitleProps) {
+	return (
+		<>
+			<span className="truncate px-1.5 text-sm font-semibold">
+				<Trans>Portfolio</Trans>
+			</span>
+			<SaveStatus onReveal={onReveal} />
+		</>
+	);
+}
+
+/** The canvas section's header: undo and redo, and the preview's width (tablets: icons only). */
+function PortfolioControls({ compact }: { compact: boolean }) {
 	const canUndo = usePortfolioEditorStore((state) => state.undoStack.length > 0);
 	const canRedo = usePortfolioEditorStore((state) => state.redoStack.length > 0);
-	const url = usePortfolioUrl();
-	const phone = layout === "mobile";
 
 	return (
-		<header className={cn("grid h-(--editor-bar) grid-cols-(--editor-columns) items-center", transition)}>
-			<div className="flex min-w-0 items-center gap-1 ps-3 pe-2">
-				<Tooltip>
-					<Tooltip.Trigger>
-						<Link
-							to="/dashboard/portfolio"
-							aria-label={t`Back to Portfolio`}
-							className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
-						>
-							<Icon name="arrow-left" />
-						</Link>
-					</Tooltip.Trigger>
-					<Tooltip.Content placement="bottom">
-						<Trans>Back to Portfolio</Trans>
-					</Tooltip.Content>
-				</Tooltip>
-				{layout === "tablet" && <DrawerControls pinnable={pinnable} />}
-				{!phone && (
-					<span className="flex min-w-0 items-center gap-1.5 ps-1 text-sm font-medium text-muted">
-						<Icon name="globe-hemisphere-west" size={16} className="shrink-0" />
-						<span className="truncate">
-							<Trans>Portfolio</Trans>
-						</span>
-					</span>
-				)}
-			</div>
-			<div className="flex min-w-0 items-center justify-end gap-1 pe-3">
-				<SaveStatus onReveal={onReveal} />
-				<IconButton
-					icon="arrow-counter-clockwise"
-					label={t`Undo`}
-					shortcut="⌘Z"
-					isDisabled={!canUndo}
-					onPress={() => usePortfolioEditorStore.getState().undo()}
-				/>
-				<IconButton
-					icon="arrow-clockwise"
-					label={t`Redo`}
-					shortcut="⌘⇧Z"
-					isDisabled={!canRedo}
-					onPress={() => usePortfolioEditorStore.getState().redo()}
-				/>
-				{live &&
-					(phone ? (
-						<a
-							href={url}
-							target="_blank"
-							rel="noopener"
-							aria-label={t`Open page`}
-							className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
-						>
-							<Icon name="arrow-square-out" />
-						</a>
-					) : (
-						<a href={url} target="_blank" rel="noopener" className={buttonVariants({ variant: "secondary" })}>
-							<Icon name="arrow-square-out" size={18} />
-							<Trans>Open page</Trans>
-						</a>
-					))}
-			</div>
-		</header>
+		<>
+			<UndoRedo
+				canUndo={canUndo}
+				canRedo={canRedo}
+				onUndo={() => usePortfolioEditorStore.getState().undo()}
+				onRedo={() => usePortfolioEditorStore.getState().redo()}
+			/>
+			<BarDivider />
+			<PreviewWidth compact={compact} />
+		</>
+	);
+}
+
+/** Once published, the page in a new tab: a labelled button over the canvas, an icon in the phone's bar. */
+function OpenPage({ compact }: { compact: boolean }) {
+	const live = usePortfolioEditorStore((state) => isPortfolioLive(state.portfolio));
+	const url = usePortfolioUrl();
+	if (!live) return null;
+
+	return compact ? (
+		<a
+			href={url}
+			target="_blank"
+			rel="noopener"
+			aria-label={t`Open page`}
+			className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
+		>
+			<Icon name="arrow-square-out" />
+		</a>
+	) : (
+		<a href={url} target="_blank" rel="noopener" className={buttonVariants({ variant: "secondary", size: "sm" })}>
+			<Icon name="arrow-square-out" size={16} />
+			<Trans>Open page</Trans>
+		</a>
+	);
+}
+
+/** The preview at a computer's width or a phone's (tablets: icons only). */
+function PreviewWidth({ compact }: { compact: boolean }) {
+	const device = usePortfolioEditorUi((state) => state.previewDevice);
+
+	return (
+		<Segment
+			aria-label={t`Preview size`}
+			size="sm"
+			selectedKey={device}
+			onSelectionChange={(key) =>
+				usePortfolioEditorUi.getState().setPreviewDevice(key === "phone" ? "phone" : "desktop")
+			}
+		>
+			<Segment.Item id="desktop" aria-label={t`Computer`} className="w-auto px-2.5">
+				<Icon name="desktop" size={16} variant={device === "desktop" ? "duotone" : "stroke"} />
+				{!compact && <Trans>Computer</Trans>}
+			</Segment.Item>
+			<Segment.Item id="phone" aria-label={t`Phone`} className="w-auto px-2.5">
+				<Icon name="device-mobile" size={16} variant={device === "phone" ? "duotone" : "stroke"} />
+				{!compact && <Trans>Phone</Trans>}
+			</Segment.Item>
+		</Segment>
 	);
 }
 
@@ -420,7 +448,7 @@ function ConflictDialog() {
 						</Modal.Heading>
 					</Modal.Header>
 					<Modal.Body>
-						<p className="text-sm text-muted">
+						<p className="text-body-sm text-muted">
 							<Trans>
 								It was saved in another tab or on another device after you opened it here. Reload to continue from that
 								version, or keep your version and save it over that one.

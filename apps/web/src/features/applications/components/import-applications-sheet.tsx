@@ -111,7 +111,7 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 							<Sheet.Heading>
 								<Trans>Import from CSV</Trans>
 							</Sheet.Heading>
-							<p className="text-sm text-muted">
+							<p className="text-body-sm text-muted">
 								<Trans>
 									Paste rows or upload a .csv. Columns are matched automatically, and you check the match before
 									anything is saved.
@@ -159,7 +159,6 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 									fullWidth
 									id="import-csv-text"
 									value={text}
-									rows={6}
 									placeholder="Company,Role,Stage,…"
 									className="font-mono text-xs"
 									onChange={(event) => {
@@ -226,7 +225,7 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 											/>
 										</p>
 										{result.skipped > 0 && (
-											<p className="text-xs text-muted">
+											<p className="text-body-xs text-muted">
 												<Plural
 													value={result.skipped}
 													one="# row has no company or role and will be skipped."
@@ -242,7 +241,7 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 											</p>
 										)}
 										{result.contactsSkipped > 0 && (
-											<p className="text-xs text-muted">
+											<p className="text-body-xs text-muted">
 												<Plural
 													value={result.contactsSkipped}
 													one="# contact has an invalid email or no name; its application still imports."
@@ -251,7 +250,7 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 											</p>
 										)}
 										{overflow > 0 && (
-											<p className="text-xs text-warning-soft-foreground">
+											<p className="text-body-xs text-warning-soft-foreground">
 												<Trans>
 													Only the first {MAX_IMPORT} rows import at once, leaving out {overflow}. Split the file to
 													import the rest.

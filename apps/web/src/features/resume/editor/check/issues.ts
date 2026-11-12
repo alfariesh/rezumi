@@ -42,6 +42,7 @@ export const getCategoryName = (category: AtsCategory) =>
 		writing: t`Writing`,
 	})[category];
 
+/** What a category checks, shown as the tooltip on its row. */
 export const getCategoryDescription = (category: AtsCategory) =>
 	({
 		contact: t`Name, email, phone and location are found, and links are full addresses.`,

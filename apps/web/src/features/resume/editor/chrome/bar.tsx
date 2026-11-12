@@ -1,4 +1,3 @@
-import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { Button, ButtonGroup, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
@@ -6,8 +5,6 @@ import { Trans } from "@lingui/react/macro";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
-import { useEditorColumnsTransition } from "./shell";
-import { AssistantButton } from "@/features/assistant/assistant-button";
 import { BackLink, DrawerControls } from "@/features/resume/editor/chrome";
 import { useEditorStore } from "@/features/resume/editor/store";
 
@@ -15,71 +12,42 @@ type EditorBarFrameProps = {
 	layout: "desktop" | "tablet" | "mobile";
 	/** Tablet in landscape: the panel can be pinned beside the page. */
 	pinnable: boolean;
-	/** What kind of document this is, beside the back button: "Resume", "Cover letter". */
-	kind: { icon: IconName; label: string };
-	/** The document's name and save state. */
+	/** The document's editable name, its menu and its save state, after the back button. */
 	menu: ReactNode;
-	/** Share and Download, after History and the assistant. */
-	children: ReactNode;
+	/** Controls for the canvas under it, centered: undo and redo, zoom, the page count. Phones leave them out. */
+	center: ReactNode;
+	/** Leaving the editor, on phones (elsewhere it tops the rail): "Back to documents" unless it has its own place. */
+	back?: ReactNode;
+	/** At the end: the phone's Download, the portfolio's published page. */
+	children?: ReactNode;
 };
 
 /**
- * The 56px editor bar, on the editor's own column grid (`--editor-columns`), so it lines up with the body: back and
- * the document's kind over the panel column; the name and save state centered over the page; History, the assistant,
- * Share and Download at its end. Phones start the name right after the back button.
+ * The 56px editor bar, three zones on one row: back, the document's name, its menu and save state at the start; the
+ * canvas controls (undo, zoom, pages) in the middle; little at the end (the phone's Download, the portfolio's page).
+ * The outer zones share what the middle leaves, so it stays centered; a long name truncates and never runs under it.
+ * Phones drop the middle. The modes, AI and History live down the left of the panel; Download floats over the page.
  */
-export function EditorBarFrame({ layout, pinnable, kind, menu, children }: EditorBarFrameProps) {
-	const setSheetTab = useEditorStore((state) => state.setSheetTab);
-	const transition = useEditorColumnsTransition();
+export function EditorBarFrame({ layout, pinnable, menu, center, back, children }: EditorBarFrameProps) {
 	const phone = layout === "mobile";
 
-	const name = (
-		// The name and its save state share a row; the state shows as an icon, its words for screen readers.
-		<div className={cn("flex min-w-0 items-center gap-1.5", !phone && "justify-center")}>{menu}</div>
-	);
-
 	return (
-		<header className={cn("grid h-(--editor-bar) grid-cols-(--editor-columns) items-center", transition)}>
-			<div className="flex min-w-0 items-center gap-1 ps-3 pe-2">
-				<BackLink />
+		<header
+			className={cn(
+				"grid h-(--editor-bar) min-w-0 items-center gap-3 px-3",
+				phone ? "grid-cols-[minmax(0,1fr)_auto]" : "grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]",
+			)}
+		>
+			<div className="flex min-w-0 items-center gap-1">
+				{/* Elsewhere back tops the rail, in the window corner. */}
+				{phone && (back ?? <BackLink />)}
 				{layout === "tablet" && <DrawerControls pinnable={pinnable} />}
-				{!phone && (
-					<span className="flex min-w-0 items-center gap-1.5 ps-1 text-sm font-medium text-muted">
-						<Icon name={kind.icon} size={16} className="shrink-0" />
-						<span className="truncate">{kind.label}</span>
-					</span>
-				)}
+				<div className="flex min-w-0 items-center gap-1 ps-1">{menu}</div>
 			</div>
 
-			{/* The actions never shrink; the name takes what's left (truncating) and stays centered while the outer
-			    tracks can be equal. A long name gives up the left track first, never overlapping the actions. */}
-			<div
-				className={cn(
-					"grid min-w-0 items-center gap-2 pe-3",
-					phone
-						? "grid-cols-[minmax(0,1fr)_auto]"
-						: "grid-cols-[minmax(0,1fr)_minmax(0,max-content)_minmax(max-content,1fr)] ps-3",
-				)}
-			>
-				{!phone && <span aria-hidden="true" />}
-				{name}
-				<div className="flex items-center justify-end gap-1">
-					{/* History lives in the Download & history sheet; the clock opens it there. */}
-					{layout === "desktop" && (
-						<IconButton
-							icon="clock-counter-clockwise"
-							label={t`History`}
-							className="text-muted"
-							onPress={() => setSheetTab("history")}
-						/>
-					)}
-					{/* Every layout opens the assistant from the ✦: a column, a drawer, or full screen on phones. */}
-					<span className={layout === "desktop" ? "me-1.5" : undefined}>
-						<AssistantButton />
-					</span>
-					{children}
-				</div>
-			</div>
+			{!phone && <div className="flex min-w-0 items-center justify-center gap-0.5">{center}</div>}
+
+			<div className="flex items-center justify-end gap-1">{children}</div>
 		</header>
 	);
 }

@@ -5,7 +5,7 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { IMAGE_BLOCK_LAYOUTS } from "@rezumi/schema/portfolio/blocks";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
-import { ChoiceSelect, ItemToolbar, moveItem, TextInput } from "../editor/fields";
+import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput } from "../editor/fields";
 import { AltTextInput, ImageDrop, portfolioImageSrc, UploadStatus, useImageUploads } from "../images/image-field";
 import { discardUnplacedImages } from "../images/upload";
 import { pictureKeys } from "./blocks";
@@ -56,55 +56,19 @@ export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEd
 					})
 				}
 			/>
-			{images.map((image, index) => {
-				const name = image.alt.trim() || t`Picture ${index + 1}`;
-				return (
-					<div key={keys[index]} {...itemProps} className="grid gap-3 rounded-xl border border-border p-3">
-						<div className="flex gap-3">
-							<img
-								src={portfolioImageSrc(image)}
-								alt=""
-								width={image.width}
-								height={image.height}
-								className="size-20 shrink-0 rounded-lg bg-surface object-cover"
-							/>
-							<div className="grid min-w-0 flex-1 gap-3">
-								<AltTextInput
-									value={image.alt}
-									fallback={work.title.trim()}
-									onChange={(alt) =>
-										edit(
-											(draft) => {
-												const target = draft.images[index];
-												if (target) target.alt = alt;
-											},
-											{ key: `blocks.${block.id}.${index}.alt` },
-										)
-									}
-								/>
-							</div>
-						</div>
-						<TextInput
-							label={t`Caption (optional)`}
-							value={image.caption ?? ""}
-							maxLength={PORTFOLIO_LIMITS.text.caption}
-							onChange={(caption) =>
-								edit(
-									(draft) => {
-										const target = draft.images[index];
-										if (!target) return;
-										if (caption) target.caption = caption;
-										else delete target.caption;
-									},
-									{ key: `blocks.${block.id}.${index}.caption` },
-								)
-							}
-						/>
-						<ItemToolbar
-							name={name}
+			<SortableList
+				ids={keys}
+				onMove={(from, to) => edit((draft) => moveItem(draft.images, from, to), { structural: true })}
+			>
+				{images.map((image, index) => {
+					const name = image.alt.trim() || t`Picture ${index + 1}`;
+					return (
+						<SortableCard
+							key={keys[index]}
+							id={keys[index] ?? String(index)}
+							list="images"
 							index={index}
-							count={images.length}
-							onMove={(to) => edit((draft) => moveItem(draft.images, index, to), { structural: true })}
+							name={name}
 							onRemove={() => {
 								if (images.length === 1) {
 									onRemove();
@@ -118,22 +82,63 @@ export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEd
 									{ structural: true },
 								);
 							}}
-						/>
-					</div>
-				);
-			})}
+							itemProps={itemProps}
+						>
+							<div className="flex gap-3">
+								<img
+									src={portfolioImageSrc(image)}
+									alt=""
+									width={image.width}
+									height={image.height}
+									className="size-20 shrink-0 rounded-lg bg-surface object-cover"
+								/>
+								<div className="grid min-w-0 flex-1 gap-3">
+									<AltTextInput
+										value={image.alt}
+										fallback={work.title.trim()}
+										onChange={(alt) =>
+											edit(
+												(draft) => {
+													const target = draft.images[index];
+													if (target) target.alt = alt;
+												},
+												{ key: `blocks.${block.id}.${index}.alt` },
+											)
+										}
+									/>
+								</div>
+							</div>
+							<TextInput
+								label={t`Caption (optional)`}
+								value={image.caption ?? ""}
+								maxLength={PORTFOLIO_LIMITS.text.caption}
+								onChange={(caption) =>
+									edit(
+										(draft) => {
+											const target = draft.images[index];
+											if (!target) return;
+											if (caption) target.caption = caption;
+											else delete target.caption;
+										},
+										{ key: `blocks.${block.id}.${index}.caption` },
+									)
+								}
+							/>
+						</SortableCard>
+					);
+				})}
+			</SortableList>
 			<div ref={fallbackRef} className="contents">
 				{room > 0 ? (
 					<ImageDrop
 						compact
 						multiple
 						label={t`Add pictures`}
-						description={t`${images.length} of ${PORTFOLIO_LIMITS.imagesPerBlock}. Drop, choose or paste them.`}
 						isDisabled={uploads.busy}
 						onFiles={(files) => void add(files)}
 					/>
 				) : (
-					<p className="text-xs text-muted">
+					<p className="text-body-xs text-muted">
 						<Trans>A Pictures block holds up to {most} pictures. Add another block for more.</Trans>
 					</p>
 				)}

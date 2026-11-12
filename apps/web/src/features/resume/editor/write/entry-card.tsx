@@ -74,7 +74,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 
 	if (!entry || !described) return null;
 
-	const { title, meta } = described;
+	const { title } = described;
 	const draft = isDraftEntry(section.type, entry);
 	const primaryField = getPrimaryField(section.type);
 	const hint = draft && primaryField ? DRAFT_HINTS[primaryField] : undefined;
@@ -85,7 +85,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 	};
 	const fields = (
 		<>
-			{hint && <p className="col-span-full text-xs text-muted">{i18n._(hint)}</p>}
+			{hint && <p className="col-span-full text-body-xs text-muted">{i18n._(hint)}</p>}
 			<EntryFields type={section.type} entry={entry} write={write} page={page} autoFocus={autoFocus} />
 		</>
 	);
@@ -102,7 +102,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 			id={entryElementId(entryId)}
 			data-entry-id={entryId}
 			className={cn(
-				"group/entry relative scroll-mt-[60px] rounded-xl bg-background fields-on-card",
+				"group/entry relative scroll-mt-[60px] rounded-xl border border-separator",
 				sortable.isDragging && "opacity-50",
 			)}
 		>
@@ -124,7 +124,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 					onClick={toggle}
 					onKeyDown={onTitleKeyDown}
 					className={cn(
-						"flex min-w-0 flex-1 cursor-(--cursor-interactive) flex-col items-start gap-0.5 rounded-lg py-2.5 pe-2 text-start outline-none focus-visible:ring-2 focus-visible:ring-focus",
+						"flex min-w-0 flex-1 cursor-(--cursor-interactive) items-center rounded-lg py-2.5 pe-2 text-start outline-none focus-visible:ring-2 focus-visible:ring-focus",
 						locked ? "ps-3" : "ps-0.5",
 					)}
 				>
@@ -143,7 +143,6 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 							</Chip>
 						)}
 					</span>
-					{meta && <span className="max-w-full truncate text-xs leading-4 text-muted">{meta}</span>}
 				</button>
 
 				{open && !locked && (

@@ -202,7 +202,7 @@ export function ApplyTab({ application, version }: WorkspaceTabProps) {
 							<Trans>Add a question from the form</Trans>
 						</Button>
 						{live.length >= 30 && (
-							<p className="text-xs text-muted">
+							<p className="text-body-xs text-muted">
 								<Trans>You can keep up to 30 application questions.</Trans>
 							</p>
 						)}
@@ -338,7 +338,6 @@ function AnswerCard({
 					variant="secondary"
 					// oxlint-disable-next-line jsx-a11y/no-autofocus -- opened by the user's click on Add a question or Edit question
 					autoFocus
-					rows={1}
 					value={question}
 					maxLength={2000}
 					disabled={disabled}
@@ -357,7 +356,7 @@ function AnswerCard({
 						flushQuestion();
 						if (question.trim()) setEditingQuestion(false);
 					}}
-					className="field-sizing-content min-h-0 w-full min-w-0 resize-none text-base font-semibold"
+					className="w-full min-w-0 text-base font-semibold"
 				/>
 			) : (
 				<Typography type="h6" render={renderAsH2} className="min-w-0">
@@ -368,7 +367,7 @@ function AnswerCard({
 			<Swap id={proposal ? "diff" : "text"}>
 				{proposal ? (
 					<div className="grid gap-3">
-						<p className="rounded-xl bg-surface-secondary px-3.5 py-3 text-sm leading-relaxed">
+						<p className="rounded-xl bg-surface-secondary px-3.5 py-3 text-body-sm">
 							{diffWords(text, proposal.text).map((part, index) => (
 								<span
 									key={index}
@@ -401,7 +400,7 @@ function AnswerCard({
 						</div>
 					</div>
 				) : readOnly ? (
-					<p className="rounded-xl bg-surface-secondary px-3.5 py-3 text-sm leading-relaxed whitespace-pre-wrap text-muted">
+					<p className="rounded-xl bg-surface-secondary px-3.5 py-3 text-body-sm whitespace-pre-wrap text-muted">
 						{text}
 					</p>
 				) : (
@@ -415,7 +414,6 @@ function AnswerCard({
 						placeholder={t`Write your answer, or draft one from your Knowledge.`}
 						onChange={(event) => setText(event.target.value)}
 						onBlur={flushAnswer}
-						className="min-h-[88px]"
 					/>
 				)}
 			</Swap>
@@ -625,7 +623,7 @@ function Checklist({
 						<li key={label}>
 							<Checkbox
 								variant="secondary"
-								className="text-sm leading-5"
+								className="text-sm"
 								isSelected={ticked.includes(index)}
 								isDisabled={readOnly || submitting}
 								onChange={(checked) => toggle(index, checked)}
@@ -649,7 +647,7 @@ function Checklist({
 				)}
 			</ul>
 			{!canSubmit && !readOnly && (
-				<p role="alert" className="text-xs text-danger">
+				<p role="alert" className="text-body-xs text-danger">
 					<Trans>
 						Shorten questions to 2,000 characters and answers to 6,000 characters before marking this applied.
 					</Trans>
@@ -681,7 +679,7 @@ function Checklist({
 					</Dropdown.Popover>
 				</Dropdown>
 			</div>
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent.</Trans>
 			</p>
 		</CareerWidget>

@@ -1,7 +1,7 @@
 import type { ButtonProps } from "@heroui/react";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, buttonVariants, Separator, Toolbar, Tooltip } from "@heroui/react";
+import { Button, buttonVariants, Separator, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
@@ -13,8 +13,8 @@ import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore, ZOOM_MAX, ZOOM_MIN, ZOOM_STEP } from "./store";
 
-// The editor chrome resumes and letters share: the back link and drawer controls in the bar, the canvas width
-// and the zoom bar.
+// The editor chrome resumes and letters share: the back link, the document's name and drawer controls in the bar,
+// the canvas width, and the undo and zoom controls in the bar's middle.
 
 const LANDSCAPE_QUERY = "(orientation: landscape)";
 
@@ -52,7 +52,10 @@ function useCanvasWidth() {
 	return [ref, width] as const;
 }
 
-/** The canvas ref, the fit scale for the page format, and the scale the page is drawn at (zoom, or fit). */
+/**
+ * The canvas ref and the scale the page is drawn at (zoom, or fit). The scale that fits the page format goes to the
+ * store, for the bar's zoom.
+ */
 export function usePageScale(format: keyof typeof PAGE_WIDTH) {
 	const zoom = useEditorStore((state) => state.zoom);
 	const isPhone = useBreakpoint() === "mobile";
@@ -61,7 +64,12 @@ export function usePageScale(format: keyof typeof PAGE_WIDTH) {
 	const fitScale = canvasWidth > 0 ? Math.min(ZOOM_MAX, (canvasWidth - gutter) / PAGE_WIDTH[format]) : 1;
 	const pageScale = zoom === "fit" ? Math.max(0.25, fitScale) : zoom;
 
-	return { canvasRef, fitScale, pageScale };
+	// The bar's zoom steps from what fits now.
+	useEffect(() => {
+		useEditorStore.setState({ fitScale });
+	}, [fitScale]);
+
+	return { canvasRef, pageScale };
 }
 
 type CanvasStatusPillProps = { icon: IconName; children: ReactNode };
@@ -79,24 +87,92 @@ export function CanvasStatusPill({ icon, children }: CanvasStatusPillProps) {
 	);
 }
 
-type DocumentMenuTriggerProps = Omit<ButtonProps, "children"> & { name: string; isLocked: boolean };
+type DocumentMenuTriggerProps = Omit<ButtonProps, "children"> & { name: string };
 
-/** The document name in the editor bar, as the button that opens the document menu. */
-export function DocumentMenuTrigger({ name, isLocked, className, ...props }: DocumentMenuTriggerProps) {
+/** The ▾ after the document's name in the editor bar: opens the document menu. */
+export function DocumentMenuTrigger({ name, className, ...props }: DocumentMenuTriggerProps) {
 	return (
 		<Button
 			variant="ghost"
+			size="sm"
+			isIconOnly
 			{...props}
 			aria-label={t`Document menu: ${name}`}
-			className={cn(
-				"-ms-1.5 h-8 max-w-fit min-w-0 shrink justify-start gap-1.5 rounded-lg px-1.5 text-start font-normal",
-				typeof className === "string" && className,
-			)}
+			className={cn("shrink-0 text-muted", typeof className === "string" && className)}
 		>
-			<span className="truncate text-sm font-semibold text-foreground">{name}</span>
-			{isLocked && <Icon name="lock" size={16} className="shrink-0 text-muted" />}
-			<Icon name="caret-down" size={16} className="shrink-0 text-muted" />
+			<Icon name="caret-down" size={16} />
 		</Button>
+	);
+}
+
+type DocumentTitleProps = {
+	name: string;
+	/** A locked document's name reads as text and shows the lock. */
+	isLocked: boolean;
+	onRename: (name: string) => void;
+	maxLength?: number;
+};
+
+/**
+ * The document's name in the editor bar, edited in place: it reads as the title until hovered, Enter or leaving the
+ * field saves it (trimmed; an empty name is put back), Esc puts the old one back. It's as wide as its text, up to the
+ * room the bar leaves, and truncates past that.
+ */
+export function DocumentTitle({ name, isLocked, onRename, maxLength = 100 }: DocumentTitleProps) {
+	const [draft, setDraft] = useState<string | null>(null);
+	const cancelled = useRef(false);
+	const value = draft ?? name;
+
+	const commit = () => {
+		const next = draft?.trim().slice(0, maxLength);
+		setDraft(null);
+		if (cancelled.current) {
+			cancelled.current = false;
+			return;
+		}
+		if (next && next !== name) onRename(next);
+	};
+
+	return (
+		<span className="flex min-w-0 items-center gap-1">
+			<span className="inline-grid min-w-0 grid-cols-[minmax(0,auto)]">
+				{/* Sizes the field to its text: an input doesn't grow with what's typed. */}
+				<span
+					aria-hidden="true"
+					className="invisible col-start-1 row-start-1 truncate px-1.5 text-sm font-semibold whitespace-pre"
+				>
+					{value || " "}
+				</span>
+				<input
+					aria-label={t`Document name`}
+					value={value}
+					readOnly={isLocked}
+					maxLength={maxLength}
+					spellCheck={false}
+					autoComplete="off"
+					onChange={(event) => setDraft(event.target.value)}
+					onBlur={commit}
+					onKeyDown={(event) => {
+						if (event.key === "Enter") event.currentTarget.blur();
+						if (event.key === "Escape") {
+							cancelled.current = true;
+							event.stopPropagation();
+							event.currentTarget.blur();
+						}
+					}}
+					className={cn(
+						"col-start-1 row-start-1 h-8 w-full min-w-0 truncate rounded-lg bg-transparent px-1.5 text-sm font-semibold text-foreground transition-[background-color,box-shadow] duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus",
+						isLocked ? "cursor-default" : "hover:bg-default focus:bg-default",
+					)}
+				/>
+			</span>
+			{isLocked && (
+				<span className="flex shrink-0 text-muted" title={t`Locked`}>
+					<Icon name="lock" size={16} />
+					<span className="sr-only">{t`Locked`}</span>
+				</span>
+			)}
+		</span>
 	);
 }
 
@@ -115,7 +191,7 @@ export function BackLink() {
 					<Icon name="arrow-left" />
 				</Link>
 			</Tooltip.Trigger>
-			<Tooltip.Content placement="bottom">{label}</Tooltip.Content>
+			<Tooltip.Content placement="right">{label}</Tooltip.Content>
 		</Tooltip>
 	);
 }
@@ -152,35 +228,68 @@ export function DrawerControls({ pinnable }: { pinnable: boolean }) {
 	);
 }
 
-type ZoomBarProps = {
-	fitScale: number;
-	pageCount: number;
+type UndoRedoProps = {
+	canUndo: boolean;
+	canRedo: boolean;
+	onUndo: () => void;
+	onRedo: () => void;
 };
 
-/** − · Fit · + and the page count, floating 18px above the bottom of the canvas. Zoom runs from 60% to 150%. */
-export function ZoomBar({ fitScale, pageCount }: ZoomBarProps) {
+/** Undo and redo in the bar (⌘Z and ⌘⇧Z do the same outside fields, which keep their own). */
+export function UndoRedo({ canUndo, canRedo, onUndo, onRedo }: UndoRedoProps) {
+	return (
+		<>
+			<IconButton
+				icon="arrow-counter-clockwise"
+				label={t`Undo`}
+				shortcut="⌘Z"
+				className="text-muted"
+				isDisabled={!canUndo}
+				onPress={onUndo}
+			/>
+			<IconButton
+				icon="arrow-clockwise"
+				label={t`Redo`}
+				shortcut="⌘⇧Z"
+				className="text-muted"
+				isDisabled={!canRedo}
+				onPress={onRedo}
+			/>
+		</>
+	);
+}
+
+/** The thin rule between groups of controls in the bar's middle. */
+export function BarDivider() {
+	return <Separator orientation="vertical" className="mx-1 h-5 self-center" />;
+}
+
+/**
+ * − · Fit · + in the bar's middle, over the canvas, and (unless `compact`) the page count. Zoom runs from 60% to 150%;
+ * ⌘0 fits the page again.
+ */
+export function ZoomControls({ compact = false }: { compact?: boolean }) {
 	const zoom = useEditorStore((state) => state.zoom);
+	const fitScale = useEditorStore((state) => state.fitScale);
+	const pageCount = useEditorStore((state) => Math.max(1, state.rendered.pageCount));
 	const setZoom = useEditorStore((state) => state.setZoom);
 	const current = zoom === "fit" ? fitScale : zoom;
 
 	useHotkey("Mod+0", () => setZoom("fit"));
 
 	return (
-		<Toolbar isAttached aria-label={t`Zoom`} className="absolute bottom-[18px] left-1/2 -translate-x-1/2 gap-0.5">
+		<>
 			<IconButton
 				icon="minus"
 				label={t`Zoom out`}
-				size="sm"
-				tooltipPlacement="top"
-				className="rounded-full"
+				className="text-muted"
 				isDisabled={current <= ZOOM_MIN}
 				onPress={() => setZoom(current - ZOOM_STEP)}
 			/>
 			<Button
 				variant="ghost"
-				size="sm"
 				aria-label={t`Fit page to width`}
-				className="min-w-[52px] rounded-full px-2 text-xs font-medium tabular-nums"
+				className="min-w-14 px-2 text-sm font-medium tabular-nums"
 				onPress={() => setZoom("fit")}
 			>
 				{zoom === "fit" ? <Trans>Fit</Trans> : `${Math.round(current * 100)}%`}
@@ -188,16 +297,18 @@ export function ZoomBar({ fitScale, pageCount }: ZoomBarProps) {
 			<IconButton
 				icon="plus"
 				label={t`Zoom in`}
-				size="sm"
-				tooltipPlacement="top"
-				className="rounded-full"
+				className="text-muted"
 				isDisabled={current >= ZOOM_MAX}
 				onPress={() => setZoom(current + ZOOM_STEP)}
 			/>
-			<Separator orientation="vertical" className="mx-1" />
-			<span className="ps-1 pe-3 text-xs whitespace-nowrap text-muted tabular-nums">
-				<Plural value={pageCount} one="# page" other="# pages" />
-			</span>
-		</Toolbar>
+			{!compact && (
+				<>
+					<BarDivider />
+					<span className="px-1.5 text-sm whitespace-nowrap text-muted tabular-nums">
+						<Plural value={pageCount} one="# page" other="# pages" />
+					</span>
+				</>
+			)}
+		</>
 	);
 }

@@ -249,7 +249,6 @@ function Idle({ error, posting, onPosting, onFile }: IdleProps) {
 					</Trans>
 				</Label>
 				<TextArea
-					rows={3}
 					maxLength={MAX_POSTING}
 					placeholder={t`Paste the posting to see which of its terms your resume already has.`}
 				/>
@@ -260,7 +259,7 @@ function Idle({ error, posting, onPosting, onFile }: IdleProps) {
 					<Typography type="h3" render={renderAsH2} id={`${id}-checks`}>
 						<Trans>What it checks</Trans>
 					</Typography>
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>
 							Applicant tracking systems turn your PDF into plain text before anyone reads it. The checker does the
 							same, with the PDF.js library in your browser, then scores how much of your resume survives: 0 to 100,
@@ -408,7 +407,7 @@ function Result({ result, file, onFix, onReset }: ResultProps) {
 				</div>
 
 				{report.document.truncated && (
-					<p className="text-xs text-muted">
+					<p className="text-body-xs text-muted">
 						<Trans>Only the first {report.document.pageCount} pages were checked.</Trans>
 					</p>
 				)}
@@ -521,7 +520,7 @@ function Result({ result, file, onFix, onReset }: ResultProps) {
 						hidden={lens !== "text"}
 						className={cn(
 							ENTER_CLASS,
-							"w-full max-w-[612px] rounded-lg border border-separator bg-overlay px-7 py-6 font-mono text-sm leading-relaxed whitespace-pre-wrap",
+							"w-full max-w-[612px] rounded-lg border border-separator bg-overlay px-7 py-6 font-mono text-body-sm whitespace-pre-wrap",
 						)}
 					>
 						{result.fullText || t`No text could be read from this file.`}

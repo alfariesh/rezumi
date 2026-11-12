@@ -12,7 +12,6 @@ import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { DownloadSheetFrame } from "@/features/resume/editor/chrome/download-sheet";
-import { useEditorStore } from "@/features/resume/editor/store";
 import { createExportFile, getDefaultFileName, sanitizeFileName } from "@/features/resume/export/use-resume-export";
 import {
 	DownloadActions,
@@ -24,19 +23,18 @@ import { HistoryTimeline } from "@/features/resume/share/history-tab";
 import { getOrpcErrorMessage, getReadableErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 
-/** Download & history for letters. Letters have no public link, so Share opens Download. */
+/** Download for letters, from the ▾ beside Download PDF. Letters have no public link. */
 export function LetterDownloadSheet() {
-	const history = useLetterHistory(useEditorStore((state) => state.sheetTab) === "history");
-
 	return (
-		<DownloadSheetFrame
-			fallback="download"
-			tabs={[
-				{ value: "download", label: <Trans>Download</Trans>, content: <LetterDownloadTab /> },
-				{ value: "history", label: <Trans>History</Trans>, content: <HistoryTimeline source={history} /> },
-			]}
-		/>
+		<DownloadSheetFrame>
+			<LetterDownloadTab />
+		</DownloadSheetFrame>
 	);
+}
+
+/** The letter's versions, in the panel while History is picked. */
+export function LetterHistory() {
+	return <HistoryTimeline source={useLetterHistory(true)} />;
 }
 
 type LetterFormat = ExportFormat | "both";

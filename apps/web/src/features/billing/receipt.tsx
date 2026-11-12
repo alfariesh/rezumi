@@ -118,7 +118,7 @@ function Receipt({ payment, buyer, formatDate }: ReceiptProps) {
 				</ReceiptRow>
 			</dl>
 
-			<p className="text-xs text-muted print:text-neutral-600">
+			<p className="text-body-xs text-muted print:text-neutral-600">
 				<Trans>
 					The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax
 					invoice.

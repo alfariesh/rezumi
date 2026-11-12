@@ -1,5 +1,7 @@
 import type { SwitchProps } from "@heroui/react";
+import type { ComponentProps } from "react";
 import type * as React from "react";
+import { CellSwitch } from "@heroui-pro/react";
 import { Description, Switch } from "@heroui/react";
 import { cn } from "@rezumi/utils/style";
 
@@ -27,4 +29,21 @@ function SwitchRow({ className, label, description, ...props }: SwitchRowProps) 
 	);
 }
 
-export { SwitchRow, type SwitchRowProps };
+type CellSwitchRowProps = Omit<ComponentProps<typeof CellSwitch>, "children"> & { label: React.ReactNode };
+
+/**
+ * A toggle as one compact cell for the editors' panels: the label on the start side, the switch on the end, the whole
+ * cell toggles. It has no description; a toggle's name says what it does.
+ */
+function CellSwitchRow({ label, ...props }: CellSwitchRowProps) {
+	return (
+		<CellSwitch {...props}>
+			<CellSwitch.Trigger>
+				<CellSwitch.Label>{label}</CellSwitch.Label>
+				<CellSwitch.Control />
+			</CellSwitch.Trigger>
+		</CellSwitch>
+	);
+}
+
+export { CellSwitchRow, type CellSwitchRowProps, SwitchRow, type SwitchRowProps };

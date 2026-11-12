@@ -253,7 +253,7 @@ type BlockListProps = { work: PortfolioWork; locale: string };
 
 /**
  * A work's detail as blocks (`01-desain.md` section 15): add one anywhere with "+ Add block" (or "/" in a text block),
- * drag or use the arrows to reorder, remove with Undo. An empty work can start from a case study outline.
+ * drag to reorder, remove with Undo. An empty work can start from a case study outline.
  */
 export function BlockList({ work, locale }: BlockListProps) {
 	const blocks = work.blocks;
@@ -276,18 +276,10 @@ export function BlockList({ work, locale }: BlockListProps) {
 	return (
 		<div className="grid gap-2">
 			{blocks.length === 0 && (
-				<div className="grid gap-3 rounded-2xl border border-dashed border-border p-4 text-sm">
-					<p className="text-muted">
-						<Trans>
-							The detail opens when a visitor taps this work. Build it from blocks: text, pictures and results as
-							numbers.
-						</Trans>
-					</p>
-					<Button variant="secondary" className="w-fit" onPress={startCaseStudy}>
-						<Icon name="magic-wand" size={18} />
-						<Trans>Start from a case study outline</Trans>
-					</Button>
-				</div>
+				<Button variant="secondary" className="w-fit" onPress={startCaseStudy}>
+					<Icon name="magic-wand" size={18} />
+					<Trans>Start from a case study outline</Trans>
+				</Button>
 			)}
 			<SortableProvider
 				onMove={(id, target) =>
@@ -345,9 +337,6 @@ type BlockCardProps = {
 function BlockCard({ work, block, index, list, locale, itemProps, onRemoved }: BlockCardProps) {
 	const info = blockTypeInfo(block.type);
 	const sortable = useSortableItem({ id: block.id, list, index, label: info.title });
-	const count = work.blocks.length;
-
-	const move = (to: number) => editWork(work.id, (draft) => moveItem(draft.blocks, index, to), { structural: true });
 	const remove = () => {
 		onRemoved(index);
 		removeBlockWithUndo(work, block, index, info.title);
@@ -357,27 +346,13 @@ function BlockCard({ work, block, index, list, locale, itemProps, onRemoved }: B
 		<div
 			{...itemProps}
 			{...sortable.dropTargetProps}
-			className={cn("relative grid gap-3 rounded-2xl bg-surface-secondary p-3", sortable.isDragging && "opacity-50")}
+			className={cn("relative grid gap-3 rounded-xl border border-separator p-3", sortable.isDragging && "opacity-50")}
 		>
 			<SortableEdge edge={sortable.edge} />
 			<div className="flex items-center gap-1">
 				<SortableHandle item={sortable} label={t`Reorder the ${info.title} block`} className="h-8 w-6" />
 				<Icon name={info.icon} size={16} className="text-muted" />
 				<span className="flex-1 text-sm font-medium">{info.title}</span>
-				<IconButton
-					icon="arrow-up"
-					size="sm"
-					label={t`Move the ${info.title} block up`}
-					isDisabled={index === 0}
-					onPress={() => move(index - 1)}
-				/>
-				<IconButton
-					icon="arrow-down"
-					size="sm"
-					label={t`Move the ${info.title} block down`}
-					isDisabled={index === count - 1}
-					onPress={() => move(index + 1)}
-				/>
 				<IconButton
 					icon="trash"
 					size="sm"

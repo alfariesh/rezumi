@@ -130,7 +130,7 @@ type PaymentMethodSwitchProps = { method: PaymentMethod; onChange: (method: Paym
 /** The other way to pay, for visitors from Indonesia: a card in US dollars instead of QRIS in Rupiah, or back. */
 function PaymentMethodSwitch({ method, onChange }: PaymentMethodSwitchProps) {
 	return (
-		<p className="text-xs text-muted">
+		<p className="text-body-xs text-muted">
 			{method === "qris" ? (
 				<Trans>
 					No QRIS app, or want it to renew on its own?{" "}
@@ -234,7 +234,7 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 					</Segment.Item>
 				</Segment>
 				{saving > 0 && (
-					<span className="text-xs text-muted">
+					<span className="text-body-xs text-muted">
 						<Trans>Yearly saves up to {saving}%</Trans>
 					</span>
 				)}
@@ -320,7 +320,7 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 								))}
 							</ul>
 							{pending && (
-								<p className="text-xs text-muted">
+								<p className="text-body-xs text-muted">
 									<Trans>Starts at your next renewal.</Trans>
 								</p>
 							)}
@@ -350,16 +350,16 @@ export function BuyPlansSection({ plan, selected, portfolioOpen = false }: BuyPl
 				})}
 			</div>
 			{!qris && live?.cancelAtPeriodEnd && (
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>Your subscription is set to end. Keep it first to change the plan.</Trans>
 				</p>
 			)}
 			{!qris && isPaymentFailed(live) && (
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>Your last payment didn't go through. Update your payment method in billing first.</Trans>
 				</p>
 			)}
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				{qris ? (
 					<Trans>Prices are final: no tax is added.</Trans>
 				) : (

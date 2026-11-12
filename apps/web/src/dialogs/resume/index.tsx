@@ -102,7 +102,7 @@ export function ResumeDialog({ mode, data }: ResumeDialogProps) {
 						<Icon name="pencil-simple" size={16} />
 						{isUpdate ? <Trans>Update resume</Trans> : <Trans>Duplicate resume</Trans>}
 					</Modal.Heading>
-					<p id={descriptionId} className="text-sm text-muted">
+					<p id={descriptionId} className="text-body-sm text-muted">
 						{isUpdate ? (
 							<Trans>Changed your mind? Rename your resume to something more descriptive.</Trans>
 						) : (

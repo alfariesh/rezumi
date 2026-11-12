@@ -107,7 +107,7 @@ export function SavedTab({ application, go }: WorkspaceTabProps) {
 						</FilterChip>
 					))}
 				</div>
-				<p className="text-xs text-muted">{t`Everything the coach wrote for ${application.company}, newest first.`}</p>
+				<p className="text-body-xs text-muted">{t`Everything the coach wrote for ${application.company}, newest first.`}</p>
 			</div>
 
 			<Widget>
@@ -210,7 +210,7 @@ function SavedRow({ item, applicationId, expanded, onToggle, onOpen, onDelete }:
 			<AnimatePresence initial={false}>
 				{expanded && (
 					<CollapseRow id={summaryId} className="col-span-full sm:ps-12">
-						<p className="mt-3 rounded-xl bg-surface-secondary px-3.5 py-3 text-sm leading-5 text-muted">
+						<p className="mt-3 rounded-xl bg-surface-secondary px-3.5 py-3 text-body-sm text-muted">
 							{summaryOf(item, i18n.locale)}
 						</p>
 					</CollapseRow>

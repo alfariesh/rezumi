@@ -85,10 +85,9 @@ export function ApplicationNotes({ application }: ApplicationNotesProps) {
 			<TextArea
 				id={id}
 				aria-labelledby={`${id}-title`}
-				rows={4}
 				value={notes}
 				placeholder={t`Anything to remember about this job`}
-				className="widget__content mt-0 block w-[calc(100%-0.75rem)] resize-none rounded-xl border-0 bg-surface shadow-none"
+				className="widget__content mt-0 block w-[calc(100%-0.75rem)] rounded-xl border-0 bg-surface shadow-none"
 				onChange={(event) => {
 					drafts.set(application.id, event.target.value);
 					setNotes(event.target.value);

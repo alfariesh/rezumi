@@ -118,7 +118,7 @@ export function AiRewriteMenu({ field, value, onResult }: AiRewriteMenuProps) {
 						</p>
 					) : changed !== null ? (
 						<div className="grid gap-2 p-2">
-							<p role="alert" className="text-xs text-danger">
+							<p role="alert" className="text-body-xs text-danger">
 								<Trans>The text changed since you asked, so it wasn't replaced.</Trans>
 							</p>
 							<div className="flex gap-1.5">
@@ -152,7 +152,7 @@ export function AiRewriteMenu({ field, value, onResult }: AiRewriteMenuProps) {
 						))
 					)}
 					{rewrite.error && (
-						<p role="alert" className="px-2 pb-1 text-xs text-danger">
+						<p role="alert" className="px-2 pb-1 text-body-xs text-danger">
 							{portfolioAiErrorMessage(rewrite.error, t`Couldn't rewrite this. Nothing changed. Try again.`)}
 						</p>
 					)}

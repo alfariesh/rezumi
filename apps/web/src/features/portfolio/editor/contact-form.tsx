@@ -1,12 +1,12 @@
 import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { WHATSAPP_NUMBER_PATTERN } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { LocationFields } from "../location/location-fields";
 import { useDraftText } from "../metrics/use-draft-text";
-import { useSourceResume } from "./context";
 import { TextInput } from "./fields";
 import { editPortfolio, usePortfolioData } from "./store";
 import { orpc } from "@/libs/orpc/client";
@@ -28,8 +28,6 @@ export function normalizeWhatsAppNumber(text: string, defaultCountryCode = "62")
  */
 export function ContactForm() {
 	const { contact } = usePortfolioData();
-	const source = useSourceResume();
-	const resume = source.data;
 	const { data: portfolio } = useQuery(orpc.portfolio.get.queryOptions());
 	const formAvailable = portfolio?.contactFormAvailable ?? false;
 	const set = <K extends keyof typeof contact>(field: K, value: (typeof contact)[K]) =>
@@ -54,48 +52,37 @@ export function ContactForm() {
 					)
 				}
 			/>
-			<div className="grid gap-1">
-				<SwitchRow
-					isSelected={contact.email}
-					onChange={(checked) => set("email", checked)}
-					label={t`Show my email address`}
-					description={resume?.basics.email || t`From your resume; it has none yet.`}
-					className="items-start py-1"
-				/>
-				<SwitchRow
-					isSelected={contact.phone}
-					onChange={(checked) => set("phone", checked)}
-					label={t`Show my phone number`}
-					description={resume?.basics.phone || t`From your resume; it has none yet.`}
-					className="items-start py-1"
-				/>
-				<SwitchRow
-					isSelected={contact.website}
-					onChange={(checked) => set("website", checked)}
-					label={t`Show my website`}
-					description={resume?.basics.website.url || t`From your resume; it has none yet.`}
-					className="items-start py-1"
-				/>
-				<SwitchRow
-					isSelected={contact.profiles}
-					onChange={(checked) => set("profiles", checked)}
-					label={t`Show my profiles`}
-					description={t`LinkedIn, GitHub and other profiles from your resume.`}
-					className="items-start py-1"
-				/>
-			</div>
-			<SwitchRow
+			<CellSwitchRow
+				isSelected={contact.email}
+				onChange={(checked) => set("email", checked)}
+				label={t`Show my email address`}
+			/>
+			<CellSwitchRow
+				isSelected={contact.phone}
+				onChange={(checked) => set("phone", checked)}
+				label={t`Show my phone number`}
+			/>
+			<CellSwitchRow
+				isSelected={contact.website}
+				onChange={(checked) => set("website", checked)}
+				label={t`Show my website`}
+			/>
+			<CellSwitchRow
+				isSelected={contact.profiles}
+				onChange={(checked) => set("profiles", checked)}
+				label={t`Show my profiles`}
+			/>
+			<CellSwitchRow
 				isSelected={contact.form && formAvailable}
 				isDisabled={!formAvailable}
 				onChange={(checked) => set("form", checked)}
 				label={t`Show a contact form`}
-				description={
-					formAvailable
-						? t`Messages arrive by email and in your dashboard, and are deleted after 90 days.`
-						: t`The contact form isn't available right now. Visitors can still use your other contact options.`
-				}
-				className="items-start py-1"
 			/>
+			{!formAvailable && (
+				<p className="px-1 text-body-xs text-warning">
+					<Trans>The contact form isn't available right now. Visitors can still use your other contact options.</Trans>
+				</p>
+			)}
 			<WhatsAppField />
 			<LocationFields />
 		</div>
@@ -110,8 +97,8 @@ function WhatsAppField() {
 	const valid = WHATSAPP_NUMBER_PATTERN.test(number);
 
 	return (
-		<div className="grid gap-2">
-			<SwitchRow
+		<div className="grid gap-4">
+			<CellSwitchRow
 				isSelected={contact.whatsapp.show}
 				onChange={(checked) =>
 					editPortfolio((draft) => {
@@ -119,7 +106,6 @@ function WhatsAppField() {
 					})
 				}
 				label={t`Show a WhatsApp button`}
-				className="py-0"
 			/>
 			<TextInput
 				label={t`WhatsApp number`}
@@ -127,8 +113,8 @@ function WhatsAppField() {
 				inputMode="tel"
 				value={text}
 				maxLength={20}
+				icon="phone"
 				placeholder="+62 812 5550 1824"
-				description={t`With the country code. Numbers starting with 0 are read as Indonesian (+62).`}
 				// Like address fields: said once the field is left, so a number being typed isn't called wrong.
 				errorMessage={touched && !valid ? t`Enter 7 to 15 digits, with the country code.` : undefined}
 				onBlur={() => setTouched(true)}

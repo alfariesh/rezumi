@@ -1,11 +1,10 @@
 import type { CustomSectionType, SectionType } from "@rezumi/schema/resume/data";
 import type { IconName } from "@rezumi/ui/components/icon";
-import { Widget } from "@heroui-pro/react";
 import { Button, Dropdown, Header, Label, Link, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useId } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { PanelSection } from "../chrome/panel-section";
 import { useEditorStore } from "../store";
 import { openEntry } from "./actions";
 import {
@@ -15,7 +14,6 @@ import {
 	CUSTOM_SECTION_TYPES,
 	isSectionInUse,
 } from "./model";
-import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useCurrentBuilderResumeSelector, useResumeStore } from "@/features/resume/builder/draft";
 import { getSectionTitle } from "@/libs/resume/section";
 
@@ -142,13 +140,10 @@ const SUGGESTED: ("summary" | SectionType)[] = ["experience", "education", "skil
 
 /** A blank resume: the first sections to add, as + chips, and an offer to import instead. */
 export function StartSuggestions({ onImport }: { onImport: () => void }) {
-	const titleId = useId();
-
 	return (
-		<Widget role="region" aria-labelledby={titleId}>
-			<WidgetHeading id={titleId} icon="rows" title={<Trans>Sections</Trans>} />
-			<Widget.Content className="grid gap-3">
-				<p className="text-sm text-muted">
+		<PanelSection icon="rows" title={<Trans>Sections</Trans>}>
+			<div className="grid gap-3">
+				<p className="text-body-sm text-muted">
 					<Trans>Start with the sections most resumes have.</Trans>
 				</p>
 				<div className="flex flex-wrap gap-2">
@@ -159,7 +154,7 @@ export function StartSuggestions({ onImport }: { onImport: () => void }) {
 						</Button>
 					))}
 				</div>
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>
 						Have a resume already?{" "}
 						<Link className="text-xs font-medium" onPress={onImport}>
@@ -167,7 +162,7 @@ export function StartSuggestions({ onImport }: { onImport: () => void }) {
 						</Link>
 					</Trans>
 				</p>
-			</Widget.Content>
-		</Widget>
+			</div>
+		</PanelSection>
 	);
 }

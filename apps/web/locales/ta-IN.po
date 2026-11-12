@@ -597,6 +597,11 @@ msgstr ""
 msgid "{0} per reply"
 msgstr ""
 
+#. placeholder {0}: theme.name
+#: src/features/homepage/portfolio.tsx
+msgid "{0} portfolio theme preview"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/conversation.tsx
 msgid "{0} posting"
@@ -1333,6 +1338,10 @@ msgstr "உள்நுழையும்போது அங்கீகரி�
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "A comfortable length, and it fits on one page."
 msgstr "ஒரு வசதியான நீளம், அது ஒரு பக்கத்தில் பொருந்துகிறது."
+
+#: src/features/homepage/portfolio.tsx
+msgid "A contact form, and how many people visited"
+msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
@@ -2324,6 +2333,8 @@ msgstr "உங்கள் தேவைகளுடன் ஒப்பிட்�
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
 #: src/features/portfolio/ai/rewrite-menu.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 msgid "AI"
 msgstr ""
 
@@ -2948,7 +2959,6 @@ msgstr ""
 msgid "Aspect ratio"
 msgstr "விகிதாச்சாரம்"
 
-#: src/features/assistant/assistant-button.tsx
 #: src/features/assistant/assistant-panel.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -3543,6 +3553,10 @@ msgstr ""
 msgid "Case studies"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Case studies with pictures, video, PDFs and results in numbers"
+msgstr ""
+
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Case study (public version)"
 msgstr ""
@@ -4039,6 +4053,7 @@ msgstr ""
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
 #: src/features/resume/editor/chrome/download-sheet.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
 #: src/features/resume/stylesheet/editor.tsx
@@ -4210,8 +4225,8 @@ msgstr "முழுமையான தரவு காப்புப்பி�
 msgid "Compress or remove large images to keep uploads quick."
 msgstr "பதிவேற்றங்களை விரைவாக வைத்திருக்க பெரிய படங்களை சுருக்கவும் அல்லது நீக்கவும்."
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Computer"
 msgstr "கணினி"
 
@@ -5249,7 +5264,6 @@ msgstr "நிரப்பு"
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "கவர் கடிதம்"
 
@@ -5848,6 +5862,7 @@ msgstr "{0} பங்கு பற்றிய விளக்கம்"
 msgid "Design"
 msgstr "வடிவமைப்பு"
 
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Design groups"
 msgstr "வடிவமைப்பு குழுக்கள்"
@@ -5991,6 +6006,10 @@ msgstr "ஆவணங்கள்"
 msgid "Document menu: {name}"
 msgstr "ஆவண மெனு: {name}"
 
+#: src/features/resume/editor/chrome.tsx
+msgid "Document name"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Document type"
 msgstr "ஆவண வகை"
@@ -6097,8 +6116,7 @@ msgstr ""
 #: src/features/career/workspace/apply.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/resume/editor/chrome/bar.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
+#: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download"
 msgstr "பதிவிறக்கு"
 
@@ -6109,10 +6127,6 @@ msgstr "{label} ஐப் பதிவிறக்கவும்"
 #: src/features/templates/gallery.tsx
 msgid "Download {name} sample PDF"
 msgstr "{name} மாதிரி PDF ஐப் பதிவிறக்கவும்"
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Download & history"
-msgstr "பதிவிறக்கம் & வரலாறு"
 
 #: src/features/billing/plan.ts
 msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
@@ -7410,6 +7424,7 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
+#: src/features/homepage/portfolio.tsx
 #: src/features/homepage/templates.tsx
 #: src/features/portfolio/theme-gallery.tsx
 #: src/features/templates/gallery.tsx
@@ -7955,10 +7970,9 @@ msgstr "பணியமர்த்தல் குழு"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/portfolio/admin/review-page.tsx
-#: src/features/resume/editor/chrome/bar.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "History"
 msgstr "வரலாறு"
 
@@ -9475,6 +9489,7 @@ msgstr "பூட்டு எடிட்டிங்"
 
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Locked"
 msgstr "பூட்டப்பட்டது"
 
@@ -9519,10 +9534,6 @@ msgstr "உங்கள் அங்கீகார செயலியை அண
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Low"
 msgstr "குறைந்த"
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Lower the design sheet"
-msgstr "வடிவமைப்பு தாளைக் குறைக்கவும்"
 
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/share/web-page-text.ts
@@ -10678,9 +10689,8 @@ msgstr ""
 msgid "No work-experience section was found."
 msgstr "பணி அனுபவப் பிரிவு எதுவும் காணப்படவில்லை."
 
-#: src/features/applications/components/add-application-dialog.tsx
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/applications/document-options.ts
 #: src/features/portfolio/works/work-editor.tsx
 msgid "None"
 msgstr "இல்லை"
@@ -10890,10 +10900,6 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Nothing here should cost you a match."
 msgstr "இங்கே எதுவும் உங்களுக்கு ஒரு போட்டிக்கு செலவாகாது."
-
-#: src/features/career/today.tsx
-msgid "Nothing is applied for or created until you choose."
-msgstr "நீங்கள் தேர்ந்தெடுக்கும் வரை எதற்கும் விண்ணப்பிக்கப்படாது, எதுவும் உருவாக்கப்படாது."
 
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
@@ -11495,9 +11501,7 @@ msgstr ""
 
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
-#: src/routes/builder/$resumeId/-components/editor-shell.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx
-#: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Page"
 msgstr "பக்கம்"
 
@@ -11890,12 +11894,12 @@ msgstr "எல்லாவற்றையும் நிரந்தரமா�
 msgid "Persian"
 msgstr "பேர்ஷியன்"
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Phone"
 msgstr "தொலைபேசி"
 
@@ -12111,6 +12115,7 @@ msgstr "போலிஷ்"
 msgid "Polishing"
 msgstr "மெருகேற்றுகிறது"
 
+#: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
@@ -12337,10 +12342,6 @@ msgstr "தற்போதைய முக்கியச் சொல்லை�
 msgid "Press <0>Enter</0> to open"
 msgstr "திறக்க <0>Enter ஐ</0> அழுத்தவும்"
 
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
-msgid "Preview"
-msgstr ""
-
 #: src/features/templates/gallery.tsx
 msgid "Preview {name} sample PDF"
 msgstr "{name} மாதிரி PDF மாதிரிக்காட்சி"
@@ -12353,8 +12354,8 @@ msgstr ""
 msgid "Preview every template before you sign up. The Free plan includes {freeCount} templates and PDF downloads without a watermark. Plus and Pro AI unlock every template, plus Word and ODT downloads."
 msgstr ""
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Preview size"
 msgstr "முன்னோட்ட அளவு"
 
@@ -12631,6 +12632,10 @@ msgstr "வெளியீடுகள்"
 msgid "Publish"
 msgstr "வெளியிடு"
 
+#: src/features/homepage/portfolio.tsx
+msgid "Publish a one-page website at rezumi.app/your-name. Start from a resume, add your work, and choose a theme that suits your field."
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish it to share a link that opens on any screen. Only you can see it until then."
 msgstr "எந்தத் திரையிலும் திறக்கும் இணைப்பைப் பகிர இதை வெளியிடுங்கள். அதுவரை நீங்கள் மட்டுமே இதைப் பார்க்க முடியும்."
@@ -12752,10 +12757,6 @@ msgstr ""
 #: src/features/portfolio/editor/rich-text-editor.tsx
 msgid "Quote"
 msgstr ""
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Raise the design sheet"
-msgstr "வடிவமைப்பு தாளை உயர்த்தவும்"
 
 #: src/features/portfolio/themes.ts
 msgid "Random letters settle into your name."
@@ -13094,7 +13095,7 @@ msgid "Red"
 msgstr "சிவப்பு"
 
 #: src/features/portfolio/editor/rich-text-editor.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Redo"
 msgstr ""
 
@@ -13255,10 +13256,6 @@ msgstr "எனக்கு நினைவூட்டு"
 #: src/features/career/schedule-sheet.tsx
 msgid "Remind me on"
 msgstr "நினைவூட்ட வேண்டிய நாள்"
-
-#: src/features/career/today.tsx
-msgid "Reminders appear here. Email copies are optional and need a verified address."
-msgstr "நினைவூட்டல்கள் இங்கே தோன்றும். மின்னஞ்சல் நகல்கள் விருப்பத்தேர்வு; அவற்றுக்குச் சரிபார்க்கப்பட்ட முகவரி தேவை."
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/career/offers.tsx
@@ -13631,7 +13628,6 @@ msgstr "ரெஸ்யூம்"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "ரெஸ்யூம்"
@@ -13852,8 +13848,8 @@ msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - முகப்புப் பக்கத்துக்கு செல்லவும்"
 
 #: src/routes/dashboard/settings/route.tsx
-msgid "Rezumi {__APP_VERSION__} · MIT"
-msgstr "Rezumi {__APP_VERSION__} · MIT"
+msgid "Rezumi {__APP_VERSION__}"
+msgstr ""
 
 #. placeholder {0}: getPlanName(payment.planId)
 #: src/features/billing/receipt.tsx
@@ -14480,6 +14476,10 @@ msgstr "கீழே பார்க்கவும்"
 msgid "See exactly what applicant tracking systems read"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "See how a portfolio works"
+msgstr ""
+
 #: src/features/billing/plan-dialog.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -14757,17 +14757,12 @@ msgstr "நிழல் அகலம்"
 #: src/features/resume/share/web-page-text.ts
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Share"
 msgstr "பகிரவும்"
 
 #: src/features/homepage/introduction.tsx
 msgid "Share a live link that is always the latest version"
 msgstr ""
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Share sections"
-msgstr "பிரிவுகளைப் பகிரவும்"
 
 #: src/features/resume/share/address-field.tsx
 msgid "Share via…"
@@ -14985,6 +14980,10 @@ msgstr "டெம்ப்ளேட்களைக் காட்டு"
 msgid "Show the {name} logo"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Show the work behind your resume."
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "அவற்றை மீண்டும் காட்டு"
@@ -15118,10 +15117,6 @@ msgstr "சூழ்நிலை"
 #: src/features/career/workspace/prepare.tsx
 msgid "Situation, action, result"
 msgstr "சூழ்நிலை, செயல், முடிவு"
-
-#: src/features/career/knowledge/stories.tsx
-msgid "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
-msgstr "சூழ்நிலை, பணி, செயல், முடிவு, பிரதிபலிப்பு. ஒவ்வொரு கதையையும் நீங்கள் ஆதாரம் தரக்கூடிய உண்மைகளுடன் இணைக்கவும்; தெரியாத விளைவுகளைக் காலியாக விடவும்."
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Size"
@@ -17713,6 +17708,7 @@ msgstr "இணைப்புகளை அடிக்கோடிடவும�
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
+#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/resume/editor/proposals/proposals.ts
@@ -17723,7 +17719,6 @@ msgstr "இணைப்புகளை அடிக்கோடிடவும�
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Undo"
 msgstr "செயல்தவிர்"
 
@@ -19349,6 +19344,10 @@ msgstr "உங்கள் புல்லட் புள்ளிகள் அ
 msgid "Your career as a path: experience and education hang from a fine line with an accent dot at each step, beside a left sidebar."
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Your career details stay in step with your resume"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/use-editor-hotkeys.ts
 #: src/routes/builder/letter/-components/letter-shell.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -19877,7 +19876,6 @@ msgstr ""
 msgid "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
 msgstr ""
 
-#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"
 msgstr "ஜூம்"

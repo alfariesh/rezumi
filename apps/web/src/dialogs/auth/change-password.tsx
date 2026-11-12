@@ -90,7 +90,7 @@ export function ChangePasswordDialog(_: DialogProps<"auth.change-password">) {
 						<Icon name="password" size={16} />
 						<Trans>Change your password</Trans>
 					</Modal.Heading>
-					<p id={descriptionId} className="text-sm text-muted">
+					<p id={descriptionId} className="text-body-sm text-muted">
 						<Trans>Enter your current password, then choose a new one.</Trans>
 					</p>
 				</Modal.Header>

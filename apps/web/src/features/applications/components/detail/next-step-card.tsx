@@ -166,7 +166,7 @@ function FollowUpDialog({ application, open, onOpenChange }: FollowUpDialogProps
 						<Modal.Heading>
 							<Trans>Follow-up</Trans>
 						</Modal.Heading>
-						<p id={`${id}-description`} className="text-sm text-muted">
+						<p id={`${id}-description`} className="text-body-sm text-muted">
 							<Trans>A reminder to check in, shown as the next step until you do.</Trans>
 						</p>
 					</Modal.Header>

@@ -78,7 +78,7 @@ function AiDraftDialog({ onClose }: AiDraftDialogProps) {
 						<Modal.Heading id={`${id}-title`}>
 							<Trans>Write a draft with AI</Trans>
 						</Modal.Heading>
-						<p className="text-sm text-muted">
+						<p className="text-body-sm text-muted">
 							<Trans>
 								From your resume: your greeting, About me, and the story of each work you pick. It replaces what's in
 								those places. You can undo it.

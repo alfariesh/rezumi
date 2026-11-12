@@ -1,11 +1,12 @@
 import type { DateFormat, ResumeDates, YearMonth } from "@rezumi/schema/resume/dates";
-import { Input, Switch } from "@heroui/react";
+import { Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { formatYearMonth, getPresentLabel, toYearMonth } from "@rezumi/schema/resume/dates";
 import { readSingleDate } from "@rezumi/schema/resume/period";
 import { Icon } from "@rezumi/ui/components/icon";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
 
 type DateSettings = { locale: string; format?: DateFormat | undefined };
@@ -139,25 +140,16 @@ export function DatesField({ dates, single = false, locale, format, onChange, cl
 			</div>
 
 			{!single && (
-				<>
-					<Switch
-						isSelected={dates.present}
-						onChange={(present) => onChange({ ...current, present, end: present ? null : dates.end })}
-						className="w-fit p-1 text-sm"
-					>
-						<Switch.Content>
-							<Switch.Control>
-								<Switch.Thumb />
-							</Switch.Control>
-							<Trans>Present</Trans>
-						</Switch.Content>
-					</Switch>
-				</>
+				<CellSwitchRow
+					label={<Trans>Present</Trans>}
+					isSelected={dates.present}
+					onChange={(present) => onChange({ ...current, present, end: present ? null : dates.end })}
+				/>
 			)}
 
 			<div id={`${id}-note`}>
 				{hasError ? (
-					<p className="flex items-start gap-1 text-xs leading-4 text-danger">
+					<p className="flex items-start gap-1 text-xs text-danger">
 						<Icon name="warning-circle" size={16} className="shrink-0" />
 						<Trans>
 							This date hasn't been saved. Use a month and year, like Mar 2022, or just a year. The resume keeps the
@@ -165,7 +157,7 @@ export function DatesField({ dates, single = false, locale, format, onChange, cl
 						</Trans>
 					</p>
 				) : dates.raw !== undefined ? (
-					<p className="flex items-start gap-1 text-xs leading-4 text-warning-soft-foreground">
+					<p className="flex items-start gap-1 text-xs text-warning-soft-foreground">
 						<Icon name="warning" size={16} className="shrink-0" />
 						{dates.start ? (
 							<Trans>Read as “{dates.raw}”. Pick a month so it sorts and prints consistently.</Trans>
@@ -174,7 +166,7 @@ export function DatesField({ dates, single = false, locale, format, onChange, cl
 						)}
 					</p>
 				) : reversed ? (
-					<p className="flex items-start gap-1 text-xs leading-4 text-warning-soft-foreground">
+					<p className="flex items-start gap-1 text-xs text-warning-soft-foreground">
 						<Icon name="warning" size={16} className="shrink-0" />
 						<Trans>The end is before the start.</Trans>
 					</p>

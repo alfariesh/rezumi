@@ -28,7 +28,7 @@ function NativeCallbackPage() {
 			<Typography type="h3" align="center" render={renderAsH1}>
 				<Trans>Open the Rezumi app</Trans>
 			</Typography>
-			<p className="text-sm text-muted">
+			<p className="text-body-sm text-muted">
 				<Trans>If the app did not open, try again on a device where it is installed.</Trans>
 			</p>
 			<a

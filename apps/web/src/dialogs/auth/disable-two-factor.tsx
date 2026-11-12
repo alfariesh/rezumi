@@ -81,7 +81,7 @@ export function DisableTwoFactorDialog(_: DialogProps<"auth.two-factor.disable">
 						<Icon name="lock-open" size={16} />
 						<Trans>Turn off two-step verification?</Trans>
 					</Modal.Heading>
-					<p id={descriptionId} className="text-sm text-muted">
+					<p id={descriptionId} className="text-body-sm text-muted">
 						<Trans>
 							Enter your password to turn off two-step verification. Without it, your password alone can sign in to your
 							account.

@@ -78,7 +78,7 @@ export function ApplicationInsights({ applications }: { applications: Applicatio
 
 	if (outcomes.sent === 0) {
 		return (
-			<p className="py-16 text-center text-sm text-muted">
+			<p className="py-16 text-center text-body-sm text-muted">
 				<Trans>Once you've sent a few applications, this shows how far they get and how quickly people reply.</Trans>
 			</p>
 		);
@@ -145,7 +145,7 @@ export function ApplicationInsights({ applications }: { applications: Applicatio
 					<Widget role="region" aria-labelledby="insights-tailored">
 						<WidgetHeading id="insights-tailored" icon="file-text" title={<Trans>Tailored vs. base resume</Trans>} />
 						<Widget.Content>
-							<p className="text-sm leading-6 text-muted">
+							<p className="text-body-sm text-muted">
 								<Trans>
 									{outcomes.tailored.replied} of {outcomes.tailored.sent} tailored applications got a reply;{" "}
 									{outcomes.base.replied} of {outcomes.base.sent} sent with another resume.
@@ -253,7 +253,7 @@ export function ApplicationInsights({ applications }: { applications: Applicatio
 				{/* sources */}
 				<ChartWidget icon="map-pin" title={t`Where applications come from`} description={t`Count by source`}>
 					{sourceData.length === 0 ? (
-						<p className="text-sm text-muted">
+						<p className="text-body-sm text-muted">
 							<Trans>No source data yet.</Trans>
 						</p>
 					) : (

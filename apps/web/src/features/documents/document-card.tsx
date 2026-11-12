@@ -235,7 +235,7 @@ export function DocumentCard({
 						{renaming ? (
 							<RenameInput document={document} onDone={() => setRenaming(false)} />
 						) : (
-							<h3 className="truncate text-sm leading-5 font-medium text-foreground">{document.name}</h3>
+							<h3 className="truncate text-sm font-medium text-foreground">{document.name}</h3>
 						)}
 						<span className="truncate text-xs text-muted">{meta}</span>
 						{document.application && (

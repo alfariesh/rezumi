@@ -189,7 +189,7 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 					</>
 				}
 				action={
-					<span className="text-xs text-muted">
+					<span className="text-body-xs text-muted">
 						<Trans>Write it down while it's fresh</Trans>
 					</span>
 				}
@@ -217,7 +217,7 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 					<Label>
 						<Trans>What did you say, as close as you remember?</Trans>
 					</Label>
-					<TextArea variant="secondary" className="min-h-24" />
+					<TextArea variant="secondary" />
 				</TextField>
 				<div className="grid gap-1.5">
 					<p id={`${id}-landed`} className="text-sm font-medium">
@@ -338,7 +338,7 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 			{(data.nextRound || data.priority) && (
 				<div className="grid gap-3 rounded-xl bg-surface-secondary p-4">
 					{data.nextRound && (
-						<p className="text-sm">
+						<p className="text-body-sm">
 							<strong className="font-semibold">
 								<Trans>For the next round:</Trans>
 							</strong>{" "}
@@ -346,7 +346,7 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 						</p>
 					)}
 					{data.priority && (
-						<p className="text-sm">
+						<p className="text-body-sm">
 							<strong className="font-semibold">
 								<Trans>Practice priority:</Trans>
 							</strong>{" "}
@@ -482,12 +482,12 @@ function WeekPlan({ application, review, now, readOnly }: WeekPlanProps) {
 												<Checkbox.Indicator />
 											</Checkbox.Control>
 											<span className="grid gap-1">
-												<span className="text-xs leading-4 font-medium text-muted tabular-nums">
+												<span className="text-xs font-medium text-muted tabular-nums">
 													{weekday} · {t`${length}m`}
 												</span>
 												<span
 													className={cn(
-														"text-sm leading-5 transition-colors duration-quick",
+														"text-sm transition-colors duration-quick",
 														checked && "text-muted line-through",
 													)}
 												>
@@ -506,7 +506,7 @@ function WeekPlan({ application, review, now, readOnly }: WeekPlanProps) {
 						<Trans>Add to calendar</Trans>
 					</Button>
 				)}
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					<Trans>Practice priorities, not conclusions about why an employer decided anything.</Trans>
 				</p>
 			</Widget.Content>

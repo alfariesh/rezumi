@@ -66,11 +66,11 @@ export function FromResume({ onBack, onClose }: StepProps) {
 		<>
 			<Modal.Body className="grid gap-3">
 				{!record.sourceResume || !source.data ? (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>This portfolio has no resume to take projects from. Choose one in Publish → Source resume.</Trans>
 					</p>
 				) : projects.length === 0 ? (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>Your resume has no projects yet. Add them in the resume editor, or start an empty work.</Trans>
 					</p>
 				) : (

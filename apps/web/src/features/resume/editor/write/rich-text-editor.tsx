@@ -42,16 +42,16 @@ function RichTextPreview({
 	const editable = !disabled && !readOnlyTable;
 
 	return (
-		// Matches the loaded editor's frame: a secondary HeroUI field.
+		// Matches the loaded editor's frame: a primary HeroUI field (the panel is gray).
 		<div
 			className={cn(
-				"rounded-field bg-background text-field-foreground",
-				disabled ? "opacity-(--disabled-opacity)" : "hover:bg-default",
+				"rounded-field bg-field text-field-foreground shadow-field",
+				disabled ? "opacity-(--disabled-opacity)" : "hover:bg-field-hover",
 				className,
 			)}
 		>
 			{readOnlyTable && (
-				<p role="status" className="border-b border-separator px-3 py-2 text-xs text-muted">
+				<p role="status" className="border-b border-separator px-3 py-2 text-body-xs text-muted">
 					<Trans>
 						Original table formatting is preserved. This content is read-only because it cannot be edited safely.
 					</Trans>
@@ -67,7 +67,9 @@ function RichTextPreview({
 				onPointerDown={(event) => editable && onFocusRequest(() => ({ x: event.clientX, y: event.clientY }))}
 				onFocus={() => editable && onFocusRequest((current) => current ?? "end")}
 				className={cn(
-					"typeset typeset-field overflow-y-auto px-3 py-2 text-sm outline-none",
+					// `text-sm` fixes the size on phones too; its own 20px line height would override the preset's, so the preset's is
+					// put back.
+					"typeset typeset-field overflow-y-auto px-3 py-2 text-sm leading-(--typeset-leading) outline-none",
 					heightClassName,
 					"[&_[data-resume-whitespace=preserve]]:whitespace-pre-wrap",
 				)}

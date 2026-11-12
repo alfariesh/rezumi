@@ -3,7 +3,7 @@ import { InputGroup } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { pageSchema } from "@rezumi/schema/resume/data";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { SectionBase } from "../shared/section-base";
 import { NumberInput } from "@/components/input/number-input";
 import { useCurrentResume, useUpdateResumeData } from "@/features/resume/builder/draft";
@@ -90,7 +90,7 @@ function PageSectionForm() {
 			{pageSwitchFields.map(({ name, label }) => (
 				<form.Field key={name} name={name}>
 					{(field) => (
-						<SwitchRow
+						<CellSwitchRow
 							className="col-span-full"
 							label={label}
 							// Labels describe the ON state; the stored flags are hide*, so the switch is inverted.

@@ -115,7 +115,7 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 				<Checkbox.Control>
 					<Checkbox.Indicator />
 				</Checkbox.Control>
-				<span className="text-sm">
+				<span className="text-body-sm">
 					{qris ? (
 						<Trans>Also take back the pass and its remaining credits</Trans>
 					) : (
@@ -166,7 +166,7 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 			>
 				{payment && (
 					<div className="grid gap-3">
-						<p className="rounded-xl bg-surface-secondary px-3 py-2 text-sm">
+						<p className="rounded-xl bg-surface-secondary px-3 py-2 text-body-sm">
 							{qris ? (
 								<Trans>
 									Sumopod can't send refunds. Send the money back yourself first (bank transfer or e-wallet), then
@@ -196,7 +196,7 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 									<Checkbox.Control>
 										<Checkbox.Indicator />
 									</Checkbox.Control>
-									<span className="text-sm">
+									<span className="text-body-sm">
 										<Trans>Also end the subscription now (access stops at once)</Trans>
 									</span>
 								</Checkbox.Content>
@@ -480,7 +480,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 						<Chip.Label>{getPaymentStatusLabel(payment.status)}</Chip.Label>
 					</Chip>
 					{payment.paidAt && !payment.fulfilledAt && (
-						<span className="text-xs text-danger">
+						<span className="text-body-xs text-danger">
 							<Trans>Not applied</Trans>
 						</span>
 					)}
@@ -495,7 +495,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 					<span className="grid gap-0.5">
 						<span className="text-sm">{formatShort(payment.paidAt)}</span>
 						{payment.periodEnd && (
-							<span className="text-xs text-muted">{t`covers until ${formatShort(payment.periodEnd)}`}</span>
+							<span className="text-body-xs text-muted">{t`covers until ${formatShort(payment.periodEnd)}`}</span>
 						)}
 					</span>
 				) : (
@@ -580,7 +580,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 					getRowId={(payment) => payment.id}
 					contentClassName="min-w-[780px]"
 					renderEmptyState={() => (
-						<p className="py-10 text-center text-sm text-muted">
+						<p className="py-10 text-center text-body-sm text-muted">
 							<Trans>No payments.</Trans>
 						</p>
 					)}
@@ -750,7 +750,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 					}
 				>
 					{data.periods.length === 0 ? (
-						<p className="py-6 text-center text-sm text-muted">
+						<p className="py-6 text-center text-body-sm text-muted">
 							<Trans>None.</Trans>
 						</p>
 					) : (
@@ -805,7 +805,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 					description={<Trans>Payment provider events and admin actions, newest first.</Trans>}
 				>
 					{history.length === 0 ? (
-						<p className="py-6 text-center text-sm text-muted">
+						<p className="py-6 text-center text-body-sm text-muted">
 							<Trans>Nothing yet.</Trans>
 						</p>
 					) : (
@@ -912,7 +912,7 @@ export function CustomerBillingPage({ userId }: CustomerBillingPageProps) {
 			{customer.data ? (
 				<CustomerBody data={customer.data} onDialog={setDialog} onDone={refresh} />
 			) : customer.error ? (
-				<p role="alert" className="text-sm text-danger">
+				<p role="alert" className="text-body-sm text-danger">
 					{getReadableErrorMessage(customer.error, t`This customer couldn't load.`)}
 				</p>
 			) : (
@@ -923,7 +923,7 @@ export function CustomerBillingPage({ userId }: CustomerBillingPageProps) {
 				</div>
 			)}
 			{account && (
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					{t`Account ${account.id} · created ${formatAccountDate(account.createdAt)} · time zone ${account.timezone}`}
 				</p>
 			)}

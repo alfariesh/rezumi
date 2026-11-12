@@ -597,6 +597,11 @@ msgstr ""
 msgid "{0} per reply"
 msgstr ""
 
+#. placeholder {0}: theme.name
+#: src/features/homepage/portfolio.tsx
+msgid "{0} portfolio theme preview"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/conversation.tsx
 msgid "{0} posting"
@@ -1333,6 +1338,10 @@ msgstr "Egy hitelesítő alkalmazás kódja bejelentkezéskor"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "A comfortable length, and it fits on one page."
 msgstr "Kényelmes hosszúságú, egy oldalon elfér."
+
+#: src/features/homepage/portfolio.tsx
+msgid "A contact form, and how many people visited"
+msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
@@ -2324,6 +2333,8 @@ msgstr "Az elvárásaidhoz mérve"
 #. Icon picker category: artificial intelligence
 #: src/components/input/icon-picker-grid.tsx
 #: src/features/portfolio/ai/rewrite-menu.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 msgid "AI"
 msgstr ""
 
@@ -2948,7 +2959,6 @@ msgstr ""
 msgid "Aspect ratio"
 msgstr "Méretarány"
 
-#: src/features/assistant/assistant-button.tsx
 #: src/features/assistant/assistant-panel.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -3543,6 +3553,10 @@ msgstr ""
 msgid "Case studies"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Case studies with pictures, video, PDFs and results in numbers"
+msgstr ""
+
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "Case study (public version)"
 msgstr ""
@@ -4039,6 +4053,7 @@ msgstr ""
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
 #: src/features/resume/editor/chrome/download-sheet.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
 #: src/features/resume/stylesheet/editor.tsx
@@ -4210,8 +4225,8 @@ msgstr "Teljes adatmentés. Visszaimportálható a Rezumi vagy JSON Resume szers
 msgid "Compress or remove large images to keep uploads quick."
 msgstr "Tömörítsd vagy távolítsd el a nagy képeket, hogy a feltöltés gyors maradjon."
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Computer"
 msgstr "Számítógép"
 
@@ -5249,7 +5264,6 @@ msgstr "Kitöltés"
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Motivációs levél"
 
@@ -5848,6 +5862,7 @@ msgstr "{0} szerepkör leírása"
 msgid "Design"
 msgstr "Dizájn"
 
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Design groups"
 msgstr "Tervező csoportok"
@@ -5991,6 +6006,10 @@ msgstr "Dokumentáció"
 msgid "Document menu: {name}"
 msgstr "Dokumentum menü: {name}"
 
+#: src/features/resume/editor/chrome.tsx
+msgid "Document name"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Document type"
 msgstr "Dokumentum típusa"
@@ -6097,8 +6116,7 @@ msgstr ""
 #: src/features/career/workspace/apply.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/resume/editor/chrome/bar.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
+#: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download"
 msgstr "Letöltés"
 
@@ -6109,10 +6127,6 @@ msgstr "Töltse le a {label}-t"
 #: src/features/templates/gallery.tsx
 msgid "Download {name} sample PDF"
 msgstr "Töltse le a(z) {name} PDF-mintát"
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Download & history"
-msgstr "Letöltés és előzmények"
 
 #: src/features/billing/plan.ts
 msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
@@ -7410,6 +7424,7 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
+#: src/features/homepage/portfolio.tsx
 #: src/features/homepage/templates.tsx
 #: src/features/portfolio/theme-gallery.tsx
 #: src/features/templates/gallery.tsx
@@ -7955,10 +7970,9 @@ msgstr "Bérbeadó csapat"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/portfolio/admin/review-page.tsx
-#: src/features/resume/editor/chrome/bar.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
+#: src/features/resume/editor/chrome/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
-#: src/routes/builder/$resumeId/-components/download-sheet.tsx
-#: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "History"
 msgstr "Előzmények"
 
@@ -9475,6 +9489,7 @@ msgstr "Szerkesztés zárolása"
 
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Locked"
 msgstr "Zárolva"
 
@@ -9519,10 +9534,6 @@ msgstr "Elveszítetted a hozzáférést a hitelesítő alkalmazásodhoz?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Low"
 msgstr "Alacsony"
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Lower the design sheet"
-msgstr "Engedje le a tervezőlapot"
 
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/share/web-page-text.ts
@@ -10678,9 +10689,8 @@ msgstr ""
 msgid "No work-experience section was found."
 msgstr "Nem található Szakmai tapasztalat szakasz."
 
-#: src/features/applications/components/add-application-dialog.tsx
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/applications/document-options.ts
 #: src/features/portfolio/works/work-editor.tsx
 msgid "None"
 msgstr "Egyik sem"
@@ -10890,10 +10900,6 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Nothing here should cost you a match."
 msgstr "Itt semmi sem kerülhet egy gyufába."
-
-#: src/features/career/today.tsx
-msgid "Nothing is applied for or created until you choose."
-msgstr "Semmilyen jelentkezés vagy létrehozás nem történik, amíg nem döntesz."
 
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
@@ -11495,9 +11501,7 @@ msgstr ""
 
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
-#: src/routes/builder/$resumeId/-components/editor-shell.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx
-#: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Page"
 msgstr "Oldal"
 
@@ -11890,12 +11894,12 @@ msgstr "Véglegesen eltávolít mindent. Először exportálja, ha másolatot sz
 msgid "Persian"
 msgstr "perzsa"
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Phone"
 msgstr "Telefonszám"
 
@@ -12111,6 +12115,7 @@ msgstr "lengyel"
 msgid "Polishing"
 msgstr "Csiszolás"
 
+#: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/portfolio-page.tsx
@@ -12337,10 +12342,6 @@ msgstr "Az aktuális kulcsszó hozzáadásához vagy mentéséhez nyomd meg ezt:
 msgid "Press <0>Enter</0> to open"
 msgstr "Nyomja meg az <0>Entert</0> a megnyitáshoz"
 
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
-msgid "Preview"
-msgstr ""
-
 #: src/features/templates/gallery.tsx
 msgid "Preview {name} sample PDF"
 msgstr "Tekintse meg a(z) {name} PDF-minta előnézetét"
@@ -12353,8 +12354,8 @@ msgstr ""
 msgid "Preview every template before you sign up. The Free plan includes {freeCount} templates and PDF downloads without a watermark. Plus and Pro AI unlock every template, plus Word and ODT downloads."
 msgstr ""
 
-#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Preview size"
 msgstr "Előnézet mérete"
 
@@ -12631,6 +12632,10 @@ msgstr "Publikációk"
 msgid "Publish"
 msgstr "Közzététel"
 
+#: src/features/homepage/portfolio.tsx
+msgid "Publish a one-page website at rezumi.app/your-name. Start from a resume, add your work, and choose a theme that suits your field."
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish it to share a link that opens on any screen. Only you can see it until then."
 msgstr "Tedd közzé, és megoszthatsz egy linket, amely bármilyen képernyőn megnyílik. Addig csak te látod."
@@ -12752,10 +12757,6 @@ msgstr ""
 #: src/features/portfolio/editor/rich-text-editor.tsx
 msgid "Quote"
 msgstr ""
-
-#: src/routes/builder/$resumeId/-components/design-panel.tsx
-msgid "Raise the design sheet"
-msgstr "Emelje fel a tervezőlapot"
 
 #: src/features/portfolio/themes.ts
 msgid "Random letters settle into your name."
@@ -13094,7 +13095,7 @@ msgid "Red"
 msgstr "Piros"
 
 #: src/features/portfolio/editor/rich-text-editor.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+#: src/features/resume/editor/chrome.tsx
 msgid "Redo"
 msgstr ""
 
@@ -13255,10 +13256,6 @@ msgstr "Emlékeztess"
 #: src/features/career/schedule-sheet.tsx
 msgid "Remind me on"
 msgstr "Emlékeztetés ekkor"
-
-#: src/features/career/today.tsx
-msgid "Reminders appear here. Email copies are optional and need a verified address."
-msgstr "Az emlékeztetők itt jelennek meg. Az e-mail-másolat nem kötelező, és megerősített címet igényel."
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/career/offers.tsx
@@ -13631,7 +13628,6 @@ msgstr "önéletrajz"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "Önéletrajz"
@@ -13852,8 +13848,8 @@ msgid "Rezumi - Go to homepage"
 msgstr "Rezumi – Ugrás a kezdőlapra"
 
 #: src/routes/dashboard/settings/route.tsx
-msgid "Rezumi {__APP_VERSION__} · MIT"
-msgstr "Rezumi {__APP_VERSION__} · MIT"
+msgid "Rezumi {__APP_VERSION__}"
+msgstr ""
 
 #. placeholder {0}: getPlanName(payment.planId)
 #: src/features/billing/receipt.tsx
@@ -14480,6 +14476,10 @@ msgstr "Lásd lent"
 msgid "See exactly what applicant tracking systems read"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "See how a portfolio works"
+msgstr ""
+
 #: src/features/billing/plan-dialog.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -14757,17 +14757,12 @@ msgstr "Árnyék vastagsága"
 #: src/features/resume/share/web-page-text.ts
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Share"
 msgstr "Megosztás"
 
 #: src/features/homepage/introduction.tsx
 msgid "Share a live link that is always the latest version"
 msgstr ""
-
-#: src/features/resume/editor/chrome/download-sheet.tsx
-msgid "Share sections"
-msgstr "Ossza meg a szakaszokat"
 
 #: src/features/resume/share/address-field.tsx
 msgid "Share via…"
@@ -14985,6 +14980,10 @@ msgstr "Sablonok megjelenítése"
 msgid "Show the {name} logo"
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Show the work behind your resume."
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "Mutasd meg őket újra"
@@ -15118,10 +15117,6 @@ msgstr "Helyzet"
 #: src/features/career/workspace/prepare.tsx
 msgid "Situation, action, result"
 msgstr "Helyzet, tevékenység, eredmény"
-
-#: src/features/career/knowledge/stories.tsx
-msgid "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
-msgstr "Helyzet, Feladat, Tevékenység, Eredmény, Tanulság. Minden történetet kapcsolj olyan tényekhez, amelyeket alá tudsz támasztani; az ismeretlen kimeneteleket hagyd üresen."
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Size"
@@ -17713,6 +17708,7 @@ msgstr "A hivatkozások aláhúzása"
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
+#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/resume/editor/proposals/proposals.ts
@@ -17723,7 +17719,6 @@ msgstr "A hivatkozások aláhúzása"
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
-#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Undo"
 msgstr "Visszavonás"
 
@@ -19349,6 +19344,10 @@ msgstr "A felsoroláspontjaid szokatlan karakterekkel vannak jelölve."
 msgid "Your career as a path: experience and education hang from a fine line with an accent dot at each step, beside a left sidebar."
 msgstr ""
 
+#: src/features/homepage/portfolio.tsx
+msgid "Your career details stay in step with your resume"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/use-editor-hotkeys.ts
 #: src/routes/builder/letter/-components/letter-shell.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -19877,7 +19876,6 @@ msgstr ""
 msgid "YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play."
 msgstr ""
 
-#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"
 msgstr "Zoomolás"

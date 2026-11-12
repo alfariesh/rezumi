@@ -51,7 +51,8 @@ test("proposes edits that change nothing until accepted, asks before assuming, a
 	await createSampleResumeFromDashboard(page, testInfo);
 	const resumeId = resumeIdOf(page);
 
-	await page.getByRole("button", { name: "Assistant", exact: true }).click();
+	// The assistant opens from the AI button in the header row.
+	await page.getByRole("button", { name: /^AI/ }).click();
 	await connectStub(page);
 
 	await send(page, "Tighten my resume");

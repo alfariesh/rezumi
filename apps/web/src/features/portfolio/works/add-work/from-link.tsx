@@ -130,10 +130,10 @@ export function FromLink({ onBack, onClose }: StepProps) {
 				<div className="grid gap-2">
 					<TextInput
 						label={t`Link`}
+						icon="link-simple-horizontal"
 						value={text}
 						maxLength={PORTFOLIO_LIMITS.text.url}
 						placeholder="https://www.behance.net/gallery/…"
-						description={t`Behance, Dribbble, GitHub, Figma, Medium, YouTube, Vimeo or any public page.`}
 						isDisabled={adding}
 						onChange={(value) => {
 							setText(value);
@@ -149,7 +149,7 @@ export function FromLink({ onBack, onClose }: StepProps) {
 						<Trans>Read the link</Trans>
 					</Button>
 					{full && (
-						<p className="text-xs text-danger">
+						<p className="text-body-xs text-danger">
 							<Trans>This portfolio already holds {limits.works} works.</Trans>
 						</p>
 					)}
@@ -195,7 +195,7 @@ export function FromLink({ onBack, onClose }: StepProps) {
 										</Label>
 									</Checkbox.Content>
 								</Checkbox>
-								<span className="text-xs text-muted">
+								<span className="text-body-xs text-muted">
 									<Trans>Use it only if you may show it. Your page never loads pictures from other sites.</Trans>
 								</span>
 							</div>

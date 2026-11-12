@@ -251,11 +251,11 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 												</RowIcon>
 												<div className="flex min-w-0 flex-1 flex-wrap items-start gap-x-3 gap-y-2">
 													<div className="grid min-w-0 flex-1 basis-56 gap-0.5">
-														<p id={`note-${row.id}`} className="text-sm leading-5 font-semibold">
+														<p id={`note-${row.id}`} className="text-sm font-semibold">
 															{row.title}
 														</p>
 														<p className="line-clamp-3 text-sm text-muted">{row.body}</p>
-														<p className="mt-0.5 text-xs text-muted">{meta(row)}</p>
+														<p className="mt-0.5 text-body-xs text-muted">{meta(row)}</p>
 													</div>
 													{actionable && (
 														<Button variant="secondary" size="sm" onPress={() => act(row)}>
@@ -407,7 +407,7 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 		const offset = dayOffset(active.nextRunAt, now);
 		const clock = time(active.nextRunAt);
 		return (
-			<p className="text-sm text-muted">
+			<p className="text-body-sm text-muted">
 				{offset === 0
 					? t`No new roles. Discovery runs again today at ${clock}.`
 					: offset === 1
@@ -521,7 +521,7 @@ function RoleCard({ row, found, first, tracked, pending, onTrack, onUndo, onDism
 					<Typography type="h6" render={renderAsH3} id={`role-${row.id}`}>
 						{row.role}
 					</Typography>
-					<p className="text-sm text-muted">{[company, row.location, found].filter(Boolean).join(" · ")}</p>
+					<p className="text-body-sm text-muted">{[company, row.location, found].filter(Boolean).join(" · ")}</p>
 				</div>
 				{row.snippet && <p className="line-clamp-3 text-sm text-muted">{row.snippet}</p>}
 				{matches.length + unknowns.length > 0 && (
@@ -613,7 +613,7 @@ function ComingUp({ now, className }: ComingUpProps) {
 		<CareerWidget title={t`Coming up`} icon="calendar-blank" className={className}>
 			<div className="flex items-start gap-3">
 				<span className="flex w-14 shrink-0 flex-col items-stretch gap-0.5 rounded-xl bg-accent p-1">
-					<span className="text-center text-xs leading-4 font-semibold text-accent-foreground">
+					<span className="text-center text-xs font-semibold text-accent-foreground">
 						{format(start, { weekday: "short" })}
 					</span>
 					<span className="rounded-lg bg-surface/40 py-1 text-center text-xl leading-6 font-semibold text-accent-foreground tabular-nums">
@@ -629,7 +629,7 @@ function ComingUp({ now, className }: ComingUpProps) {
 						/>
 						{t`${kind} interview`}
 					</p>
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						{[application.company, time(start), formatDuration(interview.durationMinutes, locale)].join(" · ")}
 					</p>
 				</div>
@@ -786,7 +786,7 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 			) : !rows ? (
 				<RowsSkeleton rows={2} />
 			) : rows.length === 0 ? (
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					<Trans>Nothing scheduled yet.</Trans>
 				</p>
 			) : (

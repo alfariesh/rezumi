@@ -76,7 +76,7 @@ export default function CommandPaletteContent() {
 								message: "Command palette",
 							})}
 							renderEmptyState={() => (
-								<div className="py-8 text-center text-sm text-muted">
+								<div className="py-8 text-center text-body-sm text-muted">
 									<Trans comment="Empty-state message when no command palette results match the search query">
 										No commands match that search.
 									</Trans>

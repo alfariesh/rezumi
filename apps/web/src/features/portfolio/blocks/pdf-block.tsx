@@ -11,7 +11,7 @@ import { TextInput } from "../editor/fields";
 import { portfolioImageSrc } from "../images/image-field";
 import { discardUnplacedImages, discardUploadedImages, isAbort } from "../images/upload";
 import { useRequestSignals } from "../images/use-request-signals";
-import { formatFileSize, pdfErrorMessage, pdfLimitText, uploadPortfolioPdf } from "../media/pdf";
+import { formatFileSize, pdfErrorMessage, uploadPortfolioPdf } from "../media/pdf";
 import { currentBlock, ErrorNote, usePdfPicker } from "./add-media-block";
 
 const { text: max } = PORTFOLIO_LIMITS;
@@ -23,7 +23,6 @@ export function PdfBlockEditor({ work, block, edit }: PdfBlockEditorProps) {
 	const [busy, setBusy] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const requests = useRequestSignals();
-	const limit = pdfLimitText();
 
 	const replace = async (file: File) => {
 		const signal = requests.next();
@@ -81,6 +80,7 @@ export function PdfBlockEditor({ work, block, edit }: PdfBlockEditorProps) {
 			</div>
 			<TextInput
 				label={t`PDF title`}
+				icon="text-t"
 				value={block.title}
 				maxLength={max.mediaTitle}
 				placeholder={t`Case study (public version)`}
@@ -98,8 +98,7 @@ export function PdfBlockEditor({ work, block, edit }: PdfBlockEditorProps) {
 					<Icon name="arrows-clockwise" size={16} />
 					<Trans>Replace the PDF</Trans>
 				</Button>
-				<span className="text-xs text-muted">
-					<Trans>Up to {limit}, without a password. Visitors open it in a new tab.</Trans>{" "}
+				<span className="text-body-xs text-muted">
 					<Trans>Details saved inside the file, such as the author's name, are published with it.</Trans>
 				</span>
 			</div>

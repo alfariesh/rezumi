@@ -106,7 +106,7 @@ export function UploadedFonts({ faces = [] }: UploadedFontsProps) {
 				);
 			})}
 
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				{planLocked ? (
 					<Trans>Your own fonts aren't in your plan. Fonts already added keep working on the page.</Trans>
 				) : (

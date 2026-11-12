@@ -3,13 +3,13 @@ import type { OutlineRow, WriteSection } from "./model";
 import type { SortableTarget } from "@/components/input/sortable";
 import type { MessageDescriptor } from "@lingui/core";
 import type { CustomSectionType } from "@rezumi/schema/resume/data";
-import { Widget } from "@heroui-pro/react";
-import { Button } from "@heroui/react";
+import { Button, Chip } from "@heroui/react";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
-import { Fragment, useId, useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { PanelSection } from "../chrome/panel-section";
 import { useEditorStore } from "../store";
 import { addEntryTo } from "./actions";
 import { EntryCard } from "./entry-card";
@@ -17,7 +17,6 @@ import { getEntries, getOutlineRows, getSectionKind, getSectionType, moveSection
 import { SectionRow } from "./section-row";
 import { SummaryEditor } from "./summary-editor";
 import { SortableProvider } from "@/components/input/sortable";
-import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useCurrentBuilderResumeSelector, useUpdateResumeData } from "@/features/resume/builder/draft";
 
 const ADD_LABELS: Record<CustomSectionType, MessageDescriptor> = {
@@ -116,24 +115,26 @@ function groupByPage(rows: OutlineRow[]) {
 type PageWidgetProps = { pageNumber: number; hint: boolean; children: React.ReactNode };
 
 function PageWidget({ pageNumber, hint, children }: PageWidgetProps) {
-	const titleId = useId();
-
 	return (
-		<Widget role="region" aria-labelledby={titleId}>
-			<WidgetHeading
-				id={titleId}
-				icon="file-text"
-				title={<Trans>Page {pageNumber}</Trans>}
-				action={
-					hint && (
-						<Widget.Description className="whitespace-nowrap max-sm:hidden">
-							<Trans>drag · ⌥↑↓</Trans>
-						</Widget.Description>
-					)
-				}
-			/>
-			<Widget.Content className="grid gap-0.5 p-1.5">{children}</Widget.Content>
-		</Widget>
+		<PanelSection
+			icon="file-text"
+			title={<Trans>Page {pageNumber}</Trans>}
+			action={
+				hint && (
+					<span className="flex items-center gap-1 max-sm:hidden">
+						<Chip size="lg" className="bg-surface whitespace-nowrap">
+							<Trans>drag</Trans>
+						</Chip>
+						<Chip size="lg" className="bg-surface whitespace-nowrap">
+							⌥↑↓
+						</Chip>
+					</span>
+				)
+			}
+			contentClassName="gap-0.5"
+		>
+			{children}
+		</PanelSection>
 	);
 }
 

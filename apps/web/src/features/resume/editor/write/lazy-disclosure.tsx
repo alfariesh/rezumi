@@ -15,8 +15,9 @@ export function LazyDisclosure({ open, children }: LazyDisclosureProps) {
 
 	return (
 		<Disclosure isExpanded={open}>
-			<Disclosure.Content>
-				<Disclosure.Body>{opened && children}</Disclosure.Body>
+			{/* `*:p-0`: Disclosure.Body pads an outer wrapper its className doesn't reach; the content brings its own insets. */}
+			<Disclosure.Content className="*:p-0">
+				<Disclosure.Body className="p-0">{opened && children}</Disclosure.Body>
 			</Disclosure.Content>
 		</Disclosure>
 	);

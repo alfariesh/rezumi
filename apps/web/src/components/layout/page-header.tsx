@@ -24,7 +24,7 @@ export function PageHeader({ title, description, back, actions, children }: Page
 					<Typography type="h2" render={renderAsH1}>
 						{title}
 					</Typography>
-					{description && <p className="text-sm text-muted">{description}</p>}
+					{description && <p className="text-body-sm text-muted">{description}</p>}
 				</div>
 				{actions && <div className="flex items-center gap-2">{actions}</div>}
 			</header>

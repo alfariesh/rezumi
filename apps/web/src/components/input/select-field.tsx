@@ -1,4 +1,5 @@
 import type { Key, ReactNode } from "react";
+import { CellSelect } from "@heroui-pro/react";
 import { Description, Label, ListBox, Select } from "@heroui/react";
 import { cn } from "@rezumi/utils/style";
 
@@ -16,6 +17,8 @@ type SelectOption = {
 	/** The text typeahead matches and screen readers read; defaults to `label` when that is a string. */
 	textValue?: string;
 	isDisabled?: boolean;
+	/** Shown before the label in a `CellSelectField` (a flag, say), in its list and in its trigger. */
+	icon?: ReactNode;
 };
 
 type SelectFieldProps = {
@@ -88,6 +91,71 @@ export function SelectField({
 				</ListBox>
 			</Select.Popover>
 		</Select>
+	);
+}
+
+type CellSelectFieldProps = {
+	options: readonly SelectOption[];
+	value: string;
+	onChange: (value: string) => void;
+	/** The cell's name, at its start; the chosen option shows at its end. */
+	label: string;
+	isDisabled?: boolean;
+	/** Classes for the list, e.g. a minimum width when the cell is narrow. */
+	popoverClassName?: string;
+};
+
+/**
+ * A pick-one field as one compact cell for the editors' panels (HeroUI Pro `CellSelect`): the label at the start, the
+ * chosen option and a chevron at the end. Same string value and `""` handling as {@link SelectField}.
+ */
+export function CellSelectField({
+	options,
+	value,
+	onChange,
+	label,
+	isDisabled,
+	popoverClassName,
+}: CellSelectFieldProps) {
+	const hasEmpty = options.some((option) => option.value === "");
+
+	return (
+		<CellSelect
+			aria-label={label}
+			value={value === "" && !hasEmpty ? null : toKey(value)}
+			onChange={(key: Key | Key[] | null) => {
+				if (typeof key === "string") onChange(key === NONE ? "" : key);
+			}}
+			disabledKeys={options.filter((option) => option.isDisabled).map((option) => toKey(option.value))}
+			{...(isDisabled !== undefined && { isDisabled })}
+		>
+			<CellSelect.Trigger>
+				<CellSelect.Label>{label}</CellSelect.Label>
+				<CellSelect.Value />
+				<CellSelect.Indicator />
+			</CellSelect.Trigger>
+			<CellSelect.Popover {...(popoverClassName ? { className: popoverClassName } : {})}>
+				<ListBox>
+					{options.map((option) => (
+						<ListBox.Item
+							key={toKey(option.value)}
+							id={toKey(option.value)}
+							textValue={option.textValue ?? (typeof option.label === "string" ? option.label : option.value)}
+						>
+							{option.icon ? (
+								<span className="flex items-center gap-2">
+									{option.icon}
+									{option.label}
+								</span>
+							) : (
+								option.label
+							)}
+							<ListBox.ItemIndicator />
+						</ListBox.Item>
+					))}
+				</ListBox>
+			</CellSelect.Popover>
+		</CellSelect>
 	);
 }
 

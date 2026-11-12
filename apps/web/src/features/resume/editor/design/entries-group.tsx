@@ -126,6 +126,7 @@ export function EntriesGroup() {
 		{ id: "role", name: t`Position`, detail: t`Date` },
 	];
 	if (entry.lead === "role") rows.reverse();
+	const [first, second] = rows;
 
 	return (
 		<div className="grid gap-4">
@@ -155,7 +156,7 @@ export function EntriesGroup() {
 								<span aria-hidden="true" className="flex h-7.5 flex-col justify-center gap-1 px-0.5">
 									{option.wireframe}
 								</span>
-								<span className="text-center text-xs leading-4 text-muted group-data-selected/layout:font-semibold group-data-selected/layout:text-foreground">
+								<span className="text-center text-xs text-muted group-data-selected/layout:font-semibold group-data-selected/layout:text-foreground">
 									{option.label()}
 								</span>
 							</RadioButtonGroup.ItemContent>
@@ -168,36 +169,21 @@ export function EntriesGroup() {
 				<span className="text-sm font-medium">
 					<Trans>Row order</Trans>
 				</span>
-				<div className="flex items-center gap-2 rounded-xl bg-surface-secondary p-2">
-					<div className="grid min-w-0 flex-1 gap-1">
-						{rows.map((row) => (
-							<m.div
-								key={row.id}
-								layout="position"
-								// Measured only when the order changes, so the panel moving around it doesn't slide the chips.
-								layoutDependency={entry.lead}
-								transition={{ duration: D2, ease: EASE_MOVE }}
-								className="flex items-center justify-between gap-2 rounded-lg bg-surface px-2.5 py-1.5 text-xs"
-							>
-								<span className="truncate font-semibold">{row.name}</span>
-								<span className="truncate text-muted">{row.detail}</span>
-							</m.div>
-						))}
-					</div>
+				{/* The two rows side by side, the first printed on the left; the button between them swaps them. */}
+				<div className="flex items-center gap-2">
+					{first && <RowCard row={first} lead={entry.lead} />}
 					<IconButton
-						icon="arrows-down-up"
+						icon="arrows-left-right"
 						iconSize={16}
 						variant="secondary"
 						size="sm"
 						tooltipPlacement="top"
-						className="rounded-full"
+						className="shrink-0 rounded-full"
 						label={entry.lead === "role" ? t`Swap rows: lead with company` : t`Swap rows: lead with position`}
 						onPress={() => set({ lead: entry.lead === "role" ? "organization" : "role" })}
 					/>
+					{second && <RowCard row={second} lead={entry.lead} />}
 				</div>
-				<span className="text-xs text-muted">
-					<Trans>Education swaps school and field of study the same way.</Trans>
-				</span>
 			</div>
 
 			<div className="grid gap-2">
@@ -225,5 +211,23 @@ export function EntriesGroup() {
 				</Segment>
 			</div>
 		</div>
+	);
+}
+
+type RowCardProps = { row: { id: string; name: string; detail: string }; lead: string };
+
+/** One of the two header rows, as tall as a cell. It slides to its new side when the order swaps. */
+function RowCard({ row, lead }: RowCardProps) {
+	return (
+		<m.div
+			layout="position"
+			// Measured only when the order changes, so the panel moving around it doesn't slide the chips.
+			layoutDependency={lead}
+			transition={{ duration: D2, ease: EASE_MOVE }}
+			className="flex h-9 min-w-0 flex-1 items-center justify-between gap-2 rounded-field bg-surface px-3 text-sm"
+		>
+			<span className="truncate font-medium">{row.name}</span>
+			<span className="truncate text-xs text-muted">{row.detail}</span>
+		</m.div>
 	);
 }

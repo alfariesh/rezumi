@@ -1,13 +1,14 @@
 import type { CheckTab } from "../store";
 import type { CheckIssue } from "./issues";
 import type { CheckResult } from "./use-check";
-import type { AtsCategory, AtsReport } from "@rezumi/resume/ats";
+import type { AtsReport } from "@rezumi/resume/ats";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { Segment } from "@heroui-pro/react";
-import { Button, Chip, Disclosure, Modal, ProgressCircle, Spinner } from "@heroui/react";
+import { Button, Chip, Modal, ProgressCircle, Spinner, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
+import { Focusable } from "react-aria-components";
 import { ATS_CATEGORIES } from "@rezumi/resume/ats";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
@@ -134,12 +135,8 @@ function IssuesTab({ check }: { check: CheckResult }) {
 	const locked = useIsResumeLocked();
 
 	return (
-		<div className="grid gap-3">
-			<CheckWidget
-				icon="list-checks"
-				title={<Trans>Issues</Trans>}
-				contentClassName={issues.length > 0 ? "p-2" : undefined}
-			>
+		<div className="grid gap-6">
+			<CheckWidget icon="list-checks" title={<Trans>Issues</Trans>}>
 				{issues.length === 0 ? (
 					<div className="flex gap-2.5 rounded-xl bg-success-soft p-3 text-sm text-success-soft-foreground">
 						<Icon name="check-circle" className="shrink-0" />
@@ -162,7 +159,7 @@ function IssuesTab({ check }: { check: CheckResult }) {
 
 			<DeepCheck data={data} />
 
-			<p className="px-2 text-xs leading-4 text-muted">
+			<p className="px-2 text-body-xs text-muted">
 				<Trans>
 					The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted.
 				</Trans>{" "}
@@ -226,7 +223,7 @@ function IssueCard({ issue, selected, locked }: IssueCardProps) {
 					</span>
 					{issue.title}
 				</h3>
-				<p className="text-sm text-muted">{issue.body}</p>
+				<p className="text-body-sm text-muted">{issue.body}</p>
 			</div>
 
 			{/* Default size: 40px on phones (B1), 36px from tablets up. The picked card's fix is the primary action. */}
@@ -271,32 +268,26 @@ function IssueCard({ issue, selected, locked }: IssueCardProps) {
 	);
 }
 
-/** Contact details, Dates, Layout, Section headings, Writing: "n of m", open when something needs attention. */
+/** Contact details, Dates, Layout, Section headings, Writing: one white row each, "n of m" or how many to review. */
 function CategoryRows({ report }: { report: AtsReport }) {
-	const [toggled, setToggled] = useState<Partial<Record<AtsCategory, boolean>>>({});
 	const categories = ATS_CATEGORIES.filter((category) => report.categories[category].total > 0);
 
 	return (
-		<CheckWidget icon="squares-four" title={<Trans>Checks by category</Trans>} contentClassName="gap-0.5 p-1.5">
+		<CheckWidget icon="squares-four" title={<Trans>Checks by category</Trans>} contentClassName="gap-2">
 			{categories.map((category) => {
 				const { total, passed } = report.categories[category];
 				const failing = total - passed;
-				const open = toggled[category] ?? failing > 0;
 
 				return (
-					<Disclosure
-						key={category}
-						isExpanded={open}
-						onExpandedChange={(next) => setToggled((current) => ({ ...current, [category]: next }))}
-					>
-						<Disclosure.Heading>
-							<Disclosure.Trigger className="flex h-11 w-full cursor-(--cursor-interactive) items-center gap-2.5 rounded-xl px-2.5 text-start text-sm font-medium outline-none hover:bg-default focus-visible:ring-2 focus-visible:ring-focus">
+					<Tooltip key={category}>
+						<Focusable>
+							<div className="flex h-11 items-center gap-2.5 rounded-xl bg-surface px-3 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-focus">
 								<Icon
 									name={failing > 0 ? "warning-circle" : "check-circle"}
 									className={cn("shrink-0", failing > 0 ? "text-warning" : "text-accent")}
 								/>
 								{getCategoryName(category)}
-								<span className="text-xs font-normal text-muted tabular-nums">
+								<span className="ms-auto text-xs font-normal text-muted tabular-nums">
 									{failing > 0 ? (
 										<Plural value={failing} one="# to review" other="# to review" />
 									) : (
@@ -305,15 +296,12 @@ function CategoryRows({ report }: { report: AtsReport }) {
 										</Trans>
 									)}
 								</span>
-								<Disclosure.Indicator className="ms-auto text-muted" />
-							</Disclosure.Trigger>
-						</Disclosure.Heading>
-						<Disclosure.Content>
-							<Disclosure.Body>
-								<p className="ps-10 pe-2.5 pb-2.5 text-sm text-muted">{getCategoryDescription(category)}</p>
-							</Disclosure.Body>
-						</Disclosure.Content>
-					</Disclosure>
+							</div>
+						</Focusable>
+						<Tooltip.Content placement="top" className="max-w-64">
+							{getCategoryDescription(category)}
+						</Tooltip.Content>
+					</Tooltip>
 				);
 			})}
 		</CheckWidget>
@@ -380,7 +368,7 @@ function DeepCheck({ data }: { data: ResumeData }) {
 							<Modal.Heading>
 								<Trans>The exported PDF</Trans>
 							</Modal.Heading>
-							<p id={reportDescriptionId} className="text-sm text-muted">
+							<p id={reportDescriptionId} className="text-body-sm text-muted">
 								<Trans>
 									What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded.
 								</Trans>

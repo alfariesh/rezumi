@@ -4,7 +4,7 @@ import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { ChatListView, PromptSuggestion } from "@heroui-pro/react";
-import { Button, Description, Dropdown, Label, Separator, Spinner, Typography } from "@heroui/react";
+import { Description, Label, ListBox, Select, Spinner, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -145,24 +145,27 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 
 	const notSetUp = threads.error instanceof ORPCError && threads.error.code === "PRECONDITION_FAILED";
 
+	// Picked in the composer's toolbar, as in the coach.
+	const model =
+		usable.length > 0 ? (
+			<ModelSelect
+				open={modelMenuOpen}
+				onOpenChange={setModelMenuOpen}
+				providers={usable}
+				current={provider}
+				label={providerLabel}
+				onChoose={(id) => void chooseProvider(id)}
+			/>
+		) : null;
+
 	return (
-		<section aria-label={t`Assistant`} className="flex h-full min-h-0 flex-col">
-			<header className="flex h-[52px] shrink-0 items-center gap-1 rounded-2xl bg-surface-secondary ps-4 pe-2">
-				<Icon name="sparkle" size={20} className="text-accent" />
-				<Typography type="h6" render={renderAsH2} className="me-auto">
+		<section aria-label={t`Assistant`} data-assistant="" className="flex h-full min-h-0 flex-col">
+			{/* As tall as the editor's bar, with no fill of its own, so the two read as one header across the window. */}
+			<header className="flex h-(--editor-bar) shrink-0 items-center gap-1 ps-1">
+				<Icon name="sparkle" size={20} className="shrink-0 text-accent" />
+				<Typography type="h6" render={renderAsH2} className="me-auto ps-1.5 text-sm">
 					<Trans>Assistant</Trans>
 				</Typography>
-
-				{usable.length > 0 && (
-					<ModelMenu
-						open={modelMenuOpen}
-						onOpenChange={setModelMenuOpen}
-						providers={usable}
-						current={provider}
-						label={providerLabel}
-						onChoose={(id) => void chooseProvider(id)}
-					/>
-				)}
 
 				<IconButton
 					icon="note-pencil"
@@ -238,6 +241,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 						setPromptAttachments([]);
 					}}
 					onSwitchModel={() => setModelMenuOpen(true)}
+					model={model}
 				/>
 			) : (
 				<>
@@ -261,6 +265,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 						disabled={document.locked}
 						threadId={null}
 						providerId={provider?.id}
+						model={model}
 						ensureThread={ensureThread}
 						onSend={(text, attachments) => void start(text, attachments)}
 						onStop={() => undefined}
@@ -281,6 +286,7 @@ type ConversationLoaderProps = {
 	initialContext: MessageContext;
 	onPromptSent: () => void;
 	onSwitchModel: () => void;
+	model: ReactNode;
 };
 
 /** Reads the conversation fresh each time it opens: the chat takes its messages once, when it mounts. */
@@ -320,7 +326,7 @@ function ConversationLoader({ threadId, document, ...props }: ConversationLoader
 	);
 }
 
-type ModelMenuProps = {
+type ModelSelectProps = {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	providers: readonly UsableProvider[];
@@ -329,65 +335,57 @@ type ModelMenuProps = {
 	onChoose: (id: string) => void;
 };
 
-function ModelMenu({ open, onOpenChange, providers, current, label, onChoose }: ModelMenuProps) {
+/** The connection replies run on, picked in the composer's toolbar like the coach's. */
+function ModelSelect({ open, onOpenChange, providers, current, label, onChoose }: ModelSelectProps) {
 	const navigate = useNavigate();
 	// Rezumi AI is named by its cost per reply, while the account chooses.
 	const credits = useAiSource().choice ? creditCost("coach-turn") : null;
 
 	return (
-		<Dropdown isOpen={open} onOpenChange={onOpenChange}>
-			<Button
-				variant="ghost"
-				size="sm"
-				aria-label={t`Model: ${label}`}
-				className="h-7 max-w-[140px] gap-0.5 px-2 text-xs text-muted"
-			>
-				<span className="truncate">{current?.model ?? label}</span>
-				<Icon name="caret-down" size={16} />
-			</Button>
-			<Dropdown.Popover placement="bottom end" className="w-64">
-				<Dropdown.Menu>
-					<Dropdown.Section
-						selectionMode="single"
-						disallowEmptySelection
-						selectedKeys={new Set(current ? [current.id] : [])}
-						onSelectionChange={(keys) => {
-							const [id] = keys === "all" ? [] : keys;
-							if (typeof id === "string") onChoose(id);
-						}}
-					>
-						{providers.map((item) => (
-							<Dropdown.Item key={item.id} id={item.id} textValue={`${item.label} ${item.model}`}>
-								<span className="grid min-w-0 flex-1">
-									<Label className={cn("truncate", item.managed && credits !== null && REZUMI_AI_TEXT)}>
-										{item.label}
-									</Label>
-									<Description className="truncate">
-										{item.managed && credits !== null ? <Trans>{creditCount(credits)} per reply</Trans> : item.model}
-									</Description>
-								</span>
-								<Dropdown.ItemIndicator />
-							</Dropdown.Item>
-						))}
-					</Dropdown.Section>
-					<Separator />
-					<Dropdown.Item
-						id="connect"
-						textValue={t`Connect another…`}
-						onAction={() => void navigate({ to: "/dashboard/settings/app", hash: "ai-providers" })}
-					>
+		<Select
+			aria-label={t`Model: ${label}`}
+			placeholder={label}
+			isOpen={open}
+			onOpenChange={onOpenChange}
+			className="w-auto max-w-[160px]"
+			value={current?.id ?? null}
+			onChange={(key) => {
+				if (key === "connect") void navigate({ to: "/dashboard/settings/app", hash: "ai-providers" });
+				else if (typeof key === "string") onChoose(key);
+			}}
+		>
+			<Select.Trigger className="h-8 min-h-8 items-center rounded-full bg-surface ps-3 pe-8 text-sm shadow-none hover:bg-default">
+				<Select.Value className="leading-none" />
+				<Select.Indicator />
+			</Select.Trigger>
+			<Select.Popover className="w-64">
+				<ListBox>
+					{providers.map((item) => (
+						<ListBox.Item key={item.id} id={item.id} textValue={`${item.label} ${item.model}`}>
+							<span className="grid min-w-0 flex-1">
+								<Label className={cn("truncate", item.managed && credits !== null && REZUMI_AI_TEXT)}>
+									{item.label}
+								</Label>
+								<Description className="truncate">
+									{item.managed && credits !== null ? <Trans>{creditCount(credits)} per reply</Trans> : item.model}
+								</Description>
+							</span>
+							<ListBox.ItemIndicator />
+						</ListBox.Item>
+					))}
+					<ListBox.Item id="connect" textValue={t`Connect another…`}>
 						<Label>
 							<Trans>Connect another…</Trans>
 						</Label>
-					</Dropdown.Item>
-				</Dropdown.Menu>
-			</Dropdown.Popover>
-		</Dropdown>
+					</ListBox.Item>
+				</ListBox>
+			</Select.Popover>
+		</Select>
 	);
 }
 
 function Notice({ children }: { children: ReactNode }) {
-	return <p className="m-4 rounded-xl bg-default p-4 text-sm text-muted">{children}</p>;
+	return <p className="m-4 rounded-xl bg-default p-4 text-body-sm text-muted">{children}</p>;
 }
 
 type Suggestion = { icon: IconName; label: string; hint: string };
@@ -443,12 +441,12 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 	const prepare = useEditorStore((state) => state.assistantSuggestions === "prepare");
 
 	return (
-		<div className="grid min-h-0 flex-1 content-start gap-4 overflow-y-auto p-4">
+		<div className="grid min-h-0 flex-1 content-start justify-items-center gap-4 overflow-y-auto p-4 text-center">
 			<div className="grid gap-1.5">
-				<Typography type="h4" render={renderAsH3}>
+				<Typography type="h4" align="center" render={renderAsH3}>
 					<Trans>What should we work on?</Trans>
 				</Typography>
-				<p className="text-sm text-muted">
+				<p className="text-body-sm text-muted">
 					{document.posting ? (
 						<Trans>
 							I can see this {kind} and the {document.posting.company} posting. Suggestions come back as edits you can
@@ -459,29 +457,27 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 					)}
 				</p>
 				{document.locked && (
-					<p className="text-xs text-warning-soft-foreground">
+					<p className="text-body-xs text-warning-soft-foreground">
 						<Trans>This document is locked. Unlock it to get suggestions.</Trans>
 					</p>
 				)}
 			</div>
 			<PromptSuggestion>
-				<PromptSuggestion.Items className="grid-cols-1">
+				<PromptSuggestion.Items className="flex flex-wrap justify-center gap-2">
 					{suggestionsFor(document, prepare).map((suggestion, index) => (
 						<PromptSuggestion.Item
 							key={suggestion.label}
 							isDisabled={disabled}
 							showEndIcon={false}
 							style={stagger(index)}
-							className={ENTER_CLASS}
+							className={cn(
+								ENTER_CLASS,
+								"w-fit items-center justify-center border-transparent bg-default px-3 py-1.5 text-xs hover:bg-default-hover",
+							)}
 							onPress={() => onPick(suggestion.label)}
 						>
-							<Icon name={suggestion.icon} size={20} className="shrink-0 text-muted" />
-							<span className="grid min-w-0 flex-1">
-								<PromptSuggestion.ItemTitle className="truncate">{suggestion.label}</PromptSuggestion.ItemTitle>
-								<PromptSuggestion.ItemDescription className="truncate">
-									{suggestion.hint}
-								</PromptSuggestion.ItemDescription>
-							</span>
+							<Icon name={suggestion.icon} size={16} className="me-2 shrink-0 text-accent" />
+							{suggestion.label}
 						</PromptSuggestion.Item>
 					))}
 				</PromptSuggestion.Items>
@@ -561,7 +557,6 @@ function PastConversations({ threads, document, currentId, onOpen }: PastConvers
 							<IconButton
 								icon="x"
 								label={t`Delete ${thread.title}`}
-								size="sm"
 								className="text-muted"
 								onPress={() => void remove(thread)}
 							/>
@@ -585,7 +580,7 @@ function PastConversations({ threads, document, currentId, onOpen }: PastConvers
 						(thread) => `${formatVersionTime(new Date(thread.lastMessageAt), i18n.locale)} · ${outcome(thread)}`,
 					)
 				) : (
-					<p className="px-3 text-sm text-muted">
+					<p className="px-3 text-body-sm text-muted">
 						<Trans>No conversations about this document yet.</Trans>
 					</p>
 				)}

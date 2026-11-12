@@ -4,7 +4,7 @@ import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
 import type { KeyboardEvent, PointerEvent, ReactNode } from "react";
 import type { DropEvent } from "react-aria";
 import { DropZone, useDropZonePickerContext } from "@heroui-pro/react";
-import { Alert, Button, Description, FieldError, Input, Label, ProgressBar, TextField } from "@heroui/react";
+import { Alert, Button, FieldError, Input, Label, ProgressBar, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useEffect, useRef, useState } from "react";
@@ -14,6 +14,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { pictureFiles } from "./compress";
 import { discardUploadedImages, MAX_BATCH_PICTURES, uploadImageBatch } from "./upload";
+import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 
 /** A stored picture's address in the editor (the upload route serves `uploads/...` at the app's origin). */
 export function portfolioImageSrc(image: Pick<PortfolioImage, "key" | "thumbKey">, small = true): string {
@@ -24,7 +25,6 @@ const DROP_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image
 
 type ImageDropProps = {
 	label: ReactNode;
-	description?: ReactNode;
 	multiple?: boolean;
 	/** A short row instead of a tall area, for a field among others. */
 	compact?: boolean;
@@ -39,7 +39,6 @@ type ImageDropProps = {
  */
 export function ImageDrop({
 	label,
-	description,
 	multiple = false,
 	compact = false,
 	isDisabled = false,
@@ -77,7 +76,6 @@ export function ImageDrop({
 					</DropZone.Icon>
 					<div className={cn("grid gap-0.5", !compact && "justify-items-center text-center")}>
 						<DropZone.Label>{label}</DropZone.Label>
-						{description && <DropZone.Description>{description}</DropZone.Description>}
 					</div>
 					<PickerButton compact={compact} isDisabled={isDisabled}>
 						{trigger ?? (multiple ? <Trans>Choose pictures</Trans> : <Trans>Choose a picture</Trans>)}
@@ -211,7 +209,7 @@ export function useImageUploads() {
 type AltTextInputProps = {
 	value: string;
 	onChange: (value: string) => void;
-	/** What the page reads out when the field is left empty. */
+	/** What the page reads out when the field is left empty; shown as the placeholder. */
 	fallback?: string;
 	label?: string;
 };
@@ -235,12 +233,13 @@ export function AltTextInput({ value, onChange, fallback, label }: AltTextInputP
 			className="gap-1.5"
 		>
 			<Label>{label ?? t`Describe the picture`}</Label>
-			<Input variant="secondary" placeholder={t`What it shows, for people who can't see it`} />
-			<Description>
-				{fallback && empty
-					? t`Read aloud by screen readers. Until you write one, the page uses “${fallback}”.`
-					: t`Read aloud by screen readers and read by search engines.`}
-			</Description>
+			<WithInputIcon icon="image">
+				<Input
+					variant="secondary"
+					placeholder={fallback || t`What it shows, for people who can't see it`}
+					className={INPUT_WITH_ICON}
+				/>
+			</WithInputIcon>
 			<FieldError>{t`Describe the picture in a few words.`}</FieldError>
 		</TextField>
 	);
@@ -337,9 +336,6 @@ function FocusPicker({ image, focus, onChange }: FocusPickerProps) {
 					style={{ objectPosition: position }}
 				/>
 			</div>
-			<span className="text-xs text-muted">
-				<Trans>Tap the part to keep in view when a card crops the cover. Arrow keys move it too.</Trans>
-			</span>
 		</div>
 	);
 }
@@ -351,7 +347,6 @@ type ImageFieldProps = {
 	kind?: PortfolioImageKind;
 	/** The alternative text a new picture starts with (the work's title, the client's name…). */
 	altSuggestion: string;
-	description?: ReactNode;
 	/** Shows the focus point picker (covers). */
 	focus?: { value: Focus | undefined; onChange: (focus: Focus) => void };
 	/** Extra fields under the picture (a caption). */
@@ -368,7 +363,6 @@ export function ImageField({
 	onChange,
 	kind = "photo",
 	altSuggestion,
-	description,
 	focus,
 	children,
 }: ImageFieldProps) {
@@ -410,13 +404,7 @@ export function ImageField({
 					</div>
 				</div>
 			) : (
-				<ImageDrop
-					compact
-					label={label}
-					description={description}
-					isDisabled={uploads.busy}
-					onFiles={(files) => void choose(files)}
-				/>
+				<ImageDrop compact label={label} isDisabled={uploads.busy} onFiles={(files) => void choose(files)} />
 			)}
 			<UploadStatus progress={uploads.progress} errors={uploads.errors} />
 		</div>

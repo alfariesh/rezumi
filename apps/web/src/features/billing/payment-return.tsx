@@ -252,7 +252,7 @@ function ClosedResult({ payment, state }: Omit<ResultProps, "formatDate">) {
 				)
 			}
 		>
-			<p className="text-sm text-muted">
+			<p className="text-body-sm text-muted">
 				{refunded ? (
 					<Trans>
 						The money went back, and any credits it brought were taken back. Your documents stay as they are.
@@ -332,7 +332,7 @@ export function PaymentReturnPage({ paymentId }: PaymentReturnPageProps) {
 			<PageHeader back={<BackToPlanLink />} title={<Trans>Payment</Trans>} />
 			{notFound ? (
 				<ResultCard icon="question" tone="bg-default text-muted" title={<Trans>We couldn't find this payment</Trans>}>
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						{paymentId === null ? (
 							<Trans>This link doesn't say which payment it is. Your plan page lists every payment you started.</Trans>
 						) : (
@@ -352,7 +352,7 @@ export function PaymentReturnPage({ paymentId }: PaymentReturnPageProps) {
 					tone="bg-danger/15 text-danger"
 					title={<Trans>We couldn't check this payment</Trans>}
 				>
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>Check your connection and try again. If you paid, the payment isn't lost.</Trans>
 					</p>
 					<Button onPress={checkAgain}>

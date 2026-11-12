@@ -2,26 +2,14 @@ import type { DensityId, FontPairingId, MarginId } from "./presets";
 import type { Color } from "@heroui/react";
 import type { IconDesign, IconStyle, ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
-import { RadioButtonGroup, Segment } from "@heroui-pro/react";
-import {
-	Button,
-	Chip,
-	ColorArea,
-	ColorField,
-	ColorPicker,
-	ColorSlider,
-	ColorSwatch,
-	ColorSwatchPicker,
-	Label,
-	parseColor,
-	Slider,
-} from "@heroui/react";
+import { CellColorPicker, CellSlider, Segment } from "@heroui-pro/react";
+import { Button, Chip, ColorArea, ColorField, ColorSlider, ColorSwatchPicker, parseColor } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { createContext, useContext, useId, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { iconDesignOf } from "@rezumi/schema/resume/data";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { contrastOnWhite } from "@rezumi/utils/color";
 import { cn } from "@rezumi/utils/style";
 import {
@@ -39,7 +27,7 @@ import {
 	rgbaToHex,
 	TEXT_SIZE,
 } from "./presets";
-import { Combobox } from "@/components/ui/combobox";
+import { CellSelectField } from "@/components/input/select-field";
 import { hasPlanFeature, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { getLocaleOptions } from "@/features/locale/locale-options";
@@ -82,9 +70,8 @@ export function useDesign(): DesignSource {
 /** A segment option that shares the row and keeps the whole control inside a 300px panel. */
 export const SEGMENT_ITEM = "flex-1 px-2";
 
-// A selectable row: a quiet card that takes the accent when chosen. Siblings share the height.
-const OPTION_ROW =
-	"h-12 flex-row items-center gap-3 rounded-xl border-0 bg-surface-secondary px-4 py-0 data-selected:bg-accent-soft";
+/** The select's value for fonts that match none of the pairings. */
+const CUSTOM_FONTS = "custom";
 
 const familiesLabel = (heading: string, body: string) => (heading === body ? heading : `${heading} + ${body}`);
 
@@ -105,68 +92,68 @@ export function TypeGroup({ onCustomFonts }: TypeGroupProps) {
 
 	return (
 		<div className="grid gap-4">
-			<div className="grid gap-2">
-				<RadioButtonGroup
-					aria-label={t`Font pairing`}
-					value={pairing ?? null}
-					onChange={(value) => write("pairing", (draft) => applyFontPairing(draft, value as FontPairingId), true)}
-					className="flex-col gap-2"
-				>
-					{FONT_PAIRINGS.map((option) => (
-						<RadioButtonGroup.Item key={option.id} value={option.id} className={OPTION_ROW}>
-							<RadioButtonGroup.ItemContent className="flex-row items-baseline gap-3 pe-7">
-								<span className="text-sm font-medium">{option.label}</span>
+			<CellSelectField
+				label={t`Font`}
+				value={pairing ?? (onCustomFonts ? CUSTOM_FONTS : "")}
+				onChange={(value) => {
+					if (value === CUSTOM_FONTS) onCustomFonts?.();
+					else write("pairing", (draft) => applyFontPairing(draft, value as FontPairingId), true);
+				}}
+				options={[
+					...FONT_PAIRINGS.map((option) => ({
+						value: option.id,
+						textValue: option.label,
+						label: (
+							<span className="flex min-w-0 items-baseline gap-2">
+								<span>{option.label}</span>
 								<span className="truncate text-xs text-muted">{familiesLabel(option.heading, option.body)}</span>
-							</RadioButtonGroup.ItemContent>
-							<RadioButtonGroup.Indicator className="end-3 top-1/2 -translate-y-1/2">
-								<Icon name="check" />
-							</RadioButtonGroup.Indicator>
-						</RadioButtonGroup.Item>
-					))}
-				</RadioButtonGroup>
+							</span>
+						),
+					})),
+					// Any other font is set in Advanced; picking this brings it into view.
+					...(onCustomFonts
+						? [
+								{
+									value: CUSTOM_FONTS,
+									textValue: t`Custom`,
+									label: (
+										<span className="flex min-w-0 items-baseline gap-2">
+											<span>
+												<Trans>Custom</Trans>
+											</span>
+											{!pairing && (
+												<span className="truncate text-xs text-muted">
+													{familiesLabel(heading.fontFamily, body.fontFamily)}
+												</span>
+											)}
+										</span>
+									),
+								},
+							]
+						: []),
+				]}
+			/>
 
-				{onCustomFonts && (
-					<Button
-						variant="ghost"
-						fullWidth
-						onPress={onCustomFonts}
-						className="h-12 justify-start gap-3 rounded-xl border border-dashed border-border px-4 text-start font-normal"
-					>
-						<span className="text-sm font-medium">
-							<Trans>Custom</Trans>
-						</span>
-						<span className="truncate text-xs text-muted">
-							{pairing ? <Trans>Any font, in Advanced</Trans> : familiesLabel(heading.fontFamily, body.fontFamily)}
-						</span>
-						<Icon name="arrow-down" size={18} className="ms-auto text-muted" />
-					</Button>
-				)}
-			</div>
-
-			<div className="grid gap-1.5">
-				<Slider
-					minValue={TEXT_SIZE.min}
-					maxValue={TEXT_SIZE.max}
-					step={TEXT_SIZE.step}
-					value={Math.min(TEXT_SIZE.max, Math.max(TEXT_SIZE.min, size))}
-					onChange={(value) =>
-						write("size", (draft) => applyTextSize(draft, Array.isArray(value) ? (value[0] ?? size) : value))
-					}
-				>
-					<Label>
+			<CellSlider
+				aria-label={t`Text size`}
+				minValue={TEXT_SIZE.min}
+				maxValue={TEXT_SIZE.max}
+				step={TEXT_SIZE.step}
+				value={Math.min(TEXT_SIZE.max, Math.max(TEXT_SIZE.min, size))}
+				onChange={(value) =>
+					write("size", (draft) => applyTextSize(draft, Array.isArray(value) ? (value[0] ?? size) : value))
+				}
+			>
+				<CellSlider.Track>
+					<CellSlider.Fill />
+					<CellSlider.Thumb />
+					<CellSlider.Label>
 						<Trans>Text size</Trans>
-					</Label>
+					</CellSlider.Label>
 					{/* The stored size, not the clamped thumb: an exact size from Advanced can sit outside the range. */}
-					<Slider.Output className="text-muted">{size} pt</Slider.Output>
-					<Slider.Track>
-						<Slider.Fill />
-						<Slider.Thumb />
-					</Slider.Track>
-				</Slider>
-				<span className="text-xs text-muted">
-					<Trans>10–11 recommended</Trans>
-				</span>
-			</div>
+					<CellSlider.Output>{size} pt</CellSlider.Output>
+				</CellSlider.Track>
+			</CellSlider>
 
 			<div className="grid gap-2">
 				<span className="text-sm font-medium">
@@ -238,58 +225,51 @@ export function ColorGroup() {
 				))}
 			</ColorSwatchPicker>
 
-			<div className="flex items-center gap-3">
-				<ColorPicker
-					value={color}
-					onChange={(next) => {
-						setPicked(next);
-						setAccent(next, false);
-					}}
-				>
-					<ColorPicker.Trigger aria-label={t`Custom color`} className="shrink-0 rounded-full">
-						<ColorSwatch size="lg" />
-					</ColorPicker.Trigger>
-					<ColorPicker.Popover placement="bottom start" className="w-64">
-						<ColorArea
-							aria-label={t`Saturation and brightness`}
-							colorSpace="hsb"
-							xChannel="saturation"
-							yChannel="brightness"
-							className="w-full"
-						>
-							<ColorArea.Thumb />
-						</ColorArea>
-						<ColorSlider aria-label={t`Hue`} channel="hue" colorSpace="hsb">
-							<ColorSlider.Track>
-								<ColorSlider.Thumb />
-							</ColorSlider.Track>
-						</ColorSlider>
-					</ColorPicker.Popover>
-				</ColorPicker>
-
-				<ColorField
-					aria-label={t`Custom color (hex)`}
-					value={color}
-					onChange={(next) => {
-						if (!next) return;
-						setPicked(null);
-						setAccent(next);
-					}}
-					className="min-w-0 flex-1"
-				>
-					<ColorField.Group variant="secondary" fullWidth>
-						<ColorField.Input className="font-mono" />
-						<ColorField.Suffix
-							className={cn("pe-3 font-mono text-xs tabular-nums", tooLight ? "text-warning" : "text-muted")}
-						>
-							<span className="sr-only">
-								<Trans>Contrast on white:</Trans>
-							</span>
-							{ratio.toFixed(1)}:1
-						</ColorField.Suffix>
-					</ColorField.Group>
-				</ColorField>
-			</div>
+			<CellColorPicker
+				aria-label={t`Custom color`}
+				value={color}
+				onChange={(next) => {
+					setPicked(next);
+					setAccent(next, false);
+				}}
+			>
+				<CellColorPicker.Trigger>
+					<CellColorPicker.Label>
+						<Trans>Custom</Trans>
+					</CellColorPicker.Label>
+					<CellColorPicker.ValueDisplay />
+					<CellColorPicker.Swatch />
+				</CellColorPicker.Trigger>
+				<CellColorPicker.Popover>
+					<ColorArea
+						aria-label={t`Saturation and brightness`}
+						colorSpace="hsb"
+						xChannel="saturation"
+						yChannel="brightness"
+						className="w-full max-w-full"
+					>
+						<ColorArea.Thumb />
+					</ColorArea>
+					<ColorSlider aria-label={t`Hue`} channel="hue" colorSpace="hsb">
+						<ColorSlider.Track>
+							<ColorSlider.Thumb />
+						</ColorSlider.Track>
+					</ColorSlider>
+					<ColorField aria-label={t`Custom color (hex)`}>
+						<ColorField.Group variant="secondary" fullWidth>
+							<ColorField.Input className="font-mono" />
+							<ColorField.Suffix
+								className={cn("pe-3 font-mono text-xs tabular-nums", tooLight ? "text-warning" : "text-muted")}
+							>
+								<span className="sr-only">
+									<Trans>Contrast on white:</Trans>
+								</span>
+								{ratio.toFixed(1)}:1
+							</ColorField.Suffix>
+						</ColorField.Group>
+					</ColorField>
+				</CellColorPicker.Popover>
+			</CellColorPicker>
 
 			{tooLight && (
 				<div className="grid gap-2 rounded-xl bg-warning-soft p-3 text-sm text-warning-soft-foreground" role="status">
@@ -310,12 +290,6 @@ export function ColorGroup() {
 					</Button>
 				</div>
 			)}
-
-			<p className="text-xs text-muted">
-				<Trans>
-					Accent is used for headings, icons and the header band. Body text stays near-black for print and ATS.
-				</Trans>
-			</p>
 		</div>
 	);
 }
@@ -323,7 +297,6 @@ export function ColorGroup() {
 /** Page: paper, language (section titles and date words), margins, icons and link underlines. */
 export function PageGroup() {
 	const { metadata, write } = useDesign();
-	const languageId = useId();
 	if (!metadata) return null;
 
 	const { page } = metadata;
@@ -361,29 +334,21 @@ export function PageGroup() {
 				</Segment>
 			</div>
 
-			<div className="grid gap-2">
-				<label htmlFor={languageId} className="text-sm font-medium">
-					<Trans>Language</Trans>
-				</label>
-				<Combobox
-					variant="secondary"
-					id={languageId}
-					options={getLocaleOptions()}
-					value={page.locale}
-					onValueChange={(locale) =>
-						write(
-							"locale",
-							(draft) => {
-								draft.page.locale = (locale ?? "en-US") as string;
-							},
-							true,
-						)
-					}
-				/>
-				<span className="text-xs text-muted">
-					<Trans>Changes section titles and date words only, not your content.</Trans>
-				</span>
-			</div>
+			<CellSelectField
+				label={t`Language`}
+				// The flag and the language's name; the code in the list view would crowd a cell.
+				options={getLocaleOptions().map(({ value, icon, textValue }) => ({ value, icon, label: textValue }))}
+				value={page.locale}
+				onChange={(locale) =>
+					write(
+						"locale",
+						(draft) => {
+							draft.page.locale = locale || "en-US";
+						},
+						true,
+					)
+				}
+			/>
 
 			<div className="grid gap-2">
 				<span className="text-sm font-medium">
@@ -407,8 +372,8 @@ export function PageGroup() {
 				</Segment>
 			</div>
 
-			<div className="grid">
-				<SwitchRow
+			<div className="grid gap-2">
+				<CellSwitchRow
 					label={t`Underline links`}
 					isSelected={!page.hideLinkUnderline}
 					onChange={(checked) =>
@@ -446,34 +411,29 @@ export function IconsGroup() {
 			},
 			true,
 		);
-	const groups: { key: "contact" | "sections" | "items" | "logos"; label: string; description: string }[] = [
+	const groups: { key: "contact" | "sections" | "items" | "logos"; label: string }[] = [
 		{
 			key: "contact",
 			label: t`Contact line`,
-			description: t`Before your email, phone, location, website and custom fields.`,
 		},
 		{
 			key: "sections",
 			label: t`Section titles`,
-			description: t`Before titles such as Education, Skills and Certifications.`,
 		},
 		{
 			key: "items",
 			label: t`Skills, interests and profiles`,
-			description: t`The icons you pick, and network logos such as LinkedIn and GitHub.`,
 		},
 		{
 			key: "logos",
 			label: t`Tool logos in skills`,
-			description: t`Logos beside the tools a skill names, such as React, Python or Figma. The words always print.`,
 		},
 	];
 
 	return (
 		<div className="grid gap-4">
-			<SwitchRow
+			<CellSwitchRow
 				label={t`Show icons`}
-				description={t`Turn off for a text-only resume.`}
 				isSelected={icons.enabled}
 				onChange={(enabled) => set("enabled", { enabled })}
 			/>
@@ -501,11 +461,11 @@ export function IconsGroup() {
 				</Segment>
 			</div>
 
-			<div className="grid">
-				{groups.map(({ key, label, description }) => {
+			<div className="grid gap-2">
+				{groups.map(({ key, label }) => {
 					const locked = key === "logos" && logosLocked;
 					return (
-						<SwitchRow
+						<CellSwitchRow
 							key={key}
 							label={
 								locked ? (
@@ -521,7 +481,6 @@ export function IconsGroup() {
 									label
 								)
 							}
-							description={description}
 							isSelected={icons[key]}
 							isDisabled={!icons.enabled}
 							onChange={(checked) =>

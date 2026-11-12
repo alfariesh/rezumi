@@ -536,7 +536,7 @@ function StylesheetEditorShell({ readOnly = false }: StylesheetEditorShellProps)
 					</ul>
 				</div>
 			)}
-			<p className="text-xs text-muted">
+			<p className="text-body-xs text-muted">
 				<Trans>
 					PDF styles support a subset of CSS. Rotation, dashed and dotted borders, and some layout properties are
 					ignored.

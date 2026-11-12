@@ -11,7 +11,7 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
-import { effectDescription, effectLabel } from "../themes";
+import { effectLabel } from "../themes";
 import { EffectDemo } from "./effect-demo";
 import { ChoiceSelect, TextInput } from "./fields";
 import { editPortfolio, usePortfolioData } from "./store";
@@ -99,7 +99,6 @@ export function IntroEffectPicker() {
 						key={effect}
 						value={effect}
 						aria-labelledby={`${id}-${effect}-name${plan?.enabled && !isFreePortfolioHeroEffect(effect) ? ` ${id}-${effect}-plan` : ""}`}
-						aria-describedby={`${id}-${effect}-description`}
 						onFocus={() => playDemo(effect)}
 						className="w-full"
 					>
@@ -107,7 +106,7 @@ export function IntroEffectPicker() {
 							onHoverStart={() => playDemo(effect)}
 							className={({ isSelected, isFocusVisible }) =>
 								cn(
-									"grid w-full gap-2 rounded-2xl border p-3 text-start",
+									"grid w-full gap-2 rounded-xl border p-3 text-start",
 									isSelected ? "border-accent bg-accent-soft" : "border-separator hover:bg-default",
 									isFocusVisible && "ring-2 ring-focus",
 								)
@@ -138,9 +137,6 @@ export function IntroEffectPicker() {
 									play={plays[effect] ?? 0}
 								/>
 							</span>
-							<span id={`${id}-${effect}-description`} className="text-xs text-muted">
-								{effectDescription(effect)}
-							</span>
 						</Radio.Content>
 					</Radio>
 				))}
@@ -164,16 +160,11 @@ export function IntroEffectPicker() {
 
 			{current === "typewriter" && (
 				<div className="grid gap-2">
-					<p className="text-xs text-muted">
-						<Trans>
-							Your headline types first and is where it stops. Add up to two more roles it switches to, in about five
-							seconds.
-						</Trans>
-					</p>
 					{Array.from({ length: PORTFOLIO_LIMITS.typewriterPhrases }, (_, index) => (
 						<TextInput
 							key={index}
 							label={roleLabel(index)}
+							icon="text-t"
 							value={roles[index] ?? ""}
 							maxLength={PORTFOLIO_LIMITS.text.phrase}
 							placeholder={index === 0 ? t`e.g. UX researcher` : t`e.g. Mentor`}
@@ -191,19 +182,12 @@ export function IntroEffectPicker() {
 						/>
 					))}
 					{typed.length === 0 && (
-						<p className="text-xs text-warning">
+						<p className="text-body-xs text-warning">
 							<Trans>Add a headline or a role so there is something to type.</Trans>
 						</p>
 					)}
 				</div>
 			)}
-
-			<p className="text-xs text-muted">
-				<Trans>
-					Effects stop by themselves within five seconds and stay still for visitors who ask their device for less
-					motion.
-				</Trans>
-			</p>
 		</div>
 	);
 }

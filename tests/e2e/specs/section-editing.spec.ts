@@ -25,15 +25,17 @@ test("adds an experience item and persists it across reloads", async ({ authPage
 	await entry.getByRole("textbox", { name: "Company" }).fill(company);
 	await savePromise;
 
-	// With a company it's no longer a draft, and its card reads "company · …"
+	// With a company it's no longer a draft, and its card is titled by the position.
 	await expect(entry.getByText("Draft", { exact: true })).toHaveCount(0);
-	await expect(page.getByText(company).filter({ visible: true }).first()).toBeVisible();
+	await expect(entry.getByRole("button", { name: new RegExp(`^${position}, entry`) })).toBeVisible();
 
-	// And it survives a full reload
+	// And it survives a full reload: the card shows the position, and opening it shows the company.
 	await page.reload();
 	await openSidebarSection(page, "Experience");
-	await expect(page.getByText(company).filter({ visible: true }).first()).toBeVisible();
-	await expect(page.getByText(position).filter({ visible: true }).first()).toBeVisible();
+	const saved = page.locator("#sidebar-experience [data-entry-id]").last();
+	await expect(saved.getByRole("button", { name: new RegExp(`^${position}, entry`) })).toBeVisible();
+	await saved.getByRole("button", { name: new RegExp(`^${position}, entry`) }).click();
+	await expect(saved.getByRole("textbox", { name: "Company" })).toHaveValue(company);
 });
 
 test("keeps formatting controls accessible when tabbing from the editor", async ({ authPage: page }, testInfo) => {

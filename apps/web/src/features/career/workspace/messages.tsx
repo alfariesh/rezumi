@@ -88,7 +88,6 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 				placeholder={t`Paste the email or message, without the signature.`}
 				onChange={(event) => setMessage(event.target.value)}
 				onBlur={flush}
-				className="min-h-[92px]"
 			/>
 			{!readOnly && (
 				<div className="grid justify-items-start gap-2.5">
@@ -133,13 +132,13 @@ function ReplyCard({ reply, readOnly }: ReplyCardProps) {
 			{(reply.data.asks.length > 0 || reply.data.unconfirmed.length > 0) && (
 				<ul className="grid gap-2">
 					{reply.data.asks.map((ask) => (
-						<li key={ask} className="flex gap-2 text-sm leading-5">
+						<li key={ask} className="flex gap-2 text-sm">
 							<Icon name="check" size={17} className="mt-0.5 shrink-0 text-success" />
 							{ask}
 						</li>
 					))}
 					{reply.data.unconfirmed.map((open) => (
-						<li key={open} className="flex gap-2 text-sm leading-5">
+						<li key={open} className="flex gap-2 text-sm">
 							<Icon name="question" size={17} className="mt-0.5 shrink-0 text-warning" />
 							{open}
 						</li>
@@ -160,7 +159,6 @@ function ReplyCard({ reply, readOnly }: ReplyCardProps) {
 							readOnly={readOnly}
 							maxLength={4000}
 							onChange={(event) => draft.setValue(event.target.value)}
-							className="min-h-[110px]"
 						/>
 					</div>
 					<div className="flex flex-wrap items-center gap-x-3 gap-y-2">
@@ -168,7 +166,7 @@ function ReplyCard({ reply, readOnly }: ReplyCardProps) {
 							<Icon name="copy" size={16} />
 							<Trans>Copy reply</Trans>
 						</Button>
-						<span className="text-xs text-muted">
+						<span className="text-body-xs text-muted">
 							<Trans>You send it from your own email.</Trans>
 						</span>
 					</div>
@@ -316,7 +314,7 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 									<Checkbox.Control className="mt-px">
 										<Checkbox.Indicator />
 									</Checkbox.Control>
-									<span className="grid gap-0.5 text-sm leading-5">
+									<span className="grid gap-0.5 text-sm">
 										<span className="font-semibold">{title}</span>
 										<span className="text-muted">{detail}</span>
 									</span>
@@ -329,7 +327,7 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 
 			{/* Only a message about scheduling can tempt adding an interview from an unconfirmed time. */}
 			{reply.data.unconfirmed.length > 0 && !reply.data.changes.some((change) => change.type === "offer") && (
-				<p className="text-xs text-muted">
+				<p className="text-body-xs text-muted">
 					{contact
 						? t`Confirm the time with ${contact} before adding a new interview.`
 						: t`Confirm the time before adding a new interview.`}

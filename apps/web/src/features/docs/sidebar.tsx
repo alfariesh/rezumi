@@ -60,7 +60,7 @@ export function DocsSidebar({ slug, placement, onNavigate }: DocsSidebarProps) {
 												aria-current={current ? "page" : undefined}
 												onClick={onNavigate}
 												className={cn(
-													"block rounded-lg px-3 py-1.5 text-sm leading-5 text-muted hover:bg-default hover:text-foreground",
+													"block rounded-lg px-3 py-1.5 text-sm text-muted hover:bg-default hover:text-foreground",
 													current && "bg-default font-medium text-foreground",
 												)}
 											>
@@ -74,7 +74,7 @@ export function DocsSidebar({ slug, placement, onNavigate }: DocsSidebarProps) {
 					);
 				})}
 				{filtering && matches.size === 0 && (
-					<p role="status" className="px-3 text-sm text-pretty text-muted">
+					<p role="status" className="px-3 text-body-sm text-pretty text-muted">
 						{t`No pages match “${term}”.`}
 					</p>
 				)}

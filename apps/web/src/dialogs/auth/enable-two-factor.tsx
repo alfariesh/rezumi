@@ -173,7 +173,7 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 					<Modal.Heading>
 						<TwoFactorDialogTitle step={step} />
 					</Modal.Heading>
-					<p id={descriptionId} className="text-sm text-muted">
+					<p id={descriptionId} className="text-body-sm text-muted">
 						<TwoFactorDialogDescription step={step} />
 					</p>
 				</Modal.Header>

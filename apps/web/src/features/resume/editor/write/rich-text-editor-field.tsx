@@ -227,7 +227,9 @@ export function RichTextEditor({
 				role: "textbox",
 				spellcheck: "true",
 				class: cn(
-					"typeset typeset-field overflow-y-auto px-3 py-2 text-sm outline-none",
+					// `text-sm` fixes the size on phones too; its own 20px line height would override the preset's, so the preset's is
+					// put back.
+					"typeset typeset-field overflow-y-auto px-3 py-2 text-sm leading-(--typeset-leading) outline-none",
 					heightClassName,
 					"[&_[data-resume-whitespace=preserve]]:whitespace-pre-wrap",
 				),
@@ -284,6 +286,8 @@ export function RichTextEditor({
 
 	const size = mobile ? "lg" : "sm";
 	const side = mobile ? "top" : "bottom";
+	// Smaller icons in the compact desktop toolbar; phones keep touch-sized ones.
+	const iconSize = mobile ? 20 : 16;
 	const toggleGroup = (label: string, from: number, to: number) => {
 		const group = actions.slice(from, to);
 		const selected = new Set(group.filter((_, index) => state?.active[from + index]).map((action) => action.icon));
@@ -311,7 +315,7 @@ export function RichTextEditor({
 							preventFocusOnPress
 							className={toolbarToggleClassName}
 						>
-							<Icon name={action.icon} />
+							<Icon name={action.icon} size={iconSize} />
 						</ToggleButton>
 						<Tooltip.Content placement={side}>{action.label}</Tooltip.Content>
 					</Tooltip>
@@ -328,6 +332,7 @@ export function RichTextEditor({
 			{editor && (
 				<FormattingMenus
 					editor={editor}
+					iconSize={iconSize}
 					formatting={state?.formatting ?? DEFAULT_FORMATTING}
 					size={size}
 					side={side}
@@ -367,11 +372,11 @@ export function RichTextEditor({
 				const inMenu = next instanceof Element && next.closest("[data-toolbar-menu]") !== null;
 				if (!event.currentTarget.contains(next) && !toolbar.current?.contains(next) && !inMenu) setFocused(false);
 			}}
-			// The frame of a secondary HeroUI field: its fill, radius and focus ring, around text, toolbar and footer.
+			// The frame of a primary HeroUI field: its fill, radius and focus ring, around text, toolbar and footer.
 			className={cn(
-				"rounded-field bg-background text-field-foreground transition-[background-color,box-shadow] duration-quick",
-				!editing && !disabled && "hover:bg-default",
-				editing && "ring-2 ring-focus",
+				"rounded-field bg-field text-field-foreground shadow-field transition-[background-color,box-shadow] duration-quick",
+				!editing && !disabled && "hover:bg-field-hover",
+				editing && "ring-2 ring-focus ring-inset",
 				disabled && "opacity-(--disabled-opacity)",
 				className,
 			)}
@@ -406,7 +411,7 @@ export function RichTextEditor({
 				)}
 
 			{readOnlyTable && (
-				<p role="status" className="border-b border-separator px-3 py-2 text-xs text-muted">
+				<p role="status" className="border-b border-separator px-3 py-2 text-body-xs text-muted">
 					<Trans>
 						Original table formatting is preserved. This content is read-only because it cannot be edited safely.
 					</Trans>
@@ -421,7 +426,7 @@ export function RichTextEditor({
 				<Toolbar
 					ref={toolbar}
 					aria-label={t`Formatting`}
-					className="@container flex w-full flex-wrap items-center gap-1 border-t border-separator px-1.5 py-1"
+					className="@container flex w-full flex-wrap items-center gap-1 px-1.5 py-1"
 				>
 					{toolbarButtons}
 				</Toolbar>
@@ -438,7 +443,7 @@ export function RichTextEditor({
 			)}
 
 			{editing && (
-				<div className="flex items-center justify-between gap-3 border-t border-separator px-3 py-1.5 text-xs text-muted">
+				<div className="flex items-center justify-between gap-3 px-3 py-1.5 text-xs text-muted">
 					<span>{hint ?? <Trans>Markdown shortcuts on</Trans>}</span>
 					<span className="font-mono tabular-nums">
 						<Plural value={state?.characters ?? 0} one="# character" other="# characters" />
@@ -459,12 +464,13 @@ type FormattingMenusProps = {
 	editor: Editor;
 	formatting: FormattingState;
 	size: "sm" | "lg";
+	iconSize: number;
 	side: "top" | "bottom";
 	menus: ReturnType<typeof useToolbarMenus>;
 };
 
 /** Alignment, then everything else the toolbar has no room for. */
-function FormattingMenus({ editor, formatting, size, side, menus }: FormattingMenusProps) {
+function FormattingMenus({ editor, formatting, size, iconSize, side, menus }: FormattingMenusProps) {
 	const chain = () => editor.chain().focus();
 	const alignLabels: Record<Alignment, string> = {
 		left: t`Align left`,
@@ -508,6 +514,7 @@ function FormattingMenus({ editor, formatting, size, side, menus }: FormattingMe
 					icon={ALIGNMENT_ICONS[formatting.align]}
 					label={t`Text alignment`}
 					size={size}
+					iconSize={iconSize}
 					tooltipPlacement={side}
 					data-toolbar-trigger=""
 					className={cn(
@@ -546,6 +553,7 @@ function FormattingMenus({ editor, formatting, size, side, menus }: FormattingMe
 					icon="dots-three"
 					label={t`More formatting`}
 					size={size}
+					iconSize={iconSize}
 					tooltipPlacement={side}
 					data-toolbar-trigger=""
 					className={toolbarButtonClassName}

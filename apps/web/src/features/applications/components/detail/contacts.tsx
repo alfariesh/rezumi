@@ -187,7 +187,7 @@ function ContactsWidget({ contacts, disabled, onChange }: ContactsProps) {
 									</Button>
 								))}
 							</div>
-							{error && <p className="text-xs text-danger-soft-foreground">{error}</p>}
+							{error && <p className="text-body-xs text-danger-soft-foreground">{error}</p>}
 							<div className="flex justify-end gap-1.5">
 								<Button
 									size="sm"

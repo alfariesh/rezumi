@@ -55,7 +55,7 @@ export function PortfolioReportsPage({ status }: PortfolioReportsPageProps) {
 					<Typography type="h2" render={renderAsH1}>
 						<Trans>Portfolio reports</Trans>
 					</Typography>
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>{open} open. The portfolio's owner never sees who sent a report.</Trans>
 					</p>
 				</div>
@@ -105,11 +105,11 @@ export function PortfolioReportsPage({ status }: PortfolioReportsPageProps) {
 				{reports.isPending ? (
 					<Spinner size="sm" />
 				) : reports.isError ? (
-					<p className="text-sm text-danger" role="alert">
+					<p className="text-body-sm text-danger" role="alert">
 						{portfolioErrorMessage(reports.error, { fallback: t`Couldn't load the reports. Try again.` })}
 					</p>
 				) : items.length === 0 ? (
-					<p className="text-sm text-muted">
+					<p className="text-body-sm text-muted">
 						<Trans>No reports here.</Trans>
 					</p>
 				) : (

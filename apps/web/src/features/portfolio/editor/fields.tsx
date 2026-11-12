@@ -2,28 +2,21 @@ import type { SlashItem } from "./rich-text-editor";
 import type { PortfolioAiField } from "@rezumi/schema/portfolio/ai";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Widget } from "@heroui-pro/react";
-import {
-	Description,
-	FieldError,
-	Input,
-	Label,
-	ListBox,
-	Radio,
-	Select,
-	Skeleton,
-	TextArea,
-	TextField,
-} from "@heroui/react";
+import { FieldError, Input, Label, Skeleton, TextArea, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { lazy, Suspense, useId, useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { isAllowedPortfolioUrl, PORTFOLIO_WEB_PROTOCOLS } from "@rezumi/schema/portfolio/links";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { cn } from "@rezumi/utils/style";
 import { AiRewriteMenu } from "../ai/rewrite-menu";
 import { useDraftText } from "../metrics/use-draft-text";
 import { usePortfolioEditorStore } from "./store";
-import { WidgetHeading } from "@/components/layout/widget-heading";
+import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
+import { CellSelectField } from "@/components/input/select-field";
+import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
+import { GroupSection, useInGroupPanel } from "@/features/resume/editor/chrome/group-nav";
+import { PanelSection } from "@/features/resume/editor/chrome/panel-section";
 
 const LazyRichTextEditor = lazy(() => import("./rich-text-editor"));
 
@@ -33,21 +26,29 @@ export function preloadPortfolioRichTextEditor() {
 }
 
 type PanelGroupProps = {
+	/** The group's anchor in a group panel (Design), which its chip jumps to. */
+	id?: string;
 	icon: IconName;
 	title: ReactNode;
-	/** Sits at the end of the header: a switch or a short note. */
-	action?: ReactNode;
 	children: ReactNode;
 };
 
-/** One group of the editor's panel: a labelled region with an icon and title, its fields on a card. */
-export function PanelGroup({ icon, title, action, children }: PanelGroupProps) {
-	const titleId = useId();
+/**
+ * One group of the editor's panel: an icon and title with its fields right under them on the panel, like the resume
+ * editor's sections. Inside a group panel (Design) it is a section of the panel card instead.
+ */
+export function PanelGroup({ id, icon, title, children }: PanelGroupProps) {
+	const inGroupPanel = useInGroupPanel();
+	if (inGroupPanel && id)
+		return (
+			<GroupSection id={id} icon={icon} title={title}>
+				{children}
+			</GroupSection>
+		);
 	return (
-		<Widget role="region" aria-labelledby={titleId}>
-			<WidgetHeading id={titleId} icon={icon} title={title} action={action} />
-			<Widget.Content className="@container grid gap-4">{children}</Widget.Content>
-		</Widget>
+		<PanelSection icon={icon} title={title} contentClassName="gap-4">
+			{children}
+		</PanelSection>
 	);
 }
 
@@ -57,8 +58,9 @@ type TextInputProps = {
 	onChange: (value: string) => void;
 	maxLength: number;
 	placeholder?: string | undefined;
-	description?: ReactNode;
-	/** What's wrong with the value, shown under the field (which is marked invalid) instead of the description. */
+	/** Drawn at the start of a one-line field; text areas have none. */
+	icon?: IconName | undefined;
+	/** What's wrong with the value, shown under the field, which is marked invalid. */
 	errorMessage?: string | undefined;
 	multiline?: boolean;
 	isDisabled?: boolean;
@@ -76,7 +78,7 @@ export function TextInput({
 	onChange,
 	maxLength,
 	placeholder,
-	description,
+	icon,
 	errorMessage,
 	multiline = false,
 	isDisabled = false,
@@ -106,11 +108,17 @@ export function TextInput({
 				<Label>{label}</Label>
 			)}
 			{multiline ? (
-				<TextArea variant="secondary" className="min-h-20" {...(placeholder ? { placeholder } : {})} />
+				<TextArea variant="secondary" {...(placeholder ? { placeholder } : {})} />
 			) : (
-				<Input variant="secondary" {...(placeholder ? { placeholder } : {})} {...(inputMode ? { inputMode } : {})} />
+				<WithInputIcon icon={icon}>
+					<Input
+						variant="secondary"
+						className={cn(icon && INPUT_WITH_ICON)}
+						{...(placeholder ? { placeholder } : {})}
+						{...(inputMode ? { inputMode } : {})}
+					/>
+				</WithInputIcon>
 			)}
-			{description && !errorMessage && <Description>{description}</Description>}
 			<FieldError>{errorMessage}</FieldError>
 		</TextField>
 	);
@@ -126,7 +134,8 @@ type UrlInputProps = {
 	/** Web pages only (no mailto:). */
 	webOnly?: boolean;
 	placeholder?: string | undefined;
-	description?: ReactNode;
+	/** Drawn at the start of the field; a link icon by default. */
+	icon?: IconName;
 	/** Called when the field loses focus, once typing in it is over. */
 	onBlur?: () => void;
 };
@@ -150,7 +159,7 @@ export function UrlInput({
 	onValidChange,
 	webOnly = false,
 	placeholder,
-	description,
+	icon = "link-simple-horizontal",
 	onBlur,
 }: UrlInputProps) {
 	// Undo, redo or a reload put another address in the data: the field shows that one.
@@ -183,8 +192,9 @@ export function UrlInput({
 			className="gap-1.5"
 		>
 			<Label>{label}</Label>
-			<Input variant="secondary" dir="ltr" placeholder={placeholder ?? "https://"} />
-			{description && <Description>{description}</Description>}
+			<WithInputIcon icon={icon}>
+				<Input variant="secondary" dir="ltr" placeholder={placeholder ?? "https://"} className={INPUT_WITH_ICON} />
+			</WithInputIcon>
 			<FieldError>
 				{webOnly
 					? t`Enter a full web address, such as https://example.com.`
@@ -200,7 +210,6 @@ type RichTextFieldProps = {
 	onChange: (html: string) => void;
 	maxLength: number;
 	placeholder?: string | undefined;
-	description?: ReactNode;
 	/** Typing "/" opens these (blocks to add after this one). */
 	slashItems?: readonly SlashItem[] | undefined;
 	/** The label is for screen readers only (the block around it already says what it is). */
@@ -216,7 +225,6 @@ export function RichTextField({
 	onChange,
 	maxLength,
 	placeholder,
-	description,
 	slashItems,
 	hideLabel = false,
 	rewrite,
@@ -257,7 +265,6 @@ export function RichTextField({
 					slashItems={slashItems}
 				/>
 			</Suspense>
-			{description && <p className="text-xs text-muted">{description}</p>}
 		</div>
 	);
 }
@@ -269,70 +276,76 @@ type ChoiceSelectProps<T extends string> = {
 	value: T;
 	options: readonly ChoiceOption<T>[];
 	onChange: (value: T) => void;
-	description?: ReactNode;
+	/** Something wrong with the choice, said under the cell (not a help text). */
+	warning?: ReactNode;
 };
 
-/** A labelled pick-one list. */
-export function ChoiceSelect<T extends string>({ label, value, options, onChange, description }: ChoiceSelectProps<T>) {
+/** A pick-one cell: its label at the start, the chosen option at the end. */
+export function ChoiceSelect<T extends string>({ label, value, options, onChange, warning }: ChoiceSelectProps<T>) {
 	return (
-		<Select
-			value={value}
-			onChange={(key) => {
-				if (typeof key === "string") onChange(key as T);
-			}}
-			className="grid w-full gap-1.5"
-		>
-			<Label>{label}</Label>
-			<Select.Trigger>
-				<Select.Value />
-				<Select.Indicator />
-			</Select.Trigger>
-			{description && <Description>{description}</Description>}
-			<Select.Popover>
-				<ListBox>
-					{options.map((option) => (
-						<ListBox.Item key={option.id} id={option.id} textValue={option.label}>
-							{option.label}
-							<ListBox.ItemIndicator />
-						</ListBox.Item>
-					))}
-				</ListBox>
-			</Select.Popover>
-		</Select>
+		<>
+			<CellSelectField
+				label={label}
+				value={value}
+				options={options.map((option) => ({ value: option.id, label: option.label }))}
+				onChange={(next) => onChange(next as T)}
+			/>
+			{warning && <p className="px-1 text-body-xs text-warning">{warning}</p>}
+		</>
 	);
 }
 
-type ItemToolbarProps = {
-	/** Names the item in the buttons' labels: "Move Branding up". */
-	name: string;
-	index: number;
-	count: number;
-	onMove: (to: number) => void;
-	onRemove: () => void;
-	/** Extra buttons before Move up. */
-	children?: ReactNode;
+type SortableListProps = {
+	/** The ids of the items in order, so a drop's target can be turned into a place in the list. */
+	ids: readonly string[];
+	/** Moves the item at `from` to `to`. */
+	onMove: (from: number, to: number) => void;
+	children: ReactNode;
 };
 
-/** Move up, move down and remove, for one item of a list (the keyboard and screen-reader way to reorder). */
-export function ItemToolbar({ name, index, count, onMove, onRemove, children }: ItemToolbarProps) {
+/** A list whose cards can be dragged into a new order (each card is a {@link SortableCard}). */
+export function SortableList({ ids, onMove, children }: SortableListProps) {
 	return (
-		<div className="flex items-center justify-end gap-0.5">
+		<SortableProvider
+			onMove={(id, target) => {
+				const from = ids.indexOf(id);
+				if (from !== -1) onMove(from, target.index);
+			}}
+		>
 			{children}
-			<IconButton
-				icon="arrow-up"
-				size="sm"
-				label={t`Move ${name} up`}
-				isDisabled={index === 0}
-				onPress={() => onMove(index - 1)}
-			/>
-			<IconButton
-				icon="arrow-down"
-				size="sm"
-				label={t`Move ${name} down`}
-				isDisabled={index === count - 1}
-				onPress={() => onMove(index + 1)}
-			/>
-			<IconButton icon="trash" size="sm" label={t`Remove ${name}`} className="text-danger" onPress={onRemove} />
+		</SortableProvider>
+	);
+}
+
+type SortableCardProps = {
+	/** The item's id in its {@link SortableList}'s `ids`. */
+	id: string;
+	/** Names the list, so items only drop within their own. */
+	list: string;
+	index: number;
+	/** Names the item in the buttons' labels: "Reorder Branding". */
+	name: string;
+	onRemove: () => void;
+	/** Marks the card for `useRemovalFocus`. */
+	itemProps?: Record<string, string>;
+	children: ReactNode;
+};
+
+/** One item of a list as a bordered card: its fields, then a row with the drag handle and Remove. */
+export function SortableCard({ id, list, index, name, onRemove, itemProps, children }: SortableCardProps) {
+	const sortable = useSortableItem({ id, list, index, label: name });
+	return (
+		<div
+			{...itemProps}
+			{...sortable.dropTargetProps}
+			className={cn("relative grid gap-3 rounded-xl border border-separator p-3", sortable.isDragging && "opacity-50")}
+		>
+			<SortableEdge edge={sortable.edge} />
+			{children}
+			<div className="flex items-center justify-between">
+				<SortableHandle item={sortable} label={t`Reorder ${name}`} className="size-8" />
+				<IconButton icon="trash" size="sm" label={t`Remove ${name}`} className="text-danger" onPress={onRemove} />
+			</div>
 		</div>
 	);
 }
@@ -342,20 +355,4 @@ export function moveItem<T>(items: T[], from: number, to: number): void {
 	if (to < 0 || to >= items.length || from === to) return;
 	const [item] = items.splice(from, 1);
 	if (item !== undefined) items.splice(to, 0, item);
-}
-
-type RadioOptionProps = { value: string; children: ReactNode };
-
-/** One choice of a `RadioGroup`: the dot, then its label. */
-export function RadioOption({ value, children }: RadioOptionProps) {
-	return (
-		<Radio value={value} className="flex min-h-9 items-center rounded-lg px-1 hover:bg-default">
-			<Radio.Content className="flex-1 text-sm">
-				<Radio.Control>
-					<Radio.Indicator />
-				</Radio.Control>
-				{children}
-			</Radio.Content>
-		</Radio>
-	);
 }

@@ -43,18 +43,19 @@ export async function openSidebarSection(page: Page, title: string) {
 	await expect(row).toHaveAttribute("aria-expanded", "true");
 }
 
-/** Opens Download & history on its Download tab, from the ▾ next to Download PDF. */
+/** Opens the Download sheet from the ▾ next to the floating Download PDF. */
 export async function openDownloadDialog(page: Page) {
 	await page.getByRole("button", { name: "More download formats", exact: true }).click();
-	const sheet = page.getByRole("dialog", { name: "Download & history" });
-	await expect(sheet.getByRole("tab", { name: "Download", exact: true })).toHaveAttribute("aria-selected", "true");
+	const sheet = page.getByRole("dialog", { name: "Download" });
+	await expect(sheet).toBeVisible();
 	return sheet;
 }
 
 /** Publishes the web page in Share mode and returns its address. */
 export async function makeResumePublic(page: Page) {
 	await openSidebarSection(page, "Sharing");
-	await page.getByRole("button", { name: "Publish", exact: true }).click();
+	// The switch's input is visually hidden inside its cell; people press the cell's label.
+	await page.locator("label").filter({ hasText: "Public link" }).click();
 	await expect(page.getByRole("switch", { name: "Public link" })).toBeChecked();
 	return getPublicUrl(page);
 }

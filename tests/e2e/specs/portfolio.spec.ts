@@ -46,7 +46,8 @@ test("creates a portfolio from a resume, publishes it, and a guest sees each cha
 	await expect(page.getByTitle("Saved", { exact: true })).toBeVisible();
 
 	await page.getByRole("tab", { name: "Publish" }).click();
-	await page.getByRole("region", { name: "Publish" }).getByRole("button", { name: "Publish" }).click();
+	// Publishing is the switch at the top of the panel; its input is visually hidden, so people press the row's label.
+	await page.getByRole("region", { name: "Publish" }).getByText("Published", { exact: true }).click();
 	const publish = page.getByRole("dialog");
 	await expect(publish.getByRole("switch", { name: "Show in search engines" })).toBeChecked();
 	await publish.getByRole("button", { name: "Publish" }).click();

@@ -44,6 +44,20 @@ const RULES: readonly Rule[] = [
 		hint: "fall back to var(--font-sans) or var(--font-mono)",
 	},
 	{
+		name: "hand-set paragraph leading",
+		// A paragraph's leading comes from `text-body-sm` / `text-body-xs`, not from a `leading-*` beside the size.
+		pattern:
+			/<p\b[^>]*className="(?=[^"]*(?<![\w:-])text-(?:xs|sm)(?![\w-]))(?=[^"]*(?<![\w-])leading-(?!none(?![\w-])))/,
+		hint: "use text-body-sm or text-body-xs (the paragraph leading) instead of text-sm/text-xs with leading-*",
+	},
+	{
+		name: "paragraph on the one-line scale",
+		// A plain paragraph (no weight, layout or truncation) can wrap; one-line text sits on `text-sm` / `text-xs` itself.
+		pattern:
+			/<p\b[^>]*className="(?=[^"]*(?<![\w:-])text-(?:xs|sm)(?![\w-]))(?![^"]*(?:font-|flex|grid|truncate|line-clamp|whitespace-nowrap|tabular-nums|sr-only|uppercase|items-|w-fit))/,
+		hint: "use text-body-sm or text-body-xs: paragraphs need more leading than a single line",
+	},
+	{
 		name: "hand-sized heading",
 		pattern: /<h[1-3]\b[^>]*className="[^"]*(?<![\w-])text-(?:xl|[2-6]xl)(?![\w-])/,
 		hint: 'use <Typography type="h2" render={renderAsH1}> (see libs/typography.tsx)',
@@ -66,15 +80,20 @@ describe("typography rules", () => {
 		expect(findViolations('<p className="font-martian font-[Inter]">')).toHaveLength(2);
 		expect(findViolations('style={{ fontFamily: `"${font}", sans-serif` }}')).toHaveLength(1);
 		expect(findViolations('<h2 className="text-xl font-semibold">')).toHaveLength(1);
+		expect(findViolations('<p className="text-sm leading-5 text-muted">')).toHaveLength(2);
+		expect(findViolations('<p className="text-xs text-muted">')).toHaveLength(1);
 	});
 
 	it("allows the scale, colors and tokens", () => {
 		for (const line of [
-			'<p className="text-sm font-medium text-muted leading-relaxed tracking-tight">',
+			'<span className="text-sm font-medium text-muted leading-relaxed tracking-tight">',
 			'<p className="text-[#555] text-[oklch(0.3_0.01_95)] text-[color:var(--x)]">',
 			'<p className="leading-(--cell) h-(--cell) font-sans font-mono">',
 			'style={{ fontFamily: `"${font}", var(--font-sans)` }}',
 			'<h2 className="text-sm font-semibold">',
+			'<p className="text-body-sm text-muted">',
+			'<p className="flex items-center gap-2 text-sm text-muted">',
+			'<p className="text-sm font-medium">',
 			'<Typography type="h2" render={renderAsH1}>',
 		])
 			expect(findViolations(line)).toEqual([]);
@@ -104,7 +123,10 @@ describe("apps/web/src", () => {
 		const violations = sourceFiles(SRC).flatMap((file) => {
 			const name = relative(SRC, file);
 			let rules = name.startsWith(MARKETING) ? MARKETING_RULES : RULES;
-			if (DOCUMENT_HEADINGS.has(name)) rules = rules.filter((rule) => rule.name !== "hand-sized heading");
+			if (DOCUMENT_HEADINGS.has(name))
+				rules = rules.filter(
+					(rule) => rule.name !== "hand-sized heading" && rule.name !== "paragraph on the one-line scale",
+				);
 			return findViolations(readFileSync(file, "utf8"), rules).map((violation) => `${name}: ${violation}`);
 		});
 

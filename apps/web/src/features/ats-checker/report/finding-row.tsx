@@ -26,8 +26,8 @@ export function FindingRow({ finding }: FindingRowProps) {
 				<span className={cn("mt-1.5 size-2 shrink-0 rounded-sm", severityDotClass(finding.severity))} aria-hidden />
 
 				<div className="min-w-0 flex-1 space-y-1">
-					<p className="text-sm leading-snug font-medium">{message.title}</p>
-					<p className="text-xs leading-normal text-muted">{message.action}</p>
+					<p className="text-sm font-medium">{message.title}</p>
+					<p className="text-body-xs text-muted">{message.action}</p>
 				</div>
 
 				<Chip size="sm" variant="soft" className="shrink-0">
