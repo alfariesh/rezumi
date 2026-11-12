@@ -21,7 +21,7 @@ describe("initializeResvg", () => {
 		initWasm.mockReset().mockRejectedValueOnce(new Error("no")).mockResolvedValue(undefined);
 		const { configureResvgWasm, initializeResvg } = await import("./resvg");
 		const module = {} as WebAssembly.Module;
-		configureResvgWasm(module);
+		configureResvgWasm(() => Promise.resolve(module));
 		await expect(initializeResvg()).rejects.toThrow("no");
 		await initializeResvg();
 		expect(initWasm.mock.calls).toEqual([[module], [module]]);
