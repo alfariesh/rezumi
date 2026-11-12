@@ -418,6 +418,40 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			expect(row?.date).toBe("2026-11-10");
 			expect(row?.sources).toEqual({ linkedin: 1 });
 		});
+
+		it("count a prerendered page's view beacon as its visit, once with the server's own count", async () => {
+			const id = await addPortfolio("member");
+			const portfolio = { id, userId: "member", timezone: "UTC" };
+			const target = { ...portfolio, hasWork: false };
+			const beacon = (trustedClient: string, referer = "https://rezumi.example/member?utm_source=linkedin") => {
+				const requestHeaders = visitor();
+				requestHeaders.set("referer", referer);
+				return publicPortfolio.recordPortfolioEvent({ target, kind: "view", requestHeaders, trustedClient });
+			};
+			// A normal load: the server counts it, and a beacon from the same visitor adds nothing.
+			await publicPortfolio.recordPortfolioVisit({
+				portfolio,
+				requestHeaders: visitor(),
+				requestUrl: "https://rezumi.example/member",
+				trustedClient: "10.2.0.1",
+			});
+			await beacon("10.2.0.1");
+			expect(await views(id)).toBe(1);
+			// A prerendered page the server skipped: only its beacon counts it, with the source in the page's address.
+			await beacon("10.2.0.2");
+			await beacon("10.2.0.2");
+			expect(await views(id)).toBe(2);
+			const [row] = await getDb()
+				.select()
+				.from(tables.portfolioStatisticsDaily)
+				.where(eq(tables.portfolioStatisticsDaily.portfolioId, id));
+			expect(row?.sources).toEqual({ direct: 1, linkedin: 1 });
+			// Never the owner, and nothing without the page's address.
+			await beacon("10.2.0.3", "not an address");
+			fixture.viewer = { id: "member" };
+			await beacon("10.2.0.4");
+			expect(await views(id)).toBe(2);
+		});
 	});
 
 	describe("beacons", () => {

@@ -49,6 +49,7 @@ vi.mock("@rezumi/env/server", () => ({
 	},
 }));
 vi.mock("@formepdf/core/pkg-web/forme_bg.wasm", () => ({ default: new Uint8Array() }));
+vi.mock("@resvg/resvg-wasm/index_bg.wasm", () => ({ default: new Uint8Array() }));
 vi.mock("@formepdf/core/worker", () => ({ init: mocks.wasm }));
 vi.mock("@rezumi/auth/config", () => ({ initializeAuth: mocks.auth }));
 vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: mocks.run }));

@@ -501,7 +501,7 @@ describe.skipIf(!databaseUrl)("portfolio contact form", () => {
 			fixture.detailed = false;
 			expect((await read(id, "i2")).details).toEqual({ state: "locked" });
 			fixture.detailed = true;
-			expect((await read(id, "i2")).details).toEqual({ state: "unavailable" });
+			expect((await read(id, "i2")).details).toEqual({ state: "not-configured" });
 		});
 	});
 });

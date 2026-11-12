@@ -96,13 +96,9 @@ describe("remoteUrl", () => {
 });
 
 describe("fetchRemote's answer about odd statuses", () => {
-	it("reads a status a Response can't hold as a site turning bots away, on Node and on Workers alike", async () => {
+	it("reads a status a Response can't hold as a site turning bots away", async () => {
 		const failing = (error: Error) => () => Promise.reject(error);
-		for (const error of [
-			new TypeError("Invalid response status code 999"),
-			new Error("Invalid response status code 999"),
-			new RangeError("Responses may only be constructed with status codes in the range 200 to 599, inclusive."),
-		])
+		for (const error of [new TypeError("Invalid response status code 999"), new Error("Invalid response status 999")])
 			await expect(
 				fetchRemote(new URL("https://site.example.test/"), {
 					signal: AbortSignal.timeout(5000),

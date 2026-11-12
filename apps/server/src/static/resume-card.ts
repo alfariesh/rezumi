@@ -1,18 +1,11 @@
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
-import { initWasm, Resvg } from "@resvg/resvg-wasm";
+import { Resvg } from "@resvg/resvg-wasm";
 import { getPublicResumeCardData } from "@rezumi/api/features/resume/social-meta";
 import { env } from "@rezumi/env/server";
 import { CARD_WIDTH, resumeCardSvg } from "@rezumi/pdf/web-page-card";
 import { publicResumePath } from "@rezumi/resume/sharing";
 import { matchesIfNoneMatch } from "@rezumi/utils/http";
-
-let ready: Promise<void> | undefined;
-const initialize = () =>
-	(ready ??= readFile(fileURLToPath(import.meta.resolve("@resvg/resvg-wasm/index_bg.wasm"))).then((bytes) =>
-		initWasm(bytes),
-	));
+import { initializeResvg } from "./resvg";
 
 // Recent cards by what they draw; crawlers fetch a card once per share, so a small cache covers bursts.
 // ponytail: keyed on the picture's address; a new picture at the same address shows once the cache is cleared.
@@ -64,7 +57,7 @@ export async function handleResumeCard(request: Request, username: string, slug:
 				bodyFamily: assets.bodyFamily,
 				picture: assets.picture,
 			});
-			await initialize();
+			await initializeResvg();
 			const resvg = new Resvg(svg, {
 				fitTo: { mode: "width", value: CARD_WIDTH },
 				font: { fontBuffers: assets.fonts, defaultFontFamily: assets.bodyFamily, loadSystemFonts: false },

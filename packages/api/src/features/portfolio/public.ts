@@ -231,6 +231,28 @@ export async function recordPortfolioVisit(input: {
 	requestUrl: string;
 	trustedClient?: string | undefined;
 }): Promise<void> {
+	const url = new URL(input.requestUrl);
+	await countPortfolioVisit({
+		portfolio: input.portfolio,
+		requestHeaders: input.requestHeaders,
+		pageUrl: url,
+		referer: input.requestHeaders.get("referer"),
+		trustedClient: input.trustedClient,
+	});
+}
+
+/**
+ * The one way a visit is counted, for the page itself (`recordPortfolioVisit`) and for a prerendered page's `view`
+ * beacon: the same limit, owner and crawler checks, and the same once-an-hour key, so a page counted by the server and
+ * by its beacon counts once. `referer` is where the visitor came from, when known.
+ */
+async function countPortfolioVisit(input: {
+	portfolio: Pick<PublicPortfolio, "id" | "userId" | "timezone">;
+	requestHeaders: Headers;
+	pageUrl: URL;
+	referer: string | null;
+	trustedClient?: string | undefined;
+}): Promise<void> {
 	if (isCrawler(input.requestHeaders)) return;
 	const address = `ip:${input.trustedClient?.trim() || "unknown"}`;
 	if (!env.FLAG_DISABLE_API_RATE_LIMIT && !(await visitLimiter.limit(`${input.portfolio.id}:${address}`)).success)
@@ -238,9 +260,9 @@ export async function recordPortfolioVisit(input: {
 	if (await isPortfolioOwner(input.portfolio, input.requestHeaders)) return;
 	const visitor = visitorKey(input.requestHeaders, input.trustedClient);
 	if (!(await isFirstVisitThisHour(`portfolio:${input.portfolio.id}:view:${visitor}`))) return;
-	const url = new URL(input.requestUrl);
+	const url = input.pageUrl;
 	const hosts = new Set([...ownHosts(), url.hostname]);
-	const referer = input.requestHeaders.get("referer");
+	const { referer } = input;
 	const source = visitSource({ referer, utmSource: url.searchParams.get("utm_source"), ownHosts: hosts });
 	await countVisit(input.portfolio.id, dayInTimeZone(new Date(), input.portfolio.timezone), source);
 	writePortfolioEvent({
@@ -285,8 +307,9 @@ export async function findPortfolioEventTarget(
 const eventLimiter = createRateLimiter("portfolioEvents", rateLimitConfig.portfolioPublic.events);
 
 /**
- * Counts a beacon from a published page (`02-teknis.md` section 9): a click of one kind, or a work whose detail was
- * opened. Once an hour per visitor and kind (and per work), never for its owner or crawlers.
+ * Counts a beacon from a published page (`02-teknis.md` section 9): a click of one kind, a work whose detail was
+ * opened, or the visit of a prerendered page once shown (`view`, counted as the page's visit). Once an hour per visitor
+ * and kind (and per work), never for its owner or crawlers.
  */
 export async function recordPortfolioEvent(input: {
 	target: PortfolioEventTarget;
@@ -296,6 +319,20 @@ export async function recordPortfolioEvent(input: {
 	trustedClient?: string | undefined;
 }): Promise<void> {
 	const { target, kind, workId } = input;
+	if (kind === "view") {
+		// The beacon comes from the page, so its own `Referer` is the page's address (with any `utm_source`); where the
+		// visitor came from before isn't known here.
+		const page = pageAddress(input.requestHeaders.get("referer"));
+		if (page)
+			await countPortfolioVisit({
+				portfolio: target,
+				requestHeaders: input.requestHeaders,
+				pageUrl: page,
+				referer: null,
+				trustedClient: input.trustedClient,
+			});
+		return;
+	}
 	if (kind === "work" && (!workId || !target.hasWork)) return;
 	if (isCrawler(input.requestHeaders)) return;
 	if (
@@ -316,6 +353,17 @@ export async function recordPortfolioEvent(input: {
 		workId: kind === "work" ? workId : undefined,
 		device: deviceClass(input.requestHeaders),
 	});
+}
+
+/** The page a beacon came from, when its `Referer` is an http(s) address. */
+function pageAddress(referer: string | null): URL | null {
+	if (!referer) return null;
+	try {
+		const url = new URL(referer);
+		return url.protocol === "https:" || url.protocol === "http:" ? url : null;
+	} catch {
+		return null;
+	}
 }
 
 /** A page of the sitemap holds at most this many addresses, the protocol's limit. */

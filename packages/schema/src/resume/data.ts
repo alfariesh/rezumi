@@ -130,7 +130,7 @@ export const summarySchema = z.object({
 });
 
 const baseItemSchema = z.object({
-	id: z.string().describe("The unique identifier for the item. Usually generated as a UUID."),
+	id: z.string().describe("The unique identifier for the item: 1 to 64 characters, usually a generated UUID."),
 	hidden: z.boolean().describe("Whether to hide the item from the resume."),
 });
 
@@ -185,7 +185,7 @@ export const educationItemSchema = baseItemSchema.extend({
 });
 
 const roleItemSchema = z.object({
-	id: z.string().describe("The unique identifier for the role. Usually generated as a UUID."),
+	id: z.string().describe("The unique identifier for the role: 1 to 64 characters, usually a generated UUID."),
 	position: z.string().describe("The position or job title for this role."),
 	period: z
 		.string()
@@ -473,7 +473,9 @@ export type CustomSectionItem = z.infer<(typeof customSectionItemDefinitionByTyp
 const customSectionSchemaOptions = Object.entries(customSectionItemDefinitionByType).map(([type, { schema }]) =>
 	baseSectionSchema.extend({
 		keywordLayout: (type === "skills" ? skillKeywordLayoutSchema : z.undefined().catch(undefined)).optional(),
-		id: z.string().describe("The unique identifier for the custom section. Usually generated as a UUID."),
+		id: z
+			.string()
+			.describe("The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID."),
 		type: z
 			.literal(type as CustomSectionType)
 			.describe("The type of items this custom section contains. Determines which item schema and form fields to use."),

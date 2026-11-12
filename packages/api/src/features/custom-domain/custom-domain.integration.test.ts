@@ -290,11 +290,15 @@ describe.skipIf(!databaseUrl)("custom domains with Cloudflare for SaaS", () => {
 			cloudflare.settle = { status: "active", ssl: { status: "pending_issuance" } };
 			await runJobs(later(5 * 60_000));
 			expect(await service.get("member")).toMatchObject({ stage: "certificate" });
+			// Verified but its certificate not active yet: it neither serves pages nor is where search engines are sent.
+			expect(await destination(site)).toBeNull();
+			expect(await isLive()).toBe(false);
 
 			cloudflare.settle = { status: "active", ssl: { status: "active" } };
 			await runJobs(later(10 * 60_000));
 			expect(await service.get("member")).toMatchObject({ stage: "active", problem: null });
 			expect(await isLive()).toBe(true);
+			expect(await destination(site)).toMatchObject({ redirecting: false });
 		});
 
 		it("says which record is missing and makes no hostname", async () => {

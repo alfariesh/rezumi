@@ -48,6 +48,8 @@ try {
 	config.vars.ENCRYPTION_SECRET = randomBytes(32).toString("hex");
 	// This test checks the Worker runs, not billing: plans stay off so its user's AI goes to the provider below.
 	config.vars.BILLING_MODE = "off";
+	// Portfolios open to everyone, so the smoke user can publish one and its share card can be checked.
+	config.vars.PORTFOLIO_MODE = "on";
 	// Minimal external provider boundary; the real AI SDK and Worker stream stay under test.
 	const provider = createServer((request, response) => {
 		let body = "";
@@ -209,6 +211,29 @@ try {
 	const pdf = Buffer.from(await response.arrayBuffer());
 	assert.equal(pdf.subarray(0, 5).toString(), "%PDF-");
 	assert(pdf.includes(Buffer.from("/Subtype /Image")), "Uploaded picture must be embedded in PDF");
+	// Link-preview cards draw with resvg's WebAssembly, bundled beside the script: a PNG, never the banner fallback.
+	const assertCard = async (path) => {
+		const card = await request(path, { redirect: "manual" });
+		assert.equal(card.status, 200, `${path} answered ${card.status} ${card.headers.get("location") ?? ""}`);
+		assert.equal(card.headers.get("content-type"), "image/png");
+		const bytes = Buffer.from(await card.arrayBuffer());
+		assert.equal(bytes.subarray(1, 4).toString(), "PNG");
+	};
+	await assertCard(`/cards/workersmoke/${resume.slug}.png`);
+	const verified = new Pool({ connectionString: databaseUrl.href });
+	try {
+		await verified.query(`UPDATE "user" SET email_verified = true WHERE username = 'workersmoke'`);
+	} finally {
+		await verified.end();
+	}
+	await client.portfolio.create({ sourceResumeId: id });
+	await client.portfolio.setPublic({ isPublic: true });
+	await assertCard("/cards/workersmoke.png");
+	// The address checks behind link reading load and run under workerd (node:net BlockList).
+	await assert.rejects(client.portfolio.unfurl({ url: "http://127.0.0.1/admin" }), (error) => {
+		assert.equal(error.code, "PORTFOLIO_LINK_UNREADABLE");
+		return true;
+	});
 	const updated = (await client.resume.getById({ id })).data;
 	assert.equal(updated.basics.name, "Cloudflare Native");
 	// Icon drawings load from Text modules beside the script; the same resume without icons draws less.
@@ -297,7 +322,7 @@ try {
 		null,
 	);
 	console.log(
-		"Cloudflare smoke passed: auth, native cron, transactions, R2 privacy, live updates, PDF pictures and icons, assistant streaming/stop, atomic limits, expiry.",
+		"Cloudflare smoke passed: auth, native cron, transactions, R2 privacy, live updates, PDF pictures and icons, share cards, portfolio link checks, assistant streaming/stop, atomic limits, expiry.",
 	);
 } catch (error) {
 	for (const log of harness?.getLogs() ?? []) {

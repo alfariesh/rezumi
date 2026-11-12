@@ -15,6 +15,7 @@ import { on } from "node:events";
 import { isIP } from "node:net";
 import wasm from "@formepdf/core/pkg-web/forme_bg.wasm";
 import { init } from "@formepdf/core/worker";
+import resvgWasm from "@resvg/resvg-wasm/index_bg.wasm";
 import { Pool } from "pg";
 import { configureAgentStreamLifetime } from "@rezumi/api/features/agent/streams";
 import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
@@ -34,6 +35,7 @@ import { configureOwnPictureReader } from "@rezumi/pdf/server";
 import { TRUSTED_IP_HEADERS } from "@rezumi/utils/rate-limit";
 import { createApp } from "../http/app";
 import { configurePortfolioVisitLifetime } from "../static/portfolio-page";
+import { configureResvgWasm } from "../static/resvg";
 import { R2StorageService } from "./r2";
 
 export { Coordination } from "./coordination";
@@ -70,6 +72,8 @@ configurePortfolioVisitLifetime((promise) => {
 	store?.ctx.waitUntil(promise);
 });
 configurePortfolioPublicLimiter(() => requests.getStore()?.bindings.PORTFOLIO_PUBLIC_LIMITER);
+// Link-preview cards draw with resvg, whose WebAssembly ships beside the script.
+configureResvgWasm(resvgWasm);
 configurePortfolioAnalytics({
 	dataset: () => requests.getStore()?.bindings.PORTFOLIO_EVENTS,
 	sql: () => requests.getStore()?.bindings.ANALYTICS_SQL,

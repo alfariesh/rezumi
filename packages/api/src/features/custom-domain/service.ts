@@ -292,19 +292,29 @@ async function takeHostnameFromOthers(tx: DbOrTx, hostname: string, userId: stri
 }
 
 /**
- * Whether a domain really opens the account's pages: proven, still within its plan, and with the automation, its
- * certificate active. Where search engines are sent, so never a domain that redirects or doesn't work yet.
+ * Whether a domain is connected: proven, and with the automation, its hostname and certificate active. The one rule for
+ * whether it answers at all (`customDomainDestination`) and, within its plan, where search engines are sent
+ * (`domainIsLive`), so a domain never serves pages while canonical links and the sitemap point elsewhere.
+ */
+const domainIsConnected = () =>
+	and(
+		isNotNull(schema.customDomain.verifiedAt),
+		isCloudflareSaasEnabled()
+			? and(eq(schema.customDomain.cfHostnameStatus, "active"), eq(schema.customDomain.cfSslStatus, "active"))
+			: undefined,
+	);
+
+/**
+ * Whether a domain really opens the account's pages: connected (`domainIsConnected`) and still within its plan's
+ * grace. Where search engines are sent, so never a domain that redirects or doesn't work yet.
  */
 export const domainIsLive = () =>
 	and(
-		isNotNull(schema.customDomain.verifiedAt),
+		domainIsConnected(),
 		or(
 			isNull(schema.customDomain.planLapsedAt),
 			gt(schema.customDomain.planLapsedAt, sql`now() - make_interval(days => ${PLAN_GRACE_DAYS})`),
 		),
-		isCloudflareSaasEnabled()
-			? and(eq(schema.customDomain.cfHostnameStatus, "active"), eq(schema.customDomain.cfSslStatus, "active"))
-			: undefined,
 	);
 
 /**
@@ -319,8 +329,9 @@ export const verifiedDomainColumn = () =>
 		: sql<string | null>`null`;
 
 /**
- * Where a verified custom domain leads: whose pages it opens, and whether it only redirects to their app address now
- * that the plan's grace is over. `null` for an unknown host.
+ * Where a connected custom domain leads (`domainIsConnected`, the rule `domainIsLive` builds on): whose pages it opens,
+ * and whether it only redirects to their app address now that the plan's grace is over. `null` for an unknown host or
+ * one whose hostname or certificate isn't active yet.
  */
 export async function customDomainDestination(
 	hostname: string,
@@ -331,13 +342,7 @@ export async function customDomainDestination(
 		.select({ username: schema.user.username, planLapsedAt: schema.customDomain.planLapsedAt })
 		.from(schema.customDomain)
 		.innerJoin(schema.user, eq(schema.customDomain.userId, schema.user.id))
-		.where(
-			and(
-				eq(schema.customDomain.hostname, hostname.toLowerCase()),
-				isNotNull(schema.customDomain.verifiedAt),
-				ownerIsNotBanned(),
-			),
-		);
+		.where(and(eq(schema.customDomain.hostname, hostname.toLowerCase()), domainIsConnected(), ownerIsNotBanned()));
 	return owner
 		? { username: owner.username, redirecting: planStateOf(owner.planLapsedAt, now).state === "redirecting" }
 		: null;

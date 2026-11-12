@@ -71,6 +71,7 @@ function addTo<K extends string>(totals: Totals<K>, keys: readonly K[], values: 
 
 type PortfolioDetails =
 	| { state: "locked" }
+	| { state: "not-configured" }
 	| { state: "unavailable" }
 	| {
 			state: "ready";
@@ -152,7 +153,7 @@ async function details(
 	const entitlements = await getEntitlements(userId);
 	if (!entitlements.features.detailedPortfolioStats) return { state: "locked" };
 	const rows = await readPortfolioDetails(portfolioId, timeZone, now);
-	if (!rows) return { state: "unavailable" };
+	if (typeof rows === "string") return { state: rows };
 	return {
 		state: "ready",
 		countries: rows.countries,

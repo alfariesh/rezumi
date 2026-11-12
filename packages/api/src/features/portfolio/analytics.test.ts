@@ -128,7 +128,7 @@ describe("work days", () => {
 		);
 		configurePortfolioAnalytics({ dataset: () => undefined, sql: () => ({ query }), country: () => undefined });
 		const rows = await readPortfolioDetails(`pf-${day}`, "Asia/Jakarta");
-		expect(rows?.workDays).toEqual([{ date: "2026-11-08", workId: "w1", opens: 3 }]);
+		expect(typeof rows === "string" ? rows : rows.workDays).toEqual([{ date: "2026-11-08", workId: "w1", opens: 3 }]);
 	});
 });
 
@@ -136,17 +136,17 @@ describe("readPortfolioDetails", () => {
 	beforeEach(() => vi.spyOn(console, "error").mockImplementation(() => undefined));
 	afterEach(() => vi.restoreAllMocks());
 
-	it("is null without the binding", async () => {
-		expect(await readPortfolioDetails("pf-none")).toBeNull();
+	it("is not configured without the binding", async () => {
+		expect(await readPortfolioDetails("pf-none")).toBe("not-configured");
 	});
 
-	it("is null when the query fails", async () => {
+	it("is unavailable when the query fails", async () => {
 		configurePortfolioAnalytics({
 			dataset: () => undefined,
 			sql: () => ({ query: () => Promise.reject(new Error("no")) }),
 			country: () => undefined,
 		});
-		expect(await readPortfolioDetails("pf-fail")).toBeNull();
+		expect(await readPortfolioDetails("pf-fail")).toBe("unavailable");
 	});
 
 	it("reads rows, rounding weighted sums and dropping what isn't a known value, then caches them", async () => {

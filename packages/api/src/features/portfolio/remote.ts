@@ -136,13 +136,8 @@ function toRemoteError(error: unknown, signal: AbortSignal): unknown {
 	// resolved to a private address. It reads as a name that doesn't resolve, which says nothing about the network.
 	if (error instanceof Error && error.cause === "unsafe-url")
 		return new RemoteFetchError("unreachable", { cause: error });
-	// fetchPublic refuses statuses a Response can't hold (LinkedIn answers bots with 999): on Node with its own message,
-	// on Workers as the RangeError the Response constructor throws.
-	if (
-		error instanceof Error &&
-		(error.message.startsWith("Invalid response status") ||
-			(error instanceof RangeError && /status/i.test(error.message)))
-	)
+	// fetchPublic refuses statuses a Response can't hold (LinkedIn answers bots with 999), on Node and on Workers alike.
+	if (error instanceof Error && error.message.startsWith("Invalid response status"))
 		return new RemoteFetchError("blocked");
 	return new RemoteFetchError("unreachable");
 }

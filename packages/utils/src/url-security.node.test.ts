@@ -253,6 +253,18 @@ describe("fetchPublic", () => {
 		expect(sent).toBeLessThan(80);
 	});
 
+	it("refuses a status a Response can't hold on Workers, as on Node", async () => {
+		vi.stubEnv("CLOUDFLARE", "1");
+		const cancel = vi.fn(async () => {});
+		// What workerd's fetch hands back for LinkedIn's 999: a response no Response constructor accepts.
+		vi.stubGlobal(
+			"fetch",
+			vi.fn(async () => ({ status: 999, statusText: "", headers: new Headers(), body: { cancel } })),
+		);
+		await expect(fetchPublic("https://www.linkedin.example.test/in/x")).rejects.toThrow("Invalid response status 999");
+		expect(cancel).toHaveBeenCalled();
+	});
+
 	it("refuses a public-looking host whose address is private when the connection opens", async () => {
 		const reached = vi.fn();
 		const server = createServer((_request, response) => {

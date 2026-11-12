@@ -50,12 +50,13 @@ describe("parsePortfolioEvent", () => {
 	it("accepts the known kinds, and a work only with a valid id", () => {
 		expect(parsePortfolioEvent('{"kind":"whatsapp"}')).toEqual({ kind: "whatsapp" });
 		expect(parsePortfolioEvent('{"kind":"work","id":"w1"}')).toEqual({ kind: "work", id: "w1" });
+		expect(parsePortfolioEvent('{"kind":"view"}')).toEqual({ kind: "view" });
 		expect(parsePortfolioEvent('{"kind":"work"}')).toBeNull();
 		expect(parsePortfolioEvent('{"kind":"work","id":"../x"}')).toBeNull();
 	});
 
 	it("refuses anything else", () => {
-		for (const body of ["", "nope", "null", "[]", '{"kind":"view"}', '{"kind":"constructor"}'])
+		for (const body of ["", "nope", "null", "[]", '{"kind":"visit"}', '{"kind":"constructor"}'])
 			expect(parsePortfolioEvent(body), body).toBeNull();
 	});
 });

@@ -145,7 +145,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.profiles.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.profiles.items` | `array` | yes | — | The items to display in the profiles section. |
 | `sections.profiles.items[]` | `object` | — | — | — |
-| `sections.profiles.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.profiles.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.profiles.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.profiles.items[].icon` | `string` | yes | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `sections.profiles.items[].iconColor` | `string` | yes | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
@@ -165,7 +165,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.experience.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.experience.items` | `array` | yes | — | The items to display in the experience section. |
 | `sections.experience.items[]` | `object` | — | — | — |
-| `sections.experience.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.experience.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.experience.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.experience.items[].company` | `string` | yes | — | The name of the company or organization. Empty while the entry is a draft, which isn't printed. |
 | `sections.experience.items[].position` | `string` | yes | — | The position held at the company or organization. Used when there is only a single role. If multiple roles are provided in the 'roles' field, this serves as a summary title or can be left blank. |
@@ -187,7 +187,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.experience.items[].description` | `string` | yes | — | The description of the experience. This should be a HTML-formatted string. |
 | `sections.experience.items[].roles` | `array` | yes | default: [] | List of individual roles held at this company to show career progression. |
 | `sections.experience.items[].roles[]` | `object` | — | — | — |
-| `sections.experience.items[].roles[].id` | `string` | yes | — | The unique identifier for the role. Usually generated as a UUID. |
+| `sections.experience.items[].roles[].id` | `string` | yes | — | The unique identifier for the role: 1 to 64 characters, usually a generated UUID. |
 | `sections.experience.items[].roles[].position` | `string` | yes | — | The position or job title for this role. |
 | `sections.experience.items[].roles[].period` | `string` | yes | — | The period of time this role was held, as text. Written from `dates` on every save; write `dates` instead. |
 | `sections.experience.items[].roles[].dates` | `object` | no | — | Structured dates. Write these rather than the legacy text field (`period` or `date`), which is kept in sync from them. |
@@ -210,7 +210,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.education.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.education.items` | `array` | yes | — | The items to display in the education section. |
 | `sections.education.items[]` | `object` | — | — | — |
-| `sections.education.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.education.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.education.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.education.items[].school` | `string` | yes | — | The name of the school or institution. Empty while the entry is a draft, which isn't printed. |
 | `sections.education.items[].degree` | `string` | yes | — | The degree or qualification obtained. |
@@ -242,7 +242,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.projects.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.projects.items` | `array` | yes | — | The items to display in the projects section. |
 | `sections.projects.items[]` | `object` | — | — | — |
-| `sections.projects.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.projects.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.projects.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.projects.items[].name` | `string` | yes | — | The name of the project. Empty while the entry is a draft, which isn't printed. |
 | `sections.projects.items[].period` | `string` | yes | — | The period of time the project was worked on, as text. Written from `dates` on every save; write `dates` instead. |
@@ -270,7 +270,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.skills.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.skills.items` | `array` | yes | — | The items to display in the skills section. |
 | `sections.skills.items[]` | `object` | — | — | — |
-| `sections.skills.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.skills.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.skills.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.skills.items[].icon` | `string` | yes | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `sections.skills.items[].iconColor` | `string` | yes | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
@@ -291,7 +291,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.languages.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.languages.items` | `array` | yes | — | The items to display in the languages section. |
 | `sections.languages.items[]` | `object` | — | — | — |
-| `sections.languages.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.languages.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.languages.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.languages.items[].language` | `string` | yes | — | The name of the language the author knows. Empty while the entry is a draft, which isn't printed. |
 | `sections.languages.items[].fluency` | `string` | yes | — | The fluency level of the language. Can be any text, such as 'Native', 'Fluent', 'Conversational', etc. or can also be a CEFR level (A1, A2, B1, B2, C1, C2). |
@@ -306,7 +306,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.interests.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.interests.items` | `array` | yes | — | The items to display in the interests section. |
 | `sections.interests.items[]` | `object` | — | — | — |
-| `sections.interests.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.interests.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.interests.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.interests.items[].icon` | `string` | yes | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `sections.interests.items[].iconColor` | `string` | yes | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
@@ -323,7 +323,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.awards.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.awards.items` | `array` | yes | — | The items to display in the awards section. |
 | `sections.awards.items[]` | `object` | — | — | — |
-| `sections.awards.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.awards.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.awards.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.awards.items[].title` | `string` | yes | — | The title of the award. Empty while the entry is a draft, which isn't printed. |
 | `sections.awards.items[].awarder` | `string` | yes | — | The awarder of the award. |
@@ -352,7 +352,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.certifications.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.certifications.items` | `array` | yes | — | The items to display in the certifications section. |
 | `sections.certifications.items[]` | `object` | — | — | — |
-| `sections.certifications.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.certifications.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.certifications.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.certifications.items[].title` | `string` | yes | — | The title of the certification. Empty while the entry is a draft, which isn't printed. |
 | `sections.certifications.items[].issuer` | `string` | yes | — | The issuer of the certification. |
@@ -381,7 +381,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.publications.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.publications.items` | `array` | yes | — | The items to display in the publications section. |
 | `sections.publications.items[]` | `object` | — | — | — |
-| `sections.publications.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.publications.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.publications.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.publications.items[].title` | `string` | yes | — | The title of the publication. Empty while the entry is a draft, which isn't printed. |
 | `sections.publications.items[].publisher` | `string` | yes | — | The publisher of the publication. |
@@ -410,7 +410,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.volunteer.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.volunteer.items` | `array` | yes | — | The items to display in the volunteer section. |
 | `sections.volunteer.items[]` | `object` | — | — | — |
-| `sections.volunteer.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.volunteer.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.volunteer.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.volunteer.items[].organization` | `string` | yes | — | The name of the organization or company. Empty while the entry is a draft, which isn't printed. |
 | `sections.volunteer.items[].location` | `string` | yes | — | The location of the organization or company. |
@@ -439,7 +439,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.references.startOnNewPage` | `boolean` | yes | default: false | If true, the section always begins on a new page. |
 | `sections.references.items` | `array` | yes | — | The items to display in the references section. |
 | `sections.references.items[]` | `object` | — | — | — |
-| `sections.references.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
+| `sections.references.items[].id` | `string` | yes | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `sections.references.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
 | `sections.references.items[].name` | `string` | yes | — | The name of the reference, or a note such as 'Available upon request'. Empty while the entry is a draft, which isn't printed. |
 | `sections.references.items[].position` | `string` | yes | — | The position or job title of the reference. |
@@ -460,11 +460,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type summary, schema summaryItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type summary, schema summaryItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type summary, schema summaryItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type summary, schema summaryItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type summary, schema summaryItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type summary, schema summaryItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type summary, schema summaryItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type summary, schema summaryItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type summary, schema summaryItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type summary, schema summaryItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type summary, schema summaryItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].content` | `string` | yes (type summary, schema summaryItemSchema at customSections[]) | — | The rich text content of the summary item. This should be a HTML-formatted string. |
 | `customSections[]` | `object` | — (type profiles, schema profileItemSchema at customSections[]) | — | — |
@@ -476,11 +476,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type profiles, schema profileItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type profiles, schema profileItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type profiles, schema profileItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type profiles, schema profileItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type profiles, schema profileItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].icon` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `customSections[].items[].iconColor` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
@@ -499,11 +499,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type experience, schema experienceItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type experience, schema experienceItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type experience, schema experienceItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type experience, schema experienceItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type experience, schema experienceItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].company` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The name of the company or organization. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].position` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The position held at the company or organization. Used when there is only a single role. If multiple roles are provided in the 'roles' field, this serves as a summary title or can be left blank. |
@@ -525,7 +525,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].description` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The description of the experience. This should be a HTML-formatted string. |
 | `customSections[].items[].roles` | `array` | yes (type experience, schema experienceItemSchema at customSections[]) | default: [] | List of individual roles held at this company to show career progression. |
 | `customSections[].items[].roles[]` | `object` | — (type experience, schema experienceItemSchema at customSections[]) | — | — |
-| `customSections[].items[].roles[].id` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The unique identifier for the role. Usually generated as a UUID. |
+| `customSections[].items[].roles[].id` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The unique identifier for the role: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].roles[].position` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The position or job title for this role. |
 | `customSections[].items[].roles[].period` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The period of time this role was held, as text. Written from `dates` on every save; write `dates` instead. |
 | `customSections[].items[].roles[].dates` | `object` | no (type experience, schema experienceItemSchema at customSections[]) | — | Structured dates. Write these rather than the legacy text field (`period` or `date`), which is kept in sync from them. |
@@ -547,11 +547,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type education, schema educationItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type education, schema educationItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type education, schema educationItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type education, schema educationItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type education, schema educationItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type education, schema educationItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type education, schema educationItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type education, schema educationItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type education, schema educationItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type education, schema educationItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type education, schema educationItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].school` | `string` | yes (type education, schema educationItemSchema at customSections[]) | — | The name of the school or institution. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].degree` | `string` | yes (type education, schema educationItemSchema at customSections[]) | — | The degree or qualification obtained. |
@@ -582,11 +582,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type projects, schema projectItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type projects, schema projectItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type projects, schema projectItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type projects, schema projectItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type projects, schema projectItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type projects, schema projectItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type projects, schema projectItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type projects, schema projectItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type projects, schema projectItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type projects, schema projectItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type projects, schema projectItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].name` | `string` | yes (type projects, schema projectItemSchema at customSections[]) | — | The name of the project. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].period` | `string` | yes (type projects, schema projectItemSchema at customSections[]) | — | The period of time the project was worked on, as text. Written from `dates` on every save; write `dates` instead. |
@@ -613,11 +613,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type skills, schema skillItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type skills, schema skillItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `string` | no (type skills, schema skillItemSchema at customSections[]) | enum: ["inline","list","tags"]; default: "inline" | How skill keywords are displayed: inline separated by commas, one bullet per keyword, or 'tags' (small chips). |
-| `customSections[].id` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type skills, schema skillItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type skills, schema skillItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type skills, schema skillItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].icon` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `customSections[].items[].iconColor` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
@@ -635,11 +635,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type languages, schema languageItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type languages, schema languageItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type languages, schema languageItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type languages, schema languageItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type languages, schema languageItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type languages, schema languageItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type languages, schema languageItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type languages, schema languageItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type languages, schema languageItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type languages, schema languageItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type languages, schema languageItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].language` | `string` | yes (type languages, schema languageItemSchema at customSections[]) | — | The name of the language the author knows. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].fluency` | `string` | yes (type languages, schema languageItemSchema at customSections[]) | — | The fluency level of the language. Can be any text, such as 'Native', 'Fluent', 'Conversational', etc. or can also be a CEFR level (A1, A2, B1, B2, C1, C2). |
@@ -653,11 +653,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type interests, schema interestItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type interests, schema interestItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type interests, schema interestItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type interests, schema interestItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type interests, schema interestItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type interests, schema interestItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].icon` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `customSections[].items[].iconColor` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
@@ -673,11 +673,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type awards, schema awardItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type awards, schema awardItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type awards, schema awardItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type awards, schema awardItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type awards, schema awardItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type awards, schema awardItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type awards, schema awardItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type awards, schema awardItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type awards, schema awardItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type awards, schema awardItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type awards, schema awardItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].title` | `string` | yes (type awards, schema awardItemSchema at customSections[]) | — | The title of the award. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].awarder` | `string` | yes (type awards, schema awardItemSchema at customSections[]) | — | The awarder of the award. |
@@ -705,11 +705,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type certifications, schema certificationItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type certifications, schema certificationItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type certifications, schema certificationItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type certifications, schema certificationItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].title` | `string` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | The title of the certification. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].issuer` | `string` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | The issuer of the certification. |
@@ -737,11 +737,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type publications, schema publicationItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type publications, schema publicationItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type publications, schema publicationItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type publications, schema publicationItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type publications, schema publicationItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type publications, schema publicationItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type publications, schema publicationItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type publications, schema publicationItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type publications, schema publicationItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type publications, schema publicationItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type publications, schema publicationItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].title` | `string` | yes (type publications, schema publicationItemSchema at customSections[]) | — | The title of the publication. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].publisher` | `string` | yes (type publications, schema publicationItemSchema at customSections[]) | — | The publisher of the publication. |
@@ -769,11 +769,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type volunteer, schema volunteerItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type volunteer, schema volunteerItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].organization` | `string` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | The name of the organization or company. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].location` | `string` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | The location of the organization or company. |
@@ -801,11 +801,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type references, schema referenceItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type references, schema referenceItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type references, schema referenceItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type references, schema referenceItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type references, schema referenceItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type references, schema referenceItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type references, schema referenceItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type references, schema referenceItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type references, schema referenceItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type references, schema referenceItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type references, schema referenceItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].name` | `string` | yes (type references, schema referenceItemSchema at customSections[]) | — | The name of the reference, or a note such as 'Available upon request'. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].position` | `string` | yes (type references, schema referenceItemSchema at customSections[]) | — | The position or job title of the reference. |
@@ -824,11 +824,11 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].keepTogether` | `boolean` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
 | `customSections[].keywordLayout` | `any` | no (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | — |
-| `customSections[].id` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
+| `customSections[].id` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | The unique identifier for the custom section: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].type` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | — |
-| `customSections[].items[].id` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
+| `customSections[].items[].id` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | The unique identifier for the item: 1 to 64 characters, usually a generated UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
 | `customSections[].items[].recipient` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | The recipient's address block as HTML (name, title, company, address, email). |
 | `customSections[].items[].content` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | The cover letter body as HTML (salutation, paragraphs, closing, signature). |

@@ -1,8 +1,6 @@
 import type { PortfolioViewImage } from "@rezumi/portfolio/view";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
-import { initWasm, Resvg } from "@resvg/resvg-wasm";
+import { Resvg } from "@resvg/resvg-wasm";
 import { findPublicPortfolio } from "@rezumi/api/features/portfolio/public";
 import { publicPortfolioRequestAllowed, tooManyPortfolioRequests } from "@rezumi/api/features/portfolio/public-limit";
 import { env } from "@rezumi/env/server";
@@ -10,12 +8,7 @@ import { CARD_WIDTH, resumeCardSvg } from "@rezumi/pdf/web-page-card";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { matchesIfNoneMatch } from "@rezumi/utils/http";
 import { publicPortfolioView } from "./portfolio-page";
-
-let ready: Promise<void> | undefined;
-const initialize = () =>
-	(ready ??= readFile(fileURLToPath(import.meta.resolve("@resvg/resvg-wasm/index_bg.wasm"))).then((bytes) =>
-		initWasm(bytes),
-	));
+import { initializeResvg } from "./resvg";
 
 // Recent cards by what they draw; crawlers fetch a card once per share, so a small cache covers bursts.
 const cache = new Map<string, Uint8Array>();
@@ -102,7 +95,7 @@ export async function handlePortfolioCard(
 				bodyFamily: assets.bodyFamily,
 				picture: photo,
 			});
-			await initialize();
+			await initializeResvg();
 			const resvg = new Resvg(svg, {
 				fitTo: { mode: "width", value: CARD_WIDTH },
 				font: { fontBuffers: assets.fonts, defaultFontFamily: assets.bodyFamily, loadSystemFonts: false },

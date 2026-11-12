@@ -113,7 +113,8 @@ const statisticsSchema = z.object({
 	works: z.array(z.object({ id: z.string(), title: z.string(), opens: z.number().int() })),
 	details: z.discriminatedUnion("state", [
 		z.object({ state: z.literal("locked") }),
-		z.object({ state: z.literal("unavailable") }),
+		z.object({ state: z.literal("not-configured") }).describe("Analytics Engine isn't set up on this server."),
+		z.object({ state: z.literal("unavailable") }).describe("Reading the breakdown failed; try again later."),
 		z.object({
 			state: z.literal("ready"),
 			countries: z.array(z.object({ code: z.string(), views: z.number().int() })),

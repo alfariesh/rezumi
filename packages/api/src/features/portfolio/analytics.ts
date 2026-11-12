@@ -182,14 +182,17 @@ function parseRows(value: string): PortfolioDetailRows | null {
 	}
 }
 
-/** A portfolio's breakdown, cached for a few minutes; null when Analytics Engine isn't bound or the query fails. */
+/**
+ * A portfolio's breakdown, cached for a few minutes; `not-configured` when Analytics Engine isn't bound here, and
+ * `unavailable` when reading it failed.
+ */
 export async function readPortfolioDetails(
 	portfolioId: string,
 	timeZone = "UTC",
 	now = new Date(),
-): Promise<PortfolioDetailRows | null> {
+): Promise<PortfolioDetailRows | "not-configured" | "unavailable"> {
 	const sql = adapter?.sql();
-	if (!sql) return null;
+	if (!sql) return "not-configured";
 	const key = cacheKey(portfolioId, timeZone);
 	const cached = await readCache(key, now.getTime());
 	const parsed = cached ? parseRows(cached) : null;
@@ -221,6 +224,6 @@ export async function readPortfolioDetails(
 		return rows;
 	} catch {
 		console.error("[portfolio] Reading analytics details failed.");
-		return null;
+		return "unavailable";
 	}
 }

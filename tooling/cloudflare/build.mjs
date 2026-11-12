@@ -36,6 +36,12 @@ await build({
 			name: "forme-wasm",
 			setup(builder) {
 				builder.onResolve({ filter: /^css-tree$/ }, () => ({ path: require.resolve("css-tree/dist/csstree.esm") }));
+				// resvg draws the link-preview cards; it ships beside forme as its own module. Registered first: the
+				// first rule that answers wins.
+				builder.onResolve({ filter: /^@resvg\/resvg-wasm\/index_bg\.wasm$/ }, () => ({
+					path: "./resvg.wasm",
+					external: true,
+				}));
 				builder.onResolve({ filter: /\.wasm$/ }, () => ({ path: "./forme.wasm", external: true }));
 			},
 		},
@@ -66,6 +72,7 @@ if (size > 12 * 2 ** 20) {
 	throw new Error(`Worker script is ${(size / 2 ** 20).toFixed(1)} MiB, over its 12 MiB startup budget`);
 }
 await cp(require.resolve("@formepdf/core/pkg-web/forme_bg.wasm"), `${output}/forme.wasm`);
+await cp(require.resolve("@resvg/resvg-wasm/index_bg.wasm"), `${output}/resvg.wasm`);
 await mkdir(`${output}/prompts`);
 for (const name of await readdir(resolve(root, "packages/ai/src/prompts"))) {
 	if (name.endsWith(".md")) await cp(resolve(root, "packages/ai/src/prompts", name), `${output}/prompts/${name}`);

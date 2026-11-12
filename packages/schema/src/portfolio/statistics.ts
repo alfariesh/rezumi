@@ -18,8 +18,12 @@ export const PORTFOLIO_CLICK_KINDS = [
 
 export type PortfolioClickKind = (typeof PORTFOLIO_CLICK_KINDS)[number];
 
-/** What a beacon may report: a click, or a work whose detail was opened. */
-export const PORTFOLIO_EVENT_KINDS = [...PORTFOLIO_CLICK_KINDS, "work"] as const;
+/**
+ * What a beacon may report: a click, a work whose detail was opened, or `view`, the visit of a page that was prerendered
+ * or prefetched and then shown (the server skips speculative requests, so such a page reports its own visit). A `view`
+ * counts like the server's own visit count, once an hour per visitor, so a normal load is never counted twice.
+ */
+export const PORTFOLIO_EVENT_KINDS = [...PORTFOLIO_CLICK_KINDS, "work", "view"] as const;
 
 export type PortfolioEventKind = (typeof PORTFOLIO_EVENT_KINDS)[number];
 
@@ -32,6 +36,15 @@ export type PortfolioVisitSource = (typeof PORTFOLIO_VISIT_SOURCES)[number];
 export const PORTFOLIO_DEVICES = ["mobile", "tablet", "desktop"] as const;
 
 export type PortfolioDevice = (typeof PORTFOLIO_DEVICES)[number];
+
+/**
+ * What the dashboard's breakdown (countries, devices, referrers, works per day) is: `locked` without the plan feature,
+ * `not-configured` where Analytics Engine isn't bound (Node, local development), `unavailable` when reading it failed,
+ * else `ready`.
+ */
+export const PORTFOLIO_STATISTICS_DETAIL_STATES = ["locked", "not-configured", "unavailable", "ready"] as const;
+
+export type PortfolioStatisticsDetailState = (typeof PORTFOLIO_STATISTICS_DETAIL_STATES)[number];
 
 /** The days the dashboard shows. */
 export const PORTFOLIO_STATISTICS_DAYS = 30;
