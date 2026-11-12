@@ -503,7 +503,7 @@ type MetricsEditorProps = {
 	onRemoveLast?: () => void;
 };
 
-/** A list of metrics, each with its fields and move/remove buttons, plus "Add". */
+/** A list of metrics, each a draggable card with its fields and Remove, plus "Add". */
 export function MetricsEditor({
 	metrics,
 	edit,

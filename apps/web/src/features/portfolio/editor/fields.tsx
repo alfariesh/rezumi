@@ -30,8 +30,6 @@ type PanelGroupProps = {
 	id?: string;
 	icon: IconName;
 	title: ReactNode;
-	/** Sits at the end of the header: a switch or a short note. */
-	action?: ReactNode;
 	children: ReactNode;
 };
 
@@ -39,16 +37,16 @@ type PanelGroupProps = {
  * One group of the editor's panel: an icon and title with its fields right under them on the panel, like the resume
  * editor's sections. Inside a group panel (Design) it is a section of the panel card instead.
  */
-export function PanelGroup({ id, icon, title, action, children }: PanelGroupProps) {
+export function PanelGroup({ id, icon, title, children }: PanelGroupProps) {
 	const inGroupPanel = useInGroupPanel();
 	if (inGroupPanel && id)
 		return (
-			<GroupSection id={id} icon={icon} title={title} action={action}>
+			<GroupSection id={id} icon={icon} title={title}>
 				{children}
 			</GroupSection>
 		);
 	return (
-		<PanelSection icon={icon} title={title} action={action} contentClassName="gap-4">
+		<PanelSection icon={icon} title={title} contentClassName="gap-4">
 			{children}
 		</PanelSection>
 	);

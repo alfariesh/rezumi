@@ -253,7 +253,7 @@ type BlockListProps = { work: PortfolioWork; locale: string };
 
 /**
  * A work's detail as blocks (`01-desain.md` section 15): add one anywhere with "+ Add block" (or "/" in a text block),
- * drag or use the arrows to reorder, remove with Undo. An empty work can start from a case study outline.
+ * drag to reorder, remove with Undo. An empty work can start from a case study outline.
  */
 export function BlockList({ work, locale }: BlockListProps) {
 	const blocks = work.blocks;

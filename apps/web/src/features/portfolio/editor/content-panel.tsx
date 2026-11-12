@@ -56,8 +56,8 @@ const sectionIcon = (key: PortfolioSectionKey): IconName =>
 	isStandardSection(key) ? SECTION_ICONS[key] : key.startsWith("custom:") ? "note-pencil" : "file-text";
 
 /**
- * Content: the intro, which is always first, then every section in page order. Drag a section (or use its arrows) to
- * reorder, the eye hides it, the pencil renames it; opening one shows its fields.
+ * Content: the intro, which is always first, then every section in page order. Drag a section to reorder, the eye
+ * hides it, the pencil renames it; opening one shows its fields.
  */
 export function ContentPanel() {
 	const openWorkId = usePortfolioEditorUi((state) => state.openWorkId);
