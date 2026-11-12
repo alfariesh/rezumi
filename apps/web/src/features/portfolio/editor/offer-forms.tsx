@@ -6,7 +6,7 @@ import { useId, useState } from "react";
 import { getBrandIcon } from "@rezumi/resume/icons";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { generateId } from "@rezumi/utils/string";
 import { ImageField } from "../images/image-field";
 import { useSourceResume } from "./context";
@@ -44,11 +44,12 @@ export function ServicesForm() {
 				const action: ServiceAction =
 					service.cta.kind === "whatsapp" || service.cta.kind === "link" ? service.cta.kind : "contact";
 				return (
-					<div key={service.id} className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
+					<div key={service.id} className="grid gap-3 rounded-xl border border-separator p-3">
 						<div className="flex items-end gap-2">
 							<div className="min-w-0 flex-1">
 								<TextInput
 									label={t`Service`}
+									icon="tag"
 									value={service.title}
 									maxLength={max.serviceTitle}
 									placeholder={t`Logo design`}
@@ -76,6 +77,7 @@ export function ServicesForm() {
 						</div>
 						<TextInput
 							label={t`Description`}
+							icon="text-align-left"
 							multiline
 							rewrite="serviceDescription"
 							value={service.description}
@@ -92,6 +94,7 @@ export function ServicesForm() {
 						/>
 						<TextInput
 							label={t`Price (optional)`}
+							icon="tag"
 							value={service.price ?? ""}
 							maxLength={max.servicePrice}
 							placeholder={t`From Rp1.5m`}
@@ -110,7 +113,7 @@ export function ServicesForm() {
 							label={t`Order button`}
 							value={action}
 							options={actions}
-							description={
+							warning={
 								action === "whatsapp" && !contact.whatsapp.number
 									? t`Add your WhatsApp number in Contact, or the button won't show.`
 									: undefined
@@ -195,7 +198,7 @@ export function TestimonialsForm() {
 						key ? { key: `testimonials.${item.id}.${key}` } : undefined,
 					);
 				return (
-					<div key={item.id} className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
+					<div key={item.id} className="grid gap-3 rounded-xl border border-separator p-3">
 						<TestimonialFields
 							value={item}
 							onChange={(field, value) =>
@@ -269,6 +272,7 @@ function TestimonialFields({ value, onChange }: TestimonialFieldsProps) {
 		<>
 			<TextInput
 				label={t`What they said`}
+				icon="chat-text"
 				multiline
 				value={value.quote}
 				maxLength={max.quote}
@@ -276,12 +280,14 @@ function TestimonialFields({ value, onChange }: TestimonialFieldsProps) {
 			/>
 			<TextInput
 				label={t`Their name`}
+				icon="user-circle"
 				value={value.name}
 				maxLength={max.personName}
 				onChange={(text) => onChange("name", text)}
 			/>
 			<TextInput
 				label={t`Their role and company`}
+				icon="briefcase"
 				value={value.role}
 				maxLength={max.personRole}
 				placeholder={t`Head of Marketing, Kopi Senja`}
@@ -395,9 +401,10 @@ export function ClientsForm() {
 				const brandIcon = getBrandIcon(client.name);
 				const showsBrand = Boolean(client.logo && "brandIcon" in client.logo);
 				return (
-					<div key={client.id} className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
+					<div key={client.id} className="grid gap-3 rounded-xl border border-separator p-3">
 						<TextInput
 							label={t`Name`}
+							icon="briefcase"
 							value={client.name}
 							maxLength={max.clientName}
 							onChange={(value) =>
@@ -422,7 +429,6 @@ export function ClientsForm() {
 							kind="logo"
 							value={client.logo && "key" in client.logo ? client.logo : undefined}
 							altSuggestion={client.name.trim() ? t`${client.name.trim()} logo` : ""}
-							description={t`PNG or WebP with a clear background. By uploading it, you confirm you may show it.`}
 							onChange={(image) =>
 								editPortfolio((draft) => {
 									const target = draft.clients.items[index];
@@ -437,7 +443,7 @@ export function ClientsForm() {
 							}
 						/>
 						{brandIcon && !(client.logo && "key" in client.logo) && (
-							<SwitchRow
+							<CellSwitchRow
 								isSelected={showsBrand}
 								onChange={(checked) =>
 									editPortfolio((draft) => {
@@ -448,7 +454,6 @@ export function ClientsForm() {
 									})
 								}
 								label={t`Show the ${name} logo`}
-								className="py-0"
 							/>
 						)}
 						<UrlInput
@@ -481,11 +486,8 @@ export function ClientsForm() {
 					</div>
 				);
 			})}
-			<p className="text-body-xs text-muted">
-				<Trans>
-					By adding a logo, you confirm you have the right to show it. Logos show grey and turn to colour when pointed
-					at, and anyone can report one that's used without permission.
-				</Trans>
+			<p className="px-1 text-body-xs text-muted">
+				<Trans>By adding a logo, you confirm you have the right to show it.</Trans>
 			</p>
 			<div className="flex flex-wrap gap-2">
 				{items.length < PORTFOLIO_LIMITS.clients && (

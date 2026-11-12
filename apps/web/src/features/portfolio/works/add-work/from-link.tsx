@@ -130,10 +130,10 @@ export function FromLink({ onBack, onClose }: StepProps) {
 				<div className="grid gap-2">
 					<TextInput
 						label={t`Link`}
+						icon="link-simple-horizontal"
 						value={text}
 						maxLength={PORTFOLIO_LIMITS.text.url}
 						placeholder="https://www.behance.net/gallery/…"
-						description={t`Behance, Dribbble, GitHub, Figma, Medium, YouTube, Vimeo or any public page.`}
 						isDisabled={adding}
 						onChange={(value) => {
 							setText(value);

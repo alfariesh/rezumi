@@ -1,7 +1,7 @@
 import type { City } from "./cities";
 import type { MapPrecision } from "./map-config";
 import type { PortfolioLocation } from "@rezumi/schema/portfolio/data";
-import { Alert, Button, Checkbox, Label, RadioGroup, Spinner } from "@heroui/react";
+import { Alert, Button, Spinner } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -9,9 +9,9 @@ import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useState } from "
 import { PORTFOLIO_WORK_MODES } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { pageLocaleOf, useSourceResume } from "../editor/context";
-import { ChoiceSelect, RadioOption, TextInput } from "../editor/fields";
+import { ChoiceSelect, TextInput } from "../editor/fields";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "../editor/store";
 import { areaCenter, cityLabel, countryNames, findCity, hasOnlyOtherScripts, searchCities } from "./cities";
 import { loadCities } from "./load-cities";
@@ -185,7 +185,7 @@ export function LocationFields() {
 	const noResults = searching && search.trim() !== "" && cities !== null && results.length === 0;
 
 	return (
-		<div className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
+		<div className="grid gap-4">
 			<span className="text-sm font-medium">
 				<Trans>Location card</Trans>
 			</span>
@@ -193,6 +193,7 @@ export function LocationFields() {
 			<div className="grid gap-2">
 				<TextInput
 					label={location.point ? t`Change the city` : t`Find your city`}
+					icon="magnifying-glass"
 					value={query}
 					maxLength={80}
 					placeholder={t`Type a city, such as Bandung`}
@@ -267,8 +268,8 @@ export function LocationFields() {
 				label={t`City or region on the page`}
 				value={location.label}
 				maxLength={max.location}
+				icon="map-pin"
 				placeholder={resumeLocation || t`Bandung, Indonesia`}
-				description={resumeLocation ? t`Empty uses your resume's: ${resumeLocation}` : undefined}
 				onChange={(value) =>
 					editPortfolio(
 						(draft) => {
@@ -280,22 +281,15 @@ export function LocationFields() {
 			/>
 
 			{location.point && (
-				<RadioGroup
+				<ChoiceSelect
+					label={t`How precise`}
 					value={precision}
-					orientation="horizontal"
-					onChange={(value) => void changePrecision(value as MapPrecision)}
-				>
-					<Label>
-						<Trans>How precise</Trans>
-					</Label>
-					<div className="flex flex-wrap gap-x-3">
-						{(["city", "region", "country"] as const).map((option) => (
-							<RadioOption key={option} value={option}>
-								{precisionLabel(option)}
-							</RadioOption>
-						))}
-					</div>
-				</RadioGroup>
+					options={(["city", "region", "country"] as const).map((option) => ({
+						id: option,
+						label: precisionLabel(option),
+					}))}
+					onChange={(value) => void changePrecision(value)}
+				/>
 			)}
 			{wanted && wanted !== precision && location.point && (
 				<p className="text-body-xs text-warning" role="status">
@@ -309,7 +303,7 @@ export function LocationFields() {
 				</p>
 			)}
 
-			<SwitchRow
+			<CellSwitchRow
 				isSelected={location.showMap}
 				isDisabled={!location.point}
 				onChange={(checked) =>
@@ -320,19 +314,13 @@ export function LocationFields() {
 					})
 				}
 				label={t`Show a map on my page`}
-				description={
-					location.point
-						? t`Off by default. The page shows a picture of the map, so visitors aren't tracked by a map service.`
-						: t`Choose a city first.`
-				}
-				className="items-start py-0"
 			/>
 
 			{location.showMap && location.point && (
 				<div className="grid gap-2">
 					<Suspense
 						fallback={
-							<div className="grid aspect-5/3 place-items-center rounded-xl border border-border">
+							<div className="grid aspect-5/3 place-items-center rounded-xl border border-separator">
 								<Spinner size="sm" />
 							</div>
 						}
@@ -375,35 +363,27 @@ export function LocationFields() {
 				</Button>
 			)}
 
-			<fieldset className="grid gap-1.5">
-				<legend className="mb-1.5 text-sm font-medium">
+			<div className="grid gap-2">
+				<span className="text-sm font-medium">
 					<Trans>How you work</Trans>
-				</legend>
-				<div className="flex flex-wrap gap-x-4 gap-y-2">
-					{PORTFOLIO_WORK_MODES.map((mode) => (
-						<Checkbox
-							key={mode}
-							isSelected={location.workModes.includes(mode)}
-							onChange={(checked) =>
-								editPortfolio((draft) => {
-									const rest = draft.location.workModes.filter((entry) => entry !== mode);
-									draft.location.workModes = checked
-										? PORTFOLIO_WORK_MODES.filter((entry) => entry === mode || rest.includes(entry))
-										: rest;
-								})
-							}
-						>
-							<Checkbox.Content>
-								<Checkbox.Control>
-									<Checkbox.Indicator />
-								</Checkbox.Control>
-								<Label className="text-sm">{workModeLabel(mode)}</Label>
-							</Checkbox.Content>
-						</Checkbox>
-					))}
-				</div>
-			</fieldset>
-			<SwitchRow
+				</span>
+				{PORTFOLIO_WORK_MODES.map((mode) => (
+					<CellSwitchRow
+						key={mode}
+						label={workModeLabel(mode)}
+						isSelected={location.workModes.includes(mode)}
+						onChange={(checked) =>
+							editPortfolio((draft) => {
+								const rest = draft.location.workModes.filter((entry) => entry !== mode);
+								draft.location.workModes = checked
+									? PORTFOLIO_WORK_MODES.filter((entry) => entry === mode || rest.includes(entry))
+									: rest;
+							})
+						}
+					/>
+				))}
+			</div>
+			<CellSwitchRow
 				isSelected={location.relocate}
 				onChange={(checked) =>
 					editPortfolio((draft) => {
@@ -411,9 +391,8 @@ export function LocationFields() {
 					})
 				}
 				label={t`Open to relocating`}
-				className="py-0"
 			/>
-			<SwitchRow
+			<CellSwitchRow
 				isSelected={location.showLocalTime}
 				onChange={(checked) =>
 					editPortfolio((draft) => {
@@ -422,8 +401,6 @@ export function LocationFields() {
 					})
 				}
 				label={t`Show my local time`}
-				description={t`Helps recruiters in other time zones know when to reach you.`}
-				className="items-start py-0"
 			/>
 			{location.showLocalTime && (
 				<ChoiceSelect

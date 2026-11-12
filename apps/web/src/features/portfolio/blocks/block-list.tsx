@@ -276,18 +276,10 @@ export function BlockList({ work, locale }: BlockListProps) {
 	return (
 		<div className="grid gap-2">
 			{blocks.length === 0 && (
-				<div className="grid gap-3 rounded-2xl border border-dashed border-border p-4 text-sm">
-					<p className="text-muted">
-						<Trans>
-							The detail opens when a visitor taps this work. Build it from blocks: text, pictures and results as
-							numbers.
-						</Trans>
-					</p>
-					<Button variant="secondary" className="w-fit" onPress={startCaseStudy}>
-						<Icon name="magic-wand" size={18} />
-						<Trans>Start from a case study outline</Trans>
-					</Button>
-				</div>
+				<Button variant="secondary" className="w-fit" onPress={startCaseStudy}>
+					<Icon name="magic-wand" size={18} />
+					<Trans>Start from a case study outline</Trans>
+				</Button>
 			)}
 			<SortableProvider
 				onMove={(id, target) =>
@@ -357,7 +349,7 @@ function BlockCard({ work, block, index, list, locale, itemProps, onRemoved }: B
 		<div
 			{...itemProps}
 			{...sortable.dropTargetProps}
-			className={cn("relative grid gap-3 rounded-2xl bg-surface-secondary p-3", sortable.isDragging && "opacity-50")}
+			className={cn("relative grid gap-3 rounded-xl border border-separator p-3", sortable.isDragging && "opacity-50")}
 		>
 			<SortableEdge edge={sortable.edge} />
 			<div className="flex items-center gap-1">

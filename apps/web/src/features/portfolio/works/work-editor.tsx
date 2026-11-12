@@ -6,9 +6,9 @@ import { useEffect, useRef } from "react";
 import { formatMetric } from "@rezumi/portfolio/metric";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { BlockList, editWork } from "../blocks/block-list";
-import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "../editor/context";
+import { pageLocaleOf, useSourceResume } from "../editor/context";
 import { ChoiceSelect, PanelGroup, TextInput, UrlInput } from "../editor/fields";
 import { editPortfolio, usePortfolioData } from "../editor/store";
 import { usePortfolioEditorUi } from "../editor/ui";
@@ -34,7 +34,6 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 	}, [workId]);
 	const data = usePortfolioData();
 	const source = useSourceResume();
-	const owner = usePortfolioOwner();
 	const openWork = usePortfolioEditorUi((state) => state.openWork);
 	const confirm = useConfirm();
 	const work = data.works.items.find((entry) => entry.id === workId);
@@ -62,7 +61,7 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 	};
 
 	return (
-		<div ref={top} className="grid scroll-mt-3 gap-3 p-3">
+		<div ref={top} className="grid scroll-mt-3 gap-6 p-3">
 			<div className="flex items-center gap-2">
 				<Button size="sm" variant="ghost" onPress={() => openWork(null)}>
 					<Icon name="arrow-left" size={16} />
@@ -81,7 +80,6 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 					label={t`Cover picture`}
 					value={work.cover}
 					altSuggestion={work.title.trim()}
-					description={t`Shown on the card and atop the detail. Landscape pictures fit best.`}
 					onChange={(image) =>
 						update((draft) => {
 							if (image) draft.cover = image;
@@ -98,12 +96,10 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 				/>
 				<TextInput
 					label={t`Title`}
+					icon="text-t"
 					value={work.title}
 					maxLength={max.workTitle}
 					placeholder={t`Kopi Senja checkout redesign`}
-					description={
-						owner.username ? t`Address: ${window.location.host}/${owner.username}#work-${work.slug}` : undefined
-					}
 					onChange={(value) =>
 						editPortfolio(
 							(draft) => {
@@ -120,8 +116,8 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 					rewrite="workSummary"
 					value={work.summary}
 					maxLength={max.workSummary}
+					icon="text-align-left"
 					placeholder={t`What you made, for whom, and what changed.`}
-					description={t`One or two sentences on the card. ${work.summary.length}/${max.workSummary}`}
 					onChange={(value) =>
 						update((draft) => {
 							draft.summary = value;
@@ -131,6 +127,7 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 				<div className="grid gap-3 @sm:grid-cols-2">
 					<TextInput
 						label={t`Your role`}
+						icon="briefcase"
 						value={work.role}
 						maxLength={max.workRole}
 						placeholder={t`Lead designer`}
@@ -142,6 +139,7 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 					/>
 					<TextInput
 						label={t`Year`}
+						icon="calendar-blank"
 						value={work.date}
 						maxLength={max.workDate}
 						placeholder={t`2025 or Jan–Mar 2025`}
@@ -169,11 +167,6 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 							})
 						}
 					/>
-					<span className="text-body-xs text-muted">
-						<Trans>
-							Up to {PORTFOLIO_LIMITS.tagsPerWork}, such as “UX research” or “Figma”. Press Enter or a comma after each.
-						</Trans>
-					</span>
 				</div>
 				<ChoiceSelect
 					label={t`Metric on the card`}
@@ -185,11 +178,6 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 							label: `${formatMetric(metric, locale)} ${metric.label.trim()}`,
 						})),
 					]}
-					description={
-						metrics.length
-							? t`One result from this work's Metrics blocks, shown as a chip on its card.`
-							: t`Add a Metrics block below to show a result on the card.`
-					}
 					onChange={(id) =>
 						update((draft) => {
 							if (id === "none") delete draft.highlightMetricId;
@@ -210,6 +198,7 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 					/>
 					<TextInput
 						label={t`Link text`}
+						icon="text-t"
 						value={work.primaryLink?.label ?? ""}
 						maxLength={max.buttonLabel}
 						placeholder={t`See the live site`}
@@ -221,7 +210,7 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 						}
 					/>
 				</div>
-				<SwitchRow
+				<CellSwitchRow
 					isSelected={work.featured}
 					onChange={(featured) =>
 						update((draft) => {
@@ -229,10 +218,8 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 						})
 					}
 					label={t`Featured`}
-					description={t`Layouts that make room for it show this work larger.`}
-					className="items-start py-0"
 				/>
-				<SwitchRow
+				<CellSwitchRow
 					isSelected={work.hidden}
 					onChange={(hidden) =>
 						update((draft) => {
@@ -240,8 +227,6 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 						})
 					}
 					label={t`Hide from the page`}
-					description={t`Kept here, but visitors don't see it.`}
-					className="items-start py-0"
 				/>
 			</PanelGroup>
 

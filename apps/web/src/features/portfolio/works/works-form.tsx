@@ -56,19 +56,11 @@ export function WorksForm() {
 
 	return (
 		<div className="grid gap-3">
-			{items.length === 0 && (
-				<p className="text-body-sm text-muted">
-					<Trans>
-						Show what you made: a project, a design, an article. Each work has a card in the list and a detail built
-						from text, pictures and results.
-					</Trans>
-				</p>
-			)}
 			<ul className="grid gap-2">
 				{items.map((work, index) => {
 					const title = work.title.trim() || t`Untitled work`;
 					return (
-						<li key={work.id} {...itemProps} className="flex items-center gap-2 rounded-2xl bg-surface-secondary p-2">
+						<li key={work.id} {...itemProps} className="flex items-center gap-2 rounded-xl border border-separator p-2">
 							<button
 								type="button"
 								onClick={() => openWork(work.id)}

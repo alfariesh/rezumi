@@ -1,18 +1,7 @@
 import type { SettingOptions } from "./settings";
 import type { PortfolioRecord } from "./store";
 import type { Locale } from "@rezumi/utils/locale";
-import {
-	Alert,
-	Button,
-	buttonVariants,
-	InputGroup,
-	Label,
-	ListBox,
-	Modal,
-	Popover,
-	Select,
-	TextField,
-} from "@heroui/react";
+import { Alert, Button, buttonVariants, InputGroup, Label, Modal, Popover, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -23,7 +12,7 @@ import { useId, useState } from "react";
 import { publicResumeUrl } from "@rezumi/resume/sharing";
 import { PORTFOLIO_LIMITS, portfolioIndexableFrom } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { countPortfolioPlaceholders } from "../ai/apply";
 import { portfolioErrorMessage } from "../errors";
@@ -33,7 +22,7 @@ import { PanelGroup, TextInput } from "./fields";
 import { changeSetting } from "./settings";
 import { editPortfolio, usePortfolioData, usePortfolioRecord } from "./store";
 import { useEditorView } from "./use-view";
-import { Combobox } from "@/components/ui/combobox";
+import { CellSelectField } from "@/components/input/select-field";
 import { getLocaleOptions } from "@/features/locale/locale-options";
 import { CopyLinkButton } from "@/features/resume/share/copy-link-button";
 import { CustomDomainField } from "@/features/resume/share/custom-domain-field";
@@ -80,7 +69,7 @@ function useSettingAction() {
 /** Publish: going live, the address, search engines, the page's language and the resume it comes from. */
 export function PublishPanel() {
 	return (
-		<div className="grid gap-3 p-3">
+		<div className="grid gap-6 p-3">
 			<PublishGroup />
 			<DomainGroup />
 			<SearchGroup />
@@ -133,42 +122,22 @@ function PublishGroup() {
 					</Alert.Content>
 				</Alert>
 			)}
-			{record.isPublic ? (
-				// Still on while taken down, so it can be switched off; visitors can't see it either way.
-				<SwitchRow
-					isSelected
-					isDisabled={pending}
-					onChange={() => void unpublish()}
-					label={t`Published`}
-					description={
-						live
-							? t`Anyone with the link can see your portfolio. Changes show as soon as they're saved.`
-							: t`Visitors can't see it while it's taken down.`
-					}
-					className="items-start py-0"
-				/>
-			) : (
-				<div className="grid gap-3">
-					<div className="grid gap-1">
-						<p className="text-sm font-medium">
-							<Trans>Not published yet</Trans>
-						</p>
-						<p className="text-body-xs text-muted">
-							<Trans>Only you can see it until you publish. After that, changes show as soon as they're saved.</Trans>
-						</p>
-					</div>
-					<Button className="w-fit" isDisabled={pending || suspended} onPress={() => setDialogOpen(true)}>
-						<Icon name="globe-hemisphere-west" size={18} />
-						<Trans>Publish</Trans>
-					</Button>
-				</div>
-			)}
+			{/* Still on while taken down, so it can be switched off; visitors can't see it either way. */}
+			<CellSwitchRow
+				label={t`Published`}
+				isSelected={record.isPublic}
+				isDisabled={pending || (suspended && !record.isPublic)}
+				onChange={(checked) => (checked ? setDialogOpen(true) : void unpublish())}
+			/>
 
 			<TextField variant="secondary" isReadOnly value={url.replace(/^https?:\/\//, "")}>
 				<Label>
 					<Trans>Address</Trans>
 				</Label>
 				<InputGroup variant="secondary" fullWidth>
+					<InputGroup.Prefix>
+						<Icon name="link-simple-horizontal" size={18} className="text-muted" />
+					</InputGroup.Prefix>
 					<InputGroup.Input dir="ltr" className="font-mono text-sm" />
 					<InputGroup.Suffix className="pe-1">
 						<CopyLinkButton url={url} />
@@ -234,9 +203,6 @@ function useIndexingDelay(): string | null {
 	const date = from.toLocaleDateString(i18n.locale, { day: "numeric", month: "long", year: "numeric" });
 	return t`Your account is new, so search engines are kept away until ${date}, even with this on. It keeps fake pages out of Google.`;
 }
-
-const searchDescription = () =>
-	t`Lets Google and other search engines list your portfolio, so recruiters can find you by name. It can take weeks to appear, or to disappear after you turn this off.`;
 
 /**
  * Going live: the address, whether search engines may list it (on by default, owner decision #5) and, when the short
@@ -321,13 +287,8 @@ function PublishDialog({ onClose }: { onClose: () => void }) {
 								</Alert.Content>
 							</Alert>
 						)}
-						<SwitchRow
-							isSelected={searchable}
-							onChange={setSearchable}
-							label={t`Show in search engines`}
-							description={delay ? `${searchDescription()} ${delay}` : searchDescription()}
-							className="items-start py-0"
-						/>
+						<CellSwitchRow isSelected={searchable} onChange={setSearchable} label={t`Show in search engines`} />
+						{delay && <p className="px-1 text-body-xs text-muted">{delay}</p>}
 						{placeholders > 0 && (
 							<Alert status="warning">
 								<Alert.Indicator />
@@ -388,7 +349,7 @@ function SearchGroup() {
 
 	return (
 		<PanelGroup icon="magnifying-glass" title={<Trans>Search engines</Trans>}>
-			<SwitchRow
+			<CellSwitchRow
 				isSelected={record.showInSearchEngines}
 				isDisabled={pending}
 				onChange={(checked) =>
@@ -398,21 +359,14 @@ function SearchGroup() {
 					)
 				}
 				label={t`Show in search engines`}
-				description={
-					record.showInSearchEngines
-						? delay
-							? `${searchDescription()} ${delay}`
-							: searchDescription()
-						: t`Off. Search engines won't list your portfolio, but anyone with the link can still open it.`
-				}
-				className="items-start py-0"
 			/>
+			{record.showInSearchEngines && delay && <p className="px-1 text-body-xs text-muted">{delay}</p>}
 			<TextInput
 				label={t`Title in search results`}
 				value={seo.title ?? ""}
 				maxLength={PORTFOLIO_LIMITS.text.seoTitle}
+				icon="text-t"
 				placeholder={view.seo.title}
-				description={t`Empty uses your name and headline.`}
 				onChange={(value) =>
 					editPortfolio(
 						(draft) => {
@@ -428,8 +382,8 @@ function SearchGroup() {
 				multiline
 				value={seo.description ?? ""}
 				maxLength={PORTFOLIO_LIMITS.text.seoDescription}
+				icon="text-align-left"
 				placeholder={view.seo.description}
-				description={t`Empty uses your greeting or About me.`}
 				onChange={(value) =>
 					editPortfolio(
 						(draft) => {
@@ -452,35 +406,24 @@ function LanguageGroup() {
 	const resumeLocale = source.data
 		? languageName(pageLocaleOf({ ...data, locale: undefined }, source.data), i18n.locale)
 		: null;
-	const languageId = useId();
 
 	return (
 		<PanelGroup icon="translate" title={<Trans>Page language</Trans>}>
-			<div className="grid gap-1.5">
-				<label htmlFor={languageId} className="text-sm font-medium">
-					<Trans>Language of the page's own words</Trans>
-				</label>
-				<Combobox
-					variant="secondary"
-					id={languageId}
-					showClear
-					options={getLocaleOptions()}
-					value={data.locale ?? null}
-					placeholder={resumeLocale ? t`Same as my resume (${resumeLocale})` : t`Same as my resume`}
-					onValueChange={(locale) =>
-						editPortfolio((draft) => {
-							if (locale) draft.locale = locale as Locale;
-							else delete draft.locale;
-						})
-					}
-				/>
-				<span className="text-body-xs text-muted">
-					<Trans>
-						Changes section titles and button labels such as “View resume”, not your own text. Empty follows your
-						resume.
-					</Trans>
-				</span>
-			</div>
+			<CellSelectField
+				label={t`Language`}
+				// The flag and the language's name; the code in the list view would crowd a cell.
+				options={[
+					{ value: "", label: resumeLocale ? t`Same as my resume (${resumeLocale})` : t`Same as my resume` },
+					...getLocaleOptions().map(({ value, icon, textValue }) => ({ value, icon, label: textValue })),
+				]}
+				value={data.locale ?? ""}
+				onChange={(locale) =>
+					editPortfolio((draft) => {
+						if (locale) draft.locale = locale as Locale;
+						else delete draft.locale;
+					})
+				}
+			/>
 		</PanelGroup>
 	);
 }
@@ -516,42 +459,19 @@ function SourceGroup() {
 					</Alert.Content>
 				</Alert>
 			)}
-			<Select
+			<CellSelectField
+				label={t`Resume`}
 				value={value}
 				isDisabled={pending}
+				options={options.map((option) => ({ value: option.id, label: option.label }))}
 				onChange={(key) => {
-					if (typeof key !== "string" || key === value) return;
+					if (key === value) return;
 					void run(
 						() => client.portfolio.updateSettings({ sourceResumeId: key === NO_RESUME ? null : key }),
 						t`Couldn't change the source resume. Try again.`,
 					);
 				}}
-				className="grid w-full gap-1.5"
-			>
-				<Label>
-					<Trans>Career sections come from</Trans>
-				</Label>
-				<Select.Trigger>
-					<Select.Value />
-					<Select.Indicator />
-				</Select.Trigger>
-				<Select.Popover>
-					<ListBox>
-						{options.map((option) => (
-							<ListBox.Item key={option.id} id={option.id} textValue={option.label}>
-								{option.label}
-								<ListBox.ItemIndicator />
-							</ListBox.Item>
-						))}
-					</ListBox>
-				</Select.Popover>
-			</Select>
-			<p className="text-body-xs text-muted">
-				<Trans>
-					Your name, photo, experience, education, skills and contact details follow this resume as it changes. Your
-					portfolio's own text, work and design stay as they are.
-				</Trans>
-			</p>
+			/>
 		</PanelGroup>
 	);
 }

@@ -126,6 +126,7 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 			</Button>
 			<TextInput
 				label={t`Title`}
+				icon="text-t"
 				value={block.title}
 				maxLength={max.linkTitle}
 				placeholder={block.url}
@@ -137,6 +138,7 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 			/>
 			<TextInput
 				label={t`Description (optional)`}
+				icon="text-align-left"
 				multiline
 				value={block.description ?? ""}
 				maxLength={max.linkDescription}
@@ -148,6 +150,7 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 			/>
 			<TextInput
 				label={t`Site name (optional)`}
+				icon="globe"
 				value={block.siteName ?? ""}
 				maxLength={max.siteName}
 				placeholder="Behance"
@@ -158,7 +161,7 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 				}
 			/>
 			{suggestion && !block.image && (
-				<div className="grid gap-2 rounded-xl border border-border p-3">
+				<div className="grid gap-2 rounded-xl border border-separator p-3">
 					<span className="text-sm font-medium">
 						<Trans>Use the page's picture?</Trans>
 					</span>

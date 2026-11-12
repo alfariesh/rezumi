@@ -65,7 +65,7 @@ export function ContentPanel() {
 	// A work removed elsewhere (undo, another tab) closes its editor.
 	if (openWorkId && exists) return <WorkEditor key={openWorkId} workId={openWorkId} />;
 	return (
-		<div className="grid gap-3 p-3">
+		<div className="grid gap-6 p-3">
 			<AiDraftButton />
 			<PanelGroup icon="user-circle" title={<Trans>Intro</Trans>}>
 				<IntroForm />
@@ -91,12 +91,6 @@ function SectionsGroup() {
 
 	return (
 		<PanelGroup icon="list-bullets" title={<Trans>Sections</Trans>}>
-			<p className="text-body-xs text-muted">
-				<Trans>
-					Drag a section, or use its arrows, to change the order. Empty sections don't show on the page until they have
-					something in them.
-				</Trans>
-			</p>
 			<SortableProvider onMove={(id, target) => move(id as PortfolioSectionKey, target.index)}>
 				<div className="grid gap-1">
 					{order.map((key, index) => (
@@ -209,10 +203,7 @@ function SectionRow({
 	};
 
 	return (
-		<div
-			{...sortable.dropTargetProps}
-			className={cn("relative rounded-xl", sortable.isDragging && "opacity-50", open && "bg-default/40")}
-		>
+		<div {...sortable.dropTargetProps} className={cn("relative rounded-xl", sortable.isDragging && "opacity-50")}>
 			<SortableEdge edge={sortable.edge} />
 			<div className="group/row flex h-11 items-center gap-0.5 rounded-xl pe-1 hover:bg-default">
 				<SortableHandle
@@ -280,7 +271,7 @@ function SectionRow({
 					onPress={() => onMove(index + 1)}
 				/>
 			</div>
-			{open && <div className="grid gap-3 px-2 pt-2 pb-4">{children}</div>}
+			{open && <div className="grid gap-3 px-1 pt-2 pb-4">{children}</div>}
 		</div>
 	);
 }

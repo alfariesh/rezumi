@@ -1,11 +1,11 @@
 import type { UploadedImage } from "../../images/upload";
 import type { StepProps } from "./parts";
-import { Button, Label, Modal, RadioGroup } from "@heroui/react";
+import { Button, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
-import { RadioOption, TextInput } from "../../editor/fields";
+import { ChoiceSelect, TextInput } from "../../editor/fields";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "../../editor/store";
 import { usePortfolioEditorUi } from "../../editor/ui";
 import { ImageDrop, portfolioImageSrc, UploadStatus, useImageUploads } from "../../images/image-field";
@@ -56,24 +56,19 @@ export function FromPictures({ onBack, onClose }: StepProps) {
 	return (
 		<>
 			<Modal.Body className="grid gap-4">
-				<RadioGroup
+				<ChoiceSelect
+					label={t`Make`}
 					value={mode}
-					onChange={(value) => setMode(value as "one" | "each")}
-					isDisabled={uploads.busy || done.length > 0}
-				>
-					<Label>
-						<Trans>Make</Trans>
-					</Label>
-					<RadioOption value="one">
-						<Trans>One work with all the pictures</Trans>
-					</RadioOption>
-					<RadioOption value="each">
-						<Trans>One work per picture (photographers, illustrators)</Trans>
-					</RadioOption>
-				</RadioGroup>
+					options={[
+						{ id: "one", label: t`One work with all the pictures` },
+						{ id: "each", label: t`One work per picture` },
+					]}
+					onChange={setMode}
+				/>
 				{mode === "one" && (
 					<TextInput
 						label={t`Title of the work`}
+						icon="text-t"
 						value={title}
 						maxLength={PORTFOLIO_LIMITS.text.workTitle}
 						placeholder={t`Wedding photos, Bandung 2025`}
@@ -85,7 +80,6 @@ export function FromPictures({ onBack, onClose }: StepProps) {
 					<ImageDrop
 						multiple
 						label={t`Drop pictures here`}
-						description={t`JPG, PNG or WebP. Each is shrunk in your browser before it's uploaded, and its location data is removed.`}
 						isDisabled={uploads.busy}
 						onFiles={(files) => void upload(files)}
 					/>

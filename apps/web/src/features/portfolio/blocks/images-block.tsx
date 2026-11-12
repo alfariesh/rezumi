@@ -59,7 +59,7 @@ export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEd
 			{images.map((image, index) => {
 				const name = image.alt.trim() || t`Picture ${index + 1}`;
 				return (
-					<div key={keys[index]} {...itemProps} className="grid gap-3 rounded-xl border border-border p-3">
+					<div key={keys[index]} {...itemProps} className="grid gap-3 rounded-xl border border-separator p-3">
 						<div className="flex gap-3">
 							<img
 								src={portfolioImageSrc(image)}
@@ -128,7 +128,6 @@ export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEd
 						compact
 						multiple
 						label={t`Add pictures`}
-						description={t`${images.length} of ${PORTFOLIO_LIMITS.imagesPerBlock}. Drop, choose or paste them.`}
 						isDisabled={uploads.busy}
 						onFiles={(files) => void add(files)}
 					/>

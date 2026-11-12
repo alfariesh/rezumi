@@ -1,9 +1,10 @@
 import type { PortfolioSectionKey } from "@rezumi/schema/portfolio/sections";
-import { Button, buttonVariants, Switch } from "@heroui/react";
+import { Button, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { isResumeReferenceId, PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { generateId } from "@rezumi/utils/string";
 import { ImageField } from "../images/image-field";
 import { useSourceResume } from "./context";
@@ -75,6 +76,7 @@ export function CustomSectionForm({ id }: { id: string }) {
 		<div className="grid gap-4">
 			<TextInput
 				label={t`Section title`}
+				icon="text-t"
 				value={section.title}
 				maxLength={max.customTitle}
 				placeholder={t`How I work`}
@@ -97,6 +99,7 @@ export function CustomSectionForm({ id }: { id: string }) {
 			/>
 			<TextInput
 				label={t`Button text (optional)`}
+				icon="text-t"
 				value={section.button?.label ?? ""}
 				maxLength={max.buttonLabel}
 				placeholder={t`See the case study`}
@@ -177,38 +180,18 @@ export function ResumeItemsForm({ sectionKey }: { sectionKey: PortfolioSectionKe
 					<Trans>Nothing here on your resume yet, so the section doesn't show.</Trans>
 				</p>
 			) : (
-				<ul className="grid gap-1">
+				<ul className="grid gap-2">
 					{items.map((item) => {
 						// The portfolio refers to an item by its id; one it can't store (empty or too long) can't be hidden here.
 						const hideable = isResumeReferenceId(item.id);
 						return (
 							<li key={item.id}>
-								<Switch
+								<CellSwitchRow
 									isSelected={!item.hiddenOnResume && !hidden.has(item.id)}
 									isDisabled={item.hiddenOnResume || !hideable}
 									onChange={(shown) => editPortfolio((draft) => setItemHidden(draft, sectionKey, item.id, !shown))}
-									className="w-full"
-								>
-									<Switch.Content className="w-full justify-between gap-3 text-start">
-										<span className="grid min-w-0">
-											<span className="truncate text-sm">{item.label}</span>
-											{item.hiddenOnResume ? (
-												<span className="text-body-xs text-muted">
-													<Trans>Hidden on your resume</Trans>
-												</span>
-											) : (
-												!hideable && (
-													<span className="text-body-xs text-muted">
-														<Trans>This item can't be hidden here. Hide it on your resume instead.</Trans>
-													</span>
-												)
-											)}
-										</span>
-										<Switch.Control>
-											<Switch.Thumb />
-										</Switch.Control>
-									</Switch.Content>
-								</Switch>
+									label={item.hiddenOnResume ? t`${item.label} (hidden on your resume)` : item.label}
+								/>
 							</li>
 						);
 					})}

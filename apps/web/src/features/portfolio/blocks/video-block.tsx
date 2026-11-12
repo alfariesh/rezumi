@@ -135,16 +135,14 @@ export function VideoBlockEditor({ work, block, edit }: VideoBlockEditorProps) {
 				label={t`Video link`}
 				value={text}
 				maxLength={max.url}
+				icon="link-simple-horizontal"
 				placeholder="https://www.youtube.com/watch?v=…"
-				description={
-					parsed || !text.trim()
-						? t`YouTube or Vimeo. Visitors see this thumbnail; the player loads only when they press play.`
-						: t`That isn't a YouTube or Vimeo video link.`
-				}
+				errorMessage={parsed || !text.trim() ? undefined : t`That isn't a YouTube or Vimeo video link.`}
 				onChange={changeVideo}
 			/>
 			<TextInput
 				label={t`Video title (optional)`}
+				icon="text-t"
 				value={block.title ?? ""}
 				maxLength={max.mediaTitle}
 				onChange={(value) =>

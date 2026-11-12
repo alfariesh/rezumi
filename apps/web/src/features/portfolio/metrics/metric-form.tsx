@@ -1,9 +1,10 @@
 import type { MetricFormatChoice } from "./metrics";
 import type { PortfolioMetric } from "@rezumi/schema/portfolio/metric";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { Draft } from "immer";
 import type { ReactNode } from "react";
-import { Segment } from "@heroui-pro/react";
-import { Button, Description, FieldError, Input, InputGroup, Label, Skeleton, Switch, TextField } from "@heroui/react";
+import { CellSlider, Segment } from "@heroui-pro/react";
+import { Button, FieldError, Input, InputGroup, Label, Skeleton, TextField } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -11,6 +12,7 @@ import { lazy, Suspense, useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { METRIC_DIRECTIONS, METRIC_DURATION_UNITS } from "@rezumi/schema/portfolio/metric";
 import { Icon } from "@rezumi/ui/components/icon";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { useRemovalFocus } from "../blocks/list-focus";
 import { ChoiceSelect, ItemToolbar, moveItem, TextInput } from "../editor/fields";
 import { FindMetricsButton } from "./find-metrics";
@@ -28,6 +30,7 @@ import {
 } from "./metrics";
 import { useDraftText } from "./use-draft-text";
 import { IconPicker } from "@/components/input/icon-picker";
+import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 
 const LazyMetricPreview = lazy(() => import("./metric-preview"));
 
@@ -59,7 +62,8 @@ type NumberTextProps = {
 	value: number | undefined;
 	/** A number, or undefined once the field is cleared. Half-typed text never reaches the data. */
 	onChange: (value: number | undefined) => void;
-	description?: ReactNode;
+	/** Drawn at the start of the field. */
+	icon?: IconName;
 	placeholder?: string;
 	min?: number;
 	max?: number;
@@ -77,7 +81,7 @@ function NumberText({
 	label,
 	value,
 	onChange,
-	description,
+	icon,
 	placeholder,
 	min,
 	max: upper,
@@ -116,6 +120,11 @@ function NumberText({
 			<Label>{label}</Label>
 			{allowNegative ? (
 				<InputGroup variant="secondary" fullWidth>
+					{icon && (
+						<InputGroup.Prefix>
+							<Icon name={icon} size={18} className="text-muted" />
+						</InputGroup.Prefix>
+					)}
 					<InputGroup.Input {...input} />
 					<InputGroup.Suffix className="pe-1">
 						<Button
@@ -130,9 +139,10 @@ function NumberText({
 					</InputGroup.Suffix>
 				</InputGroup>
 			) : (
-				<Input variant="secondary" {...input} />
+				<WithInputIcon icon={icon}>
+					<Input variant="secondary" {...input} className={icon ? INPUT_WITH_ICON : ""} />
+				</WithInputIcon>
 			)}
-			{description && <Description>{description}</Description>}
 			<FieldError>
 				{min !== undefined && upper !== undefined
 					? t`Enter a number from ${min} to ${upper}.`
@@ -173,8 +183,15 @@ function SeriesText({ value, onChange }: SeriesTextProps) {
 			className="gap-1.5"
 		>
 			<Label>{t`Small chart (optional)`}</Label>
-			<Input variant="secondary" inputMode="text" dir="ltr" placeholder={["12", "15", "21", "28"].join(separator)} />
-			<Description>{t`${min} to ${most} values in order, oldest first. The page draws them as a small line.`}</Description>
+			<WithInputIcon icon="chart-line-up">
+				<Input
+					variant="secondary"
+					inputMode="text"
+					dir="ltr"
+					placeholder={["12", "15", "21", "28"].join(separator)}
+					className={INPUT_WITH_ICON}
+				/>
+			</WithInputIcon>
 			<FieldError>{t`Enter ${min} to ${most} numbers separated by “${separator.trim()}”.`}</FieldError>
 		</TextField>
 	);
@@ -240,6 +257,7 @@ function MetricFields({ metric, edit, locale, compact = false }: MetricFieldsPro
 					<NumberText
 						key={`${metric.id}-value`}
 						label={t`Value`}
+						icon="trend-up"
 						isRequired
 						allowNegative
 						value={metric.value.number}
@@ -274,8 +292,8 @@ function MetricFields({ metric, edit, locale, compact = false }: MetricFieldsPro
 					label={t`Value`}
 					value={metric.value.text}
 					maxLength={max.metricText}
+					icon="trend-up"
 					placeholder={t`Top 3`}
-					description={t`For results that aren't a number, such as “Top 3” or “#1”.`}
 					onChange={(text) =>
 						edit((draft) => {
 							draft.value = { kind: "text", text };
@@ -286,6 +304,7 @@ function MetricFields({ metric, edit, locale, compact = false }: MetricFieldsPro
 			<div className="grid grid-cols-2 gap-3">
 				<TextInput
 					label={t`Before the value`}
+					icon="text-t"
 					value={metric.prefix ?? ""}
 					maxLength={max.metricPrefix}
 					placeholder="+"
@@ -298,6 +317,7 @@ function MetricFields({ metric, edit, locale, compact = false }: MetricFieldsPro
 				/>
 				<TextInput
 					label={t`After the value`}
+					icon="text-t"
 					value={metric.suffix ?? ""}
 					maxLength={max.metricSuffix}
 					placeholder={t`/month`}
@@ -328,7 +348,8 @@ function MoreMetricFields({ metric, edit }: Pick<MetricFieldsProps, "metric" | "
 	const change = metric.change;
 	return (
 		<div className="grid gap-3 border-s-2 border-border ps-3">
-			<Switch
+			<CellSwitchRow
+				label={t`Show a change`}
 				isSelected={Boolean(change)}
 				onChange={(on) =>
 					edit((draft) => {
@@ -336,16 +357,7 @@ function MoreMetricFields({ metric, edit }: Pick<MetricFieldsProps, "metric" | "
 						else delete draft.change;
 					})
 				}
-			>
-				<Switch.Content className="w-full justify-between">
-					<span className="text-body-sm">
-						<Trans>Show a change</Trans>
-					</span>
-					<Switch.Control>
-						<Switch.Thumb />
-					</Switch.Control>
-				</Switch.Content>
-			</Switch>
+			/>
 			{change && (
 				<div className="grid gap-3 @sm:grid-cols-2">
 					<ChoiceSelect
@@ -360,6 +372,7 @@ function MoreMetricFields({ metric, edit }: Pick<MetricFieldsProps, "metric" | "
 					/>
 					<TextInput
 						label={t`Change text`}
+						icon="trend-up"
 						value={change.text}
 						maxLength={max.metricChange}
 						placeholder="+35%"
@@ -376,7 +389,6 @@ function MoreMetricFields({ metric, edit }: Pick<MetricFieldsProps, "metric" | "
 							{ id: "good", label: t`Good news (green)` },
 							{ id: "bad", label: t`Bad news (red)` },
 						]}
-						description={t`A fall can be good, such as faster load times.`}
 						onChange={(value) =>
 							edit((draft) => {
 								if (draft.change) draft.change.good = value === "good";
@@ -390,8 +402,8 @@ function MoreMetricFields({ metric, edit }: Pick<MetricFieldsProps, "metric" | "
 					key={`${metric.id}-before`}
 					label={t`Value before (optional)`}
 					allowNegative
+					icon="clock-counter-clockwise"
 					value={metric.before}
-					description={t`Shown as before → after bars, in the same format.`}
 					onChange={(value) =>
 						edit((draft) => {
 							if (value === undefined) delete draft.before;
@@ -409,22 +421,42 @@ function MoreMetricFields({ metric, edit }: Pick<MetricFieldsProps, "metric" | "
 					}, "series")
 				}
 			/>
-			<NumberText
-				key={`${metric.id}-progress`}
-				label={t`Progress (optional)`}
-				value={metric.progress}
-				min={PROGRESS.min}
-				max={PROGRESS.max}
-				description={t`From ${PROGRESS.min} to ${PROGRESS.max}, drawn as a bar.`}
-				onChange={(value) =>
+			<CellSwitchRow
+				label={t`Show progress`}
+				isSelected={metric.progress !== undefined}
+				onChange={(on) =>
 					edit((draft) => {
-						if (value === undefined) delete draft.progress;
-						else draft.progress = value;
-					}, "progress")
+						if (on) draft.progress = 50;
+						else delete draft.progress;
+					})
 				}
 			/>
+			{metric.progress !== undefined && (
+				<CellSlider
+					aria-label={t`Progress`}
+					minValue={PROGRESS.min}
+					maxValue={PROGRESS.max}
+					step={1}
+					value={metric.progress}
+					onChange={(value) =>
+						edit((draft) => {
+							draft.progress = Array.isArray(value) ? (value[0] ?? PROGRESS.min) : value;
+						}, "progress")
+					}
+				>
+					<CellSlider.Track>
+						<CellSlider.Fill />
+						<CellSlider.Thumb />
+						<CellSlider.Label>
+							<Trans>Progress</Trans>
+						</CellSlider.Label>
+						<CellSlider.Output>{metric.progress}%</CellSlider.Output>
+					</CellSlider.Track>
+				</CellSlider>
+			)}
 			<TextInput
 				label={t`Context or source (optional)`}
+				icon="note"
 				value={metric.context ?? ""}
 				maxLength={max.metricContext}
 				placeholder={t`3 months after launch`}
@@ -485,13 +517,10 @@ export function MetricsEditor({
 	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 	return (
 		<div className="grid gap-3">
-			<p className="text-body-xs text-muted">
-				<Trans>Use numbers you can explain in an interview, and say where they come from.</Trans>
-			</p>
 			{metrics.map((metric, index) => {
 				const name = metric.label.trim() || t`Metric ${index + 1}`;
 				return (
-					<div key={metric.id} {...itemProps} className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
+					<div key={metric.id} {...itemProps} className="grid gap-3 rounded-xl border border-separator p-3">
 						<MetricFields
 							metric={metric}
 							compact={compact}

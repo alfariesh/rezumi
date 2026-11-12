@@ -1,12 +1,13 @@
 import type { GroupItem } from "@/features/resume/editor/chrome/group-nav";
+import type { Color } from "@heroui/react";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioScheme, PortfolioVariantKey, PortfolioVariantValue } from "@rezumi/schema/portfolio/themes";
 import type { ReactNode } from "react";
-import { Segment } from "@heroui-pro/react";
-import { Chip, Radio, RadioGroup } from "@heroui/react";
+import { CellColorPicker, Segment } from "@heroui-pro/react";
+import { Chip, ColorArea, ColorField, ColorSlider, parseColor, Radio, RadioGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useId } from "react";
+import { useId, useState } from "react";
 import { accentIsCorrected } from "@rezumi/portfolio/editor";
 import { PORTFOLIO_HERO_BACKGROUNDS } from "@rezumi/schema/portfolio/data";
 import {
@@ -20,7 +21,7 @@ import {
 	themeVariant,
 } from "@rezumi/schema/portfolio/themes";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SwitchRow } from "@rezumi/ui/components/switch";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { rgbaStringToHex } from "@rezumi/utils/color";
 import { cn } from "@rezumi/utils/style";
 import { ImageField } from "../images/image-field";
@@ -30,7 +31,6 @@ import { ChoiceSelect, PanelGroup } from "./fields";
 import { IntroEffectPicker } from "./intro-effect";
 import { editPortfolio, usePortfolioData } from "./store";
 import { useEditorView } from "./use-view";
-import { ColorPicker } from "@/components/input/color-picker";
 import { hasPlanFeature, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { GroupPanel, useGroupSpy } from "@/features/resume/editor/chrome/group-nav";
@@ -118,7 +118,7 @@ function BadgeGroup() {
 	const canHide = hasPlanFeature(plan, "hidePortfolioCredit");
 	return (
 		<PanelGroup id="portfolio-design-badge" icon="seal-check" title={<Trans>Badge</Trans>}>
-			<SwitchRow
+			<CellSwitchRow
 				label={
 					<span className="flex items-center gap-2">
 						<Trans>Show Made with Rezumi</Trans>
@@ -130,7 +130,6 @@ function BadgeGroup() {
 						)}
 					</span>
 				}
-				description={<Trans>A small badge at the bottom of your page.</Trans>}
 				isSelected={credit.show || !canHide}
 				onChange={(show) => {
 					if (!show && !canHide) {
@@ -177,6 +176,9 @@ function ColorsGroup() {
 	const resumeAccent = followsResume ? accent : resumeColor ? rgbaStringToHex(resumeColor).toUpperCase() : undefined;
 
 	const accentLabelId = useId();
+	// A stored grey or black has no hue: keep the colour last dragged to while it still matches, so the thumbs stay put.
+	const [picked, setPicked] = useState<Color | null>(null);
+	const pickerColor = picked?.toString("hex").toUpperCase() === accent.toUpperCase() ? picked : parseColor(accent);
 	const accentValue =
 		design.accent.source === "resume" ? RESUME_ACCENT : design.accent.source === "preset" ? design.accent.id : "";
 
@@ -196,7 +198,7 @@ function ColorsGroup() {
 
 	return (
 		<PanelGroup id="portfolio-design-colors" icon="palette" title={<Trans>Colors</Trans>}>
-			<div className="grid gap-1.5">
+			<div className="grid gap-2">
 				<span className="text-sm font-medium">
 					<Trans>Mode</Trans>
 				</span>
@@ -218,66 +220,78 @@ function ColorsGroup() {
 						<Trans>Device</Trans>
 					</Segment.Item>
 				</Segment>
-				<span className="text-xs text-muted">
-					{scheme === "auto" ? (
-						<Trans>Follows each visitor's light or dark setting.</Trans>
-					) : (
-						<Trans>Every visitor sees this mode.</Trans>
-					)}
-				</span>
 			</div>
 
 			<div className="grid gap-2">
 				<span id={accentLabelId} className="text-sm font-medium">
 					<Trans>Accent color</Trans>
 				</span>
-				<div className="flex flex-wrap items-center gap-2">
-					{/* One Tab stop for the swatches, arrow keys between them; your own color is its own control. */}
-					<RadioGroup
-						aria-labelledby={accentLabelId}
-						orientation="horizontal"
-						// No swatch is chosen while your own color is: null (not "") keeps every swatch reachable by Tab.
-						value={accentValue || null}
-						onChange={chooseAccent}
-						className="flex flex-wrap items-center gap-2"
-					>
-						<AccentSwatch value={RESUME_ACCENT} label={t`Same as my resume`} color={resumeAccent}>
-							<Icon name="file-text" size={16} />
-						</AccentSwatch>
-						{PORTFOLIO_ACCENT_IDS.map((id) => (
-							<AccentSwatch
-								key={id}
-								value={id}
-								label={PORTFOLIO_ACCENTS[id].label}
-								color={PORTFOLIO_ACCENTS[id].color}
-							/>
-						))}
-					</RadioGroup>
-					<ColorPicker
-						aria-label={t`Your own color`}
-						value={accent}
-						onChange={(value) =>
-							editPortfolio(
-								(draft) => {
-									draft.design.accent = { source: "custom", color: rgbaStringToHex(value).toUpperCase() };
-								},
-								{ key: "design.accent" },
-							)
-						}
-						className={cn(
-							"grid size-9 shrink-0 cursor-(--cursor-interactive) place-items-center rounded-full border border-separator outline-none focus-visible:ring-2 focus-visible:ring-focus",
-							design.accent.source === "custom" && "ring-2 ring-accent ring-offset-2 ring-offset-background",
-						)}
-					/>
-				</div>
-				<span className="text-xs text-muted">
-					{followsResume ? <Trans>Same as your resume, so both look like a set.</Trans> : null}
-					{followsResume && corrected ? " " : null}
-					{corrected ? (
-						<Trans>This color is hard to read as text here, so links and accent text use a deeper shade of it.</Trans>
-					) : null}
-				</span>
+				{/* One Tab stop for the swatches, arrow keys between them; your own color is its own control. */}
+				<RadioGroup
+					aria-labelledby={accentLabelId}
+					orientation="horizontal"
+					// No swatch is chosen while your own color is: null (not "") keeps every swatch reachable by Tab.
+					value={accentValue || null}
+					onChange={chooseAccent}
+					className="flex flex-wrap items-center gap-2"
+				>
+					<AccentSwatch value={RESUME_ACCENT} label={t`Same as my resume`} color={resumeAccent}>
+						<Icon name="file-text" size={16} />
+					</AccentSwatch>
+					{PORTFOLIO_ACCENT_IDS.map((id) => (
+						<AccentSwatch key={id} value={id} label={PORTFOLIO_ACCENTS[id].label} color={PORTFOLIO_ACCENTS[id].color} />
+					))}
+				</RadioGroup>
 			</div>
+
+			<CellColorPicker
+				aria-label={t`Your own color`}
+				value={pickerColor}
+				onChange={(next) => {
+					setPicked(next);
+					editPortfolio(
+						(draft) => {
+							draft.design.accent = { source: "custom", color: next.toString("hex").toUpperCase() };
+						},
+						{ key: "design.accent" },
+					);
+				}}
+			>
+				<CellColorPicker.Trigger>
+					<CellColorPicker.Label>
+						<Trans>Your own color</Trans>
+					</CellColorPicker.Label>
+					<CellColorPicker.ValueDisplay />
+					<CellColorPicker.Swatch />
+				</CellColorPicker.Trigger>
+				<CellColorPicker.Popover>
+					<ColorArea
+						aria-label={t`Saturation and brightness`}
+						colorSpace="hsb"
+						xChannel="saturation"
+						yChannel="brightness"
+						className="w-full max-w-full"
+					>
+						<ColorArea.Thumb />
+					</ColorArea>
+					<ColorSlider aria-label={t`Hue`} channel="hue" colorSpace="hsb">
+						<ColorSlider.Track>
+							<ColorSlider.Thumb />
+						</ColorSlider.Track>
+					</ColorSlider>
+					<ColorField aria-label={t`Your own color (hex)`}>
+						<ColorField.Group variant="secondary" fullWidth>
+							<ColorField.Input className="font-mono" />
+						</ColorField.Group>
+					</ColorField>
+				</CellColorPicker.Popover>
+			</CellColorPicker>
+
+			{corrected && (
+				<p role="status" className="px-1 text-body-xs text-warning">
+					<Trans>This color is hard to read as text here, so links and accent text use a deeper shade of it.</Trans>
+				</p>
+			)}
 		</PanelGroup>
 	);
 }
@@ -340,7 +354,6 @@ function IntroGroup() {
 					label={t`Background picture`}
 					value={data.hero.background.image}
 					altSuggestion=""
-					description={t`A darker layer goes over it so the text stays readable. Wide pictures fit best.`}
 					onChange={(image) =>
 						editPortfolio((draft) => {
 							if (image) draft.hero.background.image = image;
@@ -371,11 +384,6 @@ function FontsGroup() {
 				label={t`Font pair`}
 				value={value}
 				options={options}
-				description={
-					design.fonts.source === "resume"
-						? t`Uses your resume's fonts when they're available on the web; otherwise the theme's.`
-						: t`One for headings, one for text.`
-				}
 				onChange={(next) =>
 					editPortfolio((draft) => {
 						draft.design.fonts =
@@ -417,9 +425,6 @@ function LayoutGroup() {
 					/>
 				);
 			})}
-			<p className="text-body-xs text-muted">
-				<Trans>The numbers style applies to results in your work once you add them.</Trans>
-			</p>
 		</PanelGroup>
 	);
 }
