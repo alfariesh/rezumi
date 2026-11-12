@@ -54,7 +54,8 @@ export async function openDownloadDialog(page: Page) {
 /** Publishes the web page in Share mode and returns its address. */
 export async function makeResumePublic(page: Page) {
 	await openSidebarSection(page, "Sharing");
-	await page.getByRole("button", { name: "Publish", exact: true }).click();
+	// The switch's input is visually hidden inside its cell; people press the cell's label.
+	await page.locator("label").filter({ hasText: "Public link" }).click();
 	await expect(page.getByRole("switch", { name: "Public link" })).toBeChecked();
 	return getPublicUrl(page);
 }

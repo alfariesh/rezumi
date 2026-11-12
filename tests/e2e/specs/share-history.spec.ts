@@ -10,7 +10,8 @@ test("renames the public address and keeps the old one redirecting", async ({ br
 	await expect(page.getByText("Use lowercase letters, numbers and single dashes.")).toBeVisible();
 
 	await address.fill("renamed-address");
-	await expect(page.getByText(/^Live at .*\/renamed-address$/)).toBeVisible();
+	// Once the new address is saved, the page's link follows it.
+	await expect(page.getByRole("link", { name: "Open web page" })).toHaveAttribute("href", /\/renamed-address$/);
 	expect(await getPublicUrl(page)).toMatch(/\/renamed-address$/);
 
 	const visitor = await browser.newPage();
