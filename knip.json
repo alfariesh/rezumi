@@ -23,6 +23,23 @@
 				"src/ui/{index,tokens}.ts"
 			]
 		},
+		"apps/extension": {
+			"entry": [
+				"scripts/*.ts",
+				"src/background/index.ts",
+				"src/content/index.ts",
+				"src/sidepanel/main.tsx",
+				"lingui.config.ts",
+				"vitest.config.ts",
+				"tests/**/*.ts"
+			],
+			"vite": {
+				"config": []
+			},
+			"vitest": {
+				"config": []
+			}
+		},
 		"apps/blog": {
 			"entry": ["src/live.config.ts"]
 		},
