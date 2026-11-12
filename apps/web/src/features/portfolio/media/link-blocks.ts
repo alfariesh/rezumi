@@ -117,7 +117,7 @@ export function videoBlockFromUnfurl(result: Extract<UnfurledLink, { kind: "vide
 export function workFromLink(
 	data: Pick<PortfolioData, "works">,
 	link: { url: string; title: string; summary: string },
-	block: PortfolioBlockOf<"link"> | PortfolioBlockOf<"video">,
+	block: PortfolioBlockOf<"link"> | PortfolioBlockOf<"video"> | PortfolioBlockOf<"embed">,
 	cover?: PortfolioImage,
 ): PortfolioWork {
 	const work = newWork(data);

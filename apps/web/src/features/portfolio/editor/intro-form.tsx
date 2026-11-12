@@ -1,8 +1,9 @@
-import type { PortfolioButton } from "@rezumi/schema/portfolio/data";
-import { Button } from "@heroui/react";
+import type { PortfolioButton, PortfolioJobType } from "@rezumi/schema/portfolio/data";
+import { Button, Checkbox, CheckboxGroup, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { PORTFOLIO_BUTTON_KINDS } from "@rezumi/schema/portfolio/data";
+import { useId } from "react";
+import { PORTFOLIO_BUTTON_KINDS, PORTFOLIO_JOB_TYPES } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
@@ -18,6 +19,7 @@ import { setBasicsText } from "./sections";
 import { editPortfolio, usePortfolioData } from "./store";
 import { KEPT_PHOTO_MS, usePortfolioEditorUi } from "./ui";
 import { useEditorView, usePageMessages } from "./use-view";
+import { ChipInput } from "@/components/input/chip-input";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -109,22 +111,28 @@ export function IntroForm() {
 				}
 				label={t`Show “Open to work”`}
 			/>
+			<p className="-mt-2 px-1 text-body-xs text-muted">
+				<Trans>Anyone who opens your page sees this, your current employer too.</Trans>
+			</p>
 			{hero.availability.show && (
-				<TextInput
-					label={t`Label text`}
-					value={hero.availability.text}
-					maxLength={max.availability}
-					icon="pencil-line"
-					placeholder={t`Open to work`}
-					onChange={(value) =>
-						editPortfolio(
-							(draft) => {
-								draft.hero.availability.text = value;
-							},
-							{ key: "hero.availability" },
-						)
-					}
-				/>
+				<>
+					<TextInput
+						label={t`Label text`}
+						value={hero.availability.text}
+						maxLength={max.availability}
+						icon="pencil-line"
+						placeholder={t`Open to work`}
+						onChange={(value) =>
+							editPortfolio(
+								(draft) => {
+									draft.hero.availability.text = value;
+								},
+								{ key: "hero.availability" },
+							)
+						}
+					/>
+					<OpenToFields />
+				</>
 			)}
 			<HeroHighlights />
 			<HeroButtons />
@@ -255,6 +263,88 @@ function hiddenButtonReason(kind: PortfolioButton["kind"]): string {
 		case "vcard":
 			return t`Shown on your published page.`;
 	}
+}
+
+const jobTypeLabel = (type: PortfolioJobType) =>
+	({
+		"full-time": t`Full-time`,
+		"part-time": t`Part-time`,
+		contract: t`Contract`,
+		freelance: t`Freelance`,
+		internship: t`Internship`,
+	})[type];
+
+/**
+ * What "Open to work" is open to (Phase 13 3.6): the roles looked for and the kinds of work. The page shows them as
+ * one line under the label ("Looking for: Product Designer · UI Designer — Full-time, Contract").
+ */
+function OpenToFields() {
+	const { hero } = usePortfolioData();
+	const { roles, types } = hero.availability;
+	const most = PORTFOLIO_LIMITS.availabilityRoles;
+	const rolesId = useId();
+
+	return (
+		<>
+			<div className="grid gap-1.5">
+				<span id={rolesId} className="text-sm font-medium">
+					<Trans>Roles you're looking for</Trans>
+				</span>
+				<ChipInput
+					allowCommas
+					aria-labelledby={rolesId}
+					placeholder={t`Add a role…`}
+					value={roles}
+					onChange={(next) =>
+						editPortfolio(
+							(draft) => {
+								draft.hero.availability.roles = [
+									...new Set(next.map((role) => role.trim().slice(0, max.availabilityRole)).filter(Boolean)),
+								].slice(0, most);
+							},
+							{ key: "hero.availability" },
+						)
+					}
+				/>
+				<p className="px-1 text-body-xs text-muted">
+					{roles.length >= most ? (
+						<Trans>That's the most: remove one to add another.</Trans>
+					) : (
+						<Trans>Up to 5, such as Product Designer.</Trans>
+					)}
+				</p>
+			</div>
+			<CheckboxGroup
+				value={types}
+				onChange={(next) =>
+					editPortfolio(
+						(draft) => {
+							// In the list's own order, so the page reads the same whatever was ticked first.
+							draft.hero.availability.types = PORTFOLIO_JOB_TYPES.filter((type) => next.includes(type));
+						},
+						{ key: "hero.availability" },
+					)
+				}
+				className="grid gap-1.5"
+			>
+				<Label className="text-sm font-medium">
+					<Trans>Kinds of work</Trans>
+				</Label>
+				<div className="flex flex-wrap gap-x-4 gap-y-2">
+					{PORTFOLIO_JOB_TYPES.map((type) => (
+						<Checkbox key={type} value={type}>
+							<Checkbox.Content>
+								<Checkbox.Control>
+									<Checkbox.Indicator />
+								</Checkbox.Control>
+								<Label className="text-sm">{jobTypeLabel(type)}</Label>
+							</Checkbox.Content>
+						</Checkbox>
+					))}
+				</div>
+			</CheckboxGroup>
+		</>
+	);
 }
 
 const ADD_ORDER: PortfolioButton["kind"][] = [

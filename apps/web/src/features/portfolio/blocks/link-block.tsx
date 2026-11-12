@@ -1,31 +1,41 @@
 import type { EditBlock } from "./video-block";
-import type { PortfolioBlockOf } from "@rezumi/schema/portfolio/blocks";
+import type { PortfolioBlock, PortfolioBlockOf } from "@rezumi/schema/portfolio/blocks";
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
+import type { ParsedEmbed } from "@rezumi/schema/portfolio/embed";
 import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useRef, useState } from "react";
+import { parseEmbedUrl } from "@rezumi/schema/portfolio/embed";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { TextInput, UrlInput } from "../editor/fields";
 import { ImageField } from "../images/image-field";
 import { discardUploadedImages, isAbort } from "../images/upload";
 import { useRequestSignals } from "../images/use-request-signals";
+import { embedBlockFrom, embedFromUrl, importEmbedThumbnail } from "../media/embeds";
 import { linkBlockFromUnfurl, siteOf, useLinkSuggestions } from "../media/link-blocks";
 import { importRemotePicture, remotePictureErrorMessage, unfurlErrorMessage, unfurlLink } from "../media/remote";
 import { currentBlock, ErrorNote } from "./add-media-block";
+import { EmbedInstead } from "./embed-block";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
-type LinkBlockEditorProps = { work: PortfolioWork; block: PortfolioBlockOf<"link">; edit: EditBlock<"link"> };
+type LinkBlockEditorProps = {
+	work: PortfolioWork;
+	block: PortfolioBlockOf<"link">;
+	edit: EditBlock<"link">;
+	/** Puts another block in this one's place ("Embed it instead"). */
+	onReplace?: (block: PortfolioBlock) => void;
+};
 
 /**
  * A link card: the address, what the page said about itself (all editable), and a picture: one the person uploads,
  * or the page's own once they agree to copy it. A new address drops the page's suggested picture, and the site name
  * and description when it's another site.
  */
-export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
+export function LinkBlockEditor({ work, block, edit, onReplace }: LinkBlockEditorProps) {
 	const suggestion = useLinkSuggestions((state) => state.pictures[block.id]);
 	const [reading, setReading] = useState(false);
 	const [copying, setCopying] = useState(false);
@@ -35,6 +45,38 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 	// The site the card's text came from. While the address is typed it passes through other sites ("https://d" on the
 	// way to dribbble.com), so the site name and description are only dropped once typing ends on another site.
 	const cardSite = useRef(siteOf(block.url));
+	// Content another service lets pages embed, by the address or by what reading it found (a short link).
+	const [readEmbed, setReadEmbed] = useState<ParsedEmbed | null>(null);
+	const [embedding, setEmbedding] = useState(false);
+	const embedOffer = parseEmbedUrl(block.url) ?? readEmbed;
+
+	/** "Embed it instead": an Embed block in this card's place, with the card's title and picture, else the service's. */
+	const embedInstead = async () => {
+		if (!embedOffer || !onReplace) return;
+		const signal = requests.next("embed");
+		setEmbedding(true);
+		try {
+			let thumbnail = block.image;
+			let title = block.title.trim();
+			if (!thumbnail) {
+				const find = await embedFromUrl(block.url, signal);
+				if (!title && find?.block.title) title = find.block.title;
+				if (find?.thumbnailUrl) thumbnail = await importEmbedThumbnail(find.thumbnailUrl, title, signal);
+			}
+			// Removed meanwhile: nothing to replace, and the copied picture isn't kept.
+			if (currentBlock(work.id, block.id)?.type !== "link") {
+				if (thumbnail && thumbnail !== block.image) void discardUploadedImages([thumbnail]);
+				return;
+			}
+			const embed = embedBlockFrom(embedOffer, title);
+			onReplace({ ...embed, id: block.id, ...(thumbnail ? { thumbnail } : {}) });
+			useLinkSuggestions.getState().dismiss(block.id);
+		} catch (failure) {
+			if (!isAbort(failure, signal)) setError(unfurlErrorMessage(failure));
+		} finally {
+			if (!signal.aborted) setEmbedding(false);
+		}
+	};
 
 	const readAgain = async () => {
 		const signal = requests.next("read");
@@ -46,6 +88,11 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 			const result = await unfurlLink(url, signal);
 			if (result.kind === "video") {
 				setError(t`This is a video. Add it as a Video block to play it on the page.`);
+				return;
+			}
+			if (result.kind === "embed") {
+				// The offer below shows; the card keeps what it has meanwhile.
+				setReadEmbed({ provider: result.provider, ref: result.ref });
 				return;
 			}
 			const fresh = linkBlockFromUnfurl(result, url);
@@ -106,6 +153,7 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 		requests.cancel("picture");
 		requests.cancel("read");
 		setReading(false);
+		setReadEmbed(null);
 		edit((draft) => {
 			draft.url = url;
 			delete draft.brandIcon;
@@ -209,6 +257,9 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 					)
 				}
 			/>
+			{embedOffer && onReplace && (
+				<EmbedInstead embed={embedOffer} busy={embedding} onEmbed={() => void embedInstead()} />
+			)}
 			{error && <ErrorNote message={error} />}
 		</div>
 	);

@@ -11,5 +11,7 @@ const ownSegments = [
 	"__[^/]*",
 ].join("|");
 
-// Query parameters must not turn the homepage or an app route into a public-resume request.
-export const publicResumeProxyPattern = `^/(?!(?:${ownSegments})(?:/|\\?|$))[^/.?]+(?:/[^/.?]+)?/?(?:\\?.*)?$`;
+// The server's public pages: `/<username>` (resume or portfolio), `/<username>/<slug>` (a resume) and
+// `/<username>/work/<slug>` (a portfolio's work page). Query parameters must not turn the homepage or an app route into
+// a public-page request; the app's own three-segment routes all start with one of its segments.
+export const publicResumeProxyPattern = `^/(?!(?:${ownSegments})(?:/|\\?|$))[^/.?]+(?:/work/[^/.?]+|/[^/.?]+)?/?(?:\\?.*)?$`;

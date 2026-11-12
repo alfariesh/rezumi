@@ -51,7 +51,8 @@ export function useEditorView() {
 				messages,
 				fileUrl: (key) => `/${key}`,
 				// Placeholders: panels only ask whether the buttons show.
-				links: { resume: showResume ? "#" : null, resumePdf: showPdf ? "#" : null },
+				// "Save contact" shows in the inert preview; it leads nowhere there (Phase 13 4.1).
+				links: { resume: showResume ? "#" : null, resumePdf: showPdf ? "#" : null, vcard: "#contact" },
 				contactFormAvailable,
 			}),
 		[

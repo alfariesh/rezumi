@@ -1,3 +1,4 @@
+import type { EmbedFind } from "../media/embeds";
 import type { PortfolioBlock, PortfolioBlockOf } from "@rezumi/schema/portfolio/blocks";
 import type { Draft } from "immer";
 import { Alert, Spinner } from "@heroui/react";
@@ -11,6 +12,14 @@ import { useFilePicker } from "../images/image-field";
 import { discardUploadedImages, isAbort } from "../images/upload";
 import { useRequestSignals } from "../images/use-request-signals";
 import {
+	embedFromUnfurl,
+	embedFromUrl,
+	embedProviderName,
+	importEmbedThumbnail,
+	isNoRoomError,
+	stillEmbeds,
+} from "../media/embeds";
+import {
 	linkBlockFromUnfurl,
 	readLinkAddress,
 	stillPlays,
@@ -19,6 +28,7 @@ import {
 } from "../media/link-blocks";
 import { newPdfBlock, pdfErrorMessage } from "../media/pdf";
 import { importVideoThumbnail, unfurlErrorMessage, unfurlLink, videoBlockFromUrl } from "../media/remote";
+import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { usePrompt } from "@/hooks/use-confirm";
 
 /** The block as it is in the editor now (after edits made while a request ran). */
@@ -63,6 +73,24 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 		}
 		setBlock(workId, block.id, (draft) => {
 			if (draft.type === "video") draft.thumbnail = thumbnail;
+		});
+	};
+
+	/** Copies a new Embed block's picture in, quietly unless storage is full, if the block still shows that content. */
+	const copyEmbedPicture = async (find: EmbedFind, signal: AbortSignal) => {
+		if (!find.thumbnailUrl) return;
+		setBusy(t`Copying the picture…`);
+		const { block } = find;
+		const image = await importEmbedThumbnail(find.thumbnailUrl, block.title ?? "", signal, (failure) => {
+			if (isNoRoomError(failure)) openPlanDialogForError(failure);
+		});
+		if (!image) return;
+		if (!stillEmbeds(currentBlock(workId, block.id), block)) {
+			void discardUploadedImages([image]);
+			return;
+		}
+		setBlock(workId, block.id, (draft) => {
+			if (draft.type === "embed") draft.thumbnail = image;
 		});
 	};
 
@@ -114,6 +142,14 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 		await run(t`Reading the link…`, async (signal) => {
 			try {
 				const result = await unfurlLink(url, signal);
+				if (result.kind === "embed") {
+					const find = embedFromUnfurl(result);
+					if (!insert(find.block)) return;
+					const provider = embedProviderName(result.provider);
+					toast.add({ description: t`That's a ${provider} link, so it was added as an Embed block.` });
+					await copyEmbedPicture(find, signal);
+					return;
+				}
 				if (result.kind === "video") {
 					const block = videoBlockFromUnfurl(result);
 					if (!insert(block)) return;
@@ -131,6 +167,29 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 				insert({ id: generateId(), type: "link", url, title: "" });
 				setError(unfurlErrorMessage(failure));
 			}
+		});
+	};
+
+	const addEmbed = async (insert: InsertBlock) => {
+		const text = await prompt(t`Add an embed`, {
+			description: t`Paste a link to Figma, Loom, Spotify, SoundCloud or Google Slides. Visitors load it only when they press it.`,
+			confirmText: t`Add embed`,
+		});
+		if (!text?.trim()) return;
+		const address = readLinkAddress(text);
+		if (!address.ok) {
+			setError(t`This link isn't from a service we can embed. Use a Link block instead.`);
+			return;
+		}
+		const { url } = address;
+		await run(t`Reading the link…`, async (signal) => {
+			const find = await embedFromUrl(url, signal);
+			if (!find) {
+				setError(t`This link isn't from a service we can embed. Use a Link block instead.`);
+				return;
+			}
+			if (!insert(find.block)) return;
+			await copyEmbedPicture(find, signal);
 		});
 	};
 
@@ -156,8 +215,9 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 		if (insert) void addPdf(file, insert);
 	});
 
-	const add = (type: "video" | "pdf" | "link", insert: InsertBlock) => {
+	const add = (type: "video" | "embed" | "pdf" | "link", insert: InsertBlock) => {
 		if (type === "video") void addVideo(insert);
+		else if (type === "embed") void addEmbed(insert);
 		else if (type === "link") void addLink(insert);
 		else {
 			pdfInsert.current = insert;

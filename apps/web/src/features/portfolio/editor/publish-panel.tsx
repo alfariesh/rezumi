@@ -1,13 +1,10 @@
-import type { SettingOptions } from "./settings";
-import type { PortfolioRecord } from "./store";
 import type { Locale } from "@rezumi/utils/locale";
-import { Alert, Button, buttonVariants, InputGroup, Label, Modal, Popover, TextField } from "@heroui/react";
+import { Alert, Button, buttonVariants, InputGroup, Label, Modal, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
-import { QRCodeSVG } from "qrcode.react";
 import { useId, useState } from "react";
 import { publicResumeUrl } from "@rezumi/resume/sharing";
 import { PORTFOLIO_LIMITS, portfolioIndexableFrom } from "@rezumi/schema/portfolio/limits";
@@ -15,11 +12,13 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { countPortfolioPlaceholders } from "../ai/apply";
-import { portfolioErrorMessage } from "../errors";
-import { invalidatePortfolioQueries, isPortfolioLive } from "../status";
+import { BusinessCardButton } from "../card/business-card-dialog";
+import { usePortfolioPageUrl } from "../card/use-page-url";
+import { isPortfolioLive } from "../status";
 import { languageName, pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { PanelGroup, TextInput } from "./fields";
-import { changeSetting } from "./settings";
+import { PasswordGroup } from "./password-group";
+import { useSettingAction } from "./setting-action";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore, usePortfolioRecord } from "./store";
 import { useEditorView } from "./use-view";
 import { CellSelectField } from "@/components/input/select-field";
@@ -38,39 +37,12 @@ export function usePortfolioUrl(): string {
 	return `${origin}/${encodeURIComponent(username)}`;
 }
 
-/** Changes a setting that lives beside the data (`changeSetting`), saying what went wrong when it couldn't. */
-function useSettingAction() {
-	const queryClient = useQueryClient();
-	const [pending, setPending] = useState(false);
-
-	const run = async (action: () => Promise<PortfolioRecord>, fallback: string, options: SettingOptions = {}) => {
-		setPending(true);
-		try {
-			if ((await changeSetting(action, options)) === "unsaved") {
-				toast.add({
-					type: "error",
-					description: t`Your latest changes aren't saved, so nothing was changed. Check the save status at the top, then try again.`,
-				});
-				return false;
-			}
-			void invalidatePortfolioQueries(queryClient);
-			return true;
-		} catch (error) {
-			toast.add({ type: "error", description: portfolioErrorMessage(error, { fallback }) });
-			return false;
-		} finally {
-			setPending(false);
-		}
-	};
-
-	return { run, pending };
-}
-
 /** Publish: going live, the address, search engines, the page's language and the resume it comes from. */
 export function PublishPanel() {
 	return (
 		<div className="grid gap-6 p-3">
 			<PublishGroup />
+			<PasswordGroup />
 			<DomainGroup />
 			<SearchGroup />
 			<LanguageGroup />
@@ -156,7 +128,7 @@ function PublishGroup() {
 						<Icon name="arrow-square-out" size={18} />
 						<Trans>Open page</Trans>
 					</a>
-					<QrCodeButton url={url} />
+					<EditorBusinessCard />
 				</div>
 			)}
 			{dialogOpen && <PublishDialog onClose={() => setDialogOpen(false)} />}
@@ -175,19 +147,13 @@ function DomainGroup() {
 	);
 }
 
-function QrCodeButton({ url }: { url: string }) {
+/** The business card from the editor: the name and headline the page shows, and the address visitors use. */
+function EditorBusinessCard() {
+	const view = useEditorView();
+	const { username } = usePortfolioOwner();
+	const pageUrl = usePortfolioPageUrl(username);
 	return (
-		<Popover>
-			<Button variant="secondary" className="w-full">
-				<Icon name="qr-code" size={18} />
-				<Trans>QR code</Trans>
-			</Button>
-			<Popover.Content placement="bottom start" className="w-auto">
-				<Popover.Dialog className="p-3">
-					<QRCodeSVG value={url} size={176} marginSize={2} title={t`QR code for ${url}`} />
-				</Popover.Dialog>
-			</Popover.Content>
-		</Popover>
+		<BusinessCardButton name={view.basics.name} headline={view.basics.headline} username={username} pageUrl={pageUrl} />
 	);
 }
 
@@ -242,7 +208,7 @@ function PublishDialog({ onClose }: { onClose: () => void }) {
 	const publish = async () => {
 		const done = await run(
 			async () => {
-				if (searchable !== record.showInSearchEngines) {
+				if (!record.hasPassword && searchable !== record.showInSearchEngines) {
 					// Taken at once: when publishing then fails (email not verified, a plan), this switch has changed anyway.
 					const updated = await client.portfolio.updateSettings({ showInSearchEngines: searchable });
 					usePortfolioEditorStore.getState().applySettings(updated);
@@ -295,8 +261,29 @@ function PublishDialog({ onClose }: { onClose: () => void }) {
 								</Alert.Content>
 							</Alert>
 						)}
-						<CellSwitchRow isSelected={searchable} onChange={setSearchable} label={t`Show in search engines`} />
-						{delay && <p className="px-1 text-body-xs text-muted">{delay}</p>}
+						{record.hasPassword ? (
+							<Alert status="accent">
+								<Alert.Indicator>
+									<Icon name="lock" />
+								</Alert.Indicator>
+								<Alert.Content>
+									<Alert.Title>
+										<Trans>Only people with the password can see it</Trans>
+									</Alert.Title>
+									<Alert.Description>
+										<Trans>
+											Search engines don't list it, and link previews show a general picture. Remove the password in
+											Publish → Password to change that.
+										</Trans>
+									</Alert.Description>
+								</Alert.Content>
+							</Alert>
+						) : (
+							<>
+								<CellSwitchRow isSelected={searchable} onChange={setSearchable} label={t`Show in search engines`} />
+								{delay && <p className="px-1 text-body-xs text-muted">{delay}</p>}
+							</>
+						)}
 						{placeholders > 0 && (
 							<Alert status="warning">
 								<Alert.Indicator />
@@ -366,9 +353,10 @@ function SearchGroup() {
 
 	return (
 		<PanelGroup icon="magnifying-glass" title={<Trans>Search engines</Trans>}>
+			{/* A password keeps search engines away whatever this says, so it shows off and can't be changed meanwhile. */}
 			<CellSwitchRow
-				isSelected={record.showInSearchEngines}
-				isDisabled={pending}
+				isSelected={record.showInSearchEngines && !record.hasPassword}
+				isDisabled={pending || record.hasPassword}
 				onChange={(checked) =>
 					void run(
 						() => client.portfolio.updateSettings({ showInSearchEngines: checked }),
@@ -377,7 +365,13 @@ function SearchGroup() {
 				}
 				label={t`Show in search engines`}
 			/>
-			{record.showInSearchEngines && delay && <p className="px-1 text-body-xs text-muted">{delay}</p>}
+			{record.hasPassword ? (
+				<p className="px-1 text-body-xs text-muted">
+					<Trans>Off while your portfolio has a password.</Trans>
+				</p>
+			) : (
+				record.showInSearchEngines && delay && <p className="px-1 text-body-xs text-muted">{delay}</p>
+			)}
 			<TextInput
 				label={t`Title in search results`}
 				value={seo.title ?? ""}

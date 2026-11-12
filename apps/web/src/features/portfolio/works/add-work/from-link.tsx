@@ -15,6 +15,7 @@ import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "../../
 import { usePortfolioEditorUi } from "../../editor/ui";
 import { discardUnplacedImages, isAbort } from "../../images/upload";
 import { useRequestSignals } from "../../images/use-request-signals";
+import { embedFromUnfurl, embedProviderName } from "../../media/embeds";
 import { linkBlockFromUnfurl, readLinkAddress, videoBlockFromUnfurl, workFromLink } from "../../media/link-blocks";
 import {
 	importRemotePicture,
@@ -29,13 +30,21 @@ import { workRoom } from "../works";
 import { BackButton, StepAlert, useReportBusy } from "./parts";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 
-type LinkPreview = { picture: string | null; block: PortfolioBlockOf<"link"> | PortfolioBlockOf<"video"> };
+type LinkPreview = {
+	picture: string | null;
+	block: PortfolioBlockOf<"link"> | PortfolioBlockOf<"video"> | PortfolioBlockOf<"embed">;
+};
 
 /** A preview from what the server read: the block it makes and the picture it would copy as the cover. */
 function previewOf(result: UnfurledLink, pasted: string): LinkPreview {
 	if (result.kind === "video") {
 		const block = videoBlockFromUnfurl(result);
 		return { block, picture: videoThumbnailCandidates(block).at(-1) ?? null };
+	}
+	if (result.kind === "embed") {
+		// Figma, Loom, Spotify, SoundCloud or Google Slides: the work holds an Embed block.
+		const { block, thumbnailUrl } = embedFromUnfurl(result);
+		return { block, picture: thumbnailUrl };
 	}
 	return { block: linkBlockFromUnfurl(result, pasted), picture: result.imageUrl ?? null };
 }
@@ -119,7 +128,7 @@ export function FromLink({ onBack, onClose, onBusy }: StepProps) {
 						});
 				}
 			}
-			if (cover && block.type === "video") block.thumbnail = cover;
+			if (cover && (block.type === "video" || block.type === "embed")) block.thumbnail = cover;
 			if (cover && block.type === "link") block.image = cover;
 			if (block.type === "link" && !block.title.trim())
 				block.title = title.trim().slice(0, PORTFOLIO_LIMITS.text.linkTitle);
@@ -185,6 +194,12 @@ export function FromLink({ onBack, onClose, onBusy }: StepProps) {
 								<Trans>Video: it plays on your page when a visitor presses play</Trans>
 							</Chip>
 						)}
+						{preview.block.type === "embed" && (
+							<Chip size="sm" variant="soft" className="w-fit">
+								<Icon name="plugs-connected" size={14} />
+								<EmbedChipText provider={embedProviderName(preview.block.provider)} />
+							</Chip>
+						)}
 						<TextInput
 							label={t`Title of the work`}
 							value={title}
@@ -234,4 +249,9 @@ export function FromLink({ onBack, onClose, onBusy }: StepProps) {
 			</Modal.Footer>
 		</>
 	);
+}
+
+/** The words on an embed's chip, with the service's name. */
+function EmbedChipText({ provider }: { provider: string }) {
+	return <Trans>{provider}: it shows on your page when a visitor presses it</Trans>;
 }

@@ -1,7 +1,7 @@
 import type { PortfolioData, PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import { uniquePortfolioSlug } from "@rezumi/schema/portfolio/data";
+import { PORTFOLIO_SLUG_PATTERN, uniquePortfolioSlug } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { generateId } from "@rezumi/utils/string";
 import { newImagesBlock } from "../blocks/blocks";
@@ -35,16 +35,61 @@ export function newWork(data: Pick<PortfolioData, "works">, title = ""): Portfol
 	};
 }
 
+/** Why an address typed for a work can't be used, or null when it can. */
+export function workSlugProblem(
+	data: Pick<PortfolioData, "works">,
+	workId: string,
+	slug: string,
+): "pattern" | "taken" | null {
+	if (!slug || slug.length > PORTFOLIO_LIMITS.text.slug || !PORTFOLIO_SLUG_PATTERN.test(slug)) return "pattern";
+	return slugsExcept(data, workId).has(slug) ? "taken" : null;
+}
+
+/** Old addresses as stored: newest first, each once, at most the limit, none that a work now uses as its address. */
+export function cleanSlugHistory(history: readonly string[], active: ReadonlySet<string>): string[] {
+	return [...new Set(history)].filter((slug) => !active.has(slug)).slice(0, PORTFOLIO_LIMITS.previousSlugs);
+}
+
+/**
+ * Gives a work a new address (Phase 13 3.1). The old one goes to the front of `previousSlugs`, so links already
+ * shared forward to the new one, but only when it was saved as this work's address: `saved` is the data the server
+ * last took (`lastSavedData`), so the letters of a title being typed never pile up as old addresses. Without `saved`
+ * (unknown) the old address is kept. No work keeps an old address another work now uses.
+ */
+export function changeWorkSlug(
+	data: Pick<PortfolioData, "works">,
+	work: PortfolioWork,
+	slug: string,
+	saved?: Pick<PortfolioData, "works"> | null,
+): void {
+	const old = work.slug;
+	if (old === slug) return;
+	const savedWork = saved?.works.items.find((entry) => entry.id === work.id);
+	const wasSaved =
+		saved === undefined || (savedWork ? savedWork.slug === old || savedWork.previousSlugs.includes(old) : false);
+	work.slug = slug;
+	const active = new Set(data.works.items.map((entry) => (entry.id === work.id ? slug : entry.slug)));
+	work.previousSlugs = cleanSlugHistory(wasSaved ? [old, ...work.previousSlugs] : work.previousSlugs, active);
+	for (const other of data.works.items)
+		if (other.id !== work.id && other.previousSlugs.includes(slug))
+			other.previousSlugs = other.previousSlugs.filter((entry) => entry !== slug);
+}
+
 /**
  * Changes a work's title. Its address follows the title while it still is the one the old title makes, as it is for
  * works made in the editor, imported from the resume, or made from pictures or a link. An address that differs (a
- * work whose address another work's took first, data written outside the editor) stays as it is.
+ * work whose address another work's took first, one typed by hand, data written outside the editor) stays as it is.
  */
-export function retitleWork(data: Pick<PortfolioData, "works">, work: PortfolioWork, title: string): void {
+export function retitleWork(
+	data: Pick<PortfolioData, "works">,
+	work: PortfolioWork,
+	title: string,
+	saved?: Pick<PortfolioData, "works"> | null,
+): void {
 	const others = slugsExcept(data, work.id);
 	const automatic = work.slug === uniquePortfolioSlug(work.title, others);
 	work.title = title;
-	if (automatic) work.slug = uniquePortfolioSlug(title, others);
+	if (automatic) changeWorkSlug(data, work, uniquePortfolioSlug(title, others), saved);
 }
 
 /** A title from a file name, at most `max` characters: "kopi-senja_final.jpg" → "kopi senja final". */

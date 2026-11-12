@@ -547,6 +547,14 @@ export const usePortfolioEditorStore = create<PortfolioEditorStore>()((set, get)
 	};
 });
 
+/**
+ * The data the server last took (or loaded with): what visitors can have seen, as far as this editor knows. Work
+ * addresses use it to keep only saved addresses as old ones (`changeWorkSlug`).
+ */
+export function lastSavedData(): PortfolioData | null {
+	return known.at(-1) ?? null;
+}
+
 /** The portfolio data being edited. Only use inside the editor, where a portfolio is always loaded. */
 export function usePortfolioData(): PortfolioData {
 	const data = usePortfolioEditorStore((state) => state.portfolio?.data);

@@ -23,7 +23,7 @@ const { text: max } = PORTFOLIO_LIMITS;
 /** A pause in typing a video link before its title and thumbnail are fetched. */
 const DETAILS_DELAY_MS = 600;
 
-export type EditBlock<T extends PortfolioBlockOf<"video" | "pdf" | "link">["type"]> = (
+export type EditBlock<T extends PortfolioBlockOf<"video" | "embed" | "pdf" | "link">["type"]> = (
 	recipe: (block: Draft<PortfolioBlockOf<T>>) => void,
 	options?: { key?: string; structural?: boolean },
 ) => void;

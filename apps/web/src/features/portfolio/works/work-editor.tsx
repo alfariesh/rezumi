@@ -10,10 +10,11 @@ import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { BlockList, editWork } from "../blocks/block-list";
 import { pageLocaleOf, useSourceResume } from "../editor/context";
 import { ChoiceSelect, PanelGroup, TextInput, UrlInput } from "../editor/fields";
-import { editPortfolio, usePortfolioData } from "../editor/store";
+import { editPortfolio, lastSavedData, usePortfolioData } from "../editor/store";
 import { usePortfolioEditorUi } from "../editor/ui";
 import { ImageField } from "../images/image-field";
 import { workMetrics } from "../metrics/metrics";
+import { WorkAddress } from "./work-address";
 import { retitleWork } from "./works";
 import { ChipInput } from "@/components/input/chip-input";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -112,12 +113,13 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 						editPortfolio(
 							(draft) => {
 								const target = draft.works.items.find((entry) => entry.id === workId);
-								if (target) retitleWork(draft, target as PortfolioWork, value);
+								if (target) retitleWork(draft, target as PortfolioWork, value, lastSavedData());
 							},
 							{ key: `works.${workId}.title` },
 						)
 					}
 				/>
+				<WorkAddress work={work} />
 				<TextInput
 					label={t`Summary`}
 					multiline

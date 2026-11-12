@@ -1,3 +1,4 @@
+import type { PortfolioPageKind } from "@rezumi/portfolio";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { Button, Spinner } from "@heroui/react";
@@ -16,7 +17,7 @@ import { ownPictureUrl } from "@rezumi/utils/own-picture";
 import { cn } from "@rezumi/utils/style";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { useOwnOrigins, withOwnPicture } from "./pictures";
-import { usePortfolioData } from "./store";
+import { usePortfolioData, usePortfolioEditorStore } from "./store";
 import { usePortfolioEditorUi } from "./ui";
 import { useResumeLinks } from "./use-view";
 import { usePlanFeature } from "@/features/billing/plan";
@@ -69,16 +70,22 @@ export async function renderPortfolioPreview({
 		entitlements: { hidePortfolioCredit: canHideCredit },
 		messages: portfolioViewMessages(messages),
 		fileUrl: (key) => `${origin}/${key}`,
-		links: { resume: links.resume ? "#" : null, resumePdf: links.resumePdf ? "#" : null },
+		links: { resume: links.resume ? "#" : null, resumePdf: links.resumePdf ? "#" : null, vcard: "#contact" },
 		openWorkId: openWorkId ?? null,
 	});
-	const names = portfolioIconNames(view);
+	// The work being edited shows as its own page (Phase 13 3.1), when the page has one for it.
+	const page: PortfolioPageKind =
+		openWorkId && view.works.some((work) => work.id === openWorkId)
+			? { kind: "work", workId: openWorkId }
+			: { kind: "home" };
+	const names = portfolioIconNames(view, page);
 	let icons: Record<string, string> = {};
 	if (names.length) {
 		const loaded = await loadGlyphs();
 		icons = Object.fromEntries(names.flatMap((name) => (loaded[name] ? [[name, loaded[name]]] : [])));
 	}
-	const page = renderPortfolioPage({
+	const html = renderPortfolioPage({
+		page,
 		view,
 		messages,
 		icons,
@@ -87,12 +94,7 @@ export async function renderPortfolioPreview({
 		creditUrl: origin,
 	});
 	// The intro effect holds still while the draft is edited; "Replay" plays it from the editor (`replayIntroEffect`).
-	const html = renderPortfolioDocument({ page, inert: true }).replace("</head>", `${PREVIEW_STILL_CSS}</head>`);
-	// The page opens a detail by its address (`:target`); an inert preview has no address to change, so the detail of
-	// the work being edited is shown by a rule instead. Anchors are `work-<slug>`, letters, digits and dashes only.
-	const openAnchor = view.works.find((work) => work.id === openWorkId)?.anchor;
-	if (!openAnchor || !/^work-[\da-z-]+$/.test(openAnchor)) return html;
-	return html.replace("</head>", `<style>#${openAnchor}{display:block}</style></head>`);
+	return renderPortfolioDocument({ page: html, inert: true }).replace("</head>", `${PREVIEW_STILL_CSS}</head>`);
 }
 
 type PortfolioPreviewProps = {
@@ -117,8 +119,8 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	const openWorkId = usePortfolioEditorUi((state) => state.openWorkId);
 	const openWork = debouncedData.works.items.find((work) => work.id === openWorkId && !work.hidden);
 	const openWorkKey = openWork?.id ?? null;
-	// What scroll positions are kept for: the open work's detail, by its address.
-	const openAnchor = openWork ? `work-${openWork.slug}` : null;
+	// Which page the preview shows (the home page, or the open work's), so a redraw keeps the reader's place on it.
+	const shownPage = openWorkKey ?? "home";
 	const origins = useOwnOrigins();
 	const canHideCredit = usePlanFeature("hidePortfolioCredit");
 	const frame = useRef<HTMLIFrameElement>(null);
@@ -128,9 +130,10 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	const replayBeforeShown = useRef(effectReplay);
 	// A replay asked for before the redrawn preview has loaded plays once it has.
 	const pendingReplay = useRef(0);
-	const hasEffect = themeEffect(data.theme, data.hero.effect.id) !== "none";
+	// A work's page has no intro, so nothing to replay while one is open.
+	const hasEffect = themeEffect(data.theme, data.hero.effect.id) !== "none" && shownPage === "home";
 	// Where the reader was, so a redrawn preview opens at the same place instead of the top.
-	const scroll = useRef({ page: 0, detail: 0, anchor: null as string | null });
+	const scroll = useRef({ top: 0, page: "home" });
 
 	const { resume: showResume, resumePdf: showPdf } = useResumeLinks();
 
@@ -149,12 +152,10 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 			.then((html) => {
 				if (!current) return;
 				const view = frame.current?.contentWindow;
-				const detail = scroll.current.anchor ? view?.document.getElementById(scroll.current.anchor) : null;
+				// Another page (a work opened or closed) starts at its top.
 				scroll.current = {
-					page: view?.scrollY ?? scroll.current.page,
-					// Another work opened starts at its top.
-					detail: scroll.current.anchor === openAnchor ? (detail?.scrollTop ?? 0) : 0,
-					anchor: openAnchor,
+					top: scroll.current.page === shownPage ? (view?.scrollY ?? scroll.current.top) : 0,
+					page: shownPage,
 				};
 				setDocument(html);
 				setFailed(false);
@@ -176,7 +177,7 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 		showResume,
 		showPdf,
 		openWorkKey,
-		openAnchor,
+		shownPage,
 		origins,
 		canHideCredit,
 		attempt,
@@ -201,17 +202,50 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 		return () => window.clearTimeout(timer);
 	}, [effectReplay]);
 
+	// A section of the home page a work page's link asked for ("All work"), to scroll to once home is drawn.
+	const pendingAnchor = useRef<string | null>(null);
+
+	/**
+	 * The preview's links between pages, followed here since the preview runs no script of its own: a work card (or a
+	 * work page's previous and next) opens that work, as its editor does; on a work page, a link to a part of the home
+	 * page goes back home there. Other links behave as on the page (in-page anchors, new tabs).
+	 */
+	const followPreviewLink = (event: MouseEvent) => {
+		const target = event.target as Element | null;
+		const link = target?.closest?.("a[href]");
+		const href = link?.getAttribute("href") ?? "";
+		if (!href.startsWith("#") || event.defaultPrevented) return;
+		const anchor = decodeURIComponent(href.slice(1));
+		const ui = usePortfolioEditorUi.getState();
+		const works = usePortfolioEditorStore.getState().portfolio?.data.works.items ?? [];
+		const work = anchor.startsWith("work-") ? works.find((entry) => `work-${entry.slug}` === anchor) : undefined;
+		if (work) {
+			event.preventDefault();
+			ui.openWork(work.id);
+			return;
+		}
+		// On a work page, an anchor that isn't on it belongs to the home page.
+		if (shownPage !== "home" && anchor && !link?.ownerDocument.getElementById(anchor)) {
+			event.preventDefault();
+			pendingAnchor.current = anchor;
+			ui.openWork(null);
+		}
+	};
+
 	const restoreScroll = () => {
 		const view = frame.current?.contentWindow;
 		if (!view) return;
+		view.document.addEventListener("click", followPreviewLink);
 		if (pendingReplay.current && playEffect()) {
 			pendingReplay.current = 0;
 			return;
 		}
-		const { page, detail, anchor } = scroll.current;
-		view.scrollTo(0, page);
-		const opened = anchor ? view.document.getElementById(anchor) : null;
-		if (opened) opened.scrollTop = detail;
+		const anchor = shownPage === "home" ? pendingAnchor.current : null;
+		pendingAnchor.current = null;
+		const section = anchor ? view.document.getElementById(anchor) : null;
+		// Instant, whatever the page's own smooth scrolling: a redraw right after reads where the reader is.
+		const top = section ? section.getBoundingClientRect().top + view.scrollY : scroll.current.top;
+		view.scrollTo({ top, behavior: "instant" });
 	};
 
 	return (

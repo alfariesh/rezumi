@@ -87,6 +87,14 @@ export function ContactForm() {
 					<Trans>The contact form isn't available right now. Visitors can still use your other contact options.</Trans>
 				</p>
 			)}
+			<CellSwitchRow
+				isSelected={contact.saveContact}
+				onChange={(checked) => set("saveContact", checked)}
+				label={t`Show a Save contact button`}
+			/>
+			<p className="-mt-2 px-1 text-body-xs text-muted">
+				<Trans>Visitors save your name, headline and the contact details shown here to their phone.</Trans>
+			</p>
 			<WhatsAppField />
 			<LocationFields />
 		</div>

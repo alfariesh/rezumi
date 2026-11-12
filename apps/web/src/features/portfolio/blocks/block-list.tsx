@@ -33,6 +33,7 @@ import {
 	removeBlock,
 	restoreBlock,
 } from "./blocks";
+import { EmbedBlockEditor } from "./embed-block";
 import { ImagesBlockEditor } from "./images-block";
 import { LinkBlockEditor } from "./link-block";
 import { useRemovalFocus } from "./list-focus";
@@ -145,19 +146,13 @@ function blockTypeInfo(type: PortfolioBlockType): BlockTypeInfo {
 			};
 		case "embed":
 			return {
-				icon: "link-simple-horizontal",
+				icon: "plugs-connected",
 				title: t`Embed`,
 				description: t`Figma, Loom, Spotify, SoundCloud or Google Slides`,
 				keywords: ["embed", "sematan", "figma", "loom", "spotify", "soundcloud", "slides"],
 			};
 	}
 }
-
-/**
- * The block types the editor can add. Phase 13 Langkah 0: Embed is left out until `pf-web` builds its editor
- * (`blocks/embed-block.tsx`); then this is `PORTFOLIO_BLOCK_TYPES` again.
- */
-const ADDABLE_BLOCK_TYPES = PORTFOLIO_BLOCK_TYPES.filter((type) => type !== "embed");
 
 /** The words for a block that arrived when its work had no room left. */
 const fullWorkMessage = () =>
@@ -209,7 +204,8 @@ function useAddBlock(work: PortfolioWork, index: number, last = false) {
 		const place = blockPlace(work, index, last);
 		picturePlace.current = place;
 		if (type === "images") picker.open();
-		else if (type === "video" || type === "pdf" || type === "link") media.add(type, inserter(place));
+		else if (type === "video" || type === "embed" || type === "pdf" || type === "link")
+			media.add(type, inserter(place));
 		else inserter(place)(type === "text" ? newTextBlock() : newMetricsBlock());
 	};
 
@@ -260,7 +256,7 @@ function AddBlockMenu({ work, index, last = false, quiet = false }: AddBlockMenu
 				)}
 				<Dropdown.Popover placement="bottom" className="w-72">
 					<Dropdown.Menu onAction={(key) => add(key as PortfolioBlockType)}>
-						{ADDABLE_BLOCK_TYPES.map((type) => {
+						{PORTFOLIO_BLOCK_TYPES.map((type) => {
 							const info = blockTypeInfo(type);
 							return (
 								<Dropdown.Item key={type} id={type} textValue={info.title}>
@@ -467,14 +463,25 @@ function BlockBody({ work, block, index, locale, onRemove }: BlockBodyProps) {
 					work={work}
 					block={block}
 					edit={(recipe, options) => editBlock(work.id, block.id, "link", recipe, options)}
+					onReplace={(next) =>
+						editWork(
+							work.id,
+							(draft) => {
+								const at = draft.blocks.findIndex((entry) => entry.id === block.id);
+								if (at !== -1) draft.blocks[at] = next;
+							},
+							{ structural: true },
+						)
+					}
 				/>
 			);
 		case "embed":
-			// Phase 13 Langkah 0: shown, not editable yet (`pf-web` adds `EmbedBlockEditor`).
 			return (
-				<p className="text-body-sm text-muted">
-					<Trans>Embed: this block can't be edited here yet.</Trans>
-				</p>
+				<EmbedBlockEditor
+					work={work}
+					block={block}
+					edit={(recipe, options) => editBlock(work.id, block.id, "embed", recipe, options)}
+				/>
 			);
 	}
 }
@@ -484,7 +491,7 @@ type TextBlockEditorProps = { work: PortfolioWork; block: PortfolioBlockOf<"text
 /** Rich text; typing "/" adds a block after this one. */
 function TextBlockEditor({ work, block, index }: TextBlockEditorProps) {
 	const { add, busy, status } = useAddBlock(work, index + 1);
-	const slashItems: SlashItem[] = ADDABLE_BLOCK_TYPES.map((type) => {
+	const slashItems: SlashItem[] = PORTFOLIO_BLOCK_TYPES.map((type) => {
 		const info = blockTypeInfo(type);
 		return { ...info, onSelect: () => add(type) };
 	});

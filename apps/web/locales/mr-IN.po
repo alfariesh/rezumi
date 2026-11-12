@@ -89,6 +89,7 @@ msgstr ""
 msgid "(no header)"
 msgstr "(शीर्षलेख नाही)"
 
+#: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "(opens in a new tab)"
 msgstr ""
@@ -871,6 +872,10 @@ msgstr "{label} कनेक्शन"
 msgid "{label}: {visits} visits"
 msgstr ""
 
+#: src/features/portfolio/statistics/work-statistics.tsx
+msgid "{label}: opened {opens} times"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr ""
@@ -1097,6 +1102,10 @@ msgstr ""
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{proposed, plural, one {# proposed} other {# proposed}}"
 msgstr "{proposed, plural, one {# प्रस्तावित} other {# प्रस्तावित}}"
+
+#: src/features/portfolio/works/add-work/from-link.tsx
+msgid "{provider}: it shows on your page when a visitor presses it"
+msgstr ""
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
@@ -1588,6 +1597,10 @@ msgstr "वेब पत्ता https:// शिवाय लिहिला �
 msgid "A web portfolio with {freeWorks} works and {freeThemes} themes"
 msgstr ""
 
+#: src/features/portfolio/statistics/work-statistics.tsx
+msgid "A work's own numbers aren't available yet."
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "A/B testing"
 msgstr ""
@@ -1879,6 +1892,10 @@ msgstr ""
 msgid "Add a role, then Enter"
 msgstr "भूमिका जोडा, नंतर Enter दाबा"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Add a role…"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Add a salary"
 msgstr ""
@@ -1951,6 +1968,10 @@ msgstr "आधी एक अर्ज जोडा"
 msgid "Add an email"
 msgstr "ईमेल जोडा"
 
+#: src/features/portfolio/blocks/add-media-block.tsx
+msgid "Add an embed"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Add an interview"
@@ -2000,6 +2021,10 @@ msgstr "तारखा जोडा"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add education"
 msgstr "शिक्षण जोडा"
+
+#: src/features/portfolio/blocks/add-media-block.tsx
+msgid "Add embed"
+msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Add entry"
@@ -2630,6 +2655,10 @@ msgstr "तुमचा दुसरा रेझ्युमे हा पत�
 msgid "Another resume already uses this address. Choose a different one."
 msgstr "हा पत्ता आधीच दुसरा रेझ्युमे वापरत आहे. वेगळा पत्ता निवडा."
 
+#: src/features/portfolio/works/work-address.tsx
+msgid "Another work uses this address."
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 msgid "Answer"
 msgstr "उत्तर"
@@ -2670,8 +2699,16 @@ msgstr "कोणतेही"
 msgid "Anyone who opens the public URL will need this password."
 msgstr "सार्वजनिक URL उघडणाऱ्या प्रत्येकाला हा पासवर्ड लागेल."
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Anyone who opens your page sees this, your current employer too."
+msgstr ""
+
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Anyone with the link can see it."
+msgstr ""
+
+#: src/features/portfolio/editor/password-group.tsx
+msgid "Anyone with the link can see your portfolio again, and search engines may list it if that's on."
 msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
@@ -2982,6 +3019,10 @@ msgstr "सहाय्यक संभाषणे"
 #: src/features/settings/ai/web-access.tsx
 msgid "Assistant."
 msgstr "सहाय्यक."
+
+#: src/features/portfolio/editor/password-group.tsx
+msgid "At least 6 characters."
+msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "ATS check and basic keyword matching"
@@ -3338,6 +3379,10 @@ msgstr ""
 msgid "Break the resume into the usual sections so it can be segmented."
 msgstr "रेझ्युमेचे विभाजन करता यावे म्हणून तो नेहमीच्या विभागांमध्ये विभागा."
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Breakdown"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 #: src/features/career/workspace/saved.tsx
 msgid "Briefing"
@@ -3409,6 +3454,14 @@ msgstr "बुलेट केलेली यादी"
 msgid "Business"
 msgstr ""
 
+#: src/features/portfolio/card/business-card-dialog.tsx
+msgid "Business card"
+msgstr ""
+
+#: src/features/portfolio/card/business-card-dialog.tsx
+msgid "Business cards to print"
+msgstr ""
+
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Button link"
 msgstr ""
@@ -3478,6 +3531,7 @@ msgstr "सॉफ्टवेअर तुमचा रेझ्युमे व
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/password-group.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -3581,6 +3635,7 @@ msgstr "भाषा… मध्ये बदला"
 
 #. Primary action button to submit changed password
 #: src/dialogs/auth/change-password.tsx
+#: src/features/portfolio/editor/password-group.tsx
 msgid "Change password"
 msgstr "पासवर्ड बदला"
 
@@ -3646,6 +3701,10 @@ msgstr "मत बदलले आहे का? तुमच्या रेझ
 #. placeholder {1}: formatDate(plan.currentPeriodEndsAt)
 #: src/features/billing/plan-page.tsx
 msgid "Changes to {0} on {1}"
+msgstr ""
+
+#: src/features/portfolio/works/work-address.tsx
+msgid "Changing it keeps the old address working: it forwards to the new one."
 msgstr ""
 
 #: src/features/settings/account/profile.tsx
@@ -3975,6 +4034,10 @@ msgstr "पृष्ठावरील कोणत्याही गोष्�
 msgid "Clicks"
 msgstr ""
 
+#: src/features/portfolio/statistics/work-statistics.tsx
+msgid "Clicks on this page"
+msgstr ""
+
 #: src/features/auth/pages/consent.tsx
 msgid "Client ID"
 msgstr "क्लायंट आयडी"
@@ -4013,11 +4076,14 @@ msgstr ""
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
+#: src/features/portfolio/card/business-card-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/password-group.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/metrics/find-metrics.tsx
 #: src/features/portfolio/page-text.ts
+#: src/features/portfolio/statistics/work-statistics.tsx
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -4196,7 +4262,7 @@ msgstr "अपलोड जलद ठेवण्यासाठी मोठ्
 msgid "Computer"
 msgstr "संगणक"
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Computers"
 msgstr ""
 
@@ -4368,7 +4434,7 @@ msgstr "संपर्क भूमिका"
 msgid "Contacts"
 msgstr "संपर्क"
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Contacts saved"
 msgstr ""
 
@@ -4420,6 +4486,7 @@ msgstr ""
 msgid "Continue without AI"
 msgstr ""
 
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Contract"
 msgstr ""
@@ -4539,6 +4606,10 @@ msgstr ""
 #: src/features/assistant/conversation.tsx
 msgid "Copy transcript"
 msgstr "उतारा कॉपी करा"
+
+#: src/features/portfolio/blocks/add-media-block.tsx
+msgid "Copying the picture…"
+msgstr ""
 
 #: src/features/portfolio/blocks/video-block.tsx
 msgid "Copying the thumbnail into your portfolio…"
@@ -4925,6 +4996,10 @@ msgstr "ते अर्जांमधून काढता आले ना�
 msgid "Couldn't remove the passkey. Try again."
 msgstr "पासकी काढता आली नाही. पुन्हा प्रयत्न करा."
 
+#: src/features/portfolio/editor/password-group.tsx
+msgid "Couldn't remove the password. Try again."
+msgstr ""
+
 #: src/features/documents/document-actions.tsx
 msgid "Couldn't rename the document. Try again."
 msgstr "दस्तऐवजाचे नाव बदलता आले नाही. पुन्हा प्रयत्न करा."
@@ -5057,6 +5132,7 @@ msgstr "ईमेल पाठवू शकलो नाही. पुन्ह�
 msgid "Couldn't send the password reset email. Try again."
 msgstr "पासवर्ड रीसेट ईमेल पाठवता आला नाही. पुन्हा प्रयत्न करा."
 
+#: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Couldn't set the password. Try again."
 msgstr "पासवर्ड सेट करता आला नाही. पुन्हा प्रयत्न करा."
@@ -5220,11 +5296,16 @@ msgstr "याची मोजणी पार्स स्कोअरपेक
 
 #: src/features/career/knowledge/search-regions-field.tsx
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/work-statistics.tsx
 msgid "Countries"
 msgstr "देश"
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Countries, devices and linking sites can't be shown right now. Try again later."
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Countries, devices, linking sites and works by day"
 msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
@@ -5519,14 +5600,17 @@ msgstr "चेक"
 msgid "Daily at {clock} · next {next}"
 msgstr "दररोज {clock} वाजता · पुढील {next}"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Daily numbers"
+msgstr ""
+
 #. placeholder {0}: summary.peak
 #: src/features/resume/share/share-panel.tsx
 msgid "Daily views over 30 days, peak {0}"
 msgstr "३० दिवसांहून अधिक दैनिक दृश्ये, शिखर {0}"
 
-#. placeholder {0}: summary.peak
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
-msgid "Daily visits over 30 days, peak {0}"
+msgid "Daily visits over {days} days, peak {peak}"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -5603,6 +5687,10 @@ msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "Days in WIB. Trends compare with the period just before."
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Days shown"
 msgstr ""
 
 #: src/features/letters/compose.ts
@@ -5886,9 +5974,15 @@ msgstr ""
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/features/portfolio/admin/reports-page.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
 msgstr "तपशील"
+
+#. placeholder {0}: work.title
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Details for {0}"
+msgstr ""
 
 #. Label above the raw error text forwarded by the identity provider
 #: src/features/auth/pages/error.tsx
@@ -5904,6 +5998,7 @@ msgid "Device"
 msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/work-statistics.tsx
 msgid "Devices"
 msgstr ""
 
@@ -5927,7 +6022,7 @@ msgstr "वेगळे चलन, तुलना केली नाही"
 msgid "Different pay period, not compared"
 msgstr "वेगळा वेतन कालावधी, तुलना केली नाही"
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Direct"
 msgstr ""
 
@@ -6141,6 +6236,7 @@ msgstr "कोड डाउनलोड करा"
 
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/billing/admin/overview.tsx
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Download CSV"
 msgstr "CSV डाउनलोड करा"
 
@@ -6155,13 +6251,21 @@ msgstr "डाउनलोड अयशस्वी झाले. पुन्�
 msgid "Download PDF"
 msgstr "PDF डाउनलोड करा"
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Download PDF button"
 msgstr ""
 
 #: src/features/resume/share/download-tab.tsx
 msgid "Download PDF instead"
 msgstr "त्याऐवजी PDF डाउनलोड करा"
+
+#: src/features/portfolio/card/business-card-dialog.tsx
+msgid "Download QR (PNG)"
+msgstr ""
+
+#: src/features/portfolio/card/business-card-dialog.tsx
+msgid "Download QR (SVG)"
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Download resume PDF"
@@ -6530,7 +6634,7 @@ msgstr "ईमेल पत्ता"
 msgid "Email address won't be recognized"
 msgstr "ईमेल पत्ता ओळखला जाणार नाही"
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Email button"
 msgstr ""
 
@@ -6566,11 +6670,11 @@ msgstr ""
 msgid "Embed all fonts when exporting, so characters map the way you intended."
 msgstr "निर्यात करताना सर्व फाँट्स एम्बेड करा, जेणेकरून अक्षरे तुम्ही उद्देशलेल्या पद्धतीने दिसतील."
 
-#: src/features/portfolio/blocks/block-list.tsx
-msgid "Embed: this block can't be edited here yet."
+#: src/features/portfolio/blocks/embed-block.tsx
+msgid "Embed it instead"
 msgstr ""
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Embeds opened"
 msgstr ""
 
@@ -6822,6 +6926,10 @@ msgstr "प्रत्येक टर्म जॉब पोस्टिंग
 #: src/features/career/schedule-sheet.tsx
 msgid "Every week"
 msgstr "दर आठवड्याला"
+
+#: src/features/portfolio/editor/password-group.tsx
+msgid "Everyone who opened it with the old password has to enter the new one."
+msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
@@ -7452,6 +7560,7 @@ msgstr ""
 msgid "Free-form"
 msgstr "मुक्त-स्वरूप"
 
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Freelance"
 msgstr ""
@@ -7532,6 +7641,10 @@ msgstr "तुमच्या अनुभवाच्या नोंदीं�
 msgid "From your message"
 msgstr "तुमच्या संदेशातून"
 
+#: src/features/portfolio/statistics/parts.tsx
+msgid "From your portfolio"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "From your resume"
 msgstr "तुमच्या रेझ्युमेमधून"
@@ -7561,6 +7674,7 @@ msgstr "पूर्ण रुंदी"
 msgid "Full width, one under another"
 msgstr ""
 
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Full-time"
 msgstr ""
@@ -7642,6 +7756,10 @@ msgstr "तुमची टाइमलाइन पुन्हा तयार
 #: src/features/ats-checker/messages.ts
 msgid "Give every role and qualification a date range."
 msgstr "प्रत्येक भूमिका आणि पात्रतेला तारीख श्रेणी द्या."
+
+#: src/features/portfolio/editor/password-group.tsx
+msgid "Give it only to the people who should see your portfolio."
+msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Give pass"
@@ -7899,6 +8017,7 @@ msgstr "पॅनेल लपवा"
 
 #. Accessible label for button that hides a visible password
 #: src/components/input/password-input.tsx
+#: src/features/portfolio/editor/password-group.tsx
 msgid "Hide password"
 msgstr "पासवर्ड लपवा"
 
@@ -8013,6 +8132,10 @@ msgstr "त्यासोबत किती दिवसांची रजा
 #: src/features/career/schedule-sheet.tsx
 msgid "How often"
 msgstr "किती वेळा"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "How often each work was opened"
+msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "How precise"
@@ -8336,6 +8459,7 @@ msgstr "इंटरफेस भाषा"
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "फक्त इंटरफेस. प्रत्येक रेझ्युमे डिझाइनमध्ये स्वतःची भाषा सेट करतो."
 
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Internship"
 msgstr ""
@@ -8822,6 +8946,10 @@ msgstr ""
 msgid "Kind regards,"
 msgstr "विनम्र अभिवादन,"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Kinds of work"
+msgstr ""
+
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 #: src/routes/dashboard/career/route.tsx
@@ -8882,6 +9010,18 @@ msgstr "भाषा"
 #: src/libs/resume/section.tsx
 msgid "Languages"
 msgstr "भाषा"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Last 30 days"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Last 7 days"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Last 90 days"
+msgstr ""
 
 #. placeholder {0}: monthYear(new Date(password.updatedAt))
 #: src/features/settings/account/security.tsx
@@ -9177,6 +9317,7 @@ msgstr "या क्लोज रेषा वाचल्यावर एक�
 
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/portfolio/blocks/block-list.tsx
+#: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/portfolio/works/add-work/from-link.tsx
@@ -9275,7 +9416,7 @@ msgstr "LinkedIn, रेफरल…"
 msgid "Linking…"
 msgstr "लिंक करत आहे..."
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "Links"
 msgstr "दुवे"
@@ -9885,10 +10026,6 @@ msgstr "बहुतांश बुलेट्स तुम्ही काय
 msgid "Most entries have no dates."
 msgstr "बहुतांश नोंदींना तारखा नाहीत."
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
-msgid "Most opened work"
-msgstr ""
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
 msgstr "बहुतेक रिक्रूटर्स 180-320 शब्द वाचतात. छायांकित बँड श्रेणी दर्शविते."
@@ -10300,6 +10437,7 @@ msgid "No city by that name. Larger towns are listed; type the nearest one, then
 msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/work-statistics.tsx
 msgid "No clicks yet."
 msgstr ""
 
@@ -10413,6 +10551,7 @@ msgid "No lines look like a job title paired with an employer."
 msgstr "नोकरीचे शीर्षक आणि नियोक्ता जोडलेल्या ओळी दिसत नाहीत."
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/work-statistics.tsx
 msgid "No links from other sites yet."
 msgstr ""
 
@@ -10596,6 +10735,7 @@ msgid "No timezone matches."
 msgstr "कोणताही टाइमझोन जुळत नाही."
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/work-statistics.tsx
 msgid "No visits yet."
 msgstr ""
 
@@ -10652,6 +10792,10 @@ msgstr "लागू केले नाही"
 #: src/features/applications/next-step.ts
 msgid "Not applied yet"
 msgstr "अद्याप अर्ज केला नाही"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Not available right now"
+msgstr ""
 
 #: src/features/settings/account/security.tsx
 msgid "Not connected"
@@ -10946,9 +11090,17 @@ msgstr "निरीक्षण"
 msgid "Odia"
 msgstr "ओडिया"
 
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Of total"
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "Off"
 msgstr "बंद"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Off while your portfolio has a password."
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Off. The letter keeps its own copy of your details."
@@ -11065,6 +11217,14 @@ msgstr "फक्त एकच ओळखता येण्याजोगे �
 msgid "Only one version so far. Every editing session adds one automatically."
 msgstr "आतापर्यंत फक्त एक आवृत्ती. प्रत्येक संपादन सत्र आपोआप एक जोडते."
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Only people with the password can see it"
+msgstr ""
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Only people with the password can see it."
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "Only providers that pass their test can be turned on."
 msgstr "केवळ त्यांची चाचणी उत्तीर्ण करणारे प्रदाता चालू केले जाऊ शकतात."
@@ -11093,6 +11253,10 @@ msgstr ""
 
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Only you can see it. Publish it from the editor when it's ready."
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Only you see these, and your own visits aren't counted."
 msgstr ""
 
 #: src/features/homepage/faq.tsx
@@ -11161,6 +11325,10 @@ msgstr ""
 msgid "Open in Offers"
 msgstr "ऑफर्समध्ये उघडा"
 
+#: src/features/portfolio/blocks/embed-block.tsx
+msgid "Open it on {provider}"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Open link"
 msgstr ""
@@ -11173,6 +11341,7 @@ msgstr ""
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/portfolio-page.tsx
+#: src/features/portfolio/works/work-address.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Open page"
 msgstr ""
@@ -11238,6 +11407,10 @@ msgstr "वेब पेज उघडा"
 #: src/features/career/today.tsx
 msgid "Open workspace"
 msgstr "वर्कस्पेस उघडा"
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Opened"
+msgstr ""
 
 #: src/features/homepage/resume.tsx
 msgid "Opened 12 times this week"
@@ -11370,7 +11543,7 @@ msgstr ""
 msgid "Other documents · {0}"
 msgstr "इतर कागदपत्रे · {0}"
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Other sites"
 msgstr ""
 
@@ -11426,6 +11599,10 @@ msgstr "पृष्ठ १"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Page 1 · {formatLabel}"
 msgstr "पृष्ठ 1 · {formatLabel}"
+
+#: src/features/portfolio/works/work-address.tsx
+msgid "Page address"
+msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/editor/save-problem.ts
@@ -11510,6 +11687,7 @@ msgstr "परिच्छेद {n}"
 msgid "Paragraphs, headings, lists and links"
 msgstr ""
 
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Part-time"
 msgstr ""
@@ -11558,7 +11736,9 @@ msgstr "पासकीज"
 #: src/features/auth/pages/login.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/portfolio/editor/password-group.tsx
 #: src/features/portfolio/page-text.ts
+#: src/features/portfolio/portfolio-page.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/share/web-page-text.ts
 #: src/features/settings/account/auth-hooks.ts
@@ -11567,9 +11747,11 @@ msgid "Password"
 msgstr "पासवर्ड"
 
 #: src/dialogs/auth/change-password.tsx
+#: src/features/portfolio/editor/password-group.tsx
 msgid "Password changed"
 msgstr "पासवर्ड बदलला"
 
+#: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Password removed"
 msgstr "पासवर्ड काढला"
@@ -11578,6 +11760,7 @@ msgstr "पासवर्ड काढला"
 msgid "Password reset. Sign in with your new password."
 msgstr "पासवर्ड रीसेट झाला. तुमच्या नवीन पासवर्डने साइन इन करा."
 
+#: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Password set"
 msgstr "पासवर्ड सेट"
@@ -11600,6 +11783,10 @@ msgstr ""
 
 #: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Paste a link to Behance, Dribbble, GitHub, Figma, Medium or any site. The card fills itself in."
+msgstr ""
+
+#: src/features/portfolio/blocks/add-media-block.tsx
+msgid "Paste a link to Figma, Loom, Spotify, SoundCloud or Google Slides. Visitors load it only when they press it."
 msgstr ""
 
 #. placeholder {0}: application.company
@@ -11764,7 +11951,7 @@ msgstr ""
 msgid "PDF, Word or JSON. We'll build a resume from it."
 msgstr "PDF, Word किंवा JSON. आम्ही त्यातून एक रेझ्युमे तयार करू."
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "PDFs opened"
 msgstr ""
 
@@ -11783,6 +11970,10 @@ msgstr ""
 
 #: src/features/homepage/pricing.tsx
 msgid "per month, or {yearly} a year"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Per work"
 msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
@@ -11815,7 +12006,7 @@ msgstr "फोन"
 msgid "Phone (optional)"
 msgstr "फोन (ऐच्छिक)"
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Phones"
 msgstr ""
 
@@ -11885,6 +12076,7 @@ msgstr "तुमच्या कथा निवडत आहे"
 msgid "Picture"
 msgstr "चित्र"
 
+#: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Picture (optional)"
@@ -12333,6 +12525,14 @@ msgstr "प्राथमिक रेझ्युमे"
 msgid "Print"
 msgstr "छापा"
 
+#: src/features/portfolio/card/business-card-dialog.tsx
+msgid "Print cards"
+msgstr ""
+
+#: src/features/portfolio/card/business-card-dialog.tsx
+msgid "Print cards makes an A4 sheet of 10 cards (85 × 55 mm) with lines to cut along."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Print or export the form to a flat PDF before sending it."
 msgstr "पाठवण्यापूर्वी फॉर्म प्रिंट करा किंवा फ्लॅट PDF मध्ये निर्यात करा."
@@ -12439,6 +12639,10 @@ msgstr "प्रस्तावित बदल"
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Proposed edits"
 msgstr "प्रस्तावित संपादने"
+
+#: src/features/portfolio/editor/password-group.tsx
+msgid "Protect with a password"
+msgstr ""
 
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Protect your resume with a password"
@@ -12558,13 +12762,15 @@ msgstr "पहिल्या पानाच्या वरच्या भा
 msgid "Put the caret in a line to improve it"
 msgstr "कॅरेट सुधारण्यासाठी एका ओळीत ठेवा"
 
-#: src/features/portfolio/editor/publish-panel.tsx
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "QR code"
 msgstr "QR कोड"
 
-#: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/card/business-card-dialog.tsx
+msgid "QR code for {shown}"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "QR code for {url}"
 msgstr "{url} साठी QR कोड"
@@ -12787,6 +12993,7 @@ msgstr "फाईल वाचत आहे"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/portfolio/blocks/add-media-block.tsx
+#: src/features/portfolio/blocks/embed-block.tsx
 msgid "Reading the link…"
 msgstr "लिंक वाचत आहे..."
 
@@ -13207,6 +13414,7 @@ msgstr ""
 msgid "Remove passkey"
 msgstr "पासकी काढा"
 
+#: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Remove password"
 msgstr "पासवर्ड काढा"
@@ -13246,6 +13454,7 @@ msgstr ""
 msgid "Remove the city and map"
 msgstr ""
 
+#: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Remove the password?"
 msgstr "पासवर्ड काढायचा?"
@@ -13804,6 +14013,10 @@ msgstr "भूमिका, कंपनी किंवा स्थान"
 msgid "Roles"
 msgstr "भूमिका"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Roles you're looking for"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Roles, places and companies. Starts from your preferences."
 msgstr "भूमिका, ठिकाणे आणि कंपन्या. तुमच्या प्राधान्यांपासून सुरुवात होते."
@@ -14126,6 +14339,10 @@ msgstr ""
 msgid "Scan the QR code with your authenticator app, or copy the secret and paste it into the app."
 msgstr "तुमच्या ऑथेंटिकेटर अॅपने QR कोड स्कॅन करा, किंवा गुप्त कोड कॉपी करून अॅपमध्ये पेस्ट करा."
 
+#: src/features/portfolio/card/business-card-dialog.tsx
+msgid "Scan to see my portfolio"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Schedule an interview"
 msgstr "मुलाखतीचे वेळापत्रक करा"
@@ -14209,6 +14426,10 @@ msgstr "कागदपत्रे शोधा"
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Search engines"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Search engines don't list it, and link previews show a general picture. Remove the password in Publish → Password to change that."
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -14379,7 +14600,7 @@ msgstr ""
 msgid "See the live site"
 msgstr ""
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "See visitors' countries on a map, their devices, and which sites link to you with Plus."
 msgstr ""
 
@@ -14387,7 +14608,7 @@ msgstr ""
 msgid "See what ATS software reads"
 msgstr ""
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "See what's included"
 msgstr ""
 
@@ -14458,7 +14679,7 @@ msgstr ""
 msgid "Send a message (to Contact)"
 msgstr ""
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Send a message button"
 msgstr ""
 
@@ -14562,7 +14783,7 @@ msgstr "सर्बियन"
 msgid "Service"
 msgstr ""
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Service orders"
 msgstr ""
 
@@ -14582,6 +14803,7 @@ msgstr "फॉलोअप सेट करा..."
 msgid "Set a password"
 msgstr "पासवर्ड सेट करा"
 
+#: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Set password"
 msgstr "पासवर्ड सेट करा"
@@ -14639,6 +14861,10 @@ msgstr "शेअर करा"
 
 #: src/features/homepage/introduction.tsx
 msgid "Share a live link that is always the latest version"
+msgstr ""
+
+#: src/features/portfolio/media/embeds.ts
+msgid "Share the presentation with “Anyone with the link” first, or it won't show."
 msgstr ""
 
 #: src/features/resume/share/address-field.tsx
@@ -14758,6 +14984,10 @@ msgid "Show a map on my page"
 msgstr ""
 
 #: src/features/portfolio/editor/contact-form.tsx
+msgid "Show a Save contact button"
+msgstr ""
+
+#: src/features/portfolio/editor/contact-form.tsx
 msgid "Show a WhatsApp button"
 msgstr ""
 
@@ -14772,6 +15002,10 @@ msgstr "सर्व प्रकार दाखवा"
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Show DNS records"
 msgstr "DNS रेकॉर्ड दाखवा"
+
+#: src/features/portfolio/card/business-card-dialog.tsx
+msgid "Show full screen"
+msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Show heading"
@@ -14846,6 +15080,7 @@ msgstr "पटल दाखवा"
 
 #. Accessible label for button that reveals a masked password
 #: src/components/input/password-input.tsx
+#: src/features/portfolio/editor/password-group.tsx
 msgid "Show password"
 msgstr "पासवर्ड दाखवा"
 
@@ -14984,6 +15219,7 @@ msgid "Site name (optional)"
 msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/work-statistics.tsx
 msgid "Sites that link to you"
 msgstr ""
 
@@ -15186,6 +15422,7 @@ msgstr ""
 #: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/work-statistics.tsx
 msgid "Sources"
 msgstr "स्त्रोत"
 
@@ -15726,7 +15963,7 @@ msgstr "सिस्टम तुम्हाला पृष्ठाच्य�
 msgid "Systems look for an experience section. Projects or volunteering can show the same history."
 msgstr "सिस्टम अनुभव विभाग शोधतात. प्रकल्प किंवा स्वयंसेवा समान इतिहास दर्शवू शकतात."
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Tablets"
 msgstr ""
 
@@ -16113,7 +16350,15 @@ msgid "That sign-in provider is no longer available on this server. Use another 
 msgstr "तो साइन-इन प्रदाता या सर्व्हरवर आता उपलब्ध नाही. साइन इन करण्याची दुसरी पद्धत वापरा."
 
 #: src/features/portfolio/blocks/add-media-block.tsx
+msgid "That's a {provider} link, so it was added as an Embed block."
+msgstr ""
+
+#: src/features/portfolio/blocks/add-media-block.tsx
 msgid "That's a video, so it was added as a Video block."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "That's the most: remove one to add another."
 msgstr ""
 
 #. placeholder {0}: passDays(target.interval)
@@ -16249,6 +16494,10 @@ msgstr ""
 msgid "The file couldn't be read as a resume."
 msgstr "फाइल रेझ्युमे म्हणून वाचली जाऊ शकली नाही."
 
+#: src/features/portfolio/media/embeds.ts
+msgid "The file must be viewable by anyone with the link."
+msgstr ""
+
 #: src/dialogs/resume/template/data.ts
 msgid "The formal Indonesian CV: a portrait beside the name and a column of personal details, with firm ruled section titles. Fits state-owned companies, civil service and local employers."
 msgstr ""
@@ -16268,10 +16517,6 @@ msgstr ""
 #: src/features/settings/ai/providers.tsx
 msgid "The key is encrypted on the server and never shown again. Saving tests the connection."
 msgstr "की सर्व्हरवर एनक्रिप्ट केलेली आहे आणि पुन्हा कधीही दर्शविली जात नाही. जतन करणे कनेक्शनची चाचणी घेते."
-
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
-msgid "The last 30 days. Only you see these, and your own visits aren't counted."
-msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "The last payment didn't go through. Update your payment method to keep it; access is paused until then."
@@ -16327,6 +16572,10 @@ msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "The numbers couldn't load."
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "The numbers for these days couldn't be loaded. The ones below are from before."
 msgstr ""
 
 #: src/features/career/coach.tsx
@@ -16401,6 +16650,10 @@ msgstr ""
 msgid "The picture couldn't be copied. Add a cover yourself."
 msgstr ""
 
+#: src/features/portfolio/card/business-card-dialog.tsx
+msgid "The picture couldn't be made. Try the SVG instead."
+msgstr ""
+
 #: src/features/portfolio/images/upload.ts
 msgid "The picture couldn't be uploaded. Check your connection and try again."
 msgstr ""
@@ -16472,6 +16725,10 @@ msgstr "प्रदात्याने एक पुनरावलोकन 
 #: src/features/auth/pages/error.tsx
 msgid "The provider's response couldn't be verified. Try again."
 msgstr "प्रदात्याचा प्रतिसाद पडताळता आला नाही. पुन्हा प्रयत्न करा."
+
+#: src/features/portfolio/card/business-card-dialog.tsx
+msgid "The QR code adds ?utm_source=qr, so your statistics show visits from it."
+msgstr ""
 
 #: src/features/applications/components/detail/close-dialog.tsx
 msgid "The reason is kept for Insights. Linked documents aren't touched."
@@ -16846,6 +17103,10 @@ msgstr ""
 msgid "This invoice isn't available here. Open billing to find all your invoices."
 msgstr ""
 
+#: src/features/portfolio/blocks/embed-block.tsx
+msgid "This is a {provider} link: it can show on your page itself, after a visitor presses it."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "हा एक PDF पोर्टफोलिओ आहे: दिसणारे पान फक्त मुखपृष्ठ आहे."
@@ -16880,6 +17141,11 @@ msgstr "हे पत्र त्याचा प्राप्तकर्त
 
 #: src/features/billing/payment-return.tsx
 msgid "This link doesn't say which payment it is. Your plan page lists every payment you started."
+msgstr ""
+
+#: src/features/portfolio/blocks/add-media-block.tsx
+#: src/features/portfolio/blocks/embed-block.tsx
+msgid "This link isn't from a service we can embed. Use a Link block instead."
 msgstr ""
 
 #: src/features/ats-checker/report/report-view.tsx
@@ -17132,8 +17398,24 @@ msgstr ""
 msgid "This work already holds {0} blocks, so the new block wasn't added."
 msgstr ""
 
+#: src/features/portfolio/works/work-address.tsx
+msgid "This work has no page while it's hidden, has no title, or the Work section is hidden."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "This work isn't in your portfolio anymore. Reload the page to see the current list."
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "This work isn't on this portfolio anymore."
+msgstr ""
+
+#: src/features/portfolio/statistics/work-statistics.tsx
+msgid "This work's numbers couldn't be loaded."
+msgstr ""
+
+#: src/features/portfolio/statistics/work-statistics.tsx
+msgid "This work's page over the last {range} days."
 msgstr ""
 
 #: src/features/career/workspace/shell.tsx
@@ -17197,6 +17479,18 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "वेळा {timeZone} मध्ये दाखवल्या जातात."
 
+#: src/features/portfolio/statistics/work-statistics.tsx
+msgid "Times opened"
+msgstr ""
+
+#: src/features/portfolio/statistics/work-statistics.tsx
+msgid "Times opened per day"
+msgstr ""
+
+#: src/features/portfolio/statistics/work-statistics.tsx
+msgid "Times opened per day over {days} days, peak {peak}"
+msgstr ""
+
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/general.tsx
 msgid "Timezone"
@@ -17212,6 +17506,7 @@ msgid "Tip"
 msgstr "टीप"
 
 #: src/features/career/knowledge/stories.tsx
+#: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -17241,7 +17536,7 @@ msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Today"
 msgstr "आज"
@@ -17446,6 +17741,7 @@ msgstr "एक नमुना वापरून पहा"
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/statistics/portfolio-messages.tsx
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/work-statistics.tsx
 #: src/features/resume/editor/write/improve.tsx
 #: src/features/resume/preview/preview.browser.tsx
 #: src/features/resume/share/download-tab.tsx
@@ -17762,6 +18058,10 @@ msgstr "2 मिनिटांपर्यंत. तुम्ही बोल�
 msgid "Up to 25 MB · checked in your browser, never uploaded"
 msgstr "25 MB पर्यंत · तुमच्या ब्राउझरमध्ये चेक केले, कधीही अपलोड केले नाही"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Up to 5, such as Product Designer."
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Up, a bad change:"
 msgstr ""
@@ -17934,6 +18234,7 @@ msgstr "किमान 9pt वापरा."
 msgid "Use at most 64 characters."
 msgstr "जास्तीत जास्त 64 अक्षरे वापरा."
 
+#: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Use between 6 and 64 characters."
 msgstr "६ ते ६४ अक्षरांदरम्यान वापरा."
@@ -17957,6 +18258,10 @@ msgstr "कोचिंगमध्ये वापरा: {excerpt}"
 
 #: src/features/portfolio/works/add-work/from-link.tsx
 msgid "Use it only if you may show it. Your page never loads pictures from other sites."
+msgstr ""
+
+#: src/features/portfolio/works/work-address.tsx
+msgid "Use lowercase letters, digits and single dashes."
 msgstr ""
 
 #: src/features/resume/share/address-field.tsx
@@ -18224,7 +18529,7 @@ msgstr ""
 msgid "Video: it plays on your page when a visitor presses play"
 msgstr ""
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "Videos played"
 msgstr ""
 
@@ -18253,7 +18558,7 @@ msgstr "जॉब पोस्टिंग पहा"
 msgid "View resume"
 msgstr ""
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "View resume button"
 msgstr ""
 
@@ -18292,6 +18597,18 @@ msgstr "अभ्यागत PDF डाउनलोड करू शकता�
 msgid "Visitors can't see it anymore. Your short link opens your primary resume again, if you have a published one."
 msgstr ""
 
+#: src/features/portfolio/blocks/embed-block.tsx
+msgid "Visitors load it from {provider} only when they press it."
+msgstr ""
+
+#: src/features/portfolio/editor/password-group.tsx
+msgid "Visitors need this password to see your portfolio and its works. While it's on, search engines don't list it and link previews show a general picture."
+msgstr ""
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Visitors save your name, headline and the contact details shown here to their phone."
+msgstr ""
+
 #: src/features/portfolio/admin/review-page.tsx
 msgid "Visitors stop seeing it right away; nothing is deleted. The owner reads this reason in their editor, so don't mention who reported it."
 msgstr ""
@@ -18306,6 +18623,10 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Visits, clicks, messages and sources are included."
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Visits, messages, clicks and sources per day"
 msgstr ""
 
 #: src/features/career/workspace/practise.tsx
@@ -18666,7 +18987,7 @@ msgstr ""
 msgid "WhatsApp"
 msgstr ""
 
-#: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/portfolio/statistics/parts.tsx
 msgid "WhatsApp button"
 msgstr ""
 
@@ -18796,6 +19117,10 @@ msgstr ""
 msgid "Within 7 days of your first charge you can ask for a full refund if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
 msgstr ""
 
+#: src/features/portfolio/blocks/embed-block.tsx
+msgid "Without a picture, the page shows a plain button with the service's name."
+msgstr ""
+
 #: src/features/portfolio/create-dialog.tsx
 msgid "Without a resume"
 msgstr ""
@@ -18822,6 +19147,7 @@ msgid "Words run together when the text is extracted."
 msgstr "मजकूर काढल्यावर शब्द एकत्र चिकटतात."
 
 #: src/features/portfolio/page-text.ts
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Work"
 msgstr ""
 
@@ -18831,6 +19157,10 @@ msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Work opened by day"
+msgstr ""
+
+#: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Works"
 msgstr ""
 
 #: src/features/portfolio/ai/draft-dialog.tsx
@@ -19377,7 +19707,7 @@ msgstr ""
 msgid "Your latest changes aren't saved yet. Wait for them to save, then try again."
 msgstr ""
 
-#: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/editor/setting-action.ts
 msgid "Your latest changes aren't saved, so nothing was changed. Check the save status at the top, then try again."
 msgstr ""
 
