@@ -39,7 +39,6 @@ export function ContactForm() {
 		<div className="grid gap-4">
 			<TextInput
 				label={t`Invitation`}
-				icon="chat-text"
 				multiline
 				value={contact.note}
 				maxLength={max.contactNote}

@@ -25,17 +25,15 @@ function InputIcon({ name, className }: InputIconProps) {
 type WithInputIconProps = {
 	icon: IconName | undefined;
 	className?: string;
-	/** Classes for the icon, e.g. `top-3 translate-y-0` to sit at a text area's first line. */
-	iconClassName?: string;
 	children: ReactNode;
 };
 
 /** Wraps one `Input` so an icon sits at its start; with no icon the input renders as it is. */
-export function WithInputIcon({ icon, className, iconClassName, children }: WithInputIconProps) {
+export function WithInputIcon({ icon, className, children }: WithInputIconProps) {
 	if (!icon) return children;
 	return (
 		<div className={cn("relative min-w-0", className)}>
-			<InputIcon name={icon} {...(iconClassName && { className: iconClassName })} />
+			<InputIcon name={icon} />
 			{children}
 		</div>
 	);

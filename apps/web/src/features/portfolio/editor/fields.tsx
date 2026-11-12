@@ -60,7 +60,7 @@ type TextInputProps = {
 	onChange: (value: string) => void;
 	maxLength: number;
 	placeholder?: string | undefined;
-	/** Drawn at the start of the field. */
+	/** Drawn at the start of a one-line field; text areas have none. */
 	icon?: IconName | undefined;
 	/** What's wrong with the value, shown under the field, which is marked invalid. */
 	errorMessage?: string | undefined;
@@ -109,22 +109,18 @@ export function TextInput({
 			) : (
 				<Label>{label}</Label>
 			)}
-			<WithInputIcon icon={icon} {...(multiline && { iconClassName: "top-3 translate-y-0" })}>
-				{multiline ? (
-					<TextArea
-						variant="secondary"
-						className={cn("min-h-20", icon && INPUT_WITH_ICON)}
-						{...(placeholder ? { placeholder } : {})}
-					/>
-				) : (
+			{multiline ? (
+				<TextArea variant="secondary" {...(placeholder ? { placeholder } : {})} />
+			) : (
+				<WithInputIcon icon={icon}>
 					<Input
 						variant="secondary"
 						className={cn(icon && INPUT_WITH_ICON)}
 						{...(placeholder ? { placeholder } : {})}
 						{...(inputMode ? { inputMode } : {})}
 					/>
-				)}
-			</WithInputIcon>
+				</WithInputIcon>
+			)}
 			<FieldError>{errorMessage}</FieldError>
 		</TextField>
 	);

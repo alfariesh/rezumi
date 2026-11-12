@@ -81,7 +81,6 @@ export function IntroForm() {
 			/>
 			<TextInput
 				label={t`Greeting`}
-				icon="text-align-left"
 				multiline
 				rewrite="greeting"
 				value={hero.greeting}

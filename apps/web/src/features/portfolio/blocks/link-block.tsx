@@ -138,7 +138,6 @@ export function LinkBlockEditor({ work, block, edit }: LinkBlockEditorProps) {
 			/>
 			<TextInput
 				label={t`Description (optional)`}
-				icon="text-align-left"
 				multiline
 				value={block.description ?? ""}
 				maxLength={max.linkDescription}

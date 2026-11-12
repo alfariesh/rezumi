@@ -254,7 +254,7 @@ function MetricFields({ metric, edit, locale, compact = false }: MetricFieldsPro
 				</Segment.Item>
 			</Segment>
 			{metric.value.kind === "number" ? (
-				<div className="grid gap-3 @sm:grid-cols-2">
+				<div className="grid gap-3">
 					<NumberText
 						key={`${metric.id}-value`}
 						label={t`Value`}
@@ -360,7 +360,7 @@ function MoreMetricFields({ metric, edit }: Pick<MetricFieldsProps, "metric" | "
 				}
 			/>
 			{change && (
-				<div className="grid gap-3 @sm:grid-cols-2">
+				<div className="grid gap-3">
 					<ChoiceSelect
 						label={t`Direction`}
 						value={change.direction}

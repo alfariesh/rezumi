@@ -95,7 +95,6 @@ export function ServicesForm() {
 							</div>
 							<TextInput
 								label={t`Description`}
-								icon="text-align-left"
 								multiline
 								rewrite="serviceDescription"
 								value={service.description}
@@ -282,7 +281,6 @@ function TestimonialFields({ value, onChange }: TestimonialFieldsProps) {
 		<>
 			<TextInput
 				label={t`What they said`}
-				icon="chat-text"
 				multiline
 				value={value.quote}
 				maxLength={max.quote}

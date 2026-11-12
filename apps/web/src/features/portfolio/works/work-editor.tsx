@@ -116,7 +116,6 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 					rewrite="workSummary"
 					value={work.summary}
 					maxLength={max.workSummary}
-					icon="text-align-left"
 					placeholder={t`What you made, for whom, and what changed.`}
 					onChange={(value) =>
 						update((draft) => {

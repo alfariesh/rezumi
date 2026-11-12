@@ -40,11 +40,7 @@ export function DraftNote({ value, onChange }: DraftNoteProps) {
 			<Label>
 				<Trans>Anything to stress or leave out? (optional)</Trans>
 			</Label>
-			<TextArea
-				variant="secondary"
-				className="min-h-20"
-				placeholder={t`I want freelance branding work, so lead with my client projects.`}
-			/>
+			<TextArea variant="secondary" placeholder={t`I want freelance branding work, so lead with my client projects.`} />
 			<Description>
 				<Trans>
 					AI only uses what's on your resume and in this note. It won't make up numbers, clients or results.

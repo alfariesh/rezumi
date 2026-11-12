@@ -382,7 +382,6 @@ function SearchGroup() {
 				multiline
 				value={seo.description ?? ""}
 				maxLength={PORTFOLIO_LIMITS.text.seoDescription}
-				icon="text-align-left"
 				placeholder={view.seo.description}
 				onChange={(value) =>
 					editPortfolio(
