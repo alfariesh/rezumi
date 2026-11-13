@@ -3,7 +3,7 @@ title: "Importing a resume"
 description: "Turn an existing resume into an editable Rezumi document from a PDF, Word file, LinkedIn export, JSON Resume or Rezumi JSON file."
 ---
 
-If you already have a resume, you don't need to retype it. Import the file and Rezumi builds a new, editable resume from it, section by section. Your original file is never changed.
+If you already have a resume, you don't need to retype it. Import the file and Rezumi builds a new, editable resume from it, section by section, and fills in what your [Profile](/guides/using-your-profile) is missing. Your original file is never changed.
 
 ## Supported files
 
@@ -69,6 +69,12 @@ If some dates couldn't be read exactly, the note says how many fields need a loo
 
 Go through every section before you send the resume. PDF and Word files don't store which text belongs where, so parts can land in the wrong section, lose formatting or come out slightly reworded. Structured files (Rezumi JSON, JSON Resume, LinkedIn) come in far more reliably.
 
+## What the import adds to your Profile
+
+Importing a resume also fills what your [Profile](/guides/using-your-profile) still lacks: blank details, a missing photo or summary, and sections with no entries yet. Nothing already in your Profile changes, so check your Profile's **Details & career** tab after a PDF or Word import too.
+
+To fill your Profile from a file without creating a resume, open **Profile → Details & career** and select **Import a file**. It's offered while your Profile has no career entries yet.
+
 ## Notes on each format
 
 <AccordionGroup>
@@ -99,7 +105,7 @@ Go through every section before you send the resume. PDF and Word files don't st
 
 **"This file type can't be imported."** The file isn't one of the supported types. Export your resume as PDF, Word or JSON, or use your LinkedIn data export.
 
-**"Reading Word files needs an AI provider."** Connect a provider in **Settings → AI providers** and test it, or import a PDF or JSON version instead. **Choose another file** lets you pick a different file without closing the dialog, and **Start blank** gives you an empty resume.
+**"Reading Word files needs an AI provider."** Connect a provider in **Settings → AI providers** and test it, or import a PDF or JSON version instead. **Choose another file** lets you pick a different file without closing the dialog, and **Start blank** starts a resume from your Profile instead.
 
 <Frame caption="A Word file without an AI provider">
   <img
@@ -121,6 +127,7 @@ Go through every section before you send the resume. PDF and Word files don't st
 ## Related guides
 
 - [Creating your first resume](/guides/creating-your-first-resume): start from scratch instead.
+- [Keep your details in one Profile](/guides/using-your-profile): what your Profile holds and how resumes follow it.
 - [Entering dates](/guides/entering-dates): fix dates that need a look.
 - [Managing sections](/guides/managing-sections): rename, hide or reorder imported sections.
 - [JSON Resume schema](/guides/json-resume-schema): the structure of Rezumi's JSON format.
