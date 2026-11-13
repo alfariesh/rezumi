@@ -55,7 +55,8 @@ export function useStartDocument(applicationId?: string) {
 			}
 		},
 		newLetter: async () => {
-			// A new letter takes its sender details and design from the resume edited most recently.
+			// A new letter goes with the resume edited most recently: its sender details (which follow the Profile unless
+			// that resume changed them) and its design, so the two look alike. Without a resume, the Profile is the sender.
 			const documents = queryClient.getQueryData(orpc.documents.list.queryKey({ input: { trashed: false } }));
 			const resume = documents
 				?.filter((document) => document.type === "resume")

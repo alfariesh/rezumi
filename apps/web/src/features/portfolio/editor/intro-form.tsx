@@ -11,7 +11,7 @@ import { ownPictureUrl } from "@rezumi/utils/own-picture";
 import { useRemovalFocus } from "../blocks/list-focus";
 import { ImageField } from "../images/image-field";
 import { MetricsEditor } from "../metrics/metric-form";
-import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
+import { pageLocaleOf, usePortfolioOwner, usePortfolioSource } from "./context";
 import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
 import { removeWithUndo } from "./list-undo";
 import { useOwnOrigins } from "./pictures";
@@ -36,12 +36,13 @@ const buttonKindLabel = (kind: PortfolioButton["kind"]) =>
 	})[kind];
 
 /**
- * The intro, always first on the page: the name, headline and location the portfolio shows (empty follows the
- * resume), a short greeting, the photo, "Open to work", two to four achievement numbers and up to three buttons.
+ * The intro, always first on the page: the name, headline and location the portfolio shows (empty follows its
+ * source, the Profile or the resume, which the placeholders show), a short greeting, the photo, "Open to work", two
+ * to four achievement numbers and up to three buttons.
  */
 export function IntroForm() {
 	const data = usePortfolioData();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	const owner = usePortfolioOwner();
 	const resume = source.data;
 	const { basics, hero } = data;
@@ -147,7 +148,7 @@ export function IntroForm() {
  */
 function HeroPhoto() {
 	const data = usePortfolioData();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	const owner = usePortfolioOwner();
 	const kept = usePortfolioEditorUi((state) => state.keptPhoto);
 	const keepPhoto = usePortfolioEditorUi((state) => state.keepPhoto);
@@ -186,7 +187,14 @@ function HeroPhoto() {
 				label={t`Photo`}
 				value={choice}
 				options={[
-					...(resumePhoto ? [{ id: "resume", label: t`The photo on my resume` }] : []),
+					...(resumePhoto
+						? [
+								{
+									id: "resume",
+									label: source.from === "profile" ? t`The photo in my Profile` : t`The photo on my resume`,
+								},
+							]
+						: []),
 					{ id: "own", label: t`A photo for the portfolio only` },
 					{ id: "none", label: t`No photo` },
 				]}
@@ -220,8 +228,8 @@ function HeroPhoto() {
 /** Two to four achievement numbers under the greeting: a value and a label each. */
 function HeroHighlights() {
 	const data = usePortfolioData();
-	const source = useSourceResume();
-	const locale = pageLocaleOf(data, source.data);
+	const source = usePortfolioSource();
+	const locale = pageLocaleOf(data, source.designData);
 	return (
 		<div className="grid gap-3">
 			<span className="text-sm font-medium">

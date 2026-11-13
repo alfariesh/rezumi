@@ -4,7 +4,7 @@ import { Trans } from "@lingui/react/macro";
 import { useId, useRef, useState } from "react";
 import { PORTFOLIO_AI_DRAFT_WORKS } from "@rezumi/schema/portfolio/ai";
 import { Icon } from "@rezumi/ui/components/icon";
-import { useSourceResume } from "../editor/context";
+import { usePortfolioSource } from "../editor/context";
 import { usePortfolioData, usePortfolioEditorStore } from "../editor/store";
 import { applyDraftToEditor } from "./apply";
 import { DraftNote, DraftProgress, draftFailure, useDraftRun } from "./draft-form";
@@ -15,7 +15,7 @@ import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 export function AiDraftButton() {
 	const [open, setOpen] = useState(false);
 	const ai = useAiSource();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	if (!source.data || !ai.source) return null;
 	return (
 		<>

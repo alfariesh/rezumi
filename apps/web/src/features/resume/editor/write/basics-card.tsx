@@ -8,33 +8,35 @@ import { generateId } from "@rezumi/utils/string";
 import { useEditorStore } from "../store";
 import { TextField, validateEmail, WebsiteField } from "./fields";
 import { PictureSettings } from "./picture-settings";
+import { ProfileMarker } from "./profile-link";
+import { useWriteIconStyle, useWriteSelector, useWriteSource, useWriteUpdate } from "./source";
 import { IconPicker } from "@/components/input/icon-picker";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
-import {
-	useCurrentBuilderResumeSelector,
-	useResumeIconStyle,
-	useUpdateResumeData,
-} from "@/features/resume/builder/draft";
 
 type TextKey = "name" | "headline" | "email" | "phone" | "location";
 
 function useBasicsWriter() {
-	const updateResumeData = useUpdateResumeData();
+	const update = useWriteUpdate();
 	return (key: string, mutate: (basics: Basics) => void) =>
-		updateResumeData((draft) => mutate(draft.basics), { coalesceKey: `basics.${key}` });
+		update((draft) => mutate(draft.basics), { coalesceKey: `basics.${key}` });
 }
+
+type BasicsCardProps = { locked: boolean };
 
 /**
  * The About widget: the page header's details. Its header names it and, closed, shows "name · headline"; open, it
- * holds the photo, contact fields and custom fields. Selecting the header on the page opens it.
+ * holds the photo, contact fields and custom fields. Selecting the header on the page opens it. On the Profile it
+ * holds the same details, which documents take from it.
  */
-export function BasicsCard({ locked }: { locked: boolean }) {
-	const basics = useCurrentBuilderResumeSelector((resume) => resume.data.basics);
+export function BasicsCard({ locked }: BasicsCardProps) {
+	const basics = useWriteSelector((data) => data.basics);
+	const profile = useWriteSource().kind === "profile";
 	const open = useEditorStore((state) => state.basicsOpen);
 	const write = useBasicsWriter();
 
 	const text = (key: TextKey) => ({
 		value: basics[key],
+		labelAction: <ProfileMarker part={{ kind: "basics", field: key }} />,
 		onChange: (value: string) =>
 			write(key, (target) => {
 				target[key] = value;
@@ -42,13 +44,13 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 	});
 
 	return (
-		<section id="sidebar-basics" aria-label={t`About`} className="scroll-mt-[60px] px-1">
+		<section id="sidebar-basics" aria-label={profile ? t`Your details` : t`About`} className="scroll-mt-[60px] px-1">
 			<Disclosure isExpanded={open} onExpandedChange={(next) => useEditorStore.setState({ basicsOpen: next })}>
 				<Disclosure.Heading className="min-w-0">
 					<Disclosure.Trigger className="flex min-h-8 w-full cursor-(--cursor-interactive) items-center gap-2 rounded-lg text-start outline-none focus-visible:ring-2 focus-visible:ring-focus">
 						<Icon name="user-circle" size={20} className="shrink-0 text-muted [&_*]:stroke-2" />
 						<span className="shrink-0 text-sm font-semibold">
-							<Trans>About</Trans>
+							{profile ? <Trans>Your details</Trans> : <Trans>About</Trans>}
 						</span>
 						<Disclosure.Indicator className="ms-auto text-muted" />
 					</Disclosure.Trigger>
@@ -69,7 +71,7 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 									wide
 									autoComplete="name"
 									// A blank resume opens straight into the name field.
-									autoFocus={!locked && !basics.name}
+									autoFocus={!locked && !profile && !basics.name}
 									{...text("name")}
 								/>
 								<TextField label={<Trans>Headline</Trans>} icon="briefcase" wide {...text("headline")} />
@@ -85,6 +87,7 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 								<TextField label={<Trans>Location</Trans>} icon="map-pin" wide {...text("location")} />
 								<WebsiteField
 									label={<Trans>Website</Trans>}
+									labelAction={<ProfileMarker part={{ kind: "basics", field: "website" }} />}
 									value={basics.website}
 									allowInlineLink={false}
 									onChange={(website) =>
@@ -103,8 +106,11 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 	);
 }
 
-function PhotoRow({ locked }: { locked: boolean }) {
-	const picture = useCurrentBuilderResumeSelector((resume) => resume.data.picture);
+type PhotoRowProps = { locked: boolean };
+
+function PhotoRow({ locked }: PhotoRowProps) {
+	const picture = useWriteSelector((data) => data.picture);
+	const profile = useWriteSource().kind === "profile";
 	const hasPhoto = Boolean(picture.url);
 
 	return (
@@ -122,19 +128,23 @@ function PhotoRow({ locked }: { locked: boolean }) {
 			<p className="min-w-0 flex-1 text-xs text-muted">
 				{!hasPhoto ? (
 					<Trans>No photo. Most ATS ignore photos; some regions expect one.</Trans>
+				) : profile ? (
+					<Trans>Documents that show a photo use this one.</Trans>
 				) : picture.hidden ? (
 					<Trans>Photo hidden from the page.</Trans>
 				) : (
 					<Trans>Photo on the page.</Trans>
 				)}
 			</p>
+			<ProfileMarker part={{ kind: "picture" }} />
 			<Popover>
 				<Button variant="secondary" size="sm" isDisabled={locked}>
 					{hasPhoto ? <Trans>Edit</Trans> : <Trans>Add</Trans>}
 				</Button>
 				<Popover.Content placement="bottom end" className="max-h-[70svh] w-[360px] overflow-y-auto">
 					<Popover.Dialog className="p-4">
-						<PictureSettings />
+						{/* The photo's frame (size, shape, border) belongs to each document; the Profile keeps the picture. */}
+						<PictureSettings frame={!profile} />
 					</Popover.Dialog>
 				</Popover.Content>
 			</Popover>
@@ -148,26 +158,29 @@ function PhotoRow({ locked }: { locked: boolean }) {
  */
 type CustomFieldsProps = { fields: CustomField[]; locked: boolean };
 function CustomFields({ fields, locked }: CustomFieldsProps) {
-	const updateResumeData = useUpdateResumeData();
-	const iconStyle = useResumeIconStyle();
+	const update = useWriteUpdate();
+	const iconStyle = useWriteIconStyle();
 
 	const edit = (key: string, mutate: (list: CustomField[]) => void) =>
-		updateResumeData((draft) => mutate(draft.basics.customFields), { coalesceKey: `basics.customFields.${key}` });
+		update((draft) => mutate(draft.basics.customFields), { coalesceKey: `basics.customFields.${key}` });
 
 	return (
 		<div className="col-span-full grid gap-3">
 			{fields.map((field, index) => (
 				<CustomFieldRow key={field.id} field={field} index={index} locked={locked} iconStyle={iconStyle} edit={edit} />
 			))}
-			<Button
-				variant="ghost"
-				isDisabled={locked}
-				className="w-fit text-accent-soft-foreground"
-				onPress={() => edit("add", (list) => list.push({ id: generateId(), icon: "acorn", text: "", link: "" }))}
-			>
-				<Icon name="plus" size={18} />
-				<Trans>Add field</Trans>
-			</Button>
+			<div className="flex items-center gap-1">
+				<Button
+					variant="ghost"
+					isDisabled={locked}
+					className="w-fit text-accent-soft-foreground"
+					onPress={() => edit("add", (list) => list.push({ id: generateId(), icon: "acorn", text: "", link: "" }))}
+				>
+					<Icon name="plus" size={18} />
+					<Trans>Add field</Trans>
+				</Button>
+				<ProfileMarker part={{ kind: "basics", field: "customFields" }} />
+			</div>
 		</div>
 	);
 }
@@ -176,7 +189,7 @@ type CustomFieldRowProps = {
 	field: CustomField;
 	index: number;
 	locked: boolean;
-	iconStyle: ReturnType<typeof useResumeIconStyle>;
+	iconStyle: ReturnType<typeof useWriteIconStyle>;
 	edit: (key: string, mutate: (list: CustomField[]) => void) => void;
 };
 

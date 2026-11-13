@@ -61,16 +61,16 @@ test("coach stories wait for exact-content approval and respect Skip", async ({ 
 		const composer = page.getByPlaceholder("Ask about your next career step…");
 		await composer.fill("Review a story about my onboarding work.");
 		await composer.press("Enter");
-		await expect(page.getByText("Save this story to Knowledge?", { exact: true })).toBeVisible({ timeout: 20_000 });
+		await expect(page.getByText("Save this story to your Profile?", { exact: true })).toBeVisible({ timeout: 20_000 });
 		await expect(page.getByRole("button", { name: "Save story", exact: true })).toBeEnabled();
 		expect(await stories()).toEqual([]);
 		if (approve)
 			await page
-				.getByText("Save this story to Knowledge?", { exact: true })
+				.getByText("Save this story to your Profile?", { exact: true })
 				.locator("..")
 				.screenshot({ path: testInfo.outputPath("story-approval.png") });
 		await page.getByRole("button", { name: approve ? "Save story" : "Skip", exact: true }).click();
-		await expect(page.getByText("Save this story to Knowledge?", { exact: true })).toBeHidden();
+		await expect(page.getByText("Save this story to your Profile?", { exact: true })).toBeHidden();
 		await expect(page.getByText("Story decision received.", { exact: true })).toHaveCount(approve ? 2 : 1, {
 			timeout: 20_000,
 		});
@@ -113,7 +113,9 @@ test("knowledge corrections persist and the workspace opens without an AI provid
 	await expect(page.getByRole("link", { name: "Connect an AI provider in Settings" })).toBeVisible();
 });
 
-test("a fit check's missing evidence is saved to Knowledge from the requirements list", async ({ authPage: page }) => {
+test("a fit check's missing evidence is saved to the Profile from the requirements list", async ({
+	authPage: page,
+}) => {
 	test.skip(process.env.FLAG_ALLOW_UNSAFE_AI_BASE_URL !== "true", "Needs FLAG_ALLOW_UNSAFE_AI_BASE_URL=true");
 	const applicationId = await createApplication(page);
 	const provider = await page.request.post("/api/openapi/ai-providers", {
@@ -128,7 +130,7 @@ test("a fit check's missing evidence is saved to Knowledge from the requirements
 	await page.getByRole("button", { name: "Add evidence" }).click();
 	const evidence = "I onboarded 40 enterprise accounts in 2024.";
 	await page.getByLabel("What you did: Enterprise onboarding").fill(evidence);
-	await page.getByRole("button", { name: "Save to Knowledge" }).click();
+	await page.getByRole("button", { name: "Save to Profile" }).click();
 	await expect(page.getByText("Added by you").filter({ visible: true })).toBeVisible();
 
 	await page.goto("/dashboard/career/knowledge/facts");

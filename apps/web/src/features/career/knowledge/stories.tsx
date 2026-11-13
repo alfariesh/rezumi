@@ -114,7 +114,7 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 
 	const open = (id: string | undefined, editMode = false) =>
 		void navigate({
-			to: "/dashboard/career/knowledge/stories/{-$storyId}",
+			to: "/dashboard/profile/stories/{-$storyId}",
 			params: { storyId: id ?? undefined },
 			search: editMode ? { edit: true } : {},
 		});
@@ -147,7 +147,7 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 				count={list.length}
 				trailing={
 					<Link
-						to="/dashboard/career/knowledge/stories/{-$storyId}"
+						to="/dashboard/profile/stories/{-$storyId}"
 						params={{ storyId: undefined }}
 						search={{ edit: true }}
 						aria-current={editing && !selected ? "page" : undefined}
@@ -253,7 +253,7 @@ const StoryCard = memo(function StoryCard({ story, selected, changed }: StoryCar
 	return (
 		<CollapseRow>
 			<Link
-				to="/dashboard/career/knowledge/stories/{-$storyId}"
+				to="/dashboard/profile/stories/{-$storyId}"
 				params={{ storyId: story.id }}
 				aria-current={selected ? "page" : undefined}
 				className={cn(
@@ -364,7 +364,7 @@ function StoryReader({ story, facts }: StoryReaderProps) {
 				{backing.map((fact) => (
 					<Link
 						key={fact.id}
-						to="/dashboard/career/knowledge/facts"
+						to="/dashboard/profile/facts"
 						search={{ highlight: fact.id }}
 						className="flex items-start gap-2.5 rounded-xl px-3 py-2.5 text-sm hover:bg-default"
 					>

@@ -13,7 +13,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { applyPendingDraft } from "@/features/portfolio/ai/apply";
 import { ContentPanel } from "@/features/portfolio/editor/content-panel";
-import { useSourceResume } from "@/features/portfolio/editor/context";
+import { usePortfolioSource } from "@/features/portfolio/editor/context";
 import { DesignPanel } from "@/features/portfolio/editor/design-panel";
 import { preloadPortfolioRichTextEditor } from "@/features/portfolio/editor/fields";
 import { PublishPanel, usePortfolioUrl } from "@/features/portfolio/editor/publish-panel";
@@ -315,7 +315,7 @@ function useSaveFailure() {
 	const problem = usePortfolioEditorStore((state) => state.problem);
 	const retry = usePortfolioEditorStore((state) => state.retry);
 	const data = usePortfolioData();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	const messages = usePageMessages();
 	if (status === "error" && retry) return { message: describeRetry(retry.reason), place: null };
 	if ((status === "invalid" || status === "gone") && problem)

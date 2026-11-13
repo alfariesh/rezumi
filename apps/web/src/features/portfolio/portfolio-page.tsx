@@ -1,3 +1,4 @@
+import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import { EmptyState, Widget } from "@heroui-pro/react";
 import { Button, buttonVariants, Chip, Spinner } from "@heroui/react";
@@ -8,6 +9,7 @@ import { Link, useRouteContext } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
 import { buildPortfolioView } from "@rezumi/portfolio/view";
+import { resumeDataFromProfile } from "@rezumi/resume/profile";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { BusinessCardButton } from "./card/business-card-dialog";
@@ -21,6 +23,7 @@ import { invalidatePortfolioQueries, isPortfolioLive } from "./status";
 import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { WidgetHeading } from "@/components/layout/widget-heading";
+import { profileQueryOptions } from "@/features/profile/queries";
 import { CopyLinkButton } from "@/features/resume/share/copy-link-button";
 import { CustomDomainField } from "@/features/resume/share/custom-domain-field";
 import { useShareOrigin } from "@/features/resume/share/use-share-origin";
@@ -40,7 +43,7 @@ export function PortfolioPage() {
 		<Page>
 			<PageHeader
 				title={<Trans>Portfolio</Trans>}
-				description={<Trans>A one-page website at your own address, made from your resume and your work.</Trans>}
+				description={<Trans>A one-page website at your own address, made from your Profile and your work.</Trans>}
 			/>
 			{isPending ? (
 				<div className="grid place-items-center py-16">
@@ -65,7 +68,7 @@ export function PortfolioPage() {
 							<Icon name="globe-hemisphere-west" size={22} />
 						</EmptyState.Media>
 						<EmptyState.Title>
-							<Trans>Turn your resume into a portfolio website</Trans>
+							<Trans>Turn your Profile into a portfolio website</Trans>
 						</EmptyState.Title>
 						<EmptyState.Description className="max-w-sm text-pretty">
 							<Trans>
@@ -107,18 +110,27 @@ type DashboardBusinessCardProps = {
 	username: string;
 };
 
-/** The business card from the dashboard: the name and headline as the page shows them (the resume fills the gaps). */
+/**
+ * The business card from the dashboard: the name and headline as the page shows them (its source, the resume or the
+ * Profile, fills the gaps).
+ */
 function DashboardBusinessCard({ data, sourceResumeId, username }: DashboardBusinessCardProps) {
 	const { data: session } = authClient.useSession();
 	const { data: resume } = useQuery({
 		...orpc.resume.getById.queryOptions({ input: { id: sourceResumeId ?? "" } }),
 		enabled: sourceResumeId !== null,
 	});
+	const { data: profile } = useQuery({ ...profileQueryOptions(), enabled: sourceResumeId === null });
 	const pageUrl = usePortfolioPageUrl(username);
 	const resumeData = resume?.data ?? null;
+	const source: PortfolioSource | null = resumeData
+		? { data: resumeData, from: "resume" }
+		: sourceResumeId === null && profile
+			? { data: resumeDataFromProfile(profile.data), from: "profile" }
+			: null;
 	const view = buildPortfolioView({
 		portfolio: { data },
-		resume: resumeData ? { data: resumeData } : null,
+		resume: source,
 		owner: { name: session?.user.name ?? "", username },
 		entitlements: { hidePortfolioCredit: false },
 		messages: portfolioViewMessages(portfolioMessages(pageLocaleOf(data, resumeData))),

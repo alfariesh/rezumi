@@ -1,6 +1,6 @@
 import type { PortfolioPageKind } from "@rezumi/portfolio";
+import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
-import type { ResumeData } from "@rezumi/schema/resume/data";
 import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -10,11 +10,11 @@ import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
 import { renderPortfolioDocument } from "@rezumi/portfolio/document";
 import { PREVIEW_STILL_CSS, replayIntroEffect } from "@rezumi/portfolio/effects";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
-import { buildPortfolioView } from "@rezumi/portfolio/view";
+import { buildPortfolioView, portfolioSourceResume } from "@rezumi/portfolio/view";
 import { themeEffect } from "@rezumi/schema/portfolio/themes";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
-import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
+import { pageLocaleOf, usePortfolioOwner, usePortfolioSource } from "./context";
 import { ownFileUrl, useOwnOrigins, withOwnPicture } from "./pictures";
 import { usePortfolioData, usePortfolioEditorStore } from "./store";
 import { usePortfolioEditorUi } from "./ui";
@@ -25,7 +25,8 @@ import "../page-text";
 
 type PreviewInput = {
 	data: PortfolioData;
-	resume: ResumeData | null;
+	/** The source's content: the source resume, or the Profile as resume data. */
+	source: PortfolioSource | null;
 	owner: { name: string; username: string };
 	/** Which resume buttons the page would show; the preview's links lead nowhere. */
 	links: { resume: boolean; resumePdf: boolean };
@@ -51,7 +52,7 @@ function loadGlyphs(): Promise<Readonly<Record<string, string>>> {
 /** The page a visitor gets, drawn by the server's renderer from the draft, as an inert document. */
 export async function renderPortfolioPreview({
 	data,
-	resume,
+	source,
 	owner,
 	links,
 	openWorkId,
@@ -59,12 +60,12 @@ export async function renderPortfolioPreview({
 	canHideCredit,
 }: PreviewInput): Promise<string> {
 	const origin = window.location.origin;
-	const locale = pageLocaleOf(data, resume);
+	const locale = pageLocaleOf(data, portfolioSourceResume(source));
 	const messages = portfolioMessages(locale);
 	const view = buildPortfolioView({
 		portfolio: { data },
 		// A resume photo kept on another site shows no photo, as on the page.
-		resume: resume ? { data: withOwnPicture(resume, origins) } : null,
+		resume: source ? { ...source, data: withOwnPicture(source.data, origins) } : null,
 		owner,
 		entitlements: { hidePortfolioCredit: canHideCredit },
 		messages: portfolioViewMessages(messages),
@@ -109,7 +110,7 @@ type PortfolioPreviewProps = {
 export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioPreviewProps) {
 	const data = usePortfolioData();
 	const owner = usePortfolioOwner();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	const device = usePortfolioEditorUi((state) => state.previewDevice);
 	const [document, setDocument] = useState<string>();
 	// The last draw failed: the preview says so (over the previous one, when there is one) and offers to try again.
@@ -142,7 +143,7 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 		let current = true;
 		void renderPortfolioPreview({
 			data: debouncedData,
-			resume: source.data,
+			source: source.data && source.from ? { data: source.data, from: source.from } : null,
 			owner: { name: owner.name, username: owner.username },
 			links: { resume: showResume, resumePdf: showPdf },
 			openWorkId: openWorkKey,
@@ -171,6 +172,7 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	}, [
 		debouncedData,
 		source.data,
+		source.from,
 		source.isLoading,
 		owner.name,
 		owner.username,

@@ -40,7 +40,7 @@ function ReviewPreview({ review }: { review: Review }) {
 		let current = true;
 		void renderPortfolioPreview({
 			data: review.data,
-			resume: review.resumeData,
+			source: review.resumeData && review.sourceFrom ? { data: review.resumeData, from: review.sourceFrom } : null,
 			owner: { name: review.ownerName, username: review.username },
 			links: { resume: false, resumePdf: false },
 			origins,

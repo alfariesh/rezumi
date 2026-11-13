@@ -265,8 +265,8 @@ msgstr "{0, plural, other {# 個故事}}"
 
 #. placeholder {0}: remembered.ids.length
 #: src/features/career/coach-chat.tsx
-msgid "{0, plural, one {Added # fact to Knowledge.} other {Added # facts to Knowledge.}}"
-msgstr "{0, plural, other {已將 # 個事實加入知識庫。}}"
+msgid "{0, plural, one {Added # fact to your Profile.} other {Added # facts to your Profile.}}"
+msgstr ""
 
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
@@ -308,15 +308,15 @@ msgstr "{0, plural, one {導入 # 職位申請} other {導入 # 職位申請}}"
 msgid "{0, plural, one {Imported # application.} other {Imported # applications.}}"
 msgstr "{0, plural, other {已匯入 # 筆應徵紀錄。}}"
 
-#. placeholder {0}: knowledge.active.length
-#: src/features/career/coach.tsx
-msgid "{0, plural, one {Knowledge · # fact} other {Knowledge · # facts}}"
-msgstr "{0, plural, other {知識庫 · # 個事實}}"
-
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {No reply in # day} other {No reply in # days}}"
 msgstr "{0, plural, one {#當天沒有回覆} other {#天沒有回复}}"
+
+#. placeholder {0}: knowledge.active.length
+#: src/features/career/coach.tsx
+msgid "{0, plural, one {Profile · # fact} other {Profile · # facts}}"
+msgstr ""
 
 #. placeholder {0}: passages.length
 #: src/features/resume/editor/check/writing-tab.tsx
@@ -348,6 +348,11 @@ msgstr ""
 msgid "{0, plural, one {Took # step} other {Took # steps}}"
 msgstr ""
 
+#. placeholder {0}: followed.length
+#: src/features/profile/details-page.tsx
+msgid "{0, plural, one {Updated in # resume} other {Updated in # resumes}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -360,8 +365,8 @@ msgstr "{0, plural, one {您選擇的字體無法顯示 {list}，它會顯示為
 
 #. placeholder {0}: when(runAt)
 #: src/features/career/workspace/prepare.tsx
-msgid "{0} · {providerLabel}. Sends this application and your Knowledge; your provider may charge."
-msgstr "{0} · {providerLabel}。將傳送這筆應徵和您的知識庫；您的提供者可能會收費。"
+msgid "{0} · {providerLabel}. Sends this application and your Profile; your provider may charge."
+msgstr ""
 
 #. placeholder {0}: BILLING_SELLER.name
 #. placeholder {1}: BILLING_SELLER.brand
@@ -733,6 +738,7 @@ msgstr "首年 {cost}"
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
 
+#: src/features/resume/editor/write/add-section.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{count, plural, one {# entry} other {# entries}}"
 msgstr "{count, plural, one {#條目} other {# 條目}}"
@@ -1019,6 +1025,10 @@ msgstr "{open, plural, one {# 要審查的東西。} other {# 要審查的事情
 
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "{open} open. The portfolio's owner never sees who sent a report."
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "{others, plural, one {Saved to your Profile. # other resume was updated too.} other {Saved to your Profile. # other resumes were updated too.}}"
 msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
@@ -1478,7 +1488,7 @@ msgid "A numeric date reads differently in different countries."
 msgstr "數字格式的日期在不同國家的讀法不同。"
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "A one-page website at your own address, made from your resume and your work."
+msgid "A one-page website at your own address, made from your Profile and your work."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -1695,6 +1705,11 @@ msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "Account deleted"
+msgstr ""
+
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/account/profile.tsx
+msgid "Account details"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -1952,6 +1967,15 @@ msgstr ""
 msgid "Add a year"
 msgstr ""
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Add all"
+msgstr ""
+
+#. placeholder {0}: missing.length
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Add all ({0})"
+msgstr ""
+
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
 msgstr "新增 @ 和域名，例如 name@example.com"
@@ -2053,6 +2077,10 @@ msgstr "在有數據支持的地方加上數字：數量、百分比、時間跨
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Add from Experience"
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Add from Profile"
 msgstr ""
 
 #: src/features/resume/editor/write/outline.tsx
@@ -2228,6 +2256,10 @@ msgid "Add work from pictures"
 msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "Add work from your Profile"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Add work from your resume"
 msgstr ""
 
@@ -2266,25 +2298,25 @@ msgstr "由您新增"
 msgid "Added credits expire in (days)"
 msgstr ""
 
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as a preference."
-msgstr "已作為偏好加入知識庫。"
-
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as a skill."
-msgstr "已作為技能加入知識庫。"
-
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as an accomplishment."
-msgstr "已作為成就加入知識庫。"
-
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as an experience."
-msgstr "已作為經歷加入知識庫。"
-
 #: src/features/career/workspace/fit.tsx
 msgid "Added to Prepare"
 msgstr "已加入「準備」"
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as a preference."
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as a skill."
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as an accomplishment."
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as an experience."
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -2479,10 +2511,6 @@ msgstr ""
 #: src/features/documents/recent-documents.tsx
 msgid "All documents"
 msgstr ""
-
-#: src/features/settings/account/data.tsx
-msgid "All documents and applications as JSON, in one zip"
-msgstr "所有文件和工作申請均以 JSON 形式壓縮在一個 zip 中"
 
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
@@ -3584,6 +3612,10 @@ msgstr ""
 msgid "Cards"
 msgstr ""
 
+#: src/features/profile/details-page.tsx
+msgid "Career"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Case studies"
 msgstr ""
@@ -3696,6 +3728,10 @@ msgstr "直接改了履歷（之前的對話）"
 #: src/dialogs/resume/index.tsx
 msgid "Changed your mind? Rename your resume to something more descriptive."
 msgstr "改變主意了嗎？將履歷重新命名成更具描述性的名稱吧。"
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Changes made here stay in this resume."
+msgstr ""
 
 #. placeholder {0}: getPlanName(pending.planId)
 #. placeholder {1}: formatDate(plan.currentPeriodEndsAt)
@@ -3828,8 +3864,8 @@ msgid "Checking {0}"
 msgstr "檢查{0}"
 
 #: src/features/career/shared.tsx
-msgid "Checking against Knowledge"
-msgstr "正在對照知識庫"
+msgid "Checking against your Profile"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "Checking layout and content"
@@ -3894,6 +3930,10 @@ msgstr ""
 #: src/features/documents/documents-page.tsx
 msgid "Choose a file"
 msgstr "選擇一個文件"
+
+#: src/features/profile/fill.tsx
+msgid "Choose a file to fill your Profile"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "Choose a file to import"
@@ -4447,6 +4487,10 @@ msgstr "完整顯示"
 msgid "Content"
 msgstr "內容"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Content from"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Content is laid out in a grid."
 msgstr "內容以網格形式排列。"
@@ -4678,7 +4722,7 @@ msgid "Couldn't change the schedule. Try again."
 msgstr "無法變更排程。請再試一次。"
 
 #: src/features/portfolio/editor/publish-panel.tsx
-msgid "Couldn't change the source resume. Try again."
+msgid "Couldn't change the source. Try again."
 msgstr ""
 
 #: src/features/career/today.tsx
@@ -4812,6 +4856,10 @@ msgstr "無法匯出您的資料。請再試一次。"
 msgid "Couldn't fill in the fields. Try again, or fill them in yourself."
 msgstr "無法填寫這些欄位。請再試一次，或自行填寫。"
 
+#: src/features/profile/fill.tsx
+msgid "Couldn't fill your Profile. Try again."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Couldn't forget that fact. Try again."
 msgstr "無法忘記該事實。請再試一次。"
@@ -4850,7 +4898,7 @@ msgstr "無法連結該提供者帳戶。請再試一次。"
 msgid "Couldn't link the application. Try again."
 msgstr "無法連結應徵紀錄。請再試一次。"
 
-#: src/features/documents/new-document-dialog.tsx
+#: src/features/resume/import/use-read-resume-file.ts
 msgid "Couldn't load AI connections. Try again before importing this file."
 msgstr "無法載入 AI 連線。請重試後再匯入此檔案。"
 
@@ -4939,6 +4987,7 @@ msgid "Couldn't reach the AI provider. Try again in a moment; no credits were us
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/profile/fill.tsx
 msgid "Couldn't reach the AI provider. Try again in a moment."
 msgstr "無法聯繫 AI 提供者。稍後再試一次。"
 
@@ -4962,6 +5011,10 @@ msgstr "無法讀取該檔案。請再試一次。"
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Couldn't read the dates on {entries}, so they stay at the end. Fix their dates and sort again."
 msgstr "無法讀取 {entries} 的日期，因此它們保留在末尾。請修正日期後重新排序。"
+
+#: src/features/profile/fill.tsx
+msgid "Couldn't read the file. Try again."
+msgstr ""
 
 #. placeholder {0}: part.errorText
 #: src/features/assistant/conversation.tsx
@@ -5044,8 +5097,8 @@ msgstr "無法儲存該變更。再試一次。"
 
 #: src/features/career/workspace/debrief.tsx
 #: src/features/career/workspace/fit.tsx
-msgid "Couldn't save that to Knowledge. Try again."
-msgstr "無法儲存到知識庫。請重試。"
+msgid "Couldn't save that to your Profile. Try again."
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Couldn't save the application. Try again."
@@ -5089,6 +5142,10 @@ msgstr "無法儲存標籤。請再試一次。"
 msgid "Couldn't save the timezone. Try again."
 msgstr "無法儲存時區。請再試一次。"
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Couldn't save this resume first, so nothing was sent. Try again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Couldn't save this role to Applications. Try again."
 msgstr "無法將此職缺儲存到「應徵紀錄」。請再試一次。"
@@ -5096,6 +5153,10 @@ msgstr "無法將此職缺儲存到「應徵紀錄」。請再試一次。"
 #: src/features/career/schedule-sheet.tsx
 msgid "Couldn't save this schedule. Try again."
 msgstr "無法儲存此排程。請再試一次。"
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Couldn't save to your Profile. Try again."
+msgstr ""
 
 #: src/features/letters/store.ts
 #: src/features/resume/share/history-tab.tsx
@@ -5712,6 +5773,10 @@ msgstr "回顧"
 msgid "Default"
 msgstr "預設"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Default ({automatic})"
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Degree"
 msgstr "學位"
@@ -5979,6 +6044,11 @@ msgstr ""
 msgid "Details"
 msgstr "細節"
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/profile/route.tsx
+msgid "Details & career"
+msgstr ""
+
 #. placeholder {0}: work.title
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Details for {0}"
@@ -6021,6 +6091,10 @@ msgstr "幣別不同，不予比較"
 #: src/features/career/offers.tsx
 msgid "Different pay period, not compared"
 msgstr "發薪週期不同，不予比較"
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Differs from your Profile"
+msgstr ""
 
 #: src/features/portfolio/statistics/parts.tsx
 msgid "Direct"
@@ -6130,6 +6204,10 @@ msgstr "這份工作的文件"
 
 #: src/features/billing/plan-page.tsx
 msgid "Documents in Trash don't count."
+msgstr ""
+
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Documents that show a photo use this one."
 msgstr ""
 
 #: src/features/documents/trash-page.tsx
@@ -6306,8 +6384,12 @@ msgid "Draft"
 msgstr "文件草稿"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Draft · uses only the posting"
-msgstr "草稿·僅使用職缺發布"
+msgid "Draft · uses only your Profile"
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Draft · uses only your Profile and the posting"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft · uses only your resume"
@@ -6328,6 +6410,10 @@ msgstr "起草總結"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft from the posting"
 msgstr "根據職缺公告起草"
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Draft from your Profile"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft from your resume"
@@ -6393,8 +6479,8 @@ msgid "Drag to reposition and use the slider to zoom before uploading."
 msgstr "拖曳即可重新定位，上傳前可使用滑桿進行縮放。"
 
 #: src/features/documents/new-document-dialog.tsx
-msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section and flag anything we're unsure of."
-msgstr "将文件拖放到此处或浏览。 PDF、Word、Rezumi 或 JSON Resume。我們填寫每個部分並標記任何我們不確定的內容。"
+msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section, flag anything we're unsure of, and add what your Profile is missing."
+msgstr ""
 
 #: src/features/documents/documents-page.tsx
 msgid "Drop a PDF, Word or JSON file"
@@ -6462,8 +6548,8 @@ msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "每個獲得回饋的回答都保存在這裡，最新的在前。"
 
 #: src/features/career/workspace/fit.tsx
-msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
-msgstr "職缺公告中的每項條件都會與您知識庫中的事實和故事對照。落差會顯示為缺少證據，而絕不是缺少能力。"
+msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6507,6 +6593,10 @@ msgstr "編輯詳細資料..."
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 msgid "Edit entry"
 msgstr "編輯條目"
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Edit in Profile"
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
@@ -6598,6 +6688,7 @@ msgid "education"
 msgstr ""
 
 #: src/components/input/icon-picker-grid.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
@@ -6614,6 +6705,7 @@ msgstr ""
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/settings/account/profile.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Email"
 msgstr "電子郵件"
 
@@ -6681,6 +6773,10 @@ msgstr ""
 #: src/features/portfolio/editor/content-panel.tsx
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Empty"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Empty for now. Type your name below, or fill in your Profile."
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
@@ -6958,6 +7054,7 @@ msgid "experience"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
@@ -6970,6 +7067,14 @@ msgstr ""
 
 #: src/features/resume/editor/design/entries-group.tsx
 msgid "Experience, Education and more"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Experience, education and your other sections follow this resume."
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Experience, education and your other sections follow your Profile."
 msgstr ""
 
 #: src/features/billing/purchase.ts
@@ -7068,14 +7173,11 @@ msgid "Fact forgotten"
 msgstr "已忘記事實"
 
 #: src/features/career/coach-chat.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Facts"
 msgstr "事實"
-
-#: src/features/career/coach.tsx
-msgid "Facts, stories and preferences that are switched on in Knowledge"
-msgstr "知識庫中已開啟的事實、故事和偏好"
 
 #: src/features/billing/purchase.ts
 #: src/features/settings/ai/providers.tsx
@@ -7142,6 +7244,10 @@ msgstr "文件讀取"
 msgid "Fill fields"
 msgstr "填入欄位"
 
+#: src/features/profile/fill.tsx
+msgid "Fill from a resume…"
+msgstr ""
+
 #: src/features/portfolio/blocks/link-block.tsx
 msgid "Fill in from the link"
 msgstr ""
@@ -7158,8 +7264,12 @@ msgstr "填寫職位和公司。在「設定」中連接 AI 提供者，即可�
 msgid "Fill in the role and company. The posting is saved with the application."
 msgstr "填寫角色和公司。職位發布與職位申請一起保存。"
 
-#: src/features/portfolio/create-dialog.tsx
-msgid "Fill in your details yourself."
+#: src/features/documents/documents-page.tsx
+msgid "Fill in your Profile first"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Fill your Profile from what you have"
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -7169,6 +7279,15 @@ msgstr "從工作申請中填寫。問候語跟在名字之後。"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Filled in what we could from the posting."
 msgstr "已依據職缺公告盡量填入。"
+
+#: src/features/profile/fill.tsx
+msgid "Filled your Profile from “{name}”. Check each section."
+msgstr ""
+
+#. placeholder {0}: file.name
+#: src/features/profile/fill.tsx
+msgid "Filled your Profile from {0}. Check each section."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "Filling in entries"
@@ -7193,6 +7312,10 @@ msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Find numbers"
+msgstr ""
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Find numbers in your Profile"
 msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
@@ -7610,7 +7733,15 @@ msgid "From Fit"
 msgstr "來自契合度檢查"
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "From my Profile"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "From my resume"
+msgstr ""
+
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "From Profile"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
@@ -7643,6 +7774,14 @@ msgstr "來自您的訊息"
 
 #: src/features/portfolio/statistics/parts.tsx
 msgid "From your portfolio"
+msgstr ""
+
+#: src/features/resume/editor/write/add-section.tsx
+msgid "From your Profile"
+msgstr ""
+
+#: src/features/portfolio/location/location-fields.tsx
+msgid "From your Profile:"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -7933,6 +8072,7 @@ msgstr "標題已更改"
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/resume/editor/write/basics-card.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Headline"
 msgstr "標題"
 
@@ -8312,9 +8452,17 @@ msgstr "圖片佔據了頁面的大部分空間。"
 msgid "Import"
 msgstr "匯入"
 
+#: src/features/profile/fill.tsx
+msgid "Import a file"
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Import a resume"
 msgstr "導入履歷"
+
+#: src/features/profile/fill.tsx
+msgid "Import a resume or a LinkedIn export, or take what's in one of your resumes. Only what your Profile is missing is added."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "Import a resume, copy one for a job, or start blank."
@@ -8358,8 +8506,8 @@ msgid "Import with AI"
 msgstr ""
 
 #: src/features/documents/documents-page.tsx
-msgid "Import your current resume and we'll lay out every section for you to refine. Or start fresh. Start with your name. Build from there."
-msgstr "匯入現有履歷，我們會排好各個部分，供您完善。也可以從零開始。先填寫姓名，再逐步完成。"
+msgid "Import your current resume and we'll lay out every section for you to refine. It also fills your Profile, so your next resume, letter and portfolio start from it. Or start blank from your Profile."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/resume/share/format.ts
@@ -8400,6 +8548,10 @@ msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "In progress"
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "In your Profile"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -8950,12 +9102,6 @@ msgstr "親切的問候，"
 msgid "Kinds of work"
 msgstr ""
 
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
-#: src/routes/dashboard/career/route.tsx
-msgid "Knowledge"
-msgstr "知識庫"
-
 #: src/features/portfolio/works/work-editor.tsx
 msgid "Kopi Senja checkout redesign"
 msgstr ""
@@ -9393,14 +9539,6 @@ msgstr "無法載入連結的文件。"
 msgid "Linked resume"
 msgstr "連結簡歷"
 
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Linked to the resume again"
-msgstr "再次連結到簡歷"
-
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Linked. Name, email, phone and city update when the resume does."
-msgstr "已連結。姓名、電子郵件、電話和城市會隨著履歷的更新而更新。"
-
 #. Authentication provider display name in account settings
 #. Brand name label for LinkedIn social sign-in button
 #: src/features/auth/components/social-auth.tsx
@@ -9559,6 +9697,7 @@ msgstr ""
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Location"
 msgstr "地點"
 
@@ -10161,6 +10300,7 @@ msgstr "我的角色"
 #: src/features/settings/account/profile.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Name"
 msgstr "名稱"
 
@@ -10660,11 +10800,6 @@ msgstr "找不到相符的結果。"
 msgid "No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time by 40%”, then try again."
 msgstr ""
 
-#: src/features/portfolio/editor/publish-panel.tsx
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "No resume"
-msgstr "沒有履歷"
-
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
 msgstr "尚無履歷。"
@@ -10844,6 +10979,10 @@ msgstr "錄取通知中沒有 · 詢問 {company}"
 msgid "Not in your plan"
 msgstr ""
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Not in your Profile yet"
+msgstr ""
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Not in your resume"
 msgstr "不在您的履歷中"
@@ -10920,6 +11059,10 @@ msgstr "未儲存 — 這個事實先前已被忘記。"
 msgid "Not saved: something needs fixing"
 msgstr ""
 
+#: src/features/profile/details-page.tsx
+msgid "Not saved."
+msgstr ""
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "not scored"
 msgstr "未得分"
@@ -10981,6 +11124,10 @@ msgstr ""
 
 #: src/features/portfolio/admin/review-page.tsx
 msgid "Nothing has been done yet."
+msgstr ""
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Nothing here in your Profile yet, so the section doesn't show."
 msgstr ""
 
 #: src/features/portfolio/editor/section-forms.tsx
@@ -11101,10 +11248,6 @@ msgstr "離開"
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Off while your portfolio has a password."
 msgstr ""
-
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Off. The letter keeps its own copy of your details."
-msgstr "離開。這封信保留了您的詳細資料的單獨副本。"
 
 #: src/features/applications/stages.ts
 #: src/features/career/workspace/saved.tsx
@@ -11431,10 +11574,6 @@ msgstr "在「職涯 → 錄取通知」中開啟。"
 #: src/features/resume/stylesheet/editor.tsx
 msgid "opens in new tab"
 msgstr "在新分頁中開啟"
-
-#: src/features/documents/new-document-dialog.tsx
-msgid "Opens the editor on your name. Nothing else to fill in first."
-msgstr "打開您名字的編輯器。沒有什麼可以先填寫的。"
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
@@ -11998,6 +12137,7 @@ msgstr "波斯語"
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Phone"
 msgstr "電話"
@@ -12054,6 +12194,10 @@ msgstr "選擇一個圖標"
 #: src/features/ats-checker/messages.ts
 msgid "Pick one format and use it everywhere."
 msgstr "選定一種格式，並在所有地方保持一致。"
+
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "Pick projects from your Profile: title, summary, dates and link come along."
+msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Pick projects from your resume: title, summary, dates and link come along."
@@ -12359,7 +12503,7 @@ msgstr "偏好設定"
 
 #: src/features/career/coach-chat.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
 msgstr "偏好"
@@ -12593,7 +12737,8 @@ msgstr "熟練度"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/page-text.ts
-#: src/features/settings/account/profile.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Profile"
 msgstr "個人設置"
 
@@ -12948,6 +13093,10 @@ msgstr "讀取簡歷"
 msgid "Read your email address."
 msgstr "讀取您的電子郵件地址。"
 
+#: src/features/assistant/conversation.tsx
+msgid "Read your Profile"
+msgstr ""
+
 #: src/features/auth/pages/consent.tsx
 msgid "Read your profile information."
 msgstr "讀取您的個人資料。"
@@ -12990,6 +13139,10 @@ msgstr "正在閱讀頁面..."
 #: src/features/documents/new-document-dialog.tsx
 msgid "Reading the file"
 msgstr "讀取文件"
+
+#: src/features/profile/fill.tsx
+msgid "Reading the file…"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/portfolio/blocks/add-media-block.tsx
@@ -13046,6 +13199,10 @@ msgstr "正在閱讀您的回答"
 #: src/features/career/shared.tsx
 msgid "Reading your notes"
 msgstr "正在閱讀您的筆記"
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Reading your Profile…"
+msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Reading your resume…"
@@ -13715,8 +13872,6 @@ msgstr "恢復"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/features/portfolio/editor/publish-panel.tsx
-#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "履歷"
 
@@ -13813,6 +13968,7 @@ msgstr "檢索到 {0}。除非報告，否則原產地新鮮度未知。"
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/documents/recent-documents.tsx
+#: src/features/profile/details-page.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13862,8 +14018,8 @@ msgid "Review my answer"
 msgstr "評論我的回答"
 
 #: src/features/career/workspace/debrief.tsx
-msgid "Review my answer sends the question, what you said, this posting and your Knowledge to {providerName}."
-msgstr "「評論我的回答」會將問題、您說的內容、此職缺公告和您的知識庫傳送給 {providerName}。"
+msgid "Review my answer sends the question, what you said, this posting and your Profile to {providerName}."
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Review required form answers and remove unsupported claims."
@@ -14190,6 +14346,10 @@ msgstr "先儲存，然後測試搜尋和閱讀。沒有測試自動運行。"
 msgid "Save interview"
 msgstr "儲存面試"
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Save it to your Profile to use it in new resumes, letters and your portfolio."
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Save job"
@@ -14221,12 +14381,13 @@ msgid "Save these offer terms to compare"
 msgstr "儲存這些錄取條件以進行比較"
 
 #: src/features/assistant/tool-approvals.tsx
-msgid "Save this story to Knowledge?"
+msgid "Save this story to your Profile?"
 msgstr ""
 
 #: src/features/career/workspace/fit.tsx
-msgid "Save to Knowledge"
-msgstr "儲存到知識庫"
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Save to Profile"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Save to the application"
@@ -14248,6 +14409,7 @@ msgstr "已儲存"
 #: src/features/applications/stages.ts
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/homepage/features.tsx
+#: src/features/profile/details-page.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -14302,18 +14464,26 @@ msgstr "已儲存到「應徵紀錄」"
 msgid "Saved to Applications with the posting"
 msgstr "已連同職缺公告儲存到「應徵紀錄」"
 
-#: src/features/career/workspace/fit.tsx
-msgid "Saved to Knowledge as a fact"
-msgstr "已作為事實儲存到知識庫"
-
-#: src/features/career/coach-chat.tsx
-#: src/features/career/workspace/debrief.tsx
-msgid "Saved to Knowledge, private to this application."
-msgstr "已儲存到知識庫，僅用於這筆應徵。"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Saved to Saved · Practice"
 msgstr "已儲存到「已儲存」 · 練習"
+
+#: src/features/career/workspace/fit.tsx
+msgid "Saved to your Profile as a fact"
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+#: src/features/career/workspace/debrief.tsx
+msgid "Saved to your Profile, private to this application."
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Saved to your Profile."
+msgstr ""
+
+#: src/features/profile/details-page.tsx
+msgid "Saves as you type. Resumes that still use a part follow your changes."
+msgstr ""
 
 #. placeholder {0}: new URL(url).host
 #: src/features/resume/share/address-field.tsx
@@ -14325,6 +14495,7 @@ msgid "Saving is taking longer than expected. Your changes are still open."
 msgstr "儲存時間比預期更久。您的變更仍然保留。"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/profile/details-page.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -14704,10 +14875,6 @@ msgstr "直接傳送履歷本身，而不是包在作品集外層的檔案。"
 msgid "Send this exact query to your web search provider?"
 msgstr ""
 
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Sender details copied into the letter"
-msgstr "寄件者詳細資料複製到信件中"
-
 #: src/features/homepage/testimonials.tsx
 msgid "Sending a link instead of a PDF means recruiters always see the latest version."
 msgstr ""
@@ -14721,21 +14888,21 @@ msgid "Sending your message…"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
-msgid "Sends this application (posting, notes, interview details) and Knowledge that's switched on to {label}."
-msgstr "將這筆應徵（職缺公告、備註、面試詳細資料）和已開啟的知識庫內容傳送給 {label}。"
+msgid "Sends this application (posting, notes, interview details) and your Profile (details, career, and the facts and stories that are switched on) to {label}."
+msgstr ""
 
 #. placeholder {0}: provider.label
 #: src/features/career/workspace/fit.tsx
-msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to {0}."
-msgstr "將這筆應徵的職缺公告、備註和文件，以及已開啟的知識庫內容傳送給 {0}。"
+msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to {0}."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
-msgstr "將這筆應徵的職缺公告、備註和文件，以及已開啟的知識庫內容傳送到此連線。您的提供者可能會收費。"
+msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
+msgstr ""
 
 #: src/features/career/workspace/coach-sheet.tsx
-msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
-msgstr "將您的訊息、這筆應徵（職缺公告、備註、已寄出的文件）和已開啟的知識庫內容傳送給 {connection}。"
+msgid "Sends your message, this application (posting, notes, documents sent) and your Profile (details, career, and the facts and stories that are switched on) to {connection}."
+msgstr ""
 
 #. placeholder {0}: provider?.label
 #. placeholder {1}: provider?.model
@@ -15243,6 +15410,7 @@ msgstr "技能"
 msgid "skills"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
@@ -15411,12 +15579,9 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/career/knowledge/facts.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
 msgid "Source"
 msgstr "來源"
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Source resume"
-msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/assistant/message-sources.tsx
@@ -15518,6 +15683,10 @@ msgstr "開始日期必須早於或等於結束日期。"
 msgid "Start each one with a concrete verb: built, led, reduced, migrated."
 msgstr "每一條都以具體的動詞開頭：建置、領導、降低、遷移。"
 
+#: src/features/resume/editor/write/add-section.tsx
+msgid "Start empty"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Start free"
 msgstr ""
@@ -15565,6 +15734,10 @@ msgid "Start the resume with your name on its own line."
 msgstr "履歷開頭單獨用一行寫上您的姓名。"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Start typing, or draft from what we know: the {company} posting and your Profile."
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing, or draft from what we know: the {company} posting and your resume."
 msgstr "開始打字，或根據我們所知道的內容起草：{company} 職位發布和您的簡歷。"
 
@@ -15573,12 +15746,16 @@ msgid "Start typing, or draft from what we know: the {company} posting."
 msgstr "開始打字，或根據我們所知道的內容起草：{company} 職位發布。"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Start typing, or draft from what we know: your Profile."
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing, or draft from what we know: your resume."
 msgstr "開始打字，或根據我們所知道的內容起草：您的履歷。"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Start typing. To draft one, link a resume or an application first."
-msgstr "開始打字。要起草一份，請先連結簡歷或工作申請。"
+msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
+msgstr ""
 
 #: src/features/homepage/introduction.tsx
 msgid "Start with the free plan"
@@ -15587,6 +15764,10 @@ msgstr ""
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Start with the sections most resumes have."
 msgstr "從大多數履歷都有的部分開始。"
+
+#: src/features/resume/editor/write/add-section.tsx
+msgid "Start with the sections most resumes have. New resumes start from them."
+msgstr ""
 
 #: src/features/portfolio/editor/rich-text-editor.tsx
 msgid "Start writing…"
@@ -15599,6 +15780,10 @@ msgstr "已開始"
 
 #: src/features/billing/buy-plans.tsx
 msgid "Starts at your next renewal."
+msgstr ""
+
+#: src/features/documents/new-document-dialog.tsx
+msgid "Starts from your Profile. Change anything for this resume."
 msgstr ""
 
 #: src/features/career/shared.tsx
@@ -15712,8 +15897,9 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Stories"
 msgstr "故事"
 
@@ -16431,8 +16617,8 @@ msgid "The coach doesn't remember anything from your messages."
 msgstr "教練不會從您的訊息中記住任何內容。"
 
 #: src/features/career/coach.tsx
-msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
-msgstr "此伺服器尚未設定教練。伺服器管理員需要設定 ENCRYPTION_SECRET。知識庫、錄取通知和您的應徵紀錄不需要它也能使用。"
+msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and your applications work without it."
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
@@ -16486,11 +16672,8 @@ msgstr "出口PDF"
 msgid "The exported PDF couldn't be checked. Try again."
 msgstr "導出的PDF無法檢查。再試一次。"
 
-#: src/routes/dashboard/career/route.tsx
-msgid "The facts, stories and preferences the coach works from."
-msgstr ""
-
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/profile/fill.tsx
 msgid "The file couldn't be read as a resume."
 msgstr "該文件無法作為簡歷讀取。"
 
@@ -16636,6 +16819,10 @@ msgstr ""
 
 #: src/features/portfolio/media/pdf.ts
 msgid "The PDF couldn't be uploaded. Check your connection and try again."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "The photo in my Profile"
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
@@ -17067,7 +17254,7 @@ msgstr ""
 msgid "This file isn't a picture your browser can read. Use a JPG, PNG or WebP file."
 msgstr ""
 
-#: src/features/documents/new-document-dialog.tsx
+#: src/features/resume/import/use-read-resume-file.ts
 msgid "This file type can't be imported. Use a PDF, Word, Rezumi or JSON Resume file, or a LinkedIn export (.zip)."
 msgstr "無法匯入此文件類型。使用 PDF、Word、Rezumi 或 JSON Resume 文件，或 LinkedIn 匯出 (.zip)。"
 
@@ -17107,6 +17294,10 @@ msgstr ""
 msgid "This is a {provider} link: it can show on your page itself, after a visitor presses it."
 msgstr ""
 
+#: src/features/profile/fill.tsx
+msgid "This is a cover letter. Import a resume or a LinkedIn export instead."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "這是一個 PDF Portfolio（PDF 作品集包）：可見的頁面只是封面。"
@@ -17138,6 +17329,10 @@ msgstr "這封信被鎖住了。從選單中將其解鎖以進行編輯。"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "This letter keeps its recipient as written."
 msgstr "這封信將保留其收件者所寫的內容。"
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "This letter only"
+msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "This link doesn't say which payment it is. Your plan page lists every payment you started."
@@ -17253,10 +17448,6 @@ msgstr ""
 msgid "This portfolio doesn't exist anymore. Its owner may have deleted it."
 msgstr ""
 
-#: src/features/portfolio/works/add-work/from-resume.tsx
-msgid "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
-msgstr ""
-
 #: src/features/portfolio/errors.ts
 msgid "This portfolio is already in that state. Reload the page to see what changed."
 msgstr ""
@@ -17267,6 +17458,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "This portfolio was taken down"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-resume.tsx
+msgid "This portfolio's source resume is in Trash. Choose another source in Publish → Source."
 msgstr ""
 
 #: src/features/billing/receipt.tsx
@@ -17334,7 +17529,7 @@ msgid "This saved version is no longer available."
 msgstr "此已儲存版本已無法使用。"
 
 #: src/features/portfolio/editor/section-forms.tsx
-msgid "This section comes from a resume. Choose one in Publish → Source resume to fill it."
+msgid "This section comes from your source resume, which is in Trash. Choose another in Publish → Source."
 msgstr ""
 
 #: src/features/auth/pages/error.tsx
@@ -17809,7 +18004,7 @@ msgid "Turn this schedule on"
 msgstr "開啟此排程"
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "Turn your resume into a portfolio website"
+msgid "Turn your Profile into a portfolio website"
 msgstr ""
 
 #: src/dialogs/auth/disable-two-factor.tsx
@@ -17921,6 +18116,7 @@ msgstr "底線連結"
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/list-undo.ts
 #: src/features/portfolio/editor/rich-text-editor.tsx
+#: src/features/profile/fill.tsx
 #: src/features/resume/editor/check/actions.ts
 #: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/design/fit.ts
@@ -17928,6 +18124,7 @@ msgstr "底線連結"
 #: src/features/resume/editor/proposals/proposals.ts
 #: src/features/resume/editor/webmcp.ts
 #: src/features/resume/editor/write/entry-card.tsx
+#: src/features/resume/editor/write/profile-link.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -18004,6 +18201,7 @@ msgid "Until now it opened your resume. Your resume stays at <0>{0}</0>, and you
 msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
+#: src/features/resume/editor/write/profile-link.tsx
 #: src/features/resume/stylesheet/targets.ts
 msgid "Untitled"
 msgstr "無題"
@@ -18089,6 +18287,10 @@ msgstr "已更新"
 #: src/features/documents/document-actions.tsx
 msgid "Updated {done} of {total}. Locked documents, and letters for public links, were skipped."
 msgstr "已更新 {total} 份中的 {done} 份。已略過鎖定的文件，公共連結操作也已略過求職信。"
+
+#: src/features/resume/builder/draft.ts
+msgid "Updated from your Profile."
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Updating your resume..."
@@ -18243,11 +18445,6 @@ msgstr "請使用 6 至 64 個字元。"
 msgid "Use default"
 msgstr "使用預設值"
 
-#. placeholder {0}: resume?.name ?? t`the resume`
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Use details from “{0}”"
-msgstr "使用“{0}”中的詳細信息"
-
 #: src/features/career/knowledge/facts.tsx
 msgid "Use for all applications"
 msgstr "用於所有應徵"
@@ -18291,6 +18488,10 @@ msgstr "使用簡單明瞭的標題，例如「經歷」、「學歷」和「技
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Use posting"
 msgstr "使用職缺發布"
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Use Profile's"
+msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Use sample"
@@ -18391,6 +18592,10 @@ msgstr "使用在設定中設定的網路搜尋服務。結果會在「今天」
 #: src/features/settings/ai/web-access.tsx
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "在支援的情況下使用人工智慧提供者自己的網路搜索，並使用內建閱讀器讀取連結。"
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Using your Profile's version."
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "UX Designer"
@@ -18772,6 +18977,7 @@ msgstr ""
 
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/write/basics-card.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Website"
 msgstr "個人網站"
 
@@ -18943,6 +19149,10 @@ msgstr "亮點"
 #: src/features/career/knowledge/stories.tsx
 msgid "What would you do differently?"
 msgstr "如果重來，您會怎麼做？"
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "What you add to your Profile later shows up here. You can also pick a resume later in Publish."
+msgstr ""
 
 #. placeholder {0}: requirement.text
 #: src/features/career/workspace/fit.tsx
@@ -19121,10 +19331,6 @@ msgstr ""
 msgid "Without a picture, the page shows a plain button with the service's name."
 msgstr ""
 
-#: src/features/portfolio/create-dialog.tsx
-msgid "Without a resume"
-msgstr ""
-
 #: src/features/settings/ai/api-keys.tsx
 msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
 msgstr ""
@@ -19255,8 +19461,8 @@ msgid "Write what you did."
 msgstr "寫下您做了什麼。"
 
 #: src/features/career/workspace/apply.tsx
-msgid "Write your answer, or draft one from your Knowledge."
-msgstr "寫下您的回答，或根據知識庫擬一份草稿。"
+msgid "Write your answer, or draft one from your Profile."
+msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
@@ -19387,10 +19593,6 @@ msgstr "您可以繼續編輯。當您重新上線時變更同步。下載和共
 #: src/features/career/workspace/apply.tsx
 msgid "You can keep up to 30 application questions."
 msgstr "最多可保存 30 個應徵問題。"
-
-#: src/features/portfolio/create-dialog.tsx
-msgid "You can link a resume later in Publish."
-msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "You can look at every theme. {themes} are included, and a portfolio that already uses another theme keeps it."
@@ -19593,9 +19795,37 @@ msgstr "您的數據"
 msgid "Your dates are written several different ways."
 msgstr "您的日期寫法不統一，用了好幾種不同的方式。"
 
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Your details"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Your details and career, kept in one place."
+msgstr ""
+
+#: src/routes/dashboard/profile/route.tsx
+msgid "Your details and career, kept in one place. New resumes, letters and your portfolio start from here."
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Your details and career, with the facts, stories and preferences that are switched on in your Profile"
+msgstr ""
+
+#: src/routes/builder/letter/-components/letter-shell.tsx
+msgid "Your details changed in your Profile. The letter updated too."
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your details changed on the resume. The letter updated too."
 msgstr "您的簡歷上的詳細資訊發生了變化。這封信也更新了。"
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your details from"
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your details were copied into the letter. Edit them here."
+msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/portfolio-page.tsx
@@ -19691,10 +19921,6 @@ msgstr ""
 msgid "Your headline changed on the resume. The letter updated too."
 msgstr "您履歷上的標題發生了變化。這封信也更新了。"
 
-#: src/features/career/workspace/debrief.tsx
-msgid "your Knowledge"
-msgstr "您的知識庫"
-
 #: src/features/billing/buy-plans.tsx
 msgid "Your last payment didn't go through. Update your payment method in billing first."
 msgstr ""
@@ -19753,9 +19979,14 @@ msgstr ""
 msgid "Your name"
 msgstr ""
 
+#. placeholder {0}: resume?.name ?? t`the resume`
 #: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Your name and contact details come from a resume."
-msgstr "您的姓名和聯絡方式來自履歷。"
+msgid "Your name and contact details follow “{0}”."
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your name and contact details follow your Profile."
+msgstr ""
 
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Your name as your address, from OlaCV, the .cv registry. Code <0/> takes 50% off the first year."
@@ -19775,6 +20006,10 @@ msgstr "你的名字不見了"
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Your name, photo, experience, education and skills follow this resume as it changes. Its summary becomes About me and its projects become your work, to edit freely."
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Your name, photo, experience, education and skills follow your Profile as it changes. Its summary becomes About me and its projects become your work, to edit freely."
 msgstr ""
 
 #: src/components/layout/loading-screen.tsx
@@ -19942,7 +20177,7 @@ msgid "Your portfolio shows a small Made with Rezumi badge at the bottom of the 
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
-msgid "Your portfolio still shows its own content. Choose another resume to fill Experience, Education and the other sections again."
+msgid "Your portfolio still shows its own content. Choose your Profile or another resume to fill Experience, Education and the other sections again."
 msgstr ""
 
 #: src/features/portfolio/errors.ts
@@ -19971,6 +20206,37 @@ msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Your primary resume"
+msgstr ""
+
+#: src/features/career/workspace/debrief.tsx
+msgid "your Profile"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your Profile"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Your Profile already has everything in “{name}”."
+msgstr ""
+
+#. placeholder {0}: file.name
+#: src/features/profile/fill.tsx
+msgid "Your Profile already has everything in {0}."
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-resume.tsx
+msgid "Your Profile has no projects yet. Add them in Profile, or start an empty work."
+msgstr ""
+
+#: src/features/profile/store.ts
+msgid "Your Profile was changed somewhere else, so it was reloaded. Check your last change."
+msgstr ""
+
+#: src/features/settings/account/data.tsx
+msgid "Your Profile, documents and applications as JSON, in one zip"
 msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx

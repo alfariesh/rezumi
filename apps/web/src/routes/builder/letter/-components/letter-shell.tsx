@@ -158,6 +158,10 @@ type SenderSnapshot = Partial<Record<SenderField, string>>;
 const snapshotOf = (letter: CoverLetter): SenderSnapshot =>
 	Object.fromEntries(SENDER_FIELDS.map((field) => [field, letter.style.basics[field]]));
 
+// The resume's snapshot keeps the key it always had; the Profile's has its own.
+const snapshotKey = (letter: CoverLetter) =>
+	letter.sourceResumeId ? `letter-sender:${letter.id}` : `letter-sender:${letter.id}:profile`;
+
 const readSnapshot = (key: string): SenderSnapshot | null => {
 	try {
 		return JSON.parse(window.localStorage.getItem(key) ?? "null") as SenderSnapshot | null;
@@ -176,8 +180,9 @@ const changedMessage = (field: SenderField) =>
 	})[field];
 
 /**
- * C2: a linked letter says so, once, when details it takes from the resume changed since this device last showed
- * it. The live link means there's nothing to refresh.
+ * C2: a linked letter says so, once, when details it takes from the resume or the Profile changed since this device
+ * last showed it. The live link means there's nothing to refresh. Each source keeps its own snapshot, so switching
+ * between them says nothing.
  */
 function useLinkedUpdateNotice() {
 	const letterId = useLetterEditorStore((state) => state.letter?.id);
@@ -186,15 +191,18 @@ function useLinkedUpdateNotice() {
 	useEffect(() => {
 		const letter = useLetterEditorStore.getState().letter;
 		if (!letterId || !letter?.senderLinked) return;
-		const before = readSnapshot(`letter-sender:${letter.id}`);
+		const before = readSnapshot(snapshotKey(letter));
 		if (!before) return;
 		const now = snapshotOf(letter);
 		const changed = SENDER_FIELDS.filter((field) => before[field] !== undefined && before[field] !== now[field]);
 		const [only] = changed;
 		if (!only) return;
 		toast.add({
-			description:
-				changed.length === 1 ? changedMessage(only) : t`Your details changed on the resume. The letter updated too.`,
+			description: !letter.sourceResumeId
+				? t`Your details changed in your Profile. The letter updated too.`
+				: changed.length === 1
+					? changedMessage(only)
+					: t`Your details changed on the resume. The letter updated too.`,
 		});
 	}, [letterId]);
 
@@ -203,7 +211,7 @@ function useLinkedUpdateNotice() {
 		const letter = useLetterEditorStore.getState().letter;
 		if (!letter || !basics) return;
 		try {
-			window.localStorage.setItem(`letter-sender:${letter.id}`, JSON.stringify(snapshotOf(letter)));
+			window.localStorage.setItem(snapshotKey(letter), JSON.stringify(snapshotOf(letter)));
 		} catch {
 			// Storage can be unavailable; the notice is a nicety.
 		}

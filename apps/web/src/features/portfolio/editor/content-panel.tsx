@@ -14,7 +14,7 @@ import { AiDraftButton } from "../ai/draft-dialog";
 import { WorkEditor } from "../works/work-editor";
 import { WorksForm } from "../works/works-form";
 import { ContactForm } from "./contact-form";
-import { useSourceResume } from "./context";
+import { usePortfolioSource } from "./context";
 import { PanelGroup } from "./fields";
 import { IntroForm } from "./intro-form";
 import { ClientsForm, ServicesForm, TestimonialsForm } from "./offer-forms";
@@ -78,7 +78,7 @@ export function ContentPanel() {
 
 function SectionsGroup() {
 	const data = usePortfolioData();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	const view = useEditorView();
 	const messages = usePageMessages();
 	const order = editorSectionOrder(data, source.data);
@@ -166,6 +166,7 @@ function SectionRow({ sectionKey, index, title, hidden, empty, open, onOpenChang
 	const detailsId = useId();
 	const sortable = useSortableItem({ id: sectionKey, list: "sections", index, label: title });
 	const fromResume = isResumeSection(sectionKey);
+	const fromProfile = usePortfolioSource().from === "profile";
 	const renamable = !sectionKey.startsWith("custom:");
 	const toggle = useRef<HTMLButtonElement>(null);
 	const revealing = usePortfolioEditorUi((state) => state.revealing === sectionKey);
@@ -219,7 +220,7 @@ function SectionRow({ sectionKey, index, title, hidden, empty, open, onOpenChang
 					<span id={detailsId} className="contents">
 						{fromResume && (
 							<Chip size="sm" variant="soft" className="shrink-0">
-								<Trans>From resume</Trans>
+								{fromProfile ? <Trans>From Profile</Trans> : <Trans>From resume</Trans>}
 							</Chip>
 						)}
 						{empty && (

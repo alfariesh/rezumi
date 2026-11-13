@@ -7,7 +7,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { generateId } from "@rezumi/utils/string";
 import { ImageField } from "../images/image-field";
-import { useSourceResume } from "./context";
+import { usePortfolioSource } from "./context";
 import { RichTextField, TextInput, UrlInput } from "./fields";
 import { resumeSectionItems, setItemHidden, setSectionHidden } from "./sections";
 import { editPortfolio, usePortfolioData, usePortfolioRecord } from "./store";
@@ -171,14 +171,19 @@ export function addCustomSection(): string {
 export function ResumeItemsForm({ sectionKey }: { sectionKey: PortfolioSectionKey }) {
 	const data = usePortfolioData();
 	const { sourceResume } = usePortfolioRecord();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
+	const fromProfile = source.from === "profile";
 	const items = resumeSectionItems(source.data, sectionKey);
 	const hidden = new Set(data.sections.hiddenItems[sectionKey] ?? []);
 
 	if (!source.data)
 		return (
 			<p className="text-body-sm text-muted">
-				<Trans>This section comes from a resume. Choose one in Publish → Source resume to fill it.</Trans>
+				{source.isLoading ? null : (
+					<Trans>
+						This section comes from your source resume, which is in Trash. Choose another in Publish → Source.
+					</Trans>
+				)}
 			</p>
 		);
 
@@ -186,7 +191,11 @@ export function ResumeItemsForm({ sectionKey }: { sectionKey: PortfolioSectionKe
 		<div className="grid gap-3">
 			{items.length === 0 ? (
 				<p className="text-body-sm text-muted">
-					<Trans>Nothing here on your resume yet, so the section doesn't show.</Trans>
+					{fromProfile ? (
+						<Trans>Nothing here in your Profile yet, so the section doesn't show.</Trans>
+					) : (
+						<Trans>Nothing here on your resume yet, so the section doesn't show.</Trans>
+					)}
 				</p>
 			) : (
 				<ul className="grid gap-2">
@@ -206,15 +215,15 @@ export function ResumeItemsForm({ sectionKey }: { sectionKey: PortfolioSectionKe
 					})}
 				</ul>
 			)}
-			{sourceResume && (
+			{(sourceResume || fromProfile) && (
 				<a
-					href={`/builder/${sourceResume.id}`}
+					href={sourceResume ? `/builder/${sourceResume.id}` : "/dashboard/profile"}
 					target="_blank"
 					rel="noopener"
 					className={buttonVariants({ variant: "secondary", className: "w-fit" })}
 				>
 					<Icon name="arrow-square-out" size={18} />
-					<Trans>Edit on resume</Trans>
+					{sourceResume ? <Trans>Edit on resume</Trans> : <Trans>Edit in Profile</Trans>}
 				</a>
 			)}
 		</div>

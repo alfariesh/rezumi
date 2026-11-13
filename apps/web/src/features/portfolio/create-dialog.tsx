@@ -16,15 +16,18 @@ import { invalidatePortfolioQueries } from "./status";
 import { ThemeGallery } from "./theme-gallery";
 import { useAiSource } from "@/features/billing/ai-source";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
+import { profileHasCareer, profileQueryOptions } from "@/features/profile/queries";
 import { authClient } from "@/libs/auth/client";
 import { client, orpc } from "@/libs/orpc/client";
 
-const WITHOUT_RESUME = "none";
+// The Profile choice; resume ids are UUIDs, so it can't clash.
+const FROM_PROFILE = "profile";
 
 /**
- * Make a portfolio (`01-desain.md` section 2): first the resume it comes from (the primary one is picked) or none,
- * with a name and headline; then a theme; then, from a resume, an optional draft with AI. The editor opens next, and
- * a draft goes in there as one edit Undo takes back.
+ * Make a portfolio (`01-desain.md` section 2): first what it comes from, the Profile or a resume (the Profile when it
+ * has a career, else the primary resume), with a name and headline while the Profile has nothing yet; then a theme;
+ * then, with something to write from, an optional draft with AI. The editor opens next, and a draft goes in there as
+ * one edit Undo takes back.
  */
 type CreatePortfolioDialogProps = { onClose: () => void };
 
@@ -34,6 +37,8 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 	const queryClient = useQueryClient();
 	const { data: session } = authClient.useSession();
 	const { data: resumes, isPending: loadingResumes } = useQuery(orpc.resume.list.queryOptions());
+	const { data: profile, isPending: loadingProfile } = useQuery(profileQueryOptions());
+	const profileFilled = profile ? profileHasCareer(profile.data) : false;
 	const [step, setStep] = useState<"source" | "theme" | "ai">("source");
 	const [chosen, setChosen] = useState<string | null>(null);
 	const [name, setName] = useState(session?.user.name ?? "");
@@ -49,9 +54,11 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 	const draft = useDraftRun();
 
 	const primary = resumes?.find((resume) => resume.isPrimary) ?? resumes?.[0];
-	const source = chosen ?? primary?.id ?? WITHOUT_RESUME;
-	const withoutResume = source === WITHOUT_RESUME;
-	const offersAi = !withoutResume && ai.source !== null;
+	const source = chosen ?? (profileFilled ? FROM_PROFILE : (primary?.id ?? FROM_PROFILE));
+	const fromProfile = source === FROM_PROFILE;
+	// An empty Profile has nothing to show yet: the name and headline typed here stand in.
+	const askBasics = fromProfile && !profileFilled;
+	const offersAi = !askBasics && ai.source !== null;
 	const busy = creating || draft.isRunning;
 
 	const openEditor = async () => {
@@ -66,8 +73,12 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 		setCreating(true);
 		try {
 			await client.portfolio.create(
-				withoutResume
-					? { sourceResumeId: null, theme, basics: { name: name.trim(), headline: headline.trim() } }
+				fromProfile
+					? {
+							sourceResumeId: null,
+							theme,
+							...(askBasics ? { basics: { name: name.trim(), headline: headline.trim() } } : {}),
+						}
 					: { sourceResumeId: source, theme },
 			);
 			setCreated(true);
@@ -139,7 +150,7 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 					</Modal.Header>
 					<Modal.Body className="grid gap-4">
 						{step === "source" ? (
-							loadingResumes ? (
+							loadingResumes || loadingProfile ? (
 								<div className="grid place-items-center py-8">
 									<Spinner size="md" color="current" />
 								</div>
@@ -147,12 +158,18 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 								<>
 									<RadioGroup aria-label={t`Start from`} value={source} onChange={setChosen} className="grid gap-2">
 										{[
+											{
+												id: FROM_PROFILE,
+												label: t`Your Profile`,
+												note: profileFilled
+													? t`Your details and career, kept in one place.`
+													: t`Empty for now. Type your name below, or fill in your Profile.`,
+											},
 											...(resumes ?? []).map((resume) => ({
 												id: resume.id,
 												label: resume.name,
 												note: resume.isPrimary ? t`Your primary resume` : null,
 											})),
-											{ id: WITHOUT_RESUME, label: t`Without a resume`, note: t`Fill in your details yourself.` },
 										].map((option) => (
 											<Radio
 												key={option.id}
@@ -172,8 +189,15 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 										))}
 									</RadioGroup>
 									<p className="text-body-xs text-muted">
-										{withoutResume ? (
-											<Trans>You can link a resume later in Publish.</Trans>
+										{askBasics ? (
+											<Trans>
+												What you add to your Profile later shows up here. You can also pick a resume later in Publish.
+											</Trans>
+										) : fromProfile ? (
+											<Trans>
+												Your name, photo, experience, education and skills follow your Profile as it changes. Its
+												summary becomes About me and its projects become your work, to edit freely.
+											</Trans>
 										) : (
 											<Trans>
 												Your name, photo, experience, education and skills follow this resume as it changes. Its summary
@@ -181,7 +205,7 @@ export function CreatePortfolioDialog({ onClose }: CreatePortfolioDialogProps) {
 											</Trans>
 										)}
 									</p>
-									{withoutResume && (
+									{askBasics && (
 										<div className="grid gap-3">
 											<TextInput
 												label={t`Your name`}

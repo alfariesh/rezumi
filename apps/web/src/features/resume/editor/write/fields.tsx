@@ -9,13 +9,13 @@ import { useCallback, useState } from "react";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { cn } from "@rezumi/utils/style";
 import { findEntry } from "./model";
+import { useWriteSelector, useWriteUpdate } from "./source";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { URLInput } from "@/components/input/url-input";
-import { useCurrentBuilderResumeSelector, useUpdateResumeData } from "@/features/resume/builder/draft";
 
 /** One entry of a section, re-rendering only when that entry changes; null once it's deleted. */
 export const useEntry = (sectionId: string, entryId: string) =>
-	useCurrentBuilderResumeSelector((resume) => findEntry(resume.data, sectionId, entryId) ?? null);
+	useWriteSelector((data) => findEntry(data, sectionId, entryId) ?? null);
 
 export type EntryWriter = (key: string, mutate: (entry: Record<string, unknown>) => void) => void;
 
@@ -24,11 +24,11 @@ export type EntryWriter = (key: string, mutate: (entry: Record<string, unknown>)
  * while a different field starts a new one.
  */
 export function useEntryWriter(sectionId: string, entryId: string): EntryWriter {
-	const updateResumeData = useUpdateResumeData();
+	const update = useWriteUpdate();
 
 	return useCallback(
 		(key, mutate) => {
-			updateResumeData(
+			update(
 				(draft) => {
 					const entry = findEntry(draft, sectionId, entryId);
 					if (entry) mutate(entry as Entry & Record<string, unknown>);
@@ -36,7 +36,7 @@ export function useEntryWriter(sectionId: string, entryId: string): EntryWriter 
 				{ coalesceKey: `${entryId}:${key}` },
 			);
 		},
-		[updateResumeData, sectionId, entryId],
+		[update, sectionId, entryId],
 	);
 }
 
@@ -77,6 +77,8 @@ type TextFieldProps = Omit<ComponentProps<"input">, "value" | "onChange"> & {
 	wide?: boolean | undefined;
 	/** Drawn at the start of the field. */
 	icon?: IconName | undefined;
+	/** A small control at the end of the label's line, such as the Profile marker. */
+	labelAction?: ReactNode;
 };
 
 /** A labelled text field. Errors appear after the first blur and say how to fix them. */
@@ -88,6 +90,7 @@ export function TextField({
 	hint,
 	wide,
 	icon,
+	labelAction,
 	className,
 	onBlur,
 	...props
@@ -104,7 +107,9 @@ export function TextField({
 			validationBehavior="aria"
 			className={cn("gap-1.5", wide && "col-span-full")}
 		>
-			<Label>{label}</Label>
+			<LabelLine action={labelAction}>
+				<Label>{label}</Label>
+			</LabelLine>
 			<WithInputIcon icon={icon}>
 				<Input
 					fullWidth
@@ -122,15 +127,30 @@ export function TextField({
 	);
 }
 
+type LabelLineProps = { action?: ReactNode; children: ReactNode };
+
+/** A field's label with an optional control at the end of its line, kept outside the label so it isn't part of it. */
+function LabelLine({ action, children }: LabelLineProps) {
+	if (!action) return children;
+	return (
+		<div className="flex items-center justify-between gap-2">
+			{children}
+			{action}
+		</div>
+	);
+}
+
 type WebsiteFieldProps = {
 	label?: ReactNode;
+	/** A small control at the end of the label's line, such as the Profile marker. */
+	labelAction?: ReactNode;
 	value: Website & { inlineLink?: boolean };
 	onChange: (value: Website & { inlineLink?: boolean }) => void;
 	/** Entries can print the link on their title instead of on its own line. */
 	allowInlineLink?: boolean;
 };
 
-export function WebsiteField({ label, value, onChange, allowInlineLink = true }: WebsiteFieldProps) {
+export function WebsiteField({ label, labelAction, value, onChange, allowInlineLink = true }: WebsiteFieldProps) {
 	const [touched, setTouched] = useState(false);
 	const error = touched ? validateUrl(value.url) : undefined;
 	const inline = value.inlineLink ?? false;
@@ -138,7 +158,9 @@ export function WebsiteField({ label, value, onChange, allowInlineLink = true }:
 	return (
 		<div className="col-span-full grid gap-2">
 			<FormItem hasError={Boolean(error)}>
-				<FormLabel>{label ?? <Trans>Link</Trans>}</FormLabel>
+				<LabelLine action={labelAction}>
+					<FormLabel>{label ?? <Trans>Link</Trans>}</FormLabel>
+				</LabelLine>
 				<FormControl
 					render={
 						<URLInput

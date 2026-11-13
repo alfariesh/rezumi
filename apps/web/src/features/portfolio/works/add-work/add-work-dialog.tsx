@@ -4,6 +4,7 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { usePortfolioSource } from "../../editor/context";
 import { editPortfolio, usePortfolioData } from "../../editor/store";
 import { usePortfolioEditorUi } from "../../editor/ui";
 import { newWork } from "../works";
@@ -46,6 +47,7 @@ export function AddWorkDialog({ onClose }: AddWorkDialogProps) {
 	const data = usePortfolioData();
 	const openWork = usePortfolioEditorUi((state) => state.openWork);
 	const [way, setWay] = useState<Way | null>(null);
+	const fromProfile = usePortfolioSource().from === "profile";
 	// A step in the middle of an upload or import: closing would cut it short, so only its own buttons end it.
 	const [busy, setBusy] = useState(false);
 
@@ -74,7 +76,11 @@ export function AddWorkDialog({ onClose }: AddWorkDialogProps) {
 					<Modal.Header>
 						<Modal.Heading id={`${id}-title`}>
 							{way === "resume" ? (
-								<Trans>Add work from your resume</Trans>
+								fromProfile ? (
+									<Trans>Add work from your Profile</Trans>
+								) : (
+									<Trans>Add work from your resume</Trans>
+								)
 							) : way === "pictures" ? (
 								<Trans>Add work from pictures</Trans>
 							) : way === "link" ? (
@@ -100,8 +106,14 @@ export function AddWorkDialog({ onClose }: AddWorkDialogProps) {
 							/>
 							<WayCard
 								icon="file-text"
-								title={<Trans>From my resume</Trans>}
-								text={<Trans>Pick projects from your resume: title, summary, dates and link come along.</Trans>}
+								title={fromProfile ? <Trans>From my Profile</Trans> : <Trans>From my resume</Trans>}
+								text={
+									fromProfile ? (
+										<Trans>Pick projects from your Profile: title, summary, dates and link come along.</Trans>
+									) : (
+										<Trans>Pick projects from your resume: title, summary, dates and link come along.</Trans>
+									)
+								}
 								onPress={() => setWay("resume")}
 							/>
 							<WayCard

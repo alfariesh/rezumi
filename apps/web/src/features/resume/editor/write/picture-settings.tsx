@@ -22,10 +22,10 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import "react-easy-crop/react-easy-crop.css";
+import { useWriteSelector, useWriteUpdate } from "./source";
 import { ColorPicker } from "@/components/input/color-picker";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { NumberInput } from "@/components/input/number-input";
-import { useCurrentBuilderResumeSelector, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useSyncFormValues } from "@/hooks/use-sync-form-values";
@@ -34,6 +34,8 @@ import { orpc } from "@/libs/orpc/client";
 import { useAppForm } from "@/libs/tanstack-form";
 
 type PicturePreviewControlsProps = {
+	/** Show and hide belong to a document's photo; the Profile only keeps the picture. */
+	canHide: boolean;
 	fileInputRef: React.RefObject<HTMLInputElement | null>;
 	form: PictureSettingsForm;
 	normalizedPictureUrl: string;
@@ -45,6 +47,7 @@ type PicturePreviewControlsProps = {
 };
 
 function PicturePreviewControls({
+	canHide,
 	fileInputRef,
 	form,
 	normalizedPictureUrl,
@@ -111,15 +114,17 @@ function PicturePreviewControls({
 								/>
 							</WithInputIcon>
 
-							<IconButton
-								icon={picture.hidden ? "eye-slash" : "eye"}
-								iconSize={16}
-								label={picture.hidden ? t`Show photo` : t`Hide photo`}
-								onPress={() => {
-									form.setFieldValue("hidden", !picture.hidden);
-									onAutoSave();
-								}}
-							/>
+							{canHide && (
+								<IconButton
+									icon={picture.hidden ? "eye-slash" : "eye"}
+									iconSize={16}
+									label={picture.hidden ? t`Show photo` : t`Hide photo`}
+									onPress={() => {
+										form.setFieldValue("hidden", !picture.hidden);
+										onAutoSave();
+									}}
+								/>
+							)}
 						</div>
 					</FormItem>
 				)}
@@ -704,23 +709,31 @@ function ColorWidthFields(props: ColorWidthFieldsProps) {
 	);
 }
 
+type PictureSettingsProps = {
+	/**
+	 * The frame: show or hide, fit, size, rotation, shape, border and shadow. A document's own; the Profile keeps only
+	 * the picture.
+	 */
+	frame?: boolean;
+};
+
 /** Every photo option: upload with crop, address, show or hide, delete, fit, size, rotation, shape, border and shadow. */
-export function PictureSettings() {
+export function PictureSettings({ frame = true }: PictureSettingsProps) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const confirm = useConfirm();
 	const appOrigin = window.location.origin;
 
 	const [cropState, setCropState] = useState<CropState | null>(null);
 
-	const picture = useCurrentBuilderResumeSelector((resume) => resume.data.picture);
+	const picture = useWriteSelector((data) => data.picture);
 	const normalizedPictureUrl = normalizePictureUrl(picture.url, appOrigin);
-	const updateResumeData = useUpdateResumeData();
+	const update = useWriteUpdate();
 
 	const { mutate: uploadFile } = useMutation(orpc.storage.uploadFile.mutationOptions({ meta: { noInvalidate: true } }));
 	const { mutate: deleteFile } = useMutation(orpc.storage.deleteFile.mutationOptions({ meta: { noInvalidate: true } }));
 
 	const persist = (data: PictureValues) => {
-		updateResumeData((draft) => {
+		update((draft) => {
 			draft.picture = data;
 		});
 	};
@@ -818,6 +831,7 @@ export function PictureSettings() {
 				}}
 			>
 				<PicturePreviewControls
+					canHide={frame}
 					fileInputRef={fileInputRef}
 					form={form}
 					normalizedPictureUrl={normalizedPictureUrl}
@@ -828,30 +842,32 @@ export function PictureSettings() {
 					onUploadPicture={onUploadPicture}
 				/>
 
-				<PictureFitField form={form} onAutoSave={handleAutoSave} />
+				{frame && <PictureFitField form={form} onAutoSave={handleAutoSave} />}
 
-				<div className="grid grid-cols-1 gap-4 @md:grid-cols-2">
-					<PictureGeometryFields form={form} onAutoSave={handleAutoSave} />
+				{frame && (
+					<div className="grid grid-cols-1 gap-4 @md:grid-cols-2">
+						<PictureGeometryFields form={form} onAutoSave={handleAutoSave} />
 
-					<ColorWidthFields
-						form={form}
-						colorName="borderColor"
-						widthName="borderWidth"
-						colorLabel={t`Border color`}
-						widthLabel={t`Border width`}
-						step={1}
-						onAutoSave={handleAutoSave}
-					/>
-					<ColorWidthFields
-						form={form}
-						colorName="shadowColor"
-						widthName="shadowWidth"
-						colorLabel={t`Shadow color`}
-						widthLabel={t`Shadow width`}
-						step={0.5}
-						onAutoSave={handleAutoSave}
-					/>
-				</div>
+						<ColorWidthFields
+							form={form}
+							colorName="borderColor"
+							widthName="borderWidth"
+							colorLabel={t`Border color`}
+							widthLabel={t`Border width`}
+							step={1}
+							onAutoSave={handleAutoSave}
+						/>
+						<ColorWidthFields
+							form={form}
+							colorName="shadowColor"
+							widthName="shadowWidth"
+							colorLabel={t`Shadow color`}
+							widthLabel={t`Shadow width`}
+							step={0.5}
+							onAutoSave={handleAutoSave}
+						/>
+					</div>
+				)}
 			</form>
 		</>
 	);

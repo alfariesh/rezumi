@@ -8,7 +8,7 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { BlockList, editWork } from "../blocks/block-list";
-import { pageLocaleOf, useSourceResume } from "../editor/context";
+import { pageLocaleOf, usePortfolioSource } from "../editor/context";
 import { ChoiceSelect, PanelGroup, TextInput, UrlInput } from "../editor/fields";
 import { editPortfolio, lastSavedData, usePortfolioData } from "../editor/store";
 import { usePortfolioEditorUi } from "../editor/ui";
@@ -34,7 +34,7 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 		top.current?.scrollIntoView({ block: "start" });
 	}, [workId]);
 	const data = usePortfolioData();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	const openWork = usePortfolioEditorUi((state) => state.openWork);
 	// Back to the list, with focus on the Work section instead of lost with the editor that closed.
 	const close = () => {
@@ -45,7 +45,7 @@ export function WorkEditor({ workId }: WorkEditorProps) {
 	const work = data.works.items.find((entry) => entry.id === workId);
 	if (!work) return null;
 
-	const locale = pageLocaleOf(data, source.data);
+	const locale = pageLocaleOf(data, source.designData);
 	const title = work.title.trim() || t`Untitled work`;
 	const metrics = workMetrics(work).filter((metric) => metric.label.trim());
 	const update = (recipe: (draft: PortfolioWork) => void, key?: string) =>

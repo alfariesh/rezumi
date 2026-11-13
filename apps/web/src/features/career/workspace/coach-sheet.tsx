@@ -238,7 +238,7 @@ function CoachSheetBody({
 				)}
 				privacy={
 					<PrivacyLine>
-						{t`Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to ${connection}.`}
+						{t`Sends your message, this application (posting, notes, documents sent) and your Profile (details, career, and the facts and stories that are switched on) to ${connection}.`}
 					</PrivacyLine>
 				}
 				placeholder={t`Ask about this application…`}

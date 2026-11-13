@@ -113,6 +113,7 @@ describe("buildAccountZip", () => {
 				],
 			},
 			portfolio: { portfolio: null, files: [], messages: [], reports: [] },
+			profile: { data: { basics: { name: "Dana" } }, updatedAt: "2026-09-28T00:00:00.000Z" },
 		} as never);
 
 		const files = unzipSync(zip);
@@ -124,9 +125,14 @@ describe("buildAccountZip", () => {
 			"career.json",
 			"letters/product-designer-01a0ec71-a410-71da-9156-b347210cf72b.json",
 			"portfolio.json",
+			"profile.json",
 			"resumes/product-designer-01a0ec71-03e8-77b1-a5e4-ce04be126204.json",
 			"resumes/product-designer-01a0ec71-32c8-728b-b43b-b760a673b825.json",
 		]);
+		expect(JSON.parse(strFromU8(files["profile.json"] as Uint8Array))).toEqual({
+			data: { basics: { name: "Dana" } },
+			updatedAt: "2026-09-28T00:00:00.000Z",
+		});
 		expect(JSON.parse(strFromU8(files["account.json"] as Uint8Array))).toEqual({
 			exportedAt: "2026-09-29T00:00:00.000Z",
 			user: { id: "u1", name: "Dana" },

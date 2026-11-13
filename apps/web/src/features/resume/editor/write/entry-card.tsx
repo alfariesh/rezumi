@@ -1,6 +1,8 @@
 import type { PageSettings } from "./entries";
 import type { Entry, WriteSection } from "./model";
+import type { WriteSource } from "./source";
 import type { MessageDescriptor } from "@lingui/core";
+import type { ProfileSectionType } from "@rezumi/schema/profile/data";
 import type { KeyboardEvent, ReactNode } from "react";
 import { Button, Chip, Dropdown, Label, Separator } from "@heroui/react";
 import { msg, t } from "@lingui/core/macro";
@@ -19,10 +21,11 @@ import { EntryFields } from "./entries";
 import { useEntry, useEntryWriter } from "./fields";
 import { LazyDisclosure } from "./lazy-disclosure";
 import { createEntry, describeEntry, getEntries, getPrimaryField, isDraftEntry } from "./model";
+import { ProfileMarker, SaveToProfileMenuItem, useLocalEntry } from "./profile-link";
 import { entryElementId, keepOpenedEntryInView } from "./reveal";
 import { useSectionTitle } from "./section-row";
+import { readWriteData, useWriteSource, useWriteUpdate } from "./source";
 import { SortableEdge, SortableHandle, useSortableItem } from "@/components/input/sortable";
-import { useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { D3, EASE_DRAWER, EXIT } from "@/libs/motion";
 import { getCompatibleMoveTargets, getSourceSectionTitle, moveItem } from "@/libs/resume/move-item";
 
@@ -53,6 +56,7 @@ type EntryCardProps = {
  */
 export function EntryCard({ section, entryId, index, count, page, locked, onMove }: EntryCardProps) {
 	const { i18n } = useLingui();
+	const source = useWriteSource();
 	const entry = useEntry(section.id, entryId);
 	const write = useEntryWriter(section.id, entryId);
 	const open = useEditorStore((state) => state.selection?.kind === "item" && state.selection.itemId === entryId);
@@ -77,7 +81,8 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 	const { title } = described;
 	const draft = isDraftEntry(section.type, entry);
 	const primaryField = getPrimaryField(section.type);
-	const hint = draft && primaryField ? DRAFT_HINTS[primaryField] : undefined;
+	// The Profile prints nowhere; its drafts are simply kept.
+	const hint = draft && primaryField && source.kind === "resume" ? DRAFT_HINTS[primaryField] : undefined;
 
 	const toggle = () => {
 		useEditorStore.setState({ selection: open ? null : { kind: "item", sectionId: section.id, itemId: entryId } });
@@ -145,13 +150,17 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 					</span>
 				</button>
 
+				{section.kind === "builtin" && (
+					<ProfileMarker part={{ kind: "item", section: section.type as ProfileSectionType, id: entryId }} />
+				)}
+
 				{open && !locked && (
 					<IconButton
 						icon="trash"
 						label={t`Delete entry`}
 						size="sm"
 						className="text-muted hover:bg-danger-soft hover:text-danger"
-						onPress={() => deleteEntry(section, entryId)}
+						onPress={() => deleteEntry(source, section, entryId)}
 					/>
 				)}
 				{!locked && <EntryMenu section={section} entry={entry} />}
@@ -172,7 +181,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 						section={section}
 						title={title}
 						locked={locked}
-						onDelete={() => deleteEntry(section, entryId)}
+						onDelete={() => deleteEntry(source, section, entryId)}
 						onBack={() => useEditorStore.setState({ selection: null })}
 					>
 						{fields}
@@ -225,9 +234,8 @@ function PhoneEntryScreen({ section, title, locked, onBack, onDelete, children }
 	);
 }
 
-function deleteEntry(section: WriteSection, entryId: string) {
-	const { updateResumeData, undo } = useResumeStore.getState();
-	updateResumeData(
+function deleteEntry(source: WriteSource, section: WriteSection, entryId: string) {
+	source.update(
 		(draft) => {
 			const entries = getEntries(draft, section);
 			const index = entries.findIndex((entry) => entry.id === entryId);
@@ -236,7 +244,7 @@ function deleteEntry(section: WriteSection, entryId: string) {
 		{ newStep: true },
 	);
 	useEditorStore.setState({ selection: null });
-	toast.add({ description: t`Entry deleted`, actionProps: { children: t`Undo`, onClick: undo } });
+	toast.add({ description: t`Entry deleted`, actionProps: { children: t`Undo`, onClick: () => source.undo() } });
 }
 
 type EntryMenuProps = { section: WriteSection; entry: Entry };
@@ -246,14 +254,21 @@ const NO_MOVE_OPTIONS: { moveTargets: ReturnType<typeof getCompatibleMoveTargets
 	sourceTitle: "",
 };
 
-/** Hide from page, Duplicate, Move to… and Delete. */
+/**
+ * Hide from page, Duplicate, Move to… and Delete, plus Save to Profile on an entry the Profile doesn't have. On the
+ * Profile only Duplicate and Delete: hiding and placing belong to each document.
+ */
 function EntryMenu({ section, entry }: EntryMenuProps) {
-	const updateResumeData = useUpdateResumeData();
+	const source = useWriteSource();
+	const document = source.kind === "resume";
+	const update = useWriteUpdate();
+	const saveToProfile = useLocalEntry({ section, entryId: entry.id });
 	const customSectionId = section.kind === "custom" ? section.id : undefined;
 	// Read when the menu opens rather than subscribed to, so typing doesn't re-render every entry's menu.
 	const [{ moveTargets, sourceTitle }, setMoveOptions] = useState(NO_MOVE_OPTIONS);
 	const readMoveOptions = () => {
-		const data = useResumeStore.getState().resume?.data;
+		if (!document) return;
+		const data = readWriteData(source);
 		if (!data) return;
 		setMoveOptions({
 			moveTargets: getCompatibleMoveTargets(data, section.type, customSectionId),
@@ -262,13 +277,13 @@ function EntryMenu({ section, entry }: EntryMenuProps) {
 	};
 
 	const move = (target: Parameters<typeof moveItem>[1]["target"]) =>
-		updateResumeData((draft) => moveItem(draft, { itemId: entry.id, type: section.type, customSectionId, target }), {
+		update((draft) => moveItem(draft, { itemId: entry.id, type: section.type, customSectionId, target }), {
 			newStep: true,
 		});
 
 	const duplicate = () => {
 		const copy = { ...structuredClone(entry), id: createEntry(section.type).id } as Entry;
-		updateResumeData(
+		update(
 			(draft) => {
 				const entries = getEntries(draft, section);
 				entries.splice(entries.findIndex((item) => item.id === entry.id) + 1, 0, copy);
@@ -279,7 +294,7 @@ function EntryMenu({ section, entry }: EntryMenuProps) {
 	};
 
 	const toggleHidden = () =>
-		updateResumeData(
+		update(
 			(draft) => {
 				const target = getEntries(draft, section).find((item) => item.id === entry.id);
 				if (target) target.hidden = !target.hidden;
@@ -292,86 +307,91 @@ function EntryMenu({ section, entry }: EntryMenuProps) {
 			<IconButton icon="dots-three" label={t`Entry options`} size="sm" />
 			<Dropdown.Popover placement="bottom end" className="w-56">
 				<Dropdown.Menu>
-					<Dropdown.Item
-						id="hidden"
-						textValue={entry.hidden ? t`Show on page` : t`Hide from page`}
-						onAction={toggleHidden}
-					>
-						<Icon name={entry.hidden ? "eye" : "eye-slash"} className="text-muted" />
-						<Label>{entry.hidden ? <Trans>Show on page</Trans> : <Trans>Hide from page</Trans>}</Label>
-					</Dropdown.Item>
+					{saveToProfile && <SaveToProfileMenuItem onAction={saveToProfile} />}
+					{document && (
+						<Dropdown.Item
+							id="hidden"
+							textValue={entry.hidden ? t`Show on page` : t`Hide from page`}
+							onAction={toggleHidden}
+						>
+							<Icon name={entry.hidden ? "eye" : "eye-slash"} className="text-muted" />
+							<Label>{entry.hidden ? <Trans>Show on page</Trans> : <Trans>Hide from page</Trans>}</Label>
+						</Dropdown.Item>
+					)}
 					<Dropdown.Item id="duplicate" textValue={t`Duplicate`} onAction={duplicate}>
 						<Icon name="copy" className="text-muted" />
 						<Label>
 							<Trans>Duplicate</Trans>
 						</Label>
 					</Dropdown.Item>
-					<Dropdown.SubmenuTrigger>
-						<Dropdown.Item id="move" textValue={t`Move to…`}>
-							<Icon name="arrow-right" className="text-muted" />
-							<Label>
-								<Trans>Move to…</Trans>
-							</Label>
-							<Dropdown.SubmenuIndicator />
-						</Dropdown.Item>
-						<Dropdown.Popover className="w-56">
-							<Dropdown.Menu>
-								{moveTargets.map(({ pageIndex, sections }) => (
-									<Dropdown.SubmenuTrigger key={pageIndex}>
-										<Dropdown.Item id={`page-${pageIndex}`} textValue={t`Page ${pageIndex + 1}`}>
-											<Icon name="file-text" className="text-muted" />
-											<Label>
-												<Trans>Page {pageIndex + 1}</Trans>
-											</Label>
-											<Dropdown.SubmenuIndicator />
-										</Dropdown.Item>
-										<Dropdown.Popover>
-											<Dropdown.Menu>
-												{sections.map(({ sectionId, sectionTitle }) => (
+					{document && (
+						<Dropdown.SubmenuTrigger>
+							<Dropdown.Item id="move" textValue={t`Move to…`}>
+								<Icon name="arrow-right" className="text-muted" />
+								<Label>
+									<Trans>Move to…</Trans>
+								</Label>
+								<Dropdown.SubmenuIndicator />
+							</Dropdown.Item>
+							<Dropdown.Popover className="w-56">
+								<Dropdown.Menu>
+									{moveTargets.map(({ pageIndex, sections }) => (
+										<Dropdown.SubmenuTrigger key={pageIndex}>
+											<Dropdown.Item id={`page-${pageIndex}`} textValue={t`Page ${pageIndex + 1}`}>
+												<Icon name="file-text" className="text-muted" />
+												<Label>
+													<Trans>Page {pageIndex + 1}</Trans>
+												</Label>
+												<Dropdown.SubmenuIndicator />
+											</Dropdown.Item>
+											<Dropdown.Popover>
+												<Dropdown.Menu>
+													{sections.map(({ sectionId, sectionTitle }) => (
+														<Dropdown.Item
+															key={sectionId}
+															id={`section-${sectionId}`}
+															textValue={sectionTitle}
+															onAction={() => move({ type: "section", sectionId })}
+														>
+															<Label>{sectionTitle}</Label>
+														</Dropdown.Item>
+													))}
+													{sections.length > 0 && <Separator />}
 													<Dropdown.Item
-														key={sectionId}
-														id={`section-${sectionId}`}
-														textValue={sectionTitle}
-														onAction={() => move({ type: "section", sectionId })}
+														id="new-section"
+														textValue={t`New section`}
+														onAction={() => move({ type: "new-section", title: sourceTitle, pageIndex })}
 													>
-														<Label>{sectionTitle}</Label>
+														<Icon name="plus" className="text-muted" />
+														<Label>
+															<Trans>New section</Trans>
+														</Label>
 													</Dropdown.Item>
-												))}
-												{sections.length > 0 && <Separator />}
-												<Dropdown.Item
-													id="new-section"
-													textValue={t`New section`}
-													onAction={() => move({ type: "new-section", title: sourceTitle, pageIndex })}
-												>
-													<Icon name="plus" className="text-muted" />
-													<Label>
-														<Trans>New section</Trans>
-													</Label>
-												</Dropdown.Item>
-											</Dropdown.Menu>
-										</Dropdown.Popover>
-									</Dropdown.SubmenuTrigger>
-								))}
-								<Separator />
-								<Dropdown.Item
-									id="new-page"
-									textValue={t`New page`}
-									onAction={() => move({ type: "new-page", title: sourceTitle })}
-								>
-									<Icon name="file-plus" className="text-muted" />
-									<Label>
-										<Trans>New page</Trans>
-									</Label>
-								</Dropdown.Item>
-							</Dropdown.Menu>
-						</Dropdown.Popover>
-					</Dropdown.SubmenuTrigger>
+												</Dropdown.Menu>
+											</Dropdown.Popover>
+										</Dropdown.SubmenuTrigger>
+									))}
+									<Separator />
+									<Dropdown.Item
+										id="new-page"
+										textValue={t`New page`}
+										onAction={() => move({ type: "new-page", title: sourceTitle })}
+									>
+										<Icon name="file-plus" className="text-muted" />
+										<Label>
+											<Trans>New page</Trans>
+										</Label>
+									</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown.SubmenuTrigger>
+					)}
 					<Separator />
 					<Dropdown.Item
 						id="delete"
 						textValue={t`Delete`}
 						variant="danger"
-						onAction={() => deleteEntry(section, entry.id)}
+						onAction={() => deleteEntry(source, section, entry.id)}
 					>
 						<Icon name="trash" />
 						<Label>

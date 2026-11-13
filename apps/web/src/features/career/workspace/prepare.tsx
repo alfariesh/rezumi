@@ -153,7 +153,8 @@ function PlanEmpty({ application, interview }: PlanEmptyProps) {
 					</Button>
 					<PrivacyLine className="max-w-sm text-start">
 						<Trans>
-							Sends this application (posting, notes, interview details) and Knowledge that's switched on to {label}.
+							Sends this application (posting, notes, interview details) and your Profile (details, career, and the
+							facts and stories that are switched on) to {label}.
 						</Trans>
 					</PrivacyLine>
 					<AiSourceMenu action="interview-practice" />
@@ -196,7 +197,7 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 			case "story":
 				return (
 					<Link
-						to="/dashboard/career/knowledge/stories/{-$storyId}"
+						to="/dashboard/profile/stories/{-$storyId}"
 						params={{ storyId: row.storyId ?? undefined }}
 						className={className}
 					>
@@ -206,7 +207,7 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 			case "draft-story":
 				return (
 					<Link
-						to="/dashboard/career/knowledge/stories/{-$storyId}"
+						to="/dashboard/profile/stories/{-$storyId}"
 						params={{ storyId: undefined }}
 						search={{ edit: true }}
 						className={className}
@@ -251,7 +252,7 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 									{doneMinutes} of {total} min
 								</Trans>
 							</Chip>
-							{/* The interview, posting or Knowledge changed since it was planned: plan again on request. */}
+							{/* The interview, posting or Profile changed since it was planned: plan again on request. */}
 							{briefing.outdated && !readOnly && provider && interview && (
 								<WidgetAction
 									isPending={generate.isPending}
@@ -416,7 +417,7 @@ function RefreshSwitch({ application, interview }: RefreshSwitchProps) {
 				? t`AI connections are unavailable.`
 				: !providerId
 					? t`Connect an AI provider in Settings to refresh it automatically.`
-					: t`${when(runAt)} · ${providerLabel}. Sends this application and your Knowledge; your provider may charge.`;
+					: t`${when(runAt)} · ${providerLabel}. Sends this application and your Profile; your provider may charge.`;
 
 	return (
 		<div className="-my-2">
@@ -459,7 +460,7 @@ function StoriesToBring({ application, briefing }: StoriesToBringProps) {
 			{bring.map((story) => (
 				<Link
 					key={story.id}
-					to="/dashboard/career/knowledge/stories/{-$storyId}"
+					to="/dashboard/profile/stories/{-$storyId}"
 					params={{ storyId: story.id }}
 					className="flex items-start gap-2 text-sm hover:underline"
 				>

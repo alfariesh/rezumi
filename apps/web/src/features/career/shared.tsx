@@ -186,7 +186,7 @@ export const workingSteps = (task: GenerateTask["task"] | "tighten" | "chat") =>
 		fit: [t`Reading the posting`, t`Matching your facts`, t`Weighing each requirement`, t`Checking your preferences`],
 		briefing: [t`Reading the posting`, t`Picking your stories`, t`Timing the plan`, t`Drafting questions`],
 		practice: [t`Reading your answer`, t`Finding what works`, t`Sharpening the opening`],
-		debrief: [t`Reading your notes`, t`Checking against Knowledge`, t`Planning your week`],
+		debrief: [t`Reading your notes`, t`Checking against your Profile`, t`Planning your week`],
 		reply: [t`Reading the message`, t`Spotting what changed`, t`Drafting a reply`],
 		answer: [t`Reading the question`, t`Drafting`],
 		tighten: [t`Tightening`, t`Trimming words`],
@@ -432,7 +432,7 @@ type MemoryProposalProps = {
 	question: string;
 	facts: string[];
 	state: "pending" | "remembered" | "dismissed";
-	/** Shown after Remember: "Added to Knowledge as a preference." */
+	/** Shown after Remember: "Added to your Profile as a preference." */
 	remembered: ReactNode;
 	onRemember: (selected: number[]) => void;
 	onDismiss: () => void;

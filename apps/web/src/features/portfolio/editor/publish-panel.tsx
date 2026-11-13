@@ -15,7 +15,7 @@ import { countPortfolioPlaceholders } from "../ai/apply";
 import { BusinessCardButton } from "../card/business-card-dialog";
 import { usePortfolioPageUrl } from "../card/use-page-url";
 import { isPortfolioLive } from "../status";
-import { languageName, pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
+import { languageName, pageLocaleOf, usePortfolioOwner, usePortfolioSource } from "./context";
 import { PanelGroup, TextInput } from "./fields";
 import { PasswordGroup } from "./password-group";
 import { useSettingAction } from "./setting-action";
@@ -410,12 +410,12 @@ function SearchGroup() {
 
 function LanguageGroup() {
 	const data = usePortfolioData();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	const { i18n } = useLingui();
-	// The resume's language by name (the placeholder's name stays, so its translations do).
-	const resumeLocale = source.data
-		? languageName(pageLocaleOf({ ...data, locale: undefined }, source.data), i18n.locale)
-		: null;
+	// The language the page takes without a choice, by name (the placeholder's name stays, so its translations do):
+	// the source resume's, or the default one when the content comes from the Profile, which has no language.
+	const automatic = languageName(pageLocaleOf({ ...data, locale: undefined }, source.designData), i18n.locale);
+	const resumeLocale = source.designData ? automatic : null;
 
 	return (
 		<PanelGroup icon="translate" title={<Trans>Page language</Trans>}>
@@ -423,7 +423,14 @@ function LanguageGroup() {
 				label={t`Language`}
 				// The flag and the language's name; the code in the list view would crowd a cell.
 				options={[
-					{ value: "", label: resumeLocale ? t`Same as my resume (${resumeLocale})` : t`Same as my resume` },
+					{
+						value: "",
+						label: resumeLocale
+							? t`Same as my resume (${resumeLocale})`
+							: source.from === "profile"
+								? t`Default (${automatic})`
+								: t`Same as my resume`,
+					},
 					...getLocaleOptions().map(({ value, icon, textValue }) => ({ value, icon, label: textValue })),
 				]}
 				value={data.locale ?? ""}
@@ -438,21 +445,24 @@ function LanguageGroup() {
 	);
 }
 
-const NO_RESUME = "none";
+// The Profile choice; resume ids are UUIDs, so it can't clash.
+const FROM_PROFILE = "profile";
 
+/** Where the career sections and details come from: the Profile (the default) or one resume. */
 function SourceGroup() {
 	const record = usePortfolioRecord();
 	const { data: resumes } = useQuery(orpc.resume.list.queryOptions());
 	const { run, pending } = useSettingAction();
 	const inTrash = record.sourceResume?.inTrash ?? false;
 	const options = [
+		{ id: FROM_PROFILE, label: t`Your Profile` },
 		...(resumes ?? []).map((resume) => ({ id: resume.id, label: resume.name })),
-		{ id: NO_RESUME, label: t`No resume` },
 	];
-	const value = record.sourceResumeId && !inTrash ? record.sourceResumeId : NO_RESUME;
+	// A source resume in Trash is no choice to show; the list asks for another.
+	const value = inTrash ? "" : (record.sourceResumeId ?? FROM_PROFILE);
 
 	return (
-		<PanelGroup icon="file-text" title={<Trans>Source resume</Trans>}>
+		<PanelGroup icon="file-text" title={<Trans>Source</Trans>}>
 			{inTrash && (
 				<Alert status="warning">
 					<Alert.Indicator />
@@ -462,23 +472,32 @@ function SourceGroup() {
 						</Alert.Title>
 						<Alert.Description>
 							<Trans>
-								Your portfolio still shows its own content. Choose another resume to fill Experience, Education and the
-								other sections again.
+								Your portfolio still shows its own content. Choose your Profile or another resume to fill Experience,
+								Education and the other sections again.
 							</Trans>
 						</Alert.Description>
 					</Alert.Content>
 				</Alert>
 			)}
+			{!inTrash && (
+				<p className="px-1 text-body-xs text-muted">
+					{value === FROM_PROFILE ? (
+						<Trans>Experience, education and your other sections follow your Profile.</Trans>
+					) : (
+						<Trans>Experience, education and your other sections follow this resume.</Trans>
+					)}
+				</p>
+			)}
 			<CellSelectField
-				label={t`Resume`}
+				label={t`Content from`}
 				value={value}
 				isDisabled={pending}
 				options={options.map((option) => ({ value: option.id, label: option.label }))}
 				onChange={(key) => {
 					if (key === value) return;
 					void run(
-						() => client.portfolio.updateSettings({ sourceResumeId: key === NO_RESUME ? null : key }),
-						t`Couldn't change the source resume. Try again.`,
+						() => client.portfolio.updateSettings({ sourceResumeId: key === FROM_PROFILE ? null : key }),
+						t`Couldn't change the source. Try again.`,
 					);
 				}}
 			/>

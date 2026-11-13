@@ -1,6 +1,7 @@
 import type { IconStyle, ResumeData } from "@rezumi/schema/resume/data";
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import type { WritableDraft } from "immer";
+import type { StoreApi } from "zustand";
 import { t } from "@lingui/core/macro";
 import { consumeEventIterator, ORPCError } from "@orpc/client";
 import { useQueryClient } from "@tanstack/react-query";
@@ -35,7 +36,7 @@ export type Resume = {
 };
 
 // Mirrors the server-side ResumeUpdatedEvent discriminator (packages/api resume/events.ts).
-type ResumeUpdateMutation = "sync" | "create" | "update" | "patch" | "lock" | "password" | "delete";
+type ResumeUpdateMutation = "sync" | "create" | "update" | "patch" | "lock" | "password" | "delete" | "profile";
 type ResumeUpdateEvent = { mutation: ResumeUpdateMutation };
 
 /**
@@ -100,6 +101,8 @@ type Runtime = {
 	beforeUnloadHandler?: () => void;
 	onlineHandler?: () => void;
 	deferredRemoteResume?: Resume | undefined;
+	/** What made the deferred change, for its toast. */
+	deferredMutation?: ResumeUpdateMutation | undefined;
 	deferredFocusHandler?: (() => void) | undefined;
 	/** This visit's saves share one autosave version in History. */
 	sessionId: string;
@@ -118,7 +121,7 @@ const NAVIGATION_SAVE_WAIT_MS = 10_000;
 const HISTORY_COALESCE_MS = 500;
 const FIELD_COALESCE_MS = 1000;
 // Bounded stacks. Entries are shared-structure references, so 200 steps stay cheap.
-const MAX_HISTORY_ENTRIES = 200;
+export const MAX_HISTORY_ENTRIES = 200;
 const UNSAVED_STORAGE_PREFIX = "rezumi:unsaved:";
 const runtimes = new Map<string, Runtime>();
 
@@ -133,8 +136,8 @@ function resetHistoryRuntime() {
 	historyCanCoalesce = false;
 }
 
-/** Whether the next edit merges into the current undo step. Exported for tests. */
-function shouldCoalesceEdit(
+/** Whether the next edit merges into the current undo step. The Profile's editor keeps its history the same way. */
+export function shouldCoalesceEdit(
 	previous: { at: number; key: string | undefined; canCoalesce: boolean },
 	next: { at: number; key: string | undefined; newStep: boolean },
 ): boolean {
@@ -215,6 +218,7 @@ export function isEditableElementFocused(): boolean {
 
 function externalUpdateMessage(mutation: ResumeUpdateMutation): string {
 	if (mutation === "patch") return t`This resume was updated by an AI agent.`;
+	if (mutation === "profile") return t`Updated from your Profile.`;
 	if (mutation === "lock" || mutation === "password") return t`This resume's sharing settings changed elsewhere.`;
 	return t`Synced changes made in another tab.`;
 }
@@ -239,13 +243,14 @@ function applyDeferredRemoteResume(id: string) {
 	if (runtime.hasPendingLocalChanges) return;
 
 	useResumeStore.getState().replaceResumeFromServer(resume);
-	notifyExternalUpdate("update");
+	notifyExternalUpdate(runtime.deferredMutation === "profile" ? "profile" : "update");
 }
 
 // #54: don't overwrite a focused field mid-keystroke; stash the remote resume and apply it on blur.
-function deferRemoteResumeUntilBlur(id: string, resume: Resume) {
+function deferRemoteResumeUntilBlur(id: string, resume: Resume, mutation: ResumeUpdateMutation) {
 	const runtime = getRuntime(id);
 	runtime.deferredRemoteResume = resume;
+	runtime.deferredMutation = mutation;
 
 	if (runtime.deferredFocusHandler) return;
 
@@ -587,6 +592,9 @@ export const useResumeStore = create<ResumeStore>()(
 	})),
 );
 
+/** The resume store as a plain store, for code that subscribes to it without calling it as a hook. */
+export const resumeStoreApi: StoreApi<ResumeStore> = useResumeStore;
+
 type ImmerSet = (fn: (state: WritableDraft<ResumeStore>) => void) => void;
 type StoreGet = () => ResumeStore;
 
@@ -748,6 +756,8 @@ export function useBuilderResumeUpdateSubscription() {
 			if (!resumeId) return;
 
 			bindRuntimeQueryClient(resumeId, queryClient);
+			// The Profile changed and this resume followed it: the Write panel's markers compare against the new one.
+			if (event.mutation === "profile") void queryClient.invalidateQueries({ queryKey: orpc.profile.get.key() });
 			const resume = (await orpc.resume.getById.call({ id: resumeId })) as Resume;
 
 			queryClient.setQueryData(getResumeQueryKey(resumeId), resume);
@@ -769,7 +779,7 @@ export function useBuilderResumeUpdateSubscription() {
 			// #54: never overwrite a field the user is editing; defer the swap until blur.
 			if (isEditableElementFocused()) {
 				useResumeStore.getState().mergeResumeMetadata(resume);
-				deferRemoteResumeUntilBlur(resumeId, resume);
+				deferRemoteResumeUntilBlur(resumeId, resume, event.mutation);
 				return;
 			}
 

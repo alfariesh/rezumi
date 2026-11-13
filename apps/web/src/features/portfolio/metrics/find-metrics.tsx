@@ -9,7 +9,7 @@ import { create } from "zustand/react";
 import { formatMetric } from "@rezumi/portfolio/metric";
 import { Icon } from "@rezumi/ui/components/icon";
 import { generateId } from "@rezumi/utils/string";
-import { useSourceResume } from "../editor/context";
+import { usePortfolioSource } from "../editor/context";
 import { portfolioAiErrorMessage } from "../errors";
 import { useRequestSignals } from "../images/use-request-signals";
 import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
@@ -18,9 +18,9 @@ import { client } from "@/libs/orpc/client";
 
 type Candidate = RouterOutput["portfolio"]["ai"]["findMetrics"]["candidates"][number];
 
-/** The last search, per resume: opening this from another block doesn't pay for the same answer twice. */
-const useFound = create<{ resumeId: string | null; candidates: Candidate[] | null }>(() => ({
-	resumeId: null,
+/** The last search, per source: opening this from another block doesn't pay for the same answer twice. */
+const useFound = create<{ sourceKey: string | null; candidates: Candidate[] | null }>(() => ({
+	sourceKey: null,
 	candidates: null,
 }));
 
@@ -37,8 +37,8 @@ type FindMetricsButtonProps = {
 export function FindMetricsButton({ room, locale, onAdd }: FindMetricsButtonProps) {
 	const [open, setOpen] = useState(false);
 	const ai = useAiSource();
-	const source = useSourceResume();
-	if (!source.resume || !ai.source || room <= 0) return null;
+	const source = usePortfolioSource();
+	if (!source.data || !ai.source || room <= 0) return null;
 	return (
 		<>
 			<Button variant="secondary" className="w-fit" onPress={() => setOpen(true)}>
@@ -47,7 +47,8 @@ export function FindMetricsButton({ room, locale, onAdd }: FindMetricsButtonProp
 			</Button>
 			{open && (
 				<FindMetricsDialog
-					resumeId={source.resume.id}
+					sourceKey={source.resume?.id ?? "profile"}
+					fromProfile={source.from === "profile"}
 					room={room}
 					locale={locale}
 					onAdd={onAdd}
@@ -58,19 +59,24 @@ export function FindMetricsButton({ room, locale, onAdd }: FindMetricsButtonProp
 	);
 }
 
-type FindMetricsDialogProps = FindMetricsButtonProps & { resumeId: string; onClose: () => void };
+type FindMetricsDialogProps = FindMetricsButtonProps & {
+	/** The source resume's id, or "profile". */
+	sourceKey: string;
+	fromProfile: boolean;
+	onClose: () => void;
+};
 
-function FindMetricsDialog({ resumeId, room, locale, onAdd, onClose }: FindMetricsDialogProps) {
+function FindMetricsDialog({ sourceKey, fromProfile, room, locale, onAdd, onClose }: FindMetricsDialogProps) {
 	const id = useId();
 	const ai = useAiSource();
-	const found = useFound((state) => (state.resumeId === resumeId ? state.candidates : null));
+	const found = useFound((state) => (state.sourceKey === sourceKey ? state.candidates : null));
 	const [chosen, setChosen] = useState<number[]>([]);
 	const signals = useRequestSignals();
 	const search = useMutation({
 		mutationFn: () => client.portfolio.ai.findMetrics(aiSourceFields(ai), { signal: signals.next() }),
 		onSuccess: (result) => {
 			setChosen([]);
-			useFound.setState({ resumeId, candidates: result.candidates });
+			useFound.setState({ sourceKey, candidates: result.candidates });
 		},
 	});
 
@@ -89,7 +95,7 @@ function FindMetricsDialog({ resumeId, room, locale, onAdd, onClose }: FindMetri
 					<Modal.CloseTrigger aria-label={t`Close`} />
 					<Modal.Header>
 						<Modal.Heading id={`${id}-title`}>
-							<Trans>Find numbers in your resume</Trans>
+							{fromProfile ? <Trans>Find numbers in your Profile</Trans> : <Trans>Find numbers in your resume</Trans>}
 						</Modal.Heading>
 						<p className="text-body-sm text-muted">
 							<Trans>
@@ -102,7 +108,7 @@ function FindMetricsDialog({ resumeId, room, locale, onAdd, onClose }: FindMetri
 							<div role="status" className="grid justify-items-center gap-3 py-8">
 								<Spinner size="lg" color="current" />
 								<p className="text-sm font-medium">
-									<Trans>Reading your resume…</Trans>
+									{fromProfile ? <Trans>Reading your Profile…</Trans> : <Trans>Reading your resume…</Trans>}
 								</p>
 							</div>
 						) : found === null ? null : found.length === 0 ? (

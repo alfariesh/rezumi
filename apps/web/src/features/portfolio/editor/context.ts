@@ -1,25 +1,41 @@
+import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Locale } from "@rezumi/utils/locale";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { portfolioPageLocale } from "@rezumi/portfolio/view";
+import { resumeDataFromProfile } from "@rezumi/resume/profile";
 import { usePortfolioRecord } from "./store";
+import { profileQueryOptions } from "@/features/profile/queries";
 import { authClient } from "@/libs/auth/client";
 import { orpc } from "@/libs/orpc/client";
 
-/** The source resume while it exists outside Trash; its sections fill the page. Null for a portfolio without one. */
-export function useSourceResume() {
+/**
+ * Where the page's career sections and contact details come from: the source resume while it exists outside Trash,
+ * or, for a portfolio without one, the account's Profile (as resume data). A source resume in Trash leaves the page
+ * without them; it never falls back to the Profile.
+ */
+export function usePortfolioSource() {
 	const { sourceResume } = usePortfolioRecord();
 	const id = sourceResume && !sourceResume.inTrash ? sourceResume.id : null;
+	const fromProfile = sourceResume === null;
 	const query = useQuery({
 		...orpc.resume.getById.queryOptions({ input: { id: id ?? "" } }),
 		enabled: id !== null,
 	});
+	const profile = useQuery({ ...profileQueryOptions(), enabled: fromProfile });
+	const profileData = useMemo(() => (profile.data ? resumeDataFromProfile(profile.data.data) : null), [profile.data]);
+	const data = (id ? (query.data?.data ?? null) : fromProfile ? profileData : null) as ResumeData | null;
 	return {
-		/** The resume's data, or null when there's none (yet). */
-		data: (id ? (query.data?.data ?? null) : null) as ResumeData | null,
+		/** The source's content as resume data, or null when there's none (yet). */
+		data,
+		/** What the content comes from; null while there's none. */
+		from: (id ? "resume" : fromProfile ? "profile" : null) as PortfolioSource["from"] | null,
+		/** The source resume's data only: what may lend the page its language, accent and fonts. */
+		designData: id ? data : null,
 		resume: id ? query.data : undefined,
-		isLoading: id !== null && query.isPending,
+		isLoading: id !== null ? query.isPending : fromProfile && profile.isPending,
 	};
 }
 
@@ -48,7 +64,10 @@ export function languageName(locale: string, appLocale: string): string {
 	}
 }
 
-/** The page's language, as the renderer decides it (`portfolioPageLocale`). */
+/**
+ * The page's language, as the renderer decides it (`portfolioPageLocale`). Pass the source resume's data only
+ * (`designData`): the Profile has no language.
+ */
 export function pageLocaleOf(data: PortfolioData, resume: ResumeData | null): Locale {
 	return portfolioPageLocale(data, resume);
 }

@@ -38,7 +38,7 @@ export function DataSection({ openDeletion = false }: DataSectionProps) {
 			<SettingsRow
 				icon="download-simple"
 				title={<Trans>Export everything</Trans>}
-				description={<Trans>All documents and applications as JSON, in one zip</Trans>}
+				description={<Trans>Your Profile, documents and applications as JSON, in one zip</Trans>}
 			>
 				<Button size="sm" variant="secondary" isPending={exportAll.isPending} onPress={() => exportAll.mutate()}>
 					{exportAll.isPending && <Spinner size="sm" color="current" aria-hidden />}

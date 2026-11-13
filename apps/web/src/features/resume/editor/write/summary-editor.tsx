@@ -1,12 +1,14 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { RichTextEditor } from "./rich-text-editor";
-import { useCurrentBuilderResumeSelector, useUpdateResumeData } from "@/features/resume/builder/draft";
+import { useWriteSelector, useWriteUpdate } from "./source";
+
+type SummaryEditorProps = { locked: boolean };
 
 /** The summary: one rich text, with the guidance the spec gives. Improve joins it in M10. */
-export function SummaryEditor({ locked }: { locked: boolean }) {
-	const content = useCurrentBuilderResumeSelector((resume) => resume.data.summary.content);
-	const updateResumeData = useUpdateResumeData();
+export function SummaryEditor({ locked }: SummaryEditorProps) {
+	const content = useWriteSelector((data) => data.summary.content);
+	const update = useWriteUpdate();
 
 	return (
 		<RichTextEditor
@@ -15,7 +17,7 @@ export function SummaryEditor({ locked }: { locked: boolean }) {
 			disabled={locked}
 			hint={<Trans>2–3 sentences reads best</Trans>}
 			onChange={(html) =>
-				updateResumeData(
+				update(
 					(draft) => {
 						draft.summary.content = html;
 					},

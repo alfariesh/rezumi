@@ -4,8 +4,8 @@ import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useState } from "react";
-import { useSourceResume } from "../../editor/context";
-import { usePortfolioData, usePortfolioEditorStore, usePortfolioRecord } from "../../editor/store";
+import { usePortfolioSource } from "../../editor/context";
+import { usePortfolioData, usePortfolioEditorStore } from "../../editor/store";
 import { usePortfolioEditorUi } from "../../editor/ui";
 import { portfolioErrorMessage } from "../../errors";
 import { usePortfolioLimits } from "../limits";
@@ -28,8 +28,7 @@ function importErrorMessage(error: unknown): string {
 /** Resume projects as works: copied through the server, which checks the resume and saves the new works. */
 export function FromResume({ onBack, onClose, onBusy }: StepProps) {
 	const data = usePortfolioData();
-	const record = usePortfolioRecord();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	const limits = usePortfolioLimits();
 	const openWork = usePortfolioEditorUi((state) => state.openWork);
 	const projects = resumeProjects(source.data, data.works.items);
@@ -66,13 +65,17 @@ export function FromResume({ onBack, onClose, onBusy }: StepProps) {
 	return (
 		<>
 			<Modal.Body className="grid gap-3">
-				{!record.sourceResume || !source.data ? (
+				{!source.data ? (
 					<p className="text-body-sm text-muted">
-						<Trans>This portfolio has no resume to take projects from. Choose one in Publish → Source resume.</Trans>
+						<Trans>This portfolio's source resume is in Trash. Choose another source in Publish → Source.</Trans>
 					</p>
 				) : projects.length === 0 ? (
 					<p className="text-body-sm text-muted">
-						<Trans>Your resume has no projects yet. Add them in the resume editor, or start an empty work.</Trans>
+						{source.from === "profile" ? (
+							<Trans>Your Profile has no projects yet. Add them in Profile, or start an empty work.</Trans>
+						) : (
+							<Trans>Your resume has no projects yet. Add them in the resume editor, or start an empty work.</Trans>
+						)}
 					</p>
 				) : (
 					<ul className="grid gap-1">

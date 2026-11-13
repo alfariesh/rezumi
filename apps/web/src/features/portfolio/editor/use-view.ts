@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
 import { buildPortfolioView } from "@rezumi/portfolio/view";
-import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
+import { pageLocaleOf, usePortfolioOwner, usePortfolioSource } from "./context";
 import { useOwnOrigins, withOwnPicture } from "./pictures";
 import { usePortfolioData } from "./store";
 import { usePlanFeature } from "@/features/billing/plan";
@@ -12,14 +12,14 @@ import { orpc } from "@/libs/orpc/client";
 /** The page's own words (default section titles, button labels) in its language. */
 export function usePageMessages(): PortfolioViewMessages {
 	const data = usePortfolioData();
-	const source = useSourceResume();
-	const locale = pageLocaleOf(data, source.data);
+	const source = usePortfolioSource();
+	const locale = pageLocaleOf(data, source.designData);
 	return useMemo(() => portfolioViewMessages(portfolioMessages(locale)), [locale]);
 }
 
 /** Which resume buttons the page would show: the resume's web page while it's public, its PDF unless it's locked. */
 export function useResumeLinks(): { resume: boolean; resumePdf: boolean } {
-	const { resume } = useSourceResume();
+	const { resume } = usePortfolioSource();
 	const shown = Boolean(resume?.isPublic);
 	return { resume: shown, resumePdf: shown && resume?.showDownloadButtons !== false && !resume?.hasPassword };
 }
@@ -30,7 +30,7 @@ export function useResumeLinks(): { resume: boolean; resumePdf: boolean } {
  */
 export function useEditorView() {
 	const data = usePortfolioData();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	const owner = usePortfolioOwner();
 	const messages = usePageMessages();
 	const origins = useOwnOrigins();
@@ -45,7 +45,7 @@ export function useEditorView() {
 			buildPortfolioView({
 				portfolio: { data },
 				// A resume photo kept on another site shows no photo, as on the page (`./pictures.ts`).
-				resume: source.data ? { data: withOwnPicture(source.data, origins) } : null,
+				resume: source.data ? { data: withOwnPicture(source.data, origins), from: source.from ?? "resume" } : null,
 				owner: { name: owner.name, username: owner.username },
 				entitlements: { hidePortfolioCredit: canHideCredit },
 				messages,
@@ -58,6 +58,7 @@ export function useEditorView() {
 		[
 			data,
 			source.data,
+			source.from,
 			owner.name,
 			owner.username,
 			messages,

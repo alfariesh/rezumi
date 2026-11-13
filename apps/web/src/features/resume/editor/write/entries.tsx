@@ -15,10 +15,10 @@ import { generateId } from "@rezumi/utils/string";
 import { DatesField } from "./dates-field";
 import { MoreOptions, TextField, WebsiteField } from "./fields";
 import { RichTextEditor } from "./rich-text-editor";
+import { useWriteIconStyle, useWriteSource } from "./source";
 import { ChipInput } from "@/components/input/chip-input";
 import { ColorPicker } from "@/components/input/color-picker";
 import { IconPicker } from "@/components/input/icon-picker";
-import { useResumeIconStyle } from "@/features/resume/builder/draft";
 
 export type PageSettings = { locale: string; dateFormat?: DateFormat | undefined };
 
@@ -103,8 +103,11 @@ function Dates({ entry, write, page, single }: FieldSetProps & { single?: boolea
 
 function Link({ entry, write }: FieldSetProps) {
 	const website = valuesOf(entry).website ?? { url: "", label: "", inlineLink: false };
+	// Where the link prints is each document's choice; the Profile keeps the link only.
+	const document = useWriteSource().kind === "resume";
 	return (
 		<WebsiteField
+			allowInlineLink={document}
 			value={website}
 			onChange={(value) =>
 				write("website", (target) => {
@@ -191,7 +194,7 @@ function Level({ entry, write }: FieldSetProps) {
 /** The icon printed before the entry, and its colour (blank uses the template's). */
 function IconAndColor({ entry, write }: FieldSetProps) {
 	const values = valuesOf(entry);
-	const iconStyle = useResumeIconStyle();
+	const iconStyle = useWriteIconStyle();
 	return (
 		<div className="col-span-full flex items-center gap-2">
 			<IconPicker

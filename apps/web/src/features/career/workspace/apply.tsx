@@ -411,7 +411,7 @@ function AnswerCard({
 						maxLength={6000}
 						disabled={disabled}
 						aria-label={question || t`Answer`}
-						placeholder={t`Write your answer, or draft one from your Knowledge.`}
+						placeholder={t`Write your answer, or draft one from your Profile.`}
 						onChange={(event) => setText(event.target.value)}
 						onBlur={flushAnswer}
 					/>

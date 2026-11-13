@@ -11,7 +11,7 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { ChunkBoundary, retryableLazy } from "../editor/chunk-boundary";
-import { pageLocaleOf, useSourceResume } from "../editor/context";
+import { pageLocaleOf, usePortfolioSource } from "../editor/context";
 import { ChoiceSelect, TextInput } from "../editor/fields";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "../editor/store";
 import { areaCenter, cityLabel, countryNames, findCity, hasOnlyOtherScripts, searchCities } from "./cities";
@@ -98,9 +98,9 @@ function useMapPictureState(location: PortfolioLocation): MapPictureState {
 export function LocationFields() {
 	const data = usePortfolioData();
 	const { location } = data;
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	const resumeLocation = source.data?.basics.location ?? "";
-	const pageLocale = pageLocaleOf(data, source.data);
+	const pageLocale = pageLocaleOf(data, source.designData);
 	const appLocale = i18n.locale;
 	const names = useMemo(() => countryNames(pageLocale), [pageLocale]);
 	const appNames = useMemo(() => countryNames(appLocale), [appLocale]);
@@ -259,7 +259,7 @@ export function LocationFields() {
 				{suggestion && (
 					<div className="flex flex-wrap items-center gap-2 text-sm">
 						<span className="text-muted">
-							<Trans>From your resume:</Trans>{" "}
+							{source.from === "profile" ? <Trans>From your Profile:</Trans> : <Trans>From your resume:</Trans>}{" "}
 							<b className="text-foreground">
 								{suggestion.name}, {appNames(suggestion.country)}
 							</b>

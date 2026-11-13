@@ -14,7 +14,6 @@ import { useReducedMotion } from "motion/react";
 import { useRef, useState } from "react";
 import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@rezumi/resume/cover-letter";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { DatePickerField } from "@/components/input/date-time-fields";
@@ -29,6 +28,7 @@ import { useLetterWords } from "@/features/letters/compose";
 import { countWords, LETTER_LENGTH, letterLength } from "@/features/letters/length";
 import { discardLetterDraft, startLetterDraft, useLetterEditorStore } from "@/features/letters/store";
 import { useLetterMode } from "@/features/letters/use-letter-mode";
+import { profileHasCareer, profileQueryOptions } from "@/features/profile/queries";
 import { ACCENTS, FONT_PAIRINGS, matchFontPairing, rgbaToHex } from "@/features/resume/editor/design/presets";
 import { RichTextEditor } from "@/features/resume/editor/write/rich-text-editor";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -301,57 +301,142 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 	);
 }
 
-/** FROM: the resume the sender's details come from, and whether they stay live or are copied into the letter. */
-function FromSection({ letter, disabled }: { letter: CoverLetter; disabled: boolean }) {
+// The From choices that aren't a resume id. Resume ids are UUIDs, so they can't clash.
+const FROM_PROFILE = "profile";
+const FROM_OWN = "own";
+
+type FromSectionProps = { letter: CoverLetter; disabled: boolean };
+
+/**
+ * FROM: where the sender's details come from. The Profile (the default) and a resume stay live; "this letter's own
+ * details" are a copy, edited here. Picking the Profile lets go of the letter's resume, whose design link ends with it.
+ */
+function FromSection({ letter, disabled }: FromSectionProps) {
 	const { data: resumes } = useQuery(orpc.resume.list.queryOptions({ input: {} }));
 	const resume = resumes?.find((item) => item.id === letter.sourceResumeId);
+	const value = !letter.senderLinked ? FROM_OWN : (letter.sourceResumeId ?? FROM_PROFILE);
 
-	const setResume = (resumeId: string | null) =>
-		void updateLetter({
-			resumeId,
-			// A letter taking a resume for the first time takes its details and design with it.
-			...(resumeId && !letter.sourceResumeId ? { senderLinked: true, designLinked: true } : {}),
-		}).catch(failed);
-
-	const setLinked = (senderLinked: boolean) =>
-		void updateLetter({ senderLinked })
-			.then(() =>
-				toast.add({
-					description: senderLinked ? t`Linked to the resume again` : t`Sender details copied into the letter`,
-				}),
-			)
+	const choose = (next: string) => {
+		if (next === value) return;
+		const change =
+			next === FROM_OWN
+				? updateLetter({ senderLinked: false })
+				: next === FROM_PROFILE
+					? updateLetter({ resumeId: null, senderLinked: true })
+					: updateLetter({
+							resumeId: next,
+							senderLinked: true,
+							// A letter taking a resume for the first time takes its design with it.
+							...(letter.sourceResumeId ? {} : { designLinked: true }),
+						});
+		void change
+			.then(() => {
+				if (next === FROM_OWN) toast.add({ description: t`Your details were copied into the letter. Edit them here.` });
+			})
 			.catch(failed);
+	};
 
 	return (
 		<LetterWidget id="letter-from" icon="user-circle" title={<Trans>From</Trans>}>
 			<SelectField
-				label={<Trans>Resume</Trans>}
-				value={letter.sourceResumeId ?? ""}
+				label={<Trans>Your details from</Trans>}
+				value={value}
 				isDisabled={disabled}
-				onChange={(value) => setResume(value || null)}
+				onChange={choose}
 				options={[
-					{ value: "", label: t`No resume` },
+					{ value: FROM_PROFILE, label: t`Your Profile` },
 					...(resumes ?? []).map((item) => ({ value: item.id, label: item.name })),
+					{ value: FROM_OWN, label: t`This letter only` },
 				]}
 			/>
-			{letter.sourceResumeId ? (
-				<SwitchRow
-					label={t`Use details from “${resume?.name ?? t`the resume`}”`}
-					description={
-						letter.senderLinked
-							? t`Linked. Name, email, phone and city update when the resume does.`
-							: t`Off. The letter keeps its own copy of your details.`
-					}
-					isSelected={letter.senderLinked}
-					isDisabled={disabled}
-					onChange={setLinked}
-				/>
+			{value === FROM_OWN ? (
+				<SenderFields letter={letter} disabled={disabled} />
 			) : (
 				<p className="text-body-xs text-muted">
-					<Trans>Your name and contact details come from a resume.</Trans>
+					{value === FROM_PROFILE ? (
+						<Trans>Your name and contact details follow your Profile.</Trans>
+					) : (
+						<Trans>Your name and contact details follow “{resume?.name ?? t`the resume`}”.</Trans>
+					)}
 				</p>
 			)}
 		</LetterWidget>
+	);
+}
+
+type SenderField = "name" | "headline" | "email" | "phone" | "location";
+
+type SenderFieldsProps = { letter: CoverLetter; disabled: boolean };
+
+/** The letter's own sender details: each saves when you leave it, and changes nothing outside the letter. */
+function SenderFields({ letter, disabled }: SenderFieldsProps) {
+	const basics = letter.style.basics;
+	const fields: { key: SenderField; label: ReactNode; type?: string; autoComplete: string }[] = [
+		{ key: "name", label: <Trans>Name</Trans>, autoComplete: "name" },
+		{ key: "headline", label: <Trans>Headline</Trans>, autoComplete: "organization-title" },
+		{ key: "email", label: <Trans>Email</Trans>, type: "email", autoComplete: "email" },
+		{ key: "phone", label: <Trans>Phone</Trans>, type: "tel", autoComplete: "tel" },
+		{ key: "location", label: <Trans>Location</Trans>, autoComplete: "address-level2" },
+	];
+
+	const save = (patch: Partial<CoverLetter["style"]["basics"]>) =>
+		void updateLetter({ basics: { ...basics, ...patch } }).catch(failed);
+
+	return (
+		<div className="grid gap-3 sm:grid-cols-2">
+			{fields.map((field) => (
+				<SenderTextField
+					key={field.key}
+					label={field.label}
+					type={field.type}
+					autoComplete={field.autoComplete}
+					value={basics[field.key]}
+					disabled={disabled}
+					onCommit={(next) => save({ [field.key]: next })}
+				/>
+			))}
+			<SenderTextField
+				label={<Trans>Website</Trans>}
+				type="url"
+				autoComplete="url"
+				value={basics.website.url}
+				disabled={disabled}
+				onCommit={(url) => save({ website: { ...basics.website, url } })}
+			/>
+		</div>
+	);
+}
+
+type SenderTextFieldProps = {
+	label: ReactNode;
+	value: string;
+	disabled: boolean;
+	type?: string | undefined;
+	autoComplete: string;
+	onCommit: (value: string) => void;
+};
+
+/** Typed locally and saved on leaving the field, so the letter isn't sent to the server on every key. */
+function SenderTextField({ label, value, disabled, type, autoComplete, onCommit }: SenderTextFieldProps) {
+	const [draft, setDraft] = useState<string | null>(null);
+	const shown = draft ?? value;
+
+	return (
+		<TextField
+			fullWidth
+			variant="secondary"
+			value={shown}
+			maxLength={200}
+			isDisabled={disabled}
+			onChange={setDraft}
+			onBlur={() => {
+				if (draft !== null && draft !== value) onCommit(draft.trim());
+				setDraft(null);
+			}}
+		>
+			<Label>{label}</Label>
+			<Input type={type} autoComplete={autoComplete} />
+		</TextField>
 	);
 }
 
@@ -485,8 +570,11 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 	const providerState = useHasUsableAiProvider();
 	const { hasUsableProvider } = providerState;
 	const hasResume = Boolean(letter.sourceResumeId);
+	// Without a resume, a draft reads the Profile.
+	const { data: profile } = useQuery({ ...profileQueryOptions(), enabled: !hasResume });
+	const hasProfile = !hasResume && profile !== undefined && profileHasCareer(profile.data);
 	const company = application?.company;
-	const canDraft = hasResume || Boolean(application);
+	const canDraft = hasResume || hasProfile || Boolean(application);
 	const offerDraft = canDraft && hasUsableProvider;
 
 	return (
@@ -494,19 +582,29 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 			<p className="text-body-sm text-muted">
 				{company && hasResume ? (
 					<Trans>Start typing, or draft from what we know: the {company} posting and your resume.</Trans>
+				) : company && hasProfile ? (
+					<Trans>Start typing, or draft from what we know: the {company} posting and your Profile.</Trans>
 				) : company ? (
 					<Trans>Start typing, or draft from what we know: the {company} posting.</Trans>
 				) : hasResume ? (
 					<Trans>Start typing, or draft from what we know: your resume.</Trans>
+				) : hasProfile ? (
+					<Trans>Start typing, or draft from what we know: your Profile.</Trans>
 				) : (
-					<Trans>Start typing. To draft one, link a resume or an application first.</Trans>
+					<Trans>Start typing. To draft one, fill in your Profile, or link a resume or an application.</Trans>
 				)}
 			</p>
 			<div className="flex flex-wrap gap-2">
 				{offerDraft && (
 					<Button size="sm" isDisabled={disabled} onPress={() => startDraft("draft")}>
 						<Icon name="sparkle" size={16} />
-						{application ? <Trans>Draft from the posting</Trans> : <Trans>Draft from your resume</Trans>}
+						{application ? (
+							<Trans>Draft from the posting</Trans>
+						) : hasResume ? (
+							<Trans>Draft from your resume</Trans>
+						) : (
+							<Trans>Draft from your Profile</Trans>
+						)}
 					</Button>
 				)}
 				{offerDraft && <AiSourceMenu action="cover-letter" />}
@@ -573,12 +671,14 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 	const streaming = draft.phase === "streaming";
 	// Reduced motion shows the whole draft at once.
 	const text = streaming && reducedMotion ? "" : draft.text;
-	const sources =
-		letter.sourceResumeId && application
+	// Without a resume, the draft read the Profile (with the posting, when there is one).
+	const sources = letter.sourceResumeId
+		? application
 			? t`Draft · uses only your resume and the posting`
-			: application
-				? t`Draft · uses only the posting`
-				: t`Draft · uses only your resume`;
+			: t`Draft · uses only your resume`
+		: application
+			? t`Draft · uses only your Profile and the posting`
+			: t`Draft · uses only your Profile`;
 
 	return (
 		<div className="grid gap-2">
