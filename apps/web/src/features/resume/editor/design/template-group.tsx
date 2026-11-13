@@ -1,14 +1,12 @@
-import type { ThumbnailContent } from "./thumbnails";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CareerField, Template } from "@rezumi/schema/templates";
-import type { FocusEvent, KeyboardEvent, PointerEvent } from "react";
+import type { FocusEvent, KeyboardEvent } from "react";
 import { CellSlider, Segment } from "@heroui-pro/react";
 import { Button, Tag, TagGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
-import { useInView } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { applyTemplatePreset, hasTemplatePreset } from "@rezumi/resume/template-preset";
 import {
 	careerFields,
@@ -20,12 +18,12 @@ import {
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { isRTL } from "@rezumi/utils/locale";
-import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { SEGMENT_ITEM } from "./style-groups";
-import { thumbnailContent, useTemplateThumbnail } from "./thumbnails";
+import { TemplateCard } from "./template-card";
+import { thumbnailContent } from "./thumbnails";
 import { CellSelectField } from "@/components/input/select-field";
-import { careerFieldNames, templateSample, templates } from "@/dialogs/resume/template/data";
+import { careerFieldNames, templates } from "@/dialogs/resume/template/data";
 import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
@@ -45,13 +43,6 @@ const matchesFilter = (id: Template, filter: Filter) => {
 
 const suitsField = (id: Template, field: CareerField | "all") =>
 	field === "all" || (templateCareerFields[id] as readonly CareerField[]).includes(field);
-
-const layoutTags = (id: Template) => {
-	const layout = templateLayouts[id];
-	return [layout.columns === 1 ? t`One column` : t`Two columns`, layout.atsSafe ? t`ATS-safe` : null]
-		.filter(Boolean)
-		.join(" · ");
-};
 
 /**
  * Applies a template with the page's cross-fade and an Undo toast. Font, size and colour carry across. A template the
@@ -74,9 +65,6 @@ function applyTemplate(template: Template, locked: boolean) {
 		actionProps: { children: t`Undo`, onClick: undo },
 	});
 }
-
-// Touch has no hover: holding a card this long previews it instead.
-const HOLD_TO_PREVIEW_MS = 400;
 
 type TemplateGroupProps = {
 	/** Phones: one horizontal strip of cards in the bottom sheet, instead of the two-column grid. */
@@ -177,7 +165,9 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 						selected={id === current}
 						labelled={isLabelledTemplate(plan, id)}
 						locked={isLockedTemplate(plan, id)}
+						onChoose={() => applyTemplate(id, isLockedTemplate(plan, id))}
 						onPreview={() => useEditorStore.setState({ previewTemplate: id === current ? null : id })}
+						onPreviewEnd={() => useEditorStore.setState({ previewTemplate: null })}
 					/>
 				))}
 			</div>
@@ -191,103 +181,6 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 
 			{templateLayouts[current].columns === 2 && <SidebarPanel data={data} template={current} />}
 		</div>
-	);
-}
-
-type TemplateCardProps = {
-	id: Template;
-	data: ResumeData;
-	content: ThumbnailContent;
-	selected: boolean;
-	/** Outside the free templates, while plans apply to the account. */
-	labelled: boolean;
-	/** The plan doesn't open it: it previews, but applying it explains the plan. */
-	locked: boolean;
-	onPreview: () => void;
-};
-
-function TemplateCard({ id, data, content, selected, labelled, locked, onPreview }: TemplateCardProps) {
-	const ref = useRef<HTMLButtonElement>(null);
-	// Only cards on or near the screen render, so a font or colour change doesn't re-render every template.
-	const isInView = useInView(ref, { margin: "240px" });
-	const { data: thumbnail } = useTemplateThumbnail(id, data, isInView, content);
-	const metadata = templates[id];
-	const { i18n } = useLingui();
-	const hold = useRef<{ timer?: number; previewing: boolean }>({ previewing: false });
-
-	const endHold = () => {
-		window.clearTimeout(hold.current.timer);
-		if (hold.current.previewing) useEditorStore.setState({ previewTemplate: null });
-	};
-
-	// A raw button: hover and hold preview the template and a press applies it, which a HeroUI Button's press
-	// handling would fold together.
-	return (
-		<button
-			ref={ref}
-			type="button"
-			aria-pressed={selected}
-			onPointerEnter={(event: PointerEvent) => {
-				if (event.pointerType !== "touch") onPreview();
-			}}
-			onPointerDown={(event: PointerEvent) => {
-				if (event.pointerType !== "touch") return;
-				hold.current.previewing = false;
-				hold.current.timer = window.setTimeout(() => {
-					hold.current.previewing = true;
-					onPreview();
-				}, HOLD_TO_PREVIEW_MS);
-			}}
-			onPointerUp={endHold}
-			onPointerCancel={endHold}
-			// A long press shows the preview; it doesn't open the system menu or apply the template.
-			onContextMenu={(event) => event.preventDefault()}
-			onFocus={onPreview}
-			onClick={() => {
-				if (hold.current.previewing) {
-					hold.current.previewing = false;
-					return;
-				}
-				applyTemplate(id, locked);
-			}}
-			className="group/card grid cursor-(--cursor-interactive) gap-1.5 rounded-xl text-start outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
-		>
-			{/* The paper is white in both themes; the inset hairline sits over the image so it shows on white pages. */}
-			<span
-				className={cn(
-					"relative block aspect-page overflow-hidden rounded-xl bg-white transition-[translate,scale] duration-quick ease-enter group-hover/card:-translate-y-0.5 group-active/card:scale-[0.98]",
-					"after:pointer-events-none after:absolute after:inset-0 after:rounded-xl after:ring-1 after:ring-black/5 after:ring-inset dark:after:ring-white/10",
-					selected && "ring-2 ring-accent ring-offset-2 ring-offset-surface",
-				)}
-			>
-				<img
-					src={thumbnail ?? templateSample(id, i18n.locale).image}
-					alt=""
-					className="size-full object-cover object-top"
-				/>
-				{selected && (
-					<span className="absolute end-1.5 top-1.5 grid size-5 place-items-center rounded-full bg-accent text-accent-foreground">
-						<Icon name="check" size={14} />
-					</span>
-				)}
-				{labelled && !selected && <PlanBadge locked={locked} />}
-			</span>
-			<span className="text-sm leading-4 font-medium">{metadata.name}</span>
-			<span className="text-xs text-muted">{layoutTags(id)}</span>
-		</button>
-	);
-}
-
-type PlanBadgeProps = { locked: boolean };
-
-/** "Plus" on a premium template's corner, with a lock while the plan doesn't open it. */
-export function PlanBadge({ locked }: PlanBadgeProps) {
-	return (
-		<span className="absolute end-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full bg-black/70 px-1.5 py-0.5 text-xs font-medium text-white">
-			{locked && <Icon name="lock" size={12} aria-hidden />}
-			Plus
-			{locked && <span className="sr-only">{t`Not in your plan`}</span>}
-		</span>
 	);
 }
 

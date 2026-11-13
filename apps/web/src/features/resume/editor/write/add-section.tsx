@@ -1,7 +1,6 @@
 import type { WriteSource } from "./source";
 import type { ProfileSectionType } from "@rezumi/schema/profile/data";
 import type { CustomSectionType, SectionType } from "@rezumi/schema/resume/data";
-import type { IconName } from "@rezumi/ui/components/icon";
 import { Button, Dropdown, Header, Label, Link, Separator } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -19,24 +18,7 @@ import {
 } from "./model";
 import { sectionParts, takeProfileParts, useBuilderProfile, useSectionsFromProfile } from "./profile-link";
 import { useWriteSelector, useWriteSource } from "./source";
-import { getSectionTitle } from "@/libs/resume/section";
-
-const SECTION_ICONS: Record<CustomSectionType, IconName> = {
-	summary: "text-align-left",
-	experience: "briefcase",
-	education: "graduation-cap",
-	projects: "graph",
-	skills: "lightning",
-	languages: "translate",
-	interests: "bookmark-simple",
-	awards: "check-circle",
-	certifications: "list-checks",
-	publications: "file-text",
-	volunteer: "user-circle",
-	references: "phone",
-	profiles: "link-simple-horizontal",
-	"cover-letter": "envelope-simple",
-};
+import { getSectionTitle, SECTION_ICONS } from "@/libs/resume/section";
 
 /** Adds a built-in section (or the summary), opens it and focuses its first field. */
 function addSection(source: WriteSource, type: "summary" | SectionType) {

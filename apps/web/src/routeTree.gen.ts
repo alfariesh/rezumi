@@ -14,6 +14,7 @@ import { Route as AgentRouteRouteImport } from "./routes/agent/route";
 import { Route as AuthRouteRouteImport } from "./routes/auth/route";
 import { Route as DashboardRouteRouteImport } from "./routes/dashboard/route";
 import { Route as DocsRouteRouteImport } from "./routes/docs/route";
+import { Route as OnboardingRouteImport } from "./routes/onboarding";
 import { Route as HomeIndexRouteImport } from "./routes/_home/index";
 import { Route as HomeAtsCheckerRouteImport } from "./routes/_home/ats-checker";
 import { Route as HomeResumeTemplatesRouteImport } from "./routes/_home/resume-templates";
@@ -100,6 +101,11 @@ const DashboardRouteRoute = DashboardRouteRouteImport.update({
 const DocsRouteRoute = DocsRouteRouteImport.update({
   id: "/docs",
   path: "/docs",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: "/onboarding",
+  path: "/onboarding",
   getParentRoute: () => rootRouteImport,
 } as any);
 const HomeIndexRoute = HomeIndexRouteImport.update({
@@ -449,6 +455,7 @@ export interface FileRoutesByFullPath {
   "/auth": typeof AuthRouteRouteWithChildren;
   "/dashboard": typeof DashboardRouteRouteWithChildren;
   "/docs": typeof DocsRouteRouteWithChildren;
+  "/onboarding": typeof OnboardingRoute;
   "/builder/$resumeId": typeof BuilderResumeIdRouteRouteWithChildren;
   "/dashboard/admin": typeof DashboardAdminRouteRouteWithChildren;
   "/dashboard/career": typeof DashboardCareerRouteRouteWithChildren;
@@ -513,6 +520,7 @@ export interface FileRoutesByFullPath {
   "/dashboard/settings/billing/return/{-$paymentId}": typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 export interface FileRoutesByTo {
+  "/onboarding": typeof OnboardingRoute;
   "/dashboard/admin": typeof DashboardAdminRouteRouteWithChildren;
   "/ats-checker": typeof HomeAtsCheckerRoute;
   "/resume-templates": typeof HomeResumeTemplatesRoute;
@@ -580,6 +588,7 @@ export interface FileRoutesById {
   "/auth": typeof AuthRouteRouteWithChildren;
   "/dashboard": typeof DashboardRouteRouteWithChildren;
   "/docs": typeof DocsRouteRouteWithChildren;
+  "/onboarding": typeof OnboardingRoute;
   "/builder/$resumeId": typeof BuilderResumeIdRouteRouteWithChildren;
   "/dashboard/admin": typeof DashboardAdminRouteRouteWithChildren;
   "/dashboard/career": typeof DashboardCareerRouteRouteWithChildren;
@@ -652,6 +661,7 @@ export interface FileRouteTypes {
     | "/auth"
     | "/dashboard"
     | "/docs"
+    | "/onboarding"
     | "/builder/$resumeId"
     | "/dashboard/admin"
     | "/dashboard/career"
@@ -716,6 +726,7 @@ export interface FileRouteTypes {
     | "/dashboard/settings/billing/return/{-$paymentId}";
   fileRoutesByTo: FileRoutesByTo;
   to:
+    | "/onboarding"
     | "/dashboard/admin"
     | "/ats-checker"
     | "/resume-templates"
@@ -782,6 +793,7 @@ export interface FileRouteTypes {
     | "/auth"
     | "/dashboard"
     | "/docs"
+    | "/onboarding"
     | "/builder/$resumeId"
     | "/dashboard/admin"
     | "/dashboard/career"
@@ -853,6 +865,7 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren;
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
   DocsRouteRoute: typeof DocsRouteRouteWithChildren;
+  OnboardingRoute: typeof OnboardingRoute;
   BuilderResumeIdRouteRoute: typeof BuilderResumeIdRouteRouteWithChildren;
   BuilderLetterCoverLetterIdRoute: typeof BuilderLetterCoverLetterIdRoute;
   BuilderPortfolioIndexRoute: typeof BuilderPortfolioIndexRoute;
@@ -893,6 +906,13 @@ declare module "@tanstack/react-router" {
       path: "/docs";
       fullPath: "/docs";
       preLoaderRoute: typeof DocsRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/onboarding": {
+      id: "/onboarding";
+      path: "/onboarding";
+      fullPath: "/onboarding";
+      preLoaderRoute: typeof OnboardingRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/_home/": {
@@ -1576,6 +1596,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   DocsRouteRoute: DocsRouteRouteWithChildren,
+  OnboardingRoute: OnboardingRoute,
   BuilderResumeIdRouteRoute: BuilderResumeIdRouteRouteWithChildren,
   BuilderLetterCoverLetterIdRoute: BuilderLetterCoverLetterIdRoute,
   BuilderPortfolioIndexRoute: BuilderPortfolioIndexRoute,

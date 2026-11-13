@@ -32,6 +32,8 @@ export function getCreditActionName(action: string) {
 			return t`Portfolio rewrite`;
 		case "portfolio-metrics":
 			return t`Numbers found for your portfolio`;
+		case "profile-website":
+			return t`Website read into your Profile`;
 		case "admin-adjustment":
 			return t`Correction by Rezumi`;
 		default:

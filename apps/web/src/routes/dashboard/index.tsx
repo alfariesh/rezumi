@@ -2,6 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import z from "zod";
 import { useOverlayHistory } from "@/features/career/hooks";
 import { HomePage } from "@/features/career/today";
+import { shouldStartOnboarding } from "@/features/onboarding/redirect";
 
 /** Documents' filters, which this address carried before Home took it. */
 const legacyDocumentsSearch = z.object({
@@ -37,6 +38,11 @@ export const Route = createFileRoute("/dashboard/")({
 			},
 			replace: true,
 		});
+	},
+	// A new account starts with onboarding; Skip or finishing it saves the Profile, so it opens once.
+	loader: async ({ context }) => {
+		if (await shouldStartOnboarding(context.queryClient, context.session))
+			throw redirect({ to: "/onboarding", replace: true });
 	},
 	component: RouteComponent,
 });
