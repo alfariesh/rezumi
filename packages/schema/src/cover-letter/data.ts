@@ -56,7 +56,9 @@ export const coverLetterSchema = coverLetterContentSchema.extend({
 	sourceApplicationId: z.string().nullable(),
 	senderLinked: z
 		.boolean()
-		.describe("The sender's details come live from the source resume, instead of the copy in `style`."),
+		.describe(
+			"The sender's details come live from the source resume, or from the account's Profile when there is none, instead of the copy in `style`.",
+		),
 	designLinked: z.boolean().describe("The design comes live from the source resume, instead of the copy in `style`."),
 	isLocked: z.boolean().describe("Locked letters can't be edited or moved to Trash until they're unlocked."),
 	revision: z.number().int().min(1),
