@@ -83,5 +83,3 @@ export function useSourceRuns() {
 		},
 	};
 }
-
-export type SourceRunsController = ReturnType<typeof useSourceRuns>;

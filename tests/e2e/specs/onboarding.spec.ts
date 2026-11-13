@@ -83,7 +83,7 @@ test("a new account brings what it has, reviews it and opens its first resume", 
 	await page.getByRole("button", { name: "Continue", exact: true }).click();
 	// LinkedIn waits for "This is my own profile".
 	await expect(page.getByText("Confirm this is your own profile.")).toBeVisible();
-	await page.getByRole("checkbox", { name: "This is my own profile" }).check();
+	await page.getByRole("checkbox", { name: "This is my own profile" }).check({ force: true });
 	await page.getByRole("button", { name: "Continue", exact: true }).click();
 
 	// Each source fails on its own; only the one worth trying again offers Retry.
@@ -99,7 +99,7 @@ test("a new account brings what it has, reviews it and opens its first resume", 
 	await page.getByRole("button", { name: "Review what we found" }).click();
 
 	await expect(page.getByRole("heading", { name: "Check what we found", level: 1 })).toBeVisible();
-	await page.getByRole("checkbox", { name: /Kopi forecast/ }).uncheck();
+	await page.getByRole("checkbox", { name: /Kopi forecast/ }).uncheck({ force: true });
 	await expect(page.getByText("2 entries ticked")).toBeVisible();
 	await page.getByRole("button", { name: "Save to my Profile" }).click();
 

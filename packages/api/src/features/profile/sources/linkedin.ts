@@ -14,7 +14,7 @@ import { sourceDeadline, sourceResult, timedOut } from "./result";
  */
 
 /** The actor's mode without email search, at its price per thousand profiles. */
-export const LINKEDIN_SCRAPER_MODE = "Profile details no email ($4 per 1k)";
+const LINKEDIN_SCRAPER_MODE = "Profile details no email ($4 per 1k)";
 /** Seconds the run may take; a profile takes a few. */
 const RUN_TIMEOUT_SECONDS = 60;
 /** The most one run may cost on the operator's Apify account, in US dollars: one profile is $0.004. */

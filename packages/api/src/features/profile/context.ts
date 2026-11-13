@@ -10,7 +10,7 @@ import { profileService } from "./service";
  * How much of the Profile an AI prompt takes, in characters: room for a long career without crowding out the posting,
  * the other context and the reply. The same budget a resume gets in the career prompts.
  */
-export const PROFILE_CONTEXT_CHARS = 10_000;
+const PROFILE_CONTEXT_CHARS = 10_000;
 
 // The model reads section names in English; the Profile has no titles of its own.
 const TITLES: Record<ProfileSectionType | "summary", string> = {
@@ -33,7 +33,7 @@ const TITLES: Record<ProfileSectionType | "summary", string> = {
  * The Profile as Markdown for an AI prompt, cut at `limit` characters with a note saying so, so the model never
  * reads a cut career as all there is. Empty while the Profile holds nothing.
  */
-export function profileMarkdown(profile: ProfileData, limit = PROFILE_CONTEXT_CHARS): string {
+function profileMarkdown(profile: ProfileData, limit = PROFILE_CONTEXT_CHARS): string {
 	if (isProfileEmpty(profile)) return "";
 	let text: string;
 	try {

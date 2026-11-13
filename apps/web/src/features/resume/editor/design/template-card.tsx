@@ -12,7 +12,7 @@ import { cn } from "@rezumi/utils/style";
 import { useTemplateThumbnail } from "./thumbnails";
 import { templateSample, templates } from "@/dialogs/resume/template/data";
 
-export const layoutTags = (id: Template) => {
+const layoutTags = (id: Template) => {
 	const layout = templateLayouts[id];
 	return [layout.columns === 1 ? t`One column` : t`Two columns`, layout.atsSafe ? t`ATS-safe` : null]
 		.filter(Boolean)

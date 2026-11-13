@@ -6,7 +6,7 @@ import { useParams } from "@tanstack/react-router";
 import { createContext, use, useMemo } from "react";
 import { useStore } from "zustand/react";
 import { iconDesignOf } from "@rezumi/schema/resume/data";
-import { resumeStoreApi, useUpdateResumeData } from "@/features/resume/builder/draft";
+import { useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
 
 export type WriteUpdateOptions = {
 	/** Consecutive edits to the same field fold into one undo step. */
@@ -88,13 +88,13 @@ export function ResumeWriteSource({ children }: ResumeWriteSourceProps) {
 	const source = useMemo<WriteSource>(
 		() => ({
 			kind: "resume",
-			store: resumeStoreApi as StoreApi<unknown>,
+			store: useResumeStore as StoreApi<unknown>,
 			read: (state) => {
-				const resume = (state as ReturnType<typeof resumeStoreApi.getState>).resume;
+				const resume = (state as ReturnType<typeof useResumeStore.getState>).resume;
 				return resumeId && resume?.id === resumeId ? resume.data : undefined;
 			},
 			update,
-			undo: () => resumeStoreApi.getState().undo(),
+			undo: () => useResumeStore.getState().undo(),
 		}),
 		[resumeId, update],
 	);

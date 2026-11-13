@@ -19,7 +19,7 @@ import { sourceResult } from "./result";
  */
 
 /** An address as typed, as the https page the reader asks for; null when it isn't a web address. */
-export function websiteAddress(input: string): string | null {
+function websiteAddress(input: string): string | null {
 	const text = input.trim();
 	if (!text || text.length > 2048 || /\s/.test(text)) return null;
 	try {

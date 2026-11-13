@@ -97,7 +97,7 @@ export type SourcesFlow = ReturnType<typeof useSourcesFlow>;
  * The address to save for a kept photo: a file's own picture as it is, anything else copied into the account's
  * uploads first, so the Profile never points at someone else's server.
  */
-export async function keepPhoto(candidate: PhotoCandidate): Promise<string> {
+async function keepPhoto(candidate: PhotoCandidate): Promise<string> {
 	if (candidate.source === "file") return candidate.url;
 	const { url } = await client.profile.sources.adoptPhoto({ url: candidate.url });
 	return url;

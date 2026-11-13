@@ -9,7 +9,7 @@ const DAY = 24 * 60 * 60 * 1000;
  * account) and what it asks of GitHub, so unlike the request throttles they also count outside production; only
  * `FLAG_DISABLE_API_RATE_LIMIT` (isolated test installations) turns them off.
  */
-export const SOURCE_DAILY_LIMITS = { linkedin: 3, github: 10 } as const;
+const SOURCE_DAILY_LIMITS = { linkedin: 3, github: 10 } as const;
 
 type LimitedSource = keyof typeof SOURCE_DAILY_LIMITS;
 

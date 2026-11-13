@@ -171,7 +171,7 @@ export function photoCandidates(base: ProfileData, runs: SourceRuns, accountImag
 	return candidates.filter((candidate, index) => candidates.findIndex((item) => item.url === candidate.url) === index);
 }
 
-export type ReviewGroupId = "details" | "summary" | ProfileSectionType;
+type ReviewGroupId = "details" | "summary" | ProfileSectionType;
 
 export type ReviewEntry =
 	| { key: `basics:${ProfileBasicsField}`; kind: "basics"; field: ProfileBasicsField }
