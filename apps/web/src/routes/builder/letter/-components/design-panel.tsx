@@ -19,7 +19,7 @@ import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billin
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { ColorGroup, DesignSourceProvider, PageGroup, TypeGroup } from "@/features/resume/editor/design/style-groups";
-import { PlanBadge } from "@/features/resume/editor/design/template-group";
+import { PlanBadge } from "@/features/resume/editor/design/template-card";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";

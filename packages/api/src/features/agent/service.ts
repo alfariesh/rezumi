@@ -30,6 +30,7 @@ import { aiSourceRequired, errorCode, resolveAiSource, startResolvedAiRun } from
 import { careerService, requireCareerApplication } from "../career/service";
 import { buildCareerTools, buildCareerInstructions } from "../career/tools";
 import { coverLetterService } from "../cover-letters/service";
+import { readProfileContext } from "../profile/context";
 import { resumeService } from "../resume/service";
 import { getStorageService, inferContentType } from "../storage/service";
 import { webAccessService } from "../web-access/credentials";
@@ -866,6 +867,17 @@ function createAgent(input: {
 				if (!document) throw new Error("The document isn't shared with this message.");
 				return documentView(await loadDocument(input.userId, document));
 			}),
+			// The coach reads the Profile with its memory, and only when the user shares that.
+			...(input.career
+				? {}
+				: {
+						readProfile: timedToolHandler("read_profile", async () => {
+							const profile = await readProfileContext(input.userId);
+							return profile
+								? { profile: profile.text }
+								: { profile: null, note: "The user's Profile is empty. Ask them for the facts you need." };
+						}),
+					}),
 			readAttachment: timedToolHandler("read_attachment", (attachmentId: string) =>
 				readAttachment({
 					id: attachmentId,

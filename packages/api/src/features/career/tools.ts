@@ -66,7 +66,13 @@ export function buildCareerInstructions(
 			? { application: context.application, resume: context.resume, letter: context.letter }
 			: {}),
 		...(input.shareMemory
-			? { preferences: context.profile, facts: context.facts.slice(0, 30), stories: context.stories.slice(0, 8) }
+			? {
+					preferences: context.profile,
+					// Their Profile: details and career history, already cut to a prompt's budget.
+					...(context.details ? { profile: context.details } : {}),
+					facts: context.facts.slice(0, 30),
+					stories: context.stories.slice(0, 8),
+				}
 			: {}),
 		// Saved offers the user chose to compare: terms in their own currency and pay period.
 		...(input.offers?.length

@@ -5,6 +5,27 @@ export type RpcHandler = (input: unknown) => unknown;
 
 type BatchItem = { url: string; method?: string; headers?: Record<string, string>; body?: unknown };
 
+/** A refusal a handler returns instead of a result, as the server would send it (`SOURCE_FAILED` with 502, say). */
+class RpcError {
+	constructor(
+		readonly status: number,
+		readonly code: string,
+		readonly message: string,
+	) {}
+}
+
+export const rpcError = (status: number, code: string, message = code) => new RpcError(status, code, message);
+
+/** A handler's answer: its result with status 200, or the refusal it returned with that refusal's status. */
+async function answer(handler: RpcHandler, input: unknown) {
+	const result = await handler(input);
+	if (result instanceof RpcError) {
+		const { status, code, message } = result;
+		return { status, body: { json: { defined: true, code, status, message, data: {} }, meta: [] } };
+	}
+	return { status: 200, body: serialize(result) };
+}
+
 /** The oRPC RPC wire format: JSON plus `meta` that marks the values JSON can't hold, here only dates (type 1). */
 function serialize(value: unknown) {
 	const meta: (string | number)[][] = [];
@@ -53,7 +74,7 @@ export async function mockRpc(page: Page, handlers: Record<string, RpcHandler>) 
 			const answers = await Promise.all(
 				items.map(async (item, index) => {
 					const handler = handlers[procedureOf(item.url)];
-					if (handler) return { index, status: 200, body: serialize(await handler(inputOf(item.body))) };
+					if (handler) return { index, ...(await answer(handler, inputOf(item.body))) };
 					return { index, ...(await forward(route, item, request.method())) };
 				}),
 			);
@@ -62,10 +83,7 @@ export async function mockRpc(page: Page, handlers: Record<string, RpcHandler>) 
 		const handler = handlers[procedureOf(request.url())];
 		if (!handler) return route.continue();
 		const body = request.method() === "GET" ? JSON.parse(url.searchParams.get("data") ?? "{}") : request.postDataJSON();
-		return route.fulfill({
-			status: 200,
-			contentType: "application/json",
-			body: JSON.stringify(serialize(await handler(inputOf(body)))),
-		});
+		const { status, body: payload } = await answer(handler, inputOf(body));
+		return route.fulfill({ status, contentType: "application/json", body: JSON.stringify(payload) });
 	});
 }

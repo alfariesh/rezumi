@@ -31,6 +31,7 @@ describe.skipIf(!process.env.OAUTH_TEST_DATABASE_URL)("account wrapper ownership
 			"application",
 			"resume_slug_redirect",
 			"released_username",
+			"profile",
 		]) {
 			await admin.query(`CREATE TABLE ${schemaName}."${table}" (LIKE public."${table}" INCLUDING ALL)`);
 		}
@@ -99,6 +100,32 @@ describe.skipIf(!process.env.OAUTH_TEST_DATABASE_URL)("account wrapper ownership
 		expect((await pool.query("SELECT id, user_id FROM resume_slug_redirect ORDER BY id")).rows).toEqual([
 			{ id: "guest-redirect", user_id: "link-owner" },
 			{ id: "owner-redirect", user_id: "link-owner" },
+		]);
+	});
+
+	it("moves the guest's Profile to an account without one, and never replaces an account's own", async () => {
+		const oldUrl = "https://resume.example/api/uploads/profile-guest/pictures/me.png";
+		await pool.query(
+			`INSERT INTO profile (user_id, data) VALUES ('profile-guest', $1), ('second-guest', $2), ('profile-owner', $3)`,
+			[
+				JSON.stringify({ basics: { name: "Guest" }, picture: { url: oldUrl } }),
+				JSON.stringify({ basics: { name: "Second guest" } }),
+				JSON.stringify({ basics: { name: "Owner" } }),
+			],
+		);
+		await withDatabasePool(pool, () => linkAnonymousAccount({ fromUserId: "profile-guest", toUserId: "new-owner" }));
+		await withDatabasePool(pool, () => linkAnonymousAccount({ fromUserId: "second-guest", toUserId: "profile-owner" }));
+		expect((await pool.query("SELECT user_id, data FROM profile ORDER BY user_id")).rows).toEqual([
+			{
+				user_id: "new-owner",
+				data: {
+					basics: { name: "Guest" },
+					picture: { url: "https://resume.example/api/uploads/new-owner/pictures/me.png" },
+				},
+			},
+			{ user_id: "profile-owner", data: { basics: { name: "Owner" } } },
+			// Left with the guest, whose deletion takes it along.
+			{ user_id: "second-guest", data: { basics: { name: "Second guest" } } },
 		]);
 	});
 

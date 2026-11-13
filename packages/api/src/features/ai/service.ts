@@ -23,6 +23,8 @@ import {
 	docxParserUserPrompt,
 	pdfParserSystemPrompt,
 	pdfParserUserPrompt,
+	websiteParserSystemPrompt,
+	websiteParserUserPrompt,
 } from "@rezumi/ai/prompts";
 import { buildAiExtractionTemplate } from "@rezumi/ai/resume/extraction-template";
 import { sanitizeAndParseResumeJson } from "@rezumi/ai/resume/sanitize";
@@ -30,6 +32,7 @@ import { AI_PROVIDER_DEFAULT_BASE_URLS, AI_PROVIDER_DISPLAY_NAMES, aiProviderSch
 import { ZipEntryTooLargeError, unzipEntries } from "@rezumi/import/zip";
 import { decodeEntities } from "../web-access/builtin";
 import { isDirectOpenAIProvider } from "./capabilities";
+import { dataBlock } from "./data-block";
 import { aiDeadline } from "./generate-json";
 import { aiTransport, resolveAiBaseUrl } from "./url-policy";
 
@@ -316,14 +319,23 @@ function buildResumeParsingMessages({ userPrompt, file, mediaType }: BuildResume
 	];
 }
 
-function buildResumeParsingTextMessages({ userPrompt, text }: { userPrompt: string; text: string }): ModelMessage[] {
+function buildResumeParsingTextMessages({
+	userPrompt,
+	text,
+	lead = "The Microsoft Word file has been converted to plain text below.",
+}: {
+	userPrompt: string;
+	text: string;
+	/** What the text is, said before it. */
+	lead?: string;
+}): ModelMessage[] {
 	return [
 		{
 			role: "user",
 			content: [
 				{
 					type: "text",
-					text: `${userPrompt}\n\nThe Microsoft Word file has been converted to plain text below.\n\n${text}`,
+					text: [userPrompt, lead, text].filter(Boolean).join("\n\n"),
 				},
 			],
 		},
@@ -413,8 +425,33 @@ async function parseDocx(input: ParseDocxInput): Promise<ResumeData> {
 	return parseAndValidateResumeJson(result.text);
 }
 
+type ParseWebsiteInput = {
+	languageModel: LanguageModel;
+	/** The page's text as read; untrusted, so it goes to the model as data. */
+	text: string;
+	url: string;
+	signal?: AbortSignal | undefined;
+};
+
+/** Reads a person's own web page into resume data, with the same rules and checks as a file import. */
+async function parseWebsite(input: ParseWebsiteInput): Promise<ResumeData> {
+	const result = await generateText({
+		model: input.languageModel,
+		abortSignal: aiDeadline(input.signal),
+		system: buildResumeParsingSystemPrompt(websiteParserSystemPrompt),
+		messages: buildResumeParsingTextMessages({
+			userPrompt: `${websiteParserUserPrompt}\nAddress: ${input.url}`,
+			lead: "",
+			text: dataBlock("PAGE", input.text),
+		}),
+	});
+
+	return parseAndValidateResumeJson(result.text);
+}
+
 export const aiService = {
 	parseDocx,
 	parsePdf,
+	parseWebsite,
 	testConnection,
 };

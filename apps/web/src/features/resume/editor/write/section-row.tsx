@@ -18,20 +18,15 @@ import { useEditorStore } from "../store";
 import { addEntryTo } from "./actions";
 import { LazyDisclosure } from "./lazy-disclosure";
 import { countEntriesToCheck, getEntries, getSectionObject } from "./model";
+import { useWriteIconStyle, useWriteSelector, useWriteSource, useWriteUpdate } from "./source";
 import { IconPicker } from "@/components/input/icon-picker";
 import { SortableEdge, SortableHandle, useSortableItem } from "@/components/input/sortable";
-import {
-	useCurrentBuilderResumeSelector,
-	useResumeIconStyle,
-	useResumeStore,
-	useUpdateResumeData,
-} from "@/features/resume/builder/draft";
 import { usePrompt } from "@/hooks/use-confirm";
 import { getSectionTitle } from "@/libs/resume/section";
 
 /** The printed title: the one the user gave, else the section type's name. */
 export function useSectionTitle(section: WriteSection) {
-	const title = useCurrentBuilderResumeSelector((resume) => getSectionObject(resume.data, section)?.title ?? "");
+	const title = useWriteSelector((data) => getSectionObject(data, section)?.title ?? "");
 	return (
 		title.trim() || getSectionTitle(section.kind === "custom" ? section.type : (section.id as SectionType | "summary"))
 	);
@@ -49,24 +44,32 @@ type SectionRowProps = {
 
 /**
  * An outline row: drag handle, title with its entry count (opens the section), the eye (hidden sections keep their
- * content and place but aren't printed), the chevron and the ⋯ menu. Open, it shows the section's entries.
+ * content and place but aren't printed), the chevron and the ⋯ menu. Open, it shows the section's entries. On the
+ * Profile, sections keep a fixed order and print nowhere, so the row has no handle and no eye.
  */
 export function SectionRow({ section, index, locked, onMove, children }: SectionRowProps) {
+	const document = useWriteSource().kind === "resume";
 	const title = useSectionTitle(section);
-	const hidden = useCurrentBuilderResumeSelector((resume) => getSectionObject(resume.data, section)?.hidden ?? false);
-	const count = useCurrentBuilderResumeSelector((resume) => getEntries(resume.data, section).length);
+	const hidden = useWriteSelector((data) => getSectionObject(data, section)?.hidden ?? false);
+	const count = useWriteSelector((data) => getEntries(data, section).length);
 	// Dates read from text that wasn't exact ask for a look (they print as typed until then).
-	const toCheck = useCurrentBuilderResumeSelector((resume) => countEntriesToCheck(getEntries(resume.data, section)));
+	const toCheck = useWriteSelector((data) => countEntriesToCheck(getEntries(data, section)));
 	const proposed = useProposedCount(section.id);
 	const titleId = useId();
 	const detailsId = useId();
 	const open = useEditorStore((state) => state.openSections.includes(section.id));
 	const setOpen = useEditorStore((state) => state.setSectionOpen);
-	const updateResumeData = useUpdateResumeData();
-	const sortable = useSortableItem({ id: section.id, list: "sections", index, label: title, isDisabled: locked });
+	const update = useWriteUpdate();
+	const sortable = useSortableItem({
+		id: section.id,
+		list: "sections",
+		index,
+		label: title,
+		isDisabled: locked || !document,
+	});
 
 	const toggleHidden = () =>
-		updateResumeData(
+		update(
 			(draft) => {
 				const target = getSectionObject(draft, section);
 				if (target) target.hidden = !target.hidden;
@@ -89,11 +92,15 @@ export function SectionRow({ section, index, locked, onMove, children }: Section
 		>
 			<SortableEdge edge={sortable.edge} />
 			<div className="group/row flex h-11 items-center gap-0.5 rounded-xl pe-1 hover:bg-default">
-				<SortableHandle
-					item={sortable}
-					label={t`Reorder ${title}`}
-					className={cn("h-11 w-7", hidden && "opacity-40")}
-				/>
+				{document ? (
+					<SortableHandle
+						item={sortable}
+						label={t`Reorder ${title}`}
+						className={cn("h-11 w-7", hidden && "opacity-40")}
+					/>
+				) : (
+					<span className="w-2.5 shrink-0" />
+				)}
 
 				{/* A raw button: the ⌥↑ / ⌥↓ key handler needs the native element. */}
 
@@ -131,15 +138,17 @@ export function SectionRow({ section, index, locked, onMove, children }: Section
 					</span>
 				</button>
 
-				<IconButton
-					icon={hidden ? "eye-slash" : "eye"}
-					label={hidden ? t`Show ${title} on the page` : t`Hide ${title} from the page`}
-					aria-pressed={hidden}
-					size="sm"
-					isDisabled={locked}
-					className={rowButtonClassName}
-					onPress={toggleHidden}
-				/>
+				{document && (
+					<IconButton
+						icon={hidden ? "eye-slash" : "eye"}
+						label={hidden ? t`Show ${title} on the page` : t`Hide ${title} from the page`}
+						aria-pressed={hidden}
+						size="sm"
+						isDisabled={locked}
+						className={rowButtonClassName}
+						onPress={toggleHidden}
+					/>
+				)}
 				{!locked && <SectionMenu section={section} title={title} onMove={onMove} />}
 			</div>
 
@@ -152,18 +161,23 @@ export function SectionRow({ section, index, locked, onMove, children }: Section
 
 type SectionMenuProps = Pick<SectionRowProps, "section" | "onMove"> & { title: string };
 
-/** Everything else a section can do: add, sort, heading, rename, icon, layout and reset or delete. */
+/**
+ * Everything else a section can do: add, sort, heading, rename, icon, layout and reset or delete. On the Profile only
+ * add, sort and clear: a section's title, icon and layout belong to each document.
+ */
 function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 	const prompt = usePrompt();
-	const updateResumeData = useUpdateResumeData();
-	const settings = useCurrentBuilderResumeSelector((resume) => getSectionObject(resume.data, section) ?? null);
-	const locale = useCurrentBuilderResumeSelector((resume) => resume.data.metadata.page.locale);
+	const source = useWriteSource();
+	const document = source.kind === "resume";
+	const update = useWriteUpdate();
+	const settings = useWriteSelector((data) => getSectionObject(data, section) ?? null);
+	const locale = useWriteSelector((data) => data.metadata.page.locale);
 	const [iconPickerOpen, setIconPickerOpen] = useState(false);
-	const iconStyle = useResumeIconStyle();
+	const iconStyle = useWriteIconStyle();
 	if (!settings) return null;
 
 	const edit = (mutate: (target: NonNullable<ReturnType<typeof getSectionObject>>) => void) =>
-		updateResumeData(
+		update(
 			(draft) => {
 				const target = getSectionObject(draft, section);
 				if (target) mutate(target);
@@ -172,7 +186,7 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 		);
 
 	const undoToast = (description: string) =>
-		toast.add({ description, actionProps: { children: t`Undo`, onClick: () => useResumeStore.getState().undo() } });
+		toast.add({ description, actionProps: { children: t`Undo`, onClick: () => source.undo() } });
 
 	const isSkills = section.type === "skills";
 	const canSort = section.type === "experience" || section.type === "education";
@@ -181,7 +195,7 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 
 	const sortByDate = () => {
 		let unresolved: string[] = [];
-		updateResumeData(
+		update(
 			(draft) => {
 				const entries = getEntries(draft, section) as never as {
 					id: string;
@@ -227,7 +241,7 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 	};
 
 	const remove = () => {
-		updateResumeData(
+		update(
 			(draft) => {
 				draft.customSections = draft.customSections.filter((custom) => custom.id !== section.id);
 				for (const page of draft.metadata.layout.pages) {
@@ -247,7 +261,7 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 				<Dropdown.Popover placement="bottom end" className="w-60">
 					<Dropdown.Menu>
 						{section.kind !== "summary" && (
-							<Dropdown.Item id="add" textValue={t`Add entry`} onAction={() => addEntryTo(section)}>
+							<Dropdown.Item id="add" textValue={t`Add entry`} onAction={() => addEntryTo(source, section)}>
 								<Icon name="plus" className="text-muted" />
 								<Label>
 									<Trans>Add entry</Trans>
@@ -278,156 +292,160 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 								</Label>
 							</Dropdown.Item>
 						)}
-						<Dropdown.Item id="rename" textValue={t`Rename…`} onAction={() => void rename()}>
-							<Icon name="pencil-simple" className="text-muted" />
-							<Label>
-								<Trans>Rename…</Trans>
-							</Label>
-						</Dropdown.Item>
-						<Dropdown.Item id="icon" textValue={t`Icon…`} onAction={() => setIconPickerOpen(true)}>
-							<Icon name="bookmark-simple" className="text-muted" />
-							<Label>
-								<Trans>Icon…</Trans>
-							</Label>
-						</Dropdown.Item>
-						<Dropdown.Section
-							selectionMode="multiple"
-							selectedKeys={new Set(settings.showHeading !== false ? ["heading"] : [])}
-							onSelectionChange={(keys) => {
-								const showHeading = has(keys, "heading");
-								edit((target) => {
-									target.showHeading = showHeading;
-								});
-							}}
-						>
-							<Dropdown.Item id="heading" textValue={t`Show heading`}>
-								<Label>
-									<Trans>Show heading</Trans>
-								</Label>
-								<Dropdown.ItemIndicator />
-							</Dropdown.Item>
-						</Dropdown.Section>
-						<Separator />
-						<Dropdown.SubmenuTrigger>
-							<Dropdown.Item id="columns" textValue={t`Columns`}>
-								<Icon name="squares-four" className="text-muted" />
-								<Label>
-									<Trans>Columns</Trans>
-								</Label>
-								<Dropdown.SubmenuIndicator />
-							</Dropdown.Item>
-							<Dropdown.Popover>
-								<Dropdown.Menu
-									selectionMode="single"
-									disallowEmptySelection
-									selectedKeys={new Set([columns])}
+						{document && (
+							<>
+								<Dropdown.Item id="rename" textValue={t`Rename…`} onAction={() => void rename()}>
+									<Icon name="pencil-simple" className="text-muted" />
+									<Label>
+										<Trans>Rename…</Trans>
+									</Label>
+								</Dropdown.Item>
+								<Dropdown.Item id="icon" textValue={t`Icon…`} onAction={() => setIconPickerOpen(true)}>
+									<Icon name="bookmark-simple" className="text-muted" />
+									<Label>
+										<Trans>Icon…</Trans>
+									</Label>
+								</Dropdown.Item>
+								<Dropdown.Section
+									selectionMode="multiple"
+									selectedKeys={new Set(settings.showHeading !== false ? ["heading"] : [])}
 									onSelectionChange={(keys) => {
-										const value = first(keys);
-										if (value === undefined) return;
+										const showHeading = has(keys, "heading");
 										edit((target) => {
-											const skills = target as { layout?: string };
-											if (isSkills) skills.layout = value === "inline" ? "inline" : "default";
-											target.columns = value === "inline" ? 1 : Number(value);
+											target.showHeading = showHeading;
 										});
 									}}
 								>
-									{[1, 2, 3, 4, 5, 6].map((column) => (
-										<Dropdown.Item
-											key={column}
-											id={String(column)}
-											textValue={plural(column, { one: "# column", other: "# columns" })}
+									<Dropdown.Item id="heading" textValue={t`Show heading`}>
+										<Label>
+											<Trans>Show heading</Trans>
+										</Label>
+										<Dropdown.ItemIndicator />
+									</Dropdown.Item>
+								</Dropdown.Section>
+								<Separator />
+								<Dropdown.SubmenuTrigger>
+									<Dropdown.Item id="columns" textValue={t`Columns`}>
+										<Icon name="squares-four" className="text-muted" />
+										<Label>
+											<Trans>Columns</Trans>
+										</Label>
+										<Dropdown.SubmenuIndicator />
+									</Dropdown.Item>
+									<Dropdown.Popover>
+										<Dropdown.Menu
+											selectionMode="single"
+											disallowEmptySelection
+											selectedKeys={new Set([columns])}
+											onSelectionChange={(keys) => {
+												const value = first(keys);
+												if (value === undefined) return;
+												edit((target) => {
+													const skills = target as { layout?: string };
+													if (isSkills) skills.layout = value === "inline" ? "inline" : "default";
+													target.columns = value === "inline" ? 1 : Number(value);
+												});
+											}}
 										>
+											{[1, 2, 3, 4, 5, 6].map((column) => (
+												<Dropdown.Item
+													key={column}
+													id={String(column)}
+													textValue={plural(column, { one: "# column", other: "# columns" })}
+												>
+													<Label>
+														<Plural value={column} one="# column" other="# columns" />
+													</Label>
+													<Dropdown.ItemIndicator type="dot" />
+												</Dropdown.Item>
+											))}
+											{isSkills && (
+												<Dropdown.Item id="inline" textValue={t`1 column, inline`}>
+													<Label>
+														<Trans>1 column, inline</Trans>
+													</Label>
+													<Dropdown.ItemIndicator type="dot" />
+												</Dropdown.Item>
+											)}
+										</Dropdown.Menu>
+									</Dropdown.Popover>
+								</Dropdown.SubmenuTrigger>
+								{isSkills && (
+									<Dropdown.SubmenuTrigger>
+										<Dropdown.Item id="keywords" textValue={t`Keyword layout`}>
+											<Icon name="list-bullets" className="text-muted" />
 											<Label>
-												<Plural value={column} one="# column" other="# columns" />
+												<Trans>Keyword layout</Trans>
 											</Label>
-											<Dropdown.ItemIndicator type="dot" />
+											<Dropdown.SubmenuIndicator />
 										</Dropdown.Item>
-									))}
-									{isSkills && (
-										<Dropdown.Item id="inline" textValue={t`1 column, inline`}>
-											<Label>
-												<Trans>1 column, inline</Trans>
-											</Label>
-											<Dropdown.ItemIndicator type="dot" />
-										</Dropdown.Item>
-									)}
-								</Dropdown.Menu>
-							</Dropdown.Popover>
-						</Dropdown.SubmenuTrigger>
-						{isSkills && (
-							<Dropdown.SubmenuTrigger>
-								<Dropdown.Item id="keywords" textValue={t`Keyword layout`}>
-									<Icon name="list-bullets" className="text-muted" />
-									<Label>
-										<Trans>Keyword layout</Trans>
-									</Label>
-									<Dropdown.SubmenuIndicator />
-								</Dropdown.Item>
-								<Dropdown.Popover>
-									<Dropdown.Menu
-										selectionMode="single"
-										disallowEmptySelection
-										selectedKeys={new Set([(settings as { keywordLayout?: string }).keywordLayout ?? "inline"])}
-										onSelectionChange={(keys) => {
-											const value = first(keys);
-											if (value === undefined) return;
-											edit((target) => {
-												(target as { keywordLayout?: string }).keywordLayout = value;
-											});
-										}}
-									>
-										<Dropdown.Item id="inline" textValue={t`Inline`}>
-											<Label>
-												<Trans>Inline</Trans>
-											</Label>
-											<Dropdown.ItemIndicator type="dot" />
-										</Dropdown.Item>
-										<Dropdown.Item id="list" textValue={t`Bulleted list`}>
-											<Label>
-												<Trans>Bulleted list</Trans>
-											</Label>
-											<Dropdown.ItemIndicator type="dot" />
-										</Dropdown.Item>
-										<Dropdown.Item id="tags" textValue={t`Chips`}>
-											<Label>
-												<Trans>Chips</Trans>
-											</Label>
-											<Dropdown.ItemIndicator type="dot" />
-										</Dropdown.Item>
-									</Dropdown.Menu>
-								</Dropdown.Popover>
-							</Dropdown.SubmenuTrigger>
+										<Dropdown.Popover>
+											<Dropdown.Menu
+												selectionMode="single"
+												disallowEmptySelection
+												selectedKeys={new Set([(settings as { keywordLayout?: string }).keywordLayout ?? "inline"])}
+												onSelectionChange={(keys) => {
+													const value = first(keys);
+													if (value === undefined) return;
+													edit((target) => {
+														(target as { keywordLayout?: string }).keywordLayout = value;
+													});
+												}}
+											>
+												<Dropdown.Item id="inline" textValue={t`Inline`}>
+													<Label>
+														<Trans>Inline</Trans>
+													</Label>
+													<Dropdown.ItemIndicator type="dot" />
+												</Dropdown.Item>
+												<Dropdown.Item id="list" textValue={t`Bulleted list`}>
+													<Label>
+														<Trans>Bulleted list</Trans>
+													</Label>
+													<Dropdown.ItemIndicator type="dot" />
+												</Dropdown.Item>
+												<Dropdown.Item id="tags" textValue={t`Chips`}>
+													<Label>
+														<Trans>Chips</Trans>
+													</Label>
+													<Dropdown.ItemIndicator type="dot" />
+												</Dropdown.Item>
+											</Dropdown.Menu>
+										</Dropdown.Popover>
+									</Dropdown.SubmenuTrigger>
+								)}
+								<Dropdown.Section
+									selectionMode="multiple"
+									selectedKeys={
+										new Set([
+											...(settings.keepTogether ? ["together"] : []),
+											...(settings.startOnNewPage ? ["newPage"] : []),
+										])
+									}
+									onSelectionChange={(keys) => {
+										const keepTogether = has(keys, "together");
+										const startOnNewPage = has(keys, "newPage");
+										edit((target) => {
+											target.keepTogether = keepTogether;
+											target.startOnNewPage = startOnNewPage;
+										});
+									}}
+								>
+									<Dropdown.Item id="together" textValue={t`Keep on one page`}>
+										<Label>
+											<Trans>Keep on one page</Trans>
+										</Label>
+										<Dropdown.ItemIndicator />
+									</Dropdown.Item>
+									<Dropdown.Item id="newPage" textValue={t`Start on a new page`}>
+										<Label>
+											<Trans>Start on a new page</Trans>
+										</Label>
+										<Dropdown.ItemIndicator />
+									</Dropdown.Item>
+								</Dropdown.Section>
+							</>
 						)}
-						<Dropdown.Section
-							selectionMode="multiple"
-							selectedKeys={
-								new Set([
-									...(settings.keepTogether ? ["together"] : []),
-									...(settings.startOnNewPage ? ["newPage"] : []),
-								])
-							}
-							onSelectionChange={(keys) => {
-								const keepTogether = has(keys, "together");
-								const startOnNewPage = has(keys, "newPage");
-								edit((target) => {
-									target.keepTogether = keepTogether;
-									target.startOnNewPage = startOnNewPage;
-								});
-							}}
-						>
-							<Dropdown.Item id="together" textValue={t`Keep on one page`}>
-								<Label>
-									<Trans>Keep on one page</Trans>
-								</Label>
-								<Dropdown.ItemIndicator />
-							</Dropdown.Item>
-							<Dropdown.Item id="newPage" textValue={t`Start on a new page`}>
-								<Label>
-									<Trans>Start on a new page</Trans>
-								</Label>
-								<Dropdown.ItemIndicator />
-							</Dropdown.Item>
-						</Dropdown.Section>
 						<Separator />
 						<Dropdown.Item
 							id="danger"
@@ -443,20 +461,22 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 			</Dropdown>
 
 			{/* The icon grid opens from the ⋯ button: an invisible trigger laid over it anchors the popover. */}
-			<IconPicker
-				value={settings.icon === "none" ? "" : settings.icon}
-				iconStyle={iconStyle}
-				onChange={(icon) => {
-					edit((target) => {
-						target.icon = icon === "" ? "none" : icon;
-					});
-					setIconPickerOpen(false);
-				}}
-				popoverProps={{ open: iconPickerOpen, onOpenChange: setIconPickerOpen }}
-				aria-hidden
-				tabIndex={-1}
-				className="pointer-events-none absolute inset-0 size-full opacity-0"
-			/>
+			{document && (
+				<IconPicker
+					value={settings.icon === "none" ? "" : settings.icon}
+					iconStyle={iconStyle}
+					onChange={(icon) => {
+						edit((target) => {
+							target.icon = icon === "" ? "none" : icon;
+						});
+						setIconPickerOpen(false);
+					}}
+					popoverProps={{ open: iconPickerOpen, onOpenChange: setIconPickerOpen }}
+					aria-hidden
+					tabIndex={-1}
+					className="pointer-events-none absolute inset-0 size-full opacity-0"
+				/>
+			)}
 		</span>
 	);
 }
@@ -477,7 +497,5 @@ const NONE: readonly never[] = [];
 function useProposedCount(sectionId: string) {
 	const proposals = useEditorStore((state) => (state.assistantOpen ? state.assistantProposals : NONE));
 	// Selects the count, so typing re-renders a row only when its count changes.
-	return useCurrentBuilderResumeSelector((resume) =>
-		proposals.length === 0 ? 0 : pendingProposals(resume.data, proposals, sectionId).length,
-	);
+	return useWriteSelector((data) => (proposals.length === 0 ? 0 : pendingProposals(data, proposals, sectionId).length));
 }

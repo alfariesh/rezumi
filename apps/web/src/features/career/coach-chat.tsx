@@ -363,7 +363,7 @@ const MessageView = memo(function MessageView({
 						<Icon name="check-circle" size={18} />
 						<Trans>Saved a story: {story.data.title}</Trans>
 						<Link
-							to="/dashboard/career/knowledge/stories/{-$storyId}"
+							to="/dashboard/profile/stories/{-$storyId}"
 							params={{ storyId: story.id }}
 							className="underline underline-offset-2"
 						>
@@ -427,7 +427,7 @@ function UsedChips({ used, applications, knowledge }: UsedChipsProps) {
 					return (
 						<li key={id}>
 							{fact ? (
-								<Link to="/dashboard/career/knowledge/facts" search={{ highlight: id }} className={linkClass}>
+								<Link to="/dashboard/profile/facts" search={{ highlight: id }} className={linkClass}>
 									{fact.text}
 								</Link>
 							) : (
@@ -452,11 +452,7 @@ function UsedChips({ used, applications, knowledge }: UsedChipsProps) {
 					return (
 						<li key={id}>
 							{story ? (
-								<Link
-									to="/dashboard/career/knowledge/stories/{-$storyId}"
-									params={{ storyId: id }}
-									className={linkClass}
-								>
+								<Link to="/dashboard/profile/stories/{-$storyId}" params={{ storyId: id }} className={linkClass}>
 									{story.data.title}
 								</Link>
 							) : (
@@ -567,7 +563,7 @@ function PreferencesList() {
 				</li>
 			))}
 			<li>
-				<Link to="/dashboard/career/knowledge/preferences" className="text-sm text-accent underline underline-offset-2">
+				<Link to="/dashboard/profile/preferences" className="text-sm text-accent underline underline-offset-2">
 					<Trans>Open preferences</Trans>
 				</Link>
 			</li>
@@ -633,10 +629,10 @@ function MemoryNotes({ message, knowledge, company }: MemoryNotesProps) {
 
 const addedAs = (category: FactCategory) =>
 	({
-		accomplishment: t`Added to Knowledge as an accomplishment.`,
-		experience: t`Added to Knowledge as an experience.`,
-		skill: t`Added to Knowledge as a skill.`,
-		preference: t`Added to Knowledge as a preference.`,
+		accomplishment: t`Added to your Profile as an accomplishment.`,
+		experience: t`Added to your Profile as an experience.`,
+		skill: t`Added to your Profile as a skill.`,
+		preference: t`Added to your Profile as a preference.`,
 	})[category];
 
 type ProposalProps = { items: Remember[]; knowledge: Knowledge; company: string | undefined };
@@ -648,7 +644,7 @@ function Proposal({ items, knowledge, company }: ProposalProps) {
 	const [busy, setBusy] = useState(false);
 	const [forgotten, setForgotten] = useState(false);
 
-	// Remembered earlier (a reload): Knowledge has a fact quoted from the same message.
+	// Remembered earlier (a reload): the Profile has a fact quoted from the same message.
 	const matched = knowledge.all.filter((fact) =>
 		items.some(
 			(item) =>
@@ -708,19 +704,15 @@ function Proposal({ items, knowledge, company }: ProposalProps) {
 			remembered={
 				<>
 					{company
-						? t`Saved to Knowledge, private to this application.`
+						? t`Saved to your Profile, private to this application.`
 						: remembered && remembered.ids.length > 1
 							? plural(remembered.ids.length, {
-									one: "Added # fact to Knowledge.",
-									other: "Added # facts to Knowledge.",
+									one: "Added # fact to your Profile.",
+									other: "Added # facts to your Profile.",
 								})
 							: addedAs(remembered?.category ?? "preference")}
 					{first && (
-						<Link
-							to="/dashboard/career/knowledge/facts"
-							search={{ highlight: first }}
-							className="underline underline-offset-2"
-						>
+						<Link to="/dashboard/profile/facts" search={{ highlight: first }} className="underline underline-offset-2">
 							<Trans>View</Trans>
 						</Link>
 					)}

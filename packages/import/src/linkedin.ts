@@ -1,6 +1,10 @@
+import type { SourceNote } from "@rezumi/schema/profile/sources";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { ResumeDates } from "@rezumi/schema/resume/dates";
+import { getNetworkIcon } from "@rezumi/resume/icons";
+import { linkedInProfileUrl } from "@rezumi/schema/profile/sources";
 import { resumeDataSchema } from "@rezumi/schema/resume/data";
+import { formatResumeDates, readLegacyDates } from "@rezumi/schema/resume/dates";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { generateId } from "@rezumi/utils/string";
 import { formatDate, toRangeDates, toSingleDates } from "./date";
@@ -315,4 +319,316 @@ export function parseLinkedInExport(zipBytes: Uint8Array): ResumeData {
 	} catch (error) {
 		rethrowAsImportError(error);
 	}
+}
+
+/*
+ * LinkedIn profiles as a scraper reads them (Apify's `harvestapi~linkedin-profile-scraper`): one JSON object per
+ * profile. Every field can be missing or null, dates can be a year alone, and text can carry stray spaces, so each
+ * value is read on its own and anything unreadable is left out.
+ */
+
+type Json = Record<string, unknown>;
+
+const record = (value: unknown): Json =>
+	value && typeof value === "object" && !Array.isArray(value) ? (value as Json) : {};
+const records = (value: unknown): Json[] => (Array.isArray(value) ? value.map(record) : []);
+const text = (value: unknown): string =>
+	typeof value === "string" ? value.trim() : typeof value === "number" && Number.isFinite(value) ? String(value) : "";
+
+/** An http(s) address as written, with https:// added when it has no scheme; empty when it isn't one. */
+function webAddress(value: unknown): string {
+	const written = text(value);
+	if (!written || /\s/.test(written)) return "";
+	try {
+		const url = new URL(/^[a-z][\d+.a-z-]*:\/\//i.test(written) ? written : `https://${written}`);
+		return /^https?:$/.test(url.protocol) ? url.toString() : "";
+	} catch {
+		return "";
+	}
+}
+
+const itemWebsite = (url: string) => ({ url, label: "", inlineLink: false });
+
+// A LinkedIn date: { month: "Jan", year: 2024 }, a year alone, or only text ("Present", "Jan 2024").
+function linkedInYearMonth(value: unknown): string | null {
+	const date = record(value);
+	const year = typeof date.year === "number" ? date.year : Number.parseInt(text(date.year), 10);
+	if (Number.isInteger(year) && year >= 1900 && year <= 2200) {
+		const month =
+			typeof date.month === "number"
+				? String(date.month).padStart(2, "0")
+				: MONTHS[text(date.month).slice(0, 3).toLowerCase()];
+		return month && /^(?:0[1-9]|1[0-2])$/.test(month) ? `${year}-${month}` : String(year);
+	}
+	return toLinkedInIsoDate(text(date.text));
+}
+
+const isOngoing = (value: unknown) => /\b(?:present|now|current)\b/i.test(text(record(value).text));
+
+function linkedInRange(start: unknown, end: unknown): ResumeDates | undefined {
+	const from = linkedInYearMonth(start);
+	if (!from) return undefined;
+	const to = linkedInYearMonth(end);
+	return { start: from, end: to, present: !to && isOngoing(end) };
+}
+
+// Dates inside a sentence: "Issued Sep 2023", "Annals of Data · Sep 5, 2023", "Oct 2004" or a year alone.
+function looseYearMonth(value: string): string | null {
+	for (const match of value.matchAll(/\b([A-Za-z]{3})[a-z]*\.?\s+(?:\d{1,2},?\s+)?(\d{4})\b/g)) {
+		const month = MONTHS[match[1]?.toLowerCase() ?? ""];
+		if (month && match[2]) return `${match[2]}-${month}`;
+	}
+	return /\b(19\d{2}|2[01]\d{2})\b/.exec(value)?.[1] ?? null;
+}
+
+const singleDates = (value: string): ResumeDates | undefined => {
+	const date = looseYearMonth(value);
+	return date ? { start: date, end: null, present: false } : undefined;
+};
+
+const dateText = (dates: ResumeDates | undefined) => (dates ? formatResumeDates(dates, { locale: "en-US" }) : "");
+
+const paragraphs = (...lines: string[]) => textToHtml(lines.filter(Boolean).join("\n"));
+
+/** Skill names: the full list when the profile has one, else the few LinkedIn shows at the top ("A • B • C"). */
+function linkedInSkills(profile: Json): string[] {
+	const listed = records(profile.skills).map((skill) => text(skill.name));
+	const top = Array.isArray(profile.topSkills)
+		? profile.topSkills.map(text)
+		: text(profile.topSkills).split(/\s*[•,]\s*/);
+	return [...new Set((listed.some(Boolean) ? listed : top).filter(Boolean))];
+}
+
+/** The person's photo at LinkedIn: the 400 px size when listed, else the full one. Empty when there is none. */
+function linkedInPhoto(profile: Json): string {
+	const picture = record(profile.profilePicture);
+	const sizes = records(picture.sizes);
+	const medium = sizes.find((size) => size.width === 400) ?? sizes.find((size) => Number(size.width) >= 200);
+	return webAddress(medium?.url) || webAddress(profile.photo) || webAddress(picture.url);
+}
+
+/**
+ * Converts one LinkedIn profile, as the scraper returns it, into ResumeData: details, summary, experience,
+ * education, projects, volunteering, skills, languages, certifications, awards and publications, with the profile
+ * itself under Profiles. `picture.url` holds the photo's address at LinkedIn, which expires: copy it before keeping it.
+ */
+export function parseLinkedInProfile(input: unknown): ResumeData {
+	const profile = record(input);
+	const result: ResumeData = structuredClone(defaultResumeData);
+	const location = record(profile.location);
+
+	result.basics = {
+		...defaultResumeData.basics,
+		name: [text(profile.firstName), text(profile.lastName)].filter(Boolean).join(" "),
+		headline: text(profile.headline),
+		location: text(location.linkedinText) || text(record(location.parsed).text),
+		website: {
+			url: (Array.isArray(profile.websites) ? profile.websites : []).map(webAddress).find(Boolean) ?? "",
+			label: "",
+		},
+		customFields: [],
+	};
+	result.picture.url = linkedInPhoto(profile);
+	const about = text(profile.about);
+	if (about) result.summary = { ...defaultResumeData.summary, content: textToHtml(about), hidden: false };
+
+	result.sections.experience.items = records(profile.experience)
+		.filter((job) => text(job.companyName) || text(job.position))
+		.map((job) => {
+			const dates = linkedInRange(job.startDate, job.endDate);
+			return {
+				id: generateId(),
+				hidden: false,
+				company: text(job.companyName),
+				position: text(job.position),
+				location: text(job.location),
+				period: dateText(dates),
+				dates,
+				website: emptyWebsite,
+				roles: [],
+				description: textToHtml(text(job.description)),
+			};
+		});
+
+	result.sections.education.items = records(profile.education)
+		.filter((school) => text(school.schoolName))
+		.map((school) => {
+			const period = text(school.period);
+			const dates =
+				linkedInRange(school.startDate, school.endDate) ??
+				(period ? readLegacyDates(period, { locale: "en-US", single: false }) : undefined);
+			return {
+				id: generateId(),
+				hidden: false,
+				school: text(school.schoolName),
+				degree: text(school.degree),
+				area: text(school.fieldOfStudy),
+				grade: text(school.grade),
+				location: "",
+				period: dateText(dates) || period,
+				dates,
+				website: emptyWebsite,
+				description: textToHtml(text(school.description)),
+			};
+		});
+
+	result.sections.projects.items = records(profile.projects)
+		.filter((project) => text(project.title))
+		.map((project) => {
+			const dates = linkedInRange(project.startDate, project.endDate);
+			return {
+				id: generateId(),
+				hidden: false,
+				name: text(project.title),
+				period: dateText(dates),
+				dates,
+				website: itemWebsite(webAddress(project.url ?? project.link)),
+				description: textToHtml(text(project.description)),
+			};
+		});
+
+	result.sections.volunteer.items = records(profile.volunteering)
+		.filter((entry) => text(entry.organizationName))
+		.map((entry) => {
+			const dates = linkedInRange(entry.startDate, entry.endDate);
+			return {
+				id: generateId(),
+				hidden: false,
+				organization: text(entry.organizationName),
+				location: "",
+				period: dateText(dates),
+				dates,
+				website: emptyWebsite,
+				description: paragraphs(text(entry.role), text(entry.cause), text(entry.description)),
+			};
+		});
+
+	result.sections.skills.items = linkedInSkills(profile).map((name) => ({
+		id: generateId(),
+		hidden: false,
+		icon: "star",
+		iconColor: "",
+		name,
+		proficiency: "",
+		level: 0,
+		keywords: [],
+	}));
+
+	result.sections.languages.items = records(profile.languages)
+		.filter((language) => text(language.name))
+		.map((language) => ({
+			id: generateId(),
+			hidden: false,
+			language: text(language.name),
+			fluency: text(language.proficiency),
+			level: languageLevel(text(language.proficiency)),
+		}));
+
+	result.sections.certifications.items = records(profile.certifications)
+		.filter((certification) => text(certification.title))
+		.map((certification) => {
+			const dates = singleDates(text(certification.issuedAt));
+			return {
+				id: generateId(),
+				hidden: false,
+				title: text(certification.title),
+				issuer: text(certification.issuedBy),
+				date: dateText(dates),
+				dates,
+				website: itemWebsite(webAddress(certification.link ?? certification.credentialUrl)),
+				description: "",
+			};
+		});
+
+	result.sections.awards.items = records(profile.honorsAndAwards)
+		.filter((award) => text(award.title))
+		.map((award) => {
+			const dates = singleDates(text(award.issuedAt));
+			return {
+				id: generateId(),
+				hidden: false,
+				title: text(award.title),
+				awarder: text(award.issuedBy),
+				date: dateText(dates),
+				dates,
+				website: emptyWebsite,
+				description: textToHtml(text(award.description)),
+			};
+		});
+
+	result.sections.publications.items = records(profile.publications)
+		.filter((publication) => text(publication.title))
+		.map((publication) => {
+			// "Publisher · Sep 5, 2023": the last part is the date when it reads as one.
+			const parts = text(publication.publishedAt)
+				.split("·")
+				.map((part) => part.trim())
+				.filter(Boolean);
+			const last = parts.at(-1) ?? "";
+			const dates = singleDates(last);
+			const publisher = dates ? parts.slice(0, -1).join(" · ") : parts.join(" · ");
+			return {
+				id: generateId(),
+				hidden: false,
+				title: text(publication.title),
+				publisher,
+				date: dateText(dates),
+				dates,
+				website: itemWebsite(webAddress(publication.link)),
+				description: textToHtml(text(publication.description)),
+			};
+		});
+
+	const username = text(profile.publicIdentifier);
+	const profileUrl = webAddress(profile.linkedinUrl) || (username ? linkedInProfileUrl(username) : "");
+	if (username || profileUrl)
+		result.sections.profiles.items = [
+			{
+				id: generateId(),
+				hidden: false,
+				icon: getNetworkIcon("linkedin"),
+				iconColor: "",
+				network: "LinkedIn",
+				username,
+				website: { url: profileUrl, label: username, inlineLink: false },
+			},
+		];
+
+	try {
+		return resumeDataSchema.parse(result);
+	} catch (error) {
+		rethrowAsImportError(error);
+	}
+}
+
+// Sections whose size LinkedIn reports in `sectionTotals`, by the key the scraper lists them under.
+const COUNTED_SECTIONS = [
+	"experience",
+	"education",
+	"projects",
+	"volunteering",
+	"skills",
+	"languages",
+	"certifications",
+	"honorsAndAwards",
+	"publications",
+] as const;
+
+/**
+ * What to tell the person about a scraped profile: `private-profile` when it showed nothing past the name and
+ * headline, `truncated` when LinkedIn counts more entries in a section than came back.
+ */
+export function linkedInProfileNotes(input: unknown): SourceNote[] {
+	const profile = record(input);
+	const notes: SourceNote[] = [];
+	const shown = text(profile.about) || COUNTED_SECTIONS.some((section) => records(profile[section]).length > 0);
+	if (!shown) notes.push("private-profile");
+	const totals = record(profile.sectionTotals);
+	const cut = COUNTED_SECTIONS.some((section) => {
+		const total = totals[section];
+		const read = section === "skills" ? linkedInSkills(profile).length : records(profile[section]).length;
+		return typeof total === "number" && total > read;
+	});
+	if (shown && cut) notes.push("truncated");
+	return notes;
 }

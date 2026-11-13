@@ -118,7 +118,7 @@ For Git deployments through **Workers Builds**, keep the repository root as the 
 2. Create an account, create a resume, and refresh the page to verify persistence.
 3. Upload a profile picture. Share the resume publicly and download its PDF.
 4. Open the same resume in two tabs. An edit should invalidate the other tab's data.
-5. Optional: add SMTP and OAuth credentials, or server AI credentials, using Wrangler secrets and the [environment variable reference](/self-hosting/environment-variables). Redeploy after changing plain variables.
+5. Optional: add SMTP and OAuth credentials, server AI credentials, or `APIFY_TOKEN` for reading LinkedIn profiles into the Profile, using Wrangler secrets and the [environment variable reference](/self-hosting/environment-variables). Redeploy after changing plain variables.
 
 For a custom domain, add it to the Worker in Cloudflare and update `APP_URL` and your OAuth callback URLs. Keep `DEPLOYMENT_NAMESPACE` unchanged so stored files remain available.
 

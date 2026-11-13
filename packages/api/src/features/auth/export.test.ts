@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
 	getLetter: vi.fn(),
 	exportCareer: vi.fn(),
 	exportBilling: vi.fn(),
+	readProfile: vi.fn(),
 }));
 vi.mock("@rezumi/db/client", () => ({ db: { select: mocks.select } }));
 vi.mock("@rezumi/db/schema", () => ({
@@ -25,6 +26,7 @@ vi.mock("../cover-letters/service", () => ({ coverLetterService: { getById: mock
 vi.mock("../career/service", () => ({ careerService: { exportData: mocks.exportCareer } }));
 vi.mock("../billing/export", () => ({ exportBillingData: mocks.exportBilling }));
 vi.mock("../billing/deletion", () => ({ endBillingForDeletedUser: vi.fn() }));
+vi.mock("../profile/service", () => ({ profileService: { read: mocks.readProfile } }));
 vi.mock("../portfolio/export", () => ({
 	exportPortfolioData: () =>
 		Promise.resolve({
@@ -90,6 +92,8 @@ describe("account backup", () => {
 				transcripts: [{ id: "transcript", original: "I lead the migration.", edited: "I led the migration." }],
 			};
 			mocks.exportCareer.mockResolvedValue(career);
+			const profile = { data: { basics: { name: "Owner" } }, updatedAt: new Date("2026-11-13T00:00:00Z") };
+			mocks.readProfile.mockResolvedValue(profile);
 			const billing = { payments: [{ id: "payment", providerPaymentId: "pay_payment", refunds: [] }], passes: [] };
 			mocks.exportBilling.mockResolvedValue(billing);
 			const application = { id: "application", userId: "owner", company: "Lumen", role: "Designer" };
@@ -121,6 +125,18 @@ describe("account backup", () => {
 			expect(exported.billing).toEqual(billing);
 			expect(exported.aiContentReports).toEqual([{ id: "report", userId: "owner", content: "Reported output" }]);
 			expect(mocks.predicates).toContainEqual({ column: "aiContentReport.userId", value: "owner" });
+			// The saved Profile comes along.
+			expect(mocks.readProfile).toHaveBeenCalledExactlyOnceWith("owner");
+			expect(exported.profile).toEqual(profile);
 		},
 	);
+
+	it("leaves out a Profile that was never saved", async () => {
+		mocks.readProfile.mockResolvedValue({ data: { basics: { name: "Owner" } }, updatedAt: null });
+		mocks.exportCareer.mockResolvedValue({});
+		mocks.exportBilling.mockResolvedValue({});
+		for (const rows of [[{ id: "owner", name: "Owner" }], [], [], [], []])
+			mocks.select.mockReturnValueOnce({ from: () => ({ where: () => Promise.resolve(rows) }) });
+		expect((await authService.exportData({ userId: "owner" })).profile).toBeNull();
+	});
 });

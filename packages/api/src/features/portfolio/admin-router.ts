@@ -84,7 +84,13 @@ export const portfolioAdminRouter = {
 				suspendedAt: z.date().nullable(),
 				suspendedReason: z.string().nullable(),
 				data: portfolioDataSchema,
-				resumeData: resumeDataSchema.nullable(),
+				resumeData: resumeDataSchema
+					.nullable()
+					.describe("What fills its career sections: the source resume's data, or the Profile's as resume data."),
+				sourceFrom: z
+					.enum(["resume", "profile"])
+					.nullable()
+					.describe("Where `resumeData` comes from; null when the source resume is in Trash or can't be read."),
 				ownerId: z.string(),
 				ownerName: z.string(),
 				username: z.string(),

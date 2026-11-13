@@ -12,7 +12,7 @@ import { generateId } from "@rezumi/utils/string";
 import { useRemovalFocus } from "../blocks/list-focus";
 import { ImageField } from "../images/image-field";
 import { renameClient } from "./clients";
-import { useSourceResume } from "./context";
+import { usePortfolioSource } from "./context";
 import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
 import { removeWithUndo } from "./list-undo";
 import { editPortfolio, usePortfolioData } from "./store";
@@ -408,7 +408,7 @@ function AddTestimonialDialog({ onClose }: AddTestimonialDialogProps) {
  */
 export function ClientsForm() {
 	const { clients } = usePortfolioData();
-	const source = useSourceResume();
+	const source = usePortfolioSource();
 	const items = clients.items;
 	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 	// Clients whose brand logo was switched on, while their name is being typed (read in handlers only).

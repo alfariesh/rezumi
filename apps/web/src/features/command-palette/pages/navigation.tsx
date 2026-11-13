@@ -94,10 +94,28 @@ export function NavigationCommandGroup() {
 				</PaletteItem>
 
 				<PaletteItem
+					id="navigation.profile"
+					textValue={searchText(t`Profile`, [
+						t`Profile`,
+						t`Details & career`,
+						t`Facts`,
+						t`Stories`,
+						t`Experience`,
+						t`Education`,
+						t`Skills`,
+					])}
+					isDisabled={!session}
+					onAction={() => onNavigate("/dashboard/profile")}
+				>
+					<Icon name="user-circle" size={16} />
+					<Trans>Profile</Trans>
+				</PaletteItem>
+
+				<PaletteItem
 					id="navigation.account"
 					textValue={searchText(t`Account`, [
 						t`Account`,
-						t`Profile`,
+						t`Account details`,
 						t`Password`,
 						t`Two-step verification`,
 						t`Passkeys`,

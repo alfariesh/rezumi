@@ -1,4 +1,5 @@
 import type { PortfolioViewEntry, ResumeEntryKind } from "./resume-entries";
+import type { PortfolioSource } from "./source";
 import type { PortfolioBlock } from "@rezumi/schema/portfolio/blocks";
 import type {
 	PORTFOLIO_BUTTON_KINDS,
@@ -47,9 +48,12 @@ import {
 import { parseColorString, rgbaStringToHex } from "@rezumi/utils/color";
 import { defaultLocale, isLocale, isRTL } from "@rezumi/utils/locale";
 import { customSectionEntries, isResumeEntryKind, resumeEntries } from "./resume-entries";
+import { portfolioSourceResume } from "./source";
 import { htmlToText, truncateText } from "./text";
 
 export type { PortfolioViewEntry } from "./resume-entries";
+export type { PortfolioSource } from "./source";
+export { portfolioSourceResume } from "./source";
 
 type ButtonKind = (typeof PORTFOLIO_BUTTON_KINDS)[number];
 
@@ -69,8 +73,8 @@ export type PortfolioViewMessages = {
 
 export type PortfolioViewInput = {
 	portfolio: { data: PortfolioData };
-	/** The source resume while it's active (not in Trash); null when the portfolio has none. */
-	resume: { data: ResumeData } | null;
+	/** The source (`PortfolioSource`); null when there is none to read, such as a source resume in Trash. */
+	resume: PortfolioSource | null;
 	owner: { name: string; username: string };
 	entitlements: { hidePortfolioCredit: boolean };
 	messages: PortfolioViewMessages;
@@ -429,7 +433,8 @@ function initials(name: string): string {
 
 /**
  * The page's language: the portfolio's own, else the source resume's, else the default. The one rule the page, its
- * interface text, the editor and the preview tools all use.
+ * interface text, the editor and the preview tools all use. A Profile has no language: pass the source through
+ * `portfolioSourceResume`, which gives null for it.
  */
 export function portfolioPageLocale(
 	data: Pick<PortfolioData, "locale">,
@@ -441,14 +446,16 @@ export function portfolioPageLocale(
 
 /**
  * Everything a portfolio page shows, resolved once for every theme (`02-teknis.md` 4.3): basics from the portfolio,
- * then the source resume, then the account; career sections read live from the resume without the sections and items
- * it hides, the items the portfolio hides, or references, with their links made safe and each item read once into
+ * then its source (the resume or the Profile), then the account; career sections read live from the source without
+ * the sections and items it hides, the items the portfolio hides, or references, with their links made safe and each item read once into
  * the entry every theme draws (`resumeEntries`); contact details by the portfolio's own privacy settings; theme
  * defaults wherever the portfolio has made no choice. Pure: the same input always gives the same view.
  */
 export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 	const { data } = input.portfolio;
 	const resume = input.resume?.data ?? null;
+	// Language, accent and fonts follow a source resume only, never the Profile.
+	const designResume = portfolioSourceResume(input.resume);
 	const { messages } = input;
 	const theme = data.theme;
 
@@ -463,7 +470,7 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 		};
 	};
 
-	const locale = portfolioPageLocale(data, resume);
+	const locale = portfolioPageLocale(data, designResume);
 
 	const name =
 		data.basics.name?.trim() || resume?.basics.name.trim() || input.owner.name.trim() || input.owner.username;
@@ -616,7 +623,7 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 		const { accent } = data.design;
 		if (accent.source === "custom") return accent.color.toUpperCase();
 		if (accent.source === "preset") return PORTFOLIO_ACCENTS[accent.id].color;
-		const fromResume = resume ? toHex(resume.metadata.design.colors.primary) : null;
+		const fromResume = designResume ? toHex(designResume.metadata.design.colors.primary) : null;
 		return fromResume ?? PORTFOLIO_THEME_INFO[theme].fallbackAccent ?? PORTFOLIO_ACCENTS[fallbackPortfolioAccent].color;
 	}
 
@@ -636,12 +643,12 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 		};
 		const { fonts } = data.design;
 		if (fonts.source === "pair") return pairFonts(themeFontPair(theme, fonts.id));
-		if (fonts.source === "resume" && resume) {
-			const uploaded = new Set((resume.metadata.typography.customFonts ?? []).map((font) => font.family));
+		if (fonts.source === "resume" && designResume) {
+			const uploaded = new Set((designResume.metadata.typography.customFonts ?? []).map((font) => font.family));
 			// Uploaded fonts and the PDF-only standard ones (Helvetica, Times) can't load on the page.
 			const usable = (family: string) => !uploaded.has(family) && Boolean(getWebFont(family));
-			const heading = resume.metadata.typography.heading.fontFamily;
-			const body = resume.metadata.typography.body.fontFamily;
+			const heading = designResume.metadata.typography.heading.fontFamily;
+			const body = designResume.metadata.typography.body.fontFamily;
 			if (usable(heading) && usable(body))
 				return { heading, body, mono, pair: null, nameStretch: null, nameUppercase: false };
 		}

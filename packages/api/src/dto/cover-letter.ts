@@ -7,6 +7,7 @@ import {
 	coverLetterSchema,
 	coverLetterStyleSchema,
 } from "@rezumi/schema/cover-letter/data";
+import { basicsSchema } from "@rezumi/schema/resume/data";
 import { templateInputSchema } from "@rezumi/schema/templates";
 import { aiSourceInput } from "../features/billing/ai-source";
 import { paginationShape } from "../pagination";
@@ -67,7 +68,13 @@ export const coverLetterDto = {
 		input: editableSchema.extend({
 			recipient: editableSchema.shape.recipient.default(""),
 			content: editableSchema.shape.content.default(""),
-			resumeId: z.string().min(1).optional().describe("The resume it goes with; its details and design are linked."),
+			resumeId: z
+				.string()
+				.min(1)
+				.optional()
+				.describe(
+					"The resume it goes with; its details and design are linked. Without one, the sender's details are linked to the Profile.",
+				),
 			applicationId: z.string().min(1).optional().describe("The job it's for; it fills the recipient."),
 			template: templateInputSchema.optional(),
 			layout: coverLetterLayoutSchema
@@ -90,10 +97,27 @@ export const coverLetterDto = {
 			recipientName: recipientFieldsSchema.shape.recipientName.unwrap().optional(),
 			recipientCompany: recipientFieldsSchema.shape.recipientCompany.unwrap().optional(),
 			letterDate: recipientFieldsSchema.shape.letterDate.unwrap().optional(),
-			resumeId: z.string().min(1).nullable().optional().describe("The resume the letter goes with."),
+			resumeId: z
+				.string()
+				.min(1)
+				.nullable()
+				.optional()
+				.describe(
+					"The resume the letter goes with. Clearing it ends the design link; a linked sender then follows the Profile.",
+				),
 			applicationId: z.string().min(1).nullable().optional().describe("The job the letter is for."),
-			senderLinked: z.boolean().optional().describe("Take the sender's details live from the resume."),
-			designLinked: z.boolean().optional().describe("Take the design live from the resume."),
+			senderLinked: z
+				.boolean()
+				.optional()
+				.describe(
+					"true: take the sender's details live from the letter's resume, or from the Profile when it has none. false: keep a copy of them as they read now.",
+				),
+			basics: basicsSchema
+				.optional()
+				.describe(
+					"The letter's own sender details, in full. Sending them ends the live link (senderLinked becomes false); not together with senderLinked: true.",
+				),
+			designLinked: z.boolean().optional().describe("Take the design live from the resume. Needs a resume."),
 			sessionId: z
 				.string()
 				.min(1)

@@ -207,26 +207,11 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 						</InputGroup>
 					</TextField>
 
-					<div className="grid content-start gap-1.5 sm:col-span-2">
-						<span id={`${id}-office`} className="text-sm font-medium">
-							<Trans>Office days a week, at most</Trans>
-						</span>
-						<Segment
-							aria-labelledby={`${id}-office`}
-							selectedKey={draft.maxOfficeDays === null ? "any" : String(draft.maxOfficeDays)}
-							onSelectionChange={(key) => change({ maxOfficeDays: String(key) === "any" ? null : Number(key) })}
-							className="w-fit max-w-full overflow-x-auto"
-						>
-							<Segment.Item id="any" className="touch-target w-auto flex-none px-3">
-								<Trans>Any</Trans>
-							</Segment.Item>
-							{[0, 1, 2, 3, 4, 5].map((days) => (
-								<Segment.Item key={days} id={String(days)} className="touch-target w-auto flex-none px-3 tabular-nums">
-									{days === 0 ? t`Remote` : days}
-								</Segment.Item>
-							))}
-						</Segment>
-					</div>
+					<OfficeDaysField
+						value={draft.maxOfficeDays}
+						onChange={(maxOfficeDays) => change({ maxOfficeDays })}
+						className="sm:col-span-2"
+					/>
 				</div>
 
 				<p className="text-body-xs text-muted">
@@ -275,10 +260,52 @@ const bareSelectPopover = "min-w-28";
 const prefixDivider = "me-1 border-e border-separator pe-2";
 const suffixDivider = "ms-1 border-s border-separator ps-2";
 
-type ChipFieldProps = { label: string; placeholder: string; value: string[]; onChange: (value: string[]) => void };
+type OfficeDaysFieldProps = {
+	value: CareerProfileData["maxOfficeDays"];
+	onChange: (value: CareerProfileData["maxOfficeDays"]) => void;
+	className?: string;
+};
 
-/** Enter or comma adds a chip, Backspace in an empty input removes the last one, × removes one. */
-function ChipField({ label, placeholder, value, onChange }: ChipFieldProps) {
+/** How many office days a week, at most: any, remote, or 1 to 5. Shared with onboarding's questions. */
+export function OfficeDaysField({ value, onChange, className }: OfficeDaysFieldProps) {
+	const id = useId();
+	return (
+		<div className={cn("grid content-start gap-1.5", className)}>
+			<span id={id} className="text-sm font-medium">
+				<Trans>Office days a week, at most</Trans>
+			</span>
+			<Segment
+				aria-labelledby={id}
+				selectedKey={value === null ? "any" : String(value)}
+				onSelectionChange={(key) => onChange(String(key) === "any" ? null : Number(key))}
+				className="w-fit max-w-full overflow-x-auto"
+			>
+				<Segment.Item id="any" className="touch-target w-auto flex-none px-3">
+					<Trans>Any</Trans>
+				</Segment.Item>
+				{[0, 1, 2, 3, 4, 5].map((days) => (
+					<Segment.Item key={days} id={String(days)} className="touch-target w-auto flex-none px-3 tabular-nums">
+						{days === 0 ? t`Remote` : days}
+					</Segment.Item>
+				))}
+			</Segment>
+		</div>
+	);
+}
+
+type ChipFieldProps = {
+	label: string;
+	placeholder: string;
+	value: string[];
+	onChange: (value: string[]) => void;
+	description?: string;
+};
+
+/**
+ * Enter or comma adds a chip, Backspace in an empty input removes the last one, × removes one. Shared with
+ * onboarding's questions.
+ */
+export function ChipField({ label, placeholder, value, onChange, description }: ChipFieldProps) {
 	const id = useId();
 	const [input, setInput] = useState("");
 
@@ -319,8 +346,14 @@ function ChipField({ label, placeholder, value, onChange }: ChipFieldProps) {
 					onKeyDown={onKeyDown}
 					onBlur={add}
 					className={tokenInputClass}
+					{...(description ? { "aria-describedby": `${id}-description` } : {})}
 				/>
 			</TokenFrame>
+			{description && (
+				<p id={`${id}-description`} className="text-body-xs text-muted">
+					{description}
+				</p>
+			)}
 		</div>
 	);
 }

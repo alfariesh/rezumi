@@ -4,7 +4,17 @@ import { getCoordination } from "@rezumi/db/coordination";
 import { getRedis, redisKey } from "@rezumi/db/redis";
 
 const RESUME_UPDATED_CHANNEL = "resume_updated";
-const resumeMutationNames = new Set(["sync", "create", "update", "patch", "lock", "password", "delete"] as const);
+// "profile": the account's Profile changed and this resume followed it.
+const resumeMutationNames = new Set([
+	"sync",
+	"create",
+	"update",
+	"patch",
+	"lock",
+	"password",
+	"delete",
+	"profile",
+] as const);
 
 type PgNotification = {
 	channel?: string | undefined;
@@ -16,7 +26,7 @@ export type ResumeUpdatedEvent = {
 	resumeId: string;
 	userId: string;
 	updatedAt: string;
-	mutation: "sync" | "create" | "update" | "patch" | "lock" | "password" | "delete";
+	mutation: "sync" | "create" | "update" | "patch" | "lock" | "password" | "delete" | "profile";
 };
 
 type SubscribeResumeUpdatedInput = {

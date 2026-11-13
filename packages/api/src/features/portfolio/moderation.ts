@@ -1,9 +1,12 @@
+import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioReportStatus } from "@rezumi/schema/portfolio/moderation";
 import { ORPCError } from "@orpc/server";
 import { and, desc, eq, isNotNull, isNull, lt, ne, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
+import { resumeDataFromProfile } from "@rezumi/resume/profile";
 import { parsePortfolioData } from "@rezumi/schema/portfolio/data";
+import { profileService } from "../profile/service";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
 import { parseCursor } from "./contact";
 import { portfolioErrors } from "./errors";
@@ -121,7 +124,7 @@ export async function getPortfolioForAdmin(portfolioId: string) {
 		.limit(1);
 	if (!row) throw portfolioErrors.notFound();
 
-	const [resume, reports, history] = await Promise.all([
+	const [resume, profile, reports, history] = await Promise.all([
 		row.sourceResumeId
 			? db
 					.select({ data: schema.resume.data })
@@ -130,6 +133,7 @@ export async function getPortfolioForAdmin(portfolioId: string) {
 					.limit(1)
 					.then(([found]) => found)
 			: undefined,
+		row.sourceResumeId ? undefined : profileService.read(row.ownerId),
 		db
 			.select({
 				id: report.id,
@@ -159,14 +163,23 @@ export async function getPortfolioForAdmin(portfolioId: string) {
 			.limit(HISTORY_LIMIT),
 	]);
 
-	let resumeData = null;
+	// What the public page shows: the Profile for a portfolio without a source resume.
+	let source: PortfolioSource | null = profile ? { data: resumeDataFromProfile(profile.data), from: "profile" } : null;
 	try {
-		resumeData = resume ? parseStoredResumeData(resume.data) : null;
+		if (resume) source = { data: parseStoredResumeData(resume.data), from: "resume" };
 	} catch {
 		console.error(`[portfolio] Source resume of portfolio ${portfolioId} can't be read; reviewed without it`);
 	}
 	const { data, sourceResumeId: _sourceResumeId, ownerBanned, ...rest } = row;
-	return { ...rest, ownerBanned: ownerBanned === true, data: parsePortfolioData(data), resumeData, reports, history };
+	return {
+		...rest,
+		ownerBanned: ownerBanned === true,
+		data: parsePortfolioData(data),
+		resumeData: source?.data ?? null,
+		sourceFrom: source?.from ?? null,
+		reports,
+		history,
+	};
 }
 
 /**

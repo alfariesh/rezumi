@@ -493,6 +493,8 @@ function stepOf(part: ToolPart, streaming: boolean): Step | null {
 			};
 		case "tool-read_attachment":
 			return { label: <Trans>Read the attachment</Trans>, working };
+		case "tool-read_profile":
+			return { label: <Trans>Read your Profile</Trans>, working };
 		case "tool-web_search":
 		case "tool-google_search":
 		case "tool-search_web":

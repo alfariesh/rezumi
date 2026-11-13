@@ -1,10 +1,10 @@
+import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
-import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { LanguageModel } from "ai";
 import z from "zod";
 import { portfolioDraftSystemPrompt } from "@rezumi/ai/prompts";
 import { escapeHtmlText } from "@rezumi/portfolio/text";
-import { portfolioPageLocale } from "@rezumi/portfolio/view";
+import { portfolioPageLocale, portfolioSourceResume } from "@rezumi/portfolio/view";
 import {
 	PORTFOLIO_AI_DRAFT_WORKS,
 	PORTFOLIO_AI_NOTE_LENGTH,
@@ -79,7 +79,8 @@ function paragraphsHtml(texts: string[], limit: number): string {
 
 type DraftRequest = z.infer<typeof draftInputSchema> & {
 	data: PortfolioData;
-	resume: ResumeData;
+	/** The portfolio's source: its resume, or the Profile. */
+	source: PortfolioSource;
 	model: LanguageModel;
 	signal?: AbortSignal | undefined;
 };
@@ -97,7 +98,8 @@ function chosenWorks(data: PortfolioData, workIds: readonly string[] | undefined
  * applies the answer as one edit the person can undo. An answer with nothing usable fails, so its credits come back.
  */
 export async function draftPortfolio(request: DraftRequest): Promise<PortfolioDraft> {
-	const { data, resume, note, model, signal } = request;
+	const { data, source: from, note, model, signal } = request;
+	const resume = from.data;
 	const works = chosenWorks(data, request.workIds);
 	const source = resumeForDraft(resume, data);
 	const written = works.map(workForDraft);
@@ -105,7 +107,7 @@ export async function draftPortfolio(request: DraftRequest): Promise<PortfolioDr
 	const safeNote = withoutContact(note ?? "");
 
 	const prompt = [
-		`Language of the page: ${pageLanguage(data, resume)}.`,
+		`Language of the page: ${pageLanguage(data, from)}.`,
 		`Works to write: ${works.length}.`,
 		`## The resume\n\n${dataBlock("RESUME", source)}`,
 		written.length ? `## The works\n\n${dataBlock("WORKS", numbered.join("\n\n"))}` : "",
@@ -118,7 +120,9 @@ export async function draftPortfolio(request: DraftRequest): Promise<PortfolioDr
 
 	// From the works' text, not their numbered headings: those numbers are ours and back up nothing.
 	const facts = knownFacts(source, written.join("\n"), safeNote);
-	const names = resume.metadata.page.locale === portfolioPageLocale(data, resume);
+	// The Profile has no language of its own: it may not be the page's, where every translated word looks like a new name.
+	const sourceResume = portfolioSourceResume(from);
+	const names = sourceResume !== null && sourceResume.metadata.page.locale === portfolioPageLocale(data, sourceResume);
 	const checked = (text: string) => supportedSentences(plain(text), facts, { names });
 	const paragraphsOf = (texts: string[]) => texts.map(checked).filter(Boolean);
 	// The greeting and a card are read at a glance: a place to fill in belongs in the story.

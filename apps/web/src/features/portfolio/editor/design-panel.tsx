@@ -26,7 +26,7 @@ import { rgbaStringToHex } from "@rezumi/utils/color";
 import { cn } from "@rezumi/utils/style";
 import { ImageField } from "../images/image-field";
 import { ThemeGallery } from "../theme-gallery";
-import { useSourceResume } from "./context";
+import { usePortfolioSource } from "./context";
 import { ChoiceSelect, PanelGroup } from "./fields";
 import { IntroEffectPicker } from "./intro-effect";
 import { editPortfolio, usePortfolioData } from "./store";
@@ -171,8 +171,9 @@ function ColorsGroup() {
 		(mode) => (scheme === "auto" || scheme === mode) && accentIsCorrected(theme, accent, mode),
 	);
 	const followsResume = design.accent.source === "resume";
-	const source = useSourceResume();
-	const resumeColor = source.data?.metadata.design.colors.primary;
+	const source = usePortfolioSource();
+	// The Profile has no colors: "Same as my resume" falls back to the theme's.
+	const resumeColor = source.designData?.metadata.design.colors.primary;
 	const resumeAccent = followsResume ? accent : resumeColor ? rgbaStringToHex(resumeColor).toUpperCase() : undefined;
 
 	const accentLabelId = useId();

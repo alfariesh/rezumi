@@ -1,8 +1,9 @@
+import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioData, PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { PortfolioSectionKey } from "@rezumi/schema/portfolio/sections";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { htmlToText } from "@rezumi/portfolio/text";
-import { portfolioPageLocale } from "@rezumi/portfolio/view";
+import { portfolioPageLocale, portfolioSourceResume } from "@rezumi/portfolio/view";
 
 /**
  * What AI may read from a resume: the work described, never how to reach the person. The name, email, phone, address,
@@ -162,8 +163,8 @@ export function workForDraft(work: PortfolioWork): string {
 }
 
 /** The page's language by its English name ("Indonesian"), which models follow better than a code. */
-export function pageLanguage(data: PortfolioData, resume: ResumeData | null): string {
-	const locale = portfolioPageLocale(data, resume);
+export function pageLanguage(data: PortfolioData, source: PortfolioSource | null): string {
+	const locale = portfolioPageLocale(data, portfolioSourceResume(source));
 	try {
 		return new Intl.DisplayNames(["en"], { type: "language" }).of(locale) ?? locale;
 	} catch {

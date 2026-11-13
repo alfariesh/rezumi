@@ -1,5 +1,5 @@
 /** The signed-in app's sections. On the alias domain (`APP_ALIAS_URL`) they move to `APP_URL`, where sign-in lives. */
-export const APP_SECTIONS = ["auth", "dashboard", "builder", "agent"] as const;
+export const APP_SECTIONS = ["auth", "dashboard", "builder", "agent", "onboarding"] as const;
 
 /** First path segments the app owns besides its sections: never a username, so never a resume's web page. */
 export const RESERVED_SEGMENTS = [

@@ -7,7 +7,7 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { isPortfolioSectionKey } from "@rezumi/schema/portfolio/sections";
 import { testResume } from "./fixtures.test-helpers";
 import { portfolioMessages, portfolioViewMessages } from "./messages";
-import { buildPortfolioView, resolvePortfolioWork, resolveSectionOrder } from "./view";
+import { buildPortfolioView, portfolioSourceResume, resolvePortfolioWork, resolveSectionOrder } from "./view";
 
 const englishMessages = portfolioViewMessages(portfolioMessages("en-US"));
 
@@ -68,6 +68,25 @@ describe("buildPortfolioView basics", () => {
 		expect(result.dir).toBe("ltr");
 		expect(result.design.accent).toBe("#0F766E");
 		expect(result.design.fonts).toMatchObject({ heading: "Lora", body: "Figtree", pair: null });
+	});
+
+	it("takes content but never language, accent or fonts from the Profile", () => {
+		const fromProfile = buildPortfolioView({
+			portfolio: { data: parseWritablePortfolioData({ design: { fonts: { source: "resume" } } }) },
+			resume: { data: testResume(), from: "profile" },
+			owner: { name: "Account Name", username: "nadia" },
+			entitlements: { hidePortfolioCredit: false },
+			messages: englishMessages,
+			fileUrl: (key) => `https://rezumi.example/${key}`,
+		});
+		const fromResume = view({ design: { fonts: { source: "resume" } } });
+		expect(fromProfile.basics).toEqual(fromResume.basics);
+		expect(fromProfile.sections.map((item) => item.kind)).toEqual(fromResume.sections.map((item) => item.kind));
+		expect(fromProfile.locale).toBe("en-US");
+		expect(fromProfile.design.accent).not.toBe("#0F766E");
+		expect(fromProfile.design.fonts.pair).not.toBeNull();
+		expect(portfolioSourceResume({ data: testResume(), from: "profile" })).toBeNull();
+		expect(portfolioSourceResume({ data: testResume() })?.metadata.page.locale).toBe("id-ID");
 	});
 
 	it("prefers the portfolio's own basics, and null means no photo", () => {

@@ -1,4 +1,5 @@
-import type { SectionType } from "@rezumi/schema/resume/data";
+import type { CustomSectionType, SectionType } from "@rezumi/schema/resume/data";
+import type { IconName } from "@rezumi/ui/components/icon";
 import { t } from "@lingui/core/macro";
 import { match } from "ts-pattern";
 
@@ -60,4 +61,22 @@ export const getSectionTitle = (type: SidebarSection | CustomOnlyType): string =
 
 			.exhaustive()
 	);
+};
+
+/** Each section type's icon, wherever sections are listed. */
+export const SECTION_ICONS: Record<CustomSectionType, IconName> = {
+	summary: "text-align-left",
+	experience: "briefcase",
+	education: "graduation-cap",
+	projects: "graph",
+	skills: "lightning",
+	languages: "translate",
+	interests: "bookmark-simple",
+	awards: "check-circle",
+	certifications: "list-checks",
+	publications: "file-text",
+	volunteer: "user-circle",
+	references: "phone",
+	profiles: "link-simple-horizontal",
+	"cover-letter": "envelope-simple",
 };

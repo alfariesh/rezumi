@@ -250,8 +250,7 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 							<div className="flex flex-wrap items-center gap-x-2">
 								<PrivacyLine>
 									<Trans>
-										Review my answer sends the question, what you said, this posting and your Knowledge to{" "}
-										{providerName}.
+										Review my answer sends the question, what you said, this posting and your Profile to {providerName}.
 									</Trans>
 								</PrivacyLine>
 								<AiSourceMenu action="interview-practice" />
@@ -302,7 +301,7 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 				setDismissed(true);
 			}
 		},
-		onError: (error) => toastError(error, t`Couldn't save that to Knowledge. Try again.`),
+		onError: (error) => toastError(error, t`Couldn't save that to your Profile. Try again.`),
 	});
 	const remembered =
 		Boolean(save.data) ||
@@ -310,7 +309,7 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 	const readable = (text: string) =>
 		[...new Set([...review.evidence.factIds, ...(facts.data ?? []).map((fact) => fact.id)])]
 			.filter(Boolean)
-			.reduce((value, id) => value.split(id).join(t`your Knowledge`), text);
+			.reduce((value, id) => value.split(id).join(t`your Profile`), text);
 	const company = application.company;
 
 	return (
@@ -360,7 +359,7 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 					question={t`Remember for ${company} only?`}
 					facts={[data.remember]}
 					state={remembered ? "remembered" : dismissed ? "dismissed" : "pending"}
-					remembered={<Trans>Saved to Knowledge, private to this application.</Trans>}
+					remembered={<Trans>Saved to your Profile, private to this application.</Trans>}
 					busy={save.isPending}
 					onRemember={() => {
 						if (!data.remember) return;

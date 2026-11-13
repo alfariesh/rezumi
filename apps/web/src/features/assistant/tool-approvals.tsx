@@ -16,7 +16,7 @@ export function ToolApprovals({ message, disabled, onDecision }: ToolApprovalsPr
 				{kind === "search" ? (
 					<Trans>Send this exact query to your web search provider?</Trans>
 				) : (
-					<Trans>Save this story to Knowledge?</Trans>
+					<Trans>Save this story to your Profile?</Trans>
 				)}
 			</p>
 			<p className="text-body-sm wrap-anywhere whitespace-pre-wrap">{text}</p>

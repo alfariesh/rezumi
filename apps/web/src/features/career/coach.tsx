@@ -252,8 +252,8 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 			<ContextChip
 				pressed={chips.memory}
 				onPressedChange={(memory) => setChips({ ...chips, memory })}
-				label={plural(knowledge.active.length, { one: "Knowledge · # fact", other: "Knowledge · # facts" })}
-				tooltip={t`Facts, stories and preferences that are switched on in Knowledge`}
+				label={plural(knowledge.active.length, { one: "Profile · # fact", other: "Profile · # facts" })}
+				tooltip={t`Your details and career, with the facts, stories and preferences that are switched on in your Profile`}
 			/>
 			<ContextChip
 				pressed={chips.web}
@@ -337,8 +337,8 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 					<>
 						<p className="m-4 rounded-xl bg-control p-4 text-body-sm text-muted">
 							<Trans>
-								The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers
-								and your applications work without it.
+								The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile,
+								Offers and your applications work without it.
 							</Trans>
 						</p>
 					</>

@@ -20,6 +20,9 @@ export type ImportKind =
 
 type ResumeJsonKind = "reactive-resume-json" | "reactive-resume-v4-json" | "json-resume-json";
 
+/** What the import file pickers accept. */
+export const IMPORT_ACCEPT = ".pdf,.docx,.json,.zip,application/pdf,application/json,application/zip";
+
 /** An import failure worded for the person importing. */
 export class ImportError extends Error {}
 

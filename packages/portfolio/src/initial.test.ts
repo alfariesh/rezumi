@@ -6,12 +6,12 @@ import { createInitialPortfolioData, workFromResumeProject } from "./initial";
 
 describe("a new portfolio from a resume", () => {
 	it("starts About from the summary, cleaned", () => {
-		const data = createInitialPortfolioData({ resume: testResume() });
+		const data = createInitialPortfolioData({ resume: { data: testResume() } });
 		expect(data.about.content).toBe("<p>I design <strong>calm</strong> apps.</p>");
 	});
 
 	it("copies visible projects as works with Text and Link blocks", () => {
-		const data = createInitialPortfolioData({ resume: testResume() });
+		const data = createInitialPortfolioData({ resume: { data: testResume() } });
 		expect(data.works.items).toHaveLength(1);
 		const [work] = data.works.items;
 		expect(work).toMatchObject({
@@ -33,7 +33,7 @@ describe("a new portfolio from a resume", () => {
 		const resume = testResume();
 		resume.summary.hidden = true;
 		resume.sections.projects.hidden = true;
-		const data = createInitialPortfolioData({ resume });
+		const data = createInitialPortfolioData({ resume: { data: resume } });
 		expect(data.about.content).toBe("");
 		expect(data.works.items).toEqual([]);
 	});
@@ -49,12 +49,12 @@ describe("a new portfolio from a resume", () => {
 			website: { url: "", label: "", inlineLink: false },
 			description: "",
 		}));
-		const data = createInitialPortfolioData({ resume });
+		const data = createInitialPortfolioData({ resume: { data: resume } });
 		expect(data.works.items.map((work) => work.fromResumeItemId)).toEqual(["proj.1", "Ünïcode id", undefined]);
 	});
 
 	it("follows the resume's accent and fonts and the theme's order", () => {
-		const data = createInitialPortfolioData({ resume: testResume(), theme: "prima" });
+		const data = createInitialPortfolioData({ resume: { data: testResume() }, theme: "prima" });
 		expect(data.theme).toBe("prima");
 		expect(data.design.accent).toEqual({ source: "resume" });
 		expect(data.design.fonts).toEqual({ source: "resume" });
@@ -72,7 +72,7 @@ describe("a new portfolio from a resume", () => {
 			website: { url: index === 2 ? "javascript:alert(1)" : "", label: "", inlineLink: false },
 			description: "",
 		}));
-		const data = createInitialPortfolioData({ resume });
+		const data = createInitialPortfolioData({ resume: { data: resume } });
 		expect(data.works.items.map((work) => work.slug)).toEqual(["kopi", "kopi-2", "kopi-3"]);
 		expect(data.works.items[2]?.primaryLink).toBeUndefined();
 		expect(data.works.items[2]?.blocks).toEqual([]);
@@ -91,7 +91,7 @@ describe("a new portfolio from a resume", () => {
 				description: "<p>x</p>",
 			},
 		];
-		const data = createInitialPortfolioData({ resume });
+		const data = createInitialPortfolioData({ resume: { data: resume } });
 		expect(() => parseWritablePortfolioData(data)).not.toThrow();
 		expect(data.works.items[0]?.title.length).toBeLessThanOrEqual(PORTFOLIO_LIMITS.text.workTitle);
 		expect(data.works.items[0]?.date.length).toBeLessThanOrEqual(PORTFOLIO_LIMITS.text.workDate);
@@ -111,7 +111,7 @@ describe("a new portfolio from a resume", () => {
 		const resume = testResume();
 		resume.summary.content = links(25);
 		resume.sections.projects.items = [project];
-		const data = createInitialPortfolioData({ resume });
+		const data = createInitialPortfolioData({ resume: { data: resume } });
 		expect(() => parseWritablePortfolioData(data)).not.toThrow();
 		expect(data.about.content).toMatch(/^<p>Link 0 Link 1 .* Link 24<\/p>$/);
 		expect(data.works.items[0]?.blocks[0]).toMatchObject({
@@ -133,11 +133,31 @@ describe("a new portfolio from a resume", () => {
 			website: { url: "", label: "", inlineLink: false },
 			description: `<p>${"word ".repeat(1900)}</p>`,
 		}));
-		const data = createInitialPortfolioData({ resume });
+		const data = createInitialPortfolioData({ resume: { data: resume } });
 		expect(portfolioDataBytes(data)).toBeLessThanOrEqual(PORTFOLIO_LIMITS.dataBytes);
 		expect(data.works.items.length).toBeGreaterThan(10);
 		expect(data.works.items.length).toBeLessThan(40);
 		expect(data.works.items[0]?.title).toBe("Project 0");
+	});
+});
+
+describe("a new portfolio from the Profile", () => {
+	it("copies About and works like a resume, but takes a design of its own and the basics given", () => {
+		const data = createInitialPortfolioData({
+			resume: { data: testResume(), from: "profile" },
+			basics: { headline: "Illustrator" },
+		});
+		expect(data.about.content).toBe("<p>I design <strong>calm</strong> apps.</p>");
+		expect(data.works.items.map((work) => work.title)).toEqual(["Aplikasi Kopi"]);
+		expect(data.basics).toEqual({ headline: "Illustrator" });
+		expect(data.design.accent).toEqual({ source: "preset", id: "samudra" });
+		expect(data.design.fonts).toEqual({ source: "theme" });
+	});
+
+	it("ignores typed basics when the source is a resume, whose own basics fill the page", () => {
+		expect(createInitialPortfolioData({ resume: { data: testResume() }, basics: { name: "Typed" } }).basics).toEqual(
+			{},
+		);
 	});
 });
 

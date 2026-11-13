@@ -303,7 +303,7 @@ export function moveSection(
 }
 
 /** Puts a section on the last page's main column unless a page already places it. */
-function ensurePlaced(draft: WritableDraft<ResumeData>, id: string) {
+export function ensurePlaced(draft: WritableDraft<ResumeData>, id: string) {
 	const pages = draft.metadata.layout.pages;
 	if (pages.some((page) => page.main.includes(id) || page.sidebar.includes(id))) return;
 	if (pages.length === 0) pages.push({ fullWidth: false, main: [], sidebar: [] });

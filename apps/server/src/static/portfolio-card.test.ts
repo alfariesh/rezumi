@@ -63,6 +63,7 @@ function portfolio(picture: { key: string; thumbKey?: string } | null): PublicPo
 		passwordHash: null,
 		indexable: true,
 		customDomain: null,
+		source: null,
 		resume: null,
 	};
 }

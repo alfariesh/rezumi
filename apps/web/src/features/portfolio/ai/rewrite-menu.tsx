@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { htmlToText } from "@rezumi/portfolio/text";
 import { Icon } from "@rezumi/ui/components/icon";
-import { languageName, pageLocaleOf, useSourceResume } from "../editor/context";
+import { languageName, pageLocaleOf, usePortfolioSource } from "../editor/context";
 import { usePortfolioData } from "../editor/store";
 import { portfolioAiErrorMessage } from "../errors";
 import { useRequestSignals } from "../images/use-request-signals";
@@ -34,7 +34,7 @@ type AiRewriteMenuProps = {
 export function AiRewriteMenu({ field, value, onResult }: AiRewriteMenuProps) {
 	const ai = useAiSource();
 	const data = usePortfolioData();
-	const resume = useSourceResume();
+	const resume = usePortfolioSource();
 	const [open, setOpen] = useState(false);
 	const [changed, setChanged] = useState<string | null>(null);
 	const signals = useRequestSignals();
@@ -51,7 +51,7 @@ export function AiRewriteMenu({ field, value, onResult }: AiRewriteMenuProps) {
 	if (!ai.source) return null;
 
 	// Just the language: "Indonesian", not "Indonesian (Indonesia)".
-	const language = languageName(pageLocaleOf(data, resume.data).split("-")[0] ?? "", i18n.locale);
+	const language = languageName(pageLocaleOf(data, resume.designData).split("-")[0] ?? "", i18n.locale);
 	const empty = !htmlToText(value);
 	const options: { instruction: PortfolioAiRewrite; icon: IconName; label: string }[] = [
 		{ instruction: "shorter", icon: "arrows-in-line-vertical", label: t`Make it shorter` },

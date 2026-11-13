@@ -5,6 +5,7 @@ import { jsonPatchOperationSchema } from "@rezumi/resume/patch";
 import { resumeDataSchema } from "@rezumi/schema/resume/data";
 import { slugSchema } from "@rezumi/schema/resume/slug";
 import { writableResumeDataSchema } from "@rezumi/schema/resume/write";
+import { templateInputSchema } from "@rezumi/schema/templates";
 import { paginationShape } from "../pagination";
 
 const resumeSchema = createSelectSchema(schema.resume, {
@@ -92,6 +93,11 @@ export const resumeDto = {
 				.optional()
 				.describe("The slug of the resume. Generated from the name, and made unique, when omitted."),
 			withSampleData: z.boolean().default(false),
+			template: templateInputSchema
+				.optional()
+				.describe(
+					"The template to start with, in the look it was designed with (its fonts, accent and layout). Premium templates need a plan that includes them. The default template when omitted.",
+				),
 		}),
 		output: z.string().describe("The ID of the created resume."),
 	},

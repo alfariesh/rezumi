@@ -49,7 +49,7 @@ export function AiNotice({ task, className }: AiNoticeProps) {
 	return (
 		<div className={cn("flex flex-wrap items-center gap-x-2", className)}>
 			<PrivacyLine>
-				{t`Sends this application's posting, notes and documents, plus Knowledge that's switched on, to ${provider.label}.`}
+				{t`Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to ${provider.label}.`}
 			</PrivacyLine>
 			<AiSourceMenu action={CAREER_TASK_CREDIT_ACTIONS[task]} />
 		</div>
@@ -90,7 +90,7 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 					</EmptyState.Title>
 					<EmptyState.Description className="max-w-[420px]">
 						<Trans>
-							Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as
+							Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as
 							missing evidence, never missing ability.
 						</Trans>
 					</EmptyState.Description>
@@ -128,7 +128,7 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 		void queryClient.invalidateQueries({ queryKey: orpc.career.facts.key() });
 		// The fact is already saved, so Undo forgets it and reopens the gap.
 		toast.add({
-			description: t`Saved to Knowledge as a fact`,
+			description: t`Saved to your Profile as a fact`,
 			actionProps: {
 				children: t`Undo`,
 				onClick: () => {
@@ -301,7 +301,7 @@ type EvidenceEditorProps = {
 	onSaved: (factId: string) => void;
 };
 
-/** W2: what the user did, saved to Knowledge as a shared Experience fact (it's about them, not this job). */
+/** W2: what the user did, saved to the Profile as a shared Experience fact (it's about them, not this job). */
 function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps) {
 	const [text, setText] = useState("");
 	const [touched, setTouched] = useState(false);
@@ -320,7 +320,7 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 			if (!fact) throw new Error("not saved");
 			onSaved(fact.id);
 		} catch (error) {
-			toastError(error, t`Couldn't save that to Knowledge. Try again.`);
+			toastError(error, t`Couldn't save that to your Profile. Try again.`);
 		}
 	};
 
@@ -348,7 +348,7 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 			<div className="flex gap-1.5">
 				<Button size="sm" variant="secondary" isPending={saveFact.isPending} onPress={() => void save()}>
 					{saveFact.isPending && <Spinner size="sm" color="current" aria-hidden />}
-					<Trans>Save to Knowledge</Trans>
+					<Trans>Save to Profile</Trans>
 				</Button>
 				<Button size="sm" variant="ghost" onPress={onCancel}>
 					<Trans>Cancel</Trans>

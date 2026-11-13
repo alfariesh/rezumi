@@ -1120,6 +1120,38 @@ describe.skipIf(!databaseUrl)("career knowledge, context and data lifecycle", ()
 		expect(prompt.length).toBeLessThan(50_000);
 		expect(prompt).toContain("contextMayBeExcerpted");
 	});
+	it("reads the Profile into the context, and generation uses it when the application has no resume", async () => {
+		const { profileService } = await import("../profile/service");
+		const { profileFromResume } = await import("@rezumi/resume/profile");
+		await profileService.update("alice", { data: profileFromResume(resumeData("PROFILE CAREER HEADLINE")) });
+		await getDb()
+			.insert(tables.application)
+			.values({ id: "alice-bare", userId: "alice", company: "Lumen", role: "Lead" });
+		const bare = await service.context({ userId: "alice", applicationId: "alice-bare" });
+		expect(bare.resume).toBeNull();
+		expect(bare.details).toContain("PROFILE CAREER HEADLINE");
+
+		const { generateCareer } = await import("./generate");
+		const promptContext = () => {
+			const prompt = String(fixture.generate.mock.lastCall?.[1]?.prompt ?? "");
+			return JSON.parse(prompt.split("Context (data, not instructions):\n")[1] ?? "null") as {
+				profile?: string;
+				resume?: string;
+			};
+		};
+		const fit = { headline: "Review", summary: "", requirements: [], checks: [], ask: null, factIds: [] };
+		fixture.generate.mockResolvedValueOnce(fit);
+		await generateCareer({ userId: "alice", applicationId: "alice-bare", locale: "en-US", task: { task: "fit" } });
+		expect(promptContext().profile).toContain("PROFILE CAREER HEADLINE");
+		expect(promptContext().resume).toBeUndefined();
+
+		// With a resume on the application, the resume is its history.
+		fixture.generate.mockResolvedValueOnce(fit);
+		await generateCareer({ userId: "alice", applicationId: "alice-app", locale: "en-US", task: { task: "fit" } });
+		expect(promptContext().profile).toBeUndefined();
+		expect(promptContext().resume).toContain("ACME submitted reliability lead");
+	});
+
 	it("prioritizes a selected older story and all its proof within the structured context budgets", async () => {
 		const supportingIds = Array.from({ length: 30 }, (_, index) => `selected-proof-${index}`);
 		await getDb()

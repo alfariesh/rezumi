@@ -324,10 +324,36 @@ describe.skipIf(!databaseUrl)("portfolio AI credits", () => {
 		expect(await usages()).toEqual([]);
 	});
 
-	it("needs a resume for a draft, before any credits are at stake", async () => {
+	it("needs a source it can read for a draft, before any credits are at stake", async () => {
+		await service.updateSettings("bare", { sourceResumeId: await addResume("bare") });
+		await getDb().update(tables.resume).set({ trashedAt: new Date() }).where(eq(tables.resume.userId, "bare"));
 		await expect(client("bare").draft(rezumi("no-resume"))).rejects.toMatchObject({ code: "PORTFOLIO_SOURCE_INVALID" });
 		expect(fixture.calls).toHaveLength(0);
 		expect(await usages("bare")).toEqual([]);
+	});
+
+	it("reads the Profile for a portfolio without a source resume", async () => {
+		const { profileService } = await import("../../profile/service");
+		const { emptyProfileData } = await import("@rezumi/schema/profile/data");
+		const profile = emptyProfileData();
+		profile.sections.experience = [
+			{
+				id: "profile-job",
+				hidden: false,
+				company: "Kopi Senja",
+				position: "Desainer",
+				location: "",
+				period: "2020",
+				website: { url: "", label: "", inlineLink: false },
+				description: "<p>Menaikkan konversi 35%.</p>",
+				roles: [],
+			},
+		] as never;
+		await profileService.update("bare", { data: profile });
+		await addOwnConnection("bare");
+		fixture.reply = METRICS;
+		const { candidates } = await client("bare").findMetrics({ aiSource: "own" });
+		expect(candidates).toMatchObject([{ quote: "Menaikkan konversi 35%.", source: "Desainer · Kopi Senja" }]);
 	});
 
 	it("is refused while portfolios are closed to the account", async () => {

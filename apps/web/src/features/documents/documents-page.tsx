@@ -17,6 +17,7 @@ import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
@@ -323,8 +324,8 @@ export function FirstRun({ onChooseFile }: FirstRunProps) {
 			</Typography>
 			<p className="text-muted">
 				<Trans>
-					Import your current resume and we'll lay out every section for you to refine. Or start fresh. Start with your
-					name. Build from there.
+					Import your current resume and we'll lay out every section for you to refine. It also fills your Profile, so
+					your next resume, letter and portfolio start from it. Or start blank from your Profile.
 				</Trans>
 			</p>
 			<div className="flex flex-wrap items-center gap-3 rounded-2xl border border-dashed border-border p-5">
@@ -355,6 +356,12 @@ export function FirstRun({ onChooseFile }: FirstRunProps) {
 				>
 					<Trans>Try a sample</Trans>
 				</Button>
+				<Link
+					to="/dashboard/profile"
+					className="inline-flex items-center text-link underline-offset-4 hover:underline pointer-coarse:min-h-11"
+				>
+					<Trans>Fill in your Profile first</Trans>
+				</Link>
 			</div>
 		</section>
 	);

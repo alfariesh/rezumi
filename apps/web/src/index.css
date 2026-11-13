@@ -113,30 +113,30 @@ html:active-view-transition-type(page)::view-transition-new(*):only-child {
 /*
  * The shell's chrome is captured apart from the page and swaps in place: no fade, no slide, no move. Without this
  * the navbar, the sidebar and a section's header and tabs dim and shift on every click, which reads as a blink.
- * Names: the sidebar (app-nav) and navbar (app-bar) in the dashboard shell, Knowledge's title (knowledge-header) and
- * Knowledge's tabs (knowledge-nav). Only the pair (both sides) is matched here: a part on one side only keeps the
+ * Names: the sidebar (app-nav) and navbar (app-bar) in the dashboard shell, the Profile's title (profile-header) and
+ * the Profile's tabs (profile-nav). Only the pair (both sides) is matched here: a part on one side only keeps the
  * `:only-child` fades above, whose selectors are more specific.
  */
 html:active-view-transition-type(page)::view-transition-group(app-nav),
 html:active-view-transition-type(page)::view-transition-group(app-bar),
-html:active-view-transition-type(page)::view-transition-group(knowledge-header),
-html:active-view-transition-type(page)::view-transition-group(knowledge-nav),
+html:active-view-transition-type(page)::view-transition-group(profile-header),
+html:active-view-transition-type(page)::view-transition-group(profile-nav),
 html:active-view-transition-type(page)::view-transition-old(app-nav),
 html:active-view-transition-type(page)::view-transition-old(app-bar),
-html:active-view-transition-type(page)::view-transition-old(knowledge-header),
-html:active-view-transition-type(page)::view-transition-old(knowledge-nav),
+html:active-view-transition-type(page)::view-transition-old(profile-header),
+html:active-view-transition-type(page)::view-transition-old(profile-nav),
 html:active-view-transition-type(page)::view-transition-new(app-nav),
 html:active-view-transition-type(page)::view-transition-new(app-bar),
-html:active-view-transition-type(page)::view-transition-new(knowledge-header),
-html:active-view-transition-type(page)::view-transition-new(knowledge-nav) {
+html:active-view-transition-type(page)::view-transition-new(profile-header),
+html:active-view-transition-type(page)::view-transition-new(profile-nav) {
 	animation: none;
 }
 
 /* The old picture would show through the new one where the chrome is transparent (a changed title, the current tab). */
 html:active-view-transition-type(page)::view-transition-old(app-nav),
 html:active-view-transition-type(page)::view-transition-old(app-bar),
-html:active-view-transition-type(page)::view-transition-old(knowledge-header),
-html:active-view-transition-type(page)::view-transition-old(knowledge-nav) {
+html:active-view-transition-type(page)::view-transition-old(profile-header),
+html:active-view-transition-type(page)::view-transition-old(profile-nav) {
 	opacity: 0;
 }
 

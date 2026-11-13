@@ -265,8 +265,8 @@ msgstr "{0, plural, one {# storia} other {# storie}}"
 
 #. placeholder {0}: remembered.ids.length
 #: src/features/career/coach-chat.tsx
-msgid "{0, plural, one {Added # fact to Knowledge.} other {Added # facts to Knowledge.}}"
-msgstr "{0, plural, one {Aggiunto # fatto a Conoscenze.} other {Aggiunti # fatti a Conoscenze.}}"
+msgid "{0, plural, one {Added # fact to your Profile.} other {Added # facts to your Profile.}}"
+msgstr ""
 
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
@@ -308,15 +308,15 @@ msgstr "{0, plural, one {Importa la domanda di lavoro #} other {Importa domande 
 msgid "{0, plural, one {Imported # application.} other {Imported # applications.}}"
 msgstr "{0, plural, one {# candidatura importata.} other {# candidature importate.}}"
 
-#. placeholder {0}: knowledge.active.length
-#: src/features/career/coach.tsx
-msgid "{0, plural, one {Knowledge · # fact} other {Knowledge · # facts}}"
-msgstr "{0, plural, one {Conoscenze · # fatto} other {Conoscenze · # fatti}}"
-
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {No reply in # day} other {No reply in # days}}"
 msgstr "{0, plural, one {Nessuna risposta nel giorno #} other {Nessuna risposta entro # giorni}}"
+
+#. placeholder {0}: knowledge.active.length
+#: src/features/career/coach.tsx
+msgid "{0, plural, one {Profile · # fact} other {Profile · # facts}}"
+msgstr ""
 
 #. placeholder {0}: passages.length
 #: src/features/resume/editor/check/writing-tab.tsx
@@ -348,6 +348,11 @@ msgstr ""
 msgid "{0, plural, one {Took # step} other {Took # steps}}"
 msgstr ""
 
+#. placeholder {0}: followed.length
+#: src/features/profile/details-page.tsx
+msgid "{0, plural, one {Updated in # resume} other {Updated in # resumes}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -360,8 +365,8 @@ msgstr "{0, plural, one {Il font selezionato non può visualizzare {list}. Viene
 
 #. placeholder {0}: when(runAt)
 #: src/features/career/workspace/prepare.tsx
-msgid "{0} · {providerLabel}. Sends this application and your Knowledge; your provider may charge."
-msgstr "{0} · {providerLabel}. Invia questa candidatura e le tue Conoscenze; il tuo fornitore potrebbe addebitarlo."
+msgid "{0} · {providerLabel}. Sends this application and your Profile; your provider may charge."
+msgstr ""
 
 #. placeholder {0}: BILLING_SELLER.name
 #. placeholder {1}: BILLING_SELLER.brand
@@ -430,6 +435,11 @@ msgstr ""
 #. placeholder {0}: payment.trialDays
 #: src/features/billing/pending-payment.tsx
 msgid "{0} days free"
+msgstr ""
+
+#. placeholder {0}: sourceLabel(id)
+#: src/features/profile/sources/messages.ts
+msgid "{0} didn't answer in time. Try again in a moment."
 msgstr ""
 
 #. placeholder {0}: proposals.length
@@ -733,6 +743,7 @@ msgstr "{cost} il primo anno"
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
 
+#: src/features/resume/editor/write/add-section.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{count, plural, one {# entry} other {# entries}}"
 msgstr "{count, plural, one {Voce #} other {Voci #}}"
@@ -858,6 +869,19 @@ msgstr "{issues, plural, one {Il problema # potrebbe costarti una corrispondenza
 #: src/features/resume/share/download-tab.tsx
 msgid "{issues, plural, one {Check has # thing to review. You can still download.} other {Check has # things to review. You can still download.}}"
 msgstr "{issues, plural, one {L'assegno ha qualcosa # da rivedere. Puoi ancora scaricare.} other {Il controllo ha # cose da rivedere. Puoi ancora scaricare.}}"
+
+#: src/features/profile/fill.tsx
+msgid "{kept, plural, =0 {Add the photo} one {Add # entry} other {Add # entries}}"
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "{kept, plural, one {# entry ticked} other {# entries ticked}}"
+msgstr ""
+
+#. placeholder {0}: keys.length
+#: src/features/profile/sources/source-review.tsx
+msgid "{kept} of {0}"
+msgstr ""
 
 #: src/features/applications/next-step.ts
 #: src/features/career/today.tsx
@@ -1019,6 +1043,10 @@ msgstr "{open, plural, one {# cosa da rivedere.} other {# cose da rivedere.}}"
 
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "{open} open. The portfolio's owner never sees who sent a report."
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "{others, plural, one {Saved to your Profile. # other resume was updated too.} other {Saved to your Profile. # other resumes were updated too.}}"
 msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
@@ -1478,7 +1506,7 @@ msgid "A numeric date reads differently in different countries."
 msgstr "Una data numerica si legge in modo diverso a seconda del paese."
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "A one-page website at your own address, made from your resume and your work."
+msgid "A one-page website at your own address, made from your Profile and your work."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -1697,6 +1725,11 @@ msgstr ""
 msgid "Account deleted"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/account/profile.tsx
+msgid "Account details"
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 msgid "Accounts"
 msgstr ""
@@ -1869,6 +1902,7 @@ msgid "Add a phone number"
 msgstr "Aggiungi un numero di telefono"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Add a place, then Enter"
 msgstr "Aggiungi un luogo e premi Invio"
 
@@ -1889,6 +1923,7 @@ msgid "Add a role to switch to. With only one line, the page shows it without th
 msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Add a role, then Enter"
 msgstr "Aggiungi un ruolo e premi Invio"
 
@@ -1952,6 +1987,15 @@ msgstr ""
 msgid "Add a year"
 msgstr ""
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Add all"
+msgstr ""
+
+#. placeholder {0}: missing.length
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Add all ({0})"
+msgstr ""
+
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
 msgstr "Aggiungi una @ e il dominio, ad esempio name@example.com"
@@ -1988,6 +2032,14 @@ msgstr "Aggiungi prima un colloquio in una candidatura"
 #: src/features/career/workspace/prepare.tsx
 msgid "Add an interview to plan for it"
 msgstr "Aggiungi un colloquio per prepararti"
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Add any of these and we'll fill in your Profile. You check everything before it's saved."
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Add any of these. You check what we find before it goes in your Profile."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/command-palette/pages/navigation.tsx
@@ -2053,6 +2105,10 @@ msgstr "Aggiungi numeri dove li hai: volumi, percentuali, tempistiche, dimension
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Add from Experience"
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Add from Profile"
 msgstr ""
 
 #: src/features/resume/editor/write/outline.tsx
@@ -2228,6 +2284,10 @@ msgid "Add work from pictures"
 msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "Add work from your Profile"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Add work from your resume"
 msgstr ""
 
@@ -2240,6 +2300,7 @@ msgid "Add your name"
 msgstr "Aggiungi il tuo nome"
 
 #: src/features/portfolio/errors.ts
+#: src/features/profile/sources/messages.ts
 msgid "Add your own AI connection in Settings, or choose Rezumi AI."
 msgstr ""
 
@@ -2266,25 +2327,33 @@ msgstr "Aggiunto da te"
 msgid "Added credits expire in (days)"
 msgstr ""
 
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as a preference."
-msgstr "Aggiunto a Conoscenze come preferenza."
-
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as a skill."
-msgstr "Aggiunto a Conoscenze come competenza."
-
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as an accomplishment."
-msgstr "Aggiunto a Conoscenze come traguardo."
-
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as an experience."
-msgstr "Aggiunto a Conoscenze come esperienza."
-
 #: src/features/career/workspace/fit.tsx
 msgid "Added to Prepare"
 msgstr "Aggiunta a Prepara"
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as a preference."
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as a skill."
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as an accomplishment."
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as an experience."
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Added to your Profile, without the photo: it couldn't be copied. Check each section."
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Added to your Profile. Check each section."
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -2295,6 +2364,10 @@ msgstr "Indirizzo"
 #: src/features/career/workspace/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "Aggiunge un promemoria in Oggi se entro quella data non hai ricevuto risposta."
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Adds your own public projects."
+msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Adjust"
@@ -2479,10 +2552,6 @@ msgstr ""
 #: src/features/documents/recent-documents.tsx
 msgid "All documents"
 msgstr ""
-
-#: src/features/settings/account/data.tsx
-msgid "All documents and applications as JSON, in one zip"
-msgstr "Tutti i documenti e le domande di lavoro come JSON, in un unico zip"
 
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
@@ -3037,6 +3106,7 @@ msgstr "Controllore ATS"
 msgid "ATS readable"
 msgstr ""
 
+#: src/features/resume/editor/design/template-card.tsx
 #: src/features/resume/editor/design/template-group.tsx
 msgid "ATS-safe"
 msgstr "ATS-sicuro"
@@ -3097,8 +3167,10 @@ msgid "BA, Visual Communication Design · Nusantara Institute of Design"
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/onboarding/onboarding-page.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/works/add-work/parts.tsx
+#: src/features/profile/fill.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Indietro"
@@ -3363,6 +3435,10 @@ msgstr "Raggio del bordo"
 msgid "Border width"
 msgstr "Larghezza del bordo"
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Both are optional. They help the coach find roles that fit you."
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Both offers cover everything compared here."
 msgstr "Entrambe le offerte coprono tutto ciò che viene confrontato qui."
@@ -3400,6 +3476,15 @@ msgstr "Aggiornamento del briefing attivo · {0}"
 #: src/features/career/workspace/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "Aggiornamento del briefing in pausa"
+
+#: src/features/onboarding/onboarding-page.tsx
+#: src/features/profile/fill.tsx
+msgid "Bring what you have"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Bring your LinkedIn, a resume file, your GitHub or your website, or take what's in one of your resumes. Only what your Profile is missing is added, and you check it first."
+msgstr ""
 
 #: src/features/homepage/templates.tsx
 msgid "Browse all {total} templates"
@@ -3534,6 +3619,7 @@ msgstr "Il software può leggere il tuo curriculum?"
 #: src/features/portfolio/editor/password-group.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
+#: src/features/profile/fill.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -3582,6 +3668,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Cards"
+msgstr ""
+
+#: src/features/profile/details-page.tsx
+msgid "Career"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
@@ -3697,6 +3787,10 @@ msgstr "Modificato direttamente il curriculum (una conversazione precedente)"
 msgid "Changed your mind? Rename your resume to something more descriptive."
 msgstr "Hai cambiato idea? Rinomina il tuo curriculum in modo più descrittivo."
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Changes made here stay in this resume."
+msgstr ""
+
 #. placeholder {0}: getPlanName(pending.planId)
 #. placeholder {1}: formatDate(plan.currentPeriodEndsAt)
 #: src/features/billing/plan-page.tsx
@@ -3784,6 +3878,11 @@ msgstr "Confronta questo ruolo con le tue prove"
 msgid "Check views"
 msgstr "Controlla le visualizzazioni"
 
+#: src/features/onboarding/onboarding-page.tsx
+#: src/features/profile/fill.tsx
+msgid "Check what we found"
+msgstr ""
+
 #: src/libs/seo.ts
 msgid "Check whether software can read your resume PDF. Runs entirely in your browser, so your file is never uploaded."
 msgstr "Controlla se il software può leggere il tuo curriculum PDF. Funziona interamente nel tuo browser, quindi il tuo file non viene mai caricato."
@@ -3828,8 +3927,8 @@ msgid "Checking {0}"
 msgstr "Controllo {0}"
 
 #: src/features/career/shared.tsx
-msgid "Checking against Knowledge"
-msgstr "Confronto con Conoscenze"
+msgid "Checking against your Profile"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "Checking layout and content"
@@ -3888,6 +3987,10 @@ msgstr "Cinese (tradizionale)"
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Chips"
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Choose"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -3969,6 +4072,10 @@ msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Cities are listed by their names in Latin letters. Type it that way, such as “Tokyo”."
+msgstr ""
+
+#: src/features/onboarding/questions.tsx
+msgid "Cities or countries. Leave it empty for anywhere."
 msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
@@ -4085,6 +4192,7 @@ msgstr ""
 #: src/features/portfolio/page-text.ts
 #: src/features/portfolio/statistics/work-statistics.tsx
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
+#: src/features/profile/fill.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
@@ -4299,6 +4407,10 @@ msgstr "Conferma l'orario con {contact} prima di aggiungere un nuovo colloquio."
 msgid "Confirm the time, link and who you'll meet. Glance at the resume and letter you sent."
 msgstr "Conferma orario, link e chi incontrerai. Dai un'occhiata al curriculum e alla lettera che hai inviato."
 
+#: src/features/profile/sources/messages.ts
+msgid "Confirm this is your own profile."
+msgstr ""
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/account/security.tsx
@@ -4447,6 +4559,10 @@ msgstr "Adatta"
 msgid "Content"
 msgstr "Contenuto"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Content from"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Content is laid out in a grid."
 msgstr "Il contenuto è impaginato in una griglia."
@@ -4461,6 +4577,8 @@ msgstr ""
 #: src/dialogs/auth/enable-two-factor.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/auth/pages/register.tsx
+#: src/features/onboarding/onboarding-page.tsx
+#: src/features/profile/fill.tsx
 msgid "Continue"
 msgstr "Continua"
 
@@ -4678,7 +4796,7 @@ msgid "Couldn't change the schedule. Try again."
 msgstr "Impossibile modificare la pianificazione. Riprova."
 
 #: src/features/portfolio/editor/publish-panel.tsx
-msgid "Couldn't change the source resume. Try again."
+msgid "Couldn't change the source. Try again."
 msgstr ""
 
 #: src/features/career/today.tsx
@@ -4711,6 +4829,10 @@ msgstr "Impossibile connettersi. Controlla la chiave e riprova."
 msgid "Couldn't continue as a guest. Try again."
 msgstr "Impossibile continuare come ospite. Riprova."
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Couldn't copy the photo. You can add one later in your Profile."
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Couldn't copy the questions. Select the text and copy it manually."
 msgstr "Impossibile copiare le domande. Seleziona il testo e copialo manualmente."
@@ -4740,6 +4862,10 @@ msgstr "Impossibile creare la chiave. Riprova."
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Couldn't create the letter. Try again."
 msgstr "Impossibile creare la lettera. Riprova."
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Couldn't create the resume. Try again."
+msgstr ""
 
 #. Fallback toast when account registration fails without a server error message
 #: src/features/auth/pages/register.tsx
@@ -4812,6 +4938,10 @@ msgstr "Impossibile esportare i tuoi dati. Riprova."
 msgid "Couldn't fill in the fields. Try again, or fill them in yourself."
 msgstr "Impossibile compilare i campi. Riprova o compilali tu."
 
+#: src/features/profile/fill.tsx
+msgid "Couldn't fill your Profile. Try again."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Couldn't forget that fact. Try again."
 msgstr "Impossibile dimenticare il fatto. Riprova."
@@ -4850,7 +4980,7 @@ msgstr "Impossibile collegare l'account del provider. Riprova."
 msgid "Couldn't link the application. Try again."
 msgstr "Impossibile collegare la candidatura. Riprova."
 
-#: src/features/documents/new-document-dialog.tsx
+#: src/features/resume/import/use-read-resume-file.ts
 msgid "Couldn't load AI connections. Try again before importing this file."
 msgstr "Impossibile caricare le connessioni IA. Riprova prima di importare questo file."
 
@@ -4939,6 +5069,7 @@ msgid "Couldn't reach the AI provider. Try again in a moment; no credits were us
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/profile/sources/messages.ts
 msgid "Couldn't reach the AI provider. Try again in a moment."
 msgstr "Impossibile contattare il fornitore di intelligenza artificiale. Riprova tra un attimo."
 
@@ -4950,6 +5081,11 @@ msgstr "Impossibile contattare il tuo fornitore di intelligenza artificiale. La 
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "Couldn't read “{0}”. Enter the dates so they sort and print consistently."
 msgstr "Impossibile leggere “{0}”. Inserisci le date in modo che vengano ordinate e stampate in modo coerente."
+
+#. placeholder {0}: sourceLabel(id)
+#: src/features/profile/sources/messages.ts
+msgid "Couldn't read {0}. Try again."
+msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Couldn't read that file. Choose a .csv file and try again."
@@ -5044,8 +5180,8 @@ msgstr "Impossibile salvare la modifica. Riprova."
 
 #: src/features/career/workspace/debrief.tsx
 #: src/features/career/workspace/fit.tsx
-msgid "Couldn't save that to Knowledge. Try again."
-msgstr "Impossibile salvarlo in Conoscenze. Riprova."
+msgid "Couldn't save that to your Profile. Try again."
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Couldn't save the application. Try again."
@@ -5089,6 +5225,10 @@ msgstr "Impossibile salvare i tag. Riprova."
 msgid "Couldn't save the timezone. Try again."
 msgstr "Impossibile salvare il fuso orario. Riprova."
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Couldn't save this resume first, so nothing was sent. Try again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Couldn't save this role to Applications. Try again."
 msgstr "Impossibile salvare questo ruolo in Candidature. Riprova."
@@ -5096,6 +5236,14 @@ msgstr "Impossibile salvare questo ruolo in Candidature. Riprova."
 #: src/features/career/schedule-sheet.tsx
 msgid "Couldn't save this schedule. Try again."
 msgstr "Impossibile salvare questa pianificazione. Riprova."
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Couldn't save to your Profile. Try again."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Couldn't save your answers. You can add them later in Profile → Preferences."
+msgstr ""
 
 #: src/features/letters/store.ts
 #: src/features/resume/share/history-tab.tsx
@@ -5112,6 +5260,14 @@ msgstr "Impossibile salvare le modifiche. Riprova."
 #: src/features/career/knowledge/preferences.tsx
 msgid "Couldn't save your preferences. Try again."
 msgstr "Impossibile salvare le tue preferenze. Riprova."
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Couldn't save your Profile, so this would open again. Try again."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Couldn't save your Profile. Try again."
+msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Couldn't save. Try again."
@@ -5422,6 +5578,10 @@ msgstr "Crea e apri"
 msgid "Create key"
 msgstr "Crea chiave"
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Create my resume"
+msgstr ""
+
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Create portfolio"
@@ -5712,6 +5872,10 @@ msgstr "Debriefing"
 msgid "Default"
 msgstr "Predefinito"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Default ({automatic})"
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Degree"
 msgstr "Titolo di studio"
@@ -5975,9 +6139,15 @@ msgstr ""
 #: src/features/career/workspace/shell.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/profile/sources/source-progress.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
 msgstr "Dettagli"
+
+#: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/profile/route.tsx
+msgid "Details & career"
+msgstr ""
 
 #. placeholder {0}: work.title
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
@@ -6021,6 +6191,10 @@ msgstr "Valuta diversa, non confrontata"
 #: src/features/career/offers.tsx
 msgid "Different pay period, not compared"
 msgstr "Periodo di retribuzione diverso, non confrontato"
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Differs from your Profile"
+msgstr ""
 
 #: src/features/portfolio/statistics/parts.tsx
 msgid "Direct"
@@ -6130,6 +6304,10 @@ msgstr "Documenti per questo lavoro"
 
 #: src/features/billing/plan-page.tsx
 msgid "Documents in Trash don't count."
+msgstr ""
+
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Documents that show a photo use this one."
 msgstr ""
 
 #: src/features/documents/trash-page.tsx
@@ -6306,8 +6484,12 @@ msgid "Draft"
 msgstr "Bozza del documento"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Draft · uses only the posting"
-msgstr "Bozza · utilizza solo l'annuncio di lavoro"
+msgid "Draft · uses only your Profile"
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Draft · uses only your Profile and the posting"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft · uses only your resume"
@@ -6328,6 +6510,10 @@ msgstr "Redigere un riassunto"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft from the posting"
 msgstr "Bozza dell'annuncio di lavoro"
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Draft from your Profile"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft from your resume"
@@ -6393,8 +6579,8 @@ msgid "Drag to reposition and use the slider to zoom before uploading."
 msgstr "Trascina per riposizionare e usa il cursore per ingrandire prima di caricare."
 
 #: src/features/documents/new-document-dialog.tsx
-msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section and flag anything we're unsure of."
-msgstr "Trascina un file qui o sfoglia. PDF, Word, Rezumi o JSON Resume. Compiliamo ogni sezione e segnaliamo tutto ciò di cui non siamo sicuri."
+msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section, flag anything we're unsure of, and add what your Profile is missing."
+msgstr ""
 
 #: src/features/documents/documents-page.tsx
 msgid "Drop a PDF, Word or JSON file"
@@ -6414,6 +6600,10 @@ msgstr "Rilascia per importare"
 
 #: src/features/ats-checker/checker.tsx
 msgid "Drop your PDF here"
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Drop your resume here"
 msgstr ""
 
 #: src/dialogs/resume/index.tsx
@@ -6462,8 +6652,8 @@ msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "Ogni risposta su cui ricevi un feedback viene conservata qui, dalla più recente."
 
 #: src/features/career/workspace/fit.tsx
-msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
-msgstr "Ogni requisito dell'annuncio viene confrontato con i fatti e le storie in Conoscenze. Le lacune risultano come prove mancanti, mai come capacità mancanti."
+msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6507,6 +6697,10 @@ msgstr "Modifica dettagli..."
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 msgid "Edit entry"
 msgstr "Modifica voce"
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Edit in Profile"
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
@@ -6598,6 +6792,7 @@ msgid "education"
 msgstr ""
 
 #: src/components/input/icon-picker-grid.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
@@ -6611,9 +6806,11 @@ msgstr ""
 #: src/features/billing/admin/overview.tsx
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/settings/account/profile.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Email"
 msgstr "Email"
 
@@ -6683,6 +6880,10 @@ msgstr ""
 msgid "Empty"
 msgstr ""
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Empty for now. Type your name below, or fill in your Profile."
+msgstr ""
+
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Empty uses a default"
 msgstr ""
@@ -6750,6 +6951,10 @@ msgstr "Inserisci un importo completo, ad esempio 95000. L'importo precedente no
 #: src/features/portfolio/blocks/add-media-block.tsx
 #: src/features/portfolio/editor/fields.tsx
 msgid "Enter a full web address, such as https://example.com."
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Enter a GitHub username, like octocat."
 msgstr ""
 
 #: src/features/settings/account/profile.tsx
@@ -6837,6 +7042,10 @@ msgstr "Inserisci la password per disattivare la verifica in due passaggi. Senza
 #: src/features/auth/pages/login.tsx
 msgid "Enter your password."
 msgstr "Inserisci la password."
+
+#: src/features/profile/sources/messages.ts
+msgid "Enter your site's address, like yourname.com."
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Entries"
@@ -6958,6 +7167,7 @@ msgid "experience"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
@@ -6970,6 +7180,14 @@ msgstr ""
 
 #: src/features/resume/editor/design/entries-group.tsx
 msgid "Experience, Education and more"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Experience, education and your other sections follow this resume."
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Experience, education and your other sections follow your Profile."
 msgstr ""
 
 #: src/features/billing/purchase.ts
@@ -7068,14 +7286,11 @@ msgid "Fact forgotten"
 msgstr "Fatto dimenticato"
 
 #: src/features/career/coach-chat.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Facts"
 msgstr "Fatti"
-
-#: src/features/career/coach.tsx
-msgid "Facts, stories and preferences that are switched on in Knowledge"
-msgstr "Fatti, storie e preferenze attivi in Conoscenze"
 
 #: src/features/billing/purchase.ts
 #: src/features/settings/ai/providers.tsx
@@ -7142,6 +7357,10 @@ msgstr "file letto"
 msgid "Fill fields"
 msgstr "Compila campi"
 
+#: src/features/profile/fill.tsx
+msgid "Fill from a resume…"
+msgstr ""
+
 #: src/features/portfolio/blocks/link-block.tsx
 msgid "Fill in from the link"
 msgstr ""
@@ -7158,8 +7377,12 @@ msgstr "Compila ruolo e azienda. Collega un provider di IA nelle Impostazioni pe
 msgid "Fill in the role and company. The posting is saved with the application."
 msgstr "Compila ruolo e azienda. L'offerta di lavoro viene salvata con la domanda di lavoro."
 
-#: src/features/portfolio/create-dialog.tsx
-msgid "Fill in your details yourself."
+#: src/features/documents/documents-page.tsx
+msgid "Fill in your Profile first"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Fill your Profile from what you have"
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -7169,6 +7392,10 @@ msgstr "Compilato dalla domanda di lavoro. Il saluto segue il nome."
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Filled in what we could from the posting."
 msgstr "Abbiamo compilato ciò che potevamo dall'annuncio."
+
+#: src/features/profile/fill.tsx
+msgid "Filled your Profile from “{name}”. Check each section."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "Filling in entries"
@@ -7193,6 +7420,10 @@ msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Find numbers"
+msgstr ""
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Find numbers in your Profile"
 msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
@@ -7230,6 +7461,10 @@ msgstr "Finlandese"
 #: src/features/billing/buy-plans.tsx
 #: src/features/homepage/pricing.tsx
 msgid "First {trialDays} days free"
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "First resume"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
@@ -7422,6 +7657,10 @@ msgstr "Per esempio, annota a quali aziende hai inviato questo curriculum, o i l
 msgid "For example: “{0}: I did … at … in 2024, and it led to …”"
 msgstr "Ad esempio: “{0}: ho fatto … presso … nel 2024, e questo ha portato a …”"
 
+#: src/features/onboarding/questions.tsx
+msgid "For example: Product designer, Data analyst."
+msgstr ""
+
 #: src/features/portfolio/themes.ts
 msgid "For finance, consulting, state companies, managers and formal fresh graduates."
 msgstr ""
@@ -7505,6 +7744,10 @@ msgstr "Trovato oggi"
 #: src/features/career/today.tsx
 msgid "Found yesterday"
 msgstr "Trovato ieri"
+
+#: src/features/profile/sources/source-progress.tsx
+msgid "Found: {list}"
+msgstr ""
 
 #: src/features/portfolio/admin/labels.ts
 #: src/features/portfolio/page-text.ts
@@ -7610,7 +7853,15 @@ msgid "From Fit"
 msgstr "Da Adattamento"
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "From my Profile"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "From my resume"
+msgstr ""
+
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "From Profile"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
@@ -7629,6 +7880,10 @@ msgstr "dall'assistente o API"
 msgid "From the first line to the shared link, every step of the resume lives in one editor."
 msgstr ""
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "From your account"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "From your cover letter"
 msgstr "Dalla tua lettera di presentazione"
@@ -7637,12 +7892,24 @@ msgstr "Dalla tua lettera di presentazione"
 msgid "From your experience entries"
 msgstr "Dalle voci della tua esperienza"
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "From your GitHub sign-in."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "From your message"
 msgstr "Dal tuo messaggio"
 
 #: src/features/portfolio/statistics/parts.tsx
 msgid "From your portfolio"
+msgstr ""
+
+#: src/features/resume/editor/write/add-section.tsx
+msgid "From your Profile"
+msgstr ""
+
+#: src/features/portfolio/location/location-fields.tsx
+msgid "From your Profile:"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -7661,6 +7928,7 @@ msgstr ""
 msgid "From your timezone"
 msgstr "In base al tuo fuso orario"
 
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Full name"
 msgstr "Nome e cognome"
@@ -7744,6 +8012,10 @@ msgstr ""
 #: src/features/settings/account/auth-hooks.ts
 msgid "GitHub"
 msgstr "GitHub"
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "GitHub username"
+msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Give a pass"
@@ -7932,7 +8204,9 @@ msgstr "La rubrica è cambiata"
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/write/basics-card.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Headline"
 msgstr "Intestazione"
 
@@ -8358,8 +8632,8 @@ msgid "Import with AI"
 msgstr ""
 
 #: src/features/documents/documents-page.tsx
-msgid "Import your current resume and we'll lay out every section for you to refine. Or start fresh. Start with your name. Build from there."
-msgstr "Importa il tuo curriculum attuale e ti esporremo ogni sezione affinché tu possa perfezionarla. Oppure ricominciare da capo. Inizia con il tuo nome. Costruisci da lì."
+msgid "Import your current resume and we'll lay out every section for you to refine. It also fills your Profile, so your next resume, letter and portfolio start from it. Or start blank from your Profile."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/resume/share/format.ts
@@ -8400,6 +8674,10 @@ msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "In progress"
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "In your Profile"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -8665,6 +8943,10 @@ msgstr "Potrebbe essere stata eliminata. Scegli un'altra storia o aggiungine una
 
 #: src/features/portfolio/admin/review-page.tsx
 msgid "It shows again if the owner still has it published."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "It starts with your Profile. You can switch templates any time."
 msgstr ""
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -8949,12 +9231,6 @@ msgstr "Cordiali saluti,"
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Kinds of work"
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
-#: src/routes/dashboard/career/route.tsx
-msgid "Knowledge"
-msgstr "Conoscenze"
 
 #: src/features/portfolio/works/work-editor.tsx
 msgid "Kopi Senja checkout redesign"
@@ -9393,20 +9669,20 @@ msgstr "Impossibile caricare i documenti collegati."
 msgid "Linked resume"
 msgstr "Curriculum collegato"
 
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Linked to the resume again"
-msgstr "Di nuovo collegato al curriculum"
-
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Linked. Name, email, phone and city update when the resume does."
-msgstr "Collegato. Nome, email, telefono e città vengono aggiornati quando lo fa il curriculum."
-
 #. Authentication provider display name in account settings
 #. Brand name label for LinkedIn social sign-in button
 #: src/features/auth/components/social-auth.tsx
 #: src/features/settings/account/auth-hooks.ts
 msgid "LinkedIn"
 msgstr "LinkedIn"
+
+#: src/features/profile/sources/messages.ts
+msgid "LinkedIn import isn't available right now. Add your LinkedIn export or a resume file instead."
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "LinkedIn profile link"
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "LinkedIn, Referral…"
@@ -9466,6 +9742,8 @@ msgstr ""
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/features/documents/recent-documents.tsx
+#: src/features/onboarding/onboarding-page.tsx
+#: src/features/profile/fill.tsx
 msgid "Loading"
 msgstr "Caricamento in corso"
 
@@ -9555,10 +9833,12 @@ msgstr ""
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/page-text.ts
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Location"
 msgstr "Località"
 
@@ -10009,6 +10289,10 @@ msgstr ""
 msgid "More providers and options are in <0>Settings</0>. The rest of the app works fully without AI."
 msgstr "Altri fornitori e opzioni sono disponibili nelle <0>Impostazioni</0>. Il resto dell’app funziona pienamente senza IA."
 
+#: src/features/onboarding/template-choice.tsx
+msgid "More templates"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "Compare più di un indirizzo email."
@@ -10025,6 +10309,10 @@ msgstr "La maggior parte dei punti elenco inizia con parole di riempimento anzic
 #: src/features/ats-checker/messages.ts
 msgid "Most entries have no dates."
 msgstr "La maggior parte delle voci non ha date."
+
+#: src/features/profile/sources/messages.ts
+msgid "Most of this profile is private, so little came in."
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
@@ -10161,6 +10449,7 @@ msgstr "Il mio ruolo"
 #: src/features/settings/account/profile.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Name"
 msgstr "Nome"
 
@@ -10617,6 +10906,7 @@ msgid "No phone number was found."
 msgstr "Non è stato trovato alcun numero di telefono."
 
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/profile/sources/source-review.tsx
 msgid "No photo"
 msgstr ""
 
@@ -10635,6 +10925,10 @@ msgstr ""
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "No postings found. Try different keywords."
 msgstr "Nessun annuncio di lavoro trovato. Prova parole chiave diverse."
+
+#: src/features/profile/sources/messages.ts
+msgid "No public repositories of your own, so no projects came in."
+msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "No QRIS app, or want it to renew on its own? <0>Pay by card in US dollars</0>"
@@ -10659,11 +10953,6 @@ msgstr "Nessun risultato trovato."
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time by 40%”, then try again."
 msgstr ""
-
-#: src/features/portfolio/editor/publish-panel.tsx
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "No resume"
-msgstr "Nessun curriculum"
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
@@ -10813,6 +11102,10 @@ msgstr ""
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "Not enough Rezumi AI credits to read it."
+msgstr ""
+
 #: src/features/portfolio/errors.ts
 msgid "Not enough Rezumi AI credits. Nothing changed."
 msgstr ""
@@ -10839,9 +11132,13 @@ msgid "Not in the offer · ask {company}"
 msgstr "Non presente nell'offerta · chiedi a {company}"
 
 #: src/features/resume/editor/design/style-groups.tsx
-#: src/features/resume/editor/design/template-group.tsx
+#: src/features/resume/editor/design/template-card.tsx
 #: src/features/resume/share/download-tab.tsx
 msgid "Not in your plan"
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Not in your Profile yet"
 msgstr ""
 
 #: src/features/ats-checker/report/jd-coverage.tsx
@@ -10857,6 +11154,7 @@ msgid "Not included"
 msgstr ""
 
 #: src/features/career/shared.tsx
+#: src/features/onboarding/onboarding-page.tsx
 msgid "Not now"
 msgstr "Non ora"
 
@@ -10918,6 +11216,10 @@ msgstr "Non salvato: questo fatto era già stato dimenticato."
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Not saved: something needs fixing"
+msgstr ""
+
+#: src/features/profile/details-page.tsx
+msgid "Not saved."
 msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
@@ -10984,6 +11286,10 @@ msgid "Nothing has been done yet."
 msgstr ""
 
 #: src/features/portfolio/editor/section-forms.tsx
+msgid "Nothing here in your Profile yet, so the section doesn't show."
+msgstr ""
+
+#: src/features/portfolio/editor/section-forms.tsx
 msgid "Nothing here on your resume yet, so the section doesn't show."
 msgstr ""
 
@@ -11012,6 +11318,14 @@ msgstr ""
 msgid "Nothing more is charged. Your account goes back to Free at the end of the period you paid for; every document stays yours."
 msgstr ""
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Nothing new to add"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Nothing new to add: your Profile already has what we found, or the sources couldn't be read."
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "Nothing saved yet"
 msgstr "Ancora niente di salvato"
@@ -11023,6 +11337,10 @@ msgstr "Niente di programmato ancora"
 #: src/features/career/today.tsx
 msgid "Nothing scheduled yet."
 msgstr "Ancora niente di pianificato."
+
+#: src/features/profile/sources/source-progress.tsx
+msgid "Nothing to add from here."
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "Nothing to apply"
@@ -11046,6 +11364,10 @@ msgstr "Niente da suggerire."
 
 #: src/features/billing/payment-return.tsx
 msgid "Nothing was charged for it. You can start {plan} again."
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Nothing was found at that address. Check it and try again."
 msgstr ""
 
 #: src/features/career/workspace/practise.tsx
@@ -11101,10 +11423,6 @@ msgstr "Spento"
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Off while your portfolio has a password."
 msgstr ""
-
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Off. The letter keeps its own copy of your details."
-msgstr "Spento. La lettera conserva una propria copia dei tuoi dati."
 
 #: src/features/applications/stages.ts
 #: src/features/career/workspace/saved.tsx
@@ -11162,6 +11480,7 @@ msgstr ""
 msgid "One calm column, a big name and your work as a clear list."
 msgstr ""
 
+#: src/features/resume/editor/design/template-card.tsx
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
 msgid "One column"
@@ -11432,10 +11751,6 @@ msgstr "Si apre in Carriera → Offerte."
 msgid "opens in new tab"
 msgstr "apre in una nuova scheda"
 
-#: src/features/documents/new-document-dialog.tsx
-msgid "Opens the editor on your name. Nothing else to fill in first."
-msgstr "Apre l'editor sul tuo nome. Nient'altro da compilare prima."
-
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
 msgid "Opportunity discovery"
@@ -11533,6 +11848,10 @@ msgstr "Altro · Compatibile con OpenAI"
 #: src/features/career/offers.tsx
 msgid "Other benefits"
 msgstr "Altri benefit"
+
+#: src/features/profile/sources/source-review.tsx
+msgid "Other details"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Other documents"
@@ -11830,6 +12149,10 @@ msgstr "Incolla la domanda dal modulo"
 msgid "Paste your key"
 msgstr "Incolla la tua chiave"
 
+#: src/features/profile/sources/messages.ts
+msgid "Paste your profile link, like linkedin.com/in/your-name."
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Pasted description"
@@ -11951,6 +12274,10 @@ msgstr ""
 msgid "PDF, Word or JSON. We'll build a resume from it."
 msgstr "PDF, Word o JSON. Ne costruiremo un curriculum."
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "PDF, Word, a LinkedIn export or a Rezumi file"
+msgstr ""
+
 #: src/features/portfolio/statistics/parts.tsx
 msgid "PDFs opened"
 msgstr ""
@@ -11993,11 +12320,17 @@ msgstr "Rimuove definitivamente tutto. Esporta prima se vuoi una copia."
 msgid "Persian"
 msgstr "Persiano"
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "Personal website"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Phone"
 msgstr "Telefono"
@@ -12012,6 +12345,7 @@ msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
+#: src/features/profile/sources/source-review.tsx
 msgid "Photo"
 msgstr ""
 
@@ -12043,6 +12377,10 @@ msgstr ""
 msgid "Photos and cameras"
 msgstr ""
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Pick a look for your first resume"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Pick a time after now."
 msgstr "Scegli un orario successivo a quello attuale."
@@ -12054,6 +12392,10 @@ msgstr "Scegli un'icona"
 #: src/features/ats-checker/messages.ts
 msgid "Pick one format and use it everywhere."
 msgstr "Scegli un formato e usalo ovunque."
+
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "Pick projects from your Profile: title, summary, dates and link come along."
+msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Pick projects from your resume: title, summary, dates and link come along."
@@ -12359,7 +12701,7 @@ msgstr "Preferenze"
 
 #: src/features/career/coach-chat.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
 msgstr "Preferenze"
@@ -12593,7 +12935,8 @@ msgstr "Competenza"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/page-text.ts
-#: src/features/settings/account/profile.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Profile"
 msgstr "Profilo"
 
@@ -12821,6 +13164,10 @@ msgstr "Opzioni della domanda"
 msgid "Question removed"
 msgstr "Domanda rimossa"
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Questions"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Questions copied"
 msgstr "Domande copiate"
@@ -12944,9 +13291,17 @@ msgstr "Leggi la pagina"
 msgid "Read the resume"
 msgstr "Ha letto il curriculum"
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "Read with AI. Only what's on the page comes in."
+msgstr ""
+
 #: src/features/auth/pages/consent.tsx
 msgid "Read your email address."
 msgstr "Leggere il tuo indirizzo email."
+
+#: src/features/assistant/conversation.tsx
+msgid "Read your Profile"
+msgstr ""
 
 #: src/features/auth/pages/consent.tsx
 msgid "Read your profile information."
@@ -12990,6 +13345,10 @@ msgstr "Pagina di lettura..."
 #: src/features/documents/new-document-dialog.tsx
 msgid "Reading the file"
 msgstr "Lettura del fascicolo"
+
+#: src/features/profile/sources/source-progress.tsx
+msgid "Reading the file…"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/portfolio/blocks/add-media-block.tsx
@@ -13047,8 +13406,21 @@ msgstr "Leggo la tua risposta"
 msgid "Reading your notes"
 msgstr "Leggo le tue note"
 
+#: src/features/profile/sources/source-progress.tsx
+msgid "Reading your profile…"
+msgstr ""
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Reading your Profile…"
+msgstr ""
+
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Reading your resume…"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+#: src/features/profile/sources/source-progress.tsx
+msgid "Reading…"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -13355,11 +13727,12 @@ msgstr "Rimuovere “{name}”?"
 
 #. placeholder {0}: attachment.filename
 #. placeholder {0}: contact.name
-#. placeholder {0}: passkey.name || t`Unnamed passkey`
+#. placeholder {0}: file.name
 #: src/features/applications/components/detail/contacts.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-thread.tsx
+#: src/features/profile/sources/source-fields.tsx
 #: src/features/settings/account/security.tsx
 msgid "Remove {0}"
 msgstr "Rimuovere {0}"
@@ -13715,8 +14088,6 @@ msgstr "riprendere"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/features/portfolio/editor/publish-panel.tsx
-#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "Curriculum"
 
@@ -13749,6 +14120,8 @@ msgid "Resume details"
 msgstr "dettagli del curriculum"
 
 #: src/features/applications/components/detail/sent-documents.tsx
+#: src/features/profile/sources/messages.ts
+#: src/features/profile/sources/source-fields.tsx
 msgid "Resume file"
 msgstr "File curriculum"
 
@@ -13813,6 +14186,8 @@ msgstr "Estratto {0}. La freschezza dell'origine è sconosciuta se non segnalata
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/documents/recent-documents.tsx
+#: src/features/profile/details-page.tsx
+#: src/features/profile/sources/source-progress.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13845,6 +14220,7 @@ msgstr ""
 
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
+#: src/features/onboarding/onboarding-page.tsx
 #: src/features/resume/share/download-tab.tsx
 msgid "Review"
 msgstr "Revisione"
@@ -13862,8 +14238,8 @@ msgid "Review my answer"
 msgstr "Rivedi la mia risposta"
 
 #: src/features/career/workspace/debrief.tsx
-msgid "Review my answer sends the question, what you said, this posting and your Knowledge to {providerName}."
-msgstr "Rivedi la mia risposta invia la domanda, ciò che hai detto, questo annuncio e le tue Conoscenze a {providerName}."
+msgid "Review my answer sends the question, what you said, this posting and your Profile to {providerName}."
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Review required form answers and remove unsupported claims."
@@ -13872,6 +14248,10 @@ msgstr "Rivedi le risposte obbligatorie del modulo e rimuovi le affermazioni non
 #: src/features/career/workspace/apply.tsx
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "Rivedi il curriculum e la lettera di presentazione selezionati nei rispettivi editor."
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Review what we found"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Review writing"
@@ -13961,6 +14341,10 @@ msgstr ""
 #: src/features/billing/plan-page.tsx
 #: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Rezumi AI isn't available right now. Use your own AI connection, or add a resume file instead."
 msgstr ""
 
 #: src/features/homepage/introduction.tsx
@@ -14190,6 +14574,10 @@ msgstr "Salva prima, poi prova la ricerca e la lettura. Nessun test viene esegui
 msgid "Save interview"
 msgstr "Salva il colloquio"
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Save it to your Profile to use it in new resumes, letters and your portfolio."
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Save job"
@@ -14221,12 +14609,17 @@ msgid "Save these offer terms to compare"
 msgstr "Salva questi termini dell'offerta per confrontarli"
 
 #: src/features/assistant/tool-approvals.tsx
-msgid "Save this story to Knowledge?"
+msgid "Save this story to your Profile?"
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Save to my Profile"
 msgstr ""
 
 #: src/features/career/workspace/fit.tsx
-msgid "Save to Knowledge"
-msgstr "Salva in Conoscenze"
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Save to Profile"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Save to the application"
@@ -14248,6 +14641,7 @@ msgstr "salvato"
 #: src/features/applications/stages.ts
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/homepage/features.tsx
+#: src/features/profile/details-page.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -14302,18 +14696,26 @@ msgstr "Salvato in Candidature"
 msgid "Saved to Applications with the posting"
 msgstr "Salvato in Candidature con l'annuncio"
 
-#: src/features/career/workspace/fit.tsx
-msgid "Saved to Knowledge as a fact"
-msgstr "Salvato in Conoscenze come fatto"
-
-#: src/features/career/coach-chat.tsx
-#: src/features/career/workspace/debrief.tsx
-msgid "Saved to Knowledge, private to this application."
-msgstr "Salvato in Conoscenze, privato per questa candidatura."
-
 #: src/features/career/workspace/practise.tsx
 msgid "Saved to Saved · Practice"
 msgstr "Salvato in Salvato · Esercitazione"
+
+#: src/features/career/workspace/fit.tsx
+msgid "Saved to your Profile as a fact"
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+#: src/features/career/workspace/debrief.tsx
+msgid "Saved to your Profile, private to this application."
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Saved to your Profile."
+msgstr ""
+
+#: src/features/profile/details-page.tsx
+msgid "Saves as you type. Resumes that still use a part follow your changes."
+msgstr ""
 
 #. placeholder {0}: new URL(url).host
 #: src/features/resume/share/address-field.tsx
@@ -14325,6 +14727,7 @@ msgid "Saving is taking longer than expected. Your changes are still open."
 msgstr "Il salvataggio sta richiedendo più tempo del previsto. Le tue modifiche sono ancora aperte."
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/profile/details-page.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -14704,10 +15107,6 @@ msgstr "Invia il curriculum stesso anziché un contenitore portfolio."
 msgid "Send this exact query to your web search provider?"
 msgstr ""
 
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Sender details copied into the letter"
-msgstr "Dettagli del mittente copiati nella lettera"
-
 #: src/features/homepage/testimonials.tsx
 msgid "Sending a link instead of a PDF means recruiters always see the latest version."
 msgstr ""
@@ -14721,21 +15120,21 @@ msgid "Sending your message…"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
-msgid "Sends this application (posting, notes, interview details) and Knowledge that's switched on to {label}."
-msgstr "Invia questa candidatura (annuncio, note, dettagli del colloquio) e le Conoscenze attive a {label}."
+msgid "Sends this application (posting, notes, interview details) and your Profile (details, career, and the facts and stories that are switched on) to {label}."
+msgstr ""
 
 #. placeholder {0}: provider.label
 #: src/features/career/workspace/fit.tsx
-msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to {0}."
-msgstr "Invia l'annuncio, le note e i documenti di questa candidatura, insieme alle Conoscenze attive, a {0}."
+msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to {0}."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
-msgstr "Invia l'annuncio, le note e i documenti di questa candidatura, insieme alle Conoscenze attive, a questa connessione. Il tuo fornitore potrebbe addebitarlo."
+msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
+msgstr ""
 
 #: src/features/career/workspace/coach-sheet.tsx
-msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
-msgstr "Invia il tuo messaggio, questa candidatura (annuncio, note, documenti inviati) e le Conoscenze attive a {connection}."
+msgid "Sends your message, this application (posting, notes, documents sent) and your Profile (details, career, and the facts and stories that are switched on) to {connection}."
+msgstr ""
 
 #. placeholder {0}: provider?.label
 #. placeholder {1}: provider?.model
@@ -14843,6 +15242,10 @@ msgstr "Impostazioni"
 #: src/features/settings/ai/mcp.tsx
 msgid "Setup guide"
 msgstr "Guida all'installazione"
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Setup steps"
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Shadow color"
@@ -15243,6 +15646,7 @@ msgstr "Competenza"
 msgid "skills"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
@@ -15259,6 +15663,7 @@ msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
 #: src/features/career/workspace/apply.tsx
+#: src/features/onboarding/onboarding-page.tsx
 #: src/features/portfolio/create-dialog.tsx
 msgid "Skip"
 msgstr "Salta"
@@ -15411,12 +15816,9 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/career/knowledge/facts.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
 msgid "Source"
 msgstr "Fonte"
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Source resume"
-msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/assistant/message-sources.tsx
@@ -15518,6 +15920,10 @@ msgstr "La data di inizio deve essere precedente o uguale alla data di fine."
 msgid "Start each one with a concrete verb: built, led, reduced, migrated."
 msgstr "Inizia ognuno con un verbo concreto: costruito, guidato, ridotto, migrato."
 
+#: src/features/resume/editor/write/add-section.tsx
+msgid "Start empty"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Start free"
 msgstr ""
@@ -15547,6 +15953,10 @@ msgstr ""
 msgid "Start from one you have and link the application."
 msgstr "Inizia da quello che hai e collega la domanda di lavoro."
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Start from scratch"
+msgstr ""
+
 #: src/features/homepage/closing.tsx
 msgid "Start from scratch or import the one you have. The free plan is yours for as long as you need it."
 msgstr ""
@@ -15565,6 +15975,10 @@ msgid "Start the resume with your name on its own line."
 msgstr "Inizia il curriculum con il tuo nome su una riga a sé."
 
 #: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Start typing, or draft from what we know: the {company} posting and your Profile."
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing, or draft from what we know: the {company} posting and your resume."
 msgstr "Inizia a digitare o a redigere una bozza in base a ciò che sappiamo: l'annuncio di lavoro {company} e il tuo curriculum."
 
@@ -15573,12 +15987,16 @@ msgid "Start typing, or draft from what we know: the {company} posting."
 msgstr "Inizia a digitare o a creare una bozza partendo da ciò che sappiamo: l'annuncio di lavoro {company}."
 
 #: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Start typing, or draft from what we know: your Profile."
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing, or draft from what we know: your resume."
 msgstr "Inizia a digitare o abbozza ciò che sappiamo: il tuo curriculum."
 
 #: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Start typing. To draft one, link a resume or an application first."
-msgstr "Inizia a digitare. Per redigerne uno, collega prima un curriculum o una domanda di lavoro."
+msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
+msgstr ""
 
 #: src/features/homepage/introduction.tsx
 msgid "Start with the free plan"
@@ -15587,6 +16005,10 @@ msgstr ""
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Start with the sections most resumes have."
 msgstr "Inizia con le sezioni presenti nella maggior parte dei curriculum."
+
+#: src/features/resume/editor/write/add-section.tsx
+msgid "Start with the sections most resumes have. New resumes start from them."
+msgstr ""
 
 #: src/features/portfolio/editor/rich-text-editor.tsx
 msgid "Start writing…"
@@ -15599,6 +16021,10 @@ msgstr "Iniziato"
 
 #: src/features/billing/buy-plans.tsx
 msgid "Starts at your next renewal."
+msgstr ""
+
+#: src/features/documents/new-document-dialog.tsx
+msgid "Starts from your Profile. Change anything for this resume."
 msgstr ""
 
 #: src/features/career/shared.tsx
@@ -15712,8 +16138,9 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Stories"
 msgstr "Storie"
 
@@ -16138,6 +16565,7 @@ msgstr "Modello, tipo e colori seguono il curriculum, quindi la coppia corrispon
 
 #: src/features/homepage/footer.tsx
 #: src/features/homepage/ui.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "Templates"
 msgstr "Modelli"
 
@@ -16329,6 +16757,10 @@ msgstr "La password non è corretta. Verificala con il proprietario del curricul
 msgid "That password isn't right. Check it and try again."
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "That profile wasn't found, or it isn't public. Check the link."
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "That provider account is already linked to another account. Use a different provider account."
 msgstr "Quell'account del provider è già collegato a un altro account. Usa un account del provider diverso."
@@ -16431,8 +16863,8 @@ msgid "The coach doesn't remember anything from your messages."
 msgstr "Il coach non ricorda nulla dei tuoi messaggi."
 
 #: src/features/career/coach.tsx
-msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
-msgstr "Il coach non è configurato su questo server. Chi lo gestisce deve impostare ENCRYPTION_SECRET. Conoscenze, Offerte e le tue candidature funzionano anche senza."
+msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and your applications work without it."
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
@@ -16486,11 +16918,8 @@ msgstr "Lo PDF esportato"
 msgid "The exported PDF couldn't be checked. Try again."
 msgstr "Non è stato possibile controllare lo PDF esportato. Riprova."
 
-#: src/routes/dashboard/career/route.tsx
-msgid "The facts, stories and preferences the coach works from."
-msgstr ""
-
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/profile/sources/messages.ts
 msgid "The file couldn't be read as a resume."
 msgstr "Non è stato possibile leggere il file come curriculum."
 
@@ -16606,6 +17035,10 @@ msgstr ""
 msgid "The page had no job details to read. Fill in the role and company."
 msgstr "La pagina non conteneva dettagli sul lavoro da leggere. Compila ruolo e azienda."
 
+#: src/features/profile/sources/messages.ts
+msgid "The page is long, so only its first part was read."
+msgstr ""
+
 #: src/features/portfolio/blocks/video-block.tsx
 msgid "The page shows a plain play button until the thumbnail is copied."
 msgstr ""
@@ -16636,6 +17069,10 @@ msgstr ""
 
 #: src/features/portfolio/media/pdf.ts
 msgid "The PDF couldn't be uploaded. Check your connection and try again."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "The photo in my Profile"
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
@@ -16892,6 +17329,10 @@ msgstr "Non c'è alcun link a un profilo, portfolio o repository."
 msgid "There is no summary paragraph."
 msgstr "Non c'è un paragrafo di riepilogo."
 
+#: src/features/profile/sources/messages.ts
+msgid "There's no GitHub account with that username."
+msgstr ""
+
 #: src/features/billing/receipt.tsx
 msgid "There's no receipt here: this payment isn't a paid QRIS plan."
 msgstr ""
@@ -17067,7 +17508,7 @@ msgstr ""
 msgid "This file isn't a picture your browser can read. Use a JPG, PNG or WebP file."
 msgstr ""
 
-#: src/features/documents/new-document-dialog.tsx
+#: src/features/resume/import/use-read-resume-file.ts
 msgid "This file type can't be imported. Use a PDF, Word, Rezumi or JSON Resume file, or a LinkedIn export (.zip)."
 msgstr "Questo tipo di file non può essere importato. Utilizzare un file PDF, Word, Rezumi o JSON Resume oppure un'esportazione LinkedIn (.zip)."
 
@@ -17107,6 +17548,10 @@ msgstr ""
 msgid "This is a {provider} link: it can show on your page itself, after a visitor presses it."
 msgstr ""
 
+#: src/features/profile/sources/use-source-runs.ts
+msgid "This is a cover letter. Add a resume or a LinkedIn export instead."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "Questo è un PDF Portfolio: la pagina visibile è solo una copertina."
@@ -17119,12 +17564,20 @@ msgstr ""
 msgid "This is an XFA form, so most software reads only the empty shell."
 msgstr "Questo è un modulo XFA, quindi la maggior parte dei software legge solo il guscio vuoto."
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "This is my own profile"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "Questo non è un formato di pagina comune per un curriculum."
 
 #: src/features/portfolio/errors.ts
 msgid "This is too long for Rezumi AI. Shorten it, or use your own AI connection."
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "This isn't available for your account."
 msgstr ""
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
@@ -17138,6 +17591,10 @@ msgstr "Questa lettera è bloccata. Sbloccalo dal suo menu per modificarlo."
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "This letter keeps its recipient as written."
 msgstr "Questa lettera mantiene il destinatario così come è scritto."
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "This letter only"
+msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "This link doesn't say which payment it is. Your plan page lists every payment you started."
@@ -17253,10 +17710,6 @@ msgstr ""
 msgid "This portfolio doesn't exist anymore. Its owner may have deleted it."
 msgstr ""
 
-#: src/features/portfolio/works/add-work/from-resume.tsx
-msgid "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
-msgstr ""
-
 #: src/features/portfolio/errors.ts
 msgid "This portfolio is already in that state. Reload the page to see what changed."
 msgstr ""
@@ -17267,6 +17720,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "This portfolio was taken down"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-resume.tsx
+msgid "This portfolio's source resume is in Trash. Choose another source in Publish → Source."
 msgstr ""
 
 #: src/features/billing/receipt.tsx
@@ -17334,7 +17791,7 @@ msgid "This saved version is no longer available."
 msgstr "Questa versione salvata non è più disponibile."
 
 #: src/features/portfolio/editor/section-forms.tsx
-msgid "This section comes from a resume. Choose one in Publish → Source resume to fill it."
+msgid "This section comes from your source resume, which is in Trash. Choose another in Publish → Source."
 msgstr ""
 
 #: src/features/auth/pages/error.tsx
@@ -17585,6 +18042,10 @@ msgstr ""
 msgid "Too many tries in a row. Wait a few minutes, then try again."
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "Too many tries in a short time. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Too many tries. Try again later."
 msgstr "Troppi tentativi. Riprova più tardi."
@@ -17809,7 +18270,7 @@ msgid "Turn this schedule on"
 msgstr "Attiva questa pianificazione"
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "Turn your resume into a portfolio website"
+msgid "Turn your Profile into a portfolio website"
 msgstr ""
 
 #: src/dialogs/auth/disable-two-factor.tsx
@@ -17824,10 +18285,15 @@ msgstr "Attivazione della verifica in due passaggi…"
 msgid "Two bullets run over two lines"
 msgstr ""
 
+#: src/features/resume/editor/design/template-card.tsx
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
 msgid "Two columns"
 msgstr "Due colonne"
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Two quick questions"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Two stories"
@@ -17921,6 +18387,7 @@ msgstr "Sottolinea i collegamenti"
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/list-undo.ts
 #: src/features/portfolio/editor/rich-text-editor.tsx
+#: src/features/profile/fill.tsx
 #: src/features/resume/editor/check/actions.ts
 #: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/design/fit.ts
@@ -17928,6 +18395,7 @@ msgstr "Sottolinea i collegamenti"
 #: src/features/resume/editor/proposals/proposals.ts
 #: src/features/resume/editor/webmcp.ts
 #: src/features/resume/editor/write/entry-card.tsx
+#: src/features/resume/editor/write/profile-link.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -17993,6 +18461,14 @@ msgstr ""
 msgid "Unread:"
 msgstr ""
 
+#: src/features/profile/fill.tsx
+msgid "Untick anything you'd rather leave out."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Untick anything you'd rather leave out. You can change it all later in your Profile."
+msgstr ""
+
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
 #: src/features/billing/admin/customer.tsx
 msgid "until {0}"
@@ -18004,6 +18480,7 @@ msgid "Until now it opened your resume. Your resume stays at <0>{0}</0>, and you
 msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
+#: src/features/resume/editor/write/profile-link.tsx
 #: src/features/resume/stylesheet/targets.ts
 msgid "Untitled"
 msgstr "Senza titolo"
@@ -18018,6 +18495,7 @@ msgid "Untitled letter"
 msgstr "Lettera senza titolo"
 
 #: src/features/documents/use-start-document.ts
+#: src/features/onboarding/onboarding-page.tsx
 msgid "Untitled resume"
 msgstr "Curriculum senza titolo"
 
@@ -18089,6 +18567,10 @@ msgstr "Aggiornato"
 #: src/features/documents/document-actions.tsx
 msgid "Updated {done} of {total}. Locked documents, and letters for public links, were skipped."
 msgstr "Aggiornati {done} di {total}. I documenti bloccati e le lettere per i collegamenti pubblici sono stati ignorati."
+
+#: src/features/resume/builder/draft.ts
+msgid "Updated from your Profile."
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Updating your resume..."
@@ -18243,11 +18725,6 @@ msgstr "Si prega di utilizzare un numero di caratteri compreso tra 6 e 64."
 msgid "Use default"
 msgstr "Usa predefinito"
 
-#. placeholder {0}: resume?.name ?? t`the resume`
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Use details from “{0}”"
-msgstr "Utilizza i dettagli da \"{0}\""
-
 #: src/features/career/knowledge/facts.tsx
 msgid "Use for all applications"
 msgstr "Usa per tutte le candidature"
@@ -18291,6 +18768,10 @@ msgstr "Usa intestazioni semplici come \"Esperienza\", \"Istruzione\" e \"Compet
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Use posting"
 msgstr "Utilizza gli annunci di lavoro"
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Use Profile's"
+msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Use sample"
@@ -18391,6 +18872,10 @@ msgstr "Usa il servizio di ricerca web configurato nelle Impostazioni. I risulta
 #: src/features/settings/ai/web-access.tsx
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "Utilizza la ricerca web del tuo provider di intelligenza artificiale, ove supportato, e legge i collegamenti con il lettore integrato."
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Using your Profile's version."
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "UX Designer"
@@ -18641,6 +19126,11 @@ msgstr "Volontariato"
 msgid "Volunteering"
 msgstr ""
 
+#. placeholder {0}: formatList(i18n.locale, waitingFor)
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Waiting for {0}…"
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 msgid "Waiting for Dodo Payments"
 msgstr ""
@@ -18693,6 +19183,18 @@ msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "We couldn't find this payment"
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "We only read what you add here, once you continue: LinkedIn profiles through Apify, GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "We only read what you add here, once you continue. Nothing goes into your Profile until you check it."
 msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
@@ -18771,9 +19273,15 @@ msgid "Webhooks with a bad signature"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/write/basics-card.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Website"
 msgstr "Sito Web"
+
+#: src/features/billing/credits.ts
+msgid "Website read into your Profile"
+msgstr ""
 
 #: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Wedding photos, Bandung 2025"
@@ -18892,6 +19400,10 @@ msgstr "Cosa conta per te"
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
+#: src/features/onboarding/questions.tsx
+msgid "What roles are you aiming for?"
+msgstr ""
+
 #: src/features/resume/editor/write/improve.tsx
 msgid "What should change?"
 msgstr "Cosa dovrebbe cambiare?"
@@ -18943,6 +19455,10 @@ msgstr "Cosa funziona"
 #: src/features/career/knowledge/stories.tsx
 msgid "What would you do differently?"
 msgstr "Cosa faresti diversamente?"
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "What you add to your Profile later shows up here. You can also pick a resume later in Publish."
+msgstr ""
 
 #. placeholder {0}: requirement.text
 #: src/features/career/workspace/fit.tsx
@@ -19016,6 +19532,10 @@ msgstr "Entro quando serve la tua risposta?"
 msgid "Where applications come from"
 msgstr "Da dove arrivano le candidature"
 
+#: src/features/onboarding/questions.tsx
+msgid "Where do you want to work?"
+msgstr ""
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Where it was given (optional)"
 msgstr ""
@@ -19068,6 +19588,10 @@ msgstr "Quali opportunità corrispondono meglio alle mie priorità?"
 msgid "Which other benefits come with it, like pension or allowances?"
 msgstr "Quali altri benefit sono inclusi, come previdenza integrativa o indennità?"
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "While we read your details"
+msgstr ""
+
 #: src/dialogs/resume/template/data.ts
 msgid "White and airy: an elegant serif name, the sidebar on the right set apart by a single hairline, and no fills anywhere."
 msgstr ""
@@ -19119,10 +19643,6 @@ msgstr ""
 
 #: src/features/portfolio/blocks/embed-block.tsx
 msgid "Without a picture, the page shows a plain button with the service's name."
-msgstr ""
-
-#: src/features/portfolio/create-dialog.tsx
-msgid "Without a resume"
 msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
@@ -19255,8 +19775,8 @@ msgid "Write what you did."
 msgstr "Scrivi cosa hai fatto."
 
 #: src/features/career/workspace/apply.tsx
-msgid "Write your answer, or draft one from your Knowledge."
-msgstr "Scrivi la tua risposta o creane una bozza dalle tue Conoscenze."
+msgid "Write your answer, or draft one from your Profile."
+msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
@@ -19388,10 +19908,6 @@ msgstr "Puoi continuare a modificare. Le modifiche vengono sincronizzate quando 
 msgid "You can keep up to 30 application questions."
 msgstr "Puoi conservare fino a 30 domande di candidatura."
 
-#: src/features/portfolio/create-dialog.tsx
-msgid "You can link a resume later in Publish."
-msgstr ""
-
 #: src/features/billing/plan.ts
 msgid "You can look at every theme. {themes} are included, and a portfolio that already uses another theme keeps it."
 msgstr ""
@@ -19431,6 +19947,10 @@ msgstr "Hai detto: “{said}” Chiedi prima di decidere."
 #: src/features/career/offers.tsx
 msgid "You said: “{said}” Ask both companies before deciding."
 msgstr "Hai detto: “{said}” Chiedi a entrambe le aziende prima di decidere."
+
+#: src/features/profile/sources/messages.ts
+msgid "You seem to be offline. Check your connection and try again."
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "You send it from your own email."
@@ -19476,12 +19996,24 @@ msgstr "Stai usando un account ospite"
 msgid "You've changed things since. Use Undo at the top of the editor."
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "You've used this as often as you can today. Try again tomorrow."
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "You've used today's LinkedIn imports. Try again tomorrow, or add your LinkedIn export."
+msgstr ""
+
 #: src/features/billing/pending-payment.tsx
 msgid "Your {plan} checkout isn't finished"
 msgstr ""
 
 #: src/features/billing/pending-payment.tsx
 msgid "Your {plan} QRIS payment isn't finished"
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Your account"
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -19593,9 +20125,39 @@ msgstr "I tuoi dati"
 msgid "Your dates are written several different ways."
 msgstr "Le tue date sono scritte in diversi modi."
 
+#: src/features/onboarding/onboarding-page.tsx
+#: src/features/profile/sources/source-review.tsx
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Your details"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Your details and career, kept in one place."
+msgstr ""
+
+#: src/routes/dashboard/profile/route.tsx
+msgid "Your details and career, kept in one place. New resumes, letters and your portfolio start from here."
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Your details and career, with the facts, stories and preferences that are switched on in your Profile"
+msgstr ""
+
+#: src/routes/builder/letter/-components/letter-shell.tsx
+msgid "Your details changed in your Profile. The letter updated too."
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your details changed on the resume. The letter updated too."
 msgstr "I tuoi dati sono cambiati nel curriculum. Anche la lettera è stata aggiornata."
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your details from"
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your details were copied into the letter. Edit them here."
+msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/portfolio-page.tsx
@@ -19691,10 +20253,6 @@ msgstr ""
 msgid "Your headline changed on the resume. The letter updated too."
 msgstr "Il tuo titolo è cambiato nel curriculum. Anche la lettera è stata aggiornata."
 
-#: src/features/career/workspace/debrief.tsx
-msgid "your Knowledge"
-msgstr "le tue Conoscenze"
-
 #: src/features/billing/buy-plans.tsx
 msgid "Your last payment didn't go through. Update your payment method in billing first."
 msgstr ""
@@ -19753,9 +20311,14 @@ msgstr ""
 msgid "Your name"
 msgstr ""
 
+#. placeholder {0}: resume?.name ?? t`the resume`
 #: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Your name and contact details come from a resume."
-msgstr "Il tuo nome e i dettagli di contatto provengono da un curriculum."
+msgid "Your name and contact details follow “{0}”."
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your name and contact details follow your Profile."
+msgstr ""
 
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Your name as your address, from OlaCV, the .cv registry. Code <0/> takes 50% off the first year."
@@ -19775,6 +20338,10 @@ msgstr "Manca il tuo nome"
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Your name, photo, experience, education and skills follow this resume as it changes. Its summary becomes About me and its projects become your work, to edit freely."
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Your name, photo, experience, education and skills follow your Profile as it changes. Its summary becomes About me and its projects become your work, to edit freely."
 msgstr ""
 
 #: src/components/layout/loading-screen.tsx
@@ -19942,7 +20509,7 @@ msgid "Your portfolio shows a small Made with Rezumi badge at the bottom of the 
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
-msgid "Your portfolio still shows its own content. Choose another resume to fill Experience, Education and the other sections again."
+msgid "Your portfolio still shows its own content. Choose your Profile or another resume to fill Experience, Education and the other sections again."
 msgstr ""
 
 #: src/features/portfolio/errors.ts
@@ -19971,6 +20538,40 @@ msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Your primary resume"
+msgstr ""
+
+#: src/features/career/workspace/debrief.tsx
+msgid "your Profile"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your Profile"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Your Profile already has everything in “{name}”."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-resume.tsx
+msgid "Your Profile has no projects yet. Add them in Profile, or start an empty work."
+msgstr ""
+
+#: src/features/profile/store.ts
+msgid "Your Profile was changed somewhere else, so it was reloaded. Check your last change."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Your Profile was changed somewhere else. Check what's new, then save again."
+msgstr ""
+
+#: src/features/settings/account/data.tsx
+msgid "Your Profile, documents and applications as JSON, in one zip"
 msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
@@ -20030,6 +20631,10 @@ msgstr "Il tuo server fornisce la ricerca web nella sezione Candidature e per l'
 msgid "Your source resume is in Trash"
 msgstr ""
 
+#: src/features/profile/sources/source-progress.tsx
+msgid "Your sources"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"
 msgstr ""
@@ -20061,6 +20666,10 @@ msgstr "La tua presentazione di due minuti"
 #: src/features/resume/share/share-panel.tsx
 msgid "Your web page is live"
 msgstr "La tua pagina web è online"
+
+#: src/features/profile/sources/messages.ts
+msgid "Your website"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "Your words stay put while the layout, fonts and colors change around them."

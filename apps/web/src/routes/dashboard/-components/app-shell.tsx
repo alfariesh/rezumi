@@ -30,11 +30,9 @@ type NavItem = {
 		| "/dashboard/documents"
 		| "/dashboard/portfolio"
 		| "/dashboard/coach"
-		| "/dashboard/career/knowledge/facts"
+		| "/dashboard/profile"
 		| "/dashboard/career/offers"
 		| "/dashboard/trash";
-	/** The section it is current in, when that differs from `to` (Knowledge is current on any of its tabs). */
-	match?: "/dashboard/career/knowledge";
 	icon: IconName;
 	label: string;
 	count?: number;
@@ -42,7 +40,7 @@ type NavItem = {
 
 /**
  * The destinations, in the order a search runs: Home (what needs you), the jobs, the documents sent to them, then the
- * coach and what it works from, and the offers at the end. Counts show only what is waiting or open.
+ * coach and the Profile everything starts from, and the offers at the end. Counts show only what is waiting or open.
  */
 function useNavItems() {
 	const { data: counts } = useQuery(orpc.documents.counts.queryOptions());
@@ -78,12 +76,7 @@ function useNavItems() {
 			? [{ to: "/dashboard/portfolio", icon: "globe-hemisphere-west", label: t`Portfolio` } satisfies NavItem]
 			: []),
 		{ to: "/dashboard/coach", icon: "sparkle", label: t`Coach` },
-		{
-			to: "/dashboard/career/knowledge/facts",
-			match: "/dashboard/career/knowledge",
-			icon: "brain",
-			label: t`Knowledge`,
-		},
+		{ to: "/dashboard/profile", icon: "user-circle", label: t`Profile` },
 		{ to: "/dashboard/career/offers", icon: "scales", label: t`Offers` },
 	];
 	const trash: NavItem | null = counts?.trash
@@ -96,7 +89,7 @@ function useNavItems() {
 /** Whether the item is the current page: Home is exact, the others match their section. */
 function useIsCurrent() {
 	const matchRoute = useMatchRoute();
-	return (item: NavItem) => Boolean(matchRoute({ to: item.match ?? item.to, fuzzy: item.to !== "/dashboard" }));
+	return (item: NavItem) => Boolean(matchRoute({ to: item.to, fuzzy: item.to !== "/dashboard" }));
 }
 
 /** The sidebar state HeroUI's AppLayout saves on every toggle; collapsed to icons by default below 1024px. */
@@ -157,13 +150,13 @@ export function AppShell({ children }: AppShellProps) {
 type Crumb = { label: ReactNode; href?: string };
 
 /**
- * Where the page sits: the section, then the page within it (Knowledge › Stories). Read from the address, so
+ * Where the page sits: the section, then the page within it (Profile › Stories). Read from the address, so
  * it is right from the first frame; the last crumb is the current page.
  */
 function useCrumbs(): Crumb[] {
 	const pathname = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") });
-	const [section, page, subpage] = pathname.split("/").slice(2);
-	const knowledge: Record<string, string> = {
+	const [section, page] = pathname.split("/").slice(2);
+	const profileTabs: Record<string, string> = {
 		facts: t`Facts`,
 		stories: t`Stories`,
 		preferences: t({
@@ -187,17 +180,15 @@ function useCrumbs(): Crumb[] {
 				: [{ label: t`Applications` }];
 		case "coach":
 			return [{ label: t`Coach` }];
-		case "career": {
-			// Today moved to Home; Knowledge and Offers keep their addresses under /dashboard/career.
-			if (page === "knowledge") {
-				const current = subpage ? knowledge[subpage] : undefined;
-				return current
-					? [{ label: t`Knowledge`, href: "/dashboard/career/knowledge/facts" }, { label: current }]
-					: [{ label: t`Knowledge` }];
-			}
-			if (page === "offers") return [{ label: t`Offers` }];
-			return [];
+		case "profile": {
+			const current = page ? profileTabs[page] : undefined;
+			return current
+				? [{ label: t`Profile`, href: "/dashboard/profile" }, { label: current }]
+				: [{ label: t`Profile` }];
 		}
+		case "career":
+			// Today moved to Home; Offers keeps its address under /dashboard/career.
+			return page === "offers" ? [{ label: t`Offers` }] : [];
 		case "settings":
 			if (page === "account") return [{ label: t`Account` }];
 			if (page === "billing") return [{ label: t`Plan` }];

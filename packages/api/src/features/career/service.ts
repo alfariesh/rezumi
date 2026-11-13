@@ -23,6 +23,7 @@ import { generateId } from "@rezumi/utils/string";
 import { requestRunCancellation } from "../agent/cancellation";
 import { applicationService, recordSentResume } from "../applications/service";
 import { lockUser } from "../documents/ownership";
+import { readProfileContext } from "../profile/context";
 import { matchPosting } from "./matching";
 import { noticeText } from "./notices";
 
@@ -506,11 +507,12 @@ export const careerService = {
 	context: async (input: Owned & { interviewId?: string | null | undefined }) => {
 		const memoryRevision = await memoryVersion(input.userId);
 		const application = await requireCareerApplication(input);
-		const [preferences, facts, stories, [owner]] = await Promise.all([
+		const [preferences, facts, stories, [owner], details] = await Promise.all([
 			careerService.profile(input.userId),
 			careerService.facts(input),
 			careerService.stories(input),
 			db.select({ timezone: tables.user.timezone }).from(tables.user).where(eq(tables.user.id, input.userId)),
+			readProfileContext(input.userId),
 		]);
 		// The coach reads times in the user's account timezone with the rest of their preferences.
 		const profile = { ...preferences, timezone: owner?.timezone ?? "UTC" };
@@ -631,12 +633,16 @@ export const careerService = {
 				stories.map((story) => [story.id, story.updatedAt]),
 				resume?.version,
 				letter?.version,
+				details?.updatedAt,
 			]),
 		);
 		return {
 			application,
 			interview,
+			/** Job-search preferences (the Preferences tab), with the account's timezone. */
 			profile,
+			/** The account's Profile (details and career history) as Markdown, cut to a prompt's budget; null while empty. */
+			details: details?.text ?? null,
 			facts: activeFacts,
 			stories: usableStories,
 			resume,

@@ -10,6 +10,9 @@ beforeEach(() => {
 		"WEB_ACCESS_API_KEY",
 		"WEB_ACCESS_API_URL",
 		"WEB_SEARCH_SEARXNG_URL",
+		"APIFY_TOKEN",
+		"APIFY_LINKEDIN_ACTOR",
+		"GITHUB_API_TOKEN",
 		"AI_PROVIDER",
 		"AI_MODEL",
 		"AI_API_KEY",
@@ -123,6 +126,31 @@ describe("SearXNG search configuration", () => {
 		vi.stubEnv("WEB_SEARCH_SEARXNG_URL", "http://searxng:8080");
 		vi.stubEnv("WEB_ACCESS_PROVIDER", "tavily");
 		await expect(import("./server")).rejects.toThrow("Web access requires WEB_ACCESS_PROVIDER");
+	});
+});
+
+describe("Profile source configuration", () => {
+	it("leaves the tokens unset and names the default LinkedIn actor", async () => {
+		const { env } = await import("./server");
+		expect(env.APIFY_TOKEN).toBeUndefined();
+		expect(env.GITHUB_API_TOKEN).toBeUndefined();
+		expect(env.APIFY_LINKEDIN_ACTOR).toBe("harvestapi~linkedin-profile-scraper");
+	});
+
+	it("reads the tokens and an actor written with a slash", async () => {
+		vi.stubEnv("APIFY_TOKEN", " apify_api_test ");
+		vi.stubEnv("APIFY_LINKEDIN_ACTOR", "someone/profile-reader");
+		vi.stubEnv("GITHUB_API_TOKEN", "github_pat_test");
+		const { env } = await import("./server");
+		expect(env.APIFY_TOKEN).toBe("apify_api_test");
+		expect(env.APIFY_LINKEDIN_ACTOR).toBe("someone~profile-reader");
+		expect(env.GITHUB_API_TOKEN).toBe("github_pat_test");
+	});
+
+	it.each(["https://apify.com/someone/actor", "no-owner"])("rejects the actor %s", async (actor) => {
+		vi.stubEnv("APIFY_LINKEDIN_ACTOR", actor);
+		vi.spyOn(console, "error").mockImplementation(() => {});
+		await expect(import("./server")).rejects.toThrow("Invalid environment variables");
 	});
 });
 

@@ -12,6 +12,7 @@ import { careerService } from "../career/service";
 import { coverLetterService } from "../cover-letters/service";
 import { queueHostnameRemoval } from "../custom-domain/hostnames";
 import { exportPortfolioData } from "../portfolio/export";
+import { profileService } from "../profile/service";
 import { getStorageService } from "../storage/service";
 import { revokeAppleAuthorization } from "./apple-revocation";
 
@@ -108,6 +109,8 @@ export const authService = {
 			career: await careerService.exportData(input.userId),
 			billing: await exportBillingData(input.userId),
 			portfolio: await exportPortfolioData(input.userId),
+			// Only a saved Profile: one never saved holds nothing but the account's name and email, exported above.
+			profile: await profileService.read(input.userId).then((profile) => (profile.updatedAt ? profile : null)),
 		};
 	},
 

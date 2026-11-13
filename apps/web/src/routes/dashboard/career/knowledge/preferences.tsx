@@ -1,6 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { PreferencesPage } from "@/features/career/knowledge/preferences";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+// Knowledge became the Profile's tabs.
 export const Route = createFileRoute("/dashboard/career/knowledge/preferences")({
-	component: PreferencesPage,
+	beforeLoad: () => {
+		throw redirect({ to: "/dashboard/profile/preferences", replace: true });
+	},
 });

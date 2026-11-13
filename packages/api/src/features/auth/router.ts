@@ -6,6 +6,7 @@ import { accountAuth, auth } from "@rezumi/auth/config";
 import * as schema from "@rezumi/db/schema";
 import { careerProfileDataSchema, careerWorkspaceSchema } from "@rezumi/schema/career";
 import { coverLetterSchema } from "@rezumi/schema/cover-letter/data";
+import { profileDataSchema } from "@rezumi/schema/profile/data";
 import { timezoneSchema } from "@rezumi/utils/timezone";
 import { protectedProcedure, publicProcedure } from "../../context";
 import { applicationDto } from "../../dto/application";
@@ -216,7 +217,7 @@ export const authRouter = {
 			operationId: "exportAccountData",
 			summary: "Export user account data",
 			description:
-				"Returns a JSON-serializable export of the authenticated user's profile, documents, applications, career knowledge, preparation, schedules, coaching conversations, payments, passes and Rezumi AI credits, and web portfolio (with its file list, contact messages, and reports about it, without who sent them). Images remain URL references; coaching attachments include storage references. Secrets such as password hashes, tokens, and API keys are never included. Requires authentication.",
+				"Returns a JSON-serializable export of the authenticated user's account, Profile (details and career history), documents, applications, career knowledge, preparation, schedules, coaching conversations, payments, passes and Rezumi AI credits, and web portfolio (with its file list, contact messages, and reports about it, without who sent them). Images remain URL references; coaching attachments include storage references. Secrets such as password hashes, tokens, and API keys are never included. Requires authentication.",
 			successDescription: "The user's exported account data.",
 		})
 		.input(z.object({}).optional())
@@ -338,6 +339,10 @@ export const authRouter = {
 					),
 				}),
 				portfolio: portfolioExportSchema,
+				profile: z
+					.object({ data: profileDataSchema, updatedAt: z.date().nullable() })
+					.nullable()
+					.describe("The account's Profile: details and career history. Null while it was never saved."),
 			}),
 		)
 		.handler(({ context }) => authService.exportData({ userId: context.user.id })),

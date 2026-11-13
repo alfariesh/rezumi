@@ -2,17 +2,26 @@ import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 const mocks = vi.hoisted(() => ({
 	parts: [] as { type: string; text?: string; error?: unknown }[],
+	prompt: "",
+	profile: { text: "# Dana Reyes\n\n## Experience\n\nDesigner at Lumen", updatedAt: null } as {
+		text: string;
+		updatedAt: Date | null;
+	} | null,
+	applicationId: "a1" as string | null,
 	succeed: vi.fn(async () => {}),
 	fail: vi.fn(async (_code: string) => {}),
 }));
 
 vi.mock("ai", async (importOriginal) => ({
 	...(await importOriginal<typeof import("ai")>()),
-	streamText: () => ({
-		stream: (async function* () {
-			yield* mocks.parts;
-		})(),
-	}),
+	streamText: (options: { prompt: string }) => {
+		mocks.prompt = options.prompt;
+		return {
+			stream: (async function* () {
+				yield* mocks.parts;
+			})(),
+		};
+	},
 }));
 vi.mock("../billing/metered-ai", () => ({
 	startAiRun: async () => ({
@@ -23,8 +32,11 @@ vi.mock("../billing/metered-ai", () => ({
 	}),
 }));
 vi.mock("./service", () => ({
-	coverLetterService: { getById: async () => ({ sourceResumeId: null, sourceApplicationId: "a1" }) },
+	coverLetterService: {
+		getById: async () => ({ sourceResumeId: null, sourceApplicationId: mocks.applicationId }),
+	},
 }));
+vi.mock("../profile/context", () => ({ readProfileContext: async () => mocks.profile }));
 vi.mock("../applications/service", () => ({
 	applicationService: {
 		getById: async () => ({ role: "Designer", company: "Example", jobDescription: "Posting", requirements: [] }),
@@ -68,6 +80,26 @@ describe("letter drafts on Rezumi AI", () => {
 		await run;
 		expect(mocks.succeed).not.toHaveBeenCalled();
 		expect(mocks.fail).toHaveBeenCalledWith("aborted");
+	});
+
+	it("writes from the Profile when the letter has no resume", async () => {
+		mocks.parts = [{ type: "text-delta", text: "Dear team," }, { type: "finish" }];
+		await drain();
+		expect(mocks.prompt).toContain("## The candidate's Profile");
+		expect(mocks.prompt).toContain("Designer at Lumen");
+		expect(mocks.prompt).not.toContain("## The resume");
+	});
+
+	it("needs a Profile, a resume or an application to write from", async () => {
+		mocks.profile = null;
+		mocks.applicationId = null;
+		try {
+			await expect(drain()).rejects.toMatchObject({ code: "BAD_REQUEST" });
+			expect(mocks.succeed).not.toHaveBeenCalled();
+		} finally {
+			mocks.profile = { text: "# Dana Reyes", updatedAt: null };
+			mocks.applicationId = "a1";
+		}
 	});
 
 	it("gives the credits back when the provider fails", async () => {

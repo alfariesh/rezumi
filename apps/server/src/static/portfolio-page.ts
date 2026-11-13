@@ -19,7 +19,12 @@ import { renderPortfolioLockPage, renderPortfolioMissingWorkPage } from "@rezumi
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
 import { renderPortfolioReportPage } from "@rezumi/portfolio/report";
 import { htmlToText, truncateText } from "@rezumi/portfolio/text";
-import { buildPortfolioView, portfolioPageLocale, resolvePortfolioWork } from "@rezumi/portfolio/view";
+import {
+	buildPortfolioView,
+	portfolioPageLocale,
+	portfolioSourceResume,
+	resolvePortfolioWork,
+} from "@rezumi/portfolio/view";
 import { publicResumePath } from "@rezumi/resume/sharing";
 import { BILLING_SELLER } from "@rezumi/schema/billing";
 import { PORTFOLIO_SLUG_PATTERN } from "@rezumi/schema/portfolio/data";
@@ -147,7 +152,7 @@ function signedFileUrl(key: string, passwordHash: string | null): string {
 	return passwordHash ? `${url}?${PORTFOLIO_FILE_TOKEN_PARAM}=${portfolioFileToken(key, passwordHash)}` : url;
 }
 
-/** The resume as the page may use it: its photo only when it's one of this app's uploads. */
+/** The source (a resume or the Profile) as the page may use it: its photo only when it's one of this app's uploads. */
 function withOwnPicture(data: ResumeData): ResumeData {
 	if (!data.picture.url.trim() || portfolioPictureUrl(data.picture.url)) return data;
 	return { ...data, picture: { ...data.picture, url: "" } };
@@ -179,12 +184,12 @@ function canonicalBase(portfolio: Pick<PublicPortfolio, "username" | "customDoma
  * served at: the home, each work's own page (Phase 13, B2) and the "Save contact" card (B14).
  */
 export function publicPortfolioView(portfolio: PublicPortfolio, options: ServeOptions = {}): PortfolioView {
-	const { resume } = portfolio;
-	const locale = portfolioPageLocale(portfolio.data, resume?.data);
+	const { resume, source } = portfolio;
+	const locale = portfolioPageLocale(portfolio.data, portfolioSourceResume(source));
 	const resumePath = resume ? publicResumePath({ username: portfolio.username, slug: resume.slug }) : null;
 	return buildPortfolioView({
 		portfolio: { data: portfolio.data },
-		resume: resume ? { data: withOwnPicture(resume.data) } : null,
+		resume: source ? { ...source, data: withOwnPicture(source.data) } : null,
 		owner: { name: portfolio.ownerName, username: portfolio.username },
 		entitlements: portfolio.entitlements,
 		contactFormAvailable: isContactFormConfigured(),

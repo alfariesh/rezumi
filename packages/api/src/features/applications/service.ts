@@ -12,11 +12,11 @@ import { and, arrayContains, count, desc, eq, inArray, isNull, sql } from "drizz
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { lintResumeForAts } from "@rezumi/resume/ats";
-import { copyCoverLetterStyle } from "@rezumi/resume/cover-letter";
 import { coverLetterSchema } from "@rezumi/schema/cover-letter/data";
 import { generateId } from "@rezumi/utils/string";
 import { requestRunCancellation } from "../agent/cancellation";
 import { prepareRunAt } from "../career/scheduling";
+import { resolveLetterLinks } from "../cover-letters/sender";
 import { coverLetterService } from "../cover-letters/service";
 import { writeLetterVersion } from "../cover-letters/versions";
 import { lockUser } from "../documents/ownership";
@@ -174,28 +174,8 @@ export async function recordSentResume(row: ApplicationRow, client: DbOrTx): Pro
 			.for("update");
 		if (!stored)
 			throw new ORPCError("NOT_FOUND", { message: "The linked letter is unavailable. Restore it before submitting." });
-		const letter = coverLetterSchema.parse(stored);
-		if (letter.sourceResumeId && (letter.senderLinked || letter.designLinked)) {
-			const [source] = await client
-				.select()
-				.from(schema.resume)
-				.where(
-					and(
-						eq(schema.resume.id, letter.sourceResumeId),
-						eq(schema.resume.userId, row.userId),
-						isNull(schema.resume.trashedAt),
-					),
-				)
-				.for("update");
-			if (source) {
-				const linked = copyCoverLetterStyle(source.data, letter.style.sectionId, letter.style.itemId);
-				letter.style = {
-					...letter.style,
-					...(letter.senderLinked ? { basics: linked.basics, picture: linked.picture } : {}),
-					...(letter.designLinked ? { metadata: linked.metadata } : {}),
-				};
-			}
-		}
+		// As the letter reads now, through the one resolver the editor reads it with, so what's recorded is what was shown.
+		const letter = await resolveLetterLinks(coverLetterSchema.parse(stored), row.userId, { client, lock: true });
 		const version = await writeLetterVersion(client, { letter, userId: row.userId, kind: "sent", name: row.company });
 		changes.sentCoverLetterVersionId = version.id;
 	}

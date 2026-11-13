@@ -265,8 +265,8 @@ msgstr "{0, plural, other {# cerita}}"
 
 #. placeholder {0}: remembered.ids.length
 #: src/features/career/coach-chat.tsx
-msgid "{0, plural, one {Added # fact to Knowledge.} other {Added # facts to Knowledge.}}"
-msgstr "{0, plural, other {# fakta ditambah ke Pengetahuan.}}"
+msgid "{0, plural, one {Added # fact to your Profile.} other {Added # facts to your Profile.}}"
+msgstr ""
 
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
@@ -308,15 +308,15 @@ msgstr "{0, plural, one {Import permohonan kerja #} other {Import permohonan ker
 msgid "{0, plural, one {Imported # application.} other {Imported # applications.}}"
 msgstr "{0, plural, one {# permohonan diimport.} other {# permohonan diimport.}}"
 
-#. placeholder {0}: knowledge.active.length
-#: src/features/career/coach.tsx
-msgid "{0, plural, one {Knowledge · # fact} other {Knowledge · # facts}}"
-msgstr "{0, plural, other {Pengetahuan · # fakta}}"
-
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {No reply in # day} other {No reply in # days}}"
 msgstr "{0, plural, one {Tiada balasan dalam # hari} other {Tiada balasan dalam # hari}}"
+
+#. placeholder {0}: knowledge.active.length
+#: src/features/career/coach.tsx
+msgid "{0, plural, one {Profile · # fact} other {Profile · # facts}}"
+msgstr ""
 
 #. placeholder {0}: passages.length
 #: src/features/resume/editor/check/writing-tab.tsx
@@ -348,6 +348,11 @@ msgstr ""
 msgid "{0, plural, one {Took # step} other {Took # steps}}"
 msgstr ""
 
+#. placeholder {0}: followed.length
+#: src/features/profile/details-page.tsx
+msgid "{0, plural, one {Updated in # resume} other {Updated in # resumes}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -360,8 +365,8 @@ msgstr "{0, plural, one {Fon pilihan anda tidak dapat memaparkan {list}. Ia dipa
 
 #. placeholder {0}: when(runAt)
 #: src/features/career/workspace/prepare.tsx
-msgid "{0} · {providerLabel}. Sends this application and your Knowledge; your provider may charge."
-msgstr "{0} · {providerLabel}. Menghantar permohonan ini dan Pengetahuan anda; pembekal anda mungkin mengenakan caj."
+msgid "{0} · {providerLabel}. Sends this application and your Profile; your provider may charge."
+msgstr ""
 
 #. placeholder {0}: BILLING_SELLER.name
 #. placeholder {1}: BILLING_SELLER.brand
@@ -430,6 +435,11 @@ msgstr ""
 #. placeholder {0}: payment.trialDays
 #: src/features/billing/pending-payment.tsx
 msgid "{0} days free"
+msgstr ""
+
+#. placeholder {0}: sourceLabel(id)
+#: src/features/profile/sources/messages.ts
+msgid "{0} didn't answer in time. Try again in a moment."
 msgstr ""
 
 #. placeholder {0}: proposals.length
@@ -733,6 +743,7 @@ msgstr "{cost} untuk tahun pertama"
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
 
+#: src/features/resume/editor/write/add-section.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{count, plural, one {# entry} other {# entries}}"
 msgstr "{count, plural, one {Kemasukan #} other {Entri #}}"
@@ -858,6 +869,19 @@ msgstr "{issues, plural, one {Isu # boleh merugikan anda.} other {Isu # boleh me
 #: src/features/resume/share/download-tab.tsx
 msgid "{issues, plural, one {Check has # thing to review. You can still download.} other {Check has # things to review. You can still download.}}"
 msgstr "{issues, plural, one {Cek mempunyai perkara # untuk disemak. Anda masih boleh memuat turun.} other {Cek mempunyai perkara # untuk disemak. Anda masih boleh memuat turun.}}"
+
+#: src/features/profile/fill.tsx
+msgid "{kept, plural, =0 {Add the photo} one {Add # entry} other {Add # entries}}"
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "{kept, plural, one {# entry ticked} other {# entries ticked}}"
+msgstr ""
+
+#. placeholder {0}: keys.length
+#: src/features/profile/sources/source-review.tsx
+msgid "{kept} of {0}"
+msgstr ""
 
 #: src/features/applications/next-step.ts
 #: src/features/career/today.tsx
@@ -1019,6 +1043,10 @@ msgstr "{open, plural, one {# perkara untuk disemak.} other {# perkara untuk dis
 
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "{open} open. The portfolio's owner never sees who sent a report."
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "{others, plural, one {Saved to your Profile. # other resume was updated too.} other {Saved to your Profile. # other resumes were updated too.}}"
 msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
@@ -1478,7 +1506,7 @@ msgid "A numeric date reads differently in different countries."
 msgstr "Tarikh berangka dibaca secara berbeza di negara yang berbeza."
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "A one-page website at your own address, made from your resume and your work."
+msgid "A one-page website at your own address, made from your Profile and your work."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -1697,6 +1725,11 @@ msgstr ""
 msgid "Account deleted"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/account/profile.tsx
+msgid "Account details"
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 msgid "Accounts"
 msgstr ""
@@ -1869,6 +1902,7 @@ msgid "Add a phone number"
 msgstr "Tambah nombor telefon"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Add a place, then Enter"
 msgstr "Tambah tempat, kemudian tekan Enter"
 
@@ -1889,6 +1923,7 @@ msgid "Add a role to switch to. With only one line, the page shows it without th
 msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Add a role, then Enter"
 msgstr "Tambah peranan, kemudian tekan Enter"
 
@@ -1952,6 +1987,15 @@ msgstr ""
 msgid "Add a year"
 msgstr ""
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Add all"
+msgstr ""
+
+#. placeholder {0}: missing.length
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Add all ({0})"
+msgstr ""
+
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
 msgstr "Tambahkan @ dan domain, seperti name@example.com"
@@ -1988,6 +2032,14 @@ msgstr "Tambah temu duga dalam permohonan dahulu"
 #: src/features/career/workspace/prepare.tsx
 msgid "Add an interview to plan for it"
 msgstr "Tambah temu duga untuk merancang persediaannya"
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Add any of these and we'll fill in your Profile. You check everything before it's saved."
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Add any of these. You check what we find before it goes in your Profile."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/command-palette/pages/navigation.tsx
@@ -2053,6 +2105,10 @@ msgstr "Tambah angka di mana anda memilikinya: jumlah, peratusan, tempoh masa, s
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Add from Experience"
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Add from Profile"
 msgstr ""
 
 #: src/features/resume/editor/write/outline.tsx
@@ -2228,6 +2284,10 @@ msgid "Add work from pictures"
 msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "Add work from your Profile"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Add work from your resume"
 msgstr ""
 
@@ -2240,6 +2300,7 @@ msgid "Add your name"
 msgstr "Tambah nama anda"
 
 #: src/features/portfolio/errors.ts
+#: src/features/profile/sources/messages.ts
 msgid "Add your own AI connection in Settings, or choose Rezumi AI."
 msgstr ""
 
@@ -2266,25 +2327,33 @@ msgstr "Ditambah oleh anda"
 msgid "Added credits expire in (days)"
 msgstr ""
 
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as a preference."
-msgstr "Ditambah ke Pengetahuan sebagai keutamaan."
-
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as a skill."
-msgstr "Ditambah ke Pengetahuan sebagai kemahiran."
-
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as an accomplishment."
-msgstr "Ditambah ke Pengetahuan sebagai pencapaian."
-
-#: src/features/career/coach-chat.tsx
-msgid "Added to Knowledge as an experience."
-msgstr "Ditambah ke Pengetahuan sebagai pengalaman."
-
 #: src/features/career/workspace/fit.tsx
 msgid "Added to Prepare"
 msgstr "Ditambah ke Persediaan"
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as a preference."
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as a skill."
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as an accomplishment."
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+msgid "Added to your Profile as an experience."
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Added to your Profile, without the photo: it couldn't be copied. Check each section."
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Added to your Profile. Check each section."
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -2295,6 +2364,10 @@ msgstr "Alamat"
 #: src/features/career/workspace/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "Menambah peringatan ke Hari ini jika anda belum menerima balasan menjelang masa itu."
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Adds your own public projects."
+msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Adjust"
@@ -2479,10 +2552,6 @@ msgstr ""
 #: src/features/documents/recent-documents.tsx
 msgid "All documents"
 msgstr ""
-
-#: src/features/settings/account/data.tsx
-msgid "All documents and applications as JSON, in one zip"
-msgstr "Semua dokumen dan permohonan kerja sebagai JSON, dalam satu zip"
 
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
@@ -3037,6 +3106,7 @@ msgstr "Penyemak ATS"
 msgid "ATS readable"
 msgstr ""
 
+#: src/features/resume/editor/design/template-card.tsx
 #: src/features/resume/editor/design/template-group.tsx
 msgid "ATS-safe"
 msgstr "ATS-selamat"
@@ -3097,8 +3167,10 @@ msgid "BA, Visual Communication Design · Nusantara Institute of Design"
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/onboarding/onboarding-page.tsx
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/works/add-work/parts.tsx
+#: src/features/profile/fill.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "belakang"
@@ -3363,6 +3435,10 @@ msgstr "Jejari sempadan"
 msgid "Border width"
 msgstr "Lebar sempadan"
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Both are optional. They help the coach find roles that fit you."
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Both offers cover everything compared here."
 msgstr "Kedua-dua tawaran merangkumi semua yang dibandingkan di sini."
@@ -3400,6 +3476,15 @@ msgstr "Penyegaran taklimat dihidupkan · {0}"
 #: src/features/career/workspace/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "Penyegaran taklimat dijeda"
+
+#: src/features/onboarding/onboarding-page.tsx
+#: src/features/profile/fill.tsx
+msgid "Bring what you have"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Bring your LinkedIn, a resume file, your GitHub or your website, or take what's in one of your resumes. Only what your Profile is missing is added, and you check it first."
+msgstr ""
 
 #: src/features/homepage/templates.tsx
 msgid "Browse all {total} templates"
@@ -3534,6 +3619,7 @@ msgstr "Bolehkah perisian membaca resume anda?"
 #: src/features/portfolio/editor/password-group.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
+#: src/features/profile/fill.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -3582,6 +3668,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Cards"
+msgstr ""
+
+#: src/features/profile/details-page.tsx
+msgid "Career"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
@@ -3697,6 +3787,10 @@ msgstr "Mengubah resume secara langsung (perbualan terdahulu)"
 msgid "Changed your mind? Rename your resume to something more descriptive."
 msgstr "Berubah fikiran? Tukar nama resume anda kepada sesuatu yang lebih deskriptif."
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Changes made here stay in this resume."
+msgstr ""
+
 #. placeholder {0}: getPlanName(pending.planId)
 #. placeholder {1}: formatDate(plan.currentPeriodEndsAt)
 #: src/features/billing/plan-page.tsx
@@ -3784,6 +3878,11 @@ msgstr "Semak peranan ini dengan bukti anda"
 msgid "Check views"
 msgstr "Semak pandangan"
 
+#: src/features/onboarding/onboarding-page.tsx
+#: src/features/profile/fill.tsx
+msgid "Check what we found"
+msgstr ""
+
 #: src/libs/seo.ts
 msgid "Check whether software can read your resume PDF. Runs entirely in your browser, so your file is never uploaded."
 msgstr "Semak sama ada perisian boleh membaca resume anda PDF. Dijalankan sepenuhnya dalam penyemak imbas anda, jadi fail anda tidak pernah dimuat naik."
@@ -3828,8 +3927,8 @@ msgid "Checking {0}"
 msgstr "Menyemak {0}"
 
 #: src/features/career/shared.tsx
-msgid "Checking against Knowledge"
-msgstr "Menyemak dengan Pengetahuan"
+msgid "Checking against your Profile"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "Checking layout and content"
@@ -3888,6 +3987,10 @@ msgstr "Cina (Tradisional)"
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Chips"
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Choose"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -3969,6 +4072,10 @@ msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Cities are listed by their names in Latin letters. Type it that way, such as “Tokyo”."
+msgstr ""
+
+#: src/features/onboarding/questions.tsx
+msgid "Cities or countries. Leave it empty for anywhere."
 msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
@@ -4085,6 +4192,7 @@ msgstr ""
 #: src/features/portfolio/page-text.ts
 #: src/features/portfolio/statistics/work-statistics.tsx
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
+#: src/features/profile/fill.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
@@ -4299,6 +4407,10 @@ msgstr "Sahkan masa dengan {contact} sebelum menambah temu duga baharu."
 msgid "Confirm the time, link and who you'll meet. Glance at the resume and letter you sent."
 msgstr "Sahkan masa, pautan dan siapa yang akan anda temui. Lihat sekilas resume dan surat yang anda hantar."
 
+#: src/features/profile/sources/messages.ts
+msgid "Confirm this is your own profile."
+msgstr ""
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/account/security.tsx
@@ -4447,6 +4559,10 @@ msgstr "Muat keseluruhan"
 msgid "Content"
 msgstr "Kandungan"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Content from"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Content is laid out in a grid."
 msgstr "Kandungan disusun dalam grid."
@@ -4461,6 +4577,8 @@ msgstr ""
 #: src/dialogs/auth/enable-two-factor.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/auth/pages/register.tsx
+#: src/features/onboarding/onboarding-page.tsx
+#: src/features/profile/fill.tsx
 msgid "Continue"
 msgstr "Teruskan"
 
@@ -4678,7 +4796,7 @@ msgid "Couldn't change the schedule. Try again."
 msgstr "Tidak dapat menukar jadual. Cuba lagi."
 
 #: src/features/portfolio/editor/publish-panel.tsx
-msgid "Couldn't change the source resume. Try again."
+msgid "Couldn't change the source. Try again."
 msgstr ""
 
 #: src/features/career/today.tsx
@@ -4711,6 +4829,10 @@ msgstr "tidak dapat menyambung. Semak kunci dan cuba lagi."
 msgid "Couldn't continue as a guest. Try again."
 msgstr "Tidak dapat meneruskan sebagai tetamu. Cuba lagi."
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Couldn't copy the photo. You can add one later in your Profile."
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Couldn't copy the questions. Select the text and copy it manually."
 msgstr "Tidak dapat menyalin soalan. Pilih teks dan salin secara manual."
@@ -4740,6 +4862,10 @@ msgstr "Tidak dapat mencipta kunci. Cuba lagi."
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Couldn't create the letter. Try again."
 msgstr "Tidak dapat mencipta surat. Cuba lagi."
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Couldn't create the resume. Try again."
+msgstr ""
 
 #. Fallback toast when account registration fails without a server error message
 #: src/features/auth/pages/register.tsx
@@ -4812,6 +4938,10 @@ msgstr "Tidak dapat mengeksport data anda. Cuba lagi."
 msgid "Couldn't fill in the fields. Try again, or fill them in yourself."
 msgstr "Tidak dapat mengisi medan. Cuba lagi, atau isi sendiri."
 
+#: src/features/profile/fill.tsx
+msgid "Couldn't fill your Profile. Try again."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Couldn't forget that fact. Try again."
 msgstr "Tidak dapat melupakan fakta itu. Cuba lagi."
@@ -4850,7 +4980,7 @@ msgstr "Tidak dapat memautkan akaun penyedia itu. Cuba lagi."
 msgid "Couldn't link the application. Try again."
 msgstr "Tidak dapat memautkan permohonan. Cuba lagi."
 
-#: src/features/documents/new-document-dialog.tsx
+#: src/features/resume/import/use-read-resume-file.ts
 msgid "Couldn't load AI connections. Try again before importing this file."
 msgstr "Tidak dapat memuatkan sambungan AI. Cuba lagi sebelum mengimport fail ini."
 
@@ -4939,6 +5069,7 @@ msgid "Couldn't reach the AI provider. Try again in a moment; no credits were us
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/profile/sources/messages.ts
 msgid "Couldn't reach the AI provider. Try again in a moment."
 msgstr "Tidak dapat menghubungi pembekal AI. Cuba lagi sebentar lagi."
 
@@ -4950,6 +5081,11 @@ msgstr "Tidak dapat menghubungi pembekal AI anda. Kuncinya mungkin telah tamat t
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "Couldn't read “{0}”. Enter the dates so they sort and print consistently."
 msgstr "Tidak dapat membaca “{0}”. Masukkan tarikh supaya ia diisih dan dicetak secara konsisten."
+
+#. placeholder {0}: sourceLabel(id)
+#: src/features/profile/sources/messages.ts
+msgid "Couldn't read {0}. Try again."
+msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Couldn't read that file. Choose a .csv file and try again."
@@ -5044,8 +5180,8 @@ msgstr "Tidak dapat menyimpan perubahan itu. Cuba lagi."
 
 #: src/features/career/workspace/debrief.tsx
 #: src/features/career/workspace/fit.tsx
-msgid "Couldn't save that to Knowledge. Try again."
-msgstr "Tidak dapat menyimpannya ke Pengetahuan. Cuba lagi."
+msgid "Couldn't save that to your Profile. Try again."
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Couldn't save the application. Try again."
@@ -5089,6 +5225,10 @@ msgstr "Tidak dapat menyimpan teg. Cuba lagi."
 msgid "Couldn't save the timezone. Try again."
 msgstr "Tidak dapat menyimpan zon waktu. Cuba lagi."
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Couldn't save this resume first, so nothing was sent. Try again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Couldn't save this role to Applications. Try again."
 msgstr "Tidak dapat menyimpan peranan ini ke Permohonan. Cuba lagi."
@@ -5096,6 +5236,14 @@ msgstr "Tidak dapat menyimpan peranan ini ke Permohonan. Cuba lagi."
 #: src/features/career/schedule-sheet.tsx
 msgid "Couldn't save this schedule. Try again."
 msgstr "Tidak dapat menyimpan jadual ini. Cuba lagi."
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Couldn't save to your Profile. Try again."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Couldn't save your answers. You can add them later in Profile → Preferences."
+msgstr ""
 
 #: src/features/letters/store.ts
 #: src/features/resume/share/history-tab.tsx
@@ -5112,6 +5260,14 @@ msgstr "Tidak dapat menyimpan perubahan anda. Cuba lagi."
 #: src/features/career/knowledge/preferences.tsx
 msgid "Couldn't save your preferences. Try again."
 msgstr "Tidak dapat menyimpan keutamaan anda. Cuba lagi."
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Couldn't save your Profile, so this would open again. Try again."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Couldn't save your Profile. Try again."
+msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Couldn't save. Try again."
@@ -5422,6 +5578,10 @@ msgstr "Buat dan buka"
 msgid "Create key"
 msgstr "Cipta kunci"
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Create my resume"
+msgstr ""
+
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Create portfolio"
@@ -5712,6 +5872,10 @@ msgstr "Ulasan"
 msgid "Default"
 msgstr "Lalai"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Default ({automatic})"
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Degree"
 msgstr "Ijazah"
@@ -5975,9 +6139,15 @@ msgstr ""
 #: src/features/career/workspace/shell.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/features/profile/sources/source-progress.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
 msgstr "Butiran"
+
+#: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/profile/route.tsx
+msgid "Details & career"
+msgstr ""
 
 #. placeholder {0}: work.title
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
@@ -6021,6 +6191,10 @@ msgstr "Mata wang berbeza, tidak dibandingkan"
 #: src/features/career/offers.tsx
 msgid "Different pay period, not compared"
 msgstr "Tempoh bayaran berbeza, tidak dibandingkan"
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Differs from your Profile"
+msgstr ""
 
 #: src/features/portfolio/statistics/parts.tsx
 msgid "Direct"
@@ -6130,6 +6304,10 @@ msgstr "Dokumen untuk kerja ini"
 
 #: src/features/billing/plan-page.tsx
 msgid "Documents in Trash don't count."
+msgstr ""
+
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Documents that show a photo use this one."
 msgstr ""
 
 #: src/features/documents/trash-page.tsx
@@ -6306,8 +6484,12 @@ msgid "Draft"
 msgstr "Draf dokumen"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Draft · uses only the posting"
-msgstr "Draf · hanya menggunakan siaran kerja"
+msgid "Draft · uses only your Profile"
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Draft · uses only your Profile and the posting"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft · uses only your resume"
@@ -6328,6 +6510,10 @@ msgstr "Draf ringkasan"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft from the posting"
 msgstr "Draf daripada siaran kerja"
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Draft from your Profile"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft from your resume"
@@ -6393,8 +6579,8 @@ msgid "Drag to reposition and use the slider to zoom before uploading."
 msgstr "Seret untuk mengubah kedudukan dan gunakan gelangsar untuk zum sebelum memuat naik."
 
 #: src/features/documents/new-document-dialog.tsx
-msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section and flag anything we're unsure of."
-msgstr "Lepaskan fail di sini atau semak imbas. PDF, Word, Rezumi atau JSON Resume. Kami mengisi setiap bahagian dan membenderakan apa sahaja yang kami tidak pasti."
+msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section, flag anything we're unsure of, and add what your Profile is missing."
+msgstr ""
 
 #: src/features/documents/documents-page.tsx
 msgid "Drop a PDF, Word or JSON file"
@@ -6414,6 +6600,10 @@ msgstr "Jatuhkan untuk mengimport"
 
 #: src/features/ats-checker/checker.tsx
 msgid "Drop your PDF here"
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Drop your resume here"
 msgstr ""
 
 #: src/dialogs/resume/index.tsx
@@ -6462,8 +6652,8 @@ msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "Setiap jawapan yang anda terima maklum balas disimpan di sini, yang terbaharu dahulu."
 
 #: src/features/career/workspace/fit.tsx
-msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
-msgstr "Setiap keperluan dalam siaran kerja disemak dengan fakta dan cerita dalam Pengetahuan anda. Jurang ditunjukkan sebagai bukti yang tiada, bukan sekali-kali kebolehan yang tiada."
+msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6507,6 +6697,10 @@ msgstr "Edit butiran…"
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 msgid "Edit entry"
 msgstr "Edit entri"
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Edit in Profile"
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
@@ -6598,6 +6792,7 @@ msgid "education"
 msgstr ""
 
 #: src/components/input/icon-picker-grid.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
@@ -6611,9 +6806,11 @@ msgstr ""
 #: src/features/billing/admin/overview.tsx
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/settings/account/profile.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Email"
 msgstr "E-mel"
 
@@ -6683,6 +6880,10 @@ msgstr ""
 msgid "Empty"
 msgstr ""
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Empty for now. Type your name below, or fill in your Profile."
+msgstr ""
+
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Empty uses a default"
 msgstr ""
@@ -6750,6 +6951,10 @@ msgstr "Masukkan amaun penuh, seperti 95000. Amaun anda sebelum ini tidak beruba
 #: src/features/portfolio/blocks/add-media-block.tsx
 #: src/features/portfolio/editor/fields.tsx
 msgid "Enter a full web address, such as https://example.com."
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Enter a GitHub username, like octocat."
 msgstr ""
 
 #: src/features/settings/account/profile.tsx
@@ -6837,6 +7042,10 @@ msgstr "Masukkan kata laluan anda untuk mematikan pengesahan dua langkah. Tanpan
 #: src/features/auth/pages/login.tsx
 msgid "Enter your password."
 msgstr "Masukkan kata laluan anda."
+
+#: src/features/profile/sources/messages.ts
+msgid "Enter your site's address, like yourname.com."
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Entries"
@@ -6958,6 +7167,7 @@ msgid "experience"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
@@ -6970,6 +7180,14 @@ msgstr ""
 
 #: src/features/resume/editor/design/entries-group.tsx
 msgid "Experience, Education and more"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Experience, education and your other sections follow this resume."
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Experience, education and your other sections follow your Profile."
 msgstr ""
 
 #: src/features/billing/purchase.ts
@@ -7068,14 +7286,11 @@ msgid "Fact forgotten"
 msgstr "Fakta dilupakan"
 
 #: src/features/career/coach-chat.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Facts"
 msgstr "Fakta"
-
-#: src/features/career/coach.tsx
-msgid "Facts, stories and preferences that are switched on in Knowledge"
-msgstr "Fakta, cerita dan keutamaan yang dihidupkan dalam Pengetahuan"
 
 #: src/features/billing/purchase.ts
 #: src/features/settings/ai/providers.tsx
@@ -7142,6 +7357,10 @@ msgstr "fail dibaca"
 msgid "Fill fields"
 msgstr "Isi medan"
 
+#: src/features/profile/fill.tsx
+msgid "Fill from a resume…"
+msgstr ""
+
 #: src/features/portfolio/blocks/link-block.tsx
 msgid "Fill in from the link"
 msgstr ""
@@ -7158,8 +7377,12 @@ msgstr "Isi peranan dan syarikat. Sambungkan pembekal AI dalam Tetapan untuk mem
 msgid "Fill in the role and company. The posting is saved with the application."
 msgstr "Isi peranan dan syarikat. Siaran kerja disimpan dengan permohonan kerja."
 
-#: src/features/portfolio/create-dialog.tsx
-msgid "Fill in your details yourself."
+#: src/features/documents/documents-page.tsx
+msgid "Fill in your Profile first"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Fill your Profile from what you have"
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -7169,6 +7392,10 @@ msgstr "Diisi dari permohonan kerja. Ucapan itu mengikut nama."
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Filled in what we could from the posting."
 msgstr "Diisi dengan apa yang kami dapat dari siaran."
+
+#: src/features/profile/fill.tsx
+msgid "Filled your Profile from “{name}”. Check each section."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "Filling in entries"
@@ -7193,6 +7420,10 @@ msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Find numbers"
+msgstr ""
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Find numbers in your Profile"
 msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
@@ -7230,6 +7461,10 @@ msgstr "Finland"
 #: src/features/billing/buy-plans.tsx
 #: src/features/homepage/pricing.tsx
 msgid "First {trialDays} days free"
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "First resume"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
@@ -7422,6 +7657,10 @@ msgstr "Contohnya, catat syarikat mana yang anda hantar resume ini, atau pautan 
 msgid "For example: “{0}: I did … at … in 2024, and it led to …”"
 msgstr "Contohnya: “{0}: Saya melakukan … di … pada 2024, dan ia membawa kepada …”"
 
+#: src/features/onboarding/questions.tsx
+msgid "For example: Product designer, Data analyst."
+msgstr ""
+
 #: src/features/portfolio/themes.ts
 msgid "For finance, consulting, state companies, managers and formal fresh graduates."
 msgstr ""
@@ -7505,6 +7744,10 @@ msgstr "Ditemui hari ini"
 #: src/features/career/today.tsx
 msgid "Found yesterday"
 msgstr "Ditemui semalam"
+
+#: src/features/profile/sources/source-progress.tsx
+msgid "Found: {list}"
+msgstr ""
 
 #: src/features/portfolio/admin/labels.ts
 #: src/features/portfolio/page-text.ts
@@ -7610,7 +7853,15 @@ msgid "From Fit"
 msgstr "Daripada Kesesuaian"
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "From my Profile"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "From my resume"
+msgstr ""
+
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "From Profile"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
@@ -7629,6 +7880,10 @@ msgstr "daripada pembantu atau API"
 msgid "From the first line to the shared link, every step of the resume lives in one editor."
 msgstr ""
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "From your account"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "From your cover letter"
 msgstr "Daripada surat iringan anda"
@@ -7637,12 +7892,24 @@ msgstr "Daripada surat iringan anda"
 msgid "From your experience entries"
 msgstr "Daripada entri pengalaman anda"
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "From your GitHub sign-in."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "From your message"
 msgstr "Daripada mesej anda"
 
 #: src/features/portfolio/statistics/parts.tsx
 msgid "From your portfolio"
+msgstr ""
+
+#: src/features/resume/editor/write/add-section.tsx
+msgid "From your Profile"
+msgstr ""
+
+#: src/features/portfolio/location/location-fields.tsx
+msgid "From your Profile:"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -7661,6 +7928,7 @@ msgstr ""
 msgid "From your timezone"
 msgstr "Daripada zon waktu anda"
 
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Full name"
 msgstr "Nama penuh"
@@ -7744,6 +8012,10 @@ msgstr ""
 #: src/features/settings/account/auth-hooks.ts
 msgid "GitHub"
 msgstr "GitHub"
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "GitHub username"
+msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Give a pass"
@@ -7932,7 +8204,9 @@ msgstr "Tajuk ditukar"
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/write/basics-card.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Headline"
 msgstr "Tajuk Utama"
 
@@ -8358,8 +8632,8 @@ msgid "Import with AI"
 msgstr ""
 
 #: src/features/documents/documents-page.tsx
-msgid "Import your current resume and we'll lay out every section for you to refine. Or start fresh. Start with your name. Build from there."
-msgstr "Import resume semasa anda dan kami akan membentangkan setiap bahagian untuk anda perhalusi. Atau mula segar. Mulakan dengan nama anda. Bina dari situ."
+msgid "Import your current resume and we'll lay out every section for you to refine. It also fills your Profile, so your next resume, letter and portfolio start from it. Or start blank from your Profile."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/resume/share/format.ts
@@ -8400,6 +8674,10 @@ msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "In progress"
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "In your Profile"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -8665,6 +8943,10 @@ msgstr "Ia mungkin telah dipadam. Pilih cerita lain atau tambah cerita baharu."
 
 #: src/features/portfolio/admin/review-page.tsx
 msgid "It shows again if the owner still has it published."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "It starts with your Profile. You can switch templates any time."
 msgstr ""
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -8949,12 +9231,6 @@ msgstr "salam hormat,"
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Kinds of work"
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
-#: src/routes/dashboard/career/route.tsx
-msgid "Knowledge"
-msgstr "Pengetahuan"
 
 #: src/features/portfolio/works/work-editor.tsx
 msgid "Kopi Senja checkout redesign"
@@ -9393,20 +9669,20 @@ msgstr "Dokumen yang dipautkan tidak dapat dimuatkan."
 msgid "Linked resume"
 msgstr "Resume yang dipautkan"
 
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Linked to the resume again"
-msgstr "Dipautkan ke resume sekali lagi"
-
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Linked. Name, email, phone and city update when the resume does."
-msgstr "Dipautkan. Kemas kini nama, e-mel, telefon dan bandar apabila resume dibuat."
-
 #. Authentication provider display name in account settings
 #. Brand name label for LinkedIn social sign-in button
 #: src/features/auth/components/social-auth.tsx
 #: src/features/settings/account/auth-hooks.ts
 msgid "LinkedIn"
 msgstr "LinkedIn"
+
+#: src/features/profile/sources/messages.ts
+msgid "LinkedIn import isn't available right now. Add your LinkedIn export or a resume file instead."
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "LinkedIn profile link"
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "LinkedIn, Referral…"
@@ -9466,6 +9742,8 @@ msgstr ""
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/features/documents/recent-documents.tsx
+#: src/features/onboarding/onboarding-page.tsx
+#: src/features/profile/fill.tsx
 msgid "Loading"
 msgstr "Memuatkan"
 
@@ -9555,10 +9833,12 @@ msgstr ""
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/page-text.ts
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Location"
 msgstr "Lokasi"
 
@@ -10009,6 +10289,10 @@ msgstr ""
 msgid "More providers and options are in <0>Settings</0>. The rest of the app works fully without AI."
 msgstr "Lebih banyak pembekal dan pilihan terdapat dalam <0>Tetapan</0>. Bahagian lain aplikasi berfungsi sepenuhnya tanpa AI."
 
+#: src/features/onboarding/template-choice.tsx
+msgid "More templates"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "Lebih daripada satu alamat e-mel muncul."
@@ -10025,6 +10309,10 @@ msgstr "Kebanyakan bulet bermula dengan kata pengisi dan bukannya sesuatu yang a
 #: src/features/ats-checker/messages.ts
 msgid "Most entries have no dates."
 msgstr "Kebanyakan entri tidak mempunyai tarikh."
+
+#: src/features/profile/sources/messages.ts
+msgid "Most of this profile is private, so little came in."
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
@@ -10161,6 +10449,7 @@ msgstr "Peranan saya"
 #: src/features/settings/account/profile.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Name"
 msgstr "Nama"
 
@@ -10617,6 +10906,7 @@ msgid "No phone number was found."
 msgstr "Tiada nombor telefon ditemui."
 
 #: src/features/portfolio/editor/intro-form.tsx
+#: src/features/profile/sources/source-review.tsx
 msgid "No photo"
 msgstr ""
 
@@ -10635,6 +10925,10 @@ msgstr ""
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "No postings found. Try different keywords."
 msgstr "Tiada siaran pekerjaan ditemui. Cuba kata kunci yang berbeza."
+
+#: src/features/profile/sources/messages.ts
+msgid "No public repositories of your own, so no projects came in."
+msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "No QRIS app, or want it to renew on its own? <0>Pay by card in US dollars</0>"
@@ -10659,11 +10953,6 @@ msgstr "Tiada keputusan dijumpai."
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time by 40%”, then try again."
 msgstr ""
-
-#: src/features/portfolio/editor/publish-panel.tsx
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "No resume"
-msgstr "Tiada resume"
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
@@ -10813,6 +11102,10 @@ msgstr ""
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "Not enough Rezumi AI credits to read it."
+msgstr ""
+
 #: src/features/portfolio/errors.ts
 msgid "Not enough Rezumi AI credits. Nothing changed."
 msgstr ""
@@ -10839,9 +11132,13 @@ msgid "Not in the offer · ask {company}"
 msgstr "Tiada dalam tawaran · tanya {company}"
 
 #: src/features/resume/editor/design/style-groups.tsx
-#: src/features/resume/editor/design/template-group.tsx
+#: src/features/resume/editor/design/template-card.tsx
 #: src/features/resume/share/download-tab.tsx
 msgid "Not in your plan"
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Not in your Profile yet"
 msgstr ""
 
 #: src/features/ats-checker/report/jd-coverage.tsx
@@ -10857,6 +11154,7 @@ msgid "Not included"
 msgstr ""
 
 #: src/features/career/shared.tsx
+#: src/features/onboarding/onboarding-page.tsx
 msgid "Not now"
 msgstr "Bukan sekarang"
 
@@ -10918,6 +11216,10 @@ msgstr "Tidak disimpan — fakta ini telah dilupakan sebelum ini."
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Not saved: something needs fixing"
+msgstr ""
+
+#: src/features/profile/details-page.tsx
+msgid "Not saved."
 msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
@@ -10984,6 +11286,10 @@ msgid "Nothing has been done yet."
 msgstr ""
 
 #: src/features/portfolio/editor/section-forms.tsx
+msgid "Nothing here in your Profile yet, so the section doesn't show."
+msgstr ""
+
+#: src/features/portfolio/editor/section-forms.tsx
 msgid "Nothing here on your resume yet, so the section doesn't show."
 msgstr ""
 
@@ -11012,6 +11318,14 @@ msgstr ""
 msgid "Nothing more is charged. Your account goes back to Free at the end of the period you paid for; every document stays yours."
 msgstr ""
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Nothing new to add"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Nothing new to add: your Profile already has what we found, or the sources couldn't be read."
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "Nothing saved yet"
 msgstr "Belum ada apa-apa yang disimpan"
@@ -11023,6 +11337,10 @@ msgstr "Tiada apa-apa yang dijadualkan lagi"
 #: src/features/career/today.tsx
 msgid "Nothing scheduled yet."
 msgstr "Belum ada apa-apa yang dijadualkan."
+
+#: src/features/profile/sources/source-progress.tsx
+msgid "Nothing to add from here."
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "Nothing to apply"
@@ -11046,6 +11364,10 @@ msgstr "Tiada apa-apa untuk dicadangkan."
 
 #: src/features/billing/payment-return.tsx
 msgid "Nothing was charged for it. You can start {plan} again."
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Nothing was found at that address. Check it and try again."
 msgstr ""
 
 #: src/features/career/workspace/practise.tsx
@@ -11101,10 +11423,6 @@ msgstr "Mati"
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Off while your portfolio has a password."
 msgstr ""
-
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Off. The letter keeps its own copy of your details."
-msgstr "Mati. Surat itu menyimpan salinan butiran anda sendiri."
 
 #: src/features/applications/stages.ts
 #: src/features/career/workspace/saved.tsx
@@ -11162,6 +11480,7 @@ msgstr ""
 msgid "One calm column, a big name and your work as a clear list."
 msgstr ""
 
+#: src/features/resume/editor/design/template-card.tsx
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
 msgid "One column"
@@ -11432,10 +11751,6 @@ msgstr "Dibuka dalam Kerjaya → Tawaran."
 msgid "opens in new tab"
 msgstr "dibuka dalam tab baharu"
 
-#: src/features/documents/new-document-dialog.tsx
-msgid "Opens the editor on your name. Nothing else to fill in first."
-msgstr "Membuka editor pada nama anda. Tiada apa-apa lagi yang perlu diisi dahulu."
-
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
 msgid "Opportunity discovery"
@@ -11533,6 +11848,10 @@ msgstr "Lain-lain · OpenAI-serasi"
 #: src/features/career/offers.tsx
 msgid "Other benefits"
 msgstr "Faedah lain"
+
+#: src/features/profile/sources/source-review.tsx
+msgid "Other details"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Other documents"
@@ -11830,6 +12149,10 @@ msgstr "Tampal soalan daripada borang"
 msgid "Paste your key"
 msgstr "Tampal kunci anda"
 
+#: src/features/profile/sources/messages.ts
+msgid "Paste your profile link, like linkedin.com/in/your-name."
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Pasted description"
@@ -11951,6 +12274,10 @@ msgstr ""
 msgid "PDF, Word or JSON. We'll build a resume from it."
 msgstr "PDF, Word atau JSON. Kami akan membina resume daripadanya."
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "PDF, Word, a LinkedIn export or a Rezumi file"
+msgstr ""
+
 #: src/features/portfolio/statistics/parts.tsx
 msgid "PDFs opened"
 msgstr ""
@@ -11993,11 +12320,17 @@ msgstr "Mengalih keluar segala-galanya secara kekal. Eksport dahulu jika anda ma
 msgid "Persian"
 msgstr "Parsi"
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "Personal website"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/share/web-page-preview.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Phone"
 msgstr "Telefon"
@@ -12012,6 +12345,7 @@ msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
+#: src/features/profile/sources/source-review.tsx
 msgid "Photo"
 msgstr ""
 
@@ -12043,6 +12377,10 @@ msgstr ""
 msgid "Photos and cameras"
 msgstr ""
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Pick a look for your first resume"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Pick a time after now."
 msgstr "Pilih masa selepas sekarang."
@@ -12054,6 +12392,10 @@ msgstr "Pilih ikon"
 #: src/features/ats-checker/messages.ts
 msgid "Pick one format and use it everywhere."
 msgstr "Pilih satu format dan gunakannya di mana-mana."
+
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "Pick projects from your Profile: title, summary, dates and link come along."
+msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Pick projects from your resume: title, summary, dates and link come along."
@@ -12359,7 +12701,7 @@ msgstr "Keutamaan"
 
 #: src/features/career/coach-chat.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
 msgstr "Keutamaan"
@@ -12593,7 +12935,8 @@ msgstr "Kecekapan"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/page-text.ts
-#: src/features/settings/account/profile.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Profile"
 msgstr "Profil"
 
@@ -12821,6 +13164,10 @@ msgstr "Pilihan soalan"
 msgid "Question removed"
 msgstr "Soalan dialih keluar"
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Questions"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Questions copied"
 msgstr "Soalan disalin"
@@ -12944,9 +13291,17 @@ msgstr "Baca halaman"
 msgid "Read the resume"
 msgstr "Membaca resume"
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "Read with AI. Only what's on the page comes in."
+msgstr ""
+
 #: src/features/auth/pages/consent.tsx
 msgid "Read your email address."
 msgstr "Baca alamat e-mel anda."
+
+#: src/features/assistant/conversation.tsx
+msgid "Read your Profile"
+msgstr ""
 
 #: src/features/auth/pages/consent.tsx
 msgid "Read your profile information."
@@ -12990,6 +13345,10 @@ msgstr "Membaca halaman…"
 #: src/features/documents/new-document-dialog.tsx
 msgid "Reading the file"
 msgstr "Membaca fail"
+
+#: src/features/profile/sources/source-progress.tsx
+msgid "Reading the file…"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/portfolio/blocks/add-media-block.tsx
@@ -13047,8 +13406,21 @@ msgstr "Membaca jawapan anda"
 msgid "Reading your notes"
 msgstr "Membaca nota anda"
 
+#: src/features/profile/sources/source-progress.tsx
+msgid "Reading your profile…"
+msgstr ""
+
+#: src/features/portfolio/metrics/find-metrics.tsx
+msgid "Reading your Profile…"
+msgstr ""
+
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Reading your resume…"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+#: src/features/profile/sources/source-progress.tsx
+msgid "Reading…"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -13355,11 +13727,12 @@ msgstr "Alih keluar “{name}”?"
 
 #. placeholder {0}: attachment.filename
 #. placeholder {0}: contact.name
-#. placeholder {0}: passkey.name || t`Unnamed passkey`
+#. placeholder {0}: file.name
 #: src/features/applications/components/detail/contacts.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-thread.tsx
+#: src/features/profile/sources/source-fields.tsx
 #: src/features/settings/account/security.tsx
 msgid "Remove {0}"
 msgstr "Alih keluar {0}"
@@ -13715,8 +14088,6 @@ msgstr "resume"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/recent-documents.tsx
-#: src/features/portfolio/editor/publish-panel.tsx
-#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "Resume"
 
@@ -13749,6 +14120,8 @@ msgid "Resume details"
 msgstr "butiran resume"
 
 #: src/features/applications/components/detail/sent-documents.tsx
+#: src/features/profile/sources/messages.ts
+#: src/features/profile/sources/source-fields.tsx
 msgid "Resume file"
 msgstr "Fail resume"
 
@@ -13813,6 +14186,8 @@ msgstr "Diperoleh {0}. Kesegaran asal tidak diketahui kecuali dilaporkan."
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/documents/recent-documents.tsx
+#: src/features/profile/details-page.tsx
+#: src/features/profile/sources/source-progress.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13845,6 +14220,7 @@ msgstr ""
 
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
+#: src/features/onboarding/onboarding-page.tsx
 #: src/features/resume/share/download-tab.tsx
 msgid "Review"
 msgstr "Semakan"
@@ -13862,8 +14238,8 @@ msgid "Review my answer"
 msgstr "Semak jawapan saya"
 
 #: src/features/career/workspace/debrief.tsx
-msgid "Review my answer sends the question, what you said, this posting and your Knowledge to {providerName}."
-msgstr "Semak jawapan saya menghantar soalan, apa yang anda katakan, siaran kerja ini dan Pengetahuan anda kepada {providerName}."
+msgid "Review my answer sends the question, what you said, this posting and your Profile to {providerName}."
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Review required form answers and remove unsupported claims."
@@ -13872,6 +14248,10 @@ msgstr "Semak jawapan borang yang diperlukan dan alih keluar dakwaan yang tidak 
 #: src/features/career/workspace/apply.tsx
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "Semak resume dan surat iringan yang dipilih dalam editornya."
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Review what we found"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Review writing"
@@ -13961,6 +14341,10 @@ msgstr ""
 #: src/features/billing/plan-page.tsx
 #: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Rezumi AI isn't available right now. Use your own AI connection, or add a resume file instead."
 msgstr ""
 
 #: src/features/homepage/introduction.tsx
@@ -14190,6 +14574,10 @@ msgstr "Simpan dahulu, kemudian uji carian dan bacaan. Tiada ujian berjalan seca
 msgid "Save interview"
 msgstr "Simpan temu duga"
 
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Save it to your Profile to use it in new resumes, letters and your portfolio."
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Save job"
@@ -14221,12 +14609,17 @@ msgid "Save these offer terms to compare"
 msgstr "Simpan syarat tawaran ini untuk dibandingkan"
 
 #: src/features/assistant/tool-approvals.tsx
-msgid "Save this story to Knowledge?"
+msgid "Save this story to your Profile?"
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Save to my Profile"
 msgstr ""
 
 #: src/features/career/workspace/fit.tsx
-msgid "Save to Knowledge"
-msgstr "Simpan ke Pengetahuan"
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Save to Profile"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Save to the application"
@@ -14248,6 +14641,7 @@ msgstr "disimpan"
 #: src/features/applications/stages.ts
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/homepage/features.tsx
+#: src/features/profile/details-page.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -14302,18 +14696,26 @@ msgstr "Disimpan ke Permohonan"
 msgid "Saved to Applications with the posting"
 msgstr "Disimpan ke Permohonan bersama siaran kerja"
 
-#: src/features/career/workspace/fit.tsx
-msgid "Saved to Knowledge as a fact"
-msgstr "Disimpan ke Pengetahuan sebagai fakta"
-
-#: src/features/career/coach-chat.tsx
-#: src/features/career/workspace/debrief.tsx
-msgid "Saved to Knowledge, private to this application."
-msgstr "Disimpan ke Pengetahuan, peribadi untuk permohonan ini."
-
 #: src/features/career/workspace/practise.tsx
 msgid "Saved to Saved · Practice"
 msgstr "Disimpan ke Disimpan · Latihan"
+
+#: src/features/career/workspace/fit.tsx
+msgid "Saved to your Profile as a fact"
+msgstr ""
+
+#: src/features/career/coach-chat.tsx
+#: src/features/career/workspace/debrief.tsx
+msgid "Saved to your Profile, private to this application."
+msgstr ""
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Saved to your Profile."
+msgstr ""
+
+#: src/features/profile/details-page.tsx
+msgid "Saves as you type. Resumes that still use a part follow your changes."
+msgstr ""
 
 #. placeholder {0}: new URL(url).host
 #: src/features/resume/share/address-field.tsx
@@ -14325,6 +14727,7 @@ msgid "Saving is taking longer than expected. Your changes are still open."
 msgstr "Menyimpan mengambil masa lebih lama daripada jangkaan. Perubahan anda masih terbuka."
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/profile/details-page.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
@@ -14704,10 +15107,6 @@ msgstr "Hantar resume itu sendiri dan bukannya pembungkus portfolio."
 msgid "Send this exact query to your web search provider?"
 msgstr ""
 
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Sender details copied into the letter"
-msgstr "Butiran pengirim disalin ke dalam surat"
-
 #: src/features/homepage/testimonials.tsx
 msgid "Sending a link instead of a PDF means recruiters always see the latest version."
 msgstr ""
@@ -14721,21 +15120,21 @@ msgid "Sending your message…"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
-msgid "Sends this application (posting, notes, interview details) and Knowledge that's switched on to {label}."
-msgstr "Menghantar permohonan ini (siaran kerja, nota, butiran temu duga) dan Pengetahuan yang dihidupkan kepada {label}."
+msgid "Sends this application (posting, notes, interview details) and your Profile (details, career, and the facts and stories that are switched on) to {label}."
+msgstr ""
 
 #. placeholder {0}: provider.label
 #: src/features/career/workspace/fit.tsx
-msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to {0}."
-msgstr "Menghantar siaran kerja, nota dan dokumen permohonan ini, serta Pengetahuan yang dihidupkan, kepada {0}."
+msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to {0}."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
-msgstr "Menghantar siaran kerja, nota dan dokumen permohonan ini, serta Pengetahuan yang dihidupkan, kepada sambungan ini. Pembekal anda mungkin mengenakan caj."
+msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
+msgstr ""
 
 #: src/features/career/workspace/coach-sheet.tsx
-msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
-msgstr "Menghantar mesej anda, permohonan ini (siaran kerja, nota, dokumen yang dihantar) dan Pengetahuan yang dihidupkan kepada {connection}."
+msgid "Sends your message, this application (posting, notes, documents sent) and your Profile (details, career, and the facts and stories that are switched on) to {connection}."
+msgstr ""
 
 #. placeholder {0}: provider?.label
 #. placeholder {1}: provider?.model
@@ -14843,6 +15242,10 @@ msgstr "Tetapan"
 #: src/features/settings/ai/mcp.tsx
 msgid "Setup guide"
 msgstr "Panduan persediaan"
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Setup steps"
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Shadow color"
@@ -15243,6 +15646,7 @@ msgstr "Kemahiran"
 msgid "skills"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
@@ -15259,6 +15663,7 @@ msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
 #: src/features/career/workspace/apply.tsx
+#: src/features/onboarding/onboarding-page.tsx
 #: src/features/portfolio/create-dialog.tsx
 msgid "Skip"
 msgstr "Langkau"
@@ -15411,12 +15816,9 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/career/knowledge/facts.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
 msgid "Source"
 msgstr "Sumber"
-
-#: src/features/portfolio/editor/publish-panel.tsx
-msgid "Source resume"
-msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/assistant/message-sources.tsx
@@ -15518,6 +15920,10 @@ msgstr "Tarikh mula mestilah pada atau sebelum tarikh tamat."
 msgid "Start each one with a concrete verb: built, led, reduced, migrated."
 msgstr "Mulakan setiap satu dengan kata kerja konkrit: built, led, reduced, migrated."
 
+#: src/features/resume/editor/write/add-section.tsx
+msgid "Start empty"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Start free"
 msgstr ""
@@ -15547,6 +15953,10 @@ msgstr ""
 msgid "Start from one you have and link the application."
 msgstr "Mulakan dari yang anda miliki dan pautkan permohonan kerja."
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Start from scratch"
+msgstr ""
+
 #: src/features/homepage/closing.tsx
 msgid "Start from scratch or import the one you have. The free plan is yours for as long as you need it."
 msgstr ""
@@ -15565,6 +15975,10 @@ msgid "Start the resume with your name on its own line."
 msgstr "Mulakan resume dengan nama anda pada baris tersendiri."
 
 #: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Start typing, or draft from what we know: the {company} posting and your Profile."
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing, or draft from what we know: the {company} posting and your resume."
 msgstr "Mula menaip, atau draf daripada apa yang kami ketahui: siaran kerja {company} dan resume anda."
 
@@ -15573,12 +15987,16 @@ msgid "Start typing, or draft from what we know: the {company} posting."
 msgstr "Mula menaip, atau draf daripada apa yang kami tahu: siaran kerja {company}."
 
 #: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Start typing, or draft from what we know: your Profile."
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing, or draft from what we know: your resume."
 msgstr "Mula menaip, atau draf daripada apa yang kami tahu: resume anda."
 
 #: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Start typing. To draft one, link a resume or an application first."
-msgstr "Mula menaip. Untuk merangka satu, pautkan resume atau permohonan kerja terlebih dahulu."
+msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
+msgstr ""
 
 #: src/features/homepage/introduction.tsx
 msgid "Start with the free plan"
@@ -15587,6 +16005,10 @@ msgstr ""
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Start with the sections most resumes have."
 msgstr "Mulakan dengan bahagian yang ada pada kebanyakan resume."
+
+#: src/features/resume/editor/write/add-section.tsx
+msgid "Start with the sections most resumes have. New resumes start from them."
+msgstr ""
 
 #: src/features/portfolio/editor/rich-text-editor.tsx
 msgid "Start writing…"
@@ -15599,6 +16021,10 @@ msgstr "Telah bermula"
 
 #: src/features/billing/buy-plans.tsx
 msgid "Starts at your next renewal."
+msgstr ""
+
+#: src/features/documents/new-document-dialog.tsx
+msgid "Starts from your Profile. Change anything for this resume."
 msgstr ""
 
 #: src/features/career/shared.tsx
@@ -15712,8 +16138,9 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/knowledge/route.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Stories"
 msgstr "Cerita"
 
@@ -16138,6 +16565,7 @@ msgstr "Templat, jenis dan warna mengikut resume, jadi pasangan itu sentiasa sep
 
 #: src/features/homepage/footer.tsx
 #: src/features/homepage/ui.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "Templates"
 msgstr "Templat"
 
@@ -16329,6 +16757,10 @@ msgstr "Kata laluan itu tidak betul. Semak dengan pemilik resume dan cuba lagi."
 msgid "That password isn't right. Check it and try again."
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "That profile wasn't found, or it isn't public. Check the link."
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "That provider account is already linked to another account. Use a different provider account."
 msgstr "Akaun penyedia itu sudah dipautkan kepada akaun lain. Gunakan akaun penyedia yang lain."
@@ -16431,8 +16863,8 @@ msgid "The coach doesn't remember anything from your messages."
 msgstr "Jurulatih tidak mengingati apa-apa daripada mesej anda."
 
 #: src/features/career/coach.tsx
-msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
-msgstr "Jurulatih tidak disediakan pada pelayan ini. Pengendali pelayan perlu menetapkan ENCRYPTION_SECRET. Pengetahuan, Tawaran dan permohonan anda berfungsi tanpanya."
+msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and your applications work without it."
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
@@ -16486,11 +16918,8 @@ msgstr "PDF yang dieksport"
 msgid "The exported PDF couldn't be checked. Try again."
 msgstr "PDF yang dieksport tidak dapat disemak. Cuba lagi."
 
-#: src/routes/dashboard/career/route.tsx
-msgid "The facts, stories and preferences the coach works from."
-msgstr ""
-
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/profile/sources/messages.ts
 msgid "The file couldn't be read as a resume."
 msgstr "Fail tidak boleh dibaca sebagai resume."
 
@@ -16606,6 +17035,10 @@ msgstr ""
 msgid "The page had no job details to read. Fill in the role and company."
 msgstr "Halaman itu tidak mempunyai butiran kerja untuk dibaca. Isi peranan dan syarikat."
 
+#: src/features/profile/sources/messages.ts
+msgid "The page is long, so only its first part was read."
+msgstr ""
+
 #: src/features/portfolio/blocks/video-block.tsx
 msgid "The page shows a plain play button until the thumbnail is copied."
 msgstr ""
@@ -16636,6 +17069,10 @@ msgstr ""
 
 #: src/features/portfolio/media/pdf.ts
 msgid "The PDF couldn't be uploaded. Check your connection and try again."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "The photo in my Profile"
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
@@ -16892,6 +17329,10 @@ msgstr "Tiada pautan ke profil, portfolio atau repositori."
 msgid "There is no summary paragraph."
 msgstr "Tiada perenggan ringkasan."
 
+#: src/features/profile/sources/messages.ts
+msgid "There's no GitHub account with that username."
+msgstr ""
+
 #: src/features/billing/receipt.tsx
 msgid "There's no receipt here: this payment isn't a paid QRIS plan."
 msgstr ""
@@ -17067,7 +17508,7 @@ msgstr ""
 msgid "This file isn't a picture your browser can read. Use a JPG, PNG or WebP file."
 msgstr ""
 
-#: src/features/documents/new-document-dialog.tsx
+#: src/features/resume/import/use-read-resume-file.ts
 msgid "This file type can't be imported. Use a PDF, Word, Rezumi or JSON Resume file, or a LinkedIn export (.zip)."
 msgstr "Jenis fail ini tidak boleh diimport. Gunakan fail PDF, Word, Rezumi atau JSON Resume atau eksport LinkedIn (.zip)."
 
@@ -17107,6 +17548,10 @@ msgstr ""
 msgid "This is a {provider} link: it can show on your page itself, after a visitor presses it."
 msgstr ""
 
+#: src/features/profile/sources/use-source-runs.ts
+msgid "This is a cover letter. Add a resume or a LinkedIn export instead."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "Ini adalah Portfolio PDF: halaman yang kelihatan hanyalah kulit muka."
@@ -17119,12 +17564,20 @@ msgstr ""
 msgid "This is an XFA form, so most software reads only the empty shell."
 msgstr "Ini adalah borang XFA, jadi kebanyakan perisian hanya membaca cengkerang kosong."
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "This is my own profile"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "Ini bukan saiz halaman resume yang biasa."
 
 #: src/features/portfolio/errors.ts
 msgid "This is too long for Rezumi AI. Shorten it, or use your own AI connection."
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "This isn't available for your account."
 msgstr ""
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
@@ -17138,6 +17591,10 @@ msgstr "Surat ini dikunci. Buka kuncinya daripada menunya untuk mengedit."
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "This letter keeps its recipient as written."
 msgstr "Surat ini mengekalkan penerimanya seperti yang ditulis."
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "This letter only"
+msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "This link doesn't say which payment it is. Your plan page lists every payment you started."
@@ -17253,10 +17710,6 @@ msgstr ""
 msgid "This portfolio doesn't exist anymore. Its owner may have deleted it."
 msgstr ""
 
-#: src/features/portfolio/works/add-work/from-resume.tsx
-msgid "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
-msgstr ""
-
 #: src/features/portfolio/errors.ts
 msgid "This portfolio is already in that state. Reload the page to see what changed."
 msgstr ""
@@ -17267,6 +17720,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "This portfolio was taken down"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-resume.tsx
+msgid "This portfolio's source resume is in Trash. Choose another source in Publish → Source."
 msgstr ""
 
 #: src/features/billing/receipt.tsx
@@ -17334,7 +17791,7 @@ msgid "This saved version is no longer available."
 msgstr "Versi yang disimpan ini tidak lagi tersedia."
 
 #: src/features/portfolio/editor/section-forms.tsx
-msgid "This section comes from a resume. Choose one in Publish → Source resume to fill it."
+msgid "This section comes from your source resume, which is in Trash. Choose another in Publish → Source."
 msgstr ""
 
 #: src/features/auth/pages/error.tsx
@@ -17585,6 +18042,10 @@ msgstr ""
 msgid "Too many tries in a row. Wait a few minutes, then try again."
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "Too many tries in a short time. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Too many tries. Try again later."
 msgstr "Terlalu banyak cubaan. Cuba lagi nanti."
@@ -17809,7 +18270,7 @@ msgid "Turn this schedule on"
 msgstr "Hidupkan jadual ini"
 
 #: src/features/portfolio/portfolio-page.tsx
-msgid "Turn your resume into a portfolio website"
+msgid "Turn your Profile into a portfolio website"
 msgstr ""
 
 #: src/dialogs/auth/disable-two-factor.tsx
@@ -17824,10 +18285,15 @@ msgstr "Menghidupkan pengesahan dua langkah…"
 msgid "Two bullets run over two lines"
 msgstr ""
 
+#: src/features/resume/editor/design/template-card.tsx
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
 msgid "Two columns"
 msgstr "Dua lajur"
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Two quick questions"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Two stories"
@@ -17921,6 +18387,7 @@ msgstr "Garis bawah pautan"
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/list-undo.ts
 #: src/features/portfolio/editor/rich-text-editor.tsx
+#: src/features/profile/fill.tsx
 #: src/features/resume/editor/check/actions.ts
 #: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/design/fit.ts
@@ -17928,6 +18395,7 @@ msgstr "Garis bawah pautan"
 #: src/features/resume/editor/proposals/proposals.ts
 #: src/features/resume/editor/webmcp.ts
 #: src/features/resume/editor/write/entry-card.tsx
+#: src/features/resume/editor/write/profile-link.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -17993,6 +18461,14 @@ msgstr ""
 msgid "Unread:"
 msgstr ""
 
+#: src/features/profile/fill.tsx
+msgid "Untick anything you'd rather leave out."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Untick anything you'd rather leave out. You can change it all later in your Profile."
+msgstr ""
+
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
 #: src/features/billing/admin/customer.tsx
 msgid "until {0}"
@@ -18004,6 +18480,7 @@ msgid "Until now it opened your resume. Your resume stays at <0>{0}</0>, and you
 msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
+#: src/features/resume/editor/write/profile-link.tsx
 #: src/features/resume/stylesheet/targets.ts
 msgid "Untitled"
 msgstr "Tidak bertajuk"
@@ -18018,6 +18495,7 @@ msgid "Untitled letter"
 msgstr "Surat tanpa tajuk"
 
 #: src/features/documents/use-start-document.ts
+#: src/features/onboarding/onboarding-page.tsx
 msgid "Untitled resume"
 msgstr "Resume tanpa tajuk"
 
@@ -18089,6 +18567,10 @@ msgstr "dikemas kini"
 #: src/features/documents/document-actions.tsx
 msgid "Updated {done} of {total}. Locked documents, and letters for public links, were skipped."
 msgstr "{done} daripada {total} dikemas kini. Dokumen terkunci, dan surat untuk pautan awam, dilangkau."
+
+#: src/features/resume/builder/draft.ts
+msgid "Updated from your Profile."
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Updating your resume..."
@@ -18243,11 +18725,6 @@ msgstr "Gunakan antara 6 hingga 64 aksara."
 msgid "Use default"
 msgstr "Guna lalai"
 
-#. placeholder {0}: resume?.name ?? t`the resume`
-#: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Use details from “{0}”"
-msgstr "Gunakan butiran daripada \"{0}\""
-
 #: src/features/career/knowledge/facts.tsx
 msgid "Use for all applications"
 msgstr "Gunakan untuk semua permohonan"
@@ -18291,6 +18768,10 @@ msgstr "Gunakan tajuk biasa seperti \"Experience\", \"Education\" dan \"Skills\"
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Use posting"
 msgstr "Gunakan siaran kerja"
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Use Profile's"
+msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Use sample"
@@ -18391,6 +18872,10 @@ msgstr "Menggunakan perkhidmatan carian web yang disediakan dalam Tetapan. Hasil
 #: src/features/settings/ai/web-access.tsx
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "Menggunakan carian web pembekal AI anda sendiri jika disokong dan membaca pautan dengan pembaca terbina dalam."
+
+#: src/features/resume/editor/write/profile-link.tsx
+msgid "Using your Profile's version."
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "UX Designer"
@@ -18641,6 +19126,11 @@ msgstr "Sukarelawan"
 msgid "Volunteering"
 msgstr ""
 
+#. placeholder {0}: formatList(i18n.locale, waitingFor)
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Waiting for {0}…"
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 msgid "Waiting for Dodo Payments"
 msgstr ""
@@ -18693,6 +19183,18 @@ msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "We couldn't find this payment"
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "We only read what you add here, once you continue: LinkedIn profiles through Apify, GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "We only read what you add here, once you continue. Nothing goes into your Profile until you check it."
 msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
@@ -18771,9 +19273,15 @@ msgid "Webhooks with a bad signature"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
+#: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/write/basics-card.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Website"
 msgstr "Laman web"
+
+#: src/features/billing/credits.ts
+msgid "Website read into your Profile"
+msgstr ""
 
 #: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Wedding photos, Bandung 2025"
@@ -18892,6 +19400,10 @@ msgstr "Apa yang penting bagi anda"
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
+#: src/features/onboarding/questions.tsx
+msgid "What roles are you aiming for?"
+msgstr ""
+
 #: src/features/resume/editor/write/improve.tsx
 msgid "What should change?"
 msgstr "Apa yang patut diubah?"
@@ -18943,6 +19455,10 @@ msgstr "Apa yang berkesan"
 #: src/features/career/knowledge/stories.tsx
 msgid "What would you do differently?"
 msgstr "Apa yang akan anda lakukan secara berbeza?"
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "What you add to your Profile later shows up here. You can also pick a resume later in Publish."
+msgstr ""
 
 #. placeholder {0}: requirement.text
 #: src/features/career/workspace/fit.tsx
@@ -19016,6 +19532,10 @@ msgstr "Bilakah mereka memerlukan jawapan anda?"
 msgid "Where applications come from"
 msgstr "Dari mana permohonan datang"
 
+#: src/features/onboarding/questions.tsx
+msgid "Where do you want to work?"
+msgstr ""
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Where it was given (optional)"
 msgstr ""
@@ -19068,6 +19588,10 @@ msgstr "Peluang manakah yang paling sepadan dengan keutamaan saya?"
 msgid "Which other benefits come with it, like pension or allowances?"
 msgstr "Apakah faedah lain yang disertakan, seperti pencen atau elaun?"
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "While we read your details"
+msgstr ""
+
 #: src/dialogs/resume/template/data.ts
 msgid "White and airy: an elegant serif name, the sidebar on the right set apart by a single hairline, and no fills anywhere."
 msgstr ""
@@ -19119,10 +19643,6 @@ msgstr ""
 
 #: src/features/portfolio/blocks/embed-block.tsx
 msgid "Without a picture, the page shows a plain button with the service's name."
-msgstr ""
-
-#: src/features/portfolio/create-dialog.tsx
-msgid "Without a resume"
 msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
@@ -19255,8 +19775,8 @@ msgid "Write what you did."
 msgstr "Tulis apa yang anda lakukan."
 
 #: src/features/career/workspace/apply.tsx
-msgid "Write your answer, or draft one from your Knowledge."
-msgstr "Tulis jawapan anda, atau draf satu daripada Pengetahuan anda."
+msgid "Write your answer, or draft one from your Profile."
+msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
@@ -19388,10 +19908,6 @@ msgstr "Anda boleh terus mengedit. Perubahan disegerakkan apabila anda kembali d
 msgid "You can keep up to 30 application questions."
 msgstr "Anda boleh menyimpan sehingga 30 soalan permohonan."
 
-#: src/features/portfolio/create-dialog.tsx
-msgid "You can link a resume later in Publish."
-msgstr ""
-
 #: src/features/billing/plan.ts
 msgid "You can look at every theme. {themes} are included, and a portfolio that already uses another theme keeps it."
 msgstr ""
@@ -19431,6 +19947,10 @@ msgstr "Anda berkata: “{said}” Tanya sebelum membuat keputusan."
 #: src/features/career/offers.tsx
 msgid "You said: “{said}” Ask both companies before deciding."
 msgstr "Anda berkata: “{said}” Tanya kedua-dua syarikat sebelum membuat keputusan."
+
+#: src/features/profile/sources/messages.ts
+msgid "You seem to be offline. Check your connection and try again."
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "You send it from your own email."
@@ -19476,12 +19996,24 @@ msgstr "Anda menggunakan akaun tetamu"
 msgid "You've changed things since. Use Undo at the top of the editor."
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "You've used this as often as you can today. Try again tomorrow."
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "You've used today's LinkedIn imports. Try again tomorrow, or add your LinkedIn export."
+msgstr ""
+
 #: src/features/billing/pending-payment.tsx
 msgid "Your {plan} checkout isn't finished"
 msgstr ""
 
 #: src/features/billing/pending-payment.tsx
 msgid "Your {plan} QRIS payment isn't finished"
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Your account"
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -19593,9 +20125,39 @@ msgstr "Data anda"
 msgid "Your dates are written several different ways."
 msgstr "Tarikh anda ditulis dalam beberapa cara berbeza."
 
+#: src/features/onboarding/onboarding-page.tsx
+#: src/features/profile/sources/source-review.tsx
+#: src/features/resume/editor/write/basics-card.tsx
+msgid "Your details"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Your details and career, kept in one place."
+msgstr ""
+
+#: src/routes/dashboard/profile/route.tsx
+msgid "Your details and career, kept in one place. New resumes, letters and your portfolio start from here."
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Your details and career, with the facts, stories and preferences that are switched on in your Profile"
+msgstr ""
+
+#: src/routes/builder/letter/-components/letter-shell.tsx
+msgid "Your details changed in your Profile. The letter updated too."
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your details changed on the resume. The letter updated too."
 msgstr "Butiran anda ditukar pada resume. Surat itu dikemas kini juga."
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your details from"
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your details were copied into the letter. Edit them here."
+msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/portfolio-page.tsx
@@ -19691,10 +20253,6 @@ msgstr ""
 msgid "Your headline changed on the resume. The letter updated too."
 msgstr "Tajuk anda berubah pada resume. Surat itu dikemas kini juga."
 
-#: src/features/career/workspace/debrief.tsx
-msgid "your Knowledge"
-msgstr "Pengetahuan anda"
-
 #: src/features/billing/buy-plans.tsx
 msgid "Your last payment didn't go through. Update your payment method in billing first."
 msgstr ""
@@ -19753,9 +20311,14 @@ msgstr ""
 msgid "Your name"
 msgstr ""
 
+#. placeholder {0}: resume?.name ?? t`the resume`
 #: src/routes/builder/letter/-components/write-panel.tsx
-msgid "Your name and contact details come from a resume."
-msgstr "Nama dan butiran hubungan anda datang daripada resume."
+msgid "Your name and contact details follow “{0}”."
+msgstr ""
+
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your name and contact details follow your Profile."
+msgstr ""
 
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Your name as your address, from OlaCV, the .cv registry. Code <0/> takes 50% off the first year."
@@ -19775,6 +20338,10 @@ msgstr "Nama awak tiada"
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Your name, photo, experience, education and skills follow this resume as it changes. Its summary becomes About me and its projects become your work, to edit freely."
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Your name, photo, experience, education and skills follow your Profile as it changes. Its summary becomes About me and its projects become your work, to edit freely."
 msgstr ""
 
 #: src/components/layout/loading-screen.tsx
@@ -19942,7 +20509,7 @@ msgid "Your portfolio shows a small Made with Rezumi badge at the bottom of the 
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
-msgid "Your portfolio still shows its own content. Choose another resume to fill Experience, Education and the other sections again."
+msgid "Your portfolio still shows its own content. Choose your Profile or another resume to fill Experience, Education and the other sections again."
 msgstr ""
 
 #: src/features/portfolio/errors.ts
@@ -19971,6 +20538,40 @@ msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Your primary resume"
+msgstr ""
+
+#: src/features/career/workspace/debrief.tsx
+msgid "your Profile"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
+#: src/routes/builder/letter/-components/write-panel.tsx
+msgid "Your Profile"
+msgstr ""
+
+#: src/features/profile/fill.tsx
+msgid "Your Profile already has everything in “{name}”."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-resume.tsx
+msgid "Your Profile has no projects yet. Add them in Profile, or start an empty work."
+msgstr ""
+
+#: src/features/profile/store.ts
+msgid "Your Profile was changed somewhere else, so it was reloaded. Check your last change."
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Your Profile was changed somewhere else. Check what's new, then save again."
+msgstr ""
+
+#: src/features/settings/account/data.tsx
+msgid "Your Profile, documents and applications as JSON, in one zip"
 msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
@@ -20030,6 +20631,10 @@ msgstr "Pelayan anda menyediakan carian web dalam bahagian Permohonan dan untuk 
 msgid "Your source resume is in Trash"
 msgstr ""
 
+#: src/features/profile/sources/source-progress.tsx
+msgid "Your sources"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"
 msgstr ""
@@ -20061,6 +20666,10 @@ msgstr "Pengenalan diri dua minit anda"
 #: src/features/resume/share/share-panel.tsx
 msgid "Your web page is live"
 msgstr "Halaman web anda kini dalam talian"
+
+#: src/features/profile/sources/messages.ts
+msgid "Your website"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "Your words stay put while the layout, fonts and colors change around them."

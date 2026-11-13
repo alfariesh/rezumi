@@ -10,6 +10,8 @@ import { AddSectionMenu, StartSuggestions } from "./add-section";
 import { BasicsCard } from "./basics-card";
 import { getOutlineRows, summarizeContent } from "./model";
 import { Outline } from "./outline";
+import { ResumeProfileProvider } from "./profile-link";
+import { ResumeWriteSource } from "./source";
 import { useDialogStore } from "@/dialogs/store";
 import {
 	useCurrentBuilderResumeSelector,
@@ -23,8 +25,19 @@ import { orpc } from "@/libs/orpc/client";
 /**
  * Write, as widgets: About (the header's details), then one widget per page with its sections in print order and
  * their entries, then Add section. Every field saves as you type; a locked resume shows the same panel read-only.
+ * Parts that differ from the account's Profile carry a calm marker (`profile-link.tsx`).
  */
 export function WritePanel() {
+	return (
+		<ResumeWriteSource>
+			<ResumeProfileProvider>
+				<ResumeWrite />
+			</ResumeProfileProvider>
+		</ResumeWriteSource>
+	);
+}
+
+function ResumeWrite() {
 	const locked = useIsResumeLocked();
 	const locale = useCurrentBuilderResumeSelector((resume) => resume.data.metadata.page.locale);
 	// The selector hook reads `undefined` as "no resume yet", so optional values need a fallback.
@@ -61,8 +74,10 @@ function ImportedNote() {
 	return imported ? <ImportedSummary imported={imported} /> : null;
 }
 
+type ImportedSummaryProps = { imported: string };
+
 /** Subscribes to the resume only while the note shows. */
-function ImportedSummary({ imported }: { imported: string }) {
+function ImportedSummary({ imported }: ImportedSummaryProps) {
 	const navigate = useNavigate();
 	const data = useCurrentBuilderResumeSelector((resume) => resume.data);
 	const { sections, entries, toCheck } = summarizeContent(data);

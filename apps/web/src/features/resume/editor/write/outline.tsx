@@ -14,10 +14,11 @@ import { useEditorStore } from "../store";
 import { addEntryTo } from "./actions";
 import { EntryCard } from "./entry-card";
 import { getEntries, getOutlineRows, getSectionKind, getSectionType, moveSection } from "./model";
+import { AddFromProfile, ProfileMarker } from "./profile-link";
 import { SectionRow } from "./section-row";
+import { useWriteSelector, useWriteSource, useWriteUpdate } from "./source";
 import { SummaryEditor } from "./summary-editor";
 import { SortableProvider } from "@/components/input/sortable";
-import { useCurrentBuilderResumeSelector, useUpdateResumeData } from "@/features/resume/builder/draft";
 
 const ADD_LABELS: Record<CustomSectionType, MessageDescriptor> = {
 	summary: msg`Add text`,
@@ -55,16 +56,14 @@ type OutlineProps = { locked: boolean; page: PageSettings };
  */
 export function Outline({ locked, page }: OutlineProps) {
 	const added = useEditorStore((state) => state.addedSections);
-	const key = useCurrentBuilderResumeSelector((resume) =>
-		getOutlineRows(resume.data, new Set(added)).map(rowKey).join("\u0001"),
-	);
+	const key = useWriteSelector((data) => getOutlineRows(data, new Set(added)).map(rowKey).join("\u0001"));
 	const rows = useMemo(() => parseRows(key), [key]);
 	const pages = useMemo(() => groupByPage(rows), [rows]);
-	const updateResumeData = useUpdateResumeData();
+	const update = useWriteUpdate();
 
 	const move = (id: string, target: OutlineRow | undefined, direction: "up" | "down") => {
 		if (!target) return;
-		updateResumeData((draft) => moveSection(draft, id, target, direction), { newStep: true });
+		update((draft) => moveSection(draft, id, target, direction), { newStep: true });
 	};
 
 	const onDrop = (id: string, { index }: SortableTarget) => {
@@ -156,10 +155,12 @@ type OutlineSectionProps = {
 	onMove?: ((direction: "up" | "down") => void) | undefined;
 };
 
-function OutlineSection({ sectionId, index, locked, page, onMove }: OutlineSectionProps) {
+/** A section's row with what it holds: the summary's text, or the entries and the ways to add one. */
+export function OutlineSection({ sectionId, index, locked, page, onMove }: OutlineSectionProps) {
 	const { i18n } = useLingui();
+	const source = useWriteSource();
 	// Select the type (a string) rather than a new section object, so the row renders only when it changes.
-	const type = useCurrentBuilderResumeSelector((resume) => getSectionType(resume.data, sectionId) ?? null);
+	const type = useWriteSelector((data) => getSectionType(data, sectionId) ?? null);
 	const stableSection = useMemo<WriteSection | null>(
 		() => (type ? { id: sectionId, kind: getSectionKind(sectionId), type } : null),
 		[sectionId, type],
@@ -169,19 +170,27 @@ function OutlineSection({ sectionId, index, locked, page, onMove }: OutlineSecti
 	return (
 		<SectionRow section={stableSection} index={index} locked={locked} onMove={onMove}>
 			{stableSection.kind === "summary" ? (
-				<SummaryEditor locked={locked} />
+				<>
+					<div className="flex justify-end empty:hidden">
+						<ProfileMarker part={{ kind: "summary" }} className="my-0" />
+					</div>
+					<SummaryEditor locked={locked} />
+				</>
 			) : (
 				<>
 					<EntryList section={stableSection} locked={locked} page={page} />
 					{!locked && (
-						<Button
-							variant="ghost"
-							onPress={() => addEntryTo(stableSection)}
-							className="w-fit text-accent-soft-foreground"
-						>
-							<Icon name="plus" size={18} />
-							{i18n._(ADD_LABELS[stableSection.type])}
-						</Button>
+						<div className="flex flex-wrap items-center gap-1">
+							<Button
+								variant="ghost"
+								onPress={() => addEntryTo(source, stableSection)}
+								className="w-fit text-accent-soft-foreground"
+							>
+								<Icon name="plus" size={18} />
+								{i18n._(ADD_LABELS[stableSection.type])}
+							</Button>
+							<AddFromProfile section={stableSection} />
+						</div>
 					)}
 				</>
 			)}
@@ -193,17 +202,17 @@ type EntryListProps = { section: WriteSection; locked: boolean; page: PageSettin
 
 /** Entries reorder like sections: drag the card's handle, or ⌥↑ / ⌥↓ on its title. */
 function EntryList({ section, locked, page }: EntryListProps) {
-	const ids = useCurrentBuilderResumeSelector((resume) =>
-		getEntries(resume.data, section)
+	const ids = useWriteSelector((data) =>
+		getEntries(data, section)
 			.map((entry) => entry.id)
 			.join("\u0000"),
 	);
 	const entryIds = useMemo(() => (ids ? ids.split("\u0000") : []), [ids]);
-	const updateResumeData = useUpdateResumeData();
+	const update = useWriteUpdate();
 
 	const move = (entryId: string, to: number) => {
 		if (to < 0 || to >= entryIds.length) return;
-		updateResumeData(
+		update(
 			(draft) => {
 				const entries = getEntries(draft, section);
 				const from = entries.findIndex((entry) => entry.id === entryId);

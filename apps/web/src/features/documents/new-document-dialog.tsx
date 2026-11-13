@@ -1,4 +1,3 @@
-import type { ImportKind } from "@/features/resume/import/read-file";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 import { Alert, Button, Input, Modal, Spinner, Tag, TagGroup } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
@@ -15,11 +14,12 @@ import { useNewDocumentsStore } from "./new-documents";
 import { useStartDocument } from "./use-start-document";
 import { useDialogStore } from "@/dialogs/store";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
-import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
+import { useAiSource } from "@/features/billing/ai-source";
 import { AiSourceMenu, openCreditsDialogForError } from "@/features/billing/ai-source-menu";
 import { describeImportedDesign, usePlan } from "@/features/billing/plan";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
-import { detectImportKind, ImportError, readResumeFile, summarizeImport } from "@/features/resume/import/read-file";
+import { detectImportKind, IMPORT_ACCEPT, ImportError, summarizeImport } from "@/features/resume/import/read-file";
+import { requireImportKind, useReadResumeFile } from "@/features/resume/import/use-read-resume-file";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
@@ -47,17 +47,6 @@ type Step =
 
 type OpenResumeOptions = { withAssistant?: boolean; importedFrom?: string };
 
-const ACCEPT = ".pdf,.docx,.json,.zip,application/pdf,application/json,application/zip";
-
-function requireImportKind(kind: ImportKind | null): ImportKind {
-	if (!kind) {
-		throw new ImportError(
-			t`This file type can't be imported. Use a PDF, Word, Rezumi or JSON Resume file, or a LinkedIn export (.zip).`,
-		);
-	}
-	return kind;
-}
-
 /** Runs an import and reports each stage into the dialog's step; a newer run or a cancel drops the older one's updates. */
 function useResumeImport(
 	setStep: Dispatch<SetStateAction<Step>>,
@@ -66,9 +55,7 @@ function useResumeImport(
 ) {
 	const queryClient = useQueryClient();
 	const markNew = useNewDocumentsStore((state) => state.markNew);
-	const providerState = useHasUsableAiProvider();
-	const { hasUsableProvider } = providerState;
-	const ai = useAiSource();
+	const readFile = useReadResumeFile();
 	const plan = usePlan();
 	const run = useRef(0);
 	// The server fits an imported design to the plan; say what changed.
@@ -106,24 +93,7 @@ function useResumeImport(
 				return;
 			}
 
-			let aiAvailable = hasUsableProvider;
-			if ((kind === "docx" || kind === "pdf") && providerState.isUnavailable) {
-				try {
-					const providers = await queryClient.fetchQuery({ ...orpc.aiProviders.list.queryOptions(), staleTime: 0 });
-					aiAvailable = providers.some((provider) => provider.enabled && provider.testStatus === "success");
-				} catch {
-					// PDFs have a browser-only reader; a connection outage must not block that local path.
-					if (kind !== "pdf")
-						throw new ImportError(t`Couldn't load AI connections. Try again before importing this file.`);
-					aiAvailable = false;
-				}
-			}
-			if (!current()) return;
-			const resume = await readResumeFile(file, kind, {
-				aiAvailable,
-				onRead: (note) => advance(1, note),
-				aiFields: aiSourceFields(ai),
-			});
+			const resume = await readFile(file, kind, (note) => advance(1, note));
 			if (!current()) return;
 			const summary = summarizeImport(resume);
 			advance(1, t`file read`);
@@ -231,7 +201,7 @@ export function NewDocumentDialog({ data }: { data?: NewDocumentDialogData | und
 				<input
 					ref={inputRef}
 					type="file"
-					accept={ACCEPT}
+					accept={IMPORT_ACCEPT}
 					className="hidden"
 					aria-label={t`Choose a file to import`}
 					onChange={(event) => {
@@ -296,8 +266,8 @@ export function NewDocumentDialog({ data }: { data?: NewDocumentDialogData | und
 								</span>
 								<span className="text-body-sm text-muted">
 									<Trans>
-										Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section and flag
-										anything we're unsure of.
+										Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section, flag
+										anything we're unsure of, and add what your Profile is missing.
 									</Trans>
 								</span>
 							</span>
@@ -314,7 +284,7 @@ export function NewDocumentDialog({ data }: { data?: NewDocumentDialogData | und
 							<ChoiceTile
 								icon="file-plus"
 								title={t`Start blank`}
-								description={t`Opens the editor on your name. Nothing else to fill in first.`}
+								description={t`Starts from your Profile. Change anything for this resume.`}
 								disabled={creating}
 								onClick={() => void startBlank()}
 							/>

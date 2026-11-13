@@ -388,8 +388,9 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 												)}
 											<PrivacyLine cost>
 												<Trans>
-													Sends this application's posting, notes and documents, plus Knowledge that's switched on, to
-													this connection. Your provider may charge for it.
+													Sends this application's posting, notes and documents, plus your Profile (details, career, and
+													the facts and stories that are switched on), to this connection. Your provider may charge for
+													it.
 												</Trans>
 											</PrivacyLine>
 										</>

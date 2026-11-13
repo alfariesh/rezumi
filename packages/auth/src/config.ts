@@ -241,6 +241,18 @@ export async function linkAnonymousAccount({
 			})
 			.where(eq(schema.application.userId, fromUserId));
 
+		// The guest's Profile moves only to an account that has none: an account's own Profile is never replaced. One
+		// that stays behind goes with the guest.
+		await tx
+			.update(schema.profile)
+			.set({ userId: toUserId, data: rewriteUploadsJson(schema.profile.data) })
+			.where(
+				and(
+					eq(schema.profile.userId, fromUserId),
+					sql`not exists (select 1 from profile p where p.user_id = ${toUserId})`,
+				),
+			);
+
 		await tx
 			.delete(schema.resumeSlugRedirect)
 			.where(
@@ -741,6 +753,27 @@ export const accountAuth = {
 	listApiKeys: (user: User) => accountUser.run(user, () => auth.api.listApiKeys({})),
 	deleteApiKey: (user: User, keyId: string) => accountUser.run(user, () => auth.api.deleteApiKey({ body: { keyId } })),
 };
+
+/**
+ * A usable access token for the account's sign-in with a provider ("github"), read through Better Auth, which keeps
+ * provider tokens encrypted and refreshes expired ones. Null when the account has no such sign-in or the token can't
+ * be read. The token is the user's: send it only to that provider.
+ */
+export async function providerAccessToken(userId: string, providerId: string): Promise<string | null> {
+	const [account] = await db
+		.select({ id: schema.account.id })
+		.from(schema.account)
+		.where(and(eq(schema.account.userId, userId), eq(schema.account.providerId, providerId)))
+		.limit(1);
+	if (!account) return null;
+	try {
+		// Without request headers, Better Auth acts for `userId` instead of a session.
+		const { accessToken } = await auth.api.getAccessToken({ body: { accountId: account.id, userId } });
+		return accessToken || null;
+	} catch {
+		return null;
+	}
+}
 
 export async function initializeAuth(): Promise<void> {
 	await auth.$context;
