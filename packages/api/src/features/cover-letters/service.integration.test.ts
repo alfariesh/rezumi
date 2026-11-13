@@ -1,3 +1,4 @@
+import type { ProfileData } from "@rezumi/schema/profile/data";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vite-plus/test";
@@ -5,6 +6,7 @@ import { ORPCError } from "@orpc/client";
 import { createRouterClient } from "@orpc/server";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
+import { emptyProfileData } from "@rezumi/schema/profile/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const fixture = vi.hoisted(() => ({
@@ -30,6 +32,21 @@ vi.mock("../resume/service", () => ({
 	},
 }));
 
+/** Saves Alice's Profile directly: these tests read it, the Profile's own tests cover saving. */
+async function saveProfile(
+	userId: string,
+	basics: Partial<Pick<ProfileData["basics"], "name" | "headline" | "email">>,
+	picture = "",
+) {
+	const data = emptyProfileData();
+	Object.assign(data.basics, basics);
+	data.picture.url = picture;
+	await getPool().query(
+		"INSERT INTO profile (user_id, data) VALUES ($1, $2) ON CONFLICT (user_id) DO UPDATE SET data = excluded.data",
+		[userId, data],
+	);
+}
+
 function getPool(): Pool {
 	if (!fixture.pool) throw new Error("Test database is not initialized");
 	return fixture.pool;
@@ -50,7 +67,7 @@ describe.skipIf(!process.env.COVER_LETTER_TEST_DATABASE_URL)("cover-letter owned
 		});
 		fixture.db = drizzle({ client: fixture.pool });
 		await fixture.pool.query(
-			`CREATE TABLE "user" (id text PRIMARY KEY); CREATE TABLE resume (id text PRIMARY KEY, user_id text, data jsonb); CREATE TABLE application (id text PRIMARY KEY, user_id text, company text NOT NULL DEFAULT '', contacts jsonb NOT NULL DEFAULT '[]', cover_letter_id text, updated_at timestamptz, resume_id text, status text DEFAULT 'saved', sent_resume_version_id text);`,
+			`CREATE TABLE "user" (id text PRIMARY KEY, name text NOT NULL DEFAULT '', email text NOT NULL DEFAULT '', is_anonymous boolean DEFAULT false); CREATE TABLE profile (user_id text PRIMARY KEY, data jsonb NOT NULL, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now()); CREATE TABLE resume (id text PRIMARY KEY, user_id text, data jsonb); CREATE TABLE application (id text PRIMARY KEY, user_id text, company text NOT NULL DEFAULT '', contacts jsonb NOT NULL DEFAULT '[]', cover_letter_id text, updated_at timestamptz, resume_id text, status text DEFAULT 'saved', sent_resume_version_id text);`,
 		);
 		// The migrations that shape the letter tables, in order.
 		for (const name of [
@@ -83,8 +100,10 @@ describe.skipIf(!process.env.COVER_LETTER_TEST_DATABASE_URL)("cover-letter owned
 		await admin?.end();
 	});
 	beforeEach(async () => {
-		await getPool().query('TRUNCATE "user",resume,application,cover_letter CASCADE');
-		await getPool().query("INSERT INTO \"user\" VALUES ('alice'),('bob')");
+		await getPool().query('TRUNCATE "user",profile,resume,application,cover_letter CASCADE');
+		await getPool().query(
+			"INSERT INTO \"user\" (id, name, email) VALUES ('alice','Alice Account','alice@example.com'),('bob','Bob','bob@example.com')",
+		);
 		await getPool().query("INSERT INTO resume VALUES ('alice-resume','alice',$1),('bob-resume','bob',$1)", [
 			defaultResumeData,
 		]);
@@ -380,10 +399,11 @@ describe.skipIf(!process.env.COVER_LETTER_TEST_DATABASE_URL)("cover-letter owned
 		});
 		expect(freeform).toMatchObject({ layout: "freeform", senderLinked: true, designLinked: false });
 		expect(freeform.style.metadata.template).toBe("senja");
-		// Without a resume there's nothing to link to.
+		// Without a resume, the sender's details are linked to the Profile; there's no design to link to.
 		expect(await service.create({ userId: "alice", name: "Plain" })).toMatchObject({
-			senderLinked: false,
+			senderLinked: true,
 			designLinked: false,
+			style: { basics: { name: "Alice Account", email: "alice@example.com" } },
 		});
 
 		// Moving the letter to another application takes it along.
@@ -445,10 +465,9 @@ describe.skipIf(!process.env.COVER_LETTER_TEST_DATABASE_URL)("cover-letter owned
 		expect((await service.getById({ userId: "alice", id: created.id })).style.metadata.page.locale).toBe("de-DE");
 
 		await expect(
-			service.update({ userId: "alice", id: created.id, expectedRevision: 3, resumeId: null, senderLinked: true }),
+			service.update({ userId: "alice", id: created.id, expectedRevision: 3, resumeId: null, designLinked: true }),
 		).rejects.toMatchObject({ code: "BAD_REQUEST" });
 
-		// Once the resume is gone, the letter reads from its copies and is no longer linked.
 		const relinked = await service.update({
 			userId: "alice",
 			id: created.id,
@@ -456,12 +475,66 @@ describe.skipIf(!process.env.COVER_LETTER_TEST_DATABASE_URL)("cover-letter owned
 			senderLinked: true,
 		});
 		expect(relinked.style.basics.name).toBe("Later sender");
+		// A resume in Trash is still the source: it can't change there, and restoring it changes nothing.
+		await getPool().query("ALTER TABLE resume ADD COLUMN IF NOT EXISTS trashed_at timestamptz");
+		await getPool().query("UPDATE resume SET trashed_at=now() WHERE id='alice-resume'");
+		expect((await service.getById({ userId: "alice", id: created.id })).style.basics.name).toBe("Later sender");
+
+		// Once the resume is gone, a linked sender follows the Profile; the design reads from its copy.
+		await saveProfile("alice", { name: "Profile Alice", email: "profile@example.com" });
 		await getPool().query("DELETE FROM resume WHERE id='alice-resume'");
 		const orphaned = await service.getById({ userId: "alice", id: created.id });
-		expect(orphaned).toMatchObject({ sourceResumeId: null, senderLinked: false, content: "<p>Keep body</p>" });
+		expect(orphaned).toMatchObject({
+			sourceResumeId: null,
+			senderLinked: true,
+			designLinked: false,
+			content: "<p>Keep body</p>",
+			style: { basics: { name: "Profile Alice", email: "profile@example.com" }, metadata: { template: "horizon" } },
+		});
 		expect(
 			(await service.update({ userId: "alice", id: created.id, expectedRevision: 4, name: "Still editable" })).name,
 		).toBe("Still editable");
+	});
+
+	it("takes the sender from the Profile without a resume, and keeps details of its own", async () => {
+		await saveProfile("alice", { name: "Alice Profile", headline: "Designer" }, "/uploads/alice/pictures/me.webp");
+		const created = await service.create({ userId: "alice", name: "From the Profile" });
+		expect(created).toMatchObject({
+			sourceResumeId: null,
+			senderLinked: true,
+			style: {
+				basics: { name: "Alice Profile", headline: "Designer" },
+				picture: { url: "/uploads/alice/pictures/me.webp" },
+			},
+		});
+
+		// The Profile changing shows at once: the letter keeps no copy to refresh.
+		await saveProfile("alice", { name: "Alice Renamed", headline: "Designer" }, "/uploads/alice/pictures/me.webp");
+		expect((await service.getById({ userId: "alice", id: created.id })).style.basics.name).toBe("Alice Renamed");
+
+		// Details of the letter's own end the link, and the photo stays as it read.
+		const own = structuredClone(created.style.basics);
+		own.name = "Alice for Lumen";
+		const unlinked = await service.update({ userId: "alice", id: created.id, expectedRevision: 1, basics: own });
+		expect(unlinked).toMatchObject({
+			senderLinked: false,
+			style: { basics: { name: "Alice for Lumen" }, picture: { url: "/uploads/alice/pictures/me.webp" } },
+		});
+		await saveProfile("alice", { name: "Alice Later" });
+		expect((await service.getById({ userId: "alice", id: created.id })).style.basics.name).toBe("Alice for Lumen");
+		await expect(
+			service.update({ userId: "alice", id: created.id, expectedRevision: 2, basics: own, senderLinked: true }),
+		).rejects.toMatchObject({ code: "BAD_REQUEST" });
+
+		// Linking again reads the Profile as it is now.
+		const relinked = await service.update({ userId: "alice", id: created.id, expectedRevision: 2, senderLinked: true });
+		expect(relinked).toMatchObject({ senderLinked: true, style: { basics: { name: "Alice Later" } } });
+
+		// Clearing the resume of a letter linked to one moves its sender to the Profile and keeps the design as it read.
+		const withResume = await service.create({ userId: "alice", name: "With resume", resumeId: "alice-resume" });
+		const cleared = await service.update({ userId: "alice", id: withResume.id, expectedRevision: 1, resumeId: null });
+		expect(cleared).toMatchObject({ sourceResumeId: null, senderLinked: true, designLinked: false });
+		expect(cleared.style.basics.name).toBe("Alice Later");
 	});
 
 	it("keeps History: one version per session, named and sent versions, and restores with a way back", async () => {

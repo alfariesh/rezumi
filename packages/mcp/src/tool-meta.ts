@@ -52,7 +52,7 @@ export const PARITY_TOOL_DESCRIPTIONS: Record<string, string> = {
 	"career.workspace":
 		"Read an application's workspace: form answers, the submit checklist, questions to ask, evidence added from Fit, ticked plan rows and the pasted employer message.",
 	"coverLetters.draft":
-		"Write a draft of a cover letter's body with the user's AI provider, from the letter's linked resume and its application's job posting, using only facts from them. Returns the draft text as chunks in `events` to join in order; `truncated` is true past 500,000 characters. No letter content is saved; server-managed AI can synchronize its account provider record. Write the draft into the letter with `update_cover_letter`. Use variant `shorter` or `personal` with `previous` to revise an earlier draft.",
+		"Write a draft of a cover letter's body with the user's AI provider, from the letter's linked resume (or, without one, the user's Profile) and its application's job posting, using only facts from them. Returns the draft text as chunks in `events` to join in order; `truncated` is true past 500,000 characters. No letter content is saved; server-managed AI can synchronize its account provider record. Write the draft into the letter with `update_cover_letter`. Use variant `shorter` or `personal` with `previous` to revise an earlier draft.",
 	"career.saveWorkspace":
 		"Save parts of an application's workspace. Each key given replaces that whole key; keys left out keep their values.",
 	"career.trackOpportunity":
@@ -66,6 +66,14 @@ export const PARITY_TOOL_DESCRIPTIONS: Record<string, string> = {
 	"career.dismissOpportunity": "Dismiss an owned discovered opportunity from the review queue.",
 	"career.notifications": "Read the user's career notifications and their read status.",
 	"career.markNotificationRead": "Mark an owned career notification as read.",
+	"profile.get":
+		"Read the user's Profile: their details (basics, photo, summary) and career history by section, which new resumes, cover letters without a resume and the portfolio take their content from. `updatedAt` is null while it was never saved. Not the career preferences (`api_career_profile`).",
+	"profile.update":
+		"Replace the Profile's data. Read it first and send all of it: omitted items are removed from the Profile (resumes keep theirs). Every resume part that still read like the Profile takes the new value; parts a resume made its own, locked resumes and resumes in Trash stay as they are. Send `expectedUpdatedAt` from your read to get PROFILE_VERSION_CONFLICT instead of overwriting a change made elsewhere. Returns the resumes that followed.",
+	"profile.savePart":
+		"Make one resume's version of a part (a basics field, the photo, the summary, or one section item by id) the Profile's. Other resumes still linked to that part follow. Reads the resume as saved.",
+	"profile.fillFromResume":
+		"Fill what the Profile still lacks (blank details, photo, summary and sections with no items) from one resume. Nothing already in the Profile changes; asking again adds nothing.",
 };
 
 // ponytail: shared schema fragment; exported so server-card can re-use without re-importing
@@ -245,10 +253,11 @@ export const TOOL_META = withAnnotationTitles({
 	[T.createResume]: {
 		title: "Create Resume",
 		description: [
-			"Create a new, empty resume with a name. Its URL-friendly slug is generated when omitted.",
+			"Create a new resume with a name. Its URL-friendly slug is generated when omitted.",
 			"",
 			"Returns the ID of the newly created resume.",
-			"Set `withSampleData` to true to pre-fill with example content (useful for testing).",
+			"It starts from the user's Profile (their details and career history, on the default design); parts left as they are keep following the Profile.",
+			"Set `withSampleData` to true to pre-fill with example content instead (useful for testing).",
 			`After creating, use \`${T.getResume}\` to view or \`${T.patchResume}\` to populate it.`,
 		].join("\n"),
 		outputSchema: idOutput,
@@ -262,6 +271,7 @@ export const TOOL_META = withAnnotationTitles({
 		description: [
 			"Create a new resume from a full ResumeData JSON object (e.g. an exported file from Rezumi).",
 			"A random name and slug are assigned automatically, like the web importer.",
+			"What the user's Profile still lacks (blank details, photo, summary, empty sections) is filled from it; nothing in the Profile is replaced.",
 			`For small edits to an existing resume, prefer \`${T.patchResume}\` instead of re-importing.`,
 			"Large payloads may exceed MCP client message limits; in that case, use the web UI or the HTTP API.",
 		].join("\n"),
@@ -439,7 +449,7 @@ export const TOOL_META = withAnnotationTitles({
 		title: "Create Cover Letter",
 		description: [
 			"Create an independent cover letter in the cover-letter library.",
-			"Optionally link it to a resume (for its sender details and design) or an application.",
+			"Optionally link it to a resume (for its sender details and design) or an application. Without a resume, the sender's details come live from the user's Profile.",
 		].join("\n"),
 		outputSchema: toWireObjectSchema(coverLetterDto.create.output),
 		inputSchema: wireInput(coverLetterDto.create.input.strict()),
@@ -449,6 +459,7 @@ export const TOOL_META = withAnnotationTitles({
 		title: "Update Cover Letter",
 		description: [
 			"Update an independent cover letter's name, recipient, content, template, or its links to a resume and application.",
+			"Sender details come live from the linked resume, or from the user's Profile without one, while `senderLinked`; send `basics` to give the letter its own sender details instead.",
 			"Pass the latest `revision` as `expectedRevision`; stale writes are rejected instead of overwriting newer edits.",
 		].join("\n"),
 		outputSchema: toWireObjectSchema(coverLetterDto.update.output),

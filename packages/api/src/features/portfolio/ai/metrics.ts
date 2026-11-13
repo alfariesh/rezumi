@@ -1,4 +1,5 @@
 import type { ResumeEntry } from "./source";
+import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { LanguageModel } from "ai";
@@ -88,7 +89,8 @@ function toMetric(answered: Answered): FoundMetrics["candidates"][number]["metri
 
 type FindRequest = {
 	data: PortfolioData;
-	resume: ResumeData;
+	/** The portfolio's source: its resume, or the Profile. */
+	source: PortfolioSource;
 	model: LanguageModel;
 	signal?: AbortSignal | undefined;
 };
@@ -98,9 +100,9 @@ type FindRequest = {
  * to use. An answer whose quote isn't in the resume, or doesn't hold its number, is left out whatever the model says.
  */
 export async function findResumeMetrics(request: FindRequest, entries: readonly ResumeEntry[]): Promise<FoundMetrics> {
-	const { data, resume, model, signal } = request;
+	const { data, source, model, signal } = request;
 	const prompt = [
-		`Language of the labels: ${pageLanguage(data, resume)}.`,
+		`Language of the labels: ${pageLanguage(data, source)}.`,
 		dataBlock("RESUME", entries.map((entry) => `${entry.source}\n${entry.text}`).join("\n\n")),
 	].join("\n\n");
 

@@ -1,5 +1,7 @@
+import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioEventKind } from "@rezumi/schema/portfolio/statistics";
+import type { ProfileData } from "@rezumi/schema/profile/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { SQL, SQLWrapper } from "drizzle-orm";
 import { and, asc, count, eq, isNull, sql } from "drizzle-orm";
@@ -7,12 +9,14 @@ import { isbot } from "isbot";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
+import { resumeDataFromProfile } from "@rezumi/resume/profile";
 import { parsePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS, PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS } from "@rezumi/schema/portfolio/limits";
 import { rateLimitConfig } from "@rezumi/utils/rate-limit";
 import { createRateLimiter } from "../../redis";
 import { getEntitlements } from "../billing/entitlements";
 import { domainIsLive, isCustomDomainsEnabled, ownHosts } from "../custom-domain/service";
+import { profileService } from "../profile/service";
 import { isOwner, ownerIsNotBanned, resolveViewer } from "../resume/access-policy";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
 import { isFirstVisitThisHour } from "../resume/view-dedup";
@@ -89,7 +93,6 @@ export async function isPublicPortfolioFile(key: string): Promise<boolean> {
 }
 
 type PublicPortfolioResume = {
-	data: ResumeData;
 	slug: string;
 	/** The resume's own web page is shared; buttons may link to it. */
 	isPublic: boolean;
@@ -111,7 +114,12 @@ export type PublicPortfolio = {
 	indexable: boolean;
 	/** The verified custom domain the portfolio opens at, which search engines are pointed to. */
 	customDomain: string | null;
-	/** The source resume while it exists outside Trash; its sections fill the page. */
+	/**
+	 * What fills the page's career sections and contact details: the source resume while it exists outside Trash, or
+	 * the account's Profile for a portfolio without one.
+	 */
+	source: PortfolioSource | null;
+	/** The source resume's own page and PDF, for the page's buttons; null unless the source is a resume. */
 	resume: PublicPortfolioResume | null;
 	/** What the owner's plan lets the page leave out, read on every view: a plan ending shows the badge again. */
 	entitlements: { hidePortfolioCredit: boolean };
@@ -151,7 +159,7 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 		.limit(1);
 	if (!row) return null;
 
-	const [resume, domain, entitlements] = await Promise.all([
+	const [resume, profile, domain, entitlements] = await Promise.all([
 		row.sourceResumeId
 			? db
 					.select({
@@ -172,6 +180,8 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 					.limit(1)
 					.then(([found]) => found)
 			: undefined,
+		// A Profile change shows on the next view: the page is never cached, and its render cache is keyed on what it draws.
+		row.sourceResumeId ? undefined : profileService.read(row.userId),
 		isCustomDomainsEnabled()
 			? db
 					.select({ hostname: schema.customDomain.hostname })
@@ -190,36 +200,44 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 		ownerName: row.ownerName,
 		timezone: row.timezone,
 		data: parsePortfolioData(row.data),
-		updatedAt: row.updatedAt,
+		// Search engines read it as the page's last change, which a Profile edit is too.
+		updatedAt: new Date(Math.max(row.updatedAt.getTime(), profile?.updatedAt?.getTime() ?? 0)),
 		indexable: row.indexable === true,
 		customDomain: domain,
-		resume: resume ? readSourceResume(row.id, resume) : null,
+		...readSource(row.id, resume, profile?.data),
 		entitlements: { hidePortfolioCredit: entitlements.features.hidePortfolioCredit },
 		passwordHash: row.passwordHash,
 	};
 }
 
 /**
- * The source resume as the page reads it. Stored data that no longer passes the resume schema leaves the page
- * without its resume sections (logged for us to repair) instead of failing the whole page.
+ * The page's source: the Profile, or the source resume. Stored resume data that no longer passes the resume schema
+ * leaves the page without its resume sections (logged for us to repair) instead of failing the whole page.
  */
-function readSourceResume(
+function readSource(
 	portfolioId: string,
-	resume: { data: unknown; slug: string; isPublic: boolean; password: string | null; showDownloadButtons: boolean },
-): PublicPortfolioResume | null {
+	resume:
+		| { data: unknown; slug: string; isPublic: boolean; password: string | null; showDownloadButtons: boolean }
+		| undefined,
+	profile: ProfileData | undefined,
+): Pick<PublicPortfolio, "source" | "resume"> {
+	if (profile) return { source: { data: resumeDataFromProfile(profile), from: "profile" }, resume: null };
+	if (!resume) return { source: null, resume: null };
 	let data: ResumeData;
 	try {
 		data = parseStoredResumeData(resume.data);
 	} catch (error) {
 		console.error(`[portfolio] Source resume of portfolio ${portfolioId} can't be read; shown without it`, error);
-		return null;
+		return { source: null, resume: null };
 	}
 	return {
-		data,
-		slug: resume.slug,
-		isPublic: resume.isPublic,
-		hasPassword: resume.password !== null,
-		showDownloadButtons: resume.showDownloadButtons,
+		source: { data, from: "resume" },
+		resume: {
+			slug: resume.slug,
+			isPublic: resume.isPublic,
+			hasPassword: resume.password !== null,
+			showDownloadButtons: resume.showDownloadButtons,
+		},
 	};
 }
 

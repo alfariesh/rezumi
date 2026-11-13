@@ -6,6 +6,7 @@ import { buildMarkdown } from "@rezumi/resume/markdown";
 import { dataBlock } from "../ai/data-block";
 import { applicationService } from "../applications/service";
 import { startAiRun } from "../billing/metered-ai";
+import { readProfileContext } from "../profile/context";
 import { resumeService } from "../resume/service";
 import { coverLetterService } from "./service";
 
@@ -22,10 +23,12 @@ type PromptInput = {
 	job?: string | undefined;
 	posting?: string | undefined;
 	resume?: string | undefined;
+	/** The account's Profile, for a letter without a resume. */
+	profile?: string | undefined;
 	previous?: string | undefined;
 };
 
-/** The request, the job, the posting, the resume and, for a revision, the draft being revised. */
+/** The request, the job, the posting, the resume or Profile and, for a revision, the draft being revised. */
 function buildLetterDraftPrompt(input: PromptInput): string {
 	const previous = input.variant === "draft" ? undefined : input.previous?.trim();
 	return [
@@ -33,6 +36,7 @@ function buildLetterDraftPrompt(input: PromptInput): string {
 		input.job && `## The job\n\n${input.job}`,
 		input.posting && `## The posting\n\n${dataBlock("POSTING", input.posting)}`,
 		input.resume && `## The resume\n\n${dataBlock("RESUME", input.resume)}`,
+		input.profile && `## The candidate's Profile\n\n${dataBlock("PROFILE", input.profile)}`,
 		previous && `## The previous draft\n\n${dataBlock("DRAFT", previous)}`,
 	]
 		.filter(Boolean)
@@ -40,8 +44,9 @@ function buildLetterDraftPrompt(input: PromptInput): string {
 }
 
 /**
- * Streams a draft of the letter's body from its resume and its application's posting. Nothing is saved: the client
- * shows the draft until it's kept or discarded, so a failure leaves the letter as it was.
+ * Streams a draft of the letter's body from its resume (or, without one, the account's Profile) and its application's
+ * posting. Nothing is saved: the client shows the draft until it's kept or discarded, so a failure leaves the letter as
+ * it was.
  */
 export async function* draftLetterBody(
 	input: CoverLetterDraftInput & { userId: string; signal?: AbortSignal | undefined },
@@ -54,8 +59,12 @@ export async function* draftLetterBody(
 			? applicationService.getById({ id: letter.sourceApplicationId, userId }).catch(() => null)
 			: null,
 	]);
-	if (!resume && !application) {
-		throw new ORPCError("BAD_REQUEST", { message: "Link the letter to a resume or an application first." });
+	// Without a resume to read, the candidate's facts come from the Profile, cut to a prompt's budget.
+	const profile = resume ? null : await readProfileContext(userId);
+	if (!resume && !profile && !application) {
+		throw new ORPCError("BAD_REQUEST", {
+			message: "Fill in your Profile, or link the letter to a resume or an application first.",
+		});
 	}
 
 	const ai = await startAiRun({
@@ -92,6 +101,7 @@ export async function* draftLetterBody(
 				job: application ? `${application.role} at ${application.company}` : undefined,
 				posting,
 				resume: resume ? buildMarkdown(resume.data) : undefined,
+				profile: profile?.text,
 				previous: input.previous,
 			}),
 			...(input.signal ? { abortSignal: input.signal } : {}),

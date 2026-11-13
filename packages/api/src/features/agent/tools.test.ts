@@ -44,6 +44,31 @@ function execute(tools: ReturnType<typeof buildAgentTools>, name: string, input:
 	return (run as unknown as (input: unknown, executionOptions: typeof options) => unknown)(input, options);
 }
 
+describe("assistant Profile tool", () => {
+	it("reads the Profile only when the caller offers it", async () => {
+		expect(build().tools.read_profile).toBeUndefined();
+		const readProfile = vi.fn(async () => ({ profile: "# Dana Reyes" }));
+		const tools = buildAgentTools({
+			document: null,
+			externalSearch: false,
+			signal: new AbortController().signal,
+			handlers: { ...build().handlers, readProfile },
+		});
+		expect(await execute(tools, "read_profile", {})).toEqual({ profile: "# Dana Reyes" });
+	});
+
+	it("lets the prompt count the Profile as a source of facts", () => {
+		const instructions = buildAgentInstructions({
+			document: { kind: "resume", name: "CV" },
+			posting: null,
+			searchTool: null,
+			canReadPage: false,
+		});
+		expect(instructions).toContain("`read_profile`");
+		expect(instructions).toMatch(/the document, the user's Profile or the conversation/);
+	});
+});
+
 describe("assistant web tools", () => {
 	it("respects an explicit connection while keeping reading available without search credentials", async () => {
 		const fallback = build();

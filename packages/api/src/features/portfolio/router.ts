@@ -101,11 +101,18 @@ const unfurlSchema = z.discriminatedUnion("kind", [
 
 const portfolioSchema = z.object({
 	id: z.string(),
-	sourceResumeId: z.string().nullable().describe("The resume its career sections come from; null for none."),
+	sourceResumeId: z
+		.string()
+		.nullable()
+		.describe(
+			"The resume its career sections and contact details come from; null: they come from the account's Profile.",
+		),
 	sourceResume: z
 		.object({ id: z.string(), name: z.string(), slug: z.string(), inTrash: z.boolean() })
 		.nullable()
-		.describe("The source resume. One in Trash still shows, so the editor can ask for another."),
+		.describe(
+			"The source resume; null while the source is the Profile. One in Trash still shows, so the editor can ask for another.",
+		),
 	isPublic: z.boolean().describe("Whether it is published at /<username>."),
 	showInSearchEngines: z.boolean(),
 	publishedAt: z.date().nullable().describe("When it was first published."),
@@ -352,7 +359,9 @@ export const portfolioRouter = {
 				sourceResumeId: resumeIdSchema
 					.nullable()
 					.optional()
-					.describe("A resume to start from; null for none; missing for the primary resume."),
+					.describe(
+						"A resume to start from; null for the Profile; missing for the Profile when it holds career items, else the primary (or latest edited) resume.",
+					),
 				theme: portfolioThemeSchema.optional(),
 				basics: z
 					.object({
@@ -361,7 +370,7 @@ export const portfolioRouter = {
 						location: z.string().max(PORTFOLIO_LIMITS.text.location).optional(),
 					})
 					.optional()
-					.describe("For a portfolio without a resume."),
+					.describe("For a portfolio whose source isn't a resume."),
 			}),
 		)
 		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "PORTFOLIO_SOURCE_INVALID", "PORTFOLIO_EXISTS"))
@@ -459,7 +468,7 @@ export const portfolioRouter = {
 				sourceResumeId: resumeIdSchema
 					.nullable()
 					.optional()
-					.describe("Another resume of the account, or null for none."),
+					.describe("Another resume of the account, or null for the Profile."),
 			}),
 		)
 		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND", "PORTFOLIO_SOURCE_INVALID"))
@@ -487,7 +496,7 @@ export const portfolioRouter = {
 			method: "POST",
 			path: "/portfolio/works/import",
 			operationId: "importPortfolioWorks",
-			summary: "Add works from the source resume's projects",
+			summary: "Add works from the source's projects",
 		})
 		.use(portfolioMutationRateLimit)
 		.input(
@@ -496,7 +505,9 @@ export const portfolioRouter = {
 					.array(z.string().min(1).max(PORTFOLIO_LIMITS.text.id))
 					.min(1)
 					.max(PORTFOLIO_LIMITS.works)
-					.describe("Projects of the source resume to add; ones already added are skipped."),
+					.describe(
+						"Projects of the source (the resume, or the Profile) to add, by item id; ones already added are skipped.",
+					),
 				expectedUpdatedAt: z.coerce.date().describe("The updatedAt the editor has; a different one is a conflict."),
 			}),
 		)

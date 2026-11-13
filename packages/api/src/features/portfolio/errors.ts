@@ -126,7 +126,7 @@ export const portfolioErrors = {
 			data: { reason },
 			cause,
 			...(reason === "unreadable"
-				? { message: "This resume's data can't be read. Choose another resume, or start without one." }
+				? { message: "This resume's data can't be read. Choose another resume, or your Profile." }
 				: {}),
 		}),
 	conflict: (updatedAt: Date) =>

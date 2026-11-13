@@ -17,6 +17,7 @@ import { aiSourceInput } from "../billing/ai-source";
 import { precheckDocumentCapacity } from "../billing/limits";
 import { errorCode, runWithAiSource, startAiRun } from "../billing/metered-ai";
 import { coverLetterService } from "../cover-letters/service";
+import { readProfileContext } from "../profile/context";
 import { resumeService } from "../resume/service";
 import { webAccessService } from "../web-access/credentials";
 import { searchScope } from "../web-access/regions";
@@ -402,12 +403,19 @@ export const aiRouter = {
 			const resume = application.resumeId
 				? await resumeService.getById({ id: application.resumeId, userId: context.user.id }).catch(() => null)
 				: null;
+			// Without a resume on the application, the candidate's history is their Profile.
+			const profile = resume ? null : await readProfileContext(context.user.id);
+			const candidate = resume
+				? `CANDIDATE RESUME:\n${JSON.stringify(resume.data)}`
+				: profile
+					? `CANDIDATE PROFILE:\n${profile.text}`
+					: "";
 
-			const context_ = `ROLE: ${application.role} at ${application.company}${application.location ? ` (${application.location})` : ""}\n${application.jobDescription ? `JOB DESCRIPTION:\n${application.jobDescription}\n` : ""}${resume ? `CANDIDATE RESUME:\n${JSON.stringify(resume.data)}` : ""}`;
+			const context_ = `ROLE: ${application.role} at ${application.company}${application.location ? ` (${application.location})` : ""}\n${application.jobDescription ? `JOB DESCRIPTION:\n${application.jobDescription}\n` : ""}${candidate}`;
 
 			const prompt =
 				input.kind === "cover-letter"
-					? `Write a concise, specific cover letter (250-350 words, no placeholders like [Name]) for this application, drawing on the resume. Return only the letter text.\n\n${context_}`
+					? `Write a concise, specific cover letter (250-350 words, no placeholders like [Name]) for this application, drawing on the candidate's resume or profile. Return only the letter text.\n\n${context_}`
 					: `Write a short, polite follow-up message (80-120 words) to a recruiter checking in on this application. Warm but not pushy. Return only the message text.\n\n${context_}`;
 
 			const action = input.kind === "cover-letter" ? "cover-letter" : "draft-answer";

@@ -226,7 +226,7 @@ describe("portfolio.ai.draft", () => {
 
 	it("gives a greeting, About me and each work's story, as the output schema says", async () => {
 		const { model } = modelAnswering(answer());
-		const result = await draftPortfolio({ data, resume: indonesian, model });
+		const result = await draftPortfolio({ data, source: { data: indonesian }, model });
 		expect(draftOutputSchema.parse(result)).toEqual({
 			greeting: "Saya mendesain produk untuk Kopi Senja.",
 			about: "<p>Saya desainer produk.</p><p>Saya menaikkan konversi checkout 35%.</p>",
@@ -242,7 +242,7 @@ describe("portfolio.ai.draft", () => {
 
 	it("names the page's language and sends no contact details", async () => {
 		const { model, prompts } = modelAnswering(answer());
-		await draftPortfolio({ data, resume: indonesian, model, note: "Telepon saya +62 812 3456 7890" });
+		await draftPortfolio({ data, source: { data: indonesian }, model, note: "Telepon saya +62 812 3456 7890" });
 		const prompt = prompts[0] ?? "";
 		expect(prompt).toContain("Language of the page: Indonesian");
 		for (const secret of ["Nadia Rahma", "nadia@contoh.test", "812 3456"]) expect(prompt).not.toContain(secret);
@@ -255,7 +255,7 @@ describe("portfolio.ai.draft", () => {
 				about: ["Konversi naik 90%.", "Saya desainer produk."],
 			}),
 		);
-		const result = await draftPortfolio({ data, resume: indonesian, model });
+		const result = await draftPortfolio({ data, source: { data: indonesian }, model });
 		expect(result.greeting).toBe("Saya mendesain produk.");
 		expect(result.about).toBe("<p>Saya desainer produk.</p>");
 	});
@@ -263,7 +263,7 @@ describe("portfolio.ai.draft", () => {
 	it("doesn't count the works' own numbering as facts", async () => {
 		const five = portfolioWith(["Satu", "Dua", "Tiga", "Empat", "Lima"]);
 		const { model } = modelAnswering(answer({ greeting: "Saya punya 5 klien. Saya desainer." }));
-		expect((await draftPortfolio({ data: five, resume: indonesian, model })).greeting).toBe("Saya desainer.");
+		expect((await draftPortfolio({ data: five, source: { data: indonesian }, model })).greeting).toBe("Saya desainer.");
 	});
 
 	it("keeps places to fill in out of the greeting and the card", async () => {
@@ -273,7 +273,7 @@ describe("portfolio.ai.draft", () => {
 				works: [{ id: "1", summary: "Checkout baru [tambahkan hasil].", story: ["Saya mendesain. [tambahkan hasil]"] }],
 			}),
 		);
-		const result = await draftPortfolio({ data, resume: indonesian, model });
+		const result = await draftPortfolio({ data, source: { data: indonesian }, model });
 		expect(result.greeting).toBe("Saya mendesain produk.");
 		expect(result.works[0]).toMatchObject({
 			summary: "Checkout baru.",
@@ -303,7 +303,7 @@ describe("portfolio.ai.draft", () => {
 	it("skips the name check when the page's language isn't the resume's", async () => {
 		const english = parseWritablePortfolioData({ ...data, locale: "en-US" });
 		const { model } = modelAnswering(answer({ greeting: "I design products in Germany." }));
-		expect((await draftPortfolio({ data: english, resume: indonesian, model })).greeting).toBe(
+		expect((await draftPortfolio({ data: english, source: { data: indonesian }, model })).greeting).toBe(
 			"I design products in Germany.",
 		);
 	});
@@ -313,7 +313,7 @@ describe("portfolio.ai.draft", () => {
 		const { model } = modelAnswering(
 			answer({ greeting: long, works: [{ id: "1", summary: long, story: ["<b>Kopi</b> & desainer."] }] }),
 		);
-		const result = await draftPortfolio({ data, resume: indonesian, model });
+		const result = await draftPortfolio({ data, source: { data: indonesian }, model });
 		expect(result.greeting.length).toBeLessThanOrEqual(PORTFOLIO_LIMITS.text.greeting);
 		expect(result.works[0]?.summary.length).toBeLessThanOrEqual(PORTFOLIO_LIMITS.text.workSummary);
 		expect(result.works[0]?.html).toBe("<p>&lt;b&gt;Kopi&lt;/b&gt; &amp; desainer.</p>");
@@ -321,12 +321,12 @@ describe("portfolio.ai.draft", () => {
 
 	it("ignores works it wasn't asked about", async () => {
 		const { model } = modelAnswering(answer({ works: [{ id: "9", summary: "x", story: [] }] }));
-		expect((await draftPortfolio({ data, resume: indonesian, model })).works).toEqual([]);
+		expect((await draftPortfolio({ data, source: { data: indonesian }, model })).works).toEqual([]);
 	});
 
 	it("refuses an answer with nothing usable, so its credits come back", async () => {
 		const { model } = modelAnswering(answer({ greeting: "", about: [], works: [] }));
-		await expect(draftPortfolio({ data, resume: indonesian, model })).rejects.toMatchObject({
+		await expect(draftPortfolio({ data, source: { data: indonesian }, model })).rejects.toMatchObject({
 			code: "PORTFOLIO_AI_UNUSABLE",
 		});
 	});
@@ -345,7 +345,7 @@ describe("portfolio.ai.rewrite", () => {
 			text,
 			instruction,
 			data,
-			resume: indonesian,
+			source: { data: indonesian },
 			model: modelAnswering(JSON.stringify({ text: answer })).model,
 		});
 
@@ -389,7 +389,7 @@ describe("portfolio.ai.rewrite", () => {
 			text: "Saya seorang desainer, silakan tulis ke budi@contoh.test.",
 			instruction: "shorter",
 			data,
-			resume: indonesian,
+			source: { data: indonesian },
 			model,
 		});
 		expect(prompts[0]).not.toContain("budi@contoh.test");
@@ -424,7 +424,10 @@ describe("portfolio.ai.findMetrics", () => {
 		...overrides,
 	});
 	const find = (metrics: object[]) =>
-		findResumeMetrics({ data, resume, model: modelAnswering(JSON.stringify({ metrics })).model }, entries);
+		findResumeMetrics(
+			{ data, source: { data: resume }, model: modelAnswering(JSON.stringify({ metrics })).model },
+			entries,
+		);
 
 	it("gives each metric with the sentence it came from, which holds its number", async () => {
 		const result = await find([

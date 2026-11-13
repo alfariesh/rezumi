@@ -241,6 +241,18 @@ export async function linkAnonymousAccount({
 			})
 			.where(eq(schema.application.userId, fromUserId));
 
+		// The guest's Profile moves only to an account that has none: an account's own Profile is never replaced. One
+		// that stays behind goes with the guest.
+		await tx
+			.update(schema.profile)
+			.set({ userId: toUserId, data: rewriteUploadsJson(schema.profile.data) })
+			.where(
+				and(
+					eq(schema.profile.userId, fromUserId),
+					sql`not exists (select 1 from profile p where p.user_id = ${toUserId})`,
+				),
+			);
+
 		await tx
 			.delete(schema.resumeSlugRedirect)
 			.where(

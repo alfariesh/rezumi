@@ -1,6 +1,7 @@
+import type { PortfolioSource } from "./source";
 import type { PortfolioData, PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
-import type { ProjectItem, ResumeData } from "@rezumi/schema/resume/data";
+import type { ProjectItem } from "@rezumi/schema/resume/data";
 import { parseWritablePortfolioData, uniquePortfolioSlug } from "@rezumi/schema/portfolio/data";
 import { createDefaultPortfolioData } from "@rezumi/schema/portfolio/default";
 import {
@@ -13,6 +14,7 @@ import { isAllowedPortfolioUrl, PORTFOLIO_WEB_PROTOCOLS } from "@rezumi/schema/p
 import { fallbackPortfolioAccent } from "@rezumi/schema/portfolio/themes";
 import { generateId } from "@rezumi/utils/string";
 import { sanitizePortfolioHtml } from "./rich-text";
+import { portfolioSourceResume } from "./source";
 import { cutText, escapeHtmlText, htmlToText, truncateText } from "./text";
 
 const { text: max } = PORTFOLIO_LIMITS;
@@ -75,37 +77,43 @@ export function workFromResumeProject(project: ProjectItem, taken: Set<string>):
 
 export type InitialPortfolioInput = {
 	theme?: PortfolioTheme;
-	/** The source resume's data, or null for a portfolio without one. */
-	resume: ResumeData | null;
-	/** For a portfolio without a resume: the basics the user typed. */
+	/** Where its content comes from (`PortfolioSource`): a resume, the Profile, or null for neither. */
+	resume: PortfolioSource | null;
+	/** Basics the user typed, for a portfolio whose source isn't a resume. */
 	basics?: { name?: string; headline?: string; location?: string };
 };
 
 /**
- * A new portfolio's first content (`02-teknis.md` 4.3). From a resume: About from its summary, works copied from its
- * projects, and accent and fonts following it. What the resume hides (its summary, its Projects section, a project)
- * isn't copied. Without one: the basics given, a curated accent and the theme's fonts. The career sections are not
- * copied; they are read live from the resume.
+ * A new portfolio's first content (`02-teknis.md` 4.3). From a source: About from its summary and works copied from
+ * its projects; what it hides (its summary, its Projects section, a project) isn't copied. A resume also lends its
+ * accent and fonts; the Profile and no source take a curated accent and the theme's fonts, and the basics given. The
+ * career sections are not copied; they are read live from the source.
  */
 export function createInitialPortfolioData(input: InitialPortfolioInput): PortfolioData {
 	const data = createDefaultPortfolioData(input.theme);
+	const source = input.resume;
+	const fromResume = portfolioSourceResume(source) !== null;
 
-	if (!input.resume) {
-		const basics = Object.fromEntries(
-			Object.entries({
-				name: cutText(input.basics?.name?.trim() ?? "", max.name),
-				headline: cutText(input.basics?.headline?.trim() ?? "", max.headline),
-				location: cutText(input.basics?.location?.trim() ?? "", max.location),
-			}).filter(([, value]) => value),
-		);
-		return parseWritablePortfolioData({
-			...data,
-			basics,
-			design: { ...data.design, accent: { source: "preset", id: fallbackPortfolioAccent }, fonts: { source: "theme" } },
-		});
-	}
+	const typed = fromResume
+		? {}
+		: Object.fromEntries(
+				Object.entries({
+					name: cutText(input.basics?.name?.trim() ?? "", max.name),
+					headline: cutText(input.basics?.headline?.trim() ?? "", max.headline),
+					location: cutText(input.basics?.location?.trim() ?? "", max.location),
+				}).filter(([, value]) => value),
+			);
+	const design = fromResume
+		? { ...data.design, accent: { source: "resume" as const }, fonts: { source: "resume" as const } }
+		: {
+				...data.design,
+				accent: { source: "preset" as const, id: fallbackPortfolioAccent },
+				fonts: { source: "theme" as const },
+			};
 
-	const { summary, sections } = input.resume;
+	if (!source) return parseWritablePortfolioData({ ...data, basics: typed, design });
+
+	const { summary, sections } = source.data;
 	const taken = new Set<string>();
 	const works = (sections.projects.hidden ? [] : sections.projects.items)
 		.filter((project) => !project.hidden)
@@ -115,11 +123,12 @@ export function createInitialPortfolioData(input: InitialPortfolioInput): Portfo
 
 	const initial = parseWritablePortfolioData({
 		...data,
-		design: { ...data.design, accent: { source: "resume" }, fonts: { source: "resume" } },
+		basics: typed,
+		design,
 		about: { content: summary.hidden ? "" : fitRichText(summary.content, max.about) },
 		works: { items: works },
 	});
-	// A resume with many long projects could outgrow the saved size; the last ones stay in the resume to add later.
+	// A source with many long projects could outgrow the saved size; the last ones stay in it to add later.
 	while (initial.works.items.length && portfolioDataBytes(initial) > PORTFOLIO_LIMITS.dataBytes)
 		initial.works.items.pop();
 	return initial;

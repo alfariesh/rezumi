@@ -59,11 +59,14 @@ async function run<T>(
 	}
 }
 
-/** The saved portfolio and the resume it needs; without one, the work can't start and no credits are at stake. */
-async function resumeContext(userId: string) {
-	const { data, resume } = await portfolioService.aiContext(userId);
-	if (!resume) throw portfolioErrors.sourceInvalid();
-	return { data, resume };
+/**
+ * The saved portfolio and the source it needs (its resume, or the Profile); with its source resume in Trash, the work
+ * can't start and no credits are at stake.
+ */
+async function sourceContext(userId: string) {
+	const { data, source } = await portfolioService.aiContext(userId);
+	if (!source) throw portfolioErrors.sourceInvalid();
+	return { data, source };
 }
 
 export const portfolioAiRouter = {
@@ -73,7 +76,7 @@ export const portfolioAiRouter = {
 			method: "POST",
 			path: "/portfolio/ai/draft",
 			operationId: "draftPortfolioWithAi",
-			summary: "Write the portfolio's greeting, About me and work stories from its resume",
+			summary: "Write the portfolio's greeting, About me and work stories from its resume or Profile",
 			description: "Writes nothing: the editor applies the answer as one edit. (3 credits on Rezumi AI)",
 		})
 		.use(aiRequestRateLimit)
@@ -81,9 +84,9 @@ export const portfolioAiRouter = {
 		.errors(errors)
 		.output(draftOutputSchema)
 		.handler(async ({ context, input, signal }) => {
-			const source = await resumeContext(context.user.id);
+			const portfolio = await sourceContext(context.user.id);
 			return run(context.user.id, input, "portfolio-draft", signal, (ai) =>
-				draftPortfolio({ ...input, ...source, model: ai.model, signal }),
+				draftPortfolio({ ...input, ...portfolio, model: ai.model, signal }),
 			);
 		}),
 
@@ -102,9 +105,9 @@ export const portfolioAiRouter = {
 		.errors(errors)
 		.output(rewriteOutputSchema)
 		.handler(async ({ context, input, signal }) => {
-			const source = await portfolioService.aiContext(context.user.id);
+			const portfolio = await portfolioService.aiContext(context.user.id);
 			return run(context.user.id, input, "portfolio-rewrite", signal, (ai) =>
-				rewriteField({ ...input, ...source, model: ai.model, signal }),
+				rewriteField({ ...input, ...portfolio, model: ai.model, signal }),
 			);
 		}),
 
@@ -123,11 +126,11 @@ export const portfolioAiRouter = {
 		.errors(errors)
 		.output(findMetricsOutputSchema)
 		.handler(async ({ context, input, signal }) => {
-			const source = await resumeContext(context.user.id);
-			const entries = entriesWithNumbers(source.resume, source.data);
+			const portfolio = await sourceContext(context.user.id);
+			const entries = entriesWithNumbers(portfolio.source.data, portfolio.data);
 			if (!entries.length) return { candidates: [] };
 			return run(context.user.id, input, "portfolio-metrics", signal, async (ai) => {
-				const found = await findResumeMetrics({ ...source, model: ai.model, signal }, entries);
+				const found = await findResumeMetrics({ ...portfolio, model: ai.model, signal }, entries);
 				// Nothing survived the checks, so the answer is worth nothing: the credit comes back and the search still ends.
 				if (!found.candidates.length) await ai.fail("nothing_found");
 				return found;

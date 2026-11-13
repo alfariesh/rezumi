@@ -387,6 +387,7 @@ describe("GET /api/portfolio/<username>/vcard (Phase 13, B14)", () => {
 			updatedAt: new Date(),
 			indexable: true,
 			customDomain: null,
+			source: null,
 			resume: null,
 			entitlements: { hidePortfolioCredit: false },
 			passwordHash: null,
@@ -423,7 +424,8 @@ describe("GET /api/portfolio/<username>/vcard (Phase 13, B14)", () => {
 		mocks.findPortfolio.mockResolvedValue({
 			...portfolio,
 			data: parsePortfolioData({ basics: { name: "Nadia Rahmawati" } }),
-			resume: { data: withContact, slug: "cv", isPublic: true, hasPassword: false, showDownloadButtons: true },
+			source: { data: withContact, from: "resume" },
+			resume: { slug: "cv", isPublic: true, hasPassword: false, showDownloadButtons: true },
 		});
 		expect((await handlePortfolioVcard(vcard(), "nadia", "1.1.1.1")).status).toBe(200);
 	});

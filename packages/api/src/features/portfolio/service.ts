@@ -1,8 +1,10 @@
 import type { Transaction } from "../billing/account";
 import type { DbOrTx } from "@rezumi/db/client";
+import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioStatisticsRange } from "@rezumi/schema/portfolio/statistics";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
+import type { ProfileData } from "@rezumi/schema/profile/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { hash } from "bcryptjs";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
@@ -11,9 +13,12 @@ import * as schema from "@rezumi/db/schema";
 import { portfolioFileKeys, portfolioFileKeysInStoredData } from "@rezumi/portfolio/files";
 import { createInitialPortfolioData, workFromResumeProject } from "@rezumi/portfolio/initial";
 import { sanitizePortfolioData } from "@rezumi/portfolio/rich-text";
+import { resumeDataFromProfile } from "@rezumi/resume/profile";
 import { parsePortfolioData, parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD, portfolioDataBytes } from "@rezumi/schema/portfolio/limits";
+import { PROFILE_SECTION_TYPES } from "@rezumi/schema/profile/data";
 import { getEntitlements } from "../billing/entitlements";
+import { profileService } from "../profile/service";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
 import { enabledAccount, requireEnabled } from "./access";
 import { deletePortfolioMessage, listPortfolioMessages, setPortfolioMessageRead } from "./contact";
@@ -57,7 +62,10 @@ type SourceResume = { id: string; name: string; slug: string; inTrash: boolean }
 
 export type PortfolioDto = PortfolioRow & {
 	data: PortfolioData;
-	/** The source resume, or null when there is none. One in Trash still shows here, so the editor can ask for another. */
+	/**
+	 * The source resume, or null when the portfolio reads the Profile instead (`sourceResumeId` null). One in Trash still
+	 * shows here, so the editor can ask for another.
+	 */
 	sourceResume: SourceResume | null;
 };
 
@@ -88,6 +96,48 @@ function readSourceResume(data: unknown): ResumeData {
 	} catch (cause) {
 		throw portfolioErrors.sourceInvalid("unreadable", cause);
 	}
+}
+
+/**
+ * Where a portfolio's content comes from: its source resume, or the account's Profile when it has none
+ * (`sourceResumeId` null). Null for a source resume in Trash: the page then shows no career sections and the editor
+ * asks for another.
+ */
+async function readPortfolioSource(
+	userId: string,
+	sourceResumeId: string | null,
+	client: DbOrTx = db,
+): Promise<PortfolioSource | null> {
+	if (!sourceResumeId) {
+		const { data } = await profileService.read(userId, client);
+		return { data: resumeDataFromProfile(data), from: "profile" };
+	}
+	const resume = await findActiveResume(userId, sourceResumeId, client);
+	return resume ? { data: readSourceResume(resume.data), from: "resume" } : null;
+}
+
+const hasProfileItems = (profile: ProfileData) =>
+	PROFILE_SECTION_TYPES.some((section) => profile.sections[section].length > 0);
+
+/** Where a new portfolio starts from (see `create`), and the resume it keeps as its source, if any. */
+async function startingSource(
+	userId: string,
+	sourceResumeId: string | null | undefined,
+): Promise<{ resumeId: string | null; source: PortfolioSource }> {
+	const fromResume = (resume: { id: string; data: unknown }) => ({
+		resumeId: resume.id,
+		source: { data: readSourceResume(resume.data), from: "resume" } satisfies PortfolioSource,
+	});
+	if (typeof sourceResumeId === "string") {
+		const resume = await findActiveResume(userId, sourceResumeId);
+		if (!resume) throw portfolioErrors.sourceInvalid();
+		return fromResume(resume);
+	}
+	const { data: profile } = await profileService.read(userId);
+	// A Profile with no career yet would start an empty page where a resume has one.
+	const resume = sourceResumeId === undefined && !hasProfileItems(profile) ? await defaultSourceResume(userId) : null;
+	if (resume) return fromResume(resume);
+	return { resumeId: null, source: { data: resumeDataFromProfile(profile), from: "profile" } };
 }
 
 async function toDto(row: PortfolioRow, data: PortfolioData, userId: string, client: DbOrTx = db) {
@@ -290,30 +340,30 @@ export const portfolioService = {
 	create: async (
 		userId: string,
 		input: {
-			/** A resume to start from; null for none; missing for the primary (or latest edited) resume. */
+			/**
+			 * A resume to start from; null for the Profile; missing for the Profile when it holds any career items, else
+			 * the primary (or latest edited) resume, else the Profile.
+			 */
 			sourceResumeId?: string | null | undefined;
 			theme?: PortfolioTheme | undefined;
 			basics?: { name?: string | undefined; headline?: string | undefined; location?: string | undefined } | undefined;
 		},
 	): Promise<PortfolioDto> => {
 		await requireEnabled(userId);
-		let source: { id: string; data: unknown } | null = null;
-		if (typeof input.sourceResumeId === "string") {
-			source = await findActiveResume(userId, input.sourceResumeId);
-			if (!source) throw portfolioErrors.sourceInvalid();
-		} else if (input.sourceResumeId === undefined) {
-			source = await defaultSourceResume(userId);
-		}
+		const { resumeId, source } = await startingSource(userId, input.sourceResumeId);
 
-		const resume = source ? readSourceResume(source.data) : null;
 		const { name, headline, location } = input.basics ?? {};
 		const basics = {
 			...(name === undefined ? {} : { name }),
 			...(headline === undefined ? {} : { headline }),
 			...(location === undefined ? {} : { location }),
 		};
-		const initial = createInitialPortfolioData({ resume, ...(input.theme ? { theme: input.theme } : {}), basics });
-		// A resume with more projects than the plan's works starts with the first ones, instead of refusing the portfolio.
+		const initial = createInitialPortfolioData({
+			resume: source,
+			...(input.theme ? { theme: input.theme } : {}),
+			basics,
+		});
+		// A source with more projects than the plan's works starts with the first ones, instead of refusing the portfolio.
 		const maxWorks = (await getEntitlements(userId)).limits.portfolioWorks;
 		if (maxWorks !== null) initial.works.items = initial.works.items.slice(0, maxWorks);
 		const next = prepareData(userId, initial);
@@ -323,7 +373,7 @@ export const portfolioService = {
 			// The unique user_id decides between two creates racing each other: one row, the other gets PORTFOLIO_EXISTS.
 			const [row] = await tx
 				.insert(schema.portfolio)
-				.values({ userId, sourceResumeId: source?.id ?? null, data: next.data })
+				.values({ userId, sourceResumeId: resumeId, data: next.data })
 				.onConflictDoNothing({ target: schema.portfolio.userId })
 				.returning(rowColumns);
 			if (!row) throw portfolioErrors.exists();
@@ -333,18 +383,17 @@ export const portfolioService = {
 	},
 
 	/**
-	 * What AI reads for this account: the saved portfolio and its source resume, null when it has none or that resume
-	 * is in Trash. It writes nothing: AI answers go to the editor, which applies them as edits.
+	 * What AI reads for this account: the saved portfolio and its source (the resume, or the Profile), null while its
+	 * source resume is in Trash. It writes nothing: AI answers go to the editor, which applies them as edits.
 	 */
-	aiContext: async (userId: string): Promise<{ data: PortfolioData; resume: ResumeData | null }> => {
+	aiContext: async (userId: string): Promise<{ data: PortfolioData; source: PortfolioSource | null }> => {
 		await requireEnabled(userId);
 		const [row] = await db
 			.select({ data: schema.portfolio.data, sourceResumeId: schema.portfolio.sourceResumeId })
 			.from(schema.portfolio)
 			.where(eq(schema.portfolio.userId, userId));
 		if (!row) throw portfolioErrors.notFound();
-		const source = row.sourceResumeId ? await findActiveResume(userId, row.sourceResumeId) : null;
-		return { data: parsePortfolioData(row.data), resume: source ? readSourceResume(source.data) : null };
+		return { data: parsePortfolioData(row.data), source: await readPortfolioSource(userId, row.sourceResumeId) };
 	},
 
 	/**
@@ -358,9 +407,9 @@ export const portfolioService = {
 	},
 
 	/**
-	 * Adds works copied from projects of the source resume, in the resume's order. Projects already copied are skipped,
-	 * so asking twice adds nothing twice, and when nothing is added nothing is written (the version stays). Saved like
-	 * `update`: the same checks, and the version the editor had.
+	 * Adds works copied from projects of the source (the resume, or the Profile), in its order. Projects already copied
+	 * are skipped, so asking twice adds nothing twice, and when nothing is added nothing is written (the version stays).
+	 * Saved like `update`: the same checks, and the version the editor had.
 	 */
 	importWorks: async (
 		userId: string,
@@ -369,9 +418,9 @@ export const portfolioService = {
 		await requireEnabled(userId);
 		return db.transaction((tx) =>
 			saveVersionedData(tx, userId, input.expectedUpdatedAt, async (existing) => {
-				const resume = existing.sourceResumeId ? await findActiveResume(userId, existing.sourceResumeId, tx) : null;
-				if (!resume) throw portfolioErrors.sourceInvalid();
-				const projects = readSourceResume(resume.data).sections.projects.items;
+				const source = await readPortfolioSource(userId, existing.sourceResumeId, tx);
+				if (!source) throw portfolioErrors.sourceInvalid();
+				const projects = source.data.sections.projects.items;
 
 				const current = parsePortfolioData(await readStoredData(tx, userId));
 				const wanted = new Set(input.resumeItemIds);

@@ -138,6 +138,13 @@ describe("linkAnonymousAccount", () => {
 		expect(coverLetterVersionSetArg).toMatchObject({ userId: "user-456" });
 		expect(coverLetterVersionSetArg).toHaveProperty("data");
 
+		// The Profile moves with its upload URLs rewritten (only to an account without one, checked in SQL).
+		const profileSetArg = mocks.updateSet.mock.calls.find(
+			(_, idx) => mocks.update.mock.calls[idx]?.[0] === schema.profile,
+		)?.[0];
+		expect(profileSetArg).toMatchObject({ userId: "user-456" });
+		expect(profileSetArg).toHaveProperty("data");
+
 		// Check resumeSlugRedirect deduplication and update
 		const redirectDeleteCall = mocks.delete.mock.calls.find((call) => call[0] === schema.resumeSlugRedirect);
 		expect(redirectDeleteCall).toBeDefined();

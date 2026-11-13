@@ -83,7 +83,8 @@ function portfolio(overrides: Partial<PublicPortfolio> = {}): PublicPortfolio {
 		updatedAt: new Date("2026-11-06T00:00:00Z"),
 		indexable: true,
 		customDomain: null,
-		resume: { data, slug: "cv", isPublic: true, hasPassword: false, showDownloadButtons: true },
+		source: { data, from: "resume" },
+		resume: { slug: "cv", isPublic: true, hasPassword: false, showDownloadButtons: true },
 		entitlements: { hidePortfolioCredit: false },
 		passwordHash: null,
 		...overrides,
@@ -495,7 +496,7 @@ describe("the page's content security policy", () => {
 describe("pictures", () => {
 	const withPicture = (url: string) => {
 		const page = portfolio();
-		if (page.resume) page.resume.data.picture = { ...page.resume.data.picture, url, hidden: false };
+		if (page.source) page.source.data.picture = { ...page.source.data.picture, url, hidden: false };
 		return page;
 	};
 

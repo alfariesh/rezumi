@@ -5,6 +5,7 @@ import { resumeDto } from "../../dto/resume";
 import { resumeMutationRateLimit } from "../../middleware/rate-limit";
 import { paginate } from "../../pagination";
 import { documentsService } from "../documents/service";
+import { profileService } from "../profile/service";
 import { createResumeData } from "./initial-data";
 import { parseStoredResumeData } from "./resume-data-validation";
 import { resumeService } from "./service";
@@ -70,7 +71,7 @@ export const crudRouter = {
 			operationId: "createResume",
 			summary: "Create a new resume",
 			description:
-				"Creates a new resume with the given name and tags. The slug (its public address) is optional: when omitted it is generated from the name and made unique across the user's resumes; when given it must be unique too. Optionally initializes the resume with sample data by setting withSampleData to true. Returns the ID of the newly created resume. Requires authentication.",
+				"Creates a new resume with the given name and tags. The slug (its public address) is optional: when omitted it is generated from the name and made unique across the user's resumes; when given it must be unique too. The resume starts from the account's Profile (its details and career history, on the default design), or with sample data when withSampleData is true. Returns the ID of the newly created resume. Requires authentication.",
 			successDescription: "The ID of the newly created resume.",
 		})
 		.input(resumeDto.create.input)
@@ -79,7 +80,7 @@ export const crudRouter = {
 		.errors({
 			...slugErrors,
 		})
-		.handler(({ context, input }) =>
+		.handler(async ({ context, input }) =>
 			resumeService.create({
 				name: input.name,
 				...(input.slug ? { slug: input.slug } : {}),
@@ -89,7 +90,7 @@ export const crudRouter = {
 				userId: context.user.id,
 				data: createResumeData({
 					withSampleData: input.withSampleData,
-					name: context.user.name,
+					profile: (await profileService.read(context.user.id)).data,
 					locale: context.locale,
 				}),
 			}),
@@ -103,7 +104,7 @@ export const crudRouter = {
 			operationId: "importResume",
 			summary: "Import a resume",
 			description:
-				"Creates a new resume from an existing ResumeData object (e.g. from a previously exported JSON file). A random name and slug are generated automatically. Returns the ID of the imported resume. Requires authentication.",
+				"Creates a new resume from an existing ResumeData object (e.g. from a previously exported JSON file). A random name and slug are generated automatically. What the account's Profile still lacks (blank details, a missing photo or summary, empty sections) is filled from it; nothing in the Profile is replaced. Returns the ID of the imported resume. Requires authentication.",
 			successDescription: "The ID of the imported resume.",
 		})
 		.input(resumeDto.import.input)
@@ -126,6 +127,8 @@ export const crudRouter = {
 				userId: context.user.id,
 				origin: "import",
 			});
+			// Best effort: the import stands even when the Profile can't take the data.
+			await profileService.completeFrom(context.user.id, input.data);
 
 			return id;
 		}),

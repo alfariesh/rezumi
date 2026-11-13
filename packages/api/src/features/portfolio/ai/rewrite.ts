@@ -1,5 +1,5 @@
+import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
-import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { LanguageModel } from "ai";
 import z from "zod";
 import { portfolioRewriteSystemPrompt } from "@rezumi/ai/prompts";
@@ -49,7 +49,8 @@ const linksOf = (html: string) => [...html.matchAll(/<a\b[^>]*\bhref="([^"]*)"/g
 
 type RewriteRequest = z.infer<typeof rewriteInputSchema> & {
 	data: PortfolioData;
-	resume: ResumeData | null;
+	/** The portfolio's source (its resume, or the Profile), for the page's language. */
+	source: PortfolioSource | null;
 	model: LanguageModel;
 	signal?: AbortSignal | undefined;
 };
@@ -60,13 +61,13 @@ type RewriteRequest = z.infer<typeof rewriteInputSchema> & {
  * its credit comes back.
  */
 export async function rewriteField(request: RewriteRequest): Promise<z.infer<typeof rewriteOutputSchema>> {
-	const { field: key, instruction, data, resume, model, signal } = request;
+	const { field: key, instruction, data, source, model, signal } = request;
 	const field = PORTFOLIO_AI_FIELDS[key];
 	const text = field.rich ? sanitizePortfolioHtml(request.text) : request.text;
 	const { masked, restore } = maskContacts(text);
 
 	const prompt = [
-		`Request: ${REQUESTS[instruction](pageLanguage(data, resume))}`,
+		`Request: ${REQUESTS[instruction](pageLanguage(data, source))}`,
 		field.rich ? "The text is HTML." : `The text is plain. At most ${field.max} characters.`,
 		dataBlock("TEXT", masked),
 	].join("\n\n");

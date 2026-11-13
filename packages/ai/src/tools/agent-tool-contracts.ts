@@ -204,6 +204,7 @@ export type AgentTools = {
 	ask_user_question: { input: AskUserQuestionInput; output: string };
 	read_resume: { input: Record<string, never>; output: unknown };
 	read_letter: { input: Record<string, never>; output: unknown };
+	read_profile: { input: Record<string, never>; output: unknown };
 	read_attachment: { input: { attachmentId: string }; output: unknown };
 	propose_edits: { input: ProposeEditsInput; output: ProposeEditsOutput };
 	search_web: {

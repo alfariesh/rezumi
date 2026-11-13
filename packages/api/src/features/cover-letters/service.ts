@@ -22,8 +22,10 @@ import { resumeDataSchema } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { assertDesignChange, assertDocumentCapacity, fitImportedDesign } from "../billing/limits";
 import { lockUser } from "../documents/ownership";
+import { profileService } from "../profile/service";
 import { resumeService } from "../resume/service";
 import { sanitizeCoverLetterHtml } from "./html";
+import { profileSender, resolveLetterLinks } from "./sender";
 import { getLetterVersion, saveLetterSessionVersion, writeLetterVersion } from "./versions";
 
 type OwnedId = { userId: string; id: string };
@@ -44,10 +46,13 @@ type CreateInput = {
 	letterDate?: string | null | undefined;
 };
 
-/** A stored row as a letter. Links end with the resume they point at, so a letter without one isn't linked. */
+/**
+ * A stored row as a letter. The design link ends with the resume it points at; a linked sender without a resume
+ * follows the Profile instead.
+ */
 function toLetter(row: typeof schema.coverLetter.$inferSelect): CoverLetter {
 	const letter = coverLetterSchema.parse(row);
-	return letter.sourceResumeId ? letter : { ...letter, senderLinked: false, designLinked: false };
+	return letter.sourceResumeId ? letter : { ...letter, designLinked: false };
 }
 
 /** The stored letter, with the copies in `style` as they are. */
@@ -60,32 +65,8 @@ async function getRow(input: OwnedId): Promise<CoverLetter> {
 	return toLetter(row);
 }
 
-/**
- * A letter as it reads now: linked sender details and design come from its source resume as the resume is today.
- * If the resume is gone, the copies the letter keeps stand in.
- */
-async function resolveLinks(letter: CoverLetter, userId: string): Promise<CoverLetter> {
-	if (!(letter.senderLinked || letter.designLinked) || !letter.sourceResumeId) return letter;
-
-	let linked: CoverLetterStyle;
-	try {
-		linked = await getResumeStyle(userId, letter.sourceResumeId, letter.style.sectionId, letter.style.itemId);
-	} catch {
-		return letter;
-	}
-
-	return {
-		...letter,
-		style: {
-			...letter.style,
-			...(letter.senderLinked ? { basics: linked.basics, picture: linked.picture } : {}),
-			...(letter.designLinked ? { metadata: linked.metadata } : {}),
-		},
-	};
-}
-
 async function getById(input: OwnedId): Promise<CoverLetter> {
-	return resolveLinks(await getRow(input), input.userId);
+	return resolveLetterLinks(await getRow(input), input.userId);
 }
 
 /** Today as YYYY-MM-DD, the date a new letter starts with. */
@@ -263,7 +244,8 @@ export const coverLetterService = {
 	},
 	/**
 	 * New letters are structured, with the recipient filled from the application (its company and first contact),
-	 * and linked to their resume's sender details and design. A letter given a recipient block stays freeform.
+	 * and linked to their resume's sender details and design, or, without a resume, to the Profile's sender details.
+	 * A letter given a recipient block stays freeform.
 	 */
 	create: async (input: CreateInput) => {
 		// A letter takes its resume's design as it is; only a template chosen for it here needs the plan.
@@ -271,6 +253,8 @@ export const coverLetterService = {
 		if (template) await assertDesignChange(input.userId, null, { template });
 		const application = await getOwnedApplication(input.userId, input.applicationId);
 		const style = await getResumeStyle(input.userId, input.resumeId);
+		// The copy a linked letter keeps starts as the Profile reads now, so unlinking later has the same details.
+		if (!input.resumeId) Object.assign(style, profileSender(style, (await profileService.read(input.userId)).data));
 		if (template) style.metadata.template = template;
 		const linked = Boolean(input.resumeId) && !input.template;
 		const letter = await db.transaction(async (tx) => {
@@ -290,7 +274,7 @@ export const coverLetterService = {
 					letterDate: input.letterDate === undefined ? today() : input.letterDate,
 					sourceResumeId: input.resumeId ?? null,
 					sourceApplicationId: input.applicationId ?? null,
-					senderLinked: Boolean(input.resumeId),
+					senderLinked: true,
 					designLinked: linked,
 				},
 				tx,
@@ -303,7 +287,7 @@ export const coverLetterService = {
 			});
 			return letter;
 		});
-		return resolveLinks(letter, input.userId);
+		return resolveLetterLinks(letter, input.userId);
 	},
 	update: async (input: CoverLetterUpdateInput & { userId: string }) => {
 		const changes: Partial<typeof schema.coverLetter.$inferInsert> = {};
@@ -319,19 +303,27 @@ export const coverLetterService = {
 		}
 
 		const sourceResumeId = changes.sourceResumeId !== undefined ? changes.sourceResumeId : stored.sourceResumeId;
-		if ((input.senderLinked || input.designLinked) && !sourceResumeId) {
-			throw new ORPCError("BAD_REQUEST", { message: "Choose a resume to link the letter to first." });
+		if (input.designLinked && !sourceResumeId) {
+			throw new ORPCError("BAD_REQUEST", { message: "Choose a resume to link the design to first." });
+		}
+		if (input.basics && input.senderLinked) {
+			throw new ORPCError("BAD_REQUEST", {
+				message: "Send the letter's own sender details or link them, not both.",
+			});
 		}
 
-		// Links follow the letter's resume and end when it's cleared; choosing a template or design ends the design link.
+		// The design link follows the letter's resume and ends when it's cleared, or with a template or design of the
+		// letter's own. A linked sender outlives the resume: without one it follows the Profile. Details of the letter's
+		// own end that link.
 		const ownDesign = Boolean(input.template || input.metadata);
-		const senderLinked = Boolean(sourceResumeId) && (input.senderLinked ?? stored.senderLinked);
+		const senderLinked = !input.basics && (input.senderLinked ?? stored.senderLinked);
 		const designLinked = Boolean(sourceResumeId) && !ownDesign && (input.designLinked ?? stored.designLinked);
 
 		// Unlinking keeps the details and design exactly as they read at that moment.
 		if ((stored.senderLinked && !senderLinked) || (stored.designLinked && !designLinked)) {
-			changes.style = (await resolveLinks(stored, input.userId)).style;
+			changes.style = (await resolveLetterLinks(stored, input.userId)).style;
 		}
+		if (input.basics) changes.style = { ...(changes.style ?? stored.style), basics: input.basics };
 		changes.senderLinked = senderLinked;
 		changes.designLinked = designLinked;
 
@@ -372,7 +364,7 @@ export const coverLetterService = {
 			}
 			return updated;
 		};
-		const updated = await resolveLinks(
+		const updated = await resolveLetterLinks(
 			await (input.applicationId === undefined
 				? persist(db)
 				: db.transaction(async (tx) => {
@@ -392,7 +384,7 @@ export const coverLetterService = {
 		const letter = await getById(input);
 		const style = await getResumeStyle(input.userId, input.resumeId, letter.style.sectionId, letter.style.itemId);
 		style.metadata.template = letter.style.metadata.template;
-		return resolveLinks(await updateRevision(input, { style, sourceResumeId: input.resumeId }), input.userId);
+		return resolveLetterLinks(await updateRevision(input, { style, sourceResumeId: input.resumeId }), input.userId);
 	},
 	duplicate: async (input: OwnedId & { name?: string | undefined }) => {
 		const letter = await getRow(input);
@@ -401,7 +393,7 @@ export const coverLetterService = {
 			userId: input.userId,
 			name: input.name ?? `${letter.name} (copy)`.slice(0, 100),
 		});
-		return resolveLinks(copy, input.userId);
+		return resolveLetterLinks(copy, input.userId);
 	},
 	/** Moves the letter to Trash (30 days, then deleted); Trash offers Restore and Delete now. */
 	delete: async (input: RevisionInput): Promise<void> => {
@@ -459,7 +451,7 @@ export const coverLetterService = {
 				letterDate: data.letterDate,
 			},
 		);
-		const resolved = await resolveLinks(restored, input.userId);
+		const resolved = await resolveLetterLinks(restored, input.userId);
 		await writeLetterVersion(db, { letter: resolved, userId: input.userId, kind: "restored" });
 		return resolved;
 	},

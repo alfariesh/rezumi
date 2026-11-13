@@ -187,10 +187,40 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 				customDomain: null,
 				resume: { slug: "my-cv", isPublic: true, hasPassword: false, showDownloadButtons: true },
 			});
-			expect(found?.resume?.data.basics.name).toBe("member resume");
+			expect(found?.source).toMatchObject({ from: "resume", data: { basics: { name: "member resume" } } });
 
+			// A source resume in Trash leaves the page without career sections; it doesn't fall back to the Profile.
 			await getDb().update(tables.resume).set({ trashedAt: new Date() }).where(eq(tables.resume.id, resumeId));
-			expect((await publicPortfolio.findPublicPortfolio(username("member")))?.resume).toBeNull();
+			expect(await publicPortfolio.findPublicPortfolio(username("member"))).toMatchObject({
+				source: null,
+				resume: null,
+			});
+		});
+
+		it("reads the Profile when it has no source resume, and shows a Profile change at once", async () => {
+			await addPortfolio("member");
+			const { profileService } = await import("../profile/service");
+			const { emptyProfileData } = await import("@rezumi/schema/profile/data");
+			const profile = emptyProfileData();
+			profile.basics.name = "Member Profile";
+			profile.sections.skills = [
+				{ id: "skill", hidden: false, icon: "", name: "Figma", proficiency: "", level: 0, keywords: [] },
+			] as never;
+			const saved = await profileService.update("member", { data: profile, expectedUpdatedAt: null });
+			const found = await publicPortfolio.findPublicPortfolio(username("member"));
+			expect(found).toMatchObject({
+				resume: null,
+				source: { from: "profile", data: { basics: { name: "Member Profile" } } },
+			});
+			expect(found?.source?.data.sections.skills.items.map((item) => item.name)).toEqual(["Figma"]);
+			// A Profile edit is the page's latest change, for search engines.
+			expect(found?.updatedAt.getTime()).toBeGreaterThanOrEqual(saved.updatedAt?.getTime() ?? Infinity);
+
+			profile.basics.name = "Member Renamed";
+			await profileService.update("member", { data: profile });
+			expect((await publicPortfolio.findPublicPortfolio(username("member")))?.source?.data.basics.name).toBe(
+				"Member Renamed",
+			);
 		});
 
 		it("still shows when its source resume's stored data can't be read, without the resume", async () => {
@@ -198,7 +228,7 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			await addPortfolio("member", { sourceResumeId: resumeId });
 			const logged = vi.spyOn(console, "error").mockImplementation(() => {});
 			const found = await publicPortfolio.findPublicPortfolio(username("member"));
-			expect(found).toMatchObject({ username: username("member"), resume: null });
+			expect(found).toMatchObject({ username: username("member"), source: null, resume: null });
 			expect(logged).toHaveBeenCalledOnce();
 			logged.mockRestore();
 		});

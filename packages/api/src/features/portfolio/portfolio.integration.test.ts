@@ -293,7 +293,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			expect(portfolio).toMatchObject({ isPublic: false, showInSearchEngines: true, publishedAt: null });
 		});
 
-		it("can start without a resume, from the basics given", async () => {
+		it("can start from the Profile instead of a resume, with the basics given and a design of its own", async () => {
 			await addResume("member");
 			const portfolio = await service.create("member", {
 				sourceResumeId: null,
@@ -303,6 +303,21 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			expect(portfolio).toMatchObject({ sourceResumeId: null, sourceResume: null });
 			expect(portfolio.data).toMatchObject({ theme: "mozaik", basics: { name: "Citra M.", headline: "Illustrator" } });
 			expect(portfolio.data.works.items).toEqual([]);
+			// The Profile has no design for the page to follow.
+			expect(portfolio.data.design).toMatchObject({ accent: { source: "preset" }, fonts: { source: "theme" } });
+		});
+
+		it("starts from the Profile when none is chosen and the Profile holds career items", async () => {
+			const { profileService } = await import("../profile/service");
+			const { profileFromResume } = await import("@rezumi/resume/profile");
+			await addResume("member", { name: "Main", isPrimary: true });
+			const career = resumeData("member");
+			career.summary.content = "<p>From the Profile.</p>";
+			await profileService.update("member", { data: profileFromResume(career) });
+			const portfolio = await service.create("member", {});
+			expect(portfolio).toMatchObject({ sourceResumeId: null, sourceResume: null });
+			expect(portfolio.data.about.content).toBe("<p>From the Profile.</p>");
+			expect(portfolio.data.works.items.map((work) => work.fromResumeItemId)).toEqual(["p1"]);
 		});
 
 		it("keeps one portfolio per account, even when two creates race", async () => {
@@ -1054,11 +1069,30 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 				service.importWorks("member", { resumeItemIds: ["p1"], expectedUpdatedAt: full.updatedAt }),
 			).resolves.toMatchObject({ data: { works: { items: expect.any(Array) } } });
 
-			await service.create("other", { sourceResumeId: null });
+			// A source resume in Trash has no projects to give.
+			const trashed = await resumeWithProjects("other");
+			await service.create("other", { sourceResumeId: trashed });
+			await getDb().update(tables.resume).set({ trashedAt: new Date() }).where(eq(tables.resume.id, trashed));
 			const other = await service.get("other");
 			await expect(
 				service.importWorks("other", { resumeItemIds: ["p1"], expectedUpdatedAt: other.portfolio?.updatedAt as Date }),
 			).rejects.toMatchObject({ code: "PORTFOLIO_SOURCE_INVALID", data: { reason: "unavailable" } });
+		});
+
+		it("adds works from the Profile's projects for a portfolio without a source resume", async () => {
+			const { profileService } = await import("../profile/service");
+			const { profileFromResume } = await import("@rezumi/resume/profile");
+			const data = resumeData("member");
+			data.sections.projects.items.push(project("p2", "Aplikasi Kopi"));
+			await profileService.update("member", { data: profileFromResume(data) });
+			const created = await service.create("member", { sourceResumeId: null });
+			expect(created.data.works.items.map((work) => work.fromResumeItemId)).toEqual(["p1", "p2"]);
+			const trimmed = await save("member", { works: { items: [] } });
+			const added = await service.importWorks("member", {
+				resumeItemIds: ["p2"],
+				expectedUpdatedAt: trimmed.updatedAt,
+			});
+			expect(added.data.works.items.map((work) => work.fromResumeItemId)).toEqual(["p2"]);
 		});
 
 		it("refuses a source resume whose stored data can't be read, rather than failing", async () => {

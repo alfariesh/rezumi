@@ -26,6 +26,8 @@ type BuildAgentToolsInput = {
 	signal: AbortSignal;
 	handlers: {
 		readDocument: () => Promise<unknown>;
+		/** The user's Profile; the document assistant only (the coach gets it with its memory, when shared). */
+		readProfile?: () => Promise<unknown>;
 		readAttachment: (attachmentId: string) => Promise<unknown>;
 		proposeEdits: (input: ProposeEditsInput) => Promise<unknown>;
 		searchWeb: (query: string, signal: AbortSignal) => Promise<SearchWebOutput>;
@@ -109,6 +111,16 @@ export function buildAgentTools(input: BuildAgentToolsInput): ToolSet {
 					}),
 				}),
 		...documentTools,
+		...(input.handlers.readProfile
+			? {
+					read_profile: tool({
+						description:
+							"Read the user's Profile: their details and career history, kept in one place for all their documents. Its facts are theirs, like what they tell you, so an edit may use them, for example to add an entry the document leaves out.",
+						inputSchema: z.object({}),
+						execute: input.handlers.readProfile,
+					}),
+				}
+			: {}),
 		ask_user_question: tool({
 			description:
 				"Ask the user a short question when you need a fact, a preference or a choice before continuing, for example before writing about something the posting wants but the document doesn't mention. Offer 2 to 4 short answer choices when you can.",

@@ -25,7 +25,7 @@ export const updatesRouter = {
 					resumeId: z.string(),
 					userId: z.string(),
 					updatedAt: z.string(),
-					mutation: z.enum(["sync", "create", "update", "patch", "lock", "password", "delete"]),
+					mutation: z.enum(["sync", "create", "update", "patch", "lock", "password", "delete", "profile"]),
 				}),
 			),
 		)
