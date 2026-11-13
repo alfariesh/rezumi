@@ -29,3 +29,15 @@ export function groupSections(
 	}
 	return groups;
 }
+
+/**
+ * Whether a short section shares its row with a neighbour: consecutive short sections pair up two by two, and a final
+ * unpaired one takes the full row, so hidden sections never leave holes.
+ */
+export function pairsUp(sections: readonly PortfolioViewSection[], index: number, kinds: ReadonlySet<string>): boolean {
+	if (!kinds.has(sections[index]?.kind ?? "")) return false;
+	if (kinds.has(sections[index + 1]?.kind ?? "")) return true;
+	let preceding = 0;
+	for (let previous = index - 1; previous >= 0 && kinds.has(sections[previous]?.kind ?? ""); previous--) preceding++;
+	return preceding % 2 === 1;
+}

@@ -21,7 +21,7 @@ export const LUGAS_PALETTE: ThemePalette = {
 
 /** Prima: white cards on a very light grey page, ink-blue text. */
 export const PRIMA_PALETTE: ThemePalette = {
-	light: { bg: "#F5F6F8", surface: "#FFFFFF", text: "#0E1726", muted: "#4D596B", border: "#D9DEE6" },
+	light: { bg: "#F7F5EF", surface: "#FFFFFF", text: "#0E1726", muted: "#4D5566", border: "#DCD7CA" },
 	dark: { bg: "#0B101A", surface: "#121A28", text: "#E7EBF2", muted: "#9BA6B7", border: "#243147" },
 };
 

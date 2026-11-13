@@ -111,7 +111,7 @@ function WorkList({ works }: WorkListProps) {
 	);
 }
 
-type SectionProps = { section: PortfolioViewSection };
+type SectionProps = { section: PortfolioViewSection; index: number };
 
 const SECTION_STYLE: SectionBodyStyle = {
 	theme: "prima",
@@ -125,14 +125,17 @@ const SECTION_STYLE: SectionBodyStyle = {
 	),
 };
 
-/** One section as a Prima row: the serif title in a 220 px rail, the content beside it, a rule above. */
-function Row({ section }: SectionProps) {
+/** One section as a Prima row: its number and serif title in a rail, the content beside it, a heavy rule above. */
+function Row({ section, index }: SectionProps) {
 	const { messages } = useRender();
 	return (
 		<Section
 			section={{ anchor: section.anchor, title: titleOf(section, messages) }}
 			className={`pf-section pr-row${section.kind === "custom" ? " pr-custom" : ""}`}
 		>
+			<span className="pr-row__index" aria-hidden="true">
+				{String(index).padStart(2, "0")}
+			</span>
 			<div className="pr-row__body">
 				<SectionBody section={section} style={SECTION_STYLE} />
 			</div>
@@ -167,7 +170,7 @@ export function PrimaPage({ year, creditUrl }: PrimaPageProps) {
 			creditUrl={creditUrl}
 		>
 			<Hero />
-			{groupSections(view.sections).map((group) => {
+			{groupSections(view.sections).map((group, index) => {
 				const first = group[0] as PortfolioViewSection;
 				if (group.length > 1 && EXTRA_KINDS.has(first.kind))
 					return (
@@ -181,7 +184,7 @@ export function PrimaPage({ year, creditUrl }: PrimaPageProps) {
 							</div>
 						</div>
 					);
-				return <Row key={first.key} section={first} />;
+				return <Row key={first.key} section={first} index={index + 1} />;
 			})}
 		</PageShell>
 	);

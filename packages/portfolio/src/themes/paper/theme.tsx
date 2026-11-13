@@ -1,5 +1,5 @@
 import type { SectionBodyStyle } from "../../shared/section-body";
-import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
+import type { PortfolioViewWork } from "../../view";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { HeroHeadline, HeroName } from "../../shared/hero-text";
@@ -8,35 +8,18 @@ import { introLocation, IntroChips, OpenToWork, useIntroBackground } from "../..
 import { MetricGroup, WorkMetric } from "../../shared/metric";
 import { Buttons, Picture, Section } from "../../shared/parts";
 import { SectionBody } from "../../shared/section-body";
+import { pairsUp } from "../../shared/sections";
 import { Navigation, PageShell } from "../../shared/shell";
 
-/** An original, static paper studio. Decorative, with no WebGL, external images or extra page script. */
-function PaperStudio() {
+/** Four selection handles on a frame's corners, as a design tool draws a selected layer. */
+function Handles() {
 	return (
-		<svg className="pp-studio" viewBox="0 0 500 380" fill="none" aria-hidden="true">
-			<g className="pp-studio__sheets" strokeLinejoin="round">
-				<path d="m55 232 210-121 188 109-210 121z" />
-				<path d="m55 220 210-121 188 109-210 121z" />
-				<path d="m55 208 210-121 188 109-210 121z" />
-			</g>
-			<g className="pp-studio__frames" strokeLinejoin="round">
-				<path d="m100 136 136-78v143l-136 78z" />
-				<path d="m110 142 116-67v119l-116 67z" />
-				<path d="m264 176 119-68v112l-119 68z" />
-				<path d="m274 182 99-57v88l-99 57z" />
-			</g>
-			<g className="pp-studio__lines" strokeLinecap="round">
-				<path d="m126 203 80-46m-80 58 64-37m-64 49 45-26m-80-48 26-15m-26 24 45-26" />
-				<path d="m288 230 68-39m-68 51 45-26m-45 38 59-34" />
-				<path d="m164 288 45-26m99-5 43-25" />
-			</g>
-			<g className="pp-studio__accent" strokeLinejoin="round">
-				<path d="m126 146 80-46v38l-80 46z" />
-				<path d="m288 183 68-39v29l-68 39z" />
-				<path d="m211 265 24-14 24 14-24 14z" />
-			</g>
-			<path className="pp-studio__cursor" d="m231 127 3 34 8-13 13 3z" strokeLinejoin="round" />
-		</svg>
+		<>
+			<i className="pp-handle pp-handle--tl" />
+			<i className="pp-handle pp-handle--tr" />
+			<i className="pp-handle pp-handle--bl" />
+			<i className="pp-handle pp-handle--br" />
+		</>
 	);
 }
 
@@ -46,12 +29,17 @@ function Hero() {
 	const variant = themeVariant("paper", "hero", view.design.variants.hero);
 	const portrait = variant !== "photo-top" ? hero.picture : null;
 	const background = useIntroBackground();
+	// Without a large photo, the highlights fill the intro's right side; beside a photo they open the sheet instead.
+	const sideStats = !portrait && hero.highlights.length > 0;
 	return (
 		<>
 			<section className="pp-hero" aria-label={messages.intro} data-variant={variant} {...background}>
 				<div className="pp-hero__copy">
 					{hero.picture && variant === "photo-top" && (
-						<Picture image={hero.picture} className="pp-avatar" eager sizes="56px" />
+						<span className="pp-avatar-frame">
+							<Picture image={hero.picture} className="pp-avatar" eager sizes="80px" />
+							<Handles />
+						</span>
 					)}
 					<IntroChips location={introLocation(view)} availability={hero.availability} />
 					<OpenToWork />
@@ -60,18 +48,21 @@ function Hero() {
 					{hero.greeting && <p className="pp-greeting">{hero.greeting}</p>}
 					<Buttons links={hero.buttons} />
 				</div>
-				<div className={`pp-hero__visual${portrait ? " pp-hero__visual--photo" : ""}`}>
-					{portrait ? (
-						<Picture image={portrait} className="pp-photo" eager sizes="(min-width: 761px) 400px, 180px" />
-					) : (
-						<PaperStudio />
-					)}
-					<span className="pp-fold" aria-hidden="true" />
-				</div>
+				{sideStats && (
+					<div className="pp-hero__stats">
+						<MetricGroup metrics={hero.highlights} variant="big" className="pp-stats" compact />
+						<Handles />
+					</div>
+				)}
+				{portrait && (
+					<div className="pp-hero__visual">
+						<div className="pp-artboard pp-artboard--photo">
+							<Picture image={portrait} className="pp-photo" eager sizes="(min-width: 761px) 420px, 200px" />
+							<Handles />
+						</div>
+					</div>
+				)}
 			</section>
-			{hero.highlights.length > 0 && (
-				<MetricGroup metrics={hero.highlights} variant="big" className="pp-stats" compact />
-			)}
 		</>
 	);
 }
@@ -87,8 +78,10 @@ function WorkList({ works }: WorkListProps) {
 				<li key={work.id} className="pp-work" data-image={Boolean(work.cover)}>
 					<a className="pp-work__card" href={work.href} aria-labelledby={`${work.anchor}--card-title`}>
 						{work.cover && (
-							<span className="pp-work__art pf-cover">
-								<Picture image={work.cover} decorative sizes="(min-width: 761px) 540px, 100vw" />
+							<span className="pp-work__art">
+								<span className="pp-work__frame pf-cover">
+									<Picture image={work.cover} decorative sizes="(min-width: 761px) 460px, 100vw" />
+								</span>
 							</span>
 						)}
 						<div className="pp-work__copy">
@@ -128,8 +121,8 @@ const SECTION_STYLE: SectionBodyStyle = {
 	work: (works) => <WorkList works={works} />,
 };
 
+/** Short lists that pair up two to a row. Experience is usually long, so it takes the full width as a dated index. */
 const HALF_SECTIONS = new Set([
-	"experience",
 	"education",
 	"skills",
 	"awards",
@@ -141,21 +134,26 @@ const HALF_SECTIONS = new Set([
 	"profiles",
 ]);
 
-/** Pair consecutive short sections. A final unpaired cell spans the sheet, keeping hidden sections from leaving holes. */
-function halfCell(sections: readonly PortfolioViewSection[], index: number): boolean {
-	if (!HALF_SECTIONS.has(sections[index]?.kind ?? "")) return false;
-	if (HALF_SECTIONS.has(sections[index + 1]?.kind ?? "")) return true;
-	let preceding = 0;
-	for (let previous = index - 1; previous >= 0 && HALF_SECTIONS.has(sections[previous]?.kind ?? ""); previous--)
-		preceding++;
-	return preceding % 2 === 1;
-}
+/** The sheet's cells that turn a corner over, as the reference turns one corner per screen or so. */
+const FOLDED = new Set(["about", "testimonials"]);
 
 type PaperPageProps = { year: number; creditUrl: string };
 
-/** Paper's bordered sheet. Each section keeps its own position and anchor, including the user's free sections. */
+/**
+ * Paper's page: a wide intro, then one bordered sheet of cells with registration squares
+ * where the lines meet. Each section keeps its own position and anchor, including the user's free sections.
+ */
 export function PaperPage({ year, creditUrl }: PaperPageProps) {
 	const { view } = useRender();
+	// The highlights open the sheet only when a large photo has the intro's right side (`Hero`).
+	const portraitVariant = themeVariant("paper", "hero", view.design.variants.hero) !== "photo-top";
+	const highlights = portraitVariant && view.hero.picture ? view.hero.highlights : [];
+	const contact = view.sections.find((section) => section.kind === "contact");
+	// Work leads the menu: on a portfolio it is what visitors look for first, wherever the page puts it.
+	const menuSections = [
+		...view.sections.filter((section) => section.kind === "work"),
+		...view.sections.filter((section) => section.kind !== "work"),
+	];
 	return (
 		<PageShell
 			theme="paper"
@@ -168,6 +166,8 @@ export function PaperPage({ year, creditUrl }: PaperPageProps) {
 							{view.basics.initials}
 						</span>
 					}
+					sections={menuSections}
+					message={contact ? { anchor: contact.anchor, className: "pp-hello" } : null}
 				/>
 			}
 			mainClassName="pp-main"
@@ -175,20 +175,24 @@ export function PaperPage({ year, creditUrl }: PaperPageProps) {
 			creditUrl={creditUrl}
 		>
 			<Hero />
-			{view.sections.length > 0 && (
+			{(view.sections.length > 0 || highlights.length > 0) && (
 				<div className="pp-sheet">
+					{highlights.length > 0 && (
+						<div className="pp-cell pp-cell--stats">
+							<MetricGroup metrics={highlights} variant="big" className="pp-stats" compact />
+						</div>
+					)}
 					{view.sections.map((section, index) => (
 						<Section
 							key={section.key}
 							section={section}
-							className={`pf-section pp-cell pp-cell--${section.kind}${halfCell(view.sections, index) ? " pp-cell--half" : ""}`}
+							className={`pf-section pp-cell pp-cell--${section.kind}${HALF_SECTIONS.has(section.kind) ? " pp-cell--short" : ""}${pairsUp(view.sections, index, HALF_SECTIONS) ? " pp-cell--half" : ""}`}
 						>
+							{section.kind === "custom" && <span className="pp-orbit" aria-hidden="true" />}
 							<div className="pp-cell__body">
 								<SectionBody section={section} style={SECTION_STYLE} />
 							</div>
-							{(section.kind === "about" || section.kind === "custom") && (
-								<span className="pp-fold" aria-hidden="true" />
-							)}
+							{FOLDED.has(section.kind) && <span className="pp-fold" aria-hidden="true" />}
 						</Section>
 					))}
 				</div>

@@ -24,7 +24,7 @@ describe("Paper", () => {
 		expect(html).not.toContain("Salman");
 	});
 
-	it("provides an original drawing without publishing a hidden portrait or hidden work", () => {
+	it("publishes no hidden portrait or hidden work", () => {
 		const { html } = renderTestPage({
 			...fullPortfolioData,
 			theme: "paper",
@@ -32,7 +32,6 @@ describe("Paper", () => {
 			sections: { hidden: ["work"] },
 		});
 		expectSoundPage(html, "paper");
-		expect(html).toContain('class="pp-studio"');
 		expect(html).not.toContain('class="pp-photo"');
 		expect(html).not.toContain("Coffee ordering app");
 		expect(html).not.toContain("pf-detail");
