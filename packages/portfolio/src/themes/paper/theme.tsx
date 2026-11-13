@@ -1,5 +1,5 @@
 import type { SectionBodyStyle } from "../../shared/section-body";
-import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
+import type { PortfolioViewWork } from "../../view";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
 import { HeroHeadline, HeroName } from "../../shared/hero-text";
@@ -8,6 +8,7 @@ import { introLocation, IntroChips, OpenToWork, useIntroBackground } from "../..
 import { MetricGroup, WorkMetric } from "../../shared/metric";
 import { Buttons, Picture, Section } from "../../shared/parts";
 import { SectionBody } from "../../shared/section-body";
+import { pairsUp } from "../../shared/sections";
 import { Navigation, PageShell } from "../../shared/shell";
 
 /** Four selection handles on a frame's corners, as a design tool draws a selected layer. */
@@ -133,16 +134,6 @@ const HALF_SECTIONS = new Set([
 	"profiles",
 ]);
 
-/** Pair consecutive short sections. A final unpaired cell spans the sheet, keeping hidden sections from leaving holes. */
-function halfCell(sections: readonly PortfolioViewSection[], index: number): boolean {
-	if (!HALF_SECTIONS.has(sections[index]?.kind ?? "")) return false;
-	if (HALF_SECTIONS.has(sections[index + 1]?.kind ?? "")) return true;
-	let preceding = 0;
-	for (let previous = index - 1; previous >= 0 && HALF_SECTIONS.has(sections[previous]?.kind ?? ""); previous--)
-		preceding++;
-	return preceding % 2 === 1;
-}
-
 /** The sheet's cells that turn a corner over, as the reference turns one corner per screen or so. */
 const FOLDED = new Set(["about", "testimonials"]);
 
@@ -195,7 +186,7 @@ export function PaperPage({ year, creditUrl }: PaperPageProps) {
 						<Section
 							key={section.key}
 							section={section}
-							className={`pf-section pp-cell pp-cell--${section.kind}${HALF_SECTIONS.has(section.kind) ? " pp-cell--short" : ""}${halfCell(view.sections, index) ? " pp-cell--half" : ""}`}
+							className={`pf-section pp-cell pp-cell--${section.kind}${HALF_SECTIONS.has(section.kind) ? " pp-cell--short" : ""}${pairsUp(view.sections, index, HALF_SECTIONS) ? " pp-cell--half" : ""}`}
 						>
 							{section.kind === "custom" && <span className="pp-orbit" aria-hidden="true" />}
 							<div className="pp-cell__body">
