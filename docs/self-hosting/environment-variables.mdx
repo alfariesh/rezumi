@@ -299,6 +299,23 @@ search and backup guidance. Public page URLs remain protected against private de
 and DNS rebinding. A remote reader must enforce these protections internally too. Search queries and selected URLs
 go to the chosen service; resume data and AI keys do not.
 
+## Profile sources
+
+New accounts can fill their Profile from a LinkedIn profile, a GitHub account or a personal website before making a
+first resume. All three are optional and read only when the person asks; nothing is stored until they review and save
+it, and the data read is never logged.
+
+| Variable               | Default                               | Description                                                                                                                                                                                                                                 |
+| ---------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `APIFY_TOKEN`          | unset                                 | Apify API token. Reading a LinkedIn profile runs an Apify actor and costs a fraction of a cent per profile on your Apify account; each account can read three profiles a day. Without it, the LinkedIn option is hidden and the rest works. |
+| `APIFY_LINKEDIN_ACTOR` | `harvestapi~linkedin-profile-scraper` | The actor that reads a profile, as `owner~name`. Another actor must accept the same input and return the same fields.                                                                                                                       |
+| `GITHUB_API_TOKEN`     | unset                                 | GitHub token for reading public accounts (no scopes needed). Accounts signed in with GitHub use their own token; others are read without one, which GitHub limits to 60 requests an hour per server address.                                |
+
+Personal websites are read with the reader described under [Web access](#web-access) and turned into Profile details
+by AI: the account's own connection, or Rezumi AI for 2 credits. Guests can use GitHub and file uploads only.
+
+On Cloudflare, set the tokens as Worker secrets, for example `pnpm exec wrangler secret put APIFY_TOKEN`.
+
 ## Feature flags
 
 All flags default to `false`.

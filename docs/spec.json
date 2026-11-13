@@ -71029,7 +71029,7 @@
 			"post": {
 				"operationId": "createResume",
 				"summary": "Create a new resume",
-				"description": "Creates a new resume with the given name and tags. The slug (its public address) is optional: when omitted it is generated from the name and made unique across the user's resumes; when given it must be unique too. The resume starts from the account's Profile (its details and career history, on the default design), or with sample data when withSampleData is true. Returns the ID of the newly created resume. Requires authentication.",
+				"description": "Creates a new resume with the given name and tags. The slug (its public address) is optional: when omitted it is generated from the name and made unique across the user's resumes; when given it must be unique too. The resume starts from the account's Profile (its details and career history, on the default design or the chosen template's), or with sample data when withSampleData is true. Returns the ID of the newly created resume. Requires authentication.",
 				"tags": [
 					"Resumes"
 				],
@@ -71063,6 +71063,48 @@
 									"withSampleData": {
 										"type": "boolean",
 										"default": false
+									},
+									"template": {
+										"enum": [
+											"meridian",
+											"sterling",
+											"aksara",
+											"atlas",
+											"tunas",
+											"summit",
+											"cendekia",
+											"wibawa",
+											"tenun",
+											"vector",
+											"anggrek",
+											"ivory",
+											"pilar",
+											"bingkai",
+											"cerah",
+											"mozaik",
+											"nusa",
+											"selaras",
+											"teras",
+											"cobalt",
+											"kontras",
+											"lintasan",
+											"kirana",
+											"linen",
+											"horizon",
+											"jejak",
+											"purnama",
+											"senja",
+											"graphite",
+											"awan",
+											"menara",
+											"tepi",
+											"sekar",
+											"marquee",
+											"fajar",
+											"cahaya"
+										],
+										"type": "string",
+										"description": "The template to start with, in the look it was designed with (its fonts, accent and layout). Premium templates need a plan that includes them. The default template when omitted."
 									}
 								},
 								"required": [

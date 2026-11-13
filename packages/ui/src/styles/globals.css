@@ -459,10 +459,10 @@
 /*
  * An unchecked checkbox is filled like a `secondary` field, with the page `background` (or `--field-fill` on a gray
  * card), not HeroUI's white: white on a white dialog or page leaves only a faint border. One that sets its own fill
- * (`bg-default`, `bg-surface`) keeps it.
+ * (`bg-default`, `bg-surface`) keeps it. An indeterminate one keeps HeroUI's accent fill, or its dash would vanish.
  */
 @layer components {
-	.checkbox:not(.checkbox--secondary) .checkbox__control {
+	.checkbox:not(.checkbox--secondary):not([data-indeterminate="true"]) .checkbox__control {
 		background-color: var(--field-fill, var(--background));
 		box-shadow: none;
 	}

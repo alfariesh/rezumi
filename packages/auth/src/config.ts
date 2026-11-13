@@ -754,6 +754,27 @@ export const accountAuth = {
 	deleteApiKey: (user: User, keyId: string) => accountUser.run(user, () => auth.api.deleteApiKey({ body: { keyId } })),
 };
 
+/**
+ * A usable access token for the account's sign-in with a provider ("github"), read through Better Auth, which keeps
+ * provider tokens encrypted and refreshes expired ones. Null when the account has no such sign-in or the token can't
+ * be read. The token is the user's: send it only to that provider.
+ */
+export async function providerAccessToken(userId: string, providerId: string): Promise<string | null> {
+	const [account] = await db
+		.select({ id: schema.account.id })
+		.from(schema.account)
+		.where(and(eq(schema.account.userId, userId), eq(schema.account.providerId, providerId)))
+		.limit(1);
+	if (!account) return null;
+	try {
+		// Without request headers, Better Auth acts for `userId` instead of a session.
+		const { accessToken } = await auth.api.getAccessToken({ body: { accountId: account.id, userId } });
+		return accessToken || null;
+	} catch {
+		return null;
+	}
+}
+
 export async function initializeAuth(): Promise<void> {
 	await auth.$context;
 }

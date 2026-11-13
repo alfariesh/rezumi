@@ -9,6 +9,7 @@ import {
 	compareWithProfile,
 	completeProfile,
 	followProfile,
+	mergeProfileData,
 	profileFromResume,
 	resumeDataFromProfile,
 	sameContent,
@@ -215,6 +216,91 @@ describe("completeProfile", () => {
 		expect(next?.basics.email).toBe(resume.basics.email);
 		expect(next?.sections.experience).toHaveLength(resume.sections.experience.items.length);
 		expect(next && completeProfile(next, resume)).toBeNull();
+	});
+});
+
+describe("mergeProfileData", () => {
+	const job = (id: string, company: string, position: string) => ({
+		id,
+		hidden: false,
+		company,
+		position,
+		location: "",
+		period: "",
+		website: { url: "", label: "", inlineLink: false },
+		description: "",
+		roles: [],
+	});
+	const skill = (id: string, name: string) => ({
+		id,
+		hidden: false,
+		icon: "",
+		iconColor: "",
+		name,
+		proficiency: "",
+		level: 0,
+		keywords: [],
+	});
+
+	it("fills blank basics, photo and summary, and keeps what the base has", () => {
+		const base = emptyProfileData();
+		base.basics.name = "Rina Saraswati";
+		const addition = emptyProfileData();
+		addition.basics.name = "Rina S.";
+		addition.basics.headline = "Data analyst";
+		addition.basics.website = { url: "https://rina.example", label: "" };
+		addition.picture.url = "https://media.licdn.com/rina.jpg";
+		addition.summary.content = "<p>Numbers person.</p>";
+
+		const merged = mergeProfileData(base, addition);
+		expect(merged.basics.name).toBe("Rina Saraswati");
+		expect(merged.basics.headline).toBe("Data analyst");
+		expect(merged.basics.website.url).toBe("https://rina.example");
+		expect(merged.picture.url).toBe("https://media.licdn.com/rina.jpg");
+		expect(merged.summary.content).toBe("<p>Numbers person.</p>");
+		expect(base.basics.headline).toBe("");
+	});
+
+	it("adds items the base doesn't have, matching case and spacing loosely", () => {
+		const base = emptyProfileData();
+		base.sections.experience = [job("a", "Kopi Nusantara", "Barista")];
+		base.sections.skills = [skill("s1", "TypeScript")];
+		const addition = emptyProfileData();
+		addition.sections.experience = [
+			job("b", "  kopi   nusantara ", "BARISTA"),
+			job("c", "Kopi Nusantara", "Head barista"),
+		];
+		addition.sections.skills = [skill("s2", "typescript"), skill("s3", "SQL"), skill("s4", "sql")];
+
+		const merged = mergeProfileData(base, addition);
+		expect(merged.sections.experience.map((item) => item.id)).toEqual(["a", "c"]);
+		expect(merged.sections.skills.map((item) => item.name)).toEqual(["TypeScript", "SQL"]);
+		expect(profileDataSchema.safeParse(merged).success).toBe(true);
+	});
+
+	it("gives an added item a new ID when the base already uses its ID", () => {
+		const base = emptyProfileData();
+		base.sections.skills = [skill("same", "Go")];
+		const addition = emptyProfileData();
+		addition.sections.skills = [skill("same", "Rust")];
+
+		const merged = mergeProfileData(base, addition);
+		expect(merged.sections.skills).toHaveLength(2);
+		expect(merged.sections.skills[1]?.name).toBe("Rust");
+		expect(merged.sections.skills[1]?.id).not.toBe("same");
+	});
+
+	it("keeps the earlier source's version when merging in order", () => {
+		const fromFile = emptyProfileData();
+		fromFile.sections.experience = [{ ...job("f", "Lumbung Data", "Analyst"), description: "<p>From the file</p>" }];
+		const fromLinkedIn = emptyProfileData();
+		fromLinkedIn.sections.experience = [
+			{ ...job("l", "Lumbung Data", "analyst"), description: "<p>From LinkedIn</p>" },
+		];
+
+		const merged = [fromLinkedIn].reduce(mergeProfileData, mergeProfileData(emptyProfileData(), fromFile));
+		expect(merged.sections.experience).toHaveLength(1);
+		expect(merged.sections.experience[0]?.description).toBe("<p>From the file</p>");
 	});
 });
 

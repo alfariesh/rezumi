@@ -2,6 +2,7 @@ import type { ProfileBasicsField, ProfileData, ProfilePart, ProfileSectionType }
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { emptyProfileData, PROFILE_BASICS_FIELDS, PROFILE_SECTION_TYPES } from "@rezumi/schema/profile/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { generateId } from "@rezumi/utils/string";
 
 /**
  * How a resume and the account's Profile stay in step.
@@ -253,6 +254,63 @@ export function profileFromResume(data: ResumeData): ProfileData {
 			hidden: false,
 		}));
 	return profile;
+}
+
+// What makes two items the same entry when sources are merged: the fields a person would recognise it by.
+const MERGE_KEYS: Record<ProfileSectionType, readonly string[]> = {
+	experience: ["company", "position"],
+	education: ["school", "degree"],
+	projects: ["name"],
+	skills: ["name"],
+	languages: ["language"],
+	interests: ["name"],
+	references: ["name"],
+	certifications: ["title"],
+	awards: ["title"],
+	publications: ["title"],
+	volunteer: ["organization"],
+	profiles: ["network"],
+};
+
+const mergeText = (value: unknown) =>
+	typeof value === "string" ? value.toLocaleLowerCase().replace(/\s+/g, " ").trim() : "";
+
+const mergeKey = (section: ProfileSectionType, item: Item) =>
+	JSON.stringify(MERGE_KEYS[section].map((field) => mergeText(item[field])));
+
+/**
+ * Adds what another source found to Profile data, as a draft for review: blank basics, a missing photo or summary,
+ * and every item it doesn't have yet. Nothing in `base` changes. An item counts as had when its key fields match
+ * ignoring case and spacing (experience: company and position; education: school and degree; certifications, awards
+ * and publications: title; volunteering: organization; profiles: network; the rest: name). Items `addition` repeats
+ * are added once. Merging several sources in order (file, LinkedIn, GitHub, website) keeps the earlier one's version.
+ */
+export function mergeProfileData(base: ProfileData, addition: ProfileData): ProfileData {
+	const next = structuredClone(base);
+
+	for (const field of PROFILE_BASICS_FIELDS) {
+		if (!isBlank(next.basics[field]) || isBlank(addition.basics[field])) continue;
+		(next.basics as Record<string, unknown>)[field] = structuredClone(addition.basics[field]);
+	}
+	if (!next.picture.url.trim() && addition.picture.url.trim()) next.picture.url = addition.picture.url;
+	if (!next.summary.content.trim() && addition.summary.content.trim()) next.summary.content = addition.summary.content;
+
+	for (const section of PROFILE_SECTION_TYPES) {
+		const items = profileItemsOf(next, section);
+		const keys = new Set(items.map((item) => mergeKey(section, item)));
+		const ids = new Set(items.map((item) => item.id));
+		for (const item of profileItemsOf(addition, section)) {
+			const key = mergeKey(section, item);
+			if (keys.has(key)) continue;
+			keys.add(key);
+			// Two sources never share IDs on purpose; a clash would make two entries one.
+			const id = ids.has(item.id) ? generateId() : item.id;
+			ids.add(id);
+			items.push({ ...structuredClone(item), id, hidden: false });
+		}
+	}
+
+	return next;
 }
 
 /**

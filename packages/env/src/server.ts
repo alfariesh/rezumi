@@ -216,6 +216,16 @@ export const env = createEnv({
 		WEB_ACCESS_API_URL: z.url({ protocol: /^https?$/ }).optional(),
 		// Optional operator-controlled SearXNG that takes over web search only; reading still uses the connection above.
 		WEB_SEARCH_SEARXNG_URL: z.url({ protocol: /^https?$/ }).optional(),
+		// Filling the Profile from outside sources. Without an Apify token, LinkedIn profiles can't be read; the actor is
+		// "owner~name" (or "owner/name"). GitHub is read without a token unless one is set (higher rate limits).
+		APIFY_TOKEN: z.string().trim().min(1).optional(),
+		APIFY_LINKEDIN_ACTOR: z
+			.string()
+			.trim()
+			.regex(/^[\w.-]+[~/][\w.-]+$/, "APIFY_LINKEDIN_ACTOR must be an Actor name such as owner~actor-name.")
+			.transform((value) => value.replace("/", "~"))
+			.default("harvestapi~linkedin-profile-scraper"),
+		GITHUB_API_TOKEN: z.string().trim().min(1).optional(),
 		AI_PROVIDER: aiProviderSchema.optional(),
 		AI_MODEL: z.string().trim().min(1).optional(),
 		AI_API_KEY: z.string().trim().min(1).optional(),

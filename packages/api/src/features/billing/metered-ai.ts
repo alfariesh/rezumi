@@ -49,6 +49,8 @@ export const AI_WORK_LIMITS: Record<CreditAction, AiWorkLimits> = {
 	// A translated Text block, at its 10,000 characters, is the longest answer.
 	"portfolio-rewrite": { maxOutputTokens: 16_384, maxInputChars: 120_000, maxSteps: 1 },
 	"portfolio-metrics": { maxOutputTokens: 8_192, maxInputChars: 120_000, maxSteps: 1 },
+	// A page is read up to 20,000 characters; the answer is Profile data in the import template's shape.
+	"profile-website": { maxOutputTokens: 16_384, maxInputChars: 120_000, maxSteps: 1 },
 };
 
 export type AiRunRequest = AiSourceRequest & {

@@ -2,6 +2,7 @@ import z from "zod";
 import { profileDataSchema, profilePartSchema } from "@rezumi/schema/profile/data";
 import { protectedProcedure } from "../../context";
 import { profileService } from "./service";
+import { profileSourcesRouter } from "./sources/router";
 
 const profileOutput = z.object({
 	data: profileDataSchema,
@@ -83,4 +84,6 @@ export const profileRouter = {
 		.input(resumeInput)
 		.output(saveOutput)
 		.handler(({ context, input }) => profileService.fillFromResume(context.user.id, input)),
+
+	sources: profileSourcesRouter,
 };

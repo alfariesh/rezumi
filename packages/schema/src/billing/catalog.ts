@@ -224,6 +224,8 @@ export const CREDIT_COSTS = {
 	"portfolio-metrics": 1,
 	/** Draft one application-form answer or recruiter reply from the user's own experience. */
 	"draft-answer": 2,
+	/** Read a personal website into Profile details to review. */
+	"profile-website": 2,
 	/** Draft one cover letter for one job. */
 	"cover-letter": 3,
 	/** Draft a portfolio from its resume: the greeting, About me and each work's story. */
