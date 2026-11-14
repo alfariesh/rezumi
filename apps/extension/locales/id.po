@@ -42,14 +42,29 @@ msgid "No account yet? <0>Sign up free</0>"
 msgstr "Belum punya akun? <0>Daftar gratis</0>"
 
 #. Browser extension home screen when the open tab is not a job posting
-#: src/sidepanel/connected-screen.tsx
+#: src/sidepanel/page-screen.tsx
 msgid "Open a job posting to save it to Rezumi."
 msgstr "Buka halaman lowongan untuk menyimpannya ke Rezumi."
 
 #. Button in the browser extension that opens the application tracker on the web
-#: src/sidepanel/connected-screen.tsx
+#: src/sidepanel/page-screen.tsx
 msgid "Open application tracker"
 msgstr "Buka pelacak lamaran"
+
+#. Browser extension on a job board search page with no posting selected
+#: src/sidepanel/page-screen.tsx
+msgid "Pick one job posting to save it."
+msgstr "Pilih satu lowongan untuk menyimpannya."
+
+#. Browser extension status while it reads the open web page
+#: src/sidepanel/page-screen.tsx
+msgid "Reading this page…"
+msgstr "Membaca halaman ini…"
+
+#. Browser extension button that tells Rezumi a page could not be read
+#: src/sidepanel/page-screen.tsx
+msgid "Report this page"
+msgstr "Laporkan halaman ini"
 
 #: src/sidepanel/settings-screen.tsx
 msgid "Rezumi account"
@@ -69,6 +84,11 @@ msgstr "Simpan lowongan dari situs mana pun ke pelacak lamaranmu."
 msgid "Save jobs to Rezumi"
 msgstr "Simpan loker ke Rezumi"
 
+#. Under the report button: what a page report contains
+#: src/sidepanel/page-screen.tsx
+msgid "Sends this page's address and which details were missing, not its content."
+msgstr "Yang dikirim hanya alamat halaman dan detail yang tidak terbaca, bukan isinya."
+
 #: src/sidepanel/connected-screen.tsx
 msgid "Settings"
 msgstr "Pengaturan"
@@ -78,10 +98,24 @@ msgstr "Pengaturan"
 msgid "Sign out"
 msgstr "Keluar"
 
+#. Browser extension note when some details of a job posting could not be read
+#: src/sidepanel/page-screen.tsx
+msgid "Some details could not be read from this page."
+msgstr "Beberapa detail tidak bisa dibaca dari halaman ini."
+
+#. Browser extension confirmation after the person reported a page it could not read
+#: src/sidepanel/page-screen.tsx
+msgid "Thanks, we'll look into it."
+msgstr "Terima kasih, kami akan memeriksanya."
+
 #. Browser extension: the server ended the connection (signed out or access revoked)
 #: src/sidepanel/connect-screen.tsx
 msgid "The connection to Rezumi ended. Connect again to continue."
 msgstr "Sambungan ke Rezumi berakhir. Hubungkan lagi untuk lanjut."
+
+#: src/sidepanel/page-screen.tsx
+msgid "The report could not be sent. Try again."
+msgstr "Laporan tidak terkirim. Coba lagi."
 
 #: src/sidepanel/panel-error.tsx
 msgid "Try again"
@@ -98,6 +132,15 @@ msgstr "Versi {EXTENSION_VERSION}"
 #: src/sidepanel/panel-error.tsx
 msgid "Wait a moment, then try again."
 msgstr "Tunggu sebentar lalu coba lagi."
+
+#: src/sidepanel/page-screen.tsx
+msgid "Wait a while, then try again."
+msgstr "Tunggu sebentar, lalu coba lagi."
+
+#. Browser extension message when the open page has no job posting it can read
+#: src/sidepanel/page-screen.tsx
+msgid "We couldn't find a job posting on this page."
+msgstr "Kami tidak menemukan lowongan di halaman ini."
 
 #: src/sidepanel/connect-screen.tsx
 #: src/sidepanel/panel-error.tsx

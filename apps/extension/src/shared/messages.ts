@@ -1,5 +1,6 @@
 import type { Account, AuthState } from "./storage";
 import { z } from "zod";
+import { capturedFieldsSchema, capturedPostingSchema } from "@rezumi/job-sites/capture";
 import { JOB_SITES } from "@rezumi/job-sites/sites";
 
 /**
@@ -36,6 +37,19 @@ export const panelMessageSchema = z.discriminatedUnion("type", [
 ]);
 
 export type PageMessage = z.infer<typeof pageMessageSchema>;
+
+/** Side panel → the tab's content script: read the open page now (the person opened the panel or asked). */
+export type ReadRequest = { type: "read" };
+
+/**
+ * The content script's answer to `read` (src/content/read.ts `PageReading`). The page is untrusted, so the panel
+ * checks it against the same bounds the server applies before showing or sending any of it.
+ */
+export const pageReadingSchema = capturedPostingSchema.extend({
+	key: z.string().min(1).max(500).nullable(),
+	textSource: z.enum(["site", "page"]),
+	fields: capturedFieldsSchema,
+});
 export type ContentMessage = z.infer<typeof contentMessageSchema>;
 export type PanelMessage = z.infer<typeof panelMessageSchema>;
 

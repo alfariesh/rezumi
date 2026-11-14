@@ -159,7 +159,7 @@ LinkedIn, Glints, dan JobStreet berganti lowongan tanpa memuat ulang halaman. Co
 
 ### 7.4 URL kanonik dan kunci per situs
 
-Pola ini dari pengetahuan umum; **verifikasi dengan halaman nyata di Phase 03** sebelum dipakai, dan catat hasilnya di bagian baru di akhir dokumen ini.
+Pola ini dari pengetahuan umum; diverifikasi dengan halaman nyata di Phase 03 (2026-11-14, hasil di §18): semua pola cocok, ditambah LinkedIn `/jobs/search-results/?currentJobId=<id>` (halaman pencarian anggota yang login).
 
 | Situs     | Contoh URL yang dikenali                                                                       | Kanonik                                     | Kunci                      |
 | --------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------- | -------------------------- |
@@ -215,17 +215,17 @@ Pola ini dari pengetahuan umum; **verifikasi dengan halaman nyata di Phase 03** 
 
 ## 12. Izin dan keamanan
 
-| Izin                                                                                                              | Untuk                                             | Catatan                              |
-| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------ |
-| `sidePanel`                                                                                                       | Panel samping                                     |                                      |
-| `storage`                                                                                                         | Token, cache kunci, isian                         |                                      |
-| `identity`                                                                                                        | Login OAuth                                       |                                      |
-| `activeTab`, `scripting`                                                                                          | Membaca halaman situs lain saat pengguna mengklik | Tanpa izin host luas                 |
-| `contextMenus`                                                                                                    | Menu klik kanan teks terpilih                     |                                      |
-| `alarms`                                                                                                          | Sinkron kunci dan pengingat                       |                                      |
-| `notifications` (opsional)                                                                                        | Pengingat desktop                                 | Diminta saat pengguna menyalakan     |
-| Host: `https://www.linkedin.com/*`, `https://*.indeed.com/*`, `https://*.jobstreet.com/*`, `https://glints.com/*` | Tombol dan penanda di empat situs                 | Pola final mengikuti temuan Phase 03 |
-| Host: `https://rezumi.app/*` (dev: `http://localhost:3000/*`)                                                     | Memanggil API tanpa CORS                          |                                      |
+| Izin                                                                                                            | Untuk                                             | Catatan                                                                                          |
+| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `sidePanel`                                                                                                     | Panel samping                                     |                                                                                                  |
+| `storage`                                                                                                       | Token, cache kunci, isian                         |                                                                                                  |
+| `identity`                                                                                                      | Login OAuth                                       |                                                                                                  |
+| `activeTab`, `scripting`                                                                                        | Membaca halaman situs lain saat pengguna mengklik | Tanpa izin host luas                                                                             |
+| `contextMenus`                                                                                                  | Menu klik kanan teks terpilih                     |                                                                                                  |
+| `alarms`                                                                                                        | Sinkron kunci dan pengingat                       |                                                                                                  |
+| `notifications` (opsional)                                                                                      | Pengingat desktop                                 | Diminta saat pengguna menyalakan                                                                 |
+| Host: `https://*.linkedin.com/*`, `https://*.indeed.com/*`, `https://*.jobstreet.com/*`, `https://glints.com/*` | Tombol, penanda, dan pembaca di empat situs       | Final Phase 03 (§18): LinkedIn `*.` untuk halaman tanpa login di host negara (`id.linkedin.com`) |
+| Host: `https://rezumi.app/*` (dev: `http://localhost:3000/*`)                                                   | Memanggil API tanpa CORS                          |                                                                                                  |
 
 - CSP bawaan MV3: tanpa kode jarak jauh, tanpa `eval`.
 - Token hanya di service worker/panel. Content script dan halaman situs tidak bisa membacanya.
@@ -287,3 +287,64 @@ Inggris (sumber) dan Indonesia saat rilis (aturan turunan #9). Bahasa plugin men
 - **Backfill:** `pnpm --filter @rezumi/tooling extension:backfill-keys [--dry-run]` (`tooling/extension/backfill-source-keys.ts`), memakai `jobKey()` yang sama, bisa diulang, mencetak jumlah saja. Diuji unit dan sekali di DB lokal; **belum dijalankan di produksi** (Phase 07, dengan izin pemilik, setelah migrasi).
 - **Tes:** API DB nyata `extension.integration.test.ts` (13 tes, env baru `APPLICATIONS_TEST_DATABASE_URL`, didaftarkan di `packages/api/turbo.json` dan `ci.yml`); gerbang paket plugin di `limits.integration.test.ts`; unit login plugin `auth.test.ts`; Playwright `tests/connect.spec.ts` (daftar akun fiktif → Hubungkan → izinkan → akun + paket Gratis dengan `BILLING_MODE=on` → Keluar; cabut di Pengaturan Rezumi → "Sambungan berakhir"; jendela ditutup → tidak berubah; tangkapan layar 360/420, terang/gelap, en/id). Spesifikasi ini butuh server lokal di `http://localhost:3000` (dilewati bila tidak ada); dijalankan dengan launch config `rezumi-extension` (DB `rezumi_extension_dev`, `BILLING_MODE=on`).
 - **Edge (belum terverifikasi otomatis):** muat `apps/extension/dist` lewat `edge://extensions` → Load unpacked; build dev membawa `key` Chrome, jadi ID-nya `fiogmglhgeiaaeajahbpmmehgmojbjjo` (alamat balik yang sama sudah resmi). ID Edge toko (`jnemleff…`) baru berlaku setelah dipasang dari Edge Add-ons; alamatnya sudah ada di `firstPartyRedirectUris`.
+
+## 18. Catatan implementasi Phase 03 (2026-11-14)
+
+**Halaman nyata yang diperiksa** (hanya membaca struktur, tanpa menyalin teks lowongan; LinkedIn lewat Chrome pemilik dengan izinnya, Indeed lewat Chrome pemilik karena browser bawaan diblokir pemeriksaan bot; sisanya browser bawaan):
+
+| Situs     | Halaman                                                  | Penanda yang dipakai                                                                                                                                                                                                                                                                                                                                                             | JSON-LD `JobPosting`                   |
+| --------- | -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| LinkedIn  | `/jobs/view/<id>/`, `/jobs/search-results/?currentJobId` | Antarmuka baru (login) berkelas acak. Stabil: judul tab `<posisi> \| <perusahaan> \| LinkedIn` (ikut lowongan terpilih), `aria-label="Company, <nama>."`, `componentkey="JobDetails_AboutTheJob_<id>"` (deskripsi + judul "About the job"), baris di bawah posisi `<lokasi> · <waktu> · <pelamar>`, tombol `aria-label="Save the job"`. Tanpa login: dinding login (`/authwall`) | Tidak ada                              |
+| Indeed    | `/jobs?…&vjk=<jk>` (daftar + detail)                     | `data-testid`: `viewjob-main-content`, `vj-job-title` (+ teks tersembunyi " - job post"), `company-info-metadata` (tautan perusahaan, lalu lokasi), `structured-job-summary` (baris gaji/jenis/lokasi tanpa label, "Pay information not provided" bila kosong), `vj-job-description-heading`, `job-header-actions`. Gaji bisa "Rp. 6.000.000 …"                                  | Tidak ada di panel detail              |
+| JobStreet | `/id/job/<id>`, `/id/<kata>-jobs/in-<kota>?jobId=<id>`   | `data-automation`: `job-detail-title`, `advertiser-name`, `job-detail-location`, `job-detail-salary`, `job-detail-work-type`, `jobAdDetails`, `job-detail-apply` (tautan `/id/job/<id>/apply`). Kartu daftar: `normalJob` + `data-job-id`. Antarmuka `id` dan `en` sama                                                                                                          | Tidak ada (hanya `WebSite`)            |
+| Glints    | `/id/opportunities/jobs/<slug>/<uuid>`                   | Kelas styled-components dengan awalan stabil: `JobOverViewTitle`, `JobOverViewCompanyName`, `SalaryJobOverview`, `JobDescriptionsc__DescriptionContainer`, `TopFold…ButtonContainer`. Halaman pencarian (`/explore`) pindah ke halaman detail, tanpa panel samping                                                                                                               | Lengkap (lokasi, gaji, `validThrough`) |
+
+**Situs lain (pembaca umum):** Dealls (`dealls.com/loker/<slug>~<perusahaan>`) punya JSON-LD lengkap (posisi, perusahaan, lokasi, gaji, deskripsi; tanpa `validThrough`); Kalibrr (`kalibrr.id/id-ID/c/<perusahaan>/jobs/<id>/…`) dan papan Greenhouse baru (`job-boards.greenhouse.io/<perusahaan>/jobs/<id>`) tanpa JSON-LD, teks `main` terbaca utuh (±9.000 dan ±13.000 karakter, termasuk deskripsi).
+
+**Hasil baca di halaman nyata** (pembaca yang sama dengan `content.js`, dijalankan di halaman; ✓ terisi, — situs tidak menampilkannya pada lowongan yang diperiksa):
+
+| Situs / halaman            | Posisi | Perusahaan | Lokasi | Gaji | Jenis | Deskripsi | Batas waktu |
+| -------------------------- | ------ | ---------- | ------ | ---- | ----- | --------- | ----------- |
+| LinkedIn daftar + detail   | ✓      | ✓          | ✓      | —    | —     | ✓         | —           |
+| LinkedIn detail            | ✓      | ✓          | ✓      | —    | —     | ✓         | —           |
+| Indeed daftar + detail     | ✓      | ✓          | ✓      | ✓    | ✓     | ✓         | —           |
+| JobStreet daftar + detail  | ✓      | ✓          | ✓      | ✓    | ✓     | ✓         | —           |
+| Glints detail              | ✓      | ✓          | ✓¹     | ✓    | —²    | ✓         | ✓¹          |
+| Dealls (umum)              | ✓¹     | ✓¹         | ✓¹     | —²   | —     | ✓¹        | —           |
+| Kalibrr, Greenhouse (umum) | —³     | —³         | —³     | —    | —     | ✓         | —           |
+
+¹ dari JSON-LD. ² JSON-LD Dealls dan Glints memuat `baseSalary`/`employmentType`, tetapi `toPagePosting` belum membaca gaji dan jenis (backlog kecil; Glints menampilkan gaji di halaman, jadi kolom itu tetap terisi dari adaptor). ³ diisi AI saat menyimpan (Phase 04) atau oleh pengguna. Halaman detail Indeed (`/viewjob`) dialihkan ke halaman masuk oleh pemeriksaan bot saat diperiksa; komponennya sama dengan panel detail, dan tata letak lamanya (`#jobDescriptionText`) tetap jadi cadangan.
+
+**Implementasi:**
+
+- `src/content/sites/{linkedin,indeed,jobstreet,glints}.ts` mengikuti kontrak 7.1 (`read` + `anchor`; `matches`/`jobKey` dari `@rezumi/job-sites/sites`). Kolom dipotong ke batas `capturedFieldsSchema` (`compact`). LinkedIn mengutamakan judul tab: tautan "On-site" juga menunjuk `/jobs/view/<id>` dan teks iklan Premium menyebut harga, jadi gaji hanya dibaca dari baris pendek yang **diawali** mata uang dan berada di atas deskripsi.
+- `src/content/read.ts` (`readPage`): adaptor → blok JSON-LD yang menyebut `JobPosting` (maks 5 × 50.000 karakter, mentah) → teks `main`/`article` terpanjang/`body` tanpa `nav`, `header`, `footer`, `aside`, `form`, `dialog`; teks terpilih ikut sebagai `selection`. Teks dirapikan (`text.ts`: baris per blok, `• ` untuk butir daftar, spasi dan baris kosong diringkas), dipotong ke 20.000. Batas ukuran pindah ke `@rezumi/job-sites/limits` (tanpa Zod) supaya content script tetap tanpa Zod; `content.js` produksi ±10 KB.
+- **Alur baca:** panel → `chrome.tabs.sendMessage(tabId, { type: "read" })` → content script menjawab `PageReading`; panel memvalidasi dengan `pageReadingSchema` (Zod, batas sama dengan server). Di situs lain content script disuntik sekali lewat `chrome.scripting.executeScript` (izin `activeTab` setelah pengguna membuka panel); halaman browser dan tab tanpa izin → beranda biasa. Panel membaca ulang saat dibuka, ganti tab, tab selesai dimuat, dan 600 ms setelah content script melapor kunci baru (SPA).
+- **Panel:** `page-screen.tsx`: kartu pratinjau (posisi, perusahaan, lokasi, gaji, jenis, batas waktu; belum bisa diubah/disimpan, Phase 04), 3.6 "Pilih satu lowongan" di halaman pencarian tanpa pilihan, 3.5 "Kami tidak menemukan lowongan" untuk halaman tanpa teks. Halaman dengan teks tanpa JSON-LD tetap ditampilkan sebagai pratinjau (banyak halaman karier begitu). Penggabungan kolom (`reading.ts`) mengikuti server: adaptor → JSON-LD; deskripsi: teks terpilih → JSON-LD → teks halaman.
+- **Laporan halaman (aturan turunan #8, dikonfirmasi 2026-11-14):** tombol "Laporkan halaman ini" muncul bila kolom posisi/perusahaan/lokasi/deskripsi kosong; memanggil `applications.reportCapture` dengan alamat, situs, versi, dan kolom kosong. Diuji ujung ke ujung: baris masuk `extension_capture_report`, ringkasan `sendCaptureReportDigest` tercatat di log (SMTP mati). "Pakai teks yang saya blok" dan "Tempel deskripsi" (3.5) menyusul di Phase 04 bersama form simpan.
+- **Debug (build dev saja):** daftar setiap kolom + sumbernya (`site`/`json-ld`/`page`/`selection`), kunci, jumlah blok JSON-LD, dan kolom kosong di bawah panel; `sidepanel.html?tab=<id>&reading` menampilkan bacaan tanpa akun (tes), `&clean` menyembunyikan daftar debug.
+- **Tes:** unit `read.test.ts` (24, fixtures sintetis per situs × keadaan di `__fixtures__/<situs>/`), `reading.test.ts` (5), `sites.test.ts` + pola LinkedIn baru; Playwright `reading.spec.ts` (6, tanpa server: empat situs di hostname asli, perpindahan SPA, lowongan kedaluwarsa) dan `reading-connected.spec.ts` (2, server lokal: pratinjau 360/420 terang/gelap en/id, kirim laporan).
+
+## 19. Tambahan rilis pertama (keputusan 2026-11-14, dikerjakan di Phase 04)
+
+### 19.1 Gaji dan jenis kerja dari JSON-LD
+
+`toPagePosting` (`@rezumi/job-sites/json-ld`) menambah `salary` (dari `baseSalary`: mata uang + min–maks + satuan, mis. "IDR 15.000.000 – 20.000.000 / bulan") dan `employmentType` (`FULL_TIME` → "Full-time", dst.). Dipakai `readCapture` dan panel setelah kolom adaptor; `parsePosting` di web ikut terisi. Glints dan Dealls memuatnya (§18).
+
+### 19.2 Usulan kontak dari deskripsi
+
+- Sumber hanya teks deskripsi lowongan: email (`hr@…`) dan nomor telepon/WhatsApp (`08…`, `+62…`, `wa.me/62…`), paling banyak 5, tanpa duplikat. Tidak membaca profil orang (tim perekrut LinkedIn tetap backlog B9).
+- Diusulkan di form simpan sebagai kotak centang yang **bawaan tidak dicentang**; yang dicentang masuk `application.contacts` (`contactSchema`: `name` wajib → nama perusahaan atau "HR", `type` "Recruiter", `email`/`phone`).
+- Fungsi murni di `@rezumi/job-sites` (dipakai panel; server bisa memakainya nanti), dengan tes yang menjaga angka gaji/tanggal tidak tertangkap sebagai nomor.
+
+### 19.3 Lowongan serupa lintas situs
+
+- Prosedur internal baru (mis. `applications.similar`, tag `Internal`) atau bagian dari `readCapture`: lamaran milik pengguna dengan posisi + perusahaan yang cocok setelah dinormalkan (huruf kecil, tanpa tanda baca, tanpa "PT"/"Tbk"/"Inc"), kunci loker berbeda, maksimal 3 terbaru.
+- Hanya dihitung saat pengguna membuka/menyimpan lowongan (bukan per halaman yang dikunjungi), jadi aturan privasi §9 tetap terjaga. Panel memberi peringatan dengan tautan ke lamaran itu; simpan tidak diblokir.
+
+### 19.4 Logo perusahaan
+
+- Sumber alamat: adaptor (`anchor`-tetangga: logo di kartu atas tiap situs) atau `hiringOrganization.logo` JSON-LD; dikirim di `fields.companyLogoUrl` (skema capture + batas panjang).
+- Server mengunduh dengan pengambil web yang aman yang sudah ada (cek `packages/api/src/features/web-access`: tolak alamat privat, ikuti batas redirect), hanya `image/png|jpeg|webp|svg+xml` (SVG disanitasi atau ditolak), ≤ 200 KB, lalu menyimpan di penyimpanan (R2 di produksi) dengan kunci per pengguna. Kegagalan unduh tidak menggagalkan simpan.
+- Kolom baru di `application` (mis. `company_logo_key`) + migrasi aditif; DTO menampilkan alamat logo yang aman untuk web; ikut ekspor data dan penghapusan akun. Web menampilkan logo di daftar dan detail lamaran (cadangan: inisial perusahaan). Mobile hanya dijaga terkompilasi.
+- Alasan tidak menautkan langsung: alamat CDN situs loker (terutama LinkedIn) kedaluwarsa dan bisa diblokir saat ditampilkan dari situs lain, dan menautkannya membocorkan kunjungan pengguna ke situs itu.

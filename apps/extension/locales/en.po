@@ -42,14 +42,29 @@ msgid "No account yet? <0>Sign up free</0>"
 msgstr "No account yet? <0>Sign up free</0>"
 
 #. Browser extension home screen when the open tab is not a job posting
-#: src/sidepanel/connected-screen.tsx
+#: src/sidepanel/page-screen.tsx
 msgid "Open a job posting to save it to Rezumi."
 msgstr "Open a job posting to save it to Rezumi."
 
 #. Button in the browser extension that opens the application tracker on the web
-#: src/sidepanel/connected-screen.tsx
+#: src/sidepanel/page-screen.tsx
 msgid "Open application tracker"
 msgstr "Open application tracker"
+
+#. Browser extension on a job board search page with no posting selected
+#: src/sidepanel/page-screen.tsx
+msgid "Pick one job posting to save it."
+msgstr "Pick one job posting to save it."
+
+#. Browser extension status while it reads the open web page
+#: src/sidepanel/page-screen.tsx
+msgid "Reading this page…"
+msgstr "Reading this page…"
+
+#. Browser extension button that tells Rezumi a page could not be read
+#: src/sidepanel/page-screen.tsx
+msgid "Report this page"
+msgstr "Report this page"
 
 #: src/sidepanel/settings-screen.tsx
 msgid "Rezumi account"
@@ -69,6 +84,11 @@ msgstr "Save job postings from any site to your application tracker."
 msgid "Save jobs to Rezumi"
 msgstr "Save jobs to Rezumi"
 
+#. Under the report button: what a page report contains
+#: src/sidepanel/page-screen.tsx
+msgid "Sends this page's address and which details were missing, not its content."
+msgstr "Sends this page's address and which details were missing, not its content."
+
 #: src/sidepanel/connected-screen.tsx
 msgid "Settings"
 msgstr "Settings"
@@ -78,10 +98,24 @@ msgstr "Settings"
 msgid "Sign out"
 msgstr "Sign out"
 
+#. Browser extension note when some details of a job posting could not be read
+#: src/sidepanel/page-screen.tsx
+msgid "Some details could not be read from this page."
+msgstr "Some details could not be read from this page."
+
+#. Browser extension confirmation after the person reported a page it could not read
+#: src/sidepanel/page-screen.tsx
+msgid "Thanks, we'll look into it."
+msgstr "Thanks, we'll look into it."
+
 #. Browser extension: the server ended the connection (signed out or access revoked)
 #: src/sidepanel/connect-screen.tsx
 msgid "The connection to Rezumi ended. Connect again to continue."
 msgstr "The connection to Rezumi ended. Connect again to continue."
+
+#: src/sidepanel/page-screen.tsx
+msgid "The report could not be sent. Try again."
+msgstr "The report could not be sent. Try again."
 
 #: src/sidepanel/panel-error.tsx
 msgid "Try again"
@@ -98,6 +132,15 @@ msgstr "Version {EXTENSION_VERSION}"
 #: src/sidepanel/panel-error.tsx
 msgid "Wait a moment, then try again."
 msgstr "Wait a moment, then try again."
+
+#: src/sidepanel/page-screen.tsx
+msgid "Wait a while, then try again."
+msgstr "Wait a while, then try again."
+
+#. Browser extension message when the open page has no job posting it can read
+#: src/sidepanel/page-screen.tsx
+msgid "We couldn't find a job posting on this page."
+msgstr "We couldn't find a job posting on this page."
 
 #: src/sidepanel/connect-screen.tsx
 #: src/sidepanel/panel-error.tsx
