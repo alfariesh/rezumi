@@ -4,6 +4,7 @@
 import type { UIDataTypes, UIMessage } from "ai";
 import z from "zod";
 import { careerStoryInputSchema } from "@rezumi/schema/career";
+import { portfolioEditSchema, portfolioEditsInputSchema } from "@rezumi/schema/portfolio/edits";
 
 export const askUserQuestionInputSchema = z.object({
 	question: z.string().trim().min(1),
@@ -165,6 +166,60 @@ export const proposeEditsOutputSchema = z.looseObject({
 	skipped: z.array(z.object({ passageId: z.string(), reason: z.string() })),
 });
 
+// Portfolio assistant (Phase 14, `phase-14-asisten-ai.md` §4). `edit_portfolio` takes the shared edit language; the
+// server applies the edits to the run's working copy of the portfolio and returns them resolved, and the editor
+// replays them on its store (one Undo step per call). Statuses follow propose_edits: accepted = applied in the
+// editor, rejected = undone, pending = not applied there yet.
+
+export const editPortfolioInputSchema = portfolioEditsInputSchema;
+
+/** One applied edit, resolved by the engine so the editor can replay it exactly. */
+export const portfolioEditCardSchema = z.object({
+	id: z.string(),
+	edit: portfolioEditSchema,
+	/** One short English line from the engine; the editor shows its own, translated. */
+	summary: z.string(),
+	status: z.enum(["pending", "accepted", "rejected"]),
+	/** The id of the item an `add` created (a work, service, block, …), for later edits and for showing it. */
+	itemId: z.string().optional(),
+	/** The `ref` the call gave that item, when it gave one. */
+	ref: z.string().optional(),
+});
+
+export const editPortfolioOutputSchema = z.looseObject({
+	title: z.string(),
+	edits: z.array(portfolioEditCardSchema),
+	/** Edits the engine refused, by their position in the call, with the reason the model got. */
+	failed: z.array(z.object({ index: z.number(), error: z.string() })),
+});
+
+export const saveAttachmentImageInputSchema = z.object({
+	attachmentId: z.string().trim().min(1).describe("The id of an image the user attached to a message."),
+	alt: z
+		.string()
+		.trim()
+		.max(200)
+		.optional()
+		.describe("Alternative text: what the image shows, in the page's language."),
+});
+
+/** The stored image, as an image ref edits can place (`{ key, alt }`). */
+export const saveAttachmentImageOutputSchema = z.looseObject({
+	image: z.object({
+		key: z.string(),
+		width: z.number(),
+		height: z.number(),
+		alt: z.string(),
+		thumbKey: z.string().optional(),
+	}),
+});
+
+export type EditPortfolioInput = z.infer<typeof editPortfolioInputSchema>;
+export type PortfolioEditCard = z.infer<typeof portfolioEditCardSchema>;
+export type EditPortfolioOutput = z.infer<typeof editPortfolioOutputSchema>;
+export type SaveAttachmentImageInput = z.infer<typeof saveAttachmentImageInputSchema>;
+export type SaveAttachmentImageOutput = z.infer<typeof saveAttachmentImageOutputSchema>;
+
 // All-optional and loose: legacy rows have no metadata and must keep rendering.
 // The usage shape mirrors the AI SDK's LanguageModelUsage (nested token details).
 export const agentMessageMetadataSchema = z
@@ -204,6 +259,9 @@ export type AgentTools = {
 	ask_user_question: { input: AskUserQuestionInput; output: string };
 	read_resume: { input: Record<string, never>; output: unknown };
 	read_letter: { input: Record<string, never>; output: unknown };
+	read_portfolio: { input: Record<string, never>; output: unknown };
+	edit_portfolio: { input: EditPortfolioInput; output: EditPortfolioOutput };
+	save_attachment_image: { input: SaveAttachmentImageInput; output: SaveAttachmentImageOutput };
 	read_profile: { input: Record<string, never>; output: unknown };
 	read_attachment: { input: { attachmentId: string }; output: unknown };
 	propose_edits: { input: ProposeEditsInput; output: ProposeEditsOutput };

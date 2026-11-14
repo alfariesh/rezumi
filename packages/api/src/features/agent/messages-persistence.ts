@@ -24,17 +24,24 @@ type ProposeEditsPart = UiMessagePart & {
 	output?: { edits?: Array<{ id: string; status: EditStatus }> };
 };
 
+/**
+ * Tool results holding edits with a status: `propose_edits` (resumes and letters: accepted or rejected by the user)
+ * and `edit_portfolio` (one card per applied edit: accepted = applied in the editor, rejected = undone, pending = not
+ * applied there yet).
+ */
+const EDIT_TOOL_PARTS = new Set(["tool-propose_edits", "tool-edit_portfolio"]);
+
 const proposeEditsParts = (message: UIMessage) =>
 	message.parts.filter(
 		(part): part is ProposeEditsPart =>
-			part.type === "tool-propose_edits" && (part as ProposeEditsPart).state === "output-available",
+			EDIT_TOOL_PARTS.has(part.type) && (part as ProposeEditsPart).state === "output-available",
 	);
 
-/** The edits a message proposed, with what the user did with each. */
+/** The edits a message proposed or applied, with what the user did with each. */
 export const proposedEditsOf = (message: UIMessage) =>
 	proposeEditsParts(message).flatMap((part) => part.output?.edits ?? []);
 
-/** The message with edit statuses set, in one propose_edits result (by tool call) or in all of them. */
+/** The message with edit statuses set, in one edits result (by tool call) or in all of them. */
 export function withEditStatuses(
 	message: UIMessage,
 	toolCallId: string | null,
@@ -45,7 +52,7 @@ export function withEditStatuses(
 		...message,
 		parts: message.parts.map((part) => {
 			const edits = (part as ProposeEditsPart).output?.edits;
-			if (part.type !== "tool-propose_edits" || !edits) return part;
+			if (!EDIT_TOOL_PARTS.has(part.type) || !Array.isArray(edits)) return part;
 			if (toolCallId && (part as ProposeEditsPart).toolCallId !== toolCallId) return part;
 			const output = (part as ProposeEditsPart).output;
 			return {

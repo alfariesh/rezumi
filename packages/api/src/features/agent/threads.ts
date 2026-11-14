@@ -30,27 +30,33 @@ export const threadsRouter = {
 			operationId: "startAgentThread",
 			summary: "Start a document, application or career conversation",
 			description:
-				'Starts an assistant conversation about one resume or cover letter, using the given tested provider or the default one. The assistant reads the document and proposes edits; it never changes the document itself. With `aiSource: "rezumi"` the conversation runs on Rezumi AI, where each reply costs 3 credits.',
+				'Starts an assistant conversation about one resume, cover letter or the account\'s portfolio, using the given tested provider or the default one. For a resume or letter the assistant reads the document and proposes edits; it never changes the document itself. For the portfolio it returns edits applied to a working copy, which the portfolio editor applies (each reply can be undone there); the server never saves the portfolio for it. With `aiSource: "rezumi"` the conversation runs on Rezumi AI, where each reply costs 3 credits.',
 		})
 		.input(
 			z
 				.object({
 					resumeId: z.string().min(1).optional(),
 					coverLetterId: z.string().min(1).optional(),
+					portfolioId: z
+						.string()
+						.min(1)
+						.optional()
+						.describe("The account's portfolio, when portfolios are open to the account."),
 					aiProviderId: z.string().optional(),
 					aiSource: aiSourceInput.aiSource,
 					scope: z.enum(["document", "application", "career"]).default("document"),
 					applicationId: z.string().min(1).optional(),
 				})
 				.refine(
-					(input) =>
-						input.scope === "document"
-							? Boolean(input.resumeId) !== Boolean(input.coverLetterId) && !input.applicationId
-							: !input.resumeId &&
-								!input.coverLetterId &&
-								(input.scope === "application") === Boolean(input.applicationId),
+					(input) => {
+						const documents = [input.resumeId, input.coverLetterId, input.portfolioId].filter(Boolean).length;
+						return input.scope === "document"
+							? documents === 1 && !input.applicationId
+							: documents === 0 && (input.scope === "application") === Boolean(input.applicationId);
+					},
 					{
-						message: "Choose one document, one application, or general career context.",
+						message:
+							"Choose one document (a resume, a cover letter or the portfolio), one application, or general career context.",
 					},
 				),
 		)

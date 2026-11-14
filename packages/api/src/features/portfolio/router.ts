@@ -1,5 +1,6 @@
 import z from "zod";
 import { portfolioDataSchema, writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
+import { portfolioEditsInputSchema } from "@rezumi/schema/portfolio/edits";
 import { EMBED_PROVIDERS } from "@rezumi/schema/portfolio/embed";
 import { PORTFOLIO_ITEM_ID_PATTERN, PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import {
@@ -48,12 +49,15 @@ const MB = 1024 * 1024;
 const PORTFOLIO_INPUT_CHARACTERS = 4 * PORTFOLIO_LIMITS.dataBytes;
 
 /**
- * Refuses portfolio data far over the size limit (`PORTFOLIO_TOO_LARGE`) from its raw JSON, before the schema parses
- * it and the service sanitizes its rich text: both take time in proportion to the input, and every field can be
- * within its own limit while the whole is hundreds of times too large.
+ * Refuses portfolio data (`update`) or AI edits (`applyEdits`) far over the size limit (`PORTFOLIO_TOO_LARGE`) from
+ * their raw JSON, before the schema parses them and their rich text is cleaned: both take time in proportion to the
+ * input, and every field can be within its own limit while the whole is hundreds of times too large.
  */
-function rejectOversizedData(input: unknown): void {
-	const data = typeof input === "object" && input !== null && "data" in input ? input.data : undefined;
+function rejectOversizedData(input: unknown, field: "data" | "edits" = "data"): void {
+	const data =
+		typeof input === "object" && input !== null && field in input
+			? (input as Record<string, unknown>)[field]
+			: undefined;
 	let json: string | undefined;
 	try {
 		json = JSON.stringify(data);
@@ -205,6 +209,35 @@ const workStatisticsSchema = z.object({
 });
 
 const messageIdSchema = z.string().min(1).max(64);
+
+/** An image of the portfolio, as its data holds one and an edit places one (`{ key, alt }` and more). */
+const imageSchema = z.object({
+	key: z.string().describe("The image's storage key; place it with an image ref `{ key, alt }`."),
+	thumbKey: z.string().optional().describe("Its small copy's key."),
+	width: z.number().int(),
+	height: z.number().int(),
+	alt: z.string().describe("Alternative text."),
+});
+
+const editPlanSchema = z
+	.object({
+		maxWorks: z
+			.number()
+			.int()
+			.nullable()
+			.describe("Works the plan allows; null for no limit beyond the technical one."),
+		features: z.object({
+			premiumPortfolioThemes: z.boolean(),
+			premiumHeroEffects: z.boolean(),
+			hidePortfolioCredit: z.boolean(),
+		}),
+		name: z.string().describe("The plan's name, e.g. Free."),
+	})
+	.nullable()
+	.describe("What the account's plan allows; null while plans don't apply to it.");
+
+/** Pictures AI or an API client adds aren't made smaller first, so a file larger than this is never one to keep. */
+const ADDED_IMAGE_FILE_BYTES = 10 * MB;
 
 export const portfolioRouter = {
 	ai: portfolioAiRouter,
@@ -376,6 +409,126 @@ export const portfolioRouter = {
 		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "PORTFOLIO_SOURCE_INVALID", "PORTFOLIO_EXISTS"))
 		.output(portfolioSchema)
 		.handler(({ context, input }) => portfolioService.create(context.user.id, input)),
+
+	aiView: protectedProcedure
+		.route({
+			...route,
+			method: "GET",
+			path: "/portfolio/ai-view",
+			operationId: "getPortfolioAiView",
+			summary: "The portfolio as AI reads it",
+			description:
+				"Every item with its id (for edits), the career sections read from the source (read-only), the pictures it can place, its limits and what the plan locks. Contact details are left out.",
+		})
+		.input(z.object({}).optional())
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND"))
+		.output(
+			z.object({
+				view: z.record(z.string(), z.unknown()),
+				updatedAt: z.date().describe("The data's version: send it as expectedUpdatedAt to refuse edits made since."),
+				published: z.boolean().describe("Whether visitors can see it now."),
+				url: z.string().nullable().describe("Its public address."),
+				uploads: z.array(imageSchema).describe("Pictures uploaded but not placed yet, newest first."),
+				plan: editPlanSchema,
+			}),
+		)
+		.handler(({ context }) => portfolioService.aiView(context.user.id)),
+
+	applyEdits: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/portfolio/edits",
+			operationId: "applyPortfolioEdits",
+			summary: "Apply edits to the portfolio",
+			description:
+				"Applies edits in the portfolio edit language, in order, each whole or not at all, and saves the result in one go. Edits that fail are listed with the reason; the rest still apply. When none applies, nothing is saved.",
+		})
+		.use(portfolioUpdateRateLimit)
+		// Edits carry what a save would (40 at most, rich text cleaned like data), and what they add must fit the same
+		// portfolio: input past the bound `update` uses can't, and is refused before it's parsed or cleaned.
+		.use(({ next }, input) => {
+			rejectOversizedData(input, "edits");
+			return next();
+		})
+		.input(
+			portfolioEditsInputSchema.extend({
+				expectedUpdatedAt: z.coerce
+					.date()
+					.optional()
+					.describe(
+						"The version the edits were made from; a different one is a conflict. Edits address ids, so it may be left out.",
+					),
+			}),
+		)
+		.errors(
+			portfolioErrorMap(
+				"PORTFOLIO_DISABLED",
+				"NOT_FOUND",
+				"PORTFOLIO_VERSION_CONFLICT",
+				"PORTFOLIO_FILE_NOT_FOUND",
+				"PORTFOLIO_TOO_LARGE",
+			),
+		)
+		.output(
+			z.object({
+				title: z.string().nullable(),
+				applied: z.array(
+					z.object({
+						index: z.number().int().describe("The edit's position in the call."),
+						summary: z.string(),
+						id: z.string().optional().describe("The id of the item an add created."),
+						ref: z.string().optional(),
+					}),
+				),
+				failed: z.array(z.object({ index: z.number().int(), error: z.string() })),
+				updatedAt: z.date().describe("The version after the edits (unchanged when none applied)."),
+			}),
+		)
+		.handler(({ context, input }) => portfolioService.applyEdits(context.user.id, input)),
+
+	addImage: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/portfolio/files/images/add",
+			operationId: "addPortfolioImage",
+			summary: "Add a picture from a link or a file",
+			description: `A JPEG, PNG or WebP picture from a public address or a file, stored for the portfolio as it is: the server can't make pictures smaller, so it must already be at most ${PORTFOLIO_UPLOAD.imageBytes / MB} MB and ${PORTFOLIO_UPLOAD.imageSide} px on its longest side. Unused until an edit places its key.`,
+		})
+		// A link reads another site, like a link's preview picture; a file is an upload.
+		.use((options, input, output) =>
+			typeof input === "object" && input !== null && "url" in input && input.url
+				? portfolioRemoteImageRateLimit(options, input, output)
+				: portfolioUploadRateLimit(options, input, output),
+		)
+		.input(
+			z
+				.object({
+					url: remoteUrlSchema.optional(),
+					file: z.file().max(ADDED_IMAGE_FILE_BYTES).optional().describe("The picture."),
+					alt: z.string().trim().max(PORTFOLIO_LIMITS.text.alt).optional().describe("Alternative text."),
+				})
+				.refine((input) => Boolean(input.url) !== Boolean(input.file), { message: "Give a url or a file." }),
+		)
+		.errors(
+			portfolioErrorMap(
+				"PORTFOLIO_DISABLED",
+				"NOT_FOUND",
+				"PORTFOLIO_IMAGE_UNREACHABLE",
+				"PORTFOLIO_FILE_TOO_LARGE",
+				"PORTFOLIO_IMAGE_INVALID",
+				"PORTFOLIO_STORAGE_FULL",
+			),
+		)
+		.output(imageSchema)
+		.handler(({ context, input, signal }) =>
+			portfolioService.addImage(
+				context.user.id,
+				{ source: input.file ? { file: input.file } : { url: input.url ?? "" }, alt: input.alt },
+				signal,
+			),
+		),
 
 	update: protectedProcedure
 		.route({

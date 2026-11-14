@@ -70,6 +70,42 @@ describe("pruneAgentModelContext — tier 0 (snapshot supersession)", () => {
 		expect(snapshotValue(pruned[2])).not.toHaveProperty("data");
 		expect(snapshotValue(pruned[4])).toHaveProperty("data");
 	});
+
+	it("keeps only the last portfolio snapshot, and leaves edit_portfolio results alone", () => {
+		const edit: ModelMessage[] = [
+			{
+				role: "assistant",
+				content: [{ type: "tool-call", toolCallId: "edit-1", toolName: "edit_portfolio", input: { title: "Add" } }],
+			},
+			{
+				role: "tool",
+				content: [
+					{
+						type: "tool-result",
+						toolCallId: "edit-1",
+						toolName: "edit_portfolio",
+						output: {
+							type: "json",
+							value: { title: "Add", applied: [{ summary: "Added work", id: "w1" }], failed: [] },
+						},
+					},
+				],
+			},
+		] as ModelMessage[];
+		const messages = [
+			user("add a work"),
+			...readResumeExchange("read-1", "read_portfolio"),
+			...edit,
+			...readResumeExchange("read-2", "read_portfolio"),
+		];
+
+		const pruned = pruneAgentModelContext(messages, 1_000_000);
+
+		expect(snapshotValue(pruned[2])).not.toHaveProperty("data");
+		expect(snapshotValue(pruned[2]).note).toContain("read_portfolio");
+		expect(snapshotValue(pruned[4])).toHaveProperty("applied");
+		expect(snapshotValue(pruned[6])).toHaveProperty("data");
+	});
 });
 
 describe("pruneAgentModelContext — tier 3 (turn dropping)", () => {

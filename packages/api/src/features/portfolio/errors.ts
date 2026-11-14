@@ -67,6 +67,12 @@ export const PORTFOLIO_ERRORS = {
 		// The reasons belong to the link reader (`UnfurlProblem`); clients treat an unknown one like the rest.
 		data: z.object({ reason: z.string() }),
 	},
+	PORTFOLIO_IMAGE_UNREACHABLE: {
+		status: 400,
+		message: "Couldn't download that picture: the address didn't answer, or isn't a public picture.",
+		// The reasons belong to the remote reader (`RemoteImageProblem`); clients treat an unknown one like the rest.
+		data: z.object({ reason: z.string() }),
+	},
 	PORTFOLIO_IMAGE_INVALID: {
 		status: 400,
 		message: "This picture can't be used.",
@@ -160,8 +166,27 @@ export const portfolioErrors = {
 			data: { bytes, max },
 		});
 	},
+	/**
+	 * A picture AI or an API client added (`addImage`) that is larger than the portfolio keeps: unlike the editor's
+	 * uploads, nothing made it smaller first, and the server can't resize pictures.
+	 */
+	pictureNotResized: (problem: { bytes: number | null } | "dimensions") => {
+		const fix = `The server can't make pictures smaller: save a copy of at most ${PORTFOLIO_UPLOAD.imageSide} px on its longest side and ${PORTFOLIO_UPLOAD.imageBytes / MB} MB (JPEG, PNG or WebP), then add that instead.`;
+		return problem === "dimensions"
+			? refusal("PORTFOLIO_IMAGE_INVALID", {
+					message: `This picture is larger than ${PORTFOLIO_UPLOAD.imageSide} px on its longest side. ${fix}`,
+					data: { reason: "dimensions" },
+				})
+			: refusal("PORTFOLIO_FILE_TOO_LARGE", {
+					message: `This picture is too large${problem.bytes === null ? "" : ` (${megabytes(problem.bytes)} of ${PORTFOLIO_UPLOAD.imageBytes / MB} MB)`}. ${fix}`,
+					// A picture too large to even fetch has no known size: the most a fetch reads, plus one.
+					data: { bytes: problem.bytes ?? PORTFOLIO_UPLOAD.remoteImageBytes + 1, max: PORTFOLIO_UPLOAD.imageBytes },
+				});
+	},
 	pdfInvalid: (reason: "type") => refusal("PORTFOLIO_PDF_INVALID", { data: { reason } }),
 	linkUnreadable: (reason: UnfurlProblem) => refusal("PORTFOLIO_LINK_UNREADABLE", { data: { reason } }),
+	/** A picture `addImage` was asked to download couldn't be (the editor's own link pictures say `linkUnreadable`). */
+	imageUnreachable: (reason: UnfurlProblem) => refusal("PORTFOLIO_IMAGE_UNREACHABLE", { data: { reason } }),
 	imageInvalid: (reason: ImageProblem) =>
 		refusal("PORTFOLIO_IMAGE_INVALID", {
 			message: {

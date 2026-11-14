@@ -19,9 +19,11 @@ export const agentThreadSchema = z.object({
 	sourceResumeId: z.string().nullable(),
 	workingResumeId: z.string().nullable(),
 	coverLetterId: z.string().nullable(),
+	portfolioId: z.string().nullable().describe("The account's portfolio, when the conversation is about it."),
 	aiProviderId: z.string().nullable(),
 	resumeName: z.string().nullable(),
 	coverLetterName: z.string().nullable(),
+	portfolioName: z.string().nullable().describe('"Portfolio" in a portfolio conversation; apps show their own word.'),
 	providerLabel: z.string().nullable(),
 	editsProposed: z.number(),
 	editsAccepted: z.number(),
@@ -47,7 +49,7 @@ export const agentConversationSchema = z.object({
 	messages: z.array(uiMessageSchema),
 	attachments: z.array(agentAttachmentSchema),
 	document: z
-		.object({ kind: z.enum(["resume", "letter"]), id: z.string(), name: z.string(), locked: z.boolean() })
+		.object({ kind: z.enum(["resume", "letter", "portfolio"]), id: z.string(), name: z.string(), locked: z.boolean() })
 		.nullable(),
 	isReadOnly: z.boolean(),
 });
