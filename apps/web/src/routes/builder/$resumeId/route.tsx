@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import z from "zod";
 import { EditorShell } from "./-components/editor-shell";
 import { useBuilderResumeUpdateSubscription, useResumeCleanup, useResumeStore } from "@/features/resume/builder/draft";
@@ -61,7 +61,8 @@ function RouteComponent() {
 	useResumeCleanup();
 	useBuilderResumeUpdateSubscription();
 
-	useEffect(() => {
+	// Before paint: the editor's first frame is the editor, not a blank page (the page fade would capture that blank).
+	useLayoutEffect(() => {
 		if (isInitialized) return;
 		initializeResumeStore(resume);
 	}, [initializeResumeStore, isInitialized, resume]);

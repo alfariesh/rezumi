@@ -1,5 +1,5 @@
 import { Widget } from "@heroui-pro/react";
-import { Button, buttonVariants, Chip, Spinner } from "@heroui/react";
+import { Button, buttonVariants, Chip, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
@@ -138,9 +138,8 @@ export function PortfolioMessages() {
 			/>
 			<Widget.Content className="grid gap-3">
 				{messages.isPending ? (
-					<div className="grid place-items-center py-6">
-						<Spinner size="md" color="current" />
-					</div>
+					// The height of the usual answer, "No messages yet", so the widget doesn't shrink once it's in.
+					<Skeleton className="h-5 w-2/3 rounded-md" />
 				) : messages.isError && items.length === 0 ? (
 					<div className="flex flex-wrap items-center gap-3">
 						<p className="min-w-0 flex-1 text-body-sm text-muted">

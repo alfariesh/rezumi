@@ -600,10 +600,14 @@ function ComingUp({ now, className }: ComingUpProps) {
 				}}
 			/>
 		);
-	if (applicationQuery.isPending || briefingQuery.isPending) return <Skeleton className="h-36 rounded-xl" />;
+	// Interviews come from the applications alone: once those are in, an account with none to come shows nothing at
+	// once. Briefings only say whether the next one is prepared, so they are awaited only when there is one.
+	const placeholder = <Skeleton className={cn("h-36 rounded-xl", className)} />;
+	if (applicationQuery.isPending) return placeholder;
 	const open = (applications ?? []).filter((application) => application.status !== "closed");
 	const next = upcomingInterviews(collectInterviews(open), now)[0];
 	if (!next) return null;
+	if (briefingQuery.isPending) return placeholder;
 
 	const { application, interview, start } = next;
 	const kind = interviewKindOf(interview.kind)?.label ?? interview.kind;

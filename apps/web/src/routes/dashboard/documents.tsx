@@ -2,6 +2,7 @@ import type { DocumentsSearch } from "@/features/documents/documents-page";
 import { createFileRoute, redirect, stripSearchParams } from "@tanstack/react-router";
 import z from "zod";
 import { DocumentsPage } from "@/features/documents/documents-page";
+import { orpc } from "@/libs/orpc/client";
 
 const defaults = { type: "all", q: "", tags: [], public: false, sort: "edited" } satisfies DocumentsSearch;
 
@@ -22,6 +23,10 @@ export const Route = createFileRoute("/dashboard/documents")({
 		if (search.letter) {
 			throw redirect({ to: "/builder/letter/$coverLetterId", params: { coverLetterId: search.letter }, replace: true });
 		}
+	},
+	// Hovering the link starts the list without holding the navigation, so it's usually there before the skeleton.
+	loader: ({ context }) => {
+		void context.queryClient.prefetchQuery(orpc.documents.list.queryOptions({ input: { trashed: false } }));
 	},
 	component: RouteComponent,
 });

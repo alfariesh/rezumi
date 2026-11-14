@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect, useBlocker } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import z from "zod";
 import { PortfolioShell } from "./-components/portfolio-shell";
 import { forgetPortfolioChanges } from "@/features/portfolio/assistant/records";
@@ -52,8 +52,9 @@ function RouteComponent() {
 		enableBeforeUnload: false,
 	});
 
-	// The editor owns the portfolio from here; later refetches don't overwrite what's being typed.
-	useEffect(() => {
+	// The editor owns the portfolio from here; later refetches don't overwrite what's being typed. Before paint, so the
+	// first frame is the editor rather than a blank page.
+	useLayoutEffect(() => {
 		const current = usePortfolioEditorStore.getState().portfolio;
 		if (data.portfolio && current?.id !== data.portfolio.id) usePortfolioEditorStore.getState().load(data.portfolio);
 	}, [data.portfolio]);

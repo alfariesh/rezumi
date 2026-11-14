@@ -89,9 +89,23 @@
 	}
 }
 
+/*
+ * HeroUI's base styles take the page out of view transitions (`:root { view-transition-name: none }`, to keep it
+ * interactive under their own). Then a page change captured only the named chrome, and the backdrop covered the whole
+ * content area until the new page appeared: a grey blink on every click. Page changes capture the page again.
+ */
+html:active-view-transition-type(page) {
+	view-transition-name: root;
+}
+
+/* Between the two pages: the page's own colour, the dashboard shell's white inside it, so the fade never dips to grey. */
 html:active-view-transition-type(page)::view-transition {
 	background-color: var(--background);
 	pointer-events: none;
+}
+
+html:has(.dashboard-shell):active-view-transition-type(page)::view-transition {
+	background-color: var(--surface);
 }
 
 html:active-view-transition-type(page)::view-transition-group(*) {

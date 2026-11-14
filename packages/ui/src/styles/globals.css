@@ -345,6 +345,22 @@
 	}
 }
 
+/*
+ * A skeleton shows only when the wait is long enough to notice: it stays invisible for its first 150ms, then fades in.
+ * Data that arrives sooner (cached, prefetched on hover, a fast network) replaces nothing the eye saw, so a page that
+ * is ready in time just appears instead of blinking grey for a frame or two. Shimmer draws on ::after, so the element's
+ * own opacity is free for this.
+ */
+@layer components {
+	.skeleton {
+		transition: opacity var(--d2) var(--ease) 150ms;
+
+		@starting-style {
+			opacity: 0;
+		}
+	}
+}
+
 /* A scroller with no visible scrollbar (the editor's panel, chip rows): it still scrolls by wheel, touch and keyboard. */
 @utility scrollbar-none {
 	scrollbar-width: none;
