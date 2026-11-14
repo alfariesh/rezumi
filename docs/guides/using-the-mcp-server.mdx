@@ -3,7 +3,7 @@ title: "Using the MCP server"
 description: "Connect Claude, Cursor, Codex or any MCP client to Rezumi with OAuth or an API key, and see every tool, prompt and resource it offers."
 ---
 
-Rezumi runs a [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server, so AI clients such as Claude, Cursor and Codex can read and edit your resumes, cover letters and job applications when you ask them to in plain language. This guide shows you how to connect a client and lists everything the server offers.
+Rezumi runs a [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server, so AI clients such as Claude, Cursor and Codex can read and edit your resumes, cover letters, portfolio website and job applications when you ask them to in plain language. This guide shows you how to connect a client and lists everything the server offers.
 
 ## Before you start
 
@@ -186,6 +186,21 @@ The server keeps the original 43 tool names and adds API-derived tools for the r
 | `unlock_resume`         | Unlocks a resume.                                                                                                                                                  |
 | `get_resume_statistics` | Returns view and download counts, and when the resume was last viewed and downloaded.                                                                              |
 
+### Portfolio
+
+These tools work on your [portfolio website](/guides/creating-a-portfolio) once portfolios are open to your account.
+
+| Tool                       | What it does                                                                                                                                                                                                                                                                                                                              |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `get_portfolio`            | Returns the portfolio as an AI reads it: every work, block, section and setting with its id, the career sections read from your resume or Profile, the pictures you can place, your limits and what your plan locks, plus `updatedAt`, whether it's published, its address and the edit language (`guide`). Contact details are left out. |
+| `create_portfolio`         | Creates your portfolio from a resume (`sourceResumeId`) or, without one, from your Profile, optionally with a `theme`.                                                                                                                                                                                                                    |
+| `edit_portfolio`           | Changes it with edits in the portfolio edit language: set a field, or add, update, remove and move works, blocks, metrics, services, testimonials, clients and your own sections, by id. Each edit applies whole or fails alone with its reason; the rest are saved together. Supply `expectedUpdatedAt` to reject stale edits.           |
+| `add_portfolio_image`      | Stores a picture from a public URL or a file and returns an image reference to place with `edit_portfolio`. Pictures must be at most 2000 pixels on each side and 2.5 MB, because the server can't resize them.                                                                                                                           |
+| `publish_portfolio`        | Publishes your portfolio (`published: true`) or hides it again. Publishing needs a verified email address; clients should ask you first.                                                                                                                                                                                                  |
+| `get_portfolio_statistics` | Returns visits for the last 7, 30 or 90 days.                                                                                                                                                                                                                                                                                             |
+
+A visitor password, your own domain and deleting the portfolio stay in the web editor. Career sections such as Experience come from your resume or Profile: edit them there with the resume tools or `api_profile_*`.
+
 ### Cover letters
 
 | Tool                         | What it does                                                                                                          |
@@ -281,20 +296,24 @@ AI procedures and tools take an optional `aiSource`: `"rezumi"` runs on Rezumi A
 
 ## Prompts
 
-Prompts are ready-made instructions your client can start from. Each takes a resume `id` and includes that resume and the schema.
+Prompts are ready-made instructions your client can start from. The resume prompts take a resume `id` and include that resume and the schema; the portfolio prompts include your portfolio and its edit language.
 
-| Prompt           | What it does                                                                                             |
-| ---------------- | -------------------------------------------------------------------------------------------------------- |
-| `build_resume`   | Walks you through building a resume section by section.                                                  |
-| `improve_resume` | Suggests concrete improvements to wording, impact and structure.                                         |
-| `review_resume`  | Gives a structured critique with a scorecard and prioritized recommendations, without changing anything. |
+| Prompt              | What it does                                                                                                       |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `build_resume`      | Walks you through building a resume section by section.                                                            |
+| `improve_resume`    | Suggests concrete improvements to wording, impact and structure.                                                   |
+| `review_resume`     | Gives a structured critique with a scorecard and prioritized recommendations, without changing anything.           |
+| `build_portfolio`   | Builds your portfolio from your resume or Profile: intro, About, works from your projects, a theme that suits you. |
+| `improve_portfolio` | Reviews your portfolio and makes focused improvements, asking for facts it doesn't have.                           |
 
 ## Resources
 
-| URI                     | Contents                                                                                                                                                                                                                                                                                                                                                                                 |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `resume://_meta/schema` | The resume data JSON Schema, listed in `resources/list` and also served at `/schema.json`. Clients use it to build valid patches; tool schemas point to it instead of repeating it, for resume data and for a cover letter's style. Tool results also summarize application timeline entries, posting sources and the account export; their full shapes are in `/api/openapi/spec.json`. |
-| `resume://{id}`         | One resume's full data as JSON. This is a resource template (`resources/templates/list`); find IDs with `list_resumes`.                                                                                                                                                                                                                                                                  |
+| URI                       | Contents                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `resume://_meta/schema`   | The resume data JSON Schema, listed in `resources/list` and also served at `/schema.json`. Clients use it to build valid patches; tool schemas point to it instead of repeating it, for resume data and for a cover letter's style. Tool results also summarize application timeline entries, posting sources and the account export; their full shapes are in `/api/openapi/spec.json`. |
+| `resume://{id}`           | One resume's full data as JSON. This is a resource template (`resources/templates/list`); find IDs with `list_resumes`.                                                                                                                                                                                                                                                                  |
+| `portfolio://current`     | Your portfolio as `get_portfolio` returns it.                                                                                                                                                                                                                                                                                                                                            |
+| `portfolio://_meta/edits` | The portfolio edit language: ops, lists and their fields, settable paths, image references and examples.                                                                                                                                                                                                                                                                                 |
 
 Your instance also publishes a server card at `/.well-known/mcp/server-card.json` that summarizes the tools, prompts and resources, for clients that discover servers without connecting. An [Agentic Resource Discovery](https://agenticresourcediscovery.org/spec/) catalog at `/.well-known/ard.json` (also served at the older `/.well-known/ai-catalog.json`) points agent registries to that card.
 
