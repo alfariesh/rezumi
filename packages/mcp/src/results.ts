@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { ErrorCode, McpError } from "@modelcontextprotocol/sdk/types.js";
 import { ORPCError } from "@orpc/server";
 import z from "zod";
+import { PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import { MCP_TOOL_NAME } from "./mcp-tool-names";
 
 function errorMessage(error: unknown): string {
@@ -19,11 +20,50 @@ function errorMessage(error: unknown): string {
  * message is the code itself (`"RESUME_LOCKED"`) or oRPC's own default
  * (`"Not Found"` for `NOT_FOUND`), and HTTP status never appears in it at all.
  */
-function errorHint(error: unknown): string {
+/** Which tools a failure came from, when their errors need their own hints (`NOT_FOUND` means no portfolio there). */
+export type ErrorDomain = "portfolio";
+
+/** Refusals of the portfolio procedures, which say what to do next for an agent. */
+function portfolioHint(code: string, inPortfolio: boolean): string | null {
+	const { getPortfolio, createPortfolio, publishPortfolio } = MCP_TOOL_NAME;
+	switch (code) {
+		case "PORTFOLIO_DISABLED":
+			return "Portfolios aren't available for this account yet. Tell the user; no portfolio tool will work.";
+		case "PORTFOLIO_EXISTS":
+			return `The account already has its one portfolio. Read it with \`${getPortfolio}\` and edit it instead.`;
+		case "PORTFOLIO_EMAIL_NOT_VERIFIED":
+			return `Ask the user to verify their email address in Rezumi, then call \`${publishPortfolio}\` again.`;
+		case "PORTFOLIO_VERSION_CONFLICT":
+			return `The portfolio changed since you read it. Call \`${getPortfolio}\` again and redo the edits on what it shows now (or leave expectedUpdatedAt out: edits address items by id).`;
+		case "PORTFOLIO_SUSPENDED":
+			return "An administrator took this portfolio down, so it can't be published. Tell the user; they can appeal to support.";
+		case "PORTFOLIO_FILE_TOO_LARGE":
+		case "PORTFOLIO_IMAGE_INVALID":
+			return `Supply a JPEG, PNG or WebP picture of at most ${PORTFOLIO_UPLOAD.imageBytes / 1024 / 1024} MB and ${PORTFOLIO_UPLOAD.imageSide} px on its longest side; the server can't resize pictures.`;
+		case "PORTFOLIO_IMAGE_UNREACHABLE":
+		case "PORTFOLIO_LINK_UNREADABLE":
+			return `That address couldn't be downloaded. Ask the user for the picture as a file instead (\`${MCP_TOOL_NAME.addPortfolioImage}\` with \`file\`).`;
+		case "PORTFOLIO_STORAGE_FULL":
+			return "The portfolio's storage is full. Ask the user to remove pictures it no longer uses in the editor.";
+		case "PORTFOLIO_SOURCE_INVALID":
+			return `Choose another resume (\`${MCP_TOOL_NAME.listResumes}\`), or null for the Profile.`;
+		case "NOT_FOUND":
+			return inPortfolio ? `This account has no portfolio yet. Create one with \`${createPortfolio}\`.` : null;
+		default:
+			return null;
+	}
+}
+
+function errorHint(error: unknown, domain?: ErrorDomain): string {
 	if (!(error instanceof ORPCError)) return "";
 
 	const { unlockResume, listResumes, listApplications } = MCP_TOOL_NAME;
 	const { code, status } = error;
+
+	const portfolio = portfolioHint(code, domain === "portfolio");
+	if (portfolio) return `\n\nHint: ${portfolio}`;
+	if (code === "PLAN_LIMIT_REACHED" || code === "PLAN_FEATURE_REQUIRED")
+		return "\n\nHint: The account's plan doesn't allow this. Explain the limit to the user and suggest what the plan includes; don't retry it.";
 
 	// Check codes before statuses: RESUME_SLUG_ALREADY_EXISTS is thrown with status 400.
 	if (code === "RESUME_SLUG_ALREADY_EXISTS") return "\n\nHint: The slug is already in use. Try a different one.";
@@ -53,6 +93,7 @@ function errorHint(error: unknown): string {
 export function withErrorHandling<T, Args extends unknown[]>(
 	label: string,
 	handler: (params: T, ...args: Args) => Promise<CallToolResult>,
+	domain?: ErrorDomain,
 ) {
 	return async (params: T, ...args: Args): Promise<CallToolResult> => {
 		try {
@@ -66,7 +107,7 @@ export function withErrorHandling<T, Args extends unknown[]>(
 				content: [
 					{
 						type: "text",
-						text: `Error ${label}: ${errorMessage(error)}${errorHint(error)}${reference ? `\n\nReference: ${reference}` : ""}`,
+						text: `Error ${label}: ${errorMessage(error)}${errorHint(error, domain)}${reference ? `\n\nReference: ${reference}` : ""}`,
 					},
 				],
 			};
@@ -88,7 +129,7 @@ export function json(value: unknown): CallToolResult {
 }
 
 /** Protocol callbacks cannot return tool isError results; emit sanitized JSON-RPC errors. */
-export function safeMcpError(error: unknown, operation: string): McpError {
+export function safeMcpError(error: unknown, operation: string, domain?: ErrorDomain): McpError {
 	const invalidInput = error instanceof z.ZodError || error instanceof URIError;
 	const known = error instanceof ORPCError && error.status < 500;
 	const reference = known || invalidInput ? undefined : randomUUID();
@@ -96,7 +137,7 @@ export function safeMcpError(error: unknown, operation: string): McpError {
 	const message = invalidInput ? "Invalid input. Check the resource URI or prompt arguments." : errorMessage(error);
 	return new McpError(
 		known || invalidInput ? ErrorCode.InvalidParams : ErrorCode.InternalError,
-		`${message}${errorHint(error)}${reference ? `\n\nReference: ${reference}` : ""}`,
+		`${message}${errorHint(error, domain)}${reference ? `\n\nReference: ${reference}` : ""}`,
 		{
 			code: known ? error.code : invalidInput ? "INVALID_INPUT" : "INTERNAL_ERROR",
 			...(reference ? { reference } : {}),

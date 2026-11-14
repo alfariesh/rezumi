@@ -1,8 +1,6 @@
 import { prepareMcpDiscovery } from "./discovery";
 import { MCP_TOOL_NAME as T } from "./mcp-tool-names";
-import { PROMPT_META } from "./prompts";
-
-const RESUME_ID_ARGUMENT = [{ name: "id", description: "Resume ID.", required: true }] as const;
+import { PROMPT_ARGUMENTS, PROMPT_META } from "./prompts";
 
 /** Shared server identity for both the live MCP server and the static server card. */
 export function buildMcpServerInfo(version: string) {
@@ -12,7 +10,7 @@ export function buildMcpServerInfo(version: string) {
 		title: "Rezumi",
 		websiteUrl: "https://rezumi.app",
 		description:
-			"Rezumi is a free and open-source resume builder. Use this MCP server to interact with your resume using an LLM of your choice.",
+			"Rezumi is a free and open-source resume builder. Use this MCP server to work on your resumes, cover letters, job applications and portfolio with an LLM of your choice.",
 		icons: [
 			{ src: "https://rezumi.app/icon/light.svg", mimeType: "image/svg+xml", theme: "light" as const },
 			{ src: "https://rezumi.app/icon/dark.svg", mimeType: "image/svg+xml", theme: "dark" as const },
@@ -33,7 +31,7 @@ export function buildMcpServerCard(appVersion: string) {
 	const prompts = Object.entries(PROMPT_META).map(([name, meta]) => ({
 		name,
 		...meta,
-		arguments: [...RESUME_ID_ARGUMENT],
+		arguments: [...PROMPT_ARGUMENTS[name as keyof typeof PROMPT_META]],
 	}));
 
 	const resources = [
@@ -56,6 +54,23 @@ export function buildMcpServerCard(appVersion: string) {
 				"Read before setting the template, icon settings or icon fields.",
 			].join(" "),
 			mimeType: "application/json",
+		},
+		{
+			name: "portfolio",
+			title: "Portfolio",
+			uri: "portfolio://current",
+			description: [
+				"The account's portfolio as an AI edits it: every item with its id, the career sections (read-only), pictures,",
+				"limits and plan locks. Same as get_portfolio.",
+			].join(" "),
+			mimeType: "application/json",
+		},
+		{
+			name: "portfolio-edits",
+			title: "Portfolio Edit Language",
+			uri: "portfolio://_meta/edits",
+			description: "The edit language edit_portfolio takes. Read it before editing a portfolio.",
+			mimeType: "text/markdown",
 		},
 		{
 			name: "resume",

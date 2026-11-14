@@ -11,6 +11,7 @@ import { coverLetterDto } from "@rezumi/api/dto/cover-letter";
 import { resumeDto } from "@rezumi/api/dto/resume";
 import { createResumePdfDownloadUrl } from "@rezumi/api/features/resume/export";
 import { env } from "@rezumi/env/server";
+import { PORTFOLIO_EDIT_GUIDE } from "@rezumi/portfolio/edits";
 import { readMcpFile } from "./files";
 import { MCP_TOOL_NAME as T } from "./mcp-tool-names";
 import { getClientCall, json, text, withErrorHandling } from "./results";
@@ -24,6 +25,21 @@ function coerceFollowUpAt(input: Record<string, unknown>): Record<string, unknow
 
 	return { ...input, followUpAt: new Date(String(followUpAt)) };
 }
+
+/** The account's username, for its public addresses; empty when the account has none. */
+function usernameOf(user: object | null | undefined): string {
+	return user && "username" in user && typeof (user as { username: unknown }).username === "string"
+		? (user as { username: string }).username
+		: "";
+}
+
+/** Where the account's portfolio is published: /<username> on this server. */
+function portfolioUrl(username: string): string | null {
+	return username ? new URL(`/${encodeURIComponent(username)}`, env.APP_URL).href : null;
+}
+
+/** Larger files are refused before reading; between this and the portfolio's own limit the service says how to fix it. */
+const PORTFOLIO_IMAGE_FILE_BYTES = 10 * 1024 * 1024;
 
 function buildResumeShareUrl(username: string, slug: string): string {
 	const base = env.APP_URL.replace(/\/$/, "");
@@ -83,6 +99,12 @@ export function registerTools(
 	requestHeaders: Headers,
 	authentication?: RequestAuthentication,
 ) {
+	const currentUser = async () => {
+		const user = authentication?.user ?? (await resolveUserFromRequestHeaders(requestHeaders));
+		if (!user) throw new ORPCError("UNAUTHORIZED");
+		return user;
+	};
+
 	const handlers: { [K in Exclude<ToolName, keyof typeof DIRECT_TOOLS>]: ToolHandler<K> } = {
 		[T.listResumes]: withErrorHandling("listing resumes", async (params) => {
 			const resumes = await client.resume.list(params);
@@ -288,6 +310,111 @@ export function registerTools(
 				throw new ORPCError("BAD_REQUEST", { message: "Supply a PDF file." });
 			return json(await client.applications.attachDocument({ id: params.id, kind: params.kind, file }));
 		}),
+
+		[T.getPortfolio]: withErrorHandling(
+			"reading the portfolio",
+			async () => {
+				const status = await client.portfolio.status({});
+				const none = { updatedAt: null, published: false, url: null, view: null, guide: null };
+				if (!status.enabled)
+					return text("Portfolios aren't available for this account yet.", {
+						exists: false,
+						enabled: false,
+						...none,
+						message: "Portfolios aren't available for this account yet.",
+					});
+				if (!status.portfolio) {
+					const message = `This account has no portfolio yet. Create one with \`${T.createPortfolio}\`.`;
+					return text(message, { exists: false, enabled: true, ...none, message });
+				}
+				const portfolio = await client.portfolio.aiView({});
+				const result = {
+					exists: true,
+					enabled: true,
+					updatedAt: portfolio.updatedAt.toISOString(),
+					published: portfolio.published,
+					url: portfolio.url,
+					view: portfolio.view,
+					guide: PORTFOLIO_EDIT_GUIDE,
+					message: `Change it with \`${T.editPortfolio}\` in the edit language described in \`guide\`.`,
+				};
+				return text(JSON.stringify(result), result);
+			},
+			"portfolio",
+		),
+
+		[T.createPortfolio]: withErrorHandling(
+			"creating the portfolio",
+			async ({ sourceResumeId, theme }) => {
+				const portfolio = await client.portfolio.create({
+					...(sourceResumeId === undefined ? {} : { sourceResumeId }),
+					...(theme ? { theme } : {}),
+				});
+				const message = `Created the portfolio, unpublished, from ${portfolio.sourceResumeId ? "the resume" : "the Profile"}. Read it with \`${T.getPortfolio}\`, then change it with \`${T.editPortfolio}\`.`;
+				return text(message, {
+					id: portfolio.id,
+					updatedAt: portfolio.updatedAt.toISOString(),
+					sourceResumeId: portfolio.sourceResumeId,
+					message,
+				});
+			},
+			"portfolio",
+		),
+
+		[T.editPortfolio]: withErrorHandling(
+			"editing the portfolio",
+			async ({ title, edits, expectedUpdatedAt }) => {
+				const result = await client.portfolio.applyEdits({
+					title,
+					edits,
+					...(expectedUpdatedAt ? { expectedUpdatedAt: new Date(expectedUpdatedAt) } : {}),
+				});
+				// Failed edits are part of the answer, not an error: the model reads why and can fix them.
+				const message = [
+					`Applied ${result.applied.length} of ${edits.length} edit(s)${result.applied.length ? " and saved them" : "; nothing was saved"}.`,
+					...result.applied.map((edit) => `- #${edit.index}: ${edit.summary}${edit.id ? ` (id: ${edit.id})` : ""}`),
+					...result.failed.map((edit) => `- #${edit.index} failed: ${edit.error}`),
+				].join("\n");
+				return text(message, { ...result, updatedAt: result.updatedAt.toISOString(), message });
+			},
+			"portfolio",
+		),
+
+		[T.addPortfolioImage]: withErrorHandling(
+			"adding a portfolio image",
+			async ({ url, file, alt }) => {
+				if ((url === undefined) === (file === undefined))
+					throw new ORPCError("BAD_REQUEST", { message: "Supply exactly one of url or file." });
+				const image = file
+					? await client.portfolio.addImage({
+							file: await readMcpFile(file, (await currentUser()).id, PORTFOLIO_IMAGE_FILE_BYTES),
+							...(alt ? { alt } : {}),
+						})
+					: await client.portfolio.addImage({ url: url ?? "", ...(alt ? { alt } : {}) });
+				const message = `Stored the picture. Place it with \`${T.editPortfolio}\` using the image ref { "key": "${image.key}", "alt": "…" }.`;
+				return text(message, { image, message });
+			},
+			"portfolio",
+		),
+
+		[T.publishPortfolio]: withErrorHandling(
+			"publishing the portfolio",
+			async ({ published }) => {
+				const portfolio = await client.portfolio.setPublic({ isPublic: published });
+				const url = portfolioUrl(usernameOf(await currentUser()));
+				const message = portfolio.isPublic
+					? `The portfolio is published${url ? ` at ${url}` : ""}.`
+					: "The portfolio is unpublished: visitors can't see it.";
+				return text(message, { published: portfolio.isPublic, url, message });
+			},
+			"portfolio",
+		),
+
+		[T.getPortfolioStatistics]: withErrorHandling(
+			"reading portfolio statistics",
+			async ({ range }) => json({ statistics: await client.portfolio.statistics(range ? { range } : {}) }),
+			"portfolio",
+		),
 	};
 
 	// Register in TOOL_META order so the SDK's tools/list matches the static discovery list.
