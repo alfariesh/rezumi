@@ -408,6 +408,9 @@ describe.skipIf(!databaseUrl)("plan limits", () => {
 			await getDb().delete(tables.oauthClient);
 			await insertClient("mobile", ["https://rezumi.app/auth/native-callback"]);
 			await insertClient("mobile-dev", ["app.rezumi:/auth/native-callback"]);
+			await insertClient("extension-chrome", ["https://fiogmglhgeiaaeajahbpmmehgmojbjjo.chromiumapp.org/"]);
+			await insertClient("extension-edge", ["https://jnemleffcmnbkcmmjnkbicdhidedffnd.chromiumapp.org/"]);
+			await insertClient("other-extension", ["https://abcdefghijklmnopabcdefghijklmnop.chromiumapp.org/"]);
 			await insertClient("claude", ["https://claude.ai/api/mcp/auth_callback"]);
 			await insertClient("mixed", ["https://rezumi.app/auth/native-callback", "https://evil.example/cb"]);
 		});
@@ -416,7 +419,14 @@ describe.skipIf(!databaseUrl)("plan limits", () => {
 			await automation.assertAutomationAccess(request("session"));
 			await automation.assertAutomationAccess(request("bearer", "mobile"));
 			await automation.assertAutomationAccess(request("bearer", "mobile-dev"));
-			for (const credential of [request("apiKey"), request("bearer", "claude"), request("bearer", "mixed")])
+			await automation.assertAutomationAccess(request("bearer", "extension-chrome"));
+			await automation.assertAutomationAccess(request("bearer", "extension-edge"));
+			for (const credential of [
+				request("apiKey"),
+				request("bearer", "claude"),
+				request("bearer", "mixed"),
+				request("bearer", "other-extension"),
+			])
 				await expect(automation.assertAutomationAccess(credential)).rejects.toMatchObject({
 					code: "PLAN_FEATURE_REQUIRED",
 					data: { feature: "automationApi" },

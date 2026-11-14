@@ -19,8 +19,11 @@
 		"@heroui/react": "catalog:",
 		"@lingui/core": "^6.10.1",
 		"@lingui/react": "^6.10.1",
+		"@orpc/client": "catalog:",
+		"@orpc/tanstack-query": "^1.16.1",
 		"@rezumi/job-sites": "workspace:*",
 		"@rezumi/ui": "workspace:*",
+		"@tanstack/react-query": "^5.105.0",
 		"react": "catalog:",
 		"react-dom": "19.3.1",
 		"zod": "catalog:"
@@ -30,6 +33,7 @@
 		"@lingui/cli": "^6.10.1",
 		"@lingui/format-po": "^6.10.1",
 		"@lingui/vite-plugin": "^6.10.1",
+		"@orpc/server": "catalog:",
 		"@playwright/test": "^1.64.1",
 		"@rezumi/config": "workspace:*",
 		"@rolldown/plugin-babel": "^0.2.4",
@@ -44,5 +48,8 @@
 		"tsrs": "catalog:",
 		"typescript": "catalog:",
 		"vite-plus": "catalog:"
+	},
+	"peerDependencies": {
+		"@rezumi/api": "workspace:*"
 	}
 }

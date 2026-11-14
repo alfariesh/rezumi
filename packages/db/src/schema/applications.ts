@@ -52,6 +52,9 @@ export const application = pg.pgTable(
 		tags: pg.text("tags").array().notNull().default([]),
 		// --- AI reservations (no working AI this pass; see feature AI roadmap) ---
 		sourceUrl: pg.text("source_url"),
+		// The posting's identity, from `sourceUrl` by `jobKey()` in @rezumi/job-sites (`linkedin:<id>`, `url:<host><path>`):
+		// the browser extension marks postings already saved by it. Set by the server on create, update and import.
+		sourceKey: pg.text("source_key"),
 		jobDescription: pg.text("job_description"),
 		postingSource: pg.jsonb("posting_source").$type<PostingSource>(),
 		// What the posting asks for, as read from it when the application was added.
@@ -79,5 +82,5 @@ export const application = pg.pgTable(
 			.defaultNow()
 			.$onUpdate(() => /* @__PURE__ */ new Date()),
 	},
-	(t) => [pg.index().on(t.userId), pg.index().on(t.userId, t.updatedAt.desc())],
+	(t) => [pg.index().on(t.userId), pg.index().on(t.userId, t.updatedAt.desc()), pg.index().on(t.userId, t.sourceKey)],
 );

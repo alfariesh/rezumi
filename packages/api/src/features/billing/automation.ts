@@ -11,21 +11,29 @@ type Authentication = { user: { id: string }; method: "apiKey" | "bearer" | "ses
 const OFFICIAL_APP_HOST = "rezumi.app";
 
 /**
- * The redirect URIs Rezumi's mobile apps register (apps/mobile/src/auth/oauth.ts): the official host's
- * `/auth/native-callback`, this server's own (the same in production), and the private-use scheme development builds
- * use against a local server.
+ * The Rezumi browser extension's store ids (Chrome Web Store, Edge Add-ons). Its OAuth redirect is
+ * `https://<id>.chromiumapp.org/` (`chrome.identity.getRedirectURL()`), which only that extension can receive.
+ * .agents/docs/plans/plugin-browser/02-teknis.md §15.
+ */
+export const EXTENSION_IDS = ["fiogmglhgeiaaeajahbpmmehgmojbjjo", "jnemleffcmnbkcmmjnkbicdhidedffnd"] as const;
+
+/**
+ * The redirect URIs Rezumi's own apps register: the mobile apps (apps/mobile/src/auth/oauth.ts) use the official
+ * host's `/auth/native-callback`, this server's own (the same in production), and the private-use scheme development
+ * builds use against a local server; the browser extension uses its store ids' `chromiumapp.org` addresses.
  */
 export function firstPartyRedirectUris(appUrl = env.APP_URL): ReadonlySet<string> {
 	return new Set([
 		`https://${OFFICIAL_APP_HOST}/auth/native-callback`,
 		`https://${new URL(appUrl).host}/auth/native-callback`,
 		"app.rezumi:/auth/native-callback",
+		...EXTENSION_IDS.map((id) => `https://${id}.chromiumapp.org/`),
 	]);
 }
 
 /**
  * Whether a request comes from Rezumi itself: a web session, or an OAuth client that can only send users back to
- * the mobile apps' callback. Anyone could register such a client for their own account; the plan rule accepts that,
+ * Rezumi's own apps (mobile callback, browser extension). Anyone could register such a client for their own account; the plan rule accepts that,
  * since it still meets the API's rate limits.
  */
 export async function isFirstPartyClient(authentication: Authentication): Promise<boolean> {
@@ -41,12 +49,13 @@ export async function isFirstPartyClient(authentication: Authentication): Promis
 }
 
 /**
- * API keys and third-party OAuth/MCP clients need `automationApi`. Rezumi's web sessions and mobile apps never do.
+ * API keys and third-party OAuth/MCP clients need `automationApi`. Rezumi's web sessions, mobile apps and browser
+ * extension never do.
  * Reads nothing while billing is off.
  */
 export async function assertAutomationAccess(authentication: Authentication | null | undefined) {
 	if (!authentication || authentication.method === "session" || getBillingMode() === "off") return;
-	// The mobile apps send most bearer requests; one lookup settles them before reading the plan.
+	// The mobile apps and the browser extension send most bearer requests; one lookup settles them before the plan.
 	if (await isFirstPartyClient(authentication)) return;
 	const entitlements = await getEntitlements(authentication.user.id);
 	if (entitlements.enabled && !entitlements.features.automationApi)

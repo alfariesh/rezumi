@@ -123,6 +123,7 @@ describe("buildAccountZip", () => {
 			"applications.json",
 			"billing.json",
 			"career.json",
+			"extension-page-reports.json",
 			"letters/product-designer-01a0ec71-a410-71da-9156-b347210cf72b.json",
 			"portfolio.json",
 			"profile.json",

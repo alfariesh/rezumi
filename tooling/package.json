@@ -23,9 +23,11 @@
 		"seed:career": "tsx seed/career-seed.ts",
 		"seed:demo": "node seed/demo-data.mjs",
 		"benchmark:ai": "tsx --tsconfig ../tsconfig.json benchmark/rezumi-ai.ts",
-		"benchmark:ai:report": "tsx benchmark/report.ts"
+		"benchmark:ai:report": "tsx benchmark/report.ts",
+		"extension:backfill-keys": "tsx extension/backfill-source-keys.ts"
 	},
 	"dependencies": {
+		"@rezumi/job-sites": "workspace:*",
 		"@rezumi/pdf": "workspace:*",
 		"@rezumi/portfolio": "workspace:*",
 		"@rezumi/schema": "workspace:*"

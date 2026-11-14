@@ -203,11 +203,13 @@ describe("while billing is off", () => {
 });
 
 describe("firstPartyRedirectUris", () => {
-	it("accepts the mobile apps' callbacks on the official host, this server and development builds", () => {
+	it("accepts the mobile apps' callbacks on the official host, this server and development builds, and the extension's", () => {
 		expect([...firstPartyRedirectUris("https://staging.rezumi.app")]).toEqual([
 			"https://rezumi.app/auth/native-callback",
 			"https://staging.rezumi.app/auth/native-callback",
 			"app.rezumi:/auth/native-callback",
+			"https://fiogmglhgeiaaeajahbpmmehgmojbjjo.chromiumapp.org/",
+			"https://jnemleffcmnbkcmmjnkbicdhidedffnd.chromiumapp.org/",
 		]);
 	});
 });

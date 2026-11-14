@@ -678,6 +678,10 @@ function PostingDialog({ application, open, onOpenChange }: PostingDialogProps) 
 							<p className="text-body-xs text-muted">
 								{application.postingSource.method === "paste" ? (
 									<Trans>Pasted description</Trans>
+								) : application.postingSource.method === "extension" ? (
+									<Trans comment="Where a saved job description came from: the Rezumi browser extension read it from the page">
+										Saved from the browser extension
+									</Trans>
 								) : (
 									<Trans>
 										Retrieved {application.postingSource.retrievedAt} using {application.postingSource.method}.

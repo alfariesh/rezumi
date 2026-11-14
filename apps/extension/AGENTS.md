@@ -23,6 +23,11 @@ pnpm --filter extension lingui:extract
 `REZUMI_URL` overrides the server at build time. `EXTENSION_KEY` overrides the Chrome Web Store public key that
 development builds carry (`CHROME_STORE_PUBLIC_KEY` in `manifest.config.ts`); store builds never carry a key.
 
+`tests/connect.spec.ts` signs in for real against a local server at `http://localhost:3000` (the development build's
+server) and is skipped when none answers. Start one for this checkout with its own database, for example
+`PORT=3000 SERVER_PORT=3001 APP_URL=http://localhost:3000 DATABASE_URL=…/rezumi_extension_dev BILLING_MODE=on pnpm dev`;
+the spec signs up fictional `extension-…@example.test` accounts there.
+
 `test:e2e` needs Playwright's Chromium (`pnpm exec playwright install chromium`): branded Chrome and Edge no longer load
 unpacked extensions from the command line. `EXTENSION_SCREENSHOTS=<dir>` makes the side panel spec save a picture of
 each width (360, 420), appearance and language.
@@ -38,21 +43,21 @@ each width (360, 420), appearance and language.
 
 ## Structure
 
-| Path                             | What                                                                                                   |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `manifest.config.ts`             | The manifest (permissions with reasons in `02-teknis.md` §12), minimum Chrome version, board matches   |
-| `scripts/build.ts`               | Builds panel + worker (ES modules), content script (one IIFE), writes `dist/manifest.json`             |
-| `scripts/build-config.ts`        | The two Vite configs and build-time constants (`__DEV__`, `__REZUMI_URL__`, `__EXTENSION_VERSION__`)   |
-| `scripts/zip.ts`                 | Packs `dist/` for the stores                                                                           |
-| `src/background/`                | Service worker: message router (sender + Zod checks), per-tab page state, alarms; tokens from Phase 02 |
-| `src/content/`                   | Content script: posting key from the address, single-page navigation; no React, no Zod, no token       |
-| `src/content/sites/__fixtures__` | Synthetic job board pages for tests (never real postings)                                              |
-| `src/sidepanel/`                 | React 19 + HeroUI side panel, Lingui en/id, follows the browser's light/dark appearance                |
-| `src/shared/`                    | Message types and schemas, storage keys, build config                                                  |
-| `locales/{en,id}.po`             | Panel strings (Lingui); the root `pnpm lingui:extract` includes them                                   |
-| `public/_locales/{en,id}/`       | Store name, description and toolbar title (`__MSG_…__` in the manifest)                                |
-| `public/icons`, `public/icon`    | Toolbar/store PNGs (from `apps/web/public/pwa-512x512.png`) and the brand mark SVG the panel shows     |
-| `tests/`                         | Playwright: the extension loaded in Chromium, job boards served from fixtures with `context.route`     |
+| Path                             | What                                                                                                    |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `manifest.config.ts`             | The manifest (permissions with reasons in `02-teknis.md` §12), minimum Chrome version, board matches    |
+| `scripts/build.ts`               | Builds panel + worker (ES modules), content script (one IIFE), writes `dist/manifest.json`              |
+| `scripts/build-config.ts`        | The two Vite configs and build-time constants (`__DEV__`, `__REZUMI_URL__`, `__EXTENSION_VERSION__`)    |
+| `scripts/zip.ts`                 | Packs `dist/` for the stores                                                                            |
+| `src/background/`                | Service worker: message router (sender + Zod checks), sign-in and tokens (`auth.ts`), tab state, alarms |
+| `src/content/`                   | Content script: posting key from the address, single-page navigation; no React, no Zod, no token        |
+| `src/content/sites/__fixtures__` | Synthetic job board pages for tests (never real postings)                                               |
+| `src/sidepanel/`                 | React 19 + HeroUI panel, oRPC client with the worker's token (`api.ts`), Lingui en/id, light/dark       |
+| `src/shared/`                    | Message types and schemas, storage keys, build config                                                   |
+| `locales/{en,id}.po`             | Panel strings (Lingui); the root `pnpm lingui:extract` includes them                                    |
+| `public/_locales/{en,id}/`       | Store name, description and toolbar title (`__MSG_…__` in the manifest)                                 |
+| `public/icons`, `public/icon`    | Toolbar/store PNGs (from `apps/web/public/pwa-512x512.png`) and the brand mark SVG the panel shows      |
+| `tests/`                         | Playwright: the extension loaded in Chromium, job boards served from fixtures with `context.route`      |
 
 ## Rules
 

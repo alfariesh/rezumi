@@ -8,6 +8,9 @@ import { authClient } from "@/libs/auth/client";
 
 const queryKey = ["auth", "connected-apps"];
 
+/** The name the Rezumi browser extension registers with (apps/extension/src/background/auth.ts). */
+const EXTENSION_CLIENT_NAME = "Rezumi browser extension";
+
 export function ConnectedAppsSection() {
 	const queryClient = useQueryClient();
 	const {
@@ -69,9 +72,21 @@ export function ConnectedAppsSection() {
 						<SettingsRow
 							as="li"
 							key={connection.id}
-							icon="link-simple-horizontal"
-							title={connection.clientName}
-							description={connection.scopes.join(", ")}
+							icon={connection.clientName === EXTENSION_CLIENT_NAME ? "briefcase" : "link-simple-horizontal"}
+							title={
+								connection.clientName === EXTENSION_CLIENT_NAME ? (
+									<Trans>Rezumi browser extension</Trans>
+								) : (
+									connection.clientName
+								)
+							}
+							description={
+								connection.clientName === EXTENSION_CLIENT_NAME ? (
+									<Trans>Saves job postings from your browser to your applications.</Trans>
+								) : (
+									connection.scopes.join(", ")
+								)
+							}
 						>
 							<Button
 								variant="secondary"

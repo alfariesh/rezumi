@@ -8,9 +8,10 @@ import type {
 	InterviewDetails,
 } from "@rezumi/schema/applications/data";
 import { ORPCError } from "@orpc/client";
-import { and, arrayContains, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, arrayContains, count, desc, eq, inArray, isNotNull, isNull, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
+import { jobKey } from "@rezumi/job-sites/sites";
 import { lintResumeForAts } from "@rezumi/resume/ats";
 import { coverLetterSchema } from "@rezumi/schema/cover-letter/data";
 import { generateId } from "@rezumi/utils/string";
@@ -377,6 +378,16 @@ async function withDocumentFiles<T>(
 	}
 }
 
+/**
+ * The posting identity to store with a saved address (02-teknis.md §6.2 of the browser extension plan): set whenever a
+ * request sets `sourceUrl`, cleared with it, untouched otherwise. The extension marks postings already saved by it.
+ */
+const sourceKeyFor = (sourceUrl: string | null | undefined) =>
+	sourceUrl === undefined ? {} : { sourceKey: sourceUrl ? jobKey(sourceUrl) : null };
+
+/** The newest saved postings the extension keeps marks for, at most this many (02-teknis.md §6.3). */
+export const MAX_SAVED_KEYS = 5_000;
+
 const stripUserId = <T extends { userId: string; activity?: ApplicationTimelineEntry[] }>(row: T) => {
 	const { userId: _userId, ...rest } = row;
 	return rest.activity ? { ...rest, activity: sortTimeline(rest.activity) } : rest;
@@ -541,6 +552,7 @@ export const applicationService = {
 						activity,
 						appliedAt: appliedAtFromTimeline(activity, new Date()),
 						...fields,
+						...sourceKeyFor(fields.sourceUrl),
 						...uploadedFields,
 					})
 					.returning();
@@ -579,6 +591,7 @@ export const applicationService = {
 				activity,
 				appliedAt: appliedAtFromTimeline(activity, new Date()),
 				...fields,
+				...sourceKeyFor(fields.sourceUrl),
 			};
 		});
 
@@ -682,6 +695,7 @@ export const applicationService = {
 					.update(schema.application)
 					.set({
 						...fields,
+						...sourceKeyFor(fields.sourceUrl),
 						...uploadedFields,
 						...(status !== undefined ? { status } : {}),
 						...(appliedAtExpr ? { appliedAt: appliedAtExpr } : {}),
@@ -731,6 +745,39 @@ export const applicationService = {
 			[fields.name]: null,
 			canDeleteAttachments: true,
 		});
+	},
+
+	/** The account's saved posting identities, newest first, for the extension's "Saved" marks. */
+	savedKeys: async (input: { userId: string }) => {
+		const rows = await db
+			.select({
+				key: schema.application.sourceKey,
+				id: schema.application.id,
+				status: schema.application.status,
+				updatedAt: schema.application.updatedAt,
+			})
+			.from(schema.application)
+			.where(and(eq(schema.application.userId, input.userId), isNotNull(schema.application.sourceKey)))
+			.orderBy(desc(schema.application.updatedAt), desc(schema.application.id))
+			.limit(MAX_SAVED_KEYS);
+		return rows.flatMap(({ key, ...row }) => (key ? [{ key, ...row }] : []));
+	},
+
+	/** The newest application saved for one posting identity, or null. */
+	findBySourceKey: async (input: { userId: string; key: string }) => {
+		const [row] = await db
+			.select({
+				id: schema.application.id,
+				role: schema.application.role,
+				company: schema.application.company,
+				status: schema.application.status,
+				updatedAt: schema.application.updatedAt,
+			})
+			.from(schema.application)
+			.where(and(eq(schema.application.userId, input.userId), eq(schema.application.sourceKey, input.key)))
+			.orderBy(desc(schema.application.updatedAt), desc(schema.application.id))
+			.limit(1);
+		return row ?? null;
 	},
 
 	// Persist AI-owned enrichment (match score + freeform metadata). Separate from the editable
