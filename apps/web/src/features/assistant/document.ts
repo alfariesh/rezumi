@@ -1,4 +1,7 @@
+import type { PortfolioReveal } from "@/features/portfolio/editor/save-problem";
+import type { PortfolioViewMessages } from "@rezumi/portfolio/view";
 import type { Passage, Proposal, ProposalState } from "@rezumi/resume/proposals";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useSearch } from "@tanstack/react-router";
@@ -18,12 +21,22 @@ import { getSectionName } from "@/features/resume/editor/check/issues";
 import { acceptResumeProposals } from "@/features/resume/editor/proposals/proposals";
 import { describeEntry } from "@/features/resume/editor/write/model";
 
-/** The document the assistant works on, as the panel needs it. Resumes and letters each provide one. */
-export type AssistantDocument = {
-	kind: "resume" | "letter";
+type AssistantDocumentBase = {
 	id: string;
 	name: string;
 	locked: boolean;
+	/**
+	 * Runs before each message goes out: null when it can, else why it can't, in the user's words. The portfolio saves
+	 * its latest changes here, since the assistant reads the saved portfolio.
+	 */
+	beforeSend?: (() => Promise<string | null>) | undefined;
+	/** Files chosen in the composer, made ready to upload (the portfolio shrinks pictures like its own uploads). */
+	prepareUploads?: ((files: File[]) => Promise<File[]>) | undefined;
+};
+
+/** A resume or a letter: the assistant proposes edits to its text, which the user accepts one by one. */
+export type TextAssistantDocument = AssistantDocumentBase & {
+	kind: "resume" | "letter";
 	/** The application it's for, whose posting is shared as context. */
 	posting: { id: string; company: string; role: string } | null;
 	/** A proposal's state against the document as it reads now. */
@@ -33,6 +46,22 @@ export type AssistantDocument = {
 	/** Where a proposal lands, in the app's language, when its passage is still there. */
 	locationOf: (proposal: Pick<Proposal, "before" | "target">) => string | undefined;
 };
+
+/**
+ * The portfolio: the assistant changes it directly (each reply's changes show on the page at once and can be undone),
+ * so it has no posting and no proposals.
+ */
+export type PortfolioAssistantDocument = AssistantDocumentBase & {
+	kind: "portfolio";
+	posting: null;
+	/** Opens the place a change is in: its tab, the work, or the section in Content. */
+	reveal: (place: PortfolioReveal) => void;
+	/** What change lines name things by besides the portfolio: its source's career sections and the page's words. */
+	source: { from: "resume" | "profile" | null; resume: ResumeData | null; messages: PortfolioViewMessages };
+};
+
+/** The document the assistant works on, as the panel needs it. Resumes, letters and the portfolio each provide one. */
+export type AssistantDocument = TextAssistantDocument | PortfolioAssistantDocument;
 
 const bullet = (n: number) => t`bullet ${n}`;
 const paragraph = (n: number) => t`paragraph ${n}`;
@@ -51,7 +80,7 @@ function locate(passages: readonly Passage[], { before, target }: Pick<Proposal,
 	return matches.length === 1 ? matches[0]?.location : undefined;
 }
 
-export function useResumeAssistantDocument(): AssistantDocument {
+export function useResumeAssistantDocument(): TextAssistantDocument {
 	const resume = useCurrentResume();
 	const { applicationId } = useSearch({ strict: false });
 	const { data: applications } = useQuery(applicationsListQueryOptions());
@@ -83,7 +112,7 @@ export function useResumeAssistantDocument(): AssistantDocument {
 	}, [resume.id, resume.name, resume.isLocked, resume.data, application]);
 }
 
-export function useLetterAssistantDocument(): AssistantDocument | null {
+export function useLetterAssistantDocument(): TextAssistantDocument | null {
 	const letter = useLetterEditorStore((state) => state.letter);
 	const { applicationId } = useSearch({ strict: false });
 	const { data: applications } = useQuery(applicationsListQueryOptions());

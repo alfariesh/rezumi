@@ -9,6 +9,7 @@ Rencana fitur **portfolio**: selain membuat CV, setiap akun bisa menerbitkan web
 - Ide setelah rilis: [backlog-lanjutan.md](backlog-lanjutan.md)
 - Fitur lanjutan gelombang kedua (Phase 13: halaman karya, kartu nama, Sintaks dan Warta, kata sandi, sematan, Open to work, statistik lanjutan): [phase-13-fitur-lanjutan.md](phase-13-fitur-lanjutan.md)
 - Laporan tinjauan kedua (2026-11-12): [laporan-review-2/](laporan-review-2/); laporan sesi Phase 13: [laporan-phase-13/](laporan-phase-13/)
+- Asisten AI portfolio + MCP portfolio (Phase 14, 2026-11-14): [phase-14-asisten-ai.md](phase-14-asisten-ai.md); laporan sesi: [laporan-phase-14/](laporan-phase-14/)
 
 ## Cara memakai (untuk pemilik)
 

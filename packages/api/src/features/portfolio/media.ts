@@ -1,11 +1,12 @@
 import type { PortfolioUnfurl } from "./unfurl";
+import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
 import { randomUUID } from "node:crypto";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { portfolioFileKeysInStoredData } from "@rezumi/portfolio/files";
 import { readPortfolioImageHeader } from "@rezumi/portfolio/image-header";
-import { PORTFOLIO_UNUSED_FILE_GRACE_MS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
+import { PORTFOLIO_LIMITS, PORTFOLIO_UNUSED_FILE_GRACE_MS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import { lockBillingAccount } from "../billing/account";
 import { getEntitlements, isBillingAppliedTo } from "../billing/entitlements";
 import { portfolioLimitReached } from "../billing/limits";
@@ -13,6 +14,7 @@ import { getStorageService } from "../storage";
 import { requireEnabled, requirePortfolio } from "./access";
 import { portfolioErrors } from "./errors";
 import { deleteUnusedFiles, lockPortfolio, OVERDUE, readStoredData, removeStoredFile, storedFiles } from "./file-store";
+import { stripPictureMetadata } from "./image-metadata";
 import {
 	fetchRemoteImage,
 	RemoteImageError,
@@ -28,15 +30,36 @@ import {
  * they're stored (`file-store.ts` keeps that bookkeeping).
  */
 
-/** A picture's bytes and what it really is, or the error saying why it can't be stored. */
-async function readUploadedPicture(file: File, maxSide: number) {
-	if (file.size > PORTFOLIO_UPLOAD.imageBytes) throw portfolioErrors.fileTooLarge(file.size);
+/**
+ * A picture's bytes and what it really is, or the error saying why it can't be stored. `resized`: the browser already
+ * shrank it (an editor upload); a picture AI or an API client brought wasn't, so its refusals say how to fix that.
+ */
+async function readUploadedPicture(file: File, maxSide: number, resized = true) {
+	const tooLarge = (bytes: number) =>
+		resized ? portfolioErrors.fileTooLarge(bytes) : portfolioErrors.pictureNotResized({ bytes });
+	if (file.size > PORTFOLIO_UPLOAD.imageBytes) throw tooLarge(file.size);
 	const data = new Uint8Array(await file.arrayBuffer());
-	if (data.byteLength > PORTFOLIO_UPLOAD.imageBytes) throw portfolioErrors.fileTooLarge(data.byteLength);
+	if (data.byteLength > PORTFOLIO_UPLOAD.imageBytes) throw tooLarge(data.byteLength);
 	const header = readPortfolioImageHeader(data);
 	if (!header.ok) throw portfolioErrors.imageInvalid(header.reason);
-	if (Math.max(header.image.width, header.image.height) > maxSide) throw portfolioErrors.imageInvalid("dimensions");
+	if (Math.max(header.image.width, header.image.height) > maxSide)
+		throw resized ? portfolioErrors.imageInvalid("dimensions") : portfolioErrors.pictureNotResized("dimensions");
 	return { data, ...header.image };
+}
+
+/** A picture at a public address, read like a link's preview picture (`fetchRemoteImage`), as a file to check. */
+async function fetchPicture(url: string, signal?: AbortSignal): Promise<File> {
+	try {
+		const picture = await fetchRemoteImage(url, { signal });
+		return new File([picture.bytes as Uint8Array<ArrayBuffer>], `picture.${picture.extension}`, {
+			type: picture.contentType,
+		});
+	} catch (error) {
+		if (!(error instanceof RemoteImageError)) throw error;
+		if (error.reason === "too-large") throw portfolioErrors.pictureNotResized({ bytes: null });
+		if (error.reason === "type") throw portfolioErrors.imageInvalid("type");
+		throw portfolioErrors.imageUnreachable(error.reason);
+	}
 }
 
 type NewFile = { key: string; bytes: number } & (
@@ -140,6 +163,37 @@ export const portfolioMedia = {
 			height: main.height,
 			bytes: files.reduce((sum, file) => sum + file.data.byteLength, 0),
 		};
+	},
+
+	/**
+	 * Adds a picture that AI or an API client brings (`portfolio.addImage`, MCP `add_portfolio_image`, the assistant's
+	 * `save_attachment_image`): read from a public address like a link's preview picture (only public addresses, a
+	 * deadline and a size cap), or given as a file. Nothing made it smaller first and the server can't, so it must
+	 * already be what the editor uploads: a still JPEG, PNG or WebP of at most `PORTFOLIO_UPLOAD.imageBytes` and
+	 * `imageSide` px. Its metadata is dropped (`image-metadata.ts`), as the browser's re-encoding drops an upload's; then
+	 * it's recorded and stored like `uploadImage` (without a small copy), and unused until saved data refers to its key.
+	 * Returns it as a portfolio image, ready to place.
+	 */
+	addImage: async (
+		userId: string,
+		input: { source: { url: string } | { file: File }; alt?: string | undefined },
+		signal?: AbortSignal,
+	): Promise<PortfolioImage> => {
+		await requireEnabled(userId);
+		await requirePortfolio(userId);
+		const file = "file" in input.source ? input.source.file : await fetchPicture(input.source.url, signal);
+		const picture = await readUploadedPicture(file, PORTFOLIO_UPLOAD.imageSide, false);
+		// The page serves the bytes as stored: where and with what it was taken (EXIF GPS, XMP, IPTC) must go first.
+		const stripped = stripPictureMetadata(picture.data, picture.contentType);
+		if (!stripped || !readPortfolioImageHeader(stripped.data).ok) throw portfolioErrors.imageInvalid("unreadable");
+		// A photo turned by its orientation (5–8: a quarter turn) shows with its sides swapped.
+		const turned = stripped.orientation >= 5;
+		const width = turned ? picture.height : picture.width;
+		const height = turned ? picture.width : picture.height;
+		const key = `uploads/${userId}/pictures/portfolio/${randomUUID()}.${picture.extension}`;
+		await recordUploads(userId, [{ kind: "image", key, bytes: stripped.data.byteLength, width, height }]);
+		await storeRecordedFiles([{ key, data: stripped.data, contentType: picture.contentType }]);
+		return { key, width, height, alt: (input.alt ?? "").trim().slice(0, PORTFOLIO_LIMITS.text.alt) };
 	},
 
 	/**

@@ -44,6 +44,10 @@ msgstr "“{fileName}”: {message}"
 msgid "“{name}” moved to Trash"
 msgstr "“{name}” moved to Trash"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "“{old}” has its default title again"
+msgstr "“{old}” has its default title again"
+
 #: src/features/resume/editor/check/issues.ts
 msgid "“{title}” isn't a heading systems look for"
 msgstr "“{title}” isn't a heading systems look for"
@@ -88,6 +92,10 @@ msgstr "(no header)"
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "(opens in a new tab)"
 msgstr "(opens in a new tab)"
+
+#: src/features/portfolio/assistant/changes.tsx
+msgid "(show it in the editor)"
+msgstr "(show it in the editor)"
 
 #: src/features/portfolio/editor/intro-effect.tsx
 msgid "(theme default)"
@@ -163,6 +171,11 @@ msgstr "{0, plural, one {# application updated} other {# applications updated}}"
 #: src/features/career/coach-chat.tsx
 msgid "{0, plural, one {# application} other {# applications}}"
 msgstr "{0, plural, one {# application} other {# applications}}"
+
+#. placeholder {0}: failures.length
+#: src/features/portfolio/assistant/changes.tsx
+msgid "{0, plural, one {# change couldn't be made:} other {# changes couldn't be made:}}"
+msgstr "{0, plural, one {# change couldn't be made:} other {# changes couldn't be made:}}"
 
 #. placeholder {0}: state?.characters ?? 0
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
@@ -886,6 +899,10 @@ msgstr "{kind} interview"
 #: src/features/career/coach-thread.tsx
 msgid "{label} connection"
 msgstr "{label} connection"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "{label}: {value}"
+msgstr "{label}: {value}"
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "{label}: {visits} visits"
@@ -1650,6 +1667,7 @@ msgstr "Academic"
 msgid "Accent"
 msgstr "Accent"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Accent color"
@@ -2309,6 +2327,10 @@ msgstr "Add your WhatsApp number in Contact, or the button won't show."
 msgid "Added {0} at {1}"
 msgstr "Added {0} at {1}"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added a {type} block to “{workName}”"
+msgstr "Added a {type} block to “{workName}”"
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr "Added by Rezumi"
@@ -2321,6 +2343,34 @@ msgstr "Added by you"
 #: src/features/billing/admin/customer.tsx
 msgid "Added credits expire in (days)"
 msgstr "Added credits expire in (days)"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the client “{name}”"
+msgstr "Added the client “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the number “{name}” to “{workName}”"
+msgstr "Added the number “{name}” to “{workName}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the number “{name}” to the intro"
+msgstr "Added the number “{name}” to the intro"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the section “{name}”"
+msgstr "Added the section “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the service “{name}”"
+msgstr "Added the service “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the testimonial from {name}"
+msgstr "Added the testimonial from {name}"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the work “{name}”"
+msgstr "Added the work “{name}”"
 
 #: src/features/career/workspace/fit.tsx
 msgid "Added to Prepare"
@@ -2944,6 +2994,7 @@ msgid "Applied"
 msgstr "Applied"
 
 #: src/features/career/workspace/messages.tsx
+#: src/features/portfolio/assistant/changes.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgctxt "A proposed change has been applied"
 msgid "Applied"
@@ -2968,6 +3019,11 @@ msgid "Applied. The application is updated."
 msgstr "Applied. The application is updated."
 
 #: src/features/career/shared.tsx
+msgid "Apply"
+msgstr "Apply"
+
+#: src/features/portfolio/assistant/changes.tsx
+msgctxt "Put the assistant's changes into the portfolio"
 msgid "Apply"
 msgstr "Apply"
 
@@ -3769,18 +3825,86 @@ msgstr "Change your plan"
 msgid "Change, before → after, chart, context"
 msgstr "Change, before → after, chart, context"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed a setting"
+msgstr "Changed a setting"
+
 #: src/routes/builder/letter/-components/letter-bar.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Changed elsewhere"
 msgstr "Changed elsewhere"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed how search engines show your page"
+msgstr "Changed how search engines show your page"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the colors"
+msgstr "Changed the colors"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the contact options"
+msgstr "Changed the contact options"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the fonts"
+msgstr "Changed the fonts"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the intro background"
+msgstr "Changed the intro background"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the intro effect"
+msgstr "Changed the intro effect"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the intro's buttons"
+msgstr "Changed the intro's buttons"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the layouts"
+msgstr "Changed the layouts"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the photo"
+msgstr "Changed the photo"
+
 #: src/features/assistant/conversation.tsx
 msgid "Changed the resume directly (an earlier conversation)"
 msgstr "Changed the resume directly (an earlier conversation)"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the theme"
+msgstr "Changed the theme"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed which items show"
+msgstr "Changed which items show"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed which items show in {section}"
+msgstr "Changed which items show in {section}"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed which sections show"
+msgstr "Changed which sections show"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed your availability"
+msgstr "Changed your availability"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed your location details"
+msgstr "Changed your location details"
+
 #: src/dialogs/resume/index.tsx
 msgid "Changed your mind? Rename your resume to something more descriptive."
 msgstr "Changed your mind? Rename your resume to something more descriptive."
+
+#: src/features/portfolio/assistant/changes.tsx
+msgid "Changes"
+msgstr "Changes"
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Changes made here stay in this resume."
@@ -3799,6 +3923,10 @@ msgstr "Changing it keeps the old address working: it forwards to the new one."
 #: src/features/settings/account/profile.tsx
 msgid "Changing it sends a confirmation to the new address. Your username is part of every public link."
 msgstr "Changing it sends a confirmation to the new address. Your username is part of every public link."
+
+#: src/features/assistant/conversation.tsx
+msgid "Changing the portfolio…"
+msgstr "Changing the portfolio…"
 
 #: src/dialogs/auth/change-password.tsx
 msgid "Changing your password…"
@@ -4786,6 +4914,11 @@ msgstr "Couldn't change the design. Try again."
 msgid "Couldn't change the email. Try again."
 msgstr "Couldn't change the email. Try again."
 
+#. placeholder {0}: part.errorText
+#: src/features/assistant/conversation.tsx
+msgid "Couldn't change the portfolio: {0}"
+msgstr "Couldn't change the portfolio: {0}"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Couldn't change the schedule. Try again."
 msgstr "Couldn't change the schedule. Try again."
@@ -5197,6 +5330,11 @@ msgstr "Couldn't save the follow-up. Try again."
 #: src/features/applications/components/application-notes.tsx
 msgid "Couldn't save the notes. Try again."
 msgstr "Couldn't save the notes. Try again."
+
+#. placeholder {0}: part.errorText
+#: src/features/assistant/conversation.tsx
+msgid "Couldn't save the picture: {0}"
+msgstr "Couldn't save the picture: {0}"
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Couldn't save the posting. Try again."
@@ -5773,6 +5911,7 @@ msgid "Danish"
 msgstr "Danish"
 
 #: src/features/command-palette/pages/preferences/index.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/libs/theme.ts
 msgid "Dark"
@@ -5862,6 +6001,7 @@ msgstr "Dear hiring team,"
 msgid "Debrief"
 msgstr "Debrief"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Default"
@@ -6158,6 +6298,7 @@ msgstr "Details from the provider:"
 msgid "Details saved inside the file, such as the author's name, are published with it."
 msgstr "Details saved inside the file, such as the author's name, are published with it."
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Device"
 msgstr "Device"
@@ -6762,6 +6903,38 @@ msgstr "Edit…"
 msgid "Edited"
 msgstr "Edited"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited a {type} block in “{workName}”"
+msgstr "Edited a {type} block in “{workName}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the client “{name}”"
+msgstr "Edited the client “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the number “{name}” in “{workName}”"
+msgstr "Edited the number “{name}” in “{workName}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the number “{name}” in the intro"
+msgstr "Edited the number “{name}” in the intro"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the section “{name}”"
+msgstr "Edited the section “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the service “{name}”"
+msgstr "Edited the service “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the testimonial from {name}"
+msgstr "Edited the testimonial from {name}"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the work “{name}”"
+msgstr "Edited the work “{name}”"
+
 #: src/features/resume/editor/page-overlay.tsx
 msgid "Editing"
 msgstr "Editing"
@@ -6854,6 +7027,7 @@ msgstr "Email, pay_… or ID"
 msgid "Emailed"
 msgstr "Emailed"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Embed"
 msgstr "Embed"
@@ -7590,6 +7764,7 @@ msgstr "Font weight"
 msgid "Font weights"
 msgstr "Font weights"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Fonts"
 msgstr "Fonts"
@@ -8196,6 +8371,7 @@ msgstr "Heading 3"
 msgid "Heading changed"
 msgstr "Heading changed"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
@@ -8241,6 +8417,34 @@ msgstr "Help me turn an accomplishment into a Situation, Task, Action, Result an
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Hex color"
 msgstr "Hex color"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid “{item}” in {section}"
+msgstr "Hid “{item}” in {section}"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid an item in {section}"
+msgstr "Hid an item in {section}"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the location in the intro"
+msgstr "Hid the location in the intro"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the photo in the intro"
+msgstr "Hid the photo in the intro"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the Rezumi badge"
+msgstr "Hid the Rezumi badge"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the section “{name}”"
+msgstr "Hid the section “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the work “{name}”"
+msgstr "Hid the work “{name}”"
 
 #: src/components/level/combobox.tsx
 #: src/features/portfolio/works/work-editor.tsx
@@ -8466,6 +8670,10 @@ msgstr "I can see this {kind} and the {0} posting. Suggestions come back as edit
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
 msgstr "I can see this {kind}. Suggestions come back as edits you can accept one by one."
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "I can see your portfolio. Changes show on the page at once, and you can undo each reply."
+msgstr "I can see your portfolio. Changes show on the page at once, and you can undo each reply."
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "I design apps people enjoy using, and I'm looking for my next team."
@@ -8813,6 +9021,7 @@ msgstr "Intro"
 msgid "Intro background"
 msgstr "Intro background"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-effect.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Intro effect"
@@ -9557,6 +9766,7 @@ msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligatures can drop letters out of words such as \"workflow\"."
 
 #: src/features/command-palette/pages/preferences/index.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/libs/theme.ts
 msgid "Light"
@@ -9587,6 +9797,7 @@ msgid "Lines this close can run together when read. Use at least {minimum}."
 msgstr "Lines this close can run together when read. Use at least {minimum}."
 
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/link-block.tsx
@@ -9825,6 +10036,7 @@ msgstr "Local time"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/page-text.ts
@@ -10184,6 +10396,7 @@ msgstr "Metric {0}"
 msgid "Metric on the card"
 msgstr "Metric on the card"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Metrics"
 msgstr "Metrics"
@@ -10204,6 +10417,7 @@ msgstr "Minimum base salary"
 msgid "Mixed"
 msgstr "Mixed"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Mode"
 msgstr "Mode"
@@ -10402,6 +10616,38 @@ msgstr "Move your email and phone number to the top of page one."
 msgid "Moved {0} of {1} to Trash. Locked documents were skipped."
 msgstr "Moved {0} of {1} to Trash. Locked documents were skipped."
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved a {type} block in “{workName}”"
+msgstr "Moved a {type} block in “{workName}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the client “{name}”"
+msgstr "Moved the client “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the number “{name}” in “{workName}”"
+msgstr "Moved the number “{name}” in “{workName}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the number “{name}” in the intro"
+msgstr "Moved the number “{name}” in the intro"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the section “{name}”"
+msgstr "Moved the section “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the service “{name}”"
+msgstr "Moved the service “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the testimonial from {name}"
+msgstr "Moved the testimonial from {name}"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the work “{name}”"
+msgstr "Moved the work “{name}”"
+
 #. placeholder {0}: getStageLabel(entry.stage)
 #. placeholder {0}: getStageLabel(status)
 #: src/features/applications/components/detail/activity.tsx
@@ -10436,6 +10682,7 @@ msgstr "My role"
 #: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
@@ -11069,11 +11316,17 @@ msgstr "Norwegian"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/career/workspace/messages.tsx
+#: src/features/portfolio/assistant/changes.tsx
 msgid "Not applied"
 msgstr "Not applied"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/next-step.ts
+msgid "Not applied yet"
+msgstr "Not applied yet"
+
+#: src/features/portfolio/assistant/changes.tsx
+msgctxt "The assistant's changes, not in the portfolio yet"
 msgid "Not applied yet"
 msgstr "Not applied yet"
 
@@ -11228,6 +11481,10 @@ msgstr "Not scored"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "Not selected"
+
+#: src/features/portfolio/assistant/document.ts
+msgid "Not sent: the assistant needs your latest changes saved first. {reason}"
+msgstr "Not sent: the assistant needs your latest changes saved first. {reason}"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -11918,6 +12175,7 @@ msgstr "Page 1 · {formatLabel}"
 msgid "Page address"
 msgstr "Page address"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Page language"
@@ -12237,6 +12495,7 @@ msgstr "Payments"
 msgid "Payments aren't set up on this server."
 msgstr "Payments aren't set up on this server."
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "PDF"
 msgstr "PDF"
@@ -12338,6 +12597,7 @@ msgstr "Phone (optional)"
 msgid "Phones"
 msgstr "Phones"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/profile/sources/source-review.tsx
@@ -12375,6 +12635,10 @@ msgstr "Photos and cameras"
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Pick a look for your first resume"
 msgstr "Pick a look for your first resume"
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Pick a theme and colors that fit my field"
+msgstr "Pick a theme and colors that fit my field"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Pick a time after now."
@@ -12428,6 +12692,7 @@ msgstr "Picture {0}"
 msgid "Picture viewer"
 msgstr "Picture viewer"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Pictures"
 msgstr "Pictures"
@@ -12548,9 +12813,12 @@ msgstr "Polish"
 msgid "Polishing"
 msgstr "Polishing"
 
+#: src/features/assistant/assistant-panel.tsx
+#: src/features/command-palette/pages/resumes.tsx
 #: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/portfolio/admin/review-page.tsx
+#: src/features/portfolio/assistant/document.ts
 #: src/features/portfolio/portfolio-page.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 #: src/routes/builder/portfolio/index.tsx
@@ -13283,6 +13551,10 @@ msgid "Read the page"
 msgstr "Read the page"
 
 #: src/features/assistant/conversation.tsx
+msgid "Read the portfolio"
+msgstr "Read the portfolio"
+
+#: src/features/assistant/conversation.tsx
 msgid "Read the resume"
 msgstr "Read the resume"
 
@@ -13537,6 +13809,7 @@ msgstr "Rectangle (full width)"
 msgid "Red"
 msgstr "Red"
 
+#: src/features/portfolio/assistant/changes.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/chrome.tsx
 msgid "Redo"
@@ -13831,6 +14104,74 @@ msgstr "Remove the password?"
 msgid "Remove this photo?"
 msgstr "Remove this photo?"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a {type} block from “{workName}”"
+msgstr "Removed a {type} block from “{workName}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a block from “{workName}”"
+msgstr "Removed a block from “{workName}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a client"
+msgstr "Removed a client"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a number from “{workName}”"
+msgstr "Removed a number from “{workName}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a number from the intro"
+msgstr "Removed a number from the intro"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a section"
+msgstr "Removed a section"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a service"
+msgstr "Removed a service"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a testimonial"
+msgstr "Removed a testimonial"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a work"
+msgstr "Removed a work"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the client “{name}”"
+msgstr "Removed the client “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the number “{name}” from “{workName}”"
+msgstr "Removed the number “{name}” from “{workName}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the number “{name}” from the intro"
+msgstr "Removed the number “{name}” from the intro"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the photo"
+msgstr "Removed the photo"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the section “{name}”"
+msgstr "Removed the section “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the service “{name}”"
+msgstr "Removed the service “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the testimonial from {name}"
+msgstr "Removed the testimonial from {name}"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the work “{name}”"
+msgstr "Removed the work “{name}”"
+
 #: src/features/career/coach.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/portfolio/editor/content-panel.tsx
@@ -13861,6 +14202,14 @@ msgstr "Rename version"
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Rename…"
 msgstr "Rename…"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Renamed “{old}” to “{title}”"
+msgstr "Renamed “{old}” to “{title}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Renamed sections"
+msgstr "Renamed sections"
 
 #: src/features/billing/purchase.ts
 msgid "Renewal"
@@ -13922,6 +14271,10 @@ msgstr "Reorder {title}"
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Reorder the {0} block"
 msgstr "Reorder the {0} block"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Reordered the sections"
+msgstr "Reordered the sections"
 
 #. placeholder {0}: jd.stuffedTerms.join(", ")
 #: src/features/ats-checker/report/jd-coverage.tsx
@@ -14236,6 +14589,10 @@ msgstr "Review my answer"
 msgid "Review my answer sends the question, what you said, this posting and your Profile to {providerName}."
 msgstr "Review my answer sends the question, what you said, this posting and your Profile to {providerName}."
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Review my portfolio and fix what's weak"
+msgstr "Review my portfolio and fix what's weak"
+
 #: src/features/career/workspace/apply.tsx
 msgid "Review required form answers and remove unsupported claims."
 msgstr "Review required form answers and remove unsupported claims."
@@ -14304,6 +14661,14 @@ msgstr "Rewriting…"
 #: src/features/portfolio/ai/rewrite-menu.tsx
 msgid "Rewritten."
 msgstr "Rewritten."
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Rewrote {about}"
+msgstr "Rewrote {about}"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Rewrote the greeting"
+msgstr "Rewrote the greeting"
 
 #: src/features/docs/header.tsx
 #: src/routes/_home/-sections/header.tsx
@@ -14493,6 +14858,11 @@ msgstr "Sales"
 msgid "Sales Executive"
 msgstr "Sales Executive"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Same as my Profile"
+msgstr "Same as my Profile"
+
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Same as my resume"
@@ -14666,6 +15036,10 @@ msgstr "saved {0}"
 msgid "Saved {0} to Applications"
 msgstr "Saved {0} to Applications"
 
+#: src/features/assistant/conversation.tsx
+msgid "Saved a picture"
+msgstr "Saved a picture"
+
 #. placeholder {0}: story.data.title
 #: src/features/career/coach-chat.tsx
 msgid "Saved a story: {0}"
@@ -14729,6 +15103,10 @@ msgstr "Saves job postings from your browser to your applications."
 #: src/features/resume/share/address-field.tsx
 msgid "Saving {0}/{username}/{slug}… Copy is available after saving."
 msgstr "Saving {0}/{username}/{slug}… Copy is available after saving."
+
+#: src/features/assistant/conversation.tsx
+msgid "Saving a picture…"
+msgstr "Saving a picture…"
 
 #: src/features/resume/builder/draft.ts
 msgid "Saving is taking longer than expected. Your changes are still open."
@@ -15527,6 +15905,34 @@ msgstr "Show up. Apply. Repeat."
 msgid "Show your work, results and services on one page that looks good on any phone, at rezumi.app/your-username."
 msgstr "Show your work, results and services on one page that looks good on any phone, at rezumi.app/your-username."
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed “{item}” in {section}"
+msgstr "Showed “{item}” in {section}"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed an item in {section}"
+msgstr "Showed an item in {section}"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the location in the intro"
+msgstr "Showed the location in the intro"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the photo in the intro"
+msgstr "Showed the photo in the intro"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the Rezumi badge"
+msgstr "Showed the Rezumi badge"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the section “{name}”"
+msgstr "Showed the section “{name}”"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the work “{name}”"
+msgstr "Showed the work “{name}”"
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
 msgstr "Shown in your timezone."
@@ -16132,6 +16538,10 @@ msgstr "Stopped. Any credits it held come back to you."
 msgid "Stopped. No edits were proposed."
 msgstr "Stopped. No edits were proposed."
 
+#: src/features/assistant/conversation.tsx
+msgid "Stopped. Nothing was changed."
+msgstr "Stopped. Nothing was changed."
+
 #: src/features/portfolio/works/storage-meter.tsx
 msgid "Storage for pictures and PDFs"
 msgstr "Storage for pictures and PDFs"
@@ -16640,6 +17050,7 @@ msgstr "Testing your server's search…"
 msgid "Testing…"
 msgstr "Testing…"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/section-forms.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -17079,10 +17490,12 @@ msgstr "The payments couldn't load."
 msgid "The PDF couldn't be uploaded. Check your connection and try again."
 msgstr "The PDF couldn't be uploaded. Check your connection and try again."
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "The photo in my Profile"
 msgstr "The photo in my Profile"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "The photo on my resume"
 msgstr "The photo on my resume"
@@ -17305,6 +17718,7 @@ msgstr "Their role and company"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/portfolio/theme-gallery.tsx
 #: src/features/settings/general.tsx
@@ -18140,6 +18554,10 @@ msgstr "Transcribing with {model}…"
 msgid "Transcript copied"
 msgstr "Transcript copied"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Translate everything to English"
+msgstr "Translate everything to English"
+
 #: src/features/portfolio/ai/rewrite-menu.tsx
 msgid "Translate to {language}"
 msgstr "Translate to {language}"
@@ -18220,6 +18638,10 @@ msgstr "Try a sample"
 msgid "Try again"
 msgstr "Try again"
 
+#: src/features/portfolio/assistant/document.ts
+msgid "Try again in a moment."
+msgstr "Try again in a moment."
+
 #: src/features/billing/buy-plans.tsx
 msgid "Try again later. Your current plan and credits aren't affected."
 msgstr "Try again later. Your current plan and credits aren't affected."
@@ -18255,6 +18677,10 @@ msgstr "Try with a sample resume"
 #: src/libs/locale.ts
 msgid "Turkish"
 msgstr "Turkish"
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Turn my resume projects into works"
+msgstr "Turn my resume projects into works"
 
 #: src/features/ats-checker/messages.ts
 msgid "Turn off discretionary ligatures when exporting."
@@ -18392,6 +18818,7 @@ msgstr "Underline links"
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/portfolio/ai/apply.ts
+#: src/features/portfolio/assistant/changes.tsx
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/list-undo.ts
 #: src/features/portfolio/editor/rich-text-editor.tsx
@@ -18415,6 +18842,10 @@ msgstr "Undo"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Undo resume change"
 msgstr "Undo resume change"
+
+#: src/features/portfolio/assistant/changes.tsx
+msgid "Undone"
+msgstr "Undone"
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Unit"
@@ -18493,6 +18924,7 @@ msgstr "Until now it opened your resume. Your resume stays at <0>{0}</0>, and yo
 msgid "Untitled"
 msgstr "Untitled"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled client"
@@ -18502,26 +18934,34 @@ msgstr "Untitled client"
 msgid "Untitled letter"
 msgstr "Untitled letter"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Untitled number"
+msgstr "Untitled number"
+
 #: src/features/documents/use-start-document.ts
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Untitled resume"
 msgstr "Untitled resume"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/sections.ts
 msgid "Untitled section"
 msgstr "Untitled section"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled service"
 msgstr "Untitled service"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled testimonial"
 msgstr "Untitled testimonial"
 
 #: src/features/portfolio/ai/draft-dialog.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/portfolio/works/works-form.tsx
@@ -19002,6 +19442,7 @@ msgstr "Very few words were recovered for a resume."
 msgid "Very little text was recovered for this many pages."
 msgstr "Very little text was recovered for this many pages."
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Video"
 msgstr "Video"
@@ -19729,6 +20170,10 @@ msgstr "Write \"Present\" as the end date of your current role."
 msgid "Write a draft with AI"
 msgstr "Write a draft with AI"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Write a stronger intro"
+msgstr "Write a stronger intro"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."
 msgstr "Write down what they asked while it's fresh. The coach compares your answers with your stories."
@@ -20078,6 +20523,10 @@ msgstr "Your browser can't take dictation here. Type your answer instead."
 #: src/features/career/workspace/practise.tsx
 msgid "Your browser turns your speech into text. Depending on the browser, its maker may process the audio (Google in Chrome, Apple in Safari)."
 msgstr "Your browser turns your speech into text. Depending on the browser, its maker may process the audio (Google in Chrome, Apple in Safari)."
+
+#: src/features/portfolio/editor/webmcp.ts
+msgid "Your browser's AI agent changed your portfolio."
+msgstr "Your browser's AI agent changed your portfolio."
 
 #: src/features/letters/webmcp.ts
 msgid "Your browser's AI agent edited this letter."
@@ -20486,6 +20935,10 @@ msgstr "Your portfolio changed in another tab or device. Reload it to see the la
 msgid "Your portfolio changed somewhere else"
 msgstr "Your portfolio changed somewhere else"
 
+#: src/features/portfolio/assistant/document.ts
+msgid "Your portfolio changed somewhere else. Choose the version to keep."
+msgstr "Your portfolio changed somewhere else. Choose the version to keep."
+
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Your portfolio couldn't be saved. Undo your last change, or contact support if this keeps happening."
 msgstr "Your portfolio couldn't be saved. Undo your last change, or contact support if this keeps happening."
@@ -20511,6 +20964,10 @@ msgstr "Your portfolio is too large to save ({0} KB of {1} KB). Shorten some tex
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio is too large to save. Shorten some text or remove a few blocks."
 msgstr "Your portfolio is too large to save. Shorten some text or remove a few blocks."
+
+#: src/features/portfolio/assistant/document.ts
+msgid "Your portfolio isn't open anymore. Reload the page."
+msgstr "Your portfolio isn't open anymore. Reload the page."
 
 #: src/features/billing/plan.ts
 msgid "Your portfolio shows a small Made with Rezumi badge at the bottom of the page."

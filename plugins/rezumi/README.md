@@ -1,6 +1,6 @@
 # Rezumi
 
-Job-search help for your AI agent, built around [Rezumi](https://rezumi.app), the free and open-source resume builder. The plugin bundles eight skills and the Rezumi MCP server, so your agent can read and edit the resumes, cover letters and job applications in your account.
+Job-search help for your AI agent, built around [Rezumi](https://rezumi.app), the free and open-source resume builder. The plugin bundles nine skills and the Rezumi MCP server, so your agent can read and edit the resumes, cover letters, portfolio and job applications in your account.
 
 ## Skills
 
@@ -10,6 +10,7 @@ Job-search help for your AI agent, built around [Rezumi](https://rezumi.app), th
 | `resume-content-guide`    | Decides what belongs on a resume for your situation, country and industry, and audits an existing one.  |
 | `resume-bullet-writer`    | Turns duties into impact bullets, asking for real numbers or honest ranges.                             |
 | `resume-tailor`           | Fits one resume to one job posting on a copy, with gap questions and an optional cover letter.          |
+| `portfolio-builder`       | Builds and edits your portfolio website from your resume and your work, and publishes it when you say.  |
 | `job-application-manager` | Tracks applications, stages, follow-ups and the resume version you sent, and drafts messages.           |
 | `interview-prep`          | Builds a story bank, a company brief and likely questions for a specific interview, then debriefs it.   |
 | `mock-interview`          | Plays the interviewer for a specific job and scores your answers with quotes.                           |

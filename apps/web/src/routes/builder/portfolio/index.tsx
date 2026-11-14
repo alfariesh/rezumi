@@ -4,6 +4,7 @@ import { createFileRoute, redirect, useBlocker } from "@tanstack/react-router";
 import { useEffect } from "react";
 import z from "zod";
 import { PortfolioShell } from "./-components/portfolio-shell";
+import { forgetPortfolioChanges } from "@/features/portfolio/assistant/records";
 import { shouldStayInEditor } from "@/features/portfolio/editor/leave";
 import { usePortfolioEditorStore } from "@/features/portfolio/editor/store";
 import { usePortfolioEditorUi } from "@/features/portfolio/editor/ui";
@@ -14,6 +15,9 @@ import { createNoindexFollowMeta } from "@/libs/seo";
 const searchSchema = z.object({
 	// Content is the default and stays out of the URL.
 	mode: z.enum(["design", "share"]).optional().catch(undefined),
+	// The assistant on a conversation ("new" for a fresh one), and a link's message for its composer (sent on Send).
+	assistant: z.string().optional().catch(undefined),
+	ask: z.string().optional().catch(undefined),
 });
 
 /**
@@ -59,6 +63,7 @@ function RouteComponent() {
 		() => () => {
 			usePortfolioEditorStore.getState().close();
 			usePortfolioEditorUi.getState().reset();
+			forgetPortfolioChanges();
 		},
 		[],
 	);

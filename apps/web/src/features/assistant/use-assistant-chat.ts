@@ -12,6 +12,7 @@ import {
 import { useLayoutEffect, useMemo, useRef } from "react";
 import { agentMessageMetadataSchema } from "@rezumi/ai/tools/agent-tool-contracts";
 import { generateId } from "@rezumi/utils/string";
+import { DocumentNotReadyError } from "./send-guard";
 import { openCreditsDialogForError } from "@/features/billing/ai-source-menu";
 import { streamClient } from "@/libs/orpc/client";
 
@@ -48,6 +49,11 @@ type UseAssistantChatInput = {
 	context: MessageContext;
 	/** Which AI the conversation runs on, while the account chooses; each reply on Rezumi AI costs one Coach turn. */
 	aiSource?: "rezumi" | "own" | undefined;
+	/**
+	 * Runs before every request, answers and retries included: null to send, else why not. A refusal fails the request
+	 * with a `DocumentNotReadyError` carrying the reason.
+	 */
+	beforeSend?: (() => Promise<string | null>) | undefined;
 	onFinish: () => void;
 };
 
@@ -61,13 +67,16 @@ export function useAssistantChat({
 	resume,
 	context,
 	aiSource,
+	beforeSend,
 	onFinish,
 }: UseAssistantChatInput) {
 	const contextRef = useRef(context);
 	const aiSourceRef = useRef(aiSource);
+	const beforeSendRef = useRef(beforeSend);
 	useLayoutEffect(() => {
 		contextRef.current = context;
 		aiSourceRef.current = aiSource;
+		beforeSendRef.current = beforeSend;
 	});
 
 	const transport = useMemo<ChatTransport<AgentUIMessage>>(
@@ -75,6 +84,8 @@ export function useAssistantChat({
 			async sendMessages(options) {
 				const message = options.messages.at(-1);
 				if (!message) throw new Error("No message to send.");
+				const problem = (await beforeSendRef.current?.()) ?? null;
+				if (problem) throw new DocumentNotReadyError(problem);
 				const attachmentIds = attachmentIdsOf(options.body);
 				// Every reply is its own Rezumi AI action, with its own key.
 				const source = aiSourceRef.current ? { aiSource: aiSourceRef.current, idempotencyKey: generateId() } : {};

@@ -1,15 +1,20 @@
 import type { Transaction } from "../billing/account";
 import type { DbOrTx } from "@rezumi/db/client";
+import type { PortfolioAiViewInput, PortfolioEditPlan, PortfolioUpload } from "@rezumi/portfolio/edits";
 import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
+import type { PortfolioEdit } from "@rezumi/schema/portfolio/edits";
 import type { PortfolioStatisticsRange } from "@rezumi/schema/portfolio/statistics";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import type { ProfileData } from "@rezumi/schema/profile/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
+import { ORPCError } from "@orpc/server";
 import { hash } from "bcryptjs";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
+import { env } from "@rezumi/env/server";
+import { applyPortfolioEdits, portfolioAiView } from "@rezumi/portfolio/edits";
 import { portfolioFileKeys, portfolioFileKeysInStoredData } from "@rezumi/portfolio/files";
 import { createInitialPortfolioData, workFromResumeProject } from "@rezumi/portfolio/initial";
 import { sanitizePortfolioData } from "@rezumi/portfolio/rich-text";
@@ -22,6 +27,7 @@ import { profileService } from "../profile/service";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
 import { enabledAccount, requireEnabled } from "./access";
 import { deletePortfolioMessage, listPortfolioMessages, setPortfolioMessageRead } from "./contact";
+import { portfolioEditPlan, unplacedUploads } from "./edits";
 import { portfolioErrors } from "./errors";
 import { lockPortfolio, markFileUsage, OVERDUE, readStoredData, storedFiles } from "./file-store";
 import { portfolioMedia } from "./media";
@@ -254,6 +260,65 @@ async function setVisitorPassword(userId: string, password: string | null): Prom
 	return toDto(row, parsePortfolioData(row.data), userId);
 }
 
+/**
+ * What AI reads and edits (Phase 14): the saved portfolio, where its career sections come from, whether it's live and
+ * where, its version, the pictures uploaded but not placed yet, and what the plan allows. The assistant keeps it as
+ * its working copy for a reply; `aiView` turns it into what a model reads.
+ */
+export type PortfolioAiState = Omit<PortfolioAiViewInput, "plan" | "uploads"> & {
+	plan: PortfolioEditPlan;
+	/** Pictures uploaded but not placed in the saved data. */
+	uploads: PortfolioUpload[];
+	updatedAt: Date;
+};
+
+async function readAiState(userId: string): Promise<PortfolioAiState> {
+	await requireEnabled(userId);
+	const [row] = await db
+		.select({
+			data: schema.portfolio.data,
+			sourceResumeId: schema.portfolio.sourceResumeId,
+			isPublic: schema.portfolio.isPublic,
+			suspendedAt: schema.portfolio.suspendedAt,
+			updatedAt: schema.portfolio.updatedAt,
+			username: schema.user.username,
+		})
+		.from(schema.portfolio)
+		.innerJoin(schema.user, eq(schema.portfolio.userId, schema.user.id))
+		.where(eq(schema.portfolio.userId, userId));
+	if (!row) throw portfolioErrors.notFound();
+	const [source, sourceName, uploads, plan] = await Promise.all([
+		// A source resume whose data can't be read leaves the career sections out, as the page does.
+		readPortfolioSource(userId, row.sourceResumeId).catch((error: unknown) => {
+			if (error instanceof ORPCError && error.code === "PORTFOLIO_SOURCE_INVALID") return null;
+			throw error;
+		}),
+		row.sourceResumeId
+			? db
+					.select({ name: schema.resume.name })
+					.from(schema.resume)
+					.where(and(eq(schema.resume.id, row.sourceResumeId), eq(schema.resume.userId, userId)))
+					.then(([resume]) => resume?.name ?? null)
+			: null,
+		unplacedUploads(userId),
+		portfolioEditPlan(userId),
+	]);
+	return {
+		data: parsePortfolioData(row.data),
+		source: { from: row.sourceResumeId ? "resume" : "profile", name: sourceName, resume: source?.data ?? null },
+		status: {
+			published: row.isPublic && row.suspendedAt === null,
+			url: new URL(`/${encodeURIComponent(row.username)}`, env.APP_URL).href,
+		},
+		uploads,
+		plan,
+		updatedAt: row.updatedAt,
+	};
+}
+
+/** An applied edit as a caller sees it: where it was in the call, what it did, and the id of an item it added. */
+type AppliedEditSummary = { index: number; summary: string; id?: string; ref?: string };
+
 export const portfolioService = {
 	// Uploads, links and file deletion (`media.ts`).
 	...portfolioMedia,
@@ -394,6 +459,66 @@ export const portfolioService = {
 			.where(eq(schema.portfolio.userId, userId));
 		if (!row) throw portfolioErrors.notFound();
 		return { data: parsePortfolioData(row.data), source: await readPortfolioSource(userId, row.sourceResumeId) };
+	},
+
+	/** The portfolio as AI works on it (`PortfolioAiState`): the in-app assistant keeps it as a reply's working copy. */
+	aiState: readAiState,
+
+	/**
+	 * The portfolio as a model reads it (`portfolioAiView`): every item with its id, the career sections from the source
+	 * (read-only), the pictures it may place, its limits and what the plan locks. Contact details are never included.
+	 */
+	aiView: async (userId: string) => {
+		const state = await readAiState(userId);
+		const placed = new Set(portfolioFileKeys(state.data));
+		const uploads: PortfolioUpload[] = state.uploads.filter((upload) => !placed.has(upload.key));
+		return {
+			view: portfolioAiView({ ...state, uploads }),
+			updatedAt: state.updatedAt,
+			published: state.status.published,
+			url: state.status.url,
+			uploads,
+			plan: state.plan,
+		};
+	},
+
+	/**
+	 * Applies AI edits (`@rezumi/portfolio/edits`, strict) to the saved portfolio in one transaction under its lock, and
+	 * saves the result the way `update` does (cleaned, size-checked, the plan and file usage checked). Edits address
+	 * items by id, so they apply to the latest data; `expectedUpdatedAt`, when given, must still be its version. An edit
+	 * that fails is reported with the reason and the rest still apply; when none applies, nothing is written and the
+	 * version stays. Pictures an edit places are the data's own or this account's uploads not placed yet.
+	 */
+	applyEdits: async (
+		userId: string,
+		input: { title?: string | undefined; edits: readonly PortfolioEdit[]; expectedUpdatedAt?: Date | undefined },
+	): Promise<{
+		title: string | null;
+		applied: AppliedEditSummary[];
+		failed: { index: number; error: string }[];
+		updatedAt: Date;
+	}> => {
+		await requireEnabled(userId);
+		return db.transaction(async (tx) => {
+			const existing = await lockPortfolio(tx, userId);
+			if (!existing) throw portfolioErrors.notFound();
+			if (input.expectedUpdatedAt && existing.updatedAt.getTime() !== input.expectedUpdatedAt.getTime())
+				throw portfolioErrors.conflict(existing.updatedAt);
+			const current = parsePortfolioData(await readStoredData(tx, userId));
+			const [plan, uploads] = await Promise.all([portfolioEditPlan(userId, tx), unplacedUploads(userId, tx)]);
+			const result = applyPortfolioEdits(current, input.edits, { mode: "strict", plan, images: uploads });
+			const applied = result.applied.map((edit): AppliedEditSummary => ({
+				index: edit.index,
+				summary: edit.summary,
+				...(edit.id ? { id: edit.id } : {}),
+				...(edit.ref ? { ref: edit.ref } : {}),
+			}));
+			const title = input.title ?? null;
+			if (!applied.length) return { title, applied, failed: result.failed, updatedAt: existing.updatedAt };
+			const next = prepareData(userId, result.data);
+			const saved = await saveVersionedData(tx, userId, existing.updatedAt, () => next);
+			return { title, applied, failed: result.failed, updatedAt: saved.updatedAt };
+		});
 	},
 
 	/**

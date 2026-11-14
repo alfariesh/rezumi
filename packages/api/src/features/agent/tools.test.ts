@@ -1,6 +1,7 @@
 import type { ReadPageOutput } from "@rezumi/ai/tools/agent-tool-contracts";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
-import { buildAgentInstructions, buildAgentTools, MAX_AGENT_WEB_CALLS } from "./tools";
+import { PORTFOLIO_EDIT_GUIDE } from "@rezumi/portfolio/edits";
+import { buildAgentInstructions, buildAgentTools, buildPortfolioAgentInstructions, MAX_AGENT_WEB_CALLS } from "./tools";
 
 const page: ReadPageOutput = {
 	requestedUrl: "https://example.com/job",
@@ -125,5 +126,90 @@ describe("assistant web tools", () => {
 				canReadPage: true,
 			}),
 		).toContain("Use `search_web`");
+	});
+});
+
+describe("portfolio assistant tools", () => {
+	function buildPortfolio() {
+		const handlers = {
+			...build().handlers,
+			readDocument: vi.fn(async () => ({ name: "Portfolio", updatedAt: "2026-11-14T08:00:00.000Z", data: {} })),
+			editPortfolio: vi.fn(async () => ({
+				title: "Add Lumen",
+				edits: [
+					{
+						id: "card-1",
+						edit: { op: "add" as const, list: "works" as const, item: { id: "w1", title: "Lumen" } },
+						summary: 'Added work "Lumen"',
+						status: "pending" as const,
+						itemId: "w1",
+					},
+				],
+				failed: [],
+			})),
+			saveAttachmentImage: vi.fn(async () => ({
+				image: { key: "uploads/u/pictures/portfolio/a.webp", width: 10, height: 10, alt: "" },
+			})),
+		};
+		const tools = buildAgentTools({
+			document: "portfolio",
+			externalSearch: false,
+			signal: new AbortController().signal,
+			handlers: { ...handlers, readProfile: vi.fn(async () => ({ profile: null })) },
+		});
+		return { tools, handlers };
+	}
+
+	it("offers reading, editing and saving attached pictures instead of proposals", () => {
+		const { tools } = buildPortfolio();
+		expect(Object.keys(tools).sort()).toEqual(
+			[
+				"ask_user_question",
+				"edit_portfolio",
+				"read_attachment",
+				"read_page",
+				"read_portfolio",
+				"read_profile",
+				"save_attachment_image",
+			].sort(),
+		);
+		expect(tools.propose_edits).toBeUndefined();
+		expect(tools.read_resume).toBeUndefined();
+	});
+
+	it("returns the resolved edits for the editor and only their outcome to the model", async () => {
+		const { tools, handlers } = buildPortfolio();
+		const input = { title: "Add Lumen", edits: [{ op: "add", list: "works", item: { title: "Lumen" } }] };
+		const output = await execute(tools, "edit_portfolio", input);
+		expect(handlers.editPortfolio).toHaveBeenCalledWith(input);
+		expect(output).toMatchObject({ edits: [{ id: "card-1", status: "pending", itemId: "w1" }] });
+		const modelOutput = await tools.edit_portfolio?.toModelOutput?.({ toolCallId: "call", input, output });
+		expect(modelOutput).toEqual({
+			type: "json",
+			value: {
+				title: "Add Lumen",
+				applied: [{ summary: 'Added work "Lumen"', id: "w1" }],
+				failed: [],
+				note: expect.any(String),
+			},
+		});
+		await execute(tools, "save_attachment_image", { attachmentId: "a1", alt: "Screens" });
+		expect(handlers.saveAttachmentImage).toHaveBeenCalledWith({ attachmentId: "a1", alt: "Screens" });
+		expect(await execute(tools, "read_portfolio", {})).toMatchObject({ name: "Portfolio" });
+	});
+
+	it("puts the portfolio rules and the edit language in the instructions", () => {
+		const instructions = buildPortfolioAgentInstructions({ shared: true, searchTool: null, canReadPage: true });
+		expect(instructions).toContain("`edit_portfolio`");
+		expect(instructions).toContain("`save_attachment_image`");
+		expect(instructions).toMatch(/Never invent/);
+		expect(instructions).toMatch(/Never publish/);
+		expect(instructions.endsWith(`${PORTFOLIO_EDIT_GUIDE}\n`)).toBe(true);
+		expect(instructions).toContain("Web search is unavailable");
+		expect(instructions).not.toContain("{{");
+		const withheld = buildPortfolioAgentInstructions({ shared: false, searchTool: "search_web", canReadPage: false });
+		expect(withheld).toContain("chose not to share the portfolio");
+		expect(withheld).not.toContain(PORTFOLIO_EDIT_GUIDE);
+		expect(withheld).toContain("Use `search_web`");
 	});
 });

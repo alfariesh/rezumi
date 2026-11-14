@@ -77,6 +77,15 @@ describe("portfolio procedures while PORTFOLIO_MODE is off", () => {
 		).rejects.toMatchObject(disabled);
 		await expect(client().unfurl({ url: "https://github.com/nadia/kopi-app" })).rejects.toMatchObject(disabled);
 		await expect(client().fetchRemoteImage({ url: "https://example.com/cover.png" })).rejects.toMatchObject(disabled);
+		// What AI reads and writes (Phase 14).
+		await expect(client().aiView()).rejects.toMatchObject(disabled);
+		await expect(
+			client().applyEdits({ title: "Theme", edits: [{ op: "set", path: "theme", value: "prima" }] }),
+		).rejects.toMatchObject(disabled);
+		await expect(client().addImage({ url: "https://example.com/cover.png" })).rejects.toMatchObject(disabled);
+		await expect(
+			client().addImage({ file: new File([new Uint8Array([0xff, 0xd8, 0xff])], "a.jpg", { type: "image/jpeg" }) }),
+		).rejects.toMatchObject(disabled);
 	});
 });
 
@@ -109,10 +118,44 @@ describe("portfolio input", () => {
 			defined: true,
 			data: { bytes: expect.any(Number), max: PORTFOLIO_LIMITS.dataBytes },
 		});
+		// AI edits too: ten edits of a megabyte each are refused before anything parses or cleans them.
+		const edits = Array.from({ length: 10 }, () => ({ op: "set" as const, path: "about.content", value: content }));
+		await expect(client().applyEdits({ title: "Huge", edits })).rejects.toMatchObject({
+			code: "PORTFOLIO_TOO_LARGE",
+			status: 413,
+			defined: true,
+		});
 		// Input that isn't JSON at all is left to the schema.
 		await expect(
 			client().update({ data: { hero: { greeting: 1n } } as never, expectedUpdatedAt: new Date() }),
 		).rejects.toMatchObject({ code: "BAD_REQUEST" });
+	});
+
+	it("checks AI edits and added pictures before anything else", async () => {
+		const bad = { code: "BAD_REQUEST" };
+		await expect(
+			client().applyEdits({ title: "Odd", edits: [{ op: "rename", list: "works" }] as never }),
+		).rejects.toMatchObject(bad);
+		await expect(
+			client().applyEdits({ title: "Path", edits: [{ op: "set", path: "seo.robots", value: false }] as never }),
+		).rejects.toMatchObject(bad);
+		await expect(client().applyEdits({ title: "None", edits: [] })).rejects.toMatchObject(bad);
+		await expect(
+			client().applyEdits({
+				title: "Blocks",
+				edits: [{ op: "add", list: "blocks", item: { type: "text", html: "<p>Hi</p>" } }],
+			}),
+		).rejects.toMatchObject(bad);
+		await expect(client().addImage({})).rejects.toMatchObject(bad);
+		await expect(
+			client().addImage({
+				url: "https://example.com/a.png",
+				file: new File([new Uint8Array([1])], "a.png", { type: "image/png" }),
+			}),
+		).rejects.toMatchObject(bad);
+		await expect(
+			client().addImage({ file: new File([new Uint8Array(10 * 1024 * 1024 + 1)], "a.png", { type: "image/png" }) }),
+		).rejects.toMatchObject(bad);
 	});
 
 	it("refuses files over the upload limits before reading them", async () => {

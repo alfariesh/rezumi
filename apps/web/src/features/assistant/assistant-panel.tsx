@@ -14,6 +14,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { useConversationConnection } from "./chat";
 import { Composer, Conversation } from "./conversation";
@@ -40,10 +41,28 @@ type AssistantPanelProps = {
 	onClose: () => void;
 };
 
-const belongsTo = (thread: ThreadSummary, document: AssistantDocument) =>
-	document.kind === "letter"
-		? thread.coverLetterId === document.id
-		: thread.workingResumeId === document.id && !thread.coverLetterId;
+function belongsTo(thread: ThreadSummary, document: AssistantDocument) {
+	switch (document.kind) {
+		case "portfolio":
+			return thread.portfolioId === document.id;
+		case "letter":
+			return thread.coverLetterId === document.id;
+		default:
+			return thread.workingResumeId === document.id && !thread.coverLetterId;
+	}
+}
+
+/** What a new conversation is about: exactly one document. */
+function documentInput(document: AssistantDocument) {
+	switch (document.kind) {
+		case "portfolio":
+			return { portfolioId: document.id };
+		case "letter":
+			return { coverLetterId: document.id };
+		default:
+			return { resumeId: document.id };
+	}
+}
 
 /**
  * The assistant beside the page: it knows the open document and the posting it's for, proposes edits that appear on
@@ -89,7 +108,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 		// A list refetch must not auto-open this empty draft while its composer still holds unsent files.
 		useEditorStore.setState({ assistantThread: "new" });
 		const input = {
-			...(document.kind === "letter" ? { coverLetterId: document.id } : { resumeId: document.id }),
+			...documentInput(document),
 			...(provider ? { aiProviderId: provider.id } : {}),
 			...(ai.choice && provider ? { aiSource: provider.managed ? ("rezumi" as const) : ("own" as const) } : {}),
 		};
@@ -105,22 +124,30 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 		}
 	};
 
-	const start = async (text: string, attachments: ChatAttachment[] = []) => {
-		if (starting) return;
+	/** Starts the conversation with its first message; false when it didn't (the composer gets the message back). */
+	const start = async (text: string, attachments: ChatAttachment[] = []): Promise<boolean> => {
+		if (starting) return false;
 		setStartingText(text);
+		let started = false;
 		try {
-			const id = await ensureThread();
-			useEditorStore.setState({ assistantPrompt: text, assistantDraft: null });
-			setPromptAttachments(attachments);
-			useEditorStore.setState({ assistantThread: id });
-			draftThread.current = null;
-			useEditorStore.setState({ assistantSuggestions: null });
-			setView("thread");
-			void queryClient.invalidateQueries({ queryKey: orpc.agent.threads.list.key() });
+			const problem = (await document.beforeSend?.()) ?? null;
+			if (problem) toast.add({ type: "error", description: problem });
+			else {
+				const id = await ensureThread();
+				useEditorStore.setState({ assistantPrompt: text, assistantDraft: null });
+				setPromptAttachments(attachments);
+				useEditorStore.setState({ assistantThread: id });
+				draftThread.current = null;
+				useEditorStore.setState({ assistantSuggestions: null });
+				setView("thread");
+				void queryClient.invalidateQueries({ queryKey: orpc.agent.threads.list.key() });
+				started = true;
+			}
 		} catch (error) {
 			toastError(error, t`Couldn't start the conversation. Try again.`);
 		}
 		setStartingText(null);
+		return started;
 	};
 
 	// A question from ⌘K or Job match starts a conversation as soon as the assistant can. A link's draft never does.
@@ -267,7 +294,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 						providerId={provider?.id}
 						model={model}
 						ensureThread={ensureThread}
-						onSend={(text, attachments) => void start(text, attachments)}
+						onSend={(text, attachments) => start(text, attachments)}
 						onStop={() => undefined}
 					/>
 				</>
@@ -388,9 +415,18 @@ function Notice({ children }: { children: ReactNode }) {
 	return <p className="m-4 rounded-xl bg-default p-4 text-body-sm text-muted">{children}</p>;
 }
 
-type Suggestion = { icon: IconName; label: string; hint: string };
+type Suggestion = { icon: IconName; label: string; hint?: string };
 
 function suggestionsFor(document: AssistantDocument, prepare: boolean): Suggestion[] {
+	if (document.kind === "portfolio")
+		return [
+			{ icon: "text-align-left", label: t`Write a stronger intro` },
+			{ icon: "squares-four", label: t`Turn my resume projects into works` },
+			{ icon: "palette", label: t`Pick a theme and colors that fit my field` },
+			{ icon: "magnifying-glass", label: t`Review my portfolio and fix what's weak` },
+			{ icon: "translate", label: t`Translate everything to English` },
+		];
+
 	const tailor: Suggestion[] = document.posting
 		? [
 				{
@@ -447,7 +483,9 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 					<Trans>What should we work on?</Trans>
 				</Typography>
 				<p className="text-body-sm text-muted">
-					{document.posting ? (
+					{document.kind === "portfolio" ? (
+						<Trans>I can see your portfolio. Changes show on the page at once, and you can undo each reply.</Trans>
+					) : document.posting ? (
 						<Trans>
 							I can see this {kind} and the {document.posting.company} posting. Suggestions come back as edits you can
 							accept one by one.
@@ -501,7 +539,7 @@ function PastConversations({ threads, document, currentId, onOpen }: PastConvers
 	const confirm = useConfirm();
 	const mine = threads.filter((thread) => belongsTo(thread, document));
 	const others = threads.filter(
-		(thread) => !belongsTo(thread, document) && (thread.workingResumeId || thread.coverLetterId),
+		(thread) => !belongsTo(thread, document) && (thread.workingResumeId || thread.coverLetterId || thread.portfolioId),
 	);
 
 	const outcome = (thread: ThreadSummary) =>
@@ -510,7 +548,8 @@ function PastConversations({ threads, document, currentId, onOpen }: PastConvers
 	const open = (thread: ThreadSummary) => {
 		if (belongsTo(thread, document)) return onOpen(thread.id);
 		// Another document's conversation opens that document, with the assistant on it.
-		if (thread.coverLetterId)
+		if (thread.portfolioId) void navigate({ to: "/builder/portfolio", search: { assistant: thread.id } });
+		else if (thread.coverLetterId)
 			void navigate({
 				to: "/builder/letter/$coverLetterId",
 				params: { coverLetterId: thread.coverLetterId },
@@ -594,7 +633,7 @@ function PastConversations({ threads, document, currentId, onOpen }: PastConvers
 						others,
 						t`Other documents`,
 						(thread) =>
-							`${formatVersionTime(new Date(thread.lastMessageAt), i18n.locale)} · ${outcome(thread)} · ${thread.coverLetterName ?? thread.resumeName ?? ""}`,
+							`${formatVersionTime(new Date(thread.lastMessageAt), i18n.locale)} · ${outcome(thread)} · ${thread.portfolioId ? t`Portfolio` : (thread.coverLetterName ?? thread.resumeName ?? "")}`,
 					)}
 				</section>
 			)}
