@@ -10,9 +10,10 @@ const page = (
 		theme: overrides.theme ?? "lugas",
 		hero: { effect: overrides.effect ? { id: overrides.effect } : {} },
 		credit: { show: overrides.show ?? true },
-		works: { items: [] },
 	}) satisfies Portfolio;
 
+// Moved from `packages/api/src/features/portfolio/plan.test.ts` with the function (Phase 14): the API's save check and
+// the edit engine share it.
 describe("portfolioFeaturesNeeded", () => {
 	it("needs nothing for a free page", () => {
 		expect(portfolioFeaturesNeeded(null, page())).toEqual([]);
