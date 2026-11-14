@@ -85,7 +85,7 @@ function HomeScreen() {
 type ExternalButtonProps = { href: string; children: ReactNode };
 
 /** A link styled as a secondary button that opens Rezumi on the web in a new tab. */
-export function ExternalButton({ href, children }: ExternalButtonProps) {
+function ExternalButton({ href, children }: ExternalButtonProps) {
 	return (
 		<a href={href} target="_blank" rel="noreferrer" className={buttonVariants({ variant: "secondary", size: "sm" })}>
 			{children}

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { AUTH_KEYS } from "../shared/storage";
 import { askWorker } from "./api";
 
-export const connectionKey = ["connection"] as const;
+const connectionKey = ["connection"] as const;
 
 /**
  * Whether the extension is connected, and to whom. Follows changes made anywhere (this panel, another window's panel,

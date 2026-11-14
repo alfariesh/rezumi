@@ -22,7 +22,7 @@ import { applicationService } from "./service";
 const route = { tags: ["Internal"] };
 
 /** At most this many page reports per account an hour (02-teknis.md §6.3). */
-export const CAPTURE_REPORTS_PER_HOUR = 10;
+const CAPTURE_REPORTS_PER_HOUR = 10;
 const HOUR_MS = 60 * 60 * 1000;
 
 const existingSchema = z

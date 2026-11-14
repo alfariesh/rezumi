@@ -68,7 +68,7 @@ async function rpcFetch(request: Request): Promise<Response> {
 	return second;
 }
 
-export const client: RouterClient<typeof router> = createORPCClient(
+const client: RouterClient<typeof router> = createORPCClient(
 	new RPCLink({ url: `${REZUMI_ORIGIN}/api/rpc`, fetch: rpcFetch }),
 );
 

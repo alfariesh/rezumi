@@ -1,7 +1,7 @@
 import { ORPCError } from "@orpc/server";
 
 /** The header the browser extension sends on every request: its own version, x.y.z. */
-export const EXTENSION_VERSION_HEADER = "x-rezumi-extension";
+const EXTENSION_VERSION_HEADER = "x-rezumi-extension";
 
 const parts = (version: string) => {
 	const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version.trim());

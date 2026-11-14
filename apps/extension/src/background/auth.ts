@@ -18,7 +18,7 @@
 import type { Account, AuthState } from "../shared/storage";
 import { AUTH_KEYS } from "../shared/storage";
 
-export const CLIENT_NAME = "Rezumi browser extension";
+const CLIENT_NAME = "Rezumi browser extension";
 const SCOPES = ["openid", "profile", "email", "offline_access", "api:read", "api:write"];
 /** Refresh this long before the access token expires, so a request never leaves with a token about to lapse. */
 const EXPIRY_SKEW_MS = 60_000;
@@ -389,5 +389,3 @@ export function createAuth(deps: AuthDeps) {
 
 	return { connect, disconnect, accessToken, status, expire };
 }
-
-export type Auth = ReturnType<typeof createAuth>;
