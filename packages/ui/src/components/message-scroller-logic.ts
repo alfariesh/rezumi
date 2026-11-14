@@ -73,6 +73,11 @@ export function findLastAnchor(rows: readonly HTMLElement[]): HTMLElement | null
 	return null;
 }
 
+/** Every turn start in the transcript, in order. */
+export function findAnchors(rows: readonly HTMLElement[]): HTMLElement[] {
+	return rows.filter(isScrollAnchor);
+}
+
 /** The first turn start that has not been scrolled to yet. */
 export function findUnhandledAnchor(rows: readonly HTMLElement[], handled: WeakSet<HTMLElement>): HTMLElement | null {
 	for (const row of rows) {
