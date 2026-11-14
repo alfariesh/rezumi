@@ -45,6 +45,12 @@ Semua butir di bawah keluar bersama di rilis pertama:
 11. **Bahasa Inggris dan Indonesia**; tema terang/gelap mengikuti browser.
 12. **Di web Rezumi:** label "Disimpan dari plugin", ajakan memasang plugin, plugin tampil di Aplikasi terhubung, panduan pengguna, bagian plugin di Kebijakan Privasi.
 
+13. **Tambahan (keputusan 2026-11-14, dikerjakan di Phase 04):**
+    - gaji dan jenis kerja dibaca juga dari data terstruktur (JSON-LD) halaman;
+    - **kontak HR dari deskripsi** (email, nomor telepon/WhatsApp yang tertulis di teks lowongan) diusulkan di form simpan dan hanya tersimpan bila pengguna mencentangnya;
+    - **peringatan lowongan serupa** dari situs lain (posisi + perusahaan cocok dengan lamaran yang sudah ada);
+    - **logo perusahaan** ikut tersimpan dan tampil di pelacak lamaran (disalin ke penyimpanan Rezumi, bukan ditautkan ke situs loker).
+
 **Tidak termasuk rilis pertama:** isi formulir lamaran otomatis, Firefox, simpan banyak loker sekaligus dari daftar hasil pencarian (semua di backlog).
 
 ## 6. Privasi (prinsip yang tidak boleh dilanggar)
@@ -53,6 +59,7 @@ Semua butir di bawah keluar bersama di rilis pertama:
 - **Tanda "sudah disimpan" dihitung di dalam browser.** Plugin mengunduh daftar kunci loker yang sudah disimpan pengguna, lalu mencocokkannya sendiri. Alamat halaman yang dikunjungi tidak dikirim ke server.
 - Tidak ada pelacak atau analitik pihak ketiga, dan tidak ada kode yang dimuat dari luar (aturan Manifest V3).
 - Izin seminimal mungkin. Izin situs hanya untuk empat situs loker dan `rezumi.app`.
+- Kontak dari halaman hanya **diusulkan** (email/telepon yang tertulis di deskripsi lowongan) dan tersimpan setelah pengguna mencentangnya; profil orang di LinkedIn ("tim perekrut") tidak dibaca.
 - Plugin **tidak menyedot data otomatis** dan **tidak menekan tombol apa pun** di situs loker atas nama pengguna.
 
 ## 7. Aturan turunan yang menunggu konfirmasi
@@ -68,7 +75,7 @@ Agent menanyakan setiap aturan di phase yang disebut, dengan usulan sebagai pili
 | 5   | Tombol di halaman saat belum masuk         | Tetap tampil; diklik membuka panel "Hubungkan ke Rezumi". Bisa dimatikan di pengaturan plugin                                                  | Phase 04               |
 | 6   | Pengingat bawaan                           | 2 hari sebelum batas waktu loker bila tercantum; bila tidak, kosong                                                                            | Phase 05               |
 | 7   | Notifikasi desktop                         | Bawaan mati; izin browser diminta saat pengguna menyalakannya; paling banyak satu notifikasi per lamaran per hari, pukul 09.00 waktu perangkat | Phase 05               |
-| 8   | Isi laporan halaman gagal                  | Alamat halaman, situs, versi plugin, kolom yang gagal terbaca; tanpa isi halaman; dikirim hanya setelah pengguna mengklik                      | Phase 03               |
+| 8   | Isi laporan halaman gagal                  | Alamat halaman, situs, versi plugin, kolom yang gagal terbaca; tanpa isi halaman; dikirim hanya setelah pengguna mengklik                      | Phase 03 ✅ 2026-11-14 |
 | 9   | Bahasa plugin saat rilis                   | Inggris dan Indonesia; bahasa lain memakai Inggris dan menyusul                                                                                | Phase 01 ✅ 2026-11-12 |
 | 10  | Halaman setelah plugin dicopot             | Buka halaman singkat "Kenapa berhenti?" di rezumi.app, isian opsional tanpa data pribadi                                                       | Phase 06               |
 | 11  | CV untuk skor kecocokan                    | CV utama akun (yang dibuka alamat pendek); bisa diganti di panel; pilihan diingat                                                              | Phase 05               |
@@ -84,8 +91,10 @@ Agent menanyakan setiap aturan di phase yang disebut, dengan usulan sebagai pili
 
 ## 9. Log keputusan
 
-| Tanggal    | Keputusan                                                                                                                                                                                           | Oleh    |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| 2026-11-11 | Rencana dibuat. Plugin gratis untuk semua paket (AI tetap memakai kredit); pembaca khusus LinkedIn, Indeed, JobStreet, Glints; rilis lengkap sekaligus kecuali isi formulir otomatis; Chrome + Edge | Pemilik |
-| 2026-11-11 | Aturan turunan #1 (nama toko: usulan ID dan EN dipakai) dan #12 (email dukungan `hi@rezumi.app`) dikonfirmasi di Phase 00                                                                           | Pemilik |
-| 2026-11-12 | Aturan turunan #9 (bahasa saat rilis: Inggris dan Indonesia, bahasa lain memakai Inggris) dikonfirmasi di Phase 01                                                                                  | Pemilik |
+| Tanggal    | Keputusan                                                                                                                                                                                                                                                                                                     | Oleh    |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| 2026-11-11 | Rencana dibuat. Plugin gratis untuk semua paket (AI tetap memakai kredit); pembaca khusus LinkedIn, Indeed, JobStreet, Glints; rilis lengkap sekaligus kecuali isi formulir otomatis; Chrome + Edge                                                                                                           | Pemilik |
+| 2026-11-11 | Aturan turunan #1 (nama toko: usulan ID dan EN dipakai) dan #12 (email dukungan `hi@rezumi.app`) dikonfirmasi di Phase 00                                                                                                                                                                                     | Pemilik |
+| 2026-11-12 | Aturan turunan #9 (bahasa saat rilis: Inggris dan Indonesia, bahasa lain memakai Inggris) dikonfirmasi di Phase 01                                                                                                                                                                                            | Pemilik |
+| 2026-11-14 | Aturan turunan #8 (isi laporan halaman gagal: alamat, situs, versi plugin, kolom yang gagal terbaca; tanpa isi halaman; dikirim hanya setelah pengguna mengklik) dikonfirmasi di Phase 03. Pemilik mengizinkan Claude membaca halaman LinkedIn di Chrome-nya (hanya membaca)                                  | Pemilik |
+| 2026-11-14 | Tambahan rilis pertama di Phase 04: gaji/jenis kerja dari JSON-LD, usulan kontak HR dari deskripsi (dicentang pengguna; tim perekrut LinkedIn tetap backlog B9), peringatan lowongan serupa lintas situs, logo perusahaan disalin ke penyimpanan Rezumi. Penanda lowongan ditutup tetap di luar rilis pertama | Pemilik |
