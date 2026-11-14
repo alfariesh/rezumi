@@ -51,6 +51,10 @@ type Search = z.output<typeof searchSchema>;
 const defaultSearch: Search = { q: "", view: "list", create: false };
 
 export const Route = createFileRoute("/dashboard/applications/")({
+	// Hovering the link starts the list without holding the navigation, so it's usually there before the skeleton.
+	loader: ({ context }) => {
+		void context.queryClient.prefetchQuery(applicationsListQueryOptions());
+	},
 	component: RouteComponent,
 	validateSearch: searchSchema,
 	search: { middlewares: [stripSearchParams(defaultSearch)] },
@@ -339,10 +343,10 @@ function RouteComponent() {
 						<div
 							key={shown}
 							className={cn(
-								viewSwitched
-									? "transition-[opacity,translate] duration-standard ease-enter starting:translate-y-1 starting:opacity-0"
-									: // The list fades in on its first appearance, after its skeleton.
-										shown === "list" && "transition-opacity duration-standard ease-enter starting:opacity-0",
+								// Only a view switch animates. The first appearance takes the skeleton's place as is: fading in
+								// from nothing would blink the list empty in between.
+								viewSwitched &&
+									"transition-[opacity,translate] duration-standard ease-enter starting:translate-y-1 starting:opacity-0",
 							)}
 						>
 							{shown === "list" && (
@@ -479,10 +483,8 @@ function FollowUpNudge({ applications, onOpen }: FollowUpNudgeProps) {
 
 function FirstJobEmptyState({ onAdd, onImport }: { onAdd: () => void; onImport: () => void }) {
 	return (
-		<EmptyState
-			size="lg"
-			className="py-16 transition-[opacity,translate] duration-emphasized ease-enter starting:translate-y-2 starting:opacity-0"
-		>
+		// Takes the skeleton's place as is (no fade from nothing), so the page doesn't blink empty in between.
+		<EmptyState size="lg" className="py-16">
 			<EmptyState.Header>
 				<EmptyState.Media variant="icon">
 					<Icon name="briefcase" size={26} />

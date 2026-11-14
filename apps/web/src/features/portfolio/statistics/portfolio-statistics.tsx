@@ -3,7 +3,7 @@ import type { client } from "@/libs/orpc/client";
 import type { PortfolioStatisticsRange } from "@rezumi/schema/portfolio/statistics";
 import { KPIGroup, Segment, Widget } from "@heroui-pro/react";
 import { KPI } from "@heroui-pro/react/kpi";
-import { Button, Chip, Dropdown, Label, Spinner } from "@heroui/react";
+import { Button, Chip, Dropdown, Label, Skeleton, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -172,6 +172,20 @@ function ReadyStatisticsDetails({ details }: DetailsProps) {
  * The portfolio's numbers for the last 7, 30 or 90 days (`01-desain.md` section 10, Phase 13 3.7), the range kept in
  * the address (`?range=`). Only its owner can read them.
  */
+type VisitorsHeadingProps = { id: string };
+
+/** The widget's heading, the same while its numbers load and once they're in. */
+function VisitorsHeading({ id }: VisitorsHeadingProps) {
+	return (
+		<WidgetHeading
+			id={id}
+			icon="chart-line-up"
+			title={<Trans>Visitors</Trans>}
+			description={<Trans>Only you see these, and your own visits aren't counted.</Trans>}
+		/>
+	);
+}
+
 export function PortfolioStatistics() {
 	const [range, setRange] = useStatisticsRange();
 	const { data, isPending, isError, isPlaceholderData, refetch, isRefetching } = useQuery({
@@ -183,11 +197,25 @@ export function PortfolioStatistics() {
 	const titleId = useId();
 	const clicks = clickLabels();
 	const sources = sourceLabels();
+	// The widget itself, with its title, and grey blocks where the numbers land: not a spinner that the whole
+	// widget then pushes the page down from.
 	if (isPending)
 		return (
-			<div className="grid place-items-center py-10">
-				<Spinner size="md" color="current" />
-			</div>
+			<Widget role="region" aria-labelledby={titleId} aria-busy className="@container">
+				<VisitorsHeading id={titleId} />
+				<Widget.Content className="grid gap-5">
+					<div className="flex flex-wrap items-center justify-between gap-2">
+						<Skeleton className="h-9 w-64 max-w-full rounded-xl" />
+						<Skeleton className="h-9 w-32 rounded-xl" />
+					</div>
+					<Skeleton className="h-24 rounded-2xl" />
+					<Skeleton className="h-40 rounded-2xl" />
+					<div className="grid gap-6 @lg:grid-cols-2">
+						<Skeleton className="h-32 rounded-2xl" />
+						<Skeleton className="h-32 rounded-2xl" />
+					</div>
+				</Widget.Content>
+			</Widget>
 		);
 	if (isError && !data)
 		return (
@@ -214,12 +242,7 @@ export function PortfolioStatistics() {
 
 	return (
 		<Widget role="region" aria-labelledby={titleId} aria-busy={isPlaceholderData} className="@container">
-			<WidgetHeading
-				id={titleId}
-				icon="chart-line-up"
-				title={<Trans>Visitors</Trans>}
-				description={<Trans>Only you see these, and your own visits aren't counted.</Trans>}
-			/>
+			<VisitorsHeading id={titleId} />
 			<Widget.Content className="grid gap-5">
 				<div className="flex flex-wrap items-center justify-between gap-2">
 					<RangeSwitch value={range} onChange={setRange} />

@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect, useBlocker } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import z from "zod";
 import { toast } from "@rezumi/ui/components/toast";
 import { LetterShell } from "./-components/letter-shell";
@@ -74,8 +74,9 @@ function RouteComponent() {
 		enableBeforeUnload: false,
 	});
 
-	// The editor owns the letter from here; later refetches don't overwrite what's being typed.
-	useEffect(() => {
+	// The editor owns the letter from here; later refetches don't overwrite what's being typed. Before paint, so the
+	// first frame is the editor rather than a blank page.
+	useLayoutEffect(() => {
 		if (useLetterEditorStore.getState().letter?.id !== letter.id) useLetterEditorStore.getState().load(letter);
 	}, [letter]);
 
