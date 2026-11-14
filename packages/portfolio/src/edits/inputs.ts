@@ -93,7 +93,7 @@ function plainToHtml(text: string): string {
 }
 
 /** Rich text in the portfolio's subset, from HTML or plain text, within `limit` characters of text. */
-export function richTextInput(value: unknown, limit: number, what: string): unknown {
+function richTextInput(value: unknown, limit: number, what: string): unknown {
 	if (value === null) return null;
 	if (typeof value !== "string") return refuse(`${what}: give HTML or plain text.`);
 	const text = value.trim();
@@ -116,7 +116,7 @@ export function richTextInput(value: unknown, limit: number, what: string): unkn
  * An image ref (`{ key, alt?, … }`) as a stored image: the key must be one of the images the data uses or the uploads
  * given; width, height and the small copy come from there. `extras` are the fields the place adds (a caption, a focus).
  */
-export function imageInput(value: unknown, env: InputEnv, what: string, extras: readonly string[] = []): unknown {
+function imageInput(value: unknown, env: InputEnv, what: string, extras: readonly string[] = []): unknown {
 	if (value === null) return null;
 	const input = asObject(value, `${what} (an image: { "key": …, "alt": … })`);
 	const allowed = ["key", "alt", ...extras, "width", "height", "thumbKey"];
@@ -137,7 +137,7 @@ export function imageInput(value: unknown, env: InputEnv, what: string, extras: 
 }
 
 /** A button: what it opens, its text, and the address profile and link buttons need. */
-export function buttonInput(value: unknown, what: string): unknown {
+function buttonInput(value: unknown, what: string): unknown {
 	if (value === null) return null;
 	const input = asObject(value, what);
 	checkFields(input, ["kind", "label", "url"], what);

@@ -41,7 +41,7 @@ export function itemLabel(list: PortfolioEditList, item: Record<string, unknown>
 const LOOKUP_HINT = "Use an id from the portfolio as you last read it, or a ref from an earlier add in this call.";
 
 /** The work an edit of blocks or metrics names. */
-export function findWork(data: PortfolioData, workId: string | undefined): PortfolioWork {
+function findWork(data: PortfolioData, workId: string | undefined): PortfolioWork {
 	const work = data.works.items.find((item) => item.id === workId);
 	return work ?? refuse(`No work has the id "${workId ?? ""}". ${LOOKUP_HINT}`);
 }

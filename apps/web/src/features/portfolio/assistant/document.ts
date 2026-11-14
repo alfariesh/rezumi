@@ -10,7 +10,7 @@ import { portfolioRefusalMessage } from "../errors";
 import { compressImage, pictureFiles } from "../images/compress";
 
 /** The words for a save that stops the assistant, from the editor's save state (after a flush that didn't save). */
-export function portfolioSaveReason(context: Omit<PortfolioPlaceContext, "data">): string {
+function portfolioSaveReason(context: Omit<PortfolioPlaceContext, "data">): string {
 	const { status, problem, retry, portfolio } = usePortfolioEditorStore.getState();
 	switch (status) {
 		case "conflict":

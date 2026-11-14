@@ -34,7 +34,7 @@ export function placedPortfolioImages(data: PortfolioData): PlacedPortfolioImage
 }
 
 /** The stored image itself, without what a place adds to it (a caption, a focus point). */
-export function bareImage(image: PortfolioImage): PortfolioImage {
+function bareImage(image: PortfolioImage): PortfolioImage {
 	return {
 		key: image.key,
 		...(image.thumbKey ? { thumbKey: image.thumbKey } : {}),

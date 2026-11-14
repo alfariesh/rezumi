@@ -248,8 +248,6 @@ export function createPortfolioRun(input: PortfolioRunInput) {
 	};
 }
 
-export type PortfolioRun = ReturnType<typeof createPortfolioRun>;
-
 const STATUS_FOR_MODEL = {
 	accepted: "applied",
 	rejected: "undone by the user",

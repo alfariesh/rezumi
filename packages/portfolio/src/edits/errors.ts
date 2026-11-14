@@ -25,7 +25,7 @@ export type SchemaIssue = {
 const DEFAULT_MESSAGE = /^(?:Invalid|Too big|Too small)\b/;
 
 /** A short English reason for one issue: "at most 240 characters", "use one of: light, dark, auto". */
-export function issueText(issue: SchemaIssue): string {
+function issueText(issue: SchemaIssue): string {
 	// Messages the schema wrote itself ("Use an image uploaded to this portfolio.") say it best.
 	if (!DEFAULT_MESSAGE.test(issue.message)) return issue.message;
 	const unit = issue.origin === "string" ? " characters" : issue.origin === "array" ? " items" : "";
@@ -70,7 +70,7 @@ function itemName(item: unknown, index: number): string {
  * A readable place in portfolio data: list items by their name, `items` arrays folded into their owner, so
  * `["works", "items", 2, "summary"]` reads `works › "Lumen" › summary`.
  */
-export function describePath(data: unknown, path: readonly PropertyKey[]): string {
+function describePath(data: unknown, path: readonly PropertyKey[]): string {
 	const parts: string[] = [];
 	let node: unknown = data;
 	path.forEach((key, index) => {
