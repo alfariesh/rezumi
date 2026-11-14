@@ -49,6 +49,10 @@ msgstr ""
 msgid "“{name}” moved to Trash"
 msgstr "“{name}”가 휴지통으로 이동되었습니다."
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "“{old}” has its default title again"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "“{title}” isn't a heading systems look for"
 msgstr "\"{title}\"는 시스템이 찾는 제목이 아닙니다."
@@ -92,6 +96,10 @@ msgstr "(헤더 없음)"
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "(opens in a new tab)"
+msgstr ""
+
+#: src/features/portfolio/assistant/changes.tsx
+msgid "(show it in the editor)"
 msgstr ""
 
 #: src/features/portfolio/editor/intro-effect.tsx
@@ -168,6 +176,11 @@ msgstr "{0, plural, one {지원 #건이 업데이트되었습니다} other {지�
 #: src/features/career/coach-chat.tsx
 msgid "{0, plural, one {# application} other {# applications}}"
 msgstr "{0, plural, other {지원 #건}}"
+
+#. placeholder {0}: failures.length
+#: src/features/portfolio/assistant/changes.tsx
+msgid "{0, plural, one {# change couldn't be made:} other {# changes couldn't be made:}}"
+msgstr ""
 
 #. placeholder {0}: state?.characters ?? 0
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
@@ -891,6 +904,10 @@ msgstr "{kind} 인터뷰"
 #: src/features/career/coach-thread.tsx
 msgid "{label} connection"
 msgstr "{label} 연결"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "{label}: {value}"
+msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "{label}: {visits} visits"
@@ -1655,6 +1672,7 @@ msgstr ""
 msgid "Accent"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Accent color"
@@ -2314,6 +2332,10 @@ msgstr ""
 msgid "Added {0} at {1}"
 msgstr "{1}에 {0}를 추가했습니다."
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added a {type} block to “{workName}”"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr ""
@@ -2325,6 +2347,34 @@ msgstr "직접 추가함"
 
 #: src/features/billing/admin/customer.tsx
 msgid "Added credits expire in (days)"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the client “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the number “{name}” to “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the number “{name}” to the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the service “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the testimonial from {name}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the work “{name}”"
 msgstr ""
 
 #: src/features/career/workspace/fit.tsx
@@ -2949,6 +2999,7 @@ msgid "Applied"
 msgstr "지원함"
 
 #: src/features/career/workspace/messages.tsx
+#: src/features/portfolio/assistant/changes.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgctxt "A proposed change has been applied"
 msgid "Applied"
@@ -2975,6 +3026,11 @@ msgstr "적용했습니다. 지원 내역이 업데이트되었습니다."
 #: src/features/career/shared.tsx
 msgid "Apply"
 msgstr "지원"
+
+#: src/features/portfolio/assistant/changes.tsx
+msgctxt "Put the assistant's changes into the portfolio"
+msgid "Apply"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Arabic"
@@ -3774,18 +3830,86 @@ msgstr ""
 msgid "Change, before → after, chart, context"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed a setting"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-bar.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Changed elsewhere"
 msgstr "다른 곳에서 변경됨"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed how search engines show your page"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the colors"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the contact options"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the fonts"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the intro background"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the intro effect"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the intro's buttons"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the layouts"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the photo"
+msgstr ""
+
 #: src/features/assistant/conversation.tsx
 msgid "Changed the resume directly (an earlier conversation)"
 msgstr "이력서를 직접 변경함(이전 대화)"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the theme"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed which items show"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed which items show in {section}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed which sections show"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed your availability"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed your location details"
+msgstr ""
+
 #: src/dialogs/resume/index.tsx
 msgid "Changed your mind? Rename your resume to something more descriptive."
 msgstr "생각이 바뀌셨나요? 이력서 이름을 더 잘 설명하는 이름으로 바꿔 보세요."
+
+#: src/features/portfolio/assistant/changes.tsx
+msgid "Changes"
+msgstr ""
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Changes made here stay in this resume."
@@ -3804,6 +3928,10 @@ msgstr ""
 #: src/features/settings/account/profile.tsx
 msgid "Changing it sends a confirmation to the new address. Your username is part of every public link."
 msgstr "이를 변경하면 새 주소로 확인 메시지가 전송됩니다. 귀하의 사용자 이름은 모든 공개 링크의 일부입니다."
+
+#: src/features/assistant/conversation.tsx
+msgid "Changing the portfolio…"
+msgstr ""
 
 #: src/dialogs/auth/change-password.tsx
 msgid "Changing your password…"
@@ -4791,6 +4919,11 @@ msgstr "디자인을 변경할 수 없었습니다. 다시 시도해 보세요."
 msgid "Couldn't change the email. Try again."
 msgstr "이메일을 변경할 수 없습니다. 다시 시도해 보세요."
 
+#. placeholder {0}: part.errorText
+#: src/features/assistant/conversation.tsx
+msgid "Couldn't change the portfolio: {0}"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Couldn't change the schedule. Try again."
 msgstr "일정을 변경할 수 없습니다. 다시 시도해 보세요."
@@ -5202,6 +5335,11 @@ msgstr "후속 연락을 저장할 수 없습니다. 다시 시도해 보세요.
 #: src/features/applications/components/application-notes.tsx
 msgid "Couldn't save the notes. Try again."
 msgstr "노트를 저장할 수 없습니다. 다시 시도해 보세요."
+
+#. placeholder {0}: part.errorText
+#: src/features/assistant/conversation.tsx
+msgid "Couldn't save the picture: {0}"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Couldn't save the posting. Try again."
@@ -5778,6 +5916,7 @@ msgid "Danish"
 msgstr "덴마크어"
 
 #: src/features/command-palette/pages/preferences/index.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/libs/theme.ts
 msgid "Dark"
@@ -5867,6 +6006,7 @@ msgstr "친애하는 채용팀 여러분,"
 msgid "Debrief"
 msgstr "회고"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Default"
@@ -6163,6 +6303,7 @@ msgstr "공급자에서 제공한 세부 정보:"
 msgid "Details saved inside the file, such as the author's name, are published with it."
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Device"
 msgstr ""
@@ -6767,6 +6908,38 @@ msgstr "편집하다…"
 msgid "Edited"
 msgstr "편집됨"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited a {type} block in “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the client “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the number “{name}” in “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the number “{name}” in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the service “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the testimonial from {name}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the work “{name}”"
+msgstr ""
+
 #: src/features/resume/editor/page-overlay.tsx
 msgid "Editing"
 msgstr "편집"
@@ -6859,6 +7032,7 @@ msgstr ""
 msgid "Emailed"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Embed"
 msgstr ""
@@ -7595,6 +7769,7 @@ msgstr "글꼴 굵기"
 msgid "Font weights"
 msgstr "글꼴 굵기"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Fonts"
 msgstr ""
@@ -8201,6 +8376,7 @@ msgstr "제목 3"
 msgid "Heading changed"
 msgstr "제목이 변경됨"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
@@ -8245,6 +8421,34 @@ msgstr "성과를 상황, 과제, 행동, 결과, 성찰 스토리로 만들도�
 #: src/components/input/color-picker.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Hex color"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid “{item}” in {section}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid an item in {section}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the location in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the photo in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the Rezumi badge"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the work “{name}”"
 msgstr ""
 
 #: src/components/level/combobox.tsx
@@ -8471,6 +8675,10 @@ msgstr "이 {kind} 및 {0} 채용 공고를 볼 수 있습니다. 제안사항�
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
 msgstr "{kind}가 보이네요. 제안사항은 하나씩 수락할 수 있는 수정사항으로 다시 표시됩니다."
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "I can see your portfolio. Changes show on the page at once, and you can undo each reply."
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "I design apps people enjoy using, and I'm looking for my next team."
@@ -8818,6 +9026,7 @@ msgstr ""
 msgid "Intro background"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-effect.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Intro effect"
@@ -9562,6 +9771,7 @@ msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "합자(리게이처)는 \"workflow\"와 같은 단어에서 글자를 누락시킬 수 있습니다."
 
 #: src/features/command-palette/pages/preferences/index.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/libs/theme.ts
 msgid "Light"
@@ -9592,6 +9802,7 @@ msgid "Lines this close can run together when read. Use at least {minimum}."
 msgstr "이렇게 가까운 줄은 읽을 때 함께 실행될 수 있습니다. 최소한 {minimum}를 사용하세요."
 
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/link-block.tsx
@@ -9830,6 +10041,7 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/page-text.ts
@@ -10189,6 +10401,7 @@ msgstr ""
 msgid "Metric on the card"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Metrics"
 msgstr ""
@@ -10209,6 +10422,7 @@ msgstr "최소 기본급"
 msgid "Mixed"
 msgstr "반반"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Mode"
 msgstr ""
@@ -10407,6 +10621,38 @@ msgstr "이메일과 전화번호를 첫 페이지 상단으로 옮기세요."
 msgid "Moved {0} of {1} to Trash. Locked documents were skipped."
 msgstr "{1}개 중 {0}개를 휴지통으로 이동했습니다. 잠긴 서류는 건너뛰었습니다."
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved a {type} block in “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the client “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the number “{name}” in “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the number “{name}” in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the service “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the testimonial from {name}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the work “{name}”"
+msgstr ""
+
 #. placeholder {0}: getStageLabel(entry.stage)
 #. placeholder {0}: getStageLabel(status)
 #: src/features/applications/components/detail/activity.tsx
@@ -10441,6 +10687,7 @@ msgstr "내 역할"
 #: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
@@ -11074,6 +11321,7 @@ msgstr "노르웨이어"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/career/workspace/messages.tsx
+#: src/features/portfolio/assistant/changes.tsx
 msgid "Not applied"
 msgstr "적용 안 됨"
 
@@ -11081,6 +11329,11 @@ msgstr "적용 안 됨"
 #: src/features/applications/next-step.ts
 msgid "Not applied yet"
 msgstr "아직 지원하지 않음"
+
+#: src/features/portfolio/assistant/changes.tsx
+msgctxt "The assistant's changes, not in the portfolio yet"
+msgid "Not applied yet"
+msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Not available right now"
@@ -11233,6 +11486,10 @@ msgstr "점수 미부여"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "선택되지 않음"
+
+#: src/features/portfolio/assistant/document.ts
+msgid "Not sent: the assistant needs your latest changes saved first. {reason}"
+msgstr ""
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -11923,6 +12180,7 @@ msgstr "페이지 1 · {formatLabel}"
 msgid "Page address"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Page language"
@@ -12242,6 +12500,7 @@ msgstr ""
 msgid "Payments aren't set up on this server."
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "PDF"
 msgstr ""
@@ -12343,6 +12602,7 @@ msgstr "전화번호(선택)"
 msgid "Phones"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/profile/sources/source-review.tsx
@@ -12379,6 +12639,10 @@ msgstr ""
 
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Pick a look for your first resume"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Pick a theme and colors that fit my field"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
@@ -12433,6 +12697,7 @@ msgstr ""
 msgid "Picture viewer"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Pictures"
 msgstr ""
@@ -12553,9 +12818,12 @@ msgstr "폴란드어"
 msgid "Polishing"
 msgstr "다듬는 중"
 
+#: src/features/assistant/assistant-panel.tsx
+#: src/features/command-palette/pages/resumes.tsx
 #: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/portfolio/admin/review-page.tsx
+#: src/features/portfolio/assistant/document.ts
 #: src/features/portfolio/portfolio-page.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 #: src/routes/builder/portfolio/index.tsx
@@ -13288,6 +13556,10 @@ msgid "Read the page"
 msgstr "페이지 읽기"
 
 #: src/features/assistant/conversation.tsx
+msgid "Read the portfolio"
+msgstr ""
+
+#: src/features/assistant/conversation.tsx
 msgid "Read the resume"
 msgstr "이력서를 읽음"
 
@@ -13542,6 +13814,7 @@ msgstr "직사각형 (전체 너비)"
 msgid "Red"
 msgstr "빨간색"
 
+#: src/features/portfolio/assistant/changes.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/chrome.tsx
 msgid "Redo"
@@ -13836,6 +14109,74 @@ msgstr "비밀번호를 삭제하시겠습니까?"
 msgid "Remove this photo?"
 msgstr "이 사진을 삭제하시겠습니까?"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a {type} block from “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a block from “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a client"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a number from “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a number from the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a section"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a service"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a testimonial"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a work"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the client “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the number “{name}” from “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the number “{name}” from the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the photo"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the service “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the testimonial from {name}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the work “{name}”"
+msgstr ""
+
 #: src/features/career/coach.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/portfolio/editor/content-panel.tsx
@@ -13866,6 +14207,14 @@ msgstr "버전 이름 바꾸기"
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Rename…"
 msgstr "이름 바꾸기…"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Renamed “{old}” to “{title}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Renamed sections"
+msgstr ""
 
 #: src/features/billing/purchase.ts
 msgid "Renewal"
@@ -13926,6 +14275,10 @@ msgstr "{title} 재주문"
 #. placeholder {0}: info.title
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Reorder the {0} block"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Reordered the sections"
 msgstr ""
 
 #. placeholder {0}: jd.stuffedTerms.join(", ")
@@ -14241,6 +14594,10 @@ msgstr "내 답변 검토"
 msgid "Review my answer sends the question, what you said, this posting and your Profile to {providerName}."
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Review my portfolio and fix what's weak"
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 msgid "Review required form answers and remove unsupported claims."
 msgstr "필수 양식 답변을 검토하고 근거 없는 주장을 삭제하세요."
@@ -14308,6 +14665,14 @@ msgstr ""
 
 #: src/features/portfolio/ai/rewrite-menu.tsx
 msgid "Rewritten."
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Rewrote {about}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Rewrote the greeting"
 msgstr ""
 
 #: src/features/docs/header.tsx
@@ -14498,6 +14863,11 @@ msgstr ""
 msgid "Sales Executive"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Same as my Profile"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Same as my resume"
@@ -14671,6 +15041,10 @@ msgstr "{0} 저장됨"
 msgid "Saved {0} to Applications"
 msgstr "지원 목록에 {0} 저장됨"
 
+#: src/features/assistant/conversation.tsx
+msgid "Saved a picture"
+msgstr ""
+
 #. placeholder {0}: story.data.title
 #: src/features/career/coach-chat.tsx
 msgid "Saved a story: {0}"
@@ -14734,6 +15108,10 @@ msgstr ""
 #: src/features/resume/share/address-field.tsx
 msgid "Saving {0}/{username}/{slug}… Copy is available after saving."
 msgstr "{0}/{username}/{slug}… 저장 저장 후 복사가 가능합니다."
+
+#: src/features/assistant/conversation.tsx
+msgid "Saving a picture…"
+msgstr ""
 
 #: src/features/resume/builder/draft.ts
 msgid "Saving is taking longer than expected. Your changes are still open."
@@ -15532,6 +15910,34 @@ msgstr ""
 msgid "Show your work, results and services on one page that looks good on any phone, at rezumi.app/your-username."
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed “{item}” in {section}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed an item in {section}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the location in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the photo in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the Rezumi badge"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the work “{name}”"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
 msgstr "내 시간대로 표시됩니다."
@@ -16137,6 +16543,10 @@ msgstr ""
 msgid "Stopped. No edits were proposed."
 msgstr "중지되었습니다. 제안된 수정사항이 없습니다."
 
+#: src/features/assistant/conversation.tsx
+msgid "Stopped. Nothing was changed."
+msgstr ""
+
 #: src/features/portfolio/works/storage-meter.tsx
 msgid "Storage for pictures and PDFs"
 msgstr ""
@@ -16645,6 +17055,7 @@ msgstr "서버에서 검색 서비스를 테스트하는 중…"
 msgid "Testing…"
 msgstr "테스트…"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/section-forms.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -17084,10 +17495,12 @@ msgstr ""
 msgid "The PDF couldn't be uploaded. Check your connection and try again."
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "The photo in my Profile"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "The photo on my resume"
 msgstr ""
@@ -17310,6 +17723,7 @@ msgstr ""
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/portfolio/theme-gallery.tsx
 #: src/features/settings/general.tsx
@@ -18145,6 +18559,10 @@ msgstr "{model} 모델로 텍스트 변환 중…"
 msgid "Transcript copied"
 msgstr "성적 증명서가 복사되었습니다."
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Translate everything to English"
+msgstr ""
+
 #: src/features/portfolio/ai/rewrite-menu.tsx
 msgid "Translate to {language}"
 msgstr ""
@@ -18225,6 +18643,10 @@ msgstr "샘플을 사용해 보세요"
 msgid "Try again"
 msgstr "다시 시도해 보세요"
 
+#: src/features/portfolio/assistant/document.ts
+msgid "Try again in a moment."
+msgstr ""
+
 #: src/features/billing/buy-plans.tsx
 msgid "Try again later. Your current plan and credits aren't affected."
 msgstr ""
@@ -18260,6 +18682,10 @@ msgstr "샘플 이력서를 사용해 보세요"
 #: src/libs/locale.ts
 msgid "Turkish"
 msgstr "터키어"
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Turn my resume projects into works"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Turn off discretionary ligatures when exporting."
@@ -18397,6 +18823,7 @@ msgstr "링크에 밑줄을 긋습니다"
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/portfolio/ai/apply.ts
+#: src/features/portfolio/assistant/changes.tsx
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/list-undo.ts
 #: src/features/portfolio/editor/rich-text-editor.tsx
@@ -18420,6 +18847,10 @@ msgstr "끄르다"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Undo resume change"
 msgstr "이력서 변경 취소"
+
+#: src/features/portfolio/assistant/changes.tsx
+msgid "Undone"
+msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Unit"
@@ -18498,6 +18929,7 @@ msgstr ""
 msgid "Untitled"
 msgstr "제목 없음"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled client"
@@ -18507,26 +18939,34 @@ msgstr ""
 msgid "Untitled letter"
 msgstr "제목 없는 편지"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Untitled number"
+msgstr ""
+
 #: src/features/documents/use-start-document.ts
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Untitled resume"
 msgstr "제목 없는 이력서"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/sections.ts
 msgid "Untitled section"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled service"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled testimonial"
 msgstr ""
 
 #: src/features/portfolio/ai/draft-dialog.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/portfolio/works/works-form.tsx
@@ -19007,6 +19447,7 @@ msgstr "이력서치고 복구된 단어 수가 매우 적습니다."
 msgid "Very little text was recovered for this many pages."
 msgstr "이만큼의 페이지 수에 비해 복구된 텍스트가 매우 적습니다."
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Video"
 msgstr ""
@@ -19734,6 +20175,10 @@ msgstr "현재 재직 중인 직무의 종료일로 \"현재\"라고 작성하�
 msgid "Write a draft with AI"
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Write a stronger intro"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."
 msgstr "기억이 생생할 때 받은 질문을 적어 두세요. 코치가 답변을 내 스토리와 비교합니다."
@@ -20083,6 +20528,10 @@ msgstr "여기서는 브라우저가 받아쓰기를 할 수 없습니다. 대�
 #: src/features/career/workspace/practise.tsx
 msgid "Your browser turns your speech into text. Depending on the browser, its maker may process the audio (Google in Chrome, Apple in Safari)."
 msgstr "브라우저가 음성을 텍스트로 변환합니다. 브라우저에 따라 제조사가 오디오를 처리할 수 있습니다(Chrome은 Google, Safari는 Apple)."
+
+#: src/features/portfolio/editor/webmcp.ts
+msgid "Your browser's AI agent changed your portfolio."
+msgstr ""
 
 #: src/features/letters/webmcp.ts
 msgid "Your browser's AI agent edited this letter."
@@ -20491,6 +20940,10 @@ msgstr ""
 msgid "Your portfolio changed somewhere else"
 msgstr ""
 
+#: src/features/portfolio/assistant/document.ts
+msgid "Your portfolio changed somewhere else. Choose the version to keep."
+msgstr ""
+
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Your portfolio couldn't be saved. Undo your last change, or contact support if this keeps happening."
 msgstr ""
@@ -20515,6 +20968,10 @@ msgstr ""
 
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio is too large to save. Shorten some text or remove a few blocks."
+msgstr ""
+
+#: src/features/portfolio/assistant/document.ts
+msgid "Your portfolio isn't open anymore. Reload the page."
 msgstr ""
 
 #: src/features/billing/plan.ts

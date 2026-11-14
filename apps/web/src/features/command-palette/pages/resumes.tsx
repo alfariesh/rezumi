@@ -181,7 +181,9 @@ function ThreadsPage({ page }: SearchPageProps) {
 	const { data: threads, isLoading } = useQuery(orpc.agent.threads.list.queryOptions());
 	const filteredThreads = (threads ?? [])
 		.filter((thread) => thread.scope === "document")
-		.filter((thread) => matchesSearch(search, [thread.title, thread.resumeName, thread.coverLetterName]));
+		.filter((thread) =>
+			matchesSearch(search, [thread.title, thread.resumeName, thread.coverLetterName, thread.portfolioName]),
+		);
 
 	// A conversation opens its document with the assistant showing it.
 	const onOpenThread = async (thread: Thread) => {
@@ -197,6 +199,7 @@ function ThreadsPage({ page }: SearchPageProps) {
 				params: { resumeId: thread.workingResumeId },
 				search: { assistant: thread.id },
 			});
+		else if (thread.portfolioId) await navigate({ to: "/builder/portfolio", search: { assistant: thread.id } });
 		reset();
 	};
 
@@ -208,7 +211,7 @@ function ThreadsPage({ page }: SearchPageProps) {
 				</LoadingItem>
 			) : (
 				filteredThreads.map((thread) => {
-					const documentName = thread.coverLetterName ?? thread.resumeName ?? "";
+					const documentName = thread.coverLetterName ?? thread.resumeName ?? (thread.portfolioId ? t`Portfolio` : "");
 
 					return (
 						<PaletteItem

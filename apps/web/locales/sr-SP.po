@@ -49,6 +49,10 @@ msgstr ""
 msgid "“{name}” moved to Trash"
 msgstr "„{name}“ је премештен у Отпад"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "“{old}” has its default title again"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "“{title}” isn't a heading systems look for"
 msgstr "„{title}“ није систем курса који тражи"
@@ -92,6 +96,10 @@ msgstr "(без заглавља)"
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "(opens in a new tab)"
+msgstr ""
+
+#: src/features/portfolio/assistant/changes.tsx
+msgid "(show it in the editor)"
 msgstr ""
 
 #: src/features/portfolio/editor/intro-effect.tsx
@@ -168,6 +176,11 @@ msgstr "{0, plural, one {# пријава је ажурирана} few {# при
 #: src/features/career/coach-chat.tsx
 msgid "{0, plural, one {# application} other {# applications}}"
 msgstr "{0, plural, one {# пријава} few {# пријаве} other {# пријава}}"
+
+#. placeholder {0}: failures.length
+#: src/features/portfolio/assistant/changes.tsx
+msgid "{0, plural, one {# change couldn't be made:} other {# changes couldn't be made:}}"
+msgstr ""
 
 #. placeholder {0}: state?.characters ?? 0
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
@@ -891,6 +904,10 @@ msgstr "{kind} интервју"
 #: src/features/career/coach-thread.tsx
 msgid "{label} connection"
 msgstr "Веза {label}"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "{label}: {value}"
+msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "{label}: {visits} visits"
@@ -1655,6 +1672,7 @@ msgstr ""
 msgid "Accent"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Accent color"
@@ -2314,6 +2332,10 @@ msgstr ""
 msgid "Added {0} at {1}"
 msgstr "Додат {0} на {1}"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added a {type} block to “{workName}”"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr ""
@@ -2325,6 +2347,34 @@ msgstr "Додали сте ви"
 
 #: src/features/billing/admin/customer.tsx
 msgid "Added credits expire in (days)"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the client “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the number “{name}” to “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the number “{name}” to the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the service “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the testimonial from {name}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Added the work “{name}”"
 msgstr ""
 
 #: src/features/career/workspace/fit.tsx
@@ -2949,6 +2999,7 @@ msgid "Applied"
 msgstr "Пријављено"
 
 #: src/features/career/workspace/messages.tsx
+#: src/features/portfolio/assistant/changes.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgctxt "A proposed change has been applied"
 msgid "Applied"
@@ -2975,6 +3026,11 @@ msgstr "Примењено. Пријава је ажурирана."
 #: src/features/career/shared.tsx
 msgid "Apply"
 msgstr "Пријављивање"
+
+#: src/features/portfolio/assistant/changes.tsx
+msgctxt "Put the assistant's changes into the portfolio"
+msgid "Apply"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Arabic"
@@ -3774,18 +3830,86 @@ msgstr ""
 msgid "Change, before → after, chart, context"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed a setting"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-bar.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Changed elsewhere"
 msgstr "Промењено на другом месту"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed how search engines show your page"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the colors"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the contact options"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the fonts"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the intro background"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the intro effect"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the intro's buttons"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the layouts"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the photo"
+msgstr ""
+
 #: src/features/assistant/conversation.tsx
 msgid "Changed the resume directly (an earlier conversation)"
 msgstr "Директно променио животопис (ранији разговор)"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed the theme"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed which items show"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed which items show in {section}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed which sections show"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed your availability"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Changed your location details"
+msgstr ""
+
 #: src/dialogs/resume/index.tsx
 msgid "Changed your mind? Rename your resume to something more descriptive."
 msgstr "Променили сте мишљење? Преименујте свој резиме у нешто описније."
+
+#: src/features/portfolio/assistant/changes.tsx
+msgid "Changes"
+msgstr ""
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Changes made here stay in this resume."
@@ -3804,6 +3928,10 @@ msgstr ""
 #: src/features/settings/account/profile.tsx
 msgid "Changing it sends a confirmation to the new address. Your username is part of every public link."
 msgstr "Промена шаље потврду на нову адресу. Ваше корисничко име је део сваке јавне везе."
+
+#: src/features/assistant/conversation.tsx
+msgid "Changing the portfolio…"
+msgstr ""
 
 #: src/dialogs/auth/change-password.tsx
 msgid "Changing your password…"
@@ -4791,6 +4919,11 @@ msgstr "Није могуће променити дизајн. Покушајт�
 msgid "Couldn't change the email. Try again."
 msgstr "Није могуће променити имејл. Покушајте поново."
 
+#. placeholder {0}: part.errorText
+#: src/features/assistant/conversation.tsx
+msgid "Couldn't change the portfolio: {0}"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Couldn't change the schedule. Try again."
 msgstr "Није могуће променити распоред. Покушајте поново."
@@ -5202,6 +5335,11 @@ msgstr "Није могуће сачувати праћење. Покушајт�
 #: src/features/applications/components/application-notes.tsx
 msgid "Couldn't save the notes. Try again."
 msgstr "Није могуће сачувати белешке. Покушајте поново."
+
+#. placeholder {0}: part.errorText
+#: src/features/assistant/conversation.tsx
+msgid "Couldn't save the picture: {0}"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Couldn't save the posting. Try again."
@@ -5778,6 +5916,7 @@ msgid "Danish"
 msgstr "Дански"
 
 #: src/features/command-palette/pages/preferences/index.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/libs/theme.ts
 msgid "Dark"
@@ -5867,6 +6006,7 @@ msgstr "Драги тиму за запошљавање,"
 msgid "Debrief"
 msgstr "Анализа"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Default"
@@ -6163,6 +6303,7 @@ msgstr "Детаљи од добављача:"
 msgid "Details saved inside the file, such as the author's name, are published with it."
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Device"
 msgstr ""
@@ -6767,6 +6908,38 @@ msgstr "Уреди…"
 msgid "Edited"
 msgstr "Едитед"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited a {type} block in “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the client “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the number “{name}” in “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the number “{name}” in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the service “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the testimonial from {name}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Edited the work “{name}”"
+msgstr ""
+
 #: src/features/resume/editor/page-overlay.tsx
 msgid "Editing"
 msgstr "Уређивање"
@@ -6859,6 +7032,7 @@ msgstr ""
 msgid "Emailed"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Embed"
 msgstr ""
@@ -7595,6 +7769,7 @@ msgstr "Дебљина фонта"
 msgid "Font weights"
 msgstr "Дебљине фонта"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Fonts"
 msgstr ""
@@ -8201,6 +8376,7 @@ msgstr "Наслов 3"
 msgid "Heading changed"
 msgstr "Наслов је промењен"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
@@ -8245,6 +8421,34 @@ msgstr "Помози ми да претворим достигнуће у при
 #: src/components/input/color-picker.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Hex color"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid “{item}” in {section}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid an item in {section}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the location in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the photo in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the Rezumi badge"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Hid the work “{name}”"
 msgstr ""
 
 #: src/components/level/combobox.tsx
@@ -8471,6 +8675,10 @@ msgstr "Могу да видим овај {kind} и {0} оглас за поса
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
 msgstr "Могу да видим овај {kind}. Предлози се враћају као измене које можете да прихватите једну по једну."
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "I can see your portfolio. Changes show on the page at once, and you can undo each reply."
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "I design apps people enjoy using, and I'm looking for my next team."
@@ -8818,6 +9026,7 @@ msgstr ""
 msgid "Intro background"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-effect.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Intro effect"
@@ -9562,6 +9771,7 @@ msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Лигатуре могу да избаце слова из речи попут „workflow“."
 
 #: src/features/command-palette/pages/preferences/index.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/libs/theme.ts
 msgid "Light"
@@ -9592,6 +9802,7 @@ msgid "Lines this close can run together when read. Use at least {minimum}."
 msgstr "Овако блиски редови могу да иду заједно када се читају. Користите најмање {minimum}."
 
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/link-block.tsx
@@ -9830,6 +10041,7 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/page-text.ts
@@ -10189,6 +10401,7 @@ msgstr ""
 msgid "Metric on the card"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Metrics"
 msgstr ""
@@ -10209,6 +10422,7 @@ msgstr "Минимална основна плата"
 msgid "Mixed"
 msgstr "Помешано"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Mode"
 msgstr ""
@@ -10407,6 +10621,38 @@ msgstr "Преместите свој имејл и број телефона н
 msgid "Moved {0} of {1} to Trash. Locked documents were skipped."
 msgstr "У Отпад премештено: {0} од {1}. Закључани документи су прескочени."
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved a {type} block in “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the client “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the number “{name}” in “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the number “{name}” in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the service “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the testimonial from {name}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Moved the work “{name}”"
+msgstr ""
+
 #. placeholder {0}: getStageLabel(entry.stage)
 #. placeholder {0}: getStageLabel(status)
 #: src/features/applications/components/detail/activity.tsx
@@ -10441,6 +10687,7 @@ msgstr "Моја улога"
 #: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
@@ -11074,6 +11321,7 @@ msgstr "Норвешки"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/career/workspace/messages.tsx
+#: src/features/portfolio/assistant/changes.tsx
 msgid "Not applied"
 msgstr "Није примењено"
 
@@ -11081,6 +11329,11 @@ msgstr "Није примењено"
 #: src/features/applications/next-step.ts
 msgid "Not applied yet"
 msgstr "Још није пријављено"
+
+#: src/features/portfolio/assistant/changes.tsx
+msgctxt "The assistant's changes, not in the portfolio yet"
+msgid "Not applied yet"
+msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Not available right now"
@@ -11233,6 +11486,10 @@ msgstr "Није оцењено"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "Није изабрано"
+
+#: src/features/portfolio/assistant/document.ts
+msgid "Not sent: the assistant needs your latest changes saved first. {reason}"
+msgstr ""
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -11923,6 +12180,7 @@ msgstr "Паге 1 · {formatLabel}"
 msgid "Page address"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Page language"
@@ -12242,6 +12500,7 @@ msgstr ""
 msgid "Payments aren't set up on this server."
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "PDF"
 msgstr ""
@@ -12343,6 +12602,7 @@ msgstr "Телефон (опционо)"
 msgid "Phones"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/profile/sources/source-review.tsx
@@ -12379,6 +12639,10 @@ msgstr ""
 
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Pick a look for your first resume"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Pick a theme and colors that fit my field"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
@@ -12433,6 +12697,7 @@ msgstr ""
 msgid "Picture viewer"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Pictures"
 msgstr ""
@@ -12553,9 +12818,12 @@ msgstr "Пољски"
 msgid "Polishing"
 msgstr "Дотеривање"
 
+#: src/features/assistant/assistant-panel.tsx
+#: src/features/command-palette/pages/resumes.tsx
 #: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/portfolio/admin/review-page.tsx
+#: src/features/portfolio/assistant/document.ts
 #: src/features/portfolio/portfolio-page.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 #: src/routes/builder/portfolio/index.tsx
@@ -13288,6 +13556,10 @@ msgid "Read the page"
 msgstr "Прочитајте страницу"
 
 #: src/features/assistant/conversation.tsx
+msgid "Read the portfolio"
+msgstr ""
+
+#: src/features/assistant/conversation.tsx
 msgid "Read the resume"
 msgstr "Прочитан животопис"
 
@@ -13542,6 +13814,7 @@ msgstr "Правоугаоник (пуна ширина)"
 msgid "Red"
 msgstr "Црвена"
 
+#: src/features/portfolio/assistant/changes.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/chrome.tsx
 msgid "Redo"
@@ -13836,6 +14109,74 @@ msgstr "Уклоните лозинку?"
 msgid "Remove this photo?"
 msgstr "Желите ли да уклоните ову слику?"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a {type} block from “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a block from “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a client"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a number from “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a number from the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a section"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a service"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a testimonial"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed a work"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the client “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the number “{name}” from “{workName}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the number “{name}” from the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the photo"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the service “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the testimonial from {name}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Removed the work “{name}”"
+msgstr ""
+
 #: src/features/career/coach.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/portfolio/editor/content-panel.tsx
@@ -13866,6 +14207,14 @@ msgstr "Преименуј верзију"
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Rename…"
 msgstr "Преименуј…"
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Renamed “{old}” to “{title}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Renamed sections"
+msgstr ""
 
 #: src/features/billing/purchase.ts
 msgid "Renewal"
@@ -13926,6 +14275,10 @@ msgstr "Поново наручите {title}"
 #. placeholder {0}: info.title
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Reorder the {0} block"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Reordered the sections"
 msgstr ""
 
 #. placeholder {0}: jd.stuffedTerms.join(", ")
@@ -14241,6 +14594,10 @@ msgstr "Прегледај мој одговор"
 msgid "Review my answer sends the question, what you said, this posting and your Profile to {providerName}."
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Review my portfolio and fix what's weak"
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 msgid "Review required form answers and remove unsupported claims."
 msgstr "Прегледајте обавезне одговоре у обрасцу и уклоните непоткрепљене тврдње."
@@ -14308,6 +14665,14 @@ msgstr ""
 
 #: src/features/portfolio/ai/rewrite-menu.tsx
 msgid "Rewritten."
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Rewrote {about}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Rewrote the greeting"
 msgstr ""
 
 #: src/features/docs/header.tsx
@@ -14498,6 +14863,11 @@ msgstr ""
 msgid "Sales Executive"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Same as my Profile"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Same as my resume"
@@ -14671,6 +15041,10 @@ msgstr "сачувано {0}"
 msgid "Saved {0} to Applications"
 msgstr "{0} сачувано у Пријаве"
 
+#: src/features/assistant/conversation.tsx
+msgid "Saved a picture"
+msgstr ""
+
 #. placeholder {0}: story.data.title
 #: src/features/career/coach-chat.tsx
 msgid "Saved a story: {0}"
@@ -14734,6 +15108,10 @@ msgstr ""
 #: src/features/resume/share/address-field.tsx
 msgid "Saving {0}/{username}/{slug}… Copy is available after saving."
 msgstr "Чување {0}/{username}/{slug}… Копија је доступна након чувања."
+
+#: src/features/assistant/conversation.tsx
+msgid "Saving a picture…"
+msgstr ""
 
 #: src/features/resume/builder/draft.ts
 msgid "Saving is taking longer than expected. Your changes are still open."
@@ -15532,6 +15910,34 @@ msgstr ""
 msgid "Show your work, results and services on one page that looks good on any phone, at rezumi.app/your-username."
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed “{item}” in {section}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed an item in {section}"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the location in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the photo in the intro"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the Rezumi badge"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the section “{name}”"
+msgstr ""
+
+#: src/features/portfolio/assistant/labels.ts
+msgid "Showed the work “{name}”"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
 msgstr "Приказано у вашој временској зони."
@@ -16137,6 +16543,10 @@ msgstr ""
 msgid "Stopped. No edits were proposed."
 msgstr "Заустављено. Нису предложене никакве измене."
 
+#: src/features/assistant/conversation.tsx
+msgid "Stopped. Nothing was changed."
+msgstr ""
+
 #: src/features/portfolio/works/storage-meter.tsx
 msgid "Storage for pictures and PDFs"
 msgstr ""
@@ -16645,6 +17055,7 @@ msgstr "Тестирање услуге претраге на вашем сер�
 msgid "Testing…"
 msgstr "Тестирање…"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/section-forms.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -17084,10 +17495,12 @@ msgstr ""
 msgid "The PDF couldn't be uploaded. Check your connection and try again."
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "The photo in my Profile"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "The photo on my resume"
 msgstr ""
@@ -17310,6 +17723,7 @@ msgstr ""
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/design-panel.tsx
 #: src/features/portfolio/theme-gallery.tsx
 #: src/features/settings/general.tsx
@@ -18145,6 +18559,10 @@ msgstr "Транскрибовање помоћу модела {model}…"
 msgid "Transcript copied"
 msgstr "Транскрипт је копиран"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Translate everything to English"
+msgstr ""
+
 #: src/features/portfolio/ai/rewrite-menu.tsx
 msgid "Translate to {language}"
 msgstr ""
@@ -18225,6 +18643,10 @@ msgstr "Пробајте узорак"
 msgid "Try again"
 msgstr "Покушај поново"
 
+#: src/features/portfolio/assistant/document.ts
+msgid "Try again in a moment."
+msgstr ""
+
 #: src/features/billing/buy-plans.tsx
 msgid "Try again later. Your current plan and credits aren't affected."
 msgstr ""
@@ -18260,6 +18682,10 @@ msgstr "Покушајте са узорком резимеа"
 #: src/libs/locale.ts
 msgid "Turkish"
 msgstr "Турски"
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Turn my resume projects into works"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Turn off discretionary ligatures when exporting."
@@ -18397,6 +18823,7 @@ msgstr "Подвуци везе"
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/portfolio/ai/apply.ts
+#: src/features/portfolio/assistant/changes.tsx
 #: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/list-undo.ts
 #: src/features/portfolio/editor/rich-text-editor.tsx
@@ -18420,6 +18847,10 @@ msgstr "Поништи"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Undo resume change"
 msgstr "Поништите промену резимеа"
+
+#: src/features/portfolio/assistant/changes.tsx
+msgid "Undone"
+msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Unit"
@@ -18498,6 +18929,7 @@ msgstr ""
 msgid "Untitled"
 msgstr "Унтитлед"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled client"
@@ -18507,26 +18939,34 @@ msgstr ""
 msgid "Untitled letter"
 msgstr "Писмо без наслова"
 
+#: src/features/portfolio/assistant/labels.ts
+msgid "Untitled number"
+msgstr ""
+
 #: src/features/documents/use-start-document.ts
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Untitled resume"
 msgstr "Унтитлед ресуме"
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/sections.ts
 msgid "Untitled section"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled service"
 msgstr ""
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Untitled testimonial"
 msgstr ""
 
 #: src/features/portfolio/ai/draft-dialog.tsx
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/save-problem.ts
 #: src/features/portfolio/works/work-editor.tsx
 #: src/features/portfolio/works/works-form.tsx
@@ -19007,6 +19447,7 @@ msgstr "Врло мало речи је извучено за биографиј
 msgid "Very little text was recovered for this many pages."
 msgstr "Врло мало текста је извучено за оволико страница."
 
+#: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Video"
 msgstr ""
@@ -19734,6 +20175,10 @@ msgstr "Напишите „Present“ као датум завршетка ва
 msgid "Write a draft with AI"
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Write a stronger intro"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."
 msgstr "Запишите шта су питали док је још свеже. Саветник пореди ваше одговоре са вашим причама."
@@ -20083,6 +20528,10 @@ msgstr "Ваш прегледач овде не подржава диктира�
 #: src/features/career/workspace/practise.tsx
 msgid "Your browser turns your speech into text. Depending on the browser, its maker may process the audio (Google in Chrome, Apple in Safari)."
 msgstr "Ваш прегледач претвара ваш говор у текст. У зависности од прегледача, његов произвођач може обрађивати звук (Google у Chrome-у, Apple у Safari-ју)."
+
+#: src/features/portfolio/editor/webmcp.ts
+msgid "Your browser's AI agent changed your portfolio."
+msgstr ""
 
 #: src/features/letters/webmcp.ts
 msgid "Your browser's AI agent edited this letter."
@@ -20491,6 +20940,10 @@ msgstr ""
 msgid "Your portfolio changed somewhere else"
 msgstr ""
 
+#: src/features/portfolio/assistant/document.ts
+msgid "Your portfolio changed somewhere else. Choose the version to keep."
+msgstr ""
+
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Your portfolio couldn't be saved. Undo your last change, or contact support if this keeps happening."
 msgstr ""
@@ -20515,6 +20968,10 @@ msgstr ""
 
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio is too large to save. Shorten some text or remove a few blocks."
+msgstr ""
+
+#: src/features/portfolio/assistant/document.ts
+msgid "Your portfolio isn't open anymore. Reload the page."
 msgstr ""
 
 #: src/features/billing/plan.ts

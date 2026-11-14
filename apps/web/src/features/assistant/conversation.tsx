@@ -1,5 +1,5 @@
 import type { ChatAttachment, MessageContext } from "./chat";
-import type { AssistantDocument } from "./document";
+import type { AssistantDocument, TextAssistantDocument } from "./document";
 import type { PromptChip, PromptFile } from "./prompt-box";
 import type { ProposeEditsOutput } from "@rezumi/ai/tools/agent-tool-contracts";
 import type { Proposal } from "@rezumi/resume/proposals";
@@ -11,7 +11,7 @@ import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { lastAssistantMessageIsCompleteWithApprovalResponses, lastAssistantMessageIsCompleteWithToolCalls } from "ai";
-import { memo, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
+import { lazy, memo, Suspense, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { agentWebSources, readPageOutputSchema } from "@rezumi/ai/tools/agent-tool-contracts";
 import { Icon } from "@rezumi/ui/components/icon";
 import {
@@ -30,6 +30,7 @@ import { attachmentPart, fileToBase64, transcriptOf } from "./chat";
 import { AssistantMarkdown } from "./markdown";
 import { MessageSources } from "./message-sources";
 import { PromptBox } from "./prompt-box";
+import { DocumentNotReadyError } from "./send-guard";
 import { ToolApprovals } from "./tool-approvals";
 import { useAssistantChat } from "./use-assistant-chat";
 import { WaitingRow } from "./waiting-row";
@@ -50,6 +51,13 @@ type ToolPart = Part & {
 	output?: unknown;
 	errorText?: string;
 };
+
+// The portfolio's changes card and the replay of its changes load with the first portfolio conversation, so the
+// resume and letter assistants don't carry the portfolio's edit engine.
+const PortfolioChanges = lazy(() =>
+	import("@/features/portfolio/assistant/changes").then((module) => ({ default: module.PortfolioChanges })),
+);
+const loadPortfolioReplay = () => import("@/features/portfolio/assistant/apply");
 
 type ConversationProps = {
 	threadId: string;
@@ -74,6 +82,8 @@ type ConversationProps = {
 /** One conversation: the thread (role="log"), change sets and questions in it, and the composer. */
 export function Conversation(props: ConversationProps) {
 	const { threadId, document, readOnly } = props;
+	// Resumes and letters get proposals to accept; the portfolio gets changes applied as they arrive.
+	const textDocument = document.kind === "portfolio" ? null : document;
 	const queryClient = useQueryClient();
 	const [context, setContext] = useState<MessageContext>(props.initialContext);
 	const [statuses, setStatuses] = useState<ReadonlyMap<string, EditStatus>>(new Map());
@@ -97,6 +107,7 @@ export function Conversation(props: ConversationProps) {
 			resume: props.activeRun,
 			context,
 			aiSource: aiSourceFieldsFor(ai, props.providerId).aiSource,
+			beforeSend: document.beforeSend,
 			onFinish: refresh,
 		});
 	const streaming = status === "submitted" || status === "streaming";
@@ -118,14 +129,21 @@ export function Conversation(props: ConversationProps) {
 		(messages.at(-1)?.metadata as { contextScope?: string } | undefined)?.contextScope !==
 			JSON.stringify([context.document !== false, context.posting !== false]);
 
-	const send = (text: string, attachments: ChatAttachment[] = []) => {
-		if (streaming || readOnly) return;
+	/** Sends a message; false when the document wasn't ready (a toast says why, and the composer gets it back). */
+	const send = async (text: string, attachments: ChatAttachment[] = []): Promise<boolean> => {
+		if (streaming || readOnly) return false;
+		const problem = (await document.beforeSend?.()) ?? null;
+		if (problem) {
+			toast.add({ type: "error", description: problem });
+			return false;
+		}
 		clearError();
 		setStopped(false);
 		const files = attachments.map(attachmentPart);
 		sendMessage(files.length > 0 ? { text, files } : { text }, {
 			body: { attachmentIds: attachments.map((attachment) => attachment.id) },
 		});
+		return true;
 	};
 
 	// The first message (or ⌘K's question) goes out once the conversation is open.
@@ -164,10 +182,12 @@ export function Conversation(props: ConversationProps) {
 	// Every proposed edit in the conversation, with what the user did with it: marked on the page while pending.
 	const proposals = useMemo(
 		() =>
-			messages.flatMap((message) =>
-				message.parts.flatMap((part) => (isProposeEdits(part) ? toProposals(part, statuses, document) : [])),
-			),
-		[messages, statuses, document],
+			textDocument
+				? messages.flatMap((message) =>
+						message.parts.flatMap((part) => (isProposeEdits(part) ? toProposals(part, statuses, textDocument) : [])),
+					)
+				: [],
+		[messages, statuses, textDocument],
 	);
 	// Published only when they change: the page canvas and every section row re-render on each publish, and a
 	// streaming reply rebuilds this list on every chunk.
@@ -197,11 +217,12 @@ export function Conversation(props: ConversationProps) {
 	// Undoing an accepted edit makes it pending again. Only an undo (the document) or a status change can cause
 	// one, so streamed chunks don't re-check every edit.
 	const recordUndone = useEffectEvent(() => {
+		if (!textDocument) return;
 		for (const message of messages) {
 			for (const part of message.parts) {
 				if (!isProposeEdits(part)) continue;
-				const undone = toProposals(part, statuses, document).filter(
-					(proposal) => proposal.status === "accepted" && document.stateOf(proposal) === "pending",
+				const undone = toProposals(part, statuses, textDocument).filter(
+					(proposal) => proposal.status === "accepted" && textDocument.stateOf(proposal) === "pending",
 				);
 				if (undone.length > 0) record(message, part, undone, "pending");
 			}
@@ -213,8 +234,88 @@ export function Conversation(props: ConversationProps) {
 	const answer = (toolCallId: string, output: string) =>
 		addToolOutput({ tool: "ask_user_question", toolCallId, output });
 
+	// The portfolio's changes go on the page as soon as they stream in during this visit; those the conversation
+	// opened with wait on their card for Apply.
+	const portfolio = document.kind === "portfolio" && !readOnly;
+	useEffect(() => {
+		if (!portfolio) return;
+		const fresh = messages.filter(
+			(message) => message.role === "assistant" && !initialIds.has(message.id) && message.parts.some(isEditPortfolio),
+		);
+		if (fresh.length === 0) return;
+		const onRecorded = () => void queryClient.invalidateQueries({ queryKey: orpc.agent.threads.list.key() });
+		void loadPortfolioReplay().then(({ autoApplyMessages }) => autoApplyMessages(threadId, fresh, { onRecorded }));
+	}, [portfolio, messages, initialIds, threadId, queryClient]);
+
 	const last = messages.at(-1);
-	const proposedInLast = last?.role === "assistant" && last.parts.some(isProposeEdits);
+	const proposedInLast =
+		last?.role === "assistant" && last.parts.some((part) => isProposeEdits(part) || isEditPortfolio(part));
+
+	// What follows the last message (Stopped, an error, Copy transcript) belongs to its row. As rows of their own they
+	// came and went as a reply started and ended, and the scroller took such a swap (or a new turn landing before them)
+	// for an older turn to settle on: a reopened thread jumped to its first message instead of following the reply.
+	const stoppedNote = stopped && !streaming && !proposedInLast;
+	const errorNote = Boolean(error) && !streaming;
+	const copyRow = !streaming && messages.length > 0;
+	const after = (stoppedNote || errorNote || copyRow) && (
+		<div className="grid gap-3 pt-3">
+			{stoppedNote && (
+				<p className="flex items-center gap-2 text-sm text-muted transition-opacity duration-standard ease-enter starting:opacity-0">
+					<Icon name="stop-circle" size={18} />
+					{textDocument ? (
+						<Trans>Stopped. No edits were proposed.</Trans>
+					) : (
+						<Trans>Stopped. Nothing was changed.</Trans>
+					)}
+					<Button size="sm" variant="ghost" onPress={() => void send(t`Continue`)}>
+						<Trans>Continue</Trans>
+					</Button>
+				</p>
+			)}
+
+			{errorNote && (
+				<div
+					role="alert"
+					className="grid gap-2 rounded-xl bg-danger-soft p-3 text-sm text-danger-soft-foreground transition-opacity duration-standard ease-enter starting:opacity-0"
+				>
+					<span className="flex gap-2">
+						<Icon name="warning-circle" size={18} className="shrink-0" />
+						{error instanceof DocumentNotReadyError ? (
+							error.message
+						) : (
+							<Trans>
+								{props.providerLabel} returned “
+								{getOrpcErrorMessage(error, {
+									fallback: t`an error`,
+									allowServerMessage: true,
+								})}
+								”. Your message is kept.
+							</Trans>
+						)}
+					</span>
+					<span className="flex gap-1.5">
+						<Button size="sm" variant="secondary" onPress={() => retry()}>
+							<Trans>Retry</Trans>
+						</Button>
+						{!(error instanceof DocumentNotReadyError) && (
+							<Button size="sm" variant="ghost" onPress={() => props.onSwitchModel()}>
+								<Trans>Switch model</Trans>
+							</Button>
+						)}
+					</span>
+				</div>
+			)}
+
+			{copyRow && (
+				<div className="flex justify-end transition-opacity duration-standard ease-enter starting:opacity-0">
+					<Button size="sm" variant="ghost" className="text-muted" onPress={() => void copyTranscript(messages)}>
+						<Icon name="copy" size={16} />
+						<Trans>Copy transcript</Trans>
+					</Button>
+				</div>
+			)}
+		</div>
+	);
 
 	return (
 		<div className="flex min-h-0 flex-1 flex-col">
@@ -228,6 +329,7 @@ export function Conversation(props: ConversationProps) {
 								{messages.map((message, index) => (
 									<MessageScrollerItem key={message.id} messageId={message.id} scrollAnchor={message.role === "user"}>
 										<MessageView
+											threadId={threadId}
 											message={message}
 											streaming={streaming && index === messages.length - 1}
 											enter={!initialIds.has(message.id) && !(fromPending && index === 0)}
@@ -244,8 +346,10 @@ export function Conversation(props: ConversationProps) {
 												void addToolApprovalResponse(decision);
 											}}
 										/>
+										{index === messages.length - 1 && after}
 									</MessageScrollerItem>
 								))}
+								{messages.length === 0 && error && !streaming && <MessageScrollerItem>{after}</MessageScrollerItem>}
 
 								<WaitingRow show={waiting} skipEnter={fromPending && messages.length <= 1}>
 									<TraceLine status="running">
@@ -257,61 +361,6 @@ export function Conversation(props: ConversationProps) {
 										</TraceTitle>
 									</TraceLine>
 								</WaitingRow>
-
-								{stopped && !streaming && !proposedInLast && (
-									<MessageScrollerItem>
-										<p className="flex items-center gap-2 text-sm text-muted transition-opacity duration-standard ease-enter starting:opacity-0">
-											<Icon name="stop-circle" size={18} />
-											<Trans>Stopped. No edits were proposed.</Trans>
-											<Button size="sm" variant="ghost" onPress={() => send(t`Continue`)}>
-												<Trans>Continue</Trans>
-											</Button>
-										</p>
-									</MessageScrollerItem>
-								)}
-
-								{error && !streaming && (
-									<MessageScrollerItem>
-										<div
-											role="alert"
-											className="grid gap-2 rounded-xl bg-danger-soft p-3 text-sm text-danger-soft-foreground transition-opacity duration-standard ease-enter starting:opacity-0"
-										>
-											<span className="flex gap-2">
-												<Icon name="warning-circle" size={18} className="shrink-0" />
-												<Trans>
-													{props.providerLabel} returned “
-													{getOrpcErrorMessage(error, {
-														fallback: t`an error`,
-														allowServerMessage: true,
-													})}
-													”. Your message is kept.
-												</Trans>
-											</span>
-											<span className="flex gap-1.5">
-												<Button size="sm" variant="secondary" onPress={() => retry()}>
-													<Trans>Retry</Trans>
-												</Button>
-												<Button size="sm" variant="ghost" onPress={() => props.onSwitchModel()}>
-													<Trans>Switch model</Trans>
-												</Button>
-											</span>
-										</div>
-									</MessageScrollerItem>
-								)}
-
-								{!streaming && messages.length > 0 && (
-									<MessageScrollerItem className="flex justify-end transition-opacity duration-standard ease-enter starting:opacity-0">
-										<Button
-											size="sm"
-											variant="ghost"
-											className="text-muted"
-											onPress={() => void copyTranscript(messages)}
-										>
-											<Icon name="copy" size={16} />
-											<Trans>Copy transcript</Trans>
-										</Button>
-									</MessageScrollerItem>
-								)}
 							</MessageScrollerContent>
 						</MessageScrollerViewport>
 						<MessageScrollerButton>
@@ -341,10 +390,13 @@ export function Conversation(props: ConversationProps) {
 const isProposeEdits = (part: Part): part is ToolPart =>
 	part.type === "tool-propose_edits" && (part as ToolPart).state === "output-available";
 
+const isEditPortfolio = (part: Part): part is ToolPart =>
+	part.type === "tool-edit_portfolio" && (part as ToolPart).state === "output-available";
+
 function toProposals(
 	part: ToolPart,
 	statuses: ReadonlyMap<string, EditStatus>,
-	document: AssistantDocument,
+	document: TextAssistantDocument,
 ): Proposal[] {
 	const output = part.output as ProposeEditsOutput | undefined;
 	return (output?.edits ?? []).map((edit) => {
@@ -365,6 +417,7 @@ function toProposals(
 }
 
 type MessageViewProps = {
+	threadId: string;
 	message: UIMessage;
 	streaming: boolean;
 	enter: boolean;
@@ -377,6 +430,7 @@ type MessageViewProps = {
 
 /** Memoized: while a reply streams, only its own message re-renders; the ones above keep their props. */
 const MessageView = memo(function MessageView({
+	threadId,
 	message,
 	streaming,
 	enter,
@@ -454,6 +508,7 @@ const MessageView = memo(function MessageView({
 					return (
 						<ToolPartView
 							key={key}
+							threadId={threadId}
 							part={block.part}
 							streaming={streaming}
 							message={message}
@@ -491,10 +546,20 @@ function stepOf(part: ToolPart, streaming: boolean): Step | null {
 				label: part.type === "tool-read_letter" ? <Trans>Read the letter</Trans> : <Trans>Read the resume</Trans>,
 				working,
 			};
+		case "tool-read_portfolio":
+			return { label: <Trans>Read the portfolio</Trans>, working };
 		case "tool-read_attachment":
 			return { label: <Trans>Read the attachment</Trans>, working };
 		case "tool-read_profile":
 			return { label: <Trans>Read your Profile</Trans>, working };
+		case "tool-save_attachment_image":
+			// A picture that couldn't be saved shows on its own line, with why.
+			if (part.state === "output-error") return null;
+			return { label: working ? <Trans>Saving a picture…</Trans> : <Trans>Saved a picture</Trans>, working };
+		case "tool-edit_portfolio":
+			return part.state === "output-error" || part.state === "output-available"
+				? null
+				: { label: <Trans>Changing the portfolio…</Trans>, working: true };
 		case "tool-web_search":
 		case "tool-google_search":
 		case "tool-search_web":
@@ -576,9 +641,25 @@ function StepGroup({
 	);
 }
 
+/**
+ * Whether the model sent a refused call again later in the same reply and it worked then (`same` narrows the retries
+ * that count): the refusal is then left out, since what the reader sees is the result.
+ */
+function retriedLater(message: UIMessage, part: ToolPart, same: (a: ToolPart, b: ToolPart) => boolean = () => true) {
+	const later = message.parts.slice(message.parts.indexOf(part) + 1) as ToolPart[];
+	return later.some((next) => next.type === part.type && next.state === "output-available" && same(part, next));
+}
+
+const attachmentOf = (part: ToolPart) => (part.input as { attachmentId?: unknown } | undefined)?.attachmentId;
+
+/** A save of the same attachment (a refusal without one counts any later save). */
+const sameAttachment = (failed: ToolPart, next: ToolPart) =>
+	attachmentOf(failed) === undefined || attachmentOf(failed) === attachmentOf(next);
+
 type ToolPartViewProps = Omit<MessageViewProps, "enter"> & { part: ToolPart };
 
 function ToolPartView({
+	threadId,
 	part,
 	streaming,
 	message,
@@ -591,6 +672,47 @@ function ToolPartView({
 	const working = part.state === "input-streaming" || part.state === "input-available";
 
 	switch (part.type) {
+		case "tool-save_attachment_image":
+			// A picture the model saved again after a refusal (its alt text too long, say) saved fine in the end.
+			return part.state === "output-error" && !retriedLater(message, part, sameAttachment) ? (
+				<TraceLine status="error">
+					<TraceIcon>
+						<Icon name="warning-circle" size={14} />
+					</TraceIcon>
+					<TraceTitle>
+						<Trans>Couldn't save the picture: {part.errorText}</Trans>
+					</TraceTitle>
+				</TraceLine>
+			) : null;
+		case "tool-edit_portfolio":
+			if (part.state === "output-error") {
+				// The model resends a call the tool refused (a title over its limit, say); once a later call in the reply
+				// worked, the slip isn't news to the reader.
+				if (retriedLater(message, part)) return null;
+				return (
+					<TraceLine status="error">
+						<TraceIcon>
+							<Icon name="warning-circle" size={14} />
+						</TraceIcon>
+						<TraceTitle>
+							<Trans>Couldn't change the portfolio: {part.errorText}</Trans>
+						</TraceTitle>
+					</TraceLine>
+				);
+			}
+			if (part.state !== "output-available" || document.kind !== "portfolio") return null;
+			return (
+				<Suspense fallback={null}>
+					<PortfolioChanges
+						threadId={threadId}
+						messageId={message.id}
+						toolCallId={part.toolCallId}
+						output={part.output}
+						document={document}
+						readOnly={readOnly}
+					/>
+				</Suspense>
+			);
 		case "tool-web_search":
 		case "tool-google_search":
 		case "tool-search_web":
@@ -638,7 +760,7 @@ function ToolPartView({
 						</TraceTitle>
 					</TraceLine>
 				);
-			if (part.state !== "output-available") return null;
+			if (part.state !== "output-available" || document.kind === "portfolio") return null;
 			const output = part.output as ProposeEditsOutput;
 			const proposals = toProposals(part, statuses, document);
 			const states = proposals.map(document.stateOf);
@@ -763,7 +885,8 @@ type ComposerProps = {
 	threadId: string | null;
 	/** Creates a draft conversation lazily for the first attachment. */
 	ensureThread?: () => Promise<string>;
-	onSend: (text: string, attachments?: ChatAttachment[]) => void;
+	/** Sends the message; a promise of false gives it back to the box (it wasn't sent). */
+	onSend: (text: string, attachments?: ChatAttachment[]) => void | Promise<boolean>;
 	onStop: () => void;
 	/** Text the box starts with (a link's `?ask=`); the user still presses Send. */
 	initialText?: string | undefined;
@@ -786,16 +909,30 @@ export function Composer(props: ComposerProps) {
 
 	const submit = () => {
 		if (!hasText || streaming || disabled || uploading) return;
-		props.onSend(text.trim(), attachments);
+		const message = text.trim();
+		const files = attachments;
+		const sent = props.onSend(message, files);
 		setText("");
 		setAttachments([]);
+		// Not sent after all: the message comes back, unless something new was typed meanwhile.
+		if (sent instanceof Promise)
+			void sent.then((ok) => {
+				if (ok) return;
+				setText((current) => current || message);
+				setAttachments((current) => (current.length > 0 ? current : files));
+			});
 	};
 
 	const upload = async (chosen: File[]) => {
-		const files = acceptUploads(chosen, attachments.length);
-		if (files.length === 0) return;
+		const room = Math.max(0, MAX_ATTACHMENTS_PER_MESSAGE - attachments.length);
 		setUploading(true);
 		try {
+			// Only what fits is prepared (shrunk, for the portfolio); the rest still gets its "too many" note.
+			const prepared = document.prepareUploads
+				? [...(await document.prepareUploads(chosen.slice(0, room))), ...chosen.slice(room)]
+				: chosen;
+			const files = acceptUploads(prepared, attachments.length);
+			if (files.length === 0) return;
 			const threadId = props.threadId ?? (await props.ensureThread?.());
 			if (!threadId) return;
 			const uploaded = await Promise.all(
@@ -824,7 +961,12 @@ export function Composer(props: ComposerProps) {
 	const chips: PromptChip[] = [
 		{
 			key: "document" as const,
-			icon: document.kind === "letter" ? ("envelope-simple" as const) : ("file-text" as const),
+			icon:
+				document.kind === "portfolio"
+					? ("globe-hemisphere-west" as const)
+					: document.kind === "letter"
+						? ("envelope-simple" as const)
+						: ("file-text" as const),
 			label: document.name,
 		},
 		...(document.posting
