@@ -17,6 +17,7 @@ import wasm from "@formepdf/core/pkg-web/forme_bg.wasm";
 import { init } from "@formepdf/core/worker";
 import { Pool } from "pg";
 import { configureAgentStreamLifetime } from "@rezumi/api/features/agent/streams";
+import { runExtensionJobs } from "@rezumi/api/features/applications/extension-jobs";
 import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
 import { runCareerJobs } from "@rezumi/api/features/career/jobs";
 import { runCustomDomainJobs } from "@rezumi/api/features/custom-domain/jobs";
@@ -275,6 +276,7 @@ export default {
 				await runCustomDomainJobs().catch(() =>
 					console.error("[custom-domain] Scheduled work failed; it retries next run."),
 				);
+				await runExtensionJobs().catch(() => console.error("[extension] Scheduled work failed; it retries next run."));
 			}
 		};
 		ctx.waitUntil(run(jobs).finally(() => closePool(pool, store)));

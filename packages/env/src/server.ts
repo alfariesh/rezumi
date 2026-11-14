@@ -250,6 +250,13 @@ export const env = createEnv({
 		// Where billing alerts and the daily sales summary go: the owner's address. Without it they are only kept for the
 		// admin page.
 		BILLING_ALERT_EMAIL: z.email().optional(),
+		// The oldest browser extension version the API still serves (x.y.z). Older ones get EXTENSION_OUTDATED and ask the
+		// person to update. An emergency brake for a broken release; unset serves every version.
+		EXTENSION_MIN_VERSION: z
+			.string()
+			.trim()
+			.regex(/^\d+\.\d+\.\d+$/, "Use a version like 0.2.0.")
+			.optional(),
 		// Dodo Payments (merchant of record) sells the subscriptions. Without the API key checkout is unavailable; without
 		// the webhook key the webhook endpoint is a 404 and payments only arrive through the billing job's checks.
 		DODO_PAYMENTS_ENVIRONMENT: z.enum(["test_mode", "live_mode"]).optional(),

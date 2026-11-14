@@ -106,6 +106,11 @@ export const authService = {
 				.select()
 				.from(schema.aiContentReport)
 				.where(eq(schema.aiContentReport.userId, input.userId)),
+			// Pages the browser extension could not read, as the account reported them (kept 30 days).
+			extensionCaptureReports: await db
+				.select()
+				.from(schema.extensionCaptureReport)
+				.where(eq(schema.extensionCaptureReport.userId, input.userId)),
 			career: await careerService.exportData(input.userId),
 			billing: await exportBillingData(input.userId),
 			portfolio: await exportPortfolioData(input.userId),

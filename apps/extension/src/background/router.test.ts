@@ -8,7 +8,11 @@ const extensionOrigin = `chrome-extension://${extensionId}/`;
 function setup() {
 	const handlers = {
 		page: vi.fn(async () => ({ ok: true as const })),
-		status: vi.fn(async () => ({ connected: false, version: "0.1.0" })),
+		status: vi.fn(async () => ({ state: "signed-out" as const, account: null, version: "0.1.0" })),
+		connect: vi.fn(async () => ({ ok: false as const, code: "cancelled" })),
+		disconnect: vi.fn(async () => ({ ok: true as const })),
+		token: vi.fn(async () => ({ accessToken: "token" })),
+		expire: vi.fn(async () => ({ ok: true as const })),
 	};
 	return { handlers, route: createMessageRouter({ extensionId, extensionOrigin, handlers }) };
 }
@@ -39,7 +43,7 @@ describe("createMessageRouter", () => {
 		const { route } = setup();
 		expect(await route({ type: "status" }, panelSender)).toEqual({
 			ok: true,
-			data: { connected: false, version: "0.1.0" },
+			data: { state: "signed-out", account: null, version: "0.1.0" },
 		});
 	});
 
@@ -52,6 +56,23 @@ describe("createMessageRouter", () => {
 		const { route, handlers } = setup();
 		expect(await route(page, sender)).toEqual({ ok: false, error: "invalid-sender" });
 		expect(handlers.page).not.toHaveBeenCalled();
+	});
+
+	it("treats the panel opened in a tab as the panel", async () => {
+		const { route } = setup();
+		expect(await route({ type: "status" }, { ...panelSender, tab: tab(), frameId: 0 })).toMatchObject({ ok: true });
+	});
+
+	it("hands the panel's token request to its handler, and never a content script's", async () => {
+		const { route, handlers } = setup();
+		expect(await route({ type: "token", force: true }, panelSender)).toEqual({
+			ok: true,
+			data: { accessToken: "token" },
+		});
+		expect(handlers.token).toHaveBeenCalledWith({ type: "token", force: true });
+		for (const type of ["token", "connect", "disconnect", "expire"])
+			expect(await route({ type }, contentSender)).toEqual({ ok: false, error: "invalid-message" });
+		expect(handlers.token).toHaveBeenCalledOnce();
 	});
 
 	it("keeps each part to its own messages", async () => {

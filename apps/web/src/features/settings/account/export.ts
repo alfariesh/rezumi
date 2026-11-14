@@ -20,6 +20,7 @@ export function buildAccountZip(data: AccountExport): Uint8Array {
 		"applications.json": json(data.applications),
 		"career.json": json(data.career),
 		"ai-content-reports.json": json(data.aiContentReports),
+		"extension-page-reports.json": json(data.extensionCaptureReports),
 		"billing.json": json(data.billing),
 		"portfolio.json": json(data.portfolio),
 		// Null while the Profile was never saved.

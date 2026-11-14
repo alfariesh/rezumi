@@ -1,3 +1,4 @@
+import { runExtensionJobs } from "@rezumi/api/features/applications/extension-jobs";
 import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
 import { runCareerJobs } from "@rezumi/api/features/career/jobs";
 import { runCustomDomainJobs } from "@rezumi/api/features/custom-domain/jobs";
@@ -24,6 +25,9 @@ export function startJobScheduler() {
 		});
 		await runCustomDomainJobs().catch(() => {
 			console.error("[custom-domain] Scheduled work failed. It retries on a later tick.");
+		});
+		await runExtensionJobs().catch(() => {
+			console.error("[extension] Scheduled work failed. It retries on a later tick.");
 		});
 	};
 

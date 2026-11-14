@@ -7,6 +7,9 @@ const portfolio = vi.hoisted(() => vi.fn<() => Promise<{ deletedFiles: number; c
 vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: run }));
 vi.mock("@rezumi/api/features/billing/jobs", () => ({ runBillingJobs: billing }));
 vi.mock("@rezumi/api/features/portfolio/jobs", () => ({ runPortfolioJobs: portfolio }));
+vi.mock("@rezumi/api/features/applications/extension-jobs", () => ({
+	runExtensionJobs: vi.fn(async () => ({ emailed: false, deleted: 0 })),
+}));
 
 beforeEach(() => {
 	vi.useFakeTimers();

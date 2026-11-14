@@ -17,6 +17,7 @@ vi.mock("@rezumi/db/schema", () => ({
 	coverLetter: { userId: "coverLetter.userId" },
 	application: { userId: "application.userId" },
 	aiContentReport: { userId: "aiContentReport.userId" },
+	extensionCaptureReport: { userId: "extensionCaptureReport.userId" },
 }));
 vi.mock("drizzle-orm", () => ({ eq: (column: unknown, value: unknown) => ({ column, value }) }));
 vi.mock("@rezumi/env/server", () => ({ env: {} }));
@@ -103,6 +104,7 @@ describe("account backup", () => {
 				[letter],
 				[application],
 				[{ id: "report", userId: "owner", content: "Reported output" }],
+				[{ id: "page-report", userId: "owner", url: "https://careers.example/7" }],
 			]) {
 				mocks.select.mockReturnValueOnce({
 					from: () => ({
@@ -125,6 +127,11 @@ describe("account backup", () => {
 			expect(exported.billing).toEqual(billing);
 			expect(exported.aiContentReports).toEqual([{ id: "report", userId: "owner", content: "Reported output" }]);
 			expect(mocks.predicates).toContainEqual({ column: "aiContentReport.userId", value: "owner" });
+			// Pages the browser extension could not read, as the account reported them.
+			expect(exported.extensionCaptureReports).toEqual([
+				{ id: "page-report", userId: "owner", url: "https://careers.example/7" },
+			]);
+			expect(mocks.predicates).toContainEqual({ column: "extensionCaptureReport.userId", value: "owner" });
 			// The saved Profile comes along.
 			expect(mocks.readProfile).toHaveBeenCalledExactlyOnceWith("owner");
 			expect(exported.profile).toEqual(profile);
@@ -135,7 +142,7 @@ describe("account backup", () => {
 		mocks.readProfile.mockResolvedValue({ data: { basics: { name: "Owner" } }, updatedAt: null });
 		mocks.exportCareer.mockResolvedValue({});
 		mocks.exportBilling.mockResolvedValue({});
-		for (const rows of [[{ id: "owner", name: "Owner" }], [], [], [], []])
+		for (const rows of [[{ id: "owner", name: "Owner" }], [], [], [], [], []])
 			mocks.select.mockReturnValueOnce({ from: () => ({ where: () => Promise.resolve(rows) }) });
 		expect((await authService.exportData({ userId: "owner" })).profile).toBeNull();
 	});

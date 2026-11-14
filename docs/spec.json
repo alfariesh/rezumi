@@ -15027,7 +15027,8 @@
 																	"builtin",
 																	"firecrawl",
 																	"tavily",
-																	"exa"
+																	"exa",
+																	"extension"
 																],
 																"type": "string"
 															},
@@ -15604,7 +15605,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -15924,7 +15926,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -17090,7 +17093,8 @@
 																			"builtin",
 																			"firecrawl",
 																			"tavily",
-																			"exa"
+																			"exa",
+																			"extension"
 																		],
 																		"type": "string"
 																	},
@@ -17803,7 +17807,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -18369,7 +18374,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -18686,7 +18692,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -19115,7 +19122,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -19754,7 +19762,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -20071,7 +20080,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -20500,7 +20510,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -21065,7 +21076,8 @@
 																		"builtin",
 																		"firecrawl",
 																		"tavily",
-																		"exa"
+																		"exa",
+																		"extension"
 																	],
 																	"type": "string"
 																},
@@ -21615,7 +21627,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -22281,7 +22294,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -22971,7 +22985,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -23730,7 +23745,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -24487,7 +24503,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -25242,7 +25259,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -25937,7 +25955,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -26610,7 +26629,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -27303,7 +27323,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -28645,7 +28666,8 @@
 														"builtin",
 														"firecrawl",
 														"tavily",
-														"exa"
+														"exa",
+														"extension"
 													],
 													"type": "string"
 												},
@@ -36132,7 +36154,8 @@
 																			"builtin",
 																			"firecrawl",
 																			"tavily",
-																			"exa"
+																			"exa",
+																			"extension"
 																		],
 																		"type": "string"
 																	},
@@ -36599,6 +36622,69 @@
 													"note",
 													"createdAt",
 													"reviewedAt"
+												]
+											}
+										},
+										"extensionCaptureReports": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"id": {
+														"type": "string"
+													},
+													"userId": {
+														"type": "string"
+													},
+													"url": {
+														"type": "string"
+													},
+													"site": {
+														"anyOf": [
+															{
+																"type": "string"
+															},
+															{
+																"type": "null"
+															}
+														]
+													},
+													"extensionVersion": {
+														"type": "string"
+													},
+													"missing": {
+														"type": "array",
+														"items": {
+															"type": "string"
+														}
+													},
+													"createdAt": {
+														"type": "string",
+														"format": "date-time",
+														"x-native-type": "date"
+													},
+													"notifiedAt": {
+														"anyOf": [
+															{
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															{
+																"type": "null"
+															}
+														]
+													}
+												},
+												"required": [
+													"id",
+													"userId",
+													"url",
+													"site",
+													"extensionVersion",
+													"missing",
+													"createdAt",
+													"notifiedAt"
 												]
 											}
 										},
@@ -41049,6 +41135,7 @@
 										"coverLetters",
 										"applications",
 										"aiContentReports",
+										"extensionCaptureReports",
 										"career",
 										"billing",
 										"portfolio",
@@ -119645,7 +119732,8 @@
 														"builtin",
 														"firecrawl",
 														"tavily",
-														"exa"
+														"exa",
+														"extension"
 													],
 													"type": "string"
 												},
@@ -121092,7 +121180,8 @@
 																		"builtin",
 																		"firecrawl",
 																		"tavily",
-																		"exa"
+																		"exa",
+																		"extension"
 																	],
 																	"type": "string"
 																},

@@ -1,6 +1,18 @@
+import { Spinner } from "@heroui/react";
 import { ConnectScreen } from "./connect-screen";
+import { ConnectedScreen } from "./connected-screen";
+import { useConnection } from "./connection";
 
-/** The side panel. Phase 01 shows only the signed-out screen (01-desain.md §3.1); the others follow in Phases 02–05. */
+/** The side panel: "Connect to Rezumi" until an account is connected, then the account's screens. */
 export function App() {
-	return <ConnectScreen />;
+	const connection = useConnection();
+
+	if (connection.isPending)
+		return (
+			<main className="grid min-h-svh place-items-center">
+				<Spinner aria-hidden />
+			</main>
+		);
+	if (connection.data?.state === "connected") return <ConnectedScreen account={connection.data.account} />;
+	return <ConnectScreen expired={connection.data?.state === "expired"} />;
 }
