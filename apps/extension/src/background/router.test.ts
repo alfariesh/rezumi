@@ -7,7 +7,10 @@ const extensionOrigin = `chrome-extension://${extensionId}/`;
 
 function setup() {
 	const handlers = {
-		page: vi.fn(async () => ({ ok: true as const })),
+		page: vi.fn(async () => ({ button: true, floating: true, connected: false, saved: null, locale: "en" as const })),
+		"open-panel": vi.fn(async () => ({ opened: true })),
+		"hide-floating": vi.fn(async () => ({ ok: true as const })),
+		saved: vi.fn(async () => ({ ok: true as const })),
 		status: vi.fn(async () => ({ state: "signed-out" as const, account: null, version: "0.1.0" })),
 		connect: vi.fn(async () => ({ ok: false as const, code: "cancelled" })),
 		disconnect: vi.fn(async () => ({ ok: true as const })),
@@ -35,7 +38,10 @@ const page = {
 describe("createMessageRouter", () => {
 	it("hands a content script's page message to its handler with the tab id", async () => {
 		const { route, handlers } = setup();
-		expect(await route(page, contentSender)).toEqual({ ok: true, data: { ok: true } });
+		expect(await route(page, contentSender)).toEqual({
+			ok: true,
+			data: { button: true, floating: true, connected: false, saved: null, locale: "en" },
+		});
 		expect(handlers.page).toHaveBeenCalledWith(page, 7);
 	});
 
@@ -73,6 +79,21 @@ describe("createMessageRouter", () => {
 		for (const type of ["token", "connect", "disconnect", "expire"])
 			expect(await route({ type }, contentSender)).toEqual({ ok: false, error: "invalid-message" });
 		expect(handlers.token).toHaveBeenCalledOnce();
+	});
+
+	it("lets the on-page button open the panel for its own tab, and only the panel report a save", async () => {
+		const { route, handlers } = setup();
+		expect(await route({ type: "open-panel" }, contentSender)).toEqual({ ok: true, data: { opened: true } });
+		expect(handlers["open-panel"]).toHaveBeenCalledWith({ type: "open-panel" }, 7);
+		const saved = { type: "saved", key: "linkedin:4012345678", id: "app", status: "applied" };
+		expect(await route(saved, contentSender)).toEqual({ ok: false, error: "invalid-message" });
+		expect(await route(saved, panelSender)).toEqual({ ok: true, data: { ok: true } });
+		expect(await route({ ...saved, status: "hired" }, panelSender)).toEqual({ ok: false, error: "invalid-message" });
+		expect(await route({ type: "open-panel" }, panelSender)).toEqual({ ok: false, error: "invalid-message" });
+		expect(await route({ type: "hide-floating", site: "monster" }, contentSender)).toEqual({
+			ok: false,
+			error: "invalid-message",
+		});
 	});
 
 	it("keeps each part to its own messages", async () => {

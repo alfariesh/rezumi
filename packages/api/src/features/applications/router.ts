@@ -25,5 +25,6 @@ export const applicationsRouter = {
 	savedKeys: extensionRouter.savedKeys,
 	readCapture: extensionRouter.readCapture,
 	reportCapture: extensionRouter.reportCapture,
+	saveLogo: extensionRouter.saveLogo,
 	ai: aiRouter,
 };

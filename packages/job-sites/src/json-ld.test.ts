@@ -68,7 +68,38 @@ describe("toPagePosting", () => {
 			{ description: "&lt;p&gt;Design&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Figma&lt;/li&gt;&lt;/ul&gt;" },
 			{ description: "Design\nFigma" },
 		],
-		["a salary it does not read", { baseSalary: { value: { minValue: 1 } } }, {}],
+		[
+			"a pay range in rupiah",
+			{
+				baseSalary: {
+					"@type": "MonetaryAmount",
+					currency: "IDR",
+					value: { "@type": "QuantitativeValue", minValue: 15000000, maxValue: 20000000, unitText: "MONTH" },
+				},
+			},
+			{ salary: "IDR 15.000.000 – 20.000.000 / month" },
+		],
+		[
+			"a single amount in dollars",
+			{ baseSalary: { currency: "usd", value: { value: "85000", unitText: "YEAR" } } },
+			{ salary: "USD 85,000 / year" },
+		],
+		["a salary with no amount", { baseSalary: { currency: "IDR", value: { minValue: 0 } } }, {}],
+		[
+			"kinds of employment",
+			{ employmentType: ["FULL_TIME", "contractor", "Shift malam", "OTHER"] },
+			{ employmentType: "Full-time, Contract, Shift malam" },
+		],
+		[
+			"the organisation's logo",
+			{ hiringOrganization: { name: "Lumen", logo: { "@type": "ImageObject", url: "https://cdn.example/logo.png" } } },
+			{ company: "Lumen", logoUrl: "https://cdn.example/logo.png" },
+		],
+		[
+			"a logo that is not https",
+			{ hiringOrganization: { name: "Lumen", logo: "http://cdn.example/a.png" } },
+			{ company: "Lumen" },
+		],
 	])("reads %s", (_, fields, expected) => {
 		expect(toPagePosting({ "@type": "JobPosting", title: "Designer", ...fields }, stripTags)).toEqual({
 			role: "Designer",
@@ -76,6 +107,9 @@ describe("toPagePosting", () => {
 			location: "",
 			description: "",
 			closesAt: "",
+			salary: "",
+			employmentType: "",
+			logoUrl: "",
 			...expected,
 		});
 	});

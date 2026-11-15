@@ -2,7 +2,7 @@ import { Alert, Button } from "@heroui/react";
 import { useLingui } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { Icon } from "@rezumi/ui/components/icon";
-import { OfflineError } from "./api";
+import { OfflineError } from "./offline";
 
 type PanelErrorProps = {
 	error: unknown;

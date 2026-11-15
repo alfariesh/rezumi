@@ -55,6 +55,9 @@ export const application = pg.pgTable(
 		// The posting's identity, from `sourceUrl` by `jobKey()` in @rezumi/job-sites (`linkedin:<id>`, `url:<host><path>`):
 		// the browser extension marks postings already saved by it. Set by the server on create, update and import.
 		sourceKey: pg.text("source_key"),
+		// The company's logo, copied by the server into the account's uploads from the posting page the browser
+		// extension saved (never a link to the job board). Set only by `applications.saveLogo`.
+		companyLogoUrl: pg.text("company_logo_url"),
 		jobDescription: pg.text("job_description"),
 		postingSource: pg.jsonb("posting_source").$type<PostingSource>(),
 		// What the posting asks for, as read from it when the application was added.

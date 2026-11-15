@@ -4,20 +4,29 @@ import { Button, buttonVariants, Spinner } from "@heroui/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useMutation } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { EXTENSION_VERSION, rezumiLink } from "../shared/config";
 import { orpc } from "./api";
+import { TextField } from "./fields";
+import { HomeScreen } from "./home-screen";
 import { useTabReading } from "./page";
+import { PostingScreen } from "./posting-screen";
 import { SHOWN_FIELDS, summarizeReading } from "./reading";
 
+type PageScreenProps = {
+	/** Connected: the save form (§3.3) and saved view (§3.4). Otherwise (the development reading view) a read-only card. */
+	editable?: boolean;
+};
+
 /**
- * What the panel shows for the open tab (01-desain.md §3.2, §3.5, §3.6): the posting it read, "pick a posting" on a
- * search page with none open, or "no posting here" with a report. Saving arrives in Phase 04; development builds add
- * the raw reading underneath (where each field came from).
+ * What the panel shows for the open tab (01-desain.md §3.2–§3.6): the posting it read with the save form, "pick a
+ * posting" on a search page with none open, or "no posting here" with a pasted description and a report. Development
+ * builds add the raw reading underneath (where each field came from).
  */
-export function PageScreen() {
+export function PageScreen({ editable = false }: PageScreenProps) {
 	const tab = useTabReading();
+	const [pasted, setPasted] = useState<{ tabId: number; url: string; text: string } | null>(null);
 
 	if (tab.isPending) {
 		return (
@@ -27,23 +36,50 @@ export function PageScreen() {
 			</p>
 		);
 	}
-	if (tab.data?.state !== "read") return <HomeScreen />;
-	return <ReadingView reading={tab.data.reading} />;
+	if (tab.data?.state !== "read") return editable ? <HomeScreen /> : <EmptyHome />;
+	const { tabId, reading } = tab.data;
+	return (
+		<ReadingView
+			tabId={tabId}
+			reading={reading}
+			pasted={pasted && pasted.tabId === tabId && pasted.url === reading.url ? pasted.text : null}
+			editable={editable}
+			onPaste={(text) => setPasted({ tabId, url: reading.url, text })}
+		/>
+	);
 }
 
 /** Development builds list the raw reading under the panel, unless `?clean` asks for the plain view (screenshots). */
 const showDebug = __DEV__ && !new URLSearchParams(location.search).has("clean");
 
-type ReadingViewProps = { reading: PageReading };
+type ReadingViewProps = {
+	tabId: number;
+	reading: PageReading;
+	/** 01-desain.md §3.5 "Paste the description": the pasted text stands in for the page's, like a selection. */
+	pasted: string | null;
+	editable: boolean;
+	onPaste: (text: string) => void;
+};
 
-function ReadingView({ reading }: ReadingViewProps) {
+function ReadingView({ tabId, reading: read, pasted, editable, onPaste }: ReadingViewProps) {
+	// One object per reading and paste: the form keys its draft on it.
+	const reading = useMemo(() => (pasted ? { ...read, selection: pasted } : read), [read, pasted]);
 	const summary = useMemo(() => summarizeReading(reading), [reading]);
 
 	let body: ReactNode;
-	if (reading.site && !reading.key) body = <PickPosting />;
-	// A page with text but no JobPosting may still be one (many career pages); saving reads it with AI (Phase 04).
-	else if (summary.kind !== "none") body = <PostingPreview reading={reading} summary={summary} />;
-	else body = <NoPosting reading={reading} summary={summary} />;
+	if (reading.site && !reading.key && !reading.selection) body = <PickPosting />;
+	// A page with text but no JobPosting may still be one (many career pages): the person checks the fields, or turns
+	// on "Read with AI".
+	else if (summary.kind !== "none")
+		body = editable ? (
+			<>
+				<PostingScreen tabId={tabId} reading={reading} summary={summary} />
+				{summary.missing.length > 0 ? <MissingNotice reading={reading} missing={summary.missing} /> : null}
+			</>
+		) : (
+			<PostingPreview reading={reading} summary={summary} />
+		);
+	else body = <NoPosting reading={reading} summary={summary} editable={editable} onPaste={onPaste} />;
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -53,8 +89,8 @@ function ReadingView({ reading }: ReadingViewProps) {
 	);
 }
 
-/** 01-desain.md §3.2, before the lists: what to do next. */
-function HomeScreen() {
+/** The development reading view's home: what to do next, without account data. */
+function EmptyHome() {
 	return (
 		<section className="flex flex-col items-center gap-y-4 px-2 py-8 text-center">
 			<span aria-hidden className="grid size-12 place-items-center rounded-2xl bg-control text-muted">
@@ -90,9 +126,25 @@ function PickPosting() {
 	);
 }
 
+type MissingNoticeProps = { reading: PageReading; missing: ShownFieldName[] };
+
+/** Under the save form: some fields could not be read, with "Report this page" (aturan turunan #8). */
+function MissingNotice({ reading, missing }: MissingNoticeProps) {
+	return (
+		<div className="flex flex-col gap-2 border-t border-separator pt-4 text-sm text-muted">
+			<p>
+				<Trans comment="Browser extension note when some details of a job posting could not be read">
+					Some details could not be read from this page.
+				</Trans>
+			</p>
+			<ReportPage reading={reading} missing={missing} align="start" />
+		</div>
+	);
+}
+
 type PostingPreviewProps = { reading: PageReading; summary: ReadingSummary };
 
-/** 01-desain.md §3.3, first part: what was read. Editing and saving arrive in Phase 04. */
+/** The development reading view (`?reading`): what was read, without saving (tests run it without an account). */
 function PostingPreview({ reading, summary }: PostingPreviewProps) {
 	const { fields, missing } = summary;
 	return (
@@ -136,10 +188,21 @@ function Detail({ icon, children }: DetailProps) {
 	);
 }
 
-type NoPostingProps = { reading: PageReading; summary: ReadingSummary };
+type NoPostingProps = {
+	reading: PageReading;
+	summary: ReadingSummary;
+	editable: boolean;
+	onPaste: (text: string) => void;
+};
 
-/** 01-desain.md §3.5: no posting found. Pasting a description and saving a selection arrive in Phase 04. */
-function NoPosting({ reading, summary }: NoPostingProps) {
+/**
+ * 01-desain.md §3.5: no posting found. Text the person selected on the page is read on its own (select, then open the
+ * panel or use the context menu); a pasted description works the same way.
+ */
+function NoPosting({ reading, summary, editable, onPaste }: NoPostingProps) {
+	const { t } = useLingui();
+	const [pasting, setPasting] = useState(false);
+	const [text, setText] = useState("");
 	return (
 		<section className="flex flex-col items-center gap-y-4 px-2 py-8 text-center">
 			<span aria-hidden className="grid size-12 place-items-center rounded-2xl bg-control text-muted">
@@ -150,6 +213,42 @@ function NoPosting({ reading, summary }: NoPostingProps) {
 					We couldn't find a job posting on this page.
 				</Trans>
 			</p>
+			{editable ? (
+				<div className="flex w-full flex-col gap-2 text-start">
+					<p className="text-xs text-balance text-muted">
+						<Trans comment="Browser extension hint: select the posting's text on the page, or paste it">
+							Select the job posting's text on the page and right-click "Save selected text to Rezumi", or paste the
+							description here.
+						</Trans>
+					</p>
+					{pasting ? (
+						<form
+							className="flex flex-col gap-2"
+							onSubmit={(event) => {
+								event.preventDefault();
+								if (text.trim()) onPaste(text.trim().slice(0, 20_000));
+							}}
+						>
+							<TextField
+								label={t`Job description`}
+								value={text}
+								maxLength={20_000}
+								multiline
+								rows={8}
+								onChange={setText}
+							/>
+							<Button type="submit" size="sm" isDisabled={!text.trim()}>
+								<Trans>Continue</Trans>
+							</Button>
+						</form>
+					) : (
+						<Button size="sm" variant="secondary" onPress={() => setPasting(true)}>
+							<Icon name="clipboard-text" size={16} aria-hidden />
+							<Trans comment="Browser extension button to paste a job description by hand">Paste description</Trans>
+						</Button>
+					)}
+				</div>
+			) : null}
 			<ReportPage reading={reading} missing={summary.missing} />
 		</section>
 	);

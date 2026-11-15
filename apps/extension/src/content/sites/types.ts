@@ -29,6 +29,7 @@ const FIELD_LIMITS: Record<keyof CapturedFields, number> = {
 	employmentType: 100,
 	validThrough: 100,
 	applyUrl: 2_000,
+	companyLogoUrl: 2_000,
 };
 
 /** Drops empty values and cuts long ones, so only what the page states is sent and the server accepts it. */
@@ -41,7 +42,26 @@ export function compact(fields: { [K in keyof CapturedFields]?: string | undefin
 			if (/^https?:\/\//i.test(text) && text.length <= FIELD_LIMITS.applyUrl) out.applyUrl = text;
 			continue;
 		}
+		if (name === "companyLogoUrl") {
+			// Pictures inlined as data: or served over http are not copied.
+			if (/^https:\/\/\S+$/i.test(text) && text.length <= FIELD_LIMITS.companyLogoUrl) out.companyLogoUrl = text;
+			continue;
+		}
 		out[name] = text.slice(0, FIELD_LIMITS[name]).trim();
 	}
 	return out;
+}
+
+/**
+ * The row of a board's own action buttons, from one of them: the nearest flex ancestor (at most three levels up). Boards
+ * wrap each button (LinkedIn in a grid that stacks its children, JobStreet in a block), and the "Save to Rezumi" button
+ * belongs beside them, not inside a wrapper. Checked on real pages 2026-11-15.
+ */
+export function buttonRow(button: Element | null | undefined): Element | null {
+	let row = button?.parentElement ?? null;
+	for (let level = 0; row && level < 3; level++, row = row.parentElement) {
+		const display = getComputedStyle(row).display;
+		if (display === "flex" || display === "inline-flex") return row;
+	}
+	return button?.parentElement ?? null;
 }

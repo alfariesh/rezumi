@@ -1,5 +1,5 @@
 import type { SiteAdapter } from "./types";
-import { firstText } from "../text";
+import { firstText, logoIn } from "../text";
 import { compact } from "./types";
 
 /**
@@ -11,10 +11,14 @@ import { compact } from "./types";
 export const glints: SiteAdapter = {
 	site: "glints",
 	read(document) {
+		const company = firstText(document, ['[class*="JobOverViewCompanyName"]']);
 		return {
 			fields: compact({
 				role: firstText(document, ['[class*="JobOverViewTitle"]', "h1"]),
-				company: firstText(document, ['[class*="JobOverViewCompanyName"]']),
+				company,
+				companyLogoUrl: logoIn(document.querySelector('[class*="JobOverView"]')?.parentElement, company, [
+					'[class*="CompanyLogo"] img',
+				]),
 				salary: firstText(document, ['[class*="SalaryJobOverview"]', '[class*="BasicSalary"]']),
 			}),
 			description: firstText(document, [

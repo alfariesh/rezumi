@@ -186,6 +186,8 @@ export async function fillPostingFields(input: {
 	sourceUrl: string | null;
 	postingSource: PostingSource;
 	signal?: AbortSignal | undefined;
+	/** Fill from the page only, even when an AI connection could run (the extension's "Read with AI" is off). */
+	skipAi?: boolean | undefined;
 }): Promise<ParsedPosting> {
 	const { jobDescription, fromPage, sourceUrl, postingSource, signal } = input;
 	const fallback: ParsedPosting = {
@@ -198,6 +200,7 @@ export async function fillPostingFields(input: {
 		filledBy: input.readFromPage ? "page" : "none",
 	};
 
+	if (input.skipAi) return fallback;
 	let ai: Awaited<ReturnType<typeof startAiRun>>;
 	try {
 		ai = await startAiRun({ ...aiRequest(input.userId, input.request, "short-text"), optional: true });
@@ -340,7 +343,12 @@ export const aiRouter = {
 				userId: context.user.id,
 				request: input,
 				jobDescription: text.slice(0, MAX_POSTING_CHARS),
-				fromPage: { role: page?.role ?? "", company: page?.company ?? "", location: page?.location ?? "", salary: "" },
+				fromPage: {
+					role: page?.role ?? "",
+					company: page?.company ?? "",
+					location: page?.location ?? "",
+					salary: page?.salary ?? "",
+				},
 				readFromPage: Boolean(page),
 				sourceUrl: link,
 				postingSource,

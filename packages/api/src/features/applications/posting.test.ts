@@ -56,6 +56,9 @@ describe("readJobPosting", () => {
 			location: "Berlin, DE",
 			description: "Design calm tools.\nFigma",
 			closesAt: "",
+			salary: "",
+			employmentType: "",
+			logoUrl: "",
 		});
 	});
 });

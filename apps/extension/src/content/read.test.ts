@@ -161,6 +161,7 @@ describe("JobStreet", () => {
 				salary: "Rp 15.000.000 – Rp 20.000.000 per month",
 				employmentType: "Full time",
 				applyUrl: "https://id.jobstreet.com/id/job/81234567/apply",
+				companyLogoUrl: "https://image-service.example/logos/lumen.png",
 			},
 		});
 		expect(reading.text).toContain("• Merancang alur pendaftaran pasien.");

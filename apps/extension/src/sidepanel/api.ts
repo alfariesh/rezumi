@@ -13,6 +13,7 @@ import { createORPCClient } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 import { EXTENSION_VERSION, REZUMI_ORIGIN } from "../shared/config";
+import { OfflineError } from "./offline";
 
 /** Sends one message to the service worker and returns its answer, or throws when it refused or failed. */
 export async function askWorker<T extends PanelMessage>(message: T): Promise<MessageResults[T["type"]]> {
@@ -24,13 +25,8 @@ export async function askWorker<T extends PanelMessage>(message: T): Promise<Mes
 	return response.data;
 }
 
-/** The browser is offline, or a token refresh could not reach Rezumi. */
-export class OfflineError extends Error {
-	constructor() {
-		super("Offline");
-		this.name = "OfflineError";
-	}
-}
+/** The longest an API call may take (AI reading included) before the panel reports it failed. */
+const REQUEST_TIMEOUT_MS = 45_000;
 
 const tokenFromWorker = async (force: boolean) => {
 	const { accessToken, offline } = await askWorker({ type: "token", force });
@@ -50,9 +46,13 @@ async function rpcFetch(request: Request): Promise<Response> {
 		headers.set("x-rezumi-extension", EXTENSION_VERSION);
 		headers.set("x-client-timezone", Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC");
 		if (token) headers.set("authorization", `Bearer ${token}`);
-		return fetch(request.url, { method: request.method, headers, body, credentials: "omit", signal: request.signal });
+		// A request that hangs (a captive portal, a dropped connection) ends after this, so "Saving…" never stays forever.
+		const signal = AbortSignal.any([request.signal, AbortSignal.timeout(REQUEST_TIMEOUT_MS)]);
+		return fetch(request.url, { method: request.method, headers, body, credentials: "omit", signal });
 	};
 
+	// Offline, say so at once instead of waiting on a request that cannot go out.
+	if (!navigator.onLine) throw new OfflineError();
 	let response: Response;
 	try {
 		response = await send(await tokenFromWorker(false));

@@ -6,6 +6,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { describeNextStep, getNextStep } from "../next-step";
 import { ApplicationActionsMenu } from "./application-actions-menu";
+import { CompanyMark } from "./company-mark";
 
 type ApplicationCardProps = { application: ApplicationSummary };
 
@@ -20,12 +21,11 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
 	return (
 		<>
 			<div className="flex items-start gap-2.5">
-				<span
-					aria-hidden="true"
-					className="grid size-7 shrink-0 place-items-center rounded-lg bg-control text-xs font-semibold text-muted"
-				>
-					{application.company.slice(0, 1).toUpperCase()}
-				</span>
+				<CompanyMark
+					company={application.company}
+					logoUrl={application.companyLogoUrl}
+					className="size-7 rounded-lg text-xs"
+				/>
 				<div className="grid min-w-0 flex-1">
 					<span className="truncate font-semibold text-foreground">{application.role}</span>
 					<span className="truncate text-xs text-muted">{application.company}</span>
