@@ -11,7 +11,7 @@ import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { lastAssistantMessageIsCompleteWithApprovalResponses, lastAssistantMessageIsCompleteWithToolCalls } from "ai";
-import { lazy, memo, Suspense, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
+import { lazy, memo, Suspense, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { agentWebSources, readPageOutputSchema } from "@rezumi/ai/tools/agent-tool-contracts";
 import { Icon } from "@rezumi/ui/components/icon";
 import {
@@ -22,11 +22,12 @@ import {
 	MessageScrollerProvider,
 	MessageScrollerViewport,
 } from "@rezumi/ui/components/message-scroller";
+import { ThinkingOrb } from "@rezumi/ui/components/thinking-orb";
 import { toast } from "@rezumi/ui/components/toast";
 import { TraceIcon, TraceLine, TraceTitle } from "@rezumi/ui/components/trace";
 import { cn } from "@rezumi/utils/style";
 import { acceptUploads, MAX_ATTACHMENTS_PER_MESSAGE } from "./attachment-limits";
-import { attachmentPart, fileToBase64, transcriptOf } from "./chat";
+import { attachmentPart, fileToBase64, isBlankReply, isEmptyPart, transcriptOf } from "./chat";
 import { AssistantMarkdown } from "./markdown";
 import { MessageSources } from "./message-sources";
 import { ThinkingLine } from "./orb";
@@ -115,8 +116,7 @@ export function Conversation(props: ConversationProps) {
 	// "streaming" starts with the reply's first chunk, which can come seconds before any text or tool call; the same
 	// gap opens after each tool result. Say the assistant is still working through all of it.
 	const newest = messages.at(-1);
-	const newestPart =
-		newest?.role === "assistant" ? newest.parts.findLast((part) => part.type !== "step-start") : undefined;
+	const newestPart = newest?.role === "assistant" ? newest.parts.findLast((part) => !isEmptyPart(part)) : undefined;
 	const waiting =
 		status === "submitted" ||
 		(status === "streaming" &&
@@ -147,10 +147,11 @@ export function Conversation(props: ConversationProps) {
 		return true;
 	};
 
-	// The first message (or ⌘K's question) goes out once the conversation is open.
+	// The first message (or ⌘K's question) goes out once the conversation is open, before its first paint: the pending
+	// view's question and "Thinking…" line then carry straight on instead of blinking out for a frame.
 	const { prompt, promptAttachments, onPromptSent } = props;
 	const sentPrompt = useRef(false);
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!prompt || sentPrompt.current) return;
 		sentPrompt.current = true;
 		onPromptSent();
@@ -280,7 +281,7 @@ export function Conversation(props: ConversationProps) {
 					className="grid gap-2 rounded-xl bg-danger-soft p-3 text-sm text-danger-soft-foreground transition-opacity duration-standard ease-enter starting:opacity-0"
 				>
 					<span className="flex gap-2">
-						<Icon name="warning-circle" size={18} className="shrink-0" />
+						<ThinkingOrb size={20} mood="error" className="shrink-0" />
 						{error instanceof DocumentNotReadyError ? (
 							error.message
 						) : (
@@ -328,7 +329,14 @@ export function Conversation(props: ConversationProps) {
 							{/* Announced when the answer is complete, not token by token. */}
 							<MessageScrollerContent aria-busy={streaming} className="gap-3 py-3">
 								{messages.map((message, index) => (
-									<MessageScrollerItem key={message.id} messageId={message.id} scrollAnchor={message.role === "user"}>
+									<MessageScrollerItem
+										key={message.id}
+										messageId={message.id}
+										scrollAnchor={message.role === "user"}
+										// A reply still on its way with nothing to show yet would add a gap above "Thinking…" and nudge it
+										// down. Once it ends it shows as it always did.
+										className={cn(streaming && index === messages.length - 1 && isBlankReply(message) && "hidden")}
+									>
 										<MessageView
 											threadId={threadId}
 											message={message}
@@ -469,7 +477,8 @@ const MessageView = memo(function MessageView({
 	const blocks: Block[] = [];
 	message.parts.forEach((part, index) => {
 		if (part.type === "text") {
-			blocks.push({ kind: "text", text: part.text, index });
+			// Text that has started but has no words yet would be an empty bubble.
+			if (part.text !== "") blocks.push({ kind: "text", text: part.text, index });
 			return;
 		}
 		if (!part.type.startsWith("tool-")) return;

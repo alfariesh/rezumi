@@ -74,3 +74,12 @@ export function useConversationConnection(
 			.catch(() => undefined);
 	}, [staleId, providerId, queryClient]);
 }
+
+/** A part with nothing to show: a step boundary, or text that has started but has no words yet. */
+export const isEmptyPart = (part: UIMessage["parts"][number]) =>
+	part.type === "step-start" || (part.type === "text" && part.text === "");
+
+/** A reply that has started but has no words or tool call to show yet. */
+export const isBlankReply = (message: UIMessage) =>
+	message.role === "assistant" &&
+	!message.parts.some((part) => (part.type === "text" && part.text !== "") || part.type.startsWith("tool-"));

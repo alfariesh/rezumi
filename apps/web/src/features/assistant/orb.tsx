@@ -73,19 +73,21 @@ export function HeadingOrb({ size = 64, className }: HeadingOrbProps) {
 
 type ThinkingLineProps = {
 	children: ReactNode;
+	/** `writing` once words are streaming in. */
+	mood?: Extract<ThinkingOrbMood, "thinking" | "writing">;
 	/** The pending first message's line: the heading's orb flies into it. */
 	fly?: boolean;
 	className?: string;
 };
 
 /** "The assistant is working": a spinning orb and a shimmering line, in place of a spinner. */
-export function ThinkingLine({ children, fly = false, className }: ThinkingLineProps) {
+export function ThinkingLine({ children, mood = "thinking", fly = false, className }: ThinkingLineProps) {
 	return (
 		<p
 			data-slot="thinking-line"
 			className={cn("flex w-fit max-w-full min-w-0 items-center gap-2 text-xs text-muted", className)}
 		>
-			<OrbSlot size={20} mood="thinking" fly={fly} />
+			<OrbSlot size={20} mood={mood} fly={fly} />
 			<span className="min-w-0">
 				<TextShimmer>{children}</TextShimmer>
 			</span>

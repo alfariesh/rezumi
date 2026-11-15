@@ -1,27 +1,39 @@
 import type { CSSProperties } from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { cn } from "@rezumi/utils/style";
 
 /**
- * Rezumi's thinking orb: a dotted sphere in the logo's sky blue with an orange "sun" drifting over its surface and two
- * comets (orange and blue) on tilted rings. Inspired by Libraries.dev's MIT `thinking-orbs` (Jakub Antalik): honestly
- * 3D (rotated, depth-shaded, z-sorted), drawn with plain 2D canvas arcs only, so it looks the same in every browser.
+ * Rezumi's AI orb: about a hundred dots that take a shape for each thing the assistant can be doing.
  *
- * - `idle` turns slowly and breathes; one faint comet circles it. For empty states, above a heading.
- * - `thinking` spins up, a ripple runs pole to pole and both comets race. For "the assistant is working" lines.
+ * - `idle`: the logo's "R" as a constellation (the bowl in sky blue, the pencil leg in orange), its stars linked, a
+ *   signal of light running down the letter and the letter swaying a little. For empty states, above a heading.
+ * - `thinking`: a spinning 3D sphere with an orange dawn drifting over it, a ripple running pole to pole and two comets
+ *   (orange and blue) on tilted rings. For "the assistant is working" lines and AI buttons that are waiting.
+ * - `writing`: the blue bowl stays the "R" and ripples while the orange pencil lifts off and writes a loop of ink
+ *   around it. For "Writing an answer…", while words stream in.
+ * - `error`: the dots lose their footing: a short shake, then the letter slumps to the floor, the bowl greys and the
+ *   pencil glows red, pulsing slowly. Beside an error message.
  *
- * Switching moods eases between them instead of jumping. Depth is carried by dot size and alpha only, so the orb reads
- * on light and dark surfaces without knowing the theme. The canvas draws at the size it is shown at (it measures
- * itself each frame), so it stays crisp while a layout animation scales it. Every orb pauses offscreen and in hidden
- * tabs; reduced motion gets one still frame.
+ * Moving between moods, each dot leaves its shape at its own moment, so shapes dissolve into each other instead of
+ * jumping. An orb that mounts as another leaves (the same "Thinking" line mounted again by the next view) starts from
+ * that orb's shape, dot by dot, and pace, so the change reads as one orb carrying on.
+ *
+ * The sphere follows Libraries.dev's MIT `thinking-orbs` (Jakub Antalik): honestly 3D (rotated, depth-shaded,
+ * z-sorted), drawn with plain 2D canvas arcs and lines only. Depth is carried by dot size and alpha, so the orb reads on
+ * light and dark surfaces without knowing the theme; `tone="current"` draws it in the text color instead, for filled
+ * buttons. The canvas draws at the size it is shown at (it measures itself each frame), so it stays crisp while a layout
+ * animation scales it. Every orb pauses offscreen and in hidden tabs, and a settled idle or error orb draws at 30 fps;
+ * reduced motion (followed live) gets one still frame per mood.
  */
 
-export type ThinkingOrbMood = "idle" | "thinking";
+export type ThinkingOrbMood = "idle" | "thinking" | "writing" | "error";
 
 type ThinkingOrbProps = {
 	/** CSS pixels, width and height. */
 	size?: number;
 	mood?: ThinkingOrbMood;
+	/** `brand`: sky blue and orange. `current`: the text color, for an orb on a filled button. */
+	tone?: "brand" | "current";
 	className?: string;
 	style?: CSSProperties;
 	/** Announced as an image when given; otherwise the orb is decorative (the words beside it carry the meaning). */
@@ -29,22 +41,131 @@ type ThinkingOrbProps = {
 };
 
 type Rgb = readonly [number, number, number];
+type Vec = readonly [number, number, number];
 
 const SKY: Rgb = [0, 186, 255];
 const ORANGE: Rgb = [255, 128, 32];
-const DOTS = 96;
+/** Sky to orange passes through this warm white, like dawn light: a straight blend would pass through a muddy gray. */
+const DAWN: Rgb = [255, 226, 190];
+const SLATE: Rgb = [140, 154, 176];
+const ALARM: Rgb = [242, 72, 52];
 const TILT = 0.42;
-const ENERGY: Record<ThinkingOrbMood, number> = { idle: 0.16, thinking: 1 };
 
-/** Fibonacci lattice: stable, evenly spread directions on the unit sphere. */
-const LATTICE = Array.from({ length: DOTS }, (_, index) => {
-	const y = 1 - (2 * (index + 0.5)) / DOTS;
-	const ring = Math.sqrt(1 - y * y);
-	const angle = index * Math.PI * (3 - Math.sqrt(5));
-	return [ring * Math.cos(angle), y, ring * Math.sin(angle)] as const;
-});
+// The shapes, as indexes into each dot's weights.
+const LETTER = 0;
+const SPHERE = 1;
+const WRITING = 2;
+const ERROR = 3;
+const FORMS = 4;
+const FORM_OF: Record<ThinkingOrbMood, number> = { idle: LETTER, thinking: SPHERE, writing: WRITING, error: ERROR };
+/** How fast everything turns in each mood. */
+const ENERGY: Record<ThinkingOrbMood, number> = { idle: 0.16, thinking: 1, writing: 0.7, error: 0.05 };
+/** Seconds for a change of mood to finish, the last dot included. */
+const MORPH = 0.9;
 
-type Vec = readonly [number, number, number];
+// ---- The logo, sampled to dots ----
+
+// The logo's two shapes in its own 36-unit view box: the "R" bowl and the pencil that forms its leg (mirrored).
+const LOGO_BOX = { x: 17.25, y: -12.7, size: 36 };
+const LOGO_BOWL =
+	"M38.712-9.872c11.815 1.207 15.452 14.746 5.807 20.069-.759.365-1.213.531-2.016.804-1.865-1.7-3.756-3.524-5.587-5.267 2.788-.019 5.934-1.596 5.817-4.581-.27-6.946-11.958-2.771-16.048-4.479-2.069-.862-6.033-5.023-7.686-6.585z";
+const LOGO_PENCIL =
+	"M20.434 3.63c.415.415.772.773 1.027 1.096.271.345.489.728.531 1.202a1.74 1.74 0 0 1 0 .403c-.042.473-.26.856-.531 1.201-.255.324-.612.682-1.027 1.097l-1.122 1.122-5.061-5.061 1.122-1.122c.415-.415.773-.773 1.097-1.027.345-.272.727-.489 1.201-.531a1.74 1.74 0 0 1 .403 0c.474.042.856.259 1.202.531.323.254.743.674 1.158 1.089ZM18.251 10.811l-7.813 7.814c-.769.769-1.303 1.303-1.994 1.59-.692.286-1.448.286-2.536.286H4.251a.75.75 0 0 1-.75-.75v-1.658c0-1.087-.001-1.843.285-2.535.287-.691.822-1.226 1.591-1.995l7.814-7.812 5.06 5.06Z";
+/** About this many dots draw the letter; every other shape uses the same dots. */
+const TARGET_DOTS = 104;
+
+type Glyph = { x: number; y: number; pencil: boolean };
+type Shape = {
+	glyph: Glyph[];
+	/** The sphere point each dot goes to, paired top to bottom so the morph travels short distances. */
+	lattice: Vec[];
+	/** When each dot leaves its shape during a change of mood, 0–1. */
+	stagger: number[];
+	/** Neighbouring stars of the constellation, as index pairs. */
+	links: [number, number][];
+	/** The pencil's centre in the letter, for the writing shape. */
+	pencilCenter: readonly [number, number];
+};
+
+let shape: Shape | null = null;
+
+/** Samples the logo onto a hexagonal grid of dots (once, in the browser), centred and scaled to the unit square. */
+function logoShape(): Shape {
+	if (shape) return shape;
+	const raster = 120;
+	const canvas = document.createElement("canvas");
+	canvas.width = raster;
+	canvas.height = raster;
+	const context = canvas.getContext("2d", { willReadFrequently: true });
+	let glyph: Glyph[] = [];
+	let spacing = 12;
+	if (context) {
+		const scale = raster / LOGO_BOX.size;
+		context.setTransform(scale, 0, 0, scale, -LOGO_BOX.x * scale, -LOGO_BOX.y * scale);
+		context.fillStyle = "#f00";
+		context.fill(new Path2D(LOGO_BOWL));
+		context.transform(-1, 0, 0, 1, 48, 0);
+		context.globalCompositeOperation = "lighter";
+		context.fillStyle = "#0f0";
+		context.fill(new Path2D(LOGO_PENCIL));
+		const { data } = context.getImageData(0, 0, raster, raster);
+		const sample = (step: number) => {
+			const found: Glyph[] = [];
+			const rowStep = step * 0.866;
+			for (let row = 0, y = rowStep / 2; y < raster; row++, y += rowStep)
+				for (let x = (row % 2 ? step / 2 : 0) + step / 4; x < raster; x += step) {
+					const at = (Math.floor(y) * raster + Math.floor(x)) * 4;
+					const pencil = (data[at + 1] ?? 0) > 127;
+					if (pencil || (data[at] ?? 0) > 127) found.push({ x, y, pencil });
+				}
+			return found;
+		};
+		// The widest spacing that still gives enough dots.
+		while (spacing > 2 && sample(spacing).length < TARGET_DOTS) spacing -= 0.1;
+		glyph = sample(spacing);
+	}
+	if (glyph.length === 0) glyph = [{ x: 0, y: 0, pencil: false }];
+
+	const xs = glyph.map((dot) => dot.x);
+	const ys = glyph.map((dot) => dot.y);
+	const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+	const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+	const half = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) / 2 || 1;
+	for (const dot of glyph) {
+		dot.x = (dot.x - cx) / half;
+		dot.y = (dot.y - cy) / half;
+	}
+	glyph.sort((a, b) => a.y - b.y || a.x - b.x);
+
+	const count = glyph.length;
+	const lattice = glyph.map((_, index): Vec => {
+		const y = 1 - (2 * (index + 0.5)) / count;
+		const ring = Math.sqrt(1 - y * y);
+		const angle = index * Math.PI * (3 - Math.sqrt(5));
+		return [ring * Math.cos(angle), y, ring * Math.sin(angle)];
+	});
+	const stagger = glyph.map((_, index) => {
+		const h = Math.sin(index * 12.9898) * 43758.5453;
+		return h - Math.floor(h);
+	});
+	const reach = (spacing / half) * 1.15;
+	const links: [number, number][] = [];
+	glyph.forEach((a, i) => {
+		for (let j = i + 1; j < count; j++) {
+			const b = glyph[j];
+			if (b && Math.hypot(a.x - b.x, a.y - b.y) < reach) links.push([i, j]);
+		}
+	});
+	const pencil = glyph.filter((dot) => dot.pencil);
+	const pencilCenter = [
+		pencil.reduce((sum, dot) => sum + dot.x, 0) / (pencil.length || 1),
+		pencil.reduce((sum, dot) => sum + dot.y, 0) / (pencil.length || 1),
+	] as const;
+	shape = { glyph, lattice, stagger, links, pencilCenter };
+	return shape;
+}
+
+// ---- Small helpers ----
 
 function normalize([x, y, z]: Vec): Vec {
 	const length = Math.hypot(x, y, z) || 1;
@@ -64,16 +185,54 @@ const COMETS = [
 	{ plane: planeOf([-0.7, 0.75, 0.35]), color: SKY, direction: -1.35 },
 ] as const;
 const TRAIL = 8;
+const INK = 56;
+
+const smoothstep = (from: number, to: number, value: number) => {
+	const t = Math.min(1, Math.max(0, (value - from) / (to - from)));
+	return t * t * (3 - 2 * t);
+};
+
+const rgba = (color: Rgb, alpha: number) =>
+	`rgba(${Math.round(color[0])},${Math.round(color[1])},${Math.round(color[2])},${alpha.toFixed(3)})`;
+
+const mix = (a: Rgb, b: Rgb, t: number): Rgb => [
+	a[0] + (b[0] - a[0]) * t,
+	a[1] + (b[1] - a[1]) * t,
+	a[2] + (b[2] - a[2]) * t,
+];
+
+const warmColor = (warmth: number): Rgb =>
+	warmth < 0.5 ? mix(SKY, DAWN, (warmth * 2) ** 1.5 * 0.85) : mix(DAWN, ORANGE, 0.15 + 0.85 * (warmth * 2 - 1));
+
+let swatch: CanvasRenderingContext2D | null = null;
+
+/** Any CSS color (the theme's are oklch) as RGB, by painting one pixel with it. */
+function resolveColor(value: string): Rgb | null {
+	if (!swatch) {
+		const canvas = document.createElement("canvas");
+		canvas.width = 1;
+		canvas.height = 1;
+		swatch = canvas.getContext("2d", { willReadFrequently: true });
+	}
+	if (!swatch) return null;
+	swatch.clearRect(0, 0, 1, 1);
+	swatch.fillStyle = value;
+	swatch.fillRect(0, 0, 1, 1);
+	const [r = 0, g = 0, b = 0, a = 0] = swatch.getImageData(0, 0, 1, 1).data;
+	return a === 0 ? null : [r, g, b];
+}
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+function subscribeReducedMotion(onChange: () => void) {
+	const query = window.matchMedia(REDUCED_MOTION);
+	query.addEventListener("change", onChange);
+	return () => query.removeEventListener("change", onChange);
+}
+
+// ---- Time ----
 
 type Phase = { spin: number; sun: number; wave: number; comet: number; time: number };
-
-/**
- * The phase the last orb drew at. A new orb picks up from it, so an orb that replaces another (the empty state's orb
- * flying into the "Thinking" line) carries on mid-turn instead of snapping back.
- */
-const lastPhase: Phase = { spin: 0.9, sun: 0.4, wave: 0, comet: 0.6, time: 0 };
-/** The last orb's energy and when it drew: an orb replacing one that was just on screen keeps its pace too. */
-const lastDraw = { energy: 0, at: -Infinity };
 
 function advance(phase: Phase, dt: number, energy: number) {
 	phase.spin += dt * (0.22 + 1.05 * energy);
@@ -83,32 +242,53 @@ function advance(phase: Phase, dt: number, energy: number) {
 	phase.time += dt;
 }
 
-const smoothstep = (from: number, to: number, value: number) => {
-	const t = Math.min(1, Math.max(0, (value - from) / (to - from)));
-	return t * t * (3 - 2 * t);
+/**
+ * The last orb that left the screen: when, and its phase, pace and each dot's shape (every orb has the same dots). An
+ * orb mounting within moments of it carries on from there, so it reads as the same orb. Orbs on screen together never
+ * take each other's shape.
+ */
+const lastGone: { at: number; energy: number; phase: Phase; weights: Float32Array | null } = {
+	at: Number.NEGATIVE_INFINITY,
+	energy: 0,
+	phase: { spin: 0.9, sun: 0.4, wave: 0, comet: 0.6, time: 0 },
+	weights: null,
 };
 
-const rgba = (color: Rgb, alpha: number) => `rgba(${color[0]},${color[1]},${color[2]},${alpha.toFixed(3)})`;
-
-const mix = (a: Rgb, b: Rgb, t: number): Rgb => [
-	Math.round(a[0] + (b[0] - a[0]) * t),
-	Math.round(a[1] + (b[1] - a[1]) * t),
-	Math.round(a[2] + (b[2] - a[2]) * t),
-];
-
-/** Sky to orange through a warm white, like dawn light: a straight blend would pass through a muddy gray. */
-const DAWN: Rgb = [255, 226, 190];
-const warmColor = (warmth: number): Rgb =>
-	warmth < 0.5 ? mix(SKY, DAWN, (warmth * 2) ** 1.5 * 0.85) : mix(DAWN, ORANGE, 0.15 + 0.85 * (warmth * 2 - 1));
+// ---- Drawing ----
 
 type Mark = { x: number; y: number; z: number; r: number; color: Rgb; alpha: number };
 
-/** Draws one frame of an orb `size` CSS pixels wide (the context is already scaled to CSS pixels). */
-function paint(context: CanvasRenderingContext2D, size: number, phase: Phase, energy: number) {
+type Frame = {
+	size: number;
+	phase: Phase;
+	energy: number;
+	/** Each dot's weight per shape, `FORMS` numbers per dot; they sum to 1. */
+	weights: Float32Array;
+	/** Seconds since the orb last went into `error`, for its shake. */
+	sinceError: number;
+	/** Every mark in this color instead of the brand's (`tone="current"`). */
+	ink: Rgb | null;
+};
+
+/** Draws one frame (the context is already scaled to CSS pixels). */
+function paint(context: CanvasRenderingContext2D, frame: Frame) {
+	const { size, phase, energy, weights } = frame;
+	const { glyph, lattice, links, pencilCenter } = logoShape();
+	const count = glyph.length;
 	const center = size / 2;
 	const breathe = 1 + 0.035 * Math.sin(phase.time * 1.6) * (1 - 0.6 * energy);
 	const radius = size * 0.335 * breathe;
-	const dot = 0.35 + size * 0.019;
+	const dot = 0.35 + size * 0.018;
+	const letter = radius * 1.12;
+
+	// How much of the orb is in each shape, for what belongs to a shape as a whole (comets, ink, links, halo).
+	const share = [0, 0, 0, 0];
+	for (let i = 0; i < count * FORMS; i++) share[i % FORMS] = (share[i % FORMS] ?? 0) + (weights[i] ?? 0) / count;
+	const [letterShare = 0, sphereShare = 0, writingShare = 0, errorShare = 0] = share;
+
+	// A shake as the orb goes into error, then stillness.
+	const since = frame.sinceError;
+	const shake = Number.isFinite(since) ? Math.sin(since * 48) * Math.exp(-since * 5) * size * 0.05 * errorShare : 0;
 
 	// Spin about the vertical axis, then tilt toward the viewer; orthographic.
 	const sy = Math.sin(phase.spin);
@@ -123,40 +303,163 @@ function paint(context: CanvasRenderingContext2D, size: number, phase: Phase, en
 
 	context.clearRect(0, 0, size, size);
 
-	// A soft halo, blue at the heart and warm at the rim; too faint to matter at inline sizes.
-	if (size >= 28) {
+	// A soft halo, blue at the heart and warm at the rim (red and dimmer in error); too faint to matter at inline sizes.
+	if (size >= 28 && !frame.ink) {
 		const halo = context.createRadialGradient(center, center, radius * 0.3, center, center, size / 2);
-		halo.addColorStop(0, rgba(SKY, 0.14 + 0.1 * energy));
-		halo.addColorStop(0.62, rgba(ORANGE, 0.04 + 0.06 * energy));
+		const calm = 1 - errorShare;
+		halo.addColorStop(0, rgba(mix(SKY, ALARM, errorShare), (0.12 + 0.1 * energy) * (0.5 + 0.5 * calm)));
+		halo.addColorStop(0.62, rgba(mix(ORANGE, ALARM, errorShare), 0.03 + 0.06 * energy));
 		halo.addColorStop(1, rgba(SKY, 0));
 		context.fillStyle = halo;
 		context.fillRect(0, 0, size, size);
 	}
 
-	const marks: Mark[] = [];
+	// The letter sways a little; a band of dawn light sweeps across it now and then, and a signal runs down its stars.
+	const sway = 0.38 * Math.sin(phase.time * 0.7);
+	const swayCos = Math.cos(sway);
+	const swaySin = Math.sin(sway);
+	const sweep = ((phase.time * 0.45) % 3) * 2.4 - 3.2;
+	const signal = (phase.time * 0.9) % 1;
 
-	// The sun: an orange cap drifting over the surface, wider while thinking.
+	// The sphere's sun: an orange cap drifting over the surface, wider while thinking.
 	const sun = normalize([Math.cos(phase.sun), 0.45 * Math.sin(phase.sun * 0.7), Math.sin(phase.sun)]);
 	const ripple = 0.015 + 0.07 * energy;
-	for (const [x, y, z] of LATTICE) {
-		const lift = radius * (1 + ripple * Math.sin(y * 5 - phase.wave));
-		const [px, py, pz] = project(x * lift, y * lift, z * lift);
-		const depth = (pz / lift + 1) / 2;
-		const warmth = smoothstep(0.1 - 0.25 * energy, 0.8, x * sun[0] + y * sun[1] + z * sun[2]);
-		marks.push({
-			x: px,
-			y: py,
-			z: pz,
-			r: dot * (0.42 + 0.78 * depth) * (1 + 0.25 * warmth),
-			color: warmColor(warmth),
-			alpha: 0.12 + 0.88 * depth ** 1.4,
+
+	// Writing: the pencil's tip runs along a figure eight around the letter.
+	const loop = (t: number) => {
+		const d = 1 + Math.sin(t) ** 2;
+		return [
+			center + (radius * 1.3 * Math.cos(t)) / d,
+			center + (radius * 1.3 * Math.sin(t) * Math.cos(t)) / d,
+		] as const;
+	};
+	const tip = phase.comet * 0.9;
+	const [headX, headY] = loop(tip);
+	const [nextX, nextY] = loop(tip + 0.02);
+	// The logo's pencil points down and to the left; turn it to point along the path, tip first.
+	const turn = Math.atan2(nextY - headY, nextX - headX) - Math.atan2(1, -1) + Math.PI;
+	const turnCos = Math.cos(turn);
+	const turnSin = Math.sin(turn);
+
+	const marks: Mark[] = [];
+	const stars: Mark[] = [];
+	for (let i = 0; i < count; i++) {
+		const point = glyph[i] ?? { x: 0, y: 0, pencil: false };
+		const w = (form: number) => weights[i * FORMS + form] ?? 0;
+		let x = 0;
+		let y = 0;
+		let z = 0;
+		let r = 0;
+		let alpha = 0;
+		let color: Rgb = [0, 0, 0];
+		const add = (weight: number, mark: Mark) => {
+			if (weight < 0.001) return;
+			x += mark.x * weight;
+			y += mark.y * weight;
+			z += mark.z * weight;
+			r += mark.r * weight;
+			alpha += mark.alpha * weight;
+			color = [color[0] + mark.color[0] * weight, color[1] + mark.color[1] * weight, color[2] + mark.color[2] * weight];
+		};
+
+		const light = Math.exp(-((point.x + point.y - sweep) ** 2) * 6);
+		const base = point.pencil ? ORANGE : SKY;
+		const lx = center + point.x * letter * swayCos;
+		const ly = center + point.y * letter;
+		const lz = -point.x * letter * swaySin;
+
+		const pulse = Math.exp(-((i / count - signal) ** 2) * 160);
+		add(w(LETTER), {
+			x: lx,
+			y: ly,
+			z: lz,
+			r: dot * (0.62 + 0.35 * light) * (1 + 0.5 * pulse),
+			color: mix(base, DAWN, Math.min(1, light * 0.7 + pulse * 0.5)),
+			alpha: 0.95,
 		});
+
+		if (w(SPHERE) >= 0.001) {
+			const [ux, uy, uz] = lattice[i] ?? [0, 0, 1];
+			const lift = radius * (1 + ripple * Math.sin(uy * 5 - phase.wave));
+			const [sx, sy2, sz] = project(ux * lift, uy * lift, uz * lift);
+			const depth = (sz / lift + 1) / 2;
+			const warmth = smoothstep(0.1 - 0.25 * energy, 0.8, ux * sun[0] + uy * sun[1] + uz * sun[2]);
+			add(w(SPHERE), {
+				x: sx,
+				y: sy2,
+				z: sz,
+				r: dot * (0.42 + 0.78 * depth) * (1 + 0.25 * warmth),
+				color: warmColor(warmth),
+				alpha: 0.12 + 0.88 * depth ** 1.4,
+			});
+		}
+
+		if (w(WRITING) >= 0.001) {
+			if (point.pencil) {
+				const px = (point.x - pencilCenter[0]) * letter * 0.5;
+				const py = (point.y - pencilCenter[1]) * letter * 0.5;
+				add(w(WRITING), {
+					x: headX + px * turnCos - py * turnSin,
+					y: headY + px * turnSin + py * turnCos,
+					z: radius,
+					r: dot * 0.8,
+					color: ORANGE,
+					alpha: 0.95,
+				});
+			} else {
+				const wave = Math.max(0, Math.sin((point.x - point.y) * 5 - phase.wave * 1.4));
+				add(w(WRITING), {
+					x: lx,
+					y: ly - wave * size * 0.012,
+					z: lz,
+					r: dot * (0.9 + 0.35 * wave),
+					color: mix(SKY, DAWN, wave * 0.5),
+					alpha: 0.92,
+				});
+			}
+		}
+
+		if (w(ERROR) >= 0.001) {
+			// Slumped: the letter squashed to the floor, a little wider, the bowl greyed, the pencil red.
+			const throb = 0.75 + 0.25 * Math.sin(phase.time * 3);
+			add(w(ERROR), {
+				x: center + point.x * letter * 1.08,
+				y: center + radius * 0.32 + point.y * radius * 0.48,
+				z: 0,
+				r: dot * (point.pencil ? 1.05 : 0.8),
+				color: point.pencil ? ALARM : SLATE,
+				alpha: point.pencil ? 0.95 * throb : 0.55,
+			});
+		}
+
+		const mark = { x: x + shake, y, z, r, color, alpha };
+		stars.push(mark);
+		marks.push(mark);
+	}
+
+	// The constellation's links: drawn under the stars, fading as the stars leave the letter.
+	if (letterShare > 0.01) {
+		context.lineWidth = Math.max(0.4, size * 0.006);
+		for (const [i, j] of links) {
+			const a = stars[i];
+			const b = stars[j];
+			if (!a || !b) continue;
+			const hold = Math.min(weights[i * FORMS + LETTER] ?? 0, weights[j * FORMS + LETTER] ?? 0);
+			const pulse = Math.exp(-((i / count - signal) ** 2) * 160);
+			const alpha = (0.45 + 0.55 * pulse) * hold;
+			if (alpha < 0.02) continue;
+			context.strokeStyle = rgba(frame.ink ?? mix(a.color, DAWN, pulse * 0.6), alpha * (frame.ink ? 0.6 : 1));
+			context.beginPath();
+			context.moveTo(a.x, a.y);
+			context.lineTo(b.x, b.y);
+			context.stroke();
+		}
 	}
 
 	// Comets with fading tails, just outside the sphere.
 	const ring = radius * 1.3;
 	COMETS.forEach(({ plane: [u, v], color, direction }, index) => {
-		const strength = index === 0 ? 0.3 + 0.7 * energy : energy ** 1.5;
+		const strength = sphereShare * (index === 0 ? smoothstep(0.25, 0.8, energy) : energy ** 1.5);
 		if (strength < 0.03) return;
 		const head = phase.comet * direction + index * Math.PI;
 		for (let step = 0; step < TRAIL; step++) {
@@ -167,7 +470,7 @@ function paint(context: CanvasRenderingContext2D, size: number, phase: Phase, en
 			const depth = (pz / ring + 1) / 2;
 			const fade = (1 - step / TRAIL) ** 1.6;
 			marks.push({
-				x: px,
+				x: px + shake,
 				y: py,
 				z: pz,
 				r: dot * (1.55 - step * 0.13) * (0.7 + 0.5 * depth),
@@ -177,22 +480,51 @@ function paint(context: CanvasRenderingContext2D, size: number, phase: Phase, en
 		}
 	});
 
+	// Writing's ink: a fading line behind the pencil's tip.
+	if (writingShare > 0.01)
+		for (let step = 1; step < INK; step++) {
+			const [px, py] = loop(tip - step * 0.055);
+			const fade = (1 - step / INK) ** 1.2;
+			marks.push({
+				x: px,
+				y: py,
+				z: -radius,
+				r: dot * (0.45 + 0.6 * fade),
+				color: mix(ORANGE, DAWN, (1 - fade) * 0.8),
+				alpha: writingShare * (0.25 + 0.75 * fade),
+			});
+		}
+
 	marks.sort((a, b) => a.z - b.z);
 	for (const mark of marks) {
 		if (mark.alpha < 0.02) continue;
-		context.fillStyle = rgba(mark.color, mark.alpha);
+		context.fillStyle = rgba(frame.ink ?? mark.color, Math.min(1, mark.alpha));
 		context.beginPath();
 		context.arc(mark.x, mark.y, Math.max(0.3, mark.r), 0, Math.PI * 2);
 		context.fill();
 	}
 }
 
-export function ThinkingOrb({ size = 64, mood = "thinking", className, style, label }: ThinkingOrbProps) {
+export function ThinkingOrb({
+	size = 64,
+	mood = "thinking",
+	tone = "brand",
+	className,
+	style,
+	label,
+}: ThinkingOrbProps) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const target = useRef(ENERGY[mood]);
+	const moodRef = useRef(mood);
+	const reduced = useSyncExternalStore(
+		subscribeReducedMotion,
+		() => window.matchMedia(REDUCED_MOTION).matches,
+		() => false,
+	);
+	const redrawRef = useRef<() => void>(() => undefined);
 
 	useEffect(() => {
-		target.current = ENERGY[mood];
+		moodRef.current = mood;
+		redrawRef.current();
 	}, [mood]);
 
 	useEffect(() => {
@@ -200,80 +532,139 @@ export function ThinkingOrb({ size = 64, mood = "thinking", className, style, la
 		const context = canvas?.getContext("2d");
 		if (!canvas || !context) return;
 
+		const { glyph, stagger } = logoShape();
+		const count = glyph.length;
 		const ratio = Math.min(2, window.devicePixelRatio || 1);
-		const phase: Phase = { ...lastPhase };
-		// A thinking orb spins up from idle as it appears, so it visibly gets going, unless it takes over from an orb
-		// that was drawing a moment ago (the same "Thinking" line mounted again), which keeps its pace.
-		const takeover = performance.now() - lastDraw.at < 200;
-		let energy = Math.min(target.current, takeover ? lastDraw.energy : ENERGY.idle);
-		let previous = performance.now();
+		const now = performance.now();
+		// Carry on from an orb that just left; otherwise start as the "R" at rest and get going.
+		const takeover = now - lastGone.at < 200;
+		const phase: Phase = takeover ? { ...lastGone.phase } : { spin: 0.9, sun: 0.4, wave: 0, comet: 0.6, time: 0 };
+		let energy = takeover ? lastGone.energy : ENERGY.idle;
+		const weights = new Float32Array(count * FORMS);
+		if (takeover && lastGone.weights?.length === weights.length) weights.set(lastGone.weights);
+		else for (let i = 0; i < count; i++) weights[i * FORMS + LETTER] = 1;
+		let from = weights.slice();
+		let form = -1;
+		let progress = 1;
+		let errorAt = Number.NEGATIVE_INFINITY;
+		let ink: Rgb | null = null;
+		let inkReadAt = Number.NEGATIVE_INFINITY;
+		let drawnAt = Number.NEGATIVE_INFINITY;
 
-		const draw = () => {
+		/** Starts a change of shape when the mood changed. */
+		const follow = () => {
+			const next = FORM_OF[moodRef.current];
+			if (next === form) return;
+			from = weights.slice();
+			progress = 0;
+			if (next === ERROR) errorAt = phase.time;
+			form = next;
+		};
+
+		/** Moves every dot along its own share of the change, so shapes dissolve dot by dot. */
+		const settle = (dt: number) => {
+			progress = Math.min(1, progress + dt / MORPH);
+			for (let i = 0; i < count; i++) {
+				const own = smoothstep(0, 1, progress * 1.7 - (stagger[i] ?? 0) * 0.7);
+				for (let f = 0; f < FORMS; f++) {
+					const at = i * FORMS + f;
+					weights[at] = (from[at] ?? 0) * (1 - own) + (f === form ? own : 0);
+				}
+			}
+		};
+
+		const draw = (time: number) => {
+			if (tone === "current" && time - inkReadAt > 500) {
+				ink = resolveColor(getComputedStyle(canvas).color);
+				inkReadAt = time;
+			}
 			// The size it is shown at, transforms included: crisp while a layout animation scales it.
 			const shown = canvas.getBoundingClientRect().width || size;
-			const pixels = Math.max(1, Math.round(shown * ratio));
-			if (canvas.width !== pixels) {
-				canvas.width = pixels;
-				canvas.height = pixels;
+			const needed = Math.max(1, Math.round(shown * ratio));
+			// Grow the backing store as needed, shrink it only when far too big: a flight scales it every frame.
+			if (canvas.width < needed || canvas.width > needed * 2) {
+				canvas.width = needed;
+				canvas.height = needed;
 			}
-			context.setTransform(pixels / shown, 0, 0, pixels / shown, 0, 0);
-			paint(context, shown, phase, energy);
+			const scale = canvas.width / shown;
+			context.setTransform(scale, 0, 0, scale, 0, 0);
+			paint(context, { size: shown, phase, energy, weights, sinceError: phase.time - errorAt, ink });
 		};
 
-		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-			energy = target.current;
-			draw();
-			return;
+		if (reduced) {
+			// One still frame per mood, in its final shape.
+			redrawRef.current = () => {
+				follow();
+				progress = 1;
+				from.fill(0);
+				settle(0);
+				energy = ENERGY[moodRef.current];
+				errorAt = Number.NEGATIVE_INFINITY;
+				draw(performance.now());
+			};
+			redrawRef.current();
+			return () => {
+				redrawRef.current = () => undefined;
+			};
 		}
 
-		let frame = 0;
+		follow();
+		let previous = now;
+		let raf = 0;
 		let running = false;
-		const loop = (now: number) => {
-			const dt = Math.min(0.05, (now - previous) / 1000);
-			previous = now;
-			energy += (target.current - energy) * (1 - Math.exp(-dt * 3.5));
+		const tick = (time: number) => {
+			// A settled idle or error orb moves slowly: 30 fps is enough.
+			const calm = progress === 1 && (form === LETTER || form === ERROR) && phase.time - errorAt > 1;
+			if (calm && time - drawnAt < 32) {
+				if (running) raf = requestAnimationFrame(tick);
+				return;
+			}
+			drawnAt = time;
+			const dt = Math.min(0.05, (time - previous) / 1000);
+			previous = time;
+			follow();
+			settle(dt);
+			energy += (ENERGY[moodRef.current] - energy) * (1 - Math.exp(-dt * 3.5));
 			advance(phase, dt, energy);
-			Object.assign(lastPhase, phase);
-			lastDraw.energy = energy;
-			lastDraw.at = now;
-			draw();
-			if (running) frame = requestAnimationFrame(loop);
+			draw(time);
+			if (running) raf = requestAnimationFrame(tick);
 		};
-		const start = () => {
+		const play = () => {
 			if (running) return;
 			running = true;
 			previous = performance.now();
-			frame = requestAnimationFrame(loop);
+			raf = requestAnimationFrame(tick);
 		};
-		const stop = () => {
+		const pause = () => {
 			running = false;
-			cancelAnimationFrame(frame);
+			cancelAnimationFrame(raf);
 		};
 
-		draw();
+		draw(now);
 		let visible = true;
 		const observer =
 			typeof IntersectionObserver === "undefined"
 				? null
-				: new IntersectionObserver(([entry]) => {
-						visible = entry?.isIntersecting ?? true;
-						if (visible && document.visibilityState === "visible") start();
-						else stop();
+				: new IntersectionObserver((entries) => {
+						visible = entries.at(-1)?.isIntersecting ?? true;
+						if (visible && document.visibilityState === "visible") play();
+						else pause();
 					});
 		observer?.observe(canvas);
-		if (!observer) start();
+		if (!observer) play();
 		const onVisibility = () => {
-			if (document.visibilityState === "hidden") stop();
-			else if (visible) start();
+			if (document.visibilityState === "hidden") pause();
+			else if (visible) play();
 		};
 		document.addEventListener("visibilitychange", onVisibility);
 
 		return () => {
-			stop();
+			pause();
+			Object.assign(lastGone, { at: performance.now(), energy, phase: { ...phase }, weights: weights.slice() });
 			observer?.disconnect();
 			document.removeEventListener("visibilitychange", onVisibility);
 		};
-	}, [size]);
+	}, [size, tone, reduced]);
 
 	return (
 		<canvas

@@ -5,18 +5,7 @@ import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { EmptyState } from "@heroui-pro/react";
-import {
-	Alert,
-	Button,
-	buttonVariants,
-	Checkbox,
-	Chip,
-	Modal,
-	Separator,
-	Skeleton,
-	Spinner,
-	Typography,
-} from "@heroui/react";
+import { Alert, Button, buttonVariants, Checkbox, Chip, Modal, Separator, Skeleton, Typography } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -24,6 +13,7 @@ import { Link, useRouteContext } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
+import { ThinkingOrb } from "@rezumi/ui/components/thinking-orb";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { formatList } from "@rezumi/utils/locale";
@@ -148,7 +138,7 @@ function PlanEmpty({ application, interview }: PlanEmptyProps) {
 						isDisabled={!provider}
 						onPress={() => void generate.run({ task: "briefing", interviewId: interview.id }).catch(() => {})}
 					>
-						{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
+						{generate.isPending && <ThinkingOrb size={16} tone="current" />}
 						{generate.isPending ? <Working steps={workingSteps("briefing")} /> : <Trans>Plan my preparation</Trans>}
 					</Button>
 					<PrivacyLine className="max-w-sm text-start">
