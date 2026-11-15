@@ -17,7 +17,9 @@ had no users yet). Neon was left in place and can be deleted once the VPS has ru
 
 Certificate verification is disabled on the VPC service because Workers VPC does not accept a private CA yet and the
 only hop it covers is loopback on the VPS; the Hyperdrive → `cloudflared` leg runs inside the encrypted tunnel. Nothing
-but SSH is reachable from the internet; `fail2ban` guards SSH.
+but SSH is reachable from the internet; `fail2ban` guards SSH, and `/etc/ssh/sshd_config.d/01-rezumi-hardening.conf`
+allows keys only (root: `prohibit-password`). OrcaTerm in the Lighthouse console still works because it logs in through
+Tencent's `tat_agent`, not SSH.
 
 ## Migrations
 
@@ -25,7 +27,8 @@ The deploy workflow opens an SSH tunnel as `dbtunnel` (key may only forward to `
 `pnpm --filter @rezumi/db db:migrate` against `127.0.0.1:15432` with `sslmode=disable` (SSH already encrypts it).
 Secrets: `DATABASE_URL`, `DB_SSH_HOST`, `DB_SSH_KEY`, `DB_SSH_KNOWN_HOSTS`.
 
-From a trusted machine with the admin key:
+From a trusted machine with the admin key, in a checkout of `origin/main` (production runs `main`; migrating from an
+older feature branch leaves tables missing):
 
 ```sh
 ssh -f -N -o ExitOnForwardFailure=yes -L 15432:127.0.0.1:5432 rezumi-db
