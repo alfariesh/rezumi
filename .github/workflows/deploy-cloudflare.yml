@@ -52,16 +52,11 @@ jobs:
 
       - name: Open database SSH tunnel
         if: ${{ env.DATABASE_URL != '' && env.DB_SSH_HOST != '' }}
-        env:
-          DB_SSH_KEY: ${{ secrets.DB_SSH_KEY }}
-          DB_SSH_KNOWN_HOSTS: ${{ secrets.DB_SSH_KNOWN_HOSTS }}
-        run: |
-          install -d -m 700 ~/.ssh
-          printf '%s\n' "$DB_SSH_KEY" > ~/.ssh/db_tunnel && chmod 600 ~/.ssh/db_tunnel
-          printf '%s\n' "$DB_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          ssh -i ~/.ssh/db_tunnel -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes \
-            -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -f -N \
-            -L 15432:127.0.0.1:5432 "dbtunnel@$DB_SSH_HOST"
+        uses: ./.github/actions/db-tunnel
+        with:
+          host: ${{ env.DB_SSH_HOST }}
+          key: ${{ secrets.DB_SSH_KEY }}
+          known-hosts: ${{ secrets.DB_SSH_KNOWN_HOSTS }}
 
       - name: Apply database migrations
         if: ${{ env.DATABASE_URL != '' }}

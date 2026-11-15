@@ -8,7 +8,7 @@ had no users yet). Neon was left in place and can be deleted once the VPS has ru
 | Piece             | Value                                                                                                               |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------- |
 | Server            | Lighthouse `lhins-c762px0u`, region `ap-jakarta`, Ubuntu 26.04, 2 vCPU, 2 GB RAM, 40 GB disk, `43.157.211.152`      |
-| PostgreSQL        | 18, cluster `18/main`, database `rezumi`, owner/login role `rezumi`; listens on `127.0.0.1`/`::1` only              |
+| PostgreSQL        | 18, cluster `18/main`, database `rezumi`; listens on `127.0.0.1`/`::1` only; roles below                            |
 | Settings          | `/etc/postgresql/18/main/conf.d/rezumi.conf` (memory sized for 2 GB), `tls.conf` (private CA in `tls/`)             |
 | Hyperdrive        | `vitaekit` (`f2e0cd8d0b084ed5bdbfb8a1de8a80dc`), caching off, origin = Workers VPC service                          |
 | Workers VPC       | service `rezumi-db` (`01a1dc88-f77d-7d80-baf0-96a2f83c1f2d`), tcp 5432 → `127.0.0.1`, cert verification disabled    |
@@ -17,9 +17,23 @@ had no users yet). Neon was left in place and can be deleted once the VPS has ru
 
 Certificate verification is disabled on the VPC service because Workers VPC does not accept a private CA yet and the
 only hop it covers is loopback on the VPS; the Hyperdrive → `cloudflared` leg runs inside the encrypted tunnel. Nothing
-but SSH is reachable from the internet; `fail2ban` guards SSH, and `/etc/ssh/sshd_config.d/01-rezumi-hardening.conf`
+but SSH is reachable from the internet: `ufw` denies all other inbound traffic (it allows `169.254.0.0/16`, Tencent's
+internal services; blocking it breaks OrcaTerm), `fail2ban` guards SSH, and `/etc/ssh/sshd_config.d/01-rezumi-hardening.conf`
 allows keys only (root: `prohibit-password`). OrcaTerm in the Lighthouse console still works because it logs in through
 Tencent's `tat_agent`, not SSH.
+
+## Database roles
+
+| Role             | Used by                      | Rights                                                                                                      |
+| ---------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `rezumi`         | migrations (CI and by hand)  | owns database `rezumi`, its tables and functions                                                            |
+| `rezumi_app`     | Hyperdrive (the running app) | `SELECT/INSERT/UPDATE/DELETE` on tables, sequence use, function `EXECUTE`; no DDL, `statement_timeout` 60 s |
+| `rezumi_monitor` | `monitor-production.yml`     | read-only, may connect only to database `rezumi_ops` (backup heartbeat table `backup_run`)                  |
+
+Default privileges (`ALTER DEFAULT PRIVILEGES FOR ROLE rezumi`) grant `rezumi_app` its rights on every table, sequence and
+function a migration creates, so migrations need no extra grants. A migration that changes ownership or creates objects
+as another role must grant `rezumi_app` explicitly. Passwords live in `~/.ssh/rezumi/` on the owner's Mac
+(`db_password`, `db_app_password`, `db_monitor_password`).
 
 ## Migrations
 
@@ -53,5 +67,8 @@ Restore into a scratch database first (`createdb rezumi_restore`) when checking 
 
 ## Health
 
+- `.github/workflows/monitor-production.yml` runs every 30 minutes: it fails (and GitHub emails the owner) when
+  `/api/health` is unhealthy three times in a row or the newest backup in `rezumi_ops.backup_run` is older than 26 hours or
+  missed R2. Scheduled workflows pause after 60 days without repository activity; re-enable it in the Actions tab.
 - `https://rezumi.app/api/health` reports `database.status`.
 - On the VPS: `systemctl status postgresql@18-main cloudflared`, `journalctl -u cloudflared`.

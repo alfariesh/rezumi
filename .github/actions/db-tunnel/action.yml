@@ -1,0 +1,32 @@
+name: Open database SSH tunnel
+description: >-
+  Forwards 127.0.0.1:15432 on the runner to PostgreSQL on the database VPS, which only listens on localhost. The key's
+  user (dbtunnel) may only forward to 127.0.0.1:5432; known-hosts pins the server's host key.
+
+inputs:
+  host:
+    description: Database VPS address (secret DB_SSH_HOST).
+    required: true
+  key:
+    description: Private key of the forward-only dbtunnel user (secret DB_SSH_KEY).
+    required: true
+  known-hosts:
+    description: Pinned host key line for the VPS (secret DB_SSH_KNOWN_HOSTS).
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Open tunnel
+      shell: bash
+      env:
+        DB_SSH_HOST: ${{ inputs.host }}
+        DB_SSH_KEY: ${{ inputs.key }}
+        DB_SSH_KNOWN_HOSTS: ${{ inputs.known-hosts }}
+      run: |
+        install -d -m 700 ~/.ssh
+        printf '%s\n' "$DB_SSH_KEY" > ~/.ssh/db_tunnel && chmod 600 ~/.ssh/db_tunnel
+        printf '%s\n' "$DB_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+        ssh -i ~/.ssh/db_tunnel -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes \
+          -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -f -N \
+          -L 15432:127.0.0.1:5432 "dbtunnel@$DB_SSH_HOST"
