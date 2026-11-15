@@ -1,5 +1,5 @@
 import type { SiteAdapter } from "./types";
-import { textOf } from "../text";
+import { logoIn, textOf } from "../text";
 import { compact } from "./types";
 
 /**
@@ -19,14 +19,21 @@ export const jobstreet: SiteAdapter = {
 		} catch {
 			applyUrl = undefined;
 		}
+		const company = field(document, "advertiser-name");
+		const title = document.querySelector('[data-automation="job-detail-title"]');
+		const header = title?.closest("section, article, [data-automation='jobDetailsPage']") ?? document;
 		return {
 			fields: compact({
 				role: field(document, "job-detail-title"),
-				company: field(document, "advertiser-name"),
+				company,
 				location: field(document, "job-detail-location"),
 				salary: field(document, "job-detail-salary"),
 				employmentType: field(document, "job-detail-work-type"),
 				applyUrl,
+				companyLogoUrl: logoIn(header, company, [
+					'[data-automation="advertiser-logo"] img',
+					'[data-testid="bx-logo-image"] img',
+				]),
 			}),
 			description: field(document, "jobAdDetails"),
 		};

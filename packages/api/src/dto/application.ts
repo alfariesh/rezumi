@@ -77,6 +77,12 @@ const applicationSchema = createSelectSchema(schema.application, {
 		.refine((value) => /^(https?:\/\/|\/)/.test(value), "Cover letter URL must be http(s) or a relative path.")
 		.nullable(),
 	coverLetterName: z.string().nullable(),
+	// Same rule as the file URLs: only this app's own upload addresses are stored.
+	companyLogoUrl: z
+		.string()
+		.refine((value) => /^(https?:\/\/|\/)/.test(value), "Company logo URL must be http(s) or a relative path.")
+		.nullable()
+		.describe("The company's logo, copied into Rezumi's storage when the browser extension saved the posting."),
 	followUpAt: z.date().nullable(),
 	followUpNote: z.string().trim().nullable(),
 	tags: z.array(z.string()),
@@ -102,6 +108,7 @@ const applicationSummarySchema = applicationSchema.pick({
 	source: true,
 	tags: true,
 	sourceUrl: true,
+	companyLogoUrl: true,
 	matchScore: true,
 	followUpAt: true,
 	followUpNote: true,

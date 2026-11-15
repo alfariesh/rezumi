@@ -9,9 +9,10 @@ import { jobPostingsInJson, toPagePosting } from "@rezumi/job-sites/json-ld";
 import { canonicalJobUrl, JOB_SITES, jobKey } from "@rezumi/job-sites/sites";
 import { applicationStatusSchema } from "@rezumi/schema/applications/data";
 import { protectedProcedure } from "../../context";
-import { aiRequestRateLimit } from "../../middleware/rate-limit";
+import { aiRequestRateLimit, storageUploadRateLimit } from "../../middleware/rate-limit";
 import { aiSourceInput } from "../billing/ai-source";
 import { fillPostingFields, parsePostingOutput } from "./ai";
+import { copyCompanyLogo } from "./logo";
 import { htmlToText, MAX_POSTING_CHARS } from "./posting";
 import { applicationService } from "./service";
 
@@ -36,9 +37,30 @@ const existingSchema = z
 	.nullable()
 	.describe("The newest application already saved for this posting, if any.");
 
+const similarSchema = z
+	.array(
+		z.object({
+			id: z.string(),
+			role: z.string(),
+			company: z.string(),
+			status: applicationStatusSchema,
+			sourceUrl: z.string().nullable(),
+			updatedAt: z.date(),
+		}),
+	)
+	.describe(
+		"Applications for the same role at the same company saved from another posting (another site), newest first.",
+	);
+
 const readCaptureOutput = parsePostingOutput.extend({
 	validThrough: z.string().nullable().describe("When the employer stops taking applications, as the page states it."),
+	employmentType: z.string().describe('The kind of employment the page states ("Full-time"), or empty.'),
+	companyLogoUrl: z
+		.string()
+		.nullable()
+		.describe("The company's logo on the page, for `saveLogo` after saving (https only), or null."),
 	existing: existingSchema,
+	similar: similarSchema,
 });
 
 /** The posting's address to save: the board's permanent one when the server knows it, else what the extension sent. */
@@ -84,7 +106,15 @@ export const extensionRouter = {
 	readCapture: protectedProcedure
 		.route({ ...route, method: "POST", path: "/applications/extension/read-capture" })
 		.use(aiRequestRateLimit)
-		.input(capturedPostingSchema.extend(aiSourceInput))
+		.input(
+			capturedPostingSchema.extend({
+				...aiSourceInput,
+				useAi: z
+					.boolean()
+					.optional()
+					.describe('false: fill from the page only ("Read with AI" off). Left out, any available AI may run.'),
+			}),
+		)
 		.output(readCaptureOutput)
 		.errors({
 			BAD_GATEWAY: {
@@ -93,7 +123,7 @@ export const extensionRouter = {
 			},
 		})
 		.handler(async ({ context, input, signal }) => {
-			const { aiSource: _aiSource, idempotencyKey: _idempotencyKey, ...capture } = input;
+			const { aiSource: _aiSource, idempotencyKey: _idempotencyKey, useAi, ...capture } = input;
 			const page = pagePosting(capture.jsonLd);
 			const fields = capture.fields ?? {};
 			// What the person selected wins; then the posting's own description, then the page's text.
@@ -113,7 +143,7 @@ export const extensionRouter = {
 				role: fields.role || page?.role || "",
 				company: fields.company || page?.company || "",
 				location: fields.location || page?.location || "",
-				salary: fields.salary || "",
+				salary: fields.salary || page?.salary || "",
 			};
 			const key = jobKey(sourceUrl);
 			const [parsed, existing] = await Promise.all([
@@ -126,10 +156,40 @@ export const extensionRouter = {
 					sourceUrl,
 					postingSource,
 					signal,
+					skipAi: useAi === false,
 				}),
 				key ? applicationService.findBySourceKey({ userId: context.user.id, key }) : null,
 			]);
-			return { ...parsed, validThrough: fields.validThrough || page?.closesAt || null, existing };
+			// Only when the person opened this posting: never per page visited (02-teknis.md §9, §19.3).
+			const similar = await applicationService.similar({
+				userId: context.user.id,
+				role: parsed.role,
+				company: parsed.company,
+				key,
+			});
+			return {
+				...parsed,
+				validThrough: fields.validThrough || page?.closesAt || null,
+				employmentType: fields.employmentType || page?.employmentType || "",
+				companyLogoUrl: fields.companyLogoUrl || page?.logoUrl || null,
+				existing,
+				similar: existing ? similar.filter((item) => item.id !== existing.id) : similar,
+			};
+		}),
+
+	// After saving: copies the posting page's company logo into the account's uploads. A logo that can't be copied
+	// leaves the application as it is (the web shows the company's initials), so this never fails the save.
+	saveLogo: protectedProcedure
+		.route({ ...route, method: "POST", path: "/applications/extension/save-logo" })
+		.use(storageUploadRateLimit)
+		.input(z.object({ id: z.string().min(1), logoUrl: z.url({ protocol: /^https$/ }).max(2_000) }))
+		.output(z.object({ companyLogoUrl: z.string().nullable() }))
+		.handler(async ({ context, input, signal }) => {
+			await applicationService.getById({ id: input.id, userId: context.user.id });
+			const copied = await copyCompanyLogo(context.user.id, input.logoUrl, { signal });
+			if (!copied.ok) return { companyLogoUrl: null };
+			await applicationService.setCompanyLogo({ id: input.id, userId: context.user.id, url: copied.url });
+			return { companyLogoUrl: copied.url };
 		}),
 
 	// A page the extension could not read. Only the address, board, version and missing fields: never the page's text.

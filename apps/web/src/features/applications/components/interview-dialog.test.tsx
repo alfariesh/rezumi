@@ -43,6 +43,7 @@ const interview: InterviewTimelineEntry = {
 const application: Application = {
 	id: "application",
 	company: "Example Co",
+	companyLogoUrl: null,
 	role: "Engineer",
 	status: "interview",
 	closedReason: null,

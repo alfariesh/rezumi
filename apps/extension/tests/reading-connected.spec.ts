@@ -3,7 +3,8 @@ import { connect, screenshotDir, server, serverIsUp, signUp } from "./account";
 import { expect, serveFixture, test } from "./fixtures";
 
 /**
- * The connected panel on a posting (Phase 03): the preview card, and "Report this page" sent to the local server.
+ * The connected panel on a posting: the save form filled from the page (Phase 04), and "Report this page" sent to the
+ * local server (Phase 03).
  * Skipped when no Rezumi server answers at http://localhost:3000.
  */
 
@@ -68,8 +69,13 @@ for (const uiLanguage of ["en-US", "id"] as const) {
 					await panel.setViewportSize({ width, height: 640 });
 					await panel.emulateMedia({ colorScheme });
 					await panel.goto(`chrome-extension://${extensionId}/sidepanel.html?tab=${tabId}&clean`);
-					await expect(panel.getByRole("heading", { name: "Product Designer" })).toBeVisible();
-					await expect(panel.getByText("Rp 15.000.000 – Rp 20.000.000 per month")).toBeVisible();
+					await expect(panel.getByRole("textbox", { name: english ? "Role" : "Posisi" })).toHaveValue(
+						"Product Designer",
+					);
+					await expect(panel.getByRole("textbox", { name: english ? "Salary" : "Gaji" })).toHaveValue(
+						"Rp 15.000.000 – Rp 20.000.000 per month",
+					);
+					await expect(panel.getByText(english ? "Checking your applications…" : "Mengecek lamaranmu…")).toBeHidden();
 					if (screenshotDir)
 						await panel.screenshot({ path: `${screenshotDir}/posting-${uiLanguage}-${width}-${colorScheme}.png` });
 				}

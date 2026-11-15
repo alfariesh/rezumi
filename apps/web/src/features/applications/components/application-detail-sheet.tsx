@@ -19,6 +19,7 @@ import { applicationDetailQueryOptions, getInitialApplicationDetail } from "../q
 import { getClosedReasonLabel, getNextStage, getStageColor, getStageLabel } from "../stages";
 import { useApplicationActions, useInvalidateApplications } from "../use-application-actions";
 import { ApplicationNotes } from "./application-notes";
+import { CompanyMark } from "./company-mark";
 import { Activity } from "./detail/activity";
 import { CloseDialog } from "./detail/close-dialog";
 import { Contacts } from "./detail/contacts";
@@ -200,12 +201,11 @@ function Detail({ variant, application, onEditDetails, onDeleted }: DetailProps)
 		<ScrollShadow hideScrollBar className="h-full overflow-y-auto">
 			<header className="grid gap-4 px-5 pt-5 pb-4">
 				<div className="flex items-start gap-3 pe-8">
-					<span
-						aria-hidden="true"
-						className="grid size-10 shrink-0 place-items-center rounded-xl bg-default font-semibold text-muted"
-					>
-						{application.company.slice(0, 1).toUpperCase()}
-					</span>
+					<CompanyMark
+						company={application.company}
+						logoUrl={application.companyLogoUrl}
+						className="size-10 rounded-xl"
+					/>
 					<div className="grid min-w-0 flex-1 gap-0.5">
 						{variant === "sheet" ? (
 							<Sheet.Heading>{application.role}</Sheet.Heading>

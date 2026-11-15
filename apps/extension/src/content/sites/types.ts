@@ -29,6 +29,7 @@ const FIELD_LIMITS: Record<keyof CapturedFields, number> = {
 	employmentType: 100,
 	validThrough: 100,
 	applyUrl: 2_000,
+	companyLogoUrl: 2_000,
 };
 
 /** Drops empty values and cuts long ones, so only what the page states is sent and the server accepts it. */
@@ -39,6 +40,11 @@ export function compact(fields: { [K in keyof CapturedFields]?: string | undefin
 		if (!text) continue;
 		if (name === "applyUrl") {
 			if (/^https?:\/\//i.test(text) && text.length <= FIELD_LIMITS.applyUrl) out.applyUrl = text;
+			continue;
+		}
+		if (name === "companyLogoUrl") {
+			// Pictures inlined as data: or served over http are not copied.
+			if (/^https:\/\/\S+$/i.test(text) && text.length <= FIELD_LIMITS.companyLogoUrl) out.companyLogoUrl = text;
 			continue;
 		}
 		out[name] = text.slice(0, FIELD_LIMITS[name]).trim();

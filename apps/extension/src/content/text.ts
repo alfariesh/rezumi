@@ -100,3 +100,32 @@ const EMPLOYMENT_TYPES =
 
 /** True when a short line names a kind of employment (Full-time, Kontrak, Magang, …). */
 export const looksLikeEmploymentType = (text: string) => text.length <= 60 && EMPLOYMENT_TYPES.test(text);
+
+/**
+ * The company's logo in a part of the page (a board's top card): an https picture whose alt text names the company or
+ * says "logo", else the first such picture inside one of `selectors`. Inline (`data:`) pictures are never sent.
+ */
+export function logoIn(
+	root: ParentNode | null | undefined,
+	company: string,
+	selectors: readonly string[] = [],
+): string {
+	if (!root) return "";
+	const https = (image: Element | null | undefined) => {
+		const source = image?.getAttribute("src")?.trim() ?? "";
+		return /^https:\/\/\S+$/i.test(source) ? source : "";
+	};
+	for (const selector of selectors) {
+		const found = https(root.querySelector(selector));
+		if (found) return found;
+	}
+	const name = company.trim().toLowerCase();
+	for (const image of root.querySelectorAll("img")) {
+		const alt = image.getAttribute("alt")?.toLowerCase() ?? "";
+		if ((name && alt.includes(name)) || /\blogo\b/.test(alt)) {
+			const found = https(image);
+			if (found) return found;
+		}
+	}
+	return "";
+}

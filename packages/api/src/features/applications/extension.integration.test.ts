@@ -15,7 +15,25 @@ const fixture = vi.hoisted(() => ({
 	ai: null as null | { model: object; succeed: () => Promise<void>; fail: () => Promise<void> },
 	fields: { company: "", role: "", location: "", salary: "", requirements: [] as string[] },
 	emails: [] as { to: string; subject: string; notice: { rows?: { label: string; value: string }[] } }[],
+	logo: { ok: true, url: "http://localhost:3000/api/uploads/member/pictures/0a1b.png" } as
+		| { ok: true; url: string }
+		| { ok: false; reason: string },
+	deleted: [] as string[],
 }));
+// No network: the logo copy is unit-tested in logo.test.ts.
+vi.mock("./logo", () => ({ copyCompanyLogo: vi.fn(async () => fixture.logo) }));
+vi.mock("../storage/service", async () => {
+	const actual = await vi.importActual<typeof import("../storage/service")>("../storage/service");
+	return {
+		...actual,
+		getStorageService: () => ({
+			delete: async (key: string) => {
+				fixture.deleted.push(key);
+				return true;
+			},
+		}),
+	};
+});
 vi.mock("@rezumi/db/client", () => ({
 	get db() {
 		return fixture.db;
@@ -131,6 +149,8 @@ describe.skipIf(!databaseUrl)("browser extension procedures", () => {
 		fixture.minimumVersion = undefined;
 		fixture.ai = null;
 		fixture.emails = [];
+		fixture.logo = { ok: true, url: "http://localhost:3000/api/uploads/member/pictures/0a1b.png" };
+		fixture.deleted = [];
 		await pool.query('TRUNCATE "user" CASCADE');
 		await getDb()
 			.insert(tables.user)
@@ -399,6 +419,104 @@ describe.skipIf(!databaseUrl)("browser extension procedures", () => {
 			});
 			await expect(client("member", { "x-rezumi-extension": "0.2.0" }).savedKeys()).resolves.toEqual({ keys: [] });
 			await expect(client().savedKeys()).resolves.toEqual({ keys: [] });
+		});
+	});
+
+	describe("Phase 04 additions", () => {
+		it("reads pay and the kind of employment from the page's JSON-LD", async () => {
+			const posting = JSON.stringify({
+				"@type": "JobPosting",
+				title: "Data Analyst",
+				hiringOrganization: { name: "Nusantara Data", logo: "https://cdn.example/nusantara.png" },
+				baseSalary: { currency: "IDR", value: { minValue: 9000000, maxValue: 12000000, unitText: "MONTH" } },
+				employmentType: "FULL_TIME",
+				description: "<p>Analyse data.</p>",
+			});
+			const read = await client().readCapture(
+				capture({
+					site: null,
+					url: "https://careers.example/jobs/7",
+					canonicalUrl: "https://careers.example/jobs/7",
+					jsonLd: [posting],
+				}),
+			);
+			expect(read).toMatchObject({
+				role: "Data Analyst",
+				salary: "IDR 9.000.000 – 12.000.000 / month",
+				employmentType: "Full-time",
+				companyLogoUrl: "https://cdn.example/nusantara.png",
+				similar: [],
+			});
+		});
+
+		it("does not run AI when the extension asks for the page only", async () => {
+			fixture.ai = { model: {}, succeed: async () => {}, fail: async () => {} };
+			fixture.fields = { company: "AI Co", role: "AI Role", location: "", salary: "", requirements: ["x"] };
+			const read = await client().readCapture({ ...capture(), useAi: false });
+			expect(read.filledBy).not.toBe("ai");
+			expect(read.role).not.toBe("AI Role");
+		});
+
+		it("warns about the same job saved from another site, only the account's own", async () => {
+			const mine = client();
+			const jobstreet = await mine.create({
+				company: "PT Lumen Labs Tbk",
+				role: "product designer",
+				sourceUrl: "https://id.jobstreet.com/id/job/81234567",
+			});
+			await mine.create({ company: "Lumen Labs", role: "Engineer", sourceUrl: "https://id.jobstreet.com/id/job/1" });
+			await client("other").create({
+				company: "Lumen Labs",
+				role: "Product Designer",
+				sourceUrl: "https://glints.com/id/opportunities/jobs/x/6f1c2a8e-1d2b-4c3d-9e8f-0a1b2c3d4e5f",
+			});
+
+			const read = await mine.readCapture(capture({ fields: { role: "Product Designer", company: "Lumen Labs" } }));
+			expect(read.existing).toBeNull();
+			expect(read.similar.map((item) => item.id)).toEqual([jobstreet]);
+			expect(read.similar[0]).toMatchObject({ sourceUrl: "https://id.jobstreet.com/id/job/81234567" });
+
+			// The same posting already saved is "existing", never "similar".
+			const linkedin = await mine.create({
+				company: "Lumen Labs",
+				role: "Product Designer",
+				sourceUrl: "https://www.linkedin.com/jobs/view/4012345678/",
+			});
+			const again = await mine.readCapture(capture({ fields: { role: "Product Designer", company: "Lumen Labs" } }));
+			expect(again.existing?.id).toBe(linkedin);
+			expect(again.similar.map((item) => item.id)).toEqual([jobstreet]);
+			expect(
+				(await client("other").readCapture(capture({ fields: { role: "Product Designer", company: "Lumen Labs" } })))
+					.similar,
+			).toHaveLength(1);
+		});
+
+		it("keeps a copied logo on the application, shows it in lists, and deletes it with the application", async () => {
+			const mine = client();
+			const id = await mine.create({ company: "Lumen Labs", role: "Designer" });
+			expect(await mine.saveLogo({ id, logoUrl: "https://cdn.example/lumen.png" })).toEqual({
+				companyLogoUrl: "http://localhost:3000/api/uploads/member/pictures/0a1b.png",
+			});
+			expect((await mine.getById({ id })).companyLogoUrl).toBe(
+				"http://localhost:3000/api/uploads/member/pictures/0a1b.png",
+			);
+			expect((await mine.listSummary({ limit: 5 }))[0]?.companyLogoUrl).toBe(
+				"http://localhost:3000/api/uploads/member/pictures/0a1b.png",
+			);
+
+			await mine.delete({ id });
+			expect(fixture.deleted).toContain("uploads/member/pictures/0a1b.png");
+		});
+
+		it("leaves the application as it is when the logo can't be copied, and refuses another account's application", async () => {
+			const mine = client();
+			const id = await mine.create({ company: "Lumen Labs", role: "Designer" });
+			fixture.logo = { ok: false, reason: "too-large" };
+			expect(await mine.saveLogo({ id, logoUrl: "https://cdn.example/huge.png" })).toEqual({ companyLogoUrl: null });
+			expect((await mine.getById({ id })).companyLogoUrl).toBeNull();
+			await expect(client("other").saveLogo({ id, logoUrl: "https://cdn.example/lumen.png" })).rejects.toMatchObject({
+				code: "NOT_FOUND",
+			});
 		});
 	});
 });

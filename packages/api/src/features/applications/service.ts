@@ -11,6 +11,7 @@ import { ORPCError } from "@orpc/client";
 import { and, arrayContains, count, desc, eq, inArray, isNotNull, isNull, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
+import { isSamePosting, normalizeCompany, normalizeRole } from "@rezumi/job-sites/match";
 import { jobKey } from "@rezumi/job-sites/sites";
 import { lintResumeForAts } from "@rezumi/resume/ats";
 import { coverLetterSchema } from "@rezumi/schema/cover-letter/data";
@@ -218,10 +219,29 @@ function storageKeyFromApplicationUrl(userId: string, value: string | null | und
 	return key?.startsWith(`uploads/${userId}/`) ? key : null;
 }
 
+/** The stored key of a company logo `applications.saveLogo` copied (one picture per application, never shared). */
+function logoKeyFromUrl(userId: string, value: string | null | undefined) {
+	if (!value) return null;
+	let pathname: string;
+	try {
+		pathname = value.startsWith("/") ? value : new URL(value).pathname;
+	} catch {
+		return null;
+	}
+	const key = pathname.match(/^\/(?:api\/)?(uploads\/[^/]+\/pictures\/[\w-]+\.(?:png|jpeg|webp))$/)?.[1];
+	return key?.startsWith(`uploads/${userId}/`) ? key : null;
+}
+
 async function deleteApplicationAttachments(
 	userId: string,
-	applications: Pick<EditableFields, "resumeFileUrl" | "coverLetterUrl">[],
+	applications: (Pick<EditableFields, "resumeFileUrl" | "coverLetterUrl"> & { companyLogoUrl?: string | null })[],
 ) {
+	const logoKeys = applications.flatMap((application) => logoKeyFromUrl(userId, application.companyLogoUrl) ?? []);
+	if (logoKeys.length) {
+		const storage = getStorageService();
+		await Promise.allSettled(logoKeys.map((key) => storage.delete(key)));
+	}
+
 	const candidateKeys = [
 		...new Set(
 			applications.flatMap((application) => [
@@ -417,6 +437,7 @@ const applicationSummarySelect = {
 	appliedAt: schema.application.appliedAt,
 	createdAt: schema.application.createdAt,
 	updatedAt: schema.application.updatedAt,
+	companyLogoUrl: schema.application.companyLogoUrl,
 };
 
 export const applicationService = {
@@ -761,6 +782,47 @@ export const applicationService = {
 			.orderBy(desc(schema.application.updatedAt), desc(schema.application.id))
 			.limit(MAX_SAVED_KEYS);
 		return rows.flatMap(({ key, ...row }) => (key ? [{ key, ...row }] : []));
+	},
+
+	/**
+	 * The person's applications for the same role at the same company as a posting, saved from another posting
+	 * (another key, or none): the same job published on two boards (02-teknis.md §19.3). Newest first, at most three.
+	 * Names are compared normalised (`isSamePosting`), so the newest 2,000 applications are read and filtered here.
+	 */
+	similar: async (input: { userId: string; role: string; company: string; key: string | null }) => {
+		if (!normalizeCompany(input.company) || !normalizeRole(input.role)) return [];
+		const rows = await db
+			.select({
+				id: schema.application.id,
+				role: schema.application.role,
+				company: schema.application.company,
+				status: schema.application.status,
+				sourceUrl: schema.application.sourceUrl,
+				sourceKey: schema.application.sourceKey,
+				updatedAt: schema.application.updatedAt,
+			})
+			.from(schema.application)
+			.where(eq(schema.application.userId, input.userId))
+			.orderBy(desc(schema.application.updatedAt), desc(schema.application.id))
+			.limit(2_000);
+		return rows
+			.filter((row) => (!input.key || row.sourceKey !== input.key) && isSamePosting(row, input))
+			.slice(0, 3)
+			.map(({ sourceKey: _sourceKey, ...row }) => row);
+	},
+
+	/** Records the logo `applications.saveLogo` copied, replacing (and deleting) an earlier one. */
+	setCompanyLogo: async (input: { id: string; userId: string; url: string }) => {
+		const existing = await requireOwned(input.id, input.userId);
+		await db
+			.update(schema.application)
+			.set({ companyLogoUrl: input.url })
+			.where(and(eq(schema.application.id, input.id), eq(schema.application.userId, input.userId)));
+		const previous = logoKeyFromUrl(input.userId, existing.companyLogoUrl);
+		if (previous && previous !== logoKeyFromUrl(input.userId, input.url))
+			await getStorageService()
+				.delete(previous)
+				.catch(() => false);
 	},
 
 	/** The newest application saved for one posting identity, or null. */

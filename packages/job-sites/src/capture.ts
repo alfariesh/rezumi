@@ -19,6 +19,11 @@ export const capturedFieldsSchema = z.object({
 		.url({ protocol: /^https?$/ })
 		.max(2_000)
 		.optional(),
+	/** The company's logo on the page (https only); the server copies the picture into Rezumi's storage. */
+	companyLogoUrl: z
+		.url({ protocol: /^https$/ })
+		.max(2_000)
+		.optional(),
 });
 
 export type CapturedFields = z.infer<typeof capturedFieldsSchema>;

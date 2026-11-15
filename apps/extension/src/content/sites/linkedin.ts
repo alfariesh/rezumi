@@ -1,6 +1,6 @@
 import type { SiteAdapter } from "./types";
 import { jobKey } from "@rezumi/job-sites/sites";
-import { firstText, looksLikeSalary, textOf } from "../text";
+import { firstText, logoIn, looksLikeSalary, textOf } from "../text";
 import { compact } from "./types";
 
 /**
@@ -91,7 +91,12 @@ export const linkedin: SiteAdapter = {
 					.find(looksLikeSalary)
 			: undefined;
 
-		return { fields: compact({ role, company, location, salary }), description };
+		// The company's picture beside its name in the top card (signed in), or the signed-out card's logo.
+		const companyLogoUrl =
+			logoIn(card, company) ||
+			logoIn(document, company, [".top-card-layout__card img.artdeco-entity-image", ".topcard__org-logo img"]);
+
+		return { fields: compact({ role, company, location, salary, companyLogoUrl }), description };
 	},
 	anchor(document) {
 		const save = document.querySelector(

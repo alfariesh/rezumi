@@ -14,6 +14,7 @@ import { cn } from "@rezumi/utils/style";
 import { describeNextStep, getNextStep } from "../next-step";
 import { CLOSED_REASONS, getClosedReasonLabel, getStageColor, getStageLabel, LIST_ORDER, PIPELINE } from "../stages";
 import { useInvalidateApplications } from "../use-application-actions";
+import { CompanyMark } from "./company-mark";
 import { useConfirm } from "@/hooks/use-confirm";
 import { formatRelativeTime } from "@/libs/locale";
 import { orpc } from "@/libs/orpc/client";
@@ -224,12 +225,11 @@ const ApplicationRow = memo(function ApplicationRow({
 	const tone = next.tone === "warn" ? "text-warning-soft-foreground" : "text-muted";
 
 	const initial = (
-		<span
-			aria-hidden="true"
-			className="grid size-8 shrink-0 place-items-center rounded-xl bg-control text-sm font-semibold text-muted"
-		>
-			{application.company.slice(0, 1).toUpperCase()}
-		</span>
+		<CompanyMark
+			company={application.company}
+			logoUrl={application.companyLogoUrl}
+			className="size-8 rounded-xl text-sm"
+		/>
 	);
 
 	const openButton = (

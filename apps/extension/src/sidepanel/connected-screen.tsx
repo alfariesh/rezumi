@@ -13,7 +13,7 @@ import { SettingsScreen } from "./settings-screen";
 type ConnectedScreenProps = { account: Account | null };
 
 /**
- * Connected: the open tab's posting or the home screen (page-screen.tsx; the due and recent lists arrive in Phases 04–05) and the settings
+ * Connected: the open tab's posting with the save form, or the home screen (page-screen.tsx), and the settings
  * (§3.8) behind the gear. Reading the plan first also proves the connection works, so a failure shows here (§3.7).
  */
 export function ConnectedScreen({ account }: ConnectedScreenProps) {
@@ -52,7 +52,7 @@ export function ConnectedScreen({ account }: ConnectedScreenProps) {
 				) : view === "settings" ? (
 					<SettingsScreen account={account} summary={summary.data} />
 				) : (
-					<PageScreen />
+					<PageScreen editable />
 				)}
 			</main>
 		</div>
