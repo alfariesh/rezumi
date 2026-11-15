@@ -72,9 +72,14 @@
 }
 
 /*
- * Page transitions: the router starts a view transition of type `page` when the pathname changes. The page fades
- * out quickly and the new one fades up 6px. Named parts that exist on only one side (leaving or entering a section)
- * fade with the page; the shell's chrome swaps in place (below).
+ * Page transitions: the router starts a view transition of type `page` when the pathname changes. The dashboard's
+ * content area (`#main-content`, captured as `page-content`) fades out quickly and the next one fades up 6px; the
+ * shell's chrome swaps in place (below). Named parts that exist on one side only fade with the content.
+ *
+ * HeroUI's base styles keep `:root` out of view transitions (`view-transition-name: none`), so the rest of the page
+ * stays live: a dialog closing as the page changes runs its exit and lets go of the pointer. The backdrop is therefore
+ * transparent: the live page shows between the pictures, the shell's own white in the dashboard. A coloured backdrop
+ * covered the whole content area until the new page appeared, a grey blink on every click.
  */
 @keyframes vt-page-out {
 	to {
@@ -89,8 +94,12 @@
 	}
 }
 
+html:active-view-transition-type(page) #main-content {
+	view-transition-name: page-content;
+}
+
 html:active-view-transition-type(page)::view-transition {
-	background-color: var(--background);
+	background-color: transparent;
 	pointer-events: none;
 }
 
@@ -99,13 +108,18 @@ html:active-view-transition-type(page)::view-transition-group(*) {
 	animation-timing-function: var(--ease);
 }
 
-html:active-view-transition-type(page)::view-transition-old(root),
+/* Pages differ in height: the content takes the new page's box at once instead of stretching between the two. */
+html:active-view-transition-type(page)::view-transition-group(page-content) {
+	animation: none;
+}
+
+html:active-view-transition-type(page)::view-transition-old(page-content),
 html:active-view-transition-type(page)::view-transition-old(*):only-child {
 	opacity: 1;
 	animation: calc(var(--d2) * 0.7) var(--ease) both vt-page-out;
 }
 
-html:active-view-transition-type(page)::view-transition-new(root),
+html:active-view-transition-type(page)::view-transition-new(page-content),
 html:active-view-transition-type(page)::view-transition-new(*):only-child {
 	animation: var(--d2) var(--ease) both vt-page-in;
 }
@@ -168,11 +182,11 @@ html[dir="rtl"] {
 }
 
 @media (width < 640px) {
-	html:active-view-transition-type(forward)::view-transition-new(root) {
+	html:active-view-transition-type(forward)::view-transition-new(page-content) {
 		animation: var(--d2) var(--ease) both vt-push-in;
 	}
 
-	html:active-view-transition-type(back)::view-transition-new(root) {
+	html:active-view-transition-type(back)::view-transition-new(page-content) {
 		animation: var(--d2) var(--ease) both vt-pop-in;
 	}
 }

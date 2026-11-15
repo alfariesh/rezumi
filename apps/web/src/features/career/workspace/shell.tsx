@@ -14,6 +14,7 @@ import {
 	Chip,
 	Disclosure,
 	Link as TextLink,
+	Skeleton,
 	Spinner,
 	Typography,
 } from "@heroui/react";
@@ -120,6 +121,45 @@ type WorkspaceProps = {
 	search: WorkspaceSearch;
 };
 
+type WorkspaceSkeletonProps = { breakpoint: ReturnType<typeof useBreakpoint> };
+
+/**
+ * The workspace's outline while the application loads: back link, title and stage line, then the details column
+ * (wide screens) beside the section tabs and a panel, where the real ones land.
+ */
+function WorkspaceSkeleton({ breakpoint }: WorkspaceSkeletonProps) {
+	const wide = breakpoint === "desktop" || breakpoint === "wide";
+	return (
+		<div role="status" className="mx-auto flex min-h-svh w-full max-w-[1440px] flex-col">
+			<span className="sr-only">{t`Loading`}</span>
+			<div className="grid gap-4 px-4 pt-8 pb-6 md:px-8">
+				<Skeleton className="h-5 w-28 rounded-md" />
+				<div className="grid gap-2">
+					<Skeleton className="h-8 w-full max-w-md rounded-lg" />
+					<Skeleton className="h-5 w-56 rounded-md" />
+				</div>
+			</div>
+			<div
+				className={cn(
+					"grid flex-1 content-start gap-x-8 gap-y-2 px-4 pb-10 md:px-8",
+					wide && (breakpoint === "wide" ? "grid-cols-[300px_minmax(0,1fr)]" : "grid-cols-[264px_minmax(0,1fr)]"),
+				)}
+			>
+				{wide && (
+					<div className="grid content-start gap-4 pt-2">
+						<Skeleton className="h-40 rounded-2xl" />
+						<Skeleton className="h-28 rounded-2xl" />
+					</div>
+				)}
+				<div className="grid content-start gap-4">
+					<Skeleton className="h-10 w-full max-w-lg rounded-xl" />
+					<Skeleton className="h-80 rounded-3xl" />
+				</div>
+			</div>
+		</div>
+	);
+}
+
 export function Workspace({ applicationId, tab: requested, search }: WorkspaceProps) {
 	const navigate = useNavigate();
 	const now = useNow();
@@ -133,12 +173,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 	const overlay = useOverlayHistory();
 	const application = query.data;
 
-	if (query.isPending)
-		return (
-			<div className="grid min-h-svh place-items-center">
-				<Spinner size="lg" color="current" aria-label={t`Loading`} />
-			</div>
-		);
+	if (query.isPending) return <WorkspaceSkeleton breakpoint={breakpoint} />;
 	if (!application)
 		return (
 			<div className="grid min-h-svh place-items-center p-6">

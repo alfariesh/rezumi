@@ -70,7 +70,8 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 		refetch,
 	} = useQuery(orpc.documents.list.queryOptions({ input: { trashed: false } }));
 	// The library staggers in on its first appearance only; cards that appear later (filters, a new document) don't.
-	const [intro, setIntro] = useState(true);
+	// Cards that replace the skeleton land at once: fading them in from nothing would blink the grid empty in between.
+	const [intro, setIntro] = useState(!isPending);
 	useEffect(() => {
 		if (isPending) return;
 		const timeout = setTimeout(() => setIntro(false), INTRO_MS);
@@ -313,12 +314,15 @@ function storeView(view: "grid" | "list") {
 
 type FirstRunProps = { onChooseFile: () => void };
 
-/** The first visit, here and on Home until there is a document: import is the filled button here, and only here. */
+/**
+ * The first visit, here and on Home until there is a document: import is the filled button here, and only here. It
+ * takes the loading skeleton's place as is, with no fade from nothing, so the page never blinks empty in between.
+ */
 export function FirstRun({ onChooseFile }: FirstRunProps) {
 	const { startBlank, trySample, creating } = useStartDocument();
 
 	return (
-		<section className="grid max-w-xl gap-4 pt-4 transition-[opacity,translate] duration-emphasized ease-enter starting:translate-y-2 starting:opacity-0">
+		<section className="grid max-w-xl gap-4 pt-4">
 			<Typography type="h3" render={renderAsH2}>
 				<Trans>Let's start with what you have</Trans>
 			</Typography>

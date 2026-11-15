@@ -1,8 +1,10 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import z from "zod";
+import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { useOverlayHistory } from "@/features/career/hooks";
 import { HomePage } from "@/features/career/today";
 import { shouldStartOnboarding } from "@/features/onboarding/redirect";
+import { orpc } from "@/libs/orpc/client";
 
 /** Documents' filters, which this address carried before Home took it. */
 const legacyDocumentsSearch = z.object({
@@ -41,6 +43,9 @@ export const Route = createFileRoute("/dashboard/")({
 	},
 	// A new account starts with onboarding; Skip or finishing it saves the Profile, so it opens once.
 	loader: async ({ context }) => {
+		// Home's widgets read these; starting them here (on hover, without waiting) means fewer skeletons on arrival.
+		void context.queryClient.prefetchQuery(orpc.documents.list.queryOptions({ input: { trashed: false } }));
+		void context.queryClient.prefetchQuery(applicationsListQueryOptions());
 		if (await shouldStartOnboarding(context.queryClient, context.session))
 			throw redirect({ to: "/onboarding", replace: true });
 	},
