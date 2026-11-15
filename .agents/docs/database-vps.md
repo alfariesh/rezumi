@@ -37,6 +37,8 @@ DATABASE_URL='postgresql://rezumi:<password>@127.0.0.1:15432/rezumi?sslmode=disa
 The backup script uploads only when `/etc/rezumi-backup/r2.env` (mode 600) exists, holding `R2_ACCOUNT_ID`,
 `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY` for an R2 API token limited to Object Read & Write on bucket
 `rezumi-db-backups`. Run `systemctl start rezumi-db-backup.service` and read `journalctl -u rezumi-db-backup` to check.
+The token (`rezumi-db-backup (VPS)`, created 2026-11-15) only works from the VPS IP. Uploads use `curl --aws-sigv4`;
+Ubuntu 26.04's rclone 1.60 reports `NotImplemented` against R2 even when the upload lands, so it is not used.
 
 ## Restore
 
