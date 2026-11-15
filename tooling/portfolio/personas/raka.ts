@@ -11,7 +11,7 @@ export const raka: PersonaDefinition = {
 	resume: "horizon",
 	username: "raka",
 	accent: "rgba(34, 197, 94, 1)",
-	photo: "raka.jpg",
+	photo: "raka.webp",
 	profiles: [
 		{ network: "GitHub", username: "rakamahendra", url: "https://github.com/rakamahendra", icon: "github" },
 		{
@@ -86,7 +86,7 @@ export const raka: PersonaDefinition = {
 						role: ["Tech lead", "Tech lead"],
 						date: "2023–2025",
 						tags: ["dbt", "SQL", "BigQuery"],
-						cover: "sintaks-1.svg",
+						cover: "sintaks-1.webp",
 						featured: true,
 						metrics: [
 							metric("m-cost", ["Warehouse query cost", "Biaya kueri warehouse"], -46, {
@@ -116,15 +116,18 @@ export const raka: PersonaDefinition = {
 								layout: "grid",
 								images: [
 									{
-										...picture("sintaks-g1.svg", ["The metrics dashboard", "Dasbor metrik"]),
+										...picture("sintaks-g1.webp", ["The metrics dashboard", "Dasbor metrik"]),
 										caption: t(["The dashboard every team now reads", "Dasbor yang kini dibaca semua tim"]),
 									},
 									{
-										...picture("sintaks-g2.svg", ["Lineage from sources to metrics", "Silsilah dari sumber ke metrik"]),
+										...picture("sintaks-g2.webp", [
+											"Lineage from sources to metrics",
+											"Silsilah dari sumber ke metrik",
+										]),
 										caption: t(["Lineage from raw orders to GMV", "Silsilah dari pesanan mentah ke GMV"]),
 									},
 									{
-										...picture("sintaks-g3.svg", ["Warehouse cost by month", "Biaya warehouse per bulan"]),
+										...picture("sintaks-g3.webp", ["Warehouse cost by month", "Biaya warehouse per bulan"]),
 										caption: t(["Warehouse cost by month", "Biaya warehouse per bulan"]),
 									},
 								],
@@ -139,7 +142,7 @@ export const raka: PersonaDefinition = {
 								provider: "youtube",
 								videoId: "Rk3mXb7QpLs",
 								title: t(["Talk: testing metrics like code", "Talk: menguji metrik seperti kode"]),
-								thumbnail: picture("sintaks-video.svg", [
+								thumbnail: picture("sintaks-1.webp", [
 									"Video: testing metrics like code",
 									"Video: menguji metrik seperti kode",
 								]),
@@ -160,7 +163,7 @@ export const raka: PersonaDefinition = {
 								provider: "figma",
 								ref: "design/Rk4Zq8Lc2Vt7Pm9Xw3Nb?node-id=2-48",
 								title: t(["Dashboard layout in Figma", "Tata letak dasbor di Figma"]),
-								thumbnail: picture("sintaks-2.svg", ["Figma: the dashboard layout", "Figma: tata letak dasbor"]),
+								thumbnail: picture("sintaks-2.webp", ["Figma: the dashboard layout", "Figma: tata letak dasbor"]),
 							},
 							{
 								id: "w-metrics-s",
@@ -217,7 +220,7 @@ export const raka: PersonaDefinition = {
 						role: ["Product owner", "Product owner"],
 						date: "2022–2024",
 						tags: ["Python", "Airflow", ["Statistics", "Statistika"]],
-						cover: "sintaks-2.svg",
+						cover: "sintaks-2.webp",
 						metrics: [metric("m-exp", ["Tests a year", "Uji per tahun"], 220)],
 						blocks: [
 							text("w-experiments-t", [
@@ -239,7 +242,7 @@ export const raka: PersonaDefinition = {
 					role: ["Lead analyst", "Analis utama"],
 					date: "2024",
 					tags: ["Python", "scikit-learn", "SQL"],
-					cover: "sintaks-3.svg",
+					cover: "sintaks-3.webp",
 					metrics: [
 						metric("m-uplift", ["Promo spend", "Biaya promo"], -28, {
 							format: "percent",
@@ -264,7 +267,7 @@ export const raka: PersonaDefinition = {
 					role: ["Analytics lead", "Analytics lead"],
 					date: "2020–2022",
 					tags: ["Python", ["Time series", "Deret waktu"], "BigQuery"],
-					cover: "sintaks-4.svg",
+					cover: "sintaks-4.webp",
 					metrics: [
 						metric("m-forecast", ["Stock-outs", "Stok habis"], -23, {
 							format: "percent",
@@ -289,7 +292,7 @@ export const raka: PersonaDefinition = {
 					role: ["Senior data analyst", "Senior data analyst"],
 					date: "2017–2019",
 					tags: ["SQL", "Python", ["Geospatial", "Geospasial"]],
-					cover: "sintaks-5.svg",
+					cover: "sintaks-5.webp",
 					metrics: [
 						metric("m-eta", ["Late parcels", "Paket terlambat"], -18, {
 							format: "percent",
@@ -314,7 +317,7 @@ export const raka: PersonaDefinition = {
 					role: ["Founder and teacher", "Penggagas dan pengajar"],
 					date: "2023–2025",
 					tags: ["SQL", "Looker"],
-					cover: "sintaks-6.svg",
+					cover: "sintaks-6.webp",
 					metrics: [metric("m-academy", ["People certified", "Peserta lulus"], 420)],
 					blocks: [
 						text("w-academy-t", [

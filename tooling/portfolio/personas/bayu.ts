@@ -7,7 +7,7 @@ export const bayu: PersonaDefinition = {
 	resume: "senja",
 	username: "bayu",
 	accent: "rgba(214, 96, 63, 1)",
-	photo: "bayu.jpg",
+	photo: "bayu.webp",
 	profiles: [
 		{
 			network: "Instagram",
@@ -75,7 +75,7 @@ export const bayu: PersonaDefinition = {
 					role: ["Creative director & photographer", "Creative director & fotografer"],
 					date: "2025",
 					tags: [["Campaign", "Kampanye"], ["Photography", "Fotografi"], "Video"],
-					cover: "kanvas-1.svg",
+					cover: "kanvas-1.webp",
 					featured: true,
 					metrics: [
 						metric("m-sales", ["Online sales", "Penjualan daring"], 40, {
@@ -110,15 +110,15 @@ export const bayu: PersonaDefinition = {
 							layout: "full",
 							images: [
 								{
-									...picture("kanvas-g1.svg", ["The first farm, 5.40 am", "Kebun pertama, 05.40"]),
+									...picture("kanvas-g1.webp", ["The first farm, 5.40 am", "Kebun pertama, 05.40"]),
 									caption: t(["The first farm, 5.40 am", "Kebun pertama, 05.40"]),
 								},
 								{
-									...picture("kanvas-g2.svg", ["Pickers on the top plot", "Pemetik di petak atas"]),
+									...picture("kanvas-g2.webp", ["Pickers on the top plot", "Pemetik di petak atas"]),
 									caption: t(["Pickers on the top plot", "Pemetik di petak atas"]),
 								},
 								{
-									...picture("kanvas-g3.svg", ["Mist after the harvest", "Kabut turun setelah panen"]),
+									...picture("kanvas-g3.webp", ["Mist after the harvest", "Kabut turun setelah panen"]),
 									caption: t(["Mist after the harvest", "Kabut turun setelah panen"]),
 								},
 							],
@@ -133,7 +133,7 @@ export const bayu: PersonaDefinition = {
 							provider: "vimeo",
 							videoId: "918273645",
 							title: t(["Behind the scenes: three farms, one morning", "Di balik layar: tiga kebun, satu pagi"]),
-							thumbnail: picture("kanvas-video.svg", ["Video: behind the scenes", "Video: di balik layar"]),
+							thumbnail: picture("kanvas-g1.webp", ["Video: behind the scenes", "Video: di balik layar"]),
 						},
 						{
 							id: "w-kopi-spotify",
@@ -141,7 +141,7 @@ export const bayu: PersonaDefinition = {
 							provider: "spotify",
 							ref: "episode/3Vt8KmQ2xRb7Lp4Nw9Zc1H",
 							title: t(["Podcast: shooting coffee at dawn", "Podcast: memotret kopi saat subuh"]),
-							thumbnail: picture("kanvas-g1.svg", ["Podcast cover", "Sampul podcast"], { width: 600, height: 600 }),
+							thumbnail: picture("kanvas-g1.webp", ["Podcast cover", "Sampul podcast"], { width: 600, height: 600 }),
 						},
 						{
 							id: "w-kopi-soundcloud",
@@ -173,7 +173,7 @@ export const bayu: PersonaDefinition = {
 							]),
 							siteName: "behance.net",
 							brandIcon: "behance-01",
-							image: picture("kanvas-g2.svg", ["Pickers on the top plot", "Pemetik di petak atas"]),
+							image: picture("kanvas-g2.webp", ["Pickers on the top plot", "Pemetik di petak atas"]),
 						},
 						text("w-slopes-r", [
 							"<h3>Result</h3><p>The campaign video was watched 12 million times in eight weeks. Online sales rose 40% in a quarter, and production costs fell 35% thanks to the in-house studio.</p>",
@@ -192,7 +192,7 @@ export const bayu: PersonaDefinition = {
 					role: "Creative director",
 					date: "2024",
 					tags: [["Identity", "Identitas"], "Lookbook"],
-					cover: "kanvas-2.svg",
+					cover: "kanvas-2.webp",
 					metrics: [metric("m-batik", ["Collection sold out", "Koleksi habis"], ["9 days", "9 hari"])],
 					blocks: [
 						text("w-batik-t", [
@@ -212,7 +212,7 @@ export const bayu: PersonaDefinition = {
 					role: ["Photographer", "Fotografer"],
 					date: "2022",
 					tags: [["Exhibition", "Pameran"], "Street"],
-					cover: "kanvas-3.svg",
+					cover: "kanvas-3.webp",
 					metrics: [metric("m-rain", ["Visitors", "Pengunjung"], 3100)],
 					blocks: [
 						text("w-rain-t", [
@@ -232,7 +232,7 @@ export const bayu: PersonaDefinition = {
 					role: ["Packaging designer", "Desainer kemasan"],
 					date: "2019",
 					tags: [["Packaging", "Kemasan"]],
-					cover: "kanvas-4.svg",
+					cover: "kanvas-4.webp",
 					metrics: [metric("m-renyah", ["Minimarkets", "Minimarket"], 1400)],
 					blocks: [
 						text("w-renyah-t", [
@@ -252,7 +252,7 @@ export const bayu: PersonaDefinition = {
 					role: ["Art director & photographer", "Art director & fotografer"],
 					date: "2023",
 					tags: [["Campaign", "Kampanye"], "Outdoor"],
-					cover: "kanvas-5.svg",
+					cover: "kanvas-5.webp",
 					metrics: [
 						metric("m-north", "Engagement", 2.4, {
 							format: "multiplier",
@@ -277,7 +277,7 @@ export const bayu: PersonaDefinition = {
 					role: ["Photographer", "Fotografer"],
 					date: "2017–2025",
 					tags: ["Editorial", ["Portrait", "Potret"]],
-					cover: "kanvas-6.svg",
+					cover: "kanvas-6.webp",
 					metrics: [metric("m-covers", ["Covers", "Sampul"], 14)],
 					blocks: [
 						text("w-covers-t", [
@@ -374,7 +374,7 @@ export const bayu: PersonaDefinition = {
 					"<p>“Pasar Subuh”: 20 photographs of Bandung's traditional markets before sunrise. March 2026, Ruang Seni Dago.</p>",
 					"<p>“Pasar Subuh”: 20 foto pasar tradisional Bandung sebelum matahari terbit. Maret 2026, Ruang Seni Dago.</p>",
 				]),
-				image: picture("kanvas-g3.svg", ["A market before sunrise", "Pasar sebelum matahari terbit"]),
+				image: picture("kanvas-g3.webp", ["A market before sunrise", "Pasar sebelum matahari terbit"]),
 				button: {
 					kind: "link",
 					label: t(["Ask for an invitation", "Minta undangan"]),

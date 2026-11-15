@@ -11,7 +11,7 @@ export const laras: PersonaDefinition = {
 	resume: "aksara",
 	username: "laras",
 	accent: "rgba(180, 35, 24, 1)",
-	photo: "laras.jpg",
+	photo: "laras.webp",
 	profiles: [
 		{
 			network: "LinkedIn",
@@ -83,7 +83,7 @@ export const laras: PersonaDefinition = {
 						role: ["Writer and editor", "Penulis dan editor"],
 						date: "2024",
 						tags: [["Environment", "Lingkungan"], ["Long read", "Tulisan panjang"], "Award"],
-						cover: "warta-1.svg",
+						cover: "warta-1.webp",
 						featured: true,
 						metrics: [
 							// The card's highlight. Time spent on the published story is the magazine's figure, not this page's
@@ -111,21 +111,21 @@ export const laras: PersonaDefinition = {
 								layout: "grid",
 								images: [
 									{
-										...picture("warta-g1.svg", ["Boats moored by the sea wall", "Perahu di tepi tanggul laut"]),
+										...picture("warta-g1.webp", ["Boats moored by the sea wall", "Perahu di tepi tanggul laut"]),
 										caption: t([
 											"Tambak Lorok, March: the boats moor above the old road",
 											"Tambak Lorok, Maret: perahu tertambat di atas jalan lama",
 										]),
 									},
 									{
-										...picture("warta-g2.svg", [
+										...picture("warta-g2.webp", [
 											"How far the ground dropped each year",
 											"Penurunan tanah setiap tahun",
 										]),
 										caption: t(["How far the ground dropped, 2015–2024", "Penurunan tanah, 2015–2024"]),
 									},
 									{
-										...picture("warta-g3.svg", ["Map of the sinking coast", "Peta pesisir yang turun"]),
+										...picture("warta-g3.webp", ["Map of the sinking coast", "Peta pesisir yang turun"]),
 										caption: t(["The coast that sinks fastest, in red", "Pesisir yang turun paling cepat, merah"]),
 									},
 								],
@@ -143,7 +143,7 @@ export const laras: PersonaDefinition = {
 									"Ruang Tunggu, episode 31: the land is leaving",
 									"Ruang Tunggu, episode 31: tanahnya yang pergi",
 								]),
-								thumbnail: picture("warta-audio.svg", ["The podcast's cover", "Sampul podcast"], {
+								thumbnail: picture("warta-3.webp", ["The podcast's cover", "Sampul podcast"], {
 									width: 600,
 									height: 600,
 								}),
@@ -154,7 +154,7 @@ export const laras: PersonaDefinition = {
 								provider: "youtube",
 								videoId: "Lk7pQw2NmZr",
 								title: t(["Short film: three walls, one year", "Film pendek: tiga dinding, satu tahun"]),
-								thumbnail: picture("warta-video.svg", [
+								thumbnail: picture("warta-g2.webp", [
 									"Video: three walls, one year",
 									"Video: tiga dinding, satu tahun",
 								]),
@@ -204,7 +204,7 @@ export const laras: PersonaDefinition = {
 						["Food", "Kuliner"],
 						["Long read", "Tulisan panjang"],
 					],
-					cover: "warta-2.svg",
+					cover: "warta-2.webp",
 					metrics: [metric("m-kitchen", ["Readers", "Pembaca"], 86_000, { format: "compact" })],
 					blocks: [
 						text("w-kitchen-t", [
@@ -225,7 +225,7 @@ export const laras: PersonaDefinition = {
 						role: ["Creator and host", "Penggagas dan pembawa acara"],
 						date: "2022–2025",
 						tags: ["Podcast", ["Public services", "Layanan publik"]],
-						cover: "warta-3.svg",
+						cover: "warta-3.webp",
 						metrics: [metric("m-podcast", ["Listeners a month", "Pendengar per bulan"], 45_000, { format: "compact" })],
 						blocks: [
 							text("w-podcast-t", [
@@ -238,7 +238,7 @@ export const laras: PersonaDefinition = {
 								provider: "soundcloud",
 								ref: "laraskusuma/sets/ruang-tunggu",
 								title: t(["Ruang Tunggu, season two", "Ruang Tunggu, musim kedua"]),
-								thumbnail: picture("warta-audio.svg", ["The podcast's cover", "Sampul podcast"], {
+								thumbnail: picture("warta-3.webp", ["The podcast's cover", "Sampul podcast"], {
 									width: 600,
 									height: 600,
 								}),
@@ -258,7 +258,7 @@ export const laras: PersonaDefinition = {
 					role: ["Editor", "Editor"],
 					date: "2023",
 					tags: ["Newsletter", ["Audience", "Pembaca"]],
-					cover: "warta-4.svg",
+					cover: "warta-4.webp",
 					metrics: [metric("m-newsletter", ["Subscribers", "Pelanggan"], 18_000, { format: "compact" })],
 					blocks: [
 						text("w-newsletter-t", [
@@ -278,7 +278,7 @@ export const laras: PersonaDefinition = {
 					role: ["Content strategist", "Ahli strategi konten"],
 					date: "2022",
 					tags: [["Strategy", "Strategi"], "Analytics"],
-					cover: "warta-5.svg",
+					cover: "warta-5.webp",
 					metrics: [
 						metric("m-calendar", ["Reading time", "Waktu baca"], "6:15", {
 							change: { direction: "up", text: ["from 2:40", "dari 2:40"], good: true },
@@ -302,7 +302,7 @@ export const laras: PersonaDefinition = {
 					role: ["Author", "Penulis"],
 					date: "2019",
 					tags: ["SEO", ["Guide", "Panduan"]],
-					cover: "warta-6.svg",
+					cover: "warta-6.webp",
 					metrics: [metric("m-headlines", ["Search traffic", "Trafik pencarian"], 2, { format: "multiplier" })],
 					blocks: [
 						text("w-headlines-t", [

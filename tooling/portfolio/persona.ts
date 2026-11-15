@@ -1,12 +1,11 @@
 /**
  * The fictional people of the portfolio themes (`01-desain.md` sections 5 and 14), in English and Indonesian: Nadia
  * Rahmawati (Lugas, Paper), Anindya Dewi (Prima), Bayu Saputra (Kanvas), Citra Maharani (Mozaik, Brutal), Raka
- * Mahendra (Sintaks) and Laras Kusumawardhani (Warta). Raka's and Laras' portraits (`raka.jpg`, `laras.jpg`) are
- * illustrations, not photos. Their
+ * Mahendra (Sintaks) and Laras Kusumawardhani (Warta). Their
  * careers are the gallery's resume personas (`tooling/templates/personas`), their portfolios follow the Phase 00
  * mockups (`.agents/docs/plans/portfolio/mockups/<theme>.html`). Every name, company, client, testimonial, number and
- * link is made up. Pictures are the mockups' own drawings and photos (`mockups/img`); client logos and the sample PDFs
- * are drawn here.
+ * link is made up. Generated WebP pictures live in `images/`; remaining drawings live in `mockups/img`. Client logos
+ * and the sample PDFs are drawn here.
  *
  * Variants (`02-teknis.md` section 22): `full` (A) fills everything, every block type included; `minimal` (B) has no
  * photo, no work pictures and one Text block per work; `long` (C) has many works, a very long name and long work
@@ -29,6 +28,7 @@ import { nadia } from "./personas/nadia";
 import { raka } from "./personas/raka";
 
 const MOCKUP_IMAGES = new URL("../../.agents/docs/plans/portfolio/mockups/img/", import.meta.url);
+const GENERATED_IMAGES = new URL("./images/", import.meta.url);
 
 export const PERSONA_IDS = ["nadia", "anindya", "bayu", "citra", "raka", "laras"] as const;
 export type PersonaId = (typeof PERSONA_IDS)[number];
@@ -60,7 +60,7 @@ type WorkSource = {
 	role: Text;
 	date: Text;
 	tags?: readonly Text[];
-	/** A mockup drawing. */
+	/** A project cover from the generated assets or mockup drawings. */
 	cover: string;
 	/** The first is the metric the work's card highlights; they form a Metrics block after the first block. */
 	metrics: readonly MetricInput[];
@@ -68,10 +68,10 @@ type WorkSource = {
 	featured?: boolean;
 };
 
-/** What a persona's portfolio is written with: the language, and stored files that point at mockup drawings. */
+/** What a persona's portfolio is written with: the language and its stored media. */
 type PersonaKit = {
 	t: (text: Text) => string;
-	/** A mockup drawing as a stored picture (1200×900 unless `size` says otherwise). */
+	/** A stored picture (1200×900 unless `size` says otherwise). */
 	picture: (file: string, alt?: Text, size?: { width: number; height: number }) => ImageInput;
 	/** A made-up client's wordmark: one of six abstract marks and the name, in `color`. */
 	logo: (name: string, mark: number, color: string) => ImageInput;
@@ -90,7 +90,7 @@ export type PersonaDefinition = {
 	username: string;
 	/** The resume's accent, which the portfolio follows ("Follow resume", the mockup's own colour). */
 	accent: string;
-	/** The photo in `mockups/img`. */
+	/** The portrait filename in `images/` or `mockups/img`. */
 	photo: string;
 	profiles: readonly { network: string; username: string; url: string; icon: string }[];
 	/** Variant B's one-sentence intro. */
@@ -118,9 +118,9 @@ export const THEME_PERSONAS: Record<PortfolioTheme, PersonaId> = {
 
 /** A stored file the persona's portfolio uses. */
 type PersonaFile = {
-	/** The storage key in the portfolio data (pictures `.png`, documents `.pdf`). */
+	/** The storage key in the portfolio data. */
 	key: string;
-	/** The file's name next to a rendered page (`img/<name>`), in its own format: SVG drawings, JPEG photos, PDFs. */
+	/** The file's name next to a rendered page (`img/<name>`). */
 	name: string;
 	kind: "image" | "pdf";
 	/** Pixel size of a picture; zero for a PDF. */
@@ -137,11 +137,15 @@ export type Persona = {
 	resume: ResumeData;
 	portfolio: PortfolioDataInput;
 	files: PersonaFile[];
-	/** The resume's photo, in `mockups/img`. */
+	/** The resume's portrait. */
 	photo: Pick<PersonaFile, "name" | "read">;
 };
 
-const mockup = (name: string) => () => readFile(fileURLToPath(new URL(name, MOCKUP_IMAGES)));
+const mockup = (name: string) => () =>
+	readFile(fileURLToPath(new URL(name, name.endsWith(".webp") ? GENERATED_IMAGES : MOCKUP_IMAGES)));
+
+/** Paper has its own illustrated portrait while sharing Nadia's portfolio content with Lugas. */
+export const paperPortrait = { name: "paper-portrait.webp", read: mockup("paper-portrait.webp") };
 
 const escapeXml = (text: string) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -201,7 +205,7 @@ function createKit(definition: PersonaDefinition, lang: PersonaLang, files: Map<
 	};
 	const picture: PersonaKit["picture"] = (name, alt = "", size = { width: 1200, height: 900 }) => {
 		const file = register({
-			key: `${root}/pictures/portfolio/${name.replace(/\.\w+$/, "")}.png`,
+			key: `${root}/pictures/portfolio/${name.replace(/\.\w+$/, "")}.${name.endsWith(".webp") ? "webp" : "png"}`,
 			name,
 			kind: "image",
 			...size,
