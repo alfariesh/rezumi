@@ -1,5 +1,6 @@
 import type { PortfolioReveal } from "@/features/portfolio/editor/save-problem";
 import type { PortfolioSaveStatus } from "@/features/portfolio/editor/store";
+import type { ReactNode } from "react";
 import { Segment } from "@heroui-pro/react";
 import { Button, buttonVariants, Modal, Spinner, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
@@ -11,7 +12,9 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
+import { openAssistantFrom } from "@/features/assistant/open";
 import { applyPendingDraft } from "@/features/portfolio/ai/apply";
+import { PortfolioAssistant } from "@/features/portfolio/assistant/dock";
 import { ContentPanel } from "@/features/portfolio/editor/content-panel";
 import { usePortfolioSource } from "@/features/portfolio/editor/context";
 import { DesignPanel } from "@/features/portfolio/editor/design-panel";
@@ -21,6 +24,7 @@ import { describeRetry, describeSaveProblem } from "@/features/portfolio/editor/
 import { usePortfolioData, usePortfolioEditorStore } from "@/features/portfolio/editor/store";
 import { usePortfolioEditorUi } from "@/features/portfolio/editor/ui";
 import { usePageMessages } from "@/features/portfolio/editor/use-view";
+import { usePortfolioWebMcpTools } from "@/features/portfolio/editor/webmcp";
 import { portfolioRefusalMessage } from "@/features/portfolio/errors";
 import { mapPictures } from "@/features/portfolio/location/map-pictures";
 import { isPortfolioLive } from "@/features/portfolio/status";
@@ -82,7 +86,9 @@ export function PortfolioShell() {
 	// A saved location that shows a map without its pictures gets them, without Contact having to be opened.
 	useEffect(() => mapPictures.watch(), []);
 	useEffect(() => applyPendingDraft(), []);
+	useOpenAssistantFromUrl();
 	useUnsavedGuard();
+	usePortfolioWebMcpTools();
 
 	// Opens the place a save problem is in: its tab (the panel, on phones), the work, or the section in Content's list.
 	const reveal = ({ tab, section, workId }: PortfolioReveal) => {
@@ -91,6 +97,14 @@ export function PortfolioShell() {
 		const ui = usePortfolioEditorUi.getState();
 		ui.openWork(workId ?? null);
 		if (section && !workId) ui.revealSection(section);
+	};
+
+	// A line on the assistant's changes card opens its place. The assistant stays open beside the panel; on phones,
+	// where one sheet shows at a time, the panel's sheet takes its place, and a tablet's panel drawer opens.
+	const revealChange = (place: PortfolioReveal) => {
+		reveal(place);
+		if (editorLayout.layout === "mobile") useEditorStore.getState().setPanelView(null);
+		else if (editorLayout.layout === "tablet") useEditorStore.setState({ drawerOpen: true });
 	};
 
 	return (
@@ -127,7 +141,8 @@ export function PortfolioShell() {
 				panelLabel={modeLabel(mode)}
 				panel={<ModePanel mode={mode} />}
 				page={<Preview />}
-				mobile={<MobileBody onModeChange={setMode} />}
+				assistant={<PortfolioAssistant onReveal={revealChange} />}
+				mobile={<MobileBody onModeChange={setMode} assistant={<PortfolioAssistant onReveal={revealChange} />} />}
 			>
 				<PortfolioHotkeys />
 			</EditorFrame>
@@ -168,10 +183,10 @@ function Preview({ showDeviceSwitch = true }: { showDeviceSwitch?: boolean }) {
 
 const PORTFOLIO_MODES = ["write", "design", "share"] as const;
 
-type MobileBodyProps = { onModeChange: (mode: PortfolioMode) => void };
+type MobileBodyProps = { onModeChange: (mode: PortfolioMode) => void; assistant: ReactNode };
 
-/** Phones (≤768 px): the live page, with Content · Design · Publish floating over it, each opening a sheet. */
-function MobileBody({ onModeChange }: MobileBodyProps) {
+/** Phones (≤768 px): the live page, with Content · Design · Publish and AI floating over it, each opening a sheet. */
+function MobileBody({ onModeChange, assistant }: MobileBodyProps) {
 	const open = useMobileSheet(PORTFOLIO_MODES);
 
 	return (
@@ -181,6 +196,8 @@ function MobileBody({ onModeChange }: MobileBodyProps) {
 				{ mode: "design", icon: "palette", label: modeLabel("design") },
 				{ mode: "share", icon: "globe-hemisphere-west", label: modeLabel("share") },
 			]}
+			views={["assistant"]}
+			assistant={assistant}
 			open={open}
 			onOpenChange={(next) => {
 				useEditorStore.setState({ mobileView: next ?? "page" });
@@ -516,7 +533,7 @@ function GoneDialog() {
 	);
 }
 
-/** Undo and redo outside fields (fields keep their own), and ⌘S says saving is automatic. */
+/** Undo and redo outside fields (fields keep their own), ⌘J toggles the assistant, and ⌘S says saving is automatic. */
 function PortfolioHotkeys() {
 	useHotkey("Mod+Z", () => {
 		if (!isEditableElementFocused()) usePortfolioEditorStore.getState().undo();
@@ -524,11 +541,35 @@ function PortfolioHotkeys() {
 	useHotkey("Mod+Shift+Z", () => {
 		if (!isEditableElementFocused()) usePortfolioEditorStore.getState().redo();
 	});
+	useHotkey("Mod+J", () => useEditorStore.getState().setAssistantOpen(!useEditorStore.getState().assistantOpen, true));
 	useHotkey("Mod+S", () => {
 		void usePortfolioEditorStore.getState().flush();
 		toast.add({ type: "info", description: t`Your changes are saved automatically.`, id: "auto-save" });
 	});
 	return null;
+}
+
+/**
+ * `?assistant=` (a conversation from Past conversations elsewhere) opens it here, and a link's `?ask=` waits in the
+ * composer for Send; both leave the address once read.
+ */
+function useOpenAssistantFromUrl() {
+	const { assistant, ask } = routeApi.useSearch();
+	const navigate = routeApi.useNavigate();
+
+	useEffect(() => {
+		if (!openAssistantFrom({ assistant, draft: ask })) return;
+		void navigate({
+			to: ".",
+			resetScroll: false,
+			search: (current: ReturnType<typeof routeApi.useSearch>) => ({
+				...current,
+				assistant: undefined,
+				ask: undefined,
+			}),
+			replace: true,
+		});
+	}, [assistant, ask, navigate]);
 }
 
 /** Closing the tab with changes still on their way asks first. */

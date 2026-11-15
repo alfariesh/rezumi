@@ -8,6 +8,7 @@ import type { ScrollMode } from "./message-scroller-logic";
 import {
 	AUTOSCROLL_WINDOW_MS,
 	SCROLL_EPSILON,
+	findAnchors,
 	findLastAnchor,
 	getAnchorScrollTop,
 	getContentExtent,
@@ -252,6 +253,10 @@ export class MessageScrollerController {
 		if (this.openedAtDefaultPosition || this.rowCount === 0) return false;
 		const opened = this.defaultScrollPosition === "last-anchor" ? this.openOnLastTurn() : this.scrollToEnd();
 		if (!opened) return false;
+		// The turns already there when the thread opened count as seen: a row replaced later (a retried reply, a notice
+		// moving into a message) must not send the reader back to the first of them.
+		const { content } = this;
+		if (content) for (const anchor of findAnchors(getRows(content, this.spacer))) this.handledAnchors.add(anchor);
 		this.openedAtDefaultPosition = true;
 		this.pendingScroll.set(false);
 		return true;

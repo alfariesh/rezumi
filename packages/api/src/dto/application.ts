@@ -85,7 +85,9 @@ const applicationSchema = createSelectSchema(schema.application, {
 	appliedAt: z.date(),
 	createdAt: z.date(),
 	updatedAt: z.date(),
-});
+})
+	// The posting identity is server bookkeeping for the browser extension (`applications.savedKeys`), not a field.
+	.omit({ sourceKey: true });
 
 const applicationSummarySchema = applicationSchema.pick({
 	id: true,

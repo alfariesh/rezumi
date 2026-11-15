@@ -75,6 +75,15 @@ const clientMock = {
 		export: vi.fn(),
 		import: vi.fn(),
 	},
+	portfolio: {
+		status: vi.fn(),
+		aiView: vi.fn(),
+		create: vi.fn(),
+		applyEdits: vi.fn(),
+		addImage: vi.fn(),
+		setPublic: vi.fn(),
+		statistics: vi.fn(),
+	},
 	applications: {
 		list: vi.fn(),
 		getById: vi.fn(),
@@ -162,6 +171,128 @@ describe("registerTools", () => {
 			}),
 		);
 		expect(clientMock.resume.patch.mock.calls[0]?.[0].expectedUpdatedAt).toEqual(updatedAt);
+	});
+
+	describe("portfolio", () => {
+		const tool = (name: string) => {
+			const { server, registered } = makeFakeServer();
+			registerTools(server as never, clientMock as never, new Headers(), {
+				user: { id: "owner", username: "dana" },
+			} as never);
+			return registered.find((item) => item.name === name)!;
+		};
+
+		it("reads the portfolio with the edit language, or says how to start one", async () => {
+			const updatedAt = new Date("2026-11-14T08:00:00.000Z");
+			clientMock.portfolio.status.mockResolvedValueOnce({
+				enabled: true,
+				portfolio: { isPublic: true, suspendedAt: null },
+			});
+			clientMock.portfolio.aiView.mockResolvedValueOnce({
+				view: { works: [{ id: "w1", title: "Lumen" }] },
+				updatedAt,
+				published: true,
+				url: "https://example.com/dana",
+				uploads: [],
+				plan: null,
+			});
+			const read = await tool(MCP_TOOL_NAME.getPortfolio).handler({});
+			expect(read.isError).toBeUndefined();
+			expect(read.structuredContent).toMatchObject({
+				exists: true,
+				enabled: true,
+				updatedAt: "2026-11-14T08:00:00.000Z",
+				published: true,
+				url: "https://example.com/dana",
+				view: { works: [{ id: "w1", title: "Lumen" }] },
+				guide: expect.any(String),
+			});
+			expect(TOOL_META[MCP_TOOL_NAME.getPortfolio].outputSchema.safeParse(read.structuredContent).success).toBe(true);
+
+			clientMock.portfolio.status.mockResolvedValueOnce({ enabled: true, portfolio: null });
+			const none = await tool(MCP_TOOL_NAME.getPortfolio).handler({});
+			expect(none.structuredContent).toMatchObject({ exists: false, enabled: true, view: null });
+			expect(none.content[0]!.text).toContain(MCP_TOOL_NAME.createPortfolio);
+			expect(clientMock.portfolio.aiView).toHaveBeenCalledTimes(1);
+
+			clientMock.portfolio.status.mockResolvedValueOnce({ enabled: false, portfolio: null });
+			expect((await tool(MCP_TOOL_NAME.getPortfolio).handler({})).structuredContent).toMatchObject({
+				exists: false,
+				enabled: false,
+			});
+		});
+
+		it("applies edits and returns failures as part of the result, not as an error", async () => {
+			clientMock.portfolio.applyEdits.mockResolvedValueOnce({
+				title: "Add Lumen",
+				applied: [{ index: 0, summary: 'Added work "Lumen"', id: "w9" }],
+				failed: [{ index: 1, error: "No works item has the id nope." }],
+				updatedAt: new Date("2026-11-14T09:00:00.000Z"),
+			});
+			const input = TOOL_META[MCP_TOOL_NAME.editPortfolio].inputSchema.parse({
+				title: "Add Lumen",
+				edits: [
+					{ op: "add", list: "works", item: { title: "Lumen" } },
+					{ op: "remove", list: "works", id: "nope" },
+				],
+				expectedUpdatedAt: "2026-11-14T08:00:00.000Z",
+			});
+			const result = await tool(MCP_TOOL_NAME.editPortfolio).handler(input);
+			expect(clientMock.portfolio.applyEdits).toHaveBeenCalledWith({
+				title: "Add Lumen",
+				edits: input.edits,
+				expectedUpdatedAt: new Date("2026-11-14T08:00:00.000Z"),
+			});
+			expect(result.isError).toBeUndefined();
+			expect(result.content[0]!.text).toContain("#1 failed: No works item has the id nope.");
+			expect(result.content[0]!.text).toContain("(id: w9)");
+			expect(result.structuredContent).toMatchObject({ updatedAt: "2026-11-14T09:00:00.000Z", failed: [{ index: 1 }] });
+			expect(TOOL_META[MCP_TOOL_NAME.editPortfolio].outputSchema.safeParse(result.structuredContent).success).toBe(
+				true,
+			);
+		});
+
+		it("adds a picture from a link or a file", async () => {
+			const image = { key: "uploads/owner/pictures/portfolio/a.webp", width: 10, height: 10, alt: "Cover" };
+			clientMock.portfolio.addImage.mockResolvedValue(image);
+			const add = tool(MCP_TOOL_NAME.addPortfolioImage);
+			const linked = await add.handler({ url: "https://example.com/a.webp", alt: "Cover" });
+			expect(clientMock.portfolio.addImage).toHaveBeenLastCalledWith({
+				url: "https://example.com/a.webp",
+				alt: "Cover",
+			});
+			expect(linked.structuredContent).toMatchObject({ image });
+			const { readMcpFile } = await import("./files");
+			const file = new File([new Uint8Array([1])], "a.webp", { type: "image/webp" });
+			vi.mocked(readMcpFile).mockResolvedValueOnce(file);
+			const upload = { name: "a.webp", contentType: "image/webp", dataBase64: "AQ==" };
+			await add.handler({ file: upload });
+			expect(readMcpFile).toHaveBeenCalledWith(upload, "owner", 10 * 1024 * 1024);
+			expect(clientMock.portfolio.addImage).toHaveBeenLastCalledWith({ file });
+		});
+
+		it("publishes at the account's address", async () => {
+			clientMock.portfolio.setPublic.mockResolvedValueOnce({ isPublic: true });
+			const result = await tool(MCP_TOOL_NAME.publishPortfolio).handler({ published: true });
+			expect(clientMock.portfolio.setPublic).toHaveBeenCalledWith({ isPublic: true });
+			expect(result.structuredContent).toMatchObject({ published: true, url: "https://example.com/dana" });
+		});
+
+		it.each([
+			["NOT_FOUND", 404, `Create one with \`${MCP_TOOL_NAME.createPortfolio}\``],
+			["PORTFOLIO_DISABLED", 403, "Portfolios aren't available for this account yet."],
+			["PORTFOLIO_EMAIL_NOT_VERIFIED", 403, "verify their email address"],
+			["PORTFOLIO_VERSION_CONFLICT", 409, `Call \`${MCP_TOOL_NAME.getPortfolio}\` again`],
+			["PLAN_FEATURE_REQUIRED", 403, "The account's plan doesn't allow this."],
+			["PLAN_LIMIT_REACHED", 403, "The account's plan doesn't allow this."],
+			["PORTFOLIO_FILE_TOO_LARGE", 413, "the server can't resize pictures"],
+			["PORTFOLIO_IMAGE_UNREACHABLE", 400, "Ask the user for the picture as a file instead"],
+		])("hints on %s from a portfolio tool", async (code, status, expected) => {
+			clientMock.portfolio.setPublic.mockRejectedValueOnce(new ORPCError(code, { status }));
+			const result = await tool(MCP_TOOL_NAME.publishPortfolio).handler({ published: true });
+			expect(result.isError).toBe(true);
+			expect(result.content[0]!.text).toContain(expected);
+		});
 	});
 
 	describe("error hints", () => {

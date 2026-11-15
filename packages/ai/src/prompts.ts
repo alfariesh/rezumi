@@ -56,6 +56,7 @@ const websiteParserSystemPrompt = makeParserPrompt({
 });
 
 const assistantSystemPromptTemplate = `${safetySystemPrompt}\n\n${readPrompt("assistant-system.md")}`;
+const portfolioAssistantSystemPromptTemplate = `${safetySystemPrompt}\n\n${readPrompt("portfolio-assistant-system.md")}`;
 export const careerSystemPromptTemplate = `${safetySystemPrompt}\n\n${readPrompt("career-system.md")}`;
 const atsReviewSystemPrompt = readPrompt("ats-review-system.md");
 const atsReviewUserPromptTemplate = readPrompt("ats-review-user.md");
@@ -80,6 +81,7 @@ export {
 	letterDraftSystemPrompt,
 	pdfParserSystemPrompt,
 	pdfParserUserPrompt,
+	portfolioAssistantSystemPromptTemplate,
 	portfolioDraftSystemPrompt,
 	portfolioMetricsSystemPrompt,
 	portfolioRewriteSystemPrompt,

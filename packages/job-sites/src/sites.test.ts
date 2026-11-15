@@ -42,6 +42,12 @@ describe("jobKey and canonicalJobUrl on the four boards", () => {
 			"linkedin:1234567890",
 			"https://www.linkedin.com/jobs/view/1234567890/",
 		],
+		// The search page signed-in members see (checked 2026-11-14).
+		[
+			"https://www.linkedin.com/jobs/search-results/?currentJobId=1234567890&keywords=product%20designer",
+			"linkedin:1234567890",
+			"https://www.linkedin.com/jobs/view/1234567890/",
+		],
 		[
 			"https://www.linkedin.com/jobs/collections/recommended/?currentJobId=1234567890",
 			"linkedin:1234567890",

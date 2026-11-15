@@ -19,6 +19,7 @@ describe("portfolio refusals", () => {
 			PORTFOLIO_FILE_TOO_LARGE: 413,
 			PORTFOLIO_PDF_INVALID: 400,
 			PORTFOLIO_LINK_UNREADABLE: 400,
+			PORTFOLIO_IMAGE_UNREACHABLE: 400,
 			PORTFOLIO_IMAGE_INVALID: 400,
 			PORTFOLIO_FILE_IN_USE: 409,
 			PORTFOLIO_WORKS_LIMIT: 400,
@@ -48,6 +49,7 @@ describe("portfolio refusals", () => {
 			portfolioErrors.fileTooLarge(11 * 1024 * 1024, "remote-picture"),
 			portfolioErrors.pdfInvalid("type"),
 			portfolioErrors.linkUnreadable("timeout"),
+			portfolioErrors.imageUnreachable("unreachable"),
 			...(["type", "animated", "dimensions", "unreadable"] as const).map((reason) =>
 				portfolioErrors.imageInvalid(reason),
 			),

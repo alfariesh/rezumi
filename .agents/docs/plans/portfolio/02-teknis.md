@@ -1086,3 +1086,13 @@ Baris bertanda "Dikoreksi 2026-11-12" ditambahkan di tempatnya tanpa mengubah no
 - **Bagian 29 (Pemakaian file dan pembersihan) dan 32.2 (Job):** pembersihan file tidak berhenti saat `PORTFOLIO_MODE=off` (41.1).
 - **Bagian 36 (Kunci uji Turnstile):** di produksi secret uji tidak lagi melewati cek hostname (pesan ditolak), dan `remoteip` hanya dikirim bila alamat IP sungguhan. Di bagian yang sama status rincian tanpa Analytics Engine kini `not-configured`, bukan `unavailable`.
 - **Bagian 39 (Data):** log moderasi memuat aksi `deleted`, dan `setReportStatus` mengenal konflik (41.1).
+
+## 42. Asisten AI portfolio dan MCP portfolio (Phase 14, 2026-11-14)
+
+Kontrak dan keputusan: `phase-14-asisten-ai.md`; laporan: `laporan-phase-14/`. Aturan yang harus dijaga phase berikutnya:
+
+- **Satu mesin edit** `@rezumi/portfolio/edits` (`applyPortfolioEdits`, `portfolioAiView`, `PORTFOLIO_EDIT_GUIDE`, `portfolioFeaturesNeeded`) adalah satu-satunya jalan AI mengubah portfolio: asisten di aplikasi, MCP `edit_portfolio`, dan WebMCP `portfolio_edit`. Bidang atau daftar baru di skema data harus ikut di mesin (daftar, path `set`, input, view, guide) dan tesnya (replay = data sama; invers = data awal).
+- Asisten di aplikasi **tidak menulis DB**: tiap balasan bekerja di salinan kerja milik run; editor memutar ulang edit yang sudah diresolusikan (`mode: "replay"`) sebagai satu langkah Undo dan menyimpannya lewat autosave biasa. Editor meng-`flush()` sebelum tiap pesan. Kartu `tool-edit_portfolio` memakai status `setEditStatus` (accepted = diterapkan, rejected = dibatalkan, pending = belum diterapkan).
+- MCP `edit_portfolio` menyimpan lewat `portfolioService.applyEdits` dalam satu transaksi dengan jalur tulis yang sama dengan `update` (`prepareData`, `saveVersionedData`, `assertPortfolioPlan`, pemakaian file).
+- Batas keamanan: asisten di aplikasi tidak boleh **menyalakan** detail kontak (telepon, WhatsApp, email, situs, profil, lokasi) — hanya mematikan; blok tautan dari AI tidak di-unfurl otomatis (mencegah server mengambil URL buatan injeksi prompt); gambar dari `addImage` dibuang metadatanya (EXIF/GPS) di tingkat byte; `save_attachment_image` dideduplikasi dan dibatasi per balasan.
+- Kredit: satu balasan = `coach-turn` (3 kredit), sama dengan asisten CV.

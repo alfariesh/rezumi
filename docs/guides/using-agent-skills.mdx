@@ -1,9 +1,9 @@
 ---
 title: "Using agent skills"
-description: "Install Rezumi's eight agent skills in Claude, Codex, Cursor and other AI agents, and learn which skill to use at each step of a job search."
+description: "Install Rezumi's nine agent skills in Claude, Codex, Cursor and other AI agents, and learn which skill to use at each step of a job search."
 ---
 
-Rezumi publishes eight agent skills that teach an AI agent how to help with a job search: building a resume, deciding what belongs on it, writing bullets, tailoring it to a posting, tracking applications, preparing for and practicing interviews, and negotiating an offer. This guide explains what skills are, how to install them, what each one does and which one to use when.
+Rezumi publishes nine agent skills that teach an AI agent how to help with a job search: building a resume, deciding what belongs on it, writing bullets, tailoring it to a posting, building your portfolio website, tracking applications, preparing for and practicing interviews, and negotiating an offer. This guide explains what skills are, how to install them, what each one does and which one to use when.
 
 <CardGroup cols={2}>
   <Card title="resume-builder" icon="file-plus" href="#resume-builder">
@@ -17,6 +17,9 @@ Rezumi publishes eight agent skills that teach an AI agent how to help with a jo
   </Card>
   <Card title="resume-tailor" icon="target" href="#resume-tailor">
     Fits one resume to one job posting.
+  </Card>
+  <Card title="portfolio-builder" icon="layout-template" href="#portfolio-builder">
+    Builds and edits your portfolio website, then publishes it when you say so.
   </Card>
   <Card title="job-application-manager" icon="kanban" href="#job-application-manager">
     Tracks applications, follow-ups and messages.
@@ -50,13 +53,13 @@ Skills work on their own: paste your resume or a job posting and you get text, a
 
 ## Install the skills
 
-The skills live in the [`plugins/rezumi/skills` folder](https://github.com/alfariesh/rezumi/tree/main/plugins/rezumi/skills) of the Rezumi repository, one folder per skill. Install all eight if you can: each skill hands off to the others, and when one is missing it does a lighter version of that work itself and tells you so.
+The skills live in the [`plugins/rezumi/skills` folder](https://github.com/alfariesh/rezumi/tree/main/plugins/rezumi/skills) of the Rezumi repository, one folder per skill. Install all nine if you can: each skill hands off to the others, and when one is missing it does a lighter version of that work itself and tells you so.
 
 <Note>Keep each skill's folder whole. The `references` folder inside it holds detail the skill reads on demand.</Note>
 
 ### As a plugin (Claude Code and Codex)
 
-The Rezumi plugin installs all eight skills and connects the [MCP server](/guides/using-the-mcp-server) in one step. Your agent asks you to sign in to Rezumi the first time a skill needs your data.
+The Rezumi plugin installs all nine skills and connects the [MCP server](/guides/using-the-mcp-server) in one step. Your agent asks you to sign in to Rezumi the first time a skill needs your data.
 
 <Tabs>
   <Tab title="Claude Code">
@@ -95,7 +98,7 @@ npx skills add alfariesh/rezumi
 # Install one skill
 npx skills add alfariesh/rezumi --skill resume-tailor
 
-# Install all eight for one agent, for your user account, without prompts
+# Install all nine for one agent, for your user account, without prompts
 npx skills add alfariesh/rezumi --skill '*' -a claude-code -g -y
 ```
 
@@ -258,6 +261,21 @@ Try:
 - "The job asks for Kubernetes and I've never used it. What should I do?"
 - "Will my resume get past the ATS for this data analyst role?"
 
+### portfolio-builder
+
+Builds and improves your one-page [portfolio](/guides/creating-a-portfolio) at `rezumi.app/<username>` through the MCP server. It creates the portfolio from a resume or your Profile, writes the intro and About, turns your projects into works with text, pictures, metrics, video and links, picks a theme, colours and fonts that suit your field, and hides or reorders sections. Career sections such as Experience stay read from your resume, so it points you there to rewrite them.
+
+- **Use it when** you say "make me a portfolio", "add this project to my portfolio", "write a case study for…", "change my portfolio's theme" or "publish my portfolio".
+- **You get** changes made in your portfolio, each one summarized, with the page address when it's published.
+- **It needs** the MCP server connected (it reads and edits your portfolio there), and the facts behind each work: what you did, the result, and pictures or links.
+- **With MCP** it reads the portfolio with `get_portfolio`, edits it with `edit_portfolio`, stores pictures with `add_portfolio_image` and publishes with `publish_portfolio` only after you confirm.
+
+Try:
+
+- "Make my portfolio from my resume and pick a theme that suits a product designer."
+- "Add my Lumen redesign as a work. Here are three screenshots and the case study notes."
+- "Hide my oldest internship and move Services above Experience."
+
 ### job-application-manager
 
 Runs your job search as a pipeline. It adds jobs from a link or pasted posting, checks for duplicates, scam warning signs and stale postings, and sorts each into a priority tier. It keeps stages and dates accurate, records the exact resume version you sent, sets follow-up dates, and runs a weekly review of what's due, what's stale and how your search is converting. It drafts networking, referral, recruiter, follow-up, thank-you, status-check, expedite and withdrawal messages, and never sends them for you.
@@ -339,6 +357,7 @@ Your agent picks a skill from your words, so similar requests can go to differen
 | "Will my resume get past the ATS?"                                    | resume-tailor           | Without a posting it explains screening and checks parsing; paste one to tailor                |
 | "Write a cover letter for this job."                                  | resume-tailor           | Built from the same requirement table                                                          |
 | "Add this job to my tracker." (with a link)                           | job-application-manager | resume-tailor for that job                                                                     |
+| "Make me a portfolio website from my resume."                         | portfolio-builder       | resume-bullet-writer to dig out results for each work                                          |
 | "I applied today." / "I got rejected." / "I was ghosted."             | job-application-manager |                                                                                                |
 | "What should I follow up on?" / "Do my weekly review."                | job-application-manager |                                                                                                |
 | "Why am I not getting interviews?"                                    | job-application-manager | Its weekly review checks your numbers, then points to the skill that fits, often resume-tailor |

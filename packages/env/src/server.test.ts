@@ -32,6 +32,7 @@ beforeEach(() => {
 		"SUMOPOD_WEBHOOK_SECRET",
 		"BILLING_CHECKOUT_PAUSED",
 		"BILLING_ALERT_EMAIL",
+		"EXTENSION_MIN_VERSION",
 	])
 		vi.stubEnv(name, undefined);
 });
@@ -337,5 +338,18 @@ describe("Sumopod configuration", () => {
 	])("refuses to start with an incomplete setup: %j", async (settings, message) => {
 		for (const [name, value] of Object.entries(settings)) vi.stubEnv(name, value);
 		await expect(import("./server")).rejects.toThrow(message);
+	});
+});
+
+describe("extension minimum version", () => {
+	it.each([undefined, "", "0.2.0"])("accepts an unset or x.y.z version (%s)", async (value) => {
+		vi.stubEnv("EXTENSION_MIN_VERSION", value);
+		expect((await import("./server")).env.EXTENSION_MIN_VERSION).toBe(value || undefined);
+	});
+
+	it.each(["v1", "1.2", "1.2.3-beta"])("rejects %s", async (value) => {
+		vi.stubEnv("EXTENSION_MIN_VERSION", value);
+		vi.spyOn(console, "error").mockImplementation(() => {});
+		await expect(import("./server")).rejects.toThrow("Invalid environment variables");
 	});
 });

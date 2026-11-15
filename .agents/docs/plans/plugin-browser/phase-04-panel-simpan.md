@@ -13,6 +13,7 @@
 3. Setelah tersimpan, tombol berubah menjadi **"Tersimpan · <status>"**, ikon toolbar bercentang, dan status bisa diubah langsung dari panel. Loker yang sama tidak tersimpan dua kali tanpa sengaja.
 4. Beranda panel: lima loker terakhir yang disimpan.
 5. Pengaturan plugin: bahasa, tombol di halaman nyala/mati, keluar.
+6. **Tambahan keputusan 2026-11-14:** gaji dan jenis kerja terisi juga dari data terstruktur halaman; **kontak HR** (email/WhatsApp yang tertulis di deskripsi) diusulkan di form dan hanya tersimpan bila dicentang; **peringatan** bila lowongan serupa dari situs lain sudah tersimpan; **logo perusahaan** ikut tersimpan dan tampil di pelacak lamaran.
 
 **Siapkan:** jawaban aturan turunan #2–#5 (Claude menanyakannya dengan usulan).
 
@@ -32,6 +33,10 @@
 6. **Menu klik kanan** (teks terpilih → pratinjau dengan cara umum), **pintasan** `commands`, **pengaturan** 3.8 (bahasa, tombol di halaman, keluar).
 7. **Aksesibilitas:** urutan fokus, label, `aria-live` untuk hasil simpan, kontras AA terang/gelap.
 8. **Teks:** Lingui, terjemahan Indonesia lengkap untuk semua layar.
+9. **Gaji dan jenis kerja dari JSON-LD** (`02-teknis.md` §19.1): `toPagePosting` di `@rezumi/job-sites/json-ld` membaca `baseSalary` dan `employmentType`; `readCapture` dan panel memakainya setelah kolom adaptor. Perilaku `parsePosting` di web ikut membaik; tes lama tetap lulus.
+10. **Usulan kontak** (§19.2): ambil email dan nomor telepon/WhatsApp dari teks deskripsi (bukan profil orang), tampilkan sebagai kotak centang di form simpan (bawaan tidak dicentang), simpan ke `contacts` lamaran hanya yang dicentang.
+11. **Peringatan lowongan serupa** (§19.3): sebelum menyimpan, cari lamaran milik pengguna dengan posisi + perusahaan yang cocok (dinormalkan) tetapi kunci loker berbeda; panel menampilkan "Kamu sudah menyimpan lowongan serupa dari <situs>" dengan tautan, tanpa memblokir simpan.
+12. **Logo perusahaan** (§19.4): adaptor/JSON-LD memberi alamat logo; server mengunduhnya lewat pengambil web yang aman (batas ukuran dan jenis gambar), menyimpannya di penyimpanan Rezumi, dan web menampilkannya di daftar dan detail lamaran (cadangan: inisial). Kolom baru + migrasi; mobile tetap terkompilasi.
 
 ### Aturan yang wajib dijaga
 
@@ -41,7 +46,8 @@
 
 ### Tes dan verifikasi
 
-- Unit: keadaan panel per tab, aturan duplikat, pemetaan galat API → layar 3.7.
+- Unit: keadaan panel per tab, aturan duplikat, pemetaan galat API → layar 3.7, pembaca kontak (email, nomor Indonesia `08…`/`+62…`/`wa.me`, tanpa salah tangkap angka gaji), pencocokan lowongan serupa, `toPagePosting` gaji/jenis.
+- API (DB nyata): lowongan serupa hanya milik pengguna; logo: unduh, batas ukuran/jenis, alamat privat ditolak.
 - Playwright terhadap server lokal: hubungkan (akun uji fiktif) → buka fixture tiap situs → klik tombol di halaman → panel pratinjau → ubah posisi → Simpan → chip "Tersimpan" → lamaran ada di API dengan `postingSource.method = "extension"` dan `sourceUrl` kanonik; buka lagi → tersimpan; ubah status dari panel; galat jaringan menyimpan isian; menu klik kanan dan pintasan.
 - Screenshot: panel 360/420 px terang/gelap en/id untuk layar 3.1–3.8, tombol dan chip di fixtures empat situs.
 - Pemilik mencoba di Chrome-nya sendiri dengan plugin uji ke server lokal (opsional di sesi ini, wajib di Phase 07).
@@ -50,3 +56,4 @@
 
 - Alur simpan, penanda tersimpan, ubah status, catatan, menu klik kanan, pintasan, dan pengaturan berjalan di Chrome dan Edge terhadap server lokal.
 - Aturan turunan #2–#5 tercatat.
+- Tambahan 2026-11-14 berjalan: gaji/jenis dari JSON-LD, usulan kontak (tersimpan hanya yang dicentang), peringatan lowongan serupa, logo tampil di pelacak web.

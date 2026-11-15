@@ -1,4 +1,6 @@
+import type { Account, AuthState } from "./storage";
 import { z } from "zod";
+import { capturedFieldsSchema, capturedPostingSchema } from "@rezumi/job-sites/capture";
 import { JOB_SITES } from "@rezumi/job-sites/sites";
 
 /**
@@ -14,25 +16,59 @@ const pageMessageSchema = z.object({
 	key: z.string().min(1).max(500).nullable(),
 });
 
-/** Side panel → service worker: whether the extension is connected to a Rezumi account. */
+/** Side panel → service worker: whether the extension is connected to a Rezumi account, and which. */
 const statusMessageSchema = z.object({ type: z.literal("status") });
+/** Side panel → service worker: sign in (opens Rezumi's sign-in window). */
+const connectMessageSchema = z.object({ type: z.literal("connect") });
+/** Side panel → service worker: sign out, revoking the refresh token. */
+const disconnectMessageSchema = z.object({ type: z.literal("disconnect") });
+/** Side panel → service worker: an access token for an API call; `force` after the server answered 401 to it. */
+const tokenMessageSchema = z.object({ type: z.literal("token"), force: z.boolean().optional() });
+/** Side panel → service worker: the server refused the connection even with a fresh token. */
+const expireMessageSchema = z.object({ type: z.literal("expire") });
 
 export const contentMessageSchema = z.discriminatedUnion("type", [pageMessageSchema]);
-export const panelMessageSchema = z.discriminatedUnion("type", [statusMessageSchema]);
+export const panelMessageSchema = z.discriminatedUnion("type", [
+	statusMessageSchema,
+	connectMessageSchema,
+	disconnectMessageSchema,
+	tokenMessageSchema,
+	expireMessageSchema,
+]);
 
 export type PageMessage = z.infer<typeof pageMessageSchema>;
+
+/** Side panel → the tab's content script: read the open page now (the person opened the panel or asked). */
+export type ReadRequest = { type: "read" };
+
+/**
+ * The content script's answer to `read` (src/content/read.ts `PageReading`). The page is untrusted, so the panel
+ * checks it against the same bounds the server applies before showing or sending any of it.
+ */
+export const pageReadingSchema = capturedPostingSchema.extend({
+	key: z.string().min(1).max(500).nullable(),
+	textSource: z.enum(["site", "page"]),
+	fields: capturedFieldsSchema,
+});
 export type ContentMessage = z.infer<typeof contentMessageSchema>;
 export type PanelMessage = z.infer<typeof panelMessageSchema>;
 
 type StatusResult = {
-	/** Phase 02 connects accounts; until then the panel always shows "Connect to Rezumi". */
-	connected: boolean;
+	state: AuthState;
+	/** Who is connected, from the sign-in (empty strings when the server sent no name or email). */
+	account: Account | null;
 	version: string;
 };
 
 export type MessageResults = {
 	page: { ok: true };
 	status: StatusResult;
+	/** `code` says why connecting failed: `cancelled` (window closed), `network`, or an OAuth error code. */
+	connect: { ok: true; account: Account } | { ok: false; code: string };
+	disconnect: { ok: true };
+	/** Null when not connected (or no longer); `offline` when a needed refresh could not reach the server. */
+	token: { accessToken: string | null; offline?: boolean };
+	expire: { ok: true };
 };
 
 type MessageError = "invalid-sender" | "invalid-message" | "failed";

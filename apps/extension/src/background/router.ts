@@ -29,8 +29,10 @@ type RouterOptions = {
 export function createMessageRouter({ extensionId, extensionOrigin, handlers }: RouterOptions) {
 	return async (message: unknown, sender: Sender): Promise<MessageResponse<unknown>> => {
 		if (sender.id !== extensionId) return { ok: false, error: "invalid-sender" };
-		const fromTab = sender.tab?.id !== undefined;
-		const fromExtensionPage = !sender.tab && typeof sender.url === "string" && sender.url.startsWith(extensionOrigin);
+		// An extension page (the side panel) is known by its address, also when it is open in a tab; anything else in a
+		// tab is a content script.
+		const fromExtensionPage = typeof sender.url === "string" && sender.url.startsWith(extensionOrigin);
+		const fromTab = !fromExtensionPage && sender.tab?.id !== undefined;
 
 		try {
 			if (fromTab) {
@@ -42,7 +44,9 @@ export function createMessageRouter({ extensionId, extensionOrigin, handlers }: 
 			if (fromExtensionPage) {
 				const parsed = panelMessageSchema.safeParse(message);
 				if (!parsed.success) return { ok: false, error: "invalid-message" };
-				return { ok: true, data: await handlers[parsed.data.type](parsed.data) };
+				// Each schema member reaches the handler of its own type; TypeScript cannot narrow the lookup by itself.
+				const handle = handlers[parsed.data.type] as (message: PanelMessage) => Promise<unknown>;
+				return { ok: true, data: await handle(parsed.data) };
 			}
 		} catch (error) {
 			console.error("Rezumi extension message failed", error);

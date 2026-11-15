@@ -25,8 +25,12 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      # Direct (non-pooled) PostgreSQL connection string, used only to apply migrations.
+      # Direct (non-pooled) PostgreSQL connection string, used only to apply migrations. When DB_SSH_HOST is set,
+      # it points at the local end of the SSH tunnel opened below (127.0.0.1:15432, sslmode=disable).
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      # Optional SSH tunnel to a database that only listens on localhost (the VPS behind Hyperdrive's Workers VPC).
+      # DB_SSH_KEY's user may only forward to 127.0.0.1:5432; DB_SSH_KNOWN_HOSTS pins the server's host key.
+      DB_SSH_HOST: ${{ secrets.DB_SSH_HOST }}
 
     steps:
       - name: Check out source
@@ -45,6 +49,14 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Open database SSH tunnel
+        if: ${{ env.DATABASE_URL != '' && env.DB_SSH_HOST != '' }}
+        uses: ./.github/actions/db-tunnel
+        with:
+          host: ${{ env.DB_SSH_HOST }}
+          key: ${{ secrets.DB_SSH_KEY }}
+          known-hosts: ${{ secrets.DB_SSH_KNOWN_HOSTS }}
 
       - name: Apply database migrations
         if: ${{ env.DATABASE_URL != '' }}

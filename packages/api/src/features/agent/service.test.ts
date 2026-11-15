@@ -210,11 +210,16 @@ const documentMock = {
 	documentView: vi.fn(),
 	resolveEdits: vi.fn(),
 };
+const requireOwnPortfolioMock = vi.fn();
 vi.mock("./document", async (importOriginal) => ({
 	// documentOf stays real: it only reads the thread's columns.
 	documentOf: (await importOriginal<typeof import("./document")>()).documentOf,
+	PORTFOLIO_DOCUMENT_NAME: "Portfolio",
+	requireOwnPortfolio: requireOwnPortfolioMock,
 	...documentMock,
 }));
+const portfolioServiceMock = { aiState: vi.fn(), addImage: vi.fn() };
+vi.mock("../portfolio/service", () => ({ portfolioService: portfolioServiceMock }));
 vi.mock("../storage/service", () => ({
 	getStorageService: vi.fn(() => storageServiceMock),
 	inferContentType: vi.fn(),
@@ -231,6 +236,7 @@ vi.mock("./streams", () => ({
 }));
 vi.mock("./tools", () => ({
 	buildAgentInstructions: vi.fn(),
+	buildPortfolioAgentInstructions: vi.fn(() => "portfolio instructions"),
 	buildAgentTools: vi.fn(() => ({})),
 }));
 vi.mock("@rezumi/schema/resume/default", () => ({
@@ -1194,6 +1200,191 @@ describe("agentService.messages.send", () => {
 		});
 		expect(claimActiveAgentRunMock).not.toHaveBeenCalled();
 		expect(dbMock.insert).not.toHaveBeenCalled();
+	});
+});
+
+describe("portfolio conversations", () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+		requireOwnPortfolioMock.mockReset();
+		portfolioServiceMock.aiState.mockReset();
+		portfolioServiceMock.addImage.mockReset();
+	});
+
+	const portfolioThread = (overrides: Record<string, unknown> = {}) =>
+		buildActiveThread({ workingResumeId: null, portfolioId: "portfolio-1", ...overrides });
+
+	it("starts only on the caller's own portfolio, while portfolios are open to the account", async () => {
+		const { agentService } = await import("./service");
+		aiProvidersServiceMock.getDefaultRunnable.mockResolvedValue({ id: "provider-1", label: "My model" });
+		const values = vi.fn((_row: Record<string, unknown>) => ({
+			returning: vi.fn(async () => [portfolioThread({ title: "New conversation" })]),
+		}));
+		dbMock.insert.mockReturnValue({ values });
+		requireOwnPortfolioMock.mockResolvedValueOnce({ id: "portfolio-1", updatedAt: new Date() });
+
+		const summary = await agentService.threads.start({ userId: "user-1", portfolioId: "portfolio-1" });
+		expect(requireOwnPortfolioMock).toHaveBeenCalledWith("user-1", "portfolio-1");
+		expect(values.mock.calls[0]?.[0]).toMatchObject({ portfolioId: "portfolio-1", scope: "document" });
+		expect(values.mock.calls[0]?.[0]).not.toHaveProperty("workingResumeId");
+		expect(values.mock.calls[0]?.[0]).not.toHaveProperty("coverLetterId");
+		expect(summary).toMatchObject({
+			portfolioId: "portfolio-1",
+			portfolioName: "Portfolio",
+			resumeName: null,
+			coverLetterName: null,
+			providerLabel: "My model",
+		});
+		expect(resumeServiceMock.getById).not.toHaveBeenCalled();
+
+		for (const code of ["PORTFOLIO_DISABLED", "NOT_FOUND"]) {
+			requireOwnPortfolioMock.mockRejectedValueOnce(Object.assign(new Error(code), { code }));
+			await expect(agentService.threads.start({ userId: "user-1", portfolioId: "portfolio-2" })).rejects.toMatchObject({
+				code,
+			});
+		}
+		expect(dbMock.insert).toHaveBeenCalledTimes(1);
+	});
+
+	it("opens a portfolio conversation with its document, and read-only once the portfolio isn't there", async () => {
+		const { agentService } = await import("./service");
+		const open = async () => {
+			dbMock.select
+				.mockImplementationOnce(() => selectLimitResult([portfolioThread()]))
+				.mockImplementationOnce(() => selectOrderByResult([]))
+				.mockImplementationOnce(() => selectOrderByResult([]));
+			return agentService.threads.get({ id: "thread-1", userId: "user-1" });
+		};
+		requireOwnPortfolioMock.mockResolvedValueOnce({ id: "portfolio-1", updatedAt: new Date() });
+		await expect(open()).resolves.toMatchObject({
+			thread: { portfolioId: "portfolio-1", portfolioName: "Portfolio" },
+			document: { kind: "portfolio", id: "portfolio-1", name: "Portfolio", locked: false },
+			isReadOnly: false,
+		});
+		requireOwnPortfolioMock.mockRejectedValueOnce(Object.assign(new Error("off"), { code: "PORTFOLIO_DISABLED" }));
+		await expect(open()).resolves.toMatchObject({ document: null, isReadOnly: true });
+	});
+
+	it("gives a reply the portfolio tools, one working copy, and the ids of attached pictures", async () => {
+		const persistedMessage = {
+			id: "message-1",
+			userId: "user-1",
+			threadId: "thread-1",
+			role: "user",
+			status: "completed",
+			sequence: 1,
+			uiMessage: { id: "ui-message-1", role: "user", parts: [{ type: "text", text: "Use the photo as the cover" }] },
+		};
+		const earlier = {
+			...persistedMessage,
+			id: "message-0",
+			sequence: 0,
+			uiMessage: {
+				id: "ui-message-0",
+				role: "user",
+				parts: [
+					{ type: "text", text: "Here is a photo" },
+					{ type: "file", url: "agent-attachment:att-1", mediaType: "image/webp", filename: "lumen.webp" },
+				],
+			},
+		};
+		dbMock.insert.mockReturnValue({ values: vi.fn(() => ({ returning: vi.fn(async () => [persistedMessage]) })) });
+		const set = vi.fn((_values: Record<string, unknown>) => ({ where: vi.fn(async () => undefined) }));
+		dbMock.update.mockReturnValue({ set });
+		claimActiveAgentRunMock.mockResolvedValue(true);
+		aiProvidersServiceMock.getRunnableById.mockResolvedValue({
+			id: "provider-1",
+			provider: "openai-compatible",
+			model: "stub",
+			apiKey: "secret",
+			baseURL: "http://127.0.0.1:1/v1",
+		});
+		documentMock.loadDocument.mockResolvedValue({
+			kind: "portfolio",
+			name: "Portfolio",
+			locked: false,
+			applicationId: null,
+		});
+		const [{ convertToModelMessages, ToolLoopAgent }, { agentStreamLifecycle }, tools, { agentService }] =
+			await Promise.all([import("ai"), import("./streams"), import("./tools"), import("./service")]);
+		vi.mocked(convertToModelMessages).mockResolvedValue([{ role: "user", content: [{ type: "text", text: "Hi" }] }]);
+		class MockToolLoopAgent {
+			stream = vi.fn(async () => ({ toUIMessageStream: vi.fn(() => new ReadableStream()) }));
+		}
+		vi.mocked(ToolLoopAgent).mockImplementation(MockToolLoopAgent as never);
+		vi.mocked(agentStreamLifecycle.create).mockResolvedValue(new ReadableStream());
+		vi.mocked(streamToEventIterator).mockReturnValue("iterator" as never);
+		dbMock.select
+			.mockImplementationOnce(() => selectLimitResult([portfolioThread()]))
+			.mockImplementationOnce(() => selectWhereResult([{ total: 2 }]))
+			.mockImplementationOnce(() => selectOrderByResult([earlier, persistedMessage]));
+
+		await agentService.messages.send({
+			threadId: "thread-1",
+			userId: "user-1",
+			message: persistedMessage.uiMessage as UIMessage,
+		});
+
+		expect(documentMock.loadDocument).toHaveBeenCalledWith("user-1", { kind: "portfolio", id: "portfolio-1" });
+		expect(documentMock.findPosting).not.toHaveBeenCalled();
+		const config = vi.mocked(tools.buildAgentTools).mock.calls.at(-1)?.[0];
+		expect(config).toMatchObject({ document: "portfolio" });
+		expect(tools.buildPortfolioAgentInstructions).toHaveBeenLastCalledWith(expect.objectContaining({ shared: true }));
+		expect(tools.buildAgentInstructions).not.toHaveBeenCalled();
+		expect(vi.mocked(ToolLoopAgent).mock.calls.at(-1)?.[0]).toMatchObject({ instructions: "portfolio instructions" });
+		// An attached picture reaches the model with its id, so save_attachment_image can name it a turn later.
+		expect(JSON.stringify(vi.mocked(convertToModelMessages).mock.calls.at(-1)?.[0])).toContain(
+			"(Attached lumen.webp, image/webp, attachmentId: att-1.)",
+		);
+
+		// The working copy is loaded once for the whole reply; edits change it, never the saved portfolio.
+		const { createDefaultPortfolioData } = await import("@rezumi/schema/portfolio/default");
+		portfolioServiceMock.aiState.mockResolvedValue({
+			data: createDefaultPortfolioData(),
+			source: { from: "profile", name: null, resume: null },
+			status: { published: false, url: "https://rezumi.test/dana" },
+			uploads: [],
+			plan: null,
+			updatedAt: new Date("2026-11-14T08:00:00.000Z"),
+		});
+		const handlers = config?.handlers;
+		if (!handlers?.editPortfolio || !handlers.saveAttachmentImage) throw new Error("Missing portfolio handlers");
+		await handlers.readDocument();
+		const output = await handlers.editPortfolio({
+			title: "Add Lumen",
+			edits: [{ op: "add", list: "works", item: { title: "Lumen redesign" } }],
+		});
+		expect(output.edits).toEqual([expect.objectContaining({ status: "pending", summary: expect.any(String) })]);
+		expect(JSON.stringify(await handlers.readDocument())).toContain("Lumen redesign");
+		expect(portfolioServiceMock.aiState).toHaveBeenCalledTimes(1);
+		expect(set).toHaveBeenCalledWith(expect.objectContaining({ editsProposed: expect.anything() }));
+
+		// Attachments are read from this conversation only, once sent.
+		dbMock.select.mockImplementationOnce(() =>
+			selectLimitResult([buildAttachment({ id: "att-1", messageId: null, mediaType: "image/webp" })]),
+		);
+		await expect(handlers.saveAttachmentImage({ attachmentId: "att-1" })).rejects.toThrow("No attachment");
+		expect(portfolioServiceMock.addImage).not.toHaveBeenCalled();
+		dbMock.select.mockImplementationOnce(() =>
+			selectLimitResult([
+				buildAttachment({ id: "att-1", messageId: "message-0", mediaType: "image/webp", filename: "lumen.webp" }),
+			]),
+		);
+		storageServiceMock.read.mockResolvedValueOnce({ data: new Uint8Array([1, 2, 3]) });
+		portfolioServiceMock.addImage.mockResolvedValueOnce({
+			key: "uploads/user-1/pictures/portfolio/new.webp",
+			width: 800,
+			height: 600,
+			alt: "Lumen",
+		});
+		await expect(handlers.saveAttachmentImage({ attachmentId: "att-1", alt: "Lumen" })).resolves.toEqual({
+			image: { key: "uploads/user-1/pictures/portfolio/new.webp", width: 800, height: 600, alt: "Lumen" },
+		});
+		expect(portfolioServiceMock.addImage).toHaveBeenCalledWith(
+			"user-1",
+			{ source: { file: expect.any(File) }, alt: "Lumen" },
+			expect.any(AbortSignal),
+		);
 	});
 });
 

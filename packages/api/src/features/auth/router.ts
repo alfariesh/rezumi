@@ -239,6 +239,7 @@ export const authRouter = {
 				coverLetters: z.array(coverLetterSchema),
 				applications: z.array(applicationDto.getById.output),
 				aiContentReports: z.array(createSelectSchema(schema.aiContentReport)),
+				extensionCaptureReports: z.array(createSelectSchema(schema.extensionCaptureReport)),
 				career: z.object({
 					profile: careerProfileDataSchema,
 					facts: z.array(careerFactSchema.omit({ usedBy: true, company: true })),

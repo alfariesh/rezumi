@@ -1,0 +1,75 @@
+name: Monitor production
+run-name: Monitor production
+
+# A failed run is the alert: GitHub emails the account that last changed this schedule. Checks that the app, Hyperdrive,
+# the Cloudflare Tunnel and the database VPS answer, and that the nightly database backup ran and reached R2.
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: monitor-production
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  HEALTH_URL: https://rezumi.app/api/health
+
+jobs:
+  check:
+    name: Check health and backups
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: .github/actions
+
+      # Three attempts a minute apart, so one dropped request does not raise an alert.
+      - name: App and database answer
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            body=$(curl -fsS -m 20 "$HEALTH_URL" || true)
+            if jq -e '.status == "healthy" and .database.status == "healthy"' >/dev/null 2>&1 <<<"$body"; then
+              echo "healthy: $(jq -c '{database, storage: .storage.status}' <<<"$body")"
+              exit 0
+            fi
+            echo "::warning::attempt $attempt unhealthy: ${body:-no response}"
+            [ "$attempt" -lt 3 ] && sleep 60
+          done
+          echo "::error::$HEALTH_URL is not healthy"
+          exit 1
+
+      - name: Open database SSH tunnel
+        uses: ./.github/actions/db-tunnel
+        with:
+          host: ${{ secrets.DB_SSH_HOST }}
+          key: ${{ secrets.DB_SSH_KEY }}
+          known-hosts: ${{ secrets.DB_SSH_KNOWN_HOSTS }}
+
+      # The backup script records each finished run in database rezumi_ops; the monitor role can only read that table.
+      - name: Nightly backup ran and reached R2
+        shell: bash
+        env:
+          MONITOR_DATABASE_URL: ${{ secrets.MONITOR_DATABASE_URL }}
+        run: |
+          row=$(psql "$MONITOR_DATABASE_URL" -v ON_ERROR_STOP=1 -At -F ' ' -c \
+            "SELECT file, round(extract(epoch FROM now() - finished_at) / 3600, 1), uploaded_r2 FROM backup_run ORDER BY finished_at DESC LIMIT 1")
+          read -r file age_hours uploaded <<<"$row"
+          echo "latest backup: ${file:-none}, ${age_hours:-?} h ago, uploaded to R2: ${uploaded:-?}"
+          if [ -z "$file" ] || awk -v a="$age_hours" 'BEGIN { exit !(a > 26) }'; then
+            echo "::error::No database backup in the last 26 hours"
+            exit 1
+          fi
+          if [ "$uploaded" != "t" ]; then
+            echo "::error::The latest database backup was not uploaded to R2"
+            exit 1
+          fi

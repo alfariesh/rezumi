@@ -11,7 +11,10 @@ import { useEditorStore } from "@/features/resume/editor/store";
 export const loadAssistantPanel = () => import("./assistant-panel");
 const AssistantPanel = lazy(() => loadAssistantPanel().then((module) => ({ default: module.AssistantPanel })));
 
-function Panel({ document }: { document: AssistantDocument }) {
+type AssistantDockProps = { document: AssistantDocument };
+
+/** The panel for one document, loading on first open. The portfolio editor mounts it with its own document. */
+export function AssistantDock({ document }: AssistantDockProps) {
 	return (
 		<Suspense
 			fallback={
@@ -36,11 +39,11 @@ function closeAssistant() {
 
 export function ResumeAssistant() {
 	const document = useResumeAssistantDocument();
-	return <Panel document={document} />;
+	return <AssistantDock document={document} />;
 }
 
 export function LetterAssistant() {
 	const document = useLetterAssistantDocument();
 	if (!document) return null;
-	return <Panel document={document} />;
+	return <AssistantDock document={document} />;
 }

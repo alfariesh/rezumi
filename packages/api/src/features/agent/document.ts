@@ -16,18 +16,39 @@ import {
 } from "@rezumi/resume/proposals";
 import { generateId } from "@rezumi/utils/string";
 import { coverLetterService } from "../cover-letters/service";
+import { requireEnabled } from "../portfolio/access";
+import { portfolioErrors } from "../portfolio/errors";
 import { resumeService } from "../resume/service";
 
-/** The one document a conversation is about. */
-export type AssistantDocument = { kind: "resume" | "letter"; id: string };
+/** The one document a conversation is about: a resume, a cover letter, or the account's portfolio. */
+export type AssistantDocument = { kind: "resume" | "letter" | "portfolio"; id: string };
 
 export const documentOf = (thread: {
 	workingResumeId: string | null;
 	coverLetterId: string | null;
+	portfolioId?: string | null | undefined;
 }): AssistantDocument | null => {
+	if (thread.portfolioId) return { kind: "portfolio", id: thread.portfolioId };
 	if (thread.coverLetterId) return { kind: "letter", id: thread.coverLetterId };
 	return thread.workingResumeId ? { kind: "resume", id: thread.workingResumeId } : null;
 };
+
+/** What a portfolio conversation shows as its document's name; the app shows its own, translated. */
+export const PORTFOLIO_DOCUMENT_NAME = "Portfolio";
+
+/**
+ * The account's portfolio, when it is this one and portfolios are open to the account: `PORTFOLIO_DISABLED` while
+ * they aren't (`PORTFOLIO_MODE`), `NOT_FOUND` for another account's portfolio or one that's gone.
+ */
+export async function requireOwnPortfolio(userId: string, portfolioId: string) {
+	await requireEnabled(userId);
+	const [portfolio] = await db
+		.select({ id: schema.portfolio.id, updatedAt: schema.portfolio.updatedAt })
+		.from(schema.portfolio)
+		.where(and(eq(schema.portfolio.id, portfolioId), eq(schema.portfolio.userId, userId)));
+	if (!portfolio) throw portfolioErrors.notFound();
+	return portfolio;
+}
 
 // The model reads passage locations in English; the editor shows its own, translated.
 const LABELS = {
@@ -68,6 +89,21 @@ type LoadedDocument = {
 };
 
 export async function loadDocument(userId: string, document: AssistantDocument): Promise<LoadedDocument> {
+	// The portfolio is read and edited through its own tools (`./portfolio.ts`); this only confirms it's there.
+	if (document.kind === "portfolio") {
+		const portfolio = await requireOwnPortfolio(userId, document.id);
+		return {
+			kind: "portfolio",
+			name: PORTFOLIO_DOCUMENT_NAME,
+			updatedAt: portfolio.updatedAt,
+			locked: false,
+			applicationId: null,
+			passages: [],
+			read: () => undefined,
+			view: {},
+		};
+	}
+
 	if (document.kind === "resume") {
 		const resume = await resumeService.getById({ id: document.id, userId });
 		const passages = collectPassages(resume.data, {

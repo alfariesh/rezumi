@@ -11,8 +11,17 @@ import { resumeDto } from "@rezumi/api/dto/resume";
 import { aiSourceInput } from "@rezumi/api/features/billing/ai-source";
 import { applicationStatusSchema, interviewDetailsSchema, interviewKindSchema } from "@rezumi/schema/applications/data";
 import { coverLetterDocumentSchema } from "@rezumi/schema/cover-letter/data";
-import { READ_IDEMPOTENT, WRITE_DESTRUCTIVE_EXTERNAL, WRITE_NON_IDEMPOTENT, WRITE_DESTRUCTIVE } from "./annotations";
-import { toWireObjectSchema, toWireSchema } from "./contracts";
+import { portfolioEditsInputSchema } from "@rezumi/schema/portfolio/edits";
+import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
+import { portfolioThemeSchema } from "@rezumi/schema/portfolio/themes";
+import {
+	READ_IDEMPOTENT,
+	WRITE_DESTRUCTIVE_EXTERNAL,
+	WRITE_EXTERNAL,
+	WRITE_NON_IDEMPOTENT,
+	WRITE_DESTRUCTIVE,
+} from "./annotations";
+import { fileInputSchema, toWireObjectSchema, toWireSchema } from "./contracts";
 import { MCP_TOOL_NAME as T } from "./mcp-tool-names";
 
 // Contracts remain derived from the allowlisted API procedures in parity.ts.
@@ -26,7 +35,7 @@ export const PARITY_TOOL_DESCRIPTIONS: Record<string, string> = {
 	"agent.threads.get":
 		"Read an owned conversation, messages and attachments. If its active run is stale, clear the dead run claim and settle its streaming message state before returning. Does not start generation or call an AI provider.",
 	"agent.threads.start":
-		"Start a document, application, or general career conversation using a tested saved AI provider. For scope=document, choose exactly one resumeId or coverLetterId. For scope=application, provide applicationId. For scope=career, omit document and application IDs.",
+		"Start a document, application, or general career conversation using a tested saved AI provider. For scope=document, choose exactly one resumeId, coverLetterId or portfolioId (the account's portfolio, when portfolios are open to it). For scope=application, provide applicationId. For scope=career, omit document and application IDs.",
 	"career.profile":
 		"Read the user's career preferences: target roles, locations, what matters, minimum base salary, office days, notice period, timezone and memory mode (ask, auto or off).",
 	"career.saveProfile":
@@ -137,6 +146,34 @@ function wireInput<T extends z.ZodObject>(schema: T): T {
 }
 
 const messageOutput = z.object({ message: z.string() });
+
+// Portfolios (Phase 14). The account has at most one, so these tools take no portfolio id.
+const portfolioImageOutput = z.object({
+	key: z.string().describe("Storage key; place it with an image ref `{ key, alt }` in `edit_portfolio`."),
+	width: z.number(),
+	height: z.number(),
+	alt: z.string(),
+	thumbKey: z.string().optional(),
+});
+const MB = 1024 * 1024;
+// Discovery names the statistics' parts; the counts inside (per click kind, visit source, country, device and
+// referrer) are plain numbers by key, as the app's statistics page reads them.
+const portfolioStatisticsOutput = z
+	.looseObject({
+		range: z.object({ days: z.number(), from: z.string(), to: z.string() }),
+		days: z
+			.array(z.looseObject({ date: z.string(), views: z.number() }))
+			.describe("Every day of the range, oldest first."),
+		totals: z.looseObject({ views: z.number(), messages: z.number() }),
+		sources: z.record(z.string(), z.number()).describe("Visits by where they came from."),
+		works: z
+			.array(z.object({ id: z.string(), title: z.string(), opens: z.number() }))
+			.describe("Works opened, most opened first."),
+		details: z
+			.looseObject({ state: z.string() })
+			.describe("`ready` with countries, devices and referrers; otherwise locked by the plan or unavailable."),
+	})
+	.nullable();
 const idOutput = z.object({ id: z.string() });
 
 const pagination = {
@@ -759,5 +796,162 @@ export const TOOL_META = withAnnotationTitles({
 			z.strictObject({ id: applicationIdSchema, kind: z.enum(["cover-letter", "follow-up"]), ...aiSourceInput }),
 		),
 		annotations: { ...WRITE_NON_IDEMPOTENT, openWorldHint: true },
+	},
+	[T.getPortfolio]: {
+		title: "Read Portfolio",
+		description: [
+			"Read the account's portfolio (its personal web page) as an AI edits it: page status and address, theme and design,",
+			"every item with its id (works with their blocks, services, testimonials, clients, own sections), the career",
+			"sections read live from the CV or Profile (read-only; their items can be hidden), the pictures it can place,",
+			"its limits and what the plan locks. Contact details are never included.",
+			`\`guide\` is the edit language \`${T.editPortfolio}\` takes (also the \`portfolio://_meta/edits\` resource).`,
+			`When \`exists\` is false, create it with \`${T.createPortfolio}\` first.`,
+		].join("\n"),
+		outputSchema: z.object({
+			exists: z.boolean().describe("Whether the account has a portfolio."),
+			enabled: z.boolean().describe("Whether portfolios are open to this account at all."),
+			updatedAt: z
+				.string()
+				.nullable()
+				.describe("The data's version; pass it as expectedUpdatedAt to refuse stale edits."),
+			published: z.boolean().describe("Whether visitors can see it now."),
+			url: z.string().nullable().describe("Its public address."),
+			view: z.record(z.string(), z.unknown()).nullable().describe("The portfolio as described above."),
+			guide: z.string().nullable().describe("The edit language's reference, in Markdown."),
+			message: z.string(),
+		}),
+		inputSchema: wireInput(z.strictObject({})),
+		annotations: READ_IDEMPOTENT,
+	},
+	[T.createPortfolio]: {
+		title: "Create Portfolio",
+		description: [
+			"Create the account's portfolio (one per account), unpublished. It starts from a resume's projects, summary and",
+			"photo, or from the Profile, and keeps reading its career sections from that source.",
+			`Then read it with \`${T.getPortfolio}\` and change it with \`${T.editPortfolio}\`. Publishing is a separate step.`,
+		].join("\n"),
+		outputSchema: z.object({
+			id: z.string(),
+			updatedAt: z.string(),
+			sourceResumeId: z.string().nullable().describe("The resume it reads; null for the Profile."),
+			message: z.string(),
+		}),
+		inputSchema: wireInput(
+			z.strictObject({
+				sourceResumeId: z
+					.string()
+					.min(1)
+					.max(64)
+					.nullable()
+					.optional()
+					.describe(
+						`A resume to start from (\`${T.listResumes}\`); null for the Profile. Left out: the Profile when it holds career items, else the primary resume.`,
+					),
+				theme: portfolioThemeSchema.optional(),
+			}),
+		),
+		annotations: WRITE_NON_IDEMPOTENT,
+	},
+	[T.editPortfolio]: {
+		title: "Edit Portfolio",
+		description: [
+			"Change the portfolio with edits in the portfolio edit language (the `guide` from",
+			`\`${T.getPortfolio}\`, or the \`portfolio://_meta/edits\` resource): set fields, and add, update, remove or move`,
+			"works, services, testimonials, clients, own sections, intro numbers, a work's blocks and metrics, by id.",
+			"Edits apply in order, each whole or not at all, and are saved together. Failed edits come back in `failed` with",
+			"the reason while the rest apply; nothing is saved when none applies. A published portfolio shows the change at once.",
+			"Never invent facts; testimonials need `consent: true` after the person quoted agreed. Removing content can't be",
+			"undone here: confirm with the user first.",
+		].join("\n"),
+		outputSchema: z.object({
+			title: z.string().nullable(),
+			applied: z.array(
+				z.object({
+					index: z.number().describe("The edit's position in the call."),
+					summary: z.string(),
+					id: z.string().optional().describe("The id of the item an add created."),
+					ref: z.string().optional(),
+				}),
+			),
+			failed: z.array(z.object({ index: z.number(), error: z.string() })),
+			updatedAt: z.string().describe("The version after the edits."),
+			message: z.string(),
+		}),
+		inputSchema: wireInput(
+			portfolioEditsInputSchema
+				.extend({
+					expectedUpdatedAt: z.iso
+						.datetime({ offset: true })
+						.optional()
+						.describe(
+							`The updatedAt from \`${T.getPortfolio}\`: refuses the edits when the portfolio changed since. Edits address ids, so it may be left out.`,
+						),
+				})
+				.strict(),
+		),
+		annotations: { ...WRITE_DESTRUCTIVE, openWorldHint: true },
+	},
+	[T.addPortfolioImage]: {
+		title: "Add Portfolio Image",
+		description: [
+			"Store a picture for the portfolio from a public link or a file, then place it with",
+			`\`${T.editPortfolio}\` using the returned image ref. It must already be a JPEG, PNG or WebP of at most`,
+			`${PORTFOLIO_UPLOAD.imageBytes / MB} MB and ${PORTFOLIO_UPLOAD.imageSide} px on its longest side: the server can't make pictures smaller.`,
+			"A link is fetched once from the public internet (no cookies or account data). Counts toward the portfolio's",
+			"storage until removed; an unplaced picture is deleted a day after.",
+		].join("\n"),
+		outputSchema: z.object({ image: portfolioImageOutput, message: z.string() }),
+		inputSchema: wireInput(
+			z
+				.strictObject({
+					url: z
+						.string()
+						.trim()
+						.min(1)
+						.max(PORTFOLIO_LIMITS.text.url)
+						.optional()
+						.describe("A public http(s) address of the picture."),
+					file: fileInputSchema
+						.optional()
+						.describe("The picture: base64 (at most 3 MiB encoded) or an owned storagePath from POST /api/files."),
+					alt: z
+						.string()
+						.trim()
+						.max(PORTFOLIO_LIMITS.text.alt)
+						.optional()
+						.describe("Alternative text: what the picture shows, in the page's language."),
+				})
+				.refine(
+					(value) => (value.url === undefined) !== (value.file === undefined),
+					"Supply exactly one of url or file.",
+				),
+		),
+		annotations: WRITE_EXTERNAL,
+	},
+	[T.publishPortfolio]: {
+		title: "Publish Portfolio",
+		description: [
+			"Publish the portfolio at its public address, or take it offline (`published: false`). Publishing makes it",
+			"visible to anyone and needs a verified email address. Ask the user before publishing or unpublishing.",
+			"Its password, address, custom domain and search-engine setting stay in the app.",
+		].join("\n"),
+		outputSchema: z.object({ published: z.boolean(), url: z.string().nullable(), message: z.string() }),
+		inputSchema: wireInput(z.strictObject({ published: z.boolean().describe("true to publish, false to unpublish.") })),
+		annotations: WRITE_DESTRUCTIVE_EXTERNAL,
+	},
+	[T.getPortfolioStatistics]: {
+		title: "Get Portfolio Statistics",
+		description:
+			"Read the portfolio's visits, clicks, contact messages and most opened works for the last 7, 30 (the default) or 90 days. `statistics` is null while the account has no portfolio. The detailed breakdown (countries, devices, referrers) depends on the plan.",
+		outputSchema: z.object({ statistics: portfolioStatisticsOutput }),
+		inputSchema: wireInput(
+			z.strictObject({
+				range: z
+					.union([z.literal(7), z.literal(30), z.literal(90)])
+					.optional()
+					.describe("Days, ending today: 7, 30 or 90."),
+			}),
+		),
+		annotations: READ_IDEMPOTENT,
 	},
 } as const);

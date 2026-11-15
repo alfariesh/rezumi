@@ -3,6 +3,7 @@ import type { RouterClient } from "@orpc/server";
 import type router from "@rezumi/api/routers";
 import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ORPCError } from "@orpc/server";
+import { PORTFOLIO_EDIT_GUIDE } from "@rezumi/portfolio/edits";
 import { createDesignCatalog } from "@rezumi/resume/design-catalog";
 import { createResumeDataJsonSchema } from "@rezumi/schema/resume/json-schema";
 import { MCP_TOOL_NAME as T } from "./mcp-tool-names";
@@ -83,6 +84,63 @@ export function registerResources(server: McpServer, client: RouterClient<typeof
 				throw safeMcpError(error, "reading resume schema resource");
 			}
 		},
+	);
+
+	// ── Resource: portfolio://current ─────────────────────────────
+	// The account's one portfolio, as `get_portfolio` reads it.
+	server.registerResource(
+		"portfolio",
+		"portfolio://current",
+		{
+			title: "Portfolio",
+			mimeType: "application/json",
+			description: [
+				"The account's portfolio as an AI edits it: status and address, theme and design, every item with its id, the",
+				"career sections from the CV or Profile (read-only), the pictures it can place, limits and plan locks.",
+				`Same as the \`${T.getPortfolio}\` tool; change it with \`${T.editPortfolio}\`.`,
+			].join(" "),
+		},
+		async (uri: URL) => {
+			try {
+				const portfolio = await client.portfolio.aiView({});
+				return {
+					contents: [
+						{
+							uri: uri.href,
+							mimeType: "application/json" as const,
+							text: JSON.stringify(
+								{
+									updatedAt: portfolio.updatedAt.toISOString(),
+									published: portfolio.published,
+									url: portfolio.url,
+									view: portfolio.view,
+								},
+								null,
+								2,
+							),
+						},
+					],
+				};
+			} catch (error) {
+				throw safeMcpError(error, "reading portfolio resource", "portfolio");
+			}
+		},
+	);
+
+	// ── Resource: portfolio://_meta/edits ─────────────────────────
+	// Static resource: the edit language `edit_portfolio` takes.
+	server.registerResource(
+		"portfolio-edits",
+		"portfolio://_meta/edits",
+		{
+			title: "Portfolio Edit Language",
+			mimeType: "text/markdown",
+			description: [
+				`The edit language \`${T.editPortfolio}\` takes: operations, lists and their item fields, settable fields, positions`,
+				"and refs, image refs, rich text and examples. Read it before editing a portfolio.",
+			].join(" "),
+		},
+		(uri: URL) => ({ contents: [{ uri: uri.href, mimeType: "text/markdown" as const, text: PORTFOLIO_EDIT_GUIDE }] }),
 	);
 
 	// ── Resource: resume://_meta/design ───────────────────────────

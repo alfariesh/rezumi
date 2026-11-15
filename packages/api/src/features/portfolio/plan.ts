@@ -1,9 +1,7 @@
 import type { Transaction } from "../billing/account";
-import type { PlanFeature } from "../billing/limits";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
-import { isFreePortfolioHeroEffect } from "@rezumi/schema/billing";
+import { portfolioFeaturesNeeded } from "@rezumi/portfolio/edits";
 import { parsePortfolioData } from "@rezumi/schema/portfolio/data";
-import { isFreePortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import { lockBillingAccount } from "../billing/account";
 import { getEntitlements, isBillingAppliedTo } from "../billing/entitlements";
 import { planFeatureRequired, portfolioLimitReached } from "../billing/limits";
@@ -14,21 +12,6 @@ type PlanPortfolio = Pick<PortfolioData, "theme" | "credit"> & {
 	hero: { effect: Pick<PortfolioData["hero"]["effect"], "id"> };
 	works: { items: readonly { id: string }[] };
 };
-
-/**
- * The features a change to the portfolio needs: a premium theme or intro effect chosen anew, or the badge newly hidden.
- * Keeping what's stored, removing it, and moving to something free need nothing, so a portfolio keeps working after
- * its plan ends (`00-keputusan.md` rule #2). `before` is null for a new portfolio.
- */
-export function portfolioFeaturesNeeded(before: PlanPortfolio | null, after: PlanPortfolio): PlanFeature[] {
-	const needed: PlanFeature[] = [];
-	if (!isFreePortfolioTheme(after.theme) && after.theme !== before?.theme) needed.push("premiumPortfolioThemes");
-	const effect = after.hero.effect.id;
-	if (effect && !isFreePortfolioHeroEffect(effect) && effect !== before?.hero.effect.id)
-		needed.push("premiumHeroEffects");
-	if (!after.credit.show && (before?.credit.show ?? true)) needed.push("hidePortfolioCredit");
-	return needed;
-}
 
 /**
  * Refuses a write the plan doesn't allow, in the transaction that makes it (after the portfolio's lock, for a save).

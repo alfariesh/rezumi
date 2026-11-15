@@ -7,11 +7,12 @@
 export const MINIMUM_CHROME_VERSION = "116";
 
 /**
- * The four job boards with their own reader: the content script runs only there. ponytail: the hosts are the plan's
- * first guess; Phase 03 settles them against real pages (country subdomains of LinkedIn, Glints and JobStreet).
+ * The four job boards with their own reader: the content script runs only there. Checked against real pages
+ * 2026-11-14 (02-teknis.md §18): LinkedIn also serves signed-out postings on country hosts (id.linkedin.com), Indeed
+ * and JobStreet use one host per country (id.indeed.com, id.jobstreet.com), Glints keeps every country on glints.com.
  */
 export const JOB_BOARD_MATCHES = [
-	"https://www.linkedin.com/*",
+	"https://*.linkedin.com/*",
 	"https://*.indeed.com/*",
 	"https://*.jobstreet.com/*",
 	"https://glints.com/*",

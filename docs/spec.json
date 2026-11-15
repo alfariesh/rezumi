@@ -12681,6 +12681,17 @@
 													}
 												]
 											},
+											"portfolioId": {
+												"anyOf": [
+													{
+														"type": "string"
+													},
+													{
+														"type": "null"
+													}
+												],
+												"description": "The account's portfolio, when the conversation is about it."
+											},
 											"aiProviderId": {
 												"anyOf": [
 													{
@@ -12710,6 +12721,17 @@
 														"type": "null"
 													}
 												]
+											},
+											"portfolioName": {
+												"anyOf": [
+													{
+														"type": "string"
+													},
+													{
+														"type": "null"
+													}
+												],
+												"description": "\"Portfolio\" in a portfolio conversation; apps show their own word."
 											},
 											"providerLabel": {
 												"anyOf": [
@@ -12786,9 +12808,11 @@
 											"sourceResumeId",
 											"workingResumeId",
 											"coverLetterId",
+											"portfolioId",
 											"aiProviderId",
 											"resumeName",
 											"coverLetterName",
+											"portfolioName",
 											"providerLabel",
 											"editsProposed",
 											"editsAccepted",
@@ -12878,7 +12902,7 @@
 			"post": {
 				"operationId": "startAgentThread",
 				"summary": "Start a document, application or career conversation",
-				"description": "Starts an assistant conversation about one resume or cover letter, using the given tested provider or the default one. The assistant reads the document and proposes edits; it never changes the document itself. With `aiSource: \"rezumi\"` the conversation runs on Rezumi AI, where each reply costs 3 credits.",
+				"description": "Starts an assistant conversation about one resume, cover letter or the account's portfolio, using the given tested provider or the default one. For a resume or letter the assistant reads the document and proposes edits; it never changes the document itself. For the portfolio it returns edits applied to a working copy, which the portfolio editor applies (each reply can be undone there); the server never saves the portfolio for it. With `aiSource: \"rezumi\"` the conversation runs on Rezumi AI, where each reply costs 3 credits.",
 				"tags": [
 					"Agent"
 				],
@@ -12896,6 +12920,11 @@
 									"coverLetterId": {
 										"type": "string",
 										"minLength": 1
+									},
+									"portfolioId": {
+										"type": "string",
+										"minLength": 1,
+										"description": "The account's portfolio, when portfolios are open to the account."
 									},
 									"aiProviderId": {
 										"type": "string"
@@ -12991,6 +13020,17 @@
 												}
 											]
 										},
+										"portfolioId": {
+											"anyOf": [
+												{
+													"type": "string"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "The account's portfolio, when the conversation is about it."
+										},
 										"aiProviderId": {
 											"anyOf": [
 												{
@@ -13020,6 +13060,17 @@
 													"type": "null"
 												}
 											]
+										},
+										"portfolioName": {
+											"anyOf": [
+												{
+													"type": "string"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "\"Portfolio\" in a portfolio conversation; apps show their own word."
 										},
 										"providerLabel": {
 											"anyOf": [
@@ -13096,9 +13147,11 @@
 										"sourceResumeId",
 										"workingResumeId",
 										"coverLetterId",
+										"portfolioId",
 										"aiProviderId",
 										"resumeName",
 										"coverLetterName",
+										"portfolioName",
 										"providerLabel",
 										"editsProposed",
 										"editsAccepted",
@@ -13250,6 +13303,17 @@
 														}
 													]
 												},
+												"portfolioId": {
+													"anyOf": [
+														{
+															"type": "string"
+														},
+														{
+															"type": "null"
+														}
+													],
+													"description": "The account's portfolio, when the conversation is about it."
+												},
 												"aiProviderId": {
 													"anyOf": [
 														{
@@ -13279,6 +13343,17 @@
 															"type": "null"
 														}
 													]
+												},
+												"portfolioName": {
+													"anyOf": [
+														{
+															"type": "string"
+														},
+														{
+															"type": "null"
+														}
+													],
+													"description": "\"Portfolio\" in a portfolio conversation; apps show their own word."
 												},
 												"providerLabel": {
 													"anyOf": [
@@ -13355,9 +13430,11 @@
 												"sourceResumeId",
 												"workingResumeId",
 												"coverLetterId",
+												"portfolioId",
 												"aiProviderId",
 												"resumeName",
 												"coverLetterName",
+												"portfolioName",
 												"providerLabel",
 												"editsProposed",
 												"editsAccepted",
@@ -13467,7 +13544,8 @@
 														"kind": {
 															"enum": [
 																"resume",
-																"letter"
+																"letter",
+																"portfolio"
 															],
 															"type": "string"
 														},
@@ -13661,6 +13739,17 @@
 												}
 											]
 										},
+										"portfolioId": {
+											"anyOf": [
+												{
+													"type": "string"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "The account's portfolio, when the conversation is about it."
+										},
 										"aiProviderId": {
 											"anyOf": [
 												{
@@ -13690,6 +13779,17 @@
 													"type": "null"
 												}
 											]
+										},
+										"portfolioName": {
+											"anyOf": [
+												{
+													"type": "string"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "\"Portfolio\" in a portfolio conversation; apps show their own word."
 										},
 										"providerLabel": {
 											"anyOf": [
@@ -13766,9 +13866,11 @@
 										"sourceResumeId",
 										"workingResumeId",
 										"coverLetterId",
+										"portfolioId",
 										"aiProviderId",
 										"resumeName",
 										"coverLetterName",
+										"portfolioName",
 										"providerLabel",
 										"editsProposed",
 										"editsAccepted",
@@ -15027,7 +15129,8 @@
 																	"builtin",
 																	"firecrawl",
 																	"tavily",
-																	"exa"
+																	"exa",
+																	"extension"
 																],
 																"type": "string"
 															},
@@ -15604,7 +15707,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -15924,7 +16028,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -17090,7 +17195,8 @@
 																			"builtin",
 																			"firecrawl",
 																			"tavily",
-																			"exa"
+																			"exa",
+																			"extension"
 																		],
 																		"type": "string"
 																	},
@@ -17803,7 +17909,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -18369,7 +18476,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -18686,7 +18794,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -19115,7 +19224,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -19754,7 +19864,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -20071,7 +20182,8 @@
 															"builtin",
 															"firecrawl",
 															"tavily",
-															"exa"
+															"exa",
+															"extension"
 														],
 														"type": "string"
 													},
@@ -20500,7 +20612,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -21065,7 +21178,8 @@
 																		"builtin",
 																		"firecrawl",
 																		"tavily",
-																		"exa"
+																		"exa",
+																		"extension"
 																	],
 																	"type": "string"
 																},
@@ -21615,7 +21729,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -22281,7 +22396,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -22971,7 +23087,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -23730,7 +23847,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -24487,7 +24605,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -25242,7 +25361,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -25937,7 +26057,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -26610,7 +26731,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -27303,7 +27425,8 @@
 																"builtin",
 																"firecrawl",
 																"tavily",
-																"exa"
+																"exa",
+																"extension"
 															],
 															"type": "string"
 														},
@@ -28645,7 +28768,8 @@
 														"builtin",
 														"firecrawl",
 														"tavily",
-														"exa"
+														"exa",
+														"extension"
 													],
 													"type": "string"
 												},
@@ -36132,7 +36256,8 @@
 																			"builtin",
 																			"firecrawl",
 																			"tavily",
-																			"exa"
+																			"exa",
+																			"extension"
 																		],
 																		"type": "string"
 																	},
@@ -36599,6 +36724,69 @@
 													"note",
 													"createdAt",
 													"reviewedAt"
+												]
+											}
+										},
+										"extensionCaptureReports": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"id": {
+														"type": "string"
+													},
+													"userId": {
+														"type": "string"
+													},
+													"url": {
+														"type": "string"
+													},
+													"site": {
+														"anyOf": [
+															{
+																"type": "string"
+															},
+															{
+																"type": "null"
+															}
+														]
+													},
+													"extensionVersion": {
+														"type": "string"
+													},
+													"missing": {
+														"type": "array",
+														"items": {
+															"type": "string"
+														}
+													},
+													"createdAt": {
+														"type": "string",
+														"format": "date-time",
+														"x-native-type": "date"
+													},
+													"notifiedAt": {
+														"anyOf": [
+															{
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															{
+																"type": "null"
+															}
+														]
+													}
+												},
+												"required": [
+													"id",
+													"userId",
+													"url",
+													"site",
+													"extensionVersion",
+													"missing",
+													"createdAt",
+													"notifiedAt"
 												]
 											}
 										},
@@ -38307,6 +38495,16 @@
 																	}
 																]
 															},
+															"portfolioId": {
+																"anyOf": [
+																	{
+																		"type": "string"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
 															"scope": {
 																"type": "string"
 															},
@@ -38418,6 +38616,7 @@
 															"sourceResumeId",
 															"workingResumeId",
 															"coverLetterId",
+															"portfolioId",
 															"scope",
 															"applicationId",
 															"title",
@@ -41049,6 +41248,7 @@
 										"coverLetters",
 										"applications",
 										"aiContentReports",
+										"extensionCaptureReports",
 										"career",
 										"billing",
 										"portfolio",
@@ -119645,7 +119845,8 @@
 														"builtin",
 														"firecrawl",
 														"tavily",
-														"exa"
+														"exa",
+														"extension"
 													],
 													"type": "string"
 												},
@@ -121092,7 +121293,8 @@
 																		"builtin",
 																		"firecrawl",
 																		"tavily",
-																		"exa"
+																		"exa",
+																		"extension"
 																	],
 																	"type": "string"
 																},

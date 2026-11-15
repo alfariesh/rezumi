@@ -10,6 +10,7 @@ const mocks = vi.hoisted(() => ({
 	run: vi.fn<() => Promise<{ processed: number }>>(),
 	billing: vi.fn<() => Promise<{ releasedReservations: number }>>(),
 	portfolio: vi.fn<() => Promise<{ deletedFiles: number; checkedPortfolios: number }>>(),
+	extension: vi.fn<() => Promise<{ emailed: boolean; deleted: number }>>(),
 	auth: vi.fn<() => Promise<void>>(),
 	wasm: vi.fn<() => Promise<void>>(),
 	fetch: vi.fn<(request: Request) => Promise<Response>>(),
@@ -55,6 +56,7 @@ vi.mock("@rezumi/auth/config", () => ({ initializeAuth: mocks.auth }));
 vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: mocks.run }));
 vi.mock("@rezumi/api/features/billing/jobs", () => ({ runBillingJobs: mocks.billing }));
 vi.mock("@rezumi/api/features/portfolio/jobs", () => ({ runPortfolioJobs: mocks.portfolio }));
+vi.mock("@rezumi/api/features/applications/extension-jobs", () => ({ runExtensionJobs: mocks.extension }));
 vi.mock("@rezumi/api/features/agent/streams", () => ({
 	configureAgentStreamLifetime: (lifetime: (promise: Promise<unknown>) => void) => {
 		mocks.lifetime = lifetime;
@@ -123,6 +125,7 @@ beforeEach(() => {
 	mocks.run.mockReset().mockResolvedValue({ processed: 0 });
 	mocks.billing.mockReset().mockResolvedValue({ releasedReservations: 0 });
 	mocks.portfolio.mockReset().mockResolvedValue({ deletedFiles: 0, checkedPortfolios: 0 });
+	mocks.extension.mockReset().mockResolvedValue({ emailed: false, deleted: 0 });
 	mocks.auth.mockReset().mockResolvedValue();
 	mocks.wasm.mockReset().mockResolvedValue();
 	mocks.fetch.mockReset().mockResolvedValue(new Response("ok"));
@@ -229,7 +232,7 @@ describe("Cloudflare invocation lifetime", () => {
 		expect(pool.end).toHaveBeenCalledOnce();
 	});
 
-	it("runs billing, career, then portfolio jobs on the same pool, and the others still run when billing fails", async () => {
+	it("runs billing, career, portfolio, then extension jobs on the same pool, and the others still run when billing fails", async () => {
 		const log = vi.spyOn(console, "error").mockImplementation(() => {});
 		const fixture = invocation();
 		const order: Array<[string, unknown]> = [];
@@ -245,6 +248,10 @@ describe("Cloudflare invocation lifetime", () => {
 			order.push(["portfolio", getPool()]);
 			return { deletedFiles: 0, checkedPortfolios: 0 };
 		});
+		mocks.extension.mockImplementation(async () => {
+			order.push(["extension", getPool()]);
+			return { emailed: false, deleted: 0 };
+		});
 		worker.scheduled(fixture.controller, fixture.bindings, fixture.ctx);
 		await Promise.all(fixture.pending);
 		const pool = invocationPool();
@@ -252,6 +259,7 @@ describe("Cloudflare invocation lifetime", () => {
 			["billing", pool],
 			["career", pool],
 			["portfolio", pool],
+			["extension", pool],
 		]);
 		expect(log).toHaveBeenCalledOnce();
 		expect(JSON.stringify(log.mock.calls)).not.toContain("Synthetic billing failure");

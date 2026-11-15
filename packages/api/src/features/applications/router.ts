@@ -1,5 +1,6 @@
 import { aiRouter } from "./ai";
 import { crudRouter } from "./crud";
+import { extensionRouter } from "./extension";
 
 export const applicationsRouter = {
 	list: crudRouter.list,
@@ -20,5 +21,9 @@ export const applicationsRouter = {
 	bulkDelete: crudRouter.bulkDelete,
 	stats: crudRouter.stats,
 	tags: crudRouter.tags,
+	// The browser extension (Internal: not in the public API).
+	savedKeys: extensionRouter.savedKeys,
+	readCapture: extensionRouter.readCapture,
+	reportCapture: extensionRouter.reportCapture,
 	ai: aiRouter,
 };

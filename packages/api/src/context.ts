@@ -7,6 +7,7 @@ import { getTrustedOrigins } from "@rezumi/auth/trusted-origins";
 import { db } from "@rezumi/db/client";
 import { user } from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
+import { assertExtensionVersion } from "./extension-version";
 import { assertAutomationAccess } from "./features/billing/automation";
 
 export type RequestPermission = "read" | "write" | "delete";
@@ -118,6 +119,8 @@ const base = os.$context<ORPCContext>();
 export const publicProcedure = base
 	.route({ spec: (operation) => ({ ...operation, security: [] }) })
 	.use(async ({ context, next }) => {
+		// Before authentication: an extension too old to trust gets nothing, not even a token check.
+		assertExtensionVersion(context.reqHeaders, env.EXTENSION_MIN_VERSION);
 		const authentication =
 			context.authentication === undefined
 				? await resolveAuthenticationFromRequestHeaders(context.reqHeaders)

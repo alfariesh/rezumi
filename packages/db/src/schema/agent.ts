@@ -5,6 +5,7 @@ import { generateId } from "@rezumi/utils/string";
 import { application } from "./applications";
 import { user } from "./auth";
 import { coverLetter } from "./cover-letter";
+import { portfolio } from "./portfolio";
 import { resume } from "./resume";
 
 type AgentUiMessage = Record<string, unknown>;
@@ -76,8 +77,9 @@ export const agentThread = pg.pgTable(
 		aiProviderId: pg.text("ai_provider_id").references(() => aiProvider.id, { onDelete: "set null" }),
 		sourceResumeId: pg.text("source_resume_id").references(() => resume.id, { onDelete: "set null" }),
 		workingResumeId: pg.text("working_resume_id").references(() => resume.id, { onDelete: "set null" }),
-		// A conversation is about one document: the resume above, or this letter.
+		// A conversation is about one document: the resume above, this letter, or the account's portfolio.
 		coverLetterId: pg.text("cover_letter_id").references(() => coverLetter.id, { onDelete: "set null" }),
+		portfolioId: pg.text("portfolio_id").references(() => portfolio.id, { onDelete: "set null" }),
 		scope: pg.text("scope").notNull().default("document"),
 		applicationId: pg.text("application_id").references(() => application.id, { onDelete: "cascade" }),
 		title: pg.text("title").notNull(),
@@ -104,6 +106,7 @@ export const agentThread = pg.pgTable(
 		pg.index().on(t.userId, t.status, t.lastMessageAt.desc()),
 		pg.index().on(t.workingResumeId),
 		pg.index().on(t.coverLetterId),
+		pg.index().on(t.portfolioId),
 		pg.index().on(t.aiProviderId),
 	],
 );

@@ -2,7 +2,12 @@ import type { getModel } from "../ai/service";
 import type { AiWorkLimits } from "../billing/metered-ai";
 import type { WebAccessConnection } from "../web-access/contracts";
 import type { AssistantDocument } from "./document";
-import type { ProposeEditsInput, ProposeEditsOutput } from "@rezumi/ai/tools/agent-tool-contracts";
+import type {
+	EditPortfolioInput,
+	ProposeEditsInput,
+	ProposeEditsOutput,
+	SaveAttachmentImageInput,
+} from "@rezumi/ai/tools/agent-tool-contracts";
 import type { AiSource } from "@rezumi/schema/billing";
 import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { FilePart, ImagePart, ModelMessage, TextPart, UIMessage, UIMessageChunk } from "ai";
@@ -30,6 +35,7 @@ import { aiSourceRequired, errorCode, resolveAiSource, startResolvedAiRun } from
 import { careerService, requireCareerApplication } from "../career/service";
 import { buildCareerTools, buildCareerInstructions } from "../career/tools";
 import { coverLetterService } from "../cover-letters/service";
+import { portfolioService } from "../portfolio/service";
 import { readProfileContext } from "../profile/context";
 import { resumeService } from "../resume/service";
 import { getStorageService, inferContentType } from "../storage/service";
@@ -38,7 +44,15 @@ import { searchScope } from "../web-access/regions";
 import { readPage, searchWeb } from "../web-access/service";
 import { isRunAlive, monitorRunCancellation, requestRunCancellation } from "./cancellation";
 import { pruneAgentModelContext } from "./context";
-import { documentOf, documentView, findPosting, loadDocument, resolveEdits } from "./document";
+import {
+	documentOf,
+	documentView,
+	findPosting,
+	loadDocument,
+	PORTFOLIO_DOCUMENT_NAME,
+	requireOwnPortfolio,
+	resolveEdits,
+} from "./document";
 import { mergeClientToolResponses } from "./messages-merge";
 import {
 	applyStepToUiMessage,
@@ -52,10 +66,11 @@ import {
 	withAccumulatedUsageMetadata,
 	withEditStatuses,
 } from "./messages-persistence";
+import { createPortfolioRun, savedAttachmentImages, withCompactPortfolioEdits } from "./portfolio";
 import { repairAgentToolCall } from "./repair";
 import { claimActiveAgentRun, clearActiveAgentRunIfCurrent, isStaleAgentRun, reapStaleAgentRun } from "./runs";
 import { agentStreamLifecycle } from "./streams";
-import { buildAgentInstructions, buildAgentTools } from "./tools";
+import { buildAgentInstructions, buildAgentTools, buildPortfolioAgentInstructions } from "./tools";
 
 const MAX_AGENT_STEPS = 30;
 const MAX_AGENT_OUTPUT_TOKENS = 8_192;
@@ -97,9 +112,10 @@ type StartThreadInput = {
 	scope?: "document" | "application" | "career" | undefined;
 	applicationId?: string | undefined;
 	userId: string;
-	/** The document the conversation is about: a resume or a letter. */
+	/** The document the conversation is about: a resume, a letter, or the account's portfolio. */
 	resumeId?: string | undefined;
 	coverLetterId?: string | undefined;
+	portfolioId?: string | undefined;
 	aiProviderId?: string | undefined;
 	/** Which AI the conversation runs on; see `resolveAiSource`. */
 	aiSource?: AiSource | undefined;
@@ -158,9 +174,11 @@ function toThreadSummary(row: ThreadSummaryRow) {
 		sourceResumeId: row.sourceResumeId,
 		workingResumeId: row.workingResumeId,
 		coverLetterId: row.coverLetterId,
+		portfolioId: row.portfolioId ?? null,
 		aiProviderId: row.aiProviderId,
 		resumeName: row.resumeName ?? null,
 		coverLetterName: row.coverLetterName ?? null,
+		portfolioName: row.portfolioId ? PORTFOLIO_DOCUMENT_NAME : null,
 		providerLabel: row.providerLabel ?? null,
 		editsProposed: row.editsProposed,
 		editsAccepted: row.editsAccepted,
@@ -196,6 +214,26 @@ function attachmentUiPart(attachment: AgentAttachmentRecord): UIMessage["parts"]
 		url: `${AGENT_ATTACHMENT_URL_PREFIX}${attachment.id}`,
 		mediaType: attachment.mediaType,
 		filename: attachment.filename,
+	};
+}
+
+/**
+ * Attachment references in user messages as text the model reads: which file, of what type, and its id. The portfolio
+ * assistant places attached pictures by id (`save_attachment_image`), including ones sent in an earlier message, whose
+ * pictures the model no longer sees.
+ */
+function withAttachmentNotes(message: UIMessage): UIMessage {
+	if (message.role !== "user") return message;
+	return {
+		...message,
+		parts: message.parts.map((part) => {
+			if (part.type !== "file" || !part.url.startsWith(AGENT_ATTACHMENT_URL_PREFIX)) return part;
+			const id = part.url.slice(AGENT_ATTACHMENT_URL_PREFIX.length);
+			return {
+				type: "text",
+				text: `(Attached ${part.filename ?? "a file"}, ${part.mediaType}, attachmentId: ${id}.)`,
+			};
+		}),
 	};
 }
 
@@ -275,6 +313,7 @@ function toModelInputMessage(
 	message: UIMessage,
 	provider: { provider: string; model: string },
 	externalSearch: boolean,
+	options: { attachmentNotes?: boolean } = {},
 ): UIMessage {
 	const sources = agentWebSources(message)
 		.map((source) => `${source.title}: ${source.url}`)
@@ -297,7 +336,10 @@ function toModelInputMessage(
 			};
 		}),
 	};
-	return withoutLegacyPatchParts(withoutProviderMetadata(withoutAgentAttachmentUiParts(portable), provider));
+	const withAttachments = options.attachmentNotes ? withAttachmentNotes(portable) : portable;
+	return withCompactPortfolioEdits(
+		withoutLegacyPatchParts(withoutProviderMetadata(withoutAgentAttachmentUiParts(withAttachments), provider)),
+	);
 }
 
 type AgentToolPart = UIMessage["parts"][number] & {
@@ -734,6 +776,33 @@ async function readAttachment(input: { id: string; threadId: string; userId: str
 	};
 }
 
+/** An attachment of this conversation as stored, once it was sent with a message (`save_attachment_image`). */
+async function readAttachmentFile(input: { id: string; threadId: string; userId: string }) {
+	const [attachment] = await db
+		.select()
+		.from(schema.agentAttachment)
+		.where(
+			and(
+				eq(schema.agentAttachment.id, input.id),
+				eq(schema.agentAttachment.threadId, input.threadId),
+				eq(schema.agentAttachment.userId, input.userId),
+			),
+		)
+		.limit(1);
+	if (!attachment?.messageId) throw new Error("No attachment of this conversation has this id.");
+	const stored = await getStorageService().read(attachment.storageKey);
+	if (!stored) throw new Error(`${attachment.filename} can't be read anymore. Ask the user to attach it again.`);
+	return { filename: attachment.filename, mediaType: attachment.mediaType, data: stored.data };
+}
+
+/** Adds edits the assistant made or proposed to the conversation's outcome ("3 of 4 edits accepted"). */
+async function countProposedEdits(input: { userId: string; threadId: string; count: number }) {
+	await db
+		.update(schema.agentThread)
+		.set({ editsProposed: sql`${schema.agentThread.editsProposed} + ${input.count}` })
+		.where(and(eq(schema.agentThread.id, input.threadId), eq(schema.agentThread.userId, input.userId)));
+}
+
 /** Places the model's edits on the document and counts them toward the conversation's outcome. */
 async function proposeEdits(input: {
 	userId: string;
@@ -743,14 +812,8 @@ async function proposeEdits(input: {
 }): Promise<ProposeEditsOutput> {
 	const loaded = await loadDocument(input.userId, input.document);
 	const output = resolveEdits(loaded, input.edits);
-	if (output.edits.length > 0) {
-		await db
-			.update(schema.agentThread)
-			.set({
-				editsProposed: sql`${schema.agentThread.editsProposed} + ${output.edits.length}`,
-			})
-			.where(and(eq(schema.agentThread.id, input.threadId), eq(schema.agentThread.userId, input.userId)));
-	}
+	if (output.edits.length > 0)
+		await countProposedEdits({ userId: input.userId, threadId: input.threadId, count: output.edits.length });
 	return output;
 }
 
@@ -771,6 +834,10 @@ function createAgent(input: {
 	threadId: string;
 	/** Null when the message leaves the document out. */
 	document: (AssistantDocument & { name: string }) | null;
+	/** A portfolio conversation, whether or not this message shares the portfolio. */
+	portfolioThread?: boolean | undefined;
+	/** The conversation so far, for pictures earlier replies saved from attachments. */
+	history?: readonly UIMessage[] | undefined;
 	posting: {
 		role: string;
 		company: string;
@@ -822,6 +889,18 @@ function createAgent(input: {
 		if (key) allowedSources.set(key, key);
 	};
 	for (const url of input.allowedSources) allow(url);
+	// The portfolio assistant works on a copy of the saved portfolio for this reply (`./portfolio.ts`).
+	const portfolio =
+		document?.kind === "portfolio"
+			? createPortfolioRun({
+					load: () => portfolioService.aiState(input.userId),
+					readAttachment: (attachmentId) =>
+						readAttachmentFile({ id: attachmentId, threadId: input.threadId, userId: input.userId }),
+					addImage: (file, alt) => portfolioService.addImage(input.userId, { source: { file }, alt }, input.signal),
+					countProposed: (count) => countProposedEdits({ userId: input.userId, threadId: input.threadId, count }),
+					savedImages: savedAttachmentImages(input.history ?? []),
+				})
+			: null;
 	if (input.career?.shareApplication) {
 		const application = input.career.context.application;
 		allow(application?.sourceUrl);
@@ -865,8 +944,17 @@ function createAgent(input: {
 			}),
 			readDocument: timedToolHandler("read_document", async () => {
 				if (!document) throw new Error("The document isn't shared with this message.");
+				if (portfolio) return portfolio.read();
 				return documentView(await loadDocument(input.userId, document));
 			}),
+			...(portfolio
+				? {
+						editPortfolio: timedToolHandler("edit_portfolio", (call: EditPortfolioInput) => portfolio.edit(call)),
+						saveAttachmentImage: timedToolHandler("save_attachment_image", (call: SaveAttachmentImageInput) =>
+							portfolio.saveImage(call),
+						),
+					}
+				: {}),
 			// The coach reads the Profile with its memory, and only when the user shares that.
 			...(input.career
 				? {}
@@ -898,14 +986,16 @@ function createAgent(input: {
 	});
 
 	if (input.career) Object.assign(tools, buildCareerTools({ userId: input.userId, ...input.career }));
+	const web = { searchTool: "search_web" in tools ? ("search_web" as const) : null, canReadPage: "read_page" in tools };
 	const instructionsText = input.career
 		? buildCareerInstructions(input.career)
-		: buildAgentInstructions({
-				document: document ? { kind: document.kind, name: document.name } : null,
-				posting: input.posting,
-				searchTool: "search_web" in tools ? "search_web" : null,
-				canReadPage: "read_page" in tools,
-			});
+		: input.portfolioThread
+			? buildPortfolioAgentInstructions({ shared: Boolean(portfolio), ...web })
+			: buildAgentInstructions({
+					document: document && document.kind !== "portfolio" ? { kind: document.kind, name: document.name } : null,
+					posting: input.posting,
+					...web,
+				});
 
 	return new ToolLoopAgent({
 		toolApproval: { search_web: "user-approval", save_story: "user-approval" },
@@ -951,6 +1041,10 @@ const threadSummarySelection = {
 async function describeDocument(userId: string, document: AssistantDocument | null) {
 	if (!document) return null;
 	try {
+		if (document.kind === "portfolio") {
+			await requireOwnPortfolio(userId, document.id);
+			return { ...document, name: PORTFOLIO_DOCUMENT_NAME, locked: false };
+		}
 		if (document.kind === "resume") {
 			const resume = await resumeService.getById({ id: document.id, userId });
 			return { ...document, name: resume.name, locked: resume.isLocked };
@@ -987,27 +1081,32 @@ export const agentService = {
 		start: async (input: StartThreadInput) => {
 			assertAgentEnvironment();
 
-			const document: AssistantDocument | null = input.coverLetterId
-				? { kind: "letter", id: input.coverLetterId }
-				: input.resumeId
-					? { kind: "resume", id: input.resumeId }
-					: null;
+			const document: AssistantDocument | null = input.portfolioId
+				? { kind: "portfolio", id: input.portfolioId }
+				: input.coverLetterId
+					? { kind: "letter", id: input.coverLetterId }
+					: input.resumeId
+						? { kind: "resume", id: input.resumeId }
+						: null;
 			// The router's input refine already pairs the scope with exactly one document or application.
 			const scope = input.scope ?? "document";
 			if (scope !== "document") await requireCareerApplication(input);
 
-			// Confirms the caller owns the document (throws otherwise) and names it for the summary.
+			// Confirms the caller owns the document (throws otherwise) and names it for the summary. A portfolio also needs
+			// portfolios to be open to the account (`PORTFOLIO_MODE`).
 			const described = !document
 				? null
-				: document.kind === "resume"
-					? await resumeService.getById({
-							id: document.id,
-							userId: input.userId,
-						})
-					: await coverLetterService.getById({
-							id: document.id,
-							userId: input.userId,
-						});
+				: document.kind === "portfolio"
+					? { ...(await requireOwnPortfolio(input.userId, document.id)), name: PORTFOLIO_DOCUMENT_NAME }
+					: document.kind === "resume"
+						? await resumeService.getById({
+								id: document.id,
+								userId: input.userId,
+							})
+						: await coverLetterService.getById({
+								id: document.id,
+								userId: input.userId,
+							});
 
 			const provider = (
 				await resolveAiSource({
@@ -1031,9 +1130,11 @@ export const agentService = {
 					applicationId: input.applicationId ?? null,
 					...(!document
 						? {}
-						: document.kind === "resume"
-							? { sourceResumeId: document.id, workingResumeId: document.id }
-							: { coverLetterId: document.id }),
+						: document.kind === "portfolio"
+							? { portfolioId: document.id }
+							: document.kind === "resume"
+								? { sourceResumeId: document.id, workingResumeId: document.id }
+								: { coverLetterId: document.id }),
 					title: "New conversation",
 				})
 				.returning();
@@ -1041,7 +1142,7 @@ export const agentService = {
 
 			return toThreadSummary({
 				...thread,
-				...(!described || !document
+				...(!described || !document || document.kind === "portfolio"
 					? {}
 					: document.kind === "resume"
 						? { resumeName: described.name }
@@ -1226,8 +1327,9 @@ export const agentService = {
 				throw new ORPCError("BAD_REQUEST", {
 					message: "Unlock the document to change it.",
 				});
+			// A portfolio isn't for one job posting.
 			const posting =
-				input.context?.posting === false || !document || !loaded
+				input.context?.posting === false || !document || !loaded || document.kind === "portfolio"
 					? null
 					: await findPosting(input.userId, document.id, loaded, input.context?.applicationId);
 
@@ -1397,7 +1499,9 @@ export const agentService = {
 				const connection = await webAccessService.resolve(input.userId);
 				const search = webAccessService.canSearch(connection !== null);
 				const modelMessages = await convertToModelMessages(
-					replay.map((message) => toModelInputMessage(message, runnableProvider, search)),
+					replay.map((message) =>
+						toModelInputMessage(message, runnableProvider, search, { attachmentNotes: document?.kind === "portfolio" }),
+					),
 				);
 				const attachmentModelParts = buildAttachmentModelParts(await readAttachmentModelInputs(attachmentsForModel));
 
@@ -1421,6 +1525,8 @@ export const agentService = {
 					threadId: input.threadId,
 					document:
 						input.context?.document === false || !document || !loaded ? null : { ...document, name: loaded.name },
+					portfolioThread: document?.kind === "portfolio",
+					history: messages,
 					...(careerContext
 						? {
 								career: {

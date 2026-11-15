@@ -43,4 +43,10 @@ export const MCP_TOOL_NAME = {
 	scoreApplicationMatch: "score_application_match",
 	tailorResumeForApplication: "tailor_resume_for_application",
 	draftApplicationMessage: "draft_application_message",
+	getPortfolio: "get_portfolio",
+	createPortfolio: "create_portfolio",
+	editPortfolio: "edit_portfolio",
+	addPortfolioImage: "add_portfolio_image",
+	publishPortfolio: "publish_portfolio",
+	getPortfolioStatistics: "get_portfolio_statistics",
 } as const;

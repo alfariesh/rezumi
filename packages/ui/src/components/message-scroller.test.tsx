@@ -272,6 +272,20 @@ describe("MessageScroller", () => {
 			expect(viewport().scrollTop).toBe(topOf("u2") - PADDING - PREVIOUS_ROW_PEEK);
 			expect(viewport()).not.toHaveAttribute("data-pending-scroll");
 		});
+
+		it("stays put when a row is replaced after opening, instead of jumping to the first turn", async () => {
+			const before = [...turn(1), ...turn(2), ...turn(3), ...turn(4, 900)];
+			const view = render(<Transcript rows={before} />);
+			await settle();
+			const opened = viewport().scrollTop;
+
+			// A retried reply: the last row swapped for another, the row count unchanged.
+			view.rerender(<Transcript rows={[...before.slice(0, -1), reply("a4-retry", 900)]} />);
+			await settle();
+			await resized();
+			expect(viewport().scrollTop).toBe(opened);
+			expect(viewport().scrollTop).not.toBe(topOf("u1") - PADDING - PREVIOUS_ROW_PEEK);
+		});
 	});
 
 	describe("a new turn", () => {
