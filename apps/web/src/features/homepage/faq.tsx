@@ -2,7 +2,7 @@ import { Accordion } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
-import { PASS_DAYS, PLANS, TRIAL_CREDITS } from "@rezumi/schema/billing";
+import { FREE_PORTFOLIO_THEMES, PASS_DAYS, PLANS, TRIAL_CREDITS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { currencyForLocale, freeTemplates } from "./plans";
 import { Container, SectionHeading, SectionTitle } from "./ui";
@@ -20,7 +20,7 @@ type Question = {
  * The questions, in order. `qris` (the Indonesian page, which shows Rupiah) asks about QRIS before the card questions;
  * elsewhere it comes after them.
  */
-const getQuestions = (qris = false): Question[] => {
+const getQuestions = (qris = false, portfolio = false): Question[] => {
 	const freeTemplateCount = freeTemplates.length;
 	const freeResumes = PLANS.free.limits.activeResumes;
 	const freeCoverLetters = PLANS.free.limits.activeCoverLetters;
@@ -34,7 +34,15 @@ const getQuestions = (qris = false): Question[] => {
 		question: t`Can I pay with QRIS?`,
 		answer: t`Yes, from Indonesia: pay in Rupiah with QRIS from any bank or e-wallet app, at a final price with no tax added. A QRIS plan runs for ${passDays} days or a year and doesn't renew on its own. Pay again whenever you like and the time is added after your current plan, so no day is lost; moving up to Pro AI starts it at once and the rest of Plus continues after it. You get an email three days before it ends.`,
 	};
+	const freeWorks = PLANS.free.limits.portfolioWorks;
+	const freeThemes = FREE_PORTFOLIO_THEMES.length;
+	const portfolioQuestion: Question = {
+		id: "portfolio",
+		question: t`Is the portfolio website free?`,
+		answer: t`Yes. The free plan publishes a one-page portfolio at rezumi.app/your-name with ${freeWorks} works and ${freeThemes} themes. It takes your experience, education and skills from your profile, so it stays in step with your resume. Plus adds every theme, your own domain and no Rezumi badge.`,
+	};
 	const questions: Question[] = [
+		...(portfolio ? [portfolioQuestion] : []),
 		{
 			id: "free",
 			question: t`Is there a free plan?`,
@@ -95,12 +103,14 @@ const getQuestions = (qris = false): Question[] => {
 };
 
 /**
- * 05 FAQ: the answers people look for before they start, one open at a time. The same answers go out as FAQPage
+ * FAQ: the answers people look for before they start, one open at a time. The same answers go out as FAQPage
  * structured data, so search engines and assistants can quote them.
  */
-export function Faq() {
+type FaqProps = { portfolioEnabled?: boolean };
+
+export function Faq({ portfolioEnabled = false }: FaqProps) {
 	const { i18n } = useLingui();
-	const questions = getQuestions(currencyForLocale(i18n.locale) === "idr");
+	const questions = getQuestions(currencyForLocale(i18n.locale) === "idr", portfolioEnabled);
 	const structuredData = {
 		"@context": "https://schema.org",
 		"@type": "FAQPage",

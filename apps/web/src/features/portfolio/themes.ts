@@ -8,6 +8,13 @@ import { t } from "@lingui/core/macro";
 export const themePicture = (theme: PortfolioTheme, locale: string) =>
 	`/portfolio-themes/thumb/${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.webp`;
 
+/**
+ * A theme's whole sample page (`pnpm --filter @rezumi/tooling portfolio:samples`): the same persona as its picture, as
+ * a still document without script, for a sandboxed preview frame. Indonesian pages show the Indonesian one.
+ */
+export const themeSample = (theme: PortfolioTheme, locale: string) =>
+	`/portfolio-themes/sample/${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.html`;
+
 /** What each theme looks like, in the theme gallery (create dialog and Design). */
 export const themeDescription = (theme: PortfolioTheme) =>
 	({

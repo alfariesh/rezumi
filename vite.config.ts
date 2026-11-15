@@ -204,6 +204,8 @@ export default defineConfig({
 			"docs/spec.json",
 			"docs/guides/json-resume-schema.mdx",
 			"plugins/rezumi/skills/resume-builder/references/schema.md",
+			// Theme sample pages written by `pnpm --filter @rezumi/tooling portfolio:samples`, kept byte for byte as rendered.
+			"apps/web/public/portfolio-themes/sample/**",
 			// Third-party code kept as published (vendor/README.md).
 			"vendor/formepdf-core/**",
 			"packages/forme-native/rust/vendor/**",

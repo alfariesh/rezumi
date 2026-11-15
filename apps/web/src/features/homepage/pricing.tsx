@@ -132,7 +132,7 @@ function PlanCard({ plan, billingEnabled }: PlanCardProps) {
 	);
 }
 
-/** 04 Pricing: three plans in one panel, Pro AI raised on the accent. Paid plans are monthly or yearly subscriptions. */
+/** Pricing: three plans in one panel, Pro AI raised on the accent. Paid plans are monthly or yearly subscriptions. */
 type PricingProps = { billingEnabled?: boolean; portfolioEnabled?: boolean };
 
 export function Pricing({ billingEnabled = false, portfolioEnabled = false }: PricingProps) {
@@ -167,8 +167,8 @@ export function Pricing({ billingEnabled = false, portfolioEnabled = false }: Pr
 				</div>
 				<p className="mx-auto mt-6 max-w-3xl px-4 text-center text-sm text-pretty text-muted">
 					{qris
-						? t`Prices in Rupiah, paid with QRIS from any bank or e-wallet app. They are final: no tax is added. A plan runs for 30 days or a year and doesn't renew on its own: pay again whenever you like and the time is added after your current plan. Prefer a card that renews by itself? Pay in US dollars by card instead, with 7 free days on a first Plus subscription. When a plan ends, your account returns to Free and your documents stay. Your own AI key works on every plan.`
-						: t`Prices in US dollars, or in Rupiah for visitors from Indonesia, before tax: the checkout adds the tax for where you live. A first Plus subscription starts with 7 free days. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan.`}
+						? t`Prices in Rupiah, paid with QRIS from any bank or e-wallet app, with no tax added. When a plan ends, your account returns to Free and your documents stay.`
+						: t`Prices in US dollars, or in Rupiah for visitors from Indonesia, before tax. When a plan ends, your account returns to Free and your documents stay.`}
 				</p>
 			</div>
 		</section>

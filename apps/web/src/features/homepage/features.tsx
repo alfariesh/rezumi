@@ -247,7 +247,7 @@ function AssistantGraphic() {
 }
 
 /**
- * 01 Features, as two bento grids: the resume itself on the light grid, then the rest of the job search on a dark band.
+ * Features, as two bento grids: the resume itself on the light grid, then the rest of the job search on a dark band.
  * Each tile's drawing is made of the same HeroUI surfaces as the app, so it follows the theme.
  */
 export function Features() {

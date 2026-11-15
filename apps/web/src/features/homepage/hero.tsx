@@ -51,16 +51,18 @@ function HeroTestimonial() {
 
 /**
  * 00 Hero. The accent panel runs off the start edge of the page with the resume standing on it; beside it, a short
- * quote over the headline and the call to action. The initial content paints from prerendered HTML; the headline rotates after hydration.
+ * quote over the headline and the call to action. Once portfolios are open, the website shows first and turns into its resume and back. The initial content paints from prerendered HTML; the headline rotates after hydration.
  */
-export function Hero() {
+type HeroProps = { portfolioEnabled?: boolean };
+
+export function Hero({ portfolioEnabled = false }: HeroProps) {
 	return (
 		<section aria-labelledby="hero-title" className="overflow-hidden bg-surface-secondary lg:bg-transparent lg:px-5">
 			<div className="mx-auto grid max-w-6xl grid-cols-1 grid-rows-[auto_1fr] gap-y-16 pt-16 md:pt-20 lg:grid-cols-12 lg:gap-y-20 lg:px-3 lg:pt-20 lg:pb-36 xl:py-32">
 				<div className="relative flex items-end lg:col-span-5 lg:row-span-2">
 					<div className="absolute start-0 end-1/2 -top-20 -bottom-12 z-10 rounded-ee-[4rem] bg-accent md:bottom-8 lg:-inset-y-32 lg:-start-[100vw] lg:end-full lg:-me-40" />
 					<div className="relative z-10 mx-auto w-full px-6 pt-8 sm:w-auto sm:px-0 sm:pt-0 lg:w-full">
-						<HeroResume />
+						<HeroResume portfolioEnabled={portfolioEnabled} />
 					</div>
 				</div>
 
@@ -86,7 +88,9 @@ export function Hero() {
 							</span>
 						</h1>
 						<p className="mt-4 text-xl text-pretty text-muted sm:text-2xl">
-							{t`Build an ATS-friendly resume, tailor it to each role, and track every application in one place.`}
+							{portfolioEnabled
+								? t`Publish a portfolio website, build an ATS-friendly resume from the same details, and track every application in one place.`
+								: t`Build an ATS-friendly resume, tailor it to each role, and track every application in one place.`}
 						</p>
 						<div className="mt-8 flex flex-wrap gap-3">
 							<CtaLink />
