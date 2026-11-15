@@ -18,7 +18,7 @@ const allLandingSectionIds = ["portfolio", "features", "templates", "testimonial
 type LandingSectionId = (typeof allLandingSectionIds)[number];
 
 /** The sections on the page: the portfolio has one only once portfolios are open to everyone. */
-export const landingSectionIds = (portfolioEnabled: boolean): LandingSectionId[] =>
+const landingSectionIds = (portfolioEnabled: boolean): LandingSectionId[] =>
 	allLandingSectionIds.filter((id) => portfolioEnabled || id !== "portfolio");
 
 const LandingSectionsContext = createContext<LandingSectionId[]>(landingSectionIds(false));

@@ -170,7 +170,7 @@ export function BusinessCardDialog({ name, headline, username, pageUrl, onClose 
 														/>
 													</div>
 													<div className="grid w-full gap-0.5">
-														<p className="text-[10px] font-medium text-white/60">{caption}</p>
+														<p className="text-xs font-medium text-white/60">{caption}</p>
 														<p dir="ltr" className="font-mono text-body-xs wrap-anywhere text-white/90">
 															{shown}
 														</p>
