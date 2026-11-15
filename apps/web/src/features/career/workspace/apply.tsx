@@ -23,6 +23,7 @@ import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { careerWorkspaceSchema } from "@rezumi/schema/career";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { ThinkingOrb } from "@rezumi/ui/components/thinking-orb";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor, generateFilename } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
@@ -447,11 +448,7 @@ function AnswerCard({
 							isDisabled={disabled || !question.trim()}
 							onPress={() => void ask()}
 						>
-							{generate.isPending ? (
-								<Spinner size="sm" color="current" aria-hidden />
-							) : (
-								<Icon name="sparkle" size={16} />
-							)}
+							{generate.isPending ? <ThinkingOrb size={16} tone="current" /> : <Icon name="sparkle" size={16} />}
 							{generate.isPending ? (
 								<Working steps={workingSteps(empty ? "answer" : "tighten")} />
 							) : empty ? (

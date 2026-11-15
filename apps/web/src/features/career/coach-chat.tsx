@@ -28,11 +28,12 @@ import {
 	MessageScrollerProvider,
 	MessageScrollerViewport,
 } from "@rezumi/ui/components/message-scroller";
+import { ThinkingOrb } from "@rezumi/ui/components/thinking-orb";
 import { TraceIcon, TraceLine, TraceTitle } from "@rezumi/ui/components/trace";
 import { cn } from "@rezumi/utils/style";
 import { Composer, contentClass, copyToClipboard, usedFor, usedSchema } from "./coach-thread";
 import { Eyebrow, MemoryProposal, Working, workingSteps } from "./shared";
-import { attachmentPart } from "@/features/assistant/chat";
+import { attachmentPart, isBlankReply } from "@/features/assistant/chat";
 import { AssistantMarkdown } from "@/features/assistant/markdown";
 import { MessageSources } from "@/features/assistant/message-sources";
 import { ThinkingLine } from "@/features/assistant/orb";
@@ -164,7 +165,14 @@ export function ChatView(props: ChatViewProps) {
 							<MessageScrollerContent aria-busy={streaming} className={cn(contentClass[variant], "flex")}>
 								{messages.length === 0 && !streaming && <MessageScrollerItem>{props.empty(send)}</MessageScrollerItem>}
 								{messages.map((message, index) => (
-									<MessageScrollerItem key={message.id} messageId={message.id} scrollAnchor={message.role === "user"}>
+									<MessageScrollerItem
+										key={message.id}
+										messageId={message.id}
+										scrollAnchor={message.role === "user"}
+										// A reply still on its way with nothing to show yet would add a gap above the working line and
+										// nudge it down. Once it ends (stopped early, say) it shows as it always did, chips and all.
+										className={cn(streaming && index === messages.length - 1 && isBlankReply(message) && "hidden")}
+									>
 										<MessageView
 											message={message}
 											question={questionBefore(messages, index)}
@@ -185,7 +193,7 @@ export function ChatView(props: ChatViewProps) {
 								))}
 
 								<WaitingRow show={streaming} skipEnter={fromPending && messages.length <= 1}>
-									<ThinkingLine className="text-sm">
+									<ThinkingLine mood={answering ? "writing" : "thinking"} className="text-sm">
 										{/* Until the first words arrive, say what's happening; then the answer itself shows progress. */}
 										{answering ? (
 											<Trans>Writing an answer…</Trans>
@@ -217,7 +225,7 @@ export function ChatView(props: ChatViewProps) {
 											className="grid gap-2.5 rounded-xl bg-danger-soft p-3.5 text-sm text-danger-soft-foreground transition-opacity duration-standard ease-enter starting:opacity-0"
 										>
 											<span className="flex gap-2">
-												<Icon name="warning-circle" size={18} className="shrink-0" />
+												<ThinkingOrb size={20} mood="error" className="shrink-0" />
 												{/* Say why when the server knows (a switched-off connection, a limit); otherwise that it didn't answer. */}
 												<span>
 													{getOrpcErrorMessage(error, {

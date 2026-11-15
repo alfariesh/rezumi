@@ -33,7 +33,8 @@ vi.mock("@/features/portfolio/assistant/changes", () => ({
 	PortfolioChanges: (props: { toolCallId: string }) => <p>Changes card {props.toolCallId}</p>,
 }));
 vi.mock("@/features/portfolio/assistant/apply", () => ({ autoApplyMessages: mocks.autoApply }));
-vi.mock("./chat", () => ({
+vi.mock("./chat", async (importOriginal) => ({
+	...(await importOriginal<typeof import("./chat")>()),
 	fileToBase64: async () => "Zm9v",
 	attachmentPart: (file: { id: string; filename: string; mediaType: string }) => ({
 		type: "file",

@@ -11,7 +11,6 @@ import {
 	Label,
 	Separator,
 	Skeleton,
-	Spinner,
 	TextArea,
 	TextField,
 	Typography,
@@ -22,6 +21,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { ThinkingOrb } from "@rezumi/ui/components/thinking-orb";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
@@ -241,7 +241,7 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 				{!readOnly && (
 					<div className="grid justify-items-start gap-3">
 						<Button isDisabled={!ready || !provider} isPending={generate.isPending} onPress={submit}>
-							{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
+							{generate.isPending && <ThinkingOrb size={16} tone="current" />}
 							{generate.isPending ? <Working steps={workingSteps("debrief")} /> : <Trans>Review my answer</Trans>}
 						</Button>
 						{connection.isUnavailable ? (
