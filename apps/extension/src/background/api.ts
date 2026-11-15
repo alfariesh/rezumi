@@ -1,7 +1,8 @@
 /**
  * The service worker's own Rezumi API client, for the little it fetches by itself (the saved posting keys behind the
- * "Saved" marks). Same rules as the panel's (src/sidepanel/api.ts): Bearer token, never cookies, the extension's
- * version header; a 401 refreshes once, a second one ends the connection.
+ * "Saved" marks, the due follow-ups behind the badge count and desktop reminders). Same rules as the panel's
+ * (src/sidepanel/api.ts): Bearer token, never cookies, the extension's version header; a 401 refreshes once, a second
+ * one ends the connection.
  */
 import type { RouterClient } from "@orpc/server";
 // @boundaries-ignore type-only import of the server router
@@ -22,6 +23,8 @@ export function createWorkerClient(auth: TokenSource): RouterClient<typeof route
 		const send = (token: string | null) => {
 			const headers = new Headers(request.headers);
 			headers.set("x-rezumi-extension", EXTENSION_VERSION);
+			// "Due today" is today in this device's time zone (applications.dueFollowUps).
+			headers.set("x-client-timezone", Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC");
 			if (token) headers.set("authorization", `Bearer ${token}`);
 			return fetch(request.url, { method: request.method, headers, body, credentials: "omit", signal: request.signal });
 		};

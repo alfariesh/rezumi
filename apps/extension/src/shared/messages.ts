@@ -43,6 +43,12 @@ const savedMessageSchema = z.object({
 	status: z.enum(APPLICATION_STATUSES),
 });
 
+/**
+ * Side panel → service worker: a follow-up was set, changed or done, so the due list behind the badge and the desktop
+ * reminders is fetched again now rather than at the next hourly alarm.
+ */
+const followUpsMessageSchema = z.object({ type: z.literal("follow-ups") });
+
 export const contentMessageSchema = z.discriminatedUnion("type", [
 	pageMessageSchema,
 	openPanelMessageSchema,
@@ -55,6 +61,7 @@ export const panelMessageSchema = z.discriminatedUnion("type", [
 	tokenMessageSchema,
 	expireMessageSchema,
 	savedMessageSchema,
+	followUpsMessageSchema,
 ]);
 
 export type PageMessage = z.infer<typeof pageMessageSchema>;
@@ -107,6 +114,7 @@ export type MessageResults = {
 	"open-panel": { opened: boolean };
 	"hide-floating": { ok: true };
 	saved: { ok: true };
+	"follow-ups": { ok: true };
 	status: StatusResult;
 	/** `code` says why connecting failed: `cancelled` (window closed), `network`, or an OAuth error code. */
 	connect: { ok: true; account: Account } | { ok: false; code: string };

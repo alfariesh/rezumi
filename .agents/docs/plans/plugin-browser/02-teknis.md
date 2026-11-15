@@ -206,12 +206,14 @@ Pola ini dari pengetahuan umum; diverifikasi dengan halaman nyata di Phase 03 (2
 - **Skor AI:** `applications.ai.matchScore` setelah tersimpan.
 - **Sesuaikan CV / surat lamaran:** buka tab web `/dashboard/applications/<id>/<tab>` dengan tab yang tepat (cek tab mana yang memuat Sesuaikan CV dan surat lamaran di Phase 05). Alur AI berat tetap di web.
 - **Kredit:** saldo dan paket dari `billing.summary`; saat billing mati, angka kredit disembunyikan. Galat kredit/paket → 3.7.
+- Hasil Phase 05: §21 (`resume.matchTerms`, pilihan AI seperti web, persiapan lewat `?prepare=resume`).
 
 ## 11. Pengingat
 
 - Disimpan sebagai `followUpAt` + `followUpNote` lamaran yang sudah ada. Usulan tanggal dari `validThrough` (aturan turunan #6).
 - Panel beranda memakai `dueFollowUps` (atau filter `applications.list`).
 - Alarm tiap 60 menit: perbarui angka badge; bila notifikasi dinyalakan (`optional_permissions: ["notifications"]`), kirim notifikasi sesuai aturan turunan #7. Catatan notifikasi yang sudah terkirim disimpan lokal per tanggal.
+- Hasil Phase 05: §21 (`applications.dueFollowUps`, alarm 09.00, badge angka).
 
 ## 12. Izin dan keamanan
 
@@ -390,3 +392,31 @@ Aturan turunan #2–#5 dikonfirmasi pemilik 2026-11-15 (usulan apa adanya, `00-k
 | Indeed (pencarian + detail)          | posisi, perusahaan, lokasi, deskripsi (cadangan judul deskripsi; `#jobDescriptionText` kosong)                                                                                                                         | lowongan yang dicek tanpa logo                                                                                                                                                                                                                            | `job-header-actions` sudah baris flex, tombol sejajar                                                                                                                                |
 | JobStreet (pencarian + detail)       | posisi, perusahaan, lokasi, jenis kerja, deskripsi                                                                                                                                                                     | ✓ `[data-testid="bx-logo-image"] img` di kartu atas. Temuan: halaman detail juga memuat logo lowongan rekomendasi (`<jobId>-company-logo-container`), jadi tebakan alt "logo" dihapus (lowongan "Pengiklan Anonim" sempat mengambil logo perusahaan lain) | "Lamaran Cepat" dibungkus block; diperbaiki dengan `buttonRow()` → sejajar "Lamaran Cepat · Simpan · Simpan ke Rezumi"                                                               |
 | Glints (detail, tanpa login)         | posisi, perusahaan, gaji, deskripsi; JSON-LD lengkap: `baseSalary` IDR min–max `MONTH` (bentuk sama dengan tes unit → "IDR 4.000.000 – 5.000.000 / month"), `employmentType` `CONTRACTOR` → "Contract", `validThrough` | ✓ `[class*="CompanyLogo"] img` di kartu atas + `hiringOrganization.logo` JSON-LD (lowongan lain di samping tidak ikut)                                                                                                                                    | `TopFold…ButtonContainer` sudah baris flex, tombol sejajar setelah "Lamar" dan ikon simpan/bagikan                                                                                   |
+
+## 21. Catatan implementasi Phase 05 (2026-11-15)
+
+Aturan turunan #6, #7, #11 dikonfirmasi pemilik 2026-11-15 (usulan apa adanya, `00-keputusan.md`).
+
+**Server (hanya menambah).**
+
+- `resume.matchTerms` = `matchResume` (REST `/resumes/{id}/job-matches`) lewat RPC, bertag `Internal`: REST dan spesifikasi OpenAPI tidak berubah. `checks.ts` memakai helper `literal()` alih-alih `RegExp.escape`, karena web dan plugin kini ikut membaca tipe file itu (lib ES2023), dengan hasil yang sama.
+- `applications.dueFollowUps` (`Internal`, GET): lamaran milik pengguna yang `followUpAt` < tengah malam UTC hari esok di zona waktu `x-client-timezone` (`features/applications/follow-ups.ts` `dueBefore`; zona tak dikenal = UTC), bukan status `closed`, terdekat dulu, paling banyak 50 + `total`. Tanggal tindak lanjut adalah hari kalender: web menyimpan hari yang dipilih sebagai tengah malam UTC, plugin mengikutinya (`src/shared/follow-ups.ts`).
+- Web: `/dashboard/applications/<id>?prepare=resume&from=<cv>` membuka dialog "Copy a resume for a job" untuk lamaran itu sekali, lalu parameter dihapus (`features/applications/extension-links.ts` + rute `$applicationId.{-$tab}.tsx`). Tidak ada teks baru.
+
+**Kecocokan (§10, aturan #11).** `match.ts` (murni): CV = pilihan terakhir di perangkat (`settings.matchResumeId`) bila masih ada, else CV utama (`isPrimary`, yang dibuka alamat pendek), else CV terbaru. Bagian "Kecocokan" di form dan layar tersimpan: pemilih CV (diingat; juga di Pengaturan), `matchTerms` dengan deskripsi yang diam ±500 ms, persentase istilah, chip "Belum ada di CV-mu" dulu lalu "Ada di CV-mu", paling banyak 12, sisanya "+N". Catatan: mesin istilah belum mengenal bahasa Indonesia (backlog B14).
+
+**AI.** `ai.ts` (murni) = aturan web `useAiSource`: saat billing menyala dan server punya AI, pilih Rezumi AI (kredit) atau koneksi sendiri (`settings.aiSource`, pemilih "Jalankan AI dengan" hanya bila keduanya ada); saat billing mati, angka kredit tidak tampil dan server memakai bawaannya. "Baca dengan AI" menampilkan biaya (1 kredit) dan saldo sebelum menyala, mati dengan alasan bila tidak ada AI; setiap kali dinyalakan = bacaan baru dengan `idempotencyKey` baru (galat kredit sebelumnya tidak tersimpan di cache). Galat kredit/paket → 3.7 "Kreditmu habis" + Lihat paket + Simpan tanpa AI. **Skor AI** di layar tersimpan: tombol "Skor AI (4 kredit)", menautkan CV kecocokan ke lamaran dulu bila belum ada CV, lalu `applications.ai.matchScore`; skor + kekuatan/kekurangan, juga skor tersimpan dari web (`aiMetadata.matchScore`).
+
+**Persiapan.** Sesuaikan CV → tautan web di atas (`from` = CV lamaran, else CV kecocokan). Tulis surat lamaran → `coverLetters.create({ name, applicationId, resumeId })` seperti tombol "Write" di web, lalu tab `/builder/letter/<id>`; bila sudah ada → "Buka surat lamaran". Buka di Rezumi. Tab `WORKSPACE_TABS` tidak memuat alat CV/surat, jadi tidak dipakai.
+
+**Pengingat (§11, aturan #6, #7).**
+
+- Form simpan: "Tindak lanjut pada" + catatan; bawaan `defaultFollowUpDay(validThrough)` = 2 hari sebelum batas waktu (hari ini bila batasnya lebih dekat, kosong bila sudah lewat atau tidak tercantum), dengan petunjuk "Lowongan ditutup <tgl>." selama masih bawaan. Layar tersimpan: ubah/hapus pengingat. Beranda: "Jatuh tempo" (`dueFollowUps`, 10 teratas) dengan "Selesai" (mengosongkan pengingat).
+- Service worker: `followUps:due` (local) dari `dueFollowUps` saat terhubung/mulai, setelah pesan panel `follow-ups` (simpan dengan pengingat, ubah, selesai), dan alarm `follow-ups` tiap 60 menit. Badge (`badge.ts`): ✓ hijau di tab lowongan tersimpan, selain itu angka merah jumlah jatuh tempo (global + per tab yang dikenal), judul ikon ikut.
+- Notifikasi (aturan #7): bawaan mati; Pengaturan → "Pengingat desktop" meminta izin `notifications` (opsional, sudah di manifest sejak Phase 01) di dalam klik; dimatikan → izin dilepas. Alarm `follow-up-reminder` pada 09.00 berikutnya di perangkat (dijadwalkan ulang setiap kali berbunyi) + pengejaran tiap jam: `remindersToShow` hanya setelah 09.00, satu per lamaran per hari (`followUps:notified`, hanya entri hari ini). Teks: "Tindak lanjut hari ini" / "<posisi> di <perusahaan>" (+ catatan). Klik → lamaran di Rezumi. Izin dicabut di browser → `permissions.onRemoved` mematikan setelan, dan setiap kirim memeriksa `permissions.contains`. Semua dihapus saat Keluar.
+
+**Izin:** tidak ada izin baru (`notifications` tetap opsional).
+
+**Tes:** API `follow-ups.test.ts` (2), `match-terms.test.ts` (2), DB nyata `extension.integration.test.ts` +2 (hanya milik sendiri, bukan `closed`, terdekat dulu, batas + total, zona waktu); web `extension-links.test.ts` (2); plugin unit 119 (baru: `shared/follow-ups.test.ts` 9 — bawaan #6 dan frekuensi #7, `badge.test.ts` 3, `ai.test.ts` 5 — kredit saat billing mati/menyala, `match.test.ts` 6, draf pengingat, pesan `follow-ups`). Playwright `tests/prepare.spec.ts` (2, server lokal + stub AI `tests/ai-stub.ts`): pengingat bawaan dari batas waktu Glints, persentase berubah saat CV diganti dan pilihan diingat, simpan dengan pengingat hari ini → badge "1" (tab lowongan tetap ✓), notifikasi tidak muncul tanpa izin, "Sesuaikan CV" membuka dialog web yang benar, "Tulis surat lamaran" membuka editor surat, beranda Jatuh tempo → Selesai → badge kosong; akun Gratis 0 kredit → biaya tampil, server menolak, "Kreditmu habis" + Simpan tanpa AI; koneksi AI sendiri (stub) mengisi kolom dan Skor AI 72/100. Seluruh suite plugin 31 tes (29 + 2 screenshot). Dicek manual: Rezumi AI dengan kredit nyata di server lokal (stub sebagai AI server) memotong 1 kredit, kunci yang sama tidak menagih dua kali.
+
+**Belum otomatis:** notifikasi desktop sungguhan (Playwright tidak bisa menjawab permintaan izin browser; logika teruji unit), Edge, billing mati di e2e (teruji unit) — dicek pemilik di Phase 07.

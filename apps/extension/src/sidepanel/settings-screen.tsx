@@ -8,6 +8,7 @@ import { SwitchRow } from "@rezumi/ui/components/switch";
 import { EXTENSION_VERSION } from "../shared/config";
 import { askWorker } from "./api";
 import { SelectField } from "./fields";
+import { useMatchResume } from "./match-section";
 import { useSettings } from "./stores";
 
 /** The browser's own page for extension shortcuts (Edge has its own address). */
@@ -25,12 +26,14 @@ const planName = (planId: string) => (planId === "plus" ? "Plus" : planId === "p
 
 /**
  * 01-desain.md §3.8: the connected account (name, email, plan), the language, the on-page button (aturan turunan #5),
- * the keyboard shortcut and Sign out. The default resume and notifications join in Phase 05.
+ * the resume the match uses (aturan turunan #11), desktop reminders (aturan turunan #7: the browser asks for permission
+ * when they are turned on), the keyboard shortcut and Sign out.
  */
 export function SettingsScreen({ account, summary }: SettingsScreenProps) {
 	const { t } = useLingui();
 	const signOut = useMutation({ mutationFn: () => askWorker({ type: "disconnect" }) });
 	const [settings, updateSettings] = useSettings();
+	const matchResume = useMatchResume();
 	// Plans that don't apply (billing off) say nothing about a plan.
 	const plan = summary.enabled ? (planName(summary.planId) ?? t`Free`) : null;
 
@@ -74,6 +77,31 @@ export function SettingsScreen({ account, summary }: SettingsScreenProps) {
 					onChange={(language) => {
 						if (language === "system" || language === "en" || language === "id") void updateSettings({ language });
 					}}
+				/>
+				{matchResume.resumes?.length ? (
+					<SelectField
+						label={t`Resume for the match score`}
+						value={matchResume.id ?? ""}
+						options={matchResume.resumes.map((resume) => ({ value: resume.id, label: resume.name }))}
+						onChange={matchResume.choose}
+					/>
+				) : null}
+				<SwitchRow
+					isSelected={settings?.notifications ?? false}
+					isDisabled={!settings}
+					onChange={(on) => {
+						// The permission request must start in the click itself (the browser asks only during a gesture).
+						if (on)
+							void chrome.permissions
+								.request({ permissions: ["notifications"] })
+								.then((granted) => updateSettings({ notifications: granted }));
+						else
+							void updateSettings({ notifications: false }).then(() =>
+								chrome.permissions.remove({ permissions: ["notifications"] }),
+							);
+					}}
+					label={t`Desktop reminders`}
+					description={t`A notification at 9:00 on the day a follow-up is due, once per application.`}
 				/>
 				<SwitchRow
 					isSelected={settings?.pageButton ?? true}
