@@ -26,5 +26,6 @@ export const applicationsRouter = {
 	readCapture: extensionRouter.readCapture,
 	reportCapture: extensionRouter.reportCapture,
 	saveLogo: extensionRouter.saveLogo,
+	dueFollowUps: extensionRouter.dueFollowUps,
 	ai: aiRouter,
 };

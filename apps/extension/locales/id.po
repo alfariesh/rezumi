@@ -7,6 +7,27 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: id\n"
 
+#. Browser extension: the account's Rezumi AI credit balance
+#. placeholder {0}: choice.balance
+#: src/sidepanel/ai-parts.tsx
+msgid "{0} credits left"
+msgstr "Sisa {0} kredit"
+
+#. Browser extension: share of the posting's terms found in the resume
+#: src/sidepanel/match-section.tsx
+msgid "{percent}% of terms"
+msgstr "{percent}% istilah cocok"
+
+#. More keywords
+#. placeholder {0}: chips.more
+#: src/sidepanel/match-section.tsx
+msgid "+{0} more"
+msgstr "+{0} lainnya"
+
+#: src/sidepanel/settings-screen.tsx
+msgid "A notification at 9:00 on the day a follow-up is due, once per application."
+msgstr "Notifikasi pukul 09.00 pada hari tindak lanjut, sekali per lamaran."
+
 #: src/sidepanel/settings-screen.tsx
 msgid "Account"
 msgstr "Akun"
@@ -27,9 +48,27 @@ msgstr "Tambah tag"
 msgid "Add note"
 msgstr "Tambah catatan"
 
+#: src/sidepanel/ai-parts.tsx
+msgid "Add the job description in Rezumi to get an AI score."
+msgstr "Tambahkan deskripsi lowongan di Rezumi untuk mendapat skor AI."
+
+#: src/sidepanel/match-section.tsx
+msgid "Add the job description to see the match."
+msgstr "Tambahkan deskripsi lowongan untuk melihat kecocokan."
+
 #: src/sidepanel/posting-screen.tsx
 msgid "AI couldn't read this posting; the fields come from the page."
 msgstr "AI tidak bisa membaca lowongan ini; kolom diisi dari halaman."
+
+#. Browser extension: the AI's fit score for this job
+#: src/sidepanel/ai-parts.tsx
+msgid "AI score"
+msgstr "Skor AI"
+
+#. Browser extension button: score this job with AI, showing its credit cost
+#: src/sidepanel/ai-parts.tsx
+msgid "AI score ({cost} credits)"
+msgstr "Skor AI ({cost} kredit)"
 
 #. Status choice when saving a job the person applied to
 #: src/sidepanel/posting-screen.tsx
@@ -49,6 +88,10 @@ msgstr "Dilamar"
 #: src/sidepanel/posting-screen.tsx
 msgid "Applied on"
 msgstr "Tanggal melamar"
+
+#: src/sidepanel/follow-up.tsx
+msgid "Ask the recruiter for an update"
+msgstr "Tanya kabar ke perekrut"
 
 #: src/sidepanel/connected-screen.tsx
 msgid "Back"
@@ -71,6 +114,10 @@ msgstr "Cek pembaruan"
 msgid "Checking your applications…"
 msgstr "Mengecek lamaranmu…"
 
+#: src/sidepanel/follow-up.tsx
+msgid "Clear"
+msgstr "Hapus"
+
 #. Application stage: ended
 #: src/sidepanel/status.ts
 msgid "Closed"
@@ -79,6 +126,10 @@ msgstr "Tertutup"
 #: src/sidepanel/posting-screen.tsx
 msgid "Company"
 msgstr "Perusahaan"
+
+#: src/sidepanel/match-section.tsx
+msgid "Comparing…"
+msgstr "Membandingkan…"
 
 #: src/sidepanel/save-error.tsx
 msgid "Connect again"
@@ -102,9 +153,38 @@ msgstr "Lanjut"
 msgid "Couldn't connect to Rezumi. Try again."
 msgstr "Gagal terhubung ke Rezumi. Coba lagi."
 
+#. placeholder {0}: application.company
+#: src/sidepanel/prepare.tsx
+msgid "Cover letter — {0}"
+msgstr "Surat lamaran — {0}"
+
+#: src/sidepanel/match-section.tsx
+msgid "Create a resume in Rezumi to see how well you match."
+msgstr "Buat CV di Rezumi untuk melihat seberapa cocok kamu."
+
 #: src/sidepanel/posting-screen.tsx
 msgid "Description"
 msgstr "Deskripsi"
+
+#: src/sidepanel/settings-screen.tsx
+msgid "Desktop reminders"
+msgstr "Pengingat desktop"
+
+#. Browser extension: mark a follow-up reminder as done
+#: src/sidepanel/home-screen.tsx
+msgid "Done"
+msgstr "Selesai"
+
+#. Clear a follow-up reminder
+#. placeholder {0}: item.role
+#: src/sidepanel/home-screen.tsx
+msgid "Done: {0}"
+msgstr "Selesai: {0}"
+
+#. Browser extension home: follow-ups due today or earlier
+#: src/sidepanel/home-screen.tsx
+msgid "Due"
+msgstr "Jatuh tempo"
 
 #: src/sidepanel/posting-screen.tsx
 msgid "Employment type"
@@ -115,13 +195,31 @@ msgstr "Jenis kerja"
 msgid "Extension"
 msgstr "Plugin"
 
-#: src/sidepanel/posting-screen.tsx
-msgid "Fills the fields from the posting's text. Uses 1 credit each time."
-msgstr "Mengisi kolom dari teks lowongan. Memakai 1 kredit setiap kali."
+#: src/sidepanel/ai-parts.tsx
+msgid "Fills the fields from the posting's text with your AI connection."
+msgstr "Mengisi kolom dari teks lowongan dengan koneksi AI-mu."
+
+#. Browser extension: Read with AI, paid with Rezumi AI credits
+#: src/sidepanel/ai-parts.tsx
+msgid "Fills the fields from the posting's text. Uses {cost} credit each time."
+msgstr "Mengisi kolom dari teks lowongan. Memakai {cost} kredit setiap kali."
+
+#: src/sidepanel/follow-up.tsx
+msgid "Follow up on"
+msgstr "Tindak lanjut pada"
 
 #: src/sidepanel/settings-screen.tsx
 msgid "Free"
 msgstr "Gratis"
+
+#: src/sidepanel/ai-parts.tsx
+msgid "Gaps"
+msgstr "Kekurangan"
+
+#. Browser extension: keyword chips heading
+#: src/sidepanel/match-section.tsx
+msgid "In your resume"
+msgstr "Ada di CV-mu"
 
 #. Application stage
 #: src/sidepanel/status.ts
@@ -161,6 +259,16 @@ msgstr "Memuat…"
 msgid "Location"
 msgstr "Lokasi"
 
+#. Browser extension: how well the job posting matches the person's resume
+#: src/sidepanel/match-section.tsx
+msgid "Match"
+msgstr "Kecocokan"
+
+#. Browser extension: keyword chips heading
+#: src/sidepanel/match-section.tsx
+msgid "Missing from your resume"
+msgstr "Belum ada di CV-mu"
+
 #: src/sidepanel/posting-screen.tsx
 msgid "New tag"
 msgstr "Tag baru"
@@ -169,6 +277,18 @@ msgstr "Tag baru"
 #: src/sidepanel/connect-screen.tsx
 msgid "No account yet? <0>Sign up free</0>"
 msgstr "Belum punya akun? <0>Daftar gratis</0>"
+
+#: src/sidepanel/ai-parts.tsx
+msgid "No AI is set up for your account."
+msgstr "Belum ada AI untuk akunmu."
+
+#: src/sidepanel/ai-parts.tsx
+msgid "No AI is set up for your account. Add an AI connection in Rezumi's settings to use this."
+msgstr "Belum ada AI untuk akunmu. Tambahkan koneksi AI di pengaturan Rezumi untuk memakai ini."
+
+#: src/sidepanel/match-section.tsx
+msgid "No job terms found in this description."
+msgstr "Tidak ada istilah pekerjaan di deskripsi ini."
 
 #: src/sidepanel/posting-screen.tsx
 msgid "No resume"
@@ -201,7 +321,11 @@ msgstr "Buka halaman lowongan untuk menyimpannya ke Rezumi."
 msgid "Open application tracker"
 msgstr "Buka pelacak lamaran"
 
-#: src/sidepanel/posting-screen.tsx
+#: src/sidepanel/prepare.tsx
+msgid "Open cover letter"
+msgstr "Buka surat lamaran"
+
+#: src/sidepanel/prepare.tsx
 msgid "Open in Rezumi"
 msgstr "Buka di Rezumi"
 
@@ -210,15 +334,25 @@ msgstr "Buka di Rezumi"
 msgid "Paste description"
 msgstr "Tempel deskripsi"
 
+#: src/sidepanel/ai-parts.tsx
+msgid "Pick a resume above to get an AI score."
+msgstr "Pilih CV di atas untuk mendapat skor AI."
+
 #. Browser extension on a job board search page with no posting selected
 #: src/sidepanel/page-screen.tsx
 msgid "Pick one job posting to save it."
 msgstr "Pilih satu lowongan untuk menyimpannya."
 
-#: src/sidepanel/posting-screen.tsx
+#. Browser extension: buttons that open Rezumi's tools for preparing this application
+#: src/sidepanel/prepare.tsx
+msgid "Prepare"
+msgstr "Persiapan"
+
+#: src/sidepanel/ai-parts.tsx
 msgid "Read with AI"
 msgstr "Baca dengan AI"
 
+#. Browser extension status while it reads the open web page
 #. Browser extension status while it reads the open web page
 #. Browser extension status while it reads the open web page
 #: src/sidepanel/page-screen.tsx
@@ -235,6 +369,23 @@ msgstr "Membaca dengan AI…"
 msgid "Recently saved"
 msgstr "Terakhir disimpan"
 
+#. Browser extension: the follow-up reminder for this application
+#: src/sidepanel/follow-up.tsx
+msgid "Reminder"
+msgstr "Pengingat"
+
+#: src/sidepanel/follow-up.tsx
+msgid "Reminder cleared."
+msgstr "Pengingat dihapus."
+
+#: src/sidepanel/follow-up.tsx
+msgid "Reminder note"
+msgstr "Catatan pengingat"
+
+#: src/sidepanel/follow-up.tsx
+msgid "Reminder saved."
+msgstr "Pengingat disimpan."
+
 #. Browser extension button that tells Rezumi a page could not be read
 #: src/sidepanel/page-screen.tsx
 msgid "Report this page"
@@ -245,8 +396,20 @@ msgid "Resume"
 msgstr "CV"
 
 #: src/sidepanel/settings-screen.tsx
+msgid "Resume for the match score"
+msgstr "CV untuk skor kecocokan"
+
+#: src/sidepanel/match-section.tsx
+msgid "Resume to compare"
+msgstr "CV pembanding"
+
+#: src/sidepanel/settings-screen.tsx
 msgid "Rezumi account"
 msgstr "Akun Rezumi"
+
+#: src/sidepanel/ai-parts.tsx
+msgid "Rezumi AI (uses credits)"
+msgstr "Rezumi AI (memakai kredit)"
 
 #: src/sidepanel/save-error.tsx
 msgid "Rezumi couldn't save this. Check the details and try again."
@@ -260,6 +423,10 @@ msgstr "Rezumi sedang bermasalah."
 #: src/sidepanel/posting-screen.tsx
 msgid "Role"
 msgstr "Posisi"
+
+#: src/sidepanel/ai-parts.tsx
+msgid "Run AI with"
+msgstr "Jalankan AI dengan"
 
 #: src/sidepanel/posting-screen.tsx
 msgid "Salary"
@@ -287,6 +454,10 @@ msgstr "Simpan loker ke Rezumi"
 #: src/sidepanel/posting-screen.tsx
 msgid "Save options"
 msgstr "Pilihan simpan"
+
+#: src/sidepanel/follow-up.tsx
+msgid "Save reminder"
+msgstr "Simpan pengingat"
 
 #: src/sidepanel/posting-screen.tsx
 msgid "Save to Rezumi"
@@ -320,10 +491,18 @@ msgstr "Menyimpan lowongan ini lagi sebagai lamaran baru."
 msgid "Saving…"
 msgstr "Menyimpan…"
 
+#: src/sidepanel/ai-parts.tsx
+msgid "Score again with AI"
+msgstr "Skor ulang dengan AI"
+
 #. Application stage
 #: src/sidepanel/status.ts
 msgid "Screening"
 msgstr "Penyaringan"
+
+#: src/sidepanel/home-screen.tsx
+msgid "See all in Rezumi"
+msgstr "Lihat semua di Rezumi"
 
 #: src/sidepanel/save-error.tsx
 msgid "See plans"
@@ -338,6 +517,10 @@ msgstr "Blok teks lowongan di halaman lalu klik kanan \"Simpan teks terpilih ke 
 #: src/sidepanel/page-screen.tsx
 msgid "Sends this page's address and which details were missing, not its content."
 msgstr "Yang dikirim hanya alamat halaman dan detail yang tidak terbaca, bukan isinya."
+
+#: src/sidepanel/ai-parts.tsx
+msgid "Set up AI"
+msgstr "Atur AI"
 
 #: src/sidepanel/connected-screen.tsx
 msgid "Settings"
@@ -362,9 +545,18 @@ msgstr "Beberapa detail tidak bisa dibaca dari halaman ini."
 msgid "Status"
 msgstr "Status"
 
+#: src/sidepanel/ai-parts.tsx
+msgid "Strengths"
+msgstr "Kekuatan"
+
 #: src/sidepanel/posting-screen.tsx
 msgid "Tags"
 msgstr "Tag"
+
+#. Browser extension: open Rezumi to make a copy of a resume tailored to this job
+#: src/sidepanel/prepare.tsx
+msgid "Tailor resume"
+msgstr "Sesuaikan CV"
 
 #. Browser extension confirmation after the person reported a page it could not read
 #: src/sidepanel/page-screen.tsx
@@ -379,6 +571,16 @@ msgstr "Sambungan ke Rezumi berakhir."
 #: src/sidepanel/connect-screen.tsx
 msgid "The connection to Rezumi ended. Connect again to continue."
 msgstr "Sambungan ke Rezumi berakhir. Hubungkan lagi untuk lanjut."
+
+#: src/sidepanel/match-section.tsx
+msgid "The match couldn't be worked out right now."
+msgstr "Kecocokan belum bisa dihitung sekarang."
+
+#. Browser extension: why the reminder date was filled in
+#. placeholder {0}: new Date(`${deadline}T00:00:00Z`).toLocaleDateString(undefined, { day: "numeric", month: "short", timeZone: "UTC" })
+#: src/sidepanel/posting-screen.tsx
+msgid "The posting closes on {0}."
+msgstr "Lowongan ditutup {0}."
 
 #: src/sidepanel/page-screen.tsx
 msgid "The report could not be sent. Try again."
@@ -420,6 +622,11 @@ msgstr "Tunggu sebentar, lalu coba lagi."
 msgid "We couldn't find a job posting on this page."
 msgstr "Kami tidak menemukan lowongan di halaman ini."
 
+#. Browser extension: start a cover letter for this job in Rezumi
+#: src/sidepanel/prepare.tsx
+msgid "Write cover letter"
+msgstr "Tulis surat lamaran"
+
 #. Browser extension: the same role at the same company is already saved from another job site
 #: src/sidepanel/posting-screen.tsx
 msgid "You already saved a similar job:"
@@ -437,3 +644,12 @@ msgstr "Kamu sedang offline. Kami simpan isianmu di sini."
 #: src/sidepanel/save-error.tsx
 msgid "You're out of credits."
 msgstr "Kreditmu habis."
+
+#: src/sidepanel/ai-parts.tsx
+msgid "Your AI connection"
+msgstr "Koneksi AI-mu"
+
+#. Browser extension: Rezumi AI trial credits
+#: src/sidepanel/ai-parts.tsx
+msgid "Your first use adds free credits."
+msgstr "Pemakaian pertama menambah kredit gratis."

@@ -11,6 +11,7 @@ function setup() {
 		"open-panel": vi.fn(async () => ({ opened: true })),
 		"hide-floating": vi.fn(async () => ({ ok: true as const })),
 		saved: vi.fn(async () => ({ ok: true as const })),
+		"follow-ups": vi.fn(async () => ({ ok: true as const })),
 		status: vi.fn(async () => ({ state: "signed-out" as const, account: null, version: "0.1.0" })),
 		connect: vi.fn(async () => ({ ok: false as const, code: "cancelled" })),
 		disconnect: vi.fn(async () => ({ ok: true as const })),
@@ -90,6 +91,9 @@ describe("createMessageRouter", () => {
 		expect(await route(saved, panelSender)).toEqual({ ok: true, data: { ok: true } });
 		expect(await route({ ...saved, status: "hired" }, panelSender)).toEqual({ ok: false, error: "invalid-message" });
 		expect(await route({ type: "open-panel" }, panelSender)).toEqual({ ok: false, error: "invalid-message" });
+		// Only the panel asks for the due follow-ups again (after setting or clearing a reminder).
+		expect(await route({ type: "follow-ups" }, panelSender)).toEqual({ ok: true, data: { ok: true } });
+		expect(await route({ type: "follow-ups" }, contentSender)).toEqual({ ok: false, error: "invalid-message" });
 		expect(await route({ type: "hide-floating", site: "monster" }, contentSender)).toEqual({
 			ok: false,
 			error: "invalid-message",

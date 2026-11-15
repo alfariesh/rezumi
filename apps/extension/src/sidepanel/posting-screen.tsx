@@ -19,9 +19,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { suggestContacts } from "@rezumi/job-sites/contacts";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SwitchRow } from "@rezumi/ui/components/switch";
 import { rezumiLink } from "../shared/config";
+import { deadlineDay, defaultFollowUpDay, localDay } from "../shared/follow-ups";
 import { draftKey, tabSelectionKey } from "../shared/storage";
+import { aiFields } from "./ai";
+import { AiScore, AiSourcePicker, ReadWithAiSwitch } from "./ai-parts";
 import { askWorker, orpc } from "./api";
 import {
 	canSave,
@@ -35,9 +37,13 @@ import {
 } from "./draft";
 import { errorKind } from "./errors";
 import { SelectField, TextField } from "./fields";
+import { ReminderEditor, ReminderFields } from "./follow-up";
+import { MatchSection, useMatchResume } from "./match-section";
+import { PrepareSection } from "./prepare";
 import { SaveError } from "./save-error";
 import { useStatusLabels } from "./status";
 import { useSettings, useSavedPosting } from "./stores";
+import { useAiChoice } from "./use-ai";
 
 type PostingScreenProps = {
 	tabId: number;
@@ -53,7 +59,13 @@ export function PostingScreen({ tabId, reading, summary }: PostingScreenProps) {
 	const identity = postingIdentity(reading);
 	const savedLocally = useSavedPosting(reading.key);
 	const [settings] = useSettings();
-	const readWithAi = settings?.readWithAi ?? false;
+	const ai = useAiChoice();
+	// Aturan turunan #3 keeps the switch's last position; it only runs when some AI can (ai.ts).
+	const readWithAi = (settings?.readWithAi ?? false) && Boolean(ai.source);
+	// One key per AI reading on this panel, so a retry of the same reading takes Rezumi AI's credit once. Turning the
+	// switch on again is a new reading (after buying credits, say), with a new key and no cached failure.
+	const [panelKey] = useState(() => crypto.randomUUID());
+	const [aiAttempt, setAiAttempt] = useState(0);
 	const selection = useContextMenuSelection(tabId, reading.url);
 	const withSelection = useMemo(
 		() => (selection && !reading.selection ? { ...reading, selection } : reading),
@@ -74,10 +86,11 @@ export function PostingScreen({ tabId, reading, summary }: PostingScreenProps) {
 				...(withSelection.selection ? { selection: withSelection.selection } : {}),
 				fields: withSelection.fields,
 				useAi: readWithAi,
-				...(readWithAi ? { aiSource: "rezumi" as const } : {}),
+				...(readWithAi ? aiFields(ai, `${panelKey}:${aiAttempt}:${identity}`.slice(0, 100)) : {}),
 			},
 		}),
-		enabled: settings !== undefined,
+		// With AI on, wait for the account's choice so the reading runs once, on the right AI.
+		enabled: settings !== undefined && (!settings.readWithAi || !ai.loading),
 		staleTime: Number.POSITIVE_INFINITY,
 		retry: false,
 	});
@@ -116,6 +129,8 @@ export function PostingScreen({ tabId, reading, summary }: PostingScreenProps) {
 			summary={summary}
 			capture={capture}
 			readWithAi={readWithAi}
+			ai={ai}
+			onAiTurnedOn={() => setAiAttempt((attempt) => attempt + 1)}
 			duplicate={asNew === identity}
 			onSaved={(id) => setSavedHere({ identity, id })}
 		/>
@@ -157,6 +172,8 @@ type SaveFormProps = {
 	summary: ReadingSummary;
 	capture: CaptureQuery;
 	readWithAi: boolean;
+	ai: ReturnType<typeof useAiChoice>;
+	onAiTurnedOn: () => void;
 	/** The person chose "Save as a new application" for a posting already saved. */
 	duplicate: boolean;
 	onSaved: (id: string) => void;
@@ -188,7 +205,18 @@ function useDraft(tabId: number, identity: string, summary: ReadingSummary) {
 	return { draft, update, clear };
 }
 
-function SaveForm({ tabId, identity, reading, summary, capture, readWithAi, duplicate, onSaved }: SaveFormProps) {
+function SaveForm({
+	tabId,
+	identity,
+	reading,
+	summary,
+	capture,
+	readWithAi,
+	ai,
+	onAiTurnedOn,
+	duplicate,
+	onSaved,
+}: SaveFormProps) {
 	const { t } = useLingui();
 	const queryClient = useQueryClient();
 	const { draft, update, clear } = useDraft(tabId, identity, summary);
@@ -242,6 +270,7 @@ function SaveForm({ tabId, identity, reading, summary, capture, readWithAi, dupl
 				if (__DEV__) console.info(`[Rezumi] saved in ${Math.round(performance.now() - startedAt.current)} ms`);
 				clear();
 				void askWorker({ type: "saved", key: reading.key, id, status: draft.values.status });
+				if (input.followUpAt) void askWorker({ type: "follow-ups" });
 				if (captured?.companyLogoUrl) saveLogo.mutate({ id, logoUrl: captured.companyLogoUrl });
 				void queryClient.invalidateQueries({ queryKey: orpc.applications.key() });
 				onSaved(id);
@@ -250,6 +279,18 @@ function SaveForm({ tabId, identity, reading, summary, capture, readWithAi, dupl
 	};
 
 	const tagOptions = [...new Set([...(knownTags.data ?? []), ...draft.values.tags])].slice(0, 30);
+	// Says why the reminder starts where it does while it is still the closing date's default (aturan turunan #6).
+	const deadline = deadlineDay(captured?.validThrough);
+	const reminderHint =
+		deadline &&
+		!draft.edited.includes("followUpOn") &&
+		draft.values.followUpOn &&
+		draft.values.followUpOn === defaultFollowUpDay(captured?.validThrough, localDay())
+			? t({
+					message: `The posting closes on ${new Date(`${deadline}T00:00:00Z`).toLocaleDateString(undefined, { day: "numeric", month: "short", timeZone: "UTC" })}.`,
+					comment: "Browser extension: why the reminder date was filled in",
+				})
+			: null;
 	const similar = captured?.similar ?? [];
 	const values = draft.values;
 
@@ -338,6 +379,8 @@ function SaveForm({ tabId, identity, reading, summary, capture, readWithAi, dupl
 				</Disclosure.Content>
 			</Disclosure>
 
+			<MatchSection description={values.description} />
+
 			<section aria-labelledby="save-heading" className="flex flex-col gap-4">
 				<h2 id="save-heading" className="sr-only">
 					<Trans>Save options</Trans>
@@ -363,6 +406,12 @@ function SaveForm({ tabId, identity, reading, summary, capture, readWithAi, dupl
 					onChange={(resumeId) => set({ resumeId })}
 				/>
 				<TagPicker selected={values.tags} options={tagOptions} onChange={(tags) => set({ tags })} />
+				<ReminderFields
+					day={values.followUpOn}
+					note={values.followUpNote}
+					hint={reminderHint}
+					onChange={(patch) => set(patch)}
+				/>
 				{suggestions.length > 0 ? (
 					<fieldset className="flex flex-col gap-2">
 						<legend className="mb-1 text-sm font-medium">
@@ -395,12 +444,15 @@ function SaveForm({ tabId, identity, reading, summary, capture, readWithAi, dupl
 						})}
 					</fieldset>
 				) : null}
-				<SwitchRow
+				<ReadWithAiSwitch
+					choice={ai}
 					isSelected={readWithAi}
-					onChange={(on) => void updateSettings({ readWithAi: on })}
-					label={t`Read with AI`}
-					description={t`Fills the fields from the posting's text. Uses 1 credit each time.`}
+					onChange={(on) => {
+						if (on) onAiTurnedOn();
+						void updateSettings({ readWithAi: on });
+					}}
 				/>
+				{readWithAi ? <AiSourcePicker choice={ai} /> : null}
 			</section>
 
 			<div aria-live="polite" className="flex flex-col gap-3">
@@ -578,6 +630,8 @@ function SavedView({ id, postingKey, justSaved, onSaveAsNew }: SavedViewProps) {
 	const labels = useStatusLabels();
 	const application = useQuery(orpc.applications.getById.queryOptions({ input: { id } }));
 	const update = useMutation(orpc.applications.update.mutationOptions());
+	const ai = useAiChoice();
+	const matchResume = useMatchResume();
 	const addNote = useMutation(orpc.applications.addNote.mutationOptions());
 	const [note, setNote] = useState("");
 
@@ -639,10 +693,12 @@ function SavedView({ id, postingKey, justSaved, onSaveAsNew }: SavedViewProps) {
 					onChange={changeStatus}
 				/>
 				{update.isError ? <SaveError kind={errorKind(update.error)} onRetry={() => update.reset()} /> : null}
-				<ExternalButton href={rezumiLink(`/dashboard/applications/${id}`)}>
-					<Trans>Open in Rezumi</Trans>
-				</ExternalButton>
 			</section>
+
+			{data.jobDescription?.trim() ? <MatchSection description={data.jobDescription} /> : null}
+			<AiScore application={data} resumeId={matchResume.id} choice={ai} />
+			<PrepareSection application={data} matchResumeId={matchResume.id} />
+			<ReminderEditor key={`${data.id}:${data.followUpAt ? String(data.followUpAt) : ""}`} application={data} />
 
 			<form
 				className="flex flex-col gap-2"

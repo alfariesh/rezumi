@@ -65,6 +65,15 @@ export type Settings = {
 	readWithAi: boolean;
 	/** Boards where the person closed the floating button (it shows when the board's usual spot is missing). */
 	floatingHidden: string[];
+	/**
+	 * The resume the match score compares with (aturan turunan #11): null until the person picks one, then the account's
+	 * primary resume is used. Remembered on this device.
+	 */
+	matchResumeId: string | null;
+	/** Which AI runs AI actions when the account chooses (Rezumi AI with credits, or its own connection); null: default. */
+	aiSource: "rezumi" | "own" | null;
+	/** Desktop reminders (aturan turunan #7: off by default; the browser asks for permission when turned on). */
+	notifications: boolean;
 };
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -72,6 +81,9 @@ export const DEFAULT_SETTINGS: Settings = {
 	pageButton: true,
 	readWithAi: false,
 	floatingHidden: [],
+	matchResumeId: null,
+	aiSource: null,
+	notifications: false,
 };
 
 /** Settings as stored, with defaults for anything missing or malformed. */
@@ -84,6 +96,10 @@ export function readSettings(value: unknown): Settings {
 		floatingHidden: Array.isArray(stored.floatingHidden)
 			? stored.floatingHidden.filter((site): site is string => typeof site === "string").slice(0, 10)
 			: [],
+		matchResumeId:
+			typeof stored.matchResumeId === "string" && stored.matchResumeId.length <= 100 ? stored.matchResumeId : null,
+		aiSource: stored.aiSource === "rezumi" || stored.aiSource === "own" ? stored.aiSource : null,
+		notifications: stored.notifications === true,
 	};
 }
 
@@ -98,3 +114,29 @@ export const draftKey = (tabId: number) => `draft:${tabId}`;
 
 /** session: text the person saved through the context menu in a tab, until the panel reads it. */
 export const tabSelectionKey = (tabId: number) => `tabSelection:${tabId}`;
+
+/**
+ * local: the account's follow-ups due today or earlier (`applications.dueFollowUps`), behind the toolbar badge's count
+ * and the desktop reminders (02-teknis.md §11). Removed on sign-out.
+ */
+export const DUE_FOLLOW_UPS = "followUps:due";
+
+export type DueFollowUp = {
+	id: string;
+	role: string;
+	company: string;
+	/** The follow-up day as stored (midnight UTC of the picked day), ISO. */
+	followUpAt: string;
+	followUpNote: string | null;
+};
+
+export type DueFollowUps = {
+	origin: string;
+	syncedAt: number;
+	/** Every due follow-up, also beyond `items`. */
+	total: number;
+	items: DueFollowUp[];
+};
+
+/** local: the day (YYYY-MM-DD, device time) each application's desktop reminder was last shown (aturan turunan #7). */
+export const NOTIFIED_FOLLOW_UPS = "followUps:notified";

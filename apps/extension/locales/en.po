@@ -7,6 +7,27 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
 
+#. Browser extension: the account's Rezumi AI credit balance
+#. placeholder {0}: choice.balance
+#: src/sidepanel/ai-parts.tsx
+msgid "{0} credits left"
+msgstr "{0} credits left"
+
+#. Browser extension: share of the posting's terms found in the resume
+#: src/sidepanel/match-section.tsx
+msgid "{percent}% of terms"
+msgstr "{percent}% of terms"
+
+#. More keywords
+#. placeholder {0}: chips.more
+#: src/sidepanel/match-section.tsx
+msgid "+{0} more"
+msgstr "+{0} more"
+
+#: src/sidepanel/settings-screen.tsx
+msgid "A notification at 9:00 on the day a follow-up is due, once per application."
+msgstr "A notification at 9:00 on the day a follow-up is due, once per application."
+
 #: src/sidepanel/settings-screen.tsx
 msgid "Account"
 msgstr "Account"
@@ -27,9 +48,27 @@ msgstr "Add a tag"
 msgid "Add note"
 msgstr "Add note"
 
+#: src/sidepanel/ai-parts.tsx
+msgid "Add the job description in Rezumi to get an AI score."
+msgstr "Add the job description in Rezumi to get an AI score."
+
+#: src/sidepanel/match-section.tsx
+msgid "Add the job description to see the match."
+msgstr "Add the job description to see the match."
+
 #: src/sidepanel/posting-screen.tsx
 msgid "AI couldn't read this posting; the fields come from the page."
 msgstr "AI couldn't read this posting; the fields come from the page."
+
+#. Browser extension: the AI's fit score for this job
+#: src/sidepanel/ai-parts.tsx
+msgid "AI score"
+msgstr "AI score"
+
+#. Browser extension button: score this job with AI, showing its credit cost
+#: src/sidepanel/ai-parts.tsx
+msgid "AI score ({cost} credits)"
+msgstr "AI score ({cost} credits)"
 
 #. Status choice when saving a job the person applied to
 #: src/sidepanel/posting-screen.tsx
@@ -49,6 +88,10 @@ msgstr "Applied"
 #: src/sidepanel/posting-screen.tsx
 msgid "Applied on"
 msgstr "Applied on"
+
+#: src/sidepanel/follow-up.tsx
+msgid "Ask the recruiter for an update"
+msgstr "Ask the recruiter for an update"
 
 #: src/sidepanel/connected-screen.tsx
 msgid "Back"
@@ -71,6 +114,10 @@ msgstr "Check for updates"
 msgid "Checking your applications…"
 msgstr "Checking your applications…"
 
+#: src/sidepanel/follow-up.tsx
+msgid "Clear"
+msgstr "Clear"
+
 #. Application stage: ended
 #: src/sidepanel/status.ts
 msgid "Closed"
@@ -79,6 +126,10 @@ msgstr "Closed"
 #: src/sidepanel/posting-screen.tsx
 msgid "Company"
 msgstr "Company"
+
+#: src/sidepanel/match-section.tsx
+msgid "Comparing…"
+msgstr "Comparing…"
 
 #: src/sidepanel/save-error.tsx
 msgid "Connect again"
@@ -102,9 +153,38 @@ msgstr "Continue"
 msgid "Couldn't connect to Rezumi. Try again."
 msgstr "Couldn't connect to Rezumi. Try again."
 
+#. placeholder {0}: application.company
+#: src/sidepanel/prepare.tsx
+msgid "Cover letter — {0}"
+msgstr "Cover letter — {0}"
+
+#: src/sidepanel/match-section.tsx
+msgid "Create a resume in Rezumi to see how well you match."
+msgstr "Create a resume in Rezumi to see how well you match."
+
 #: src/sidepanel/posting-screen.tsx
 msgid "Description"
 msgstr "Description"
+
+#: src/sidepanel/settings-screen.tsx
+msgid "Desktop reminders"
+msgstr "Desktop reminders"
+
+#. Browser extension: mark a follow-up reminder as done
+#: src/sidepanel/home-screen.tsx
+msgid "Done"
+msgstr "Done"
+
+#. Clear a follow-up reminder
+#. placeholder {0}: item.role
+#: src/sidepanel/home-screen.tsx
+msgid "Done: {0}"
+msgstr "Done: {0}"
+
+#. Browser extension home: follow-ups due today or earlier
+#: src/sidepanel/home-screen.tsx
+msgid "Due"
+msgstr "Due"
 
 #: src/sidepanel/posting-screen.tsx
 msgid "Employment type"
@@ -115,13 +195,31 @@ msgstr "Employment type"
 msgid "Extension"
 msgstr "Extension"
 
-#: src/sidepanel/posting-screen.tsx
-msgid "Fills the fields from the posting's text. Uses 1 credit each time."
-msgstr "Fills the fields from the posting's text. Uses 1 credit each time."
+#: src/sidepanel/ai-parts.tsx
+msgid "Fills the fields from the posting's text with your AI connection."
+msgstr "Fills the fields from the posting's text with your AI connection."
+
+#. Browser extension: Read with AI, paid with Rezumi AI credits
+#: src/sidepanel/ai-parts.tsx
+msgid "Fills the fields from the posting's text. Uses {cost} credit each time."
+msgstr "Fills the fields from the posting's text. Uses {cost} credit each time."
+
+#: src/sidepanel/follow-up.tsx
+msgid "Follow up on"
+msgstr "Follow up on"
 
 #: src/sidepanel/settings-screen.tsx
 msgid "Free"
 msgstr "Free"
+
+#: src/sidepanel/ai-parts.tsx
+msgid "Gaps"
+msgstr "Gaps"
+
+#. Browser extension: keyword chips heading
+#: src/sidepanel/match-section.tsx
+msgid "In your resume"
+msgstr "In your resume"
 
 #. Application stage
 #: src/sidepanel/status.ts
@@ -161,6 +259,16 @@ msgstr "Loading…"
 msgid "Location"
 msgstr "Location"
 
+#. Browser extension: how well the job posting matches the person's resume
+#: src/sidepanel/match-section.tsx
+msgid "Match"
+msgstr "Match"
+
+#. Browser extension: keyword chips heading
+#: src/sidepanel/match-section.tsx
+msgid "Missing from your resume"
+msgstr "Missing from your resume"
+
 #: src/sidepanel/posting-screen.tsx
 msgid "New tag"
 msgstr "New tag"
@@ -169,6 +277,18 @@ msgstr "New tag"
 #: src/sidepanel/connect-screen.tsx
 msgid "No account yet? <0>Sign up free</0>"
 msgstr "No account yet? <0>Sign up free</0>"
+
+#: src/sidepanel/ai-parts.tsx
+msgid "No AI is set up for your account."
+msgstr "No AI is set up for your account."
+
+#: src/sidepanel/ai-parts.tsx
+msgid "No AI is set up for your account. Add an AI connection in Rezumi's settings to use this."
+msgstr "No AI is set up for your account. Add an AI connection in Rezumi's settings to use this."
+
+#: src/sidepanel/match-section.tsx
+msgid "No job terms found in this description."
+msgstr "No job terms found in this description."
 
 #: src/sidepanel/posting-screen.tsx
 msgid "No resume"
@@ -201,7 +321,11 @@ msgstr "Open a job posting to save it to Rezumi."
 msgid "Open application tracker"
 msgstr "Open application tracker"
 
-#: src/sidepanel/posting-screen.tsx
+#: src/sidepanel/prepare.tsx
+msgid "Open cover letter"
+msgstr "Open cover letter"
+
+#: src/sidepanel/prepare.tsx
 msgid "Open in Rezumi"
 msgstr "Open in Rezumi"
 
@@ -210,15 +334,25 @@ msgstr "Open in Rezumi"
 msgid "Paste description"
 msgstr "Paste description"
 
+#: src/sidepanel/ai-parts.tsx
+msgid "Pick a resume above to get an AI score."
+msgstr "Pick a resume above to get an AI score."
+
 #. Browser extension on a job board search page with no posting selected
 #: src/sidepanel/page-screen.tsx
 msgid "Pick one job posting to save it."
 msgstr "Pick one job posting to save it."
 
-#: src/sidepanel/posting-screen.tsx
+#. Browser extension: buttons that open Rezumi's tools for preparing this application
+#: src/sidepanel/prepare.tsx
+msgid "Prepare"
+msgstr "Prepare"
+
+#: src/sidepanel/ai-parts.tsx
 msgid "Read with AI"
 msgstr "Read with AI"
 
+#. Browser extension status while it reads the open web page
 #. Browser extension status while it reads the open web page
 #. Browser extension status while it reads the open web page
 #: src/sidepanel/page-screen.tsx
@@ -235,6 +369,23 @@ msgstr "Reading with AI…"
 msgid "Recently saved"
 msgstr "Recently saved"
 
+#. Browser extension: the follow-up reminder for this application
+#: src/sidepanel/follow-up.tsx
+msgid "Reminder"
+msgstr "Reminder"
+
+#: src/sidepanel/follow-up.tsx
+msgid "Reminder cleared."
+msgstr "Reminder cleared."
+
+#: src/sidepanel/follow-up.tsx
+msgid "Reminder note"
+msgstr "Reminder note"
+
+#: src/sidepanel/follow-up.tsx
+msgid "Reminder saved."
+msgstr "Reminder saved."
+
 #. Browser extension button that tells Rezumi a page could not be read
 #: src/sidepanel/page-screen.tsx
 msgid "Report this page"
@@ -245,8 +396,20 @@ msgid "Resume"
 msgstr "Resume"
 
 #: src/sidepanel/settings-screen.tsx
+msgid "Resume for the match score"
+msgstr "Resume for the match score"
+
+#: src/sidepanel/match-section.tsx
+msgid "Resume to compare"
+msgstr "Resume to compare"
+
+#: src/sidepanel/settings-screen.tsx
 msgid "Rezumi account"
 msgstr "Rezumi account"
+
+#: src/sidepanel/ai-parts.tsx
+msgid "Rezumi AI (uses credits)"
+msgstr "Rezumi AI (uses credits)"
 
 #: src/sidepanel/save-error.tsx
 msgid "Rezumi couldn't save this. Check the details and try again."
@@ -260,6 +423,10 @@ msgstr "Rezumi is having trouble right now."
 #: src/sidepanel/posting-screen.tsx
 msgid "Role"
 msgstr "Role"
+
+#: src/sidepanel/ai-parts.tsx
+msgid "Run AI with"
+msgstr "Run AI with"
 
 #: src/sidepanel/posting-screen.tsx
 msgid "Salary"
@@ -287,6 +454,10 @@ msgstr "Save jobs to Rezumi"
 #: src/sidepanel/posting-screen.tsx
 msgid "Save options"
 msgstr "Save options"
+
+#: src/sidepanel/follow-up.tsx
+msgid "Save reminder"
+msgstr "Save reminder"
 
 #: src/sidepanel/posting-screen.tsx
 msgid "Save to Rezumi"
@@ -320,10 +491,18 @@ msgstr "Saving this posting again as a new application."
 msgid "Saving…"
 msgstr "Saving…"
 
+#: src/sidepanel/ai-parts.tsx
+msgid "Score again with AI"
+msgstr "Score again with AI"
+
 #. Application stage
 #: src/sidepanel/status.ts
 msgid "Screening"
 msgstr "Screening"
+
+#: src/sidepanel/home-screen.tsx
+msgid "See all in Rezumi"
+msgstr "See all in Rezumi"
 
 #: src/sidepanel/save-error.tsx
 msgid "See plans"
@@ -338,6 +517,10 @@ msgstr "Select the job posting's text on the page and right-click \"Save selecte
 #: src/sidepanel/page-screen.tsx
 msgid "Sends this page's address and which details were missing, not its content."
 msgstr "Sends this page's address and which details were missing, not its content."
+
+#: src/sidepanel/ai-parts.tsx
+msgid "Set up AI"
+msgstr "Set up AI"
 
 #: src/sidepanel/connected-screen.tsx
 msgid "Settings"
@@ -362,9 +545,18 @@ msgstr "Some details could not be read from this page."
 msgid "Status"
 msgstr "Status"
 
+#: src/sidepanel/ai-parts.tsx
+msgid "Strengths"
+msgstr "Strengths"
+
 #: src/sidepanel/posting-screen.tsx
 msgid "Tags"
 msgstr "Tags"
+
+#. Browser extension: open Rezumi to make a copy of a resume tailored to this job
+#: src/sidepanel/prepare.tsx
+msgid "Tailor resume"
+msgstr "Tailor resume"
 
 #. Browser extension confirmation after the person reported a page it could not read
 #: src/sidepanel/page-screen.tsx
@@ -379,6 +571,16 @@ msgstr "The connection to Rezumi ended."
 #: src/sidepanel/connect-screen.tsx
 msgid "The connection to Rezumi ended. Connect again to continue."
 msgstr "The connection to Rezumi ended. Connect again to continue."
+
+#: src/sidepanel/match-section.tsx
+msgid "The match couldn't be worked out right now."
+msgstr "The match couldn't be worked out right now."
+
+#. Browser extension: why the reminder date was filled in
+#. placeholder {0}: new Date(`${deadline}T00:00:00Z`).toLocaleDateString(undefined, { day: "numeric", month: "short", timeZone: "UTC" })
+#: src/sidepanel/posting-screen.tsx
+msgid "The posting closes on {0}."
+msgstr "The posting closes on {0}."
 
 #: src/sidepanel/page-screen.tsx
 msgid "The report could not be sent. Try again."
@@ -420,6 +622,11 @@ msgstr "Wait a while, then try again."
 msgid "We couldn't find a job posting on this page."
 msgstr "We couldn't find a job posting on this page."
 
+#. Browser extension: start a cover letter for this job in Rezumi
+#: src/sidepanel/prepare.tsx
+msgid "Write cover letter"
+msgstr "Write cover letter"
+
 #. Browser extension: the same role at the same company is already saved from another job site
 #: src/sidepanel/posting-screen.tsx
 msgid "You already saved a similar job:"
@@ -437,3 +644,12 @@ msgstr "You're offline. We kept what you entered here."
 #: src/sidepanel/save-error.tsx
 msgid "You're out of credits."
 msgstr "You're out of credits."
+
+#: src/sidepanel/ai-parts.tsx
+msgid "Your AI connection"
+msgstr "Your AI connection"
+
+#. Browser extension: Rezumi AI trial credits
+#: src/sidepanel/ai-parts.tsx
+msgid "Your first use adds free credits."
+msgstr "Your first use adds free credits."

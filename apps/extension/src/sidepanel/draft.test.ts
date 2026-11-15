@@ -61,6 +61,7 @@ describe("draft", () => {
 			location: "Jakarta",
 			salary: "",
 			employmentType: "Full-time",
+			validThrough: null,
 		});
 		expect(next.values).toMatchObject({
 			role: "Senior Product Designer",
@@ -71,12 +72,36 @@ describe("draft", () => {
 		expect(next.edited).toEqual(["company"]);
 	});
 
+	it("starts the reminder two days before the posting closes, unless the person set one (aturan turunan #6)", () => {
+		const capture = {
+			role: "",
+			company: "",
+			location: "",
+			salary: "",
+			employmentType: "",
+			validThrough: "2026-12-31",
+		};
+		const fresh = draftFromReading("linkedin:1", summary, "2026-11-15");
+		expect(withCapture(fresh, capture, "2026-11-15").values.followUpOn).toBe("2026-12-29");
+		expect(withCapture(fresh, { ...capture, validThrough: null }, "2026-11-15").values.followUpOn).toBe("");
+		const cleared = editDraft(fresh, { followUpOn: "" });
+		expect(withCapture(cleared, capture, "2026-11-15").values.followUpOn).toBe("");
+		const picked = editDraft(fresh, { followUpOn: "2026-11-20" });
+		expect(withCapture(picked, capture, "2026-11-15").values.followUpOn).toBe("2026-11-20");
+	});
+
 	it("keeps a stored draft only for the same posting", () => {
 		const draft = draftFromReading("linkedin:1", summary);
 		expect(readDraft(draft, "linkedin:1")).toEqual(draft);
 		expect(readDraft(draft, "linkedin:2")).toBeNull();
 		expect(readDraft({ identity: "linkedin:1", values: null, edited: [] }, "linkedin:1")).toBeNull();
 		expect(readDraft(undefined, "linkedin:1")).toBeNull();
+		// A draft from before reminders existed gets empty reminder fields.
+		const { followUpOn: _on, followUpNote: _note, ...older } = draft.values;
+		expect(readDraft({ ...draft, values: older }, "linkedin:1")?.values).toMatchObject({
+			followUpOn: "",
+			followUpNote: "",
+		});
 	});
 });
 
@@ -111,7 +136,19 @@ describe("createInput", () => {
 		const input = createInput(draftFromReading("linkedin:1", summary), context);
 		expect(input.contacts).toEqual([]);
 		expect(input).not.toHaveProperty("stageEnteredAt");
+		expect(input).not.toHaveProperty("followUpAt");
 		expect(input.status).toBe("saved");
+	});
+
+	it("saves the reminder as the picked day, as the web does", () => {
+		const draft = editDraft(draftFromReading("linkedin:1", summary), {
+			followUpOn: "2026-11-20",
+			followUpNote: " Ask about the take-home ",
+		});
+		expect(createInput(draft, context)).toMatchObject({
+			followUpAt: new Date("2026-11-20T00:00:00.000Z"),
+			followUpNote: "Ask about the take-home",
+		});
 	});
 });
 

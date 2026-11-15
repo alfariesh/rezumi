@@ -8,7 +8,7 @@ import type {
 	InterviewDetails,
 } from "@rezumi/schema/applications/data";
 import { ORPCError } from "@orpc/client";
-import { and, arrayContains, count, desc, eq, inArray, isNotNull, isNull, sql } from "drizzle-orm";
+import { and, arrayContains, asc, count, desc, eq, inArray, isNotNull, isNull, lt, ne, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { isSamePosting, normalizeCompany, normalizeRole } from "@rezumi/job-sites/match";
@@ -782,6 +782,39 @@ export const applicationService = {
 			.orderBy(desc(schema.application.updatedAt), desc(schema.application.id))
 			.limit(MAX_SAVED_KEYS);
 		return rows.flatMap(({ key, ...row }) => (key ? [{ key, ...row }] : []));
+	},
+
+	/**
+	 * The person's open applications with a follow-up before `before` (today's end, 02-teknis.md §11), soonest first,
+	 * and how many there are in all. Closed applications need nothing, as on the web.
+	 */
+	dueFollowUps: async (input: { userId: string; before: Date; limit: number }) => {
+		const due = and(
+			eq(schema.application.userId, input.userId),
+			isNotNull(schema.application.followUpAt),
+			lt(schema.application.followUpAt, input.before),
+			ne(schema.application.status, "closed"),
+		);
+		const [rows, [total]] = await Promise.all([
+			db
+				.select({
+					id: schema.application.id,
+					role: schema.application.role,
+					company: schema.application.company,
+					status: schema.application.status,
+					followUpAt: schema.application.followUpAt,
+					followUpNote: schema.application.followUpNote,
+				})
+				.from(schema.application)
+				.where(due)
+				.orderBy(asc(schema.application.followUpAt), asc(schema.application.id))
+				.limit(input.limit),
+			db.select({ total: count() }).from(schema.application).where(due),
+		]);
+		return {
+			items: rows.flatMap(({ followUpAt, ...row }) => (followUpAt ? [{ ...row, followUpAt }] : [])),
+			total: total?.total ?? 0,
+		};
 	},
 
 	/**

@@ -1,11 +1,13 @@
 import type { Page, Worker } from "@playwright/test";
+import { localDay } from "../src/shared/follow-ups";
 import { connect, screenshotDir, server, serverIsUp, signUp } from "./account";
 import { expect, serveFixture, test } from "./fixtures";
 
 /**
  * Pictures for the design check (plan rule #9), only with `EXTENSION_SCREENSHOTS=<dir>` and a local server: the save
- * form, the saved view and the home screen at 360 and 420 px, light and dark, English and Indonesian, and the on-page
- * button and chip on the four boards' fixtures.
+ * form (with the match and the reminder from the posting's deadline), the saved view (match, AI score, preparation,
+ * reminder) and the home screen with due follow-ups at 360 and 420 px, light and dark, English and Indonesian, and the
+ * on-page button and chip on the four boards' fixtures.
  */
 
 const boards = [
@@ -92,6 +94,24 @@ for (const uiLanguage of ["en-US", "id"] as const) {
 				await consent.getByRole("button", { name: "Allow access" }).click();
 			}
 			await expect(panel.getByRole("button", { name: english ? "Settings" : "Pengaturan" })).toBeVisible();
+			// A resume to match with (a fictional persona's summary).
+			const resume = await context.request.post(`${server}/api/openapi/resumes`, {
+				headers: { origin: server },
+				data: { name: "Rina Wijaya — Product Designer", tags: [], withSampleData: false },
+			});
+			const resumeId = (await resume.json()) as string;
+			await context.request.patch(`${server}/api/openapi/resumes/${resumeId}`, {
+				headers: { origin: server },
+				data: {
+					operations: [
+						{
+							op: "replace",
+							path: "/summary/content",
+							value: "<p>Product designer working in Figma, user research and design systems for health teams.</p>",
+						},
+					],
+				},
+			});
 
 			for (const [index, board] of boards.entries()) {
 				await serveFixture(context, board.origin, board.fixture);
@@ -107,12 +127,21 @@ for (const uiLanguage of ["en-US", "id"] as const) {
 				const save = panel.getByRole("button", { name: english ? "Save to Rezumi" : "Simpan ke Rezumi" });
 				await expect(save).toBeVisible();
 				await expect(panel.getByText(english ? "Checking your applications…" : "Mengecek lamaranmu…")).toBeHidden();
-				if (index === 0) await shoot(panel, `form-${uiLanguage}`);
+				// The first posting gets a reminder for today, so the home screen has something due.
+				if (index === 0) await panel.getByLabel(english ? "Follow up on" : "Tindak lanjut pada").fill(localDay());
+				// Glints states its salary and closing date: the fullest form.
+				if (index === 3) {
+					await expect(panel.getByTestId("match-percent")).toBeVisible();
+					await shoot(panel, `form-${uiLanguage}`);
+				}
 				await save.click();
 				await expect(
 					panel.getByText(english ? "Saved to Rezumi" : "Tersimpan di Rezumi", { exact: true }),
 				).toBeVisible();
-				if (index === 0) await shoot(panel, `saved-${uiLanguage}`);
+				if (index === 3) {
+					await expect(panel.getByTestId("match-percent")).toBeVisible();
+					await shoot(panel, `saved-${uiLanguage}`);
+				}
 				await expect.poll(() => buttonState(page)).not.toBe(english ? "Save to Rezumi" : "Simpan ke Rezumi");
 				await page.waitForTimeout(400);
 				await page.screenshot({ path: `${screenshotDir}/chip-${site}-${uiLanguage}.png` });
@@ -122,7 +151,8 @@ for (const uiLanguage of ["en-US", "id"] as const) {
 			await panel.goto(`chrome-extension://${extensionId}/sidepanel.html`);
 			await expect(panel.getByText(english ? "Recently saved" : "Terakhir disimpan")).toBeVisible();
 			await expect(panel.getByRole("link", { name: /Product Designer/ }).first()).toBeVisible();
-			await shoot(panel, `home-recent-${uiLanguage}`);
+			await expect(panel.getByRole("button", { name: english ? /^Done: / : /^Selesai: / })).toBeVisible();
+			await shoot(panel, `home-due-${uiLanguage}`);
 		});
 	});
 }

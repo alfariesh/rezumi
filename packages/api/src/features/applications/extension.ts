@@ -12,6 +12,7 @@ import { protectedProcedure } from "../../context";
 import { aiRequestRateLimit, storageUploadRateLimit } from "../../middleware/rate-limit";
 import { aiSourceInput } from "../billing/ai-source";
 import { fillPostingFields, parsePostingOutput } from "./ai";
+import { dueBefore, MAX_DUE_FOLLOW_UPS } from "./follow-ups";
 import { copyCompanyLogo } from "./logo";
 import { htmlToText, MAX_POSTING_CHARS } from "./posting";
 import { applicationService } from "./service";
@@ -191,6 +192,34 @@ export const extensionRouter = {
 			await applicationService.setCompanyLogo({ id: input.id, userId: context.user.id, url: copied.url });
 			return { companyLogoUrl: copied.url };
 		}),
+
+	// The home screen's "Due" list and the toolbar badge (02-teknis.md §11): follow-ups due today or earlier in the
+	// time zone the extension sends (`x-client-timezone`, as the web does), never another account's.
+	dueFollowUps: protectedProcedure
+		.route({ ...route, method: "GET", path: "/applications/extension/due-follow-ups" })
+		.input(z.object({ limit: z.number().int().min(1).max(MAX_DUE_FOLLOW_UPS).optional() }).optional())
+		.output(
+			z.object({
+				items: z.array(
+					z.object({
+						id: z.string(),
+						role: z.string(),
+						company: z.string(),
+						status: applicationStatusSchema,
+						followUpAt: z.date(),
+						followUpNote: z.string().nullable(),
+					}),
+				),
+				total: z.number().int().describe("Every due follow-up, also beyond the list's limit."),
+			}),
+		)
+		.handler(({ context, input }) =>
+			applicationService.dueFollowUps({
+				userId: context.user.id,
+				before: dueBefore(context.reqHeaders.get("x-client-timezone") ?? undefined),
+				limit: input?.limit ?? MAX_DUE_FOLLOW_UPS,
+			}),
+		),
 
 	// A page the extension could not read. Only the address, board, version and missing fields: never the page's text.
 	reportCapture: protectedProcedure

@@ -1,14 +1,18 @@
 /**
  * The service worker: signs in to Rezumi and holds the tokens (the panel asks it for an access token per call). It
  * opens the side panel from the toolbar icon, the on-page button and the context menu, keeps what each tab's content
- * script reports, keeps the saved posting keys behind the "Saved" marks and the toolbar badge, and runs the alarms.
+ * script reports, keeps the saved posting keys behind the "Saved" marks and the due follow-ups behind the badge count,
+ * shows the desktop reminders, and runs the alarms.
  */
 import type { PageState, PageStateUpdate } from "../shared/messages";
-import type { SavedKeys, TabPage } from "../shared/storage";
-import { EXTENSION_VERSION, REZUMI_ORIGIN } from "../shared/config";
+import type { DueFollowUp, DueFollowUps, SavedKeys, TabPage } from "../shared/storage";
+import { EXTENSION_VERSION, REZUMI_ORIGIN, rezumiLink } from "../shared/config";
+import { markReminded, remindersToShow } from "../shared/follow-ups";
 import {
 	AUTH_KEYS,
 	draftKey,
+	DUE_FOLLOW_UPS,
+	NOTIFIED_FOLLOW_UPS,
 	readSettings,
 	resolveLanguage,
 	SAVED_KEYS,
@@ -19,6 +23,7 @@ import {
 import { registerAlarms, runAlarm } from "./alarms";
 import { createWorkerClient } from "./api";
 import { ConnectError, createAuth } from "./auth";
+import { badgeFor } from "./badge";
 import { createMessageRouter } from "./router";
 import { pageState, SAVED_KEYS_MAX_AGE_MS, toSavedKeys, withSaved } from "./saved";
 
@@ -83,24 +88,145 @@ async function stateFor(page: TabPage | null): Promise<PageState> {
 	});
 }
 
-const BADGE_TITLES = {
-	en: "Rezumi: this job is saved",
-	id: "Rezumi: loker ini sudah tersimpan",
+// --- Due follow-ups, the badge count and desktop reminders (02-teknis.md §11) ---
+
+async function storedDue(): Promise<DueFollowUps | null> {
+	const stored = await chrome.storage.local.get(DUE_FOLLOW_UPS);
+	const due = stored[DUE_FOLLOW_UPS] as DueFollowUps | undefined;
+	return due && due.origin === REZUMI_ORIGIN ? due : null;
+}
+
+async function dueCount() {
+	return (await storedDue())?.total ?? 0;
+}
+
+let syncingFollowUps: Promise<void> | null = null;
+
+/** Fetches the due follow-ups again (one at a time), then shows the reminders due now; keeps the old copy offline. */
+function syncFollowUps(): Promise<void> {
+	syncingFollowUps ??= (async () => {
+		try {
+			if ((await auth.status()).state !== "connected") return;
+			const { items, total } = await api.applications.dueFollowUps({});
+			const due: DueFollowUps = {
+				origin: REZUMI_ORIGIN,
+				syncedAt: Date.now(),
+				total,
+				items: items.map((item) => ({ ...item, followUpAt: new Date(item.followUpAt).toISOString() })),
+			};
+			await chrome.storage.local.set({ [DUE_FOLLOW_UPS]: due });
+			await showReminders(due.items);
+		} catch (error) {
+			if (__DEV__) console.warn("[Rezumi] follow-ups not refreshed", error);
+		} finally {
+			syncingFollowUps = null;
+		}
+	})();
+	return syncingFollowUps;
+}
+
+const REMINDER_TEXT = {
+	en: { title: "Follow up today", message: (role: string, company: string) => `${role} at ${company}` },
+	id: { title: "Tindak lanjut hari ini", message: (role: string, company: string) => `${role} di ${company}` },
 } as const;
 
-/** A green check on the toolbar icon in a tab whose posting is saved; the default title otherwise. */
+/** Whether reminders may show: turned on in the extension, and the browser still grants the permission. */
+async function remindersAllowed() {
+	const stored = await chrome.storage.local.get(SETTINGS);
+	if (!readSettings(stored[SETTINGS]).notifications) return false;
+	return chrome.permissions.contains({ permissions: ["notifications"] });
+}
+
+/**
+ * Aturan turunan #7: one desktop reminder per due application per day, from 09:00 on this device, only while the
+ * person turned them on and the browser grants the permission (01-desain.md §6).
+ */
+async function showReminders(items: readonly DueFollowUp[], now = new Date()) {
+	if (!(await remindersAllowed()) || !chrome.notifications) return [];
+	const stored = await chrome.storage.local.get([NOTIFIED_FOLLOW_UPS, SETTINGS]);
+	const notified = (stored[NOTIFIED_FOLLOW_UPS] as Record<string, string> | undefined) ?? {};
+	const show = remindersToShow(items, notified, now);
+	if (!show.length) return [];
+	const text = REMINDER_TEXT[resolveLanguage(readSettings(stored[SETTINGS]).language, chrome.i18n.getUILanguage())];
+	const shown: chrome.notifications.NotificationCreateOptions[] = [];
+	for (const item of show) {
+		const options: chrome.notifications.NotificationCreateOptions = {
+			type: "basic",
+			iconUrl: chrome.runtime.getURL("icons/icon-128.png"),
+			title: text.title,
+			message: text.message(item.role, item.company),
+			...(item.followUpNote ? { contextMessage: item.followUpNote.slice(0, 200) } : {}),
+		};
+		await chrome.notifications.create(`follow-up:${item.id}`, options);
+		shown.push(options);
+	}
+	await chrome.storage.local.set({
+		[NOTIFIED_FOLLOW_UPS]: markReminded(
+			notified,
+			show.map((item) => item.id),
+			now,
+		),
+	});
+	return shown;
+}
+
+let listeningToReminders = false;
+
+/** A reminder opens its application in Rezumi. The API exists only while the permission is granted. */
+function listenToReminders() {
+	if (listeningToReminders || !chrome.notifications) return;
+	listeningToReminders = true;
+	chrome.notifications.onClicked.addListener((notificationId) => {
+		const id = /^follow-up:(.+)$/.exec(notificationId)?.[1];
+		if (!id) return;
+		void chrome.tabs.create({ url: rezumiLink(`/dashboard/applications/${encodeURIComponent(id)}`) });
+		void chrome.notifications.clear(notificationId);
+	});
+}
+listenToReminders();
+
+chrome.permissions.onAdded.addListener(({ permissions }) => {
+	if (permissions?.includes("notifications")) listenToReminders();
+});
+// Taken back in the browser's settings: reminders turn off, so the switch tells the truth.
+chrome.permissions.onRemoved.addListener(({ permissions }) => {
+	if (!permissions?.includes("notifications")) return;
+	void chrome.storage.local
+		.get(SETTINGS)
+		.then((stored) =>
+			chrome.storage.local.set({ [SETTINGS]: { ...readSettings(stored[SETTINGS]), notifications: false } }),
+		);
+});
+
+// Development builds: tests run the reminders with a chosen clock (Playwright cannot answer the permission prompt).
+if (__DEV__)
+	(globalThis as { rezumiReminders?: unknown }).rezumiReminders = async (now: string) =>
+		showReminders((await storedDue())?.items ?? [], new Date(now));
+
+// --- The toolbar badge (01-desain.md §5) ---
+
+/** A green check in a tab whose posting is saved, else the due count (badge.ts). */
 async function setBadge(tabId: number, state: PageState) {
+	const badge = badgeFor({ saved: Boolean(state.saved), due: await dueCount(), locale: state.locale });
 	try {
-		await chrome.action.setBadgeText({ tabId, text: state.saved ? "✓" : "" });
-		if (state.saved) {
-			await chrome.action.setBadgeBackgroundColor({ tabId, color: "#16a34a" });
-			await chrome.action.setBadgeTextColor({ tabId, color: "#ffffff" });
-		}
-		// An empty title puts the manifest's default back.
-		await chrome.action.setTitle({ tabId, title: state.saved ? BADGE_TITLES[state.locale] : "" });
+		await chrome.action.setBadgeText({ tabId, text: badge.text });
+		await chrome.action.setBadgeBackgroundColor({ tabId, color: badge.color });
+		await chrome.action.setBadgeTextColor({ tabId, color: "#ffffff" });
+		await chrome.action.setTitle({ tabId, title: badge.title });
 	} catch {
 		// The tab closed meanwhile.
 	}
+}
+
+/** The badge in tabs the content script never reported (other sites, new tabs): the due count. */
+async function setDefaultBadge() {
+	const stored = await chrome.storage.local.get(SETTINGS);
+	const locale = resolveLanguage(readSettings(stored[SETTINGS]).language, chrome.i18n.getUILanguage());
+	const badge = badgeFor({ saved: false, due: await dueCount(), locale });
+	await chrome.action.setBadgeText({ text: badge.text });
+	await chrome.action.setBadgeBackgroundColor({ color: badge.color });
+	await chrome.action.setBadgeTextColor({ color: "#ffffff" });
+	await chrome.action.setTitle({ title: badge.title });
 }
 
 /** Works out a tab's state again, updates its badge and tells its content script. */
@@ -116,6 +242,7 @@ async function refreshTab(tabId: number) {
 }
 
 async function refreshAllTabs() {
+	await setDefaultBadge();
 	const stored = await chrome.storage.session.get(null);
 	const tabIds = Object.keys(stored).flatMap((key) => {
 		const id = /^tabPage:(\d+)$/.exec(key)?.[1];
@@ -168,6 +295,7 @@ const route = createMessageRouter({
 			try {
 				const account = await auth.connect();
 				void syncSavedKeys();
+				void syncFollowUps();
 				return { ok: true, account };
 			} catch (error) {
 				return { ok: false, code: connectErrorCode(error) };
@@ -175,7 +303,7 @@ const route = createMessageRouter({
 		},
 		disconnect: async () => {
 			await auth.disconnect();
-			await chrome.storage.local.remove(SAVED_KEYS);
+			await chrome.storage.local.remove([SAVED_KEYS, DUE_FOLLOW_UPS, NOTIFIED_FOLLOW_UPS]);
 			return { ok: true };
 		},
 		token: async ({ force }) => {
@@ -197,6 +325,10 @@ const route = createMessageRouter({
 			void syncSavedKeys();
 			return { ok: true };
 		},
+		"follow-ups": async () => {
+			await syncFollowUps();
+			return { ok: true };
+		},
 	},
 });
 
@@ -209,7 +341,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // The marks, badges and buttons follow every change of the saved keys, the settings and the connection.
 chrome.storage.onChanged.addListener((changes, area) => {
 	if (area !== "local") return;
-	const watched: string[] = [SAVED_KEYS, SETTINGS, AUTH_KEYS.refresh, AUTH_KEYS.state];
+	const watched: string[] = [SAVED_KEYS, SETTINGS, DUE_FOLLOW_UPS, AUTH_KEYS.refresh, AUTH_KEYS.state];
 	if (Object.keys(changes).some((key) => watched.includes(key))) void refreshAllTabs();
 });
 
@@ -252,11 +384,13 @@ if (__DEV__) (globalThis as { rezumiContextMenu?: typeof onContextMenu }).rezumi
 chrome.runtime.onInstalled.addListener(() => {
 	void registerAlarms();
 	createContextMenu();
+	void syncFollowUps();
 });
 chrome.runtime.onStartup.addListener(() => {
 	void registerAlarms();
 	createContextMenu();
+	void syncFollowUps();
 });
 chrome.alarms.onAlarm.addListener((alarm) => {
-	void runAlarm(alarm, { syncSavedKeys });
+	void runAlarm(alarm, { syncSavedKeys, syncFollowUps });
 });

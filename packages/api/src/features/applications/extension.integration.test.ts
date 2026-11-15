@@ -519,4 +519,43 @@ describe.skipIf(!databaseUrl)("browser extension procedures", () => {
 			});
 		});
 	});
+
+	describe("dueFollowUps (Phase 05)", () => {
+		const day = (offset: number) => {
+			const date = new Date();
+			return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + offset));
+		};
+
+		it("lists the account's open follow-ups due today or earlier, soonest first, never another account's", async () => {
+			const mine = client("member", { "x-client-timezone": "UTC" });
+			const overdue = await mine.create({ company: "Lumen Labs", role: "Designer", followUpAt: day(-2) });
+			const today = await mine.create({
+				company: "Nusantara Data",
+				role: "Analyst",
+				followUpAt: day(0),
+				followUpNote: "Ask about the take-home",
+			});
+			await mine.create({ company: "Later Co", role: "Writer", followUpAt: day(3) });
+			await mine.create({ company: "No Date", role: "Tester" });
+			await mine.create({ company: "Closed Co", role: "Lead", followUpAt: day(-1), status: "closed" });
+			await client("other").create({ company: "Theirs", role: "Designer", followUpAt: day(-1) });
+
+			const due = await mine.dueFollowUps();
+			expect(due.total).toBe(2);
+			expect(due.items.map((item) => item.id)).toEqual([overdue, today]);
+			expect(due.items[1]).toMatchObject({ company: "Nusantara Data", followUpNote: "Ask about the take-home" });
+			expect((await mine.dueFollowUps({ limit: 1 })).items).toHaveLength(1);
+			expect((await mine.dueFollowUps({ limit: 1 })).total).toBe(2);
+		});
+
+		it("follows the time zone the extension sends", async () => {
+			// Tomorrow's day (UTC) is already today east of UTC late in the UTC day, and never today west of it.
+			const id = await client().create({ company: "Lumen Labs", role: "Designer", followUpAt: day(1) });
+			const west = await client("member", { "x-client-timezone": "Pacific/Honolulu" }).dueFollowUps();
+			expect(west.items.map((item) => item.id)).not.toContain(id);
+			const east = await client("member", { "x-client-timezone": "Pacific/Kiritimati" }).dueFollowUps();
+			const easternDay = new Intl.DateTimeFormat("en-CA", { timeZone: "Pacific/Kiritimati" }).format(new Date());
+			expect(east.items.map((item) => item.id).includes(id)).toBe(easternDay >= day(1).toISOString().slice(0, 10));
+		});
+	});
 });
