@@ -1,7 +1,7 @@
 # Production database on the VPS
 
 Production PostgreSQL moved from Neon to a Tencent Cloud Lighthouse VPS on 2026-11-15 (no data was carried over; the app
-had no users yet). Neon was left in place and can be deleted once the VPS has run cleanly for a while.
+had no users yet). The Neon project (`vitaekit`, `floral-haze-81626500`) was deleted the same day.
 
 ## Layout
 
