@@ -24,6 +24,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { z } from "zod";
 import { AI_VOICE_MODELS } from "@rezumi/ai/types";
 import { Icon } from "@rezumi/ui/components/icon";
+import { ThinkingOrb } from "@rezumi/ui/components/thinking-orb";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { useCoachKnowledge } from "../coach-thread";
@@ -679,7 +680,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 					<div className="grid gap-3">
 						<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
 							<Button isDisabled={!ready || !provider} isPending={generate.isPending} onPress={getFeedback}>
-								{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
+								{generate.isPending && <ThinkingOrb size={16} tone="current" />}
 								{generate.isPending ? <Working steps={workingSteps("practice")} /> : <Trans>Get feedback</Trans>}
 							</Button>
 							<p className="text-body-xs text-muted">

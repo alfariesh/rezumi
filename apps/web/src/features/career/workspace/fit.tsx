@@ -9,6 +9,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { CAREER_TASK_CREDIT_ACTIONS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
+import { ThinkingOrb } from "@rezumi/ui/components/thinking-orb";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useWorkspace } from "../hooks";
@@ -99,7 +100,7 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 					<AiNotice task="fit" />
 					{provider && (
 						<Button isPending={generate.isPending} onPress={check}>
-							{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
+							{generate.isPending && <ThinkingOrb size={16} tone="current" />}
 							{generate.isPending ? <Working steps={workingSteps("fit")} /> : <Trans>Check fit</Trans>}
 						</Button>
 					)}
