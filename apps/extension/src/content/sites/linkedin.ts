@@ -1,7 +1,7 @@
 import type { SiteAdapter } from "./types";
 import { jobKey } from "@rezumi/job-sites/sites";
 import { firstText, logoIn, looksLikeSalary, textOf } from "../text";
-import { compact } from "./types";
+import { buttonRow, compact } from "./types";
 
 /**
  * LinkedIn, checked 2026-11-14 signed in (02-teknis.md §18). The current interface has generated class names, so the
@@ -102,6 +102,7 @@ export const linkedin: SiteAdapter = {
 		const save = document.querySelector(
 			'button[aria-label="Save the job"], button[aria-label^="Simpan"], .jobs-save-button',
 		);
-		return save?.parentElement ?? document.querySelector(".jobs-apply-button--top-card");
+		// Signed in (2026-11-15) the Save button sits alone in a grid that stacks its children: go up to the row.
+		return save ? buttonRow(save) : document.querySelector(".jobs-apply-button--top-card");
 	},
 };

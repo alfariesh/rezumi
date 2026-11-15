@@ -102,8 +102,9 @@ const EMPLOYMENT_TYPES =
 export const looksLikeEmploymentType = (text: string) => text.length <= 60 && EMPLOYMENT_TYPES.test(text);
 
 /**
- * The company's logo in a part of the page (a board's top card): an https picture whose alt text names the company or
- * says "logo", else the first such picture inside one of `selectors`. Inline (`data:`) pictures are never sent.
+ * The company's logo in a part of the page (a board's top card): the first https picture matched by `selectors`, else
+ * one whose alt text names the company. Never just any picture called "logo": job pages also list other companies'
+ * postings with their logos (JobStreet, checked 2026-11-15). Inline (`data:`) pictures are never sent.
  */
 export function logoIn(
 	root: ParentNode | null | undefined,
@@ -122,7 +123,7 @@ export function logoIn(
 	const name = company.trim().toLowerCase();
 	for (const image of root.querySelectorAll("img")) {
 		const alt = image.getAttribute("alt")?.toLowerCase() ?? "";
-		if ((name && alt.includes(name)) || /\blogo\b/.test(alt)) {
+		if (name && alt.includes(name)) {
 			const found = https(image);
 			if (found) return found;
 		}

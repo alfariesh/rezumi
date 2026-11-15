@@ -51,3 +51,17 @@ export function compact(fields: { [K in keyof CapturedFields]?: string | undefin
 	}
 	return out;
 }
+
+/**
+ * The row of a board's own action buttons, from one of them: the nearest flex ancestor (at most three levels up). Boards
+ * wrap each button (LinkedIn in a grid that stacks its children, JobStreet in a block), and the "Save to Rezumi" button
+ * belongs beside them, not inside a wrapper. Checked on real pages 2026-11-15.
+ */
+export function buttonRow(button: Element | null | undefined): Element | null {
+	let row = button?.parentElement ?? null;
+	for (let level = 0; row && level < 3; level++, row = row.parentElement) {
+		const display = getComputedStyle(row).display;
+		if (display === "flex" || display === "inline-flex") return row;
+	}
+	return button?.parentElement ?? null;
+}
