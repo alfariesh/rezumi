@@ -35,6 +35,7 @@ import { Eyebrow, MemoryProposal, Working, workingSteps } from "./shared";
 import { attachmentPart } from "@/features/assistant/chat";
 import { AssistantMarkdown } from "@/features/assistant/markdown";
 import { MessageSources } from "@/features/assistant/message-sources";
+import { ThinkingLine } from "@/features/assistant/orb";
 import { ToolApprovals } from "@/features/assistant/tool-approvals";
 import { useAssistantChat } from "@/features/assistant/use-assistant-chat";
 import { WaitingRow } from "@/features/assistant/waiting-row";
@@ -184,21 +185,16 @@ export function ChatView(props: ChatViewProps) {
 								))}
 
 								<WaitingRow show={streaming} skipEnter={fromPending && messages.length <= 1}>
-									<TraceLine status="running" className="text-sm">
-										<TraceIcon>
-											<Spinner size="sm" color="current" aria-hidden />
-										</TraceIcon>
-										<TraceTitle>
-											{/* Until the first words arrive, say what's happening; then the answer itself shows progress. */}
-											{answering ? (
-												<Trans>Writing an answer…</Trans>
-											) : (
-												<Working
-													steps={[...workingSteps("chat"), ...(props.context.web ? [t`Searching the web`] : [])]}
-												/>
-											)}
-										</TraceTitle>
-									</TraceLine>
+									<ThinkingLine className="text-sm">
+										{/* Until the first words arrive, say what's happening; then the answer itself shows progress. */}
+										{answering ? (
+											<Trans>Writing an answer…</Trans>
+										) : (
+											<Working
+												steps={[...workingSteps("chat"), ...(props.context.web ? [t`Searching the web`] : [])]}
+											/>
+										)}
+									</ThinkingLine>
 								</WaitingRow>
 
 								{stopped && !streaming && (

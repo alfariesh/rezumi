@@ -18,6 +18,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { useConversationConnection } from "./chat";
 import { Composer, Conversation } from "./conversation";
+import { HeadingOrb, OrbFlightProvider, orbLanding } from "./orb";
 import { PendingTurn } from "./pending-turn";
 import { ProviderSetup } from "./provider-setup";
 import { creditCost, useAiSource } from "@/features/billing/ai-source";
@@ -128,12 +129,13 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 	const start = async (text: string, attachments: ChatAttachment[] = []): Promise<boolean> => {
 		if (starting) return false;
 		setStartingText(text);
+		const landed = orbLanding();
 		let started = false;
 		try {
 			const problem = (await document.beforeSend?.()) ?? null;
 			if (problem) toast.add({ type: "error", description: problem });
 			else {
-				const id = await ensureThread();
+				const [id] = await Promise.all([ensureThread(), landed]);
 				useEditorStore.setState({ assistantPrompt: text, assistantDraft: null });
 				setPromptAttachments(attachments);
 				useEditorStore.setState({ assistantThread: id });
@@ -186,120 +188,122 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 		) : null;
 
 	return (
-		<section aria-label={t`Assistant`} data-assistant="" className="flex h-full min-h-0 flex-col">
-			{/* As tall as the editor's bar, with no fill of its own, so the two read as one header across the window. */}
-			<header className="flex h-(--editor-bar) shrink-0 items-center gap-1 ps-1">
-				<Icon name="sparkle" size={20} className="shrink-0 text-accent" />
-				<Typography type="h6" render={renderAsH2} className="me-auto ps-1.5 text-sm">
-					<Trans>Assistant</Trans>
-				</Typography>
+		<OrbFlightProvider epoch={draftKey}>
+			<section aria-label={t`Assistant`} data-assistant="" className="flex h-full min-h-0 flex-col">
+				{/* As tall as the editor's bar, with no fill of its own, so the two read as one header across the window. */}
+				<header className="flex h-(--editor-bar) shrink-0 items-center gap-1 ps-1">
+					<Icon name="sparkle" size={20} className="shrink-0 text-accent" />
+					<Typography type="h6" render={renderAsH2} className="me-auto ps-1.5 text-sm">
+						<Trans>Assistant</Trans>
+					</Typography>
 
-				<IconButton
-					icon="note-pencil"
-					label={t`New conversation`}
-					className="text-muted"
-					onPress={() => {
-						draftThread.current = null;
-						creatingThread.current = null;
-						setDraftKey((key) => key + 1);
-						setContext({ document: true, posting: true });
-						setPromptAttachments([]);
-						useEditorStore.setState({ assistantDraft: null, assistantThread: "new" });
-						setView("thread");
-					}}
-				/>
-				<IconButton
-					icon="clock-counter-clockwise"
-					label={t`Past conversations`}
-					aria-pressed={view === "history"}
-					className={cn("text-muted", view === "history" && "bg-accent-soft text-accent-soft-foreground")}
-					onPress={() => setView(view === "history" ? "thread" : "history")}
-				/>
-				<IconButton icon="x" label={t`Close the assistant`} shortcut="⌘J" className="text-muted" onPress={onClose} />
-			</header>
-
-			{notSetUp ? (
-				<Notice>
-					<Trans>
-						The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else
-						works without it.
-					</Trans>
-				</Notice>
-			) : providers.error ? (
-				<AiProviderLoadState
-					state={{
-						...providers,
-						retry: () => {
-							providers.retry();
-							void threads.refetch();
-						},
-					}}
-				/>
-			) : providers.isLoading || threads.isPending ? (
-				<div className="grid flex-1 place-items-center">
-					<Spinner size="md" color="current" className="text-muted" aria-hidden />
-				</div>
-			) : !providers.hasUsableProvider ? (
-				<div className="min-h-0 flex-1 overflow-y-auto">
-					<ProviderSetup />
-				</div>
-			) : view === "history" ? (
-				<PastConversations
-					threads={threads.data ?? []}
-					document={document}
-					currentId={threadId}
-					onOpen={(id) => {
-						useEditorStore.setState({ assistantThread: id });
-						setView("thread");
-					}}
-				/>
-			) : threadId ? (
-				<ConversationLoader
-					key={threadId}
-					threadId={threadId}
-					document={document}
-					providerLabel={providerLabel}
-					providerId={provider?.id}
-					prompt={selected === threadId ? prompt : null}
-					promptAttachments={promptAttachments}
-					initialContext={{ ...context, ...(document.posting ? { applicationId: document.posting.id } : {}) }}
-					onPromptSent={() => {
-						useEditorStore.setState({ assistantPrompt: null });
-						setPromptAttachments([]);
-					}}
-					onSwitchModel={() => setModelMenuOpen(true)}
-					model={model}
-				/>
-			) : (
-				<>
-					{startingText ? (
-						<PendingTurn text={startingText} className="min-h-0 flex-1 overflow-y-auto py-3" />
-					) : (
-						<EmptyState
-							document={document}
-							disabled={document.locked || starting}
-							onPick={(text) => void start(text)}
-						/>
-					)}
-					<Composer
-						// A draft arriving while the box is open replaces what's in it.
-						key={`${draftKey}:${draft ?? ""}`}
-						initialText={draft ?? undefined}
-						document={document}
-						context={context}
-						onContextChange={setContext}
-						streaming={starting}
-						disabled={document.locked}
-						threadId={null}
-						providerId={provider?.id}
-						model={model}
-						ensureThread={ensureThread}
-						onSend={(text, attachments) => start(text, attachments)}
-						onStop={() => undefined}
+					<IconButton
+						icon="note-pencil"
+						label={t`New conversation`}
+						className="text-muted"
+						onPress={() => {
+							draftThread.current = null;
+							creatingThread.current = null;
+							setDraftKey((key) => key + 1);
+							setContext({ document: true, posting: true });
+							setPromptAttachments([]);
+							useEditorStore.setState({ assistantDraft: null, assistantThread: "new" });
+							setView("thread");
+						}}
 					/>
-				</>
-			)}
-		</section>
+					<IconButton
+						icon="clock-counter-clockwise"
+						label={t`Past conversations`}
+						aria-pressed={view === "history"}
+						className={cn("text-muted", view === "history" && "bg-accent-soft text-accent-soft-foreground")}
+						onPress={() => setView(view === "history" ? "thread" : "history")}
+					/>
+					<IconButton icon="x" label={t`Close the assistant`} shortcut="⌘J" className="text-muted" onPress={onClose} />
+				</header>
+
+				{notSetUp ? (
+					<Notice>
+						<Trans>
+							The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else
+							works without it.
+						</Trans>
+					</Notice>
+				) : providers.error ? (
+					<AiProviderLoadState
+						state={{
+							...providers,
+							retry: () => {
+								providers.retry();
+								void threads.refetch();
+							},
+						}}
+					/>
+				) : providers.isLoading || threads.isPending ? (
+					<div className="grid flex-1 place-items-center">
+						<Spinner size="md" color="current" className="text-muted" aria-hidden />
+					</div>
+				) : !providers.hasUsableProvider ? (
+					<div className="min-h-0 flex-1 overflow-y-auto">
+						<ProviderSetup />
+					</div>
+				) : view === "history" ? (
+					<PastConversations
+						threads={threads.data ?? []}
+						document={document}
+						currentId={threadId}
+						onOpen={(id) => {
+							useEditorStore.setState({ assistantThread: id });
+							setView("thread");
+						}}
+					/>
+				) : threadId ? (
+					<ConversationLoader
+						key={threadId}
+						threadId={threadId}
+						document={document}
+						providerLabel={providerLabel}
+						providerId={provider?.id}
+						prompt={selected === threadId ? prompt : null}
+						promptAttachments={promptAttachments}
+						initialContext={{ ...context, ...(document.posting ? { applicationId: document.posting.id } : {}) }}
+						onPromptSent={() => {
+							useEditorStore.setState({ assistantPrompt: null });
+							setPromptAttachments([]);
+						}}
+						onSwitchModel={() => setModelMenuOpen(true)}
+						model={model}
+					/>
+				) : (
+					<>
+						{startingText ? (
+							<PendingTurn text={startingText} className="min-h-0 flex-1 overflow-y-auto py-3" />
+						) : (
+							<EmptyState
+								document={document}
+								disabled={document.locked || starting}
+								onPick={(text) => void start(text)}
+							/>
+						)}
+						<Composer
+							// A draft arriving while the box is open replaces what's in it.
+							key={`${draftKey}:${draft ?? ""}`}
+							initialText={draft ?? undefined}
+							document={document}
+							context={context}
+							onContextChange={setContext}
+							streaming={starting}
+							disabled={document.locked}
+							threadId={null}
+							providerId={provider?.id}
+							model={model}
+							ensureThread={ensureThread}
+							onSend={(text, attachments) => start(text, attachments)}
+							onStop={() => undefined}
+						/>
+					</>
+				)}
+			</section>
+		</OrbFlightProvider>
 	);
 }
 
@@ -333,7 +337,7 @@ function ConversationLoader({ threadId, document, ...props }: ConversationLoader
 	if (!thread.data || !thread.isFetchedAfterMount)
 		// A first message is already on its way: show it instead of an empty wait.
 		return props.prompt ? (
-			<PendingTurn text={props.prompt} className="min-h-0 flex-1 overflow-y-auto py-3" />
+			<PendingTurn text={props.prompt} fly={false} className="min-h-0 flex-1 overflow-y-auto py-3" />
 		) : (
 			// Hidden for the first 150ms, so a quick refetch never flashes a spinner.
 			<div className="grid flex-1 place-items-center transition-opacity delay-150 duration-standard ease-enter starting:opacity-0">
@@ -478,7 +482,8 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 
 	return (
 		<div className="grid min-h-0 flex-1 content-start justify-items-center gap-4 overflow-y-auto p-4 text-center">
-			<div className="grid gap-1.5">
+			<div className="grid justify-items-center gap-1.5">
+				<HeadingOrb className="mb-1.5" />
 				<Typography type="h4" align="center" render={renderAsH3}>
 					<Trans>What should we work on?</Trans>
 				</Typography>

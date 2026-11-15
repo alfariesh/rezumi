@@ -6,7 +6,7 @@ import type { Proposal } from "@rezumi/resume/proposals";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
 import { ChainOfThought, ChatAttachment as FileAttachment, ChatAttachmentGroup, ChatMessage } from "@heroui-pro/react";
-import { Button, Input, Spinner, TextField } from "@heroui/react";
+import { Button, Input, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
@@ -29,6 +29,7 @@ import { acceptUploads, MAX_ATTACHMENTS_PER_MESSAGE } from "./attachment-limits"
 import { attachmentPart, fileToBase64, transcriptOf } from "./chat";
 import { AssistantMarkdown } from "./markdown";
 import { MessageSources } from "./message-sources";
+import { ThinkingLine } from "./orb";
 import { PromptBox } from "./prompt-box";
 import { DocumentNotReadyError } from "./send-guard";
 import { ToolApprovals } from "./tool-approvals";
@@ -352,14 +353,9 @@ export function Conversation(props: ConversationProps) {
 								{messages.length === 0 && error && !streaming && <MessageScrollerItem>{after}</MessageScrollerItem>}
 
 								<WaitingRow show={waiting} skipEnter={fromPending && messages.length <= 1}>
-									<TraceLine status="running">
-										<TraceIcon>
-											<Spinner size="sm" color="current" aria-hidden />
-										</TraceIcon>
-										<TraceTitle>
-											<Trans>Thinking…</Trans>
-										</TraceTitle>
-									</TraceLine>
+									<ThinkingLine>
+										<Trans>Thinking…</Trans>
+									</ThinkingLine>
 								</WaitingRow>
 							</MessageScrollerContent>
 						</MessageScrollerViewport>

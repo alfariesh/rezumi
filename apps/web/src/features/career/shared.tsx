@@ -199,6 +199,10 @@ type WorkingProps = { steps: string[] };
  * A 10–30 second wait reads as progress: the label moves through the work's steps every 2.2 seconds, then loops
  * through general phrases. Each phrase rises in from below out of a 2px blur as the last one leaves upward; all of
  * them share one grid cell, so a button keeps the width of the longest.
+ *
+ * Phrases not on show are `invisible` as well as transparent (visibility flips after the fade): a `TextShimmer` around
+ * the label masks its highlight to every painted glyph, opacity or not, which stacked all the phrases on top of each
+ * other inside the shimmer.
  */
 export function Working({ steps }: WorkingProps) {
 	const general = [t`Thinking`, t`Double-checking`, t`Polishing`];
@@ -220,12 +224,12 @@ export function Working({ steps }: WorkingProps) {
 					key={index}
 					aria-hidden="true"
 					className={cn(
-						"col-start-1 row-start-1 transition-[opacity,translate,filter] duration-standard ease-enter motion-reduce:translate-y-0 motion-reduce:blur-none",
+						"col-start-1 row-start-1 transition-[opacity,translate,filter,visibility] duration-standard ease-enter motion-reduce:translate-y-0 motion-reduce:blur-none",
 						index === shown
 							? ""
 							: index === left
-								? "-translate-y-1 opacity-0 blur-[2px]"
-								: "translate-y-1 opacity-0 blur-[2px]",
+								? "invisible -translate-y-1 opacity-0 blur-[2px]"
+								: "invisible translate-y-1 opacity-0 blur-[2px]",
 					)}
 				>
 					{phrase}…
