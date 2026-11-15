@@ -34,6 +34,7 @@ import {
 import { CareerLoadError } from "./load-state";
 import { ContextChip, useCareerTime, useNow } from "./shared";
 import { transcriptOf, useConversationConnection } from "@/features/assistant/chat";
+import { HeadingOrb } from "@/features/assistant/orb";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
 import { useAiSource } from "@/features/billing/ai-source";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -417,7 +418,8 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 	];
 	return (
 		<div className="grid justify-items-center gap-6 pt-[clamp(0px,6vh,48px)] text-center">
-			<div className="grid max-w-2xl gap-3">
+			<div className="grid max-w-2xl justify-items-center gap-3">
+				<HeadingOrb size={72} className="mb-1" />
 				<Typography type="h2" align="center" render={renderAsH3}>
 					<Trans>What are you working on?</Trans>
 				</Typography>

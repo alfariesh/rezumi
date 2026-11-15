@@ -14,6 +14,7 @@ import { IconButton } from "@rezumi/ui/components/icon-button";
 import { CoachThread, connectionName, deleteConversation, titleFor, useConversationDate } from "../coach-thread";
 import { PrivacyLine, tabLabel } from "../shared";
 import { useConversationConnection } from "@/features/assistant/chat";
+import { HeadingOrb } from "@/features/assistant/orb";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
 import { useAiSource } from "@/features/billing/ai-source";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -224,8 +225,8 @@ function CoachSheetBody({
 				empty={() => (
 					<EmptyState size="sm">
 						<EmptyState.Header>
-							<EmptyState.Media variant="icon">
-								<Icon name="sparkle" size={20} />
+							<EmptyState.Media>
+								<HeadingOrb size={56} />
 							</EmptyState.Media>
 							<EmptyState.Description>
 								<Trans>

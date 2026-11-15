@@ -17,6 +17,7 @@ import { useSessionDraft } from "./hooks";
 import { useCareerTime, useNow, withUndo } from "./shared";
 import { acceptUploads, MAX_ATTACHMENTS_PER_MESSAGE } from "@/features/assistant/attachment-limits";
 import { fileToBase64 } from "@/features/assistant/chat";
+import { OrbFlightProvider, orbLanding } from "@/features/assistant/orb";
 import { PendingTurn } from "@/features/assistant/pending-turn";
 import { PromptBox } from "@/features/assistant/prompt-box";
 import { AiCostNote } from "@/features/billing/ai-source-menu";
@@ -181,6 +182,21 @@ type CoachThreadProps = {
 
 /** The coach's chat, shared by Career → Coach and the workspace sheet: messages, writing state, composer. */
 export function CoachThread(props: CoachThreadProps) {
+	// Each return to the empty state (a new chat) starts a new orb flight, so the orb never flies in from an old one.
+	const [epoch, setEpoch] = useState(0);
+	const [lastThreadId, setLastThreadId] = useState(props.threadId);
+	if (lastThreadId !== props.threadId) {
+		setLastThreadId(props.threadId);
+		if (props.threadId === null) setEpoch(epoch + 1);
+	}
+	return (
+		<OrbFlightProvider epoch={epoch}>
+			<CoachThreadBody {...props} />
+		</OrbFlightProvider>
+	);
+}
+
+function CoachThreadBody(props: CoachThreadProps) {
 	const knowledge = useCoachKnowledge(props.applicationId);
 	useEffect(() => void loadChatView(), []);
 	const [prompt, setPrompt] = useState<Prompt | null>(null);
@@ -210,8 +226,9 @@ export function CoachThread(props: CoachThreadProps) {
 	const start = async (text: string, attachments: ChatAttachment[] = []) => {
 		if (starting || props.disabled) return false;
 		setStartingText(text);
+		const landed = orbLanding();
 		try {
-			const id = await ensureThread();
+			const [id] = await Promise.all([ensureThread(), landed]);
 			setPrompt({ text, attachments, used: usedFor(knowledge, props.context) });
 			draft.current = null;
 			props.onThreadCreated(id, text);
@@ -296,7 +313,7 @@ function ThreadSession(props: SessionProps) {
 				// A first message is already on its way: show it instead of an empty wait.
 				<div className="min-h-0 flex-1 overflow-y-auto">
 					<div className={contentClass[props.variant]}>
-						<PendingTurn text={pending} />
+						<PendingTurn text={pending} fly={false} />
 					</div>
 				</div>
 			) : (

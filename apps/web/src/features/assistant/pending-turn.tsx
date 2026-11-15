@@ -1,16 +1,20 @@
 import { ChatMessage } from "@heroui-pro/react";
-import { Spinner } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
-import { TraceIcon, TraceLine, TraceTitle } from "@rezumi/ui/components/trace";
 import { cn } from "@rezumi/utils/style";
+import { ThinkingLine } from "./orb";
 
-type PendingTurnProps = { text: string; className?: string };
+type PendingTurnProps = {
+	text: string;
+	/** Only the first pending view, right after the empty state, catches the orb; later ones take over in place. */
+	fly?: boolean;
+	className?: string;
+};
 
 /**
  * A first message on its way: the question and "Thinking…" show at once, while the conversation is created and opened
- * (two requests) and before the thread's own view can take over.
+ * (two requests) and before the thread's own view can take over. The empty state's orb flies into the thinking line.
  */
-export function PendingTurn({ text, className }: PendingTurnProps) {
+export function PendingTurn({ text, fly = true, className }: PendingTurnProps) {
 	return (
 		<div className={cn("grid content-start gap-3", className)}>
 			<ChatMessage.User className="ps-8">
@@ -20,14 +24,9 @@ export function PendingTurn({ text, className }: PendingTurnProps) {
 					</ChatMessage.Content>
 				</ChatMessage.Bubble>
 			</ChatMessage.User>
-			<TraceLine status="running">
-				<TraceIcon>
-					<Spinner size="sm" color="current" aria-hidden />
-				</TraceIcon>
-				<TraceTitle>
-					<Trans>Thinking…</Trans>
-				</TraceTitle>
-			</TraceLine>
+			<ThinkingLine fly={fly}>
+				<Trans>Thinking…</Trans>
+			</ThinkingLine>
 		</div>
 	);
 }
