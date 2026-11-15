@@ -9,10 +9,11 @@ import { cn } from "@rezumi/utils/style";
  *   signal of light running down the letter and the letter swaying a little. For empty states, above a heading.
  * - `thinking`: a spinning 3D sphere with an orange dawn drifting over it, a ripple running pole to pole and two comets
  *   (orange and blue) on tilted rings. For "the assistant is working" lines and AI buttons that are waiting.
- * - `writing`: the blue bowl stays the "R" and ripples while the orange pencil lifts off and writes a loop of ink
- *   around it. For "Writing an answer…", while words stream in.
- * - `error`: the dots lose their footing: a short shake, then the letter slumps to the floor, the bowl greys and the
- *   pencil glows red, pulsing slowly. Beside an error message.
+ * - `writing`: a dotted Rubik's cube in Rezumi's colors turning slowly while its slices scramble in quick quarter
+ *   turns, then replay in reverse until every face clicks back solved, rest, and go again (after the `solving` state of
+ *   Libraries.dev's orbs). For "Writing an answer…", while words stream in.
+ * - `error`: a glitch: the sphere loses its spin and dims to slate while its slices tear sideways and flash red, then
+ *   snap back; a hard tear as the error lands, a smaller stutter every few seconds after. Beside an error message.
  *
  * Moving between moods, each dot leaves its shape at its own moment, so shapes dissolve into each other instead of
  * jumping. An orb that mounts as another leaves (the same "Thinking" line mounted again by the next view) starts from
@@ -54,10 +55,10 @@ const TILT = 0.42;
 // The shapes, as indexes into each dot's weights.
 const LETTER = 0;
 const SPHERE = 1;
-const WRITING = 2;
+const CUBE = 2;
 const ERROR = 3;
 const FORMS = 4;
-const FORM_OF: Record<ThinkingOrbMood, number> = { idle: LETTER, thinking: SPHERE, writing: WRITING, error: ERROR };
+const FORM_OF: Record<ThinkingOrbMood, number> = { idle: LETTER, thinking: SPHERE, writing: CUBE, error: ERROR };
 /** How fast everything turns in each mood. */
 const ENERGY: Record<ThinkingOrbMood, number> = { idle: 0.16, thinking: 1, writing: 0.7, error: 0.05 };
 /** Seconds for a change of mood to finish, the last dot included. */
@@ -74,6 +75,12 @@ const LOGO_PENCIL =
 /** About this many dots draw the letter; every other shape uses the same dots. */
 const TARGET_DOTS = 104;
 
+/** A stable pseudo-random number in [0, 1) for two integers. */
+const hashOf = (a: number, b: number) => {
+	const h = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453;
+	return h - Math.floor(h);
+};
+
 type Glyph = { x: number; y: number; pencil: boolean };
 type Shape = {
 	glyph: Glyph[];
@@ -83,8 +90,8 @@ type Shape = {
 	stagger: number[];
 	/** Neighbouring stars of the constellation, as index pairs. */
 	links: [number, number][];
-	/** The pencil's centre in the letter, for the writing shape. */
-	pencilCenter: readonly [number, number];
+	/** The cube point each dot goes to (on a 4×4 grid per face) and the face it colors. */
+	cube: { point: Vec; face: number }[];
 };
 
 let shape: Shape | null = null;
@@ -144,10 +151,7 @@ function logoShape(): Shape {
 		const angle = index * Math.PI * (3 - Math.sqrt(5));
 		return [ring * Math.cos(angle), y, ring * Math.sin(angle)];
 	});
-	const stagger = glyph.map((_, index) => {
-		const h = Math.sin(index * 12.9898) * 43758.5453;
-		return h - Math.floor(h);
-	});
+	const stagger = glyph.map((_, index) => hashOf(index, 0));
 	const reach = (spacing / half) * 1.15;
 	const links: [number, number][] = [];
 	glyph.forEach((a, i) => {
@@ -156,12 +160,23 @@ function logoShape(): Shape {
 			if (b && Math.hypot(a.x - b.x, a.y - b.y) < reach) links.push([i, j]);
 		}
 	});
-	const pencil = glyph.filter((dot) => dot.pencil);
-	const pencilCenter = [
-		pencil.reduce((sum, dot) => sum + dot.x, 0) / (pencil.length || 1),
-		pencil.reduce((sum, dot) => sum + dot.y, 0) / (pencil.length || 1),
-	] as const;
-	shape = { glyph, lattice, stagger, links, pencilCenter };
+
+	// The cube's stickers: 6 faces × 16, top first; a few dots double up on a sticker when there are more dots than 96.
+	const steps = [-0.75, -0.25, 0.25, 0.75];
+	const stickers: { point: Vec; face: number }[] = [];
+	for (let axis = 0; axis < 3; axis++)
+		for (const sign of [-1, 1])
+			for (const u of steps)
+				for (const v of steps) {
+					const point: Vec = axis === 0 ? [sign, u, v] : axis === 1 ? [u, sign, v] : [u, v, sign];
+					stickers.push({ point, face: axis * 2 + (sign > 0 ? 1 : 0) });
+				}
+	stickers.sort((a, b) => b.point[1] - a.point[1]);
+	const cube = glyph.map(
+		(_, index) => stickers[Math.floor((index * stickers.length) / count)] ?? { point: [0, 0, 1] as Vec, face: 0 },
+	);
+
+	shape = { glyph, lattice, stagger, links, cube };
 	return shape;
 }
 
@@ -185,7 +200,66 @@ const COMETS = [
 	{ plane: planeOf([-0.7, 0.75, 0.35]), color: SKY, direction: -1.35 },
 ] as const;
 const TRAIL = 8;
-const INK = 56;
+
+/** Each face of the cube: opposite faces are the same hue, light and deep. */
+const FACES: Rgb[] = [SKY, [0, 112, 214], DAWN, [255, 172, 64], ORANGE, [150, 220, 255]];
+
+// The cube's solver heartbeat: rapid eased quarter turns scramble it, then replay in reverse so every face clicks back
+// solved, a rest, and again (Libraries.dev `thinking-orbs`, MIT).
+type Move = { axis: 0 | 1 | 2; low: number; high: number; angle: number };
+const MOVES: Move[] = Array.from({ length: 8 }, (_, index) => {
+	const pick = (salt: number) => hashOf(index, salt);
+	const axis = Math.min(2, Math.floor(pick(2.3) * 3)) as 0 | 1 | 2;
+	const low = -1 + 0.5 * Math.min(3, Math.floor(pick(5.9) * 4));
+	// The outer slices take the face itself (a coordinate of exactly ±1) too.
+	return {
+		axis,
+		low: low === -1 ? -1.01 : low,
+		high: low === 0.5 ? 1.01 : low + 0.5,
+		angle: ((pick(7.7) < 0.5 ? 1 : -1) * Math.PI) / 2,
+	};
+});
+const MOVE_TIME = 0.34;
+const MOVE_REST = 0.9;
+
+/** How far each move has turned at `time` (0–1), and the move turning now. */
+function solveCycle(time: number) {
+	const count = MOVES.length;
+	const cycle = 2 * count * MOVE_TIME + MOVE_REST;
+	const at = time % cycle;
+	const amount = Array.from({ length: count }, () => 0);
+	let active = -1;
+	if (at < 2 * count * MOVE_TIME) {
+		const slot = Math.floor(at / MOVE_TIME);
+		const eased = 1 - (1 - Math.min(1, (at - slot * MOVE_TIME) / MOVE_TIME / 0.7)) ** 3;
+		const move = slot < count ? slot : 2 * count - 1 - slot;
+		for (let i = 0; i < move; i++) amount[i] = 1;
+		amount[move] = slot < count ? eased : 1 - eased;
+		active = move;
+	}
+	return { amount, active };
+}
+
+/** A cube point after the moves so far; whether it sits in the slice turning now. */
+function turnPoint([px, py, pz]: Vec, cycle: ReturnType<typeof solveCycle>): [number, number, number, boolean] {
+	let x = px;
+	let y = py;
+	let z = pz;
+	let turning = false;
+	MOVES.forEach((move, index) => {
+		const amount = cycle.amount[index] ?? 0;
+		if (amount <= 0) return;
+		const coord = move.axis === 0 ? x : move.axis === 1 ? y : z;
+		if (coord < move.low || coord >= move.high) return;
+		if (index === cycle.active) turning = true;
+		const cos = Math.cos(move.angle * amount);
+		const sin = Math.sin(move.angle * amount);
+		if (move.axis === 0) [y, z] = [y * cos - z * sin, y * sin + z * cos];
+		else if (move.axis === 1) [x, z] = [x * cos + z * sin, -x * sin + z * cos];
+		else [x, y] = [x * cos - y * sin, x * sin + y * cos];
+	});
+	return [x, y, z, turning];
+}
 
 const smoothstep = (from: number, to: number, value: number) => {
 	const t = Math.min(1, Math.max(0, (value - from) / (to - from)));
@@ -264,7 +338,7 @@ type Frame = {
 	energy: number;
 	/** Each dot's weight per shape, `FORMS` numbers per dot; they sum to 1. */
 	weights: Float32Array;
-	/** Seconds since the orb last went into `error`, for its shake. */
+	/** Seconds since the orb last went into `error`, for its glitch. */
 	sinceError: number;
 	/** Every mark in this color instead of the brand's (`tone="current"`). */
 	ink: Rgb | null;
@@ -273,7 +347,7 @@ type Frame = {
 /** Draws one frame (the context is already scaled to CSS pixels). */
 function paint(context: CanvasRenderingContext2D, frame: Frame) {
 	const { size, phase, energy, weights } = frame;
-	const { glyph, lattice, links, pencilCenter } = logoShape();
+	const { glyph, lattice, links, cube } = logoShape();
 	const count = glyph.length;
 	const center = size / 2;
 	const breathe = 1 + 0.035 * Math.sin(phase.time * 1.6) * (1 - 0.6 * energy);
@@ -284,11 +358,15 @@ function paint(context: CanvasRenderingContext2D, frame: Frame) {
 	// How much of the orb is in each shape, for what belongs to a shape as a whole (comets, ink, links, halo).
 	const share = [0, 0, 0, 0];
 	for (let i = 0; i < count * FORMS; i++) share[i % FORMS] = (share[i % FORMS] ?? 0) + (weights[i] ?? 0) / count;
-	const [letterShare = 0, sphereShare = 0, writingShare = 0, errorShare = 0] = share;
+	const [letterShare = 0, sphereShare = 0, , errorShare = 0] = share;
 
-	// A shake as the orb goes into error, then stillness.
+	// The glitch: a hard tear once the dots have mostly turned (0.45 s in), then a smaller stutter every 2.4 s; the tear pattern changes 12 times a
+	// second while it lasts.
 	const since = frame.sinceError;
-	const shake = Number.isFinite(since) ? Math.sin(since * 48) * Math.exp(-since * 5) * size * 0.05 * errorShare : 0;
+	const glitch = Number.isFinite(since)
+		? Math.max(Math.exp(-((since - 0.45) ** 2) / 0.02), 0.8 * Math.exp(-(((since % 2.4) - 0.45) ** 2) / 0.012))
+		: 0;
+	const tearSeed = Math.floor(phase.time * 12);
 
 	// Spin about the vertical axis, then tilt toward the viewer; orthographic.
 	const sy = Math.sin(phase.spin);
@@ -325,21 +403,15 @@ function paint(context: CanvasRenderingContext2D, frame: Frame) {
 	const sun = normalize([Math.cos(phase.sun), 0.45 * Math.sin(phase.sun * 0.7), Math.sin(phase.sun)]);
 	const ripple = 0.015 + 0.07 * energy;
 
-	// Writing: the pencil's tip runs along a figure eight around the letter.
-	const loop = (t: number) => {
-		const d = 1 + Math.sin(t) ** 2;
-		return [
-			center + (radius * 1.3 * Math.cos(t)) / d,
-			center + (radius * 1.3 * Math.sin(t) * Math.cos(t)) / d,
-		] as const;
-	};
-	const tip = phase.comet * 0.9;
-	const [headX, headY] = loop(tip);
-	const [nextX, nextY] = loop(tip + 0.02);
-	// The logo's pencil points down and to the left; turn it to point along the path, tip first.
-	const turn = Math.atan2(nextY - headY, nextX - headX) - Math.atan2(1, -1) + Math.PI;
-	const turnCos = Math.cos(turn);
-	const turnSin = Math.sin(turn);
+	// The cube turns slowly on its own, tilted toward the viewer, while its slices scramble and solve.
+	const cycle = solveCycle(phase.time);
+	const half = radius * 0.74;
+	const cubeYaw = phase.spin * 0.45 + 0.6;
+	const cubeSin = Math.sin(cubeYaw);
+	const cubeCos = Math.cos(cubeYaw);
+	const cubeTilt = 0.5 + 0.08 * Math.sin(phase.time * 0.9);
+	const tiltSin = Math.sin(cubeTilt);
+	const tiltCos = Math.cos(cubeTilt);
 
 	const marks: Mark[] = [];
 	const stars: Mark[] = [];
@@ -394,45 +466,44 @@ function paint(context: CanvasRenderingContext2D, frame: Frame) {
 			});
 		}
 
-		if (w(WRITING) >= 0.001) {
-			if (point.pencil) {
-				const px = (point.x - pencilCenter[0]) * letter * 0.5;
-				const py = (point.y - pencilCenter[1]) * letter * 0.5;
-				add(w(WRITING), {
-					x: headX + px * turnCos - py * turnSin,
-					y: headY + px * turnSin + py * turnCos,
-					z: radius,
-					r: dot * 0.8,
-					color: ORANGE,
-					alpha: 0.95,
-				});
-			} else {
-				const wave = Math.max(0, Math.sin((point.x - point.y) * 5 - phase.wave * 1.4));
-				add(w(WRITING), {
-					x: lx,
-					y: ly - wave * size * 0.012,
-					z: lz,
-					r: dot * (0.9 + 0.35 * wave),
-					color: mix(SKY, DAWN, wave * 0.5),
-					alpha: 0.92,
-				});
-			}
-		}
-
-		if (w(ERROR) >= 0.001) {
-			// Slumped: the letter squashed to the floor, a little wider, the bowl greyed, the pencil red.
-			const throb = 0.75 + 0.25 * Math.sin(phase.time * 3);
-			add(w(ERROR), {
-				x: center + point.x * letter * 1.08,
-				y: center + radius * 0.32 + point.y * radius * 0.48,
-				z: 0,
-				r: dot * (point.pencil ? 1.05 : 0.8),
-				color: point.pencil ? ALARM : SLATE,
-				alpha: point.pencil ? 0.95 * throb : 0.55,
+		if (w(CUBE) >= 0.001) {
+			const sticker = cube[i] ?? { point: [0, 0, 1] as Vec, face: 0 };
+			const [cx0, cy0, cz0, turning] = turnPoint(sticker.point, cycle);
+			const x1 = cx0 * cubeCos + cz0 * cubeSin;
+			const z1 = -cx0 * cubeSin + cz0 * cubeCos;
+			const y2 = cy0 * tiltCos - z1 * tiltSin;
+			const z2 = cy0 * tiltSin + z1 * tiltCos;
+			const depth = (z2 / 1.74 + 1) / 2;
+			add(w(CUBE), {
+				x: center + x1 * half,
+				y: center - y2 * half,
+				z: z2 * half,
+				r: dot * (0.5 + 0.75 * depth) * (turning ? 1.2 : 1),
+				color: mix(FACES[sticker.face] ?? SKY, DAWN, turning ? 0.25 : 0),
+				alpha: 0.18 + 0.82 * depth ** 1.3,
 			});
 		}
 
-		const mark = { x: x + shake, y, z, r, color, alpha };
+		if (w(ERROR) >= 0.001) {
+			// The sphere, stalled and dimmed, its horizontal slices torn sideways (and red) during a glitch.
+			const [ux, uy, uz] = lattice[i] ?? [0, 0, 1];
+			const [ex, ey, ez] = project(ux * radius, uy * radius, uz * radius);
+			const depth = (ez / radius + 1) / 2;
+			const band = Math.floor((uy + 1) * 4);
+			const tears = hashOf(band, 3) > 0.45;
+			const shift = tears ? (hashOf(band, tearSeed) - 0.5) * size * 0.22 * glitch : 0;
+			const hot = Math.min(1, Math.abs(shift) / (size * 0.06));
+			add(w(ERROR), {
+				x: ex + shift,
+				y: ey,
+				z: ez,
+				r: dot * (0.42 + 0.78 * depth),
+				color: mix(SLATE, ALARM, hot),
+				alpha: (0.12 + 0.88 * depth ** 1.4) * (0.65 + 0.35 * hot),
+			});
+		}
+
+		const mark = { x, y, z, r, color, alpha };
 		stars.push(mark);
 		marks.push(mark);
 	}
@@ -470,7 +541,7 @@ function paint(context: CanvasRenderingContext2D, frame: Frame) {
 			const depth = (pz / ring + 1) / 2;
 			const fade = (1 - step / TRAIL) ** 1.6;
 			marks.push({
-				x: px + shake,
+				x: px,
 				y: py,
 				z: pz,
 				r: dot * (1.55 - step * 0.13) * (0.7 + 0.5 * depth),
@@ -479,21 +550,6 @@ function paint(context: CanvasRenderingContext2D, frame: Frame) {
 			});
 		}
 	});
-
-	// Writing's ink: a fading line behind the pencil's tip.
-	if (writingShare > 0.01)
-		for (let step = 1; step < INK; step++) {
-			const [px, py] = loop(tip - step * 0.055);
-			const fade = (1 - step / INK) ** 1.2;
-			marks.push({
-				x: px,
-				y: py,
-				z: -radius,
-				r: dot * (0.45 + 0.6 * fade),
-				color: mix(ORANGE, DAWN, (1 - fade) * 0.8),
-				alpha: writingShare * (0.25 + 0.75 * fade),
-			});
-		}
 
 	marks.sort((a, b) => a.z - b.z);
 	for (const mark of marks) {
@@ -582,7 +638,8 @@ export function ThinkingOrb({
 			const shown = canvas.getBoundingClientRect().width || size;
 			const needed = Math.max(1, Math.round(shown * ratio));
 			// Grow the backing store as needed, shrink it only when far too big: a flight scales it every frame.
-			if (canvas.width < needed || canvas.width > needed * 2) {
+			// A new canvas starts at the default 300×150, so a non-square store is resized too.
+			if (canvas.width < needed || canvas.width > needed * 2 || canvas.height !== canvas.width) {
 				canvas.width = needed;
 				canvas.height = needed;
 			}
