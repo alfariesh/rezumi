@@ -36,14 +36,19 @@ describe("the portfolio on the landing page", () => {
 	it("isn't mentioned until portfolios are open", () => {
 		renderHomepage(false);
 		expect(screen.queryByRole("heading", { name: "Portfolio" })).toBeNull();
+		expect(screen.queryByRole("link", { name: /Portfolio/ })).toBeNull();
 		expect(document.querySelector('a[href="/docs/guides/creating-a-portfolio"]')).toBeNull();
 	});
 
 	it("shows every theme with its plan and links to the guide once they are", () => {
 		renderHomepage(true);
 		expect(screen.getByRole("heading", { name: "Portfolio" })).toBeTruthy();
-		for (const theme of ["Lugas", "Prima", "Kanvas", "Mozaik", "Paper", "Brutal"]) {
+		const nav = screen.getByRole("navigation", { name: "Sections" });
+		expect(nav.querySelector('a[href="#portfolio"]')?.textContent).toBe("01Portfolio");
+		expect(nav.querySelector('a[href="#testimonials"]')?.textContent).toBe("04Testimonials");
+		for (const theme of ["Lugas", "Prima", "Kanvas", "Mozaik", "Paper", "Brutal", "Sintaks", "Warta"]) {
 			expect(screen.getByRole("img", { name: `${theme} portfolio theme preview` })).toBeTruthy();
+			expect(screen.getByRole("button", { name: `Preview the ${theme} theme` })).toBeTruthy();
 		}
 		expect(document.querySelector('a[href="/docs/guides/creating-a-portfolio"]')).toBeTruthy();
 	});

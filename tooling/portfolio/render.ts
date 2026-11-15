@@ -12,10 +12,11 @@ import { mkdir, stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
 import { renderPortfolioDocument } from "@rezumi/portfolio/document";
+import { PREVIEW_STILL_CSS } from "@rezumi/portfolio/effects";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
 import { buildPortfolioView, portfolioPageLocale } from "@rezumi/portfolio/view";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
-import { buildPersona } from "./persona";
+import { buildPersona, paperPortrait } from "./persona";
 
 export type PageOptions = {
 	persona: PersonaId;
@@ -33,6 +34,11 @@ export type PageOptions = {
 	work?: string;
 	/** The intro's background instead of the persona's own (plain); `image` uses the first work's cover. */
 	background?: "soft-gradient" | "pattern" | "image";
+	/**
+	 * A still sample for a gallery's preview: the page without its script, the intro effect at its end, pictures from
+	 * `assetBase` (an absolute path, where the `img/` folder is published) and links that lead nowhere.
+	 */
+	sample?: { assetBase: string; imageDir: string };
 };
 
 /** The file a work's own page is written to, beside its home page `home`: `<home>.work-<slug>.html`. */
@@ -76,11 +82,14 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 		...(options.lang ? { lang: options.lang } : {}),
 		...(options.variant ? { variant: options.variant } : {}),
 	});
-	await mkdir(join(dir, "img"), { recursive: true });
-	for (const file of [...persona.files, persona.photo]) await copyOnce(join(dir, "img", file.name), file.read);
+	const photo = options.theme === "paper" && options.persona === "nadia" ? paperPortrait : persona.photo;
+	const imageDir = join(options.sample?.imageDir ?? dir, "img");
+	const assetBase = options.sample?.assetBase ?? "img/";
+	await mkdir(imageDir, { recursive: true });
+	for (const file of [...persona.files, photo]) await copyOnce(join(imageDir, file.name), file.read);
 
 	const resume = persona.resume;
-	resume.picture.url = `img/${persona.photo.name}`;
+	resume.picture.url = `${assetBase}${photo.name}`;
 	let data = persona.portfolio;
 	data = {
 		...data,
@@ -116,12 +125,12 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 		owner: persona.owner,
 		entitlements: { hidePortfolioCredit: false },
 		messages: portfolioViewMessages(messages),
-		fileUrl: (key) => `img/${names.get(key) ?? "missing.png"}`,
+		fileUrl: (key) => `${assetBase}${names.get(key) ?? "missing.png"}`,
 		links: {
 			resume: "#cv",
 			resumePdf: "#pdf",
-			home: name,
-			work: (slug) => workPageFile(name, slug),
+			home: options.sample ? "#" : name,
+			work: (slug) => (options.sample ? "#work" : workPageFile(name, slug)),
 			// There is no server to download the card from; the button shows, pointing at Contact.
 			vcard: "#contact",
 		},
@@ -144,8 +153,9 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 		creditUrl: "https://rezumi.app",
 		page: pageKind,
 	});
-	const document = renderPortfolioDocument({
+	const rendered = renderPortfolioDocument({
 		page,
+		inert: Boolean(options.sample),
 		head: {
 			title: work ? `${work.title} — ${view.basics.name}` : view.seo.title,
 			description: (work?.summary || view.seo.description).slice(0, 160),
@@ -154,6 +164,7 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 			type: work ? "article" : "profile",
 		},
 	});
+	const document = options.sample ? rendered.replace("</head>", `${PREVIEW_STILL_CSS}</head>`) : rendered;
 	const file = join(dir, work ? workPageFile(name, work.slug) : name);
 	await writeFile(file, document);
 	const first = view.works[0];

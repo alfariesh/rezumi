@@ -7,7 +7,7 @@ export const nadia: PersonaDefinition = {
 	resume: "meridian",
 	username: "nadia",
 	accent: "rgba(31, 58, 104, 1)",
-	photo: "nadia.jpg",
+	photo: "nadia.webp",
 	profiles: [
 		{
 			network: "LinkedIn",
@@ -74,7 +74,7 @@ export const nadia: PersonaDefinition = {
 					role: ["Senior PM · team of 11", "Senior PM · tim 11 orang"],
 					date: "2022–2024",
 					tags: [["Payments", "Pembayaran"], ["Experiments", "Eksperimen"], "Mobile"],
-					cover: "lugas-1.svg",
+					cover: "lugas-1.webp",
 					featured: true,
 					metrics: [
 						metric("m-qr", ["Successful payments", "Pembayaran berhasil"], 97.5, {
@@ -96,14 +96,14 @@ export const nadia: PersonaDefinition = {
 							layout: "grid",
 							images: [
 								{
-									...picture("lugas-g1.svg", ["QR screen before the change", "Layar QR sebelum perubahan"]),
+									...picture("lugas-g1.webp", ["QR screen before the change", "Layar QR sebelum perubahan"]),
 									caption: t(["QR screen before the change", "Layar QR sebelum perubahan"]),
 								},
 								{
-									...picture("lugas-g2.svg", ["A clearer amount confirmation", "Konfirmasi nominal yang lebih jelas"]),
+									...picture("lugas-g2.webp", ["A clearer amount confirmation", "Konfirmasi nominal yang lebih jelas"]),
 									caption: t(["A clearer amount confirmation", "Konfirmasi nominal yang lebih jelas"]),
 								},
-								picture("lugas-g3.svg", ["Instant receipt after paying", "Struk instan setelah bayar"]),
+								picture("lugas-g3.webp", ["Instant receipt after paying", "Struk instan setelah bayar"]),
 							],
 						},
 						{
@@ -135,7 +135,7 @@ export const nadia: PersonaDefinition = {
 							provider: "youtube",
 							videoId: "nRzPq7Lk2Xa",
 							title: t(["Demo of the new QR checkout", "Demo alur QR checkout baru"]),
-							thumbnail: picture("lugas-video.svg", ["Video: the new QR checkout", "Video: alur QR checkout baru"]),
+							thumbnail: picture("lugas-1.webp", ["Video: the new QR checkout", "Video: alur QR checkout baru"]),
 						},
 						{
 							id: "w-qr-figma",
@@ -143,7 +143,7 @@ export const nadia: PersonaDefinition = {
 							provider: "figma",
 							ref: "design/Qx7RkP2mVt9LcN4wZb8H?node-id=12-408",
 							title: t(["QR checkout flow in Figma", "Alur QR checkout di Figma"]),
-							thumbnail: picture("lugas-2.svg", ["Figma: the QR checkout flow", "Figma: alur QR checkout"]),
+							thumbnail: picture("lugas-2.webp", ["Figma: the QR checkout flow", "Figma: alur QR checkout"]),
 						},
 						{
 							id: "w-qr-loom",
@@ -196,7 +196,7 @@ export const nadia: PersonaDefinition = {
 					role: "Senior PM",
 					date: "2023",
 					tags: [["Payments", "Pembayaran"]],
-					cover: "lugas-2.svg",
+					cover: "lugas-2.webp",
 					metrics: [metric("m-split", ["Transaction volume", "Volume transaksi"], 18, { format: "percent" })],
 					blocks: [
 						text("w-split-t", [
@@ -216,7 +216,7 @@ export const nadia: PersonaDefinition = {
 					role: ["PM, Merchant Platform", "PM, Merchant Platform"],
 					date: "2020",
 					tags: ["Onboarding"],
-					cover: "lugas-3.svg",
+					cover: "lugas-3.webp",
 					metrics: [metric("m-merchant", ["Time to sign up", "Waktu daftar"], ["52 min", "52 mnt"])],
 					blocks: [
 						text("w-merchant-t", [
@@ -236,7 +236,7 @@ export const nadia: PersonaDefinition = {
 					role: ["PM, Merchant Platform", "PM, Merchant Platform"],
 					date: "2019–2021",
 					tags: ["Dashboard"],
-					cover: "lugas-4.svg",
+					cover: "lugas-4.webp",
 					metrics: [
 						metric("m-dashboard", ["Active merchants", "Merchant aktif"], 310_000, {
 							format: "compact",
@@ -261,7 +261,7 @@ export const nadia: PersonaDefinition = {
 					role: "Senior PM",
 					date: ["2022–now", "2022–kini"],
 					tags: [["Experiments", "Eksperimen"]],
-					cover: "lugas-5.svg",
+					cover: "lugas-5.webp",
 					metrics: [metric("m-experiments", ["A/B tests a year", "Uji A/B per tahun"], 40, { suffix: "+" })],
 					blocks: [
 						text("w-experiments-t", [
@@ -281,7 +281,7 @@ export const nadia: PersonaDefinition = {
 					role: ["Associate PM · Rantai Logistik", "Associate PM · Rantai Logistik"],
 					date: "2017",
 					tags: [["Logistics", "Logistik"]],
-					cover: "lugas-6.svg",
+					cover: "lugas-6.webp",
 					metrics: [
 						metric("m-courier", ["Calls to support", "Telepon ke CS"], -33, {
 							format: "percent",

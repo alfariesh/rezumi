@@ -2,6 +2,7 @@ import type { ComponentProps, ReactNode } from "react";
 import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Link } from "@tanstack/react-router";
+import { createContext, useContext, useMemo } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 
@@ -10,27 +11,50 @@ export function Container({ className, ...props }: ComponentProps<"div">) {
 	return <div className={cn("mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8", className)} {...props} />;
 }
 
-/** The landing's sections, in page order. The sticky section bar and the section headings both number from this. */
-export const landingSectionIds = ["features", "templates", "testimonials", "pricing", "faq"] as const;
+/** Every landing section, in page order. The sticky section bar and the section headings both number from these. */
+// The portfolio leads once it is open: it is what sets Rezumi apart; the resume follows.
+const allLandingSectionIds = ["portfolio", "features", "templates", "testimonials", "pricing", "faq"] as const;
 
-type LandingSectionId = (typeof landingSectionIds)[number];
+type LandingSectionId = (typeof allLandingSectionIds)[number];
 
-export const getLandingSections = () => {
+/** The sections on the page: the portfolio has one only once portfolios are open to everyone. */
+const landingSectionIds = (portfolioEnabled: boolean): LandingSectionId[] =>
+	allLandingSectionIds.filter((id) => portfolioEnabled || id !== "portfolio");
+
+const LandingSectionsContext = createContext<LandingSectionId[]>(landingSectionIds(false));
+
+type LandingSectionsProviderProps = { portfolioEnabled: boolean; children: ReactNode };
+
+/** Tells the section bar and the numbered headings which sections the page shows. */
+export function LandingSectionsProvider({ portfolioEnabled, children }: LandingSectionsProviderProps) {
+	const ids = useMemo(() => landingSectionIds(portfolioEnabled), [portfolioEnabled]);
+	return <LandingSectionsContext.Provider value={ids}>{children}</LandingSectionsContext.Provider>;
+}
+
+/** Whether the page shows the portfolio, which leads the page and its call to action when it does. */
+export function usePortfolioLanding() {
+	return useContext(LandingSectionsContext).includes("portfolio");
+}
+
+/** The page's sections with their titles, numbered by position. */
+export function useLandingSections() {
+	const ids = useContext(LandingSectionsContext);
 	const titles: Record<LandingSectionId, string> = {
 		features: t`Features`,
 		templates: t`Templates`,
+		portfolio: t`Portfolio`,
 		testimonials: t`Testimonials`,
 		pricing: t`Pricing`,
 		faq: t`FAQ`,
 	};
-	return landingSectionIds.map((id) => ({ id, title: titles[id] }));
-};
+	return ids.map((id) => ({ id, title: titles[id] }));
+}
 
 type SectionHeadingProps = { section: LandingSectionId; id: string; className?: string };
 
 /** A section's numbered label, "01 | Features", the heading the section is named by. */
 export function SectionHeading({ section, id, className }: SectionHeadingProps) {
-	const sections = getLandingSections();
+	const sections = useLandingSections();
 	const index = sections.findIndex((item) => item.id === section);
 	const title = sections[index]?.title;
 
@@ -64,11 +88,15 @@ export function SectionTitle({ children, className }: SectionTitleProps) {
 
 type CtaLinkProps = { size?: "sm" | "md" | "lg"; variant?: "primary" | "secondary"; className?: string };
 
-/** "Build your resume": the page's one call to action, in the hero, the section bar and the closing panel. */
+/**
+ * The page's one call to action, in the hero, the section bar and the closing panel: "Create your portfolio" once
+ * portfolios are open, "Build your resume" before.
+ */
 export function CtaLink({ size = "lg", variant = "primary", className }: CtaLinkProps) {
+	const portfolio = usePortfolioLanding();
 	return (
 		<Link to="/auth/register" className={cn(buttonVariants({ size, variant }), className)}>
-			{t`Build your resume`}
+			{portfolio ? t`Create your portfolio` : t`Build your resume`}
 			<Icon name="arrow-right" size={size === "lg" ? 20 : 16} />
 		</Link>
 	);

@@ -69,6 +69,9 @@
 		// SUMOPOD_WEBHOOK_SECRET (whsec_…, made when the webhook URL is saved in Sumopod) are Worker secrets; without the
 		// key QRIS isn't offered and visitors from Indonesia pay by card.
 		"SUMOPOD_ENVIRONMENT": "live",
+		// Apify actor that reads LinkedIn profiles into the Profile. Not secret; this is also the default. APIFY_TOKEN is a
+		// Worker secret: without it LinkedIn import is off.
+		"APIFY_LINKEDIN_ACTOR": "harvestapi~linkedin-profile-scraper",
 	},
 	"send_email": [{ "name": "EMAIL" }],
 	"hyperdrive": [{ "binding": "HYPERDRIVE", "id": "f2e0cd8d0b084ed5bdbfb8a1de8a80dc" }],

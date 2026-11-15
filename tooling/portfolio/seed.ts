@@ -71,7 +71,9 @@ try {
 		const bytes =
 			file.kind === "pdf"
 				? source
-				: await sharp(source, { density: 144 }).resize(file.width, file.height, { fit: "cover" }).png().toBuffer();
+				: file.key.endsWith(".webp")
+					? await sharp(source).resize(file.width, file.height, { fit: "cover" }).webp({ quality: 80 }).toBuffer()
+					: await sharp(source, { density: 144 }).resize(file.width, file.height, { fit: "cover" }).png().toBuffer();
 		const key = own(file.key);
 		await store(key, bytes);
 		await pool.query(
@@ -91,7 +93,7 @@ try {
 	}
 
 	const resume = persona.resume;
-	const pictureKey = `uploads/${user.id}/pictures/portfolio-persona.jpg`;
+	const pictureKey = `uploads/${user.id}/pictures/portfolio-persona.${persona.photo.name.endsWith(".webp") ? "webp" : "jpg"}`;
 	await store(pictureKey, await persona.photo.read());
 	resume.picture.url = `/${pictureKey}`;
 

@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+import { HoloCard } from "@heroui-pro/react";
 import { Button, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -12,6 +14,18 @@ import { businessCardAddress, businessCardPrintSheet, cardFileName } from "./qr"
 
 /** The PNG's width and height: sharp when printed large or placed in a design. */
 const PNG_SIZE = 1024;
+
+/** The on-screen card: the printed card's 55 × 85 mm turned upright, narrowing on small phones. */
+const CARD_SIZE = {
+	"--holo-card-width": "min(240px, calc(100vw - 8rem))",
+	"--holo-card-height": "calc(var(--holo-card-width) * 85 / 55)",
+	"--holo-card-radius": "18px",
+	"--holo-card-bleed": "24px",
+} as CSSProperties;
+
+/** Blue into purple, dark enough that white text reads on every part of it. */
+const CARD_GRADIENT =
+	"linear-gradient(155deg, rgb(37 99 235) 0%, rgb(67 56 202) 45%, rgb(109 40 217) 80%, rgb(88 28 135) 100%)";
 
 type BusinessCardIdentity = {
 	name: string;
@@ -60,6 +74,8 @@ export function BusinessCardDialog({ name, headline, username, pageUrl, onClose 
 		if (!svg) return null;
 		const copy = svg.cloneNode(true) as SVGSVGElement;
 		copy.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+		// The card shows the code on a see-through tile; the file and the printed sheet get it on solid white.
+		for (const path of copy.querySelectorAll('path[fill="transparent"]')) path.setAttribute("fill", "#FFFFFF");
 		return new XMLSerializer().serializeToString(copy);
 	};
 
@@ -119,38 +135,67 @@ export function BusinessCardDialog({ name, headline, username, pageUrl, onClose 
 							</Modal.Heading>
 						</Modal.Header>
 						<Modal.Body className="grid gap-4">
-							{/* The card as it prints: white, whatever the app's theme, so the code always reads. */}
-							<div className="flex items-center gap-4 rounded-2xl border border-separator bg-white p-4 text-neutral-900 shadow-sm">
-								<div className="grid min-w-0 flex-1 gap-1">
-									<p className="text-base font-semibold wrap-anywhere">{displayName}</p>
-									{headline.trim() && <p className="text-body-sm wrap-anywhere text-neutral-600">{headline.trim()}</p>}
-									<p className="mt-2 text-body-xs text-neutral-600">{caption}</p>
-									<p dir="ltr" className="font-mono text-body-xs wrap-anywhere">
-										{shown}
-									</p>
-								</div>
-								{/* The address the code holds, for tests and anyone inspecting the page. */}
-								<div ref={svgHolder} data-qr-value={qr} className="shrink-0">
-									<QRCodeSVG value={qr} size={120} level="M" marginSize={4} title={qrTitle} />
-								</div>
+							{/*
+							 * The card on screen: a holographic card that tilts under the pointer. The code sits on a white tile in a
+							 * content layer, which stacks above the glare, so it always reads. Printing and downloads stay plain.
+							 */}
+							<div className="flex justify-center">
+								<HoloCard style={CARD_SIZE} gradient={CARD_GRADIENT}>
+									<HoloCard.Rotator>
+										<HoloCard.Frame>
+											<HoloCard.Surface>
+												<HoloCard.Inset />
+												<HoloCard.Pattern />
+												<HoloCard.Content className="flex-col items-center justify-between p-6 text-center">
+													<div className="grid w-full gap-1">
+														<p className="line-clamp-2 text-lg font-semibold wrap-anywhere text-white">{displayName}</p>
+														{headline.trim() && (
+															<p className="line-clamp-2 text-body-xs wrap-anywhere text-white/70">{headline.trim()}</p>
+														)}
+													</div>
+													{/* The address the code holds, for tests and anyone inspecting the page. */}
+													<div
+														ref={svgHolder}
+														data-qr-value={qr}
+														className="overflow-clip rounded-xl bg-white/80 shadow-lg backdrop-blur-sm"
+													>
+														<QRCodeSVG
+															value={qr}
+															size={132}
+															bgColor="transparent"
+															level="M"
+															marginSize={3}
+															title={qrTitle}
+															style={{ width: "min(132px, calc(var(--holo-card-width) * 0.55))", height: "auto" }}
+														/>
+													</div>
+													<div className="grid w-full gap-0.5">
+														<p className="text-xs font-medium text-white/60">{caption}</p>
+														<p dir="ltr" className="font-mono text-body-xs wrap-anywhere text-white/90">
+															{shown}
+														</p>
+													</div>
+												</HoloCard.Content>
+												<HoloCard.Shine />
+											</HoloCard.Surface>
+										</HoloCard.Frame>
+									</HoloCard.Rotator>
+								</HoloCard>
 							</div>
-							<p className="text-body-xs text-muted">
-								<Trans>The QR code adds ?utm_source=qr, so your statistics show visits from it.</Trans>
-							</p>
 							<div className="grid gap-2 sm:grid-cols-2">
-								<Button variant="secondary" onPress={downloadPng}>
+								<Button variant="secondary" className="w-full" onPress={downloadPng}>
 									<Icon name="download-simple" size={18} />
 									<Trans>Download QR (PNG)</Trans>
 								</Button>
-								<Button variant="secondary" onPress={downloadSvg}>
+								<Button variant="secondary" className="w-full" onPress={downloadSvg}>
 									<Icon name="download-simple" size={18} />
 									<Trans>Download QR (SVG)</Trans>
 								</Button>
-								<Button variant="secondary" onPress={print}>
+								<Button variant="secondary" className="w-full" onPress={print}>
 									<Icon name="printer" size={18} />
 									<Trans>Print cards</Trans>
 								</Button>
-								<Button variant="secondary" onPress={() => setFullScreen(true)}>
+								<Button variant="secondary" className="w-full" onPress={() => setFullScreen(true)}>
 									<Icon name="arrows-out-simple" size={18} />
 									<Trans>Show full screen</Trans>
 								</Button>

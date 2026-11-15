@@ -9,10 +9,15 @@ import { freeTemplates } from "./plans";
 import { Container, SectionHeading, SectionTitle } from "./ui";
 import { templateSample, templates } from "@/dialogs/resume/template/data";
 
-// The free five first, then one of the layouts Plus adds.
-const shown: Template[] = [...freeTemplates, "horizon"];
+// The free ones first, then layouts Plus adds, filling the last row: the grid has 2, 3 or 6 columns, so the count
+// stays a multiple of 6 whatever the free lineup holds.
+const plusTemplates = templateLineup.filter((id) => !freeTemplates.includes(id));
+const shown: Template[] = [
+	...freeTemplates,
+	...plusTemplates.slice(0, Math.ceil((freeTemplates.length + 1) / 6) * 6 - freeTemplates.length),
+];
 
-/** 02 Templates: the free ones beside a taste of the rest, each marked with the plan it comes with. */
+/** Templates: the free ones beside a taste of the rest, each marked with the plan it comes with. */
 export function Templates() {
 	const { i18n } = useLingui();
 	const total = i18n.number(templateLineup.length);

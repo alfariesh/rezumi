@@ -3,7 +3,7 @@ import { useLingui } from "@lingui/react";
 import { useEffect, useRef, useState } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { cn } from "@rezumi/utils/style";
-import { CtaLink, getLandingSections, landingSectionIds } from "./ui";
+import { CtaLink, useLandingSections } from "./ui";
 
 /**
  * The sticky bar under the introduction: one numbered link per section, the one being read marked. On phones the brand and call to action sit
@@ -11,7 +11,8 @@ import { CtaLink, getLandingSections, landingSectionIds } from "./ui";
  */
 export function SectionNav() {
 	const { i18n } = useLingui();
-	const sections = getLandingSections();
+	const sections = useLandingSections();
+	const sectionKey = sections.map((section) => section.id).join(" ");
 	const ref = useRef<HTMLDivElement>(null);
 	const navRef = useRef<HTMLElement>(null);
 	const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -20,18 +21,19 @@ export function SectionNav() {
 		const bar = ref.current;
 		if (!bar) return;
 		const root = bar.closest<HTMLElement>("#top");
+		const sectionIds = sectionKey.split(" ");
 		let frame = 0;
 		const update = () => {
 			frame = 0;
 			// At the bottom of the page the last section is current, however short it is.
 			if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
-				setActiveIndex(landingSectionIds.length - 1);
+				setActiveIndex(sectionIds.length - 1);
 				return;
 			}
 			// Activate the section entering the reading area, including anchor scroll offsets.
 			const readingLine = Math.max(bar.getBoundingClientRect().bottom, window.innerHeight * 0.3);
 			let next: number | null = null;
-			landingSectionIds.forEach((id, index) => {
+			sectionIds.forEach((id, index) => {
 				const element = document.getElementById(id);
 				if (element && element.getBoundingClientRect().top <= readingLine) next = index;
 			});
@@ -58,7 +60,7 @@ export function SectionNav() {
 			window.removeEventListener("scroll", scheduleUpdate);
 			window.removeEventListener("resize", updateSize);
 		};
-	}, []);
+	}, [sectionKey]);
 
 	useEffect(() => {
 		const nav = navRef.current;

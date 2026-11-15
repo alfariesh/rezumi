@@ -7,7 +7,7 @@ export const citra: PersonaDefinition = {
 	resume: "kirana",
 	username: "citra",
 	accent: "rgba(29, 111, 115, 1)",
-	photo: "citra.jpg",
+	photo: "citra.webp",
 	profiles: [
 		{ network: "Behance", username: "citramaharani", url: "https://www.behance.net/citramaharani", icon: "behance-01" },
 		{ network: "Dribbble", username: "citramaharani", url: "https://dribbble.com/citramaharani", icon: "dribbble" },
@@ -75,7 +75,7 @@ export const citra: PersonaDefinition = {
 					role: "Lead brand designer",
 					date: "2024",
 					tags: [["Identity", "Identitas"], ["Packaging", "Kemasan"], "Pop-up"],
-					cover: "mozaik-1.svg",
+					cover: "mozaik-1.webp",
 					featured: true,
 					metrics: [
 						metric("m-fair", ["Fair sales", "Penjualan pameran"], 2, {
@@ -107,15 +107,15 @@ export const citra: PersonaDefinition = {
 							layout: "carousel",
 							images: [
 								{
-									...picture("mozaik-g1.svg", ["Base motif from gringsing cloth", "Motif dasar dari kain gringsing"]),
+									...picture("mozaik-g1.webp", ["Base motif from gringsing cloth", "Motif dasar dari kain gringsing"]),
 									caption: t(["Base motif from gringsing cloth", "Motif dasar dari kain gringsing"]),
 								},
 								{
-									...picture("mozaik-g2.svg", ["Labels and cloth boxes", "Label dan kotak kain"]),
+									...picture("mozaik-g2.webp", ["Labels and cloth boxes", "Label dan kotak kain"]),
 									caption: t(["Labels and cloth boxes", "Label dan kotak kain"]),
 								},
 								{
-									...picture("mozaik-g3.svg", ["The pop-up shop in Jakarta", "Toko pop-up di Jakarta"]),
+									...picture("mozaik-g3.webp", ["The pop-up shop in Jakarta", "Toko pop-up di Jakarta"]),
 									caption: t(["The pop-up shop in Jakarta", "Toko pop-up di Jakarta"]),
 								},
 							],
@@ -130,7 +130,7 @@ export const citra: PersonaDefinition = {
 							provider: "youtube",
 							videoId: "Vq7nLm3RkTe",
 							title: t(["Process: from motif to logo", "Proses: dari motif ke logo"]),
-							thumbnail: picture("mozaik-video.svg", ["Video: from motif to logo", "Video: dari motif ke logo"]),
+							thumbnail: picture("mozaik-g1.webp", ["Video: from motif to logo", "Video: dari motif ke logo"]),
 						},
 						{
 							id: "w-motif-figma",
@@ -138,7 +138,7 @@ export const citra: PersonaDefinition = {
 							provider: "figma",
 							ref: "board/Mt4Vq9Lc2Rk7Pz8Xw3Nb?node-id=4-120",
 							title: t(["Motif board in Figma", "Papan motif di Figma"]),
-							thumbnail: picture("mozaik-2.svg", ["Figma: the motif board", "Figma: papan motif"]),
+							thumbnail: picture("mozaik-2.webp", ["Figma: the motif board", "Figma: papan motif"]),
 						},
 						{
 							id: "w-tenun-pdf",
@@ -181,7 +181,7 @@ export const citra: PersonaDefinition = {
 					role: ["Wayfinding designer", "Desainer wayfinding"],
 					date: "2023",
 					tags: ["Signage", ["Icons", "Ikon"]],
-					cover: "mozaik-2.svg",
+					cover: "mozaik-2.webp",
 					metrics: [metric("m-ubud", ["Visitors a month", "Pengunjung/bulan"], 9000, { format: "compact" })],
 					blocks: [
 						text("w-ubud-t", [
@@ -201,7 +201,7 @@ export const citra: PersonaDefinition = {
 					role: "Senior brand designer",
 					date: "2023",
 					tags: [["Packaging", "Kemasan"], "Rebranding"],
-					cover: "mozaik-3.svg",
+					cover: "mozaik-3.webp",
 					metrics: [
 						metric("m-segara", ["Stockists", "Toko penjual"], 85, {
 							change: { direction: "up", text: ["from 12", "dari 12"], good: true },
@@ -226,7 +226,7 @@ export const citra: PersonaDefinition = {
 					role: "Brand designer",
 					date: "2022",
 					tags: [["Brand guidelines", "Panduan merek"]],
-					cover: "mozaik-4.svg",
+					cover: "mozaik-4.webp",
 					metrics: [metric("m-sanur", ["Outlets", "Gerai"], 40)],
 					blocks: [
 						text("w-sanur-t", [
@@ -249,7 +249,7 @@ export const citra: PersonaDefinition = {
 						["Illustration", "Ilustrasi"],
 						["System", "Sistem"],
 					],
-					cover: "mozaik-5.svg",
+					cover: "mozaik-5.webp",
 					metrics: [
 						metric("m-library", ["Production time", "Waktu produksi"], -50, {
 							format: "percent",
@@ -277,7 +277,7 @@ export const citra: PersonaDefinition = {
 						["Campaign", "Kampanye"],
 						["Social", "Sosial"],
 					],
-					cover: "mozaik-6.svg",
+					cover: "mozaik-6.webp",
 					metrics: [metric("m-homecoming", ["Reach", "Jangkauan"], 6_000_000, { format: "compact" })],
 					blocks: [
 						text("w-homecoming-t", [

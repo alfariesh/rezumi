@@ -7,7 +7,7 @@ export const anindya: PersonaDefinition = {
 	resume: "purnama",
 	username: "anindya",
 	accent: "rgba(22, 30, 52, 1)",
-	photo: "anindya.jpg",
+	photo: "anindya.webp",
 	profiles: [
 		{
 			network: "LinkedIn",
@@ -93,7 +93,7 @@ export const anindya: PersonaDefinition = {
 					role: ["Lead relationship manager", "Relationship manager utama"],
 					date: "2024",
 					tags: [["Succession", "Suksesi"], "Family office"],
-					cover: "prima-1.svg",
+					cover: "prima-1.webp",
 					featured: true,
 					metrics: [
 						metric("m-assets", ["Assets restructured", "Aset yang ditata"], 1_100_000_000_000, {
@@ -126,15 +126,15 @@ export const anindya: PersonaDefinition = {
 							layout: "grid",
 							images: [
 								{
-									...picture("prima-g1.svg", ["Asset map before the plan", "Peta aset sebelum penataan"]),
+									...picture("prima-g1.webp", ["Asset map before the plan", "Peta aset sebelum penataan"]),
 									caption: t(["Asset map before the plan", "Peta aset sebelum penataan"]),
 								},
 								{
-									...picture("prima-g2.svg", ["The new ownership structure", "Struktur kepemilikan baru"]),
+									...picture("prima-g2.webp", ["The new ownership structure", "Struktur kepemilikan baru"]),
 									caption: t(["The new ownership structure", "Struktur kepemilikan baru"]),
 								},
 								{
-									...picture("prima-g3.svg", ["Five-year transfer schedule", "Jadwal peralihan lima tahun"]),
+									...picture("prima-g3.webp", ["Five-year transfer schedule", "Jadwal peralihan lima tahun"]),
 									caption: t(["Five-year transfer schedule", "Jadwal peralihan lima tahun"]),
 								},
 							],
@@ -149,7 +149,7 @@ export const anindya: PersonaDefinition = {
 							provider: "youtube",
 							videoId: "Hq4mTt9WbZe",
 							title: t(["Interview: preparing the next generation", "Wawancara: menyiapkan generasi penerus"]),
-							thumbnail: picture("prima-video.svg", [
+							thumbnail: picture("prima-g1.webp", [
 								"Video: preparing the next generation",
 								"Video: menyiapkan generasi penerus",
 							]),
@@ -211,7 +211,7 @@ export const anindya: PersonaDefinition = {
 						["Education", "Pendidikan"],
 						["Bonds", "Obligasi"],
 					],
-					cover: "prima-2.svg",
+					cover: "prima-2.webp",
 					metrics: [
 						metric("m-education", ["Ahead of plan", "Lebih cepat"], ["2 years", "2 tahun"], {
 							change: { direction: "up", text: ["vs plan", "dari rencana"], good: true },
@@ -238,7 +238,7 @@ export const anindya: PersonaDefinition = {
 						["Process", "Proses"],
 						["Team", "Tim"],
 					],
-					cover: "prima-3.svg",
+					cover: "prima-3.webp",
 					metrics: [metric("m-review", ["Bankers using it", "Banker yang memakai"], 26)],
 					blocks: [
 						text("w-review-t", [
@@ -261,7 +261,7 @@ export const anindya: PersonaDefinition = {
 						["Compliance", "Kepatuhan"],
 						["Fixed income", "Pendapatan tetap"],
 					],
-					cover: "prima-4.svg",
+					cover: "prima-4.webp",
 					metrics: [metric("m-audit", ["Audit findings", "Temuan audit"], 0, { context: ["4 audits", "4 audit"] })],
 					blocks: [
 						text("w-audit-t", [
@@ -281,7 +281,7 @@ export const anindya: PersonaDefinition = {
 					role: "Mentor",
 					date: "2023–2025",
 					tags: [["Leadership", "Kepemimpinan"]],
-					cover: "prima-5.svg",
+					cover: "prima-5.webp",
 					metrics: [metric("m-coaching", ["Promoted", "Dipromosikan"], ["2 of 3", "2 dari 3"])],
 					blocks: [
 						text("w-coaching-t", [
@@ -304,7 +304,7 @@ export const anindya: PersonaDefinition = {
 						["Segmentation", "Segmentasi"],
 						["Sales", "Penjualan"],
 					],
-					cover: "prima-6.svg",
+					cover: "prima-6.webp",
 					metrics: [
 						metric("m-priority", ["Fee income", "Pendapatan fee"], 52, {
 							format: "percent",
