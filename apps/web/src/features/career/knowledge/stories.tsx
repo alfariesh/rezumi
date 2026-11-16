@@ -1,5 +1,4 @@
 import type { Fact, Story } from "../hooks";
-import { EmptyState } from "@heroui-pro/react";
 import {
 	Button,
 	Checkbox,
@@ -24,6 +23,7 @@ import { cn } from "@rezumi/utils/style";
 import { useSessionDraft } from "../hooks";
 import { CareerLoadError } from "../load-state";
 import { CareerWidget, CollapseRow, Eyebrow, Swap, useNow, withUndo } from "../shared";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { WidgetAction, widgetActionClass } from "@/components/layout/widget-heading";
 import { collectInterviews, upcomingInterviews } from "@/features/applications/interviews";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
@@ -171,24 +171,17 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 			</CareerWidget>
 
 			{storyId && !selected ? (
-				<EmptyState role="status" className="rounded-2xl bg-surface-secondary">
-					<EmptyState.Header>
-						<EmptyState.Media variant="icon">
-							<Icon name="book-open" size={20} />
-						</EmptyState.Media>
-						<EmptyState.Title>
-							<Trans>Story not found</Trans>
-						</EmptyState.Title>
-						<EmptyState.Description>
-							<Trans>It may have been deleted. Choose another story or add a new one.</Trans>
-						</EmptyState.Description>
-					</EmptyState.Header>
-					<EmptyState.Content>
+				<EmptyBlock
+					kind="page"
+					icon="book-open"
+					title={<Trans>Story not found</Trans>}
+					description={<Trans>It may have been deleted. Choose another story or add a new one.</Trans>}
+					action={
 						<Button variant="secondary" onPress={() => open(undefined)}>
 							<Trans>Back to stories</Trans>
 						</Button>
-					</EmptyState.Content>
-				</EmptyState>
+					}
+				/>
 			) : selected || editing ? (
 				<CareerWidget
 					icon="book-open"
@@ -221,21 +214,21 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 					</Swap>
 				</CareerWidget>
 			) : (
-				<EmptyState className="rounded-2xl bg-surface-secondary">
-					<EmptyState.Header>
-						<EmptyState.Media variant="icon">
-							<Icon name="book-open" size={20} />
-						</EmptyState.Media>
-						<EmptyState.Title>
-							<Trans>No stories yet</Trans>
-						</EmptyState.Title>
-						<EmptyState.Description>
-							<Trans>
-								Write one about something you did, in five parts. Leave a part blank until you can support it.
-							</Trans>
-						</EmptyState.Description>
-					</EmptyState.Header>
-				</EmptyState>
+				<EmptyBlock
+					kind="page"
+					icon="book-open"
+					title={<Trans>No stories yet</Trans>}
+					description={
+						<Trans>
+							Write one about something you did, in five parts. Leave a part blank until you can support it.
+						</Trans>
+					}
+					action={
+						<Button onPress={() => open(undefined, true)}>
+							<Trans>New story</Trans>
+						</Button>
+					}
+				/>
 			)}
 		</div>
 	);

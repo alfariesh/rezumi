@@ -17,6 +17,11 @@ type EmptyBlockProps = {
 	kind: EmptyBlockKind;
 	/** `page` needs one; `filtered` defaults to the magnifying glass; `inline` has none. */
 	icon?: IconName;
+	/**
+	 * In place of the icon, for the few places with a picture of their own: a chat's start screen shows the coach's
+	 * orb, as the editors' assistant does.
+	 */
+	media?: ReactNode;
 	title: ReactNode;
 	/** One sentence, ending with a full stop. */
 	description?: ReactNode;
@@ -29,7 +34,7 @@ type EmptyBlockProps = {
  * The one empty state the web app uses. Every empty list, search and widget goes through it, so they look and read
  * the same; import HeroUI's `EmptyState` only here (a lint rule enforces it).
  */
-export function EmptyBlock({ kind, icon, title, description, action, className }: EmptyBlockProps) {
+export function EmptyBlock({ kind, icon, media: picture, title, description, action, className }: EmptyBlockProps) {
 	if (kind === "inline")
 		return (
 			<div
@@ -51,10 +56,14 @@ export function EmptyBlock({ kind, icon, title, description, action, className }
 	return (
 		<EmptyState className={cn(kind === "page" ? "py-16" : "py-12", className)}>
 			<EmptyState.Header>
-				{media && (
-					<EmptyState.Media variant="icon">
-						<Icon name={media} size={22} />
-					</EmptyState.Media>
+				{picture ? (
+					<EmptyState.Media>{picture}</EmptyState.Media>
+				) : (
+					media && (
+						<EmptyState.Media variant="icon">
+							<Icon name={media} size={22} />
+						</EmptyState.Media>
+					)
 				)}
 				<EmptyState.Title>{title}</EmptyState.Title>
 				{description && <EmptyState.Description className="max-w-sm text-pretty">{description}</EmptyState.Description>}

@@ -19,6 +19,8 @@ export type SectionNavItem = {
 	label: string;
 	/** A number after the label: what the page holds. Hidden while unknown. */
 	count?: number | undefined;
+	/** Shown in place of `count` when the hint needs more than a number: a countdown, a coloured chip. */
+	badge?: ReactNode;
 	/** Starts a new group under this heading; the items after it belong to it until the next heading. */
 	group?: string | undefined;
 	/**
@@ -136,7 +138,8 @@ function SectionLink({ item, current }: SectionLinkProps) {
 		>
 			<Icon name={item.icon} size={18} variant={current ? "duotone" : "stroke"} className="shrink-0" />
 			<span className="min-w-0 flex-1 truncate">{item.label}</span>
-			{item.count !== undefined && <span className="text-body-xs text-muted tabular-nums">{item.count}</span>}
+			{item.badge ??
+				(item.count !== undefined && <span className="text-body-xs text-muted tabular-nums">{item.count}</span>)}
 		</Link>
 	);
 }
@@ -155,7 +158,8 @@ function SectionChip({ item, current }: SectionLinkProps) {
 		>
 			<Icon name={item.icon} size={16} variant={current ? "duotone" : "stroke"} />
 			{item.label}
-			{item.count !== undefined && <span className="text-body-xs text-muted tabular-nums">{item.count}</span>}
+			{item.badge ??
+				(item.count !== undefined && <span className="text-body-xs text-muted tabular-nums">{item.count}</span>)}
 		</Link>
 	);
 }

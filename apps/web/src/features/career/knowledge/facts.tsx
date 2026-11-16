@@ -2,7 +2,6 @@ import type { Fact } from "../hooks";
 import type { FactCategory } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { KeyboardEvent } from "react";
-import { EmptyState } from "@heroui-pro/react";
 import {
 	Button,
 	Chip,
@@ -27,6 +26,7 @@ import { cn } from "@rezumi/utils/style";
 import { CareerLoadError } from "../load-state";
 import { CareerWidget, CollapseRow, FilterChip, flash, useCareerTime, withUndo } from "../shared";
 import { SelectField } from "@/components/input/select-field";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { toastError } from "@/libs/error-message";
 import { D2, EASE, EXIT } from "@/libs/motion";
@@ -188,24 +188,19 @@ export function FactsPage({ highlight }: FactsPageProps) {
 								))}
 							</AnimatePresence>
 							{visible.length === 0 && (
-								<EmptyState size="sm">
-									<EmptyState.Header>
-										<EmptyState.Media variant="icon">
-											<Icon name="list-checks" size={20} />
-										</EmptyState.Media>
-										<EmptyState.Title>{facts.length === 0 ? t`No facts yet` : t`No facts match`}</EmptyState.Title>
-										<EmptyState.Description>
-											{facts.length === 0 ? t`Use Add fact to start.` : t`Try another word or type.`}
-										</EmptyState.Description>
-									</EmptyState.Header>
-									{type !== null && (
-										<EmptyState.Content>
+								<EmptyBlock
+									kind={facts.length === 0 ? "page" : "filtered"}
+									{...(facts.length === 0 ? { icon: "list-checks" as const } : {})}
+									title={facts.length === 0 ? t`No facts yet` : t`No facts match`}
+									description={facts.length === 0 ? t`Use Add fact to start.` : t`Try another word or type.`}
+									action={
+										type === null ? undefined : (
 											<Button variant="secondary" size="sm" onPress={() => setType(null)}>
 												<Trans>Show all types</Trans>
 											</Button>
-										</EmptyState.Content>
-									)}
-								</EmptyState>
+										)
+									}
+								/>
 							)}
 						</div>
 					)}
