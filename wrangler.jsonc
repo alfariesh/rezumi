@@ -72,6 +72,9 @@
 		// Apify actor that reads LinkedIn profiles into the Profile. Not secret; this is also the default. APIFY_TOKEN is a
 		// Worker secret: without it LinkedIn import is off.
 		"APIFY_LINKEDIN_ACTOR": "harvestapi~linkedin-profile-scraper",
+		// Rezumi AI (Anthropic) through the "rezumi" Cloudflare AI Gateway, for cost and error analytics. Not secret; kept
+		// here because a deploy replaces dashboard variables. The gateway requires AI_GATEWAY_TOKEN (a Worker secret).
+		"AI_BASE_URL": "https://gateway.ai.cloudflare.com/v1/8be116534f7237b451f28adec91fbbbd/rezumi/anthropic/v1",
 	},
 	"send_email": [{ "name": "EMAIL" }],
 	"hyperdrive": [{ "binding": "HYPERDRIVE", "id": "f2e0cd8d0b084ed5bdbfb8a1de8a80dc" }],
