@@ -4,6 +4,7 @@ import { Button, Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useState } from "react";
+import { mergeProps } from "react-aria";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -166,32 +167,29 @@ function WorksList() {
 								title={title}
 								selected={work.id === openWorkId}
 								itemProps={itemProps}
+								card={<WorkCardButton work={work} title={title} selected={work.id === openWorkId} />}
 							>
-								<WorkCardButton work={work} title={title} selected={work.id === openWorkId} />
-								<div className="flex shrink-0 items-center">
-									<IconButton
-										icon={work.hidden ? "eye-slash" : "eye"}
-										size="sm"
-										aria-pressed={work.hidden}
-										label={work.hidden ? t`Show ${title} on the page` : t`Hide ${title} from the page`}
-										// A hidden work keeps its crossed eye in view: it's the row's state, not just a control.
-										className={cn("text-muted", !work.hidden && ROW_CONTROL)}
-										onPress={() =>
-											editPortfolio((draft) => {
-												// By id: the list may have moved since this row was drawn (a drop, Undo).
-												const target = draft.works.items.find((item) => item.id === work.id);
-												if (target) target.hidden = !target.hidden;
-											})
-										}
-									/>
-									<IconButton
-										icon="trash"
-										size="sm"
-										label={t`Delete ${title}`}
-										className={cn("text-muted hover:text-danger", ROW_CONTROL)}
-										onPress={() => void remove(work.id, title)}
-									/>
-								</div>
+								<IconButton
+									icon={work.hidden ? "eye-slash" : "eye"}
+									size="sm"
+									aria-pressed={work.hidden}
+									label={work.hidden ? t`Show ${title} on the page` : t`Hide ${title} from the page`}
+									className="text-muted"
+									onPress={() =>
+										editPortfolio((draft) => {
+											// By id: the list may have moved since this row was drawn (a drop, Undo).
+											const target = draft.works.items.find((item) => item.id === work.id);
+											if (target) target.hidden = !target.hidden;
+										})
+									}
+								/>
+								<IconButton
+									icon="trash"
+									size="sm"
+									label={t`Delete ${title}`}
+									className="text-muted hover:text-danger"
+									onPress={() => void remove(work.id, title)}
+								/>
 							</WorkRow>
 						);
 					})}
@@ -218,6 +216,8 @@ function WorkCardButton({ work, title, selected }: WorkCardButtonProps) {
 				<img
 					src={portfolioImageSrc(work.cover)}
 					alt=""
+					// The row drags, not the picture on its own.
+					draggable={false}
 					className="aspect-4/3 w-16 shrink-0 rounded-lg object-cover"
 					style={
 						work.cover.focus
@@ -263,33 +263,44 @@ type WorkRowProps = {
 	selected: boolean;
 	/** Marks the row for `useRemovalFocus`. */
 	itemProps: Record<string, string>;
+	/** What opens the work. */
+	card: ReactNode;
+	/** The open work's buttons (hide, delete), after its grip. */
 	children: ReactNode;
 };
 
 /**
- * A row's controls (handle, hide, delete) show while it's hovered, focused or open, and always on touch screens, so
- * the list reads as covers and titles.
+ * One work in the list, dragged by the whole row. No frame and no buttons unless it's open: then it's a white card
+ * with its grip (the keyboard's way to reorder), hide and delete in a row at its lower start, so the list reads as
+ * covers and titles and the text keeps the full width.
  */
-const ROW_CONTROL =
-	"opacity-0 transition-opacity duration-quick group-focus-within/work:opacity-100 group-hover/work:opacity-100 group-data-selected/work:opacity-100 pointer-coarse:opacity-100";
-
-/** One work in the list: a drag handle, then what opens the work and its buttons. No frame unless it's open. */
-function WorkRow({ id, index, title, selected, itemProps, children }: WorkRowProps) {
+function WorkRow({ id, index, title, selected, itemProps, card, children }: WorkRowProps) {
 	const sortable = useSortableItem({ id, list: "works", index, label: title });
 	return (
 		<li {...itemProps}>
 			<div
-				{...sortable.dropTargetProps}
+				{...mergeProps(sortable.dropTargetProps, sortable.dragProps)}
 				data-selected={selected || undefined}
 				className={cn(
-					"group/work relative flex items-center gap-1 rounded-2xl p-2 transition-[background-color,box-shadow] duration-quick",
+					"relative grid gap-1 rounded-2xl p-2 transition-[background-color,box-shadow] duration-quick select-none",
 					selected ? "bg-surface shadow-surface" : "hover:bg-default/60",
 					sortable.isDragging && "opacity-50",
 				)}
 			>
 				<SortableEdge edge={sortable.edge} />
-				<SortableHandle item={sortable} label={t`Reorder ${title}`} className={cn("h-12 w-6", ROW_CONTROL)} />
-				{children}
+				{card}
+				{selected && (
+					<div className="flex items-center gap-0.5">
+						<SortableHandle
+							item={sortable}
+							dragSource={false}
+							label={t`Reorder ${title}`}
+							iconSize={16}
+							className="size-8"
+						/>
+						{children}
+					</div>
+				)}
 			</div>
 		</li>
 	);
