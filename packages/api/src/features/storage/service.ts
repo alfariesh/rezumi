@@ -75,8 +75,8 @@ const EXTENSION_BY_CONTENT_TYPE: Record<string, string> = {
 };
 
 // Derive the stored key's extension from the content type so the static handler serves each
-// file correctly instead of mislabeling it. Images normally arrive as JPEG (sharp), but with
-// FLAG_DISABLE_IMAGE_PROCESSING they keep their original type — hence all image types are
+// file correctly instead of mislabeling it. Images normally arrive as JPEG (sharp, or the Images binding on
+// Cloudflare), but with FLAG_DISABLE_IMAGE_PROCESSING and no processor they keep their original type — hence all image types are
 // mapped, not just JPEG. Non-image uploads (e.g. a cover-letter PDF) get their real extension.
 function buildFileKey(userId: string, contentType: string): string {
 	const extension = EXTENSION_BY_CONTENT_TYPE[contentType] ?? "bin";
@@ -117,10 +117,30 @@ const SHARP_INPUT_FORMATS = new Set(["jpeg", "png", "webp", "gif"]);
 
 const invalidImage = () => new ORPCError("BAD_REQUEST", { message: "Pictures must be PNG, JPEG, WebP or GIF images." });
 
+/**
+ * Resizes an upload where sharp can't run (Cloudflare Workers, through the Images binding). It answers `null` when it
+ * can't, and the upload then keeps the original picture, as with FLAG_DISABLE_IMAGE_PROCESSING alone.
+ */
+export type ImageProcessor = (data: Uint8Array) => Promise<ProcessedImage | null>;
+
+let imageProcessor: ImageProcessor | undefined;
+
+export function configureImageProcessor(processor: ImageProcessor | undefined): void {
+	imageProcessor = processor;
+}
+
 export async function processImageForUpload(file: File): Promise<ProcessedImage> {
 	const data = new Uint8Array(await file.arrayBuffer());
 	const contentType = detectImageType(data);
 	if (!contentType) throw invalidImage();
+
+	if (imageProcessor) {
+		const processed = await imageProcessor(data).catch((error: unknown) => {
+			console.error("[storage] Picture processing failed; the original is kept.", error);
+			return null;
+		});
+		return processed ?? { data, contentType };
+	}
 
 	if (env.FLAG_DISABLE_IMAGE_PROCESSING) return { data, contentType };
 

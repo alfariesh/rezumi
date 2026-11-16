@@ -574,8 +574,77 @@ async function sendPendingEmail() {
 	}
 }
 
-/** One bounded scheduler tick. No work continues after this promise resolves. */
-export async function runCareerJobs() {
+// The most messages one tick sends; a message that finds nothing left to claim does nothing.
+const MAX_DISPATCH = 20;
+
+/** Accounts with a due job a runner could claim now (one job per account runs at a time). */
+async function countWaitingAccounts() {
+	const now = new Date();
+	const [row] = await db
+		.select({ count: sql<number>`count(distinct ${tables.careerJob.userId})::int` })
+		.from(tables.careerJob)
+		.where(
+			and(
+				lte(tables.careerJob.dueAt, now),
+				sql`${tables.careerJob.attempts} < 3`,
+				or(
+					and(
+						eq(tables.careerJob.status, "queued"),
+						or(isNull(tables.careerJob.leaseUntil), lte(tables.careerJob.leaseUntil, now)),
+					),
+					and(eq(tables.careerJob.status, "running"), lte(tables.careerJob.leaseUntil, now)),
+				),
+			),
+		);
+	return Math.min(row?.count ?? 0, MAX_DISPATCH);
+}
+
+/**
+ * Claims and runs the oldest due job of an account not in `servedUsers`; answers its owner, or `null` when nothing was
+ * waiting. A failed run goes back to the queue (or fails for good after three attempts) and notifies its owner.
+ */
+export async function runNextCareerJob(servedUsers: ReadonlySet<string> = new Set()): Promise<string | null> {
+	const job = await claim(servedUsers);
+	if (!job) return null;
+	try {
+		await execute(job);
+	} catch {
+		const [failed] = await db
+			.update(tables.careerJob)
+			.set({
+				status: job.attempts >= 3 ? "failed" : "queued",
+				lease: null,
+				leaseUntil: new Date(Date.now() + 300_000),
+				error: "This schedule failed. Check the selected provider and application, then review the schedule.",
+			})
+			.where(
+				and(
+					eq(tables.careerJob.id, job.id),
+					eq(tables.careerJob.lease, job.lease ?? ""),
+					eq(tables.careerJob.status, "running"),
+				),
+			)
+			.returning();
+		if (failed?.status === "failed")
+			await db
+				.insert(tables.careerNotification)
+				.values({
+					userId: job.userId,
+					key: `failed:${job.id}`,
+					notice: { type: "schedule-failed", reason: "failed" },
+					url: `${CAREER_URL}?schedule=${encodeURIComponent(job.scheduleId)}`,
+				})
+				.onConflictDoNothing();
+	}
+	return job.userId;
+}
+
+/**
+ * One bounded scheduler tick. No work continues after this promise resolves. By default the tick runs up to two due
+ * jobs itself. With `dispatch` (Cloudflare, through a Queue) it only says how many accounts have a job waiting, and
+ * each message then runs one job in its own invocation with `runNextCareerJob`, so jobs run side by side.
+ */
+export async function runCareerJobs(options: { dispatch?: (count: number) => Promise<void> } = {}) {
 	const exhausted = await db
 		.update(tables.careerJob)
 		.set({
@@ -604,42 +673,17 @@ export async function runCareerJobs() {
 			.onConflictDoNothing();
 	await enqueue();
 	let processed = 0;
-	const servedUsers = new Set<string>();
-	for (let i = 0; i < 2; i++) {
-		const job = await claim(servedUsers);
-		if (!job) break;
-		servedUsers.add(job.userId);
-		try {
-			await execute(job);
-		} catch {
-			const [failed] = await db
-				.update(tables.careerJob)
-				.set({
-					status: job.attempts >= 3 ? "failed" : "queued",
-					lease: null,
-					leaseUntil: new Date(Date.now() + 300_000),
-					error: "This schedule failed. Check the selected provider and application, then review the schedule.",
-				})
-				.where(
-					and(
-						eq(tables.careerJob.id, job.id),
-						eq(tables.careerJob.lease, job.lease ?? ""),
-						eq(tables.careerJob.status, "running"),
-					),
-				)
-				.returning();
-			if (failed?.status === "failed")
-				await db
-					.insert(tables.careerNotification)
-					.values({
-						userId: job.userId,
-						key: `failed:${job.id}`,
-						notice: { type: "schedule-failed", reason: "failed" },
-						url: `${CAREER_URL}?schedule=${encodeURIComponent(job.scheduleId)}`,
-					})
-					.onConflictDoNothing();
+	if (options.dispatch) {
+		const waiting = await countWaitingAccounts();
+		if (waiting) await options.dispatch(waiting);
+	} else {
+		const servedUsers = new Set<string>();
+		for (let i = 0; i < 2; i++) {
+			const userId = await runNextCareerJob(servedUsers);
+			if (!userId) break;
+			servedUsers.add(userId);
+			processed++;
 		}
-		processed++;
 	}
 	await sendPendingEmail();
 	// The scheduler tick is the one periodic job every platform runs; Trash expiry rides on it.

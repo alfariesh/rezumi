@@ -17,7 +17,8 @@ const env = vi.hoisted(() => ({
 }));
 vi.mock("@rezumi/env/server", () => ({ env }));
 
-const { configureStorageService, migrateUserStorage, processImageForUpload } = await import("./service");
+const { configureImageProcessor, configureStorageService, migrateUserStorage, processImageForUpload } =
+	await import("./service");
 
 beforeEach(() => {
 	mocks.list.mockReset();
@@ -175,6 +176,44 @@ describe("processImageForUpload", () => {
 			});
 		} finally {
 			env.FLAG_DISABLE_IMAGE_PROCESSING = false;
+		}
+	});
+
+	it("hands checked pictures to a configured processor and keeps the original when it fails", async () => {
+		const png = new Uint8Array(
+			await sharp({ create: { width: 2, height: 2, channels: 3, background: "#fff" } })
+				.png()
+				.toBuffer(),
+		);
+		const resized = { data: new Uint8Array([1, 2, 3]), contentType: "image/jpeg" };
+		const processor = vi.fn().mockResolvedValue(resized);
+		const error = vi.spyOn(console, "error").mockImplementation(() => {});
+		env.FLAG_DISABLE_IMAGE_PROCESSING = true;
+		configureImageProcessor(processor);
+		try {
+			await expect(processImageForUpload(new File([png], "a.png"))).resolves.toEqual(resized);
+			expect(processor).toHaveBeenCalledWith(png);
+
+			await expect(
+				processImageForUpload(new File([new TextEncoder().encode("<svg/>")], "a.png")),
+			).rejects.toMatchObject({ code: "BAD_REQUEST" });
+			expect(processor).toHaveBeenCalledTimes(1);
+
+			processor.mockResolvedValueOnce(null);
+			await expect(processImageForUpload(new File([png], "a.png"))).resolves.toEqual({
+				data: png,
+				contentType: "image/png",
+			});
+			processor.mockRejectedValueOnce(new Error("quota"));
+			await expect(processImageForUpload(new File([png], "a.png"))).resolves.toEqual({
+				data: png,
+				contentType: "image/png",
+			});
+			expect(error).toHaveBeenCalledOnce();
+		} finally {
+			configureImageProcessor(undefined);
+			env.FLAG_DISABLE_IMAGE_PROCESSING = false;
+			error.mockRestore();
 		}
 	});
 });
