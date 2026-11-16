@@ -1,13 +1,15 @@
 import type { SlashItem } from "../editor/rich-text-editor";
 import type { BlockPlace } from "./blocks";
+import type { StoryTemplateId } from "./story-templates";
 import type { PortfolioBlock, PortfolioBlockOf, PortfolioBlockType } from "@rezumi/schema/portfolio/blocks";
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Draft } from "immer";
 import { Button, Dropdown, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { PORTFOLIO_BLOCK_TYPES } from "@rezumi/schema/portfolio/blocks";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -25,7 +27,6 @@ import { dropMissingHighlight } from "../metrics/metrics";
 import { focusTextBlock } from "../works/doc-focus";
 import { pdfFiles, useAddMediaBlock } from "./add-media-block";
 import {
-	addCaseStudy,
 	blockPlace,
 	blockRoom,
 	insertBlocksAt,
@@ -40,6 +41,8 @@ import { ImagesBlockEditor } from "./images-block";
 import { LinkBlockEditor } from "./link-block";
 import { useRemovalFocus } from "./list-focus";
 import { PdfBlockEditor } from "./pdf-block";
+import { StoryTemplateMenu } from "./story-template-menu";
+import { addStoryTemplate, normalizeHeading, storyHints } from "./story-templates";
 import { VideoBlockEditor } from "./video-block";
 import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
 import { openAssistantFrom } from "@/features/assistant/open";
@@ -327,31 +330,27 @@ type BlockListProps = { work: PortfolioWork; locale: string; appearance?: BlockL
 
 /**
  * A work's detail as blocks (`01-desain.md` section 15): add one anywhere with "+ Add block" (or "/" in a text block,
- * or by pasting pictures or a video link into one), drag to reorder, remove with Undo. An empty work can start from a
- * case study outline; on Work's writing surface also by writing, or with the assistant's interview.
+ * or by pasting pictures or a video link into one), drag to reorder, remove with Undo. An empty work can start from an
+ * outline for its kind of work (`story-templates.ts`); on Work's writing surface also by writing, or with the
+ * assistant's interview.
  */
 export function BlockList({ work, locale, appearance = "panel" }: BlockListProps) {
 	const blocks = work.blocks;
 	const list = `blocks:${work.id}`;
 	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 
-	const startCaseStudy = () => {
-		const first = work.blocks.length;
+	const { i18n } = useLingui();
+	const startOutline = (id: StoryTemplateId) => {
+		let first: string | undefined;
 		editWork(
 			work.id,
-			(draft) =>
-				addCaseStudy(draft as PortfolioWork, {
-					problem: t`The problem`,
-					role: t`My role`,
-					process: t`The process`,
-					result: t`The result`,
-				}),
+			(draft) => {
+				first = addStoryTemplate(draft as PortfolioWork, id, (descriptor) => i18n._(descriptor))[0]?.id;
+			},
 			{ structural: true },
 		);
-		// The caret under the first heading, to start writing the problem.
-		const added = usePortfolioEditorStore.getState().portfolio?.data.works.items.find((entry) => entry.id === work.id)
-			?.blocks[first];
-		if (added?.type === "text") focusTextBlock(added.id);
+		// The caret under the first heading, to start writing.
+		if (first) focusTextBlock(first);
 	};
 
 	const asDocument = appearance === "document";
@@ -360,12 +359,14 @@ export function BlockList({ work, locale, appearance = "panel" }: BlockListProps
 		<div className="grid gap-2">
 			{blocks.length === 0 &&
 				(asDocument ? (
-					<EmptyStory work={work} onOutline={startCaseStudy} />
+					<EmptyStory work={work} onOutline={startOutline} />
 				) : (
-					<Button variant="secondary" className="w-fit" onPress={startCaseStudy}>
-						<Icon name="magic-wand" size={18} />
-						<Trans>Start from a case study outline</Trans>
-					</Button>
+					<StoryTemplateMenu work={work} onPick={startOutline}>
+						<Button variant="secondary" className="w-fit">
+							<Icon name="magic-wand" size={18} />
+							<Trans>Start from an outline</Trans>
+						</Button>
+					</StoryTemplateMenu>
 				))}
 			<SortableProvider
 				onMove={(id, target) =>
@@ -600,6 +601,9 @@ type TextBlockEditorProps = {
 /** Rich text; typing "/" adds a block after this one. */
 function TextBlockEditor({ work, block, index, appearance }: TextBlockEditorProps) {
 	const { add, addFiles, addUrl, busy, status } = useAddBlock(work, index + 1);
+	const { i18n } = useLingui();
+	// The questions under a story outline's headings, in the app's language.
+	const hints = useMemo(() => storyHints((descriptor) => i18n._(descriptor)), [i18n]);
 	const slashItems: SlashItem[] = PORTFOLIO_BLOCK_TYPES.map((type) => {
 		const info = blockTypeInfo(type);
 		return { ...info, onSelect: () => add(type) };
@@ -611,6 +615,7 @@ function TextBlockEditor({ work, block, index, appearance }: TextBlockEditorProp
 				// One add at a time, as for "/".
 				onFiles={busy ? undefined : addFiles}
 				onUrl={busy ? undefined : addUrl}
+				headingHint={(heading) => hints.get(normalizeHeading(heading))}
 				hideLabel
 				rewrite="blockText"
 				label={t`Text block of ${work.title.trim() || t`this work`}`}
@@ -641,11 +646,11 @@ function TextBlockEditor({ work, block, index, appearance }: TextBlockEditorProp
 	);
 }
 
-type EmptyStoryProps = { work: PortfolioWork; onOutline: () => void };
+type EmptyStoryProps = { work: PortfolioWork; onOutline: (id: StoryTemplateId) => void };
 
 /**
  * A work with no detail yet, on Work's writing surface: three ways to start the story. Writing it alone adds a text
- * block with the caret in it; the outline adds the case study's headings; AI interviews the person about this work
+ * block with the caret in it; an outline (picked for the kind of work) adds its headings; AI interviews the person about this work
  * (a few questions with likely answers to pick, `portfolioFocusNote` on the server) and writes the blocks.
  */
 function EmptyStory({ work, onOutline }: EmptyStoryProps) {
@@ -658,21 +663,15 @@ function EmptyStory({ work, onOutline }: EmptyStoryProps) {
 	};
 	// Sent at once: the assistant opens on this work (its chip) and starts with its first question.
 	const askAi = () => openAssistantFrom({ ask: t`Interview me about this work, then write its story.` });
-	const options: { icon: IconName; title: string; description: string; onPress: () => void }[] = [
-		{
-			icon: "sparkle",
-			title: t`Write it with AI`,
-			description: t`Answer a few questions; it writes the story`,
-			onPress: askAi,
-		},
-		{
-			icon: "list-numbers",
-			title: t`Start from an outline`,
-			description: t`Problem, role, process and result headings`,
-			onPress: onOutline,
-		},
-		{ icon: "text-t", title: t`Write it myself`, description: t`Start with an empty paragraph`, onPress: startWriting },
-	];
+	const cardClass =
+		"grid cursor-(--cursor-interactive) content-start gap-1 rounded-xl bg-default/60 p-3 text-start transition-colors duration-quick outline-none hover:bg-default focus-visible:ring-2 focus-visible:ring-focus";
+	const card = (icon: IconName, title: string, description: string) => (
+		<>
+			<Icon name={icon} size={18} className="text-accent" />
+			<span className="text-sm font-medium">{title}</span>
+			<span className="text-xs text-muted">{description}</span>
+		</>
+	);
 
 	return (
 		<div className="grid gap-3 rounded-2xl border border-dashed border-separator p-4">
@@ -680,18 +679,15 @@ function EmptyStory({ work, onOutline }: EmptyStoryProps) {
 				<Trans>Tell the story behind this work: the problem, what you did, and what changed.</Trans>
 			</p>
 			<div className="grid gap-2 @md:grid-cols-3">
-				{options.map((option) => (
-					<button
-						key={option.title}
-						type="button"
-						onClick={option.onPress}
-						className="grid cursor-(--cursor-interactive) content-start gap-1 rounded-xl bg-default/60 p-3 text-start transition-colors duration-quick outline-none hover:bg-default focus-visible:ring-2 focus-visible:ring-focus"
-					>
-						<Icon name={option.icon} size={18} className="text-accent" />
-						<span className="text-sm font-medium">{option.title}</span>
-						<span className="text-xs text-muted">{option.description}</span>
-					</button>
-				))}
+				<button type="button" onClick={askAi} className={cardClass}>
+					{card("sparkle", t`Write it with AI`, t`Answer a few questions; it writes the story`)}
+				</button>
+				<StoryTemplateMenu work={work} onPick={onOutline} asTrigger={{ className: cardClass }}>
+					{card("list-numbers", t`Start from an outline`, t`Headings for your kind of work: design, code, marketing…`)}
+				</StoryTemplateMenu>
+				<button type="button" onClick={startWriting} className={cardClass}>
+					{card("text-t", t`Write it myself`, t`Start with an empty paragraph`)}
+				</button>
 			</div>
 		</div>
 	);

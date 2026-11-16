@@ -1,3 +1,4 @@
+import type { HeadingHint } from "./heading-hints";
 import type { SlashItem } from "./rich-text-editor";
 import type { PortfolioAiField } from "@rezumi/schema/portfolio/ai";
 import type { IconName } from "@rezumi/ui/components/icon";
@@ -231,6 +232,8 @@ type RichTextFieldProps = {
 	onFiles?: ((files: File[]) => boolean) | undefined;
 	/** A lone web address pasted on an empty line; true when taken. */
 	onUrl?: ((url: string) => boolean) | undefined;
+	/** A question for the empty paragraph under a heading, by the heading's text. */
+	headingHint?: HeadingHint | undefined;
 };
 
 /** A labelled rich text field. The editor loads on first use; it starts over after undo, redo or a reload. */
@@ -246,6 +249,7 @@ export function RichTextField({
 	appearance = "field",
 	onFiles,
 	onUrl,
+	headingHint,
 }: RichTextFieldProps) {
 	const revision = usePortfolioEditorStore((state) => state.revision);
 	const labelId = useId();
@@ -296,6 +300,7 @@ export function RichTextField({
 								appearance={appearance}
 								onFiles={onFiles}
 								onUrl={onUrl}
+								headingHint={headingHint}
 							/>
 						</Suspense>
 					);

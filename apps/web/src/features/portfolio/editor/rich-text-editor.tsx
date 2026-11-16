@@ -1,3 +1,4 @@
+import type { HeadingHint } from "./heading-hints";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Editor, JSONContent } from "@tiptap/core";
 import { filterRichTextEditorSuggestionItems, RichTextEditor } from "@heroui-pro/react/rich-text-editor";
@@ -6,6 +7,7 @@ import { generateJSON } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import { useLayoutEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { headingHints } from "./heading-hints";
 import { pasteIntent } from "./paste";
 
 const ICON = 18;
@@ -43,6 +45,11 @@ export type PortfolioRichTextEditorProps = {
 	onFiles?: ((files: File[]) => boolean) | undefined;
 	/** A lone web address pasted on an empty line. True when it was taken (as a Video or Embed block, say). */
 	onUrl?: ((url: string) => boolean) | undefined;
+	/**
+	 * A question to show in the empty paragraph under a heading (a story outline's), by the heading's text. Read when
+	 * the editor is made.
+	 */
+	headingHint?: HeadingHint | undefined;
 };
 
 /** Saved HTML as the editor's document. The editor's own extensions read the same tags (StarterKit holds them all). */
@@ -66,6 +73,7 @@ export default function PortfolioRichTextEditor({
 	appearance = "field",
 	onFiles,
 	onUrl,
+	headingHint,
 }: PortfolioRichTextEditorProps) {
 	const [initial] = useState(() => toDocument(value));
 	// The editor reads its handlers once, when it's made: these refs give it the latest ones.
@@ -73,6 +81,8 @@ export default function PortfolioRichTextEditor({
 	useLayoutEffect(() => {
 		handlers.current = { onFiles, onUrl };
 	});
+	// Made once, with the hints it starts with: the editor is rebuilt when its extensions change.
+	const [extensions] = useState(() => (headingHint ? [headingHints(headingHint)] : []));
 	const asDocument = appearance === "document";
 	const menuItems = asDocument ? [...formatItems(), ...(slashItems ?? [])] : (slashItems ?? []);
 
@@ -83,6 +93,7 @@ export default function PortfolioRichTextEditor({
 			defaultValue={initial}
 			maxLength={maxLength}
 			placeholder={placeholder ?? t`Start writing…`}
+			extensions={extensions}
 			onValueChange={(_, details) => onChange(details.isEmpty ? "" : details.html)}
 			editorOptions={{
 				editorProps: {
