@@ -12,6 +12,7 @@ Run from the repository root:
 ```sh
 pnpm --filter extension build:dev   # development build into apps/extension/dist (server http://localhost:3000)
 pnpm --filter extension dev         # the same, rebuilding on change
+pnpm --filter extension build:candidate # release candidate for hand testing: store build + the store key, signs in to rezumi.app (never upload)
 pnpm --filter extension build       # store build (https://rezumi.app), fails if content.js passes 50 KB
 pnpm --filter extension zip         # store build + apps/extension/release/rezumi-extension-<version>.zip
 pnpm --filter extension typecheck
