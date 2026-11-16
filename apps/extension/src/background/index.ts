@@ -20,6 +20,7 @@ import {
 	tabPageKey,
 	tabSelectionKey,
 } from "../shared/storage";
+import { uninstallUrl } from "../shared/uninstall";
 import { registerAlarms, runAlarm } from "./alarms";
 import { createWorkerClient } from "./api";
 import { ConnectError, createAuth } from "./auth";
@@ -343,6 +344,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
 	if (area !== "local") return;
 	const watched: string[] = [SAVED_KEYS, SETTINGS, DUE_FOLLOW_UPS, AUTH_KEYS.refresh, AUTH_KEYS.state];
 	if (Object.keys(changes).some((key) => watched.includes(key))) void refreshAllTabs();
+	if (SETTINGS in changes) void setUninstallPage();
 });
 
 chrome.tabs.onRemoved.addListener((tabId) => {
@@ -379,17 +381,28 @@ chrome.contextMenus.onClicked.addListener(onContextMenu);
 // Development builds: tests click the menu item through this (Playwright cannot open the browser's context menu).
 if (__DEV__) (globalThis as { rezumiContextMenu?: typeof onContextMenu }).rezumiContextMenu = onContextMenu;
 
+// --- Removal (aturan turunan #10) ---
+
+/** Removing the extension opens a short "Why did you stop?" page on Rezumi, in the extension's language. */
+async function setUninstallPage() {
+	const stored = await chrome.storage.local.get(SETTINGS);
+	const language = resolveLanguage(readSettings(stored[SETTINGS]).language, chrome.i18n.getUILanguage());
+	await chrome.runtime.setUninstallURL(uninstallUrl(REZUMI_ORIGIN, language, EXTENSION_VERSION)).catch(() => {});
+}
+
 // --- Lifecycle ---
 
 chrome.runtime.onInstalled.addListener(() => {
 	void registerAlarms();
 	createContextMenu();
 	void syncFollowUps();
+	void setUninstallPage();
 });
 chrome.runtime.onStartup.addListener(() => {
 	void registerAlarms();
 	createContextMenu();
 	void syncFollowUps();
+	void setUninstallPage();
 });
 chrome.alarms.onAlarm.addListener((alarm) => {
 	void runAlarm(alarm, { syncSavedKeys, syncFollowUps });

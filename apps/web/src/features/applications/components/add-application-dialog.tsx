@@ -15,6 +15,7 @@ import { SelectField } from "@/components/input/select-field";
 import { useDialogStore } from "@/dialogs/store";
 import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
+import { ExtensionInstallHint } from "@/features/extension/install-links";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
@@ -393,6 +394,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 							ai={hasUsableProvider}
 						/>
 					)}
+					{!text && <ExtensionInstallHint />}
 				</div>
 
 				<div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">

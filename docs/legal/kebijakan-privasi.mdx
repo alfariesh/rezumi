@@ -71,6 +71,29 @@ sesuai pengaturannya sampai dimatikan. Laporan AI/CV publik hanya mengirim konte
 identitas akun serta waktu peninjauan ke operator, bukan provider AI. Laporan ikut ekspor akun dan dihapus bersama akun atau lebih awal setelah ditinjau.
 Pemblokiran penulis CV disimpan lokal per akun/server dan tidak menghapus konten web atau perangkat lain.
 
+## Ekstensi browser
+
+Bagian ini untuk ekstensi Rezumi di Chrome dan Microsoft Edge (komputer). Ekstensi hanya menyimpan lowongan dari browser ke lamaran di akun Rezumi Anda dan membantu menyiapkannya. Semua data tersimpan di akun Rezumi; ekstensi tidak punya basis data sendiri.
+
+| Data                                                                                                                                                               | Tujuan                                                     | Dasar                                              |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- | -------------------------------------------------- |
+| Alamat, judul, teks (hingga 20.000 karakter), data lowongan terstruktur, dan teks yang Anda blok, dari halaman lowongan yang Anda minta dibaca                     | Mengisi dan menyimpan lowongan ke lamaran Anda             | Kontrak; permintaan Anda                           |
+| Token masuk, nama dan email akun yang tampil di panel                                                                                                              | Masuk ke akun dan menunjukkan akun yang terhubung          | Kontrak                                            |
+| Laporan halaman yang Anda kirim: alamat halaman, situs, versi ekstensi, nama kolom yang gagal terbaca (tanpa isi halaman)                                          | Memperbaiki pembaca situs loker                            | Kepentingan sah yang proporsional; permintaan Anda |
+| Di browser Anda: pengaturan, draf isian per tab, daftar kunci lowongan yang sudah disimpan, daftar tindak lanjut jatuh tempo, catatan notifikasi yang sudah tampil | Tanda "Tersimpan", angka di ikon, pengingat dan draf isian | Kontrak                                            |
+
+- **Kapan ekstensi membaca halaman.** Hanya saat Anda memintanya: membuka panel di halaman lowongan, menekan Simpan, memakai menu klik kanan atau pintasan keyboard. Di LinkedIn, Indeed, JobStreet dan Glints ekstensi juga membaca alamat halaman yang sedang Anda buka, di dalam browser, untuk menampilkan tanda "Tersimpan"; alamat itu tidak dikirim ke kami. Di situs lain ekstensi tidak membaca apa pun sampai Anda mengkliknya. Ekstensi tidak menekan tombol apa pun di situs loker dan tidak menyedot data otomatis.
+- **Yang dikirim ke server.** Saat panel terbuka di halaman lowongan, teks halaman itu dikirim ke server Rezumi untuk mengisi kolom (posisi, perusahaan, lokasi, dan seterusnya). Server tidak menyimpannya kecuali Anda menyimpan lowongan itu. Menyimpan membuat lamaran di akun Anda dengan isi yang Anda periksa dan ubah. Setiap permintaan memuat versi ekstensi dan zona waktu perangkat.
+- **AI opsional.** "Baca dengan AI" dan skor kecocokan AI mengirim teks lowongan (dan, untuk skor, ringkasan CV Anda) ke penyedia AI yang berlaku di bagian Penerima data, dengan biaya kredit yang tertera. Saklar bawaannya mati.
+- **Tanda "Tersimpan".** Ekstensi mengunduh daftar kunci lowongan yang sudah Anda simpan (paling banyak 5.000), lalu mencocokkannya di browser. Alamat halaman yang Anda kunjungi tidak dikirim untuk itu.
+- **Kontak dan logo.** Email atau nomor telepon yang tertulis di deskripsi lowongan hanya diusulkan dan baru tersimpan bila Anda mencentangnya. Profil orang di situs loker tidak dibaca. Logo perusahaan diunduh oleh server Rezumi dari alamat publik di halaman dan disalin ke penyimpanan Rezumi; peramban Anda tidak diminta memuatnya dari situs loker.
+- **Login.** Ekstensi masuk lewat OAuth (PKCE) tanpa menyalin kunci API. Token akses disimpan sementara di browser; token penyegar dan nama serta email akun disimpan di penyimpanan lokal ekstensi sampai Anda keluar. Menghapus ekstensi menghapus penyimpanan itu dari browser, tetapi tidak mencabut izinnya di server: cabut di **Pengaturan → Aplikasi terhubung**.
+- **Laporkan halaman.** Hanya dikirim bila Anda mengkliknya. Laporan diringkas ke email operator, disimpan paling lama 30 hari, ikut ekspor data akun, dan dihapus bersama akun.
+- **Notifikasi desktop.** Opsional dan bawaannya mati; izin diminta browser saat Anda menyalakannya. Pengingat dihitung di perangkat dari tanggal tindak lanjut yang Anda atur; tidak ada layanan push pihak ketiga.
+- **Halaman setelah menghapus.** Saat ekstensi dihapus, browser membuka halaman singkat di rezumi.app. Alamatnya hanya memuat bahasa dan versi ekstensi, tanpa data tentang Anda; halaman itu tidak meminta data.
+- **Yang tidak dilakukan.** Ekstensi tidak memuat kode dari luar, tidak memakai pelacak atau analitik pihak ketiga, tidak menjual data dan tidak memakainya untuk iklan atau penilaian kredit.
+- **Pembatasan penggunaan.** Penggunaan informasi yang diterima dari API browser mematuhi Kebijakan Data Pengguna Chrome Web Store, termasuk persyaratan Limited Use: data dipakai hanya untuk fitur tunggal ekstensi (menyimpan dan menyiapkan lowongan), tidak dialihkan ke pihak ketiga di luar yang diperlukan untuk fitur itu, tidak dibaca manusia kecuali untuk menanggapi permintaan dukungan Anda, keamanan, atau hukum, dan tidak dipakai atau dipindahkan untuk iklan.
+
 ## Portfolio web
 
 Bagian ini berlaku setelah fitur portfolio diluncurkan.
