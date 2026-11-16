@@ -13,8 +13,9 @@ type WorkCanvasProps = {
 };
 
 /**
- * Work's canvas: the open work as a document to write in (Edit), or its page as visitors see it (Preview). The
- * document sits on a sheet in the middle of the canvas, with room at its sides for each block's handle and AI.
+ * Work's canvas: the open work as a document to write in (Edit), or its page as visitors see it (Preview). Edit is
+ * the plain surface, no sheet on the gray canvas, so it reads apart from Preview's page at a glance; the text keeps a
+ * readable column in the middle, with room at its sides for each block's handle and AI.
  */
 export function WorkCanvas({ preview }: WorkCanvasProps) {
 	const view = usePortfolioEditorUi((state) => state.workView);
@@ -44,15 +45,13 @@ export function WorkCanvas({ preview }: WorkCanvasProps) {
 
 	return (
 		// Keyed by work: another work starts at its top.
-		<div key={open.id} className="size-full scrollbar-thin overflow-y-auto">
-			<div className="mx-auto w-full max-w-[56rem] px-3 py-6 sm:px-6">
-				<article
-					aria-label={t`Writing ${open.title.trim() || t`Untitled work`}`}
-					className="work-doc @container rounded-[calc(var(--radius)*4)] bg-surface px-5 py-8 shadow-surface sm:px-20 sm:py-12"
-				>
-					<WorkDocument workId={open.id} />
-				</article>
-			</div>
+		<div key={open.id} className="size-full scrollbar-thin overflow-y-auto bg-surface">
+			<article
+				aria-label={t`Writing ${open.title.trim() || t`Untitled work`}`}
+				className="work-doc @container mx-auto w-full max-w-[52rem] px-6 pt-10 pb-24 sm:px-20"
+			>
+				<WorkDocument workId={open.id} />
+			</article>
 		</div>
 	);
 }
