@@ -81,7 +81,8 @@ export function SectionNav({ title, items, footer, className }: SectionNavProps)
 				className,
 			)}
 		>
-			<ul className="grid gap-0.5 max-md:hidden">
+			{/* Pulled out by the rows' padding, so the icons line up with the navbar's and the page's edge. */}
+			<ul className="-ms-2.5 grid gap-0.5 max-md:hidden">
 				{items.map((item) => (
 					<Fragment key={item.match.to + String(item.label)}>
 						{item.group && <li aria-hidden className="mx-2.5 my-2 h-px bg-separator first:hidden" />}
