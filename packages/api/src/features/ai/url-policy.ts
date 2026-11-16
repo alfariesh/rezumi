@@ -37,5 +37,32 @@ export function resolveAiBaseUrl(input: ResolveAiBaseUrlInput) {
  * choose Rezumi AI can add them too.
  */
 export function aiTransport(serverAi = false): { fetch?: typeof fetch } {
-	return serverAi || env.FLAG_ALLOW_UNSAFE_AI_BASE_URL ? {} : { fetch: fetchPublic };
+	const transport = serverAi || env.FLAG_ALLOW_UNSAFE_AI_BASE_URL ? undefined : fetchPublic;
+	const gateway = aiGatewayFetch(transport ?? ((input, init) => fetch(input, init)));
+	if (gateway) return { fetch: gateway };
+	return transport ? { fetch: transport } : {};
+}
+
+const requestUrl = (input: RequestInfo | URL) =>
+	typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
+
+/**
+ * Cloudflare AI Gateway (new gateways require authentication): requests under the server's own `AI_BASE_URL`, when it
+ * is a gateway endpoint, carry `AI_GATEWAY_TOKEN` in `cf-aig-authorization`. Only that address gets it, so a user's own
+ * connection can't send the token to another gateway on the account (the token may run every gateway there).
+ */
+function aiGatewayFetch(next: typeof fetch): typeof fetch | undefined {
+	const token = env.AI_GATEWAY_TOKEN;
+	const base = env.AI_BASE_URL?.replace(/\/+$/, "");
+	if (!token || !base) return undefined;
+	const parsed = parseUrl(base);
+	if (parsed?.protocol !== "https:" || parsed.hostname !== "gateway.ai.cloudflare.com") return undefined;
+	const gatewayFetch = (input: RequestInfo | URL, init?: RequestInit) => {
+		const url = requestUrl(input);
+		if (url !== base && !url.startsWith(`${base}/`)) return next(input, init);
+		const headers = new Headers(init?.headers ?? (input instanceof Request ? input.headers : undefined));
+		headers.set("cf-aig-authorization", `Bearer ${token}`);
+		return next(input, { ...init, headers });
+	};
+	return gatewayFetch as typeof fetch;
 }

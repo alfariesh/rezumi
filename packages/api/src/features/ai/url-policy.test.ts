@@ -3,6 +3,8 @@ import { describe, expect, it, vi } from "vite-plus/test";
 const envMock = vi.hoisted(() => ({
 	FLAG_ALLOW_UNSAFE_AI_BASE_URL: false,
 	AI_PROVIDER: undefined as string | undefined,
+	AI_BASE_URL: undefined as string | undefined,
+	AI_GATEWAY_TOKEN: undefined as string | undefined,
 }));
 
 vi.mock("@rezumi/env/server", () => ({ env: envMock }));
@@ -49,5 +51,41 @@ describe("AI transport", () => {
 		expect(aiTransport().fetch).toBeDefined();
 		// The server's own AI is the operator's endpoint: plain fetch.
 		expect(aiTransport(true)).toEqual({});
+	});
+
+	it("sends AI_GATEWAY_TOKEN only to the server's own Cloudflare AI Gateway address", async () => {
+		const seen: Array<[string, string | null]> = [];
+		vi.stubGlobal(
+			"fetch",
+			vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+				const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
+				seen.push([url, new Headers(init?.headers).get("cf-aig-authorization")]);
+				return new Response("{}");
+			}),
+		);
+		envMock.FLAG_ALLOW_UNSAFE_AI_BASE_URL = false;
+		envMock.AI_BASE_URL = "https://gateway.ai.cloudflare.com/v1/acct/rezumi/openai/";
+		envMock.AI_GATEWAY_TOKEN = "gateway-token";
+		try {
+			const transport = aiTransport(true).fetch;
+			expect(transport).toBeDefined();
+			await transport?.("https://gateway.ai.cloudflare.com/v1/acct/rezumi/openai/chat/completions", {
+				headers: { Authorization: "Bearer provider" },
+			});
+			await transport?.("https://gateway.ai.cloudflare.com/v1/acct/other/openai/chat/completions");
+			await transport?.("https://gateway.ai.cloudflare.com/v1/acct/rezumi/openai-evil/chat");
+			expect(seen).toEqual([
+				["https://gateway.ai.cloudflare.com/v1/acct/rezumi/openai/chat/completions", "Bearer gateway-token"],
+				["https://gateway.ai.cloudflare.com/v1/acct/other/openai/chat/completions", null],
+				["https://gateway.ai.cloudflare.com/v1/acct/rezumi/openai-evil/chat", null],
+			]);
+
+			envMock.AI_BASE_URL = "https://api.openai.com/v1";
+			expect(aiTransport(true)).toEqual({});
+		} finally {
+			envMock.AI_BASE_URL = undefined;
+			envMock.AI_GATEWAY_TOKEN = undefined;
+			vi.unstubAllGlobals();
+		}
 	});
 });

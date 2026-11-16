@@ -182,7 +182,9 @@ To see every shared AI request, its cost and errors in one place, put
 [Cloudflare AI Gateway](https://developers.cloudflare.com/ai-gateway/) in front of the provider: create a gateway, then
 set `AI_BASE_URL` to its provider endpoint, for example
 `https://gateway.ai.cloudflare.com/v1/<account-id>/<gateway>/openai` for OpenAI. The provider key stays in
-`AI_API_KEY`. An OpenAI endpoint through the gateway keeps the Assistant's direct-OpenAI features.
+`AI_API_KEY`. New gateways require authentication: create a token in the gateway's **Settings** and store it as the
+`AI_GATEWAY_TOKEN` secret. An OpenAI endpoint through the gateway keeps the Assistant's direct-OpenAI features. Leave
+the gateway's **Collect Logs** off unless you need it: it stores prompts and replies, which hold people's resume data.
 
 The AI key belongs to Rezumi for this workflow. Web services receive search queries and selected public URLs;
 they do not need the AI-provider key or candidate resume data.
