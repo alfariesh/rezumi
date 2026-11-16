@@ -32,7 +32,7 @@ export function WorkCanvas({ preview }: WorkCanvasProps) {
 					<p className="text-sm font-medium">
 						{works.length ? <Trans>Choose a work to write about</Trans> : <Trans>No works yet</Trans>}
 					</p>
-					<p className="text-xs text-muted">
+					<p className="text-body-xs text-muted">
 						{works.length ? (
 							<Trans>Pick one from the list, and its story opens here.</Trans>
 						) : (

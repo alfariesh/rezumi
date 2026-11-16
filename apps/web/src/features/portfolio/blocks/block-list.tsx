@@ -676,7 +676,7 @@ function EmptyStory({ work, onOutline }: EmptyStoryProps) {
 
 	return (
 		<div className="grid gap-3 rounded-2xl border border-dashed border-separator p-4">
-			<p className="text-sm text-muted">
+			<p className="text-body-sm text-muted">
 				<Trans>Tell the story behind this work: the problem, what you did, and what changed.</Trans>
 			</p>
 			<div className="grid gap-2 @md:grid-cols-3">
