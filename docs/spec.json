@@ -38064,14 +38064,23 @@
 																							"respondBy": {
 																								"anyOf": [
 																									{
-																										"type": "string",
-																										"format": "date-time"
+																										"anyOf": [
+																											{
+																												"type": "string",
+																												"format": "date"
+																											},
+																											{
+																												"type": "string",
+																												"format": "date-time"
+																											}
+																										]
 																									},
 																									{
 																										"type": "null"
 																									}
 																								],
-																								"default": null
+																								"default": null,
+																								"description": "Answer deadline: YYYY-MM-DD when the message names only a day; an ISO date-time with offset only when it states a time. Never invent a time."
 																							}
 																						},
 																						"required": [
@@ -38228,14 +38237,23 @@
 																			"respondBy": {
 																				"anyOf": [
 																					{
-																						"type": "string",
-																						"format": "date-time"
+																						"anyOf": [
+																							{
+																								"type": "string",
+																								"format": "date"
+																							},
+																							{
+																								"type": "string",
+																								"format": "date-time"
+																							}
+																						]
 																					},
 																					{
 																						"type": "null"
 																					}
 																				],
-																				"default": null
+																				"default": null,
+																				"description": "Answer deadline: YYYY-MM-DD when the message names only a day; an ISO date-time with offset only when it states a time. Never invent a time."
 																			}
 																		},
 																		"required": [
@@ -45874,14 +45892,23 @@
 																			"respondBy": {
 																				"anyOf": [
 																					{
-																						"type": "string",
-																						"format": "date-time"
+																						"anyOf": [
+																							{
+																								"type": "string",
+																								"format": "date"
+																							},
+																							{
+																								"type": "string",
+																								"format": "date-time"
+																							}
+																						]
 																					},
 																					{
 																						"type": "null"
 																					}
 																				],
-																				"default": null
+																				"default": null,
+																				"description": "Answer deadline: YYYY-MM-DD when the message names only a day; an ISO date-time with offset only when it states a time. Never invent a time."
 																			}
 																		},
 																		"required": [
@@ -46038,14 +46065,23 @@
 															"respondBy": {
 																"anyOf": [
 																	{
-																		"type": "string",
-																		"format": "date-time"
+																		"anyOf": [
+																			{
+																				"type": "string",
+																				"format": "date"
+																			},
+																			{
+																				"type": "string",
+																				"format": "date-time"
+																			}
+																		]
 																	},
 																	{
 																		"type": "null"
 																	}
 																],
-																"default": null
+																"default": null,
+																"description": "Answer deadline: YYYY-MM-DD when the message names only a day; an ISO date-time with offset only when it states a time. Never invent a time."
 															}
 														},
 														"required": [
@@ -47226,14 +47262,23 @@
 																						"respondBy": {
 																							"anyOf": [
 																								{
-																									"type": "string",
-																									"format": "date-time"
+																									"anyOf": [
+																										{
+																											"type": "string",
+																											"format": "date"
+																										},
+																										{
+																											"type": "string",
+																											"format": "date-time"
+																										}
+																									]
 																								},
 																								{
 																									"type": "null"
 																								}
 																							],
-																							"default": null
+																							"default": null,
+																							"description": "Answer deadline: YYYY-MM-DD when the message names only a day; an ISO date-time with offset only when it states a time. Never invent a time."
 																						}
 																					},
 																					"required": [
@@ -47390,14 +47435,23 @@
 																		"respondBy": {
 																			"anyOf": [
 																				{
-																					"type": "string",
-																					"format": "date-time"
+																					"anyOf": [
+																						{
+																							"type": "string",
+																							"format": "date"
+																						},
+																						{
+																							"type": "string",
+																							"format": "date-time"
+																						}
+																					]
 																				},
 																				{
 																					"type": "null"
 																				}
 																			],
-																			"default": null
+																			"default": null,
+																			"description": "Answer deadline: YYYY-MM-DD when the message names only a day; an ISO date-time with offset only when it states a time. Never invent a time."
 																		}
 																	},
 																	"required": [

@@ -37,3 +37,32 @@ export function defaultPair(offers: { id: string; applicationId: string | null }
 	const second = offers.find((offer) => offer.applicationId !== first?.applicationId);
 	return [first?.id, second?.id] as const;
 }
+
+/** Today's calendar date in a time zone, as `YYYY-MM-DD`. */
+const calendarDate = (now: Date, timeZone: string) => {
+	const parts = new Intl.DateTimeFormat("en-US", {
+		timeZone,
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+	}).formatToParts(now);
+	const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((item) => item.type === type)?.value ?? "";
+	return `${part("year")}-${part("month")}-${part("day")}`;
+};
+
+/**
+ * A deadline the offer gave as a day with no time (`YYYY-MM-DD`): the day itself, never shifted by a time zone, and
+ * whole days from today in the user's time zone (0 today, 1 tomorrow, negative once it has passed).
+ */
+export function dateOnlyDeadline(date: string, now: Date, timeZone: string, locale: string) {
+	const day = Date.parse(`${date}T00:00:00Z`);
+	const days = Math.round((day - Date.parse(`${calendarDate(now, timeZone)}T00:00:00Z`)) / 86_400_000);
+	const label = new Intl.DateTimeFormat(locale, {
+		timeZone: "UTC",
+		weekday: "short",
+		day: "numeric",
+		month: "short",
+	}).format(day);
+	const relative = new Intl.RelativeTimeFormat(locale, { numeric: "auto" }).format(days, "day");
+	return { label, days, relative: relative.charAt(0).toLocaleUpperCase() + relative.slice(1) };
+}
