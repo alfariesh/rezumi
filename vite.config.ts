@@ -139,6 +139,31 @@ export default defineConfig({
 				},
 			},
 			{
+				// One empty state for the web app: EmptyBlock (components/layout/empty-block.tsx) wraps HeroUI's.
+				files: ["apps/web/src/**"],
+				rules: {
+					"no-restricted-imports": [
+						"error",
+						{
+							patterns: workspaceImportPatterns,
+							paths: [
+								{
+									name: "@heroui-pro/react",
+									importNames: ["EmptyState"],
+									message: "Use EmptyBlock from @/components/layout/empty-block, so every empty state looks the same.",
+								},
+							],
+						},
+					],
+				},
+			},
+			{
+				files: ["apps/web/src/components/layout/empty-block.tsx"],
+				rules: {
+					"no-restricted-imports": ["error", { patterns: workspaceImportPatterns }],
+				},
+			},
+			{
 				files: ["**/*.test.{ts,tsx,mts,mjs}", "**/*.spec.{ts,tsx,mts,mjs}"],
 				rules: {
 					"require-await": "off",
