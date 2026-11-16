@@ -9,6 +9,8 @@ const fixturesPath = fileURLToPath(new URL("../src/content/sites/__fixtures__", 
 type ExtensionFixtures = {
 	/** The browser UI language, as `chrome.i18n.getUILanguage()` reports it. */
 	uiLanguage: string;
+	/** Device pixels per CSS pixel: 2 for the sharp pictures of the store listing. */
+	pixelRatio: number;
 	context: BrowserContext;
 	serviceWorker: Worker;
 	extensionId: string;
@@ -16,10 +18,12 @@ type ExtensionFixtures = {
 
 export const test = base.extend<ExtensionFixtures>({
 	uiLanguage: ["en-US", { option: true }],
-	context: async ({ uiLanguage }, use) => {
+	pixelRatio: [1, { option: true }],
+	context: async ({ uiLanguage, pixelRatio }, use) => {
 		const context = await chromium.launchPersistentContext("", {
 			channel: "chromium",
 			locale: uiLanguage,
+			deviceScaleFactor: pixelRatio,
 			args: [
 				`--disable-extensions-except=${extensionPath}`,
 				`--load-extension=${extensionPath}`,

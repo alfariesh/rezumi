@@ -33,6 +33,7 @@ import {
 	applicationsListQueryOptions,
 	hydrateApplicationDetail,
 } from "@/features/applications/queries";
+import { ExtensionInstallHint } from "@/features/extension/install-links";
 import { useMinWidth } from "@/hooks/use-min-width";
 import { toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
@@ -505,6 +506,7 @@ function FirstJobEmptyState({ onAdd, onImport }: { onAdd: () => void; onImport: 
 					<Trans>Import from CSV</Trans>
 				</Button>
 			</EmptyState.Content>
+			<ExtensionInstallHint className="justify-center" />
 		</EmptyState>
 	);
 }

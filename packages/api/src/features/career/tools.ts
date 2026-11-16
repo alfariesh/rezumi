@@ -5,7 +5,7 @@ import z from "zod";
 import { careerSystemPromptTemplate } from "@rezumi/ai/prompts";
 import { db } from "@rezumi/db/client";
 import { application, careerArtifact } from "@rezumi/db/schema";
-import { careerStoryInputSchema, factCategorySchema } from "@rezumi/schema/career";
+import { careerStoryInputSchema, factCategorySchema, isDateOnly } from "@rezumi/schema/career";
 import { careerService, modelFact } from "./service";
 
 type CareerToolsInput = {
@@ -74,9 +74,21 @@ export function buildCareerInstructions(
 					stories: context.stories.slice(0, 8),
 				}
 			: {}),
-		// Saved offers the user chose to compare: terms in their own currency and pay period.
+		// Saved offers the user chose to compare: terms in their own currency and pay period. A deadline saved as a bare
+		// date had no time in the offer, so the coach is told not to supply one.
 		...(input.offers?.length
-			? { offers: input.offers.map(({ application, data }) => ({ ...application, terms: data })) }
+			? {
+					offers: input.offers.map(({ application, data }) => {
+						const respondBy = (data as { respondBy?: unknown } | null)?.respondBy;
+						return {
+							...application,
+							terms: data,
+							...(typeof respondBy === "string" && isDateOnly(respondBy)
+								? { respondByTime: "Not stated in the offer: the deadline is that date, with no time. Never give one." }
+								: {}),
+						};
+					}),
+				}
 			: {}),
 	};
 	// One pass with a function replacer: text inside a value (`{{CONTEXT}}`, `$&`) is never read as a placeholder.

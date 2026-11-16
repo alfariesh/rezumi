@@ -9,15 +9,17 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { documentOptions } from "../document-options";
+import { saveJobErrorMessage } from "../save-job-error";
 import { useInvalidateApplications } from "../use-application-actions";
 import { DatePickerField } from "@/components/input/date-time-fields";
 import { SelectField } from "@/components/input/select-field";
 import { useDialogStore } from "@/dialogs/store";
 import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
+import { ExtensionInstallHint } from "@/features/extension/install-links";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
-import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
+import { getOrpcErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 
 type Parsed = RouterOutput["applications"]["ai"]["parsePosting"];
@@ -100,6 +102,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 		setReading(null);
 	};
 	const create = useMutation(orpc.applications.create.mutationOptions());
+	const [saveError, setSaveError] = useState<string | null>(null);
 
 	const text = (pasteOpen ? pastedText : input).trim();
 	const sourceLink = isLink(input.trim()) ? input.trim() : null;
@@ -139,6 +142,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 
 	const add = async (tailor: boolean) => {
 		if (!ready) return;
+		setSaveError(null);
 		const posting = {
 			company: company.trim(),
 			role: role.trim(),
@@ -171,7 +175,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 				openDialog("document.new", { step: "copy", applicationId, ...(resumeId ? { sourceResumeId: resumeId } : {}) });
 			else onAdded(applicationId);
 		} catch (error) {
-			toastError(error, t`Couldn't add the application. Try again.`);
+			setSaveError(saveJobErrorMessage(error));
 		}
 	};
 
@@ -393,6 +397,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 							ai={hasUsableProvider}
 						/>
 					)}
+					{!text && <ExtensionInstallHint />}
 				</div>
 
 				<div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
@@ -483,7 +488,10 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 				<SelectField
 					label={stage === "saved" ? <Trans>Resume (optional)</Trans> : <Trans>Resume submitted (optional)</Trans>}
 					value={resumeId}
-					onChange={setResumeId}
+					onChange={(value) => {
+						setResumeId(value);
+						setSaveError(null);
+					}}
 					options={documentOptions(documents, "resume")}
 				/>
 				{stage !== "saved" && (
@@ -495,7 +503,14 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 					/>
 				)}
 			</Modal.Body>
-			<Modal.Footer>
+			<Modal.Footer className="flex-wrap">
+				{/* In the footer, beside the buttons, so it shows however far the form is scrolled. */}
+				{saveError && (
+					<p className="flex basis-full items-start gap-1.5 text-body-xs text-danger-soft-foreground" role="alert">
+						<Icon name="warning-circle" size={16} className="shrink-0" />
+						{saveError}
+					</p>
+				)}
 				<Button variant="secondary" isDisabled={!ready} onPress={() => void add(false)}>
 					{stage === "saved" ? <Trans>Save job</Trans> : <Trans>Record application</Trans>}
 				</Button>

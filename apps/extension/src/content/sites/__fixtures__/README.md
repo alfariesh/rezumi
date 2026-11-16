@@ -9,3 +9,6 @@ posting text, company or person is copied here (02-teknis.md §7.7). The structu
 - `generic/`: other sites (a career page with JSON-LD, one without, an empty app shell).
 - The top-level `linkedin.html`, `indeed.html`, `jobstreet.html` and `glints.html` keep the older interfaces the
   readers still fall back to.
+- `linkedin/store-demo.html`: a styled, board-neutral posting page used only for the store and guide pictures
+  (`tests/store-images.spec.ts`). It keeps the markup hooks the reader needs, so the real extension and button run on
+  it, but shows no job board's logo or colours.

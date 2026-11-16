@@ -1,4 +1,5 @@
 import { publicProcedure } from "../../context";
+import { matchResume } from "./checks";
 import { crudRouter } from "./crud";
 import { updatesRouter } from "./event-router";
 import { getRootResume } from "./root";
@@ -29,6 +30,8 @@ export const resumeRouter = {
 	verifyPassword: sharingRouter.verifyPassword,
 	removePassword: sharingRouter.removePassword,
 	duplicate: crudRouter.duplicate,
+	// The REST alias's term match over RPC for the browser extension (Internal: the REST route stays the public one).
+	matchTerms: matchResume.route({ tags: ["Internal"] }),
 	delete: crudRouter.delete,
 	listVersions: versionsRouter.listVersions,
 	getVersion: versionsRouter.getVersion,

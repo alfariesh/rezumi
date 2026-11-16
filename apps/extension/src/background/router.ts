@@ -39,7 +39,9 @@ export function createMessageRouter({ extensionId, extensionOrigin, handlers }: 
 				if (sender.frameId !== 0) return { ok: false, error: "invalid-sender" };
 				const parsed = contentMessageSchema.safeParse(message);
 				if (!parsed.success) return { ok: false, error: "invalid-message" };
-				return { ok: true, data: await handlers[parsed.data.type](parsed.data, sender.tab?.id ?? -1) };
+				// As below: each schema member reaches the handler of its own type.
+				const handle = handlers[parsed.data.type] as (message: ContentMessage, tabId: number) => Promise<unknown>;
+				return { ok: true, data: await handle(parsed.data, sender.tab?.id ?? -1) };
 			}
 			if (fromExtensionPage) {
 				const parsed = panelMessageSchema.safeParse(message);

@@ -2,16 +2,43 @@ import type { ReadRequest } from "../shared/messages";
 import type { PageReading } from "./reading";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { detectSite, jobKey } from "@rezumi/job-sites/sites";
 import { pageReadingSchema } from "../shared/messages";
-import { tabPageKey } from "../shared/storage";
+import { tabPageKey, tabSelectionKey } from "../shared/storage";
 
 /** How long a single-page board takes to show the next posting after its address changed. */
 const SETTLE_MS = 600;
 
 /** What reading the active tab gave: the page, or why there is nothing to read (a browser page, no access). */
-export type TabReading = { state: "read"; reading: PageReading } | { state: "unavailable" };
+export type TabReading = { state: "read"; tabId: number; reading: PageReading } | { state: "unavailable" };
 
 const ask = (tabId: number) => chrome.tabs.sendMessage(tabId, { type: "read" } satisfies ReadRequest, { frameId: 0 });
+
+/**
+ * Text saved through the context menu in a tab whose page the panel can't read (the browser gave no access to it): the
+ * selection alone stands in for the page, at the address the click reported.
+ */
+async function fromContextMenu(tabId: number): Promise<TabReading> {
+	const stored = (await chrome.storage.session.get(tabSelectionKey(tabId)))[tabSelectionKey(tabId)] as
+		| { text?: unknown; url?: unknown }
+		| undefined;
+	const text = typeof stored?.text === "string" ? stored.text.trim().slice(0, 20_000) : "";
+	const url = typeof stored?.url === "string" ? stored.url : "";
+	if (!text || !url) return { state: "unavailable" };
+	const parsed = pageReadingSchema.safeParse({
+		url,
+		canonicalUrl: url,
+		site: detectSite(url),
+		key: jobKey(url),
+		pageTitle: "",
+		jsonLd: [],
+		text,
+		textSource: "page",
+		selection: text,
+		fields: {},
+	});
+	return parsed.success ? { state: "read", tabId, reading: parsed.data } : { state: "unavailable" };
+}
 
 /**
  * Asks the tab's content script to read the page. On a site without it (anything but the four boards), injects it
@@ -27,15 +54,15 @@ async function readTab(tabId: number): Promise<TabReading> {
 			await chrome.scripting.executeScript({ target: { tabId }, files: ["content.js"] });
 			answer = await ask(tabId);
 		} catch {
-			return { state: "unavailable" };
+			return fromContextMenu(tabId);
 		}
 	}
 	const parsed = pageReadingSchema.safeParse(answer);
 	if (!parsed.success) {
 		if (__DEV__) console.warn("[Rezumi] unreadable page reading", parsed.error);
-		return { state: "unavailable" };
+		return fromContextMenu(tabId);
 	}
-	return { state: "read", reading: parsed.data };
+	return { state: "read", tabId, reading: parsed.data };
 }
 
 /** The tab the panel works on: the active tab of the panel's window (a test may name one with `?tab=` in dev builds). */

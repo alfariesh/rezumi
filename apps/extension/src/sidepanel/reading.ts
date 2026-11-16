@@ -26,7 +26,7 @@ export type ShownFieldName = (typeof SHOWN_FIELDS)[number];
 const EXPECTED_FIELDS = ["role", "company", "location", "description"] as const satisfies readonly ShownFieldName[];
 
 export type ReadingSummary = {
-	/** `posting`: a board posting or a page with a JobPosting; `page`: some other page with text; `none`: no text. */
+	/** `posting`: a readable board posting or a page with a JobPosting; `page`: some other page with text; `none`: neither. */
 	kind: "posting" | "page" | "none";
 	fields: Partial<Record<ShownFieldName, ShownField>>;
 	/** Expected fields nothing could read. */
@@ -77,7 +77,11 @@ export function summarizeReading(reading: PageReading, htmlToText?: HtmlToText):
 	put("description", posting?.description, "json-ld");
 	put("description", reading.text, reading.textSource === "site" ? "site" : "page");
 
-	const kind = (reading.site && reading.key) || posting ? "posting" : fields.description ? "page" : "none";
+	// A board posting page that showed nothing readable (its markup changed) counts as no posting: the person can paste
+	// the description or report the page.
+	const readable = Boolean(fields.role || fields.description);
+	const kind =
+		((reading.site && reading.key) || posting) && readable ? "posting" : fields.description ? "page" : "none";
 	const missing = kind === "posting" ? EXPECTED_FIELDS.filter((name) => !fields[name]) : [...EXPECTED_FIELDS];
 	return { kind, fields, missing };
 }

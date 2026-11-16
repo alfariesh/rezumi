@@ -1,7 +1,7 @@
 # Chrome Web Store — isian draf
 
-Item: `fiogmglhgeiaaeajahbpmmehgmojbjjo`. Isian ini untuk **draf**; jangan kirim untuk review sebelum Phase 07. Teks final dan
-bagian privasi diperiksa lagi di Phase 06 (setelah Kebijakan Privasi punya bagian plugin).
+Item: `fiogmglhgeiaaeajahbpmmehgmojbjjo`. Isian ini untuk **draf**; jangan kirim untuk review sebelum Phase 07. Teks final ada di
+`listing.md`, `izin.md`, dan `privasi-toko.md` (Phase 06, menunggu persetujuan pemilik); berkas ini tinggal panduan isian per tab.
 
 Gambar ada di `gambar/`.
 
@@ -52,15 +52,14 @@ Gratis untuk semua paket Rezumi. Perlu akun Rezumi gratis (rezumi.app).
 
 **Graphic assets:**
 
-| Kolom                      | File                                                                 |
-| -------------------------- | -------------------------------------------------------------------- |
-| Store icon (128×128)       | `gambar/ikon-toko-128x128.png`                                       |
-| Screenshots (1280×800)     | `gambar/screenshot-en-1280x800.png` (Indonesian: `screenshot-id-…`)  |
-| Small promo tile (440×280) | `gambar/promo-kecil-en-440x280.png` (Indonesian: `promo-kecil-id-…`) |
-| Marquee promo tile         | kosongkan                                                            |
+| Kolom                      | File                                                                    |
+| -------------------------- | ----------------------------------------------------------------------- |
+| Store icon (128×128)       | `gambar/ikon-toko-128x128.png`                                          |
+| Screenshots (1280×800)     | `gambar/screenshot-en-1…5-1280x800.png` (Indonesian: `screenshot-id-…`) |
+| Small promo tile (440×280) | `gambar/promo-kecil-en-440x280.png` (Indonesian: `promo-kecil-id-…`)    |
+| Marquee promo tile         | kosongkan                                                               |
 
-Screenshot sekarang hanya layar "Hubungkan ke Rezumi"; Phase 06 menggantinya dengan layar simpan, tersimpan, dan
-kecocokan.
+Lima screenshot per bahasa (Phase 06): tombol di halaman, form simpan, kecocokan, tersimpan + persiapan, pengingat.
 
 **Additional fields:**
 
@@ -102,7 +101,7 @@ Save job postings from job sites to the user's Rezumi application tracker and he
 Lalu centang ketiga pernyataan: tidak menjual data ke pihak ketiga; tidak memakai data untuk hal di luar tujuan tunggal;
 tidak memakai data untuk menilai kelayakan kredit atau pinjaman.
 
-**Privacy policy URL:** `https://docs.rezumi.app/legal/privacy-policy` (bagian plugin ditambahkan di Phase 06 sebelum review).
+**Privacy policy URL:** `https://docs.rezumi.app/legal/privacy-policy` (bagian plugin sudah ditambahkan di Phase 06; pastikan sudah tayang sebelum review).
 
 ## Tab "Distribution"
 

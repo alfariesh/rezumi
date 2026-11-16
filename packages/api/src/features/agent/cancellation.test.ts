@@ -10,8 +10,24 @@ const mocks = vi.hoisted(() => {
 		}),
 		exists: vi.fn(async (key: string) => (values.has(key) ? 1 : 0)),
 	};
-	return { values, redis, getRedis: vi.fn((): typeof redis | null => redis) };
+	const sharedValues = new Map<string, string>();
+	const shared = {
+		get: vi.fn(async (key: string) => sharedValues.get(key) ?? null),
+		set: vi.fn(async (key: string, value: string) => {
+			sharedValues.set(key, value);
+		}),
+	};
+	return {
+		values,
+		redis,
+		getRedis: vi.fn((): typeof redis | null => redis),
+		sharedValues,
+		shared,
+		getCoordination: vi.fn((): typeof shared | undefined => undefined),
+	};
 });
+
+vi.mock("@rezumi/db/coordination", () => ({ getCoordination: mocks.getCoordination }));
 
 vi.mock("@rezumi/db/redis", () => ({
 	getRedis: mocks.getRedis,
@@ -23,7 +39,9 @@ beforeEach(() => {
 	vi.clearAllMocks();
 	vi.useFakeTimers();
 	mocks.values.clear();
+	mocks.sharedValues.clear();
 	mocks.getRedis.mockReturnValue(mocks.redis);
+	mocks.getCoordination.mockReturnValue(undefined);
 });
 
 afterEach(() => vi.useRealTimers());
@@ -88,5 +106,57 @@ describe("agent cancellation", () => {
 		mocks.getRedis.mockReturnValue(null);
 		mocks.values.clear();
 		expect(await isRunAlive("run-7", old)).toBe(true);
+	});
+	it("reports a stop to whoever asks next, on any instance", async () => {
+		const remote = await import("./cancellation");
+		vi.resetModules();
+		const other = await import("./cancellation");
+		expect(await other.isRunCancellationRequested("run-8")).toBe(false);
+		await remote.requestRunCancellation("run-8", "USER_STOPPED");
+		expect(await other.isRunCancellationRequested("run-8")).toBe(true);
+
+		mocks.getRedis.mockReturnValue(null);
+		vi.resetModules();
+		const local = await import("./cancellation");
+		const controller = new AbortController();
+		const cleanup = await local.monitorRunCancellation("run-9", controller);
+		expect(await local.isRunCancellationRequested("run-9")).toBe(false);
+		await local.requestRunCancellation("run-9", "USER_STOPPED");
+		expect(await local.isRunCancellationRequested("run-9")).toBe(true);
+		cleanup();
+	});
+
+	// On Workers the stop request and the run are different requests: the run must abort itself from its own poll.
+	it("leaves the abort to the owner's poll with Workers coordination", async () => {
+		mocks.getRedis.mockReturnValue(null);
+		mocks.getCoordination.mockReturnValue(mocks.shared);
+		const { monitorRunCancellation, requestRunCancellation, isRunCancellationRequested } =
+			await import("./cancellation");
+		const controller = new AbortController();
+		const cleanup = await monitorRunCancellation("run-10", controller);
+		await requestRunCancellation("run-10", "USER_STOPPED");
+		expect(controller.signal.aborted).toBe(false);
+		expect(await isRunCancellationRequested("run-10")).toBe(true);
+		await vi.advanceTimersByTimeAsync(1_000);
+		expect(controller.signal.reason).toMatchObject({ name: "AbortError", message: "USER_STOPPED" });
+		cleanup();
+	});
+
+	it("stops the heartbeat of an aborted run that never finishes", async () => {
+		const { ABORTED_RUN_HEARTBEAT_GRACE_MS, isRunAlive, monitorRunCancellation } = await import("./cancellation");
+		const controller = new AbortController();
+		const cleanup = await monitorRunCancellation("run-11", controller);
+		controller.abort(new DOMException("USER_STOPPED", "AbortError"));
+		const startedAt = new Date(Date.now() - 60_000);
+		await vi.advanceTimersByTimeAsync(ABORTED_RUN_HEARTBEAT_GRACE_MS + 2_000);
+		expect(await isRunAlive("run-11", startedAt)).toBe(true);
+		const beats = mocks.redis.set.mock.calls.length;
+		await vi.advanceTimersByTimeAsync(5_000);
+		expect(mocks.redis.set.mock.calls.length).toBe(beats);
+		expect(vi.getTimerCount()).toBe(0);
+		// The fake store keeps keys forever; a real one lets the last beat expire after its TTL.
+		mocks.values.delete("test:agent-run-alive:run-11");
+		expect(await isRunAlive("run-11", startedAt)).toBe(false);
+		cleanup();
 	});
 });

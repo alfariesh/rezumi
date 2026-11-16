@@ -1,5 +1,5 @@
 import type { SiteAdapter } from "./types";
-import { firstText, looksLikeEmploymentType, looksLikeSalary, textOf } from "../text";
+import { firstText, logoIn, looksLikeEmploymentType, looksLikeSalary, textOf } from "../text";
 import { compact } from "./types";
 
 /**
@@ -57,7 +57,13 @@ export const indeed: SiteAdapter = {
 			textOf(root.querySelector("#jobDescriptionText")) ||
 			textOf(heading?.parentElement, { skip: (element) => element === heading });
 
-		return { fields: compact({ role, company, location, salary, employmentType }), description };
+		const companyLogoUrl = logoIn(root, company, [
+			'[data-testid="jobsearch-CompanyAvatar-image"]',
+			'[data-testid="company-avatar"] img',
+			".jobsearch-CompanyAvatar-image",
+		]);
+
+		return { fields: compact({ role, company, location, salary, employmentType, companyLogoUrl }), description };
 	},
 	anchor(document) {
 		return document.querySelector('[data-testid="job-header-actions"], #jobsearch-ViewJobButtons-container');

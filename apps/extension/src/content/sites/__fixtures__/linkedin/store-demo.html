@@ -1,0 +1,238 @@
+<!doctype html>
+<!--
+	A styled stand-in for a job board's posting page, used only for the pictures in the store listing and the guide
+	(tests/store-images.spec.ts). It carries the markup hooks the reader and the on-page button look for, so the real
+	extension runs on it, but its look is generic on purpose: no job board's logo, colours or name appear in it.
+	Company and posting are fictional.
+-->
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Product Designer | Lumen Health | LinkedIn</title>
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0;
+				background: #eef0f3;
+				color: #1d2329;
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+				font-size: 15px;
+				line-height: 1.5;
+			}
+			nav {
+				display: flex;
+				align-items: center;
+				gap: 24px;
+				height: 56px;
+				padding: 0 max(24px, calc((100% - 1040px) / 2));
+				background: #fff;
+				border-bottom: 1px solid #dde1e6;
+			}
+			nav .mark {
+				width: 30px;
+				height: 30px;
+				border-radius: 8px;
+				background: #1d2329;
+			}
+			nav a {
+				color: #56616c;
+				text-decoration: none;
+				font-weight: 600;
+			}
+			nav a.on {
+				color: #1d2329;
+			}
+			nav .search {
+				margin-left: auto;
+				width: 280px;
+				height: 34px;
+				border-radius: 17px;
+				background: #eef0f3;
+			}
+			main {
+				width: min(780px, calc(100% - 48px));
+				margin: 28px auto;
+				padding: 28px 32px 8px;
+				background: #fff;
+				border: 1px solid #dde1e6;
+				border-radius: 14px;
+			}
+			[aria-label^="Company, "] {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				font-weight: 600;
+				color: #56616c;
+			}
+			[aria-label^="Company, "] a {
+				color: inherit;
+				text-decoration: none;
+			}
+			.logo {
+				display: grid;
+				place-items: center;
+				width: 40px;
+				height: 40px;
+				border-radius: 10px;
+				background: #e4efe9;
+				color: #2c6b52;
+				font-weight: 700;
+				font-size: 14px;
+			}
+			.row {
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+			}
+			.row button {
+				border: 0;
+				background: none;
+				color: #56616c;
+				font-size: 20px;
+				cursor: default;
+			}
+			.title {
+				margin: 14px 0 4px;
+				font-size: 28px;
+				font-weight: 700;
+				line-height: 1.2;
+			}
+			.title a {
+				color: inherit;
+				text-decoration: none;
+			}
+			.meta {
+				margin: 0;
+				color: #56616c;
+			}
+			.chips {
+				display: flex;
+				gap: 8px;
+				margin: 16px 0;
+			}
+			.chips span,
+			.chips a {
+				padding: 4px 12px;
+				border-radius: 999px;
+				background: #eef0f3;
+				color: #3b4650;
+				font-size: 13px;
+				font-weight: 600;
+				text-decoration: none;
+			}
+			.chips button {
+				all: unset;
+			}
+			.actions {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				margin: 20px 0 24px;
+			}
+			.actions button {
+				height: 38px;
+				padding: 0 18px;
+				border-radius: 19px;
+				border: 1.5px solid #3b4650;
+				background: #fff;
+				color: #1d2329;
+				font: inherit;
+				font-weight: 700;
+			}
+			.actions button:first-child {
+				border-color: #1d2329;
+				background: #1d2329;
+				color: #fff;
+			}
+			.about {
+				border-top: 1px solid #dde1e6;
+				padding-top: 20px;
+			}
+			.about h2 {
+				margin: 0 0 8px;
+				font-size: 19px;
+			}
+			.about p {
+				margin: 8px 0;
+			}
+			.about ul {
+				margin: 6px 0 16px;
+				padding-left: 22px;
+			}
+			.about li {
+				margin: 4px 0;
+			}
+			.company {
+				margin-top: 12px;
+				padding: 16px 0 20px;
+				border-top: 1px solid #dde1e6;
+				font-weight: 700;
+			}
+			.company a {
+				color: inherit;
+				text-decoration: none;
+			}
+		</style>
+	</head>
+	<body>
+		<nav data-testid="primary-nav">
+			<span class="mark"></span>
+			<a href="/feed/">Home</a>
+			<a class="on" href="/jobs/">Jobs</a>
+			<a href="/network/">Network</a>
+			<span class="search"></span>
+		</nav>
+		<main>
+			<div data-testid="lazy-column">
+				<div data-testid="lazy-column" componentkey="b1d0c8e2-0000-4000-8000-000000000001">
+					<div class="row" componentkey="auto-binding-0000-4012345678">
+						<div aria-label="Company, Lumen Health.">
+							<span class="logo">LH</span>
+							<a href="https://www.linkedin.com/company/lumen-health/life/">Lumen Health</a>
+						</div>
+						<button type="button" aria-label="More options">…</button>
+					</div>
+					<p class="title"><a href="#">Product Designer</a></p>
+					<p class="meta">
+						<span>Jakarta, Indonesia</span> · <span>3 days ago</span> · <span>Over 100 applicants</span>
+					</p>
+					<div class="chips">
+						<a href="https://www.linkedin.com/jobs/view/4012345678/?workplaceType=2">On-site</a>
+						<button type="button"><span>Rp 18.000.000/month - Rp 24.000.000/month</span></button>
+						<button type="button"><span>Hybrid</span></button>
+						<button type="button"><span>Full-time</span></button>
+					</div>
+					<div class="actions">
+						<button type="button" aria-label="Easy Apply to this job">Easy Apply</button>
+						<button type="button" aria-label="Save the job">Save</button>
+					</div>
+					<div class="about" componentkey="JobDetails_AboutTheJob_4012345678">
+						<div componentkey="966dc5f0-0000-4000-8000-000000000002">
+							<h2>About the job</h2>
+							<p>A clinic software company is hiring a Product Designer for its patient intake product.</p>
+							<p><strong>What you will do</strong></p>
+							<ul>
+								<li>Figma and prototyping for new intake flows.</li>
+								<li>User research and usability testing with nurses.</li>
+								<li>Design systems, together with engineers.</li>
+							</ul>
+							<p><strong>Requirements</strong></p>
+							<ul>
+								<li>Accessibility and WCAG experience.</li>
+								<li>Healthcare software background.</li>
+								<li>Stakeholder communication.</li>
+							</ul>
+						</div>
+					</div>
+					<div class="company" componentkey="JobDetails_AboutTheCompany_4012345678">
+						<a href="#"
+							><p><span>Lumen Health</span></p></a
+						>
+					</div>
+				</div>
+			</div>
+		</main>
+	</body>
+</html>

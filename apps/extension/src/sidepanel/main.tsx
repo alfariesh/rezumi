@@ -2,13 +2,16 @@ import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { readSettings, resolveLanguage, SETTINGS } from "../shared/storage";
 import { App } from "./app";
-import { activatePanelLocale, panelLocale } from "./i18n";
+import { activatePanelLocale } from "./i18n";
 import { followSystemTheme } from "./theme";
 import "./styles.css";
 
 followSystemTheme();
-const i18n = activatePanelLocale(panelLocale(chrome.i18n.getUILanguage()));
+// The language setting first, so the panel never flashes in the other language.
+const stored = await chrome.storage.local.get(SETTINGS);
+const i18n = activatePanelLocale(resolveLanguage(readSettings(stored[SETTINGS]).language, chrome.i18n.getUILanguage()));
 
 const queryClient = new QueryClient({
 	defaultOptions: {

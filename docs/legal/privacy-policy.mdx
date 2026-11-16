@@ -69,6 +69,29 @@ under its settings until disabled. AI/shared-resume reports send only chosen con
 to the operator, not AI providers. Reports are included in account export and deleted with the account or earlier after review.
 Author blocks are local per account/server; they do not remove website content or affect other devices.
 
+## Browser extension
+
+This section covers the Rezumi extension for Chrome and Microsoft Edge (desktop). The extension only saves job postings from your browser to the applications in your Rezumi account and helps you prepare them. Everything is stored in your Rezumi account; the extension has no database of its own.
+
+| Data                                                                                                                                              | Purpose                                                  | Basis                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------ |
+| Address, title, text (up to 20,000 characters), the page's structured job data and the text you select, from a job page you ask it to read        | Filling in and saving the posting to your applications   | Contract; your request                           |
+| Sign-in tokens, and the account name and email shown in the panel                                                                                 | Signing in and showing which account is connected        | Contract                                         |
+| A page report you send: the page address, site, extension version and names of the fields that failed to read (no page content)                   | Fixing the job site readers                              | Proportionate legitimate interests; your request |
+| In your browser: settings, per-tab form drafts, the list of saved posting keys, the list of due follow-ups, and a note of reminders already shown | The "Saved" mark, the icon's count, reminders and drafts | Contract                                         |
+
+- **When it reads a page.** Only when you ask it to: opening the panel on a job page, pressing Save, the right-click menu or the keyboard shortcut. On LinkedIn, Indeed, JobStreet and Glints it also reads the address of the page you are on, inside your browser, to show the "Saved" mark; that address is not sent to us. On any other site it reads nothing until you click it. It never presses a button on a job site and never collects data on its own.
+- **What goes to the server.** When the panel is open on a job page, that page's text is sent to the Rezumi server to fill in the fields (role, company, location and so on). The server does not keep it unless you save the posting. Saving creates an application in your account with what you reviewed and edited. Every request carries the extension version and your device's time zone.
+- **Optional AI.** "Read with AI" and the AI match score send the posting text (and, for the score, a summary of your resume) to the AI provider named under Recipients, at the credit cost shown. The switch is off by default.
+- **The "Saved" mark.** The extension downloads the list of posting keys you have already saved (up to 5,000) and matches them in your browser. The addresses of the pages you visit are not sent for this.
+- **Contacts and logos.** An email address or phone number written in a posting's description is only suggested, and saved only if you tick it. People's profiles on job sites are not read. A company logo is downloaded by the Rezumi server from a public address on the page and copied to Rezumi's storage; your browser is not asked to load it from the job site.
+- **Sign-in.** The extension signs in with OAuth (PKCE), without copying API keys. The access token is kept briefly in the browser; the refresh token and the account's name and email stay in the extension's local storage until you sign out. Removing the extension deletes that storage from the browser but does not revoke its access on the server: revoke it under **Settings → Connected applications**.
+- **Report this page.** Sent only when you click it. Reports are summarised in an email to the operator, kept for at most 30 days, included in the account data export and deleted with the account.
+- **Desktop notifications.** Optional and off by default; the browser asks for permission when you turn them on. Reminders are worked out on your device from the follow-up dates you set; no third-party push service is involved.
+- **The page after removal.** When the extension is removed, the browser opens a short page on rezumi.app. Its address carries only the language and the extension version, nothing about you, and the page asks for no data.
+- **What it does not do.** It loads no code from outside, uses no third-party trackers or analytics, does not sell data and does not use it for advertising or credit decisions.
+- **Limited Use.** Use of information received through browser APIs follows the Chrome Web Store User Data Policy, including its Limited Use requirements: data is used only for the extension's single purpose (saving and preparing job postings), is not transferred to third parties beyond what that feature needs, is not read by people except to answer your support request, for security, or as the law requires, and is not used or transferred for advertising.
+
 ## Web portfolios
 
 This section applies once portfolios launch.

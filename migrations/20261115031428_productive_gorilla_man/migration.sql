@@ -1,0 +1,1 @@
+ALTER TABLE "application" ADD COLUMN "company_logo_url" text;

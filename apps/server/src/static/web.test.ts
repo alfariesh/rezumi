@@ -196,6 +196,27 @@ describe("web app fallback classification", () => {
 		},
 	);
 
+	it.each(["/extension/removed", "/extension/removed/"])(
+		"serves the page opened when the browser extension is removed (%s) as the shell, kept out of search",
+		async (pathname) => {
+			const response = await handleWebApp(new Request(`https://example.com${pathname}?locale=id-ID&v=1.0.0`));
+
+			expect(response.status).toBe(200);
+			expect(response.headers.get("Content-Type")).toBe("text/html; charset=UTF-8");
+			expect(response.headers.get("X-Robots-Tag")).toBe("noindex, follow");
+			expect(await response.text()).toBe("<html>app</html>");
+		},
+	);
+
+	it.each(["/extension", "/extension/other", "/extension/removed/more"])(
+		"does not answer other addresses under the extension segment (%s)",
+		async (pathname) => {
+			const response = await handleWebApp(new Request(`https://example.com${pathname}`));
+
+			expect(response.status).toBe(404);
+		},
+	);
+
 	it.each(["/templates", "/templates/azurill", "/templates/azurill.pdf"])(
 		"returns 404 for retired template preview %s",
 		async (pathname) => {

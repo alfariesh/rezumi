@@ -83,7 +83,7 @@ Akun yang terhubung (nama, email, paket), bahasa (ikuti browser / Inggris / Indo
 - Dirender dalam Shadow DOM tertutup supaya gaya situs tidak bocor ke tombol dan sebaliknya.
 - Ukuran dan sudut menyesuaikan tombol situs di sebelahnya; warna aksen Rezumi; teks pendek; ikon logo kecil.
 - Keadaan: **Simpan ke Rezumi** → **Menyimpan…** → **Tersimpan · <status>** (chip) · gagal → "Coba lagi" + buka panel.
-- Klik tombol: membuka panel dengan pratinjau. Bila browser tidak mengizinkan panel dibuka dari tombol di halaman (dicek di Phase 04), klik langsung menyimpan dengan pengaturan bawaan, lalu chip menawarkan "Ubah di panel" lewat ikon toolbar.
+- Klik tombol: membuka panel dengan pratinjau. Bila browser tidak mengizinkan panel dibuka dari tombol di halaman, tombol menampilkan petunjuk "Klik ikon Rezumi di toolbar untuk menyimpan" (Phase 04: Chromium mengizinkan; simpan langsung tanpa pratinjau tidak dipakai, lihat `02-teknis.md` §20).
 - Tidak tampil di halaman yang bukan loker, dan hilang bila pengguna mematikannya di pengaturan.
 
 ## 5. Ikon toolbar

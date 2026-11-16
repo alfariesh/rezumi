@@ -38,7 +38,7 @@ import { AssistantMarkdown } from "@/features/assistant/markdown";
 import { MessageSources } from "@/features/assistant/message-sources";
 import { ThinkingLine } from "@/features/assistant/orb";
 import { ToolApprovals } from "@/features/assistant/tool-approvals";
-import { useAssistantChat } from "@/features/assistant/use-assistant-chat";
+import { requestStop, useAssistantChat } from "@/features/assistant/use-assistant-chat";
 import { WaitingRow } from "@/features/assistant/waiting-row";
 import { aiSourceFieldsFor, useAiSource } from "@/features/billing/ai-source";
 import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
@@ -149,7 +149,7 @@ export function ChatView(props: ChatViewProps) {
 
 	const stopReply = () => {
 		setStopped(true);
-		void client.agent.messages.stop({ threadId }).catch(() => undefined);
+		requestStop(threadId);
 		void stop();
 	};
 

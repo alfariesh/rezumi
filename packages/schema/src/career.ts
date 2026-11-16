@@ -88,9 +88,22 @@ export const offerTermsSchema = z.object({
 	leave: z.string().max(500).default(""),
 	learning: z.number().nonnegative().nullable().default(null),
 	other: z.string().max(1000).default(""),
-	respondBy: z.iso.datetime({ offset: true }).nullable().default(null),
+	/**
+	 * When the employer needs an answer: a date (`YYYY-MM-DD`) when the offer names only a day, or a date-time with
+	 * offset when it states a time. A date carries no invented time; older saved offers are always date-times.
+	 */
+	respondBy: z
+		.union([z.iso.date(), z.iso.datetime({ offset: true })])
+		.nullable()
+		.default(null)
+		.describe(
+			"Answer deadline: YYYY-MM-DD when the message names only a day; an ISO date-time with offset only when it states a time. Never invent a time.",
+		),
 });
 export type OfferTerms = z.infer<typeof offerTermsSchema>;
+
+/** Whether a deadline is a bare date (`YYYY-MM-DD`), which has no time of day. */
+export const isDateOnly = (value: string) => /^\d{4}-\d{2}-\d{2}$/.test(value);
 
 const text = (max = 2000) => z.string().trim().max(max);
 

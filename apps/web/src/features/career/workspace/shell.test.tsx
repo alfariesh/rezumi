@@ -70,6 +70,7 @@ vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
 const application: Application = {
 	id: "shell-application",
 	company: "Harbor",
+	companyLogoUrl: null,
 	role: "Engineer",
 	status: "saved",
 	closedReason: null,

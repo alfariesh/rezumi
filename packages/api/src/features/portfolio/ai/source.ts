@@ -4,6 +4,7 @@ import type { PortfolioSectionKey } from "@rezumi/schema/portfolio/sections";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { htmlToText } from "@rezumi/portfolio/text";
 import { portfolioPageLocale, portfolioSourceResume } from "@rezumi/portfolio/view";
+import { localeSchema } from "@rezumi/utils/locale";
 
 /**
  * What AI may read from a resume: the work described, never how to reach the person. The name, email, phone, address,
@@ -162,12 +163,114 @@ export function workForDraft(work: PortfolioWork): string {
 	return withoutContact(text);
 }
 
-/** The page's language by its English name ("Indonesian"), which models follow better than a code. */
-export function pageLanguage(data: PortfolioData, source: PortfolioSource | null): string {
-	const locale = portfolioPageLocale(data, portfolioSourceResume(source));
+/** A language by its English name ("Indonesian"), which models follow better than a code. */
+export function languageName(locale: string): string {
 	try {
 		return new Intl.DisplayNames(["en"], { type: "language" }).of(locale) ?? locale;
 	} catch {
 		return locale;
 	}
+}
+
+/** The page's language by its English name ("Indonesian"). */
+export function pageLanguage(data: PortfolioData, source: PortfolioSource | null): string {
+	return languageName(portfolioPageLocale(data, portfolioSourceResume(source)));
+}
+
+/** A locale's language without its region: "id" for "id-ID". */
+export const languageOf = (locale: string) => locale.split("-")[0] ?? locale;
+
+/** What people also call a language in Indonesian, beyond its standard name. */
+const INDONESIAN_ALIASES: Record<string, string[]> = { zh: ["mandarin", "cina"], ms: ["malaysia"] };
+
+const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/** Every language a page can be in, by its lowercase name in `display` ("en" or "id"), to its language code. */
+function languageNames(display: "en" | "id"): Map<string, string> {
+	const names = new Map<string, string>();
+	let displayNames: Intl.DisplayNames | null = null;
+	try {
+		displayNames = new Intl.DisplayNames([display], { type: "language" });
+	} catch {
+		// Without the runtime's language names, nothing is recognized and the model reads the note itself.
+	}
+	for (const locale of localeSchema.options) {
+		const code = languageOf(locale);
+		const name = displayNames?.of(code);
+		if (name && name !== code) names.set(name.toLowerCase(), code);
+		if (display === "id") for (const alias of INDONESIAN_ALIASES[code] ?? []) names.set(alias, code);
+	}
+	return names;
+}
+
+type LanguageAsk = { pattern: RegExp; names: Map<string, string> };
+
+let languageAsks: LanguageAsk[] | null = null;
+
+/**
+ * How a note asks for the language to write in, in English ("write it in Indonesian") or in Indonesian ("tulis dalam
+ * bahasa Indonesia"). Strict on purpose: a verb telling the writer what to do, not after "I" or "saya" (which describes
+ * the person's own work, "I write docs in English"), and the language name ending the phrase, so "Indonesian startups"
+ * or "bahasa Inggris setiap hari" don't count. What this misses, the model still reads in the note.
+ */
+function asks(): LanguageAsk[] {
+	if (languageAsks) return languageAsks;
+	const alternation = (names: Map<string, string>) =>
+		[...names.keys()]
+			.sort((a, b) => b.length - a.length)
+			.map(escapeRegExp)
+			.join("|");
+	const english = languageNames("en");
+	const indonesian = languageNames("id");
+	languageAsks = [
+		{
+			names: english,
+			pattern: new RegExp(
+				String.raw`(?<!\b(?:i|we|they|he|she)\s+)\b(?:write|rewrite|draft|answer|reply|respond|use|make|keep|put|phrase)\b[^.!?\n]{0,60}?\bin\s+(?:the\s+)?(${alternation(english)})(?:\s+language)?(?=\s*(?:$|[.,;:!?)\n]|\b(?:only|please|instead)\b))`,
+				"giu",
+			),
+		},
+		{
+			names: indonesian,
+			pattern: new RegExp(
+				String.raw`(?<!\b(?:saya|aku|kami|kita|dia|mereka)\s+)\b(?:tulis|tuliskan|tulislah|ditulis|buat|buatkan|buatlah|dibuat|gunakan|gunakanlah|pakai|pakailah|jawab|jawablah)\b[^.!?\n]{0,60}?\b(?:ber)?bahasa\s+(${alternation(indonesian)})(?=\s*(?:$|[.,;:!?)\n]|\b(?:saja|aja|ya|semua|semuanya|bukan|dong)\b))`,
+				"giu",
+			),
+		},
+	];
+	return languageAsks;
+}
+
+const NEGATION = /\b(?:not|don['’]?t|never|jangan|bukan|tidak|tak)\b/i;
+
+/**
+ * The language a person's note asks the draft to be written in, as a language code ("id"), or null when it asks for
+ * none, says not to use one ("don't write in English"), or names more than one. The note is the person's own text, so
+ * this choice is theirs to make; every other rule still holds.
+ */
+export function noteLanguage(note: string): string | null {
+	const found = new Set<string>();
+	for (const { pattern, names } of asks()) {
+		for (const match of note.matchAll(pattern)) {
+			const name = match[1];
+			const code = name && names.get(name.toLowerCase());
+			if (!code) continue;
+			// The two words before the verb in its clause ("jangan tulis", "don't write"), and those up to the name
+			// ("write it, not in").
+			const lead = (
+				note
+					.slice(0, match.index)
+					.split(/[.!?,;\n]/)
+					.at(-1) ?? ""
+			)
+				.trim()
+				.split(/\s+/)
+				.slice(-2)
+				.join(" ");
+			const gap = match[0].slice(0, match[0].lastIndexOf(name));
+			if (NEGATION.test(`${lead} ${gap}`)) continue;
+			found.add(code);
+		}
+	}
+	return found.size === 1 ? ([...found][0] ?? null) : null;
 }

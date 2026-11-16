@@ -66,6 +66,9 @@ export const checkPdf = publicProcedure
 		};
 	});
 
+/** A term as a literal pattern. Not `RegExp.escape`: the browser apps type-check this file (resume.matchTerms). */
+const literal = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 export const matchResume = protectedProcedure
 	.route({
 		method: "POST",
@@ -93,7 +96,7 @@ export const matchResume = protectedProcedure
 				...term,
 				label:
 					surfaceFormsOf(term.term)
-						.map((form) => input.jobDescription.match(new RegExp(RegExp.escape(form), "i"))?.[0])
+						.map((form) => input.jobDescription.match(new RegExp(literal(form), "i"))?.[0])
 						.find(Boolean) ?? term.term,
 			}));
 		return {

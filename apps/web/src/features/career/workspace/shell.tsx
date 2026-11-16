@@ -44,6 +44,7 @@ import { PrepareTab } from "./prepare";
 import { SavedTab } from "./saved";
 import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
 import { ApplicationNotes } from "@/features/applications/components/application-notes";
+import { CompanyMark } from "@/features/applications/components/company-mark";
 import { InterviewDialog } from "@/features/applications/components/interview-dialog";
 import { buildIcs } from "@/features/applications/ics";
 import { formatDuration, interviewKindOf, isInterview } from "@/features/applications/interviews";
@@ -478,9 +479,19 @@ function WorkspaceHeader({ application, onAskCoach }: WorkspaceHeaderProps) {
 			</TextLink>
 			<div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
 				<div className="grid min-w-0 gap-2">
-					<Typography type="h2" render={renderAsH1}>
-						{application.role} · {application.company}
-					</Typography>
+					<div className="flex min-w-0 items-center gap-3">
+						{/* The logo the browser extension copied, when there is one; nothing changes for other applications. */}
+						{application.companyLogoUrl ? (
+							<CompanyMark
+								company={application.company}
+								logoUrl={application.companyLogoUrl}
+								className="size-10 rounded-xl"
+							/>
+						) : null}
+						<Typography type="h2" render={renderAsH1}>
+							{application.role} · {application.company}
+						</Typography>
+					</div>
 					<p className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm text-muted">
 						<Chip size="sm" variant="soft" className="gap-1.5">
 							<span aria-hidden="true" className={cn("size-1.5 rounded-full", stageDot[application.status])} />
