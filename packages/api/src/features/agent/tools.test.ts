@@ -224,6 +224,10 @@ describe("portfolio assistant tools", () => {
 		expect(focused.startsWith(base)).toBe(true);
 		expect(focused).toContain("work with id `work-1` open");
 		expect(focused).toContain("Interviewing for a work's story");
+		// The story's headings follow the person's field when it's clear, with the generic outline otherwise.
+		expect(focused).toContain("The headings follow their field");
+		expect(focused).toContain("a developer or engineer: context, the challenge");
+		expect(focused).toContain("Otherwise use The problem, My role, The process and The result");
 		const withheld = buildPortfolioAgentInstructions({
 			shared: false,
 			focusWorkId: "work-1",

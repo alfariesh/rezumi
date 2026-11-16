@@ -100,24 +100,3 @@ export function removeBlock(work: PortfolioWork, blockId: string): void {
 	work.blocks = work.blocks.filter((block) => block.id !== blockId);
 	dropMissingHighlight(work);
 }
-
-export type CaseStudyTitles = { problem: string; role: string; process: string; result: string };
-
-/**
- * "Start from a case study outline": text blocks headed Problem, My role, Process and Result, then an empty Metrics
- * block for the outcome (`01-desain.md` section 15). Headings only; the person writes the rest.
- */
-export function caseStudyBlocks(titles: CaseStudyTitles): PortfolioBlock[] {
-	const escape = (text: string) => text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-	return [
-		...[titles.problem, titles.role, titles.process, titles.result].map((title) =>
-			newTextBlock(`<h2>${escape(title)}</h2><p></p>`),
-		),
-		newMetricsBlock(),
-	];
-}
-
-/** Adds the case study outline after the work's blocks, as far as the work has room. Returns how many went in. */
-export function addCaseStudy(work: PortfolioWork, titles: CaseStudyTitles): number {
-	return insertBlocks(work, work.blocks.length, caseStudyBlocks(titles));
-}
