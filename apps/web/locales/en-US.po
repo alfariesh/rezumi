@@ -1764,9 +1764,9 @@ msgstr "Accomplishment"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/settings/account/page.tsx
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "Account"
 
@@ -2505,7 +2505,7 @@ msgstr "Adjust Rezumi AI credits"
 msgid "admin"
 msgstr "admin"
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Admin"
 msgstr "Admin"
 
@@ -2646,6 +2646,7 @@ msgstr "Align left"
 msgid "Align right"
 msgstr "Align right"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/saved.tsx
 #: src/features/documents/documents-layout.tsx
@@ -2958,8 +2959,8 @@ msgid "App navigation"
 msgstr "App navigation"
 
 #: src/features/settings/page.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "App settings"
 msgstr "App settings"
 
@@ -3526,9 +3527,9 @@ msgstr "Billed monthly or yearly until you cancel. Cancel any time; you keep acc
 msgid "Billing"
 msgstr "Billing"
 
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Billing admin"
 msgstr "Billing admin"
 
@@ -3552,7 +3553,7 @@ msgstr "Blocker"
 msgid "Blue"
 msgstr "Blue"
 
-#: src/features/applications/components/applications-section.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "Board"
 msgstr "Board"
 
@@ -3744,7 +3745,7 @@ msgstr "By adding a logo, you confirm you have the right to show it."
 msgid "By QRIS · {0} paid"
 msgstr "By QRIS · {0} paid"
 
-#: src/features/applications/components/applications-section.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "Calendar"
 
@@ -3838,7 +3839,9 @@ msgid "Cards"
 msgstr "Cards"
 
 #: src/features/command-palette/pages/navigation.tsx
-#: src/features/profile/details-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/career.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Career"
 msgstr "Career"
 
@@ -4780,7 +4783,7 @@ msgstr "Connections bill speech separately and may use tokens on your account. Y
 msgid "Contact"
 msgstr "Contact"
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Contact & complaints"
 msgstr "Contact & complaints"
 
@@ -6466,8 +6469,9 @@ msgstr "Details"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/profile/index.tsx
 #: src/routes/dashboard/profile/route.tsx
-msgid "Details & career"
-msgstr "Details & career"
+msgctxt "Profile page: your name, photo, contact details and links"
+msgid "Details"
+msgstr "Details"
 
 #. placeholder {0}: work.title
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
@@ -6586,7 +6590,7 @@ msgid "DNS records"
 msgstr "DNS records"
 
 #: src/features/docs/header.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Docs"
 msgstr "Docs"
 
@@ -7865,8 +7869,8 @@ msgid "Fit"
 msgstr "Fit"
 
 #: src/features/career/workspace/saved.tsx
-msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
-msgstr "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
+msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other sections create them."
+msgstr "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other sections create them."
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Fit page to width"
@@ -9166,6 +9170,7 @@ msgid "Inline formatting"
 msgstr "Inline formatting"
 
 #: src/features/applications/components/applications-section.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "Insights"
 msgstr "Insights"
 
@@ -9812,6 +9817,7 @@ msgstr "Lay the text out horizontally. Rotated runs are often dropped or misplac
 #: src/features/resume/editor/check/issues.ts
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "Layout"
 msgstr "Layout"
 
@@ -9994,7 +10000,7 @@ msgid "Level {level} of 5"
 msgstr "Level {level} of 5"
 
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Licenses"
 msgstr "Licenses"
 
@@ -10165,9 +10171,9 @@ msgstr "Linking…"
 msgid "Links"
 msgstr "Links"
 
-#: src/features/applications/components/applications-section.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/portfolio/editor/design-panel.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "List"
 msgstr "List"
 
@@ -12713,8 +12719,8 @@ msgid "Paste a YouTube or Vimeo link. The player loads only when a visitor press
 msgstr "Paste a YouTube or Vimeo link. The player loads only when a visitor presses play."
 
 #: src/features/career/offers.tsx
-msgid "Paste an offer into an application's Messages tab."
-msgstr "Paste an offer into an application's Messages tab."
+msgid "Paste an offer into an application's Messages section."
+msgstr "Paste an offer into an application's Messages section."
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Paste description instead"
@@ -13075,9 +13081,9 @@ msgstr "Plain text with headings. Paste into application forms and notes."
 #: src/features/billing/back-link.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/billing/plan-page.tsx
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Plan"
 msgstr "Plan"
 
@@ -13198,9 +13204,9 @@ msgid "Portfolio preview"
 msgstr "Portfolio preview"
 
 #: src/features/portfolio/admin/reports-page.tsx
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Portfolio reports"
 msgstr "Portfolio reports"
 
@@ -13520,7 +13526,7 @@ msgid "Privacy"
 msgstr "Privacy"
 
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Privacy policy"
 msgstr "Privacy policy"
 
@@ -14254,7 +14260,7 @@ msgid "Refund not confirmed"
 msgstr "Refund not confirmed"
 
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Refund policy"
 msgstr "Refund policy"
 
@@ -15086,7 +15092,7 @@ msgstr "Rewrote the greeting"
 msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - Go to homepage"
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Rezumi {__APP_VERSION__}"
 msgstr "Rezumi {__APP_VERSION__}"
 
@@ -16069,9 +16075,9 @@ msgid "Setting up HTTPS. This usually takes a few minutes, and this page updates
 msgstr "Setting up HTTPS. This usually takes a few minutes, and this page updates by itself."
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Settings"
 
@@ -17497,7 +17503,7 @@ msgid "Terms from the posting"
 msgstr "Terms from the posting"
 
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Terms of service"
 msgstr "Terms of service"
 
@@ -21328,10 +21334,6 @@ msgstr "Your details"
 msgid "Your details and career, kept in one place."
 msgstr "Your details and career, kept in one place."
 
-#: src/routes/dashboard/profile/index.tsx
-msgid "Your details and career, kept in one place. New resumes, letters and your portfolio start from here."
-msgstr "Your details and career, kept in one place. New resumes, letters and your portfolio start from here."
-
 #: src/features/career/coach.tsx
 msgid "Your details and career, with the facts, stories and preferences that are switched on in your Profile"
 msgstr "Your details and career, with the facts, stories and preferences that are switched on in your Profile"
@@ -21532,6 +21534,10 @@ msgstr "Your name in lights: a very large display name over a thick accent rule 
 #: src/features/resume/editor/check/issues.ts
 msgid "Your name is missing"
 msgstr "Your name is missing"
+
+#: src/routes/dashboard/profile/index.tsx
+msgid "Your name, photo, contact details and links. New resumes, letters and your portfolio start from here."
+msgstr "Your name, photo, contact details and links. New resumes, letters and your portfolio start from here."
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Your name, photo, experience, education and skills follow this resume as it changes. Its summary becomes About me and its projects become your work, to edit freely."
@@ -21875,6 +21881,10 @@ msgstr "Your subscription ends at the close of this period."
 #: src/features/billing/buy-plans.tsx
 msgid "Your subscription is set to end. Keep it first to change the plan."
 msgstr "Your subscription is set to end. Keep it first to change the plan."
+
+#: src/routes/dashboard/profile/career.tsx
+msgid "Your summary, experience, education, skills and the rest. New resumes and your portfolio start from here."
+msgstr "Your summary, experience, education, skills and the rest. New resumes and your portfolio start from here."
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "Your title, the team, and what you owned."

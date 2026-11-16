@@ -1769,9 +1769,9 @@ msgstr "ସଫଳତା"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/settings/account/page.tsx
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "ଆକାଉଣ୍ଟ"
 
@@ -2510,7 +2510,7 @@ msgstr ""
 msgid "admin"
 msgstr ""
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Admin"
 msgstr ""
 
@@ -2651,6 +2651,7 @@ msgstr "ବାମକୁ ସଜାନ୍ତୁ"
 msgid "Align right"
 msgstr "ଡାହାଣକୁ ସଜାନ୍ତୁ"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/saved.tsx
 #: src/features/documents/documents-layout.tsx
@@ -2963,8 +2964,8 @@ msgid "App navigation"
 msgstr "ଆପ୍ ନାଭିଗେସନ୍"
 
 #: src/features/settings/page.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "App settings"
 msgstr ""
 
@@ -3531,9 +3532,9 @@ msgstr ""
 msgid "Billing"
 msgstr ""
 
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -3557,7 +3558,7 @@ msgstr "ଅବରୋଧକ"
 msgid "Blue"
 msgstr "ନୀଳ"
 
-#: src/features/applications/components/applications-section.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "Board"
 msgstr "ବୋର୍ଡ |"
 
@@ -3749,7 +3750,7 @@ msgstr ""
 msgid "By QRIS · {0} paid"
 msgstr ""
 
-#: src/features/applications/components/applications-section.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "କ୍ୟାଲେଣ୍ଡର"
 
@@ -3843,7 +3844,9 @@ msgid "Cards"
 msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
-#: src/features/profile/details-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/career.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Career"
 msgstr ""
 
@@ -4785,7 +4788,7 @@ msgstr "ସଂଯୋଗଗୁଡ଼ିକ ସ୍ପିଚ୍ ପାଇଁ ଅଲ
 msgid "Contact"
 msgstr "ଯୋଗାଯୋଗ କରନ୍ତୁ |"
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -6471,7 +6474,8 @@ msgstr "ବିବରଣୀଗୁଡିକ"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/profile/index.tsx
 #: src/routes/dashboard/profile/route.tsx
-msgid "Details & career"
+msgctxt "Profile page: your name, photo, contact details and links"
+msgid "Details"
 msgstr ""
 
 #. placeholder {0}: work.title
@@ -6591,7 +6595,7 @@ msgid "DNS records"
 msgstr ""
 
 #: src/features/docs/header.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Docs"
 msgstr "ଡକ୍ୟୁମେଣ୍ଟେସନ୍"
 
@@ -7870,8 +7874,8 @@ msgid "Fit"
 msgstr "ଉପଯୁକ୍ତତା"
 
 #: src/features/career/workspace/saved.tsx
-msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
-msgstr "ଅନ୍ୟ ଟ୍ୟାବ୍‌ଗୁଡ଼ିକ ସୃଷ୍ଟି କରିବା ସହ ଉପଯୁକ୍ତତା ଯାଞ୍ଚ, ବ୍ରିଫିଂ, ଅଭ୍ୟାସ ମତାମତ, ସମୀକ୍ଷା, ଉତ୍ତର ଓ ପ୍ରତ୍ୟୁତ୍ତର ଏଠାରେ ଆସେ।"
+msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other sections create them."
+msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Fit page to width"
@@ -9172,6 +9176,7 @@ msgid "Inline formatting"
 msgstr ""
 
 #: src/features/applications/components/applications-section.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "Insights"
 msgstr "ଅନ୍ତର୍ଦୃଷ୍ଟି |"
 
@@ -9818,6 +9823,7 @@ msgstr "ଟେକ୍ସଟ୍‌କୁ ଭୂସମାନ୍ତର ଭାବର�
 #: src/features/resume/editor/check/issues.ts
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "Layout"
 msgstr "ଲେଆଉଟ୍"
 
@@ -10000,7 +10006,7 @@ msgid "Level {level} of 5"
 msgstr "5 ରୁ ସ୍ତର {level}"
 
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Licenses"
 msgstr ""
 
@@ -10171,9 +10177,9 @@ msgstr "ଲିଙ୍କ୍…"
 msgid "Links"
 msgstr "ଲିଙ୍କ୍"
 
-#: src/features/applications/components/applications-section.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/portfolio/editor/design-panel.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "List"
 msgstr "ତାଲିକା (List)"
 
@@ -12720,8 +12726,8 @@ msgid "Paste a YouTube or Vimeo link. The player loads only when a visitor press
 msgstr ""
 
 #: src/features/career/offers.tsx
-msgid "Paste an offer into an application's Messages tab."
-msgstr "ଏକ ଆବେଦନର ବାର୍ତ୍ତା ଟ୍ୟାବ୍‌ରେ ଏକ ଅଫର୍ ପେଷ୍ଟ କରନ୍ତୁ।"
+msgid "Paste an offer into an application's Messages section."
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Paste description instead"
@@ -13082,9 +13088,9 @@ msgstr "ହେଡିଙ୍ଗ୍ ସହିତ ସାଧା ପାଠ | ଚାକ
 #: src/features/billing/back-link.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/billing/plan-page.tsx
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Plan"
 msgstr ""
 
@@ -13205,9 +13211,9 @@ msgid "Portfolio preview"
 msgstr ""
 
 #: src/features/portfolio/admin/reports-page.tsx
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Portfolio reports"
 msgstr ""
 
@@ -13527,7 +13533,7 @@ msgid "Privacy"
 msgstr "ଗୋପନୀୟତା"
 
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Privacy policy"
 msgstr "ଗୋପନୀୟତା ନୀତି"
 
@@ -14261,7 +14267,7 @@ msgid "Refund not confirmed"
 msgstr ""
 
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -15093,7 +15099,7 @@ msgstr ""
 msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - ହୋମ୍ପେଜ୍‌କୁ ଯାଆନ୍ତୁ"
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Rezumi {__APP_VERSION__}"
 msgstr ""
 
@@ -16076,9 +16082,9 @@ msgid "Setting up HTTPS. This usually takes a few minutes, and this page updates
 msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "ସେଟିଂସ୍"
 
@@ -17504,7 +17510,7 @@ msgid "Terms from the posting"
 msgstr "ଚାକିରି ବିଜ୍ଞାପନରୁ ଶବ୍ଦ"
 
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Terms of service"
 msgstr ""
 
@@ -21336,10 +21342,6 @@ msgstr ""
 msgid "Your details and career, kept in one place."
 msgstr ""
 
-#: src/routes/dashboard/profile/index.tsx
-msgid "Your details and career, kept in one place. New resumes, letters and your portfolio start from here."
-msgstr ""
-
 #: src/features/career/coach.tsx
 msgid "Your details and career, with the facts, stories and preferences that are switched on in your Profile"
 msgstr ""
@@ -21540,6 +21542,10 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "Your name is missing"
 msgstr "ତୁମର ନାମ ହଜିଯାଇଛି |"
+
+#: src/routes/dashboard/profile/index.tsx
+msgid "Your name, photo, contact details and links. New resumes, letters and your portfolio start from here."
+msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Your name, photo, experience, education and skills follow this resume as it changes. Its summary becomes About me and its projects become your work, to edit freely."
@@ -21882,6 +21888,10 @@ msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Your subscription is set to end. Keep it first to change the plan."
+msgstr ""
+
+#: src/routes/dashboard/profile/career.tsx
+msgid "Your summary, experience, education, skills and the rest. New resumes and your portfolio start from here."
 msgstr ""
 
 #: src/features/portfolio/blocks/story-templates.ts
