@@ -19,7 +19,6 @@ import {
 } from "./store";
 import { SortableProvider } from "@/components/input/sortable";
 import { CareerLoadError } from "@/features/career/load-state";
-import { PanelSection } from "@/features/resume/editor/chrome/panel-section";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { AddSectionMenu, StartSuggestions } from "@/features/resume/editor/write/add-section";
 import { BasicsCard } from "@/features/resume/editor/write/basics-card";
@@ -39,11 +38,16 @@ function useLoadProfile(profile: ProfileDto | undefined) {
 	}, [profile]);
 }
 
+/** Which Profile page: Details (name, photo, contact, links) or Career (the summary and every built-in section). */
+export type ProfilePart = "details" | "career";
+
+type ProfileDetailsPageProps = { part: ProfilePart };
+
 /**
- * Profile → Details & career: the person's details, photo, summary and every built-in section, edited with the
- * resume editor's own forms and saved as you type. Resumes still using a part follow when it changes here.
+ * Profile → Details or Career, edited with the resume editor's own forms and saved as you type. Resumes still using a
+ * part follow when it changes here.
  */
-export function ProfileDetailsPage() {
+export function ProfileDetailsPage({ part }: ProfileDetailsPageProps) {
 	const queryClient = useQueryClient();
 	const query = useQuery(profileQueryOptions());
 	const ready = useProfileDraftStore((state) => state.data !== null);
@@ -78,12 +82,23 @@ export function ProfileDetailsPage() {
 
 	return (
 		<WriteSourceProvider source={profileWriteSource}>
-			<ProfileDetails />
+			{part === "details" ? <ProfileDetails /> : <ProfileCareer />}
 		</WriteSourceProvider>
 	);
 }
 
+/** Details: name, headline, photo, contact details and links. */
 function ProfileDetails() {
+	return (
+		<div className="grid max-w-[720px] gap-8">
+			<SaveNote />
+			<BasicsCard locked={false} />
+		</div>
+	);
+}
+
+/** Career: the summary and the career sections; while it's empty, a way to fill it from a file or a resume. */
+function ProfileCareer() {
 	const { i18n } = useLingui();
 	const page: PageSettings = { locale: i18n.locale };
 	const careerEmpty = useWriteSelector(
@@ -96,7 +111,6 @@ function ProfileDetails() {
 		<div className="grid max-w-[720px] gap-8">
 			<SaveNote />
 			{careerEmpty && <FillProfile />}
-			<BasicsCard locked={false} />
 			<CareerSections page={page} />
 			<AddSectionMenu />
 		</div>
@@ -117,15 +131,16 @@ function CareerSections({ page }: CareerSectionsProps) {
 
 	if (ids.length === 0) return <StartSuggestions />;
 
+	// The page's header already says Career: the sections follow it with no heading of their own.
 	return (
-		<PanelSection icon="briefcase" title={<Trans>Career</Trans>} contentClassName="gap-0.5">
+		<div className="@container grid min-w-0 gap-0.5">
 			{/* Sections keep the Profile's order; the provider only serves the entries' own reordering. */}
 			<SortableProvider onMove={() => {}}>
 				{ids.map((id, index) => (
 					<OutlineSection key={id} sectionId={id} index={index} locked={false} page={page} />
 				))}
 			</SortableProvider>
-		</PanelSection>
+		</div>
 	);
 }
 

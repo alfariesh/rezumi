@@ -219,6 +219,7 @@ function useCrumbs(): Crumb[] {
 	const pathname = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") });
 	const [section, page, subpage] = pathname.split("/").slice(2);
 	const profileTabs: Record<string, string> = {
+		career: t`Career`,
 		facts: t`Facts`,
 		stories: t`Stories`,
 		preferences: t({

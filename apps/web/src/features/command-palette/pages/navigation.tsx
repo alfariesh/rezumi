@@ -149,7 +149,8 @@ export function NavigationCommandGroup() {
 					id="navigation.profile"
 					textValue={searchText(t`Profile`, [
 						t`Profile`,
-						t`Details & career`,
+						t({ message: "Details", context: "Profile page: your name, photo, contact details and links" }),
+						t`Career`,
 						t`Facts`,
 						t`Stories`,
 						t`Experience`,

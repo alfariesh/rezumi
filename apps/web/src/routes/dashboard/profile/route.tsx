@@ -22,7 +22,13 @@ function ProfileLayout() {
 			link: { to: "/dashboard/profile" },
 			match: { to: "/dashboard/profile", fuzzy: false },
 			icon: "user-circle",
-			label: t`Details & career`,
+			label: t({ message: "Details", context: "Profile page: your name, photo, contact details and links" }),
+		},
+		{
+			link: { to: "/dashboard/profile/career" },
+			match: { to: "/dashboard/profile/career", fuzzy: true },
+			icon: "briefcase",
+			label: t`Career`,
 		},
 		{
 			link: { to: "/dashboard/profile/facts" },

@@ -12,14 +12,14 @@ function RouteComponent() {
 	return (
 		<>
 			<PageHeader
-				title={t`Details & career`}
+				title={t({ message: "Details", context: "Profile page: your name, photo, contact details and links" })}
 				description={
 					<Trans>
-						Your details and career, kept in one place. New resumes, letters and your portfolio start from here.
+						Your name, photo, contact details and links. New resumes, letters and your portfolio start from here.
 					</Trans>
 				}
 			/>
-			<ProfileDetailsPage />
+			<ProfileDetailsPage part="details" />
 		</>
 	);
 }
