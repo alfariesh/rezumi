@@ -42,6 +42,7 @@ import { Route as DashboardSettingsRouteRouteImport } from "./routes/dashboard/s
 import { Route as DashboardTrashRouteImport } from "./routes/dashboard/trash";
 import { Route as DocsIndexRouteImport } from "./routes/docs/index";
 import { Route as DocsSplatRouteImport } from "./routes/docs/$";
+import { Route as HomeExtensionRemovedRouteImport } from "./routes/_home/extension.removed";
 import { Route as BuilderResumeIdIndexRouteImport } from "./routes/builder/$resumeId/index";
 import { Route as BuilderLetterCoverLetterIdRouteImport } from "./routes/builder/letter/$coverLetterId";
 import { Route as BuilderPortfolioIndexRouteImport } from "./routes/builder/portfolio/index";
@@ -242,6 +243,11 @@ const DocsSplatRoute = DocsSplatRouteImport.update({
   id: "/$",
   path: "/$",
   getParentRoute: () => DocsRouteRoute,
+} as any);
+const HomeExtensionRemovedRoute = HomeExtensionRemovedRouteImport.update({
+  id: "/extension/removed",
+  path: "/extension/removed",
+  getParentRoute: () => HomeRouteRoute,
 } as any);
 const BuilderResumeIdIndexRoute = BuilderResumeIdIndexRouteImport.update({
   id: "/",
@@ -483,6 +489,7 @@ export interface FileRoutesByFullPath {
   "/dashboard/": typeof DashboardIndexRoute;
   "/docs/": typeof DocsIndexRoute;
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
+  "/extension/removed": typeof HomeExtensionRemovedRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
   "/dashboard/career/offers": typeof DashboardCareerOffersRoute;
   "/dashboard/coach/{-$conversationId}": typeof DashboardCoachChar123ConversationIdChar125Route;
@@ -545,6 +552,7 @@ export interface FileRoutesByTo {
   "/dashboard": typeof DashboardIndexRoute;
   "/docs": typeof DocsIndexRoute;
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
+  "/extension/removed": typeof HomeExtensionRemovedRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
   "/dashboard/career/offers": typeof DashboardCareerOffersRoute;
   "/dashboard/coach/{-$conversationId}": typeof DashboardCoachChar123ConversationIdChar125Route;
@@ -617,6 +625,7 @@ export interface FileRoutesById {
   "/dashboard/": typeof DashboardIndexRoute;
   "/docs/": typeof DocsIndexRoute;
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
+  "/_home/extension/removed": typeof HomeExtensionRemovedRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
   "/dashboard/career/offers": typeof DashboardCareerOffersRoute;
   "/dashboard/coach/{-$conversationId}": typeof DashboardCoachChar123ConversationIdChar125Route;
@@ -689,6 +698,7 @@ export interface FileRouteTypes {
     | "/dashboard/"
     | "/docs/"
     | "/dashboard/settings/integrations"
+    | "/extension/removed"
     | "/builder/letter/$coverLetterId"
     | "/dashboard/career/offers"
     | "/dashboard/coach/{-$conversationId}"
@@ -751,6 +761,7 @@ export interface FileRouteTypes {
     | "/dashboard"
     | "/docs"
     | "/dashboard/settings/integrations"
+    | "/extension/removed"
     | "/builder/letter/$coverLetterId"
     | "/dashboard/career/offers"
     | "/dashboard/coach/{-$conversationId}"
@@ -822,6 +833,7 @@ export interface FileRouteTypes {
     | "/dashboard/"
     | "/docs/"
     | "/dashboard/settings/integrations"
+    | "/_home/extension/removed"
     | "/builder/letter/$coverLetterId"
     | "/dashboard/career/offers"
     | "/dashboard/coach/{-$conversationId}"
@@ -1104,6 +1116,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof DocsSplatRouteImport;
       parentRoute: typeof DocsRouteRoute;
     };
+    "/_home/extension/removed": {
+      id: "/_home/extension/removed";
+      path: "/extension/removed";
+      fullPath: "/extension/removed";
+      preLoaderRoute: typeof HomeExtensionRemovedRouteImport;
+      parentRoute: typeof HomeRouteRoute;
+    };
     "/builder/$resumeId/": {
       id: "/builder/$resumeId/";
       path: "/";
@@ -1363,12 +1382,14 @@ interface HomeRouteRouteChildren {
   HomeAtsCheckerRoute: typeof HomeAtsCheckerRoute;
   HomeResumeTemplatesRoute: typeof HomeResumeTemplatesRoute;
   HomeIndexRoute: typeof HomeIndexRoute;
+  HomeExtensionRemovedRoute: typeof HomeExtensionRemovedRoute;
 }
 
 const HomeRouteRouteChildren: HomeRouteRouteChildren = {
   HomeAtsCheckerRoute: HomeAtsCheckerRoute,
   HomeResumeTemplatesRoute: HomeResumeTemplatesRoute,
   HomeIndexRoute: HomeIndexRoute,
+  HomeExtensionRemovedRoute: HomeExtensionRemovedRoute,
 };
 
 const HomeRouteRouteWithChildren = HomeRouteRoute._addFileChildren(

@@ -12,6 +12,8 @@ export const RESERVED_SEGMENTS = [
 	"ats-checker",
 	"resume-templates",
 	"docs",
+	// `/extension/removed`: where the browser sends someone who removes the Rezumi extension.
+	"extension",
 ] as const;
 
 /**

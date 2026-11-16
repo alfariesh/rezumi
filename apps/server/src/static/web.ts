@@ -37,6 +37,11 @@ const prerenderRoot = `${staticRoot}-prerender`;
  * server serves the shell for anything, so this failure only ever shows up once deployed.
  */
 const indexableAppPaths = new Set(["/ats-checker", "/resume-templates"]);
+/**
+ * Public pages the SPA owns that must stay out of search results: the page the browser opens when the Rezumi extension is
+ * removed (`chrome.runtime.setUninstallURL`). Served like an app page: the shell, `noindex, follow`.
+ */
+const noindexPublicPaths = new Set(["/extension/removed"]);
 const reservedPublicResumeSegments = new Set<string>(RESERVED_SEGMENTS);
 
 function isAssetPath(pathname: string): boolean {
@@ -315,7 +320,7 @@ function getFallbackResponseHeaders(pathname: string) {
 	if (pathname === "/" || indexableAppPaths.has(pathname) || isDocsPath(pathname)) {
 		return { "Content-Type": "text/html; charset=UTF-8", ...BASE_SECURITY_HEADERS };
 	}
-	if (isAppSectionPath(pathname)) {
+	if (isAppSectionPath(pathname) || noindexPublicPaths.has(pathname.replace(/(.)\/+$/, "$1"))) {
 		return {
 			"Content-Type": "text/html; charset=UTF-8",
 			"X-Robots-Tag": "noindex, follow",

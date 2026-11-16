@@ -47,6 +47,12 @@ stub. Development builds expose `globalThis.rezumiReminders(<ISO time>)` in the 
 reminders with a chosen clock (Playwright cannot answer the browser's permission prompt, so it checks that none show
 without the permission).
 
+`tests/store-images.spec.ts` (only with `EXTENSION_STORE_IMAGES=<dir>` and the local server) makes the store listing and
+guide pictures: a fictional person saves a fictional posting from `__fixtures__/linkedin/store-demo.html`, a styled,
+board-neutral stand-in page; the real panel crops go to `<dir>/raw/<lang>/` and five composed 1280×800 screenshots
+(written at 2×, so 2560×1600: shrink before uploading) per language to `<dir>/<lang>/`. The `pixelRatio` fixture option
+sets the browser's device pixel ratio.
+
 `test:e2e` needs Playwright's Chromium (`pnpm exec playwright install chromium`): branded Chrome and Edge no longer load
 unpacked extensions from the command line. `EXTENSION_SCREENSHOTS=<dir>` makes the side panel spec save a picture of
 each width (360, 420), appearance and language.
@@ -73,7 +79,7 @@ each width (360, 420), appearance and language.
 | `src/content/sites/`             | One reader per board (`linkedin.ts`, …); hooks checked on real pages are listed in `02-teknis.md` §18                                                                                                          |
 | `src/content/sites/__fixtures__` | Synthetic job board pages for tests, `<board>/<state>.html` (never real postings)                                                                                                                              |
 | `src/sidepanel/`                 | React 19 + HeroUI panel, oRPC client with the worker's token (`api.ts`), save form (`posting-screen.tsx`, `draft.ts`), errors (`errors.ts`), Lingui en/id, light/dark                                          |
-| `src/shared/`                    | Message types and schemas, storage keys, build config, follow-up dates and reminder rules (`follow-ups.ts`)                                                                                                    |
+| `src/shared/`                    | Message types and schemas, storage keys, build config, follow-up dates and reminder rules (`follow-ups.ts`), the removal page address (`uninstall.ts`)                                                         |
 | `locales/{en,id}.po`             | Panel strings (Lingui); the root `pnpm lingui:extract` includes them                                                                                                                                           |
 | `public/_locales/{en,id}/`       | Store name, description and toolbar title (`__MSG_…__` in the manifest)                                                                                                                                        |
 | `public/icons`, `public/icon`    | Toolbar/store PNGs (from `apps/web/public/pwa-512x512.png`) and the brand mark SVG the panel shows                                                                                                             |
