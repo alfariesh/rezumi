@@ -49,9 +49,15 @@ vi.mock("@tanstack/react-router", () => ({
 	useNavigate: () => api.navigate,
 	useRouteContext: () => ({ session: { user: { id: "shell-user", timezone: "UTC" } } }),
 	useRouter: () => ({ state: { location: { state: { __TSR_index: 0 } } } }),
-	Link: ({ children }: { children: ReactNode }) => <a href="#test-link">{children}</a>,
+	useMatchRoute: () => () => false,
+	Link: ({ children, "aria-current": current }: { children: ReactNode; "aria-current"?: "page" }) => (
+		<a href="#test-link" aria-current={current}>
+			{children}
+		</a>
+	),
 }));
-vi.mock("@rezumi/ui/hooks/use-breakpoint", () => ({ useBreakpoint: () => "desktop" }));
+// Wide: the details column shows beside the panel instead of folding into "Details".
+vi.mock("@rezumi/ui/hooks/use-breakpoint", () => ({ useBreakpoint: () => "wide" }));
 vi.mock("@/features/settings/integrations/hooks/use-has-usable-ai-provider", () => ({
 	useHasUsableAiProvider: () => ({ usableProviders: [], isLoading: false }),
 }));
@@ -125,15 +131,27 @@ const archive = (data: SavedItem["data"]): SavedItem =>
 	}) as SavedItem;
 const answers = () => archive({ kind: "answers", answers: [{ question: "Why this role?", answer: "Sent answer" }] });
 const clients: QueryClient[] = [];
-function mount(version?: string, options: { workspace?: boolean; resumeId?: string } = {}) {
+function mount(
+	version?: string,
+	options: {
+		workspace?: boolean;
+		resumeId?: string;
+		tab?: "apply" | "practise" | "debrief";
+		activity?: Application["activity"];
+	} = {},
+) {
 	const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
 	clients.push(client);
-	client.setQueryData(["application"], { ...application, resumeId: options.resumeId ?? null });
+	client.setQueryData(["application"], {
+		...application,
+		resumeId: options.resumeId ?? null,
+		activity: options.activity ?? application.activity,
+	});
 	if (options.workspace !== false) client.setQueryData(["workspace"], structuredClone(current));
 	const view = render(
 		<QueryClientProvider client={client}>
 			<I18nProvider i18n={i18n}>
-				<Workspace applicationId={application.id} tab="apply" search={version ? { version } : {}} />
+				<Workspace applicationId={application.id} tab={options.tab ?? "apply"} search={version ? { version } : {}} />
 			</I18nProvider>
 		</QueryClientProvider>,
 	);
@@ -250,4 +268,43 @@ it("explains a missing linked document during loading and offers retry after fai
 	api.documents.mockResolvedValue([{ id: "linked-resume", type: "resume", name: "Harbor resume" }]);
 	fireEvent.click(screen.getByRole("button", { name: "Try again" }));
 	await waitFor(() => expect(screen.getByRole("link", { name: /Harbor resume/ })).toBeTruthy());
+});
+
+it("shows five sections, with Prepare, Practice and Debrief under Interview", async () => {
+	mount(undefined, { tab: "practise" });
+	const nav = await screen.findByRole("navigation", { name: "Workspace sections" });
+	// The wide-screen list and the phone chips hold the same five entries.
+	const labels = [...nav.querySelectorAll("ul:first-of-type a")].map((link) => link.textContent);
+	expect(labels).toEqual(["Fit", "Apply", "Interview", "Messages", "Saved"]);
+	for (const link of screen.getAllByRole("link", { name: "Interview" }))
+		expect(link).toHaveAttribute("aria-current", "page");
+	for (const link of screen.getAllByRole("link", { name: "Apply" })) expect(link).not.toHaveAttribute("aria-current");
+	for (const name of ["Prepare", "Practice", "Debrief"]) expect(screen.getByText(name)).toBeTruthy();
+	expect(screen.getByRole("region", { name: "Practice" })).toBeTruthy();
+});
+
+it("keeps the Interview switch off the other sections", async () => {
+	mount();
+	await screen.findByRole("navigation", { name: "Workspace sections" });
+	expect(screen.queryByText("Practice")).toBeNull();
+	for (const link of screen.getAllByRole("link", { name: "Apply" }))
+		expect(link).toHaveAttribute("aria-current", "page");
+});
+
+it("shows the time to a close interview on the Interview entry", async () => {
+	const interview = {
+		id: "round",
+		type: "interview",
+		at: new Date(Date.now() + 30.5 * 60_000),
+		kind: "screening",
+		durationMinutes: 30,
+		location: "",
+		notes: "",
+		participants: [],
+		audience: "other",
+		timezone: "UTC",
+	} as const;
+	mount(undefined, { activity: [interview] as unknown as Application["activity"] });
+	await screen.findByRole("navigation", { name: "Workspace sections" });
+	for (const link of screen.getAllByRole("link", { name: /^Interview/ })) expect(link.textContent).toMatch(/\d+ min/);
 });

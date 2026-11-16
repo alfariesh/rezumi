@@ -4,7 +4,6 @@ import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { EmptyState } from "@heroui-pro/react";
 import { Alert, Button, buttonVariants, Checkbox, Chip, Modal, Separator, Skeleton, Typography } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -29,6 +28,7 @@ import {
 	Working,
 	workingSteps,
 } from "../shared";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { interviewTypeLabel } from "@/features/applications/components/interview-dialog";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
@@ -98,16 +98,13 @@ type NoticeProps = { icon: IconName; title: string; description: ReactNode; chil
 /** An empty or in-between state: what to do next, in one centered block. */
 function Notice({ icon, title, description, children }: NoticeProps) {
 	return (
-		<EmptyState className="rounded-2xl bg-surface-secondary py-12">
-			<EmptyState.Header>
-				<EmptyState.Media variant="icon">
-					<Icon name={icon} size={20} />
-				</EmptyState.Media>
-				<EmptyState.Title>{title}</EmptyState.Title>
-				<EmptyState.Description className="max-w-sm">{description}</EmptyState.Description>
-			</EmptyState.Header>
-			<EmptyState.Content className="items-center gap-3">{children}</EmptyState.Content>
-		</EmptyState>
+		<EmptyBlock
+			kind="page"
+			icon={icon}
+			title={title}
+			description={description}
+			action={<div className="grid justify-items-center gap-3">{children}</div>}
+		/>
 	);
 }
 

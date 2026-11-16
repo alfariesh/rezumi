@@ -10,6 +10,7 @@ import { isTextDropItem, useDragAndDrop } from "react-aria-components";
 import { CLOSED_REASONS, getClosedReasonLabel, getStageColor, getStageLabel, PIPELINE } from "../stages";
 import { useApplicationActions } from "../use-application-actions";
 import { ApplicationCard } from "./application-card";
+import { EmptyBlock } from "@/components/layout/empty-block";
 
 type BoardProps = {
 	applications: ApplicationSummary[];
@@ -177,7 +178,7 @@ function Column({ stage, applications, isDragSource, onDragSourceChange, onDrop,
 							const application = shown.find((item) => item.id === key);
 							if (application) onOpen(application);
 						}}
-						renderEmptyState={() => t`No applications`}
+						renderEmptyState={() => <EmptyBlock kind="inline" title={t`No applications`} className="mx-2" />}
 						className="rounded-2xl transition-colors duration-quick data-drop-target:bg-accent-soft"
 					>
 						{(application) => (

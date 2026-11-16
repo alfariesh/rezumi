@@ -30,6 +30,7 @@ import { StageStepper } from "./detail/stage-stepper";
 import { InterviewDialog } from "./interview-dialog";
 import { DatePickerField } from "@/components/input/date-time-fields";
 import { SelectField } from "@/components/input/select-field";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -143,15 +144,13 @@ export function ApplicationDetailPane({ application, onClose, onEditDetails }: D
 /** The pane while no application is chosen: where the detail will appear, and how to get it there. */
 export function ApplicationDetailPanePlaceholder() {
 	return (
-		<div className={cn(PANE_CLASS, "grid place-items-center p-6 text-center")}>
-			<div className="grid max-w-64 justify-items-center gap-3">
-				<span aria-hidden="true" className="grid size-12 place-items-center rounded-2xl bg-default text-muted">
-					<Icon name="briefcase" size={22} />
-				</span>
-				<p className="text-body-sm text-pretty text-muted">
-					<Trans>Choose an application to see its next step, what you sent and its activity here.</Trans>
-				</p>
-			</div>
+		<div className={cn(PANE_CLASS, "grid place-items-center p-6")}>
+			<EmptyBlock
+				kind="page"
+				icon="briefcase"
+				title={<Trans>No application open</Trans>}
+				description={<Trans>Choose an application to see its next step, what you sent and its activity here.</Trans>}
+			/>
 		</div>
 	);
 }

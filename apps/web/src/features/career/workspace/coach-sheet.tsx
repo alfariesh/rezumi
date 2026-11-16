@@ -2,7 +2,7 @@ import type { Application } from "@/features/applications/types";
 import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { WorkspaceTab } from "@rezumi/schema/career";
-import { EmptyState, Sheet } from "@heroui-pro/react";
+import { Sheet } from "@heroui-pro/react";
 import { Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -13,6 +13,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { CoachThread, connectionName, deleteConversation, titleFor, useConversationDate } from "../coach-thread";
 import { PrivacyLine, tabLabel } from "../shared";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { useConversationConnection } from "@/features/assistant/chat";
 import { HeadingOrb } from "@/features/assistant/orb";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
@@ -223,19 +224,17 @@ function CoachSheetBody({
 				onChangeConnection={() => void navigate({ to: "/dashboard/settings/app", hash: "ai-providers" })}
 				header={() => null}
 				empty={() => (
-					<EmptyState size="sm">
-						<EmptyState.Header>
-							<EmptyState.Media>
-								<HeadingOrb size={56} />
-							</EmptyState.Media>
-							<EmptyState.Description>
-								<Trans>
-									Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows
-									you're on {tabName}.
-								</Trans>
-							</EmptyState.Description>
-						</EmptyState.Header>
-					</EmptyState>
+					<EmptyBlock
+						kind="page"
+						media={<HeadingOrb size={56} />}
+						title={<Trans>Ask the coach</Trans>}
+						description={
+							<Trans>
+								Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're
+								on {tabName}.
+							</Trans>
+						}
+					/>
 				)}
 				privacy={
 					<PrivacyLine>

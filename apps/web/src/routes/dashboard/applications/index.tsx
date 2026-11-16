@@ -1,16 +1,17 @@
 import type { Application, ApplicationSummary } from "@/features/applications/types";
-import { EmptyState, Segment } from "@heroui-pro/react";
-import { Button, Dropdown, Input, Label, Skeleton } from "@heroui/react";
+import { Segment } from "@heroui-pro/react";
+import { Button, buttonVariants, Chip, Dropdown, Input, Label, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, stripSearchParams, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, stripSearchParams, useNavigate } from "@tanstack/react-router";
 import { useCallback, useDeferredValue, useEffect, useRef, useState } from "react";
 import z from "zod";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { AddApplicationDialog } from "@/features/applications/components/add-application-dialog";
@@ -37,6 +38,7 @@ import { ExtensionInstallHint } from "@/features/extension/install-links";
 import { useMinWidth } from "@/hooks/use-min-width";
 import { toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
+import { orpc } from "@/libs/orpc/client";
 
 const VIEWS = ["list", "board", "insights", "calendar"] as const;
 type View = (typeof VIEWS)[number];
@@ -94,6 +96,8 @@ function RouteComponent() {
 	const { data: applications, isPending, isError, isFetching, refetch } = useQuery(applicationsListQueryOptions());
 	const queryClient = useQueryClient();
 	const { data: fullApplications } = useQuery({ ...applicationsFullListQueryOptions(), enabled: exporting });
+	const offers = useQuery(orpc.career.savedItems.queryOptions({ input: { kind: "offer" } }));
+	const offerCount = offers.data?.length ?? 0;
 
 	const PREFETCH_LIMIT = 12;
 	const prefetchInFlight = useRef(new Set<string>());
@@ -238,6 +242,23 @@ function RouteComponent() {
 								</Dropdown.Menu>
 							</Dropdown.Popover>
 						</Dropdown>
+						{(!empty || offerCount > 0) && (
+							<Link
+								to="/dashboard/applications/offers"
+								aria-label={offerCount > 0 ? t`Compare offers (${offerCount})` : t`Compare offers`}
+								className={buttonVariants({ variant: "secondary" })}
+							>
+								<Icon name="scales" />
+								<span className="max-sm:hidden">
+									<Trans>Compare offers</Trans>
+								</span>
+								{offerCount > 0 && (
+									<Chip size="sm" variant="soft" className="tabular-nums">
+										{offerCount}
+									</Chip>
+								)}
+							</Link>
+						)}
 						<Button onPress={() => setAdding(true)}>
 							<Icon name="plus" />
 							<Trans>Save job</Trans>
@@ -325,21 +346,16 @@ function RouteComponent() {
 					{isPending ? (
 						<ViewSkeleton view={shown} />
 					) : noMatches ? (
-						<EmptyState className="py-16">
-							<EmptyState.Header>
-								<EmptyState.Media variant="icon">
-									<Icon name="magnifying-glass" size={22} />
-								</EmptyState.Media>
-								<EmptyState.Title>
-									<Trans>No applications match “{query.trim()}”.</Trans>
-								</EmptyState.Title>
-							</EmptyState.Header>
-							<EmptyState.Content>
+						<EmptyBlock
+							kind="filtered"
+							title={<Trans>No applications match “{query.trim()}”.</Trans>}
+							description={<Trans>Search reads the role, company, location, contacts and tags.</Trans>}
+							action={
 								<Button size="sm" variant="secondary" onPress={() => setQuery("")}>
 									<Trans>Clear search</Trans>
 								</Button>
-							</EmptyState.Content>
-						</EmptyState>
+							}
+						/>
 					) : (
 						<div
 							key={shown}
@@ -482,32 +498,31 @@ function FollowUpNudge({ applications, onOpen }: FollowUpNudgeProps) {
 	);
 }
 
-function FirstJobEmptyState({ onAdd, onImport }: { onAdd: () => void; onImport: () => void }) {
+type FirstJobEmptyStateProps = { onAdd: () => void; onImport: () => void };
+
+function FirstJobEmptyState({ onAdd, onImport }: FirstJobEmptyStateProps) {
 	return (
 		// Takes the skeleton's place as is (no fade from nothing), so the page doesn't blink empty in between.
-		<EmptyState size="lg" className="py-16">
-			<EmptyState.Header>
-				<EmptyState.Media variant="icon">
-					<Icon name="briefcase" size={26} />
-				</EmptyState.Media>
-				<EmptyState.Title>
-					<Trans>Track your first job</Trans>
-				</EmptyState.Title>
-				<EmptyState.Description className="max-w-sm text-pretty">
-					<Trans>Paste a job link. We'll save the posting so Check, the assistant and your letter can use it.</Trans>
-				</EmptyState.Description>
-			</EmptyState.Header>
-			<EmptyState.Content className="flex-row gap-2">
-				<Button onPress={() => onAdd()}>
-					<Icon name="plus" />
-					<Trans>Save job</Trans>
-				</Button>
-				<Button variant="secondary" onPress={() => onImport()}>
-					<Trans>Import from CSV</Trans>
-				</Button>
-			</EmptyState.Content>
-			<ExtensionInstallHint className="justify-center" />
-		</EmptyState>
+		<EmptyBlock
+			kind="page"
+			icon="briefcase"
+			title={<Trans>Track your first job</Trans>}
+			description={
+				<Trans>Paste a job link. We'll save the posting so Check, the assistant and your letter can use it.</Trans>
+			}
+			action={
+				<>
+					<Button onPress={() => onAdd()}>
+						<Icon name="plus" />
+						<Trans>Save job</Trans>
+					</Button>
+					<Button variant="secondary" onPress={() => onImport()}>
+						<Trans>Import from CSV</Trans>
+					</Button>
+					<ExtensionInstallHint className="basis-full justify-center pt-2" />
+				</>
+			}
+		/>
 	);
 }
 

@@ -2,7 +2,7 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { Application } from "@/features/applications/types";
 import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { EmptyState, Segment, Widget } from "@heroui-pro/react";
+import { Segment, Widget } from "@heroui-pro/react";
 import {
 	Button,
 	Checkbox,
@@ -20,13 +20,13 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { Icon } from "@rezumi/ui/components/icon";
 import { ThinkingOrb } from "@rezumi/ui/components/thinking-orb";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useTicks } from "../hooks";
 import { CareerWidget, MemoryProposal, PrivacyLine, useCareerTime, Working, workingSteps } from "../shared";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { buildIcs } from "@/features/applications/ics";
 import { isInterview } from "@/features/applications/interviews";
@@ -92,16 +92,10 @@ export function DebriefTab({ application, version, now }: WorkspaceTabProps) {
 			{plan ? (
 				<WeekPlan key={plan.id} application={application} review={plan} now={now} readOnly={!!viewing} />
 			) : (
-				<EmptyState size="sm" className="rounded-2xl bg-surface-secondary">
-					<EmptyState.Header>
-						<EmptyState.Media variant="icon">
-							<Icon name="calendar-dot" size={20} />
-						</EmptyState.Media>
-						<EmptyState.Description>
-							<Trans>After your first review, a light plan for this week appears here.</Trans>
-						</EmptyState.Description>
-					</EmptyState.Header>
-				</EmptyState>
+				<EmptyBlock
+					kind="inline"
+					title={<Trans>After your first review, a light plan for this week appears here.</Trans>}
+				/>
 			)}
 		</div>
 	);
