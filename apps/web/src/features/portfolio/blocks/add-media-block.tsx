@@ -4,6 +4,8 @@ import type { Draft } from "immer";
 import { Alert, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useRef, useState } from "react";
+import { parseEmbedUrl } from "@rezumi/schema/portfolio/embed";
+import { parseVideoUrl } from "@rezumi/schema/portfolio/video";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { generateId } from "@rezumi/utils/string";
@@ -40,7 +42,7 @@ export function currentBlock(workId: string, blockId: string): PortfolioBlock | 
 }
 
 /** PDFs only, by type or name, from a picker. */
-const pdfFiles = (files: readonly File[]) =>
+export const pdfFiles = (files: readonly File[]) =>
 	files.filter((file) => file.type === "application/pdf" || /\.pdf$/i.test(file.name)).slice(0, 1);
 
 /** A hidden PDF picker opened by code. */
@@ -113,8 +115,12 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 			confirmText: t`Add video`,
 		});
 		if (!text?.trim()) return;
+		await addVideoUrl(text.trim(), insert);
+	};
+
+	const addVideoUrl = async (url: string, insert: InsertBlock) => {
 		await run(t`Reading the video…`, async (signal) => {
-			const block = await videoBlockFromUrl(text.trim(), signal);
+			const block = await videoBlockFromUrl(url, signal);
 			if (!block) {
 				setError(t`That isn't a YouTube or Vimeo video link. Copy the address from the video's page.`);
 				return;
@@ -181,7 +187,10 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 			setError(t`This link isn't from a service we can embed. Use a Link block instead.`);
 			return;
 		}
-		const { url } = address;
+		await addEmbedUrl(address.url, insert);
+	};
+
+	const addEmbedUrl = async (url: string, insert: InsertBlock) => {
 		await run(t`Reading the link…`, async (signal) => {
 			const find = await embedFromUrl(url, signal);
 			if (!find) {
@@ -225,6 +234,22 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 		}
 	};
 
+	/**
+	 * A YouTube or Vimeo address becomes a Video block, a Figma, Loom, Spotify, SoundCloud or Google Slides one an
+	 * Embed block (a pasted address, say). False for any other address, which stays where it was pasted.
+	 */
+	const addFromUrl = (url: string, insert: InsertBlock): boolean => {
+		if (parseVideoUrl(url)) {
+			void addVideoUrl(url, insert);
+			return true;
+		}
+		if (parseEmbedUrl(url)) {
+			void addEmbedUrl(url, insert);
+			return true;
+		}
+		return false;
+	};
+
 	const status = (
 		<>
 			{picker.element}
@@ -238,7 +263,14 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 		</>
 	);
 
-	return { add, busy: busy !== null, status };
+	return {
+		add,
+		addFromUrl,
+		/** A PDF dropped or pasted: uploaded and put in like one chosen from the menu. */
+		addPdfFile: (file: File, insert: InsertBlock) => void addPdf(file, insert),
+		busy: busy !== null,
+		status,
+	};
 }
 
 type ErrorNoteProps = { message: string };

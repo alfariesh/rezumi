@@ -11,7 +11,10 @@ import { PORTFOLIO_UNUSED_FILE_GRACE_MS } from "@rezumi/schema/portfolio/limits"
 export const KEPT_PHOTO_MS = PORTFOLIO_UNUSED_FILE_GRACE_MS / 2;
 
 type PortfolioEditorUi = {
-	/** The work open in Work; the preview shows its page. Opening one anywhere (a card in the preview, a new work, "Show me") switches the editor to Work. */
+	/**
+	 * The work open in Work; the preview shows its page. Opening one anywhere (a card in the preview, a new work, "Show
+	 * me") switches the editor to Work (`workModeStep`).
+	 */
 	openWorkId: string | null;
 	openWork: (id: string | null) => void;
 	/** The work last open in Work, picked again when Work is opened from the rail. */

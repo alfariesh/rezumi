@@ -7,6 +7,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { usePortfolioSource } from "../../editor/context";
 import { editPortfolio, usePortfolioData } from "../../editor/store";
 import { usePortfolioEditorUi } from "../../editor/ui";
+import { focusWorkTitle } from "../doc-focus";
 import { newWork } from "../works";
 import { FromLink } from "./from-link";
 import { FromPictures } from "./from-pictures";
@@ -61,6 +62,8 @@ export function AddWorkDialog({ onClose }: AddWorkDialogProps) {
 		);
 		onClose();
 		openWork(work.id);
+		// An empty work starts with its name.
+		focusWorkTitle(work.id);
 	};
 
 	return (

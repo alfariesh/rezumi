@@ -426,9 +426,9 @@ function suggestionsFor(document: AssistantDocument, prepare: boolean): Suggesti
 	if (document.kind === "portfolio" && document.focus)
 		return [
 			{
-				icon: "pencil-simple",
-				label: t`Write this work's story from my notes`,
-				hint: t`Problem, your role, process and result, as blocks`,
+				icon: "chat-text",
+				label: t`Interview me about this work, then write its story.`,
+				hint: t`A few questions with answers to pick, then the story as blocks`,
 			},
 			{
 				icon: "chart-line-up",

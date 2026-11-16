@@ -29,6 +29,7 @@ import { portfolioRefusalMessage } from "@/features/portfolio/errors";
 import { mapPictures } from "@/features/portfolio/location/map-pictures";
 import { isPortfolioLive } from "@/features/portfolio/status";
 import { WorkCanvas, WorkViewSwitch } from "@/features/portfolio/works/work-canvas";
+import { workModeStep } from "@/features/portfolio/works/work-mode";
 import { WorksPanel } from "@/features/portfolio/works/works-panel";
 import { isEditableElementFocused } from "@/features/resume/builder/draft";
 import { BarDivider, UndoRedo } from "@/features/resume/editor/chrome";
@@ -82,11 +83,7 @@ const MODE_ICONS = {
 	share: "globe-hemisphere-west",
 } as const;
 
-/**
- * Keeps the open work and the tab together. Opening a work anywhere (a card in the preview, a new work, "Show me")
- * switches to Work; Work opened from the rail picks the work open last, else the first; leaving Work closes the work,
- * so the other tabs' preview shows the home page.
- */
+/** Keeps the open work and the tab together (`workModeStep`). */
 function useWorkFollowsMode(mode: PortfolioMode, setMode: (mode: PortfolioMode) => void) {
 	const openWorkId = usePortfolioEditorUi((state) => state.openWorkId);
 	// Null at first, so an editor opened on Work (`?mode=work`) picks a work as if Work had just been chosen.
@@ -101,23 +98,23 @@ function useWorkFollowsMode(mode: PortfolioMode, setMode: (mode: PortfolioMode) 
 		const before = previous.current;
 		previous.current = mode;
 		const ui = usePortfolioEditorUi.getState();
-		if (before === "work" && mode !== "work") {
-			ui.openWork(null);
-			return;
-		}
-		if (mode === "work" && before !== "work" && !openWorkId) {
-			const works = usePortfolioEditorStore.getState().portfolio?.data.works.items ?? [];
-			const pick = works.find((work) => work.id === ui.lastWorkId) ?? works[0];
-			if (pick) ui.openWork(pick.id);
-			return;
-		}
-		if (mode !== "work" && openWorkId) switchTo.current("work");
+		const works = usePortfolioEditorStore.getState().portfolio?.data.works.items ?? [];
+		const step = workModeStep({
+			before,
+			mode,
+			openWorkId,
+			lastWorkId: ui.lastWorkId,
+			workIds: works.map((work) => work.id),
+		});
+		if (step.kind === "open") ui.openWork(step.workId);
+		else if (step.kind === "switch-to-work") switchTo.current("work");
 	}, [mode, openWorkId]);
 }
 
 /**
- * The portfolio editor (`01-desain.md` section 7): the resume editor's frame with Content, Design and Publish on the
- * left and the live page on the right. Phones show one view at a time from the tab bar.
+ * The portfolio editor (`01-desain.md` section 7): the resume editor's frame with Content, Work, Design and Publish on
+ * the left and the live page on the right (in Work, the open work to write in, or its page). Phones show one view at a
+ * time from the tab bar.
  */
 export function PortfolioShell() {
 	const [mode, setMode] = usePortfolioMode();
@@ -238,7 +235,10 @@ const PORTFOLIO_MODES = ["write", "work", "design", "share"] as const satisfies 
 
 type MobileBodyProps = { onModeChange: (mode: PortfolioMode) => void; assistant: ReactNode };
 
-/** Phones (≤768 px): the live page, with Content · Design · Publish and AI floating over it, each opening a sheet. */
+/**
+ * Phones (≤768 px): the live page, with Content · Work · Design · Publish and AI floating over it, each opening a
+ * sheet.
+ */
 function MobileBody({ onModeChange, assistant }: MobileBodyProps) {
 	const open = useMobileSheet(PORTFOLIO_MODES);
 

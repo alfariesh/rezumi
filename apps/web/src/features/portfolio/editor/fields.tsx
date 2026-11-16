@@ -222,8 +222,15 @@ type RichTextFieldProps = {
 	hideLabel?: boolean;
 	/** Offers AI rewriting for this field. */
 	rewrite?: PortfolioAiField | undefined;
-	/** `document`: unframed, as part of the page being written (Work); AI rewriting shows while it's hovered or focused. */
+	/**
+	 * `document`: unframed, as part of the page being written (Work); AI rewriting shows beside it while it's hovered
+	 * or focused.
+	 */
 	appearance?: "field" | "document";
+	/** Files pasted or dropped into the text; true when taken. */
+	onFiles?: ((files: File[]) => boolean) | undefined;
+	/** A lone web address pasted on an empty line; true when taken. */
+	onUrl?: ((url: string) => boolean) | undefined;
 };
 
 /** A labelled rich text field. The editor loads on first use; it starts over after undo, redo or a reload. */
@@ -237,6 +244,8 @@ export function RichTextField({
 	hideLabel = false,
 	rewrite,
 	appearance = "field",
+	onFiles,
+	onUrl,
 }: RichTextFieldProps) {
 	const revision = usePortfolioEditorStore((state) => state.revision);
 	const labelId = useId();
@@ -285,6 +294,8 @@ export function RichTextField({
 								placeholder={placeholder}
 								slashItems={slashItems}
 								appearance={appearance}
+								onFiles={onFiles}
+								onUrl={onUrl}
 							/>
 						</Suspense>
 					);

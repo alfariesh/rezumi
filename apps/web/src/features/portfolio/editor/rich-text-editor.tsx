@@ -4,8 +4,9 @@ import { filterRichTextEditorSuggestionItems, RichTextEditor } from "@heroui-pro
 import { t } from "@lingui/core/macro";
 import { generateJSON } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { pasteIntent } from "./paste";
 
 const ICON = 18;
 
@@ -35,6 +36,13 @@ export type PortfolioRichTextEditorProps = {
 	 * no frame; formatting comes up over selected text, and "/" also turns the line into a heading, a list or a quote.
 	 */
 	appearance?: "field" | "document";
+	/**
+	 * Files pasted or dropped into the text. True when they were taken (as a block, say); otherwise the editor does
+	 * what it would.
+	 */
+	onFiles?: ((files: File[]) => boolean) | undefined;
+	/** A lone web address pasted on an empty line. True when it was taken (as a Video or Embed block, say). */
+	onUrl?: ((url: string) => boolean) | undefined;
 };
 
 /** Saved HTML as the editor's document. The editor's own extensions read the same tags (StarterKit holds them all). */
@@ -56,10 +64,17 @@ export default function PortfolioRichTextEditor({
 	labelledBy,
 	slashItems,
 	appearance = "field",
+	onFiles,
+	onUrl,
 }: PortfolioRichTextEditorProps) {
 	const [initial] = useState(() => toDocument(value));
-	const document = appearance === "document";
-	const menuItems = document ? [...formatItems(), ...(slashItems ?? [])] : (slashItems ?? []);
+	// The editor reads its handlers once, when it's made: these refs give it the latest ones.
+	const handlers = useRef({ onFiles, onUrl });
+	useLayoutEffect(() => {
+		handlers.current = { onFiles, onUrl };
+	});
+	const asDocument = appearance === "document";
+	const menuItems = asDocument ? [...formatItems(), ...(slashItems ?? [])] : (slashItems ?? []);
 
 	return (
 		<RichTextEditor
@@ -76,11 +91,32 @@ export default function PortfolioRichTextEditor({
 						"aria-multiline": "true",
 						...(labelledBy ? { "aria-labelledby": labelledBy } : { "aria-label": label }),
 					},
+					handlePaste: (view, event) => {
+						const { selection, doc } = view.state;
+						const paste = pasteIntent({
+							files: [...(event.clipboardData?.files ?? [])],
+							text: event.clipboardData?.getData("text/plain") ?? "",
+							emptyLine: selection.empty && selection.$from.parent.content.size === 0,
+						});
+						if (paste.kind === "files") return handlers.current.onFiles?.(paste.files) ?? false;
+						if (paste.kind !== "url" || !handlers.current.onUrl?.(paste.url)) return false;
+						// The empty line it was pasted on goes, unless it's all the text there is.
+						if (doc.childCount > 1 && selection.$from.depth === 1)
+							view.dispatch(view.state.tr.delete(selection.$from.before(), selection.$from.after()));
+						return true;
+					},
+					handleDrop: (_view, event, _slice, moved) => {
+						const files = [...(event.dataTransfer?.files ?? [])];
+						if (moved || !files.length) return false;
+						const taken = handlers.current.onFiles?.(files) ?? false;
+						if (taken) event.preventDefault();
+						return taken;
+					},
 				},
 			}}
 		>
 			<RichTextEditor.Shell>
-				{!document && (
+				{!asDocument && (
 					<RichTextEditor.Toolbar aria-label={t`Text formatting`}>
 						<RichTextEditor.ToolbarGroup>
 							<RichTextEditor.ToggleButton command="bold" tooltip={t`Bold`}>
@@ -136,7 +172,7 @@ export default function PortfolioRichTextEditor({
 					</RichTextEditor.Toolbar>
 				)}
 				<RichTextEditor.Content />
-				{document && <SelectionToolbar />}
+				{asDocument && <SelectionToolbar />}
 				{menuItems.length > 0 && (
 					<RichTextEditor.SuggestionMenu
 						char="/"
@@ -159,7 +195,7 @@ export default function PortfolioRichTextEditor({
 					/>
 				)}
 				<RichTextEditor.Footer>
-					{document ? <NearLimitCount maxLength={maxLength} /> : <RichTextEditor.CharacterCount />}
+					{asDocument ? <NearLimitCount maxLength={maxLength} /> : <RichTextEditor.CharacterCount />}
 				</RichTextEditor.Footer>
 			</RichTextEditor.Shell>
 		</RichTextEditor>

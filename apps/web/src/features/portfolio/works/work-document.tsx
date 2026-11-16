@@ -10,12 +10,14 @@ import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { AiRewriteMenu } from "../ai/rewrite-menu";
 import { BlockList, editWork } from "../blocks/block-list";
+import { blockRoom, insertBlocksAt, newTextBlock } from "../blocks/blocks";
 import { pageLocaleOf, usePortfolioSource } from "../editor/context";
 import { ChoiceSelect, TextInput, UrlInput } from "../editor/fields";
 import { editPortfolio, lastSavedData, usePortfolioData, usePortfolioEditorStore } from "../editor/store";
 import { usePortfolioEditorUi } from "../editor/ui";
 import { ImageField, portfolioImageSrc } from "../images/image-field";
 import { workMetrics } from "../metrics/metrics";
+import { focusTextBlock, focusWorkSummary } from "./doc-focus";
 import { WorkAddress } from "./work-address";
 import { retitleWork } from "./works";
 import { ChipInput } from "@/components/input/chip-input";
@@ -44,13 +46,13 @@ export function WorkDocument({ workId }: WorkDocumentProps) {
 		editWork(workId, (draft) => recipe(draft as PortfolioWork), key ? { key: `works.${workId}.${key}` } : undefined);
 
 	return (
-		<div className={cn("grid gap-6", phone && "px-3 pb-6")}>
+		<div data-work-doc={workId} className={cn("grid gap-6", phone && "px-3 pb-6")}>
 			<WorkStatus work={work} update={update} />
 			<Cover work={work} update={update} />
 
 			<div className="grid gap-3">
 				<TitleInput work={work} />
-				<SummaryInput work={work} update={update} />
+				<SummaryInput work={work} update={update} inline={phone} />
 			</div>
 
 			<Details work={work} locale={locale} update={update} />
@@ -218,9 +220,12 @@ function TitleInput({ work }: { work: PortfolioWork }) {
 				maxLength={max.workTitle}
 				aria-label={t`Title`}
 				placeholder={t`Name this work`}
-				// A title is one line: Enter moves on instead of breaking it.
+				data-doc-part="title"
+				// A title is one line: Enter moves on to the summary instead of breaking it.
 				onKeyDown={(event) => {
-					if (event.key === "Enter") event.preventDefault();
+					if (event.key !== "Enter" || event.nativeEvent.isComposing) return;
+					event.preventDefault();
+					focusWorkSummary(work.id);
 				}}
 				onChange={(event) => {
 					const value = event.currentTarget.value.replace(/\s*\n\s*/g, " ");
@@ -238,8 +243,13 @@ function TitleInput({ work }: { work: PortfolioWork }) {
 	);
 }
 
+type SummaryInputProps = PartProps & {
+	/** AI under the field instead of beside it: a phone's sheet has no room at the side. */
+	inline: boolean;
+};
+
 /** The summary under the title: what the work's card says. AI can shorten or polish it. */
-function SummaryInput({ work, update }: PartProps) {
+function SummaryInput({ work, update, inline }: SummaryInputProps) {
 	const change = (value: string) =>
 		update((draft) => {
 			draft.summary = value;
@@ -252,11 +262,24 @@ function SummaryInput({ work, update }: PartProps) {
 				value={work.summary}
 				maxLength={max.workSummary}
 				aria-label={t`Summary`}
+				data-doc-part="summary"
 				placeholder={t`One or two lines: what you made, for whom, and what changed.`}
+				// The card shows one paragraph: Enter moves on into the story.
+				onKeyDown={(event) => {
+					if (event.key !== "Enter" || event.shiftKey || event.nativeEvent.isComposing) return;
+					event.preventDefault();
+					startStory(work);
+				}}
 				onChange={(event) => change(event.currentTarget.value)}
 				className={cn(BARE_FIELD, "text-muted")}
 			/>
-			<span className="absolute -end-14 top-0.5 opacity-0 transition-opacity duration-quick group-focus-within/summary:opacity-100 group-hover/summary:opacity-100 has-[[aria-expanded=true]]:opacity-100 pointer-coarse:opacity-100">
+			<span
+				className={
+					inline
+						? "flex justify-end"
+						: "absolute -end-14 top-0.5 opacity-0 transition-opacity duration-quick group-focus-within/summary:opacity-100 group-hover/summary:opacity-100 has-[[aria-expanded=true]]:opacity-100 pointer-coarse:opacity-100"
+				}
+			>
 				<AiRewriteMenu field="workSummary" value={work.summary} onResult={change} />
 			</span>
 			{work.summary.length >= max.workSummary * 0.8 && (
@@ -402,4 +425,19 @@ function Details({ work, locale, update }: DetailsProps) {
 			)}
 		</div>
 	);
+}
+
+/** From the summary into the story: the first text block, or a new paragraph at its start when there's none. */
+function startStory(work: PortfolioWork) {
+	const text = work.blocks.find((block) => block.type === "text");
+	if (text) {
+		focusTextBlock(text.id);
+		return;
+	}
+	if (blockRoom(work) === 0) return;
+	const block = newTextBlock();
+	editWork(work.id, (draft) => void insertBlocksAt(draft as PortfolioWork, { after: null }, [block]), {
+		structural: true,
+	});
+	focusTextBlock(block.id);
 }

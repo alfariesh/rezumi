@@ -16,12 +16,14 @@ import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { moveItem, RichTextField } from "../editor/fields";
 import { editPortfolio, usePortfolioEditorStore } from "../editor/store";
+import { pictureFiles } from "../images/compress";
 import { leftOutMessage, UploadStatus, useFilePicker, useImageUploads } from "../images/image-field";
 import { discardUnplacedImages } from "../images/upload";
 import { pdfLimitText } from "../media/pdf";
 import { MetricsEditor } from "../metrics/metric-form";
 import { dropMissingHighlight } from "../metrics/metrics";
-import { useAddMediaBlock } from "./add-media-block";
+import { focusTextBlock } from "../works/doc-focus";
+import { pdfFiles, useAddMediaBlock } from "./add-media-block";
 import {
 	addCaseStudy,
 	blockPlace,
@@ -207,7 +209,11 @@ function useAddBlock(work: PortfolioWork, index: number, last = false) {
 		if (type === "images") picker.open();
 		else if (type === "video" || type === "embed" || type === "pdf" || type === "link")
 			media.add(type, inserter(place));
-		else inserter(place)(type === "text" ? newTextBlock() : newMetricsBlock());
+		else if (type === "text") {
+			const block = newTextBlock();
+			// A new paragraph is for typing in: the caret goes there.
+			if (inserter(place)(block)) focusTextBlock(block.id);
+		} else inserter(place)(newMetricsBlock());
 	};
 
 	const status = (
@@ -218,10 +224,37 @@ function useAddBlock(work: PortfolioWork, index: number, last = false) {
 		</>
 	);
 
-	return { add, busy: uploads.busy || media.busy, status };
+	/**
+	 * Files pasted or dropped into a text block: pictures become a Pictures block after it, a PDF a PDF block. False
+	 * for anything else, which the text handles as it would.
+	 */
+	const addFiles = (files: File[]): boolean => {
+		const pictures = pictureFiles(files);
+		const pdf = pdfFiles(files)[0];
+		if (!pictures.length && !pdf) return false;
+		if (blockRoom(work) === 0) {
+			toast.add({ type: "warning", description: fullWorkMessage() });
+			return true;
+		}
+		const place = blockPlace(work, index, last);
+		if (pictures.length) void addPictures(pictures, place);
+		else if (pdf) media.addPdfFile(pdf, inserter(place));
+		return true;
+	};
+
+	/** A YouTube, Vimeo or embeddable address pasted on an empty line becomes its block after this one. */
+	const addUrl = (url: string): boolean => {
+		if (blockRoom(work) === 0) return false;
+		return media.addFromUrl(url, inserter(blockPlace(work, index, last)));
+	};
+
+	return { add, addFiles, addUrl, busy: uploads.busy || media.busy, status };
 }
 
-/** `panel`: framed cards in a narrow panel. `document`: Work's writing surface, text as part of the page, controls on hover. */
+/**
+ * `panel`: framed cards in a narrow panel (a phone's sheet). `document`: Work's writing surface, text as part of the
+ * page, each block's controls beside it while it's hovered or focused.
+ */
 type BlockListAppearance = "panel" | "document";
 
 type AddBlockMenuProps = {
@@ -293,15 +326,17 @@ function AddBlockMenu({ work, index, last = false, quiet = false, appearance = "
 type BlockListProps = { work: PortfolioWork; locale: string; appearance?: BlockListAppearance };
 
 /**
- * A work's detail as blocks (`01-desain.md` section 15): add one anywhere with "+ Add block" (or "/" in a text block),
- * drag to reorder, remove with Undo. An empty work can start from a case study outline.
+ * A work's detail as blocks (`01-desain.md` section 15): add one anywhere with "+ Add block" (or "/" in a text block,
+ * or by pasting pictures or a video link into one), drag to reorder, remove with Undo. An empty work can start from a
+ * case study outline; on Work's writing surface also by writing, or with the assistant's interview.
  */
 export function BlockList({ work, locale, appearance = "panel" }: BlockListProps) {
 	const blocks = work.blocks;
 	const list = `blocks:${work.id}`;
 	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 
-	const startCaseStudy = () =>
+	const startCaseStudy = () => {
+		const first = work.blocks.length;
 		editWork(
 			work.id,
 			(draft) =>
@@ -313,13 +348,18 @@ export function BlockList({ work, locale, appearance = "panel" }: BlockListProps
 				}),
 			{ structural: true },
 		);
+		// The caret under the first heading, to start writing the problem.
+		const added = usePortfolioEditorStore.getState().portfolio?.data.works.items.find((entry) => entry.id === work.id)
+			?.blocks[first];
+		if (added?.type === "text") focusTextBlock(added.id);
+	};
 
-	const document = appearance === "document";
+	const asDocument = appearance === "document";
 
 	return (
 		<div className="grid gap-2">
 			{blocks.length === 0 &&
-				(document ? (
+				(asDocument ? (
 					<EmptyStory work={work} onOutline={startCaseStudy} />
 				) : (
 					<Button variant="secondary" className="w-fit" onPress={startCaseStudy}>
@@ -339,7 +379,7 @@ export function BlockList({ work, locale, appearance = "panel" }: BlockListProps
 					)
 				}
 			>
-				<div className={document ? "grid gap-0.5" : "grid gap-1"}>
+				<div className={asDocument ? "grid gap-0.5" : "grid gap-1"}>
 					{blocks.map((block, index) => (
 						// The menu after a block belongs to that block, so a block that arrives late (an upload) still has its
 						// menu, and its progress, when the blocks around it move or go. After the last block it only shows
@@ -399,6 +439,7 @@ function BlockCard({ work, block, index, list, locale, itemProps, onRemoved, app
 			<div
 				{...itemProps}
 				{...sortable.dropTargetProps}
+				data-block-id={block.id}
 				className={cn("group/block relative", sortable.isDragging && "opacity-50")}
 			>
 				<SortableEdge edge={sortable.edge} />
@@ -437,6 +478,7 @@ function BlockCard({ work, block, index, list, locale, itemProps, onRemoved, app
 		<div
 			{...itemProps}
 			{...sortable.dropTargetProps}
+			data-block-id={block.id}
 			className={cn("relative grid gap-3 rounded-xl border border-separator p-3", sortable.isDragging && "opacity-50")}
 		>
 			<SortableEdge edge={sortable.edge} />
@@ -557,7 +599,7 @@ type TextBlockEditorProps = {
 
 /** Rich text; typing "/" adds a block after this one. */
 function TextBlockEditor({ work, block, index, appearance }: TextBlockEditorProps) {
-	const { add, busy, status } = useAddBlock(work, index + 1);
+	const { add, addFiles, addUrl, busy, status } = useAddBlock(work, index + 1);
 	const slashItems: SlashItem[] = PORTFOLIO_BLOCK_TYPES.map((type) => {
 		const info = blockTypeInfo(type);
 		return { ...info, onSelect: () => add(type) };
@@ -566,6 +608,9 @@ function TextBlockEditor({ work, block, index, appearance }: TextBlockEditorProp
 	return (
 		<>
 			<RichTextField
+				// One add at a time, as for "/".
+				onFiles={busy ? undefined : addFiles}
+				onUrl={busy ? undefined : addUrl}
 				hideLabel
 				rewrite="blockText"
 				label={t`Text block of ${work.title.trim() || t`this work`}`}
@@ -600,22 +645,24 @@ type EmptyStoryProps = { work: PortfolioWork; onOutline: () => void };
 
 /**
  * A work with no detail yet, on Work's writing surface: three ways to start the story. Writing it alone adds a text
- * block; the outline adds the case study's headings; AI opens the assistant on this work with a message to finish.
+ * block with the caret in it; the outline adds the case study's headings; AI interviews the person about this work
+ * (a few questions with likely answers to pick, `portfolioFocusNote` on the server) and writes the blocks.
  */
 function EmptyStory({ work, onOutline }: EmptyStoryProps) {
-	const startWriting = () =>
-		editWork(work.id, (draft) => void insertBlocksAt(draft as PortfolioWork, "end", [newTextBlock()], 0), {
+	const startWriting = () => {
+		const block = newTextBlock();
+		editWork(work.id, (draft) => void insertBlocksAt(draft as PortfolioWork, "end", [block], 0), {
 			structural: true,
 		});
-	const askAi = () =>
-		openAssistantFrom({
-			draft: t`Write the story of this work as a short case study (problem, my role, process, result) from these notes: `,
-		});
+		focusTextBlock(block.id);
+	};
+	// Sent at once: the assistant opens on this work (its chip) and starts with its first question.
+	const askAi = () => openAssistantFrom({ ask: t`Interview me about this work, then write its story.` });
 	const options: { icon: IconName; title: string; description: string; onPress: () => void }[] = [
 		{
 			icon: "sparkle",
-			title: t`Draft it with AI`,
-			description: t`Tell the assistant what happened; it writes the blocks`,
+			title: t`Write it with AI`,
+			description: t`Answer a few questions; it writes the story`,
 			onPress: askAi,
 		},
 		{

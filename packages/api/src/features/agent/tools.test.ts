@@ -223,6 +223,7 @@ describe("portfolio assistant tools", () => {
 		});
 		expect(focused.startsWith(base)).toBe(true);
 		expect(focused).toContain("work with id `work-1` open");
+		expect(focused).toContain("Interviewing for a work's story");
 		const withheld = buildPortfolioAgentInstructions({
 			shared: false,
 			focusWorkId: "work-1",
