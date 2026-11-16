@@ -14,7 +14,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 import { ShellPendingContext } from "@/components/layout/loading-screen";
-import { PAGE_GUTTER } from "@/components/layout/page";
+import { PAGE_GUTTER, PAGE_MAX_WIDTH } from "@/components/layout/page";
 import { useDialogStore } from "@/dialogs/store";
 import { applicationDetailQueryOptions } from "@/features/applications/queries";
 import { GuestBanner } from "@/features/auth/components/guest-banner";
@@ -299,7 +299,7 @@ function AppNavbar() {
 
 	return (
 		<Navbar maxWidth="full" size="sm" aria-label={t`Toolbar`} className="bg-surface [view-transition-name:app-bar]">
-			<Navbar.Header className={PAGE_GUTTER}>
+			<Navbar.Header className={cn("mx-auto w-full", PAGE_GUTTER, PAGE_MAX_WIDTH)}>
 				<AppLayout.MenuToggle aria-label={t`Open navigation`} />
 				{/* A little in, and the crumbs close after it: the toggle's icon and the crumbs line up with a
 					    section menu's icons and labels below. */}

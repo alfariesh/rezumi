@@ -10,9 +10,12 @@ import { cn } from "@rezumi/utils/style";
  */
 type PageWidth = "narrow" | "default" | "wide";
 
+/** A page's default width. The navbar's row uses it too, so its edges line up with the page under it on wide screens. */
+export const PAGE_MAX_WIDTH = "max-w-[1440px]";
+
 const WIDTHS: Record<PageWidth, string> = {
 	narrow: "max-w-[720px]",
-	default: "max-w-[1440px]",
+	default: PAGE_MAX_WIDTH,
 	wide: "max-w-[1920px]",
 };
 
