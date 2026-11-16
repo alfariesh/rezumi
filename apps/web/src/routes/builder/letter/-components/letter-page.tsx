@@ -8,7 +8,7 @@ import { useReducedMotion } from "motion/react";
 import { useMemo, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { coverLetterTextToHtml } from "@rezumi/resume/cover-letter";
-import { getStateIn } from "@rezumi/resume/proposals";
+import { applyTo, getStateIn } from "@rezumi/resume/proposals";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { templates } from "@/dialogs/resume/template/data";
@@ -81,7 +81,8 @@ export function LetterPage() {
 			: assistantProposals
 					.filter((proposal) => getStateIn(letter.content, proposal) === "pending")
 					.reduce(
-						(html, proposal) => html.replace(proposal.before, () => markChange(proposal.before, proposal.after)),
+						(html, proposal) =>
+							applyTo(html, { before: proposal.before, after: markChange(proposal.before, proposal.after) }) ?? html,
 						letter.content,
 					);
 		const page = letterPageData({ ...letter, content }, words);

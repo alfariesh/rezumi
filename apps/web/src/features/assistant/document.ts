@@ -8,6 +8,7 @@ import { useSearch } from "@tanstack/react-router";
 import { useMemo } from "react";
 import {
 	applyTo,
+	canonicalHtml,
 	collectLetterPassages,
 	collectPassages,
 	getProposalState,
@@ -66,17 +67,24 @@ export type AssistantDocument = TextAssistantDocument | PortfolioAssistantDocume
 const bullet = (n: number) => t`bullet ${n}`;
 const paragraph = (n: number) => t`paragraph ${n}`;
 
-/** Finds the passage a proposal replaces, or the one an addition follows. */
+/**
+ * Finds the passage a proposal replaces, or the one an addition follows. Compared as canonical HTML: the server spells
+ * a letter as it stored it, which can differ from the editor's copy.
+ */
 function locate(passages: readonly Passage[], { before, target }: Pick<Proposal, "before" | "target">) {
-	const matches = passages.filter(
-		(passage) =>
-			passage.target.sectionId === target.sectionId &&
-			passage.target.itemId === target.itemId &&
-			passage.target.roleId === target.roleId &&
-			passage.target.field === target.field &&
-			passage.html &&
-			(before === passage.html || before.startsWith(passage.html)),
-	);
+	const wanted = canonicalHtml(before);
+	const matches = passages.filter((passage) => {
+		if (
+			passage.target.sectionId !== target.sectionId ||
+			passage.target.itemId !== target.itemId ||
+			passage.target.roleId !== target.roleId ||
+			passage.target.field !== target.field ||
+			!passage.html
+		)
+			return false;
+		const html = canonicalHtml(passage.html);
+		return wanted === html || wanted.startsWith(html);
+	});
 	return matches.length === 1 ? matches[0]?.location : undefined;
 }
 
