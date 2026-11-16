@@ -39,7 +39,7 @@ function useLoadProfile(profile: ProfileDto | undefined) {
 }
 
 /** Which Profile page: Details (name, photo, contact, links) or Career (the summary and every built-in section). */
-export type ProfilePart = "details" | "career";
+type ProfilePart = "details" | "career";
 
 type ProfileDetailsPageProps = { part: ProfilePart };
 

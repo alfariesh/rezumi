@@ -2,7 +2,7 @@ import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { openCoachPanel, useCoachPanelStore } from "./store";
 
 /** An application's workspace, which has a coach of its own (the `?coach=` sheet) for that job. */
-export const WORKSPACE_ROUTE = "/dashboard/applications/$applicationId/{-$tab}";
+const WORKSPACE_ROUTE = "/dashboard/applications/$applicationId/{-$tab}";
 
 /** The open application workspace's params, or undefined on any other page. */
 export function useWorkspaceParams() {

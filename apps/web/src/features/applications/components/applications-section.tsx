@@ -9,7 +9,7 @@ export const APPLICATION_VIEWS = ["list", "board", "insights", "calendar"] as co
 export type ApplicationView = (typeof APPLICATION_VIEWS)[number];
 
 /** The ways to lay out the list, picked in the page's own switch. Insights is a page of the menu. */
-export const APPLICATION_LAYOUTS = ["list", "board", "calendar"] as const;
+const APPLICATION_LAYOUTS = ["list", "board", "calendar"] as const;
 export type ApplicationLayout = (typeof APPLICATION_LAYOUTS)[number];
 
 const LAYOUT_KEY = "applications-layout";
