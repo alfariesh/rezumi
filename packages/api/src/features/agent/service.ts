@@ -42,7 +42,7 @@ import { getStorageService, inferContentType } from "../storage/service";
 import { webAccessService } from "../web-access/credentials";
 import { searchScope } from "../web-access/regions";
 import { readPage, searchWeb } from "../web-access/service";
-import { isRunAlive, monitorRunCancellation, requestRunCancellation } from "./cancellation";
+import { isRunAlive, isRunCancellationRequested, monitorRunCancellation, requestRunCancellation } from "./cancellation";
 import { pruneAgentModelContext } from "./context";
 import {
 	documentOf,
@@ -672,6 +672,26 @@ async function repairLegacyAskUserQuestionAnswers(
 	return nextRows;
 }
 
+/**
+ * Whether a thread's run claim may be taken over: the run outlived its TTL, someone stopped it, or its owner stopped
+ * heartbeating. On Workers a stopped or disconnected run can be cut off before it releases its claim, so waiting for
+ * the TTL alone kept the conversation "still replying" for up to 15 minutes after Stop.
+ */
+async function isRunReclaimable(thread: { activeRunId: string | null; activeRunStartedAt: Date | null }) {
+	if (!thread.activeRunId) return false;
+	if (isStaleAgentRun(thread)) return true;
+	try {
+		return (
+			(await isRunCancellationRequested(thread.activeRunId)) ||
+			!(await isRunAlive(thread.activeRunId, thread.activeRunStartedAt))
+		);
+	} catch (error) {
+		// Without the shared run state, keep the claim: two runs writing to one conversation is worse than a wait.
+		console.error("[agent] Failed to check the active run", error);
+		return false;
+	}
+}
+
 async function cleanupActiveRun(input: {
 	threadId: string;
 	userId: string;
@@ -1158,7 +1178,7 @@ export const agentService = {
 
 			// Heal on open: clear a dead run's claim before reading messages so the client neither
 			// resumes a dead stream nor renders a perpetually "streaming" draft.
-			if (thread.activeRunId && isStaleAgentRun(thread)) {
+			if (thread.activeRunId && (await isRunReclaimable(thread))) {
 				await reapStaleAgentRun({
 					threadId: input.id,
 					userId: input.userId,
@@ -1272,12 +1292,12 @@ export const agentService = {
 				});
 			}
 			if (thread.activeRunId) {
-				if (!isStaleAgentRun(thread)) {
+				if (!(await isRunReclaimable(thread))) {
 					throw new ORPCError("CONFLICT", {
 						message: "This conversation is still replying. Wait for it to finish, or stop it.",
 					});
 				}
-				// Lazy reap: a dead run's claim heals on the next send instead of CONFLICTing forever.
+				// Lazy reap: a stopped or dead run's claim heals on the next send instead of CONFLICTing until its TTL.
 				await reapStaleAgentRun({
 					threadId: input.threadId,
 					userId: input.userId,

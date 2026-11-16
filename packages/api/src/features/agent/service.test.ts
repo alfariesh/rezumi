@@ -15,7 +15,7 @@ const dbMock = {
 const clearActiveAgentRunIfCurrentMock = vi.fn();
 const claimActiveAgentRunMock = vi.fn();
 const cancellationRedisMock = {
-	get: vi.fn(async () => null),
+	get: vi.fn(async (_key: string): Promise<string | null> => null),
 	set: vi.fn(async () => "OK"),
 	exists: vi.fn(async () => 1),
 };
@@ -1745,6 +1745,65 @@ describe("agentService.messages.stop", () => {
 		);
 		expect(clearActiveAgentRunIfCurrentMock).not.toHaveBeenCalled();
 		expect(vi.mocked((await import("./runs")).reapStaleAgentRun)).not.toHaveBeenCalled();
+	});
+});
+
+describe("agentService.messages.send on a busy conversation", () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
+
+	const busyThread = (startedAt: Date) =>
+		buildActiveThread({ activeRunId: "busy-run", activeStreamId: "busy-stream", activeRunStartedAt: startedAt });
+	const sendTo = async (thread: ReturnType<typeof buildActiveThread>) => {
+		dbMock.select.mockImplementation(() => selectLimitResult([thread]));
+		// Stops the send right after the busy check, so only the check is under test.
+		aiProvidersServiceMock.getRunnableById.mockRejectedValue(new Error("PAST_THE_BUSY_CHECK"));
+		const { agentService } = await import("./service");
+		return agentService.messages.send({
+			threadId: "thread-1",
+			userId: "user-1",
+			// oxlint-disable-next-line typescript/no-explicit-any -- minimal fixture for unit test
+			message: { id: "ui-message-2", role: "user", parts: [{ type: "text", text: "Again" }] } as any,
+		});
+	};
+
+	it("refuses while the reply is still running", async () => {
+		const runs = await import("./runs");
+		await expect(sendTo(busyThread(new Date(Date.now() - 60_000)))).rejects.toMatchObject({ code: "CONFLICT" });
+		expect(vi.mocked(runs.reapStaleAgentRun)).not.toHaveBeenCalled();
+	});
+
+	// Regression: after Stop, a Worker's run can be cut off before it releases its claim. The next message used to get
+	// "still replying" until the 15-minute TTL; a stopped run now gives the conversation back at once.
+	it("takes over a run the user stopped", async () => {
+		const runs = await import("./runs");
+		cancellationRedisMock.get.mockImplementation(async (key: string) =>
+			key === "test:agent-cancellation:busy-run" ? "USER_STOPPED" : null,
+		);
+		await expect(sendTo(busyThread(new Date()))).rejects.toThrow("PAST_THE_BUSY_CHECK");
+		expect(vi.mocked(runs.reapStaleAgentRun)).toHaveBeenCalledWith({
+			threadId: "thread-1",
+			userId: "user-1",
+			runId: "busy-run",
+			streamId: "busy-stream",
+		});
+	});
+
+	it("takes over a run whose owner stopped heartbeating", async () => {
+		const runs = await import("./runs");
+		cancellationRedisMock.exists.mockResolvedValue(0);
+		await expect(sendTo(busyThread(new Date(Date.now() - 60_000)))).rejects.toThrow("PAST_THE_BUSY_CHECK");
+		expect(vi.mocked(runs.reapStaleAgentRun)).toHaveBeenCalledOnce();
+	});
+
+	it("keeps the claim when the shared run state can't be read", async () => {
+		const runs = await import("./runs");
+		cancellationRedisMock.get.mockRejectedValue(new Error("Disconnected"));
+		const error = vi.spyOn(console, "error").mockImplementation(() => undefined);
+		await expect(sendTo(busyThread(new Date(Date.now() - 60_000)))).rejects.toMatchObject({ code: "CONFLICT" });
+		expect(vi.mocked(runs.reapStaleAgentRun)).not.toHaveBeenCalled();
+		error.mockRestore();
 	});
 });
 

@@ -14,7 +14,7 @@ import { agentMessageMetadataSchema } from "@rezumi/ai/tools/agent-tool-contract
 import { generateId } from "@rezumi/utils/string";
 import { DocumentNotReadyError } from "./send-guard";
 import { openCreditsDialogForError } from "@/features/billing/ai-source-menu";
-import { streamClient } from "@/libs/orpc/client";
+import { client, streamClient } from "@/libs/orpc/client";
 
 // Apart from chat.ts so pages that only list conversations don't load the AI SDK.
 
@@ -33,6 +33,21 @@ function parseSse(stream: ReadableStream<string>) {
 			},
 		}),
 	);
+}
+
+// Stop requests still on their way to the server, by conversation. The next message waits for its stop, so the server
+// already knows the run was stopped and frees the conversation instead of answering "still replying".
+const pendingStops = new Map<string, Promise<unknown>>();
+
+/** Tells the server to stop the conversation's reply; the next message in it is sent once the server has heard. */
+export function requestStop(threadId: string) {
+	const request = client.agent.messages
+		.stop({ threadId })
+		.catch(() => undefined)
+		.finally(() => {
+			if (pendingStops.get(threadId) === request) pendingStops.delete(threadId);
+		});
+	pendingStops.set(threadId, request);
 }
 
 const attachmentIdsOf = (body: object | undefined) =>
@@ -84,6 +99,7 @@ export function useAssistantChat({
 			async sendMessages(options) {
 				const message = options.messages.at(-1);
 				if (!message) throw new Error("No message to send.");
+				await pendingStops.get(threadId);
 				const problem = (await beforeSendRef.current?.()) ?? null;
 				if (problem) throw new DocumentNotReadyError(problem);
 				const attachmentIds = attachmentIdsOf(options.body);

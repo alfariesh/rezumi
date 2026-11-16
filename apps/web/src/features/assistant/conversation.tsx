@@ -34,7 +34,7 @@ import { ThinkingLine } from "./orb";
 import { PromptBox } from "./prompt-box";
 import { DocumentNotReadyError } from "./send-guard";
 import { ToolApprovals } from "./tool-approvals";
-import { useAssistantChat } from "./use-assistant-chat";
+import { requestStop, useAssistantChat } from "./use-assistant-chat";
 import { WaitingRow } from "./waiting-row";
 import { aiSourceFieldsFor, useAiSource } from "@/features/billing/ai-source";
 import { AiCostNote } from "@/features/billing/ai-source-menu";
@@ -177,7 +177,7 @@ export function Conversation(props: ConversationProps) {
 
 	const stopReply = () => {
 		setStopped(true);
-		void client.agent.messages.stop({ threadId }).catch(() => undefined);
+		requestStop(threadId);
 		void stop();
 	};
 
