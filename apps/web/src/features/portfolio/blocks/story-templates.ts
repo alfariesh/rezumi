@@ -21,7 +21,7 @@ export type StoryTemplateId = (typeof STORY_TEMPLATE_IDS)[number];
 export type StorySection = { heading: MessageDescriptor; hint: MessageDescriptor };
 
 /** A section, or the Metrics block. */
-export type StoryPart = StorySection | "metrics";
+type StoryPart = StorySection | "metrics";
 
 export type StoryTemplate = {
 	id: StoryTemplateId;

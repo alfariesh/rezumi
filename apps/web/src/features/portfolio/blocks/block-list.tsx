@@ -650,8 +650,9 @@ type EmptyStoryProps = { work: PortfolioWork; onOutline: (id: StoryTemplateId) =
 
 /**
  * A work with no detail yet, on Work's writing surface: three ways to start the story. Writing it alone adds a text
- * block with the caret in it; an outline (picked for the kind of work) adds its headings; AI interviews the person about this work
- * (a few questions with likely answers to pick, `portfolioFocusNote` on the server) and writes the blocks.
+ * block with the caret in it; an outline (picked for the kind of work) adds its headings; AI interviews the person
+ * about this work (a few questions with likely answers to pick, `portfolioFocusNote` on the server) and writes the
+ * blocks.
  */
 function EmptyStory({ work, onOutline }: EmptyStoryProps) {
 	const startWriting = () => {
