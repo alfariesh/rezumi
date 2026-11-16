@@ -104,12 +104,18 @@ function SectionNav({ title, items, footer }: SectionNavProps) {
 
 type SectionLinkProps = { item: SectionNavItem; current: boolean };
 
-/** One row of the wide-screen menu. Its own match marks it current; TanStack's exact match only adds the same state. */
+/**
+ * TanStack marks a link it finds active (`aria-current`, after the props), so it may only find the one `current`
+ * finds: an exact match, search included. Documents' All, Resumes and Letters share one address and differ by `?type=`.
+ */
+const ACTIVE_OPTIONS = { exact: true, includeSearch: true } as const;
+
+/** One row of the wide-screen menu. */
 function SectionLink({ item, current }: SectionLinkProps) {
 	return (
 		<Link
 			{...item.link}
-			activeOptions={{ exact: true, includeSearch: false }}
+			activeOptions={ACTIVE_OPTIONS}
 			aria-current={current ? "page" : undefined}
 			className={cn(
 				"flex h-9 items-center gap-2.5 rounded-xl px-2.5 text-sm font-medium transition-colors duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus",
@@ -129,7 +135,7 @@ function SectionChip({ item, current }: SectionLinkProps) {
 	return (
 		<Link
 			{...item.link}
-			activeOptions={{ exact: true, includeSearch: false }}
+			activeOptions={ACTIVE_OPTIONS}
 			aria-current={current ? "page" : undefined}
 			className={cn(
 				"flex h-9 items-center gap-1.5 rounded-full px-3.5 text-sm font-medium whitespace-nowrap transition-colors duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus",

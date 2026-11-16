@@ -6,9 +6,9 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useMatchRoute, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useMatchRoute, useRouterState } from "@tanstack/react-router";
 import Cookies from "js-cookie";
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -19,6 +19,7 @@ import { useDialogStore } from "@/dialogs/store";
 import { applicationDetailQueryOptions } from "@/features/applications/queries";
 import { GuestBanner } from "@/features/auth/components/guest-banner";
 import { CoachPanelSlot, loadCoachPanel } from "@/features/coach-panel/coach-panel";
+import { useCoachLauncher, useWorkspaceParams } from "@/features/coach-panel/launcher";
 import { useCoachPanelStore } from "@/features/coach-panel/store";
 import { useCommandPaletteStore } from "@/features/command-palette/store";
 import { isEditableElementFocused } from "@/features/resume/builder/draft";
@@ -115,21 +116,6 @@ function useAsideShown() {
 /** Coach full screen (`/dashboard/coach/…`), or the older address that redirects there. */
 const isCoachPage = (pathname: string) => /^\/dashboard\/(career\/)?coach(\/|$)/.test(pathname);
 
-/** An application's workspace, which has a coach of its own (the `?coach=` sheet) for that job. */
-const WORKSPACE_ROUTE = "/dashboard/applications/$applicationId/{-$tab}";
-
-/** The open application workspace's params, or undefined on any other page. */
-function useWorkspaceParams() {
-	const applicationId = useRouterState({
-		select: (state): string | undefined =>
-			state.matches.find((match) => match.routeId === WORKSPACE_ROUTE)?.params.applicationId,
-	});
-	const tab = useRouterState({
-		select: (state): string | undefined => state.matches.find((match) => match.routeId === WORKSPACE_ROUTE)?.params.tab,
-	});
-	return applicationId ? { applicationId, tab } : undefined;
-}
-
 /**
  * The app shell for every dashboard page: HeroUI Pro's AppLayout with a 240px sidebar that collapses to icons (⌘B),
  * and a sheet opened from the navbar's menu button on phones. N opens New anywhere outside a field. The coach opens
@@ -153,6 +139,15 @@ export function AppShell({ children }: AppShellProps) {
 	useEffect(() => {
 		if (!isCoachPage(location.pathname)) useCoachPanelStore.getState().setLastHref(location.href);
 	}, [location.pathname, location.href]);
+
+	// Up to 1024px the coach is a sheet over the page: when a link in the chat (a fact, an offer) opens another page,
+	// the sheet closes so that page shows. The docked panel stays open beside the page.
+	const shownPath = useRef(location.pathname);
+	useEffect(() => {
+		if (shownPath.current === location.pathname) return;
+		shownPath.current = location.pathname;
+		if (!docked) setCoachOpen(false);
+	}, [location.pathname, docked, setCoachOpen]);
 
 	useHotkey("N", () => {
 		if (isEditableElementFocused() || useDialogStore.getState().open) return;
@@ -194,7 +189,8 @@ export function AppShell({ children }: AppShellProps) {
 				<ShellPendingContext value>{children}</ShellPendingContext>
 			</div>
 			{!docked && !onCoachPage && (
-				// The editors' assistant drawer below 1280px: the window's surface, the column's padding.
+				// Up to 1024px, a sheet like the editors' assistant drawer. Unlike the docked column it unmounts when it
+				// closes (HeroUI's modal), so the chat reloads the conversation when it opens again.
 				<Sheet isOpen={coachVisible} onOpenChange={setCoachOpen} placement="right">
 					<Sheet.Backdrop>
 						<Sheet.Content className="w-full sm:max-w-none md:max-w-[420px]">
@@ -361,24 +357,13 @@ function AppNavbar() {
  * panel.
  */
 function CoachButton() {
-	const navigate = useNavigate();
 	const open = useCoachPanelStore((state) => state.open);
-	const toggle = useCoachPanelStore((state) => state.toggle);
+	const launch = useCoachLauncher();
 	const workspace = useWorkspaceParams();
-	const search = useRouterState({ select: (state) => state.location.search });
 	const onCoachPage = useRouterState({ select: (state) => isCoachPage(state.location.pathname) });
 	const pressed = open && !workspace;
 	if (onCoachPage) return null;
-	const onPress = () => {
-		if (!workspace) return toggle();
-		// Replaced, not pushed: the sheet's own close then leaves no entry that Back would reopen it from.
-		void navigate({
-			to: WORKSPACE_ROUTE,
-			params: workspace,
-			search: { ...search, coach: true },
-			replace: true,
-		});
-	};
+	const onPress = () => launch("toggle");
 
 	return (
 		<>

@@ -15,9 +15,9 @@ type CoachPanelSlotProps = {
 };
 
 /**
- * The coach panel's content: mounted on first open and kept after closing, so a reply keeps streaming and the draft
- * stays while the panel is shut or the person moves between pages. Expand opens Coach full screen on the same
- * conversation.
+ * The coach panel's content: mounted on first open. In the docked column it's kept after closing, so a reply keeps
+ * streaming and the draft stays while the panel is shut or the person moves between pages; the narrow-screen sheet
+ * unmounts it on close. Expand opens Coach full screen on the same conversation.
  */
 export function CoachPanelSlot({ visible, className }: CoachPanelSlotProps) {
 	const navigate = useNavigate();

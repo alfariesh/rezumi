@@ -6,6 +6,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { useCommandPaletteStore } from "../store";
 import { BaseCommandGroup, PaletteItem, searchText } from "./base";
 import { useDialogStore } from "@/dialogs/store";
+import { useCoachLauncher } from "@/features/coach-panel/launcher";
 import { openCoachPanel } from "@/features/coach-panel/store";
 import { orpc } from "@/libs/orpc/client";
 
@@ -14,6 +15,7 @@ export function NavigationCommandGroup() {
 	const { session } = useRouteContext({ strict: false });
 	const reset = useCommandPaletteStore((state) => state.reset);
 	const pathname = useRouterState({ select: (state) => state.location.pathname });
+	const launchCoach = useCoachLauncher();
 	// Portfolio is listed only for accounts that have one switched on (the sidebar's rule).
 	const { data: portfolio } = useQuery({ ...orpc.portfolio.status.queryOptions(), enabled: Boolean(session) });
 
@@ -119,8 +121,13 @@ export function NavigationCommandGroup() {
 						// Coach full screen is already the coach.
 						if (pathname.startsWith("/dashboard/coach")) return;
 						// The panel lives in the dashboard's shell: elsewhere (the editor, public pages) go to Home first.
-						if (!pathname.startsWith("/dashboard")) void navigate({ to: "/dashboard" });
-						openCoachPanel();
+						if (!pathname.startsWith("/dashboard")) {
+							void navigate({ to: "/dashboard" });
+							openCoachPanel();
+							return;
+						}
+						// A job's workspace opens that job's coach; other pages, the panel.
+						launchCoach("open");
 					}}
 				>
 					<Icon name="sparkle" size={16} />
