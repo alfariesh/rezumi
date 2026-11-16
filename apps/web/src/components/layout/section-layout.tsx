@@ -31,7 +31,7 @@ export type SectionNavItem = {
 };
 
 type SectionLayoutProps = {
-	/** The section's name over its menu: "Profile", "Settings". */
+	/** The section's name, for its menu's accessible name: "Profile", "Settings". The breadcrumb shows it. */
 	title: string;
 	items: SectionNavItem[];
 	/** Under the menu on wide screens: small print such as the version and legal links. */
@@ -41,9 +41,9 @@ type SectionLayoutProps = {
 };
 
 /**
- * A section of the dashboard with pages of its own (Profile, Settings, Documents): the section's menu on the left and
- * the current page on the right, as the editors lay out their panel beside the canvas. On phones the menu becomes a
- * row of chips over the page. Each page renders its own `PageHeader`, which names the page, so the menu shows no
+ * A section of the dashboard with pages or views of its own (Profile, Settings, Documents, Applications, an
+ * application's workspace): the section's menu on the left and the current page on the right. On phones the menu
+ * becomes a row of chips over the page. Each page renders its own `PageHeader`, which names the page, so the menu shows no
  * heading of its own; groups are set apart by a hairline.
  */
 export function SectionLayout({ title, items, footer, children }: SectionLayoutProps) {
@@ -60,14 +60,12 @@ type SectionNavProps = {
 	title: string;
 	items: SectionNavItem[];
 	footer?: ReactNode;
-	className?: string;
 };
 
 /**
- * The section's menu on its own, for a page with its own layout (an application's workspace): a list on wide screens,
- * a row of chips on phones. Place it in the left column of a `md:grid-cols-[13.5rem_minmax(0,1fr)]` grid.
+ * The menu: a list on wide screens, sticky and starting on the app sidebar's first row; a row of chips on phones.
  */
-export function SectionNav({ title, items, footer, className }: SectionNavProps) {
+function SectionNav({ title, items, footer }: SectionNavProps) {
 	const matchRoute = useMatchRoute();
 	const isCurrent = (item: SectionNavItem) =>
 		item.current ?? Boolean(matchRoute({ to: item.match.to, fuzzy: item.match.fuzzy }));
@@ -76,14 +74,12 @@ export function SectionNav({ title, items, footer, className }: SectionNavProps)
 		// Named for the page transition: moving between the section's pages keeps the menu in place (index.css).
 		<nav
 			aria-label={title}
-			className={cn(
-				"[view-transition-name:section-nav] md:sticky md:top-[3.75rem] md:-mt-5 md:grid md:max-h-[calc(100svh-6rem)] md:content-start md:gap-4 md:overflow-y-auto",
-				className,
-			)}
+			// Pulled up by part of the page's top margin so its first row lines up with the app sidebar's.
+			className="[view-transition-name:section-nav] md:sticky md:top-[3.75rem] md:-mt-5 md:grid md:max-h-[calc(100svh-6rem)] md:content-start md:gap-4 md:overflow-y-auto"
 		>
 			<ul className="grid gap-0.5 max-md:hidden">
 				{items.map((item) => (
-					<Fragment key={item.match.to + String(item.label)}>
+					<Fragment key={item.match.to + item.label}>
 						{item.group && <li aria-hidden className="mx-2.5 my-2 h-px bg-separator first:hidden" />}
 						<li>
 							<SectionLink item={item} current={isCurrent(item)} />
@@ -95,7 +91,7 @@ export function SectionNav({ title, items, footer, className }: SectionNavProps)
 			{/* Phones: the same pages as chips, scrolled sideways when they don't fit. */}
 			<ul className="-mx-4 scrollbar-none flex gap-1.5 overflow-x-auto px-4 md:hidden">
 				{items.map((item) => (
-					<li key={item.match.to + String(item.label)} className="shrink-0">
+					<li key={item.match.to + item.label} className="shrink-0">
 						<SectionChip item={item} current={isCurrent(item)} />
 					</li>
 				))}

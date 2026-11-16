@@ -13,7 +13,7 @@ import { renderAsSpan } from "@/libs/typography";
  * - `inline`: a small part of a page (a widget, a card, a sheet) with nothing to show. One line, an optional link, no
  *   big icon.
  */
-export type EmptyBlockKind = "page" | "filtered" | "inline";
+type EmptyBlockKind = "page" | "filtered" | "inline";
 
 type EmptyBlockProps = {
 	kind: EmptyBlockKind;

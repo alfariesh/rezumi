@@ -268,7 +268,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 	const editingId = editing ? editing.id : (interview?.id ?? null);
 	const editingInterview = application.activity.filter(isInterview).find((entry) => entry.id === editingId);
 	const minutes = interview ? minutesUntil(new Date(interview.at), now) : null;
-	// From 1280px the job's details get their own column in the card; narrower, they fold into "Details".
+	// From 1280px the job's details get their own column beside the panel; narrower, they fold into "Details".
 	const wide = breakpoint === "wide";
 	const savedCount = saved.data?.length ?? 0;
 	const countdown = minutes !== null && minutes > 0 && minutes < 7 * 24 * 60 ? minutes : null;

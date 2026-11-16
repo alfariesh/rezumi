@@ -173,8 +173,7 @@ function RouteComponent() {
 	const selected = applications?.find((application) => application.id === selectedId) ?? null;
 	// The board needs room to drag: phones get the list instead.
 	const shown: View = phone && (view === "board" || view === "calendar") ? "list" : view;
-	// A switch from the menu: the new view animates in, and the open application closes with the old one (the pane
-	// goes with the list; the sheet shouldn't pop open over the board instead).
+	// A switch from the menu: the new view animates in, and the open application's sheet closes with the old one.
 	const [lastShown, setLastShown] = useState(shown);
 	if (lastShown !== shown) {
 		setLastShown(shown);

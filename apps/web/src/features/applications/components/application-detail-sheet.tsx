@@ -76,7 +76,6 @@ export function ApplicationDetailSheet({ application, onOpenChange, onEditDetail
 						{current ? (
 							<Detail
 								key={current.id}
-								variant="sheet"
 								application={current}
 								onEditDetails={onEditDetails}
 								onDeleted={() => onOpenChange(false)}
@@ -102,14 +101,12 @@ export function ApplicationDetailSheet({ application, onOpenChange, onEditDetail
 }
 
 type DetailProps = {
-	/** In the sheet, or in the pane beside the list (wide screens). */
-	variant: "sheet" | "pane";
 	application: Application;
 	onEditDetails: (application: Application) => void;
 	onDeleted: () => void;
 };
 
-function Detail({ variant, application, onEditDetails, onDeleted }: DetailProps) {
+function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 	const { i18n } = useLingui();
 	const confirm = useConfirm();
 	const { moveTo, close, remove } = useApplicationActions();
@@ -134,7 +131,7 @@ function Detail({ variant, application, onEditDetails, onDeleted }: DetailProps)
 		remove.mutate({ id: application.id }, { onSuccess: onDeleted });
 	};
 
-	// The scrolling part: in the sheet it is the sheet's body, in the pane a plain box.
+	// The scrolling part, the sheet's body.
 	const body = (
 		<ScrollShadow hideScrollBar className="h-full overflow-y-auto">
 			<header className="grid gap-4 px-5 pt-5 pb-4">
@@ -145,11 +142,7 @@ function Detail({ variant, application, onEditDetails, onDeleted }: DetailProps)
 						className="size-10 rounded-xl"
 					/>
 					<div className="grid min-w-0 flex-1 gap-0.5">
-						{variant === "sheet" ? (
-							<Sheet.Heading>{application.role}</Sheet.Heading>
-						) : (
-							<h2 className="text-lg leading-6 font-semibold">{application.role}</h2>
-						)}
+						<Sheet.Heading>{application.role}</Sheet.Heading>
 						<div className="flex flex-wrap items-center gap-x-1.5 text-sm text-muted">
 							<span>{[application.company, application.location].filter(Boolean).join(" · ")}</span>
 							{(application.sourceUrl || application.jobDescription) && (
@@ -255,11 +248,7 @@ function Detail({ variant, application, onEditDetails, onDeleted }: DetailProps)
 
 	return (
 		<>
-			{variant === "sheet" ? (
-				<Sheet.Body className="min-h-0 flex-1 overflow-hidden p-0">{body}</Sheet.Body>
-			) : (
-				<div className="min-h-0 flex-1 overflow-hidden">{body}</div>
-			)}
+			<Sheet.Body className="min-h-0 flex-1 overflow-hidden p-0">{body}</Sheet.Body>
 
 			<footer className="shrink-0 bg-surface px-4 pt-2 pb-4">
 				{!closed ? (

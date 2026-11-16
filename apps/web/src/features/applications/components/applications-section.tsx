@@ -17,7 +17,7 @@ type ApplicationsSectionProps = {
 
 /**
  * Applications as a section: the views of the list (List, Board, Insights, Calendar) and Offers in the menu, the page
- * in the card. The views are one page with `?view=`, so each item says for itself whether it's current. Phones have no
+ * beside it. The views are one page with `?view=`, so each item says for itself whether it's current. Phones have no
  * room for the board or the calendar, so their items are left out there.
  */
 export function ApplicationsSection({ view, children }: ApplicationsSectionProps) {

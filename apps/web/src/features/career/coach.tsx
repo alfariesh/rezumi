@@ -108,8 +108,7 @@ export type ConversationChange = {
 type CoachProps = {
 	/**
 	 * `panel`: the dashboard's coach panel (beside the page from 1024px, a sheet below), laid out like the editors'
-	 * assistant column. `page`: Coach full screen, the conversation list in the section's place and the chat in the
-	 * content card.
+	 * assistant column. `page`: Coach full screen, the conversation list on the left and the chat beside it.
 	 */
 	layout: "panel" | "page";
 	/** The conversation shown; undefined is a new one. */
