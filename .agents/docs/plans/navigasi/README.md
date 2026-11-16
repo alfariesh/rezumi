@@ -11,30 +11,37 @@ commit, never switch branch, never run `git stash`/`reset`/`checkout -- <file>`.
 ## Final state (shipped on this branch)
 
 Rounds: round 1 (sections A/B/C below), round 2 (owner feedback: sidebar order, no view tabs, coach full screen,
-empty-state buttons side by side), a rail+card experiment the owner rejected (reverted), then alignment fixes. Worker
-reports in `laporan/` describe each round as it was; this section is what is true now.
+empty-state buttons side by side), a rail+card experiment the owner rejected (reverted), alignment fixes, an
+independent review's fixes, then round 3 (owner: applications layout as a switch, Profile Details/Career split, page
+titles on the sidebar's first row, loading outlines). Worker reports in `laporan/` describe each round as it was; this
+section is what is true now.
 
 - Sidebar (`routes/dashboard/-components/app-shell.tsx`): **Home, Portfolio (when enabled), Documents, Profile,
-  Applications** (owner's order). No Coach, Offers or Trash entries; Settings stays in the account menu.
+  Applications** (owner's order). No Coach, Offers or Trash entries (Trash marks Documents current); Settings stays in
+  the account menu.
 - `components/layout/section-layout.tsx` → `SectionLayout`: a text menu on the left (icon + label + count/badge),
-  sticky, its first row level with the sidebar's first row; groups set apart by a hairline, no section title or group
-  headings (each page's own `PageHeader` names it). Phones: the menu as a chip row. Header and content share one
-  column; there is no narrow-content option. `SectionNavItem`: `link`, `match`, `icon`, `label`, `count?`,
-  `badge?`, `group?`, `current?`.
-- Sections on it: Profile (Details & career, Facts, Stories, Preferences), Settings (Account, Plan, App settings,
-  admin group), Documents (All, Resumes, Letters, Trash), Applications (List, Board, Insights, Calendar as `?view=`
-  items; Offers at `/dashboard/applications/offers`), the application workspace (Fit, Apply | Prepare, Practice,
-  Debrief | Messages, Saved; `WORKSPACE_TABS` unchanged).
-- Applications: an application opens only in the side sheet (bottom sheet on phones); the wide-screen pane is gone.
-- Coach: a panel from the navbar's Coach button on every dashboard page (docked from 1024px, a sheet below), styled
-  like the editors' assistant, with "Open full screen" → `/dashboard/coach/{-$conversationId}` (conversation list +
-  chat) and "Back to the panel". On a job workspace the button opens that job's coach sheet.
-- `components/layout/empty-block.tsx` → `EmptyBlock` (`page` / `filtered` / `inline`, optional `media` for the coach
-  orb): h5 titles, actions side by side. Lint forbids HeroUI `EmptyState` elsewhere in `apps/web/src`.
-- Navbar row is capped at the page width (`PAGE_MAX_WIDTH`) and its toggle and crumbs line up with a section menu's
-  icons and labels.
+  sticky; no section title or group headings (each page's own `PageHeader` names it), groups set apart by a
+  hairline. Phones: the menu as a chip row. Header and content share one column. `SectionNavItem`: `link`, `match`,
+  `icon`, `label`, `count?`, `badge?`, `group?`, `current?`. TanStack's own active marking only counts exact matches
+  with the search, so one item is `aria-current` at a time.
+- `components/layout/page.tsx` → `Page`: from 768px a 12px top margin, so page titles and section menus start on the
+  app sidebar's first row; the navbar row is capped at the same width (`PAGE_MAX_WIDTH`) and its toggle and crumbs
+  line up with a section menu's icons and labels.
+- Sections: Profile (Details, Career at `/dashboard/profile/career`, Facts, Stories, Preferences), Settings (Account,
+  Plan, App settings, admin group; the admin pages render in it), Documents (All, Resumes, Letters, Trash),
+  Applications (All, Insights, Offers at `/dashboard/applications/offers`; on All a List/Board/Calendar layout switch
+  beside the search, kept on the device, list only on phones; `?view=` still opens a view), the application
+  workspace (Fit, Apply | Prepare, Practice, Debrief | Messages, Saved; `WORKSPACE_TABS` unchanged).
+- Applications: an application opens only in the side sheet (bottom sheet on phones).
+- Coach: a panel from the navbar's Coach button (docked from 1025px, a sheet below that closes when a chat link opens
+  a page), styled like the editors' assistant, with "Open full screen" → `/dashboard/coach/{-$conversationId}` and
+  "Back to the panel". On a job workspace the navbar button and the command palette open that job's coach sheet
+  (`features/coach-panel/launcher.ts`).
+- `components/layout/empty-block.tsx` → `EmptyBlock` (`page` / `filtered` / `inline`, optional `media` with no tile):
+  h5 titles, actions side by side. Lint forbids HeroUI Pro `EmptyState` elsewhere in `apps/web/src`.
+- Loading: `components/layout/loading-screen.tsx` shows a section's menu rows as skeletons beside the page outline
+  while a section page's code loads; pages keep their own data skeletons.
 - Old addresses redirect: `/dashboard/career/offers` (keeps `a`/`b`), `/dashboard/career/coach…`, settings subpages.
-- Not done here: retaking the docs screenshots that show the old navigation (listed in the PR).
 
 ## Round 1 contract (historical)
 
