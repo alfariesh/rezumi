@@ -201,6 +201,22 @@ export function NavigationCommandGroup() {
 					<Icon name="gear-six" size={16} />
 					<Trans>Settings</Trans>
 				</PaletteItem>
+
+				<PaletteItem
+					id="navigation.help"
+					textValue={searchText(t`Help & legal`, [
+						t`Help & legal`,
+						t`Docs`,
+						t`Terms of service`,
+						t`Privacy policy`,
+						t`Licenses`,
+					])}
+					isDisabled={!session}
+					onAction={() => onNavigate("/dashboard/help")}
+				>
+					<Icon name="question" size={16} />
+					<Trans>Help & legal</Trans>
+				</PaletteItem>
 			</BaseCommandGroup>
 		</>
 	);

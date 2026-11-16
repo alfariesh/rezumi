@@ -45,7 +45,7 @@ describe("UserDropdownMenu", () => {
 		await waitFor(() => expect(router.invalidate).toHaveBeenCalled());
 		expect(queryClient.getQueryCache().getAll()).toHaveLength(0);
 	});
-	it("opens Account and Settings as separate pages", async () => {
+	it("opens Account (Settings' section) and Help & legal", async () => {
 		router.navigate.mockClear();
 		render(
 			<I18nProvider i18n={i18n}>
@@ -59,14 +59,14 @@ describe("UserDropdownMenu", () => {
 		await user.click(screen.getByRole("button", { name: "Account" }));
 		expect((await screen.findAllByRole("menuitem")).map((item) => item.textContent)).toEqual([
 			"Account",
-			"Settings",
+			"Help & legal",
 			"Sign out",
 		]);
 		await user.click(screen.getByRole("menuitem", { name: "Account" }));
 		expect(router.navigate).toHaveBeenLastCalledWith({ to: "/dashboard/settings/account" });
 
 		await user.click(screen.getByRole("button", { name: "Account" }));
-		await user.click(await screen.findByRole("menuitem", { name: "Settings" }));
-		expect(router.navigate).toHaveBeenLastCalledWith({ to: "/dashboard/settings/app" });
+		await user.click(await screen.findByRole("menuitem", { name: "Help & legal" }));
+		expect(router.navigate).toHaveBeenLastCalledWith({ to: "/dashboard/help" });
 	});
 });

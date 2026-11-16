@@ -1,29 +1,16 @@
 import type { SectionNavItem } from "@/components/layout/section-layout";
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
 import { useRouteContext } from "@tanstack/react-router";
-import { LEGAL_URLS } from "@rezumi/schema/billing";
-import { cn } from "@rezumi/utils/style";
 import { SectionLayout } from "@/components/layout/section-layout";
 import { usePlan } from "@/features/billing/plan";
-
-// Help and legal documents for the hosted service.
-const getProjectLinks = () => [
-	{ href: "/docs", label: t`Docs` },
-	{ href: LEGAL_URLS.contact, label: t`Contact & complaints` },
-	{ href: LEGAL_URLS.terms, label: t`Terms of service` },
-	{ href: LEGAL_URLS.privacy, label: t`Privacy policy` },
-	{ href: LEGAL_URLS.refund, label: t`Refund policy` },
-	{ href: LEGAL_URLS.license, label: t`Licenses` },
-];
 
 type SettingsSectionProps = { children: ReactNode };
 
 /**
  * Settings: Account, Plan (while plans apply) and the app's own settings, with the admin tools for administrators. The
- * section's menu on the left (chips on phones); each page has its own header. The version and legal links sit under
- * the menu on wide screens and after the page on phones. The admin pages render in it too, so the menu stays.
+ * section's menu on the left (chips on phones); each page has its own header. The admin pages render in it too, so the
+ * menu stays. The version, docs and legal documents have a page of their own (Help & legal, `/dashboard/help`).
  */
 export function SettingsSection({ children }: SettingsSectionProps) {
 	const { session } = useRouteContext({ from: "/dashboard" });
@@ -73,32 +60,8 @@ export function SettingsSection({ children }: SettingsSectionProps) {
 	];
 
 	return (
-		<SectionLayout title={t`Settings`} items={items} footer={<ProjectLinks />}>
+		<SectionLayout title={t`Settings`} items={items}>
 			{children}
-			{/* Phones: the menu's small print, after the page. */}
-			<ProjectLinks className="mt-6 md:hidden" />
 		</SectionLayout>
-	);
-}
-
-type ProjectLinksProps = { className?: string };
-
-/** The app's version, then the docs and the legal documents, each opening in a new tab. */
-function ProjectLinks({ className }: ProjectLinksProps) {
-	return (
-		<div className={cn("grid gap-1.5 text-body-xs text-muted", className)}>
-			<p>
-				<Trans>Rezumi {__APP_VERSION__}</Trans>
-			</p>
-			<ul className="flex flex-wrap gap-x-3 gap-y-1.5 md:grid">
-				{getProjectLinks().map((link) => (
-					<li key={link.href}>
-						<a className="underline hover:text-foreground" href={link.href} target="_blank" rel="noopener noreferrer">
-							{link.label}
-						</a>
-					</li>
-				))}
-			</ul>
-		</div>
 	);
 }

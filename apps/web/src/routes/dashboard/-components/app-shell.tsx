@@ -239,6 +239,8 @@ function useCrumbs(): Crumb[] {
 			return [{ label: t`Home` }];
 		case "coach":
 			return [{ label: t`Coach` }];
+		case "help":
+			return [{ label: t`Help & legal` }];
 		case "documents":
 			return [{ label: t`Documents` }];
 		case "trash":

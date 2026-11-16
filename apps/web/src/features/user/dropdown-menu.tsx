@@ -7,7 +7,6 @@ import { useRouter } from "@tanstack/react-router";
 import { Pressable } from "react-aria-components/Pressable";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
-import { usePlan } from "@/features/billing/plan";
 import { clearAccountData } from "@/libs/auth/clear-account-data";
 import { authClient } from "@/libs/auth/client";
 import { getReadableErrorMessage } from "@/libs/error-message";
@@ -17,14 +16,13 @@ type Props = {
 };
 
 /**
- * The account menu: Account, Plan (while plans apply to the account), Settings and, for administrators, Billing admin
- * are pages; theme and language live in Settings and the command bar.
+ * The account menu: Account opens Settings' section (Account, Plan, App settings and, for administrators, the admin
+ * pages, in its own menu), Help & legal the docs and legal documents, then Sign out.
  */
 export function UserDropdownMenu({ children }: Props) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const { data: session } = authClient.useSession();
-	const plan = usePlan();
 
 	const handleLogout = async () => {
 		const toastId = toast.add({ type: "loading", description: t`Signing out...` });
@@ -71,52 +69,16 @@ export function UserDropdownMenu({ children }: Props) {
 							<Trans>Account</Trans>
 						</Label>
 					</Dropdown.Item>
-					{plan?.enabled && (
-						<Dropdown.Item
-							id="plan"
-							textValue={t`Plan`}
-							onAction={() => void router.navigate({ to: "/dashboard/settings/billing" })}
-						>
-							<Icon name="seal-check" size={16} />
-							<Label>
-								<Trans>Plan</Trans>
-							</Label>
-						</Dropdown.Item>
-					)}
 					<Dropdown.Item
-						id="settings"
-						textValue={t`Settings`}
-						onAction={() => void router.navigate({ to: "/dashboard/settings/app" })}
+						id="help"
+						textValue={t`Help & legal`}
+						onAction={() => void router.navigate({ to: "/dashboard/help" })}
 					>
-						<Icon name="gear-six" size={16} />
+						<Icon name="question" size={16} />
 						<Label>
-							<Trans>Settings</Trans>
+							<Trans>Help & legal</Trans>
 						</Label>
 					</Dropdown.Item>
-					{session.user.role === "admin" && (
-						<Dropdown.Item
-							id="billing-admin"
-							textValue={t`Billing admin`}
-							onAction={() => void router.navigate({ to: "/dashboard/admin/billing" })}
-						>
-							<Icon name="shield-check" size={16} />
-							<Label>
-								<Trans>Billing admin</Trans>
-							</Label>
-						</Dropdown.Item>
-					)}
-					{session.user.role === "admin" && (
-						<Dropdown.Item
-							id="portfolio-reports"
-							textValue={t`Portfolio reports`}
-							onAction={() => void router.navigate({ to: "/dashboard/admin/portfolios", search: {} })}
-						>
-							<Icon name="warning-circle" size={16} />
-							<Label>
-								<Trans>Portfolio reports</Trans>
-							</Label>
-						</Dropdown.Item>
-					)}
 
 					<Separator />
 

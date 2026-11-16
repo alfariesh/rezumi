@@ -108,7 +108,8 @@ function RootComponent() {
 												{import.meta.env.DEV && <BreakpointIndicator />}
 												{import.meta.env.DEV && (
 													<TanStackDevtools
-														config={{ position: "bottom-left" }}
+														// Middle of the left edge: in a corner it covered the sidebar's account button.
+														config={{ position: "middle-left" }}
 														plugins={[
 															{
 																name: "TanStack Query",

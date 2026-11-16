@@ -41,6 +41,9 @@ section is what is true now.
   h5 titles, actions side by side. Lint forbids HeroUI Pro `EmptyState` elsewhere in `apps/web/src`.
 - Loading: `components/layout/loading-screen.tsx` shows a section's menu rows as skeletons beside the page outline
   while a section page's code loads; pages keep their own data skeletons.
+- Account menu (the sidebar's name button): **Account** (opens Settings' section: Account, Plan, App settings, admin
+  pages), **Help & legal** (`/dashboard/help`: the version, then the docs and legal documents as a grid of cards,
+  each opening in a new tab), **Sign out**. The legal links no longer sit under the Settings menu.
 - Old addresses redirect: `/dashboard/career/offers` (keeps `a`/`b`), `/dashboard/career/coach…`, settings subpages.
 
 ## Round 1 contract (historical)

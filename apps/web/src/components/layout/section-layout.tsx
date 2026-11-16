@@ -35,8 +35,6 @@ type SectionLayoutProps = {
 	/** The section's name, for its menu's accessible name: "Profile", "Settings". The breadcrumb shows it. */
 	title: string;
 	items: SectionNavItem[];
-	/** Under the menu on wide screens: small print such as the version and legal links. */
-	footer?: ReactNode;
 	/** The current page: its own `PageHeader` first, then its content. */
 	children: ReactNode;
 };
@@ -49,10 +47,10 @@ type SectionLayoutProps = {
  */
 const SECTION_GRID = "md:grid md:grid-cols-[13.5rem_minmax(0,1fr)] md:items-start md:gap-x-8 lg:gap-x-12";
 
-export function SectionLayout({ title, items, footer, children }: SectionLayoutProps) {
+export function SectionLayout({ title, items, children }: SectionLayoutProps) {
 	return (
 		<Page className={SECTION_GRID}>
-			<SectionNav title={title} items={items} footer={footer} />
+			<SectionNav title={title} items={items} />
 			{/* One column for the page: its header and everything under it share the same width on every section. */}
 			<div className="flex min-w-0 flex-col gap-5 max-md:mt-5">{children}</div>
 		</Page>
@@ -62,13 +60,12 @@ export function SectionLayout({ title, items, footer, children }: SectionLayoutP
 type SectionNavProps = {
 	title: string;
 	items: SectionNavItem[];
-	footer?: ReactNode;
 };
 
 /**
  * The menu: a list on wide screens, sticky, starting on the app sidebar's first row; a row of chips on phones.
  */
-function SectionNav({ title, items, footer }: SectionNavProps) {
+function SectionNav({ title, items }: SectionNavProps) {
 	const matchRoute = useMatchRoute();
 	const isCurrent = (item: SectionNavItem) =>
 		item.current ?? Boolean(matchRoute({ to: item.match.to, fuzzy: item.match.fuzzy }));
@@ -99,8 +96,6 @@ function SectionNav({ title, items, footer }: SectionNavProps) {
 					</li>
 				))}
 			</ul>
-
-			{footer && <div className="px-2.5 text-body-xs text-muted max-md:hidden">{footer}</div>}
 		</nav>
 	);
 }
