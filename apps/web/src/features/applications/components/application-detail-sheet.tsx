@@ -76,7 +76,6 @@ export function ApplicationDetailSheet({ application, onOpenChange, onEditDetail
 						{current ? (
 							<Detail
 								key={current.id}
-								variant="sheet"
 								application={current}
 								onEditDetails={onEditDetails}
 								onDeleted={() => onOpenChange(false)}
@@ -101,77 +100,13 @@ export function ApplicationDetailSheet({ application, onOpenChange, onEditDetail
 	);
 }
 
-type DetailPaneProps = {
-	application: ApplicationSummary;
-	onClose: () => void;
-	onEditDetails: (application: Application) => void;
-};
-
-/**
- * The same detail as the sheet, as a pane beside the list on wide screens: it stays open while you move from row to
- * row, and the list stays usable. Its height is the window's under the navbar, and it scrolls inside.
- */
-export function ApplicationDetailPane({ application, onClose, onEditDetails }: DetailPaneProps) {
-	const { data, isError, isFetching, isPending, refetch } = useQuery({
-		...applicationDetailQueryOptions(application.id),
-		initialData: getInitialApplicationDetail(application),
-		initialDataUpdatedAt: 0,
-	});
-
-	return (
-		<section aria-label={t`Application details`} className={PANE_CLASS}>
-			<IconButton icon="x" label={t`Close`} size="sm" className="absolute end-3 top-3 z-10" onPress={onClose} />
-			{data ? (
-				<Detail key={data.id} variant="pane" application={data} onEditDetails={onEditDetails} onDeleted={onClose} />
-			) : (
-				<div className="grid gap-2 p-5">
-					<h2 className="pe-8 text-lg leading-6 font-semibold">{application.role}</h2>
-					<p className="text-body-sm text-muted" aria-live="polite">
-						{isError ? t`Couldn't load this. Your saved data hasn't changed.` : t`Loading…`}
-					</p>
-					{isError && (
-						<Button variant="secondary" isDisabled={isFetching || isPending} onPress={() => void refetch()}>
-							<Trans>Try again</Trans>
-						</Button>
-					)}
-				</div>
-			)}
-		</section>
-	);
-}
-
-/** The pane while no application is chosen: where the detail will appear, and how to get it there. */
-export function ApplicationDetailPanePlaceholder() {
-	return (
-		<div className={cn(PANE_CLASS, "grid place-items-center p-6 text-center")}>
-			<div className="grid max-w-64 justify-items-center gap-3">
-				<span aria-hidden="true" className="grid size-12 place-items-center rounded-2xl bg-default text-muted">
-					<Icon name="briefcase" size={22} />
-				</span>
-				<p className="text-body-sm text-pretty text-muted">
-					<Trans>Choose an application to see its next step, what you sent and its activity here.</Trans>
-				</p>
-			</div>
-		</div>
-	);
-}
-
-/**
- * Sticky under the page's top margin (24px), as tall as the window under the 48px navbar less both margins. A
- * hairline instead of a shadow: it sits on the page, not above it.
- */
-const PANE_CLASS =
-	"sticky top-6 flex h-[calc(100svh-6rem)] min-h-96 flex-col overflow-hidden rounded-3xl border border-separator bg-background";
-
 type DetailProps = {
-	/** In the sheet, or in the pane beside the list (wide screens). */
-	variant: "sheet" | "pane";
 	application: Application;
 	onEditDetails: (application: Application) => void;
 	onDeleted: () => void;
 };
 
-function Detail({ variant, application, onEditDetails, onDeleted }: DetailProps) {
+function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 	const { i18n } = useLingui();
 	const confirm = useConfirm();
 	const { moveTo, close, remove } = useApplicationActions();
@@ -196,7 +131,7 @@ function Detail({ variant, application, onEditDetails, onDeleted }: DetailProps)
 		remove.mutate({ id: application.id }, { onSuccess: onDeleted });
 	};
 
-	// The scrolling part: in the sheet it is the sheet's body, in the pane a plain box.
+	// The scrolling part, the sheet's body.
 	const body = (
 		<ScrollShadow hideScrollBar className="h-full overflow-y-auto">
 			<header className="grid gap-4 px-5 pt-5 pb-4">
@@ -207,11 +142,7 @@ function Detail({ variant, application, onEditDetails, onDeleted }: DetailProps)
 						className="size-10 rounded-xl"
 					/>
 					<div className="grid min-w-0 flex-1 gap-0.5">
-						{variant === "sheet" ? (
-							<Sheet.Heading>{application.role}</Sheet.Heading>
-						) : (
-							<h2 className="text-lg leading-6 font-semibold">{application.role}</h2>
-						)}
+						<Sheet.Heading>{application.role}</Sheet.Heading>
 						<div className="flex flex-wrap items-center gap-x-1.5 text-sm text-muted">
 							<span>{[application.company, application.location].filter(Boolean).join(" · ")}</span>
 							{(application.sourceUrl || application.jobDescription) && (
@@ -317,11 +248,7 @@ function Detail({ variant, application, onEditDetails, onDeleted }: DetailProps)
 
 	return (
 		<>
-			{variant === "sheet" ? (
-				<Sheet.Body className="min-h-0 flex-1 overflow-hidden p-0">{body}</Sheet.Body>
-			) : (
-				<div className="min-h-0 flex-1 overflow-hidden">{body}</div>
-			)}
+			<Sheet.Body className="min-h-0 flex-1 overflow-hidden p-0">{body}</Sheet.Body>
 
 			<footer className="shrink-0 bg-surface px-4 pt-2 pb-4">
 				{!closed ? (

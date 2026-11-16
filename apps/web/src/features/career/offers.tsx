@@ -2,12 +2,11 @@ import type { SavedData, SavedItem } from "./hooks";
 import type { CareerProfileData } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { EmptyState } from "@heroui-pro/react";
-import { Alert, Avatar, Button, Chip, Dropdown, Header, Label, Skeleton } from "@heroui/react";
+import { Alert, Avatar, Button, buttonVariants, Chip, Dropdown, Header, Label, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { isDateOnly } from "@rezumi/schema/career";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -26,6 +25,7 @@ import {
 	sameTerms,
 } from "./offer-compare";
 import { CareerWidget, useCareerTime, useNow } from "./shared";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
 
@@ -63,7 +63,7 @@ export function OffersPage({ a, b }: OffersPageProps) {
 	const offers = query.data?.filter((item): item is Offer => item.data.kind === "offer");
 
 	const setPair = (next: { a: string | undefined; b: string | undefined }) =>
-		void navigate({ to: "/dashboard/career/offers", search: next });
+		void navigate({ to: "/dashboard/applications/offers", search: next });
 
 	// Fill the URL with a pair: the remembered one if it still exists, else the two newest from different jobs.
 	useEffect(() => {
@@ -81,7 +81,7 @@ export function OffersPage({ a, b }: OffersPageProps) {
 		const nextA = exists(a) ? a : first;
 		const next = { a: nextA, b: exists(b) && b !== nextA ? b : nextA === second ? first : second };
 		if (next.a !== a || next.b !== b)
-			void navigate({ to: "/dashboard/career/offers", search: { a: next.a, b: next.b }, replace: true });
+			void navigate({ to: "/dashboard/applications/offers", search: { a: next.a, b: next.b }, replace: true });
 	}, [query.data, a, b, navigate]);
 
 	if ((query.isError && !query.data) || (profileQuery.isError && !profileQuery.data))
@@ -102,19 +102,17 @@ export function OffersPage({ a, b }: OffersPageProps) {
 
 	if (!offers?.length)
 		return (
-			<EmptyState className="rounded-2xl bg-surface-secondary">
-				<EmptyState.Header>
-					<EmptyState.Media variant="icon">
-						<Icon name="scales" size={20} />
-					</EmptyState.Media>
-					<EmptyState.Title>
-						<Trans>No offers to compare yet</Trans>
-					</EmptyState.Title>
-					<EmptyState.Description>
-						<Trans>Paste an offer into an application's Messages tab.</Trans>
-					</EmptyState.Description>
-				</EmptyState.Header>
-			</EmptyState>
+			<EmptyBlock
+				kind="page"
+				icon="scales"
+				title={<Trans>No offers to compare yet</Trans>}
+				description={<Trans>Paste an offer into an application's Messages section.</Trans>}
+				action={
+					<Link to="/dashboard/applications" className={buttonVariants({ variant: "secondary" })}>
+						<Trans>Open applications</Trans>
+					</Link>
+				}
+			/>
 		);
 
 	const left = offers.find((offer) => offer.id === a);
@@ -239,7 +237,7 @@ function ComparisonTable({ offers, left, right, onChoose }: ComparisonTableProps
 												<Trans>Save another offer to compare</Trans>
 											</p>
 											<p className="text-body-sm font-normal text-muted">
-												<Trans>Paste an offer into an application's Messages tab.</Trans>
+												<Trans>Paste an offer into an application's Messages section.</Trans>
 											</p>
 											{offers.length > 1 && (
 												<OfferHeader

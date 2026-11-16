@@ -13,7 +13,7 @@ export function AppSettings() {
 	return (
 		<>
 			<PageHeader
-				title={<Trans>Settings</Trans>}
+				title={<Trans>App settings</Trans>}
 				description={
 					<Trans>Appearance, language and the tools you connect for writing, job search and your resumes.</Trans>
 				}

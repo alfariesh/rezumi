@@ -34,9 +34,9 @@ import { Route as AuthVerify2faBackupRouteImport } from "./routes/auth/verify-2f
 import { Route as BuilderResumeIdRouteRouteImport } from "./routes/builder/$resumeId/route";
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
 import { Route as DashboardAdminRouteRouteImport } from "./routes/dashboard/admin/route";
-import { Route as DashboardCareerRouteRouteImport } from "./routes/dashboard/career/route";
 import { Route as DashboardCoverLettersRouteImport } from "./routes/dashboard/cover-letters";
 import { Route as DashboardDocumentsRouteImport } from "./routes/dashboard/documents";
+import { Route as DashboardHelpRouteImport } from "./routes/dashboard/help";
 import { Route as DashboardProfileRouteRouteImport } from "./routes/dashboard/profile/route";
 import { Route as DashboardSettingsRouteRouteImport } from "./routes/dashboard/settings/route";
 import { Route as DashboardTrashRouteImport } from "./routes/dashboard/trash";
@@ -47,11 +47,13 @@ import { Route as BuilderResumeIdIndexRouteImport } from "./routes/builder/$resu
 import { Route as BuilderLetterCoverLetterIdRouteImport } from "./routes/builder/letter/$coverLetterId";
 import { Route as BuilderPortfolioIndexRouteImport } from "./routes/builder/portfolio/index";
 import { Route as DashboardApplicationsIndexRouteImport } from "./routes/dashboard/applications/index";
+import { Route as DashboardApplicationsOffersRouteImport } from "./routes/dashboard/applications/offers";
 import { Route as DashboardCareerIndexRouteImport } from "./routes/dashboard/career/index";
 import { Route as DashboardCareerOffersRouteImport } from "./routes/dashboard/career/offers";
 import { Route as DashboardCoachChar123ConversationIdChar125RouteImport } from "./routes/dashboard/coach.{-$conversationId}";
 import { Route as DashboardPortfolioIndexRouteImport } from "./routes/dashboard/portfolio/index";
 import { Route as DashboardProfileIndexRouteImport } from "./routes/dashboard/profile/index";
+import { Route as DashboardProfileCareerRouteImport } from "./routes/dashboard/profile/career";
 import { Route as DashboardProfileFactsRouteImport } from "./routes/dashboard/profile/facts";
 import { Route as DashboardProfilePreferencesRouteImport } from "./routes/dashboard/profile/preferences";
 import { Route as DashboardResumesIndexRouteImport } from "./routes/dashboard/resumes/index";
@@ -204,11 +206,6 @@ const DashboardAdminRouteRoute = DashboardAdminRouteRouteImport.update({
   path: "/admin",
   getParentRoute: () => DashboardRouteRoute,
 } as any);
-const DashboardCareerRouteRoute = DashboardCareerRouteRouteImport.update({
-  id: "/career",
-  path: "/career",
-  getParentRoute: () => DashboardRouteRoute,
-} as any);
 const DashboardCoverLettersRoute = DashboardCoverLettersRouteImport.update({
   id: "/cover-letters",
   path: "/cover-letters",
@@ -217,6 +214,11 @@ const DashboardCoverLettersRoute = DashboardCoverLettersRouteImport.update({
 const DashboardDocumentsRoute = DashboardDocumentsRouteImport.update({
   id: "/documents",
   path: "/documents",
+  getParentRoute: () => DashboardRouteRoute,
+} as any);
+const DashboardHelpRoute = DashboardHelpRouteImport.update({
+  id: "/help",
+  path: "/help",
   getParentRoute: () => DashboardRouteRoute,
 } as any);
 const DashboardProfileRouteRoute = DashboardProfileRouteRouteImport.update({
@@ -271,15 +273,21 @@ const DashboardApplicationsIndexRoute =
     path: "/applications/",
     getParentRoute: () => DashboardRouteRoute,
   } as any);
+const DashboardApplicationsOffersRoute =
+  DashboardApplicationsOffersRouteImport.update({
+    id: "/applications/offers",
+    path: "/applications/offers",
+    getParentRoute: () => DashboardRouteRoute,
+  } as any);
 const DashboardCareerIndexRoute = DashboardCareerIndexRouteImport.update({
-  id: "/",
-  path: "/",
-  getParentRoute: () => DashboardCareerRouteRoute,
+  id: "/career/",
+  path: "/career/",
+  getParentRoute: () => DashboardRouteRoute,
 } as any);
 const DashboardCareerOffersRoute = DashboardCareerOffersRouteImport.update({
-  id: "/offers",
-  path: "/offers",
-  getParentRoute: () => DashboardCareerRouteRoute,
+  id: "/career/offers",
+  path: "/career/offers",
+  getParentRoute: () => DashboardRouteRoute,
 } as any);
 const DashboardCoachChar123ConversationIdChar125Route =
   DashboardCoachChar123ConversationIdChar125RouteImport.update({
@@ -295,6 +303,11 @@ const DashboardPortfolioIndexRoute = DashboardPortfolioIndexRouteImport.update({
 const DashboardProfileIndexRoute = DashboardProfileIndexRouteImport.update({
   id: "/",
   path: "/",
+  getParentRoute: () => DashboardProfileRouteRoute,
+} as any);
+const DashboardProfileCareerRoute = DashboardProfileCareerRouteImport.update({
+  id: "/career",
+  path: "/career",
   getParentRoute: () => DashboardProfileRouteRoute,
 } as any);
 const DashboardProfileFactsRoute = DashboardProfileFactsRouteImport.update({
@@ -396,27 +409,27 @@ const DashboardApplicationsApplicationIdChar123TabChar125Route =
   } as any);
 const DashboardCareerCoachChar123ConversationIdChar125Route =
   DashboardCareerCoachChar123ConversationIdChar125RouteImport.update({
-    id: "/coach/{-$conversationId}",
-    path: "/coach/{-$conversationId}",
-    getParentRoute: () => DashboardCareerRouteRoute,
+    id: "/career/coach/{-$conversationId}",
+    path: "/career/coach/{-$conversationId}",
+    getParentRoute: () => DashboardRouteRoute,
   } as any);
 const DashboardCareerKnowledgeIndexRoute =
   DashboardCareerKnowledgeIndexRouteImport.update({
-    id: "/knowledge/",
-    path: "/knowledge/",
-    getParentRoute: () => DashboardCareerRouteRoute,
+    id: "/career/knowledge/",
+    path: "/career/knowledge/",
+    getParentRoute: () => DashboardRouteRoute,
   } as any);
 const DashboardCareerKnowledgeFactsRoute =
   DashboardCareerKnowledgeFactsRouteImport.update({
-    id: "/knowledge/facts",
-    path: "/knowledge/facts",
-    getParentRoute: () => DashboardCareerRouteRoute,
+    id: "/career/knowledge/facts",
+    path: "/career/knowledge/facts",
+    getParentRoute: () => DashboardRouteRoute,
   } as any);
 const DashboardCareerKnowledgePreferencesRoute =
   DashboardCareerKnowledgePreferencesRouteImport.update({
-    id: "/knowledge/preferences",
-    path: "/knowledge/preferences",
-    getParentRoute: () => DashboardCareerRouteRoute,
+    id: "/career/knowledge/preferences",
+    path: "/career/knowledge/preferences",
+    getParentRoute: () => DashboardRouteRoute,
   } as any);
 const DashboardProfileStoriesChar123StoryIdChar125Route =
   DashboardProfileStoriesChar123StoryIdChar125RouteImport.update({
@@ -438,9 +451,9 @@ const DashboardSettingsBillingIndexRoute =
   } as any);
 const DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route =
   DashboardCareerKnowledgeStoriesChar123StoryIdChar125RouteImport.update({
-    id: "/knowledge/stories/{-$storyId}",
-    path: "/knowledge/stories/{-$storyId}",
-    getParentRoute: () => DashboardCareerRouteRoute,
+    id: "/career/knowledge/stories/{-$storyId}",
+    path: "/career/knowledge/stories/{-$storyId}",
+    getParentRoute: () => DashboardRouteRoute,
   } as any);
 const DashboardSettingsBillingReceiptPaymentIdRoute =
   DashboardSettingsBillingReceiptPaymentIdRouteImport.update({
@@ -464,7 +477,6 @@ export interface FileRoutesByFullPath {
   "/onboarding": typeof OnboardingRoute;
   "/builder/$resumeId": typeof BuilderResumeIdRouteRouteWithChildren;
   "/dashboard/admin": typeof DashboardAdminRouteRouteWithChildren;
-  "/dashboard/career": typeof DashboardCareerRouteRouteWithChildren;
   "/dashboard/profile": typeof DashboardProfileRouteRouteWithChildren;
   "/dashboard/settings": typeof DashboardSettingsRouteRouteWithChildren;
   "/ats-checker": typeof HomeAtsCheckerRoute;
@@ -482,6 +494,7 @@ export interface FileRoutesByFullPath {
   "/auth/verify-2fa-backup": typeof AuthVerify2faBackupRoute;
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
   "/dashboard/documents": typeof DashboardDocumentsRoute;
+  "/dashboard/help": typeof DashboardHelpRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
   "/docs/$": typeof DocsSplatRoute;
   "/agent/": typeof AgentIndexRoute;
@@ -491,8 +504,10 @@ export interface FileRoutesByFullPath {
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
   "/extension/removed": typeof HomeExtensionRemovedRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
+  "/dashboard/applications/offers": typeof DashboardApplicationsOffersRoute;
   "/dashboard/career/offers": typeof DashboardCareerOffersRoute;
   "/dashboard/coach/{-$conversationId}": typeof DashboardCoachChar123ConversationIdChar125Route;
+  "/dashboard/profile/career": typeof DashboardProfileCareerRoute;
   "/dashboard/profile/facts": typeof DashboardProfileFactsRoute;
   "/dashboard/profile/preferences": typeof DashboardProfilePreferencesRoute;
   "/dashboard/settings/account": typeof DashboardSettingsAccountRoute;
@@ -544,6 +559,7 @@ export interface FileRoutesByTo {
   "/auth/verify-2fa-backup": typeof AuthVerify2faBackupRoute;
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
   "/dashboard/documents": typeof DashboardDocumentsRoute;
+  "/dashboard/help": typeof DashboardHelpRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
   "/docs/$": typeof DocsSplatRoute;
   "/": typeof HomeIndexRoute;
@@ -554,8 +570,10 @@ export interface FileRoutesByTo {
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
   "/extension/removed": typeof HomeExtensionRemovedRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
+  "/dashboard/applications/offers": typeof DashboardApplicationsOffersRoute;
   "/dashboard/career/offers": typeof DashboardCareerOffersRoute;
   "/dashboard/coach/{-$conversationId}": typeof DashboardCoachChar123ConversationIdChar125Route;
+  "/dashboard/profile/career": typeof DashboardProfileCareerRoute;
   "/dashboard/profile/facts": typeof DashboardProfileFactsRoute;
   "/dashboard/profile/preferences": typeof DashboardProfilePreferencesRoute;
   "/dashboard/settings/account": typeof DashboardSettingsAccountRoute;
@@ -599,7 +617,6 @@ export interface FileRoutesById {
   "/onboarding": typeof OnboardingRoute;
   "/builder/$resumeId": typeof BuilderResumeIdRouteRouteWithChildren;
   "/dashboard/admin": typeof DashboardAdminRouteRouteWithChildren;
-  "/dashboard/career": typeof DashboardCareerRouteRouteWithChildren;
   "/dashboard/profile": typeof DashboardProfileRouteRouteWithChildren;
   "/dashboard/settings": typeof DashboardSettingsRouteRouteWithChildren;
   "/_home/ats-checker": typeof HomeAtsCheckerRoute;
@@ -617,6 +634,7 @@ export interface FileRoutesById {
   "/auth/verify-2fa-backup": typeof AuthVerify2faBackupRoute;
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
   "/dashboard/documents": typeof DashboardDocumentsRoute;
+  "/dashboard/help": typeof DashboardHelpRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
   "/docs/$": typeof DocsSplatRoute;
   "/_home/": typeof HomeIndexRoute;
@@ -627,8 +645,10 @@ export interface FileRoutesById {
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
   "/_home/extension/removed": typeof HomeExtensionRemovedRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
+  "/dashboard/applications/offers": typeof DashboardApplicationsOffersRoute;
   "/dashboard/career/offers": typeof DashboardCareerOffersRoute;
   "/dashboard/coach/{-$conversationId}": typeof DashboardCoachChar123ConversationIdChar125Route;
+  "/dashboard/profile/career": typeof DashboardProfileCareerRoute;
   "/dashboard/profile/facts": typeof DashboardProfileFactsRoute;
   "/dashboard/profile/preferences": typeof DashboardProfilePreferencesRoute;
   "/dashboard/settings/account": typeof DashboardSettingsAccountRoute;
@@ -673,7 +693,6 @@ export interface FileRouteTypes {
     | "/onboarding"
     | "/builder/$resumeId"
     | "/dashboard/admin"
-    | "/dashboard/career"
     | "/dashboard/profile"
     | "/dashboard/settings"
     | "/ats-checker"
@@ -691,6 +710,7 @@ export interface FileRouteTypes {
     | "/auth/verify-2fa-backup"
     | "/dashboard/cover-letters"
     | "/dashboard/documents"
+    | "/dashboard/help"
     | "/dashboard/trash"
     | "/docs/$"
     | "/agent/"
@@ -700,8 +720,10 @@ export interface FileRouteTypes {
     | "/dashboard/settings/integrations"
     | "/extension/removed"
     | "/builder/letter/$coverLetterId"
+    | "/dashboard/applications/offers"
     | "/dashboard/career/offers"
     | "/dashboard/coach/{-$conversationId}"
+    | "/dashboard/profile/career"
     | "/dashboard/profile/facts"
     | "/dashboard/profile/preferences"
     | "/dashboard/settings/account"
@@ -753,6 +775,7 @@ export interface FileRouteTypes {
     | "/auth/verify-2fa-backup"
     | "/dashboard/cover-letters"
     | "/dashboard/documents"
+    | "/dashboard/help"
     | "/dashboard/trash"
     | "/docs/$"
     | "/"
@@ -763,8 +786,10 @@ export interface FileRouteTypes {
     | "/dashboard/settings/integrations"
     | "/extension/removed"
     | "/builder/letter/$coverLetterId"
+    | "/dashboard/applications/offers"
     | "/dashboard/career/offers"
     | "/dashboard/coach/{-$conversationId}"
+    | "/dashboard/profile/career"
     | "/dashboard/profile/facts"
     | "/dashboard/profile/preferences"
     | "/dashboard/settings/account"
@@ -807,7 +832,6 @@ export interface FileRouteTypes {
     | "/onboarding"
     | "/builder/$resumeId"
     | "/dashboard/admin"
-    | "/dashboard/career"
     | "/dashboard/profile"
     | "/dashboard/settings"
     | "/_home/ats-checker"
@@ -825,6 +849,7 @@ export interface FileRouteTypes {
     | "/auth/verify-2fa-backup"
     | "/dashboard/cover-letters"
     | "/dashboard/documents"
+    | "/dashboard/help"
     | "/dashboard/trash"
     | "/docs/$"
     | "/_home/"
@@ -835,8 +860,10 @@ export interface FileRouteTypes {
     | "/dashboard/settings/integrations"
     | "/_home/extension/removed"
     | "/builder/letter/$coverLetterId"
+    | "/dashboard/applications/offers"
     | "/dashboard/career/offers"
     | "/dashboard/coach/{-$conversationId}"
+    | "/dashboard/profile/career"
     | "/dashboard/profile/facts"
     | "/dashboard/profile/preferences"
     | "/dashboard/settings/account"
@@ -1060,13 +1087,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof DashboardAdminRouteRouteImport;
       parentRoute: typeof DashboardRouteRoute;
     };
-    "/dashboard/career": {
-      id: "/dashboard/career";
-      path: "/career";
-      fullPath: "/dashboard/career";
-      preLoaderRoute: typeof DashboardCareerRouteRouteImport;
-      parentRoute: typeof DashboardRouteRoute;
-    };
     "/dashboard/cover-letters": {
       id: "/dashboard/cover-letters";
       path: "/cover-letters";
@@ -1079,6 +1099,13 @@ declare module "@tanstack/react-router" {
       path: "/documents";
       fullPath: "/dashboard/documents";
       preLoaderRoute: typeof DashboardDocumentsRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/help": {
+      id: "/dashboard/help";
+      path: "/help";
+      fullPath: "/dashboard/help";
+      preLoaderRoute: typeof DashboardHelpRouteImport;
       parentRoute: typeof DashboardRouteRoute;
     };
     "/dashboard/profile": {
@@ -1151,19 +1178,26 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof DashboardApplicationsIndexRouteImport;
       parentRoute: typeof DashboardRouteRoute;
     };
+    "/dashboard/applications/offers": {
+      id: "/dashboard/applications/offers";
+      path: "/applications/offers";
+      fullPath: "/dashboard/applications/offers";
+      preLoaderRoute: typeof DashboardApplicationsOffersRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
     "/dashboard/career/": {
       id: "/dashboard/career/";
-      path: "/";
+      path: "/career";
       fullPath: "/dashboard/career/";
       preLoaderRoute: typeof DashboardCareerIndexRouteImport;
-      parentRoute: typeof DashboardCareerRouteRoute;
+      parentRoute: typeof DashboardRouteRoute;
     };
     "/dashboard/career/offers": {
       id: "/dashboard/career/offers";
-      path: "/offers";
+      path: "/career/offers";
       fullPath: "/dashboard/career/offers";
       preLoaderRoute: typeof DashboardCareerOffersRouteImport;
-      parentRoute: typeof DashboardCareerRouteRoute;
+      parentRoute: typeof DashboardRouteRoute;
     };
     "/dashboard/coach/{-$conversationId}": {
       id: "/dashboard/coach/{-$conversationId}";
@@ -1184,6 +1218,13 @@ declare module "@tanstack/react-router" {
       path: "/";
       fullPath: "/dashboard/profile/";
       preLoaderRoute: typeof DashboardProfileIndexRouteImport;
+      parentRoute: typeof DashboardProfileRouteRoute;
+    };
+    "/dashboard/profile/career": {
+      id: "/dashboard/profile/career";
+      path: "/career";
+      fullPath: "/dashboard/profile/career";
+      preLoaderRoute: typeof DashboardProfileCareerRouteImport;
       parentRoute: typeof DashboardProfileRouteRoute;
     };
     "/dashboard/profile/facts": {
@@ -1307,31 +1348,31 @@ declare module "@tanstack/react-router" {
     };
     "/dashboard/career/coach/{-$conversationId}": {
       id: "/dashboard/career/coach/{-$conversationId}";
-      path: "/coach/{-$conversationId}";
+      path: "/career/coach/{-$conversationId}";
       fullPath: "/dashboard/career/coach/{-$conversationId}";
       preLoaderRoute: typeof DashboardCareerCoachChar123ConversationIdChar125RouteImport;
-      parentRoute: typeof DashboardCareerRouteRoute;
+      parentRoute: typeof DashboardRouteRoute;
     };
     "/dashboard/career/knowledge/": {
       id: "/dashboard/career/knowledge/";
-      path: "/knowledge";
+      path: "/career/knowledge";
       fullPath: "/dashboard/career/knowledge/";
       preLoaderRoute: typeof DashboardCareerKnowledgeIndexRouteImport;
-      parentRoute: typeof DashboardCareerRouteRoute;
+      parentRoute: typeof DashboardRouteRoute;
     };
     "/dashboard/career/knowledge/facts": {
       id: "/dashboard/career/knowledge/facts";
-      path: "/knowledge/facts";
+      path: "/career/knowledge/facts";
       fullPath: "/dashboard/career/knowledge/facts";
       preLoaderRoute: typeof DashboardCareerKnowledgeFactsRouteImport;
-      parentRoute: typeof DashboardCareerRouteRoute;
+      parentRoute: typeof DashboardRouteRoute;
     };
     "/dashboard/career/knowledge/preferences": {
       id: "/dashboard/career/knowledge/preferences";
-      path: "/knowledge/preferences";
+      path: "/career/knowledge/preferences";
       fullPath: "/dashboard/career/knowledge/preferences";
       preLoaderRoute: typeof DashboardCareerKnowledgePreferencesRouteImport;
-      parentRoute: typeof DashboardCareerRouteRoute;
+      parentRoute: typeof DashboardRouteRoute;
     };
     "/dashboard/profile/stories/{-$storyId}": {
       id: "/dashboard/profile/stories/{-$storyId}";
@@ -1356,10 +1397,10 @@ declare module "@tanstack/react-router" {
     };
     "/dashboard/career/knowledge/stories/{-$storyId}": {
       id: "/dashboard/career/knowledge/stories/{-$storyId}";
-      path: "/knowledge/stories/{-$storyId}";
+      path: "/career/knowledge/stories/{-$storyId}";
       fullPath: "/dashboard/career/knowledge/stories/{-$storyId}";
       preLoaderRoute: typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125RouteImport;
-      parentRoute: typeof DashboardCareerRouteRoute;
+      parentRoute: typeof DashboardRouteRoute;
     };
     "/dashboard/settings/billing/receipt/$paymentId": {
       id: "/dashboard/settings/billing/receipt/$paymentId";
@@ -1460,33 +1501,8 @@ const DashboardAdminRouteRouteChildren: DashboardAdminRouteRouteChildren = {
 const DashboardAdminRouteRouteWithChildren =
   DashboardAdminRouteRoute._addFileChildren(DashboardAdminRouteRouteChildren);
 
-interface DashboardCareerRouteRouteChildren {
-  DashboardCareerOffersRoute: typeof DashboardCareerOffersRoute;
-  DashboardCareerIndexRoute: typeof DashboardCareerIndexRoute;
-  DashboardCareerCoachChar123ConversationIdChar125Route: typeof DashboardCareerCoachChar123ConversationIdChar125Route;
-  DashboardCareerKnowledgeFactsRoute: typeof DashboardCareerKnowledgeFactsRoute;
-  DashboardCareerKnowledgePreferencesRoute: typeof DashboardCareerKnowledgePreferencesRoute;
-  DashboardCareerKnowledgeIndexRoute: typeof DashboardCareerKnowledgeIndexRoute;
-  DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route: typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
-}
-
-const DashboardCareerRouteRouteChildren: DashboardCareerRouteRouteChildren = {
-  DashboardCareerOffersRoute: DashboardCareerOffersRoute,
-  DashboardCareerIndexRoute: DashboardCareerIndexRoute,
-  DashboardCareerCoachChar123ConversationIdChar125Route:
-    DashboardCareerCoachChar123ConversationIdChar125Route,
-  DashboardCareerKnowledgeFactsRoute: DashboardCareerKnowledgeFactsRoute,
-  DashboardCareerKnowledgePreferencesRoute:
-    DashboardCareerKnowledgePreferencesRoute,
-  DashboardCareerKnowledgeIndexRoute: DashboardCareerKnowledgeIndexRoute,
-  DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route:
-    DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route,
-};
-
-const DashboardCareerRouteRouteWithChildren =
-  DashboardCareerRouteRoute._addFileChildren(DashboardCareerRouteRouteChildren);
-
 interface DashboardProfileRouteRouteChildren {
+  DashboardProfileCareerRoute: typeof DashboardProfileCareerRoute;
   DashboardProfileFactsRoute: typeof DashboardProfileFactsRoute;
   DashboardProfilePreferencesRoute: typeof DashboardProfilePreferencesRoute;
   DashboardProfileIndexRoute: typeof DashboardProfileIndexRoute;
@@ -1494,6 +1510,7 @@ interface DashboardProfileRouteRouteChildren {
 }
 
 const DashboardProfileRouteRouteChildren: DashboardProfileRouteRouteChildren = {
+  DashboardProfileCareerRoute: DashboardProfileCareerRoute,
   DashboardProfileFactsRoute: DashboardProfileFactsRoute,
   DashboardProfilePreferencesRoute: DashboardProfilePreferencesRoute,
   DashboardProfileIndexRoute: DashboardProfileIndexRoute,
@@ -1550,36 +1567,55 @@ const DashboardSettingsRouteRouteWithChildren =
 
 interface DashboardRouteRouteChildren {
   DashboardAdminRouteRoute: typeof DashboardAdminRouteRouteWithChildren;
-  DashboardCareerRouteRoute: typeof DashboardCareerRouteRouteWithChildren;
   DashboardProfileRouteRoute: typeof DashboardProfileRouteRouteWithChildren;
   DashboardSettingsRouteRoute: typeof DashboardSettingsRouteRouteWithChildren;
   DashboardCoverLettersRoute: typeof DashboardCoverLettersRoute;
   DashboardDocumentsRoute: typeof DashboardDocumentsRoute;
+  DashboardHelpRoute: typeof DashboardHelpRoute;
   DashboardTrashRoute: typeof DashboardTrashRoute;
   DashboardIndexRoute: typeof DashboardIndexRoute;
+  DashboardApplicationsOffersRoute: typeof DashboardApplicationsOffersRoute;
+  DashboardCareerOffersRoute: typeof DashboardCareerOffersRoute;
   DashboardCoachChar123ConversationIdChar125Route: typeof DashboardCoachChar123ConversationIdChar125Route;
   DashboardApplicationsIndexRoute: typeof DashboardApplicationsIndexRoute;
+  DashboardCareerIndexRoute: typeof DashboardCareerIndexRoute;
   DashboardPortfolioIndexRoute: typeof DashboardPortfolioIndexRoute;
   DashboardResumesIndexRoute: typeof DashboardResumesIndexRoute;
   DashboardApplicationsApplicationIdChar123TabChar125Route: typeof DashboardApplicationsApplicationIdChar123TabChar125Route;
+  DashboardCareerCoachChar123ConversationIdChar125Route: typeof DashboardCareerCoachChar123ConversationIdChar125Route;
+  DashboardCareerKnowledgeFactsRoute: typeof DashboardCareerKnowledgeFactsRoute;
+  DashboardCareerKnowledgePreferencesRoute: typeof DashboardCareerKnowledgePreferencesRoute;
+  DashboardCareerKnowledgeIndexRoute: typeof DashboardCareerKnowledgeIndexRoute;
+  DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route: typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardAdminRouteRoute: DashboardAdminRouteRouteWithChildren,
-  DashboardCareerRouteRoute: DashboardCareerRouteRouteWithChildren,
   DashboardProfileRouteRoute: DashboardProfileRouteRouteWithChildren,
   DashboardSettingsRouteRoute: DashboardSettingsRouteRouteWithChildren,
   DashboardCoverLettersRoute: DashboardCoverLettersRoute,
   DashboardDocumentsRoute: DashboardDocumentsRoute,
+  DashboardHelpRoute: DashboardHelpRoute,
   DashboardTrashRoute: DashboardTrashRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardApplicationsOffersRoute: DashboardApplicationsOffersRoute,
+  DashboardCareerOffersRoute: DashboardCareerOffersRoute,
   DashboardCoachChar123ConversationIdChar125Route:
     DashboardCoachChar123ConversationIdChar125Route,
   DashboardApplicationsIndexRoute: DashboardApplicationsIndexRoute,
+  DashboardCareerIndexRoute: DashboardCareerIndexRoute,
   DashboardPortfolioIndexRoute: DashboardPortfolioIndexRoute,
   DashboardResumesIndexRoute: DashboardResumesIndexRoute,
   DashboardApplicationsApplicationIdChar123TabChar125Route:
     DashboardApplicationsApplicationIdChar123TabChar125Route,
+  DashboardCareerCoachChar123ConversationIdChar125Route:
+    DashboardCareerCoachChar123ConversationIdChar125Route,
+  DashboardCareerKnowledgeFactsRoute: DashboardCareerKnowledgeFactsRoute,
+  DashboardCareerKnowledgePreferencesRoute:
+    DashboardCareerKnowledgePreferencesRoute,
+  DashboardCareerKnowledgeIndexRoute: DashboardCareerKnowledgeIndexRoute,
+  DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route:
+    DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route,
 };
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(

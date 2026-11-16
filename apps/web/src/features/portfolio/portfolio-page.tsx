@@ -1,6 +1,6 @@
 import type { PortfolioSource } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
-import { EmptyState, Widget } from "@heroui-pro/react";
+import { Widget } from "@heroui-pro/react";
 import { Button, buttonVariants, Chip, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -20,6 +20,7 @@ import { portfolioErrorMessage } from "./errors";
 import { PortfolioMessages } from "./statistics/portfolio-messages";
 import { PortfolioStatistics } from "./statistics/portfolio-statistics";
 import { invalidatePortfolioQueries, isPortfolioLive } from "./status";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { WidgetHeading } from "@/components/layout/widget-heading";
@@ -62,28 +63,23 @@ export function PortfolioPage() {
 					)}
 				</div>
 			) : (
-				<EmptyState className="py-16">
-					<EmptyState.Header>
-						<EmptyState.Media variant="icon">
-							<Icon name="globe-hemisphere-west" size={22} />
-						</EmptyState.Media>
-						<EmptyState.Title>
-							<Trans>Turn your Profile into a portfolio website</Trans>
-						</EmptyState.Title>
-						<EmptyState.Description className="max-w-sm text-pretty">
-							<Trans>
-								Show your work, results and services on one page that looks good on any phone, at
-								rezumi.app/your-username.
-							</Trans>
-						</EmptyState.Description>
-					</EmptyState.Header>
-					<EmptyState.Content>
+				<EmptyBlock
+					kind="page"
+					icon="globe-hemisphere-west"
+					title={<Trans>Turn your Profile into a portfolio website</Trans>}
+					description={
+						<Trans>
+							Show your work, results and services on one page that looks good on any phone, at
+							rezumi.app/your-username.
+						</Trans>
+					}
+					action={
 						<Button onPress={() => setCreating(true)}>
 							<Icon name="plus" size={18} />
 							<Trans>Create portfolio</Trans>
 						</Button>
-					</EmptyState.Content>
-				</EmptyState>
+					}
+				/>
 			)}
 			{creating && <CreatePortfolioDialog onClose={() => setCreating(false)} />}
 		</Page>

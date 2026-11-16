@@ -217,7 +217,7 @@ export function ResumeItemsForm({ sectionKey }: { sectionKey: PortfolioSectionKe
 			)}
 			{(sourceResume || fromProfile) && (
 				<a
-					href={sourceResume ? `/builder/${sourceResume.id}` : "/dashboard/profile"}
+					href={sourceResume ? `/builder/${sourceResume.id}` : "/dashboard/profile/career"}
 					target="_blank"
 					rel="noopener"
 					className={buttonVariants({ variant: "secondary", className: "w-fit" })}

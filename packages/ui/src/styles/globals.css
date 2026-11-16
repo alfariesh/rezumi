@@ -332,8 +332,7 @@
 	--control-fill-hover: var(--default);
 }
 
-:is(.dashboard-shell, [role="dialog"])
-	:is(.widget__header, .widget__footer, .prompt-input__shell, .empty-state[class*="bg-surface-secondary"]) {
+:is(.dashboard-shell, [role="dialog"]) :is(.widget__header, .widget__footer, .prompt-input__shell) {
 	--control-fill: var(--default);
 	--control-fill-hover: var(--default-hover);
 }

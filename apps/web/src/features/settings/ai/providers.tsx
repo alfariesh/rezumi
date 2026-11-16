@@ -1,6 +1,5 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { AIProvider } from "@rezumi/ai/types";
-import { EmptyState } from "@heroui-pro/react";
 import {
 	Alert,
 	Button,
@@ -35,6 +34,7 @@ import {
 	providerLabel,
 	providerOptions,
 } from "./catalog";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { Combobox } from "@/components/ui/combobox";
@@ -126,25 +126,17 @@ export function ProvidersSection() {
 					<Trans>Loading providers…</Trans>
 				</p>
 			) : providers?.length === 0 ? (
-				<EmptyState size="sm">
-					<EmptyState.Header>
-						<EmptyState.Media variant="icon">
-							<Icon name="sparkle" size={20} />
-						</EmptyState.Media>
-						<EmptyState.Title>
-							<Trans>Add your first AI provider</Trans>
-						</EmptyState.Title>
-						<EmptyState.Description>
-							<Trans>Anthropic, Gemini, Ollama, OpenAI-compatible</Trans>
-						</EmptyState.Description>
-					</EmptyState.Header>
-					<EmptyState.Content>
+				<EmptyBlock
+					kind="inline"
+					title={<Trans>Add your first AI provider</Trans>}
+					description={<Trans>Anthropic, Gemini, Ollama, OpenAI-compatible</Trans>}
+					action={
 						<Button size="sm" variant="secondary" onPress={() => setAdding(true)}>
 							<Icon name="plus" size={18} />
 							<Trans>Add provider</Trans>
 						</Button>
-					</EmptyState.Content>
-				</EmptyState>
+					}
+				/>
 			) : (
 				<>
 					{providers?.map((provider, index) => (

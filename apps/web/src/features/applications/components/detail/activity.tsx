@@ -1,19 +1,19 @@
 import type { Application } from "../../types";
 import type { ApplicationTimelineEntry, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { EmptyState, Timeline, Widget } from "@heroui-pro/react";
+import { Timeline, Widget } from "@heroui-pro/react";
 import { Button, Dropdown, Input, Label, Modal, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useId, useState } from "react";
-import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { interviewKindOf } from "../../interviews";
 import { getStageColor, getStageLabel } from "../../stages";
 import { useInvalidateApplications } from "../../use-application-actions";
 import { DatePickerField } from "@/components/input/date-time-fields";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -125,19 +125,11 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 					</form>
 
 					{sorted.length === 0 && (
-						<EmptyState size="sm">
-							<EmptyState.Header>
-								<EmptyState.Media variant="icon">
-									<Icon name="clock" size={18} />
-								</EmptyState.Media>
-								<EmptyState.Title>
-									<Trans>No activity yet</Trans>
-								</EmptyState.Title>
-								<EmptyState.Description>
-									<Trans>Stage changes, notes and interviews appear here.</Trans>
-								</EmptyState.Description>
-							</EmptyState.Header>
-						</EmptyState>
+						<EmptyBlock
+							kind="inline"
+							title={<Trans>No activity yet</Trans>}
+							description={<Trans>Stage changes, notes and interviews appear here.</Trans>}
+						/>
 					)}
 
 					<Timeline size="sm" density="compact" aria-label={t`Activity`}>

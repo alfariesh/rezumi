@@ -2,7 +2,7 @@ import type { SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { SavedItemKind, WorkspaceTab } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
-import { EmptyState, Widget } from "@heroui-pro/react";
+import { Widget } from "@heroui-pro/react";
 import { Button, buttonVariants, Separator, Tooltip, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -16,6 +16,7 @@ import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useSavedItems } from "../hooks";
 import { formatMoney } from "../offer-compare";
 import { CollapseRow, FilterChip, tabLabel, useCareerTime, withUndo } from "../shared";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { orpc } from "@/libs/orpc/client";
 
 const KINDS: { kind: SavedItemKind; icon: IconName; tab: WorkspaceTab | null }[] = [
@@ -62,22 +63,17 @@ export function SavedTab({ application, go }: WorkspaceTabProps) {
 
 	if (items.length === 0)
 		return (
-			<EmptyState className="rounded-2xl bg-surface-secondary py-12">
-				<EmptyState.Header>
-					<EmptyState.Media variant="icon">
-						<Icon name="clock-counter-clockwise" size={20} />
-					</EmptyState.Media>
-					<EmptyState.Title>
-						<Trans>Nothing saved yet</Trans>
-					</EmptyState.Title>
-					<EmptyState.Description className="max-w-[340px]">
-						<Trans>
-							Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create
-							them.
-						</Trans>
-					</EmptyState.Description>
-				</EmptyState.Header>
-			</EmptyState>
+			<EmptyBlock
+				kind="page"
+				icon="clock-counter-clockwise"
+				title={<Trans>Nothing saved yet</Trans>}
+				description={
+					<Trans>
+						Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other sections
+						create them.
+					</Trans>
+				}
+			/>
 		);
 
 	const onDelete = (item: SavedItem) => {
@@ -198,7 +194,7 @@ function SavedRow({ item, applicationId, expanded, onToggle, onOpen, onDelete }:
 					</Button>
 				) : (
 					<Link
-						to="/dashboard/career/offers"
+						to="/dashboard/applications/offers"
 						search={{ a: item.id }}
 						className={buttonVariants({ size: "sm", variant: "secondary" })}
 					>

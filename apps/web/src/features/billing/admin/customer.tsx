@@ -38,6 +38,7 @@ import { describeAudit, describeEvent, formatMoney, getSubscriptionStatusLabel }
 import { AdminCard, StatWidget } from "./parts";
 import { ReasonDialog } from "./reason-dialog";
 import { SelectField } from "@/components/input/select-field";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { getReadableErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 import { renderAsH1 } from "@/libs/typography";
@@ -579,11 +580,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 					data={data.payments}
 					getRowId={(payment) => payment.id}
 					contentClassName="min-w-[780px]"
-					renderEmptyState={() => (
-						<p className="py-10 text-center text-body-sm text-muted">
-							<Trans>No payments.</Trans>
-						</p>
-					)}
+					renderEmptyState={() => <EmptyBlock kind="inline" className="m-3" title={<Trans>No payments.</Trans>} />}
 				/>
 			</AdminCard>
 
@@ -805,9 +802,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 					description={<Trans>Payment provider events and admin actions, newest first.</Trans>}
 				>
 					{history.length === 0 ? (
-						<p className="py-6 text-center text-body-sm text-muted">
-							<Trans>Nothing yet.</Trans>
-						</p>
+						<EmptyBlock kind="inline" title={<Trans>Nothing yet.</Trans>} />
 					) : (
 						<div className="max-h-96 overflow-y-auto">
 							<Timeline density="compact" size="sm">

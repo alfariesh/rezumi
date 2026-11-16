@@ -1,5 +1,5 @@
 import type { Contact } from "@rezumi/schema/applications/data";
-import { EmptyState, Widget } from "@heroui-pro/react";
+import { Widget } from "@heroui-pro/react";
 import { Button, Input, Popover } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -8,6 +8,7 @@ import { contactSchema } from "@rezumi/schema/applications/data";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { FIELD_CLASS } from "./field-style";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { RowIcon } from "@/components/layout/icon-row";
 import { WidgetAction, WidgetHeading } from "@/components/layout/widget-heading";
 import { SettingsRows } from "@/features/settings/section";
@@ -95,25 +96,17 @@ function ContactsWidget({ contacts, disabled, onChange }: ContactsProps) {
 				/>
 				<Widget.Content className="grid gap-4">
 					{empty && (
-						<EmptyState size="sm">
-							<EmptyState.Header>
-								<EmptyState.Media variant="icon">
-									<Icon name="user-plus" size={20} />
-								</EmptyState.Media>
-								<EmptyState.Title>
-									<Trans>No contacts yet</Trans>
-								</EmptyState.Title>
-								<EmptyState.Description>
-									<Trans>Recruiters, interviewers and referrals for this job.</Trans>
-								</EmptyState.Description>
-							</EmptyState.Header>
-							<EmptyState.Content>
+						<EmptyBlock
+							kind="inline"
+							title={<Trans>No contacts yet</Trans>}
+							description={<Trans>Recruiters, interviewers and referrals for this job.</Trans>}
+							action={
 								<Button variant="secondary" size="sm" isDisabled={disabled} onPress={() => setAdding(true)}>
 									<Icon name="plus" size={16} />
 									<Trans>Add contact</Trans>
 								</Button>
-							</EmptyState.Content>
-						</EmptyState>
+							}
+						/>
 					)}
 
 					{contacts.length > 0 && (

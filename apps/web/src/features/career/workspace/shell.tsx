@@ -1,11 +1,11 @@
 import type { SavedItem } from "../hooks";
 import type { CoachConversation } from "./coach-sheet";
+import type { SectionNavItem } from "@/components/layout/section-layout";
 import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { WorkspaceTab } from "@rezumi/schema/career";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { EmptyState } from "@heroui-pro/react";
-import { Segment } from "@heroui-pro/react";
 import {
 	Alert,
 	Avatar,
@@ -42,7 +42,10 @@ import { MessagesTab } from "./messages";
 import { PractiseTab } from "./practise";
 import { PrepareTab } from "./prepare";
 import { SavedTab } from "./saved";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
+import { Page } from "@/components/layout/page";
+import { SectionLayout } from "@/components/layout/section-layout";
 import { ApplicationNotes } from "@/features/applications/components/application-notes";
 import { CompanyMark } from "@/features/applications/components/company-mark";
 import { InterviewDialog } from "@/features/applications/components/interview-dialog";
@@ -87,6 +90,46 @@ const archiveKinds = {
 	saved: null,
 } satisfies Record<WorkspaceTab, SavedItem["data"]["kind"] | null>;
 
+const TAB_ICONS: Record<WorkspaceTab, IconName> = {
+	fit: "list-checks",
+	apply: "note-pencil",
+	prepare: "clipboard-text",
+	practise: "microphone",
+	debrief: "chat-centered-text",
+	messages: "envelope-simple",
+	saved: "clock-counter-clockwise",
+};
+
+type MenuHints = Partial<Record<WorkspaceTab, Pick<SectionNavItem, "badge" | "count">>>;
+
+/**
+ * The workspace's menu: every tab its own item, grouped as the job goes (before applying | the interview | after),
+ * each group set apart by a hairline.
+ * The address has no tab when the stage picks one, so each item says for itself whether it's current.
+ */
+function workspaceSections(applicationId: string, tab: WorkspaceTab | undefined, hints: MenuHints = {}) {
+	const groups: Partial<Record<WorkspaceTab, string>> = { prepare: "interview", messages: "after applying" };
+	return WORKSPACE_TABS.map((value): SectionNavItem => ({
+		link: {
+			to: "/dashboard/applications/$applicationId/{-$tab}",
+			params: { applicationId, tab: value },
+			// The panel fades itself in, so the page-wide view transition would only add a second fade.
+			viewTransition: false,
+		},
+		match: { to: "/dashboard/applications/$applicationId/{-$tab}", fuzzy: false },
+		current: tab === value,
+		icon: TAB_ICONS[value],
+		label: tabLabel(value),
+		group: groups[value],
+		...hints[value],
+	}));
+}
+
+/** True once the interview has ended: the workspace opens on Debrief then, else on Prepare. */
+function interviewEnded(interview: InterviewTimelineEntry | undefined, now: Date) {
+	return Boolean(interview && +new Date(interview.at) + interview.durationMinutes * 60_000 < +now);
+}
+
 /** The interview a workspace is about: the next one to come, else the latest one if it ended in the last day. */
 function currentInterview(application: Application, now: Date) {
 	const interviews = application.activity.filter(isInterview).sort((a, b) => +new Date(a.at) - +new Date(b.at));
@@ -97,10 +140,9 @@ function currentInterview(application: Application, now: Date) {
 	);
 }
 
-/** Rule 7: the tab a stage opens on. Offers are compared in Career, so an offer opens on its messages. */
+/** Rule 7: the tab a stage opens on. Offers are compared in Applications › Offers, so an offer opens on its messages. */
 function defaultTab(application: Application, now: Date): WorkspaceTab {
-	const interview = currentInterview(application, now);
-	const ended = interview && +new Date(interview.at) + interview.durationMinutes * 60_000 < +now;
+	const ended = interviewEnded(currentInterview(application, now), now);
 	switch (application.status) {
 		case "saved":
 			return "fit";
@@ -122,47 +164,30 @@ type WorkspaceProps = {
 	search: WorkspaceSearch;
 };
 
-type WorkspaceSkeletonProps = { breakpoint: ReturnType<typeof useBreakpoint> };
+type WorkspaceSkeletonProps = { applicationId: string; tab: WorkspaceTab | undefined };
 
-/**
- * The workspace's outline while the application loads: back link, title and stage line, then the details column
- * (wide screens) beside the section tabs and a panel, where the real ones land.
- */
-function WorkspaceSkeleton({ breakpoint }: WorkspaceSkeletonProps) {
-	const wide = breakpoint === "desktop" || breakpoint === "wide";
+/** The workspace's outline while the application loads: the menu as it will be, then the header and panel. */
+function WorkspaceSkeleton({ applicationId, tab }: WorkspaceSkeletonProps) {
 	return (
-		<div role="status" className="mx-auto flex min-h-svh w-full max-w-[1440px] flex-col">
-			<span className="sr-only">{t`Loading`}</span>
-			<div className="grid gap-4 px-4 pt-8 pb-6 md:px-8">
-				<Skeleton className="h-5 w-28 rounded-md" />
-				<div className="grid gap-2">
-					<Skeleton className="h-8 w-full max-w-md rounded-lg" />
-					<Skeleton className="h-5 w-56 rounded-md" />
-				</div>
-			</div>
-			<div
-				className={cn(
-					"grid flex-1 content-start gap-x-8 gap-y-2 px-4 pb-10 md:px-8",
-					wide && (breakpoint === "wide" ? "grid-cols-[300px_minmax(0,1fr)]" : "grid-cols-[264px_minmax(0,1fr)]"),
-				)}
-			>
-				{wide && (
-					<div className="grid content-start gap-4 pt-2">
-						<Skeleton className="h-40 rounded-2xl" />
-						<Skeleton className="h-28 rounded-2xl" />
+		<SectionLayout title={t`Workspace sections`} items={workspaceSections(applicationId, tab)}>
+			<div role="status" className="grid gap-5">
+				<span className="sr-only">{t`Loading`}</span>
+				<div className="grid gap-4">
+					<Skeleton className="h-5 w-28 rounded-md" />
+					<div className="grid gap-2">
+						<Skeleton className="h-8 w-full max-w-md rounded-lg" />
+						<Skeleton className="h-5 w-56 rounded-md" />
 					</div>
-				)}
-				<div className="grid content-start gap-4">
-					<Skeleton className="h-10 w-full max-w-lg rounded-xl" />
-					<Skeleton className="h-80 rounded-3xl" />
 				</div>
+				<Skeleton className="h-80 rounded-3xl" />
 			</div>
-		</div>
+		</SectionLayout>
 	);
 }
 
 export function Workspace({ applicationId, tab: requested, search }: WorkspaceProps) {
 	const navigate = useNavigate();
+	const { i18n } = useLingui();
 	const now = useNow();
 	// The round being edited is fixed when the dialog opens; "next interview" can move on while it's open.
 	const [editing, setEditing] = useState<{ id: string | null } | null>(null);
@@ -174,26 +199,25 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 	const overlay = useOverlayHistory();
 	const application = query.data;
 
-	if (query.isPending) return <WorkspaceSkeleton breakpoint={breakpoint} />;
+	if (query.isPending) return <WorkspaceSkeleton applicationId={applicationId} tab={requested} />;
 	if (!application)
 		return (
-			<div className="grid min-h-svh place-items-center p-6">
-				<EmptyState>
-					<EmptyState.Header>
-						<EmptyState.Media variant="icon">
-							<Icon name="warning-circle" size={20} />
-						</EmptyState.Media>
-						<EmptyState.Title role="alert">
+			<Page>
+				<EmptyBlock
+					kind="page"
+					icon="warning-circle"
+					title={
+						<span role="alert">
 							<Trans>This application couldn't be opened.</Trans>
-						</EmptyState.Title>
-					</EmptyState.Header>
-					<EmptyState.Content>
+						</span>
+					}
+					action={
 						<Link to="/dashboard/applications" className={cn(buttonVariants({ variant: "secondary" }))}>
 							<Trans>Back to applications</Trans>
 						</Link>
-					</EmptyState.Content>
-				</EmptyState>
-			</div>
+					}
+				/>
+			</Page>
 		);
 
 	const tab = requested ?? defaultTab(application, now);
@@ -245,161 +269,134 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 	const editingId = editing ? editing.id : (interview?.id ?? null);
 	const editingInterview = application.activity.filter(isInterview).find((entry) => entry.id === editingId);
 	const minutes = interview ? minutesUntil(new Date(interview.at), now) : null;
-	const wide = breakpoint === "desktop" || breakpoint === "wide";
+	// From 1280px the job's details get their own column beside the panel; narrower, they fold into "Details".
+	const wide = breakpoint === "wide";
+	const savedCount = saved.data?.length ?? 0;
+	const countdown = minutes !== null && minutes > 0 && minutes < 7 * 24 * 60 ? minutes : null;
+	const unit = (value: number, unit: "minute" | "hour") =>
+		new Intl.NumberFormat(i18n.locale, { style: "unit", unit, unitDisplay: "narrow" }).format(value);
+	const sections = workspaceSections(applicationId, tab, {
+		// Time to the next round when it's within a week; warning colour in its last hour.
+		prepare: {
+			badge:
+				countdown === null ? undefined : (
+					<MenuBadge tone={countdown <= 60 ? "warning" : "default"}>
+						{countdown <= 60 ? unit(countdown, "minute") : unit(Math.round(countdown / 60), "hour")}
+					</MenuBadge>
+				),
+		},
+		messages: { badge: unreadMessages > 0 ? <MenuBadge tone="accent">{unreadMessages}</MenuBadge> : undefined },
+		saved: { count: savedCount },
+	});
+	const context = (
+		<ContextColumn
+			application={application}
+			interview={interview}
+			now={now}
+			onEdit={() => openSearch({ edit: "interview" })}
+		/>
+	);
 
 	return (
-		<div className="mx-auto flex min-h-svh w-full max-w-[1440px] flex-col">
+		<SectionLayout title={t`Workspace sections`} items={sections}>
 			<WorkspaceHeader application={application} onAskCoach={() => openSearch({ coach: true })} />
-			<div
-				className={cn(
-					"grid min-h-0 flex-1 content-start gap-x-8 gap-y-2 px-4 pb-10 md:px-8",
-					!wide && "grid-rows-[auto_minmax(0,1fr)]",
-					wide && (breakpoint === "wide" ? "grid-cols-[300px_minmax(0,1fr)]" : "grid-cols-[264px_minmax(0,1fr)]"),
-				)}
-			>
-				{wide ? (
-					<aside
-						aria-label={t`Application details`}
-						className="grid grid-cols-[minmax(0,1fr)] content-start gap-4 pt-2"
-					>
-						<ContextColumn
-							application={application}
-							interview={interview}
-							now={now}
-							onEdit={() => openSearch({ edit: "interview" })}
-						/>
-					</aside>
-				) : (
-					<Disclosure isExpanded={detailsOpen} onExpandedChange={setDetailsOpen}>
-						<Disclosure.Heading>
-							<Disclosure.Trigger className="flex w-fit cursor-(--cursor-interactive) items-center gap-1 rounded-sm py-2 text-sm font-medium text-muted transition-colors duration-quick outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-focus">
-								<Trans>Details</Trans>
-								<Disclosure.Indicator />
-							</Disclosure.Trigger>
-						</Disclosure.Heading>
-						<Disclosure.Content>
-							<Disclosure.Body className="grid grid-cols-[minmax(0,1fr)] gap-4 pb-2">
-								<ContextColumn
-									application={application}
-									interview={interview}
-									now={now}
-									onEdit={() => openSearch({ edit: "interview" })}
-								/>
-							</Disclosure.Body>
-						</Disclosure.Content>
-					</Disclosure>
-				)}
-				<div className="grid min-w-0 content-start gap-0">
-					<div className="-mx-4 [scrollbar-width:none] overflow-x-auto px-4 sm:mx-0 sm:px-0">
-						<Segment
-							aria-label={t`Workspace sections`}
-							selectedKey={tab}
-							onSelectionChange={(key) => go(String(key) as WorkspaceTab)}
-							className="w-max"
+			<div className={cn("grid min-w-0 content-start gap-x-10", wide && "grid-cols-[minmax(0,1fr)_300px]")}>
+				<div className="grid min-w-0 content-start gap-4">
+					{!wide && (
+						<Disclosure isExpanded={detailsOpen} onExpandedChange={setDetailsOpen}>
+							<Disclosure.Heading>
+								<Disclosure.Trigger className="flex w-fit cursor-(--cursor-interactive) items-center gap-1 rounded-sm py-1 text-sm font-medium text-muted transition-colors duration-quick outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-focus">
+									<Trans>Details</Trans>
+									<Disclosure.Indicator />
+								</Disclosure.Trigger>
+							</Disclosure.Heading>
+							<Disclosure.Content>
+								<Disclosure.Body className="grid grid-cols-[minmax(0,1fr)] gap-4 pt-2 pb-2">{context}</Disclosure.Body>
+							</Disclosure.Content>
+						</Disclosure>
+					)}
+					<section key={tab} aria-label={tabLabel(tab)} className="@container min-w-0 pb-6">
+						<m.div
+							initial={{ opacity: 0, transform: "translateY(4px)" }}
+							animate={{ opacity: 1, transform: "translateY(0px)" }}
+							transition={{ duration: D1, ease: EASE }}
 						>
-							{WORKSPACE_TABS.map((value) => (
-								<Segment.Item key={value} id={value} className="w-auto flex-none gap-1.5">
-									{tabLabel(value)}
-									{value === "prepare" && minutes !== null && minutes > 0 && minutes < 7 * 24 * 60 && (
-										<TabBadge color={minutes <= 60 ? "warning" : "default"}>
-											{minutes <= 60 ? t`${minutes} min` : t`${Math.round(minutes / 60)} h`}
-										</TabBadge>
-									)}
-									{value === "messages" && unreadMessages > 0 && <TabBadge color="accent">{unreadMessages}</TabBadge>}
-									{value === "saved" && (saved.data?.length ?? 0) > 0 && (
-										<TabBadge color="default">{saved.data?.length}</TabBadge>
-									)}
-								</Segment.Item>
-							))}
-						</Segment>
-					</div>
-					{WORKSPACE_TABS.map((value) => (
-						<div
-							key={value}
-							role="tabpanel"
-							hidden={value !== tab}
-							aria-label={tabLabel(value)}
-							className="@container min-w-0 px-0 py-6"
-						>
-							{value === tab && (
-								<m.div
-									initial={{ opacity: 0, transform: "translateY(4px)" }}
-									animate={{ opacity: 1, transform: "translateY(0px)" }}
-									transition={{ duration: D1, ease: EASE }}
-								>
-									{blocked ? (
-										waiting ? (
-											<p
-												role="status"
-												className="flex items-center gap-2 rounded-2xl bg-surface-secondary p-5 text-sm text-muted"
-											>
-												<Spinner size="sm" color="current" aria-hidden />
-												{archived ? <Trans>Loading saved version…</Trans> : <Trans>Loading workspace…</Trans>}
-											</p>
-										) : (
-											<Alert status="danger" role="alert">
-												<Alert.Indicator />
-												<Alert.Content>
-													<Alert.Description>
-														{failed ? (
-															archived ? (
-																<Trans>This saved version couldn't be loaded.</Trans>
-															) : (
-																<Trans>This workspace couldn't be loaded.</Trans>
-															)
-														) : version ? (
-															<Trans>This saved version belongs to a different tab. Open it from Saved.</Trans>
-														) : (
-															<Trans>This saved version is no longer available.</Trans>
-														)}
-													</Alert.Description>
-													<div className="mt-3 flex flex-wrap gap-2">
-														{failed && (
-															<Button
-																size="sm"
-																variant="secondary"
-																onPress={() => {
-																	void saved.refetch();
-																	if (!archived) void workspace.refetch();
-																}}
-															>
-																<Trans>Try again</Trans>
-															</Button>
-														)}
-														{archived && (
-															<Button size="sm" variant="secondary" onPress={() => setSearch({ version: undefined })}>
-																<Trans>Back to current</Trans>
-															</Button>
-														)}
-													</div>
-												</Alert.Content>
-											</Alert>
-										)
-									) : (
-										<>
-											{version && (
-												<Alert className="mb-4">
-													<Alert.Indicator>
-														<Icon name="clock-counter-clockwise" size={18} />
-													</Alert.Indicator>
-													<Alert.Content>
-														<Alert.Description>
-															<Trans>You're looking at a saved version. It can't be edited.</Trans>
-														</Alert.Description>
-													</Alert.Content>
+							{blocked ? (
+								waiting ? (
+									<p
+										role="status"
+										className="flex items-center gap-2 rounded-2xl bg-surface-secondary p-5 text-sm text-muted"
+									>
+										<Spinner size="sm" color="current" aria-hidden />
+										{archived ? <Trans>Loading saved version…</Trans> : <Trans>Loading workspace…</Trans>}
+									</p>
+								) : (
+									<Alert status="danger" role="alert">
+										<Alert.Indicator />
+										<Alert.Content>
+											<Alert.Description>
+												{failed ? (
+													archived ? (
+														<Trans>This saved version couldn't be loaded.</Trans>
+													) : (
+														<Trans>This workspace couldn't be loaded.</Trans>
+													)
+												) : version ? (
+													<Trans>This saved version belongs to a different tab. Open it from Saved.</Trans>
+												) : (
+													<Trans>This saved version is no longer available.</Trans>
+												)}
+											</Alert.Description>
+											<div className="mt-3 flex flex-wrap gap-2">
+												{failed && (
+													<Button
+														size="sm"
+														variant="secondary"
+														onPress={() => {
+															void saved.refetch();
+															if (!archived) void workspace.refetch();
+														}}
+													>
+														<Trans>Try again</Trans>
+													</Button>
+												)}
+												{archived && (
 													<Button size="sm" variant="secondary" onPress={() => setSearch({ version: undefined })}>
 														<Trans>Back to current</Trans>
 													</Button>
-												</Alert>
-											)}
-											<TabBody tab={value} {...props} />
-										</>
+												)}
+											</div>
+										</Alert.Content>
+									</Alert>
+								)
+							) : (
+								<>
+									{version && (
+										<Alert className="mb-4">
+											<Alert.Indicator>
+												<Icon name="clock-counter-clockwise" size={18} />
+											</Alert.Indicator>
+											<Alert.Content>
+												<Alert.Description>
+													<Trans>You're looking at a saved version. It can't be edited.</Trans>
+												</Alert.Description>
+											</Alert.Content>
+											<Button size="sm" variant="secondary" onPress={() => setSearch({ version: undefined })}>
+												<Trans>Back to current</Trans>
+											</Button>
+										</Alert>
 									)}
-								</m.div>
+									<TabBody tab={tab} {...props} />
+								</>
 							)}
-						</div>
-					))}
+						</m.div>
+					</section>
 				</div>
+				{wide && (
+					<aside aria-label={t`Application details`} className="grid grid-cols-[minmax(0,1fr)] content-start gap-4">
+						{context}
+					</aside>
+				)}
 			</div>
 			<CoachSheet
 				application={application}
@@ -419,7 +416,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 				open={search.edit === "interview"}
 				onOpenChange={(open) => (open ? openSearch({ edit: "interview" }) : closeSearch({ edit: undefined }))}
 			/>
-		</div>
+		</SectionLayout>
 	);
 }
 
@@ -442,14 +439,21 @@ function TabBody({ tab, ...props }: WorkspaceTabProps & { tab: WorkspaceTab }) {
 	}
 }
 
-type TabBadgeProps = { color: "default" | "accent" | "warning"; children: ReactNode };
+type MenuBadgeProps = { tone: "default" | "accent" | "warning"; children: ReactNode };
 
-/** A count or countdown after a tab's name: quiet by default, accent for something waiting, warning when it's close. */
-function TabBadge({ color, children }: TabBadgeProps) {
+/** A small chip after a menu item's name: a countdown, or something waiting. */
+function MenuBadge({ tone, children }: MenuBadgeProps) {
 	return (
-		<Chip size="sm" variant="soft" color={color} className="whitespace-nowrap tabular-nums">
+		<span
+			className={cn(
+				"flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-body-xs leading-none font-medium whitespace-nowrap tabular-nums",
+				tone === "accent" && "bg-accent text-accent-foreground",
+				tone === "warning" && "bg-warning text-warning-foreground",
+				tone === "default" && "bg-default text-foreground",
+			)}
+		>
 			{children}
-		</Chip>
+		</span>
 	);
 }
 
@@ -469,7 +473,7 @@ function WorkspaceHeader({ application, onAskCoach }: WorkspaceHeaderProps) {
 	const reached = PIPELINE.indexOf(application.status);
 	const sent = application.status !== "saved";
 	return (
-		<header className="grid gap-4 px-4 pt-8 pb-6 md:px-8">
+		<header className="grid gap-4">
 			<TextLink
 				href="/dashboard/applications"
 				className="w-fit gap-1 text-sm text-muted no-underline transition-colors duration-quick hover:text-foreground"
@@ -520,7 +524,7 @@ function WorkspaceHeader({ application, onAskCoach }: WorkspaceHeaderProps) {
 					)}
 					<div className="flex items-center gap-2">
 						{application.status === "offer" && (
-							<Link to="/dashboard/career/offers" className={cn(buttonVariants({ variant: "ghost" }))}>
+							<Link to="/dashboard/applications/offers" className={cn(buttonVariants({ variant: "ghost" }))}>
 								<Trans>Compare offers</Trans>
 							</Link>
 						)}

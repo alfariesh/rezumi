@@ -1,15 +1,23 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useRouteContext, useRouterState } from "@tanstack/react-router";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useCommandPaletteStore } from "../store";
 import { BaseCommandGroup, PaletteItem, searchText } from "./base";
 import { useDialogStore } from "@/dialogs/store";
+import { useCoachLauncher } from "@/features/coach-panel/launcher";
+import { openCoachPanel } from "@/features/coach-panel/store";
+import { orpc } from "@/libs/orpc/client";
 
 export function NavigationCommandGroup() {
 	const navigate = useNavigate();
 	const { session } = useRouteContext({ strict: false });
 	const reset = useCommandPaletteStore((state) => state.reset);
+	const pathname = useRouterState({ select: (state) => state.location.pathname });
+	const launchCoach = useCoachLauncher();
+	// Portfolio is listed only for accounts that have one switched on (the sidebar's rule).
+	const { data: portfolio } = useQuery({ ...orpc.portfolio.status.queryOptions(), enabled: Boolean(session) });
 
 	const onNavigate = async (path: string) => {
 		await navigate({ to: path });
@@ -53,7 +61,8 @@ export function NavigationCommandGroup() {
 
 				<PaletteItem
 					id="navigation.trash"
-					textValue={searchText(t`Trash`, [t`Trash`, t`Deleted`])}
+					// Documents' trash, in its section menu.
+					textValue={searchText(t`Trash`, [t`Trash`, t`Deleted`, t`Documents`])}
 					isDisabled={!session}
 					onAction={() => onNavigate("/dashboard/trash")}
 				>
@@ -94,10 +103,54 @@ export function NavigationCommandGroup() {
 				</PaletteItem>
 
 				<PaletteItem
+					id="navigation.offers"
+					textValue={searchText(t`Offers`, [t`Offers`, t`Compare offers`, t`Applications`])}
+					isDisabled={!session}
+					onAction={() => onNavigate("/dashboard/applications/offers")}
+				>
+					<Icon name="scales" size={16} />
+					<Trans>Offers</Trans>
+				</PaletteItem>
+
+				<PaletteItem
+					id="navigation.coach"
+					textValue={searchText(t`Coach`, [t`Coach`, t`Career`, t`Conversations`])}
+					isDisabled={!session}
+					onAction={() => {
+						reset();
+						// Coach full screen is already the coach.
+						if (pathname.startsWith("/dashboard/coach")) return;
+						// The panel lives in the dashboard's shell: elsewhere (the editor, public pages) go to Home first.
+						if (!pathname.startsWith("/dashboard")) {
+							void navigate({ to: "/dashboard" });
+							openCoachPanel();
+							return;
+						}
+						// A job's workspace opens that job's coach; other pages, the panel.
+						launchCoach("open");
+					}}
+				>
+					<Icon name="sparkle" size={16} />
+					<Trans>Coach</Trans>
+				</PaletteItem>
+
+				{session && portfolio?.enabled && (
+					<PaletteItem
+						id="navigation.portfolio"
+						textValue={searchText(t`Portfolio`, [t`Portfolio`, t`Website`])}
+						onAction={() => onNavigate("/dashboard/portfolio")}
+					>
+						<Icon name="globe-hemisphere-west" size={16} />
+						<Trans>Portfolio</Trans>
+					</PaletteItem>
+				)}
+
+				<PaletteItem
 					id="navigation.profile"
 					textValue={searchText(t`Profile`, [
 						t`Profile`,
-						t`Details & career`,
+						t({ message: "Details", context: "Profile page: your name, photo, contact details and links" }),
+						t`Career`,
 						t`Facts`,
 						t`Stories`,
 						t`Experience`,
@@ -147,6 +200,22 @@ export function NavigationCommandGroup() {
 				>
 					<Icon name="gear-six" size={16} />
 					<Trans>Settings</Trans>
+				</PaletteItem>
+
+				<PaletteItem
+					id="navigation.help"
+					textValue={searchText(t`Help & legal`, [
+						t`Help & legal`,
+						t`Docs`,
+						t`Terms of service`,
+						t`Privacy policy`,
+						t`Licenses`,
+					])}
+					isDisabled={!session}
+					onAction={() => onNavigate("/dashboard/help")}
+				>
+					<Icon name="question" size={16} />
+					<Trans>Help & legal</Trans>
 				</PaletteItem>
 			</BaseCommandGroup>
 		</>

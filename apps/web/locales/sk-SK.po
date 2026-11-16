@@ -497,11 +497,6 @@ msgstr "Nájdené {0}"
 msgid "{0} found, {unreadable} unreadable"
 msgstr "Nájdené {0}, {unreadable} nečitateľné"
 
-#. placeholder {0}: Math.round(minutes / 60)
-#: src/features/career/workspace/shell.tsx
-msgid "{0} h"
-msgstr "{0} h"
-
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -980,10 +975,6 @@ msgstr "{minutes, plural, one {spolu # minúta} few {spolu # minúty} many {spol
 #: src/features/career/workspace/prepare.tsx
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, one {Začína o # minútu} few {Začína o # minúty} many {Začína o # minúty} other {Začína o # minút}}"
-
-#: src/features/career/workspace/shell.tsx
-msgid "{minutes} min"
-msgstr "{minutes} min"
 
 #: src/features/career/workspace/fit.tsx
 msgid "{missing} missing"
@@ -1558,6 +1549,10 @@ msgstr "Názov vám pomôže rozlíšiť prístupové kľúče, napríklad „Pr
 msgid "A negative amount takes credits away, soonest-expiring first, never below zero."
 msgstr ""
 
+#: src/features/documents/documents-page.tsx
+msgid "A new letter takes its sender details and design from your latest resume."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "A numeric date reads differently in different countries."
 msgstr "Číselný dátum sa v rôznych krajinách číta inak."
@@ -1774,7 +1769,7 @@ msgstr "Úspech"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/settings/account/page.tsx
-#: src/features/settings/root.tsx
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Account"
@@ -2515,6 +2510,10 @@ msgstr ""
 msgid "admin"
 msgstr ""
 
+#: src/features/settings/settings-section.tsx
+msgid "Admin"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Advanced"
 msgstr "Pokročilé"
@@ -2652,9 +2651,10 @@ msgstr "Zarovnať doľava"
 msgid "Align right"
 msgstr "Zarovnať doprava"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/resume/editor/design/template-group.tsx
 msgid "All"
@@ -2964,6 +2964,12 @@ msgid "App navigation"
 msgstr "Navigácia aplikácie"
 
 #: src/features/settings/page.tsx
+#: src/features/settings/settings-section.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "App settings"
+msgstr ""
+
+#: src/features/settings/page.tsx
 msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
 msgstr ""
 
@@ -3039,7 +3045,6 @@ msgstr "Dátum prihlášky do"
 msgid "Application deleted"
 msgstr "žiadosť o zamestnanie vymazaná"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Podrobnosti žiadosti"
@@ -3053,6 +3058,7 @@ msgstr "možnosti žiadosti o zamestnanie"
 msgid "Application updated"
 msgstr "Žiadosť aktualizovaná"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
@@ -3120,6 +3126,10 @@ msgstr ""
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "Approach and stack"
+msgstr ""
+
+#: src/features/settings/ai/connected-apps.tsx
+msgid "Apps you allow to access your account appear here."
 msgstr ""
 
 #: src/libs/locale.ts
@@ -3200,6 +3210,7 @@ msgstr "Opýtajte sa asistenta „{question}“"
 msgid "Ask the assistant to work it in"
 msgstr "Požiadajte asistenta, aby to zapracoval"
 
+#: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Ask the coach"
 msgstr "Opýtať sa kouča"
@@ -3317,7 +3328,6 @@ msgstr ""
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/works/add-work/parts.tsx
 #: src/features/profile/fill.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Späť"
 
@@ -3334,7 +3344,6 @@ msgstr "Späť na nastavenia overovania"
 msgid "Back to current"
 msgstr "Späť na aktuálnu verziu"
 
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/chrome.tsx
 msgid "Back to documents"
 msgstr "Späť k dokumentom"
@@ -3364,6 +3373,10 @@ msgstr "Späť na príbehy"
 
 #: src/features/career/coach.tsx
 msgid "Back to the chat"
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Back to the panel"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
@@ -3519,8 +3532,7 @@ msgstr ""
 msgid "Billing"
 msgstr ""
 
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
@@ -3830,7 +3842,10 @@ msgstr ""
 msgid "Cards"
 msgstr ""
 
-#: src/features/profile/details-page.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/career.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Career"
 msgstr ""
 
@@ -4276,10 +4291,6 @@ msgstr "Vyberte súbor WebM, MP4, MP3, WAV alebo Ogg s veľkosťou do 2 MB."
 msgid "Choose a work to write about"
 msgstr ""
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "Choose an application to see its next step, what you sent and its activity here."
-msgstr ""
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "Vyberte si žiadosť o prácu…"
@@ -4365,6 +4376,7 @@ msgstr "Vymazať"
 msgid "Clear formatting"
 msgstr "Vymazať formátovanie"
 
+#: src/features/career/coach.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Clear search"
 msgstr "Vymazať vyhľadávanie"
@@ -4484,6 +4496,10 @@ msgstr "Zavrieť upozornenie"
 msgid "Close the assistant"
 msgstr "Zatvorte asistenta"
 
+#: src/features/career/coach.tsx
+msgid "Close the coach"
+msgstr ""
+
 #: src/features/applications/components/detail/close-dialog.tsx
 msgid "Close this application"
 msgstr "Zatvorte túto žiadosť o prácu"
@@ -4501,6 +4517,7 @@ msgstr "ZATVORENÉ"
 #: src/features/billing/credits.ts
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Kouč"
@@ -4595,6 +4612,7 @@ msgid "Compare attempts to see what improved. Practice questions are simulated, 
 msgstr "Porovnajte pokusy a uvidíte, čo sa zlepšilo. Cvičné otázky sú simulované, nepochádzajú od {0}."
 
 #: src/features/career/workspace/shell.tsx
+#: src/features/command-palette/pages/navigation.tsx
 msgid "Compare offers"
 msgstr "Porovnať ponuky"
 
@@ -4602,7 +4620,7 @@ msgstr "Porovnať ponuky"
 msgid "Compare plans"
 msgstr ""
 
-#: src/routes/dashboard/career/route.tsx
+#: src/routes/dashboard/applications/offers.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
 msgstr ""
 
@@ -4769,7 +4787,7 @@ msgstr "Pripojenia účtujú reč osobitne a môžu čerpať tokeny z vášho ú
 msgid "Contact"
 msgstr "Kontaktovať"
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/help/help-page.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -4910,6 +4928,7 @@ msgstr "Názov konverzácie"
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Conversations"
 msgstr "Rozhovory"
@@ -6452,8 +6471,10 @@ msgid "Details"
 msgstr "Podrobnosti"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/profile/index.tsx
 #: src/routes/dashboard/profile/route.tsx
-msgid "Details & career"
+msgctxt "Profile page: your name, photo, contact details and links"
+msgid "Details"
 msgstr ""
 
 #. placeholder {0}: work.title
@@ -6572,8 +6593,9 @@ msgstr ""
 msgid "DNS records"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/docs/header.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/help/help-page.tsx
 msgid "Docs"
 msgstr "Dokumentácia"
 
@@ -6585,10 +6607,6 @@ msgstr "Ponuka dokumentov: {name}"
 msgid "Document name"
 msgstr ""
 
-#: src/features/documents/documents-page.tsx
-msgid "Document type"
-msgstr "Typ dokumentu"
-
 #: src/features/docs/layout.tsx
 #: src/features/docs/sidebar.tsx
 msgid "Documentation"
@@ -6596,6 +6614,7 @@ msgstr ""
 
 #: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Documents"
@@ -6894,10 +6913,6 @@ msgstr "Pred nahraním potiahnutím zmeňte polohu a pomocou posúvača priblí�
 #: src/features/documents/new-document-dialog.tsx
 msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section, flag anything we're unsure of, and add what your Profile is missing."
 msgstr ""
-
-#: src/features/documents/documents-page.tsx
-msgid "Drop a PDF, Word or JSON file"
-msgstr "Presuňte súbor PDF, Word alebo JSON"
 
 #: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Drop pictures here"
@@ -7663,6 +7678,7 @@ msgstr "Fakt zabudnutý"
 #: src/features/career/coach-chat.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/facts.tsx
 #: src/routes/dashboard/profile/route.tsx
 msgid "Facts"
 msgstr "Fakty"
@@ -7751,10 +7767,6 @@ msgstr "Vyplňte pozíciu a spoločnosť. Pripojte poskytovateľa AI v Nastaveni
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Fill in the role and company. The posting is saved with the application."
 msgstr "Vyplňte rolu a spoločnosť. Pracovná ponuka sa uloží so žiadosťou o zamestnanie."
-
-#: src/features/documents/documents-page.tsx
-msgid "Fill in your Profile first"
-msgstr ""
 
 #: src/features/profile/fill.tsx
 msgid "Fill your Profile from what you have"
@@ -7862,8 +7874,8 @@ msgid "Fit"
 msgstr "Zhoda"
 
 #: src/features/career/workspace/saved.tsx
-msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
-msgstr "Kontroly zhody, brífingy, spätná väzba z nácviku, rozbory, odpovede a návrhy odpovedí sa tu objavia, keď ich vytvoria ostatné karty."
+msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other sections create them."
+msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Fit page to width"
@@ -8637,9 +8649,12 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: src/features/settings/root.tsx
-msgid "Help & docs"
-msgstr "Pomocník a dokumenty"
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
+#: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Help & legal"
+msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
@@ -9069,6 +9084,10 @@ msgstr "Priebeh importu"
 msgid "Import steps"
 msgstr "Kroky importu"
 
+#: src/features/documents/documents-page.tsx
+msgid "Import the resume you have, or start a new one from your Profile."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Import this file into a free Rezumi. Every issue is waiting for you in Check."
 msgstr "Importujte tento súbor do bezplatného Rezumi. Každý problém na vás čaká v šeku."
@@ -9078,7 +9097,7 @@ msgid "Import with AI"
 msgstr ""
 
 #: src/features/documents/documents-page.tsx
-msgid "Import your current resume and we'll lay out every section for you to refine. It also fills your Profile, so your next resume, letter and portfolio start from it. Or start blank from your Profile."
+msgid "Import your current resume, or drop a PDF, Word or JSON file here, and we'll lay out every section for you to refine."
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -9162,6 +9181,7 @@ msgstr "V texte"
 msgid "Inline formatting"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Insights"
 msgstr "Prehľady"
@@ -9809,6 +9829,7 @@ msgstr "Usporiadajte text vodorovne. Otočené úseky sa často strácajú alebo
 #: src/features/resume/editor/check/issues.ts
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "Layout"
 msgstr "Rozloženie"
 
@@ -9971,6 +9992,7 @@ msgstr "List bol duplikovaný"
 msgid "Letter page"
 msgstr "Listová stránka"
 
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Letters"
 msgstr "Listy"
@@ -9989,8 +10011,9 @@ msgstr "Úroveň"
 msgid "Level {level} of 5"
 msgstr "Úroveň {level} z 5"
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Licenses"
 msgstr ""
 
@@ -10703,6 +10726,10 @@ msgstr "Návrhy modelov nie sú k dispozícii. Stále môžete zadať akékoľve
 msgid "Model: {label}"
 msgstr "Model: {label}"
 
+#: src/routes/dashboard/profile/stories.{-$storyId}.tsx
+msgid "Moments from your work, told in a few lines, ready for interviews and letters."
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Month"
 msgstr ""
@@ -11073,6 +11100,10 @@ msgstr "Nová žiadosť"
 msgid "New conversation"
 msgstr "Nový rozhovor"
 
+#: src/features/documents/documents-page.tsx
+msgid "New cover letter"
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "New cover letter instead"
 msgstr "Namiesto toho nový sprievodný list"
@@ -11097,6 +11128,10 @@ msgstr "Nová stránka"
 #: src/features/auth/pages/reset-password.tsx
 msgid "New password"
 msgstr "Nové heslo"
+
+#: src/features/documents/documents-page.tsx
+msgid "New resume"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "New roles from your search"
@@ -11251,8 +11286,8 @@ msgid "No commands match that search."
 msgstr "Tomuto hľadaniu nezodpovedajú žiadne príkazy."
 
 #: src/features/settings/ai/connected-apps.tsx
-msgid "No connected applications yet. Apps you allow to access your account appear here."
-msgstr "Zatiaľ žiadne pripojené aplikácie. Zobrazia sa tu aplikácie, ktorým povolíte prístup k účtu."
+msgid "No connected applications yet."
+msgstr ""
 
 #: src/features/applications/components/detail/contacts.tsx
 msgid "No contacts yet"
@@ -11349,6 +11384,10 @@ msgstr "Zatiaľ bez práce"
 #: src/features/settings/ai/api-keys.tsx
 msgid "No keys yet."
 msgstr "Zatiaľ žiadne kľúče."
+
+#: src/features/documents/documents-page.tsx
+msgid "No letters yet"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No lines look like a job title paired with an employer."
@@ -11467,6 +11506,10 @@ msgstr "Nenašli sa žiadne výsledky."
 
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time by 40%”, then try again."
+msgstr ""
+
+#: src/features/documents/documents-page.tsx
+msgid "No resumes yet"
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -11831,6 +11874,10 @@ msgstr ""
 msgid "Nothing here should cost you a match."
 msgstr "Nič by vás tu nemalo stáť zápas."
 
+#: src/features/career/coach.tsx
+msgid "Nothing is titled “{query}”."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
 msgstr "Nič neoznačuje pozíciu ako prebiehajúcu."
@@ -11840,13 +11887,13 @@ msgstr "Nič neoznačuje pozíciu ako prebiehajúcu."
 msgid "Nothing matches “{0}”"
 msgstr "Nič nezodpovedá „{0}“"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Nothing matches “{query}”"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Nothing matches these filters"
 msgstr "Týmto filtrom sa nič nezhoduje"
-
-#: src/features/billing/admin/overview.tsx
-msgid "Nothing matches."
-msgstr ""
 
 #: src/features/billing/subscription-actions.tsx
 msgid "Nothing more is charged. Your account goes back to Free at the end of the period you paid for; every document stays yours."
@@ -11968,8 +12015,10 @@ msgstr "Ponuka"
 msgid "Offer comparison"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
+#: src/routes/dashboard/applications/offers.tsx
 msgid "Offers"
 msgstr "Ponuky"
 
@@ -12149,6 +12198,10 @@ msgstr "Otvorte nastavenia AI"
 msgid "Open any theme to scroll through a whole sample page. Switch themes at any time; your content stays the same."
 msgstr ""
 
+#: src/features/career/offers.tsx
+msgid "Open applications"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Open briefing"
 msgstr "Otvoriť brífing"
@@ -12173,6 +12226,10 @@ msgstr "Otvoriť e‑mailovú aplikáciu"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Open focus mode"
 msgstr "Otvoriť režim zaostrenia"
+
+#: src/features/career/coach.tsx
+msgid "Open full screen"
+msgstr ""
 
 #. placeholder {0}: tabLabel(meta.tab)
 #: src/features/career/workspace/saved.tsx
@@ -12641,6 +12698,7 @@ msgid "Password set"
 msgstr "Heslo je nastavené"
 
 #: src/features/assistant/assistant-panel.tsx
+#: src/features/career/coach.tsx
 msgid "Past conversations"
 msgstr "Minulé rozhovory"
 
@@ -12674,8 +12732,8 @@ msgid "Paste a YouTube or Vimeo link. The player loads only when a visitor press
 msgstr ""
 
 #: src/features/career/offers.tsx
-msgid "Paste an offer into an application's Messages tab."
-msgstr "Vložte ponuku na kartu Správy v žiadosti."
+msgid "Paste an offer into an application's Messages section."
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Paste description instead"
@@ -12757,6 +12815,7 @@ msgstr "Výplatné obdobie"
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-return.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Payment"
 msgstr ""
 
@@ -13035,8 +13094,7 @@ msgstr "Obyčajný text s nadpismi. Vložte do formulárov žiadostí o zamestna
 #: src/features/billing/back-link.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/billing/plan-page.tsx
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
@@ -13131,6 +13189,7 @@ msgid "Polishing"
 msgstr "Dolaďujeme"
 
 #: src/features/assistant/assistant-panel.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/resumes.tsx
 #: src/features/homepage/ui.tsx
 #: src/features/portfolio/admin/reports-page.tsx
@@ -13157,8 +13216,7 @@ msgid "Portfolio preview"
 msgstr ""
 
 #: src/features/portfolio/admin/reports-page.tsx
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Portfolio reports"
 msgstr ""
@@ -13281,6 +13339,7 @@ msgstr "Predvoľby"
 
 #: src/features/career/coach-chat.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/preferences.tsx
 #: src/routes/dashboard/profile/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -13477,8 +13536,9 @@ msgstr ""
 msgid "Privacy"
 msgstr "Súkromie"
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Privacy policy"
 msgstr "Zásady ochrany osobných údajov"
 
@@ -14067,6 +14127,7 @@ msgstr "Z pamäti"
 
 #: src/features/billing/receipt-link.tsx
 #: src/features/billing/receipt.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Receipt"
 msgstr ""
 
@@ -14210,8 +14271,8 @@ msgstr ""
 msgid "Refund not confirmed"
 msgstr ""
 
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -14871,6 +14932,7 @@ msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/resumes.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Resumes"
 msgstr "Životopisy"
@@ -15042,7 +15104,7 @@ msgstr ""
 msgid "Rezumi - Go to homepage"
 msgstr "Rezumi – prejsť na domovskú stránku"
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/help/help-page.tsx
 msgid "Rezumi {__APP_VERSION__}"
 msgstr ""
 
@@ -15642,6 +15704,10 @@ msgstr "Vyhľadávajte v Žiadostiach a v asistentovi a čítajte stránky, ktor
 msgid "Search job postings"
 msgstr "Hľadajte pracovné ponuky"
 
+#: src/routes/dashboard/applications/index.tsx
+msgid "Search reads the role, company, location, contacts and tags."
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 msgid "Search results"
 msgstr ""
@@ -16021,9 +16087,7 @@ msgid "Setting up HTTPS. This usually takes a few minutes, and this page updates
 msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/page.tsx
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "Nastavenia"
@@ -16991,6 +17055,7 @@ msgstr ""
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/profile/route.tsx
+#: src/routes/dashboard/profile/stories.{-$storyId}.tsx
 msgid "Stories"
 msgstr "Príbehy"
 
@@ -17448,8 +17513,9 @@ msgstr ""
 msgid "Terms from the posting"
 msgstr "Výrazy z pracovnej ponuky"
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Terms of service"
 msgstr ""
 
@@ -18158,6 +18224,10 @@ msgstr ""
 msgid "The right role is out there."
 msgstr ""
 
+#: src/routes/dashboard/profile/preferences.tsx
+msgid "The roles, places, pay and ways of working you want. Job matches and the coach follow them."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The same line repeats on every page."
 msgstr "Ten istý riadok sa opakuje na každej strane."
@@ -18329,6 +18399,10 @@ msgstr "Oni a ich časové osi sa natrvalo odstránia. Toto sa nedá vrátiť sp
 #: src/features/resume/editor/check/issues.ts
 msgid "They look for headings such as Experience, Education and Skills."
 msgstr "Hľadajú rubriky ako Skúsenosti, Vzdelanie a Zručnosti."
+
+#: src/routes/dashboard/profile/facts.tsx
+msgid "Things that are true about your work. The coach and AI quote them, and never invent their own."
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Thinking"
@@ -19132,6 +19206,7 @@ msgid "Translate to {language}"
 msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/trash-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Trash"
@@ -20074,7 +20149,6 @@ msgstr "Vietnamčina"
 
 #: src/features/career/coach-chat.tsx
 #: src/features/documents/documents-page.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "View"
 msgstr "Zobraziť"
 
@@ -20331,6 +20405,7 @@ msgstr ""
 msgid "Webhooks with a bad signature"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/write/basics-card.tsx
@@ -20576,6 +20651,10 @@ msgstr "Čo ste poslali · {0}"
 #: src/features/career/knowledge/preferences.tsx
 msgid "What you're looking for"
 msgstr "Čo hľadáte"
+
+#: src/features/billing/plan-page.tsx
+msgid "What your plan includes, and your payments."
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "What's included"
@@ -21267,10 +21346,6 @@ msgstr ""
 msgid "Your details and career, kept in one place."
 msgstr ""
 
-#: src/routes/dashboard/profile/route.tsx
-msgid "Your details and career, kept in one place. New resumes, letters and your portfolio start from here."
-msgstr ""
-
 #: src/features/career/coach.tsx
 msgid "Your details and career, with the facts, stories and preferences that are switched on in your Profile"
 msgstr ""
@@ -21289,6 +21364,10 @@ msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your details were copied into the letter. Edit them here."
+msgstr ""
+
+#: src/features/settings/account/page.tsx
+msgid "Your details, how you sign in, and your data."
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -21467,6 +21546,10 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "Your name is missing"
 msgstr "Vaše meno chýba"
+
+#: src/routes/dashboard/profile/index.tsx
+msgid "Your name, photo, contact details and links. New resumes, letters and your portfolio start from here."
+msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Your name, photo, experience, education and skills follow this resume as it changes. Its summary becomes About me and its projects become your work, to edit freely."
@@ -21809,6 +21892,10 @@ msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Your subscription is set to end. Keep it first to change the plan."
+msgstr ""
+
+#: src/routes/dashboard/profile/career.tsx
+msgid "Your summary, experience, education, skills and the rest. New resumes and your portfolio start from here."
 msgstr ""
 
 #: src/features/portfolio/blocks/story-templates.ts

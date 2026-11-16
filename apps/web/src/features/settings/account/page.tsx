@@ -11,7 +11,10 @@ export function AccountSettings() {
 
 	return (
 		<>
-			<PageHeader title={<Trans>Account</Trans>} />
+			<PageHeader
+				title={<Trans>Account</Trans>}
+				description={<Trans>Your details, how you sign in, and your data.</Trans>}
+			/>
 			<ProfileSection session={session} />
 			<SecuritySection />
 			<DataSection openDeletion={deleteAccount ?? false} />

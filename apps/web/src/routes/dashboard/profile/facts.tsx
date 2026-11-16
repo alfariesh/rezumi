@@ -1,5 +1,8 @@
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { createFileRoute } from "@tanstack/react-router";
 import z from "zod";
+import { PageHeader } from "@/components/layout/page-header";
 import { FactsPage } from "@/features/career/knowledge/facts";
 
 export const Route = createFileRoute("/dashboard/profile/facts")({
@@ -10,5 +13,15 @@ export const Route = createFileRoute("/dashboard/profile/facts")({
 
 function RouteComponent() {
 	const { highlight } = Route.useSearch();
-	return <FactsPage highlight={highlight} />;
+	return (
+		<>
+			<PageHeader
+				title={t`Facts`}
+				description={
+					<Trans>Things that are true about your work. The coach and AI quote them, and never invent their own.</Trans>
+				}
+			/>
+			<FactsPage highlight={highlight} />
+		</>
+	);
 }

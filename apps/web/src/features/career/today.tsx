@@ -2,7 +2,6 @@ import type { Kind, Lead, Schedule } from "./schedule-sheet";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Ref } from "react";
-import { EmptyState } from "@heroui-pro/react";
 import { Button, buttonVariants, Chip, Skeleton, Spinner, Switch, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -28,6 +27,7 @@ import {
 	useNow,
 	withUndo,
 } from "./shared";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { RowIcon } from "@/components/layout/icon-row";
 import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
@@ -280,26 +280,18 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 							</AnimatePresence>
 						</div>
 					) : (
-						<EmptyState size="sm">
-							<EmptyState.Header>
-								<EmptyState.Media variant="icon">
-									<Icon name="check-circle" size={20} />
-								</EmptyState.Media>
-								<EmptyState.Title>
-									<Trans>You're up to date</Trans>
-								</EmptyState.Title>
-								<EmptyState.Description>
-									<Trans>New roles, reminders and finished briefings appear here.</Trans>
-								</EmptyState.Description>
-							</EmptyState.Header>
-							{read.length > 0 && (
-								<EmptyState.Content>
+						<EmptyBlock
+							kind="inline"
+							title={<Trans>You're up to date</Trans>}
+							description={<Trans>New roles, reminders and finished briefings appear here.</Trans>}
+							action={
+								read.length > 0 ? (
 									<Button variant="ghost" size="sm" onPress={() => setShowRead(true)}>
 										<Trans>Show {read.length} read</Trans>
 									</Button>
-								</EmptyState.Content>
-							)}
-						</EmptyState>
+								) : undefined
+							}
+						/>
 					)}
 				</Swap>
 			)}
@@ -397,23 +389,29 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 		if (!active) return null;
 		if (!active.enabled)
 			return (
-				<p className="flex flex-wrap items-center gap-x-1 text-sm text-muted">
-					<Trans>No new roles. Discovery is paused.</Trans>
-					<Button variant="ghost" size="sm" onPress={() => onOpenSchedule(active.id)}>
-						<Trans>Open the schedule</Trans>
-					</Button>
-				</p>
+				<EmptyBlock
+					kind="inline"
+					title={<Trans>No new roles. Discovery is paused.</Trans>}
+					action={
+						<Button variant="ghost" size="sm" onPress={() => onOpenSchedule(active.id)}>
+							<Trans>Open the schedule</Trans>
+						</Button>
+					}
+				/>
 			);
 		const offset = dayOffset(active.nextRunAt, now);
 		const clock = time(active.nextRunAt);
 		return (
-			<p className="text-body-sm text-muted">
-				{offset === 0
-					? t`No new roles. Discovery runs again today at ${clock}.`
-					: offset === 1
-						? t`No new roles. Discovery runs again tomorrow at ${clock}.`
-						: t`No new roles. Discovery runs again on ${day(active.nextRunAt)} at ${clock}.`}
-			</p>
+			<EmptyBlock
+				kind="inline"
+				title={
+					offset === 0
+						? t`No new roles. Discovery runs again today at ${clock}.`
+						: offset === 1
+							? t`No new roles. Discovery runs again tomorrow at ${clock}.`
+							: t`No new roles. Discovery runs again on ${day(active.nextRunAt)} at ${clock}.`
+				}
+			/>
 		);
 	};
 
@@ -437,21 +435,15 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 					active ? (
 						emptyLine()
 					) : (
-						<EmptyState size="sm">
-							<EmptyState.Header>
-								<EmptyState.Media variant="icon">
-									<Icon name="globe-simple" size={20} />
-								</EmptyState.Media>
-								<EmptyState.Title>
-									<Trans>Get new roles here every morning</Trans>
-								</EmptyState.Title>
-							</EmptyState.Header>
-							<EmptyState.Content>
+						<EmptyBlock
+							kind="inline"
+							title={<Trans>Get new roles here every morning</Trans>}
+							action={
 								<Button variant="secondary" size="sm" onPress={() => onOpenSchedule("new:discovery")}>
 									<Trans>Set up discovery</Trans>
 								</Button>
-							</EmptyState.Content>
-						</EmptyState>
+							}
+						/>
 					)
 				) : (
 					<div>
@@ -790,9 +782,15 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 			) : !rows ? (
 				<RowsSkeleton rows={2} />
 			) : rows.length === 0 ? (
-				<p className="text-body-sm text-muted">
-					<Trans>Nothing scheduled yet.</Trans>
-				</p>
+				<EmptyBlock
+					kind="inline"
+					title={<Trans>Nothing scheduled yet.</Trans>}
+					action={
+						<Button variant="ghost" size="sm" onPress={() => onOpenSchedule("new")}>
+							<Trans>Add</Trans>
+						</Button>
+					}
+				/>
 			) : (
 				<div>
 					<AnimatePresence initial={false}>

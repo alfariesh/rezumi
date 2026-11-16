@@ -16,6 +16,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { computeInsights, computeOutcomes, computeTimeline } from "../insights";
 import { getStageColor, getStageLabel } from "../stages";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { WidgetAction, WidgetHeading } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
 
@@ -253,9 +254,7 @@ export function ApplicationInsights({ applications }: { applications: Applicatio
 				{/* sources */}
 				<ChartWidget icon="map-pin" title={t`Where applications come from`} description={t`Count by source`}>
 					{sourceData.length === 0 ? (
-						<p className="text-body-sm text-muted">
-							<Trans>No source data yet.</Trans>
-						</p>
+						<EmptyBlock kind="inline" title={<Trans>No source data yet.</Trans>} />
 					) : (
 						<>
 							<BarChart

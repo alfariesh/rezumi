@@ -1,6 +1,6 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { AppLayout, Navbar, Sidebar, useSidebar } from "@heroui-pro/react";
+import { AppLayout, Navbar, Sheet, Sidebar, useSidebar } from "@heroui-pro/react";
 import { Breadcrumbs, Button, Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -8,14 +8,19 @@ import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useMatchRoute, useRouterState } from "@tanstack/react-router";
 import Cookies from "js-cookie";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { cn } from "@rezumi/utils/style";
 import { ShellPendingContext } from "@/components/layout/loading-screen";
-import { PAGE_GUTTER } from "@/components/layout/page";
+import { PAGE_GUTTER, PAGE_MAX_WIDTH } from "@/components/layout/page";
 import { useDialogStore } from "@/dialogs/store";
 import { applicationDetailQueryOptions } from "@/features/applications/queries";
 import { GuestBanner } from "@/features/auth/components/guest-banner";
+import { CoachPanelSlot, loadCoachPanel } from "@/features/coach-panel/coach-panel";
+import { useCoachLauncher, useWorkspaceParams } from "@/features/coach-panel/launcher";
+import { useCoachPanelStore } from "@/features/coach-panel/store";
 import { useCommandPaletteStore } from "@/features/command-palette/store";
 import { isEditableElementFocused } from "@/features/resume/builder/draft";
 import { UserAvatar } from "@/features/user/avatar";
@@ -24,23 +29,16 @@ import { orpc } from "@/libs/orpc/client";
 
 type NavItem = {
 	/** Where it links. */
-	to:
-		| "/dashboard"
-		| "/dashboard/applications"
-		| "/dashboard/documents"
-		| "/dashboard/portfolio"
-		| "/dashboard/coach"
-		| "/dashboard/profile"
-		| "/dashboard/career/offers"
-		| "/dashboard/trash";
+	to: "/dashboard" | "/dashboard/applications" | "/dashboard/documents" | "/dashboard/portfolio" | "/dashboard/profile";
 	icon: IconName;
 	label: string;
 	count?: number;
 };
 
 /**
- * The destinations, in the order a search runs: Home (what needs you), the jobs, the documents sent to them, then the
- * coach and the Profile everything starts from, and the offers at the end. Counts show only what is waiting or open.
+ * The destinations, in the order a search runs: Home (what needs you), the jobs (offers live inside them), the
+ * documents sent to them (trash inside), the portfolio, then the Profile everything starts from. The coach opens from
+ * the top bar on every page. Counts show only what is waiting or open.
  */
 function useNavItems() {
 	const { data: counts } = useQuery(orpc.documents.counts.queryOptions());
@@ -52,44 +50,45 @@ function useNavItems() {
 	// Home counts what's waiting for the user (unread notifications), so nothing shows at zero.
 	const unread = notifications?.filter((notification) => !notification.readAt).length ?? 0;
 
+	const applications: NavItem = {
+		to: "/dashboard/applications",
+		icon: "briefcase",
+		label: t`Applications`,
+		...(applicationStats
+			? {
+					count: applicationStats.byStage
+						.filter((row) => row.status !== "closed")
+						.reduce((total, row) => total + row.count, 0),
+				}
+			: {}),
+	};
+	// The owner's order (2026-11-16): Home, Portfolio, Documents, Profile, then Applications.
 	const items: NavItem[] = [
 		{ to: "/dashboard", icon: "house", label: t`Home`, ...(unread ? { count: unread } : {}) },
-		{
-			to: "/dashboard/applications",
-			icon: "briefcase",
-			label: t`Applications`,
-			...(applicationStats
-				? {
-						count: applicationStats.byStage
-							.filter((row) => row.status !== "closed")
-							.reduce((total, row) => total + row.count, 0),
-					}
-				: {}),
-		},
+		...(portfolio?.enabled
+			? [{ to: "/dashboard/portfolio", icon: "globe-hemisphere-west", label: t`Portfolio` } satisfies NavItem]
+			: []),
 		{
 			to: "/dashboard/documents",
 			icon: "file-text",
 			label: t`Documents`,
 			...(counts ? { count: counts.resume + counts.letter } : {}),
 		},
-		...(portfolio?.enabled
-			? [{ to: "/dashboard/portfolio", icon: "globe-hemisphere-west", label: t`Portfolio` } satisfies NavItem]
-			: []),
-		{ to: "/dashboard/coach", icon: "sparkle", label: t`Coach` },
 		{ to: "/dashboard/profile", icon: "user-circle", label: t`Profile` },
-		{ to: "/dashboard/career/offers", icon: "scales", label: t`Offers` },
+		applications,
 	];
-	const trash: NavItem | null = counts?.trash
-		? { to: "/dashboard/trash", icon: "trash", label: t`Trash`, count: counts.trash }
-		: null;
 
-	return { items, trash };
+	return items;
 }
 
-/** Whether the item is the current page: Home is exact, the others match their section. */
+/** Whether the item is the current page: Home is exact, the others match their section (Trash is Documents'). */
 function useIsCurrent() {
 	const matchRoute = useMatchRoute();
-	return (item: NavItem) => Boolean(matchRoute({ to: item.to, fuzzy: item.to !== "/dashboard" }));
+	return (item: NavItem) =>
+		Boolean(
+			matchRoute({ to: item.to, fuzzy: item.to !== "/dashboard" }) ||
+			(item.to === "/dashboard/documents" && matchRoute({ to: "/dashboard/trash" })),
+		);
 }
 
 /** The sidebar state HeroUI's AppLayout saves on every toggle; collapsed to icons by default below 1024px. */
@@ -99,14 +98,60 @@ function initialSidebarOpen() {
 	return typeof window === "undefined" || window.matchMedia("(min-width: 1024px)").matches;
 }
 
+/** AppLayout hides its aside column up to 1024px (`max-width: 1024px`); the coach is a sheet there. */
+const ASIDE_QUERY = "(min-width: 1025px)";
+
+function subscribeAside(onChange: () => void) {
+	if (typeof window.matchMedia !== "function") return () => {};
+	const list = window.matchMedia(ASIDE_QUERY);
+	list.addEventListener("change", onChange);
+	return () => list.removeEventListener("change", onChange);
+}
+
+/** Whether the coach docks beside the page (AppLayout shows its aside) rather than coming in as a sheet. */
+function useAsideShown() {
+	return useSyncExternalStore(
+		subscribeAside,
+		() => typeof window.matchMedia === "function" && window.matchMedia(ASIDE_QUERY).matches,
+		() => true,
+	);
+}
+
+/** Coach full screen (`/dashboard/coach/…`), or the older address that redirects there. */
+const isCoachPage = (pathname: string) => /^\/dashboard\/(career\/)?coach(\/|$)/.test(pathname);
+
 /**
  * The app shell for every dashboard page: HeroUI Pro's AppLayout with a 240px sidebar that collapses to icons (⌘B),
- * and a sheet opened from the navbar's menu button on phones. N opens New anywhere outside a field.
+ * and a sheet opened from the navbar's menu button on phones. N opens New anywhere outside a field. The coach opens
+ * from the navbar into a panel beside the page (a sheet up to 1024px) and stays open from page to page; an
+ * application's workspace hides it, since that page has a coach for the job.
  */
 type AppShellProps = { children: ReactNode };
 
 export function AppShell({ children }: AppShellProps) {
 	const openDialog = useDialogStore((state) => state.openDialog);
+	const coachOpen = useCoachPanelStore((state) => state.open);
+	const setCoachOpen = useCoachPanelStore((state) => state.setOpen);
+	const docked = useAsideShown();
+	const onWorkspace = useWorkspaceParams() !== undefined;
+	const location = useRouterState({ select: (state) => state.location });
+	// Coach full screen shows the coach itself: no panel beside it (two live chats on one conversation).
+	const onCoachPage = isCoachPage(location.pathname);
+	const coachVisible = coachOpen && !onWorkspace && !onCoachPage;
+
+	// Where Coach full screen collapses back to: the page the person was on (never a coach address).
+	useEffect(() => {
+		if (!isCoachPage(location.pathname)) useCoachPanelStore.getState().setLastHref(location.href);
+	}, [location.pathname, location.href]);
+
+	// Up to 1024px the coach is a sheet over the page: when a link in the chat (a fact, an offer) opens another page,
+	// the sheet closes so that page shows. The docked panel stays open beside the page.
+	const shownPath = useRef(location.pathname);
+	useEffect(() => {
+		if (shownPath.current === location.pathname) return;
+		shownPath.current = location.pathname;
+		if (!docked) setCoachOpen(false);
+	}, [location.pathname, docked, setCoachOpen]);
 
 	useHotkey("N", () => {
 		if (isEditableElementFocused() || useDialogStore.getState().open) return;
@@ -115,9 +160,13 @@ export function AppShell({ children }: AppShellProps) {
 
 	return (
 		<AppLayout
-			className="dashboard-shell bg-surface"
+			// The docked panel is the editors' assistant column: on the window's surface, no border, as wide as theirs.
+			className="dashboard-shell bg-surface [&_[data-slot=app-layout-aside]]:border-0 [&_[data-slot=app-layout-aside]]:bg-surface [&_[data-slot=app-layout-aside]]:[--app-layout-aside-width:var(--editor-assistant)]"
 			defaultSidebarOpen={initialSidebarOpen()}
 			sidebarCollapsible="icon"
+			// One coach at a time: the docked panel here, or the sheet below (AppLayout's own sheet would mount it twice).
+			aside={docked && !onCoachPage ? <CoachPanelSlot visible={coachVisible} className="ps-1 pe-3 pb-2" /> : null}
+			asideOpen={docked && coachVisible}
 			sidebar={
 				<>
 					<Sidebar
@@ -143,6 +192,19 @@ export function AppShell({ children }: AppShellProps) {
 				<GuestBanner />
 				<ShellPendingContext value>{children}</ShellPendingContext>
 			</div>
+			{!docked && !onCoachPage && (
+				// Up to 1024px, a sheet like the editors' assistant drawer. Unlike the docked column it unmounts when it
+				// closes (HeroUI's modal), so the chat reloads the conversation when it opens again.
+				<Sheet isOpen={coachVisible} onOpenChange={setCoachOpen} placement="right">
+					<Sheet.Backdrop>
+						<Sheet.Content className="w-full sm:max-w-none md:max-w-[420px]">
+							<Sheet.Dialog aria-label={t`Coach`} className="h-full gap-0 bg-surface p-0">
+								<CoachPanelSlot visible className="px-3 pb-2" />
+							</Sheet.Dialog>
+						</Sheet.Content>
+					</Sheet.Backdrop>
+				</Sheet>
+			)}
 		</AppLayout>
 	);
 }
@@ -155,8 +217,9 @@ type Crumb = { label: ReactNode; href?: string };
  */
 function useCrumbs(): Crumb[] {
 	const pathname = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") });
-	const [section, page] = pathname.split("/").slice(2);
+	const [section, page, subpage] = pathname.split("/").slice(2);
 	const profileTabs: Record<string, string> = {
+		career: t`Career`,
 		facts: t`Facts`,
 		stories: t`Stories`,
 		preferences: t({
@@ -164,10 +227,20 @@ function useCrumbs(): Crumb[] {
 			context: "Career preferences: the roles, places, pay and ways of working you want",
 		}),
 	};
+	// Settings' menu (routes/dashboard/settings/route.tsx); older addresses redirect to these.
+	const settingsPages: Record<string, string> = {
+		account: t`Account`,
+		billing: t`Plan`,
+		app: t`App settings`,
+	};
 
 	switch (section) {
 		case undefined:
 			return [{ label: t`Home` }];
+		case "coach":
+			return [{ label: t`Coach` }];
+		case "help":
+			return [{ label: t`Help & legal` }];
 		case "documents":
 			return [{ label: t`Documents` }];
 		case "trash":
@@ -175,26 +248,35 @@ function useCrumbs(): Crumb[] {
 		case "portfolio":
 			return [{ label: t`Portfolio` }];
 		case "applications":
+			if (page === "offers") return [{ label: t`Applications`, href: "/dashboard/applications" }, { label: t`Offers` }];
 			return page
 				? [{ label: t`Applications`, href: "/dashboard/applications" }, { label: <ApplicationCrumb id={page} /> }]
 				: [{ label: t`Applications` }];
-		case "coach":
-			return [{ label: t`Coach` }];
 		case "profile": {
 			const current = page ? profileTabs[page] : undefined;
 			return current
 				? [{ label: t`Profile`, href: "/dashboard/profile" }, { label: current }]
 				: [{ label: t`Profile` }];
 		}
-		case "career":
-			// Today moved to Home; Offers keeps its address under /dashboard/career.
-			return page === "offers" ? [{ label: t`Offers` }] : [];
-		case "settings":
-			if (page === "account") return [{ label: t`Account` }];
-			if (page === "billing") return [{ label: t`Plan` }];
-			return [{ label: t`Settings` }];
+		case "settings": {
+			// A payment's return page and its receipt sit under Plan.
+			if (page === "billing" && (subpage === "return" || subpage === "receipt"))
+				return [
+					{ label: t`Settings`, href: "/dashboard/settings" },
+					{ label: t`Plan`, href: "/dashboard/settings/billing" },
+					{ label: subpage === "return" ? t`Payment` : t`Receipt` },
+				];
+			const current = page ? settingsPages[page] : undefined;
+			return current
+				? [{ label: t`Settings`, href: "/dashboard/settings" }, { label: current }]
+				: [{ label: t`Settings` }];
+		}
 		case "admin":
-			return [{ label: page === "portfolios" ? t`Portfolio reports` : t`Billing admin` }];
+			// Administrators reach these from Settings' menu.
+			return [
+				{ label: t`Settings`, href: "/dashboard/settings" },
+				{ label: page === "portfolios" ? t`Portfolio reports` : t`Billing admin` },
+			];
 		default:
 			return [];
 	}
@@ -220,14 +302,16 @@ function AppNavbar() {
 
 	return (
 		<Navbar maxWidth="full" size="sm" aria-label={t`Toolbar`} className="bg-surface [view-transition-name:app-bar]">
-			<Navbar.Header className={PAGE_GUTTER}>
+			<Navbar.Header className={cn("mx-auto w-full", PAGE_GUTTER, PAGE_MAX_WIDTH)}>
 				<AppLayout.MenuToggle aria-label={t`Open navigation`} />
-				<Sidebar.Trigger aria-label={t`Toggle sidebar`} />
+				{/* A little in, and the crumbs close after it: the toggle's icon and the crumbs line up with a
+					    section menu's icons and labels below. */}
+				<Sidebar.Trigger aria-label={t`Toggle sidebar`} className="md:ms-0.5" />
 				<Link to="/dashboard" aria-label="Rezumi" className="md:hidden">
 					<BrandIcon variant="icon" alt="" className="size-6" />
 				</Link>
 				{crumbs.length > 0 && (
-					<Breadcrumbs className="ms-1 min-w-0 max-md:hidden">
+					<Breadcrumbs className="-ms-2 min-w-0 max-md:hidden">
 						{crumbs.map((crumb, index) => (
 							// Only the last crumb has no link, so the link (or "current") is a unique key.
 							<Breadcrumbs.Item
@@ -241,6 +325,7 @@ function AppNavbar() {
 				)}
 				<Navbar.Spacer />
 				<Navbar.Content>
+					<CoachButton />
 					<Button
 						variant="tertiary"
 						size="sm"
@@ -273,9 +358,50 @@ function AppNavbar() {
 	);
 }
 
+/**
+ * Opens the coach panel, or closes it when open. On an application's workspace it opens that job's coach instead
+ * (the workspace's `?coach=` sheet). Hidden on Coach full screen, which is the coach. Hovering starts loading the
+ * panel.
+ */
+function CoachButton() {
+	const open = useCoachPanelStore((state) => state.open);
+	const launch = useCoachLauncher();
+	const workspace = useWorkspaceParams();
+	const onCoachPage = useRouterState({ select: (state) => isCoachPage(state.location.pathname) });
+	const pressed = open && !workspace;
+	if (onCoachPage) return null;
+	const onPress = () => launch("toggle");
+
+	return (
+		<>
+			<Button
+				variant="tertiary"
+				size="sm"
+				aria-pressed={pressed}
+				data-coach-button=""
+				className={cn("gap-2 max-md:hidden", pressed ? "bg-accent-soft text-accent-soft-foreground" : "text-muted")}
+				onHoverStart={() => void loadCoachPanel()}
+				onPress={onPress}
+			>
+				<Icon name="sparkle" size={16} className={pressed ? undefined : "text-accent"} />
+				<Trans>Coach</Trans>
+			</Button>
+			<IconButton
+				icon="sparkle"
+				label={t`Coach`}
+				size="sm"
+				aria-pressed={pressed}
+				data-coach-button=""
+				className={cn("text-accent md:hidden", pressed && "bg-accent-soft")}
+				onPress={onPress}
+			/>
+		</>
+	);
+}
+
 /** Brand, destinations, New and the account menu; shared by the desktop sidebar and the phone sheet. */
 function NavigationContent() {
-	const { items, trash } = useNavItems();
+	const items = useNavItems();
 	const isCurrent = useIsCurrent();
 	const openDialog = useDialogStore((state) => state.openDialog);
 	const { isOpen, isMobile } = useSidebar();
@@ -309,7 +435,6 @@ function NavigationContent() {
 			</Sidebar.Content>
 
 			<Sidebar.Footer className="gap-2">
-				{trash && <Sidebar.Menu aria-label={t`Trash`}>{link(trash)}</Sidebar.Menu>}
 				<Sidebar.Tooltip content={t`New`}>
 					<Button
 						aria-label={t`New`}

@@ -109,7 +109,9 @@ test("knowledge corrections persist and the workspace opens without an AI provid
 
 	// Stage Interview opens on Prepare; with no connection it says where to add one instead of failing.
 	await page.goto(`/dashboard/applications/${applicationId}`);
-	await expect(page.getByRole("radio", { name: /Prepare/, checked: true })).toBeVisible();
+	await expect(
+		page.getByRole("navigation", { name: "Workspace sections" }).getByRole("link", { name: /Prepare/ }),
+	).toHaveAttribute("aria-current", "page");
 	await expect(page.getByRole("link", { name: "Connect an AI provider in Settings" })).toBeVisible();
 });
 

@@ -1,5 +1,6 @@
+import type { ApplicationLayout, ApplicationView } from "@/features/applications/components/applications-section";
 import type { Application, ApplicationSummary } from "@/features/applications/types";
-import { EmptyState, Segment } from "@heroui-pro/react";
+import { Segment } from "@heroui-pro/react";
 import { Button, Dropdown, Input, Label, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -11,15 +12,17 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
-import { Page } from "@/components/layout/page";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { PageHeader } from "@/components/layout/page-header";
 import { AddApplicationDialog } from "@/features/applications/components/add-application-dialog";
-import {
-	ApplicationDetailPane,
-	ApplicationDetailPanePlaceholder,
-	ApplicationDetailSheet,
-} from "@/features/applications/components/application-detail-sheet";
+import { ApplicationDetailSheet } from "@/features/applications/components/application-detail-sheet";
 import { ApplicationFormSheet } from "@/features/applications/components/application-form-sheet";
+import {
+	APPLICATION_VIEWS,
+	ApplicationsSection,
+	readStoredLayout,
+	storeLayout,
+} from "@/features/applications/components/applications-section";
 import { ApplicationBoard } from "@/features/applications/components/board";
 import { ApplicationCalendar } from "@/features/applications/components/calendar-view";
 import { ExportApplicationsSheet } from "@/features/applications/components/export-applications-sheet";
@@ -34,22 +37,19 @@ import {
 	hydrateApplicationDetail,
 } from "@/features/applications/queries";
 import { ExtensionInstallHint } from "@/features/extension/install-links";
-import { useMinWidth } from "@/hooks/use-min-width";
 import { toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
 
-const VIEWS = ["list", "board", "insights", "calendar"] as const;
-type View = (typeof VIEWS)[number];
-
 const searchSchema = z.object({
 	q: z.string().default("").catch(""),
-	view: z.enum(VIEWS).default("list").catch("list"),
+	// Without one, the page uses the layout last picked on this device.
+	view: z.enum(APPLICATION_VIEWS).optional().catch(undefined),
 	// Deep links: open Add, or one application.
 	create: z.boolean().default(false).catch(false),
 	applicationId: z.string().optional().catch(undefined),
 });
 type Search = z.output<typeof searchSchema>;
-const defaultSearch: Search = { q: "", view: "list", create: false };
+const defaultSearch = { q: "", create: false } satisfies Partial<Search>;
 
 export const Route = createFileRoute("/dashboard/applications/")({
 	// Hovering the link starts the list without holding the navigation, so it's usually there before the skeleton.
@@ -77,9 +77,10 @@ function matches(application: ApplicationSummary, query: string) {
 }
 
 function RouteComponent() {
-	const { q, view, create, applicationId } = Route.useSearch();
+	const { q, view: requestedView, create, applicationId } = Route.useSearch();
 	const navigate = useNavigate({ from: Route.fullPath });
 	const phone = useBreakpoint() === "mobile";
+	const view: ApplicationView = requestedView ?? readStoredLayout();
 	// Typing filters at once; the URL only seeds the search.
 	const [query, setQuery] = useState(q);
 	const [adding, setAdding] = useState(false);
@@ -154,8 +155,6 @@ function RouteComponent() {
 			window.clearTimeout(timer);
 		};
 	}, [prefetch]);
-	const setSearch = (patch: Partial<Search>) =>
-		void navigate({ resetScroll: false, search: (prev: Search) => ({ ...prev, ...patch }) });
 
 	useEffect(() => {
 		if (!create) return;
@@ -180,10 +179,18 @@ function RouteComponent() {
 	const filtered = (applications ?? []).filter((application) => matches(application, text));
 	const selected = applications?.find((application) => application.id === selectedId) ?? null;
 	// The board needs room to drag: phones get the list instead.
-	const shown: View = phone && (view === "board" || view === "calendar") ? "list" : view;
-	// From 1536px the list keeps the open application in a pane beside it, so moving between rows needs no closing.
-	// Narrower, and on the board and calendar (which need the width), it opens in the sheet.
-	const split = useMinWidth(1536) && shown === "list";
+	const shown: ApplicationView = phone && (view === "board" || view === "calendar") ? "list" : view;
+	// A switch (the layout or the menu): the new view animates in, and the open application's sheet closes with the old one.
+	const [lastShown, setLastShown] = useState(shown);
+	if (lastShown !== shown) {
+		setLastShown(shown);
+		setViewSwitched(true);
+		setSelectedId(null);
+	}
+	const setLayout = (next: ApplicationLayout) => {
+		storeLayout(next);
+		void navigate({ replace: true, resetScroll: false, search: (prev: Search) => ({ ...prev, view: next }) });
+	};
 	const editDetails = (application: Application) => {
 		setSelectedId(null);
 		setEditing(application);
@@ -211,9 +218,9 @@ function RouteComponent() {
 	};
 
 	return (
-		<Page width="wide">
+		<ApplicationsSection view={shown}>
 			<PageHeader
-				title={<Trans>Applications</Trans>}
+				title={shown === "insights" ? <Trans>Insights</Trans> : <Trans>Applications</Trans>}
 				actions={
 					<>
 						<Dropdown>
@@ -245,60 +252,43 @@ function RouteComponent() {
 					</>
 				}
 			>
-				{!(isError && !applications) && !empty && (
-					<>
-						<Segment
-							aria-label={t`View`}
-							// On a phone the switch spans the row, its two items sharing it.
-							className="max-sm:w-full"
-							selectedKey={shown}
-							onSelectionChange={(key) => {
-								setViewSwitched(true);
-								// The pane closes with the list; the sheet shouldn't pop open over the board instead.
-								setSelectedId(null);
-								setSearch({ view: String(key) as View });
-							}}
-						>
-							<Segment.Item id="list">
-								<Icon name="rows" size={18} variant={shown === "list" ? "duotone" : "stroke"} />
-								<Trans>List</Trans>
-							</Segment.Item>
-							{!phone && (
-								<Segment.Item id="board">
-									<Icon name="kanban" size={18} variant={shown === "board" ? "duotone" : "stroke"} />
-									<Trans>Board</Trans>
-								</Segment.Item>
-							)}
-							<Segment.Item id="insights">
-								<Icon name="chart-line-up" size={18} variant={shown === "insights" ? "duotone" : "stroke"} />
-								<Trans>Insights</Trans>
-							</Segment.Item>
-							{!phone && (
-								<Segment.Item id="calendar">
-									<Icon name="calendar-dots" size={18} variant={shown === "calendar" ? "duotone" : "stroke"} />
-									<Trans>Calendar</Trans>
-								</Segment.Item>
-							)}
-						</Segment>
-
-						<div className="relative ms-auto max-w-72 min-w-40 flex-1 max-sm:ms-0 max-sm:max-w-none max-sm:basis-full">
-							<Icon
-								name="magnifying-glass"
-								size={18}
-								className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-muted"
-							/>
-							<Input
-								variant="secondary"
-								fullWidth
-								type="search"
-								aria-label={t`Search applications`}
-								placeholder={t`Search role, company or contact`}
-								value={query}
-								className="ps-8"
-								onChange={(event) => setQuery(event.target.value)}
-							/>
-						</div>
-					</>
+				{!(isError && !applications) && !empty && shown !== "insights" && (
+					<div className="relative max-w-80 min-w-40 flex-1 max-sm:max-w-none max-sm:basis-full">
+						<Icon
+							name="magnifying-glass"
+							size={18}
+							className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-muted"
+						/>
+						<Input
+							variant="secondary"
+							fullWidth
+							type="search"
+							aria-label={t`Search applications`}
+							placeholder={t`Search role, company or contact`}
+							value={query}
+							className="ps-8"
+							onChange={(event) => setQuery(event.target.value)}
+						/>
+					</div>
+				)}
+				{/* How to lay the applications out: a preference, kept on this device. Phones have room for the list only. */}
+				{!(isError && !applications) && !empty && shown !== "insights" && !phone && (
+					<Segment
+						aria-label={t`Layout`}
+						className="ms-auto shrink-0"
+						selectedKey={shown}
+						onSelectionChange={(next) => setLayout(next as ApplicationLayout)}
+					>
+						<Segment.Item id="list" aria-label={t`List`}>
+							<Icon name="rows" size={18} variant={shown === "list" ? "duotone" : "stroke"} />
+						</Segment.Item>
+						<Segment.Item id="board" aria-label={t`Board`}>
+							<Icon name="kanban" size={18} variant={shown === "board" ? "duotone" : "stroke"} />
+						</Segment.Item>
+						<Segment.Item id="calendar" aria-label={t`Calendar`}>
+							<Icon name="calendar-dots" size={18} variant={shown === "calendar" ? "duotone" : "stroke"} />
+						</Segment.Item>
+					</Segment>
 				)}
 			</PageHeader>
 
@@ -325,21 +315,16 @@ function RouteComponent() {
 					{isPending ? (
 						<ViewSkeleton view={shown} />
 					) : noMatches ? (
-						<EmptyState className="py-16">
-							<EmptyState.Header>
-								<EmptyState.Media variant="icon">
-									<Icon name="magnifying-glass" size={22} />
-								</EmptyState.Media>
-								<EmptyState.Title>
-									<Trans>No applications match “{query.trim()}”.</Trans>
-								</EmptyState.Title>
-							</EmptyState.Header>
-							<EmptyState.Content>
+						<EmptyBlock
+							kind="filtered"
+							title={<Trans>No applications match “{query.trim()}”.</Trans>}
+							description={<Trans>Search reads the role, company, location, contacts and tags.</Trans>}
+							action={
 								<Button size="sm" variant="secondary" onPress={() => setQuery("")}>
 									<Trans>Clear search</Trans>
 								</Button>
-							</EmptyState.Content>
-						</EmptyState>
+							}
+						/>
 					) : (
 						<div
 							key={shown}
@@ -351,19 +336,7 @@ function RouteComponent() {
 							)}
 						>
 							{shown === "list" && (
-								<div className={cn(split && "grid grid-cols-[minmax(0,1fr)_420px] items-start gap-6")}>
-									<ApplicationList applications={filtered} selectedId={selectedId} onOpen={openApplication} />
-									{split &&
-										(selected ? (
-											<ApplicationDetailPane
-												application={selected}
-												onClose={() => setSelectedId(null)}
-												onEditDetails={editDetails}
-											/>
-										) : (
-											<ApplicationDetailPanePlaceholder />
-										))}
-								</div>
+								<ApplicationList applications={filtered} selectedId={selectedId} onOpen={openApplication} />
 							)}
 							{shown === "board" && (
 								<div className="h-[calc(100svh-230px)] min-h-96">
@@ -397,11 +370,11 @@ function RouteComponent() {
 				filtered={filteredFullApplications}
 			/>
 			<ApplicationDetailSheet
-				application={split ? null : selected}
+				application={selected}
 				onOpenChange={(open) => !open && setSelectedId(null)}
 				onEditDetails={editDetails}
 			/>
-		</Page>
+		</ApplicationsSection>
 	);
 }
 
@@ -482,37 +455,36 @@ function FollowUpNudge({ applications, onOpen }: FollowUpNudgeProps) {
 	);
 }
 
-function FirstJobEmptyState({ onAdd, onImport }: { onAdd: () => void; onImport: () => void }) {
+type FirstJobEmptyStateProps = { onAdd: () => void; onImport: () => void };
+
+function FirstJobEmptyState({ onAdd, onImport }: FirstJobEmptyStateProps) {
 	return (
 		// Takes the skeleton's place as is (no fade from nothing), so the page doesn't blink empty in between.
-		<EmptyState size="lg" className="py-16">
-			<EmptyState.Header>
-				<EmptyState.Media variant="icon">
-					<Icon name="briefcase" size={26} />
-				</EmptyState.Media>
-				<EmptyState.Title>
-					<Trans>Track your first job</Trans>
-				</EmptyState.Title>
-				<EmptyState.Description className="max-w-sm text-pretty">
-					<Trans>Paste a job link. We'll save the posting so Check, the assistant and your letter can use it.</Trans>
-				</EmptyState.Description>
-			</EmptyState.Header>
-			<EmptyState.Content className="flex-row gap-2">
-				<Button onPress={() => onAdd()}>
-					<Icon name="plus" />
-					<Trans>Save job</Trans>
-				</Button>
-				<Button variant="secondary" onPress={() => onImport()}>
-					<Trans>Import from CSV</Trans>
-				</Button>
-			</EmptyState.Content>
-			<ExtensionInstallHint className="justify-center" />
-		</EmptyState>
+		<EmptyBlock
+			kind="page"
+			icon="briefcase"
+			title={<Trans>Track your first job</Trans>}
+			description={
+				<Trans>Paste a job link. We'll save the posting so Check, the assistant and your letter can use it.</Trans>
+			}
+			action={
+				<>
+					<Button onPress={() => onAdd()}>
+						<Icon name="plus" />
+						<Trans>Save job</Trans>
+					</Button>
+					<Button variant="secondary" onPress={() => onImport()}>
+						<Trans>Import from CSV</Trans>
+					</Button>
+					<ExtensionInstallHint className="basis-full justify-center pt-2" />
+				</>
+			}
+		/>
 	);
 }
 
 /** Each view's shape while applications load, so the first rows land where the placeholders were. */
-function ViewSkeleton({ view }: { view: View }) {
+function ViewSkeleton({ view }: { view: ApplicationView }) {
 	if (view === "insights") return <InsightsSkeleton />;
 	if (view === "list")
 		return (

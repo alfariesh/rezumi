@@ -4,6 +4,7 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SettingsRow, SettingsRows, SettingsSection } from "../section";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { authClient } from "@/libs/auth/client";
 
 const queryKey = ["auth", "connected-apps"];
@@ -63,9 +64,11 @@ export function ConnectedAppsSection() {
 					<Trans>Loading connections...</Trans>
 				</p>
 			) : connections.length === 0 ? (
-				<p className="text-body-sm text-muted">
-					<Trans>No connected applications yet. Apps you allow to access your account appear here.</Trans>
-				</p>
+				<EmptyBlock
+					kind="inline"
+					title={<Trans>No connected applications yet.</Trans>}
+					description={<Trans>Apps you allow to access your account appear here.</Trans>}
+				/>
 			) : (
 				<SettingsRows>
 					{connections.map((connection) => (

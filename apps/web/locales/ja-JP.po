@@ -497,11 +497,6 @@ msgstr "{0} が見つかりました"
 msgid "{0} found, {unreadable} unreadable"
 msgstr "{0} が見つかりましたが、{unreadable} は読み取れません"
 
-#. placeholder {0}: Math.round(minutes / 60)
-#: src/features/career/workspace/shell.tsx
-msgid "{0} h"
-msgstr "{0}時間"
-
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -980,10 +975,6 @@ msgstr "{minutes, plural, other {合計#分}}"
 #: src/features/career/workspace/prepare.tsx
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, other {あと#分で開始}}"
-
-#: src/features/career/workspace/shell.tsx
-msgid "{minutes} min"
-msgstr "{minutes}分"
 
 #: src/features/career/workspace/fit.tsx
 msgid "{missing} missing"
@@ -1558,6 +1549,10 @@ msgstr "「職場のラップトップ」のように名前を付けると、パ
 msgid "A negative amount takes credits away, soonest-expiring first, never below zero."
 msgstr ""
 
+#: src/features/documents/documents-page.tsx
+msgid "A new letter takes its sender details and design from your latest resume."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "A numeric date reads differently in different countries."
 msgstr "数字だけの日付は、国によって読み方が異なります。"
@@ -1774,7 +1769,7 @@ msgstr "実績"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/settings/account/page.tsx
-#: src/features/settings/root.tsx
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Account"
@@ -2515,6 +2510,10 @@ msgstr ""
 msgid "admin"
 msgstr ""
 
+#: src/features/settings/settings-section.tsx
+msgid "Admin"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Advanced"
 msgstr "高度な"
@@ -2652,9 +2651,10 @@ msgstr "左揃え"
 msgid "Align right"
 msgstr "右揃え"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/resume/editor/design/template-group.tsx
 msgid "All"
@@ -2964,6 +2964,12 @@ msgid "App navigation"
 msgstr "アプリのナビゲーション"
 
 #: src/features/settings/page.tsx
+#: src/features/settings/settings-section.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "App settings"
+msgstr ""
+
+#: src/features/settings/page.tsx
 msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
 msgstr ""
 
@@ -3039,7 +3045,6 @@ msgstr "応募日（終了）"
 msgid "Application deleted"
 msgstr "求人応募が削除されました"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "応募の詳細"
@@ -3053,6 +3058,7 @@ msgstr "求人応募オプション"
 msgid "Application updated"
 msgstr "応募を更新しました"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
@@ -3120,6 +3126,10 @@ msgstr ""
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "Approach and stack"
+msgstr ""
+
+#: src/features/settings/ai/connected-apps.tsx
+msgid "Apps you allow to access your account appear here."
 msgstr ""
 
 #: src/libs/locale.ts
@@ -3200,6 +3210,7 @@ msgstr "アシスタントに「{question}」と聞いてください。"
 msgid "Ask the assistant to work it in"
 msgstr "アシスタントに作業を依頼してください"
 
+#: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Ask the coach"
 msgstr "コーチに聞く"
@@ -3317,7 +3328,6 @@ msgstr ""
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/works/add-work/parts.tsx
 #: src/features/profile/fill.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "戻る"
 
@@ -3334,7 +3344,6 @@ msgstr "認証設定に戻る"
 msgid "Back to current"
 msgstr "現在の版に戻る"
 
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/chrome.tsx
 msgid "Back to documents"
 msgstr "ドキュメントに戻る"
@@ -3364,6 +3373,10 @@ msgstr "ストーリー一覧に戻る"
 
 #: src/features/career/coach.tsx
 msgid "Back to the chat"
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Back to the panel"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
@@ -3519,8 +3532,7 @@ msgstr ""
 msgid "Billing"
 msgstr ""
 
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
@@ -3830,7 +3842,10 @@ msgstr ""
 msgid "Cards"
 msgstr ""
 
-#: src/features/profile/details-page.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/career.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Career"
 msgstr ""
 
@@ -4276,10 +4291,6 @@ msgstr "2 MBまでのWebM、MP4、MP3、WAV、Oggファイルを選択してく�
 msgid "Choose a work to write about"
 msgstr ""
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "Choose an application to see its next step, what you sent and its activity here."
-msgstr ""
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "求人応募を選択してください…"
@@ -4365,6 +4376,7 @@ msgstr "クリア"
 msgid "Clear formatting"
 msgstr "書式をクリアする"
 
+#: src/features/career/coach.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Clear search"
 msgstr "検索をクリア"
@@ -4484,6 +4496,10 @@ msgstr "通知を閉じる"
 msgid "Close the assistant"
 msgstr "アシスタントを閉じます"
 
+#: src/features/career/coach.tsx
+msgid "Close the coach"
+msgstr ""
+
 #: src/features/applications/components/detail/close-dialog.tsx
 msgid "Close this application"
 msgstr "この求人応募を閉じます"
@@ -4501,6 +4517,7 @@ msgstr "閉店"
 #: src/features/billing/credits.ts
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "コーチ"
@@ -4595,6 +4612,7 @@ msgid "Compare attempts to see what improved. Practice questions are simulated, 
 msgstr "試行を比べて、何が良くなったかを確認しましょう。練習用の質問はシミュレーションであり、{0}からのものではありません。"
 
 #: src/features/career/workspace/shell.tsx
+#: src/features/command-palette/pages/navigation.tsx
 msgid "Compare offers"
 msgstr "オファーを比較"
 
@@ -4602,7 +4620,7 @@ msgstr "オファーを比較"
 msgid "Compare plans"
 msgstr ""
 
-#: src/routes/dashboard/career/route.tsx
+#: src/routes/dashboard/applications/offers.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
 msgstr ""
 
@@ -4769,7 +4787,7 @@ msgstr "接続先のサービスでは音声が別途課金され、アカウン
 msgid "Contact"
 msgstr "接触"
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/help/help-page.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -4910,6 +4928,7 @@ msgstr "会話の名前"
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Conversations"
 msgstr "会話"
@@ -6452,8 +6471,10 @@ msgid "Details"
 msgstr "詳細"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/profile/index.tsx
 #: src/routes/dashboard/profile/route.tsx
-msgid "Details & career"
+msgctxt "Profile page: your name, photo, contact details and links"
+msgid "Details"
 msgstr ""
 
 #. placeholder {0}: work.title
@@ -6572,8 +6593,9 @@ msgstr ""
 msgid "DNS records"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/docs/header.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/help/help-page.tsx
 msgid "Docs"
 msgstr "ドキュメント"
 
@@ -6585,10 +6607,6 @@ msgstr "ドキュメントメニュー: {name}"
 msgid "Document name"
 msgstr ""
 
-#: src/features/documents/documents-page.tsx
-msgid "Document type"
-msgstr "文書の種類"
-
 #: src/features/docs/layout.tsx
 #: src/features/docs/sidebar.tsx
 msgid "Documentation"
@@ -6596,6 +6614,7 @@ msgstr ""
 
 #: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Documents"
@@ -6894,10 +6913,6 @@ msgstr "アップロードする前に、ドラッグして位置を調整し、
 #: src/features/documents/new-document-dialog.tsx
 msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section, flag anything we're unsure of, and add what your Profile is missing."
 msgstr ""
-
-#: src/features/documents/documents-page.tsx
-msgid "Drop a PDF, Word or JSON file"
-msgstr "PDF、Word、または JSON ファイルをドロップします"
 
 #: src/features/portfolio/works/add-work/from-pictures.tsx
 msgid "Drop pictures here"
@@ -7663,6 +7678,7 @@ msgstr "事実を忘れさせました"
 #: src/features/career/coach-chat.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/facts.tsx
 #: src/routes/dashboard/profile/route.tsx
 msgid "Facts"
 msgstr "事実"
@@ -7751,10 +7767,6 @@ msgstr "職種と会社名を入力してください。設定で AI プロバ�
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Fill in the role and company. The posting is saved with the application."
 msgstr "役割と会社名を入力します。求人情報は求人応募書とともに保存されます。"
-
-#: src/features/documents/documents-page.tsx
-msgid "Fill in your Profile first"
-msgstr ""
 
 #: src/features/profile/fill.tsx
 msgid "Fill your Profile from what you have"
@@ -7862,8 +7874,8 @@ msgid "Fit"
 msgstr "適合度"
 
 #: src/features/career/workspace/saved.tsx
-msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
-msgstr "適合度チェック、ブリーフィング、練習のフィードバック、振り返り、回答、返信は、ほかのタブで作成されるとここに表示されます。"
+msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other sections create them."
+msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Fit page to width"
@@ -8637,9 +8649,12 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: src/features/settings/root.tsx
-msgid "Help & docs"
-msgstr "ヘルプとドキュメント"
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
+#: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Help & legal"
+msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
@@ -9069,6 +9084,10 @@ msgstr "インポートの進行状況"
 msgid "Import steps"
 msgstr "インポート手順"
 
+#: src/features/documents/documents-page.tsx
+msgid "Import the resume you have, or start a new one from your Profile."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Import this file into a free Rezumi. Every issue is waiting for you in Check."
 msgstr "このファイルを無料の Rezumi にインポートします。すべての問題が Check でお待ちしています。"
@@ -9078,7 +9097,7 @@ msgid "Import with AI"
 msgstr ""
 
 #: src/features/documents/documents-page.tsx
-msgid "Import your current resume and we'll lay out every section for you to refine. It also fills your Profile, so your next resume, letter and portfolio start from it. Or start blank from your Profile."
+msgid "Import your current resume, or drop a PDF, Word or JSON file here, and we'll lay out every section for you to refine."
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -9162,6 +9181,7 @@ msgstr "インライン"
 msgid "Inline formatting"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Insights"
 msgstr "インサイト"
@@ -9809,6 +9829,7 @@ msgstr "テキストは横書きで配置してください。回転したテキ
 #: src/features/resume/editor/check/issues.ts
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "Layout"
 msgstr "レイアウト"
 
@@ -9971,6 +9992,7 @@ msgstr "レターを複製しました"
 msgid "Letter page"
 msgstr "レターページ"
 
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Letters"
 msgstr "レター"
@@ -9989,8 +10011,9 @@ msgstr "レベル"
 msgid "Level {level} of 5"
 msgstr "5 段階中 {level}"
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Licenses"
 msgstr ""
 
@@ -10703,6 +10726,10 @@ msgstr "モデルの提案は利用できません。任意のモデル ID を�
 msgid "Model: {label}"
 msgstr "モデル: {label}"
 
+#: src/routes/dashboard/profile/stories.{-$storyId}.tsx
+msgid "Moments from your work, told in a few lines, ready for interviews and letters."
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Month"
 msgstr ""
@@ -11073,6 +11100,10 @@ msgstr "新しい応募"
 msgid "New conversation"
 msgstr "新しい会話"
 
+#: src/features/documents/documents-page.tsx
+msgid "New cover letter"
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "New cover letter instead"
 msgstr "代わりに新しいカバーレター"
@@ -11097,6 +11128,10 @@ msgstr "新しいページ"
 #: src/features/auth/pages/reset-password.tsx
 msgid "New password"
 msgstr "新しいパスワード"
+
+#: src/features/documents/documents-page.tsx
+msgid "New resume"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "New roles from your search"
@@ -11251,8 +11286,8 @@ msgid "No commands match that search."
 msgstr "検索に一致するコマンドはありません。"
 
 #: src/features/settings/ai/connected-apps.tsx
-msgid "No connected applications yet. Apps you allow to access your account appear here."
-msgstr "接続されたアプリケーションはまだありません。アカウントへのアクセスを許可したアプリがここに表示されます。"
+msgid "No connected applications yet."
+msgstr ""
 
 #: src/features/applications/components/detail/contacts.tsx
 msgid "No contacts yet"
@@ -11349,6 +11384,10 @@ msgstr "まだ仕事がありません"
 #: src/features/settings/ai/api-keys.tsx
 msgid "No keys yet."
 msgstr "まだ鍵がありません。"
+
+#: src/features/documents/documents-page.tsx
+msgid "No letters yet"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No lines look like a job title paired with an employer."
@@ -11467,6 +11506,10 @@ msgstr "結果が見つかりません。"
 
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time by 40%”, then try again."
+msgstr ""
+
+#: src/features/documents/documents-page.tsx
+msgid "No resumes yet"
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -11831,6 +11874,10 @@ msgstr ""
 msgid "Nothing here should cost you a match."
 msgstr "ここでは、試合に費用をかける必要はありません。"
 
+#: src/features/career/coach.tsx
+msgid "Nothing is titled “{query}”."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
 msgstr "現在も継続中であることを示す表記がありません。"
@@ -11840,13 +11887,13 @@ msgstr "現在も継続中であることを示す表記がありません。"
 msgid "Nothing matches “{0}”"
 msgstr "「{0}」に一致するものはありません"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Nothing matches “{query}”"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Nothing matches these filters"
 msgstr "これらのフィルターに一致するものはありません"
-
-#: src/features/billing/admin/overview.tsx
-msgid "Nothing matches."
-msgstr ""
 
 #: src/features/billing/subscription-actions.tsx
 msgid "Nothing more is charged. Your account goes back to Free at the end of the period you paid for; every document stays yours."
@@ -11968,8 +12015,10 @@ msgstr "内定"
 msgid "Offer comparison"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
+#: src/routes/dashboard/applications/offers.tsx
 msgid "Offers"
 msgstr "オファー"
 
@@ -12149,6 +12198,10 @@ msgstr "AI設定を開く"
 msgid "Open any theme to scroll through a whole sample page. Switch themes at any time; your content stays the same."
 msgstr ""
 
+#: src/features/career/offers.tsx
+msgid "Open applications"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Open briefing"
 msgstr "ブリーフィングを開く"
@@ -12173,6 +12226,10 @@ msgstr "メールアプリを開く"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Open focus mode"
 msgstr "フォーカスモードを開く"
+
+#: src/features/career/coach.tsx
+msgid "Open full screen"
+msgstr ""
 
 #. placeholder {0}: tabLabel(meta.tab)
 #: src/features/career/workspace/saved.tsx
@@ -12641,6 +12698,7 @@ msgid "Password set"
 msgstr "パスワードを設定しました"
 
 #: src/features/assistant/assistant-panel.tsx
+#: src/features/career/coach.tsx
 msgid "Past conversations"
 msgstr "過去の会話"
 
@@ -12674,8 +12732,8 @@ msgid "Paste a YouTube or Vimeo link. The player loads only when a visitor press
 msgstr ""
 
 #: src/features/career/offers.tsx
-msgid "Paste an offer into an application's Messages tab."
-msgstr "オファーを応募の「メッセージ」タブに貼り付けてください。"
+msgid "Paste an offer into an application's Messages section."
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Paste description instead"
@@ -12757,6 +12815,7 @@ msgstr "支払い期間"
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-return.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Payment"
 msgstr ""
 
@@ -13035,8 +13094,7 @@ msgstr "見出し付きのプレーンテキスト。求人応募フォームや
 #: src/features/billing/back-link.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/billing/plan-page.tsx
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
@@ -13131,6 +13189,7 @@ msgid "Polishing"
 msgstr "仕上げ中"
 
 #: src/features/assistant/assistant-panel.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/resumes.tsx
 #: src/features/homepage/ui.tsx
 #: src/features/portfolio/admin/reports-page.tsx
@@ -13157,8 +13216,7 @@ msgid "Portfolio preview"
 msgstr ""
 
 #: src/features/portfolio/admin/reports-page.tsx
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Portfolio reports"
 msgstr ""
@@ -13281,6 +13339,7 @@ msgstr "環境設定"
 
 #: src/features/career/coach-chat.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/preferences.tsx
 #: src/routes/dashboard/profile/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -13477,8 +13536,9 @@ msgstr ""
 msgid "Privacy"
 msgstr "プライバシー"
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Privacy policy"
 msgstr "プライバシーポリシー"
 
@@ -14067,6 +14127,7 @@ msgstr "実際の質問"
 
 #: src/features/billing/receipt-link.tsx
 #: src/features/billing/receipt.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Receipt"
 msgstr ""
 
@@ -14210,8 +14271,8 @@ msgstr ""
 msgid "Refund not confirmed"
 msgstr ""
 
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -14871,6 +14932,7 @@ msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/resumes.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Resumes"
 msgstr "レジュメ"
@@ -15042,7 +15104,7 @@ msgstr ""
 msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - ホームページへ移動"
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/help/help-page.tsx
 msgid "Rezumi {__APP_VERSION__}"
 msgstr ""
 
@@ -15642,6 +15704,10 @@ msgstr "「応募」とアシスタントから検索でき、内蔵リーダー
 msgid "Search job postings"
 msgstr "求人情報を検索する"
 
+#: src/routes/dashboard/applications/index.tsx
+msgid "Search reads the role, company, location, contacts and tags."
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 msgid "Search results"
 msgstr ""
@@ -16021,9 +16087,7 @@ msgid "Setting up HTTPS. This usually takes a few minutes, and this page updates
 msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/page.tsx
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "設定"
@@ -16991,6 +17055,7 @@ msgstr ""
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/profile/route.tsx
+#: src/routes/dashboard/profile/stories.{-$storyId}.tsx
 msgid "Stories"
 msgstr "ストーリー"
 
@@ -17448,8 +17513,9 @@ msgstr ""
 msgid "Terms from the posting"
 msgstr "求人掲載の条件"
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Terms of service"
 msgstr ""
 
@@ -18158,6 +18224,10 @@ msgstr ""
 msgid "The right role is out there."
 msgstr ""
 
+#: src/routes/dashboard/profile/preferences.tsx
+msgid "The roles, places, pay and ways of working you want. Job matches and the coach follow them."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The same line repeats on every page."
 msgstr "同じ行がすべてのページに繰り返し表示されています。"
@@ -18329,6 +18399,10 @@ msgstr "これらとそのタイムラインは完全に削除されます。こ
 #: src/features/resume/editor/check/issues.ts
 msgid "They look for headings such as Experience, Education and Skills."
 msgstr "経験、教育、スキルなどの見出しを探します。"
+
+#: src/routes/dashboard/profile/facts.tsx
+msgid "Things that are true about your work. The coach and AI quote them, and never invent their own."
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Thinking"
@@ -19132,6 +19206,7 @@ msgid "Translate to {language}"
 msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/trash-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Trash"
@@ -20074,7 +20149,6 @@ msgstr "ベトナム語"
 
 #: src/features/career/coach-chat.tsx
 #: src/features/documents/documents-page.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "View"
 msgstr "ビュー"
 
@@ -20331,6 +20405,7 @@ msgstr ""
 msgid "Webhooks with a bad signature"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/write/basics-card.tsx
@@ -20576,6 +20651,10 @@ msgstr "送信した内容 · {0}"
 #: src/features/career/knowledge/preferences.tsx
 msgid "What you're looking for"
 msgstr "探している仕事"
+
+#: src/features/billing/plan-page.tsx
+msgid "What your plan includes, and your payments."
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "What's included"
@@ -21267,10 +21346,6 @@ msgstr ""
 msgid "Your details and career, kept in one place."
 msgstr ""
 
-#: src/routes/dashboard/profile/route.tsx
-msgid "Your details and career, kept in one place. New resumes, letters and your portfolio start from here."
-msgstr ""
-
 #: src/features/career/coach.tsx
 msgid "Your details and career, with the facts, stories and preferences that are switched on in your Profile"
 msgstr ""
@@ -21289,6 +21364,10 @@ msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your details were copied into the letter. Edit them here."
+msgstr ""
+
+#: src/features/settings/account/page.tsx
+msgid "Your details, how you sign in, and your data."
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -21467,6 +21546,10 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "Your name is missing"
 msgstr "あなたの名前がありません"
+
+#: src/routes/dashboard/profile/index.tsx
+msgid "Your name, photo, contact details and links. New resumes, letters and your portfolio start from here."
+msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Your name, photo, experience, education and skills follow this resume as it changes. Its summary becomes About me and its projects become your work, to edit freely."
@@ -21809,6 +21892,10 @@ msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Your subscription is set to end. Keep it first to change the plan."
+msgstr ""
+
+#: src/routes/dashboard/profile/career.tsx
+msgid "Your summary, experience, education, skills and the rest. New resumes and your portfolio start from here."
 msgstr ""
 
 #: src/features/portfolio/blocks/story-templates.ts

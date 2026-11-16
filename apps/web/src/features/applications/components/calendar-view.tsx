@@ -3,7 +3,7 @@ import type { ApplicationSummary } from "../types";
 import type { InterviewSlot } from "./interview-dialog";
 import type { AgendaEventType, AgendaView } from "@heroui-pro/react";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Agenda, EmptyState, ItemCard, ItemCardGroup, Segment, useAgenda } from "@heroui-pro/react";
+import { Agenda, ItemCard, ItemCardGroup, Segment, useAgenda } from "@heroui-pro/react";
 import { Button, Separator, Tooltip } from "@heroui/react";
 import { fromDate, getLocalTimeZone, toCalendarDateTime } from "@internationalized/date";
 import { plural, t } from "@lingui/core/macro";
@@ -23,6 +23,7 @@ import {
 } from "../interviews";
 import { useRescheduleInterview } from "../use-reschedule-interview";
 import { InterviewDialog, interviewTypeLabel } from "./interview-dialog";
+import { EmptyBlock } from "@/components/layout/empty-block";
 
 // Kind labels up to this length prefix an event's title ("Technical · Engineer · Acme").
 const MAX_PREFIX_LENGTH = 12;
@@ -284,25 +285,19 @@ export function ApplicationCalendar({ applications, allApplications, onOpen }: A
 				</h3>
 
 				{upcoming.length === 0 ? (
-					<EmptyState size="sm" className="rounded-2xl border border-dashed border-border">
-						<EmptyState.Header>
-							<EmptyState.Media variant="icon">
-								<Icon name="calendar-blank" size={20} />
-							</EmptyState.Media>
-							<EmptyState.Title>
-								<Trans>Nothing scheduled yet</Trans>
-							</EmptyState.Title>
-							<EmptyState.Description className="max-w-xs text-pretty">
-								<Trans>Add screening calls and technical interviews to see them here and on the calendar.</Trans>
-							</EmptyState.Description>
-						</EmptyState.Header>
-						<EmptyState.Content>
+					<EmptyBlock
+						kind="inline"
+						title={<Trans>Nothing scheduled yet</Trans>}
+						description={
+							<Trans>Add screening calls and technical interviews to see them here and on the calendar.</Trans>
+						}
+						action={
 							<Button size="sm" variant="secondary" onPress={() => schedule()}>
 								<Icon name="calendar-plus" size={16} />
 								<Trans>Schedule interview</Trans>
 							</Button>
-						</EmptyState.Content>
-					</EmptyState>
+						}
+					/>
 				) : (
 					upcomingByDay.map((group) => {
 						const first = group[0];

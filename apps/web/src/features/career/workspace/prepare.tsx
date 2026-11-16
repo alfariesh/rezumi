@@ -4,7 +4,6 @@ import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { EmptyState } from "@heroui-pro/react";
 import { Alert, Button, buttonVariants, Checkbox, Chip, Modal, Separator, Skeleton, Typography } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -29,6 +28,7 @@ import {
 	Working,
 	workingSteps,
 } from "../shared";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { interviewTypeLabel } from "@/features/applications/components/interview-dialog";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
@@ -97,18 +97,7 @@ type NoticeProps = { icon: IconName; title: string; description: ReactNode; chil
 
 /** An empty or in-between state: what to do next, in one centered block. */
 function Notice({ icon, title, description, children }: NoticeProps) {
-	return (
-		<EmptyState className="rounded-2xl bg-surface-secondary py-12">
-			<EmptyState.Header>
-				<EmptyState.Media variant="icon">
-					<Icon name={icon} size={20} />
-				</EmptyState.Media>
-				<EmptyState.Title>{title}</EmptyState.Title>
-				<EmptyState.Description className="max-w-sm">{description}</EmptyState.Description>
-			</EmptyState.Header>
-			<EmptyState.Content className="items-center gap-3">{children}</EmptyState.Content>
-		</EmptyState>
-	);
+	return <EmptyBlock kind="page" icon={icon} title={title} description={description} action={children} />;
 }
 
 type PlanEmptyProps = { application: Application; interview: InterviewTimelineEntry };
@@ -141,13 +130,16 @@ function PlanEmpty({ application, interview }: PlanEmptyProps) {
 						{generate.isPending && <ThinkingOrb size={16} tone="current" />}
 						{generate.isPending ? <Working steps={workingSteps("briefing")} /> : <Trans>Plan my preparation</Trans>}
 					</Button>
-					<PrivacyLine className="max-w-sm text-start">
-						<Trans>
-							Sends this application (posting, notes, interview details) and your Profile (details, career, and the
-							facts and stories that are switched on) to {label}.
-						</Trans>
-					</PrivacyLine>
-					<AiSourceMenu action="interview-practice" />
+					{/* Their own row under the button: what planning sends, and what it costs. */}
+					<div className="grid basis-full justify-items-center gap-3">
+						<PrivacyLine className="max-w-sm text-start">
+							<Trans>
+								Sends this application (posting, notes, interview details) and your Profile (details, career, and the
+								facts and stories that are switched on) to {label}.
+							</Trans>
+						</PrivacyLine>
+						<AiSourceMenu action="interview-practice" />
+					</div>
 				</>
 			) : (
 				<Link to="/dashboard/settings/app" hash="ai-providers" className={cn(buttonVariants({ variant: "secondary" }))}>
@@ -623,7 +615,7 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 						<p className="text-base">“{briefing.data.opening}”</p>
 					</div>
 				)}
-				{/* The workspace is full screen on phones (no app tab bar), so the bar pads for the safe area itself. */}
+				{/* Pinned to the bottom of the phone's screen, so the bar pads for the safe area itself. */}
 				<div className="sticky bottom-0 -mx-4 mt-3 -mb-6 flex gap-2 border-t border-separator bg-background px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))]">
 					{briefing && (
 						<Button variant="secondary" size="lg" className="flex-1" onPress={() => setReading(true)}>

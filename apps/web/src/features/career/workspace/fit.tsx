@@ -1,7 +1,6 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { CareerWorkspace, GenerateTask } from "@rezumi/schema/career";
-import { EmptyState } from "@heroui-pro/react";
 import { Button, Chip, Link as TextLink, Spinner, TextArea, Skeleton, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -14,6 +13,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useWorkspace } from "../hooks";
 import { CareerWidget, PrivacyLine, StatusPill, Swap, Working, workingSteps } from "../shared";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { toastError } from "@/libs/error-message";
@@ -81,31 +81,33 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 
 	if (!item)
 		return (
-			<EmptyState className="rounded-2xl bg-surface-secondary py-12">
-				<EmptyState.Header>
-					<EmptyState.Media variant="icon">
-						<Icon name="list-checks" size={20} />
-					</EmptyState.Media>
-					<EmptyState.Title>
-						<Trans>Check this role against your evidence</Trans>
-					</EmptyState.Title>
-					<EmptyState.Description className="max-w-[420px]">
-						<Trans>
-							Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as
-							missing evidence, never missing ability.
-						</Trans>
-					</EmptyState.Description>
-				</EmptyState.Header>
-				<EmptyState.Content className="max-w-[420px] gap-3">
-					<AiNotice task="fit" />
-					{provider && (
-						<Button isPending={generate.isPending} onPress={check}>
-							{generate.isPending && <ThinkingOrb size={16} tone="current" />}
-							{generate.isPending ? <Working steps={workingSteps("fit")} /> : <Trans>Check fit</Trans>}
-						</Button>
-					)}
-				</EmptyState.Content>
-			</EmptyState>
+			<EmptyBlock
+				kind="page"
+				icon="list-checks"
+				title={<Trans>Check this role against your evidence</Trans>}
+				description={
+					<Trans>
+						Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as
+						missing evidence, never missing ability.
+					</Trans>
+				}
+				action={
+					<>
+						{provider && (
+							<Button isPending={generate.isPending} onPress={check}>
+								{generate.isPending && <ThinkingOrb size={16} tone="current" />}
+								{generate.isPending ? <Working steps={workingSteps("fit")} /> : <Trans>Check fit</Trans>}
+							</Button>
+						)}
+						{/* Its own row under the button: what the check sends, and where. */}
+						<div className="flex basis-full justify-center">
+							<div className="max-w-[420px]">
+								<AiNotice task="fit" />
+							</div>
+						</div>
+					</>
+				}
+			/>
 		);
 
 	const evidence = readOnly ? {} : workspace.data.evidence;

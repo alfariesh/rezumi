@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { SettingsSection } from "@/features/settings/settings-section";
 
 export const Route = createFileRoute("/dashboard/admin")({
 	// The pages are hidden from everyone else, and the server refuses their calls anyway.
@@ -8,11 +9,11 @@ export const Route = createFileRoute("/dashboard/admin")({
 	component: RouteComponent,
 });
 
-/** Internal tools for the owner; wider than Settings, for tables. No mobile version: they are not a customer feature. */
+/** Internal tools for the owner, in Settings' section (its admin group). No mobile version: not a customer feature. */
 function RouteComponent() {
 	return (
-		<div className="mx-auto w-full max-w-7xl px-5 pt-5 pb-10 max-sm:px-4">
+		<SettingsSection>
 			<Outlet />
-		</div>
+		</SettingsSection>
 	);
 }

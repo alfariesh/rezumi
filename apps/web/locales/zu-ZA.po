@@ -492,11 +492,6 @@ msgstr ""
 msgid "{0} found, {unreadable} unreadable"
 msgstr ""
 
-#. placeholder {0}: Math.round(minutes / 60)
-#: src/features/career/workspace/shell.tsx
-msgid "{0} h"
-msgstr ""
-
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -974,10 +969,6 @@ msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
-msgstr ""
-
-#: src/features/career/workspace/shell.tsx
-msgid "{minutes} min"
 msgstr ""
 
 #: src/features/career/workspace/fit.tsx
@@ -1553,6 +1544,10 @@ msgstr ""
 msgid "A negative amount takes credits away, soonest-expiring first, never below zero."
 msgstr ""
 
+#: src/features/documents/documents-page.tsx
+msgid "A new letter takes its sender details and design from your latest resume."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "A numeric date reads differently in different countries."
 msgstr ""
@@ -1769,7 +1764,7 @@ msgstr ""
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/settings/account/page.tsx
-#: src/features/settings/root.tsx
+#: src/features/settings/settings-section.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Account"
@@ -2510,6 +2505,10 @@ msgstr ""
 msgid "admin"
 msgstr ""
 
+#: src/features/settings/settings-section.tsx
+msgid "Admin"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Advanced"
 msgstr ""
@@ -2647,9 +2646,10 @@ msgstr ""
 msgid "Align right"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 #: src/features/resume/editor/design/template-group.tsx
 msgid "All"
@@ -2959,6 +2959,12 @@ msgid "App navigation"
 msgstr ""
 
 #: src/features/settings/page.tsx
+#: src/features/settings/settings-section.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "App settings"
+msgstr ""
+
+#: src/features/settings/page.tsx
 msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
 msgstr ""
 
@@ -3034,7 +3040,6 @@ msgstr ""
 msgid "Application deleted"
 msgstr ""
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr ""
@@ -3048,6 +3053,7 @@ msgstr ""
 msgid "Application updated"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
@@ -3115,6 +3121,10 @@ msgstr ""
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "Approach and stack"
+msgstr ""
+
+#: src/features/settings/ai/connected-apps.tsx
+msgid "Apps you allow to access your account appear here."
 msgstr ""
 
 #: src/libs/locale.ts
@@ -3195,6 +3205,7 @@ msgstr ""
 msgid "Ask the assistant to work it in"
 msgstr ""
 
+#: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Ask the coach"
 msgstr ""
@@ -3312,7 +3323,6 @@ msgstr ""
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/works/add-work/parts.tsx
 #: src/features/profile/fill.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr ""
 
@@ -3329,7 +3339,6 @@ msgstr ""
 msgid "Back to current"
 msgstr ""
 
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/chrome.tsx
 msgid "Back to documents"
 msgstr ""
@@ -3359,6 +3368,10 @@ msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "Back to the chat"
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Back to the panel"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
@@ -3514,8 +3527,7 @@ msgstr ""
 msgid "Billing"
 msgstr ""
 
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
@@ -3825,7 +3837,10 @@ msgstr ""
 msgid "Cards"
 msgstr ""
 
-#: src/features/profile/details-page.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/career.tsx
+#: src/routes/dashboard/profile/route.tsx
 msgid "Career"
 msgstr ""
 
@@ -4271,10 +4286,6 @@ msgstr ""
 msgid "Choose a work to write about"
 msgstr ""
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "Choose an application to see its next step, what you sent and its activity here."
-msgstr ""
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr ""
@@ -4360,6 +4371,7 @@ msgstr ""
 msgid "Clear formatting"
 msgstr ""
 
+#: src/features/career/coach.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Clear search"
 msgstr ""
@@ -4479,6 +4491,10 @@ msgstr ""
 msgid "Close the assistant"
 msgstr ""
 
+#: src/features/career/coach.tsx
+msgid "Close the coach"
+msgstr ""
+
 #: src/features/applications/components/detail/close-dialog.tsx
 msgid "Close this application"
 msgstr ""
@@ -4496,6 +4512,7 @@ msgstr ""
 #: src/features/billing/credits.ts
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr ""
@@ -4590,6 +4607,7 @@ msgid "Compare attempts to see what improved. Practice questions are simulated, 
 msgstr ""
 
 #: src/features/career/workspace/shell.tsx
+#: src/features/command-palette/pages/navigation.tsx
 msgid "Compare offers"
 msgstr ""
 
@@ -4597,7 +4615,7 @@ msgstr ""
 msgid "Compare plans"
 msgstr ""
 
-#: src/routes/dashboard/career/route.tsx
+#: src/routes/dashboard/applications/offers.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
 msgstr ""
 
@@ -4764,7 +4782,7 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/help/help-page.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -4905,6 +4923,7 @@ msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Conversations"
 msgstr ""
@@ -6447,8 +6466,10 @@ msgid "Details"
 msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/profile/index.tsx
 #: src/routes/dashboard/profile/route.tsx
-msgid "Details & career"
+msgctxt "Profile page: your name, photo, contact details and links"
+msgid "Details"
 msgstr ""
 
 #. placeholder {0}: work.title
@@ -6567,8 +6588,9 @@ msgstr ""
 msgid "DNS records"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/docs/header.tsx
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/help/help-page.tsx
 msgid "Docs"
 msgstr ""
 
@@ -6580,10 +6602,6 @@ msgstr ""
 msgid "Document name"
 msgstr ""
 
-#: src/features/documents/documents-page.tsx
-msgid "Document type"
-msgstr ""
-
 #: src/features/docs/layout.tsx
 #: src/features/docs/sidebar.tsx
 msgid "Documentation"
@@ -6591,6 +6609,7 @@ msgstr ""
 
 #: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Documents"
@@ -6888,10 +6907,6 @@ msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section, flag anything we're unsure of, and add what your Profile is missing."
-msgstr ""
-
-#: src/features/documents/documents-page.tsx
-msgid "Drop a PDF, Word or JSON file"
 msgstr ""
 
 #: src/features/portfolio/works/add-work/from-pictures.tsx
@@ -7658,6 +7673,7 @@ msgstr ""
 #: src/features/career/coach-chat.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/facts.tsx
 #: src/routes/dashboard/profile/route.tsx
 msgid "Facts"
 msgstr ""
@@ -7745,10 +7761,6 @@ msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Fill in the role and company. The posting is saved with the application."
-msgstr ""
-
-#: src/features/documents/documents-page.tsx
-msgid "Fill in your Profile first"
 msgstr ""
 
 #: src/features/profile/fill.tsx
@@ -7857,7 +7869,7 @@ msgid "Fit"
 msgstr ""
 
 #: src/features/career/workspace/saved.tsx
-msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
+msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other sections create them."
 msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
@@ -8632,8 +8644,11 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: src/features/settings/root.tsx
-msgid "Help & docs"
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
+#: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Help & legal"
 msgstr ""
 
 #: src/features/career/coach.tsx
@@ -9064,6 +9079,10 @@ msgstr ""
 msgid "Import steps"
 msgstr ""
 
+#: src/features/documents/documents-page.tsx
+msgid "Import the resume you have, or start a new one from your Profile."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Import this file into a free Rezumi. Every issue is waiting for you in Check."
 msgstr ""
@@ -9073,7 +9092,7 @@ msgid "Import with AI"
 msgstr ""
 
 #: src/features/documents/documents-page.tsx
-msgid "Import your current resume and we'll lay out every section for you to refine. It also fills your Profile, so your next resume, letter and portfolio start from it. Or start blank from your Profile."
+msgid "Import your current resume, or drop a PDF, Word or JSON file here, and we'll lay out every section for you to refine."
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -9157,6 +9176,7 @@ msgstr ""
 msgid "Inline formatting"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Insights"
 msgstr ""
@@ -9804,6 +9824,7 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
+#: src/routes/dashboard/applications/index.tsx
 msgid "Layout"
 msgstr ""
 
@@ -9966,6 +9987,7 @@ msgstr ""
 msgid "Letter page"
 msgstr ""
 
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Letters"
 msgstr ""
@@ -9984,8 +10006,9 @@ msgstr ""
 msgid "Level {level} of 5"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Licenses"
 msgstr ""
 
@@ -10698,6 +10721,10 @@ msgstr ""
 msgid "Model: {label}"
 msgstr ""
 
+#: src/routes/dashboard/profile/stories.{-$storyId}.tsx
+msgid "Moments from your work, told in a few lines, ready for interviews and letters."
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Month"
 msgstr ""
@@ -11068,6 +11095,10 @@ msgstr ""
 msgid "New conversation"
 msgstr ""
 
+#: src/features/documents/documents-page.tsx
+msgid "New cover letter"
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "New cover letter instead"
 msgstr ""
@@ -11091,6 +11122,10 @@ msgstr ""
 #: src/dialogs/auth/change-password.tsx
 #: src/features/auth/pages/reset-password.tsx
 msgid "New password"
+msgstr ""
+
+#: src/features/documents/documents-page.tsx
+msgid "New resume"
 msgstr ""
 
 #: src/features/career/today.tsx
@@ -11246,7 +11281,7 @@ msgid "No commands match that search."
 msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
-msgid "No connected applications yet. Apps you allow to access your account appear here."
+msgid "No connected applications yet."
 msgstr ""
 
 #: src/features/applications/components/detail/contacts.tsx
@@ -11343,6 +11378,10 @@ msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "No keys yet."
+msgstr ""
+
+#: src/features/documents/documents-page.tsx
+msgid "No letters yet"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -11462,6 +11501,10 @@ msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "No results with numbers in your jobs and projects yet. Add one to your resume, such as “cut load time by 40%”, then try again."
+msgstr ""
+
+#: src/features/documents/documents-page.tsx
+msgid "No resumes yet"
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -11826,6 +11869,10 @@ msgstr ""
 msgid "Nothing here should cost you a match."
 msgstr ""
 
+#: src/features/career/coach.tsx
+msgid "Nothing is titled “{query}”."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
 msgstr ""
@@ -11835,12 +11882,12 @@ msgstr ""
 msgid "Nothing matches “{0}”"
 msgstr ""
 
-#: src/features/documents/documents-page.tsx
-msgid "Nothing matches these filters"
+#: src/features/billing/admin/overview.tsx
+msgid "Nothing matches “{query}”"
 msgstr ""
 
-#: src/features/billing/admin/overview.tsx
-msgid "Nothing matches."
+#: src/features/documents/documents-page.tsx
+msgid "Nothing matches these filters"
 msgstr ""
 
 #: src/features/billing/subscription-actions.tsx
@@ -11963,8 +12010,10 @@ msgstr ""
 msgid "Offer comparison"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
+#: src/routes/dashboard/applications/offers.tsx
 msgid "Offers"
 msgstr ""
 
@@ -12144,6 +12193,10 @@ msgstr ""
 msgid "Open any theme to scroll through a whole sample page. Switch themes at any time; your content stays the same."
 msgstr ""
 
+#: src/features/career/offers.tsx
+msgid "Open applications"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Open briefing"
 msgstr ""
@@ -12167,6 +12220,10 @@ msgstr ""
 
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Open focus mode"
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Open full screen"
 msgstr ""
 
 #. placeholder {0}: tabLabel(meta.tab)
@@ -12636,6 +12693,7 @@ msgid "Password set"
 msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
+#: src/features/career/coach.tsx
 msgid "Past conversations"
 msgstr ""
 
@@ -12669,7 +12727,7 @@ msgid "Paste a YouTube or Vimeo link. The player loads only when a visitor press
 msgstr ""
 
 #: src/features/career/offers.tsx
-msgid "Paste an offer into an application's Messages tab."
+msgid "Paste an offer into an application's Messages section."
 msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
@@ -12752,6 +12810,7 @@ msgstr ""
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-return.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Payment"
 msgstr ""
 
@@ -13030,8 +13089,7 @@ msgstr ""
 #: src/features/billing/back-link.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/billing/plan-page.tsx
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
@@ -13126,6 +13184,7 @@ msgid "Polishing"
 msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/resumes.tsx
 #: src/features/homepage/ui.tsx
 #: src/features/portfolio/admin/reports-page.tsx
@@ -13152,8 +13211,7 @@ msgid "Portfolio preview"
 msgstr ""
 
 #: src/features/portfolio/admin/reports-page.tsx
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Portfolio reports"
 msgstr ""
@@ -13276,6 +13334,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
+#: src/routes/dashboard/profile/preferences.tsx
 #: src/routes/dashboard/profile/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -13472,8 +13531,9 @@ msgstr ""
 msgid "Privacy"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Privacy policy"
 msgstr ""
 
@@ -14062,6 +14122,7 @@ msgstr ""
 
 #: src/features/billing/receipt-link.tsx
 #: src/features/billing/receipt.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Receipt"
 msgstr ""
 
@@ -14205,8 +14266,8 @@ msgstr ""
 msgid "Refund not confirmed"
 msgstr ""
 
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -14866,6 +14927,7 @@ msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/resumes.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Resumes"
 msgstr ""
@@ -15037,7 +15099,7 @@ msgstr ""
 msgid "Rezumi - Go to homepage"
 msgstr ""
 
-#: src/routes/dashboard/settings/route.tsx
+#: src/features/help/help-page.tsx
 msgid "Rezumi {__APP_VERSION__}"
 msgstr ""
 
@@ -15637,6 +15699,10 @@ msgstr ""
 msgid "Search job postings"
 msgstr ""
 
+#: src/routes/dashboard/applications/index.tsx
+msgid "Search reads the role, company, location, contacts and tags."
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 msgid "Search results"
 msgstr ""
@@ -16016,9 +16082,7 @@ msgid "Setting up HTTPS. This usually takes a few minutes, and this page updates
 msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/page.tsx
-#: src/features/settings/root.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/settings-section.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr ""
@@ -16986,6 +17050,7 @@ msgstr ""
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/profile/route.tsx
+#: src/routes/dashboard/profile/stories.{-$storyId}.tsx
 msgid "Stories"
 msgstr ""
 
@@ -17443,8 +17508,9 @@ msgstr ""
 msgid "Terms from the posting"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/help/help-page.tsx
 #: src/features/homepage/footer.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Terms of service"
 msgstr ""
 
@@ -18153,6 +18219,10 @@ msgstr ""
 msgid "The right role is out there."
 msgstr ""
 
+#: src/routes/dashboard/profile/preferences.tsx
+msgid "The roles, places, pay and ways of working you want. Job matches and the coach follow them."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The same line repeats on every page."
 msgstr ""
@@ -18323,6 +18393,10 @@ msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "They look for headings such as Experience, Education and Skills."
+msgstr ""
+
+#: src/routes/dashboard/profile/facts.tsx
+msgid "Things that are true about your work. The coach and AI quote them, and never invent their own."
 msgstr ""
 
 #: src/features/career/shared.tsx
@@ -19127,6 +19201,7 @@ msgid "Translate to {language}"
 msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/documents/documents-layout.tsx
 #: src/features/documents/trash-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Trash"
@@ -20069,7 +20144,6 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/documents/documents-page.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "View"
 msgstr ""
 
@@ -20326,6 +20400,7 @@ msgstr ""
 msgid "Webhooks with a bad signature"
 msgstr ""
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/profile/sources/source-review.tsx
 #: src/features/resume/editor/write/basics-card.tsx
@@ -20570,6 +20645,10 @@ msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "What you're looking for"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "What your plan includes, and your payments."
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -21262,10 +21341,6 @@ msgstr ""
 msgid "Your details and career, kept in one place."
 msgstr ""
 
-#: src/routes/dashboard/profile/route.tsx
-msgid "Your details and career, kept in one place. New resumes, letters and your portfolio start from here."
-msgstr ""
-
 #: src/features/career/coach.tsx
 msgid "Your details and career, with the facts, stories and preferences that are switched on in your Profile"
 msgstr ""
@@ -21284,6 +21359,10 @@ msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your details were copied into the letter. Edit them here."
+msgstr ""
+
+#: src/features/settings/account/page.tsx
+msgid "Your details, how you sign in, and your data."
 msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
@@ -21461,6 +21540,10 @@ msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Your name is missing"
+msgstr ""
+
+#: src/routes/dashboard/profile/index.tsx
+msgid "Your name, photo, contact details and links. New resumes, letters and your portfolio start from here."
 msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
@@ -21804,6 +21887,10 @@ msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Your subscription is set to end. Keep it first to change the plan."
+msgstr ""
+
+#: src/routes/dashboard/profile/career.tsx
+msgid "Your summary, experience, education, skills and the rest. New resumes and your portfolio start from here."
 msgstr ""
 
 #: src/features/portfolio/blocks/story-templates.ts
