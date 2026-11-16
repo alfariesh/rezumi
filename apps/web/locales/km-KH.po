@@ -497,11 +497,6 @@ msgstr "{0} បានរកឃើញ"
 msgid "{0} found, {unreadable} unreadable"
 msgstr "{0} បានរកឃើញ {unreadable} មិនអាចអានបានទេ។"
 
-#. placeholder {0}: Math.round(countdown / 60)
-#: src/features/career/workspace/shell.tsx
-msgid "{0} h"
-msgstr "{0} ម៉ោង"
-
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -803,10 +798,6 @@ msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} resume templates. Find your fit."
-msgstr ""
-
-#: src/features/career/workspace/shell.tsx
-msgid "{countdown} min"
 msgstr ""
 
 #: src/routes/dashboard/applications/index.tsx
@@ -3053,7 +3044,6 @@ msgstr "កាលបរិច្ឆេទនៃការដាក់ពាក្
 msgid "Application deleted"
 msgstr "ពាក្យសុំការងារត្រូវបានលុប"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "ព័ត៌មានលម្អិតនៃពាក្យសុំ"
@@ -3067,6 +3057,7 @@ msgstr "ជម្រើសពាក្យសុំការងារ"
 msgid "Application updated"
 msgstr "បានធ្វើបច្ចុប្បន្នភាពពាក្យសុំ"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
@@ -3076,7 +3067,6 @@ msgstr "បានធ្វើបច្ចុប្បន្នភាពពាក
 #: src/features/command-palette/pages/resumes.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/index.tsx
-#: src/routes/dashboard/applications/offers.tsx
 msgid "Applications"
 msgstr "ពាក្យសុំ"
 
@@ -3380,6 +3370,14 @@ msgstr "ត្រឡប់ទៅការចូល"
 msgid "Back to stories"
 msgstr "ត្រឡប់ទៅរឿង"
 
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Back to the panel"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Back to the portfolio"
 msgstr ""
@@ -3559,7 +3557,7 @@ msgstr "ឧបសគ្គធំ"
 msgid "Blue"
 msgstr "ខៀវ"
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Board"
 msgstr "ក្តារ"
 
@@ -3751,7 +3749,7 @@ msgstr ""
 msgid "By QRIS · {0} paid"
 msgstr ""
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Calendar"
 msgstr "ប្រតិទិន"
 
@@ -4291,10 +4289,6 @@ msgstr "ជ្រើសរើសឯកសារ WebM, MP4, MP3, WAV ឬ Ogg ដ�
 msgid "Choose a work to write about"
 msgstr ""
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "Choose an application to see its next step, what you sent and its activity here."
-msgstr ""
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "ជ្រើសរើសពាក្យសុំការងារ…"
@@ -4617,13 +4611,8 @@ msgstr "ប្រៀបធៀបការសាកល្បង ដើម្ប�
 
 #: src/features/career/workspace/shell.tsx
 #: src/features/command-palette/pages/navigation.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "Compare offers"
 msgstr "ប្រៀបធៀបការផ្តល់ការងារ"
-
-#: src/routes/dashboard/applications/index.tsx
-msgid "Compare offers ({offerCount})"
-msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Compare plans"
@@ -9181,7 +9170,7 @@ msgstr "ក្នុងជួរ"
 msgid "Inline formatting"
 msgstr ""
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Insights"
 msgstr "ការយល់ដឹង"
 
@@ -9212,11 +9201,6 @@ msgstr ""
 #: src/features/homepage/features.tsx
 msgid "Interview"
 msgstr "សម្ភាសន៍"
-
-#: src/features/career/workspace/shell.tsx
-msgctxt "Application workspace section: prepare, practise and debrief"
-msgid "Interview"
-msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Interview debrief"
@@ -10186,9 +10170,9 @@ msgstr "កំពុងភ្ជាប់..."
 msgid "Links"
 msgstr "តំណភ្ជាប់"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/portfolio/editor/design-panel.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "List"
 msgstr "បញ្ជី"
 
@@ -11239,10 +11223,6 @@ msgstr ""
 msgid "No application"
 msgstr "មិនមានពាក្យសុំការងារទេ។"
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "No application open"
-msgstr ""
-
 #: src/features/applications/components/board.tsx
 msgid "No applications"
 msgstr ""
@@ -12021,6 +12001,7 @@ msgstr "ផ្តល់ការងារ"
 msgid "Offer comparison"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/offers.tsx
@@ -12231,6 +12212,10 @@ msgstr "បើកកម្មវិធីអ៊ីមែល"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Open focus mode"
 msgstr "បើករបៀបផ្តោតអារម្មណ៍"
+
+#: src/features/career/coach.tsx
+msgid "Open full screen"
+msgstr ""
 
 #. placeholder {0}: tabLabel(meta.tab)
 #: src/features/career/workspace/saved.tsx
@@ -20151,7 +20136,6 @@ msgstr "Vietnamese"
 
 #: src/features/career/coach-chat.tsx
 #: src/features/documents/documents-page.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "View"
 msgstr "មើល"
 

@@ -497,11 +497,6 @@ msgstr "{0} ditemukan"
 msgid "{0} found, {unreadable} unreadable"
 msgstr "{0} ditemukan, {unreadable} tidak dapat dibaca"
 
-#. placeholder {0}: Math.round(countdown / 60)
-#: src/features/career/workspace/shell.tsx
-msgid "{0} h"
-msgstr "{0} j"
-
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -804,10 +799,6 @@ msgstr "{count} menit baca"
 #: src/features/templates/gallery.tsx
 msgid "{count} resume templates. Find your fit."
 msgstr ""
-
-#: src/features/career/workspace/shell.tsx
-msgid "{countdown} min"
-msgstr "{countdown} mnt"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -3053,7 +3044,6 @@ msgstr "Tanggal lamaran sampai"
 msgid "Application deleted"
 msgstr "lamaran kerja dihapus"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Detail lamaran"
@@ -3067,6 +3057,7 @@ msgstr "pilihan lamaran pekerjaan"
 msgid "Application updated"
 msgstr "Lamaran diperbarui"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
@@ -3076,7 +3067,6 @@ msgstr "Lamaran diperbarui"
 #: src/features/command-palette/pages/resumes.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/index.tsx
-#: src/routes/dashboard/applications/offers.tsx
 msgid "Applications"
 msgstr "Lamaran"
 
@@ -3380,6 +3370,14 @@ msgstr "Kembali ke masuk"
 msgid "Back to stories"
 msgstr "Kembali ke cerita"
 
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr "Kembali ke chat"
+
+#: src/features/career/coach.tsx
+msgid "Back to the panel"
+msgstr "Kembali ke panel"
+
 #: src/features/portfolio/page-text.ts
 msgid "Back to the portfolio"
 msgstr "Kembali ke portofolio"
@@ -3559,7 +3557,7 @@ msgstr "Penghalang"
 msgid "Blue"
 msgstr "Biru"
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Board"
 msgstr "Papan"
 
@@ -3751,7 +3749,7 @@ msgstr "Dengan menambahkan logo, Anda menyatakan berhak menampilkannya."
 msgid "By QRIS · {0} paid"
 msgstr "Lewat QRIS · {0} dibayar"
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -4291,10 +4289,6 @@ msgstr "Pilih file WebM, MP4, MP3, WAV, atau Ogg hingga 2 MB."
 msgid "Choose a work to write about"
 msgstr "Pilih karya yang ingin ditulis"
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "Choose an application to see its next step, what you sent and its activity here."
-msgstr "Pilih lamaran untuk melihat langkah selanjutnya, dokumen yang dikirim, dan aktivitasnya di sini."
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "Pilih lamaran kerja…"
@@ -4617,13 +4611,8 @@ msgstr "Bandingkan percobaan untuk melihat apa yang membaik. Pertanyaan latihan 
 
 #: src/features/career/workspace/shell.tsx
 #: src/features/command-palette/pages/navigation.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "Compare offers"
 msgstr "Bandingkan penawaran"
-
-#: src/routes/dashboard/applications/index.tsx
-msgid "Compare offers ({offerCount})"
-msgstr "Bandingkan penawaran ({offerCount})"
 
 #: src/features/billing/plan-page.tsx
 msgid "Compare plans"
@@ -9181,7 +9170,7 @@ msgstr "sebaris"
 msgid "Inline formatting"
 msgstr ""
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Insights"
 msgstr "Insight"
 
@@ -9210,11 +9199,6 @@ msgstr "Magang"
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
 #: src/features/homepage/features.tsx
-msgid "Interview"
-msgstr "Wawancara"
-
-#: src/features/career/workspace/shell.tsx
-msgctxt "Application workspace section: prepare, practise and debrief"
 msgid "Interview"
 msgstr "Wawancara"
 
@@ -10186,9 +10170,9 @@ msgstr "Menghubungkan…"
 msgid "Links"
 msgstr "Tautan"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/portfolio/editor/design-panel.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "List"
 msgstr "List"
 
@@ -11157,7 +11141,7 @@ msgstr "Pendaftar baru"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "New story"
-msgstr ""
+msgstr "Cerita baru"
 
 #: src/features/billing/purchase.ts
 msgid "New subscription"
@@ -11238,10 +11222,6 @@ msgstr "Tanpa perlu mengatur API key"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No application"
 msgstr "Tidak ada lamaran kerja"
-
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "No application open"
-msgstr "Tidak ada lamaran yang dibuka"
 
 #: src/features/applications/components/board.tsx
 msgid "No applications"
@@ -12021,6 +12001,7 @@ msgstr "Penawaran"
 msgid "Offer comparison"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/offers.tsx
@@ -12231,6 +12212,10 @@ msgstr "Buka aplikasi email"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Open focus mode"
 msgstr "Buka mode fokus"
+
+#: src/features/career/coach.tsx
+msgid "Open full screen"
+msgstr "Buka layar penuh"
 
 #. placeholder {0}: tabLabel(meta.tab)
 #: src/features/career/workspace/saved.tsx
@@ -20151,7 +20136,6 @@ msgstr "Vietnam"
 
 #: src/features/career/coach-chat.tsx
 #: src/features/documents/documents-page.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "View"
 msgstr "Melihat"
 

@@ -92,15 +92,20 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 					</Trans>
 				}
 				action={
-					<div className="grid max-w-[420px] justify-items-center gap-3">
-						<AiNotice task="fit" />
+					<>
 						{provider && (
 							<Button isPending={generate.isPending} onPress={check}>
 								{generate.isPending && <ThinkingOrb size={16} tone="current" />}
 								{generate.isPending ? <Working steps={workingSteps("fit")} /> : <Trans>Check fit</Trans>}
 							</Button>
 						)}
-					</div>
+						{/* Its own row under the button: what the check sends, and where. */}
+						<div className="flex basis-full justify-center">
+							<div className="max-w-[420px]">
+								<AiNotice task="fit" />
+							</div>
+						</div>
+					</>
 				}
 			/>
 		);

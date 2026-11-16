@@ -116,6 +116,8 @@ export function NavigationCommandGroup() {
 					isDisabled={!session}
 					onAction={() => {
 						reset();
+						// Coach full screen is already the coach.
+						if (pathname.startsWith("/dashboard/coach")) return;
 						// The panel lives in the dashboard's shell: elsewhere (the editor, public pages) go to Home first.
 						if (!pathname.startsWith("/dashboard")) void navigate({ to: "/dashboard" });
 						openCoachPanel();

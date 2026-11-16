@@ -497,11 +497,6 @@ msgstr "{0} gevonden"
 msgid "{0} found, {unreadable} unreadable"
 msgstr "{0} gevonden, {unreadable} onleesbaar"
 
-#. placeholder {0}: Math.round(countdown / 60)
-#: src/features/career/workspace/shell.tsx
-msgid "{0} h"
-msgstr "{0} u"
-
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -803,10 +798,6 @@ msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} resume templates. Find your fit."
-msgstr ""
-
-#: src/features/career/workspace/shell.tsx
-msgid "{countdown} min"
 msgstr ""
 
 #: src/routes/dashboard/applications/index.tsx
@@ -3053,7 +3044,6 @@ msgstr "Sollicitatiedatum tot"
 msgid "Application deleted"
 msgstr "sollicitatie verwijderd"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Sollicitatiegegevens"
@@ -3067,6 +3057,7 @@ msgstr "sollicitatie mogelijkheden"
 msgid "Application updated"
 msgstr "Sollicitatie bijgewerkt"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
@@ -3076,7 +3067,6 @@ msgstr "Sollicitatie bijgewerkt"
 #: src/features/command-palette/pages/resumes.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/index.tsx
-#: src/routes/dashboard/applications/offers.tsx
 msgid "Applications"
 msgstr "Sollicitaties"
 
@@ -3380,6 +3370,14 @@ msgstr "Terug naar inloggen"
 msgid "Back to stories"
 msgstr "Terug naar verhalen"
 
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Back to the panel"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Back to the portfolio"
 msgstr ""
@@ -3559,7 +3557,7 @@ msgstr "Blokkerend"
 msgid "Blue"
 msgstr "Blauw"
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Board"
 msgstr "Bord"
 
@@ -3751,7 +3749,7 @@ msgstr ""
 msgid "By QRIS · {0} paid"
 msgstr ""
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -4291,10 +4289,6 @@ msgstr "Kies een WebM-, MP4-, MP3-, WAV- of Ogg-bestand van maximaal 2 MB."
 msgid "Choose a work to write about"
 msgstr ""
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "Choose an application to see its next step, what you sent and its activity here."
-msgstr ""
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "Kies een sollicitatie..."
@@ -4617,13 +4611,8 @@ msgstr "Vergelijk pogingen om te zien wat er beter ging. Oefenvragen zijn gesimu
 
 #: src/features/career/workspace/shell.tsx
 #: src/features/command-palette/pages/navigation.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "Compare offers"
 msgstr "Aanbiedingen vergelijken"
-
-#: src/routes/dashboard/applications/index.tsx
-msgid "Compare offers ({offerCount})"
-msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Compare plans"
@@ -9181,7 +9170,7 @@ msgstr "Doorlopend"
 msgid "Inline formatting"
 msgstr ""
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Insights"
 msgstr "Inzichten"
 
@@ -9212,11 +9201,6 @@ msgstr ""
 #: src/features/homepage/features.tsx
 msgid "Interview"
 msgstr "Sollicitatiegesprek"
-
-#: src/features/career/workspace/shell.tsx
-msgctxt "Application workspace section: prepare, practise and debrief"
-msgid "Interview"
-msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Interview debrief"
@@ -10186,9 +10170,9 @@ msgstr "Koppelen…"
 msgid "Links"
 msgstr "Koppelingen"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/portfolio/editor/design-panel.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "List"
 msgstr "Lijst"
 
@@ -11239,10 +11223,6 @@ msgstr ""
 msgid "No application"
 msgstr "Geen sollicitatie"
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "No application open"
-msgstr ""
-
 #: src/features/applications/components/board.tsx
 msgid "No applications"
 msgstr ""
@@ -12021,6 +12001,7 @@ msgstr "Aanbod"
 msgid "Offer comparison"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/offers.tsx
@@ -12231,6 +12212,10 @@ msgstr "E-mailapp openen"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Open focus mode"
 msgstr "Focusmodus openen"
+
+#: src/features/career/coach.tsx
+msgid "Open full screen"
+msgstr ""
 
 #. placeholder {0}: tabLabel(meta.tab)
 #: src/features/career/workspace/saved.tsx
@@ -20151,7 +20136,6 @@ msgstr "Vietnamees"
 
 #: src/features/career/coach-chat.tsx
 #: src/features/documents/documents-page.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "View"
 msgstr "Weergave"
 

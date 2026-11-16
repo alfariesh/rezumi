@@ -1,8 +1,10 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { EmptyState } from "@heroui-pro/react";
+import { Typography } from "@heroui/react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
+import { renderAsSpan } from "@/libs/typography";
 
 /**
  * - `page`: a page or list with nothing in it yet. An icon, a title naming what goes here, one sentence on what it's
@@ -44,7 +46,9 @@ export function EmptyBlock({ kind, icon, media: picture, title, description, act
 				)}
 			>
 				<div className="grid min-w-0 gap-0.5">
-					<p className="text-sm font-medium">{title}</p>
+					<Typography type="h5" render={renderAsSpan}>
+						{title}
+					</Typography>
 					{description && <p className="text-body-sm text-pretty text-muted">{description}</p>}
 				</div>
 				{action && <div className="flex shrink-0 items-center gap-2">{action}</div>}
@@ -65,10 +69,19 @@ export function EmptyBlock({ kind, icon, media: picture, title, description, act
 						</EmptyState.Media>
 					)
 				)}
-				<EmptyState.Title>{title}</EmptyState.Title>
+				<EmptyState.Title>
+					<Typography type="h5" render={renderAsSpan}>
+						{title}
+					</Typography>
+				</EmptyState.Title>
 				{description && <EmptyState.Description className="max-w-sm text-pretty">{description}</EmptyState.Description>}
 			</EmptyState.Header>
-			{action && <EmptyState.Content className="flex flex-wrap justify-center gap-2">{action}</EmptyState.Content>}
+			{action && (
+				// Side by side, wrapping only when the row runs out of room.
+				<EmptyState.Content className="flex-row! flex-wrap items-center justify-center gap-2">
+					{action}
+				</EmptyState.Content>
+			)}
 		</EmptyState>
 	);
 }

@@ -72,7 +72,7 @@ function RouteComponent() {
 	];
 
 	return (
-		<SectionLayout title={t`Settings`} items={items} contentWidth="narrow" footer={<ProjectLinks />}>
+		<SectionLayout title={t`Settings`} items={items} footer={<ProjectLinks />}>
 			<Outlet />
 			{/* Phones: the menu's small print, after the page. */}
 			<ProjectLinks className="mt-6 md:hidden" />

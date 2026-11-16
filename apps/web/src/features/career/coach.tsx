@@ -2,6 +2,7 @@ import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
+import type { ReactNode } from "react";
 import { ContextMenu, PromptSuggestion } from "@heroui-pro/react";
 import {
 	Button,
@@ -35,6 +36,7 @@ import {
 import { CareerLoadError } from "./load-state";
 import { ContextChip, useCareerTime, useNow } from "./shared";
 import { EmptyBlock } from "@/components/layout/empty-block";
+import { PAGE_GUTTER } from "@/components/layout/page";
 import { transcriptOf, useConversationConnection } from "@/features/assistant/chat";
 import { HeadingOrb } from "@/features/assistant/orb";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
@@ -43,7 +45,7 @@ import { AiProviderLoadState } from "@/features/settings/integrations/ai-provide
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { toastError } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
-import { renderAsH2, renderAsH3 } from "@/libs/typography";
+import { renderAsH2 } from "@/libs/typography";
 
 type ThreadSummary = RouterOutput["agent"]["threads"]["list"][number];
 type UsableProvider = ReturnType<typeof useHasUsableAiProvider>["usableProviders"][number];
@@ -95,33 +97,51 @@ function writeOfferIds(id: string, offers: string[]) {
 /** The server's title for a conversation, from its first message, so the list doesn't change after a refetch. */
 const titleOf = (text: string) => (text.length > 47 ? `${text.slice(0, 44)}...` : text);
 
-type CoachPanelProps = {
+/** How a conversation change reaches the address or the panel's store. */
+export type ConversationChange = {
+	/** The offers the conversation starts with; a conversation just created keeps the ones it began with. */
+	offerIds?: string[];
+	/** The conversation just created here: the full page replaces its address instead of adding a step. */
+	created?: boolean;
+};
+
+type CoachProps = {
+	/**
+	 * `panel`: the dashboard's coach panel (beside the page from 1024px, a sheet below), laid out like the editors'
+	 * assistant column. `page`: Coach full screen, the conversation list in the section's place and the chat in the
+	 * content card.
+	 */
+	layout: "panel" | "page";
 	/** The conversation shown; undefined is a new one. */
 	conversationId: string | undefined;
 	/** Saved offers to add as context ("Plan what to ask" from Offers). */
 	offerIds: string[];
-	/** Shows another conversation (undefined: a new one), as the old page's address did. */
-	onConversationChange: (conversationId: string | undefined, offerIds?: string[]) => void;
+	/** Shows another conversation (undefined: a new one). */
+	onConversationChange: (conversationId: string | undefined, change?: ConversationChange) => void;
+	/** The panel closes; the full page goes back to the panel on the page the person came from. */
 	onClose: () => void;
+	/** The panel only: opens Coach full screen on the conversation shown. */
+	onExpand?: (conversationId: string | undefined, offerIds: string[]) => void;
 };
 
 /**
- * C7–C11: conversations about the whole search, with what each message shares chosen in the composer. Lives in the
- * dashboard's coach panel (beside the page on wide screens, a sheet on narrow ones), laid out like the editors'
- * assistant: a header with new conversation, past conversations and close, then the chat or the list.
+ * C7–C11: conversations about the whole search, with what each message shares chosen in the composer. The panel and
+ * the full page share everything but the layout, so the conversation, its chips and its draft carry between them.
  */
-export function CoachPanel({
+export function Coach({
+	layout,
 	conversationId,
 	offerIds: routeOfferIds,
 	onConversationChange,
 	onClose,
-}: CoachPanelProps) {
+	onExpand,
+}: CoachProps) {
 	const queryClient = useQueryClient();
 	const providers = useHasUsableAiProvider();
 	const threads = useQuery(orpc.agent.threads.list.queryOptions());
 	const knowledge = useCoachKnowledge(null);
 	const [modelMenuOpen, setModelMenuOpen] = useState(false);
-	// The chat and the conversation list share the panel: one at a time, like the editors' assistant.
+	// The panel (and the full page on phones) shows the chat or the conversation list, one at a time.
 	const [view, setView] = useState<"chat" | "history">("chat");
 	const [providerId, setProviderId] = useState<string | null>(null);
 	const [hidden, setHidden] = useState<ReadonlySet<string>>(() => new Set());
@@ -201,7 +221,7 @@ export function CoachPanel({
 		writeChips(id, chips);
 		writeOfferIds(id, offerIds);
 		setSession((current) => ({ ...current, created: id }));
-		onConversationChange(id, offerIds);
+		onConversationChange(id, { offerIds, created: true });
 	};
 
 	const chooseProvider = async (id: string) => {
@@ -317,23 +337,144 @@ export function CoachPanel({
 	const notSetUp = threads.error instanceof ORPCError && threads.error.code === "PRECONDITION_FAILED";
 	const noProvider = !providers.isUnavailable && !providers.hasUsableProvider;
 
+	const page = layout === "page";
+	const startNew = () => {
+		setView("chat");
+		onConversationChange(undefined);
+	};
+	const conversationList = (className: string, header?: ReactNode) => (
+		<ConversationList
+			className={className}
+			header={header}
+			threads={conversations}
+			currentId={threadId}
+			onOpen={(id) => {
+				setView("chat");
+				if (id !== threadId) onConversationChange(id);
+			}}
+			onRename={(thread, title) => void rename(thread, title)}
+			onDelete={remove}
+		/>
+	);
+	const disabled = noProvider || (chips.memory && (knowledge.isPending || knowledge.isError));
+
+	const chat = notSetUp ? (
+		<p className="m-4 rounded-xl bg-control p-4 text-body-sm text-muted">
+			<Trans>
+				The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and
+				your applications work without it.
+			</Trans>
+		</p>
+	) : providers.error ? (
+		<AiProviderLoadState
+			state={{
+				...providers,
+				retry: () => {
+					providers.retry();
+					void threads.refetch();
+					knowledge.retry();
+				},
+			}}
+		/>
+	) : providers.isLoading || threads.isPending ? (
+		<div className="grid flex-1 place-items-center">
+			<Spinner size="md" color="current" className="text-muted" aria-label={t`Loading`} />
+		</div>
+	) : threads.isError && !threads.data ? (
+		<CareerLoadError
+			onRetry={() => {
+				void threads.refetch();
+				providers.retry();
+			}}
+		/>
+	) : noProvider && !threadId ? (
+		<div className="min-h-0 flex-1 overflow-y-auto py-4">
+			<div className={cn(page && "mx-auto max-w-[560px]")}>
+				<ProviderSetup />
+			</div>
+		</div>
+	) : (
+		<CoachThread
+			key={session.key}
+			draftKey={`career-coach:${threadId ?? "new"}`}
+			threadId={threadId}
+			createThread={createThread}
+			onThreadCreated={onThreadCreated}
+			applicationId={null}
+			context={context}
+			connection={connection}
+			providerId={provider?.id}
+			onChangeConnection={() => setModelMenuOpen(true)}
+			header={() => null}
+			afterMessages={afterMessages}
+			empty={(send) => <EmptyState disabled={disabled} onPick={send} />}
+			chips={contextChips}
+			model={model}
+			placeholder={t`Ask about your next career step…`}
+			disabled={disabled}
+			variant={page ? "page" : "panel"}
+		/>
+	);
+
+	if (page)
+		return (
+			// Laid out like the dashboard's sections: the conversations where a section's menu sits, the chat beside them, on
+			// the plain page with its margins. It fills the window under the navbar so the chat scrolls on its own; phones
+			// show one at a time.
+			<div
+				className={cn(
+					"mx-auto flex h-[calc(100svh-3rem)] min-h-[480px] w-full max-w-[1440px] flex-col pt-2 md:grid md:grid-cols-[16rem_minmax(0,1fr)] md:gap-x-8 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-x-12",
+					PAGE_GUTTER,
+				)}
+			>
+				{conversationList(
+					view === "history" ? "flex flex-1" : "hidden md:flex",
+					<>
+						<IconButton
+							icon="arrow-left"
+							label={t`Back to the chat`}
+							className="text-muted md:hidden"
+							onPress={() => setView("chat")}
+						/>
+						<IconButton icon="note-pencil" label={t`New conversation`} className="text-muted" onPress={startNew} />
+					</>,
+				)}
+				<section
+					aria-label={t`Coach`}
+					className={cn("min-h-0 min-w-0 flex-col", view === "history" ? "hidden md:flex" : "flex flex-1")}
+				>
+					<header className="flex h-12 shrink-0 items-center gap-1">
+						<IconButton
+							icon="clock-counter-clockwise"
+							label={t`Past conversations`}
+							className="text-muted md:hidden"
+							onPress={() => setView("history")}
+						/>
+						<Typography type="h6" render={renderAsH2} className="me-auto min-w-0 truncate text-sm">
+							{summary ? titleFor(summary) : <Trans>New conversation</Trans>}
+						</Typography>
+						<IconButton
+							icon="note-pencil"
+							label={t`New conversation`}
+							className="text-muted md:hidden"
+							onPress={startNew}
+						/>
+						<IconButton icon="arrows-in-simple" label={t`Back to the panel`} className="text-muted" onPress={onClose} />
+					</header>
+					<div className="flex min-h-0 flex-1 flex-col pb-3">{chat}</div>
+				</section>
+			</div>
+		);
+
 	return (
 		<section aria-label={t`Coach`} className="flex h-full min-h-0 flex-col">
-			{/* As tall as the navbar beside it, so the two read as one header across the window. */}
-			<header className="flex h-12 shrink-0 items-center gap-1 ps-4 pe-2">
+			{/* The editors' assistant header, as tall as the navbar beside it so the two read as one row. */}
+			<header className="flex h-12 shrink-0 items-center gap-1 ps-1">
 				<Icon name="sparkle" size={20} className="shrink-0 text-accent" />
 				<Typography type="h6" render={renderAsH2} className="me-auto ps-1.5 text-sm">
 					<Trans>Coach</Trans>
 				</Typography>
-				<IconButton
-					icon="note-pencil"
-					label={t`New conversation`}
-					className="text-muted"
-					onPress={() => {
-						setView("chat");
-						onConversationChange(undefined);
-					}}
-				/>
+				<IconButton icon="note-pencil" label={t`New conversation`} className="text-muted" onPress={startNew} />
 				<IconButton
 					icon="clock-counter-clockwise"
 					label={t`Past conversations`}
@@ -341,83 +482,17 @@ export function CoachPanel({
 					className={cn("text-muted", view === "history" && "bg-accent-soft text-accent-soft-foreground")}
 					onPress={() => setView(view === "history" ? "chat" : "history")}
 				/>
+				{onExpand && (
+					<IconButton
+						icon="arrows-out-simple"
+						label={t`Open full screen`}
+						className="text-muted"
+						onPress={() => onExpand(threadId ?? undefined, offerIds)}
+					/>
+				)}
 				<IconButton icon="x" label={t`Close the coach`} className="text-muted" onPress={onClose} />
 			</header>
-			{view === "history" ? (
-				<ConversationList
-					threads={conversations}
-					currentId={threadId}
-					onOpen={(id) => {
-						setView("chat");
-						if (id !== threadId) onConversationChange(id);
-					}}
-					onRename={(thread, title) => void rename(thread, title)}
-					onDelete={remove}
-				/>
-			) : (
-				<div className="flex min-h-0 flex-1 flex-col px-1 pb-3">
-					{notSetUp ? (
-						<p className="m-4 rounded-xl bg-control p-4 text-body-sm text-muted">
-							<Trans>
-								The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile,
-								Offers and your applications work without it.
-							</Trans>
-						</p>
-					) : providers.error ? (
-						<AiProviderLoadState
-							state={{
-								...providers,
-								retry: () => {
-									providers.retry();
-									void threads.refetch();
-									knowledge.retry();
-								},
-							}}
-						/>
-					) : providers.isLoading || threads.isPending ? (
-						<div className="grid flex-1 place-items-center">
-							<Spinner size="md" color="current" className="text-muted" aria-label={t`Loading`} />
-						</div>
-					) : threads.isError && !threads.data ? (
-						<CareerLoadError
-							onRetry={() => {
-								void threads.refetch();
-								providers.retry();
-							}}
-						/>
-					) : noProvider && !threadId ? (
-						<div className="min-h-0 flex-1 overflow-y-auto p-4">
-							<ProviderSetup />
-						</div>
-					) : (
-						<CoachThread
-							key={session.key}
-							draftKey={`career-coach:${threadId ?? "new"}`}
-							threadId={threadId}
-							createThread={createThread}
-							onThreadCreated={onThreadCreated}
-							applicationId={null}
-							context={context}
-							connection={connection}
-							providerId={provider?.id}
-							onChangeConnection={() => setModelMenuOpen(true)}
-							header={() => null}
-							afterMessages={afterMessages}
-							empty={(send) => (
-								<EmptyState
-									disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
-									onPick={send}
-								/>
-							)}
-							chips={contextChips}
-							model={model}
-							placeholder={t`Ask about your next career step…`}
-							disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
-							variant="sheet"
-						/>
-					)}
-				</div>
-			)}
+			{view === "history" ? conversationList("flex flex-1") : chat}
 		</section>
 	);
 }
@@ -425,8 +500,8 @@ export function CoachPanel({
 type EmptyStateProps = { disabled: boolean; onPick: (text: string) => void };
 
 /**
- * A new conversation: what the coach is for, and three ways to start. Not an `EmptyBlock`: like the editors'
- * assistant, its orb flies down to the first "Thinking…" line when a message is sent.
+ * A new conversation: what the coach is for, and three ways to start. The orb, as in the editors' assistant, flies
+ * down to the first "Thinking…" line when a message is sent.
  */
 function EmptyState({ disabled, onPick }: EmptyStateProps) {
 	const starters: Array<{ icon: IconName; text: string }> = [
@@ -438,36 +513,37 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 		{ icon: "user-sound", text: t`What interview answers should I practice?` },
 	];
 	return (
-		<div className="grid justify-items-center gap-4 pt-4 text-center">
-			<div className="grid justify-items-center gap-1.5">
-				<HeadingOrb className="mb-1.5" />
-				<Typography type="h4" align="center" render={renderAsH3}>
-					<Trans>What are you working on?</Trans>
-				</Typography>
-				<p className="text-body-sm text-pretty text-muted">
-					<Trans>
-						Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on
-						below and say what they relied on.
-					</Trans>
-				</p>
-			</div>
-			<PromptSuggestion>
-				<PromptSuggestion.Items className="flex flex-col items-center gap-2">
-					{starters.map((starter) => (
-						<PromptSuggestion.Item
-							key={starter.icon}
-							isDisabled={disabled}
-							showEndIcon={false}
-							onPress={() => onPick(starter.text)}
-							className="w-fit max-w-full items-center justify-center border-transparent bg-default px-3 py-1.5 text-start text-xs hover:bg-default-hover"
-						>
-							<Icon name={starter.icon} size={16} className="me-2 shrink-0 text-accent" />
-							<span className="min-w-0 text-pretty">{starter.text}</span>
-						</PromptSuggestion.Item>
-					))}
-				</PromptSuggestion.Items>
-			</PromptSuggestion>
-		</div>
+		<EmptyBlock
+			kind="page"
+			// The orb brings its own shape: no tile behind it (EmptyState's media fill shows on the panel's white).
+			className="py-4 [&_[data-slot=empty-state-media]]:bg-transparent"
+			media={<HeadingOrb />}
+			title={<Trans>What are you working on?</Trans>}
+			description={
+				<Trans>
+					Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on
+					below and say what they relied on.
+				</Trans>
+			}
+			action={
+				<PromptSuggestion>
+					<PromptSuggestion.Items className="flex flex-wrap justify-center gap-2">
+						{starters.map((starter) => (
+							<PromptSuggestion.Item
+								key={starter.icon}
+								isDisabled={disabled}
+								showEndIcon={false}
+								onPress={() => onPick(starter.text)}
+								className="w-fit max-w-full items-center justify-center border-transparent bg-default px-3 py-1.5 text-start text-xs hover:bg-default-hover"
+							>
+								<Icon name={starter.icon} size={16} className="me-2 shrink-0 text-accent" />
+								<span className="min-w-0 text-pretty">{starter.text}</span>
+							</PromptSuggestion.Item>
+						))}
+					</PromptSuggestion.Items>
+				</PromptSuggestion>
+			}
+		/>
 	);
 }
 
@@ -525,6 +601,9 @@ function ModelSelect({ open, onOpenChange, providers, current, label, onChoose }
 // ---- Conversations ----
 
 type ConversationListProps = {
+	className: string;
+	/** Buttons beside the search (the full page's New conversation). */
+	header?: ReactNode;
 	threads: ThreadSummary[];
 	currentId: string | null;
 	onOpen: (id: string) => void;
@@ -538,7 +617,15 @@ type Group = "today" | "yesterday" | "week" | "older";
  * Past conversations, in place of the chat until one is chosen: a title each, grouped by when they last moved.
  * Search matches titles. A conversation renames in place and deletes with Undo.
  */
-function ConversationList({ threads, currentId, onOpen, onRename, onDelete }: ConversationListProps) {
+function ConversationList({
+	className,
+	header,
+	threads,
+	currentId,
+	onOpen,
+	onRename,
+	onDelete,
+}: ConversationListProps) {
 	const { format } = useCareerTime();
 	const [renaming, setRenaming] = useState<string | null>(null);
 	const [query, setQuery] = useState("");
@@ -570,14 +657,23 @@ function ConversationList({ threads, currentId, onOpen, onRename, onDelete }: Co
 		.filter(({ items }) => items.length > 0);
 
 	return (
-		<nav aria-label={t`Conversations`} className="flex min-h-0 flex-1 flex-col gap-3 px-3 pb-3">
-			<SearchField aria-label={t`Search conversations`} variant="secondary" value={query} onChange={setQuery}>
-				<SearchField.Group>
-					<SearchField.SearchIcon />
-					<SearchField.Input placeholder={t`Search…`} />
-					<SearchField.ClearButton />
-				</SearchField.Group>
-			</SearchField>
+		<nav aria-label={t`Conversations`} className={cn("min-h-0 flex-col gap-2 pb-3", className)}>
+			<div className="flex h-12 shrink-0 items-center gap-1">
+				<SearchField
+					aria-label={t`Search conversations`}
+					variant="secondary"
+					className="min-w-0 flex-1"
+					value={query}
+					onChange={setQuery}
+				>
+					<SearchField.Group>
+						<SearchField.SearchIcon />
+						<SearchField.Input placeholder={t`Search…`} />
+						<SearchField.ClearButton />
+					</SearchField.Group>
+				</SearchField>
+				{header}
+			</div>
 
 			<ScrollShadow hideScrollBar className="min-h-0 flex-1 overflow-y-auto">
 				{currentId === null && !needle && (
@@ -621,7 +717,10 @@ function ConversationList({ threads, currentId, onOpen, onRename, onDelete }: Co
 						}
 					/>
 				)}
-				{threads.length === 0 && <EmptyBlock kind="inline" title={t`Your conversations appear here.`} />}
+				{/* With nothing saved yet, the "New conversation" row above says enough. */}
+				{threads.length === 0 && currentId !== null && (
+					<EmptyBlock kind="inline" title={t`Your conversations appear here.`} />
+				)}
 			</ScrollShadow>
 		</nav>
 	);

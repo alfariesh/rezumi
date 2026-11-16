@@ -7,10 +7,7 @@ type CoachPanelState = {
 	conversationId: string | undefined;
 	/** Saved offers added as context ("Plan what to ask" from Offers); stored per conversation once it starts. */
 	offerIds: string[];
-	/**
-	 * The last dashboard page shown outside the coach's old address, so `/dashboard/coach/…` can open the panel and
-	 * stay where the person was.
-	 */
+	/** The last dashboard page shown outside Coach full screen, which its collapse button returns to. */
 	lastHref: string | undefined;
 };
 

@@ -97,15 +97,7 @@ type NoticeProps = { icon: IconName; title: string; description: ReactNode; chil
 
 /** An empty or in-between state: what to do next, in one centered block. */
 function Notice({ icon, title, description, children }: NoticeProps) {
-	return (
-		<EmptyBlock
-			kind="page"
-			icon={icon}
-			title={title}
-			description={description}
-			action={<div className="grid justify-items-center gap-3">{children}</div>}
-		/>
-	);
+	return <EmptyBlock kind="page" icon={icon} title={title} description={description} action={children} />;
 }
 
 type PlanEmptyProps = { application: Application; interview: InterviewTimelineEntry };
@@ -138,13 +130,16 @@ function PlanEmpty({ application, interview }: PlanEmptyProps) {
 						{generate.isPending && <ThinkingOrb size={16} tone="current" />}
 						{generate.isPending ? <Working steps={workingSteps("briefing")} /> : <Trans>Plan my preparation</Trans>}
 					</Button>
-					<PrivacyLine className="max-w-sm text-start">
-						<Trans>
-							Sends this application (posting, notes, interview details) and your Profile (details, career, and the
-							facts and stories that are switched on) to {label}.
-						</Trans>
-					</PrivacyLine>
-					<AiSourceMenu action="interview-practice" />
+					{/* Their own row under the button: what planning sends, and what it costs. */}
+					<div className="grid basis-full justify-items-center gap-3">
+						<PrivacyLine className="max-w-sm text-start">
+							<Trans>
+								Sends this application (posting, notes, interview details) and your Profile (details, career, and the
+								facts and stories that are switched on) to {label}.
+							</Trans>
+						</PrivacyLine>
+						<AiSourceMenu action="interview-practice" />
+					</div>
 				</>
 			) : (
 				<Link to="/dashboard/settings/app" hash="ai-providers" className={cn(buttonVariants({ variant: "secondary" }))}>

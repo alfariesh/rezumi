@@ -8,11 +8,10 @@ import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useMatchRoute, useNavigate, useRouterState } from "@tanstack/react-router";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { ShellPendingContext } from "@/components/layout/loading-screen";
 import { PAGE_GUTTER } from "@/components/layout/page";
@@ -50,30 +49,32 @@ function useNavItems() {
 	// Home counts what's waiting for the user (unread notifications), so nothing shows at zero.
 	const unread = notifications?.filter((notification) => !notification.readAt).length ?? 0;
 
+	const applications: NavItem = {
+		to: "/dashboard/applications",
+		icon: "briefcase",
+		label: t`Applications`,
+		...(applicationStats
+			? {
+					count: applicationStats.byStage
+						.filter((row) => row.status !== "closed")
+						.reduce((total, row) => total + row.count, 0),
+				}
+			: {}),
+	};
+	// The owner's order (2026-11-16): Home, Portfolio, Documents, Profile, then Applications.
 	const items: NavItem[] = [
 		{ to: "/dashboard", icon: "house", label: t`Home`, ...(unread ? { count: unread } : {}) },
-		{
-			to: "/dashboard/applications",
-			icon: "briefcase",
-			label: t`Applications`,
-			...(applicationStats
-				? {
-						count: applicationStats.byStage
-							.filter((row) => row.status !== "closed")
-							.reduce((total, row) => total + row.count, 0),
-					}
-				: {}),
-		},
+		...(portfolio?.enabled
+			? [{ to: "/dashboard/portfolio", icon: "globe-hemisphere-west", label: t`Portfolio` } satisfies NavItem]
+			: []),
 		{
 			to: "/dashboard/documents",
 			icon: "file-text",
 			label: t`Documents`,
 			...(counts ? { count: counts.resume + counts.letter } : {}),
 		},
-		...(portfolio?.enabled
-			? [{ to: "/dashboard/portfolio", icon: "globe-hemisphere-west", label: t`Portfolio` } satisfies NavItem]
-			: []),
 		{ to: "/dashboard/profile", icon: "user-circle", label: t`Profile` },
+		applications,
 	];
 
 	return items;
@@ -91,6 +92,28 @@ function initialSidebarOpen() {
 	if (saved !== undefined) return saved !== "false";
 	return typeof window === "undefined" || window.matchMedia("(min-width: 1024px)").matches;
 }
+
+/** AppLayout hides its aside column up to 1024px (`max-width: 1024px`); the coach is a sheet there. */
+const ASIDE_QUERY = "(min-width: 1025px)";
+
+function subscribeAside(onChange: () => void) {
+	if (typeof window.matchMedia !== "function") return () => {};
+	const list = window.matchMedia(ASIDE_QUERY);
+	list.addEventListener("change", onChange);
+	return () => list.removeEventListener("change", onChange);
+}
+
+/** Whether the coach docks beside the page (AppLayout shows its aside) rather than coming in as a sheet. */
+function useAsideShown() {
+	return useSyncExternalStore(
+		subscribeAside,
+		() => typeof window.matchMedia === "function" && window.matchMedia(ASIDE_QUERY).matches,
+		() => true,
+	);
+}
+
+/** Coach full screen (`/dashboard/coach/…`), or the older address that redirects there. */
+const isCoachPage = (pathname: string) => /^\/dashboard\/(career\/)?coach(\/|$)/.test(pathname);
 
 /** An application's workspace, which has a coach of its own (the `?coach=` sheet) for that job. */
 const WORKSPACE_ROUTE = "/dashboard/applications/$applicationId/{-$tab}";
@@ -110,7 +133,7 @@ function useWorkspaceParams() {
 /**
  * The app shell for every dashboard page: HeroUI Pro's AppLayout with a 240px sidebar that collapses to icons (⌘B),
  * and a sheet opened from the navbar's menu button on phones. N opens New anywhere outside a field. The coach opens
- * from the navbar into a panel beside the page (a sheet below 1024px) and stays open from page to page; an
+ * from the navbar into a panel beside the page (a sheet up to 1024px) and stays open from page to page; an
  * application's workspace hides it, since that page has a coach for the job.
  */
 type AppShellProps = { children: ReactNode };
@@ -119,16 +142,16 @@ export function AppShell({ children }: AppShellProps) {
 	const openDialog = useDialogStore((state) => state.openDialog);
 	const coachOpen = useCoachPanelStore((state) => state.open);
 	const setCoachOpen = useCoachPanelStore((state) => state.setOpen);
-	const breakpoint = useBreakpoint();
-	const docked = breakpoint === "desktop" || breakpoint === "wide";
+	const docked = useAsideShown();
 	const onWorkspace = useWorkspaceParams() !== undefined;
-	const coachVisible = coachOpen && !onWorkspace;
 	const location = useRouterState({ select: (state) => state.location });
+	// Coach full screen shows the coach itself: no panel beside it (two live chats on one conversation).
+	const onCoachPage = isCoachPage(location.pathname);
+	const coachVisible = coachOpen && !onWorkspace && !onCoachPage;
 
-	// Where `/dashboard/coach/…` returns to after opening the panel: the page the person was on (never that address).
+	// Where Coach full screen collapses back to: the page the person was on (never a coach address).
 	useEffect(() => {
-		if (!/^\/dashboard\/(career\/)?coach(\/|$)/.test(location.pathname))
-			useCoachPanelStore.getState().setLastHref(location.href);
+		if (!isCoachPage(location.pathname)) useCoachPanelStore.getState().setLastHref(location.href);
 	}, [location.pathname, location.href]);
 
 	useHotkey("N", () => {
@@ -138,11 +161,12 @@ export function AppShell({ children }: AppShellProps) {
 
 	return (
 		<AppLayout
-			className="dashboard-shell bg-surface [--app-layout-aside-width:360px] xl:[--app-layout-aside-width:400px]"
+			// The docked panel is the editors' assistant column: on the window's surface, no border, as wide as theirs.
+			className="dashboard-shell bg-surface [&_[data-slot=app-layout-aside]]:border-0 [&_[data-slot=app-layout-aside]]:bg-surface [&_[data-slot=app-layout-aside]]:[--app-layout-aside-width:var(--editor-assistant)]"
 			defaultSidebarOpen={initialSidebarOpen()}
 			sidebarCollapsible="icon"
 			// One coach at a time: the docked panel here, or the sheet below (AppLayout's own sheet would mount it twice).
-			aside={docked ? <CoachPanelSlot visible={coachVisible} /> : null}
+			aside={docked && !onCoachPage ? <CoachPanelSlot visible={coachVisible} className="ps-1 pe-3 pb-2" /> : null}
 			asideOpen={docked && coachVisible}
 			sidebar={
 				<>
@@ -169,12 +193,13 @@ export function AppShell({ children }: AppShellProps) {
 				<GuestBanner />
 				<ShellPendingContext value>{children}</ShellPendingContext>
 			</div>
-			{!docked && (
+			{!docked && !onCoachPage && (
+				// The editors' assistant drawer below 1280px: the window's surface, the column's padding.
 				<Sheet isOpen={coachVisible} onOpenChange={setCoachOpen} placement="right">
 					<Sheet.Backdrop>
 						<Sheet.Content className="w-full sm:max-w-none md:max-w-[420px]">
-							<Sheet.Dialog aria-label={t`Coach`} className="h-full gap-0 p-0">
-								<CoachPanelSlot visible />
+							<Sheet.Dialog aria-label={t`Coach`} className="h-full gap-0 bg-surface p-0">
+								<CoachPanelSlot visible className="px-3 pb-2" />
 							</Sheet.Dialog>
 						</Sheet.Content>
 					</Sheet.Backdrop>
@@ -211,6 +236,8 @@ function useCrumbs(): Crumb[] {
 	switch (section) {
 		case undefined:
 			return [{ label: t`Home` }];
+		case "coach":
+			return [{ label: t`Coach` }];
 		case "documents":
 			return [{ label: t`Documents` }];
 		case "trash":
@@ -328,7 +355,8 @@ function AppNavbar() {
 
 /**
  * Opens the coach panel, or closes it when open. On an application's workspace it opens that job's coach instead
- * (the workspace's `?coach=` sheet). Hovering starts loading the panel.
+ * (the workspace's `?coach=` sheet). Hidden on Coach full screen, which is the coach. Hovering starts loading the
+ * panel.
  */
 function CoachButton() {
 	const navigate = useNavigate();
@@ -336,7 +364,9 @@ function CoachButton() {
 	const toggle = useCoachPanelStore((state) => state.toggle);
 	const workspace = useWorkspaceParams();
 	const search = useRouterState({ select: (state) => state.location.search });
+	const onCoachPage = useRouterState({ select: (state) => isCoachPage(state.location.pathname) });
 	const pressed = open && !workspace;
+	if (onCoachPage) return null;
 	const onPress = () => {
 		if (!workspace) return toggle();
 		// Replaced, not pushed: the sheet's own close then leaves no entry that Back would reopen it from.

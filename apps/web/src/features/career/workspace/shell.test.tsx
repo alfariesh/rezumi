@@ -270,28 +270,21 @@ it("explains a missing linked document during loading and offers retry after fai
 	await waitFor(() => expect(screen.getByRole("link", { name: /Harbor resume/ })).toBeTruthy());
 });
 
-it("shows five sections, with Prepare, Practice and Debrief under Interview", async () => {
+it("shows every tab in the menu, grouped, with the open one current", async () => {
 	mount(undefined, { tab: "practise" });
 	const nav = await screen.findByRole("navigation", { name: "Workspace sections" });
-	// The wide-screen list and the phone chips hold the same five entries.
-	const labels = [...nav.querySelectorAll("ul:first-of-type a")].map((link) => link.textContent);
-	expect(labels).toEqual(["Fit", "Apply", "Interview", "Messages", "Saved"]);
-	for (const link of screen.getAllByRole("link", { name: "Interview" }))
-		expect(link).toHaveAttribute("aria-current", "page");
-	for (const link of screen.getAllByRole("link", { name: "Apply" })) expect(link).not.toHaveAttribute("aria-current");
-	for (const name of ["Prepare", "Practice", "Debrief"]) expect(screen.getByText(name)).toBeTruthy();
+	// The wide-screen list; phones get the same links again as chips.
+	const list = nav.querySelector("ul");
+	const labels = [...(list?.querySelectorAll("a") ?? [])].map((link) => link.querySelector(".truncate")?.textContent);
+	expect(labels).toEqual(["Fit", "Apply", "Prepare", "Practice", "Debrief", "Messages", "Saved"]);
+	// Group headings before Prepare and before Messages.
+	expect(list?.querySelectorAll("li[aria-hidden]")).toHaveLength(2);
+	expect(screen.getAllByRole("link", { name: "Practice" })[0]).toHaveAttribute("aria-current", "page");
+	expect(screen.getAllByRole("link", { name: "Apply" })[0]).not.toHaveAttribute("aria-current");
 	expect(screen.getByRole("region", { name: "Practice" })).toBeTruthy();
 });
 
-it("keeps the Interview switch off the other sections", async () => {
-	mount();
-	await screen.findByRole("navigation", { name: "Workspace sections" });
-	expect(screen.queryByText("Practice")).toBeNull();
-	for (const link of screen.getAllByRole("link", { name: "Apply" }))
-		expect(link).toHaveAttribute("aria-current", "page");
-});
-
-it("shows the time to a close interview on the Interview entry", async () => {
+it("shows the time to a close interview on Prepare", async () => {
 	const interview = {
 		id: "round",
 		type: "interview",
@@ -306,5 +299,5 @@ it("shows the time to a close interview on the Interview entry", async () => {
 	} as const;
 	mount(undefined, { activity: [interview] as unknown as Application["activity"] });
 	await screen.findByRole("navigation", { name: "Workspace sections" });
-	for (const link of screen.getAllByRole("link", { name: /^Interview/ })) expect(link.textContent).toMatch(/\d+ min/);
+	expect(screen.getAllByRole("link", { name: /Prepare/ })[0]?.textContent).toMatch(/\d+\s?m/);
 });

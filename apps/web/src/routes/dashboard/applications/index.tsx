@@ -1,10 +1,9 @@
 import type { Application, ApplicationSummary } from "@/features/applications/types";
-import { Segment } from "@heroui-pro/react";
-import { Button, buttonVariants, Chip, Dropdown, Input, Label, Skeleton } from "@heroui/react";
+import { Button, Dropdown, Input, Label, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, Link, stripSearchParams, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, stripSearchParams, useNavigate } from "@tanstack/react-router";
 import { useCallback, useDeferredValue, useEffect, useRef, useState } from "react";
 import z from "zod";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -12,15 +11,11 @@ import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { EmptyBlock } from "@/components/layout/empty-block";
-import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { AddApplicationDialog } from "@/features/applications/components/add-application-dialog";
-import {
-	ApplicationDetailPane,
-	ApplicationDetailPanePlaceholder,
-	ApplicationDetailSheet,
-} from "@/features/applications/components/application-detail-sheet";
+import { ApplicationDetailSheet } from "@/features/applications/components/application-detail-sheet";
 import { ApplicationFormSheet } from "@/features/applications/components/application-form-sheet";
+import { APPLICATION_VIEWS, ApplicationsSection } from "@/features/applications/components/applications-section";
 import { ApplicationBoard } from "@/features/applications/components/board";
 import { ApplicationCalendar } from "@/features/applications/components/calendar-view";
 import { ExportApplicationsSheet } from "@/features/applications/components/export-applications-sheet";
@@ -35,17 +30,14 @@ import {
 	hydrateApplicationDetail,
 } from "@/features/applications/queries";
 import { ExtensionInstallHint } from "@/features/extension/install-links";
-import { useMinWidth } from "@/hooks/use-min-width";
 import { toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
-import { orpc } from "@/libs/orpc/client";
 
-const VIEWS = ["list", "board", "insights", "calendar"] as const;
-type View = (typeof VIEWS)[number];
+type View = (typeof APPLICATION_VIEWS)[number];
 
 const searchSchema = z.object({
 	q: z.string().default("").catch(""),
-	view: z.enum(VIEWS).default("list").catch("list"),
+	view: z.enum(APPLICATION_VIEWS).default("list").catch("list"),
 	// Deep links: open Add, or one application.
 	create: z.boolean().default(false).catch(false),
 	applicationId: z.string().optional().catch(undefined),
@@ -96,8 +88,6 @@ function RouteComponent() {
 	const { data: applications, isPending, isError, isFetching, refetch } = useQuery(applicationsListQueryOptions());
 	const queryClient = useQueryClient();
 	const { data: fullApplications } = useQuery({ ...applicationsFullListQueryOptions(), enabled: exporting });
-	const offers = useQuery(orpc.career.savedItems.queryOptions({ input: { kind: "offer" } }));
-	const offerCount = offers.data?.length ?? 0;
 
 	const PREFETCH_LIMIT = 12;
 	const prefetchInFlight = useRef(new Set<string>());
@@ -158,8 +148,6 @@ function RouteComponent() {
 			window.clearTimeout(timer);
 		};
 	}, [prefetch]);
-	const setSearch = (patch: Partial<Search>) =>
-		void navigate({ resetScroll: false, search: (prev: Search) => ({ ...prev, ...patch }) });
 
 	useEffect(() => {
 		if (!create) return;
@@ -185,9 +173,14 @@ function RouteComponent() {
 	const selected = applications?.find((application) => application.id === selectedId) ?? null;
 	// The board needs room to drag: phones get the list instead.
 	const shown: View = phone && (view === "board" || view === "calendar") ? "list" : view;
-	// From 1536px the list keeps the open application in a pane beside it, so moving between rows needs no closing.
-	// Narrower, and on the board and calendar (which need the width), it opens in the sheet.
-	const split = useMinWidth(1536) && shown === "list";
+	// A switch from the menu: the new view animates in, and the open application closes with the old one (the pane
+	// goes with the list; the sheet shouldn't pop open over the board instead).
+	const [lastShown, setLastShown] = useState(shown);
+	if (lastShown !== shown) {
+		setLastShown(shown);
+		setViewSwitched(true);
+		setSelectedId(null);
+	}
 	const editDetails = (application: Application) => {
 		setSelectedId(null);
 		setEditing(application);
@@ -215,7 +208,7 @@ function RouteComponent() {
 	};
 
 	return (
-		<Page width="wide">
+		<ApplicationsSection view={shown}>
 			<PageHeader
 				title={<Trans>Applications</Trans>}
 				actions={
@@ -242,23 +235,6 @@ function RouteComponent() {
 								</Dropdown.Menu>
 							</Dropdown.Popover>
 						</Dropdown>
-						{(!empty || offerCount > 0) && (
-							<Link
-								to="/dashboard/applications/offers"
-								aria-label={offerCount > 0 ? t`Compare offers (${offerCount})` : t`Compare offers`}
-								className={buttonVariants({ variant: "secondary" })}
-							>
-								<Icon name="scales" />
-								<span className="max-sm:hidden">
-									<Trans>Compare offers</Trans>
-								</span>
-								{offerCount > 0 && (
-									<Chip size="sm" variant="soft" className="tabular-nums">
-										{offerCount}
-									</Chip>
-								)}
-							</Link>
-						)}
 						<Button onPress={() => setAdding(true)}>
 							<Icon name="plus" />
 							<Trans>Save job</Trans>
@@ -267,59 +243,23 @@ function RouteComponent() {
 				}
 			>
 				{!(isError && !applications) && !empty && (
-					<>
-						<Segment
-							aria-label={t`View`}
-							// On a phone the switch spans the row, its two items sharing it.
-							className="max-sm:w-full"
-							selectedKey={shown}
-							onSelectionChange={(key) => {
-								setViewSwitched(true);
-								// The pane closes with the list; the sheet shouldn't pop open over the board instead.
-								setSelectedId(null);
-								setSearch({ view: String(key) as View });
-							}}
-						>
-							<Segment.Item id="list">
-								<Icon name="rows" size={18} variant={shown === "list" ? "duotone" : "stroke"} />
-								<Trans>List</Trans>
-							</Segment.Item>
-							{!phone && (
-								<Segment.Item id="board">
-									<Icon name="kanban" size={18} variant={shown === "board" ? "duotone" : "stroke"} />
-									<Trans>Board</Trans>
-								</Segment.Item>
-							)}
-							<Segment.Item id="insights">
-								<Icon name="chart-line-up" size={18} variant={shown === "insights" ? "duotone" : "stroke"} />
-								<Trans>Insights</Trans>
-							</Segment.Item>
-							{!phone && (
-								<Segment.Item id="calendar">
-									<Icon name="calendar-dots" size={18} variant={shown === "calendar" ? "duotone" : "stroke"} />
-									<Trans>Calendar</Trans>
-								</Segment.Item>
-							)}
-						</Segment>
-
-						<div className="relative ms-auto max-w-72 min-w-40 flex-1 max-sm:ms-0 max-sm:max-w-none max-sm:basis-full">
-							<Icon
-								name="magnifying-glass"
-								size={18}
-								className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-muted"
-							/>
-							<Input
-								variant="secondary"
-								fullWidth
-								type="search"
-								aria-label={t`Search applications`}
-								placeholder={t`Search role, company or contact`}
-								value={query}
-								className="ps-8"
-								onChange={(event) => setQuery(event.target.value)}
-							/>
-						</div>
-					</>
+					<div className="relative max-w-80 min-w-40 flex-1 max-sm:max-w-none max-sm:basis-full">
+						<Icon
+							name="magnifying-glass"
+							size={18}
+							className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-muted"
+						/>
+						<Input
+							variant="secondary"
+							fullWidth
+							type="search"
+							aria-label={t`Search applications`}
+							placeholder={t`Search role, company or contact`}
+							value={query}
+							className="ps-8"
+							onChange={(event) => setQuery(event.target.value)}
+						/>
+					</div>
 				)}
 			</PageHeader>
 
@@ -367,19 +307,7 @@ function RouteComponent() {
 							)}
 						>
 							{shown === "list" && (
-								<div className={cn(split && "grid grid-cols-[minmax(0,1fr)_420px] items-start gap-6")}>
-									<ApplicationList applications={filtered} selectedId={selectedId} onOpen={openApplication} />
-									{split &&
-										(selected ? (
-											<ApplicationDetailPane
-												application={selected}
-												onClose={() => setSelectedId(null)}
-												onEditDetails={editDetails}
-											/>
-										) : (
-											<ApplicationDetailPanePlaceholder />
-										))}
-								</div>
+								<ApplicationList applications={filtered} selectedId={selectedId} onOpen={openApplication} />
 							)}
 							{shown === "board" && (
 								<div className="h-[calc(100svh-230px)] min-h-96">
@@ -413,11 +341,11 @@ function RouteComponent() {
 				filtered={filteredFullApplications}
 			/>
 			<ApplicationDetailSheet
-				application={split ? null : selected}
+				application={selected}
 				onOpenChange={(open) => !open && setSelectedId(null)}
 				onEditDetails={editDetails}
 			/>
-		</Page>
+		</ApplicationsSection>
 	);
 }
 

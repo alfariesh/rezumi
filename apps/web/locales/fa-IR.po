@@ -497,11 +497,6 @@ msgstr "{0} پیدا شد"
 msgid "{0} found, {unreadable} unreadable"
 msgstr "{0} پیدا شد، {unreadable} غیرقابل خواندن است"
 
-#. placeholder {0}: Math.round(countdown / 60)
-#: src/features/career/workspace/shell.tsx
-msgid "{0} h"
-msgstr "{0} ساعت"
-
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -803,10 +798,6 @@ msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} resume templates. Find your fit."
-msgstr ""
-
-#: src/features/career/workspace/shell.tsx
-msgid "{countdown} min"
 msgstr ""
 
 #: src/routes/dashboard/applications/index.tsx
@@ -3053,7 +3044,6 @@ msgstr "تاریخ درخواست به"
 msgid "Application deleted"
 msgstr "درخواست کار حذف شد"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "جزئیات درخواست"
@@ -3067,6 +3057,7 @@ msgstr "گزینه های درخواست شغل"
 msgid "Application updated"
 msgstr "درخواست به‌روز شد"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
@@ -3076,7 +3067,6 @@ msgstr "درخواست به‌روز شد"
 #: src/features/command-palette/pages/resumes.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/index.tsx
-#: src/routes/dashboard/applications/offers.tsx
 msgid "Applications"
 msgstr "درخواست‌ها"
 
@@ -3380,6 +3370,14 @@ msgstr "بازگشت به ورود"
 msgid "Back to stories"
 msgstr "بازگشت به داستان‌ها"
 
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Back to the panel"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Back to the portfolio"
 msgstr ""
@@ -3559,7 +3557,7 @@ msgstr "مسدودکننده"
 msgid "Blue"
 msgstr "آبی"
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Board"
 msgstr "برد"
 
@@ -3751,7 +3749,7 @@ msgstr ""
 msgid "By QRIS · {0} paid"
 msgstr ""
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Calendar"
 msgstr "تقویم"
 
@@ -4291,10 +4289,6 @@ msgstr "یک فایل WebM، MP4، MP3، WAV یا Ogg تا ۲ مگابایت ا�
 msgid "Choose a work to write about"
 msgstr ""
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "Choose an application to see its next step, what you sent and its activity here."
-msgstr ""
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "انتخاب یک درخواست شغلی…"
@@ -4617,13 +4611,8 @@ msgstr "تلاش‌ها را مقایسه کنید تا ببینید چه چیز
 
 #: src/features/career/workspace/shell.tsx
 #: src/features/command-palette/pages/navigation.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "Compare offers"
 msgstr "مقایسهٔ پیشنهادها"
-
-#: src/routes/dashboard/applications/index.tsx
-msgid "Compare offers ({offerCount})"
-msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Compare plans"
@@ -9181,7 +9170,7 @@ msgstr "درخط"
 msgid "Inline formatting"
 msgstr ""
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Insights"
 msgstr "بینش‌ها"
 
@@ -9212,11 +9201,6 @@ msgstr ""
 #: src/features/homepage/features.tsx
 msgid "Interview"
 msgstr "مصاحبه"
-
-#: src/features/career/workspace/shell.tsx
-msgctxt "Application workspace section: prepare, practise and debrief"
-msgid "Interview"
-msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Interview debrief"
@@ -10186,9 +10170,9 @@ msgstr "پیوند دادن…"
 msgid "Links"
 msgstr "پیوندها"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/portfolio/editor/design-panel.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "List"
 msgstr "لیست"
 
@@ -11239,10 +11223,6 @@ msgstr ""
 msgid "No application"
 msgstr "بدون درخواست کار"
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "No application open"
-msgstr ""
-
 #: src/features/applications/components/board.tsx
 msgid "No applications"
 msgstr ""
@@ -12021,6 +12001,7 @@ msgstr "پیشنهاد"
 msgid "Offer comparison"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/offers.tsx
@@ -12231,6 +12212,10 @@ msgstr "باز کردن برنامهٔ ایمیل"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Open focus mode"
 msgstr "حالت فوکوس را باز کنید"
+
+#: src/features/career/coach.tsx
+msgid "Open full screen"
+msgstr ""
 
 #. placeholder {0}: tabLabel(meta.tab)
 #: src/features/career/workspace/saved.tsx
@@ -20151,7 +20136,6 @@ msgstr "ویتنامی"
 
 #: src/features/career/coach-chat.tsx
 #: src/features/documents/documents-page.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "View"
 msgstr "مشاهده کنید"
 

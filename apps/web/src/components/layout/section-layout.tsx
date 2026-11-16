@@ -21,7 +21,7 @@ export type SectionNavItem = {
 	count?: number | undefined;
 	/** Shown in place of `count` when the hint needs more than a number: a countdown, a coloured chip. */
 	badge?: ReactNode;
-	/** Starts a new group under this heading; the items after it belong to it until the next heading. */
+	/** Starts a new group: a hairline above this item. The text only names the group in code. */
 	group?: string | undefined;
 	/**
 	 * Overrides `match` when the address alone can't tell: items that differ only by search (Documents › Resumes is
@@ -34,11 +34,6 @@ type SectionLayoutProps = {
 	/** The section's name over its menu: "Profile", "Settings". */
 	title: string;
 	items: SectionNavItem[];
-	/**
-	 * How wide the content may grow: `narrow` (720px) for forms and settings, `full` for lists, grids and boards.
-	 * Defaults to `full`.
-	 */
-	contentWidth?: "narrow" | "full";
 	/** Under the menu on wide screens: small print such as the version and legal links. */
 	footer?: ReactNode;
 	/** The current page: its own `PageHeader` first, then its content. */
@@ -48,18 +43,15 @@ type SectionLayoutProps = {
 /**
  * A section of the dashboard with pages of its own (Profile, Settings, Documents): the section's menu on the left and
  * the current page on the right, as the editors lay out their panel beside the canvas. On phones the menu becomes a
- * row of chips over the page. Each page renders its own `PageHeader`; the menu is not a tab bar, and views of the same
- * data (board, list, calendar) stay a `Segment` inside the page.
+ * row of chips over the page. Each page renders its own `PageHeader`, which names the page, so the menu shows no
+ * heading of its own; groups are set apart by a hairline.
  */
-export function SectionLayout({ title, items, contentWidth = "full", footer, children }: SectionLayoutProps) {
+export function SectionLayout({ title, items, footer, children }: SectionLayoutProps) {
 	return (
 		<Page className="md:grid md:grid-cols-[13.5rem_minmax(0,1fr)] md:items-start md:gap-x-8 lg:gap-x-12">
 			<SectionNav title={title} items={items} footer={footer} />
-			<div
-				className={cn("flex min-w-0 flex-col gap-5 max-md:mt-5", contentWidth === "narrow" && "w-full max-w-[720px]")}
-			>
-				{children}
-			</div>
+			{/* One column for the page: its header and everything under it share the same width on every section. */}
+			<div className="flex min-w-0 flex-col gap-5 max-md:mt-5">{children}</div>
 		</Page>
 	);
 }
@@ -68,8 +60,6 @@ type SectionNavProps = {
 	title: string;
 	items: SectionNavItem[];
 	footer?: ReactNode;
-	/** Shows the title over the menu on wide screens; off where the page already names the section above it. */
-	showTitle?: boolean;
 	className?: string;
 };
 
@@ -77,7 +67,7 @@ type SectionNavProps = {
  * The section's menu on its own, for a page with its own layout (an application's workspace): a list on wide screens,
  * a row of chips on phones. Place it in the left column of a `md:grid-cols-[13.5rem_minmax(0,1fr)]` grid.
  */
-export function SectionNav({ title, items, footer, showTitle = true, className }: SectionNavProps) {
+export function SectionNav({ title, items, footer, className }: SectionNavProps) {
 	const matchRoute = useMatchRoute();
 	const isCurrent = (item: SectionNavItem) =>
 		item.current ?? Boolean(matchRoute({ to: item.match.to, fuzzy: item.match.fuzzy }));
@@ -91,16 +81,10 @@ export function SectionNav({ title, items, footer, showTitle = true, className }
 				className,
 			)}
 		>
-			{showTitle && <p className="px-2.5 text-lg font-semibold max-md:hidden">{title}</p>}
-
 			<ul className="grid gap-0.5 max-md:hidden">
 				{items.map((item) => (
 					<Fragment key={item.match.to + String(item.label)}>
-						{item.group && (
-							<li aria-hidden className="px-2.5 pt-4 pb-1 text-body-xs font-medium text-muted first:pt-0">
-								{item.group}
-							</li>
-						)}
+						{item.group && <li aria-hidden className="mx-2.5 my-2 h-px bg-separator first:hidden" />}
 						<li>
 							<SectionLink item={item} current={isCurrent(item)} />
 						</li>

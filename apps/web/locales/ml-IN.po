@@ -497,11 +497,6 @@ msgstr "{0} കണ്ടെത്തി"
 msgid "{0} found, {unreadable} unreadable"
 msgstr "{0} കണ്ടെത്തി, {unreadable} വായിക്കാൻ കഴിയില്ല"
 
-#. placeholder {0}: Math.round(countdown / 60)
-#: src/features/career/workspace/shell.tsx
-msgid "{0} h"
-msgstr "{0} മണിക്കൂർ"
-
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -803,10 +798,6 @@ msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} resume templates. Find your fit."
-msgstr ""
-
-#: src/features/career/workspace/shell.tsx
-msgid "{countdown} min"
 msgstr ""
 
 #: src/routes/dashboard/applications/index.tsx
@@ -3053,7 +3044,6 @@ msgstr "അപേക്ഷ തീയതി വരെ"
 msgid "Application deleted"
 msgstr "ജോലി അപേക്ഷ ഇല്ലാതാക്കി"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "അപേക്ഷയുടെ വിശദാംശങ്ങൾ"
@@ -3067,6 +3057,7 @@ msgstr "ജോലി അപേക്ഷാ ഓപ്ഷനുകൾ"
 msgid "Application updated"
 msgstr "അപേക്ഷ അപ്ഡേറ്റ് ചെയ്തു"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
@@ -3076,7 +3067,6 @@ msgstr "അപേക്ഷ അപ്ഡേറ്റ് ചെയ്തു"
 #: src/features/command-palette/pages/resumes.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/index.tsx
-#: src/routes/dashboard/applications/offers.tsx
 msgid "Applications"
 msgstr "അപേക്ഷകൾ"
 
@@ -3380,6 +3370,14 @@ msgstr "സൈൻ ഇന്നിലേക്ക് മടങ്ങുക"
 msgid "Back to stories"
 msgstr "കഥകളിലേക്ക് മടങ്ങുക"
 
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Back to the panel"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Back to the portfolio"
 msgstr ""
@@ -3559,7 +3557,7 @@ msgstr "തടസ്സം"
 msgid "Blue"
 msgstr "നീല"
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Board"
 msgstr "ബോർഡ്"
 
@@ -3751,7 +3749,7 @@ msgstr ""
 msgid "By QRIS · {0} paid"
 msgstr ""
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Calendar"
 msgstr "കലണ്ടർ"
 
@@ -4291,10 +4289,6 @@ msgstr "2 MB വരെയുള്ള WebM, MP4, MP3, WAV അല്ലെങ്�
 msgid "Choose a work to write about"
 msgstr ""
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "Choose an application to see its next step, what you sent and its activity here."
-msgstr ""
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "ഒരു തൊഴിൽ അപേക്ഷ തിരഞ്ഞെടുക്കുക..."
@@ -4617,13 +4611,8 @@ msgstr "എന്താണ് മെച്ചപ്പെട്ടതെന്�
 
 #: src/features/career/workspace/shell.tsx
 #: src/features/command-palette/pages/navigation.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "Compare offers"
 msgstr "ഓഫറുകൾ താരതമ്യം ചെയ്യുക"
-
-#: src/routes/dashboard/applications/index.tsx
-msgid "Compare offers ({offerCount})"
-msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Compare plans"
@@ -9181,7 +9170,7 @@ msgstr "ഇൻലൈൻ"
 msgid "Inline formatting"
 msgstr ""
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Insights"
 msgstr "ഉൾക്കാഴ്ചകൾ"
 
@@ -9212,11 +9201,6 @@ msgstr ""
 #: src/features/homepage/features.tsx
 msgid "Interview"
 msgstr "അഭിമുഖം"
-
-#: src/features/career/workspace/shell.tsx
-msgctxt "Application workspace section: prepare, practise and debrief"
-msgid "Interview"
-msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Interview debrief"
@@ -10186,9 +10170,9 @@ msgstr "ലിങ്ക് ചെയ്യുന്നു..."
 msgid "Links"
 msgstr "ലിങ്കുകൾ"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/portfolio/editor/design-panel.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "List"
 msgstr "ലിസ്റ്റ്"
 
@@ -11239,10 +11223,6 @@ msgstr ""
 msgid "No application"
 msgstr "ജോലി അപേക്ഷയില്ല"
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "No application open"
-msgstr ""
-
 #: src/features/applications/components/board.tsx
 msgid "No applications"
 msgstr ""
@@ -12021,6 +12001,7 @@ msgstr "ഓഫർ"
 msgid "Offer comparison"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/offers.tsx
@@ -12231,6 +12212,10 @@ msgstr "ഇമെയിൽ ആപ്പ് തുറക്കുക"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Open focus mode"
 msgstr "ഫോക്കസ് മോഡ് തുറക്കുക"
+
+#: src/features/career/coach.tsx
+msgid "Open full screen"
+msgstr ""
 
 #. placeholder {0}: tabLabel(meta.tab)
 #: src/features/career/workspace/saved.tsx
@@ -20151,7 +20136,6 @@ msgstr "വിയറ്റ്നാമീസ്"
 
 #: src/features/career/coach-chat.tsx
 #: src/features/documents/documents-page.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "View"
 msgstr "കാണുക"
 

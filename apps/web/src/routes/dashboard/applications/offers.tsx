@@ -1,10 +1,9 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import z from "zod";
-import { Icon } from "@rezumi/ui/components/icon";
-import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
+import { ApplicationsSection } from "@/features/applications/components/applications-section";
 import { OffersPage } from "@/features/career/offers";
 
 export const Route = createFileRoute("/dashboard/applications/offers")({
@@ -15,25 +14,16 @@ export const Route = createFileRoute("/dashboard/applications/offers")({
 	component: RouteComponent,
 });
 
-/** Offers: two saved offers side by side. Part of Applications, reached from its header. */
+/** Offers: two saved offers side by side, a page of Applications with its own item in the menu. */
 function RouteComponent() {
 	const { a, b } = Route.useSearch();
 	return (
-		<Page>
+		<ApplicationsSection view={null}>
 			<PageHeader
-				back={
-					<Link
-						to="/dashboard/applications"
-						className="inline-flex w-fit items-center gap-1 text-sm text-muted transition-colors duration-quick hover:text-foreground"
-					>
-						<Icon name="caret-left" size={16} className="rtl:-scale-x-100" />
-						<Trans>Applications</Trans>
-					</Link>
-				}
 				title={t`Offers`}
 				description={<Trans>Compare two saved offers side by side, and decide what to ask.</Trans>}
 			/>
 			<OffersPage a={a} b={b} />
-		</Page>
+		</ApplicationsSection>
 	);
 }

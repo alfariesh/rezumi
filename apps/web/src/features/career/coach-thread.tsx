@@ -177,7 +177,11 @@ type CoachThreadProps = {
 	/** Keeps the unsent draft when the thread closes (the sheet). */
 	draftKey?: string;
 	disabled?: boolean;
-	variant: "page" | "sheet";
+	/**
+	 * `page`: the full Coach page, centered at reading width. `sheet`: a job's coach sheet. `panel`: the dashboard's coach
+	 * panel, spaced like the editors' assistant column.
+	 */
+	variant: "page" | "sheet" | "panel";
 };
 
 /** The coach's chat, shared by Career → Coach and the workspace sheet: messages, writing state, composer. */
@@ -286,6 +290,7 @@ function Empty({ render, send }: EmptyProps) {
 export const contentClass = {
 	page: "mx-auto grid w-full max-w-[720px] content-start gap-6 px-1 pt-6 pb-3",
 	sheet: "grid content-start gap-4 p-[18px]",
+	panel: "grid content-start gap-3 py-3",
 };
 
 export type SessionProps = Omit<CoachThreadProps, "threadId"> & {
@@ -421,12 +426,15 @@ export function Composer(props: ComposerProps) {
 	};
 
 	const page = props.variant === "page";
+	// The panel's box sits as the editors' assistant's does: flush with the column, a little air above.
+	const panel = props.variant === "panel";
 
 	return (
-		<div className={page ? "" : "px-3.5 pt-2 pb-3.5"}>
-			<div className={cn("grid gap-2", page && "mx-auto w-full max-w-[720px]")}>
+		<div className={page ? "" : panel ? "pt-2" : "px-3.5 pt-2 pb-3.5"}>
+			<div className={cn("grid gap-2", page && "mx-auto w-full max-w-[720px]", panel && "gap-1")}>
 				<PromptBox
-					variant={page ? "primary" : "secondary"}
+					// Primary on the window's surface (the panel, the full page); secondary in a job's sheet.
+					variant={page || panel ? "primary" : "secondary"}
 					value={text}
 					onValueChange={setText}
 					onSubmit={() => void submit()}
@@ -436,7 +444,7 @@ export function Composer(props: ComposerProps) {
 					canSend={text.trim().length > 0 && !uploading}
 					placeholder={props.placeholder}
 					label={t`Message the coach`}
-					maxHeight={200}
+					maxHeight={panel ? 160 : 200}
 					files={attachments.map((attachment) => ({
 						key: attachment.id,
 						name: attachment.filename,
@@ -454,7 +462,7 @@ export function Composer(props: ComposerProps) {
 					}}
 				/>
 				{props.privacy}
-				<AiCostNote action="coach-turn" providerId={props.providerId} className="px-1" />
+				<AiCostNote action="coach-turn" providerId={props.providerId} className={panel ? "block px-1" : "px-1"} />
 			</div>
 		</div>
 	);

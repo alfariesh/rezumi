@@ -497,11 +497,6 @@ msgstr "{0} 발견"
 msgid "{0} found, {unreadable} unreadable"
 msgstr "{0}가 발견됨, {unreadable}를 읽을 수 없음"
 
-#. placeholder {0}: Math.round(countdown / 60)
-#: src/features/career/workspace/shell.tsx
-msgid "{0} h"
-msgstr "{0}시간"
-
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -803,10 +798,6 @@ msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} resume templates. Find your fit."
-msgstr ""
-
-#: src/features/career/workspace/shell.tsx
-msgid "{countdown} min"
 msgstr ""
 
 #: src/routes/dashboard/applications/index.tsx
@@ -3053,7 +3044,6 @@ msgstr "지원일 종료"
 msgid "Application deleted"
 msgstr "채용 지원서가 삭제되었습니다."
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "지원 세부 정보"
@@ -3067,6 +3057,7 @@ msgstr "취업 지원 옵션"
 msgid "Application updated"
 msgstr "지원 내역이 업데이트되었습니다"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
@@ -3076,7 +3067,6 @@ msgstr "지원 내역이 업데이트되었습니다"
 #: src/features/command-palette/pages/resumes.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/index.tsx
-#: src/routes/dashboard/applications/offers.tsx
 msgid "Applications"
 msgstr "지원 목록"
 
@@ -3380,6 +3370,14 @@ msgstr "로그인으로 돌아가기"
 msgid "Back to stories"
 msgstr "스토리로 돌아가기"
 
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
+
+#: src/features/career/coach.tsx
+msgid "Back to the panel"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Back to the portfolio"
 msgstr ""
@@ -3559,7 +3557,7 @@ msgstr "차단 요소"
 msgid "Blue"
 msgstr "파란색"
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Board"
 msgstr "보드"
 
@@ -3751,7 +3749,7 @@ msgstr ""
 msgid "By QRIS · {0} paid"
 msgstr ""
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Calendar"
 msgstr "달력"
 
@@ -4291,10 +4289,6 @@ msgstr "2MB 이하의 WebM, MP4, MP3, WAV 또는 Ogg 파일을 선택하세요."
 msgid "Choose a work to write about"
 msgstr ""
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "Choose an application to see its next step, what you sent and its activity here."
-msgstr ""
-
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "입사 지원서를 선택하세요…"
@@ -4617,13 +4611,8 @@ msgstr "시도한 답변을 비교해 무엇이 나아졌는지 확인하세요.
 
 #: src/features/career/workspace/shell.tsx
 #: src/features/command-palette/pages/navigation.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "Compare offers"
 msgstr "오퍼 비교"
-
-#: src/routes/dashboard/applications/index.tsx
-msgid "Compare offers ({offerCount})"
-msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Compare plans"
@@ -9181,7 +9170,7 @@ msgstr "인라인"
 msgid "Inline formatting"
 msgstr ""
 
-#: src/routes/dashboard/applications/index.tsx
+#: src/features/applications/components/applications-section.tsx
 msgid "Insights"
 msgstr "인사이트"
 
@@ -9212,11 +9201,6 @@ msgstr ""
 #: src/features/homepage/features.tsx
 msgid "Interview"
 msgstr "면접"
-
-#: src/features/career/workspace/shell.tsx
-msgctxt "Application workspace section: prepare, practise and debrief"
-msgid "Interview"
-msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Interview debrief"
@@ -10186,9 +10170,9 @@ msgstr "연결 중…"
 msgid "Links"
 msgstr "모래밭"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/portfolio/editor/design-panel.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "List"
 msgstr "목록"
 
@@ -11239,10 +11223,6 @@ msgstr ""
 msgid "No application"
 msgstr "입사지원서 없음"
 
-#: src/features/applications/components/application-detail-sheet.tsx
-msgid "No application open"
-msgstr ""
-
 #: src/features/applications/components/board.tsx
 msgid "No applications"
 msgstr ""
@@ -12021,6 +12001,7 @@ msgstr "오퍼"
 msgid "Offer comparison"
 msgstr ""
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/applications/offers.tsx
@@ -12231,6 +12212,10 @@ msgstr "이메일 앱 열기"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Open focus mode"
 msgstr "초점 모드 열기"
+
+#: src/features/career/coach.tsx
+msgid "Open full screen"
+msgstr ""
 
 #. placeholder {0}: tabLabel(meta.tab)
 #: src/features/career/workspace/saved.tsx
@@ -20151,7 +20136,6 @@ msgstr "베트남어"
 
 #: src/features/career/coach-chat.tsx
 #: src/features/documents/documents-page.tsx
-#: src/routes/dashboard/applications/index.tsx
 msgid "View"
 msgstr "보다"
 
