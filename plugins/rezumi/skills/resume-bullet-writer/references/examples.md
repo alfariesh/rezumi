@@ -103,7 +103,7 @@ Notes: bullet 2 says "the unit", not "reduced CLABSI", because the user said it 
 
 7. The patch returns the full resume with a new `updatedAt`; use it as `expectedUpdatedAt` for the next role.
 8. Repeat for `roles/1` (1–3 bullets on what earned the promotion, nothing repeated from the senior role) and Acme. Trim Initech as agreed in triage.
-9. Finish by showing all saved bullets, offering `api_rest_check_resume {id}`, listing anything still needed with where to find it, and asking whether to save the confirmed achievements to Career Knowledge for interview prep.
+9. Finish by showing all saved bullets, offering `api_rest_check_resume {id}`, listing anything still needed with where to find it, and asking whether to save the confirmed achievements to your Profile for interview prep.
 
 If a patch fails with a version conflict, read again, find each target by its `id` (indexes may have moved), show the user anything that changed, and retry.
 

@@ -195,7 +195,7 @@ async function memoryVersion(userId: string, reader: DbOrTx = db) {
 	return hash(JSON.stringify(revisions));
 }
 
-/** Structured generation is read-only: any change to its Knowledge/preferences invalidates the result. */
+/** Structured generation is read-only: any change to its Profile/preferences invalidates the result. */
 function knowledgeSignature(
 	profile: z.infer<typeof careerProfileDataSchema>,
 	facts: Array<typeof tables.careerFact.$inferSelect>,
@@ -344,7 +344,7 @@ export const careerService = {
 				.onConflictDoUpdate({ target: tables.careerProfile.userId, set: { data, updatedAt: new Date() } });
 			return data;
 		}),
-	/** Facts the coach can use for an application (or shared ones). `all` lists every scope, for Knowledge. */
+	/** Facts the coach can use for an application (or shared ones). `all` lists every scope, for the Profile. */
 	facts: async (input: Owned & { query?: string | undefined; all?: boolean | undefined }) => {
 		await requireCareerApplication(input);
 		const rows = await db
@@ -670,7 +670,7 @@ export const careerService = {
 		return rows.map(({ item, company, role }) => ({
 			...item,
 			application: company === null ? null : { company, role: role ?? "" },
-			// Knowledge, the posting or documents changed since it was written.
+			// Profile, the posting or documents changed since it was written.
 			outdated: item.data.kind !== "answers" && context !== null && item.inputVersion !== context.version,
 		}));
 	},

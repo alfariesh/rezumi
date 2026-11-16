@@ -55,7 +55,7 @@ export const PARITY_TOOL_DESCRIPTIONS: Record<string, string> = {
 		"Create a STARR story, or replace an existing story by providing its id. Provide situation, task, action, result, reflection, and supporting fact IDs. Shared stories can only reference shared facts; the service validates ownership and scope.",
 	"career.deleteStory": "Delete an owned STARR story. Its supporting facts remain available.",
 	"career.savedItems":
-		"Read what the coach saved for an application (fit checks, briefings, practice feedback, debriefs, answers, employer replies and offers), or one kind across applications. Outdated items were written before Knowledge or the application changed.",
+		"Read what the coach saved for an application (fit checks, briefings, practice feedback, debriefs, answers, employer replies and offers), or one kind across applications. Outdated items were written before the Profile or the application changed.",
 	"career.deleteSavedItem": "Delete an owned saved item.",
 	"career.applyReply":
 		"Apply the chosen changes (by index) of a read employer message to its application: stage, follow-up, next-step note, or saving offer terms. This changes the application; it does not send an email.",

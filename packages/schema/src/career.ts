@@ -152,7 +152,7 @@ export const savedItemDataSchema = z.discriminatedUnion("kind", [
 		stories: z.array(text(300)).max(3),
 		honesty: text(400),
 		storyIds: z.array(z.string()).max(5).default([]),
-		/** A story the interviewer asked for that Knowledge doesn't have yet. */
+		/** A story the interviewer asked for that the Profile doesn't have yet. */
 		missingStory: text(300).nullable().default(null),
 		practiceQuestions: z.array(text(300)).max(5).default([]),
 	}),

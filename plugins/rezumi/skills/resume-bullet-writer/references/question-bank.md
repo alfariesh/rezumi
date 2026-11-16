@@ -153,7 +153,7 @@ When the user wants speed, give each bullet a finished version with no placehold
 
 ## 12. Optional: capture as you go
 
-Encourage users to keep a running brag document from now on: after each project, note what changed, the number if one exists, who benefited, and their own part. It makes the next rewrite a copy job. In Rezumi, confirmed achievements can be saved as Career Knowledge facts (see the MCP section of SKILL.md).
+Encourage users to keep a running brag document from now on: after each project, note what changed, the number if one exists, who benefited, and their own part. It makes the next rewrite a copy job. In Rezumi, confirmed achievements can be saved as Profile facts (see the MCP section of SKILL.md).
 
 ## Sources
 
