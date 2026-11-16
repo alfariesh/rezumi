@@ -63,7 +63,7 @@ type SectionNavProps = {
 };
 
 /**
- * The menu: a list on wide screens, sticky and starting on the app sidebar's first row; a row of chips on phones.
+ * The menu: a list on wide screens, sticky, starting on the app sidebar's first row; a row of chips on phones.
  */
 function SectionNav({ title, items, footer }: SectionNavProps) {
 	const matchRoute = useMatchRoute();
@@ -74,8 +74,8 @@ function SectionNav({ title, items, footer }: SectionNavProps) {
 		// Named for the page transition: moving between the section's pages keeps the menu in place (index.css).
 		<nav
 			aria-label={title}
-			// Pulled up by part of the page's top margin so its first row lines up with the app sidebar's.
-			className="[view-transition-name:section-nav] md:sticky md:top-[3.75rem] md:-mt-5 md:grid md:max-h-[calc(100svh-6rem)] md:content-start md:gap-4 md:overflow-y-auto"
+			// Sticky where it starts: its first row, the page's title and the app sidebar's first row share a line.
+			className="[view-transition-name:section-nav] md:sticky md:top-[3.75rem] md:grid md:max-h-[calc(100svh-6rem)] md:content-start md:gap-4 md:overflow-y-auto"
 		>
 			<ul className="grid gap-0.5 max-md:hidden">
 				{items.map((item) => (

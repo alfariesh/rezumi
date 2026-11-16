@@ -1,5 +1,6 @@
-import type { ApplicationView } from "@/features/applications/components/applications-section";
+import type { ApplicationLayout, ApplicationView } from "@/features/applications/components/applications-section";
 import type { Application, ApplicationSummary } from "@/features/applications/types";
+import { Segment } from "@heroui-pro/react";
 import { Button, Dropdown, Input, Label, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -16,7 +17,12 @@ import { PageHeader } from "@/components/layout/page-header";
 import { AddApplicationDialog } from "@/features/applications/components/add-application-dialog";
 import { ApplicationDetailSheet } from "@/features/applications/components/application-detail-sheet";
 import { ApplicationFormSheet } from "@/features/applications/components/application-form-sheet";
-import { APPLICATION_VIEWS, ApplicationsSection } from "@/features/applications/components/applications-section";
+import {
+	APPLICATION_VIEWS,
+	ApplicationsSection,
+	readStoredLayout,
+	storeLayout,
+} from "@/features/applications/components/applications-section";
 import { ApplicationBoard } from "@/features/applications/components/board";
 import { ApplicationCalendar } from "@/features/applications/components/calendar-view";
 import { ExportApplicationsSheet } from "@/features/applications/components/export-applications-sheet";
@@ -36,13 +42,14 @@ import { ENTER_CLASS } from "@/libs/motion";
 
 const searchSchema = z.object({
 	q: z.string().default("").catch(""),
-	view: z.enum(APPLICATION_VIEWS).default("list").catch("list"),
+	// Without one, the page uses the layout last picked on this device.
+	view: z.enum(APPLICATION_VIEWS).optional().catch(undefined),
 	// Deep links: open Add, or one application.
 	create: z.boolean().default(false).catch(false),
 	applicationId: z.string().optional().catch(undefined),
 });
 type Search = z.output<typeof searchSchema>;
-const defaultSearch: Search = { q: "", view: "list", create: false };
+const defaultSearch = { q: "", create: false } satisfies Partial<Search>;
 
 export const Route = createFileRoute("/dashboard/applications/")({
 	// Hovering the link starts the list without holding the navigation, so it's usually there before the skeleton.
@@ -70,9 +77,10 @@ function matches(application: ApplicationSummary, query: string) {
 }
 
 function RouteComponent() {
-	const { q, view, create, applicationId } = Route.useSearch();
+	const { q, view: requestedView, create, applicationId } = Route.useSearch();
 	const navigate = useNavigate({ from: Route.fullPath });
 	const phone = useBreakpoint() === "mobile";
+	const view: ApplicationView = requestedView ?? readStoredLayout();
 	// Typing filters at once; the URL only seeds the search.
 	const [query, setQuery] = useState(q);
 	const [adding, setAdding] = useState(false);
@@ -172,13 +180,17 @@ function RouteComponent() {
 	const selected = applications?.find((application) => application.id === selectedId) ?? null;
 	// The board needs room to drag: phones get the list instead.
 	const shown: ApplicationView = phone && (view === "board" || view === "calendar") ? "list" : view;
-	// A switch from the menu: the new view animates in, and the open application's sheet closes with the old one.
+	// A switch (the layout or the menu): the new view animates in, and the open application's sheet closes with the old one.
 	const [lastShown, setLastShown] = useState(shown);
 	if (lastShown !== shown) {
 		setLastShown(shown);
 		setViewSwitched(true);
 		setSelectedId(null);
 	}
+	const setLayout = (next: ApplicationLayout) => {
+		storeLayout(next);
+		void navigate({ replace: true, resetScroll: false, search: (prev: Search) => ({ ...prev, view: next }) });
+	};
 	const editDetails = (application: Application) => {
 		setSelectedId(null);
 		setEditing(application);
@@ -208,7 +220,7 @@ function RouteComponent() {
 	return (
 		<ApplicationsSection view={shown}>
 			<PageHeader
-				title={<Trans>Applications</Trans>}
+				title={shown === "insights" ? <Trans>Insights</Trans> : <Trans>Applications</Trans>}
 				actions={
 					<>
 						<Dropdown>
@@ -240,7 +252,7 @@ function RouteComponent() {
 					</>
 				}
 			>
-				{!(isError && !applications) && !empty && (
+				{!(isError && !applications) && !empty && shown !== "insights" && (
 					<div className="relative max-w-80 min-w-40 flex-1 max-sm:max-w-none max-sm:basis-full">
 						<Icon
 							name="magnifying-glass"
@@ -258,6 +270,25 @@ function RouteComponent() {
 							onChange={(event) => setQuery(event.target.value)}
 						/>
 					</div>
+				)}
+				{/* How to lay the applications out: a preference, kept on this device. Phones have room for the list only. */}
+				{!(isError && !applications) && !empty && shown !== "insights" && !phone && (
+					<Segment
+						aria-label={t`Layout`}
+						className="ms-auto shrink-0"
+						selectedKey={shown}
+						onSelectionChange={(next) => setLayout(next as ApplicationLayout)}
+					>
+						<Segment.Item id="list" aria-label={t`List`}>
+							<Icon name="rows" size={18} variant={shown === "list" ? "duotone" : "stroke"} />
+						</Segment.Item>
+						<Segment.Item id="board" aria-label={t`Board`}>
+							<Icon name="kanban" size={18} variant={shown === "board" ? "duotone" : "stroke"} />
+						</Segment.Item>
+						<Segment.Item id="calendar" aria-label={t`Calendar`}>
+							<Icon name="calendar-dots" size={18} variant={shown === "calendar" ? "duotone" : "stroke"} />
+						</Segment.Item>
+					</Segment>
 				)}
 			</PageHeader>
 

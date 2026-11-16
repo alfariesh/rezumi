@@ -32,12 +32,20 @@ type PageProps = {
 };
 
 /**
- * The column every dashboard page sits in: centred, capped at its width, with the shared margins. Rows stack 20px
- * apart; a page can change the gap or add a minimum height through `className`.
+ * The column every dashboard page sits in: centred, capped at its width, with the shared margins. From 768px its top
+ * margin is 12px, so the title (and a section's menu) starts on the app sidebar's first row. Rows stack 20px apart; a
+ * page can change the gap or add a minimum height through `className`.
  */
 export function Page({ width = "default", className, children }: PageProps) {
 	return (
-		<div className={cn("mx-auto flex w-full flex-col gap-5 py-5 sm:py-8", PAGE_GUTTER, WIDTHS[width], className)}>
+		<div
+			className={cn(
+				"mx-auto flex w-full flex-col gap-5 pt-5 pb-5 sm:pb-8 md:pt-3",
+				PAGE_GUTTER,
+				WIDTHS[width],
+				className,
+			)}
+		>
 			<InPageContext value>{children}</InPageContext>
 		</div>
 	);

@@ -81,10 +81,14 @@ function useNavItems() {
 	return items;
 }
 
-/** Whether the item is the current page: Home is exact, the others match their section. */
+/** Whether the item is the current page: Home is exact, the others match their section (Trash is Documents'). */
 function useIsCurrent() {
 	const matchRoute = useMatchRoute();
-	return (item: NavItem) => Boolean(matchRoute({ to: item.to, fuzzy: item.to !== "/dashboard" }));
+	return (item: NavItem) =>
+		Boolean(
+			matchRoute({ to: item.to, fuzzy: item.to !== "/dashboard" }) ||
+			(item.to === "/dashboard/documents" && matchRoute({ to: "/dashboard/trash" })),
+		);
 }
 
 /** The sidebar state HeroUI's AppLayout saves on every toggle; collapsed to icons by default below 1024px. */

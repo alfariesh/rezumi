@@ -2,12 +2,35 @@ import type { SectionNavItem } from "@/components/layout/section-layout";
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { useQuery } from "@tanstack/react-query";
-import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { SectionLayout } from "@/components/layout/section-layout";
 import { orpc } from "@/libs/orpc/client";
 
 export const APPLICATION_VIEWS = ["list", "board", "insights", "calendar"] as const;
 export type ApplicationView = (typeof APPLICATION_VIEWS)[number];
+
+/** The ways to lay out the list, picked in the page's own switch. Insights is a page of the menu. */
+export const APPLICATION_LAYOUTS = ["list", "board", "calendar"] as const;
+export type ApplicationLayout = (typeof APPLICATION_LAYOUTS)[number];
+
+const LAYOUT_KEY = "applications-layout";
+
+/** The layout last picked on this device; storage can be unavailable, and then it's the list. */
+export function readStoredLayout(): ApplicationLayout {
+	try {
+		const stored = window.localStorage.getItem(LAYOUT_KEY);
+		return APPLICATION_LAYOUTS.find((layout) => layout === stored) ?? "list";
+	} catch {
+		return "list";
+	}
+}
+
+export function storeLayout(layout: ApplicationLayout) {
+	try {
+		window.localStorage.setItem(LAYOUT_KEY, layout);
+	} catch {
+		// A convenience only.
+	}
+}
 
 type ApplicationsSectionProps = {
 	/** The view on show, or null on a page of its own (Offers). */
@@ -16,27 +39,28 @@ type ApplicationsSectionProps = {
 };
 
 /**
- * Applications as a section: the views of the list (List, Board, Insights, Calendar) and Offers in the menu, the page
- * beside it. The views are one page with `?view=`, so each item says for itself whether it's current. Phones have no
- * room for the board or the calendar, so their items are left out there.
+ * Applications as a section: All (the applications, laid out as the page's switch picks), Insights and Offers in the
+ * menu, the page beside it. All and Insights are one page with `?view=`, so each item says for itself whether it's
+ * current.
  */
 export function ApplicationsSection({ view, children }: ApplicationsSectionProps) {
-	const phone = useBreakpoint() === "mobile";
 	const offers = useQuery(orpc.career.savedItems.queryOptions({ input: { kind: "offer" } }));
 
-	const viewItem = (value: ApplicationView, icon: SectionNavItem["icon"], label: string): SectionNavItem => ({
-		link: { to: "/dashboard/applications", search: { view: value } },
-		match: { to: "/dashboard/applications", fuzzy: false },
-		current: view === value,
-		icon,
-		label,
-	});
-
 	const items: SectionNavItem[] = [
-		viewItem("list", "rows", t`List`),
-		...(phone ? [] : [viewItem("board", "kanban", t`Board`)]),
-		viewItem("insights", "chart-line-up", t`Insights`),
-		...(phone ? [] : [viewItem("calendar", "calendar-dots", t`Calendar`)]),
+		{
+			link: { to: "/dashboard/applications" },
+			match: { to: "/dashboard/applications", fuzzy: false },
+			current: view !== null && view !== "insights",
+			icon: "briefcase",
+			label: t`All`,
+		},
+		{
+			link: { to: "/dashboard/applications", search: { view: "insights" } },
+			match: { to: "/dashboard/applications", fuzzy: false },
+			current: view === "insights",
+			icon: "chart-line-up",
+			label: t`Insights`,
+		},
 		{
 			link: { to: "/dashboard/applications/offers" },
 			match: { to: "/dashboard/applications/offers", fuzzy: false },
@@ -44,7 +68,6 @@ export function ApplicationsSection({ view, children }: ApplicationsSectionProps
 			icon: "scales",
 			label: t`Offers`,
 			count: offers.data?.length,
-			group: t`Offers`,
 		},
 	];
 
