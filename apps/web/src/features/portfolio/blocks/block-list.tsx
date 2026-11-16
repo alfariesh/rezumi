@@ -40,6 +40,7 @@ import { useRemovalFocus } from "./list-focus";
 import { PdfBlockEditor } from "./pdf-block";
 import { VideoBlockEditor } from "./video-block";
 import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
+import { openAssistantFrom } from "@/features/assistant/open";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -220,22 +221,35 @@ function useAddBlock(work: PortfolioWork, index: number, last = false) {
 	return { add, busy: uploads.busy || media.busy, status };
 }
 
+/** `panel`: framed cards in a narrow panel. `document`: Work's writing surface, text as part of the page, controls on hover. */
+type BlockListAppearance = "panel" | "document";
+
 type AddBlockMenuProps = {
 	work: PortfolioWork;
 	index: number;
+	appearance?: BlockListAppearance;
 	/** The last one, under every block: a full button. */ last?: boolean;
 	/** No button, only the progress and messages of what it started (it's after the last block now). */
 	quiet?: boolean;
 };
 
 /** "+ Add block" between blocks: Text, Pictures, Metrics, Video, PDF, Link. */
-function AddBlockMenu({ work, index, last = false, quiet = false }: AddBlockMenuProps) {
+function AddBlockMenu({ work, index, last = false, quiet = false, appearance = "panel" }: AddBlockMenuProps) {
 	const { add, busy, status } = useAddBlock(work, index, last);
 	const full = blockRoom(work) === 0;
 
 	if (quiet) return status;
 	return (
-		<div className={cn("grid gap-2", !last && "justify-items-center")}>
+		<div
+			className={cn(
+				"grid gap-2",
+				!last && "justify-items-center",
+				// Between a document's blocks: shown while the gap is hovered or the button has focus.
+				appearance === "document" &&
+					!last &&
+					"opacity-0 transition-opacity duration-quick focus-within:opacity-100 hover:opacity-100 pointer-coarse:opacity-100",
+			)}
+		>
 			<Dropdown>
 				{last ? (
 					<Button variant="secondary" className="w-fit" isDisabled={full || busy}>
@@ -276,13 +290,13 @@ function AddBlockMenu({ work, index, last = false, quiet = false }: AddBlockMenu
 	);
 }
 
-type BlockListProps = { work: PortfolioWork; locale: string };
+type BlockListProps = { work: PortfolioWork; locale: string; appearance?: BlockListAppearance };
 
 /**
  * A work's detail as blocks (`01-desain.md` section 15): add one anywhere with "+ Add block" (or "/" in a text block),
  * drag to reorder, remove with Undo. An empty work can start from a case study outline.
  */
-export function BlockList({ work, locale }: BlockListProps) {
+export function BlockList({ work, locale, appearance = "panel" }: BlockListProps) {
 	const blocks = work.blocks;
 	const list = `blocks:${work.id}`;
 	const { itemProps, fallbackRef, removed } = useRemovalFocus();
@@ -300,14 +314,19 @@ export function BlockList({ work, locale }: BlockListProps) {
 			{ structural: true },
 		);
 
+	const document = appearance === "document";
+
 	return (
 		<div className="grid gap-2">
-			{blocks.length === 0 && (
-				<Button variant="secondary" className="w-fit" onPress={startCaseStudy}>
-					<Icon name="magic-wand" size={18} />
-					<Trans>Start from a case study outline</Trans>
-				</Button>
-			)}
+			{blocks.length === 0 &&
+				(document ? (
+					<EmptyStory work={work} onOutline={startCaseStudy} />
+				) : (
+					<Button variant="secondary" className="w-fit" onPress={startCaseStudy}>
+						<Icon name="magic-wand" size={18} />
+						<Trans>Start from a case study outline</Trans>
+					</Button>
+				))}
 			<SortableProvider
 				onMove={(id, target) =>
 					editWork(
@@ -320,7 +339,7 @@ export function BlockList({ work, locale }: BlockListProps) {
 					)
 				}
 			>
-				<div className="grid gap-1">
+				<div className={document ? "grid gap-0.5" : "grid gap-1"}>
 					{blocks.map((block, index) => (
 						// The menu after a block belongs to that block, so a block that arrives late (an upload) still has its
 						// menu, and its progress, when the blocks around it move or go. After the last block it only shows
@@ -334,14 +353,15 @@ export function BlockList({ work, locale }: BlockListProps) {
 								locale={locale}
 								itemProps={itemProps}
 								onRemoved={removed}
+								appearance={appearance}
 							/>
-							<AddBlockMenu work={work} index={index + 1} quiet={index === blocks.length - 1} />
+							<AddBlockMenu work={work} index={index + 1} quiet={index === blocks.length - 1} appearance={appearance} />
 						</div>
 					))}
 				</div>
 			</SortableProvider>
 			<div ref={fallbackRef} className="flex flex-wrap items-center gap-2 pt-1">
-				<AddBlockMenu work={work} index={blocks.length} last />
+				<AddBlockMenu work={work} index={blocks.length} last appearance={appearance} />
 				{blocks.length > 0 && (
 					<span className="text-xs text-muted">
 						{blocks.length}/{PORTFOLIO_LIMITS.blocksPerWork}
@@ -362,15 +382,56 @@ type BlockCardProps = {
 	itemProps: Record<string, string>;
 	/** Called as the card is removed, so focus moves to the next one. */
 	onRemoved: (index: number) => void;
+	appearance: BlockListAppearance;
 };
 
-function BlockCard({ work, block, index, list, locale, itemProps, onRemoved }: BlockCardProps) {
+function BlockCard({ work, block, index, list, locale, itemProps, onRemoved, appearance }: BlockCardProps) {
 	const info = blockTypeInfo(block.type);
 	const sortable = useSortableItem({ id: block.id, list, index, label: info.title });
 	const remove = () => {
 		onRemoved(index);
 		removeBlockWithUndo(work, block, index, info.title);
 	};
+
+	// A document: the handle and Remove in the start gutter while the block is hovered or focused; text without a frame.
+	if (appearance === "document")
+		return (
+			<div
+				{...itemProps}
+				{...sortable.dropTargetProps}
+				className={cn("group/block relative", sortable.isDragging && "opacity-50")}
+			>
+				<SortableEdge edge={sortable.edge} />
+				<div className="absolute -start-16 top-0 flex items-center opacity-0 transition-opacity duration-quick group-focus-within/block:opacity-100 group-hover/block:opacity-100 pointer-coarse:opacity-100">
+					<SortableHandle item={sortable} label={t`Reorder the ${info.title} block`} className="h-8 w-6" />
+					<IconButton
+						icon="trash"
+						size="sm"
+						label={t`Remove the ${info.title} block`}
+						className="text-muted hover:text-danger"
+						onPress={remove}
+					/>
+				</div>
+				{block.type === "text" ? (
+					<BlockBody
+						work={work}
+						block={block}
+						index={index}
+						locale={locale}
+						onRemove={remove}
+						appearance={appearance}
+					/>
+				) : (
+					<div className="grid gap-3 rounded-2xl border border-separator p-3">
+						<div className="flex items-center gap-2 text-sm font-medium text-muted">
+							<Icon name={info.icon} size={16} />
+							{info.title}
+						</div>
+						<BlockBody work={work} block={block} index={index} locale={locale} onRemove={remove} />
+					</div>
+				)}
+			</div>
+		);
 
 	return (
 		<div
@@ -402,12 +463,13 @@ type BlockBodyProps = {
 	index: number;
 	locale: string;
 	onRemove: () => void;
+	appearance?: BlockListAppearance;
 };
 
-function BlockBody({ work, block, index, locale, onRemove }: BlockBodyProps) {
+function BlockBody({ work, block, index, locale, onRemove, appearance = "panel" }: BlockBodyProps) {
 	switch (block.type) {
 		case "text":
-			return <TextBlockEditor work={work} block={block} index={index} />;
+			return <TextBlockEditor work={work} block={block} index={index} appearance={appearance} />;
 		case "images":
 			return (
 				<ImagesBlockEditor
@@ -486,10 +548,15 @@ function BlockBody({ work, block, index, locale, onRemove }: BlockBodyProps) {
 	}
 }
 
-type TextBlockEditorProps = { work: PortfolioWork; block: PortfolioBlockOf<"text">; index: number };
+type TextBlockEditorProps = {
+	work: PortfolioWork;
+	block: PortfolioBlockOf<"text">;
+	index: number;
+	appearance: BlockListAppearance;
+};
 
 /** Rich text; typing "/" adds a block after this one. */
-function TextBlockEditor({ work, block, index }: TextBlockEditorProps) {
+function TextBlockEditor({ work, block, index, appearance }: TextBlockEditorProps) {
 	const { add, busy, status } = useAddBlock(work, index + 1);
 	const slashItems: SlashItem[] = PORTFOLIO_BLOCK_TYPES.map((type) => {
 		const info = blockTypeInfo(type);
@@ -504,7 +571,12 @@ function TextBlockEditor({ work, block, index }: TextBlockEditorProps) {
 				label={t`Text block of ${work.title.trim() || t`this work`}`}
 				value={block.html}
 				maxLength={max.blockText}
-				placeholder={t`Write here. Type “/” to add a block after this one.`}
+				appearance={appearance === "document" ? "document" : "field"}
+				placeholder={
+					appearance === "document"
+						? t`Write, or type “/” for headings, lists, pictures and more…`
+						: t`Write here. Type “/” to add a block after this one.`
+				}
 				// One add at a time: a second one would cancel the upload or link reading still going.
 				slashItems={blockRoom(work) > 0 && !busy ? slashItems : undefined}
 				onChange={(html) =>
@@ -521,5 +593,59 @@ function TextBlockEditor({ work, block, index }: TextBlockEditorProps) {
 			/>
 			{status}
 		</>
+	);
+}
+
+type EmptyStoryProps = { work: PortfolioWork; onOutline: () => void };
+
+/**
+ * A work with no detail yet, on Work's writing surface: three ways to start the story. Writing it alone adds a text
+ * block; the outline adds the case study's headings; AI opens the assistant on this work with a message to finish.
+ */
+function EmptyStory({ work, onOutline }: EmptyStoryProps) {
+	const startWriting = () =>
+		editWork(work.id, (draft) => void insertBlocksAt(draft as PortfolioWork, "end", [newTextBlock()], 0), {
+			structural: true,
+		});
+	const askAi = () =>
+		openAssistantFrom({
+			draft: t`Write the story of this work as a short case study (problem, my role, process, result) from these notes: `,
+		});
+	const options: { icon: IconName; title: string; description: string; onPress: () => void }[] = [
+		{
+			icon: "sparkle",
+			title: t`Draft it with AI`,
+			description: t`Tell the assistant what happened; it writes the blocks`,
+			onPress: askAi,
+		},
+		{
+			icon: "list-numbers",
+			title: t`Start from an outline`,
+			description: t`Problem, role, process and result headings`,
+			onPress: onOutline,
+		},
+		{ icon: "text-t", title: t`Write it myself`, description: t`Start with an empty paragraph`, onPress: startWriting },
+	];
+
+	return (
+		<div className="grid gap-3 rounded-2xl border border-dashed border-separator p-4">
+			<p className="text-sm text-muted">
+				<Trans>Tell the story behind this work: the problem, what you did, and what changed.</Trans>
+			</p>
+			<div className="grid gap-2 @md:grid-cols-3">
+				{options.map((option) => (
+					<button
+						key={option.title}
+						type="button"
+						onClick={option.onPress}
+						className="grid cursor-(--cursor-interactive) content-start gap-1 rounded-xl bg-default/60 p-3 text-start transition-colors duration-quick outline-none hover:bg-default focus-visible:ring-2 focus-visible:ring-focus"
+					>
+						<Icon name={option.icon} size={18} className="text-accent" />
+						<span className="text-sm font-medium">{option.title}</span>
+						<span className="text-xs text-muted">{option.description}</span>
+					</button>
+				))}
+			</div>
+		</div>
 	);
 }

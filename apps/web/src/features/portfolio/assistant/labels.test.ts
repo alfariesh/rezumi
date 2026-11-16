@@ -216,9 +216,9 @@ describe("portfolioChangeLines", () => {
 			context(),
 		);
 		expect(lines.map((line) => line.reveal)).toEqual([
-			{ tab: "write", section: "work", workId: "work-1" },
+			{ tab: "work", section: "work", workId: "work-1" },
 			{ tab: "write", section: "work" },
-			{ tab: "write", section: "work", workId: "work-1" },
+			{ tab: "work", section: "work", workId: "work-1" },
 			{ tab: "write", section: "custom:custom-1" },
 			{ tab: "design" },
 			{ tab: "share" },

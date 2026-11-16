@@ -45,7 +45,7 @@ describe("the place of a save problem", () => {
 		});
 		expect(problemPlace(["works", "items", 0, "blocks", 3, "html"], context)).toEqual({
 			label: "Work → Kopi Senja",
-			reveal: { tab: "write", section: "work", workId: "w1" },
+			reveal: { tab: "work", section: "work", workId: "w1" },
 		});
 		expect(problemPlace(["services", "items", 0, "title"], context)?.label).toBe("Services → Logo design");
 		expect(problemPlace(["custom", 0, "content"], context)).toEqual({
@@ -74,7 +74,7 @@ describe("save problems in words", () => {
 		);
 		expect(place).toEqual({
 			label: "Work → Untitled work",
-			reveal: { tab: "write", section: "work", workId: "w2" },
+			reveal: { tab: "work", section: "work", workId: "w2" },
 		});
 		expect(pathOfValue(context.data, key)).toEqual(["works", "items", 1, "cover", "key"]);
 	});

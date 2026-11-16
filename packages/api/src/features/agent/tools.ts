@@ -89,6 +89,8 @@ export function buildAgentInstructions({ document, posting, searchTool, canReadP
 export function buildPortfolioAgentInstructions(input: {
 	/** Whether the portfolio is shared with this message; without it the assistant can't read or edit it. */
 	shared: boolean;
+	/** The work open in the editor, when the user is writing one. */
+	focusWorkId?: string | undefined;
 	searchTool: "search_web" | null;
 	canReadPage: boolean;
 }) {
@@ -98,7 +100,17 @@ export function buildPortfolioAgentInstructions(input: {
 			: "\n**The user chose not to share the portfolio with this message, so you can't read or edit it now.** Answer from the conversation, or ask them to share it again.\n",
 		WEB: webInstructions({ ...input, privateContent: "portfolio, resume or Profile" }),
 	});
-	return input.shared ? `${instructions}\n\n${PORTFOLIO_EDIT_GUIDE}\n` : instructions;
+	if (!input.shared) return instructions;
+	return `${instructions}\n\n${PORTFOLIO_EDIT_GUIDE}\n${input.focusWorkId ? portfolioFocusNote(input.focusWorkId) : ""}`;
+}
+
+/**
+ * The user is writing one work (the editor's Work tab) as they send: "this work", "this project" or "the story" mean
+ * that one. The id comes from the client (checked to be an id's characters) and only points the model at an item it
+ * reads like any other.
+ */
+export function portfolioFocusNote(workId: string): string {
+	return `\n## The work open in the editor\n\nThe user has the work with id \`${workId}\` open in the editor's Work tab while sending this message. When they say "this work", "this project", "the story", "the case study" or ask for a change without naming a work, they mean this one: read the portfolio to find it and change only it unless they name something else. Its story is its blocks (text, pictures, metrics, video, PDF, links, embeds); prefer adding or editing blocks over cramming text into the summary. If no work with that id exists any more, ask which work they mean.\n`;
 }
 
 export function buildAgentTools(input: BuildAgentToolsInput): ToolSet {

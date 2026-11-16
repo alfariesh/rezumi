@@ -1,0 +1,46 @@
+/*
+ * Work's writing surface (`work-canvas.tsx`): its rich text reads as part of the page being written, with no field
+ * frame or toolbar (formatting comes up over a selection), in the document's size. HeroUI Pro's editor styles are
+ * unlayered, so these are too, scoped under `.work-doc` to win.
+ */
+.work-doc .rich-text-editor[data-appearance="document"] .rich-text-editor__shell,
+.work-doc
+	.rich-text-editor[data-appearance="document"]:has(.rich-text-editor__prosemirror:focus)
+	.rich-text-editor__shell {
+	border-width: 0;
+	background-color: transparent;
+	box-shadow: none;
+}
+
+.work-doc .rich-text-editor[data-appearance="document"] .rich-text-editor__prosemirror {
+	min-height: 1.75rem;
+	padding: 0;
+	font-size: 1rem;
+	line-height: 1.75rem;
+}
+
+.work-doc .rich-text-editor[data-appearance="document"] .rich-text-editor__prosemirror > * + * {
+	margin-top: 0.75rem;
+}
+
+.work-doc .rich-text-editor[data-appearance="document"] .rich-text-editor__prosemirror h2 {
+	margin-top: 1.75rem;
+	font-size: 1.5rem;
+	line-height: 2rem;
+}
+
+.work-doc .rich-text-editor[data-appearance="document"] .rich-text-editor__prosemirror h3 {
+	margin-top: 1.25rem;
+	font-size: 1.2rem;
+	line-height: 1.75rem;
+}
+
+.work-doc .rich-text-editor[data-appearance="document"] .rich-text-editor__prosemirror > :first-child {
+	margin-top: 0;
+}
+
+.work-doc .rich-text-editor[data-appearance="document"] .rich-text-editor__footer {
+	min-height: 0;
+	padding: 0;
+	justify-content: flex-end;
+}

@@ -11,9 +11,14 @@ import { PORTFOLIO_UNUSED_FILE_GRACE_MS } from "@rezumi/schema/portfolio/limits"
 export const KEPT_PHOTO_MS = PORTFOLIO_UNUSED_FILE_GRACE_MS / 2;
 
 type PortfolioEditorUi = {
-	/** The work open in the content panel; the preview shows its detail. */
+	/** The work open in Work; the preview shows its page. Opening one anywhere (a card in the preview, a new work, "Show me") switches the editor to Work. */
 	openWorkId: string | null;
 	openWork: (id: string | null) => void;
+	/** The work last open in Work, picked again when Work is opened from the rail. */
+	lastWorkId: string | null;
+	/** Work's canvas: the work as a document to write in, or its page as visitors see it. */
+	workView: "edit" | "preview";
+	setWorkView: (view: "edit" | "preview") => void;
 	/** The section open in Content's list. */
 	openSectionKey: PortfolioSectionKey | null;
 	openSection: (key: PortfolioSectionKey | null) => void;
@@ -47,6 +52,8 @@ type PortfolioEditorUi = {
 
 const initialUi = {
 	openWorkId: null,
+	lastWorkId: null,
+	workView: "edit",
 	openSectionKey: null,
 	revealing: null,
 	effectReplay: 0,
@@ -59,7 +66,8 @@ const initialUi = {
 /** What the editor shows, apart from the data: kept outside the data store so it never becomes an undo step. */
 export const usePortfolioEditorUi = create<PortfolioEditorUi>()((set) => ({
 	...initialUi,
-	openWork: (openWorkId) => set({ openWorkId }),
+	openWork: (openWorkId) => set((state) => ({ openWorkId, lastWorkId: openWorkId ?? state.lastWorkId })),
+	setWorkView: (workView) => set({ workView }),
 	openSection: (openSectionKey) => set({ openSectionKey }),
 	revealSection: (key) => set({ openSectionKey: key, revealing: key }),
 	revealed: () => set({ revealing: null }),

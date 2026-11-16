@@ -115,15 +115,15 @@ msgstr "(pembayaran ini)"
 msgid "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
 msgstr "{0, plural, =0 {Tambahkan karya} other {Tambahkan # karya}}"
 
-#. placeholder {0}: work.blocks.length
-#: src/features/portfolio/works/works-form.tsx
-msgid "{0, plural, =0 {No blocks yet} one {# block} other {# blocks}}"
-msgstr "{0, plural, =0 {Belum ada blok} other {# blok}}"
-
 #. placeholder {0}: results.length
 #: src/features/portfolio/location/location-fields.tsx
 msgid "{0, plural, =0 {No cities found} one {# city found} other {# cities found}}"
 msgstr "{0, plural, =0 {Kota tidak ditemukan} other {# kota ditemukan}}"
+
+#. placeholder {0}: work.blocks.length
+#: src/features/portfolio/works/works-panel.tsx
+msgid "{0, plural, =0 {No story yet} one {# block} other {# blocks}}"
+msgstr "{0, plural, =0 {Belum ada cerita} other {# blok}}"
 
 #. placeholder {0}: proposals.length
 #: src/features/resume/editor/proposals/proposals.ts
@@ -275,6 +275,11 @@ msgstr "{0, plural, one {# dipilih} other {# dipilih}}"
 #: src/features/career/coach-chat.tsx
 msgid "{0, plural, one {# story} other {# stories}}"
 msgstr "{0, plural, other {# cerita}}"
+
+#. placeholder {0}: work.tags.length - 3
+#: src/features/portfolio/works/work-document.tsx
+msgid "{0, plural, one {+# tag} other {+# tags}}"
+msgstr "{0, plural, other {+# tag}}"
 
 #. placeholder {0}: remembered.ids.length
 #: src/features/career/coach-chat.tsx
@@ -624,6 +629,12 @@ msgstr "{0} dari {1} lamaran pekerjaan yang disesuaikan mendapat balasan; {2} da
 msgid "{0} of {1} terms found"
 msgstr "{0} dari {1} istilah ditemukan"
 
+#. placeholder {0}: items.length
+#. placeholder {1}: limits.works
+#: src/features/portfolio/works/works-panel.tsx
+msgid "{0} of {1} works"
+msgstr "{0} dari {1} karya"
+
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
 msgid "{0} per reply"
@@ -756,6 +767,10 @@ msgstr "{cost} per tindakan · sisa {0}"
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "{cost} the first year"
 msgstr "{cost} untuk tahun pertama"
+
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "{count, plural, =0 {No works yet.} one {# work on the page.} other {# works on the page.}}"
+msgstr "{count, plural, =0 {Belum ada karya.} other {# karya di halaman.}}"
 
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
@@ -1326,7 +1341,7 @@ msgstr "2019 – 2022"
 msgid "2022 – Present"
 msgstr "2022 – Sekarang"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "2025 or Jan–Mar 2025"
 msgstr "2025 atau Jan–Mar 2025"
 
@@ -1385,6 +1400,10 @@ msgstr "Cadangan surat ini. Impor kembali ke Rezumi sebagai surat."
 #: src/dialogs/resume/template/data.ts
 msgid "A bento page: the header is a solid tile of the accent and every section sits on its own soft rounded tile, with skills as chips."
 msgstr "Halaman bento: header berupa ubin aksen solid dan setiap bagian berada di ubin lembut membulatnya sendiri, dengan keahlian sebagai chip."
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "A big title for a part of the story"
+msgstr "Judul besar untuk satu bagian cerita"
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "A CAA record on this domain blocks its HTTPS certificate. Remove that record or allow the certificate authority, then check again."
@@ -1614,6 +1633,10 @@ msgstr "Tindak lanjut singkat biasanya baik-baik saja sekarang"
 #: src/dialogs/resume/template/data.ts
 msgid "A slim stripe of the accent runs down the page edge on the sidebar's side, the sidebar sits behind a hairline and main titles open with a short accent dash."
 msgstr "Garis aksen ramping membentang di tepi halaman pada sisi sidebar, sidebar dipisah garis tipis, dan judul utama dibuka dengan tanda pisah aksen pendek."
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "A smaller title"
+msgstr "Judul yang lebih kecil"
 
 #: src/dialogs/resume/template/data.ts
 msgid "A soft rounded panel floats in the left column with your portrait, name and contact lines above the supporting sections, beside an open white main column."
@@ -2018,6 +2041,10 @@ msgstr "Tambah testimoni"
 msgid "Add a video"
 msgstr "Tambah video"
 
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "Add a work"
+msgstr "Tambah karya"
+
 #: src/features/billing/purchase.ts
 msgid "Add a year"
 msgstr "Tambah setahun"
@@ -2170,6 +2197,10 @@ msgstr "Tambah tautan"
 msgid "Add my connection"
 msgstr "Tambah koneksi saya"
 
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Add one from the list: start empty, or from resume projects, pictures or a link."
+msgstr "Tambahkan dari daftar: mulai kosong, atau dari proyek CV, gambar, atau tautan."
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add one in Settings to use it without credits"
 msgstr "Tambahkan di Pengaturan untuk memakai AI tanpa kredit"
@@ -2310,7 +2341,7 @@ msgstr "Tambahkan apa yang terjadi sebelum menyimpan."
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/portfolio/works/add-work/from-link.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Add work"
 msgstr "Tambah karya"
 
@@ -2333,6 +2364,10 @@ msgstr "Tambah karya dari CV Anda"
 #: src/features/settings/ai/providers.tsx
 msgid "Add your first AI provider"
 msgstr ""
+
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Add your first work"
+msgstr "Tambahkan karya pertama Anda"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
@@ -2634,16 +2669,16 @@ msgstr "Semua bidang"
 msgid "All reports"
 msgstr "Semua laporan"
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "All sections"
-msgstr "Semua bagian"
-
 #: src/features/billing/admin/overview.tsx
 msgid "All statuses"
 msgstr "Semua status"
 
 #: src/features/portfolio/page-text.ts
 msgid "All work"
+msgstr "Semua karya"
+
+#: src/features/portfolio/works/works-panel.tsx
+msgid "All works"
 msgstr "Semua karya"
 
 #: src/features/settings/account/data.tsx
@@ -3737,10 +3772,6 @@ msgstr "Dibatalkan; aktif sampai {0}"
 msgid "Caption (optional)"
 msgstr "Keterangan (opsional)"
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Card"
-msgstr "Kartu"
-
 #: src/features/billing/admin/labels.ts
 msgid "Card dispute"
 msgstr "Sengketa kartu"
@@ -4181,6 +4212,10 @@ msgstr "Pilih resume di Write agar sesuai dengan desainnya. Sampai saat itu, sur
 #: src/features/career/workspace/practise.tsx
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "Pilih file WebM, MP4, MP3, WAV, atau Ogg hingga 2 MB."
+
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Choose a work to write about"
+msgstr "Pilih karya yang ingin ditulis"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Choose an application to see its next step, what you sent and its activity here."
@@ -5708,7 +5743,7 @@ msgstr "Surat lamaran dan balasan untuk recruiter"
 msgid "Cover letters that match"
 msgstr "Surat lamaran yang serasi"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Cover picture"
 msgstr "Gambar sampul"
 
@@ -6086,8 +6121,8 @@ msgstr "Hapus “{0}” sekarang?"
 msgid "Delete “{0}”?"
 msgstr "Hapus “{0}”?"
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Delete “{title}”?"
 msgstr "Hapus “{title}”?"
@@ -6097,7 +6132,8 @@ msgstr "Hapus “{title}”?"
 msgid "Delete {0}"
 msgstr "Hapus {0}"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Delete {title}"
 msgstr "Hapus {title}"
 
@@ -6182,8 +6218,8 @@ msgstr "Hapus bagian ini?"
 msgid "Delete version"
 msgstr "Hapus versi"
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Delete work"
 msgstr "Hapus karya"
 
@@ -6316,10 +6352,6 @@ msgstr "Desain sistem"
 #: src/features/homepage/theme-preview.tsx
 msgid "Desktop"
 msgstr "Desktop"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Detail"
-msgstr "Detail"
 
 #: src/features/billing/plan-page.tsx
 msgid "Detailed portfolio statistics"
@@ -6553,6 +6585,7 @@ msgstr "Jangan kirim {0}"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Done"
@@ -6718,6 +6751,10 @@ msgstr "Draf dari Profil Anda"
 msgid "Draft from your resume"
 msgstr "Draf dari resume Anda"
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Draft it with AI"
+msgstr "Buat draf dengan AI"
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft kept. Edit anything you like."
 msgstr "Draf disimpan. Edit apa pun yang Anda suka."
@@ -6858,6 +6895,7 @@ msgstr "Setiap persyaratan dalam lowongan diperiksa terhadap fakta dan cerita di
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/portfolio/works/work-canvas.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Edit"
@@ -6885,6 +6923,10 @@ msgstr "Pengeditan diterapkan"
 msgid "Edit color {0}"
 msgstr "Edit warna {0}"
 
+#: src/features/portfolio/works/work-document.tsx
+msgid "Edit cover"
+msgstr "Edit sampul"
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit date"
 msgstr "Edit tanggal"
@@ -6900,6 +6942,10 @@ msgstr "Sunting entri"
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Edit in Profile"
 msgstr "Ubah di Profil"
+
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "Edit in Work"
+msgstr "Edit di Karya"
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
@@ -7545,8 +7591,8 @@ msgstr "Gagal, kedaluwarsa, atau dibatalkan"
 msgid "FAQ"
 msgstr "FAQ"
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Featured"
 msgstr "Unggulan"
 
@@ -7677,6 +7723,10 @@ msgstr "Cari portofolio"
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
 msgstr "Cari posisi"
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Find the results in this work and show them as metrics"
+msgstr "Temukan hasil di karya ini dan tampilkan sebagai metrik"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Find weak bullets"
@@ -8523,8 +8573,7 @@ msgid "Hid the work “{name}”"
 msgstr "Menyembunyikan karya “{name}”"
 
 #: src/components/level/combobox.tsx
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hidden"
@@ -8533,6 +8582,10 @@ msgstr "Tersembunyi"
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "Disembunyikan dari Posisi baru"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Hidden from the page"
+msgstr "Disembunyikan dari halaman"
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Hidden terms are back"
@@ -8543,7 +8596,7 @@ msgid "Hidden: {hiddenList}"
 msgstr "Tersembunyi: {hiddenList}"
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Hide {title} from the page"
 msgstr "Sembunyikan {title} dari halaman"
@@ -8554,10 +8607,6 @@ msgstr "Sembunyikan detail kontak"
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hide from page"
-msgstr "Sembunyikan dari halaman"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Hide from the page"
 msgstr "Sembunyikan dari halaman"
 
 #: src/features/resume/editor/chrome.tsx
@@ -8746,6 +8795,10 @@ msgstr "Saya dapat melihat postingan pekerjaan {kind} dan {0} ini. Saran muncul 
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
 msgstr "Saya dapat melihat {kind} ini. Saran muncul kembali sebagai hasil edit yang dapat Anda terima satu per satu."
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "I can see your portfolio, and I'll work on “{focusTitle}” unless you name another. Changes show on the page at once, and you can undo each reply."
+msgstr "Saya bisa melihat portofolio Anda, dan saya akan mengerjakan “{focusTitle}” kecuali Anda menyebut karya lain. Perubahan langsung tampil di halaman, dan setiap balasan bisa dibatalkan."
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see your portfolio. Changes show on the page at once, and you can undo each reply."
@@ -9516,10 +9569,6 @@ msgstr "Salam hormat,"
 msgid "Kinds of work"
 msgstr "Jenis pekerjaan"
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Kopi Senja checkout redesign"
-msgstr "Desain ulang checkout Kopi Senja"
-
 #: src/libs/locale.ts
 msgid "Korean"
 msgstr "Korea"
@@ -9639,7 +9688,7 @@ msgstr "Tata letak"
 msgid "Layouts"
 msgstr "Tata letak"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Lead designer"
 msgstr "Desainer utama"
 
@@ -9883,6 +9932,7 @@ msgstr "Garis sedekat ini dapat berjalan bersamaan saat dibaca. Gunakan setidakn
 #: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/portfolio/works/add-work/from-link.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/fields.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Link"
@@ -9919,7 +9969,7 @@ msgstr "Tautkan lamaran pekerjaan…"
 msgid "Link copied"
 msgstr "Tautan disalin"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Link text"
 msgstr "Teks tautan"
 
@@ -10202,7 +10252,7 @@ msgstr "Dibuat dengan Rezumi"
 msgid "Main"
 msgstr "Utama"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Main link (optional)"
 msgstr "Tautan utama (opsional)"
 
@@ -10473,7 +10523,7 @@ msgstr "Pesan"
 msgid "Metric {0}"
 msgstr "Metrik {0}"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Metric on the card"
 msgstr "Metrik di kartu"
 
@@ -10805,6 +10855,10 @@ msgstr "Beri nama kunci sandi ini"
 #: src/features/resume/share/history-tab.tsx
 msgid "Name this version"
 msgstr "Beri nama versi ini"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Name this work"
+msgstr "Beri nama karya ini"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
@@ -11367,9 +11421,14 @@ msgstr "Belum ada karya yang dibuka."
 msgid "No work-experience section was found."
 msgstr "Tidak ditemukan bagian pengalaman kerja."
 
+#: src/features/portfolio/works/work-canvas.tsx
+#: src/features/portfolio/works/works-panel.tsx
+msgid "No works yet"
+msgstr "Belum ada karya"
+
 #: src/features/applications/components/list-view.tsx
 #: src/features/applications/document-options.ts
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "None"
 msgstr "Tidak ada"
 
@@ -11835,6 +11894,10 @@ msgstr "Satu kolom dengan karier sebagai lintasan: pengalaman dan pendidikan ber
 msgctxt "Entry header layout"
 msgid "One line"
 msgstr ""
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "One or two lines: what you made, for whom, and what changed."
+msgstr "Satu atau dua baris: apa yang Anda buat, untuk siapa, dan apa yang berubah."
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "One payment by QRIS. It doesn't renew: we email you 3 days before it ends."
@@ -12743,6 +12806,10 @@ msgstr "Pilih ikon"
 msgid "Pick one format and use it everywhere."
 msgstr "Pilih satu format dan gunakan di mana pun."
 
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Pick one from the list, and its story opens here."
+msgstr "Pilih satu dari daftar, dan ceritanya terbuka di sini."
+
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Pick projects from your Profile: title, summary, dates and link come along."
 msgstr "Pilih proyek dari Profil Anda: judul, ringkasan, tanggal, dan tautan ikut dibawa."
@@ -12895,6 +12962,10 @@ msgstr "Plus dan Pro AI ditagih bulanan atau tahunan dan diperpanjang sampai kam
 #: src/features/homepage/pricing.tsx
 msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
 msgstr "Plus, Pro AI, dan kredit coba segera tersedia. Batas paket berbayar belum aktif."
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Points in any order"
+msgstr "Poin tanpa urutan"
 
 #: src/libs/locale.ts
 msgid "Polish"
@@ -13131,6 +13202,7 @@ msgid "Press <0>Enter</0> to open"
 msgstr "Tekan <0>Enter</0> untuk membuka"
 
 #: src/features/homepage/portfolio.tsx
+#: src/features/portfolio/works/work-canvas.tsx
 msgid "Preview"
 msgstr "Pratinjau"
 
@@ -13267,6 +13339,14 @@ msgstr "Pro AI · {0} lunas"
 #: src/features/billing/credits.ts
 msgid "Pro AI credits"
 msgstr "Kredit Pro AI"
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Problem, role, process and result headings"
+msgstr "Judul masalah, peran, proses, dan hasil"
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Problem, your role, process and result, as blocks"
+msgstr "Masalah, peran Anda, proses, dan hasil, sebagai blok"
 
 #: src/features/homepage/footer.tsx
 msgid "Product"
@@ -14367,7 +14447,7 @@ msgid "Reorder {name}"
 msgstr "Ubah urutan {name}"
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
@@ -14707,6 +14787,10 @@ msgstr "Tinjau jawaban formulir yang wajib dan hapus klaim yang tidak didukung."
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "Tinjau CV dan surat lamaran yang dipilih di editornya masing-masing."
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Review this work like a hiring manager"
+msgstr "Tinjau karya ini seperti perekrut"
+
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Review what we found"
 msgstr "Periksa yang kami temukan"
@@ -14866,6 +14950,10 @@ msgstr "Peran orang {0}"
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Role, company or location"
 msgstr "Peran, perusahaan, atau lokasi"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Role, year, tags and link"
+msgstr "Peran, tahun, tag, dan tautan"
 
 #: src/features/career/coach-chat.tsx
 msgid "Roles"
@@ -15499,7 +15587,7 @@ msgstr "Lihat Pro AI"
 msgid "See the case study"
 msgstr "Lihat studi kasus"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "See the live site"
 msgstr "Lihat situsnya"
 
@@ -15816,6 +15904,10 @@ msgstr "Singkat dan langsung. Baik jika lowongan pekerjaan meminta singkatnya."
 msgid "Short and polite, for the recruiter"
 msgstr "Singkat dan sopan, untuk perekrut"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Short enough for its card"
+msgstr "Cukup singkat untuk kartunya"
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Short link"
 msgstr ""
@@ -15877,7 +15969,7 @@ msgid "Show {provider} here"
 msgstr "Tampilkan {provider} di sini"
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Show {title} on the page"
 msgstr "Tampilkan {title} di halaman"
@@ -16058,6 +16150,10 @@ msgstr "Menampilkan karya “{name}”"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
 msgstr "Ditampilkan dalam zona waktu Anda."
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Shown on the page"
+msgstr "Tampil di halaman"
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Shown on your published page."
@@ -16460,6 +16556,10 @@ msgstr "Mulai setiap poin dengan kata kerja yang konkret: membangun, memimpin, m
 msgid "Start empty"
 msgstr "Mulai kosong"
 
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Start empty, or from resume projects, pictures or a link."
+msgstr "Mulai kosong, atau dari proyek CV, gambar, atau tautan."
+
 #: src/features/homepage/plans.ts
 msgid "Start free"
 msgstr "Mulai gratis"
@@ -16484,6 +16584,10 @@ msgstr "Mulai dari"
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Start from a case study outline"
 msgstr "Mulai dari kerangka studi kasus"
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Start from an outline"
+msgstr "Mulai dari kerangka"
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "Start from one you have and link the application."
@@ -16537,6 +16641,10 @@ msgstr "Mulailah mengetik, atau membuat draf dari apa yang kami ketahui: resume 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
 msgstr "Mulailah mengetik. Untuk membuat draf, isi Profil Anda, atau tautkan CV atau lamaran."
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Start with an empty paragraph"
+msgstr "Mulai dengan paragraf kosong"
 
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Start with the sections most resumes have."
@@ -16625,6 +16733,10 @@ msgstr "Langkah 2 dari 3 · Tampilan"
 msgid "Step 3 of 3 · Start with AI"
 msgstr "Langkah 3 dari 3 · Mulai dengan AI"
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Steps in order"
+msgstr "Langkah berurutan"
+
 #: src/features/assistant/prompt-box.tsx
 #: src/features/portfolio/ai/draft-form.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -16689,6 +16801,7 @@ msgid "Stories to bring"
 msgstr "Cerita yang perlu dibawa"
 
 #: src/features/career/knowledge/stories.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Story"
 msgstr "Cerita"
 
@@ -16788,6 +16901,10 @@ msgstr "Keberhasilan dalam 90 hari · langkah berikutnya"
 msgid "Suggest again"
 msgstr "Sarankan lagi"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Suggest tags and my role for this work"
+msgstr "Sarankan tag dan peran saya untuk karya ini"
+
 #. Icon picker category: the icons resumes use most
 #: src/components/input/icon-picker-grid.tsx
 msgid "Suggested"
@@ -16818,7 +16935,7 @@ msgid "Summaries of your open applications"
 msgstr "Ringkasan lamaran Anda yang masih terbuka"
 
 #: src/features/homepage/resume.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/summary-editor.tsx
 #: src/libs/resume/section.tsx
 msgid "Summary"
@@ -16949,7 +17066,7 @@ msgstr "Menandai"
 #: src/features/career/knowledge/stories.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/documents-page.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Tags"
 msgstr "Tag"
 
@@ -17086,6 +17203,14 @@ msgstr "Ceritakan saat Anda memimpin sebuah redesain."
 #: src/features/portfolio/page-text.ts
 msgid "Tell Rezumi what's wrong with {name}'s portfolio. Only the Rezumi team reads reports, and the portfolio's owner is never told who sent one."
 msgstr "Beri tahu Rezumi apa yang salah dengan portofolio {name}. Hanya tim Rezumi yang membaca laporan, dan pemilik portofolio tidak pernah diberi tahu siapa yang melapor."
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Tell the assistant what happened; it writes the blocks"
+msgstr "Ceritakan apa yang terjadi; asisten menulis bloknya"
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Tell the story behind this work: the problem, what you did, and what changed."
+msgstr "Ceritakan kisah di balik karya ini: masalahnya, apa yang Anda lakukan, dan apa yang berubah."
 
 #: src/libs/locale.ts
 msgid "Telugu"
@@ -17824,8 +17949,8 @@ msgstr "Batas waktu pembayaran sudah lewat"
 msgid "The top of the first page does not look like a name."
 msgstr "Bagian atas halaman pertama tidak tampak seperti sebuah nama."
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "The work and its blocks leave the portfolio. You can undo this."
 msgstr "Karya dan blok-bloknya dihapus dari portofolio. Anda bisa mengurungkannya."
 
@@ -18437,6 +18562,10 @@ msgid "Tighten"
 msgstr "Padatkan"
 
 #: src/features/assistant/assistant-panel.tsx
+msgid "Tighten this work's title and summary"
+msgstr "Rapikan judul dan ringkasan karya ini"
+
+#: src/features/assistant/assistant-panel.tsx
 msgid "Tighten to one page"
 msgstr "Kencangkan menjadi satu halaman"
 
@@ -18514,7 +18643,7 @@ msgstr "Tips"
 #: src/features/career/knowledge/stories.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/link-block.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Title"
 msgstr "Judul"
@@ -18846,6 +18975,10 @@ msgstr "Menonaktifkan verifikasi dua langkah…"
 msgid "Turning on two-step verification…"
 msgstr "Mengaktifkan verifikasi dua langkah…"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Turns numbers in the text into a metrics block"
+msgstr "Mengubah angka di teks menjadi blok metrik"
+
 #: src/features/homepage/features.tsx
 msgid "Two bullets run over two lines"
 msgstr "Dua poin lebih dari dua baris"
@@ -19091,11 +19224,14 @@ msgstr "Layanan tanpa nama"
 msgid "Untitled testimonial"
 msgstr "Testimoni tanpa nama"
 
+#: src/features/assistant/assistant-panel.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/save-problem.ts
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-canvas.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Untitled work"
 msgstr "Karya tanpa judul"
 
@@ -19917,6 +20053,10 @@ msgstr "Berjalan baik"
 msgid "What"
 msgstr "Jenis"
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "What a client or user said"
+msgstr "Kata klien atau pengguna"
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "What a parser reads"
 msgstr "Apa yang dibaca oleh pengurai"
@@ -20057,10 +20197,6 @@ msgstr "Yang Anda tambahkan ke Profil nanti akan muncul di sini. Anda juga bisa 
 #: src/features/career/workspace/fit.tsx
 msgid "What you did: {0}"
 msgstr "Yang Anda lakukan: {0}"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "What you made, for whom, and what changed."
-msgstr "Apa yang Anda buat, untuk siapa, dan apa yang berubah."
 
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "What you sent"
@@ -20261,6 +20397,7 @@ msgstr "Kata-kata menyatu ketika teksnya diekstrak."
 
 #: src/features/portfolio/page-text.ts
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Work"
 msgstr "Karya"
 
@@ -20271,6 +20408,15 @@ msgstr "Tata letak Karya"
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Work opened by day"
 msgstr "Karya dibuka per hari"
+
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Work view"
+msgstr "Tampilan karya"
+
+#. placeholder {0}: document.focus.title.trim() || t`Untitled work`
+#: src/features/assistant/conversation.tsx
+msgid "Work: {0}"
+msgstr "Karya: {0}"
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Works"
@@ -20343,6 +20489,7 @@ msgstr "Tulis sebagai satu kesatuan tanpa putus, tanpa spasi khusus."
 msgid "Write it down while it's fresh"
 msgstr "Catat selagi masih segar"
 
+#: src/features/portfolio/blocks/block-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Write it myself"
 msgstr "Tulis sendiri"
@@ -20363,6 +20510,14 @@ msgstr "Tulis satu cerita tentang sesuatu yang Anda lakukan, dalam lima bagian. 
 msgid "Write the full address so it is recognized as a link."
 msgstr "Tulis alamat lengkapnya agar dikenali sebagai tautan."
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Write the story of this work as a short case study (problem, my role, process, result) from these notes: "
+msgstr "Tulis cerita karya ini sebagai studi kasus singkat (masalah, peran saya, proses, hasil) dari catatan berikut: "
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Write this work's story from my notes"
+msgstr "Tulis cerita karya ini dari catatan saya"
+
 #: src/features/career/workspace/fit.tsx
 msgid "Write what you did."
 msgstr "Tulis apa yang Anda lakukan."
@@ -20375,12 +20530,21 @@ msgstr "Tulis jawaban Anda, atau buat draf dari Profil Anda."
 msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
 msgstr "Tulis intro, Tentang saya, dan cerita karya Anda dari CV, lalu ubah sesuai keinginan. Anda bisa mengurungkannya."
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Write, or type “/” for headings, lists, pictures and more…"
+msgstr "Tulis, atau ketik “/” untuk judul, daftar, gambar, dan lainnya…"
+
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
 msgstr "Tulisan"
+
+#. placeholder {0}: open.title.trim() || t`Untitled work`
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Writing {0}"
+msgstr "Menulis {0}"
 
 #: src/features/career/coach-chat.tsx
 msgid "Writing an answer…"
@@ -20403,7 +20567,7 @@ msgid "Written offer"
 msgstr "Penawaran tertulis"
 
 #: src/features/portfolio/page-text.ts
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Year"
 msgstr "Tahun"
 
@@ -21228,7 +21392,7 @@ msgstr "Resume Anda menggunakan \"I\" dan \"my\"."
 msgid "Your resume, published as a website"
 msgstr "CV Anda, terbit sebagai website"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Your role"
 msgstr "Peran Anda"
 

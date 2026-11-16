@@ -1,3 +1,4 @@
+import type { AssistantDocument } from "./document";
 import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { FileUIPart, UIMessage } from "ai";
 import { useQueryClient } from "@tanstack/react-query";
@@ -9,6 +10,9 @@ import { client, orpc } from "@/libs/orpc/client";
 export type MessageContext = {
 	document: boolean;
 	posting: boolean;
+	/** The portfolio's open work (its chip); on unless removed. Sent as `workId`. */
+	work?: boolean;
+	workId?: string;
 	applicationId?: string;
 	application?: boolean;
 	memory?: boolean;
@@ -83,3 +87,15 @@ export const isEmptyPart = (part: UIMessage["parts"][number]) =>
 export const isBlankReply = (message: UIMessage) =>
 	message.role === "assistant" &&
 	!message.parts.some((part) => (part.type === "text" && part.text !== "") || part.type.startsWith("tool-"));
+
+/**
+ * The context as a message sends it: the portfolio's open work as its id, while its chip is on. The chip's own switch
+ * stays here.
+ */
+export function sentContext(context: MessageContext, document: AssistantDocument): MessageContext {
+	const sent: MessageContext = { ...context };
+	delete sent.work;
+	delete sent.workId;
+	if (document.kind === "portfolio" && document.focus && context.work !== false) sent.workId = document.focus.workId;
+	return sent;
+}

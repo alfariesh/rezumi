@@ -115,14 +115,14 @@ msgstr ""
 msgid "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
 msgstr ""
 
-#. placeholder {0}: work.blocks.length
-#: src/features/portfolio/works/works-form.tsx
-msgid "{0, plural, =0 {No blocks yet} one {# block} other {# blocks}}"
-msgstr ""
-
 #. placeholder {0}: results.length
 #: src/features/portfolio/location/location-fields.tsx
 msgid "{0, plural, =0 {No cities found} one {# city found} other {# cities found}}"
+msgstr ""
+
+#. placeholder {0}: work.blocks.length
+#: src/features/portfolio/works/works-panel.tsx
+msgid "{0, plural, =0 {No story yet} one {# block} other {# blocks}}"
 msgstr ""
 
 #. placeholder {0}: proposals.length
@@ -275,6 +275,11 @@ msgstr "{0, plural, one {# தேர்ந்தெடுக்கப்பட�
 #: src/features/career/coach-chat.tsx
 msgid "{0, plural, one {# story} other {# stories}}"
 msgstr "{0, plural, one {# கதை} other {# கதைகள்}}"
+
+#. placeholder {0}: work.tags.length - 3
+#: src/features/portfolio/works/work-document.tsx
+msgid "{0, plural, one {+# tag} other {+# tags}}"
+msgstr ""
 
 #. placeholder {0}: remembered.ids.length
 #: src/features/career/coach-chat.tsx
@@ -624,6 +629,12 @@ msgstr "மாற்றியமைக்கப்பட்ட {1} வேலை 
 msgid "{0} of {1} terms found"
 msgstr "{0} சொற்களில் {1} கண்டறியப்பட்டன"
 
+#. placeholder {0}: items.length
+#. placeholder {1}: limits.works
+#: src/features/portfolio/works/works-panel.tsx
+msgid "{0} of {1} works"
+msgstr ""
+
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
 msgid "{0} per reply"
@@ -756,6 +767,10 @@ msgstr ""
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "{cost} the first year"
 msgstr "முதல் ஆண்டுக்கு {cost}"
+
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "{count, plural, =0 {No works yet.} one {# work on the page.} other {# works on the page.}}"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
@@ -1326,7 +1341,7 @@ msgstr ""
 msgid "2022 – Present"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "2025 or Jan–Mar 2025"
 msgstr ""
 
@@ -1384,6 +1399,10 @@ msgstr "இந்த கடிதத்தின் காப்புப்ப�
 
 #: src/dialogs/resume/template/data.ts
 msgid "A bento page: the header is a solid tile of the accent and every section sits on its own soft rounded tile, with skills as chips."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "A big title for a part of the story"
 msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
@@ -1613,6 +1632,10 @@ msgstr "ஒரு குறுகிய பின்தொடர்தல் ப
 
 #: src/dialogs/resume/template/data.ts
 msgid "A slim stripe of the accent runs down the page edge on the sidebar's side, the sidebar sits behind a hairline and main titles open with a short accent dash."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "A smaller title"
 msgstr ""
 
 #: src/dialogs/resume/template/data.ts
@@ -2018,6 +2041,10 @@ msgstr ""
 msgid "Add a video"
 msgstr ""
 
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "Add a work"
+msgstr ""
+
 #: src/features/billing/purchase.ts
 msgid "Add a year"
 msgstr ""
@@ -2170,6 +2197,10 @@ msgstr ""
 msgid "Add my connection"
 msgstr ""
 
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Add one from the list: start empty, or from resume projects, pictures or a link."
+msgstr ""
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add one in Settings to use it without credits"
 msgstr ""
@@ -2310,7 +2341,7 @@ msgstr "சேமிப்பதற்கு முன் என்ன நடந
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/portfolio/works/add-work/from-link.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Add work"
 msgstr ""
 
@@ -2332,6 +2363,10 @@ msgstr ""
 
 #: src/features/settings/ai/providers.tsx
 msgid "Add your first AI provider"
+msgstr ""
+
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Add your first work"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -2634,16 +2669,16 @@ msgstr ""
 msgid "All reports"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "All sections"
-msgstr ""
-
 #: src/features/billing/admin/overview.tsx
 msgid "All statuses"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "All work"
+msgstr ""
+
+#: src/features/portfolio/works/works-panel.tsx
+msgid "All works"
 msgstr ""
 
 #: src/features/settings/account/data.tsx
@@ -3737,10 +3772,6 @@ msgstr ""
 msgid "Caption (optional)"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Card"
-msgstr ""
-
 #: src/features/billing/admin/labels.ts
 msgid "Card dispute"
 msgstr ""
@@ -4181,6 +4212,10 @@ msgstr "அதன் வடிவமைப்புடன் பொருந்�
 #: src/features/career/workspace/practise.tsx
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2 MB வரையிலான WebM, MP4, MP3, WAV அல்லது Ogg கோப்பைத் தேர்ந்தெடுக்கவும்."
+
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Choose a work to write about"
+msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Choose an application to see its next step, what you sent and its activity here."
@@ -5708,7 +5743,7 @@ msgstr ""
 msgid "Cover letters that match"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Cover picture"
 msgstr ""
 
@@ -6086,8 +6121,8 @@ msgstr "\"{0}\" ஐ இப்போது நீக்கவா?"
 msgid "Delete “{0}”?"
 msgstr "“{0}”-ஐ நீக்கவா?"
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Delete “{title}”?"
 msgstr "\"{title}\" ஐ நீக்கவா?"
@@ -6097,7 +6132,8 @@ msgstr "\"{title}\" ஐ நீக்கவா?"
 msgid "Delete {0}"
 msgstr "{0} ஐ நீக்கு"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Delete {title}"
 msgstr ""
 
@@ -6182,8 +6218,8 @@ msgstr ""
 msgid "Delete version"
 msgstr "பதிப்பை நீக்கு"
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Delete work"
 msgstr ""
 
@@ -6315,10 +6351,6 @@ msgstr "வடிவமைப்பு அமைப்புகள்"
 
 #: src/features/homepage/theme-preview.tsx
 msgid "Desktop"
-msgstr ""
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Detail"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -6553,6 +6585,7 @@ msgstr "{0} ஐ அனுப்ப வேண்டாம்"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Done"
@@ -6718,6 +6751,10 @@ msgstr ""
 msgid "Draft from your resume"
 msgstr "உங்கள் ரெஸ்யூமிலிருந்து வரைவு"
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Draft it with AI"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft kept. Edit anything you like."
 msgstr "வரைவு வைக்கப்பட்டுள்ளது. நீங்கள் விரும்பும் எதையும் திருத்தவும்."
@@ -6858,6 +6895,7 @@ msgstr ""
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/portfolio/works/work-canvas.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Edit"
@@ -6885,6 +6923,10 @@ msgstr "திருத்தம் பயன்படுத்தப்பட�
 msgid "Edit color {0}"
 msgstr "வண்ணத்தைத் திருத்து {0}"
 
+#: src/features/portfolio/works/work-document.tsx
+msgid "Edit cover"
+msgstr ""
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit date"
 msgstr "தேதியைத் திருத்து"
@@ -6899,6 +6941,10 @@ msgstr "உள்ளீட்டைத் திருத்து"
 
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Edit in Profile"
+msgstr ""
+
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "Edit in Work"
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -7545,8 +7591,8 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Featured"
 msgstr ""
 
@@ -7677,6 +7723,10 @@ msgstr ""
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
 msgstr "பதவிகளைக் கண்டறி"
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Find the results in this work and show them as metrics"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Find weak bullets"
@@ -8523,8 +8573,7 @@ msgid "Hid the work “{name}”"
 msgstr ""
 
 #: src/components/level/combobox.tsx
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hidden"
@@ -8533,6 +8582,10 @@ msgstr "மறைக்கப்பட்டது"
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "புதிய பதவிகளிலிருந்து மறைக்கப்பட்டது"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Hidden from the page"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Hidden terms are back"
@@ -8543,7 +8596,7 @@ msgid "Hidden: {hiddenList}"
 msgstr "மறைக்கப்பட்டவை: {hiddenList}"
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Hide {title} from the page"
 msgstr "பக்கத்திலிருந்து {title} ஐ மறை"
@@ -8555,10 +8608,6 @@ msgstr "தொடர்பு விவரங்களை மறை"
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hide from page"
 msgstr "பக்கத்திலிருந்து மறை"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Hide from the page"
-msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Hide panel"
@@ -8746,6 +8795,10 @@ msgstr "இந்த {kind} மற்றும் {0} வேலை இடுக�
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
 msgstr "என்னால் இதை {kind} பார்க்க முடிகிறது. நீங்கள் ஒவ்வொன்றாக ஏற்றுக்கொள்ளக்கூடிய திருத்தங்களாக பரிந்துரைகள் மீண்டும் வருகின்றன."
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "I can see your portfolio, and I'll work on “{focusTitle}” unless you name another. Changes show on the page at once, and you can undo each reply."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see your portfolio. Changes show on the page at once, and you can undo each reply."
@@ -9516,10 +9569,6 @@ msgstr "அன்புடன்,"
 msgid "Kinds of work"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Kopi Senja checkout redesign"
-msgstr ""
-
 #: src/libs/locale.ts
 msgid "Korean"
 msgstr "கொரியன்"
@@ -9639,7 +9688,7 @@ msgstr "லேயவுட்"
 msgid "Layouts"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Lead designer"
 msgstr ""
 
@@ -9883,6 +9932,7 @@ msgstr "படிக்கும் போது இந்த நெருக்
 #: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/portfolio/works/add-work/from-link.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/fields.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Link"
@@ -9919,7 +9969,7 @@ msgstr "வேலை விண்ணப்பத்தை இணைக்கவ�
 msgid "Link copied"
 msgstr "இணைப்பு நகலெடுக்கப்பட்டது"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Link text"
 msgstr ""
 
@@ -10202,7 +10252,7 @@ msgstr ""
 msgid "Main"
 msgstr "முதன்மை"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Main link (optional)"
 msgstr ""
 
@@ -10473,7 +10523,7 @@ msgstr "செய்திகள்"
 msgid "Metric {0}"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Metric on the card"
 msgstr ""
 
@@ -10805,6 +10855,10 @@ msgstr "இந்த பாஸ்கீக்கு பெயரிடவும�
 #: src/features/resume/share/history-tab.tsx
 msgid "Name this version"
 msgstr "இந்த பதிப்பிற்கு பெயரிடவும்"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Name this work"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
@@ -11367,9 +11421,14 @@ msgstr ""
 msgid "No work-experience section was found."
 msgstr "பணி அனுபவப் பிரிவு எதுவும் காணப்படவில்லை."
 
+#: src/features/portfolio/works/work-canvas.tsx
+#: src/features/portfolio/works/works-panel.tsx
+msgid "No works yet"
+msgstr ""
+
 #: src/features/applications/components/list-view.tsx
 #: src/features/applications/document-options.ts
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "None"
 msgstr "இல்லை"
 
@@ -11834,6 +11893,10 @@ msgstr ""
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header layout"
 msgid "One line"
+msgstr ""
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "One or two lines: what you made, for whom, and what changed."
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -12743,6 +12806,10 @@ msgstr "ஒரு சின்னத்தைத் தேர்ந்தெட�
 msgid "Pick one format and use it everywhere."
 msgstr "ஒரு வடிவமைப்பைத் தேர்ந்தெடுத்து அதை எல்லா இடங்களிலும் பயன்படுத்தவும்."
 
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Pick one from the list, and its story opens here."
+msgstr ""
+
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Pick projects from your Profile: title, summary, dates and link come along."
 msgstr ""
@@ -12894,6 +12961,10 @@ msgstr ""
 
 #: src/features/homepage/pricing.tsx
 msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Points in any order"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -13131,6 +13202,7 @@ msgid "Press <0>Enter</0> to open"
 msgstr "திறக்க <0>Enter ஐ</0> அழுத்தவும்"
 
 #: src/features/homepage/portfolio.tsx
+#: src/features/portfolio/works/work-canvas.tsx
 msgid "Preview"
 msgstr ""
 
@@ -13266,6 +13338,14 @@ msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Pro AI credits"
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Problem, role, process and result headings"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Problem, your role, process and result, as blocks"
 msgstr ""
 
 #: src/features/homepage/footer.tsx
@@ -14367,7 +14447,7 @@ msgid "Reorder {name}"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
@@ -14707,6 +14787,10 @@ msgstr "தேவையான படிவப் பதில்களை மத
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "தேர்ந்தெடுத்த ரெஸ்யூமையும் கவர் கடிதத்தையும் அவற்றின் எடிட்டர்களில் மதிப்பாய்வு செய்யவும்."
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Review this work like a hiring manager"
+msgstr ""
+
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Review what we found"
 msgstr ""
@@ -14866,6 +14950,10 @@ msgstr "நபர் {0}-இன் பணிப்பொறுப்பு"
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Role, company or location"
 msgstr "பங்கு, நிறுவனம் அல்லது இடம்"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Role, year, tags and link"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Roles"
@@ -15499,7 +15587,7 @@ msgstr ""
 msgid "See the case study"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "See the live site"
 msgstr ""
 
@@ -15816,6 +15904,10 @@ msgstr "குறுகிய மற்றும் நேரடி. வேல�
 msgid "Short and polite, for the recruiter"
 msgstr "குறுகிய மற்றும் கண்ணியமான, பணியமர்த்துபவர்"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Short enough for its card"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Short link"
 msgstr ""
@@ -15877,7 +15969,7 @@ msgid "Show {provider} here"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Show {title} on the page"
 msgstr "பக்கத்தில் {title} ஐக் காட்டு"
@@ -16058,6 +16150,10 @@ msgstr ""
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
 msgstr "உங்கள் நேர மண்டலத்தில் காட்டப்படுகிறது."
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Shown on the page"
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Shown on your published page."
@@ -16460,6 +16556,10 @@ msgstr "ஒவ்வொன்றையும் ஒரு உறுதியா�
 msgid "Start empty"
 msgstr ""
 
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Start empty, or from resume projects, pictures or a link."
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Start free"
 msgstr ""
@@ -16483,6 +16583,10 @@ msgstr "இருந்து தொடங்குங்கள்"
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Start from a case study outline"
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Start from an outline"
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -16536,6 +16640,10 @@ msgstr "தட்டச்சு செய்யத் தொடங்குங�
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Start with an empty paragraph"
 msgstr ""
 
 #: src/features/resume/editor/write/add-section.tsx
@@ -16625,6 +16733,10 @@ msgstr ""
 msgid "Step 3 of 3 · Start with AI"
 msgstr ""
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Steps in order"
+msgstr ""
+
 #: src/features/assistant/prompt-box.tsx
 #: src/features/portfolio/ai/draft-form.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -16689,6 +16801,7 @@ msgid "Stories to bring"
 msgstr "கொண்டுசெல்ல வேண்டிய கதைகள்"
 
 #: src/features/career/knowledge/stories.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Story"
 msgstr "கதை"
 
@@ -16788,6 +16901,10 @@ msgstr "90 நாட்களில் வெற்றி · அடுத்த 
 msgid "Suggest again"
 msgstr "மீண்டும் பரிந்துரைக்கவும்"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Suggest tags and my role for this work"
+msgstr ""
+
 #. Icon picker category: the icons resumes use most
 #: src/components/input/icon-picker-grid.tsx
 msgid "Suggested"
@@ -16818,7 +16935,7 @@ msgid "Summaries of your open applications"
 msgstr "உங்கள் திறந்த விண்ணப்பங்களின் சுருக்கங்கள்"
 
 #: src/features/homepage/resume.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/summary-editor.tsx
 #: src/libs/resume/section.tsx
 msgid "Summary"
@@ -16949,7 +17066,7 @@ msgstr "குறிச்சொல்"
 #: src/features/career/knowledge/stories.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/documents-page.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Tags"
 msgstr "டேக்குகள்"
 
@@ -17085,6 +17202,14 @@ msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "Tell Rezumi what's wrong with {name}'s portfolio. Only the Rezumi team reads reports, and the portfolio's owner is never told who sent one."
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Tell the assistant what happened; it writes the blocks"
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Tell the story behind this work: the problem, what you did, and what changed."
 msgstr ""
 
 #: src/libs/locale.ts
@@ -17824,8 +17949,8 @@ msgstr ""
 msgid "The top of the first page does not look like a name."
 msgstr "முதல் பக்கத்தின் மேற்பகுதி ஒரு பெயர் போல் தெரியவில்லை."
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "The work and its blocks leave the portfolio. You can undo this."
 msgstr ""
 
@@ -18437,6 +18562,10 @@ msgid "Tighten"
 msgstr "சுருக்கு"
 
 #: src/features/assistant/assistant-panel.tsx
+msgid "Tighten this work's title and summary"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
 msgid "Tighten to one page"
 msgstr "ஒரு பக்கமாக இறுக்கவும்"
 
@@ -18514,7 +18643,7 @@ msgstr "குறிப்பு"
 #: src/features/career/knowledge/stories.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/link-block.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Title"
 msgstr "தலைப்பு"
@@ -18846,6 +18975,10 @@ msgstr "இரண்டு-படி சரிபார்ப்பு முட
 msgid "Turning on two-step verification…"
 msgstr "இரண்டு-படி சரிபார்ப்பு இயக்கப்படுகிறது…"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Turns numbers in the text into a metrics block"
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "Two bullets run over two lines"
 msgstr ""
@@ -19091,11 +19224,14 @@ msgstr ""
 msgid "Untitled testimonial"
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/save-problem.ts
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-canvas.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Untitled work"
 msgstr ""
 
@@ -19917,6 +20053,10 @@ msgstr "நன்றாக நடந்தது"
 msgid "What"
 msgstr ""
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "What a client or user said"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "What a parser reads"
 msgstr "ஒரு பார்சர் என்ன படிக்கிறது"
@@ -20057,10 +20197,6 @@ msgstr ""
 #: src/features/career/workspace/fit.tsx
 msgid "What you did: {0}"
 msgstr "நீங்கள் செய்தது: {0}"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "What you made, for whom, and what changed."
-msgstr ""
 
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "What you sent"
@@ -20261,6 +20397,7 @@ msgstr "உரை பிரித்தெடுக்கப்படும்�
 
 #: src/features/portfolio/page-text.ts
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Work"
 msgstr ""
 
@@ -20270,6 +20407,15 @@ msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Work opened by day"
+msgstr ""
+
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Work view"
+msgstr ""
+
+#. placeholder {0}: document.focus.title.trim() || t`Untitled work`
+#: src/features/assistant/conversation.tsx
+msgid "Work: {0}"
 msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
@@ -20343,6 +20489,7 @@ msgstr "எந்த சிறப்பு இடைவெளியும் இ
 msgid "Write it down while it's fresh"
 msgstr "நினைவில் புதிதாக இருக்கும்போதே எழுதுங்கள்"
 
+#: src/features/portfolio/blocks/block-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Write it myself"
 msgstr "அதை நானே எழுது"
@@ -20363,6 +20510,14 @@ msgstr "நீங்கள் செய்த ஒன்றைப் பற்ற
 msgid "Write the full address so it is recognized as a link."
 msgstr "இணைப்பாக அடையாளம் காணப்படும் வகையில் முழு முகவரியையும் எழுதவும்."
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Write the story of this work as a short case study (problem, my role, process, result) from these notes: "
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Write this work's story from my notes"
+msgstr ""
+
 #: src/features/career/workspace/fit.tsx
 msgid "Write what you did."
 msgstr "நீங்கள் செய்ததை எழுதுங்கள்."
@@ -20375,12 +20530,21 @@ msgstr ""
 msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
 msgstr ""
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Write, or type “/” for headings, lists, pictures and more…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
 msgstr "எழுத்து நடை"
+
+#. placeholder {0}: open.title.trim() || t`Untitled work`
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Writing {0}"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Writing an answer…"
@@ -20403,7 +20567,7 @@ msgid "Written offer"
 msgstr "எழுத்துப்பூர்வச் சலுகை"
 
 #: src/features/portfolio/page-text.ts
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Year"
 msgstr ""
 
@@ -21228,7 +21392,7 @@ msgstr "உங்கள் ரெஸ்யூம் \"I\" மற்றும் 
 msgid "Your resume, published as a website"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Your role"
 msgstr ""
 

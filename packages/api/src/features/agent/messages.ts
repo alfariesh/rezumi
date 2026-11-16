@@ -1,6 +1,7 @@
 import { eventIterator } from "@orpc/server";
 import z from "zod";
 import { workspaceTabSchema } from "@rezumi/schema/career";
+import { PORTFOLIO_ITEM_ID_PATTERN } from "@rezumi/schema/portfolio/limits";
 import { protectedProcedure } from "../../context";
 import { uiMessageSchema } from "../../dto/agent";
 import { aiRequestRateLimit } from "../../middleware/rate-limit";
@@ -51,6 +52,12 @@ export const messagesRouter = {
 							.optional()
 							.describe("Career coach: saved offers to compare (Plan what to ask)."),
 						applicationId: z.string().trim().min(1).max(255).optional(),
+						// A portfolio item id (letters, digits, `_` and `-`), so it can sit in the model's instructions as it is.
+						workId: z
+							.string()
+							.regex(PORTFOLIO_ITEM_ID_PATTERN)
+							.optional()
+							.describe("Portfolio: the work open in the editor's Work tab, as a hint for what 'this work' means."),
 					})
 					.optional(),
 				...aiSourceInput,

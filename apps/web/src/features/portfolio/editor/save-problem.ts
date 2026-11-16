@@ -10,7 +10,7 @@ import { sectionLabel } from "./sections";
 // A save problem in the user's words, and the place in the editor it concerns (`01-desain.md` 7: errors are shown
 // where they are; the save status names the place and opens it).
 
-type PortfolioEditorTab = "write" | "design" | "share";
+type PortfolioEditorTab = "write" | "work" | "design" | "share";
 
 /** What "Show me" opens: the tab, the section in Content's list, and the work, when the place is in one. */
 export type PortfolioReveal = { tab: PortfolioEditorTab; section?: PortfolioSectionKey; workId?: string };
@@ -80,7 +80,7 @@ export function problemPlace(path: PortfolioDataPath, context: PortfolioPlaceCon
 		const name = sectionLabel(key, data, resume, messages);
 		return {
 			label: detail ? joined(name, detail) : name,
-			reveal: { tab: "write", section: key, ...(workId ? { workId } : {}) },
+			reveal: workId ? { tab: "work", section: key, workId } : { tab: "write", section: key },
 		};
 	};
 	// A function declaration, not a generic arrow: the build's Lingui macro step parses `.ts` files as TSX, where

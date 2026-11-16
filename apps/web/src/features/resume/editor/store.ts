@@ -14,7 +14,8 @@ type SheetTab = "download" | "history";
 export type CheckTab = "issues" | "match" | "writing";
 
 /** Phones show one view at a time: the page, or one mode's panel. */
-export type MobileView = "page" | EditorMode;
+/** The phone's open sheet; the portfolio editor adds Work to the resume editor's modes. */
+export type MobileView = "page" | EditorMode | "work";
 
 /** What the panel shows over the editor's mode: the assistant or History; null shows the mode. */
 export type PanelView = "assistant" | "history" | null;

@@ -281,12 +281,12 @@ function itemReveal(edit: ItemEdit, id: string | null, context: ChangeLineContex
 	switch (edit.list) {
 		case "works": {
 			const workId = edit.op === "remove" ? null : present(data.works.items, id);
-			return { tab: "write", section: "work", ...(workId ? { workId } : {}) };
+			return workId ? { tab: "work", section: "work", workId } : { tab: "write", section: "work" };
 		}
 		case "blocks":
 		case "metrics": {
 			const workId = present(data.works.items, edit.workId);
-			return { tab: "write", section: "work", ...(workId ? { workId } : {}) };
+			return workId ? { tab: "work", section: "work", workId } : { tab: "write", section: "work" };
 		}
 		case "services":
 		case "testimonials":

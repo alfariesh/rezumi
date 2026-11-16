@@ -27,7 +27,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { TraceIcon, TraceLine, TraceTitle } from "@rezumi/ui/components/trace";
 import { cn } from "@rezumi/utils/style";
 import { acceptUploads, MAX_ATTACHMENTS_PER_MESSAGE } from "./attachment-limits";
-import { attachmentPart, fileToBase64, isBlankReply, isEmptyPart, transcriptOf } from "./chat";
+import { attachmentPart, fileToBase64, isBlankReply, isEmptyPart, sentContext, transcriptOf } from "./chat";
 import { AssistantMarkdown } from "./markdown";
 import { MessageSources } from "./message-sources";
 import { ThinkingLine } from "./orb";
@@ -107,7 +107,7 @@ export function Conversation(props: ConversationProps) {
 			threadId,
 			initialMessages: props.initialMessages,
 			resume: props.activeRun,
-			context,
+			context: sentContext(context, document),
 			aiSource: aiSourceFieldsFor(ai, props.providerId).aiSource,
 			beforeSend: document.beforeSend,
 			onFinish: refresh,
@@ -983,8 +983,18 @@ export function Composer(props: ComposerProps) {
 					},
 				]
 			: []),
+		...(document.kind === "portfolio" && document.focus
+			? [
+					{
+						key: "work" as const,
+						icon: "squares-four" as const,
+						label: t`Work: ${document.focus.title.trim() || t`Untitled work`}`,
+					},
+				]
+			: []),
 	]
-		.filter((chip) => context[chip.key])
+		// The work's chip is on unless removed; the others are switched on when the panel opens.
+		.filter((chip) => (chip.key === "work" ? context.work !== false : context[chip.key]))
 		.map((chip) => ({
 			...chip,
 			removeLabel: t`Don't send ${chip.label}`,

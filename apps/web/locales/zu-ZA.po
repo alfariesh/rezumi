@@ -110,14 +110,14 @@ msgstr ""
 msgid "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
 msgstr ""
 
-#. placeholder {0}: work.blocks.length
-#: src/features/portfolio/works/works-form.tsx
-msgid "{0, plural, =0 {No blocks yet} one {# block} other {# blocks}}"
-msgstr ""
-
 #. placeholder {0}: results.length
 #: src/features/portfolio/location/location-fields.tsx
 msgid "{0, plural, =0 {No cities found} one {# city found} other {# cities found}}"
+msgstr ""
+
+#. placeholder {0}: work.blocks.length
+#: src/features/portfolio/works/works-panel.tsx
+msgid "{0, plural, =0 {No story yet} one {# block} other {# blocks}}"
 msgstr ""
 
 #. placeholder {0}: proposals.length
@@ -269,6 +269,11 @@ msgstr ""
 #. placeholder {0}: used.stories.length
 #: src/features/career/coach-chat.tsx
 msgid "{0, plural, one {# story} other {# stories}}"
+msgstr ""
+
+#. placeholder {0}: work.tags.length - 3
+#: src/features/portfolio/works/work-document.tsx
+msgid "{0, plural, one {+# tag} other {+# tags}}"
 msgstr ""
 
 #. placeholder {0}: remembered.ids.length
@@ -619,6 +624,12 @@ msgstr ""
 msgid "{0} of {1} terms found"
 msgstr ""
 
+#. placeholder {0}: items.length
+#. placeholder {1}: limits.works
+#: src/features/portfolio/works/works-panel.tsx
+msgid "{0} of {1} works"
+msgstr ""
+
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
 msgid "{0} per reply"
@@ -750,6 +761,10 @@ msgstr ""
 
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "{cost} the first year"
+msgstr ""
+
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "{count, plural, =0 {No works yet.} one {# work on the page.} other {# works on the page.}}"
 msgstr ""
 
 #: src/features/billing/credits.ts
@@ -1321,7 +1336,7 @@ msgstr ""
 msgid "2022 – Present"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "2025 or Jan–Mar 2025"
 msgstr ""
 
@@ -1379,6 +1394,10 @@ msgstr ""
 
 #: src/dialogs/resume/template/data.ts
 msgid "A bento page: the header is a solid tile of the accent and every section sits on its own soft rounded tile, with skills as chips."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "A big title for a part of the story"
 msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
@@ -1608,6 +1627,10 @@ msgstr ""
 
 #: src/dialogs/resume/template/data.ts
 msgid "A slim stripe of the accent runs down the page edge on the sidebar's side, the sidebar sits behind a hairline and main titles open with a short accent dash."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "A smaller title"
 msgstr ""
 
 #: src/dialogs/resume/template/data.ts
@@ -2013,6 +2036,10 @@ msgstr ""
 msgid "Add a video"
 msgstr ""
 
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "Add a work"
+msgstr ""
+
 #: src/features/billing/purchase.ts
 msgid "Add a year"
 msgstr ""
@@ -2165,6 +2192,10 @@ msgstr ""
 msgid "Add my connection"
 msgstr ""
 
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Add one from the list: start empty, or from resume projects, pictures or a link."
+msgstr ""
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add one in Settings to use it without credits"
 msgstr ""
@@ -2305,7 +2336,7 @@ msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/portfolio/works/add-work/from-link.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Add work"
 msgstr ""
 
@@ -2327,6 +2358,10 @@ msgstr ""
 
 #: src/features/settings/ai/providers.tsx
 msgid "Add your first AI provider"
+msgstr ""
+
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Add your first work"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -2629,16 +2664,16 @@ msgstr ""
 msgid "All reports"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "All sections"
-msgstr ""
-
 #: src/features/billing/admin/overview.tsx
 msgid "All statuses"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "All work"
+msgstr ""
+
+#: src/features/portfolio/works/works-panel.tsx
+msgid "All works"
 msgstr ""
 
 #: src/features/settings/account/data.tsx
@@ -3732,10 +3767,6 @@ msgstr ""
 msgid "Caption (optional)"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Card"
-msgstr ""
-
 #: src/features/billing/admin/labels.ts
 msgid "Card dispute"
 msgstr ""
@@ -4175,6 +4206,10 @@ msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
+msgstr ""
+
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Choose a work to write about"
 msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -5703,7 +5738,7 @@ msgstr ""
 msgid "Cover letters that match"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Cover picture"
 msgstr ""
 
@@ -6081,8 +6116,8 @@ msgstr ""
 msgid "Delete “{0}”?"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Delete “{title}”?"
 msgstr ""
@@ -6092,7 +6127,8 @@ msgstr ""
 msgid "Delete {0}"
 msgstr ""
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Delete {title}"
 msgstr ""
 
@@ -6177,8 +6213,8 @@ msgstr ""
 msgid "Delete version"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Delete work"
 msgstr ""
 
@@ -6310,10 +6346,6 @@ msgstr ""
 
 #: src/features/homepage/theme-preview.tsx
 msgid "Desktop"
-msgstr ""
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Detail"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -6548,6 +6580,7 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Done"
@@ -6713,6 +6746,10 @@ msgstr ""
 msgid "Draft from your resume"
 msgstr ""
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Draft it with AI"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft kept. Edit anything you like."
 msgstr ""
@@ -6853,6 +6890,7 @@ msgstr ""
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/portfolio/works/work-canvas.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Edit"
@@ -6880,6 +6918,10 @@ msgstr ""
 msgid "Edit color {0}"
 msgstr ""
 
+#: src/features/portfolio/works/work-document.tsx
+msgid "Edit cover"
+msgstr ""
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit date"
 msgstr ""
@@ -6894,6 +6936,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Edit in Profile"
+msgstr ""
+
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "Edit in Work"
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -7540,8 +7586,8 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Featured"
 msgstr ""
 
@@ -7671,6 +7717,10 @@ msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Find the results in this work and show them as metrics"
 msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
@@ -8518,8 +8568,7 @@ msgid "Hid the work “{name}”"
 msgstr ""
 
 #: src/components/level/combobox.tsx
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hidden"
@@ -8527,6 +8576,10 @@ msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
+msgstr ""
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Hidden from the page"
 msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
@@ -8538,7 +8591,7 @@ msgid "Hidden: {hiddenList}"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Hide {title} from the page"
 msgstr ""
@@ -8549,10 +8602,6 @@ msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hide from page"
-msgstr ""
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Hide from the page"
 msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
@@ -8740,6 +8789,10 @@ msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "I can see your portfolio, and I'll work on “{focusTitle}” unless you name another. Changes show on the page at once, and you can undo each reply."
 msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
@@ -9511,10 +9564,6 @@ msgstr ""
 msgid "Kinds of work"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Kopi Senja checkout redesign"
-msgstr ""
-
 #: src/libs/locale.ts
 msgid "Korean"
 msgstr ""
@@ -9634,7 +9683,7 @@ msgstr ""
 msgid "Layouts"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Lead designer"
 msgstr ""
 
@@ -9878,6 +9927,7 @@ msgstr ""
 #: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/portfolio/works/add-work/from-link.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/fields.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Link"
@@ -9914,7 +9964,7 @@ msgstr ""
 msgid "Link copied"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Link text"
 msgstr ""
 
@@ -10197,7 +10247,7 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Main link (optional)"
 msgstr ""
 
@@ -10468,7 +10518,7 @@ msgstr ""
 msgid "Metric {0}"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Metric on the card"
 msgstr ""
 
@@ -10799,6 +10849,10 @@ msgstr ""
 
 #: src/features/resume/share/history-tab.tsx
 msgid "Name this version"
+msgstr ""
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Name this work"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -11362,9 +11416,14 @@ msgstr ""
 msgid "No work-experience section was found."
 msgstr ""
 
+#: src/features/portfolio/works/work-canvas.tsx
+#: src/features/portfolio/works/works-panel.tsx
+msgid "No works yet"
+msgstr ""
+
 #: src/features/applications/components/list-view.tsx
 #: src/features/applications/document-options.ts
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "None"
 msgstr ""
 
@@ -11829,6 +11888,10 @@ msgstr ""
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header layout"
 msgid "One line"
+msgstr ""
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "One or two lines: what you made, for whom, and what changed."
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -12738,6 +12801,10 @@ msgstr ""
 msgid "Pick one format and use it everywhere."
 msgstr ""
 
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Pick one from the list, and its story opens here."
+msgstr ""
+
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Pick projects from your Profile: title, summary, dates and link come along."
 msgstr ""
@@ -12889,6 +12956,10 @@ msgstr ""
 
 #: src/features/homepage/pricing.tsx
 msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Points in any order"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -13126,6 +13197,7 @@ msgid "Press <0>Enter</0> to open"
 msgstr ""
 
 #: src/features/homepage/portfolio.tsx
+#: src/features/portfolio/works/work-canvas.tsx
 msgid "Preview"
 msgstr ""
 
@@ -13261,6 +13333,14 @@ msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Pro AI credits"
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Problem, role, process and result headings"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Problem, your role, process and result, as blocks"
 msgstr ""
 
 #: src/features/homepage/footer.tsx
@@ -14362,7 +14442,7 @@ msgid "Reorder {name}"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
@@ -14702,6 +14782,10 @@ msgstr ""
 msgid "Review the selected resume and cover letter in their editors."
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Review this work like a hiring manager"
+msgstr ""
+
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Review what we found"
 msgstr ""
@@ -14860,6 +14944,10 @@ msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Role, company or location"
+msgstr ""
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Role, year, tags and link"
 msgstr ""
 
 #: src/features/career/coach-chat.tsx
@@ -15494,7 +15582,7 @@ msgstr ""
 msgid "See the case study"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "See the live site"
 msgstr ""
 
@@ -15811,6 +15899,10 @@ msgstr ""
 msgid "Short and polite, for the recruiter"
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Short enough for its card"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Short link"
 msgstr ""
@@ -15872,7 +15964,7 @@ msgid "Show {provider} here"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Show {title} on the page"
 msgstr ""
@@ -16052,6 +16144,10 @@ msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
+msgstr ""
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Shown on the page"
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
@@ -16455,6 +16551,10 @@ msgstr ""
 msgid "Start empty"
 msgstr ""
 
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Start empty, or from resume projects, pictures or a link."
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Start free"
 msgstr ""
@@ -16478,6 +16578,10 @@ msgstr ""
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Start from a case study outline"
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Start from an outline"
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -16531,6 +16635,10 @@ msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Start with an empty paragraph"
 msgstr ""
 
 #: src/features/resume/editor/write/add-section.tsx
@@ -16620,6 +16728,10 @@ msgstr ""
 msgid "Step 3 of 3 · Start with AI"
 msgstr ""
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Steps in order"
+msgstr ""
+
 #: src/features/assistant/prompt-box.tsx
 #: src/features/portfolio/ai/draft-form.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -16684,6 +16796,7 @@ msgid "Stories to bring"
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Story"
 msgstr ""
 
@@ -16783,6 +16896,10 @@ msgstr ""
 msgid "Suggest again"
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Suggest tags and my role for this work"
+msgstr ""
+
 #. Icon picker category: the icons resumes use most
 #: src/components/input/icon-picker-grid.tsx
 msgid "Suggested"
@@ -16813,7 +16930,7 @@ msgid "Summaries of your open applications"
 msgstr ""
 
 #: src/features/homepage/resume.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/summary-editor.tsx
 #: src/libs/resume/section.tsx
 msgid "Summary"
@@ -16944,7 +17061,7 @@ msgstr ""
 #: src/features/career/knowledge/stories.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/documents-page.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Tags"
 msgstr ""
 
@@ -17080,6 +17197,14 @@ msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "Tell Rezumi what's wrong with {name}'s portfolio. Only the Rezumi team reads reports, and the portfolio's owner is never told who sent one."
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Tell the assistant what happened; it writes the blocks"
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Tell the story behind this work: the problem, what you did, and what changed."
 msgstr ""
 
 #: src/libs/locale.ts
@@ -17819,8 +17944,8 @@ msgstr ""
 msgid "The top of the first page does not look like a name."
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "The work and its blocks leave the portfolio. You can undo this."
 msgstr ""
 
@@ -18432,6 +18557,10 @@ msgid "Tighten"
 msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
+msgid "Tighten this work's title and summary"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
 msgid "Tighten to one page"
 msgstr ""
 
@@ -18509,7 +18638,7 @@ msgstr ""
 #: src/features/career/knowledge/stories.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/link-block.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Title"
 msgstr ""
@@ -18841,6 +18970,10 @@ msgstr ""
 msgid "Turning on two-step verification…"
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Turns numbers in the text into a metrics block"
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "Two bullets run over two lines"
 msgstr ""
@@ -19086,11 +19219,14 @@ msgstr ""
 msgid "Untitled testimonial"
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/save-problem.ts
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-canvas.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Untitled work"
 msgstr ""
 
@@ -19912,6 +20048,10 @@ msgstr ""
 msgid "What"
 msgstr ""
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "What a client or user said"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "What a parser reads"
 msgstr ""
@@ -20051,10 +20191,6 @@ msgstr ""
 #. placeholder {0}: requirement.text
 #: src/features/career/workspace/fit.tsx
 msgid "What you did: {0}"
-msgstr ""
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "What you made, for whom, and what changed."
 msgstr ""
 
 #: src/features/applications/components/detail/sent-documents.tsx
@@ -20256,6 +20392,7 @@ msgstr ""
 
 #: src/features/portfolio/page-text.ts
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Work"
 msgstr ""
 
@@ -20265,6 +20402,15 @@ msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Work opened by day"
+msgstr ""
+
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Work view"
+msgstr ""
+
+#. placeholder {0}: document.focus.title.trim() || t`Untitled work`
+#: src/features/assistant/conversation.tsx
+msgid "Work: {0}"
 msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
@@ -20338,6 +20484,7 @@ msgstr ""
 msgid "Write it down while it's fresh"
 msgstr ""
 
+#: src/features/portfolio/blocks/block-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Write it myself"
 msgstr ""
@@ -20358,6 +20505,14 @@ msgstr ""
 msgid "Write the full address so it is recognized as a link."
 msgstr ""
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Write the story of this work as a short case study (problem, my role, process, result) from these notes: "
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "Write this work's story from my notes"
+msgstr ""
+
 #: src/features/career/workspace/fit.tsx
 msgid "Write what you did."
 msgstr ""
@@ -20370,11 +20525,20 @@ msgstr ""
 msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
 msgstr ""
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Write, or type “/” for headings, lists, pictures and more…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
+msgstr ""
+
+#. placeholder {0}: open.title.trim() || t`Untitled work`
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Writing {0}"
 msgstr ""
 
 #: src/features/career/coach-chat.tsx
@@ -20398,7 +20562,7 @@ msgid "Written offer"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Year"
 msgstr ""
 
@@ -21223,7 +21387,7 @@ msgstr ""
 msgid "Your resume, published as a website"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Your role"
 msgstr ""
 

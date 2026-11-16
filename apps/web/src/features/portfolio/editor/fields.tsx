@@ -222,6 +222,8 @@ type RichTextFieldProps = {
 	hideLabel?: boolean;
 	/** Offers AI rewriting for this field. */
 	rewrite?: PortfolioAiField | undefined;
+	/** `document`: unframed, as part of the page being written (Work); AI rewriting shows while it's hovered or focused. */
+	appearance?: "field" | "document";
 };
 
 /** A labelled rich text field. The editor loads on first use; it starts over after undo, redo or a reload. */
@@ -234,6 +236,7 @@ export function RichTextField({
 	slashItems,
 	hideLabel = false,
 	rewrite,
+	appearance = "field",
 }: RichTextFieldProps) {
 	const revision = usePortfolioEditorStore((state) => state.revision);
 	const labelId = useId();
@@ -241,8 +244,14 @@ export function RichTextField({
 	const [rewrites, setRewrites] = useState(0);
 
 	return (
-		<div className="grid gap-1.5">
-			<div className="flex items-center justify-between gap-2">
+		<div className={cn("grid gap-1.5", appearance === "document" && "group/text relative")}>
+			<div
+				className={cn(
+					"flex items-center justify-between gap-2",
+					appearance === "document" &&
+						"absolute -end-14 top-0 z-10 opacity-0 transition-opacity duration-quick group-focus-within/text:opacity-100 group-hover/text:opacity-100 has-[[aria-expanded=true]]:opacity-100 pointer-coarse:opacity-100",
+				)}
+			>
 				<span id={labelId} className={hideLabel ? "sr-only" : "text-sm font-medium"}>
 					{label}
 				</span>
@@ -263,7 +272,9 @@ export function RichTextField({
 				{(attempt) => {
 					const LazyRichTextEditor = richTextEditor(attempt);
 					return (
-						<Suspense fallback={<Skeleton className="h-44 rounded-2xl" />}>
+						<Suspense
+							fallback={<Skeleton className={appearance === "document" ? "h-7 rounded-lg" : "h-44 rounded-2xl"} />}
+						>
 							<LazyRichTextEditor
 								key={`${revision}-${rewrites}`}
 								label={label}
@@ -273,6 +284,7 @@ export function RichTextField({
 								maxLength={maxLength}
 								placeholder={placeholder}
 								slashItems={slashItems}
+								appearance={appearance}
 							/>
 						</Suspense>
 					);

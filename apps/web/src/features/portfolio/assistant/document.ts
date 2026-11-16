@@ -5,6 +5,7 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 import { usePortfolioSource } from "../editor/context";
 import { describeRetry, describeSaveProblem } from "../editor/save-problem";
 import { usePortfolioEditorStore } from "../editor/store";
+import { usePortfolioEditorUi } from "../editor/ui";
 import { usePageMessages } from "../editor/use-view";
 import { portfolioRefusalMessage } from "../errors";
 import { compressImage, pictureFiles } from "../images/compress";
@@ -87,6 +88,11 @@ export function usePortfolioAssistantDocument(reveal: (place: PortfolioReveal) =
 	});
 	const resume = source.data;
 	const from = source.from ?? null;
+	// The work open in Work, by id and title: only its title's changes make a new document, not every edit.
+	const focusId = usePortfolioEditorUi((state) => state.openWorkId);
+	const focusTitle = usePortfolioEditorStore(
+		(state) => state.portfolio?.data.works.items.find((work) => work.id === focusId)?.title ?? null,
+	);
 
 	return useMemo(
 		() => ({
@@ -99,7 +105,8 @@ export function usePortfolioAssistantDocument(reveal: (place: PortfolioReveal) =
 			beforeSend: () => portfolioSendProblem({ resume, messages }),
 			prepareUploads: preparePortfolioUploads,
 			reveal: (place) => revealRef.current(place),
+			focus: focusId && focusTitle !== null ? { workId: focusId, title: focusTitle } : null,
 		}),
-		[id, from, resume, messages],
+		[id, from, resume, messages, focusId, focusTitle],
 	);
 }

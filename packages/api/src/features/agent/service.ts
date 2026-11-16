@@ -131,6 +131,8 @@ type MessageContext = {
 	document?: boolean | undefined;
 	posting?: boolean | undefined;
 	applicationId?: string | undefined;
+	/** Portfolio: the work open in the editor, a hint for what "this work" means. */
+	workId?: string | undefined;
 };
 
 type SendMessageInput = {
@@ -836,6 +838,8 @@ function createAgent(input: {
 	document: (AssistantDocument & { name: string }) | null;
 	/** A portfolio conversation, whether or not this message shares the portfolio. */
 	portfolioThread?: boolean | undefined;
+	/** Portfolio: the work open in the editor while the message was sent. */
+	focusWorkId?: string | undefined;
 	/** The conversation so far, for pictures earlier replies saved from attachments. */
 	history?: readonly UIMessage[] | undefined;
 	posting: {
@@ -990,7 +994,7 @@ function createAgent(input: {
 	const instructionsText = input.career
 		? buildCareerInstructions(input.career)
 		: input.portfolioThread
-			? buildPortfolioAgentInstructions({ shared: Boolean(portfolio), ...web })
+			? buildPortfolioAgentInstructions({ shared: Boolean(portfolio), focusWorkId: input.focusWorkId, ...web })
 			: buildAgentInstructions({
 					document: document && document.kind !== "portfolio" ? { kind: document.kind, name: document.name } : null,
 					posting: input.posting,
@@ -1526,6 +1530,7 @@ export const agentService = {
 					document:
 						input.context?.document === false || !document || !loaded ? null : { ...document, name: loaded.name },
 					portfolioThread: document?.kind === "portfolio",
+					...(document?.kind === "portfolio" && input.context?.workId ? { focusWorkId: input.context.workId } : {}),
 					history: messages,
 					...(careerContext
 						? {

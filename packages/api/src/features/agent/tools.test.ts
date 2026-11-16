@@ -212,4 +212,23 @@ describe("portfolio assistant tools", () => {
 		expect(withheld).not.toContain(PORTFOLIO_EDIT_GUIDE);
 		expect(withheld).toContain("Use `search_web`");
 	});
+
+	it("points the portfolio assistant at the work open in the editor, after the cached part", () => {
+		const base = buildPortfolioAgentInstructions({ shared: true, searchTool: null, canReadPage: true });
+		const focused = buildPortfolioAgentInstructions({
+			shared: true,
+			focusWorkId: "work-1",
+			searchTool: null,
+			canReadPage: true,
+		});
+		expect(focused.startsWith(base)).toBe(true);
+		expect(focused).toContain("work with id `work-1` open");
+		const withheld = buildPortfolioAgentInstructions({
+			shared: false,
+			focusWorkId: "work-1",
+			searchTool: null,
+			canReadPage: true,
+		});
+		expect(withheld).not.toContain("work-1");
+	});
 });
