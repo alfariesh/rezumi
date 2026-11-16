@@ -168,13 +168,14 @@ function WorksList() {
 								itemProps={itemProps}
 							>
 								<WorkCardButton work={work} title={title} selected={work.id === openWorkId} />
-								<div className="flex shrink-0 items-center opacity-70 group-hover/work:opacity-100">
+								<div className="flex shrink-0 items-center">
 									<IconButton
 										icon={work.hidden ? "eye-slash" : "eye"}
 										size="sm"
 										aria-pressed={work.hidden}
 										label={work.hidden ? t`Show ${title} on the page` : t`Hide ${title} from the page`}
-										className={cn(work.hidden && "text-muted")}
+										// A hidden work keeps its crossed eye in view: it's the row's state, not just a control.
+										className={cn("text-muted", !work.hidden && ROW_CONTROL)}
 										onPress={() =>
 											editPortfolio((draft) => {
 												// By id: the list may have moved since this row was drawn (a drop, Undo).
@@ -187,7 +188,7 @@ function WorksList() {
 										icon="trash"
 										size="sm"
 										label={t`Delete ${title}`}
-										className="text-danger"
+										className={cn("text-muted hover:text-danger", ROW_CONTROL)}
 										onPress={() => void remove(work.id, title)}
 									/>
 								</div>
@@ -265,21 +266,29 @@ type WorkRowProps = {
 	children: ReactNode;
 };
 
-/** One work in the list: a drag handle, then what opens the work and its buttons. */
+/**
+ * A row's controls (handle, hide, delete) show while it's hovered, focused or open, and always on touch screens, so
+ * the list reads as covers and titles.
+ */
+const ROW_CONTROL =
+	"opacity-0 transition-opacity duration-quick group-focus-within/work:opacity-100 group-hover/work:opacity-100 group-data-selected/work:opacity-100 pointer-coarse:opacity-100";
+
+/** One work in the list: a drag handle, then what opens the work and its buttons. No frame unless it's open. */
 function WorkRow({ id, index, title, selected, itemProps, children }: WorkRowProps) {
 	const sortable = useSortableItem({ id, list: "works", index, label: title });
 	return (
 		<li {...itemProps}>
 			<div
 				{...sortable.dropTargetProps}
+				data-selected={selected || undefined}
 				className={cn(
-					"group/work relative flex items-center gap-1 rounded-2xl border p-2 transition-colors duration-quick",
-					selected ? "border-accent bg-accent-soft/40" : "border-separator hover:bg-default/60",
+					"group/work relative flex items-center gap-1 rounded-2xl p-2 transition-[background-color,box-shadow] duration-quick",
+					selected ? "bg-surface shadow-surface" : "hover:bg-default/60",
 					sortable.isDragging && "opacity-50",
 				)}
 			>
 				<SortableEdge edge={sortable.edge} />
-				<SortableHandle item={sortable} label={t`Reorder ${title}`} className="h-12 w-6" />
+				<SortableHandle item={sortable} label={t`Reorder ${title}`} className={cn("h-12 w-6", ROW_CONTROL)} />
 				{children}
 			</div>
 		</li>
