@@ -21,3 +21,10 @@ export const renderDialog = (dialog: DialogSchema) => {
 			return <ResumeDialog mode="duplicate" data={dialog.data} />;
 	}
 };
+
+type DialogContentProps = { dialog: DialogSchema };
+
+/** The open dialog; the manager loads this module on first open. */
+export function DialogContent({ dialog }: DialogContentProps) {
+	return renderDialog(dialog);
+}
