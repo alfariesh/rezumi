@@ -59,6 +59,8 @@ export type PortfolioAssistantDocument = AssistantDocumentBase & {
 	reveal: (place: PortfolioReveal) => void;
 	/** What change lines name things by besides the portfolio: its source's career sections and the page's words. */
 	source: { from: "resume" | "profile" | null; resume: ResumeData | null; messages: PortfolioViewMessages };
+	/** The work open in Work, which messages point the assistant at (the "Work" chip), or null outside Work. */
+	focus: { workId: string; title: string } | null;
 };
 
 /** The document the assistant works on, as the panel needs it. Resumes, letters and the portfolio each provide one. */

@@ -422,6 +422,27 @@ function Notice({ children }: { children: ReactNode }) {
 type Suggestion = { icon: IconName; label: string; hint?: string };
 
 function suggestionsFor(document: AssistantDocument, prepare: boolean): Suggestion[] {
+	// Writing one work: help with that work's story.
+	if (document.kind === "portfolio" && document.focus)
+		return [
+			{
+				icon: "chat-text",
+				label: t`Interview me about this work, then write its story.`,
+				hint: t`A few questions with answers to pick, then the story as blocks`,
+			},
+			{
+				icon: "chart-line-up",
+				label: t`Find the results in this work and show them as metrics`,
+				hint: t`Turns numbers in the text into a metrics block`,
+			},
+			{
+				icon: "scissors",
+				label: t`Tighten this work's title and summary`,
+				hint: t`Short enough for its card`,
+			},
+			{ icon: "tag", label: t`Suggest tags and my role for this work` },
+			{ icon: "magnifying-glass", label: t`Review this work like a hiring manager` },
+		];
 	if (document.kind === "portfolio")
 		return [
 			{ icon: "text-align-left", label: t`Write a stronger intro` },
@@ -478,6 +499,7 @@ type EmptyStateProps = { document: AssistantDocument; disabled: boolean; onPick:
 
 function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 	const kind = document.kind === "letter" ? t`letter` : t`resume`;
+	const focusTitle = document.kind === "portfolio" ? document.focus?.title.trim() || t`Untitled work` : "";
 	const prepare = useEditorStore((state) => state.assistantSuggestions === "prepare");
 
 	return (
@@ -488,7 +510,12 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 					<Trans>What should we work on?</Trans>
 				</Typography>
 				<p className="text-body-sm text-muted">
-					{document.kind === "portfolio" ? (
+					{document.kind === "portfolio" && document.focus ? (
+						<Trans>
+							I can see your portfolio, and I'll work on “{focusTitle}” unless you name another. Changes show on the
+							page at once, and you can undo each reply.
+						</Trans>
+					) : document.kind === "portfolio" ? (
 						<Trans>I can see your portfolio. Changes show on the page at once, and you can undo each reply.</Trans>
 					) : document.posting ? (
 						<Trans>

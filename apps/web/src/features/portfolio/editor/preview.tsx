@@ -223,6 +223,8 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 		const work = anchor.startsWith("work-") ? works.find((entry) => `work-${entry.slug}` === anchor) : undefined;
 		if (work) {
 			event.preventDefault();
+			// Work opens on its page, where the reader was looking; Edit is a switch away.
+			ui.setWorkView("preview");
 			ui.openWork(work.id);
 			return;
 		}

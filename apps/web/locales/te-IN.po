@@ -115,14 +115,14 @@ msgstr ""
 msgid "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
 msgstr ""
 
-#. placeholder {0}: work.blocks.length
-#: src/features/portfolio/works/works-form.tsx
-msgid "{0, plural, =0 {No blocks yet} one {# block} other {# blocks}}"
-msgstr ""
-
 #. placeholder {0}: results.length
 #: src/features/portfolio/location/location-fields.tsx
 msgid "{0, plural, =0 {No cities found} one {# city found} other {# cities found}}"
+msgstr ""
+
+#. placeholder {0}: work.blocks.length
+#: src/features/portfolio/works/works-panel.tsx
+msgid "{0, plural, =0 {No story yet} one {# block} other {# blocks}}"
 msgstr ""
 
 #. placeholder {0}: proposals.length
@@ -275,6 +275,11 @@ msgstr "{0, plural, one {# ఎంచుకోబడింది} other {# ఎం
 #: src/features/career/coach-chat.tsx
 msgid "{0, plural, one {# story} other {# stories}}"
 msgstr "{0, plural, one {# కథ} other {# కథలు}}"
+
+#. placeholder {0}: work.tags.length - 3
+#: src/features/portfolio/works/work-document.tsx
+msgid "{0, plural, one {+# tag} other {+# tags}}"
+msgstr ""
 
 #. placeholder {0}: remembered.ids.length
 #: src/features/career/coach-chat.tsx
@@ -624,6 +629,12 @@ msgstr "అనుకూలీకరించిన {1} దరఖాస్తు�
 msgid "{0} of {1} terms found"
 msgstr "{0} పదాలలో {1} కనుగొనబడ్డాయి"
 
+#. placeholder {0}: items.length
+#. placeholder {1}: limits.works
+#: src/features/portfolio/works/works-panel.tsx
+msgid "{0} of {1} works"
+msgstr ""
+
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
 msgid "{0} per reply"
@@ -756,6 +767,10 @@ msgstr ""
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "{cost} the first year"
 msgstr "మొదటి సంవత్సరానికి {cost}"
+
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "{count, plural, =0 {No works yet.} one {# work on the page.} other {# works on the page.}}"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
@@ -1326,7 +1341,7 @@ msgstr ""
 msgid "2022 – Present"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "2025 or Jan–Mar 2025"
 msgstr ""
 
@@ -1384,6 +1399,10 @@ msgstr "ఈ లేఖ యొక్క బ్యాకప్. అక్షరం 
 
 #: src/dialogs/resume/template/data.ts
 msgid "A bento page: the header is a solid tile of the accent and every section sits on its own soft rounded tile, with skills as chips."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "A big title for a part of the story"
 msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
@@ -1469,6 +1488,10 @@ msgstr "తర్వాత మీరు మరచిపోయిన వాస్
 #: src/features/portfolio/admin/labels.ts
 #: src/features/portfolio/page-text.ts
 msgid "A fake testimonial"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "A few questions with answers to pick, then the story as blocks"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -1611,12 +1634,20 @@ msgstr "మీ పదజాలంపై రెండవ అభిప్రాయ
 msgid "A section title holds {most} characters, so the rest was left out."
 msgstr ""
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "A short brief and concept, then room for your pictures"
+msgstr ""
+
 #: src/features/applications/next-step.ts
 msgid "A short follow-up is usually fine now"
 msgstr "చిన్న ఫాలో-అప్ ఇప్పుడు సాధారణంగా మంచిది"
 
 #: src/dialogs/resume/template/data.ts
 msgid "A slim stripe of the accent runs down the page edge on the sidebar's side, the sidebar sits behind a hairline and main titles open with a short accent dash."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "A smaller title"
 msgstr ""
 
 #: src/dialogs/resume/template/data.ts
@@ -2022,6 +2053,10 @@ msgstr ""
 msgid "Add a video"
 msgstr ""
 
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "Add a work"
+msgstr ""
+
 #: src/features/billing/purchase.ts
 msgid "Add a year"
 msgstr ""
@@ -2174,6 +2209,10 @@ msgstr ""
 msgid "Add my connection"
 msgstr ""
 
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Add one from the list: start empty, or from resume projects, pictures or a link."
+msgstr ""
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add one in Settings to use it without credits"
 msgstr ""
@@ -2322,7 +2361,7 @@ msgstr "సేవ్ చేసే ముందు ఏమి జరిగిం�
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/portfolio/works/add-work/from-link.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Add work"
 msgstr ""
 
@@ -2344,6 +2383,10 @@ msgstr ""
 
 #: src/features/settings/ai/providers.tsx
 msgid "Add your first AI provider"
+msgstr ""
+
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Add your first work"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -2646,16 +2689,16 @@ msgstr ""
 msgid "All reports"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "All sections"
-msgstr ""
-
 #: src/features/billing/admin/overview.tsx
 msgid "All statuses"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "All work"
+msgstr ""
+
+#: src/features/portfolio/works/works-panel.tsx
+msgid "All works"
 msgstr ""
 
 #: src/features/settings/account/data.tsx
@@ -2819,6 +2862,10 @@ msgstr ""
 #: src/features/career/workspace/apply.tsx
 msgid "Answer"
 msgstr "సమాధానం"
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Answer a few questions; it writes the story"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Answer by"
@@ -3068,6 +3115,11 @@ msgstr "దరఖాస్తు"
 #: src/features/portfolio/assistant/changes.tsx
 msgctxt "Put the assistant's changes into the portfolio"
 msgid "Apply"
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Approach and stack"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -3429,6 +3481,11 @@ msgstr ""
 msgid "Behavioral"
 msgstr "బిహేవియరల్"
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Behind the scenes"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Bengali"
 msgstr "బెంగాలీ"
@@ -3556,6 +3613,10 @@ msgstr "విభజించగలిగేలా రెజ్యూమ్‌�
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Breakdown"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Brief, angle, the piece and how it was received"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -3761,10 +3822,6 @@ msgstr ""
 msgid "Caption (optional)"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Card"
-msgstr ""
-
 #: src/features/billing/admin/labels.ts
 msgid "Card dispute"
 msgstr ""
@@ -3785,6 +3842,11 @@ msgstr ""
 msgid "Case studies with results"
 msgstr ""
 
+#. Story outline for any kind of work
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Case study"
+msgstr ""
+
 #: src/features/homepage/portfolio.tsx
 msgid "Case study · Lumen Labs"
 msgstr ""
@@ -3801,6 +3863,10 @@ msgstr "కాటలాన్"
 #: src/libs/resume/section.tsx
 msgid "Certifications"
 msgstr "ప్రామாணపత్రాలు"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Challenge, approach and stack, key decisions, outcome"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
@@ -4206,6 +4272,10 @@ msgstr "దాని డిజైన్‌తో సరిపోలడాని�
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2 MB వరకు ఉన్న WebM, MP4, MP3, WAV లేదా Ogg ఫైల్‌ను ఎంచుకోండి."
 
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Choose a work to write about"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Choose an application to see its next step, what you sent and its activity here."
 msgstr ""
@@ -4442,6 +4512,11 @@ msgstr ""
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
 msgstr "కోడ్"
+
+#. Story outline heading: where to link the code or a live demo
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Code and demo"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx
@@ -4764,6 +4839,11 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "Content is laid out in a grid."
 msgstr "కంటెంట్ గ్రిడ్‌లో అమర్చబడింది."
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Context"
+msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Context or source (optional)"
@@ -5744,7 +5824,7 @@ msgstr ""
 msgid "Cover letters that match"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Cover picture"
 msgstr ""
 
@@ -6122,8 +6202,8 @@ msgstr "\"{0}\"ని ఇప్పుడే తొలగించాలా?"
 msgid "Delete “{0}”?"
 msgstr "“{0}”ని తొలగించాలా?"
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Delete “{title}”?"
 msgstr "\"{title}\"ని తొలగించాలా?"
@@ -6133,7 +6213,8 @@ msgstr "\"{title}\"ని తొలగించాలా?"
 msgid "Delete {0}"
 msgstr "{0}ని తొలగించండి"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Delete {title}"
 msgstr ""
 
@@ -6218,8 +6299,8 @@ msgstr ""
 msgid "Delete version"
 msgstr "సంస్కరణను తొలగించండి"
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Delete work"
 msgstr ""
 
@@ -6351,10 +6432,6 @@ msgstr "డిజైన్ సిస్టమ్స్"
 
 #: src/features/homepage/theme-preview.tsx
 msgid "Desktop"
-msgstr ""
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Detail"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -6589,6 +6666,7 @@ msgstr "{0}ని పంపవద్దు"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Done"
@@ -6898,6 +6976,7 @@ msgstr ""
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/portfolio/works/work-canvas.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Edit"
@@ -6925,6 +7004,10 @@ msgstr "సవరణ వర్తింపజేయబడింది"
 msgid "Edit color {0}"
 msgstr "రంగును సవరించండి {0}"
 
+#: src/features/portfolio/works/work-document.tsx
+msgid "Edit cover"
+msgstr ""
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit date"
 msgstr "తేదీని సవరించండి"
@@ -6939,6 +7022,10 @@ msgstr "ఎంట్రీని సవరించండి"
 
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Edit in Profile"
+msgstr ""
+
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "Edit in Work"
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -7593,8 +7680,8 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Featured"
 msgstr ""
 
@@ -7727,6 +7814,10 @@ msgid "Find roles"
 msgstr "పదవులను కనుగొను"
 
 #: src/features/assistant/assistant-panel.tsx
+msgid "Find the results in this work and show them as metrics"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
 msgid "Find weak bullets"
 msgstr "బలహీన జాబితా ఎంట్రీలను కనుగొనండి"
 
@@ -7780,6 +7871,11 @@ msgstr "వెడల్పుకు పేజీని అమర్చండి"
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Fitness"
+msgstr ""
+
+#. Marks the story outline that likely fits the person's field
+#: src/features/portfolio/blocks/story-template-menu.tsx
+msgid "Fits your field"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -8374,6 +8470,10 @@ msgstr ""
 msgid "Go to…"
 msgstr "…కు వెళ్ళండి"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Goal, audience, strategy, campaign and results"
+msgstr ""
+
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Good news (green)"
 msgstr ""
@@ -8499,6 +8599,10 @@ msgstr "శీర్షిక 3"
 msgid "Heading changed"
 msgstr "శీర్షిక మార్చబడింది"
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Headings for your kind of work: design, code, marketing…"
+msgstr ""
+
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
@@ -8575,8 +8679,7 @@ msgid "Hid the work “{name}”"
 msgstr ""
 
 #: src/components/level/combobox.tsx
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hidden"
@@ -8585,6 +8688,10 @@ msgstr "హిడెన్"
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "కొత్త పదవుల నుండి దాచబడింది"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Hidden from the page"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Hidden terms are back"
@@ -8595,7 +8702,7 @@ msgid "Hidden: {hiddenList}"
 msgstr "దాచబడింది: {hiddenList}"
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Hide {title} from the page"
 msgstr "పేజీ నుండి {title}ని దాచండి"
@@ -8607,10 +8714,6 @@ msgstr "సంప్రదింపు వివరాలను దాచండ�
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hide from page"
 msgstr "పేజీ నుండి దాచు"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Hide from the page"
-msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Hide panel"
@@ -8758,6 +8861,10 @@ msgstr "ఫైల్‌ను ఎలా చూపించాలి"
 msgid "How well do I fit this role?"
 msgstr "ఈ పాత్రకు నేను ఎంతవరకు సరిపోతాను?"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "How you tackled it, and the tools and languages you used."
+msgstr ""
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "How you work"
 msgstr ""
@@ -8802,6 +8909,10 @@ msgstr "నేను ఈ {kind} మరియు {0} జాబ్ పోస్ట
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
 msgstr "నేను ఈ {kind}ని చూడగలను. మీరు ఒక్కొక్కటిగా ఆమోదించగలిగే సవరణలుగా సూచనలు తిరిగి వస్తాయి."
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "I can see your portfolio, and I'll work on “{focusTitle}” unless you name another. Changes show on the page at once, and you can undo each reply."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see your portfolio. Changes show on the page at once, and you can undo each reply."
@@ -9094,6 +9205,11 @@ msgstr "ఇంటర్వ్యూ తొలగించబడింది"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Interview is in another timezone"
 msgstr "ఇంటర్వ్యూ వేరే టైమ్ జోన్‌లో ఉంది"
+
+#: src/features/assistant/assistant-panel.tsx
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Interview me about this work, then write its story."
+msgstr ""
 
 #: src/features/applications/use-reschedule-interview.ts
 msgid "Interview moved to {when}"
@@ -9536,6 +9652,11 @@ msgstr "అలాగే ఉంచారు"
 msgid "Kept in the audit log with your name. At least 3 characters."
 msgstr ""
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Key decisions"
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "Key ends in {ending}"
 msgstr ""
@@ -9574,10 +9695,6 @@ msgstr "దయతో,"
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Kinds of work"
-msgstr ""
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Kopi Senja checkout redesign"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -9699,7 +9816,7 @@ msgstr "విన్యాసం"
 msgid "Layouts"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Lead designer"
 msgstr ""
 
@@ -9943,6 +10060,7 @@ msgstr "చదివినప్పుడు ఈ దగ్గరగా ఉన్
 #: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/portfolio/works/add-work/from-link.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/fields.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Link"
@@ -9979,7 +10097,7 @@ msgstr "ఉద్యోగ దరఖాస్తును లింక్ చే
 msgid "Link copied"
 msgstr "లింక్ కాపీ చేయబడింది"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Link text"
 msgstr ""
 
@@ -10262,7 +10380,7 @@ msgstr ""
 msgid "Main"
 msgstr "ప్రధానం"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Main link (optional)"
 msgstr ""
 
@@ -10447,6 +10565,11 @@ msgstr "చదివినట్లు గుర్తించబడింద�
 msgid "Marketing Associate"
 msgstr ""
 
+#. Story outline for marketing and growth work
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Marketing or growth"
+msgstr ""
+
 #. placeholder {0}: resume?.name ?? t`the resume`
 #: src/routes/builder/letter/-components/design-panel.tsx
 msgid "Match “{0}”"
@@ -10533,7 +10656,7 @@ msgstr "సందేశాలు"
 msgid "Metric {0}"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Metric on the card"
 msgstr ""
 
@@ -10809,7 +10932,8 @@ msgstr ""
 msgid "My internships and campus projects finally read like real experience. The ATS check showed me what to fix."
 msgstr ""
 
-#: src/features/portfolio/blocks/block-list.tsx
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
 #: src/features/portfolio/page-text.ts
 msgid "My role"
 msgstr "నా పాత్ర"
@@ -10865,6 +10989,10 @@ msgstr "ఈ పాస్‌కీకి పేరు పెట్టండి"
 #: src/features/resume/share/history-tab.tsx
 msgid "Name this version"
 msgstr "ఈ సంస్కరణకు పేరు పెట్టండి"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Name this work"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
@@ -11431,9 +11559,14 @@ msgstr ""
 msgid "No work-experience section was found."
 msgstr "వర్క్-ఎక్స్‌పీరియన్స్ విభాగం కనుగొనబడలేదు."
 
+#: src/features/portfolio/works/work-canvas.tsx
+#: src/features/portfolio/works/works-panel.tsx
+msgid "No works yet"
+msgstr ""
+
 #: src/features/applications/components/list-view.tsx
 #: src/features/applications/document-options.ts
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "None"
 msgstr "ఏదీ లేదు"
 
@@ -11900,6 +12033,10 @@ msgctxt "Entry header layout"
 msgid "One line"
 msgstr ""
 
+#: src/features/portfolio/works/work-document.tsx
+msgid "One or two lines: what you made, for whom, and what changed."
+msgstr ""
+
 #: src/features/billing/purchase-dialog.tsx
 msgid "One payment by QRIS. It doesn't renew: we email you 3 days before it ends."
 msgstr ""
@@ -12177,6 +12314,10 @@ msgstr "ఐచ్ఛికం"
 #: src/features/settings/ai/providers.tsx
 msgid "Optional for local Ollama"
 msgstr "స్థానిక Ollama కోసం ఐచ్ఛికం"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Optional: sketches, the setup, the tools."
+msgstr ""
 
 #: src/components/ui/combobox.tsx
 #: src/features/docs/mdx-components.tsx
@@ -12791,6 +12932,11 @@ msgstr ""
 msgid "Photo on top"
 msgstr ""
 
+#. Story outline for photographers, illustrators and other visual work
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Photo, illustration or visual"
+msgstr ""
+
 #: src/components/input/icon-picker-grid.tsx
 msgid "Photos and cameras"
 msgstr ""
@@ -12814,6 +12960,10 @@ msgstr "ఒక చిహ్నాన్ని ఎంచుకోండి"
 #: src/features/ats-checker/messages.ts
 msgid "Pick one format and use it everywhere."
 msgstr "ఒక ఫార్మాట్‌ను ఎంచుకుని దాన్ని ప్రతిచోటా వాడండి."
+
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Pick one from the list, and its story opens here."
+msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Pick projects from your Profile: title, summary, dates and link come along."
@@ -12966,6 +13116,10 @@ msgstr ""
 
 #: src/features/homepage/pricing.tsx
 msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Points in any order"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -13203,6 +13357,7 @@ msgid "Press <0>Enter</0> to open"
 msgstr "తెరవడానికి <0>ఎంటర్</0> నొక్కండి"
 
 #: src/features/homepage/portfolio.tsx
+#: src/features/portfolio/works/work-canvas.tsx
 msgid "Preview"
 msgstr ""
 
@@ -13340,6 +13495,10 @@ msgstr ""
 msgid "Pro AI credits"
 msgstr ""
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Problem, role, process and result. Fits any field"
+msgstr ""
+
 #: src/features/homepage/footer.tsx
 msgid "Product"
 msgstr "ఉత్పత్తి"
@@ -13363,6 +13522,11 @@ msgstr ""
 
 #: src/features/homepage/resume.tsx
 msgid "Product designer with seven years of experience turning complex flows into simple, measurable products."
+msgstr ""
+
+#. Story outline for product, UX and UI designers
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Product or UX design"
 msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
@@ -13661,6 +13825,10 @@ msgstr "ఫాంట్‌లు ఎంబెడ్ చేసి తిరిగ
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "ఫాంట్‌లు ఎంబెడ్ చేసి తిరిగి ఎగుమతి చేయండి, తర్వాత ఫైల్‌ను తెరిచి టెక్స్ట్ శుభ్రంగా కాపీ అవుతుందో చెక్ చేయండి."
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Reach, sign-ups, sales: what moved? Put the numbers below."
+msgstr ""
+
 #: src/features/applications/components/insights-view.tsx
 msgid "Reached"
 msgstr ""
@@ -13876,6 +14044,10 @@ msgstr "శుభ్రంగా చదువుతాడు"
 #: src/features/settings/ai/web-access.tsx
 msgid "Reads supported public job pages. No account needed."
 msgstr "మద్దతు ఉన్న పబ్లిక్ జాబ్ పేజీలను చదువుతుంది. ఖాతా అవసరం లేదు."
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Reads, shares, feedback or awards."
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 #: src/features/settings/ai/providers.tsx
@@ -14443,7 +14615,7 @@ msgid "Reorder {name}"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
@@ -14544,6 +14716,15 @@ msgstr "అవసరాలు"
 #: src/features/career/workspace/fit.tsx
 msgid "Requirements and your evidence"
 msgstr "అవసరాలు, మీ ఆధారాలు"
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Research and insights"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Research and insights, design process, solution and impact"
+msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Resend the link"
@@ -14783,6 +14964,10 @@ msgstr "తప్పనిసరి ఫారమ్ సమాధానాలన�
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "ఎంచుకున్న రెజ్యూమ్, కవర్ లెటర్‌ను వాటి ఎడిటర్‌లలో సమీక్షించండి."
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Review this work like a hiring manager"
+msgstr ""
+
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Review what we found"
 msgstr ""
@@ -14946,6 +15131,10 @@ msgstr "వ్యక్తి {0} పాత్ర"
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Role, company or location"
 msgstr "పాత్ర, కంపెనీ లేదా స్థానం"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Role, year, tags and link"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Roles"
@@ -15591,7 +15780,7 @@ msgstr ""
 msgid "See the case study"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "See the live site"
 msgstr ""
 
@@ -15908,6 +16097,10 @@ msgstr "చిన్న మరియు ప్రత్యక్ష. జాబ�
 msgid "Short and polite, for the recruiter"
 msgstr "రిక్రూటర్ కోసం చిన్న మరియు మర్యాదగా"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Short enough for its card"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Short link"
 msgstr ""
@@ -15969,7 +16162,7 @@ msgid "Show {provider} here"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Show {title} on the page"
 msgstr "పేజీలో {title}ని చూపండి"
@@ -16151,6 +16344,10 @@ msgstr ""
 msgid "Shown in your timezone."
 msgstr "మీ టైమ్ జోన్‌లో చూపబడింది."
 
+#: src/features/portfolio/works/work-document.tsx
+msgid "Shown on the page"
+msgstr ""
+
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Shown on your published page."
 msgstr ""
@@ -16266,6 +16463,10 @@ msgstr "పరిస్థితి, చర్య, ఫలితం"
 msgid "Size"
 msgstr "సైజు"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Sketches, iterations, and why you chose this direction."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Skill"
 msgstr "స్కిల్"
@@ -16345,6 +16546,11 @@ msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Soft gradient"
+msgstr ""
+
+#. Story outline for developers and engineers
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Software or engineering"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -16552,6 +16758,10 @@ msgstr "ప్రతిదాన్ని నిర్దిష్ట క్ర�
 msgid "Start empty"
 msgstr ""
 
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Start empty, or from resume projects, pictures or a link."
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Start free"
 msgstr ""
@@ -16574,7 +16784,7 @@ msgid "Start from"
 msgstr "నుండి ప్రారంభించండి"
 
 #: src/features/portfolio/blocks/block-list.tsx
-msgid "Start from a case study outline"
+msgid "Start from an outline"
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -16628,6 +16838,10 @@ msgstr "టైప్ చేయడం ప్రారంభించండి ల
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Start with an empty paragraph"
 msgstr ""
 
 #: src/features/resume/editor/write/add-section.tsx
@@ -16717,6 +16931,10 @@ msgstr ""
 msgid "Step 3 of 3 · Start with AI"
 msgstr ""
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Steps in order"
+msgstr ""
+
 #: src/features/assistant/prompt-box.tsx
 #: src/features/portfolio/ai/draft-form.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -16781,6 +16999,7 @@ msgid "Stories to bring"
 msgstr "తీసుకెళ్లాల్సిన కథలు"
 
 #: src/features/career/knowledge/stories.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Story"
 msgstr "కథ"
 
@@ -16880,6 +17099,10 @@ msgstr "90 రోజుల్లో విజయం · తదుపరి అడ
 msgid "Suggest again"
 msgstr "మళ్లీ సూచించండి"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Suggest tags and my role for this work"
+msgstr ""
+
 #. Icon picker category: the icons resumes use most
 #: src/components/input/icon-picker-grid.tsx
 msgid "Suggested"
@@ -16910,7 +17133,7 @@ msgid "Summaries of your open applications"
 msgstr "మీ ఓపెన్ దరఖాస్తుల సారాంశాలు"
 
 #: src/features/homepage/resume.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/summary-editor.tsx
 #: src/libs/resume/section.tsx
 msgid "Summary"
@@ -17041,7 +17264,7 @@ msgstr "ట్యాగ్ చేయండి"
 #: src/features/career/knowledge/stories.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/documents-page.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Tags"
 msgstr "ట్యాగ్స్"
 
@@ -17177,6 +17400,10 @@ msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "Tell Rezumi what's wrong with {name}'s portfolio. Only the Rezumi team reads reports, and the portfolio's owner is never told who sent one."
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Tell the story behind this work: the problem, what you did, and what changed."
 msgstr ""
 
 #: src/features/extension/removed-page.tsx
@@ -17455,6 +17682,11 @@ msgstr ""
 msgid "The AI's answer couldn't be used, so nothing changed. Try again; no credits were used."
 msgstr ""
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The angle"
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "The application that sent you here made an invalid authorization request. Return to the application and try again."
 msgstr "మిమ్మల్ని ఇక్కడకు పంపిన అప్లికేషన్ చెల్లని అధికార అభ్యర్థనను చేసింది. అప్లికేషన్‌కు తిరిగి వెళ్ళి మళ్ళీ ప్రయత్నించండి."
@@ -17471,13 +17703,33 @@ msgstr "ఈ సర్వర్‌లో అసిస్టెంట్ సెట
 msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
 msgstr "అసిస్టెంట్ మీ స్వంత కీని ఉపయోగిస్తుంది. మీరు ఒకదానిని కనెక్ట్ చేసే వరకు ఏదీ ఎక్కడికీ పంపబడదు."
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The audience"
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "The badge stays on your plan"
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The brief"
 msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "The built-in reader remains active."
 msgstr "అంతర్నిర్మిత రీడర్ సక్రియంగా ఉంటుంది."
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The campaign"
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The challenge"
+msgstr ""
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "The changes saved in the other tab or device are replaced by what you see here."
@@ -17523,6 +17775,11 @@ msgstr "కోచ్ వీటిని ఈ దరఖాస్తు కోస�
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "మీరు చెప్పే వాస్తవాలను కోచ్ సేవ్ చేసి, మీకు తెలియజేస్తుంది. మీరు రద్దు చేయవచ్చు."
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The concept"
+msgstr ""
+
 #: src/features/portfolio/editor/save-problem.ts
 msgid "The connection dropped. Your changes are kept here, and saving tries again by itself."
 msgstr ""
@@ -17537,6 +17794,11 @@ msgstr "కాపీ జాబ్ అప్లికేషన్‌కి లి
 
 #: src/dialogs/resume/template/data.ts
 msgid "The creative page: a block of the accent anchors the top corner, framing your portrait, beside an oversized name; two columns follow."
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The design process"
 msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
@@ -17572,16 +17834,38 @@ msgstr "ఫైల్‌ను రెజ్యూమ్‌గా చదవడం 
 msgid "The file must be viewable by anyone with the link."
 msgstr ""
 
+#. Story outline heading: where the pictures of the finished work go
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The final pieces"
+msgstr ""
+
 #: src/dialogs/resume/template/data.ts
 msgid "The formal Indonesian CV: a portrait beside the name and a column of personal details, with firm ruled section titles. Fits state-owned companies, civil service and local employers."
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The goal"
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "The greeting follows the name."
 msgstr "గ్రీటింగ్ పేరును అనుసరిస్తుంది."
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The hook or point of view that made it yours."
+msgstr ""
+
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The HTTPS certificate couldn't be issued. Make sure the DNS records are still there, then check again."
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The idea behind it, and the channels you chose."
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The idea or mood behind the work."
 msgstr ""
 
 #: src/features/billing/invoice-button.tsx
@@ -17668,6 +17952,11 @@ msgstr "అసలు లింక్ ఈ ఉద్యోగంతో ఉంట�
 msgid "The original stays in the history."
 msgstr "అసలుది చరిత్రలో ఉంటుంది."
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The outcome"
+msgstr ""
+
 #: src/features/portfolio/admin/review-page.tsx
 msgid "The owner can sign in again, and their public pages come back."
 msgstr ""
@@ -17746,6 +18035,11 @@ msgstr ""
 msgid "The picture is still too large after shrinking it. Try a smaller picture."
 msgstr ""
 
+#. Story outline heading: where to link or quote the written piece
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The piece"
+msgstr ""
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "The posting asks for “{label}”. If it's true for me, work it into my resume where it fits. Ask me first."
 msgstr "జాబ్ పోస్టింగ్ “{label}” కోసం అడుగుతుంది. ఇది నాకు నిజమైతే, అది సరిపోయే చోట నా రెజ్యూమేలో పని చేయండి. ముందుగా నన్ను అడగండి."
@@ -17774,12 +18068,18 @@ msgstr ""
 msgid "The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax invoice."
 msgstr ""
 
-#: src/features/portfolio/blocks/block-list.tsx
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
 msgid "The problem"
 msgstr ""
 
-#: src/features/portfolio/blocks/block-list.tsx
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
 msgid "The process"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The product, the team, and where this fits."
 msgstr ""
 
 #: src/features/portfolio/works/add-work/from-resume.tsx
@@ -17814,12 +18114,23 @@ msgstr "ప్రొవైడర్ ప్రతిస్పందనను ధ�
 msgid "The reason is kept for Insights. Linked documents aren't touched."
 msgstr "కారణం అంతర్దృష్టుల కోసం ఉంచబడింది. లింక్ చేసిన పత్రాలు తాకబడవు."
 
+#. Story outline heading: how readers and the client responded
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The reception"
+msgstr ""
+
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The records aren't visible yet. Check again later."
 msgstr "రికార్డ్‌లు ఇంకా కనిపించడం లేదు. తర్వాత మళ్లీ తనిఖీ చేయండి."
 
-#: src/features/portfolio/blocks/block-list.tsx
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
 msgid "The result"
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The results"
 msgstr ""
 
 #: src/routes/builder/letter/-components/design-panel.tsx
@@ -17908,6 +18219,20 @@ msgstr "సేవ API కీని తిరస్కరించింది. �
 msgid "The service's quota is used up. Check your plan with the service, or try again later."
 msgstr "సేవ కోటా అయిపోయింది. సేవతో మీ ప్లాన్‌ను తనిఖీ చేయండి, లేదా తర్వాత మళ్ళీ ప్రయత్నించండి."
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The solution"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The steps you took and the choices that mattered."
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The strategy"
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "The test didn't run. Try again."
 msgstr "పరీక్ష అమలు కాలేదు. మళ్ళీ ప్రయత్నించండి."
@@ -17928,8 +18253,12 @@ msgstr ""
 msgid "The top of the first page does not look like a name."
 msgstr "మొదటి పేజీ పైభాగం పేరులా కనిపించడం లేదు."
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The trade-offs you made, and why."
+msgstr ""
+
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "The work and its blocks leave the portfolio. You can undo this."
 msgstr ""
 
@@ -18546,6 +18875,10 @@ msgid "Tighten"
 msgstr "కుదించు"
 
 #: src/features/assistant/assistant-panel.tsx
+msgid "Tighten this work's title and summary"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
 msgid "Tighten to one page"
 msgstr "ఒక పేజీకి బిగించండి"
 
@@ -18623,7 +18956,7 @@ msgstr "చిట్కా"
 #: src/features/career/knowledge/stories.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/link-block.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Title"
 msgstr "టైటిల్"
@@ -18956,6 +19289,10 @@ msgstr "రెండు-దశల ధృవీకరణను ఆఫ్ చే�
 msgid "Turning on two-step verification…"
 msgstr "రెండు-దశల ధృవీకరణను ఆన్ చేస్తోంది…"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Turns numbers in the text into a metrics block"
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "Two bullets run over two lines"
 msgstr ""
@@ -19002,6 +19339,18 @@ msgstr "రకం"
 msgctxt "DNS record"
 msgid "Type"
 msgstr "రకం"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Type “/” to add a link to the code or a live demo."
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Type “/” to add your pictures or a video."
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Type “/” to link to it, or quote a short part."
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Type <0>{CONFIRMATION}</0> to confirm"
@@ -19201,11 +19550,14 @@ msgstr ""
 msgid "Untitled testimonial"
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/save-problem.ts
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-canvas.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Untitled work"
 msgstr ""
 
@@ -20031,6 +20383,10 @@ msgstr "బాగా జరిగింది"
 msgid "What"
 msgstr ""
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "What a client or user said"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "What a parser reads"
 msgstr "పార్సర్ ఏమి చదువుతుంది"
@@ -20047,13 +20403,25 @@ msgstr "మీరు దేనిపై పని చేస్తున్నా
 msgid "What changed? Leave blank if you can’t support it."
 msgstr "ఏమి మారింది? ఆధారం చూపలేకపోతే ఖాళీగా వదిలేయండి."
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What changed? Put the numbers in the metrics below."
+msgstr ""
+
 #: src/features/career/workspace/debrief.tsx
 msgid "What did they ask?"
 msgstr "వారు ఏమి అడిగారు?"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What did this need to achieve, and by when?"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "What did you do, specifically?"
 msgstr "ప్రత్యేకంగా మీరు ఏమి చేశారు?"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What did you learn from users or data?"
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "What did you say, as close as you remember?"
@@ -20066,6 +20434,10 @@ msgstr "నేను ఏ ఫార్మాట్‌లను డౌన్‌ల
 #: src/features/resume/editor/write/add-section.tsx
 msgid "What goes in it?"
 msgstr "అందులో ఏం జరుగుతుంది?"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What improved: speed, cost, reliability? Put the numbers below."
+msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "What interview answers should I practice?"
@@ -20147,9 +20519,25 @@ msgstr ""
 msgid "What to do"
 msgstr "ఏం చేయాలి"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What was asked for, in a line or two."
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "What was happening before you started?"
 msgstr "మీరు మొదలుపెట్టే ముందు ఏమి జరుగుతోంది?"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What was slow, hard or broken?"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What wasn't working, and for whom?"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What went out, and when. Type “/” to add the creative."
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "What were you responsible for?"
@@ -20167,14 +20555,14 @@ msgstr "మీరు దేన్ని భిన్నంగా చేస్త
 msgid "What you add to your Profile later shows up here. You can also pick a resume later in Publish."
 msgstr ""
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What you designed and why it works. Type “/” to add screens."
+msgstr ""
+
 #. placeholder {0}: requirement.text
 #: src/features/career/workspace/fit.tsx
 msgid "What you did: {0}"
 msgstr "మీరు చేసింది: {0}"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "What you made, for whom, and what changed."
-msgstr ""
 
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "What you sent"
@@ -20307,6 +20695,10 @@ msgstr ""
 msgid "Who can see my resume?"
 msgstr "నా రెజ్యూమేని ఎవరు చూడగలరు?"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Who were you trying to reach?"
+msgstr ""
+
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Who you are, what you do best, and what you're looking for."
 msgstr ""
@@ -20375,6 +20767,7 @@ msgstr "టెక్స్ట్ ఎక్స్‌ట్రాక్ట్ అ�
 
 #: src/features/portfolio/page-text.ts
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Work"
 msgstr ""
 
@@ -20384,6 +20777,15 @@ msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Work opened by day"
+msgstr ""
+
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Work view"
+msgstr ""
+
+#. placeholder {0}: document.focus.title.trim() || t`Untitled work`
+#: src/features/assistant/conversation.tsx
+msgid "Work: {0}"
 msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
@@ -20457,9 +20859,14 @@ msgstr "దీన్ని ఎలాంటి ప్రత్యేక స్ప
 msgid "Write it down while it's fresh"
 msgstr "గుర్తున్నప్పుడే రాసుకోండి"
 
+#: src/features/portfolio/blocks/block-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Write it myself"
 msgstr "నేనే రాసుకో"
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Write it with AI"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "Write letters"
@@ -20489,12 +20896,21 @@ msgstr ""
 msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
 msgstr ""
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Write, or type “/” for headings, lists, pictures and more…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
 msgstr "రచన"
+
+#. placeholder {0}: open.title.trim() || t`Untitled work`
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Writing {0}"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Writing an answer…"
@@ -20503,6 +20919,11 @@ msgstr "సమాధానం రాస్తోంది…"
 #: src/features/settings/ai/providers.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "రాయడంలో సహాయం, అనుగుణమైన సూచనలు, సహాయకుడు. మీరు ఎంచుకోని చోట డిఫాల్ట్ ప్రొవైడర్ ఉపయోగించబడుతుంది. మీ కీలు ఎన్‌క్రిప్ట్ చేయబడే ఉంటాయి."
+
+#. Story outline for writers, journalists and content work
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Writing or content"
+msgstr ""
 
 #: src/features/portfolio/ai/draft-form.tsx
 msgid "Writing your draft…"
@@ -20517,7 +20938,7 @@ msgid "Written offer"
 msgstr "లిఖిత ఆఫర్"
 
 #: src/features/portfolio/page-text.ts
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Year"
 msgstr ""
 
@@ -21342,7 +21763,7 @@ msgstr "మీ రెజ్యూమ్ \"I\" మరియు \"my\" ఉపయ�
 msgid "Your resume, published as a website"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Your role"
 msgstr ""
 
@@ -21388,6 +21809,10 @@ msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Your subscription is set to end. Keep it first to change the plan."
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Your title, the team, and what you owned."
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx

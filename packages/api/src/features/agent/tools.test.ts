@@ -212,4 +212,28 @@ describe("portfolio assistant tools", () => {
 		expect(withheld).not.toContain(PORTFOLIO_EDIT_GUIDE);
 		expect(withheld).toContain("Use `search_web`");
 	});
+
+	it("points the portfolio assistant at the work open in the editor, after the cached part", () => {
+		const base = buildPortfolioAgentInstructions({ shared: true, searchTool: null, canReadPage: true });
+		const focused = buildPortfolioAgentInstructions({
+			shared: true,
+			focusWorkId: "work-1",
+			searchTool: null,
+			canReadPage: true,
+		});
+		expect(focused.startsWith(base)).toBe(true);
+		expect(focused).toContain("work with id `work-1` open");
+		expect(focused).toContain("Interviewing for a work's story");
+		// The story's headings follow the person's field when it's clear, with the generic outline otherwise.
+		expect(focused).toContain("The headings follow their field");
+		expect(focused).toContain("a developer or engineer: context, the challenge");
+		expect(focused).toContain("Otherwise use The problem, My role, The process and The result");
+		const withheld = buildPortfolioAgentInstructions({
+			shared: false,
+			focusWorkId: "work-1",
+			searchTool: null,
+			canReadPage: true,
+		});
+		expect(withheld).not.toContain("work-1");
+	});
 });

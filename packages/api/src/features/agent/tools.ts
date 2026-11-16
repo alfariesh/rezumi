@@ -89,6 +89,8 @@ export function buildAgentInstructions({ document, posting, searchTool, canReadP
 export function buildPortfolioAgentInstructions(input: {
 	/** Whether the portfolio is shared with this message; without it the assistant can't read or edit it. */
 	shared: boolean;
+	/** The work open in the editor, when the user is writing one. */
+	focusWorkId?: string | undefined;
 	searchTool: "search_web" | null;
 	canReadPage: boolean;
 }) {
@@ -98,7 +100,17 @@ export function buildPortfolioAgentInstructions(input: {
 			: "\n**The user chose not to share the portfolio with this message, so you can't read or edit it now.** Answer from the conversation, or ask them to share it again.\n",
 		WEB: webInstructions({ ...input, privateContent: "portfolio, resume or Profile" }),
 	});
-	return input.shared ? `${instructions}\n\n${PORTFOLIO_EDIT_GUIDE}\n` : instructions;
+	if (!input.shared) return instructions;
+	return `${instructions}\n\n${PORTFOLIO_EDIT_GUIDE}\n${input.focusWorkId ? portfolioFocusNote(input.focusWorkId) : ""}`;
+}
+
+/**
+ * The user is writing one work (the editor's Work tab) as they send: "this work", "this project" or "the story" mean
+ * that one. The id comes from the client (checked to be an id's characters) and only points the model at an item it
+ * reads like any other.
+ */
+function portfolioFocusNote(workId: string): string {
+	return `\n## The work open in the editor\n\nThe user has the work with id \`${workId}\` open in the editor's Work tab while sending this message. When they say "this work", "this project", "the story", "the case study" or ask for a change without naming a work, they mean this one: read the portfolio to find it and change only it unless they name something else. Its story is its blocks (text, pictures, metrics, video, PDF, links, embeds); prefer adding or editing blocks over cramming text into the summary. If no work with that id exists any more, ask which work they mean.\n\n### Interviewing for a work's story\n\nWhen they ask you to interview them about this work (or to write its story and it has little to go on), read the portfolio and their Profile or resume first, then ask with \`ask_user_question\`, one question per call, only what you can't already tell, at most five, in this order: the problem or goal and who it was for; their role and the team; what they did, the key decisions; the result, with a number if there is one (and how it was measured); anything to show (pictures, a link, a video). Keep each question to one sentence and offer 2 to 4 likely answers drawn from what the portfolio already says, so they can pick instead of type. Don't invent facts or numbers: a skipped question means that part is left out. Then write the story in one \`edit_portfolio\` call as blocks: short text blocks under headings in the page's language, and a Metrics block for real numbers. The headings follow their field when it's clear from the work, their headline or their answers, not always the same four: a product or UX designer: the problem, my role, research and insights, the design process, the solution, the result; a developer or engineer: context, the challenge, approach and stack, key decisions, the outcome; a marketer: the goal, the audience, the strategy, the campaign, the results; a photographer, illustrator or other visual work: a short brief and concept, then the pictures with little text; a writer: the brief, the angle, the piece, the reception. Otherwise use The problem, My role, The process and The result. Replace an empty outline (headings with nothing under them, from the editor's outlines) instead of adding a second one, fill the summary if it's empty, and end with one line on what they could add (a picture, a link).\n`;
 }
 
 export function buildAgentTools(input: BuildAgentToolsInput): ToolSet {

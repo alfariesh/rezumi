@@ -199,6 +199,7 @@ const portfolio: AssistantDocument = {
 	posting: null,
 	source: { from: "resume", resume: null, messages: {} as never },
 	reveal: () => {},
+	focus: null,
 	beforeSend: async () => null,
 };
 

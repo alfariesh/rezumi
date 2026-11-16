@@ -1,13 +1,10 @@
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import { describe, expect, it } from "vite-plus/test";
 import { produce } from "immer";
-import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import {
-	addCaseStudy,
 	blockPlace,
 	blockRoom,
-	caseStudyBlocks,
 	insertBlocks,
 	insertBlocksAt,
 	newImagesBlock,
@@ -18,8 +15,6 @@ import {
 	restoreBlock,
 } from "./blocks";
 import { itemAfterRemoval } from "./list-focus";
-
-const titles = { problem: "Masalah", role: "Peran saya", process: "Proses", result: "Hasil" };
 
 const work = (blocks: PortfolioWork["blocks"] = []): PortfolioWork => ({
 	id: "w1",
@@ -74,19 +69,6 @@ describe("blocks", () => {
 		const removed = produce(start, (draft) => removeBlock(draft as PortfolioWork, metrics.id));
 		expect(removed.blocks).toHaveLength(1);
 		expect(removed.highlightMetricId).toBeUndefined();
-	});
-
-	it("starts a case study: four headed text blocks and a Metrics block, valid to save", () => {
-		const blocks = caseStudyBlocks({ ...titles, problem: "Problem <1>" });
-		expect(blocks.map((block) => block.type)).toEqual(["text", "text", "text", "text", "metrics"]);
-		expect(blocks[0]).toMatchObject({ type: "text", html: "<h2>Problem &lt;1&gt;</h2><p></p>" });
-		expect(new Set(blocks.map((block) => block.id)).size).toBe(5);
-
-		const withOutline = produce(work([newTextBlock("<p>intro</p>")]), (draft) => {
-			expect(addCaseStudy(draft as PortfolioWork, titles)).toBe(5);
-		});
-		expect(withOutline.blocks[1]).toMatchObject({ html: "<h2>Masalah</h2><p></p>" });
-		expect(() => parseWritablePortfolioData({ works: { items: [withOutline] } })).not.toThrow();
 	});
 });
 

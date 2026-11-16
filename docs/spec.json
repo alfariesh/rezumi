@@ -14120,6 +14120,11 @@
 												"type": "string",
 												"minLength": 1,
 												"maxLength": 255
+											},
+											"workId": {
+												"type": "string",
+												"pattern": "^[\\w-]{1,64}$",
+												"description": "Portfolio: the work open in the editor's Work tab, as a hint for what 'this work' means."
 											}
 										}
 									},
@@ -122719,6 +122724,11 @@
 												"type": "string",
 												"minLength": 1,
 												"maxLength": 255
+											},
+											"workId": {
+												"type": "string",
+												"pattern": "^[\\w-]{1,64}$",
+												"description": "Portfolio: the work open in the editor's Work tab, as a hint for what 'this work' means."
 											}
 										}
 									},

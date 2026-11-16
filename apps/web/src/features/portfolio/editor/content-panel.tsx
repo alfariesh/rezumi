@@ -11,8 +11,7 @@ import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { AiDraftButton } from "../ai/draft-dialog";
-import { WorkEditor } from "../works/work-editor";
-import { WorksForm } from "../works/works-form";
+import { WorksShortcut } from "../works/works-shortcut";
 import { ContactForm } from "./contact-form";
 import { usePortfolioSource } from "./context";
 import { PanelGroup } from "./fields";
@@ -61,10 +60,6 @@ const sectionIcon = (key: PortfolioSectionKey): IconName =>
  * hides it, the pencil renames it; opening one shows its fields.
  */
 export function ContentPanel() {
-	const openWorkId = usePortfolioEditorUi((state) => state.openWorkId);
-	const exists = usePortfolioData().works.items.some((work) => work.id === openWorkId);
-	// A work removed elsewhere (undo, another tab) closes its editor.
-	if (openWorkId && exists) return <WorkEditor key={openWorkId} workId={openWorkId} />;
 	return (
 		<div className="grid gap-6 p-3">
 			<AiDraftButton />
@@ -134,7 +129,7 @@ function SectionForm({ sectionKey }: { sectionKey: PortfolioSectionKey }) {
 		case "about":
 			return <AboutForm />;
 		case "work":
-			return <WorksForm />;
+			return <WorksShortcut />;
 		case "services":
 			return <ServicesForm />;
 		case "testimonials":

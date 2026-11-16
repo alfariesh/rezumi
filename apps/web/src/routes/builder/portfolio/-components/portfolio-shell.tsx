@@ -8,7 +8,7 @@ import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { getRouteApi, Link, useNavigate } from "@tanstack/react-router";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -28,6 +28,9 @@ import { usePortfolioWebMcpTools } from "@/features/portfolio/editor/webmcp";
 import { portfolioRefusalMessage } from "@/features/portfolio/errors";
 import { mapPictures } from "@/features/portfolio/location/map-pictures";
 import { isPortfolioLive } from "@/features/portfolio/status";
+import { WorkCanvas, WorkViewSwitch } from "@/features/portfolio/works/work-canvas";
+import { workModeStep } from "@/features/portfolio/works/work-mode";
+import { WorksPanel } from "@/features/portfolio/works/works-panel";
 import { isEditableElementFocused } from "@/features/resume/builder/draft";
 import { BarDivider, UndoRedo } from "@/features/resume/editor/chrome";
 import { EditorBarFrame } from "@/features/resume/editor/chrome/bar";
@@ -45,8 +48,11 @@ import { client, orpc } from "@/libs/orpc/client";
 
 const PortfolioPreview = lazy(() => import("@/features/portfolio/editor/preview"));
 
-/** The editor's three tabs. They reuse the resume editor's mode names, which its shell and phone tab bar know. */
-type PortfolioMode = "write" | "design" | "share";
+/**
+ * The editor's tabs. Content, Design and Publish reuse the resume editor's mode names, which its shell and phone tab
+ * bar know; Work is the portfolio's own.
+ */
+type PortfolioMode = "write" | "work" | "design" | "share";
 
 const routeApi = getRouteApi("/builder/portfolio/");
 
@@ -67,11 +73,48 @@ function usePortfolioMode() {
 	return [current, setMode] as const;
 }
 
-const modeLabel = (mode: PortfolioMode) => ({ write: t`Content`, design: t`Design`, share: t`Publish` })[mode];
+const modeLabel = (mode: PortfolioMode) =>
+	({ write: t`Content`, work: t`Work`, design: t`Design`, share: t`Publish` })[mode];
+
+const MODE_ICONS = {
+	write: "pencil-simple",
+	work: "squares-four",
+	design: "palette",
+	share: "globe-hemisphere-west",
+} as const;
+
+/** Keeps the open work and the tab together (`workModeStep`). */
+function useWorkFollowsMode(mode: PortfolioMode, setMode: (mode: PortfolioMode) => void) {
+	const openWorkId = usePortfolioEditorUi((state) => state.openWorkId);
+	// Null at first, so an editor opened on Work (`?mode=work`) picks a work as if Work had just been chosen.
+	const previous = useRef<PortfolioMode | null>(null);
+	// The latest setter, so a new one each render doesn't run the effect again.
+	const switchTo = useRef(setMode);
+	useLayoutEffect(() => {
+		switchTo.current = setMode;
+	});
+
+	useEffect(() => {
+		const before = previous.current;
+		previous.current = mode;
+		const ui = usePortfolioEditorUi.getState();
+		const works = usePortfolioEditorStore.getState().portfolio?.data.works.items ?? [];
+		const step = workModeStep({
+			before,
+			mode,
+			openWorkId,
+			lastWorkId: ui.lastWorkId,
+			workIds: works.map((work) => work.id),
+		});
+		if (step.kind === "open") ui.openWork(step.workId);
+		else if (step.kind === "switch-to-work") switchTo.current("work");
+	}, [mode, openWorkId]);
+}
 
 /**
- * The portfolio editor (`01-desain.md` section 7): the resume editor's frame with Content, Design and Publish on the
- * left and the live page on the right. Phones show one view at a time from the tab bar.
+ * The portfolio editor (`01-desain.md` section 7): the resume editor's frame with Content, Work, Design and Publish on
+ * the left and the live page on the right (in Work, the open work to write in, or its page). Phones show one view at a
+ * time from the tab bar.
  */
 export function PortfolioShell() {
 	const [mode, setMode] = usePortfolioMode();
@@ -87,6 +130,7 @@ export function PortfolioShell() {
 	useEffect(() => mapPictures.watch(), []);
 	useEffect(() => applyPendingDraft(), []);
 	useOpenAssistantFromUrl();
+	useWorkFollowsMode(mode, setMode);
 	useUnsavedGuard();
 	usePortfolioWebMcpTools();
 
@@ -95,8 +139,10 @@ export function PortfolioShell() {
 		setMode(tab);
 		useEditorStore.setState({ mobileView: tab });
 		const ui = usePortfolioEditorUi.getState();
-		ui.openWork(workId ?? null);
-		if (section && !workId) ui.revealSection(section);
+		if (workId) {
+			ui.openWork(workId);
+			ui.setWorkView("edit");
+		} else if (section) ui.revealSection(section);
 	};
 
 	// A line on the assistant's changes card opens its place. The assistant stays open beside the panel; on phones,
@@ -124,23 +170,19 @@ export function PortfolioShell() {
 				}
 				back={<PortfolioBackLink />}
 				title={<PortfolioTitle onReveal={reveal} />}
-				controls={<PortfolioControls compact={editorLayout.layout === "tablet"} />}
+				controls={<PortfolioControls mode={mode} compact={editorLayout.layout === "tablet"} />}
 				actions={<OpenPage compact={false} />}
 				mode={mode}
 				modes={
 					<ModeSwitch
-						modes={[
-							{ id: "write", icon: "pencil-simple", label: modeLabel("write") },
-							{ id: "design", icon: "palette", label: modeLabel("design") },
-							{ id: "share", icon: "globe-hemisphere-west", label: modeLabel("share") },
-						]}
+						modes={PORTFOLIO_MODES.map((id) => ({ id, icon: MODE_ICONS[id], label: modeLabel(id) }))}
 						selected={mode}
 						onChange={setMode}
 					/>
 				}
 				panelLabel={modeLabel(mode)}
 				panel={<ModePanel mode={mode} />}
-				page={<Preview />}
+				page={mode === "work" ? <WorkCanvas preview={<Preview />} /> : <Preview />}
 				assistant={<PortfolioAssistant onReveal={revealChange} />}
 				mobile={<MobileBody onModeChange={setMode} assistant={<PortfolioAssistant onReveal={revealChange} />} />}
 			>
@@ -162,7 +204,15 @@ type ModePanelProps = { mode: PortfolioMode };
 function ModePanel({ mode }: ModePanelProps) {
 	return (
 		<div key={mode} className={MODE_ENTER_CLASS}>
-			{mode === "design" ? <DesignPanel /> : mode === "share" ? <PublishPanel /> : <ContentPanel />}
+			{mode === "work" ? (
+				<WorksPanel />
+			) : mode === "design" ? (
+				<DesignPanel />
+			) : mode === "share" ? (
+				<PublishPanel />
+			) : (
+				<ContentPanel />
+			)}
 		</div>
 	);
 }
@@ -181,21 +231,20 @@ function Preview({ showDeviceSwitch = true }: { showDeviceSwitch?: boolean }) {
 	);
 }
 
-const PORTFOLIO_MODES = ["write", "design", "share"] as const;
+const PORTFOLIO_MODES = ["write", "work", "design", "share"] as const satisfies readonly PortfolioMode[];
 
 type MobileBodyProps = { onModeChange: (mode: PortfolioMode) => void; assistant: ReactNode };
 
-/** Phones (≤768 px): the live page, with Content · Design · Publish and AI floating over it, each opening a sheet. */
+/**
+ * Phones (≤768 px): the live page, with Content · Work · Design · Publish and AI floating over it, each opening a
+ * sheet.
+ */
 function MobileBody({ onModeChange, assistant }: MobileBodyProps) {
 	const open = useMobileSheet(PORTFOLIO_MODES);
 
 	return (
 		<MobileEditor
-			items={[
-				{ mode: "write", icon: "pencil-simple", label: modeLabel("write") },
-				{ mode: "design", icon: "palette", label: modeLabel("design") },
-				{ mode: "share", icon: "globe-hemisphere-west", label: modeLabel("share") },
-			]}
+			items={PORTFOLIO_MODES.map((id) => ({ mode: id, icon: MODE_ICONS[id], label: modeLabel(id) }))}
 			views={["assistant"]}
 			assistant={assistant}
 			open={open}
@@ -248,8 +297,13 @@ function PortfolioTitle({ onReveal }: PortfolioTitleProps) {
 	);
 }
 
-/** The canvas section's header: undo and redo, and the preview's width (tablets: icons only). */
-function PortfolioControls({ compact }: { compact: boolean }) {
+type PortfolioControlsProps = { mode: PortfolioMode; compact: boolean };
+
+/**
+ * The canvas section's header: undo and redo, then the preview's width (tablets: icons only). In Work it switches the
+ * canvas between writing the work and its page, with the width only beside the page.
+ */
+function PortfolioControls({ mode, compact }: PortfolioControlsProps) {
 	const canUndo = usePortfolioEditorStore((state) => state.undoStack.length > 0);
 	const canRedo = usePortfolioEditorStore((state) => state.redoStack.length > 0);
 
@@ -262,7 +316,11 @@ function PortfolioControls({ compact }: { compact: boolean }) {
 				onRedo={() => usePortfolioEditorStore.getState().redo()}
 			/>
 			<BarDivider />
-			<PreviewWidth compact={compact} />
+			{mode === "work" ? (
+				<WorkViewSwitch compact={compact} previewWidth={<PreviewWidth compact />} />
+			) : (
+				<PreviewWidth compact={compact} />
+			)}
 		</>
 	);
 }

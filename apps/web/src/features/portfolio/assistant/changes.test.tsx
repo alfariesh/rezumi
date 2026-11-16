@@ -58,6 +58,7 @@ const document: PortfolioAssistantDocument = {
 	posting: null,
 	source: { from: "resume", resume: null, messages: portfolioViewMessages(portfolioMessages("en-US")) },
 	reveal,
+	focus: null,
 };
 
 let counter = 0;
@@ -164,7 +165,7 @@ it("opens a change's place in the editor when its line is pressed", () => {
 	const made = output([{ op: "update", list: "works", id: "work-1", fields: { summary: "Better" } }]);
 	renderCard(made, "call-d");
 	fireEvent.click(screen.getByRole("button", { name: /Edited the work “First”/ }));
-	expect(reveal).toHaveBeenCalledWith({ tab: "write", section: "work", workId: "work-1" });
+	expect(reveal).toHaveBeenCalledWith({ tab: "work", section: "work", workId: "work-1" });
 });
 
 it("lists what the assistant couldn't change", () => {

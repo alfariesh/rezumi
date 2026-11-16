@@ -54,10 +54,10 @@ async function publishedPortfolio(page: Page, account: E2EAccount, resumeName: s
 	await page.getByRole("tab", { name: "Content" }).click();
 }
 
-/** Adds an empty work with this title from Content → Work, and leaves its editor open. */
+/** Adds an empty work with this title in the editor's Work tab, and leaves it open there. */
 async function addWork(page: Page, title: string) {
-	await page.getByRole("button", { name: "Work", exact: true }).click();
-	await page.getByRole("button", { name: "Add work" }).click();
+	await page.getByRole("tab", { name: "Work", exact: true }).click();
+	await page.getByRole("button", { name: "Add work", exact: true }).click();
 	await page.getByRole("dialog").getByRole("button", { name: /Empty/ }).click();
 	await page.getByRole("textbox", { name: "Title" }).fill(title);
 	await saved(page);
@@ -85,7 +85,8 @@ test("a work has its own page, Back returns home, and an old address forwards to
 		await visitor.goBack();
 		await expect(visitor).toHaveURL(new RegExp(`/${account.username}$`));
 
-		// A new address keeps the old one working (Phase 13 3.1).
+		// A new address keeps the old one working (Phase 13 3.1). It's among the work's details, folded under the summary.
+		await page.getByRole("button", { name: "Role, year, tags and link" }).click();
 		await page.getByRole("textbox", { name: "Page address" }).fill("kopi-senja-app");
 		await saved(page);
 		await visitor.goto(`/${account.username}/work/kopi-senja`);

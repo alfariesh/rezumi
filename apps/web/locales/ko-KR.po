@@ -115,14 +115,14 @@ msgstr ""
 msgid "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
 msgstr ""
 
-#. placeholder {0}: work.blocks.length
-#: src/features/portfolio/works/works-form.tsx
-msgid "{0, plural, =0 {No blocks yet} one {# block} other {# blocks}}"
-msgstr ""
-
 #. placeholder {0}: results.length
 #: src/features/portfolio/location/location-fields.tsx
 msgid "{0, plural, =0 {No cities found} one {# city found} other {# cities found}}"
+msgstr ""
+
+#. placeholder {0}: work.blocks.length
+#: src/features/portfolio/works/works-panel.tsx
+msgid "{0, plural, =0 {No story yet} one {# block} other {# blocks}}"
 msgstr ""
 
 #. placeholder {0}: proposals.length
@@ -275,6 +275,11 @@ msgstr "{0, plural, one {# 선택됨} other {# 선택됨}}"
 #: src/features/career/coach-chat.tsx
 msgid "{0, plural, one {# story} other {# stories}}"
 msgstr "{0, plural, other {스토리 #개}}"
+
+#. placeholder {0}: work.tags.length - 3
+#: src/features/portfolio/works/work-document.tsx
+msgid "{0, plural, one {+# tag} other {+# tags}}"
+msgstr ""
 
 #. placeholder {0}: remembered.ids.length
 #: src/features/career/coach-chat.tsx
@@ -624,6 +629,12 @@ msgstr "{0}의 {1} 적응 채용 지원서는 답변을 받았습니다. {3}의 
 msgid "{0} of {1} terms found"
 msgstr "검색어 {0}개 중 {1}개 발견"
 
+#. placeholder {0}: items.length
+#. placeholder {1}: limits.works
+#: src/features/portfolio/works/works-panel.tsx
+msgid "{0} of {1} works"
+msgstr ""
+
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
 msgid "{0} per reply"
@@ -756,6 +767,10 @@ msgstr ""
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "{cost} the first year"
 msgstr "첫해 {cost}"
+
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "{count, plural, =0 {No works yet.} one {# work on the page.} other {# works on the page.}}"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
@@ -1326,7 +1341,7 @@ msgstr ""
 msgid "2022 – Present"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "2025 or Jan–Mar 2025"
 msgstr ""
 
@@ -1384,6 +1399,10 @@ msgstr "이 편지의 백업본입니다. 문자로 Rezumi에 다시 가져옵�
 
 #: src/dialogs/resume/template/data.ts
 msgid "A bento page: the header is a solid tile of the accent and every section sits on its own soft rounded tile, with skills as chips."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "A big title for a part of the story"
 msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
@@ -1469,6 +1488,10 @@ msgstr "이후에 잊은 사실"
 #: src/features/portfolio/admin/labels.ts
 #: src/features/portfolio/page-text.ts
 msgid "A fake testimonial"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "A few questions with answers to pick, then the story as blocks"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -1611,12 +1634,20 @@ msgstr "귀하의 표현에 대한 두 번째 의견"
 msgid "A section title holds {most} characters, so the rest was left out."
 msgstr ""
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "A short brief and concept, then room for your pictures"
+msgstr ""
+
 #: src/features/applications/next-step.ts
 msgid "A short follow-up is usually fine now"
 msgstr "짧은 후속 조치는 일반적으로 이제 괜찮습니다."
 
 #: src/dialogs/resume/template/data.ts
 msgid "A slim stripe of the accent runs down the page edge on the sidebar's side, the sidebar sits behind a hairline and main titles open with a short accent dash."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "A smaller title"
 msgstr ""
 
 #: src/dialogs/resume/template/data.ts
@@ -2022,6 +2053,10 @@ msgstr ""
 msgid "Add a video"
 msgstr ""
 
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "Add a work"
+msgstr ""
+
 #: src/features/billing/purchase.ts
 msgid "Add a year"
 msgstr ""
@@ -2174,6 +2209,10 @@ msgstr ""
 msgid "Add my connection"
 msgstr ""
 
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Add one from the list: start empty, or from resume projects, pictures or a link."
+msgstr ""
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add one in Settings to use it without credits"
 msgstr ""
@@ -2322,7 +2361,7 @@ msgstr "저장하려면 무슨 일이 있었는지 추가하세요."
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 #: src/features/portfolio/works/add-work/from-link.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Add work"
 msgstr ""
 
@@ -2344,6 +2383,10 @@ msgstr ""
 
 #: src/features/settings/ai/providers.tsx
 msgid "Add your first AI provider"
+msgstr ""
+
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Add your first work"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -2646,16 +2689,16 @@ msgstr ""
 msgid "All reports"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "All sections"
-msgstr ""
-
 #: src/features/billing/admin/overview.tsx
 msgid "All statuses"
 msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "All work"
+msgstr ""
+
+#: src/features/portfolio/works/works-panel.tsx
+msgid "All works"
 msgstr ""
 
 #: src/features/settings/account/data.tsx
@@ -2819,6 +2862,10 @@ msgstr ""
 #: src/features/career/workspace/apply.tsx
 msgid "Answer"
 msgstr "답변"
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Answer a few questions; it writes the story"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Answer by"
@@ -3068,6 +3115,11 @@ msgstr "지원"
 #: src/features/portfolio/assistant/changes.tsx
 msgctxt "Put the assistant's changes into the portfolio"
 msgid "Apply"
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Approach and stack"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -3429,6 +3481,11 @@ msgstr ""
 msgid "Behavioral"
 msgstr "인성"
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Behind the scenes"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Bengali"
 msgstr "벵골어"
@@ -3556,6 +3613,10 @@ msgstr "이력서를 일반적인 섹션으로 나누어 구분할 수 있게 �
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Breakdown"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Brief, angle, the piece and how it was received"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -3761,10 +3822,6 @@ msgstr ""
 msgid "Caption (optional)"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Card"
-msgstr ""
-
 #: src/features/billing/admin/labels.ts
 msgid "Card dispute"
 msgstr ""
@@ -3785,6 +3842,11 @@ msgstr ""
 msgid "Case studies with results"
 msgstr ""
 
+#. Story outline for any kind of work
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Case study"
+msgstr ""
+
 #: src/features/homepage/portfolio.tsx
 msgid "Case study · Lumen Labs"
 msgstr ""
@@ -3801,6 +3863,10 @@ msgstr "카탈루냐어"
 #: src/libs/resume/section.tsx
 msgid "Certifications"
 msgstr "자격증"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Challenge, approach and stack, key decisions, outcome"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
@@ -4206,6 +4272,10 @@ msgstr "디자인에 어울리는 이력서를 Write에서 선택하세요. 그�
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2MB 이하의 WebM, MP4, MP3, WAV 또는 Ogg 파일을 선택하세요."
 
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Choose a work to write about"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Choose an application to see its next step, what you sent and its activity here."
 msgstr ""
@@ -4442,6 +4512,11 @@ msgstr ""
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
 msgstr "코드"
+
+#. Story outline heading: where to link the code or a live demo
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Code and demo"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx
@@ -4764,6 +4839,11 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "Content is laid out in a grid."
 msgstr "내용이 격자 형태로 배치되어 있습니다."
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Context"
+msgstr ""
 
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Context or source (optional)"
@@ -5744,7 +5824,7 @@ msgstr ""
 msgid "Cover letters that match"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Cover picture"
 msgstr ""
 
@@ -6122,8 +6202,8 @@ msgstr "“{0}”을(를) 지금 삭제할까요?"
 msgid "Delete “{0}”?"
 msgstr "“{0}”을(를) 삭제할까요?"
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Delete “{title}”?"
 msgstr "“{title}”을(를) 삭제할까요?"
@@ -6133,7 +6213,8 @@ msgstr "“{title}”을(를) 삭제할까요?"
 msgid "Delete {0}"
 msgstr "{0} 삭제"
 
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Delete {title}"
 msgstr ""
 
@@ -6218,8 +6299,8 @@ msgstr ""
 msgid "Delete version"
 msgstr "버전 삭제"
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Delete work"
 msgstr ""
 
@@ -6351,10 +6432,6 @@ msgstr "디자인 시스템"
 
 #: src/features/homepage/theme-preview.tsx
 msgid "Desktop"
-msgstr ""
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Detail"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -6589,6 +6666,7 @@ msgstr "{0}를 보내지 마세요"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Done"
@@ -6898,6 +6976,7 @@ msgstr ""
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/portfolio/works/work-canvas.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Edit"
@@ -6925,6 +7004,10 @@ msgstr "수정사항 적용됨"
 msgid "Edit color {0}"
 msgstr "색상 편집 {0}"
 
+#: src/features/portfolio/works/work-document.tsx
+msgid "Edit cover"
+msgstr ""
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit date"
 msgstr "날짜 수정"
@@ -6939,6 +7022,10 @@ msgstr "항목 수정"
 
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Edit in Profile"
+msgstr ""
+
+#: src/features/portfolio/works/works-shortcut.tsx
+msgid "Edit in Work"
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -7593,8 +7680,8 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Featured"
 msgstr ""
 
@@ -7727,6 +7814,10 @@ msgid "Find roles"
 msgstr "직무 찾기"
 
 #: src/features/assistant/assistant-panel.tsx
+msgid "Find the results in this work and show them as metrics"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
 msgid "Find weak bullets"
 msgstr "약한 목록 항목 찾기"
 
@@ -7780,6 +7871,11 @@ msgstr "페이지를 너비에 맞추기"
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Fitness"
+msgstr ""
+
+#. Marks the story outline that likely fits the person's field
+#: src/features/portfolio/blocks/story-template-menu.tsx
+msgid "Fits your field"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -8374,6 +8470,10 @@ msgstr ""
 msgid "Go to…"
 msgstr "…로 이동하세요"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Goal, audience, strategy, campaign and results"
+msgstr ""
+
 #: src/features/portfolio/metrics/metric-form.tsx
 msgid "Good news (green)"
 msgstr ""
@@ -8499,6 +8599,10 @@ msgstr "제목 3"
 msgid "Heading changed"
 msgstr "제목이 변경됨"
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Headings for your kind of work: design, code, marketing…"
+msgstr ""
+
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/editor/intro-form.tsx
@@ -8575,8 +8679,7 @@ msgid "Hid the work “{name}”"
 msgstr ""
 
 #: src/components/level/combobox.tsx
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hidden"
@@ -8585,6 +8688,10 @@ msgstr "숨김"
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "새 직무에서 숨김"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Hidden from the page"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Hidden terms are back"
@@ -8595,7 +8702,7 @@ msgid "Hidden: {hiddenList}"
 msgstr "숨김: {hiddenList}"
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Hide {title} from the page"
 msgstr "페이지에서 {title} 숨기기"
@@ -8607,10 +8714,6 @@ msgstr "연락처 정보 숨기기"
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hide from page"
 msgstr "페이지에서 숨기기"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Hide from the page"
-msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Hide panel"
@@ -8758,6 +8861,10 @@ msgstr "파일을 표시하는 방법"
 msgid "How well do I fit this role?"
 msgstr "나는 이 역할에 얼마나 잘 맞는가?"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "How you tackled it, and the tools and languages you used."
+msgstr ""
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "How you work"
 msgstr ""
@@ -8802,6 +8909,10 @@ msgstr "이 {kind} 및 {0} 채용 공고를 볼 수 있습니다. 제안사항�
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
 msgstr "{kind}가 보이네요. 제안사항은 하나씩 수락할 수 있는 수정사항으로 다시 표시됩니다."
+
+#: src/features/assistant/assistant-panel.tsx
+msgid "I can see your portfolio, and I'll work on “{focusTitle}” unless you name another. Changes show on the page at once, and you can undo each reply."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see your portfolio. Changes show on the page at once, and you can undo each reply."
@@ -9094,6 +9205,11 @@ msgstr "면접이 삭제되었습니다"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Interview is in another timezone"
 msgstr "면접이 다른 시간대에서 진행됩니다"
+
+#: src/features/assistant/assistant-panel.tsx
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Interview me about this work, then write its story."
+msgstr ""
 
 #: src/features/applications/use-reschedule-interview.ts
 msgid "Interview moved to {when}"
@@ -9536,6 +9652,11 @@ msgstr "그대로 유지"
 msgid "Kept in the audit log with your name. At least 3 characters."
 msgstr ""
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Key decisions"
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "Key ends in {ending}"
 msgstr ""
@@ -9574,10 +9695,6 @@ msgstr "감사합니다."
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Kinds of work"
-msgstr ""
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "Kopi Senja checkout redesign"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -9699,7 +9816,7 @@ msgstr "레이아웃"
 msgid "Layouts"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Lead designer"
 msgstr ""
 
@@ -9943,6 +10060,7 @@ msgstr "이렇게 가까운 줄은 읽을 때 함께 실행될 수 있습니다.
 #: src/features/portfolio/blocks/link-block.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/portfolio/works/add-work/from-link.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/fields.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Link"
@@ -9979,7 +10097,7 @@ msgstr "입사 지원서 연결…"
 msgid "Link copied"
 msgstr "링크가 복사되었습니다"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Link text"
 msgstr ""
 
@@ -10262,7 +10380,7 @@ msgstr ""
 msgid "Main"
 msgstr "메인"
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Main link (optional)"
 msgstr ""
 
@@ -10447,6 +10565,11 @@ msgstr "읽음으로 표시됨"
 msgid "Marketing Associate"
 msgstr ""
 
+#. Story outline for marketing and growth work
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Marketing or growth"
+msgstr ""
+
 #. placeholder {0}: resume?.name ?? t`the resume`
 #: src/routes/builder/letter/-components/design-panel.tsx
 msgid "Match “{0}”"
@@ -10533,7 +10656,7 @@ msgstr "메시지"
 msgid "Metric {0}"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Metric on the card"
 msgstr ""
 
@@ -10809,7 +10932,8 @@ msgstr ""
 msgid "My internships and campus projects finally read like real experience. The ATS check showed me what to fix."
 msgstr ""
 
-#: src/features/portfolio/blocks/block-list.tsx
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
 #: src/features/portfolio/page-text.ts
 msgid "My role"
 msgstr "내 역할"
@@ -10865,6 +10989,10 @@ msgstr "이 패스키의 이름을 지정하세요."
 #: src/features/resume/share/history-tab.tsx
 msgid "Name this version"
 msgstr "버전 이름 지정"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Name this work"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
@@ -11431,9 +11559,14 @@ msgstr ""
 msgid "No work-experience section was found."
 msgstr "경력 섹션을 찾을 수 없습니다."
 
+#: src/features/portfolio/works/work-canvas.tsx
+#: src/features/portfolio/works/works-panel.tsx
+msgid "No works yet"
+msgstr ""
+
 #: src/features/applications/components/list-view.tsx
 #: src/features/applications/document-options.ts
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "None"
 msgstr "없음"
 
@@ -11900,6 +12033,10 @@ msgctxt "Entry header layout"
 msgid "One line"
 msgstr ""
 
+#: src/features/portfolio/works/work-document.tsx
+msgid "One or two lines: what you made, for whom, and what changed."
+msgstr ""
+
 #: src/features/billing/purchase-dialog.tsx
 msgid "One payment by QRIS. It doesn't renew: we email you 3 days before it ends."
 msgstr ""
@@ -12177,6 +12314,10 @@ msgstr "선택 과목"
 #: src/features/settings/ai/providers.tsx
 msgid "Optional for local Ollama"
 msgstr "로컬 Ollama의 경우 선택 사항"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Optional: sketches, the setup, the tools."
+msgstr ""
 
 #: src/components/ui/combobox.tsx
 #: src/features/docs/mdx-components.tsx
@@ -12791,6 +12932,11 @@ msgstr ""
 msgid "Photo on top"
 msgstr ""
 
+#. Story outline for photographers, illustrators and other visual work
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Photo, illustration or visual"
+msgstr ""
+
 #: src/components/input/icon-picker-grid.tsx
 msgid "Photos and cameras"
 msgstr ""
@@ -12814,6 +12960,10 @@ msgstr "아이콘을 선택하세요"
 #: src/features/ats-checker/messages.ts
 msgid "Pick one format and use it everywhere."
 msgstr "하나의 형식을 정해 모든 곳에 동일하게 사용하세요."
+
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Pick one from the list, and its story opens here."
+msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Pick projects from your Profile: title, summary, dates and link come along."
@@ -12966,6 +13116,10 @@ msgstr ""
 
 #: src/features/homepage/pricing.tsx
 msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Points in any order"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -13203,6 +13357,7 @@ msgid "Press <0>Enter</0> to open"
 msgstr "<0>Enter</0> 키를 눌러 열기"
 
 #: src/features/homepage/portfolio.tsx
+#: src/features/portfolio/works/work-canvas.tsx
 msgid "Preview"
 msgstr ""
 
@@ -13340,6 +13495,10 @@ msgstr ""
 msgid "Pro AI credits"
 msgstr ""
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Problem, role, process and result. Fits any field"
+msgstr ""
+
 #: src/features/homepage/footer.tsx
 msgid "Product"
 msgstr "제품"
@@ -13363,6 +13522,11 @@ msgstr ""
 
 #: src/features/homepage/resume.tsx
 msgid "Product designer with seven years of experience turning complex flows into simple, measurable products."
+msgstr ""
+
+#. Story outline for product, UX and UI designers
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Product or UX design"
 msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
@@ -13661,6 +13825,10 @@ msgstr "폰트를 임베드하여 다시 내보낸 뒤, 텍스트가 깔끔하�
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "폰트를 임베드하여 다시 내보낸 뒤 파일을 열어 텍스트가 깔끔하게 복사되는지 확인하세요."
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Reach, sign-ups, sales: what moved? Put the numbers below."
+msgstr ""
+
 #: src/features/applications/components/insights-view.tsx
 msgid "Reached"
 msgstr ""
@@ -13876,6 +14044,10 @@ msgstr "깔끔하게 읽힌다"
 #: src/features/settings/ai/web-access.tsx
 msgid "Reads supported public job pages. No account needed."
 msgstr "지원되는 공개 채용 정보 페이지를 읽습니다. 계정이 필요하지 않습니다."
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Reads, shares, feedback or awards."
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 #: src/features/settings/ai/providers.tsx
@@ -14443,7 +14615,7 @@ msgid "Reorder {name}"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
@@ -14544,6 +14716,15 @@ msgstr "요건"
 #: src/features/career/workspace/fit.tsx
 msgid "Requirements and your evidence"
 msgstr "요건과 내 근거"
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Research and insights"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Research and insights, design process, solution and impact"
+msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Resend the link"
@@ -14783,6 +14964,10 @@ msgstr "필수 양식 답변을 검토하고 근거 없는 주장을 삭제하�
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "선택한 이력서와 커버레터를 각 편집기에서 검토하세요."
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Review this work like a hiring manager"
+msgstr ""
+
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Review what we found"
 msgstr ""
@@ -14946,6 +15131,10 @@ msgstr "{0}번째 사람 직책"
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Role, company or location"
 msgstr "역할, 회사 또는 위치"
+
+#: src/features/portfolio/works/work-document.tsx
+msgid "Role, year, tags and link"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Roles"
@@ -15591,7 +15780,7 @@ msgstr ""
 msgid "See the case study"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "See the live site"
 msgstr ""
 
@@ -15908,6 +16097,10 @@ msgstr "짧고 직접적입니다. 채용 공고에서 간결성을 요구하는
 msgid "Short and polite, for the recruiter"
 msgstr "채용 담당자를 위한 짧고 정중한 표현"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Short enough for its card"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Short link"
 msgstr ""
@@ -15969,7 +16162,7 @@ msgid "Show {provider} here"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/works-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Show {title} on the page"
 msgstr "페이지에 {title} 표시"
@@ -16151,6 +16344,10 @@ msgstr ""
 msgid "Shown in your timezone."
 msgstr "내 시간대로 표시됩니다."
 
+#: src/features/portfolio/works/work-document.tsx
+msgid "Shown on the page"
+msgstr ""
+
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Shown on your published page."
 msgstr ""
@@ -16266,6 +16463,10 @@ msgstr "상황, 행동, 결과"
 msgid "Size"
 msgstr "크기"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Sketches, iterations, and why you chose this direction."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Skill"
 msgstr "기술"
@@ -16345,6 +16546,11 @@ msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Soft gradient"
+msgstr ""
+
+#. Story outline for developers and engineers
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Software or engineering"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -16552,6 +16758,10 @@ msgstr "각 항목을 구체적인 동사로 시작하세요: 구축했다, 이�
 msgid "Start empty"
 msgstr ""
 
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Start empty, or from resume projects, pictures or a link."
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Start free"
 msgstr ""
@@ -16574,7 +16784,7 @@ msgid "Start from"
 msgstr "다음에서 시작"
 
 #: src/features/portfolio/blocks/block-list.tsx
-msgid "Start from a case study outline"
+msgid "Start from an outline"
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -16628,6 +16838,10 @@ msgstr "이력서를 입력하거나 우리가 아는 것에서 초안을 작성
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Start with an empty paragraph"
 msgstr ""
 
 #: src/features/resume/editor/write/add-section.tsx
@@ -16717,6 +16931,10 @@ msgstr ""
 msgid "Step 3 of 3 · Start with AI"
 msgstr ""
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Steps in order"
+msgstr ""
+
 #: src/features/assistant/prompt-box.tsx
 #: src/features/portfolio/ai/draft-form.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -16781,6 +16999,7 @@ msgid "Stories to bring"
 msgstr "가져갈 스토리"
 
 #: src/features/career/knowledge/stories.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Story"
 msgstr "이야기"
 
@@ -16880,6 +17099,10 @@ msgstr "90일 후의 성공 · 다음 단계"
 msgid "Suggest again"
 msgstr "다시 제안"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Suggest tags and my role for this work"
+msgstr ""
+
 #. Icon picker category: the icons resumes use most
 #: src/components/input/icon-picker-grid.tsx
 msgid "Suggested"
@@ -16910,7 +17133,7 @@ msgid "Summaries of your open applications"
 msgstr "진행 중인 지원 요약"
 
 #: src/features/homepage/resume.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/summary-editor.tsx
 #: src/libs/resume/section.tsx
 msgid "Summary"
@@ -17041,7 +17264,7 @@ msgstr "꼬리표"
 #: src/features/career/knowledge/stories.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/documents-page.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Tags"
 msgstr "태그"
 
@@ -17177,6 +17400,10 @@ msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "Tell Rezumi what's wrong with {name}'s portfolio. Only the Rezumi team reads reports, and the portfolio's owner is never told who sent one."
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Tell the story behind this work: the problem, what you did, and what changed."
 msgstr ""
 
 #: src/features/extension/removed-page.tsx
@@ -17455,6 +17682,11 @@ msgstr ""
 msgid "The AI's answer couldn't be used, so nothing changed. Try again; no credits were used."
 msgstr ""
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The angle"
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "The application that sent you here made an invalid authorization request. Return to the application and try again."
 msgstr "이곳으로 보낸 애플리케이션이 잘못된 인증 요청을 보냈습니다. 애플리케이션으로 돌아가 다시 시도해 보세요."
@@ -17471,13 +17703,33 @@ msgstr "이 서버에는 도우미가 설정되어 있지 않습니다. 누가 �
 msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
 msgstr "어시스턴트는 사용자의 키를 사용합니다. 연결하기 전까지는 아무데도 전송되지 않습니다."
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The audience"
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "The badge stays on your plan"
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The brief"
 msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "The built-in reader remains active."
 msgstr "내장 리더는 활성 상태로 유지됩니다."
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The campaign"
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The challenge"
+msgstr ""
 
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "The changes saved in the other tab or device are replaced by what you see here."
@@ -17523,6 +17775,11 @@ msgstr "코치는 이 지원 건에 한해서만 이 내용을 읽습니다."
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "코치가 말씀하신 사실을 저장하고 알려 드립니다. 실행 취소할 수 있습니다."
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The concept"
+msgstr ""
+
 #: src/features/portfolio/editor/save-problem.ts
 msgid "The connection dropped. Your changes are kept here, and saving tries again by itself."
 msgstr ""
@@ -17537,6 +17794,11 @@ msgstr "사본은 채용 지원서에 연결되므로 Check와 보조자는 해�
 
 #: src/dialogs/resume/template/data.ts
 msgid "The creative page: a block of the accent anchors the top corner, framing your portrait, beside an oversized name; two columns follow."
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The design process"
 msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
@@ -17572,16 +17834,38 @@ msgstr "파일을 이력서로 읽을 수 없습니다."
 msgid "The file must be viewable by anyone with the link."
 msgstr ""
 
+#. Story outline heading: where the pictures of the finished work go
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The final pieces"
+msgstr ""
+
 #: src/dialogs/resume/template/data.ts
 msgid "The formal Indonesian CV: a portrait beside the name and a column of personal details, with firm ruled section titles. Fits state-owned companies, civil service and local employers."
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The goal"
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "The greeting follows the name."
 msgstr "인사말은 이름을 따릅니다."
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The hook or point of view that made it yours."
+msgstr ""
+
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The HTTPS certificate couldn't be issued. Make sure the DNS records are still there, then check again."
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The idea behind it, and the channels you chose."
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The idea or mood behind the work."
 msgstr ""
 
 #: src/features/billing/invoice-button.tsx
@@ -17668,6 +17952,11 @@ msgstr "원래 링크는 이 작업에 유지됩니다."
 msgid "The original stays in the history."
 msgstr "원본은 기록에 남습니다."
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The outcome"
+msgstr ""
+
 #: src/features/portfolio/admin/review-page.tsx
 msgid "The owner can sign in again, and their public pages come back."
 msgstr ""
@@ -17746,6 +18035,11 @@ msgstr ""
 msgid "The picture is still too large after shrinking it. Try a smaller picture."
 msgstr ""
 
+#. Story outline heading: where to link or quote the written piece
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The piece"
+msgstr ""
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "The posting asks for “{label}”. If it's true for me, work it into my resume where it fits. Ask me first."
 msgstr "채용 공고에는 \"{label}\"가 필요합니다. 그것이 나에게 사실이라면 이력서에 적합한 곳에 적용하십시오. 먼저 나에게 물어보세요."
@@ -17774,12 +18068,18 @@ msgstr ""
 msgid "The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax invoice."
 msgstr ""
 
-#: src/features/portfolio/blocks/block-list.tsx
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
 msgid "The problem"
 msgstr ""
 
-#: src/features/portfolio/blocks/block-list.tsx
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
 msgid "The process"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The product, the team, and where this fits."
 msgstr ""
 
 #: src/features/portfolio/works/add-work/from-resume.tsx
@@ -17814,12 +18114,23 @@ msgstr "제공자의 응답을 확인할 수 없습니다. 다시 시도해 보�
 msgid "The reason is kept for Insights. Linked documents aren't touched."
 msgstr "이유는 Insights에 보관됩니다. 연결된 문서는 건드리지 않습니다."
 
+#. Story outline heading: how readers and the client responded
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The reception"
+msgstr ""
+
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The records aren't visible yet. Check again later."
 msgstr "아직 레코드가 확인되지 않습니다. 나중에 다시 확인하세요."
 
-#: src/features/portfolio/blocks/block-list.tsx
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
 msgid "The result"
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The results"
 msgstr ""
 
 #: src/routes/builder/letter/-components/design-panel.tsx
@@ -17908,6 +18219,20 @@ msgstr "서비스가 API 키를 거부했습니다. 키를 확인하고 다시 �
 msgid "The service's quota is used up. Check your plan with the service, or try again later."
 msgstr "서비스 사용량 한도를 모두 소진했습니다. 서비스 요금제를 확인하거나 나중에 다시 시도해 보세요."
 
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The solution"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The steps you took and the choices that mattered."
+msgstr ""
+
+#. Story outline heading
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The strategy"
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "The test didn't run. Try again."
 msgstr "테스트가 실행되지 않았습니다. 다시 시도해 보세요."
@@ -17928,8 +18253,12 @@ msgstr ""
 msgid "The top of the first page does not look like a name."
 msgstr "첫 페이지 상단이 이름처럼 보이지 않습니다."
 
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "The trade-offs you made, and why."
+msgstr ""
+
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "The work and its blocks leave the portfolio. You can undo this."
 msgstr ""
 
@@ -18546,6 +18875,10 @@ msgid "Tighten"
 msgstr "간결하게"
 
 #: src/features/assistant/assistant-panel.tsx
+msgid "Tighten this work's title and summary"
+msgstr ""
+
+#: src/features/assistant/assistant-panel.tsx
 msgid "Tighten to one page"
 msgstr "한 페이지로 압축"
 
@@ -18623,7 +18956,7 @@ msgstr "팁"
 #: src/features/career/knowledge/stories.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/link-block.tsx
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Title"
 msgstr "제목"
@@ -18956,6 +19289,10 @@ msgstr "2단계 인증을 끄는 중…"
 msgid "Turning on two-step verification…"
 msgstr "2단계 인증을 켜는 중…"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Turns numbers in the text into a metrics block"
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "Two bullets run over two lines"
 msgstr ""
@@ -19002,6 +19339,18 @@ msgstr "유형"
 msgctxt "DNS record"
 msgid "Type"
 msgstr "유형"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Type “/” to add a link to the code or a live demo."
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Type “/” to add your pictures or a video."
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Type “/” to link to it, or quote a short part."
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Type <0>{CONFIRMATION}</0> to confirm"
@@ -19201,11 +19550,14 @@ msgstr ""
 msgid "Untitled testimonial"
 msgstr ""
 
+#: src/features/assistant/assistant-panel.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/save-problem.ts
-#: src/features/portfolio/works/work-editor.tsx
-#: src/features/portfolio/works/works-form.tsx
+#: src/features/portfolio/works/work-canvas.tsx
+#: src/features/portfolio/works/work-document.tsx
+#: src/features/portfolio/works/works-panel.tsx
 msgid "Untitled work"
 msgstr ""
 
@@ -20031,6 +20383,10 @@ msgstr "잘됨"
 msgid "What"
 msgstr ""
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "What a client or user said"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "What a parser reads"
 msgstr "파서가 읽는 내용"
@@ -20047,13 +20403,25 @@ msgstr "무엇을 하고 계신가요?"
 msgid "What changed? Leave blank if you can’t support it."
 msgstr "무엇이 달라졌나요? 뒷받침할 수 없다면 비워 두세요."
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What changed? Put the numbers in the metrics below."
+msgstr ""
+
 #: src/features/career/workspace/debrief.tsx
 msgid "What did they ask?"
 msgstr "어떤 질문을 받았나요?"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What did this need to achieve, and by when?"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "What did you do, specifically?"
 msgstr "구체적으로 무엇을 했나요?"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What did you learn from users or data?"
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "What did you say, as close as you remember?"
@@ -20066,6 +20434,10 @@ msgstr "어떤 형식을 다운로드할 수 있나요?"
 #: src/features/resume/editor/write/add-section.tsx
 msgid "What goes in it?"
 msgstr "그 안에는 무엇이 들어있나요?"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What improved: speed, cost, reliability? Put the numbers below."
+msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "What interview answers should I practice?"
@@ -20147,9 +20519,25 @@ msgstr ""
 msgid "What to do"
 msgstr "해야 할 일"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What was asked for, in a line or two."
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "What was happening before you started?"
 msgstr "시작하기 전에 어떤 상황이었나요?"
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What was slow, hard or broken?"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What wasn't working, and for whom?"
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What went out, and when. Type “/” to add the creative."
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "What were you responsible for?"
@@ -20167,14 +20555,14 @@ msgstr "무엇을 다르게 하겠나요?"
 msgid "What you add to your Profile later shows up here. You can also pick a resume later in Publish."
 msgstr ""
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "What you designed and why it works. Type “/” to add screens."
+msgstr ""
+
 #. placeholder {0}: requirement.text
 #: src/features/career/workspace/fit.tsx
 msgid "What you did: {0}"
 msgstr "한 일: {0}"
-
-#: src/features/portfolio/works/work-editor.tsx
-msgid "What you made, for whom, and what changed."
-msgstr ""
 
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "What you sent"
@@ -20307,6 +20695,10 @@ msgstr ""
 msgid "Who can see my resume?"
 msgstr "내 이력서를 누가 볼 수 있나요?"
 
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Who were you trying to reach?"
+msgstr ""
+
 #: src/features/portfolio/editor/section-forms.tsx
 msgid "Who you are, what you do best, and what you're looking for."
 msgstr ""
@@ -20375,6 +20767,7 @@ msgstr "텍스트를 추출하면 단어들이 서로 붙어버립니다."
 
 #: src/features/portfolio/page-text.ts
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Work"
 msgstr ""
 
@@ -20384,6 +20777,15 @@ msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Work opened by day"
+msgstr ""
+
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Work view"
+msgstr ""
+
+#. placeholder {0}: document.focus.title.trim() || t`Untitled work`
+#: src/features/assistant/conversation.tsx
+msgid "Work: {0}"
 msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
@@ -20457,9 +20859,14 @@ msgstr "특수한 간격 없이 하나의 이어진 텍스트로 작성하세요
 msgid "Write it down while it's fresh"
 msgstr "기억이 생생할 때 적어 두세요"
 
+#: src/features/portfolio/blocks/block-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Write it myself"
 msgstr "직접 작성해 보세요"
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Write it with AI"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "Write letters"
@@ -20489,12 +20896,21 @@ msgstr ""
 msgid "Write your intro, About me and the story of your work from your resume, then edit it however you like. You can undo it."
 msgstr ""
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Write, or type “/” for headings, lists, pictures and more…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
 msgstr "글쓰기"
+
+#. placeholder {0}: open.title.trim() || t`Untitled work`
+#: src/features/portfolio/works/work-canvas.tsx
+msgid "Writing {0}"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Writing an answer…"
@@ -20503,6 +20919,11 @@ msgstr "답변 작성 중…"
 #: src/features/settings/ai/providers.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "작성 도움, 맞춤 제안, 어시스턴트. 따로 선택하지 않으면 기본 제공업체가 사용됩니다. 키는 암호화된 상태로 보관됩니다."
+
+#. Story outline for writers, journalists and content work
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Writing or content"
+msgstr ""
 
 #: src/features/portfolio/ai/draft-form.tsx
 msgid "Writing your draft…"
@@ -20517,7 +20938,7 @@ msgid "Written offer"
 msgstr "서면 오퍼"
 
 #: src/features/portfolio/page-text.ts
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Year"
 msgstr ""
 
@@ -21342,7 +21763,7 @@ msgstr "이력서에서 \"I\"와 \"my\"를 사용하고 있습니다."
 msgid "Your resume, published as a website"
 msgstr ""
 
-#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/work-document.tsx
 msgid "Your role"
 msgstr ""
 
@@ -21388,6 +21809,10 @@ msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Your subscription is set to end. Keep it first to change the plan."
+msgstr ""
+
+#: src/features/portfolio/blocks/story-templates.ts
+msgid "Your title, the team, and what you owned."
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx

@@ -1,0 +1,11 @@
+/*
+ * The question under a story outline's heading (`heading-hints.ts`), shown like the editor's placeholder in the empty
+ * paragraph, focused or not. More specific than HeroUI Pro's `.is-empty` placeholder, so it shows instead of that one.
+ */
+.rich-text-editor__prosemirror p.heading-hint::before {
+	content: attr(data-hint);
+	float: inline-start;
+	height: 0;
+	color: var(--muted);
+	pointer-events: none;
+}

@@ -14,7 +14,7 @@ import { createNoindexFollowMeta } from "@/libs/seo";
 
 const searchSchema = z.object({
 	// Content is the default and stays out of the URL.
-	mode: z.enum(["design", "share"]).optional().catch(undefined),
+	mode: z.enum(["work", "design", "share"]).optional().catch(undefined),
 	// The assistant on a conversation ("new" for a fresh one), and a link's message for its composer (sent on Send).
 	assistant: z.string().optional().catch(undefined),
 	ask: z.string().optional().catch(undefined),
