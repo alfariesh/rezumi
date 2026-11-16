@@ -1,10 +1,11 @@
-import { ProgressBar } from "@heroui/react";
+import { ProgressBar, Typography } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import { usePortfolioEditorUi } from "../editor/ui";
 import { orpc } from "@/libs/orpc/client";
+import { renderAsSpan } from "@/libs/typography";
 
 const MEGABYTE = 1024 * 1024;
 
@@ -52,13 +53,15 @@ export function StorageMeter() {
 			maxValue={Math.max(max, 1)}
 			size="sm"
 			color={used >= max ? "danger" : "default"}
-			className="grid gap-1.5"
+			className="grid gap-2"
 		>
-			<span className="flex justify-between text-xs text-muted">
-				<span>{t`Pictures and PDFs`}</span>
-				<span>{t`${size} of ${total}`}</span>
+			<span className="flex items-baseline justify-between gap-2">
+				<Typography type="h6" render={renderAsSpan}>
+					{t`Pictures and PDFs`}
+				</Typography>
+				<span className="text-xs text-muted tabular-nums">{t`${size} of ${total}`}</span>
 			</span>
-			<ProgressBar.Track>
+			<ProgressBar.Track className="h-2">
 				<ProgressBar.Fill />
 			</ProgressBar.Track>
 		</ProgressBar>

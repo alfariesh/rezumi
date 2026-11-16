@@ -113,7 +113,8 @@ function WorksList() {
 
 	return (
 		<>
-			<div className="flex items-center gap-2">
+			{/* Where focus goes once the last work is deleted: Add work. */}
+			<div ref={fallbackRef} className="flex items-center gap-2">
 				<span className="flex-1 text-xs text-muted">
 					{items.length > 0 ? (
 						<Trans>
@@ -128,6 +129,8 @@ function WorksList() {
 					<Trans>Add work</Trans>
 				</Button>
 			</div>
+
+			<StorageMeter />
 
 			{items.length === 0 && (
 				<button
@@ -193,9 +196,7 @@ function WorksList() {
 					})}
 				</ul>
 			</SortableProvider>
-			<div ref={fallbackRef}>
-				<StorageMeter />
-			</div>
+
 			{adding && <AddWorkDialog onClose={() => setAdding(false)} />}
 		</>
 	);
