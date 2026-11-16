@@ -4348,6 +4348,7 @@ msgstr ""
 #: src/dialogs/auth/change-password.tsx
 #: src/dialogs/auth/disable-two-factor.tsx
 #: src/dialogs/auth/enable-two-factor.tsx
+#: src/dialogs/manager.tsx
 #: src/dialogs/resume/index.tsx
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -4966,7 +4967,6 @@ msgstr ""
 msgid "Couldn't add that fact. Try again."
 msgstr "Tega dejstva ni bilo mogoče dodati. Poskusite znova."
 
-#: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Couldn't add the application. Try again."
 msgstr "Prijave ni bilo mogoče dodati. Poskusite znova."
@@ -5404,6 +5404,14 @@ msgstr "Dokumentov ni bilo mogoče shraniti. Poskusite znova."
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Couldn't save the follow-up. Try again."
 msgstr "Nadaljnjega sporočila ni bilo mogoče shraniti. Poskusite znova."
+
+#: src/features/applications/save-job-error.ts
+msgid "Couldn't save the job just now. Your details are still here. Try again."
+msgstr ""
+
+#: src/features/applications/save-job-error.ts
+msgid "Couldn't save the job. Your details are still here. Try again."
+msgstr ""
 
 #: src/features/applications/components/application-notes.tsx
 msgid "Couldn't save the notes. Try again."
@@ -11397,6 +11405,10 @@ msgstr "V tej objavi za delo ni izstopal noben izraz."
 #: src/features/ats-checker/messages.ts
 msgid "No text could be read from this file."
 msgstr "Iz te datoteke ni bilo mogoče prebrati besedila."
+
+#: src/features/career/offers.tsx
+msgid "No time given"
+msgstr ""
 
 #: src/features/settings/general.tsx
 msgid "No timezone matches."
@@ -17483,6 +17495,10 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Čeki so mehanski. To vpraša jezikovni model, kako bi se lahko bralec odzval na vaše vnose na seznamu, in predlaga prepise. To ni del ocene."
 
+#: src/features/applications/save-job-error.ts
+msgid "The chosen resume or letter is no longer available. Choose another one, or None."
+msgstr ""
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "The city list didn't load. Check your connection, then type again."
 msgstr ""
@@ -18285,6 +18301,7 @@ msgstr "Ta stran je zelo gosto zapolnjena."
 msgid "This page may have moved. Search the list of pages, or start from the introduction."
 msgstr ""
 
+#: src/dialogs/manager.tsx
 #: src/features/portfolio/editor/chunk-boundary.tsx
 msgid "This part didn't load. Check your connection, then try again."
 msgstr ""
@@ -18835,6 +18852,7 @@ msgid "Try a sample"
 msgstr "Poskusite vzorec"
 
 #: src/components/layout/error-screen.tsx
+#: src/dialogs/manager.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/billing/payment-return.tsx
 #: src/features/career/coach-chat.tsx
