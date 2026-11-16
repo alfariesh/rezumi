@@ -9,13 +9,22 @@ import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { isDateOnly } from "@rezumi/schema/career";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatList } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
 import { CareerLoadError } from "./load-state";
-import { defaultPair, formatMoney, matchingPlace, meetsMinimum, moneyDifference, sameTerms } from "./offer-compare";
+import {
+	dateOnlyDeadline,
+	defaultPair,
+	formatMoney,
+	matchingPlace,
+	meetsMinimum,
+	moneyDifference,
+	sameTerms,
+} from "./offer-compare";
 import { CareerWidget, useCareerTime, useNow } from "./shared";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
@@ -406,7 +415,7 @@ function OfferHeader({ offer, offers, otherId, onChoose }: OfferHeaderProps) {
 
 /** Each term of one offer, with notes against the other column where they can be compared honestly. */
 function useCells() {
-	const { locale, when, relative } = useCareerTime();
+	const { locale, timeZone, when, relative } = useCareerTime();
 	const now = useNow();
 
 	return (offer: Offer, other: Offer | undefined): Record<string, Cell> => {
@@ -451,7 +460,10 @@ function useCells() {
 					: plural(days, { one: "# office day a week", other: "# office days a week" });
 		const place = [terms.location.trim(), office].filter(Boolean).join(" · ");
 
-		const respondBy = terms.respondBy ? new Date(terms.respondBy) : null;
+		// A deadline the offer gave as a bare day shows that day only: no time it never stated.
+		const deadlineDay =
+			terms.respondBy && isDateOnly(terms.respondBy) ? dateOnlyDeadline(terms.respondBy, now, timeZone, locale) : null;
+		const respondBy = terms.respondBy && !deadlineDay ? new Date(terms.respondBy) : null;
 		const hoursLeft = respondBy ? (respondBy.getTime() - now.getTime()) / 3_600_000 : null;
 
 		return {
@@ -485,8 +497,15 @@ function useCells() {
 			leave: text(terms.leave),
 			learning: terms.learning === null ? unknown : { value: money(terms.learning), notes: better("learning") },
 			other: text(terms.other),
-			respondBy:
-				respondBy && hoursLeft !== null
+			respondBy: deadlineDay
+				? {
+						value: deadlineDay.label,
+						notes: [
+							{ icon: "clock", tone: deadlineDay.days <= 1 ? "warn" : "muted", text: deadlineDay.relative },
+							{ icon: "info", tone: "muted", text: t`No time given` },
+						],
+					}
+				: respondBy && hoursLeft !== null
 					? {
 							value: when(respondBy),
 							notes: [{ icon: "clock", tone: hoursLeft < 48 ? "warn" : "muted", text: relative(respondBy, now) }],

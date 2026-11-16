@@ -4348,6 +4348,7 @@ msgstr ""
 #: src/dialogs/auth/change-password.tsx
 #: src/dialogs/auth/disable-two-factor.tsx
 #: src/dialogs/auth/enable-two-factor.tsx
+#: src/dialogs/manager.tsx
 #: src/dialogs/resume/index.tsx
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -4966,7 +4967,6 @@ msgstr ""
 msgid "Couldn't add that fact. Try again."
 msgstr "वह तथ्य जोड़ा नहीं जा सका। पुनः प्रयास करें।"
 
-#: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Couldn't add the application. Try again."
 msgstr "आवेदन जोड़ा नहीं जा सका। पुनः प्रयास करें।"
@@ -5404,6 +5404,14 @@ msgstr "दस्तावेज़ सहेजे नहीं जा सक�
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Couldn't save the follow-up. Try again."
 msgstr "फ़ॉलो-अप सहेजा नहीं जा सका। पुनः प्रयास करें।"
+
+#: src/features/applications/save-job-error.ts
+msgid "Couldn't save the job just now. Your details are still here. Try again."
+msgstr ""
+
+#: src/features/applications/save-job-error.ts
+msgid "Couldn't save the job. Your details are still here. Try again."
+msgstr ""
 
 #: src/features/applications/components/application-notes.tsx
 msgid "Couldn't save the notes. Try again."
@@ -11397,6 +11405,10 @@ msgstr "इस नौकरी पोस्टिंग में कोई भ�
 #: src/features/ats-checker/messages.ts
 msgid "No text could be read from this file."
 msgstr "इस फ़ाइल से कोई टेक्स्ट पढ़ा नहीं जा सका।"
+
+#: src/features/career/offers.tsx
+msgid "No time given"
+msgstr ""
 
 #: src/features/settings/general.tsx
 msgid "No timezone matches."
@@ -17483,6 +17495,10 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "जाँचें यांत्रिक हैं. यह एक भाषा मॉडल से पूछता है कि एक पाठक आपकी सूची प्रविष्टियों पर कैसे प्रतिक्रिया दे सकता है और फिर से लिखने का सुझाव देता है। यह स्कोर का हिस्सा नहीं है."
 
+#: src/features/applications/save-job-error.ts
+msgid "The chosen resume or letter is no longer available. Choose another one, or None."
+msgstr ""
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "The city list didn't load. Check your connection, then type again."
 msgstr ""
@@ -18285,6 +18301,7 @@ msgstr "यह पेज बहुत घना भरा हुआ है।"
 msgid "This page may have moved. Search the list of pages, or start from the introduction."
 msgstr ""
 
+#: src/dialogs/manager.tsx
 #: src/features/portfolio/editor/chunk-boundary.tsx
 msgid "This part didn't load. Check your connection, then try again."
 msgstr ""
@@ -18835,6 +18852,7 @@ msgid "Try a sample"
 msgstr "एक नमूना आज़माएँ"
 
 #: src/components/layout/error-screen.tsx
+#: src/dialogs/manager.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/billing/payment-return.tsx
 #: src/features/career/coach-chat.tsx

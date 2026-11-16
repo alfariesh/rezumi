@@ -18,7 +18,7 @@ import {
 } from "./facts";
 import { entriesWithNumbers, findMetricsOutputSchema, findResumeMetrics } from "./metrics";
 import { rewriteField, rewriteInputSchema } from "./rewrite";
-import { resumeForDraft, withoutContact } from "./source";
+import { noteLanguage, resumeForDraft, withoutContact } from "./source";
 
 /** A model that answers `text` and remembers what it was asked. */
 function modelAnswering(text: string) {
@@ -248,6 +248,34 @@ describe("portfolio.ai.draft", () => {
 		for (const secret of ["Nadia Rahma", "nadia@contoh.test", "812 3456"]) expect(prompt).not.toContain(secret);
 	});
 
+	it("writes in the language the note asks for, over the page's", async () => {
+		const english = parseWritablePortfolioData({ ...data, locale: "en-US" });
+		const { model, prompts } = modelAnswering(answer());
+		const note =
+			"QA test kedua. WAJIB tulis greeting dan About me dalam bahasa Indonesia, bukan Inggris. Fakta: saya QA engineer manual selama 3 tahun, menguji aplikasi web dan menulis laporan bug. Jangan tambahkan fakta lain.";
+		await draftPortfolio({
+			data: english,
+			source: { data: resumeOf("en-US", "<p>Tested web apps.</p>") },
+			model,
+			note,
+		});
+		const prompt = prompts[0] ?? "";
+		expect(prompt).toContain("Language of the page: American English");
+		expect(prompt).toContain("Language the note asks for: Indonesian");
+	});
+
+	it("adds no language when the note asks for the page's own", async () => {
+		const { model, prompts } = modelAnswering(answer());
+		await draftPortfolio({ data, source: { data: indonesian }, model, note: "Tulis dalam bahasa Indonesia saja." });
+		expect(prompts[0]).not.toContain("Language the note asks for:");
+	});
+
+	it("skips the name check when the note asks for another language than the resume's", async () => {
+		const { model } = modelAnswering(answer({ greeting: "I design products in Germany." }));
+		const result = await draftPortfolio({ data, source: { data: indonesian }, model, note: "Write it in English." });
+		expect(result.greeting).toBe("I design products in Germany.");
+	});
+
 	it("leaves out sentences with numbers or names the input doesn't have", async () => {
 		const { model } = modelAnswering(
 			answer({
@@ -329,6 +357,32 @@ describe("portfolio.ai.draft", () => {
 		await expect(draftPortfolio({ data, source: { data: indonesian }, model })).rejects.toMatchObject({
 			code: "PORTFOLIO_AI_UNUSABLE",
 		});
+	});
+});
+
+describe("the language a note asks for", () => {
+	it("reads an ask in Indonesian or English", () => {
+		expect(noteLanguage("WAJIB tulis greeting dan About me dalam bahasa Indonesia, bukan Inggris.")).toBe("id");
+		expect(noteLanguage("Buat portofolio berbahasa Indonesia ya")).toBe("id");
+		expect(noteLanguage("Tolong tuliskan dalam bahasa Inggris saja")).toBe("en");
+		expect(noteLanguage("Please write everything in Indonesian.")).toBe("id");
+		expect(noteLanguage("Write it in Japanese, not in English.")).toBe("ja");
+		expect(noteLanguage("Stress the checkout. Keep the whole page in Dutch")).toBe("nl");
+	});
+
+	it("doesn't take a fact about the person, or a language they don't want, as an ask", () => {
+		for (const note of [
+			"",
+			"Stress my work for Indonesian startups.",
+			"I write documentation in English.",
+			"Saya menggunakan bahasa Inggris setiap hari.",
+			"Saya tulis artikel dalam bahasa Inggris.",
+			"Jangan tulis dalam bahasa Inggris.",
+			"Don't write it in English.",
+			"Write it, not in English.",
+			"Write it in English. Tulis dalam bahasa Indonesia.",
+		])
+			expect(noteLanguage(note), note).toBeNull();
 	});
 });
 

@@ -63,12 +63,103 @@ export function writeTarget(draft: ResumeData, target: ProposalTarget, value: st
 	if (entry) entry[target.field] = value;
 }
 
-/** A pending proposal can be applied only while its passage is still in the text, word for word. */
+// A tag, or a run of text up to the next one. A stray "<" that opens no tag is text.
+const HTML_TOKEN = /<[^<>]*>|[^<]+|</g;
+const TAG_PARTS = /^<\s*(\/?)\s*([a-z][\w-]*)([\s\S]*?)\/?\s*>$/i;
+const ATTRIBUTE = /([^\s=/]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+)))?/g;
+
+const escapeText = (text: string) => text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+/** Text as one spelling: entities decoded (bar `&`, `<` and `>`), whitespace (no-break spaces too) collapsed. */
+const canonicalText = (text: string) => {
+	const spelled = escapeText(decodeEntities(text)).replace(/\s+/g, " ");
+	// Whitespace between tags (`</p>\n<p>`) is layout, not words.
+	return spelled === " " ? "" : spelled;
+};
+
+const canonicalStyle = (style: string) =>
+	style
+		.split(";")
+		.map((rule) => rule.replace(/\s*:\s*/, ":").trim())
+		.filter(Boolean)
+		.join(";");
+
+function canonicalTag(tag: string) {
+	const parts = TAG_PARTS.exec(tag);
+	if (!parts) return tag;
+	const name = (parts[2] ?? "").toLowerCase();
+	if (parts[1]) return `</${name}>`;
+
+	const attributes = [...(parts[3] ?? "").matchAll(ATTRIBUTE)].map((match) => {
+		const attribute = (match[1] ?? "").toLowerCase();
+		const raw = match[2] ?? match[3] ?? match[4];
+		if (raw === undefined) return attribute;
+		const value = decodeEntities(raw);
+		return `${attribute}="${escapeText(attribute === "style" ? canonicalStyle(value) : value.trim())}"`;
+	});
+	return `<${[name, ...attributes].join(" ")}>`;
+}
+
+/**
+ * HTML in one spelling, with where each tag starts and ends in the original. The server's sanitizer and the browser's
+ * editor write the same passage differently (`&#39;` or `'`, `&nbsp;` or a no-break space, `<br>` or `<br />`,
+ * `text-align: center;` or `text-align:center`); words and tags still count, so changed text or formatting differs.
+ */
+function canonicalize(html: string) {
+	let text = "";
+	// Canonical offset → original offset, at the start and end of each tag (a match starts and ends on a tag).
+	const starts = new Map<number, number>();
+	const ends = new Map<number, number>();
+
+	for (const match of html.matchAll(HTML_TOKEN)) {
+		const token = match[0];
+		const tag = token.length > 1 && token.startsWith("<");
+		const spelled = tag ? canonicalTag(token) : canonicalText(token);
+		if (!spelled) continue;
+		if (tag) starts.set(text.length, match.index);
+		text += spelled;
+		if (tag) ends.set(text.length, match.index + token.length);
+	}
+
+	return { text, starts, ends };
+}
+
+/** HTML in one spelling, for comparing passages however they were written. */
+export const canonicalHtml = (html: string) => canonicalize(html).text;
+
+/**
+ * Where a passage (whole blocks of HTML) sits in a field: once, word for word or spelled differently. `undefined`
+ * when it's gone or appears more than once.
+ */
+function findPassage(value: string, html: string): { start: number; end: number } | undefined {
+	const index = value.indexOf(html);
+	if (index >= 0 && value.indexOf(html, index + 1) >= 0) return undefined;
+
+	// Once, however it's spelled: the same paragraph written two ways is still a repeat.
+	const passage = canonicalHtml(html);
+	if (!passage) return undefined;
+	const field = canonicalize(value);
+	const at = field.text.indexOf(passage);
+	if (at < 0 || field.text.indexOf(passage, at + 1) >= 0) return undefined;
+	if (index >= 0) return { start: index, end: index + html.length };
+
+	const start = field.starts.get(at);
+	const end = field.ends.get(at + passage.length);
+	return start === undefined || end === undefined ? undefined : { start, end };
+}
+
+/** Whether the field holds this HTML, however it's spelled. */
+const holds = (value: string, html: string) =>
+	value.includes(html) || canonicalHtml(value).includes(canonicalHtml(html));
+
+/**
+ * A pending proposal can be applied only while its passage is still in the text, word for word. Spelling isn't
+ * wording: the letter the editor holds and the one the server sanitized and stored may write it differently.
+ */
 export function canApplyTo(value: string | undefined, { before }: Pick<Proposal, "before">) {
 	if (value === undefined) return false;
 	if (!before) return value === "";
-	const index = value.indexOf(before);
-	return index >= 0 && value.indexOf(before, index + 1) < 0;
+	return findPassage(value, before) !== undefined;
 }
 
 export const canApply = (data: ResumeData, proposal: Proposal) =>
@@ -81,7 +172,7 @@ export const canApply = (data: ResumeData, proposal: Proposal) =>
 export function getStateIn(value: string, proposal: Proposal): ProposalState {
 	if (proposal.status === "rejected") return "rejected";
 	if (proposal.status === "accepted")
-		return canApplyTo(value, proposal) && !value.includes(proposal.after) ? "pending" : "accepted";
+		return canApplyTo(value, proposal) && !holds(value, proposal.after) ? "pending" : "accepted";
 	return canApplyTo(value, proposal) ? "pending" : "stale";
 }
 
@@ -90,9 +181,12 @@ export const getProposalState = (data: ResumeData, proposal: Proposal): Proposal
 
 /** The text with `after` in place of `before`, or `undefined` when the proposal is out of date. */
 export function applyTo(value: string | undefined, proposal: Pick<Proposal, "before" | "after">) {
-	if (value === undefined || !canApplyTo(value, proposal)) return undefined;
-	// A replacer function, so "$&" or "$1" in the new text stay literal.
-	return value.replace(proposal.before, () => proposal.after);
+	if (value === undefined) return undefined;
+	if (!proposal.before) return value === "" ? proposal.after : undefined;
+	const found = findPassage(value, proposal.before);
+	if (!found) return undefined;
+	// Replaces the passage as this field spells it.
+	return `${value.slice(0, found.start)}${proposal.after}${value.slice(found.end)}`;
 }
 
 /** Puts `after` in place of `before`. Returns false (changing nothing) when the proposal is out of date. */
@@ -127,15 +221,16 @@ export function replaceBlockText(block: string, text: string): string {
  * new block of the same kind follows it, so a new bullet lands as its own list item.
  */
 export function additionAfter(value: string, passageHtml: string, text: string) {
-	if (!canApplyTo(value, { before: passageHtml })) return undefined;
-	const index = value.indexOf(passageHtml);
-	if (index < 0) return undefined;
+	const found = passageHtml ? findPassage(value, passageHtml) : value === "" ? { start: 0, end: 0 } : undefined;
+	if (!found) return undefined;
+	// The passage as this field spells it.
+	const passage = value.slice(found.start, found.end);
 
-	const block = replaceBlockText(passageHtml, text);
-	const closing = /^\s*<\/li>/i.exec(value.slice(index + passageHtml.length));
-	if (!closing) return { before: passageHtml, after: `${passageHtml}${block}` };
+	const block = replaceBlockText(passage, text);
+	const closing = /^\s*<\/li>/i.exec(value.slice(found.end));
+	if (!closing) return { before: passage, after: `${passage}${block}` };
 
-	const before = `${passageHtml}${closing[0]}`;
+	const before = `${passage}${closing[0]}`;
 	return { before, after: `${before}<li>${block}</li>` };
 }
 

@@ -4348,6 +4348,7 @@ msgstr ""
 #: src/dialogs/auth/change-password.tsx
 #: src/dialogs/auth/disable-two-factor.tsx
 #: src/dialogs/auth/enable-two-factor.tsx
+#: src/dialogs/manager.tsx
 #: src/dialogs/resume/index.tsx
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -4966,7 +4967,6 @@ msgstr ""
 msgid "Couldn't add that fact. Try again."
 msgstr "해당 사실을 추가할 수 없습니다. 다시 시도해 보세요."
 
-#: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Couldn't add the application. Try again."
 msgstr "지원을 추가할 수 없습니다. 다시 시도해 보세요."
@@ -5404,6 +5404,14 @@ msgstr "서류를 저장할 수 없습니다. 다시 시도해 보세요."
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Couldn't save the follow-up. Try again."
 msgstr "후속 연락을 저장할 수 없습니다. 다시 시도해 보세요."
+
+#: src/features/applications/save-job-error.ts
+msgid "Couldn't save the job just now. Your details are still here. Try again."
+msgstr ""
+
+#: src/features/applications/save-job-error.ts
+msgid "Couldn't save the job. Your details are still here. Try again."
+msgstr ""
 
 #: src/features/applications/components/application-notes.tsx
 msgid "Couldn't save the notes. Try again."
@@ -11397,6 +11405,10 @@ msgstr "이 채용 공고에는 눈에 띄는 용어가 없습니다."
 #: src/features/ats-checker/messages.ts
 msgid "No text could be read from this file."
 msgstr "이 파일에서 텍스트를 읽을 수 없습니다."
+
+#: src/features/career/offers.tsx
+msgid "No time given"
+msgstr ""
 
 #: src/features/settings/general.tsx
 msgid "No timezone matches."
@@ -17483,6 +17495,10 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "수표는 기계식입니다. 이는 독자가 목록 항목에 어떻게 반응할 것인지 언어 모델에 묻고 재작성을 제안합니다. 점수에 포함되지 않습니다."
 
+#: src/features/applications/save-job-error.ts
+msgid "The chosen resume or letter is no longer available. Choose another one, or None."
+msgstr ""
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "The city list didn't load. Check your connection, then type again."
 msgstr ""
@@ -18285,6 +18301,7 @@ msgstr "이 페이지는 내용이 매우 빽빽하게 채워져 있습니다."
 msgid "This page may have moved. Search the list of pages, or start from the introduction."
 msgstr ""
 
+#: src/dialogs/manager.tsx
 #: src/features/portfolio/editor/chunk-boundary.tsx
 msgid "This part didn't load. Check your connection, then try again."
 msgstr ""
@@ -18835,6 +18852,7 @@ msgid "Try a sample"
 msgstr "샘플을 사용해 보세요"
 
 #: src/components/layout/error-screen.tsx
+#: src/dialogs/manager.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/billing/payment-return.tsx
 #: src/features/career/coach-chat.tsx

@@ -4348,6 +4348,7 @@ msgstr ""
 #: src/dialogs/auth/change-password.tsx
 #: src/dialogs/auth/disable-two-factor.tsx
 #: src/dialogs/auth/enable-two-factor.tsx
+#: src/dialogs/manager.tsx
 #: src/dialogs/resume/index.tsx
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -4966,7 +4967,6 @@ msgstr ""
 msgid "Couldn't add that fact. Try again."
 msgstr "無法新增該事實。請再試一次。"
 
-#: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Couldn't add the application. Try again."
 msgstr "無法新增應徵紀錄。請再試一次。"
@@ -5404,6 +5404,14 @@ msgstr "無法儲存文件。請再試一次。"
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Couldn't save the follow-up. Try again."
 msgstr "無法儲存後續追蹤。請再試一次。"
+
+#: src/features/applications/save-job-error.ts
+msgid "Couldn't save the job just now. Your details are still here. Try again."
+msgstr ""
+
+#: src/features/applications/save-job-error.ts
+msgid "Couldn't save the job. Your details are still here. Try again."
+msgstr ""
 
 #: src/features/applications/components/application-notes.tsx
 msgid "Couldn't save the notes. Try again."
@@ -11397,6 +11405,10 @@ msgstr "這份招聘啟事中沒有任何突出的條款。"
 #: src/features/ats-checker/messages.ts
 msgid "No text could be read from this file."
 msgstr "無法從該檔案中讀取任何文字。"
+
+#: src/features/career/offers.tsx
+msgid "No time given"
+msgstr ""
 
 #: src/features/settings/general.tsx
 msgid "No timezone matches."
@@ -17483,6 +17495,10 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "檢查是機械的。這會詢問語言模型讀者對您的清單條目有何反應並建議重寫。它不是分數的一部分。"
 
+#: src/features/applications/save-job-error.ts
+msgid "The chosen resume or letter is no longer available. Choose another one, or None."
+msgstr ""
+
 #: src/features/portfolio/location/location-fields.tsx
 msgid "The city list didn't load. Check your connection, then type again."
 msgstr ""
@@ -18285,6 +18301,7 @@ msgstr "此頁面排得非常密集。"
 msgid "This page may have moved. Search the list of pages, or start from the introduction."
 msgstr ""
 
+#: src/dialogs/manager.tsx
 #: src/features/portfolio/editor/chunk-boundary.tsx
 msgid "This part didn't load. Check your connection, then try again."
 msgstr ""
@@ -18835,6 +18852,7 @@ msgid "Try a sample"
 msgstr "嘗試樣品"
 
 #: src/components/layout/error-screen.tsx
+#: src/dialogs/manager.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/billing/payment-return.tsx
 #: src/features/career/coach-chat.tsx

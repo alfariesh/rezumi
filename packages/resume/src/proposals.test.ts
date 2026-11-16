@@ -1,7 +1,19 @@
+import type { Proposal } from "./proposals";
 import { describe, expect, it } from "vite-plus/test";
 import { experienceItemSchema } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
-import { additionAfter, applyProposal, applyTo, collectLetterPassages, collectPassages, readTarget } from "./proposals";
+import {
+	additionAfter,
+	applyProposal,
+	applyTo,
+	canApplyTo,
+	canonicalHtml,
+	collectLetterPassages,
+	collectPassages,
+	getStateIn,
+	readTarget,
+	replaceBlockText,
+} from "./proposals";
 
 const labels = { body: "Letter", bullet: (n: number) => `bullet ${n}`, paragraph: (n: number) => `paragraph ${n}` };
 
@@ -107,5 +119,92 @@ describe("collectLetterPassages", () => {
 		expect(empty).toMatchObject({ html: "", text: "", location: "Letter" });
 		// Writing into it replaces the empty text.
 		expect(applyTo("", { before: "", after: "<p>Dear team</p>" })).toBe("<p>Dear team</p>");
+	});
+});
+
+describe("letter proposals across spellings", () => {
+	// The body as the editor holds it after "Keep" (`coverLetterTextToHtml` escapes quotes) and a little typing (the
+	// editor writes `<br>`, `&nbsp;` and spaced styles)...
+	const editor = [
+		"<p>Dear Ms. Reyes,<br>I&#39;m applying for the Product Designer role at Kettle&nbsp;Labs.</p>",
+		"<p>At Lumen Health I led the &quot;Care Plans&quot; redesign — it’s now used by 40,000 patients.</p>",
+		"<p>I built the design system and ran weekly usability sessions.</p>",
+		"<p>I also mentor two junior designers.</p>",
+		'<p style="text-align: left;">I&#39;d welcome a chat about the team&#39;s plans.<br>Kind regards,<br>Dana Reyes</p>',
+	].join("");
+	// ...and as the server sanitized and stored it, which the assistant reads and proposes against.
+	const stored = [
+		"<p>Dear Ms. Reyes,<br />I'm applying for the Product Designer role at Kettle\u00a0Labs.</p>",
+		'<p>At Lumen Health I led the "Care Plans" redesign — it’s now used by 40,000 patients.</p>',
+		"<p>I built the design system and ran weekly usability sessions.</p>",
+		"<p>I also mentor two junior designers.</p>",
+		"<p style=\"text-align:left\">I'd welcome a chat about the team's plans.<br />Kind regards,<br />Dana Reyes</p>",
+	].join("");
+	const translations = [
+		"Yth. Ibu Reyes, saya melamar posisi Product Designer di Kettle Labs.",
+		"Di Lumen Health saya memimpin desain ulang “Care Plans”.",
+		"Saya membangun design system dan menjalankan sesi uji kegunaan mingguan.",
+		"Saya juga membimbing dua desainer junior.",
+		"Saya ingin berdiskusi tentang rencana tim. Salam hormat, Dana Reyes",
+	];
+	const proposals: Proposal[] = collectLetterPassages(stored, labels).map((passage, index) => ({
+		id: passage.id,
+		target: passage.target,
+		location: passage.location,
+		before: passage.html,
+		after: replaceBlockText(passage.html, translations[index] ?? ""),
+		why: "Translate to Indonesian.",
+		status: "pending",
+		source: "assistant",
+	}));
+
+	it("keeps every fresh proposal applicable to the editor's copy", () => {
+		expect(proposals).toHaveLength(5);
+		expect(proposals.map((proposal) => getStateIn(editor, proposal))).toEqual(Array(5).fill("pending"));
+	});
+
+	it("applies them all, replacing each paragraph as the editor spells it", () => {
+		const translated = proposals.reduce((value, proposal) => applyTo(value, proposal) ?? value, editor);
+		expect(translated).toBe(proposals.map((proposal) => proposal.after).join(""));
+		expect(proposals.map((proposal) => getStateIn(translated, { ...proposal, status: "accepted" }))).toEqual(
+			Array(5).fill("accepted"),
+		);
+		// Undo puts the editor's text back: accepted edits show as pending again.
+		expect(proposals.map((proposal) => getStateIn(editor, { ...proposal, status: "accepted" }))).toEqual(
+			Array(5).fill("pending"),
+		);
+	});
+
+	it("still marks a proposal out of date once its words or formatting change", () => {
+		const [first, second] = proposals;
+		if (!first || !second) throw new Error("Missing proposals");
+		expect(getStateIn(editor.replace("Kettle&nbsp;Labs", "Kettle Studio"), first)).toBe("stale");
+		expect(
+			getStateIn(editor.replace("&quot;Care Plans&quot;", "<strong>&quot;Care Plans&quot;</strong>"), second),
+		).toBe("stale");
+		// A paragraph that now appears twice is ambiguous, however it's spelled.
+		const repeated = `${editor}<p>At Lumen Health I led the "Care Plans" redesign — it’s now used by 40,000 patients.</p>`;
+		expect(canApplyTo(repeated, second)).toBe(false);
+	});
+
+	it("adds a paragraph after one the editor spells differently", () => {
+		const [first] = collectLetterPassages(stored, labels);
+		if (!first) throw new Error("Missing passage");
+		const addition = additionAfter(editor, first.html, "Saya tertarik pada misi Kettle.");
+		expect(addition?.before).toBe(
+			"<p>Dear Ms. Reyes,<br>I&#39;m applying for the Product Designer role at Kettle&nbsp;Labs.</p>",
+		);
+		expect(addition && applyTo(editor, addition)).toContain(
+			"Kettle&nbsp;Labs.</p><p>Saya tertarik pada misi Kettle.</p><p>At Lumen",
+		);
+	});
+
+	it("spells equivalent HTML the same and different HTML differently", () => {
+		expect(canonicalHtml("<P STYLE='text-align: center;'>a&nbsp;b<BR/></P>")).toBe(
+			canonicalHtml('<p style="text-align:center">a\u00a0b<br></p>'),
+		);
+		expect(canonicalHtml("<p>1 &lt; 2 &amp;&amp; 3 &#62; 2</p>")).toBe("<p>1 &lt; 2 &amp;&amp; 3 &gt; 2</p>");
+		expect(canonicalHtml("<p>Tom &amp; Jerry</p>")).not.toBe(canonicalHtml("<p>Tom and Jerry</p>"));
+		expect(canonicalHtml("<p><em>Hi</em></p>")).not.toBe(canonicalHtml("<p>Hi</p>"));
 	});
 });

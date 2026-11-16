@@ -57,7 +57,7 @@ Each item looks like:
     equity: "160,000 USD in RSUs over 4 years",   # free text, not a cash value
     location: "Seattle", officeDays: 3,           # 0 = fully remote; null = unknown
     leave: "", learning: null, other: "",
-    respondBy: "2026-10-16T17:00:00-07:00"        # or null
+    respondBy: "2026-10-16T17:00:00-07:00"        # "2026-10-16" when no time was given (never assume one), or null
   }
 }
 ```

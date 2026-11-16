@@ -1,10 +1,21 @@
 import { buttonVariants, Alert } from "@heroui/react";
+import { i18n } from "@lingui/core";
+import { I18nProvider } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Icon } from "@rezumi/ui/components/icon";
 
+/** The router's not-found view. Like ErrorScreen, it may render outside the root component's I18nProvider. */
 export function NotFoundScreen() {
+	return (
+		<I18nProvider i18n={i18n}>
+			<NotFoundContent />
+		</I18nProvider>
+	);
+}
+
+function NotFoundContent() {
 	return (
 		<div className="mx-auto flex h-svh max-w-md flex-col items-center justify-center gap-y-4">
 			<BrandIcon variant="logo" className="size-12" />
