@@ -672,24 +672,55 @@ async function repairLegacyAskUserQuestionAnswers(
 	return nextRows;
 }
 
+type ActiveRunFields = {
+	activeRunId: string | null;
+	activeStreamId: string | null;
+	activeRunStartedAt: Date | null;
+};
+
 /**
- * Whether a thread's run claim may be taken over: the run outlived its TTL, someone stopped it, or its owner stopped
- * heartbeating. On Workers a stopped or disconnected run can be cut off before it releases its claim, so waiting for
- * the TTL alone kept the conversation "still replying" for up to 15 minutes after Stop.
+ * Whether a thread's run is dead: it outlived its TTL or its owner stopped heartbeating. On Workers a stopped or
+ * disconnected run can be cut off before it releases its claim, so waiting for the TTL alone kept the conversation
+ * "still replying" for up to 15 minutes after Stop.
  */
-async function isRunReclaimable(thread: { activeRunId: string | null; activeRunStartedAt: Date | null }) {
+async function isRunDead(thread: ActiveRunFields) {
 	if (!thread.activeRunId) return false;
 	if (isStaleAgentRun(thread)) return true;
 	try {
-		return (
-			(await isRunCancellationRequested(thread.activeRunId)) ||
-			!(await isRunAlive(thread.activeRunId, thread.activeRunStartedAt))
-		);
+		return !(await isRunAlive(thread.activeRunId, thread.activeRunStartedAt));
 	} catch (error) {
 		// Without the shared run state, keep the claim: two runs writing to one conversation is worse than a wait.
 		console.error("[agent] Failed to check the active run", error);
 		return false;
 	}
+}
+
+/** How long a new message waits for a stopped run to save what it wrote and give the conversation back itself. */
+export const STOPPED_RUN_RELEASE_WAIT_MS = 8_000;
+const STOPPED_RUN_POLL_MS = 250;
+
+/**
+ * Settles the run a new message finds on its conversation: null when the conversation is free (the run released it
+ * meanwhile), the run to take over when it is dead or was stopped and didn't let go in time, or "busy". A stopped run
+ * still saves its text before releasing, so it gets a few seconds first: taking over at once would drop that text.
+ */
+async function settleActiveRun(input: { threadId: string; userId: string; thread: ActiveRunFields }) {
+	const runId = input.thread.activeRunId;
+	if (!runId) return null;
+	if (await isRunDead(input.thread)) return input.thread;
+	try {
+		if (!(await isRunCancellationRequested(runId))) return "busy" as const;
+	} catch (error) {
+		console.error("[agent] Failed to check the active run", error);
+		return "busy" as const;
+	}
+	let current: ActiveRunFields = input.thread;
+	for (const deadline = Date.now() + STOPPED_RUN_RELEASE_WAIT_MS; Date.now() < deadline;) {
+		await new Promise((resolve) => setTimeout(resolve, STOPPED_RUN_POLL_MS));
+		current = await getThread({ id: input.threadId, userId: input.userId });
+		if (current.activeRunId !== runId) return current.activeRunId ? ("busy" as const) : null;
+	}
+	return current;
 }
 
 async function cleanupActiveRun(input: {
@@ -1178,7 +1209,7 @@ export const agentService = {
 
 			// Heal on open: clear a dead run's claim before reading messages so the client neither
 			// resumes a dead stream nor renders a perpetually "streaming" draft.
-			if (thread.activeRunId && (await isRunReclaimable(thread))) {
+			if (thread.activeRunId && (await isRunDead(thread))) {
 				await reapStaleAgentRun({
 					threadId: input.id,
 					userId: input.userId,
@@ -1292,18 +1323,21 @@ export const agentService = {
 				});
 			}
 			if (thread.activeRunId) {
-				if (!(await isRunReclaimable(thread))) {
+				const run = await settleActiveRun({ threadId: input.threadId, userId: input.userId, thread });
+				if (run === "busy") {
 					throw new ORPCError("CONFLICT", {
 						message: "This conversation is still replying. Wait for it to finish, or stop it.",
 					});
 				}
 				// Lazy reap: a stopped or dead run's claim heals on the next send instead of CONFLICTing until its TTL.
-				await reapStaleAgentRun({
-					threadId: input.threadId,
-					userId: input.userId,
-					runId: thread.activeRunId,
-					streamId: thread.activeStreamId,
-				});
+				if (run?.activeRunId) {
+					await reapStaleAgentRun({
+						threadId: input.threadId,
+						userId: input.userId,
+						runId: run.activeRunId,
+						streamId: run.activeStreamId,
+					});
+				}
 			}
 			const document = documentOf(thread);
 			const isCareer = thread.scope === "career" || thread.scope === "application";
