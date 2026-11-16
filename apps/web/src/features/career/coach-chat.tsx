@@ -575,7 +575,9 @@ function PreferencesList() {
 	);
 }
 
-function OffersList({ ids, className }: { ids: string[]; className: string }) {
+type OffersListProps = { ids: string[]; className: string };
+
+function OffersList({ ids, className }: OffersListProps) {
 	const { data } = useQuery(orpc.career.savedItems.queryOptions({ input: { kind: "offer" } }));
 	if (!data)
 		return (

@@ -106,7 +106,7 @@ export function OffersPage({ a, b }: OffersPageProps) {
 				kind="page"
 				icon="scales"
 				title={<Trans>No offers to compare yet</Trans>}
-				description={<Trans>Paste an offer into an application's Messages tab.</Trans>}
+				description={<Trans>Paste an offer into an application's Messages section.</Trans>}
 				action={
 					<Link to="/dashboard/applications" className={buttonVariants({ variant: "secondary" })}>
 						<Trans>Open applications</Trans>
@@ -237,7 +237,7 @@ function ComparisonTable({ offers, left, right, onChoose }: ComparisonTableProps
 												<Trans>Save another offer to compare</Trans>
 											</p>
 											<p className="text-body-sm font-normal text-muted">
-												<Trans>Paste an offer into an application's Messages tab.</Trans>
+												<Trans>Paste an offer into an application's Messages section.</Trans>
 											</p>
 											{offers.length > 1 && (
 												<OfferHeader

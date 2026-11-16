@@ -615,7 +615,7 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 						<p className="text-base">“{briefing.data.opening}”</p>
 					</div>
 				)}
-				{/* The workspace is full screen on phones (no app tab bar), so the bar pads for the safe area itself. */}
+				{/* Pinned to the bottom of the phone's screen, so the bar pads for the safe area itself. */}
 				<div className="sticky bottom-0 -mx-4 mt-3 -mb-6 flex gap-2 border-t border-separator bg-background px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))]">
 					{briefing && (
 						<Button variant="secondary" size="lg" className="flex-1" onPress={() => setReading(true)}>

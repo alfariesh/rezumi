@@ -36,7 +36,7 @@ import {
 import { CareerLoadError } from "./load-state";
 import { ContextChip, useCareerTime, useNow } from "./shared";
 import { EmptyBlock } from "@/components/layout/empty-block";
-import { PAGE_GUTTER } from "@/components/layout/page";
+import { PAGE_GUTTER, PAGE_MAX_WIDTH } from "@/components/layout/page";
 import { transcriptOf, useConversationConnection } from "@/features/assistant/chat";
 import { HeadingOrb } from "@/features/assistant/orb";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
@@ -98,7 +98,7 @@ function writeOfferIds(id: string, offers: string[]) {
 const titleOf = (text: string) => (text.length > 47 ? `${text.slice(0, 44)}...` : text);
 
 /** How a conversation change reaches the address or the panel's store. */
-export type ConversationChange = {
+type ConversationChange = {
 	/** The offers the conversation starts with; a conversation just created keeps the ones it began with. */
 	offerIds?: string[];
 	/** The conversation just created here: the full page replaces its address instead of adding a step. */
@@ -406,7 +406,7 @@ export function Coach({
 			onChangeConnection={() => setModelMenuOpen(true)}
 			header={() => null}
 			afterMessages={afterMessages}
-			empty={(send) => <EmptyState disabled={disabled} onPick={send} />}
+			empty={(send) => <CoachStart disabled={disabled} onPick={send} />}
 			chips={contextChips}
 			model={model}
 			placeholder={t`Ask about your next career step…`}
@@ -422,8 +422,9 @@ export function Coach({
 			// show one at a time.
 			<div
 				className={cn(
-					"mx-auto flex h-[calc(100svh-3rem)] min-h-[480px] w-full max-w-[1440px] flex-col pt-2 md:grid md:grid-cols-[16rem_minmax(0,1fr)] md:gap-x-8 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-x-12",
+					"mx-auto flex h-[calc(100svh-3rem)] min-h-[480px] w-full flex-col pt-2 md:grid md:grid-cols-[16rem_minmax(0,1fr)] md:gap-x-8 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-x-12",
 					PAGE_GUTTER,
+					PAGE_MAX_WIDTH,
 				)}
 			>
 				{conversationList(
@@ -496,13 +497,13 @@ export function Coach({
 	);
 }
 
-type EmptyStateProps = { disabled: boolean; onPick: (text: string) => void };
+type CoachStartProps = { disabled: boolean; onPick: (text: string) => void };
 
 /**
  * A new conversation: what the coach is for, and three ways to start. The orb, as in the editors' assistant, flies
  * down to the first "Thinking…" line when a message is sent.
  */
-function EmptyState({ disabled, onPick }: EmptyStateProps) {
+function CoachStart({ disabled, onPick }: CoachStartProps) {
 	const starters: Array<{ icon: IconName; text: string }> = [
 		{ icon: "list-magnifying-glass", text: t`Which opportunities best match my priorities?` },
 		{
@@ -514,8 +515,7 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 	return (
 		<EmptyBlock
 			kind="page"
-			// The orb brings its own shape: no tile behind it (EmptyState's media fill shows on the panel's white).
-			className="py-4 [&_[data-slot=empty-state-media]]:bg-transparent"
+			className="py-4"
 			media={<HeadingOrb />}
 			title={<Trans>What are you working on?</Trans>}
 			description={

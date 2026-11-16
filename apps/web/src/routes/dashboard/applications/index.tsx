@@ -1,3 +1,4 @@
+import type { ApplicationView } from "@/features/applications/components/applications-section";
 import type { Application, ApplicationSummary } from "@/features/applications/types";
 import { Button, Dropdown, Input, Label, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
@@ -32,8 +33,6 @@ import {
 import { ExtensionInstallHint } from "@/features/extension/install-links";
 import { toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
-
-type View = (typeof APPLICATION_VIEWS)[number];
 
 const searchSchema = z.object({
 	q: z.string().default("").catch(""),
@@ -172,7 +171,7 @@ function RouteComponent() {
 	const filtered = (applications ?? []).filter((application) => matches(application, text));
 	const selected = applications?.find((application) => application.id === selectedId) ?? null;
 	// The board needs room to drag: phones get the list instead.
-	const shown: View = phone && (view === "board" || view === "calendar") ? "list" : view;
+	const shown: ApplicationView = phone && (view === "board" || view === "calendar") ? "list" : view;
 	// A switch from the menu: the new view animates in, and the open application's sheet closes with the old one.
 	const [lastShown, setLastShown] = useState(shown);
 	if (lastShown !== shown) {
@@ -454,7 +453,7 @@ function FirstJobEmptyState({ onAdd, onImport }: FirstJobEmptyStateProps) {
 }
 
 /** Each view's shape while applications load, so the first rows land where the placeholders were. */
-function ViewSkeleton({ view }: { view: View }) {
+function ViewSkeleton({ view }: { view: ApplicationView }) {
 	if (view === "insights") return <InsightsSkeleton />;
 	if (view === "list")
 		return (

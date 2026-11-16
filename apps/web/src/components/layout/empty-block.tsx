@@ -61,7 +61,8 @@ export function EmptyBlock({ kind, icon, media: picture, title, description, act
 		<EmptyState className={cn(kind === "page" ? "py-16" : "py-12", className)}>
 			<EmptyState.Header>
 				{picture ? (
-					<EmptyState.Media>{picture}</EmptyState.Media>
+					// A picture brings its own shape: no tile behind it.
+					<EmptyState.Media className="bg-transparent">{picture}</EmptyState.Media>
 				) : (
 					media && (
 						<EmptyState.Media variant="icon">

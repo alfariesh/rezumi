@@ -564,7 +564,6 @@ function LibrarySkeleton({ view }: { view: "grid" | "list" }) {
 	);
 }
 
-/** A file dragged anywhere over the page shows the drop target, and dropping it starts the import. */
 /** A file dropped anywhere on the page opens New with it; mounted where import is offered (Documents, a first Home). */
 export function DropToImport() {
 	const openDialog = useDialogStore((state) => state.openDialog);

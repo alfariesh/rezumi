@@ -69,8 +69,8 @@ export function SavedTab({ application, go }: WorkspaceTabProps) {
 				title={<Trans>Nothing saved yet</Trans>}
 				description={
 					<Trans>
-						Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create
-						them.
+						Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other sections
+						create them.
 					</Trans>
 				}
 			/>

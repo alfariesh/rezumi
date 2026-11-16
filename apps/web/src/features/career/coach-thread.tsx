@@ -96,7 +96,7 @@ export const usedFor = (knowledge: Knowledge, context: MessageContext): Used => 
 	},
 });
 
-// ---- Conversations, listed on Career → Coach and in the workspace sheet ----
+// ---- Conversations, listed in the coach (panel and full screen) and in the workspace sheet ----
 
 type ThreadSummary = RouterOutput["agent"]["threads"]["list"][number];
 
@@ -184,7 +184,7 @@ type CoachThreadProps = {
 	variant: "page" | "sheet" | "panel";
 };
 
-/** The coach's chat, shared by Career → Coach and the workspace sheet: messages, writing state, composer. */
+/** The coach's chat, shared by the coach (panel and full screen) and the workspace sheet: messages, writing state, composer. */
 export function CoachThread(props: CoachThreadProps) {
 	// Each return to the empty state (a new chat) starts a new orb flight, so the orb never flies in from an old one.
 	const [epoch, setEpoch] = useState(0);

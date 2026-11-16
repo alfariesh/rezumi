@@ -44,6 +44,7 @@ import { PrepareTab } from "./prepare";
 import { SavedTab } from "./saved";
 import { EmptyBlock } from "@/components/layout/empty-block";
 import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
+import { Page } from "@/components/layout/page";
 import { SectionLayout } from "@/components/layout/section-layout";
 import { ApplicationNotes } from "@/features/applications/components/application-notes";
 import { CompanyMark } from "@/features/applications/components/company-mark";
@@ -102,11 +103,11 @@ const TAB_ICONS: Record<WorkspaceTab, IconName> = {
 type MenuHints = Partial<Record<WorkspaceTab, Pick<SectionNavItem, "badge" | "count">>>;
 
 /**
- * The workspace's menu: every tab its own item, grouped as the job goes (before applying | the interview | after).
+ * The workspace's menu: every tab its own item, grouped as the job goes (before applying | the interview | after),
+ * each group set apart by a hairline.
  * The address has no tab when the stage picks one, so each item says for itself whether it's current.
  */
 function workspaceSections(applicationId: string, tab: WorkspaceTab | undefined, hints: MenuHints = {}) {
-	// The menu heads each group with its name.
 	const groups: Partial<Record<WorkspaceTab, string>> = { prepare: "interview", messages: "after applying" };
 	return WORKSPACE_TABS.map((value): SectionNavItem => ({
 		link: {
@@ -201,7 +202,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 	if (query.isPending) return <WorkspaceSkeleton applicationId={applicationId} tab={requested} />;
 	if (!application)
 		return (
-			<div className="grid min-h-svh place-items-center p-6">
+			<Page>
 				<EmptyBlock
 					kind="page"
 					icon="warning-circle"
@@ -216,7 +217,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 						</Link>
 					}
 				/>
-			</div>
+			</Page>
 		);
 
 	const tab = requested ?? defaultTab(application, now);
