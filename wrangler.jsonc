@@ -76,6 +76,8 @@
 	"send_email": [{ "name": "EMAIL" }],
 	"hyperdrive": [{ "binding": "HYPERDRIVE", "id": "f2e0cd8d0b084ed5bdbfb8a1de8a80dc" }],
 	"r2_buckets": [{ "binding": "BUCKET", "bucket_name": "vitaekit" }],
+	// Resizes uploaded pictures (800 px JPEG, as sharp does on the Node server); see apps/server/src/cloudflare/images.ts.
+	"images": { "binding": "IMAGES" },
 	// Visitor breakdowns for portfolio statistics; the dataset is created on the first write. Read through ANALYTICS_SQL.
 	"analytics_engine_datasets": [{ "binding": "PORTFOLIO_EVENTS", "dataset": "portfolio_events" }],
 	"analytics": { "binding": "ANALYTICS_SQL" },
@@ -83,8 +85,28 @@
 	"ratelimits": [
 		{ "name": "PORTFOLIO_PUBLIC_LIMITER", "namespace_id": "1101", "simple": { "limit": 600, "period": 60 } },
 	],
+	// Career schedules: each cron tick sends one message per account with a due job, and each message runs that job in
+	// its own invocation, side by side, instead of two per minute inside the tick. Create the queue once before the
+	// first deploy: `pnpm exec wrangler queues create rezumi-career-jobs`.
+	"queues": {
+		"producers": [{ "binding": "CAREER_JOBS", "queue": "rezumi-career-jobs" }],
+		"consumers": [
+			{
+				"queue": "rezumi-career-jobs",
+				"max_batch_size": 1,
+				"max_batch_timeout": 1,
+				"max_concurrency": 10,
+				"max_retries": 0,
+			},
+		],
+	},
 	"durable_objects": { "bindings": [{ "name": "COORDINATION", "class_name": "Coordination" }] },
 	"migrations": [{ "tag": "v1", "new_sqlite_classes": ["Coordination"] }],
+	// Runs the Worker next to PostgreSQL (Tencent ap-jakarta, reached through Hyperdrive) instead of next to the visitor:
+	// a request makes several sequential queries, each ~1-3 ms near the database instead of 20-30 ms or more from far
+	// away. Static assets are still served from the visitor's nearest location. The VPS only listens on localhost, so
+	// a "host" probe can't reach it; GCP's Jakarta region is the nearest cloud region Placement knows.
+	"placement": { "mode": "targeted", "region": "gcp:asia-southeast2" },
 	"limits": { "cpu_ms": 30000 },
 	"observability": { "enabled": true, "head_sampling_rate": 0.1 },
 }

@@ -4,6 +4,9 @@ import type {
 	ExecutionContext,
 	Fetcher,
 	Hyperdrive,
+	ImagesBinding,
+	MessageBatch,
+	Queue,
 	R2Bucket,
 	ScheduledController,
 	SendEmail,
@@ -19,13 +22,18 @@ import { Pool } from "pg";
 import { configureAgentStreamLifetime } from "@rezumi/api/features/agent/streams";
 import { runExtensionJobs } from "@rezumi/api/features/applications/extension-jobs";
 import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
-import { runCareerJobs } from "@rezumi/api/features/career/jobs";
+import { runCareerJobs, runNextCareerJob } from "@rezumi/api/features/career/jobs";
 import { runCustomDomainJobs } from "@rezumi/api/features/custom-domain/jobs";
 import { configurePortfolioAnalytics } from "@rezumi/api/features/portfolio/analytics";
 import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
 import { portfolioFileAccess } from "@rezumi/api/features/portfolio/public";
 import { configurePortfolioPublicLimiter } from "@rezumi/api/features/portfolio/public-limit";
-import { configureStorageService, getStorageService, isPublicUploadOwner } from "@rezumi/api/features/storage";
+import {
+	configureImageProcessor,
+	configureStorageService,
+	getStorageService,
+	isPublicUploadOwner,
+} from "@rezumi/api/features/storage";
 import { initializeAuth } from "@rezumi/auth/config";
 import { withDatabasePool } from "@rezumi/db/client";
 import { configureCoordination } from "@rezumi/db/coordination";
@@ -36,6 +44,7 @@ import { TRUSTED_IP_HEADERS } from "@rezumi/utils/rate-limit";
 import { createApp } from "../http/app";
 import { configurePortfolioVisitLifetime } from "../static/portfolio-page";
 import { configureResvgWasm } from "../static/resvg";
+import { createImagesProcessor } from "./images";
 import { R2StorageService } from "./r2";
 
 export { Coordination } from "./coordination";
@@ -46,9 +55,24 @@ export type CloudflareBindings = {
 	BUCKET: R2Bucket;
 	COORDINATION: DurableObjectNamespace;
 	EMAIL?: SendEmail;
+	/** Runs career jobs side by side (one message per waiting account); without it the cron tick runs two itself. */
+	CAREER_JOBS?: Queue<CareerJobMessage>;
+	IMAGES?: ImagesBinding;
 	PORTFOLIO_EVENTS?: AnalyticsEngineDataset;
 	ANALYTICS_SQL?: AnalyticsSql;
 	PORTFOLIO_PUBLIC_LIMITER?: { limit: (options: { key: string }) => Promise<{ success: boolean }> };
+};
+
+type CareerJobMessage = { type: "career-job" };
+
+const careerDispatch = (bindings: CloudflareBindings) => {
+	const queue = bindings.CAREER_JOBS;
+	if (!queue) return {};
+	return {
+		dispatch: async (count: number) => {
+			await queue.sendBatch(Array.from({ length: count }, () => ({ body: { type: "career-job" } as const })));
+		},
+	};
 };
 
 /** `background` holds work that outlives the response, such as assistant runs, and still needs the pool. */
@@ -72,6 +96,8 @@ configurePortfolioVisitLifetime((promise) => {
 	store?.ctx.waitUntil(promise);
 });
 configurePortfolioPublicLimiter(() => requests.getStore()?.bindings.PORTFOLIO_PUBLIC_LIMITER);
+// sharp can't run here (FLAG_DISABLE_IMAGE_PROCESSING is required), so uploaded pictures resize through Images.
+configureImageProcessor(createImagesProcessor(() => requests.getStore()?.bindings.IMAGES));
 // Link-preview cards draw with resvg, whose WebAssembly ships beside the script. It loads when the first card is drawn:
 // imported at the top it counts toward the Worker's startup CPU limit, which the upload then failed.
 configureResvgWasm(() => import("@resvg/resvg-wasm/index_bg.wasm").then((module) => module.default));
@@ -270,7 +296,7 @@ export default {
 		const jobs = async () => {
 			await runBillingJobs().catch(() => console.error("[billing] Scheduled work failed; it retries next run."));
 			try {
-				return await runCareerJobs();
+				return await runCareerJobs(careerDispatch(bindings));
 			} finally {
 				await runPortfolioJobs().catch(() => console.error("[portfolio] Scheduled work failed; it retries next run."));
 				await runCustomDomainJobs().catch(() =>
@@ -280,5 +306,26 @@ export default {
 			}
 		};
 		ctx.waitUntil(run(jobs).finally(() => closePool(pool, store)));
+	},
+	/** Each `career-job` message runs one due career job; the database lease, not the message, tracks retries. */
+	async queue(
+		batch: MessageBatch<CareerJobMessage>,
+		bindings: CloudflareBindings,
+		ctx: ExecutionContext,
+	): Promise<void> {
+		const { pool, store, run } = createInvocation(bindings, ctx);
+		try {
+			await run(async () => {
+				for (const message of batch.messages) {
+					if (message.body?.type === "career-job")
+						await runNextCareerJob().catch((error: unknown) =>
+							console.error("[career] Queued job failed; it retries from the next tick.", error),
+						);
+					message.ack();
+				}
+			});
+		} finally {
+			await closePool(pool, store);
+		}
 	},
 };

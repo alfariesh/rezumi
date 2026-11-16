@@ -7,7 +7,8 @@ import { getPool } from "@rezumi/db/client";
 import worker from "./index";
 
 const mocks = vi.hoisted(() => ({
-	run: vi.fn<() => Promise<{ processed: number }>>(),
+	run: vi.fn<(options?: { dispatch?: (count: number) => Promise<void> }) => Promise<{ processed: number }>>(),
+	next: vi.fn<() => Promise<string | null>>(),
 	billing: vi.fn<() => Promise<{ releasedReservations: number }>>(),
 	portfolio: vi.fn<() => Promise<{ deletedFiles: number; checkedPortfolios: number }>>(),
 	extension: vi.fn<() => Promise<{ emailed: boolean; deleted: number }>>(),
@@ -53,7 +54,7 @@ vi.mock("@formepdf/core/pkg-web/forme_bg.wasm", () => ({ default: new Uint8Array
 vi.mock("@resvg/resvg-wasm/index_bg.wasm", () => ({ default: new Uint8Array() }));
 vi.mock("@formepdf/core/worker", () => ({ init: mocks.wasm }));
 vi.mock("@rezumi/auth/config", () => ({ initializeAuth: mocks.auth }));
-vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: mocks.run }));
+vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: mocks.run, runNextCareerJob: mocks.next }));
 vi.mock("@rezumi/api/features/billing/jobs", () => ({ runBillingJobs: mocks.billing }));
 vi.mock("@rezumi/api/features/portfolio/jobs", () => ({ runPortfolioJobs: mocks.portfolio }));
 vi.mock("@rezumi/api/features/applications/extension-jobs", () => ({ runExtensionJobs: mocks.extension }));
@@ -68,6 +69,7 @@ vi.mock("@rezumi/db/coordination", () => ({
 	},
 }));
 vi.mock("@rezumi/api/features/storage", () => ({
+	configureImageProcessor: vi.fn(),
 	configureStorageService: vi.fn(),
 	getStorageService: () => ({ read: mocks.readPicture }),
 	isPublicUploadOwner: mocks.publicOwner,
@@ -123,6 +125,7 @@ function invocationPool() {
 beforeEach(() => {
 	mocks.pools.length = 0;
 	mocks.run.mockReset().mockResolvedValue({ processed: 0 });
+	mocks.next.mockReset().mockResolvedValue(null);
 	mocks.billing.mockReset().mockResolvedValue({ releasedReservations: 0 });
 	mocks.portfolio.mockReset().mockResolvedValue({ deletedFiles: 0, checkedPortfolios: 0 });
 	mocks.extension.mockReset().mockResolvedValue({ emailed: false, deleted: 0 });
@@ -316,5 +319,43 @@ describe("Cloudflare invocation lifetime", () => {
 		expect(await text).toBe("ok");
 		await Promise.all(fixture.pending);
 		expect(pool.end).toHaveBeenCalledOnce();
+	});
+
+	it("runs career jobs itself without a queue, and through one message per waiting account with it", async () => {
+		const plain = invocation();
+		worker.scheduled(plain.controller, plain.bindings, plain.ctx);
+		await plain.pending[0];
+		expect(mocks.run).toHaveBeenLastCalledWith({});
+
+		const queued = invocation();
+		const sendBatch = vi.fn().mockResolvedValue(undefined);
+		Object.assign(queued.bindings, { CAREER_JOBS: { sendBatch } });
+		mocks.run.mockImplementation(async (options) => {
+			await options?.dispatch?.(3);
+			return { processed: 0 };
+		});
+		worker.scheduled(queued.controller, queued.bindings, queued.ctx);
+		await queued.pending[0];
+		expect(sendBatch).toHaveBeenCalledWith([
+			{ body: { type: "career-job" } },
+			{ body: { type: "career-job" } },
+			{ body: { type: "career-job" } },
+		]);
+	});
+
+	it("runs one career job per queue message, acks even when it fails, and closes its pool", async () => {
+		const fixture = invocation();
+		const error = vi.spyOn(console, "error").mockImplementation(() => {});
+		mocks.next.mockResolvedValueOnce("alice").mockRejectedValueOnce(new Error("provider down"));
+		const messages = [1, 2, 3].map((id) => ({
+			body: id === 3 ? { type: "other" } : { type: "career-job" },
+			ack: vi.fn(),
+		}));
+		await worker.queue({ messages } as never, fixture.bindings, fixture.ctx);
+		expect(mocks.next).toHaveBeenCalledTimes(2);
+		for (const message of messages) expect(message.ack).toHaveBeenCalledOnce();
+		expect(error).toHaveBeenCalledOnce();
+		expect(invocationPool().end).toHaveBeenCalledOnce();
+		error.mockRestore();
 	});
 });

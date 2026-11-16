@@ -1,5 +1,6 @@
-export type { StorageService } from "./service";
+export type { ImageProcessor, StorageService } from "./service";
 export {
+	configureImageProcessor,
 	configureStorageService,
 	getStorageService,
 	inferContentType,

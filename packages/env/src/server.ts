@@ -230,6 +230,8 @@ export const env = createEnv({
 		AI_MODEL: z.string().trim().min(1).optional(),
 		AI_API_KEY: z.string().trim().min(1).optional(),
 		AI_BASE_URL: z.url({ protocol: /^https?$/ }).optional(),
+		// Cloudflare AI Gateway token, sent as cf-aig-authorization when AI_BASE_URL is a gateway endpoint. Optional.
+		AI_GATEWAY_TOKEN: z.string().trim().min(1).optional(),
 		// What the server AI costs, in US dollars per million tokens, to record Rezumi AI spending. Optional.
 		AI_COST_INPUT_USD_PER_MTOK: z.coerce.number().nonnegative().optional(),
 		AI_COST_OUTPUT_USD_PER_MTOK: z.coerce.number().nonnegative().optional(),

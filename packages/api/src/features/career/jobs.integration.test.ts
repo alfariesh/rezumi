@@ -85,6 +85,7 @@ const posting = {
 describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 	let jobs: typeof import("./jobs").careerJobs;
 	let run: typeof import("./jobs").runCareerJobs;
+	let runNext: typeof import("./jobs").runNextCareerJob;
 	let admin: Pool;
 	let pool: Pool;
 	const schemaName = `career_jobs_test_${randomUUID().replaceAll("-", "")}`;
@@ -106,7 +107,7 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 			const file = new URL(`${directory}/migration.sql`, migrations);
 			if (existsSync(file)) await pool.query((await readFile(file, "utf8")).replaceAll('"public".', ""));
 		}
-		({ careerJobs: jobs, runCareerJobs: run } = await import("./jobs"));
+		({ careerJobs: jobs, runCareerJobs: run, runNextCareerJob: runNext } = await import("./jobs"));
 	}, 30_000);
 
 	afterAll(async () => {
@@ -230,6 +231,23 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 		expect(await jobs.notifications("alice")).toHaveLength(1);
 		expect(await getDb().select().from(tables.application)).toEqual([]);
 		expect(await getDb().select().from(tables.careerArtifact)).toEqual([]);
+	});
+
+	it("with a dispatcher, a tick only queues the waiting account, and one queued run does the job", async () => {
+		await schedule();
+		const dispatch = vi.fn(async (_count: number) => {});
+		await expect(run({ dispatch })).resolves.toEqual({ processed: 0 });
+		expect(dispatch).toHaveBeenCalledWith(1);
+		expect(fixture.search).not.toHaveBeenCalled();
+
+		await expect(runNext()).resolves.toBe("alice");
+		await expect(runNext()).resolves.toBeNull();
+		expect(fixture.search).toHaveBeenCalledOnce();
+		expect(await jobs.notifications("alice")).toHaveLength(1);
+
+		dispatch.mockClear();
+		await run({ dispatch });
+		expect(dispatch).not.toHaveBeenCalled();
 	});
 
 	it("keeps only postings as roles, and reads each page it finds once", async () => {

@@ -20,6 +20,8 @@ Rezumi runs on **Cloudflare Workers**, with the web app served by **Workers Stat
 | R2 Standard             | Pictures, job application files, assistant attachments                       | Private bucket; native binding needs no S3 credentials. No R2 egress charge.                       |
 | SQLite Durable Objects  | Atomic rate limits, live resume updates, assistant cancellation and liveness | Counters expire. Live updates use WebSocket hibernation, with no periodic database polling.        |
 | Hyperdrive              | PostgreSQL connection pooling                                                | Included with Workers; disable query caching to keep sessions and edits current.                   |
+| Images                  | Resizes uploaded pictures (800 px JPEG)                                      | One transformation per upload; the Free plan's monthly allowance covers most installations.        |
+| Queues                  | Runs scheduled career jobs side by side                                      | A few operations per due job; Workers Paid includes 1 million operations a month.                  |
 | PostgreSQL              | Accounts, resumes, letters, applications, assistant history                  | Use an existing database or choose a provider with an allowance appropriate for your installation. |
 
 This setup requires **Workers Paid**: password hashing and PDF generation exceed the Free plan's 10 ms CPU budget. As of October 2026, Workers Paid starts at **$5/month**, including 10 million dynamic requests and 30 million CPU milliseconds. Static asset requests are free and unlimited. The checked-in configuration caps CPU at 30 seconds per request; network waiting time is separate. See [Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/) and [limits](https://developers.cloudflare.com/workers/platform/limits/).
@@ -71,7 +73,15 @@ Keep `AUTH_SECRET` and `ENCRYPTION_SECRET` across deployments. Changing them inv
    - Keep `CLOUDFLARE=1`, `STORAGE_BACKEND=r2`, and `FLAG_DISABLE_IMAGE_PROCESSING=true`.
    - Keep both compatibility flags. `global_fetch_strictly_public` is part of the external image/page reader's private-network protection.
 
+   - Set `placement.region` to the cloud region nearest your PostgreSQL server (for example `aws:eu-central-1`), or use `{ "mode": "smart" }`. A request makes several sequential queries, so running the Worker next to the database saves 20 ms or more on each. Static assets are still served from the visitor's nearest location.
+
    Wrangler creates the `Coordination` Durable Object namespace and its SQLite migration on deployment. No manual table or Redis setup is needed.
+
+   Create the career job queue once (deployment fails while it's missing):
+
+   ```bash
+   pnpm exec wrangler queues create rezumi-career-jobs
+   ```
 
 4. Store the secrets using Wrangler's interactive prompts:
 
@@ -124,13 +134,13 @@ For a custom domain, add it to the Worker in Cloudflare and update `APP_URL` and
 
 ## Scheduled career work
 
-Root `wrangler.jsonc` includes a once-per-minute Cron Trigger. Deployment registers it automatically. The Worker's `scheduled()` handler runs due career jobs directly using Hyperdrive, R2, and Durable Objects; no external scheduler, Redis, or runner authentication token is required. Users explicitly enable their own schedules. Each tick first runs short billing upkeep (it returns Rezumi AI credits held by work that stopped without finishing), then career jobs; a failure in one never skips the other. Trigger changes can take up to 15 minutes to propagate.
+Root `wrangler.jsonc` includes a once-per-minute Cron Trigger. Deployment registers it automatically. The Worker's `scheduled()` handler queues due career work using Hyperdrive, R2, and Durable Objects; no external scheduler, Redis, or runner authentication token is required. Each tick sends one `rezumi-career-jobs` message per account with a due job, and the Worker's `queue()` handler runs each in its own invocation (up to 10 at once), so a busy minute doesn't wait for the next tick. The database lease, not the message, tracks attempts. Without the `CAREER_JOBS` binding the tick runs two jobs itself. Users explicitly enable their own schedules. Each tick first runs short billing upkeep (it returns Rezumi AI credits held by work that stopped without finishing), then career jobs; a failure in one never skips the other. Trigger changes can take up to 15 minutes to propagate.
 
 Verify a due reminder after deployment and check Cron Trigger event status. Minute-by-minute ticks query PostgreSQL even without due work and can keep a database awake. See [career scheduling](/contributing/career-platform#operate-scheduled-work) and [Cloudflare Cron Triggers](https://developers.cloudflare.com/workers/configuration/cron-triggers/).
 
 ## Runtime differences
 
-- Uploaded images retain their original format. Workers does not run native Sharp, so automatic server resizing/conversion stays disabled. Upload PNG, JPEG or WebP pictures; these formats work in PDF exports.
+- Workers does not run native Sharp. Uploaded pictures resize through the `IMAGES` binding instead (at most 800 × 800, JPEG, as the Node server does). Without the binding, or when Images can't read a file, the picture keeps its original format.
 - Assistant replies stream live, and cancellation works across Worker instances. An in-progress stream cannot reconnect after a reload in this Redis-free setup; completed messages remain in PostgreSQL.
 - Workers has a 128 MB memory limit. Large resumes, large images, or multiple concurrent server PDF renders can exceed it. Normal browser downloads render in the browser, reducing server CPU cost. Monitor Worker CPU/memory errors before increasing limits or serving a large public installation.
 - Email: the Worker uses the `send_email` binding (Cloudflare Email Service, Workers Paid) when present, with `SMTP_FROM` as the sender. Onboard the sender domain first with `wrangler email sending enable <domain>`. Otherwise it falls back to SMTP.
