@@ -3,6 +3,8 @@
  * script), and manifest.json.
  *
  *   node scripts/build.ts              production build for the stores (REZUMI_URL defaults to https://rezumi.app)
+ *   node scripts/build.ts --candidate  release candidate for hand testing: a store build that also carries the store key, so
+ *                                      "Load unpacked" gets the store's id and signs in to https://rezumi.app (never zipped)
  *   node scripts/build.ts --dev        development build (http://localhost:3000, logs, EXTENSION_KEY if set)
  *   node scripts/build.ts --dev --watch
  *
@@ -21,9 +23,10 @@ import {
 
 const dev = process.argv.includes("--dev");
 const watch = process.argv.includes("--watch");
+const candidate = process.argv.includes("--candidate");
 const rezumiUrl = process.env.REZUMI_URL?.trim() || (dev ? "http://localhost:3000" : "https://rezumi.app");
 // The Chrome Web Store item's public key (02-teknis.md §15), never in a store build. EXTENSION_KEY overrides it.
-const key = dev ? process.env.EXTENSION_KEY?.trim() || CHROME_STORE_PUBLIC_KEY : undefined;
+const key = dev || candidate ? process.env.EXTENSION_KEY?.trim() || CHROME_STORE_PUBLIC_KEY : undefined;
 
 if (!dev && !rezumiUrl.startsWith("https://"))
 	throw new Error(`A store build must talk to an https server: ${rezumiUrl}`);
@@ -46,4 +49,6 @@ if (!dev) {
 		throw new Error(`content.js is ${size} bytes, over its ${CONTENT_SCRIPT_BUDGET_BYTES}-byte budget`);
 }
 
-console.log(`Built Rezumi extension ${version} for ${rezumiUrl}${dev ? " (development)" : ""} into ${distDir}`);
+console.log(
+	`Built Rezumi extension ${version} for ${rezumiUrl}${dev ? " (development)" : candidate ? " (release candidate, carries the store key: do not upload)" : ""} into ${distDir}`,
+);

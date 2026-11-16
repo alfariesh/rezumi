@@ -1,12 +1,13 @@
 {
 	"name": "extension",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"type": "module",
 	"private": true,
 	"scripts": {
 		"dev": "node scripts/build.ts --dev --watch",
 		"build": "node scripts/build.ts",
 		"build:dev": "node scripts/build.ts --dev",
+		"build:candidate": "node scripts/build.ts --candidate",
 		"zip": "node scripts/build.ts && node scripts/zip.ts",
 		"typecheck": "tsrs --noEmit",
 		"test": "vp test run --passWithNoTests",
