@@ -47,6 +47,8 @@ export const MCP_TOOL_NAME = {
 	createPortfolio: "create_portfolio",
 	editPortfolio: "edit_portfolio",
 	addPortfolioImage: "add_portfolio_image",
+	importPortfolioWorks: "import_portfolio_works",
+	setPortfolioSource: "set_portfolio_source",
 	publishPortfolio: "publish_portfolio",
 	getPortfolioStatistics: "get_portfolio_statistics",
 } as const;

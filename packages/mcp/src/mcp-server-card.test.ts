@@ -22,6 +22,8 @@ describe("buildMcpServerCard", () => {
 			"create_portfolio",
 			"edit_portfolio",
 			"add_portfolio_image",
+			"import_portfolio_works",
+			"set_portfolio_source",
 			"publish_portfolio",
 			"get_portfolio_statistics",
 		])

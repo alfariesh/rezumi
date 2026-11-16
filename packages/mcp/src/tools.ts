@@ -14,6 +14,7 @@ import { env } from "@rezumi/env/server";
 import { PORTFOLIO_EDIT_GUIDE } from "@rezumi/portfolio/edits";
 import { readMcpFile } from "./files";
 import { MCP_TOOL_NAME as T } from "./mcp-tool-names";
+import { fillLinkDetails } from "./portfolio-links";
 import { getClientCall, json, text, withErrorHandling } from "./results";
 import { TOOL_META } from "./tool-meta";
 
@@ -124,8 +125,7 @@ export function registerTools(
 
 		[T.downloadResumePdf]: withErrorHandling("creating PDF download URL", async ({ id }) => {
 			const resume = await client.resume.getById({ id });
-			const user = authentication?.user ?? (await resolveUserFromRequestHeaders(requestHeaders));
-			if (!user) throw new ORPCError("UNAUTHORIZED");
+			const user = await currentUser();
 
 			const signedUrl = createResumePdfDownloadUrl({ resumeId: id, userId: user.id });
 
@@ -199,10 +199,7 @@ export function registerTools(
 			const resume = await client.resume.update(input);
 
 			const user = authentication?.user ?? (await resolveUserFromRequestHeaders(requestHeaders));
-			const username =
-				user && "username" in user && typeof (user as { username: unknown }).username === "string"
-					? (user as { username: string }).username
-					: "";
+			const username = usernameOf(user);
 			const shareUrl =
 				username !== ""
 					? buildResumeShareUrl(username, resume.slug)
@@ -294,8 +291,7 @@ export function registerTools(
 		),
 
 		[T.attachApplicationDocument]: withErrorHandling("attaching application document", async (params) => {
-			const user = authentication?.user ?? (await resolveUserFromRequestHeaders(requestHeaders));
-			if (!user) throw new ORPCError("UNAUTHORIZED");
+			const user = await currentUser();
 			const file = await readMcpFile(
 				{
 					name: params.fileName,
@@ -363,7 +359,8 @@ export function registerTools(
 
 		[T.editPortfolio]: withErrorHandling(
 			"editing the portfolio",
-			async ({ title, edits, expectedUpdatedAt }) => {
+			async ({ title, edits: given, expectedUpdatedAt }) => {
+				const { edits, filled } = await fillLinkDetails(client.portfolio, given);
 				const result = await client.portfolio.applyEdits({
 					title,
 					edits,
@@ -374,6 +371,7 @@ export function registerTools(
 					`Applied ${result.applied.length} of ${edits.length} edit(s)${result.applied.length ? " and saved them" : "; nothing was saved"}.`,
 					...result.applied.map((edit) => `- #${edit.index}: ${edit.summary}${edit.id ? ` (id: ${edit.id})` : ""}`),
 					...result.failed.map((edit) => `- #${edit.index} failed: ${edit.error}`),
+					...(filled ? [`Completed ${filled} link, video or embed block(s) from their pages.`] : []),
 				].join("\n");
 				return text(message, { ...result, updatedAt: result.updatedAt.toISOString(), message });
 			},
@@ -397,6 +395,67 @@ export function registerTools(
 			"portfolio",
 		),
 
+		[T.importPortfolioWorks]: withErrorHandling(
+			"importing works",
+			async ({ projectIds }) => {
+				// The import saves over the version it is given; a save in between is a conflict, so it reads and tries again once.
+				const importOnce = async () => {
+					const { enabled, portfolio } = await client.portfolio.get({});
+					if (!enabled) throw new ORPCError("PORTFOLIO_DISABLED", { status: 403 });
+					if (!portfolio) throw new ORPCError("NOT_FOUND");
+					const before = new Set(portfolio.data.works.items.map((work) => work.id));
+					const saved = await client.portfolio.importWorks({
+						resumeItemIds: projectIds,
+						expectedUpdatedAt: portfolio.updatedAt,
+					});
+					return { before, saved };
+				};
+				const { before, saved } = await importOnce().catch((error: unknown) => {
+					if (error instanceof ORPCError && error.code === "PORTFOLIO_VERSION_CONFLICT") return importOnce();
+					throw error;
+				});
+				const added = saved.data.works.items.flatMap((work) =>
+					!before.has(work.id) && work.fromResumeItemId
+						? [{ id: work.id, title: work.title, projectId: work.fromResumeItemId }]
+						: [],
+				);
+				const addedFrom = new Set(added.map((work) => work.projectId));
+				const skipped = [...new Set(projectIds)].filter((id) => !addedFrom.has(id));
+				const message = [
+					added.length
+						? `Added ${added.length} work(s) at the end of the list:`
+						: "No work was added: nothing was saved.",
+					...added.map((work) => `- "${work.title}" (id: ${work.id})`),
+					...(skipped.length
+						? [
+								`Skipped ${skipped.length}: already a work, or not one of the source's projects (\`view.source.projects\` in \`${T.getPortfolio}\`).`,
+							]
+						: []),
+					...(added.length
+						? [
+								`Each starts from the project's description; give it a role, cover and blocks with \`${T.editPortfolio}\`.`,
+							]
+						: []),
+				].join("\n");
+				return text(message, { added, skipped, updatedAt: saved.updatedAt.toISOString(), message });
+			},
+			"portfolio",
+		),
+
+		[T.setPortfolioSource]: withErrorHandling(
+			"changing the portfolio's source",
+			async ({ sourceResumeId }) => {
+				const portfolio = await client.portfolio.updateSettings({ sourceResumeId });
+				const sourceName = portfolio.sourceResume?.name ?? null;
+				const source = portfolio.sourceResumeId
+					? `the resume "${sourceName ?? portfolio.sourceResumeId}"`
+					: "the Profile";
+				const message = `The portfolio now reads its career sections, basics and projects from ${source}. Read it again with \`${T.getPortfolio}\` to see the new sections and their item ids.`;
+				return text(message, { sourceResumeId: portfolio.sourceResumeId, sourceName, message });
+			},
+			"portfolio",
+		),
+
 		[T.publishPortfolio]: withErrorHandling(
 			"publishing the portfolio",
 			async ({ published }) => {
@@ -412,7 +471,10 @@ export function registerTools(
 
 		[T.getPortfolioStatistics]: withErrorHandling(
 			"reading portfolio statistics",
-			async ({ range }) => json({ statistics: await client.portfolio.statistics(range ? { range } : {}) }),
+			async ({ range, workId }) =>
+				workId
+					? json({ work: await client.portfolio.workStatistics({ workId, ...(range ? { range } : {}) }) })
+					: json({ statistics: await client.portfolio.statistics(range ? { range } : {}) }),
 			"portfolio",
 		),
 	};

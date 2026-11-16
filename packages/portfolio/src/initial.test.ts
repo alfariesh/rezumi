@@ -2,7 +2,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS, portfolioDataBytes } from "@rezumi/schema/portfolio/limits";
 import { testResume } from "./fixtures.test-helpers";
-import { createInitialPortfolioData, workFromResumeProject } from "./initial";
+import { createInitialPortfolioData, importableProjects, workFromResumeProject } from "./initial";
 
 describe("a new portfolio from a resume", () => {
 	it("starts About from the summary, cleaned", () => {
@@ -173,5 +173,20 @@ describe("a new portfolio without a resume", () => {
 		expect(data.design.fonts).toEqual({ source: "theme" });
 		expect(data.works.items).toEqual([]);
 		expect(data.about.content).toBe("");
+	});
+});
+
+describe("projects a work can be imported from", () => {
+	it("offers the source's shown, named projects, marking ones already imported", () => {
+		const resume = testResume();
+		const [project] = resume.sections.projects.items;
+		const work = project ? workFromResumeProject(project, new Set()) : null;
+		expect(importableProjects(resume, [])).toEqual([
+			{ id: "p1", name: "Aplikasi Kopi", period: "2024", imported: false },
+		]);
+		expect(importableProjects(resume, work ? [{ ...work, fromResumeItemId: "p1" }] : [])).toEqual([
+			{ id: "p1", name: "Aplikasi Kopi", period: "2024", imported: true },
+		]);
+		expect(importableProjects(null, [])).toEqual([]);
 	});
 });

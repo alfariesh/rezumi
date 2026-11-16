@@ -196,7 +196,7 @@ export function registerPrompts(server: McpServer, client: RouterClient<typeof r
 								? `1. **Start** — My portfolio is attached above. Read it again with \`${T.getPortfolio}\` whenever you need fresh ids.`
 								: `1. **Create** — I have no portfolio yet. Ask whether to start from my Profile or one of my resumes (\`${T.listResumes}\`), then call \`${T.createPortfolio}\` and read it with \`${T.getPortfolio}\`.`,
 							"2. **Intro** — Agree on my headline, greeting and a short About text, from my CV or Profile.",
-							"3. **Works** — Go through my projects one by one: title, role, date, a short summary and blocks (text, images, numbers, links), with only facts I give you.",
+							`3. **Works** — Offer to import projects from my CV or Profile (\`view.source.projects\`) with \`${T.importPortfolioWorks}\`, then go through my works one by one: title, role, date, a short summary and blocks (text, images, numbers, links), with only facts I give you.`,
 							"4. **Services, clients and testimonials** — Add the ones I have; skip the rest.",
 							"5. **Design** — Suggest a theme and accent that fit my field, and the section order.",
 							"6. **Publish** — When I'm happy, ask whether to publish it.",

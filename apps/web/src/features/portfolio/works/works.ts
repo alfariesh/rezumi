@@ -1,6 +1,5 @@
 import type { PortfolioData, PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
-import type { ResumeData } from "@rezumi/schema/resume/data";
 import { PORTFOLIO_SLUG_PATTERN, uniquePortfolioSlug } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { generateId } from "@rezumi/utils/string";
@@ -145,20 +144,4 @@ export function worksFromImages(
 	return images
 		.slice(0, room)
 		.map((entry) => make(entry.image.alt || titleFromFileName(entry.fileName), [entry.image]));
-}
-
-export type ImportableProject = { id: string; name: string; period: string; imported: boolean };
-
-/** The source resume's projects, marking the ones already brought in as works. Hidden projects aren't offered. */
-export function resumeProjects(resume: ResumeData | null, works: readonly PortfolioWork[]): ImportableProject[] {
-	if (!resume) return [];
-	const imported = new Set(works.flatMap((work) => (work.fromResumeItemId ? [work.fromResumeItemId] : [])));
-	return resume.sections.projects.items
-		.filter((item) => !item.hidden && item.name.trim())
-		.map((item) => ({
-			id: item.id,
-			name: item.name.trim(),
-			period: item.period.trim(),
-			imported: imported.has(item.id),
-		}));
 }
