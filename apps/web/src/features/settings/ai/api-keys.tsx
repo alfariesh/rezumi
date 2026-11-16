@@ -1,5 +1,5 @@
 import type { DataGridColumn } from "@heroui-pro/react";
-import { DataGrid, EmptyState, Segment } from "@heroui-pro/react";
+import { DataGrid, Segment } from "@heroui-pro/react";
 import {
 	Alert,
 	Button,
@@ -25,6 +25,7 @@ import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { SettingsSection } from "../section";
 import { SelectField } from "@/components/input/select-field";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { usePlanFeature } from "@/features/billing/plan";
 import { authClient } from "@/libs/auth/client";
@@ -202,16 +203,7 @@ export function ApiKeysSection() {
 			{isLoading ? (
 				<Skeleton className="h-14 rounded-xl" />
 			) : keys.length === 0 ? (
-				<EmptyState size="sm" className="rounded-xl border border-dashed border-border">
-					<EmptyState.Header>
-						<EmptyState.Media variant="icon">
-							<Icon name="key" size={20} />
-						</EmptyState.Media>
-						<EmptyState.Title>
-							<Trans>No keys yet.</Trans>
-						</EmptyState.Title>
-					</EmptyState.Header>
-				</EmptyState>
+				<EmptyBlock kind="inline" title={<Trans>No keys yet.</Trans>} />
 			) : (
 				<DataGrid
 					aria-label={t`API keys`}

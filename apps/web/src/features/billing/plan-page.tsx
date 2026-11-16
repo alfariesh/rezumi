@@ -304,7 +304,10 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 	if (!plan?.enabled)
 		return (
 			<>
-				<PageHeader title={<Trans>Plan</Trans>} />
+				<PageHeader
+					title={<Trans>Plan</Trans>}
+					description={<Trans>What your plan includes, and your payments.</Trans>}
+				/>
 				<SettingsSection icon="seal-check" title={<Trans>Your plan</Trans>}>
 					<p className="text-body-sm text-muted">
 						<Trans>Plans don't apply to your account yet, so everything is open.</Trans>
@@ -318,7 +321,10 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 
 	return (
 		<>
-			<PageHeader title={<Trans>Plan</Trans>} />
+			<PageHeader
+				title={<Trans>Plan</Trans>}
+				description={<Trans>What your plan includes, and your payments.</Trans>}
+			/>
 
 			{plan.pendingPayment && <PendingPaymentBanner payment={plan.pendingPayment} formatDate={formatDate} />}
 

@@ -1,11 +1,11 @@
+import type { SectionNavItem } from "@/components/layout/section-layout";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { Fragment } from "react";
+import { createFileRoute, Outlet, useRouteContext } from "@tanstack/react-router";
 import { LEGAL_URLS } from "@rezumi/schema/billing";
-import { Icon } from "@rezumi/ui/components/icon";
-import { Page } from "@/components/layout/page";
-import { popTransition } from "@/features/settings/root";
+import { cn } from "@rezumi/utils/style";
+import { SectionLayout } from "@/components/layout/section-layout";
+import { usePlan } from "@/features/billing/plan";
 
 // Help and legal documents for the hosted service.
 const getProjectLinks = () => [
@@ -19,37 +19,85 @@ const getProjectLinks = () => [
 
 export const Route = createFileRoute("/dashboard/settings")({ component: RouteComponent });
 
-/** Account and Settings share one centred column; the account menu is how you move between them. */
+/**
+ * Settings: Account, Plan (while plans apply) and the app's own settings, with the admin tools for administrators. The
+ * section's menu on the left (chips on phones); each page has its own header. The version and legal links sit under
+ * the menu on wide screens and after the page on phones.
+ */
 function RouteComponent() {
-	const pathname = useRouterState({ select: (state) => state.location.pathname });
-	const isRoot = pathname.replace(/\/$/, "") === "/dashboard/settings";
+	const { session } = useRouteContext({ from: "/dashboard" });
+	const plan = usePlan();
+
+	const items: SectionNavItem[] = [
+		{
+			link: { to: "/dashboard/settings/account" },
+			match: { to: "/dashboard/settings/account", fuzzy: true },
+			icon: "user-circle",
+			label: t`Account`,
+		},
+		...(plan?.enabled
+			? [
+					{
+						link: { to: "/dashboard/settings/billing" },
+						// Also the payment's return page and its receipt.
+						match: { to: "/dashboard/settings/billing", fuzzy: true },
+						icon: "seal-check",
+						label: t`Plan`,
+					} satisfies SectionNavItem,
+				]
+			: []),
+		{
+			link: { to: "/dashboard/settings/app" },
+			match: { to: "/dashboard/settings/app", fuzzy: true },
+			icon: "gear-six",
+			label: t`App settings`,
+		},
+		...(session.user.role === "admin"
+			? [
+					{
+						link: { to: "/dashboard/admin/billing" },
+						match: { to: "/dashboard/admin/billing", fuzzy: true },
+						icon: "shield-check",
+						label: t`Billing admin`,
+						group: t`Admin`,
+					} satisfies SectionNavItem,
+					{
+						link: { to: "/dashboard/admin/portfolios", search: {} },
+						match: { to: "/dashboard/admin/portfolios", fuzzy: true },
+						icon: "warning-circle",
+						label: t`Portfolio reports`,
+					} satisfies SectionNavItem,
+				]
+			: []),
+	];
 
 	return (
-		// At least the height under the 48px navbar, so the links sit at the bottom without making a short page scroll.
-		<Page width="narrow" className="min-h-[calc(100svh-3rem)] gap-8">
-			{!isRoot && (
-				<Link
-					to="/dashboard/settings"
-					viewTransition={popTransition}
-					className="-mb-4 inline-flex h-9 w-fit items-center gap-1 text-sm text-muted sm:hidden"
-				>
-					<Icon name="caret-left" size={20} />
-					<Trans>Back</Trans>
-				</Link>
-			)}
+		<SectionLayout title={t`Settings`} items={items} contentWidth="narrow" footer={<ProjectLinks />}>
 			<Outlet />
-			<p className="mt-auto text-body-xs text-muted max-sm:hidden">
+			{/* Phones: the menu's small print, after the page. */}
+			<ProjectLinks className="mt-6 md:hidden" />
+		</SectionLayout>
+	);
+}
+
+type ProjectLinksProps = { className?: string };
+
+/** The app's version, then the docs and the legal documents, each opening in a new tab. */
+function ProjectLinks({ className }: ProjectLinksProps) {
+	return (
+		<div className={cn("grid gap-1.5 text-body-xs text-muted", className)}>
+			<p>
 				<Trans>Rezumi {__APP_VERSION__}</Trans>
-				{" · "}
-				{getProjectLinks().map((link, index) => (
-					<Fragment key={link.href}>
-						{index > 0 && " · "}
+			</p>
+			<ul className="flex flex-wrap gap-x-3 gap-y-1.5 md:grid">
+				{getProjectLinks().map((link) => (
+					<li key={link.href}>
 						<a className="underline hover:text-foreground" href={link.href} target="_blank" rel="noopener noreferrer">
 							{link.label}
 						</a>
-					</Fragment>
+					</li>
 				))}
-			</p>
-		</Page>
+			</ul>
+		</div>
 	);
 }

@@ -1,6 +1,7 @@
 import type { DocumentsSearch } from "@/features/documents/documents-page";
 import { createFileRoute, redirect, stripSearchParams } from "@tanstack/react-router";
 import z from "zod";
+import { DocumentsLayout } from "@/features/documents/documents-layout";
 import { DocumentsPage } from "@/features/documents/documents-page";
 import { orpc } from "@/libs/orpc/client";
 
@@ -36,15 +37,17 @@ function RouteComponent() {
 	const navigate = Route.useNavigate();
 
 	return (
-		<DocumentsPage
-			search={search}
-			onSearchChange={(patch) =>
-				void navigate({
-					resetScroll: false,
-					search: (previous: DocumentsSearch) => ({ ...previous, ...patch }),
-					replace: true,
-				})
-			}
-		/>
+		<DocumentsLayout current={search.type} search={search}>
+			<DocumentsPage
+				search={search}
+				onSearchChange={(patch) =>
+					void navigate({
+						resetScroll: false,
+						search: (previous: DocumentsSearch) => ({ ...previous, ...patch }),
+						replace: true,
+					})
+				}
+			/>
+		</DocumentsLayout>
 	);
 }

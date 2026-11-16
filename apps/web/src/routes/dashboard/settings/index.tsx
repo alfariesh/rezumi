@@ -1,12 +1,8 @@
-import { createFileRoute, Navigate } from "@tanstack/react-router";
-import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
-import { SettingsRoot } from "@/features/settings/root";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-// Phones (below 640px) get the root with the two pages; wider screens open Account.
+// Settings opens on Account on every screen; phones reach the other pages through the section's chips.
 export const Route = createFileRoute("/dashboard/settings/")({
-	component: RouteComponent,
+	beforeLoad: () => {
+		throw redirect({ to: "/dashboard/settings/account", replace: true });
+	},
 });
-
-function RouteComponent() {
-	return useBreakpoint() === "mobile" ? <SettingsRoot /> : <Navigate to="/dashboard/settings/account" replace />;
-}

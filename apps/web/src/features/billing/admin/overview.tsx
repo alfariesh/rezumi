@@ -37,6 +37,7 @@ import {
 } from "../purchase";
 import { formatMoney, formatUsdMicros, getAlertLabel, reportRange } from "./labels";
 import { AdminCard, CHART_COLORS, IconButton, LegendDot, MiniStat, StatWidget, trendOf } from "./parts";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { getReadableErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 import { renderAsH1 } from "@/libs/typography";
@@ -290,9 +291,7 @@ function SubscriptionsCard({ metrics }: MetricsProps) {
 				<MiniStat value={metrics.passes.active} label={t`QRIS plans running now`} />
 			</div>
 			{rows.length === 0 ? (
-				<p className="py-10 text-center text-body-sm text-muted">
-					<Trans>No subscriptions yet.</Trans>
-				</p>
+				<EmptyBlock kind="inline" title={<Trans>No subscriptions yet.</Trans>} />
 			) : (
 				<div className="flex flex-col items-center gap-6 sm:flex-row">
 					<div className="relative shrink-0">
@@ -700,11 +699,13 @@ function PaymentsCard({ range, query }: PaymentsCardProps) {
 						const userId = rows.find((row) => row.id === key)?.userId;
 						if (userId) void navigate({ to: "/dashboard/admin/billing/$userId", params: { userId } });
 					}}
-					renderEmptyState={() => (
-						<p className="py-10 text-center text-body-sm text-muted">
-							{searching ? t`Nothing matches.` : t`No payments in this period.`}
-						</p>
-					)}
+					renderEmptyState={() =>
+						searching ? (
+							<EmptyBlock kind="filtered" title={<Trans>Nothing matches “{query}”</Trans>} />
+						) : (
+							<EmptyBlock kind="inline" className="m-3" title={t`No payments in this period.`} />
+						)
+					}
 				/>
 			)}
 			{!searching && total > PAGE_SIZE && (

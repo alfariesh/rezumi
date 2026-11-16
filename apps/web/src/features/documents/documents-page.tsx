@@ -1,23 +1,10 @@
 import type { DocumentSort, DocumentSummary, DocumentTypeFilter } from "./filter";
-import { ActionBar, EmptyState, Segment } from "@heroui-pro/react";
-import {
-	Button,
-	Chip,
-	Dropdown,
-	InputGroup,
-	Kbd,
-	Label,
-	Separator,
-	Skeleton,
-	Tag,
-	TagGroup,
-	Typography,
-} from "@heroui/react";
+import { ActionBar, Segment } from "@heroui-pro/react";
+import { Button, Chip, Dropdown, InputGroup, Kbd, Label, Separator, Skeleton, Tag, TagGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
@@ -28,12 +15,11 @@ import { collectTags, filterDocuments } from "./filter";
 import { LibraryError } from "./library-error";
 import { useStartDocument } from "./use-start-document";
 import { SelectField } from "@/components/input/select-field";
-import { Page } from "@/components/layout/page";
+import { EmptyBlock } from "@/components/layout/empty-block";
 import { PageHeader } from "@/components/layout/page-header";
 import { useDialogStore } from "@/dialogs/store";
 import { isEditableElementFocused } from "@/features/resume/builder/draft";
 import { orpc } from "@/libs/orpc/client";
-import { renderAsH2 } from "@/libs/typography";
 
 export type DocumentsSearch = {
 	type: DocumentTypeFilter;
@@ -51,8 +37,8 @@ type DocumentsPageProps = {
 };
 
 /**
- * Documents: every resume and letter in one library, with type tabs, search (/), sort, grid or list, and tag
- * chips once tags exist. A file dropped anywhere on the page imports straight away.
+ * Documents: every resume and letter in one library, by the type the section menu picks, with search (/), sort, grid
+ * or list, and tag chips once tags exist. A file dropped anywhere on the page imports straight away.
  */
 export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 	const openDialog = useDialogStore((state) => state.openDialog);
@@ -98,13 +84,12 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 	const firstRun = !isPending && all.length === 0;
 	const shown = filterDocuments(all, search);
 	const tags = collectTags(all);
-	const counts = {
-		all: all.length,
-		resume: all.filter((document) => document.type === "resume").length,
-		letter: all.filter((document) => document.type === "letter").length,
-	};
 	const hasPublic = all.some((document) => document.isPublic);
-	const filtered = search.type !== "all" || search.q.trim() !== "" || search.tags.length > 0 || search.public === true;
+	const filtered = search.q.trim() !== "" || search.tags.length > 0 || search.public === true;
+	// Resumes or Letters with none of that type yet: say what goes here rather than "nothing matches".
+	const emptyType =
+		!isPending && search.type !== "all" && !all.some((document) => document.type === search.type) ? search.type : null;
+	const typeEmpty = emptyType !== null;
 	// Actions apply to the selected documents the filters show.
 	const selection = shown.filter((document) => selected.has(documentKey(document)));
 	const selecting = selection.length > 0;
@@ -132,46 +117,29 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 	});
 
 	return (
-		<Page width="wide">
-			<PageHeader title={<Trans>Documents</Trans>}>
-				{!failed && !firstRun && (
-					<>
-						<Segment
-							aria-label={t`Document type`}
-							// On a phone the filter spans the row, its three items sharing it.
-							className="max-sm:w-full"
-							selectedKey={search.type}
-							onSelectionChange={(type) => onSearchChange({ type: String(type) as DocumentTypeFilter })}
-						>
-							<Segment.Item id="all">
-								<Trans>All</Trans> <span className="text-xs text-muted tabular-nums">{counts.all}</span>
-							</Segment.Item>
-							<Segment.Item id="resume">
-								<Trans>Resumes</Trans> <span className="text-xs text-muted tabular-nums">{counts.resume}</span>
-							</Segment.Item>
-							<Segment.Item id="letter">
-								<Trans>Letters</Trans> <span className="text-xs text-muted tabular-nums">{counts.letter}</span>
-							</Segment.Item>
-						</Segment>
-
-						<div className="ms-auto flex flex-wrap items-center gap-2 max-sm:ms-0 max-sm:w-full">
-							<InputGroup variant="secondary" className="w-60 max-sm:w-full">
-								<InputGroup.Prefix>
-									<Icon name="magnifying-glass" size={18} />
-								</InputGroup.Prefix>
-								<InputGroup.Input
-									ref={searchRef}
-									type="search"
-									value={search.q}
-									aria-label={t`Search documents`}
-									placeholder={t`Search`}
-									onChange={(event) => onSearchChange({ q: event.target.value })}
-								/>
-								<InputGroup.Suffix className="max-sm:hidden pointer-coarse:hidden">
-									<Kbd>/</Kbd>
-								</InputGroup.Suffix>
-							</InputGroup>
-							<div className="w-[150px] max-sm:w-auto max-sm:flex-1">
+		<>
+			<PageHeader title={getTitle(search.type)}>
+				{!failed && !firstRun && !typeEmpty && (
+					<div className="flex w-full flex-wrap items-center gap-2">
+						<InputGroup variant="secondary" className="w-60 max-sm:w-full">
+							<InputGroup.Prefix>
+								<Icon name="magnifying-glass" size={18} />
+							</InputGroup.Prefix>
+							<InputGroup.Input
+								ref={searchRef}
+								type="search"
+								value={search.q}
+								aria-label={t`Search documents`}
+								placeholder={t`Search`}
+								onChange={(event) => onSearchChange({ q: event.target.value })}
+							/>
+							<InputGroup.Suffix className="max-sm:hidden pointer-coarse:hidden">
+								<Kbd>/</Kbd>
+							</InputGroup.Suffix>
+						</InputGroup>
+						{/* Sort and view stay together at the end, and wrap under the search as one row. */}
+						<div className="ms-auto flex items-center gap-2 max-sm:ms-0 max-sm:w-full">
+							<div className="w-[150px] max-sm:flex-1">
 								<SelectField
 									aria-label={t`Sort`}
 									value={search.sort}
@@ -197,7 +165,7 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 								</Segment.Item>
 							</Segment>
 						</div>
-					</>
+					</div>
 				)}
 			</PageHeader>
 
@@ -205,6 +173,8 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 
 			{failed ? null : firstRun ? (
 				<FirstRun onChooseFile={() => openDialog("document.new", undefined)} />
+			) : emptyType ? (
+				<TypeEmpty type={emptyType} />
 			) : (
 				<>
 					{(tags.length > 0 || hasPublic) && (
@@ -221,34 +191,28 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 					{isPending ? (
 						<LibrarySkeleton view={view} />
 					) : shown.length === 0 ? (
-						<EmptyState className="py-16">
-							<EmptyState.Header>
-								<EmptyState.Media variant="icon">
-									<Icon name="magnifying-glass" size={22} />
-								</EmptyState.Media>
-								<EmptyState.Title>
-									{search.q.trim() ? (
-										<Trans>Nothing matches “{search.q.trim()}”</Trans>
-									) : (
-										<Trans>Nothing matches these filters</Trans>
-									)}
-								</EmptyState.Title>
-								<EmptyState.Description className="max-w-xs text-pretty">
-									<Trans>Search covers titles, tags and linked applications.</Trans>
-								</EmptyState.Description>
-							</EmptyState.Header>
-							{filtered && (
-								<EmptyState.Content>
+						<EmptyBlock
+							kind="filtered"
+							title={
+								search.q.trim() ? (
+									<Trans>Nothing matches “{search.q.trim()}”</Trans>
+								) : (
+									<Trans>Nothing matches these filters</Trans>
+								)
+							}
+							description={<Trans>Search covers titles, tags and linked applications.</Trans>}
+							action={
+								filtered && (
 									<Button
 										size="sm"
 										variant="secondary"
-										onPress={() => onSearchChange({ q: "", tags: [], type: "all", public: false })}
+										onPress={() => onSearchChange({ q: "", tags: [], public: false })}
 									>
 										<Trans>Clear search and filters</Trans>
 									</Button>
-								</EmptyState.Content>
-							)}
-						</EmptyState>
+								)
+							}
+						/>
 					) : view === "list" ? (
 						<DocumentList
 							documents={shown}
@@ -286,7 +250,51 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 			<DropToImport />
 			<TagsDialog documents={tagsFor} onClose={() => setTagsFor(null)} />
 			<LinkApplicationDialog document={linkFor} onClose={() => setLinkFor(null)} />
-		</Page>
+		</>
+	);
+}
+
+/** The page's title: the section menu's item, with All as the library's own name. */
+function getTitle(type: DocumentTypeFilter) {
+	if (type === "resume") return <Trans>Resumes</Trans>;
+	if (type === "letter") return <Trans>Letters</Trans>;
+	return <Trans>Documents</Trans>;
+}
+
+type TypeEmptyProps = { type: Exclude<DocumentTypeFilter, "all"> };
+
+/** Resumes or Letters before the first of that type: what goes here, and the button that makes one. */
+function TypeEmpty({ type }: TypeEmptyProps) {
+	const openDialog = useDialogStore((state) => state.openDialog);
+	const { newLetter, creating } = useStartDocument();
+
+	if (type === "letter")
+		return (
+			<EmptyBlock
+				kind="page"
+				icon="envelope-simple"
+				title={<Trans>No letters yet</Trans>}
+				description={<Trans>A new letter takes its sender details and design from your latest resume.</Trans>}
+				action={
+					<Button isDisabled={creating} onPress={() => void newLetter()}>
+						<Trans>New cover letter</Trans>
+					</Button>
+				}
+			/>
+		);
+
+	return (
+		<EmptyBlock
+			kind="page"
+			icon="file-text"
+			title={<Trans>No resumes yet</Trans>}
+			description={<Trans>Import the resume you have, or start a new one from your Profile.</Trans>}
+			action={
+				<Button onPress={() => openDialog("document.new", undefined)}>
+					<Trans>New resume</Trans>
+				</Button>
+			}
+		/>
 	);
 }
 
@@ -322,52 +330,30 @@ export function FirstRun({ onChooseFile }: FirstRunProps) {
 	const { startBlank, trySample, creating } = useStartDocument();
 
 	return (
-		<section className="grid max-w-xl gap-4 pt-4">
-			<Typography type="h3" render={renderAsH2}>
-				<Trans>Let's start with what you have</Trans>
-			</Typography>
-			<p className="text-muted">
+		<EmptyBlock
+			kind="page"
+			icon="file-arrow-up"
+			title={<Trans>Let's start with what you have</Trans>}
+			description={
 				<Trans>
-					Import your current resume and we'll lay out every section for you to refine. It also fills your Profile, so
-					your next resume, letter and portfolio start from it. Or start blank from your Profile.
+					Import your current resume, or drop a PDF, Word or JSON file here, and we'll lay out every section for you to
+					refine.
 				</Trans>
-			</p>
-			<div className="flex flex-wrap items-center gap-3 rounded-2xl border border-dashed border-border p-5">
-				<Icon name="file-arrow-up" size={24} className="text-muted" />
-				<span className="flex-1 text-sm text-muted">
-					<Trans>Drop a PDF, Word or JSON file</Trans>
-				</span>
-				<Button onPress={onChooseFile}>
-					<Trans>Choose a file</Trans>
-				</Button>
-			</div>
-			<div className="flex flex-wrap gap-4 text-sm">
-				<Button
-					variant="ghost"
-					size="sm"
-					isDisabled={creating}
-					className="h-auto px-0 text-link underline-offset-4 hover:underline pointer-coarse:min-h-11"
-					onPress={() => void startBlank()}
-				>
-					<Trans>Start blank</Trans>
-				</Button>
-				<Button
-					variant="ghost"
-					size="sm"
-					isDisabled={creating}
-					className="h-auto px-0 text-link underline-offset-4 hover:underline pointer-coarse:min-h-11"
-					onPress={() => void trySample()}
-				>
-					<Trans>Try a sample</Trans>
-				</Button>
-				<Link
-					to="/dashboard/profile"
-					className="inline-flex items-center text-link underline-offset-4 hover:underline pointer-coarse:min-h-11"
-				>
-					<Trans>Fill in your Profile first</Trans>
-				</Link>
-			</div>
-		</section>
+			}
+			action={
+				<>
+					<Button onPress={onChooseFile}>
+						<Trans>Choose a file</Trans>
+					</Button>
+					<Button variant="secondary" isDisabled={creating} onPress={() => void startBlank()}>
+						<Trans>Start blank</Trans>
+					</Button>
+					<Button variant="ghost" isDisabled={creating} onPress={() => void trySample()}>
+						<Trans>Try a sample</Trans>
+					</Button>
+				</>
+			}
+		/>
 	);
 }
 
