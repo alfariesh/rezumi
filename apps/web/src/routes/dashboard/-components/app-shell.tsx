@@ -301,12 +301,14 @@ function AppNavbar() {
 		<Navbar maxWidth="full" size="sm" aria-label={t`Toolbar`} className="bg-surface [view-transition-name:app-bar]">
 			<Navbar.Header className={PAGE_GUTTER}>
 				<AppLayout.MenuToggle aria-label={t`Open navigation`} />
-				<Sidebar.Trigger aria-label={t`Toggle sidebar`} />
+				{/* A little in, and the crumbs close after it: the toggle's icon and the crumbs line up with a
+					    section menu's icons and labels below. */}
+				<Sidebar.Trigger aria-label={t`Toggle sidebar`} className="md:ms-0.5" />
 				<Link to="/dashboard" aria-label="Rezumi" className="md:hidden">
 					<BrandIcon variant="icon" alt="" className="size-6" />
 				</Link>
 				{crumbs.length > 0 && (
-					<Breadcrumbs className="ms-1 min-w-0 max-md:hidden">
+					<Breadcrumbs className="-ms-2 min-w-0 max-md:hidden">
 						{crumbs.map((crumb, index) => (
 							// Only the last crumb has no link, so the link (or "current") is a unique key.
 							<Breadcrumbs.Item
