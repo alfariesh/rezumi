@@ -15,7 +15,7 @@ import { dataBlock } from "../../ai/data-block";
 import { generateJson } from "../../ai/generate-json";
 import { portfolioErrors } from "../errors";
 import { fitSentences, knownFacts, supportedSentences } from "./facts";
-import { pageLanguage, resumeForDraft, withoutContact, workForDraft } from "./source";
+import { languageName, languageOf, noteLanguage, resumeForDraft, withoutContact, workForDraft } from "./source";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
@@ -105,9 +105,15 @@ export async function draftPortfolio(request: DraftRequest): Promise<PortfolioDr
 	const written = works.map(workForDraft);
 	const numbered = written.map((text, index) => `### Work id="${index + 1}"\n${text}`);
 	const safeNote = withoutContact(note ?? "");
+	const sourceResume = portfolioSourceResume(from);
+	const pageLocale = portfolioPageLocale(data, sourceResume);
+	// The person may ask for another language in their note: it's their page, so that wins over the page's language.
+	const asked = noteLanguage(safeNote);
+	const noteAsks = asked !== null && asked !== languageOf(pageLocale) ? asked : null;
 
 	const prompt = [
-		`Language of the page: ${pageLanguage(data, from)}.`,
+		`Language of the page: ${languageName(pageLocale)}.`,
+		noteAsks ? `Language the note asks for: ${languageName(noteAsks)}. Write everything in it.` : "",
 		`Works to write: ${works.length}.`,
 		`## The resume\n\n${dataBlock("RESUME", source)}`,
 		written.length ? `## The works\n\n${dataBlock("WORKS", numbered.join("\n\n"))}` : "",
@@ -120,9 +126,9 @@ export async function draftPortfolio(request: DraftRequest): Promise<PortfolioDr
 
 	// From the works' text, not their numbered headings: those numbers are ours and back up nothing.
 	const facts = knownFacts(source, written.join("\n"), safeNote);
-	// The Profile has no language of its own: it may not be the page's, where every translated word looks like a new name.
-	const sourceResume = portfolioSourceResume(from);
-	const names = sourceResume !== null && sourceResume.metadata.page.locale === portfolioPageLocale(data, sourceResume);
+	// The Profile has no language of its own, and the answer's may not be the resume's (the page's, or one the note asks
+	// for): there every translated word looks like a new name.
+	const names = noteAsks === null && sourceResume !== null && sourceResume.metadata.page.locale === pageLocale;
 	const checked = (text: string) => supportedSentences(plain(text), facts, { names });
 	const paragraphsOf = (texts: string[]) => texts.map(checked).filter(Boolean);
 	// The greeting and a card are read at a glance: a place to fill in belongs in the story.
