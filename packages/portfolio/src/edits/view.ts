@@ -15,6 +15,7 @@ import {
 	PORTFOLIO_THEME_INFO,
 	PORTFOLIO_THEMES,
 } from "@rezumi/schema/portfolio/themes";
+import { importableProjects } from "../initial";
 import { portfolioMessages, portfolioViewMessages } from "../messages";
 import { customSectionEntries, isResumeEntryKind, resumeEntries } from "../resume-entries";
 import { buildPortfolioView, portfolioPageLocale, resolveSectionOrder } from "../view";
@@ -103,6 +104,20 @@ function worksView(data: PortfolioData) {
 			highlightMetricId: work.highlightMetricId,
 			fromResume: work.fromResumeItemId ? true : undefined,
 			blocks: work.blocks.map(blockView),
+		}),
+	);
+}
+
+/** The source's projects as a model imports them, or undefined when it has none. */
+function sourceProjects(resume: ResumeData | null, data: PortfolioData) {
+	const projects = importableProjects(resume, data.works.items);
+	if (!projects.length) return undefined;
+	return projects.map((project) =>
+		compact({
+			id: project.id,
+			name: project.name,
+			period: project.period || undefined,
+			imported: project.imported ? true : undefined,
 		}),
 	);
 }
@@ -255,7 +270,13 @@ export function portfolioAiView(input: PortfolioAiViewInput): Record<string, unk
 			language: locale,
 			languageFollowsSource: data.locale === undefined,
 		},
-		source: { from: input.source.from, name: input.source.name, available: resume !== null },
+		source: compact({
+			from: input.source.from,
+			name: input.source.name,
+			available: resume !== null,
+			// The source's projects, which `portfolio.importWorks` turns into works; `imported` ones already are.
+			projects: sourceProjects(resume, data),
+		}),
 		plan: plan
 			? compact({
 					name: plan.name,

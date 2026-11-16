@@ -17,6 +17,24 @@ const input = (overrides: Partial<PortfolioAiViewInput> = {}): PortfolioAiViewIn
 });
 
 describe("portfolioAiView", () => {
+	it("lists the source's projects a work can be imported from, marking the ones already imported", () => {
+		const projects = (view: Record<string, unknown>) => (view.source as { projects?: unknown[] }).projects;
+		const view = portfolioAiView(input());
+		expect(projects(view)).toEqual([expect.objectContaining({ id: "p1", name: "Aplikasi Kopi" })]);
+		expect(projects(view)?.[0]).not.toHaveProperty("imported");
+
+		const base = input();
+		const items = base.data.works.items.map((work, index) =>
+			index === 0 ? { ...work, fromResumeItemId: "p1" } : work,
+		);
+		const imported = portfolioAiView({ ...base, data: { ...base.data, works: { items } } });
+		expect(projects(imported)?.[0]).toMatchObject({ id: "p1", imported: true });
+
+		expect(portfolioAiView(input({ source: { from: "profile", name: null, resume: null } })).source).not.toHaveProperty(
+			"projects",
+		);
+	});
+
 	it("leaves every contact value and the map point out, saying only what the source has", () => {
 		const view = portfolioAiView(input());
 		const json = JSON.stringify(view);

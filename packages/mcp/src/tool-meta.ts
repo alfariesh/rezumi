@@ -20,6 +20,7 @@ import {
 	WRITE_EXTERNAL,
 	WRITE_NON_IDEMPOTENT,
 	WRITE_DESTRUCTIVE,
+	WRITE_IDEMPOTENT,
 } from "./annotations";
 import { fileInputSchema, toWireObjectSchema, toWireSchema } from "./contracts";
 import { MCP_TOOL_NAME as T } from "./mcp-tool-names";
@@ -174,6 +175,19 @@ const portfolioStatisticsOutput = z
 			.describe("`ready` with countries, devices and referrers; otherwise locked by the plan or unavailable."),
 	})
 	.nullable();
+const portfolioWorkStatisticsOutput = z.looseObject({
+	range: z.object({ days: z.number(), from: z.string(), to: z.string() }),
+	work: z.object({ id: z.string(), title: z.string(), slug: z.string() }),
+	days: z
+		.array(z.looseObject({ date: z.string(), opens: z.number() }))
+		.describe("Every day of the range, oldest first."),
+	totals: z.looseObject({ opens: z.number() }),
+	details: z
+		.looseObject({ state: z.string() })
+		.describe(
+			"`ready` with sources, countries, devices, referrers and clicks; otherwise locked by the plan or unavailable.",
+		),
+});
 const idOutput = z.object({ id: z.string() });
 
 const pagination = {
@@ -802,7 +816,8 @@ export const TOOL_META = withAnnotationTitles({
 		description: [
 			"Read the account's portfolio (its personal web page) as an AI edits it: page status and address, theme and design,",
 			"every item with its id (works with their blocks, services, testimonials, clients, own sections), the career",
-			"sections read live from the CV or Profile (read-only; their items can be hidden), the pictures it can place,",
+			"sections read live from the CV or Profile (read-only; their items can be hidden), the source's projects",
+			`(\`view.source.projects\`, which \`${T.importPortfolioWorks}\` turns into works), the pictures it can place,`,
 			"its limits and what the plan locks. Contact details are never included.",
 			`\`guide\` is the edit language \`${T.editPortfolio}\` takes (also the \`portfolio://_meta/edits\` resource).`,
 			`When \`exists\` is false, create it with \`${T.createPortfolio}\` first.`,
@@ -860,6 +875,8 @@ export const TOOL_META = withAnnotationTitles({
 			"works, services, testimonials, clients, own sections, intro numbers, a work's blocks and metrics, by id.",
 			"Edits apply in order, each whole or not at all, and are saved together. Failed edits come back in `failed` with",
 			"the reason while the rest apply; nothing is saved when none applies. A published portfolio shows the change at once.",
+			"Link, video and embed blocks it adds are completed from their page, as the editor does on paste: what the edit",
+			"leaves out (title, description, site name and logo, preview picture) is read from the link; what it gives is kept.",
 			"Never invent facts; testimonials need `consent: true` after the person quoted agreed. Removing content can't be",
 			"undone here: confirm with the user first.",
 		].join("\n"),
@@ -928,6 +945,61 @@ export const TOOL_META = withAnnotationTitles({
 		),
 		annotations: WRITE_EXTERNAL,
 	},
+	[T.importPortfolioWorks]: {
+		title: "Import Portfolio Works",
+		description: [
+			"Add works made from projects of the portfolio's source (its resume, or the Profile): each gets the project's",
+			"name, period and description, and a link block for its website. Take the ids from",
+			`\`view.source.projects\` in \`${T.getPortfolio}\`; projects already imported (\`imported: true\`) are skipped, so`,
+			`asking twice adds nothing twice. New works go at the end; polish them with \`${T.editPortfolio}\`.`,
+		].join("\n"),
+		outputSchema: z.object({
+			added: z
+				.array(z.object({ id: z.string(), title: z.string(), projectId: z.string() }))
+				.describe("The works added, with the project each came from."),
+			skipped: z
+				.array(z.string())
+				.describe("Project ids not added: already a work, or not one of the source's projects."),
+			updatedAt: z.string().describe("The portfolio's version after the import."),
+			message: z.string(),
+		}),
+		inputSchema: wireInput(
+			z.strictObject({
+				projectIds: z
+					.array(z.string().trim().min(1).max(PORTFOLIO_LIMITS.text.id))
+					.min(1)
+					.max(PORTFOLIO_LIMITS.works)
+					.describe(`Ids from \`view.source.projects\` in \`${T.getPortfolio}\`.`),
+			}),
+		),
+		annotations: { ...WRITE_IDEMPOTENT, openWorldHint: true },
+	},
+	[T.setPortfolioSource]: {
+		title: "Set Portfolio Source",
+		description: [
+			"Choose where the portfolio reads its career sections (experience, education, skills, …), name, headline, photo",
+			`and projects from: one of the account's resumes (\`${T.listResumes}\`), or null for the Profile. A published`,
+			"portfolio shows the new source at once. Works already made stay; CV items hidden on the portfolio refer to the old",
+			"source's ids, so check `sections.hiddenItems` afterwards. Ask the user before changing it.",
+		].join("\n"),
+		outputSchema: z.object({
+			sourceResumeId: z.string().nullable().describe("The resume it reads now; null for the Profile."),
+			sourceName: z.string().nullable().describe("That resume's name; null for the Profile."),
+			message: z.string(),
+		}),
+		inputSchema: wireInput(
+			z.strictObject({
+				sourceResumeId: z
+					.string()
+					.trim()
+					.min(1)
+					.max(64)
+					.nullable()
+					.describe(`A resume id from \`${T.listResumes}\` (not in Trash), or null for the Profile.`),
+			}),
+		),
+		annotations: { ...WRITE_DESTRUCTIVE_EXTERNAL, idempotentHint: true },
+	},
 	[T.publishPortfolio]: {
 		title: "Publish Portfolio",
 		description: [
@@ -942,14 +1014,24 @@ export const TOOL_META = withAnnotationTitles({
 	[T.getPortfolioStatistics]: {
 		title: "Get Portfolio Statistics",
 		description:
-			"Read the portfolio's visits, clicks, contact messages and most opened works for the last 7, 30 (the default) or 90 days. `statistics` is null while the account has no portfolio. The detailed breakdown (countries, devices, referrers) depends on the plan.",
-		outputSchema: z.object({ statistics: portfolioStatisticsOutput }),
+			"Read the portfolio's visits, clicks, contact messages and most opened works for the last 7, 30 (the default) or 90 days, in `statistics` (null while the account has no portfolio). With `workId`, read one work instead, in `work`: how often its page was opened, by day and where visitors came from. The detailed breakdown (countries, devices, referrers) depends on the plan.",
+		outputSchema: z.object({
+			statistics: portfolioStatisticsOutput.optional(),
+			work: portfolioWorkStatisticsOutput.optional(),
+		}),
 		inputSchema: wireInput(
 			z.strictObject({
 				range: z
 					.union([z.literal(7), z.literal(30), z.literal(90)])
 					.optional()
 					.describe("Days, ending today: 7, 30 or 90."),
+				workId: z
+					.string()
+					.trim()
+					.min(1)
+					.max(PORTFOLIO_LIMITS.text.id)
+					.optional()
+					.describe(`A work's id from \`${T.getPortfolio}\`, to read that work's numbers only.`),
 			}),
 		),
 		annotations: READ_IDEMPOTENT,

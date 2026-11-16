@@ -1,7 +1,7 @@
 import type { PortfolioSource } from "./source";
 import type { PortfolioData, PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
-import type { ProjectItem } from "@rezumi/schema/resume/data";
+import type { ProjectItem, ResumeData } from "@rezumi/schema/resume/data";
 import { parseWritablePortfolioData, uniquePortfolioSlug } from "@rezumi/schema/portfolio/data";
 import { createDefaultPortfolioData } from "@rezumi/schema/portfolio/default";
 import {
@@ -35,6 +35,23 @@ function hostname(url: string): string {
 	} catch {
 		return url;
 	}
+}
+
+/** A project of the source a work can be made from (`importWorks`), and whether a work already came from it. */
+type ImportableProject = { id: string; name: string; period: string; imported: boolean };
+
+/** The source's projects, marking the ones already brought in as works. Hidden and unnamed projects aren't offered. */
+export function importableProjects(resume: ResumeData | null, works: readonly PortfolioWork[]): ImportableProject[] {
+	if (!resume) return [];
+	const imported = new Set(works.flatMap((work) => (work.fromResumeItemId ? [work.fromResumeItemId] : [])));
+	return resume.sections.projects.items
+		.filter((item) => !item.hidden && item.name.trim())
+		.map((item) => ({
+			id: item.id,
+			name: item.name.trim(),
+			period: item.period.trim(),
+			imported: imported.has(item.id),
+		}));
 }
 
 /** A work copied from a resume project: its card from the name, period and description, and Text and Link blocks. */

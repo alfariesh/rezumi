@@ -83,6 +83,11 @@ const clientMock = {
 		addImage: vi.fn(),
 		setPublic: vi.fn(),
 		statistics: vi.fn(),
+		workStatistics: vi.fn(),
+		get: vi.fn(),
+		importWorks: vi.fn(),
+		updateSettings: vi.fn(),
+		unfurl: vi.fn(),
 	},
 	applications: {
 		list: vi.fn(),
@@ -269,6 +274,106 @@ describe("registerTools", () => {
 			await add.handler({ file: upload });
 			expect(readMcpFile).toHaveBeenCalledWith(upload, "owner", 10 * 1024 * 1024);
 			expect(clientMock.portfolio.addImage).toHaveBeenLastCalledWith({ file });
+		});
+
+		it("completes an added link block from its page before applying the edits", async () => {
+			clientMock.portfolio.unfurl.mockResolvedValueOnce({
+				kind: "link",
+				url: "https://example.com/post",
+				title: "Fewer failed payments",
+				siteName: "Example",
+			});
+			clientMock.portfolio.applyEdits.mockResolvedValueOnce({
+				title: "Add a link",
+				applied: [{ index: 0, summary: "Added link block", id: "b1" }],
+				failed: [],
+				updatedAt: new Date("2026-11-14T09:00:00.000Z"),
+			});
+			const input = TOOL_META[MCP_TOOL_NAME.editPortfolio].inputSchema.parse({
+				title: "Add a link",
+				edits: [{ op: "add", list: "blocks", workId: "w1", item: { type: "link", url: "https://example.com/post" } }],
+			});
+			const result = await tool(MCP_TOOL_NAME.editPortfolio).handler(input);
+			expect(clientMock.portfolio.applyEdits.mock.calls[0]?.[0].edits[0].item).toEqual({
+				type: "link",
+				url: "https://example.com/post",
+				title: "Fewer failed payments",
+				siteName: "Example",
+			});
+			expect(result.content[0]!.text).toContain("Completed 1 link, video or embed block(s)");
+		});
+
+		it("imports works from the source's projects, retrying once on a conflict", async () => {
+			const work = (id: string, from?: string) => ({
+				id,
+				title: `Work ${id}`,
+				...(from ? { fromResumeItemId: from } : {}),
+			});
+			const portfolio = (works: unknown[], updatedAt: string) => ({
+				data: { works: { items: works } },
+				updatedAt: new Date(updatedAt),
+			});
+			clientMock.portfolio.get
+				.mockResolvedValueOnce({ enabled: true, portfolio: portfolio([work("w1")], "2026-11-14T08:00:00.000Z") })
+				.mockResolvedValueOnce({ enabled: true, portfolio: portfolio([work("w1")], "2026-11-14T08:30:00.000Z") });
+			clientMock.portfolio.importWorks
+				.mockRejectedValueOnce(new ORPCError("PORTFOLIO_VERSION_CONFLICT", { status: 409 }))
+				.mockResolvedValueOnce(portfolio([work("w1"), work("w2", "p1")], "2026-11-14T09:00:00.000Z"));
+			const input = TOOL_META[MCP_TOOL_NAME.importPortfolioWorks].inputSchema.parse({ projectIds: ["p1", "p2"] });
+			const result = await tool(MCP_TOOL_NAME.importPortfolioWorks).handler(input);
+			expect(clientMock.portfolio.importWorks).toHaveBeenLastCalledWith({
+				resumeItemIds: ["p1", "p2"],
+				expectedUpdatedAt: new Date("2026-11-14T08:30:00.000Z"),
+			});
+			expect(result.structuredContent).toMatchObject({
+				added: [{ id: "w2", title: "Work w2", projectId: "p1" }],
+				skipped: ["p2"],
+				updatedAt: "2026-11-14T09:00:00.000Z",
+			});
+			expect(
+				TOOL_META[MCP_TOOL_NAME.importPortfolioWorks].outputSchema.safeParse(result.structuredContent).success,
+			).toBe(true);
+		});
+
+		it("says portfolios are closed, not missing, when importing on an account without them", async () => {
+			clientMock.portfolio.get.mockResolvedValueOnce({ enabled: false, portfolio: null });
+			const result = await tool(MCP_TOOL_NAME.importPortfolioWorks).handler({ projectIds: ["p1"] });
+			expect(result.isError).toBe(true);
+			expect(result.content[0]!.text).toContain("Portfolios aren't available for this account yet.");
+			expect(result.content[0]!.text).not.toContain("Reference:");
+			expect(clientMock.portfolio.importWorks).not.toHaveBeenCalled();
+		});
+
+		it("switches the source to a resume or the Profile", async () => {
+			clientMock.portfolio.updateSettings.mockResolvedValueOnce({
+				sourceResumeId: "r2",
+				sourceResume: { id: "r2", name: "Design CV", slug: "design", inTrash: false },
+			});
+			const set = tool(MCP_TOOL_NAME.setPortfolioSource);
+			const toResume = await set.handler({ sourceResumeId: "r2" });
+			expect(clientMock.portfolio.updateSettings).toHaveBeenLastCalledWith({ sourceResumeId: "r2" });
+			expect(toResume.structuredContent).toMatchObject({ sourceResumeId: "r2", sourceName: "Design CV" });
+			clientMock.portfolio.updateSettings.mockResolvedValueOnce({ sourceResumeId: null, sourceResume: null });
+			const toProfile = await set.handler({ sourceResumeId: null });
+			expect(toProfile.content[0]!.text).toContain("from the Profile");
+		});
+
+		it("reads one work's statistics when given its id", async () => {
+			const numbers = {
+				range: { days: 30, from: "2026-10-16", to: "2026-11-14" },
+				work: { id: "w1", title: "Lumen", slug: "lumen" },
+				days: [{ date: "2026-11-14", opens: 3 }],
+				totals: { opens: 3 },
+				details: { state: "locked" },
+			};
+			clientMock.portfolio.workStatistics.mockResolvedValueOnce(numbers);
+			const result = await tool(MCP_TOOL_NAME.getPortfolioStatistics).handler({ workId: "w1", range: 30 });
+			expect(clientMock.portfolio.workStatistics).toHaveBeenCalledWith({ workId: "w1", range: 30 });
+			expect(clientMock.portfolio.statistics).not.toHaveBeenCalled();
+			expect(result.structuredContent).toEqual({ work: numbers });
+			expect(
+				TOOL_META[MCP_TOOL_NAME.getPortfolioStatistics].outputSchema.safeParse(result.structuredContent).success,
+			).toBe(true);
 		});
 
 		it("publishes at the account's address", async () => {

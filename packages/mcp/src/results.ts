@@ -45,6 +45,10 @@ function portfolioHint(code: string, inPortfolio: boolean): string | null {
 			return `That address couldn't be downloaded. Ask the user for the picture as a file instead (\`${MCP_TOOL_NAME.addPortfolioImage}\` with \`file\`).`;
 		case "PORTFOLIO_STORAGE_FULL":
 			return "The portfolio's storage is full. Ask the user to remove pictures it no longer uses in the editor.";
+		case "PORTFOLIO_WORKS_LIMIT":
+			return "The portfolio holds as many works as it may. Ask the user which works to remove, or import fewer projects.";
+		case "PORTFOLIO_WORK_NOT_FOUND":
+			return `No work has that id. Read the ids with \`${getPortfolio}\`.`;
 		case "PORTFOLIO_SOURCE_INVALID":
 			return `Choose another resume (\`${MCP_TOOL_NAME.listResumes}\`), or null for the Profile.`;
 		case "NOT_FOUND":

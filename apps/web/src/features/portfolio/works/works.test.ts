@@ -3,12 +3,10 @@ import { describe, expect, it } from "vite-plus/test";
 import { produce } from "immer";
 import { parsePortfolioData, parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
-import { defaultResumeData } from "@rezumi/schema/resume/default";
 import {
 	changeWorkSlug,
 	cleanSlugHistory,
 	newWork,
-	resumeProjects,
 	retitleWork,
 	titleFromFileName,
 	workRoom,
@@ -96,24 +94,6 @@ describe("works", () => {
 			draft.works.items.push(...worksFromImages(draft, [picture("a")], "each", ""));
 		});
 		expect(() => parseWritablePortfolioData(data)).not.toThrow();
-	});
-
-	it("offers the resume's shown projects, marking ones already in", () => {
-		const resume = produce(defaultResumeData, (draft) => {
-			const base = { hidden: false, period: "2024", description: "", website: { url: "", label: "" }, options: {} };
-			draft.sections.projects.items = [
-				{ ...base, id: "p1", name: "Kopi app" },
-				{ ...base, id: "p2", name: "Hidden", hidden: true },
-				{ ...base, id: "p3", name: " " },
-			] as never;
-		});
-		const data = produce(empty(), (draft) => {
-			draft.works.items.push({ ...newWork(draft, "Kopi app"), fromResumeItemId: "p1" });
-		});
-		expect(resumeProjects(resume, data.works.items)).toEqual([
-			{ id: "p1", name: "Kopi app", period: "2024", imported: true },
-		]);
-		expect(resumeProjects(null, [])).toEqual([]);
 	});
 });
 

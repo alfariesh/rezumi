@@ -26,12 +26,15 @@ Help the user build and keep up a portfolio on [Rezumi](https://rezumi.app): a o
 - **Intro**: a greeting of one or two sentences in the page's language; the name, headline, photo and location come from the CV unless overridden.
 - **About**: three to five short paragraphs at most: what they do, for whom, how they work.
 - **Works**: one per real project. A strong work has a title, a one-line summary, the role, a date, a cover picture, and blocks telling the story: the problem, what they did, the result (with numbers only the user gives you), pictures, and a link or video. Ask for anything missing, one question at a time.
+- **Works from the CV**: `view.source.projects` lists the CV's or Profile's projects (`imported: true` ones already are works). `import_portfolio_works` turns the ones the user picks into works, each starting from the project's description; then add the role, cover and story with `edit_portfolio`.
 - **Career sections** (experience, education, skills, …) are read live from the CV or Profile. You can hide items or whole sections, rename and reorder them, but not rewrite them: point the user to the CV or Profile for that.
 - **Testimonials**: only the user's exact words from a real person, after they confirm that person agreed to be shown (`consent: true`). Never write one.
 
 ### 3. Pictures
 
 `add_portfolio_image` stores a picture from a public URL or a file the user gives you and returns an image ref (`{ key, alt }`) to place with `edit_portfolio` (a work's `cover`, an images block, a custom section's image). Write alt text that says what the picture shows. The server can't resize: a picture over 2000 px or 2.5 MB is refused, so ask for a smaller one.
+
+For a link, video or embed block, giving the `url` is enough: the server reads the page and fills the title, description, site name and preview picture the edit leaves out, as the editor does on paste.
 
 ### 4. Design
 
@@ -41,11 +44,13 @@ Choose a theme from the view's catalog that suits the user's field, then an acce
 
 Only when the user asks: confirm, then `publish_portfolio { published: true }`. It needs a verified email. Share the `url` from `get_portfolio`. Password protection, a custom domain and deleting the portfolio stay in the web editor.
 
+To read career sections from another CV (or the Profile), `set_portfolio_source` switches the source after the user agrees. Read the portfolio again afterwards: hidden CV items refer to the old source's ids.
+
 ## Editing tips
 
 - Failed edits come back in the result with a reason (an unknown id, a field too long, a plan limit). Fix and resend only those.
 - If `edit_portfolio` reports a version conflict because you sent `expectedUpdatedAt`, call `get_portfolio` again and redo the edits on the new ids.
-- `get_portfolio_statistics` shows visits over 7, 30 or 90 days, which helps decide what to improve.
+- `get_portfolio_statistics` shows visits over 7, 30 or 90 days, which helps decide what to improve; with a `workId` it shows how often that work was opened and where its visitors came from.
 - The prompts `build_portfolio` and `improve_portfolio` start these workflows with the current portfolio included.
 
 ## Related skills
