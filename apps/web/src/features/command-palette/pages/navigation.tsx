@@ -1,15 +1,21 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useRouteContext, useRouterState } from "@tanstack/react-router";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useCommandPaletteStore } from "../store";
 import { BaseCommandGroup, PaletteItem, searchText } from "./base";
 import { useDialogStore } from "@/dialogs/store";
+import { openCoachPanel } from "@/features/coach-panel/store";
+import { orpc } from "@/libs/orpc/client";
 
 export function NavigationCommandGroup() {
 	const navigate = useNavigate();
 	const { session } = useRouteContext({ strict: false });
 	const reset = useCommandPaletteStore((state) => state.reset);
+	const pathname = useRouterState({ select: (state) => state.location.pathname });
+	// Portfolio is listed only for accounts that have one switched on (the sidebar's rule).
+	const { data: portfolio } = useQuery({ ...orpc.portfolio.status.queryOptions(), enabled: Boolean(session) });
 
 	const onNavigate = async (path: string) => {
 		await navigate({ to: path });
@@ -53,7 +59,8 @@ export function NavigationCommandGroup() {
 
 				<PaletteItem
 					id="navigation.trash"
-					textValue={searchText(t`Trash`, [t`Trash`, t`Deleted`])}
+					// Documents' trash, in its section menu.
+					textValue={searchText(t`Trash`, [t`Trash`, t`Deleted`, t`Documents`])}
 					isDisabled={!session}
 					onAction={() => onNavigate("/dashboard/trash")}
 				>
@@ -92,6 +99,42 @@ export function NavigationCommandGroup() {
 					<Icon name="plus" size={16} />
 					<Trans>New application</Trans>
 				</PaletteItem>
+
+				<PaletteItem
+					id="navigation.offers"
+					textValue={searchText(t`Offers`, [t`Offers`, t`Compare offers`, t`Applications`])}
+					isDisabled={!session}
+					onAction={() => onNavigate("/dashboard/applications/offers")}
+				>
+					<Icon name="scales" size={16} />
+					<Trans>Offers</Trans>
+				</PaletteItem>
+
+				<PaletteItem
+					id="navigation.coach"
+					textValue={searchText(t`Coach`, [t`Coach`, t`Career`, t`Conversations`])}
+					isDisabled={!session}
+					onAction={() => {
+						reset();
+						// The panel lives in the dashboard's shell: elsewhere (the editor, public pages) go to Home first.
+						if (!pathname.startsWith("/dashboard")) void navigate({ to: "/dashboard" });
+						openCoachPanel();
+					}}
+				>
+					<Icon name="sparkle" size={16} />
+					<Trans>Coach</Trans>
+				</PaletteItem>
+
+				{session && portfolio?.enabled && (
+					<PaletteItem
+						id="navigation.portfolio"
+						textValue={searchText(t`Portfolio`, [t`Portfolio`, t`Website`])}
+						onAction={() => onNavigate("/dashboard/portfolio")}
+					>
+						<Icon name="globe-hemisphere-west" size={16} />
+						<Trans>Portfolio</Trans>
+					</PaletteItem>
+				)}
 
 				<PaletteItem
 					id="navigation.profile"

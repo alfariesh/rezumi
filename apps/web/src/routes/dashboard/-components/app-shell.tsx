@@ -1,21 +1,26 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { AppLayout, Navbar, Sidebar, useSidebar } from "@heroui-pro/react";
+import { AppLayout, Navbar, Sheet, Sidebar, useSidebar } from "@heroui-pro/react";
 import { Breadcrumbs, Button, Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useMatchRoute, useRouterState } from "@tanstack/react-router";
+import { Link, useMatchRoute, useNavigate, useRouterState } from "@tanstack/react-router";
 import Cookies from "js-cookie";
+import { useEffect } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { cn } from "@rezumi/utils/style";
 import { ShellPendingContext } from "@/components/layout/loading-screen";
 import { PAGE_GUTTER } from "@/components/layout/page";
 import { useDialogStore } from "@/dialogs/store";
 import { applicationDetailQueryOptions } from "@/features/applications/queries";
 import { GuestBanner } from "@/features/auth/components/guest-banner";
+import { CoachPanelSlot, loadCoachPanel } from "@/features/coach-panel/coach-panel";
+import { useCoachPanelStore } from "@/features/coach-panel/store";
 import { useCommandPaletteStore } from "@/features/command-palette/store";
 import { isEditableElementFocused } from "@/features/resume/builder/draft";
 import { UserAvatar } from "@/features/user/avatar";
@@ -24,23 +29,16 @@ import { orpc } from "@/libs/orpc/client";
 
 type NavItem = {
 	/** Where it links. */
-	to:
-		| "/dashboard"
-		| "/dashboard/applications"
-		| "/dashboard/documents"
-		| "/dashboard/portfolio"
-		| "/dashboard/coach"
-		| "/dashboard/profile"
-		| "/dashboard/career/offers"
-		| "/dashboard/trash";
+	to: "/dashboard" | "/dashboard/applications" | "/dashboard/documents" | "/dashboard/portfolio" | "/dashboard/profile";
 	icon: IconName;
 	label: string;
 	count?: number;
 };
 
 /**
- * The destinations, in the order a search runs: Home (what needs you), the jobs, the documents sent to them, then the
- * coach and the Profile everything starts from, and the offers at the end. Counts show only what is waiting or open.
+ * The destinations, in the order a search runs: Home (what needs you), the jobs (offers live inside them), the
+ * documents sent to them (trash inside), the portfolio, then the Profile everything starts from. The coach opens from
+ * the top bar on every page. Counts show only what is waiting or open.
  */
 function useNavItems() {
 	const { data: counts } = useQuery(orpc.documents.counts.queryOptions());
@@ -75,15 +73,10 @@ function useNavItems() {
 		...(portfolio?.enabled
 			? [{ to: "/dashboard/portfolio", icon: "globe-hemisphere-west", label: t`Portfolio` } satisfies NavItem]
 			: []),
-		{ to: "/dashboard/coach", icon: "sparkle", label: t`Coach` },
 		{ to: "/dashboard/profile", icon: "user-circle", label: t`Profile` },
-		{ to: "/dashboard/career/offers", icon: "scales", label: t`Offers` },
 	];
-	const trash: NavItem | null = counts?.trash
-		? { to: "/dashboard/trash", icon: "trash", label: t`Trash`, count: counts.trash }
-		: null;
 
-	return { items, trash };
+	return items;
 }
 
 /** Whether the item is the current page: Home is exact, the others match their section. */
@@ -99,14 +92,44 @@ function initialSidebarOpen() {
 	return typeof window === "undefined" || window.matchMedia("(min-width: 1024px)").matches;
 }
 
+/** An application's workspace, which has a coach of its own (the `?coach=` sheet) for that job. */
+const WORKSPACE_ROUTE = "/dashboard/applications/$applicationId/{-$tab}";
+
+/** The open application workspace's params, or undefined on any other page. */
+function useWorkspaceParams() {
+	const applicationId = useRouterState({
+		select: (state): string | undefined =>
+			state.matches.find((match) => match.routeId === WORKSPACE_ROUTE)?.params.applicationId,
+	});
+	const tab = useRouterState({
+		select: (state): string | undefined => state.matches.find((match) => match.routeId === WORKSPACE_ROUTE)?.params.tab,
+	});
+	return applicationId ? { applicationId, tab } : undefined;
+}
+
 /**
  * The app shell for every dashboard page: HeroUI Pro's AppLayout with a 240px sidebar that collapses to icons (⌘B),
- * and a sheet opened from the navbar's menu button on phones. N opens New anywhere outside a field.
+ * and a sheet opened from the navbar's menu button on phones. N opens New anywhere outside a field. The coach opens
+ * from the navbar into a panel beside the page (a sheet below 1024px) and stays open from page to page; an
+ * application's workspace hides it, since that page has a coach for the job.
  */
 type AppShellProps = { children: ReactNode };
 
 export function AppShell({ children }: AppShellProps) {
 	const openDialog = useDialogStore((state) => state.openDialog);
+	const coachOpen = useCoachPanelStore((state) => state.open);
+	const setCoachOpen = useCoachPanelStore((state) => state.setOpen);
+	const breakpoint = useBreakpoint();
+	const docked = breakpoint === "desktop" || breakpoint === "wide";
+	const onWorkspace = useWorkspaceParams() !== undefined;
+	const coachVisible = coachOpen && !onWorkspace;
+	const location = useRouterState({ select: (state) => state.location });
+
+	// Where `/dashboard/coach/…` returns to after opening the panel: the page the person was on (never that address).
+	useEffect(() => {
+		if (!/^\/dashboard\/(career\/)?coach(\/|$)/.test(location.pathname))
+			useCoachPanelStore.getState().setLastHref(location.href);
+	}, [location.pathname, location.href]);
 
 	useHotkey("N", () => {
 		if (isEditableElementFocused() || useDialogStore.getState().open) return;
@@ -115,9 +138,12 @@ export function AppShell({ children }: AppShellProps) {
 
 	return (
 		<AppLayout
-			className="dashboard-shell bg-surface"
+			className="dashboard-shell bg-surface [--app-layout-aside-width:360px] xl:[--app-layout-aside-width:400px]"
 			defaultSidebarOpen={initialSidebarOpen()}
 			sidebarCollapsible="icon"
+			// One coach at a time: the docked panel here, or the sheet below (AppLayout's own sheet would mount it twice).
+			aside={docked ? <CoachPanelSlot visible={coachVisible} /> : null}
+			asideOpen={docked && coachVisible}
 			sidebar={
 				<>
 					<Sidebar
@@ -143,6 +169,17 @@ export function AppShell({ children }: AppShellProps) {
 				<GuestBanner />
 				<ShellPendingContext value>{children}</ShellPendingContext>
 			</div>
+			{!docked && (
+				<Sheet isOpen={coachVisible} onOpenChange={setCoachOpen} placement="right">
+					<Sheet.Backdrop>
+						<Sheet.Content className="w-full sm:max-w-none md:max-w-[420px]">
+							<Sheet.Dialog aria-label={t`Coach`} className="h-full gap-0 p-0">
+								<CoachPanelSlot visible />
+							</Sheet.Dialog>
+						</Sheet.Content>
+					</Sheet.Backdrop>
+				</Sheet>
+			)}
 		</AppLayout>
 	);
 }
@@ -155,7 +192,7 @@ type Crumb = { label: ReactNode; href?: string };
  */
 function useCrumbs(): Crumb[] {
 	const pathname = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") });
-	const [section, page] = pathname.split("/").slice(2);
+	const [section, page, subpage] = pathname.split("/").slice(2);
 	const profileTabs: Record<string, string> = {
 		facts: t`Facts`,
 		stories: t`Stories`,
@@ -163,6 +200,12 @@ function useCrumbs(): Crumb[] {
 			message: "Preferences",
 			context: "Career preferences: the roles, places, pay and ways of working you want",
 		}),
+	};
+	// Settings' menu (routes/dashboard/settings/route.tsx); older addresses redirect to these.
+	const settingsPages: Record<string, string> = {
+		account: t`Account`,
+		billing: t`Plan`,
+		app: t`App settings`,
 	};
 
 	switch (section) {
@@ -175,26 +218,35 @@ function useCrumbs(): Crumb[] {
 		case "portfolio":
 			return [{ label: t`Portfolio` }];
 		case "applications":
+			if (page === "offers") return [{ label: t`Applications`, href: "/dashboard/applications" }, { label: t`Offers` }];
 			return page
 				? [{ label: t`Applications`, href: "/dashboard/applications" }, { label: <ApplicationCrumb id={page} /> }]
 				: [{ label: t`Applications` }];
-		case "coach":
-			return [{ label: t`Coach` }];
 		case "profile": {
 			const current = page ? profileTabs[page] : undefined;
 			return current
 				? [{ label: t`Profile`, href: "/dashboard/profile" }, { label: current }]
 				: [{ label: t`Profile` }];
 		}
-		case "career":
-			// Today moved to Home; Offers keeps its address under /dashboard/career.
-			return page === "offers" ? [{ label: t`Offers` }] : [];
-		case "settings":
-			if (page === "account") return [{ label: t`Account` }];
-			if (page === "billing") return [{ label: t`Plan` }];
-			return [{ label: t`Settings` }];
+		case "settings": {
+			// A payment's return page and its receipt sit under Plan.
+			if (page === "billing" && (subpage === "return" || subpage === "receipt"))
+				return [
+					{ label: t`Settings`, href: "/dashboard/settings" },
+					{ label: t`Plan`, href: "/dashboard/settings/billing" },
+					{ label: subpage === "return" ? t`Payment` : t`Receipt` },
+				];
+			const current = page ? settingsPages[page] : undefined;
+			return current
+				? [{ label: t`Settings`, href: "/dashboard/settings" }, { label: current }]
+				: [{ label: t`Settings` }];
+		}
 		case "admin":
-			return [{ label: page === "portfolios" ? t`Portfolio reports` : t`Billing admin` }];
+			// Administrators reach these from Settings' menu.
+			return [
+				{ label: t`Settings`, href: "/dashboard/settings" },
+				{ label: page === "portfolios" ? t`Portfolio reports` : t`Billing admin` },
+			];
 		default:
 			return [];
 	}
@@ -241,6 +293,7 @@ function AppNavbar() {
 				)}
 				<Navbar.Spacer />
 				<Navbar.Content>
+					<CoachButton />
 					<Button
 						variant="tertiary"
 						size="sm"
@@ -273,9 +326,58 @@ function AppNavbar() {
 	);
 }
 
+/**
+ * Opens the coach panel, or closes it when open. On an application's workspace it opens that job's coach instead
+ * (the workspace's `?coach=` sheet). Hovering starts loading the panel.
+ */
+function CoachButton() {
+	const navigate = useNavigate();
+	const open = useCoachPanelStore((state) => state.open);
+	const toggle = useCoachPanelStore((state) => state.toggle);
+	const workspace = useWorkspaceParams();
+	const search = useRouterState({ select: (state) => state.location.search });
+	const pressed = open && !workspace;
+	const onPress = () => {
+		if (!workspace) return toggle();
+		// Replaced, not pushed: the sheet's own close then leaves no entry that Back would reopen it from.
+		void navigate({
+			to: WORKSPACE_ROUTE,
+			params: workspace,
+			search: { ...search, coach: true },
+			replace: true,
+		});
+	};
+
+	return (
+		<>
+			<Button
+				variant="tertiary"
+				size="sm"
+				aria-pressed={pressed}
+				data-coach-button=""
+				className={cn("gap-2 max-md:hidden", pressed ? "bg-accent-soft text-accent-soft-foreground" : "text-muted")}
+				onHoverStart={() => void loadCoachPanel()}
+				onPress={onPress}
+			>
+				<Icon name="sparkle" size={16} className={pressed ? undefined : "text-accent"} />
+				<Trans>Coach</Trans>
+			</Button>
+			<IconButton
+				icon="sparkle"
+				label={t`Coach`}
+				size="sm"
+				aria-pressed={pressed}
+				data-coach-button=""
+				className={cn("text-accent md:hidden", pressed && "bg-accent-soft")}
+				onPress={onPress}
+			/>
+		</>
+	);
+}
+
 /** Brand, destinations, New and the account menu; shared by the desktop sidebar and the phone sheet. */
 function NavigationContent() {
-	const { items, trash } = useNavItems();
+	const items = useNavItems();
 	const isCurrent = useIsCurrent();
 	const openDialog = useDialogStore((state) => state.openDialog);
 	const { isOpen, isMobile } = useSidebar();
@@ -309,7 +411,6 @@ function NavigationContent() {
 			</Sidebar.Content>
 
 			<Sidebar.Footer className="gap-2">
-				{trash && <Sidebar.Menu aria-label={t`Trash`}>{link(trash)}</Sidebar.Menu>}
 				<Sidebar.Tooltip content={t`New`}>
 					<Button
 						aria-label={t`New`}

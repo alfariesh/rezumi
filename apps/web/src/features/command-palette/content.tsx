@@ -7,6 +7,7 @@ import { NavigationCommandGroup } from "./pages/navigation";
 import { PreferencesCommandGroup } from "./pages/preferences";
 import { ResumesCommandGroup } from "./pages/resumes";
 import { useCommandPaletteStore } from "./store";
+import { EmptyBlock } from "@/components/layout/empty-block";
 
 /** Substring match on the item's `textValue`. The query is trimmed so "ask <query>" rows stay visible. */
 const filterItems = (textValue: string, inputValue: string) =>
@@ -76,11 +77,15 @@ export default function CommandPaletteContent() {
 								message: "Command palette",
 							})}
 							renderEmptyState={() => (
-								<div className="py-8 text-center text-body-sm text-muted">
-									<Trans comment="Empty-state message when no command palette results match the search query">
-										No commands match that search.
-									</Trans>
-								</div>
+								<EmptyBlock
+									kind="filtered"
+									className="py-8"
+									title={
+										<Trans comment="Empty-state message when no command palette results match the search query">
+											No commands match that search.
+										</Trans>
+									}
+								/>
 							)}
 						>
 							<ResumesCommandGroup />
