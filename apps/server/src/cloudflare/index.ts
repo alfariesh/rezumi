@@ -1,6 +1,5 @@
 import type {
 	AnalyticsEngineDataset,
-	Cache,
 	DurableObjectNamespace,
 	ExecutionContext,
 	Fetcher,
@@ -45,7 +44,6 @@ import { TRUSTED_IP_HEADERS } from "@rezumi/utils/rate-limit";
 import { createApp } from "../http/app";
 import { configurePortfolioVisitLifetime } from "../static/portfolio-page";
 import { configureResvgWasm } from "../static/resvg";
-import { withEdgeCache } from "./edge-cache";
 import { createImagesProcessor } from "./images";
 import { R2StorageService } from "./r2";
 
@@ -271,13 +269,9 @@ function closePoolAfterResponse(response: Response, pool: Pool, store: RequestSt
 	);
 }
 
-// This data center's share of the zone cache (Cloudflare's `caches.default`).
-const edgeCache = () => (globalThis as { caches?: { default?: Cache } }).caches?.default;
-
 export default {
-	fetch(request: Request, bindings: CloudflareBindings, ctx: ExecutionContext): Promise<Response> {
-		if (new URL(request.url).pathname.startsWith("/_prerender"))
-			return Promise.resolve(new Response("Not Found", { status: 404 }));
+	async fetch(request: Request, bindings: CloudflareBindings, ctx: ExecutionContext): Promise<Response> {
+		if (new URL(request.url).pathname.startsWith("/_prerender")) return new Response("Not Found", { status: 404 });
 		const headers = new Headers(request.headers);
 		const ip = headers.get("cf-connecting-ip");
 		for (const name of TRUSTED_IP_HEADERS) headers.delete(name);
@@ -286,16 +280,14 @@ export default {
 			headers.set("x-forwarded-for", ip);
 		}
 		const { country } = (request as Request & { cf?: { country?: string } }).cf ?? {};
-		return withEdgeCache(request, ctx, edgeCache(), async () => {
-			const { pool, store, run } = createInvocation(bindings, ctx, country);
-			try {
-				const response = await run(() => app.fetch(new Request(request, { headers })));
-				return closePoolAfterResponse(response, pool, store);
-			} catch (error) {
-				endPool(pool, store);
-				throw error;
-			}
-		});
+		const { pool, store, run } = createInvocation(bindings, ctx, country);
+		try {
+			const response = await run(() => app.fetch(new Request(request, { headers })));
+			return closePoolAfterResponse(response, pool, store);
+		} catch (error) {
+			endPool(pool, store);
+			throw error;
+		}
 	},
 	scheduled(_controller: ScheduledController, bindings: CloudflareBindings, ctx: ExecutionContext): void {
 		const { pool, store, run } = createInvocation(bindings, ctx);

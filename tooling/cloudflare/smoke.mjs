@@ -181,10 +181,12 @@ try {
 	const id = await client.resume.create({ name: "Worker test", tags: [], withSampleData: true });
 	const png = await readFile(resolve(root, "apps/web/public/pwa-64x64.png"));
 	const upload = await client.storage.uploadFile(new File([png], "picture.png", { type: "image/png" }));
-	assert.equal(upload.contentType, "image/png");
+	// The IMAGES binding resizes uploads to JPEG, as sharp does on the Node server.
+	assert.equal(upload.contentType, "image/jpeg");
 	response = await request(new URL(upload.url).pathname);
 	assert.equal(response.status, 200);
-	assert.deepEqual(Buffer.from(await response.arrayBuffer()), png);
+	assert.equal(response.headers.get("content-type"), "image/jpeg");
+	assert.deepEqual([...Buffer.from(await response.arrayBuffer()).subarray(0, 3)], [0xff, 0xd8, 0xff]);
 	const resume = await client.resume.getById({ id });
 	resume.data.picture.url = upload.url;
 	resume.data.picture.hidden = false;

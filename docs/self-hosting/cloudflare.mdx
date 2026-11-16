@@ -141,7 +141,6 @@ Verify a due reminder after deployment and check Cron Trigger event status. Minu
 ## Runtime differences
 
 - Workers does not run native Sharp. Uploaded pictures resize through the `IMAGES` binding instead (at most 800 × 800, JPEG, as the Node server does). Without the binding, or when Images can't read a file, the picture keeps its original format.
-- Public pictures, portfolio files and link-preview cards (answers marked `Cache-Control: public`) are kept in the data center's cache, so repeat views skip the database and R2. They follow the same one-hour limit as any shared cache: a picture removed or made private can still be served from a cache for up to an hour.
 - Assistant replies stream live, and cancellation works across Worker instances. An in-progress stream cannot reconnect after a reload in this Redis-free setup; completed messages remain in PostgreSQL.
 - Workers has a 128 MB memory limit. Large resumes, large images, or multiple concurrent server PDF renders can exceed it. Normal browser downloads render in the browser, reducing server CPU cost. Monitor Worker CPU/memory errors before increasing limits or serving a large public installation.
 - Email: the Worker uses the `send_email` binding (Cloudflare Email Service, Workers Paid) when present, with `SMTP_FROM` as the sender. Onboard the sender domain first with `wrangler email sending enable <domain>`. Otherwise it falls back to SMTP.
