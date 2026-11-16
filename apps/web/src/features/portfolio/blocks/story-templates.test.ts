@@ -7,8 +7,11 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { newTextBlock } from "./blocks";
 import {
 	addStoryTemplate,
+	normalizeHeading,
+	STORY_SECTIONS,
 	STORY_TEMPLATE_IDS,
 	STORY_TEMPLATES,
+	storyHints,
 	storyTemplateBlocks,
 	suggestStoryTemplate,
 } from "./story-templates";
@@ -102,6 +105,24 @@ describe("story templates", () => {
 		produce(full, (draft) => {
 			expect(addStoryTemplate(draft as PortfolioWork, "writing", english)).toEqual([]);
 		});
+	});
+});
+
+describe("questions under the headings", () => {
+	it("has a question for every heading of every template, and one heading per question", () => {
+		const hints = storyHints(english);
+		expect(hints.size).toBe(Object.keys(STORY_SECTIONS).length);
+		for (const id of STORY_TEMPLATE_IDS)
+			for (const part of STORY_TEMPLATES[id].parts) {
+				if (part === "metrics") continue;
+				expect(hints.get(normalizeHeading(english(part.heading)))?.trim()).toBeTruthy();
+			}
+	});
+
+	it("finds a heading's question whatever its spacing or case", () => {
+		const hints = storyHints(english);
+		expect(hints.get(normalizeHeading("  the   PROBLEM "))).toBe("What wasn't working, and for whom?");
+		expect(hints.get(normalizeHeading("Our approach"))).toBeUndefined();
 	});
 });
 

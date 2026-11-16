@@ -9,7 +9,7 @@ import { Button, Dropdown, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { PORTFOLIO_BLOCK_TYPES } from "@rezumi/schema/portfolio/blocks";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -42,7 +42,7 @@ import { LinkBlockEditor } from "./link-block";
 import { useRemovalFocus } from "./list-focus";
 import { PdfBlockEditor } from "./pdf-block";
 import { StoryTemplateMenu } from "./story-template-menu";
-import { addStoryTemplate } from "./story-templates";
+import { addStoryTemplate, normalizeHeading, storyHints } from "./story-templates";
 import { VideoBlockEditor } from "./video-block";
 import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
 import { openAssistantFrom } from "@/features/assistant/open";
@@ -601,6 +601,9 @@ type TextBlockEditorProps = {
 /** Rich text; typing "/" adds a block after this one. */
 function TextBlockEditor({ work, block, index, appearance }: TextBlockEditorProps) {
 	const { add, addFiles, addUrl, busy, status } = useAddBlock(work, index + 1);
+	const { i18n } = useLingui();
+	// The questions under a story outline's headings, in the app's language.
+	const hints = useMemo(() => storyHints((descriptor) => i18n._(descriptor)), [i18n]);
 	const slashItems: SlashItem[] = PORTFOLIO_BLOCK_TYPES.map((type) => {
 		const info = blockTypeInfo(type);
 		return { ...info, onSelect: () => add(type) };
@@ -612,6 +615,7 @@ function TextBlockEditor({ work, block, index, appearance }: TextBlockEditorProp
 				// One add at a time, as for "/".
 				onFiles={busy ? undefined : addFiles}
 				onUrl={busy ? undefined : addUrl}
+				headingHint={(heading) => hints.get(normalizeHeading(heading))}
 				hideLabel
 				rewrite="blockText"
 				label={t`Text block of ${work.title.trim() || t`this work`}`}
