@@ -77,7 +77,7 @@ export function SectionNav({ title, items, footer, className }: SectionNavProps)
 		<nav
 			aria-label={title}
 			className={cn(
-				"[view-transition-name:section-nav] md:sticky md:top-20 md:grid md:max-h-[calc(100svh-6rem)] md:content-start md:gap-4 md:overflow-y-auto",
+				"[view-transition-name:section-nav] md:sticky md:top-[3.75rem] md:-mt-5 md:grid md:max-h-[calc(100svh-6rem)] md:content-start md:gap-4 md:overflow-y-auto",
 				className,
 			)}
 		>
