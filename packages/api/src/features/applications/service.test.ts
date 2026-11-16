@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { ORPCError } from "@orpc/client";
 
 // Mock the DB layer; the logic under test is the activity-timeline bookkeeping, not SQL.
 const dbMock = vi.hoisted(() => ({
@@ -63,7 +64,7 @@ vi.mock("../storage/service", () => ({
 	uploadFile: uploadFileMock,
 }));
 
-const { applicationService } = await import("./service");
+const { applicationService, applicationWriteError } = await import("./service");
 
 const existing = {
 	id: "app-1",
@@ -712,5 +713,40 @@ describe("applicationService.importMany", () => {
 			expect.objectContaining({ resumeId: "resume-1", kind: "sent", data }),
 		);
 		expect(set).toHaveBeenCalledWith({ sentResumeVersionId: "version-1", sentCheckScore: expect.any(Number) });
+	});
+});
+
+describe("applicationWriteError", () => {
+	// Drizzle wraps the driver's error as `cause`.
+	const failedQuery = (cause: Record<string, unknown>) =>
+		Object.assign(new Error("Failed query: insert into application"), { cause });
+
+	it("names a linked resume or letter removed meanwhile as not found", () => {
+		expect(
+			applicationWriteError(failedQuery({ code: "23503", constraint: "application_resume_id_resume_id_fkey" })),
+		).toMatchObject({ code: "NOT_FOUND", data: { document: "resume" } });
+		expect(
+			applicationWriteError(
+				failedQuery({ code: "23503", constraint: "application_cover_letter_id_cover_letter_id_fkey" }),
+			),
+		).toMatchObject({ code: "NOT_FOUND", data: { document: "letter" } });
+	});
+
+	it("turns lock waits, timeouts and lost connections into a retryable error that keeps the cause", () => {
+		for (const error of [
+			failedQuery({ code: "55P03" }),
+			failedQuery({ code: "57014" }),
+			failedQuery({ code: "08006" }),
+			new Error("timeout exceeded when trying to connect"),
+		]) {
+			expect(applicationWriteError(error)).toMatchObject({ code: "SERVICE_UNAVAILABLE", status: 503, cause: error });
+		}
+	});
+
+	it("passes app errors and unknown failures through unchanged", () => {
+		const notFound = new ORPCError("NOT_FOUND");
+		const unknown = failedQuery({ code: "23505", constraint: "something_unique" });
+		expect(applicationWriteError(notFound)).toBe(notFound);
+		expect(applicationWriteError(unknown)).toBe(unknown);
 	});
 });

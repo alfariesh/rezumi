@@ -116,6 +116,50 @@ async function requireOwned(id: string, userId: string) {
 	return row;
 }
 
+/** Postgres codes for a write that may pass on a retry: serialization, deadlock, lock or statement timeout, shutdown. */
+const RETRYABLE_PG_CODES = new Set(["40001", "40P01", "55P03", "57014", "57P01", "57P02", "57P03", "53300"]);
+
+/** The Postgres error behind a failed query (Drizzle wraps it as `cause`), if any. */
+function databaseError(error: unknown): { code?: string; constraint?: string; message?: string } | undefined {
+	for (let current = error, depth = 0; current && typeof current === "object" && depth < 5; depth++) {
+		const { code } = current as { code?: unknown };
+		if (typeof code === "string") return current as { code: string; constraint?: string; message?: string };
+		current = (current as { cause?: unknown }).cause;
+	}
+	return undefined;
+}
+
+/**
+ * A database failure while saving an application, as an error the app can explain instead of a bare 500: a linked
+ * document gone meanwhile is NOT_FOUND, and a lock wait, timeout or lost connection is SERVICE_UNAVAILABLE (try
+ * again). The original error stays as `cause`, so the server log still names it. Anything else passes through.
+ */
+export function applicationWriteError(error: unknown): unknown {
+	if (error instanceof ORPCError) return error;
+	const cause = databaseError(error);
+	if (cause?.code === "23503" && cause.constraint?.startsWith("application_resume_id"))
+		return new ORPCError("NOT_FOUND", {
+			message: "The chosen resume is no longer available. Choose another one.",
+			data: { document: "resume" },
+			cause: error,
+		});
+	if (cause?.code === "23503" && cause.constraint?.startsWith("application_cover_letter_id"))
+		return new ORPCError("NOT_FOUND", {
+			message: "The chosen letter is no longer available. Choose another one.",
+			data: { document: "letter" },
+			cause: error,
+		});
+	const connectionLost =
+		error instanceof Error &&
+		/timeout exceeded when trying to connect|Connection terminated/i.test(`${error.message} ${cause?.message ?? ""}`);
+	if ((cause?.code && (RETRYABLE_PG_CODES.has(cause.code) || cause.code.startsWith("08"))) || connectionLost)
+		return new ORPCError("SERVICE_UNAVAILABLE", {
+			message: "Couldn't save the application just now. Try again.",
+			cause: error,
+		});
+	return error;
+}
+
 async function assertOwnedResume(userId: string, resumeId: string | null | undefined) {
 	if (!resumeId) return;
 	await resumeService.getById({ id: resumeId, userId });
@@ -557,31 +601,35 @@ export const applicationService = {
 		const initialStatus = status ?? "saved";
 		const activity = [stageEntry(initialStatus, stageEnteredAt)];
 
-		await assertOwnedResume(userId, fields.resumeId);
-		await assertOwnedCoverLetter(userId, fields.coverLetterId);
+		try {
+			await assertOwnedResume(userId, fields.resumeId);
+			await assertOwnedCoverLetter(userId, fields.coverLetterId);
 
-		return withDocumentFiles(userId, { resumeFile, coverLetterFile }, (uploadedFields) =>
-			db.transaction(async (tx) => {
-				await lockUser(tx, userId);
-				const [row] = await tx
-					.insert(schema.application)
-					.values({
-						id,
-						userId,
-						status: initialStatus,
-						...(initialStatus === "closed" && closedReason ? { closedReason } : {}),
-						activity,
-						appliedAt: appliedAtFromTimeline(activity, new Date()),
-						...fields,
-						...sourceKeyFor(fields.sourceUrl),
-						...uploadedFields,
-					})
-					.returning();
+			return await withDocumentFiles(userId, { resumeFile, coverLetterFile }, (uploadedFields) =>
+				db.transaction(async (tx) => {
+					await lockUser(tx, userId);
+					const [row] = await tx
+						.insert(schema.application)
+						.values({
+							id,
+							userId,
+							status: initialStatus,
+							...(initialStatus === "closed" && closedReason ? { closedReason } : {}),
+							activity,
+							appliedAt: appliedAtFromTimeline(activity, new Date()),
+							...fields,
+							...sourceKeyFor(fields.sourceUrl),
+							...uploadedFields,
+						})
+						.returning();
 
-				if (row) await recordSentResume(row, tx);
-				return id;
-			}),
-		);
+					if (row) await recordSentResume(row, tx);
+					return id;
+				}),
+			);
+		} catch (error) {
+			throw applicationWriteError(error);
+		}
 	},
 
 	importMany: async (input: {
@@ -738,6 +786,8 @@ export const applicationService = {
 				await deleteApplicationAttachments(userId, [existing]).catch(() => {});
 			}
 			return result;
+		}).catch((error: unknown) => {
+			throw applicationWriteError(error);
 		});
 	},
 
