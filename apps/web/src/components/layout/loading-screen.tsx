@@ -1,11 +1,12 @@
 import { TextShimmer } from "@heroui-pro/react";
 import { Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
-import { useRouter } from "@tanstack/react-router";
+import { useRouter, useRouterState } from "@tanstack/react-router";
 import { createContext, use, useEffect, useState } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { cn } from "@rezumi/utils/style";
 import { InPageContext, Page } from "./page";
+import { isSectionPath, SectionPending } from "./section-layout";
 
 const QUOTE_INTERVAL = 3200;
 
@@ -37,23 +38,25 @@ export function LoadingScreen() {
 
 /**
  * A page's outline while it loads inside the shell: the title, a toolbar row and the first block, where every
- * dashboard page puts them. Inside a section's layout (which already draws the page and its title) only the block
- * shows. It fades in, since it only shows after 300ms (router.tsx).
+ * dashboard page puts them, with a section's menu beside them on its pages. Inside a section's layout (already drawn)
+ * only the page's own outline shows. It fades in, since it only shows after 300ms (router.tsx).
  */
 function PagePending() {
 	const inPage = use(InPageContext);
+	const pathname = useRouterState({ select: (state) => state.location.pathname });
 	const outline = (
 		<div
 			role="status"
 			className="flex flex-col gap-5 transition-opacity duration-standard ease-enter starting:opacity-0"
 		>
 			<span className="sr-only">{t`Loading`}</span>
-			{!inPage && <Skeleton className="h-8 w-48 rounded-lg" />}
+			<Skeleton className="h-8 w-48 rounded-lg" />
 			<Skeleton className="h-10 w-full max-w-md rounded-xl" />
 			<Skeleton className="h-64 rounded-3xl" />
 		</div>
 	);
-	return inPage ? outline : <Page>{outline}</Page>;
+	if (inPage) return outline;
+	return isSectionPath(pathname) ? <SectionPending>{outline}</SectionPending> : <Page>{outline}</Page>;
 }
 
 function FullScreenLoader() {

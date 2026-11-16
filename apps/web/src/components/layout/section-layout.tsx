@@ -1,6 +1,7 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { LinkOptions } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { Skeleton } from "@heroui/react";
 import { Link, useMatchRoute } from "@tanstack/react-router";
 import { Fragment } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -46,9 +47,11 @@ type SectionLayoutProps = {
  * becomes a row of chips over the page. Each page renders its own `PageHeader`, which names the page, so the menu shows no
  * heading of its own; groups are set apart by a hairline.
  */
+const SECTION_GRID = "md:grid md:grid-cols-[13.5rem_minmax(0,1fr)] md:items-start md:gap-x-8 lg:gap-x-12";
+
 export function SectionLayout({ title, items, footer, children }: SectionLayoutProps) {
 	return (
-		<Page className="md:grid md:grid-cols-[13.5rem_minmax(0,1fr)] md:items-start md:gap-x-8 lg:gap-x-12">
+		<Page className={SECTION_GRID}>
 			<SectionNav title={title} items={items} footer={footer} />
 			{/* One column for the page: its header and everything under it share the same width on every section. */}
 			<div className="flex min-w-0 flex-col gap-5 max-md:mt-5">{children}</div>
@@ -147,5 +150,26 @@ function SectionChip({ item, current }: SectionLinkProps) {
 			{item.badge ??
 				(item.count !== undefined && <span className="text-body-xs text-muted tabular-nums">{item.count}</span>)}
 		</Link>
+	);
+}
+
+/** The dashboard's sections: their pages render in `SectionLayout`, so their loading outline has the menu too. */
+const SECTION_PATHS = /^\/dashboard\/(profile|settings|admin|documents|trash|applications)(\/|$)/;
+
+export const isSectionPath = (pathname: string) => SECTION_PATHS.test(pathname);
+
+type SectionPendingProps = { children: ReactNode };
+
+/** A section's outline while its code loads: the menu's rows as skeletons, then the page's outline beside them. */
+export function SectionPending({ children }: SectionPendingProps) {
+	return (
+		<Page className={SECTION_GRID}>
+			<div aria-hidden className="grid gap-0.5 max-md:hidden md:sticky md:top-[3.75rem]">
+				{Array.from({ length: 4 }, (_, index) => (
+					<Skeleton key={index} className="h-9 rounded-xl" />
+				))}
+			</div>
+			<div className="flex min-w-0 flex-col gap-5">{children}</div>
+		</Page>
 	);
 }
