@@ -134,7 +134,7 @@ Raw material for teachers: lesson observation feedback, results or mock-exam ana
 
 Card titles from a session like this might read "Rebuilt the Year 9 fractions unit after mock results" or "Ran the department's LMS training for 14 colleagues". Each number comes from the user. The "why leave teaching" answer pulls toward the new work (designing learning at scale, the part of teaching they want more of) rather than pushing away from the classroom. Instructional design hiring commonly asks for a portfolio or a work sample [practitioner report; confirm in the posting], so tie 2–3 stories to pieces the user can show.
 
-Without MCP, deliver the cards in Markdown for the user to keep. Tell Rezumi users they can paste them into Career → Knowledge → Stories.
+Without MCP, deliver the cards in Markdown for the user to keep. Tell Rezumi users they can paste them into Profile → Stories.
 
 ## 8. Thin material: early career, returners, gaps
 

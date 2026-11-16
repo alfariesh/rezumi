@@ -34,13 +34,13 @@ const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 /** The Fit check a workspace asks for: one requirement with no evidence yet, so the spec can add some. */
 const FIT = {
 	headline: "A relevant role, with one question to resolve",
-	summary: "Each requirement from the posting, checked against your Knowledge.",
+	summary: "Each requirement from the posting, checked against your Profile.",
 	requirements: [
 		{
 			text: "Enterprise onboarding",
 			origin: "posting",
 			status: "missing",
-			evidence: "Your Knowledge doesn't say this yet.",
+			evidence: "Your Profile doesn't say this yet.",
 			factIds: [],
 		},
 	],

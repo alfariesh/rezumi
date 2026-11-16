@@ -142,7 +142,7 @@ api_career_save_story {
 - **Scope.** Stories about the user's past are usually shared (`applicationId: null`) so every application can use them. Use the application's ID only for a story that should stay with one application.
 - **Required:** `title` (1–200), `situation`, `task` (each 1–4000), `action` (1–6000). `result` and `reflection` (≤ 4000) may be `""`; leave `result` empty when the outcome can't be supported rather than writing a guess.
 - **Tags:** up to 20, each up to 100 characters; keep at most 3 primary competency tags per story (framework tags included). Use the same competency words across stories so the bank stays searchable.
-- **factIds:** up to 30; at least one is needed for the web app's Prepare, Practise and assistant to use the story. Each must be an active fact visible in the same scope; shared stories may link shared facts only. If the user declines to save facts, tell them the story will show in Knowledge but the web coach won't use it.
+- **factIds:** up to 30; at least one is needed for the web app's Prepare, Practise and assistant to use the story. Each must be an active fact visible in the same scope; shared stories may link shared facts only. If the user declines to save facts, tell them the story will show in your Profile but the web coach won't use it.
 - **Replace, don't patch.** To edit, read the story, then send its `id` with every field. Anything you leave out is lost.
 - **Duplicates.** Check the existing list for the same episode before saving a new one; improve the existing card instead.
 - Deleting (`api_career_delete_story {id}`) only when the user asks.

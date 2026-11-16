@@ -296,7 +296,7 @@ Skip this section unless Rezumi tools such as `read_resume` are available.
 
 7. **Handle errors.** `409 RESUME_VERSION_CONFLICT` or a failed `test`: read again, locate items by `id`, show the user if the text changed, then retry. `403 RESUME_LOCKED`: ask about unlocking.
 8. **Confirm.** Show the saved bullets from the patch result. For a deterministic format check, offer `api_rest_check_resume {id}`.
-9. **Optionally, with permission, save confirmed achievements** to Career Knowledge so interview prep and the in-app coach can reuse them: `api_career_save_fact {applicationId: null, text, category: "accomplishment", source: {kind: "manual", id: <new UUID>, quote: <the user's own words, verbatim>}}`. The quote must be what the user said, not your rewrite. Use a fresh UUID for each fact, because facts that share a source id are suppressed together once one is forgotten. A `null` result means nothing was saved; tell the user and don't retry.
+9. **Optionally, with permission, save confirmed achievements** to your Profile so interview prep and the in-app coach can reuse them: `api_career_save_fact {applicationId: null, text, category: "accomplishment", source: {kind: "manual", id: <new UUID>, quote: <the user's own words, verbatim>}}`. The quote must be what the user said, not your rewrite. Use a fresh UUID for each fact, because facts that share a source id are suppressed together once one is forgotten. A `null` result means nothing was saved; tell the user and don't retry.
 
 ## Handoffs
 

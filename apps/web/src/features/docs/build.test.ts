@@ -105,7 +105,7 @@ describe("imageSize", () => {
 	it("reads WebP, PNG and JPEG headers", () => {
 		const image = (path: string) => imageSize(resolve(docsRoot, "images", path));
 		expect(image("getting-started/editor-overview.webp")).toEqual({ width: 1600, height: 1000 });
-		expect(image("guides/career/story-approval.png")).toEqual({ width: 644, height: 451 });
+		expect(image("guides/career/story-approval.png")).toEqual({ width: 632, height: 504 });
 		expect(image("guides/career/briefing.jpg")).toEqual({ width: 560, height: 398 });
 	});
 });

@@ -1,5 +1,5 @@
 /**
- * Fills one local account with a fictional career search, so Today, Coach, Knowledge, Offers and the application
+ * Fills one local account with a fictional career search, so Today, Coach, the Profile, Offers and the application
  * workspace have something to show, and the user guides' screenshots can be retaken: Alex Morgan, a product manager
  * in Berlin, interviewing at Northstar Labs and weighing offers from Brightpath and Canopy Systems.
  *
@@ -50,7 +50,9 @@ async function insert(client: PoolClient, table: string, row: Record<string, unk
 	const keys = Object.keys(row);
 	const columns = keys.map((key) => `"${columnOf(key)}"`).join(", ");
 	const placeholders = keys.map((_, index) => `$${index + 1}`).join(", ");
-	const values = keys.map((key) => (JSONB_COLUMNS.has(key) ? JSON.stringify(row[key]) : row[key]));
+	// `application.source` is plain text ("Referral"); the facts' and artifacts' `source` is JSONB.
+	const isJson = (key: string) => JSONB_COLUMNS.has(key) && !(table === "application" && key === "source");
+	const values = keys.map((key) => (isJson(key) ? JSON.stringify(row[key]) : row[key]));
 	await client.query(`insert into "${table}" (${columns}) values (${placeholders})`, values);
 }
 
@@ -379,7 +381,7 @@ const fit: SavedItemData = {
 	kind: "fit",
 	headline: "A relevant role, with one question to resolve",
 	summary:
-		"Each requirement from the posting, checked against your Knowledge. Missing evidence means your notes don't show it yet, not that you lack it.",
+		"Each requirement from the posting, checked against your Profile. Missing evidence means your notes don't show it yet, not that you lack it.",
 	requirements: [
 		{
 			text: "5+ years in B2B SaaS product management",
@@ -406,7 +408,7 @@ const fit: SavedItemData = {
 			text: "Enterprise onboarding",
 			origin: "posting",
 			status: "missing",
-			evidence: "Your Knowledge doesn't say which customer segments you onboarded.",
+			evidence: "Your Profile doesn't say which customer segments you onboarded.",
 			factIds: [],
 		},
 		{
@@ -446,7 +448,7 @@ const briefing: SavedItemData = {
 		{
 			minutes: 10,
 			title: "Draft a story about a disagreement with engineering",
-			detail: "Your Knowledge has no story for this yet, and Leo is likely to ask.",
+			detail: "Your Profile has no story for this yet, and Leo is likely to ask.",
 			action: "draft-story",
 			storyId: null,
 		},
@@ -511,7 +513,7 @@ const debrief: SavedItemData = {
 	landed: "mixed",
 	title: "A clear method, thin on trade-offs",
 	verdicts: [
-		{ tag: "supported", text: "The staged rollout matches your Knowledge: the guided setup shipped behind a flag." },
+		{ tag: "supported", text: "The staged rollout matches your Profile: the guided setup shipped behind a flag." },
 		{
 			tag: "observation",
 			text: "You didn't say how you weighed the cost of a longer experiment against the release date.",
@@ -1035,7 +1037,7 @@ async function main() {
 					parts: [
 						{
 							type: "text",
-							text: "Here's a first version. Check the numbers, and I'll save it to Knowledge only if you approve.",
+							text: "Here's a first version. Check the numbers, and I'll save it to your Profile only if you approve.",
 						},
 						{
 							type: "tool-save_story",

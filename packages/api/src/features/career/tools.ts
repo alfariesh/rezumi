@@ -30,7 +30,7 @@ const TABS: Record<WorkspaceTab, string> = {
 
 const MEMORY = {
 	ask: "When the latest user message states something lasting about them (experience, a skill, an accomplishment, a preference), call remember_fact with their exact words. The user sees it as a proposal and decides; never say it was saved.",
-	auto: "When the latest user message states something lasting about them (experience, a skill, an accomplishment, a preference), call remember_fact with their exact words; it is saved to their Knowledge.",
+	auto: "When the latest user message states something lasting about them (experience, a skill, an accomplishment, a preference), call remember_fact with their exact words; it is saved to their Profile.",
 	off: "Don't remember facts; the user switched memory off.",
 };
 
