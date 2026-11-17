@@ -15,7 +15,11 @@ import { applyResumePatches, ResumePatchError } from "@rezumi/resume/patch";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { isValidSlug } from "@rezumi/schema/resume/slug";
 import { generateId } from "@rezumi/utils/string";
-import { consumeResumePasswordLimit } from "../../middleware/rate-limit";
+import {
+	consumeResumePasswordLimit,
+	isResumePasswordBudgetSpent,
+	spendResumePasswordWrongTry,
+} from "../../middleware/rate-limit";
 import { assertDesignChange, assertDocumentCapacity, fitImportedDesign } from "../billing/limits";
 import { adoptEmbeddedLetters } from "../cover-letters/embedded";
 import { lockUser } from "../documents/ownership";
@@ -838,14 +842,20 @@ export const resumeService = {
 			eq(schema.resume.isPublic, true),
 		);
 
+		// Two budgets: a few tries per address (an IPv6 address by its /64), and wrong tries per resume from all
+		// addresses together.
 		if (!(await consumeResumePasswordLimit({ resumeId: resume?.id ?? "missing", trustedClient: input.trustedClient })))
 			throw new ORPCError("TOO_MANY_REQUESTS");
+		if (resume && (await isResumePasswordBudgetSpent(resume.id))) throw new ORPCError("TOO_MANY_REQUESTS");
 		// A miss costs the same bcrypt work as a wrong password, so timing doesn't reveal which addresses exist.
 		const passwordHash = resume?.password ?? (await unusedPasswordHash());
 		const isValid = await compare(input.password, passwordHash);
 		if (!resume) throw new ORPCError("INVALID_PASSWORD", { status: 401 });
 
-		if (!isValid) throw new ORPCError("INVALID_PASSWORD", { status: 401 });
+		if (!isValid) {
+			await spendResumePasswordWrongTry(resume.id);
+			throw new ORPCError("INVALID_PASSWORD", { status: 401 });
+		}
 
 		if (input.responseHeaders) grantResumeAccess(input.responseHeaders, resume.id, passwordHash);
 

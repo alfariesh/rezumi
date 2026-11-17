@@ -16,6 +16,8 @@ const grantResumeAccessMock = vi.hoisted(() => vi.fn());
 vi.mock("../../middleware/rate-limit", async (original) => ({
 	...(await original<typeof import("../../middleware/rate-limit")>()),
 	consumeResumePasswordLimit: vi.fn(async () => true),
+	isResumePasswordBudgetSpent: vi.fn(async () => false),
+	spendResumePasswordWrongTry: vi.fn(async () => {}),
 }));
 
 vi.mock("../cover-letters/embedded", () => ({ adoptEmbeddedLetters: vi.fn(async () => undefined) }));
@@ -466,6 +468,24 @@ describe("verifyPassword", () => {
 		compareMock.mockClear();
 		await expect(
 			resumeService.verifyPassword({ username: "Ada", slug: "current", password: "wrong" }),
+		).rejects.toMatchObject({ code: "TOO_MANY_REQUESTS" });
+		expect(compareMock).not.toHaveBeenCalled();
+	});
+
+	it("spends the resume's wrong-try budget on a wrong password, and refuses every try once it's spent", async () => {
+		const { isResumePasswordBudgetSpent, spendResumePasswordWrongTry } = await import("../../middleware/rate-limit");
+		vi.mocked(spendResumePasswordWrongTry).mockClear();
+		findResumeMock.mockResolvedValue({ id: "canonical", password: "hash" });
+		compareMock.mockResolvedValueOnce(false);
+		await expect(
+			resumeService.verifyPassword({ username: "ada", slug: "current", password: "wrong" }),
+		).rejects.toMatchObject({ code: "INVALID_PASSWORD" });
+		expect(spendResumePasswordWrongTry).toHaveBeenCalledWith("canonical");
+
+		vi.mocked(isResumePasswordBudgetSpent).mockResolvedValueOnce(true);
+		compareMock.mockClear();
+		await expect(
+			resumeService.verifyPassword({ username: "ada", slug: "current", password: "right" }),
 		).rejects.toMatchObject({ code: "TOO_MANY_REQUESTS" });
 		expect(compareMock).not.toHaveBeenCalled();
 	});

@@ -3,7 +3,9 @@ import { createRatelimitMiddleware } from "@orpc/experimental-ratelimit";
 import { ORPCError } from "@orpc/server";
 import { env } from "@rezumi/env/server";
 import { rateLimitConfig } from "@rezumi/utils/rate-limit";
+import { rateLimitAddress } from "../../features/portfolio/client-address";
 import { createRateLimiter } from "../../redis";
+import { createWrongTryBudget } from "./wrong-tries";
 
 const isRateLimitEnabled = process.env.NODE_ENV === "production" && !env.FLAG_DISABLE_API_RATE_LIMIT;
 
@@ -13,8 +15,13 @@ type ContextWithHeaders = {
 	trustedClient?: string;
 };
 
+/**
+ * The client part of a per-address key: an IPv4 address as it is, an IPv6 address by its /64 network (one host usually
+ * holds a whole /64 and can pick a new address for every request, which would otherwise pass every per-address limit).
+ */
 export function getClientKey(trustedClient?: string): string {
-	return `ip:${trustedClient?.trim() || "unknown"}`;
+	const address = trustedClient?.trim();
+	return `ip:${rateLimitAddress(address) ?? (address || "unknown")}`;
 }
 
 function getUserKey(context: ContextWithHeaders): string {
@@ -82,6 +89,23 @@ const resumePasswordKey = (input: ResumePasswordAttempt) =>
 /** Spends a try from the budget the API's verify call uses, so a web page's password form gets no extra guesses. */
 export async function consumeResumePasswordLimit(input: ResumePasswordAttempt): Promise<boolean> {
 	return (await productionLimiter(resumePasswordLimiter).limit(resumePasswordKey(input))).success;
+}
+
+/**
+ * Wrong passwords one resume takes per hour from all addresses together, as for portfolios: the per-address budget
+ * alone lets a dictionary spread over many addresses run without end.
+ */
+export const RESUME_PASSWORD_FAILURES_PER_HOUR = 100;
+const resumePasswordWrongTries = createWrongTryBudget("resumePasswordFailures", RESUME_PASSWORD_FAILURES_PER_HOUR);
+
+/** Whether a resume's wrong-password budget is spent for now; every try is refused until the hour is over. */
+export async function isResumePasswordBudgetSpent(resumeId: string): Promise<boolean> {
+	return isRateLimitEnabled && (await resumePasswordWrongTries.isSpent(resumeId));
+}
+
+/** Spends one of a resume's wrong tries. */
+export async function spendResumePasswordWrongTry(resumeId: string): Promise<void> {
+	if (isRateLimitEnabled) await resumePasswordWrongTries.spend(resumeId);
 }
 
 export const pdfExportRateLimit = createRatelimitMiddleware<ContextWithHeaders, { id: string }>({

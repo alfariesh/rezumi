@@ -38,6 +38,34 @@ describe("public resume rate limits", () => {
 		]);
 	});
 
+	it("counts an IPv6 client by its /64, so rotating addresses inside it shares one budget", async () => {
+		vi.stubEnv("NODE_ENV", "production");
+		settings.FLAG_DISABLE_API_RATE_LIMIT = false;
+		limit.mockResolvedValue({ success: true, remaining: 4, reset: Date.now() + 60_000 });
+		const { consumeResumePasswordLimit, getClientKey } = await import("./index");
+		await consumeResumePasswordLimit({ resumeId: "resume-id", trustedClient: "2001:db8:1:2::a" });
+		await consumeResumePasswordLimit({ resumeId: "resume-id", trustedClient: "2001:db8:1:2:ffff:1:2:3" });
+		expect(limit.mock.calls.map(([key]) => key)).toEqual([
+			"resume-password:resume-id:ip:2001:db8:1:2::/64",
+			"resume-password:resume-id:ip:2001:db8:1:2::/64",
+		]);
+		expect(getClientKey("::ffff:203.0.113.9")).toBe("ip:203.0.113.9");
+		expect(getClientKey(undefined)).toBe("ip:unknown");
+	});
+
+	it("refuses every password try for a resume once its wrong tries for the hour are spent", async () => {
+		vi.stubEnv("NODE_ENV", "production");
+		settings.FLAG_DISABLE_API_RATE_LIMIT = false;
+		limit.mockResolvedValue({ success: true, remaining: 1, reset: Date.now() + 60_000 });
+		const { isResumePasswordBudgetSpent, spendResumePasswordWrongTry } = await import("./index");
+		await spendResumePasswordWrongTry("resume-id");
+		expect(await isResumePasswordBudgetSpent("resume-id")).toBe(false);
+		limit.mockResolvedValue({ success: true, remaining: 0, reset: Date.now() + 60_000 });
+		await spendResumePasswordWrongTry("resume-id");
+		expect(await isResumePasswordBudgetSpent("resume-id")).toBe(true);
+		expect(await isResumePasswordBudgetSpent("other-resume")).toBe(false);
+	});
+
 	it.each([
 		{
 			name: "per user and resume",

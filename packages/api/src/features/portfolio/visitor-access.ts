@@ -4,12 +4,11 @@ import { compare, hash } from "bcryptjs";
 import { parseCookies } from "better-auth/cookies";
 import { and, eq, isNotNull } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
-import { getCoordination } from "@rezumi/db/coordination";
-import { getRedis, redisKey } from "@rezumi/db/redis";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
 import { rateLimitConfig } from "@rezumi/utils/rate-limit";
 import { generateId } from "@rezumi/utils/string";
+import { createWrongTryBudget } from "../../middleware/rate-limit/wrong-tries";
 import { createRateLimiter } from "../../redis";
 import { safeEquals } from "../resume/access";
 import { ownerIsNotBanned } from "../resume/access-policy";
@@ -79,56 +78,7 @@ const attemptLimiter = createRateLimiter("portfolioPasswordAttempts", rateLimitC
  * until the hour is over.
  */
 export const PORTFOLIO_PASSWORD_FAILURES_PER_HOUR = 100;
-const HOUR_MS = 60 * 60 * 1000;
-const failureLimiter = createRateLimiter("portfolioPasswordFailures", {
-	maxRequests: PORTFOLIO_PASSWORD_FAILURES_PER_HOUR,
-	window: HOUR_MS,
-});
-
-// Where no shared store is configured, the spent budget is remembered in this process, like the limiters.
-const spentInMemory = new Map<string, number>();
-
-const spentKey = (portfolioId: string) => redisKey("portfolio-password-spent", portfolioId);
-
-/** Whether the portfolio's budget of wrong tries is spent for now. A store that fails reads as not spent. */
-async function isBudgetSpent(portfolioId: string): Promise<boolean> {
-	const key = spentKey(portfolioId);
-	try {
-		const redis = getRedis();
-		if (redis) return (await redis.get(key)) !== null;
-		const coordination = getCoordination();
-		if (coordination) return (await coordination.get(key)) !== null;
-	} catch {
-		return false;
-	}
-	const until = spentInMemory.get(key);
-	if (until !== undefined && until > Date.now()) return true;
-	spentInMemory.delete(key);
-	return false;
-}
-
-/** Spends one of the portfolio's wrong tries; the 100th marks the budget spent for an hour. */
-async function spendWrongTry(portfolioId: string): Promise<void> {
-	const result = await failureLimiter.limit(`portfolio-password-failures:${portfolioId}`);
-	if (result.success && (result.remaining ?? 1) > 0) return;
-	const key = spentKey(portfolioId);
-	try {
-		const redis = getRedis();
-		if (redis) {
-			await redis.set(key, "1", "PX", HOUR_MS);
-			return;
-		}
-		const coordination = getCoordination();
-		if (coordination) {
-			await coordination.set(key, "1", HOUR_MS);
-			return;
-		}
-	} catch {
-		return;
-	}
-	if (spentInMemory.size >= 10_000) spentInMemory.clear();
-	spentInMemory.set(key, Date.now() + HOUR_MS);
-}
+const wrongTries = createWrongTryBudget("portfolioPasswordFailures", PORTFOLIO_PASSWORD_FAILURES_PER_HOUR);
 
 let unusedHash: Promise<string> | undefined;
 /** A hash no password matches, so a miss costs the same bcrypt work as a wrong password. */
@@ -164,13 +114,13 @@ export async function verifyPortfolioPassword(input: {
 	const key = `portfolio-password:${portfolio?.id ?? "missing"}:ip:${client}`;
 	const limits = !env.FLAG_DISABLE_API_RATE_LIMIT;
 	if (limits && !(await attemptLimiter.limit(key)).success) return "limited";
-	if (limits && portfolio && (await isBudgetSpent(portfolio.id))) return "limited";
+	if (limits && portfolio && (await wrongTries.isSpent(portfolio.id))) return "limited";
 	const length = input.password.length;
 	const passwordHash = portfolio?.password ?? (await unusedPasswordHash());
 	const valid = length >= 6 && length <= 64 && (await compare(input.password, passwordHash));
 	if (!portfolio?.password) return "wrong";
 	if (!valid) {
-		if (limits) await spendWrongTry(portfolio.id);
+		if (limits) await wrongTries.spend(portfolio.id);
 		return "wrong";
 	}
 	grantPortfolioAccess(input.responseHeaders, portfolio.id, portfolio.password);
