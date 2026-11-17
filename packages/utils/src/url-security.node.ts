@@ -63,6 +63,21 @@ for (const [address, prefix] of blockedIpv4Cidrs) blockedIpv4s.addSubnet(address
 const blockedIpv6s = new BlockList();
 for (const [address, prefix] of blockedIpv6Cidrs) blockedIpv6s.addSubnet(address, prefix, "ipv6");
 
+/**
+ * Resolvers also read IPv4 written as one integer, in octal or hex, or with fewer than four parts
+ * (`2130706433`, `0177.0.0.1`, `0x7f000001`, `127.1` are all 127.0.0.1); `isIP` only knows dotted decimal.
+ * The URL parser applies the same rules, so it gives the dotted form, or a name for anything else.
+ */
+function canonicalIpv4(host: string): string | undefined {
+	if (!/^[\d.a-fx]+$/.test(host)) return undefined;
+	try {
+		const parsed = new URL(`http://${host}/`).hostname;
+		return isIP(parsed) === 4 ? parsed : undefined;
+	} catch {
+		return undefined;
+	}
+}
+
 export function isPrivateOrLoopbackHost(hostname: string) {
 	// A fully qualified name ends in a dot that DNS ignores: `localhost.` and `a.localhost.` are still loopback.
 	const normalized = stripIpv6Brackets(normalizeHostname(hostname)).replace(/\.+$/, "");
@@ -71,6 +86,8 @@ export function isPrivateOrLoopbackHost(hostname: string) {
 
 	const ipVersion = isIP(normalized);
 	if (ipVersion === 4) return blockedIpv4s.check(normalized, "ipv4");
+	const ipv4 = ipVersion === 0 ? canonicalIpv4(normalized) : undefined;
+	if (ipv4) return blockedIpv4s.check(ipv4, "ipv4");
 	if (ipVersion === 6) return blockedIpv6s.check(normalized, "ipv6");
 
 	return false;

@@ -75,6 +75,30 @@ describe("isPrivateOrLoopbackHost", () => {
 		expect(isPrivateOrLoopbackHost(address)).toBe(true);
 	});
 
+	describe("IPv4 in other spellings", () => {
+		it.each([
+			"2130706433",
+			"0177.0.0.1",
+			"0x7f.0.0.1",
+			"0x7F000001",
+			"127.1",
+			"3232235521",
+			"0xa9.0xfe.0xa9.0xfe",
+			"10.1",
+			"0x7f000001.",
+		])("matches %s", (address) => {
+			expect(isPrivateOrLoopbackHost(address)).toBe(true);
+		});
+
+		it("lets public addresses and names that only look numeric through", () => {
+			expect(isPrivateOrLoopbackHost("134744072")).toBe(false); // 8.8.8.8
+			expect(isPrivateOrLoopbackHost("0x08.0x08.0x08.0x08")).toBe(false);
+			expect(isPrivateOrLoopbackHost("cafe.bad")).toBe(false);
+			expect(isPrivateOrLoopbackHost("deadbeef")).toBe(false);
+			expect(isPrivateOrLoopbackHost("1.2.3.4.5")).toBe(false);
+		});
+	});
+
 	describe("loopback hostnames", () => {
 		it("matches localhost", () => {
 			expect(isPrivateOrLoopbackHost("localhost")).toBe(true);
