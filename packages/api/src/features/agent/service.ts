@@ -1728,9 +1728,13 @@ export const agentService = {
 										persistError = error;
 										throw error;
 									} finally {
-										// Rezumi AI keeps the turn's credits only for a reply that finished and was saved.
-										if (isAborted || persistError || streamFailed)
-											await ai.fail(isAborted ? "aborted" : persistError ? "not_saved" : "stream_error");
+										// Rezumi AI keeps the turn's credits for a reply that finished and was saved, and for one the user
+										// stopped after most of it had already arrived (the stopped reply is saved too). A run the server
+										// timed out costs nothing.
+										const timedOut = controller.signal.reason?.message === "RUN_TIMEOUT";
+										if (persistError || streamFailed) await ai.fail(persistError ? "not_saved" : "stream_error");
+										else if (isAborted && timedOut) await ai.fail("timeout");
+										else if (isAborted) await ai.stop();
 										else await ai.succeed();
 										await cleanupActiveRun({
 											threadId: input.threadId,

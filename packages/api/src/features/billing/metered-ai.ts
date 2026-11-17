@@ -85,7 +85,19 @@ export type AiRun = {
 	succeed: () => Promise<void>;
 	/** Gives the credits back: call when the work failed or was cancelled before a usable result. */
 	fail: (code: string) => Promise<void>;
+	/**
+	 * Settles work the user stopped part-way. Stopping early costs nothing, but once the stream has already sent the
+	 * user a substantial part of the answer (`STOPPED_ANSWER_KEEPS_CREDITS_CHARS`), the credits are kept: otherwise
+	 * stopping just before the end would give the whole answer for free.
+	 */
+	stop: () => Promise<void>;
 };
+
+/**
+ * Characters of answer text a stopped stream may have sent and still cost nothing: about a hundred words, far less
+ * than any letter or Coach reply, enough for someone who stopped as soon as they saw it going the wrong way.
+ */
+export const STOPPED_ANSWER_KEEPS_CREDITS_CHARS = 600;
 
 /** Apps from before Rezumi AI never spend credits: they get this instead of running on it. */
 export function aiSourceRequired() {
@@ -139,12 +151,15 @@ function tokenCount(value: unknown, parts: string[] = []): number {
 
 type TokenTally = { inputTokens: number; outputTokens: number };
 
+/** Answer text a stream has passed on so far, in characters: what the user already has if they stop it. */
+type StreamedText = { chars: number };
+
 /**
  * Counts every call's tokens into `tally` and holds each call to `limits`. A call that stops at its output limit fails
  * the work (an error part, in a stream): what it left is a letter cut off mid-sentence, JSON that doesn't parse, or only
  * reasoning, and the user shouldn't pay for it.
  */
-function meterMiddleware(tally: TokenTally, limits: AiWorkLimits): LanguageModelMiddleware {
+function meterMiddleware(tally: TokenTally, limits: AiWorkLimits, streamed: StreamedText): LanguageModelMiddleware {
 	const count = (usage: { inputTokens?: unknown; outputTokens?: unknown } | undefined) => {
 		tally.inputTokens += tokenCount(usage?.inputTokens, ["noCache", "cacheRead", "cacheWrite"]);
 		// Output includes reasoning; providers that report no total get text plus reasoning.
@@ -172,6 +187,7 @@ function meterMiddleware(tally: TokenTally, limits: AiWorkLimits): LanguageModel
 				stream: stream.pipeThrough(
 					new TransformStream({
 						transform(part, controller) {
+							if (part.type === "text-delta") streamed.chars += part.delta.length;
 							if (part.type === "finish") {
 								count(part.usage);
 								if (part.finishReason.unified === "length")
@@ -236,6 +252,7 @@ function ownRun(provider: RunnableAiProvider): AiRun {
 		wrap: (wrapped) => wrapped,
 		succeed: async () => {},
 		fail: async () => {},
+		stop: async () => {},
 	};
 }
 
@@ -251,7 +268,9 @@ async function rezumiRun(
 	const reservation = await reserve(userId, action, idempotencyKey ?? generateId());
 	const limits = AI_WORK_LIMITS[action];
 	const tally: TokenTally = { inputTokens: 0, outputTokens: 0 };
-	const wrap = (model: ProviderModel) => wrapLanguageModel({ model, middleware: meterMiddleware(tally, limits) });
+	const streamed: StreamedText = { chars: 0 };
+	const wrap = (model: ProviderModel) =>
+		wrapLanguageModel({ model, middleware: meterMiddleware(tally, limits, streamed) });
 	let settled = false;
 	const spent = (): CreditUsageResult => ({
 		provider: provider.provider,
@@ -259,6 +278,23 @@ async function rezumiRun(
 		...tally,
 		costUsdMicros: costUsdMicros(tally),
 	});
+	const succeed = async () => {
+		if (settled) return;
+		settled = true;
+		// A failed commit leaves the reservation to the billing job, which gives the credits back: the user keeps the
+		// result either way.
+		await commitCredits(reservation.usageId, spent()).catch(() =>
+			console.error("[billing] Committing Rezumi AI credits failed; the reservation is released later."),
+		);
+	};
+	const fail = async (code: string) => {
+		if (settled) return;
+		settled = true;
+		// The provider is paid for failed work too: its tokens are kept, for the cost reports.
+		await releaseCredits(reservation.usageId, code.slice(0, 100), new Date(), spent()).catch(() =>
+			console.error("[billing] Releasing Rezumi AI credits failed; the reservation is released later."),
+		);
+	};
 	return {
 		provider,
 		metered: true,
@@ -266,23 +302,9 @@ async function rezumiRun(
 		limits,
 		model: wrap(base),
 		wrap,
-		succeed: async () => {
-			if (settled) return;
-			settled = true;
-			// A failed commit leaves the reservation to the billing job, which gives the credits back: the user keeps the
-			// result either way.
-			await commitCredits(reservation.usageId, spent()).catch(() =>
-				console.error("[billing] Committing Rezumi AI credits failed; the reservation is released later."),
-			);
-		},
-		fail: async (code) => {
-			if (settled) return;
-			settled = true;
-			// The provider is paid for failed work too: its tokens are kept, for the cost reports.
-			await releaseCredits(reservation.usageId, code.slice(0, 100), new Date(), spent()).catch(() =>
-				console.error("[billing] Releasing Rezumi AI credits failed; the reservation is released later."),
-			);
-		},
+		succeed,
+		fail,
+		stop: () => (streamed.chars > STOPPED_ANSWER_KEEPS_CREDITS_CHARS ? succeed() : fail("aborted")),
 	};
 }
 
