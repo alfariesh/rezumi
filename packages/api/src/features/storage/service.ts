@@ -18,6 +18,7 @@ import {
 	uploadedFontKey,
 } from "@rezumi/fonts/uploaded";
 import { getLocalDataDirectory } from "@rezumi/utils/monorepo.node";
+import { stripPictureMetadata } from "../portfolio/image-metadata";
 import { BlobStorageService } from "./blob";
 
 interface StorageWriteInput {
@@ -104,7 +105,7 @@ interface ProcessedImage {
 }
 
 // The real format from the file's first bytes; the client-declared type is never trusted.
-function detectImageType(bytes: Uint8Array): string | undefined {
+function detectImageType(bytes: Uint8Array): "image/png" | "image/jpeg" | "image/gif" | "image/webp" | undefined {
 	const ascii = (start: number, length: number) => String.fromCharCode(...bytes.subarray(start, start + length));
 	if (ascii(0, 8) === "\x89PNG\r\n\x1a\n") return "image/png";
 	if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return "image/jpeg";
@@ -139,10 +140,22 @@ export async function processImageForUpload(file: File): Promise<ProcessedImage>
 			console.error("[storage] Picture processing failed; the original is kept.", error);
 			return null;
 		});
-		return processed ?? { data, contentType };
+		// The re-encoded JPEG goes through the stripper too: the Images binding's metadata handling isn't ours to promise.
+		if (processed)
+			return {
+				data: stripPictureMetadata(processed.data, "image/jpeg")?.data ?? processed.data,
+				contentType: processed.contentType,
+			};
 	}
 
-	if (env.FLAG_DISABLE_IMAGE_PROCESSING) return { data, contentType };
+	if (imageProcessor || env.FLAG_DISABLE_IMAGE_PROCESSING) {
+		// The original is stored and served as it is on public resume and portfolio pages, so where, when and with what
+		// the photo was taken (EXIF GPS, XMP, IPTC) must go first. GIFs carry no EXIF and pass unchanged.
+		if (contentType === "image/gif") return { data, contentType };
+		const stripped = stripPictureMetadata(data, contentType);
+		if (!stripped) throw invalidImage();
+		return { data: stripped.data, contentType };
+	}
 
 	// The pixel cap stops a small file from decoding into a huge bitmap.
 	const image = sharp(data, { limitInputPixels: 25_000_000 });
