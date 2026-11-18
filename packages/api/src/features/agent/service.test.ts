@@ -44,7 +44,11 @@ const resumeServiceMock = {
 };
 
 // The credits of one run, so tests can check a turn is kept or given back.
-const runMock = { succeed: vi.fn(async () => {}), fail: vi.fn(async (_code: string) => {}) };
+const runMock = {
+	succeed: vi.fn(async () => {}),
+	fail: vi.fn(async (_code: string) => {}),
+	stop: vi.fn(async () => {}),
+};
 
 const aiProvidersServiceMock = {
 	getRunnableById: vi.fn(),
@@ -176,6 +180,7 @@ vi.mock("../billing/metered-ai", () => ({
 		wrap: (model: unknown) => model,
 		succeed: runMock.succeed,
 		fail: runMock.fail,
+		stop: runMock.stop,
 	}),
 }));
 vi.mock("../ai-providers/service", () => ({
@@ -1593,6 +1598,7 @@ describe("agentService.messages.stop", () => {
 			let source: ReadableStreamDefaultController<UIMessageChunk> | undefined;
 			runMock.succeed.mockClear();
 			runMock.fail.mockClear();
+			runMock.stop.mockClear();
 			let streamDone: Promise<void> | undefined;
 			const chunks: UIMessageChunk[] = [];
 			const originalChunks: UIMessageChunk[] = [
@@ -1699,12 +1705,17 @@ describe("agentService.messages.stop", () => {
 				},
 				isAborted: action !== "complete",
 			});
-			// The turn's credits are kept only for a reply that finished; a stopped or timed-out one gives them back.
+			// A finished reply keeps the turn's credits; a timed-out one gives them back; one the user stopped is settled
+			// by how much of it had already arrived (AiRun.stop).
 			if (action === "complete") {
 				expect(runMock.succeed).toHaveBeenCalledOnce();
 				expect(runMock.fail).not.toHaveBeenCalled();
+			} else if (action === "timeout") {
+				expect(runMock.fail).toHaveBeenCalledWith("timeout");
+				expect(runMock.stop).not.toHaveBeenCalled();
 			} else {
-				expect(runMock.fail).toHaveBeenCalledWith("aborted");
+				expect(runMock.stop).toHaveBeenCalledOnce();
+				expect(runMock.fail).not.toHaveBeenCalled();
 				expect(runMock.succeed).not.toHaveBeenCalled();
 			}
 			expect(messagesPersistenceMock.upsertAssistantUiMessage).toHaveBeenCalledWith(

@@ -216,4 +216,52 @@ describe("processImageForUpload", () => {
 			error.mockRestore();
 		}
 	});
+
+	it("drops EXIF GPS and XMP from photos stored as they are, keeping the picture", async () => {
+		const has = (bytes: Uint8Array, text: string) => Buffer.from(bytes).includes(Buffer.from(text, "latin1"));
+		const base = sharp({ create: { width: 8, height: 6, channels: 3, background: "#1e78c8" } })
+			.withExif({ IFD0: { Make: "PhoneMaker" }, IFD3: { GPSMapDatum: "HOME STREET" } })
+			.withXmp(
+				'<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:Description xmlns:dc="http://purl.org/dc/elements/1.1/" dc:creator="XMP Dana"/></rdf:RDF></x:xmpmeta>',
+			);
+
+		env.FLAG_DISABLE_IMAGE_PROCESSING = true;
+		try {
+			for (const [format, contentType] of [
+				["jpeg", "image/jpeg"],
+				["png", "image/png"],
+				["webp", "image/webp"],
+			] as const) {
+				const photo = new Uint8Array(await base.clone().toFormat(format).toBuffer());
+				expect(has(photo, "HOME STREET") || has(photo, "XMP Dana"), format).toBe(true);
+				const stored = await processImageForUpload(new File([photo], "photo", { type: contentType }));
+				expect(stored.contentType).toBe(contentType);
+				expect(has(stored.data, "HOME STREET"), format).toBe(false);
+				expect(has(stored.data, "PhoneMaker"), format).toBe(false);
+				expect(has(stored.data, "XMP Dana"), format).toBe(false);
+				expect((await sharp(stored.data).metadata()).width).toBe(8);
+			}
+		} finally {
+			env.FLAG_DISABLE_IMAGE_PROCESSING = false;
+		}
+	});
+
+	it("drops photo metadata on the Images path too: from its output, and from the original it falls back to", async () => {
+		const has = (bytes: Uint8Array, text: string) => Buffer.from(bytes).includes(Buffer.from(text, "latin1"));
+		const photo = new Uint8Array(
+			await sharp({ create: { width: 8, height: 6, channels: 3, background: "#1e78c8" } })
+				.withExif({ IFD3: { GPSMapDatum: "HOME STREET" } })
+				.jpeg()
+				.toBuffer(),
+		);
+		const processor = vi.fn().mockResolvedValue({ data: photo, contentType: "image/jpeg" });
+		configureImageProcessor(processor);
+		try {
+			expect(has((await processImageForUpload(new File([photo], "a.jpg"))).data, "HOME STREET")).toBe(false);
+			processor.mockResolvedValueOnce(null);
+			expect(has((await processImageForUpload(new File([photo], "a.jpg"))).data, "HOME STREET")).toBe(false);
+		} finally {
+			configureImageProcessor(undefined);
+		}
+	});
 });

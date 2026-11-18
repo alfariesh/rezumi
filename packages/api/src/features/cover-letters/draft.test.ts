@@ -10,6 +10,7 @@ const mocks = vi.hoisted(() => ({
 	applicationId: "a1" as string | null,
 	succeed: vi.fn(async () => {}),
 	fail: vi.fn(async (_code: string) => {}),
+	stop: vi.fn(async () => {}),
 }));
 
 vi.mock("ai", async (importOriginal) => ({
@@ -29,6 +30,7 @@ vi.mock("../billing/metered-ai", () => ({
 		model: {},
 		succeed: mocks.succeed,
 		fail: mocks.fail,
+		stop: mocks.stop,
 	}),
 }));
 vi.mock("./service", () => ({
@@ -56,6 +58,7 @@ describe("letter drafts on Rezumi AI", () => {
 	beforeEach(() => {
 		mocks.succeed.mockClear();
 		mocks.fail.mockClear();
+		mocks.stop.mockClear();
 	});
 
 	it("keeps the credits for a draft that arrived in full", async () => {
@@ -65,21 +68,34 @@ describe("letter drafts on Rezumi AI", () => {
 		expect(mocks.fail).not.toHaveBeenCalled();
 	});
 
-	it("gives the credits back for a draft stopped part-way, which ends with an abort part", async () => {
+	it("settles a draft stopped part-way, which ends with an abort part, as stopped", async () => {
 		mocks.parts = [{ type: "text-delta", text: "Dear" }, { type: "abort" }];
 		await drain();
 		expect(mocks.succeed).not.toHaveBeenCalled();
-		expect(mocks.fail).toHaveBeenCalledWith("aborted");
+		expect(mocks.fail).not.toHaveBeenCalled();
+		expect(mocks.stop).toHaveBeenCalledOnce();
 	});
 
-	it("gives the credits back when the request was cancelled", async () => {
+	it("settles a cancelled request as stopped", async () => {
 		const controller = new AbortController();
 		mocks.parts = [{ type: "text-delta", text: "Dear" }];
 		const run = drain(controller.signal);
 		controller.abort();
 		await run;
 		expect(mocks.succeed).not.toHaveBeenCalled();
-		expect(mocks.fail).toHaveBeenCalledWith("aborted");
+		expect(mocks.stop).toHaveBeenCalledOnce();
+	});
+
+	it("settles a stream the client closed early as stopped, not as a failure", async () => {
+		mocks.parts = [
+			{ type: "text-delta", text: "Dear team," },
+			{ type: "text-delta", text: " more" },
+			{ type: "finish" },
+		];
+		for await (const _chunk of draftLetterBody({ id: "l1", userId: "u1", variant: "draft" })) break;
+		expect(mocks.succeed).not.toHaveBeenCalled();
+		expect(mocks.fail).not.toHaveBeenCalled();
+		expect(mocks.stop).toHaveBeenCalledOnce();
 	});
 
 	it("writes from the Profile when the letter has no resume", async () => {

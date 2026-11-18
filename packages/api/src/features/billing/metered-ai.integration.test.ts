@@ -336,6 +336,21 @@ describe.skipIf(!databaseUrl)("Rezumi AI metering", () => {
 			expect((await usagesOf("owner"))[0]).toMatchObject({ status: "committed", outputTokens: 200 });
 		});
 
+		it("gives the credits back for a stream stopped early, but keeps them once most of the answer arrived", async () => {
+			const stopAfter = async (text: string) => {
+				fixture.reply = { text };
+				const ai = await metered.startAiRun({ userId: "owner", action: "cover-letter", aiSource: "rezumi" });
+				if (!ai) throw new Error("No run.");
+				for await (const _part of streamText({ model: ai.model, prompt: "Write" }).fullStream);
+				// The user stops it: whatever already streamed decides.
+				await ai.stop();
+			};
+			await stopAfter("Dear hiring team,");
+			expect((await usagesOf("owner")).map((usage) => usage.status)).toEqual(["released"]);
+			await stopAfter(`Dear hiring team, ${"I led the redesign of our onboarding. ".repeat(20)}`);
+			expect((await usagesOf("owner")).map((usage) => usage.status).toSorted()).toEqual(["committed", "released"]);
+		});
+
 		it("never runs voice or scheduled work", async () => {
 			await expect(metered.startAiRun({ userId: "owner", action: null, aiSource: "rezumi" })).rejects.toMatchObject({
 				code: "REZUMI_AI_UNAVAILABLE",

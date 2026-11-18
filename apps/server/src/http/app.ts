@@ -49,6 +49,7 @@ import { handleCareerJobs } from "./career-jobs";
 import { handleCustomDomain, handleTraefikProvider } from "./custom-domain";
 import { handleDodoPaymentWebhook } from "./dodo";
 import { handleHealth } from "./health";
+import { guardLargeBody } from "./large-body";
 import {
 	handlePortfolioEvent,
 	handlePortfolioMessage,
@@ -136,6 +137,9 @@ export function createApp(options: AppOptions = {}) {
 	app.use("/api/openapi/*", limitBody(40 * 1024 * 1024));
 	// Hono's `/x/*` also matches `/x`, so each wildcard below covers its base path too.
 	app.use("/api/rpc/*", limitBody(160 * 1024 * 1024));
+	// Past 1 MiB, RPC and REST bodies are read only for a signed-in sender (`large-body.ts`).
+	app.use("/api/openapi/*", async (c, next) => (await guardLargeBody(c.req.raw)) ?? next());
+	app.use("/api/rpc/*", async (c, next) => (await guardLargeBody(c.req.raw)) ?? next());
 	app.use("/api/auth/*", limitBody(1024 * 1024));
 	app.use("/api/storage/stage", limitBody(64 * 1024));
 	// Dodo payments and subscriptions are a few KB; 256 KB leaves plenty of room. Sumopod's are smaller still.
