@@ -10,6 +10,7 @@ const envMock = vi.hoisted(() => ({
 vi.mock("@rezumi/env/server", () => ({ env: envMock }));
 
 const { aiTransport, resolveAiBaseUrl } = await import("./url-policy");
+const { fetchPublic } = await import("@rezumi/utils/url-security.node");
 
 describe("AI provider base URL policy", () => {
 	it("allows public HTTPS provider URLs", () => {
@@ -79,6 +80,12 @@ describe("AI transport", () => {
 				["https://gateway.ai.cloudflare.com/v1/acct/other/openai/chat/completions", null],
 				["https://gateway.ai.cloudflare.com/v1/acct/rezumi/openai-evil/chat", null],
 			]);
+
+			// A user's own connection never carries the operator's token, even to the same gateway address.
+			expect(aiTransport(false).fetch).toBe(fetchPublic);
+			envMock.FLAG_ALLOW_UNSAFE_AI_BASE_URL = true;
+			expect(aiTransport(false)).toEqual({});
+			envMock.FLAG_ALLOW_UNSAFE_AI_BASE_URL = false;
 
 			envMock.AI_BASE_URL = "https://api.openai.com/v1";
 			expect(aiTransport(true)).toEqual({});

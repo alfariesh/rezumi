@@ -1732,7 +1732,10 @@ export const agentService = {
 										// stopped after most of it had already arrived (the stopped reply is saved too). A run the server
 										// timed out costs nothing.
 										const timedOut = controller.signal.reason?.message === "RUN_TIMEOUT";
-										if (persistError || streamFailed) await ai.fail(persistError ? "not_saved" : "stream_error");
+										// A stream that failed after most of the reply arrived (an answer cut off at its limit) keeps the
+										// credits like a stopped one: that reply is saved and shown.
+										if (persistError) await ai.fail("not_saved");
+										else if (streamFailed) await ai.stop("stream_error");
 										else if (isAborted && timedOut) await ai.fail("timeout");
 										else if (isAborted) await ai.stop();
 										else await ai.succeed();

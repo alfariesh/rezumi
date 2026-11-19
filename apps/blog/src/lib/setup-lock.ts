@@ -62,12 +62,37 @@ const locked = () =>
 	);
 
 /**
+ * Every form of the path Astro may route: it decodes until the path stops changing (falling back to a partial decode,
+ * or the raw path) and collapses repeated slashes before matching, so `/_emdash/%61pi/setup` and `/_emdash//api/setup`
+ * reach the setup routes too. The guard matches all of them, never a narrower path than the router's.
+ */
+function routedPaths(pathname: string): string[] {
+	const forms = [pathname];
+	let current = pathname;
+	// Astro gives up after 10 rounds; a couple more here never matches less than it does.
+	for (let round = 0; round < 12; round++) {
+		let next: string;
+		try {
+			next = decodeURI(current);
+		} catch {
+			break;
+		}
+		if (next === current) break;
+		forms.push(next);
+		current = next;
+	}
+	return forms.map((form) => form.replace(/\/{2,}/g, "/"));
+}
+
+const isSetupApiPath = (path: string) => path === SETUP_API || path.startsWith(`${SETUP_API}/`);
+
+/**
  * A response that ends the request (the unlock page, or a refusal for the setup API), or null to let EmDash handle it.
  */
 export async function guardSetup(request: Request, env: SetupLockEnv): Promise<Response | null> {
 	const url = new URL(request.url);
 	const isUnlock = url.pathname === SETUP_UNLOCK_PATH;
-	const isSetupApi = url.pathname === SETUP_API || url.pathname.startsWith(`${SETUP_API}/`);
+	const isSetupApi = routedPaths(url.pathname).some(isSetupApiPath);
 	if (!isUnlock && !isSetupApi) return null;
 	// `astro dev` keeps EmDash's own loopback rules, and its dev-bypass route.
 	if (isLoopback(url.hostname)) return isUnlock ? new Response(null, { status: 404 }) : null;

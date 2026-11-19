@@ -38,7 +38,9 @@ export function resolveAiBaseUrl(input: ResolveAiBaseUrlInput) {
  */
 export function aiTransport(serverAi = false): { fetch?: typeof fetch } {
 	const transport = serverAi || env.FLAG_ALLOW_UNSAFE_AI_BASE_URL ? undefined : fetchPublic;
-	const gateway = aiGatewayFetch(transport ?? ((input, init) => fetch(input, init)));
+	// The gateway token is the operator's: only the server's own AI carries it. A user's own connection pointed at the
+	// same gateway address would otherwise run on the operator's gateway (and any keys or billing stored there).
+	const gateway = serverAi ? aiGatewayFetch(transport ?? ((input, init) => fetch(input, init))) : undefined;
 	if (gateway) return { fetch: gateway };
 	return transport ? { fetch: transport } : {};
 }

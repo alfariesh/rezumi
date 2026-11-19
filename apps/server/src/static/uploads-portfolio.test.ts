@@ -139,25 +139,25 @@ describe("portfolio files nobody may see yet, or anymore", () => {
 		expect(picture.status).toBe(200);
 		expect(Object.fromEntries(picture.headers)).toMatchObject({
 			"content-type": "image/webp",
-			"cache-control": "private, max-age=3600",
+			"cache-control": "private, no-cache",
 			"cross-origin-resource-policy": "same-site",
 		});
 		const pdf = await get(pdfKey, owner);
 		expect(Object.fromEntries(pdf.headers)).toMatchObject({
 			"content-type": "application/pdf",
 			"content-security-policy": "sandbox",
-			"cache-control": "private, max-age=3600",
+			"cache-control": "private, no-cache",
 		});
 		const cached = await get(pictureKey, { ...owner, "If-None-Match": picture.headers.get("etag") ?? "" });
 		expect(cached.status).toBe(304);
-		expect(cached.headers.get("cache-control")).toBe("private, max-age=3600");
+		expect(cached.headers.get("cache-control")).toBe("private, no-cache");
 	});
 
 	it("are readable by an administrator reviewing a taken-down portfolio, in private copies only", async () => {
 		await storage.write({ key: pictureKey, data: webpBytes, contentType: "image/webp" });
 		const picture = await get(pictureKey, administrator);
 		expect(picture.status).toBe(200);
-		expect(picture.headers.get("cache-control")).toBe("private, max-age=3600");
+		expect(picture.headers.get("cache-control")).toBe("private, no-cache");
 		expect((await get(pictureKey, stranger)).status).toBe(404);
 		expect((await get(pictureKey)).status).toBe(404);
 	});
@@ -245,7 +245,7 @@ describe("files of a portfolio behind a password (Phase 13, B16, security review
 		state.protectedFiles.add(pictureKey);
 		const response = await withToken(pictureKey, await tokenFor(pictureKey));
 		expect(response.status).toBe(200);
-		expect(response.headers.get("cache-control")).toBe("private, max-age=3600");
+		expect(response.headers.get("cache-control")).toBe("private, no-cache");
 		expect(response.headers.get("x-robots-tag")).toBe("noindex, nofollow");
 		// A custom domain's page loads them from here, the token in the address.
 		expect(response.headers.get("cross-origin-resource-policy")).toBe("cross-origin");
@@ -253,7 +253,7 @@ describe("files of a portfolio behind a password (Phase 13, B16, security review
 			"If-None-Match": response.headers.get("etag") ?? "",
 		});
 		expect(cached.status).toBe(304);
-		expect(cached.headers.get("cache-control")).toBe("private, max-age=3600");
+		expect(cached.headers.get("cache-control")).toBe("private, no-cache");
 		// No token: the address alone, crawled or kept, isn't enough.
 		const bare = await get(pictureKey);
 		expect(bare.status).toBe(404);
@@ -288,7 +288,7 @@ describe("files of a portfolio behind a password (Phase 13, B16, security review
 		state.protectedFiles.add(pictureKey);
 		const response = await get(pictureKey, owner);
 		expect(response.status).toBe(200);
-		expect(response.headers.get("cache-control")).toBe("private, max-age=3600");
+		expect(response.headers.get("cache-control")).toBe("private, no-cache");
 		expect(response.headers.get("cross-origin-resource-policy")).toBe("same-site");
 		expect((await get(pictureKey, stranger)).status).toBe(404);
 	});

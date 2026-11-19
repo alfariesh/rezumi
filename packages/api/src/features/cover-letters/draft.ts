@@ -85,13 +85,14 @@ export async function* draftLetterBody(
 			cause,
 		});
 
-	// Rezumi AI keeps its credits for a draft that arrived in full. A failed draft costs nothing, and so does one stopped
+	// Rezumi AI keeps its credits for a draft that arrived in full. A draft that failed before most of it arrived costs nothing, and so does one stopped
 	// early (the AI SDK ends a stopped stream with an `abort` part rather than an error); one stopped after most of it
 	// had already arrived keeps them (`AiRun.stop`).
 	let complete = false;
 	let stopped = false;
 	// Failed (the provider or Rezumi AI's limits), or ended without text: neither is the user stopping it.
 	let failed = false;
+	let wrote = false;
 	try {
 		const posting =
 			application?.jobDescription?.trim() ||
@@ -109,7 +110,6 @@ export async function* draftLetterBody(
 			}),
 			...(input.signal ? { abortSignal: input.signal } : {}),
 		});
-		let wrote = false;
 		for await (const part of result.stream) {
 			if (part.type === "text-delta") {
 				wrote ||= part.text.length > 0;
@@ -127,7 +127,8 @@ export async function* draftLetterBody(
 	} finally {
 		// Anything else is the user stopping the draft: the request aborted, or the client closed the stream early.
 		if (complete) await ai.succeed();
-		else if (failed) await ai.fail("no_result");
+		// A draft that failed after most of it arrived (cut off at its limit) was still shown: it settles like a stopped one.
+		else if (failed) await (wrote ? ai.stop("no_result") : ai.fail("no_result"));
 		else await ai.stop();
 	}
 }
