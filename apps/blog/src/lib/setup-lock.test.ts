@@ -32,6 +32,20 @@ describe("guardSetup", () => {
 		expect(forged?.status).toBe(403);
 	});
 
+	it("refuses encoded and doubled-slash forms the router still sends to setup", async () => {
+		for (const path of [
+			"/_emdash/%61pi/setup/admin",
+			"/_emdash/api/%73etup/admin/verify",
+			"/_emdash/api/setup/%2561dmin",
+			"/_emdash//api/setup/admin",
+			"//_emdash/api//setup",
+			"/_emdash/%2561pi/setup/admin",
+		]) {
+			const response = await guardSetup(request(path, { method: "POST" }), { BLOG_SETUP_TOKEN: TOKEN });
+			expect(response?.status, path).toBe(403);
+		}
+	});
+
 	it("keeps the status check open", async () => {
 		expect(await guardSetup(request("/_emdash/api/setup/status"), {})).toBeNull();
 		expect((await guardSetup(request("/_emdash/api/setup/status", { method: "POST" }), {}))?.status).toBe(403);

@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
 	applicationId: "a1" as string | null,
 	succeed: vi.fn(async () => {}),
 	fail: vi.fn(async (_code: string) => {}),
-	stop: vi.fn(async () => {}),
+	stop: vi.fn(async (_code?: string) => {}),
 }));
 
 vi.mock("ai", async (importOriginal) => ({
@@ -122,5 +122,15 @@ describe("letter drafts on Rezumi AI", () => {
 		mocks.parts = [{ type: "error", error: new Error("down") }];
 		await expect(drain()).rejects.toMatchObject({ code: "BAD_GATEWAY" });
 		expect(mocks.fail).toHaveBeenCalledWith("no_result");
+	});
+
+	it("settles a draft that failed after text arrived, such as one cut off at its limit, as stopped", async () => {
+		mocks.parts = [
+			{ type: "text-delta", text: "Dear team, a long letter" },
+			{ type: "error", error: new Error("cut off") },
+		];
+		await expect(drain()).rejects.toMatchObject({ code: "BAD_GATEWAY" });
+		expect(mocks.fail).not.toHaveBeenCalled();
+		expect(mocks.stop).toHaveBeenCalledWith("no_result");
 	});
 });

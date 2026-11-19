@@ -88,9 +88,10 @@ export type AiRun = {
 	/**
 	 * Settles work the user stopped part-way. Stopping early costs nothing, but once the stream has already sent the
 	 * user a substantial part of the answer (`STOPPED_ANSWER_KEEPS_CREDITS_CHARS`), the credits are kept: otherwise
-	 * stopping just before the end would give the whole answer for free.
+	 * stopping just before the end would give the whole answer for free. Work that failed after streaming (an error part,
+	 * such as an answer cut off at its limit) settles the same way, with `code` as the release reason.
 	 */
-	stop: () => Promise<void>;
+	stop: (code?: string) => Promise<void>;
 };
 
 /**
@@ -304,7 +305,7 @@ async function rezumiRun(
 		wrap,
 		succeed,
 		fail,
-		stop: () => (streamed.chars > STOPPED_ANSWER_KEEPS_CREDITS_CHARS ? succeed() : fail("aborted")),
+		stop: (code = "aborted") => (streamed.chars > STOPPED_ANSWER_KEEPS_CREDITS_CHARS ? succeed() : fail(code)),
 	};
 }
 

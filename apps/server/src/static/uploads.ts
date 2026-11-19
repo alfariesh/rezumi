@@ -22,9 +22,10 @@ const PORTFOLIO_PICTURE_PATH = /^pictures\/portfolio\/[\w-]+\.(?:webp|jpe?g|png)
 // in them runs with the app's origin. The address carries no title, so every one is named document.pdf.
 const PUBLIC_PDF_PATH = /^documents\/portfolio\/[\w-]+\.pdf$/;
 const PDF_CONTENT_TYPE = "application/pdf";
-// The owner's own copy of a file not public yet: their browser may keep it (the editor's preview redraws often), no
-// shared cache may. Keys are never reused, so a kept copy is never stale.
-const OWNER_PORTFOLIO_FILE_CACHE_CONTROL = "private, max-age=3600";
+// The owner's own copy of a file not public yet, or a locked portfolio's: only their browser may keep it, and it asks
+// again before each use, so a copy kept from one session never opens for the next one (another account, a changed
+// password). The editor's preview redraws often; the ETag answers its repeats with a bodiless 304.
+const OWNER_PORTFOLIO_FILE_CACHE_CONTROL = "private, no-cache";
 
 const notFound = () => new Response("Not Found", { status: 404, headers: { "Cache-Control": "no-store" } });
 
