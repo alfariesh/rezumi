@@ -51,7 +51,7 @@
 		// opens them to everyone. "off" keeps /<username> on the primary resume.
 		"PORTFOLIO_MODE": "on",
 		// Custom domains through Cloudflare for SaaS. The token is the Worker secret CLOUDFLARE_SAAS_API_TOKEN; without it
-		// nothing here is active. The target is the zone's fallback origin (docs/self-hosting/sharing-domains.mdx).
+		// nothing here is active. The target is the zone's fallback origin (.agents/docs/self-hosting/sharing-domains.mdx).
 		"CUSTOM_DOMAIN_TARGET": "domains.rezumi.app",
 		"CLOUDFLARE_SAAS_ZONE_ID": "de7723edd44c3c4fc9279b0062d3a49c",
 		// The contact form's public Turnstile key; set with its secret (TURNSTILE_SECRET_KEY, a Worker secret) before

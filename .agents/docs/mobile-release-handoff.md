@@ -33,7 +33,7 @@ Brand is **Rezumi**, `rxresume`, or `reactive-resume`. The official domain `rezu
 
 ## Production deployment and quirks
 
-Owner controls merge/deployment. The backend runs only on Cloudflare Workers (see [the Cloudflare guide](../../docs/self-hosting/cloudflare.mdx)). Do not infer deployment from a Git push alone.
+Owner controls merge/deployment. The backend runs only on Cloudflare Workers (see [the Cloudflare guide](self-hosting/cloudflare.mdx)). Do not infer deployment from a Git push alone.
 
 ### Worker deployment
 

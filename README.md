@@ -190,7 +190,7 @@ docker compose -f compose.dev.yml up -d postgres redis seaweedfs seaweedfs_creat
 pnpm dev
 ```
 
-To deploy, follow the [Cloudflare guide](https://docs.rezumi.app/self-hosting/cloudflare). For source development, see the [development setup guide](https://docs.rezumi.app/contributing/development).
+To deploy, follow the [Cloudflare guide](.agents/docs/self-hosting/cloudflare.mdx). For source development, see the [development setup guide](.agents/docs/contributing/development.mdx).
 
 ## Tech Stack
 
@@ -224,9 +224,9 @@ The full documentation lives at [docs.rezumi.app](https://docs.rezumi.app):
 | [Tracking job applications](https://docs.rezumi.app/guides/tracking-job-applications)                              | Saved jobs, stages, interviews, and insights |
 | [Exporting your resume](https://docs.rezumi.app/guides/exporting-your-resume)                                      | PDF, Word, Markdown, and JSON downloads      |
 | [API](https://docs.rezumi.app/guides/using-the-api) and [MCP](https://docs.rezumi.app/guides/using-the-mcp-server) | Connect scripts and external assistants      |
-| [Self-hosting](https://docs.rezumi.app/self-hosting/cloudflare)                                                    | Deploy on Cloudflare Workers                 |
-| [Development setup](https://docs.rezumi.app/contributing/development)                                              | Local development environment                |
-| [Project architecture](https://docs.rezumi.app/contributing/architecture)                                          | Codebase structure and package boundaries    |
+| [Self-hosting](.agents/docs/self-hosting/cloudflare.mdx)                                                           | Deploy on Cloudflare Workers                 |
+| [Development setup](.agents/docs/contributing/development.mdx)                                                     | Local development environment                |
+| [Project architecture](.agents/docs/contributing/architecture.mdx)                                                 | Codebase structure and package boundaries    |
 
 ## Self-Hosting
 
@@ -236,7 +236,7 @@ This fork deploys only to Cloudflare Workers: PostgreSQL through Hyperdrive for 
 
 ### Cloudflare Workers
 
-Cloudflare deployment requires **Workers Paid** and uses Static Assets, private R2 storage, SQLite Durable Objects, and PostgreSQL through Hyperdrive. Supply an existing PostgreSQL database and apply migrations before deployment. See the [Cloudflare guide](https://docs.rezumi.app/self-hosting/cloudflare) for setup and runtime limits.
+Cloudflare deployment requires **Workers Paid** and uses Static Assets, private R2 storage, SQLite Durable Objects, and PostgreSQL through Hyperdrive. Supply an existing PostgreSQL database and apply migrations before deployment. See the [Cloudflare guide](.agents/docs/self-hosting/cloudflare.mdx) for setup and runtime limits.
 
 Deploy manually with `pnpm deploy:cloudflare`, or let GitHub Actions do it: every push to `main` runs `.github/workflows/deploy-cloudflare.yml`, which applies migrations (when the optional `DATABASE_URL` secret is set) and then deploys the Worker. Add the repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
 
@@ -248,7 +248,7 @@ The application needs:
 
 ### Configuration
 
-Every setting is listed in the [environment variables reference](https://docs.rezumi.app/self-hosting/environment-variables). Self-hosters can also configure [shared AI and job-search services](https://docs.rezumi.app/self-hosting/job-search-and-ai) and [single sign-on](https://docs.rezumi.app/self-hosting/sso).
+Every setting is listed in the [environment variables reference](.agents/docs/self-hosting/environment-variables.mdx). Self-hosters can also configure [shared AI and job-search services](.agents/docs/self-hosting/job-search-and-ai.mdx) and [single sign-on](.agents/docs/self-hosting/sso.mdx).
 
 ## Support and legal
 

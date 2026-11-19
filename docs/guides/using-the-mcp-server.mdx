@@ -15,7 +15,7 @@ Rezumi runs a [Model Context Protocol (MCP)](https://modelcontextprotocol.io) se
 
 ## Find your server address
 
-The server address is your instance's address followed by `/mcp`. On the hosted instance it's `https://rezumi.app/mcp`. You can copy it from **Settings**, in the **MCP server** section.
+The server address is `https://rezumi.app/mcp`. You can copy it from **Settings**, in the **MCP server** section.
 
 <Frame caption="The MCP server section in Settings">
   <img
@@ -139,11 +139,6 @@ Then sign in from your agent, as described below.
     Run `npx add-mcp https://rezumi.app/mcp --name rezumi` and choose your agent from the list. If your client isn't listed, use the server address with its remote MCP (Streamable HTTP) option. If it asks for a transport, choose HTTP. If it can't do OAuth, send the `x-api-key` header.
   </Accordion>
 </AccordionGroup>
-
-<Note>
-  Self-hosting? Replace `https://rezumi.app` with your own address everywhere on this page, for example
-  `https://resume.example.com/mcp`.
-</Note>
 
 ## Try it
 
@@ -317,11 +312,11 @@ Prompts are ready-made instructions your client can start from. The resume promp
 | `portfolio://current`     | Your portfolio as `get_portfolio` returns it.                                                                                                                                                                                                                                                                                                                                            |
 | `portfolio://_meta/edits` | The portfolio edit language: ops, lists and their fields, settable paths, image references and examples.                                                                                                                                                                                                                                                                                 |
 
-Your instance also publishes a server card at `/.well-known/mcp/server-card.json` that summarizes the tools, prompts and resources, for clients that discover servers without connecting. An [Agentic Resource Discovery](https://agenticresourcediscovery.org/spec/) catalog at `/.well-known/ard.json` (also served at the older `/.well-known/ai-catalog.json`) points agent registries to that card.
+Rezumi also publishes a server card at `/.well-known/mcp/server-card.json` that summarizes the tools, prompts and resources, for clients that discover servers without connecting. An [Agentic Resource Discovery](https://agenticresourcediscovery.org/spec/) catalog at `/.well-known/ard.json` (also served at the older `/.well-known/ai-catalog.json`) points agent registries to that card.
 
 ## How authentication works
 
-This section is for client developers and self-hosters.
+This section is for client developers.
 
 - The server checks `x-api-key: <key>` first, then `Authorization: Bearer <token>`. MCP never accepts account session cookies. Invalid explicit credentials cannot borrow a browser session.
 - A request with neither gets `401` and a `WWW-Authenticate: Bearer resource_metadata="<instance>/.well-known/oauth-protected-resource"` header. OAuth clients use it to discover the authorization server.
@@ -333,16 +328,15 @@ This section is for client developers and self-hosters.
 
 ## Troubleshooting
 
-| Problem                                                       | What to do                                                                                            |
-| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| "Unauthorized" and no sign-in window                          | Your client doesn't support MCP OAuth. Connect with an API key.                                       |
-| The sign-in window says the request is invalid or has expired | Start the connection again from your client.                                                          |
-| `401` with an API key                                         | The key is wrong, revoked or expired. Create a new one in **Settings** → **API keys**.                |
-| A tool says the resume is locked                              | Unlock it in the app, or ask the client to run `unlock_resume`.                                       |
-| A tool says an ID wasn't found                                | Ask the client to list resumes, letters or applications first to get valid IDs.                       |
-| An edit to dates doesn't stick                                | The client changed the `period` or `date` text. Ask it to write the `dates` object instead.           |
-| A tool rejects a large file                                   | Upload through the REST file/attachment endpoint and pass an owned storage reference.                 |
-| A self-hosted connection made before an upgrade stops working | Remove the server from your client and add it again, so it registers afresh and you approve it again. |
+| Problem                                                       | What to do                                                                                  |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| "Unauthorized" and no sign-in window                          | Your client doesn't support MCP OAuth. Connect with an API key.                             |
+| The sign-in window says the request is invalid or has expired | Start the connection again from your client.                                                |
+| `401` with an API key                                         | The key is wrong, revoked or expired. Create a new one in **Settings** → **API keys**.      |
+| A tool says the resume is locked                              | Unlock it in the app, or ask the client to run `unlock_resume`.                             |
+| A tool says an ID wasn't found                                | Ask the client to list resumes, letters or applications first to get valid IDs.             |
+| An edit to dates doesn't stick                                | The client changed the `period` or `date` text. Ask it to write the `dates` object instead. |
+| A tool rejects a large file                                   | Upload through the REST file/attachment endpoint and pass an owned storage reference.       |
 
 ## Related guides
 

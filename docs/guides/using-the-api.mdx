@@ -7,7 +7,7 @@ The Rezumi REST API lets your own scripts, extensions and automations read and c
 
 ## Before you start
 
-- You need a Rezumi account. The examples use the hosted instance at `https://rezumi.app`. If you self-host, replace it with your own address.
+- You need a Rezumi account. The examples use `https://rezumi.app`.
 - An API key acts as you. Anyone who has it can read and edit your documents, so treat it like a password.
 
 ## Create an API key
@@ -69,10 +69,9 @@ supported. Renames preserve an old address for 30 days.
 Authenticated custom-domain operations live under `/api/openapi`: `GET /custom-domain`, `PUT /custom-domain` with
 `{ "hostname": "resume.example.com" }`, `POST /custom-domain/verify`, and `DELETE /custom-domain`.
 The status includes the DNS target, ownership TXT name/value, verification status and last check time. These routes
-return `PRECONDITION_FAILED` (HTTP 412) when the operator hasn't enabled custom domains. On rezumi.app, connecting a new
+return `PRECONDITION_FAILED` (HTTP 412) when custom domains are not enabled. Connecting a new
 domain needs a plan that includes it, and returns `PLAN_FEATURE_REQUIRED` (HTTP 403) otherwise. Use the
-API Reference tab for full request and response schemas, and
-[Sharing domains](/self-hosting/sharing-domains) for server prerequisites.
+API Reference tab for full request and response schemas.
 
 Public resume reads, pages and PDFs enforce visibility and password access and omit hidden content and
 private notes. The signed-in owner is exempt from their own public password challenge. Visitor PDFs also enforce
@@ -84,7 +83,7 @@ Anyone holding that preview link can open it during its 15-minute lifetime, so k
 
 ## Make your first request
 
-The REST API lives under `/api/openapi` on your instance. Send your key in the `x-api-key` header.
+The REST API lives under `/api/openapi` on rezumi.app. Send your key in the `x-api-key` header.
 
 ```bash
 curl "https://rezumi.app/api/openapi/resumes" \
@@ -133,7 +132,7 @@ The response is the new resume's ID as a JSON string.
 
 ## Find the endpoint you need
 
-Every endpoint, with its parameters, request body and responses, is listed in the **API Reference** tab of these docs. Your own instance also serves the machine-readable OpenAPI document at `/api/openapi/spec.json` (for example `https://rezumi.app/api/openapi/spec.json`). Use the spec from the version you run when you generate a client.
+Every endpoint, with its parameters, request body and responses, is listed in the **API Reference** tab of these docs. Rezumi also serves the machine-readable OpenAPI document at `/api/openapi/spec.json` (for example `https://rezumi.app/api/openapi/spec.json`).
 
 | Area          | Paths                                   | What you can do                                                                                                                                        |
 | ------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -156,7 +155,7 @@ Additional app workflows have REST endpoints:
 | Web search integration settings and connection tests                                    | `/integrations/web-access`                                                       |
 | Sign-in, sessions, profile, passwords, two-factor authentication, passkeys and API keys | `/api/auth/*` (outside `/api/openapi`)                                           |
 
-Authentication workflows use Better Auth's native HTTP API and its own error contract. Your instance publishes their specification at `/api/auth/open-api/generate-schema`; use that specification for the enabled authentication methods. Browser interactions such as zoom, print dialogs and local undo do not require separate server endpoints: use document changes, versions and exports for the corresponding data workflows.
+Authentication workflows use Better Auth's native HTTP API and its own error contract. Rezumi publishes their specification at `/api/auth/open-api/generate-schema`; use that specification for the enabled authentication methods. Browser interactions such as zoom, print dialogs and local undo do not require separate server endpoints: use document changes, versions and exports for the corresponding data workflows.
 
 `GET /api/health` (outside `/api/openapi`) reports whether the instance and its database and storage are healthy. It needs no key.
 
@@ -224,7 +223,7 @@ REST data responses use `Cache-Control: no-store`. Uploaded profile images are p
 | REST request body size (before endpoint-specific limits)                                        | 40 MiB         |
 | AI requests per account (voice transcription and speech count separately)                       | 20 per minute  |
 
-Procedure limits apply in production. When you hit a limit, the API responds with `429`. On a self-hosted installation, `FLAG_DISABLE_API_RATE_LIMIT` turns off the per-key limit together with the sign-in limits; the procedure limits also turn off (see [Environment variables](/self-hosting/environment-variables)).
+Procedure limits apply in production. When you hit a limit, the API responds with `429`.
 
 ## Rezumi AI and credits
 
