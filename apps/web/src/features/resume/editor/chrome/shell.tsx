@@ -114,7 +114,10 @@ export function EditorFrame({ editorLayout, bar, back, modes, mobile, children, 
 
 			<div className="col-start-1 row-start-2 scrollbar-none min-h-0 overflow-y-auto">{modes}</div>
 
-			<div className="relative col-span-2 col-start-2 row-start-2 grid min-h-0 min-w-0 grid-cols-subgrid overflow-hidden rounded-[calc(var(--radius)*2.5)] border-[0.5px] border-separator">
+			{/* One explicit row: with only an implicit one, Chromium can lay the canvas out zero tall when the columns change
+			while the main thread is busy (the assistant's column opening as its panel mounts), though the row stays full
+			height; the page showed as a strip for seconds. `tests/e2e/specs/builder-assistant-layout.spec.ts` covers it. */}
+			<div className="relative col-span-2 col-start-2 row-start-2 grid min-h-0 min-w-0 grid-cols-subgrid grid-rows-[minmax(0,1fr)] overflow-hidden rounded-[calc(var(--radius)*2.5)] border-[0.5px] border-separator">
 				{docked ? (
 					<PanelSection {...sections} className="border-e-[0.5px] border-separator" />
 				) : (
