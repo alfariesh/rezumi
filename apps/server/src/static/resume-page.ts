@@ -74,10 +74,15 @@ type PageOptions = {
 	customDomain?: string | undefined;
 };
 
-/** Off, unknown or trashed resumes read the same, in the visitor's language; so does a portfolio address that has none. */
-export function unavailableResponse(request: Request) {
+/**
+ * Off, unknown or trashed resumes read the same, in the visitor's language. An address that may be a portfolio's
+ * (`/<username>`, a work page) says "page" instead of "resume", since it can't say which of the two isn't shared.
+ */
+export function unavailableResponse(request: Request, subject: "resume" | "page" = "resume") {
 	const lang = localeFromAcceptLanguage(request.headers.get("accept-language"));
-	return html(renderUnavailableDocument({ lang, messages: webPageMessages(lang) }), 404);
+	const messages = webPageMessages(lang);
+	if (subject === "page") messages.unavailableTitle = messages.pageUnavailableTitle;
+	return html(renderUnavailableDocument({ lang, messages }), 404);
 }
 
 /**
@@ -100,7 +105,7 @@ async function showPage(request: Request, match: ResumeMatch, trustedClient: str
 	const previewToken = new URL(request.url).searchParams.get("preview") ?? undefined;
 	const result = await loadPublicWebPage({ match, requestHeaders: request.headers, trustedClient, previewToken });
 
-	if (result.status === "unavailable") return unavailableResponse(request);
+	if (result.status === "unavailable") return unavailableResponse(request, "primary" in match ? "page" : "resume");
 	if (result.status === "moved") {
 		const target = new URL(request.url);
 		target.pathname = publicResumePath({ username: result.username, slug: result.slug });

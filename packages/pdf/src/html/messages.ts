@@ -12,6 +12,8 @@ const ENGLISH = {
 	unlock: "Unlock",
 	wrongPassword: "That password isn't correct. Check it with the resume owner and try again.",
 	unavailableTitle: "This resume isn't shared right now.",
+	/** For an address that can be a portfolio or a resume (`/<username>`), where neither is shared. */
+	pageUnavailableTitle: "This page isn't shared right now.",
 	unavailableHint: "If someone sent you this link, ask them for a new one.",
 };
 

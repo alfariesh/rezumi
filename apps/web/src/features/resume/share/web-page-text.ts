@@ -14,4 +14,5 @@ msg`Password`;
 msg`Unlock`;
 msg`That password isn't correct. Check it with the resume owner and try again.`;
 msg`This resume isn't shared right now.`;
+msg`This page isn't shared right now.`;
 msg`If someone sent you this link, ask them for a new one.`;

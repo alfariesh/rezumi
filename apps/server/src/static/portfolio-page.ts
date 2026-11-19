@@ -530,7 +530,7 @@ export const portfolioRoutesEnabled = () => getPortfolioMode() !== "off";
  * A work's own page (Phase 13, B2): `/<username>/work/<slug>`, or `/work/<slug>` on a custom domain. The password gate
  * comes before the work is looked up, so a locked page doesn't tell whether a work exists. A previous address forwards
  * (301) to the current one; a work the page doesn't list (hidden, untitled, or the Work section hidden) is a 404 that
- * links back to the portfolio; an address with no portfolio is the same 404 as a resume that isn't shared.
+ * links back to the portfolio; an address with no portfolio is the same 404 as `/<username>` with nothing shared.
  */
 export async function servePortfolioWork(
 	request: Request,
@@ -541,7 +541,7 @@ export async function servePortfolioWork(
 ): Promise<Response> {
 	if (!(await publicPortfolioRequestAllowed(trustedClient))) return tooManyPortfolioRequests();
 	const portfolio = await findPublicPortfolio(username);
-	if (!portfolio) return unavailableResponse(request);
+	if (!portfolio) return unavailableResponse(request, "page");
 	if ((await portfolioAccess(portfolio, request.headers)) === "locked")
 		return lockedPage(request, portfolio, options, `work:${slug}`);
 	const view = publicPortfolioView(portfolio, options);
