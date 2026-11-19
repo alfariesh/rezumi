@@ -40,3 +40,23 @@ it("authorizes only the fixed application script, even if rendered content conta
 	expect(csp).not.toContain(hash("untrusted()"));
 	expect(csp?.match(/script-src ([^;]*)/)?.[1]).not.toContain("'unsafe-inline'");
 });
+
+it("says 'page' where nothing is shared at `/<username>`, which can be a portfolio's address, and 'resume' elsewhere", async () => {
+	const { loadPublicWebPage } = await import("@rezumi/api/features/resume/web-page");
+	vi.mocked(loadPublicWebPage).mockResolvedValue({ status: "unavailable" });
+	const { serveResumePage } = await import("./resume-page");
+	const english = { headers: { "accept-language": "en-US" } };
+	const primary = await serveResumePage(
+		new Request("https://resume.example/ada", english),
+		{ username: "ada", primary: true },
+		"test",
+	);
+	expect(primary.status).toBe(404);
+	expect(await primary.text()).toContain("This page isn&#39;t shared right now.");
+	const resume = await serveResumePage(
+		new Request("https://resume.example/ada/cv", english),
+		{ username: "ada", slug: "cv" },
+		"test",
+	);
+	expect(await resume.text()).toContain("This resume isn&#39;t shared right now.");
+});

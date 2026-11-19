@@ -38,6 +38,15 @@ type PreviewInput = {
 	canHideCredit: boolean;
 };
 
+/** How far the preview is scrolled, or undefined when its frame has left the drawn document for another origin. */
+function previewScrollY(frame: HTMLIFrameElement | null): number | undefined {
+	try {
+		return frame?.contentWindow?.scrollY;
+	} catch {
+		return undefined;
+	}
+}
+
 let glyphs: Promise<Readonly<Record<string, string>>> | undefined;
 
 /** The icon set's glyphs, loaded once; a failed load is tried again on the next draw instead of being kept. */
@@ -116,6 +125,8 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	// The last draw failed: the preview says so (over the previous one, when there is one) and offers to try again.
 	const [failed, setFailed] = useState(false);
 	const [attempt, setAttempt] = useState(0);
+	// Bumped to load the preview's document afresh when the frame has left it (`restoreScroll`).
+	const [frameKey, setFrameKey] = useState(0);
 	const [debouncedData] = useDebounceValue(data, 250);
 	const openWorkId = usePortfolioEditorUi((state) => state.openWorkId);
 	const openWork = debouncedData.works.items.find((work) => work.id === openWorkId && !work.hidden);
@@ -152,10 +163,9 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 		})
 			.then((html) => {
 				if (!current) return;
-				const view = frame.current?.contentWindow;
 				// Another page (a work opened or closed) starts at its top.
 				scroll.current = {
-					top: scroll.current.page === shownPage ? (view?.scrollY ?? scroll.current.top) : 0,
+					top: scroll.current.page === shownPage ? (previewScrollY(frame.current) ?? scroll.current.top) : 0,
 					page: shownPage,
 				};
 				setDocument(html);
@@ -210,7 +220,9 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	/**
 	 * The preview's links between pages, followed here since the preview runs no script of its own: a work card (or a
 	 * work page's previous and next) opens that work, as its editor does; on a work page, a link to a part of the home
-	 * page goes back home there. Other links behave as on the page (in-page anchors, new tabs).
+	 * page goes back home there. An in-page anchor scrolls the preview here: the frame's document is `about:srcdoc`, so
+	 * the browser would resolve `#contact` against the editor's address and load the app, which refuses to be framed.
+	 * Other links open in a new tab, as on the page.
 	 */
 	const followPreviewLink = (event: MouseEvent) => {
 		const target = event.target as Element | null;
@@ -229,16 +241,27 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 			return;
 		}
 		// On a work page, an anchor that isn't on it belongs to the home page.
-		if (shownPage !== "home" && anchor && !link?.ownerDocument.getElementById(anchor)) {
-			event.preventDefault();
+		event.preventDefault();
+		const section = anchor ? link?.ownerDocument.getElementById(anchor) : null;
+		if (shownPage !== "home" && anchor && !section) {
 			pendingAnchor.current = anchor;
 			ui.openWork(null);
+			return;
 		}
+		// The phone menu closes after a tap, as the page's script does.
+		link?.closest(".pf-menu a")?.closest("details")?.removeAttribute("open");
+		// Without options, the scroll follows the page's own `scroll-behavior` (and its reduced-motion rule).
+		section?.scrollIntoView();
 	};
 
 	const restoreScroll = () => {
 		const view = frame.current?.contentWindow;
 		if (!view) return;
+		// The frame left the drawn document (a link that got past `followPreviewLink`): load it again.
+		if (previewScrollY(frame.current) === undefined) {
+			setFrameKey((key) => key + 1);
+			return;
+		}
 		view.document.addEventListener("click", followPreviewLink);
 		if (pendingReplay.current && playEffect()) {
 			pendingReplay.current = 0;
@@ -271,6 +294,7 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 					// (scripts stay off, so that grants nothing) because uploads are served `Cross-Origin-Resource-Policy:
 					// same-site`, which an opaque origin can't load.
 					<iframe
+						key={frameKey}
 						ref={frame}
 						title={t`Portfolio preview`}
 						srcDoc={document}

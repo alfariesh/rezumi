@@ -205,7 +205,9 @@ export function PdfCanvasPage({
 					</figcaption>
 				) : null)}
 
-			<div style={scaledPageSize} className={cn("relative aspect-page overflow-hidden rounded-md", className)}>
+			{/* Centered: a caption wider than the page (page 1's overflow notice on a narrow canvas) widens the figure, and
+			the page would sit at its start edge, out of line with the pages below. */}
+			<div style={scaledPageSize} className={cn("relative mx-auto aspect-page overflow-hidden rounded-md", className)}>
 				<canvas ref={canvasRef} aria-label={`Resume page ${pageNumber} of ${totalPages}`} className="block size-full" />
 				{overlay}
 			</div>
