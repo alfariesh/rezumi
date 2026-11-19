@@ -43,7 +43,7 @@ This block is written and re-added by `turbo` before repository-scoped commands 
 
 Rezumi is a free, open-source resume builder for creating, importing, exporting, and sharing resumes, cover letters, and job applications. It is a TypeScript pnpm monorepo managed by Turborepo, with five apps: `apps/web` (React 19 SPA with TanStack Router, TanStack Query, Tailwind CSS, and Vite), `apps/server` (Hono / Node.js), `apps/mobile` (Expo / React Native iOS and Android app with the native Forme renderer from `packages/forme-native`), `apps/blog` (the marketing blog at blog.rezumi.app: Astro with the EmDash CMS; see `apps/blog/AGENTS.md`), and `apps/extension` (the Chrome and Edge extension that saves job postings to the application tracker: Manifest V3, React side panel, built with Vite+; see `apps/extension/AGENTS.md`). oRPC connects browser workflows to server business logic; Better Auth handles authentication; Drizzle accesses PostgreSQL. Forme renders PDFs in the browser and on the server.
 
-Production runs only on Cloudflare Workers (`wrangler.jsonc`): Static Assets serve the built web app, the Worker runs the Hono application from `apps/server` (API/auth/MCP/static routes), PostgreSQL is reached through Hyperdrive, and uploads live in private R2. Local dev and `pnpm start` run the same app as a plain Node.js process. Docker, Vercel, Kubernetes, Hostinger, Cloudron, and NAS deployments are dropped; their files and docs are deleted. Some runtime adapters (storage `s3`/`blob`/`local`, Vercel env aliases in `packages/env/src/deployment.ts`) remain in code. Setup and runtime limits: `docs/self-hosting/cloudflare.mdx`. The blog is a separate Worker (`apps/blog/wrangler.jsonc`) with its own D1 database and R2 bucket; it shares no code path, database or session with the app.
+Production runs only on Cloudflare Workers (`wrangler.jsonc`): Static Assets serve the built web app, the Worker runs the Hono application from `apps/server` (API/auth/MCP/static routes), PostgreSQL is reached through Hyperdrive, and uploads live in private R2. Local dev and `pnpm start` run the same app as a plain Node.js process. Docker, Vercel, Kubernetes, Hostinger, Cloudron, and NAS deployments are dropped; their files and docs are deleted. Some runtime adapters (storage `s3`/`blob`/`local`, Vercel env aliases in `packages/env/src/deployment.ts`) remain in code. Setup and runtime limits: `.agents/docs/self-hosting/cloudflare.mdx`. The blog is a separate Worker (`apps/blog/wrangler.jsonc`) with its own D1 database and R2 bucket; it shares no code path, database or session with the app.
 
 Internal packages are source-consumed through `package.json` export maps pointing at `src` files. Do not assume package-local `dist` output exists unless a package explicitly adds it.
 
@@ -94,7 +94,7 @@ pnpm db:studio
 - Server startup applies migrations before initializing auth and serving traffic. `pnpm db:migrate` applies them without starting the app; `pnpm db:studio` opens the database UI.
 - After adding user-facing strings, use Lingui macros and run `pnpm lingui:extract`. Catalogs live in `apps/web/locales/*.po`; `pnpm pdf:translations` regenerates PDF translations. Root build/check scripts run PDF translation generation automatically.
 - `pnpm docs:gen` regenerates the OpenAPI spec and semantic CSS reference. Use it when changing those public surfaces.
-- Career/workspace changes: update the mapped user guides and fictional screenshots in the same change. Use `docs/contributing/career-platform.mdx` → **Keep product guides current**; verify UI labels, opt-ins, context, timezone and voice fallback against current code.
+- Career/workspace changes: update the mapped user guides and fictional screenshots in the same change. Use `.agents/docs/contributing/career-platform.mdx` → **Keep product guides current**; verify UI labels, opt-ins, context, timezone and voice fallback against current code.
 
 ## Ownership map
 
@@ -235,7 +235,7 @@ pnpm deploy:cloudflare
 ```
 
 - Build outputs: `apps/web/dist` (SPA/assets), `apps/web/dist-prerender` (localized marketing HTML), and `apps/server/dist` (`index.mjs` plus server chunks). `pnpm start` runs the built Node server locally; set `NODE_ENV=production` so it uses `PORT` instead of `SERVER_PORT`. Export runtime variables or provide root `.env`; `.env.local` is not loaded by `start`. Health endpoint: `/api/health`.
-- Cloudflare is the only deploy target. `pnpm build:cloudflare` builds the web app and bundles the Worker (`tooling/cloudflare/build.mjs`); `pnpm deploy:cloudflare` builds then runs `wrangler deploy`; `pnpm check:cloudflare` builds then `wrangler deploy --dry-run`; `pnpm dev:cloudflare` runs `wrangler dev`. Config: `wrangler.jsonc`. The Worker does not run migrations or the startup schema check: apply migrations before each deploy. Workers needs the Paid plan. Guide: `docs/self-hosting/cloudflare.mdx`.
+- Cloudflare is the only deploy target. `pnpm build:cloudflare` builds the web app and bundles the Worker (`tooling/cloudflare/build.mjs`); `pnpm deploy:cloudflare` builds then runs `wrangler deploy`; `pnpm check:cloudflare` builds then `wrangler deploy --dry-run`; `pnpm dev:cloudflare` runs `wrangler dev`. Config: `wrangler.jsonc`. The Worker does not run migrations or the startup schema check: apply migrations before each deploy. Workers needs the Paid plan. Guide: `.agents/docs/self-hosting/cloudflare.mdx`.
 - Serverless module-loading failures: inspect `bundledInteropPackages` in `apps/server/tsdown.config.ts` and the `check-cloudflare` CI job. Bundle external CommonJS server dependencies with their dependencies.
 - `compose.dev.yml` is local-dev only (PostgreSQL, Redis, SeaweedFS). No production Compose file, Dockerfile, or container image exists.
 
@@ -248,7 +248,7 @@ The blog deploys separately through `.github/workflows/deploy-blog.yml`: by hand
 ### CI
 
 - `.github/workflows/ci.yml` is the CI workflow: unit/browser tests (`test` job) and Cloudflare compatibility (`check-cloudflare`) run as separate jobs on PRs, pushes to `main`, and manual dispatch. `autofix.yml` runs write-capable autofix (`pnpm knip --fix` and `pnpm check`) separately because autofix.ci requires its own workflow name. `issue-maintenance.yml` combines issue-form labeling with scheduled needs-info cleanup. GitHub runners are the default; `USE_BLACKSMITH=true` switches runners and paired actions.
-- Cloudflare smoke test: `tooling/cloudflare/smoke.mjs`, creates and deletes a disposable local database and never deploys remotely. See `docs/self-hosting/cloudflare.mdx` → **Local development and smoke tests**.
+- Cloudflare smoke test: `tooling/cloudflare/smoke.mjs`, creates and deletes a disposable local database and never deploys remotely. See `.agents/docs/self-hosting/cloudflare.mdx` → **Local development and smoke tests**.
 - Mobile workflows: `mobile-release.yml` (uses `tooling/ci/check-ci.mjs`), `mobile-forme-build.yml`, `mobile-ota-update.yml` (orphaned, see Native mobile app).
 
 ## Security and pull requests

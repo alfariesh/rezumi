@@ -24,6 +24,7 @@ const getColumns = (): { id: string; title: string; links: FooterLink[] }[] => [
 		title: t`Help`,
 		links: [
 			{ label: t`Guides`, href: "/docs" },
+			{ label: t`Blog`, href: "https://blog.rezumi.app" },
 			{ label: t`Contact`, href: LEGAL_URLS.contact },
 		],
 	},
