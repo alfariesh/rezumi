@@ -281,7 +281,7 @@ try {
 	assert(tokened, "An unlocked page's photo carries its file token");
 	response = await request(tokened);
 	assert.equal(response.status, 200);
-	assert.equal(response.headers.get("cache-control"), "private, max-age=3600");
+	assert.equal(response.headers.get("cache-control"), "private, no-cache");
 	await client.portfolio.removePassword({});
 	// The address checks behind link reading load and run under workerd (node:net BlockList).
 	await assert.rejects(client.portfolio.unfurl({ url: "http://127.0.0.1/admin" }), (error) => {
