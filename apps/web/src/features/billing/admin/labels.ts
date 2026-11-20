@@ -26,6 +26,8 @@ export function getAlertLabel(kind: string) {
 			return t`Payment provider API kept failing`;
 		case "refund_failed":
 			return t`Refund not confirmed`;
+		case "job_search_budget":
+			return t`Job search passed 80% of today's budget`;
 		// Kinds from before Dodo Payments, still in old alert rows.
 		case "amount_mismatch":
 			return t`Amount doesn't match the order`;

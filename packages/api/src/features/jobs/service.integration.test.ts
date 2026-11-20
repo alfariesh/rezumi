@@ -209,6 +209,39 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		expect((await jobs.status("bob")).cacheOnly).toBe(true);
 	});
 
+	it("emails the owner once when spending passes 80% of the day's budget", async () => {
+		await pool.query("DELETE FROM billing_notification");
+		// One search costs 20,000 millionths of a dollar: the first crosses 80% of $0.024, the second adds to it.
+		fixture.env.JOB_SEARCH_DAILY_BUDGET_USD = 0.024;
+		const { jobs } = setup([listings("hirebase", 20), listings("hirebase", 20)]);
+		await jobs.search("alice", request({ query: "nurse" }));
+		const { rows } = await pool.query<{ kind: string; count: number }>(
+			"SELECT kind, count FROM billing_notification WHERE kind = 'job_search_budget'",
+		);
+		expect(rows).toEqual([{ kind: "job_search_budget", count: 1 }]);
+		fixture.env.JOB_SEARCH_DAILY_BUDGET_USD = 1;
+		await jobs.search("alice", request({ query: "teacher" }));
+		const again = await pool.query("SELECT count FROM billing_notification WHERE kind = 'job_search_budget'");
+		expect(again.rows).toEqual([{ count: 1 }]);
+	});
+
+	it("reports stored listings, cached pages and the treg figures on the cost dashboard", async () => {
+		const { jobs } = setup([listings("hirebase", 20)]);
+		await jobs.search("alice", request({ query: "pilot" }));
+		const { jobCostReport } = await import("./admin");
+		const report = await jobCostReport(
+			{ days: 7, now: clock },
+			{ sql: undefined, treg: async () => "unavailable" as const },
+		);
+		expect(report).toMatchObject({
+			days: 7,
+			today: { day: "2026-11-20", budgetMicro: 1_000_000, available: false, switchedOff: false },
+			treg: { status: "unavailable" },
+			events: { status: "not-configured" },
+			store: { openListings: 20, closedListings: 0, cachePages: 1, freshCachePages: 1 },
+		});
+	});
+
 	it("gives the older answer when the providers fail, and an error when there is none", async () => {
 		const failing: FakePage[] = [new TregError("busy")];
 		const { jobs } = setup([listings("hirebase", 20)]);

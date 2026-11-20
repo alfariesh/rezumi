@@ -108,6 +108,23 @@ const server = createServer(async (request, response) => {
 		response.writeHead(401).end();
 		return;
 	}
+	// The team's account, for the admin cost dashboard: a fictional balance and ledger.
+	if (url.pathname === "/orgs") return send(response, [{ org_id: 1, slug: "stub-team", active: true, demo: false }]);
+	if (url.pathname === "/orgs/1/balance") return send(response, { org_id: 1, balance_micro: 4_215_300 });
+	if (url.pathname === "/orgs/1/usage/by-tag")
+		return send(response, {
+			key: "feature",
+			days: Number(url.searchParams.get("days") ?? 30),
+			rows: [
+				{ value: "jobs-search", charged_micro: 412_500, calls: 141 },
+				{ value: "jobs-discovery", charged_micro: 96_000, calls: 38 },
+				{ value: "web-search", charged_micro: 27_000, calls: 27 },
+				{ value: "jobs-count", charged_micro: 0, calls: 6 },
+			],
+			attributed_micro: 535_500,
+			unattributed_micro: 1_500,
+			total_micro: 537_000,
+		});
 	const tool = decodeURIComponent(url.pathname.replace(/^\/call\//, ""));
 	const body = await readBody(request);
 	if (tool === "hirebase.jobs.search") {

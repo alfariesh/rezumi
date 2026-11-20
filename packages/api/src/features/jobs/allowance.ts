@@ -8,6 +8,7 @@ import { env } from "@rezumi/env/server";
 import { PLANS } from "@rezumi/schema/billing";
 import { rateLimitConfig } from "@rezumi/utils/rate-limit";
 import { createRateLimiter } from "../../redis";
+import { raiseBillingAlertQuietly } from "../billing/alerts";
 import { getEntitlements } from "../billing/entitlements";
 import { dayInTimeZone, startOfDayInTimeZone } from "../portfolio/traffic";
 
@@ -131,14 +132,19 @@ export async function budgetLeft(counters: JobCounters, now: Date): Promise<bool
 	return (await spentToday(counters, now)) < dailyBudgetMicro();
 }
 
-/** Adds what a provider call cost to today's total. Logs a warning once the total passes 80% of the budget. */
+/**
+ * Adds what a provider call cost to today's total. Once the total passes 80% of the budget it logs a warning and raises
+ * the owner's alert (emailed with the billing alerts), once: only the call that crosses the line does.
+ */
 export async function recordSpend(counters: JobCounters, costMicro: number, now: Date): Promise<void> {
 	const amount = Math.max(0, Math.round(costMicro));
 	if (amount === 0) return;
 	const { total } = await counters.add(budgetKey(now), amount, { window: budgetWindow(now) });
 	const warnAt = dailyBudgetMicro() * WARN_SHARE;
-	if (total >= warnAt && total - amount < warnAt)
+	if (total >= warnAt && total - amount < warnAt) {
 		console.warn(
 			`[jobs] Job search spending passed ${WARN_SHARE * 100}% of today's budget: $${(total / 1e6).toFixed(4)} of $${(dailyBudgetMicro() / 1e6).toFixed(2)}.`,
 		);
+		await raiseBillingAlertQuietly({ kind: "job_search_budget", now });
+	}
 }

@@ -5,6 +5,8 @@ import { jobListingSchema, jobSenioritySchema, jobWorkArrangementSchema } from "
 
 export const JOB_SEARCH_POSTED_WITHIN_DAYS = [1, 7, 14, 30] as const;
 export const JOB_SEARCH_REMOTE = ["any", "only", "exclude"] as const;
+/** Listings a page of results holds (K3). */
+export const JOB_SEARCH_PAGE_SIZE = 20;
 
 export const jobSearchInputSchema = z.object({
 	query: z.string().trim().min(2).max(200),

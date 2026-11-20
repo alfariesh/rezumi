@@ -507,6 +507,17 @@ msgstr "{0} ditemukan"
 msgid "{0} found, {unreadable} unreadable"
 msgstr "{0} ditemukan, {unreadable} tidak dapat dibaca"
 
+#. placeholder {0}: integer(ok.search.cacheHits + ok.search.stale)
+#. placeholder {1}: integer(ok.search.providerCalls)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} from cache · {1} provider calls"
+msgstr "{0} dari cache · {1} panggilan penyedia"
+
+#. placeholder {0}: integer(refused)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} held back by the daily budget"
+msgstr "{0} ditahan batas anggaran harian"
+
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -563,6 +574,11 @@ msgstr "{0} mnt"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "{0} lebih banyak"
+
+#. placeholder {0}: integer(value)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} ms"
+msgstr "{0} md"
 
 #. placeholder {0}: domain.hostname
 #. placeholder {1}: domain.hostname
@@ -639,6 +655,13 @@ msgstr "{0} dari {1} istilah ditemukan"
 #: src/features/portfolio/works/works-panel.tsx
 msgid "{0} of {1} works"
 msgstr "{0} dari {1} karya"
+
+#. placeholder {0}: percent(share)
+#. placeholder {1}: formatUsd(today.budgetMicro)
+#. placeholder {2}: today.day
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} of the {1} daily budget (UTC day {2})"
+msgstr "{0} dari anggaran harian {1} (hari UTC {2})"
 
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
@@ -1396,6 +1419,7 @@ msgstr "3 dari 5 kata kunci ada di CV Anda"
 
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/buy-plans.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 hari"
@@ -1409,6 +1433,7 @@ msgid "5 credits"
 msgstr "5 kredit"
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "7 days"
 msgstr "7 hari"
 
@@ -1420,6 +1445,10 @@ msgstr "90 hari"
 #: src/features/homepage/resume.tsx
 msgid "94 of 100 checks passed"
 msgstr "Lolos 94 dari 100 pemeriksaan"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "95%"
+msgstr "95%"
 
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "A accepts and R rejects the focused edit. ↑ and ↓ move between edits."
@@ -2944,6 +2973,10 @@ msgstr "Draf jawaban"
 msgid "Answer in your own words"
 msgstr "Jawab dengan kata-kata Anda sendiri"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Answered from cache"
+msgstr "Dijawab dari cache"
+
 #: src/features/career/workspace/saved.tsx
 msgid "Answers"
 msgstr "Jawaban"
@@ -3304,6 +3337,10 @@ msgstr "Asisten"
 msgid "Assistant conversations"
 msgstr "Percakapan asisten"
 
+#: src/features/jobs/admin/costs.ts
+msgid "Assistant web search"
+msgstr "Web search asisten"
+
 #: src/features/portfolio/editor/password-group.tsx
 msgid "At least 6 characters."
 msgstr "Minimal 6 karakter."
@@ -3358,6 +3395,10 @@ msgstr "Penyimpanan otomatis dikelompokkan berdasarkan sesi dan disimpan selama 
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Available"
 msgstr "Tersedia"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Average"
+msgstr "Rata-rata"
 
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
@@ -3815,6 +3856,18 @@ msgstr "Kalender"
 msgid "Calendar view"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Call statistics come from Cloudflare Analytics Engine, so they show on the live site only. The budget and the treg figures above work everywhere."
+msgstr "Statistik panggilan berasal dari Cloudflare Analytics Engine, jadi hanya tampil di situs produksi. Anggaran dan angka treg di atas tetap berjalan di mana saja."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Calls"
+msgstr "Panggilan"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Calls by provider"
+msgstr "Panggilan per penyedia"
+
 #: src/features/homepage/faq.tsx
 msgid "Can I import a resume I already have?"
 msgstr "Bisakah saya mengimpor resume yang sudah saya miliki?"
@@ -4124,6 +4177,10 @@ msgstr "Mengubah portofolio…"
 #: src/dialogs/auth/change-password.tsx
 msgid "Changing your password…"
 msgstr "Mengubah kata sandi Anda…"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Charged"
+msgstr "Ditagih"
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Charts and dashboards"
@@ -4586,6 +4643,10 @@ msgstr "Menutup…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "Tertutup"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Closed, not yet removed"
+msgstr "Tutup, belum dihapus"
 
 #: src/features/billing/credits.ts
 #: src/features/career/coach.tsx
@@ -5120,9 +5181,17 @@ msgstr "Dikoreksi {correctedOn} · versi asli disimpan"
 msgid "Correction by Rezumi"
 msgstr "Koreksi oleh Rezumi"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Cost"
+msgstr "Biaya"
+
 #: src/features/billing/admin/overview.tsx
 msgid "Cost (rates not set)"
 msgstr "Biaya (tarif belum diisi)"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Cost per day"
+msgstr "Biaya per hari"
 
 #: src/features/career/knowledge/facts.tsx
 msgid "Couldn't add that fact. Try again."
@@ -5826,9 +5895,17 @@ msgstr "Hitung karakter"
 msgid "Count words"
 msgstr "Hitung kata"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Counted on Cloudflare only"
+msgstr "Hanya dihitung di Cloudflare"
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Counted separately from the parse score. Coverage does not predict anything."
 msgstr "Dihitung terpisah dari skor pembacaan. Cakupan tidak memprediksi apa pun."
+
+#: src/features/jobs/admin/costs.ts
+msgid "Counting (free)"
+msgstr "Menghitung (gratis)"
 
 #: src/features/career/knowledge/search-regions-field.tsx
 #: src/features/jobs/search-bar.tsx
@@ -6750,6 +6827,7 @@ msgid "Don't send {0}"
 msgstr "Jangan kirim {0}"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
 #: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
@@ -7764,9 +7842,14 @@ msgid "Facts"
 msgstr "Fakta"
 
 #: src/features/billing/purchase.ts
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Failed"
 msgstr "Gagal"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Failed calls"
+msgstr "Panggilan gagal"
 
 #: src/features/billing/admin/overview.tsx
 msgid "Failed, expired or cancelled"
@@ -7994,6 +8077,10 @@ msgstr "Perbaiki ini di editor"
 msgid "Fix these values in the CSV, or leave their columns out, before importing."
 msgstr "Perbaiki nilai-nilai ini di CSV, atau hilangkan kolomnya, sebelum mengimpor."
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "FLAG_DISABLE_JOB_SEARCH is on: people get saved results only, and job alerts wait."
+msgstr "FLAG_DISABLE_JOB_SEARCH menyala: pengguna hanya mendapat hasil tersimpan, dan notifikasi lowongan menunggu."
+
 #: src/features/ats-checker/messages.ts
 msgid "Flatten the form so the text is part of the page."
 msgstr "Ratakan formulir agar teksnya menjadi bagian dari halaman."
@@ -8084,6 +8171,7 @@ msgstr "Font tidak dapat dimuat. Coba lagi."
 msgid "Food and drink"
 msgstr "Makanan & minuman"
 
+#: src/features/jobs/admin/costs-page.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "For"
 msgstr "Untuk"
@@ -8302,6 +8390,10 @@ msgstr "Fresh graduate"
 #: src/features/homepage/testimonials.tsx
 msgid "Fresh graduate, Informatics"
 msgstr "Fresh graduate, Informatika"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Fresh result pages"
+msgstr "Halaman hasil yang masih segar"
 
 #: src/dialogs/resume/template/data.ts
 msgid "Friendly and bright: a round portrait beside the name and every section title on a soft rounded band, so a short first resume still looks finished."
@@ -9222,6 +9314,10 @@ msgstr "Tingkatkan garis yang dipilih"
 msgid "Improving…"
 msgstr "Meningkatkan…"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "In {days} days"
+msgstr "Dalam {days} hari"
+
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "In color"
 msgstr "Berwarna"
@@ -9622,9 +9718,17 @@ msgstr "Notifikasi aktif"
 msgid "Job alert paused"
 msgstr "Notifikasi dijeda"
 
+#: src/features/jobs/admin/costs.ts
+msgid "Job alerts"
+msgstr "Notifikasi lowongan"
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Job alerts aren't available on this server yet."
 msgstr "Notifikasi lowongan belum tersedia di server ini."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Job alerts on"
+msgstr "Notifikasi lowongan aktif"
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -9652,9 +9756,23 @@ msgstr "Lowongan kerja <0>· opsional, menambahkan pemeriksaan kecocokan kata ku
 msgid "Job posting link"
 msgstr "Tautan lowongan kerja"
 
+#: src/features/jobs/admin/costs.ts
+msgid "Job search"
+msgstr "Pencarian lowongan"
+
+#: src/features/jobs/admin/costs-page.tsx
+#: src/features/settings/settings-section.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Job search costs"
+msgstr "Biaya pencarian lowongan"
+
 #: src/features/jobs/jobs-page.tsx
 msgid "Job search isn't available here yet"
 msgstr "Pencarian lowongan belum tersedia di sini"
+
+#: src/features/billing/admin/labels.ts
+msgid "Job search passed 80% of today's budget"
+msgstr "Pencarian lowongan lewat 80% anggaran hari ini"
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Job search pipeline"
@@ -9681,6 +9799,10 @@ msgstr "Lowongan"
 #: src/features/jobs/jobs-page.tsx
 msgid "Jobs couldn't be loaded. Try again in a moment."
 msgstr "Lowongan belum bisa dimuat. Coba lagi sebentar lagi."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Jobs, job alerts, assistant web search and link reading. Days in UTC, as the budget counts them."
+msgstr "Lowongan, notifikasi lowongan, web search asisten, dan pembacaan link. Hari dalam UTC, sesuai cara anggaran dihitung."
 
 #. Example full name placeholder on registration form
 #: src/features/auth/pages/register.tsx
@@ -11218,6 +11340,7 @@ msgid "narrow margins"
 msgstr "margin sempit"
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Needs attention"
 msgstr "Perlu perhatian"
@@ -11398,6 +11521,14 @@ msgstr "Tema berikutnya"
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next week"
 msgstr ""
+
+#: src/features/jobs/admin/costs.ts
+msgid "Nightly upkeep"
+msgstr "Pemeliharaan malam"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Nightly upkeep hasn't run"
+msgstr "Pemeliharaan malam belum berjalan"
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
@@ -11624,6 +11755,10 @@ msgstr "Tidak ada masalah terbuka"
 msgid "No pages match “{term}”."
 msgstr "Tidak ada halaman yang cocok dengan “{term}”."
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No paid calls in this period."
+msgstr "Tidak ada panggilan berbayar pada periode ini."
+
 #: src/features/billing/admin/customer.tsx
 msgid "No paid plan running"
 msgstr "Tidak ada paket berbayar yang berjalan"
@@ -11664,6 +11799,10 @@ msgstr "Tanpa gambar"
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "No portfolio matches that."
 msgstr "Tidak ada portofolio yang cocok."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No provider calls in this period."
+msgstr "Tidak ada panggilan penyedia pada periode ini."
 
 #: src/features/profile/sources/messages.ts
 msgid "No public repositories of your own, so no projects came in."
@@ -11773,6 +11912,14 @@ msgstr "Jam tidak disebutkan"
 #: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Tidak ada zona waktu yang cocok."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No treg token on this server"
+msgstr "Tidak ada token treg di server ini"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No treg token on this server."
+msgstr "Tidak ada token treg di server ini."
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/portfolio/statistics/work-statistics.tsx
@@ -12454,6 +12601,10 @@ msgstr "Buka di {provider}"
 msgid "Open link"
 msgstr "Buka tautan"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Open listings"
+msgstr "Lowongan terbuka"
+
 #: src/features/docs/header.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Open navigation"
@@ -13120,6 +13271,7 @@ msgstr "Persen (2,8%)"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Period"
 msgstr "Periode"
 
@@ -13889,9 +14041,14 @@ msgstr "Lindungi resume Anda dengan kata sandi"
 msgid "Prototyping"
 msgstr "Prototipe"
 
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Provider"
 msgstr "Penyedia"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Provider calls"
+msgstr "Panggilan penyedia"
 
 #: src/features/billing/admin/overview.tsx
 msgid "Provider cost"
@@ -14235,6 +14392,10 @@ msgstr "Skor keterbacaan: {score} dari 100"
 msgid "Reading and uploading the PDF…"
 msgstr "Membaca dan mengunggah PDF…"
 
+#: src/features/jobs/admin/costs.ts
+msgid "Reading links"
+msgstr "Membaca link"
+
 #: src/features/assistant/conversation.tsx
 msgid "Reading page…"
 msgstr "Membaca halaman…"
@@ -14463,6 +14624,7 @@ msgid "Reflection"
 msgstr "Refleksi"
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Refresh"
 msgstr "Muat ulang"
 
@@ -15072,6 +15234,10 @@ msgstr "Memulihkan versi dari {0}. Status Anda sebelumnya disimpan sebagai \"Seb
 msgid "Result"
 msgstr "Hasil"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Result pages kept"
+msgstr "Halaman hasil tersimpan"
+
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Results as numbers, such as +35% conversion"
 msgstr "Hasil berupa angka, misalnya konversi +35%"
@@ -15473,6 +15639,7 @@ msgid "Run again"
 msgstr "Jalankan lagi"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Running"
 msgstr "Berjalan"
 
@@ -15847,6 +16014,7 @@ msgid "Screening"
 msgstr "Penyaringan"
 
 #: src/features/documents/documents-page.tsx
+#: src/features/jobs/admin/costs.ts
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Mencari"
@@ -16223,6 +16391,10 @@ msgstr ""
 #: src/libs/locale.ts
 msgid "Serbian"
 msgstr "Serbia"
+
+#: src/features/jobs/admin/costs.ts
+msgid "Serper (web search)"
+msgstr "Serper (web search)"
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
@@ -16922,9 +17094,17 @@ msgstr "Spanyol"
 msgid "Speak"
 msgstr "Bicara"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Speed is for calls that reached the provider; 95% of them were at least this fast."
+msgstr "Kecepatan dihitung dari panggilan yang sampai ke penyedia; 95% di antaranya paling lambat secepat ini."
+
 #: src/features/ats-checker/messages.ts
 msgid "Spell the month, as in \"Mar 2022\"."
 msgstr "Eja nama bulannya, seperti pada \"Mar 2022\"."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Spent today"
+msgstr "Terpakai hari ini"
 
 #: src/features/career/workspace/practise.tsx
 msgid "spoken"
@@ -17233,6 +17413,10 @@ msgstr "Penyimpanan gambar dan PDF"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "Simpan kode cadangan ini di tempat yang aman. Masing-masing dapat digunakan sekali untuk masuk jika Anda kehilangan perangkat."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Stored data"
+msgstr "Data tersimpan"
 
 #: src/features/assistant/provider-setup.tsx
 msgid "Stored encrypted and tested right away."
@@ -17955,6 +18139,10 @@ msgstr "Lencana tetap tampil pada paketmu"
 msgid "The brief"
 msgstr "Brief"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "The call statistics couldn't be read. Try Refresh in a moment."
+msgstr "Statistik panggilan tidak bisa dibaca. Coba Refresh sebentar lagi."
+
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "The campaign"
@@ -18167,6 +18355,7 @@ msgid "The numbers couldn't be loaded."
 msgstr "Angka-angkanya gagal dimuat."
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "The numbers couldn't load."
 msgstr "Angka gagal dimuat."
 
@@ -18487,6 +18676,10 @@ msgstr "Bagian atas halaman pertama tidak tampak seperti sebuah nama."
 msgid "The trade-offs you made, and why."
 msgstr "Kompromi yang Anda ambil, dan alasannya."
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "The treg balance is below one day's budget. Top it up (or turn on auto top-up) in treg's dashboard under Team → Billing; an empty balance stops every search."
+msgstr "Saldo treg di bawah anggaran satu hari. Isi saldo (atau nyalakan top-up otomatis) di dashboard treg, Team → Billing; saldo kosong menghentikan semua pencarian."
+
 #: src/features/portfolio/works/work-document.tsx
 #: src/features/portfolio/works/works-panel.tsx
 msgid "The work and its blocks leave the portfolio. You can undo this."
@@ -18547,6 +18740,10 @@ msgstr "Tidak ada akun GitHub dengan username itu."
 #: src/features/billing/receipt.tsx
 msgid "There's no receipt here: this payment isn't a paid QRIS plan."
 msgstr "Tidak ada bukti bayar di sini: pembayaran ini bukan paket QRIS yang sudah dibayar."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "There's no treg token on this server, so nobody can search for jobs."
+msgstr "Tidak ada token treg di server ini, jadi tidak ada yang bisa mencari lowongan."
 
 #: src/features/jobs/jobs-page.tsx
 msgid "These are results saved earlier. Fresh ones couldn't be loaded just now."
@@ -19251,6 +19448,10 @@ msgstr "Hari ini, {hour}"
 msgid "Today's job searches are used up"
 msgstr "Pencarian lowongan hari ini sudah habis"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Today's spending passed 80% of the daily budget. Past the budget, people get saved results only until midnight UTC. Raise JOB_SEARCH_DAILY_BUDGET_USD if the use is real."
+msgstr "Pemakaian hari ini lewat 80% anggaran harian. Setelah batas tercapai, pengguna hanya mendapat hasil tersimpan sampai tengah malam UTC. Naikkan JOB_SEARCH_DAILY_BUDGET_USD bila pemakaiannya wajar."
+
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toggle sidebar"
 msgstr ""
@@ -19417,6 +19618,32 @@ msgstr "Sampah"
 #: src/features/documents/trash-page.tsx
 msgid "Trash is empty"
 msgstr "Sampah kosong"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg balance"
+msgstr "Saldo treg"
+
+#. placeholder {0}: formatUsd(treg.totalMicro)
+#. placeholder {1}: report.days
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg charged {0} in {1} days"
+msgstr "treg menagih {0} dalam {1} hari"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg didn't answer; try Refresh"
+msgstr "treg tidak menjawab; coba Refresh"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg didn't answer. Try Refresh in a moment."
+msgstr "treg tidak menjawab. Coba Refresh sebentar lagi."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg ledger"
+msgstr "Catatan tagihan treg"
+
+#: src/features/jobs/admin/costs.ts
+msgid "treg web search"
+msgstr "Web search treg"
 
 #: src/features/billing/admin/labels.ts
 msgid "Trial"
@@ -19773,6 +20000,10 @@ msgstr "Batalkan penerbitan portofolio Anda?"
 msgid "Unread:"
 msgstr "Belum dibaca:"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Untagged (by hand, or from another app on this treg team)"
+msgstr "Tanpa tag (manual, atau dari aplikasi lain di tim treg ini)"
+
 #: src/features/profile/fill.tsx
 msgid "Untick anything you'd rather leave out."
 msgstr "Hapus centang pada yang tidak ingin Anda masukkan."
@@ -19919,6 +20150,12 @@ msgstr "Upgrade ke {name}"
 #: src/features/billing/purchase.ts
 msgid "Upgrade, {days} days, QRIS"
 msgstr "Upgrade, {days} hari, QRIS"
+
+#. placeholder {0}: upkeep.day
+#. placeholder {1}: integer(upkeep.closed)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Upkeep {0} · {1} closed"
+msgstr "Pemeliharaan {0} · {1} ditutup"
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Upload .csv"
@@ -20157,6 +20394,10 @@ msgstr "memakai {used}"
 #: src/features/homepage/resume.tsx
 msgid "Used by six teams"
 msgstr "Dipakai enam tim"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Used for"
+msgstr "Dipakai untuk"
 
 #: src/features/career/knowledge/facts.tsx
 msgid "Used in coaching"
@@ -20709,6 +20950,10 @@ msgstr "Apa yang Anda pelajari dari pengguna atau data?"
 msgid "What did you say, as close as you remember?"
 msgstr "Apa yang Anda katakan, sedekat mungkin dengan yang Anda ingat?"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "What each provider call cost, as Rezumi recorded it."
+msgstr "Biaya tiap panggilan penyedia, menurut catatan Rezumi."
+
 #: src/features/homepage/faq.tsx
 msgid "What formats can I download?"
 msgstr "Format apa yang bisa saya unduh?"
@@ -20804,6 +21049,10 @@ msgstr "Apa kata mereka"
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "What to do"
 msgstr "Apa yang harus dilakukan"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "What treg charged in {days} days, by what the calls were for."
+msgstr "Tagihan treg dalam {days} hari, menurut kegunaan panggilan."
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "What was asked for, in a line or two."

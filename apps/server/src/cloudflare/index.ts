@@ -112,7 +112,10 @@ configurePortfolioAnalytics({
 	sql: () => requests.getStore()?.bindings.ANALYTICS_SQL,
 	country: () => requests.getStore()?.country,
 });
-configureJobEvents({ dataset: () => requests.getStore()?.bindings.JOB_EVENTS });
+configureJobEvents({
+	dataset: () => requests.getStore()?.bindings.JOB_EVENTS,
+	sql: () => requests.getStore()?.bindings.ANALYTICS_SQL,
+});
 configureJobSearchLimiter(() => requests.getStore()?.bindings.JOB_SEARCH_LIMITER);
 configureOwnPictureReader(async (key) => {
 	const owner = /^uploads\/([^/]+)\/pictures\//.exec(key)?.[1];

@@ -16,3 +16,6 @@ Ide yang sengaja tidak masuk rilis pertama. Urutan bukan prioritas.
 
 - **Laporkan lowongan bermasalah** (dari `01-desain.md` 1, tidak dibuat di Phase 03): menu ⋯ di kartu yang mengirim laporan (penipuan, sudah tutup, salah info) ke dasbor admin; lowongan yang dilaporkan beberapa akun disembunyikan sementara. Butuh tabel laporan dan layar admin (bersama dasbor biaya Phase 07).
 - **Harga di halaman utama menyebut pencarian lowongan per hari** (Gratis 3 · Plus 15 · Pro AI 40). Phase 03 hanya menulisnya di panduan `searching-for-jobs`.
+- **Peringatan saldo treg lewat email** (temuan Phase 07): sekarang saldo di bawah anggaran satu hari hanya tampil di dasbor biaya. Job billing bisa membaca `GET /orgs/<id>/balance` sekali sehari dan mengirim alert seperti `job_search_budget`; atau nyalakan auto top-up di treg.
+- **Prompt MCP "cari lowongan untuk saya"** (seperti `build_portfolio`): membaca preferensi (`api_jobs_defaults`), mencari, memeriksa kecocokan, lalu menawarkan `track_job`. Tool-nya sudah ada sejak Phase 07.
+- **`auth.createApiKey` dengan `expiresIn` < 1 hari memberi 500** (galat Better Auth `EXPIRES_IN_IS_TOO_SMALL` tidak dipetakan ke 400). Bukan bagian lowongan; ditemukan saat uji MCP Phase 07.

@@ -477,6 +477,44 @@ export function registerTools(
 					: json({ statistics: await client.portfolio.statistics(range ? { range } : {}) }),
 			"portfolio",
 		),
+
+		[T.searchJobs]: withErrorHandling(
+			"searching jobs",
+			async ({ offset, limit, ...search }) => {
+				const page = await client.jobs.search(search);
+				const end = offset + limit;
+				const listings = page.listings.slice(offset, end).map((listing) => ({
+					...listing,
+					trackedApplicationId: page.tracked[listing.id] ?? null,
+					matchedSkills: page.matches[listing.id]?.matched ?? [],
+				}));
+				const rest = end < page.listings.length;
+				return json({
+					listings,
+					offset,
+					nextOffset: rest ? end : null,
+					// The next page follows once this one is read to its end.
+					cursor: rest ? null : (page.cursor ?? null),
+					fromCache: page.fromCache,
+					stale: page.stale,
+					budgetLimited: page.budgetLimited,
+					quota: page.quota,
+				});
+			},
+			"jobs",
+		),
+
+		[T.trackJob]: withErrorHandling(
+			"tracking a job",
+			async ({ listingId }) => {
+				const tracked = await client.jobs.track({ id: listingId });
+				return json({
+					...tracked,
+					url: new URL(`/dashboard/applications/${encodeURIComponent(tracked.applicationId)}`, env.APP_URL).href,
+				});
+			},
+			"jobs",
+		),
 	};
 
 	// Register in TOOL_META order so the SDK's tools/list matches the static discovery list.

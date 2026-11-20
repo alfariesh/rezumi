@@ -430,3 +430,26 @@ Untuk Phase 07:
 
 - Dasbor biaya: event `kind: "web-search"` (provider `serper`/`treg`) dan `kind: "browser"` (durasi di `double2`).
 - Panduan pemilik: token Browser Run hanya ada di produksi; untuk menguji lokal tambahkan `CLOUDFLARE_BROWSER_TOKEN` dan `CLOUDFLARE_ACCOUNT_ID` di `.env.local`.
+
+## 21. Phase 07 — yang dibangun dan temuan (2026-11-20)
+
+Kode: MCP `packages/mcp` (`search_jobs`, `track_job` di `tool-meta.ts`/`tools.ts`; parity `api_jobs_listing`, `api_jobs_hide`, `api_jobs_fit`, `api_jobs_check_fit`, `api_jobs_defaults`, `api_jobs_quota`; petunjuk galat domain `jobs` di `results.ts`), dasbor biaya `packages/api/src/features/jobs/admin.ts` (`jobCostReport`, oRPC internal `jobs.admin.costs`, GET `/jobs/admin/costs`), `jobs/treg-account.ts` (saldo dan ledger treg), web `apps/web/src/features/jobs/admin/` + route `/dashboard/admin/jobs` (Settings → **Job search costs**), jenis alert `job_search_budget` (`billing/alerts.ts`, email di `billing/notifications.ts`). `JOB_SEARCH_PAGE_SIZE` (20) kini di `@rezumi/schema/jobs/search`.
+
+Keputusan teknis:
+
+- **`search_jobs`** menerima input `jobs.search` ditambah `offset` (0–19) dan `limit` (1–10, bawaan 10). Satu panggilan = satu `jobs.search`; MCP memotong halaman 20 lowongan menjadi paling banyak 10. Sisa halaman dibaca dengan `offset: nextOffset` dan cursor yang sama: halaman itu sudah dibuka hari ini, jadi tidak memotong kuota lagi (dicek nyata: kuota tetap 2/40). `cursor` halaman berikutnya baru diberikan setelah halaman dibaca sampai habis. Tiap lowongan membawa `postingUrl`, `trackedApplicationId`, `matchedSkills`; deskripsi lengkap lewat `api_jobs_listing` (satu per satu, tanpa ekspor massal, bagian 13). Anotasi: `READ_EXTERNAL` (memanggil penyedia, tidak mengubah data pengguna selain hitungan kuota).
+- **`track_job`** = `jobs.track` + URL lamaran di app. `WRITE_IDEMPOTENT` (posting yang sama memberi lamaran yang sama).
+- **Galat 503 lowongan** (`JOBS_UNAVAILABLE`, `JOBS_BUDGET_LIMITED`) kini diteruskan apa adanya ke klien MCP beserta petunjuk (sebelumnya semua 5xx menjadi "Unexpected failure").
+- **Dasbor biaya** punya tiga sumber yang gagal sendiri-sendiri: (1) belanja hari ini dari penghitung anggaran K7 (`spentToday`), (2) treg: `GET /orgs` (tim pertama yang aktif, di-cache per proses) lalu `GET /orgs/<id>/balance` dan `GET /orgs/<id>/usage/by-tag?key=feature&days=N` (gratis; uang yang benar-benar keluar, tag dari `X-Treg-Meta: feature=…`), (3) Analytics Engine `job_search_events` lewat binding `ANALYTICS_SQL` (hanya Workers; lokal tampil "Cloudflare only"). Satu query berkelompok (hari × penyedia × tool × hasil × jenis, `COUNT(*)`/`SUM`, bobot sampling otomatis) dan satu query p95 terpisah (`quantileWeighted(0.95, double2, sampleInterval)`): bila layanan menolak fungsi itu, rata-rata tetap tampil. **Query belum pernah dijalankan ke Cloudflare sungguhan** (token lokal tidak punya izin Analytics; dataset produksi baru terisi setelah deploy): cek dasbor setelah deploy, dan bila kartu "Calls by provider" menulis "couldn't be read", lihat log `[jobs] Reading job search events failed`.
+- **Rasio cache** = jawaban cache (`hit` + `stale`) dibanding panggilan penyedia untuk pencarian (`miss`, tanpa `*.count`). Perkiraan: satu pencarian bisa dua panggilan (Hirebase + JobsPipe).
+- **Peringatan 80%** (bagian 12): `recordSpend` memanggil `raiseBillingAlertQuietly({ kind: "job_search_budget" })` hanya pada panggilan yang melewati garis, jadi sekali per hari. Email ke `BILLING_ALERT_EMAIL` lewat job billing (berbahasa Indonesia, tombol ke dasbor). Dasbor juga menampilkan kartu peringatan saat > 80%, saat `FLAG_DISABLE_JOB_SEARCH` menyala, tanpa token, atau saat **saldo treg di bawah anggaran satu hari**.
+- **Stub treg** (`tests/e2e/fixtures/treg-stub.ts`) menjawab `/orgs`, `/orgs/1/balance`, `/orgs/1/usage/by-tag` (angka fiktif) dan bisa dijalankan di port lain (`TREG_STUB_PORT`).
+
+Temuan:
+
+- **Saldo treg 2026-11-20: $0,89, hanya kredit promo $1.** Top-up (Phase 00 langkah 1) belum terlihat. Saldo habis = semua pencarian, notifikasi, dan web search asisten berhenti (`insufficient_balance` → "budget").
+- Ledger treg menunjukkan $0,0496 tanpa tag: panggilan uji dari skrip/CLI di sesi agent, bukan dari server.
+- Tes Phase 06 `web/service.test.ts` gagal typecheck (`it.each` dengan objek berbeda bentuk); diperbaiki di sini.
+- Membuat API key lewat oRPC dengan `expiresIn` < 1 hari memberi 500 alih-alih 400 (galat Better Auth tidak dipetakan). Di luar cakupan; dicatat di backlog.
+
+Tes: `jobs/admin.test.ts` (7: rentang hari UTC, query berparameter, ringkasan biaya/cache/kecepatan/galat, p95, saldo + ledger treg, tanpa token, treg gagal tanpa membocorkan token), `jobs/service.integration.test.ts` (+2: email 80% sekali, laporan membaca DB), `mcp/tools.test.ts` (+7), `web jobs/admin/costs.test.ts` (3). Uji MCP nyata di server lokal (stub treg): `search_jobs` 10 + 2 lowongan dari halaman yang sama dengan kuota tetap, `api_jobs_listing`, `track_job` dua kali → lamaran yang sama.

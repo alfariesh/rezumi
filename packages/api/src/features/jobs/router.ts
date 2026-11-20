@@ -11,7 +11,9 @@ import {
 } from "@rezumi/schema/jobs/search";
 import { protectedProcedure } from "../../context";
 import { aiRequestRateLimit } from "../../middleware/rate-limit";
+import { assertAdminSession } from "../auth/admin-session";
 import { aiSourceInput } from "../billing/ai-source";
+import { JOB_COST_DAYS, jobCostReport, jobCostReportSchema } from "./admin";
 import { jobSearchDefaults } from "./defaults";
 import { checkListingFit, readListingFit } from "./fit";
 import { JobSearchError, jobSearchService } from "./service";
@@ -50,6 +52,12 @@ function searchError(error: unknown): never {
 			throw new ORPCError("BAD_REQUEST", { status: 400, message: errors.BAD_REQUEST.message });
 	}
 }
+
+/** Web sessions of administrators: the owner's cost dashboard, kept out of the public API like the billing admin. */
+const adminProcedure = protectedProcedure.use(async ({ context, next }) => {
+	await assertAdminSession(context.authentication);
+	return next();
+});
 
 export const jobsRouter = {
 	search: protectedProcedure
@@ -207,4 +215,12 @@ export const jobsRouter = {
 		.input(z.object({}).optional())
 		.output(jobSearchStatusSchema)
 		.handler(({ context }) => jobSearchService.status(context.user.id)),
+
+	admin: {
+		costs: adminProcedure
+			.route({ tags: ["Internal"], method: "GET", path: "/jobs/admin/costs", operationId: "getJobSearchCosts" })
+			.input(z.object({ days: z.union(JOB_COST_DAYS.map((days) => z.literal(days))).default(7) }))
+			.output(jobCostReportSchema)
+			.handler(({ input }) => jobCostReport({ days: input.days })),
+	},
 };

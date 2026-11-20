@@ -289,7 +289,10 @@ function useCrumbs(): Crumb[] {
 			// Administrators reach these from Settings' menu.
 			return [
 				{ label: t`Settings`, href: "/dashboard/settings" },
-				{ label: page === "portfolios" ? t`Portfolio reports` : t`Billing admin` },
+				{
+					label:
+						page === "portfolios" ? t`Portfolio reports` : page === "jobs" ? t`Job search costs` : t`Billing admin`,
+				},
 			];
 		default:
 			return [];

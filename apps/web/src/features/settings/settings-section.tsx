@@ -55,6 +55,12 @@ export function SettingsSection({ children }: SettingsSectionProps) {
 						icon: "warning-circle",
 						label: t`Portfolio reports`,
 					} satisfies SectionNavItem,
+					{
+						link: { to: "/dashboard/admin/jobs" },
+						match: { to: "/dashboard/admin/jobs", fuzzy: true },
+						icon: "list-magnifying-glass",
+						label: t`Job search costs`,
+					} satisfies SectionNavItem,
 				]
 			: []),
 	];

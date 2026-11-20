@@ -2,6 +2,7 @@ import type { JobEventKind } from "./events";
 import type { JobSourceAdapter, ProviderListing } from "./providers";
 import type { JobProvider } from "@rezumi/schema/jobs/listing";
 import type { JobSearchInput } from "@rezumi/schema/jobs/search";
+import { JOB_SEARCH_PAGE_SIZE } from "@rezumi/schema/jobs/search";
 import { matchesSearch, withoutDuplicates } from "./filters";
 import { TregError } from "./treg";
 
@@ -16,7 +17,7 @@ import { TregError } from "./treg";
  *   it hasn't been asked yet, so JobsPipe can still step in on a later page once Hirebase runs out.
  */
 
-export const JOB_PAGE_SIZE = 20;
+export const JOB_PAGE_SIZE = JOB_SEARCH_PAGE_SIZE;
 export const TOP_UP_BELOW = 10;
 /** The providers a search may use, in the order they're asked; part of the cache key. */
 export const SEARCH_PROVIDERS = ["hirebase", "jobspipe"] as const satisfies readonly JobProvider[];

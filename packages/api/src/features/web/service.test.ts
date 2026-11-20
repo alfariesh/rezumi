@@ -134,7 +134,7 @@ describe("reading a page", () => {
 		);
 	});
 
-	it.each([
+	it.each<[string, { html?: string; status?: number }, string]>([
 		["a bot check", { html: "<p>Just a moment. Verify you are human.</p>" }, "challenge"],
 		["a refusal of plain requests", { status: 403 }, "unreachable"],
 		["a short page without JobPosting data", { html: "<p>Loading jobs…</p>" }, "empty"],

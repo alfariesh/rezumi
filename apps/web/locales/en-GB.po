@@ -507,6 +507,17 @@ msgstr "{0} found"
 msgid "{0} found, {unreadable} unreadable"
 msgstr "{0} found, {unreadable} unreadable"
 
+#. placeholder {0}: integer(ok.search.cacheHits + ok.search.stale)
+#. placeholder {1}: integer(ok.search.providerCalls)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} from cache · {1} provider calls"
+msgstr ""
+
+#. placeholder {0}: integer(refused)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} held back by the daily budget"
+msgstr ""
+
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -563,6 +574,11 @@ msgstr "{0} min"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "{0} more"
+
+#. placeholder {0}: integer(value)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} ms"
+msgstr ""
 
 #. placeholder {0}: domain.hostname
 #. placeholder {1}: domain.hostname
@@ -638,6 +654,13 @@ msgstr "{0} of {1} terms found"
 #. placeholder {1}: limits.works
 #: src/features/portfolio/works/works-panel.tsx
 msgid "{0} of {1} works"
+msgstr ""
+
+#. placeholder {0}: percent(share)
+#. placeholder {1}: formatUsd(today.budgetMicro)
+#. placeholder {2}: today.day
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} of the {1} daily budget (UTC day {2})"
 msgstr ""
 
 #. placeholder {0}: creditCount(credits)
@@ -1396,6 +1419,7 @@ msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/buy-plans.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 days"
@@ -1409,6 +1433,7 @@ msgid "5 credits"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "7 days"
 msgstr ""
 
@@ -1419,6 +1444,10 @@ msgstr "90 days"
 
 #: src/features/homepage/resume.tsx
 msgid "94 of 100 checks passed"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "95%"
 msgstr ""
 
 #: src/features/resume/editor/proposals/proposal-list.tsx
@@ -2944,6 +2973,10 @@ msgstr ""
 msgid "Answer in your own words"
 msgstr "Answer in your own words"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Answered from cache"
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "Answers"
 msgstr "Answers"
@@ -3304,6 +3337,10 @@ msgstr "Assistant"
 msgid "Assistant conversations"
 msgstr "Assistant conversations"
 
+#: src/features/jobs/admin/costs.ts
+msgid "Assistant web search"
+msgstr ""
+
 #: src/features/portfolio/editor/password-group.tsx
 msgid "At least 6 characters."
 msgstr ""
@@ -3358,6 +3395,10 @@ msgstr "Autosaves are grouped by session and kept for 90 days. Named versions ar
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Available"
 msgstr "Available"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Average"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
@@ -3815,6 +3856,18 @@ msgstr "Calendar"
 msgid "Calendar view"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Call statistics come from Cloudflare Analytics Engine, so they show on the live site only. The budget and the treg figures above work everywhere."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Calls"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Calls by provider"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I import a resume I already have?"
 msgstr "Can I import a resume I already have?"
@@ -4124,6 +4177,10 @@ msgstr ""
 #: src/dialogs/auth/change-password.tsx
 msgid "Changing your password…"
 msgstr "Changing your password…"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Charged"
+msgstr ""
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Charts and dashboards"
@@ -4586,6 +4643,10 @@ msgstr "Close…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "Closed"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Closed, not yet removed"
+msgstr ""
 
 #: src/features/billing/credits.ts
 #: src/features/career/coach.tsx
@@ -5120,8 +5181,16 @@ msgstr "Corrected {correctedOn} · original kept"
 msgid "Correction by Rezumi"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Cost"
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 msgid "Cost (rates not set)"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Cost per day"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -5826,9 +5895,17 @@ msgstr "Count characters"
 msgid "Count words"
 msgstr "Count words"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Counted on Cloudflare only"
+msgstr ""
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Counted separately from the parse score. Coverage does not predict anything."
 msgstr "Counted separately from the parse score. Coverage does not predict anything."
+
+#: src/features/jobs/admin/costs.ts
+msgid "Counting (free)"
+msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
 #: src/features/jobs/search-bar.tsx
@@ -6750,6 +6827,7 @@ msgid "Don't send {0}"
 msgstr "Don't send {0}"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
 #: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
@@ -7764,9 +7842,14 @@ msgid "Facts"
 msgstr "Facts"
 
 #: src/features/billing/purchase.ts
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Failed"
 msgstr "Failed"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Failed calls"
+msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "Failed, expired or cancelled"
@@ -7994,6 +8077,10 @@ msgstr "Fix these in the editor"
 msgid "Fix these values in the CSV, or leave their columns out, before importing."
 msgstr "Fix these values in the CSV, or leave their columns out, before importing."
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "FLAG_DISABLE_JOB_SEARCH is on: people get saved results only, and job alerts wait."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Flatten the form so the text is part of the page."
 msgstr "Flatten the form so the text is part of the page."
@@ -8084,6 +8171,7 @@ msgstr "Fonts could not be loaded. Try again."
 msgid "Food and drink"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "For"
 msgstr "For"
@@ -8301,6 +8389,10 @@ msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "Fresh graduate, Informatics"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Fresh result pages"
 msgstr ""
 
 #: src/dialogs/resume/template/data.ts
@@ -9222,6 +9314,10 @@ msgstr "Improve selected line"
 msgid "Improving…"
 msgstr "Improving…"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "In {days} days"
+msgstr ""
+
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "In color"
 msgstr ""
@@ -9622,8 +9718,16 @@ msgstr ""
 msgid "Job alert paused"
 msgstr ""
 
+#: src/features/jobs/admin/costs.ts
+msgid "Job alerts"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Job alerts aren't available on this server yet."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Job alerts on"
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -9652,8 +9756,22 @@ msgstr "Job posting <0>· optional, adds a keyword match</0>"
 msgid "Job posting link"
 msgstr "Job posting link"
 
+#: src/features/jobs/admin/costs.ts
+msgid "Job search"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+#: src/features/settings/settings-section.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Job search costs"
+msgstr ""
+
 #: src/features/jobs/jobs-page.tsx
 msgid "Job search isn't available here yet"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Job search passed 80% of today's budget"
 msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
@@ -9680,6 +9798,10 @@ msgstr ""
 
 #: src/features/jobs/jobs-page.tsx
 msgid "Jobs couldn't be loaded. Try again in a moment."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Jobs, job alerts, assistant web search and link reading. Days in UTC, as the budget counts them."
 msgstr ""
 
 #. Example full name placeholder on registration form
@@ -11218,6 +11340,7 @@ msgid "narrow margins"
 msgstr "narrow margins"
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Needs attention"
 msgstr "Needs attention"
@@ -11397,6 +11520,14 @@ msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next week"
+msgstr ""
+
+#: src/features/jobs/admin/costs.ts
+msgid "Nightly upkeep"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Nightly upkeep hasn't run"
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -11624,6 +11755,10 @@ msgstr "No open issues"
 msgid "No pages match “{term}”."
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No paid calls in this period."
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 msgid "No paid plan running"
 msgstr ""
@@ -11663,6 +11798,10 @@ msgstr ""
 
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "No portfolio matches that."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No provider calls in this period."
 msgstr ""
 
 #: src/features/profile/sources/messages.ts
@@ -11773,6 +11912,14 @@ msgstr ""
 #: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "No timezone matches."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No treg token on this server"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No treg token on this server."
+msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/portfolio/statistics/work-statistics.tsx
@@ -12454,6 +12601,10 @@ msgstr ""
 msgid "Open link"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Open listings"
+msgstr ""
+
 #: src/features/docs/header.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Open navigation"
@@ -13120,6 +13271,7 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Period"
 msgstr ""
 
@@ -13889,9 +14041,14 @@ msgstr "Protect your resume with a password"
 msgid "Prototyping"
 msgstr "Prototyping"
 
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Provider"
 msgstr "Provider"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Provider calls"
+msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "Provider cost"
@@ -14235,6 +14392,10 @@ msgstr "Readability score: {score} out of 100"
 msgid "Reading and uploading the PDF…"
 msgstr ""
 
+#: src/features/jobs/admin/costs.ts
+msgid "Reading links"
+msgstr ""
+
 #: src/features/assistant/conversation.tsx
 msgid "Reading page…"
 msgstr "Reading page…"
@@ -14463,6 +14624,7 @@ msgid "Reflection"
 msgstr "Reflection"
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Refresh"
 msgstr ""
 
@@ -15072,6 +15234,10 @@ msgstr "Restored the version from {0}. Your previous state is saved as “Before
 msgid "Result"
 msgstr "Result"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Result pages kept"
+msgstr ""
+
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Results as numbers, such as +35% conversion"
 msgstr ""
@@ -15473,6 +15639,7 @@ msgid "Run again"
 msgstr "Run again"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Running"
 msgstr ""
 
@@ -15847,6 +16014,7 @@ msgid "Screening"
 msgstr "Screening"
 
 #: src/features/documents/documents-page.tsx
+#: src/features/jobs/admin/costs.ts
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Search"
@@ -16223,6 +16391,10 @@ msgstr ""
 #: src/libs/locale.ts
 msgid "Serbian"
 msgstr "Serbian"
+
+#: src/features/jobs/admin/costs.ts
+msgid "Serper (web search)"
+msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
@@ -16922,9 +17094,17 @@ msgstr "Spanish"
 msgid "Speak"
 msgstr "Speak"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Speed is for calls that reached the provider; 95% of them were at least this fast."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Spell the month, as in \"Mar 2022\"."
 msgstr "Spell the month, as in \"Mar 2022\"."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Spent today"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "spoken"
@@ -17233,6 +17413,10 @@ msgstr ""
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Stored data"
+msgstr ""
 
 #: src/features/assistant/provider-setup.tsx
 msgid "Stored encrypted and tested right away."
@@ -17955,6 +18139,10 @@ msgstr ""
 msgid "The brief"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "The call statistics couldn't be read. Try Refresh in a moment."
+msgstr ""
+
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "The campaign"
@@ -18167,6 +18355,7 @@ msgid "The numbers couldn't be loaded."
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "The numbers couldn't load."
 msgstr ""
 
@@ -18487,6 +18676,10 @@ msgstr "The top of the first page does not look like a name."
 msgid "The trade-offs you made, and why."
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "The treg balance is below one day's budget. Top it up (or turn on auto top-up) in treg's dashboard under Team → Billing; an empty balance stops every search."
+msgstr ""
+
 #: src/features/portfolio/works/work-document.tsx
 #: src/features/portfolio/works/works-panel.tsx
 msgid "The work and its blocks leave the portfolio. You can undo this."
@@ -18546,6 +18739,10 @@ msgstr ""
 
 #: src/features/billing/receipt.tsx
 msgid "There's no receipt here: this payment isn't a paid QRIS plan."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "There's no treg token on this server, so nobody can search for jobs."
 msgstr ""
 
 #: src/features/jobs/jobs-page.tsx
@@ -19251,6 +19448,10 @@ msgstr "Today, {hour}"
 msgid "Today's job searches are used up"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Today's spending passed 80% of the daily budget. Past the budget, people get saved results only until midnight UTC. Raise JOB_SEARCH_DAILY_BUDGET_USD if the use is real."
+msgstr ""
+
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toggle sidebar"
 msgstr ""
@@ -19417,6 +19618,32 @@ msgstr "Trash"
 #: src/features/documents/trash-page.tsx
 msgid "Trash is empty"
 msgstr "Trash is empty"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg balance"
+msgstr ""
+
+#. placeholder {0}: formatUsd(treg.totalMicro)
+#. placeholder {1}: report.days
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg charged {0} in {1} days"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg didn't answer; try Refresh"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg didn't answer. Try Refresh in a moment."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg ledger"
+msgstr ""
+
+#: src/features/jobs/admin/costs.ts
+msgid "treg web search"
+msgstr ""
 
 #: src/features/billing/admin/labels.ts
 msgid "Trial"
@@ -19773,6 +20000,10 @@ msgstr ""
 msgid "Unread:"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Untagged (by hand, or from another app on this treg team)"
+msgstr ""
+
 #: src/features/profile/fill.tsx
 msgid "Untick anything you'd rather leave out."
 msgstr ""
@@ -19918,6 +20149,12 @@ msgstr ""
 
 #: src/features/billing/purchase.ts
 msgid "Upgrade, {days} days, QRIS"
+msgstr ""
+
+#. placeholder {0}: upkeep.day
+#. placeholder {1}: integer(upkeep.closed)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Upkeep {0} · {1} closed"
 msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -20156,6 +20393,10 @@ msgstr "used {used}"
 
 #: src/features/homepage/resume.tsx
 msgid "Used by six teams"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Used for"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -20709,6 +20950,10 @@ msgstr ""
 msgid "What did you say, as close as you remember?"
 msgstr "What did you say, as close as you remember?"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "What each provider call cost, as Rezumi recorded it."
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "What formats can I download?"
 msgstr "What formats can I download?"
@@ -20804,6 +21049,10 @@ msgstr ""
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "What to do"
 msgstr "What to do"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "What treg charged in {days} days, by what the calls were for."
+msgstr ""
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "What was asked for, in a line or two."

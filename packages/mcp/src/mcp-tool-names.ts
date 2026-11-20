@@ -51,4 +51,6 @@ export const MCP_TOOL_NAME = {
 	setPortfolioSource: "set_portfolio_source",
 	publishPortfolio: "publish_portfolio",
 	getPortfolioStatistics: "get_portfolio_statistics",
+	searchJobs: "search_jobs",
+	trackJob: "track_job",
 } as const;
