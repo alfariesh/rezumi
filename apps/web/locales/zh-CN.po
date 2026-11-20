@@ -89,6 +89,10 @@ msgstr ""
 msgid "(already yours)"
 msgstr ""
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "(in your Profile)"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "(no header)"
 msgstr "（无标题）"
@@ -995,6 +999,7 @@ msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, other {# 分钟后开始}}"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{missing} missing"
 msgstr ""
 
@@ -1015,6 +1020,7 @@ msgid "{name} block removed"
 msgstr ""
 
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} 没有响应。未做任何更改，请重试。"
 
@@ -1109,6 +1115,7 @@ msgid "{pairing} type"
 msgstr "{pairing}型"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{partial} partly"
 msgstr ""
 
@@ -1225,6 +1232,7 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}。在“职业 → 录用通知”中打开。"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{supported} supported"
 msgstr ""
 
@@ -4153,6 +4161,7 @@ msgstr "检查示例文件"
 
 #: src/features/billing/payment-return.tsx
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Check again"
 msgstr "重新检查"
@@ -4166,11 +4175,16 @@ msgstr "检查另一个文件"
 msgid "Check DNS"
 msgstr "检查 DNS"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Check each requirement against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 msgid "Check every claim, date and result against your experience."
 msgstr "对照您的经历核实每一项陈述、日期和结果。"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Check fit"
 msgstr "检查匹配度"
 
@@ -4799,6 +4813,7 @@ msgstr "连接上面的 AI 提供商即可使用助手。保存和准备工作�
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Connect an AI provider in Settings"
 msgstr "在设置中连接 AI 提供商"
 
@@ -10797,6 +10812,11 @@ msgstr "匹配系统主题"
 msgid "Match this posting"
 msgstr "匹配此职位发布"
 
+#. How many of the skills a job listing names appear in the person's Profile
+#: src/features/jobs/listing-card.tsx
+msgid "Matches {matched} of {total} skills"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Matches the resume ({summary})."
 msgstr "与简历匹配 ({summary})。"
@@ -13525,6 +13545,16 @@ msgstr "职位公告"
 msgid "Posting"
 msgstr "职位公告"
 
+#. The job posting of a tracked application was taken down by the employer
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Posting closed"
+msgstr ""
+
+#. placeholder {0}: date(application.postingClosedAt)
+#: src/features/career/workspace/shell.tsx
+msgid "Posting closed {0}"
+msgstr ""
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting from the linked application"
 msgstr "来自链接的职位申请的职位发布"
@@ -15052,6 +15082,7 @@ msgid "Requirements"
 msgstr "要求"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Requirements and your evidence"
 msgstr "要求与您的证据"
 
@@ -16265,6 +16296,11 @@ msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
+msgstr ""
+
+#. placeholder {0}: provider.label
+#: src/features/jobs/listing-fit.tsx
+msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
 msgstr ""
 
 #: src/features/career/workspace/coach-sheet.tsx
@@ -19493,6 +19529,10 @@ msgstr "跟踪你正在申请的职位并关联已发送的简历。"
 msgid "Track in Applications"
 msgstr "在“申请”中追踪"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Track this job to add evidence and questions in its workspace. The check goes with it."
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Track your first job"
 msgstr "追踪你的第一份工作"
@@ -21259,6 +21299,15 @@ msgstr "值得一问"
 msgid "Worth asking {0}"
 msgstr "值得问问 {0}"
 
+#. placeholder {0}: fit.ask.person
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking {0}:"
+msgstr ""
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking:"
+msgstr ""
+
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
@@ -21626,6 +21675,7 @@ msgstr "您的 AI 连接"
 
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "Your AI connection"
 msgstr "您的 AI 连接"
 
@@ -21802,6 +21852,10 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "你的文件"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Your fit"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Your focus"
@@ -22164,8 +22218,20 @@ msgstr ""
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr ""
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Your Profile changed since this check. Checking again uses AI again."
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile doesn't mention these skills yet. Add the ones you have to your Profile, and matches show here."
+msgstr ""
+
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your Profile has no projects yet. Add them in Profile, or start an empty work."
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile mentions {matched} of the {total} main skills this job names. A word match, without AI: check your fit for a closer look."
 msgstr ""
 
 #: src/features/profile/store.ts

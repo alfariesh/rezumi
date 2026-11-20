@@ -15214,6 +15214,19 @@
 													}
 												]
 											},
+											"postingClosedAt": {
+												"anyOf": [
+													{
+														"type": "string",
+														"format": "date-time",
+														"x-native-type": "date"
+													},
+													{
+														"type": "null"
+													}
+												],
+												"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+											},
 											"requirements": {
 												"type": "array",
 												"items": {
@@ -15547,6 +15560,7 @@
 											"companyLogoUrl",
 											"jobDescription",
 											"postingSource",
+											"postingClosedAt",
 											"requirements",
 											"matchScore",
 											"aiMetadata",
@@ -17306,6 +17320,19 @@
 															}
 														]
 													},
+													"postingClosedAt": {
+														"anyOf": [
+															{
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															{
+																"type": "null"
+															}
+														],
+														"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+													},
 													"requirements": {
 														"type": "array",
 														"items": {
@@ -17639,6 +17666,7 @@
 													"companyLogoUrl",
 													"jobDescription",
 													"postingSource",
+													"postingClosedAt",
 													"requirements",
 													"matchScore",
 													"aiMetadata",
@@ -18034,6 +18062,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -18367,6 +18408,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -19364,6 +19406,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -19697,6 +19752,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -20767,6 +20823,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -21100,6 +21169,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -21898,6 +21968,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -22231,6 +22314,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -22578,6 +22662,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -22911,6 +23008,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -23282,6 +23380,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -23615,6 +23726,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -24055,6 +24167,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -24388,6 +24513,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -24826,6 +24952,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -25159,6 +25298,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -25595,6 +25735,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -25928,6 +26081,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -26304,6 +26458,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -26637,6 +26804,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -26991,6 +27159,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -27324,6 +27505,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -27698,6 +27880,19 @@
 												}
 											]
 										},
+										"postingClosedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time",
+													"x-native-type": "date"
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+										},
 										"requirements": {
 											"type": "array",
 											"items": {
@@ -28031,6 +28226,7 @@
 										"companyLogoUrl",
 										"jobDescription",
 										"postingSource",
+										"postingClosedAt",
 										"requirements",
 										"matchScore",
 										"aiMetadata",
@@ -36250,6 +36446,19 @@
 															}
 														]
 													},
+													"postingClosedAt": {
+														"anyOf": [
+															{
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															{
+																"type": "null"
+															}
+														],
+														"description": "When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi."
+													},
 													"requirements": {
 														"type": "array",
 														"items": {
@@ -36583,6 +36792,7 @@
 													"companyLogoUrl",
 													"jobDescription",
 													"postingSource",
+													"postingClosedAt",
 													"requirements",
 													"matchScore",
 													"aiMetadata",
@@ -38407,6 +38617,25 @@
 																		},
 																		"required": [
 																			"type"
+																		]
+																	},
+																	{
+																		"type": "object",
+																		"properties": {
+																			"type": {
+																				"const": "posting-closed"
+																			},
+																			"company": {
+																				"type": "string"
+																			},
+																			"role": {
+																				"type": "string"
+																			}
+																		},
+																		"required": [
+																			"type",
+																			"company",
+																			"role"
 																		]
 																	}
 																]
@@ -42989,6 +43218,25 @@
 														},
 														"required": [
 															"type"
+														]
+													},
+													{
+														"type": "object",
+														"properties": {
+															"type": {
+																"const": "posting-closed"
+															},
+															"company": {
+																"type": "string"
+															},
+															"role": {
+																"type": "string"
+															}
+														},
+														"required": [
+															"type",
+															"company",
+															"role"
 														]
 													}
 												]
@@ -64426,6 +64674,34 @@
 											"additionalProperties": {
 												"type": "string"
 											}
+										},
+										"matches": {
+											"type": "object",
+											"propertyNames": {
+												"type": "string"
+											},
+											"additionalProperties": {
+												"type": "object",
+												"properties": {
+													"matched": {
+														"type": "array",
+														"items": {
+															"type": "string"
+														}
+													},
+													"missing": {
+														"type": "array",
+														"items": {
+															"type": "string"
+														}
+													}
+												},
+												"required": [
+													"matched",
+													"missing"
+												]
+											},
+											"default": {}
 										}
 									},
 									"required": [
@@ -65442,6 +65718,569 @@
 						"lang": "bash",
 						"label": "cURL",
 						"source": "curl --request POST \"https://rezumi.app/api/openapi/jobs/listings/<id>/track\" --header \"x-api-key: <api-key>\""
+					}
+				]
+			}
+		},
+		"/jobs/listings/{id}/fit": {
+			"get": {
+				"operationId": "getJobListingFit",
+				"summary": "Get your fit check of a job listing",
+				"description": "Returns the AI fit check you ran on a job listing, if any, and whether your Profile changed since (then it's outdated). Costs nothing. Requires authentication.",
+				"tags": [
+					"Jobs"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 64
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"fit": {
+											"anyOf": [
+												{
+													"type": "object",
+													"properties": {
+														"kind": {
+															"const": "fit"
+														},
+														"headline": {
+															"type": "string",
+															"maxLength": 200
+														},
+														"summary": {
+															"type": "string",
+															"maxLength": 600
+														},
+														"requirements": {
+															"type": "array",
+															"maxItems": 20,
+															"items": {
+																"type": "object",
+																"properties": {
+																	"text": {
+																		"type": "string",
+																		"maxLength": 300
+																	},
+																	"origin": {
+																		"enum": [
+																			"posting",
+																			"inferred"
+																		],
+																		"type": "string"
+																	},
+																	"status": {
+																		"enum": [
+																			"supported",
+																			"partial",
+																			"missing"
+																		],
+																		"type": "string"
+																	},
+																	"evidence": {
+																		"type": "string",
+																		"maxLength": 600
+																	},
+																	"factIds": {
+																		"type": "array",
+																		"maxItems": 10,
+																		"items": {
+																			"type": "string"
+																		},
+																		"default": []
+																	}
+																},
+																"required": [
+																	"text",
+																	"origin",
+																	"status",
+																	"evidence"
+																]
+															}
+														},
+														"checks": {
+															"type": "array",
+															"maxItems": 5,
+															"items": {
+																"type": "object",
+																"properties": {
+																	"label": {
+																		"type": "string",
+																		"maxLength": 60
+																	},
+																	"met": {
+																		"anyOf": [
+																			{
+																				"type": "boolean"
+																			},
+																			{
+																				"type": "null"
+																			}
+																		]
+																	},
+																	"text": {
+																		"type": "string",
+																		"maxLength": 300
+																	}
+																},
+																"required": [
+																	"label",
+																	"met",
+																	"text"
+																]
+															}
+														},
+														"ask": {
+															"anyOf": [
+																{
+																	"type": "object",
+																	"properties": {
+																		"person": {
+																			"type": "string",
+																			"maxLength": 100
+																		},
+																		"text": {
+																			"type": "string",
+																			"maxLength": 400
+																		}
+																	},
+																	"required": [
+																		"person",
+																		"text"
+																	]
+																},
+																{
+																	"type": "null"
+																}
+															]
+														}
+													},
+													"required": [
+														"kind",
+														"headline",
+														"summary",
+														"requirements",
+														"checks",
+														"ask"
+													]
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"outdated": {
+											"type": "boolean"
+										},
+										"checkedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time"
+												},
+												{
+													"type": "null"
+												}
+											]
+										}
+									},
+									"required": [
+										"fit",
+										"outdated",
+										"checkedAt"
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl \"https://rezumi.app/api/openapi/jobs/listings/<id>/fit\" --header \"x-api-key: <api-key>\""
+					}
+				]
+			},
+			"post": {
+				"operationId": "checkJobListingFit",
+				"summary": "Check your fit for a job listing with AI",
+				"description": "Checks each requirement of a job listing against the facts and stories in your Profile and compares the job with your preferences, as the application workspace's Fit check does. With `aiSource: \"rezumi\"` it costs 4 Rezumi AI credits. The answer is kept: asking again while your Profile is unchanged gives it back without running or charging again. Tracking the listing copies it into the application's workspace. Requires authentication.",
+				"tags": [
+					"Jobs"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 64
+						}
+					}
+				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"locale": {
+										"type": "string",
+										"maxLength": 20,
+										"default": "en-US"
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"fit": {
+											"anyOf": [
+												{
+													"type": "object",
+													"properties": {
+														"kind": {
+															"const": "fit"
+														},
+														"headline": {
+															"type": "string",
+															"maxLength": 200
+														},
+														"summary": {
+															"type": "string",
+															"maxLength": 600
+														},
+														"requirements": {
+															"type": "array",
+															"maxItems": 20,
+															"items": {
+																"type": "object",
+																"properties": {
+																	"text": {
+																		"type": "string",
+																		"maxLength": 300
+																	},
+																	"origin": {
+																		"enum": [
+																			"posting",
+																			"inferred"
+																		],
+																		"type": "string"
+																	},
+																	"status": {
+																		"enum": [
+																			"supported",
+																			"partial",
+																			"missing"
+																		],
+																		"type": "string"
+																	},
+																	"evidence": {
+																		"type": "string",
+																		"maxLength": 600
+																	},
+																	"factIds": {
+																		"type": "array",
+																		"maxItems": 10,
+																		"items": {
+																			"type": "string"
+																		},
+																		"default": []
+																	}
+																},
+																"required": [
+																	"text",
+																	"origin",
+																	"status",
+																	"evidence"
+																]
+															}
+														},
+														"checks": {
+															"type": "array",
+															"maxItems": 5,
+															"items": {
+																"type": "object",
+																"properties": {
+																	"label": {
+																		"type": "string",
+																		"maxLength": 60
+																	},
+																	"met": {
+																		"anyOf": [
+																			{
+																				"type": "boolean"
+																			},
+																			{
+																				"type": "null"
+																			}
+																		]
+																	},
+																	"text": {
+																		"type": "string",
+																		"maxLength": 300
+																	}
+																},
+																"required": [
+																	"label",
+																	"met",
+																	"text"
+																]
+															}
+														},
+														"ask": {
+															"anyOf": [
+																{
+																	"type": "object",
+																	"properties": {
+																		"person": {
+																			"type": "string",
+																			"maxLength": 100
+																		},
+																		"text": {
+																			"type": "string",
+																			"maxLength": 400
+																		}
+																	},
+																	"required": [
+																		"person",
+																		"text"
+																	]
+																},
+																{
+																	"type": "null"
+																}
+															]
+														}
+													},
+													"required": [
+														"kind",
+														"headline",
+														"summary",
+														"requirements",
+														"checks",
+														"ask"
+													]
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"outdated": {
+											"type": "boolean"
+										},
+										"checkedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time"
+												},
+												{
+													"type": "null"
+												}
+											]
+										}
+									},
+									"required": [
+										"fit",
+										"outdated",
+										"checkedAt"
+									]
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "404",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": true
+												},
+												"code": {
+													"const": "NOT_FOUND"
+												},
+												"status": {
+													"const": 404
+												},
+												"message": {
+													"type": "string",
+													"default": "This job listing isn't available anymore."
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": false
+												},
+												"code": {
+													"type": "string"
+												},
+												"status": {
+													"type": "number"
+												},
+												"message": {
+													"type": "string"
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										}
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/jobs/listings/<id>/fit\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}

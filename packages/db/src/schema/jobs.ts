@@ -1,3 +1,4 @@
+import type { FitData } from "@rezumi/schema/career";
 import type { JobProvider } from "@rezumi/schema/jobs/listing";
 import * as pg from "drizzle-orm/pg-core";
 import { JOB_PROVIDERS } from "@rezumi/schema/jobs/listing";
@@ -103,3 +104,46 @@ export const jobListingHidden = pg.pgTable(
 	},
 	(t) => [pg.primaryKey({ columns: [t.userId, t.listingId] }), pg.index().on(t.listingId)],
 );
+
+/**
+ * A person's AI fit check of one listing (K8, Phase 05), kept so opening the listing again doesn't pay for it twice.
+ * `inputVersion` is the Profile's version when it ran: a changed Profile marks the check as outdated. Removed with the
+ * account or the listing.
+ */
+export const jobListingFit = pg.pgTable(
+	"job_listing_fit",
+	{
+		userId: pg
+			.text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		listingId: pg
+			.text("listing_id")
+			.notNull()
+			.references(() => jobListing.id, { onDelete: "cascade" }),
+		data: pg.jsonb("data").notNull().$type<FitData>(),
+		/** The Profile facts the check cited. */
+		factIds: pg.text("fact_ids").array().notNull().default([]),
+		inputVersion: pg.text("input_version").notNull(),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+	},
+	(t) => [pg.primaryKey({ columns: [t.userId, t.listingId] }), pg.index().on(t.listingId)],
+);
+
+/**
+ * The daily listing upkeep (`02-teknis.md` section 10), one row per UTC day. It runs over several scheduler ticks:
+ * `nextPage` is the next page of Hirebase's closed-jobs feed to read (null once read to the end), and the lease keeps
+ * two ticks from running it at once. A day whose run never finished is left behind; the next day's run starts from it.
+ */
+export const jobMaintenance = pg.pgTable("job_maintenance", {
+	/** The UTC day, YYYY-MM-DD. */
+	day: pg.text("day").primaryKey(),
+	/** Where the closed-jobs feed starts: the last finished run's day (the feed answers whole days). */
+	since: pg.text("since").notNull(),
+	nextPage: pg.integer("next_page").default(1),
+	/** Listings marked closed by this run. */
+	closed: pg.integer("closed").notNull().default(0),
+	startedAt: pg.timestamp("started_at", { withTimezone: true }).notNull().defaultNow(),
+	leaseUntil: pg.timestamp("lease_until", { withTimezone: true }),
+	completedAt: pg.timestamp("completed_at", { withTimezone: true }),
+});

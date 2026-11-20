@@ -1,8 +1,11 @@
 /** What a posting doesn't say, named as a missing fact rather than a problem. */
 type Unknown = "salary" | "office";
 
-// ponytail: a small English stop list; preferences in other languages simply keep more of their words significant.
-const STOP_WORDS = new Set(["an", "and", "at", "for", "from", "in", "of", "on", "or", "the", "to", "with", "within"]);
+// ponytail: small English and Indonesian stop lists; phrases in other languages simply keep more words significant.
+// English, then Indonesian.
+const STOP_WORDS = new Set(
+	"an and at for from in of on or the to with within dan atau di ke dari yang untuk dengan pada dalam".split(" "),
+);
 
 // ponytail: shape-based, so "10,000 users" reads as pay; good enough to stop "Salary not listed" showing wrongly.
 const SALARY = /[€$£¥₹]|\b(?:EUR|USD|GBP|CHF|SEK|NOK|DKK|PLN|CAD|AUD|INR|JPY)\b|\b\d{2,3}(?:[.,\s]?\d{3}|\s?k)\b/i;
@@ -50,5 +53,31 @@ export function matchPosting(posting: Posting, preferences: { targetRoles: strin
 			...matchOpportunity(text, preferences.locations).matches,
 		],
 		unknowns: matchOpportunity(text, []).unknowns,
+	};
+}
+
+/** The most skills a listing is matched on; providers name up to dozens, and the first ones are the main ones. */
+export const MAX_MATCHED_SKILLS = 12;
+
+/**
+ * The skills a job listing names (`job_listing.skills`), split into those the person's Profile mentions and those it
+ * doesn't yet: free, without AI (K8). A skill matches when each of its significant words appears somewhere in the
+ * Profile text, in any order; words compare whole (only a plural "s" is dropped), so "analysis" never finds
+ * "analysed". Slugs such as "sql-server" read as words. Null when the listing names no skills or the Profile is empty.
+ */
+export function matchSkills(skills: string[], profileText: string): { matched: string[]; missing: string[] } | null {
+	const byKey = new Map<string, string>();
+	for (const skill of skills) {
+		const name = skill.replace(/[-_]+/g, " ").trim();
+		const key = name.toLocaleLowerCase();
+		// The first spelling a listing uses is the one shown.
+		if (name && !byKey.has(key)) byKey.set(key, name);
+	}
+	const unique = [...byKey.values()].slice(0, MAX_MATCHED_SKILLS);
+	if (unique.length === 0 || !profileText.trim()) return null;
+	const matched = new Set(matchOpportunity(profileText, unique).matches);
+	return {
+		matched: unique.filter((skill) => matched.has(skill)),
+		missing: unique.filter((skill) => !matched.has(skill)),
 	};
 }

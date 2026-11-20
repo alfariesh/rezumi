@@ -5,8 +5,11 @@ const applications = vi.hoisted(() => ({
 	findBySourceKey: vi.fn(),
 	findIdsBySourceKeys: vi.fn(),
 	create: vi.fn(),
+	linkJobListing: vi.fn(),
 }));
+const copyListingFit = vi.hoisted(() => vi.fn());
 vi.mock("../applications/service", () => ({ applicationService: applications }));
+vi.mock("./fit", () => ({ copyListingFit }));
 
 const { trackListing, trackedApplications, trackedSalary, trackedSource } = await import("./track");
 
@@ -65,6 +68,7 @@ describe("trackListing", () => {
 			status: "saved",
 			source: "Company careers site",
 			sourceUrl: "https://jobs.ashbyhq.com/acme/1234",
+			jobListingId: "listing-1",
 			location: "London, United Kingdom",
 			salary: "£70,000–£85,000 a year",
 			jobDescription: "Lead the payments roadmap.",
@@ -79,12 +83,20 @@ describe("trackListing", () => {
 				completeness: "unknown",
 			},
 		});
+		// A fit check run on the listing goes along to the new application's workspace.
+		expect(copyListingFit).toHaveBeenCalledWith("u1", "listing-1", "app-1");
 	});
 
 	it("gives back the application already saved for the same posting", async () => {
 		applications.findBySourceKey.mockResolvedValue({ id: "app-existing" });
 		await expect(trackListing("u1", listing())).resolves.toEqual({ applicationId: "app-existing", created: false });
 		expect(applications.create).not.toHaveBeenCalled();
+		// The earlier application learns which listing it is, so it hears when the posting closes.
+		expect(applications.linkJobListing).toHaveBeenCalledWith({
+			userId: "u1",
+			id: "app-existing",
+			listingId: "listing-1",
+		});
 	});
 
 	it("leaves out a place and pay the listing doesn't state", async () => {

@@ -4,7 +4,13 @@ import type { JobSourceAdapter } from "./providers";
 import type { ProviderCursors } from "./routing";
 import type { NormalizedJobSearch } from "./search-key";
 import type { JobProvider } from "@rezumi/schema/jobs/listing";
-import type { JobSearchInput, JobSearchRequest, JobSearchResult, JobSearchStatus } from "@rezumi/schema/jobs/search";
+import type {
+	JobListingCard,
+	JobSearchInput,
+	JobSearchRequest,
+	JobSearchResult,
+	JobSearchStatus,
+} from "@rezumi/schema/jobs/search";
 import { env } from "@rezumi/env/server";
 import { jobSearchLimitReached } from "../billing/limits";
 import {
@@ -27,6 +33,7 @@ import {
 import { jobCounters } from "./counters";
 import { recordJobEvent } from "./events";
 import { duplicateKey } from "./filters";
+import { listingMatches, profileMatchText } from "./match";
 import { JOB_SOURCES } from "./providers";
 import { hasMorePages, routeSearch, SEARCH_PROVIDERS } from "./routing";
 import { jobSearchKey, normalizeJobSearch, stableJson } from "./search-key";
@@ -79,6 +86,12 @@ type Answer = {
 	stale: boolean;
 	budgetLimited: boolean;
 };
+
+/** What only this person sees on a page: which listings they track, and how each one's skills read against their Profile. */
+async function personalize(userId: string, cards: JobListingCard[]) {
+	const [tracked, profileText] = await Promise.all([trackedApplications(userId, cards), profileMatchText(userId)]);
+	return { tracked, matches: listingMatches(cards, profileText) };
+}
 
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -263,7 +276,7 @@ export function createJobSearchService(overrides: Partial<JobSearchDependencies>
 				stale: answer.stale,
 				budgetLimited: answer.budgetLimited,
 				quota: { used: Math.min(used, quota.max), max: quota.max, resetsAt: quota.resetsAt.toISOString() },
-				tracked: await trackedApplications(userId, cards),
+				...(await personalize(userId, cards)),
 			};
 		},
 

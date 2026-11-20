@@ -1,5 +1,6 @@
 import { ORPCError } from "@orpc/server";
 import z from "zod";
+import { jobListingFitSchema } from "@rezumi/schema/jobs/fit";
 import { jobListingSchema } from "@rezumi/schema/jobs/listing";
 import {
 	jobSearchDefaultsSchema,
@@ -9,7 +10,10 @@ import {
 	jobTrackResultSchema,
 } from "@rezumi/schema/jobs/search";
 import { protectedProcedure } from "../../context";
+import { aiRequestRateLimit } from "../../middleware/rate-limit";
+import { aiSourceInput } from "../billing/ai-source";
 import { jobSearchDefaults } from "./defaults";
+import { checkListingFit, readListingFit } from "./fit";
 import { JobSearchError, jobSearchService } from "./service";
 import { trackListing } from "./track";
 
@@ -128,6 +132,51 @@ export const jobsRouter = {
 			if (!listing || listing.closedAt) throw new ORPCError("NOT_FOUND", { status: 404 });
 			return trackListing(context.user.id, listing);
 		}),
+
+	fit: protectedProcedure
+		.route({
+			...route,
+			method: "GET",
+			path: "/jobs/listings/{id}/fit",
+			operationId: "getJobListingFit",
+			summary: "Get your fit check of a job listing",
+			description:
+				"Returns the AI fit check you ran on a job listing, if any, and whether your Profile changed since (then it's outdated). Costs nothing. Requires authentication.",
+		})
+		.input(z.object({ id: z.string().min(1).max(64) }))
+		.output(jobListingFitSchema)
+		.handler(({ context, input }) => readListingFit(context.user.id, input.id)),
+
+	checkFit: protectedProcedure
+		.use(aiRequestRateLimit)
+		.route({
+			...route,
+			method: "POST",
+			path: "/jobs/listings/{id}/fit",
+			operationId: "checkJobListingFit",
+			summary: "Check your fit for a job listing with AI",
+			description:
+				"Checks each requirement of a job listing against the facts and stories in your Profile and compares the job with your preferences, as the application workspace's Fit check does. With `aiSource: \"rezumi\"` it costs 4 Rezumi AI credits. The answer is kept: asking again while your Profile is unchanged gives it back without running or charging again. Tracking the listing copies it into the application's workspace. Requires authentication.",
+		})
+		.input(
+			z.object({
+				id: z.string().min(1).max(64),
+				locale: z.string().max(20).default("en-US"),
+				...aiSourceInput,
+			}),
+		)
+		.output(jobListingFitSchema)
+		.errors(listingGone)
+		.handler(({ context, input, signal }) =>
+			checkListingFit({
+				userId: context.user.id,
+				listingId: input.id,
+				locale: input.locale,
+				aiSource: input.aiSource,
+				idempotencyKey: input.idempotencyKey,
+				signal,
+			}),
+		),
 
 	defaults: protectedProcedure
 		.route({

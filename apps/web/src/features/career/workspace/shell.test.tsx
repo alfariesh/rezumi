@@ -77,6 +77,7 @@ const application: Application = {
 	id: "shell-application",
 	company: "Harbor",
 	companyLogoUrl: null,
+	postingClosedAt: null,
 	role: "Engineer",
 	status: "saved",
 	closedReason: null,

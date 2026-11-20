@@ -89,6 +89,10 @@ msgstr ""
 msgid "(already yours)"
 msgstr ""
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "(in your Profile)"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "(no header)"
 msgstr "(sense capçalera)"
@@ -995,6 +999,7 @@ msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, one {Comença d'aquí a # minut} other {Comença d'aquí a # minuts}}"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{missing} missing"
 msgstr ""
 
@@ -1015,6 +1020,7 @@ msgid "{name} block removed"
 msgstr ""
 
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} no ha respost. No s'ha canviat res; torneu-ho a provar."
 
@@ -1109,6 +1115,7 @@ msgid "{pairing} type"
 msgstr "Tipus {pairing}"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{partial} partly"
 msgstr ""
 
@@ -1225,6 +1232,7 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. S'obre a Carrera → Ofertes."
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{supported} supported"
 msgstr ""
 
@@ -4153,6 +4161,7 @@ msgstr "Comproveu un fitxer de mostra"
 
 #: src/features/billing/payment-return.tsx
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Check again"
 msgstr "Torna a comprovar"
@@ -4166,11 +4175,16 @@ msgstr "Comproveu un altre fitxer"
 msgid "Check DNS"
 msgstr "Comprova el DNS"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Check each requirement against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 msgid "Check every claim, date and result against your experience."
 msgstr "Contrasteu cada afirmació, data i resultat amb la vostra experiència."
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Check fit"
 msgstr "Comprova l'encaix"
 
@@ -4799,6 +4813,7 @@ msgstr "Connecta un proveïdor d'IA anterior per utilitzar l'assistent. Desar i 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Connect an AI provider in Settings"
 msgstr "Connecteu un proveïdor d'IA a Configuració"
 
@@ -10797,6 +10812,11 @@ msgstr "Tema del sistema de coincidències"
 msgid "Match this posting"
 msgstr "Compara amb aquest anunci"
 
+#. How many of the skills a job listing names appear in the person's Profile
+#: src/features/jobs/listing-card.tsx
+msgid "Matches {matched} of {total} skills"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Matches the resume ({summary})."
 msgstr "Coincideix amb el currículum ({summary})."
@@ -13525,6 +13545,16 @@ msgstr "l'anunci"
 msgid "Posting"
 msgstr "Anunci"
 
+#. The job posting of a tracked application was taken down by the employer
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Posting closed"
+msgstr ""
+
+#. placeholder {0}: date(application.postingClosedAt)
+#: src/features/career/workspace/shell.tsx
+msgid "Posting closed {0}"
+msgstr ""
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting from the linked application"
 msgstr "Anunci de la candidatura enllaçada"
@@ -15052,6 +15082,7 @@ msgid "Requirements"
 msgstr "Requisits"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Requirements and your evidence"
 msgstr "Requisits i les vostres proves"
 
@@ -16265,6 +16296,11 @@ msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
+msgstr ""
+
+#. placeholder {0}: provider.label
+#: src/features/jobs/listing-fit.tsx
+msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
 msgstr ""
 
 #: src/features/career/workspace/coach-sheet.tsx
@@ -19493,6 +19529,10 @@ msgstr "Fes un seguiment de la feina a la qual estàs sol·licitant i enllaça e
 msgid "Track in Applications"
 msgstr "Fes-ne el seguiment a Candidatures"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Track this job to add evidence and questions in its workspace. The check goes with it."
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Track your first job"
 msgstr "Feu un seguiment del vostre primer treball"
@@ -21259,6 +21299,15 @@ msgstr "Val la pena preguntar"
 msgid "Worth asking {0}"
 msgstr "Val la pena preguntar a {0}"
 
+#. placeholder {0}: fit.ask.person
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking {0}:"
+msgstr ""
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking:"
+msgstr ""
+
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
@@ -21626,6 +21675,7 @@ msgstr "la vostra connexió d'IA"
 
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "Your AI connection"
 msgstr "La vostra connexió d'IA"
 
@@ -21802,6 +21852,10 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "El teu fitxer"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Your fit"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Your focus"
@@ -22164,8 +22218,20 @@ msgstr ""
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr ""
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Your Profile changed since this check. Checking again uses AI again."
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile doesn't mention these skills yet. Add the ones you have to your Profile, and matches show here."
+msgstr ""
+
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your Profile has no projects yet. Add them in Profile, or start an empty work."
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile mentions {matched} of the {total} main skills this job names. A word match, without AI: check your fit for a closer look."
 msgstr ""
 
 #: src/features/profile/store.ts

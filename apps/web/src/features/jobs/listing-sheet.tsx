@@ -1,14 +1,16 @@
 import type { ListingActions } from "./listing-card";
-import type { JobListingCard } from "@rezumi/schema/jobs/search";
+import type { JobListingCard, JobListingMatch } from "@rezumi/schema/jobs/search";
 import { Sheet } from "@heroui-pro/react";
 import { Button, Chip, ScrollShadow, Skeleton, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
+import { Icon } from "@rezumi/ui/components/icon";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { placeLabel, sourceLabel } from "./format";
 import { ListingButtons, ListingFacts } from "./listing-card";
+import { ListingFit } from "./listing-fit";
 import { CompanyMark } from "@/features/applications/components/company-mark";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { formatRelativeTime } from "@/libs/locale";
@@ -17,6 +19,8 @@ import { renderAsSpan } from "@/libs/typography";
 
 type JobListingSheetProps = {
 	listing: JobListingCard | null;
+	/** Listing id → its skills against the Profile, from the search results. */
+	matches: Record<string, JobListingMatch>;
 	actions: ListingActions;
 	onOpenChange: (open: boolean) => void;
 };
@@ -25,7 +29,7 @@ type JobListingSheetProps = {
  * A listing in full, beside the results (from the bottom on phones): the provider's description as plain text (never
  * HTML: it's untrusted data), what it asks for, the company, and the same buttons as its card.
  */
-export function JobListingSheet({ listing, actions, onOpenChange }: JobListingSheetProps) {
+export function JobListingSheet({ listing, matches, actions, onOpenChange }: JobListingSheetProps) {
 	const phone = useBreakpoint() === "mobile";
 	const [shown, onOpenChangeComplete] = useClosingValue(listing);
 
@@ -41,7 +45,7 @@ export function JobListingSheet({ listing, actions, onOpenChange }: JobListingSh
 					<Sheet.Dialog className="bg-surface">
 						{phone && <Sheet.Handle />}
 						<Sheet.CloseTrigger aria-label={t`Close`} />
-						{shown && <ListingDetail key={shown.id} listing={shown} actions={actions} />}
+						{shown && <ListingDetail key={shown.id} listing={shown} match={matches[shown.id]} actions={actions} />}
 					</Sheet.Dialog>
 				</Sheet.Content>
 			</Sheet.Backdrop>
@@ -49,9 +53,9 @@ export function JobListingSheet({ listing, actions, onOpenChange }: JobListingSh
 	);
 }
 
-type ListingDetailProps = { listing: JobListingCard; actions: ListingActions };
+type ListingDetailProps = { listing: JobListingCard; match: JobListingMatch | undefined; actions: ListingActions };
 
-function ListingDetail({ listing, actions }: ListingDetailProps) {
+function ListingDetail({ listing, match, actions }: ListingDetailProps) {
 	const { i18n } = useLingui();
 	const detail = useQuery({ ...orpc.jobs.listing.queryOptions({ input: { id: listing.id } }), staleTime: 10 * 60_000 });
 	const place = placeLabel(listing);
@@ -70,7 +74,7 @@ function ListingDetail({ listing, actions }: ListingDetailProps) {
 						<p className="text-body-sm text-muted">{[company.name, place].filter(Boolean).join(" · ")}</p>
 					</div>
 				</div>
-				<ListingFacts listing={listing} />
+				<ListingFacts listing={listing} match={match} />
 				{(posted || source) && (
 					<p className="text-body-xs text-muted">
 						{posted && <Trans>Posted {posted}</Trans>}
@@ -82,6 +86,7 @@ function ListingDetail({ listing, actions }: ListingDetailProps) {
 			</header>
 
 			<div className="grid gap-6 border-t border-separator px-5 pt-5 pb-8">
+				<ListingFit listing={listing} />
 				{listing.requirementsSummary && (
 					<section className="grid gap-2">
 						<Typography type="h5" render={renderAsSpan}>
@@ -95,14 +100,24 @@ function ListingDetail({ listing, actions }: ListingDetailProps) {
 						<Typography type="h5" render={renderAsSpan}>
 							<Trans>Skills</Trans>
 						</Typography>
+						{match ? <SkillMatch match={match} /> : null}
 						<ul className="flex flex-wrap gap-1.5">
-							{listing.skills.slice(0, 30).map((skill) => (
-								<li key={skill}>
-									<Chip size="sm" variant="soft">
-										{skill}
-									</Chip>
-								</li>
-							))}
+							{listing.skills.slice(0, 30).map((skill) => {
+								const inProfile = match?.matched.some((name) => sameSkill(name, skill)) ?? false;
+								return (
+									<li key={skill}>
+										<Chip size="sm" variant="soft" color={inProfile ? "success" : "default"} className="gap-1">
+											{inProfile && <Icon name="check" size={14} />}
+											<Chip.Label>{skill}</Chip.Label>
+											{inProfile && (
+												<span className="sr-only">
+													<Trans>(in your Profile)</Trans>
+												</span>
+											)}
+										</Chip>
+									</li>
+								);
+							})}
 						</ul>
 					</section>
 				)}
@@ -152,5 +167,31 @@ function ListingDetail({ listing, actions }: ListingDetailProps) {
 				</p>
 			</div>
 		</ScrollShadow>
+	);
+}
+
+/** A provider's skill and its name in the match: the match reads "sql-server" as "sql server". */
+const sameSkill = (matched: string, skill: string) =>
+	matched.toLocaleLowerCase() === skill.replace(/[-_]+/g, " ").trim().toLocaleLowerCase();
+
+type SkillMatchProps = { match: JobListingMatch };
+
+/** The free match in words: how many of the main skills the Profile mentions, without AI. */
+function SkillMatch({ match }: SkillMatchProps) {
+	const matched = match.matched.length;
+	const total = matched + match.missing.length;
+	return (
+		<p className="text-body-sm text-pretty text-muted">
+			{matched === 0 ? (
+				<Trans>
+					Your Profile doesn't mention these skills yet. Add the ones you have to your Profile, and matches show here.
+				</Trans>
+			) : (
+				<Trans>
+					Your Profile mentions {matched} of the {total} main skills this job names. A word match, without AI: check
+					your fit for a closer look.
+				</Trans>
+			)}
+		</p>
 	);
 }

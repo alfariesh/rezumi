@@ -50,8 +50,9 @@ function profileMarkdown(profile: ProfileData, limit = PROFILE_CONTEXT_CHARS): s
 export async function readProfileContext(
 	userId: string,
 	client: DbOrTx = db,
+	limit = PROFILE_CONTEXT_CHARS,
 ): Promise<{ text: string; updatedAt: Date | null } | null> {
 	const { data, updatedAt } = await profileService.read(userId, client);
-	const text = profileMarkdown(data);
+	const text = profileMarkdown(data, limit);
 	return text ? { text, updatedAt } : null;
 }

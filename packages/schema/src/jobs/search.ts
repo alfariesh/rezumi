@@ -55,6 +55,16 @@ export const jobSearchQuotaSchema = z.object({
 });
 export type JobSearchQuota = z.infer<typeof jobSearchQuotaSchema>;
 
+/**
+ * How a listing's skills read against the person's Profile, without AI (K8): the skills the listing names that the
+ * Profile mentions, and those it doesn't yet. Missing here is missing from the Profile, not from the person.
+ */
+export const jobListingMatchSchema = z.object({
+	matched: z.array(z.string()),
+	missing: z.array(z.string()),
+});
+export type JobListingMatch = z.infer<typeof jobListingMatchSchema>;
+
 export const jobSearchResultSchema = z.object({
 	listings: z.array(jobListingCardSchema),
 	/** Passed back as `cursor` for the next page; missing on the last one. */
@@ -70,6 +80,8 @@ export const jobSearchResultSchema = z.object({
 	quota: jobSearchQuotaSchema,
 	/** The listings on this page the person already tracks: listing id → application id. */
 	tracked: z.record(z.string(), z.string()),
+	/** Listing id → its skills against the person's Profile; missing for listings that name no skills. */
+	matches: z.record(z.string(), jobListingMatchSchema).default({}),
 });
 export type JobSearchResult = z.infer<typeof jobSearchResultSchema>;
 

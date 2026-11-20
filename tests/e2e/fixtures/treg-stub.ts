@@ -8,7 +8,8 @@ import { createServer } from "node:http";
  * title at fictional companies (none for a title containing "nothing"); JobsPipe answers none. Each listing's id comes
  * from the title and place, so one search always answers the same listings and different searches never share one. A job
  * alert's check (`ingested_after`) answers four newer listings of its own, posted today; JobsPipe's new-jobs feed answers
- * none. Product guide screenshots use it too (`pnpm dev` with `TREG_BASE_URL` pointing here).
+ * none. The daily upkeep's feeds (Hirebase's closed jobs, JobsPipe's lookups by id) answer nothing closed. Product guide
+ * screenshots use it too (`pnpm dev` with `TREG_BASE_URL` pointing here).
  *
  * Run by Playwright's `webServer` (playwright.config.ts): `node tests/e2e/fixtures/treg-stub.ts`.
  */
@@ -36,6 +37,18 @@ const TITLES = [
 	(title: string) => `${title} (Contract)`,
 	(title: string) => `${title}, Marketplace`,
 	(title: string) => `Staff ${title}`,
+];
+
+/** Skills a listing names, four to six of them, for the match chip. */
+const SKILLS = [
+	"Roadmapping",
+	"SQL",
+	"Stakeholder management",
+	"Customer research",
+	"A/B testing",
+	"Python",
+	"Figma",
+	"Payments",
 ];
 
 type Place = { city?: string; country?: string };
@@ -67,6 +80,7 @@ function hirebaseJobs(title: string, place: Place, ingestedAfter?: string) {
 				index % 3 === 2 ? null : { min: 60_000 + index * 2_000, max: 78_000 + index * 2_000, currency, period: "year" },
 			visa_sponsored: index % 4 === 0,
 			requirements_summary: "3+ years in a similar role, clear writing and comfort with data.",
+			skills: Array.from({ length: 4 + (index % 3) }, (_, offset) => SKILLS[(index + offset) % SKILLS.length]),
 			date_posted: new Date(Date.now() - (ingestedAfter ? 0 : index + 1) * 86_400_000).toISOString(),
 		};
 	});
@@ -105,6 +119,9 @@ const server = createServer(async (request, response) => {
 	}
 	if (tool === "jobspipe.jobs.search" || tool === "jobspipe.jobs.new")
 		return send(response, { data: [], metadata: { next_delta_cursor: "stub-delta" } });
+	if (tool === "hirebase.jobs.expired")
+		return send(response, { jobs: [], total_count: 0, page: 1, limit: 1000, total_pages: 1 });
+	if (tool === "jobspipe.jobs.detail") return send(response, { data: [], metadata: {} });
 	response.writeHead(404).end();
 });
 

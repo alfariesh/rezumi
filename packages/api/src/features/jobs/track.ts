@@ -63,7 +63,11 @@ export async function trackedApplications(userId: string, listings: JobListingCa
 export async function trackListing(userId: string, listing: JobListing, now = new Date()): Promise<JobTrackResult> {
 	const key = listingKey(listing);
 	const existing = key ? await applicationService.findBySourceKey({ userId, key }) : null;
-	if (existing) return { applicationId: existing.id, created: false };
+	if (existing) {
+		// Saved earlier from the extension or a link: from now on the daily upkeep can say when its posting closes.
+		await applicationService.linkJobListing({ userId, id: existing.id, listingId: listing.id });
+		return { applicationId: existing.id, created: false };
+	}
 
 	const description = listing.description.slice(0, MAX_JOB_DESCRIPTION_CHARS);
 	const postingSource: PostingSource = {
@@ -87,8 +91,13 @@ export async function trackListing(userId: string, listing: JobListing, now = ne
 		sourceUrl: listing.postingUrl,
 		jobDescription: description || null,
 		postingSource,
+		jobListingId: listing.id,
 		...(location ? { location } : {}),
 		...(salary ? { salary } : {}),
 	});
+	// A fit check already run on the listing comes along to the workspace, so it isn't paid for again. Loaded here:
+	// it brings the AI stack, which searching and the scheduler don't need.
+	const { copyListingFit } = await import("./fit");
+	await copyListingFit(userId, listing.id, applicationId);
 	return { applicationId, created: true };
 }

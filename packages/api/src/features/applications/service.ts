@@ -594,6 +594,8 @@ export const applicationService = {
 				status?: ApplicationStatus | undefined;
 				closedReason?: ApplicationClosedReason | null | undefined;
 				stageEnteredAt?: string | undefined;
+				/** Server only: the job search listing it was tracked from (`jobs.track`). */
+				jobListingId?: string | undefined;
 			},
 	) => {
 		const { userId, status, stageEnteredAt, closedReason, resumeFile, coverLetterFile, ...fields } = input;
@@ -899,13 +901,31 @@ export const applicationService = {
 		const existing = await requireOwned(input.id, input.userId);
 		await db
 			.update(schema.application)
-			.set({ companyLogoUrl: input.url })
+			// A logo is how the card looks, not what the application says: AI work written for it stays current.
+			.set({ companyLogoUrl: input.url, updatedAt: sql`${schema.application.updatedAt}` })
 			.where(and(eq(schema.application.id, input.id), eq(schema.application.userId, input.userId)));
 		const previous = logoKeyFromUrl(input.userId, existing.companyLogoUrl);
 		if (previous && previous !== logoKeyFromUrl(input.userId, input.url))
 			await getStorageService()
 				.delete(previous)
 				.catch(() => false);
+	},
+
+	/**
+	 * Notes the job search listing an application already saved for the same posting was tracked from, unless it has
+	 * one. Not an edit: the application's time and AI work stay as they are.
+	 */
+	linkJobListing: async (input: { userId: string; id: string; listingId: string }) => {
+		await db
+			.update(schema.application)
+			.set({ jobListingId: input.listingId, updatedAt: sql`${schema.application.updatedAt}` })
+			.where(
+				and(
+					eq(schema.application.id, input.id),
+					eq(schema.application.userId, input.userId),
+					isNull(schema.application.jobListingId),
+				),
+			);
 	},
 
 	/** The newest application saved for one posting identity, or null. */

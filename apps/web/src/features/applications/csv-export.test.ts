@@ -6,6 +6,7 @@ const application: Application = {
 	id: "application",
 	company: 'Müller, "Partners"',
 	companyLogoUrl: null,
+	postingClosedAt: null,
 	role: "Engineer",
 	status: "interview",
 	closedReason: null,

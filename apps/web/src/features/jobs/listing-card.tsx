@@ -1,5 +1,5 @@
 import type { useListingActions } from "./use-listing-actions";
-import type { JobListingCard } from "@rezumi/schema/jobs/search";
+import type { JobListingCard, JobListingMatch } from "@rezumi/schema/jobs/search";
 import { Button, buttonVariants, Chip, Dropdown, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -14,10 +14,13 @@ import { formatRelativeTime } from "@/libs/locale";
 
 export type ListingActions = ReturnType<typeof useListingActions>;
 
-type ListingFactsProps = { listing: JobListingCard; className?: string };
+type ListingFactsProps = { listing: JobListingCard; match?: JobListingMatch | undefined; className?: string };
 
-/** How it's worked, the listed pay, sponsorship and level, as small chips; only what the listing states. */
-export function ListingFacts({ listing, className }: ListingFactsProps) {
+/**
+ * How its skills read against the Profile, then how it's worked, the listed pay, sponsorship and level, as small
+ * chips; only what the listing states.
+ */
+export function ListingFacts({ listing, match, className }: ListingFactsProps) {
 	const { i18n } = useLingui();
 	const salary = salaryLabel(listing.salary, i18n.locale);
 	const facts = [
@@ -33,9 +36,15 @@ export function ListingFacts({ listing, className }: ListingFactsProps) {
 		(fact): fact is { key: string; icon: "globe-simple" | "tag" | "check-circle" | "chart-line-up"; label: string } =>
 			Boolean(fact),
 	);
-	if (facts.length === 0) return null;
+	const matched = Boolean(match?.matched.length);
+	if (facts.length === 0 && !matched) return null;
 	return (
 		<ul className={cn("flex flex-wrap gap-1.5", className)}>
+			{matched && (
+				<li>
+					<MatchChip match={match} />
+				</li>
+			)}
 			{facts.map((fact) => (
 				<li key={fact.key}>
 					<Chip size="sm" variant="soft" className="gap-1">
@@ -45,6 +54,28 @@ export function ListingFacts({ listing, className }: ListingFactsProps) {
 				</li>
 			))}
 		</ul>
+	);
+}
+
+type MatchChipProps = { match: JobListingMatch | undefined };
+
+/**
+ * How many of the skills a listing names the person's Profile mentions (K8: free, no AI). Shown only when some do: a
+ * "0 of 6" says more about an unfilled Profile than about the job, and the detail lists them either way.
+ */
+export function MatchChip({ match }: MatchChipProps) {
+	if (!match || match.matched.length === 0) return null;
+	const matched = match.matched.length;
+	const total = matched + match.missing.length;
+	return (
+		<Chip size="sm" variant="soft" color="success" className="gap-1 tabular-nums">
+			<Icon name="list-checks" size={14} />
+			<Chip.Label>
+				<Trans comment="How many of the skills a job listing names appear in the person's Profile">
+					Matches {matched} of {total} skills
+				</Trans>
+			</Chip.Label>
+		</Chip>
 	);
 }
 
@@ -96,13 +127,17 @@ export function ListingButtons({ listing, actions, size = "sm" }: ListingButtons
 
 type JobListingItemProps = {
 	listing: JobListingCard;
+	match: JobListingMatch | undefined;
 	actions: ListingActions;
 	selected: boolean;
 	onOpen: () => void;
 };
 
-/** One listing in the results: who and where, what it states, when and where it was posted, and its buttons. */
-export function JobListingItem({ listing, actions, selected, onOpen }: JobListingItemProps) {
+/**
+ * One listing in the results: who and where, how its skills read against the Profile, what it states, when and where
+ * it was posted, and its buttons.
+ */
+export function JobListingItem({ listing, match, actions, selected, onOpen }: JobListingItemProps) {
 	const { i18n } = useLingui();
 	const place = placeLabel(listing);
 	const source = sourceLabel(listing);
@@ -150,7 +185,7 @@ export function JobListingItem({ listing, actions, selected, onOpen }: JobListin
 					</Dropdown.Popover>
 				</Dropdown>
 			</div>
-			<ListingFacts listing={listing} />
+			<ListingFacts listing={listing} match={match} />
 			{(posted || source) && (
 				<p className="text-body-xs text-muted">
 					{posted && <Trans>Posted {posted}</Trans>}

@@ -119,6 +119,7 @@ const result = (overrides: Partial<JobSearchResult> = {}): JobSearchResult => ({
 	budgetLimited: false,
 	quota,
 	tracked: {},
+	matches: {},
 	...overrides,
 });
 
@@ -199,6 +200,20 @@ describe("JobsPage", () => {
 		const item = await screen.findByRole("article", { name: "Data Analyst 1" });
 		expect(within(item).getByRole("link", { name: /Tracked/ })).toBeTruthy();
 		expect(within(item).queryByRole("button", { name: "Track" })).toBeNull();
+	});
+
+	it("shows how a listing's skills read against the Profile, only when some match", async () => {
+		api.search.mockResolvedValue(
+			result({
+				listings: [card("1", { skills: ["SQL", "Python", "dbt"] }), card("2", { skills: ["Rust"] })],
+				matches: { "1": { matched: ["SQL", "Python"], missing: ["dbt"] }, "2": { matched: [], missing: ["Rust"] } },
+			}),
+		);
+		mount({ q: "data analyst" });
+		const first = await screen.findByRole("article", { name: "Data Analyst 1" });
+		expect(within(first).getByText("Matches 2 of 3 skills")).toBeTruthy();
+		const second = screen.getByRole("article", { name: "Data Analyst 2" });
+		expect(within(second).queryByText(/Matches/)).toBeNull();
 	});
 
 	it("says the day's searches are used up, with plans on the web", async () => {

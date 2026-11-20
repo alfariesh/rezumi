@@ -84,6 +84,10 @@ msgstr "“I tailored my resume for three roles in one evening and had two inter
 msgid "(already yours)"
 msgstr "(already yours)"
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "(in your Profile)"
+msgstr "(in your Profile)"
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "(no header)"
 msgstr "(no header)"
@@ -990,6 +994,7 @@ msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{missing} missing"
 msgstr "{missing} missing"
 
@@ -1010,6 +1015,7 @@ msgid "{name} block removed"
 msgstr "{name} block removed"
 
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} didn't respond. Nothing was changed; try again."
 
@@ -1104,6 +1110,7 @@ msgid "{pairing} type"
 msgstr "{pairing} type"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{partial} partly"
 msgstr "{partial} partly"
 
@@ -1220,6 +1227,7 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Opens in Career → Offers."
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{supported} supported"
 msgstr "{supported} supported"
 
@@ -4148,6 +4156,7 @@ msgstr "Check a sample file"
 
 #: src/features/billing/payment-return.tsx
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Check again"
 msgstr "Check again"
@@ -4161,11 +4170,16 @@ msgstr "Check another file"
 msgid "Check DNS"
 msgstr "Check DNS"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Check each requirement against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr "Check each requirement against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+
 #: src/features/career/workspace/apply.tsx
 msgid "Check every claim, date and result against your experience."
 msgstr "Check every claim, date and result against your experience."
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Check fit"
 msgstr "Check fit"
 
@@ -4794,6 +4808,7 @@ msgstr "Connect an AI provider above to use the assistant. Saving and preparing 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Connect an AI provider in Settings"
 msgstr "Connect an AI provider in Settings"
 
@@ -10792,6 +10807,11 @@ msgstr "Match system theme"
 msgid "Match this posting"
 msgstr "Match this posting"
 
+#. How many of the skills a job listing names appear in the person's Profile
+#: src/features/jobs/listing-card.tsx
+msgid "Matches {matched} of {total} skills"
+msgstr "Matches {matched} of {total} skills"
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Matches the resume ({summary})."
 msgstr "Matches the resume ({summary})."
@@ -13520,6 +13540,16 @@ msgstr "posting"
 msgid "Posting"
 msgstr "Posting"
 
+#. The job posting of a tracked application was taken down by the employer
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Posting closed"
+msgstr "Posting closed"
+
+#. placeholder {0}: date(application.postingClosedAt)
+#: src/features/career/workspace/shell.tsx
+msgid "Posting closed {0}"
+msgstr "Posting closed {0}"
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting from the linked application"
 msgstr "Posting from the linked application"
@@ -15047,6 +15077,7 @@ msgid "Requirements"
 msgstr "Requirements"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Requirements and your evidence"
 msgstr "Requirements and your evidence"
 
@@ -16261,6 +16292,11 @@ msgstr "Sends this application's posting, notes and documents, plus your Profile
 #: src/features/career/schedule-sheet.tsx
 msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
 msgstr "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
+
+#. placeholder {0}: provider.label
+#: src/features/jobs/listing-fit.tsx
+msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
+msgstr "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
 
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and your Profile (details, career, and the facts and stories that are switched on) to {connection}."
@@ -19488,6 +19524,10 @@ msgstr "Track a job you're applying to and link the resume you sent."
 msgid "Track in Applications"
 msgstr "Track in Applications"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Track this job to add evidence and questions in its workspace. The check goes with it."
+msgstr "Track this job to add evidence and questions in its workspace. The check goes with it."
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Track your first job"
 msgstr "Track your first job"
@@ -21254,6 +21294,15 @@ msgstr "Worth asking"
 msgid "Worth asking {0}"
 msgstr "Worth asking {0}"
 
+#. placeholder {0}: fit.ask.person
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking {0}:"
+msgstr "Worth asking {0}:"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking:"
+msgstr "Worth asking:"
+
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
@@ -21621,6 +21670,7 @@ msgstr "your AI connection"
 
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "Your AI connection"
 msgstr "Your AI connection"
 
@@ -21797,6 +21847,10 @@ msgstr "Your facts"
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "Your file"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Your fit"
+msgstr "Your fit"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Your focus"
@@ -22159,9 +22213,21 @@ msgstr "Your Profile already has everything in “{name}”."
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Your Profile changed since this check. Checking again uses AI again."
+msgstr "Your Profile changed since this check. Checking again uses AI again."
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile doesn't mention these skills yet. Add the ones you have to your Profile, and matches show here."
+msgstr "Your Profile doesn't mention these skills yet. Add the ones you have to your Profile, and matches show here."
+
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your Profile has no projects yet. Add them in Profile, or start an empty work."
 msgstr "Your Profile has no projects yet. Add them in Profile, or start an empty work."
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile mentions {matched} of the {total} main skills this job names. A word match, without AI: check your fit for a closer look."
+msgstr "Your Profile mentions {matched} of the {total} main skills this job names. A word match, without AI: check your fit for a closer look."
 
 #: src/features/profile/store.ts
 msgid "Your Profile was changed somewhere else, so it was reloaded. Check your last change."

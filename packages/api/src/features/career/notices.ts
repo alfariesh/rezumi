@@ -33,5 +33,10 @@ export function noticeText(notice: CareerNotice): { title: string; body: string 
 				title: "Interview briefing paused",
 				body: "The interview it prepared for was removed. Choose another interview or delete the schedule.",
 			};
+		case "posting-closed":
+			return {
+				title: `${notice.role} at ${notice.company} has closed`,
+				body: "The employer took this job posting down. Your saved copy of the posting stays with the application.",
+			};
 	}
 }

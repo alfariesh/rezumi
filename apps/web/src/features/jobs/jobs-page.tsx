@@ -1,5 +1,5 @@
 import type { JobsSearch } from "./search";
-import type { JobListingCard, JobSearchResult } from "@rezumi/schema/jobs/search";
+import type { JobListingCard, JobListingMatch, JobSearchResult } from "@rezumi/schema/jobs/search";
 import type { ReactNode } from "react";
 import { Button, buttonVariants, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
@@ -78,6 +78,7 @@ export function JobsPage({ search, onSearch }: JobsPageProps) {
 	const pages = results.data?.pages ?? [];
 	const last: JobSearchResult | undefined = pages.at(-1);
 	const tracked = Object.assign({}, ...pages.map((page) => page.tracked)) as Record<string, string>;
+	const matches = Object.assign({}, ...pages.map((page) => page.matches)) as Record<string, JobListingMatch>;
 	const actions = useListingActions(tracked);
 	// One listing can come back on a later page (another provider); show it once.
 	const byId = new Map(pages.flatMap((page) => page.listings).map((listing) => [listing.id, listing]));
@@ -184,6 +185,7 @@ export function JobsPage({ search, onSearch }: JobsPageProps) {
 								<li key={listing.id} className="grid">
 									<JobListingItem
 										listing={listing}
+										match={matches[listing.id]}
 										actions={actions}
 										selected={selected?.id === listing.id}
 										onOpen={() => setSelected(listing)}
@@ -205,7 +207,12 @@ export function JobsPage({ search, onSearch }: JobsPageProps) {
 				</div>
 			)}
 
-			<JobListingSheet listing={selected} actions={actions} onOpenChange={(open) => !open && setSelected(null)} />
+			<JobListingSheet
+				listing={selected}
+				matches={matches}
+				actions={actions}
+				onOpenChange={(open) => !open && setSelected(null)}
+			/>
 			<ScheduleSheet
 				schedule={alertSheet}
 				onScheduleChange={setAlertSheet}

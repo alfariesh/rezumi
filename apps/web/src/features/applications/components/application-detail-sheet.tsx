@@ -168,6 +168,16 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 									)}
 								</>
 							)}
+							{application.postingClosedAt && (
+								<>
+									<span aria-hidden="true">·</span>
+									<span className="font-medium text-warning">
+										<Trans comment="The job posting of a tracked application was taken down by the employer">
+											Posting closed
+										</Trans>
+									</span>
+								</>
+							)}
 						</div>
 					</div>
 					<Dropdown>

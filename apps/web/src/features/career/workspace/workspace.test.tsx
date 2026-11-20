@@ -89,6 +89,7 @@ const application: Application = {
 	id: "workspace-application",
 	company: "Harbor",
 	companyLogoUrl: null,
+	postingClosedAt: null,
 	role: "Engineer",
 	status: "saved",
 	closedReason: null,

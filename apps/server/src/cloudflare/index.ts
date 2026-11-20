@@ -26,6 +26,7 @@ import { runCareerJobs, runNextCareerJob } from "@rezumi/api/features/career/job
 import { runCustomDomainJobs } from "@rezumi/api/features/custom-domain/jobs";
 import { configureJobSearchLimiter } from "@rezumi/api/features/jobs/allowance";
 import { configureJobEvents } from "@rezumi/api/features/jobs/events";
+import { runJobListingJobs } from "@rezumi/api/features/jobs/maintenance";
 import { configurePortfolioAnalytics } from "@rezumi/api/features/portfolio/analytics";
 import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
 import { portfolioFileAccess } from "@rezumi/api/features/portfolio/public";
@@ -317,6 +318,9 @@ export default {
 					console.error("[custom-domain] Scheduled work failed; it retries next run."),
 				);
 				await runExtensionJobs().catch(() => console.error("[extension] Scheduled work failed; it retries next run."));
+				await runJobListingJobs().catch((error: unknown) =>
+					console.error("[jobs] Daily listing upkeep failed; it retries next run.", error),
+				);
 			}
 		};
 		ctx.waitUntil(run(jobs).finally(() => closePool(pool, store)));

@@ -89,6 +89,10 @@ msgstr "“Saya menyesuaikan CV untuk tiga posisi dalam satu malam, dan minggu i
 msgid "(already yours)"
 msgstr "(sudah milikmu)"
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "(in your Profile)"
+msgstr "(ada di Profil Anda)"
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "(no header)"
 msgstr "(tidak ada tajuk)"
@@ -995,8 +999,9 @@ msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, other {Dimulai dalam # menit}}"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{missing} missing"
-msgstr ""
+msgstr "{missing} belum ada"
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
@@ -1015,6 +1020,7 @@ msgid "{name} block removed"
 msgstr "Blok {name} dihapus"
 
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} tidak merespons. Tidak ada yang diubah; coba lagi."
 
@@ -1109,8 +1115,9 @@ msgid "{pairing} type"
 msgstr "Tipe {pairing}"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{partial} partly"
-msgstr ""
+msgstr "{partial} sebagian"
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
@@ -1225,8 +1232,9 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Terbuka di Karier → Penawaran."
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{supported} supported"
-msgstr ""
+msgstr "{supported} didukung"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{title} cleared"
@@ -4153,6 +4161,7 @@ msgstr "Periksa file sampel"
 
 #: src/features/billing/payment-return.tsx
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Check again"
 msgstr "Periksa lagi"
@@ -4166,11 +4175,16 @@ msgstr "Periksa file lain"
 msgid "Check DNS"
 msgstr "Periksa DNS"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Check each requirement against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr "Periksa setiap persyaratan dengan fakta dan cerita di Profil Anda. Celah ditandai sebagai bukti yang belum ada, bukan kemampuan yang kurang."
+
 #: src/features/career/workspace/apply.tsx
 msgid "Check every claim, date and result against your experience."
 msgstr "Periksa setiap klaim, tanggal, dan hasil terhadap pengalaman Anda."
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Check fit"
 msgstr "Periksa kecocokan"
 
@@ -4799,6 +4813,7 @@ msgstr "Hubungkan penyedia AI di atas untuk menggunakan asisten. Menyimpan dan m
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Connect an AI provider in Settings"
 msgstr "Hubungkan penyedia AI di Pengaturan"
 
@@ -10797,6 +10812,11 @@ msgstr "Tema sistem pertandingan"
 msgid "Match this posting"
 msgstr "Cocokkan lowongan pekerjaan ini"
 
+#. How many of the skills a job listing names appear in the person's Profile
+#: src/features/jobs/listing-card.tsx
+msgid "Matches {matched} of {total} skills"
+msgstr "Cocok: {matched} dari {total} skill"
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Matches the resume ({summary})."
 msgstr "Cocok dengan resume ({summary})."
@@ -13525,6 +13545,16 @@ msgstr "lowongan"
 msgid "Posting"
 msgstr "Lowongan kerja"
 
+#. The job posting of a tracked application was taken down by the employer
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Posting closed"
+msgstr "Lowongan sudah ditutup"
+
+#. placeholder {0}: date(application.postingClosedAt)
+#: src/features/career/workspace/shell.tsx
+msgid "Posting closed {0}"
+msgstr "Lowongan ditutup {0}"
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting from the linked application"
 msgstr "postingan pekerjaan dari lamaran pekerjaan tertaut"
@@ -15052,6 +15082,7 @@ msgid "Requirements"
 msgstr "Persyaratan"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Requirements and your evidence"
 msgstr "Persyaratan dan bukti Anda"
 
@@ -16266,6 +16297,11 @@ msgstr "Mengirim lowongan, catatan, dan dokumen lamaran ini, serta Profil Anda (
 #: src/features/career/schedule-sheet.tsx
 msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
 msgstr "Mengirim lowongan, catatan, dan dokumen lamaran ini, serta Profil Anda (data diri, karier, serta fakta dan cerita yang diaktifkan), ke koneksi ini. Penyedia Anda mungkin mengenakan biaya."
+
+#. placeholder {0}: provider.label
+#: src/features/jobs/listing-fit.tsx
+msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
+msgstr "Mengirim posting lowongan ini dan Profil Anda (detail, serta fakta dan cerita yang aktif) ke {0}."
 
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and your Profile (details, career, and the facts and stories that are switched on) to {connection}."
@@ -19493,6 +19529,10 @@ msgstr "Lacak pekerjaan yang kamu lamar dan tautkan resume yang kamu kirim."
 msgid "Track in Applications"
 msgstr "Lacak di Lamaran"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Track this job to add evidence and questions in its workspace. The check goes with it."
+msgstr "Lacak lowongan ini untuk menambah bukti dan pertanyaan di workspace-nya. Hasil pemeriksaan ikut terbawa."
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Track your first job"
 msgstr "Lacak pekerjaan pertama Anda"
@@ -21259,6 +21299,15 @@ msgstr "Layak ditanyakan"
 msgid "Worth asking {0}"
 msgstr "Layak ditanyakan ke {0}"
 
+#. placeholder {0}: fit.ask.person
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking {0}:"
+msgstr "Layak ditanyakan ke {0}:"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking:"
+msgstr "Layak ditanyakan:"
+
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
@@ -21626,6 +21675,7 @@ msgstr "koneksi AI Anda"
 
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "Your AI connection"
 msgstr "Koneksi AI Anda"
 
@@ -21802,6 +21852,10 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "berkas Anda"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Your fit"
+msgstr "Kecocokan Anda"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Your focus"
@@ -22164,9 +22218,21 @@ msgstr "Profil Anda sudah memuat semua isi “{name}”."
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr "Profil Anda sudah berisi yang kami temukan, atau sumbernya tidak bisa dibaca. Isi kapan saja."
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Your Profile changed since this check. Checking again uses AI again."
+msgstr "Profil Anda berubah sejak pemeriksaan ini. Memeriksa lagi memakai AI lagi."
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile doesn't mention these skills yet. Add the ones you have to your Profile, and matches show here."
+msgstr "Profil Anda belum menyebut skill ini. Tambahkan yang Anda kuasai ke Profil, dan kecocokannya muncul di sini."
+
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your Profile has no projects yet. Add them in Profile, or start an empty work."
 msgstr "Profil Anda belum punya proyek. Tambahkan di Profil, atau mulai karya kosong."
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile mentions {matched} of the {total} main skills this job names. A word match, without AI: check your fit for a closer look."
+msgstr "Profil Anda menyebut {matched} dari {total} skill utama lowongan ini. Ini pencocokan kata tanpa AI: periksa kecocokan untuk melihat lebih dalam."
 
 #: src/features/profile/store.ts
 msgid "Your Profile was changed somewhere else, so it was reloaded. Check your last change."
