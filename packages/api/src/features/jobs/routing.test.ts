@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 import { jobSearchInputSchema } from "@rezumi/schema/jobs/search";
-import { duplicateKey, matchesSearch, withoutDuplicates } from "./filters";
+import { duplicateKey, matchesSearch, spreadCompanies, withoutDuplicates } from "./filters";
 import { JOB_PAGE_SIZE, routeSearch } from "./routing";
 import { fakeListing, fakeSource, listings } from "./test-helpers";
 import { TregError } from "./treg";
@@ -113,6 +113,53 @@ describe("routeSearch", () => {
 		expect(jobspipe.calls).toHaveLength(0);
 	});
 
+	it("keeps one company from filling the top of a page", async () => {
+		const big = (index: number) => fakeListing("hirebase", index, { company: { name: "Big Corp" } });
+		const { all } = sources([[big(1), big(2), big(3), big(4), ...listings("hirebase", 3, 5)]], []);
+		const page = await routeSearch(input(), { jobspipe: "" }, all);
+		expect(page.listings.map((listing) => listing.externalId)).toEqual([
+			"hirebase-1",
+			"hirebase-2",
+			"hirebase-5",
+			"hirebase-6",
+			"hirebase-7",
+			"hirebase-3",
+			"hirebase-4",
+		]);
+	});
+
+	it("gives up on a provider past the page's time limit and shows what the other answered", async () => {
+		const hirebase = fakeSource("hirebase", [listings("hirebase", 4)]);
+		const slow: typeof hirebase.adapter = {
+			...fakeSource("jobspipe", []).adapter,
+			search: (_input, options) =>
+				new Promise((_, reject) => {
+					options.signal?.addEventListener("abort", () => reject(options.signal?.reason));
+				}),
+		};
+		const page = await routeSearch(
+			input(),
+			undefined,
+			{ hirebase: hirebase.adapter, jobspipe: slow },
+			{ deadlineMs: 30 },
+		);
+		expect(page.listings).toHaveLength(4);
+		expect(page.partial).toBe(true);
+	});
+
+	it("throws a timeout when no provider answers in time", async () => {
+		const hanging: ReturnType<typeof fakeSource>["adapter"] = {
+			...fakeSource("hirebase", []).adapter,
+			search: (_input, options) =>
+				new Promise((_, reject) => {
+					options.signal?.addEventListener("abort", () => reject(options.signal?.reason));
+				}),
+		};
+		await expect(
+			routeSearch(input(), undefined, { hirebase: hanging, jobspipe: hanging }, { deadlineMs: 20 }),
+		).rejects.toMatchObject({ code: "timeout" });
+	});
+
 	it("throws when no provider answers", async () => {
 		const { all } = sources([new TregError("busy")], [new TregError("unavailable")]);
 		await expect(routeSearch(input(), undefined, all)).rejects.toMatchObject({ code: "busy" });
@@ -150,6 +197,22 @@ describe("matchesSearch", () => {
 		expect(matchesSearch(paid(40, "USD", "hour"), input({ salaryMin: 80_000 }))).toBe(true);
 		expect(matchesSearch(base, input({ salaryMin: 80_000 }))).toBe(true);
 		expect(matchesSearch(base, input({ salaryMin: 80_000, includeNoSalary: false }))).toBe(false);
+	});
+});
+
+describe("spreadCompanies", () => {
+	it("moves a company's third and later jobs to the end and leaves nothing out", () => {
+		const at = (index: number, name: string) => fakeListing("hirebase", index, { company: { name } });
+		const page = [at(1, "A"), at(2, "a"), at(3, "A."), at(4, "B"), at(5, ""), at(6, ""), at(7, "")];
+		expect(spreadCompanies(page).map((listing) => listing.externalId)).toEqual([
+			"hirebase-1",
+			"hirebase-2",
+			"hirebase-4",
+			"hirebase-5",
+			"hirebase-6",
+			"hirebase-7",
+			"hirebase-3",
+		]);
 	});
 });
 

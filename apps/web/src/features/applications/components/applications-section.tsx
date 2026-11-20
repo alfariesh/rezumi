@@ -33,14 +33,14 @@ export function storeLayout(layout: ApplicationLayout) {
 }
 
 type ApplicationsSectionProps = {
-	/** The view on show, or null on a page of its own (Offers). */
-	view: ApplicationView | null;
+	/** The view on show, or a page of its own (Jobs, Offers). */
+	view: ApplicationView | "jobs" | "offers";
 	children: ReactNode;
 };
 
 /**
- * Applications as a section: All (the applications, laid out as the page's switch picks), Insights and Offers in the
- * menu, the page beside it. All and Insights are one page with `?view=`, so each item says for itself whether it's
+ * Applications as a section: All (the applications, laid out as the page's switch picks), Jobs (finding new ones),
+ * Insights and Offers in the menu, the page beside it. All and Insights are one page with `?view=`, so each item says for itself whether it's
  * current.
  */
 export function ApplicationsSection({ view, children }: ApplicationsSectionProps) {
@@ -50,9 +50,16 @@ export function ApplicationsSection({ view, children }: ApplicationsSectionProps
 		{
 			link: { to: "/dashboard/applications" },
 			match: { to: "/dashboard/applications", fuzzy: false },
-			current: view !== null && view !== "insights",
+			current: view !== "jobs" && view !== "offers" && view !== "insights",
 			icon: "briefcase",
 			label: t`All`,
+		},
+		{
+			link: { to: "/dashboard/applications/jobs" },
+			match: { to: "/dashboard/applications/jobs", fuzzy: false },
+			current: view === "jobs",
+			icon: "list-magnifying-glass",
+			label: t({ message: "Jobs", context: "Job listings to search" }),
 		},
 		{
 			link: { to: "/dashboard/applications", search: { view: "insights" } },
@@ -64,7 +71,7 @@ export function ApplicationsSection({ view, children }: ApplicationsSectionProps
 		{
 			link: { to: "/dashboard/applications/offers" },
 			match: { to: "/dashboard/applications/offers", fuzzy: false },
-			current: view === null,
+			current: view === "offers",
 			icon: "scales",
 			label: t`Offers`,
 			count: offers.data?.length,

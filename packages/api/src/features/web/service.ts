@@ -19,13 +19,18 @@ import {
 	SEARCH_DEADLINE_MS,
 	WebError,
 } from "./contracts";
-import { searchThroughTreg } from "./search";
+import { searchRouted, searchSerper } from "./search";
 import { pageContent, safeFailure } from "./transport";
 
 /** Pages a person may have read through Browser Run in one UTC day (`02-teknis.md` section 11). */
 export const BROWSER_READS_PER_DAY = 20;
 /** Web searches a person may send in one UTC day; each one costs Rezumi money (section 11). */
 export const WEB_SEARCHES_PER_DAY = 50;
+/**
+ * What one person's web searches may cost in a UTC day, in millionths of a US dollar: room for every search in three
+ * countries through Serper ($0.15), so only the dearer fallback runs into it. One person can't spend the shared budget.
+ */
+export const WEB_SEARCH_SPEND_PER_DAY_MICRO = 200_000;
 /** The direct reader's share of a read's deadline when the browser can take over. */
 const DIRECT_BUDGET_MS = 12_000;
 
@@ -43,16 +48,21 @@ const deadline = (ms: number, signal?: AbortSignal) =>
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-/** Counts one use of `what` for the person today; false once `max` is reached. A counter that fails allows it. */
-async function countToday(what: string, userId: string, max: number): Promise<boolean> {
+/**
+ * A person's running total of `what` this UTC day. Checked before an attempt and added to only once it worked, so a
+ * failed read or search costs nothing. (The counters fall back to this process when the shared store fails.)
+ */
+function today(what: string, userId: string) {
 	const now = Date.now();
 	const day = new Date(now).toISOString().slice(0, 10);
-	const window = Date.parse(`${day}T00:00:00Z`) + DAY_MS - now + 60 * 60 * 1000;
-	try {
-		return (await jobCounters.add(`${what}:${userId}:${day}`, 1, { window, max })).allowed;
-	} catch {
-		return true;
-	}
+	const rule = { window: Date.parse(`${day}T00:00:00Z`) + DAY_MS - now + 60 * 60 * 1000 };
+	const key = `${what}:${userId}:${day}`;
+	return {
+		used: async () => (await jobCounters.add(key, 0, rule)).total,
+		add: async (amount: number) => {
+			if (amount > 0) await jobCounters.add(key, Math.round(amount), rule);
+		},
+	};
 }
 
 function log(operation: "search" | "read", method: string, started: number, outcome: string, detail?: string) {
@@ -82,7 +92,8 @@ export function looksUnrendered(html: string, text: string): boolean {
 
 async function readThroughBrowser(url: URL, context: WebContext, signal: AbortSignal, reason: BrowserReason) {
 	if (!isBrowserRunConfigured()) return null;
-	if (!(await countToday("web-browser", context.userId, BROWSER_READS_PER_DAY))) {
+	const reads = today("web-browser", context.userId);
+	if ((await reads.used()) >= BROWSER_READS_PER_DAY) {
 		console.info("[web]", { operation: "read", method: "browser", outcome: "daily-limit" });
 		return null;
 	}
@@ -93,6 +104,7 @@ async function readThroughBrowser(url: URL, context: WebContext, signal: AbortSi
 		browserMs = page.browserMs;
 		if (page.html.length > MAX_PAGE_BYTES) throw new WebError("too-large");
 		const content = pageContent(htmlToText(page.html));
+		await reads.add(1);
 		recordJobEvent({
 			provider: "browser-run",
 			tool: "content",
@@ -217,21 +229,26 @@ function interleave(lists: SearchResult[][]) {
 	return merged.slice(0, MAX_SEARCH_RESULTS);
 }
 
-async function searchRegion(query: string, region: string | undefined, signal: AbortSignal): Promise<SearchCall> {
+/** Runs one paid search call, adding what it cost to the server's budget and the person's spending. */
+async function recorded(
+	call: () => Promise<SearchCall>,
+	spend: ReturnType<typeof today>,
+	region: string | undefined,
+): Promise<SearchCall> {
 	try {
-		const call = await searchThroughTreg(query, { region, signal });
-		await recordSpend(jobCounters, call.costMicro, new Date()).catch(() => {});
+		const result = await call();
+		await Promise.all([recordSpend(jobCounters, result.costMicro, new Date()), spend.add(result.costMicro)]);
 		recordJobEvent({
-			provider: call.provider,
-			tool: call.tool,
+			provider: result.provider,
+			tool: result.tool,
 			outcome: "miss",
 			countryCode: region,
 			kind: "web-search",
-			costMicro: call.costMicro,
-			ms: call.ms,
-			resultCount: call.results.length,
+			costMicro: result.costMicro,
+			ms: result.ms,
+			resultCount: result.results.length,
 		});
-		return call;
+		return result;
 	} catch (error) {
 		recordJobEvent({
 			provider: "treg",
@@ -248,9 +265,10 @@ async function searchRegion(query: string, region: string | undefined, signal: A
 }
 
 /**
- * One web search, paid by the server through treg and counted in the job search budget (K7). Each of the person's
- * search countries gets its own search, in parallel under one deadline; a failed country drops out unless all fail.
- * Throws `WebError`: `budget` once today's budget is spent, `rate-limit` past the person's searches for the day.
+ * One web search, paid by the server through treg and counted in the job search budget (K7). Serper searches each of
+ * the person's search countries in parallel under one deadline; a failed country drops out. When every country failed,
+ * treg's routed search runs once, anywhere. Throws `WebError`: `budget` once today's budget is spent, `rate-limit` past
+ * the person's searches or spending for the day. A search that failed isn't counted.
  */
 export async function searchWeb(query: string, context: WebContext): Promise<SearchResult[]> {
 	const signal = deadline(SEARCH_DEADLINE_MS, context.signal);
@@ -259,16 +277,28 @@ export async function searchWeb(query: string, context: WebContext): Promise<Sea
 		await consume(context.userId, signal);
 		const input = searchInput(query);
 		if (!canSearchWeb()) throw new WebError("unavailable");
-		if (!(await budgetLeft(jobCounters, new Date()).catch(() => true))) throw new WebError("budget");
-		if (!(await countToday("web-search", context.userId, WEB_SEARCHES_PER_DAY))) throw new WebError("rate-limit");
+		if (!(await budgetLeft(jobCounters, new Date()))) throw new WebError("budget");
+		const searches = today("web-search", context.userId);
+		const spend = today("web-spend", context.userId);
+		const [used, spent] = await Promise.all([searches.used(), spend.used()]);
+		if (used >= WEB_SEARCHES_PER_DAY || spent >= WEB_SEARCH_SPEND_PER_DAY_MICRO) throw new WebError("rate-limit");
 		const regions = (context.regions ?? []).slice(0, MAX_SEARCH_REGIONS);
 		const settled = await Promise.allSettled(
-			(regions.length ? regions : [undefined]).map((region) => searchRegion(input, region, signal)),
+			(regions.length ? regions : [undefined]).map((region) =>
+				recorded(() => searchSerper(input, { region, signal }), spend, region),
+			),
 		);
 		const calls = settled.flatMap((outcome) => (outcome.status === "fulfilled" ? [outcome.value] : []));
-		if (calls.length === 0) throw (settled[0] as PromiseRejectedResult).reason;
+		if (calls.length === 0) {
+			signal.throwIfAborted();
+			const first: unknown = (settled[0] as PromiseRejectedResult).reason;
+			// A spent balance fails the routed search the same way; don't ask twice.
+			if (first instanceof WebError && first.reason === "budget") throw first;
+			calls.push(await recorded(() => searchRouted(input, { signal }), spend, undefined));
+		}
+		await searches.add(1);
 		signal.throwIfAborted();
-		const failed = settled.length - calls.length;
+		const failed = settled.length - settled.filter((outcome) => outcome.status === "fulfilled").length;
 		log(
 			"search",
 			calls[0]?.provider ?? "treg",

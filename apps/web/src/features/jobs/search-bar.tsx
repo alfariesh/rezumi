@@ -1,21 +1,26 @@
 import type { JobsSearch } from "./search";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { Key } from "react";
-import { Button, Checkbox, ComboBox, Input, Label, ListBox, Popover } from "@heroui/react";
+import { Sheet } from "@heroui-pro/react";
+import { Button, ComboBox, Input, Label, ListBox, Select } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useId, useMemo, useState } from "react";
 import { JOB_SENIORITIES } from "@rezumi/schema/jobs/listing";
 import { Icon } from "@rezumi/ui/components/icon";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { countryName, SEARCH_REGION_CODES } from "@rezumi/utils/region";
-import { cn } from "@rezumi/utils/style";
 import { arrangementLabel, seniorityLabel } from "./format";
-import { currencyForCountry, PAY_CURRENCIES } from "./search";
+import { currencyForCountry, PAY_CURRENCIES, sheetFilterCount, withoutFilters } from "./search";
 import { FlagIcon } from "@/components/flag-icon";
-import { SelectField } from "@/components/input/select-field";
+import { CellSelectField } from "@/components/input/select-field";
 
 /** "" in the country list: no country, so remote listings anywhere and on-site ones everywhere. */
 const ANYWHERE = "anywhere";
+/** Digits the minimum pay takes: up to the search's limit (MAX_JOB_SEARCH_SALARY, 13 digits) less one. */
+const MAX_PAY_DIGITS = 12;
 
 type JobsSearchBarProps = {
 	value: JobsSearch;
@@ -24,35 +29,70 @@ type JobsSearchBarProps = {
 	searching: boolean;
 };
 
+/** The row's choices, which say what they filter; the sheet's own cell names it, so its choices are shorter. */
+const postedOptions = () => [
+	{ value: "1", label: t`Posted in the last day` },
+	{ value: "7", label: t`Posted in the last week` },
+	{ value: "14", label: t`Posted in the last 2 weeks` },
+	{ value: "30", label: t`Posted in the last 30 days` },
+];
+
 /**
- * The search: role, place and country on the first row with Search; when it was posted, how it's worked, the level
- * and More (minimum pay, visa sponsorship) on the second. Changing a filter doesn't search: each search counts toward
- * the day's searches, so the person presses Search when the whole search is ready.
+ * The search on one row: when it was posted and Filters on the left, the role and Search on the right (the role first
+ * on phones). Filters opens a sheet with every other filter: place, how it's worked, level, pay and visa. Changing a
+ * filter doesn't search: each search counts toward the day's searches, so the person presses Search when it's ready.
  */
 export function JobsSearchBar({ value, onChange, onSearch, searching }: JobsSearchBarProps) {
-	const id = useId();
 	const set = (patch: Partial<JobsSearch>) => onChange({ ...value, ...patch });
 	const ready = value.q.trim().length >= 2 && !searching;
+	const [filtersOpen, setFiltersOpen] = useState(false);
+	const { i18n } = useLingui();
+	const filters = sheetFilterCount(value);
+	// Where the search looks, on the button: the sheet holds the place, so the row would otherwise hide it.
+	const place = value.location.trim() || (value.country ? countryName(value.country, i18n.locale) : "");
 
 	return (
 		<form
 			role="search"
 			aria-label={t`Search jobs`}
-			className="grid w-full gap-3"
+			className="flex w-full flex-wrap items-center gap-2"
 			onSubmit={(event) => {
 				event.preventDefault();
-				if (ready) onSearch();
+				if (ready) {
+					setFiltersOpen(false);
+					onSearch();
+				}
 			}}
 		>
-			<div className="flex flex-wrap items-end gap-2">
-				<div className="relative min-w-56 flex-[2_1_16rem]">
+			<div className="flex min-w-0 items-center gap-2 max-sm:w-full">
+				<PostedSelect value={value.posted} onChange={(posted) => set({ posted })} />
+				<Button variant="secondary" className="min-w-0 shrink" onPress={() => setFiltersOpen(true)}>
+					<Icon name="sliders-horizontal" size={16} className="shrink-0" />
+					<span className="truncate">
+						{place ? (
+							filters > 0 ? (
+								<Trans comment="The job search filters button: the place searched and how many other filters are set">
+									Filters · {place} ({filters})
+								</Trans>
+							) : (
+								<Trans comment="The job search filters button with the place searched">Filters · {place}</Trans>
+							)
+						) : filters > 0 ? (
+							<Trans>Filters ({filters})</Trans>
+						) : (
+							<Trans>Filters</Trans>
+						)}
+					</span>
+				</Button>
+			</div>
+			<div className="flex min-w-0 flex-[1_1_20rem] items-center justify-end gap-2 max-sm:order-first max-sm:basis-full">
+				<div className="relative min-w-0 flex-1 sm:max-w-md">
 					<Icon
 						name="magnifying-glass"
 						size={18}
 						className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-muted"
 					/>
 					<Input
-						id={`${id}-query`}
 						variant="secondary"
 						fullWidth
 						type="search"
@@ -64,79 +104,237 @@ export function JobsSearchBar({ value, onChange, onSearch, searching }: JobsSear
 						onChange={(event) => set({ q: event.target.value })}
 					/>
 				</div>
-				<div className="relative min-w-40 flex-[1_1_10rem]">
-					<Icon
-						name="map-pin"
-						size={18}
-						className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-muted"
-					/>
-					<Input
-						variant="secondary"
-						fullWidth
-						aria-label={t`City`}
-						placeholder={t`City (optional)`}
-						maxLength={200}
-						value={value.location}
-						className="ps-8"
-						onChange={(event) => set({ location: event.target.value })}
-					/>
-				</div>
-				<CountryField
-					value={value.country}
-					onChange={(country) =>
-						set({ country, ...(value.minPay === undefined ? {} : { currency: currencyForCountry(country) }) })
-					}
-				/>
-				<Button type="submit" isDisabled={!ready} isPending={searching} className="max-sm:basis-full">
+				<Button type="submit" isDisabled={!ready} isPending={searching} className="shrink-0">
 					{t({ message: "Search", context: "Button that runs a job search" })}
 				</Button>
 			</div>
-			<div className="-mx-4 flex [scrollbar-width:none] items-center gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
-				<SelectField
-					aria-label={t`Posted`}
-					className="w-auto shrink-0"
-					triggerClassName="h-8 min-w-36"
-					value={String(value.posted)}
-					onChange={(posted) => set({ posted: Number(posted) as JobsSearch["posted"] })}
-					options={[
-						{ value: "1", label: t`Posted in the last day` },
-						{ value: "7", label: t`Posted in the last week` },
-						{ value: "14", label: t`Posted in the last 2 weeks` },
-						{ value: "30", label: t`Posted in the last 30 days` },
-					]}
-				/>
-				<SelectField
-					aria-label={t`Work arrangement`}
-					className="w-auto shrink-0"
-					triggerClassName="h-8 min-w-36"
-					value={value.arrangement}
-					onChange={(arrangement) => set({ arrangement: arrangement as JobsSearch["arrangement"] })}
-					options={[
-						{ value: "any", label: t`On-site, hybrid or remote` },
-						{
-							value: "remote",
-							label: value.country
-								? t({ message: "Remote in this country", context: "Job search filter" })
-								: t({ message: "Remote anywhere", context: "Job search filter" }),
-						},
-						{ value: "hybrid", label: arrangementLabel("hybrid") },
-						{ value: "onsite", label: arrangementLabel("onsite") },
-					]}
-				/>
-				<SelectField
-					aria-label={t`Level`}
-					className="w-auto shrink-0"
-					triggerClassName="h-8 min-w-32"
-					value={value.level}
-					onChange={(level) => set({ level: level as JobsSearch["level"] })}
-					options={[
-						{ value: "", label: t`Any level` },
-						...JOB_SENIORITIES.map((level) => ({ value: level, label: seniorityLabel(level) })),
-					]}
-				/>
-				<MoreFilters value={value} onChange={set} />
-			</div>
+			<FiltersSheet
+				isOpen={filtersOpen}
+				onOpenChange={setFiltersOpen}
+				value={value}
+				onChange={set}
+				onReset={() => onChange({ ...withoutFilters(value), country: "", location: "" })}
+				canSearch={ready}
+				onSearch={() => {
+					setFiltersOpen(false);
+					onSearch();
+				}}
+			/>
 		</form>
+	);
+}
+
+type PostedSelectProps = { value: JobsSearch["posted"]; onChange: (posted: JobsSearch["posted"]) => void };
+
+/** When it was posted, on the search row: the filter people change most. */
+function PostedSelect({ value, onChange }: PostedSelectProps) {
+	return (
+		<Select
+			aria-label={t`Posted`}
+			className="w-auto min-w-0 max-sm:flex-1"
+			value={String(value)}
+			onChange={(key: Key | Key[] | null) => {
+				if (typeof key === "string") onChange(Number(key) as JobsSearch["posted"]);
+			}}
+		>
+			<Select.Trigger className="gap-2 sm:min-w-44 pointer-coarse:min-h-11">
+				<Icon name="calendar-blank" size={16} className="shrink-0 text-muted" />
+				<Select.Value className="truncate" />
+				<Select.Indicator />
+			</Select.Trigger>
+			<Select.Popover>
+				<ListBox>
+					{postedOptions().map((option) => (
+						<ListBox.Item key={option.value} id={option.value} textValue={option.label}>
+							{option.label}
+							<ListBox.ItemIndicator />
+						</ListBox.Item>
+					))}
+				</ListBox>
+			</Select.Popover>
+		</Select>
+	);
+}
+
+type FiltersSheetProps = {
+	isOpen: boolean;
+	onOpenChange: (open: boolean) => void;
+	value: JobsSearch;
+	onChange: (patch: Partial<JobsSearch>) => void;
+	onReset: () => void;
+	canSearch: boolean;
+	onSearch: () => void;
+};
+
+type FieldHeadingProps = { icon: IconName; htmlFor?: string; children: React.ReactNode };
+
+/** A field's name with its icon, above a text field or the country picker. */
+function FieldHeading({ icon, htmlFor, children }: FieldHeadingProps) {
+	return (
+		<Label htmlFor={htmlFor} className="flex items-center gap-2">
+			<Icon name={icon} size={16} className="shrink-0 text-muted" />
+			{children}
+		</Label>
+	);
+}
+
+/**
+ * Every filter in one place, from the right (from the bottom on phones), each on its own row: where, when, how it's
+ * worked, the level, pay and visa sponsorship (K11). Search runs the search from here; closing keeps the changes for it.
+ */
+function FiltersSheet({ isOpen, onOpenChange, value, onChange, onReset, canSearch, onSearch }: FiltersSheetProps) {
+	const id = useId();
+	const phone = useBreakpoint() === "mobile";
+	const { i18n } = useLingui();
+	const currency = value.currency ?? currencyForCountry(value.country);
+	const [draftPay, setDraftPay] = useState(value.minPay === undefined ? "" : String(value.minPay));
+	const [lastPay, setLastPay] = useState(value.minPay);
+	if (lastPay !== value.minPay) {
+		setLastPay(value.minPay);
+		setDraftPay(value.minPay === undefined ? "" : String(value.minPay));
+	}
+
+	return (
+		<Sheet isOpen={isOpen} onOpenChange={onOpenChange} placement={phone ? "bottom" : "right"}>
+			<Sheet.Backdrop>
+				<Sheet.Content className={phone ? "max-h-[90svh]" : "w-full sm:max-w-[420px]"}>
+					<Sheet.Dialog className="bg-surface">
+						{phone && <Sheet.Handle />}
+						<Sheet.CloseTrigger aria-label={t`Close`} />
+						<Sheet.Header>
+							<Sheet.Heading>
+								<Trans>Filters</Trans>
+							</Sheet.Heading>
+						</Sheet.Header>
+						<Sheet.Body className="grid content-start gap-4">
+							<div className="grid gap-1.5">
+								<FieldHeading icon="globe-simple">
+									<Trans>Country</Trans>
+								</FieldHeading>
+								<CountryField
+									className="w-full"
+									value={value.country}
+									onChange={(country) =>
+										onChange({
+											country,
+											...(value.minPay === undefined ? {} : { currency: currencyForCountry(country) }),
+										})
+									}
+								/>
+							</div>
+							<div className="grid gap-1.5">
+								<FieldHeading icon="map-pin" htmlFor={`${id}-city`}>
+									<Trans>City</Trans>
+								</FieldHeading>
+								<Input
+									id={`${id}-city`}
+									variant="secondary"
+									fullWidth
+									placeholder={t`Anywhere in the country`}
+									maxLength={200}
+									value={value.location}
+									onChange={(event) => onChange({ location: event.target.value })}
+								/>
+							</div>
+							<div className="grid gap-2">
+								<CellSelectField
+									icon="calendar-blank"
+									label={t`Posted`}
+									value={String(value.posted)}
+									onChange={(posted) => onChange({ posted: Number(posted) as JobsSearch["posted"] })}
+									options={[
+										{ value: "1", label: t({ message: "Last day", context: "Job search filter: posted within" }) },
+										{ value: "7", label: t({ message: "Last week", context: "Job search filter: posted within" }) },
+										{ value: "14", label: t({ message: "Last 2 weeks", context: "Job search filter: posted within" }) },
+										{ value: "30", label: t({ message: "Last 30 days", context: "Job search filter: posted within" }) },
+									]}
+								/>
+								<CellSelectField
+									icon="briefcase"
+									label={t`Work arrangement`}
+									value={value.arrangement}
+									onChange={(arrangement) => onChange({ arrangement: arrangement as JobsSearch["arrangement"] })}
+									options={[
+										{ value: "any", label: t({ message: "Any", context: "Job search filter: any work arrangement" }) },
+										{
+											value: "remote",
+											label: value.country
+												? t({ message: "Remote in this country", context: "Job search filter" })
+												: t({ message: "Remote anywhere", context: "Job search filter" }),
+										},
+										{ value: "hybrid", label: arrangementLabel("hybrid") },
+										{ value: "onsite", label: arrangementLabel("onsite") },
+									]}
+								/>
+								<CellSelectField
+									icon="chart-line-up"
+									label={t`Level`}
+									value={value.level}
+									onChange={(level) => onChange({ level: level as JobsSearch["level"] })}
+									options={[
+										{ value: "", label: t`Any level` },
+										...JOB_SENIORITIES.map((level) => ({ value: level, label: seniorityLabel(level) })),
+									]}
+								/>
+							</div>
+							<div className="grid gap-1.5">
+								<FieldHeading icon="tag" htmlFor={`${id}-pay`}>
+									<Trans>Minimum yearly pay</Trans>
+								</FieldHeading>
+								<Input
+									id={`${id}-pay`}
+									variant="secondary"
+									fullWidth
+									inputMode="numeric"
+									placeholder={t`Any`}
+									// Grouped for reading ("150.000.000"); only the digits are kept.
+									value={draftPay ? new Intl.NumberFormat(i18n.locale).format(Number(draftPay)) : ""}
+									onChange={(event) => {
+										const digits = event.target.value.replace(/[^\d]/g, "").slice(0, MAX_PAY_DIGITS);
+										setDraftPay(digits);
+										const amount = Number(digits);
+										onChange(amount > 0 ? { minPay: amount, currency } : { minPay: undefined, currency: undefined });
+									}}
+								/>
+							</div>
+							<div className="grid gap-2">
+								<CellSelectField
+									icon="scales"
+									label={t`Currency`}
+									value={currency}
+									onChange={(next) => onChange({ currency: next })}
+									options={PAY_CURRENCIES.map((code) => ({ value: code, label: code }))}
+								/>
+								<CellSwitchRow
+									label={<Trans>Include jobs that don't list pay</Trans>}
+									isSelected={value.noPay}
+									isDisabled={value.minPay === undefined}
+									onChange={(noPay) => onChange({ noPay })}
+								/>
+								<CellSwitchRow
+									label={<Trans>Offers visa sponsorship</Trans>}
+									isSelected={value.visa}
+									onChange={(visa) => onChange({ visa })}
+								/>
+								<p className="px-1 text-body-xs text-muted">
+									<Trans>
+										Many postings don't list pay, especially outside the US, and few say whether they sponsor a visa.
+									</Trans>
+								</p>
+							</div>
+						</Sheet.Body>
+						<Sheet.Footer className="flex gap-2">
+							<Button variant="secondary" onPress={onReset}>
+								<Trans>Clear filters</Trans>
+							</Button>
+							<Button className="flex-1" isDisabled={!canSearch} onPress={onSearch}>
+								{t({ message: "Search", context: "Button that runs a job search" })}
+							</Button>
+						</Sheet.Footer>
+					</Sheet.Dialog>
+				</Sheet.Content>
+			</Sheet.Backdrop>
+		</Sheet>
 	);
 }
 
@@ -212,90 +410,5 @@ export function CountryField({ value, onChange, label, className }: CountryField
 				</ListBox>
 			</ComboBox.Popover>
 		</ComboBox>
-	);
-}
-
-type MoreFiltersProps = { value: JobsSearch; onChange: (patch: Partial<JobsSearch>) => void };
-
-/** Minimum pay (keeping listings without pay unless that's turned off) and visa sponsorship (K11). */
-function MoreFilters({ value, onChange }: MoreFiltersProps) {
-	const id = useId();
-	const extra = (value.minPay === undefined ? 0 : 1) + (value.visa ? 1 : 0);
-	const currency = value.currency ?? currencyForCountry(value.country);
-	const [draftPay, setDraftPay] = useState(value.minPay === undefined ? "" : String(value.minPay));
-	const [lastPay, setLastPay] = useState(value.minPay);
-	if (lastPay !== value.minPay) {
-		setLastPay(value.minPay);
-		setDraftPay(value.minPay === undefined ? "" : String(value.minPay));
-	}
-
-	return (
-		<Popover>
-			<Popover.Trigger
-				className={cn(
-					"inline-flex h-8 shrink-0 items-center gap-1.5 rounded-field bg-default px-3 text-sm whitespace-nowrap text-field-foreground transition-colors duration-quick outline-none hover:bg-default-hover focus-visible:ring-2 focus-visible:ring-focus pointer-coarse:min-h-11",
-					extra > 0 && "text-accent-soft-foreground",
-				)}
-			>
-				<Icon name="sliders-horizontal" size={16} />
-				{extra > 0 ? <Trans>More filters ({extra})</Trans> : <Trans>More filters</Trans>}
-			</Popover.Trigger>
-			<Popover.Content placement="bottom start" className="w-80 max-w-[calc(100vw-2rem)]">
-				<Popover.Dialog aria-label={t`More filters`} className="grid gap-4 p-1">
-					<div className="grid gap-1.5">
-						<Label htmlFor={`${id}-pay`}>
-							<Trans>Minimum yearly pay</Trans>
-						</Label>
-						<div className="flex gap-2">
-							<Input
-								id={`${id}-pay`}
-								variant="secondary"
-								fullWidth
-								inputMode="numeric"
-								placeholder={t`Any`}
-								value={draftPay}
-								onChange={(event) => {
-									const digits = event.target.value.replace(/[^\d]/g, "").slice(0, 9);
-									setDraftPay(digits);
-									const amount = Number(digits);
-									onChange(amount > 0 ? { minPay: amount, currency } : { minPay: undefined, currency: undefined });
-								}}
-							/>
-							<SelectField
-								aria-label={t`Currency`}
-								className="w-28 shrink-0"
-								value={currency}
-								onChange={(next) => onChange({ currency: next })}
-								options={PAY_CURRENCIES.map((code) => ({ value: code, label: code }))}
-							/>
-						</div>
-						<Checkbox
-							isSelected={value.noPay}
-							isDisabled={value.minPay === undefined}
-							onChange={(noPay) => onChange({ noPay })}
-							className="text-sm"
-						>
-							<Checkbox.Content>
-								<Checkbox.Control>
-									<Checkbox.Indicator />
-								</Checkbox.Control>
-								<Trans>Include jobs that don't list pay</Trans>
-							</Checkbox.Content>
-						</Checkbox>
-						<p className="text-body-xs text-muted">
-							<Trans>Many postings don't list pay, especially outside the US.</Trans>
-						</p>
-					</div>
-					<Checkbox isSelected={value.visa} onChange={(visa) => onChange({ visa })} className="text-sm">
-						<Checkbox.Content>
-							<Checkbox.Control>
-								<Checkbox.Indicator />
-							</Checkbox.Control>
-							<Trans>Offers visa sponsorship</Trans>
-						</Checkbox.Content>
-					</Checkbox>
-				</Popover.Dialog>
-			</Popover.Content>
-		</Popover>
 	);
 }

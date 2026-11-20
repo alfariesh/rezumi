@@ -440,7 +440,9 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 		expect(fixture.hirebase).not.toHaveBeenCalled();
 		const [job] = await getDb().select().from(tables.careerJob);
 		expect(job).toMatchObject({ status: "queued", attempts: 0, error: null });
-		expect(job?.leaseUntil?.toISOString().slice(11, 16)).toBe("00:05");
+		// Between 00:05 and 06:05 UTC: postponed checks are spread over the new day's first hours.
+		const time = job?.leaseUntil?.toISOString().slice(11, 16) ?? "";
+		expect(time >= "00:05" && time <= "06:05").toBe(true);
 		expect(job?.leaseUntil?.getTime()).toBeGreaterThan(Date.now());
 		expect(await jobs.notifications("alice")).toEqual([]);
 
@@ -496,6 +498,35 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 				}),
 			),
 		).resolves.toMatchObject({ enabled: false });
+	});
+
+	it("changes the role of a saved search when only the role is sent, as MCP does", async () => {
+		const saved = await jobs.save(
+			"alice",
+			careerScheduleInputSchema.parse({
+				kind: "discovery",
+				search: { query: "Data analyst", country: "GB" },
+				timezone: "UTC",
+				nextRunAt: due(),
+			}),
+		);
+		const renamed = await jobs.save("alice", {
+			...careerScheduleInputSchema.parse({ ...saved, search: undefined, query: "Data engineer" }),
+			id: saved.id,
+		});
+		expect(renamed).toMatchObject({ query: "Data engineer", search: { query: "Data engineer", country: "GB" } });
+	});
+
+	it("checks only the alerts the plan covers after a move to a smaller plan", async () => {
+		await schedule();
+		await schedule();
+		fixture.env.BILLING_MODE = "on";
+		await run();
+		await run();
+		// Free covers one alert: the older one is checked, the other waits without a failure.
+		expect(fixture.hirebase).toHaveBeenCalledOnce();
+		const rows = await getDb().select({ status: tables.careerJob.status }).from(tables.careerJob);
+		expect(rows.map((row) => row.status).toSorted()).toEqual(["completed", "completed"]);
 	});
 
 	it.each(["pause", "delete schedule", "delete application"] as const)(

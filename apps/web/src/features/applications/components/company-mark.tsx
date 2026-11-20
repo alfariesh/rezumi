@@ -32,6 +32,7 @@ export function CompanyMark({ company, logoUrl, className }: CompanyMarkProps) {
 					alt=""
 					loading="lazy"
 					decoding="async"
+					referrerPolicy="no-referrer"
 					className="size-full object-contain p-0.5"
 					onError={() => setFailed(logoUrl)}
 				/>

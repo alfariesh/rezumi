@@ -40,6 +40,10 @@ export const PARITY_TOOL_DESCRIPTIONS: Record<string, string> = {
 	"jobs.hide": "Hide a job listing from the user's search results, or show it again (`hidden: false`).",
 	"jobs.checkFit":
 		'Check the user\'s fit for a job listing with AI: each requirement against the facts and stories in their Profile, and the job against their preferences. With `aiSource: "rezumi"` it costs 4 Rezumi AI credits, so ask first. Asking again while the Profile is unchanged gives the saved answer back without charging; `api_jobs_fit` reads it for free.',
+	"jobs.recent":
+		"List the user's last 10 job searches, newest first, with their filters. `seenToday: true` means running that search again today with `search_jobs` (same criteria) doesn't count toward the day's searches; otherwise it uses one. Searches nothing.",
+	"jobs.forgetRecent": "Remove one search from the user's recent job searches, by its id from `api_jobs_recent`.",
+	"jobs.clearRecent": "Remove every search from the user's recent job searches. Ask the user first.",
 	"documents.list":
 		"List owned resumes and cover letters, optionally from Trash. Listing Trash also permanently purges documents older than 30 days and their owned files.",
 	"aiProviders.list":

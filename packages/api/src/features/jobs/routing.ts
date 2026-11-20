@@ -3,7 +3,7 @@ import type { JobSourceAdapter, ProviderListing } from "./providers";
 import type { JobProvider } from "@rezumi/schema/jobs/listing";
 import type { JobSearchInput } from "@rezumi/schema/jobs/search";
 import { JOB_SEARCH_PAGE_SIZE } from "@rezumi/schema/jobs/search";
-import { matchesSearch, withoutDuplicates } from "./filters";
+import { matchesSearch, spreadCompanies, withoutDuplicates } from "./filters";
 import { TregError } from "./treg";
 
 /**
@@ -13,6 +13,9 @@ import { TregError } from "./treg";
  * - Hirebase first, for every country and remote: cheaper, and its links go to the employer.
  * - JobsPipe tops the page up to JOB_PAGE_SIZE when Hirebase failed or found fewer than TOP_UP_BELOW fitting jobs.
  *   It is left out of searches for visa sponsorship, since its listings don't say.
+ * - A page has a time limit: once it passes, a provider still answering is given up on, and the page shows what the
+ *   others answered.
+ * - No company fills the top of a page (`spreadCompanies`).
  * - Each provider keeps its own place for "load more". A cursor of "" means it has nothing more; a missing one means
  *   it hasn't been asked yet, so JobsPipe can still step in on a later page once Hirebase runs out.
  */
@@ -44,6 +47,8 @@ export type RouteOptions = {
 	kind?: JobEventKind;
 	/** Duplicate keys of jobs already shown on earlier pages. */
 	seen?: Set<string>;
+	/** The most time the page may take in all, in milliseconds. */
+	deadlineMs?: number;
 };
 
 const jobspipeAllowed = (input: JobSearchInput, cursors: ProviderCursors) =>
@@ -69,7 +74,15 @@ export async function routeSearch(
 	const providers: JobProvider[] = [];
 	const errors: unknown[] = [];
 	let costMicro = 0;
-	const searchOptions = { kind: options.kind ?? "search", signal: options.signal } as const;
+	const deadline = options.deadlineMs === undefined ? undefined : AbortSignal.timeout(options.deadlineMs);
+	const signal =
+		deadline && options.signal ? AbortSignal.any([options.signal, deadline]) : (deadline ?? options.signal);
+	const searchOptions = { kind: options.kind ?? "search", signal } as const;
+	/** A caller that went away stops the page; a passed time limit only counts as that provider failing. */
+	const failed = (error: unknown) => {
+		options.signal?.throwIfAborted();
+		errors.push(deadline?.aborted && !(error instanceof TregError) ? new TregError("timeout") : error);
+	};
 
 	const ask = async (provider: JobProvider, limit: number) => {
 		const cursor = cursors[provider];
@@ -95,26 +108,24 @@ export async function routeSearch(
 			await ask("hirebase", JOB_PAGE_SIZE);
 		} catch (error) {
 			if (error instanceof TregError && error.code === "budget") throw error;
-			options.signal?.throwIfAborted();
+			failed(error);
 			hirebaseFailed = true;
-			errors.push(error);
 		}
 	}
 
 	const topUp = hirebaseFailed || shown.length < TOP_UP_BELOW;
-	if (topUp && jobspipeAllowed(input, cursors)) {
+	if (topUp && jobspipeAllowed(input, cursors) && !deadline?.aborted) {
 		try {
 			await ask("jobspipe", JOB_PAGE_SIZE - shown.length);
 		} catch (error) {
 			if (error instanceof TregError && error.code === "budget" && providers.length === 0) throw error;
-			options.signal?.throwIfAborted();
-			errors.push(error);
+			failed(error);
 		}
 	}
 
 	if (providers.length === 0 && errors.length > 0) throw errors[0];
 	return {
-		listings: shown.slice(0, JOB_PAGE_SIZE),
+		listings: spreadCompanies(shown.slice(0, JOB_PAGE_SIZE)),
 		returned,
 		cursors,
 		hasMore: hasMorePages(input, cursors),

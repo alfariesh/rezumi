@@ -139,10 +139,12 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete, search }: 
 	const { when, timeZone, locale } = useCareerTime();
 	const context = useRouteContext({ strict: false });
 	const user = context.session?.user;
-	const { data: schedules } = useQuery(orpc.career.schedules.queryOptions({ input: {} }));
-	const { data: profile } = useQuery(orpc.career.profile.queryOptions());
-	const { data: applications } = useQuery(applicationsListQueryOptions());
-	const { data: jobSearch } = useQuery(orpc.jobs.quota.queryOptions());
+	// Nothing is loaded until a schedule is opened: the sheet stays mounted on pages that may never open it.
+	const opened = Boolean(shown);
+	const { data: schedules } = useQuery({ ...orpc.career.schedules.queryOptions({ input: {} }), enabled: opened });
+	const { data: profile } = useQuery({ ...orpc.career.profile.queryOptions(), enabled: opened });
+	const { data: applications } = useQuery({ ...applicationsListQueryOptions(), enabled: opened });
+	const { data: jobSearch } = useQuery({ ...orpc.jobs.quota.queryOptions(), enabled: opened });
 	// A new alert without a search starts from the role, place and country in Preferences.
 	const needsDefaults = Boolean(schedule?.startsWith("new") && !search);
 	const defaults = useQuery({ ...orpc.jobs.defaults.queryOptions(), enabled: needsDefaults, staleTime: Infinity });

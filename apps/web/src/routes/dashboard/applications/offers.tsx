@@ -18,7 +18,7 @@ export const Route = createFileRoute("/dashboard/applications/offers")({
 function RouteComponent() {
 	const { a, b } = Route.useSearch();
 	return (
-		<ApplicationsSection view={null}>
+		<ApplicationsSection view="offers">
 			<PageHeader
 				title={t`Offers`}
 				description={<Trans>Compare two saved offers side by side, and decide what to ask.</Trans>}

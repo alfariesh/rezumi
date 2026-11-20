@@ -195,7 +195,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 				<p className="flex flex-wrap items-center gap-x-1.5 text-body-sm text-muted">
 					<Trans>Looking for openings?</Trans>
 					<Link
-						to="/dashboard/jobs"
+						to="/dashboard/applications/jobs"
 						className="font-medium text-accent-soft-foreground hover:underline"
 						onClick={onClose}
 					>

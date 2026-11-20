@@ -1,7 +1,7 @@
 import type { JobCounters } from "./counters";
 import type { TregDependencies } from "./treg";
 import type { JobProvider } from "@rezumi/schema/jobs/listing";
-import { and, asc, desc, eq, exists, inArray, isNotNull, isNull, lt, ne, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, exists, inArray, isNotNull, isNull, lt, ne, notExists, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { budgetLeft, recordSpend } from "./allowance";
@@ -23,7 +23,8 @@ import { callTreg, isTregConfigured, TregError } from "./treg";
  * 4. Closed listings go (Hirebase's terms ask for that), with the search answers a day past their expiry and listings
  *    nobody saw for 30 days and nothing uses (K3).
  *
- * Each step is safe to run twice. A lease keeps two ticks from running the day at once.
+ * Each step is safe to run twice. A lease keeps two ticks from running the day at once. New roles nobody saw for 30
+ * days are dismissed, so the listings behind them can go too.
  */
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -34,7 +35,11 @@ const EXPIRED_TOOL = "hirebase.jobs.expired";
 const EXPIRED_PAGE_SIZE = 1000;
 /** Time one tick spends reading the feed before leaving the rest to the next tick. */
 const TICK_BUDGET_MS = 20_000;
-const LEASE_MS = 2 * 60_000;
+/**
+ * Longer than one tick can take (the feed's time, its last call, the JobsPipe lookups and the deletes); a tick only
+ * releases a lease it still holds.
+ */
+const LEASE_MS = 10 * 60_000;
 const DETAIL_TOOL = "jobspipe.jobs.detail";
 const JOBSPIPE_RECHECK_MS = 3 * DAY_MS;
 /** Ids per lookup: treg holds the price of every id asked for until the call ends. */
@@ -235,7 +240,7 @@ type DetailAnswer = { data?: unknown };
 /**
  * Looks up JobsPipe listings people use and haven't had checked for three days (`jobspipe.jobs.detail`, open or
  * closed). A job already pulled this month costs nothing; others are paid like a search result, from the same daily
- * budget (K7). Ids JobsPipe no longer knows are left as they are.
+ * budget (K7). Ids JobsPipe no longer knows stay open and are asked about again in three days.
  */
 async function checkJobspipeListings(now: Date, options: JobMaintenanceOptions): Promise<number> {
 	const counters = options.counters ?? jobCounters;
@@ -273,6 +278,11 @@ async function checkJobspipeListings(now: Date, options: JobMaintenanceOptions):
 			const jobs = Array.isArray(answer.data.data) ? answer.data.data.filter(isRecord) : [];
 			const { listings } = validListings(jobs.map(mapJobspipeJob));
 			await upsertListings(listings, now);
+			// Ids JobsPipe didn't answer wait their turn again, so they can't hold the front of the queue every day.
+			await db
+				.update(schema.jobListing)
+				.set({ lastVerifiedAt: now })
+				.where(and(eq(schema.jobListing.provider, "jobspipe"), inArray(schema.jobListing.externalId, ids)));
 			checked += listings.length;
 			recordJobEvent({
 				provider: "jobspipe",
@@ -367,18 +377,35 @@ async function deleteListingsWhere(where: ReturnType<typeof and>): Promise<numbe
 /**
  * Removes what the providers' terms and K3 say not to keep: closed listings (their opportunities are dismissed first,
  * so they don't come back without the listing), search answers a day past their expiry, and listings no search has
- * returned for 30 days that nothing uses. Applications keep their own copy of the posting.
+ * returned for 30 days that nothing uses. New roles no alert found again for 30 days are dismissed first. Applications keep their own copy of the posting.
  */
 async function removeOldListings(now: Date): Promise<JobMaintenanceResult["removed"]> {
-	const closedIds = db
-		.select({ id: schema.jobListing.id })
-		.from(schema.jobListing)
-		.where(isNotNull(schema.jobListing.closedAt));
+	// A listing that closed after its applications were marked waits for the next run, so they get marked first.
+	const closed = and(
+		isNotNull(schema.jobListing.closedAt),
+		notExists(
+			db
+				.select({ one: sql`1` })
+				.from(schema.application)
+				.where(
+					and(eq(schema.application.jobListingId, schema.jobListing.id), isNull(schema.application.postingClosedAt)),
+				),
+		),
+	);
+	const closedIds = db.select({ id: schema.jobListing.id }).from(schema.jobListing).where(closed);
 	await db
 		.update(schema.careerOpportunity)
 		.set({ dismissedAt: now, updatedAt: sql`${schema.careerOpportunity.updatedAt}` })
-		.where(and(isNull(schema.careerOpportunity.dismissedAt), inArray(schema.careerOpportunity.listingId, closedIds)));
-	const closedListings = await deleteListingsWhere(and(isNotNull(schema.jobListing.closedAt)));
+		.where(
+			and(
+				isNull(schema.careerOpportunity.dismissedAt),
+				or(
+					inArray(schema.careerOpportunity.listingId, closedIds),
+					lt(schema.careerOpportunity.lastSeenAt, new Date(now.getTime() - UNUSED_LISTING_MS)),
+				),
+			),
+		);
+	const closedListings = await deleteListingsWhere(closed);
 	const searches = (
 		await db
 			.delete(schema.jobSearchCache)
@@ -428,10 +455,12 @@ export async function runJobListingJobs(options: JobMaintenanceOptions = {}): Pr
 		console.info(`[jobs] Daily listing upkeep done: ${JSON.stringify({ ...result, day: run.day })}`);
 		return result;
 	} finally {
-		await db
-			.update(schema.jobMaintenance)
-			.set({ leaseUntil: null })
-			.where(eq(schema.jobMaintenance.day, run.day))
-			.catch(() => undefined);
+		// Only this tick's lease: one that ran out may already belong to another tick.
+		if (run.leaseUntil)
+			await db
+				.update(schema.jobMaintenance)
+				.set({ leaseUntil: null })
+				.where(and(eq(schema.jobMaintenance.day, run.day), eq(schema.jobMaintenance.leaseUntil, run.leaseUntil)))
+				.catch(() => undefined);
 	}
 }

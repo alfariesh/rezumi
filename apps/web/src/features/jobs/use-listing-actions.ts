@@ -21,14 +21,22 @@ export function useListingActions(tracked: Record<string, string>) {
 	const trackMutation = useMutation(orpc.jobs.track.mutationOptions());
 	const saveLogo = useMutation(orpc.applications.saveLogo.mutationOptions());
 	const hideMutation = useMutation(orpc.jobs.hide.mutationOptions());
-	const [pending, setPending] = useState<string | null>(null);
+	// Listings being tracked now; several can be at once.
+	const [pending, setPending] = useState<ReadonlySet<string>>(new Set());
+	const setTracking = (listingId: string, busy: boolean) =>
+		setPending((current) => {
+			const next = new Set(current);
+			if (busy) next.add(listingId);
+			else next.delete(listingId);
+			return next;
+		});
 
 	const applicationFor = (listingId: string) => trackedHere[listingId] ?? tracked[listingId];
 
 	const track = async (listing: JobListingCard): Promise<string | null> => {
 		const existing = applicationFor(listing.id);
 		if (existing) return existing;
-		setPending(listing.id);
+		setTracking(listing.id, true);
 		try {
 			const result = await trackMutation.mutateAsync({ id: listing.id });
 			setTrackedHere((current) => ({ ...current, [listing.id]: result.applicationId }));
@@ -45,7 +53,7 @@ export function useListingActions(tracked: Record<string, string>) {
 			toastError(error, t`This job couldn't be tracked. Try again.`);
 			return null;
 		} finally {
-			setPending(null);
+			setTracking(listing.id, false);
 		}
 	};
 
@@ -87,7 +95,7 @@ export function useListingActions(tracked: Record<string, string>) {
 
 	return {
 		applicationFor,
-		isPending: (listingId: string) => pending === listingId,
+		isPending: (listingId: string) => pending.has(listingId),
 		isHidden: (listingId: string) => hidden.has(listingId),
 		track: trackWithToast,
 		tailor,

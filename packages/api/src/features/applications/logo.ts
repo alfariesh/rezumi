@@ -32,12 +32,15 @@ type LogoProblem = "unsafe-url" | "unreachable" | "too-large" | "wrong-type";
 
 export type CopiedLogo = { ok: true; url: string } | { ok: false; reason: LogoProblem };
 
-/** Downloads one logo and stores it under the account's uploads; returns its address there, or why it was skipped. */
-export async function copyCompanyLogo(
-	userId: string,
+export type DownloadedLogo =
+	| { ok: true; bytes: Uint8Array; contentType: "image/png" | "image/jpeg" | "image/webp" }
+	| { ok: false; reason: LogoProblem };
+
+/** Downloads one logo from a public https address, checked as above; why it was skipped when it wasn't. */
+export async function downloadLogo(
 	address: string,
 	options: { signal?: AbortSignal | undefined; hop?: RemoteHop | undefined } = {},
-): Promise<CopiedLogo> {
+): Promise<DownloadedLogo> {
 	const url = remoteUrl(address);
 	if (!url || url.protocol !== "https:") return { ok: false, reason: "unsafe-url" };
 
@@ -46,7 +49,9 @@ export async function copyCompanyLogo(
 		body = await fetchRemote(url, {
 			signal: remoteDeadline(LOGO_DEADLINE_MS, options.signal),
 			accept: "image/png,image/jpeg,image/webp;q=0.9,image/*;q=0.1",
-			acceptsType: (type) => LOGO_TYPES.has(type),
+			// Storage buckets often serve pictures as plain bytes; the bytes themselves are checked below either way.
+			acceptsType: (type) =>
+				LOGO_TYPES.has(type) || type === "application/octet-stream" || type === "binary/octet-stream",
 			maxBytes: MAX_LOGO_BYTES,
 			overflow: "refuse",
 			hop: options.hop,
@@ -61,7 +66,17 @@ export async function copyCompanyLogo(
 	}
 
 	const contentType = logoType(body.bytes);
-	if (!contentType) return { ok: false, reason: "wrong-type" };
-	const stored = await uploadFile({ userId, data: body.bytes, contentType });
+	return contentType ? { ok: true, bytes: body.bytes, contentType } : { ok: false, reason: "wrong-type" };
+}
+
+/** Downloads one logo and stores it under the account's uploads; returns its address there, or why it was skipped. */
+export async function copyCompanyLogo(
+	userId: string,
+	address: string,
+	options: { signal?: AbortSignal | undefined; hop?: RemoteHop | undefined } = {},
+): Promise<CopiedLogo> {
+	const logo = await downloadLogo(address, options);
+	if (!logo.ok) return logo;
+	const stored = await uploadFile({ userId, data: logo.bytes, contentType: logo.contentType });
 	return { ok: true, url: stored.url };
 }

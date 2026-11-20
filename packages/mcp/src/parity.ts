@@ -106,6 +106,9 @@ const PARITY_PROCEDURES: Record<string, [AnyProcedure, BehaviorAnnotations]> = {
 	"jobs.checkFit": [router.jobs.checkFit, WRITE_EXTERNAL],
 	"jobs.defaults": [router.jobs.defaults, READ_IDEMPOTENT],
 	"jobs.quota": [router.jobs.quota, READ_IDEMPOTENT],
+	"jobs.recent": [router.jobs.recent, READ_IDEMPOTENT],
+	"jobs.forgetRecent": [router.jobs.forgetRecent, WRITE_DESTRUCTIVE],
+	"jobs.clearRecent": [router.jobs.clearRecent, WRITE_DESTRUCTIVE],
 	"profile.get": [router.profile.get, READ_IDEMPOTENT],
 	"profile.update": [router.profile.update, WRITE_DESTRUCTIVE],
 	"profile.savePart": [router.profile.savePart, WRITE_DESTRUCTIVE],
@@ -366,67 +369,71 @@ export function registerParityTools(
 		server.registerTool(
 			name,
 			meta,
-			withErrorHandling(path, async (params) => {
-				const userId = context.authentication.user.id;
-				const permission = requiredPermission(definition.route);
-				if (!context.authentication.permissions.includes(permission))
-					throw new ORPCError("FORBIDDEN", {
-						message: `This credential needs the api:${permission} permission. Use a credential that includes it.`,
-					});
-				const maxBytes =
-					path === "rest.checkPdf"
-						? 25_000_000
-						: path === "agent.attachments.create"
-							? 25 * 1024 * 1024
-							: 10 * 1024 * 1024;
-				let input = await decodeInput(params, inputJson as Record<string, unknown>, userId, maxBytes);
-				if (path === "ai.parsePdf" || path === "ai.parseDocx" || path === "agent.attachments.create") {
-					const record = input as Record<string, unknown>;
-					const field = path === "agent.attachments.create" ? "data" : "file";
-					const file = await readMcpFile(record[field], userId, maxBytes);
-					input = { ...record, [field]: Buffer.from(await file.arrayBuffer()).toString("base64") };
-				}
-				context.resHeaders.delete("set-cookie");
-				let result: unknown;
-				if (exportPaths.has(path)) {
-					const { id, format, words } = input as { id: string; format: string; words?: Record<string, string> };
-					await (path.endsWith(".resume") ? client.resume.getById({ id }) : client.coverLetters.getById({ id }));
-					const collection = path.endsWith(".resume") ? "resumes" : "cover-letters";
-					const url = new URL(
-						`/api/openapi/${collection}/${encodeURIComponent(id)}/exports/${encodeURIComponent(format)}`,
-						env.APP_URL,
-					);
-					if (words) for (const [key, value] of Object.entries(words)) url.searchParams.set(`words[${key}]`, value);
-					return json({ url: url.toString(), requiresAuthentication: true });
-				}
-				if (path === "resume.getBySlug") {
-					// Public reads never borrow the caller's browser cookies.
-					const reqHeaders = new Headers(headers);
-					reqHeaders.delete("cookie");
-					context.signal?.throwIfAborted();
-					result = await call(router.resume.getBySlug, input as { username: string; slug: string }, {
-						context: { ...context, reqHeaders },
-						...(context.signal && { signal: context.signal }),
-					});
-				} else {
-					result = await getClientCall(client, path)(input);
-				}
-				if (streamingPaths.has(path)) {
-					const events: string[] = [];
-					let length = 0;
-					let truncated = false;
-					for await (const event of result as AsyncIterable<string>) {
-						if (length + event.length > 500_000) {
-							truncated = true;
-							break;
-						}
-						events.push(event);
-						length += event.length;
+			withErrorHandling(
+				path,
+				async (params) => {
+					const userId = context.authentication.user.id;
+					const permission = requiredPermission(definition.route);
+					if (!context.authentication.permissions.includes(permission))
+						throw new ORPCError("FORBIDDEN", {
+							message: `This credential needs the api:${permission} permission. Use a credential that includes it.`,
+						});
+					const maxBytes =
+						path === "rest.checkPdf"
+							? 25_000_000
+							: path === "agent.attachments.create"
+								? 25 * 1024 * 1024
+								: 10 * 1024 * 1024;
+					let input = await decodeInput(params, inputJson as Record<string, unknown>, userId, maxBytes);
+					if (path === "ai.parsePdf" || path === "ai.parseDocx" || path === "agent.attachments.create") {
+						const record = input as Record<string, unknown>;
+						const field = path === "agent.attachments.create" ? "data" : "file";
+						const file = await readMcpFile(record[field], userId, maxBytes);
+						input = { ...record, [field]: Buffer.from(await file.arrayBuffer()).toString("base64") };
 					}
-					result = { events, truncated };
-				}
-				return json(encodeOutput(result));
-			}),
+					context.resHeaders.delete("set-cookie");
+					let result: unknown;
+					if (exportPaths.has(path)) {
+						const { id, format, words } = input as { id: string; format: string; words?: Record<string, string> };
+						await (path.endsWith(".resume") ? client.resume.getById({ id }) : client.coverLetters.getById({ id }));
+						const collection = path.endsWith(".resume") ? "resumes" : "cover-letters";
+						const url = new URL(
+							`/api/openapi/${collection}/${encodeURIComponent(id)}/exports/${encodeURIComponent(format)}`,
+							env.APP_URL,
+						);
+						if (words) for (const [key, value] of Object.entries(words)) url.searchParams.set(`words[${key}]`, value);
+						return json({ url: url.toString(), requiresAuthentication: true });
+					}
+					if (path === "resume.getBySlug") {
+						// Public reads never borrow the caller's browser cookies.
+						const reqHeaders = new Headers(headers);
+						reqHeaders.delete("cookie");
+						context.signal?.throwIfAborted();
+						result = await call(router.resume.getBySlug, input as { username: string; slug: string }, {
+							context: { ...context, reqHeaders },
+							...(context.signal && { signal: context.signal }),
+						});
+					} else {
+						result = await getClientCall(client, path)(input);
+					}
+					if (streamingPaths.has(path)) {
+						const events: string[] = [];
+						let length = 0;
+						let truncated = false;
+						for await (const event of result as AsyncIterable<string>) {
+							if (length + event.length > 500_000) {
+								truncated = true;
+								break;
+							}
+							events.push(event);
+							length += event.length;
+						}
+						result = { events, truncated };
+					}
+					return json(encodeOutput(result));
+				},
+				path.startsWith("jobs.") ? "jobs" : undefined,
+			),
 		);
 	}
 	for (const [path, { url }] of Object.entries(HANDOFFS)) {

@@ -104,7 +104,7 @@ describe("plan problems", () => {
 		expect(describePlanProblem({ kind: "limit", limit: "jobAlerts", max: 1, used: 1 })).toEqual({
 			title: "No room for another job alert",
 			description:
-				"Your plan keeps 1 job alert on. Alerts you already have keep running. Pause or delete one to turn on another.",
+				"Your plan keeps 1 job alert on. With more, only the oldest are checked. Pause or delete one to turn on another.",
 		});
 	});
 

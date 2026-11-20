@@ -38283,7 +38283,7 @@
 																			"salaryMin": {
 																				"type": "integer",
 																				"minimum": -9007199254740991,
-																				"maximum": 100000000,
+																				"maximum": 1000000000000,
 																				"exclusiveMinimum": 0
 																			},
 																			"salaryCurrency": {
@@ -42248,7 +42248,7 @@
 															"salaryMin": {
 																"type": "integer",
 																"minimum": -9007199254740991,
-																"maximum": 100000000,
+																"maximum": 1000000000000,
 																"exclusiveMinimum": 0
 															},
 															"salaryCurrency": {
@@ -42515,7 +42515,7 @@
 													"salaryMin": {
 														"type": "integer",
 														"minimum": -9007199254740991,
-														"maximum": 100000000,
+														"maximum": 1000000000000,
 														"exclusiveMinimum": 0
 													},
 													"salaryCurrency": {
@@ -42743,7 +42743,7 @@
 														"salaryMin": {
 															"type": "integer",
 															"minimum": -9007199254740991,
-															"maximum": 100000000,
+															"maximum": 1000000000000,
 															"exclusiveMinimum": 0
 														},
 														"salaryCurrency": {
@@ -64275,7 +64275,7 @@
 									"salaryMin": {
 										"type": "integer",
 										"minimum": -9007199254740991,
-										"maximum": 100000000,
+										"maximum": 1000000000000,
 										"exclusiveMinimum": 0
 									},
 									"salaryCurrency": {
@@ -66402,6 +66402,369 @@
 						"lang": "bash",
 						"label": "cURL",
 						"source": "curl \"https://rezumi.app/api/openapi/jobs/quota\" --header \"x-api-key: <api-key>\""
+					}
+				]
+			}
+		},
+		"/jobs/recent": {
+			"get": {
+				"operationId": "listRecentJobSearches",
+				"summary": "List your recent job searches",
+				"description": "Returns your last 10 job searches, newest first, each with `seenToday`: whether its first page was opened today, so searching it again today doesn't count toward the day's searches. Searches nothing. Requires authentication.",
+				"tags": [
+					"Jobs"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"searches": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"id": {
+														"type": "string"
+													},
+													"criteria": {
+														"type": "object",
+														"properties": {
+															"query": {
+																"type": "string",
+																"minLength": 2,
+																"maxLength": 200
+															},
+															"location": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 200
+															},
+															"country": {
+																"type": "string",
+																"pattern": "^[A-Z]{2}$"
+															},
+															"remote": {
+																"enum": [
+																	"any",
+																	"only",
+																	"exclude"
+																],
+																"type": "string",
+																"default": "any"
+															},
+															"postedWithinDays": {
+																"anyOf": [
+																	{
+																		"const": 1
+																	},
+																	{
+																		"const": 7
+																	},
+																	{
+																		"const": 14
+																	},
+																	{
+																		"const": 30
+																	}
+																],
+																"default": 30
+															},
+															"workArrangement": {
+																"enum": [
+																	"onsite",
+																	"hybrid",
+																	"remote"
+																],
+																"type": "string"
+															},
+															"seniority": {
+																"enum": [
+																	"entry",
+																	"junior",
+																	"mid",
+																	"senior",
+																	"lead",
+																	"executive"
+																],
+																"type": "string"
+															},
+															"salaryMin": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 1000000000000,
+																"exclusiveMinimum": 0
+															},
+															"salaryCurrency": {
+																"type": "string",
+																"pattern": "^[A-Z]{3}$"
+															},
+															"includeNoSalary": {
+																"type": "boolean",
+																"default": true
+															},
+															"visaSponsorship": {
+																"type": "boolean"
+															}
+														},
+														"required": [
+															"query"
+														]
+													},
+													"searchedAt": {
+														"type": "string",
+														"format": "date-time"
+													},
+													"seenToday": {
+														"type": "boolean"
+													}
+												},
+												"required": [
+													"id",
+													"criteria",
+													"searchedAt",
+													"seenToday"
+												]
+											}
+										}
+									},
+									"required": [
+										"searches"
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl \"https://rezumi.app/api/openapi/jobs/recent\" --header \"x-api-key: <api-key>\""
+					}
+				]
+			},
+			"delete": {
+				"operationId": "clearRecentJobSearches",
+				"summary": "Clear your recent job searches",
+				"description": "Removes every search from your recent job searches. Requires authentication.",
+				"tags": [
+					"Jobs"
+				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"ok": {
+											"const": true
+										}
+									},
+									"required": [
+										"ok"
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/jobs/recent\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+					}
+				]
+			}
+		},
+		"/jobs/recent/{id}": {
+			"delete": {
+				"operationId": "forgetRecentJobSearch",
+				"summary": "Remove a recent job search",
+				"description": "Removes one search from your recent job searches. Requires authentication.",
+				"tags": [
+					"Jobs"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 64
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"ok": {
+											"const": true
+										}
+									},
+									"required": [
+										"ok"
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/jobs/recent/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}

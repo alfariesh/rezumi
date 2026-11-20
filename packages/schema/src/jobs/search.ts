@@ -5,6 +5,8 @@ import { jobListingSchema, jobSenioritySchema, jobWorkArrangementSchema } from "
 
 export const JOB_SEARCH_POSTED_WITHIN_DAYS = [1, 7, 14, 30] as const;
 export const JOB_SEARCH_REMOTE = ["any", "only", "exclude"] as const;
+/** The highest minimum yearly pay a search takes; high enough for currencies such as IDR and VND. */
+export const MAX_JOB_SEARCH_SALARY = 1_000_000_000_000;
 /** Listings a page of results holds (K3). */
 export const JOB_SEARCH_PAGE_SIZE = 20;
 
@@ -22,7 +24,7 @@ export const jobSearchInputSchema = z.object({
 	postedWithinDays: z.union(JOB_SEARCH_POSTED_WITHIN_DAYS.map((days) => z.literal(days))).default(30),
 	workArrangement: jobWorkArrangementSchema.optional(),
 	seniority: jobSenioritySchema.optional(),
-	salaryMin: z.number().int().positive().max(100_000_000).optional(),
+	salaryMin: z.number().int().positive().max(MAX_JOB_SEARCH_SALARY).optional(),
 	salaryCurrency: z
 		.string()
 		.regex(/^[A-Z]{3}$/)
@@ -110,6 +112,19 @@ export const jobSearchDefaultsSchema = z.object({
 	suggestions: z.array(z.string()),
 });
 export type JobSearchDefaults = z.infer<typeof jobSearchDefaultsSchema>;
+
+/** How many recent searches an account keeps. */
+export const MAX_RECENT_JOB_SEARCHES = 10;
+
+/** One of the person's recent searches, as the Jobs page offers it again. */
+export const jobSearchRecentSchema = z.object({
+	id: z.string(),
+	criteria: jobSearchCriteriaSchema,
+	searchedAt: z.iso.datetime({ offset: true }),
+	/** Its first page was opened today, so opening it again today doesn't count toward the day's searches. */
+	seenToday: z.boolean(),
+});
+export type JobSearchRecent = z.infer<typeof jobSearchRecentSchema>;
 
 /** What `jobs.track` gives back: the application the listing is tracked as, and whether it was just made. */
 export const jobTrackResultSchema = z.object({

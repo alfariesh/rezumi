@@ -21,6 +21,9 @@ const api = vi.hoisted(() => ({
 	openDialog: vi.fn(),
 	schedules: vi.fn(),
 	deleteSchedule: vi.fn(),
+	recent: vi.fn(),
+	forgetRecent: vi.fn(),
+	clearRecent: vi.fn(),
 }));
 
 vi.mock("@/libs/orpc/client", () => ({
@@ -49,6 +52,12 @@ vi.mock("@/libs/orpc/client", () => ({
 					getNextPageParam: options.getNextPageParam,
 				}),
 			},
+			recent: {
+				queryOptions: () => ({ queryKey: ["jobs", "recent"], queryFn: api.recent }),
+				key: () => ["jobs", "recent"],
+			},
+			forgetRecent: { mutationOptions: () => ({ mutationFn: api.forgetRecent }) },
+			clearRecent: { mutationOptions: () => ({ mutationFn: api.clearRecent }) },
 			track: { mutationOptions: () => ({ mutationFn: api.track }) },
 			hide: { mutationOptions: () => ({ mutationFn: api.hide }) },
 		},
@@ -68,12 +77,15 @@ vi.mock("@/features/career/schedule-sheet", () => ({
 			</div>
 		) : null,
 }));
+// The fit check has its own tests (listing-fit.test.tsx); here the open listing only needs to show.
+vi.mock("./listing-fit", () => ({ ListingFit: () => null }));
 vi.mock("@/features/applications/use-application-actions", () => ({ useInvalidateApplications: () => api.invalidate }));
 vi.mock("@/dialogs/store", () => ({
 	useDialogStore: (select: (state: { openDialog: typeof api.openDialog }) => unknown) =>
 		select({ openDialog: api.openDialog }),
 }));
-vi.mock("@rezumi/ui/hooks/use-breakpoint", () => ({ useBreakpoint: () => "desktop" }));
+const screenSize = vi.hoisted(() => ({ breakpoint: "wide" as "desktop" | "wide" }));
+vi.mock("@rezumi/ui/hooks/use-breakpoint", () => ({ useBreakpoint: () => screenSize.breakpoint }));
 vi.mock("@tanstack/react-router", async (importOriginal) => ({
 	...(await importOriginal<typeof import("@tanstack/react-router")>()),
 	Link: ({ children, to, className }: { children: ReactNode; to: string; className?: string }) => (
@@ -146,6 +158,14 @@ beforeEach(() => {
 	api.search.mockResolvedValue(result());
 	api.listing.mockResolvedValue({ ...card("1"), description: "About the role." });
 	api.schedules.mockResolvedValue([]);
+	api.recent.mockResolvedValue({ searches: [] });
+});
+
+const recentSearch = (query: string, seenToday: boolean, criteria: Record<string, unknown> = {}) => ({
+	id: `recent-${query}`,
+	criteria: { query, remote: "any", postedWithinDays: 30, includeNoSalary: true, ...criteria },
+	searchedAt: "2026-11-20T08:00:00.000Z",
+	seenToday,
 });
 afterEach(() => {
 	cleanup();
@@ -161,6 +181,58 @@ describe("JobsPage", () => {
 		expect(api.search).not.toHaveBeenCalled();
 	});
 
+	it("lists recent searches with whether each is free today, and runs one when picked", async () => {
+		api.recent.mockResolvedValue({
+			searches: [
+				recentSearch("Product designer", false, { country: "AE", workArrangement: "hybrid" }),
+				recentSearch("Nurse", false, { location: "Leeds", country: "GB" }),
+			],
+		});
+		api.defaults.mockResolvedValue({ query: "", location: "", country: "", remote: "any", suggestions: ["Midwife"] });
+		const { onSearch } = mount();
+		const widget = await screen.findByRole("region", { name: "Recent job searches" });
+		expect(within(widget).getByText("United Arab Emirates · Hybrid")).toBeTruthy();
+		expect(within(widget).getByText("Leeds, United Kingdom")).toBeTruthy();
+		expect(within(widget).getAllByText("Uses 1 search")).toHaveLength(2);
+		// The roles from the preferences stay under the recent searches.
+		expect(await screen.findByRole("button", { name: "Midwife" })).toBeTruthy();
+		fireEvent.click(within(widget).getByRole("button", { name: "Product designer" }));
+		expect(onSearch).toHaveBeenCalledWith(
+			expect.objectContaining({ q: "Product designer", country: "AE", arrangement: "hybrid" }),
+		);
+		expect(api.search).not.toHaveBeenCalled();
+	});
+
+	it("forgets one recent search, and clears them all", async () => {
+		api.recent.mockResolvedValue({ searches: [recentSearch("Nurse", false), recentSearch("Midwife", false)] });
+		api.forgetRecent.mockResolvedValue({ ok: true });
+		api.clearRecent.mockResolvedValue({ ok: true });
+		mount();
+		const widget = await screen.findByRole("region", { name: "Recent job searches" });
+		fireEvent.click(within(widget).getByRole("button", { name: "Remove Nurse from recent searches" }));
+		await waitFor(() => expect(api.forgetRecent.mock.calls[0]?.[0]).toEqual({ id: "recent-Nurse" }));
+		fireEvent.click(within(widget).getByRole("button", { name: "Clear" }));
+		await waitFor(() => expect(api.clearRecent).toHaveBeenCalled());
+	});
+
+	it("opens today's last search again when it's free, without adding a step to the history", async () => {
+		api.recent.mockResolvedValue({
+			searches: [recentSearch("Nurse", true, { country: "GB" }), recentSearch("Midwife", false)],
+		});
+		const { onSearch } = mount();
+		await waitFor(() =>
+			expect(onSearch).toHaveBeenCalledWith(expect.objectContaining({ q: "Nurse", country: "GB" }), { replace: true }),
+		);
+		expect(screen.queryByRole("region", { name: "Recent job searches" })).toBeNull();
+	});
+
+	it("doesn't open an older search by itself, since that would use one of today's searches", async () => {
+		api.recent.mockResolvedValue({ searches: [recentSearch("Nurse", false)] });
+		const { onSearch } = mount();
+		expect(await screen.findByRole("region", { name: "Recent job searches" })).toBeTruthy();
+		expect(onSearch).not.toHaveBeenCalled();
+	});
+
 	it("starts from the preferences and searches nothing until asked", async () => {
 		api.defaults.mockResolvedValue({
 			query: "Nurse",
@@ -171,7 +243,8 @@ describe("JobsPage", () => {
 		});
 		const { onSearch } = mount();
 		expect(await screen.findByDisplayValue("Nurse")).toBeTruthy();
-		expect(screen.getByDisplayValue("Leeds")).toBeTruthy();
+		// The country and city wait in the Filters sheet; its button names the place.
+		expect(screen.getByRole("button", { name: "Filters · Leeds" })).toBeTruthy();
 		expect(api.search).not.toHaveBeenCalled();
 		fireEvent.click(screen.getByRole("button", { name: "Midwife" }));
 		expect(onSearch).toHaveBeenCalledWith(expect.objectContaining({ q: "Midwife", country: "GB", location: "Leeds" }));
@@ -181,15 +254,18 @@ describe("JobsPage", () => {
 		api.track.mockResolvedValue({ applicationId: "app-1", created: true });
 		mount({ q: "data analyst", country: "GB" });
 		const item = await screen.findByRole("article", { name: "Data Analyst 1" });
-		const original = within(item).getByRole("link", { name: /View original/ });
+		// The first listing opens beside the results on a wide screen.
+		const open = screen.getByRole("complementary", { name: "Job details" });
+		const original = within(open).getByRole("link", { name: /View original/ });
 		expect(original.getAttribute("href")).toBe("https://jobs.example.com/1");
 		expect(original.getAttribute("target")).toBe("_blank");
 		expect(original.getAttribute("rel")).toBe("noopener noreferrer");
-		expect(within(item).getByText(/via LinkedIn/)).toBeTruthy();
+		expect(within(open).getByText(/via LinkedIn/)).toBeTruthy();
 		expect(screen.getByText("14 searches left today (of 15)")).toBeTruthy();
 
-		fireEvent.click(within(item).getByRole("button", { name: "Track" }));
-		expect(await within(item).findByRole("link", { name: /Tracked/ })).toBeTruthy();
+		fireEvent.click(within(open).getByRole("button", { name: "Track" }));
+		expect(await within(open).findByRole("link", { name: /Tracked/ })).toBeTruthy();
+		expect(within(item).getByText("Tracked")).toBeTruthy();
 		expect(api.track.mock.calls[0]?.[0]).toEqual({ id: "1" });
 		expect(api.invalidate).toHaveBeenCalled();
 	});
@@ -198,8 +274,35 @@ describe("JobsPage", () => {
 		api.search.mockResolvedValue(result({ tracked: { "1": "app-7" } }));
 		mount({ q: "data analyst" });
 		const item = await screen.findByRole("article", { name: "Data Analyst 1" });
-		expect(within(item).getByRole("link", { name: /Tracked/ })).toBeTruthy();
-		expect(within(item).queryByRole("button", { name: "Track" })).toBeNull();
+		expect(within(item).getByText("Tracked")).toBeTruthy();
+		const open = screen.getByRole("complementary", { name: "Job details" });
+		expect(within(open).getByRole("link", { name: /Tracked/ })).toBeTruthy();
+		expect(within(open).queryByRole("button", { name: "Track" })).toBeNull();
+	});
+
+	it("opens the first listing beside the results, and another when picked", async () => {
+		api.search.mockResolvedValue(result({ listings: [card("1"), card("2")] }));
+		mount({ q: "data analyst" });
+		const second = await screen.findByRole("article", { name: "Data Analyst 2" });
+		const open = () => screen.getByRole("complementary", { name: "Job details" });
+		expect(within(open()).getByRole("heading", { name: "Data Analyst 1" })).toBeTruthy();
+		fireEvent.click(within(second).getByRole("button", { name: "Data Analyst 2" }));
+		expect(within(open()).getByRole("heading", { name: "Data Analyst 2" })).toBeTruthy();
+		expect(within(second).getByRole("button", { name: "Data Analyst 2" }).getAttribute("aria-current")).toBe("true");
+	});
+
+	it("opens nothing by itself on a narrower screen, and a listing in a sheet when picked", async () => {
+		screenSize.breakpoint = "desktop";
+		try {
+			api.search.mockResolvedValue(result({ listings: [card("1"), card("2")] }));
+			mount({ q: "data analyst" });
+			const first = await screen.findByRole("article", { name: "Data Analyst 1" });
+			expect(screen.queryByRole("complementary", { name: "Job details" })).toBeNull();
+			fireEvent.click(within(first).getByRole("button", { name: "Data Analyst 1" }));
+			expect(await screen.findByRole("dialog")).toBeTruthy();
+		} finally {
+			screenSize.breakpoint = "wide";
+		}
 	});
 
 	it("shows how a listing's skills read against the Profile, only when some match", async () => {
@@ -268,11 +371,13 @@ describe("JobsPage", () => {
 	it("keeps the country when Enter is pressed in its field", async () => {
 		const { onSearch } = mount({ q: "data analyst", country: "GB" });
 		await screen.findByRole("article", { name: "Data Analyst 1" });
-		const country = screen.getByRole("combobox", { name: "Country" });
+		fireEvent.click(screen.getByRole("button", { name: "Filters · United Kingdom" }));
+		const sheet = await screen.findByRole("dialog", { name: "Filters" });
+		const country = within(sheet).getByRole("combobox", { name: "Country" });
 		fireEvent.focus(country);
 		fireEvent.keyDown(country, { key: "Enter" });
 		fireEvent.keyUp(country, { key: "Enter" });
-		fireEvent.click(screen.getByRole("button", { name: "Search" }));
+		fireEvent.click(within(sheet).getByRole("button", { name: "Search" }));
 		expect(onSearch).toHaveBeenCalledWith(expect.objectContaining({ country: "GB" }));
 	});
 

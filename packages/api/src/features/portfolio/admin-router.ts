@@ -6,8 +6,7 @@ import {
 	PORTFOLIO_REPORT_STATUSES,
 } from "@rezumi/schema/portfolio/moderation";
 import { resumeDataSchema } from "@rezumi/schema/resume/data";
-import { protectedProcedure } from "../../context";
-import { assertAdminSession } from "../auth/admin-session";
+import { adminProcedure as sharedAdminProcedure } from "../auth/admin-session";
 import { portfolioErrorMap, portfolioErrors } from "./errors";
 import { getPortfolioMode } from "./mode";
 import {
@@ -24,8 +23,7 @@ import {
 const route = { tags: ["Internal"] };
 
 /** Web sessions of administrators, while portfolios exist at all. */
-const adminProcedure = protectedProcedure.use(async ({ context, next }) => {
-	await assertAdminSession(context.authentication);
+const adminProcedure = sharedAdminProcedure.use(({ next }) => {
 	if (getPortfolioMode() === "off") throw portfolioErrors.disabled();
 	return next();
 });

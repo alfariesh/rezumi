@@ -15,7 +15,7 @@ import {
 } from "@rezumi/schema/billing";
 import { protectedProcedure } from "../../context";
 import { checkoutRateLimit } from "../../middleware/rate-limit";
-import { assertAdminSession } from "../auth/admin-session";
+import { adminProcedure } from "../auth/admin-session";
 import { billingAdmin } from "./admin";
 import { listRecentAlerts } from "./alerts";
 import {
@@ -200,11 +200,6 @@ function originOf(context: { reqHeaders?: Headers; trustedClient?: string | unde
 		ip: context.trustedClient ?? context.reqHeaders?.get("x-real-ip") ?? null,
 	};
 }
-
-const adminProcedure = protectedProcedure.use(async ({ context, next }) => {
-	await assertAdminSession(context.authentication);
-	return next();
-});
 
 export const billingRouter = {
 	summary: protectedProcedure

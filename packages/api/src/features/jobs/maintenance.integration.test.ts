@@ -283,6 +283,36 @@ describe.skipIf(!databaseUrl)("daily job listing upkeep", () => {
 		expect((await notices())[0]?.notice).toEqual({ type: "posting-closed", company: "ACME", role: "Role app-used" });
 	});
 
+	it("moves JobsPipe ids it doesn't answer to the back of the queue", async () => {
+		const [gone] = await store([fakeListing("jobspipe", 1, { externalId: "jp-gone", closedAt: null })], 5);
+		await track(must(gone).id, "app-gone");
+		const treg = fakeTreg({
+			"hirebase.jobs.expired": closedFeed([]),
+			"jobspipe.jobs.detail": () => ({ body: { data: [], metadata: {} }, costMicro: 0 }),
+		});
+		expect(await run({ now: NIGHT, treg })).toMatchObject({ completed: true, checked: 0 });
+		const row = await listingRow(must(gone).id);
+		expect(row?.lastVerifiedAt).toEqual(NIGHT);
+		expect(row?.closedAt).toBeNull();
+	});
+
+	it("dismisses roles no alert found again for 30 days, so their listings can go", async () => {
+		const [listing] = await store([fakeListing("hirebase", 8)], 31);
+		await db()
+			.insert(tables.careerOpportunity)
+			.values({
+				userId: "alice",
+				url: "https://example.test/8",
+				snippet: "",
+				listingId: must(listing).id,
+				lastSeenAt: ago(31),
+			});
+		const result = await run({ now: NIGHT, treg: fakeTreg({ "hirebase.jobs.expired": closedFeed([]) }) });
+		expect(result.removed.unusedListings).toBe(1);
+		const [role] = await db().select().from(tables.careerOpportunity);
+		expect(role?.dismissedAt).not.toBeNull();
+	});
+
 	it("skips JobsPipe lookups once the day's budget is spent", async () => {
 		fixture.budgetUsd = 0;
 		const [used] = await store([fakeListing("jobspipe", 1, { externalId: "jp-used", closedAt: null })], 5);

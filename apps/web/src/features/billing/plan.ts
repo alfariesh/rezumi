@@ -127,9 +127,9 @@ export function describePlanProblem(problem: PlanProblem): { title: string; desc
 			return {
 				title: t`No room for another job alert`,
 				description: plural(max, {
-					one: "Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.",
+					one: "Your plan keeps # job alert on. With more, only the oldest are checked. Pause or delete one to turn on another.",
 					other:
-						"Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.",
+						"Your plan keeps up to # job alerts on. With more, only the oldest are checked. Pause or delete one to turn on another.",
 				}),
 			};
 		}

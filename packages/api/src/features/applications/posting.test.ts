@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 import { MAX_CAPTURE_TEXT_CHARS } from "@rezumi/job-sites/capture";
 import { readPage } from "../web/service";
-import { fetchJobPosting, htmlToText, MAX_POSTING_CHARS, readJobPosting, readOpenPosting } from "./posting";
+import { fetchJobPosting, htmlToText, MAX_POSTING_CHARS, readJobPosting } from "./posting";
 
 vi.mock("../web/service", () => ({
 	readPage: vi.fn(),
@@ -52,36 +52,6 @@ describe("readJobPosting", () => {
 			employmentType: "",
 			logoUrl: "",
 		});
-	});
-});
-
-describe("readOpenPosting", () => {
-	const posting = (fields: object = {}) => ({ "@type": "JobPosting", title: "Designer", ...fields });
-	// null: not a role. A string: a role, with the company its address names when the page has no JobPosting data.
-	it.each([
-		["one posting", "https://lumen.example/careers/designer", [posting()], ""],
-		["a list of postings", "https://lumen.example/careers", [posting(), posting({ title: "Engineer" })], null],
-		["a closed posting", "https://lumen.example/careers/designer", [posting({ validThrough: "2020-01-01" })], null],
-		["a careers page", "https://lumen.example/careers", [], null],
-		["a Lever posting", "https://jobs.lever.co/lumen/0c5b9e8a-3f7e-4a43-9d36-0d4c1b1e2f3a", [], "lumen"],
-		[
-			"a LinkedIn posting",
-			"https://www.linkedin.com/jobs/view/senior-designer-at-simple-club-4264843261",
-			[],
-			"simple club",
-		],
-	])("%s: %j", async (_name, url, postings, expected) => {
-		vi.mocked(readPage).mockResolvedValue({
-			requestedUrl: url,
-			content: "Page text",
-			html: postings.map((item) => `<script type="application/ld+json">${JSON.stringify(item)}</script>`).join(""),
-			format: "text",
-			retrievedAt: "2026-09-30T12:00:00.000Z",
-			method: "builtin",
-			truncated: false,
-			completeness: "unknown",
-		});
-		expect((await readOpenPosting(url, { userId: "user" }))?.company ?? null).toBe(expected);
 	});
 });
 

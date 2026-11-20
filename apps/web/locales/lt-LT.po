@@ -935,6 +935,10 @@ msgstr "{issues, plural, one {# numeris gali jums kainuoti.} other {# problemos 
 msgid "{issues, plural, one {Check has # thing to review. You can still download.} other {Check has # things to review. You can still download.}}"
 msgstr "{issues, plural, one {Čekis turi # dalyką, kurį reikia peržiūrėti. Jūs vis dar galite atsisiųsti.} other {Čeke yra # dalykų, kuriuos reikia peržiūrėti. Jūs vis dar galite atsisiųsti.}}"
 
+#: src/features/homepage/plans.ts
+msgid "{jobAlerts, plural, one {{jobSearchesPerDay} job searches a day and # job alert} other {{jobSearchesPerDay} job searches a day and # job alerts}}"
+msgstr ""
+
 #: src/features/profile/fill.tsx
 msgid "{kept, plural, =0 {Add the photo} one {Add # entry} other {Add # entries}}"
 msgstr ""
@@ -1002,7 +1006,7 @@ msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs o
 msgstr "{lines, plural, one {Eina į puslapį {next} maždaug # linija} other {Eina į puslapį {next} maždaug # eilutėmis}}"
 
 #: src/features/billing/plan.ts
-msgid "{max, plural, one {Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.}}"
+msgid "{max, plural, one {Your plan keeps # job alert on. With more, only the oldest are checked. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. With more, only the oldest are checked. Pause or delete one to turn on another.}}"
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -2995,6 +2999,11 @@ msgid "Any"
 msgstr "Bet koks"
 
 #: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: any work arrangement"
+msgid "Any"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
 msgid "Any level"
 msgstr ""
 
@@ -3027,9 +3036,14 @@ msgid "Anything to stress or leave out? (optional)"
 msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/recent-searches.tsx
 #: src/features/jobs/search-bar.tsx
 msgid "Anywhere"
 msgstr "Bet kur"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Anywhere in the country"
+msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "API and MCP access isn't in your plan"
@@ -4472,7 +4486,6 @@ msgid "City"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
-#: src/features/jobs/search-bar.tsx
 msgid "City (optional)"
 msgstr ""
 
@@ -4492,12 +4505,16 @@ msgstr "Patikslinti"
 msgid "Claude Desktop"
 msgstr "Claude Desktop"
 
+#. Removes every recent job search
+#. Removes every recent job search
 #: src/features/applications/components/detail/next-step-card.tsx
+#: src/features/jobs/recent-searches.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Clear"
 msgstr "Išvalyti"
 
 #: src/features/jobs/jobs-page.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Clear filters"
 msgstr ""
 
@@ -4584,6 +4601,7 @@ msgstr ""
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/homepage/theme-preview.tsx
 #: src/features/jobs/listing-sheet.tsx
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/card/business-card-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
@@ -7955,6 +7973,24 @@ msgstr "Įrašų pildymas"
 msgid "Filter by tag"
 msgstr "Filtruoti pagal žymą"
 
+#: src/features/jobs/search-bar.tsx
+msgid "Filters"
+msgstr ""
+
+#. The job search filters button with the place searched
+#: src/features/jobs/search-bar.tsx
+msgid "Filters · {place}"
+msgstr ""
+
+#. The job search filters button: the place searched and how many other filters are set
+#: src/features/jobs/search-bar.tsx
+msgid "Filters · {place} ({filters})"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Filters ({filters})"
+msgstr ""
+
 #. Template gallery filter: finance, banking, law and consulting jobs
 #: src/dialogs/resume/template/data.ts
 msgid "Finance"
@@ -8349,6 +8385,11 @@ msgstr ""
 msgid "Free plan, no card needed. PDF downloads without a watermark."
 msgstr ""
 
+#. A recent job search that opens again today without counting
+#: src/features/jobs/recent-searches.tsx
+msgid "Free today"
+msgstr ""
+
 #: src/features/billing/purchase.ts
 msgid "Free trial"
 msgstr ""
@@ -8480,6 +8521,10 @@ msgstr "Iš jūsų žinutės"
 
 #: src/features/portfolio/statistics/parts.tsx
 msgid "From your portfolio"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "From your preferences:"
 msgstr ""
 
 #: src/features/resume/editor/write/add-section.tsx
@@ -9735,6 +9780,10 @@ msgstr ""
 msgid "Job description"
 msgstr "Darbo aprašymas"
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Job details"
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Job link or posting text"
 msgstr "Darbo nuoroda arba darbo skelbimo tekstas"
@@ -9790,6 +9839,7 @@ msgstr ""
 msgid "Jobs"
 msgstr "Darbai"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/jobs/jobs-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgctxt "Job listings to search"
@@ -10024,7 +10074,17 @@ msgstr "Kalba"
 msgid "Languages"
 msgstr "Kalbos"
 
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
+msgid "Last 2 weeks"
+msgstr ""
+
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Last 30 days"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
 msgid "Last 30 days"
 msgstr ""
 
@@ -10045,6 +10105,11 @@ msgstr "Paskutinį kartą pakeistas {0}"
 msgid "Last checked {lastChecked} ago"
 msgstr "Paskutinį kartą patikrinta prieš {lastChecked}"
 
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
+msgid "Last day"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Last edited"
@@ -10060,6 +10125,11 @@ msgstr "Paskutinis naudotas"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used {used}"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
+msgid "Last week"
 msgstr ""
 
 #: src/features/assistant/conversation.tsx
@@ -10546,6 +10616,10 @@ msgstr "Įkeliami modelio pasiūlymai... Taip pat galite įvesti bet kokį model
 msgid "Loading providers…"
 msgstr "Įkeliami paslaugų teikėjai…"
 
+#: src/features/jobs/recent-searches.tsx
+msgid "Loading recent job searches"
+msgstr ""
+
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Loading resumes…"
 msgstr "Kraunami gyvenimo aprašymai…"
@@ -10769,7 +10843,7 @@ msgid "Many bullets start with the same phrase."
 msgstr "Daug punktų prasideda ta pačia fraze."
 
 #: src/features/jobs/search-bar.tsx
-msgid "Many postings don't list pay, especially outside the US."
+msgid "Many postings don't list pay, especially outside the US, and few say whether they sponsor a visa."
 msgstr ""
 
 #: src/features/homepage/plans.ts
@@ -11041,14 +11115,6 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "More download formats"
 msgstr "Daugiau atsisiuntimo formatų"
-
-#: src/features/jobs/search-bar.tsx
-msgid "More filters"
-msgstr ""
-
-#: src/features/jobs/search-bar.tsx
-msgid "More filters ({extra})"
-msgstr ""
 
 #. placeholder {0}: listing.title
 #: src/features/jobs/listing-card.tsx
@@ -12390,10 +12456,6 @@ msgstr ""
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/page-text.ts
 msgid "On-site"
-msgstr ""
-
-#: src/features/jobs/search-bar.tsx
-msgid "On-site, hybrid or remote"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -14528,6 +14590,14 @@ msgstr ""
 msgid "Recent documents"
 msgstr ""
 
+#: src/features/jobs/recent-searches.tsx
+msgid "Recent job searches"
+msgstr ""
+
+#: src/features/jobs/recent-searches.tsx
+msgid "Recent searches"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Gavėjas"
@@ -14810,6 +14880,11 @@ msgstr "Pašalinti „{name}“?"
 #: src/features/settings/account/security.tsx
 msgid "Remove {0}"
 msgstr "Nuimkite {0}"
+
+#. placeholder {0}: search.criteria.query
+#: src/features/jobs/recent-searches.tsx
+msgid "Remove {0} from recent searches"
+msgstr ""
 
 #. Screen reader label for button that removes a keyword chip. Variable is the current keyword text.
 #: src/components/input/chip-input.tsx
@@ -16028,6 +16103,7 @@ msgctxt "Button that runs a job search"
 msgid "Search"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Search again"
 msgstr ""
@@ -18010,6 +18086,7 @@ msgstr ""
 msgid "Thank you. Your report was sent to the Rezumi team."
 msgstr ""
 
+#: src/features/jobs/recent-searches.tsx
 #: src/features/jobs/use-listing-actions.ts
 msgid "That didn't save. Try again."
 msgstr ""
@@ -19033,6 +19110,10 @@ msgstr ""
 msgid "This list can't be continued. Search again to see more jobs."
 msgstr ""
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "This listing isn't available anymore. The original posting may still have the details."
+msgstr ""
+
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "Tai parodo, kaip tiksliai programinė įranga gali išgauti šio failo tekstą. Tai neprognozuoja, ar paraiška bus atmesta – to negali nė vienas įrankis. Jūsų failas buvo perskaitytas šioje naršyklėje ir niekada nebuvo įkeltas."
@@ -19564,6 +19645,7 @@ msgstr ""
 msgid "Track your first job"
 msgstr "Stebėkite savo pirmąjį darbą"
 
+#. A job listing saved to the person's applications
 #. A job listing saved to the person's applications; links to it
 #: src/features/jobs/listing-card.tsx
 msgid "Tracked"
@@ -20428,6 +20510,11 @@ msgstr "Vartotojo vardas"
 
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Username or email"
+msgstr ""
+
+#. A recent job search that counts toward today's searches when opened
+#: src/features/jobs/recent-searches.tsx
+msgid "Uses 1 search"
 msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx

@@ -8,7 +8,7 @@ const fixture = vi.hoisted(() => ({ env: { JOB_SEARCH_DAILY_BUDGET_USD: 1, DEPLO
 vi.mock("@rezumi/env/server", () => ({ env: fixture.env }));
 vi.mock("@rezumi/db/client", () => ({ db: {} }));
 
-const { checkJobAlert, JobAlertPostponed, nextBudgetDay } = await import("./alerts");
+const { alertPostingWindow, checkJobAlert, JobAlertPostponed, nextBudgetDay } = await import("./alerts");
 const { memoryCounters } = await import("./counters");
 const { spentToday } = await import("./allowance");
 const { TregError } = await import("./treg");
@@ -139,6 +139,23 @@ describe("checkJobAlert", () => {
 		expect(again.state).not.toHaveProperty("jobspipeDelta");
 	});
 
+	it("asks JobsPipe only about jobs posted within the alert's interval", async () => {
+		const jobspipe = source("jobspipe", { search: many("jobspipe", 2) });
+		const { options } = setup(source("hirebase", { search: [] }), jobspipe);
+		await checkJobAlert(search(), null, options);
+		expect(jobspipe.calls[0]?.input.postedWithinDays).toBe(7);
+		expect(alertPostingWindow(search(), 7)).toBe(14);
+		expect(alertPostingWindow(search({ postedWithinDays: 7 }), 14)).toBe(7);
+	});
+
+	it("drops a delta cursor JobsPipe refuses, so the next check searches", async () => {
+		const jobspipe = source("jobspipe", { newListings: new TregError("rejected") });
+		const { options } = setup(source("hirebase", { search: many("hirebase", 1) }), jobspipe);
+		const recent = { jobspipeDelta: "delta-1", jobspipeDeltaAt: new Date(NOW.getTime() - 2 * DAY).toISOString() };
+		const check = await checkJobAlert(search(), recent, options);
+		expect(check.state).not.toHaveProperty("jobspipeDelta");
+	});
+
 	it("leaves JobsPipe out of visa sponsorship alerts", async () => {
 		const { options, jobspipe } = setup(source("hirebase", { search: [] }));
 		await checkJobAlert(search({ visaSponsorship: true }), null, options);
@@ -162,9 +179,13 @@ describe("checkJobAlert", () => {
 		await counters.add(`budget:${NOW.toISOString().slice(0, 10)}`, 1_000_000, { window: DAY });
 		const spent = checkJobAlert(search(), null, options);
 		await expect(spent).rejects.toBeInstanceOf(JobAlertPostponed);
-		await expect(spent).rejects.toMatchObject({ until: new Date("2026-11-21T00:05:00.000Z") });
+		const { until } = (await spent.catch((error: unknown) => error)) as InstanceType<typeof JobAlertPostponed>;
+		expect(until.getTime()).toBeGreaterThanOrEqual(Date.parse("2026-11-21T00:05:00.000Z"));
+		expect(until.getTime()).toBeLessThanOrEqual(Date.parse("2026-11-21T06:05:00.000Z"));
 		expect(hirebase.calls).toEqual([]);
-		expect(nextBudgetDay(new Date("2026-11-20T23:59:00Z")).toISOString()).toBe("2026-11-21T00:05:00.000Z");
+		// Spread over a few hours after midnight, so postponed alerts don't spend the new day's budget at once.
+		expect(nextBudgetDay(new Date("2026-11-20T23:59:00Z"), 0).toISOString()).toBe("2026-11-21T00:05:00.000Z");
+		expect(nextBudgetDay(new Date("2026-11-20T10:00:00Z"), 1).toISOString()).toBe("2026-11-21T06:05:00.000Z");
 
 		const capped = setup(source("hirebase", { search: new TregError("budget") }));
 		await expect(checkJobAlert(search(), null, capped.options)).rejects.toBeInstanceOf(JobAlertPostponed);

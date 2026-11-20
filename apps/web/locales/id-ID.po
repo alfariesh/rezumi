@@ -935,6 +935,10 @@ msgstr "{issues, plural, one {Masalah # bisa membuat Anda kehilangan uang.} othe
 msgid "{issues, plural, one {Check has # thing to review. You can still download.} other {Check has # things to review. You can still download.}}"
 msgstr "{issues, plural, one {Periksa apakah ada hal # untuk ditinjau. Anda masih dapat mengunduh.} other {Periksa apakah ada # hal untuk ditinjau. Anda masih dapat mengunduh.}}"
 
+#: src/features/homepage/plans.ts
+msgid "{jobAlerts, plural, one {{jobSearchesPerDay} job searches a day and # job alert} other {{jobSearchesPerDay} job searches a day and # job alerts}}"
+msgstr "{jobAlerts, plural, other {{jobSearchesPerDay} pencarian lowongan per hari dan # notifikasi lowongan}}"
+
 #: src/features/profile/fill.tsx
 msgid "{kept, plural, =0 {Add the photo} one {Add # entry} other {Add # entries}}"
 msgstr "{kept, plural, =0 {Tambahkan foto} one {Tambahkan # entri} other {Tambahkan # entri}}"
@@ -1002,8 +1006,8 @@ msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs o
 msgstr "{lines, plural, one {Berjalan ke halaman {next} sekitar baris #} other {Berjalan ke halaman {next} sekitar baris #}}"
 
 #: src/features/billing/plan.ts
-msgid "{max, plural, one {Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.}}"
-msgstr "{max, plural, one {Paketmu bisa menyalakan # notifikasi lowongan. Notifikasi yang sudah ada tetap berjalan. Jeda atau hapus salah satunya untuk menyalakan yang lain.} other {Paketmu bisa menyalakan hingga # notifikasi lowongan. Notifikasi yang sudah ada tetap berjalan. Jeda atau hapus salah satunya untuk menyalakan yang lain.}}"
+msgid "{max, plural, one {Your plan keeps # job alert on. With more, only the oldest are checked. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. With more, only the oldest are checked. Pause or delete one to turn on another.}}"
+msgstr "{max, plural, one {Paketmu bisa menyalakan # notifikasi lowongan. Bila lebih, hanya yang paling lama yang diperiksa. Jeda atau hapus salah satunya untuk menyalakan yang lain.} other {Paketmu bisa menyalakan hingga # notifikasi lowongan. Bila lebih, hanya yang paling lama yang diperiksa. Jeda atau hapus salah satunya untuk menyalakan yang lain.}}"
 
 #: src/features/career/offers.tsx
 msgid "{minimum} minimum"
@@ -2995,6 +2999,11 @@ msgid "Any"
 msgstr "Apa saja"
 
 #: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: any work arrangement"
+msgid "Any"
+msgstr "Semua"
+
+#: src/features/jobs/search-bar.tsx
 msgid "Any level"
 msgstr "Semua level"
 
@@ -3027,9 +3036,14 @@ msgid "Anything to stress or leave out? (optional)"
 msgstr "Ada yang ingin ditonjolkan atau dilewati? (opsional)"
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/recent-searches.tsx
 #: src/features/jobs/search-bar.tsx
 msgid "Anywhere"
 msgstr "Dimanapun"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Anywhere in the country"
+msgstr "Di mana saja di negara ini"
 
 #: src/features/billing/plan.ts
 msgid "API and MCP access isn't in your plan"
@@ -4472,7 +4486,6 @@ msgid "City"
 msgstr "Kota"
 
 #: src/features/career/schedule-sheet.tsx
-#: src/features/jobs/search-bar.tsx
 msgid "City (optional)"
 msgstr "Kota (opsional)"
 
@@ -4492,12 +4505,16 @@ msgstr "Perjelas"
 msgid "Claude Desktop"
 msgstr "Claude Desktop"
 
+#. Removes every recent job search
+#. Removes every recent job search
 #: src/features/applications/components/detail/next-step-card.tsx
+#: src/features/jobs/recent-searches.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Clear"
 msgstr "Bersihkan"
 
 #: src/features/jobs/jobs-page.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Clear filters"
 msgstr "Hapus filter"
 
@@ -4584,6 +4601,7 @@ msgstr "Klien"
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/homepage/theme-preview.tsx
 #: src/features/jobs/listing-sheet.tsx
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/card/business-card-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
@@ -7955,6 +7973,24 @@ msgstr "Mengisi entri"
 msgid "Filter by tag"
 msgstr "Filter berdasarkan tag"
 
+#: src/features/jobs/search-bar.tsx
+msgid "Filters"
+msgstr "Filter"
+
+#. The job search filters button with the place searched
+#: src/features/jobs/search-bar.tsx
+msgid "Filters · {place}"
+msgstr "Filter · {place}"
+
+#. The job search filters button: the place searched and how many other filters are set
+#: src/features/jobs/search-bar.tsx
+msgid "Filters · {place} ({filters})"
+msgstr "Filter · {place} ({filters})"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Filters ({filters})"
+msgstr "Filter ({filters})"
+
 #. Template gallery filter: finance, banking, law and consulting jobs
 #: src/dialogs/resume/template/data.ts
 msgid "Finance"
@@ -8349,6 +8385,11 @@ msgstr "Gratis di semua paket. Plugin membaca halaman loker hanya saat kamu memi
 msgid "Free plan, no card needed. PDF downloads without a watermark."
 msgstr "Paket gratis, tanpa kartu. Unduh PDF tanpa watermark."
 
+#. A recent job search that opens again today without counting
+#: src/features/jobs/recent-searches.tsx
+msgid "Free today"
+msgstr "Gratis hari ini"
+
 #: src/features/billing/purchase.ts
 msgid "Free trial"
 msgstr "Masa coba gratis"
@@ -8481,6 +8522,10 @@ msgstr "Dari pesan Anda"
 #: src/features/portfolio/statistics/parts.tsx
 msgid "From your portfolio"
 msgstr "Dari portofolio Anda"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "From your preferences:"
+msgstr "Dari preferensimu:"
 
 #: src/features/resume/editor/write/add-section.tsx
 msgid "From your Profile"
@@ -9735,6 +9780,10 @@ msgstr "Notifikasi lowongan aktif"
 msgid "Job description"
 msgstr "Deskripsi pekerjaan"
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Job details"
+msgstr "Detail lowongan"
+
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Job link or posting text"
 msgstr "Tautan pekerjaan atau teks postingan pekerjaan"
@@ -9790,6 +9839,7 @@ msgstr "Pelacak lamaran dengan papan, kalender, dan insight"
 msgid "Jobs"
 msgstr "Pekerjaan"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/jobs/jobs-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgctxt "Job listings to search"
@@ -10024,7 +10074,17 @@ msgstr "Bahasa"
 msgid "Languages"
 msgstr "Bahasa"
 
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
+msgid "Last 2 weeks"
+msgstr "2 minggu terakhir"
+
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Last 30 days"
+msgstr "30 hari terakhir"
+
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
 msgid "Last 30 days"
 msgstr "30 hari terakhir"
 
@@ -10045,6 +10105,11 @@ msgstr "Terakhir diubah di {0}"
 msgid "Last checked {lastChecked} ago"
 msgstr "Terakhir diperiksa {lastChecked} lalu"
 
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
+msgid "Last day"
+msgstr "1 hari terakhir"
+
 #: src/features/documents/documents-page.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Last edited"
@@ -10061,6 +10126,11 @@ msgstr "Terakhir digunakan"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used {used}"
 msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
+msgid "Last week"
+msgstr "1 minggu terakhir"
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -10546,6 +10616,10 @@ msgstr "Memuat saran model… Anda juga dapat memasukkan ID model apa pun."
 msgid "Loading providers…"
 msgstr "Memuat penyedia…"
 
+#: src/features/jobs/recent-searches.tsx
+msgid "Loading recent job searches"
+msgstr "Memuat pencarian lowongan terakhir"
+
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Loading resumes…"
 msgstr "Memuat resume…"
@@ -10769,8 +10843,8 @@ msgid "Many bullets start with the same phrase."
 msgstr "Banyak poin dimulai dengan frasa yang sama."
 
 #: src/features/jobs/search-bar.tsx
-msgid "Many postings don't list pay, especially outside the US."
-msgstr "Banyak posting tidak mencantumkan gaji, terutama di luar AS."
+msgid "Many postings don't list pay, especially outside the US, and few say whether they sponsor a visa."
+msgstr "Banyak lowongan tidak mencantumkan gaji, terutama di luar AS, dan sedikit yang menyebut apakah mereka mensponsori visa."
 
 #: src/features/homepage/plans.ts
 msgid "Many versions of your application, in every format."
@@ -11041,14 +11115,6 @@ msgstr "Bulan"
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "More download formats"
 msgstr "Lebih banyak format unduhan"
-
-#: src/features/jobs/search-bar.tsx
-msgid "More filters"
-msgstr "Filter lain"
-
-#: src/features/jobs/search-bar.tsx
-msgid "More filters ({extra})"
-msgstr "Filter lain ({extra})"
 
 #. placeholder {0}: listing.title
 #: src/features/jobs/listing-card.tsx
@@ -12391,10 +12457,6 @@ msgstr "Di halaman ini"
 #: src/features/portfolio/page-text.ts
 msgid "On-site"
 msgstr "Di kantor"
-
-#: src/features/jobs/search-bar.tsx
-msgid "On-site, hybrid or remote"
-msgstr "Di kantor, hybrid, atau remote"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
@@ -14528,6 +14590,14 @@ msgstr "Aktivitas terbaru"
 msgid "Recent documents"
 msgstr "Dokumen terbaru"
 
+#: src/features/jobs/recent-searches.tsx
+msgid "Recent job searches"
+msgstr "Pencarian lowongan terakhir"
+
+#: src/features/jobs/recent-searches.tsx
+msgid "Recent searches"
+msgstr "Pencarian terakhir"
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Penerima"
@@ -14810,6 +14880,11 @@ msgstr "Hapus “{name}”?"
 #: src/features/settings/account/security.tsx
 msgid "Remove {0}"
 msgstr "Hapus {0}"
+
+#. placeholder {0}: search.criteria.query
+#: src/features/jobs/recent-searches.tsx
+msgid "Remove {0} from recent searches"
+msgstr "Hapus {0} dari pencarian terakhir"
 
 #. Screen reader label for button that removes a keyword chip. Variable is the current keyword text.
 #: src/components/input/chip-input.tsx
@@ -16028,6 +16103,7 @@ msgctxt "Button that runs a job search"
 msgid "Search"
 msgstr "Cari"
 
+#: src/features/jobs/jobs-page.tsx
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Search again"
 msgstr "Cari lagi"
@@ -18010,6 +18086,7 @@ msgstr "Terima kasih. Pesan Anda sudah terkirim."
 msgid "Thank you. Your report was sent to the Rezumi team."
 msgstr "Terima kasih. Laporan Anda sudah dikirim ke tim Rezumi."
 
+#: src/features/jobs/recent-searches.tsx
 #: src/features/jobs/use-listing-actions.ts
 msgid "That didn't save. Try again."
 msgstr "Belum tersimpan. Coba lagi."
@@ -19033,6 +19110,10 @@ msgstr "Tautan ini bukan dari layanan yang bisa disematkan. Pakai blok Tautan sa
 msgid "This list can't be continued. Search again to see more jobs."
 msgstr "Daftar ini tidak bisa dilanjutkan. Cari lagi untuk melihat lowongan lain."
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "This listing isn't available anymore. The original posting may still have the details."
+msgstr "Lowongan ini sudah tidak tersedia. Detailnya mungkin masih ada di posting aslinya."
+
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "Ini mengukur seberapa setia perangkat lunak dapat mengekstrak teks dari file ini. Ini tidak memprediksi apakah lamaran akan ditolak, dan tidak ada alat yang bisa. File Anda dibaca di peramban ini dan tidak pernah diunggah."
@@ -19564,6 +19645,7 @@ msgstr "Lacak lowongan ini untuk menambah bukti dan pertanyaan di workspace-nya.
 msgid "Track your first job"
 msgstr "Lacak pekerjaan pertama Anda"
 
+#. A job listing saved to the person's applications
 #. A job listing saved to the person's applications; links to it
 #: src/features/jobs/listing-card.tsx
 msgid "Tracked"
@@ -20429,6 +20511,11 @@ msgstr "Nama Pengguna"
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Username or email"
 msgstr "Username atau email"
+
+#. A recent job search that counts toward today's searches when opened
+#: src/features/jobs/recent-searches.tsx
+msgid "Uses 1 search"
+msgstr "Pakai 1 pencarian"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Uses facts from your resume"
