@@ -1,0 +1,102 @@
+# App mobile Rezumi (iOS + Android): bangun ulang — mulai di sini
+
+Rencana membawa app mobile setara dengan web hari ini, dengan tampilan, alur masuk, dan onboarding yang baru, lalu merilisnya ke App Store dan Play Store. App mobile dibekukan sejak 2026-11-04; sejak itu web mendapat Portofolio, Profil, Lowongan, onboarding, navigasi baru, dan design system baru. Satu phase dikerjakan dalam satu sesi Claude (phase besar boleh 2–3 sesi).
+
+**Arah yang dipilih (ringkas):** bukan tambal sulam, dan bukan buang semua. **Mesin inti dipertahankan** (koneksi ke server, sesi masuk, simpan offline, mesin PDF native) karena hasil audit menunjukkan bagian itu rapi dan aman. **Semua yang terlihat pengguna dibangun ulang**: design system, navigasi, layar masuk, onboarding, dan setiap layar fitur. Kode tampilan lama diarsipkan lewat tag git, lalu dihapus bertahap. Alasan lengkap: [00-keputusan.md](00-keputusan.md) K1 dan [02-teknis.md](02-teknis.md) bagian 1.
+
+- Keputusan dan hal yang perlu jawaban pemilik: [00-keputusan.md](00-keputusan.md)
+- Navigasi, alur, dan tampilan: [01-desain.md](01-desain.md)
+- Hasil audit dan rancangan teknis (untuk agent): [02-teknis.md](02-teknis.md)
+- Ide setelah rilis pertama: [backlog-lanjutan.md](backlog-lanjutan.md)
+
+## Cara memakai (untuk pemilik)
+
+1. Kerjakan dulu **Phase 00**. Bagian ini kamu kerjakan sendiri dengan dipandu Claude (cek akun toko, ruang disk, perangkat uji, dan menjawab "setuju" atas keputusan).
+2. Untuk setiap phase berikutnya, buka **sesi Claude baru** lalu tempel prompt ini (ganti nomornya):
+
+   ```text
+   Kerjakan Phase 01 dari .agents/docs/plans/mobile/README.md
+   ```
+
+3. Claude membaca dokumen, mengecek prasyarat, dan bertanya bila ada keputusan yang kurang. Jawab saja di chat.
+4. Di akhir sesi Claude memberi laporan berbahasa awam dengan **screenshot iPhone dan Android**, lalu menawarkan commit dan Pull Request.
+5. **Merge ke `main` aman untuk pengguna web.** App mobile belum ada di toko, jadi perubahan di `apps/mobile` tidak sampai ke siapa pun sampai Phase 16. Perubahan di paket bersama dan server ikut tayang ke web saat merge, jadi tiap phase tetap menjalankan tes web.
+
+Prompt lain:
+
+| Kebutuhan                        | Prompt                                                                                 |
+| -------------------------------- | -------------------------------------------------------------------------------------- |
+| Melanjutkan phase yang terpotong | `Lanjutkan Phase 07 dari .agents/docs/plans/mobile/README.md`                          |
+| Dibantu tugas non-kode           | `Bantu saya mengerjakan Phase 00 dari .agents/docs/plans/mobile/README.md`             |
+| Menanyakan posisi rencana        | `Apa status rencana mobile? Baca .agents/docs/plans/mobile/README.md`                  |
+| Melihat app di simulator         | `Jalankan app mobile di simulator iPhone dan emulator Android, tunjukkan layar <nama>` |
+| Ada yang terasa salah di app     | `Di app mobile, <layar> terasa <masalah>. Selidiki dan perbaiki, ikuti plans/mobile`   |
+
+## Urutan phase dan status
+
+Status: ⬜ belum mulai · 🟡 berjalan/sebagian · ✅ selesai · ⛔ diblokir (lihat catatan) · ⏸️ ditunda (keputusan pemilik).
+
+| Phase | Judul                                                                              | Dikerjakan               | Ukuran | Perlu dari pemilik sebelum mulai                           | Bergantung pada | Status |
+| ----- | ---------------------------------------------------------------------------------- | ------------------------ | ------ | ---------------------------------------------------------- | --------------- | ------ |
+| 00    | [Persiapan pemilik](phase-00-persiapan-pemilik.md)                                 | Pemilik + Claude memandu | Kecil  | ±45 menit: akun toko, Expo, disk, perangkat, jawaban P1–P4 | —               | ✅     |
+| 01    | [Fondasi: build dua platform sehat](phase-01-fondasi.md)                           | Claude                   | Besar  | Jawaban P1, P3; izin menjalankan workflow Forme            | 00              | ⬜     |
+| 02    | [Design system baru](phase-02-design-system.md)                                    | Claude + review pemilik  | Besar  | Melihat galeri komponen                                    | 01              | ⬜     |
+| 03    | [Navigasi, kerangka app, dan Home](phase-03-navigasi-home.md)                      | Claude + review pemilik  | Besar  | Melihat screenshot                                         | 02              | ⬜     |
+| 04    | [Masuk dan daftar di dalam app](phase-04-masuk-daftar.md)                          | Claude                   | Besar  | Kunci Google Sign-In (dipandu); uji dengan akunmu          | 03              | ⬜     |
+| 05    | [Onboarding dan pengalaman pertama](phase-05-onboarding.md)                        | Claude + review pemilik  | Sedang | Melihat screenshot                                         | 04              | ⬜     |
+| 06    | [Profil](phase-06-profil.md)                                                       | Claude                   | Sedang | —                                                          | 05              | ⬜     |
+| 07    | [Dokumen dan pembuat CV](phase-07-dokumen-cv.md)                                   | Claude + review pemilik  | Besar  | —                                                          | 06              | ⬜     |
+| 08    | [Surat lamaran, cek ATS, bagikan dan ekspor](phase-08-surat-ats-bagikan.md)        | Claude                   | Sedang | —                                                          | 07              | ⬜     |
+| 09    | [Lowongan](phase-09-lowongan.md)                                                   | Claude + review pemilik  | Sedang | Saldo treg cukup untuk uji nyata (±$0.10)                  | 06              | ⬜     |
+| 10    | [Lamaran dan ruang kerja lamaran](phase-10-lamaran.md)                             | Claude                   | Besar  | —                                                          | 09              | ⬜     |
+| 11    | [Coach dan asisten AI](phase-11-coach-asisten.md)                                  | Claude                   | Sedang | —                                                          | 03              | ⬜     |
+| 12    | [Portofolio I: kelola, terbitkan, statistik, pesan](phase-12-portofolio-kelola.md) | Claude + review pemilik  | Besar  | —                                                          | 03              | ⬜     |
+| 13    | [Portofolio II: editor dan AI](phase-13-portofolio-editor.md)                      | Claude + review pemilik  | Besar  | —                                                          | 11, 12          | ⬜     |
+| 14    | [Pengaturan, paket, bantuan, pencarian, bahasa](phase-14-pengaturan.md)            | Claude                   | Sedang | —                                                          | 03              | ⬜     |
+| 15    | [Pengerasan iOS dan Android](phase-15-pengerasan.md)                               | Claude + pemilik menguji | Besar  | ±1 jam mencoba di iPhone dan Android sungguhan             | 04–14           | ⬜     |
+| 16    | [Rilis ke App Store dan Play Store](phase-16-rilis.md)                             | Pemilik + Claude         | Besar  | Akses toko, penguji, ±2 jam total                          | 15              | ⬜     |
+
+Phase 01–05 berurutan. Setelah Phase 05, urutan yang disarankan adalah 06 → 07 → 08 → 09 → 10 → 11 → 12 → 13 → 14. Phase 11, 12 dan 14 hanya bergantung pada Phase 03, jadi boleh dimajukan bila pemilik ingin melihat Portofolio lebih dulu. **Satu phase per checkout**: jangan menjalankan dua phase mobile bersamaan di folder yang sama (build native berat dan saling menimpa).
+
+Perkiraan kasar: 25–35 sesi Claude sampai siap dikirim ke toko. Ini taksiran, bukan janji; angka nyatanya dicatat di "Catatan sesi".
+
+## Aturan wajib untuk setiap sesi agent
+
+Bagian ini untuk Claude. Pemilik tidak perlu menghafalnya.
+
+1. **Baca dulu:** `CLAUDE.md` di root, README ini, `00-keputusan.md`, `01-desain.md`, `02-teknis.md`, lalu dokumen phase. Setelah Phase 01, baca juga `apps/mobile/AGENTS.md` dan `apps/mobile/DESIGN.md` (dibuat di Phase 01 dan 02). Refresh graph (`index_repository`). Path di dokumen ini dari audit 2026-11-21: cek ulang sebelum mengandalkannya.
+2. **Aturan "mobile ditunda" di `CLAUDE.md` dicabut di Phase 01** (dengan izin pemilik, P4). Sebelum itu, sesi di luar rencana ini tetap tidak menyentuh `apps/mobile`.
+3. **Dokumen pustaka dibaca dari versi terpasang, bukan dari ingatan.** Expo SDK 58, React Native 0.88, HeroUI Native, Uniwind, Expo Router: baca dokumen di `node_modules` atau lewat MCP (`heroui-pro`, skill `heroui-native`) sebelum memakai API. Muat skill `argent-*` yang cocok sebelum build, debug, atau menggerakkan simulator.
+4. **Dua platform, setiap phase.** Layar baru atau yang diubah dijalankan di simulator iPhone **dan** emulator Android sebelum phase dinyatakan selesai. Daftar cek ada di `02-teknis.md` bagian 10. Bila salah satu platform tidak bisa dijalankan, status phase 🟡 dan alasannya ditulis; jangan menyatakan selesai.
+5. **Design system dulu.** Layar memakai komponen `src/ui` baru dan token; tidak ada warna hex, angka jarak, atau font di layar fitur. Komponen yang kurang ditambahkan ke `src/ui`, bukan dibuat lokal. Aturan lengkap: `apps/mobile/DESIGN.md`.
+6. **Logika bersama keluar dari app.** Aturan data, perhitungan, dan model layar yang dipakai web dan mobile tinggal di paket (`02-teknis.md` bagian 5). Jangan menyalin dari `apps/web`; pindahkan ke paket lalu pakai dari dua tempat, dan jalankan tes web.
+7. **Dependensi native ditambah sekali, di Phase 01–02** (`02-teknis.md` bagian 3.4). Phase lain yang ternyata butuh modul native baru: jelaskan alasannya di laporan dan catat di bagian itu, karena tiap tambahan mengubah fingerprint dan butuh build ulang.
+8. **API tetap kompatibel.** Server dipakai web yang sudah tayang. Perubahan server untuk mobile bersifat menambah (prosedur atau field baru), tidak mengubah yang ada, kecuali dokumen phase menyebut lain.
+9. **Aturan toko tidak ditawar** (`02-teknis.md` bagian 12): tidak ada layar beli paket atau harga di app (K6), izin persetujuan AI per operasi tetap, hapus akun tetap bisa dijangkau, laporan konten AI tetap ada.
+10. **Git:** `git status --short` sebelum mengedit; stage hanya path milik sesi ini; `git branch --show-current` sebelum commit. Branch `feat/mobile-NN-<slug>` dari `main` terbaru. Conventional Commits. Tanpa atribusi AI. Jangan merge ke `main` tanpa persetujuan pemilik.
+11. **Rahasia:** kunci penandatanganan, token Expo, kunci Google/Apple, kata sandi akun uji tidak pernah ditulis di kode, dokumen, log, atau chat. Pemilik mengetiknya sendiri di tempat yang ditunjukkan.
+12. **Kualitas:** string lewat Lingui lalu `pnpm --filter mobile lingui:extract` (terjemahkan id-ID); `pnpm --filter mobile typecheck`; tes paket yang berubah (`pnpm --filter <paket> test`) dan tes mobile; `pnpm exec turbo boundaries` bila ekspor antarpaket berubah; `pnpm exec vp lint --fix <path>` dan `pnpm exec vp fmt <path>`; akhiri dengan `pnpm lint:agent` dan `pnpm format:check`. Bila paket bersama berubah: typecheck dan tes `web` juga. Laporkan jumlah tes yang benar-benar berjalan.
+13. **Tampilan dicek dengan mata:** screenshot iPhone dan Android, terang dan gelap, Inggris dan Indonesia, untuk tiap layar utama phase itu; tablet untuk phase yang mengubah tata letak. Simpan di `.agents/docs/plans/mobile/laporan/phase-NN/` dan tampilkan di laporan.
+14. **Kode lama:** layar yang diganti dihapus di phase yang sama (git menyimpan riwayatnya; tag arsip dibuat di Phase 01). Jangan meninggalkan dua versi layar yang sama.
+15. **Dokumen ikut diperbarui:** rancangan berubah → `02-teknis.md` (tampilan → `01-desain.md`), bagian baru di akhir. Hapus butir yang sudah terpenuhi dari "Feature parity exceptions" di `.agents/docs/mobile-release-handoff.md`.
+16. **Akhir sesi:** perbarui kolom Status di tabel atas, tambah satu baris di "Catatan sesi", lalu beri laporan dengan format di bawah.
+17. **Bila konteks hampir habis:** berhenti di titik aman (app tetap bisa di-build), status 🟡, tulis langkah lanjutan di "Catatan sesi", minta pemilik membuka sesi baru dengan "Lanjutkan Phase NN".
+
+Format laporan akhir untuk pemilik (bahasa awam, singkat):
+
+```text
+Phase NN — <judul>: selesai / sebagian
+Yang berubah: …
+Screenshot (iPhone | Android): …
+Dicoba di: iPhone <model/OS> simulator, Android <model/API> emulator, tablet (ya/tidak)
+Tes yang dijalankan: … (jumlah lulus/gagal/dilewati)
+Belum dikerjakan / risiko: …
+Tugasmu sebelum phase berikutnya: …
+```
+
+## Catatan sesi
+
+| Tanggal    | Phase | Hasil                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Sisa / tugas pemilik                                                                             |
+| ---------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| 2026-11-21 | —     | Rencana ditulis dari audit kode `apps/mobile` (±47 ribu baris) dan inventaris fitur web. Temuan utama: mesin inti rapi dan layak dipertahankan; tampilan memakai design system lama ("Desk & Paper", hijau) dan sama sekali belum memakai HeroUI Native; masuk hanya lewat browser; onboarding tidak ada; Portofolio, Profil, Lowongan belum ada layarnya. Tidak ada kode yang diubah.                                                                                                       | Phase 00: jawab P1–P5 (terutama kepemilikan akun toko)                                           |
+| 2026-11-21 | 00    | **K1–K16 disetujui** (P5). Cek alat di Mac: Xcode 27.2 dengan simulator iOS 26.5/27.0/27.2 (iPhone 17, 17e, Air, 18 Pro Max, Duo, iPad) ada; Android SDK ada (platform 36, 36.1, 37; AVD `Pixel_8` dan `Resizable_Experimental`), `adb` ada. **Belum ada:** Java di PATH (cek JBR bawaan Android Studio), `eas`, `maestro`, `rustc`/`cargo` di PATH (target Rust hanya host; Forme butuh target iOS dan Android), `ANDROID_HOME` belum diset. Disk: 21 GB kosong dari 460 GB (96% terpakai). | P1 (kepemilikan akun), P2 (perangkat), P3 (kosongkan disk ke ±60 GB), P4 (izin ubah `CLAUDE.md`) |
