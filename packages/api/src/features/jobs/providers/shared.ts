@@ -15,6 +15,8 @@ export type ProviderSearchOptions = {
 	kind?: JobEventKind;
 	/** Skips treg's answer archive. */
 	fresh?: boolean;
+	/** Hirebase: only listings it first saw at or after this time (ISO), newest first. For job alerts. */
+	ingestedAfter?: string;
 	signal?: AbortSignal | undefined;
 	treg?: TregDependencies;
 };
@@ -30,6 +32,8 @@ export type ProviderSearchResult = {
 	ms: number;
 	/** Listings the provider sent that were dropped as unusable (no title, no link). */
 	dropped: number;
+	/** JobsPipe: where a later "new since" check starts; given only on an answer's last page. */
+	deltaCursor?: string | undefined;
 };
 
 export type JobSourceAdapter = {
@@ -37,6 +41,15 @@ export type JobSourceAdapter = {
 	/** US dollars for one listing returned. */
 	pricePerListingUsd: number;
 	search: (input: JobSearchInput, options: ProviderSearchOptions) => Promise<ProviderSearchResult>;
+	/**
+	 * Listings that became searchable since `deltaCursor` (a previous answer's `deltaCursor`), for job alerts. Only
+	 * providers with a "new since" feed have it (JobsPipe); an answer with nothing new is free.
+	 */
+	newListings?: (
+		input: JobSearchInput,
+		deltaCursor: string,
+		options: ProviderSearchOptions,
+	) => Promise<ProviderSearchResult>;
 	/** How many jobs match, from the provider's free count endpoint (JobsPipe stops counting at 10,000). */
 	count: (
 		input: JobSearchInput,

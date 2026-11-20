@@ -1,3 +1,5 @@
+import type { ProviderListing, ProviderSearchOptions, ProviderSearchResult } from "../jobs/providers";
+import type { JobSearchInput } from "@rezumi/schema/jobs/search";
 import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
@@ -7,14 +9,24 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import * as tables from "@rezumi/db/schema";
 import { careerScheduleInputSchema } from "@rezumi/schema/career";
+import { fakeListing } from "../jobs/test-helpers";
+
+type SourceCall = (input: JobSearchInput, options: ProviderSearchOptions) => Promise<ProviderSearchResult>;
 
 const fixture = vi.hoisted(() => ({
 	db: undefined as ReturnType<typeof drizzle> | undefined,
-	search: vi.fn<typeof import("../applications/posting").searchJobPostings>(),
-	read: vi.fn<typeof import("../applications/posting").readOpenPosting>(),
+	// The job providers are the boundary: what treg would answer, without calling it.
+	hirebase: vi.fn<SourceCall>(),
+	jobspipeSearch: vi.fn<SourceCall>(),
+	jobspipeNew:
+		vi.fn<(input: JobSearchInput, delta: string, options: ProviderSearchOptions) => Promise<ProviderSearchResult>>(),
 	email: vi.fn<typeof import("@rezumi/email/transport").sendCareerNotification>(),
 	generate: vi.fn<typeof import("./generate").generateCareer>(),
-	env: { CRON_SECRET: undefined as string | undefined },
+	env: {
+		CRON_SECRET: undefined as string | undefined,
+		BILLING_MODE: "off" as "off" | "on",
+		JOB_SEARCH_DAILY_BUDGET_USD: 1,
+	},
 }));
 vi.mock("@rezumi/db/client", () => ({
 	get db() {
@@ -32,6 +44,14 @@ vi.mock("@rezumi/env/server", async () => {
 			get CRON_SECRET() {
 				return fixture.env.CRON_SECRET;
 			},
+			get BILLING_MODE() {
+				return fixture.env.BILLING_MODE;
+			},
+			get JOB_SEARCH_DAILY_BUDGET_USD() {
+				return fixture.env.JOB_SEARCH_DAILY_BUDGET_USD;
+			},
+			TREG_API_KEY: "test-only-treg-token",
+			FLAG_DISABLE_JOB_SEARCH: false,
 			SMTP_HOST: undefined,
 			SMTP_USER: undefined,
 			SMTP_PASS: undefined,
@@ -39,11 +59,29 @@ vi.mock("@rezumi/env/server", async () => {
 		},
 	};
 });
-// The external-service boundary is deterministic; queue ownership and all persistence remain real.
-vi.mock("../applications/posting", () => ({ searchJobPostings: fixture.search, readOpenPosting: fixture.read }));
-vi.mock("../web-access/credentials", () => ({
-	webAccessService: { resolve: async () => ({ provider: "tavily", apiKey: "synthetic-web-key" }) },
+vi.mock("../jobs/providers", () => ({
+	JOB_SOURCES: {
+		hirebase: {
+			provider: "hirebase",
+			pricePerListingUsd: 0.0015,
+			search: (...args: Parameters<SourceCall>) => fixture.hirebase(...args),
+			count: async () => undefined,
+		},
+		jobspipe: {
+			provider: "jobspipe",
+			pricePerListingUsd: 0.00392,
+			search: (...args: Parameters<SourceCall>) => fixture.jobspipeSearch(...args),
+			newListings: (input: JobSearchInput, delta: string, options: ProviderSearchOptions) =>
+				fixture.jobspipeNew(input, delta, options),
+			count: async () => undefined,
+		},
+	},
 }));
+// Budget and quota totals in this process, as on a server without Redis.
+vi.mock("../jobs/counters", async () => {
+	const actual = await vi.importActual<typeof import("../jobs/counters")>("../jobs/counters");
+	return { ...actual, jobCounters: actual.memoryCounters() };
+});
 vi.mock("@rezumi/email/transport", () => ({ sendCareerNotification: fixture.email }));
 // No live AI: the briefing writer is the boundary; the provider check only has to find the connection.
 vi.mock("./generate", () => ({ generateCareer: fixture.generate }));
@@ -58,29 +96,31 @@ function getDb() {
 }
 
 const databaseUrl = process.env.INTEGRATIONS_TEST_DATABASE_URL ?? process.env.COVER_LETTER_TEST_DATABASE_URL;
-const results = [
-	{
-		title: "Reliability engineer",
-		url: "https://example.test/jobs/42?utm_source=search#details",
+/** A provider answer with these listings, at Hirebase's price. */
+const answer = (
+	provider: "hirebase" | "jobspipe",
+	listings: ProviderListing[],
+	extra: Partial<ProviderSearchResult> = {},
+) => ({
+	provider,
+	listings,
+	cursor: undefined,
+	total: undefined,
+	costMicro: listings.length * 1_500,
+	ms: 5,
+	dropped: 0,
+	...extra,
+});
+const role = (index: number, overrides: Partial<ProviderListing> = {}) =>
+	fakeListing("hirebase", index, {
+		title: `Reliability engineer ${index}`,
+		company: { name: "ACME" },
+		postingUrl: `https://example.test/jobs/${index}?utm_source=search`,
 		description: "Maintain reliable services.",
-	},
-	{
-		title: "Reliability engineer",
-		url: "https://example.test/jobs/42?fbclid=tracking",
-		description: "Maintain reliable services.",
-	},
-];
-const posting = {
-	page: {
-		role: "Reliability engineer",
-		company: "ACME",
-		location: "Berlin",
-		description: "Maintain reliable services.",
-		closesAt: "",
-	},
-	text: "Maintain reliable services.",
-	company: "",
-};
+		...overrides,
+	});
+/** Enough fitting jobs from Hirebase that JobsPipe isn't asked. */
+const plenty = () => Array.from({ length: 12 }, (_, index) => role(index + 1));
 
 describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 	let jobs: typeof import("./jobs").careerJobs;
@@ -119,11 +159,14 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 	beforeEach(async () => {
 		vi.stubEnv("VERCEL", "");
 		fixture.env.CRON_SECRET = undefined;
-		fixture.search.mockReset().mockResolvedValue(results);
-		fixture.read.mockReset().mockResolvedValue(posting);
+		fixture.env.BILLING_MODE = "off";
+		fixture.env.JOB_SEARCH_DAILY_BUDGET_USD = 1;
+		fixture.hirebase.mockReset().mockResolvedValue(answer("hirebase", plenty()));
+		fixture.jobspipeSearch.mockReset().mockResolvedValue(answer("jobspipe", []));
+		fixture.jobspipeNew.mockReset().mockResolvedValue(answer("jobspipe", []));
 		fixture.email.mockReset().mockResolvedValue(true);
 		fixture.generate.mockReset().mockResolvedValue({ item: null, answer: null });
-		await pool.query('TRUNCATE "user" CASCADE');
+		await pool.query('TRUNCATE "user", job_listing CASCADE');
 		await getDb().insert(tables.user).values({
 			id: "alice",
 			name: "Alice Example",
@@ -143,7 +186,7 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 			careerScheduleInputSchema.parse({
 				applicationId,
 				kind: "discovery",
-				query: "Reliability engineering roles",
+				query: "Reliability engineer",
 				enabled: true,
 				timezone: "Europe/Berlin",
 				nextRunAt: due(),
@@ -205,10 +248,10 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 		await schedule();
 		const started = Promise.withResolvers<void>();
 		const release = Promise.withResolvers<void>();
-		fixture.search.mockImplementationOnce(async () => {
+		fixture.hirebase.mockImplementationOnce(async () => {
 			started.resolve();
 			await release.promise;
-			return results;
+			return answer("hirebase", [role(1), role(1, { externalId: "hirebase-1-copy" })]);
 		});
 		const first = run();
 		await Promise.race([
@@ -224,9 +267,9 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 			await first;
 		}
 		await run();
-		expect(fixture.search).toHaveBeenCalledTimes(1);
+		expect(fixture.hirebase).toHaveBeenCalledTimes(1);
 		expect(await jobs.opportunities("alice")).toMatchObject([
-			{ url: "https://example.test/jobs/42", role: "Reliability engineer", company: "ACME" },
+			{ url: "https://example.test/jobs/1", role: "Reliability engineer 1", company: "ACME" },
 		]);
 		expect(await jobs.notifications("alice")).toHaveLength(1);
 		expect(await getDb().select().from(tables.application)).toEqual([]);
@@ -238,11 +281,11 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 		const dispatch = vi.fn(async (_count: number) => {});
 		await expect(run({ dispatch })).resolves.toEqual({ processed: 0 });
 		expect(dispatch).toHaveBeenCalledWith(1);
-		expect(fixture.search).not.toHaveBeenCalled();
+		expect(fixture.hirebase).not.toHaveBeenCalled();
 
 		await expect(runNext()).resolves.toBe("alice");
 		await expect(runNext()).resolves.toBeNull();
-		expect(fixture.search).toHaveBeenCalledOnce();
+		expect(fixture.hirebase).toHaveBeenCalledOnce();
 		expect(await jobs.notifications("alice")).toHaveLength(1);
 
 		dispatch.mockClear();
@@ -250,29 +293,209 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 		expect(dispatch).not.toHaveBeenCalled();
 	});
 
-	it("keeps only postings as roles, and reads each page it finds once", async () => {
-		fixture.search.mockResolvedValue([
-			...results,
-			{ title: "243 reliability jobs", url: "https://example.test/jobs?q=reliability", description: "" },
-		]);
-		fixture.read.mockImplementation(async (url) => (url.includes("?q=") ? null : posting));
-		await schedule();
+	it("offers new listings as roles, and a later run with nothing new adds nothing and moves on", async () => {
+		const saved = await schedule();
+		const before = Date.now();
 		await run();
-		const reads = fixture.read.mock.calls.length;
-		await schedule();
+		const [first] = fixture.hirebase.mock.calls;
+		expect(first?.[0]).toMatchObject({ query: "Reliability engineer" });
+		expect(first?.[1]).toMatchObject({ kind: "discovery", fresh: true, limit: 20 });
+		// The first check reaches one interval (a day) back.
+		expect(Date.parse(first?.[1].ingestedAfter ?? "")).toBeLessThanOrEqual(before - 86_400_000 + 1_000);
+		expect(fixture.jobspipeSearch).not.toHaveBeenCalled();
+
+		const roles = await jobs.opportunities("alice");
+		expect(roles).toHaveLength(12);
+		expect(roles[0]).toMatchObject({
+			role: expect.stringMatching(/^Reliability engineer \d+$/),
+			company: "ACME",
+			url: expect.stringMatching(/^https:\/\/example\.test\/jobs\/\d+$/),
+			listingId: expect.any(String),
+			listing: { company: { name: "ACME" }, postingUrl: expect.stringContaining("utm_source") },
+			unknowns: ["salary", "office"],
+		});
+		expect(await getDb().select().from(tables.jobListing)).toHaveLength(12);
+		expect(await jobs.notifications("alice")).toMatchObject([{ title: "12 new roles to review" }]);
+
+		// Nothing new since: the same listings come back (an hour of overlap) and nothing is offered twice.
+		await getDb()
+			.update(tables.careerSchedule)
+			.set({ nextRunAt: new Date(Date.now() - 30_000) })
+			.where(eq(tables.careerSchedule.id, saved.id));
 		await run();
-		expect(fixture.search).toHaveBeenCalledTimes(2);
-		expect(fixture.read).toHaveBeenCalledTimes(reads);
-		const opportunities = await jobs.opportunities("alice");
-		expect(opportunities).toMatchObject([{ url: "https://example.test/jobs/42", role: "Reliability engineer" }]);
-		expect(await jobs.notifications("alice")).toMatchObject([{ title: "1 new role to review" }]);
-		const [opportunity] = opportunities;
-		if (!opportunity) throw new Error("Expected a reviewable result.");
-		await jobs.dismissOpportunity("alice", opportunity.id);
-		await schedule();
-		await run();
-		expect(await jobs.opportunities("alice")).toEqual([]);
+		expect(fixture.hirebase).toHaveBeenCalledTimes(2);
+		const [, second] = fixture.hirebase.mock.calls;
+		expect(Date.parse(second?.[1].ingestedAfter ?? "")).toBeGreaterThan(before - 3_600_000 - 1_000);
+		expect(await jobs.opportunities("alice")).toHaveLength(12);
 		expect(await jobs.notifications("alice")).toHaveLength(1);
+		expect(await getDb().select().from(tables.application)).toEqual([]);
+	});
+
+	it("never offers a listing the person hid, tracked or dismissed, and leaves closed ones out", async () => {
+		const careers = (await import("./service")).careerService;
+		const { upsertListings } = await import("../jobs/store");
+		const { trackListing } = await import("../jobs/track");
+		fixture.hirebase.mockResolvedValue(answer("hirebase", [role(1), role(2), role(3)]));
+		const saved = await schedule();
+		await run();
+		const roles = await jobs.opportunities("alice");
+		const byRole = (index: number) => {
+			const found = roles.find((row) => row.role === `Reliability engineer ${index}`);
+			if (!found) throw new Error(`Expected role ${index}`);
+			return found;
+		};
+		await jobs.dismissOpportunity("alice", byRole(1).id);
+		const tracked = await careers.trackOpportunity("alice", byRole(2).id);
+		expect(await careers.trackOpportunity("alice", byRole(2).id)).toEqual(tracked);
+		// Closed after it was offered: it leaves New roles.
+		await getDb()
+			.update(tables.jobListing)
+			.set({ closedAt: new Date() })
+			.where(eq(tables.jobListing.id, byRole(3).listingId ?? ""));
+		// Hidden and tracked from the Jobs page.
+		const [four, five] = await upsertListings([role(4), role(5)]);
+		if (!four || !five) throw new Error("Expected stored listings.");
+		await getDb().insert(tables.jobListingHidden).values({ userId: "alice", listingId: four.id });
+		await trackListing("alice", five);
+
+		fixture.hirebase.mockResolvedValue(
+			answer(
+				"hirebase",
+				[1, 2, 3, 4, 5, 6].map((index) => role(index)),
+			),
+		);
+		await getDb()
+			.update(tables.careerSchedule)
+			.set({ nextRunAt: new Date(Date.now() - 30_000) })
+			.where(eq(tables.careerSchedule.id, saved.id));
+		await run();
+		expect(
+			(await jobs.opportunities("alice")).map((row) => [row.role, Boolean(row.trackedApplicationId)]).sort(),
+		).toEqual([
+			["Reliability engineer 2", true],
+			["Reliability engineer 6", false],
+		]);
+		expect((await jobs.notifications("alice")).map((row) => row.title)).toEqual([
+			"1 new role to review",
+			"3 new roles to review",
+		]);
+		expect(
+			await getDb()
+				.select({ role: tables.application.role, source: tables.application.source, url: tables.application.sourceUrl })
+				.from(tables.application)
+				.orderBy(tables.application.role),
+		).toEqual([
+			{
+				role: "Reliability engineer 2",
+				source: "Rezumi job search",
+				url: "https://example.test/jobs/2?utm_source=search",
+			},
+			{
+				role: "Reliability engineer 5",
+				source: "Rezumi job search",
+				url: "https://example.test/jobs/5?utm_source=search",
+			},
+		]);
+	});
+
+	it("tops up with JobsPipe below ten, then follows its delta cursor for new jobs only", async () => {
+		fixture.hirebase.mockResolvedValue(answer("hirebase", [role(1)]));
+		fixture.jobspipeSearch.mockResolvedValue(
+			answer("jobspipe", [fakeListing("jobspipe", 7, { title: "Site reliability engineer" })], {
+				deltaCursor: "delta-one",
+			}),
+		);
+		const saved = await schedule();
+		await run();
+		expect(fixture.jobspipeSearch).toHaveBeenCalledOnce();
+		expect(fixture.jobspipeSearch.mock.calls[0]?.[1]).toMatchObject({ limit: 19, fresh: true, kind: "discovery" });
+		expect(await jobs.opportunities("alice")).toHaveLength(2);
+
+		fixture.jobspipeNew.mockResolvedValue(
+			answer("jobspipe", [fakeListing("jobspipe", 8, { title: "Reliability lead" })], { deltaCursor: "delta-two" }),
+		);
+		await getDb()
+			.update(tables.careerSchedule)
+			.set({ nextRunAt: new Date(Date.now() - 30_000) })
+			.where(eq(tables.careerSchedule.id, saved.id));
+		await run();
+		expect(fixture.jobspipeSearch).toHaveBeenCalledOnce();
+		expect(fixture.jobspipeNew).toHaveBeenCalledWith(
+			expect.objectContaining({ query: "Reliability engineer" }),
+			"delta-one",
+			expect.objectContaining({ limit: 19 }),
+		);
+		expect(await jobs.opportunities("alice")).toHaveLength(3);
+		const [state] = await getDb()
+			.select({ state: tables.careerSchedule.discoveryState })
+			.from(tables.careerSchedule)
+			.where(eq(tables.careerSchedule.id, saved.id));
+		expect(state?.state).toMatchObject({ jobspipeDelta: "delta-two", hirebaseAfter: expect.any(String) });
+	});
+
+	it("postpones a check until the budget resets, without using an attempt or reporting a failure", async () => {
+		fixture.env.JOB_SEARCH_DAILY_BUDGET_USD = 0;
+		await schedule();
+		await run();
+		expect(fixture.hirebase).not.toHaveBeenCalled();
+		const [job] = await getDb().select().from(tables.careerJob);
+		expect(job).toMatchObject({ status: "queued", attempts: 0, error: null });
+		expect(job?.leaseUntil?.toISOString().slice(11, 16)).toBe("00:05");
+		expect(job?.leaseUntil?.getTime()).toBeGreaterThan(Date.now());
+		expect(await jobs.notifications("alice")).toEqual([]);
+
+		fixture.env.JOB_SEARCH_DAILY_BUDGET_USD = 1;
+		await getDb().update(tables.careerJob).set({ leaseUntil: expired() });
+		await run();
+		expect(fixture.hirebase).toHaveBeenCalledOnce();
+		expect(await jobs.opportunities("alice")).toHaveLength(12);
+	});
+
+	it("keeps a saved search, rebuilds one from a role, and caps job alerts by plan", async () => {
+		const search = { query: "Data analyst", country: "GB", remote: "only", postedWithinDays: 7 };
+		const saved = await jobs.save(
+			"alice",
+			careerScheduleInputSchema.parse({
+				kind: "discovery",
+				search,
+				timezone: "UTC",
+				nextRunAt: due(),
+				intervalDays: 1,
+			}),
+		);
+		expect(saved).toMatchObject({ query: "Data analyst", search: { ...search, includeNoSalary: true } });
+		// A toggle that leaves the search out keeps it.
+		const paused = await jobs.save("alice", {
+			...careerScheduleInputSchema.parse({ ...saved, search: undefined, enabled: false }),
+			id: saved.id,
+		});
+		expect(paused.search).toMatchObject(search);
+		await expect(
+			jobs.save(
+				"alice",
+				careerScheduleInputSchema.parse({ kind: "discovery", query: "x", timezone: "UTC", nextRunAt: due() }),
+			),
+		).rejects.toMatchObject({ code: "BAD_REQUEST" });
+
+		fixture.env.BILLING_MODE = "on";
+		await schedule();
+		await expect(schedule()).rejects.toMatchObject({
+			code: "PLAN_LIMIT_REACHED",
+			data: { limit: "jobAlerts", max: 1, used: 1, planId: "free" },
+		});
+		// Paused alerts don't count.
+		await expect(
+			jobs.save(
+				"alice",
+				careerScheduleInputSchema.parse({
+					kind: "discovery",
+					query: "Designer",
+					enabled: false,
+					timezone: "UTC",
+					nextRunAt: due(),
+				}),
+			),
+		).resolves.toMatchObject({ enabled: false });
 	});
 
 	it.each(["pause", "delete schedule", "delete application"] as const)(
@@ -284,10 +507,10 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 			const saved = await schedule("alice-app");
 			const started = Promise.withResolvers<void>();
 			const release = Promise.withResolvers<void>();
-			fixture.search.mockImplementationOnce(async () => {
+			fixture.hirebase.mockImplementationOnce(async () => {
 				started.resolve();
 				await release.promise;
-				return results;
+				return answer("hirebase", plenty());
 			});
 			const running = run();
 			await started.promise;
@@ -301,7 +524,7 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 				await running;
 			}
 			await run();
-			expect(fixture.search).toHaveBeenCalledTimes(1);
+			expect(fixture.hirebase).toHaveBeenCalledTimes(1);
 			expect(await jobs.opportunities("alice")).toEqual([]);
 			expect(await jobs.notifications("alice")).toEqual([]);
 			expect(fixture.email).not.toHaveBeenCalled();
@@ -432,16 +655,20 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 		},
 	);
 
-	it("tracks a discovered role once, and a tracked role stays quiet in later searches", async () => {
+	it("tracks an older role without a listing once, from its own copy of the posting", async () => {
 		const careers = (await import("./service")).careerService;
 		const url = "https://example.test/jobs/42";
-		fixture.search.mockResolvedValue([
-			{ title: "Reliability engineer at ACME | LinkedIn", url, description: "Maintain reliable services." },
-		]);
-		await schedule();
-		await run();
-		const [opportunity] = await jobs.opportunities("alice");
-		if (!opportunity) throw new Error("Expected a discovered role.");
+		const [opportunity] = await getDb()
+			.insert(tables.careerOpportunity)
+			.values({
+				userId: "alice",
+				url,
+				role: "Reliability engineer",
+				company: "ACME",
+				snippet: "Maintain reliable services.",
+			})
+			.returning();
+		if (!opportunity) throw new Error("Expected a role.");
 		await expect(careers.trackOpportunity("bob", opportunity.id)).rejects.toMatchObject({ code: "NOT_FOUND" });
 		const tracked = await careers.trackOpportunity("alice", opportunity.id);
 		expect(await careers.trackOpportunity("alice", opportunity.id)).toEqual(tracked);
@@ -458,12 +685,6 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 		).toEqual([
 			{ id: tracked.applicationId, company: "ACME", role: "Reliability engineer", status: "saved", sourceUrl: url },
 		]);
-		fixture.search.mockResolvedValue([
-			{ title: "Senior reliability engineer at ACME", url, description: "Updated requirements." },
-		]);
-		await schedule();
-		await run();
-		expect(await jobs.notifications("alice")).toHaveLength(1);
 	});
 
 	it("recovers a crashed lease but reports an exhausted lease only once without another provider call", async () => {
@@ -504,8 +725,8 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 			]);
 		await Promise.all([run(), run()]);
 		await run();
-		expect(fixture.search).toHaveBeenCalledTimes(1);
-		expect(await jobs.opportunities("alice")).toHaveLength(1);
+		expect(fixture.hirebase).toHaveBeenCalledTimes(1);
+		expect(await jobs.opportunities("alice")).toHaveLength(12);
 		const notifications = await jobs.notifications("alice");
 		expect(notifications.filter((item) => item.title === "Career schedule needs attention")).toHaveLength(1);
 		expect(notifications).toHaveLength(2);
@@ -519,10 +740,11 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 
 	it("backs off failed requests and stops after three attempts with one actionable, sanitized notification", async () => {
 		const failing = await schedule();
-		fixture.search.mockRejectedValue(new Error("Synthetic provider error containing private-key-material"));
+		fixture.hirebase.mockRejectedValue(new Error("Synthetic provider error containing private-key-material"));
+		fixture.jobspipeSearch.mockRejectedValue(new Error("Synthetic provider error containing private-key-material"));
 		await run();
 		await run();
-		expect(fixture.search).toHaveBeenCalledTimes(1);
+		expect(fixture.hirebase).toHaveBeenCalledTimes(1);
 		const [job] = await getDb().select().from(tables.careerJob);
 		if (!job) throw new Error("Expected durable failed work.");
 		expect(job.status).toBe("queued");
@@ -534,7 +756,7 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 			await run();
 		}
 		await run();
-		expect(fixture.search).toHaveBeenCalledTimes(3);
+		expect(fixture.hirebase).toHaveBeenCalledTimes(3);
 		expect(await jobs.opportunities("alice")).toEqual([]);
 		const notifications = await jobs.notifications("alice");
 		expect(notifications).toMatchObject([
@@ -548,28 +770,6 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 				.where(eq(tables.careerJob.id, job.id)),
 		).toEqual([{ status: "failed", attempts: 3 }]);
 	});
-	it("rechecks an old untracked posting without reporting it as a new role", async () => {
-		await schedule();
-		await run();
-		await getDb()
-			.update(tables.careerOpportunity)
-			.set({ updatedAt: new Date(Date.now() - 8 * 86_400_000) });
-		await getDb()
-			.update(tables.careerSchedule)
-			.set({ nextRunAt: new Date(Date.now() - 30_000) });
-		fixture.read.mockResolvedValue({
-			...posting,
-			text: "Updated responsibilities",
-			page: { ...posting.page, role: "Senior engineer" },
-		});
-		await run();
-		expect(await jobs.opportunities("alice")).toMatchObject([{ role: "Senior engineer" }]);
-		expect(await getDb().select().from(tables.careerOpportunity)).toMatchObject([
-			{ description: "Updated responsibilities" },
-		]);
-		expect((await jobs.notifications("alice")).filter((item) => item.notice.type === "opportunities")).toHaveLength(1);
-	});
-
 	it("reclaims an abandoned email attempt but never resends a delivered notification", async () => {
 		const saved = await schedule();
 		await getDb().update(tables.careerSchedule).set({ email: true }).where(eq(tables.careerSchedule.id, saved.id));

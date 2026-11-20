@@ -974,6 +974,10 @@ msgstr "{length} മി."
 msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
 msgstr "{lines, plural, one {{next} പേജിലേക്ക് ഏകദേശം # ലൈൻ വഴി പ്രവർത്തിക്കുന്നു} other {{next} പേജിലേക്ക് ഏകദേശം # ലൈനുകളിൽ പ്രവർത്തിക്കുന്നു}}"
 
+#: src/features/billing/plan.ts
+msgid "{max, plural, one {Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.}}"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "{minimum} minimum"
 msgstr "കുറഞ്ഞത് {minimum}"
@@ -1538,6 +1542,10 @@ msgstr "ഒരു വിടവ് ഒരു പ്രശ്നമല്ല. ന�
 msgid "A job site wasn't read correctly"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+msgid "A job title works best, such as “Product designer”."
+msgstr ""
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "A link"
 msgstr ""
@@ -2018,8 +2026,8 @@ msgid "Add a result"
 msgstr "ഒരു ഫലം ചേർക്കുക"
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Add a role or company to look for."
-msgstr "തിരയേണ്ട ഒരു റോളോ കമ്പനിയോ ചേർക്കുക."
+msgid "Add a role to look for."
+msgstr ""
 
 #: src/features/portfolio/editor/intro-effect.tsx
 msgid "Add a role to switch to. With only one line, the page shows it without the effect."
@@ -2800,6 +2808,10 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Also end the subscription now (access stops at once)"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Also filtered by: {list}"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -4404,6 +4416,7 @@ msgstr ""
 msgid "City"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/jobs/search-bar.tsx
 msgid "City (optional)"
 msgstr ""
@@ -5276,6 +5289,10 @@ msgstr "ദാതാവിനെ ഇല്ലാതാക്കാനായി�
 msgid "Couldn't delete this conversation. Try again."
 msgstr "ഈ സംഭാഷണം ഇല്ലാതാക്കാനായില്ല. വീണ്ടും ശ്രമിക്കുക."
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Couldn't delete this job alert. Try again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Couldn't delete this schedule. Try again."
 msgstr "ഈ ഷെഡ്യൂൾ ഇല്ലാതാക്കാനായില്ല. വീണ്ടും ശ്രമിക്കുക."
@@ -5845,6 +5862,7 @@ msgstr ""
 msgid "Countries, devices, linking sites and works by day"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Country"
@@ -7048,6 +7066,10 @@ msgstr "ഫീഡ്‌ബാക്ക് ലഭിച്ച ഓരോ ഉത്
 msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
+msgstr ""
+
 #: src/features/settings/ai/browser-extension.tsx
 msgid "Edge Add-ons"
 msgstr ""
@@ -7120,6 +7142,10 @@ msgstr ""
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
 msgstr "അഭിമുഖം എഡിറ്റ് ചെയ്യുക..."
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Edit job alert"
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 msgid "Edit keyword"
@@ -7904,10 +7930,6 @@ msgstr ""
 msgid "Find portfolio"
 msgstr ""
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Find roles"
-msgstr "റോളുകൾ കണ്ടെത്തുക"
-
 #: src/features/assistant/assistant-panel.tsx
 msgid "Find the results in this work and show them as metrics"
 msgstr ""
@@ -8482,9 +8504,13 @@ msgstr "“ഫീഡ്‌ബാക്ക് നേടുക” ചോദ്യ�
 msgid "Get found"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Get job alerts"
+msgstr ""
+
 #: src/features/career/today.tsx
-msgid "Get new roles here every morning"
-msgstr "എല്ലാ ദിവസവും രാവിലെ പുതിയ റോളുകൾ ഇവിടെ നേടുക"
+msgid "Get new jobs for your search here every morning"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -9600,6 +9626,32 @@ msgstr "ജാപ്പനീസ്"
 msgid "Job"
 msgstr "ഇയ്യോബ്"
 
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/today.tsx
+msgid "Job alert"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgctxt "Short schedule kind in a segmented choice"
+msgid "Job alert"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert deleted"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert on"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert paused"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Job alerts aren't available on this server yet."
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Job description"
@@ -10499,10 +10551,6 @@ msgstr ""
 msgid "Long stretches are set in capitals."
 msgstr "നീണ്ട ഭാഗങ്ങൾ ക്യാപിറ്റൽസിലാണ്."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Look for"
-msgstr "തിരയേണ്ടത്"
-
 #: src/features/portfolio/page-text.ts
 msgid "Looking for"
 msgstr ""
@@ -11271,6 +11319,10 @@ msgstr "പകരം പുതിയ കവർ ലെറ്റർ"
 msgid "New document"
 msgstr "പുതിയ പ്രമാണം"
 
+#: src/features/career/schedule-sheet.tsx
+msgid "New job alert"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr "പുതിയ കീ"
@@ -11576,22 +11628,22 @@ msgstr "സ്ഥാനമില്ല"
 msgid "No messages yet. Turn on the contact form in the editor, under Contact."
 msgstr ""
 
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery is paused."
-msgstr "പുതിയ റോളുകളില്ല. കണ്ടെത്തൽ താൽക്കാലികമായി നിർത്തിയിരിക്കുന്നു."
-
 #. placeholder {0}: day(active.nextRunAt)
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again on {0} at {clock}."
-msgstr "പുതിയ റോളുകളില്ല. കണ്ടെത്തൽ {0} {clock}-ന് വീണ്ടും പ്രവർത്തിക്കും."
+msgid "No new roles. Your job alert checks again on {0} at {clock}."
+msgstr ""
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again today at {clock}."
-msgstr "പുതിയ റോളുകളില്ല. കണ്ടെത്തൽ ഇന്ന് {clock}-ന് വീണ്ടും പ്രവർത്തിക്കും."
+msgid "No new roles. Your job alert checks again today at {clock}."
+msgstr ""
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again tomorrow at {clock}."
-msgstr "പുതിയ റോളുകളില്ല. കണ്ടെത്തൽ നാളെ {clock}-ന് വീണ്ടും പ്രവർത്തിക്കും."
+msgid "No new roles. Your job alert checks again tomorrow at {clock}."
+msgstr ""
+
+#: src/features/career/today.tsx
+msgid "No new roles. Your job alert is paused."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
@@ -11688,6 +11740,10 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "No room for another job alert"
 msgstr ""
 
 #: src/features/billing/plan.ts
@@ -12534,11 +12590,6 @@ msgstr "കരിയർ → ഓഫറുകൾ എന്നതിൽ തുറ�
 msgid "opens in new tab"
 msgstr "പുതിയ ടാബിൽ തുറക്കും"
 
-#: src/features/career/schedule-sheet.tsx
-#: src/features/career/today.tsx
-msgid "Opportunity discovery"
-msgstr "അവസര കണ്ടെത്തൽ"
-
 #: src/features/settings/ai/web-access.tsx
 msgid "Optional"
 msgstr "ഓപ്ഷണൽ"
@@ -12969,6 +13020,16 @@ msgstr "താൽക്കാലികമായി നിർത്തിയ ഷ�
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Pay {price} with QRIS"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year, or not listed"
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -13432,6 +13493,7 @@ msgstr ""
 msgid "Posted {posted}"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last 2 weeks"
 msgstr ""
@@ -13440,10 +13502,12 @@ msgstr ""
 msgid "Posted in the last 30 days"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last day"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last week"
 msgstr ""
@@ -14592,11 +14656,13 @@ msgstr "ഓർമ്മിപ്പിക്കേണ്ട തീയതി"
 msgid "Remote"
 msgstr "റിമോട്ട്"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgctxt "Job search filter"
 msgid "Remote anywhere"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgctxt "Job search filter"
 msgid "Remote in this country"
@@ -15383,6 +15449,7 @@ msgstr "ഇപ്പോൾ"
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/career/schedule-sheet.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "തസ്തിക"
@@ -15416,10 +15483,6 @@ msgstr "റോളുകൾ"
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Roles you're looking for"
 msgstr ""
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Roles, places and companies. Starts from your preferences."
-msgstr "റോളുകൾ, സ്ഥലങ്ങൾ, കമ്പനികൾ. നിങ്ങളുടെ പ്രിഫറൻസുകളിൽ നിന്ന് തുടങ്ങുന്നു."
 
 #: src/libs/locale.ts
 msgid "Romanian"
@@ -16293,12 +16356,8 @@ msgid "Set to end at the period end"
 msgstr ""
 
 #: src/features/career/today.tsx
-msgid "Set up discovery"
-msgstr "കണ്ടെത്തൽ സജ്ജമാക്കുക"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Set up web search in Settings"
-msgstr "സെറ്റിംഗ്സിൽ വെബ് തിരയൽ സജ്ജമാക്കുക"
+msgid "Set up a job alert"
+msgstr ""
 
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Set up your authenticator app"
@@ -20277,10 +20336,6 @@ msgstr "നിങ്ങളുടെ റെസ്യൂമെയിൽ നിന�
 msgid "Uses the linked application"
 msgstr "ലിങ്ക് ചെയ്‌ത ജോലി അപേക്ഷ ഉപയോഗിക്കുന്നു"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Uses the web search service set up in Settings. Results wait in Today for your review; applications and documents are never created for you."
-msgstr "സെറ്റിംഗ്സിൽ സജ്ജമാക്കിയ വെബ് തിരയൽ സേവനം ഉപയോഗിക്കുന്നു. ഫലങ്ങൾ നിങ്ങളുടെ പരിശോധനയ്ക്കായി “ഇന്ന്” എന്നതിൽ കാത്തിരിക്കും; അപേക്ഷകളും പ്രമാണങ്ങളും നിങ്ങൾക്കായി ഒരിക്കലും സ്വയം സൃഷ്ടിക്കില്ല."
-
 #: src/features/settings/ai/web-access.tsx
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "പിന്തുണയ്‌ക്കുന്നിടത്ത് നിങ്ങളുടെ AI ദാതാവിൻ്റെ സ്വന്തം വെബ് തിരയൽ ഉപയോഗിക്കുന്നു, ബിൽറ്റ്-ഇൻ റീഡറുമായുള്ള ലിങ്കുകൾ വായിക്കുന്നു."
@@ -20492,6 +20547,7 @@ msgstr ""
 msgid "views · 30 days"
 msgstr "കാഴ്ചകൾ · 30 ദിവസം"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/listing-card.tsx
 msgid "Visa sponsorship"
 msgstr ""

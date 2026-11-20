@@ -134,6 +134,18 @@ export function jobSearchLimitReached(input: { max: number; used: number; planId
 	});
 }
 
+/**
+ * Switching on another job alert past the plan's limit. Neutral like the other limits: the alerts already on keep
+ * running, and pausing or deleting one makes room.
+ */
+export function jobAlertLimitReached(input: { max: number; used: number; planId: PlanId }) {
+	return new ORPCError("PLAN_LIMIT_REACHED", {
+		status: 403,
+		message: `The limit of ${input.max} job ${input.max === 1 ? "alert" : "alerts"} is reached. Pause or delete an alert you no longer need to turn on another.`,
+		data: { limit: "jobAlerts", max: input.max, used: input.used, planId: input.planId },
+	});
+}
+
 /** Using a feature the account's plan doesn't include. */
 export function planFeatureRequired(feature: PlanFeature, planId: PlanId) {
 	return new ORPCError("PLAN_FEATURE_REQUIRED", {

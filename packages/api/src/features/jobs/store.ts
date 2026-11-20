@@ -1,5 +1,6 @@
 import type { ProviderListing } from "./providers/shared";
 import type { JobListing, JobProvider } from "@rezumi/schema/jobs/listing";
+import type { JobListingCard } from "@rezumi/schema/jobs/search";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
@@ -85,6 +86,9 @@ export function toJobListing(row: ListingRow): JobListing {
 		closedAt: row.closedAt?.toISOString() ?? null,
 	};
 }
+
+/** A listing as a result shows it: everything but the full description. */
+export const toJobListingCard = ({ description: _description, ...card }: JobListing): JobListingCard => card;
 
 /** Updated on every save; `closed_at` only when the provider said whether the job is open. */
 const updatedColumns = (withClosedAt: boolean) => ({

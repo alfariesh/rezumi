@@ -67,12 +67,13 @@ export const PARITY_TOOL_DESCRIPTIONS: Record<string, string> = {
 		"Save parts of an application's workspace. Each key given replaces that whole key; keys left out keep their values.",
 	"career.trackOpportunity":
 		"Create an application at Saved from a discovered role, with its posting link and text and the preferences it matched.",
-	"career.schedules": "List the user's career discovery, interview preparation, and follow-up schedules.",
+	"career.schedules":
+		"List the user's career schedules: job alerts (kind discovery, with the job search they repeat), interview preparation, and follow-up reminders.",
 	"career.saveSchedule":
-		"Create a career schedule, or replace one by providing its id. Explicitly choose enabled and email preferences, nextRunAt, timezone, optional repeat interval, and any application, interview, or saved AI provider. Enabled schedules may later perform research or coaching and send configured notifications; saving does not run a job immediately.",
+		"Create a career schedule, or replace one by providing its id. Explicitly choose enabled and email preferences, nextRunAt, timezone, optional repeat interval, and any application, interview, or saved AI provider. A job alert (kind discovery) repeats a job search: pass search (query as a job title, optional country, location and filters, as in jobs.search) or just query as the role; left out on an update, the saved search stays. Each run adds only jobs that appeared since the last one to the opportunities for review. Turning on alerts beyond the plan's limit returns PLAN_LIMIT_REACHED. Enabled schedules may later perform research or coaching and send configured notifications; saving does not run a job immediately.",
 	"career.deleteSchedule": "Delete an owned career schedule and prevent its future scheduled runs.",
 	"career.opportunities":
-		"List discovered opportunities for review. Discovery results are suggestions; create a tracked application only when the user chooses one.",
+		"List roles found by job alerts for review, with the job listing each came from (pay, work arrangement, posting link). They are suggestions; create a tracked application only when the user chooses one.",
 	"career.dismissOpportunity": "Dismiss an owned discovered opportunity from the review queue.",
 	"career.notifications": "Read the user's career notifications and their read status.",
 	"career.markNotificationRead": "Mark an owned career notification as read.",

@@ -74,26 +74,6 @@ export function canonicalOpportunityUrl(value: string): string | null {
 	}
 }
 
-const JOB_BOARDS =
-	/^(linkedin|indeed|glassdoor|welcome to the jungle|otta|wellfound|greenhouse|lever|workable|ashby|stepstone|xing|monster)\b/i;
-
-/**
- * Reads "Role at Company", "Role - Company | Board" and "Company: Role" listing titles. Job-board names are dropped;
- * anything unrecognised stays the role, with no company.
- */
-export function parseListingTitle(title: string): { role: string; company: string } {
-	const parts = title
-		// Lookbehinds start each whitespace run once, so long runs stay linear.
-		.split(/(?<!\s)\s+[|·–—-]\s+/)
-		.map((part) => part.trim())
-		.filter((part) => part && !JOB_BOARDS.test(part));
-	const at = parts[0]?.match(/^(.+?)(?<!\s)\s+(?:at|@|bei|chez)\s+(.+)$/i);
-	if (at) return { role: at[1] ?? "", company: at[2] ?? "" };
-	const colon = parts[0]?.match(/^([^:]+):\s*(.+)$/);
-	if (parts.length === 1 && colon) return { company: colon[1] ?? "", role: colon[2] ?? "" };
-	return { role: parts[0] ?? title.trim(), company: parts[1] ?? "" };
-}
-
 /**
  * When a briefing runs: 24 or 2 hours before the interview, or 08:00 on its day in `timezone` (or 2 hours before, for
  * an interview that starts before 10:00).
@@ -122,7 +102,7 @@ export function prepareRunAt(interviewAt: Date, lead: "24h" | "2h" | "morning", 
 }
 
 /**
- * Search results arrive as page excerpts, sometimes whole pages of markdown. Today shows a short plain summary:
+ * Posting text can hold markdown (pasted pages, older roles found by web search). Today shows a short plain summary:
  * links and images reduced to their text, markup and escapes dropped, cut at a word near 320 characters.
  */
 export function plainSnippet(text: string, max = 320) {

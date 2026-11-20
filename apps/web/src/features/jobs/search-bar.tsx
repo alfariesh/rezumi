@@ -140,10 +140,16 @@ export function JobsSearchBar({ value, onChange, onSearch, searching }: JobsSear
 	);
 }
 
-type CountryFieldProps = { value: string; onChange: (country: string) => void };
+type CountryFieldProps = {
+	value: string;
+	onChange: (country: string) => void;
+	/** A visible label above the field; without one it's named for screen readers only. */
+	label?: string;
+	className?: string;
+};
 
 /** The country to search in, by name or code, or anywhere. */
-function CountryField({ value, onChange }: CountryFieldProps) {
+export function CountryField({ value, onChange, label, className }: CountryFieldProps) {
 	const { i18n } = useLingui();
 	const countries = useMemo(
 		() =>
@@ -162,7 +168,7 @@ function CountryField({ value, onChange }: CountryFieldProps) {
 
 	return (
 		<ComboBox
-			aria-label={t`Country`}
+			{...(label ? {} : { "aria-label": t`Country` })}
 			selectedKey={selected}
 			inputValue={query ?? selectedName}
 			onInputChange={setQuery}
@@ -178,8 +184,9 @@ function CountryField({ value, onChange }: CountryFieldProps) {
 			// highlighted, and Enter is how people run the search.
 			menuTrigger="input"
 			allowsEmptyCollection
-			className="min-w-44 flex-[1_1_11rem]"
+			className={className ?? "min-w-44 flex-[1_1_11rem]"}
 		>
+			{label && <Label>{label}</Label>}
 			<ComboBox.InputGroup>
 				<Input variant="secondary" fullWidth placeholder={t`Country`} />
 				<ComboBox.Trigger />

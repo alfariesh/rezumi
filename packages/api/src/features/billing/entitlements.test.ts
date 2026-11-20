@@ -60,6 +60,7 @@ const unlimited = {
 		portfolioWorks: null,
 		portfolioStorageBytes: null,
 		jobSearchesPerDay: null,
+		jobAlerts: null,
 	},
 	currentPeriodEndsAt: null,
 	source: null,

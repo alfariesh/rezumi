@@ -32,6 +32,10 @@ export const jobSearchInputSchema = z.object({
 });
 export type JobSearchInput = z.infer<typeof jobSearchInputSchema>;
 
+/** A search as a job alert keeps it: everything but the page cursor. */
+export const jobSearchCriteriaSchema = jobSearchInputSchema.omit({ cursor: true });
+export type JobSearchCriteria = z.infer<typeof jobSearchCriteriaSchema>;
+
 /** The page token `jobs.search` hands back for "load more": the id of the page it continues from. */
 export const jobSearchCursorSchema = z.string().regex(/^[a-f0-9]{64}$/);
 

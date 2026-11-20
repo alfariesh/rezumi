@@ -1,12 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import {
-	canonicalOpportunityUrl,
-	nextCareerRun,
-	nextFutureCareerRun,
-	parseListingTitle,
-	plainSnippet,
-	prepareRunAt,
-} from "./scheduling";
+import { canonicalOpportunityUrl, nextCareerRun, nextFutureCareerRun, plainSnippet, prepareRunAt } from "./scheduling";
 
 describe("career schedule recurrence", () => {
 	it.each([1, 7])("advances a decades-old %s-day schedule beyond now", (days) => {
@@ -94,17 +87,6 @@ describe("opportunity URL identity", () => {
 		"https://router.home.arpa/role",
 	])("rejects unsafe or malformed opportunity URL %s", (url) => {
 		expect(canonicalOpportunityUrl(url)).toBeNull();
-	});
-});
-
-describe("listing titles", () => {
-	it.each([
-		["Reliability engineer at ACME", "ACME"],
-		["Reliability engineer - ACME | LinkedIn", "ACME"],
-		["ACME: Reliability engineer", "ACME"],
-		["Reliability engineer", ""],
-	])("reads %s", (title, company) => {
-		expect(parseListingTitle(title)).toEqual({ role: "Reliability engineer", company });
 	});
 });
 

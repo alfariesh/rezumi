@@ -1,4 +1,6 @@
 import type { careerScheduleInputSchema } from "@rezumi/schema/career";
+import type { JobListing } from "@rezumi/schema/jobs/listing";
+import type { JobListingCard, JobSearchCriteria } from "@rezumi/schema/jobs/search";
 import type z from "zod";
 import { ORPCError } from "@orpc/client";
 import { and, asc, desc, eq, inArray, isNull, lte, notInArray, or, sql } from "drizzle-orm";
@@ -6,25 +8,26 @@ import { db } from "@rezumi/db/client";
 import * as tables from "@rezumi/db/schema";
 import { sendCareerNotification } from "@rezumi/email/transport";
 import { env } from "@rezumi/env/server";
+import { jobSearchCriteriaSchema } from "@rezumi/schema/jobs/search";
 import { generateId } from "@rezumi/utils/string";
 import { STALE_AGENT_RUN_TTL_MS } from "../agent/runs";
 import { aiProvidersService } from "../ai-providers/service";
-import { readOpenPosting, searchJobPostings } from "../applications/posting";
+import { applicationService } from "../applications/service";
+import { getEntitlements } from "../billing/entitlements";
+import { jobAlertLimitReached } from "../billing/limits";
 import { lockUser } from "../documents/ownership";
 import { documentsService } from "../documents/service";
-import { webAccessService } from "../web-access/credentials";
-import { searchScope } from "../web-access/regions";
+import { checkJobAlert, JobAlertPostponed } from "../jobs/alerts";
+import { hiddenListingIds } from "../jobs/cache";
+import { stableJson } from "../jobs/search-key";
+import { toJobListing, toJobListingCard, upsertListings } from "../jobs/store";
+import { listingKey } from "../jobs/track";
+import { isTregConfigured } from "../jobs/treg";
 import { generateCareer } from "./generate";
 import { matchPosting } from "./matching";
 import { noticeText } from "./notices";
 import { isCareerSchedulingEnabled } from "./runner";
-import {
-	canonicalOpportunityUrl,
-	nextFutureCareerRun,
-	parseListingTitle,
-	plainSnippet,
-	prepareRunAt,
-} from "./scheduling";
+import { canonicalOpportunityUrl, nextFutureCareerRun, plainSnippet, prepareRunAt } from "./scheduling";
 import { careerService, requireCareerApplication } from "./service";
 
 const CAREER_URL = "/dashboard/career";
@@ -60,8 +63,6 @@ export const careerJobs = {
 		);
 		if (input.kind === "prepare" && interview?.type === "interview")
 			input.nextRunAt = prepareRunAt(new Date(interview.at), input.lead ?? "24h", input.timezone);
-		if (input.kind === "discovery" && !input.query)
-			throw new ORPCError("BAD_REQUEST", { message: "Enter a job search query." });
 		if (input.kind !== "discovery" && !input.applicationId)
 			throw new ORPCError("BAD_REQUEST", { message: "Choose an application." });
 		if (input.kind === "prepare" && !input.interviewId)
@@ -98,9 +99,16 @@ export const careerJobs = {
 						"Email reminders need a verified email address and email delivery on this server. Verify your email, or turn off email reminders.",
 				});
 		}
-		const { id, ...values } = input;
+		if (input.kind === "discovery" && input.enabled && !isTregConfigured())
+			throw new ORPCError("PRECONDITION_FAILED", {
+				message: "Job alerts aren't available on this server. Ask the server administrator to set up job search.",
+			});
+		const { id, search: requested, ...rest } = input;
 		let keepQueuedAt: Date | null = null;
 		return db.transaction(async (tx) => {
+			// Serializes this user's creates and job alerts so the caps hold under concurrent requests.
+			if (!id || (input.kind === "discovery" && input.enabled)) await lockUser(tx, userId);
+			let previous: typeof tables.careerSchedule.$inferSelect | undefined;
 			if (id) {
 				const [owned] = await tx
 					.select()
@@ -108,6 +116,7 @@ export const careerJobs = {
 					.where(and(eq(tables.careerSchedule.id, id), eq(tables.careerSchedule.userId, userId)))
 					.for("update");
 				if (!owned) throw new ORPCError("NOT_FOUND");
+				previous = owned;
 				const ran = owned.lastQueuedAt && input.nextRunAt <= owned.lastQueuedAt ? owned.lastQueuedAt : null;
 				// A briefing's time comes from its interview: one that already ran for that time stays done when switched
 				// back on. Other schedules need a new time.
@@ -121,9 +130,21 @@ export const careerJobs = {
 					.set({ status: "canceled", lease: null, leaseUntil: null })
 					.where(and(eq(tables.careerJob.scheduleId, id), sql`${tables.careerJob.status} in ('queued', 'running')`));
 			}
+			const search = input.kind === "discovery" ? alertSearch(requested, previous, input.query) : null;
+			if (input.kind === "discovery" && !search)
+				throw new ORPCError("BAD_REQUEST", { message: "Enter a role to look for." });
+			if (input.kind === "discovery" && input.enabled) await assertJobAlertRoom(tx, userId, id);
+			const values = {
+				...rest,
+				search,
+				query: search?.query ?? "",
+				// A changed search starts over: its first check reaches one interval back.
+				discoveryState:
+					previous && search && previous.search && stableJson(previous.search) === stableJson(search)
+						? previous.discoveryState
+						: null,
+			};
 			if (!id) {
-				// Serialize this user's creates so the cap holds under concurrent requests.
-				await lockUser(tx, userId);
 				const [count] = await tx
 					.select({ total: sql<number>`count(*)::int` })
 					.from(tables.careerSchedule)
@@ -166,17 +187,27 @@ export const careerJobs = {
 			.set({ readAt: new Date() })
 			.where(and(eq(tables.careerNotification.id, id), eq(tables.careerNotification.userId, userId)));
 	},
-	/** Each role with the preferences its posting matches and what it leaves out; the posting text stays here. */
+	/**
+	 * Each role with the preferences its posting matches and what it leaves out; the posting text stays here. A role from
+	 * a job listing carries the listing's card (pay, arrangement, logo); one whose listing has closed is left out.
+	 */
 	opportunities: async (userId: string) => {
 		const [rows, profile] = await Promise.all([
 			db
-				.select()
+				.select({ opportunity: tables.careerOpportunity, listing: tables.jobListing })
 				.from(tables.careerOpportunity)
+				.leftJoin(tables.jobListing, eq(tables.careerOpportunity.listingId, tables.jobListing.id))
 				.where(and(eq(tables.careerOpportunity.userId, userId), isNull(tables.careerOpportunity.dismissedAt)))
 				.orderBy(desc(tables.careerOpportunity.lastSeenAt)),
 			careerService.profile(userId),
 		]);
-		return rows.map(({ description, ...row }) => ({ ...row, ...matchPosting({ ...row, description }, profile) }));
+		return rows
+			.filter(({ listing }) => !listing?.closedAt)
+			.map(({ opportunity: { description, ...row }, listing }) => {
+				const card = listing ? toJobListingCard(toJobListing(listing)) : null;
+				const match = matchPosting({ ...row, description }, profile);
+				return { ...row, ...match, ...(card ? { unknowns: listingUnknowns(card) } : {}), listing: card };
+			});
 	},
 	dismissOpportunity: async (userId: string, id: string) => {
 		await db
@@ -186,53 +217,94 @@ export const careerJobs = {
 	},
 };
 
-type Posting = Awaited<ReturnType<typeof readOpenPosting>>;
+/**
+ * The job search a discovery schedule repeats: the one sent, else the one it has, else (an older client, or MCP) its
+ * `query` as the role with the search defaults. Null without a role to look for.
+ */
+function alertSearch(
+	requested: JobSearchCriteria | null | undefined,
+	previous: { search: JobSearchCriteria | null; query: string } | undefined,
+	query: string,
+): JobSearchCriteria | null {
+	if (requested) return requested;
+	if (requested === undefined && previous?.search) return previous.search;
+	const parsed = jobSearchCriteriaSchema.safeParse({ query: (query || previous?.query || "").slice(0, 200) });
+	return parsed.success ? parsed.data : null;
+}
+
+/** Throws PLAN_LIMIT_REACHED when switching on another job alert would pass the plan's limit. */
+async function assertJobAlertRoom(tx: Parameters<typeof lockUser>[0], userId: string, id: string | undefined) {
+	const entitlements = await getEntitlements(userId, new Date(), tx);
+	const max = entitlements.enabled ? entitlements.limits.jobAlerts : null;
+	if (max === null) return;
+	const [row] = await tx
+		.select({ total: sql<number>`count(*)::int` })
+		.from(tables.careerSchedule)
+		.where(
+			and(
+				eq(tables.careerSchedule.userId, userId),
+				eq(tables.careerSchedule.kind, "discovery"),
+				eq(tables.careerSchedule.enabled, true),
+				id ? sql`${tables.careerSchedule.id} <> ${id}` : undefined,
+			),
+		);
+	const used = row?.total ?? 0;
+	if (used >= max) throw jobAlertLimitReached({ max, used, planId: entitlements.planId });
+}
+
+/** What a listing doesn't say, from its own fields rather than its text. */
+const listingUnknowns = (listing: JobListingCard) => [
+	...(listing.salary ? [] : (["salary"] as const)),
+	...(listing.workArrangement ? [] : (["office"] as const)),
+];
+
+/** A found listing as a role to review; the listing's own columns are copied in case the listing goes. */
+function opportunityValues(userId: string, listing: JobListing) {
+	return {
+		userId,
+		url: canonicalOpportunityUrl(listing.postingUrl) ?? listing.postingUrl,
+		role: listing.title.slice(0, 200),
+		company: listing.company.name.slice(0, 200),
+		location: listing.location.text.slice(0, 200),
+		snippet: plainSnippet(listing.requirementsSummary || listing.description),
+		description: listing.description,
+		listingId: listing.id,
+	};
+}
 
 /**
- * A discovery search's hits, each read once: by the built-in reader, then by the web connection (which renders
- * script-built pages). Only one open role's posting is kept as a role; anything else is remembered as not one, so it is
- * never read again. Untracked roles are rechecked weekly so saved descriptions do not remain stale forever.
+ * Checks a discovery schedule's search for listings that appeared since its last run (`../jobs/alerts.ts`), stores
+ * them in the shared listings, and answers the ones this person hasn't hidden or tracked, as roles to offer. Posting
+ * pages aren't opened: the providers' listings already hold the posting.
  */
-async function discover(userId: string, query: string) {
-	const [connection, scope] = await Promise.all([webAccessService.resolve(userId), searchScope(userId)]);
-	const signal = AbortSignal.timeout(90_000);
-	// A background run has no request locale, so the place is named in English.
-	const hits = await searchJobPostings(query, { userId, connection, signal, ...scope });
-	const found = new Map<string, (typeof hits)[number]>();
-	for (const hit of hits) {
-		const url = canonicalOpportunityUrl(hit.url);
-		if (url && !found.has(url)) found.set(url, hit);
-	}
-	const known = found.size
-		? await db
-				.select({
-					url: tables.careerOpportunity.url,
-					updatedAt: tables.careerOpportunity.updatedAt,
-					dismissedAt: tables.careerOpportunity.dismissedAt,
-					trackedApplicationId: tables.careerOpportunity.trackedApplicationId,
-				})
-				.from(tables.careerOpportunity)
-				.where(
-					and(eq(tables.careerOpportunity.userId, userId), inArray(tables.careerOpportunity.url, [...found.keys()])),
-				)
-		: [];
-	const seen = new Map(known.map((row) => [row.url, row]));
-	return Promise.all(
-		[...found].map(async ([url, hit]) => {
-			const prior = seen.get(url);
-			if (
-				prior &&
-				(prior.dismissedAt || prior.trackedApplicationId || prior.updatedAt.getTime() > Date.now() - 7 * 86_400_000)
-			)
-				return { url, hit, posting: undefined, existing: true };
-			// A failed read is undefined: skipped this run and tried again on the next, never taken for "not a posting".
-			const read = (via: typeof connection) =>
-				readOpenPosting(url, { userId, connection: via, signal }).catch((): Posting | undefined => undefined);
-			const builtin = await read(null);
-			const posting = builtin || !connection ? builtin : await read(connection);
-			return { url, hit, posting, existing: Boolean(prior) };
-		}),
+async function discover(userId: string, schedule: typeof tables.careerSchedule.$inferSelect) {
+	const search = alertSearch(schedule.search, undefined, schedule.query);
+	if (!search) return { roles: [], state: schedule.discoveryState };
+	const now = new Date();
+	const check = await checkJobAlert(search, schedule.discoveryState, {
+		now,
+		intervalDays: schedule.intervalDays ?? 1,
+		signal: AbortSignal.timeout(60_000),
+	});
+	const stored = await upsertListings(check.returned, now);
+	const byProviderId = new Map(stored.map((listing) => [`${listing.provider}:${listing.externalId}`, listing]));
+	const offered = check.listings.flatMap(
+		(listing) => byProviderId.get(`${listing.provider}:${listing.externalId}`) ?? [],
 	);
+	const [hidden, tracked] = await Promise.all([
+		hiddenListingIds(
+			userId,
+			offered.map((listing) => listing.id),
+		),
+		applicationService.findIdsBySourceKeys({
+			userId,
+			keys: offered.flatMap((listing) => listingKey(listing) ?? []),
+		}),
+	]);
+	const roles = offered
+		.filter((listing) => !hidden.has(listing.id) && !tracked.has(listingKey(listing) ?? ""))
+		.map((listing) => opportunityValues(userId, listing));
+	return { roles, state: check.state };
 }
 
 async function enqueue() {
@@ -377,7 +449,7 @@ async function execute(job: typeof tables.careerJob.$inferSelect) {
 		applicationId: schedule.applicationId,
 		interviewId: schedule.interviewId,
 	});
-	const results = schedule.kind === "discovery" ? await discover(job.userId, schedule.query) : [];
+	const found = schedule.kind === "discovery" ? await discover(job.userId, schedule) : null;
 	if (schedule.kind === "prepare") {
 		if (!application || !schedule.interviewId) throw new Error("Preparation application unavailable.");
 		const [saved] = await db
@@ -419,51 +491,43 @@ async function execute(job: typeof tables.careerJob.$inferSelect) {
 			.for("update");
 		if (!current || !current.leaseUntil || current.leaseUntil < new Date()) return;
 		let changed = 0;
-		for (const { url, hit, posting, existing } of results) {
-			// Seen before, or unreadable this run.
-			if (posting === undefined) {
+		if (found) {
+			const urls = found.roles.map((role) => role.url);
+			// Roles seen before stay as they are (dismissed ones stay dismissed); only new ones are offered.
+			const known = new Set(
+				urls.length
+					? (
+							await tx
+								.select({ url: tables.careerOpportunity.url })
+								.from(tables.careerOpportunity)
+								.where(
+									and(eq(tables.careerOpportunity.userId, job.userId), inArray(tables.careerOpportunity.url, urls)),
+								)
+						).map((row) => row.url)
+					: [],
+			);
+			const fresh = [...new Map(found.roles.map((role) => [role.url, role])).values()].filter(
+				(role) => !known.has(role.url),
+			);
+			if (known.size)
 				await tx
 					.update(tables.careerOpportunity)
 					.set({ lastSeenAt: new Date(), updatedAt: sql`${tables.careerOpportunity.updatedAt}` })
-					.where(and(eq(tables.careerOpportunity.userId, job.userId), eq(tables.careerOpportunity.url, url)));
-				continue;
-			}
-			// Titles keep their separators ("Role - Company | Board") for parsing; only markup goes.
-			const title = parseListingTitle(
-				hit.title
-					.replace(/[*_`#\\]+/g, "")
-					.replace(/\s+/g, " ")
-					.trim(),
-			);
-			const values = {
-				userId: job.userId,
-				url,
-				role: (posting?.page?.role || title.role).slice(0, 200),
-				company: (posting?.page?.company || posting?.company || title.company).slice(0, 200),
-				location: (posting?.page?.location ?? "").slice(0, 200),
-				snippet: plainSnippet(hit.description || posting?.text || ""),
-				description: posting?.text ?? "",
-				// Not a posting: kept out of New roles, and never read again.
-				...(posting ? {} : { dismissedAt: new Date() }),
-			};
-			const [inserted] = await tx
-				.insert(tables.careerOpportunity)
-				.values(values)
-				.onConflictDoUpdate({
-					target: [tables.careerOpportunity.userId, tables.careerOpportunity.url],
-					set: {
-						role: values.role,
-						company: values.company,
-						location: values.location,
-						snippet: values.snippet,
-						description: values.description,
-						lastSeenAt: new Date(),
-						...(posting ? {} : { dismissedAt: new Date() }),
-					},
-					setWhere: sql`${tables.careerOpportunity.dismissedAt} is null and ${tables.careerOpportunity.trackedApplicationId} is null`,
-				})
-				.returning();
-			if (inserted && posting && !existing) changed++;
+					.where(
+						and(eq(tables.careerOpportunity.userId, job.userId), inArray(tables.careerOpportunity.url, [...known])),
+					);
+			if (fresh.length)
+				changed = (
+					await tx
+						.insert(tables.careerOpportunity)
+						.values(fresh)
+						.onConflictDoNothing()
+						.returning({ id: tables.careerOpportunity.id })
+				).length;
+			await tx
+				.update(tables.careerSchedule)
+				.set({ discoveryState: found.state })
+				.where(eq(tables.careerSchedule.id, schedule.id));
 		}
 		// New roles all wait in one list, so the newest "new roles" notice replaces older unread ones.
 		if (schedule.kind === "discovery" && changed)
@@ -608,7 +672,21 @@ export async function runNextCareerJob(servedUsers: ReadonlySet<string> = new Se
 	if (!job) return null;
 	try {
 		await execute(job);
-	} catch {
+	} catch (error) {
+		// The day's job search budget is spent: run again once it resets, without using up an attempt.
+		if (error instanceof JobAlertPostponed) {
+			await db
+				.update(tables.careerJob)
+				.set({ status: "queued", attempts: Math.max(0, job.attempts - 1), lease: null, leaseUntil: error.until })
+				.where(
+					and(
+						eq(tables.careerJob.id, job.id),
+						eq(tables.careerJob.lease, job.lease ?? ""),
+						eq(tables.careerJob.status, "running"),
+					),
+				);
+			return job.userId;
+		}
 		const [failed] = await db
 			.update(tables.careerJob)
 			.set({

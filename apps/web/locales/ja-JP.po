@@ -974,6 +974,10 @@ msgstr "{length}分"
 msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
 msgstr "{lines, plural, one {# 行目あたりで {next} ページに実行されます} other {ページ {next} におよそ # 行で実行されます}}"
 
+#: src/features/billing/plan.ts
+msgid "{max, plural, one {Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.}}"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "{minimum} minimum"
 msgstr "最低{minimum}"
@@ -1538,6 +1542,10 @@ msgstr "空白期間は問題ではありません。必要であれば一行で
 msgid "A job site wasn't read correctly"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+msgid "A job title works best, such as “Product designer”."
+msgstr ""
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "A link"
 msgstr ""
@@ -2018,8 +2026,8 @@ msgid "Add a result"
 msgstr "結果を追加"
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Add a role or company to look for."
-msgstr "探したい職種または会社を追加してください。"
+msgid "Add a role to look for."
+msgstr ""
 
 #: src/features/portfolio/editor/intro-effect.tsx
 msgid "Add a role to switch to. With only one line, the page shows it without the effect."
@@ -2800,6 +2808,10 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Also end the subscription now (access stops at once)"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Also filtered by: {list}"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -4404,6 +4416,7 @@ msgstr ""
 msgid "City"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/jobs/search-bar.tsx
 msgid "City (optional)"
 msgstr ""
@@ -5276,6 +5289,10 @@ msgstr "プロバイダーを削除できませんでした。もう一度お試
 msgid "Couldn't delete this conversation. Try again."
 msgstr "この会話を削除できませんでした。もう一度お試しください。"
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Couldn't delete this job alert. Try again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Couldn't delete this schedule. Try again."
 msgstr "このスケジュールを削除できませんでした。もう一度お試しください。"
@@ -5845,6 +5862,7 @@ msgstr ""
 msgid "Countries, devices, linking sites and works by day"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Country"
@@ -7048,6 +7066,10 @@ msgstr "フィードバックを受けた回答は、新しい順にここに保
 msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
+msgstr ""
+
 #: src/features/settings/ai/browser-extension.tsx
 msgid "Edge Add-ons"
 msgstr ""
@@ -7120,6 +7142,10 @@ msgstr ""
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
 msgstr "インタビューを編集…"
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Edit job alert"
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 msgid "Edit keyword"
@@ -7904,10 +7930,6 @@ msgstr ""
 msgid "Find portfolio"
 msgstr ""
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Find roles"
-msgstr "職種を探す"
-
 #: src/features/assistant/assistant-panel.tsx
 msgid "Find the results in this work and show them as metrics"
 msgstr ""
@@ -8482,9 +8504,13 @@ msgstr "「フィードバックをもらう」を押すと、質問、あなた
 msgid "Get found"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Get job alerts"
+msgstr ""
+
 #: src/features/career/today.tsx
-msgid "Get new roles here every morning"
-msgstr "毎朝ここで新しい求人を受け取る"
+msgid "Get new jobs for your search here every morning"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -9600,6 +9626,32 @@ msgstr "日本語"
 msgid "Job"
 msgstr "仕事"
 
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/today.tsx
+msgid "Job alert"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgctxt "Short schedule kind in a segmented choice"
+msgid "Job alert"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert deleted"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert on"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert paused"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Job alerts aren't available on this server yet."
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Job description"
@@ -10499,10 +10551,6 @@ msgstr ""
 msgid "Long stretches are set in capitals."
 msgstr "長い箇所がすべて大文字で書かれています。"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Look for"
-msgstr "探す対象"
-
 #: src/features/portfolio/page-text.ts
 msgid "Looking for"
 msgstr ""
@@ -11271,6 +11319,10 @@ msgstr "代わりに新しいカバーレター"
 msgid "New document"
 msgstr "新しいドキュメント"
 
+#: src/features/career/schedule-sheet.tsx
+msgid "New job alert"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr "新しいキー"
@@ -11576,22 +11628,22 @@ msgstr "場所がありません"
 msgid "No messages yet. Turn on the contact form in the editor, under Contact."
 msgstr ""
 
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery is paused."
-msgstr "新しい求人はありません。求人探索は一時停止中です。"
-
 #. placeholder {0}: day(active.nextRunAt)
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again on {0} at {clock}."
-msgstr "新しい求人はありません。次回の求人探索は{0} {clock}です。"
+msgid "No new roles. Your job alert checks again on {0} at {clock}."
+msgstr ""
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again today at {clock}."
-msgstr "新しい求人はありません。次回の求人探索は今日の{clock}です。"
+msgid "No new roles. Your job alert checks again today at {clock}."
+msgstr ""
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again tomorrow at {clock}."
-msgstr "新しい求人はありません。次回の求人探索は明日の{clock}です。"
+msgid "No new roles. Your job alert checks again tomorrow at {clock}."
+msgstr ""
+
+#: src/features/career/today.tsx
+msgid "No new roles. Your job alert is paused."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
@@ -11688,6 +11740,10 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "No room for another job alert"
 msgstr ""
 
 #: src/features/billing/plan.ts
@@ -12534,11 +12590,6 @@ msgstr "キャリア → オファーで開きます。"
 msgid "opens in new tab"
 msgstr "新しいタブで開きます"
 
-#: src/features/career/schedule-sheet.tsx
-#: src/features/career/today.tsx
-msgid "Opportunity discovery"
-msgstr "求人探索"
-
 #: src/features/settings/ai/web-access.tsx
 msgid "Optional"
 msgstr "オプション"
@@ -12969,6 +13020,16 @@ msgstr "一時停止したスケジュールの設定は保持されます。"
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Pay {price} with QRIS"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year, or not listed"
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -13432,6 +13493,7 @@ msgstr ""
 msgid "Posted {posted}"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last 2 weeks"
 msgstr ""
@@ -13440,10 +13502,12 @@ msgstr ""
 msgid "Posted in the last 30 days"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last day"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last week"
 msgstr ""
@@ -14592,11 +14656,13 @@ msgstr "リマインド日"
 msgid "Remote"
 msgstr "リモート"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgctxt "Job search filter"
 msgid "Remote anywhere"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgctxt "Job search filter"
 msgid "Remote in this country"
@@ -15383,6 +15449,7 @@ msgstr "今すぐ"
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/career/schedule-sheet.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "職種"
@@ -15416,10 +15483,6 @@ msgstr "職種"
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Roles you're looking for"
 msgstr ""
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Roles, places and companies. Starts from your preferences."
-msgstr "職種、場所、会社。希望条件をもとに開始します。"
 
 #: src/libs/locale.ts
 msgid "Romanian"
@@ -16293,12 +16356,8 @@ msgid "Set to end at the period end"
 msgstr ""
 
 #: src/features/career/today.tsx
-msgid "Set up discovery"
-msgstr "求人探索を設定"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Set up web search in Settings"
-msgstr "設定でウェブ検索を設定"
+msgid "Set up a job alert"
+msgstr ""
 
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Set up your authenticator app"
@@ -20277,10 +20336,6 @@ msgstr "履歴書の事実を使用する"
 msgid "Uses the linked application"
 msgstr "リンクされた応募を使用"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Uses the web search service set up in Settings. Results wait in Today for your review; applications and documents are never created for you."
-msgstr "設定で用意したウェブ検索サービスを使用します。結果は「今日」であなたの確認を待ちます。応募やドキュメントが自動で作成されることはありません。"
-
 #: src/features/settings/ai/web-access.tsx
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "サポートされている場合は AI プロバイダー独自の Web 検索を使用し、内蔵リーダーでリンクを読み取ります。"
@@ -20492,6 +20547,7 @@ msgstr ""
 msgid "views · 30 days"
 msgstr "閲覧回数 · 30 日間"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/listing-card.tsx
 msgid "Visa sponsorship"
 msgstr ""

@@ -143,6 +143,7 @@ describe("job search plans", () => {
 		expect(PLANS.free.limits.jobSearchesPerDay).toBe(3);
 		expect(PLANS.plus.limits.jobSearchesPerDay).toBe(15);
 		expect(PLANS["pro-ai"].limits.jobSearchesPerDay).toBe(40);
+		expect([PLANS.free, PLANS.plus, PLANS["pro-ai"]].map((plan) => plan.limits.jobAlerts)).toEqual([1, 3, 10]);
 	});
 });
 

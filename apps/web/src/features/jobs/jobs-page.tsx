@@ -6,21 +6,23 @@ import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { JobListingItem } from "./listing-card";
 import { JobListingSheet } from "./listing-sheet";
-import { activeFilterCount, startingSearch, toSearchRequest, withoutFilters } from "./search";
+import { activeFilterCount, sameSearch, startingSearch, toSearchRequest, withoutFilters } from "./search";
 import { JobsSearchBar } from "./search-bar";
 import { useListingActions } from "./use-listing-actions";
 import { EmptyBlock } from "@/components/layout/empty-block";
 import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
+import { ScheduleSheet } from "@/features/career/schedule-sheet";
 import { ExtensionInstallHint } from "@/features/extension/install-links";
-import { getOrpcErrorMessage } from "@/libs/error-message";
+import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
 import { formatRelativeTime } from "@/libs/locale";
 import { orpc } from "@/libs/orpc/client";
 
@@ -48,8 +50,19 @@ export function JobsPage({ search, onSearch }: JobsPageProps) {
 	}
 	const form = draft ?? startingSearch(search, defaults.data);
 	const [selected, setSelected] = useState<JobListingCard | null>(null);
+	// The job alert sheet: "new:discovery" for this search, or the id of the alert that already repeats it.
+	const [alertSheet, setAlertSheet] = useState<string | undefined>();
+	const schedules = useQuery({ ...orpc.career.schedules.queryOptions({ input: {} }), enabled: Boolean(search.q) });
+	const removeAlert = useMutation({
+		...orpc.career.deleteSchedule.mutationOptions(),
+		onSuccess: () => toast.add({ description: t`Job alert deleted` }),
+		onError: (error) => toastError(error, t`Couldn't delete this job alert. Try again.`, { allowServerMessage: true }),
+	});
 
 	const request = toSearchRequest(search);
+	const alert = schedules.data?.find(
+		(schedule) => schedule.kind === "discovery" && schedule.search && sameSearch(schedule.search, request),
+	);
 	const results = useInfiniteQuery({
 		...orpc.jobs.search.infiniteOptions({
 			input: (cursor: string | undefined) => ({ ...request, ...(cursor ? { cursor } : {}) }),
@@ -117,7 +130,28 @@ export function JobsPage({ search, onSearch }: JobsPageProps) {
 			) : (
 				<div className="grid gap-4">
 					{error && <SearchProblem error={error} onRetry={() => void results.refetch()} />}
-					{last && <ResultNotes result={last} count={listings.length} />}
+					{last && (
+						<ResultNotes
+							result={last}
+							count={listings.length}
+							action={
+								<Button
+									size="sm"
+									variant={alert?.enabled ? "ghost" : "secondary"}
+									onPress={() => setAlertSheet(alert?.id ?? "new:discovery")}
+								>
+									<Icon name={alert?.enabled ? "check-circle" : "bell"} size={16} />
+									{alert?.enabled ? (
+										<Trans>Job alert on</Trans>
+									) : alert ? (
+										<Trans>Job alert paused</Trans>
+									) : (
+										<Trans>Get job alerts</Trans>
+									)}
+								</Button>
+							}
+						/>
+					)}
 					{results.isPending ? (
 						<ResultsSkeleton />
 					) : listings.length === 0 && !error ? (
@@ -172,6 +206,12 @@ export function JobsPage({ search, onSearch }: JobsPageProps) {
 			)}
 
 			<JobListingSheet listing={selected} actions={actions} onOpenChange={(open) => !open && setSelected(null)} />
+			<ScheduleSheet
+				schedule={alertSheet}
+				onScheduleChange={setAlertSheet}
+				onDelete={(id) => removeAlert.mutate({ id })}
+				search={request}
+			/>
 		</Page>
 	);
 }
@@ -225,10 +265,10 @@ function FirstSearch({ suggestions, onPick }: FirstSearchProps) {
 	);
 }
 
-type ResultNotesProps = { result: JobSearchResult; count: number };
+type ResultNotesProps = { result: JobSearchResult; count: number; action?: ReactNode };
 
 /** How many, how fresh, and whether these are saved results because new ones couldn't be fetched just now. */
-function ResultNotes({ result, count }: ResultNotesProps) {
+function ResultNotes({ result, count, action }: ResultNotesProps) {
 	const { i18n } = useLingui();
 	const updated = formatRelativeTime(result.fetchedAt, i18n.locale);
 	return (
@@ -243,9 +283,12 @@ function ResultNotes({ result, count }: ResultNotesProps) {
 					)}
 				</p>
 			)}
-			<p className="text-body-sm text-muted" role="status">
-				<Plural value={count} one="# job" other="# jobs" /> · <Trans>updated {updated}</Trans>
-			</p>
+			<div className="flex flex-wrap items-center justify-between gap-2">
+				<p className="text-body-sm text-muted" role="status">
+					<Plural value={count} one="# job" other="# jobs" /> · <Trans>updated {updated}</Trans>
+				</p>
+				{action}
+			</div>
 		</div>
 	);
 }

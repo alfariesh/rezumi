@@ -68,6 +68,7 @@ export type PlanProblem =
 	| { kind: "limit"; limit: "portfolioWorks"; max: number; used: number }
 	| { kind: "limit"; limit: "portfolioStorageBytes"; max: number; used: number }
 	| { kind: "limit"; limit: "jobSearchesPerDay"; max: number; used: number }
+	| { kind: "limit"; limit: "jobAlerts"; max: number; used: number }
 	| { kind: "feature"; feature: PlanFeature };
 
 /** The plan problem behind a server error (PLAN_LIMIT_REACHED or PLAN_FEATURE_REQUIRED), else null. */
@@ -75,7 +76,12 @@ export function getPlanProblem(error: unknown): PlanProblem | null {
 	if (!(error instanceof ORPCError)) return null;
 	const data = (error.data ?? {}) as Record<string, unknown>;
 	if (error.code === "PLAN_LIMIT_REACHED") {
-		if (data.limit === "portfolioWorks" || data.limit === "portfolioStorageBytes" || data.limit === "jobSearchesPerDay")
+		if (
+			data.limit === "portfolioWorks" ||
+			data.limit === "portfolioStorageBytes" ||
+			data.limit === "jobSearchesPerDay" ||
+			data.limit === "jobAlerts"
+		)
 			return {
 				kind: "limit",
 				limit: data.limit,
@@ -114,6 +120,17 @@ export function describePlanProblem(problem: PlanProblem): { title: string; desc
 			return {
 				title: t`Today's job searches are used up`,
 				description: t`Your plan includes ${max} job searches a day. Results you already opened stay available, and searches start again at midnight.`,
+			};
+		}
+		if (problem.limit === "jobAlerts") {
+			const { max } = problem;
+			return {
+				title: t`No room for another job alert`,
+				description: plural(max, {
+					one: "Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.",
+					other:
+						"Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.",
+				}),
 			};
 		}
 		if (problem.limit === "portfolioStorageBytes") {

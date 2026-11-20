@@ -38098,6 +38098,97 @@
 															"query": {
 																"type": "string"
 															},
+															"search": {
+																"anyOf": [
+																	{
+																		"type": "object",
+																		"properties": {
+																			"query": {
+																				"type": "string",
+																				"minLength": 2,
+																				"maxLength": 200
+																			},
+																			"location": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 200
+																			},
+																			"country": {
+																				"type": "string",
+																				"pattern": "^[A-Z]{2}$"
+																			},
+																			"remote": {
+																				"enum": [
+																					"any",
+																					"only",
+																					"exclude"
+																				],
+																				"type": "string",
+																				"default": "any"
+																			},
+																			"postedWithinDays": {
+																				"anyOf": [
+																					{
+																						"const": 1
+																					},
+																					{
+																						"const": 7
+																					},
+																					{
+																						"const": 14
+																					},
+																					{
+																						"const": 30
+																					}
+																				],
+																				"default": 30
+																			},
+																			"workArrangement": {
+																				"enum": [
+																					"onsite",
+																					"hybrid",
+																					"remote"
+																				],
+																				"type": "string"
+																			},
+																			"seniority": {
+																				"enum": [
+																					"entry",
+																					"junior",
+																					"mid",
+																					"senior",
+																					"lead",
+																					"executive"
+																				],
+																				"type": "string"
+																			},
+																			"salaryMin": {
+																				"type": "integer",
+																				"minimum": -9007199254740991,
+																				"maximum": 100000000,
+																				"exclusiveMinimum": 0
+																			},
+																			"salaryCurrency": {
+																				"type": "string",
+																				"pattern": "^[A-Z]{3}$"
+																			},
+																			"includeNoSalary": {
+																				"type": "boolean",
+																				"default": true
+																			},
+																			"visaSponsorship": {
+																				"type": "boolean"
+																			}
+																		},
+																		"required": [
+																			"query"
+																		]
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
 															"lead": {
 																"anyOf": [
 																	{
@@ -38169,6 +38260,7 @@
 															"interviewId",
 															"kind",
 															"query",
+															"search",
 															"lead",
 															"locale",
 															"timezone",
@@ -38774,6 +38866,16 @@
 																		"type": "null"
 																	}
 																]
+															},
+															"listingId": {
+																"anyOf": [
+																	{
+																		"type": "string"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
 															}
 														},
 														"required": [
@@ -38790,7 +38892,8 @@
 															"firstSeenAt",
 															"lastSeenAt",
 															"dismissedAt",
-															"trackedApplicationId"
+															"trackedApplicationId",
+															"listingId"
 														]
 													}
 												},
@@ -41941,6 +42044,97 @@
 											"query": {
 												"type": "string"
 											},
+											"search": {
+												"anyOf": [
+													{
+														"type": "object",
+														"properties": {
+															"query": {
+																"type": "string",
+																"minLength": 2,
+																"maxLength": 200
+															},
+															"location": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 200
+															},
+															"country": {
+																"type": "string",
+																"pattern": "^[A-Z]{2}$"
+															},
+															"remote": {
+																"enum": [
+																	"any",
+																	"only",
+																	"exclude"
+																],
+																"type": "string",
+																"default": "any"
+															},
+															"postedWithinDays": {
+																"anyOf": [
+																	{
+																		"const": 1
+																	},
+																	{
+																		"const": 7
+																	},
+																	{
+																		"const": 14
+																	},
+																	{
+																		"const": 30
+																	}
+																],
+																"default": 30
+															},
+															"workArrangement": {
+																"enum": [
+																	"onsite",
+																	"hybrid",
+																	"remote"
+																],
+																"type": "string"
+															},
+															"seniority": {
+																"enum": [
+																	"entry",
+																	"junior",
+																	"mid",
+																	"senior",
+																	"lead",
+																	"executive"
+																],
+																"type": "string"
+															},
+															"salaryMin": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 100000000,
+																"exclusiveMinimum": 0
+															},
+															"salaryCurrency": {
+																"type": "string",
+																"pattern": "^[A-Z]{3}$"
+															},
+															"includeNoSalary": {
+																"type": "boolean",
+																"default": true
+															},
+															"visaSponsorship": {
+																"type": "boolean"
+															}
+														},
+														"required": [
+															"query"
+														]
+													},
+													{
+														"type": "null"
+													}
+												]
+											},
 											"lead": {
 												"anyOf": [
 													{
@@ -42012,6 +42206,7 @@
 											"interviewId",
 											"kind",
 											"query",
+											"search",
 											"lead",
 											"locale",
 											"timezone",
@@ -42115,6 +42310,97 @@
 										"type": "string",
 										"maxLength": 500,
 										"default": ""
+									},
+									"search": {
+										"anyOf": [
+											{
+												"type": "object",
+												"properties": {
+													"query": {
+														"type": "string",
+														"minLength": 2,
+														"maxLength": 200
+													},
+													"location": {
+														"type": "string",
+														"minLength": 1,
+														"maxLength": 200
+													},
+													"country": {
+														"type": "string",
+														"pattern": "^[A-Z]{2}$"
+													},
+													"remote": {
+														"enum": [
+															"any",
+															"only",
+															"exclude"
+														],
+														"type": "string",
+														"default": "any"
+													},
+													"postedWithinDays": {
+														"anyOf": [
+															{
+																"const": 1
+															},
+															{
+																"const": 7
+															},
+															{
+																"const": 14
+															},
+															{
+																"const": 30
+															}
+														],
+														"default": 30
+													},
+													"workArrangement": {
+														"enum": [
+															"onsite",
+															"hybrid",
+															"remote"
+														],
+														"type": "string"
+													},
+													"seniority": {
+														"enum": [
+															"entry",
+															"junior",
+															"mid",
+															"senior",
+															"lead",
+															"executive"
+														],
+														"type": "string"
+													},
+													"salaryMin": {
+														"type": "integer",
+														"minimum": -9007199254740991,
+														"maximum": 100000000,
+														"exclusiveMinimum": 0
+													},
+													"salaryCurrency": {
+														"type": "string",
+														"pattern": "^[A-Z]{3}$"
+													},
+													"includeNoSalary": {
+														"type": "boolean",
+														"default": true
+													},
+													"visaSponsorship": {
+														"type": "boolean"
+													}
+												},
+												"required": [
+													"query"
+												]
+											},
+											{
+												"type": "null"
+											}
+										]
 									},
 									"interviewId": {
 										"anyOf": [
@@ -42253,6 +42539,97 @@
 										"query": {
 											"type": "string"
 										},
+										"search": {
+											"anyOf": [
+												{
+													"type": "object",
+													"properties": {
+														"query": {
+															"type": "string",
+															"minLength": 2,
+															"maxLength": 200
+														},
+														"location": {
+															"type": "string",
+															"minLength": 1,
+															"maxLength": 200
+														},
+														"country": {
+															"type": "string",
+															"pattern": "^[A-Z]{2}$"
+														},
+														"remote": {
+															"enum": [
+																"any",
+																"only",
+																"exclude"
+															],
+															"type": "string",
+															"default": "any"
+														},
+														"postedWithinDays": {
+															"anyOf": [
+																{
+																	"const": 1
+																},
+																{
+																	"const": 7
+																},
+																{
+																	"const": 14
+																},
+																{
+																	"const": 30
+																}
+															],
+															"default": 30
+														},
+														"workArrangement": {
+															"enum": [
+																"onsite",
+																"hybrid",
+																"remote"
+															],
+															"type": "string"
+														},
+														"seniority": {
+															"enum": [
+																"entry",
+																"junior",
+																"mid",
+																"senior",
+																"lead",
+																"executive"
+															],
+															"type": "string"
+														},
+														"salaryMin": {
+															"type": "integer",
+															"minimum": -9007199254740991,
+															"maximum": 100000000,
+															"exclusiveMinimum": 0
+														},
+														"salaryCurrency": {
+															"type": "string",
+															"pattern": "^[A-Z]{3}$"
+														},
+														"includeNoSalary": {
+															"type": "boolean",
+															"default": true
+														},
+														"visaSponsorship": {
+															"type": "boolean"
+														}
+													},
+													"required": [
+														"query"
+													]
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
 										"lead": {
 											"anyOf": [
 												{
@@ -42324,6 +42701,7 @@
 										"interviewId",
 										"kind",
 										"query",
+										"search",
 										"lead",
 										"locale",
 										"timezone",
@@ -42895,6 +43273,16 @@
 													}
 												]
 											},
+											"listingId": {
+												"anyOf": [
+													{
+														"type": "string"
+													},
+													{
+														"type": "null"
+													}
+												]
+											},
 											"matches": {
 												"type": "array",
 												"items": {
@@ -42910,6 +43298,234 @@
 													],
 													"type": "string"
 												}
+											},
+											"listing": {
+												"anyOf": [
+													{
+														"type": "object",
+														"properties": {
+															"provider": {
+																"enum": [
+																	"hirebase",
+																	"jobspipe"
+																],
+																"type": "string"
+															},
+															"externalId": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 200
+															},
+															"title": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 500
+															},
+															"company": {
+																"type": "object",
+																"properties": {
+																	"name": {
+																		"type": "string",
+																		"minLength": 1,
+																		"maxLength": 300
+																	},
+																	"domain": {
+																		"type": "string",
+																		"minLength": 1,
+																		"maxLength": 253
+																	},
+																	"logoUrl": {
+																		"type": "string",
+																		"format": "uri"
+																	},
+																	"size": {
+																		"type": "string",
+																		"minLength": 1,
+																		"maxLength": 60
+																	},
+																	"industry": {
+																		"type": "string",
+																		"minLength": 1,
+																		"maxLength": 200
+																	}
+																},
+																"required": [
+																	"name"
+																]
+															},
+															"location": {
+																"type": "object",
+																"properties": {
+																	"city": {
+																		"type": "string",
+																		"minLength": 1,
+																		"maxLength": 200
+																	},
+																	"region": {
+																		"type": "string",
+																		"minLength": 1,
+																		"maxLength": 200
+																	},
+																	"country": {
+																		"type": "string",
+																		"minLength": 1,
+																		"maxLength": 200
+																	},
+																	"countryCode": {
+																		"type": "string",
+																		"pattern": "^[A-Z]{2}$"
+																	},
+																	"text": {
+																		"type": "string",
+																		"maxLength": 500
+																	}
+																},
+																"required": [
+																	"text"
+																]
+															},
+															"workArrangement": {
+																"enum": [
+																	"onsite",
+																	"hybrid",
+																	"remote"
+																],
+																"type": "string"
+															},
+															"seniority": {
+																"enum": [
+																	"entry",
+																	"junior",
+																	"mid",
+																	"senior",
+																	"lead",
+																	"executive"
+																],
+																"type": "string"
+															},
+															"employmentType": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 100
+															},
+															"visaSponsorship": {
+																"type": "boolean"
+															},
+															"salary": {
+																"type": "object",
+																"properties": {
+																	"min": {
+																		"type": "number",
+																		"minimum": 0
+																	},
+																	"max": {
+																		"type": "number",
+																		"minimum": 0
+																	},
+																	"currency": {
+																		"anyOf": [
+																			{
+																				"type": "string",
+																				"pattern": "^[A-Z]{3}$"
+																			},
+																			{
+																				"const": ""
+																			}
+																		]
+																	},
+																	"period": {
+																		"enum": [
+																			"year",
+																			"month",
+																			"hour",
+																			"unknown"
+																		],
+																		"type": "string"
+																	}
+																},
+																"required": [
+																	"currency",
+																	"period"
+																]
+															},
+															"requirementsSummary": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 2000
+															},
+															"skills": {
+																"type": "array",
+																"maxItems": 100,
+																"items": {
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 200
+																}
+															},
+															"postingUrl": {
+																"type": "string",
+																"format": "uri"
+															},
+															"applyUrl": {
+																"type": "string",
+																"format": "uri"
+															},
+															"source": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 100
+															},
+															"language": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 20
+															},
+															"postedAt": {
+																"type": "string",
+																"format": "date-time"
+															},
+															"closedAt": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"id": {
+																"type": "string",
+																"minLength": 1
+															},
+															"firstSeenAt": {
+																"type": "string",
+																"format": "date-time"
+															},
+															"lastVerifiedAt": {
+																"type": "string",
+																"format": "date-time"
+															}
+														},
+														"required": [
+															"provider",
+															"externalId",
+															"title",
+															"company",
+															"location",
+															"skills",
+															"postingUrl",
+															"closedAt",
+															"id",
+															"firstSeenAt",
+															"lastVerifiedAt"
+														]
+													},
+													{
+														"type": "null"
+													}
+												]
 											}
 										},
 										"required": [
@@ -42926,8 +43542,10 @@
 											"lastSeenAt",
 											"dismissedAt",
 											"trackedApplicationId",
+											"listingId",
 											"matches",
-											"unknowns"
+											"unknowns",
+											"listing"
 										]
 									}
 								}

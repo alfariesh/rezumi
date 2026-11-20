@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import { jobListingDraftSchema } from "@rezumi/schema/jobs/listing";
 import { jobSearchInputSchema } from "@rezumi/schema/jobs/search";
 import hirebaseSearch from "../__fixtures__/hirebase-search.json";
+import jobspipeNew from "../__fixtures__/jobspipe-new.json";
 import jobspipeSearch from "../__fixtures__/jobspipe-search.json";
 
 vi.mock("@rezumi/env/server", () => ({ env: { TREG_API_KEY: undefined } }));
@@ -325,5 +326,46 @@ describe("JobsPipe search", () => {
 		expect(result).toMatchObject({ provider: "jobspipe", costMicro: 3920, dropped: 0, total: undefined });
 		expect(result.cursor).toBe(jobspipeSearch.metadata.next_cursor);
 		expect(result.listings[0]?.externalId).toBe("23e9b4d3e84b0dcb");
+	});
+});
+
+describe("New jobs for alerts", () => {
+	const input = jobSearchInputSchema.parse({ query: "machine learning engineer", country: "DE" });
+
+	it("asks Hirebase for jobs it first saw since the last check, newest first", async () => {
+		expect(hirebaseSearchBody(input, 20, 1, "2026-11-19T07:00:00.000Z")).toMatchObject({
+			ingested_after: "2026-11-19T07:00:00.000Z",
+			sort_by: "first_ingested",
+			sort_order: "desc",
+		});
+		expect(hirebaseSearchBody(input, 20, 1)).not.toHaveProperty("ingested_after");
+		const { treg, calls } = fakeTreg(hirebaseSearch);
+		await hirebase.search(input, { limit: 20, treg, kind: "discovery", ingestedAfter: "2026-11-19T07:00:00.000Z" });
+		expect(calls[0]?.body).toMatchObject({ ingested_after: "2026-11-19T07:00:00.000Z" });
+	});
+
+	it("polls JobsPipe with the delta cursor and the same filters, and hands back the next one", async () => {
+		const { treg, calls } = fakeTreg(jobspipeNew, 3920);
+		const newListings = jobspipe.newListings;
+		if (!newListings) throw new Error("JobsPipe has a new-jobs feed");
+		const result = await newListings({ ...input, cursor: "page-2" }, "delta-cursor", { limit: 5, treg });
+		expect(calls[0]?.url).toContain("/call/jobspipe.jobs.new");
+		expect(calls[0]?.body).toEqual({
+			job_title_or: ["machine learning engineer"],
+			job_country_code_or: ["DE"],
+			posted_at_max_age_days: 30,
+			status: "active",
+			limit: 5,
+			delta_cursor: "delta-cursor",
+		});
+		expect(result).toMatchObject({ costMicro: 3920, deltaCursor: jobspipeNew.metadata.next_delta_cursor });
+		expect(result.listings).toHaveLength(1);
+	});
+
+	it("reads a search's delta cursor only from its last page", async () => {
+		const { treg } = fakeTreg(jobspipeSearch);
+		const result = await jobspipe.search(input, { limit: 1, treg });
+		expect(jobspipeSearch.metadata.next_cursor).toBeTruthy();
+		expect(result.deltaCursor).toBeUndefined();
 	});
 });

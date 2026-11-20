@@ -1,14 +1,16 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { careerScheduleInputSchema } from "@rezumi/schema/career";
+import type { JobSearchCriteria } from "@rezumi/schema/jobs/search";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import type z from "zod";
 import { Segment, Sheet } from "@heroui-pro/react";
-import { Alert, Button, buttonVariants, Input, Label, Link as HeroLink, Separator, Spinner } from "@heroui/react";
+import { Alert, Button, Input, Label, Link as HeroLink, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Link, useRouteContext } from "@tanstack/react-router";
+import { useRouteContext } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
@@ -20,6 +22,8 @@ import { DatePickerField, TimePickerField } from "@/components/input/date-time-f
 import { SelectField } from "@/components/input/select-field";
 import { collectInterviews, interviewKindOf } from "@/features/applications/interviews";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
+import { searchFilterLabels } from "@/features/jobs/format";
+import { CountryField } from "@/features/jobs/search-bar";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { useClosingValue } from "@/hooks/use-closing-value";
@@ -37,7 +41,7 @@ const KINDS: readonly Kind[] = ["discovery", "prepare", "follow-up"];
 export function scheduleKind(kind: string): { icon: IconName; title: string } {
 	if (kind === "prepare") return { icon: "graduation-cap", title: t`Interview preparation` };
 	if (kind === "follow-up") return { icon: "bell", title: t`Follow-up reminder` };
-	return { icon: "globe-simple", title: t`Opportunity discovery` };
+	return { icon: "globe-simple", title: t`Job alert` };
 }
 
 // ---- Wall-clock time in the account timezone ----
@@ -89,7 +93,11 @@ const prepareRunAt = (start: Date, lead: Lead, timeZone: string) =>
 
 type Draft = {
 	kind: Kind;
-	query: string;
+	/** Job alert: the role, city and country to look in; `filters` keeps the rest of the search as it was. */
+	role: string;
+	city: string;
+	country: string;
+	filters: Partial<JobSearchCriteria>;
 	every: string;
 	date: string;
 	time: string;
@@ -114,6 +122,8 @@ type Form = {
 type ScheduleSheetProps = {
 	schedule: string | undefined;
 	onScheduleChange: (schedule: string | undefined) => void;
+	/** For a new job alert: the search to repeat (the Jobs page's); otherwise it starts from Preferences. */
+	search?: JobSearchCriteria | undefined;
 	/** Hides the schedule and offers Undo; the page owns it so its list hides the row too. */
 	onDelete: (id: string) => void;
 };
@@ -122,7 +132,7 @@ type ScheduleSheetProps = {
  * One schedule, from the right (a bottom sheet on phones). `schedule` is an id, or "new" optionally followed by
  * ":kind" and ":applicationId" ("new:follow-up:abc") to preselect what runs.
  */
-export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: ScheduleSheetProps) {
+export function ScheduleSheet({ schedule, onScheduleChange, onDelete, search }: ScheduleSheetProps) {
 	const phone = useBreakpoint() === "mobile";
 	const now = useNow();
 	const [shown, onClosingComplete] = useClosingValue(schedule ?? null);
@@ -132,7 +142,10 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 	const { data: schedules } = useQuery(orpc.career.schedules.queryOptions({ input: {} }));
 	const { data: profile } = useQuery(orpc.career.profile.queryOptions());
 	const { data: applications } = useQuery(applicationsListQueryOptions());
-	const { data: webAccess } = useQuery(orpc.webAccess.status.queryOptions());
+	const { data: jobSearch } = useQuery(orpc.jobs.quota.queryOptions());
+	// A new alert without a search starts from the role, place and country in Preferences.
+	const needsDefaults = Boolean(schedule?.startsWith("new") && !search);
+	const defaults = useQuery({ ...orpc.jobs.defaults.queryOptions(), enabled: needsDefaults, staleTime: Infinity });
 	const providerState = useHasUsableAiProvider();
 	const { usableProviders: providers, isLoading: providersLoading } = providerState;
 	const close = () => onScheduleChange(undefined);
@@ -145,7 +158,8 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 
 	// The form starts once its data is in, and again for each schedule opened; closing drops it.
 	const [form, setForm] = useState<Form | null>(null);
-	if (shown && form?.target !== shown && schedules && profile && applications && !providersLoading) {
+	const defaultsReady = !needsDefaults || defaults.data || defaults.isError;
+	if (shown && form?.target !== shown && schedules && profile && applications && !providersLoading && defaultsReady) {
 		const [head, kind, applicationId] = shown.split(":");
 		const existing = head === "new" ? null : (schedules.find((row) => row.id === shown) ?? null);
 		const at = existing
@@ -153,9 +167,21 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 				? rollForward(new Date(existing.nextRunAt), existing.intervalDays, timeZone, now)
 				: new Date(existing.nextRunAt)
 			: fromZoned(toZoned(new Date(now.getTime() + 86_400_000), timeZone).date, "08:00", timeZone);
+		const fromPreferences: Partial<JobSearchCriteria> | undefined = defaults.data && {
+			query: defaults.data.query,
+			...(defaults.data.location ? { location: defaults.data.location } : {}),
+			...(defaults.data.country ? { country: defaults.data.country } : {}),
+			remote: defaults.data.remote,
+		};
+		const { query, location, country, ...filters }: Partial<JobSearchCriteria> = existing
+			? (existing.search ?? { query: existing.query })
+			: (search ?? fromPreferences ?? { query: profile.targetRoles[0] ?? "" });
 		const initial: Draft = {
 			kind: existing ? (existing.kind as Kind) : (KINDS.find((item) => item === kind) ?? "discovery"),
-			query: existing?.query || [...profile.targetRoles, ...profile.locations].join(" · "),
+			role: query ?? "",
+			city: location ?? "",
+			country: country ?? "",
+			filters,
 			every: String(existing?.intervalDays ?? 1),
 			...toZoned(at, timeZone),
 			interviewId: existing?.interviewId ?? upcoming[0]?.interview.id ?? "",
@@ -182,7 +208,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 		draft?.kind === "prepare" ? (interview ? prepareRunAt(interview.start, draft.lead, timeZone) : null) : null;
 	const enteredAt = draft ? fromZoned(draft.date, draft.time, timeZone) : null;
 	const errors = {
-		query: draft?.kind === "discovery" && draft.query.trim().length < 3 ? t`Add a role or company to look for.` : null,
+		query: draft?.kind === "discovery" && draft.role.trim().length < 2 ? t`Add a role to look for.` : null,
 		when:
 			draft && draft.kind !== "prepare" && enteredAt && !(enteredAt > now)
 				? Number.isNaN(enteredAt.getTime())
@@ -197,12 +223,13 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 	const blocked =
 		(draft?.kind === "prepare" && (!interview || providers.length === 0)) ||
 		(draft?.kind === "follow-up" && open.length === 0);
-	const needsWebSearch = draft?.kind === "discovery" && webAccess?.search === false;
+	const alertsUnavailable = draft?.kind === "discovery" && jobSearch?.available === false;
 
 	const onSave = () => {
 		if (!form || !draft) return;
 		setForm({ ...form, submitted: true });
-		if (errors.query || errors.when || blocked) return;
+		if (errors.query || errors.when || blocked || alertsUnavailable) return;
+		const city = draft.city.trim();
 		save.mutate(
 			{
 				...(form.existing ? { id: form.existing.id } : {}),
@@ -213,7 +240,16 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 						: draft.kind === "follow-up"
 							? draft.applicationId || null
 							: null,
-				query: draft.kind === "discovery" ? draft.query.trim() : "",
+				query: draft.kind === "discovery" ? draft.role.trim() : "",
+				search:
+					draft.kind === "discovery"
+						? {
+								...draft.filters,
+								query: draft.role.trim(),
+								...(city ? { location: city } : {}),
+								...(draft.country ? { country: draft.country } : {}),
+							}
+						: null,
 				interviewId: draft.kind === "prepare" ? draft.interviewId || null : null,
 				lead: draft.kind === "prepare" ? draft.lead : null,
 				enabled: draft.enabled,
@@ -255,7 +291,17 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 						<Sheet.CloseTrigger aria-label={t`Close`} />
 						<Sheet.Header>
 							<Sheet.Heading>
-								{form?.existing ? <Trans>Edit schedule</Trans> : <Trans>New schedule</Trans>}
+								{draft?.kind === "discovery" ? (
+									form?.existing ? (
+										<Trans>Edit job alert</Trans>
+									) : (
+										<Trans>New job alert</Trans>
+									)
+								) : form?.existing ? (
+									<Trans>Edit schedule</Trans>
+								) : (
+									<Trans>New schedule</Trans>
+								)}
 							</Sheet.Heading>
 						</Sheet.Header>
 
@@ -270,7 +316,10 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 									value={draft.kind}
 									onChange={(kind) => set({ kind: kind as Kind })}
 									options={[
-										{ value: "discovery", label: t`Find roles` },
+										{
+											value: "discovery",
+											label: t({ message: "Job alert", context: "Short schedule kind in a segmented choice" }),
+										},
 										{ value: "prepare", label: t`Prepare` },
 										{ value: "follow-up", label: t`Remind me` },
 									]}
@@ -280,8 +329,8 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 									{draft.kind === "discovery" && (
 										<>
 											<Field
-												label={t`Look for`}
-												hint={t`Roles, places and companies. Starts from your preferences.`}
+												label={t`Role`}
+												hint={t`A job title works best, such as “Product designer”.`}
 												error={shownError("query")}
 											>
 												{(props) => (
@@ -289,14 +338,38 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 														fullWidth
 														variant="secondary"
 														{...props}
-														value={draft.query}
-														maxLength={500}
-														onChange={(event) => set({ query: event.target.value })}
+														value={draft.role}
+														maxLength={200}
+														onChange={(event) => set({ role: event.target.value })}
 														onBlur={() => touch("query")}
 														className="pointer-coarse:text-base"
 													/>
 												)}
 											</Field>
+											<div className="grid gap-3 sm:grid-cols-2">
+												<Field label={t`City (optional)`}>
+													{(props) => (
+														<Input
+															fullWidth
+															variant="secondary"
+															{...props}
+															value={draft.city}
+															maxLength={200}
+															onChange={(event) => set({ city: event.target.value })}
+															className="pointer-coarse:text-base"
+														/>
+													)}
+												</Field>
+												<CountryField
+													label={t`Country`}
+													value={draft.country}
+													onChange={(country) => set({ country })}
+													className="grid gap-1.5"
+												/>
+											</div>
+											<FilterNote
+												filters={{ ...draft.filters, ...(draft.country ? { country: draft.country } : {}) }}
+											/>
 											<Segments
 												label={t`How often`}
 												value={draft.every}
@@ -307,19 +380,32 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 													{ value: "7", label: t`Every week` },
 												]}
 											/>
-											<Alert status="accent">
-												<Alert.Indicator className="shrink-0">
-													<Icon name="globe-simple" size={18} />
-												</Alert.Indicator>
-												<Alert.Content>
-													<Alert.Description>
-														<Trans>
-															Uses the web search service set up in Settings. Results wait in Today for your review;
-															applications and documents are never created for you.
-														</Trans>
-													</Alert.Description>
-												</Alert.Content>
-											</Alert>
+											{alertsUnavailable ? (
+												<Alert status="warning">
+													<Alert.Indicator className="shrink-0">
+														<Icon name="warning-circle" size={18} />
+													</Alert.Indicator>
+													<Alert.Content>
+														<Alert.Description>
+															<Trans>Job alerts aren't available on this server yet.</Trans>
+														</Alert.Description>
+													</Alert.Content>
+												</Alert>
+											) : (
+												<Alert status="accent">
+													<Alert.Indicator className="shrink-0">
+														<Icon name="bell" size={18} />
+													</Alert.Indicator>
+													<Alert.Content>
+														<Alert.Description>
+															<Trans>
+																Each run looks for jobs that appeared since the last one. New ones wait in Home for your
+																review; applications and documents are never created for you.
+															</Trans>
+														</Alert.Description>
+													</Alert.Content>
+												</Alert>
+											)}
 										</>
 									)}
 
@@ -497,20 +583,14 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 										<Button variant="secondary" onPress={requestClose}>
 											<Trans>Cancel</Trans>
 										</Button>
-										{needsWebSearch ? (
-											<Link
-												to="/dashboard/settings/app"
-												hash="web-access"
-												className={buttonVariants({ variant: "secondary" })}
-											>
-												<Trans>Set up web search in Settings</Trans>
-											</Link>
-										) : (
-											<Button isDisabled={!form || blocked} isPending={save.isPending} onPress={onSave}>
-												{save.isPending && <Spinner size="sm" color="current" aria-hidden />}
-												<Trans>Save schedule</Trans>
-											</Button>
-										)}
+										<Button
+											isDisabled={!form || blocked || alertsUnavailable}
+											isPending={save.isPending}
+											onPress={onSave}
+										>
+											{save.isPending && <Spinner size="sm" color="current" aria-hidden />}
+											<Trans>Save schedule</Trans>
+										</Button>
 									</>
 								)}
 							</Swap>
@@ -523,6 +603,24 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 }
 
 // ---- Parts ----
+
+type FilterNoteProps = { filters: Partial<JobSearchCriteria> };
+
+/** The search's other filters, kept as they were saved; they're chosen on the Jobs page. */
+function FilterNote({ filters }: FilterNoteProps) {
+	const { i18n } = useLingui();
+	const labels = searchFilterLabels(filters, i18n.locale);
+	if (labels.length === 0) return null;
+	const list = labels.join(" · ");
+	return (
+		<p className="-mt-2 flex items-start gap-1.5 text-body-xs text-muted">
+			<Icon name="sliders-horizontal" size={15} className="mt-px shrink-0" />
+			<span>
+				<Trans>Also filtered by: {list}</Trans>
+			</span>
+		</p>
+	);
+}
 
 type FieldControlProps = { id: string; "aria-describedby"?: string; "aria-invalid"?: true };
 

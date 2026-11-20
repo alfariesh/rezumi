@@ -19,6 +19,8 @@ const api = vi.hoisted(() => ({
 	saveLogo: vi.fn(),
 	invalidate: vi.fn(),
 	openDialog: vi.fn(),
+	schedules: vi.fn(),
+	deleteSchedule: vi.fn(),
 }));
 
 vi.mock("@/libs/orpc/client", () => ({
@@ -51,7 +53,20 @@ vi.mock("@/libs/orpc/client", () => ({
 			hide: { mutationOptions: () => ({ mutationFn: api.hide }) },
 		},
 		applications: { saveLogo: { mutationOptions: () => ({ mutationFn: api.saveLogo }) } },
+		career: {
+			schedules: { queryOptions: () => ({ queryKey: ["career", "schedules"], queryFn: api.schedules }) },
+			deleteSchedule: { mutationOptions: () => ({ mutationFn: api.deleteSchedule }) },
+		},
 	},
+}));
+// The schedule sheet has its own tests; here it only shows what it was opened with.
+vi.mock("@/features/career/schedule-sheet", () => ({
+	ScheduleSheet: ({ schedule, search }: { schedule: string | undefined; search: unknown }) =>
+		schedule ? (
+			<div role="dialog" aria-label="Job alert" data-schedule={schedule}>
+				{JSON.stringify(search)}
+			</div>
+		) : null,
 }));
 vi.mock("@/features/applications/use-application-actions", () => ({ useInvalidateApplications: () => api.invalidate }));
 vi.mock("@/dialogs/store", () => ({
@@ -129,6 +144,7 @@ beforeEach(() => {
 	api.defaults.mockResolvedValue({ query: "", location: "", country: "GB", remote: "any", suggestions: [] });
 	api.search.mockResolvedValue(result());
 	api.listing.mockResolvedValue({ ...card("1"), description: "About the role." });
+	api.schedules.mockResolvedValue([]);
 });
 afterEach(() => {
 	cleanup();
@@ -253,5 +269,38 @@ describe("JobsPage", () => {
 		fireEvent.click(await screen.findByRole("menuitem", { name: /Hide this job/ }));
 		await waitFor(() => expect(screen.queryByRole("article", { name: "Data Analyst 1" })).toBeNull());
 		expect(api.hide.mock.calls[0]?.[0]).toEqual({ id: "1", hidden: true });
+	});
+
+	it("offers a job alert for the search shown, and opens the one that already repeats it", async () => {
+		mount({ q: "data analyst", country: "GB", arrangement: "remote", visa: true });
+		fireEvent.click(await screen.findByRole("button", { name: "Get job alerts" }));
+		const sheet = await screen.findByRole("dialog", { name: "Job alert" });
+		expect(sheet.dataset.schedule).toBe("new:discovery");
+		expect(JSON.parse(sheet.textContent ?? "")).toMatchObject({
+			query: "data analyst",
+			country: "GB",
+			remote: "only",
+			visaSponsorship: true,
+		});
+		cleanup();
+
+		api.schedules.mockResolvedValue([
+			{
+				id: "alert-1",
+				kind: "discovery",
+				enabled: true,
+				search: {
+					query: "Data Analyst",
+					country: "GB",
+					remote: "only",
+					postedWithinDays: 30,
+					includeNoSalary: true,
+					visaSponsorship: true,
+				},
+			},
+		]);
+		mount({ q: "data analyst", country: "GB", arrangement: "remote", visa: true });
+		fireEvent.click(await screen.findByRole("button", { name: "Job alert on" }));
+		expect((await screen.findByRole("dialog", { name: "Job alert" })).dataset.schedule).toBe("alert-1");
 	});
 });

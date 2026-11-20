@@ -3,14 +3,8 @@ import type { JobCounters } from "./counters";
 import type { JobSourceAdapter } from "./providers";
 import type { ProviderCursors } from "./routing";
 import type { NormalizedJobSearch } from "./search-key";
-import type { JobListing, JobProvider } from "@rezumi/schema/jobs/listing";
-import type {
-	JobListingCard,
-	JobSearchInput,
-	JobSearchRequest,
-	JobSearchResult,
-	JobSearchStatus,
-} from "@rezumi/schema/jobs/search";
+import type { JobProvider } from "@rezumi/schema/jobs/listing";
+import type { JobSearchInput, JobSearchRequest, JobSearchResult, JobSearchStatus } from "@rezumi/schema/jobs/search";
 import { env } from "@rezumi/env/server";
 import { jobSearchLimitReached } from "../billing/limits";
 import {
@@ -36,7 +30,7 @@ import { duplicateKey } from "./filters";
 import { JOB_SOURCES } from "./providers";
 import { hasMorePages, routeSearch, SEARCH_PROVIDERS } from "./routing";
 import { jobSearchKey, normalizeJobSearch, stableJson } from "./search-key";
-import { upsertListings } from "./store";
+import { toJobListingCard, upsertListings } from "./store";
 import { trackedApplications } from "./track";
 import { isTregConfigured, TregError } from "./treg";
 
@@ -85,8 +79,6 @@ type Answer = {
 	stale: boolean;
 	budgetLimited: boolean;
 };
-
-const toCard = ({ description: _description, ...card }: JobListing): JobListingCard => card;
 
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -262,7 +254,7 @@ export function createJobSearchService(overrides: Partial<JobSearchDependencies>
 				userId,
 				listings.map((listing) => listing.id),
 			);
-			const cards = listings.filter((listing) => !listing.closedAt && !hidden.has(listing.id)).map(toCard);
+			const cards = listings.filter((listing) => !listing.closedAt && !hidden.has(listing.id)).map(toJobListingCard);
 			return {
 				listings: cards,
 				...(hasMorePages(input, answer.entry.cursors) ? { cursor: answer.entry.key } : {}),

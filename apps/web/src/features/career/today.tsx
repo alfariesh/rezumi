@@ -4,6 +4,7 @@ import type { IconName } from "@rezumi/ui/components/icon";
 import type { Ref } from "react";
 import { Button, buttonVariants, Chip, Skeleton, Spinner, Switch, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouter } from "@tanstack/react-router";
@@ -12,6 +13,7 @@ import { useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
+import { countryName } from "@rezumi/utils/region";
 import { getInitials } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
 import { CareerLoadError, RowsSkeleton } from "./load-state";
@@ -42,6 +44,7 @@ import {
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { DropToImport, FirstRun } from "@/features/documents/documents-page";
 import { RecentDocuments } from "@/features/documents/recent-documents";
+import { arrangementLabel, salaryLabel } from "@/features/jobs/format";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
 import { renderAsH3 } from "@/libs/typography";
@@ -197,7 +200,7 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 	const meta = (row: Notification) => {
 		const source =
 			row.notice.type === "opportunities"
-				? t`Opportunity discovery`
+				? t`Job alert`
 				: row.notice.type === "briefing"
 					? t`Interview preparation`
 					: row.applicationId
@@ -391,7 +394,7 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 			return (
 				<EmptyBlock
 					kind="inline"
-					title={<Trans>No new roles. Discovery is paused.</Trans>}
+					title={<Trans>No new roles. Your job alert is paused.</Trans>}
 					action={
 						<Button variant="ghost" size="sm" onPress={() => onOpenSchedule(active.id)}>
 							<Trans>Open the schedule</Trans>
@@ -406,10 +409,10 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 				kind="inline"
 				title={
 					offset === 0
-						? t`No new roles. Discovery runs again today at ${clock}.`
+						? t`No new roles. Your job alert checks again today at ${clock}.`
 						: offset === 1
-							? t`No new roles. Discovery runs again tomorrow at ${clock}.`
-							: t`No new roles. Discovery runs again on ${day(active.nextRunAt)} at ${clock}.`
+							? t`No new roles. Your job alert checks again tomorrow at ${clock}.`
+							: t`No new roles. Your job alert checks again on ${day(active.nextRunAt)} at ${clock}.`
 				}
 			/>
 		);
@@ -437,10 +440,10 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 					) : (
 						<EmptyBlock
 							kind="inline"
-							title={<Trans>Get new roles here every morning</Trans>}
+							title={<Trans>Get new jobs for your search here every morning</Trans>}
 							action={
 								<Button variant="secondary" size="sm" onPress={() => onOpenSchedule("new:discovery")}>
-									<Trans>Set up discovery</Trans>
+									<Trans>Set up a job alert</Trans>
 								</Button>
 							}
 						/>
@@ -498,16 +501,30 @@ type RoleCardProps = {
 const companyOf = (row: Opportunity) => row.company || new URL(row.url).hostname.replace(/^www\./, "");
 
 function RoleCard({ row, found, first, tracked, pending, onTrack, onUndo, onDismiss }: RoleCardProps) {
-	const { matches, unknowns } = row;
+	const { i18n } = useLingui();
+	const { matches, unknowns, listing } = row;
 	const company = companyOf(row);
 	const unknownLabels = { salary: t`Salary not listed`, office: t`Office days not stated` };
+	// What the job listing says outright: how it's worked and the listed pay.
+	const facts = listing
+		? [
+				listing.workArrangement ? arrangementLabel(listing.workArrangement) : null,
+				salaryLabel(listing.salary, i18n.locale),
+			].filter((fact): fact is string => Boolean(fact))
+		: [];
 	return (
 		<article
 			data-role-card
 			aria-labelledby={`role-${row.id}`}
 			className={cn("flex items-start gap-3 rounded-xl py-4", first && "pt-0")}
 		>
-			<RowIcon className="text-sm font-semibold text-muted">{getInitials(company).slice(0, 1)}</RowIcon>
+			<RowIcon className="text-sm font-semibold text-muted">
+				{listing?.company.logoUrl ? (
+					<img src={listing.company.logoUrl} alt="" className="size-full rounded-[inherit] object-contain" />
+				) : (
+					getInitials(company).slice(0, 1)
+				)}
+			</RowIcon>
 			<div className="grid min-w-0 flex-1 gap-3">
 				<div className="grid gap-0.5">
 					<Typography type="h6" render={renderAsH3} id={`role-${row.id}`}>
@@ -516,8 +533,13 @@ function RoleCard({ row, found, first, tracked, pending, onTrack, onUndo, onDism
 					<p className="text-body-sm text-muted">{[company, row.location, found].filter(Boolean).join(" · ")}</p>
 				</div>
 				{row.snippet && <p className="line-clamp-3 text-sm text-muted">{row.snippet}</p>}
-				{matches.length + unknowns.length > 0 && (
+				{facts.length + matches.length + unknowns.length > 0 && (
 					<div className="flex flex-wrap gap-1.5">
+						{facts.map((fact) => (
+							<Chip key={fact} size="sm" variant="soft">
+								<Chip.Label>{fact}</Chip.Label>
+							</Chip>
+						))}
 						{matches.map((match) => (
 							<InfoChip key={match} tone="match">
 								{match}
@@ -554,7 +576,7 @@ function RoleCard({ row, found, first, tracked, pending, onTrack, onUndo, onDism
 								<Trans>Track in Applications</Trans>
 							</Button>
 							<a
-								href={row.url}
+								href={listing?.postingUrl ?? row.url}
 								target="_blank"
 								rel="noopener noreferrer"
 								className={buttonVariants({ variant: "ghost", size: "sm" })}
@@ -659,7 +681,7 @@ const KIND_ORDER = ["discovery", "prepare", "follow-up"];
 
 function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 	const queryClient = useQueryClient();
-	const { day, time, when } = useCareerTime();
+	const { day, time, when, locale } = useCareerTime();
 	const queryKey = orpc.career.schedules.queryKey({ input: {} });
 	const { data: schedules, isError, refetch } = useQuery(orpc.career.schedules.queryOptions({ input: {} }));
 	const applicationQuery = useQuery(applicationsListQueryOptions());
@@ -708,7 +730,10 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 
 	const describe = (row: Schedule) => {
 		const application = applications?.find((item) => item.id === row.applicationId);
-		if (row.kind === "discovery") return row.query;
+		if (row.kind === "discovery") {
+			const place = [row.search?.location, row.search?.country ? countryName(row.search.country, locale) : null];
+			return [row.query, ...place].filter(Boolean).join(" · ");
+		}
 		if (row.kind === "follow-up") return application ? `${application.company} · ${application.role}` : "";
 		const interview = application?.activity.find((entry) => entry.type === "interview" && entry.id === row.interviewId);
 		const kind = interview?.type === "interview" ? (interviewKindOf(interview.kind)?.label ?? interview.kind) : null;

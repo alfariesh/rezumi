@@ -6,11 +6,13 @@ import type {
 	CareerWorkspace,
 	SavedItemData,
 } from "@rezumi/schema/career";
+import type { JobSearchCriteria } from "@rezumi/schema/jobs/search";
 import * as pg from "drizzle-orm/pg-core";
 import { generateId } from "@rezumi/utils/string";
 import { aiProvider } from "./agent";
 import { application } from "./applications";
 import { user } from "./auth";
+import { jobListing } from "./jobs";
 
 const owned = () => ({
 	id: pg
@@ -88,6 +90,13 @@ export const careerSchedule = pg.pgTable(
 		interviewId: pg.text("interview_id"),
 		kind: pg.text("kind").notNull(),
 		query: pg.text("query").notNull().default(""),
+		/** Discovery: the job search it repeats (the Jobs page's search without a page cursor); `query` is its role. */
+		search: pg.jsonb("search").$type<JobSearchCriteria>(),
+		/**
+		 * Discovery: where each provider's "new since" check continues. Cleared when the search changes, so the next run
+		 * starts one interval back.
+		 */
+		discoveryState: pg.jsonb("discovery_state").$type<CareerDiscoveryState>(),
 		/** Prepare only: 24h, 2h or morning (08:00 on the interview day). */
 		lead: pg.text("lead"),
 		/** The interface language when it was saved, so a scheduled briefing is written in it. */
@@ -102,6 +111,15 @@ export const careerSchedule = pg.pgTable(
 	},
 	(t) => [pg.index().on(t.enabled, t.nextRunAt)],
 );
+/** Where a discovery schedule's next check for new listings starts, per provider. */
+export type CareerDiscoveryState = {
+	/** Hirebase: listings it first saw at or after this time (ISO). */
+	hirebaseAfter?: string;
+	/** JobsPipe: the delta cursor from its last complete answer, and when it was issued (ISO). */
+	jobspipeDelta?: string;
+	jobspipeDeltaAt?: string;
+};
+
 export const careerJob = pg.pgTable(
 	"career_job",
 	{
@@ -140,7 +158,7 @@ export const careerOpportunity = pg.pgTable(
 	{
 		...owned(),
 		url: pg.text("url").notNull(),
-		/** Read from the posting page (its JobPosting data when it has some, else its title). */
+		/** From the job listing (or, for rows found before job search, read from the posting page). */
 		role: pg.text("role").notNull().default(""),
 		company: pg.text("company").notNull().default(""),
 		location: pg.text("location").notNull().default(""),
@@ -152,8 +170,10 @@ export const careerOpportunity = pg.pgTable(
 		dismissedAt: pg.timestamp("dismissed_at", { withTimezone: true }),
 		/** Set when tracked in Applications; a tracked role never returns in later runs. */
 		trackedApplicationId: pg.text("tracked_application_id").references(() => application.id, { onDelete: "set null" }),
+		/** The shared job listing it came from; the text columns above keep a copy for when the listing is removed. */
+		listingId: pg.text("listing_id").references(() => jobListing.id, { onDelete: "set null" }),
 	},
-	(t) => [pg.uniqueIndex().on(t.userId, t.url)],
+	(t) => [pg.uniqueIndex().on(t.userId, t.url), pg.index().on(t.listingId)],
 );
 
 /** One application's live workspace state: answers, checklist ticks, questions to ask. */

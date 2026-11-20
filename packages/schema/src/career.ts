@@ -1,6 +1,7 @@
 import z from "zod";
 import { searchRegionsSchema } from "@rezumi/utils/region";
 import { timezoneSchema } from "@rezumi/utils/timezone";
+import { jobSearchCriteriaSchema } from "./jobs/search";
 
 /** The workspace tabs of one application, in the order a search happens. */
 export const WORKSPACE_TABS = ["fit", "apply", "prepare", "practise", "debrief", "messages", "saved"] as const;
@@ -311,6 +312,8 @@ export type CareerNotice = z.infer<typeof careerNoticeSchema>;
 export const careerScheduleInputSchema = careerScopeSchema.extend({
 	kind: z.enum(["discovery", "prepare", "follow-up"]),
 	query: z.string().trim().max(500).default(""),
+	/** Discovery: the job search to repeat. Left out, a saved schedule keeps its search; a new one searches `query`. */
+	search: jobSearchCriteriaSchema.nullable().optional(),
 	interviewId: z.string().nullable().default(null),
 	/** Prepare only: when the briefing runs relative to the interview. */
 	lead: z.enum(["24h", "2h", "morning"]).nullable().default(null),

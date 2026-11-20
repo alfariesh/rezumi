@@ -150,8 +150,11 @@ export function mapHirebaseJob(job: Record<string, unknown>): MappedJob {
 	return { listing, raw };
 }
 
-/** The `hirebase.jobs.search` body for a search; only parameters the treg catalog lists (others answer 422). */
-export function hirebaseSearchBody(input: JobSearchInput, limit: number, page: number) {
+/**
+ * The `hirebase.jobs.search` body for a search; only parameters the treg catalog lists (others answer 422). With
+ * `ingestedAfter`, only listings Hirebase first saw since then, newest first (job alerts).
+ */
+export function hirebaseSearchBody(input: JobSearchInput, limit: number, page: number, ingestedAfter?: string) {
 	const place = {
 		...(input.location ? { city: input.location } : {}),
 		...(input.country ? { country: englishCountryName(input.country) } : {}),
@@ -172,6 +175,7 @@ export function hirebaseSearchBody(input: JobSearchInput, limit: number, page: n
 		days_ago: input.postedWithinDays,
 		...(input.seniority ? { experience_levels: [EXPERIENCE_LEVELS[input.seniority]] } : {}),
 		...(salaryFilter ? { salary: { min: input.salaryMin }, currency: input.salaryCurrency ?? "USD" } : {}),
+		...(ingestedAfter ? { ingested_after: ingestedAfter, sort_by: "first_ingested", sort_order: "desc" } : {}),
 		limit,
 		page,
 	};
@@ -195,7 +199,7 @@ export const hirebase: JobSourceAdapter = {
 				{
 					tool: HIREBASE_SEARCH_TOOL,
 					method: "POST",
-					body: hirebaseSearchBody(input, options.limit, page),
+					body: hirebaseSearchBody(input, options.limit, page, options.ingestedAfter),
 					maxCostUsd: maxCostUsd(options.limit, HIREBASE_PRICE_USD),
 					feature: `jobs-${options.kind ?? "search"}`,
 					...(options.fresh ? { fresh: true } : {}),

@@ -67,3 +67,10 @@ Pencarian di dialog (`add-application-dialog.tsx`) diganti tautan **"Cari lowong
 - Sesuai bagian 1–2, dengan perbedaan: filter "Remote" dan "tipe kerja" digabung menjadi satu pilihan **cara kerja** (semua / remote / hybrid / di kantor); kota opsional di samping negara; mengubah filter tidak langsung mencari (tekan **Cari**, karena tiap pencarian memakai kuota).
 - Kartu: logo atau inisial, posisi (klik → panel detail), perusahaan · lokasi, chip cara kerja / gaji / sponsor visa / level, "Diposting … · lewat …", tombol **Lacak** (→ **Dilacak ✓** yang membuka lamaran), **Sesuaikan CV**, **Lihat posting asli ↗**, menu ⋯ **Sembunyikan** (dengan Urungkan). Dua kolom dari layar lebar, satu kolom di ponsel; filter di ponsel satu baris yang bisa digeser.
 - Belum ada: chip kecocokan (Phase 05), tombol "Simpan sebagai notifikasi" (Phase 04), menu "Laporkan lowongan bermasalah" (backlog, butuh tempat menerima laporan).
+
+## 7. Yang dibangun di Phase 04 (2026-11-20)
+
+- Nama di layar: **Job alert** (Indonesia: **Notifikasi lowongan**). Tombol di halaman Lowongan, di kanan baris "N jobs · updated …": **Get job alerts** (Indonesia: "Simpan sebagai notifikasi"), menjadi **Job alert on** / **Job alert paused** bila sudah ada notifikasi untuk pencarian yang sama; menekan tombol membuka sheet notifikasi itu.
+- Sheet (judul **New job alert** / **Edit job alert**): pilihan jenis "Job alert / Prepare / Remind me", **Role** (petunjuk: nama posisi paling cocok), **City (optional)**, **Country**, baris "Also filtered by: …" untuk filter lain dari pencarian (tidak bisa diubah di sheet; ubah lewat halaman Lowongan), frekuensi, penjelasan "Each run looks for jobs that appeared since the last one…", waktu jalan pertama. Tidak ada lagi tautan Web access.
+- Home: kartu **New roles from your search** menampilkan chip cara kerja dan gaji dari lowongan, logo perusahaan bila ada; "Read posting" ke posting asli. Kosong: "Get new jobs for your search here every morning" + **Set up a job alert**. Baris jadwal: "Senior Product Manager · Germany".
+- Batas paket (K12) memakai pesan netral "No room for another job alert".

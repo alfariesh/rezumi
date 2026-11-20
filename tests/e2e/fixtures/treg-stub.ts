@@ -6,8 +6,9 @@ import { createServer } from "node:http";
  * A stand-in for treg (https://treg.to) for the browser tests: the server sends job searches here through
  * `TREG_BASE_URL`, so no test ever calls treg or pays for a listing. Hirebase answers twelve made-up listings for a
  * title at fictional companies (none for a title containing "nothing"); JobsPipe answers none. Each listing's id comes
- * from the title and place, so one search always answers the same listings and different searches never share one. Product
- * guide screenshots use it too (`pnpm dev` with `TREG_BASE_URL` pointing here).
+ * from the title and place, so one search always answers the same listings and different searches never share one. A job
+ * alert's check (`ingested_after`) answers four newer listings of its own, posted today; JobsPipe's new-jobs feed answers
+ * none. Product guide screenshots use it too (`pnpm dev` with `TREG_BASE_URL` pointing here).
  *
  * Run by Playwright's `webServer` (playwright.config.ts): `node tests/e2e/fixtures/treg-stub.ts`.
  */
@@ -39,12 +40,14 @@ const TITLES = [
 
 type Place = { city?: string; country?: string };
 
-function hirebaseJobs(title: string, place: Place) {
+function hirebaseJobs(title: string, place: Place, ingestedAfter?: string) {
 	if (/nothing/i.test(title)) return [];
 	const country = place.country ?? "United Kingdom";
 	const city = place.city ?? (country === "Germany" ? "Berlin" : "London");
-	return TITLES.map((name, index) => {
-		const id = createHash("sha256").update(`${title}:${city}:${country}:${index}`).digest("hex").slice(0, 24);
+	const titles = ingestedAfter ? TITLES.slice(1, 5) : TITLES;
+	return titles.map((name, index) => {
+		const seed = ingestedAfter ? `new:${title}:${city}:${country}:${index}` : `${title}:${city}:${country}:${index}`;
+		const id = createHash("sha256").update(seed).digest("hex").slice(0, 24);
 		const company = COMPANIES[index % COMPANIES.length] ?? COMPANIES[0];
 		const currency = country === "Germany" ? "EUR" : country === "United States" ? "USD" : "GBP";
 		return {
@@ -64,7 +67,7 @@ function hirebaseJobs(title: string, place: Place) {
 				index % 3 === 2 ? null : { min: 60_000 + index * 2_000, max: 78_000 + index * 2_000, currency, period: "year" },
 			visa_sponsored: index % 4 === 0,
 			requirements_summary: "3+ years in a similar role, clear writing and comfort with data.",
-			date_posted: new Date(Date.now() - (index + 1) * 86_400_000).toISOString(),
+			date_posted: new Date(Date.now() - (ingestedAfter ? 0 : index + 1) * 86_400_000).toISOString(),
 		};
 	});
 }
@@ -96,10 +99,12 @@ const server = createServer(async (request, response) => {
 	if (tool === "hirebase.jobs.search") {
 		const titles = Array.isArray(body.job_titles) ? body.job_titles.map(String) : [];
 		const places = Array.isArray(body.geo_locations) ? (body.geo_locations as Place[]) : [];
-		const jobs = hirebaseJobs(titles[0] ?? "Job", places[0] ?? {});
+		const ingestedAfter = typeof body.ingested_after === "string" ? body.ingested_after : undefined;
+		const jobs = hirebaseJobs(titles[0] ?? "Job", places[0] ?? {}, ingestedAfter);
 		return send(response, { jobs, total_count: jobs.length, page: 1, total_pages: 1 });
 	}
-	if (tool === "jobspipe.jobs.search") return send(response, { data: [], metadata: {} });
+	if (tool === "jobspipe.jobs.search" || tool === "jobspipe.jobs.new")
+		return send(response, { data: [], metadata: { next_delta_cursor: "stub-delta" } });
 	response.writeHead(404).end();
 });
 

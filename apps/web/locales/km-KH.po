@@ -974,6 +974,10 @@ msgstr "{length} នាទី"
 msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
 msgstr "{lines, plural, one {ដំណើរការលើទំព័រ {next} ដោយបន្ទាត់ #} other {ដំណើរការលើទំព័រ {next} ដោយបន្ទាត់ #}}"
 
+#: src/features/billing/plan.ts
+msgid "{max, plural, one {Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.}}"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "{minimum} minimum"
 msgstr "អប្បបរមា {minimum}"
@@ -1538,6 +1542,10 @@ msgstr "ចន្លោះមួយមិនមែនជាបញ្ហាទេ
 msgid "A job site wasn't read correctly"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+msgid "A job title works best, such as “Product designer”."
+msgstr ""
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "A link"
 msgstr ""
@@ -2018,8 +2026,8 @@ msgid "Add a result"
 msgstr "បន្ថែមលទ្ធផល"
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Add a role or company to look for."
-msgstr "បន្ថែមតួនាទី ឬក្រុមហ៊ុនដែលត្រូវស្វែងរក។"
+msgid "Add a role to look for."
+msgstr ""
 
 #: src/features/portfolio/editor/intro-effect.tsx
 msgid "Add a role to switch to. With only one line, the page shows it without the effect."
@@ -2800,6 +2808,10 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Also end the subscription now (access stops at once)"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Also filtered by: {list}"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -4404,6 +4416,7 @@ msgstr ""
 msgid "City"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/jobs/search-bar.tsx
 msgid "City (optional)"
 msgstr ""
@@ -5276,6 +5289,10 @@ msgstr "មិនអាចលុបអ្នកផ្តល់សេវាបា
 msgid "Couldn't delete this conversation. Try again."
 msgstr "មិនអាចលុបការសន្ទនានេះបានទេ។ ព្យាយាមម្តងទៀត។"
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Couldn't delete this job alert. Try again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Couldn't delete this schedule. Try again."
 msgstr "មិនអាចលុបកាលវិភាគនេះបានទេ។ ព្យាយាមម្តងទៀត។"
@@ -5845,6 +5862,7 @@ msgstr ""
 msgid "Countries, devices, linking sites and works by day"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Country"
@@ -7048,6 +7066,10 @@ msgstr "ចម្លើយនីមួយៗដែលអ្នកទទួលប
 msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
+msgstr ""
+
 #: src/features/settings/ai/browser-extension.tsx
 msgid "Edge Add-ons"
 msgstr ""
@@ -7120,6 +7142,10 @@ msgstr ""
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
 msgstr "កែសម្រួលបទសម្ភាសន៍…"
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Edit job alert"
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 msgid "Edit keyword"
@@ -7904,10 +7930,6 @@ msgstr ""
 msgid "Find portfolio"
 msgstr ""
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Find roles"
-msgstr "ស្វែងរកតួនាទី"
-
 #: src/features/assistant/assistant-panel.tsx
 msgid "Find the results in this work and show them as metrics"
 msgstr ""
@@ -8482,9 +8504,13 @@ msgstr "“ទទួលមតិកែលម្អ” ផ្ញើសំណួ�
 msgid "Get found"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Get job alerts"
+msgstr ""
+
 #: src/features/career/today.tsx
-msgid "Get new roles here every morning"
-msgstr "ទទួលតួនាទីថ្មីៗនៅទីនេះរៀងរាល់ព្រឹក"
+msgid "Get new jobs for your search here every morning"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -9600,6 +9626,32 @@ msgstr "Japanese"
 msgid "Job"
 msgstr "ការងារ"
 
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/today.tsx
+msgid "Job alert"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgctxt "Short schedule kind in a segmented choice"
+msgid "Job alert"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert deleted"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert on"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert paused"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Job alerts aren't available on this server yet."
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Job description"
@@ -10499,10 +10551,6 @@ msgstr ""
 msgid "Long stretches are set in capitals."
 msgstr "ចម្រៀកវែងៗត្រូវបានកំណត់ជាអក្សរធំ។"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Look for"
-msgstr "ស្វែងរក"
-
 #: src/features/portfolio/page-text.ts
 msgid "Looking for"
 msgstr ""
@@ -11271,6 +11319,10 @@ msgstr "លិខិតគម្របថ្មីជំនួសវិញ។"
 msgid "New document"
 msgstr "ឯកសារថ្មី។"
 
+#: src/features/career/schedule-sheet.tsx
+msgid "New job alert"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr "សោថ្មី។"
@@ -11576,22 +11628,22 @@ msgstr "គ្មានទីតាំង"
 msgid "No messages yet. Turn on the contact form in the editor, under Contact."
 msgstr ""
 
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery is paused."
-msgstr "គ្មានតួនាទីថ្មីទេ។ ការស្វែងរកការងារត្រូវបានផ្អាក។"
-
 #. placeholder {0}: day(active.nextRunAt)
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again on {0} at {clock}."
-msgstr "គ្មានតួនាទីថ្មីទេ។ ការស្វែងរកការងារនឹងដំណើរការម្តងទៀតនៅ {0} ម៉ោង {clock}។"
+msgid "No new roles. Your job alert checks again on {0} at {clock}."
+msgstr ""
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again today at {clock}."
-msgstr "គ្មានតួនាទីថ្មីទេ។ ការស្វែងរកការងារនឹងដំណើរការម្តងទៀតថ្ងៃនេះ ម៉ោង {clock}។"
+msgid "No new roles. Your job alert checks again today at {clock}."
+msgstr ""
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again tomorrow at {clock}."
-msgstr "គ្មានតួនាទីថ្មីទេ។ ការស្វែងរកការងារនឹងដំណើរការម្តងទៀតថ្ងៃស្អែក ម៉ោង {clock}។"
+msgid "No new roles. Your job alert checks again tomorrow at {clock}."
+msgstr ""
+
+#: src/features/career/today.tsx
+msgid "No new roles. Your job alert is paused."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
@@ -11688,6 +11740,10 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "No room for another job alert"
 msgstr ""
 
 #: src/features/billing/plan.ts
@@ -12534,11 +12590,6 @@ msgstr "បើកក្នុង អាជីព → ការផ្តល់ក
 msgid "opens in new tab"
 msgstr "បើក​ក្នុង​ផ្ទាំង​ថ្មី"
 
-#: src/features/career/schedule-sheet.tsx
-#: src/features/career/today.tsx
-msgid "Opportunity discovery"
-msgstr "ការស្វែងរកឱកាសការងារ"
-
 #: src/features/settings/ai/web-access.tsx
 msgid "Optional"
 msgstr "ស្រេចចិត្ត"
@@ -12969,6 +13020,16 @@ msgstr "កាលវិភាគដែលបានផ្អាក រក្ស�
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Pay {price} with QRIS"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year, or not listed"
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -13432,6 +13493,7 @@ msgstr ""
 msgid "Posted {posted}"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last 2 weeks"
 msgstr ""
@@ -13440,10 +13502,12 @@ msgstr ""
 msgid "Posted in the last 30 days"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last day"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last week"
 msgstr ""
@@ -14592,11 +14656,13 @@ msgstr "រំលឹកខ្ញុំនៅ"
 msgid "Remote"
 msgstr "ពីចម្ងាយ"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgctxt "Job search filter"
 msgid "Remote anywhere"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgctxt "Job search filter"
 msgid "Remote in this country"
@@ -15383,6 +15449,7 @@ msgstr "ឥឡូវនេះ"
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/career/schedule-sheet.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "មុខតំណែង"
@@ -15416,10 +15483,6 @@ msgstr "តួនាទី"
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Roles you're looking for"
 msgstr ""
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Roles, places and companies. Starts from your preferences."
-msgstr "តួនាទី ទីកន្លែង និងក្រុមហ៊ុន។ ចាប់ផ្តើមពីចំណង់ចំណូលចិត្តរបស់អ្នក។"
 
 #: src/libs/locale.ts
 msgid "Romanian"
@@ -16293,12 +16356,8 @@ msgid "Set to end at the period end"
 msgstr ""
 
 #: src/features/career/today.tsx
-msgid "Set up discovery"
-msgstr "រៀបចំការស្វែងរកការងារ"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Set up web search in Settings"
-msgstr "រៀបចំការស្វែងរកតាមអ៊ីនធឺណិតក្នុងការកំណត់"
+msgid "Set up a job alert"
+msgstr ""
 
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Set up your authenticator app"
@@ -20277,10 +20336,6 @@ msgstr "ប្រើការពិតពីប្រវត្តិរូបស
 msgid "Uses the linked application"
 msgstr "ប្រើពាក្យសុំការងារដែលបានភ្ជាប់"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Uses the web search service set up in Settings. Results wait in Today for your review; applications and documents are never created for you."
-msgstr "ប្រើសេវាស្វែងរកតាមអ៊ីនធឺណិតដែលបានរៀបចំក្នុងការកំណត់។ លទ្ធផលរង់ចាំនៅក្នុង “ថ្ងៃនេះ” សម្រាប់ការពិនិត្យរបស់អ្នក; ពាក្យសុំ និងឯកសារមិនដែលត្រូវបានបង្កើតជំនួសអ្នកទេ។"
-
 #: src/features/settings/ai/web-access.tsx
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "ប្រើការស្វែងរកគេហទំព័រផ្ទាល់ខ្លួនរបស់អ្នកផ្តល់សេវា AI ដែលជាកន្លែងដែលត្រូវបានគាំទ្រ និងអានតំណភ្ជាប់ជាមួយអ្នកអានដែលភ្ជាប់មកជាមួយ។"
@@ -20492,6 +20547,7 @@ msgstr ""
 msgid "views · 30 days"
 msgstr "ទិដ្ឋភាព · 30 ថ្ងៃ។"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/listing-card.tsx
 msgid "Visa sponsorship"
 msgstr ""

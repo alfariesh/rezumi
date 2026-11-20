@@ -114,6 +114,8 @@ export type PlanLimits = {
 	 * the same page again that day doesn't.
 	 */
 	jobSearchesPerDay: number;
+	/** Job alerts switched on: discovery schedules that check for new listings (2026-11-20, owner). */
+	jobAlerts: number;
 };
 
 /**
@@ -302,6 +304,7 @@ export const PLANS = {
 			portfolioWorks: 6,
 			portfolioStorageBytes: 100 * MEGABYTE,
 			jobSearchesPerDay: 3,
+			jobAlerts: 1,
 		},
 		features: {
 			premiumTemplates: false,
@@ -327,7 +330,7 @@ export const PLANS = {
 			month: { usd: 499, idr: 2_900_000 },
 			year: { usd: 3_900, idr: 24_900_000 },
 		},
-		limits: { activeResumes: 50, activeCoverLetters: 50, ...paidPortfolioLimits, jobSearchesPerDay: 15 },
+		limits: { activeResumes: 50, activeCoverLetters: 50, ...paidPortfolioLimits, jobSearchesPerDay: 15, jobAlerts: 3 },
 		features: paidFeatures,
 		creditsPerMonth: 0,
 		trialDays: 7,
@@ -340,7 +343,7 @@ export const PLANS = {
 			month: { usd: 999, idr: 5_900_000 },
 			year: { usd: 7_900, idr: 49_900_000 },
 		},
-		limits: { activeResumes: 50, activeCoverLetters: 50, ...paidPortfolioLimits, jobSearchesPerDay: 40 },
+		limits: { activeResumes: 50, activeCoverLetters: 50, ...paidPortfolioLimits, jobSearchesPerDay: 40, jobAlerts: 10 },
 		features: paidFeatures,
 		creditsPerMonth: 100,
 		trialDays: null,

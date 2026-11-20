@@ -1,6 +1,6 @@
 # Keputusan produk — cari lowongan
 
-Keputusan pemilik: D1–D6 dan K1–K11 (semua usulan K disetujui pemilik 2026-11-20). Nomor K tetap dipakai karena dirujuk dokumen phase. Agent tidak mengubah keputusan diam-diam; bila ada yang perlu diubah, tanya pemilik dan catat di log di bawah.
+Keputusan pemilik: D1–D6 dan K1–K12 (semua usulan K disetujui pemilik 2026-11-20). Nomor K tetap dipakai karena dirujuk dokumen phase. Agent tidak mengubah keputusan diam-diam; bila ada yang perlu diubah, tanya pemilik dan catat di log di bawah.
 
 ## 1. Sudah diputuskan pemilik
 
@@ -30,6 +30,7 @@ Pemilik menjawab "setuju semua": kolom "Usulan Claude" adalah keputusannya, kolo
 | K9  | Papan lowongan lokal yang tidak ada di penyedia (JobStreet, Glints, Kalibrr, StepStone, Naukri, Seek, …) | **Lewat browser extension** (JobStreet sudah didukung; tambah per permintaan pengguna). Tidak ada sumber API.                                                                                                                                                                                                                   | —                                                                                | Phase 00   |
 | K10 | Halaman lowongan publik untuk SEO                                                                        | **Tidak dibuat.** Aturan penyedia tidak jelas soal ini dan melarang membangun database pesaing.                                                                                                                                                                                                                                 | —                                                                                | Phase 00   |
 | K11 | Filter untuk pasar global                                                                                | **Gaji** (dengan pilihan "sertakan lowongan tanpa gaji", aktif bawaan; di AS ±66% lowongan mencantumkan gaji, Inggris ±29%, Jerman ±12%, India ±1%), **sponsor visa**, **remote di mana saja** vs **remote di negara ini**, level, tipe kerja, tanggal posting.                                                                 | Tanpa filter visa                                                                | Phase 03   |
+| K12 | Batas notifikasi lowongan yang menyala per paket                                                         | **Gratis 1 · Plus 3 · Pro AI 10.** Notifikasi yang dijeda tidak dihitung. Biaya cek masuk anggaran server (K7), tidak memakai kuota pencarian harian (K2).                                                                                                                                                                      | Gratis 0 (fitur berbayar saja); sama untuk semua paket (5)                       | Phase 04   |
 
 ## 3. Perhitungan biaya (dasar K2 dan K7)
 
@@ -56,3 +57,4 @@ Contoh kasar dengan Hirebase sebagai utama: 100 pengguna aktif × 3 pencarian pe
 | 2026-11-20 | K7 diubah: batas anggaran **$1 per hari** (bukan $3) selama belum ada user; dinaikkan saat user datang                                                                                                                                                                 | Pemilik |
 | 2026-11-20 | Phase 02: K2 (Gratis 3 · Plus 15 · Pro AI 40), K3 (20 per halaman, cache 6 jam, hapus 30 hari) dan K7 ($1 per hari) dipakai apa adanya, tanpa perubahan                                                                                                                | Claude  |
 | 2026-11-20 | Phase 03: K5 dipakai apa adanya (menu "Lowongan" tepat di atas "Lamaran"; pencarian di dialog Tambah lamaran diganti tautan "Cari lowongan"). K11 dipakai: gaji minimum dengan "sertakan tanpa gaji" menyala bawaan, sponsor visa, remote di mana saja / di negara ini | Claude  |
+| 2026-11-20 | Phase 04: **K12 baru** — batas notifikasi lowongan yang menyala Gratis 1 · Plus 3 · Pro AI 10 (pilihan yang disarankan Claude). Batas paket `jobAlerts`, galat `PLAN_LIMIT_REACHED`                                                                                    | Pemilik |

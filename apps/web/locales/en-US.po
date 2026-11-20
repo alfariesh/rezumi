@@ -969,6 +969,10 @@ msgstr "{length}m"
 msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
 msgstr "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
 
+#: src/features/billing/plan.ts
+msgid "{max, plural, one {Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.}}"
+msgstr "{max, plural, one {Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.}}"
+
 #: src/features/career/offers.tsx
 msgid "{minimum} minimum"
 msgstr "{minimum} minimum"
@@ -1533,6 +1537,10 @@ msgstr "A gap is not a problem. Add a one-line explanation if you want to; many 
 msgid "A job site wasn't read correctly"
 msgstr "A job site wasn't read correctly"
 
+#: src/features/career/schedule-sheet.tsx
+msgid "A job title works best, such as “Product designer”."
+msgstr "A job title works best, such as “Product designer”."
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "A link"
 msgstr "A link"
@@ -2013,8 +2021,8 @@ msgid "Add a result"
 msgstr "Add a result"
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Add a role or company to look for."
-msgstr "Add a role or company to look for."
+msgid "Add a role to look for."
+msgstr "Add a role to look for."
 
 #: src/features/portfolio/editor/intro-effect.tsx
 msgid "Add a role to switch to. With only one line, the page shows it without the effect."
@@ -2796,6 +2804,10 @@ msgstr "Also end its access to your account"
 #: src/features/billing/admin/customer.tsx
 msgid "Also end the subscription now (access stops at once)"
 msgstr "Also end the subscription now (access stops at once)"
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Also filtered by: {list}"
+msgstr "Also filtered by: {list}"
 
 #: src/features/billing/admin/customer.tsx
 msgid "Also take back the pass and its remaining credits"
@@ -4399,6 +4411,7 @@ msgstr "Cities or countries. Leave it empty for anywhere."
 msgid "City"
 msgstr "City"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/jobs/search-bar.tsx
 msgid "City (optional)"
 msgstr "City (optional)"
@@ -5271,6 +5284,10 @@ msgstr "Couldn't delete the provider. Try again."
 msgid "Couldn't delete this conversation. Try again."
 msgstr "Couldn't delete this conversation. Try again."
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Couldn't delete this job alert. Try again."
+msgstr "Couldn't delete this job alert. Try again."
+
 #: src/features/career/today.tsx
 msgid "Couldn't delete this schedule. Try again."
 msgstr "Couldn't delete this schedule. Try again."
@@ -5840,6 +5857,7 @@ msgstr "Countries, devices and linking sites can't be shown right now. Try again
 msgid "Countries, devices, linking sites and works by day"
 msgstr "Countries, devices, linking sites and works by day"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Country"
@@ -7043,6 +7061,10 @@ msgstr "Each answer you get feedback on is kept here, newest first."
 msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
 msgstr "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
 
+#: src/features/career/schedule-sheet.tsx
+msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
+msgstr "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
+
 #: src/features/settings/ai/browser-extension.tsx
 msgid "Edge Add-ons"
 msgstr "Edge Add-ons"
@@ -7115,6 +7137,10 @@ msgstr "Edit interview: {0}, {range}"
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
 msgstr "Edit interview…"
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Edit job alert"
+msgstr "Edit job alert"
 
 #: src/components/input/chip-input.tsx
 msgid "Edit keyword"
@@ -7899,10 +7925,6 @@ msgstr "Find numbers in your resume"
 msgid "Find portfolio"
 msgstr "Find portfolio"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Find roles"
-msgstr "Find roles"
-
 #: src/features/assistant/assistant-panel.tsx
 msgid "Find the results in this work and show them as metrics"
 msgstr "Find the results in this work and show them as metrics"
@@ -8477,9 +8499,13 @@ msgstr "Get feedback sends the question, your answer, this posting and your stor
 msgid "Get found"
 msgstr "Get found"
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Get job alerts"
+msgstr "Get job alerts"
+
 #: src/features/career/today.tsx
-msgid "Get new roles here every morning"
-msgstr "Get new roles here every morning"
+msgid "Get new jobs for your search here every morning"
+msgstr "Get new jobs for your search here every morning"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -9595,6 +9621,32 @@ msgstr "Japanese"
 msgid "Job"
 msgstr "Job"
 
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/today.tsx
+msgid "Job alert"
+msgstr "Job alert"
+
+#: src/features/career/schedule-sheet.tsx
+msgctxt "Short schedule kind in a segmented choice"
+msgid "Job alert"
+msgstr "Job alert"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert deleted"
+msgstr "Job alert deleted"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert on"
+msgstr "Job alert on"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert paused"
+msgstr "Job alert paused"
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Job alerts aren't available on this server yet."
+msgstr "Job alerts aren't available on this server yet."
+
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Job description"
@@ -10494,10 +10546,6 @@ msgstr "Logos"
 msgid "Long stretches are set in capitals."
 msgstr "Long stretches are set in capitals."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Look for"
-msgstr "Look for"
-
 #: src/features/portfolio/page-text.ts
 msgid "Looking for"
 msgstr "Looking for"
@@ -11266,6 +11314,10 @@ msgstr "New cover letter instead"
 msgid "New document"
 msgstr "New document"
 
+#: src/features/career/schedule-sheet.tsx
+msgid "New job alert"
+msgstr "New job alert"
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr "New key"
@@ -11571,22 +11623,22 @@ msgstr "No location"
 msgid "No messages yet. Turn on the contact form in the editor, under Contact."
 msgstr "No messages yet. Turn on the contact form in the editor, under Contact."
 
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery is paused."
-msgstr "No new roles. Discovery is paused."
-
 #. placeholder {0}: day(active.nextRunAt)
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again on {0} at {clock}."
-msgstr "No new roles. Discovery runs again on {0} at {clock}."
+msgid "No new roles. Your job alert checks again on {0} at {clock}."
+msgstr "No new roles. Your job alert checks again on {0} at {clock}."
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again today at {clock}."
-msgstr "No new roles. Discovery runs again today at {clock}."
+msgid "No new roles. Your job alert checks again today at {clock}."
+msgstr "No new roles. Your job alert checks again today at {clock}."
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again tomorrow at {clock}."
-msgstr "No new roles. Discovery runs again tomorrow at {clock}."
+msgid "No new roles. Your job alert checks again tomorrow at {clock}."
+msgstr "No new roles. Your job alert checks again tomorrow at {clock}."
+
+#: src/features/career/today.tsx
+msgid "No new roles. Your job alert is paused."
+msgstr "No new roles. Your job alert is paused."
 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
@@ -11684,6 +11736,10 @@ msgstr "No Rezumi AI work in this period."
 #: src/features/billing/plan.ts
 msgid "No room for another cover letter"
 msgstr "No room for another cover letter"
+
+#: src/features/billing/plan.ts
+msgid "No room for another job alert"
+msgstr "No room for another job alert"
 
 #: src/features/billing/plan.ts
 msgid "No room for another resume"
@@ -12529,11 +12585,6 @@ msgstr "Opens in Career → Offers."
 msgid "opens in new tab"
 msgstr "opens in new tab"
 
-#: src/features/career/schedule-sheet.tsx
-#: src/features/career/today.tsx
-msgid "Opportunity discovery"
-msgstr "Opportunity discovery"
-
 #: src/features/settings/ai/web-access.tsx
 msgid "Optional"
 msgstr "Optional"
@@ -12965,6 +13016,16 @@ msgstr "Paused schedules keep their settings."
 #: src/features/billing/purchase-dialog.tsx
 msgid "Pay {price} with QRIS"
 msgstr "Pay {price} with QRIS"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year"
+msgstr "Pay from {pay} a year"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year, or not listed"
+msgstr "Pay from {pay} a year, or not listed"
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Pay on the secure checkout by Dodo Payments with a card, Apple Pay or Google Pay. {name} starts as soon as the payment goes through."
@@ -13427,6 +13488,7 @@ msgstr "Posted"
 msgid "Posted {posted}"
 msgstr "Posted {posted}"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last 2 weeks"
 msgstr "Posted in the last 2 weeks"
@@ -13435,10 +13497,12 @@ msgstr "Posted in the last 2 weeks"
 msgid "Posted in the last 30 days"
 msgstr "Posted in the last 30 days"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last day"
 msgstr "Posted in the last day"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgid "Posted in the last week"
 msgstr "Posted in the last week"
@@ -14587,11 +14651,13 @@ msgstr "Remind me on"
 msgid "Remote"
 msgstr "Remote"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgctxt "Job search filter"
 msgid "Remote anywhere"
 msgstr "Remote anywhere"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/search-bar.tsx
 msgctxt "Job search filter"
 msgid "Remote in this country"
@@ -15378,6 +15444,7 @@ msgstr "Right now"
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/career/schedule-sheet.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "Role"
@@ -15411,10 +15478,6 @@ msgstr "Roles"
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Roles you're looking for"
 msgstr "Roles you're looking for"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Roles, places and companies. Starts from your preferences."
-msgstr "Roles, places and companies. Starts from your preferences."
 
 #: src/libs/locale.ts
 msgid "Romanian"
@@ -16288,12 +16351,8 @@ msgid "Set to end at the period end"
 msgstr "Set to end at the period end"
 
 #: src/features/career/today.tsx
-msgid "Set up discovery"
-msgstr "Set up discovery"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Set up web search in Settings"
-msgstr "Set up web search in Settings"
+msgid "Set up a job alert"
+msgstr "Set up a job alert"
 
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Set up your authenticator app"
@@ -20272,10 +20331,6 @@ msgstr "Uses facts from your resume"
 msgid "Uses the linked application"
 msgstr "Uses the linked application"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Uses the web search service set up in Settings. Results wait in Today for your review; applications and documents are never created for you."
-msgstr "Uses the web search service set up in Settings. Results wait in Today for your review; applications and documents are never created for you."
-
 #: src/features/settings/ai/web-access.tsx
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
@@ -20487,6 +20542,7 @@ msgstr "Views"
 msgid "views · 30 days"
 msgstr "views · 30 days"
 
+#: src/features/jobs/format.ts
 #: src/features/jobs/listing-card.tsx
 msgid "Visa sponsorship"
 msgstr "Visa sponsorship"

@@ -1,4 +1,4 @@
-import type { JobSourceAdapter, MappedJob } from "./shared";
+import type { JobSourceAdapter, MappedJob, ProviderSearchOptions, ProviderSearchResult } from "./shared";
 import type { JobWorkArrangement } from "@rezumi/schema/jobs/listing";
 import type { JobSearchInput } from "@rezumi/schema/jobs/search";
 import { recordJobEvent } from "../events";
@@ -167,53 +167,69 @@ export function jobspipeSearchBody(input: JobSearchInput, limit: number) {
 
 type SearchAnswer = { data?: unknown; metadata?: unknown };
 
+export const JOBSPIPE_NEW_TOOL = "jobspipe.jobs.new";
+
+/** One call to `jobspipe.jobs.search` or `jobspipe.jobs.new`, mapped; both answer the same shape. */
+async function fetchJobs(
+	tool: typeof JOBSPIPE_SEARCH_TOOL | typeof JOBSPIPE_NEW_TOOL,
+	body: Record<string, unknown>,
+	input: JobSearchInput,
+	options: ProviderSearchOptions,
+): Promise<ProviderSearchResult> {
+	const event = { provider: "jobspipe", tool, countryCode: input.country, kind: options.kind ?? "search" } as const;
+	try {
+		const result = await callTreg<SearchAnswer>(
+			{
+				tool,
+				method: "POST",
+				body,
+				maxCostUsd: maxCostUsd(options.limit, JOBSPIPE_PRICE_USD),
+				feature: `jobs-${options.kind ?? "search"}`,
+				...(options.fresh ? { fresh: true } : {}),
+				signal: options.signal,
+			},
+			options.treg,
+		);
+		const jobs = Array.isArray(result.data.data) ? result.data.data.filter(isRecord) : [];
+		const metadata = isRecord(result.data.metadata) ? result.data.metadata : {};
+		const { listings, dropped } = validListings(jobs.map(mapJobspipeJob));
+		recordJobEvent({
+			...event,
+			outcome: "miss",
+			costMicro: result.costMicro,
+			ms: result.ms,
+			resultCount: listings.length,
+		});
+		return {
+			provider: "jobspipe",
+			listings,
+			cursor: jobs.length > 0 ? str(metadata.next_cursor, 2_000) : undefined,
+			total: num(metadata.total_results),
+			costMicro: result.costMicro,
+			ms: result.ms,
+			dropped,
+			deltaCursor: str(metadata.next_delta_cursor, 2_000),
+		};
+	} catch (error) {
+		const outcome = error instanceof TregError && error.code === "budget" ? "budget" : "error";
+		recordJobEvent({ ...event, outcome, costMicro: 0, ms: 0, resultCount: 0 });
+		throw error;
+	}
+}
+
 export const jobspipe: JobSourceAdapter = {
 	provider: "jobspipe",
 	pricePerListingUsd: JOBSPIPE_PRICE_USD,
-	async search(input, options) {
-		const event = {
-			provider: "jobspipe",
-			tool: JOBSPIPE_SEARCH_TOOL,
-			countryCode: input.country,
-			kind: options.kind ?? "search",
-		} as const;
-		try {
-			const result = await callTreg<SearchAnswer>(
-				{
-					tool: JOBSPIPE_SEARCH_TOOL,
-					method: "POST",
-					body: jobspipeSearchBody(input, options.limit),
-					maxCostUsd: maxCostUsd(options.limit, JOBSPIPE_PRICE_USD),
-					feature: `jobs-${options.kind ?? "search"}`,
-					...(options.fresh ? { fresh: true } : {}),
-					signal: options.signal,
-				},
-				options.treg,
-			);
-			const jobs = Array.isArray(result.data.data) ? result.data.data.filter(isRecord) : [];
-			const metadata = isRecord(result.data.metadata) ? result.data.metadata : {};
-			const { listings, dropped } = validListings(jobs.map(mapJobspipeJob));
-			recordJobEvent({
-				...event,
-				outcome: "miss",
-				costMicro: result.costMicro,
-				ms: result.ms,
-				resultCount: listings.length,
-			});
-			return {
-				provider: "jobspipe",
-				listings,
-				cursor: jobs.length > 0 ? str(metadata.next_cursor, 2_000) : undefined,
-				total: num(metadata.total_results),
-				costMicro: result.costMicro,
-				ms: result.ms,
-				dropped,
-			};
-		} catch (error) {
-			const outcome = error instanceof TregError && error.code === "budget" ? "budget" : "error";
-			recordJobEvent({ ...event, outcome, costMicro: 0, ms: 0, resultCount: 0 });
-			throw error;
-		}
+	search: (input, options) => fetchJobs(JOBSPIPE_SEARCH_TOOL, jobspipeSearchBody(input, options.limit), input, options),
+	newListings(input, deltaCursor, options) {
+		// The same filters as the search that issued the cursor; a page cursor never goes with a delta cursor.
+		const { cursor: _cursor, ...search } = input;
+		return fetchJobs(
+			JOBSPIPE_NEW_TOOL,
+			{ ...jobspipeSearchBody(search, options.limit), delta_cursor: deltaCursor },
+			input,
+			options,
+		);
 	},
 	async count(input, options = {}) {
 		const { cursor: _cursor, ...search } = input;

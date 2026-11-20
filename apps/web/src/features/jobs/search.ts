@@ -1,4 +1,4 @@
-import type { JobSearchDefaults, JobSearchRequest } from "@rezumi/schema/jobs/search";
+import type { JobSearchCriteria, JobSearchDefaults, JobSearchRequest } from "@rezumi/schema/jobs/search";
 import z from "zod";
 import { JOB_SENIORITIES } from "@rezumi/schema/jobs/listing";
 import { JOB_SEARCH_POSTED_WITHIN_DAYS } from "@rezumi/schema/jobs/search";
@@ -138,4 +138,23 @@ export function startingSearch(search: JobsSearch, defaults: JobSearchDefaults |
 		country: defaults.country,
 		arrangement: defaults.remote === "only" ? "remote" : search.arrangement,
 	};
+}
+
+/** Whether a job alert repeats this search: the same role (any case), place and filters. */
+export function sameSearch(a: Partial<JobSearchCriteria>, b: Partial<JobSearchCriteria>): boolean {
+	const key = (search: Partial<JobSearchCriteria>) =>
+		JSON.stringify([
+			search.query?.trim().toLocaleLowerCase() ?? "",
+			search.location?.trim().toLocaleLowerCase() ?? "",
+			search.country ?? "",
+			search.remote ?? "any",
+			search.postedWithinDays ?? 30,
+			search.workArrangement ?? "",
+			search.seniority ?? "",
+			search.salaryMin ?? null,
+			search.salaryMin === undefined ? "" : (search.salaryCurrency ?? "USD"),
+			search.salaryMin === undefined ? true : (search.includeNoSalary ?? true),
+			search.visaSponsorship ?? false,
+		]);
+	return key(a) === key(b);
 }

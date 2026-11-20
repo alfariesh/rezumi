@@ -44,6 +44,11 @@ const JSONB_COLUMNS = new Set([
 	"contacts",
 	"activity",
 ]);
+/** JSONB columns whose names are plain text in other tables (`application.company` is text). */
+const TABLE_JSONB_COLUMNS: Record<string, Set<string>> = {
+	career_schedule: new Set(["search"]),
+	job_listing: new Set(["company", "location", "salary", "skills", "raw"]),
+};
 const columnOf = (key: string) => key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 
 async function insert(client: PoolClient, table: string, row: Record<string, unknown>) {
@@ -51,7 +56,9 @@ async function insert(client: PoolClient, table: string, row: Record<string, unk
 	const columns = keys.map((key) => `"${columnOf(key)}"`).join(", ");
 	const placeholders = keys.map((_, index) => `$${index + 1}`).join(", ");
 	// `application.source` is plain text ("Referral"); the facts' and artifacts' `source` is JSONB.
-	const isJson = (key: string) => JSONB_COLUMNS.has(key) && !(table === "application" && key === "source");
+	const isJson = (key: string) =>
+		(JSONB_COLUMNS.has(key) && !(table === "application" && key === "source")) ||
+		(TABLE_JSONB_COLUMNS[table]?.has(key) ?? false);
 	const values = keys.map((key) => (isJson(key) ? JSON.stringify(row[key]) : row[key]));
 	await client.query(`insert into "${table}" (${columns}) values (${placeholders})`, values);
 }
@@ -353,27 +360,34 @@ const stories: StorySeed[] = [
 	},
 ];
 
+/** Roles found by the job alert, each from a fictional shared job listing (pay and arrangement come from the listing). */
 const opportunities = [
 	{
 		role: "Senior Product Manager",
 		company: "Mosaic Cloud",
-		location: "Berlin, DE",
+		location: "Berlin, Germany",
 		snippet: "Lead onboarding and product-led growth. Experience with customer discovery and experimentation.",
 		url: "https://jobs.example.com/mosaic-cloud/senior-product-manager",
 		foundHoursAgo: 14,
+		arrangement: "hybrid",
+		salary: { min: 90_000, max: 110_000, currency: "EUR", period: "year" },
 	},
 	{
-		role: "Product Lead, Activation",
+		role: "Senior Product Manager, Activation",
 		company: "Fieldwork",
-		location: "Remote within Europe",
+		location: "Berlin, Germany",
 		snippet:
 			"Own the new-customer journey for a B2B platform. Cross-functional leadership across design, engineering and sales.",
 		url: "https://jobs.example.com/fieldwork/product-lead-activation",
 		foundHoursAgo: 14,
+		arrangement: "remote",
+		salary: null,
 	},
 ];
 
-const discoveryQuery = "Senior product manager onboarding B2B SaaS Berlin remote Europe";
+const discoveryQuery = "Senior Product Manager";
+/** Fictional listings this seed owns in the shared job listings, by provider id. */
+const SEED_LISTING_PREFIX = "seed-career-";
 
 // --- Saved results for Northstar Labs --------------------------------------------------------------------------
 
@@ -911,6 +925,7 @@ async function main() {
 			id: discoveryId,
 			kind: "discovery",
 			query: discoveryQuery,
+			search: { query: discoveryQuery, country: "DE", remote: "any", postedWithinDays: 30, includeNoSalary: true },
 			enabled: false,
 			nextRunAt: at(1, 7, 30),
 			lastQueuedAt: at(0, 7, 30),
@@ -936,16 +951,43 @@ async function main() {
 			intervalDays: null,
 		});
 
+		await tx.query(`delete from "job_listing" where external_id like $1`, [`${SEED_LISTING_PREFIX}%`]);
 		for (const [index, row] of opportunities.entries()) {
+			const listingId = generateId();
+			const description = `${row.snippet}\n\nRemote-friendly, flexible hours.`;
+			await insert(tx, "job_listing", {
+				id: listingId,
+				provider: "hirebase",
+				externalId: `${SEED_LISTING_PREFIX}${index}`,
+				title: row.role,
+				company: { name: row.company },
+				location: { city: "Berlin", country: "Germany", countryCode: "DE", text: row.location },
+				countryCode: "DE",
+				workArrangement: row.arrangement,
+				seniority: "senior",
+				salary: row.salary,
+				description,
+				requirementsSummary: row.snippet,
+				skills: [],
+				postingUrl: row.url,
+				source: "greenhouse",
+				postedAt: hoursAgo(row.foundHoursAgo + 20),
+				raw: {},
+				searchText: `${row.role} ${row.company}`.toLowerCase(),
+				firstSeenAt: hoursAgo(row.foundHoursAgo - index),
+				lastSeenAt: hoursAgo(row.foundHoursAgo - index),
+				lastVerifiedAt: hoursAgo(row.foundHoursAgo - index),
+			});
 			await insert(tx, "career_opportunity", {
 				id: generateId(),
 				userId: user.id,
+				listingId,
 				url: row.url,
 				role: row.role,
 				company: row.company,
 				location: row.location,
 				snippet: row.snippet,
-				description: `${row.snippet}\n\nRemote-friendly, flexible hours.`,
+				description,
 				firstSeenAt: hoursAgo(row.foundHoursAgo - index),
 				lastSeenAt: hoursAgo(row.foundHoursAgo - index),
 			});
