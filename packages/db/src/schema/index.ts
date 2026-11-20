@@ -11,3 +11,4 @@ export * from "./resume";
 export * from "./web-access";
 export * from "./ai-content-report";
 export * from "./extension";
+export * from "./jobs";

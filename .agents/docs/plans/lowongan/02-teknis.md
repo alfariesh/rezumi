@@ -129,7 +129,7 @@ Pemetaan (dari sampel 2026-11-20, bagian 14; cek ulang dengan `example_response`
 | seniority       | `experience_level`                                                                                   | `seniority`                                                                                                                   |
 | salary          | `salary_range` (`min`, `max`, `currency`, `period`)                                                  | `min_annual_salary`, `max_annual_salary`, `salary_currency`, `salary_type` (`estimated_*` **tidak** ditampilkan sebagai gaji) |
 | description     | `description` (HTML bersih, 500–2.000 karakter) → teks                                               | `description` → teks                                                                                                          |
-| postingUrl      | `job_board_link` atau `application_link`                                                             | `url` / `source_url`                                                                                                          |
+| postingUrl      | `application_link`, cadangan `job_board_link` (papan karier seluruh perusahaan; lihat 15)            | `url` / `source_url` / `sources[0].url`                                                                                       |
 | applyUrl        | `application_link`                                                                                   | `final_url`                                                                                                                   |
 | source          | `job_board`                                                                                          | `sources[0]`                                                                                                                  |
 | postedAt        | `date_posted`                                                                                        | `date_posted`                                                                                                                 |
@@ -263,3 +263,26 @@ Biaya total ±$0.05 dari saldo gratis $1. Skrip ada di scratchpad sesi (tidak di
 - **Latensi:** Hirebase ±1,6 detik, JobsPipe 1,8–2,6 detik.
 - **Keandalan:** beberapa `503 treg's database pool is saturated` saat panggilan count beruntun → wajib retry (bagian 4).
 - **Tool routed** `treg.companies.jobs.search` dilayani Hirebase dengan harga sama; tidak dipakai karena kita butuh parameter khusus tiap penyedia.
+
+## 15. Phase 01 — yang dibangun dan temuan (2026-11-20)
+
+Kode: `packages/api/src/features/jobs/` (`treg.ts`, `events.ts`, `store.ts`, `providers/{shared,hirebase,jobspipe,index}.ts`, fixtures di `__fixtures__/` dari `example_response` katalog treg), skema `packages/schema/src/jobs/{listing,search}.ts`, tabel `packages/db/src/schema/jobs.ts` (migrasi `20261120021955_orange_talon`), binding `JOB_EVENTS`, skrip `pnpm jobs:probe`.
+
+Keputusan teknis (berbeda atau lebih rinci dari bagian 4–6):
+
+- **Klien treg:** kode galat `not-configured`, `budget` (`member_spend_cap_reached`, `tag_spend_cap_reached`, `insufficient_balance`, `funds_required`, `trial_allowance_reached`), `busy`, `rejected` (4xx lain, termasuk 402 `route_max_cost`), `timeout`, `unavailable`. Coba ulang hanya 503 dan 429 `share_busy`/`provider_rate_limited`; `org_rate_limit`/`org_concurrency_limit` berhenti sebagai `busy`. Header `X-Treg-Meta: feature=jobs-<kind>` untuk ledger treg (tanpa id pengguna). Panggilan `GET` memakai query (`hirebase.jobs.expired?since=…`, `hirebase.jobs.get?job_id=…`).
+- **Batas biaya per panggilan:** `limit × harga × 1,25 + $0.005`. Harga di kode: Hirebase $0.0015, JobsPipe $0.00392 per lowongan (katalog 2026-11-20). Endpoint count dikirim dengan batas $0.001.
+- **Adaptor** punya `search()` dan `count()` (endpoint gratis). `search()` mencatat event Analytics Engine sendiri (`miss`, `error`, `budget`); Phase 02 menambah `hit`/`stale` dari cache.
+- **`postingUrl` Hirebase = `application_link`**: di contoh katalog `job_board_link` adalah papan karier seluruh perusahaan (`jobs.ashbyhq.com/ramp`), bukan posting itu. `company_link` hanya dipakai sebagai domain bila berupa domain polos (di `jobs.get` isinya link papan Lever).
+- **Gaji JobsPipe** dari `min/max_annual_salary_usd`, jadi selalu USD per tahun (lowongan Inggris tampil dalam USD hasil konversi penyedia). `estimated_*` tidak dipakai.
+- **Status JobsPipe:** `active` → `closedAt: null`; status lain → `closed_at` atau `last_seen_at`. Hirebase tidak memberi status, jadi `upsertListings` tidak mengubah `closedAt` yang sudah ada (diisi pemeliharaan Phase 05).
+- **Tabel:** `job_listing` punya `country_code` (indeks nanti bila perlu), `last_seen_at` (pembersihan 30 hari) dan `last_verified_at` (terakhir dipastikan buka). `raw` hanya daftar kolom tetap per penyedia; kolom kontak tidak pernah masuk (diuji).
+
+Untuk Phase 02:
+
+- **Visa:** katalog kedua penyedia tidak punya parameter filter visa. Hirebase mengisi `visa_sponsored` per lowongan; JobsPipe tidak punya kolomnya di contoh. Filter K11 "sponsor visa" harus dikerjakan setelah hasil diterima (atau hanya untuk Hirebase).
+- **"Sertakan lowongan tanpa gaji":** Hirebase tidak punya `include_no_salary` di katalog, JobsPipe `min_salary_usd` membuang lowongan tanpa gaji. Adaptor mengirim filter gaji hanya bila pengguna mematikan opsi itu; bila menyala, saring/urutkan sendiri.
+- **Seniority JobsPipe:** nilai `job_seniority_or` tidak tercantum di katalog (contoh respons: `director`). Belum dikirim; ukur dulu dengan `jobspipe.jobs.search.count`.
+- **Jumlah total JobsPipe** kosong (`total_results: null`) kecuali `include_total_results: true`; pakai endpoint count gratis bila angka perlu.
+- **Relevansi:** uji nyata "nurse" Inggris di JobsPipe memberi "Reception Class Teacher (… Nursery School)"; "data analyst" remote di JobsPipe memberi sebagian lowongan tanpa tanda remote. Bandingkan `job_title_or` dengan frasa berkutip/`description_or` dan cek `work_arrangement` hasil sebelum memilih.
+- **Uji nyata 2026-11-20** (3 lowongan per penyedia: software engineer AS, nurse Inggris, data analyst remote): semua 18 lowongan valid (0 dibuang), latensi 1,5–2,3 detik, total biaya **$0.0292**. Hirebase 6 dari 9 mencantumkan gaji; JobsPipe 6 dari 9.

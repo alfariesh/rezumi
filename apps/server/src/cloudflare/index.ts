@@ -24,6 +24,7 @@ import { runExtensionJobs } from "@rezumi/api/features/applications/extension-jo
 import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
 import { runCareerJobs, runNextCareerJob } from "@rezumi/api/features/career/jobs";
 import { runCustomDomainJobs } from "@rezumi/api/features/custom-domain/jobs";
+import { configureJobEvents } from "@rezumi/api/features/jobs/events";
 import { configurePortfolioAnalytics } from "@rezumi/api/features/portfolio/analytics";
 import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
 import { portfolioFileAccess } from "@rezumi/api/features/portfolio/public";
@@ -59,6 +60,8 @@ export type CloudflareBindings = {
 	CAREER_JOBS?: Queue<CareerJobMessage>;
 	IMAGES?: ImagesBinding;
 	PORTFOLIO_EVENTS?: AnalyticsEngineDataset;
+	/** Job search cost, latency and result counts (`job_search_events`). */
+	JOB_EVENTS?: AnalyticsEngineDataset;
 	ANALYTICS_SQL?: AnalyticsSql;
 	PORTFOLIO_PUBLIC_LIMITER?: { limit: (options: { key: string }) => Promise<{ success: boolean }> };
 };
@@ -106,6 +109,7 @@ configurePortfolioAnalytics({
 	sql: () => requests.getStore()?.bindings.ANALYTICS_SQL,
 	country: () => requests.getStore()?.country,
 });
+configureJobEvents({ dataset: () => requests.getStore()?.bindings.JOB_EVENTS });
 configureOwnPictureReader(async (key) => {
 	const owner = /^uploads\/([^/]+)\/pictures\//.exec(key)?.[1];
 	if (!owner || !(await isPublicUploadOwner(owner))) throw new Error("Picture unavailable");

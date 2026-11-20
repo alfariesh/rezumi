@@ -81,8 +81,12 @@
 	"r2_buckets": [{ "binding": "BUCKET", "bucket_name": "vitaekit" }],
 	// Resizes uploaded pictures (800 px JPEG, as sharp does on the Node server); see apps/server/src/cloudflare/images.ts.
 	"images": { "binding": "IMAGES" },
-	// Visitor breakdowns for portfolio statistics; the dataset is created on the first write. Read through ANALYTICS_SQL.
-	"analytics_engine_datasets": [{ "binding": "PORTFOLIO_EVENTS", "dataset": "portfolio_events" }],
+	// Visitor breakdowns for portfolio statistics and job search cost and latency (job_search_events); a dataset is created
+	// on its first write. Read through ANALYTICS_SQL.
+	"analytics_engine_datasets": [
+		{ "binding": "PORTFOLIO_EVENTS", "dataset": "portfolio_events" },
+		{ "binding": "JOB_EVENTS", "dataset": "job_search_events" },
+	],
 	"analytics": { "binding": "ANALYTICS_SQL" },
 	// Stops one address flooding the public portfolio routes; same numbers as rateLimitConfig.portfolioPublic.requests.
 	"ratelimits": [
