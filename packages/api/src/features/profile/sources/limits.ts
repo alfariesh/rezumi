@@ -5,8 +5,8 @@ import { sourceErrors } from "./errors";
 const DAY = 24 * 60 * 60 * 1000;
 
 /**
- * Reads per account per day. They bound what one account costs (each LinkedIn read is paid on the operator's Apify
- * account) and what it asks of GitHub, so unlike the request throttles they also count outside production; only
+ * Reads per account per day. They bound what one account costs (each LinkedIn read is paid from the operator's treg
+ * balance, or Apify account when treg can't answer) and what it asks of GitHub, so unlike the request throttles they also count outside production; only
  * `FLAG_DISABLE_API_RATE_LIMIT` (isolated test installations) turns them off.
  */
 const SOURCE_DAILY_LIMITS = { linkedin: 3, github: 10 } as const;
