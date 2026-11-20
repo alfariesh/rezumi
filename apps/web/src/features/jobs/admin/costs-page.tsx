@@ -137,7 +137,7 @@ function AttentionCard({ report }: ReportProps) {
 	if (lines.length === 0) return null;
 	return (
 		<AdminCard tone="warning" icon="warning" title={<Trans>Needs attention</Trans>}>
-			<ul className="flex list-disc flex-col gap-1 ps-5 text-body-sm text-white">
+			<ul className="flex list-disc flex-col gap-1 ps-5 text-body-sm">
 				{lines.map((line, index) => (
 					<li key={index}>{line}</li>
 				))}
