@@ -930,6 +930,10 @@ msgstr "{issues, plural, one {# issue could cost you a match.} other {# issues c
 msgid "{issues, plural, one {Check has # thing to review. You can still download.} other {Check has # things to review. You can still download.}}"
 msgstr "{issues, plural, one {Check has # thing to review. You can still download.} other {Check has # things to review. You can still download.}}"
 
+#: src/features/homepage/plans.ts
+msgid "{jobAlerts, plural, one {{jobSearchesPerDay} job searches a day and # job alert} other {{jobSearchesPerDay} job searches a day and # job alerts}}"
+msgstr "{jobAlerts, plural, one {{jobSearchesPerDay} job searches a day and # job alert} other {{jobSearchesPerDay} job searches a day and # job alerts}}"
+
 #: src/features/profile/fill.tsx
 msgid "{kept, plural, =0 {Add the photo} one {Add # entry} other {Add # entries}}"
 msgstr "{kept, plural, =0 {Add the photo} one {Add # entry} other {Add # entries}}"
@@ -997,8 +1001,8 @@ msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs o
 msgstr "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
 
 #: src/features/billing/plan.ts
-msgid "{max, plural, one {Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.}}"
-msgstr "{max, plural, one {Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.}}"
+msgid "{max, plural, one {Your plan keeps # job alert on. With more, only the oldest are checked. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. With more, only the oldest are checked. Pause or delete one to turn on another.}}"
+msgstr "{max, plural, one {Your plan keeps # job alert on. With more, only the oldest are checked. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. With more, only the oldest are checked. Pause or delete one to turn on another.}}"
 
 #: src/features/career/offers.tsx
 msgid "{minimum} minimum"
@@ -2990,6 +2994,11 @@ msgid "Any"
 msgstr "Any"
 
 #: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: any work arrangement"
+msgid "Any"
+msgstr "Any"
+
+#: src/features/jobs/search-bar.tsx
 msgid "Any level"
 msgstr "Any level"
 
@@ -3022,9 +3031,14 @@ msgid "Anything to stress or leave out? (optional)"
 msgstr "Anything to stress or leave out? (optional)"
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/recent-searches.tsx
 #: src/features/jobs/search-bar.tsx
 msgid "Anywhere"
 msgstr "Anywhere"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Anywhere in the country"
+msgstr "Anywhere in the country"
 
 #: src/features/billing/plan.ts
 msgid "API and MCP access isn't in your plan"
@@ -4467,7 +4481,6 @@ msgid "City"
 msgstr "City"
 
 #: src/features/career/schedule-sheet.tsx
-#: src/features/jobs/search-bar.tsx
 msgid "City (optional)"
 msgstr "City (optional)"
 
@@ -4487,12 +4500,16 @@ msgstr "Clarify"
 msgid "Claude Desktop"
 msgstr "Claude Desktop"
 
+#. Removes every recent job search
+#. Removes every recent job search
 #: src/features/applications/components/detail/next-step-card.tsx
+#: src/features/jobs/recent-searches.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Clear"
 msgstr "Clear"
 
 #: src/features/jobs/jobs-page.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Clear filters"
 msgstr "Clear filters"
 
@@ -4579,6 +4596,7 @@ msgstr "Clients"
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/homepage/theme-preview.tsx
 #: src/features/jobs/listing-sheet.tsx
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/card/business-card-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
@@ -7950,6 +7968,24 @@ msgstr "Filling in entries"
 msgid "Filter by tag"
 msgstr "Filter by tag"
 
+#: src/features/jobs/search-bar.tsx
+msgid "Filters"
+msgstr "Filters"
+
+#. The job search filters button with the place searched
+#: src/features/jobs/search-bar.tsx
+msgid "Filters · {place}"
+msgstr "Filters · {place}"
+
+#. The job search filters button: the place searched and how many other filters are set
+#: src/features/jobs/search-bar.tsx
+msgid "Filters · {place} ({filters})"
+msgstr "Filters · {place} ({filters})"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Filters ({filters})"
+msgstr "Filters ({filters})"
+
 #. Template gallery filter: finance, banking, law and consulting jobs
 #: src/dialogs/resume/template/data.ts
 msgid "Finance"
@@ -8344,6 +8380,11 @@ msgstr "Free on every plan. It reads a job page only when you ask, and clicks no
 msgid "Free plan, no card needed. PDF downloads without a watermark."
 msgstr "Free plan, no card needed. PDF downloads without a watermark."
 
+#. A recent job search that opens again today without counting
+#: src/features/jobs/recent-searches.tsx
+msgid "Free today"
+msgstr "Free today"
+
 #: src/features/billing/purchase.ts
 msgid "Free trial"
 msgstr "Free trial"
@@ -8476,6 +8517,10 @@ msgstr "From your message"
 #: src/features/portfolio/statistics/parts.tsx
 msgid "From your portfolio"
 msgstr "From your portfolio"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "From your preferences:"
+msgstr "From your preferences:"
 
 #: src/features/resume/editor/write/add-section.tsx
 msgid "From your Profile"
@@ -9730,6 +9775,10 @@ msgstr "Job alerts on"
 msgid "Job description"
 msgstr "Job description"
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Job details"
+msgstr "Job details"
+
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Job link or posting text"
 msgstr "Job link or posting text"
@@ -9785,6 +9834,7 @@ msgstr "Job tracker with board, calendar and insights"
 msgid "Jobs"
 msgstr "Jobs"
 
+#: src/features/applications/components/applications-section.tsx
 #: src/features/jobs/jobs-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgctxt "Job listings to search"
@@ -10019,7 +10069,17 @@ msgstr "Language"
 msgid "Languages"
 msgstr "Languages"
 
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
+msgid "Last 2 weeks"
+msgstr "Last 2 weeks"
+
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
+msgid "Last 30 days"
+msgstr "Last 30 days"
+
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
 msgid "Last 30 days"
 msgstr "Last 30 days"
 
@@ -10040,6 +10100,11 @@ msgstr "Last changed in {0}"
 msgid "Last checked {lastChecked} ago"
 msgstr "Last checked {lastChecked} ago"
 
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
+msgid "Last day"
+msgstr "Last day"
+
 #: src/features/documents/documents-page.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Last edited"
@@ -10056,6 +10121,11 @@ msgstr "Last used"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used {used}"
 msgstr "Last used {used}"
+
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter: posted within"
+msgid "Last week"
+msgstr "Last week"
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -10541,6 +10611,10 @@ msgstr "Loading model suggestions… You can also enter any model ID."
 msgid "Loading providers…"
 msgstr "Loading providers…"
 
+#: src/features/jobs/recent-searches.tsx
+msgid "Loading recent job searches"
+msgstr "Loading recent job searches"
+
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Loading resumes…"
 msgstr "Loading resumes…"
@@ -10764,8 +10838,8 @@ msgid "Many bullets start with the same phrase."
 msgstr "Many bullets start with the same phrase."
 
 #: src/features/jobs/search-bar.tsx
-msgid "Many postings don't list pay, especially outside the US."
-msgstr "Many postings don't list pay, especially outside the US."
+msgid "Many postings don't list pay, especially outside the US, and few say whether they sponsor a visa."
+msgstr "Many postings don't list pay, especially outside the US, and few say whether they sponsor a visa."
 
 #: src/features/homepage/plans.ts
 msgid "Many versions of your application, in every format."
@@ -11036,14 +11110,6 @@ msgstr "Months"
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "More download formats"
 msgstr "More download formats"
-
-#: src/features/jobs/search-bar.tsx
-msgid "More filters"
-msgstr "More filters"
-
-#: src/features/jobs/search-bar.tsx
-msgid "More filters ({extra})"
-msgstr "More filters ({extra})"
 
 #. placeholder {0}: listing.title
 #: src/features/jobs/listing-card.tsx
@@ -12386,10 +12452,6 @@ msgstr "On this page"
 #: src/features/portfolio/page-text.ts
 msgid "On-site"
 msgstr "On-site"
-
-#: src/features/jobs/search-bar.tsx
-msgid "On-site, hybrid or remote"
-msgstr "On-site, hybrid or remote"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
@@ -14523,6 +14585,14 @@ msgstr "Recent activity"
 msgid "Recent documents"
 msgstr "Recent documents"
 
+#: src/features/jobs/recent-searches.tsx
+msgid "Recent job searches"
+msgstr "Recent job searches"
+
+#: src/features/jobs/recent-searches.tsx
+msgid "Recent searches"
+msgstr "Recent searches"
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Recipient"
@@ -14805,6 +14875,11 @@ msgstr "Remove “{name}”?"
 #: src/features/settings/account/security.tsx
 msgid "Remove {0}"
 msgstr "Remove {0}"
+
+#. placeholder {0}: search.criteria.query
+#: src/features/jobs/recent-searches.tsx
+msgid "Remove {0} from recent searches"
+msgstr "Remove {0} from recent searches"
 
 #. Screen reader label for button that removes a keyword chip. Variable is the current keyword text.
 #: src/components/input/chip-input.tsx
@@ -16023,6 +16098,7 @@ msgctxt "Button that runs a job search"
 msgid "Search"
 msgstr "Search"
 
+#: src/features/jobs/jobs-page.tsx
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Search again"
 msgstr "Search again"
@@ -18005,6 +18081,7 @@ msgstr "Thank you. Your message was sent."
 msgid "Thank you. Your report was sent to the Rezumi team."
 msgstr "Thank you. Your report was sent to the Rezumi team."
 
+#: src/features/jobs/recent-searches.tsx
 #: src/features/jobs/use-listing-actions.ts
 msgid "That didn't save. Try again."
 msgstr "That didn't save. Try again."
@@ -19028,6 +19105,10 @@ msgstr "This link isn't from a service we can embed. Use a Link block instead."
 msgid "This list can't be continued. Search again to see more jobs."
 msgstr "This list can't be continued. Search again to see more jobs."
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "This listing isn't available anymore. The original posting may still have the details."
+msgstr "This listing isn't available anymore. The original posting may still have the details."
+
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
@@ -19559,6 +19640,7 @@ msgstr "Track this job to add evidence and questions in its workspace. The check
 msgid "Track your first job"
 msgstr "Track your first job"
 
+#. A job listing saved to the person's applications
 #. A job listing saved to the person's applications; links to it
 #: src/features/jobs/listing-card.tsx
 msgid "Tracked"
@@ -20424,6 +20506,11 @@ msgstr "Username"
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Username or email"
 msgstr "Username or email"
+
+#. A recent job search that counts toward today's searches when opened
+#: src/features/jobs/recent-searches.tsx
+msgid "Uses 1 search"
+msgstr "Uses 1 search"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Uses facts from your resume"

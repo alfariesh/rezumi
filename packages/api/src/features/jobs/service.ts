@@ -35,6 +35,7 @@ import { recordJobEvent } from "./events";
 import { duplicateKey } from "./filters";
 import { listingMatches, profileMatchText } from "./match";
 import { JOB_SOURCES } from "./providers";
+import { listRecentSearches, recordRecentSearch } from "./recent";
 import { hasMorePages, routeSearch, SEARCH_PROVIDERS } from "./routing";
 import { jobSearchKey, normalizeJobSearch, stableJson } from "./search-key";
 import { toJobListingCard, upsertListings } from "./store";
@@ -50,7 +51,9 @@ import { isTregConfigured, TregError } from "./treg";
 /** How long a request waits for another one that is already asking the providers the same thing. */
 const SINGLE_FLIGHT_WAIT_MS = 8_000;
 const SINGLE_FLIGHT_POLL_MS = 300;
-/** The lock's life: longer than a provider call with its retries (treg client: 15 s, retries within 10 s). */
+/** The most one page of results may take from the providers; a slower provider is given up on (`routeSearch`). */
+const SEARCH_DEADLINE_MS = 25_000;
+/** The lock's life: longer than the page's time limit, so one request asks at a time. */
 const SINGLE_FLIGHT_LOCK_MS = 30_000;
 
 /**
@@ -177,7 +180,12 @@ export function createJobSearchService(overrides: Partial<JobSearchDependencies>
 
 		let page: Awaited<ReturnType<typeof routeSearch>>;
 		try {
-			page = await routeSearch(input, after, deps.sources, { signal, kind: "search", ...(seen ? { seen } : {}) });
+			page = await routeSearch(input, after, deps.sources, {
+				signal,
+				kind: "search",
+				deadlineMs: SEARCH_DEADLINE_MS,
+				...(seen ? { seen } : {}),
+			});
 		} catch (error) {
 			signal?.throwIfAborted();
 			const spent = error instanceof TregError && error.code === "budget";
@@ -268,6 +276,11 @@ export function createJobSearchService(overrides: Partial<JobSearchDependencies>
 				listings.map((listing) => listing.id),
 			);
 			const cards = listings.filter((listing) => !listing.closedAt && !hidden.has(listing.id)).map(toJobListingCard);
+			// A new search (not "load more") goes to the top of the person's recent searches. Never fails the search.
+			if (!cursor)
+				await recordRecentSearch(userId, rest, now).catch((error: unknown) =>
+					console.error("[jobs] Saving a recent search failed", error),
+				);
 			return {
 				listings: cards,
 				...(hasMorePages(input, answer.entry.cursors) ? { cursor: answer.entry.key } : {}),
@@ -279,6 +292,9 @@ export function createJobSearchService(overrides: Partial<JobSearchDependencies>
 				...(await personalize(userId, cards)),
 			};
 		},
+
+		/** The person's recent searches, newest first, each with whether opening it again today is free. */
+		recent: (userId: string) => listRecentSearches(userId, deps.counters, deps.now()),
 
 		/** One listing in full, for its detail view; closed ones too, so a saved link still explains itself. */
 		listing: (listingId: string) => readListing(listingId),

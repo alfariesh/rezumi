@@ -48,6 +48,7 @@ const amount = (value: number, currency: string, locale: string) => {
 			style: "currency",
 			currency,
 			notation: value >= 10_000 ? "compact" : "standard",
+			minimumFractionDigits: 0,
 			maximumFractionDigits: value >= 10_000 ? 1 : 0,
 		}).format(value);
 	} catch {

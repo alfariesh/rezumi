@@ -6,7 +6,7 @@ import { normalizeSearch } from "./transport";
 /**
  * Web search through treg on Rezumi's account (`02-teknis.md` section 11). Serper (Google results, $0.001 a call,
  * a country parameter) answers first; when it fails, treg's routed `treg.web.search` tries its other search providers,
- * cheapest first, within a small cost ceiling. Provider names and prices come from treg's catalog
+ * cheapest first, within a small cost ceiling. The service decides when to fall back (once per search, not per country). Provider names and prices come from treg's catalog
  * (`GET https://treg.to/catalog/endpoints/<tool>`); check it before changing them.
  */
 
@@ -31,8 +31,8 @@ function failure(error: unknown): WebError {
 	return new WebError("unavailable");
 }
 
-/** One search in one country (`region`, ISO alpha-2), or anywhere. Throws `WebError`. */
-export async function searchThroughTreg(
+/** One Serper search in one country (`region`, ISO alpha-2), or anywhere. Throws `WebError`. */
+export async function searchSerper(
 	query: string,
 	options: { region?: string | undefined; signal: AbortSignal },
 ): Promise<SearchCall> {
@@ -47,10 +47,12 @@ export async function searchThroughTreg(
 		return { results: normalizeSearch(data.organic), provider: PRIMARY.provider, tool: PRIMARY.tool, costMicro, ms };
 	} catch (error) {
 		options.signal.throwIfAborted();
-		// A spent balance or a missing token fails the routed search the same way; don't ask twice.
-		if (!(error instanceof TregError) || error.code === "budget" || error.code === "not-configured")
-			throw failure(error);
+		throw failure(error);
 	}
+}
+
+/** treg's routed search, anywhere (it takes no country): the fallback when Serper failed. Throws `WebError`. */
+export async function searchRouted(query: string, options: { signal: AbortSignal }): Promise<SearchCall> {
 	try {
 		const { data, costMicro, ms } = await callTreg<RoutedAnswer>({
 			tool: ROUTED.tool,

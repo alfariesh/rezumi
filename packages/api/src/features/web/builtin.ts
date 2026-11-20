@@ -71,7 +71,8 @@ export function readBuiltinPage(
 				}
 				if (status < 200 || status >= 300) {
 					res.resume();
-					return reject(new WebError("unreachable"));
+					// A page that is gone is gone for a browser too; other refusals may be bot checks it can pass.
+					return reject(new WebError(status === 404 || status === 410 ? "not-found" : "unreachable"));
 				}
 				if (!/text\/html|application\/xhtml\+xml|text\/plain/i.test(String(res.headers["content-type"] ?? ""))) {
 					res.resume();

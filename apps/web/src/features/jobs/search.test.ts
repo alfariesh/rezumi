@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vite-plus/test";
-import { activeFilterCount, jobsSearchSchema, startingSearch, toSearchRequest, withoutFilters } from "./search";
+import {
+	activeFilterCount,
+	fromCriteria,
+	jobsSearchSchema,
+	startingSearch,
+	toSearchRequest,
+	withoutFilters,
+} from "./search";
 
 const search = (input: Record<string, unknown> = {}) => jobsSearchSchema.parse({ q: "data analyst", ...input });
 
@@ -78,5 +85,25 @@ describe("startingSearch", () => {
 
 	it("keeps the last search once there is one", () => {
 		expect(startingSearch(search({ country: "US" }), defaults)).toMatchObject({ q: "data analyst", country: "US" });
+	});
+});
+
+describe("jobsSearchSchema", () => {
+	it("keeps a minimum pay in currencies with large amounts", () => {
+		expect(search({ minPay: 150_000_000, currency: "IDR" }).minPay).toBe(150_000_000);
+	});
+});
+
+describe("fromCriteria", () => {
+	it("reads a saved search back as the same address", () => {
+		for (const value of [
+			search({ country: "GB", location: "Leeds", arrangement: "remote", level: "senior", visa: true }),
+			search({ arrangement: "hybrid", posted: 7, minPay: 60_000, currency: "GBP", noPay: false }),
+		]) {
+			const request = toSearchRequest(value);
+			expect(toSearchRequest(fromCriteria({ ...request, includeNoSalary: request.includeNoSalary ?? true }))).toEqual(
+				request,
+			);
+		}
 	});
 });

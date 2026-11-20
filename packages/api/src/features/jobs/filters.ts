@@ -47,6 +47,26 @@ const tidy = (value: string | undefined) =>
 export const duplicateKey = (listing: Listing) =>
 	`${tidy(listing.title)}|${tidy(listing.company.name)}|${tidy(listing.location.city)}`;
 
+/** At most this many jobs from one company sit before every company has had its turn on a page. */
+const MAX_PER_COMPANY_FIRST = 2;
+
+/**
+ * Orders a page so one employer can't fill the top of it: each company's first MAX_PER_COMPANY_FIRST jobs keep their
+ * place, the rest move to the end in their original order. Nothing is left out.
+ */
+export function spreadCompanies<T extends Listing>(listings: T[]): T[] {
+	const perCompany = new Map<string, number>();
+	const first: T[] = [];
+	const later: T[] = [];
+	for (const listing of listings) {
+		const company = tidy(listing.company.name);
+		const count = perCompany.get(company) ?? 0;
+		perCompany.set(company, count + 1);
+		(company && count >= MAX_PER_COMPANY_FIRST ? later : first).push(listing);
+	}
+	return [...first, ...later];
+}
+
 /** Keeps the first of each job, in order; `seen` holds keys already shown (an earlier page). */
 export function withoutDuplicates<T extends Listing>(listings: T[], seen: Set<string> = new Set()): T[] {
 	const result: T[] = [];

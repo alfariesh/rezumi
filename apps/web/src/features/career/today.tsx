@@ -503,6 +503,8 @@ const companyOf = (row: Opportunity) => row.company || new URL(row.url).hostname
 function RoleCard({ row, found, first, tracked, pending, onTrack, onUndo, onDismiss }: RoleCardProps) {
 	const { i18n } = useLingui();
 	const { matches, unknowns, listing } = row;
+	// A provider logo that no longer loads shows the company's initial.
+	const [logoFailed, setLogoFailed] = useState(false);
 	const company = companyOf(row);
 	const unknownLabels = { salary: t`Salary not listed`, office: t`Office days not stated` };
 	// What the job listing says outright: how it's worked and the listed pay.
@@ -519,8 +521,14 @@ function RoleCard({ row, found, first, tracked, pending, onTrack, onUndo, onDism
 			className={cn("flex items-start gap-3 rounded-xl py-4", first && "pt-0")}
 		>
 			<RowIcon className="text-sm font-semibold text-muted">
-				{listing?.company.logoUrl ? (
-					<img src={listing.company.logoUrl} alt="" className="size-full rounded-[inherit] object-contain" />
+				{listing?.company.logoUrl && !logoFailed ? (
+					<img
+						src={listing.company.logoUrl}
+						alt=""
+						referrerPolicy="no-referrer"
+						onError={() => setLogoFailed(true)}
+						className="size-full rounded-[inherit] object-contain"
+					/>
 				) : (
 					getInitials(company).slice(0, 1)
 				)}

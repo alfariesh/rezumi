@@ -4,6 +4,7 @@ import { jobListingFitSchema } from "@rezumi/schema/jobs/fit";
 import { jobListingSchema } from "@rezumi/schema/jobs/listing";
 import {
 	jobSearchDefaultsSchema,
+	jobSearchRecentSchema,
 	jobSearchRequestSchema,
 	jobSearchResultSchema,
 	jobSearchStatusSchema,
@@ -11,11 +12,12 @@ import {
 } from "@rezumi/schema/jobs/search";
 import { protectedProcedure } from "../../context";
 import { aiRequestRateLimit } from "../../middleware/rate-limit";
-import { assertAdminSession } from "../auth/admin-session";
+import { adminProcedure } from "../auth/admin-session";
 import { aiSourceInput } from "../billing/ai-source";
 import { JOB_COST_DAYS, jobCostReport, jobCostReportSchema } from "./admin";
 import { jobSearchDefaults } from "./defaults";
 import { checkListingFit, readListingFit } from "./fit";
+import { forgetRecentSearches } from "./recent";
 import { JobSearchError, jobSearchService } from "./service";
 import { trackListing } from "./track";
 
@@ -52,12 +54,6 @@ function searchError(error: unknown): never {
 			throw new ORPCError("BAD_REQUEST", { status: 400, message: errors.BAD_REQUEST.message });
 	}
 }
-
-/** Web sessions of administrators: the owner's cost dashboard, kept out of the public API like the billing admin. */
-const adminProcedure = protectedProcedure.use(async ({ context, next }) => {
-	await assertAdminSession(context.authentication);
-	return next();
-});
 
 export const jobsRouter = {
 	search: protectedProcedure
@@ -215,6 +211,52 @@ export const jobsRouter = {
 		.input(z.object({}).optional())
 		.output(jobSearchStatusSchema)
 		.handler(({ context }) => jobSearchService.status(context.user.id)),
+
+	recent: protectedProcedure
+		.route({
+			...route,
+			method: "GET",
+			path: "/jobs/recent",
+			operationId: "listRecentJobSearches",
+			summary: "List your recent job searches",
+			description:
+				"Returns your last 10 job searches, newest first, each with `seenToday`: whether its first page was opened today, so searching it again today doesn't count toward the day's searches. Searches nothing. Requires authentication.",
+		})
+		.input(z.object({}).optional())
+		.output(z.object({ searches: z.array(jobSearchRecentSchema) }))
+		.handler(async ({ context }) => ({ searches: await jobSearchService.recent(context.user.id) })),
+
+	forgetRecent: protectedProcedure
+		.route({
+			...route,
+			method: "DELETE",
+			path: "/jobs/recent/{id}",
+			operationId: "forgetRecentJobSearch",
+			summary: "Remove a recent job search",
+			description: "Removes one search from your recent job searches. Requires authentication.",
+		})
+		.input(z.object({ id: z.string().min(1).max(64) }))
+		.output(z.object({ ok: z.literal(true) }))
+		.handler(async ({ context, input }) => {
+			await forgetRecentSearches(context.user.id, input.id);
+			return { ok: true as const };
+		}),
+
+	clearRecent: protectedProcedure
+		.route({
+			...route,
+			method: "DELETE",
+			path: "/jobs/recent",
+			operationId: "clearRecentJobSearches",
+			summary: "Clear your recent job searches",
+			description: "Removes every search from your recent job searches. Requires authentication.",
+		})
+		.input(z.object({}).optional())
+		.output(z.object({ ok: z.literal(true) }))
+		.handler(async ({ context }) => {
+			await forgetRecentSearches(context.user.id);
+			return { ok: true as const };
+		}),
 
 	admin: {
 		costs: adminProcedure

@@ -6,7 +6,8 @@ import { getRedis, redisKey } from "@rezumi/db/redis";
  * Running totals shared by every server instance: job searches a person made today, what the providers cost today,
  * and the short lock that lets one request fill a cache entry (`02-teknis.md` sections 7–8). The Workers deployment
  * keeps them in the `Coordination` Durable Object (`add`), a Node server in Redis when `REDIS_URL` is set, and otherwise
- * in this process. A store that fails falls back to this process, so a broken store never stops searching.
+ * in this process. A store that fails, or doesn't answer within SHARED_TIMEOUT_MS, falls back to this process, so a
+ * broken or stuck store never stops searching.
  */
 
 export type JobCounters = {
@@ -30,6 +31,8 @@ return {1, current, redis.call('PTTL', KEYS[1])}
 `;
 
 const MAX_MEMORY_KEYS = 10_000;
+/** How long a search waits for the shared store before counting in this process instead. */
+export const SHARED_TIMEOUT_MS = 3_000;
 
 /** Totals kept in this process only. */
 export function memoryCounters(now: () => number = Date.now): JobCounters {
@@ -75,15 +78,32 @@ async function sharedAdd(key: string, amount: number, rule: AddRule): Promise<Ad
 	return undefined;
 }
 
+/** Counters in `shared` (undefined when there is no shared store), with this process as the fallback. */
+export function fallbackCounters(
+	shared: (key: string, amount: number, rule: AddRule) => Promise<AddResult | undefined>,
+	timeoutMs = SHARED_TIMEOUT_MS,
+	fallback: JobCounters = local,
+): JobCounters {
+	return {
+		async add(key, amount, rule) {
+			let timer: ReturnType<typeof setTimeout> | undefined;
+			try {
+				const result = await Promise.race([
+					shared(key, amount, rule),
+					new Promise<never>((_, reject) => {
+						timer = setTimeout(() => reject(new Error("Shared counter timed out")), timeoutMs);
+					}),
+				]);
+				if (result) return result;
+			} catch (error) {
+				console.error("[jobs] Shared counter unavailable; counting in this process", error);
+			} finally {
+				clearTimeout(timer);
+			}
+			return fallback.add(key, amount, rule);
+		},
+	};
+}
+
 /** The counters this server uses. */
-export const jobCounters: JobCounters = {
-	async add(key, amount, rule) {
-		try {
-			const shared = await sharedAdd(key, amount, rule);
-			if (shared) return shared;
-		} catch (error) {
-			console.error("[jobs] Shared counter unavailable; counting in this process", error);
-		}
-		return local.add(key, amount, rule);
-	},
-};
+export const jobCounters: JobCounters = fallbackCounters(sharedAdd);

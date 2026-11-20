@@ -1,5 +1,6 @@
 import type { FitData } from "@rezumi/schema/career";
 import type { JobProvider } from "@rezumi/schema/jobs/listing";
+import type { JobSearchCriteria } from "@rezumi/schema/jobs/search";
 import * as pg from "drizzle-orm/pg-core";
 import { JOB_PROVIDERS } from "@rezumi/schema/jobs/listing";
 import { generateId } from "@rezumi/utils/string";
@@ -128,6 +129,29 @@ export const jobListingFit = pg.pgTable(
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 	},
 	(t) => [pg.primaryKey({ columns: [t.userId, t.listingId] }), pg.index().on(t.listingId)],
+);
+
+/**
+ * A person's recent job searches (the Jobs page's "Recent job searches"), newest first, at most 10 per account. One row
+ * per search, whatever its page: `criteriaKey` is the hash of the normalized search, so "Data Analyst" and "data
+ * analyst" share a row; `criteria` keeps it as it was last asked. Removed with the account.
+ */
+export const jobSearchRecent = pg.pgTable(
+	"job_search_recent",
+	{
+		id: pg
+			.text("id")
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		userId: pg
+			.text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		criteriaKey: pg.text("criteria_key").notNull(),
+		criteria: pg.jsonb("criteria").notNull().$type<JobSearchCriteria>(),
+		searchedAt: pg.timestamp("searched_at", { withTimezone: true }).notNull().defaultNow(),
+	},
+	(t) => [pg.uniqueIndex().on(t.userId, t.criteriaKey), pg.index().on(t.userId, t.searchedAt)],
 );
 
 /**

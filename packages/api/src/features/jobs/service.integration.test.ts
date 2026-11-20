@@ -96,7 +96,9 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 	beforeEach(async () => {
 		clock = new Date("2026-11-20T10:00:00Z");
 		Object.assign(fixture.env, { BILLING_MODE: "off", JOB_SEARCH_DAILY_BUDGET_USD: 1, FLAG_DISABLE_JOB_SEARCH: false });
-		await pool.query("DELETE FROM job_search_cache; DELETE FROM job_listing_hidden; DELETE FROM job_listing;");
+		await pool.query(
+			"DELETE FROM job_search_cache; DELETE FROM job_listing_hidden; DELETE FROM job_listing; DELETE FROM job_search_recent;",
+		);
 	});
 
 	it("asks the providers once, then answers the same search from the cache for free", async () => {
@@ -147,6 +149,85 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		expect((await jobs.search("alice", request({ query: "two" }))).quota).toMatchObject({ used: 3, max: 3 });
 		clock = new Date("2026-11-21T00:00:01Z");
 		expect((await jobs.search("alice", request({ query: "four" }))).quota.used).toBe(1);
+	});
+
+	it("doesn't give new searches for changing the account's time zone", async () => {
+		fixture.env.BILLING_MODE = "on";
+		await pool.query(
+			`INSERT INTO "user" (id, name, email, username, display_username, timezone) VALUES ('dave', 'dave', 'dave@example.com', 'dave', 'dave', 'Pacific/Kiritimati')`,
+		);
+		const { jobs } = setup([listings("hirebase", 20)]);
+		// 10:00 UTC is the 21st in Kiritimati (UTC+14) and the 19th at UTC-12: three account days, one UTC day.
+		for (const query of ["one", "two", "three"]) await jobs.search("dave", request({ query }));
+		await pool.query(`UPDATE "user" SET timezone = 'UTC' WHERE id = 'dave'`);
+		for (const query of ["four", "five", "six"]) await jobs.search("dave", request({ query }));
+		await pool.query(`UPDATE "user" SET timezone = 'Etc/GMT+12' WHERE id = 'dave'`);
+		expect((await jobs.status("dave")).quota.used).toBe(3);
+		await expect(jobs.search("dave", request({ query: "seven" }))).rejects.toMatchObject({
+			code: "PLAN_LIMIT_REACHED",
+		});
+	});
+
+	describe("recent searches", () => {
+		let recent: typeof import("./recent");
+		beforeAll(async () => {
+			recent = await import("./recent");
+		});
+
+		it("remembers new searches newest first, one row per search however it's typed, not load more", async () => {
+			const { jobs } = setup([listings("hirebase", 20), listings("hirebase", 20, 21)]);
+			const first = await jobs.search("alice", request({ query: "Data Analyst", country: "DE" }));
+			clock = new Date(clock.getTime() + 60_000);
+			await jobs.search("alice", request({ query: "nurse" }));
+			clock = new Date(clock.getTime() + 60_000);
+			await jobs.search("alice", request({ query: "  data   ANALYST ", country: "DE" }));
+			if (first.cursor)
+				await jobs.search("alice", request({ query: "Data Analyst", country: "DE", cursor: first.cursor }));
+			const searches = await jobs.recent("alice");
+			expect(searches.map((search) => search.criteria.query)).toEqual(["  data   ANALYST ".trim(), "nurse"]);
+			expect(searches[0]?.criteria).toMatchObject({ country: "DE", postedWithinDays: 30, remote: "any" });
+		});
+
+		it(`keeps the last ${10} searches`, async () => {
+			const { jobs } = setup([listings("hirebase", 20)]);
+			for (let index = 0; index < 12; index++) {
+				clock = new Date(clock.getTime() + 1_000);
+				await jobs.search("alice", request({ query: `role ${index}` }));
+			}
+			const searches = await jobs.recent("alice");
+			expect(searches).toHaveLength(10);
+			expect(searches[0]?.criteria.query).toBe("role 11");
+			expect(searches.at(-1)?.criteria.query).toBe("role 2");
+		});
+
+		it("says whether opening a search again is free today", async () => {
+			const { jobs } = setup([listings("hirebase", 20)]);
+			await jobs.search("alice", request({ query: "designer" }));
+			expect((await jobs.recent("alice"))[0]).toMatchObject({ seenToday: true });
+			clock = new Date("2026-11-21T10:00:00Z");
+			expect((await jobs.recent("alice"))[0]).toMatchObject({ seenToday: false });
+		});
+
+		it("keeps each account's searches to itself", async () => {
+			const { jobs } = setup([listings("hirebase", 20)]);
+			await jobs.search("alice", request({ query: "designer" }));
+			await jobs.search("bob", request({ query: "nurse" }));
+			const [alices] = await jobs.recent("alice");
+			expect((await jobs.recent("bob")).map((search) => search.criteria.query)).toEqual(["nurse"]);
+			// Bob can't remove Alice's search, by id or by clearing.
+			await recent.forgetRecentSearches("bob", alices?.id);
+			await recent.forgetRecentSearches("bob");
+			expect(await jobs.recent("alice")).toHaveLength(1);
+			expect(await jobs.recent("bob")).toHaveLength(0);
+			await recent.forgetRecentSearches("alice", alices?.id);
+			expect(await jobs.recent("alice")).toHaveLength(0);
+		});
+
+		it("doesn't remember a search that failed", async () => {
+			const { jobs } = setup([new TregError("unavailable")], [new TregError("unavailable")]);
+			await expect(jobs.search("alice", request({ query: "designer" }))).rejects.toBeTruthy();
+			expect(await jobs.recent("alice")).toEqual([]);
+		});
 	});
 
 	it("starts the day at midnight in the account's time zone", async () => {

@@ -1,6 +1,6 @@
 import type { BillingCurrency, PlanId, PlanLimits, PlanPrices } from "@rezumi/schema/billing";
 import type { Template } from "@rezumi/schema/templates";
-import { t } from "@lingui/core/macro";
+import { plural, t } from "@lingui/core/macro";
 import {
 	DEFAULT_BILLING_CURRENCY,
 	FREE_PORTFOLIO_THEMES,
@@ -39,6 +39,12 @@ export type Plan = {
 const documentLimits = ({ activeResumes, activeCoverLetters }: PlanLimits) =>
 	t`${activeResumes} active resumes and ${activeCoverLetters} cover letters`;
 
+const jobSearchLimits = ({ jobSearchesPerDay, jobAlerts }: PlanLimits) =>
+	plural(jobAlerts, {
+		one: `${jobSearchesPerDay} job searches a day and # job alert`,
+		other: `${jobSearchesPerDay} job searches a day and # job alerts`,
+	});
+
 export const getPlans = (portfolioEnabled = false): Plan[] => {
 	const freeTemplateCount = freeTemplates.length;
 	const templateCount = templateLineup.length;
@@ -58,6 +64,7 @@ export const getPlans = (portfolioEnabled = false): Plan[] => {
 				t`PDF downloads without a watermark`,
 				t`ATS check and basic keyword matching`,
 				t`Job tracker with board, calendar and insights`,
+				jobSearchLimits(PLANS.free.limits),
 				t`${trialCredits} AI credits to try`,
 				...(portfolioEnabled ? [t`A web portfolio with ${freeWorks} works and ${freeThemes} themes`] : []),
 			],
@@ -75,6 +82,7 @@ export const getPlans = (portfolioEnabled = false): Plan[] => {
 				t`Word and ODT downloads`,
 				t`Custom styles and your own fonts`,
 				t`MCP and API for your own automations`,
+				jobSearchLimits(PLANS.plus.limits),
 				...(portfolioEnabled ? [t`Every portfolio theme, your own domain, no Rezumi badge`] : []),
 			],
 			cta: t`Try Plus free`,
@@ -87,6 +95,7 @@ export const getPlans = (portfolioEnabled = false): Plan[] => {
 			features: [
 				t`Everything in Plus`,
 				t`${proCredits} AI credits every month`,
+				jobSearchLimits(PLANS["pro-ai"].limits),
 				t`No API key to set up`,
 				t`Tailor your resume to each posting`,
 				t`Cover letters and recruiter replies`,

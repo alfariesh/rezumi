@@ -20,6 +20,9 @@ import { dayInTimeZone, startOfDayInTimeZone } from "../portfolio/traffic";
 
 const HOUR_MS = 60 * 60 * 1000;
 const DAY_MS = 24 * HOUR_MS;
+const utcDay = (now: Date) => now.toISOString().slice(0, 10);
+/** Until a little past the next UTC midnight. */
+const budgetWindow = (now: Date) => Date.parse(`${utcDay(now)}T00:00:00Z`) + DAY_MS - now.getTime() + HOUR_MS;
 
 // ---- Burst limit -------------------------------------------------------------------------------------------------
 
@@ -78,8 +81,19 @@ const quotaWindow = (quota: QuotaDay, now: Date) => Math.max(1, quota.resetsAt.g
 const quotaKey = (userId: string, quota: QuotaDay) => `quota:${userId}:${quota.day}`;
 const seenKey = (userId: string, quota: QuotaDay, pageKey: string) => `seen:${userId}:${quota.day}:${pageKey}`;
 
+/**
+ * The same searches counted per UTC day, so changing the account's time zone can't start new days over and over. An
+ * account's day overlaps two UTC days, so a UTC day holds at most two days' searches; past that the day's are used up.
+ */
+const utcQuotaKey = (userId: string, now: Date) => `quota-utc:${userId}:${utcDay(now)}`;
+
+/** Searches counted today: the account's day, or more when its UTC days already hold two days' worth. */
 export async function quotaUsed(counters: JobCounters, userId: string, quota: QuotaDay, now: Date): Promise<number> {
-	return (await counters.add(quotaKey(userId, quota), 0, { window: quotaWindow(quota, now) })).total;
+	const [day, utc] = await Promise.all([
+		counters.add(quotaKey(userId, quota), 0, { window: quotaWindow(quota, now) }),
+		counters.add(utcQuotaKey(userId, now), 0, { window: budgetWindow(now) }),
+	]);
+	return Math.max(day.total, utc.total - quota.max);
 }
 
 /** Whether the account opened this page of results already today; opening it again isn't counted (section 7). */
@@ -105,6 +119,8 @@ export async function countSearch(
 	now: Date,
 ): Promise<{ allowed: boolean; used: number }> {
 	const window = quotaWindow(quota, now);
+	const utc = await counters.add(utcQuotaKey(userId, now), 1, { window: budgetWindow(now), max: quota.max * 2 });
+	if (!utc.allowed) return { allowed: false, used: quota.max };
 	const result = await counters.add(quotaKey(userId, quota), 1, { window, max: quota.max });
 	if (result.allowed) await counters.add(seenKey(userId, quota, pageKey), 1, { window });
 	return { allowed: result.allowed, used: result.total };
@@ -115,9 +131,7 @@ export async function countSearch(
 /** Share of the budget after which a warning is logged once. */
 const WARN_SHARE = 0.8;
 
-const utcDay = (now: Date) => now.toISOString().slice(0, 10);
 const budgetKey = (now: Date) => `budget:${utcDay(now)}`;
-const budgetWindow = (now: Date) => Date.parse(`${utcDay(now)}T00:00:00Z`) + DAY_MS - now.getTime() + HOUR_MS;
 
 /** Today's budget in millionths of a US dollar (`JOB_SEARCH_DAILY_BUDGET_USD`, default $1). */
 export const dailyBudgetMicro = () => Math.round((env.JOB_SEARCH_DAILY_BUDGET_USD ?? 1) * 1_000_000);

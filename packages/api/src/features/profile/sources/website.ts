@@ -39,6 +39,7 @@ function pageError(reason: WebFailure) {
 		case "malformed":
 			return sourceErrors.invalid("Enter the address of a public website, such as yourname.com.");
 		case "unreachable":
+		case "not-found":
 		case "not-a-page":
 		case "empty":
 			return sourceErrors.notFound("That page couldn't be found or has no text to read. Check the address.");

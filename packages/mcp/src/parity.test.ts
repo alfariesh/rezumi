@@ -24,6 +24,7 @@ const calls = {
 	resume: { listVersions: vi.fn(), getById: vi.fn() },
 	rest: { fileUpload: vi.fn(), documentExports: { resume: vi.fn() } },
 	coverLetters: { draft: vi.fn() },
+	jobs: { recent: vi.fn(), forgetRecent: vi.fn(), clearRecent: vi.fn() },
 };
 
 beforeEach(async () => {
@@ -126,6 +127,33 @@ it("discovers API-derived contracts and exchanges native files and dates through
 			})
 		).isError,
 	).toBe(true);
+});
+
+it("lists, forgets and clears recent job searches through the API, with job search hints", async () => {
+	const search = {
+		id: "recent-1",
+		criteria: { query: "Designer", remote: "any", postedWithinDays: 30, includeNoSalary: true },
+		searchedAt: "2026-11-20T10:00:00.000Z",
+		seenToday: true,
+	};
+	calls.jobs.recent.mockResolvedValueOnce({ searches: [search] });
+	const listed = await client.callTool({ name: "api_jobs_recent", arguments: {} });
+	expect(listed.isError).not.toBe(true);
+	expect(listed.structuredContent).toEqual({ searches: [search] });
+
+	calls.jobs.forgetRecent.mockResolvedValueOnce({ ok: true });
+	const forgotten = await client.callTool({ name: "api_jobs_forget_recent", arguments: { id: "recent-1" } });
+	expect(forgotten.isError).not.toBe(true);
+	expect(calls.jobs.forgetRecent).toHaveBeenCalledWith({ id: "recent-1" });
+
+	calls.jobs.clearRecent.mockResolvedValueOnce({ ok: true });
+	expect((await client.callTool({ name: "api_jobs_clear_recent", arguments: {} })).isError).not.toBe(true);
+	expect(calls.jobs.clearRecent).toHaveBeenCalledOnce();
+
+	calls.jobs.recent.mockRejectedValueOnce(new ORPCError("RATE_LIMIT_EXCEEDED", { status: 429 }));
+	const refused = await client.callTool({ name: "api_jobs_recent", arguments: {} });
+	expect(refused.isError).toBe(true);
+	expect(JSON.stringify(refused.content)).toContain("Too many searches in a short time");
 });
 
 it("rejects foreign and traversing file references before reading storage or invoking the API", async () => {

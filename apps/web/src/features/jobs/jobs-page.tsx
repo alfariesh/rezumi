@@ -6,21 +6,22 @@ import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { toast } from "@rezumi/ui/components/toast";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { JobListingItem } from "./listing-card";
-import { JobListingSheet } from "./listing-sheet";
-import { activeFilterCount, sameSearch, startingSearch, toSearchRequest, withoutFilters } from "./search";
+import { JobListingSheet, ListingDetail } from "./listing-sheet";
+import { RecentSearchesButton, RecentSearchesWidget, useRecentSearches } from "./recent-searches";
+import { activeFilterCount, fromCriteria, sameSearch, startingSearch, toSearchRequest, withoutFilters } from "./search";
 import { JobsSearchBar } from "./search-bar";
 import { useListingActions } from "./use-listing-actions";
 import { EmptyBlock } from "@/components/layout/empty-block";
-import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { ScheduleSheet } from "@/features/career/schedule-sheet";
+import { withUndo } from "@/features/career/shared";
 import { ExtensionInstallHint } from "@/features/extension/install-links";
 import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
 import { formatRelativeTime } from "@/libs/locale";
@@ -29,17 +30,31 @@ import { orpc } from "@/libs/orpc/client";
 type JobsPageProps = {
 	/** The search in the address: what was last searched, or nothing yet. */
 	search: JobsSearch;
-	onSearch: (next: JobsSearch) => void;
+	/** Shows another search; `replace` swaps the address instead of adding a step (restoring today's last search). */
+	onSearch: (next: JobsSearch, options?: { replace?: boolean }) => void;
 };
 
 /**
- * Jobs (`.agents/docs/plans/lowongan/01-desain.md`): search current listings from job data providers with no setup,
- * read one in full, track it as an application, tailor a resume for it, or open the original posting. The form starts
- * from the person's preferences; nothing is searched until they press Search.
+ * Jobs, a page of Applications (`.agents/docs/plans/lowongan/01-desain.md`): search current listings from job data
+ * providers with no setup, read one in full, track it as an application, tailor a resume for it, or open the original
+ * posting. The results are a column of widgets; on wide screens the open one (the first, until another is picked) reads
+ * beside them, on others it opens in a sheet. Opened without a search, it shows today's last search again when that's
+ * free (a page opened today doesn't count again), else the recent searches and the roles from the preferences; nothing
+ * is searched that would use one of the day's searches until the person asks.
  */
 export function JobsPage({ search, onSearch }: JobsPageProps) {
+	const queryClient = useQueryClient();
+	// A query shorter than a search takes (a hand-edited address) shows the start, as no query does.
+	const searched = search.q.length >= 2;
 	const status = useQuery(orpc.jobs.quota.queryOptions());
-	const defaults = useQuery({ ...orpc.jobs.defaults.queryOptions(), enabled: !search.q, staleTime: Infinity });
+	const defaults = useQuery({ ...orpc.jobs.defaults.queryOptions(), enabled: !searched, staleTime: Infinity });
+	const recent = useRecentSearches();
+	// Today's last search comes back by itself when it's free (coming back to Jobs from another page); an older one
+	// waits in the recent searches, since opening it would use one of today's searches.
+	const resume = !searched && recent.searches?.[0]?.seenToday ? recent.searches[0] : undefined;
+	useEffect(() => {
+		if (resume) onSearch(fromCriteria(resume.criteria), { replace: true });
+	}, [resume, onSearch]);
 	// The form's own copy: changing it doesn't search. It starts from the address, or from the preferences once loaded.
 	const [draft, setDraft] = useState<JobsSearch | null>(null);
 	// Back and forward change the address: the form follows it.
@@ -49,32 +64,55 @@ export function JobsPage({ search, onSearch }: JobsPageProps) {
 		setDraft(null);
 	}
 	const form = draft ?? startingSearch(search, defaults.data);
-	const [selected, setSelected] = useState<JobListingCard | null>(null);
+	// The listing open: beside the results on wide screens (the first one until another is picked), in a sheet on others.
+	const wide = useBreakpoint() === "wide";
+	const [selectedId, setSelectedId] = useState<string | null>(null);
 	// The job alert sheet: "new:discovery" for this search, or the id of the alert that already repeats it.
 	const [alertSheet, setAlertSheet] = useState<string | undefined>();
-	const schedules = useQuery({ ...orpc.career.schedules.queryOptions({ input: {} }), enabled: Boolean(search.q) });
+	const schedules = useQuery({ ...orpc.career.schedules.queryOptions({ input: {} }), enabled: searched });
+	// Alerts deleted here while their Undo is offered.
+	const [deletedAlerts, setDeletedAlerts] = useState<string[]>([]);
 	const removeAlert = useMutation({
 		...orpc.career.deleteSchedule.mutationOptions(),
-		onSuccess: () => toast.add({ description: t`Job alert deleted` }),
-		onError: (error) => toastError(error, t`Couldn't delete this job alert. Try again.`, { allowServerMessage: true }),
+		onError: (error, { id }) => {
+			setDeletedAlerts((current) => current.filter((item) => item !== id));
+			toastError(error, t`Couldn't delete this job alert. Try again.`, { allowServerMessage: true });
+		},
 	});
+	const deleteAlert = (id: string) => {
+		setDeletedAlerts((current) => [...current, id]);
+		withUndo({
+			description: t`Job alert deleted`,
+			commit: () => removeAlert.mutate({ id }),
+			onUndo: () => setDeletedAlerts((current) => current.filter((item) => item !== id)),
+		});
+	};
 
 	const request = toSearchRequest(search);
 	const alert = schedules.data?.find(
-		(schedule) => schedule.kind === "discovery" && schedule.search && sameSearch(schedule.search, request),
+		(schedule) =>
+			schedule.kind === "discovery" &&
+			schedule.search &&
+			!deletedAlerts.includes(schedule.id) &&
+			sameSearch(schedule.search, request),
 	);
+	const searchOptions = orpc.jobs.search.infiniteOptions({
+		input: (cursor: string | undefined) => ({ ...request, ...(cursor ? { cursor } : {}) }),
+		initialPageParam: undefined,
+		getNextPageParam: (page) => page.cursor,
+	});
 	const results = useInfiniteQuery({
-		...orpc.jobs.search.infiniteOptions({
-			input: (cursor: string | undefined) => ({ ...request, ...(cursor ? { cursor } : {}) }),
-			initialPageParam: undefined,
-			getNextPageParam: (page) => page.cursor,
-		}),
-		enabled: search.q.length >= 2,
-		// Each search counts toward the day's searches: never again on its own (focus, remount, errors).
+		...searchOptions,
+		enabled: searched,
+		// Each search counts toward the day's searches: never again on its own (focus, remount, errors, or another
+		// change on the page such as tracking a job, which refetches everything else).
 		staleTime: 30 * 60_000,
 		retry: false,
 		refetchOnWindowFocus: false,
+		meta: { keepOnMutation: true },
 	});
+	/** Drops the loaded pages and asks for the first one again, for a list that can't be continued. */
+	const restart = () => void queryClient.resetQueries({ queryKey: searchOptions.queryKey, exact: true });
 	const pages = results.data?.pages ?? [];
 	const last: JobSearchResult | undefined = pages.at(-1);
 	const tracked = Object.assign({}, ...pages.map((page) => page.tracked)) as Record<string, string>;
@@ -83,21 +121,36 @@ export function JobsPage({ search, onSearch }: JobsPageProps) {
 	// One listing can come back on a later page (another provider); show it once.
 	const byId = new Map(pages.flatMap((page) => page.listings).map((listing) => [listing.id, listing]));
 	const listings = [...byId.values()].filter((listing) => !actions.isHidden(listing.id));
+	const picked = listings.find((listing) => listing.id === selectedId);
+	const open: JobListingCard | undefined = picked ?? (wide ? listings[0] : undefined);
 
-	// The day's searches, from the last answer when there is one (it's newer than the status).
-	const quota = last?.quota ?? status.data?.quota;
+	// The day's searches have one source, the status. A newer answer brings its count into it; an earlier search shown
+	// again (the back button) is older than the status and leaves it alone.
+	const latest = last?.quota;
+	const answeredAt = results.dataUpdatedAt;
+	const statusAt = status.dataUpdatedAt;
+	useEffect(() => {
+		if (!latest || answeredAt <= statusAt) return;
+		queryClient.setQueryData(orpc.jobs.quota.queryKey(), (current) => current && { ...current, quota: latest });
+	}, [latest, answeredAt, statusAt, queryClient]);
+	// Each answer moves its search to the top of the recent ones (the server records it).
+	useEffect(() => {
+		if (answeredAt) void queryClient.invalidateQueries({ queryKey: orpc.jobs.recent.key() });
+	}, [answeredAt, queryClient]);
+	const quota = status.data?.quota;
 
 	const submit = (next: JobsSearch) => {
 		setDraft(next);
-		setSelected(null);
+		setSelectedId(null);
 		onSearch({ ...next, q: next.q.trim(), location: next.location.trim() });
 	};
 
-	const { error } = results;
+	// A failed "load more" is told beside its button; the pages already shown stay.
+	const { error, isFetchNextPageError: moreFailed } = results;
 	const unavailable = status.data && !status.data.available;
 
 	return (
-		<Page width="default">
+		<>
 			<PageHeader
 				title={t({ message: "Jobs", context: "Job listings to search" })}
 				actions={quota && !unavailable ? <QuotaNote used={quota.used} max={quota.max} /> : null}
@@ -126,30 +179,44 @@ export function JobsPage({ search, onSearch }: JobsPageProps) {
 						</Link>
 					}
 				/>
-			) : !search.q ? (
-				<FirstSearch suggestions={defaults.data?.suggestions ?? []} onPick={(q) => submit({ ...form, q })} />
+			) : resume ? (
+				<ResultsSkeleton />
+			) : !searched ? (
+				<div className="grid gap-4">
+					<RecentSearchesWidget recent={recent} onOpen={submit} />
+					{recent.searches?.length ? (
+						<RoleSuggestions suggestions={defaults.data?.suggestions ?? []} onPick={(q) => submit({ ...form, q })} />
+					) : recent.isPending ? null : (
+						<FirstSearch suggestions={defaults.data?.suggestions ?? []} onPick={(q) => submit({ ...form, q })} />
+					)}
+				</div>
 			) : (
 				<div className="grid gap-4">
-					{error && <SearchProblem error={error} onRetry={() => void results.refetch()} />}
+					{error && !moreFailed && (
+						<SearchProblem error={error} onRetry={() => void results.refetch()} onRestart={restart} />
+					)}
 					{last && (
 						<ResultNotes
 							result={last}
 							count={listings.length}
 							action={
-								<Button
-									size="sm"
-									variant={alert?.enabled ? "ghost" : "secondary"}
-									onPress={() => setAlertSheet(alert?.id ?? "new:discovery")}
-								>
-									<Icon name={alert?.enabled ? "check-circle" : "bell"} size={16} />
-									{alert?.enabled ? (
-										<Trans>Job alert on</Trans>
-									) : alert ? (
-										<Trans>Job alert paused</Trans>
-									) : (
-										<Trans>Get job alerts</Trans>
-									)}
-								</Button>
+								<div className="flex flex-wrap items-center gap-2">
+									<RecentSearchesButton recent={recent} onOpen={submit} />
+									<Button
+										size="sm"
+										variant={alert?.enabled ? "ghost" : "secondary"}
+										onPress={() => setAlertSheet(alert?.id ?? "new:discovery")}
+									>
+										<Icon name={alert?.enabled ? "check-circle" : "bell"} size={16} />
+										{alert?.enabled ? (
+											<Trans>Job alert on</Trans>
+										) : alert ? (
+											<Trans>Job alert paused</Trans>
+										) : (
+											<Trans>Get job alerts</Trans>
+										)}
+									</Button>
+								</div>
 							}
 						/>
 					)}
@@ -177,49 +244,59 @@ export function JobsPage({ search, onSearch }: JobsPageProps) {
 							}
 						/>
 					) : (
-						<ul
-							className="grid gap-3 lg:grid-cols-2"
-							aria-label={t({ message: "Jobs", context: "Job listings to search" })}
-						>
-							{listings.map((listing) => (
-								<li key={listing.id} className="grid">
-									<JobListingItem
-										listing={listing}
-										match={matches[listing.id]}
-										actions={actions}
-										selected={selected?.id === listing.id}
-										onOpen={() => setSelected(listing)}
-									/>
-								</li>
-							))}
-						</ul>
-					)}
-					{results.hasNextPage && listings.length > 0 && (
-						<Button
-							variant="secondary"
-							className="justify-self-center"
-							isPending={results.isFetchingNextPage}
-							onPress={() => void results.fetchNextPage()}
-						>
-							<Trans>Load more</Trans>
-						</Button>
+						// One column of widgets; on wide screens the open listing reads beside it, staying in view while the
+						// list scrolls.
+						<div className="grid items-start gap-4 xl:grid-cols-[minmax(18rem,24rem)_minmax(0,1fr)] xl:gap-5">
+							<div className="grid gap-3">
+								<ul className="grid gap-2" aria-label={t({ message: "Jobs", context: "Job listings to search" })}>
+									{listings.map((listing) => (
+										<li key={listing.id} className="grid">
+											<JobListingItem
+												listing={listing}
+												match={matches[listing.id]}
+												actions={actions}
+												selected={open?.id === listing.id}
+												onOpen={() => setSelectedId(listing.id)}
+											/>
+										</li>
+									))}
+								</ul>
+								{moreFailed && error ? (
+									<SearchProblem error={error} onRetry={() => void results.fetchNextPage()} onRestart={restart} />
+								) : (
+									results.hasNextPage && (
+										<Button
+											variant="secondary"
+											className="justify-self-center"
+											isPending={results.isFetchingNextPage}
+											onPress={() => void results.fetchNextPage()}
+										>
+											<Trans>Load more</Trans>
+										</Button>
+									)
+								)}
+							</div>
+							{wide && open && (
+								<aside
+									aria-label={t`Job details`}
+									className="sticky top-[3.75rem] h-[calc(100svh-4.75rem)] overflow-hidden rounded-2xl border border-separator bg-surface"
+								>
+									<ListingDetail key={open.id} listing={open} match={matches[open.id]} actions={actions} />
+								</aside>
+							)}
+						</div>
 					)}
 				</div>
 			)}
 
 			<JobListingSheet
-				listing={selected}
+				listing={wide ? null : (picked ?? null)}
 				matches={matches}
 				actions={actions}
-				onOpenChange={(open) => !open && setSelected(null)}
+				onOpenChange={(isOpen) => !isOpen && setSelectedId(null)}
 			/>
-			<ScheduleSheet
-				schedule={alertSheet}
-				onScheduleChange={setAlertSheet}
-				onDelete={(id) => removeAlert.mutate({ id })}
-				search={request}
-			/>
-		</Page>
+			<ScheduleSheet schedule={alertSheet} onScheduleChange={setAlertSheet} onDelete={deleteAlert} search={request} />
+		</>
 	);
 }
 
@@ -272,6 +349,26 @@ function FirstSearch({ suggestions, onPick }: FirstSearchProps) {
 	);
 }
 
+type RoleSuggestionsProps = { suggestions: string[]; onPick: (query: string) => void };
+
+/** The roles from the preferences as one-press searches, under the recent searches. */
+function RoleSuggestions({ suggestions, onPick }: RoleSuggestionsProps) {
+	if (suggestions.length === 0) return null;
+	return (
+		<div className="flex flex-wrap items-center gap-2">
+			<p className="text-body-sm text-muted">
+				<Trans>From your preferences:</Trans>
+			</p>
+			{suggestions.map((role) => (
+				<Button key={role} size="sm" variant="secondary" onPress={() => onPick(role)}>
+					<Icon name="magnifying-glass" size={16} />
+					{role}
+				</Button>
+			))}
+		</div>
+	);
+}
+
 type ResultNotesProps = { result: JobSearchResult; count: number; action?: ReactNode };
 
 /** How many, how fresh, and whether these are saved results because new ones couldn't be fetched just now. */
@@ -300,10 +397,16 @@ function ResultNotes({ result, count, action }: ResultNotesProps) {
 	);
 }
 
-type SearchProblemProps = { error: unknown; onRetry: () => void };
+type SearchProblemProps = {
+	error: unknown;
+	/** Asks for the same page again. */
+	onRetry: () => void;
+	/** Starts the list over from its first page, when a later page can't be continued. */
+	onRestart: () => void;
+};
 
 /** Why a search gave nothing: the day's searches, the server's budget, too many at once, or the providers. */
-function SearchProblem({ error, onRetry }: SearchProblemProps) {
+function SearchProblem({ error, onRetry, onRestart }: SearchProblemProps) {
 	const code = error instanceof ORPCError ? error.code : undefined;
 	if (code === "PLAN_LIMIT_REACHED")
 		return (
@@ -330,7 +433,15 @@ function SearchProblem({ error, onRetry }: SearchProblemProps) {
 		);
 	if (code === "BAD_REQUEST")
 		return (
-			<Problem tone="muted" message={<Trans>This list can't be continued. Search again to see more jobs.</Trans>} />
+			<Problem
+				tone="muted"
+				message={<Trans>This list can't be continued. Search again to see more jobs.</Trans>}
+				action={
+					<Button size="sm" variant="secondary" onPress={onRestart}>
+						<Trans>Search again</Trans>
+					</Button>
+				}
+			/>
 		);
 	return (
 		<Problem
@@ -376,10 +487,17 @@ function Problem({ tone, message, action }: ProblemProps) {
 /** Cards in the results' shape while the first page loads. */
 function ResultsSkeleton() {
 	return (
-		<div className="grid gap-3 lg:grid-cols-2" aria-busy="true" aria-label={t`Loading jobs`}>
-			{Array.from({ length: 6 }, (_, index) => (
-				<Skeleton key={index} className="h-44 rounded-2xl" />
-			))}
+		<div
+			className="grid items-start gap-4 xl:grid-cols-[minmax(18rem,24rem)_minmax(0,1fr)] xl:gap-5"
+			aria-busy="true"
+			aria-label={t`Loading jobs`}
+		>
+			<div className="grid gap-2">
+				{Array.from({ length: 5 }, (_, index) => (
+					<Skeleton key={index} className="h-32 rounded-2xl" />
+				))}
+			</div>
+			<Skeleton className="h-[calc(100svh-4.75rem)] rounded-2xl max-xl:hidden" />
 		</div>
 	);
 }

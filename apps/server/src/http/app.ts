@@ -49,6 +49,7 @@ import { handleCareerJobs } from "./career-jobs";
 import { handleCustomDomain, handleTraefikProvider } from "./custom-domain";
 import { handleDodoPaymentWebhook } from "./dodo";
 import { handleHealth } from "./health";
+import { handleJobListingLogo } from "./job-logo";
 import { guardLargeBody } from "./large-body";
 import {
 	handlePortfolioEvent,
@@ -160,6 +161,7 @@ export function createApp(options: AppOptions = {}) {
 		handlePublicResumePdf(c.req.raw, c.req.param("username"), c.req.param("slug"), client(c)),
 	);
 	app.get("/api/resumes/:id/pdf", (c) => handleResumePdfDownload(c.req.raw, c.req.param("id")));
+	app.get("/api/jobs/listings/:id/logo", (c) => handleJobListingLogo(c.req.raw, c.req.param("id")));
 	app.post("/api/portfolio/:username/event", limitBody(2 * 1024), (c) =>
 		handlePortfolioEvent(c.req.raw, c.req.param("username"), client(c)),
 	);

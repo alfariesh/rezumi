@@ -71,7 +71,7 @@ function jobsHint(code: string): string | null {
 		case "JOBS_BUDGET_LIMITED":
 			return "Job search reached today's limit on this server. Tell the user to try again tomorrow; don't retry today.";
 		case "PLAN_LIMIT_REACHED":
-			return "The user's job searches for today are used up (see `resetsAt` in the error data). Tell the user; reading pages already opened today still works, new searches don't.";
+			return "The user's job searches for today are used up; they start again at midnight in the user's time zone (`api_jobs_quota` says when). Tell the user; pages already opened today still open, new searches don't.";
 		case "NOT_FOUND":
 			return `This listing isn't available anymore (closed or removed). Run \`${MCP_TOOL_NAME.searchJobs}\` again.`;
 		case "RATE_LIMIT_EXCEEDED":

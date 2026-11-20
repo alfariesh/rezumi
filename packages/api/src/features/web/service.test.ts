@@ -4,7 +4,14 @@ import { lookup } from "node:dns/promises";
 import { EventEmitter } from "node:events";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { memoryCounters } from "../jobs/counters";
-import { BROWSER_READS_PER_DAY, looksUnrendered, readPage, searchWeb, WEB_SEARCHES_PER_DAY } from "./service";
+import {
+	BROWSER_READS_PER_DAY,
+	looksUnrendered,
+	readPage,
+	searchWeb,
+	WEB_SEARCH_SPEND_PER_DAY_MICRO,
+	WEB_SEARCHES_PER_DAY,
+} from "./service";
 
 const fixtures = vi.hoisted(() => ({
 	limit: vi.fn(async () => ({ success: true })),
@@ -164,6 +171,21 @@ describe("reading a page", () => {
 		await expect(readPage(PAGE, { userId: "user" })).rejects.toMatchObject({ reason: "empty" });
 	});
 
+	it("doesn't ask the browser for a page that is gone", async () => {
+		fixtures.directStatus = 404;
+		await expect(readPage(PAGE, { userId: "user" })).rejects.toMatchObject({ reason: "not-found" });
+		expect(calls).toHaveLength(0);
+	});
+
+	it("doesn't count a browser read that failed", async () => {
+		fixtures.directHtml = SPA_SHELL;
+		answer = () => new Response("{}", { status: 503 });
+		for (let index = 0; index < BROWSER_READS_PER_DAY; index++)
+			await expect(readPage(PAGE, { userId: "user" })).rejects.toMatchObject({ reason: "empty" });
+		answer = () => json({ success: true, result: RENDERED });
+		expect(await readPage(PAGE, { userId: "user" })).toMatchObject({ method: "browser" });
+	});
+
 	it(`reads at most ${BROWSER_READS_PER_DAY} pages through the browser per person per day`, async () => {
 		fixtures.directHtml = SPA_SHELL;
 		for (let index = 0; index < BROWSER_READS_PER_DAY; index++)
@@ -310,6 +332,35 @@ describe("searching the web", () => {
 		]);
 		expect(calls[1]?.headers["x-treg-route-max-cost"]).toBe("0.0100");
 		expect(calls[1]?.body).toEqual({ q: "Lumen Health", limit: 5 });
+	});
+
+	it("falls back once, not once per country, when Serper fails everywhere", async () => {
+		answer = (call) =>
+			call.url.endsWith("serper.web.search")
+				? json({ error: "upstream_error" }, { status: 500 })
+				: json(
+						{ output: { results: [{ url: "https://lumen.example/team", title: "Team" }] } },
+						{ headers: { "x-treg-cost-micro": "4000" } },
+					);
+		await searchWeb("designer", { userId: "user", regions: ["DE", "FR", "GB"] });
+		expect(calls.filter((call) => call.url.endsWith("treg.web.search"))).toHaveLength(1);
+	});
+
+	it("doesn't count a search that failed", async () => {
+		answer = () => json({ error: "upstream_error" }, { status: 500 });
+		for (let index = 0; index < WEB_SEARCHES_PER_DAY; index++)
+			await expect(searchWeb("designer", { userId: "user" })).rejects.toMatchObject({ reason: "unavailable" });
+		answer = () => json({ organic }, { headers: { "x-treg-cost-micro": "1000" } });
+		expect(await searchWeb("designer", { userId: "user" })).toHaveLength(1);
+	});
+
+	it("stops a person whose searches cost too much today, without calling treg", async () => {
+		answer = () => json({ organic }, { headers: { "x-treg-cost-micro": String(WEB_SEARCH_SPEND_PER_DAY_MICRO) } });
+		await searchWeb("designer", { userId: "user" });
+		calls.length = 0;
+		await expect(searchWeb("designer", { userId: "user" })).rejects.toMatchObject({ reason: "rate-limit" });
+		expect(calls).toHaveLength(0);
+		expect(await searchWeb("designer", { userId: "someone-else" })).toHaveLength(1);
 	});
 
 	it("stops with a budget error once today's budget is spent, without calling treg", async () => {

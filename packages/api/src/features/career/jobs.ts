@@ -30,6 +30,9 @@ import { isCareerSchedulingEnabled } from "./runner";
 import { canonicalOpportunityUrl, nextFutureCareerRun, plainSnippet, prepareRunAt } from "./scheduling";
 import { careerService, requireCareerApplication } from "./service";
 
+/** New roles Home lists at most, newest first; older ones are dismissed by the daily upkeep after 30 days. */
+const MAX_OPPORTUNITIES_SHOWN = 100;
+
 const CAREER_URL = "/dashboard/career";
 const workspaceUrl = (applicationId: string | null, tab?: string) =>
 	applicationId ? `/dashboard/applications/${encodeURIComponent(applicationId)}${tab ? `/${tab}` : ""}` : CAREER_URL;
@@ -198,7 +201,8 @@ export const careerJobs = {
 				.from(tables.careerOpportunity)
 				.leftJoin(tables.jobListing, eq(tables.careerOpportunity.listingId, tables.jobListing.id))
 				.where(and(eq(tables.careerOpportunity.userId, userId), isNull(tables.careerOpportunity.dismissedAt)))
-				.orderBy(desc(tables.careerOpportunity.lastSeenAt)),
+				.orderBy(desc(tables.careerOpportunity.lastSeenAt))
+				.limit(MAX_OPPORTUNITIES_SHOWN),
 			careerService.profile(userId),
 		]);
 		return rows
@@ -218,8 +222,8 @@ export const careerJobs = {
 };
 
 /**
- * The job search a discovery schedule repeats: the one sent, else the one it has, else (an older client, or MCP) its
- * `query` as the role with the search defaults. Null without a role to look for.
+ * The job search a discovery schedule repeats: the one sent, else the one it has (with the role changed when only
+ * `query` was sent, as MCP does), else its `query` as the role with the search defaults. Null without a role.
  */
 function alertSearch(
 	requested: JobSearchCriteria | null | undefined,
@@ -227,9 +231,36 @@ function alertSearch(
 	query: string,
 ): JobSearchCriteria | null {
 	if (requested) return requested;
-	if (requested === undefined && previous?.search) return previous.search;
+	if (requested === undefined && previous?.search) {
+		const role = query.trim().slice(0, 200);
+		if (role.length < 2 || role === previous.search.query) return previous.search;
+		return { ...previous.search, query: role };
+	}
 	const parsed = jobSearchCriteriaSchema.safeParse({ query: (query || previous?.query || "").slice(0, 200) });
 	return parsed.success ? parsed.data : null;
+}
+
+/**
+ * Whether the plan still covers this alert: after a move to a smaller plan, only the oldest alerts that fit its limit
+ * run; the rest wait (switched on, but not checked) until there is room again.
+ */
+async function alertWithinPlan(userId: string, scheduleId: string): Promise<boolean> {
+	const entitlements = await getEntitlements(userId, new Date());
+	const max = entitlements.enabled ? entitlements.limits.jobAlerts : null;
+	if (max === null) return true;
+	const covered = await db
+		.select({ id: tables.careerSchedule.id })
+		.from(tables.careerSchedule)
+		.where(
+			and(
+				eq(tables.careerSchedule.userId, userId),
+				eq(tables.careerSchedule.kind, "discovery"),
+				eq(tables.careerSchedule.enabled, true),
+			),
+		)
+		.orderBy(asc(tables.careerSchedule.createdAt), asc(tables.careerSchedule.id))
+		.limit(max);
+	return covered.some((row) => row.id === scheduleId);
 }
 
 /** Throws PLAN_LIMIT_REACHED when switching on another job alert would pass the plan's limit. */
@@ -279,7 +310,7 @@ function opportunityValues(userId: string, listing: JobListing) {
  */
 async function discover(userId: string, schedule: typeof tables.careerSchedule.$inferSelect) {
 	const search = alertSearch(schedule.search, undefined, schedule.query);
-	if (!search) return { roles: [], state: schedule.discoveryState };
+	if (!search || !(await alertWithinPlan(userId, schedule.id))) return { roles: [], state: schedule.discoveryState };
 	const now = new Date();
 	const check = await checkJobAlert(search, schedule.discoveryState, {
 		now,

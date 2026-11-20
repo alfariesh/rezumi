@@ -4,6 +4,7 @@ import type { CareerDiscoveryState } from "@rezumi/db/schema";
 import type { JobProvider } from "@rezumi/schema/jobs/listing";
 import type { JobSearchCriteria, JobSearchInput } from "@rezumi/schema/jobs/search";
 import { env } from "@rezumi/env/server";
+import { JOB_SEARCH_POSTED_WITHIN_DAYS } from "@rezumi/schema/jobs/search";
 import { budgetLeft, recordSpend } from "./allowance";
 import { jobCounters } from "./counters";
 import { matchesSearch, withoutDuplicates } from "./filters";
@@ -12,15 +13,17 @@ import { TOP_UP_BELOW } from "./routing";
 import { isTregConfigured, TregError } from "./treg";
 
 /**
- * Job alerts (`02-teknis.md` section 9): the listings that appeared for a saved search since its last check. Only new
- * listings are paid for, and a check with nothing new is free:
+ * Job alerts (`02-teknis.md` section 9): the listings that appeared for a saved search since its last check. Mostly new
+ * listings are paid for:
  *
  * - Hirebase first, with `ingested_after` (newest first): the jobs it first saw since the last check, an interval back
- *   on the first one. The next check overlaps by an hour, since a job can become searchable a little after Hirebase
- *   first saw it; jobs offered already are skipped by the caller.
+ *   on the first one. The next check overlaps by an hour (paid again), since a job can become searchable a little after
+ *   Hirebase first saw it; jobs offered already are skipped by the caller.
  * - JobsPipe tops up below TOP_UP_BELOW, as in a search (K1), through `jobspipe.jobs.new` with the delta cursor from its
- *   previous answer. Without a usable cursor (first check, or one older than a JobsPipe month) it runs the search once:
- *   a job it already returned this month costs nothing again, and the answer's last page carries a fresh cursor.
+ *   previous answer (free when nothing is new). Without a usable cursor (first check, one older than a JobsPipe month,
+ *   or one JobsPipe refused) it searches only jobs posted within the alert's interval: a job it already returned this
+ *   month costs nothing again, and an answer that fits on one page carries a fresh cursor. Both ask with that same
+ *   posting window, since a delta cursor only continues the search that issued it.
  * - At most ALERT_PAGE_SIZE listings per provider per check; when more appeared, the newest are offered.
  * - The cost counts toward the server's daily budget (K7), not the person's searches. A spent budget postpones the check
  *   to the next UTC day ({@link JobAlertPostponed}); nothing is lost, since the state only moves after a check.
@@ -44,9 +47,26 @@ export class JobAlertPostponed extends Error {
 	}
 }
 
-/** Shortly after the next UTC midnight, when the day's budget starts again. */
-export const nextBudgetDay = (now: Date) =>
-	new Date(Date.parse(`${now.toISOString().slice(0, 10)}T00:00:00Z`) + DAY_MS + 5 * 60_000);
+/** Postponed checks start again over this long after midnight, so they don't spend the new day's budget at once. */
+const POSTPONE_SPREAD_MS = 6 * HOUR_MS;
+
+/** Shortly after the next UTC midnight, when the day's budget starts again, plus `spread` (0–1) of a few hours. */
+export const nextBudgetDay = (now: Date, spread = Math.random()) =>
+	new Date(
+		Date.parse(`${now.toISOString().slice(0, 10)}T00:00:00Z`) +
+			DAY_MS +
+			5 * 60_000 +
+			Math.round(Math.min(Math.max(spread, 0), 1) * POSTPONE_SPREAD_MS),
+	);
+
+/** The posting window JobsPipe is asked about: the shortest the search allows that covers the alert's interval. */
+export function alertPostingWindow(
+	search: JobSearchCriteria,
+	intervalDays: number,
+): JobSearchInput["postedWithinDays"] {
+	const fits = JOB_SEARCH_POSTED_WITHIN_DAYS.find((days) => days > intervalDays) ?? search.postedWithinDays;
+	return Math.min(fits, search.postedWithinDays) as JobSearchInput["postedWithinDays"];
+}
 
 export type JobAlertCheck = {
 	/** Open listings that fit the search, without duplicates, Hirebase's first: what may be offered. */
@@ -136,11 +156,12 @@ export async function checkJobAlert(
 				: undefined;
 		const { jobspipe } = sources;
 		const limit = Math.max(1, ALERT_PAGE_SIZE - shown.length);
+		const recent: JobSearchInput = { ...input, postedWithinDays: alertPostingWindow(search, options.intervalDays) };
 		try {
 			const result = await take("jobspipe", () =>
 				fresh && jobspipe.newListings
-					? jobspipe.newListings(input, fresh, { ...base, limit })
-					: jobspipe.search(input, { ...base, limit }),
+					? jobspipe.newListings(recent, fresh, { ...base, limit })
+					: jobspipe.search(recent, { ...base, limit }),
 			);
 			if (result.deltaCursor) {
 				next.jobspipeDelta = result.deltaCursor;
@@ -152,6 +173,11 @@ export async function checkJobAlert(
 		} catch (error) {
 			if (isBudget(error) && providers.length === 0) throw new JobAlertPostponed(nextBudgetDay(now));
 			options.signal?.throwIfAborted();
+			// A cursor JobsPipe refuses (expired, or from other filters) would be refused every time: search next time.
+			if (fresh && error instanceof TregError && error.code === "rejected") {
+				delete next.jobspipeDelta;
+				delete next.jobspipeDeltaAt;
+			}
 			errors.push(error);
 		}
 	}

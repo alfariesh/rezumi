@@ -11,7 +11,7 @@ vi.mock("@rezumi/env/server", () => ({
 	},
 }));
 
-const { memoryCounters, jobCounters } = await import("./counters");
+const { fallbackCounters, memoryCounters, jobCounters } = await import("./counters");
 
 describe("memoryCounters", () => {
 	it("adds, reads with 0, refuses past max and starts again after the window", async () => {
@@ -23,6 +23,29 @@ describe("memoryCounters", () => {
 		expect(await counters.add("k", 1, { window: 100, max: 3 })).toMatchObject({ allowed: true, total: 3 });
 		now = 1_101;
 		expect(await counters.add("k", 0, { window: 100 })).toMatchObject({ total: 0 });
+	});
+});
+
+describe("fallbackCounters", () => {
+	it("counts in this process when the shared store fails, answers nothing or hangs", async () => {
+		const errors = vi.spyOn(console, "error").mockImplementation(() => undefined);
+		const rule = { window: 60_000 };
+		const failing = fallbackCounters(() => Promise.reject(new Error("down")), 50, memoryCounters());
+		expect(await failing.add("k", 2, rule)).toMatchObject({ allowed: true, total: 2 });
+		const missing = fallbackCounters(() => Promise.resolve(undefined), 50, memoryCounters());
+		expect(await missing.add("k", 1, rule)).toMatchObject({ total: 1 });
+		const hanging = fallbackCounters(() => new Promise(() => undefined), 20, memoryCounters());
+		const started = Date.now();
+		expect(await hanging.add("k", 3, rule)).toMatchObject({ total: 3 });
+		expect(Date.now() - started).toBeLessThan(1_000);
+		expect(errors).toHaveBeenCalledTimes(2);
+		errors.mockRestore();
+	});
+
+	it("uses the shared answer when there is one", async () => {
+		const shared = { allowed: false, total: 9, reset: 1 };
+		const counters = fallbackCounters(() => Promise.resolve(shared), 50, memoryCounters());
+		expect(await counters.add("k", 1, { window: 1, max: 9 })).toBe(shared);
 	});
 });
 

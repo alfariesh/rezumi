@@ -23,12 +23,13 @@ export const getQueryClient = () => {
 			onError: (error) => {
 				if (!openPlanDialogForError(error)) openCreditsDialogForError(error);
 			},
+			// A query with `meta.keepOnMutation` (one that costs something to ask again, such as a job search) is left as it is.
 			onSettled: (_1, _2, _3, _4, _5, context) => {
 				if (context?.meta?.noInvalidate) return;
 				void queryClient.invalidateQueries({
 					predicate: (query) => {
 						const key = query.queryKey[0];
-						return key !== "auth" && key !== "flags";
+						return key !== "auth" && key !== "flags" && !query.meta?.keepOnMutation;
 					},
 				});
 			},

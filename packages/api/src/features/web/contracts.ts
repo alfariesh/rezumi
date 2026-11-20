@@ -36,6 +36,7 @@ export type SearchResult = { url: string; title: string; snippet?: string };
 export type WebFailure =
 	| "unsafe-url"
 	| "unreachable"
+	| "not-found"
 	| "not-a-page"
 	| "too-large"
 	| "malformed"
@@ -50,6 +51,7 @@ export type WebFailure =
 const MESSAGES: Record<WebFailure, string> = {
 	"unsafe-url": "Only public https:// addresses can be read.",
 	unreachable: "The page couldn't be reached.",
+	"not-found": "The page doesn't exist anymore.",
 	"not-a-page": "The address isn't a readable web page.",
 	"too-large": "The page is too large to read.",
 	malformed: "The request wasn't valid.",

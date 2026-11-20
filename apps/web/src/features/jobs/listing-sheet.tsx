@@ -5,17 +5,20 @@ import { Button, Chip, ScrollShadow, Skeleton, Typography } from "@heroui/react"
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
+import { ORPCError } from "@orpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { cn } from "@rezumi/utils/style";
 import { placeLabel, sourceLabel } from "./format";
 import { ListingButtons, ListingFacts } from "./listing-card";
 import { ListingFit } from "./listing-fit";
+import { listingLogoUrl } from "./logo-color";
 import { CompanyMark } from "@/features/applications/components/company-mark";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { formatRelativeTime } from "@/libs/locale";
 import { orpc } from "@/libs/orpc/client";
-import { renderAsSpan } from "@/libs/typography";
+import { renderAsH2, renderAsSpan } from "@/libs/typography";
 
 type JobListingSheetProps = {
 	listing: JobListingCard | null;
@@ -26,8 +29,7 @@ type JobListingSheetProps = {
 };
 
 /**
- * A listing in full, beside the results (from the bottom on phones): the provider's description as plain text (never
- * HTML: it's untrusted data), what it asks for, the company, and the same buttons as its card.
+ * A listing in full over the results, on screens too narrow for the panel beside them (from the bottom on phones).
  */
 export function JobListingSheet({ listing, matches, actions, onOpenChange }: JobListingSheetProps) {
 	const phone = useBreakpoint() === "mobile";
@@ -45,7 +47,9 @@ export function JobListingSheet({ listing, matches, actions, onOpenChange }: Job
 					<Sheet.Dialog className="bg-surface">
 						{phone && <Sheet.Handle />}
 						<Sheet.CloseTrigger aria-label={t`Close`} />
-						{shown && <ListingDetail key={shown.id} listing={shown} match={matches[shown.id]} actions={actions} />}
+						{shown && (
+							<ListingDetail key={shown.id} listing={shown} match={matches[shown.id]} actions={actions} inSheet />
+						)}
 					</Sheet.Dialog>
 				</Sheet.Content>
 			</Sheet.Backdrop>
@@ -53,11 +57,26 @@ export function JobListingSheet({ listing, matches, actions, onOpenChange }: Job
 	);
 }
 
-type ListingDetailProps = { listing: JobListingCard; match: JobListingMatch | undefined; actions: ListingActions };
+type ListingDetailProps = {
+	listing: JobListingCard;
+	match: JobListingMatch | undefined;
+	actions: ListingActions;
+	/** In the sheet (its heading names the dialog, and its close button sits top right), else in the panel. */
+	inSheet?: boolean;
+};
 
-function ListingDetail({ listing, match, actions }: ListingDetailProps) {
+/**
+ * A listing in full: the provider's description as plain text (never HTML: it's untrusted data), what it asks for, the
+ * company, its fit, and its buttons. Shown in the panel beside the results on wide screens, in the sheet on others.
+ */
+export function ListingDetail({ listing, match, actions, inSheet = false }: ListingDetailProps) {
 	const { i18n } = useLingui();
-	const detail = useQuery({ ...orpc.jobs.listing.queryOptions({ input: { id: listing.id } }), staleTime: 10 * 60_000 });
+	const detail = useQuery({
+		...orpc.jobs.listing.queryOptions({ input: { id: listing.id } }),
+		staleTime: 10 * 60_000,
+		// A listing that is gone stays gone.
+		retry: (failures, error) => !(error instanceof ORPCError && error.code === "NOT_FOUND") && failures < 2,
+	});
 	const place = placeLabel(listing);
 	const source = sourceLabel(listing);
 	const posted = listing.postedAt ? formatRelativeTime(listing.postedAt, i18n.locale) : null;
@@ -67,10 +86,16 @@ function ListingDetail({ listing, match, actions }: ListingDetailProps) {
 	return (
 		<ScrollShadow hideScrollBar className="h-full overflow-y-auto">
 			<header className="grid gap-4 px-5 pt-5 pb-4">
-				<div className="flex items-start gap-3 pe-8">
-					<CompanyMark company={company.name} logoUrl={company.logoUrl ?? null} className="size-11 rounded-xl" />
+				<div className={cn("flex items-start gap-3", inSheet && "pe-8")}>
+					<CompanyMark company={company.name} logoUrl={listingLogoUrl(listing)} className="size-11 rounded-xl" />
 					<div className="grid min-w-0 flex-1 gap-0.5">
-						<Sheet.Heading>{listing.title}</Sheet.Heading>
+						{inSheet ? (
+							<Sheet.Heading>{listing.title}</Sheet.Heading>
+						) : (
+							<Typography type="h4" render={renderAsH2}>
+								{listing.title}
+							</Typography>
+						)}
 						<p className="text-body-sm text-muted">{[company.name, place].filter(Boolean).join(" · ")}</p>
 					</div>
 				</div>
@@ -134,6 +159,10 @@ function ListingDetail({ listing, match, actions }: ListingDetailProps) {
 								<Trans>The provider has no description for this job. The original posting has the details.</Trans>
 							</p>
 						)
+					) : detail.error instanceof ORPCError && detail.error.code === "NOT_FOUND" ? (
+						<p className="text-body-sm text-muted">
+							<Trans>This listing isn't available anymore. The original posting may still have the details.</Trans>
+						</p>
 					) : detail.isError ? (
 						<div className="flex flex-wrap items-center gap-2">
 							<p className="text-body-sm text-muted">

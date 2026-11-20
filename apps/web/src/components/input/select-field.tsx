@@ -1,6 +1,8 @@
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { Key, ReactNode } from "react";
 import { CellSelect } from "@heroui-pro/react";
 import { Description, Label, ListBox, Select } from "@heroui/react";
+import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 
 /*
@@ -100,6 +102,8 @@ type CellSelectFieldProps = {
 	onChange: (value: string) => void;
 	/** The cell's name, at its start; the chosen option shows at its end. */
 	label: string;
+	/** An icon before the name. */
+	icon?: IconName | undefined;
 	isDisabled?: boolean;
 	/** Classes for the list, e.g. a minimum width when the cell is narrow. */
 	popoverClassName?: string;
@@ -114,6 +118,7 @@ export function CellSelectField({
 	value,
 	onChange,
 	label,
+	icon,
 	isDisabled,
 	popoverClassName,
 }: CellSelectFieldProps) {
@@ -130,7 +135,16 @@ export function CellSelectField({
 			{...(isDisabled !== undefined && { isDisabled })}
 		>
 			<CellSelect.Trigger>
-				<CellSelect.Label>{label}</CellSelect.Label>
+				<CellSelect.Label>
+					{icon ? (
+						<span className="flex items-center gap-2">
+							<Icon name={icon} size={16} className="shrink-0 text-muted" />
+							{label}
+						</span>
+					) : (
+						label
+					)}
+				</CellSelect.Label>
 				<CellSelect.Value />
 				<CellSelect.Indicator />
 			</CellSelect.Trigger>

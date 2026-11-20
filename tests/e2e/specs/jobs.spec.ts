@@ -11,7 +11,7 @@ test("searches with no setup, opens a listing and tracks it into Applications", 
 	authPage: page,
 }, testInfo) => {
 	const title = uniqueTitle(testInfo.testId);
-	await page.goto("/dashboard/jobs");
+	await page.goto("/dashboard/applications/jobs");
 	await expect(page.getByRole("heading", { name: "Jobs", level: 1 })).toBeVisible();
 	const form = page.getByRole("search", { name: "Search jobs" });
 	await form.getByRole("searchbox", { name: "Role or keywords" }).fill(title);
@@ -22,19 +22,18 @@ test("searches with no setup, opens a listing and tracks it into Applications", 
 	// The search as the address holds it, with the country the form started from.
 	const searched = page.url();
 	await expect(page.getByText("12 jobs")).toBeVisible();
-	const original = first.getByRole("link", { name: /View original/ });
+	// On a wide screen the first listing opens beside the results: the provider's description as text.
+	const open = page.getByRole("complementary", { name: "Job details" });
+	await expect(open.getByRole("heading", { name: title, exact: true })).toBeVisible();
+	await expect(open.getByText(/Join .* as /)).toBeVisible();
+	await expect(open.locator("li", { hasText: "Own the reporting" })).toHaveCount(0);
+	const original = open.getByRole("link", { name: /View original/ });
 	await expect(original).toHaveAttribute("target", "_blank");
 	await expect(original).toHaveAttribute("rel", "noopener noreferrer");
 
-	// The detail: the provider's description as text.
-	await first.getByRole("button", { name: title, exact: true }).click();
-	const sheet = page.getByRole("dialog", { name: title });
-	await expect(sheet.getByText(/Join .* as /)).toBeVisible();
-	await expect(sheet.locator("li", { hasText: "Own the reporting" })).toHaveCount(0);
-	await page.keyboard.press("Escape");
-
-	await first.getByRole("button", { name: "Track", exact: true }).click();
-	await expect(first.getByRole("link", { name: /Tracked/ })).toBeVisible();
+	await open.getByRole("button", { name: "Track", exact: true }).click();
+	await expect(open.getByRole("link", { name: /Tracked/ })).toBeVisible();
+	await expect(first.getByText("Tracked")).toBeVisible();
 
 	const applications = await (await page.request.get("/api/openapi/applications")).json();
 	expect(applications).toEqual(
@@ -52,8 +51,14 @@ test("searches with no setup, opens a listing and tracks it into Applications", 
 
 	// Searching again marks it as tracked, and tracking again doesn't make a second application.
 	await page.goto(searched);
+	await expect(page.getByRole("article", { name: title, exact: true }).getByText("Tracked")).toBeVisible();
+});
+
+test("keeps the old Jobs address working, as a page of Applications", async ({ authPage: page }) => {
+	await page.goto("/dashboard/jobs?q=Designer");
+	await expect(page).toHaveURL(/\/dashboard\/applications\/jobs\?q=Designer/);
 	await expect(
-		page.getByRole("article", { name: title, exact: true }).getByRole("link", { name: /Tracked/ }),
+		page.getByRole("navigation", { name: "Applications" }).getByRole("link", { name: "Jobs" }),
 	).toBeVisible();
 });
 
@@ -68,7 +73,7 @@ test("shows a plain message once the day's searches are used up", async ({ authP
 		await expect(response).toBeOK();
 	}
 
-	await page.goto("/dashboard/jobs");
+	await page.goto("/dashboard/applications/jobs");
 	await expect(page.getByText(`No searches left today (of ${quota.quota.max})`)).toBeVisible();
 	const form = page.getByRole("search", { name: "Search jobs" });
 	await form.getByRole("searchbox", { name: "Role or keywords" }).fill(`${title} one more`);
@@ -77,7 +82,7 @@ test("shows a plain message once the day's searches are used up", async ({ authP
 	await expect(page.getByRole("link", { name: "See plans" })).toBeVisible();
 
 	// A page already opened today still opens.
-	await page.goto(`/dashboard/jobs?q=${encodeURIComponent(`${title} filler 0`)}`);
+	await page.goto(`/dashboard/applications/jobs?q=${encodeURIComponent(`${title} filler 0`)}`);
 	await expect(page.getByRole("article", { name: `${title} filler 0`, exact: true })).toBeVisible();
 });
 
@@ -87,5 +92,5 @@ test("Save a job links to Jobs instead of searching in the dialog", async ({ aut
 	const dialog = page.getByRole("dialog", { name: "Save a job", exact: true });
 	await expect(dialog.getByText("Search job postings")).toHaveCount(0);
 	await dialog.getByRole("link", { name: "Find jobs" }).click();
-	await expect(page).toHaveURL(/\/dashboard\/jobs/);
+	await expect(page).toHaveURL(/\/dashboard\/applications\/jobs/);
 });

@@ -1,7 +1,7 @@
 import type { JobSearchCriteria, JobSearchDefaults, JobSearchRequest } from "@rezumi/schema/jobs/search";
 import z from "zod";
 import { JOB_SENIORITIES } from "@rezumi/schema/jobs/listing";
-import { JOB_SEARCH_POSTED_WITHIN_DAYS } from "@rezumi/schema/jobs/search";
+import { JOB_SEARCH_POSTED_WITHIN_DAYS, MAX_JOB_SEARCH_SALARY } from "@rezumi/schema/jobs/search";
 
 /**
  * The Jobs page's search as the address holds it: what was last searched, so a reload or the back button shows the
@@ -26,7 +26,7 @@ export const jobsSearchSchema = z.object({
 		.catch(30),
 	arrangement: z.enum(JOB_ARRANGEMENTS).default("any").catch("any"),
 	level: z.enum(JOB_SENIORITIES).or(z.literal("")).default("").catch(""),
-	minPay: z.number().int().positive().max(100_000_000).optional().catch(undefined),
+	minPay: z.number().int().positive().max(MAX_JOB_SEARCH_SALARY).optional().catch(undefined),
 	currency: z
 		.string()
 		.regex(/^[A-Z]{3}$/)
@@ -58,6 +58,12 @@ export function activeFilterCount(search: JobsSearch): number {
 		search.minPay !== undefined,
 		search.visa,
 	].filter(Boolean).length;
+}
+
+/** The filters the Filters sheet holds besides the place, for its button (which names the place itself). */
+export function sheetFilterCount(search: JobsSearch): number {
+	return [search.arrangement !== "any", search.level !== "", search.minPay !== undefined, search.visa].filter(Boolean)
+		.length;
 }
 
 /** The same search without its filters. */
@@ -124,6 +130,27 @@ export function toSearchRequest(search: JobsSearch): Omit<JobSearchRequest, "cur
 			: {}),
 		includeNoSalary: search.noPay,
 		...(search.visa ? { visaSponsorship: true } : {}),
+	};
+}
+
+/**
+ * A saved search (a recent one, say) as the page's address: the reverse of {@link toSearchRequest}. "No remote jobs",
+ * which only the API can ask for, reads as any arrangement.
+ */
+export function fromCriteria(criteria: JobSearchCriteria): JobsSearch {
+	const arrangement = criteria.workArrangement ?? (criteria.remote === "only" ? "remote" : "any");
+	return {
+		q: criteria.query,
+		location: criteria.location ?? "",
+		country: criteria.country ?? "",
+		posted: criteria.postedWithinDays,
+		arrangement,
+		level: criteria.seniority ?? "",
+		...(criteria.salaryMin === undefined
+			? { minPay: undefined, currency: undefined }
+			: { minPay: criteria.salaryMin, currency: criteria.salaryCurrency }),
+		noPay: criteria.includeNoSalary,
+		visa: criteria.visaSponsorship ?? false,
 	};
 }
 

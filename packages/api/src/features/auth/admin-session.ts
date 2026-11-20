@@ -2,6 +2,7 @@ import { ORPCError } from "@orpc/server";
 import { eq } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
+import { protectedProcedure } from "../../context";
 
 /** The owner's tools: web sessions of accounts with the admin role only, the role read from the database. */
 export async function assertAdminSession(authentication: { user: { id: string }; method: string } | null | undefined) {
@@ -13,3 +14,9 @@ export async function assertAdminSession(authentication: { user: { id: string };
 		.where(eq(schema.user.id, authentication.user.id));
 	if (account?.role !== "admin") throw new ORPCError("FORBIDDEN", { message: "Only administrators can do this." });
 }
+
+/** Procedures for the owner's tools (billing, job search costs, portfolio moderation). */
+export const adminProcedure = protectedProcedure.use(async ({ context, next }) => {
+	await assertAdminSession(context.authentication);
+	return next();
+});
