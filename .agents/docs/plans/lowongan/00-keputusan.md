@@ -48,10 +48,11 @@ Contoh kasar dengan Hirebase sebagai utama: 100 pengguna aktif × 3 pencarian pe
 
 ## 4. Log keputusan
 
-| Tanggal    | Keputusan / perubahan                                                                                                                                   | Oleh    |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| 2026-11-20 | D1–D5 dari diskusi dengan Claude; usulan K1–K10 ditulis, menunggu jawaban                                                                               | Pemilik |
-| 2026-11-20 | D6: target global, bukan Indonesia. K1 diubah (Hirebase utama untuk semua, JobsPipe menambah), K9 diperluas, K11 ditambah                               | Pemilik |
-| 2026-11-20 | **K1–K11 disetujui semua** ("Setuju semua")                                                                                                             | Pemilik |
-| 2026-11-20 | K7 diubah: batas anggaran **$1 per hari** (bukan $3) selama belum ada user; dinaikkan saat user datang                                                  | Pemilik |
-| 2026-11-20 | Phase 02: K2 (Gratis 3 · Plus 15 · Pro AI 40), K3 (20 per halaman, cache 6 jam, hapus 30 hari) dan K7 ($1 per hari) dipakai apa adanya, tanpa perubahan | Claude  |
+| Tanggal    | Keputusan / perubahan                                                                                                                                                                                                                                                  | Oleh    |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| 2026-11-20 | D1–D5 dari diskusi dengan Claude; usulan K1–K10 ditulis, menunggu jawaban                                                                                                                                                                                              | Pemilik |
+| 2026-11-20 | D6: target global, bukan Indonesia. K1 diubah (Hirebase utama untuk semua, JobsPipe menambah), K9 diperluas, K11 ditambah                                                                                                                                              | Pemilik |
+| 2026-11-20 | **K1–K11 disetujui semua** ("Setuju semua")                                                                                                                                                                                                                            | Pemilik |
+| 2026-11-20 | K7 diubah: batas anggaran **$1 per hari** (bukan $3) selama belum ada user; dinaikkan saat user datang                                                                                                                                                                 | Pemilik |
+| 2026-11-20 | Phase 02: K2 (Gratis 3 · Plus 15 · Pro AI 40), K3 (20 per halaman, cache 6 jam, hapus 30 hari) dan K7 ($1 per hari) dipakai apa adanya, tanpa perubahan                                                                                                                | Claude  |
+| 2026-11-20 | Phase 03: K5 dipakai apa adanya (menu "Lowongan" tepat di atas "Lamaran"; pencarian di dialog Tambah lamaran diganti tautan "Cari lowongan"). K11 dipakai: gaji minimum dengan "sertakan tanpa gaji" menyala bawaan, sponsor visa, remote di mana saja / di negara ini | Claude  |

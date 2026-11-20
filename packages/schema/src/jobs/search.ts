@@ -64,6 +64,8 @@ export const jobSearchResultSchema = z.object({
 	/** Today's server budget for job providers is spent: only saved answers until tomorrow (K7). */
 	budgetLimited: z.boolean(),
 	quota: jobSearchQuotaSchema,
+	/** The listings on this page the person already tracks: listing id → application id. */
+	tracked: z.record(z.string(), z.string()),
 });
 export type JobSearchResult = z.infer<typeof jobSearchResultSchema>;
 
@@ -75,3 +77,25 @@ export const jobSearchStatusSchema = z.object({
 	quota: jobSearchQuotaSchema,
 });
 export type JobSearchStatus = z.infer<typeof jobSearchStatusSchema>;
+
+/**
+ * Where the Jobs page starts: the first role and place from the person's career preferences, and the country their
+ * searches target (`searchRegions`, else the account time zone's). Nothing is searched until they press Search.
+ */
+export const jobSearchDefaultsSchema = z.object({
+	query: z.string(),
+	location: z.string(),
+	/** Empty: anywhere. */
+	country: z.string(),
+	remote: z.enum(JOB_SEARCH_REMOTE),
+	/** Up to three roles from the preferences, offered before the first search. */
+	suggestions: z.array(z.string()),
+});
+export type JobSearchDefaults = z.infer<typeof jobSearchDefaultsSchema>;
+
+/** What `jobs.track` gives back: the application the listing is tracked as, and whether it was just made. */
+export const jobTrackResultSchema = z.object({
+	applicationId: z.string(),
+	created: z.boolean(),
+});
+export type JobTrackResult = z.infer<typeof jobTrackResultSchema>;

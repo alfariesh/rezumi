@@ -925,6 +925,19 @@ export const applicationService = {
 		return row ?? null;
 	},
 
+	/** The newest application per posting key, for marking postings already saved: key → application id. */
+	findIdsBySourceKeys: async (input: { userId: string; keys: string[] }) => {
+		const found = new Map<string, string>();
+		if (input.keys.length === 0) return found;
+		const rows = await db
+			.select({ id: schema.application.id, key: schema.application.sourceKey })
+			.from(schema.application)
+			.where(and(eq(schema.application.userId, input.userId), inArray(schema.application.sourceKey, input.keys)))
+			.orderBy(desc(schema.application.updatedAt), desc(schema.application.id));
+		for (const row of rows) if (row.key && !found.has(row.key)) found.set(row.key, row.id);
+		return found;
+	},
+
 	// Persist AI-owned enrichment (match score + freeform metadata). Separate from the editable
 	// update path so these fields are only ever written by the AI procedures.
 	setAiResult: async (input: {

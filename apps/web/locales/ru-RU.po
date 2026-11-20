@@ -93,6 +93,7 @@ msgstr ""
 msgid "(no header)"
 msgstr "(без заголовка)"
 
+#: src/features/jobs/listing-card.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "(opens in a new tab)"
@@ -465,6 +466,11 @@ msgstr ""
 msgid "{0} edits applied"
 msgstr "Применено изменений: {0}"
 
+#. placeholder {0}: company.size
+#: src/features/jobs/listing-sheet.tsx
+msgid "{0} employees"
+msgstr ""
+
 #. placeholder {0}: credits.nextExpiry.credits
 #. placeholder {1}: formatShort(credits.nextExpiry.at)
 #: src/features/billing/admin/customer.tsx
@@ -776,6 +782,10 @@ msgstr ""
 msgid "{count, plural, one {# entry} other {# entries}}"
 msgstr "{count, plural, one {# запись} other {Записи #}}"
 
+#: src/features/jobs/jobs-page.tsx
+msgid "{count, plural, one {# job} other {# jobs}}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# нерешённая проблема} few {# нерешённые проблемы} many {# нерешённых проблем} other {# нерешённой проблемы}}"
@@ -930,6 +940,10 @@ msgstr ""
 
 #: src/features/portfolio/statistics/work-statistics.tsx
 msgid "{label}: opened {opens} times"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "{left, plural, =0 {No searches left today (of {max})} one {# search left today (of {max})} other {# searches left today (of {max})}}"
 msgstr ""
 
 #: src/features/billing/credits.ts
@@ -1161,6 +1175,21 @@ msgstr "{proposed, plural, one {Предлагается #} other {Предла�
 
 #: src/features/portfolio/works/add-work/from-link.tsx
 msgid "{provider}: it shows on your page when a visitor presses it"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} a month"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} a year"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} an hour"
 msgstr ""
 
 #: src/features/resume/editor/write/write-panel.tsx
@@ -1701,6 +1730,11 @@ msgstr ""
 msgid "About"
 msgstr "Об этом приложении"
 
+#. placeholder {0}: company.name
+#: src/features/jobs/listing-sheet.tsx
+msgid "About {0}"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "About 90 seconds when spoken"
 msgstr "Около 90 секунд вслух"
@@ -1708,6 +1742,10 @@ msgstr "Около 90 секунд вслух"
 #: src/features/portfolio/editor/section-forms.tsx
 #: src/features/portfolio/page-text.ts
 msgid "About me"
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "About the job"
 msgstr ""
 
 #. Template gallery filter: research, teaching and scholarships
@@ -2304,6 +2342,10 @@ msgstr "Добавьте окончание домена, например {doma
 msgid "Add the order link, or the button won't show."
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Add the roles you want"
+msgstr ""
+
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "Add these records where you manage the domain, then check. Changes can take a few hours to reach everyone."
 msgstr "Добавьте эти записи там, где вы управляете доменом, затем выполните проверку. Распространение изменений может занять несколько часов."
@@ -2896,8 +2938,13 @@ msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
 msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Any"
 msgstr "Любой"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Any level"
+msgstr ""
 
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Anyone who opens the public URL will need this password."
@@ -2928,6 +2975,7 @@ msgid "Anything to stress or leave out? (optional)"
 msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Anywhere"
 msgstr "Где угодно"
 
@@ -4351,8 +4399,13 @@ msgstr ""
 msgid "Cities or countries. Leave it empty for anywhere."
 msgstr ""
 
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "City"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "City (optional)"
 msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
@@ -4375,6 +4428,10 @@ msgstr "Claude Desktop"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Clear"
 msgstr "Очистить"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Clear filters"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Clear formatting"
@@ -4458,6 +4515,7 @@ msgstr ""
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/homepage/theme-preview.tsx
+#: src/features/jobs/listing-sheet.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/card/business-card-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
@@ -5773,6 +5831,7 @@ msgid "Counted separately from the parse score. Coverage does not predict anythi
 msgstr "Считается отдельно от оценки распознавания. Покрытие ничего не предсказывает."
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/portfolio/statistics/work-statistics.tsx
 msgid "Countries"
@@ -5786,6 +5845,7 @@ msgstr ""
 msgid "Countries, devices, linking sites and works by day"
 msgstr ""
 
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Country"
 msgstr ""
@@ -5988,6 +6048,7 @@ msgid "CSV data"
 msgstr "CSV-данные"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Currency"
 msgstr "Валюта"
 
@@ -7437,6 +7498,11 @@ msgstr ""
 msgid "Entry deleted"
 msgstr "Запись удалена"
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Entry level"
+msgstr ""
+
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Entry options"
 msgstr "Варианты входа"
@@ -7538,6 +7604,11 @@ msgstr "Все, что коуч написал для {0}, — сначала н
 
 #: src/features/homepage/features.tsx
 msgid "Everything you need to reach the interview."
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Executive"
 msgstr ""
 
 #: src/features/resume/stylesheet/toolbar.tsx
@@ -7807,6 +7878,14 @@ msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "Find a customer"
+msgstr ""
+
+#: src/features/applications/components/add-application-dialog.tsx
+msgid "Find jobs"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Find jobs that fit"
 msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
@@ -8704,6 +8783,11 @@ msgstr ""
 msgid "Hidden"
 msgstr "Скрытый"
 
+#. placeholder {0}: listing.title
+#: src/features/jobs/use-listing-actions.ts
+msgid "Hidden {0}. It won't show in your results again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "Скрыто из новых вакансий"
@@ -8755,6 +8839,10 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "Hide the photo"
 msgstr "Скрыть фото"
+
+#: src/features/jobs/listing-card.tsx
+msgid "Hide this job"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "High"
@@ -8911,6 +8999,7 @@ msgstr ""
 msgid "Hungarian"
 msgstr "Венгерский"
 
+#: src/features/jobs/format.ts
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Hybrid"
@@ -9147,6 +9236,10 @@ msgstr ""
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "In your Profile"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Include jobs that don't list pay"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -9533,9 +9626,9 @@ msgstr "Объявление о вакансии <0>· необязательн�
 msgid "Job posting link"
 msgstr "Ссылка на вакансию"
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Job search failed. Try again or paste a posting link."
-msgstr "Поиск работы не удался. Попробуйте еще раз или вставьте ссылку на объявление о вакансии."
+#: src/features/jobs/jobs-page.tsx
+msgid "Job search isn't available here yet"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Job search pipeline"
@@ -9553,6 +9646,16 @@ msgstr ""
 msgid "Jobs"
 msgstr "Работа"
 
+#: src/features/jobs/jobs-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgctxt "Job listings to search"
+msgid "Jobs"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Jobs couldn't be loaded. Try again in a moment."
+msgstr ""
+
 #. Example full name placeholder on registration form
 #: src/features/auth/pages/register.tsx
 msgid "John Doe"
@@ -9566,6 +9669,11 @@ msgstr "john.doe"
 #: src/features/resume/import/read-file.ts
 msgid "JSON read"
 msgstr "JSON читать"
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Junior"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Justify"
@@ -9841,6 +9949,11 @@ msgstr "Макет"
 msgid "Layouts"
 msgstr ""
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Lead"
+msgstr ""
+
 #: src/features/portfolio/works/work-document.tsx
 msgid "Lead designer"
 msgstr ""
@@ -10005,6 +10118,7 @@ msgstr "Письма"
 msgid "Letters share your resume's design and live beside the job they are for."
 msgstr ""
 
+#: src/features/jobs/search-bar.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Level"
@@ -10202,6 +10316,10 @@ msgstr "Перечислите инструменты и технологии, �
 msgid "Listening… Stop when you're done."
 msgstr "Слушаю… Остановите, когда закончите."
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "Listings come from job data providers and may change. The original posting is the one to apply through."
+msgstr ""
+
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Lists"
 msgstr ""
@@ -10218,6 +10336,7 @@ msgstr "Live · обновления по мере редактирования"
 msgid "Living gradient"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Load more"
 msgstr ""
@@ -10265,6 +10384,10 @@ msgstr "Загрузка разговоров…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Загрузка собеседований…"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Loading jobs"
+msgstr ""
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10382,6 +10505,10 @@ msgstr "Что искать"
 
 #: src/features/portfolio/page-text.ts
 msgid "Looking for"
+msgstr ""
+
+#: src/features/applications/components/add-application-dialog.tsx
+msgid "Looking for openings?"
 msgstr ""
 
 #: src/features/resume/share/download-tab.tsx
@@ -10504,6 +10631,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "Many bullets start with the same phrase."
 msgstr "Многие пункты начинаются с одной и той же фразы."
+
+#: src/features/jobs/search-bar.tsx
+msgid "Many postings don't list pay, especially outside the US."
+msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "Many versions of your application, in every format."
@@ -10696,6 +10827,11 @@ msgstr ""
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
 msgstr "Микрофон заблокирован. Разрешите доступ в настройках браузера или введите ответ текстом."
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Mid level"
+msgstr ""
+
 #: src/features/billing/admin/labels.ts
 msgid "Midtrans API kept failing"
 msgstr ""
@@ -10703,6 +10839,10 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Minimum base salary"
 msgstr "Минимальный базовый оклад"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Minimum yearly pay"
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Mixed"
@@ -10760,6 +10900,19 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "More download formats"
 msgstr "Больше форматов загрузки"
+
+#: src/features/jobs/search-bar.tsx
+msgid "More filters"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "More filters ({extra})"
+msgstr ""
+
+#. placeholder {0}: listing.title
+#: src/features/jobs/listing-card.tsx
+msgid "More for {0}"
+msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "More for {title}"
@@ -11149,6 +11302,14 @@ msgstr "Здесь появляются новые вакансии, напом�
 msgid "New schedule"
 msgstr "Новое расписание"
 
+#: src/features/jobs/jobs-page.tsx
+msgid "New searches are limited right now. Results you already opened stay available."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "New searches are limited right now. These are results saved earlier; try again tomorrow."
+msgstr ""
+
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "New section"
 msgstr "Новый раздел"
@@ -11314,6 +11475,7 @@ msgid "No corrections"
 msgstr "Без исправлений"
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "No country matches."
 msgstr "Страны не найдены."
 
@@ -11384,6 +11546,10 @@ msgstr ""
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
 msgstr "Работы пока нет"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "No jobs match yet."
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "No keys yet."
@@ -11479,10 +11645,6 @@ msgstr ""
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "No portfolio matches that."
 msgstr ""
-
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "No postings found. Try different keywords."
-msgstr "Объявлений о вакансиях не найдено. Попробуйте разные ключевые слова."
 
 #: src/features/profile/sources/messages.ts
 msgid "No public repositories of your own, so no projects came in."
@@ -12026,6 +12188,10 @@ msgstr ""
 msgid "Offers"
 msgstr "Предложения"
 
+#: src/features/jobs/search-bar.tsx
+msgid "Offers visa sponsorship"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Office days a week, at most"
 msgstr "Дней в офисе в неделю, не более"
@@ -12046,9 +12212,14 @@ msgstr ""
 msgid "On this page"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/page-text.ts
 msgid "On-site"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "On-site, hybrid or remote"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -13252,6 +13423,31 @@ msgstr "Португальский (Португалия)"
 msgid "Position"
 msgstr "Должность"
 
+#: src/features/jobs/search-bar.tsx
+msgid "Posted"
+msgstr ""
+
+#: src/features/jobs/listing-card.tsx
+#: src/features/jobs/listing-sheet.tsx
+msgid "Posted {posted}"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last 2 weeks"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last 30 days"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last day"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last week"
+msgstr ""
+
 #: src/dialogs/resume/template/data.ts
 msgid "Poster type: a tall condensed name over a heavy ink rule and display section titles with a rule running on. Bold, high-contrast and made for creatives."
 msgstr ""
@@ -14390,10 +14586,21 @@ msgstr "Дата напоминания"
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/career/offers.tsx
+#: src/features/jobs/format.ts
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Remote"
 msgstr "Удаленно"
+
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter"
+msgid "Remote anywhere"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter"
+msgid "Remote in this country"
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Remote, Hybrid, a city…"
@@ -15194,9 +15401,9 @@ msgstr "Роль/титул"
 msgid "Role of person {0}"
 msgstr "Роль участника {0}"
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Role, company or location"
-msgstr "Роль, компания или местоположение"
+#: src/features/jobs/search-bar.tsx
+msgid "Role or keywords"
+msgstr ""
 
 #: src/features/portfolio/works/work-document.tsx
 msgid "Role, year, tags and link"
@@ -15335,6 +15542,7 @@ msgid "Save"
 msgstr "Сохранить"
 
 #: src/features/applications/components/add-application-dialog.tsx
+#: src/features/jobs/jobs-page.tsx
 msgid "Save a job"
 msgstr "Сохранить работу"
 
@@ -15634,11 +15842,15 @@ msgstr ""
 msgid "Screening"
 msgstr "Скрининг"
 
-#: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Поиск"
+
+#: src/features/jobs/search-bar.tsx
+msgctxt "Button that runs a job search"
+msgid "Search"
+msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Search again"
@@ -15668,6 +15880,10 @@ msgstr ""
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "Поиск охватывает названия, теги и связанные заявления о приеме на работу."
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Search current openings from company careers sites and job boards, then track the ones you like."
+msgstr ""
 
 #: src/features/documents/documents-page.tsx
 msgid "Search documents"
@@ -15704,9 +15920,9 @@ msgstr "Поиск…"
 msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
 msgstr "Ищите в разделе «Заявки» и в помощнике и читайте страницы, недоступные встроенной программе чтения. Один сервис охватывает и то, и другое."
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Search job postings"
-msgstr "Поиск объявлений о вакансиях"
+#: src/features/jobs/search-bar.tsx
+msgid "Search jobs"
+msgstr ""
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search reads the role, company, location, contacts and tags."
@@ -15771,10 +15987,6 @@ msgstr "Выполняет поиск с помощью поиска вашег�
 msgid "Searches with your server's search and reads pages with {connectedProvider}, whichever AI provider you use."
 msgstr "Выполняет поиск с помощью поиска вашего сервера и читает страницы с помощью {connectedProvider}, независимо от того, какого поставщика искусственного интеллекта вы используете."
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Searching job postings…"
-msgstr "Поиск вакансий…"
-
 #: src/features/career/coach-chat.tsx
 msgid "Searching the web"
 msgstr "Ищем в интернете"
@@ -15833,6 +16045,7 @@ msgid "See how many people visited, and read what they sent through your contact
 msgstr ""
 
 #: src/features/billing/plan-dialog.tsx
+#: src/features/jobs/jobs-page.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "See plans"
@@ -16004,6 +16217,11 @@ msgstr "Отправляет текст вашего резюме только �
 #. placeholder {0}: provider.label
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Sends your resume's text only to {0}."
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Senior"
 msgstr ""
 
 #: src/features/homepage/features.tsx
@@ -16545,6 +16763,7 @@ msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
+#: src/features/jobs/listing-sheet.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
 msgid "Skills"
@@ -17369,6 +17588,10 @@ msgstr ""
 msgid "Tailor my resume to the Northwind posting."
 msgstr ""
 
+#: src/features/jobs/listing-card.tsx
+msgid "Tailor resume"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/assistant-panel.tsx
 msgid "Tailor to the {0} posting"
@@ -17658,6 +17881,10 @@ msgstr ""
 msgid "Thank you. Your report was sent to the Rezumi team."
 msgstr ""
 
+#: src/features/jobs/use-listing-actions.ts
+msgid "That didn't save. Try again."
+msgstr ""
+
 #: src/features/portfolio/admin/review-page.tsx
 msgid "That didn't work. Reload the page and try again."
 msgstr ""
@@ -17864,6 +18091,10 @@ msgstr "Копия связана с заявлением о приеме на �
 
 #: src/dialogs/resume/template/data.ts
 msgid "The creative page: a block of the accent anchors the top corner, framing your portrait, beside an oversized name; two columns follow."
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "The description couldn't be loaded."
 msgstr ""
 
 #. Story outline heading
@@ -18168,6 +18399,10 @@ msgstr "Провайдер не ответил. Проверьте ключ, м�
 msgid "The provider didn't share an email address, which is required. Allow email access when the provider asks, or use another sign-in method."
 msgstr "Провайдер не передал адрес электронной почты, а он обязателен. Разрешите доступ к почте, когда провайдер попросит, или используйте другой способ входа."
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "The provider has no description for this job. The original posting has the details."
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "The provider rejected this sign-in attempt. Try again."
 msgstr "Провайдер отклонил эту попытку входа. Попробуйте еще раз."
@@ -18390,6 +18625,10 @@ msgstr ""
 
 #: src/features/billing/receipt.tsx
 msgid "There's no receipt here: this payment isn't a paid QRIS plan."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "These are results saved earlier. Fresh ones couldn't be loaded just now."
 msgstr ""
 
 #: src/features/career/workspace/apply.tsx
@@ -18639,6 +18878,10 @@ msgstr ""
 msgid "This isn't available for your account."
 msgstr ""
 
+#: src/features/jobs/use-listing-actions.ts
+msgid "This job couldn't be tracked. Try again."
+msgstr ""
+
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "This letter and “{resumeName}” as two PDFs, named to match."
 msgstr "Эта буква и «{resumeName}» как два PDFs, названные так."
@@ -18662,6 +18905,10 @@ msgstr ""
 #: src/features/portfolio/blocks/add-media-block.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 msgid "This link isn't from a service we can embed. Use a Link block instead."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "This list can't be continued. Search again to see more jobs."
 msgstr ""
 
 #: src/features/ats-checker/report/report-view.tsx
@@ -19079,6 +19326,10 @@ msgstr "Сегодня {time}"
 msgid "Today, {hour}"
 msgstr "Сегодня, {hour}"
 
+#: src/features/billing/plan.ts
+msgid "Today's job searches are used up"
+msgstr ""
+
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toggle sidebar"
 msgstr ""
@@ -19109,6 +19360,10 @@ msgstr "Слишком много запросов. Повторите попы�
 
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Too many saves in a short time. Saving tries again in a moment."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Too many searches in a short time. Wait a minute, then try again."
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -19165,7 +19420,9 @@ msgstr ""
 msgid "Totals aren't added up on purpose."
 msgstr ""
 
+#. Save a job listing to the person's applications
 #: src/features/homepage/features.tsx
+#: src/features/jobs/listing-card.tsx
 msgid "Track"
 msgstr ""
 
@@ -19180,6 +19437,22 @@ msgstr "Отслеживать в заявках"
 #: src/routes/dashboard/applications/index.tsx
 msgid "Track your first job"
 msgstr "Отслеживайте свою первую работу"
+
+#. A job listing saved to the person's applications; links to it
+#: src/features/jobs/listing-card.tsx
+msgid "Tracked"
+msgstr ""
+
+#. Where a saved job description came from: a listing tracked from Rezumi's Jobs page
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Tracked from Jobs. The description is the job data provider's copy; the original posting may have changed since."
+msgstr ""
+
+#. placeholder {0}: listing.title
+#. placeholder {1}: listing.company.name
+#: src/features/jobs/use-listing-actions.ts
+msgid "Tracking {0} at {1}"
+msgstr ""
 
 #: src/features/portfolio/admin/labels.ts
 msgid "Trademark or copyright"
@@ -19263,6 +19536,10 @@ msgstr "Попробуйте {0}"
 msgid "Try {name} free"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Try a longer posting window, fewer filters or other words. For local job boards, save jobs with the browser extension."
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Try a sample"
 msgstr "Попробуйте образец"
@@ -19276,6 +19553,8 @@ msgstr "Попробуйте образец"
 #: src/features/career/workspace/practise.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/features/documents/library-error.tsx
+#: src/features/jobs/jobs-page.tsx
+#: src/features/jobs/listing-sheet.tsx
 #: src/features/portfolio/editor/chunk-boundary.tsx
 #: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/location/location-fields.tsx
@@ -19490,6 +19769,7 @@ msgstr "Подчеркнуть ссылки"
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/jobs/use-listing-actions.ts
 #: src/features/portfolio/ai/apply.ts
 #: src/features/portfolio/assistant/changes.tsx
 #: src/features/portfolio/blocks/block-list.tsx
@@ -19692,6 +19972,10 @@ msgstr "Обновлено"
 msgid "Updated {done} of {total}. Locked documents, and letters for public links, were skipped."
 msgstr "Обновлено: {done} из {total}. Пропущены заблокированные документы, а для публичных ссылок — письма."
 
+#: src/features/jobs/jobs-page.tsx
+msgid "updated {updated}"
+msgstr ""
+
 #: src/features/resume/builder/draft.ts
 msgid "Updated from your Profile."
 msgstr ""
@@ -19888,10 +20172,6 @@ msgstr "Используйте только строчные буквы, циф�
 #: src/features/ats-checker/messages.ts
 msgid "Use plain headings such as \"Experience\", \"Education\" and \"Skills\"."
 msgstr "Используйте простые заголовки, такие как «Experience», «Education» и «Skills»."
-
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Use posting"
-msgstr "Используйте объявление о вакансии"
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Use Profile's"
@@ -20126,6 +20406,14 @@ msgstr "Для резюме удалось восстановить очень �
 msgid "Very little text was recovered for this many pages."
 msgstr "Для такого числа страниц удалось восстановить очень мало текста."
 
+#: src/features/jobs/format.ts
+msgid "via {name}"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgid "via the company's careers site"
+msgstr ""
+
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Video"
@@ -20164,7 +20452,10 @@ msgstr "Вид"
 msgid "View application"
 msgstr "Посмотреть заявление о приеме на работу"
 
-#: src/features/applications/components/add-application-dialog.tsx
+#: src/features/jobs/listing-card.tsx
+msgid "View original"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "View posting"
@@ -20200,6 +20491,10 @@ msgstr ""
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "просмотры · 30 дней"
+
+#: src/features/jobs/listing-card.tsx
+msgid "Visa sponsorship"
+msgstr ""
 
 #: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
@@ -20590,6 +20885,10 @@ msgstr "Как выглядит успех, какая задача важнее
 msgid "What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded."
 msgstr "Что проверка на уровне файла обнаружила в отправленном вами PDF. Он работал на этой вкладке; ничего не было загружено."
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "What they ask for"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "What they asked you to prepare"
 msgstr "Что вас попросили подготовить"
@@ -20856,6 +21155,10 @@ msgstr "При извлечении текста слова сливаются �
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Work"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Work arrangement"
 msgstr ""
 
 #: src/features/portfolio/editor/design-panel.tsx
@@ -21139,6 +21442,10 @@ msgstr "Вы больше не сможете входить с этим клю�
 msgid "You can preview every template. {free} are included, and documents that already use another template keep it."
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "You can still save jobs from a link, from pasted text, or with the browser extension."
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
 msgstr "Вы отменили вход до его завершения. Попробуйте еще раз, когда будете готовы."
@@ -21213,6 +21520,10 @@ msgstr "Вы используете гостевой аккаунт"
 
 #: src/features/portfolio/ai/apply.ts
 msgid "You've changed things since. Use Undo at the top of the editor."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "You've reached today's search limit. Results you already opened stay available. Try again tomorrow."
 msgstr ""
 
 #: src/features/profile/sources/messages.ts
@@ -21654,6 +21965,10 @@ msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Your plan changes at your next renewal."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan includes {max} job searches a day. Results you already opened stay available, and searches start again at midnight."
 msgstr ""
 
 #. placeholder {0}: getPlanName(target.planId)

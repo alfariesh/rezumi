@@ -36,11 +36,7 @@ vi.mock("@/libs/orpc/client", () => ({
 			create: { mutationOptions: () => ({ mutationFn: api.create }) },
 			ai: {
 				parsePosting: { mutationOptions: () => ({ mutationFn: api.parsePosting }) },
-				searchPostings: { mutationOptions: () => ({ mutationFn: async () => [] }) },
 			},
-		},
-		webAccess: {
-			status: { queryOptions: () => ({ queryKey: ["web-access"], queryFn: async () => ({ search: false }) }) },
 		},
 		documents: { list: { queryOptions: () => ({ queryKey: ["documents"], queryFn: async () => [] }) } },
 	},
@@ -55,6 +51,15 @@ vi.mock("@/features/settings/integrations/hooks/use-has-usable-ai-provider", () 
 	useHasUsableAiProvider: () => ({ hasUsableProvider: true }),
 }));
 vi.mock("@/dialogs/store", () => ({ useDialogStore: () => vi.fn() }));
+// The dialog links to Jobs; these tests render it without a router.
+vi.mock("@tanstack/react-router", async (importOriginal) => ({
+	...(await importOriginal<typeof import("@tanstack/react-router")>()),
+	Link: ({ children, to, className }: { children: ReactNode; to: string; className?: string }) => (
+		<a href={to} className={className}>
+			{children}
+		</a>
+	),
+}));
 vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
 
 import { AddApplicationDialog } from "./add-application-dialog";

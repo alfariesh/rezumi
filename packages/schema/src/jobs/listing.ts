@@ -92,3 +92,53 @@ export const jobListingSchema = jobListingDraftSchema.extend({
 	closedAt: z.iso.datetime({ offset: true }).nullable(),
 });
 export type JobListing = z.infer<typeof jobListingSchema>;
+
+/**
+ * Applicant tracking systems: a listing found there came from the employer's own careers site ("via the company's
+ * careers site"), not from a job board.
+ */
+export const COMPANY_SITE_SOURCES: ReadonlySet<string> = new Set([
+	"ashby",
+	"bamboohr",
+	"breezy",
+	"greenhouse",
+	"icims",
+	"jobvite",
+	"lever",
+	"personio",
+	"recruitee",
+	"smartrecruiters",
+	"successfactors",
+	"taleo",
+	"teamtailor",
+	"workable",
+	"workday",
+]);
+
+/** Job boards by their usual names; other sources show as the provider gave them. */
+export const JOB_BOARD_NAMES: Readonly<Record<string, string>> = {
+	linkedin: "LinkedIn",
+	indeed: "Indeed",
+	glassdoor: "Glassdoor",
+	ziprecruiter: "ZipRecruiter",
+	monster: "Monster",
+	jobstreet: "JobStreet",
+	seek: "SEEK",
+	naukri: "Naukri",
+	stepstone: "StepStone",
+	wellfound: "Wellfound",
+	dice: "Dice",
+	builtin: "Built In",
+	otta: "Otta",
+};
+
+/**
+ * Where a listing was found, for "via …": `company-site` for an applicant tracking system, a job board's name, or
+ * undefined when the provider doesn't say.
+ */
+export function jobSourceName(source: string | undefined): "company-site" | string | undefined {
+	const key = source?.trim().toLowerCase();
+	if (!key) return undefined;
+	if (COMPANY_SITE_SOURCES.has(key)) return "company-site";
+	return JOB_BOARD_NAMES[key] ?? source?.trim();
+}

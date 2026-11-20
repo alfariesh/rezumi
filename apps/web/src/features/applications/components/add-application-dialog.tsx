@@ -4,6 +4,7 @@ import { Button, Input, Label, Modal, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
@@ -66,10 +67,7 @@ type AddApplicationFormProps = { onClose: () => void; onAdded: (id: string) => v
 
 function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 	const id = useId();
-	const { data: webAccess } = useQuery(orpc.webAccess.status.queryOptions());
 	const { data: documents } = useQuery(orpc.documents.list.queryOptions({ input: { trashed: false } }));
-	const [query, setQuery] = useState("");
-	const search = useMutation(orpc.applications.ai.searchPostings.mutationOptions());
 	const [input, setInput] = useState("");
 	const [role, setRole] = useState("");
 	const [company, setCompany] = useState("");
@@ -193,95 +191,17 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 				</Modal.Heading>
 			</Modal.Header>
 			<Modal.Body className="grid gap-4 p-1">
-				{webAccess?.search && (
-					<section className="grid gap-2" aria-labelledby={`${id}-search-label`}>
-						<Label id={`${id}-search-label`} htmlFor={`${id}-search`}>
-							<Trans>Search job postings</Trans>
-						</Label>
-						<div className="flex gap-2">
-							<Input
-								variant="secondary"
-								fullWidth
-								id={`${id}-search`}
-								value={query}
-								maxLength={500}
-								placeholder={t`Role, company or location`}
-								onChange={(event) => {
-									setQuery(event.target.value);
-									search.reset();
-								}}
-								onKeyDown={(event) => {
-									if (event.key === "Enter" && !event.nativeEvent.isComposing) {
-										event.preventDefault();
-										if (query.trim().length >= 2 && !search.isPending) search.mutate({ query });
-									}
-								}}
-							/>
-							<Button
-								variant="secondary"
-								isDisabled={query.trim().length < 2 || search.isPending || create.isPending}
-								onPress={() => search.mutate({ query })}
-							>
-								<Trans>Search</Trans>
-							</Button>
-						</div>
-						{search.isPending && (
-							<p className="text-body-xs text-muted" role="status">
-								<Trans>Searching job postings…</Trans>
-							</p>
-						)}
-						{search.error && (
-							<p className="text-body-xs text-danger-soft-foreground" role="alert">
-								{getOrpcErrorMessage(search.error, {
-									fallback: t`Job search failed. Try again or paste a posting link.`,
-								})}
-							</p>
-						)}
-						{search.data?.length === 0 && (
-							<p className="text-body-xs text-muted" role="status">
-								<Trans>No postings found. Try different keywords.</Trans>
-							</p>
-						)}
-						{search.data && search.data.length > 0 && (
-							<ul className="grid gap-2">
-								{search.data.map((result) => (
-									<li key={result.url} className="rounded-xl border border-separator p-3">
-										<strong className="text-sm font-medium">{result.title}</strong>
-										<p className="line-clamp-2 text-xs text-muted">{result.description}</p>
-										<div className="mt-2 flex items-center gap-3">
-											<a
-												href={result.url}
-												target="_blank"
-												rel="noreferrer"
-												className="text-xs text-accent-soft-foreground hover:underline"
-											>
-												<Trans>View posting</Trans>
-											</a>
-											<Button
-												size="sm"
-												variant="secondary"
-												isDisabled={read.isPending || create.isPending}
-												onPress={() => {
-													setInput(result.url);
-													setPasteOpen(false);
-													setDescription(null);
-													resetRead();
-													setRole("");
-													setCompany("");
-													setLocation("");
-													setSalary("");
-													search.reset();
-												}}
-											>
-												<Trans>Use posting</Trans>
-											</Button>
-										</div>
-									</li>
-								))}
-							</ul>
-						)}
-					</section>
-				)}
+				{/* Searching for jobs has its own page; this dialog saves one already found. */}
+				<p className="flex flex-wrap items-center gap-x-1.5 text-body-sm text-muted">
+					<Trans>Looking for openings?</Trans>
+					<Link
+						to="/dashboard/jobs"
+						className="font-medium text-accent-soft-foreground hover:underline"
+						onClick={onClose}
+					>
+						<Trans>Find jobs</Trans>
+					</Link>
+				</p>
 
 				<div className="grid gap-1.5">
 					<Label htmlFor={`${id}-posting`}>

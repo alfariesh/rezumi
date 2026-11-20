@@ -61,3 +61,9 @@ Pencarian di dialog (`add-application-dialog.tsx`) diganti tautan **"Cari lowong
 
 - Bagian **Settings → AI → Web access** (Firecrawl/Tavily/Exa) dihapus di Phase 06 (K4).
 - Pesan "Job search isn't configured on this server" tidak ada lagi.
+
+## 6. Yang dibangun di Phase 03 (2026-11-20)
+
+- Sesuai bagian 1–2, dengan perbedaan: filter "Remote" dan "tipe kerja" digabung menjadi satu pilihan **cara kerja** (semua / remote / hybrid / di kantor); kota opsional di samping negara; mengubah filter tidak langsung mencari (tekan **Cari**, karena tiap pencarian memakai kuota).
+- Kartu: logo atau inisial, posisi (klik → panel detail), perusahaan · lokasi, chip cara kerja / gaji / sponsor visa / level, "Diposting … · lewat …", tombol **Lacak** (→ **Dilacak ✓** yang membuka lamaran), **Sesuaikan CV**, **Lihat posting asli ↗**, menu ⋯ **Sembunyikan** (dengan Urungkan). Dua kolom dari layar lebar, satu kolom di ponsel; filter di ponsel satu baris yang bisa digeser.
+- Belum ada: chip kecocokan (Phase 05), tombol "Simpan sebagai notifikasi" (Phase 04), menu "Laporkan lowongan bermasalah" (backlog, butuh tempat menerima laporan).

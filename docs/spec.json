@@ -15146,7 +15146,8 @@
 																	"firecrawl",
 																	"tavily",
 																	"exa",
-																	"extension"
+																	"extension",
+																	"job-search"
 																],
 																"type": "string"
 															},
@@ -15725,7 +15726,8 @@
 															"firecrawl",
 															"tavily",
 															"exa",
-															"extension"
+															"extension",
+															"job-search"
 														],
 														"type": "string"
 													},
@@ -16046,7 +16048,8 @@
 															"firecrawl",
 															"tavily",
 															"exa",
-															"extension"
+															"extension",
+															"job-search"
 														],
 														"type": "string"
 													},
@@ -17235,7 +17238,8 @@
 																			"firecrawl",
 																			"tavily",
 																			"exa",
-																			"extension"
+																			"extension",
+																			"job-search"
 																		],
 																		"type": "string"
 																	},
@@ -17962,7 +17966,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -18530,7 +18535,8 @@
 															"firecrawl",
 															"tavily",
 															"exa",
-															"extension"
+															"extension",
+															"job-search"
 														],
 														"type": "string"
 													},
@@ -18848,7 +18854,8 @@
 															"firecrawl",
 															"tavily",
 															"exa",
-															"extension"
+															"extension",
+															"job-search"
 														],
 														"type": "string"
 													},
@@ -19289,7 +19296,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -19930,7 +19938,8 @@
 															"firecrawl",
 															"tavily",
 															"exa",
-															"extension"
+															"extension",
+															"job-search"
 														],
 														"type": "string"
 													},
@@ -20248,7 +20257,8 @@
 															"firecrawl",
 															"tavily",
 															"exa",
-															"extension"
+															"extension",
+															"job-search"
 														],
 														"type": "string"
 													},
@@ -20689,7 +20699,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -21256,7 +21267,8 @@
 																		"firecrawl",
 																		"tavily",
 																		"exa",
-																		"extension"
+																		"extension",
+																		"job-search"
 																	],
 																	"type": "string"
 																},
@@ -21818,7 +21830,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -22497,7 +22510,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -23200,7 +23214,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -23972,7 +23987,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -24742,7 +24758,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -25510,7 +25527,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -26218,7 +26236,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -26904,7 +26923,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -27610,7 +27630,8 @@
 																"firecrawl",
 																"tavily",
 																"exa",
-																"extension"
+																"extension",
+																"job-search"
 															],
 															"type": "string"
 														},
@@ -28566,299 +28587,6 @@
 				]
 			}
 		},
-		"/applications/ai/search-postings": {
-			"post": {
-				"operationId": "searchApplicationPostings",
-				"summary": "Search job postings",
-				"description": "Searches through the server's SearXNG when it has one, otherwise the selected Firecrawl, Tavily or Exa connection. Returns up to five public links to review and import. Requires authentication.",
-				"tags": [
-					"Applications",
-					"AI"
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"query": {
-										"type": "string",
-										"minLength": 2,
-										"maxLength": 500
-									}
-								},
-								"required": [
-									"query"
-								]
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"type": "object",
-										"properties": {
-											"url": {
-												"type": "string"
-											},
-											"title": {
-												"type": "string",
-												"maxLength": 1000
-											},
-											"description": {
-												"type": "string",
-												"maxLength": 5000,
-												"default": ""
-											}
-										},
-										"required": [
-											"url",
-											"title"
-										]
-									}
-								}
-							}
-						}
-					},
-					"429": {
-						"description": "429",
-						"content": {
-							"application/json": {
-								"schema": {
-									"oneOf": [
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": true
-												},
-												"code": {
-													"const": "RATE_LIMIT_EXCEEDED"
-												},
-												"status": {
-													"const": 429
-												},
-												"message": {
-													"type": "string",
-													"default": "Too many web requests. Try again later."
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										},
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": false
-												},
-												"code": {
-													"type": "string"
-												},
-												"status": {
-													"type": "number"
-												},
-												"message": {
-													"type": "string"
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										}
-									]
-								}
-							}
-						}
-					},
-					"502": {
-						"description": "502",
-						"content": {
-							"application/json": {
-								"schema": {
-									"oneOf": [
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": true
-												},
-												"code": {
-													"const": "SEARCH_FAILED"
-												},
-												"status": {
-													"const": 502
-												},
-												"message": {
-													"type": "string",
-													"default": "Job search couldn't be reached. Try again or paste a posting link."
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										},
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": false
-												},
-												"code": {
-													"type": "string"
-												},
-												"status": {
-													"type": "number"
-												},
-												"message": {
-													"type": "string"
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										}
-									]
-								}
-							}
-						}
-					},
-					"503": {
-						"description": "503",
-						"content": {
-							"application/json": {
-								"schema": {
-									"oneOf": [
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": true
-												},
-												"code": {
-													"const": "SEARCH_UNAVAILABLE"
-												},
-												"status": {
-													"const": 503
-												},
-												"message": {
-													"type": "string",
-													"default": "Job search isn't configured on this server."
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										},
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": false
-												},
-												"code": {
-													"type": "string"
-												},
-												"status": {
-													"type": "number"
-												},
-												"message": {
-													"type": "string"
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										}
-									]
-								}
-							}
-						}
-					},
-					"default": {
-						"description": "Structured API error. See status and code; do not branch on message text.",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"required": [
-										"defined",
-										"code",
-										"status",
-										"message"
-									],
-									"properties": {
-										"defined": {
-											"type": "boolean"
-										},
-										"code": {
-											"type": "string"
-										},
-										"status": {
-											"type": "integer"
-										},
-										"message": {
-											"type": "string"
-										},
-										"data": {}
-									}
-								}
-							}
-						}
-					}
-				},
-				"security": [
-					{
-						"apiKey": []
-					},
-					{
-						"bearerAuth": []
-					},
-					{
-						"cookieAuth": []
-					}
-				],
-				"x-codeSamples": [
-					{
-						"lang": "bash",
-						"label": "cURL",
-						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/ai/search-postings\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"query\": \"<string>\"\n}'"
-					}
-				]
-			}
-		},
 		"/applications/ai/parse-posting": {
 			"post": {
 				"operationId": "aiParseApplicationPosting",
@@ -28954,7 +28682,8 @@
 														"firecrawl",
 														"tavily",
 														"exa",
-														"extension"
+														"extension",
+														"job-search"
 													],
 													"type": "string"
 												},
@@ -36453,7 +36182,8 @@
 																			"firecrawl",
 																			"tavily",
 																			"exa",
-																			"extension"
+																			"extension",
+																			"job-search"
 																		],
 																		"type": "string"
 																	},
@@ -64069,6 +63799,15 @@
 												"max",
 												"resetsAt"
 											]
+										},
+										"tracked": {
+											"type": "object",
+											"propertyNames": {
+												"type": "string"
+											},
+											"additionalProperties": {
+												"type": "string"
+											}
 										}
 									},
 									"required": [
@@ -64077,7 +63816,8 @@
 										"fromCache",
 										"stale",
 										"budgetLimited",
-										"quota"
+										"quota",
+										"tracked"
 									]
 								}
 							}
@@ -64929,6 +64669,265 @@
 						"lang": "bash",
 						"label": "cURL",
 						"source": "curl --request PUT \"https://rezumi.app/api/openapi/jobs/listings/<id>/hidden\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+					}
+				]
+			}
+		},
+		"/jobs/listings/{id}/track": {
+			"post": {
+				"operationId": "trackJobListing",
+				"summary": "Track a job listing",
+				"description": "Saves a job listing as an application in the Saved stage, with its role, company, place, listed pay, the provider's copy of the posting and the link to the original. A posting already saved gives back that application instead of a second one. Requires authentication.",
+				"tags": [
+					"Jobs"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 64
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"applicationId": {
+											"type": "string"
+										},
+										"created": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"applicationId",
+										"created"
+									]
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "404",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": true
+												},
+												"code": {
+													"const": "NOT_FOUND"
+												},
+												"status": {
+													"const": 404
+												},
+												"message": {
+													"type": "string",
+													"default": "This job listing isn't available anymore."
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": false
+												},
+												"code": {
+													"type": "string"
+												},
+												"status": {
+													"type": "number"
+												},
+												"message": {
+													"type": "string"
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										}
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/jobs/listings/<id>/track\" --header \"x-api-key: <api-key>\""
+					}
+				]
+			}
+		},
+		"/jobs/defaults": {
+			"get": {
+				"operationId": "getJobSearchDefaults",
+				"summary": "Get a starting job search",
+				"description": "Returns the role, place and country a job search starts from, taken from your career preferences and search regions. Searches nothing. Requires authentication.",
+				"tags": [
+					"Jobs"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"query": {
+											"type": "string"
+										},
+										"location": {
+											"type": "string"
+										},
+										"country": {
+											"type": "string"
+										},
+										"remote": {
+											"enum": [
+												"any",
+												"only",
+												"exclude"
+											],
+											"type": "string"
+										},
+										"suggestions": {
+											"type": "array",
+											"items": {
+												"type": "string"
+											}
+										}
+									},
+									"required": [
+										"query",
+										"location",
+										"country",
+										"remote",
+										"suggestions"
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl \"https://rezumi.app/api/openapi/jobs/defaults\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -121057,299 +121056,6 @@
 				]
 			}
 		},
-		"/applications/ai/posting-searches": {
-			"post": {
-				"operationId": "createPostingSearch",
-				"summary": "Search job postings",
-				"description": "Searches through the server's SearXNG when it has one, otherwise the selected Firecrawl, Tavily or Exa connection. Returns up to five public links to review and import. Requires authentication.",
-				"tags": [
-					"Applications",
-					"AI"
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"query": {
-										"type": "string",
-										"minLength": 2,
-										"maxLength": 500
-									}
-								},
-								"required": [
-									"query"
-								]
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"type": "object",
-										"properties": {
-											"url": {
-												"type": "string"
-											},
-											"title": {
-												"type": "string",
-												"maxLength": 1000
-											},
-											"description": {
-												"type": "string",
-												"maxLength": 5000,
-												"default": ""
-											}
-										},
-										"required": [
-											"url",
-											"title"
-										]
-									}
-								}
-							}
-						}
-					},
-					"429": {
-						"description": "429",
-						"content": {
-							"application/json": {
-								"schema": {
-									"oneOf": [
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": true
-												},
-												"code": {
-													"const": "RATE_LIMIT_EXCEEDED"
-												},
-												"status": {
-													"const": 429
-												},
-												"message": {
-													"type": "string",
-													"default": "Too many web requests. Try again later."
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										},
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": false
-												},
-												"code": {
-													"type": "string"
-												},
-												"status": {
-													"type": "number"
-												},
-												"message": {
-													"type": "string"
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										}
-									]
-								}
-							}
-						}
-					},
-					"502": {
-						"description": "502",
-						"content": {
-							"application/json": {
-								"schema": {
-									"oneOf": [
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": true
-												},
-												"code": {
-													"const": "SEARCH_FAILED"
-												},
-												"status": {
-													"const": 502
-												},
-												"message": {
-													"type": "string",
-													"default": "Job search couldn't be reached. Try again or paste a posting link."
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										},
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": false
-												},
-												"code": {
-													"type": "string"
-												},
-												"status": {
-													"type": "number"
-												},
-												"message": {
-													"type": "string"
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										}
-									]
-								}
-							}
-						}
-					},
-					"503": {
-						"description": "503",
-						"content": {
-							"application/json": {
-								"schema": {
-									"oneOf": [
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": true
-												},
-												"code": {
-													"const": "SEARCH_UNAVAILABLE"
-												},
-												"status": {
-													"const": 503
-												},
-												"message": {
-													"type": "string",
-													"default": "Job search isn't configured on this server."
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										},
-										{
-											"type": "object",
-											"properties": {
-												"defined": {
-													"const": false
-												},
-												"code": {
-													"type": "string"
-												},
-												"status": {
-													"type": "number"
-												},
-												"message": {
-													"type": "string"
-												},
-												"data": {}
-											},
-											"required": [
-												"defined",
-												"code",
-												"status",
-												"message"
-											]
-										}
-									]
-								}
-							}
-						}
-					},
-					"default": {
-						"description": "Structured API error. See status and code; do not branch on message text.",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"required": [
-										"defined",
-										"code",
-										"status",
-										"message"
-									],
-									"properties": {
-										"defined": {
-											"type": "boolean"
-										},
-										"code": {
-											"type": "string"
-										},
-										"status": {
-											"type": "integer"
-										},
-										"message": {
-											"type": "string"
-										},
-										"data": {}
-									}
-								}
-							}
-						}
-					}
-				},
-				"security": [
-					{
-						"apiKey": []
-					},
-					{
-						"bearerAuth": []
-					},
-					{
-						"cookieAuth": []
-					}
-				],
-				"x-codeSamples": [
-					{
-						"lang": "bash",
-						"label": "cURL",
-						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/ai/posting-searches\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"query\": \"<string>\"\n}'"
-					}
-				]
-			}
-		},
 		"/applications/ai/posting-parses": {
 			"post": {
 				"operationId": "createPostingParse",
@@ -121445,7 +121151,8 @@
 														"firecrawl",
 														"tavily",
 														"exa",
-														"extension"
+														"extension",
+														"job-search"
 													],
 													"type": "string"
 												},
@@ -122893,7 +122600,8 @@
 																		"firecrawl",
 																		"tavily",
 																		"exa",
-																		"extension"
+																		"extension",
+																		"job-search"
 																	],
 																	"type": "string"
 																},

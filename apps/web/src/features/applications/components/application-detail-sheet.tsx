@@ -609,6 +609,11 @@ function PostingDialog({ application, open, onOpenChange }: PostingDialogProps) 
 									<Trans comment="Where a saved job description came from: the Rezumi browser extension read it from the page">
 										Saved from the browser extension
 									</Trans>
+								) : application.postingSource.method === "job-search" ? (
+									<Trans comment="Where a saved job description came from: a listing tracked from Rezumi's Jobs page">
+										Tracked from Jobs. The description is the job data provider's copy; the original posting may have
+										changed since.
+									</Trans>
 								) : (
 									<Trans>
 										Retrieved {application.postingSource.retrievedAt} using {application.postingSource.method}.

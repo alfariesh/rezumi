@@ -9,6 +9,9 @@ import { env } from "@rezumi/env/server";
 
 export const TREG_BASE_URL = "https://treg.to";
 
+/** treg, or the stand-in the browser tests run (`TREG_BASE_URL`). */
+const tregBase = () => env.TREG_BASE_URL ?? TREG_BASE_URL;
+
 const CALL_TIMEOUT_MS = 15_000;
 /** Retries of a busy refusal stop once the call has taken this long in all. */
 const RETRY_BUDGET_MS = 10_000;
@@ -112,7 +115,7 @@ function classify(status: number, reason: string | undefined): { code: TregError
 }
 
 function callUrl(call: TregCall): string {
-	const url = new URL(`/call/${encodeURIComponent(call.tool)}`, TREG_BASE_URL);
+	const url = new URL(`/call/${encodeURIComponent(call.tool)}`, tregBase());
 	for (const [key, value] of Object.entries(call.query ?? {})) url.searchParams.set(key, String(value));
 	return url.href;
 }

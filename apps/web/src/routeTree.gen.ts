@@ -37,6 +37,7 @@ import { Route as DashboardAdminRouteRouteImport } from "./routes/dashboard/admi
 import { Route as DashboardCoverLettersRouteImport } from "./routes/dashboard/cover-letters";
 import { Route as DashboardDocumentsRouteImport } from "./routes/dashboard/documents";
 import { Route as DashboardHelpRouteImport } from "./routes/dashboard/help";
+import { Route as DashboardJobsRouteImport } from "./routes/dashboard/jobs";
 import { Route as DashboardProfileRouteRouteImport } from "./routes/dashboard/profile/route";
 import { Route as DashboardSettingsRouteRouteImport } from "./routes/dashboard/settings/route";
 import { Route as DashboardTrashRouteImport } from "./routes/dashboard/trash";
@@ -219,6 +220,11 @@ const DashboardDocumentsRoute = DashboardDocumentsRouteImport.update({
 const DashboardHelpRoute = DashboardHelpRouteImport.update({
   id: "/help",
   path: "/help",
+  getParentRoute: () => DashboardRouteRoute,
+} as any);
+const DashboardJobsRoute = DashboardJobsRouteImport.update({
+  id: "/jobs",
+  path: "/jobs",
   getParentRoute: () => DashboardRouteRoute,
 } as any);
 const DashboardProfileRouteRoute = DashboardProfileRouteRouteImport.update({
@@ -495,6 +501,7 @@ export interface FileRoutesByFullPath {
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
   "/dashboard/documents": typeof DashboardDocumentsRoute;
   "/dashboard/help": typeof DashboardHelpRoute;
+  "/dashboard/jobs": typeof DashboardJobsRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
   "/docs/$": typeof DocsSplatRoute;
   "/agent/": typeof AgentIndexRoute;
@@ -560,6 +567,7 @@ export interface FileRoutesByTo {
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
   "/dashboard/documents": typeof DashboardDocumentsRoute;
   "/dashboard/help": typeof DashboardHelpRoute;
+  "/dashboard/jobs": typeof DashboardJobsRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
   "/docs/$": typeof DocsSplatRoute;
   "/": typeof HomeIndexRoute;
@@ -635,6 +643,7 @@ export interface FileRoutesById {
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
   "/dashboard/documents": typeof DashboardDocumentsRoute;
   "/dashboard/help": typeof DashboardHelpRoute;
+  "/dashboard/jobs": typeof DashboardJobsRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
   "/docs/$": typeof DocsSplatRoute;
   "/_home/": typeof HomeIndexRoute;
@@ -711,6 +720,7 @@ export interface FileRouteTypes {
     | "/dashboard/cover-letters"
     | "/dashboard/documents"
     | "/dashboard/help"
+    | "/dashboard/jobs"
     | "/dashboard/trash"
     | "/docs/$"
     | "/agent/"
@@ -776,6 +786,7 @@ export interface FileRouteTypes {
     | "/dashboard/cover-letters"
     | "/dashboard/documents"
     | "/dashboard/help"
+    | "/dashboard/jobs"
     | "/dashboard/trash"
     | "/docs/$"
     | "/"
@@ -850,6 +861,7 @@ export interface FileRouteTypes {
     | "/dashboard/cover-letters"
     | "/dashboard/documents"
     | "/dashboard/help"
+    | "/dashboard/jobs"
     | "/dashboard/trash"
     | "/docs/$"
     | "/_home/"
@@ -1106,6 +1118,13 @@ declare module "@tanstack/react-router" {
       path: "/help";
       fullPath: "/dashboard/help";
       preLoaderRoute: typeof DashboardHelpRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/jobs": {
+      id: "/dashboard/jobs";
+      path: "/jobs";
+      fullPath: "/dashboard/jobs";
+      preLoaderRoute: typeof DashboardJobsRouteImport;
       parentRoute: typeof DashboardRouteRoute;
     };
     "/dashboard/profile": {
@@ -1572,6 +1591,7 @@ interface DashboardRouteRouteChildren {
   DashboardCoverLettersRoute: typeof DashboardCoverLettersRoute;
   DashboardDocumentsRoute: typeof DashboardDocumentsRoute;
   DashboardHelpRoute: typeof DashboardHelpRoute;
+  DashboardJobsRoute: typeof DashboardJobsRoute;
   DashboardTrashRoute: typeof DashboardTrashRoute;
   DashboardIndexRoute: typeof DashboardIndexRoute;
   DashboardApplicationsOffersRoute: typeof DashboardApplicationsOffersRoute;
@@ -1596,6 +1616,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardCoverLettersRoute: DashboardCoverLettersRoute,
   DashboardDocumentsRoute: DashboardDocumentsRoute,
   DashboardHelpRoute: DashboardHelpRoute,
+  DashboardJobsRoute: DashboardJobsRoute,
   DashboardTrashRoute: DashboardTrashRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardApplicationsOffersRoute: DashboardApplicationsOffersRoute,

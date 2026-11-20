@@ -58,7 +58,6 @@ const PARITY_PROCEDURES: Record<string, [AnyProcedure, BehaviorAnnotations]> = {
 	"documents.purge": [router.documents.purge, WRITE_DESTRUCTIVE],
 	"documents.purgeExpired": [router.documents.purgeExpired, WRITE_DESTRUCTIVE],
 	"documents.copyForJob": [router.documents.copyForJob, WRITE_DESTRUCTIVE],
-	"applications.ai.searchPostings": [router.applications.ai.searchPostings, WRITE_DESTRUCTIVE_EXTERNAL],
 	"applications.ai.parsePosting": [router.applications.ai.parsePosting, WRITE_DESTRUCTIVE_EXTERNAL],
 	"ai.parsePdf": [router.ai.parsePdf, WRITE_DESTRUCTIVE_EXTERNAL],
 	"ai.parseDocx": [router.ai.parseDocx, WRITE_DESTRUCTIVE_EXTERNAL],

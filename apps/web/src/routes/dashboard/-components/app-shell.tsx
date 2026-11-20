@@ -29,7 +29,13 @@ import { orpc } from "@/libs/orpc/client";
 
 type NavItem = {
 	/** Where it links. */
-	to: "/dashboard" | "/dashboard/applications" | "/dashboard/documents" | "/dashboard/portfolio" | "/dashboard/profile";
+	to:
+		| "/dashboard"
+		| "/dashboard/applications"
+		| "/dashboard/documents"
+		| "/dashboard/jobs"
+		| "/dashboard/portfolio"
+		| "/dashboard/profile";
 	icon: IconName;
 	label: string;
 	count?: number;
@@ -62,7 +68,8 @@ function useNavItems() {
 				}
 			: {}),
 	};
-	// The owner's order (2026-11-16): Home, Portfolio, Documents, Profile, then Applications.
+	// The owner's order (2026-11-16): Home, Portfolio, Documents, Profile, then Applications; Jobs right above
+	// Applications (2026-11-20, `.agents/docs/plans/lowongan/00-keputusan.md` K5).
 	const items: NavItem[] = [
 		{ to: "/dashboard", icon: "house", label: t`Home`, ...(unread ? { count: unread } : {}) },
 		...(portfolio?.enabled
@@ -75,6 +82,11 @@ function useNavItems() {
 			...(counts ? { count: counts.resume + counts.letter } : {}),
 		},
 		{ to: "/dashboard/profile", icon: "user-circle", label: t`Profile` },
+		{
+			to: "/dashboard/jobs",
+			icon: "list-magnifying-glass",
+			label: t({ message: "Jobs", context: "Job listings to search" }),
+		},
 		applications,
 	];
 
@@ -247,6 +259,8 @@ function useCrumbs(): Crumb[] {
 			return [{ label: t`Documents`, href: "/dashboard/documents" }, { label: t`Trash` }];
 		case "portfolio":
 			return [{ label: t`Portfolio` }];
+		case "jobs":
+			return [{ label: t({ message: "Jobs", context: "Job listings to search" }) }];
 		case "applications":
 			if (page === "offers") return [{ label: t`Applications`, href: "/dashboard/applications" }, { label: t`Offers` }];
 			return page

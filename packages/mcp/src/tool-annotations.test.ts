@@ -57,7 +57,6 @@ describe("tool annotations", () => {
 			"api_agent_threads_get",
 			"api_ai_parse_pdf",
 			"api_web_access_test",
-			"api_applications_ai_search_postings",
 		]) {
 			expect(PARITY_TOOL_META[name]?.annotations, name).toMatchObject({ readOnlyHint: false, destructiveHint: true });
 		}
@@ -82,7 +81,6 @@ describe("tool annotations", () => {
 		}
 		for (const name of [
 			"api_agent_messages_send",
-			"api_applications_ai_search_postings",
 			"api_resume_get_by_slug",
 			"api_documents_trash",
 			"api_documents_restore",

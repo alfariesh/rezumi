@@ -67,6 +67,7 @@ export type PlanProblem =
 	  }
 	| { kind: "limit"; limit: "portfolioWorks"; max: number; used: number }
 	| { kind: "limit"; limit: "portfolioStorageBytes"; max: number; used: number }
+	| { kind: "limit"; limit: "jobSearchesPerDay"; max: number; used: number }
 	| { kind: "feature"; feature: PlanFeature };
 
 /** The plan problem behind a server error (PLAN_LIMIT_REACHED or PLAN_FEATURE_REQUIRED), else null. */
@@ -74,7 +75,7 @@ export function getPlanProblem(error: unknown): PlanProblem | null {
 	if (!(error instanceof ORPCError)) return null;
 	const data = (error.data ?? {}) as Record<string, unknown>;
 	if (error.code === "PLAN_LIMIT_REACHED") {
-		if (data.limit === "portfolioWorks" || data.limit === "portfolioStorageBytes")
+		if (data.limit === "portfolioWorks" || data.limit === "portfolioStorageBytes" || data.limit === "jobSearchesPerDay")
 			return {
 				kind: "limit",
 				limit: data.limit,
@@ -106,6 +107,13 @@ export function describePlanProblem(problem: PlanProblem): { title: string; desc
 			return {
 				title: t`No room for another work`,
 				description: t`Your plan shows up to ${max} works. The works you already have stay. Remove one to add another.`,
+			};
+		}
+		if (problem.limit === "jobSearchesPerDay") {
+			const { max } = problem;
+			return {
+				title: t`Today's job searches are used up`,
+				description: t`Your plan includes ${max} job searches a day. Results you already opened stay available, and searches start again at midnight.`,
 			};
 		}
 		if (problem.limit === "portfolioStorageBytes") {

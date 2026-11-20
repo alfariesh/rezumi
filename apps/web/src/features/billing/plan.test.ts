@@ -92,6 +92,11 @@ describe("plan problems", () => {
 		});
 		expect(getPlanProblem(new ORPCError("NOT_FOUND"))).toBeNull();
 		expect(getPlanProblem(new Error("PLAN_LIMIT_REACHED"))).toBeNull();
+		// Today's job searches read as their own limit, not a document one.
+		const searches = new ORPCError("PLAN_LIMIT_REACHED", {
+			data: { limit: "jobSearchesPerDay", max: 3, used: 3, planId: "free", resetsAt: "2026-11-21T00:00:00.000Z" },
+		});
+		expect(getPlanProblem(searches)).toEqual({ kind: "limit", limit: "jobSearchesPerDay", max: 3, used: 3 });
 	});
 
 	it("explains each problem with the free way on and no price", () => {

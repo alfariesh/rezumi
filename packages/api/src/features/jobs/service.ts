@@ -37,6 +37,7 @@ import { JOB_SOURCES } from "./providers";
 import { hasMorePages, routeSearch, SEARCH_PROVIDERS } from "./routing";
 import { jobSearchKey, normalizeJobSearch, stableJson } from "./search-key";
 import { upsertListings } from "./store";
+import { trackedApplications } from "./track";
 import { isTregConfigured, TregError } from "./treg";
 
 /**
@@ -261,14 +262,16 @@ export function createJobSearchService(overrides: Partial<JobSearchDependencies>
 				userId,
 				listings.map((listing) => listing.id),
 			);
+			const cards = listings.filter((listing) => !listing.closedAt && !hidden.has(listing.id)).map(toCard);
 			return {
-				listings: listings.filter((listing) => !listing.closedAt && !hidden.has(listing.id)).map(toCard),
+				listings: cards,
 				...(hasMorePages(input, answer.entry.cursors) ? { cursor: answer.entry.key } : {}),
 				fetchedAt: answer.entry.fetchedAt.toISOString(),
 				fromCache: answer.fromCache,
 				stale: answer.stale,
 				budgetLimited: answer.budgetLimited,
 				quota: { used: Math.min(used, quota.max), max: quota.max, resetsAt: quota.resetsAt.toISOString() },
+				tracked: await trackedApplications(userId, cards),
 			};
 		},
 

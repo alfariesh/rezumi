@@ -109,10 +109,6 @@ export const restAliases = {
 		operationId: "deleteDocumentPermanently",
 	}),
 	documentCopy: router.documents.copyForJob.route({ path: "/documents/copies", operationId: "createDocumentCopy" }),
-	postingSearch: router.applications.ai.searchPostings.route({
-		path: "/applications/ai/posting-searches",
-		operationId: "createPostingSearch",
-	}),
 	postingParse: router.applications.ai.parsePosting.route({
 		path: "/applications/ai/posting-parses",
 		operationId: "createPostingParse",

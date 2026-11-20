@@ -228,6 +228,8 @@ export const env = createEnv({
 		GITHUB_API_TOKEN: z.string().trim().min(1).optional(),
 		// Job search: Hirebase and JobsPipe through treg (https://treg.to). Without it, job search isn't offered.
 		TREG_API_KEY: z.string().trim().min(1).optional(),
+		// Tests only: where treg calls go instead of https://treg.to (the browser tests' stand-in provider).
+		TREG_BASE_URL: z.url({ protocol: /^https?$/ }).optional(),
 		// What job search may spend on treg per UTC day, in US dollars; past it, people get cached results only.
 		JOB_SEARCH_DAILY_BUDGET_USD: z.coerce.number().nonnegative().default(1),
 		AI_PROVIDER: aiProviderSchema.optional(),

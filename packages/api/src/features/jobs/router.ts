@@ -1,9 +1,17 @@
 import { ORPCError } from "@orpc/server";
 import z from "zod";
 import { jobListingSchema } from "@rezumi/schema/jobs/listing";
-import { jobSearchRequestSchema, jobSearchResultSchema, jobSearchStatusSchema } from "@rezumi/schema/jobs/search";
+import {
+	jobSearchDefaultsSchema,
+	jobSearchRequestSchema,
+	jobSearchResultSchema,
+	jobSearchStatusSchema,
+	jobTrackResultSchema,
+} from "@rezumi/schema/jobs/search";
 import { protectedProcedure } from "../../context";
+import { jobSearchDefaults } from "./defaults";
 import { JobSearchError, jobSearchService } from "./service";
+import { trackListing } from "./track";
 
 /**
  * Job search over oRPC (`02-teknis.md` section 7). Listings come from Hirebase and JobsPipe through Rezumi's own treg
@@ -12,6 +20,8 @@ import { JobSearchError, jobSearchService } from "./service";
  */
 
 const route = { tags: ["Jobs"] } as const;
+
+const listingGone = { NOT_FOUND: { message: "This job listing isn't available anymore.", status: 404 } } as const;
 
 const errors = {
 	JOBS_UNAVAILABLE: { message: "Job search isn't available right now. Try again later.", status: 503 },
@@ -75,7 +85,7 @@ export const jobsRouter = {
 		})
 		.input(z.object({ id: z.string().min(1).max(64) }))
 		.output(jobListingSchema)
-		.errors({ NOT_FOUND: { message: "This job listing isn't available anymore.", status: 404 } })
+		.errors(listingGone)
 		.handler(async ({ input }) => {
 			const listing = await jobSearchService.listing(input.id);
 			if (!listing) throw new ORPCError("NOT_FOUND", { status: 404 });
@@ -93,12 +103,47 @@ export const jobsRouter = {
 		})
 		.input(z.object({ id: z.string().min(1).max(64), hidden: z.boolean().default(true) }))
 		.output(z.object({ hidden: z.boolean() }))
-		.errors({ NOT_FOUND: { message: "This job listing isn't available anymore.", status: 404 } })
+		.errors(listingGone)
 		.handler(async ({ context, input }) => {
 			if (!(await jobSearchService.hide(context.user.id, input.id, input.hidden)))
 				throw new ORPCError("NOT_FOUND", { status: 404 });
 			return { hidden: input.hidden };
 		}),
+
+	track: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/jobs/listings/{id}/track",
+			operationId: "trackJobListing",
+			summary: "Track a job listing",
+			description:
+				"Saves a job listing as an application in the Saved stage, with its role, company, place, listed pay, the provider's copy of the posting and the link to the original. A posting already saved gives back that application instead of a second one. Requires authentication.",
+		})
+		.input(z.object({ id: z.string().min(1).max(64) }))
+		.output(jobTrackResultSchema)
+		.errors(listingGone)
+		.handler(async ({ context, input }) => {
+			const listing = await jobSearchService.listing(input.id);
+			if (!listing || listing.closedAt) throw new ORPCError("NOT_FOUND", { status: 404 });
+			return trackListing(context.user.id, listing);
+		}),
+
+	defaults: protectedProcedure
+		.route({
+			...route,
+			method: "GET",
+			path: "/jobs/defaults",
+			operationId: "getJobSearchDefaults",
+			summary: "Get a starting job search",
+			description:
+				"Returns the role, place and country a job search starts from, taken from your career preferences and search regions. Searches nothing. Requires authentication.",
+		})
+		.input(z.object({}).optional())
+		.output(jobSearchDefaultsSchema)
+		.handler(({ context }) =>
+			jobSearchDefaults(context.user.id, context.reqHeaders.get("x-client-timezone") ?? undefined),
+		),
 
 	quota: protectedProcedure
 		.route({
