@@ -14,7 +14,7 @@
 
 1. **treg** (https://treg.to, akun yang kunci `TREG_API_KEY`-nya sudah ada di `.env.local`):
    - Top-up saldo secukupnya untuk awal (mis. $10). Pembayaran kamu lakukan sendiri.
-   - Pasang **batas belanja harian** (spend cap) sesuai K7, mis. $3 per hari.
+   - Pasang **batas belanja harian** (spend cap) sesuai K7: **$1 per hari**.
    - Buat **token tim terpisah untuk produksi** (jangan pakai token yang sama dengan laptop), lalu simpan sebagai rahasia Worker. Claude memandu perintahnya; kamu yang mengetik nilainya:
 
      ```bash

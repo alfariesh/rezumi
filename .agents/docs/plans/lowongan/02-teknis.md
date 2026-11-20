@@ -176,7 +176,7 @@ Prosedur oRPC baru di `packages/api/src/features/jobs/router.ts`, digabung ke `@
 ## 8. Kuota dan anggaran
 
 - **Kuota pengguna (K2):** `PlanLimits` di `packages/schema/src/billing/catalog.ts` mendapat `jobSearchesPerDay` (free 3, plus 15, pro-ai 40, atau sesuai jawaban pemilik). Pengecekan memakai `Coordination` `consume` key `jobs-quota:<userId>:<YYYY-MM-DD zona akun>`, `window` sampai tengah malam zona akun. Saat `BILLING_MODE` mati, pakai batas Pro AI. Pesan galat netral (tanpa harga) seperti `planLimitReached`; kode galat `PLAN_LIMIT_REACHED` dengan `limit: "jobSearchesPerDay"`.
-- **Anggaran server (K7):** env `JOB_SEARCH_DAILY_BUDGET_USD` (angka; bawaan 3). Total biaya hari ini dijumlah dari `X-Treg-Cost-Micro` dan disimpan di `Coordination` key `jobs-budget:<YYYY-MM-DD UTC>` (gunakan `consume` dengan `max` dalam mikro-USD per unit, atau tambahkan operasi `add` kecil ke Coordination bila perlu; catat pilihannya di sini). Lewat batas → hanya cache. Batas keras kedua ada di dasbor treg (spend cap harian per anggota).
+- **Anggaran server (K7):** env `JOB_SEARCH_DAILY_BUDGET_USD` (angka; bawaan 1). Total biaya hari ini dijumlah dari `X-Treg-Cost-Micro` dan disimpan di `Coordination` key `jobs-budget:<YYYY-MM-DD UTC>` (gunakan `consume` dengan `max` dalam mikro-USD per unit, atau tambahkan operasi `add` kecil ke Coordination bila perlu; catat pilihannya di sini). Lewat batas → hanya cache. Batas keras kedua ada di dasbor treg (spend cap harian per anggota).
 - **Kill switch:** env `FLAG_DISABLE_JOB_SEARCH=true` mematikan panggilan penyedia (hanya cache).
 
 ## 9. Lowongan baru otomatis (Phase 04)

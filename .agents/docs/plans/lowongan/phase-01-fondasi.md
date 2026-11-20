@@ -17,7 +17,7 @@
 ### Langkah
 
 1. Baca `02-teknis.md` bagian 1–6 dan 13. Ambil skema terbaru dari katalog treg (gratis) untuk `hirebase.jobs.search`, `hirebase.jobs.get`, `hirebase.jobs.expired`, `jobspipe.jobs.search`, `jobspipe.jobs.new`, dan endpoint `*.count`. Simpan `example_response` (atau satu respons nyata kecil, tanpa kolom kontak orang) sebagai fixtures di `packages/api/src/features/jobs/__fixtures__/`.
-2. **Env:** `TREG_API_KEY` (opsional), `JOB_SEARCH_DAILY_BUDGET_USD` (angka, bawaan 3), `FLAG_DISABLE_JOB_SEARCH` (boolean) di `packages/env/src/server.ts`, `.env.example`, `turbo.json`.
+2. **Env:** `TREG_API_KEY` (opsional), `JOB_SEARCH_DAILY_BUDGET_USD` (angka, bawaan 1), `FLAG_DISABLE_JOB_SEARCH` (boolean) di `packages/env/src/server.ts`, `.env.example`, `turbo.json`.
 3. **Klien treg** `packages/api/src/features/jobs/treg.ts` sesuai bagian 4: header, batas biaya per panggilan, retry 429/503, batas waktu, biaya dari `X-Treg-Cost-Micro`, log tanpa rahasia.
 4. **Skema** `packages/schema/src/jobs/` (`listing.ts`, `search.ts`) dengan Zod, ekspor eksplisit di `package.json`.
 5. **Adaptor penyedia** `packages/api/src/features/jobs/providers/hirebase.ts` dan `jobspipe.ts`: `search(input) → { listings: JobListing[], cursor?, costMicro }` dan pemetaan bagian 5. Kolom kontak dibuang. Deskripsi HTML → teks.
