@@ -51,6 +51,8 @@ export type TregCall = {
 	fresh?: boolean;
 	/** What the call is for, kept in treg's ledger as `feature=<value>`; never a person's id. */
 	feature?: string;
+	/** How long one attempt may take; 15 seconds unless the tool is slower, such as reading a LinkedIn profile. */
+	timeoutMs?: number;
 	signal?: AbortSignal | undefined;
 };
 
@@ -143,7 +145,7 @@ export async function callTreg<T>(call: TregCall, dependencies: TregDependencies
 	const started = now();
 
 	for (let attempt = 0; ; attempt++) {
-		const timeout = AbortSignal.timeout(CALL_TIMEOUT_MS);
+		const timeout = AbortSignal.timeout(call.timeoutMs ?? CALL_TIMEOUT_MS);
 		const signal = call.signal ? AbortSignal.any([call.signal, timeout]) : timeout;
 		let response: Response;
 		try {

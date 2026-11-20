@@ -62,6 +62,8 @@ export function featureName(feature: string) {
 			return t`Counting (free)`;
 		case "web-search":
 			return t`Assistant web search`;
+		case "profile-linkedin":
+			return t`LinkedIn profile reads`;
 		default:
 			return feature;
 	}

@@ -28,7 +28,7 @@ export const profileSourcesRouter = {
 			operationId: "getProfileSources",
 			summary: "Which sources can fill the Profile",
 			description:
-				"Which sources this account can read (LinkedIn needs the server's Apify token; guests get GitHub only) and what its sign-ins already tell: name, email, photo, linked GitHub login and providers.",
+				"Which sources this account can read (LinkedIn needs the server's treg or Apify token; guests get GitHub only) and what its sign-ins already tell: name, email, photo, linked GitHub login and providers.",
 		})
 		.input(z.object({}).optional())
 		.output(sourcesStatusSchema)

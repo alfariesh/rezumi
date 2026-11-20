@@ -129,8 +129,8 @@ export function SourcesNote({ availability, className }: SourcesNoteProps) {
 		<p className={cn("text-body-xs text-muted", className)}>
 			{availability.linkedin ? (
 				<Trans>
-					We only read what you add here, once you continue: LinkedIn profiles through Apify, GitHub accounts through
-					GitHub, websites with AI. Nothing goes into your Profile until you check it.
+					We only read what you add here, once you continue: LinkedIn profiles through treg or Apify, GitHub accounts
+					through GitHub, websites with AI. Nothing goes into your Profile until you check it.
 				</Trans>
 			) : availability.website ? (
 				<Trans>

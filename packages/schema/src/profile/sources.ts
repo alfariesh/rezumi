@@ -32,7 +32,9 @@ export type SourceResult = z.infer<typeof sourceResultSchema>;
 export const sourcesStatusSchema = z.object({
 	linkedin: z
 		.boolean()
-		.describe("Whether LinkedIn profiles can be read: the server has an Apify token and the account isn't a guest."),
+		.describe(
+			"Whether LinkedIn profiles can be read: the server has a treg or Apify token and the account isn't a guest.",
+		),
 	github: z.boolean().describe("Whether GitHub accounts can be read. Always true."),
 	website: z.boolean().describe("Whether personal websites can be read: the account isn't a guest."),
 	account: z.object({
@@ -80,7 +82,7 @@ export function linkedInProfileId(input: string): string | null {
 	return LINKEDIN_ID.test(id) ? id : null;
 }
 
-/** The address Apify is asked for: the canonical form of a LinkedIn profile. */
+/** The address treg or Apify is asked for: the canonical form of a LinkedIn profile. */
 export const linkedInProfileUrl = (id: string) => `https://www.linkedin.com/in/${encodeURIComponent(id)}`;
 
 // GitHub logins: 1 to 39 letters, digits or dashes, not starting with a dash.

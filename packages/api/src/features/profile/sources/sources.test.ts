@@ -4,7 +4,7 @@ import { createRouterClient } from "@orpc/server";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 /**
- * The sources with every outbound call faked: Apify and GitHub through `fetch`, websites through the web reader, AI
+ * The sources with every outbound call faked: treg, Apify and GitHub through `fetch`, websites through the web reader, AI
  * through the metered runner, photos through a fake hop, storage and the database through stand-ins. Nothing here
  * reaches the network.
  */
@@ -14,6 +14,8 @@ const fixtures = vi.hoisted(() => ({
 		APP_URL: "https://rezumi.test",
 		APIFY_TOKEN: "apify-secret-token" as string | undefined,
 		APIFY_LINKEDIN_ACTOR: "harvestapi~linkedin-profile-scraper",
+		TREG_API_KEY: undefined as string | undefined,
+		TREG_BASE_URL: undefined as string | undefined,
 		GITHUB_API_TOKEN: undefined as string | undefined,
 		FLAG_DISABLE_API_RATE_LIMIT: false,
 	},
@@ -107,6 +109,7 @@ beforeEach(() => {
 	vi.stubGlobal("fetch", fetchMock);
 	fetchMock.mockReset();
 	fixtures.env.APIFY_TOKEN = "apify-secret-token";
+	fixtures.env.TREG_API_KEY = undefined;
 	fixtures.env.GITHUB_API_TOKEN = undefined;
 	fixtures.user.isAnonymous = false;
 	fixtures.user.image = null;
@@ -138,7 +141,96 @@ const linkedInProfile = {
 	status: 200,
 };
 
-describe("profile.sources.linkedin", () => {
+const tregAnswer = (body: unknown, status = 200) =>
+	new Response(JSON.stringify(body), {
+		status,
+		headers: { "content-type": "application/json", "x-treg-cost-micro": "6400", "x-treg-call-id": "call-1" },
+	});
+
+describe("profile.sources.linkedin through treg", () => {
+	beforeEach(() => {
+		fixtures.env.TREG_API_KEY = "treg-secret-token";
+		vi.spyOn(console, "info").mockImplementation(() => {});
+	});
+
+	it("reads HarvestAPI's full profile through treg first, without Apify", async () => {
+		fetchMock.mockResolvedValueOnce(tregAnswer({ element: linkedInProfile, status: 200, cost: 0.0064 }));
+		const { call } = client();
+
+		const result = await call.linkedin({ url: "https://www.linkedin.com/in/dewi-lestari-example/" });
+
+		expect(result.data.basics).toMatchObject({ name: "Dewi Lestari", headline: "Product designer" });
+		expect(result.data.sections.experience).toEqual([
+			expect.objectContaining({ company: "Kopi Nusantara", position: "Designer" }),
+		]);
+		expect(result.photoUrl).toBe("https://media.licdn.com/dms/image/photo-800?e=1");
+		expect(fetchMock).toHaveBeenCalledOnce();
+
+		const [address, init] = fetchMock.mock.calls[0] ?? [];
+		const url = new URL(String(address));
+		expect(url.origin + url.pathname).toBe("https://treg.to/call/harvestapi.linkedin.user.profile");
+		expect(url.searchParams.get("url")).toBe("https://www.linkedin.com/in/dewi-lestari-example");
+		expect([...url.searchParams.keys()]).toEqual(["url"]);
+		expect(String(address)).not.toContain("treg-secret-token");
+		const headers = new Headers(init?.headers);
+		expect(headers.get("x-treg-token")).toBe("treg-secret-token");
+		expect(Number(headers.get("x-treg-route-max-cost"))).toBeLessThanOrEqual(0.02);
+		expect(headers.get("x-treg-meta")).toBe("feature=profile-linkedin");
+		expect(init?.method).toBe("GET");
+		expect(init?.body).toBeUndefined();
+	});
+
+	it("takes treg's miss as the answer, without asking Apify", async () => {
+		fetchMock.mockResolvedValueOnce(tregAnswer({ element: null, status: 404, error: "Profile not found" }));
+		const { call } = client();
+		await expect(call.linkedin({ url: "linkedin.com/in/nobody-here" })).rejects.toMatchObject({
+			code: "SOURCE_NOT_FOUND",
+			status: 404,
+		});
+		expect(fetchMock).toHaveBeenCalledOnce();
+	});
+
+	it.each([
+		["a provider failure", () => tregAnswer({ error: "route_failed" }, 502)],
+		["a spent balance", () => tregAnswer({ error: "insufficient_balance" }, 402)],
+		["an answer without a profile body", () => tregAnswer(["unexpected"])],
+	])("falls back to Apify after %s", async (_case, answer) => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		fetchMock.mockResolvedValueOnce(answer());
+		fetchMock.mockResolvedValueOnce(json([linkedInProfile], 201));
+		const { call } = client();
+
+		const result = await call.linkedin({ url: "dewi-lestari-example" });
+
+		expect(result.data.basics).toMatchObject({ name: "Dewi Lestari" });
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+		expect(String(fetchMock.mock.calls[1]?.[0])).toContain("https://api.apify.com/v2/acts/");
+		expect(JSON.stringify(warn.mock.calls)).not.toContain("treg-secret-token");
+		warn.mockRestore();
+	});
+
+	it("reports treg's failure when there is no Apify fallback, without the token", async () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		fixtures.env.APIFY_TOKEN = undefined;
+		fetchMock.mockResolvedValueOnce(tregAnswer({ error: "route_failed" }, 502));
+		const { call } = client();
+
+		const error = await call.linkedin({ url: "dewi-lestari-example" }).catch((caught: unknown) => caught);
+
+		expect(error).toMatchObject({ code: "SOURCE_FAILED", status: 502 });
+		expect(JSON.stringify(error)).not.toContain("treg-secret-token");
+		expect(fetchMock).toHaveBeenCalledOnce();
+		expect(JSON.stringify(warn.mock.calls)).not.toContain("treg-secret-token");
+		warn.mockRestore();
+	});
+
+	it("is offered with a treg token alone", async () => {
+		fixtures.env.APIFY_TOKEN = undefined;
+		expect(await client().call.status()).toMatchObject({ linkedin: true });
+	});
+});
+
+describe("profile.sources.linkedin through Apify alone", () => {
 	it("runs the actor without email search and returns a draft, the photo apart", async () => {
 		fetchMock.mockResolvedValueOnce(json([linkedInProfile], 201));
 		const { call } = client();
@@ -223,7 +315,7 @@ describe("profile.sources.linkedin", () => {
 		await expect(client().call.linkedin({ url: "dewi-lestari-example" })).resolves.toBeDefined();
 	});
 
-	it("refuses guests and servers without an Apify token", async () => {
+	it("refuses guests and servers without a treg or Apify token", async () => {
 		fixtures.user.isAnonymous = true;
 		await expect(client().call.linkedin({ url: "dewi-lestari-example" })).rejects.toMatchObject({
 			code: "SOURCE_UNAVAILABLE",
@@ -422,7 +514,7 @@ describe("profile.sources.status", () => {
 		});
 	});
 
-	it("offers a guest GitHub only, and LinkedIn only with an Apify token", async () => {
+	it("offers a guest GitHub only, and LinkedIn only with a treg or Apify token", async () => {
 		fixtures.user.isAnonymous = true;
 		const guest = await client().call.status();
 		expect(guest).toMatchObject({ linkedin: false, github: true, website: false, account: { name: "", email: "" } });

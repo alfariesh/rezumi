@@ -210,8 +210,9 @@ export const env = createEnv({
 		ENCRYPTION_SECRET: z.string().min(32, "ENCRYPTION_SECRET must be at least 32 characters").optional(),
 		CRON_SECRET: z.string().min(16, "CRON_SECRET must be at least 16 characters").optional(),
 
-		// Filling the Profile from outside sources. Without an Apify token, LinkedIn profiles can't be read; the actor is
-		// "owner~name" (or "owner/name"). GitHub is read without a token unless one is set (higher rate limits).
+		// Filling the Profile from outside sources. LinkedIn profiles are read through treg (TREG_API_KEY, below) and,
+		// when treg can't answer or isn't set up, through this Apify actor ("owner~name" or "owner/name"). Without either
+		// token, LinkedIn profiles can't be read. GitHub is read without a token unless one is set (higher rate limits).
 		APIFY_TOKEN: z.string().trim().min(1).optional(),
 		APIFY_LINKEDIN_ACTOR: z
 			.string()
@@ -220,7 +221,8 @@ export const env = createEnv({
 			.transform((value) => value.replace("/", "~"))
 			.default("harvestapi~linkedin-profile-scraper"),
 		GITHUB_API_TOKEN: z.string().trim().min(1).optional(),
-		// Job search: Hirebase and JobsPipe through treg (https://treg.to). Without it, job search isn't offered.
+		// Job search: Hirebase and JobsPipe through treg (https://treg.to). Without it, job search isn't offered. It also
+		// reads LinkedIn profiles into the Profile (HarvestAPI), with Apify as the fallback.
 		TREG_API_KEY: z.string().trim().min(1).optional(),
 		// Tests only: where treg calls go instead of https://treg.to (the browser tests' stand-in provider).
 		TREG_BASE_URL: z.url({ protocol: /^https?$/ }).optional(),
