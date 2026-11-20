@@ -19,6 +19,49 @@ type ThemePreviewProps = {
 	billingEnabled: boolean;
 };
 
+function followSampleAnchor(event: MouseEvent) {
+	const target = event.target as Element | null;
+	const link = target?.closest?.("a[href]");
+	const href = link?.getAttribute("href");
+	if (!link || !href?.startsWith("#") || event.defaultPrevented) return;
+
+	// A fragment in srcDoc resolves against the landing page, which refuses to be framed.
+	event.preventDefault();
+	link.closest("details.pf-menu")?.removeAttribute("open");
+	link.ownerDocument.getElementById(href.slice(1))?.scrollIntoView();
+}
+
+type ThemeSampleFrameProps = {
+	sample: string;
+	title: string;
+};
+
+function ThemeSampleFrame({ sample, title }: ThemeSampleFrameProps) {
+	const [ready, setReady] = useState(false);
+
+	return (
+		<>
+			{!ready && (
+				<div className="absolute inset-0 grid place-items-center">
+					<Spinner size="md" color="current" />
+				</div>
+			)}
+			<iframe
+				title={title}
+				srcDoc={sample}
+				onLoad={(event) => {
+					const document = event.currentTarget.contentDocument;
+					if (document?.URL !== "about:srcdoc") return;
+					document.addEventListener("click", followSampleAnchor);
+					setReady(true);
+				}}
+				sandbox="allow-same-origin"
+				className={cn("size-full border-0", !ready && "invisible")}
+			/>
+		</>
+	);
+}
+
 /**
  * A theme's whole sample page in a dialog, scrollable as a visitor reads it, on a desktop or a phone width, with the
  * other themes one arrow away. The page is a still document (`themeSample`) in a sandboxed frame: nothing on it runs.
@@ -115,14 +158,7 @@ export function ThemePreview({ theme, onThemeChange, billingEnabled }: ThemePrev
 							)}
 						>
 							{sample !== undefined ? (
-								// Sandboxed without scripts, as the editor's preview: the sample's links lead nowhere and nothing runs.
-								<iframe
-									key={url}
-									title={t`${info?.name ?? ""} portfolio theme sample`}
-									srcDoc={sample}
-									sandbox="allow-same-origin"
-									className="size-full border-0"
-								/>
+								<ThemeSampleFrame key={url} title={t`${info?.name ?? ""} portfolio theme sample`} sample={sample} />
 							) : failedUrl === url ? (
 								<div role="alert" className="grid size-full place-items-center p-6 text-center text-sm text-muted">
 									{t`The sample couldn't be loaded. Check your connection and try again.`}
