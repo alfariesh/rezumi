@@ -48,7 +48,8 @@ describe("docs MDX", () => {
 				expect(existsSync(resolve(docsRoot, slug, "..", source ?? "")), `${slug}: ${source}`).toBe(true);
 		}
 		expect(unknown).toEqual([]);
-	});
+		// Compiling every page one by one takes about five seconds on a CI runner, more as the docs grow.
+	}, 30_000);
 
 	it("rewrites links for the app and reports pages that do not exist", async () => {
 		const { output, unknown } = await compilePage(
