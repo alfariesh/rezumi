@@ -21,6 +21,7 @@ const {
 	designFeaturesNeeded,
 	planFeatureRequired,
 	planLimitReached,
+	jobSearchLimitReached,
 	assertFeature,
 	assertDesignChange,
 	fitImportedDesign,
@@ -140,6 +141,21 @@ describe("plan errors", () => {
 		});
 		expect(imported.message).toContain("This adds 1 resume and 2 cover letters");
 		expect(imported.message).toContain("limit of 3 active cover letters (2 in use)");
+	});
+
+	it("refuses a job search past the day's searches with when they start again", () => {
+		const error = jobSearchLimitReached({
+			max: 3,
+			used: 3,
+			planId: "free",
+			resetsAt: new Date("2026-11-21T00:00:00Z"),
+		});
+		expect(error).toMatchObject({
+			code: "PLAN_LIMIT_REACHED",
+			status: 403,
+			data: { limit: "jobSearchesPerDay", max: 3, used: 3, planId: "free", resetsAt: "2026-11-21T00:00:00.000Z" },
+		});
+		expect(error.message).not.toMatch(/Rp|\$|https?:|\bbuy\b|upgrade|purchase|price/i);
 	});
 
 	it("names no price, purchase or link, except to third-party apps", () => {

@@ -89,8 +89,10 @@
 	],
 	"analytics": { "binding": "ANALYTICS_SQL" },
 	// Stops one address flooding the public portfolio routes; same numbers as rateLimitConfig.portfolioPublic.requests.
+	// JOB_SEARCH_LIMITER holds back a burst of job searches per account; same numbers as rateLimitConfig.orpc.jobSearch.
 	"ratelimits": [
 		{ "name": "PORTFOLIO_PUBLIC_LIMITER", "namespace_id": "1101", "simple": { "limit": 600, "period": 60 } },
+		{ "name": "JOB_SEARCH_LIMITER", "namespace_id": "1102", "simple": { "limit": 10, "period": 60 } },
 	],
 	// Career schedules: each cron tick sends one message per account with a due job, and each message runs that job in
 	// its own invocation, side by side, instead of two per minute inside the tick. Create the queue once before the

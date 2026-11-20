@@ -138,6 +138,14 @@ describe("billing catalog", () => {
 	});
 });
 
+describe("job search plans", () => {
+	it("gives each plan its daily job searches (K2)", () => {
+		expect(PLANS.free.limits.jobSearchesPerDay).toBe(3);
+		expect(PLANS.plus.limits.jobSearchesPerDay).toBe(15);
+		expect(PLANS["pro-ai"].limits.jobSearchesPerDay).toBe(40);
+	});
+});
+
 describe("portfolio plans", () => {
 	it("sells the free themes and effects the gallery labels", () => {
 		expect(FREE_PORTFOLIO_THEMES.toSorted()).toEqual(PORTFOLIO_THEMES.filter(isFreePortfolioTheme).toSorted());

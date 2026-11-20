@@ -63694,6 +63694,1354 @@
 				]
 			}
 		},
+		"/jobs/search": {
+			"post": {
+				"operationId": "searchJobs",
+				"summary": "Search job listings",
+				"description": "Searches current job listings (20 a page) by title, place and filters. Each new search or further page counts toward the plan's searches a day; opening the same page again that day doesn't. Answers may come from a shared cache up to six hours old. Requires authentication.",
+				"tags": [
+					"Jobs"
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"query": {
+										"type": "string",
+										"minLength": 2,
+										"maxLength": 200
+									},
+									"location": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 200
+									},
+									"country": {
+										"type": "string",
+										"pattern": "^[A-Z]{2}$"
+									},
+									"remote": {
+										"enum": [
+											"any",
+											"only",
+											"exclude"
+										],
+										"type": "string",
+										"default": "any"
+									},
+									"postedWithinDays": {
+										"anyOf": [
+											{
+												"const": 1
+											},
+											{
+												"const": 7
+											},
+											{
+												"const": 14
+											},
+											{
+												"const": 30
+											}
+										],
+										"default": 30
+									},
+									"workArrangement": {
+										"enum": [
+											"onsite",
+											"hybrid",
+											"remote"
+										],
+										"type": "string"
+									},
+									"seniority": {
+										"enum": [
+											"entry",
+											"junior",
+											"mid",
+											"senior",
+											"lead",
+											"executive"
+										],
+										"type": "string"
+									},
+									"salaryMin": {
+										"type": "integer",
+										"minimum": -9007199254740991,
+										"maximum": 100000000,
+										"exclusiveMinimum": 0
+									},
+									"salaryCurrency": {
+										"type": "string",
+										"pattern": "^[A-Z]{3}$"
+									},
+									"includeNoSalary": {
+										"type": "boolean",
+										"default": true
+									},
+									"visaSponsorship": {
+										"type": "boolean"
+									},
+									"cursor": {
+										"type": "string",
+										"pattern": "^[a-f0-9]{64}$"
+									}
+								},
+								"required": [
+									"query"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"listings": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"provider": {
+														"enum": [
+															"hirebase",
+															"jobspipe"
+														],
+														"type": "string"
+													},
+													"externalId": {
+														"type": "string",
+														"minLength": 1,
+														"maxLength": 200
+													},
+													"title": {
+														"type": "string",
+														"minLength": 1,
+														"maxLength": 500
+													},
+													"company": {
+														"type": "object",
+														"properties": {
+															"name": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 300
+															},
+															"domain": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 253
+															},
+															"logoUrl": {
+																"type": "string",
+																"format": "uri"
+															},
+															"size": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 60
+															},
+															"industry": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 200
+															}
+														},
+														"required": [
+															"name"
+														]
+													},
+													"location": {
+														"type": "object",
+														"properties": {
+															"city": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 200
+															},
+															"region": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 200
+															},
+															"country": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 200
+															},
+															"countryCode": {
+																"type": "string",
+																"pattern": "^[A-Z]{2}$"
+															},
+															"text": {
+																"type": "string",
+																"maxLength": 500
+															}
+														},
+														"required": [
+															"text"
+														]
+													},
+													"workArrangement": {
+														"enum": [
+															"onsite",
+															"hybrid",
+															"remote"
+														],
+														"type": "string"
+													},
+													"seniority": {
+														"enum": [
+															"entry",
+															"junior",
+															"mid",
+															"senior",
+															"lead",
+															"executive"
+														],
+														"type": "string"
+													},
+													"employmentType": {
+														"type": "string",
+														"minLength": 1,
+														"maxLength": 100
+													},
+													"visaSponsorship": {
+														"type": "boolean"
+													},
+													"salary": {
+														"type": "object",
+														"properties": {
+															"min": {
+																"type": "number",
+																"minimum": 0
+															},
+															"max": {
+																"type": "number",
+																"minimum": 0
+															},
+															"currency": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"pattern": "^[A-Z]{3}$"
+																	},
+																	{
+																		"const": ""
+																	}
+																]
+															},
+															"period": {
+																"enum": [
+																	"year",
+																	"month",
+																	"hour",
+																	"unknown"
+																],
+																"type": "string"
+															}
+														},
+														"required": [
+															"currency",
+															"period"
+														]
+													},
+													"requirementsSummary": {
+														"type": "string",
+														"minLength": 1,
+														"maxLength": 2000
+													},
+													"skills": {
+														"type": "array",
+														"maxItems": 100,
+														"items": {
+															"type": "string",
+															"minLength": 1,
+															"maxLength": 200
+														}
+													},
+													"postingUrl": {
+														"type": "string",
+														"format": "uri"
+													},
+													"applyUrl": {
+														"type": "string",
+														"format": "uri"
+													},
+													"source": {
+														"type": "string",
+														"minLength": 1,
+														"maxLength": 100
+													},
+													"language": {
+														"type": "string",
+														"minLength": 1,
+														"maxLength": 20
+													},
+													"postedAt": {
+														"type": "string",
+														"format": "date-time"
+													},
+													"closedAt": {
+														"anyOf": [
+															{
+																"type": "string",
+																"format": "date-time"
+															},
+															{
+																"type": "null"
+															}
+														]
+													},
+													"id": {
+														"type": "string",
+														"minLength": 1
+													},
+													"firstSeenAt": {
+														"type": "string",
+														"format": "date-time"
+													},
+													"lastVerifiedAt": {
+														"type": "string",
+														"format": "date-time"
+													}
+												},
+												"required": [
+													"provider",
+													"externalId",
+													"title",
+													"company",
+													"location",
+													"skills",
+													"postingUrl",
+													"closedAt",
+													"id",
+													"firstSeenAt",
+													"lastVerifiedAt"
+												]
+											}
+										},
+										"cursor": {
+											"type": "string",
+											"pattern": "^[a-f0-9]{64}$"
+										},
+										"fetchedAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"fromCache": {
+											"type": "boolean"
+										},
+										"stale": {
+											"type": "boolean"
+										},
+										"budgetLimited": {
+											"type": "boolean"
+										},
+										"quota": {
+											"type": "object",
+											"properties": {
+												"used": {
+													"type": "integer",
+													"minimum": 0,
+													"maximum": 9007199254740991
+												},
+												"max": {
+													"type": "integer",
+													"minimum": 0,
+													"maximum": 9007199254740991
+												},
+												"resetsAt": {
+													"type": "string",
+													"format": "date-time"
+												}
+											},
+											"required": [
+												"used",
+												"max",
+												"resetsAt"
+											]
+										}
+									},
+									"required": [
+										"listings",
+										"fetchedAt",
+										"fromCache",
+										"stale",
+										"budgetLimited",
+										"quota"
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "400",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": true
+												},
+												"code": {
+													"const": "BAD_REQUEST"
+												},
+												"status": {
+													"const": 400
+												},
+												"message": {
+													"type": "string",
+													"default": "This list can't be continued. Search again to see more jobs."
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": false
+												},
+												"code": {
+													"type": "string"
+												},
+												"status": {
+													"type": "number"
+												},
+												"message": {
+													"type": "string"
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										}
+									]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "403",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": true
+												},
+												"code": {
+													"const": "PLAN_LIMIT_REACHED"
+												},
+												"status": {
+													"const": 403
+												},
+												"message": {
+													"type": "string",
+													"default": "Today's job searches are used up."
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": false
+												},
+												"code": {
+													"type": "string"
+												},
+												"status": {
+													"type": "number"
+												},
+												"message": {
+													"type": "string"
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										}
+									]
+								}
+							}
+						}
+					},
+					"429": {
+						"description": "429",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": true
+												},
+												"code": {
+													"const": "RATE_LIMIT_EXCEEDED"
+												},
+												"status": {
+													"const": 429
+												},
+												"message": {
+													"type": "string",
+													"default": "Too many searches in a short time. Wait a minute, then try again."
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": false
+												},
+												"code": {
+													"type": "string"
+												},
+												"status": {
+													"type": "number"
+												},
+												"message": {
+													"type": "string"
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										}
+									]
+								}
+							}
+						}
+					},
+					"503": {
+						"description": "503",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": true
+												},
+												"code": {
+													"const": "JOBS_UNAVAILABLE"
+												},
+												"status": {
+													"const": 503
+												},
+												"message": {
+													"type": "string",
+													"default": "Job search isn't available right now. Try again later."
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": true
+												},
+												"code": {
+													"const": "JOBS_BUDGET_LIMITED"
+												},
+												"status": {
+													"const": 503
+												},
+												"message": {
+													"type": "string",
+													"default": "Job search has reached today's limit on this server. Try again tomorrow."
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": false
+												},
+												"code": {
+													"type": "string"
+												},
+												"status": {
+													"type": "number"
+												},
+												"message": {
+													"type": "string"
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										}
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/jobs/search\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"query\": \"<string>\"\n}'"
+					}
+				]
+			}
+		},
+		"/jobs/listings/{id}": {
+			"get": {
+				"operationId": "getJobListing",
+				"summary": "Get a job listing",
+				"description": "Returns one job listing with its full description and the link to the original posting. A closed listing has closedAt set. Requires authentication.",
+				"tags": [
+					"Jobs"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 64
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"provider": {
+											"enum": [
+												"hirebase",
+												"jobspipe"
+											],
+											"type": "string"
+										},
+										"externalId": {
+											"type": "string",
+											"minLength": 1,
+											"maxLength": 200
+										},
+										"title": {
+											"type": "string",
+											"minLength": 1,
+											"maxLength": 500
+										},
+										"company": {
+											"type": "object",
+											"properties": {
+												"name": {
+													"type": "string",
+													"minLength": 1,
+													"maxLength": 300
+												},
+												"domain": {
+													"type": "string",
+													"minLength": 1,
+													"maxLength": 253
+												},
+												"logoUrl": {
+													"type": "string",
+													"format": "uri"
+												},
+												"size": {
+													"type": "string",
+													"minLength": 1,
+													"maxLength": 60
+												},
+												"industry": {
+													"type": "string",
+													"minLength": 1,
+													"maxLength": 200
+												}
+											},
+											"required": [
+												"name"
+											]
+										},
+										"location": {
+											"type": "object",
+											"properties": {
+												"city": {
+													"type": "string",
+													"minLength": 1,
+													"maxLength": 200
+												},
+												"region": {
+													"type": "string",
+													"minLength": 1,
+													"maxLength": 200
+												},
+												"country": {
+													"type": "string",
+													"minLength": 1,
+													"maxLength": 200
+												},
+												"countryCode": {
+													"type": "string",
+													"pattern": "^[A-Z]{2}$"
+												},
+												"text": {
+													"type": "string",
+													"maxLength": 500
+												}
+											},
+											"required": [
+												"text"
+											]
+										},
+										"workArrangement": {
+											"enum": [
+												"onsite",
+												"hybrid",
+												"remote"
+											],
+											"type": "string"
+										},
+										"seniority": {
+											"enum": [
+												"entry",
+												"junior",
+												"mid",
+												"senior",
+												"lead",
+												"executive"
+											],
+											"type": "string"
+										},
+										"employmentType": {
+											"type": "string",
+											"minLength": 1,
+											"maxLength": 100
+										},
+										"visaSponsorship": {
+											"type": "boolean"
+										},
+										"salary": {
+											"type": "object",
+											"properties": {
+												"min": {
+													"type": "number",
+													"minimum": 0
+												},
+												"max": {
+													"type": "number",
+													"minimum": 0
+												},
+												"currency": {
+													"anyOf": [
+														{
+															"type": "string",
+															"pattern": "^[A-Z]{3}$"
+														},
+														{
+															"const": ""
+														}
+													]
+												},
+												"period": {
+													"enum": [
+														"year",
+														"month",
+														"hour",
+														"unknown"
+													],
+													"type": "string"
+												}
+											},
+											"required": [
+												"currency",
+												"period"
+											]
+										},
+										"description": {
+											"type": "string",
+											"maxLength": 20000
+										},
+										"requirementsSummary": {
+											"type": "string",
+											"minLength": 1,
+											"maxLength": 2000
+										},
+										"skills": {
+											"type": "array",
+											"maxItems": 100,
+											"items": {
+												"type": "string",
+												"minLength": 1,
+												"maxLength": 200
+											}
+										},
+										"postingUrl": {
+											"type": "string",
+											"format": "uri"
+										},
+										"applyUrl": {
+											"type": "string",
+											"format": "uri"
+										},
+										"source": {
+											"type": "string",
+											"minLength": 1,
+											"maxLength": 100
+										},
+										"language": {
+											"type": "string",
+											"minLength": 1,
+											"maxLength": 20
+										},
+										"postedAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"closedAt": {
+											"anyOf": [
+												{
+													"type": "string",
+													"format": "date-time"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"id": {
+											"type": "string",
+											"minLength": 1
+										},
+										"firstSeenAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"lastVerifiedAt": {
+											"type": "string",
+											"format": "date-time"
+										}
+									},
+									"required": [
+										"provider",
+										"externalId",
+										"title",
+										"company",
+										"location",
+										"description",
+										"skills",
+										"postingUrl",
+										"closedAt",
+										"id",
+										"firstSeenAt",
+										"lastVerifiedAt"
+									]
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "404",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": true
+												},
+												"code": {
+													"const": "NOT_FOUND"
+												},
+												"status": {
+													"const": 404
+												},
+												"message": {
+													"type": "string",
+													"default": "This job listing isn't available anymore."
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": false
+												},
+												"code": {
+													"type": "string"
+												},
+												"status": {
+													"type": "number"
+												},
+												"message": {
+													"type": "string"
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										}
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl \"https://rezumi.app/api/openapi/jobs/listings/<id>\" --header \"x-api-key: <api-key>\""
+					}
+				]
+			}
+		},
+		"/jobs/listings/{id}/hidden": {
+			"put": {
+				"operationId": "hideJobListing",
+				"summary": "Hide or show a job listing",
+				"description": "Hides a job listing from your search results, or shows it again. Requires authentication.",
+				"tags": [
+					"Jobs"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 64
+						}
+					}
+				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"hidden": {
+										"type": "boolean",
+										"default": true
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"hidden": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"hidden"
+									]
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "404",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": true
+												},
+												"code": {
+													"const": "NOT_FOUND"
+												},
+												"status": {
+													"const": 404
+												},
+												"message": {
+													"type": "string",
+													"default": "This job listing isn't available anymore."
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"defined": {
+													"const": false
+												},
+												"code": {
+													"type": "string"
+												},
+												"status": {
+													"type": "number"
+												},
+												"message": {
+													"type": "string"
+												},
+												"data": {}
+											},
+											"required": [
+												"defined",
+												"code",
+												"status",
+												"message"
+											]
+										}
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/jobs/listings/<id>/hidden\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+					}
+				]
+			}
+		},
+		"/jobs/quota": {
+			"get": {
+				"operationId": "getJobSearchQuota",
+				"summary": "Get job search availability and today's searches",
+				"description": "Says whether job search is available on this server, whether only saved results are given right now, and how many of today's searches are used. Requires authentication.",
+				"tags": [
+					"Jobs"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"available": {
+											"type": "boolean"
+										},
+										"cacheOnly": {
+											"type": "boolean"
+										},
+										"quota": {
+											"type": "object",
+											"properties": {
+												"used": {
+													"type": "integer",
+													"minimum": 0,
+													"maximum": 9007199254740991
+												},
+												"max": {
+													"type": "integer",
+													"minimum": 0,
+													"maximum": 9007199254740991
+												},
+												"resetsAt": {
+													"type": "string",
+													"format": "date-time"
+												}
+											},
+											"required": [
+												"used",
+												"max",
+												"resetsAt"
+											]
+										}
+									},
+									"required": [
+										"available",
+										"cacheOnly",
+										"quota"
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl \"https://rezumi.app/api/openapi/jobs/quota\" --header \"x-api-key: <api-key>\""
+					}
+				]
+			}
+		},
 		"/profile": {
 			"get": {
 				"operationId": "getProfile",

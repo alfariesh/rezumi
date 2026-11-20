@@ -145,7 +145,7 @@ Di `packages/db/src/schema/jobs.ts`, lalu `pnpm db:generate`.
 
 - **`job_listing`**: kolom bagian 5 + `raw` (jsonb, kolom penyedia yang dipakai saja, tanpa kontak orang) + `searchText` (untuk pencocokan). Unik `(provider, externalId)`. Indeks `closedAt`, `lastSeenAt`. Tidak terikat pengguna.
 - **`job_search_cache`**: `key` (sha256 dari pencarian ternormalisasi, primary key), `providers` (text[], penyedia yang dipakai jawaban ini), `query` (jsonb ternormalisasi), `listingIds` (text[] berurutan), `cursors` (jsonb, lanjutan per penyedia untuk "muat lebih banyak"), `total` (bila diketahui), `fetchedAt`, `expiresAt`.
-- **`job_listing_hidden`** (atau kolom di tabel per pengguna yang ada): pengguna menyembunyikan lowongan. Boleh digabung dengan `career_opportunity.dismissedAt` bila Phase 04 menyatukannya; putuskan di Phase 02 dan catat di sini.
+- **`job_listing_hidden`** (diputuskan Phase 02: tabel sendiri, bukan `career_opportunity.dismissedAt`): `(userId, listingId)` primary key, `hiddenAt`, cascade ke `user` dan `job_listing`. Alasan: menyembunyikan berlaku untuk hasil pencarian apa pun, yang belum tentu opportunity. Phase 04 membaca tabel ini sebelum membuat `career_opportunity` baru.
 - **`career_opportunity`**: tambah `listingId` (Phase 04).
 - **Penghapusan per penyedia:** satu fungsi admin `purgeProvider(provider)` menghapus `job_listing` dan `job_search_cache` milik penyedia itu (aturan Hirebase: hapus dalam 30 hari bila berhenti). Lamaran yang sudah dilacak pengguna menyimpan salinan teksnya sendiri dan tidak ikut terhapus.
 
@@ -176,7 +176,7 @@ Prosedur oRPC baru di `packages/api/src/features/jobs/router.ts`, digabung ke `@
 ## 8. Kuota dan anggaran
 
 - **Kuota pengguna (K2):** `PlanLimits` di `packages/schema/src/billing/catalog.ts` mendapat `jobSearchesPerDay` (free 3, plus 15, pro-ai 40, atau sesuai jawaban pemilik). Pengecekan memakai `Coordination` `consume` key `jobs-quota:<userId>:<YYYY-MM-DD zona akun>`, `window` sampai tengah malam zona akun. Saat `BILLING_MODE` mati, pakai batas Pro AI. Pesan galat netral (tanpa harga) seperti `planLimitReached`; kode galat `PLAN_LIMIT_REACHED` dengan `limit: "jobSearchesPerDay"`.
-- **Anggaran server (K7):** env `JOB_SEARCH_DAILY_BUDGET_USD` (angka; bawaan 1). Total biaya hari ini dijumlah dari `X-Treg-Cost-Micro` dan disimpan di `Coordination` key `jobs-budget:<YYYY-MM-DD UTC>` (gunakan `consume` dengan `max` dalam mikro-USD per unit, atau tambahkan operasi `add` kecil ke Coordination bila perlu; catat pilihannya di sini). Lewat batas → hanya cache. Batas keras kedua ada di dasbor treg (spend cap harian per anggota).
+- **Anggaran server (K7):** env `JOB_SEARCH_DAILY_BUDGET_USD` (angka; bawaan 1). Total biaya hari ini dijumlah dari `X-Treg-Cost-Micro` dan disimpan di `Coordination` key `jobs-budget:<YYYY-MM-DD UTC>` (Phase 02: operasi baru `add` di `Coordination`, lihat bagian 16). Lewat batas → hanya cache. Batas keras kedua ada di dasbor treg (spend cap harian per anggota).
 - **Kill switch:** env `FLAG_DISABLE_JOB_SEARCH=true` mematikan panggilan penyedia (hanya cache).
 
 ## 9. Lowongan baru otomatis (Phase 04)
@@ -286,3 +286,55 @@ Untuk Phase 02:
 - **Jumlah total JobsPipe** kosong (`total_results: null`) kecuali `include_total_results: true`; pakai endpoint count gratis bila angka perlu.
 - **Relevansi:** uji nyata "nurse" Inggris di JobsPipe memberi "Reception Class Teacher (… Nursery School)"; "data analyst" remote di JobsPipe memberi sebagian lowongan tanpa tanda remote. Bandingkan `job_title_or` dengan frasa berkutip/`description_or` dan cek `work_arrangement` hasil sebelum memilih.
 - **Uji nyata 2026-11-20** (3 lowongan per penyedia: software engineer AS, nurse Inggris, data analyst remote): semua 18 lowongan valid (0 dibuang), latensi 1,5–2,3 detik, total biaya **$0.0292**. Hirebase 6 dari 9 mencantumkan gaji; JobsPipe 6 dari 9.
+
+## 16. Phase 02 — yang dibangun dan temuan (2026-11-20)
+
+Kode: `packages/api/src/features/jobs/` — `service.ts` (`createJobSearchService`, `jobSearchService`), `routing.ts` (router penyedia; nama `router.ts` dipakai prosedur oRPC seperti fitur lain), `search-key.ts`, `filters.ts`, `cache.ts`, `allowance.ts` (rate limit, kuota, anggaran), `counters.ts`, `router.ts` (oRPC `jobs.*`). Skema keluaran di `packages/schema/src/jobs/search.ts`. Tabel `job_listing_hidden` (migrasi `20261120024148_happy_fallen_one`). `pnpm jobs:probe … --service --user <id>` menjalankan service sungguhan dua kali.
+
+### 16.1 Ukuran gratis: kata kunci bebas (2026-11-20, 525 panggilan `*.count`, $0)
+
+15 kata kunci × AS, Inggris, Jerman, India, Kanada, Indonesia, remote; 30 hari. Angka Hirebase `job_titles` / `"judul berkutip"` / `keywords`, JobsPipe `job_title_or` / `description_or` (JobsPipe berhenti di 10.000):
+
+| Kata kunci        | AS                                         | Jerman                            | Indonesia                 | Remote                                 |
+| ----------------- | ------------------------------------------ | --------------------------------- | ------------------------- | -------------------------------------- |
+| software engineer | 9.965 / 8.311 / 24.176 · 10.000 / 10.000   | 612 / 501 / 1.658 · 1.591 / 3.824 | 38 / 28 / 92 · 147 / 561  | 2.602 / 2.361 / 5.416 · 9.489 / 10.000 |
+| customer support  | 829 / 623 / 146.421 · 1.646 / 10.000       | 157 / 118 / 10.835 · 182 / 9.474  | 11 / 9 / 408 · 28 / 4.340 | 412 / 371 / 11.727 · 1.172 / 10.000    |
+| data analyst      | 1.589 / 1.079 / 10.933 · 3.930 / 10.000    | 138 / 101 / 349 · 229 / 871       | 27 / 22 / 78 · 98 / 550   | 545 / 390 / 2.326 · 1.330 / 10.000     |
+| react             | 165 / 165 / 5.177 · 1.080 / 10.000         | 23 / 23 / 457 · 101 / 1.400       | 0 / 0 / 37 · 37 / 326     | 203 / 203 / 2.193 · 1.061 / 9.099      |
+| python            | 453 / 453 / 29.116 · 1.695 / 10.000        | 47 / 47 / 2.914 · 131 / 7.831     | 1 / 1 / 227 · 18 / 856    | 378 / 378 / 8.856 · 1.535 / 10.000     |
+| nurse             | 56.791 / 56.791 / 77.267 · 10.000 / 10.000 | 251 / 251 / 1.201 · 137 / 222     | 3 / 3 / 3 · 29 / 42       | 864 / 864 / 1.557 · 3.206 / 5.758      |
+
+Temuan:
+
+- `keywords` (Hirebase) dan `description_or` (JobsPipe) mencocokkan isi deskripsi: 3–175× lebih banyak dari judul ("customer support" di AS: 829 lewat judul, 146.421 lewat deskripsi; hampir semua lowongan menyebut kata itu). Untuk pencarian posisi, hasilnya bukan posisi yang dicari.
+- `job_titles` tanpa kutip (semua kata di judul, urutan bebas) hanya 10–35% di atas versi berkutip; tanpa kutip dipakai karena "engineer software" dan "Software Engineer II" tetap cocok.
+- Judul cukup di pasar besar (AS, Inggris, India, remote: ratusan sampai ribuan untuk hampir semua kata kunci). Kata yang berupa skill, bukan posisi ("react", "python", "machine learning"), lemah lewat judul di pasar kecil (Indonesia: react 0, python 1); JobsPipe judul menambah sedikit (37, 18).
+
+**Pilihan Phase 02:** kedua penyedia memakai judul (`job_titles`, `job_title_or`), seperti Phase 01. Tidak ada cadangan `keywords` dulu: satu panggilan berbayar tambahan untuk kasus yang jarang. Kandidat backlog: bila Hirebase dan JobsPipe judul bersama memberi < 10, coba Hirebase `keywords` (diperingkat relevansi).
+
+### 16.2 Keputusan teknis
+
+- **Router (K1):** Hirebase dulu (20). JobsPipe menambah sampai 20 bila Hirebase galat atau memberi < 10 lowongan yang lolos filter. Cursor per penyedia di `job_search_cache.cursors`: string = halaman berikutnya, `""` = habis, tidak ada = belum ditanya (JobsPipe bisa mulai di halaman berikutnya setelah Hirebase habis). Pencarian sponsor visa tidak memanggil JobsPipe (datanya tidak punya kolom visa). Galat `budget` dari treg langsung berhenti tanpa mencoba penyedia lain.
+- **Filter setelah hasil diterima** (`filters.ts`): negara, remote/arrangement, level, visa, gaji. Lowongan yang tidak menyebut (tanpa negara, tanpa gaji, tanpa level) tetap tampil; hanya yang jelas tidak cocok dibuang. Gaji hanya dibandingkan bila mata uang sama dan per tahun.
+- **Dedup:** kunci judul + perusahaan + kota (huruf kecil, tanpa tanda baca), di dalam satu halaman dan terhadap halaman sebelumnya. Semua lowongan yang dibayar disimpan; cache hanya menunjuk yang tampil.
+- **Kunci cache:** sha256 dari JSON berurutan `{v: 1, search, providers, after?}`. `search` ternormalisasi (NFKC, huruf kecil, spasi tunggal); kolom yang tidak mengubah jawaban dibuang (mata uang dan "sertakan tanpa gaji" tanpa gaji minimum, `visaSponsorship: false`, `remote` bila arrangement dipilih). Halaman berikutnya dikunci dengan cursor penyedia halaman sebelumnya, jadi "muat lebih banyak" juga dibagi antar pengguna. Naikkan `JOB_SEARCH_CACHE_VERSION` bila pemetaan atau filter berubah.
+- **Cursor ke klien** = kunci halaman sebelumnya (64 hex). Ditolak (`BAD_REQUEST`) bila halaman itu sudah dihapus atau milik pencarian lain.
+- **Negara tidak diisi otomatis** di server: input kosong = di mana saja. Halaman Phase 03 mengisi negara bawaan dari `searchScope` (Profil/zona waktu).
+- **Kuota (K2):** dihitung **setelah** jawaban ada, jadi pencarian gagal tidak memakai kuota. Halaman yang sudah dibuka hari itu (kunci `seen:<user>:<hari>:<kunci halaman>`) tidak dihitung lagi, juga saat kuota habis. Hari = zona waktu akun (`user.timezone`). Saat plans tidak berlaku untuk akun (`BILLING_MODE` off/admins): batas Pro AI (40).
+- **Penghitung bersama** (`counters.ts`): operasi `add(key, amount, {window, max?})` — `amount` 0 untuk membaca; dengan `max`, jumlah yang melewati batas ditolak dan tidak ditambahkan. Workers: operasi baru `add` di Durable Object `Coordination` (`consume` tidak bisa menambah lebih dari 1). Node: Redis (skrip Lua) bila `REDIS_URL` ada, kalau tidak di memori proses. Store yang gagal → memori proses (pencarian tidak pernah berhenti karena store).
+- **Anggaran (K7):** kunci `budget:<hari UTC>` dalam mikro-USD dari `X-Treg-Cost-Micro`. Dicek sebelum memanggil penyedia; lewat batas → cache basi dengan `budgetLimited: true`, atau galat `JOBS_BUDGET_LIMITED` bila tidak ada cache. Log `warn` sekali saat melewati 80%. Alert admin lewat `billing/alerts.ts` belum dibuat (butuh jenis alert baru; Phase 07 bersama dasbor biaya).
+- **Single-flight:** `add("lock:<kunci>", 1, {max: 1, window: 30 s})`. Yang kalah menunggu (cek cache tiap 300 ms, maks 8 detik), lalu memanggil sendiri bila belum terisi. Kunci tidak dilepas; habis sendiri dalam 30 detik.
+- **Rate limit:** binding `JOB_SEARCH_LIMITER` (10 per 60 detik per akun, namespace `1102`); di Node `createRateLimiter` biasa. Mati bila `FLAG_DISABLE_API_RATE_LIMIT`.
+- **Kill switch / tanpa token:** `FLAG_DISABLE_JOB_SEARCH` → hanya cache (basi pun boleh), tanpa cache `JOBS_UNAVAILABLE`. Tanpa `TREG_API_KEY` → `JOBS_UNAVAILABLE` selalu; `jobs.quota` menjawab `available: false`.
+- **Galat penyedia** tanpa cache → `JOBS_UNAVAILABLE`; dengan cache kedaluwarsa → jawaban basi `stale: true`.
+- **oRPC** (`/api/rpc`, OpenAPI tag `Jobs`): `jobs.search` (POST `/jobs/search`), `jobs.listing` (GET `/jobs/listings/{id}`), `jobs.hide` (PUT `/jobs/listings/{id}/hidden`), `jobs.quota` (GET `/jobs/quota`). `jobs.track` menyusul di Phase 03. Galat: `PLAN_LIMIT_REACHED` (`data.limit: "jobSearchesPerDay"`, `resetsAt`), `JOBS_UNAVAILABLE`, `JOBS_BUDGET_LIMITED`, `RATE_LIMIT_EXCEEDED`, `BAD_REQUEST`.
+
+### 16.3 Uji nyata (2026-11-20, izin pemilik)
+
+`pnpm jobs:probe "software engineer" US --service --user <akun lokal> --yes`: pencarian pertama 1,8 detik, Hirebase 20 lowongan, **$0.0300**, 16 tampil (4 baris ganda dari Hirebase sendiri: posting yang sama dua kali atau satu baris per lokasi; dedup bekerja), tidak perlu JobsPipe. Pencarian kedua yang sama: **9 ms, `fromCache: true`, $0**, kuota tetap 1/40 (halaman yang sama hari itu tidak dihitung ulang). Total biaya sesi Phase 02: $0.0300.
+
+### 16.4 Untuk Phase 03
+
+- `apps/web/src/features/billing/plan.ts` `getPlanProblem` belum mengenal `limit: "jobSearchesPerDay"` (saat ini terbaca seperti batas resume). Tambahkan cabangnya bersama pesan Lingui saat halaman Lowongan dibuat.
+- Kartu tidak membawa `description`; detail lewat `jobs.listing`. `requirementsSummary` ada di kartu bila penyedia memberinya.
+- Tampilkan `stale`/`budgetLimited` sebagai pesan ringan ("hasil tersimpan; coba lagi besok"), dan sisa kuota dari `quota`.

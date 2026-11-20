@@ -2,6 +2,7 @@ import type { JobProvider } from "@rezumi/schema/jobs/listing";
 import * as pg from "drizzle-orm/pg-core";
 import { JOB_PROVIDERS } from "@rezumi/schema/jobs/listing";
 import { generateId } from "@rezumi/utils/string";
+import { user } from "./auth";
 
 /**
  * Job listings from Hirebase and JobsPipe (`.agents/docs/plans/lowongan/02-teknis.md` section 6). Shared between
@@ -70,9 +71,9 @@ export const jobSearchCache = pg.pgTable(
 	{
 		/** sha256 of the normalized search, its providers and the schema version. */
 		key: pg.text("key").primaryKey(),
-		providers: pg.text("providers").array().notNull().$type<JobProvider[]>(),
+		providers: pg.text("providers").$type<JobProvider>().array().notNull(),
 		query: pg.jsonb("query").notNull().$type<Record<string, unknown>>(),
-		listingIds: pg.text("listing_ids").array().notNull().$type<string[]>(),
+		listingIds: pg.text("listing_ids").array().notNull(),
 		/** Where each provider continues for "load more". */
 		cursors: pg.jsonb("cursors").notNull().$type<Partial<Record<JobProvider, string>>>().default({}),
 		total: pg.integer("total"),
@@ -80,4 +81,25 @@ export const jobSearchCache = pg.pgTable(
 		expiresAt: pg.timestamp("expires_at", { withTimezone: true }).notNull(),
 	},
 	(t) => [pg.index().on(t.expiresAt)],
+);
+
+/**
+ * Listings a person hid from their search results. Its own table rather than `career_opportunity.dismissedAt`: hiding
+ * works on any search result, which needn't be an opportunity, and Phase 04 reads it before adding opportunities.
+ * Removed with the account or the listing.
+ */
+export const jobListingHidden = pg.pgTable(
+	"job_listing_hidden",
+	{
+		userId: pg
+			.text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		listingId: pg
+			.text("listing_id")
+			.notNull()
+			.references(() => jobListing.id, { onDelete: "cascade" }),
+		hiddenAt: pg.timestamp("hidden_at", { withTimezone: true }).notNull().defaultNow(),
+	},
+	(t) => [pg.primaryKey({ columns: [t.userId, t.listingId] }), pg.index().on(t.listingId)],
 );

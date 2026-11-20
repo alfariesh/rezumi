@@ -116,6 +116,24 @@ export function portfolioLimitReached(input: { limit: PortfolioPlanLimit; max: n
 	});
 }
 
+/**
+ * The day's job searches are used up (K2). Neutral like the other limits: what's already found stays open, and the
+ * count starts again at midnight in the account's time zone. `resetsAt` is that midnight, as an ISO date-time.
+ */
+export function jobSearchLimitReached(input: { max: number; used: number; planId: PlanId; resetsAt: Date }) {
+	return new ORPCError("PLAN_LIMIT_REACHED", {
+		status: 403,
+		message: `You've used today's ${input.max} job searches. Results you already opened stay available, and searches start again at midnight.`,
+		data: {
+			limit: "jobSearchesPerDay",
+			max: input.max,
+			used: input.used,
+			planId: input.planId,
+			resetsAt: input.resetsAt.toISOString(),
+		},
+	});
+}
+
 /** Using a feature the account's plan doesn't include. */
 export function planFeatureRequired(feature: PlanFeature, planId: PlanId) {
 	return new ORPCError("PLAN_FEATURE_REQUIRED", {

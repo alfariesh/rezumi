@@ -8,6 +8,13 @@ const inputSchema = z.discriminatedUnion("operation", [
 		max: z.number().int().positive(),
 		rolling: z.boolean().optional(),
 	}),
+	// Adds `amount` (0 reads) to a running total; with `max`, an amount that would pass it is refused and not added.
+	z.object({
+		operation: z.literal("add"),
+		amount: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER),
+		window: z.number().positive(),
+		max: z.number().int().positive().optional(),
+	}),
 	z.object({ operation: z.literal("set"), value: z.string(), ttl: z.number().positive() }),
 	z.object({ operation: z.literal("get") }),
 	z.object({ operation: z.literal("publish"), value: z.string().max(8192) }),
@@ -46,6 +53,12 @@ export class Coordination {
 				return null;
 			}
 			const count = entry?.count ?? 0;
+			if (input.operation === "add") {
+				const allowed = input.max === undefined || count + input.amount <= input.max;
+				const expiresAt = entry?.expiresAt ?? now + input.window;
+				if (allowed && input.amount > 0) this.ctx.storage.kv.put("entry", { count: count + input.amount, expiresAt });
+				return { allowed, total: allowed ? count + input.amount : count, reset: expiresAt };
+			}
 			const allowed = count < input.max;
 			const expiresAt = allowed && input.rolling ? now + input.window : (entry?.expiresAt ?? now + input.window);
 			if (allowed) this.ctx.storage.kv.put("entry", { count: count + 1, expiresAt });

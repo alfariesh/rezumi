@@ -79,6 +79,7 @@ vi.mock("@rezumi/pdf/server", () => ({
 		mocks.pictureReader = reader;
 	},
 }));
+vi.mock("@rezumi/api/features/jobs/allowance", () => ({ configureJobSearchLimiter: vi.fn() }));
 vi.mock("@rezumi/api/features/portfolio/public", () => ({ portfolioFileAccess: mocks.publicPortfolioFile }));
 vi.mock("@rezumi/api/features/portfolio/public-limit", () => ({
 	configurePortfolioPublicLimiter: vi.fn(),

@@ -6,12 +6,17 @@
  *   pnpm jobs:probe "software engineer" US --limit 3 --yes     paid: up to 3 jobs per provider
  *   pnpm jobs:probe "data analyst" --remote --provider hirebase --yes
  *
+ *   pnpm jobs:probe "software engineer" US --service --user <local user id> --yes
+ *     runs the real job search service twice for that account (provider, then the shared cache) and prints the time,
+ *     whether it came from the cache and what treg charged; the second run should be free.
+ *
  * The second argument is an ISO country code; leave it out to search everywhere. `--yes` is required for a paid call
  * (the script prints the most it can cost first). Saving refuses any database that isn't on this machine.
  */
 import type { JobProvider } from "@rezumi/schema/jobs/listing";
 import { parseArgs } from "node:util";
 import { JOB_SOURCES } from "@rezumi/api/features/jobs/providers";
+import { createJobSearchService } from "@rezumi/api/features/jobs/service";
 import { upsertListings } from "@rezumi/api/features/jobs/store";
 import { jobSearchInputSchema } from "@rezumi/schema/jobs/search";
 
@@ -26,6 +31,8 @@ const { values: options, positionals } = parseArgs({
 		remote: { type: "boolean", default: false },
 		days: { type: "string", default: "30" },
 		count: { type: "boolean", default: false },
+		service: { type: "boolean", default: false },
+		user: { type: "string" },
 		yes: { type: "boolean", default: false },
 	},
 });
@@ -59,10 +66,54 @@ const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl || !LOCAL_HOSTS.has(new URL(databaseUrl).hostname)) {
 	throw new Error("Refusing to save: DATABASE_URL must point at a database on this machine.");
 }
-const ceiling = providers.reduce((sum, provider) => sum + limit * JOB_SOURCES[provider].pricePerListingUsd, 0);
-console.log(`At most ${limit} jobs per provider, about $${ceiling.toFixed(4)} in all.`);
+// The service asks Hirebase for a page of 20 and JobsPipe for up to 20 more when Hirebase finds fewer than 10.
+const ceiling = options.service
+	? 20 * JOB_SOURCES.hirebase.pricePerListingUsd + 20 * JOB_SOURCES.jobspipe.pricePerListingUsd
+	: providers.reduce((sum, provider) => sum + limit * JOB_SOURCES[provider].pricePerListingUsd, 0);
+console.log(
+	options.service
+		? `One search page, usually about $${(20 * JOB_SOURCES.hirebase.pricePerListingUsd).toFixed(4)}; at most $${ceiling.toFixed(4)}.`
+		: `At most ${limit} jobs per provider, about $${ceiling.toFixed(4)} in all.`,
+);
 if (!options.yes) {
 	console.log("Nothing called. Add --yes to run the paid search.");
+	process.exit(0);
+}
+
+if (options.service) {
+	if (!options.user) throw new Error("Pass the local account to search as: --user <user id>.");
+	// Counts what each provider call cost, so the second (cached) run can show it was free.
+	let costMicro = 0;
+	const counted = Object.fromEntries(
+		Object.entries(JOB_SOURCES).map(([name, source]) => [
+			name,
+			{
+				...source,
+				search: async (...args: Parameters<typeof source.search>) => {
+					const result = await source.search(...args);
+					costMicro += result.costMicro;
+					return result;
+				},
+			},
+		]),
+	) as typeof JOB_SOURCES;
+	const jobs = createJobSearchService({ sources: counted });
+	const { cursor: _cursor, ...request } = input;
+	for (const run of ["first", "second"]) {
+		const before = costMicro;
+		const started = performance.now();
+		const result = await jobs.search(options.user, request);
+		const ms = Math.round(performance.now() - started);
+		console.log(
+			`\n${run} run: ${result.listings.length} listings in ${ms} ms, fromCache ${result.fromCache}, ` +
+				`stale ${result.stale}, budgetLimited ${result.budgetLimited}, cost $${((costMicro - before) / 1e6).toFixed(4)}, ` +
+				`quota ${result.quota.used}/${result.quota.max}, more pages: ${result.cursor ? "yes" : "no"}`,
+		);
+		if (run === "first")
+			for (const listing of result.listings.slice(0, 5))
+				console.log(`- ${listing.title} · ${listing.company.name} · ${listing.location.text || "—"}`);
+	}
+	console.log(`\nSpent on treg: $${(costMicro / 1e6).toFixed(4)}`);
 	process.exit(0);
 }
 
