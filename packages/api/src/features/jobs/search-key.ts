@@ -8,7 +8,7 @@ import type { JobSearchInput } from "@rezumi/schema/jobs/search";
  */
 
 /** Raise when the stored answer of the same search would differ: a new mapping, filter or provider rule. */
-export const JOB_SEARCH_CACHE_VERSION = 1;
+const JOB_SEARCH_CACHE_VERSION = 1;
 
 export type NormalizedJobSearch = {
 	query: string;

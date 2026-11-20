@@ -26,8 +26,8 @@ import {
  * when it finds fewer than 10 (K1). Mapping: `02-teknis.md` section 5.
  */
 
-export const JOBSPIPE_SEARCH_TOOL = "jobspipe.jobs.search";
-export const JOBSPIPE_COUNT_TOOL = "jobspipe.jobs.search.count";
+const JOBSPIPE_SEARCH_TOOL = "jobspipe.jobs.search";
+const JOBSPIPE_COUNT_TOOL = "jobspipe.jobs.search.count";
 /** treg's price for one job returned by `jobspipe.jobs.search` (catalog, 2026-11-20); a repeat this month is free. */
 export const JOBSPIPE_PRICE_USD = 0.00392;
 
@@ -167,7 +167,7 @@ export function jobspipeSearchBody(input: JobSearchInput, limit: number) {
 
 type SearchAnswer = { data?: unknown; metadata?: unknown };
 
-export const JOBSPIPE_NEW_TOOL = "jobspipe.jobs.new";
+const JOBSPIPE_NEW_TOOL = "jobspipe.jobs.new";
 
 /** One call to `jobspipe.jobs.search` or `jobspipe.jobs.new`, mapped; both answer the same shape. */
 async function fetchJobs(

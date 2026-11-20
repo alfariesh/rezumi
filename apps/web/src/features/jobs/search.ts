@@ -8,8 +8,7 @@ import { JOB_SEARCH_POSTED_WITHIN_DAYS } from "@rezumi/schema/jobs/search";
  * same results (a page opened again the same day doesn't count again). Nothing is searched until there is a query.
  */
 
-export const JOB_ARRANGEMENTS = ["any", "remote", "hybrid", "onsite"] as const;
-export type JobArrangementFilter = (typeof JOB_ARRANGEMENTS)[number];
+const JOB_ARRANGEMENTS = ["any", "remote", "hybrid", "onsite"] as const;
 
 export const jobsSearchSchema = z.object({
 	q: z.string().trim().max(200).default("").catch(""),

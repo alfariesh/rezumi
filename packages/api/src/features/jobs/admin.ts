@@ -24,7 +24,7 @@ import { readTregAccount } from "./treg-account";
 
 export const JOB_COST_DAYS = [7, 30] as const;
 /** Spending past this share of the day's budget is a warning on the dashboard and an email to the owner. */
-export const BUDGET_WARN_SHARE = 0.8;
+const BUDGET_WARN_SHARE = 0.8;
 
 const DATASET = 'events.analyticsEngine."job_search_events"';
 const DAY_MS = 24 * 60 * 60 * 1000;

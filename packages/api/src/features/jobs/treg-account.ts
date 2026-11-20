@@ -9,7 +9,7 @@ import { TREG_BASE_URL } from "./treg";
 
 const READ_TIMEOUT_MS = 10_000;
 
-export type TregUsageRow = { feature: string; chargedMicro: number; calls: number };
+type TregUsageRow = { feature: string; chargedMicro: number; calls: number };
 
 export type TregAccount = {
 	balanceMicro: number;

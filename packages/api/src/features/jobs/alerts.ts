@@ -26,7 +26,7 @@ import { isTregConfigured, TregError } from "./treg";
  *   to the next UTC day ({@link JobAlertPostponed}); nothing is lost, since the state only moves after a check.
  */
 
-export const ALERT_PAGE_SIZE = 20;
+const ALERT_PAGE_SIZE = 20;
 const HOUR_MS = 60 * 60 * 1000;
 const DAY_MS = 24 * HOUR_MS;
 /** How far the next Hirebase check reaches back before this one started. */

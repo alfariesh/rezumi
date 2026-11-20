@@ -27,10 +27,10 @@ import {
  * to the employer. The primary provider for every country and remote (K1). Mapping: `02-teknis.md` section 5.
  */
 
-export const HIREBASE_SEARCH_TOOL = "hirebase.jobs.search";
-export const HIREBASE_COUNT_TOOL = "hirebase.jobs.search.count";
+const HIREBASE_SEARCH_TOOL = "hirebase.jobs.search";
+const HIREBASE_COUNT_TOOL = "hirebase.jobs.search.count";
 /** treg's price for one job returned by `hirebase.jobs.search` (catalog, 2026-11-20). */
-export const HIREBASE_PRICE_USD = 0.0015;
+const HIREBASE_PRICE_USD = 0.0015;
 
 const ARRANGEMENTS: Record<string, JobWorkArrangement> = { remote: "remote", hybrid: "hybrid", "in-person": "onsite" };
 const LOCATION_TYPES: Record<JobWorkArrangement, string> = { remote: "Remote", hybrid: "Hybrid", onsite: "In-Person" };

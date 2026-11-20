@@ -163,7 +163,7 @@ function wireInput<T extends z.ZodObject>(schema: T): T {
 const messageOutput = z.object({ message: z.string() });
 
 /** Job listings one `search_jobs` call returns: the providers' terms rule out bulk export (`02-teknis.md` 13). */
-export const MCP_JOB_LISTINGS_PER_CALL = 10;
+const MCP_JOB_LISTINGS_PER_CALL = 10;
 
 // Portfolios (Phase 14). The account has at most one, so these tools take no portfolio id.
 const portfolioImageOutput = z.object({

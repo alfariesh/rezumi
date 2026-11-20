@@ -63,7 +63,7 @@ type MatchChipProps = { match: JobListingMatch | undefined };
  * How many of the skills a listing names the person's Profile mentions (K8: free, no AI). Shown only when some do: a
  * "0 of 6" says more about an unfilled Profile than about the job, and the detail lists them either way.
  */
-export function MatchChip({ match }: MatchChipProps) {
+function MatchChip({ match }: MatchChipProps) {
 	if (!match || match.matched.length === 0) return null;
 	const matched = match.matched.length;
 	const total = matched + match.missing.length;
