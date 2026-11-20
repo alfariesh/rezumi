@@ -109,10 +109,6 @@ export const restAliases = {
 		operationId: "deleteDocumentPermanently",
 	}),
 	documentCopy: router.documents.copyForJob.route({ path: "/documents/copies", operationId: "createDocumentCopy" }),
-	postingSearch: router.applications.ai.searchPostings.route({
-		path: "/applications/ai/posting-searches",
-		operationId: "createPostingSearch",
-	}),
 	postingParse: router.applications.ai.parsePosting.route({
 		path: "/applications/ai/posting-parses",
 		operationId: "createPostingParse",
@@ -150,10 +146,6 @@ export const restAliases = {
 	providerTest: router.aiProviders.test.route({
 		path: "/ai-providers/{id}/tests",
 		operationId: "createAiProviderTest",
-	}),
-	webAccessTest: router.webAccess.test.route({
-		path: "/integrations/web-access/tests",
-		operationId: "createWebAccessTest",
 	}),
 	message: router.agent.messages.send.route({
 		path: "/agent/threads/{threadId}/messages",

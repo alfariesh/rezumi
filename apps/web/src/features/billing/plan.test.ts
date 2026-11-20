@@ -92,6 +92,20 @@ describe("plan problems", () => {
 		});
 		expect(getPlanProblem(new ORPCError("NOT_FOUND"))).toBeNull();
 		expect(getPlanProblem(new Error("PLAN_LIMIT_REACHED"))).toBeNull();
+		// Today's job searches read as their own limit, not a document one.
+		const searches = new ORPCError("PLAN_LIMIT_REACHED", {
+			data: { limit: "jobSearchesPerDay", max: 3, used: 3, planId: "free", resetsAt: "2026-11-21T00:00:00.000Z" },
+		});
+		expect(getPlanProblem(searches)).toEqual({ kind: "limit", limit: "jobSearchesPerDay", max: 3, used: 3 });
+		const alerts = new ORPCError("PLAN_LIMIT_REACHED", {
+			data: { limit: "jobAlerts", max: 1, used: 1, planId: "free" },
+		});
+		expect(getPlanProblem(alerts)).toEqual({ kind: "limit", limit: "jobAlerts", max: 1, used: 1 });
+		expect(describePlanProblem({ kind: "limit", limit: "jobAlerts", max: 1, used: 1 })).toEqual({
+			title: "No room for another job alert",
+			description:
+				"Your plan keeps 1 job alert on. Alerts you already have keep running. Pause or delete one to turn on another.",
+		});
 	});
 
 	it("explains each problem with the free way on and no price", () => {

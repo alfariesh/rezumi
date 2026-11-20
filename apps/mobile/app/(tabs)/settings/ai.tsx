@@ -16,7 +16,6 @@ export default function AiScreen() {
 					chevron
 					onPress={() => router.push("/settings/ai-providers")}
 				/>
-				<ListRow title={t`Web access`} leading="globe" chevron onPress={() => router.push("/settings/ai-web-access")} />
 				<ListRow
 					title={t`MCP server`}
 					leading="terminal-window"

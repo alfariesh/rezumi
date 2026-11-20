@@ -1,0 +1,289 @@
+import type { BrowserReason, ReadPageResult, SearchResult, WebContext, WebFailure } from "./contracts";
+import type { SearchCall } from "./search";
+import { env } from "@rezumi/env/server";
+import { rateLimitConfig } from "@rezumi/utils/rate-limit";
+import { MAX_SEARCH_REGIONS } from "@rezumi/utils/region";
+import { abortable } from "@rezumi/utils/url-security.node";
+import { createRateLimiter } from "../../redis";
+import { budgetLeft, recordSpend } from "../jobs/allowance";
+import { jobCounters } from "../jobs/counters";
+import { recordJobEvent } from "../jobs/events";
+import { isTregConfigured } from "../jobs/treg";
+import { isBrowserRunConfigured, readBrowserPage } from "./browser";
+import { assertPublicTarget, htmlToText, readBuiltinPage } from "./builtin";
+import {
+	MAX_PAGE_BYTES,
+	MAX_SEARCH_QUERY_CHARS,
+	MAX_SEARCH_RESULTS,
+	READ_DEADLINE_MS,
+	SEARCH_DEADLINE_MS,
+	WebError,
+} from "./contracts";
+import { searchThroughTreg } from "./search";
+import { pageContent, safeFailure } from "./transport";
+
+/** Pages a person may have read through Browser Run in one UTC day (`02-teknis.md` section 11). */
+export const BROWSER_READS_PER_DAY = 20;
+/** Web searches a person may send in one UTC day; each one costs Rezumi money (section 11). */
+export const WEB_SEARCHES_PER_DAY = 50;
+/** The direct reader's share of a read's deadline when the browser can take over. */
+const DIRECT_BUDGET_MS = 12_000;
+
+const limiter = createRateLimiter("web", rateLimitConfig.orpc.aiRequest);
+
+async function consume(userId: string, signal: AbortSignal) {
+	signal.throwIfAborted();
+	if (process.env.NODE_ENV !== "production" || env.FLAG_DISABLE_API_RATE_LIMIT) return;
+	const { success } = await abortable(limiter.limit(userId), signal);
+	if (!success) throw new WebError("rate-limit");
+}
+
+const deadline = (ms: number, signal?: AbortSignal) =>
+	AbortSignal.any([...(signal ? [signal] : []), AbortSignal.timeout(ms)]);
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/** Counts one use of `what` for the person today; false once `max` is reached. A counter that fails allows it. */
+async function countToday(what: string, userId: string, max: number): Promise<boolean> {
+	const now = Date.now();
+	const day = new Date(now).toISOString().slice(0, 10);
+	const window = Date.parse(`${day}T00:00:00Z`) + DAY_MS - now + 60 * 60 * 1000;
+	try {
+		return (await jobCounters.add(`${what}:${userId}:${day}`, 1, { window, max })).allowed;
+	} catch {
+		return true;
+	}
+}
+
+function log(operation: "search" | "read", method: string, started: number, outcome: string, detail?: string) {
+	console.info("[web]", {
+		method,
+		operation,
+		durationMs: Date.now() - started,
+		outcome,
+		...(detail ? { detail } : {}),
+	});
+}
+
+// ---- Reading -----------------------------------------------------------------------------------------------------
+
+const BROWSER_HELPS = new Set<WebFailure>(["empty", "challenge", "unreachable"] satisfies BrowserReason[]);
+const helpsBrowser = (reason: WebFailure): reason is BrowserReason => BROWSER_HELPS.has(reason);
+
+/**
+ * A page whose content is drawn by JavaScript: no JSON-LD to read, and only a few words of text or a note asking for
+ * JavaScript. ponytail: a heuristic; a genuinely short page also gets one browser read, within the daily allowance.
+ */
+export function looksUnrendered(html: string, text: string): boolean {
+	if (/<script[^>]+application\/ld\+json/i.test(html)) return false;
+	if (text.length < 300) return true;
+	return text.length < 2_000 && /\b(?:enable|turn on|requires?|needs?) javascript\b/i.test(text);
+}
+
+async function readThroughBrowser(url: URL, context: WebContext, signal: AbortSignal, reason: BrowserReason) {
+	if (!isBrowserRunConfigured()) return null;
+	if (!(await countToday("web-browser", context.userId, BROWSER_READS_PER_DAY))) {
+		console.info("[web]", { operation: "read", method: "browser", outcome: "daily-limit" });
+		return null;
+	}
+	const started = Date.now();
+	let browserMs = 0;
+	try {
+		const page = await readBrowserPage(url, signal);
+		browserMs = page.browserMs;
+		if (page.html.length > MAX_PAGE_BYTES) throw new WebError("too-large");
+		const content = pageContent(htmlToText(page.html));
+		recordJobEvent({
+			provider: "browser-run",
+			tool: "content",
+			outcome: "miss",
+			kind: "browser",
+			costMicro: 0,
+			ms: browserMs || Date.now() - started,
+			resultCount: 1,
+		});
+		return {
+			...content,
+			html: page.html,
+			requestedUrl: url.toString(),
+			retrievedAt: new Date().toISOString(),
+			method: "browser",
+			format: "text",
+			fallbackReason: reason,
+		} satisfies ReadPageResult;
+	} catch (error) {
+		signal.throwIfAborted();
+		recordJobEvent({
+			provider: "browser-run",
+			tool: "content",
+			outcome: "error",
+			kind: "browser",
+			costMicro: 0,
+			ms: browserMs || Date.now() - started,
+			resultCount: 0,
+		});
+		console.info("[web]", {
+			operation: "read",
+			method: "browser",
+			outcome: error instanceof WebError ? error.reason : "unreachable",
+		});
+		return null;
+	}
+}
+
+/**
+ * Reads one public page. The direct reader goes first; when it finds nothing to read, a bot check, or a page drawn by
+ * JavaScript, Cloudflare Browser Run reads it again (limited per person per day). The address is checked to be public
+ * before anything is fetched. One deadline covers both; cancellation never falls back.
+ */
+export async function readPage(input: string, context: WebContext): Promise<ReadPageResult> {
+	const signal = deadline(READ_DEADLINE_MS, context.signal);
+	const started = Date.now();
+	let reason: BrowserReason | undefined;
+	try {
+		await consume(context.userId, signal);
+		const url = await assertPublicTarget(input, signal);
+		const browser = isBrowserRunConfigured();
+		// Leave the browser time to work when it can take over.
+		const directSignal = browser ? AbortSignal.any([signal, AbortSignal.timeout(DIRECT_BUDGET_MS)]) : signal;
+		let direct: ReadPageResult | undefined;
+		try {
+			const page = await readBuiltinPage(url.toString(), directSignal);
+			const content = pageContent(htmlToText(page.html));
+			direct = {
+				...page,
+				...content,
+				requestedUrl: url.toString(),
+				retrievedAt: new Date().toISOString(),
+				method: "builtin",
+				format: "text",
+			};
+			if (!looksUnrendered(page.html, content.content)) {
+				log("read", "builtin", started, "success");
+				return direct;
+			}
+			reason = "empty";
+		} catch (error) {
+			signal.throwIfAborted();
+			const failure = safeFailure(error, directSignal);
+			if (!helpsBrowser(failure.reason)) throw failure;
+			reason = failure.reason;
+		}
+		const rendered = browser ? await readThroughBrowser(url, context, signal, reason) : null;
+		if (rendered) {
+			log("read", "browser", started, "success", reason);
+			return rendered;
+		}
+		if (direct) {
+			log("read", "builtin", started, "success", "unrendered");
+			return direct;
+		}
+		throw new WebError(reason);
+	} catch (error) {
+		log(
+			"read",
+			"builtin",
+			started,
+			signal.aborted ? "aborted" : error instanceof WebError ? error.reason : "unreachable",
+		);
+		throw safeFailure(error, signal);
+	}
+}
+
+// ---- Searching ---------------------------------------------------------------------------------------------------
+
+/** Whether this server can search the web: treg is set up. Nothing is asked of the person. */
+export const canSearchWeb = () => isTregConfigured();
+
+function searchInput(query: string) {
+	const input = query.trim();
+	if (!input || input.length > MAX_SEARCH_QUERY_CHARS) throw new WebError("malformed");
+	return input;
+}
+
+/** Deduplicates by URL and takes results round-robin in region order, so each region that returned anything shows. */
+function interleave(lists: SearchResult[][]) {
+	const seen = new Set<string>();
+	const merged: SearchResult[] = [];
+	const longest = Math.max(...lists.map((list) => list.length));
+	for (let index = 0; index < longest; index++) {
+		for (const list of lists) {
+			const item = list[index];
+			if (!item || seen.has(item.url)) continue;
+			seen.add(item.url);
+			merged.push(item);
+		}
+	}
+	return merged.slice(0, MAX_SEARCH_RESULTS);
+}
+
+async function searchRegion(query: string, region: string | undefined, signal: AbortSignal): Promise<SearchCall> {
+	try {
+		const call = await searchThroughTreg(query, { region, signal });
+		await recordSpend(jobCounters, call.costMicro, new Date()).catch(() => {});
+		recordJobEvent({
+			provider: call.provider,
+			tool: call.tool,
+			outcome: "miss",
+			countryCode: region,
+			kind: "web-search",
+			costMicro: call.costMicro,
+			ms: call.ms,
+			resultCount: call.results.length,
+		});
+		return call;
+	} catch (error) {
+		recordJobEvent({
+			provider: "treg",
+			tool: "web.search",
+			outcome: error instanceof WebError && error.reason === "budget" ? "budget" : "error",
+			countryCode: region,
+			kind: "web-search",
+			costMicro: 0,
+			ms: 0,
+			resultCount: 0,
+		});
+		throw error;
+	}
+}
+
+/**
+ * One web search, paid by the server through treg and counted in the job search budget (K7). Each of the person's
+ * search countries gets its own search, in parallel under one deadline; a failed country drops out unless all fail.
+ * Throws `WebError`: `budget` once today's budget is spent, `rate-limit` past the person's searches for the day.
+ */
+export async function searchWeb(query: string, context: WebContext): Promise<SearchResult[]> {
+	const signal = deadline(SEARCH_DEADLINE_MS, context.signal);
+	const started = Date.now();
+	try {
+		await consume(context.userId, signal);
+		const input = searchInput(query);
+		if (!canSearchWeb()) throw new WebError("unavailable");
+		if (!(await budgetLeft(jobCounters, new Date()).catch(() => true))) throw new WebError("budget");
+		if (!(await countToday("web-search", context.userId, WEB_SEARCHES_PER_DAY))) throw new WebError("rate-limit");
+		const regions = (context.regions ?? []).slice(0, MAX_SEARCH_REGIONS);
+		const settled = await Promise.allSettled(
+			(regions.length ? regions : [undefined]).map((region) => searchRegion(input, region, signal)),
+		);
+		const calls = settled.flatMap((outcome) => (outcome.status === "fulfilled" ? [outcome.value] : []));
+		if (calls.length === 0) throw (settled[0] as PromiseRejectedResult).reason;
+		signal.throwIfAborted();
+		const failed = settled.length - calls.length;
+		log(
+			"search",
+			calls[0]?.provider ?? "treg",
+			started,
+			"success",
+			failed ? `${failed}/${settled.length}-regions-failed` : undefined,
+		);
+		return interleave(calls.map((call) => call.results));
+	} catch (error) {
+		log(
+			"search",
+			"treg",
+			started,
+			signal.aborted ? "aborted" : error instanceof WebError ? error.reason : "unreachable",
+		);
+		throw safeFailure(error, signal);
+	}
+}

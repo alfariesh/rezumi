@@ -24,6 +24,9 @@ const BILLING_ALERT_KINDS = [
 	"provider_errors",
 	// Dodo refused a refund, or never confirmed one.
 	"refund_failed",
+	// Job search spending passed 80% of the day's budget (JOB_SEARCH_DAILY_BUDGET_USD); not a payment problem, but the
+	// owner's alerts already reach the right inbox.
+	"job_search_budget",
 ] as const;
 
 export type BillingAlertKind = (typeof BILLING_ALERT_KINDS)[number];

@@ -594,6 +594,8 @@ export const applicationService = {
 				status?: ApplicationStatus | undefined;
 				closedReason?: ApplicationClosedReason | null | undefined;
 				stageEnteredAt?: string | undefined;
+				/** Server only: the job search listing it was tracked from (`jobs.track`). */
+				jobListingId?: string | undefined;
 			},
 	) => {
 		const { userId, status, stageEnteredAt, closedReason, resumeFile, coverLetterFile, ...fields } = input;
@@ -899,13 +901,31 @@ export const applicationService = {
 		const existing = await requireOwned(input.id, input.userId);
 		await db
 			.update(schema.application)
-			.set({ companyLogoUrl: input.url })
+			// A logo is how the card looks, not what the application says: AI work written for it stays current.
+			.set({ companyLogoUrl: input.url, updatedAt: sql`${schema.application.updatedAt}` })
 			.where(and(eq(schema.application.id, input.id), eq(schema.application.userId, input.userId)));
 		const previous = logoKeyFromUrl(input.userId, existing.companyLogoUrl);
 		if (previous && previous !== logoKeyFromUrl(input.userId, input.url))
 			await getStorageService()
 				.delete(previous)
 				.catch(() => false);
+	},
+
+	/**
+	 * Notes the job search listing an application already saved for the same posting was tracked from, unless it has
+	 * one. Not an edit: the application's time and AI work stay as they are.
+	 */
+	linkJobListing: async (input: { userId: string; id: string; listingId: string }) => {
+		await db
+			.update(schema.application)
+			.set({ jobListingId: input.listingId, updatedAt: sql`${schema.application.updatedAt}` })
+			.where(
+				and(
+					eq(schema.application.id, input.id),
+					eq(schema.application.userId, input.userId),
+					isNull(schema.application.jobListingId),
+				),
+			);
 	},
 
 	/** The newest application saved for one posting identity, or null. */
@@ -923,6 +943,19 @@ export const applicationService = {
 			.orderBy(desc(schema.application.updatedAt), desc(schema.application.id))
 			.limit(1);
 		return row ?? null;
+	},
+
+	/** The newest application per posting key, for marking postings already saved: key → application id. */
+	findIdsBySourceKeys: async (input: { userId: string; keys: string[] }) => {
+		const found = new Map<string, string>();
+		if (input.keys.length === 0) return found;
+		const rows = await db
+			.select({ id: schema.application.id, key: schema.application.sourceKey })
+			.from(schema.application)
+			.where(and(eq(schema.application.userId, input.userId), inArray(schema.application.sourceKey, input.keys)))
+			.orderBy(desc(schema.application.updatedAt), desc(schema.application.id));
+		for (const row of rows) if (row.key && !found.has(row.key)) found.set(row.key, row.id);
+		return found;
 	},
 
 	// Persist AI-owned enrichment (match score + freeform metadata). Separate from the editable

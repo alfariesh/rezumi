@@ -210,12 +210,6 @@ export const env = createEnv({
 		ENCRYPTION_SECRET: z.string().min(32, "ENCRYPTION_SECRET must be at least 32 characters").optional(),
 		CRON_SECRET: z.string().min(16, "CRON_SECRET must be at least 16 characters").optional(),
 
-		// Optional search and enhanced reading; custom URLs are operator-controlled Firecrawl services.
-		WEB_ACCESS_PROVIDER: z.enum(["firecrawl", "tavily", "exa"]).optional(),
-		WEB_ACCESS_API_KEY: z.string().trim().min(1).optional(),
-		WEB_ACCESS_API_URL: z.url({ protocol: /^https?$/ }).optional(),
-		// Optional operator-controlled SearXNG that takes over web search only; reading still uses the connection above.
-		WEB_SEARCH_SEARXNG_URL: z.url({ protocol: /^https?$/ }).optional(),
 		// Filling the Profile from outside sources. Without an Apify token, LinkedIn profiles can't be read; the actor is
 		// "owner~name" (or "owner/name"). GitHub is read without a token unless one is set (higher rate limits).
 		APIFY_TOKEN: z.string().trim().min(1).optional(),
@@ -226,6 +220,21 @@ export const env = createEnv({
 			.transform((value) => value.replace("/", "~"))
 			.default("harvestapi~linkedin-profile-scraper"),
 		GITHUB_API_TOKEN: z.string().trim().min(1).optional(),
+		// Job search: Hirebase and JobsPipe through treg (https://treg.to). Without it, job search isn't offered.
+		TREG_API_KEY: z.string().trim().min(1).optional(),
+		// Tests only: where treg calls go instead of https://treg.to (the browser tests' stand-in provider).
+		TREG_BASE_URL: z.url({ protocol: /^https?$/ }).optional(),
+		// What job search may spend on treg per UTC day, in US dollars; past it, people get cached results only.
+		JOB_SEARCH_DAILY_BUDGET_USD: z.coerce.number().nonnegative().default(1),
+		// Cloudflare Browser Run reads pages that need JavaScript, after the direct reader found nothing to read. Both set
+		// it up: an API token with "Browser Run Edit" (a secret) and the account it belongs to. Without them only the
+		// direct reader runs. Web search for the assistant goes through treg (TREG_API_KEY) and needs nothing else.
+		CLOUDFLARE_BROWSER_TOKEN: z.string().trim().min(1).optional(),
+		CLOUDFLARE_ACCOUNT_ID: z
+			.string()
+			.trim()
+			.regex(/^[a-f0-9]{32}$/, "Use the 32-character Account ID from the Cloudflare dashboard")
+			.optional(),
 		AI_PROVIDER: aiProviderSchema.optional(),
 		AI_MODEL: z.string().trim().min(1).optional(),
 		AI_API_KEY: z.string().trim().min(1).optional(),
@@ -245,6 +254,8 @@ export const env = createEnv({
 		FLAG_ALLOW_UNSAFE_AI_BASE_URL: z.stringbool().default(false),
 		FLAG_ALLOW_UNSAFE_OAUTH_REDIRECT_URI: z.stringbool().default(false),
 		FLAG_OLACV_SUGGESTION: z.stringbool().default(false),
+		// Stops job search from calling its providers; cached results still show.
+		FLAG_DISABLE_JOB_SEARCH: z.stringbool().default(false),
 		// Paid plans: off (nothing changes), admins (only accounts with the admin role see and are bound by them), on.
 		BILLING_MODE: z.enum(["off", "admins", "on"]).default("off"),
 		// Closes new purchases for a while; passes and credits already bought keep working.
@@ -296,17 +307,6 @@ export const env = createEnv({
 	runtimeEnv: deploymentEnvironment(process.env),
 	emptyStringAsUndefined: true,
 });
-
-if (
-	(env.WEB_ACCESS_PROVIDER || env.WEB_ACCESS_API_KEY || env.WEB_ACCESS_API_URL) &&
-	(!env.WEB_ACCESS_PROVIDER ||
-		(!env.WEB_ACCESS_API_KEY && !(env.WEB_ACCESS_PROVIDER === "firecrawl" && env.WEB_ACCESS_API_URL)) ||
-		(env.WEB_ACCESS_PROVIDER !== "firecrawl" && env.WEB_ACCESS_API_URL))
-) {
-	throw new Error(
-		"Web access requires WEB_ACCESS_PROVIDER and WEB_ACCESS_API_KEY; only Firecrawl accepts WEB_ACCESS_API_URL, which may be keyless.",
-	);
-}
 
 if (
 	(env.AI_PROVIDER || env.AI_MODEL || env.AI_API_KEY || env.AI_BASE_URL) &&

@@ -54,6 +54,9 @@
 		// nothing here is active. The target is the zone's fallback origin (.agents/docs/self-hosting/sharing-domains.mdx).
 		"CUSTOM_DOMAIN_TARGET": "domains.rezumi.app",
 		"CLOUDFLARE_SAAS_ZONE_ID": "de7723edd44c3c4fc9279b0062d3a49c",
+		// Browser Run reads pasted links that need JavaScript. Not secret; the token is the Worker secret
+		// CLOUDFLARE_BROWSER_TOKEN (permission "Browser Run Edit"). Without it only the direct reader runs.
+		"CLOUDFLARE_ACCOUNT_ID": "8be116534f7237b451f28adec91fbbbd",
 		// The contact form's public Turnstile key; set with its secret (TURNSTILE_SECRET_KEY, a Worker secret) before
 		// launch. Without both, the form isn't offered and Contact falls back to the email button.
 		"TURNSTILE_SITE_KEY": "0x4AAAAAAF5qNivhOg0kkz1u",
@@ -81,12 +84,18 @@
 	"r2_buckets": [{ "binding": "BUCKET", "bucket_name": "vitaekit" }],
 	// Resizes uploaded pictures (800 px JPEG, as sharp does on the Node server); see apps/server/src/cloudflare/images.ts.
 	"images": { "binding": "IMAGES" },
-	// Visitor breakdowns for portfolio statistics; the dataset is created on the first write. Read through ANALYTICS_SQL.
-	"analytics_engine_datasets": [{ "binding": "PORTFOLIO_EVENTS", "dataset": "portfolio_events" }],
+	// Visitor breakdowns for portfolio statistics and job search cost and latency (job_search_events); a dataset is created
+	// on its first write. Read through ANALYTICS_SQL.
+	"analytics_engine_datasets": [
+		{ "binding": "PORTFOLIO_EVENTS", "dataset": "portfolio_events" },
+		{ "binding": "JOB_EVENTS", "dataset": "job_search_events" },
+	],
 	"analytics": { "binding": "ANALYTICS_SQL" },
 	// Stops one address flooding the public portfolio routes; same numbers as rateLimitConfig.portfolioPublic.requests.
+	// JOB_SEARCH_LIMITER holds back a burst of job searches per account; same numbers as rateLimitConfig.orpc.jobSearch.
 	"ratelimits": [
 		{ "name": "PORTFOLIO_PUBLIC_LIMITER", "namespace_id": "1101", "simple": { "limit": 600, "period": 60 } },
+		{ "name": "JOB_SEARCH_LIMITER", "namespace_id": "1102", "simple": { "limit": 10, "period": 60 } },
 	],
 	// Career schedules: each cron tick sends one message per account with a due job, and each message runs that job in
 	// its own invocation, side by side, instead of two per minute inside the tick. Create the queue once before the

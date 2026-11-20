@@ -221,21 +221,20 @@ Settings show that AI is enabled globally and hide personal provider controls; t
 changes. Existing personal providers remain stored and become available again if you remove the server configuration.
 Shared credentials stay in the environment and do not require `ENCRYPTION_SECRET`.
 
-| Variable                | Default          | Description                                                                                                                                                                                                                          |
-| ----------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ENCRYPTION_SECRET`     | unset            | Encrypts personal AI and web-access keys. At least 32 characters; generate one with `openssl rand -hex 32` and keep it different from `AUTH_SECRET`. A shorter value stops the server at startup. Required for saving personal keys. |
-| `AI_PROVIDER`           | unset            | Shared provider identifier, such as `openai`, `anthropic`, `gemini`, `ollama` or `openai-compatible`. Uses the same providers as the personal provider settings.                                                                     |
-| `AI_MODEL`              | unset            | Shared model name, such as `gpt-5-mini`. Required with `AI_PROVIDER`.                                                                                                                                                                |
-| `AI_API_KEY`            | unset            | Shared provider key. Required with `AI_PROVIDER`, except for Ollama. Never returned to the browser.                                                                                                                                  |
-| `AI_BASE_URL`           | provider default | Optional shared provider endpoint; required for `openai-compatible`. Local or private endpoints need `FLAG_ALLOW_UNSAFE_AI_BASE_URL=true`.                                                                                           |
-| `AI_GATEWAY_TOKEN`      | unset            | Cloudflare AI Gateway authentication token. Sent as `cf-aig-authorization`, only to requests under `AI_BASE_URL` when that is a `gateway.ai.cloudflare.com` endpoint.                                                                |
-| `REDIS_URL`             | unset            | Redis connection string, `redis://` or `rediss://`. Optional. **Leave it unset on Cloudflare:** SQLite Durable Objects provide shared limits, live updates and cancellation.                                                         |
-| `AI_TEST_TIMEOUT_MS`    | `30000`          | How long **Save and test** waits for a provider to answer, in milliseconds. Raise it for local models that load slowly on first use.                                                                                                 |
-| `AI_REQUEST_TIMEOUT_MS` | `300000`         | How long a single AI action (importing a resume, reviewing, improving, reading a posting) waits for a provider, in milliseconds. Raise it for slow local models.                                                                     |
+| Variable                | Default          | Description                                                                                                                                                                                                           |
+| ----------------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ENCRYPTION_SECRET`     | unset            | Encrypts personal AI keys. At least 32 characters; generate one with `openssl rand -hex 32` and keep it different from `AUTH_SECRET`. A shorter value stops the server at startup. Required for saving personal keys. |
+| `AI_PROVIDER`           | unset            | Shared provider identifier, such as `openai`, `anthropic`, `gemini`, `ollama` or `openai-compatible`. Uses the same providers as the personal provider settings.                                                      |
+| `AI_MODEL`              | unset            | Shared model name, such as `gpt-5-mini`. Required with `AI_PROVIDER`.                                                                                                                                                 |
+| `AI_API_KEY`            | unset            | Shared provider key. Required with `AI_PROVIDER`, except for Ollama. Never returned to the browser.                                                                                                                   |
+| `AI_BASE_URL`           | provider default | Optional shared provider endpoint; required for `openai-compatible`. Local or private endpoints need `FLAG_ALLOW_UNSAFE_AI_BASE_URL=true`.                                                                            |
+| `AI_GATEWAY_TOKEN`      | unset            | Cloudflare AI Gateway authentication token. Sent as `cf-aig-authorization`, only to requests under `AI_BASE_URL` when that is a `gateway.ai.cloudflare.com` endpoint.                                                 |
+| `REDIS_URL`             | unset            | Redis connection string, `redis://` or `rediss://`. Optional. **Leave it unset on Cloudflare:** SQLite Durable Objects provide shared limits, live updates and cancellation.                                          |
+| `AI_TEST_TIMEOUT_MS`    | `30000`          | How long **Save and test** waits for a provider to answer, in milliseconds. Raise it for local models that load slowly on first use.                                                                                  |
+| `AI_REQUEST_TIMEOUT_MS` | `300000`         | How long a single AI action (importing a resume, reviewing, improving, reading a posting) waits for a provider, in milliseconds. Raise it for slow local models.                                                      |
 
 <Warning>
-  Changing `ENCRYPTION_SECRET` makes every saved AI and web-access key unreadable. People then need to enter their keys
-  again.
+  Changing `ENCRYPTION_SECRET` makes every saved AI key unreadable. People then need to enter their keys again.
 </Warning>
 
 Redis is optional, and on Cloudflare it is not used: the `COORDINATION` Durable Object namespace takes its place. The
@@ -257,48 +256,28 @@ pair`. Passwordless (`nopass`) ACL users keep an explicitly empty password: `red
 
 Saved AI providers and Assistant conversations are kept in PostgreSQL, so they remain available without Redis.
 
-## Web access
+## Job search and web reading
 
-The built-in reader is active without credentials. Search and enhanced reading use one optional connection:
-Firecrawl, Tavily or Exa. People can select a provider and save one personal key in **Settings → Web access** when `ENCRYPTION_SECRET` is configured. Personal connections use official cloud endpoints.
+Pasted job links, the assistant's page reading and Profile's personal website reader use the built-in reader, which
+needs no credentials. When it finds nothing to read (an empty page, a page drawn by JavaScript, a bot check or a site
+that refuses plain requests), Cloudflare Browser Run reads the page again in a real browser. People set nothing up.
 
-For a shared service, set `WEB_ACCESS_PROVIDER` and `WEB_ACCESS_API_KEY`. Only Firecrawl accepts a custom
-`WEB_ACCESS_API_URL`, including a keyless self-hosted service. Server configuration takes precedence, settings say
-**Provided by the server**, and personal changes are rejected. Stored personal connections become available again
-when the shared configuration is removed. Shared connections do not require `ENCRYPTION_SECRET`.
+| Variable                      | Default | Description                                                                                                                                                                                                                                               |
+| ----------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TREG_API_KEY`                | unset   | [treg](https://treg.to) token. Turns on job search (Hirebase and JobsPipe) and the assistant's web search, both paid from your treg balance. Without it, neither is offered and the assistant asks for a link or pasted text instead. Set it as a secret. |
+| `JOB_SEARCH_DAILY_BUDGET_USD` | `1`     | What job search and assistant web search together may spend on treg per UTC day, in US dollars. Past it, job search shows cached results only and web search fails until the next day.                                                                    |
+| `CLOUDFLARE_BROWSER_TOKEN`    | unset   | Cloudflare API token with the **Browser Run Edit** permission, for reading pages that need JavaScript. Set it as a Worker secret. Needs `CLOUDFLARE_ACCOUNT_ID`.                                                                                          |
+| `CLOUDFLARE_ACCOUNT_ID`       | unset   | The 32-character hexadecimal Account ID the token belongs to. Not secret: on the Worker, set it in `vars` in `wrangler.jsonc`. Without both values, only the built-in reader runs.                                                                        |
 
-Explicit generic configuration wins over legacy Firecrawl variables. Incomplete generic configuration, a missing key
-for Tavily/Exa, or a custom URL for those providers stops startup instead of silently choosing another connection.
+Browser Run reads at most 20 pages per person per UTC day; past that, only the built-in reader runs for them. Workers
+Paid includes 10 browser hours a month, then $0.09 an hour. Every address is checked to be public `https://`, with DNS
+checked against private and loopback addresses, before anything is fetched or sent to Browser Run.
 
-| Variable                 | Default         | Description                                                                                                                                                                                              |
-| ------------------------ | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `WEB_ACCESS_PROVIDER`    | unset           | One selected provider: `firecrawl`, `tavily` or `exa`.                                                                                                                                                   |
-| `WEB_ACCESS_API_KEY`     | unset           | Shared provider key. Required except for Firecrawl with an explicit custom URL.                                                                                                                          |
-| `WEB_ACCESS_API_URL`     | Firecrawl Cloud | Optional Firecrawl base URL without `/v2`, e.g. `http://localhost:3102`. Private service URLs are operator-controlled. Tavily and Exa always use their official endpoints.                               |
-| `WEB_SEARCH_SEARXNG_URL` | unset           | Optional SearXNG base URL without `/search`, e.g. `http://searxng:8080`. Sends every web search there instead of the web connection; reading is unchanged. Private service URLs are operator-controlled. |
-
-`WEB_SEARCH_SEARXNG_URL` is independent of the `WEB_ACCESS_*` variables, so shared and personal connections keep
-working beside it. When it is set, Applications search, role discovery and assistant web search go to that SearXNG
-instance for every user, with or without a web connection, and the instance must list `json` in `search.formats`.
-Each of a user's search countries is one SearXNG request, using its likely language and country, such as `en-AU`,
-`ja-JP` or `pt-BR`. This applies to posting search, assistant search, background discovery and the connection test,
-independently of the interface language. Reading still uses the web connection, then the built-in
-reader, so sites that block plain fetches still need Firecrawl, Tavily or Exa. With it set, **Test connection** tests
-search against SearXNG and reading against the connection. See
-[Search directly from Rezumi](/self-hosting/job-search-and-ai#search-directly-from-rezumi).
-
-Connections enable Applications keyword search and assistant web tools. URL import uses the selected reader, then
-falls back to the built-in reader on recoverable failures. Saving pasted text and manual preparation work without
-either web-access or AI credentials. Search returns up to five links; choosing a result does not create an application
-until the user reviews and saves it.
-
-**Test connection** checks search and enhanced reading independently, without reader fallback. Rendering settings
-does not call external services. Quota and authentication failures leave manual workflows available.
-
-See [Job search and AI](/self-hosting/job-search-and-ai) for connection setup, Firecrawl deployment, optional SearXNG
-search and backup guidance. Public page URLs remain protected against private destinations, redirects
-and DNS rebinding. A remote reader must enforce these protections internally too. Search queries and selected URLs
-go to the chosen service; resume data and AI keys do not.
+Assistant web search asks Serper (Google results, about $0.001 a search) first, targeted by up to three of the
+person's search countries, and falls back to treg's routed web search within a $0.01 ceiling. Each person may send 50
+web searches per UTC day, and approves each exact query. Rezumi AI runs no web tools; only a person's own AI
+connection does. Search queries go to treg and selected public URLs to Browser Run; resume data and AI keys do not.
+See [Job search and AI](/self-hosting/job-search-and-ai) for setup.
 
 ## Profile sources
 
@@ -312,7 +291,7 @@ it, and the data read is never logged.
 | `APIFY_LINKEDIN_ACTOR` | `harvestapi~linkedin-profile-scraper` | The actor that reads a profile, as `owner~name`. Another actor must accept the same input and return the same fields.                                                                                                                       |
 | `GITHUB_API_TOKEN`     | unset                                 | GitHub token for reading public accounts (no scopes needed). Accounts signed in with GitHub use their own token; others are read without one, which GitHub limits to 60 requests an hour per server address.                                |
 
-Personal websites are read with the reader described under [Web access](#web-access) and turned into Profile details
+Personal websites are read with the reader described under [Job search and web reading](#job-search-and-web-reading) and turned into Profile details
 by AI: the account's own connection, or Rezumi AI for 2 credits. Guests can use GitHub and file uploads only.
 
 On Cloudflare, set the tokens as Worker secrets, for example `pnpm exec wrangler secret put APIFY_TOKEN`.

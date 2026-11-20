@@ -10,7 +10,7 @@ export function buildMcpServerInfo(version: string) {
 		title: "Rezumi",
 		websiteUrl: "https://rezumi.app",
 		description:
-			"Rezumi is a free and open-source resume builder. Use this MCP server to work on your resumes, cover letters, job applications and portfolio with an LLM of your choice.",
+			"Rezumi is a free and open-source resume builder. Use this MCP server to work on your resumes, cover letters, job search, job applications and portfolio with an LLM of your choice.",
 		icons: [
 			{ src: "https://rezumi.app/icon/light.svg", mimeType: "image/svg+xml", theme: "light" as const },
 			{ src: "https://rezumi.app/icon/dark.svg", mimeType: "image/svg+xml", theme: "dark" as const },

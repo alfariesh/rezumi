@@ -1,13 +1,11 @@
-import type { WebAccessContext } from "../web-access/contracts";
-import { z } from "zod";
+import type { WebContext } from "../web/contracts";
 import { jobPostingsIn, readJobPosting as readSharedJobPosting, toPagePosting } from "@rezumi/job-sites/json-ld";
-import { countryName } from "@rezumi/utils/region";
-import { htmlToText } from "../web-access/builtin";
-import { MAX_CONTENT_CHARS, MAX_SEARCH_QUERY_CHARS, WebAccessError } from "../web-access/contracts";
-import { readPage, searchWeb } from "../web-access/service";
+import { htmlToText } from "../web/builtin";
+import { MAX_CONTENT_CHARS, WebError } from "../web/contracts";
+import { readPage } from "../web/service";
 
-export { htmlToText } from "../web-access/builtin";
-export { WebAccessError as PostingFetchError } from "../web-access/contracts";
+export { htmlToText } from "../web/builtin";
+export { WebError as PostingFetchError } from "../web/contracts";
 
 /** Matches the applications feature's cap on a saved posting. */
 export const MAX_POSTING_CHARS = MAX_CONTENT_CHARS;
@@ -15,10 +13,10 @@ export const MAX_POSTING_CHARS = MAX_CONTENT_CHARS;
 /** A lone http(s) link, as opposed to pasted posting text. */
 export const isPostingLink = (input: string) => /^https?:\/\/\S+$/i.test(input.trim());
 
-export async function fetchJobPosting(input: string, context: WebAccessContext) {
+export async function fetchJobPosting(input: string, context: WebContext) {
 	const { content, html, ...source } = await readPage(input, context);
 	if (isListingUrl(source.resolvedUrl ?? input) || jobPostingsIn(html ?? "").length > 1)
-		throw new WebAccessError("not-a-page");
+		throw new WebError("not-a-page");
 	const page = readJobPosting(html ?? "");
 	const text = page?.description || content;
 	const truncated = source.truncated || text.length > MAX_POSTING_CHARS;
@@ -32,44 +30,6 @@ export async function fetchJobPosting(input: string, context: WebAccessContext) 
 			completeness: truncated ? ("incomplete" as const) : source.completeness,
 		},
 	};
-}
-
-export const postingSearchResult = z.object({
-	url: z.string(),
-	title: z.string().max(1_000),
-	description: z.string().max(5_000).default(""),
-});
-
-type PostingSearchContext = WebAccessContext & { locations?: string[] | undefined };
-
-/**
- * Each region's query names its country ("designer in Frankreich job posting"), in the user's UI language or English
- * without one, unless the query already names one of the user's countries or Preferences locations, asks for remote
- * work, or would pass the search length limit. Naming the place moves Exa's `auto` search to local postings where its
- * location parameter barely does.
- */
-function postingQueryFor(query: string, { regions = [], locale = "en", locations = [] }: PostingSearchContext) {
-	const text = query.toLocaleLowerCase();
-	const places = [...regions.flatMap((code) => [countryName(code, locale), countryName(code, "en")]), ...locations];
-	const keep =
-		/remote/i.test(query) ||
-		locations.some((place) => place.trim().toLowerCase() === "remote") ||
-		places.some((place) => place.trim() && text.includes(place.trim().toLocaleLowerCase()));
-	return (region: string) => {
-		const placed = `${query} in ${countryName(region, locale)} job posting`;
-		return keep || placed.length > MAX_SEARCH_QUERY_CHARS ? `${query} job posting` : placed;
-	};
-}
-
-/** Job-specific query intent belongs here, never in the generic retrieval service. */
-export async function searchJobPostings(query: string, { locations, ...context }: PostingSearchContext) {
-	return (await searchWeb(`${query} job posting`, context, postingQueryFor(query, { ...context, locations })))
-		.filter(({ url, title }) => !isListingUrl(url) && !/\b\d[\d,]*\+?\s+(?:[\w-]+\s+){0,4}jobs\b/i.test(title))
-		.map(({ url, title, snippet }) => ({
-			url,
-			title,
-			description: snippet ?? "",
-		}));
 }
 
 /** Exclude known board/search pages; unknown sites still get a chance to describe one posting. */
@@ -124,7 +84,7 @@ const CLOSED =
  * One role's posting, still open: the page describes exactly one JobPosting, or sits at a posting address. A job
  * board's list, a careers page or an article is null.
  */
-export async function readOpenPosting(url: string, context: WebAccessContext) {
+export async function readOpenPosting(url: string, context: WebContext) {
 	const { content, html = "", resolvedUrl } = await readPage(url, context);
 	// The same posting published twice (an SEO plugin beside the tracking system's own) is still one role.
 	const postings = jobPostingsIn(html);

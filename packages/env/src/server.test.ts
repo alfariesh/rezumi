@@ -6,10 +6,8 @@ beforeEach(() => {
 	vi.resetModules();
 	for (const name of [
 		"APP_REVISION",
-		"WEB_ACCESS_PROVIDER",
-		"WEB_ACCESS_API_KEY",
-		"WEB_ACCESS_API_URL",
-		"WEB_SEARCH_SEARXNG_URL",
+		"CLOUDFLARE_BROWSER_TOKEN",
+		"CLOUDFLARE_ACCOUNT_ID",
 		"APIFY_TOKEN",
 		"APIFY_LINKEDIN_ACTOR",
 		"GITHUB_API_TOKEN",
@@ -76,57 +74,24 @@ describe("web font mirror configuration", () => {
 	});
 });
 
-describe("server web access configuration", () => {
-	it.each([
-		{ WEB_ACCESS_API_KEY: "test-key" },
-		{ WEB_ACCESS_API_URL: "http://firecrawl:3002" },
-		{ WEB_ACCESS_PROVIDER: "firecrawl" },
-		{ WEB_ACCESS_PROVIDER: "tavily" },
-		{ WEB_ACCESS_PROVIDER: "exa", WEB_ACCESS_API_KEY: "test-key", WEB_ACCESS_API_URL: "https://other.example" },
-		{ WEB_ACCESS_PROVIDER: "tavily", WEB_ACCESS_API_KEY: "test-key", WEB_ACCESS_API_URL: "https://other.example" },
-	])("rejects incomplete or inconsistent configuration: %j", async (settings) => {
-		for (const [name, value] of Object.entries(settings)) vi.stubEnv(name, value);
-		await expect(import("./server")).rejects.toThrow("Web access requires WEB_ACCESS_PROVIDER");
-	});
-	it.each(["firecrawl", "tavily", "exa"])("accepts a shared %s connection", async (provider) => {
-		vi.stubEnv("WEB_ACCESS_PROVIDER", provider);
-		vi.stubEnv("WEB_ACCESS_API_KEY", "test-key");
-		expect((await import("./server")).env.WEB_ACCESS_PROVIDER).toBe(provider);
-	});
-	it("accepts keyless custom Firecrawl", async () => {
-		vi.stubEnv("WEB_ACCESS_PROVIDER", "firecrawl");
-		vi.stubEnv("WEB_ACCESS_API_URL", "http://firecrawl:3002");
-		expect((await import("./server")).env.WEB_ACCESS_API_KEY).toBeUndefined();
-	});
-});
-
-describe("SearXNG search configuration", () => {
-	it.each(["http://searxng:8080", "https://search.example.com/searxng"])(
-		"accepts %s on its own, including a private operator address",
-		async (url) => {
-			vi.stubEnv("WEB_SEARCH_SEARXNG_URL", url);
-			const { env } = await import("./server");
-			expect(env.WEB_SEARCH_SEARXNG_URL).toBe(url);
-			expect(env.WEB_ACCESS_PROVIDER).toBeUndefined();
-		},
-	);
-	it("accepts it beside a shared web connection", async () => {
-		vi.stubEnv("WEB_SEARCH_SEARXNG_URL", "http://searxng:8080");
-		vi.stubEnv("WEB_ACCESS_PROVIDER", "exa");
-		vi.stubEnv("WEB_ACCESS_API_KEY", "test-key");
+describe("Browser Run configuration", () => {
+	it("leaves the browser reader off by default", async () => {
 		const { env } = await import("./server");
-		expect(env.WEB_SEARCH_SEARXNG_URL).toBe("http://searxng:8080");
-		expect(env.WEB_ACCESS_PROVIDER).toBe("exa");
+		expect(env.CLOUDFLARE_BROWSER_TOKEN).toBeUndefined();
+		expect(env.CLOUDFLARE_ACCOUNT_ID).toBeUndefined();
 	});
-	it.each(["ftp://searxng:8080", "not a url"])("rejects %s", async (url) => {
-		vi.stubEnv("WEB_SEARCH_SEARXNG_URL", url);
-		vi.spyOn(console, "error").mockImplementation(() => {});
-		await expect(import("./server")).rejects.toThrow("Invalid environment variables");
+
+	it("reads the token and account id", async () => {
+		vi.stubEnv("CLOUDFLARE_BROWSER_TOKEN", "test-browser-token");
+		vi.stubEnv("CLOUDFLARE_ACCOUNT_ID", "0123456789abcdef0123456789abcdef");
+		const { env } = await import("./server");
+		expect(env.CLOUDFLARE_BROWSER_TOKEN).toBe("test-browser-token");
+		expect(env.CLOUDFLARE_ACCOUNT_ID).toBe("0123456789abcdef0123456789abcdef");
 	});
-	it("keeps the shared web connection's own validation", async () => {
-		vi.stubEnv("WEB_SEARCH_SEARXNG_URL", "http://searxng:8080");
-		vi.stubEnv("WEB_ACCESS_PROVIDER", "tavily");
-		await expect(import("./server")).rejects.toThrow("Web access requires WEB_ACCESS_PROVIDER");
+
+	it("rejects an account id that isn't one", async () => {
+		vi.stubEnv("CLOUDFLARE_ACCOUNT_ID", "my-account");
+		await expect(import("./server")).rejects.toThrow();
 	});
 });
 

@@ -56,12 +56,10 @@ const modules = {
 				? providers
 				: path.includes("billing/summary")
 					? { credits }
-					: path.includes("webAccess/status")
-						? {}
-						: path.includes("agent/threads/get")
-							? { thread: { aiProviderId: "server-ai:fixture" } }
-							: { id: "result" };
-			if (!/aiProviders\/list|billing\/summary|webAccess\/status|agent\/threads\/get/.test(path))
+					: path.includes("agent/threads/get")
+						? { thread: { aiProviderId: "server-ai:fixture" } }
+						: { id: "result" };
+			if (!/aiProviders\/list|billing\/summary|agent\/threads\/get/.test(path))
 				sent.push({ path, input: init?.body ? JSON.parse(new TextDecoder().decode(init.body)).json : undefined });
 			return new Response(JSON.stringify({ json: value }), { headers: { "content-type": "application/json" } });
 		},

@@ -11,7 +11,7 @@ All career features ship together and are available without a release flag: Home
 
 AI generation requires a usable AI connection. Voice can use a speech-capable connection or supported browser speech. Scheduled work requires a working deployment scheduler and explicit user opt-in. The verification section below covers deterministic checks and live-provider evaluation before production deployment.
 
-The assistant uses the existing saved AI connections. Configure `ENCRYPTION_SECRET`, then add and test a provider in **Settings → AI providers**. Users choose their provider; provider usage is billed under that connection. Public research uses the selected web-access connection. See [web access](/contributing/web-access) and [job search and AI configuration](/self-hosting/job-search-and-ai) for deployment and credential requirements.
+The assistant uses the existing saved AI connections. Configure `ENCRYPTION_SECRET`, then add and test a provider in **Settings → AI providers**. Users choose their provider; provider usage is billed under that connection. Public research (web search and page reading) runs on the server with no setup by the user, and only on the user's own AI connection, not Rezumi AI. See [web reading and search](/contributing/web-reading) and [job search and AI configuration](/self-hosting/job-search-and-ai) for deployment requirements.
 
 ## Where things live
 
@@ -62,7 +62,7 @@ Undo replaces confirmation dialogs throughout: forgetting, deleting, dismissing 
 
 ## Operate scheduled work
 
-Cloudflare schedules career work automatically once a minute. Users still explicitly enable each schedule and configure any required AI/web connection. Each tick runs billing upkeep first, then career jobs, with failures kept apart (`apps/server/src/startup/job-scheduler.ts` on Node.js).
+Cloudflare schedules career work automatically once a minute. Users still explicitly enable each schedule and configure any required AI connection. Each tick runs billing upkeep first, then career jobs, with failures kept apart (`apps/server/src/startup/job-scheduler.ts` on Node.js).
 
 | Environment                | How ticks run                                                                                                                               | Configuration                                                              |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
@@ -162,16 +162,16 @@ Live evaluation is a manual, separately authorized use of configured provider ac
 
 For each configuration, record the following outcomes without retaining private resumes or transcripts in operational logs:
 
-| Gate                     | Evidence to collect                                                                                                                                                                             |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Correct context          | Two applications share a live resume but have different sent versions; each briefing uses the selected company, round, and sent claims.                                                         |
-| Grounding                | Every personal claim traces to supplied evidence; unknown metrics remain unknown; public claims have usable citations and appropriate uncertainty.                                              |
-| Urgency and failure      | Measure time to useful output and completion. Test slow research, unavailable web access, invalid AI credentials, cancellation, and partial output. Saved context stays accessible.             |
-| Learning loop            | Preserve the original answer in debrief, keep simulations separate, and verify the next round uses real feedback without inventing employer evidence.                                           |
-| Privacy controls         | Remove application/memory context, correct/exclude/forget facts, and verify later provider requests do not reintroduce blocked material.                                                        |
-| Usefulness               | A human reviewer rates relevance, specificity, factual support, and actionable next steps across professions and languages. Fluent prose alone does not pass.                                   |
-| Accessibility            | Complete coaching, source review, memory correction, and practice with keyboard and screen reader; check focus, announcements, errors, mobile layout, and localized strings.                    |
-| Proactive work and voice | Restart/overlap runners, pause schedules, and inspect in-app/email outcomes. Test denied microphone permission, transcript correction, upload limits, provider failures, and the text fallback. |
+| Gate                     | Evidence to collect                                                                                                                                                                                 |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Correct context          | Two applications share a live resume but have different sent versions; each briefing uses the selected company, round, and sent claims.                                                             |
+| Grounding                | Every personal claim traces to supplied evidence; unknown metrics remain unknown; public claims have usable citations and appropriate uncertainty.                                                  |
+| Urgency and failure      | Measure time to useful output and completion. Test slow research, unavailable web search or page reading, invalid AI credentials, cancellation, and partial output. Saved context stays accessible. |
+| Learning loop            | Preserve the original answer in debrief, keep simulations separate, and verify the next round uses real feedback without inventing employer evidence.                                               |
+| Privacy controls         | Remove application/memory context, correct/exclude/forget facts, and verify later provider requests do not reintroduce blocked material.                                                            |
+| Usefulness               | A human reviewer rates relevance, specificity, factual support, and actionable next steps across professions and languages. Fluent prose alone does not pass.                                       |
+| Accessibility            | Complete coaching, source review, memory correction, and practice with keyboard and screen reader; check focus, announcements, errors, mobile layout, and localized strings.                        |
+| Proactive work and voice | Restart/overlap runners, pause schedules, and inspect in-app/email outcomes. Test denied microphone permission, transcript correction, upload limits, provider failures, and the text fallback.     |
 
 Treat any cross-account access, invented personal claim, wrong submitted document, or inability to remove private context as a release blocker. Record unresolved quality and accessibility findings before production deployment. Monitor latency, completion/failure counts, provider usage, corrections, and user-rated usefulness; avoid raw document, research-page, or transcript content in operational logs.
 

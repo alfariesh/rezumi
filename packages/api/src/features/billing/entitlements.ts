@@ -25,6 +25,8 @@ export type Entitlements = {
 		activeCoverLetters: number | null;
 		portfolioWorks: number | null;
 		portfolioStorageBytes: number | null;
+		jobSearchesPerDay: number | null;
+		jobAlerts: number | null;
 	};
 	/**
 	 * When the current plan's access ends (or renews), counting back-to-back periods of the same plan. Null on free.
@@ -54,7 +56,14 @@ const unlimited = (): Entitlements => ({
 		customDomain: true,
 		detailedPortfolioStats: true,
 	},
-	limits: { activeResumes: null, activeCoverLetters: null, portfolioWorks: null, portfolioStorageBytes: null },
+	limits: {
+		activeResumes: null,
+		activeCoverLetters: null,
+		portfolioWorks: null,
+		portfolioStorageBytes: null,
+		jobSearchesPerDay: null,
+		jobAlerts: null,
+	},
 	currentPeriodEndsAt: null,
 	source: null,
 	renews: false,

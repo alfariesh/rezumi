@@ -20,16 +20,7 @@ import { errorCode, runWithAiSource, startAiRun } from "../billing/metered-ai";
 import { coverLetterService } from "../cover-letters/service";
 import { readProfileContext } from "../profile/context";
 import { resumeService } from "../resume/service";
-import { webAccessService } from "../web-access/credentials";
-import { searchScope } from "../web-access/regions";
-import {
-	fetchJobPosting,
-	isPostingLink,
-	MAX_POSTING_CHARS,
-	PostingFetchError,
-	postingSearchResult,
-	searchJobPostings,
-} from "./posting";
+import { fetchJobPosting, isPostingLink, MAX_POSTING_CHARS, PostingFetchError } from "./posting";
 import { applicationService } from "./service";
 
 const reserved = { tags: ["Applications", "AI"] } as const;
@@ -250,46 +241,6 @@ const aiErrors = {
 };
 
 export const aiRouter = {
-	searchPostings: protectedProcedure
-		.route({
-			method: "POST",
-			path: "/applications/ai/search-postings",
-			operationId: "searchApplicationPostings",
-			summary: "Search job postings",
-			description:
-				"Searches through the server's SearXNG when it has one, otherwise the selected Firecrawl, Tavily or Exa connection. Returns up to five public links to review and import. Requires authentication.",
-			...reserved,
-		})
-		.input(z.object({ query: z.string().trim().min(2).max(500) }))
-		.output(z.array(postingSearchResult))
-		.errors({
-			SEARCH_UNAVAILABLE: { message: "Job search isn't configured on this server.", status: 503 },
-			SEARCH_FAILED: { message: "Job search couldn't be reached. Try again or paste a posting link.", status: 502 },
-			RATE_LIMIT_EXCEEDED: { message: "Too many web requests. Try again later.", status: 429 },
-		})
-		.handler(async ({ context, input, signal }) => {
-			const [connection, scope] = await Promise.all([
-				webAccessService.resolve(context.user.id),
-				searchScope(context.user.id, context.reqHeaders.get("x-client-timezone") ?? undefined),
-			]);
-			if (!webAccessService.canSearch(connection !== null)) throw new ORPCError("SEARCH_UNAVAILABLE", { status: 503 });
-			try {
-				return await searchJobPostings(input.query, {
-					connection,
-					userId: context.user.id,
-					signal,
-					...scope,
-					locale: context.locale,
-				});
-			} catch (error) {
-				signal?.throwIfAborted();
-				if (error instanceof PostingFetchError && error.reason === "rate-limit")
-					throw new ORPCError("RATE_LIMIT_EXCEEDED", { status: 429 });
-				// Provider errors can include request credentials or echo them in their response.
-				throw new ORPCError("SEARCH_FAILED", { status: 502 });
-			}
-		}),
-
 	// Reads a pasted link or posting into an application's fields. A link is fetched on the server (public https
 	// pages only); the page's own job data fills what it can, and an AI provider, when one is set up, reads the rest.
 	parsePosting: protectedProcedure
@@ -323,11 +274,7 @@ export const aiRouter = {
 
 			if (link) {
 				try {
-					const fetched = await fetchJobPosting(link, {
-						connection: await webAccessService.resolve(context.user.id),
-						userId: context.user.id,
-						signal,
-					});
+					const fetched = await fetchJobPosting(link, { userId: context.user.id, signal });
 					({ page, text } = fetched);
 					postingSource = fetched.source;
 				} catch (error) {

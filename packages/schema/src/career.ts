@@ -1,6 +1,7 @@
 import z from "zod";
 import { searchRegionsSchema } from "@rezumi/utils/region";
 import { timezoneSchema } from "@rezumi/utils/timezone";
+import { jobSearchCriteriaSchema } from "./jobs/search";
 
 /** The workspace tabs of one application, in the order a search happens. */
 export const WORKSPACE_TABS = ["fit", "apply", "prepare", "practise", "debrief", "messages", "saved"] as const;
@@ -107,30 +108,34 @@ export const isDateOnly = (value: string) => /^\d{4}-\d{2}-\d{2}$/.test(value);
 
 const text = (max = 2000) => z.string().trim().max(max);
 
+/** A fit check: each requirement of a posting against the person's evidence, and checks against their preferences. */
+export const fitDataSchema = z.object({
+	kind: z.literal("fit"),
+	headline: text(200),
+	summary: text(600),
+	requirements: z
+		.array(
+			z.object({
+				text: text(300),
+				origin: z.enum(["posting", "inferred"]),
+				status: z.enum(["supported", "partial", "missing"]),
+				evidence: text(600),
+				factIds: z.array(z.string()).max(10).default([]),
+			}),
+		)
+		.max(20),
+	/** Checks against Preferences: salary, office days, location. `met: null` is "needs confirming". */
+	checks: z.array(z.object({ label: text(60), met: z.boolean().nullable(), text: text(300) })).max(5),
+	ask: z.object({ person: text(100), text: text(400) }).nullable(),
+});
+export type FitData = z.infer<typeof fitDataSchema>;
+
 /**
  * What the coach wrote for an application, by kind. Each one is produced by `career.generate` from a fixed shape,
  * so tabs render it without parsing prose, and it still opens when the provider is down.
  */
 export const savedItemDataSchema = z.discriminatedUnion("kind", [
-	z.object({
-		kind: z.literal("fit"),
-		headline: text(200),
-		summary: text(600),
-		requirements: z
-			.array(
-				z.object({
-					text: text(300),
-					origin: z.enum(["posting", "inferred"]),
-					status: z.enum(["supported", "partial", "missing"]),
-					evidence: text(600),
-					factIds: z.array(z.string()).max(10).default([]),
-				}),
-			)
-			.max(20),
-		/** Checks against Preferences: salary, office days, location. `met: null` is "needs confirming". */
-		checks: z.array(z.object({ label: text(60), met: z.boolean().nullable(), text: text(300) })).max(5),
-		ask: z.object({ person: text(100), text: text(400) }).nullable(),
-	}),
+	fitDataSchema,
 	z.object({
 		kind: z.literal("briefing"),
 		headline: text(200),
@@ -305,12 +310,16 @@ export const careerNoticeSchema = z.discriminatedUnion("type", [
 	z.object({ type: z.literal("schedule-failed"), reason: z.enum(["stopped", "failed"]) }),
 	z.object({ type: z.literal("email-failed") }),
 	z.object({ type: z.literal("briefing-paused") }),
+	/** The posting of an application tracked from job search closed before the person applied. */
+	z.object({ type: z.literal("posting-closed"), company: z.string(), role: z.string() }),
 ]);
 export type CareerNotice = z.infer<typeof careerNoticeSchema>;
 
 export const careerScheduleInputSchema = careerScopeSchema.extend({
 	kind: z.enum(["discovery", "prepare", "follow-up"]),
 	query: z.string().trim().max(500).default(""),
+	/** Discovery: the job search to repeat. Left out, a saved schedule keeps its search; a new one searches `query`. */
+	search: jobSearchCriteriaSchema.nullable().optional(),
 	interviewId: z.string().nullable().default(null),
 	/** Prepare only: when the briefing runs relative to the interview. */
 	lead: z.enum(["24h", "2h", "morning"]).nullable().default(null),

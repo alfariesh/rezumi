@@ -5,7 +5,7 @@
 
 /**
  * The most posting text the extension sends and the server keeps: the server's web reader cap (MAX_CONTENT_CHARS in
- * packages/api/src/features/web-access/contracts.ts; a test there keeps the two equal).
+ * packages/api/src/features/web/contracts.ts; a test there keeps the two equal).
  */
 export const MAX_CAPTURE_TEXT_CHARS = 20_000;
 

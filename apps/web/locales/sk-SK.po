@@ -89,10 +89,15 @@ msgstr ""
 msgid "(already yours)"
 msgstr ""
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "(in your Profile)"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "(no header)"
 msgstr "(bez hlavičky)"
 
+#: src/features/jobs/listing-card.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "(opens in a new tab)"
@@ -465,6 +470,11 @@ msgstr ""
 msgid "{0} edits applied"
 msgstr "Použité úpravy: {0}"
 
+#. placeholder {0}: company.size
+#: src/features/jobs/listing-sheet.tsx
+msgid "{0} employees"
+msgstr ""
+
 #. placeholder {0}: credits.nextExpiry.credits
 #. placeholder {1}: formatShort(credits.nextExpiry.at)
 #: src/features/billing/admin/customer.tsx
@@ -496,6 +506,17 @@ msgstr "Nájdené {0}"
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "{0} found, {unreadable} unreadable"
 msgstr "Nájdené {0}, {unreadable} nečitateľné"
+
+#. placeholder {0}: integer(ok.search.cacheHits + ok.search.stale)
+#. placeholder {1}: integer(ok.search.providerCalls)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} from cache · {1} provider calls"
+msgstr ""
+
+#. placeholder {0}: integer(refused)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} held back by the daily budget"
+msgstr ""
 
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
@@ -553,6 +574,11 @@ msgstr "{0} min"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "o {0} viac"
+
+#. placeholder {0}: integer(value)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} ms"
+msgstr ""
 
 #. placeholder {0}: domain.hostname
 #. placeholder {1}: domain.hostname
@@ -628,6 +654,13 @@ msgstr "{0} z {1} nájdených pojmov"
 #. placeholder {1}: limits.works
 #: src/features/portfolio/works/works-panel.tsx
 msgid "{0} of {1} works"
+msgstr ""
+
+#. placeholder {0}: percent(share)
+#. placeholder {1}: formatUsd(today.budgetMicro)
+#. placeholder {2}: today.day
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} of the {1} daily budget (UTC day {2})"
 msgstr ""
 
 #. placeholder {0}: creditCount(credits)
@@ -775,6 +808,10 @@ msgstr ""
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{count, plural, one {# entry} other {# entries}}"
 msgstr "{count, plural, one {Vstup #} other {Záznamy #}}"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "{count, plural, one {# job} other {# jobs}}"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "{count, plural, one {# open issue} other {# open issues}}"
@@ -932,6 +969,10 @@ msgstr ""
 msgid "{label}: opened {opens} times"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "{left, plural, =0 {No searches left today (of {max})} one {# search left today (of {max})} other {# searches left today (of {max})}}"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr ""
@@ -960,6 +1001,10 @@ msgstr "{length} min"
 msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
 msgstr "{lines, plural, one {Prejde na stránku {next} približne po riadku #} other {Prejde na stránku {next} po približne # riadkoch}}"
 
+#: src/features/billing/plan.ts
+msgid "{max, plural, one {Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.}}"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "{minimum} minimum"
 msgstr "minimum {minimum}"
@@ -977,6 +1022,7 @@ msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, one {Začína o # minútu} few {Začína o # minúty} many {Začína o # minúty} other {Začína o # minút}}"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{missing} missing"
 msgstr ""
 
@@ -997,6 +1043,7 @@ msgid "{name} block removed"
 msgstr ""
 
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} neodpovedá. Nič sa nezmenilo; skúste to znova."
 
@@ -1091,6 +1138,7 @@ msgid "{pairing} type"
 msgstr "Typ {pairing}"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{partial} partly"
 msgstr ""
 
@@ -1163,6 +1211,21 @@ msgstr "{proposed, plural, one {Navrhnuté #} other {Navrhnuté #}}"
 msgid "{provider}: it shows on your page when a visitor presses it"
 msgstr ""
 
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} a month"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} a year"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} an hour"
+msgstr ""
+
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
 msgstr "{sections, plural, one {Sekcia #} other {Sekcie #}}"
@@ -1192,6 +1255,7 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Otvorí sa v Kariéra → Ponuky."
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{supported} supported"
 msgstr ""
 
@@ -1355,6 +1419,7 @@ msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/buy-plans.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 dní"
@@ -1368,6 +1433,7 @@ msgid "5 credits"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "7 days"
 msgstr ""
 
@@ -1378,6 +1444,10 @@ msgstr "90 dní"
 
 #: src/features/homepage/resume.tsx
 msgid "94 of 100 checks passed"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "95%"
 msgstr ""
 
 #: src/features/resume/editor/proposals/proposal-list.tsx
@@ -1507,6 +1577,10 @@ msgstr "Medzera nie je problém. Ak chcete, pridajte jednoriadkové vysvetlenie;
 
 #: src/features/extension/removed-page.tsx
 msgid "A job site wasn't read correctly"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgid "A job title works best, such as “Product designer”."
 msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
@@ -1701,6 +1775,11 @@ msgstr ""
 msgid "About"
 msgstr "O tejto aplikácii"
 
+#. placeholder {0}: company.name
+#: src/features/jobs/listing-sheet.tsx
+msgid "About {0}"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "About 90 seconds when spoken"
 msgstr "Asi 90 sekúnd nahlas"
@@ -1708,6 +1787,10 @@ msgstr "Asi 90 sekúnd nahlas"
 #: src/features/portfolio/editor/section-forms.tsx
 #: src/features/portfolio/page-text.ts
 msgid "About me"
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "About the job"
 msgstr ""
 
 #. Template gallery filter: research, teaching and scholarships
@@ -1833,7 +1916,6 @@ msgstr ""
 
 #: src/features/billing/admin/labels.ts
 #: src/features/resume/share/custom-domain-field.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Aktívne"
 
@@ -1980,8 +2062,8 @@ msgid "Add a result"
 msgstr "Pridajte výsledok"
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Add a role or company to look for."
-msgstr "Pridajte pozíciu alebo spoločnosť, ktorú hľadať."
+msgid "Add a role to look for."
+msgstr ""
 
 #: src/features/portfolio/editor/intro-effect.tsx
 msgid "Add a role to switch to. With only one line, the page shows it without the effect."
@@ -2302,6 +2384,10 @@ msgstr "Pridajte koncovku domény, napríklad {domain}.com"
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Add the order link, or the button won't show."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Add the roles you want"
 msgstr ""
 
 #: src/features/resume/share/dns-records-dialog.tsx
@@ -2760,6 +2846,10 @@ msgstr ""
 msgid "Also end the subscription now (access stops at once)"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+msgid "Also filtered by: {list}"
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 msgid "Also take back the pass and its remaining credits"
 msgstr ""
@@ -2883,6 +2973,10 @@ msgstr ""
 msgid "Answer in your own words"
 msgstr "Odpovedzte vlastnými slovami"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Answered from cache"
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "Answers"
 msgstr "Odpovede"
@@ -2896,8 +2990,13 @@ msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
 msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Any"
 msgstr "Ľubovoľné"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Any level"
+msgstr ""
 
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Anyone who opens the public URL will need this password."
@@ -2928,6 +3027,7 @@ msgid "Anything to stress or leave out? (optional)"
 msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Anywhere"
 msgstr "Kdekoľvek"
 
@@ -2942,7 +3042,6 @@ msgstr ""
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "API key"
 msgstr "Kľúč API"
 
@@ -3215,10 +3314,6 @@ msgstr "Požiadajte asistenta, aby to zapracoval"
 msgid "Ask the coach"
 msgstr "Opýtať sa kouča"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Ask your server administrator to enable credential encryption or configure a shared web connection."
-msgstr "Požiadajte správcu servera, aby povolil šifrovanie poverení alebo nakonfiguroval zdieľané webové pripojenie."
-
 #: src/features/assistant/conversation.tsx
 msgid "Ask, or describe a change…"
 msgstr "Opýtajte sa alebo popíšte zmenu..."
@@ -3242,9 +3337,9 @@ msgstr "asistent"
 msgid "Assistant conversations"
 msgstr "konverzácie s Asistentom"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Assistant."
-msgstr "asistent."
+#: src/features/jobs/admin/costs.ts
+msgid "Assistant web search"
+msgstr ""
 
 #: src/features/portfolio/editor/password-group.tsx
 msgid "At least 6 characters."
@@ -3300,6 +3395,10 @@ msgstr "Automatické ukladania sú zoskupené podľa relácie a uchovávané 90 
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Available"
 msgstr "Voľná"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Average"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
@@ -3696,10 +3795,6 @@ msgstr ""
 msgid "Built the design system used by six product teams."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Built-in reader"
-msgstr "Vstavaná čítačka"
-
 #: src/libs/locale.ts
 msgid "Bulgarian"
 msgstr "Bulharčina"
@@ -3761,6 +3856,18 @@ msgstr "Kalendár"
 msgid "Calendar view"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Call statistics come from Cloudflare Analytics Engine, so they show on the live site only. The budget and the treg figures above work everywhere."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Calls"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Calls by provider"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I import a resume I already have?"
 msgstr "Môžem importovať životopis, ktorý už mám?"
@@ -3804,7 +3911,6 @@ msgstr "Dokáže softvér prečítať váš životopis?"
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/settings/ai/api-keys.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/hooks/use-confirm.tsx
 msgid "Cancel"
 msgstr "Zrušiť"
@@ -3899,7 +4005,6 @@ msgid "Change at renewal"
 msgstr ""
 
 #: src/features/career/coach-chat.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Change connection"
 msgstr "Zmeňte pripojenie"
 
@@ -4073,6 +4178,10 @@ msgstr ""
 msgid "Changing your password…"
 msgstr "Mení sa vaše heslo…"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Charged"
+msgstr ""
+
 #: src/components/input/icon-picker-grid.tsx
 msgid "Charts and dashboards"
 msgstr ""
@@ -4093,6 +4202,7 @@ msgstr "Skontrolujte vzorový súbor"
 
 #: src/features/billing/payment-return.tsx
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Check again"
 msgstr "Skontrolovať znova"
@@ -4106,11 +4216,16 @@ msgstr "Skontrolujte iný súbor"
 msgid "Check DNS"
 msgstr "Skontrolovať DNS"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Check each requirement against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 msgid "Check every claim, date and result against your experience."
 msgstr "Overte každé tvrdenie, dátum a výsledok podľa svojich skúseností."
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Check fit"
 msgstr "Overiť zhodu"
 
@@ -4351,8 +4466,14 @@ msgstr ""
 msgid "Cities or countries. Leave it empty for anywhere."
 msgstr ""
 
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "City"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+#: src/features/jobs/search-bar.tsx
+msgid "City (optional)"
 msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
@@ -4375,6 +4496,10 @@ msgstr "Claude Desktop"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Clear"
 msgstr "Vymazať"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Clear filters"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Clear formatting"
@@ -4458,6 +4583,7 @@ msgstr ""
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/homepage/theme-preview.tsx
+#: src/features/jobs/listing-sheet.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/card/business-card-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
@@ -4517,6 +4643,10 @@ msgstr "Zavrieť…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "ZATVORENÉ"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Closed, not yet removed"
+msgstr ""
 
 #: src/features/billing/credits.ts
 #: src/features/career/coach.tsx
@@ -4713,21 +4843,14 @@ msgstr "Pripojiť {0}"
 msgid "Connect {domain}"
 msgstr "Pripojiť {domain}"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect a service"
-msgstr "Pripojte službu"
-
 #: src/features/assistant/provider-setup.tsx
 msgid "Connect an AI provider"
 msgstr "Pripojte poskytovateľa AI"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect an AI provider above to use the assistant. Saving and preparing jobs doesn't need one."
-msgstr "Ak chcete používať asistenta, pripojte poskytovateľa AI vyššie. Ukladanie a príprava úloh to nepotrebuje."
-
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Connect an AI provider in Settings"
 msgstr "Pripojte poskytovateľa AI v Nastaveniach"
 
@@ -4776,10 +4899,6 @@ msgstr ""
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Connection progress"
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Connection saved"
-msgstr "Pripojenie bolo uložené"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -5062,8 +5181,16 @@ msgstr "Opravené {correctedOn} · originál zachovaný"
 msgid "Correction by Rezumi"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Cost"
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 msgid "Cost (rates not set)"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Cost per day"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -5218,6 +5345,10 @@ msgstr "Poskytovateľa sa nepodarilo odstrániť. Skúste to znova."
 msgid "Couldn't delete this conversation. Try again."
 msgstr "Túto konverzáciu sa nepodarilo odstrániť. Skúste to znova."
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Couldn't delete this job alert. Try again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Couldn't delete this schedule. Try again."
 msgstr "Túto naplánovanú úlohu sa nepodarilo odstrániť. Skúste to znova."
@@ -5313,10 +5444,6 @@ msgstr "Nepodarilo sa načítať dokumenty"
 #: src/features/career/knowledge/stories.tsx
 msgid "Couldn't load interviews. Retry"
 msgstr "Pohovory sa nepodarilo načítať. Skúsiť znova"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Couldn't load or save web access settings. Try again."
-msgstr "Nastavenia webového prístupu sa nepodarilo načítať ani uložiť. Skúste to znova."
 
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Couldn't load the reports. Try again."
@@ -5768,11 +5895,20 @@ msgstr "Počítať znaky"
 msgid "Count words"
 msgstr "Počítať slová"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Counted on Cloudflare only"
+msgstr ""
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Counted separately from the parse score. Coverage does not predict anything."
 msgstr "Počíta sa oddelene od skóre čitateľnosti. Pokrytie nič nepredpovedá."
 
+#: src/features/jobs/admin/costs.ts
+msgid "Counting (free)"
+msgstr ""
+
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/portfolio/statistics/work-statistics.tsx
 msgid "Countries"
@@ -5786,6 +5922,8 @@ msgstr ""
 msgid "Countries, devices, linking sites and works by day"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Country"
 msgstr ""
@@ -5988,6 +6126,7 @@ msgid "CSV data"
 msgstr "údaje CSV"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Currency"
 msgstr "Mena"
 
@@ -6688,6 +6827,7 @@ msgid "Don't send {0}"
 msgstr "Neposielajte {0}"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
 #: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
@@ -6987,6 +7127,10 @@ msgstr "Každá odpoveď, ku ktorej dostanete spätnú väzbu, sa uchováva tu, 
 msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
+msgstr ""
+
 #: src/features/settings/ai/browser-extension.tsx
 msgid "Edge Add-ons"
 msgstr ""
@@ -7059,6 +7203,10 @@ msgstr ""
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
 msgstr "Upraviť rozhovor…"
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Edit job alert"
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 msgid "Edit keyword"
@@ -7293,10 +7441,6 @@ msgstr "Angličtina"
 msgid "English (United Kingdom)"
 msgstr "Angličtina (Spojené kráľovstvo)"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Enhanced reading failed"
-msgstr "Vylepšené čítanie zlyhalo"
-
 #: src/features/assistant/conversation.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "Rozšírené čítanie nie je k dispozícii; používa vstavanú čítačku."
@@ -7437,6 +7581,11 @@ msgstr ""
 msgid "Entry deleted"
 msgstr "Záznam bol odstránený"
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Entry level"
+msgstr ""
+
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Entry options"
 msgstr "Možnosti vstupu"
@@ -7538,6 +7687,11 @@ msgstr "Všetko, čo kouč napísal pre {0}, najnovšie navrchu."
 
 #: src/features/homepage/features.tsx
 msgid "Everything you need to reach the interview."
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Executive"
 msgstr ""
 
 #: src/features/resume/stylesheet/toolbar.tsx
@@ -7688,9 +7842,14 @@ msgid "Facts"
 msgstr "Fakty"
 
 #: src/features/billing/purchase.ts
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Failed"
 msgstr "Nepodarilo sa"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Failed calls"
+msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "Failed, expired or cancelled"
@@ -7809,6 +7968,14 @@ msgstr ""
 msgid "Find a customer"
 msgstr ""
 
+#: src/features/applications/components/add-application-dialog.tsx
+msgid "Find jobs"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Find jobs that fit"
+msgstr ""
+
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Find numbers"
 msgstr ""
@@ -7824,10 +7991,6 @@ msgstr ""
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Find portfolio"
 msgstr ""
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Find roles"
-msgstr "Nájsť pozície"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Find the results in this work and show them as metrics"
@@ -7913,6 +8076,10 @@ msgstr "Opravte ich v editore"
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Fix these values in the CSV, or leave their columns out, before importing."
 msgstr "Pred importom opravte tieto hodnoty v CSV alebo vynechajte ich stĺpce."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "FLAG_DISABLE_JOB_SEARCH is on: people get saved results only, and job alerts wait."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Flatten the form so the text is part of the page."
@@ -8004,6 +8171,7 @@ msgstr "Písma sa nepodarilo načítať. Skúste to znova."
 msgid "Food and drink"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "For"
 msgstr "Pre"
@@ -8223,6 +8391,10 @@ msgstr ""
 msgid "Fresh graduate, Informatics"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Fresh result pages"
+msgstr ""
+
 #: src/dialogs/resume/template/data.ts
 msgid "Friendly and bright: a round portrait beside the name and every section title on a soft rounded band, so a short first resume still looks finished."
 msgstr ""
@@ -8382,11 +8554,6 @@ msgstr "Nemčina"
 msgid "Get {name}"
 msgstr ""
 
-#. placeholder {0}: PROVIDER_SITES[provider]
-#: src/features/settings/ai/web-access.tsx
-msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
-msgstr "Získajte kľúč na <0>{0}</0>. Je uložený zašifrovaný a používa sa iba pre vaše požiadavky."
-
 #: src/features/billing/buy-plans.tsx
 msgid "Get a plan"
 msgstr ""
@@ -8403,9 +8570,13 @@ msgstr "„Získať spätnú väzbu“ odošle otázku, vašu odpoveď, tento in
 msgid "Get found"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Get job alerts"
+msgstr ""
+
 #: src/features/career/today.tsx
-msgid "Get new roles here every morning"
-msgstr "Dostávajte sem nové pozície každé ráno"
+msgid "Get new jobs for your search here every morning"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -8704,6 +8875,11 @@ msgstr ""
 msgid "Hidden"
 msgstr "Skryté"
 
+#. placeholder {0}: listing.title
+#: src/features/jobs/use-listing-actions.ts
+msgid "Hidden {0}. It won't show in your results again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "Skryté z nových pozícií"
@@ -8755,6 +8931,10 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "Hide the photo"
 msgstr "Skryť fotografiu"
+
+#: src/features/jobs/listing-card.tsx
+msgid "Hide this job"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "High"
@@ -8911,6 +9091,7 @@ msgstr ""
 msgid "Hungarian"
 msgstr "Maďarčina"
 
+#: src/features/jobs/format.ts
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Hybrid"
@@ -9133,6 +9314,10 @@ msgstr "Vylepšite vybraný riadok"
 msgid "Improving…"
 msgstr "Zlepšuje sa…"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "In {days} days"
+msgstr ""
+
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "In color"
 msgstr ""
@@ -9147,6 +9332,10 @@ msgstr ""
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "In your Profile"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Include jobs that don't list pay"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -9507,6 +9696,40 @@ msgstr "Japončina"
 msgid "Job"
 msgstr "Práca"
 
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/today.tsx
+msgid "Job alert"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgctxt "Short schedule kind in a segmented choice"
+msgid "Job alert"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert deleted"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert on"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert paused"
+msgstr ""
+
+#: src/features/jobs/admin/costs.ts
+msgid "Job alerts"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Job alerts aren't available on this server yet."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Job alerts on"
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Job description"
@@ -9533,9 +9756,23 @@ msgstr "Pracovná ponuka <0>· voliteľná, pridá zhodu kľúčového slova</0>
 msgid "Job posting link"
 msgstr "Odkaz na inzerát"
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Job search failed. Try again or paste a posting link."
-msgstr "Hľadanie práce zlyhalo. Skúste to znova alebo prilepte odkaz na ponuku práce."
+#: src/features/jobs/admin/costs.ts
+msgid "Job search"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+#: src/features/settings/settings-section.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Job search costs"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job search isn't available here yet"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Job search passed 80% of today's budget"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Job search pipeline"
@@ -9553,6 +9790,20 @@ msgstr ""
 msgid "Jobs"
 msgstr "Pracovné miesta"
 
+#: src/features/jobs/jobs-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgctxt "Job listings to search"
+msgid "Jobs"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Jobs couldn't be loaded. Try again in a moment."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Jobs, job alerts, assistant web search and link reading. Days in UTC, as the budget counts them."
+msgstr ""
+
 #. Example full name placeholder on registration form
 #: src/features/auth/pages/register.tsx
 msgid "John Doe"
@@ -9566,6 +9817,11 @@ msgstr "john.doe"
 #: src/features/resume/import/read-file.ts
 msgid "JSON read"
 msgstr "Čítanie JSON"
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Junior"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Justify"
@@ -9688,10 +9944,6 @@ msgstr ""
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
 msgstr "Kľúč bol odvolaný. Aplikácie, ktoré ho používajú, teraz prestanú fungovať."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Key stored encrypted"
-msgstr "Kľúč uložený zašifrovaný"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Keys act as you and can read and edit your documents."
@@ -9841,6 +10093,11 @@ msgstr "Rozloženie"
 msgid "Layouts"
 msgstr ""
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Lead"
+msgstr ""
+
 #: src/features/portfolio/works/work-document.tsx
 msgid "Lead designer"
 msgstr ""
@@ -9951,8 +10208,8 @@ msgid "Let's start with what you have"
 msgstr "Začnime tým, čo máte"
 
 #: src/features/career/coach.tsx
-msgid "Lets the coach search public pages through your web search service"
-msgstr "Umožní koučovi prehľadávať verejné stránky cez vašu službu webového vyhľadávania"
+msgid "Lets the coach search the web for public pages"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "letter"
@@ -10005,6 +10262,7 @@ msgstr "Listy"
 msgid "Letters share your resume's design and live beside the job they are for."
 msgstr ""
 
+#: src/features/jobs/search-bar.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Level"
@@ -10202,6 +10460,10 @@ msgstr "Vypíšte nástroje a technológie, ktoré používate. Náboroví praco
 msgid "Listening… Stop when you're done."
 msgstr "Počúvam… Keď skončíte, zastavte."
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "Listings come from job data providers and may change. The original posting is the one to apply through."
+msgstr ""
+
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Lists"
 msgstr ""
@@ -10218,6 +10480,7 @@ msgstr "Naživo · sa aktualizuje počas úprav"
 msgid "Living gradient"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Load more"
 msgstr ""
@@ -10250,10 +10513,6 @@ msgstr "Načítavajú sa žiadosti…"
 msgid "Loading connection request..."
 msgstr "Načítava sa žiadosť o pripojenie..."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Loading connection…"
-msgstr "Načítava sa pripojenie…"
-
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Loading connections..."
 msgstr "Načítavajú sa pripojenia..."
@@ -10265,6 +10524,10 @@ msgstr "Načítavajú sa konverzácie…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Načítavajú sa pohovory…"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Loading jobs"
+msgstr ""
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10376,12 +10639,12 @@ msgstr ""
 msgid "Long stretches are set in capitals."
 msgstr "Dlhé úseky sú napísané veľkými písmenami."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Look for"
-msgstr "Hľadať"
-
 #: src/features/portfolio/page-text.ts
 msgid "Looking for"
+msgstr ""
+
+#: src/features/applications/components/add-application-dialog.tsx
+msgid "Looking for openings?"
 msgstr ""
 
 #: src/features/resume/share/download-tab.tsx
@@ -10485,10 +10748,6 @@ msgstr "Malajčina"
 msgid "Malayalam"
 msgstr "Malajálamčina"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Managed by server"
-msgstr "Spravované serverom"
-
 #: src/features/settings/ai/providers.tsx
 msgid "Managed by your server"
 msgstr "Spravované vaším serverom"
@@ -10504,6 +10763,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "Many bullets start with the same phrase."
 msgstr "Mnohé odrážky začínajú rovnakou frázou."
+
+#: src/features/jobs/search-bar.tsx
+msgid "Many postings don't list pay, especially outside the US."
+msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "Many versions of your application, in every format."
@@ -10618,6 +10881,11 @@ msgstr "Match systémová téma"
 msgid "Match this posting"
 msgstr "Priraďte tento pracovný inzerát"
 
+#. How many of the skills a job listing names appear in the person's Profile
+#: src/features/jobs/listing-card.tsx
+msgid "Matches {matched} of {total} skills"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Matches the resume ({summary})."
 msgstr "Zodpovedá resumé ({summary})."
@@ -10696,6 +10964,11 @@ msgstr ""
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
 msgstr "Mikrofón je zablokovaný. Povoľte ho v nastaveniach prehliadača alebo odpoveď napíšte."
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Mid level"
+msgstr ""
+
 #: src/features/billing/admin/labels.ts
 msgid "Midtrans API kept failing"
 msgstr ""
@@ -10703,6 +10976,10 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Minimum base salary"
 msgstr "Minimálny základný plat"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Minimum yearly pay"
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Mixed"
@@ -10760,6 +11037,19 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "More download formats"
 msgstr "Viac formátov na stiahnutie"
+
+#: src/features/jobs/search-bar.tsx
+msgid "More filters"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "More filters ({extra})"
+msgstr ""
+
+#. placeholder {0}: listing.title
+#: src/features/jobs/listing-card.tsx
+msgid "More for {0}"
+msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "More for {title}"
@@ -11050,6 +11340,7 @@ msgid "narrow margins"
 msgstr "úzke okraje"
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Needs attention"
 msgstr "Vyžaduje pozornosť"
@@ -11118,6 +11409,10 @@ msgstr "Namiesto toho nový sprievodný list"
 msgid "New document"
 msgstr "Nový dokument"
 
+#: src/features/career/schedule-sheet.tsx
+msgid "New job alert"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr "Nový kľúč"
@@ -11148,6 +11443,14 @@ msgstr "Tu sa zobrazia nové pozície, pripomienky a hotové brífingy."
 #: src/features/career/schedule-sheet.tsx
 msgid "New schedule"
 msgstr "Nová naplánovaná úloha"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "New searches are limited right now. Results you already opened stay available."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "New searches are limited right now. These are results saved earlier; try again tomorrow."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "New section"
@@ -11217,6 +11520,14 @@ msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next week"
+msgstr ""
+
+#: src/features/jobs/admin/costs.ts
+msgid "Nightly upkeep"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Nightly upkeep hasn't run"
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -11314,6 +11625,7 @@ msgid "No corrections"
 msgstr "Žiadne opravy"
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "No country matches."
 msgstr "Nenašli sa žiadne krajiny."
 
@@ -11385,6 +11697,10 @@ msgstr ""
 msgid "No job yet"
 msgstr "Zatiaľ bez práce"
 
+#: src/features/jobs/jobs-page.tsx
+msgid "No jobs match yet."
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "No keys yet."
 msgstr "Zatiaľ žiadne kľúče."
@@ -11410,22 +11726,22 @@ msgstr "Žiadna poloha"
 msgid "No messages yet. Turn on the contact form in the editor, under Contact."
 msgstr ""
 
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery is paused."
-msgstr "Žiadne nové pozície. Vyhľadávanie je pozastavené."
-
 #. placeholder {0}: day(active.nextRunAt)
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again on {0} at {clock}."
-msgstr "Žiadne nové pozície. Vyhľadávanie znova prebehne {0} o {clock}."
+msgid "No new roles. Your job alert checks again on {0} at {clock}."
+msgstr ""
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again today at {clock}."
-msgstr "Žiadne nové pozície. Vyhľadávanie znova prebehne dnes o {clock}."
+msgid "No new roles. Your job alert checks again today at {clock}."
+msgstr ""
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again tomorrow at {clock}."
-msgstr "Žiadne nové pozície. Vyhľadávanie znova prebehne zajtra o {clock}."
+msgid "No new roles. Your job alert checks again tomorrow at {clock}."
+msgstr ""
+
+#: src/features/career/today.tsx
+msgid "No new roles. Your job alert is paused."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
@@ -11437,6 +11753,10 @@ msgstr "Žiadne otvorené problémy"
 
 #: src/features/docs/sidebar.tsx
 msgid "No pages match “{term}”."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No paid calls in this period."
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -11480,9 +11800,9 @@ msgstr ""
 msgid "No portfolio matches that."
 msgstr ""
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "No postings found. Try different keywords."
-msgstr "Nenašli sa žiadne pracovné ponuky. Skúste iné kľúčové slová."
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No provider calls in this period."
+msgstr ""
 
 #: src/features/profile/sources/messages.ts
 msgid "No public repositories of your own, so no projects came in."
@@ -11526,6 +11846,10 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "No room for another job alert"
 msgstr ""
 
 #: src/features/billing/plan.ts
@@ -11588,6 +11912,14 @@ msgstr ""
 #: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Žiadne časové pásmo sa nezhoduje."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No treg token on this server"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No treg token on this server."
+msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/portfolio/statistics/work-statistics.tsx
@@ -12026,6 +12358,10 @@ msgstr ""
 msgid "Offers"
 msgstr "Ponuky"
 
+#: src/features/jobs/search-bar.tsx
+msgid "Offers visa sponsorship"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Office days a week, at most"
 msgstr "Dni v kancelárii za týždeň, najviac"
@@ -12046,9 +12382,14 @@ msgstr ""
 msgid "On this page"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/page-text.ts
 msgid "On-site"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "On-site, hybrid or remote"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -12260,6 +12601,10 @@ msgstr ""
 msgid "Open link"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Open listings"
+msgstr ""
+
 #: src/features/docs/header.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Open navigation"
@@ -12362,15 +12707,6 @@ msgstr "Otvorí sa v Kariéra → Ponuky."
 #: src/features/resume/stylesheet/editor.tsx
 msgid "opens in new tab"
 msgstr "otvorí sa na novej karte"
-
-#: src/features/career/schedule-sheet.tsx
-#: src/features/career/today.tsx
-msgid "Opportunity discovery"
-msgstr "Vyhľadávanie príležitostí"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Optional"
-msgstr "Voliteľné"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Optional for local Ollama"
@@ -12763,10 +13099,6 @@ msgstr "Prilepte pracovnú ponuku a zistite, ktoré z jej výrazov už váš ži
 msgid "Paste the question from the form"
 msgstr "Vložte otázku z formulára"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Paste your key"
-msgstr "Prilepte svoj kľúč"
-
 #: src/features/profile/sources/messages.ts
 msgid "Paste your profile link, like linkedin.com/in/your-name."
 msgstr ""
@@ -12798,6 +13130,16 @@ msgstr "Pozastavené naplánované úlohy si ponechajú nastavenia."
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Pay {price} with QRIS"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year, or not listed"
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -12929,6 +13271,7 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Period"
 msgstr ""
 
@@ -13252,6 +13595,34 @@ msgstr "Portugalčina (Portugalsko)"
 msgid "Position"
 msgstr "Pozícia"
 
+#: src/features/jobs/search-bar.tsx
+msgid "Posted"
+msgstr ""
+
+#: src/features/jobs/listing-card.tsx
+#: src/features/jobs/listing-sheet.tsx
+msgid "Posted {posted}"
+msgstr ""
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last 2 weeks"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last 30 days"
+msgstr ""
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last day"
+msgstr ""
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last week"
+msgstr ""
+
 #: src/dialogs/resume/template/data.ts
 msgid "Poster type: a tall condensed name over a heavy ink rule and display section titles with a rule running on. Bold, high-contrast and made for creatives."
 msgstr ""
@@ -13264,6 +13635,16 @@ msgstr "inzerát"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
 msgstr "Inzerát"
+
+#. The job posting of a tracked application was taken down by the employer
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Posting closed"
+msgstr ""
+
+#. placeholder {0}: date(application.postingClosedAt)
+#: src/features/career/workspace/shell.tsx
+msgid "Posting closed {0}"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting from the linked application"
@@ -13660,14 +14041,14 @@ msgstr "Chráňte svoj životopis heslom"
 msgid "Prototyping"
 msgstr "Prototypovanie"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Provided by your server: {connectedProvider}."
-msgstr "Poskytuje váš server: {connectedProvider}."
-
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Provider"
 msgstr "Poskytovateľ"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Provider calls"
+msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "Provider cost"
@@ -13944,10 +14325,6 @@ msgstr "Prečítajte si príručku „Používanie vlastných štýlov“."
 msgid "Read the attachment"
 msgstr "Prečítajte si prílohu"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Read the job links you save. Saving and preparing jobs works without a connection."
-msgstr "Prečítajte si odkazy na pracovné miesta, ktoré si uložíte. Ukladanie a príprava úloh funguje bez pripojenia."
-
 #: src/features/assistant/conversation.tsx
 msgid "Read the letter"
 msgstr "Prečítajte si list"
@@ -14015,6 +14392,10 @@ msgstr "Skóre čitateľnosti: {score} zo 100"
 msgid "Reading and uploading the PDF…"
 msgstr ""
 
+#: src/features/jobs/admin/costs.ts
+msgid "Reading links"
+msgstr ""
+
 #: src/features/assistant/conversation.tsx
 msgid "Reading page…"
 msgstr "Číta sa stránka…"
@@ -14071,10 +14452,6 @@ msgstr "Čítame, čo ste zdieľali"
 msgid "Reading Word files needs an AI provider. Set one up in Settings, or import a PDF or JSON file instead."
 msgstr "Čítanie súborov Word vyžaduje poskytovateľa AI. Nastavte si ho v Nastaveniach alebo namiesto toho importujte súbor PDF alebo JSON."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Reading works"
-msgstr "Čítanie funguje"
-
 #: src/features/career/shared.tsx
 msgid "Reading your answer"
 msgstr "Čítame vašu odpoveď"
@@ -14104,10 +14481,6 @@ msgstr ""
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Reads cleanly"
 msgstr "Číta sa čisto"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Reads supported public job pages. No account needed."
-msgstr "Číta podporované verejné pracovné stránky. Nie je potrebný žiadny účet."
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "Reads, shares, feedback or awards."
@@ -14251,6 +14624,7 @@ msgid "Reflection"
 msgstr "Reflexia"
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Refresh"
 msgstr ""
 
@@ -14390,10 +14764,23 @@ msgstr "Pripomenúť mi dňa"
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/career/offers.tsx
+#: src/features/jobs/format.ts
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Remote"
 msgstr "Na diaľku"
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter"
+msgid "Remote anywhere"
+msgstr ""
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter"
+msgid "Remote in this country"
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Remote, Hybrid, a city…"
@@ -14445,10 +14832,6 @@ msgstr ""
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Remove {value}"
 msgstr "Odstráňte {value}"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Remove connection"
-msgstr "Odstráňte pripojenie"
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Remove field"
@@ -14779,6 +15162,7 @@ msgid "Requirements"
 msgstr "Požiadavky"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Requirements and your evidence"
 msgstr "Požiadavky a vaše dôkazy"
 
@@ -14849,6 +15233,10 @@ msgstr "Obnovená verzia z {0}. Váš predchádzajúci stav sa uloží ako „Pr
 #: src/features/career/knowledge/stories.tsx
 msgid "Result"
 msgstr "Výsledok"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Result pages kept"
+msgstr ""
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Results as numbers, such as +35% conversion"
@@ -15176,6 +15564,7 @@ msgstr "Práve teraz"
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/career/schedule-sheet.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "Pozícia"
@@ -15194,9 +15583,9 @@ msgstr "Úloha / názov"
 msgid "Role of person {0}"
 msgstr "Rola osoby {0}"
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Role, company or location"
-msgstr "Rola, spoločnosť alebo miesto"
+#: src/features/jobs/search-bar.tsx
+msgid "Role or keywords"
+msgstr ""
 
 #: src/features/portfolio/works/work-document.tsx
 msgid "Role, year, tags and link"
@@ -15209,10 +15598,6 @@ msgstr "Pozície"
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Roles you're looking for"
 msgstr ""
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Roles, places and companies. Starts from your preferences."
-msgstr "Pozície, miesta a spoločnosti. Vychádza z vašich preferencií."
 
 #: src/libs/locale.ts
 msgid "Romanian"
@@ -15254,6 +15639,7 @@ msgid "Run again"
 msgstr "Spustiť znova"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Running"
 msgstr ""
 
@@ -15335,6 +15721,7 @@ msgid "Save"
 msgstr "Uložiť"
 
 #: src/features/applications/components/add-application-dialog.tsx
+#: src/features/jobs/jobs-page.tsx
 msgid "Save a job"
 msgstr "Uložiť úlohu"
 
@@ -15367,10 +15754,6 @@ msgstr "Uložiť ako žiadosť o prácu…"
 msgid "Save changes"
 msgstr "Uložiť zmeny"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Save connection"
-msgstr "Uložiť pripojenie"
-
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Save contact"
@@ -15379,10 +15762,6 @@ msgstr ""
 #: src/features/career/knowledge/facts.tsx
 msgid "Save correction"
 msgstr "Uložiť opravu"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Save first, then test search and reading. No test runs automatically."
-msgstr "Najprv uložte, potom vyskúšajte vyhľadávanie a čítanie. Žiadny test sa nespustí automaticky."
 
 #: src/features/extension/install-links.tsx
 msgid "Save in one click with the browser extension"
@@ -15634,23 +16013,20 @@ msgstr ""
 msgid "Screening"
 msgstr "Skríning"
 
-#: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/features/jobs/admin/costs.ts
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Hľadať"
 
+#: src/features/jobs/search-bar.tsx
+msgctxt "Button that runs a job search"
+msgid "Search"
+msgstr ""
+
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Search again"
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and enhanced reading"
-msgstr "Vyhľadávanie a vylepšené čítanie"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and reading are set up for everyone here. Ask your administrator about changes."
-msgstr "Vyhľadávanie a čítanie sú tu nastavené pre každého. Spýtajte sa správcu na zmeny."
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search applications"
@@ -15669,6 +16045,10 @@ msgstr ""
 msgid "Search covers titles, tags and linked applications."
 msgstr "Vyhľadávanie zahŕňa tituly, značky a prepojené žiadosti o zamestnanie."
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Search current openings from company careers sites and job boards, then track the ones you like."
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search documents"
 msgstr "Vyhľadajte dokumenty"
@@ -15686,10 +16066,6 @@ msgstr ""
 msgid "Search facts"
 msgstr "Hľadať fakty"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search failed"
-msgstr "Vyhľadávanie zlyhalo"
-
 #. Accessible label for icon picker search input
 #. Placeholder text in icon picker search input
 #: src/components/input/icon-picker-grid.tsx
@@ -15700,13 +16076,9 @@ msgstr "Hľadať ikonu"
 msgid "Search for…"
 msgstr "Hľadať…"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
-msgstr "Vyhľadávajte v Žiadostiach a v asistentovi a čítajte stránky, ktoré vstavaná čítačka nedokáže prečítať. Jedna služba pokrýva oboje."
-
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Search job postings"
-msgstr "Hľadajte pracovné ponuky"
+#: src/features/jobs/search-bar.tsx
+msgid "Search jobs"
+msgstr ""
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search reads the role, company, location, contacts and tags."
@@ -15728,21 +16100,13 @@ msgstr ""
 msgid "Search the web"
 msgstr ""
 
+#: src/features/assistant/tool-approvals.tsx
+msgid "Search the web for this exact query?"
+msgstr ""
+
 #: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Hľadať časové pásma"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search, and reading with {connectedProvider}."
-msgstr "Vyhľadávanie bolo testované pomocou vyhľadávania vášho servera a čítania pomocou {connectedProvider}."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search. Links are read with the built-in reader."
-msgstr "Vyhľadávanie bolo testované pomocou vyhľadávania vášho servera. Odkazy sa čítajú pomocou vstavanej čítačky."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search works"
-msgstr "Vyhľadávanie funguje"
 
 #: src/components/ui/combobox.tsx
 msgid "Search..."
@@ -15758,22 +16122,6 @@ msgstr "Hľadať…"
 #: src/features/assistant/conversation.tsx
 msgid "Searched the web"
 msgstr "Hľadal na webe"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Vyhľadáva a číta stránky pomocou {connectedProvider} bez ohľadu na to, ktorého poskytovateľa AI používate."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads links with the built-in reader, whichever AI provider you use."
-msgstr "Vyhľadáva pomocou vyhľadávania vášho servera a číta odkazy pomocou vstavanej čítačky bez ohľadu na to, ktorého poskytovateľa AI používate."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Vyhľadáva pomocou vyhľadávania vášho servera a číta stránky s {connectedProvider} bez ohľadu na to, ktorého poskytovateľa AI používate."
-
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Searching job postings…"
-msgstr "Hľadajú sa pracovné ponuky…"
 
 #: src/features/career/coach-chat.tsx
 msgid "Searching the web"
@@ -15833,6 +16181,7 @@ msgid "See how many people visited, and read what they sent through your contact
 msgstr ""
 
 #: src/features/billing/plan-dialog.tsx
+#: src/features/jobs/jobs-page.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "See plans"
@@ -15962,10 +16311,6 @@ msgstr "Poslať odkaz na obnovenie"
 msgid "Send the resume itself rather than a portfolio wrapper."
 msgstr "Odošlite samotný životopis, nie obal vo forme portfólia."
 
-#: src/features/assistant/tool-approvals.tsx
-msgid "Send this exact query to your web search provider?"
-msgstr ""
-
 #: src/features/homepage/testimonials.tsx
 msgid "Sending a link instead of a PDF means recruiters always see the latest version."
 msgstr ""
@@ -15991,6 +16336,11 @@ msgstr ""
 msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
 msgstr ""
 
+#. placeholder {0}: provider.label
+#: src/features/jobs/listing-fit.tsx
+msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
+msgstr ""
+
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and your Profile (details, career, and the facts and stories that are switched on) to {connection}."
 msgstr ""
@@ -16004,6 +16354,11 @@ msgstr "Odošle text vášho životopisu iba na {0} · {1} s vaším kľúčom."
 #. placeholder {0}: provider.label
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Sends your resume's text only to {0}."
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Senior"
 msgstr ""
 
 #: src/features/homepage/features.tsx
@@ -16036,6 +16391,10 @@ msgstr ""
 #: src/libs/locale.ts
 msgid "Serbian"
 msgstr "Srbčina"
+
+#: src/features/jobs/admin/costs.ts
+msgid "Serper (web search)"
+msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
@@ -16075,12 +16434,8 @@ msgid "Set to end at the period end"
 msgstr ""
 
 #: src/features/career/today.tsx
-msgid "Set up discovery"
-msgstr "Nastaviť vyhľadávanie"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Set up web search in Settings"
-msgstr "Nastavte webové vyhľadávanie v Nastaveniach"
+msgid "Set up a job alert"
+msgstr ""
 
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Set up your authenticator app"
@@ -16545,6 +16900,7 @@ msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
+#: src/features/jobs/listing-sheet.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
 msgid "Skills"
@@ -16738,9 +17094,17 @@ msgstr "Španielčina"
 msgid "Speak"
 msgstr "Hovoriť"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Speed is for calls that reached the provider; 95% of them were at least this fast."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Spell the month, as in \"Mar 2022\"."
 msgstr "Napíšte mesiac slovom, napríklad „Mar 2022“."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Spent today"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "spoken"
@@ -17049,6 +17413,10 @@ msgstr ""
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "Uložte tieto záložné kódy na bezpečné miesto. Každý vás raz prihlási, ak stratíte zariadenie."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Stored data"
+msgstr ""
 
 #: src/features/assistant/provider-setup.tsx
 msgid "Stored encrypted and tested right away."
@@ -17369,6 +17737,10 @@ msgstr ""
 msgid "Tailor my resume to the Northwind posting."
 msgstr ""
 
+#: src/features/jobs/listing-card.tsx
+msgid "Tailor resume"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/assistant-panel.tsx
 msgid "Tailor to the {0} posting"
@@ -17527,18 +17899,6 @@ msgstr ""
 msgid "Test"
 msgstr "Test"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Test connection"
-msgstr "Otestujte pripojenie"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Test search"
-msgstr "Otestujte funkciu vyhľadávania"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Tested with {connectedProvider}. Only this service was tested."
-msgstr "Testované so {connectedProvider}. Iba táto služba bola testovaná."
-
 #: src/features/homepage/ui.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Testimonials"
@@ -17548,22 +17908,10 @@ msgstr ""
 msgid "Testimonials layout"
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing search and reading with {connectedProvider}…"
-msgstr "Testovanie vyhľadávania a čítania pomocou {connectedProvider}…"
-
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Testing the connection…"
 msgstr "Testuje sa pripojenie…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search, and reading with {connectedProvider}…"
-msgstr "Testovanie vyhľadávacej služby na vašom serveri a čítanie webovej stránky pomocou {connectedProvider}…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search…"
-msgstr "Testuje sa vyhľadávacia služba na vašom serveri…"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Testing…"
@@ -17656,6 +18004,10 @@ msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "Thank you. Your report was sent to the Rezumi team."
+msgstr ""
+
+#: src/features/jobs/use-listing-actions.ts
+msgid "That didn't save. Try again."
 msgstr ""
 
 #: src/features/portfolio/admin/review-page.tsx
@@ -17787,9 +18139,9 @@ msgstr ""
 msgid "The brief"
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "The built-in reader remains active."
-msgstr "Zabudovaná čítačka zostáva aktívna."
+#: src/features/jobs/admin/costs-page.tsx
+msgid "The call statistics couldn't be read. Try Refresh in a moment."
+msgstr ""
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -17864,6 +18216,10 @@ msgstr "Kópia je prepojená so žiadosťou o prácu, takže Check a asistent po
 
 #: src/dialogs/resume/template/data.ts
 msgid "The creative page: a block of the accent anchors the top corner, framing your portrait, beside an oversized name; two columns follow."
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "The description couldn't be loaded."
 msgstr ""
 
 #. Story outline heading
@@ -17999,6 +18355,7 @@ msgid "The numbers couldn't be loaded."
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "The numbers couldn't load."
 msgstr ""
 
@@ -18168,6 +18525,10 @@ msgstr "Poskytovateľ neodpovedal. Skontrolujte kľúč, model a základňu URL.
 msgid "The provider didn't share an email address, which is required. Allow email access when the provider asks, or use another sign-in method."
 msgstr "Poskytovateľ nezdieľal e-mailovú adresu, ktorá je povinná. Povoľte prístup k e-mailu, keď o to poskytovateľ požiada, alebo použite iný spôsob prihlásenia."
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "The provider has no description for this job. The original posting has the details."
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "The provider rejected this sign-in attempt. Try again."
 msgstr "Poskytovateľ odmietol tento pokus o prihlásenie. Skúste to znova."
@@ -18277,22 +18638,6 @@ msgstr ""
 msgid "The server couldn't save your changes. Saving tries again by itself."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "The service didn't respond in time. Try again."
-msgstr "Služba nereagovala včas. Skúste to znova."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service is unavailable or doesn't support this. Try again later."
-msgstr "Služba je nedostupná alebo to nepodporuje. Skúste to znova neskôr."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service rejected the API key. Check the key and save it again."
-msgstr "Služba odmietla kľúč API. Skontrolujte kľúč a uložte ho znova."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service's quota is used up. Check your plan with the service, or try again later."
-msgstr "Kvóta služby je vyčerpaná. Skontrolujte svoj plán v službe alebo to skúste znova neskôr."
-
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "The solution"
@@ -18329,6 +18674,10 @@ msgstr "Vrch prvej strany nevyzerá ako meno."
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "The trade-offs you made, and why."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "The treg balance is below one day's budget. Top it up (or turn on auto top-up) in treg's dashboard under Team → Billing; an empty balance stops every search."
 msgstr ""
 
 #: src/features/portfolio/works/work-document.tsx
@@ -18390,6 +18739,14 @@ msgstr ""
 
 #: src/features/billing/receipt.tsx
 msgid "There's no receipt here: this payment isn't a paid QRIS plan."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "There's no treg token on this server, so nobody can search for jobs."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "These are results saved earlier. Fresh ones couldn't be loaded just now."
 msgstr ""
 
 #: src/features/career/workspace/apply.tsx
@@ -18639,6 +18996,10 @@ msgstr ""
 msgid "This isn't available for your account."
 msgstr ""
 
+#: src/features/jobs/use-listing-actions.ts
+msgid "This job couldn't be tracked. Try again."
+msgstr ""
+
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "This letter and “{resumeName}” as two PDFs, named to match."
 msgstr "Toto písmeno a „{resumeName}“ ako dva PDFs, pomenované podľa zhody."
@@ -18662,6 +19023,10 @@ msgstr ""
 #: src/features/portfolio/blocks/add-media-block.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 msgid "This link isn't from a service we can embed. Use a Link block instead."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "This list can't be continued. Search again to see more jobs."
 msgstr ""
 
 #: src/features/ats-checker/report/report-view.tsx
@@ -19079,6 +19444,14 @@ msgstr "Dnes {time}"
 msgid "Today, {hour}"
 msgstr "Dnes, {hour}"
 
+#: src/features/billing/plan.ts
+msgid "Today's job searches are used up"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Today's spending passed 80% of the daily budget. Past the budget, people get saved results only until midnight UTC. Raise JOB_SEARCH_DAILY_BUDGET_USD if the use is real."
+msgstr ""
+
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toggle sidebar"
 msgstr ""
@@ -19103,12 +19476,12 @@ msgstr ""
 msgid "Too many requests in a short time. Wait a minute, then try again."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Too many requests. Try again later."
-msgstr "Príliš veľa žiadostí. Skúste to znova neskôr."
-
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Too many saves in a short time. Saving tries again in a moment."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Too many searches in a short time. Wait a minute, then try again."
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -19165,7 +19538,9 @@ msgstr ""
 msgid "Totals aren't added up on purpose."
 msgstr ""
 
+#. Save a job listing to the person's applications
 #: src/features/homepage/features.tsx
+#: src/features/jobs/listing-card.tsx
 msgid "Track"
 msgstr ""
 
@@ -19177,9 +19552,29 @@ msgstr "Sledujte prácu, o ktorú sa uchádzate, a prepojte životopis, ktorý s
 msgid "Track in Applications"
 msgstr "Sledovať v Žiadostiach"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Track this job to add evidence and questions in its workspace. The check goes with it."
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Track your first job"
 msgstr "Sledujte svoju prvú prácu"
+
+#. A job listing saved to the person's applications; links to it
+#: src/features/jobs/listing-card.tsx
+msgid "Tracked"
+msgstr ""
+
+#. Where a saved job description came from: a listing tracked from Rezumi's Jobs page
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Tracked from Jobs. The description is the job data provider's copy; the original posting may have changed since."
+msgstr ""
+
+#. placeholder {0}: listing.title
+#. placeholder {1}: listing.company.name
+#: src/features/jobs/use-listing-actions.ts
+msgid "Tracking {0} at {1}"
+msgstr ""
 
 #: src/features/portfolio/admin/labels.ts
 msgid "Trademark or copyright"
@@ -19224,6 +19619,32 @@ msgstr "Kôš"
 msgid "Trash is empty"
 msgstr "Kôš je prázdny"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg balance"
+msgstr ""
+
+#. placeholder {0}: formatUsd(treg.totalMicro)
+#. placeholder {1}: report.days
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg charged {0} in {1} days"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg didn't answer; try Refresh"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg didn't answer. Try Refresh in a moment."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg ledger"
+msgstr ""
+
+#: src/features/jobs/admin/costs.ts
+msgid "treg web search"
+msgstr ""
+
 #: src/features/billing/admin/labels.ts
 msgid "Trial"
 msgstr ""
@@ -19263,6 +19684,10 @@ msgstr "Vyskúšajte {0}"
 msgid "Try {name} free"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Try a longer posting window, fewer filters or other words. For local job boards, save jobs with the browser extension."
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Try a sample"
 msgstr "Vyskúšajte vzorku"
@@ -19276,6 +19701,8 @@ msgstr "Vyskúšajte vzorku"
 #: src/features/career/workspace/practise.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/features/documents/library-error.tsx
+#: src/features/jobs/jobs-page.tsx
+#: src/features/jobs/listing-sheet.tsx
 #: src/features/portfolio/editor/chunk-boundary.tsx
 #: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/location/location-fields.tsx
@@ -19285,7 +19712,6 @@ msgstr "Vyskúšajte vzorku"
 #: src/features/resume/editor/write/improve.tsx
 #: src/features/resume/preview/preview.browser.tsx
 #: src/features/resume/share/download-tab.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/features/settings/integrations/ai-provider-load-state.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Try again"
@@ -19490,6 +19916,7 @@ msgstr "Podčiarknite odkazy"
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/jobs/use-listing-actions.ts
 #: src/features/portfolio/ai/apply.ts
 #: src/features/portfolio/assistant/changes.tsx
 #: src/features/portfolio/blocks/block-list.tsx
@@ -19571,6 +19998,10 @@ msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-messages.tsx
 msgid "Unread:"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Untagged (by hand, or from another app on this treg team)"
 msgstr ""
 
 #: src/features/profile/fill.tsx
@@ -19692,6 +20123,10 @@ msgstr "Aktualizované"
 msgid "Updated {done} of {total}. Locked documents, and letters for public links, were skipped."
 msgstr "Aktualizované: {done} z {total}. Preskočené boli zamknuté dokumenty a pri verejných odkazoch aj listy."
 
+#: src/features/jobs/jobs-page.tsx
+msgid "updated {updated}"
+msgstr ""
+
 #: src/features/resume/builder/draft.ts
 msgid "Updated from your Profile."
 msgstr ""
@@ -19714,6 +20149,12 @@ msgstr ""
 
 #: src/features/billing/purchase.ts
 msgid "Upgrade, {days} days, QRIS"
+msgstr ""
+
+#. placeholder {0}: upkeep.day
+#. placeholder {1}: integer(upkeep.closed)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Upkeep {0} · {1} closed"
 msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -19889,10 +20330,6 @@ msgstr "Použite iba malé písmená, číslice, bodky, spojovníky a podčiarko
 msgid "Use plain headings such as \"Experience\", \"Education\" and \"Skills\"."
 msgstr "Použite jednoduché nadpisy ako „Experience“, „Education“ a „Skills“."
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Use posting"
-msgstr "Využite ponuku práce"
-
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Use Profile's"
 msgstr ""
@@ -19958,6 +20395,10 @@ msgstr "použité: {used}"
 msgid "Used by six teams"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Used for"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Used in coaching"
 msgstr "Použité v koučingu"
@@ -19969,10 +20410,6 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Slúžia na posúdenie pozícií a ponúk. Každá je číslo, aby kouč mohol porovnávať bez hádania."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Used when {connectedProvider} can't read a page. No account needed."
-msgstr "Používa sa, keď {connectedProvider} nedokáže prečítať stránku. Nie je potrebný žiadny účet."
 
 #: src/features/homepage/resume.tsx
 msgid "User research"
@@ -19996,14 +20433,6 @@ msgstr "Používa fakty z vášho životopisu"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Uses the linked application"
 msgstr "Používa prepojenú žiadosť o prácu"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Uses the web search service set up in Settings. Results wait in Today for your review; applications and documents are never created for you."
-msgstr "Používa službu webového vyhľadávania nastavenú v Nastaveniach. Výsledky čakajú na vašu kontrolu v sekcii Dnes; žiadosti ani dokumenty sa za vás nikdy nevytvárajú."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
-msgstr "Používa vlastné webové vyhľadávanie vášho poskytovateľa AI, ak je podporované, a číta odkazy pomocou vstavanej čítačky."
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Using your Profile's version."
@@ -20126,6 +20555,14 @@ msgstr "Pre životopis sa podarilo obnoviť veľmi málo slov."
 msgid "Very little text was recovered for this many pages."
 msgstr "Pre takýto počet strán sa podarilo obnoviť veľmi málo textu."
 
+#: src/features/jobs/format.ts
+msgid "via {name}"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgid "via the company's careers site"
+msgstr ""
+
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Video"
@@ -20164,7 +20601,10 @@ msgstr "Zobraziť"
 msgid "View application"
 msgstr "Zobraziť žiadosť o zamestnanie"
 
-#: src/features/applications/components/add-application-dialog.tsx
+#: src/features/jobs/listing-card.tsx
+msgid "View original"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "View posting"
@@ -20200,6 +20640,11 @@ msgstr ""
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "zobrazenia · 30 dní"
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/listing-card.tsx
+msgid "Visa sponsorship"
+msgstr ""
 
 #: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
@@ -20375,11 +20820,6 @@ msgstr ""
 msgid "We've emailed you the receipt. We'll remind you 3 days before the plan ends."
 msgstr ""
 
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/web-access.tsx
-msgid "Web access"
-msgstr "Webový prístup"
-
 #: src/features/resume/share/share-panel.tsx
 msgid "Web page"
 msgstr ""
@@ -20510,6 +20950,10 @@ msgstr ""
 msgid "What did you say, as close as you remember?"
 msgstr "Čo ste povedali, čo najpresnejšie, ako si pamätáte?"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "What each provider call cost, as Rezumi recorded it."
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "What formats can I download?"
 msgstr "Aké formáty si môžem stiahnuť?"
@@ -20590,6 +21034,10 @@ msgstr "Ako vyzerá úspech, ktorá výzva je najdôležitejšia a aký je ďal�
 msgid "What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded."
 msgstr "Čo by ste poslali pri kontrole na úrovni súboru v PDF. Bežalo to na tejto karte; nič nebolo nahrané."
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "What they ask for"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "What they asked you to prepare"
 msgstr "Čo vás požiadali pripraviť"
@@ -20601,6 +21049,10 @@ msgstr ""
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "What to do"
 msgstr "Čo robiť"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "What treg charged in {days} days, by what the calls were for."
+msgstr ""
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "What was asked for, in a line or two."
@@ -20858,6 +21310,10 @@ msgstr "Pri extrahovaní textu sa slová spájajú dokopy."
 msgid "Work"
 msgstr ""
 
+#: src/features/jobs/search-bar.tsx
+msgid "Work arrangement"
+msgstr ""
+
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Work layout"
 msgstr ""
@@ -20899,6 +21355,15 @@ msgstr "Stojí za otázku"
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking {0}"
 msgstr "Stojí za otázku: {0}"
+
+#. placeholder {0}: fit.ask.person
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking {0}:"
+msgstr ""
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking:"
+msgstr ""
 
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
@@ -21139,6 +21604,10 @@ msgstr "S týmto prístupovým kľúčom sa už nebudete môcť prihlásiť."
 msgid "You can preview every template. {free} are included, and documents that already use another template keep it."
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "You can still save jobs from a link, from pasted text, or with the browser extension."
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
 msgstr "Prihlásenie ste zrušili skôr, než sa dokončilo. Skúste to znova, keď budete pripravení."
@@ -21215,6 +21684,10 @@ msgstr "Používate účet hosťa"
 msgid "You've changed things since. Use Undo at the top of the editor."
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "You've reached today's search limit. Results you already opened stay available. Try again tomorrow."
+msgstr ""
+
 #: src/features/profile/sources/messages.ts
 msgid "You've used this as often as you can today. Try again tomorrow."
 msgstr ""
@@ -21259,6 +21732,7 @@ msgstr "vaše pripojenie AI"
 
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "Your AI connection"
 msgstr "Vaše pripojenie AI"
 
@@ -21435,6 +21909,10 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "Váš súbor"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Your fit"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Your focus"
@@ -21656,6 +22134,10 @@ msgstr ""
 msgid "Your plan changes at your next renewal."
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "Your plan includes {max} job searches a day. Results you already opened stay available, and searches start again at midnight."
+msgstr ""
+
 #. placeholder {0}: getPlanName(target.planId)
 #: src/features/billing/purchase-dialog.tsx
 msgid "Your plan is now {0}."
@@ -21793,8 +22275,20 @@ msgstr ""
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr ""
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Your Profile changed since this check. Checking again uses AI again."
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile doesn't mention these skills yet. Add the ones you have to your Profile, and matches show here."
+msgstr ""
+
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your Profile has no projects yet. Add them in Profile, or start an empty work."
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile mentions {matched} of the {total} main skills this job names. A word match, without AI: check your fit for a closer look."
 msgstr ""
 
 #: src/features/profile/store.ts
@@ -21865,10 +22359,6 @@ msgstr ""
 #: src/libs/error-message.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Vybrané písmo nedokáže zobraziť niektoré znaky. Zobrazujú sa ako “?”. V časti Dizajn vyberte písmo, ktoré ich obsahuje."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
-msgstr "Váš server poskytuje vyhľadávanie na webe v sekcii Žiadosti a pre asistenta. Pripojte službu na čítanie webových stránok, ktoré vstavaná čítačka nedokáže prečítať."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your source resume is in Trash"

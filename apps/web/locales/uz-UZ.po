@@ -89,10 +89,15 @@ msgstr ""
 msgid "(already yours)"
 msgstr ""
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "(in your Profile)"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "(no header)"
 msgstr "(sarlavha yo'q)"
 
+#: src/features/jobs/listing-card.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "(opens in a new tab)"
@@ -465,6 +470,11 @@ msgstr ""
 msgid "{0} edits applied"
 msgstr "{0} ta tahrir qo'llanildi"
 
+#. placeholder {0}: company.size
+#: src/features/jobs/listing-sheet.tsx
+msgid "{0} employees"
+msgstr ""
+
 #. placeholder {0}: credits.nextExpiry.credits
 #. placeholder {1}: formatShort(credits.nextExpiry.at)
 #: src/features/billing/admin/customer.tsx
@@ -496,6 +506,17 @@ msgstr "{0} topildi"
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "{0} found, {unreadable} unreadable"
 msgstr "{0} topildi, {unreadable} o‘qib bo‘lmaydi"
+
+#. placeholder {0}: integer(ok.search.cacheHits + ok.search.stale)
+#. placeholder {1}: integer(ok.search.providerCalls)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} from cache · {1} provider calls"
+msgstr ""
+
+#. placeholder {0}: integer(refused)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} held back by the daily budget"
+msgstr ""
 
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
@@ -553,6 +574,11 @@ msgstr "{0} daq."
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "{0} ko'proq"
+
+#. placeholder {0}: integer(value)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} ms"
+msgstr ""
 
 #. placeholder {0}: domain.hostname
 #. placeholder {1}: domain.hostname
@@ -628,6 +654,13 @@ msgstr "{0} ta atamadan {1} tasi topildi"
 #. placeholder {1}: limits.works
 #: src/features/portfolio/works/works-panel.tsx
 msgid "{0} of {1} works"
+msgstr ""
+
+#. placeholder {0}: percent(share)
+#. placeholder {1}: formatUsd(today.budgetMicro)
+#. placeholder {2}: today.day
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} of the {1} daily budget (UTC day {2})"
 msgstr ""
 
 #. placeholder {0}: creditCount(credits)
@@ -775,6 +808,10 @@ msgstr ""
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{count, plural, one {# entry} other {# entries}}"
 msgstr "{count, plural, one {# kirish} other {# yozuvlari}}"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "{count, plural, one {# job} other {# jobs}}"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "{count, plural, one {# open issue} other {# open issues}}"
@@ -932,6 +969,10 @@ msgstr ""
 msgid "{label}: opened {opens} times"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "{left, plural, =0 {No searches left today (of {max})} one {# search left today (of {max})} other {# searches left today (of {max})}}"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr ""
@@ -960,6 +1001,10 @@ msgstr "{length} daq."
 msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
 msgstr "{lines, plural, one {{next} sahifasiga taxminan # qatori orqali ishlaydi} other {{next} sahifasiga taxminan # qatorlari bo'ylab ishlaydi}}"
 
+#: src/features/billing/plan.ts
+msgid "{max, plural, one {Your plan keeps # job alert on. Alerts you already have keep running. Pause or delete one to turn on another.} other {Your plan keeps up to # job alerts on. Alerts you already have keep running. Pause or delete one to turn on another.}}"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "{minimum} minimum"
 msgstr "kamida {minimum}"
@@ -977,6 +1022,7 @@ msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, one {# daqiqadan keyin boshlanadi} other {# daqiqadan keyin boshlanadi}}"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{missing} missing"
 msgstr ""
 
@@ -997,6 +1043,7 @@ msgid "{name} block removed"
 msgstr ""
 
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} javob bermadi. Hech narsa o'zgarmadi; qayta urinib ko'ring."
 
@@ -1091,6 +1138,7 @@ msgid "{pairing} type"
 msgstr "{pairing} turi"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{partial} partly"
 msgstr ""
 
@@ -1163,6 +1211,21 @@ msgstr "{proposed, plural, one {# taklif qilingan} other {# taklif qilingan}}"
 msgid "{provider}: it shows on your page when a visitor presses it"
 msgstr ""
 
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} a month"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} a year"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} an hour"
+msgstr ""
+
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
 msgstr "{sections, plural, one {# bo'limi} other {# bo'limlari}}"
@@ -1192,6 +1255,7 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Karyera → Takliflar bo'limida ochiladi."
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "{supported} supported"
 msgstr ""
 
@@ -1355,6 +1419,7 @@ msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/buy-plans.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 kun"
@@ -1368,6 +1433,7 @@ msgid "5 credits"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "7 days"
 msgstr ""
 
@@ -1378,6 +1444,10 @@ msgstr "90 kun"
 
 #: src/features/homepage/resume.tsx
 msgid "94 of 100 checks passed"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "95%"
 msgstr ""
 
 #: src/features/resume/editor/proposals/proposal-list.tsx
@@ -1507,6 +1577,10 @@ msgstr "Boʻshliq muammo emas. Xohlasangiz bir qatorlik izoh qoʻshing; koʻplab
 
 #: src/features/extension/removed-page.tsx
 msgid "A job site wasn't read correctly"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgid "A job title works best, such as “Product designer”."
 msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
@@ -1701,6 +1775,11 @@ msgstr ""
 msgid "About"
 msgstr "Ushbu ilova haqida"
 
+#. placeholder {0}: company.name
+#: src/features/jobs/listing-sheet.tsx
+msgid "About {0}"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "About 90 seconds when spoken"
 msgstr "Ovoz chiqarib aytilganda taxminan 90 soniya"
@@ -1708,6 +1787,10 @@ msgstr "Ovoz chiqarib aytilganda taxminan 90 soniya"
 #: src/features/portfolio/editor/section-forms.tsx
 #: src/features/portfolio/page-text.ts
 msgid "About me"
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "About the job"
 msgstr ""
 
 #. Template gallery filter: research, teaching and scholarships
@@ -1833,7 +1916,6 @@ msgstr ""
 
 #: src/features/billing/admin/labels.ts
 #: src/features/resume/share/custom-domain-field.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Faol"
 
@@ -1980,8 +2062,8 @@ msgid "Add a result"
 msgstr "Natija qo'shing"
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Add a role or company to look for."
-msgstr "Qidirish uchun lavozim yoki kompaniya qo'shing."
+msgid "Add a role to look for."
+msgstr ""
 
 #: src/features/portfolio/editor/intro-effect.tsx
 msgid "Add a role to switch to. With only one line, the page shows it without the effect."
@@ -2302,6 +2384,10 @@ msgstr "{domain}.com kabi domen oxirini qo'shing"
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Add the order link, or the button won't show."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Add the roles you want"
 msgstr ""
 
 #: src/features/resume/share/dns-records-dialog.tsx
@@ -2760,6 +2846,10 @@ msgstr ""
 msgid "Also end the subscription now (access stops at once)"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+msgid "Also filtered by: {list}"
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 msgid "Also take back the pass and its remaining credits"
 msgstr ""
@@ -2883,6 +2973,10 @@ msgstr ""
 msgid "Answer in your own words"
 msgstr "O'z so'zlaringiz bilan javob bering"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Answered from cache"
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "Answers"
 msgstr "Javoblar"
@@ -2896,8 +2990,13 @@ msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
 msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Any"
 msgstr "Farqi yo'q"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Any level"
+msgstr ""
 
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Anyone who opens the public URL will need this password."
@@ -2928,6 +3027,7 @@ msgid "Anything to stress or leave out? (optional)"
 msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Anywhere"
 msgstr "Hamma joyda"
 
@@ -2942,7 +3042,6 @@ msgstr ""
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "API key"
 msgstr "API kaliti"
 
@@ -3215,10 +3314,6 @@ msgstr "Yordamchidan u bilan ishlashni so'rang"
 msgid "Ask the coach"
 msgstr "Murabbiydan so'rash"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Ask your server administrator to enable credential encryption or configure a shared web connection."
-msgstr "Server administratoringizdan hisob maʼlumotlarini shifrlashni yoqish yoki umumiy veb-ulanishni sozlashni soʻrang."
-
 #: src/features/assistant/conversation.tsx
 msgid "Ask, or describe a change…"
 msgstr "Oʻzgarishlarni soʻrang yoki tavsiflang…"
@@ -3242,9 +3337,9 @@ msgstr "Yordamchi"
 msgid "Assistant conversations"
 msgstr "Assistent suhbatlari"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Assistant."
-msgstr "Yordamchi."
+#: src/features/jobs/admin/costs.ts
+msgid "Assistant web search"
+msgstr ""
 
 #: src/features/portfolio/editor/password-group.tsx
 msgid "At least 6 characters."
@@ -3300,6 +3395,10 @@ msgstr "Avtomatik saqlashlar seans bo'yicha guruhlangan va 90 kun davomida saqla
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Available"
 msgstr "Bo'sh"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Average"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
@@ -3696,10 +3795,6 @@ msgstr ""
 msgid "Built the design system used by six product teams."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Built-in reader"
-msgstr "O'rnatilgan o'quvchi"
-
 #: src/libs/locale.ts
 msgid "Bulgarian"
 msgstr "Bolgar tili"
@@ -3761,6 +3856,18 @@ msgstr "Kalendar"
 msgid "Calendar view"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Call statistics come from Cloudflare Analytics Engine, so they show on the live site only. The budget and the treg figures above work everywhere."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Calls"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Calls by provider"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I import a resume I already have?"
 msgstr "Menda mavjud bo'lgan rezyumeni import qilsam bo'ladimi?"
@@ -3804,7 +3911,6 @@ msgstr "Dasturiy ta'minot sizning rezyumeingizni o'qiy oladimi?"
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/settings/ai/api-keys.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/hooks/use-confirm.tsx
 msgid "Cancel"
 msgstr "Bekor qilish"
@@ -3899,7 +4005,6 @@ msgid "Change at renewal"
 msgstr ""
 
 #: src/features/career/coach-chat.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Change connection"
 msgstr "Ulanishni o'zgartirish"
 
@@ -4073,6 +4178,10 @@ msgstr ""
 msgid "Changing your password…"
 msgstr "Parolingiz o'zgartirilmoqda…"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Charged"
+msgstr ""
+
 #: src/components/input/icon-picker-grid.tsx
 msgid "Charts and dashboards"
 msgstr ""
@@ -4093,6 +4202,7 @@ msgstr "Namuna faylni tekshiring"
 
 #: src/features/billing/payment-return.tsx
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Check again"
 msgstr "Qayta tekshirish"
@@ -4106,11 +4216,16 @@ msgstr "Boshqa faylni tekshiring"
 msgid "Check DNS"
 msgstr "DNS ni tekshirish"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Check each requirement against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 msgid "Check every claim, date and result against your experience."
 msgstr "Har bir da'vo, sana va natijani tajribangiz bilan solishtiring."
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Check fit"
 msgstr "Moslikni tekshirish"
 
@@ -4351,8 +4466,14 @@ msgstr ""
 msgid "Cities or countries. Leave it empty for anywhere."
 msgstr ""
 
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "City"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+#: src/features/jobs/search-bar.tsx
+msgid "City (optional)"
 msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
@@ -4375,6 +4496,10 @@ msgstr "Claude Desktop"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Clear"
 msgstr "Tozalash"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Clear filters"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Clear formatting"
@@ -4458,6 +4583,7 @@ msgstr ""
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/homepage/theme-preview.tsx
+#: src/features/jobs/listing-sheet.tsx
 #: src/features/portfolio/ai/draft-dialog.tsx
 #: src/features/portfolio/card/business-card-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
@@ -4517,6 +4643,10 @@ msgstr "Yopish…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "Yopiq"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Closed, not yet removed"
+msgstr ""
 
 #: src/features/billing/credits.ts
 #: src/features/career/coach.tsx
@@ -4713,21 +4843,14 @@ msgstr "{0} domenini ulash"
 msgid "Connect {domain}"
 msgstr "{domain} domenini ulash"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect a service"
-msgstr "Xizmatni ulang"
-
 #: src/features/assistant/provider-setup.tsx
 msgid "Connect an AI provider"
 msgstr "AI provayderini ulang"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect an AI provider above to use the assistant. Saving and preparing jobs doesn't need one."
-msgstr "Yordamchidan foydalanish uchun yuqoridagi AI provayderini ulang. Ishlarni saqlash va tayyorlash uchun bitta kerak emas."
-
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Connect an AI provider in Settings"
 msgstr "Sozlamalarda AI provayderini ulang"
 
@@ -4776,10 +4899,6 @@ msgstr ""
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Connection progress"
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Connection saved"
-msgstr "Ulanish saqlandi"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -5062,8 +5181,16 @@ msgstr "{correctedOn} tuzatildi · asli saqlangan"
 msgid "Correction by Rezumi"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Cost"
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 msgid "Cost (rates not set)"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Cost per day"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -5218,6 +5345,10 @@ msgstr "Provayderni o‘chirib bo‘lmadi. Qayta urinib ko'ring."
 msgid "Couldn't delete this conversation. Try again."
 msgstr "Bu suhbatni o'chirib bo'lmadi. Qayta urinib ko'ring."
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Couldn't delete this job alert. Try again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Couldn't delete this schedule. Try again."
 msgstr "Bu jadvalni o'chirib bo'lmadi. Qayta urinib ko'ring."
@@ -5313,10 +5444,6 @@ msgstr "Hujjatlarni yuklab bo‘lmadi"
 #: src/features/career/knowledge/stories.tsx
 msgid "Couldn't load interviews. Retry"
 msgstr "Intervyularni yuklab bo'lmadi. Qayta urinish"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Couldn't load or save web access settings. Try again."
-msgstr "Internetga kirish sozlamalarini yuklab yoki saqlab bo'lmadi. Qayta urinib ko'ring."
 
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Couldn't load the reports. Try again."
@@ -5768,11 +5895,20 @@ msgstr "Belgilarni sanash"
 msgid "Count words"
 msgstr "So'zlarni sanash"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Counted on Cloudflare only"
+msgstr ""
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Counted separately from the parse score. Coverage does not predict anything."
 msgstr "O'qish balidan alohida hisoblanadi. Qamrov hech narsani bashorat qilmaydi."
 
+#: src/features/jobs/admin/costs.ts
+msgid "Counting (free)"
+msgstr ""
+
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/portfolio/statistics/work-statistics.tsx
 msgid "Countries"
@@ -5786,6 +5922,8 @@ msgstr ""
 msgid "Countries, devices, linking sites and works by day"
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+#: src/features/jobs/search-bar.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Country"
 msgstr ""
@@ -5988,6 +6126,7 @@ msgid "CSV data"
 msgstr "CSV ma'lumotlari"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "Currency"
 msgstr "Valyuta"
 
@@ -6688,6 +6827,7 @@ msgid "Don't send {0}"
 msgstr "{0} yubormang"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/portfolio/works/add-work/from-pictures.tsx
 #: src/features/portfolio/works/work-document.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
@@ -6987,6 +7127,10 @@ msgstr "Fikr-mulohaza olgan har bir javobingiz shu yerda saqlanadi, eng yangisi 
 msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
 msgstr ""
 
+#: src/features/career/schedule-sheet.tsx
+msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
+msgstr ""
+
 #: src/features/settings/ai/browser-extension.tsx
 msgid "Edge Add-ons"
 msgstr ""
@@ -7059,6 +7203,10 @@ msgstr ""
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
 msgstr "Intervyuni tahrirlash…"
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Edit job alert"
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 msgid "Edit keyword"
@@ -7293,10 +7441,6 @@ msgstr "Inglizcha"
 msgid "English (United Kingdom)"
 msgstr "Inglizcha (Birlashgan Qirollik)"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Enhanced reading failed"
-msgstr "Kengaytirilgan oʻqish amalga oshmadi"
-
 #: src/features/assistant/conversation.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "Kengaytirilgan o'qish mavjud emas; o'rnatilgan o'quvchidan foydalangan."
@@ -7437,6 +7581,11 @@ msgstr ""
 msgid "Entry deleted"
 msgstr "Yozuv oʻchirildi"
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Entry level"
+msgstr ""
+
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Entry options"
 msgstr "Kirish imkoniyatlari"
@@ -7538,6 +7687,11 @@ msgstr "Murabbiy {0} uchun yozgan hamma narsa, eng yangisi birinchi."
 
 #: src/features/homepage/features.tsx
 msgid "Everything you need to reach the interview."
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Executive"
 msgstr ""
 
 #: src/features/resume/stylesheet/toolbar.tsx
@@ -7688,9 +7842,14 @@ msgid "Facts"
 msgstr "Faktlar"
 
 #: src/features/billing/purchase.ts
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Failed"
 msgstr "Muvaffaqiyatsiz"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Failed calls"
+msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "Failed, expired or cancelled"
@@ -7809,6 +7968,14 @@ msgstr ""
 msgid "Find a customer"
 msgstr ""
 
+#: src/features/applications/components/add-application-dialog.tsx
+msgid "Find jobs"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Find jobs that fit"
+msgstr ""
+
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Find numbers"
 msgstr ""
@@ -7824,10 +7991,6 @@ msgstr ""
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Find portfolio"
 msgstr ""
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Find roles"
-msgstr "Vakansiyalarni topish"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Find the results in this work and show them as metrics"
@@ -7913,6 +8076,10 @@ msgstr "Bularni muharrirda tuzating"
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Fix these values in the CSV, or leave their columns out, before importing."
 msgstr "Import qilishdan oldin CSV fayldagi bu qiymatlarni tuzating yoki ularning ustunlarini chiqarib tashlang."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "FLAG_DISABLE_JOB_SEARCH is on: people get saved results only, and job alerts wait."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Flatten the form so the text is part of the page."
@@ -8004,6 +8171,7 @@ msgstr "Shriftlarni yuklab bo‘lmadi. Qayta urinib ko‘ring."
 msgid "Food and drink"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "For"
 msgstr "uchun"
@@ -8223,6 +8391,10 @@ msgstr ""
 msgid "Fresh graduate, Informatics"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Fresh result pages"
+msgstr ""
+
 #: src/dialogs/resume/template/data.ts
 msgid "Friendly and bright: a round portrait beside the name and every section title on a soft rounded band, so a short first resume still looks finished."
 msgstr ""
@@ -8382,11 +8554,6 @@ msgstr "Nemischa"
 msgid "Get {name}"
 msgstr ""
 
-#. placeholder {0}: PROVIDER_SITES[provider]
-#: src/features/settings/ai/web-access.tsx
-msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
-msgstr "Kalitni <0>{0}</0> orqali oling. U shifrlangan holda saqlanadi va faqat sizning so'rovlaringiz uchun ishlatiladi."
-
 #: src/features/billing/buy-plans.tsx
 msgid "Get a plan"
 msgstr ""
@@ -8403,9 +8570,13 @@ msgstr "“Fikr-mulohaza olish” savolni, javobingizni, ushbu e'lonni va hikoya
 msgid "Get found"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Get job alerts"
+msgstr ""
+
 #: src/features/career/today.tsx
-msgid "Get new roles here every morning"
-msgstr "Har kuni ertalab yangi vakansiyalarni shu yerda oling"
+msgid "Get new jobs for your search here every morning"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -8704,6 +8875,11 @@ msgstr ""
 msgid "Hidden"
 msgstr "Yashirilgan"
 
+#. placeholder {0}: listing.title
+#: src/features/jobs/use-listing-actions.ts
+msgid "Hidden {0}. It won't show in your results again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "Yangi vakansiyalardan yashirildi"
@@ -8755,6 +8931,10 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "Hide the photo"
 msgstr "Suratni yashirish"
+
+#: src/features/jobs/listing-card.tsx
+msgid "Hide this job"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "High"
@@ -8911,6 +9091,7 @@ msgstr ""
 msgid "Hungarian"
 msgstr "Venger tili"
 
+#: src/features/jobs/format.ts
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Hybrid"
@@ -9133,6 +9314,10 @@ msgstr "Tanlangan qatorni yaxshilang"
 msgid "Improving…"
 msgstr "Yaxshilanmoqda…"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "In {days} days"
+msgstr ""
+
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "In color"
 msgstr ""
@@ -9147,6 +9332,10 @@ msgstr ""
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "In your Profile"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Include jobs that don't list pay"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -9507,6 +9696,40 @@ msgstr "Yapon tili"
 msgid "Job"
 msgstr "Ish"
 
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/today.tsx
+msgid "Job alert"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgctxt "Short schedule kind in a segmented choice"
+msgid "Job alert"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert deleted"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert on"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job alert paused"
+msgstr ""
+
+#: src/features/jobs/admin/costs.ts
+msgid "Job alerts"
+msgstr ""
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Job alerts aren't available on this server yet."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Job alerts on"
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Job description"
@@ -9533,9 +9756,23 @@ msgstr "Ish e’loni <0>· ixtiyoriy, kalit so‘zlar mosligini tekshirishni qo�
 msgid "Job posting link"
 msgstr "Ish e'loniga havola"
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Job search failed. Try again or paste a posting link."
-msgstr "Ish qidirish amalga oshmadi. Qayta urinib ko'ring yoki ish e'loniga havolani joylashtiring."
+#: src/features/jobs/admin/costs.ts
+msgid "Job search"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+#: src/features/settings/settings-section.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Job search costs"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Job search isn't available here yet"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Job search passed 80% of today's budget"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Job search pipeline"
@@ -9553,6 +9790,20 @@ msgstr ""
 msgid "Jobs"
 msgstr "Ish o'rinlari"
 
+#: src/features/jobs/jobs-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgctxt "Job listings to search"
+msgid "Jobs"
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Jobs couldn't be loaded. Try again in a moment."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Jobs, job alerts, assistant web search and link reading. Days in UTC, as the budget counts them."
+msgstr ""
+
 #. Example full name placeholder on registration form
 #: src/features/auth/pages/register.tsx
 msgid "John Doe"
@@ -9566,6 +9817,11 @@ msgstr "jon.doe"
 #: src/features/resume/import/read-file.ts
 msgid "JSON read"
 msgstr "JSON o'qildi"
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Junior"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Justify"
@@ -9688,10 +9944,6 @@ msgstr ""
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
 msgstr "Kalit bekor qilindi. Undan foydalanadigan ilovalar endi ishlamaydi."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Key stored encrypted"
-msgstr "Kalit shifrlangan holda saqlanadi"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Keys act as you and can read and edit your documents."
@@ -9841,6 +10093,11 @@ msgstr "Maketi"
 msgid "Layouts"
 msgstr ""
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Lead"
+msgstr ""
+
 #: src/features/portfolio/works/work-document.tsx
 msgid "Lead designer"
 msgstr ""
@@ -9951,8 +10208,8 @@ msgid "Let's start with what you have"
 msgstr "Keling, sizda bor narsadan boshlaylik"
 
 #: src/features/career/coach.tsx
-msgid "Lets the coach search public pages through your web search service"
-msgstr "Murabbiyga veb-qidiruv xizmatingiz orqali ochiq sahifalarni qidirishga ruxsat beradi"
+msgid "Lets the coach search the web for public pages"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "letter"
@@ -10005,6 +10262,7 @@ msgstr "Xatlar"
 msgid "Letters share your resume's design and live beside the job they are for."
 msgstr ""
 
+#: src/features/jobs/search-bar.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Level"
@@ -10202,6 +10460,10 @@ msgstr "Foydalanadigan vositalar va texnologiyalaringizni sanab oʻting. Ishga q
 msgid "Listening… Stop when you're done."
 msgstr "Tinglanmoqda… Tugatgach, to'xtating."
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "Listings come from job data providers and may change. The original posting is the one to apply through."
+msgstr ""
+
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Lists"
 msgstr ""
@@ -10218,6 +10480,7 @@ msgstr "Jonli · Siz tahrir qilganingizda yangilanadi"
 msgid "Living gradient"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Load more"
 msgstr ""
@@ -10250,10 +10513,6 @@ msgstr "Arizalar yuklanmoqda…"
 msgid "Loading connection request..."
 msgstr "Ulanish soʻrovi yuklanmoqda..."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Loading connection…"
-msgstr "Ulanish yuklanmoqda…"
-
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Loading connections..."
 msgstr "Ulanishlar yuklanmoqda..."
@@ -10265,6 +10524,10 @@ msgstr "Suhbatlar yuklanmoqda…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Intervyular yuklanmoqda…"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Loading jobs"
+msgstr ""
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10376,12 +10639,12 @@ msgstr ""
 msgid "Long stretches are set in capitals."
 msgstr "Uzun matn qismlari bosh harflar bilan terilgan."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Look for"
-msgstr "Nimani qidirish"
-
 #: src/features/portfolio/page-text.ts
 msgid "Looking for"
+msgstr ""
+
+#: src/features/applications/components/add-application-dialog.tsx
+msgid "Looking for openings?"
 msgstr ""
 
 #: src/features/resume/share/download-tab.tsx
@@ -10485,10 +10748,6 @@ msgstr "Malay tili"
 msgid "Malayalam"
 msgstr "Malayalam tili"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Managed by server"
-msgstr "Server tomonidan boshqariladi"
-
 #: src/features/settings/ai/providers.tsx
 msgid "Managed by your server"
 msgstr "Serveringiz tomonidan boshqariladi"
@@ -10504,6 +10763,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "Many bullets start with the same phrase."
 msgstr "Koʻplab nuqtalar bir xil ibora bilan boshlanadi."
+
+#: src/features/jobs/search-bar.tsx
+msgid "Many postings don't list pay, especially outside the US."
+msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "Many versions of your application, in every format."
@@ -10618,6 +10881,11 @@ msgstr "Tizim mavzusiga mos"
 msgid "Match this posting"
 msgstr "Ushbu ish e'lonini moslang"
 
+#. How many of the skills a job listing names appear in the person's Profile
+#: src/features/jobs/listing-card.tsx
+msgid "Matches {matched} of {total} skills"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Matches the resume ({summary})."
 msgstr "Rezyumega mos keladi ({summary})."
@@ -10696,6 +10964,11 @@ msgstr ""
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
 msgstr "Mikrofon bloklangan. Brauzer sozlamalarida unga ruxsat bering yoki javobingizni yozing."
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Mid level"
+msgstr ""
+
 #: src/features/billing/admin/labels.ts
 msgid "Midtrans API kept failing"
 msgstr ""
@@ -10703,6 +10976,10 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Minimum base salary"
 msgstr "Minimal asosiy maosh"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Minimum yearly pay"
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Mixed"
@@ -10760,6 +11037,19 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "More download formats"
 msgstr "Ko'proq yuklab olish formatlari"
+
+#: src/features/jobs/search-bar.tsx
+msgid "More filters"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "More filters ({extra})"
+msgstr ""
+
+#. placeholder {0}: listing.title
+#: src/features/jobs/listing-card.tsx
+msgid "More for {0}"
+msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "More for {title}"
@@ -11050,6 +11340,7 @@ msgid "narrow margins"
 msgstr "tor chegaralar"
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Needs attention"
 msgstr "E'tibor kerak"
@@ -11118,6 +11409,10 @@ msgstr "Buning o'rniga yangi qopqoq xati"
 msgid "New document"
 msgstr "Yangi hujjat"
 
+#: src/features/career/schedule-sheet.tsx
+msgid "New job alert"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr "Yangi kalit"
@@ -11148,6 +11443,14 @@ msgstr "Yangi vakansiyalar, eslatmalar va tayyor brifinglar shu yerda paydo bo'l
 #: src/features/career/schedule-sheet.tsx
 msgid "New schedule"
 msgstr "Yangi jadval"
+
+#: src/features/jobs/jobs-page.tsx
+msgid "New searches are limited right now. Results you already opened stay available."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "New searches are limited right now. These are results saved earlier; try again tomorrow."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "New section"
@@ -11217,6 +11520,14 @@ msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next week"
+msgstr ""
+
+#: src/features/jobs/admin/costs.ts
+msgid "Nightly upkeep"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Nightly upkeep hasn't run"
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -11314,6 +11625,7 @@ msgid "No corrections"
 msgstr "Tuzatishlar yo'q"
 
 #: src/features/career/knowledge/search-regions-field.tsx
+#: src/features/jobs/search-bar.tsx
 msgid "No country matches."
 msgstr "Hech qanday davlat topilmadi."
 
@@ -11385,6 +11697,10 @@ msgstr ""
 msgid "No job yet"
 msgstr "Hali ish yo'q"
 
+#: src/features/jobs/jobs-page.tsx
+msgid "No jobs match yet."
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "No keys yet."
 msgstr "Hali kalitlar yo'q."
@@ -11410,22 +11726,22 @@ msgstr "Joylashuv yoʻq"
 msgid "No messages yet. Turn on the contact form in the editor, under Contact."
 msgstr ""
 
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery is paused."
-msgstr "Yangi vakansiyalar yo'q. Qidiruv to'xtatilgan."
-
 #. placeholder {0}: day(active.nextRunAt)
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again on {0} at {clock}."
-msgstr "Yangi vakansiyalar yo'q. Qidiruv {0} kuni soat {clock} da yana ishlaydi."
+msgid "No new roles. Your job alert checks again on {0} at {clock}."
+msgstr ""
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again today at {clock}."
-msgstr "Yangi vakansiyalar yo'q. Qidiruv bugun soat {clock} da yana ishlaydi."
+msgid "No new roles. Your job alert checks again today at {clock}."
+msgstr ""
 
 #: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again tomorrow at {clock}."
-msgstr "Yangi vakansiyalar yo'q. Qidiruv ertaga soat {clock} da yana ishlaydi."
+msgid "No new roles. Your job alert checks again tomorrow at {clock}."
+msgstr ""
+
+#: src/features/career/today.tsx
+msgid "No new roles. Your job alert is paused."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
@@ -11437,6 +11753,10 @@ msgstr "Ochiq muammolar yo'q"
 
 #: src/features/docs/sidebar.tsx
 msgid "No pages match “{term}”."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No paid calls in this period."
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -11480,9 +11800,9 @@ msgstr ""
 msgid "No portfolio matches that."
 msgstr ""
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "No postings found. Try different keywords."
-msgstr "Hech qanday ish e'lonlari topilmadi. Turli xil kalit so'zlarni sinab ko'ring."
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No provider calls in this period."
+msgstr ""
 
 #: src/features/profile/sources/messages.ts
 msgid "No public repositories of your own, so no projects came in."
@@ -11526,6 +11846,10 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "No room for another job alert"
 msgstr ""
 
 #: src/features/billing/plan.ts
@@ -11588,6 +11912,14 @@ msgstr ""
 #: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Mos vaqt mintaqasi yo'q."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No treg token on this server"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No treg token on this server."
+msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 #: src/features/portfolio/statistics/work-statistics.tsx
@@ -12026,6 +12358,10 @@ msgstr ""
 msgid "Offers"
 msgstr "Takliflar"
 
+#: src/features/jobs/search-bar.tsx
+msgid "Offers visa sponsorship"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Office days a week, at most"
 msgstr "Haftasiga ofis kunlari, ko'pi bilan"
@@ -12046,9 +12382,14 @@ msgstr ""
 msgid "On this page"
 msgstr ""
 
+#: src/features/jobs/format.ts
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/page-text.ts
 msgid "On-site"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "On-site, hybrid or remote"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -12260,6 +12601,10 @@ msgstr ""
 msgid "Open link"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Open listings"
+msgstr ""
+
 #: src/features/docs/header.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Open navigation"
@@ -12362,15 +12707,6 @@ msgstr "Karyera → Takliflar bo'limida ochiladi."
 #: src/features/resume/stylesheet/editor.tsx
 msgid "opens in new tab"
 msgstr "yangi tabda ochiladi"
-
-#: src/features/career/schedule-sheet.tsx
-#: src/features/career/today.tsx
-msgid "Opportunity discovery"
-msgstr "Imkoniyatlarni qidirish"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Optional"
-msgstr "Ixtiyoriy"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Optional for local Ollama"
@@ -12763,10 +13099,6 @@ msgstr "Sizning rezyumeingizda qaysi shartlar mavjudligini ko'rish uchun ish e'l
 msgid "Paste the question from the form"
 msgstr "Formadagi savolni qo'ying"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Paste your key"
-msgstr "Kalitingizni joylashtiring"
-
 #: src/features/profile/sources/messages.ts
 msgid "Paste your profile link, like linkedin.com/in/your-name."
 msgstr ""
@@ -12798,6 +13130,16 @@ msgstr "To'xtatilgan jadvallar sozlamalarini saqlab qoladi."
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Pay {price} with QRIS"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year, or not listed"
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -12929,6 +13271,7 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Period"
 msgstr ""
 
@@ -13252,6 +13595,34 @@ msgstr "Portugalcha (Portugaliya)"
 msgid "Position"
 msgstr "Lavozim"
 
+#: src/features/jobs/search-bar.tsx
+msgid "Posted"
+msgstr ""
+
+#: src/features/jobs/listing-card.tsx
+#: src/features/jobs/listing-sheet.tsx
+msgid "Posted {posted}"
+msgstr ""
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last 2 weeks"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last 30 days"
+msgstr ""
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last day"
+msgstr ""
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/search-bar.tsx
+msgid "Posted in the last week"
+msgstr ""
+
 #: src/dialogs/resume/template/data.ts
 msgid "Poster type: a tall condensed name over a heavy ink rule and display section titles with a rule running on. Bold, high-contrast and made for creatives."
 msgstr ""
@@ -13264,6 +13635,16 @@ msgstr "e'lon"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
 msgstr "Ish e’loni"
+
+#. The job posting of a tracked application was taken down by the employer
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Posting closed"
+msgstr ""
+
+#. placeholder {0}: date(application.postingClosedAt)
+#: src/features/career/workspace/shell.tsx
+msgid "Posting closed {0}"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting from the linked application"
@@ -13660,14 +14041,14 @@ msgstr "Rezyumengizni parol bilan himoyalang"
 msgid "Prototyping"
 msgstr "Prototiplash"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Provided by your server: {connectedProvider}."
-msgstr "Serveringiz tomonidan taqdim etilgan: {connectedProvider}."
-
+#: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Provider"
 msgstr "Provayder"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Provider calls"
+msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "Provider cost"
@@ -13944,10 +14325,6 @@ msgstr "“Maxsus uslublarni qo'llash” qo'llanmasini o'qing."
 msgid "Read the attachment"
 msgstr "Qo'shimchani o'qing"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Read the job links you save. Saving and preparing jobs works without a connection."
-msgstr "Saqlagan ish havolalarini o'qing. Ishlarni saqlash va tayyorlash ulanishsiz ishlaydi."
-
 #: src/features/assistant/conversation.tsx
 msgid "Read the letter"
 msgstr "Xatni o'qing"
@@ -14015,6 +14392,10 @@ msgstr "O'qilishi uchun ball: {score} 100 dan"
 msgid "Reading and uploading the PDF…"
 msgstr ""
 
+#: src/features/jobs/admin/costs.ts
+msgid "Reading links"
+msgstr ""
+
 #: src/features/assistant/conversation.tsx
 msgid "Reading page…"
 msgstr "Sahifani oʻqish…"
@@ -14071,10 +14452,6 @@ msgstr "Siz ulashgan narsa o'qilmoqda"
 msgid "Reading Word files needs an AI provider. Set one up in Settings, or import a PDF or JSON file instead."
 msgstr "Word fayllarini o'qish uchun AI provayderi kerak. Sozlamalardan birini sozlang yoki oʻrniga PDF yoki JSON faylini import qiling."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Reading works"
-msgstr "O'qish ishlari"
-
 #: src/features/career/shared.tsx
 msgid "Reading your answer"
 msgstr "Javobingiz o'qilmoqda"
@@ -14104,10 +14481,6 @@ msgstr ""
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Reads cleanly"
 msgstr "Toza o'qiydi"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Reads supported public job pages. No account needed."
-msgstr "Qo'llab-quvvatlanadigan davlat ish sahifalarini o'qiydi. Hisob kerak emas."
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "Reads, shares, feedback or awards."
@@ -14251,6 +14624,7 @@ msgid "Reflection"
 msgstr "Mulohaza"
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Refresh"
 msgstr ""
 
@@ -14390,10 +14764,23 @@ msgstr "Eslatish sanasi"
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/career/offers.tsx
+#: src/features/jobs/format.ts
 #: src/features/portfolio/location/location-fields.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Remote"
 msgstr "Masofaviy"
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter"
+msgid "Remote anywhere"
+msgstr ""
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/search-bar.tsx
+msgctxt "Job search filter"
+msgid "Remote in this country"
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Remote, Hybrid, a city…"
@@ -14445,10 +14832,6 @@ msgstr ""
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Remove {value}"
 msgstr "{value} ni olib tashlang"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Remove connection"
-msgstr "Ulanishni olib tashlang"
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Remove field"
@@ -14779,6 +15162,7 @@ msgid "Requirements"
 msgstr "Talablar"
 
 #: src/features/career/workspace/fit.tsx
+#: src/features/jobs/listing-fit.tsx
 msgid "Requirements and your evidence"
 msgstr "Talablar va dalillaringiz"
 
@@ -14849,6 +15233,10 @@ msgstr "{0} versiyasi qayta tiklandi. Sizning oldingi holatingiz \"Qayta tiklash
 #: src/features/career/knowledge/stories.tsx
 msgid "Result"
 msgstr "Natija"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Result pages kept"
+msgstr ""
 
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Results as numbers, such as +35% conversion"
@@ -15176,6 +15564,7 @@ msgstr "Ayni hozir"
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/career/schedule-sheet.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "Lavozim"
@@ -15194,9 +15583,9 @@ msgstr "Lavozim / nom"
 msgid "Role of person {0}"
 msgstr "{0}-shaxs lavozimi"
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Role, company or location"
-msgstr "Rol, kompaniya yoki joy"
+#: src/features/jobs/search-bar.tsx
+msgid "Role or keywords"
+msgstr ""
 
 #: src/features/portfolio/works/work-document.tsx
 msgid "Role, year, tags and link"
@@ -15209,10 +15598,6 @@ msgstr "Lavozimlar"
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Roles you're looking for"
 msgstr ""
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Roles, places and companies. Starts from your preferences."
-msgstr "Lavozimlar, joylar va kompaniyalar. Afzalliklaringizdan boshlanadi."
 
 #: src/libs/locale.ts
 msgid "Romanian"
@@ -15254,6 +15639,7 @@ msgid "Run again"
 msgstr "Qayta ishga tushirish"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "Running"
 msgstr ""
 
@@ -15335,6 +15721,7 @@ msgid "Save"
 msgstr "Saqlash"
 
 #: src/features/applications/components/add-application-dialog.tsx
+#: src/features/jobs/jobs-page.tsx
 msgid "Save a job"
 msgstr "Ishni saqlang"
 
@@ -15367,10 +15754,6 @@ msgstr "Ishga ariza sifatida saqlash…"
 msgid "Save changes"
 msgstr "O'zgarishlarni saqlash"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Save connection"
-msgstr "Ulanishni saqlang"
-
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Save contact"
@@ -15379,10 +15762,6 @@ msgstr ""
 #: src/features/career/knowledge/facts.tsx
 msgid "Save correction"
 msgstr "Tuzatishni saqlash"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Save first, then test search and reading. No test runs automatically."
-msgstr "Avval saqlang, keyin qidirish va o'qishni sinab ko'ring. Hech qanday sinov avtomatik ravishda bajarilmaydi."
 
 #: src/features/extension/install-links.tsx
 msgid "Save in one click with the browser extension"
@@ -15634,23 +16013,20 @@ msgstr ""
 msgid "Screening"
 msgstr "Skrining"
 
-#: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/features/jobs/admin/costs.ts
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Qidiruv"
 
+#: src/features/jobs/search-bar.tsx
+msgctxt "Button that runs a job search"
+msgid "Search"
+msgstr ""
+
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Search again"
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and enhanced reading"
-msgstr "Qidiruv va kengaytirilgan o'qish"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and reading are set up for everyone here. Ask your administrator about changes."
-msgstr "Qidiruv va o'qish bu erda hamma uchun sozlangan. O'zgarishlar haqida administratoringizdan so'rang."
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search applications"
@@ -15669,6 +16045,10 @@ msgstr ""
 msgid "Search covers titles, tags and linked applications."
 msgstr "Qidiruv sarlavhalar, teglar va bog'langan arizalarni qamrab oladi."
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Search current openings from company careers sites and job boards, then track the ones you like."
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search documents"
 msgstr "Hujjatlarni qidirish"
@@ -15686,10 +16066,6 @@ msgstr ""
 msgid "Search facts"
 msgstr "Faktlarni qidirish"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search failed"
-msgstr "Qidiruv amalga oshmadi"
-
 #. Accessible label for icon picker search input
 #. Placeholder text in icon picker search input
 #: src/components/input/icon-picker-grid.tsx
@@ -15700,13 +16076,9 @@ msgstr "Ikon qidiring"
 msgid "Search for…"
 msgstr "… ni qidiring"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
-msgstr "Arizalar va yordamchi orqali qidiring hamda o'rnatilgan o'quvchi o'qiy olmaydigan sahifalarni o'qing. Bitta xizmat ikkalasini ham qamrab oladi."
-
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Search job postings"
-msgstr "Ish e'lonlarini qidirish"
+#: src/features/jobs/search-bar.tsx
+msgid "Search jobs"
+msgstr ""
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search reads the role, company, location, contacts and tags."
@@ -15728,21 +16100,13 @@ msgstr ""
 msgid "Search the web"
 msgstr ""
 
+#: src/features/assistant/tool-approvals.tsx
+msgid "Search the web for this exact query?"
+msgstr ""
+
 #: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Vaqt mintaqalarini qidirish"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search, and reading with {connectedProvider}."
-msgstr "Qidiruv serveringiz qidiruvi va {connectedProvider} bilan oʻqish bilan sinovdan oʻtkazildi."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search. Links are read with the built-in reader."
-msgstr "Qidiruv serveringiz qidiruvi bilan sinovdan o'tkazildi. Havolalar o'rnatilgan o'quvchi bilan o'qiladi."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search works"
-msgstr "Qidiruv ishlari"
 
 #: src/components/ui/combobox.tsx
 msgid "Search..."
@@ -15758,22 +16122,6 @@ msgstr "… ni qidiring"
 #: src/features/assistant/conversation.tsx
 msgid "Searched the web"
 msgstr "Internetni qidirdi"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Qaysi AI provayderidan foydalansangiz, {connectedProvider} yordamida sahifalarni qidiradi va o‘qiydi."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads links with the built-in reader, whichever AI provider you use."
-msgstr "Qaysi AI provayderidan foydalansangiz, serveringiz qidiruvi bilan qidiradi va o'rnatilgan o'quvchi bilan havolalarni o'qiydi."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Qaysi AI provayderidan foydalansangiz, serveringiz qidiruvi bilan qidiradi va sahifalarni {connectedProvider} bilan o‘qiydi."
-
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Searching job postings…"
-msgstr "Ish e'lonlari qidirilmoqda…"
 
 #: src/features/career/coach-chat.tsx
 msgid "Searching the web"
@@ -15833,6 +16181,7 @@ msgid "See how many people visited, and read what they sent through your contact
 msgstr ""
 
 #: src/features/billing/plan-dialog.tsx
+#: src/features/jobs/jobs-page.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "See plans"
@@ -15962,10 +16311,6 @@ msgstr "Tiklash havolasini yuborish"
 msgid "Send the resume itself rather than a portfolio wrapper."
 msgstr "Portfolio qobigʻi oʻrniga rezyumening oʻzini yuboring."
 
-#: src/features/assistant/tool-approvals.tsx
-msgid "Send this exact query to your web search provider?"
-msgstr ""
-
 #: src/features/homepage/testimonials.tsx
 msgid "Sending a link instead of a PDF means recruiters always see the latest version."
 msgstr ""
@@ -15991,6 +16336,11 @@ msgstr ""
 msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
 msgstr ""
 
+#. placeholder {0}: provider.label
+#: src/features/jobs/listing-fit.tsx
+msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
+msgstr ""
+
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and your Profile (details, career, and the facts and stories that are switched on) to {connection}."
 msgstr ""
@@ -16004,6 +16354,11 @@ msgstr "Rezyume matnini faqat kalitingiz bilan {0} · {1} manziliga yuboradi."
 #. placeholder {0}: provider.label
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Sends your resume's text only to {0}."
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Senior"
 msgstr ""
 
 #: src/features/homepage/features.tsx
@@ -16036,6 +16391,10 @@ msgstr ""
 #: src/libs/locale.ts
 msgid "Serbian"
 msgstr "Serb tili"
+
+#: src/features/jobs/admin/costs.ts
+msgid "Serper (web search)"
+msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
@@ -16075,12 +16434,8 @@ msgid "Set to end at the period end"
 msgstr ""
 
 #: src/features/career/today.tsx
-msgid "Set up discovery"
-msgstr "Qidiruvni sozlash"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Set up web search in Settings"
-msgstr "Sozlamalarda veb-qidiruvni sozlang"
+msgid "Set up a job alert"
+msgstr ""
 
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Set up your authenticator app"
@@ -16545,6 +16900,7 @@ msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/resume.tsx
+#: src/features/jobs/listing-sheet.tsx
 #: src/features/portfolio/page-text.ts
 #: src/libs/resume/section.tsx
 msgid "Skills"
@@ -16738,9 +17094,17 @@ msgstr "Ispan tili"
 msgid "Speak"
 msgstr "Gapirish"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Speed is for calls that reached the provider; 95% of them were at least this fast."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Spell the month, as in \"Mar 2022\"."
 msgstr "Oyni \"Mar 2022\" kabi harflar bilan yozing."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Spent today"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "spoken"
@@ -17049,6 +17413,10 @@ msgstr ""
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "Bu zaxira kodlarni xavfsiz joyda saqlang. Qurilmangizni yo'qotsangiz, har biri bilan bir marta kirish mumkin."
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Stored data"
+msgstr ""
 
 #: src/features/assistant/provider-setup.tsx
 msgid "Stored encrypted and tested right away."
@@ -17369,6 +17737,10 @@ msgstr ""
 msgid "Tailor my resume to the Northwind posting."
 msgstr ""
 
+#: src/features/jobs/listing-card.tsx
+msgid "Tailor resume"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/assistant-panel.tsx
 msgid "Tailor to the {0} posting"
@@ -17527,18 +17899,6 @@ msgstr ""
 msgid "Test"
 msgstr "Sinov"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Test connection"
-msgstr "Sinov ulanishi"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Test search"
-msgstr "Qidiruv funksiyasini sinab ko'ring"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Tested with {connectedProvider}. Only this service was tested."
-msgstr "{connectedProvider} bilan sinovdan o'tgan. Faqatgina ushbu xizmat sinovdan o'tkazildi."
-
 #: src/features/homepage/ui.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Testimonials"
@@ -17548,22 +17908,10 @@ msgstr ""
 msgid "Testimonials layout"
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing search and reading with {connectedProvider}…"
-msgstr "{connectedProvider} yordamida qidiruv va oʻqish sinovdan oʻtkazilmoqda…"
-
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Testing the connection…"
 msgstr "Ulanish tekshirilmoqda…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search, and reading with {connectedProvider}…"
-msgstr "Qidiruv xizmati serveringizda va veb-sahifani {connectedProvider} yordamida oʻqish sinovdan oʻtkazilmoqda…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search…"
-msgstr "Qidiruv xizmati serveringizda sinovdan o'tkazilmoqda…"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Testing…"
@@ -17656,6 +18004,10 @@ msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "Thank you. Your report was sent to the Rezumi team."
+msgstr ""
+
+#: src/features/jobs/use-listing-actions.ts
+msgid "That didn't save. Try again."
 msgstr ""
 
 #: src/features/portfolio/admin/review-page.tsx
@@ -17787,9 +18139,9 @@ msgstr ""
 msgid "The brief"
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "The built-in reader remains active."
-msgstr "O'rnatilgan o'quvchi faol bo'lib qoladi."
+#: src/features/jobs/admin/costs-page.tsx
+msgid "The call statistics couldn't be read. Try Refresh in a moment."
+msgstr ""
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -17864,6 +18216,10 @@ msgstr "Nusxa ish uchun ariza bilan bog'langan, shuning uchun Check va yordamchi
 
 #: src/dialogs/resume/template/data.ts
 msgid "The creative page: a block of the accent anchors the top corner, framing your portrait, beside an oversized name; two columns follow."
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "The description couldn't be loaded."
 msgstr ""
 
 #. Story outline heading
@@ -17999,6 +18355,7 @@ msgid "The numbers couldn't be loaded."
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/jobs/admin/costs-page.tsx
 msgid "The numbers couldn't load."
 msgstr ""
 
@@ -18168,6 +18525,10 @@ msgstr "Provayder javob bermadi. Kalitni, modelni va URL bazasini tekshiring."
 msgid "The provider didn't share an email address, which is required. Allow email access when the provider asks, or use another sign-in method."
 msgstr "Provayder majburiy bo'lgan email manzilini bermadi. Provayder so'raganda email manziliga ruxsat bering yoki boshqa kirish usulidan foydalaning."
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "The provider has no description for this job. The original posting has the details."
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "The provider rejected this sign-in attempt. Try again."
 msgstr "Provayder bu kirish urinishini rad etdi. Qayta urinib ko'ring."
@@ -18277,22 +18638,6 @@ msgstr ""
 msgid "The server couldn't save your changes. Saving tries again by itself."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "The service didn't respond in time. Try again."
-msgstr "Xizmat o'z vaqtida javob bermadi. Qayta urinib ko'ring."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service is unavailable or doesn't support this. Try again later."
-msgstr "Xizmat mavjud emas yoki buni qo'llab-quvvatlamaydi. Keyinroq qayta urinib ko'ring."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service rejected the API key. Check the key and save it again."
-msgstr "Xizmat API kalitini rad etdi. Kalitni tekshiring va qayta saqlang."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service's quota is used up. Check your plan with the service, or try again later."
-msgstr "Xizmat kvotasi tugadi. Xizmatdagi tarif rejangizni tekshiring yoki keyinroq qayta urinib ko'ring."
-
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "The solution"
@@ -18329,6 +18674,10 @@ msgstr "Birinchi sahifaning yuqori qismi ismga oʻxshamaydi."
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "The trade-offs you made, and why."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "The treg balance is below one day's budget. Top it up (or turn on auto top-up) in treg's dashboard under Team → Billing; an empty balance stops every search."
 msgstr ""
 
 #: src/features/portfolio/works/work-document.tsx
@@ -18390,6 +18739,14 @@ msgstr ""
 
 #: src/features/billing/receipt.tsx
 msgid "There's no receipt here: this payment isn't a paid QRIS plan."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "There's no treg token on this server, so nobody can search for jobs."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "These are results saved earlier. Fresh ones couldn't be loaded just now."
 msgstr ""
 
 #: src/features/career/workspace/apply.tsx
@@ -18639,6 +18996,10 @@ msgstr ""
 msgid "This isn't available for your account."
 msgstr ""
 
+#: src/features/jobs/use-listing-actions.ts
+msgid "This job couldn't be tracked. Try again."
+msgstr ""
+
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "This letter and “{resumeName}” as two PDFs, named to match."
 msgstr "Bu harf va “{resumeName}” ikkita PDFs sifatida, mos kelishi uchun nomlangan."
@@ -18662,6 +19023,10 @@ msgstr ""
 #: src/features/portfolio/blocks/add-media-block.tsx
 #: src/features/portfolio/blocks/embed-block.tsx
 msgid "This link isn't from a service we can embed. Use a Link block instead."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "This list can't be continued. Search again to see more jobs."
 msgstr ""
 
 #: src/features/ats-checker/report/report-view.tsx
@@ -19079,6 +19444,14 @@ msgstr "Bugun {time}"
 msgid "Today, {hour}"
 msgstr "Bugun, {hour}"
 
+#: src/features/billing/plan.ts
+msgid "Today's job searches are used up"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Today's spending passed 80% of the daily budget. Past the budget, people get saved results only until midnight UTC. Raise JOB_SEARCH_DAILY_BUDGET_USD if the use is real."
+msgstr ""
+
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toggle sidebar"
 msgstr ""
@@ -19103,12 +19476,12 @@ msgstr ""
 msgid "Too many requests in a short time. Wait a minute, then try again."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Too many requests. Try again later."
-msgstr "Juda koʻp soʻrovlar. Keyinroq qayta urinib ko‘ring."
-
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Too many saves in a short time. Saving tries again in a moment."
+msgstr ""
+
+#: src/features/jobs/jobs-page.tsx
+msgid "Too many searches in a short time. Wait a minute, then try again."
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -19165,7 +19538,9 @@ msgstr ""
 msgid "Totals aren't added up on purpose."
 msgstr ""
 
+#. Save a job listing to the person's applications
 #: src/features/homepage/features.tsx
+#: src/features/jobs/listing-card.tsx
 msgid "Track"
 msgstr ""
 
@@ -19177,9 +19552,29 @@ msgstr "Ariza topshirayotgan ishni kuzating va yuborgan rezyumeni bog'lang."
 msgid "Track in Applications"
 msgstr "Arizalarda kuzatish"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Track this job to add evidence and questions in its workspace. The check goes with it."
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Track your first job"
 msgstr "Birinchi ishingizni kuzatib boring"
+
+#. A job listing saved to the person's applications; links to it
+#: src/features/jobs/listing-card.tsx
+msgid "Tracked"
+msgstr ""
+
+#. Where a saved job description came from: a listing tracked from Rezumi's Jobs page
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Tracked from Jobs. The description is the job data provider's copy; the original posting may have changed since."
+msgstr ""
+
+#. placeholder {0}: listing.title
+#. placeholder {1}: listing.company.name
+#: src/features/jobs/use-listing-actions.ts
+msgid "Tracking {0} at {1}"
+msgstr ""
 
 #: src/features/portfolio/admin/labels.ts
 msgid "Trademark or copyright"
@@ -19224,6 +19619,32 @@ msgstr "Chiqindi"
 msgid "Trash is empty"
 msgstr "Chiqindi bo'sh"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg balance"
+msgstr ""
+
+#. placeholder {0}: formatUsd(treg.totalMicro)
+#. placeholder {1}: report.days
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg charged {0} in {1} days"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg didn't answer; try Refresh"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg didn't answer. Try Refresh in a moment."
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "treg ledger"
+msgstr ""
+
+#: src/features/jobs/admin/costs.ts
+msgid "treg web search"
+msgstr ""
+
 #: src/features/billing/admin/labels.ts
 msgid "Trial"
 msgstr ""
@@ -19263,6 +19684,10 @@ msgstr "{0}-ni sinab ko'ring"
 msgid "Try {name} free"
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "Try a longer posting window, fewer filters or other words. For local job boards, save jobs with the browser extension."
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Try a sample"
 msgstr "Namunani sinab ko'ring"
@@ -19276,6 +19701,8 @@ msgstr "Namunani sinab ko'ring"
 #: src/features/career/workspace/practise.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/features/documents/library-error.tsx
+#: src/features/jobs/jobs-page.tsx
+#: src/features/jobs/listing-sheet.tsx
 #: src/features/portfolio/editor/chunk-boundary.tsx
 #: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/location/location-fields.tsx
@@ -19285,7 +19712,6 @@ msgstr "Namunani sinab ko'ring"
 #: src/features/resume/editor/write/improve.tsx
 #: src/features/resume/preview/preview.browser.tsx
 #: src/features/resume/share/download-tab.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/features/settings/integrations/ai-provider-load-state.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Try again"
@@ -19490,6 +19916,7 @@ msgstr "Havolalar tagiga chizish"
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/jobs/use-listing-actions.ts
 #: src/features/portfolio/ai/apply.ts
 #: src/features/portfolio/assistant/changes.tsx
 #: src/features/portfolio/blocks/block-list.tsx
@@ -19571,6 +19998,10 @@ msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-messages.tsx
 msgid "Unread:"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Untagged (by hand, or from another app on this treg team)"
 msgstr ""
 
 #: src/features/profile/fill.tsx
@@ -19692,6 +20123,10 @@ msgstr "Yangilangan"
 msgid "Updated {done} of {total}. Locked documents, and letters for public links, were skipped."
 msgstr "{total} tadan {done} tasi yangilandi. Qulflangan hujjatlar va umumiy havolalar uchun xatlar o‘tkazib yuborildi."
 
+#: src/features/jobs/jobs-page.tsx
+msgid "updated {updated}"
+msgstr ""
+
 #: src/features/resume/builder/draft.ts
 msgid "Updated from your Profile."
 msgstr ""
@@ -19714,6 +20149,12 @@ msgstr ""
 
 #: src/features/billing/purchase.ts
 msgid "Upgrade, {days} days, QRIS"
+msgstr ""
+
+#. placeholder {0}: upkeep.day
+#. placeholder {1}: integer(upkeep.closed)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Upkeep {0} · {1} closed"
 msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -19889,10 +20330,6 @@ msgstr "Faqat kichik harflar, raqamlar, nuqtalar, defis va pastki chiziqlardan f
 msgid "Use plain headings such as \"Experience\", \"Education\" and \"Skills\"."
 msgstr "\"Experience\", \"Education\" va \"Skills\" kabi oddiy sarlavhalardan foydalaning."
 
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Use posting"
-msgstr "Ish e'lonidan foydalaning"
-
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Use Profile's"
 msgstr ""
@@ -19958,6 +20395,10 @@ msgstr "foydalanilgan: {used}"
 msgid "Used by six teams"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Used for"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Used in coaching"
 msgstr "Murabbiylikda foydalaniladi"
@@ -19969,10 +20410,6 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Vakansiya va takliflarni tekshirish uchun ishlatiladi. Har biri raqam, shuning uchun murabbiy taxmin qilmasdan solishtira oladi."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Used when {connectedProvider} can't read a page. No account needed."
-msgstr "{connectedProvider} sahifani o‘qiy olmasa ishlatiladi. Hisob kerak emas."
 
 #: src/features/homepage/resume.tsx
 msgid "User research"
@@ -19996,14 +20433,6 @@ msgstr "Sizning rezyumeingizdagi faktlardan foydalanadi"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Uses the linked application"
 msgstr "Bog'langan arizadan foydalanadi"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Uses the web search service set up in Settings. Results wait in Today for your review; applications and documents are never created for you."
-msgstr "Sozlamalarda sozlangan veb-qidiruv xizmatidan foydalanadi. Natijalar Bugun bo'limida ko'rib chiqishingizni kutadi; arizalar va hujjatlar hech qachon siz uchun yaratilmaydi."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
-msgstr "Qo'llab-quvvatlanadigan joylarda AI provayderingizning shaxsiy veb-qidiruvidan foydalanadi va o'rnatilgan o'quvchi bilan havolalarni o'qiydi."
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Using your Profile's version."
@@ -20126,6 +20555,14 @@ msgstr "Rezyume uchun juda kam soʻz tiklandi."
 msgid "Very little text was recovered for this many pages."
 msgstr "Shuncha koʻp sahifa uchun juda kam matn tiklandi."
 
+#: src/features/jobs/format.ts
+msgid "via {name}"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgid "via the company's careers site"
+msgstr ""
+
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
 msgid "Video"
@@ -20164,7 +20601,10 @@ msgstr "Ko‘rish"
 msgid "View application"
 msgstr "Ishga arizani ko'rish"
 
-#: src/features/applications/components/add-application-dialog.tsx
+#: src/features/jobs/listing-card.tsx
+msgid "View original"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "View posting"
@@ -20200,6 +20640,11 @@ msgstr ""
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "ko'rishlar · 30 kun"
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/listing-card.tsx
+msgid "Visa sponsorship"
+msgstr ""
 
 #: src/features/homepage/portfolio.tsx
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
@@ -20375,11 +20820,6 @@ msgstr ""
 msgid "We've emailed you the receipt. We'll remind you 3 days before the plan ends."
 msgstr ""
 
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/web-access.tsx
-msgid "Web access"
-msgstr "Internetga kirish"
-
 #: src/features/resume/share/share-panel.tsx
 msgid "Web page"
 msgstr ""
@@ -20510,6 +20950,10 @@ msgstr ""
 msgid "What did you say, as close as you remember?"
 msgstr "Eslaganingizcha aniq, nima deb javob berdingiz?"
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "What each provider call cost, as Rezumi recorded it."
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "What formats can I download?"
 msgstr "Qanday formatlarni yuklab olishim mumkin?"
@@ -20590,6 +21034,10 @@ msgstr "Muvaffaqiyat qanday ko'rinishi, qaysi muammo eng muhimligi va keyingi qa
 msgid "What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded."
 msgstr "Siz yuborgan PDF fayl darajasidagi tekshiruv nimani topdi. U ushbu varaqda ishlaydi; hech narsa yuklanmagan."
 
+#: src/features/jobs/listing-sheet.tsx
+msgid "What they ask for"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "What they asked you to prepare"
 msgstr "Sizdan nimani tayyorlash so'ralgan"
@@ -20601,6 +21049,10 @@ msgstr ""
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "What to do"
 msgstr "Nima qilsa bo'ladi"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "What treg charged in {days} days, by what the calls were for."
+msgstr ""
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "What was asked for, in a line or two."
@@ -20858,6 +21310,10 @@ msgstr "Matn ajratib olinganda soʻzlar bir-biriga qoʻshilib ketadi."
 msgid "Work"
 msgstr ""
 
+#: src/features/jobs/search-bar.tsx
+msgid "Work arrangement"
+msgstr ""
+
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Work layout"
 msgstr ""
@@ -20899,6 +21355,15 @@ msgstr "So'rashga arziydi"
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking {0}"
 msgstr "So'rashga arziydi: {0}"
+
+#. placeholder {0}: fit.ask.person
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking {0}:"
+msgstr ""
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking:"
+msgstr ""
 
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
@@ -21139,6 +21604,10 @@ msgstr "Endi bu kirish kaliti bilan kira olmaysiz."
 msgid "You can preview every template. {free} are included, and documents that already use another template keep it."
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "You can still save jobs from a link, from pasted text, or with the browser extension."
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
 msgstr "Kirishni u tugamasdan bekor qildingiz. Tayyor bo'lganingizda qayta urinib ko'ring."
@@ -21215,6 +21684,10 @@ msgstr "Siz mehmon hisobidan foydalanyapsiz"
 msgid "You've changed things since. Use Undo at the top of the editor."
 msgstr ""
 
+#: src/features/jobs/jobs-page.tsx
+msgid "You've reached today's search limit. Results you already opened stay available. Try again tomorrow."
+msgstr ""
+
 #: src/features/profile/sources/messages.ts
 msgid "You've used this as often as you can today. Try again tomorrow."
 msgstr ""
@@ -21259,6 +21732,7 @@ msgstr "AI ulanishingiz"
 
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/career/hooks.ts
+#: src/features/jobs/listing-fit.tsx
 msgid "Your AI connection"
 msgstr "AI ulanishingiz"
 
@@ -21435,6 +21909,10 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "Sizning faylingiz"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Your fit"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Your focus"
@@ -21656,6 +22134,10 @@ msgstr ""
 msgid "Your plan changes at your next renewal."
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "Your plan includes {max} job searches a day. Results you already opened stay available, and searches start again at midnight."
+msgstr ""
+
 #. placeholder {0}: getPlanName(target.planId)
 #: src/features/billing/purchase-dialog.tsx
 msgid "Your plan is now {0}."
@@ -21793,8 +22275,20 @@ msgstr ""
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr ""
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Your Profile changed since this check. Checking again uses AI again."
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile doesn't mention these skills yet. Add the ones you have to your Profile, and matches show here."
+msgstr ""
+
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your Profile has no projects yet. Add them in Profile, or start an empty work."
+msgstr ""
+
+#: src/features/jobs/listing-sheet.tsx
+msgid "Your Profile mentions {matched} of the {total} main skills this job names. A word match, without AI: check your fit for a closer look."
 msgstr ""
 
 #: src/features/profile/store.ts
@@ -21865,10 +22359,6 @@ msgstr ""
 #: src/libs/error-message.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Tanlangan shrift ba’zi belgilarni ko‘rsata olmaydi. Ular “?” bo‘lib ko‘rinadi. Dizayn bo‘limida ularni qo‘llab-quvvatlaydigan shriftni tanlang."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
-msgstr "Sizning serveringiz Arizalar bo'limida va yordamchi uchun veb-qidiruvni ta'minlaydi. O'rnatilgan o'quvchi o'qiy olmaydigan veb-sahifalarni o'qish uchun xizmatni ulang."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your source resume is in Trash"

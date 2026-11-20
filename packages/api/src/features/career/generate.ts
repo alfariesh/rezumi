@@ -17,7 +17,7 @@ const shape = (kind: SavedItemData["kind"]) =>
 const factIds = z.array(z.string()).max(20).catch([]);
 
 /** What the model returns per task: the saved shape minus what the user supplied, plus the facts it used. */
-const outputs = {
+export const outputs = {
 	fit: shape("fit").omit({ kind: true }).extend({ factIds }),
 	briefing: shape("briefing")
 		.omit({ kind: true })
@@ -35,7 +35,7 @@ const outputs = {
 	}),
 } satisfies Record<GenerateTask["task"], z.ZodType>;
 
-const SYSTEM = `You are a career coach writing one piece of structured work for a job application. Reply with one JSON object only, matching the JSON schema given, in the language named by "locale".
+export const SYSTEM = `You are a career coach writing one piece of structured work for a job application. Reply with one JSON object only, matching the JSON schema given, in the language named by "locale".
 
 Rules:
 - Only the user's facts, stories, documents and Profile (their own record of their details and career history, in "profile") support claims about their experience. Never invent metrics, dates, ownership or results. Leave unknown things unknown.
@@ -45,7 +45,7 @@ Rules:
 - Cite only fact and story IDs that appear in the context. Context may be excerpted: describe missing support as absent from the supplied context, never as missing from the person’s entire history.
 - Write like a calm coach, for a screen read at a glance: headlines and titles up to 10 words; every other text one or two short sentences, under 30 words; a suggested reply under 90 words. Plain words, no jargon.`;
 
-const TASKS: Record<GenerateTask["task"], string> = {
+export const TASKS: Record<GenerateTask["task"], string> = {
 	fit: `Check the posting's requirements against the user's switched-on facts. For each requirement: origin "posting" if stated, "inferred" if read between the lines; status "supported" when a fact states it directly, "partial" when related evidence exists but a part is missing, "missing" when nothing in the Profile mentions it. Evidence is one sentence quoting or paraphrasing the facts, or saying what the Profile doesn't show yet. headline is one plain sentence verdict (for example "A relevant role, with one question to resolve"); summary explains how to read the table. checks compare the role with preferences.minBase, preferences.maxOfficeDays and preferences.locations: met true, false, or null when the posting doesn't say. ask is the single most useful question for the interviewer or recruiter (person is their first name, or the role if unknown), or null.`,
 	briefing: `Plan the user's preparation for the selected interview round. plan is about 30 minutes in 3–5 steps; action is "story" when an existing story covers it (set storyId), "draft-story" when the interviewer asked for a story the Profile doesn't have, "questions" for questions to ask, "practise" for rehearsing aloud. questions are what to ask the interviewer; origin says where each came from (for example "Maya's request", "Briefing"). focus, opening (a first-person opening line under 60 words), stories (two one-line story summaries) and honesty (what isn't evidenced yet and how to handle it) make the 10-minute briefing. storyIds are the stories to bring. missingStory names a story the interviewer asked for that the Profile lacks, or null. practiceQuestions are 3 likely questions for this round and audience.`,
 	practice: `Give feedback on the user's practice answer to the question. When input.storyId is present, focus on that selected story and its supporting facts in the supplied context. title is a one-line verdict; works is what the answer does well, citing their words; strengthen is the single most useful improvement; opening is a stronger first-person opening built only from their facts and answer; note is a 2–3 word result for a list (for example "Contribution unclear"). A typed answer can't show pace or confidence; don't comment on them.`,

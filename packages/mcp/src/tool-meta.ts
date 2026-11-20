@@ -11,10 +11,18 @@ import { resumeDto } from "@rezumi/api/dto/resume";
 import { aiSourceInput } from "@rezumi/api/features/billing/ai-source";
 import { applicationStatusSchema, interviewDetailsSchema, interviewKindSchema } from "@rezumi/schema/applications/data";
 import { coverLetterDocumentSchema } from "@rezumi/schema/cover-letter/data";
+import {
+	JOB_SEARCH_PAGE_SIZE,
+	jobListingCardSchema,
+	jobSearchCursorSchema,
+	jobSearchInputSchema,
+	jobSearchQuotaSchema,
+} from "@rezumi/schema/jobs/search";
 import { portfolioEditsInputSchema } from "@rezumi/schema/portfolio/edits";
 import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import { portfolioThemeSchema } from "@rezumi/schema/portfolio/themes";
 import {
+	READ_EXTERNAL,
 	READ_IDEMPOTENT,
 	WRITE_DESTRUCTIVE_EXTERNAL,
 	WRITE_EXTERNAL,
@@ -27,6 +35,11 @@ import { MCP_TOOL_NAME as T } from "./mcp-tool-names";
 
 // Contracts remain derived from the allowlisted API procedures in parity.ts.
 export const PARITY_TOOL_DESCRIPTIONS: Record<string, string> = {
+	"jobs.listing":
+		"Read one job listing from `search_jobs` with its full description and the link to the original posting (`postingUrl`), which you always show the user. A closed listing has closedAt set. Doesn't count toward the day's searches.",
+	"jobs.hide": "Hide a job listing from the user's search results, or show it again (`hidden: false`).",
+	"jobs.checkFit":
+		'Check the user\'s fit for a job listing with AI: each requirement against the facts and stories in their Profile, and the job against their preferences. With `aiSource: "rezumi"` it costs 4 Rezumi AI credits, so ask first. Asking again while the Profile is unchanged gives the saved answer back without charging; `api_jobs_fit` reads it for free.',
 	"documents.list":
 		"List owned resumes and cover letters, optionally from Trash. Listing Trash also permanently purges documents older than 30 days and their owned files.",
 	"aiProviders.list":
@@ -67,12 +80,13 @@ export const PARITY_TOOL_DESCRIPTIONS: Record<string, string> = {
 		"Save parts of an application's workspace. Each key given replaces that whole key; keys left out keep their values.",
 	"career.trackOpportunity":
 		"Create an application at Saved from a discovered role, with its posting link and text and the preferences it matched.",
-	"career.schedules": "List the user's career discovery, interview preparation, and follow-up schedules.",
+	"career.schedules":
+		"List the user's career schedules: job alerts (kind discovery, with the job search they repeat), interview preparation, and follow-up reminders.",
 	"career.saveSchedule":
-		"Create a career schedule, or replace one by providing its id. Explicitly choose enabled and email preferences, nextRunAt, timezone, optional repeat interval, and any application, interview, or saved AI provider. Enabled schedules may later perform research or coaching and send configured notifications; saving does not run a job immediately.",
+		"Create a career schedule, or replace one by providing its id. Explicitly choose enabled and email preferences, nextRunAt, timezone, optional repeat interval, and any application, interview, or saved AI provider. A job alert (kind discovery) repeats a job search: pass search (query as a job title, optional country, location and filters, as in jobs.search) or just query as the role; left out on an update, the saved search stays. Each run adds only jobs that appeared since the last one to the opportunities for review. Turning on alerts beyond the plan's limit returns PLAN_LIMIT_REACHED. Enabled schedules may later perform research or coaching and send configured notifications; saving does not run a job immediately.",
 	"career.deleteSchedule": "Delete an owned career schedule and prevent its future scheduled runs.",
 	"career.opportunities":
-		"List discovered opportunities for review. Discovery results are suggestions; create a tracked application only when the user chooses one.",
+		"List roles found by job alerts for review, with the job listing each came from (pay, work arrangement, posting link). They are suggestions; create a tracked application only when the user chooses one.",
 	"career.dismissOpportunity": "Dismiss an owned discovered opportunity from the review queue.",
 	"career.notifications": "Read the user's career notifications and their read status.",
 	"career.markNotificationRead": "Mark an owned career notification as read.",
@@ -147,6 +161,9 @@ function wireInput<T extends z.ZodObject>(schema: T): T {
 }
 
 const messageOutput = z.object({ message: z.string() });
+
+/** Job listings one `search_jobs` call returns: the providers' terms rule out bulk export (`02-teknis.md` 13). */
+const MCP_JOB_LISTINGS_PER_CALL = 10;
 
 // Portfolios (Phase 14). The account has at most one, so these tools take no portfolio id.
 const portfolioImageOutput = z.object({
@@ -1035,5 +1052,82 @@ export const TOOL_META = withAnnotationTitles({
 			}),
 		),
 		annotations: READ_IDEMPOTENT,
+	},
+	[T.searchJobs]: {
+		title: "Search Jobs",
+		description: [
+			"Search current job listings by job title, place and filters, from Rezumi's own job providers (no setup needed).",
+			`Each listing has \`postingUrl\`, the original posting: always show it to the user. A page holds up to ${JOB_SEARCH_PAGE_SIZE} listings and one call returns at most ${MCP_JOB_LISTINGS_PER_CALL}.`,
+			"Each new search or further page counts toward the plan's job searches a day (`quota`); reading the rest of a page again the same day (`offset: nextOffset` with the same search and cursor) doesn't count again.",
+			"For the next page pass `cursor`. `stale` or `budgetLimited` mean older saved results were given; tell the user to try again later.",
+			`Read one listing's full description with \`api_jobs_listing\`; save one to the user's applications with \`${T.trackJob}\`.`,
+			"Don't run many searches to collect listings in bulk: that's against the providers' terms.",
+		].join("\n"),
+		outputSchema: toWireObjectSchema(
+			z.object({
+				listings: z.array(
+					jobListingCardSchema.extend({
+						trackedApplicationId: z
+							.string()
+							.nullable()
+							.describe("The user's application for this posting when it's tracked already."),
+						matchedSkills: z.array(z.string()).describe("Skills the listing names that the user's Profile mentions."),
+					}),
+				),
+				offset: z.number().int(),
+				nextOffset: z.number().int().nullable().describe("Pass as `offset` to read the rest of this page."),
+				cursor: z.string().nullable().describe("Pass as `cursor` for the next page; null on the last page."),
+				fromCache: z.boolean(),
+				stale: z.boolean(),
+				budgetLimited: z.boolean(),
+				quota: jobSearchQuotaSchema,
+			}),
+		),
+		inputSchema: wireInput(
+			z.strictObject({
+				...jobSearchInputSchema.omit({ cursor: true }).shape,
+				query: jobSearchInputSchema.shape.query.describe(
+					"A job title, such as 'product designer'. Titles match far better than skills or keywords.",
+				),
+				country: jobSearchInputSchema.shape.country.describe(
+					"ISO 3166-1 alpha-2 country, such as 'US' or 'DE'. Leave out to search everywhere. `api_jobs_defaults` suggests one from the user's preferences.",
+				),
+				location: jobSearchInputSchema.shape.location.describe("A city or area inside the country, such as 'Berlin'."),
+				remote: jobSearchInputSchema.shape.remote.describe(
+					"'only': remote jobs (in the country when one is given, else anywhere). 'exclude': no remote jobs.",
+				),
+				cursor: jobSearchCursorSchema.optional().describe("The `cursor` a previous call returned, for the next page."),
+				offset: z
+					.number()
+					.int()
+					.min(0)
+					.max(JOB_SEARCH_PAGE_SIZE - 1)
+					.default(0)
+					.describe("Listings of this page to skip; pass `nextOffset` from the previous call."),
+				limit: z
+					.number()
+					.int()
+					.min(1)
+					.max(MCP_JOB_LISTINGS_PER_CALL)
+					.default(MCP_JOB_LISTINGS_PER_CALL)
+					.describe(`Listings to return, at most ${MCP_JOB_LISTINGS_PER_CALL}.`),
+			}),
+		),
+		annotations: READ_EXTERNAL,
+	},
+	[T.trackJob]: {
+		title: "Track Job",
+		description: [
+			`Save a listing from \`${T.searchJobs}\` to the user's applications, in the Saved stage, with its role, company, place, listed pay, the provider's copy of the posting and the link to the original.`,
+			"A posting already saved gives back that application instead of a second one. A closed listing can't be tracked.",
+			`Read the application with \`${T.readApplication}\`.`,
+		].join("\n"),
+		outputSchema: z.object({ applicationId: z.string(), created: z.boolean(), url: z.url() }),
+		inputSchema: wireInput(
+			z.strictObject({
+				listingId: z.string().min(1).max(64).describe(`A listing's \`id\` from \`${T.searchJobs}\`.`),
+			}),
+		),
+		annotations: WRITE_IDEMPOTENT,
 	},
 } as const);

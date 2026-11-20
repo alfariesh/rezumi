@@ -168,6 +168,16 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 									)}
 								</>
 							)}
+							{application.postingClosedAt && (
+								<>
+									<span aria-hidden="true">·</span>
+									<span className="font-medium text-warning">
+										<Trans comment="The job posting of a tracked application was taken down by the employer">
+											Posting closed
+										</Trans>
+									</span>
+								</>
+							)}
 						</div>
 					</div>
 					<Dropdown>
@@ -608,6 +618,11 @@ function PostingDialog({ application, open, onOpenChange }: PostingDialogProps) 
 								) : application.postingSource.method === "extension" ? (
 									<Trans comment="Where a saved job description came from: the Rezumi browser extension read it from the page">
 										Saved from the browser extension
+									</Trans>
+								) : application.postingSource.method === "job-search" ? (
+									<Trans comment="Where a saved job description came from: a listing tracked from Rezumi's Jobs page">
+										Tracked from Jobs. The description is the job data provider's copy; the original posting may have
+										changed since.
 									</Trans>
 								) : (
 									<Trans>

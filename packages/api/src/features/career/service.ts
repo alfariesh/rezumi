@@ -23,6 +23,8 @@ import { generateId } from "@rezumi/utils/string";
 import { requestRunCancellation } from "../agent/cancellation";
 import { applicationService, recordSentResume } from "../applications/service";
 import { lockUser } from "../documents/ownership";
+import { readListing } from "../jobs/cache";
+import { trackListing } from "../jobs/track";
 import { readProfileContext } from "../profile/context";
 import { matchPosting } from "./matching";
 import { noticeText } from "./notices";
@@ -1038,7 +1040,23 @@ export const careerService = {
 			});
 		}),
 	/** Saves a discovered role to Applications at Saved, with the posting link and why it matched. */
-	trackOpportunity: (userId: string, id: string) => {
+	trackOpportunity: async (userId: string, id: string) => {
+		// A role from a job listing is tracked like the Jobs page tracks it: the same application for the same posting.
+		const [found] = await db
+			.select({ listingId: tables.careerOpportunity.listingId, tracked: tables.careerOpportunity.trackedApplicationId })
+			.from(tables.careerOpportunity)
+			.where(and(eq(tables.careerOpportunity.id, id), eq(tables.careerOpportunity.userId, userId)));
+		if (!found) throw new ORPCError("NOT_FOUND");
+		if (found.tracked) return { applicationId: found.tracked };
+		const listing = found.listingId ? await readListing(found.listingId) : undefined;
+		if (listing) {
+			const { applicationId } = await trackListing(userId, listing);
+			await db
+				.update(tables.careerOpportunity)
+				.set({ trackedApplicationId: applicationId })
+				.where(and(eq(tables.careerOpportunity.id, id), eq(tables.careerOpportunity.userId, userId)));
+			return { applicationId };
+		}
 		// The opportunity row is the lock: a double click or a second tab returns the same application.
 		return db.transaction(async (tx) => {
 			const [opportunity] = await tx

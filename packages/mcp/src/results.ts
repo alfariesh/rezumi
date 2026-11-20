@@ -6,8 +6,13 @@ import z from "zod";
 import { PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import { MCP_TOOL_NAME } from "./mcp-tool-names";
 
+/** Refusals with a 5xx status that still say something true and useful: job search being out of service for now. */
+const TOLD_SERVER_CODES = new Set(["JOBS_UNAVAILABLE", "JOBS_BUDGET_LIMITED"]);
+const toldError = (error: unknown): error is ORPCError<string, unknown> =>
+	error instanceof ORPCError && (error.status < 500 || TOLD_SERVER_CODES.has(error.code));
+
 function errorMessage(error: unknown): string {
-	if (error instanceof ORPCError && error.status < 500) return error.message;
+	if (toldError(error)) return error.message;
 	if (error instanceof z.ZodError) return "Invalid input. Check the tool schema.";
 	return "Unexpected failure. Retry; contact the administrator if it persists.";
 }
@@ -21,7 +26,7 @@ function errorMessage(error: unknown): string {
  * (`"Not Found"` for `NOT_FOUND`), and HTTP status never appears in it at all.
  */
 /** Which tools a failure came from, when their errors need their own hints (`NOT_FOUND` means no portfolio there). */
-export type ErrorDomain = "portfolio";
+export type ErrorDomain = "portfolio" | "jobs";
 
 /** Refusals of the portfolio procedures, which say what to do next for an agent. */
 function portfolioHint(code: string, inPortfolio: boolean): string | null {
@@ -58,6 +63,26 @@ function portfolioHint(code: string, inPortfolio: boolean): string | null {
 	}
 }
 
+/** Refusals of the job search tools. */
+function jobsHint(code: string): string | null {
+	switch (code) {
+		case "JOBS_UNAVAILABLE":
+			return "Job search can't be used on this server right now. Tell the user and don't retry soon.";
+		case "JOBS_BUDGET_LIMITED":
+			return "Job search reached today's limit on this server. Tell the user to try again tomorrow; don't retry today.";
+		case "PLAN_LIMIT_REACHED":
+			return "The user's job searches for today are used up (see `resetsAt` in the error data). Tell the user; reading pages already opened today still works, new searches don't.";
+		case "NOT_FOUND":
+			return `This listing isn't available anymore (closed or removed). Run \`${MCP_TOOL_NAME.searchJobs}\` again.`;
+		case "RATE_LIMIT_EXCEEDED":
+			return "Too many searches in a short time. Wait a minute before searching again.";
+		case "BAD_REQUEST":
+			return `This page can't be continued. Run \`${MCP_TOOL_NAME.searchJobs}\` again without \`cursor\`.`;
+		default:
+			return null;
+	}
+}
+
 function errorHint(error: unknown, domain?: ErrorDomain): string {
 	if (!(error instanceof ORPCError)) return "";
 
@@ -66,6 +91,8 @@ function errorHint(error: unknown, domain?: ErrorDomain): string {
 
 	const portfolio = portfolioHint(code, domain === "portfolio");
 	if (portfolio) return `\n\nHint: ${portfolio}`;
+	const jobs = domain === "jobs" ? jobsHint(code) : null;
+	if (jobs) return `\n\nHint: ${jobs}`;
 	if (code === "PLAN_LIMIT_REACHED" || code === "PLAN_FEATURE_REQUIRED")
 		return "\n\nHint: The account's plan doesn't allow this. Explain the limit to the user and suggest what the plan includes; don't retry it.";
 
@@ -103,8 +130,7 @@ export function withErrorHandling<T, Args extends unknown[]>(
 		try {
 			return await handler(params, ...args);
 		} catch (error) {
-			const reference =
-				(error instanceof ORPCError && error.status < 500) || error instanceof z.ZodError ? undefined : randomUUID();
+			const reference = toldError(error) || error instanceof z.ZodError ? undefined : randomUUID();
 			if (reference) console.error("MCP tool failure", { reference, operation: label });
 			return {
 				isError: true,

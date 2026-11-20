@@ -18,9 +18,7 @@ import {
 	Banner,
 	Button,
 	ChipInput,
-	ConfirmDialog,
 	EditorSheet,
-	ListRow,
 	Segmented,
 	SelectSheet,
 	Text,
@@ -53,13 +51,9 @@ export function AddApplicationSheet({ onClose }: AddApplicationSheetProps) {
 	const providers = useHasAIProvider();
 	const documentsOptions = orpc.documents.list.queryOptions({ input: { trashed: false } });
 	const documents = useQuery({ ...documentsOptions, queryKey: [...documentsOptions.queryKey, session.server] });
-	const webOptions = orpc.webAccess.status.queryOptions();
-	const web = useQuery({ ...webOptions, queryKey: [...webOptions.queryKey, session.server] });
 	const { create } = useApplicationMutations();
 	const [mode, setMode] = useState<"link" | "text">("link");
 	const [input, setInput] = useState("");
-	const [query, setQuery] = useState("");
-	const [results, setResults] = useState<RouterOutput["applications"]["ai"]["searchPostings"] | null>(null);
 	const [parsed, setParsed] = useState<ParsedPosting | null>(null);
 	const [company, setCompany] = useState("");
 	const [role, setRole] = useState("");
@@ -80,8 +74,7 @@ export function AddApplicationSheet({ onClose }: AddApplicationSheetProps) {
 	const [setup, setSetup] = useState(false);
 	const [review, setReview] = useState(false);
 	const [detailsOpen, setDetailsOpen] = useState(false);
-	const [confirmSearchExit, setConfirmSearchExit] = useState(false);
-	const [busy, setBusy] = useState<"read" | "fill" | "search" | "save" | null>(null);
+	const [busy, setBusy] = useState<"read" | "fill" | "save" | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const lock = useRef(false);
 	const active = useRef(true);
@@ -146,12 +139,6 @@ export function AddApplicationSheet({ onClose }: AddApplicationSheetProps) {
 			setLocation((value) => value || result.location);
 			setSalary((value) => value || result.salary);
 		});
-	const search = () =>
-		void run("search", async (signal) => {
-			setResults(null);
-			const result = await client.applications.ai.searchPostings({ query: query.trim() }, { signal });
-			if (current(signal)) setResults(result);
-		});
 	const changeInput = (value: string) => {
 		setInput(value);
 		setParsed(null);
@@ -198,7 +185,6 @@ export function AddApplicationSheet({ onClose }: AddApplicationSheetProps) {
 		});
 	const dirty = !!(
 		input ||
-		query ||
 		parsed ||
 		company ||
 		role ||
@@ -216,11 +202,6 @@ export function AddApplicationSheet({ onClose }: AddApplicationSheetProps) {
 		followUpNote ||
 		notes
 	);
-	const openSearchSettings = () => {
-		if (lock.current) return;
-		onClose();
-		router.push("/settings/ai-web-access");
-	};
 	const docs = documents.data ?? [];
 	return (
 		<>
@@ -234,7 +215,7 @@ export function AddApplicationSheet({ onClose }: AddApplicationSheetProps) {
 						{review ? (
 							<Button label={t`Save job`} fullWidth loading={busy === "save"} disabled={!ready} onPress={save} />
 						) : null}
-						{busy === "read" || busy === "search" || busy === "fill" ? (
+						{busy === "read" || busy === "fill" ? (
 							<Button label={t`Cancel request`} variant="ghost" onPress={() => controller.current?.abort()} />
 						) : null}
 					</>
@@ -322,54 +303,6 @@ export function AddApplicationSheet({ onClose }: AddApplicationSheetProps) {
 									setReview(true);
 								}}
 							/>
-							<Text variant="title">{t`Search job postings`}</Text>
-							<TextField
-								label={t`Role, company or location`}
-								value={query}
-								maxLength={500}
-								editable={!busy}
-								onChangeText={(value) => {
-									setQuery(value);
-									setResults(null);
-								}}
-							/>
-							<Text color="ink2">{t`Uses the web search service set up in Settings. Search results wait for your review.`}</Text>
-							{!web.data?.search && (
-								<Button
-									label={t`Set up web search`}
-									variant="link"
-									disabled={!!busy}
-									onPress={() => {
-										if (lock.current) return;
-										if (dirty) setConfirmSearchExit(true);
-										else openSearchSettings();
-									}}
-								/>
-							)}
-							<Button
-								label={t`Search`}
-								loading={busy === "search"}
-								disabled={!!busy || query.trim().length < 2 || !web.data?.search}
-								onPress={search}
-							/>
-							{results?.length === 0 && <Text>{t`No postings found. Try different keywords.`}</Text>}
-							{results?.map((result) => (
-								<ListRow
-									key={result.url}
-									title={result.title}
-									subtitle={`${result.description}\n${result.url}`}
-									disabled={!!busy}
-									accessibilityHint={t`Use posting link; review before saving`}
-									onPress={() => {
-										setMode("link");
-										setInput(result.url);
-										setSourceUrl(result.url);
-										setParsed(null);
-										setDescription("");
-										setResults(null);
-									}}
-								/>
-							))}
 						</>
 					) : (
 						<>
@@ -519,16 +452,6 @@ export function AddApplicationSheet({ onClose }: AddApplicationSheetProps) {
 					)}
 				</View>
 			</EditorSheet>
-			<ConfirmDialog
-				open={confirmSearchExit && !busy}
-				title={t`Discard changes?`}
-				message={t`Your unsaved job details will be discarded before opening web search settings.`}
-				confirmLabel={t`Discard changes`}
-				cancelLabel={t`Keep editing`}
-				destructive
-				onConfirm={openSearchSettings}
-				onCancel={() => setConfirmSearchExit(false)}
-			/>
 			<AIProviderSetupSheet open={setup} onClose={() => setSetup(false)} />
 		</>
 	);

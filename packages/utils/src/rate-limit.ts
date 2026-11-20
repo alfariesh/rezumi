@@ -58,6 +58,9 @@ export const rateLimitConfig = {
 		// Each pasted link reads another site; each approved preview picture is fetched from it once.
 		portfolioUnfurls: { maxRequests: 30, window: 60 * 60 * 1000 },
 		portfolioRemoteImages: { maxRequests: 30, window: 60 * 60 * 1000 },
+		// Job searches per account, against a burst of clicks; the daily quota is the plan's (jobSearchesPerDay).
+		// Wrangler's JOB_SEARCH_LIMITER has the same numbers.
+		jobSearch: { maxRequests: 10, window: 60 * 1000 },
 	},
 	// Public portfolio requests, where the caller has no account.
 	portfolioPublic: {

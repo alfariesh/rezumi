@@ -91,10 +91,10 @@ describe("assistant web tools", () => {
 		for (let i = 0; i < calls - 1; i++) await execute(tools, "read_page", { url: page.requestedUrl });
 		await execute(tools, "search_web", { query: "Company" });
 		await expect(async () => execute(tools, "read_page", { url: page.requestedUrl })).rejects.toThrow(
-			"Web access limit",
+			"Web search and reading limit",
 		);
 		await expect(async () => execute(tools, "search_web", { query: "Company follow-up" })).rejects.toThrow(
-			"Web access limit",
+			"Web search and reading limit",
 		);
 		expect(handlers.readPage).toHaveBeenCalledTimes(calls - 1);
 		expect(handlers.searchWeb).toHaveBeenCalledTimes(1);

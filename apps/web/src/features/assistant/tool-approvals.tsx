@@ -14,7 +14,7 @@ export function ToolApprovals({ message, disabled, onDecision }: ToolApprovalsPr
 		<div key={id} className="my-3 grid w-fit max-w-full gap-3 rounded-2xl rounded-ss-none bg-surface px-4 py-2.5">
 			<p className="text-sm font-medium">
 				{kind === "search" ? (
-					<Trans>Send this exact query to your web search provider?</Trans>
+					<Trans>Search the web for this exact query?</Trans>
 				) : (
 					<Trans>Save this story to your Profile?</Trans>
 				)}

@@ -50,6 +50,7 @@ const application: Application = {
 	id: "app-1",
 	company: "Example",
 	companyLogoUrl: null,
+	postingClosedAt: null,
 	role: "Engineer",
 	location: null,
 	salary: null,

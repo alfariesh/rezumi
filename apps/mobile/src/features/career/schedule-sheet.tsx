@@ -3,7 +3,6 @@ import type { RouterInput } from "@/api/client";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Platform, View } from "react-native";
 import { careerScheduleInputSchema } from "@rezumi/schema/career";
@@ -11,7 +10,6 @@ import { fromZonedDateTime } from "@rezumi/utils/timezone";
 import { client, useCareerAction, useCareerQueries, useCareerTime, useNow } from "./hooks";
 import { collectInterviews, nextCareerRun, prepareRunAt, rollForward, toZoned } from "./scheduling";
 import { EditorSheet, LoadState, SwitchRow } from "./shared";
-import { orpc } from "@/api/client";
 import { useFlags } from "@/api/flags";
 import { useSession } from "@/auth/session";
 import { AIProviderSetupSheet, useHasAIProvider } from "@/features/ai/providers";
@@ -38,19 +36,14 @@ export function ScheduleSheet(props: ScheduleSheetProps) {
 	const applications = useApplications();
 	const ai = useHasAIProvider();
 	const session = useSession();
-	const web = useQuery({
-		...orpc.webAccess.status.queryOptions(),
-		enabled: session.status === "signed-in",
-		queryKey: [...orpc.webAccess.status.key(), session.server],
-	});
 	const flags = useFlags();
-	const queries = [account.profile, career.profile, applications, web, flags];
+	const queries = [account.profile, career.profile, applications, flags];
 	const unavailable = queries.find((query) => query.isError || query.isPending);
 	return unavailable ? (
 		<Sheet open onClose={props.onClose} title={t`New schedule`} detents={[0.9]}>
 			<LoadState query={unavailable} />
 		</Sheet>
-	) : account.profile.data && career.profile.data && applications.data && web.data && flags.data ? (
+	) : account.profile.data && career.profile.data && applications.data && flags.data ? (
 		<ScheduleForm
 			{...props}
 			key={session.server}
@@ -58,7 +51,8 @@ export function ScheduleSheet(props: ScheduleSheetProps) {
 			locale={account.locale}
 			profile={career.profile.data}
 			applications={applications.data}
-			search={web.data.search}
+			// The server searches without setup now (treg); nothing to check first.
+			search
 			available={flags.data.careerSchedulingEnabled ?? false}
 			smtp={flags.data.smtpEnabled}
 			verified={account.profile.data.emailVerified}

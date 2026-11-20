@@ -190,7 +190,6 @@ export function NavigationCommandGroup() {
 						t`Language`,
 						t`Timezone`,
 						t`AI providers`,
-						t`Web access`,
 						t`API keys`,
 						t`MCP`,
 						t`Integrations`,

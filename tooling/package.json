@@ -25,6 +25,7 @@
 		"seed:demo": "node seed/demo-data.mjs",
 		"benchmark:ai": "tsx --tsconfig ../tsconfig.json benchmark/rezumi-ai.ts",
 		"benchmark:ai:report": "tsx benchmark/report.ts",
+		"jobs:probe": "tsx --tsconfig ../tsconfig.json jobs/probe.ts",
 		"extension:backfill-keys": "tsx extension/backfill-source-keys.ts"
 	},
 	"dependencies": {

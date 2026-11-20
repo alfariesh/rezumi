@@ -12,7 +12,9 @@ export type ApplicationStatus = z.infer<typeof applicationStatusSchema>;
 /** How the bounded posting snapshot was obtained; retrieval time is not an origin freshness claim. */
 export const postingSourceSchema = z.object({
 	// `extension`: the browser extension read the open page in the person's browser and sent its text.
-	method: z.enum(["paste", "builtin", "firecrawl", "tavily", "exa", "extension"]),
+	// `job-search`: tracked from Rezumi's job search; the text is the job data provider's copy of the posting.
+	// `browser`: the page needed JavaScript and was read through Cloudflare Browser Run.
+	method: z.enum(["paste", "builtin", "browser", "extension", "job-search"]),
 	format: z.enum(["text", "markdown"]),
 	requestedUrl: z.url({ protocol: /^https?$/ }).optional(),
 	resolvedUrl: z.url({ protocol: /^https?$/ }).optional(),
@@ -26,8 +28,6 @@ export const postingSourceSchema = z.object({
 			"unreachable",
 			"not-a-page",
 			"too-large",
-			"auth",
-			"quota",
 			"malformed",
 			"empty",
 			"challenge",

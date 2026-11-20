@@ -7,6 +7,7 @@ import {
 	careerStoryInputSchema,
 	savedItemDataSchema,
 } from "@rezumi/schema/career";
+import { jobListingCardSchema, jobSearchCriteriaSchema } from "@rezumi/schema/jobs/search";
 
 export const careerFactSchema = createSelectSchema(tables.careerFact, {
 	source: careerSourceSchema,
@@ -22,7 +23,11 @@ export const savedItemSchema = createSelectSchema(tables.careerArtifact, {
 	data: savedItemDataSchema,
 	evidence: z.object({ factIds: z.array(z.string()), storyIds: z.array(z.string()) }),
 });
-export const careerScheduleSchema = createSelectSchema(tables.careerSchedule);
+export const careerScheduleSchema = createSelectSchema(tables.careerSchedule, {
+	search: jobSearchCriteriaSchema.nullable(),
+})
+	// Where the next check for new jobs starts: the server's own bookkeeping.
+	.omit({ discoveryState: true });
 export const careerNotificationSchema = createSelectSchema(tables.careerNotification, {
 	notice: careerNoticeSchema,
 }).extend({
@@ -37,4 +42,6 @@ export const careerOpportunitySchema = createSelectSchema(tables.careerOpportuni
 		matches: z.array(z.string()),
 		/** What the posting doesn't say. */
 		unknowns: z.array(z.enum(["salary", "office"])),
+		/** The job listing it came from, as a search result shows it; null for older roles or a removed listing. */
+		listing: jobListingCardSchema.nullable(),
 	});

@@ -1,18 +1,10 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 import { MAX_CAPTURE_TEXT_CHARS } from "@rezumi/job-sites/capture";
-import { readPage, searchWeb } from "../web-access/service";
-import {
-	fetchJobPosting,
-	htmlToText,
-	MAX_POSTING_CHARS,
-	readJobPosting,
-	readOpenPosting,
-	searchJobPostings,
-} from "./posting";
+import { readPage } from "../web/service";
+import { fetchJobPosting, htmlToText, MAX_POSTING_CHARS, readJobPosting, readOpenPosting } from "./posting";
 
-vi.mock("../web-access/service", () => ({
+vi.mock("../web/service", () => ({
 	readPage: vi.fn(),
-	searchWeb: vi.fn(),
 }));
 
 describe("htmlToText", () => {
@@ -89,7 +81,7 @@ describe("readOpenPosting", () => {
 			truncated: false,
 			completeness: "unknown",
 		});
-		expect((await readOpenPosting(url, { connection: null, userId: "user" }))?.company ?? null).toBe(expected);
+		expect((await readOpenPosting(url, { userId: "user" }))?.company ?? null).toBe(expected);
 	});
 });
 
@@ -104,20 +96,9 @@ describe("posting retrieval", () => {
 			truncated: false,
 			completeness: "unknown",
 		});
-		await expect(
-			fetchJobPosting("https://www.linkedin.com/jobs/search/", { userId: "user", connection: null }),
-		).rejects.toMatchObject({ reason: "not-a-page" });
-	});
-	it("omits aggregate search results while preserving individual postings", async () => {
-		vi.mocked(searchWeb).mockResolvedValue([
-			{ url: "https://www.linkedin.com/jobs/search/?keywords=designer", title: "Designer jobs" },
-			{ url: "https://jobs.lever.co/acme", title: "Acme roles" },
-			{ url: "https://board.example/designer", title: "100 Designer Jobs in Berlin" },
-			{ url: "https://www.linkedin.com/jobs/view/123456", title: "Designer at Acme" },
-		]);
-		expect(await searchJobPostings("designer", { userId: "user", connection: null })).toEqual([
-			{ url: "https://www.linkedin.com/jobs/view/123456", title: "Designer at Acme", description: "" },
-		]);
+		await expect(fetchJobPosting("https://www.linkedin.com/jobs/search/", { userId: "user" })).rejects.toMatchObject({
+			reason: "not-a-page",
+		});
 	});
 	it.each(["broken JSON", { "@graph": { unrelated: true } }, { "@graph": "not an array" }, null])(
 		"preserves retrieved text when page metadata is malformed: %j",
@@ -132,12 +113,7 @@ describe("posting retrieval", () => {
 				truncated: false,
 				completeness: "unknown",
 			});
-			expect(
-				await fetchJobPosting("https://jobs.example.com/role", {
-					userId: "user",
-					connection: null,
-				}),
-			).toMatchObject({
+			expect(await fetchJobPosting("https://jobs.example.com/role", { userId: "user" })).toMatchObject({
 				page: null,
 				text: "Designer\nWork on accessible products.",
 				source: {
@@ -159,45 +135,23 @@ describe("posting retrieval", () => {
 				hiringOrganization: { name: "Example" },
 				description: `<p>${"x".repeat(20_001)}</p>`,
 			})}</script>`,
-			format: "markdown",
+			format: "text",
 			retrievedAt: "2026-09-30T12:00:00.000Z",
-			method: "firecrawl",
+			method: "browser",
 			truncated: false,
 			completeness: "unknown",
 		});
-		const result = await fetchJobPosting("https://jobs.example.com/role", {
-			userId: "user",
-			connection: null,
-		});
+		const result = await fetchJobPosting("https://jobs.example.com/role", { userId: "user" });
 		expect(result.page).toMatchObject({ role: "Designer", company: "Example" });
 		expect(result.text).toHaveLength(20_000);
 		expect(result.source).toMatchObject({
-			method: "firecrawl",
+			method: "browser",
 			format: "text",
 			truncated: true,
 			completeness: "incomplete",
 		});
 		expect(result.source).not.toHaveProperty("html");
 		expect(result.source).not.toHaveProperty("content");
-	});
-
-	it("applies job query intent only in Applications and maps the existing result contract", async () => {
-		vi.mocked(searchWeb).mockResolvedValue([
-			{
-				url: "https://jobs.example.com/role",
-				title: "Designer",
-				snippet: "Berlin",
-			},
-		]);
-		const context = { userId: "user", connection: null };
-		expect(await searchJobPostings("designer Berlin", context)).toEqual([
-			{
-				url: "https://jobs.example.com/role",
-				title: "Designer",
-				description: "Berlin",
-			},
-		]);
-		expect(searchWeb).toHaveBeenCalledWith("designer Berlin job posting", context, expect.any(Function));
 	});
 });
 

@@ -501,6 +501,13 @@ function WorkspaceHeader({ application, onAskCoach }: WorkspaceHeaderProps) {
 							<span aria-hidden="true" className={cn("size-1.5 rounded-full", stageDot[application.status])} />
 							<Chip.Label>{getStageLabel(application.status)}</Chip.Label>
 						</Chip>
+						{/* Set by the daily job listing upkeep for applications tracked from job search. */}
+						{application.postingClosedAt && (
+							<Chip size="sm" variant="soft" color="warning" className="gap-1">
+								<Icon name="info" size={14} />
+								<Chip.Label>{t`Posting closed ${date(application.postingClosedAt)}`}</Chip.Label>
+							</Chip>
+						)}
 						{application.location && <span>{application.location}</span>}
 						{sent && <span>{t`Applied ${date(application.appliedAt)}`}</span>}
 						{application.sourceUrl && (

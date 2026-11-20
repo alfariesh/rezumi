@@ -1,0 +1,123 @@
+---
+title: "Web reading and search"
+description: "How the server reads public pages and searches the web: reading order, Browser Run fallback, treg search, limits, safety and contribution checks."
+---
+
+Applications, the assistant and Profile share `readPage` and `searchWeb` in `packages/api/src/features/web/`. Nothing
+is set up by the person: pages are read directly, then through Cloudflare Browser Run when a page needs JavaScript, and
+searches go through treg on the operator's account. Keep generic retrieval there; JobPosting parsing belongs in
+`applications/posting.ts` and the search-country helper (`searchScope`, `resolveRegions`) in
+`packages/api/src/features/jobs/regions.ts`.
+
+| File           | Owns                                                                                                    |
+| -------------- | ------------------------------------------------------------------------------------------------------- |
+| `contracts.ts` | `WebContext`, `ReadPageResult`, `SearchResult`, `WebError` and its reasons, size and deadline constants |
+| `service.ts`   | `readPage`, `searchWeb`, `canSearchWeb`, the reading order, per-day limits, rate limits and logging     |
+| `builtin.ts`   | Public-target checks, the direct reader (Node.js and Workers) and `htmlToText`                          |
+| `browser.ts`   | The Browser Run Quick Actions `/content` call                                                           |
+| `search.ts`    | Search through treg: Serper first, then treg's routed search                                            |
+| `transport.ts` | Search-row normalization, page-content bounds, challenge detection and `safeFailure`                    |
+
+## Reading a page
+
+Callers are pasted job links in Applications **Save a job**, the assistant's `read_page` tool and Profile's personal
+website reader. `readPage` runs under one 30-second deadline:
+
+1. `assertPublicTarget` checks the address is public `https://` (no credentials, no private or loopback host) and that
+   every DNS answer is public. This happens before anything is fetched or sent to Browser Run.
+2. The direct reader fetches the page. On Node.js its socket goes through the public-address lookup, so DNS rebinding
+   after the check cannot reach a private address; redirects are followed at most three times and each target is
+   checked again. When Browser Run is configured, the direct reader gets 12 seconds so the browser has time left.
+3. A page with JSON-LD, or with enough text, is returned with `method: "builtin"`. JobPosting JSON-LD is read first by
+   the posting parser; page text is the fallback.
+4. Browser Run reads the page again only when the direct read found nothing to read. `BrowserReason` records why:
+   - `empty`: no text, or `looksUnrendered` matched a page drawn by JavaScript (no JSON-LD and under 300 characters,
+     or under 2,000 characters with an "enable JavaScript" note);
+   - `challenge`: a bot check page;
+   - `unreachable`: the site refuses plain requests.
+
+   Other failures (`unsafe-url`, `not-a-page`, `too-large`, `timeout`) never fall back. A browser result has
+   `method: "browser"` and `fallbackReason`.
+
+5. If Browser Run is not configured, past the daily allowance or fails, the direct result is kept when there is one;
+   otherwise the direct reader's `WebError` is thrown. Cancellation stops immediately and never falls back.
+
+Browser Run needs both `CLOUDFLARE_BROWSER_TOKEN` (permission **Browser Run Edit**) and `CLOUDFLARE_ACCOUNT_ID`;
+`isBrowserRunConfigured` checks them. Each person may have 20 pages read through the browser per UTC day
+(`BROWSER_READS_PER_DAY`). The request rejects images, media, fonts and stylesheets and waits for the network to
+settle. The rendered HTML is bounded by `MAX_PAGE_BYTES` like a direct read.
+
+Posting source `method` values stored with applications are `paste`, `builtin`, `browser`, `extension` and
+`job-search`. LinkedIn and Indeed often block automated reading even in a real browser; the user-facing answer for
+those sites is the browser extension.
+
+## Searching the web
+
+`searchWeb` serves the assistant's `search_web` tool. `canSearchWeb` is true only when `TREG_API_KEY` is set; without
+it the assistant is told search is unavailable and asks for a link or pasted text. The order inside one search:
+
+1. Input checks: trimmed, non-empty, at most 512 characters.
+2. The server's daily budget (`JOB_SEARCH_DAILY_BUDGET_USD`, shared with job search through `jobs/allowance.ts`). When
+   it is spent, fail with `budget` before calling treg.
+3. The person's daily count: 50 web searches per UTC day (`WEB_SEARCHES_PER_DAY`), then `rate-limit`.
+4. One search per search country, up to three in parallel under one 20-second deadline, or one search anywhere when
+   the person has no countries. A failed country drops out unless all fail. Results are deduplicated and interleaved
+   in country order, at most five.
+
+Each country search calls `serper.web.search` (Google results, about $0.001 a search, `gl` set to the country) with
+a $0.002 cost ceiling. If it fails for a reason other than a spent budget or a missing token, treg's routed
+`treg.web.search` tries other search providers within a $0.01 ceiling. Every call's cost is recorded with
+`recordSpend` against the shared budget and logged with `recordJobEvent` (`kind: "web-search"`). Provider names and
+prices come from treg's catalog (`GET https://treg.to/catalog/endpoints/<tool>`); check it before changing them.
+
+Search never changes to another paid service outside these two calls. The assistant still asks the person to approve
+each exact query, the career coach searches only when **Web research** is on for that message, and Rezumi AI (the
+managed AI) runs no web tools. Only a person's own AI connection does.
+
+## Errors
+
+Every failure is a `WebError` with one of these reasons; its message is shown to the assistant, which explains it to
+the person.
+
+| Reason        | Meaning                                                          |
+| ------------- | ---------------------------------------------------------------- |
+| `unsafe-url`  | Not a public `https://` address, or DNS points somewhere private |
+| `unreachable` | The page or browser could not reach the site                     |
+| `not-a-page`  | The response is not HTML or text                                 |
+| `too-large`   | Over `MAX_PAGE_BYTES`                                            |
+| `malformed`   | An invalid query or an unreadable provider answer                |
+| `empty`       | No readable text                                                 |
+| `challenge`   | A bot check page                                                 |
+| `timeout`     | The deadline passed                                              |
+| `unavailable` | Search or Browser Run is not configured or not answering         |
+| `rate-limit`  | The request rate, the daily search count or Browser Run's limit  |
+| `budget`      | The server's daily budget is spent                               |
+
+`safeFailure` maps anything else to `unreachable` and a timeout to `timeout`. Never keep or log a provider's error
+body: it can echo the request. Logs (`[web]`) may contain the method, operation, duration and safe outcome; they must
+never contain tokens, raw pages, queries or private resume content.
+
+## Safety
+
+- Check the public target before any fetch or Browser Run call. Browser Run runs on Cloudflare's network, so the
+  initial check is the only protection for what it opens; keep it first.
+- Never accept tokens, user IDs, headers or provider URLs from model tool inputs. The assistant's `read_page` reads
+  only links the person supplied or a search returned.
+- Remote content is untrusted data, including in assistant tool output.
+- Keep pages, results and HTML bounded (`MAX_CONTENT_CHARS`, `MAX_SEARCH_RESULTS`, `MAX_PAGE_BYTES`). HTML stays
+  server-side for the JobPosting parser.
+
+## Contribution checks
+
+Extend `packages/api/src/features/web/service.test.ts` for reading order, Browser Run fallback and its daily limit,
+private-address and DNS-rebinding refusal, search fallback, cost ceilings, the shared budget and the per-person search
+limit. These tests mock HTTP and treg; they do not verify a live Browser Run or treg account. Run:
+
+```sh
+pnpm --filter @rezumi/api test src/features/web
+pnpm --filter @rezumi/api typecheck
+pnpm exec turbo boundaries
+```
+
+Run the production and Cloudflare build checks for changes that touch the Worker. Record which live checks ran; a live
+Browser Run read or treg search spends real browser time or treg balance.

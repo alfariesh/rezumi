@@ -1,6 +1,5 @@
 import type { getModel } from "../ai/service";
 import type { AiWorkLimits } from "../billing/metered-ai";
-import type { WebAccessConnection } from "../web-access/contracts";
 import type { AssistantDocument } from "./document";
 import type {
 	EditPortfolioInput,
@@ -35,13 +34,12 @@ import { aiSourceRequired, errorCode, resolveAiSource, startResolvedAiRun } from
 import { careerService, requireCareerApplication } from "../career/service";
 import { buildCareerTools, buildCareerInstructions } from "../career/tools";
 import { coverLetterService } from "../cover-letters/service";
+import { searchScope } from "../jobs/regions";
 import { portfolioService } from "../portfolio/service";
 import { readProfileContext } from "../profile/context";
 import { resumeService } from "../resume/service";
 import { getStorageService, inferContentType } from "../storage/service";
-import { webAccessService } from "../web-access/credentials";
-import { searchScope } from "../web-access/regions";
-import { readPage, searchWeb } from "../web-access/service";
+import { canSearchWeb, readPage, searchWeb } from "../web/service";
 import { isRunAlive, isRunCancellationRequested, monitorRunCancellation, requestRunCancellation } from "./cancellation";
 import { pruneAgentModelContext } from "./context";
 import {
@@ -321,7 +319,7 @@ function toModelInputMessage(
 		.map((source) => `${source.title}: ${source.url}`)
 		.join("\n");
 	// Native calls are provider-owned (including Anthropic encrypted results). Replay portable evidence
-	// instead, so changing models or the selected web connection cannot send an incompatible native call.
+	// instead, so changing models or whether web search is offered cannot send an incompatible native call.
 	const portable = {
 		...message,
 		parts: message.parts.map((part) => {
@@ -906,8 +904,7 @@ function createAgent(input: {
 		baseURL?: string;
 	};
 	model: ReturnType<typeof getModel>;
-	connection: WebAccessConnection | null;
-	/** Whether web search is available: through the connection, or the server's SearXNG without one. */
+	/** Whether web search is available: the server searches through treg, with nothing for the person to set up. */
 	search: boolean;
 	/** Rezumi AI's limits: fewer steps and no web tools. Null on the user's own connection. */
 	limits: AiWorkLimits | null;
@@ -975,7 +972,6 @@ function createAgent(input: {
 				// General research searches the user's countries but keeps the query as written.
 				const { regions } = await searchScope(input.userId, input.deviceTimeZone);
 				const result = await searchWeb(query, {
-					connection: input.connection,
 					userId: input.userId,
 					signal,
 					regions,
@@ -990,7 +986,6 @@ function createAgent(input: {
 				const approvedUrl = key ? allowedSources.get(key) : undefined;
 				if (!approvedUrl) throw new Error("Read only retrieved URLs or public links supplied by the user.");
 				const { html: _html, ...page } = await readPage(approvedUrl, {
-					connection: input.connection,
 					userId: input.userId,
 					signal,
 				});
@@ -1554,8 +1549,7 @@ export const agentService = {
 							// keeps its first createdAt).
 							messageRows.filter((row) => row.createdAt > memoryCutoff || row.id === sourceMessageId).map(toMessage)
 						: messages;
-				const connection = await webAccessService.resolve(input.userId);
-				const search = webAccessService.canSearch(connection !== null);
+				const search = canSearchWeb();
 				const modelMessages = await convertToModelMessages(
 					replay.map((message) =>
 						toModelInputMessage(message, runnableProvider, search, { attachmentNotes: document?.kind === "portfolio" }),
@@ -1610,7 +1604,6 @@ export const agentService = {
 							.flatMap((message) => messageText(message).match(/https?:\/\/[^\s<>")]+/g) ?? []),
 					],
 					posting,
-					connection,
 					search,
 					limits: ai.limits,
 					signal: controller.signal,

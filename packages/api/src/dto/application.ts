@@ -62,6 +62,12 @@ const applicationSchema = createSelectSchema(schema.application, {
 	sourceUrl: httpUrlSchema.nullable(),
 	jobDescription: z.string().max(MAX_APPLICATION_JOB_DESCRIPTION_CHARS).nullable(),
 	postingSource: postingSourceSchema.nullable(),
+	postingClosedAt: z
+		.date()
+		.nullable()
+		.describe(
+			"When the posting closed, for an application tracked from job search; null while it's open or unknown. Set by Rezumi.",
+		),
 	matchScore: z.number().int().min(0).max(100).nullable(),
 	aiMetadata: aiMetadataSchema.nullable(),
 	notes: z.string().nullable(),
@@ -92,8 +98,9 @@ const applicationSchema = createSelectSchema(schema.application, {
 	createdAt: z.date(),
 	updatedAt: z.date(),
 })
-	// The posting identity is server bookkeeping for the browser extension (`applications.savedKeys`), not a field.
-	.omit({ sourceKey: true });
+	// The posting identity is server bookkeeping for the browser extension (`applications.savedKeys`), and the job search
+	// listing for the daily closed-posting check; neither is a field.
+	.omit({ sourceKey: true, jobListingId: true });
 
 const applicationSummarySchema = applicationSchema.pick({
 	id: true,

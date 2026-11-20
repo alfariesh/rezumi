@@ -53,11 +53,9 @@ const modules = {
 			calls.push(new URL(url).pathname);
 			const value = url.includes("aiProviders/list")
 				? [provider]
-				: url.includes("webAccess/status")
-					? { provider: "tavily" }
-					: url.includes("agent/threads/get")
-						? { thread: { aiProviderId: provider.id } }
-						: { id: "result" };
+				: url.includes("agent/threads/get")
+					? { thread: { aiProviderId: provider.id } }
+					: { id: "result" };
 			return new Response(JSON.stringify({ json: value }), { headers: { "content-type": "application/json" } });
 		},
 	},
@@ -79,7 +77,7 @@ async function waitForDialog() {
 	for (let step = 0; step < 100 && !dialog; step++) await new Promise((resolve) => setImmediate(resolve));
 	assert.ok(dialog, "sharing must require a dialog before transmission");
 }
-const sent = () => calls.filter((path) => !/aiProviders\/list|webAccess\/status|agent\/threads\/get/.test(path));
+const sent = () => calls.filter((path) => !/aiProviders\/list|agent\/threads\/get/.test(path));
 function reset() {
 	calls = [];
 	dialog = null;

@@ -11,6 +11,7 @@ import * as pg from "drizzle-orm/pg-core";
 import { generateId } from "@rezumi/utils/string";
 import { user } from "./auth";
 import { coverLetter, coverLetterVersion } from "./cover-letter";
+import { jobListing } from "./jobs";
 import { resume, resumeVersion } from "./resume";
 
 // A tracked job application. Points at the live Rezumi that was sent (resumeId),
@@ -60,6 +61,11 @@ export const application = pg.pgTable(
 		companyLogoUrl: pg.text("company_logo_url"),
 		jobDescription: pg.text("job_description"),
 		postingSource: pg.jsonb("posting_source").$type<PostingSource>(),
+		// The job search listing this application was tracked from (`jobs.track`). Server bookkeeping: the daily upkeep
+		// reads it to say when the posting closed. Cleared when the listing is removed; the posting text stays above.
+		jobListingId: pg.text("job_listing_id").references(() => jobListing.id, { onDelete: "set null" }),
+		// When the tracked listing's posting closed, as the job data provider reported it. Kept after the listing goes.
+		postingClosedAt: pg.timestamp("posting_closed_at", { withTimezone: true }),
 		// What the posting asks for, as read from it when the application was added.
 		requirements: pg.jsonb("requirements").notNull().$type<string[]>().default([]),
 		matchScore: pg.integer("match_score"),
@@ -85,5 +91,10 @@ export const application = pg.pgTable(
 			.defaultNow()
 			.$onUpdate(() => /* @__PURE__ */ new Date()),
 	},
-	(t) => [pg.index().on(t.userId), pg.index().on(t.userId, t.updatedAt.desc()), pg.index().on(t.userId, t.sourceKey)],
+	(t) => [
+		pg.index().on(t.userId),
+		pg.index().on(t.userId, t.updatedAt.desc()),
+		pg.index().on(t.userId, t.sourceKey),
+		pg.index().on(t.jobListingId),
+	],
 );

@@ -1,14 +1,13 @@
 import type { AiSourceRequest } from "../../billing/ai-source";
-import type { WebAccessFailure } from "../../web-access/contracts";
+import type { WebFailure } from "../../web/contracts";
 import type { SourceNote, SourceResult } from "@rezumi/schema/profile/sources";
 import { ORPCError } from "@orpc/server";
 import { isProfileEmpty } from "@rezumi/schema/profile/data";
 import { rethrowAiError } from "../../ai/procedure";
 import { aiService } from "../../ai/service";
 import { runWithAiSource } from "../../billing/metered-ai";
-import { WebAccessError } from "../../web-access/contracts";
-import { webAccessService } from "../../web-access/credentials";
-import { readPage } from "../../web-access/service";
+import { WebError } from "../../web/contracts";
+import { readPage } from "../../web/service";
 import { sourceErrors } from "./errors";
 import { sourceResult } from "./result";
 
@@ -34,7 +33,7 @@ function websiteAddress(input: string): string | null {
 	}
 }
 
-function pageError(reason: WebAccessFailure) {
+function pageError(reason: WebFailure) {
 	switch (reason) {
 		case "unsafe-url":
 		case "malformed":
@@ -46,7 +45,6 @@ function pageError(reason: WebAccessFailure) {
 		case "rate-limit":
 			return sourceErrors.limit("Too many pages were read in a short time. Try again in a minute.");
 		case "challenge":
-		case "auth":
 			return sourceErrors.failed("That site doesn't let other services read it. Upload a file instead.");
 		default:
 			return sourceErrors.failed("That page couldn't be read just now. Try again in a moment.");
@@ -55,10 +53,10 @@ function pageError(reason: WebAccessFailure) {
 
 async function readWebsitePage(userId: string, address: string, signal: AbortSignal | undefined) {
 	try {
-		return await readPage(address, { connection: await webAccessService.resolve(userId), userId, signal });
+		return await readPage(address, { userId, signal });
 	} catch (error) {
 		signal?.throwIfAborted();
-		throw pageError(error instanceof WebAccessError ? error.reason : "unreachable");
+		throw pageError(error instanceof WebError ? error.reason : "unreachable");
 	}
 }
 

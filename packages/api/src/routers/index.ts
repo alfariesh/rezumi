@@ -9,12 +9,12 @@ import { coverLettersRouter } from "../features/cover-letters/router";
 import { customDomainRouter } from "../features/custom-domain/router";
 import { documentsRouter } from "../features/documents/router";
 import { flagsRouter } from "../features/flags/router";
+import { jobsRouter } from "../features/jobs/router";
 import { portfolioRouter } from "../features/portfolio/router";
 import { profileRouter } from "../features/profile/router";
 import { resumeRouter } from "../features/resume/router";
 import { statisticsRouter } from "../features/statistics/router";
 import { storageRouter } from "../features/storage/router";
-import { webAccessRouter } from "../features/web-access/router";
 
 export default {
 	ai: aiRouter,
@@ -28,10 +28,10 @@ export default {
 	customDomain: customDomainRouter,
 	documents: documentsRouter,
 	flags: flagsRouter,
+	jobs: jobsRouter,
 	portfolio: portfolioRouter,
 	profile: profileRouter,
 	resume: resumeRouter,
 	statistics: statisticsRouter,
 	storage: storageRouter,
-	webAccess: webAccessRouter,
 };

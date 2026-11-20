@@ -88,6 +88,10 @@ const ALERT_TEXT: Record<BillingAlertKind, { title: string; body: string }> = {
 		title: "API penyedia pembayaran gagal berulang kali",
 		body: "Pembuatan halaman bayar atau pengecekan status ke Dodo Payments (kartu) atau Sumopod (QRIS) gagal beberapa kali. Cek status.dodopayments.com atau status.sumopod.com, dan apakah DODO_PAYMENTS_API_KEY atau SUMOPOD_API_KEY di server masih berlaku (dan dari mode yang sama).",
 	},
+	job_search_budget: {
+		title: "Biaya pencarian lowongan sudah lewat 80% anggaran hari ini",
+		body: "Pencarian lowongan dan web search asisten sudah memakai lebih dari 80% batas biaya harian server (JOB_SEARCH_DAILY_BUDGET_USD). Bila batas tercapai, pengguna hanya mendapat hasil yang tersimpan sampai tengah malam UTC dan notifikasi lowongan ditunda ke besok. Cek dashboard biaya lowongan (Settings → Job search costs): bila pemakaiannya wajar, naikkan anggarannya; bila tidak, cari penyebabnya di sana. Pastikan juga saldo treg cukup.",
+	},
 	refund_failed: {
 		title: "Refund belum berhasil",
 		body: "Dodo Payments menolak refund atau belum mengonfirmasinya (refund bisa berstatus review). Buka pembayarannya di halaman admin, tekan Cek ulang status, dan lihat alasannya.",
@@ -108,7 +112,10 @@ function alertNotice(row: NotificationRow): { subject: string; notice: BillingNo
 				{ label: "Terjadi", value: `${row.count} kali sejak ${formatWibTime(row.createdAt)} WIB` },
 				...(paymentIds.length ? [{ label: "Pembayaran", value: paymentIds.map((id) => `RZ-${id}`).join(", ") }] : []),
 			],
-			action: { label: "Buka halaman admin", url: adminUrl(paymentIds[0] && `RZ-${paymentIds[0]}`) },
+			action:
+				row.kind === "job_search_budget"
+					? { label: "Buka dashboard biaya lowongan", url: new URL("/dashboard/admin/jobs", env.APP_URL).toString() }
+					: { label: "Buka halaman admin", url: adminUrl(paymentIds[0] && `RZ-${paymentIds[0]}`) },
 			footer: "Peringatan ini dikirim paling banyak sekali per jenis per jam.",
 		},
 	};

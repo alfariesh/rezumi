@@ -56,8 +56,6 @@ describe("tool annotations", () => {
 			"api_ai_providers_test",
 			"api_agent_threads_get",
 			"api_ai_parse_pdf",
-			"api_web_access_test",
-			"api_applications_ai_search_postings",
 		]) {
 			expect(PARITY_TOOL_META[name]?.annotations, name).toMatchObject({ readOnlyHint: false, destructiveHint: true });
 		}
@@ -65,8 +63,6 @@ describe("tool annotations", () => {
 
 	it("distinguishes internal operations from external AI, search and public sharing", () => {
 		for (const name of [
-			"api_web_access_status",
-			"api_web_access_delete",
 			"api_ai_providers_list",
 			"api_ai_providers_delete",
 			"api_ai_providers_set_default",
@@ -82,7 +78,6 @@ describe("tool annotations", () => {
 		}
 		for (const name of [
 			"api_agent_messages_send",
-			"api_applications_ai_search_postings",
 			"api_resume_get_by_slug",
 			"api_documents_trash",
 			"api_documents_restore",

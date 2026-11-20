@@ -89,6 +89,7 @@ const clientMock = {
 		updateSettings: vi.fn(),
 		unfurl: vi.fn(),
 	},
+	jobs: { search: vi.fn(), track: vi.fn() },
 	applications: {
 		list: vi.fn(),
 		getById: vi.fn(),
@@ -435,6 +436,113 @@ describe("registerTools", () => {
 
 			expect(result.isError).toBe(true);
 			expect(result.content[0]!.text).toContain(expected);
+		});
+	});
+
+	describe("job search", () => {
+		const card = (index: number) => ({
+			id: `listing-${index}`,
+			title: `Designer ${index}`,
+			postingUrl: `https://jobs.example.com/${index}`,
+		});
+		const page = (count: number, cursor?: string) => ({
+			listings: Array.from({ length: count }, (_, index) => card(index)),
+			...(cursor && { cursor }),
+			fetchedAt: "2026-11-20T10:00:00.000Z",
+			fromCache: false,
+			stale: false,
+			budgetLimited: false,
+			quota: { used: 1, max: 3, resetsAt: "2026-11-21T00:00:00.000Z" },
+			tracked: { "listing-1": "application-9" },
+			matches: { "listing-0": { matched: ["Figma"], missing: ["SQL"] } },
+		});
+		const tool = (name: string) => {
+			const { server, registered } = makeFakeServer();
+			registerTools(server as never, clientMock as never, new Headers());
+			return registered.find((item) => item.name === name)!;
+		};
+		const cursor = "a".repeat(64);
+
+		it("returns at most ten listings, then the rest of the page, then the next page's cursor", async () => {
+			const search = tool(MCP_TOOL_NAME.searchJobs);
+			const schema = TOOL_META[MCP_TOOL_NAME.searchJobs].inputSchema;
+			clientMock.jobs.search.mockResolvedValue(page(20, cursor));
+
+			const first = await search.handler(schema.parse({ query: "product designer", country: "DE" }));
+			expect(clientMock.jobs.search).toHaveBeenLastCalledWith({
+				query: "product designer",
+				country: "DE",
+				remote: "any",
+				postedWithinDays: 30,
+				includeNoSalary: true,
+			});
+			const head = first.structuredContent as Record<string, unknown> & { listings: Record<string, unknown>[] };
+			expect(head.listings).toHaveLength(10);
+			expect(head.listings[0]).toMatchObject({
+				postingUrl: "https://jobs.example.com/0",
+				trackedApplicationId: null,
+				matchedSkills: ["Figma"],
+			});
+			expect(head.listings[1]).toMatchObject({ trackedApplicationId: "application-9", matchedSkills: [] });
+			expect(head).toMatchObject({ offset: 0, nextOffset: 10, cursor: null, quota: { used: 1, max: 3 } });
+
+			const rest = await search.handler(schema.parse({ query: "product designer", country: "DE", offset: 10 }));
+			const tail = rest.structuredContent as Record<string, unknown> & { listings: { id: string }[] };
+			expect(tail.listings.map((listing) => listing.id)).toEqual(
+				Array.from({ length: 10 }, (_, index) => `listing-${index + 10}`),
+			);
+			expect(tail).toMatchObject({ offset: 10, nextOffset: null, cursor });
+
+			clientMock.jobs.search.mockResolvedValue(page(4));
+			const last = await search.handler(schema.parse({ query: "product designer", cursor, limit: 3 }));
+			expect(clientMock.jobs.search).toHaveBeenLastCalledWith(expect.objectContaining({ cursor }));
+			expect(last.structuredContent).toMatchObject({ nextOffset: 3, cursor: null });
+		});
+
+		it("refuses more than ten listings a call", () => {
+			const schema = TOOL_META[MCP_TOOL_NAME.searchJobs].inputSchema;
+			expect(schema.safeParse({ query: "nurse", limit: 11 }).success).toBe(false);
+			expect(schema.safeParse({ query: "nurse", offset: 20 }).success).toBe(false);
+		});
+
+		it.each([
+			["JOBS_BUDGET_LIMITED", 503, "Job search has reached today's limit", "try again tomorrow"],
+			["JOBS_UNAVAILABLE", 503, "isn't available right now", "don't retry soon"],
+			["PLAN_LIMIT_REACHED", 403, "used up", "job searches for today are used up"],
+		])("tells the agent why a search is refused (%s)", async (code, status, message, hint) => {
+			clientMock.jobs.search.mockRejectedValueOnce(
+				new ORPCError(code, {
+					status,
+					message:
+						code === "JOBS_BUDGET_LIMITED"
+							? "Job search has reached today's limit on this server. Try again tomorrow."
+							: code === "JOBS_UNAVAILABLE"
+								? "Job search isn't available right now. Try again later."
+								: "Today's job searches are used up.",
+				}),
+			);
+			const result = await tool(MCP_TOOL_NAME.searchJobs).handler({ query: "nurse", offset: 0, limit: 10 });
+			expect(result.isError).toBe(true);
+			expect(result.content[0]!.text).toContain(message);
+			expect(result.content[0]!.text).toContain(hint);
+			expect(result.content[0]!.text).not.toContain("Reference:");
+		});
+
+		it("tracks a listing and links its application", async () => {
+			clientMock.jobs.track.mockResolvedValueOnce({ applicationId: "application 7", created: true });
+			const result = await tool(MCP_TOOL_NAME.trackJob).handler({ listingId: "listing-3" });
+			expect(clientMock.jobs.track).toHaveBeenCalledWith({ id: "listing-3" });
+			expect(result.structuredContent).toEqual({
+				applicationId: "application 7",
+				created: true,
+				url: "https://example.com/dashboard/applications/application%207",
+			});
+		});
+
+		it("says a closed listing can't be tracked", async () => {
+			clientMock.jobs.track.mockRejectedValueOnce(new ORPCError("NOT_FOUND", { status: 404 }));
+			const result = await tool(MCP_TOOL_NAME.trackJob).handler({ listingId: "gone" });
+			expect(result.content[0]!.text).toContain(`Run \`${MCP_TOOL_NAME.searchJobs}\` again`);
 		});
 	});
 });
