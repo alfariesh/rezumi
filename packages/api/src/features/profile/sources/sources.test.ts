@@ -57,8 +57,7 @@ vi.mock("../../../redis", async () => {
 });
 
 vi.mock("@rezumi/auth/config", () => ({ providerAccessToken: vi.fn(async () => null) }));
-vi.mock("../../web-access/service", () => ({ readPage: vi.fn() }));
-vi.mock("../../web-access/credentials", () => ({ webAccessService: { resolve: vi.fn(async () => null) } }));
+vi.mock("../../web/service", () => ({ readPage: vi.fn() }));
 vi.mock("../../ai/service", () => ({ aiService: { parseWebsite: vi.fn() } }));
 vi.mock("../../billing/metered-ai", () => ({
 	runWithAiSource: async (request: { action: string }, work: (ai: { model: string }) => Promise<unknown>) => {
@@ -85,10 +84,10 @@ vi.mock("../../storage/service", () => ({
 }));
 
 const { providerAccessToken } = await import("@rezumi/auth/config");
-const { readPage } = await import("../../web-access/service");
+const { readPage } = await import("../../web/service");
 const { aiService } = await import("../../ai/service");
 const { uploadFile } = await import("../../storage/service");
-const { WebAccessError } = await import("../../web-access/contracts");
+const { WebError } = await import("../../web/contracts");
 const { profileSourcesRouter } = await import("./router");
 const { adoptPhoto, isPhotoHost } = await import("./photo");
 
@@ -378,11 +377,11 @@ describe("profile.sources.website", () => {
 
 	it("maps the reader's failures and gives the credits back", async () => {
 		const { call } = client();
-		vi.mocked(readPage).mockRejectedValueOnce(new WebAccessError("unreachable"));
+		vi.mocked(readPage).mockRejectedValueOnce(new WebError("unreachable"));
 		await expect(call.website({ url: "https://gone.example" })).rejects.toMatchObject({ code: "SOURCE_NOT_FOUND" });
-		vi.mocked(readPage).mockRejectedValueOnce(new WebAccessError("unsafe-url"));
+		vi.mocked(readPage).mockRejectedValueOnce(new WebError("unsafe-url"));
 		await expect(call.website({ url: "https://intranet.example" })).rejects.toMatchObject({ code: "SOURCE_INVALID" });
-		vi.mocked(readPage).mockRejectedValueOnce(new WebAccessError("timeout"));
+		vi.mocked(readPage).mockRejectedValueOnce(new WebError("timeout"));
 		await expect(call.website({ url: "https://slow.example" })).rejects.toMatchObject({ code: "SOURCE_FAILED" });
 		await expect(call.website({ url: "not a web address" })).rejects.toMatchObject({ code: "SOURCE_INVALID" });
 		expect(fixtures.aiRuns.map((run) => run.outcome)).toEqual(["failed", "failed", "failed"]);

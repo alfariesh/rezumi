@@ -1,6 +1,6 @@
 import type { JobSearchDefaults } from "@rezumi/schema/jobs/search";
 import { careerService } from "../career/service";
-import { searchScope } from "../web-access/regions";
+import { searchScope } from "./regions";
 
 /** A preferred place that means "remote", not a city: "Remote", "Remote (EU)", "Fully remote". */
 const REMOTE_PLACE = /\bremote\b/i;

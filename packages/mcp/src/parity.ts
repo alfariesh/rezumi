@@ -67,9 +67,6 @@ const PARITY_PROCEDURES: Record<string, [AnyProcedure, BehaviorAnnotations]> = {
 	"aiProviders.delete": [router.aiProviders.delete, WRITE_DESTRUCTIVE],
 	"aiProviders.test": [router.aiProviders.test, WRITE_DESTRUCTIVE_EXTERNAL],
 	"aiProviders.setDefault": [router.aiProviders.setDefault, WRITE_DESTRUCTIVE],
-	"webAccess.status": [router.webAccess.status, READ_IDEMPOTENT],
-	"webAccess.delete": [router.webAccess.delete, WRITE_DESTRUCTIVE],
-	"webAccess.test": [router.webAccess.test, WRITE_DESTRUCTIVE_EXTERNAL],
 	"agent.threads.list": [router.agent.threads.list, READ_IDEMPOTENT],
 	"agent.threads.start": [router.agent.threads.start, WRITE_DESTRUCTIVE],
 	"agent.threads.get": [router.agent.threads.get, WRITE_DESTRUCTIVE],
@@ -149,7 +146,6 @@ const settingsHandoff = (title: string, page: string): Handoff => ({
 const HANDOFFS: Record<string, Handoff> = {
 	"aiProviders.create": settingsHandoff("Add an AI provider in the app", "app#ai-providers"),
 	"aiProviders.update": settingsHandoff("Edit an AI provider in the app", "app#ai-providers"),
-	"webAccess.save": settingsHandoff("Set up web search in the app", "app#web-access"),
 	"resume.getRoot": settingsHandoff("Open the dashboard", ""),
 	"auth.createApiKey": settingsHandoff("Create an API key in the app", "app#api-keys"),
 	"auth.deleteAccount": settingsHandoff("Delete your account in the app", "account"),

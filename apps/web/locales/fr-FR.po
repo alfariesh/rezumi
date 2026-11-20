@@ -1887,7 +1887,6 @@ msgstr ""
 
 #: src/features/billing/admin/labels.ts
 #: src/features/resume/share/custom-domain-field.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Actif"
 
@@ -3010,7 +3009,6 @@ msgstr ""
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "API key"
 msgstr "Clé API"
 
@@ -3283,10 +3281,6 @@ msgstr "Demandez à l'assistant de le travailler"
 msgid "Ask the coach"
 msgstr "Demander au coach"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Ask your server administrator to enable credential encryption or configure a shared web connection."
-msgstr "Demandez à votre administrateur de serveur d'activer le cryptage des informations d'identification ou de configurer une connexion Web partagée."
-
 #: src/features/assistant/conversation.tsx
 msgid "Ask, or describe a change…"
 msgstr "Demandez ou décrivez un changement…"
@@ -3309,10 +3303,6 @@ msgstr "Assistant"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Assistant conversations"
 msgstr "Conversations avec l'assistant"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Assistant."
-msgstr "Assistant."
 
 #: src/features/portfolio/editor/password-group.tsx
 msgid "At least 6 characters."
@@ -3764,10 +3754,6 @@ msgstr ""
 msgid "Built the design system used by six product teams."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Built-in reader"
-msgstr "Lecteur intégré"
-
 #: src/libs/locale.ts
 msgid "Bulgarian"
 msgstr "Bulgare"
@@ -3872,7 +3858,6 @@ msgstr "Un logiciel peut-il lire votre CV ?"
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/settings/ai/api-keys.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/hooks/use-confirm.tsx
 msgid "Cancel"
 msgstr "Annuler"
@@ -3967,7 +3952,6 @@ msgid "Change at renewal"
 msgstr ""
 
 #: src/features/career/coach-chat.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Change connection"
 msgstr "Changer de connexion"
 
@@ -4798,17 +4782,9 @@ msgstr "Connecter {0}"
 msgid "Connect {domain}"
 msgstr "Connecter {domain}"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect a service"
-msgstr "Connecter un service"
-
 #: src/features/assistant/provider-setup.tsx
 msgid "Connect an AI provider"
 msgstr "Connectez un fournisseur d'IA"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect an AI provider above to use the assistant. Saving and preparing jobs doesn't need one."
-msgstr "Connectez un fournisseur d'IA ci-dessus pour utiliser l'assistant. La sauvegarde et la préparation des tâches n'en ont pas besoin."
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
@@ -4862,10 +4838,6 @@ msgstr ""
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Connection progress"
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Connection saved"
-msgstr "Connexion enregistrée"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -5403,10 +5375,6 @@ msgstr "Impossible de charger les documents"
 #: src/features/career/knowledge/stories.tsx
 msgid "Couldn't load interviews. Retry"
 msgstr "Impossible de charger les entretiens. Réessayer"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Couldn't load or save web access settings. Try again."
-msgstr "Impossible de charger ou d'enregistrer les paramètres d'accès au web. Réessayez."
 
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Couldn't load the reports. Try again."
@@ -7395,10 +7363,6 @@ msgstr "Anglais"
 msgid "English (United Kingdom)"
 msgstr "Anglais (Royaume-Uni)"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Enhanced reading failed"
-msgstr "Échec de la lecture améliorée"
-
 #: src/features/assistant/conversation.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "Lecture améliorée indisponible ; utilisé le lecteur intégré."
@@ -8497,11 +8461,6 @@ msgstr "Allemand"
 #: src/features/billing/purchase.ts
 msgid "Get {name}"
 msgstr ""
-
-#. placeholder {0}: PROVIDER_SITES[provider]
-#: src/features/settings/ai/web-access.tsx
-msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
-msgstr "Obtenez une clé sur <0>{0}</0>. Elle est stockée sous forme chiffrée et utilisée uniquement pour vos demandes."
 
 #: src/features/billing/buy-plans.tsx
 msgid "Get a plan"
@@ -9864,10 +9823,6 @@ msgstr ""
 msgid "Key revoked. Apps using it stop working now."
 msgstr "Clé révoquée. Les applications qui l'utilisent cessent de fonctionner dès maintenant."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Key stored encrypted"
-msgstr "Clé stockée cryptée"
-
 #: src/features/settings/ai/api-keys.tsx
 msgid "Keys act as you and can read and edit your documents."
 msgstr "Les clés agissent comme vous et peuvent lire et modifier vos documents."
@@ -10131,8 +10086,8 @@ msgid "Let's start with what you have"
 msgstr "Commençons par ce que vous avez"
 
 #: src/features/career/coach.tsx
-msgid "Lets the coach search public pages through your web search service"
-msgstr "Permet au coach de rechercher des pages publiques via votre service de recherche web"
+msgid "Lets the coach search the web for public pages"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "letter"
@@ -10436,10 +10391,6 @@ msgstr "Chargement des candidatures…"
 msgid "Loading connection request..."
 msgstr "Chargement de la demande de connexion..."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Loading connection…"
-msgstr "Chargement de la connexion…"
-
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Loading connections..."
 msgstr "Chargement des connexions..."
@@ -10674,10 +10625,6 @@ msgstr "Malaisien"
 #: src/libs/locale.ts
 msgid "Malayalam"
 msgstr "Malayalam"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Managed by server"
-msgstr "Géré par serveur"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Managed by your server"
@@ -12610,10 +12557,6 @@ msgstr "S'ouvre dans Carrière → Offres."
 msgid "opens in new tab"
 msgstr "s'ouvre dans un nouvel onglet"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Optional"
-msgstr "Facultatif"
-
 #: src/features/settings/ai/providers.tsx
 msgid "Optional for local Ollama"
 msgstr "En option pour Ollama local"
@@ -13004,10 +12947,6 @@ msgstr "Collez l'offre d'emploi pour voir lesquels de ses termes figurent déjà
 #: src/features/career/workspace/apply.tsx
 msgid "Paste the question from the form"
 msgstr "Collez la question du formulaire"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Paste your key"
-msgstr "Collez votre clé"
 
 #: src/features/profile/sources/messages.ts
 msgid "Paste your profile link, like linkedin.com/in/your-name."
@@ -13950,12 +13889,7 @@ msgstr "Protégez votre CV par un mot de passe"
 msgid "Prototyping"
 msgstr "Prototypage"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Provided by your server: {connectedProvider}."
-msgstr "Fourni par votre serveur : {connectedProvider}."
-
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Provider"
 msgstr "Fournisseur"
 
@@ -14234,10 +14168,6 @@ msgstr "Consultez le guide « Appliquer des styles personnalisés »."
 msgid "Read the attachment"
 msgstr "Lire la pièce jointe"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Read the job links you save. Saving and preparing jobs works without a connection."
-msgstr "Lisez les liens d'emploi que vous enregistrez. La sauvegarde et la préparation des tâches fonctionnent sans connexion."
-
 #: src/features/assistant/conversation.tsx
 msgid "Read the letter"
 msgstr "Lire la lettre"
@@ -14361,10 +14291,6 @@ msgstr "Lecture de ce que vous avez partagé"
 msgid "Reading Word files needs an AI provider. Set one up in Settings, or import a PDF or JSON file instead."
 msgstr "La lecture des fichiers Word nécessite un fournisseur d'IA. Créez-en un dans Paramètres ou importez plutôt un fichier PDF ou JSON."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Reading works"
-msgstr "Travaux de lecture"
-
 #: src/features/career/shared.tsx
 msgid "Reading your answer"
 msgstr "Lecture de votre réponse"
@@ -14394,10 +14320,6 @@ msgstr ""
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Reads cleanly"
 msgstr "Lit proprement"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Reads supported public job pages. No account needed."
-msgstr "Lit les pages d’emploi publiques prises en charge. Aucun compte requis."
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "Reads, shares, feedback or awards."
@@ -14748,10 +14670,6 @@ msgstr ""
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Remove {value}"
 msgstr "Supprimer {value}"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Remove connection"
-msgstr "Supprimer la connexion"
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Remove field"
@@ -15669,10 +15587,6 @@ msgstr "Enregistrer comme demande d'emploi…"
 msgid "Save changes"
 msgstr "Enregistrer les modifications"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Save connection"
-msgstr "Enregistrer la connexion"
-
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Save contact"
@@ -15681,10 +15595,6 @@ msgstr ""
 #: src/features/career/knowledge/facts.tsx
 msgid "Save correction"
 msgstr "Enregistrer la correction"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Save first, then test search and reading. No test runs automatically."
-msgstr "Enregistrez d’abord, puis testez la recherche et la lecture. Aucun test ne s'exécute automatiquement."
 
 #: src/features/extension/install-links.tsx
 msgid "Save in one click with the browser extension"
@@ -15950,14 +15860,6 @@ msgstr ""
 msgid "Search again"
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and enhanced reading"
-msgstr "Recherche et lecture améliorée"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and reading are set up for everyone here. Ask your administrator about changes."
-msgstr "La recherche et la lecture sont ici mises en place pour tout le monde. Renseignez-vous auprès de votre administrateur sur les modifications."
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search applications"
 msgstr "Rechercher des candidatures"
@@ -15996,10 +15898,6 @@ msgstr ""
 msgid "Search facts"
 msgstr "Rechercher des faits"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search failed"
-msgstr "La recherche a échoué"
-
 #. Accessible label for icon picker search input
 #. Placeholder text in icon picker search input
 #: src/components/input/icon-picker-grid.tsx
@@ -16009,10 +15907,6 @@ msgstr "Rechercher une icône"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Search for…"
 msgstr "Rechercher…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
-msgstr "Recherchez parmi les candidatures et l'assistant, et lisez les pages que le lecteur intégré ne peut pas lire. Un service couvre les deux."
 
 #: src/features/jobs/search-bar.tsx
 msgid "Search jobs"
@@ -16038,21 +15932,13 @@ msgstr ""
 msgid "Search the web"
 msgstr ""
 
+#: src/features/assistant/tool-approvals.tsx
+msgid "Search the web for this exact query?"
+msgstr ""
+
 #: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Rechercher un fuseau horaire"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search, and reading with {connectedProvider}."
-msgstr "La recherche a été testée avec la recherche de votre serveur et la lecture avec {connectedProvider}."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search. Links are read with the built-in reader."
-msgstr "La recherche a été testée avec la recherche de votre serveur. Les liens sont lus avec le lecteur intégré."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search works"
-msgstr "Travaux de recherche"
 
 #: src/components/ui/combobox.tsx
 msgid "Search..."
@@ -16068,18 +15954,6 @@ msgstr "Rechercher…"
 #: src/features/assistant/conversation.tsx
 msgid "Searched the web"
 msgstr "J'ai cherché sur le Web"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Recherche et lit les pages avec {connectedProvider}, quel que soit le fournisseur d'IA que vous utilisez."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads links with the built-in reader, whichever AI provider you use."
-msgstr "Effectue une recherche avec la recherche de votre serveur et lit les liens avec le lecteur intégré, quel que soit le fournisseur d'IA que vous utilisez."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Effectue une recherche avec la recherche de votre serveur et lit les pages avec {connectedProvider}, quel que soit le fournisseur d'IA que vous utilisez."
 
 #: src/features/career/coach-chat.tsx
 msgid "Searching the web"
@@ -16268,10 +16142,6 @@ msgstr "Envoyer le lien de réinitialisation"
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
 msgstr "Envoyez le CV lui-même plutôt qu'une enveloppe de portfolio."
-
-#: src/features/assistant/tool-approvals.tsx
-msgid "Send this exact query to your web search provider?"
-msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "Sending a link instead of a PDF means recruiters always see the latest version."
@@ -17845,18 +17715,6 @@ msgstr ""
 msgid "Test"
 msgstr "Test"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Test connection"
-msgstr "Tester la connexion"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Test search"
-msgstr "Tester la recherche"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Tested with {connectedProvider}. Only this service was tested."
-msgstr "Testé avec {connectedProvider}. Seul ce service a été testé."
-
 #: src/features/homepage/ui.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Testimonials"
@@ -17866,22 +17724,10 @@ msgstr ""
 msgid "Testimonials layout"
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing search and reading with {connectedProvider}…"
-msgstr "Test de recherche et de lecture avec {connectedProvider}…"
-
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Testing the connection…"
 msgstr "Test de la connexion…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search, and reading with {connectedProvider}…"
-msgstr "Test du service de recherche sur votre serveur et lecture des pages web avec {connectedProvider}…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search…"
-msgstr "Test du service de recherche sur votre serveur…"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Testing…"
@@ -18108,10 +17954,6 @@ msgstr ""
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "The brief"
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The built-in reader remains active."
-msgstr "Le lecteur intégré reste actif."
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -18606,22 +18448,6 @@ msgstr ""
 #: src/features/portfolio/editor/save-problem.ts
 msgid "The server couldn't save your changes. Saving tries again by itself."
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service didn't respond in time. Try again."
-msgstr "Le service n'a pas répondu à temps. Réessayez."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service is unavailable or doesn't support this. Try again later."
-msgstr "Le service n'est pas disponible ou ne prend pas en charge cette opération. Réessayez plus tard."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service rejected the API key. Check the key and save it again."
-msgstr "Le service a rejeté la clé API. Vérifiez la clé et enregistrez-la à nouveau."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service's quota is used up. Check your plan with the service, or try again later."
-msgstr "Le quota du service est épuisé. Vérifiez votre forfait auprès du service, ou réessayez plus tard."
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -19449,10 +19275,6 @@ msgstr ""
 msgid "Too many requests in a short time. Wait a minute, then try again."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Too many requests. Try again later."
-msgstr "Trop de demandes. Réessayez plus tard."
-
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Too many saves in a short time. Saving tries again in a moment."
 msgstr ""
@@ -19663,7 +19485,6 @@ msgstr "Essayez un échantillon"
 #: src/features/resume/editor/write/improve.tsx
 #: src/features/resume/preview/preview.browser.tsx
 #: src/features/resume/share/download-tab.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/features/settings/integrations/ai-provider-load-state.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Try again"
@@ -20349,10 +20170,6 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Servent à évaluer les postes et les offres. Chacun est un nombre, pour que le coach puisse comparer sans deviner."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Used when {connectedProvider} can't read a page. No account needed."
-msgstr "Utilisé lorsque {connectedProvider} ne peut pas lire une page. Aucun compte requis."
-
 #: src/features/homepage/resume.tsx
 msgid "User research"
 msgstr "Recherche utilisateur"
@@ -20375,10 +20192,6 @@ msgstr "Utilise les faits de votre CV"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Uses the linked application"
 msgstr "Utilise la candidature liée"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
-msgstr "Utilise la recherche Web de votre fournisseur d'IA lorsqu'elle est prise en charge et lit les liens avec le lecteur intégré."
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Using your Profile's version."
@@ -20765,11 +20578,6 @@ msgstr ""
 #: src/features/billing/payment-return.tsx
 msgid "We've emailed you the receipt. We'll remind you 3 days before the plan ends."
 msgstr ""
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/web-access.tsx
-msgid "Web access"
-msgstr "Accès Internet"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Web page"
@@ -22302,10 +22110,6 @@ msgstr ""
 #: src/libs/error-message.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "La police sélectionnée ne peut pas afficher certains caractères. Ils s’affichent sous la forme “?”. Dans Apparence, choisissez une police qui les contient."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
-msgstr "Votre serveur propose une recherche Web dans la section Candidatures et pour l'assistant. Connectez un service pour lire les pages Web que le lecteur intégré ne peut pas lire."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your source resume is in Trash"

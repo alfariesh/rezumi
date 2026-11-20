@@ -152,7 +152,6 @@ Additional app workflows have REST endpoints:
 | Editor content checks and job-term matching                                             | `GET /resumes/{id}/checks`, `POST /resumes/{id}/job-matches`                     |
 | Public PDF readability checker                                                          | `POST /pdf-checks`                                                               |
 | File uploads and deletion                                                               | `POST /files`, `DELETE /files`                                                   |
-| Web search integration settings and connection tests                                    | `/integrations/web-access`                                                       |
 | Sign-in, sessions, profile, passwords, two-factor authentication, passkeys and API keys | `/api/auth/*` (outside `/api/openapi`)                                           |
 
 Authentication workflows use Better Auth's native HTTP API and its own error contract. Rezumi publishes their specification at `/api/auth/open-api/generate-schema`; use that specification for the enabled authentication methods. Browser interactions such as zoom, print dialogs and local undo do not require separate server endpoints: use document changes, versions and exports for the corresponding data workflows.

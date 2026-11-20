@@ -30,7 +30,7 @@ import { buildAiExtractionTemplate } from "@rezumi/ai/resume/extraction-template
 import { sanitizeAndParseResumeJson } from "@rezumi/ai/resume/sanitize";
 import { AI_PROVIDER_DEFAULT_BASE_URLS, AI_PROVIDER_DISPLAY_NAMES, aiProviderSchema } from "@rezumi/ai/types";
 import { ZipEntryTooLargeError, unzipEntries } from "@rezumi/import/zip";
-import { decodeEntities } from "../web-access/builtin";
+import { decodeEntities } from "../web/builtin";
 import { isDirectOpenAIProvider } from "./capabilities";
 import { dataBlock } from "./data-block";
 import { aiDeadline } from "./generate-json";

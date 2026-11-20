@@ -627,7 +627,7 @@ describe.skipIf(!databaseUrl)("career knowledge, context and data lifecycle", ()
 	});
 
 	it("adopts the device country on the first search without a Preferences visit", async () => {
-		const { searchScope } = await import("../web-access/regions");
+		const { searchScope } = await import("../jobs/regions");
 		await service.saveProfile("alice", careerProfileDataSchema.parse({ priorities: "Autonomy" }));
 		expect(await searchScope("alice", "Australia/Melbourne")).toEqual({ regions: ["AU"], locations: [] });
 		expect(await service.profile("alice")).toMatchObject({ priorities: "Autonomy", searchRegions: ["AU"] });
@@ -639,7 +639,7 @@ describe.skipIf(!databaseUrl)("career knowledge, context and data lifecycle", ()
 	it.each([null, [], ["DE"]])(
 		"keeps explicit search regions %j when the device country differs",
 		async (searchRegions) => {
-			const { searchScope } = await import("../web-access/regions");
+			const { searchScope } = await import("../jobs/regions");
 			await service.saveProfile("alice", careerProfileDataSchema.parse({ searchRegions }));
 			expect((await searchScope("alice", "Australia/Melbourne")).regions).toEqual(searchRegions ?? []);
 			expect((await service.profile("alice")).searchRegions).toEqual(searchRegions);
@@ -647,7 +647,7 @@ describe.skipIf(!databaseUrl)("career knowledge, context and data lifecycle", ()
 	);
 
 	it("uses the account country before the device and ignores unknown device time zones", async () => {
-		const { searchScope } = await import("../web-access/regions");
+		const { searchScope } = await import("../jobs/regions");
 		await getDb().update(tables.user).set({ timezone: "Europe/Berlin" }).where(eq(tables.user.id, "alice"));
 		expect((await searchScope("alice", "Australia/Melbourne")).regions).toEqual(["DE"]);
 		expect((await service.profile("alice")).searchRegions).toBeUndefined();
@@ -656,7 +656,7 @@ describe.skipIf(!databaseUrl)("career knowledge, context and data lifecycle", ()
 	});
 
 	it("keeps a concurrent explicit preference save when initializing the device country", async () => {
-		const { searchScope } = await import("../web-access/regions");
+		const { searchScope } = await import("../jobs/regions");
 		await Promise.all([
 			searchScope("alice", "Australia/Melbourne"),
 			service.saveProfile("alice", careerProfileDataSchema.parse({ priorities: "Autonomy", searchRegions: ["DE"] })),

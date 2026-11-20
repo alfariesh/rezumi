@@ -1,11 +1,11 @@
-import type { WebAccessContext } from "../web-access/contracts";
+import type { WebContext } from "../web/contracts";
 import { jobPostingsIn, readJobPosting as readSharedJobPosting, toPagePosting } from "@rezumi/job-sites/json-ld";
-import { htmlToText } from "../web-access/builtin";
-import { MAX_CONTENT_CHARS, WebAccessError } from "../web-access/contracts";
-import { readPage } from "../web-access/service";
+import { htmlToText } from "../web/builtin";
+import { MAX_CONTENT_CHARS, WebError } from "../web/contracts";
+import { readPage } from "../web/service";
 
-export { htmlToText } from "../web-access/builtin";
-export { WebAccessError as PostingFetchError } from "../web-access/contracts";
+export { htmlToText } from "../web/builtin";
+export { WebError as PostingFetchError } from "../web/contracts";
 
 /** Matches the applications feature's cap on a saved posting. */
 export const MAX_POSTING_CHARS = MAX_CONTENT_CHARS;
@@ -13,10 +13,10 @@ export const MAX_POSTING_CHARS = MAX_CONTENT_CHARS;
 /** A lone http(s) link, as opposed to pasted posting text. */
 export const isPostingLink = (input: string) => /^https?:\/\/\S+$/i.test(input.trim());
 
-export async function fetchJobPosting(input: string, context: WebAccessContext) {
+export async function fetchJobPosting(input: string, context: WebContext) {
 	const { content, html, ...source } = await readPage(input, context);
 	if (isListingUrl(source.resolvedUrl ?? input) || jobPostingsIn(html ?? "").length > 1)
-		throw new WebAccessError("not-a-page");
+		throw new WebError("not-a-page");
 	const page = readJobPosting(html ?? "");
 	const text = page?.description || content;
 	const truncated = source.truncated || text.length > MAX_POSTING_CHARS;
@@ -84,7 +84,7 @@ const CLOSED =
  * One role's posting, still open: the page describes exactly one JobPosting, or sits at a posting address. A job
  * board's list, a careers page or an article is null.
  */
-export async function readOpenPosting(url: string, context: WebAccessContext) {
+export async function readOpenPosting(url: string, context: WebContext) {
 	const { content, html = "", resolvedUrl } = await readPage(url, context);
 	// The same posting published twice (an SEO plugin beside the tracking system's own) is still one role.
 	const postings = jobPostingsIn(html);

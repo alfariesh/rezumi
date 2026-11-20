@@ -63,7 +63,8 @@ You own your data: a full data export on every plan, with no advertising analyti
 **Job Applications**
 
 - List, Board, Insights, and Calendar views for tracking applications from Saved to Offer
-- Save jobs from a URL or pasted posting; optional keyword search through Firecrawl, Tavily, or Exa
+- Search current job openings on the Jobs page (Hirebase and JobsPipe through treg) and track them
+- Save jobs from a URL or pasted posting; links are read directly, or through Cloudflare Browser Run for pages that need JavaScript
 - Tailor a resume and draft a cover letter for a saved job
 - Track contacts, notes, follow-ups, application outcomes, and the documents you sent
 - Schedule interviews, export calendar events, and import or export applications as CSV
@@ -74,7 +75,7 @@ You own your data: a full data export on every plan, with no advertising analyti
 - Proposed edits show what changes and why; accept or reject each suggestion
 - Improve selected text, review writing, and draft letters from a resume and job posting
 - Connect OpenAI, Anthropic, Google Gemini, OpenRouter, Ollama, or other supported providers and compatible endpoints
-- Optional web search and page reading; self-hosters can configure shared AI and web-access providers
+- Web search and page reading with your own AI connection, with no setup; self-hosters can configure a shared AI provider
 
 **Import, Export, and Sharing**
 

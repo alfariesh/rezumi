@@ -1887,7 +1887,6 @@ msgstr "aktif"
 
 #: src/features/billing/admin/labels.ts
 #: src/features/resume/share/custom-domain-field.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Aktif"
 
@@ -3010,7 +3009,6 @@ msgstr "API dan MCP untuk aplikasi lain"
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "API key"
 msgstr "Kunci API"
 
@@ -3283,10 +3281,6 @@ msgstr "Minta asisten untuk mengerjakannya"
 msgid "Ask the coach"
 msgstr "Tanya coach"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Ask your server administrator to enable credential encryption or configure a shared web connection."
-msgstr "Minta administrator server Anda untuk mengaktifkan enkripsi kredensial atau mengonfigurasi koneksi web bersama."
-
 #: src/features/assistant/conversation.tsx
 msgid "Ask, or describe a change…"
 msgstr "Tanyakan, atau jelaskan perubahan…"
@@ -3309,10 +3303,6 @@ msgstr "Asisten"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Assistant conversations"
 msgstr "Percakapan asisten"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Assistant."
-msgstr "Asisten."
 
 #: src/features/portfolio/editor/password-group.tsx
 msgid "At least 6 characters."
@@ -3764,10 +3754,6 @@ msgstr "Bangunan"
 msgid "Built the design system used by six product teams."
 msgstr "Membangun design system yang dipakai enam tim produk."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Built-in reader"
-msgstr "Pembaca bawaan"
-
 #: src/libs/locale.ts
 msgid "Bulgarian"
 msgstr "Bulgaria"
@@ -3872,7 +3858,6 @@ msgstr "Bisakah perangkat lunak membaca resume Anda?"
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/settings/ai/api-keys.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/hooks/use-confirm.tsx
 msgid "Cancel"
 msgstr "Batalkan"
@@ -3967,7 +3952,6 @@ msgid "Change at renewal"
 msgstr "Ganti saat perpanjangan"
 
 #: src/features/career/coach-chat.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Change connection"
 msgstr "Ubah koneksi"
 
@@ -4798,17 +4782,9 @@ msgstr "Hubungkan {0}"
 msgid "Connect {domain}"
 msgstr "Hubungkan {domain}"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect a service"
-msgstr "Hubungkan layanan"
-
 #: src/features/assistant/provider-setup.tsx
 msgid "Connect an AI provider"
 msgstr "Hubungkan penyedia AI"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect an AI provider above to use the assistant. Saving and preparing jobs doesn't need one."
-msgstr "Hubungkan penyedia AI di atas untuk menggunakan asisten. Menyimpan dan menyiapkan pekerjaan tidak memerlukannya."
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
@@ -4862,10 +4838,6 @@ msgstr ""
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Connection progress"
 msgstr "Kemajuan penghubungan"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Connection saved"
-msgstr "Koneksi disimpan"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -5403,10 +5375,6 @@ msgstr "Tidak dapat memuat dokumen"
 #: src/features/career/knowledge/stories.tsx
 msgid "Couldn't load interviews. Retry"
 msgstr "Tidak dapat memuat wawancara. Coba lagi"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Couldn't load or save web access settings. Try again."
-msgstr "Tidak dapat memuat atau menyimpan setelan akses web. Coba lagi."
 
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Couldn't load the reports. Try again."
@@ -7395,10 +7363,6 @@ msgstr "Inggris"
 msgid "English (United Kingdom)"
 msgstr "Inggris (Britania Raya)"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Enhanced reading failed"
-msgstr "Pembacaan yang ditingkatkan gagal"
-
 #: src/features/assistant/conversation.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "Bacaan yang disempurnakan tidak tersedia; menggunakan pembaca bawaan."
@@ -8497,11 +8461,6 @@ msgstr "Jerman"
 #: src/features/billing/purchase.ts
 msgid "Get {name}"
 msgstr "Ambil {name}"
-
-#. placeholder {0}: PROVIDER_SITES[provider]
-#: src/features/settings/ai/web-access.tsx
-msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
-msgstr "Dapatkan kunci di <0>{0}</0>. Itu disimpan terenkripsi dan hanya digunakan untuk permintaan Anda."
 
 #: src/features/billing/buy-plans.tsx
 msgid "Get a plan"
@@ -9864,10 +9823,6 @@ msgstr ""
 msgid "Key revoked. Apps using it stop working now."
 msgstr "Kunci dicabut. Aplikasi yang menggunakannya berhenti berfungsi sekarang."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Key stored encrypted"
-msgstr "Kunci disimpan terenkripsi"
-
 #: src/features/settings/ai/api-keys.tsx
 msgid "Keys act as you and can read and edit your documents."
 msgstr "Kunci bertindak sebagai Anda dan dapat membaca serta mengedit dokumen Anda."
@@ -10131,8 +10086,8 @@ msgid "Let's start with what you have"
 msgstr "Mari kita mulai dengan apa yang Anda miliki"
 
 #: src/features/career/coach.tsx
-msgid "Lets the coach search public pages through your web search service"
-msgstr "Memungkinkan coach mencari halaman publik melalui layanan pencarian web Anda"
+msgid "Lets the coach search the web for public pages"
+msgstr "Mengizinkan coach mencari halaman publik di web"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "letter"
@@ -10436,10 +10391,6 @@ msgstr "Memuat lamaran…"
 msgid "Loading connection request..."
 msgstr "Memuat permintaan koneksi..."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Loading connection…"
-msgstr "Memuat koneksi…"
-
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Loading connections..."
 msgstr "Memuat koneksi..."
@@ -10674,10 +10625,6 @@ msgstr "Melayu"
 #: src/libs/locale.ts
 msgid "Malayalam"
 msgstr "Malayalam"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Managed by server"
-msgstr "Dikelola oleh server"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Managed by your server"
@@ -12610,10 +12557,6 @@ msgstr "Terbuka di Karier → Penawaran."
 msgid "opens in new tab"
 msgstr "terbuka di tab baru"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Optional"
-msgstr "Opsional"
-
 #: src/features/settings/ai/providers.tsx
 msgid "Optional for local Ollama"
 msgstr "Opsional untuk Ollama lokal"
@@ -13004,10 +12947,6 @@ msgstr "Tempelkan postingan pekerjaan untuk melihat ketentuan mana yang sudah ad
 #: src/features/career/workspace/apply.tsx
 msgid "Paste the question from the form"
 msgstr "Tempel pertanyaan dari formulir"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Paste your key"
-msgstr "Tempelkan kunci Anda"
 
 #: src/features/profile/sources/messages.ts
 msgid "Paste your profile link, like linkedin.com/in/your-name."
@@ -13950,12 +13889,7 @@ msgstr "Lindungi resume Anda dengan kata sandi"
 msgid "Prototyping"
 msgstr "Prototipe"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Provided by your server: {connectedProvider}."
-msgstr "Disediakan oleh server Anda: {connectedProvider}."
-
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Provider"
 msgstr "Penyedia"
 
@@ -14234,10 +14168,6 @@ msgstr "Baca panduan “Menerapkan gaya kustom”."
 msgid "Read the attachment"
 msgstr "Baca lampirannya"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Read the job links you save. Saving and preparing jobs works without a connection."
-msgstr "Baca tautan pekerjaan yang Anda simpan. Menyimpan dan menyiapkan pekerjaan berfungsi tanpa koneksi."
-
 #: src/features/assistant/conversation.tsx
 msgid "Read the letter"
 msgstr "Baca surat itu"
@@ -14361,10 +14291,6 @@ msgstr "Membaca yang Anda bagikan"
 msgid "Reading Word files needs an AI provider. Set one up in Settings, or import a PDF or JSON file instead."
 msgstr "Membaca file Word memerlukan penyedia AI. Siapkan satu di Pengaturan, atau impor file PDF atau JSON."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Reading works"
-msgstr "Membaca berhasil"
-
 #: src/features/career/shared.tsx
 msgid "Reading your answer"
 msgstr "Membaca jawaban Anda"
@@ -14394,10 +14320,6 @@ msgstr "Membaca…"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Reads cleanly"
 msgstr "Membaca dengan bersih"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Reads supported public job pages. No account needed."
-msgstr "Membaca halaman pekerjaan publik yang didukung. Tidak diperlukan akun."
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "Reads, shares, feedback or awards."
@@ -14748,10 +14670,6 @@ msgstr "Hapus {name}"
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Remove {value}"
 msgstr "Hapus {value}"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Remove connection"
-msgstr "Hapus koneksi"
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Remove field"
@@ -15669,10 +15587,6 @@ msgstr "Simpan sebagai lamaran pekerjaan…"
 msgid "Save changes"
 msgstr "Simpan perubahan"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Save connection"
-msgstr "Simpan koneksi"
-
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Save contact"
@@ -15681,10 +15595,6 @@ msgstr "Simpan kontak"
 #: src/features/career/knowledge/facts.tsx
 msgid "Save correction"
 msgstr "Simpan koreksi"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Save first, then test search and reading. No test runs automatically."
-msgstr "Simpan dulu, lalu tes pencarian dan membaca. Tidak ada tes yang berjalan secara otomatis."
 
 #: src/features/extension/install-links.tsx
 msgid "Save in one click with the browser extension"
@@ -15950,14 +15860,6 @@ msgstr "Cari"
 msgid "Search again"
 msgstr "Cari lagi"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and enhanced reading"
-msgstr "Cari dan tingkatkan bacaan"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and reading are set up for everyone here. Ask your administrator about changes."
-msgstr "Pencarian dan membaca diatur untuk semua orang di sini. Tanyakan kepada administrator Anda tentang perubahan."
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search applications"
 msgstr "Cari lamaran kerja"
@@ -15996,10 +15898,6 @@ msgstr "Mesin pencari tidak mencantumkannya, dan pratinjau tautan menampilkan ga
 msgid "Search facts"
 msgstr "Cari fakta"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search failed"
-msgstr "Pencarian gagal"
-
 #. Accessible label for icon picker search input
 #. Placeholder text in icon picker search input
 #: src/components/input/icon-picker-grid.tsx
@@ -16009,10 +15907,6 @@ msgstr "Cari ikon"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Search for…"
 msgstr "Cari…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
-msgstr "Cari dari lamaran pekerjaan dan asisten, dan baca halaman yang tidak dapat dilakukan oleh pembaca internal. Satu layanan mencakup keduanya."
 
 #: src/features/jobs/search-bar.tsx
 msgid "Search jobs"
@@ -16038,21 +15932,13 @@ msgstr "Cari di dokumentasi"
 msgid "Search the web"
 msgstr ""
 
+#: src/features/assistant/tool-approvals.tsx
+msgid "Search the web for this exact query?"
+msgstr "Cari di web dengan kueri persis ini?"
+
 #: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Cari zona waktu"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search, and reading with {connectedProvider}."
-msgstr "Pencarian diuji dengan pencarian server Anda, dan membaca dengan {connectedProvider}."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search. Links are read with the built-in reader."
-msgstr "Pencarian diuji dengan pencarian server Anda. Tautan dibaca dengan pembaca bawaan."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search works"
-msgstr "Pencarian berhasil"
 
 #: src/components/ui/combobox.tsx
 msgid "Search..."
@@ -16068,18 +15954,6 @@ msgstr "Cari…"
 #: src/features/assistant/conversation.tsx
 msgid "Searched the web"
 msgstr "Mencari di web"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Mencari dan membaca halaman dengan {connectedProvider}, penyedia AI mana pun yang Anda gunakan."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads links with the built-in reader, whichever AI provider you use."
-msgstr "Menelusuri dengan penelusuran server Anda dan membaca tautan dengan pembaca bawaan, penyedia AI mana pun yang Anda gunakan."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Menelusuri dengan penelusuran server Anda dan membaca halaman dengan {connectedProvider}, penyedia AI mana pun yang Anda gunakan."
 
 #: src/features/career/coach-chat.tsx
 msgid "Searching the web"
@@ -16268,10 +16142,6 @@ msgstr "Kirim tautan atur ulang"
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
 msgstr "Kirim resume itu sendiri, bukan berkas portofolio pembungkusnya."
-
-#: src/features/assistant/tool-approvals.tsx
-msgid "Send this exact query to your web search provider?"
-msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "Sending a link instead of a PDF means recruiters always see the latest version."
@@ -17845,18 +17715,6 @@ msgstr "Syarat dan Ketentuan"
 msgid "Test"
 msgstr "Tes"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Test connection"
-msgstr "Uji koneksi"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Test search"
-msgstr "Uji fungsi pencarian"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Tested with {connectedProvider}. Only this service was tested."
-msgstr "Diuji dengan {connectedProvider}. Hanya layanan ini yang diuji."
-
 #: src/features/homepage/ui.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Testimonials"
@@ -17866,22 +17724,10 @@ msgstr "Testimoni"
 msgid "Testimonials layout"
 msgstr "Tata letak Testimoni"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing search and reading with {connectedProvider}…"
-msgstr "Menguji pencarian dan membaca dengan {connectedProvider}…"
-
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Testing the connection…"
 msgstr "Menguji koneksi…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search, and reading with {connectedProvider}…"
-msgstr "Menguji layanan pencarian di server Anda dan pembacaan halaman web dengan {connectedProvider}…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search…"
-msgstr "Menguji layanan pencarian di server Anda…"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Testing…"
@@ -18108,10 +17954,6 @@ msgstr "Lencana tetap tampil pada paketmu"
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "The brief"
 msgstr "Brief"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The built-in reader remains active."
-msgstr "Pembaca internal tetap aktif."
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -18606,22 +18448,6 @@ msgstr "Server tidak bisa membaca gambar ini. Coba file JPG, PNG, atau WebP lain
 #: src/features/portfolio/editor/save-problem.ts
 msgid "The server couldn't save your changes. Saving tries again by itself."
 msgstr "Server tidak bisa menyimpan perubahan Anda. Penyimpanan dicoba lagi otomatis."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service didn't respond in time. Try again."
-msgstr "Layanan tidak merespons tepat waktu. Coba lagi."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service is unavailable or doesn't support this. Try again later."
-msgstr "Layanan tidak tersedia atau tidak mendukung ini. Coba lagi nanti."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service rejected the API key. Check the key and save it again."
-msgstr "Layanan menolak kunci API. Periksa kunci dan simpan lagi."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service's quota is used up. Check your plan with the service, or try again later."
-msgstr "Kuota layanan sudah habis. Periksa paket Anda di layanan tersebut, atau coba lagi nanti."
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -19449,10 +19275,6 @@ msgstr "Terlalu banyak pesan untuk saat ini. Coba lagi nanti."
 msgid "Too many requests in a short time. Wait a minute, then try again."
 msgstr "Terlalu banyak permintaan dalam waktu singkat. Tunggu sebentar, lalu coba lagi."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Too many requests. Try again later."
-msgstr "Terlalu banyak permintaan. Coba lagi nanti."
-
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Too many saves in a short time. Saving tries again in a moment."
 msgstr "Terlalu banyak penyimpanan dalam waktu singkat. Penyimpanan dicoba lagi sebentar lagi."
@@ -19663,7 +19485,6 @@ msgstr "Coba sampel"
 #: src/features/resume/editor/write/improve.tsx
 #: src/features/resume/preview/preview.browser.tsx
 #: src/features/resume/share/download-tab.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/features/settings/integrations/ai-provider-load-state.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Try again"
@@ -20349,10 +20170,6 @@ msgstr "Dipakai pada {at}"
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Dipakai untuk memeriksa posisi dan penawaran. Masing-masing berupa angka, jadi coach bisa membandingkan tanpa menebak."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Used when {connectedProvider} can't read a page. No account needed."
-msgstr "Digunakan ketika {connectedProvider} tidak dapat membaca halaman. Tidak diperlukan akun."
-
 #: src/features/homepage/resume.tsx
 msgid "User research"
 msgstr "Riset pengguna"
@@ -20375,10 +20192,6 @@ msgstr "Menggunakan fakta dari resume Anda"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Uses the linked application"
 msgstr "Menggunakan lamaran pekerjaan tertaut"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
-msgstr "Menggunakan penelusuran web milik penyedia AI Anda jika didukung, dan membaca tautan dengan pembaca bawaan."
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Using your Profile's version."
@@ -20765,11 +20578,6 @@ msgstr "Kami sudah mengirim tautan verifikasi baru ke {email}."
 #: src/features/billing/payment-return.tsx
 msgid "We've emailed you the receipt. We'll remind you 3 days before the plan ends."
 msgstr "Bukti bayar sudah kami kirim ke emailmu. Kami mengingatkanmu 3 hari sebelum paket berakhir."
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/web-access.tsx
-msgid "Web access"
-msgstr "Akses web"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Web page"
@@ -22302,10 +22110,6 @@ msgstr "Loker, catatan, dan pengingat yang kamu simpan masih ada di akun Rezumi.
 #: src/libs/error-message.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Font yang Anda pilih tidak dapat menampilkan beberapa karakter. Karakter tersebut ditampilkan sebagai “?”. Di Desain, pilih font yang memilikinya."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
-msgstr "Server Anda menyediakan pencarian web di bagian Lamaran dan untuk asisten. Hubungkan layanan untuk membaca halaman web yang tidak dapat dibaca oleh pembaca internal."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your source resume is in Trash"

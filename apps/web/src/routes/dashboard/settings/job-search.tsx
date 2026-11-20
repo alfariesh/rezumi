@@ -1,8 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-// Settings is two pages, Account and Settings; the old address redirects to the group it held.
+// Job search had its own settings once; finding roles now lives on the Jobs page and needs no setup.
 export const Route = createFileRoute("/dashboard/settings/job-search")({
 	beforeLoad: () => {
-		throw redirect({ to: "/dashboard/settings/app", hash: "web-access", replace: true });
+		throw redirect({ to: "/dashboard/jobs", replace: true });
 	},
 });

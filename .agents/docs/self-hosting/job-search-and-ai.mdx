@@ -1,156 +1,69 @@
 ---
 title: "Job search and AI"
-description: "Configure one optional Firecrawl, Tavily or Exa connection and an AI provider without blocking manual job saving."
+description: "Configure Cloudflare Browser Run for pages that need JavaScript, treg for job search and assistant web search, and an AI provider without blocking manual job saving."
 ---
 
-Users can save pasted job descriptions, read supported public links and prepare resumes manually without adding
-API accounts. This guide adds optional keyword search, enhanced page reading and AI assistance to a working
-[Cloudflare Workers deployment](/self-hosting/cloudflare).
+Users can save pasted job descriptions, read public posting links and prepare resumes manually without adding
+API accounts. This guide adds reading pages that need JavaScript, job search, assistant web search and AI assistance
+to a working [Cloudflare Workers deployment](/self-hosting/cloudflare). Users set none of this up themselves.
 
-| Service                  | What it does                                                                      | Required for                                  |
-| ------------------------ | --------------------------------------------------------------------------------- | --------------------------------------------- |
-| Built-in reader          | Reads supported public pages.                                                     | Active without credentials.                   |
-| Firecrawl, Tavily or Exa | One selected connection supplies search and enhanced reading.                     | Optional keyword search and enhanced reading. |
-| SearXNG                  | Searches the web for Rezumi directly, or for your self-hosted Firecrawl.          | Optional alternative search backend.          |
-| AI provider              | Extracts role, company, salary, requirements and other details from posting text. | AI extraction and other AI features.          |
+| Service                | What it does                                                                          | Required for                                              |
+| ---------------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Built-in reader        | Reads public pages directly: JobPosting data first, then page text.                   | Active without credentials.                               |
+| Cloudflare Browser Run | Reads a page again in a real browser when the direct reader finds nothing to read.    | Optional; pages drawn by JavaScript or behind bot checks. |
+| treg                   | Job search on the **Jobs** page and web search for the assistant, paid by the server. | Optional job search and assistant web search.             |
+| AI provider            | Extracts role, company, salary, requirements and other details from posting text.     | AI extraction and other AI features.                      |
 
-Rezumi calls the selected web service, SearXNG and the AI provider separately. Assistant web search
-requires a configured Firecrawl, Tavily or Exa connection, or a SearXNG search URL. Without either, the assistant can
-read supplied public URLs with the built-in reader or work from pasted text.
+Rezumi calls Browser Run, treg and the AI provider separately. Without Browser Run, only the direct reader runs.
+Without treg, there is no job search and no assistant web search; the assistant asks for a link or pasted text
+instead.
 
-## 1. Choose shared services or personal keys
+## 1. Read pages that need JavaScript with Browser Run
 
-For shared web access, set one provider and key on the Rezumi Worker. Put the provider in `vars` in
-`wrangler.jsonc` and the key in a Wrangler secret:
+The direct reader goes first for every pasted job link, the assistant's page reading and Profile's personal website
+reader. When it finds nothing to read (an empty page, a page drawn by JavaScript with only a few words or an "enable
+JavaScript" note and no JSON-LD, a bot check, or a site that refuses plain requests), Rezumi reads the page again
+through Cloudflare Browser Run's Quick Actions `/content` endpoint,
+which opens it in a real browser and returns the rendered HTML. The address is always checked to be public `https://`
+(no private or loopback addresses, DNS included) before anything is fetched or sent to Browser Run.
+
+Create a Cloudflare API token with the **Browser Run Edit** permission, then set it and your account ID:
 
 ```jsonc wrangler.jsonc
-"vars": { "WEB_ACCESS_PROVIDER": "tavily" } // firecrawl, tavily or exa
+// The 32-character Account ID from the Cloudflare dashboard. Not secret.
+"vars": { "CLOUDFLARE_ACCOUNT_ID": "0123456789abcdef0123456789abcdef" }
 ```
 
 ```bash
-pnpm exec wrangler secret put WEB_ACCESS_API_KEY
+pnpm exec wrangler secret put CLOUDFLARE_BROWSER_TOKEN
 ```
 
-**Settings → Web access** then says **Provided by the server**, and personal connection changes are
-disabled. Paid usage is charged to the shared account. Existing personal connections stay stored and become available
-again if you remove shared configuration. AI has its own existing shared/personal configuration.
+Both are needed; without them only the direct reader runs. Each person can have 20 pages read through the browser per
+UTC day; past that, only the direct reader runs for them until the next day. Workers Paid includes 10 browser hours a
+month, then $0.09 an hour. LinkedIn and Indeed often block automated reading even in a browser; point users to the
+browser extension for those sites. For local development, add both values to `.env.local`.
 
-To let users bring their own keys instead, leave that integration's server variables unset and configure
-`ENCRYPTION_SECRET` with at least 32 characters, different from `AUTH_SECRET`. Users choose **Connect a service**,
-select Firecrawl, Tavily or Exa, and save one key. Replacing the connection replaces the old key; unused providers do
-not retain keys. Personal connections always use official cloud endpoints. Custom Firecrawl URLs belong only to
-operator configuration. Shared configuration does not need `ENCRYPTION_SECRET`.
+## 2. Job search and assistant web search through treg
 
-You can mix these choices, such as shared web access with personal AI keys. See the
-[environment reference](/self-hosting/environment-variables#ai-and-redis) for all settings.
-
-## 2. Connect Firecrawl
-
-Follow the official [Firecrawl self-hosting guide](https://docs.firecrawl.dev/contributing/self-host) to deploy its
-API and supporting services on a host of your choice. Rezumi connects to that service over HTTPS. Because the
-Worker runs with `global_fetch_strictly_public`, the service needs a public HTTPS address; private-network and
-`localhost` addresses are unreachable from Cloudflare. Protect it with a bearer key.
-
-Add the connection to **Rezumi's** Worker configuration:
-
-```jsonc wrangler.jsonc
-"vars": {
-  "WEB_ACCESS_PROVIDER": "firecrawl",
-  // Replace with the public HTTPS address of your Firecrawl API.
-  "WEB_ACCESS_API_URL": "https://firecrawl.example.com"
-}
-```
+Job search on the **Jobs** page and the assistant's web search both run through [treg](https://treg.to) on your
+account, with one token:
 
 ```bash
-# Set only if your Firecrawl deployment requires a bearer key.
-pnpm exec wrangler secret put WEB_ACCESS_API_KEY
+pnpm exec wrangler secret put TREG_API_KEY
 ```
 
-Use the API base URL without `/v2`. A URL alone enables a keyless self-hosted service globally. Because it must be publicly reachable on Cloudflare,
-use a bearer key and follow Firecrawl's [production guidance](https://docs.firecrawl.dev/contributing/self-host#before-production).
-Keep its protections against private destination URLs, unsafe redirects and DNS rebinding enabled; job-posting URLs
-in Rezumi must point to public HTTPS destinations.
+Assistant web search asks Serper (Google results, about $0.001 a search) first, targeted by the person's search
+countries, up to three countries searched in parallel. If Serper fails, treg's routed web search tries other search
+providers within a $0.01 ceiling. The person approves each exact query before it is sent. The career coach searches
+only when **Web research** is on for that message, and only a person's own AI connection runs web tools; Rezumi AI
+does not.
 
-For Firecrawl Cloud, use its [quickstart](https://docs.firecrawl.dev/introduction) to get a key, set only
-`WEB_ACCESS_PROVIDER="firecrawl"` and `WEB_ACCESS_API_KEY`, and leave `WEB_ACCESS_API_URL` unset. Requests then go to
-`https://api.firecrawl.dev`. Tavily and Exa use fixed official endpoints and require a key. Supplying their own API URL
-is rejected. Incomplete web-access configuration fails startup.
+Search spending counts toward the same daily server budget as job search, `JOB_SEARCH_DAILY_BUDGET_USD` (default 1 US
+dollar). Once it is spent, search fails with "Web search reached today's limit on this server. Try again tomorrow."
+Each person can also send 50 web searches per UTC day. See the
+[environment reference](/self-hosting/environment-variables#job-search-and-web-reading).
 
-### Local development
-
-For host-run local development (`pnpm dev`), you can run Firecrawl on your machine. Publish its API port `3002` as host
-port `3102` to avoid Rezumi's email preview on `3002`, and add `WEB_ACCESS_PROVIDER="firecrawl"` and
-`WEB_ACCESS_API_URL="http://localhost:3102"` to `.env.local`. A deployed Worker cannot reach `localhost`.
-
-## 3. Search through SearXNG (optional)
-
-SearXNG can serve web search in two ways: Rezumi can query it directly, or your self-hosted Firecrawl can use
-it as its search backend. Either way, deploy SearXNG on a host of your choice using its official [installation guide](https://docs.searxng.org/admin/installation.html).
-In its `settings.yml`, add `json` to the existing `search.formats` list, keeping other search settings:
-
-```yaml
-search:
-  formats:
-    - html
-    - json
-```
-
-The [search settings reference](https://docs.searxng.org/admin/settings/settings_search.html) documents these formats.
-
-### Search directly from Rezumi
-
-Add the following to **Rezumi's** `vars` in `wrangler.jsonc`, using a public HTTPS address reachable from the Worker:
-
-```jsonc wrangler.jsonc
-"vars": { "WEB_SEARCH_SEARXNG_URL": "https://searxng.example.com" }
-```
-
-Use the base URL without `/search`; Rezumi appends it and requests JSON. Every web search then goes to SearXNG
-for all users, whether or not they have a web connection. Shared and personal `WEB_ACCESS_*` connections keep working
-beside it. Each of a user's search countries becomes one SearXNG request. The server uses that country's likely language
-in `language`, such as `en-AU`, `ja-JP` or `pt-BR`, for Applications, the assistant, discovery and connection tests.
-The interface language does not change this country signal. Engines that honour the locale favour that country.
-A search with no country sends no `language`, so SearXNG uses its own default.
-
-SearXNG only searches. Reading a page still uses the user's or the server's Firecrawl, Tavily or Exa connection, then
-the built-in reader. Some job sites block plain fetches, so keep a provider connection for reading if your users rely
-on those sites. **Test connection** then tests search against SearXNG and reading against that connection.
-
-SearXNG can return HTTP 200 even when engines fail. Empty responses containing `unresponsive_engines` are reported
-as search failures, including in **Test connection**. Useful results from working engines are kept, and a clean empty
-response still means no results. Check SearXNG's logs and the `unresponsive_engines` field when diagnosing failures.
-
-### Search through self-hosted Firecrawl
-
-Add the following to **Firecrawl's** environment, using an address reachable from its API and workers:
-
-```dotenv
-SEARXNG_ENDPOINT="http://searxng:8080"
-# Optional filters; leave unset to use your SearXNG defaults.
-# SEARXNG_ENGINES="google,bing"
-# SEARXNG_CATEGORIES="general"
-```
-
-Replace `searxng` with the address of your SearXNG service. Use the base URL without `/search`: Firecrawl appends that
-path and requests JSON, as shown in its [SearXNG adapter](https://github.com/firecrawl/firecrawl/blob/v2.11.162/apps/api/src/search/v2/searxng.ts).
-These variables belong to Firecrawl, not Rezumi.
-
-### Check JSON output
-
-Restart SearXNG after changing settings, then redeploy the Rezumi Worker or restart Firecrawl's services after
-changing their environment. To check JSON output, run this from a host that can reach SearXNG, replacing the
-address as needed:
-
-```bash
-curl --get 'https://searxng.example.com/search' \
-  --data-urlencode 'q=software engineer jobs' \
-  --data-urlencode 'format=json'
-```
-
-Expect a JSON response with a `results` array. Disabled JSON output returns `403`; public instances often disable it.
-See the [SearXNG search API](https://docs.searxng.org/dev/search_api.html).
-
-## 4. Connect OpenAI or another AI provider
+## 3. Connect OpenAI or another AI provider
 
 For OpenAI, follow its [API quickstart](https://developers.openai.com/api/docs/quickstart), create a key in the
 [API dashboard](https://platform.openai.com/api-keys), and enable API billing. API usage is
@@ -186,59 +99,37 @@ set `AI_BASE_URL` to its provider endpoint, for example
 `AI_GATEWAY_TOKEN` secret. An OpenAI endpoint through the gateway keeps the Assistant's direct-OpenAI features. Leave
 the gateway's **Collect Logs** off unless you need it: it stores prompts and replies, which hold people's resume data.
 
-The AI key belongs to Rezumi for this workflow. Web services receive search queries and selected public URLs;
-they do not need the AI-provider key or candidate resume data.
+The AI key belongs to Rezumi for this workflow. treg receives search queries and Browser Run receives selected public
+URLs; neither needs the AI-provider key or candidate resume data.
 
-## 5. Apply settings and verify the workflow
+## 4. Apply settings and verify the workflow
 
 On Cloudflare, set plain values in `vars` in `wrangler.jsonc` and secrets with `wrangler secret put`, then redeploy with
 `pnpm deploy:cloudflare`. For local development, edit `.env.local` and restart `pnpm dev`. Keep keys in Wrangler secrets
 or server configuration, never browser build variables.
 
-1. Open **Settings → Web access**. The built-in reader should show **Active**. The selected web service
-   should show its provider and ownership.
-2. Click **Test connection**. Search and reading are tested separately; a built-in fallback cannot make this pass.
-3. Open **Applications**, enter search keywords, choose a result and review the role, company and retained description.
-4. Save the job as **Saved**, prepare a selected resume or a copy, and confirm **Mark as applied** after submission.
-5. Try a public posting URL and pasted text. Failed reading should preserve the draft and offer pasted-text recovery.
+1. Open **Applications**, select **Save a job**, paste a public posting link and review the role, company and retained
+   description.
+2. Try a posting link whose page is drawn by JavaScript. With Browser Run configured, the application's posting source
+   shows it was read with `browser`.
+3. Save the job as **Saved**, prepare a selected resume or a copy, and confirm **Mark as applied** after submission.
+4. Try pasted text and a link that cannot be read. Failed reading should preserve the draft and offer pasted-text
+   recovery.
+5. With `TREG_API_KEY` set, ask the assistant (on your own AI connection) to look something up. Approve the query and
+   check the **Sources** it lists.
 
 `/api/health` checks database, storage and configured Redis; it does not verify these integrations. If a step fails:
 
-| Symptom                       | Check                                                                                                                                                                                                                 |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| No keyword search             | Configure one shared connection, save a personal key in Web access, or set `WEB_SEARCH_SEARXNG_URL`.                                                                                                                  |
-| Enhanced access fails         | Test search and reading separately. Check provider credentials, quota and service support. For Firecrawl, also check its network address and [self-hosting guide](https://docs.firecrawl.dev/contributing/self-host). |
-| SearXNG returns HTML or `403` | Enable JSON and check proxy/access rules against its [search API](https://docs.searxng.org/dev/search_api.html).                                                                                                      |
-| AI extraction fails           | Check provider billing, key and model access; verify all required [AI variables](/self-hosting/environment-variables#ai-and-redis).                                                                                   |
-
-Reading failures can fall back to the built-in reader, so a successful URL import alone does not prove the external
-service was used. Review the displayed posting source and use the independent connection test.
-
-## Credential backups
-
-Personal connections store encrypted keys in `web_access_credentials`. Preserve `ENCRYPTION_SECRET` with the
-PostgreSQL backup so restored keys can be decrypted. Verify restored connections in a disposable installation
-before upgrading the live installation. The retired Firecrawl API, environment aliases and credential table are
-removed; all providers use `/integrations/web-access` and the `WEB_ACCESS_*` variables.
-
-## Opt-in live connection check
-
-Use a dedicated maintainer test account and select each provider independently in Web access (or shared server
-configuration). Its API key authenticates this command; the web-service key remains in encrypted settings or server
-configuration. The check performs one public search and one read of `https://example.com/`, without fallback:
-
-```sh
-APP_URL="http://localhost:3000" WEB_ACCESS_SMOKE_API_KEY="test-account-api-key" \
-  node tooling/web-access/smoke.mjs tavily
-```
-
-Repeat with `firecrawl` and `exa` after selecting the matching connection. These calls use provider quota. Mocked
-tests establish application behavior; a live provider is verified only when this command succeeds with actual test
-credentials. Do not commit credentials or shell output containing them.
+| Symptom                               | Check                                                                                                                                  |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Pages drawn by JavaScript stay empty  | Set both `CLOUDFLARE_BROWSER_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`; check the token has **Browser Run Edit** and your browser hours left. |
+| The assistant never offers web search | Set `TREG_API_KEY`; use your own AI connection, since Rezumi AI runs no web tools.                                                     |
+| "Web search reached today's limit"    | The shared `JOB_SEARCH_DAILY_BUDGET_USD` is spent for today; raise it or wait for the next UTC day.                                    |
+| AI extraction fails                   | Check provider billing, key and model access; verify all required [AI variables](/self-hosting/environment-variables#ai-and-redis).    |
 
 ## Career schedules
 
-The same web connection supports [automatic role discovery](/guides/finding-roles-automatically). Users enable a search schedule in **Career → Today**. Interview briefings use AI separately, and users must enable their preparation schedule too. Work runs on the server while the browser is closed.
+The same treg token powers [job alerts](/guides/finding-roles-automatically). Users enable a search schedule in **Career → Today**. Interview briefings use AI separately, and users must enable their preparation schedule too. Work runs on the server while the browser is closed.
 
 On Cloudflare, the scheduler is the once-per-minute Cron Trigger in `wrangler.jsonc`; no runner secret is needed. Verify a due reminder in a dedicated test installation. See [Operating scheduled work](/contributing/career-platform#operate-scheduled-work) for setup, delivery and retry details.
 

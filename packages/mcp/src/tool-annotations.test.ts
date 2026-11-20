@@ -56,7 +56,6 @@ describe("tool annotations", () => {
 			"api_ai_providers_test",
 			"api_agent_threads_get",
 			"api_ai_parse_pdf",
-			"api_web_access_test",
 		]) {
 			expect(PARITY_TOOL_META[name]?.annotations, name).toMatchObject({ readOnlyHint: false, destructiveHint: true });
 		}
@@ -64,8 +63,6 @@ describe("tool annotations", () => {
 
 	it("distinguishes internal operations from external AI, search and public sharing", () => {
 		for (const name of [
-			"api_web_access_status",
-			"api_web_access_delete",
 			"api_ai_providers_list",
 			"api_ai_providers_delete",
 			"api_ai_providers_set_default",

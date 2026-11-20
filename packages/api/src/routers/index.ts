@@ -15,7 +15,6 @@ import { profileRouter } from "../features/profile/router";
 import { resumeRouter } from "../features/resume/router";
 import { statisticsRouter } from "../features/statistics/router";
 import { storageRouter } from "../features/storage/router";
-import { webAccessRouter } from "../features/web-access/router";
 
 export default {
 	ai: aiRouter,
@@ -35,5 +34,4 @@ export default {
 	resume: resumeRouter,
 	statistics: statisticsRouter,
 	storage: storageRouter,
-	webAccess: webAccessRouter,
 };

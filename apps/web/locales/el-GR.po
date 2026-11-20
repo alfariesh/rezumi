@@ -1887,7 +1887,6 @@ msgstr ""
 
 #: src/features/billing/admin/labels.ts
 #: src/features/resume/share/custom-domain-field.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Ενεργός"
 
@@ -3010,7 +3009,6 @@ msgstr ""
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "API key"
 msgstr "Κλειδί API"
 
@@ -3283,10 +3281,6 @@ msgstr "Ζητήστε από τον βοηθό να το δουλέψει"
 msgid "Ask the coach"
 msgstr "Ρωτήστε τον σύμβουλο"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Ask your server administrator to enable credential encryption or configure a shared web connection."
-msgstr "Ζητήστε από τον διαχειριστή του διακομιστή σας να ενεργοποιήσει την κρυπτογράφηση διαπιστευτηρίων ή να διαμορφώσει μια κοινόχρηστη σύνδεση ιστού."
-
 #: src/features/assistant/conversation.tsx
 msgid "Ask, or describe a change…"
 msgstr "Ρωτήστε ή περιγράψτε μια αλλαγή…"
@@ -3309,10 +3303,6 @@ msgstr "Βοηθός"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Assistant conversations"
 msgstr "Βοηθητικές συνομιλίες"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Assistant."
-msgstr "Βοηθός."
 
 #: src/features/portfolio/editor/password-group.tsx
 msgid "At least 6 characters."
@@ -3764,10 +3754,6 @@ msgstr ""
 msgid "Built the design system used by six product teams."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Built-in reader"
-msgstr "Ενσωματωμένος αναγνώστης"
-
 #: src/libs/locale.ts
 msgid "Bulgarian"
 msgstr "Βουλγαρικά"
@@ -3872,7 +3858,6 @@ msgstr "Μπορεί το λογισμικό να διαβάσει το βιογ
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/settings/ai/api-keys.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/hooks/use-confirm.tsx
 msgid "Cancel"
 msgstr "Ακύρωση"
@@ -3967,7 +3952,6 @@ msgid "Change at renewal"
 msgstr ""
 
 #: src/features/career/coach-chat.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Change connection"
 msgstr "Αλλαγή σύνδεσης"
 
@@ -4798,17 +4782,9 @@ msgstr "Σύνδεση του {0}"
 msgid "Connect {domain}"
 msgstr "Σύνδεση του {domain}"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect a service"
-msgstr "Συνδέστε μια υπηρεσία"
-
 #: src/features/assistant/provider-setup.tsx
 msgid "Connect an AI provider"
 msgstr "Συνδέστε έναν πάροχο τεχνητής νοημοσύνης"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect an AI provider above to use the assistant. Saving and preparing jobs doesn't need one."
-msgstr "Συνδέστε έναν πάροχο τεχνητής νοημοσύνης παραπάνω για να χρησιμοποιήσετε τον βοηθό. Η αποθήκευση και η προετοιμασία εργασιών δεν χρειάζεται."
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
@@ -4862,10 +4838,6 @@ msgstr ""
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Connection progress"
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Connection saved"
-msgstr "Η σύνδεση αποθηκεύτηκε"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -5403,10 +5375,6 @@ msgstr "Δεν ήταν δυνατή η φόρτωση εγγράφων"
 #: src/features/career/knowledge/stories.tsx
 msgid "Couldn't load interviews. Retry"
 msgstr "Δεν ήταν δυνατή η φόρτωση των συνεντεύξεων. Δοκιμάστε ξανά"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Couldn't load or save web access settings. Try again."
-msgstr "Δεν ήταν δυνατή η φόρτωση ή η αποθήκευση των ρυθμίσεων πρόσβασης στο web. Προσπαθήστε ξανά."
 
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Couldn't load the reports. Try again."
@@ -7395,10 +7363,6 @@ msgstr "Αγγλικά"
 msgid "English (United Kingdom)"
 msgstr "Αγγλικά (Ηνωμένο Βασίλειο)"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Enhanced reading failed"
-msgstr "Η βελτιωμένη ανάγνωση απέτυχε"
-
 #: src/features/assistant/conversation.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "Η βελτιωμένη ανάγνωση δεν είναι διαθέσιμη. χρησιμοποίησε τον ενσωματωμένο αναγνώστη."
@@ -8497,11 +8461,6 @@ msgstr "Γερμανικά"
 #: src/features/billing/purchase.ts
 msgid "Get {name}"
 msgstr ""
-
-#. placeholder {0}: PROVIDER_SITES[provider]
-#: src/features/settings/ai/web-access.tsx
-msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
-msgstr "Λάβετε ένα κλειδί στο <0>{0}</0>. Αποθηκεύεται κρυπτογραφημένο και χρησιμοποιείται μόνο για τα αιτήματά σας."
 
 #: src/features/billing/buy-plans.tsx
 msgid "Get a plan"
@@ -9864,10 +9823,6 @@ msgstr ""
 msgid "Key revoked. Apps using it stop working now."
 msgstr "Το κλειδί ανακλήθηκε. Οι εφαρμογές που το χρησιμοποιούν σταματούν να λειτουργούν αμέσως."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Key stored encrypted"
-msgstr "Το κλειδί αποθηκεύεται κρυπτογραφημένο"
-
 #: src/features/settings/ai/api-keys.tsx
 msgid "Keys act as you and can read and edit your documents."
 msgstr "Τα κλειδιά λειτουργούν όπως εσείς και μπορούν να διαβάσουν και να επεξεργαστούν τα έγγραφά σας."
@@ -10131,8 +10086,8 @@ msgid "Let's start with what you have"
 msgstr "Ας ξεκινήσουμε με αυτό που έχετε"
 
 #: src/features/career/coach.tsx
-msgid "Lets the coach search public pages through your web search service"
-msgstr "Επιτρέπει στον σύμβουλο να αναζητά δημόσιες σελίδες μέσω της υπηρεσίας αναζήτησης ιστού σας"
+msgid "Lets the coach search the web for public pages"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "letter"
@@ -10436,10 +10391,6 @@ msgstr "Φόρτωση αιτήσεων…"
 msgid "Loading connection request..."
 msgstr "Φόρτωση αιτήματος σύνδεσης..."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Loading connection…"
-msgstr "Φόρτωση σύνδεσης…"
-
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Loading connections..."
 msgstr "Φόρτωση συνδέσεων..."
@@ -10674,10 +10625,6 @@ msgstr "Μαλάι"
 #: src/libs/locale.ts
 msgid "Malayalam"
 msgstr "Μαλαγιαλάμ"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Managed by server"
-msgstr "Διαχείριση από διακομιστή"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Managed by your server"
@@ -12610,10 +12557,6 @@ msgstr "Ανοίγει στην Καριέρα → Προσφορές."
 msgid "opens in new tab"
 msgstr "ανοίγει σε νέα καρτέλα"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Optional"
-msgstr "Προαιρετικός"
-
 #: src/features/settings/ai/providers.tsx
 msgid "Optional for local Ollama"
 msgstr "Προαιρετικό για τοπικό Ollama"
@@ -13004,10 +12947,6 @@ msgstr "Επικολλήστε την ανάρτηση εργασίας για �
 #: src/features/career/workspace/apply.tsx
 msgid "Paste the question from the form"
 msgstr "Επικολλήστε την ερώτηση από τη φόρμα"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Paste your key"
-msgstr "Επικολλήστε το κλειδί σας"
 
 #: src/features/profile/sources/messages.ts
 msgid "Paste your profile link, like linkedin.com/in/your-name."
@@ -13950,12 +13889,7 @@ msgstr "Προστατέψτε το βιογραφικό σας με κωδικ�
 msgid "Prototyping"
 msgstr "Δημιουργία πρωτοτύπων"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Provided by your server: {connectedProvider}."
-msgstr "Παρέχεται από τον διακομιστή σας: {connectedProvider}."
-
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Provider"
 msgstr "Πάροχος"
 
@@ -14234,10 +14168,6 @@ msgstr "Διαβάστε τον οδηγό «Εφαρμογή προσαρμοσ
 msgid "Read the attachment"
 msgstr "Διαβάστε το συνημμένο"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Read the job links you save. Saving and preparing jobs works without a connection."
-msgstr "Διαβάστε τους συνδέσμους εργασίας που αποθηκεύετε. Η αποθήκευση και η προετοιμασία εργασιών λειτουργεί χωρίς σύνδεση."
-
 #: src/features/assistant/conversation.tsx
 msgid "Read the letter"
 msgstr "Διαβάστε την επιστολή"
@@ -14361,10 +14291,6 @@ msgstr "Ανάγνωση όσων μοιραστήκατε"
 msgid "Reading Word files needs an AI provider. Set one up in Settings, or import a PDF or JSON file instead."
 msgstr "Για την ανάγνωση αρχείων Word απαιτείται πάροχος τεχνητής νοημοσύνης. Ρυθμίστε ένα στις Ρυθμίσεις ή εισαγάγετε ένα αρχείο PDF ή JSON."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Reading works"
-msgstr "Η ανάγνωση λειτουργεί"
-
 #: src/features/career/shared.tsx
 msgid "Reading your answer"
 msgstr "Ανάγνωση της απάντησής σας"
@@ -14394,10 +14320,6 @@ msgstr ""
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Reads cleanly"
 msgstr "Διαβάζει καθαρά"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Reads supported public job pages. No account needed."
-msgstr "Διαβάζει υποστηριζόμενες δημόσιες σελίδες εργασίας. Δεν απαιτείται λογαριασμός."
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "Reads, shares, feedback or awards."
@@ -14748,10 +14670,6 @@ msgstr ""
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Remove {value}"
 msgstr "Αφαιρέστε το {value}"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Remove connection"
-msgstr "Κατάργηση σύνδεσης"
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Remove field"
@@ -15669,10 +15587,6 @@ msgstr "Αποθήκευση ως αίτηση εργασίας…"
 msgid "Save changes"
 msgstr "Αποθήκευση αλλαγών"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Save connection"
-msgstr "Αποθήκευση σύνδεσης"
-
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Save contact"
@@ -15681,10 +15595,6 @@ msgstr ""
 #: src/features/career/knowledge/facts.tsx
 msgid "Save correction"
 msgstr "Αποθήκευση διόρθωσης"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Save first, then test search and reading. No test runs automatically."
-msgstr "Πρώτα αποθηκεύστε και μετά δοκιμάστε την αναζήτηση και την ανάγνωση. Καμία δοκιμή δεν εκτελείται αυτόματα."
 
 #: src/features/extension/install-links.tsx
 msgid "Save in one click with the browser extension"
@@ -15950,14 +15860,6 @@ msgstr ""
 msgid "Search again"
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and enhanced reading"
-msgstr "Αναζήτηση και βελτιωμένη ανάγνωση"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and reading are set up for everyone here. Ask your administrator about changes."
-msgstr "Η αναζήτηση και η ανάγνωση έχουν ρυθμιστεί για όλους εδώ. Ρωτήστε τον διαχειριστή σας για τις αλλαγές."
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search applications"
 msgstr "Αναζήτηση αιτήσεων εργασίας"
@@ -15996,10 +15898,6 @@ msgstr ""
 msgid "Search facts"
 msgstr "Αναζήτηση γεγονότων"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search failed"
-msgstr "Η αναζήτηση απέτυχε"
-
 #. Accessible label for icon picker search input
 #. Placeholder text in icon picker search input
 #: src/components/input/icon-picker-grid.tsx
@@ -16009,10 +15907,6 @@ msgstr "Αναζήτηση για εικονίδιο"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Search for…"
 msgstr "Αναζήτηση για…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
-msgstr "Αναζητήστε από τις Αιτήσεις και τον βοηθό και διαβάστε σελίδες που δεν μπορεί να διαβάσει ο ενσωματωμένος αναγνώστης. Μία υπηρεσία καλύπτει και τα δύο."
 
 #: src/features/jobs/search-bar.tsx
 msgid "Search jobs"
@@ -16038,21 +15932,13 @@ msgstr ""
 msgid "Search the web"
 msgstr ""
 
+#: src/features/assistant/tool-approvals.tsx
+msgid "Search the web for this exact query?"
+msgstr ""
+
 #: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Αναζήτηση ζωνών ώρας"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search, and reading with {connectedProvider}."
-msgstr "Η αναζήτηση δοκιμάστηκε με την αναζήτηση του διακομιστή σας και η ανάγνωση με {connectedProvider}."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search. Links are read with the built-in reader."
-msgstr "Η αναζήτηση δοκιμάστηκε με την αναζήτηση του διακομιστή σας. Οι σύνδεσμοι διαβάζονται με τον ενσωματωμένο αναγνώστη."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search works"
-msgstr "Η αναζήτηση λειτουργεί"
 
 #: src/components/ui/combobox.tsx
 msgid "Search..."
@@ -16068,18 +15954,6 @@ msgstr "Αναζήτηση…"
 #: src/features/assistant/conversation.tsx
 msgid "Searched the web"
 msgstr "Έψαξε στον Ιστό"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Πραγματοποιεί αναζήτηση και ανάγνωση σελίδων με το {connectedProvider}, όποιον πάροχο AI χρησιμοποιείτε."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads links with the built-in reader, whichever AI provider you use."
-msgstr "Πραγματοποιεί αναζήτηση με την αναζήτηση του διακομιστή σας και διαβάζει συνδέσμους με τον ενσωματωμένο αναγνώστη, όποιον πάροχο τεχνητής νοημοσύνης χρησιμοποιείτε."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Πραγματοποιεί αναζήτηση με την αναζήτηση του διακομιστή σας και διαβάζει σελίδες με {connectedProvider}, όποιον πάροχο τεχνητής νοημοσύνης χρησιμοποιείτε."
 
 #: src/features/career/coach-chat.tsx
 msgid "Searching the web"
@@ -16268,10 +16142,6 @@ msgstr "Αποστολή συνδέσμου επαναφοράς"
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
 msgstr "Στείλτε το ίδιο το βιογραφικό αντί για ένα περιτύλιγμα portfolio."
-
-#: src/features/assistant/tool-approvals.tsx
-msgid "Send this exact query to your web search provider?"
-msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "Sending a link instead of a PDF means recruiters always see the latest version."
@@ -17845,18 +17715,6 @@ msgstr ""
 msgid "Test"
 msgstr "Δοκιμή"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Test connection"
-msgstr "Δοκιμαστική σύνδεση"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Test search"
-msgstr "Δοκιμάστε τη λειτουργία αναζήτησης"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Tested with {connectedProvider}. Only this service was tested."
-msgstr "Δοκιμασμένο με {connectedProvider}. Μόνο αυτή η υπηρεσία δοκιμάστηκε."
-
 #: src/features/homepage/ui.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Testimonials"
@@ -17866,22 +17724,10 @@ msgstr ""
 msgid "Testimonials layout"
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing search and reading with {connectedProvider}…"
-msgstr "Δοκιμή αναζήτησης και ανάγνωσης με το {connectedProvider}…"
-
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Testing the connection…"
 msgstr "Δοκιμή της σύνδεσης…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search, and reading with {connectedProvider}…"
-msgstr "Δοκιμή της υπηρεσίας αναζήτησης στον διακομιστή σας και ανάγνωση ιστοσελίδας με {connectedProvider}…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search…"
-msgstr "Δοκιμή της υπηρεσίας αναζήτησης στον διακομιστή σας…"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Testing…"
@@ -18108,10 +17954,6 @@ msgstr ""
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "The brief"
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The built-in reader remains active."
-msgstr "Ο ενσωματωμένος αναγνώστης παραμένει ενεργός."
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -18606,22 +18448,6 @@ msgstr ""
 #: src/features/portfolio/editor/save-problem.ts
 msgid "The server couldn't save your changes. Saving tries again by itself."
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service didn't respond in time. Try again."
-msgstr "Η υπηρεσία δεν ανταποκρίθηκε έγκαιρα. Προσπαθήστε ξανά."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service is unavailable or doesn't support this. Try again later."
-msgstr "Η υπηρεσία δεν είναι διαθέσιμη ή δεν το υποστηρίζει αυτό. Προσπαθήστε ξανά αργότερα."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service rejected the API key. Check the key and save it again."
-msgstr "Η υπηρεσία απέρριψε το κλειδί API. Ελέγξτε το κλειδί και αποθηκεύστε το ξανά."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service's quota is used up. Check your plan with the service, or try again later."
-msgstr "Το όριο χρήσης της υπηρεσίας εξαντλήθηκε. Ελέγξτε το πρόγραμμά σας στην υπηρεσία ή προσπαθήστε ξανά αργότερα."
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -19449,10 +19275,6 @@ msgstr ""
 msgid "Too many requests in a short time. Wait a minute, then try again."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Too many requests. Try again later."
-msgstr "Πάρα πολλά αιτήματα. Δοκιμάστε ξανά αργότερα."
-
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Too many saves in a short time. Saving tries again in a moment."
 msgstr ""
@@ -19663,7 +19485,6 @@ msgstr "Δοκιμάστε ένα δείγμα"
 #: src/features/resume/editor/write/improve.tsx
 #: src/features/resume/preview/preview.browser.tsx
 #: src/features/resume/share/download-tab.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/features/settings/integrations/ai-provider-load-state.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Try again"
@@ -20349,10 +20170,6 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Χρησιμοποιούνται για τον έλεγχο θέσεων και προσφορών. Καθεμία είναι αριθμός, ώστε ο σύμβουλος να συγκρίνει χωρίς εικασίες."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Used when {connectedProvider} can't read a page. No account needed."
-msgstr "Χρησιμοποιείται όταν το {connectedProvider} δεν μπορεί να διαβάσει μια σελίδα. Δεν απαιτείται λογαριασμός."
-
 #: src/features/homepage/resume.tsx
 msgid "User research"
 msgstr "Έρευνα χρηστών"
@@ -20375,10 +20192,6 @@ msgstr "Χρησιμοποιεί στοιχεία από το βιογραφικ
 #: src/features/assistant/assistant-panel.tsx
 msgid "Uses the linked application"
 msgstr "Χρησιμοποιεί τη συνδεδεμένη αίτηση εργασίας"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
-msgstr "Χρησιμοποιεί την αναζήτηση ιστού του παρόχου τεχνητής νοημοσύνης όπου υποστηρίζεται και διαβάζει συνδέσμους με τον ενσωματωμένο αναγνώστη."
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Using your Profile's version."
@@ -20765,11 +20578,6 @@ msgstr ""
 #: src/features/billing/payment-return.tsx
 msgid "We've emailed you the receipt. We'll remind you 3 days before the plan ends."
 msgstr ""
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/web-access.tsx
-msgid "Web access"
-msgstr "Πρόσβαση στον Ιστό"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Web page"
@@ -22302,10 +22110,6 @@ msgstr ""
 #: src/libs/error-message.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Η γραμματοσειρά που επιλέξατε δεν μπορεί να εμφανίσει ορισμένους χαρακτήρες. Εμφανίζονται ως “?”. Στην καρτέλα Σχεδιασμός, επιλέξτε μια γραμματοσειρά που τους περιέχει."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
-msgstr "Ο διακομιστής σας παρέχει αναζήτηση Ιστού στην ενότητα Αιτήσεις και για τον βοηθό. Συνδέστε μια υπηρεσία για να διαβάσετε ιστοσελίδες που ο ενσωματωμένος αναγνώστης δεν μπορεί να διαβάσει."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your source resume is in Trash"

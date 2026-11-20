@@ -9,13 +9,13 @@ import {
 	publicHttpsAgent,
 	resolveHostAddresses,
 } from "@rezumi/utils/url-security.node";
-import { MAX_PAGE_BYTES, WebAccessError } from "./contracts";
+import { MAX_PAGE_BYTES, WebError } from "./contracts";
 
 /** Preserve the posting reader's HTTPS-only policy. */
 export function assertPublicPageUrl(input: string): URL {
 	const url = parseUrl(input.trim());
 	if (url?.protocol !== "https:" || url.username || url.password || isPrivateOrLoopbackHost(url.hostname)) {
-		throw new WebAccessError("unsafe-url");
+		throw new WebError("unsafe-url");
 	}
 	url.hash = "";
 	return url;
@@ -28,10 +28,10 @@ export async function assertPublicTarget(input: string, signal: AbortSignal) {
 	const url = assertPublicPageUrl(input);
 	const addresses = await abortable(resolveHostAddresses(url.hostname), signal).catch((error) => {
 		signal.throwIfAborted();
-		if (error instanceof WebAccessError) throw error;
-		throw new WebAccessError("unreachable");
+		if (error instanceof WebError) throw error;
+		throw new WebError("unreachable");
 	});
-	if (!allPublic(addresses)) throw new WebAccessError("unsafe-url");
+	if (!allPublic(addresses)) throw new WebError("unsafe-url");
 	return url;
 }
 
@@ -61,7 +61,7 @@ export function readBuiltinPage(
 				const location = res.headers.location;
 				if (status >= 300 && status < 400 && location) {
 					res.resume();
-					if (redirects >= 3) return reject(new WebAccessError("unreachable"));
+					if (redirects >= 3) return reject(new WebError("unreachable"));
 					try {
 						resolve(readBuiltinPage(new URL(location, url).toString(), signal, redirects + 1));
 					} catch (error) {
@@ -71,17 +71,17 @@ export function readBuiltinPage(
 				}
 				if (status < 200 || status >= 300) {
 					res.resume();
-					return reject(new WebAccessError("unreachable"));
+					return reject(new WebError("unreachable"));
 				}
 				if (!/text\/html|application\/xhtml\+xml|text\/plain/i.test(String(res.headers["content-type"] ?? ""))) {
 					res.resume();
-					return reject(new WebAccessError("not-a-page"));
+					return reject(new WebError("not-a-page"));
 				}
 				const chunks: Buffer[] = [];
 				let size = 0;
 				res.on("data", (chunk: Buffer) => {
 					size += chunk.length;
-					if (size > MAX_PAGE_BYTES) return req.destroy(new WebAccessError("too-large"));
+					if (size > MAX_PAGE_BYTES) return req.destroy(new WebError("too-large"));
 					chunks.push(chunk);
 				});
 				res.on("end", () => {
@@ -96,8 +96,8 @@ export function readBuiltinPage(
 		);
 		req.on("error", (error) => {
 			if (signal.aborted) return reject(signal.reason);
-			if (error.cause === "unsafe-url") return reject(new WebAccessError("unsafe-url"));
-			reject(error instanceof WebAccessError ? error : new WebAccessError("unreachable"));
+			if (error.cause === "unsafe-url") return reject(new WebError("unsafe-url"));
+			reject(error instanceof WebError ? error : new WebError("unreachable"));
 		});
 		req.end();
 	});
@@ -114,7 +114,7 @@ export async function readCapped(body: ReadableStream<Uint8Array>, signal: Abort
 			const { done, value } = await reader.read();
 			if (done) return Buffer.concat(chunks);
 			bytes += value.byteLength;
-			if (bytes > MAX_PAGE_BYTES) throw new WebAccessError("too-large");
+			if (bytes > MAX_PAGE_BYTES) throw new WebError("too-large");
 			chunks.push(value);
 		}
 	} finally {
@@ -131,19 +131,19 @@ async function readWorkerPage(url: URL, signal: AbortSignal): Promise<{ html: st
 		});
 		if (!response.ok) {
 			await response.body?.cancel();
-			throw new WebAccessError("unreachable");
+			throw new WebError("unreachable");
 		}
 		if (!/text\/html|application\/xhtml\+xml|text\/plain/i.test(response.headers.get("content-type") ?? "")) {
 			await response.body?.cancel();
-			throw new WebAccessError("not-a-page");
+			throw new WebError("not-a-page");
 		}
-		if (!response.body) throw new WebAccessError("not-a-page");
+		if (!response.body) throw new WebError("not-a-page");
 		const html = (await readCapped(response.body, signal)).toString("utf8");
 		return { html, resolvedUrl: response.url || url.href };
 	} catch (error) {
 		signal.throwIfAborted();
-		if (error instanceof WebAccessError) throw error;
-		throw new WebAccessError(error instanceof Error && error.cause === "unsafe-url" ? "unsafe-url" : "unreachable");
+		if (error instanceof WebError) throw error;
+		throw new WebError(error instanceof Error && error.cause === "unsafe-url" ? "unsafe-url" : "unreachable");
 	}
 }
 

@@ -4,7 +4,7 @@ import type { JobListingDraft, JobProvider, JobSeniority } from "@rezumi/schema/
 import type { JobSearchInput } from "@rezumi/schema/jobs/search";
 import { jobListingDraftSchema, MAX_JOB_DESCRIPTION_CHARS } from "@rezumi/schema/jobs/listing";
 import { countryName, SEARCH_REGION_CODES } from "@rezumi/utils/region";
-import { htmlToText } from "../../web-access/builtin";
+import { htmlToText } from "../../web/builtin";
 
 /** A listing from a provider with the provider fields Rezumi keeps beside it (never a person's contact details). */
 export type ProviderListing = JobListingDraft & { raw: Record<string, unknown> };

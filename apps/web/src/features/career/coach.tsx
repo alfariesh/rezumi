@@ -291,7 +291,7 @@ export function Coach({
 				pressed={chips.web}
 				onPressedChange={(web) => setChips({ ...chips, web })}
 				label={t`Web research`}
-				tooltip={t`Lets the coach search public pages through your web search service`}
+				tooltip={t`Lets the coach search the web for public pages`}
 				offIcon="globe-hemisphere-west"
 			/>
 			{offerIds.length > 0 && (

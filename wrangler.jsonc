@@ -54,6 +54,9 @@
 		// nothing here is active. The target is the zone's fallback origin (.agents/docs/self-hosting/sharing-domains.mdx).
 		"CUSTOM_DOMAIN_TARGET": "domains.rezumi.app",
 		"CLOUDFLARE_SAAS_ZONE_ID": "de7723edd44c3c4fc9279b0062d3a49c",
+		// Browser Run reads pasted links that need JavaScript. Not secret; the token is the Worker secret
+		// CLOUDFLARE_BROWSER_TOKEN (permission "Browser Run Edit"). Without it only the direct reader runs.
+		"CLOUDFLARE_ACCOUNT_ID": "8be116534f7237b451f28adec91fbbbd",
 		// The contact form's public Turnstile key; set with its secret (TURNSTILE_SECRET_KEY, a Worker secret) before
 		// launch. Without both, the form isn't offered and Contact falls back to the email button.
 		"TURNSTILE_SITE_KEY": "0x4AAAAAAF5qNivhOg0kkz1u",

@@ -56,7 +56,7 @@ Exact tool sequences for the workflows in SKILL.md. Use them only when the Rezum
 
 `autofill_application_from_job {jobDescription}` also needs an AI provider and returns only `{company, role, location, salary}`, so it adds nothing when parsing had no provider. Use it only to retry after `enrichmentWarning: "ai-unavailable"` when the user wants that (ask first; it fetches no URL and saves nothing).
 
-Search: `api_applications_ai_search_postings {query}` returns up to five posting links when the user has a web-access connection (Firecrawl, Tavily or Exa). Run intake on the ones the user picks.
+Search: there is no MCP tool for finding postings. Job search happens on the Jobs page in the Rezumi app; when the user brings back a posting link or text from there, run intake on it.
 
 ## 3. Marking applied with the exact documents
 

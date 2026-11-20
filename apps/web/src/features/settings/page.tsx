@@ -4,11 +4,10 @@ import { BrowserExtensionSection } from "./ai/browser-extension";
 import { ConnectedAppsSection } from "./ai/connected-apps";
 import { McpSection } from "./ai/mcp";
 import { ProvidersSection } from "./ai/providers";
-import { WebAccessSection } from "./ai/web-access";
 import { GeneralSection } from "./general";
 import { PageHeader } from "@/components/layout/page-header";
 
-/** How the app looks and reads, then the tools it connects to: AI providers, web access, API keys and MCP. */
+/** How the app looks and reads, then the tools it connects to: AI providers, the extension, API keys and MCP. */
 export function AppSettings() {
 	return (
 		<>
@@ -20,7 +19,6 @@ export function AppSettings() {
 			/>
 			<GeneralSection />
 			<ProvidersSection />
-			<WebAccessSection />
 			<BrowserExtensionSection />
 			<ApiKeysSection />
 			<ConnectedAppsSection />

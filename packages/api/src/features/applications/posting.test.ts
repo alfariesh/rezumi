@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 import { MAX_CAPTURE_TEXT_CHARS } from "@rezumi/job-sites/capture";
-import { readPage } from "../web-access/service";
+import { readPage } from "../web/service";
 import { fetchJobPosting, htmlToText, MAX_POSTING_CHARS, readJobPosting, readOpenPosting } from "./posting";
 
-vi.mock("../web-access/service", () => ({
+vi.mock("../web/service", () => ({
 	readPage: vi.fn(),
 }));
 
@@ -81,7 +81,7 @@ describe("readOpenPosting", () => {
 			truncated: false,
 			completeness: "unknown",
 		});
-		expect((await readOpenPosting(url, { connection: null, userId: "user" }))?.company ?? null).toBe(expected);
+		expect((await readOpenPosting(url, { userId: "user" }))?.company ?? null).toBe(expected);
 	});
 });
 
@@ -96,9 +96,9 @@ describe("posting retrieval", () => {
 			truncated: false,
 			completeness: "unknown",
 		});
-		await expect(
-			fetchJobPosting("https://www.linkedin.com/jobs/search/", { userId: "user", connection: null }),
-		).rejects.toMatchObject({ reason: "not-a-page" });
+		await expect(fetchJobPosting("https://www.linkedin.com/jobs/search/", { userId: "user" })).rejects.toMatchObject({
+			reason: "not-a-page",
+		});
 	});
 	it.each(["broken JSON", { "@graph": { unrelated: true } }, { "@graph": "not an array" }, null])(
 		"preserves retrieved text when page metadata is malformed: %j",
@@ -113,12 +113,7 @@ describe("posting retrieval", () => {
 				truncated: false,
 				completeness: "unknown",
 			});
-			expect(
-				await fetchJobPosting("https://jobs.example.com/role", {
-					userId: "user",
-					connection: null,
-				}),
-			).toMatchObject({
+			expect(await fetchJobPosting("https://jobs.example.com/role", { userId: "user" })).toMatchObject({
 				page: null,
 				text: "Designer\nWork on accessible products.",
 				source: {
@@ -140,20 +135,17 @@ describe("posting retrieval", () => {
 				hiringOrganization: { name: "Example" },
 				description: `<p>${"x".repeat(20_001)}</p>`,
 			})}</script>`,
-			format: "markdown",
+			format: "text",
 			retrievedAt: "2026-09-30T12:00:00.000Z",
-			method: "firecrawl",
+			method: "browser",
 			truncated: false,
 			completeness: "unknown",
 		});
-		const result = await fetchJobPosting("https://jobs.example.com/role", {
-			userId: "user",
-			connection: null,
-		});
+		const result = await fetchJobPosting("https://jobs.example.com/role", { userId: "user" });
 		expect(result.page).toMatchObject({ role: "Designer", company: "Example" });
 		expect(result.text).toHaveLength(20_000);
 		expect(result.source).toMatchObject({
-			method: "firecrawl",
+			method: "browser",
 			format: "text",
 			truncated: true,
 			completeness: "incomplete",

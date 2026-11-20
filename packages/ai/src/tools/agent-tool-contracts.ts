@@ -27,10 +27,11 @@ export const readPageOutputSchema = z.object({
 	requestedUrl: z.string(),
 	resolvedUrl: z.string().optional(),
 	content: z.string(),
+	// Older replies read with a web connection kept "markdown" and their reader's name; they still replay.
 	format: z.enum(["text", "markdown"]),
 	retrievedAt: z.iso.datetime({ offset: true }),
 	providerFetchedAt: z.iso.datetime({ offset: true }).optional(),
-	method: z.enum(["builtin", "firecrawl", "tavily", "exa"]),
+	method: z.string(),
 	truncated: z.boolean(),
 	completeness: z.enum(["unknown", "incomplete"]),
 	fallbackReason: z.string().optional(),

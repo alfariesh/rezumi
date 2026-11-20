@@ -147,10 +147,6 @@ export const restAliases = {
 		path: "/ai-providers/{id}/tests",
 		operationId: "createAiProviderTest",
 	}),
-	webAccessTest: router.webAccess.test.route({
-		path: "/integrations/web-access/tests",
-		operationId: "createWebAccessTest",
-	}),
 	message: router.agent.messages.send.route({
 		path: "/agent/threads/{threadId}/messages",
 		operationId: "createAgentMessage",

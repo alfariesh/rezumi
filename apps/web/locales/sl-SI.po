@@ -1887,7 +1887,6 @@ msgstr ""
 
 #: src/features/billing/admin/labels.ts
 #: src/features/resume/share/custom-domain-field.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Aktiven"
 
@@ -3010,7 +3009,6 @@ msgstr ""
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "API key"
 msgstr "Ključ API"
 
@@ -3283,10 +3281,6 @@ msgstr "Prosite pomočnika, naj ga obdela"
 msgid "Ask the coach"
 msgstr "Vprašajte svetovalca"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Ask your server administrator to enable credential encryption or configure a shared web connection."
-msgstr "Prosite skrbnika strežnika, da omogoči šifriranje poverilnic ali konfigurira skupno spletno povezavo."
-
 #: src/features/assistant/conversation.tsx
 msgid "Ask, or describe a change…"
 msgstr "Vprašajte ali opišite spremembo ..."
@@ -3309,10 +3303,6 @@ msgstr "Pomočnik"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Assistant conversations"
 msgstr "Pogovori s pomočnikom"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Assistant."
-msgstr "Pomočnik."
 
 #: src/features/portfolio/editor/password-group.tsx
 msgid "At least 6 characters."
@@ -3764,10 +3754,6 @@ msgstr ""
 msgid "Built the design system used by six product teams."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Built-in reader"
-msgstr "Vgrajen bralnik"
-
 #: src/libs/locale.ts
 msgid "Bulgarian"
 msgstr "Bolgarščina"
@@ -3872,7 +3858,6 @@ msgstr "Ali lahko programska oprema prebere vaš življenjepis?"
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/settings/ai/api-keys.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/hooks/use-confirm.tsx
 msgid "Cancel"
 msgstr "Prekliči"
@@ -3967,7 +3952,6 @@ msgid "Change at renewal"
 msgstr ""
 
 #: src/features/career/coach-chat.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Change connection"
 msgstr "Spremenite povezavo"
 
@@ -4798,17 +4782,9 @@ msgstr "Poveži {0}"
 msgid "Connect {domain}"
 msgstr "Poveži {domain}"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect a service"
-msgstr "Povežite storitev"
-
 #: src/features/assistant/provider-setup.tsx
 msgid "Connect an AI provider"
 msgstr "Povežite ponudnika AI"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Connect an AI provider above to use the assistant. Saving and preparing jobs doesn't need one."
-msgstr "Če želite uporabljati pomočnika, zgoraj povežite ponudnika AI. Shranjevanje in priprava delovnih mest ga ne potrebujeta."
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
@@ -4862,10 +4838,6 @@ msgstr ""
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Connection progress"
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Connection saved"
-msgstr "Povezava shranjena"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -5403,10 +5375,6 @@ msgstr "Dokumentov ni bilo mogoče naložiti"
 #: src/features/career/knowledge/stories.tsx
 msgid "Couldn't load interviews. Retry"
 msgstr "Intervjujev ni bilo mogoče naložiti. Poskusi znova"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Couldn't load or save web access settings. Try again."
-msgstr "Nastavitev spletnega dostopa ni bilo mogoče naložiti ali shraniti. Poskusite znova."
 
 #: src/features/portfolio/admin/reports-page.tsx
 msgid "Couldn't load the reports. Try again."
@@ -7395,10 +7363,6 @@ msgstr "Angleščina"
 msgid "English (United Kingdom)"
 msgstr "Angleščina (Združeno kraljestvo)"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Enhanced reading failed"
-msgstr "Izboljšano branje ni uspelo"
-
 #: src/features/assistant/conversation.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "Izboljšano branje ni na voljo; uporabljal vgrajen čitalnik."
@@ -8497,11 +8461,6 @@ msgstr "Nemščina"
 #: src/features/billing/purchase.ts
 msgid "Get {name}"
 msgstr ""
-
-#. placeholder {0}: PROVIDER_SITES[provider]
-#: src/features/settings/ai/web-access.tsx
-msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
-msgstr "Pridobite ključ pri <0>{0}</0>. Shranjen je šifriran in se uporablja samo za vaše zahteve."
 
 #: src/features/billing/buy-plans.tsx
 msgid "Get a plan"
@@ -9864,10 +9823,6 @@ msgstr ""
 msgid "Key revoked. Apps using it stop working now."
 msgstr "Ključ je preklican. Aplikacije, ki ga uporabljajo, zdaj prenehajo delovati."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Key stored encrypted"
-msgstr "Ključ shranjen šifriran"
-
 #: src/features/settings/ai/api-keys.tsx
 msgid "Keys act as you and can read and edit your documents."
 msgstr "Ključi delujejo kot vi in ​​lahko berejo ter urejajo vaše dokumente."
@@ -10131,8 +10086,8 @@ msgid "Let's start with what you have"
 msgstr "Začnimo s tem, kar imate"
 
 #: src/features/career/coach.tsx
-msgid "Lets the coach search public pages through your web search service"
-msgstr "Svetovalcu omogoča iskanje javnih strani prek vaše storitve spletnega iskanja"
+msgid "Lets the coach search the web for public pages"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "letter"
@@ -10436,10 +10391,6 @@ msgstr "Nalaganje prijav…"
 msgid "Loading connection request..."
 msgstr "Nalaganje zahteve za povezavo ..."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Loading connection…"
-msgstr "Nalaganje povezave …"
-
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Loading connections..."
 msgstr "Nalaganje povezav ..."
@@ -10674,10 +10625,6 @@ msgstr "Malajščina"
 #: src/libs/locale.ts
 msgid "Malayalam"
 msgstr "malajalamščina"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Managed by server"
-msgstr "Upravlja strežnik"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Managed by your server"
@@ -12610,10 +12557,6 @@ msgstr "Odpre se v Kariera → Ponudbe."
 msgid "opens in new tab"
 msgstr "odpre se v novem zavihku"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Optional"
-msgstr "Neobvezno"
-
 #: src/features/settings/ai/providers.tsx
 msgid "Optional for local Ollama"
 msgstr "Izbirno za lokalni Ollama"
@@ -13004,10 +12947,6 @@ msgstr "Prilepite oglas za delo, da vidite, katere njegove izraze vaš življenj
 #: src/features/career/workspace/apply.tsx
 msgid "Paste the question from the form"
 msgstr "Prilepite vprašanje iz obrazca"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Paste your key"
-msgstr "Prilepite svoj ključ"
 
 #: src/features/profile/sources/messages.ts
 msgid "Paste your profile link, like linkedin.com/in/your-name."
@@ -13950,12 +13889,7 @@ msgstr "Zaščitite svoj življenjepis z geslom"
 msgid "Prototyping"
 msgstr "Izdelava prototipov"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Provided by your server: {connectedProvider}."
-msgstr "Zagotovil vaš strežnik: {connectedProvider}."
-
 #: src/features/settings/ai/providers.tsx
-#: src/features/settings/ai/web-access.tsx
 msgid "Provider"
 msgstr "Ponudnik"
 
@@ -14234,10 +14168,6 @@ msgstr "Preberite vodnik »Uporaba slogov po meri«."
 msgid "Read the attachment"
 msgstr "Preberi priponko"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Read the job links you save. Saving and preparing jobs works without a connection."
-msgstr "Preberite povezave do delovnih mest, ki jih shranite. Shranjevanje in priprava opravil deluje brez povezave."
-
 #: src/features/assistant/conversation.tsx
 msgid "Read the letter"
 msgstr "Preberi pismo"
@@ -14361,10 +14291,6 @@ msgstr "Branje tega, kar ste delili"
 msgid "Reading Word files needs an AI provider. Set one up in Settings, or import a PDF or JSON file instead."
 msgstr "Za branje datotek Word je potreben ponudnik AI. Nastavite ga v nastavitvah ali namesto tega uvozite datoteko PDF ali JSON."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Reading works"
-msgstr "Branje dela"
-
 #: src/features/career/shared.tsx
 msgid "Reading your answer"
 msgstr "Branje vašega odgovora"
@@ -14394,10 +14320,6 @@ msgstr ""
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Reads cleanly"
 msgstr "Čisto se bere"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Reads supported public job pages. No account needed."
-msgstr "Bere podprte javne strani za delo. Račun ni potreben."
 
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "Reads, shares, feedback or awards."
@@ -14748,10 +14670,6 @@ msgstr ""
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Remove {value}"
 msgstr "Odstranite {value}"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Remove connection"
-msgstr "Odstrani povezavo"
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Remove field"
@@ -15669,10 +15587,6 @@ msgstr "Shrani kot prijavo za delo ..."
 msgid "Save changes"
 msgstr "Shranite spremembe"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Save connection"
-msgstr "Shrani povezavo"
-
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Save contact"
@@ -15681,10 +15595,6 @@ msgstr ""
 #: src/features/career/knowledge/facts.tsx
 msgid "Save correction"
 msgstr "Shrani popravek"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Save first, then test search and reading. No test runs automatically."
-msgstr "Najprej shranite, nato preizkusite iskanje in branje. Preizkus se ne izvaja samodejno."
 
 #: src/features/extension/install-links.tsx
 msgid "Save in one click with the browser extension"
@@ -15950,14 +15860,6 @@ msgstr ""
 msgid "Search again"
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and enhanced reading"
-msgstr "Iskanje in izboljšano branje"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search and reading are set up for everyone here. Ask your administrator about changes."
-msgstr "Iskanje in branje sta tu nastavljena za vse. O spremembah vprašajte skrbnika."
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search applications"
 msgstr "Iskanje prošenj za delo"
@@ -15996,10 +15898,6 @@ msgstr ""
 msgid "Search facts"
 msgstr "Išči dejstva"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Search failed"
-msgstr "Iskanje ni uspelo"
-
 #. Accessible label for icon picker search input
 #. Placeholder text in icon picker search input
 #: src/components/input/icon-picker-grid.tsx
@@ -16009,10 +15907,6 @@ msgstr "Poišči ikono"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Search for…"
 msgstr "Išči…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
-msgstr "Iščite v Prijavah in pomočniku ter berite strani, ki jih vgrajeni bralnik ne more. Ena storitev pokriva oboje."
 
 #: src/features/jobs/search-bar.tsx
 msgid "Search jobs"
@@ -16038,21 +15932,13 @@ msgstr ""
 msgid "Search the web"
 msgstr ""
 
+#: src/features/assistant/tool-approvals.tsx
+msgid "Search the web for this exact query?"
+msgstr ""
+
 #: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Išči časovne pasove"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search, and reading with {connectedProvider}."
-msgstr "Iskanje je bilo preizkušeno z iskanjem vašega strežnika in branjem z {connectedProvider}."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search was tested with your server's search. Links are read with the built-in reader."
-msgstr "Iskanje je bilo preizkušeno z iskanjem vašega strežnika. Povezave se berejo z vgrajenim bralnikom."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Search works"
-msgstr "Iskanje deluje"
 
 #: src/components/ui/combobox.tsx
 msgid "Search..."
@@ -16068,18 +15954,6 @@ msgstr "Iskanje…"
 #: src/features/assistant/conversation.tsx
 msgid "Searched the web"
 msgstr "Iskal po spletu"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Išče in bere strani z {connectedProvider}, ne glede na ponudnika AI, ki ga uporabljate."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads links with the built-in reader, whichever AI provider you use."
-msgstr "Išče z iskanjem vašega strežnika in bere povezave z vgrajenim bralnikom, ne glede na ponudnika AI, ki ga uporabljate."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Searches with your server's search and reads pages with {connectedProvider}, whichever AI provider you use."
-msgstr "Išče z iskanjem vašega strežnika in bere strani z {connectedProvider}, ne glede na ponudnika AI, ki ga uporabljate."
 
 #: src/features/career/coach-chat.tsx
 msgid "Searching the web"
@@ -16268,10 +16142,6 @@ msgstr "Pošlji povezavo za ponastavitev"
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
 msgstr "Pošljite kar sam življenjepis, ne ovoja v obliki portfelja."
-
-#: src/features/assistant/tool-approvals.tsx
-msgid "Send this exact query to your web search provider?"
-msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "Sending a link instead of a PDF means recruiters always see the latest version."
@@ -17845,18 +17715,6 @@ msgstr ""
 msgid "Test"
 msgstr "Preizkus"
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Test connection"
-msgstr "Testna povezava"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Test search"
-msgstr "Preizkusite funkcijo iskanja"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Tested with {connectedProvider}. Only this service was tested."
-msgstr "Preizkušeno z {connectedProvider}. Samo ta storitev je bila testirana."
-
 #: src/features/homepage/ui.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Testimonials"
@@ -17866,22 +17724,10 @@ msgstr ""
 msgid "Testimonials layout"
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing search and reading with {connectedProvider}…"
-msgstr "Preizkušanje iskanja in branja z {connectedProvider}…"
-
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Testing the connection…"
 msgstr "Preizkušanje povezave ..."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search, and reading with {connectedProvider}…"
-msgstr "Testiranje iskalne storitve na vašem strežniku in branje spletne strani z {connectedProvider}…"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Testing your server's search…"
-msgstr "Preizkušanje iskalne storitve na vašem strežniku ..."
 
 #: src/features/settings/ai/providers.tsx
 msgid "Testing…"
@@ -18108,10 +17954,6 @@ msgstr ""
 #: src/features/portfolio/blocks/story-templates.ts
 msgid "The brief"
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The built-in reader remains active."
-msgstr "Vgrajeni čitalnik ostane aktiven."
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -18606,22 +18448,6 @@ msgstr ""
 #: src/features/portfolio/editor/save-problem.ts
 msgid "The server couldn't save your changes. Saving tries again by itself."
 msgstr ""
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service didn't respond in time. Try again."
-msgstr "Storitev se ni pravočasno odzvala. Poskusite znova."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service is unavailable or doesn't support this. Try again later."
-msgstr "Storitev ni na voljo ali tega ne podpira. Poskusite znova pozneje."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service rejected the API key. Check the key and save it again."
-msgstr "Storitev je zavrnila ključ API. Preverite ključ in ga znova shranite."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "The service's quota is used up. Check your plan with the service, or try again later."
-msgstr "Kvota storitve je porabljena. Preverite svoj paket pri storitvi ali poskusite znova pozneje."
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -19449,10 +19275,6 @@ msgstr ""
 msgid "Too many requests in a short time. Wait a minute, then try again."
 msgstr ""
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Too many requests. Try again later."
-msgstr "Preveč zahtev. Poskusite znova pozneje."
-
 #: src/features/portfolio/editor/save-problem.ts
 msgid "Too many saves in a short time. Saving tries again in a moment."
 msgstr ""
@@ -19663,7 +19485,6 @@ msgstr "Poskusite vzorec"
 #: src/features/resume/editor/write/improve.tsx
 #: src/features/resume/preview/preview.browser.tsx
 #: src/features/resume/share/download-tab.tsx
-#: src/features/settings/ai/web-access.tsx
 #: src/features/settings/integrations/ai-provider-load-state.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Try again"
@@ -20349,10 +20170,6 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Uporablja se za preverjanje vlog in ponudb. Vsaka vrednost je število, zato lahko svetovalec primerja brez ugibanja."
 
-#: src/features/settings/ai/web-access.tsx
-msgid "Used when {connectedProvider} can't read a page. No account needed."
-msgstr "Uporablja se, ko {connectedProvider} ne more brati strani. Račun ni potreben."
-
 #: src/features/homepage/resume.tsx
 msgid "User research"
 msgstr "Uporabniške raziskave"
@@ -20375,10 +20192,6 @@ msgstr "Uporablja dejstva iz vašega življenjepisa"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Uses the linked application"
 msgstr "Uporablja povezano prijavo"
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
-msgstr "Uporablja lastno spletno iskanje vašega ponudnika AI, kjer je podprto, in bere povezave z vgrajenim bralnikom."
 
 #: src/features/resume/editor/write/profile-link.tsx
 msgid "Using your Profile's version."
@@ -20765,11 +20578,6 @@ msgstr ""
 #: src/features/billing/payment-return.tsx
 msgid "We've emailed you the receipt. We'll remind you 3 days before the plan ends."
 msgstr ""
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/web-access.tsx
-msgid "Web access"
-msgstr "Spletni dostop"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Web page"
@@ -22302,10 +22110,6 @@ msgstr ""
 #: src/libs/error-message.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Izbrana pisava ne more prikazati nekaterih znakov. Prikažejo se kot “?”. V razdelku Oblikovanje izberite pisavo, ki jih vsebuje."
-
-#: src/features/settings/ai/web-access.tsx
-msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
-msgstr "Vaš strežnik omogoča spletno iskanje v razdelku Prijave in za pomočnika. Povežite storitev za branje spletnih strani, ki jih vgrajeni bralnik ne more prebrati."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your source resume is in Trash"

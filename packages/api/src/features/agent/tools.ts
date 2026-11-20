@@ -120,7 +120,7 @@ export function buildAgentTools(input: BuildAgentToolsInput): ToolSet {
 		combined.throwIfAborted();
 		if (webCalls >= MAX_AGENT_WEB_CALLS)
 			throw new Error(
-				"Web access limit reached for this reply. Continue with the information already retrieved, or ask me to continue.",
+				"Web search and reading limit reached for this reply. Continue with the information already retrieved, or ask me to continue.",
 			);
 		webCalls++;
 		return combined;

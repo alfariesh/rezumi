@@ -15,10 +15,6 @@ vi.mock("../ai-providers/service", () => ({
 }));
 vi.mock("../resume/service", () => ({ resumeService: { getById: vi.fn(), create: vi.fn() } }));
 vi.mock("../cover-letters/service", () => ({ coverLetterService: { create: vi.fn() } }));
-vi.mock("../web-access/credentials", async (importOriginal) => {
-	const { webAccessService } = await importOriginal<typeof import("../web-access/credentials")>();
-	return { webAccessService: { ...webAccessService, resolve: vi.fn().mockResolvedValue(null) } };
-});
 vi.mock("./posting", async (importOriginal) => ({
 	...(await importOriginal<typeof import("./posting")>()),
 	fetchJobPosting: vi.fn(),

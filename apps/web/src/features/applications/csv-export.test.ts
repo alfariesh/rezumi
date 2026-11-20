@@ -51,7 +51,7 @@ function exportedRecord(value: Application) {
 describe("application CSV export", () => {
 	it("round-trips saved posting text and retrieval evidence", () => {
 		const source = {
-			method: "tavily" as const,
+			method: "browser" as const,
 			format: "markdown" as const,
 			requestedUrl: "https://example.com/job",
 			retrievedAt: "2026-09-30T12:00:00.000Z",

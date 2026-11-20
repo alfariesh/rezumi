@@ -20,7 +20,6 @@ import { errorCode, runWithAiSource, startAiRun } from "../billing/metered-ai";
 import { coverLetterService } from "../cover-letters/service";
 import { readProfileContext } from "../profile/context";
 import { resumeService } from "../resume/service";
-import { webAccessService } from "../web-access/credentials";
 import { fetchJobPosting, isPostingLink, MAX_POSTING_CHARS, PostingFetchError } from "./posting";
 import { applicationService } from "./service";
 
@@ -275,11 +274,7 @@ export const aiRouter = {
 
 			if (link) {
 				try {
-					const fetched = await fetchJobPosting(link, {
-						connection: await webAccessService.resolve(context.user.id),
-						userId: context.user.id,
-						signal,
-					});
+					const fetched = await fetchJobPosting(link, { userId: context.user.id, signal });
 					({ page, text } = fetched);
 					postingSource = fetched.source;
 				} catch (error) {
