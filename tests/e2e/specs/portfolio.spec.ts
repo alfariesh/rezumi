@@ -5,6 +5,38 @@ import { expect, test } from "../fixtures/test";
 // Portfolios stay behind PORTFOLIO_MODE until they launch (portfolio plan Phase 12), so the test server needs it on.
 test.skip(process.env.PORTFOLIO_MODE !== "on", "Needs PORTFOLIO_MODE=on on the test server");
 
+for (const device of ["Desktop", "Phone"] as const) {
+	test(`scrolls to case studies in the Prima landing preview on ${device}`, async ({ page }) => {
+		await page.setViewportSize({ width: 1440, height: 900 });
+		await page.goto("/");
+		const dialog = page.getByRole("dialog", { name: "Prima", exact: true });
+		// The prerendered button is visible before React attaches its click handler.
+		await expect(async () => {
+			if (await dialog.isVisible()) return;
+			await page.getByRole("button", { name: "Preview the Prima theme" }).click({ timeout: 2000 });
+			await expect(dialog).toBeVisible({ timeout: 1000 });
+		}).toPass({ timeout: 10_000 });
+		const iframe = dialog.locator('iframe[title="Prima portfolio theme sample"]');
+		await expect(iframe).toBeVisible();
+		const preview = iframe.contentFrame();
+		const menu = preview.locator("details.pf-menu");
+		if (device === "Phone") {
+			await dialog.getByRole("radio", { name: "Phone" }).click();
+			await menu.locator("summary").click();
+		}
+
+		const heading = preview.locator("#work--title");
+		await expect(heading).toBeAttached();
+		await expect(heading).not.toBeInViewport();
+		await preview
+			.getByRole("navigation", { name: "Page navigation" })
+			.getByRole("link", { name: "Case studies" })
+			.click();
+		await expect(heading).toBeInViewport();
+		await expect(menu).not.toHaveAttribute("open", "");
+	});
+}
+
 /** Publishing needs a verified email address; test sign-ups aren't verified by email. */
 async function verifyEmail(email: string) {
 	const pool = new Pool({ connectionString: process.env.DATABASE_URL });
