@@ -81,6 +81,7 @@ Lokasi: `packages/api/src/features/jobs/treg.ts`. Hanya server.
   - `429` `member_spend_cap_reached` / `org_rate_limit`: berhenti, tandai "anggaran habis" (lihat bagian 8).
   - `4xx` lain: galat pemanggil, catat tanpa body (bisa memuat input).
   - Panggilan gagal tidak ditagih treg.
+- Arsip treg: pertanyaan yang sama dari tim bisa dijawab dari arsip (`X-Treg-Cache: hit`) seharga 10%. Untuk pencarian kita boleh (cache sendiri tetap utama); untuk discovery dan pengecekan lowongan tutup kirim `Cache-Control: no-cache` supaya data segar.
 - Batas waktu per panggilan 15 detik, `AbortSignal` dari permintaan diteruskan.
 - Log: `[jobs] {tool, status, costMicro, ms}`. Jangan pernah mencatat header token.
 - Env: `TREG_API_KEY` (opsional di skema; tanpa nilai, fitur Lowongan tampil "belum tersedia di server ini"). Tambahkan ke `packages/env/src/server.ts`, `.env.example`, `turbo.json`.
