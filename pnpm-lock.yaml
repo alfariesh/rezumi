@@ -235,8 +235,8 @@ catalogs:
       specifier: 3.6.0
       version: 3.6.0
     '@lodev09/react-native-true-sheet':
-      specifier: 3.11.18
-      version: 3.11.18
+      specifier: 4.1.2
+      version: 4.1.2
     '@mdx-js/mdx':
       specifier: 3.1.1
       version: 3.1.1
@@ -343,8 +343,8 @@ catalogs:
       specifier: ^2.0.0
       version: 2.0.0
     heroui-native:
-      specifier: ^1.0.11
-      version: 1.0.11
+      specifier: ^1.1.1
+      version: 1.1.1
     heroui-native-pro:
       specifier: 1.0.0-beta.12
       version: 1.0.0-beta.12
@@ -410,7 +410,7 @@ catalogs:
       version: 3.3.1
     tailwindcss:
       specifier: ^4.3.3
-      version: 4.3.3
+      version: 4.3.4
     ts-pattern:
       specifier: ^5.9.2
       version: 5.9.2
@@ -730,7 +730,7 @@ importers:
         version: 6.10.1(@babel/core@7.29.7(supports-color@7.2.0))(babel-plugin-macros@3.1.0)(react@19.3.1)
       '@lodev09/react-native-true-sheet':
         specifier: 'catalog:'
-        version: 3.11.18(926531c5d8bbf0ee2ad70f085e204b13)
+        version: 4.1.2(4b140e301ce6e4f6608a60610f6975c9)
       '@orpc/client':
         specifier: 'catalog:'
         version: 1.16.1
@@ -868,7 +868,7 @@ importers:
         version: 58.0.7(expo@58.0.21)(react-native@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0))
       heroui-native:
         specifier: 'catalog:'
-        version: 1.0.11(a5286f3c81361f3a56524bb34f735081)
+        version: 1.1.1(c7380646a4e9790170164b92e6d070dd)
       heroui-native-pro:
         specifier: 'catalog:'
         version: 1.0.0-beta.12
@@ -5139,26 +5139,35 @@ packages:
       rolldown:
         optional: true
 
-  '@lodev09/react-native-true-sheet@3.11.18':
-    resolution: {integrity: sha512-Rf2Eux/8DcwtK16qLrWiLy+8lG3+jLQAVlaT3ZaK1T+Rq7+ZowY48TXEmvW7ewKkz72DU+sdrxn8475u/ih4Tw==}
+  '@lodev09/react-native-true-sheet@4.1.2':
+    resolution: {integrity: sha512-YaKgXCgeP+BkgOkYoaDRJLn5a3/i88oa+uND0BR2p00zXVDSifx30FxsCrNQrCyijmRwpyH9iaFg3+v5/YhJag==}
     peerDependencies:
       '@radix-ui/react-dialog': '>=1'
       '@radix-ui/react-presence': '>=1'
-      '@react-navigation/core': '>=7'
+      '@react-navigation/native': '>=7.3.0'
+      expo-router: '>=57.0.0'
       react: '*'
-      react-native: '*'
-      react-native-reanimated: '>=4'
-      react-native-worklets: '*'
+      react-dom: '*'
+      react-native: '>=0.82.0'
+      react-native-reanimated: '>=4.1.0'
+      react-native-worklets: '>=0.5.0'
+      standard-navigation: '>=0.0.9'
     peerDependenciesMeta:
       '@radix-ui/react-dialog':
         optional: true
       '@radix-ui/react-presence':
         optional: true
-      '@react-navigation/core':
+      '@react-navigation/native':
+        optional: true
+      expo-router:
+        optional: true
+      react-dom:
         optional: true
       react-native-reanimated:
         optional: true
       react-native-worklets:
+        optional: true
+      standard-navigation:
         optional: true
 
   '@mapbox/jsonlint-lines-primitives@2.0.3':
@@ -10642,10 +10651,10 @@ packages:
   heroui-native-pro@1.0.0-beta.12:
     resolution: {integrity: sha512-XFVxeYtOVMnidSbkhnWh7Fp7Q+lo/f7gBNWek2QA+TM4NgZgIWGF99af9ao/m6NBG/otjW/d+9f1/7zJDR3MgA==}
 
-  heroui-native@1.0.11:
-    resolution: {integrity: sha512-JC7aLZPQKqyaqlkzYx/VzAygj7pNr6mBO8/8QtbUwD6lgR5KjlMSs7ImHjDIIr0H/9nF5hixxq/sqrXM5sW63A==}
+  heroui-native@1.1.1:
+    resolution: {integrity: sha512-1ZyBH6ZBs1TjqPFCM/CckF1g58lt9rLR7yI33Lwsj3sdZB4Rm+RCwyG8RZzYzvVEGMuLtTk84o0Sx0XY8PWYdQ==}
     peerDependencies:
-      '@gorhom/bottom-sheet': ^5.2.9
+      '@lodev09/react-native-true-sheet': ^4.1.0
       expo-blur: '>=14.0.0'
       react: '>=19.0.0'
       react-native: '>=0.81.0'
@@ -10658,7 +10667,7 @@ packages:
       tailwind-merge: ^3.4.0
       tailwind-variants: ^3.2.2
     peerDependenciesMeta:
-      '@gorhom/bottom-sheet':
+      '@lodev09/react-native-true-sheet':
         optional: true
       expo-blur:
         optional: true
@@ -17570,13 +17579,15 @@ snapshots:
       - esbuild
       - supports-color
 
-  '@lodev09/react-native-true-sheet@3.11.18(926531c5d8bbf0ee2ad70f085e204b13)':
+  '@lodev09/react-native-true-sheet@4.1.2(4b140e301ce6e4f6608a60610f6975c9)':
     dependencies:
       react: 19.3.1
       react-native: 0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0)
     optionalDependencies:
       '@radix-ui/react-dialog': 1.3.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@radix-ui/react-presence': 1.1.11(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      expo-router: 58.0.28(13e400d2709e09389276bb74d1e35941)
+      react-dom: 19.3.1(react@19.3.1)
       react-native-reanimated: 4.7.1(react-native-worklets@0.13.1(@babel/core@7.29.7(supports-color@7.2.0))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(react-native@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0))(react@19.3.1)(supports-color@7.2.0))(react-native@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0))(react@19.3.1)
       react-native-worklets: 0.13.1(@babel/core@7.29.7(supports-color@7.2.0))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(react-native@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0))(react@19.3.1)(supports-color@7.2.0)
 
@@ -22929,7 +22940,7 @@ snapshots:
       chalk: 5.6.2
       heroui-pro: 1.0.0-beta.14
 
-  heroui-native@1.0.11(a5286f3c81361f3a56524bb34f735081):
+  heroui-native@1.1.1(c7380646a4e9790170164b92e6d070dd):
     dependencies:
       react: 19.3.1
       react-native: 0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0)
@@ -22941,6 +22952,7 @@ snapshots:
       tailwind-merge: 3.7.0
       tailwind-variants: 3.3.1(tailwind-merge@3.7.0)(tailwindcss@4.3.3)
     optionalDependencies:
+      '@lodev09/react-native-true-sheet': 4.1.2(4b140e301ce6e4f6608a60610f6975c9)
       react-native-screens: 4.30.1(react-native@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0))(react@19.3.1)
 
   heroui-pro@1.0.0-beta.14:

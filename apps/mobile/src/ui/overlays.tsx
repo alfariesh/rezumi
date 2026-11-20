@@ -1,5 +1,5 @@
 import type { ColorToken } from "./tokens";
-import type { ReactNode } from "react";
+import type { ComponentRef, ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
@@ -109,6 +109,7 @@ export function Sheet({
 	const insets = useWindowSafeAreaInsets();
 	const { height } = useWindowDimensions();
 	const ref = useRef<TrueSheet>(null);
+	const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null);
 	const [footerHeight, setFooterHeight] = useState(0);
 	const detentIndex = useRef(-1);
 	const wantsOpen = useRef(false);
@@ -177,7 +178,7 @@ export function Sheet({
 			cornerRadius={radius.rLg}
 			grabber={!wide}
 			accessibilityOptions={title ? { paneTitle: title } : {}}
-			scrollable
+			{...(scroll ? { scrollableRef: scrollRef } : {})}
 			insetAdjustment="never"
 			{...(headerStart || headerEnd
 				? { header: <SheetHeader title={title} headerStart={headerStart} headerEnd={headerEnd} /> }
@@ -205,6 +206,7 @@ export function Sheet({
 		>
 			{scroll ? (
 				<ScrollView
+					ref={scrollRef}
 					nestedScrollEnabled
 					accessibilityViewIsModal
 					onAccessibilityEscape={dismissible ? onClose : undefined}
