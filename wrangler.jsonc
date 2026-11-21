@@ -60,6 +60,8 @@
 		// The contact form's public Turnstile key; set with its secret (TURNSTILE_SECRET_KEY, a Worker secret) before
 		// launch. Without both, the form isn't offered and Contact falls back to the email button.
 		"TURNSTILE_SITE_KEY": "0x4AAAAAAF5qNivhOg0kkz1u",
+		// Google Analytics 4, property "Rezumi" (web stream "Rezumi web + blog"). Not secret.
+		"GOOGLE_ANALYTICS_ID": "G-MWSWTR7JB1",
 		// Dodo Payments live-mode products (business "Rezumi"). Not secret. DODO_PAYMENTS_API_KEY (a key made in live mode)
 		// and DODO_PAYMENTS_WEBHOOK_KEY are Worker secrets, set after these are deployed: the key without them, or a test-mode
 		// key here, fails startup.

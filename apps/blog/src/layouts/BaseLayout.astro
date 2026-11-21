@@ -16,7 +16,7 @@ import SiteHeader from "../components/SiteHeader.astro";
 import { defaultLocale, locales } from "../i18n/config";
 import { getTranslator } from "../i18n/messages";
 import { absoluteUrl, feedPath } from "../lib/paths";
-import { SITE_URL } from "../lib/site";
+import { GOOGLE_ANALYTICS_ID, SITE_URL } from "../lib/site";
 
 type Props = {
 	locale: Locale;
@@ -119,6 +119,45 @@ const xDefault = alternates.find((alternate) => alternate.hreflang === defaultLo
 				}
 			})();
 		</script>
+		{
+			import.meta.env.PROD && (
+				<>
+					<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`} />
+					<script is:inline define:vars={{ id: GOOGLE_ANALYTICS_ID }}>
+						// Same defaults as the app (apps/server/src/static/web.ts → analyticsTag): no advertising storage or
+						// signals, and cookieless pings only in the EEA, the UK and Switzerland, since the blog asks no consent.
+						window.dataLayer = window.dataLayer || [];
+						function gtag() {
+							dataLayer.push(arguments);
+						}
+						window.gtag = gtag;
+						gtag("consent", "default", {
+							ad_storage: "denied",
+							ad_user_data: "denied",
+							ad_personalization: "denied",
+							analytics_storage: "granted",
+						});
+						gtag("consent", "default", {
+							analytics_storage: "denied",
+							region: [
+								"AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT",
+								"LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "IS", "LI", "NO", "GB", "CH",
+							],
+						});
+						gtag("js", new Date());
+						// Only campaign parameters of the query are kept, so search terms never reach Google.
+						const params = new URLSearchParams(location.search);
+						const kept = new URLSearchParams(
+							[...params].filter(([key]) => /^(utm_[a-z_]+|gclid|gbraid|wbraid|ref)$/.test(key)),
+						).toString();
+						gtag("config", id, {
+							allow_google_signals: false,
+							page_location: location.origin + location.pathname + (kept ? `?${kept}` : ""),
+						});
+					</script>
+				</>
+			)
+		}
 		<title>{title}</title>
 		<link rel="preload" href={googleSansLatin} as="font" type="font/woff2" crossorigin />
 		<EmDashHead page={page} />

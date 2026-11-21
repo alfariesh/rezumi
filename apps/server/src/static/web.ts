@@ -69,12 +69,15 @@ export function isProfilePath(pathname: string): boolean {
 	return segments.length === 1 && segment !== undefined && !reservedProfileSegments.has(segment);
 }
 
+const GTAG_SCRIPT_URL = "https://www.googletagmanager.com/gtag/js";
+
 /**
  * Scripts run only from the app's own files and the inline scripts of the page served, allowed by hash; `wasm-unsafe-eval`
  * lets the PDF engine (Forme, WebAssembly) start. Pictures, avatars and fonts can live on any https host (a resume's
  * picture URL, a sign-in provider's avatar) and the PDF engine fetches them, so images, fonts and connections stay open
  * to https. Recordings, previews and workers use blob: URLs. Cloudflare Web Analytics, when turned on for the zone, injects
- * its real-user metrics beacon from static.cloudflareinsights.com.
+ * its real-user metrics beacon from static.cloudflareinsights.com. A page carrying the Google Analytics tag (see
+ * `analyticsTag`) may also load gtag.js from www.googletagmanager.com; its hits go out over https, already allowed.
  */
 export function contentSecurityPolicy(html = "") {
 	const inlineScripts = html.matchAll(
@@ -88,7 +91,11 @@ export function contentSecurityPolicy(html = "") {
 	);
 	return [
 		"default-src 'self'",
-		["script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com", ...hashes].join(" "),
+		[
+			"script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com",
+			...(html.includes(GTAG_SCRIPT_URL) ? ["https://www.googletagmanager.com"] : []),
+			...hashes,
+		].join(" "),
 		"style-src 'self' 'unsafe-inline'",
 		"img-src 'self' data: blob: https:",
 		"font-src 'self' data: https:",
@@ -129,24 +136,87 @@ function preloadLinks(html: string) {
 	});
 }
 
+// The EEA, the UK and Switzerland: analytics there sends cookieless pings only, since the site asks no consent.
+const CONSENT_REGIONS = [
+	"AT",
+	"BE",
+	"BG",
+	"HR",
+	"CY",
+	"CZ",
+	"DK",
+	"EE",
+	"FI",
+	"FR",
+	"DE",
+	"GR",
+	"HU",
+	"IE",
+	"IT",
+	"LV",
+	"LT",
+	"LU",
+	"MT",
+	"NL",
+	"PL",
+	"PT",
+	"RO",
+	"SK",
+	"SI",
+	"ES",
+	"SE",
+	"IS",
+	"LI",
+	"NO",
+	"GB",
+	"CH",
+];
+
+/**
+ * The Google Analytics 4 tag for `id`. Advertising storage and signals stay off everywhere; analytics cookies are off in
+ * the consent regions. Automatic page views are off: the app sends its own with the route's pattern for an address
+ * (apps/web/src/libs/analytics.ts), so resume names and ids in titles and paths never reach Google. Turn off "page
+ * changes based on browser history events" in the stream's enhanced measurement to match.
+ */
+export function analyticsTag(id: string) {
+	const consent = JSON.stringify({
+		ad_storage: "denied",
+		ad_user_data: "denied",
+		ad_personalization: "denied",
+		analytics_storage: "granted",
+	});
+	const regional = JSON.stringify({ analytics_storage: "denied", region: CONSENT_REGIONS });
+	const config = JSON.stringify({ send_page_view: false, allow_google_signals: false });
+	return `<script async src="${GTAG_SCRIPT_URL}?id=${id}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("consent","default",${consent});gtag("consent","default",${regional});gtag("js",new Date());gtag("config","${id}",${config});</script>`;
+}
+
+/** Adds the analytics tag to a page's <head> when the deployment has a measurement ID. */
+function withAnalytics(html: string, analytics: boolean) {
+	const id = env.GOOGLE_ANALYTICS_ID;
+	if (!analytics || !id) return html;
+	return html.replace("<head>", () => `<head>${analyticsTag(id)}`);
+}
+
 /**
  * An HTML page whose policy allows exactly the inline scripts of its template. Hashes come from the template before
  * any resume-derived markup goes in, so text that slipped past escaping could never allow itself.
  */
-function htmlResponse(html: string, headers: Record<string, string>, template = html, status = 200) {
+function htmlResponse(html: string, headers: Record<string, string>, template = html, status = 200, analytics = false) {
+	const page = withAnalytics(html, analytics);
+	const tagged = withAnalytics(template, analytics);
 	const verification = new URL(CONTEXT7_ASK_URL).searchParams.get("siteKey") ?? "";
 	const note = `<blockquote data-context7-ask="true" aria-hidden="true" class="sr-only"><h2>Search</h2><p>Page index: https://rezumi.app/llms.txt.</p><p>${escapeHtml(CONTEXT7_ASK_DESCRIPTION)}</p></blockquote>`;
-	const body = html
+	const body = page
 		.replace("</head>", () => `<meta name="context7-site-verification" content="${verification}"></head>`)
 		.replace(/<body\b[^>]*>/i, (tag) => `${tag}${note}`);
 	return new Response(body, {
 		status,
 		headers: {
 			...headers,
-			Link: [headers.Link, ...preloadLinks(template)].filter(Boolean).join(", "),
+			Link: [headers.Link, ...preloadLinks(tagged)].filter(Boolean).join(", "),
 			// Pages name the current build's assets, so a release can purge this tag from Cloudflare's cache.
 			"Cache-Tag": "html",
-			"Content-Security-Policy": contentSecurityPolicy(template),
+			"Content-Security-Policy": contentSecurityPolicy(tagged),
 		},
 	});
 }
@@ -455,11 +525,17 @@ function docsStructuredData(origin: string, url: string, meta: { title: string; 
  * A docs page: its prerendered HTML with the canonical address, social cards and structured data. An address with no
  * page (an old one that moved, or a typo) gets the app shell with a 404 status: the app redirects or says so.
  */
-async function handleDocsPage(pathname: string, html: string, headers: Record<string, string>, readFile: ReadWebFile) {
+async function handleDocsPage(
+	pathname: string,
+	html: string,
+	headers: Record<string, string>,
+	readFile: ReadWebFile,
+	analytics: boolean,
+) {
 	const file = docsPageFile(pathname);
 	const page = file ? await readFile(file).catch(() => null) : null;
 	if (!page) {
-		return htmlResponse(html, { ...headers, "X-Robots-Tag": "noindex, follow" }, html, 404);
+		return htmlResponse(html, { ...headers, "X-Robots-Tag": "noindex, follow" }, html, 404, analytics);
 	}
 
 	const origin = new URL(env.APP_URL).origin;
@@ -475,11 +551,16 @@ async function handleDocsPage(pathname: string, html: string, headers: Record<st
 		page.replace("</head>", () => `${markup}</head>`),
 		headers,
 		page,
+		200,
+		analytics,
 	);
 }
 
 export async function handleWebApp(request: Request, readFile: ReadWebFile = readWebDistFile) {
-	const requestedPath = new URL(request.url).pathname;
+	const requestUrl = new URL(request.url);
+	const requestedPath = requestUrl.pathname;
+	// Only the app's own address carries analytics, never a custom domain or alias showing someone's page.
+	const analytics = requestUrl.host === new URL(env.APP_URL).host;
 	const pathname = requestedPath === "/index.html" ? "/" : requestedPath;
 
 	if (!isAppSectionPath(pathname) && isAssetPath(pathname)) {
@@ -498,7 +579,7 @@ export async function handleWebApp(request: Request, readFile: ReadWebFile = rea
 
 	const html = await readFile(indexHtmlPath);
 
-	if (isDocsPath(pathname)) return handleDocsPage(pathname, html, headers, readFile);
+	if (isDocsPath(pathname)) return handleDocsPage(pathname, html, headers, readFile, analytics);
 
 	const prerendered = prerenderedPages[pathname];
 	if (prerendered) {
@@ -522,8 +603,10 @@ export async function handleWebApp(request: Request, readFile: ReadWebFile = rea
 			page.replace("</head>", () => `${markup}</head>`),
 			{ ...headers, Vary: "Cookie" },
 			page,
+			200,
+			analytics,
 		);
 	}
 
-	return htmlResponse(html, headers);
+	return htmlResponse(html, headers, html, 200, analytics);
 }

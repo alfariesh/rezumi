@@ -298,3 +298,34 @@ describe("public docs", () => {
 		expect(await listDocsPaths()).toEqual([]);
 	});
 });
+
+describe("Google Analytics", () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+		vi.mocked(fs.readFile).mockResolvedValue("<html><head><title>Rezumi</title></head><body>app</body></html>");
+	});
+
+	it("tags the app's own pages and allows the tag in the policy", async () => {
+		Object.assign(mocks.env, { GOOGLE_ANALYTICS_ID: "G-TEST1234" });
+		const response = await handleWebApp(new Request("https://rezumi.app/dashboard"));
+		const body = await response.text();
+		const policy = response.headers.get("Content-Security-Policy") ?? "";
+
+		expect(body).toContain('<script async src="https://www.googletagmanager.com/gtag/js?id=G-TEST1234"></script>');
+		expect(body).toContain('gtag("config","G-TEST1234",{"send_page_view":false');
+		expect(policy).toContain("https://www.googletagmanager.com");
+		const inline = body.match(/<script>(window\.dataLayer[\s\S]*?)<\/script>/)?.[1] ?? "";
+		expect(policy).toContain(`'sha256-${createHash("sha256").update(inline).digest("base64")}'`);
+	});
+
+	it("leaves other hosts and deployments without an ID untagged", async () => {
+		Object.assign(mocks.env, { GOOGLE_ANALYTICS_ID: "G-TEST1234" });
+		const custom = await handleWebApp(new Request("https://cv.example.com/"));
+		expect(await custom.text()).not.toContain("googletagmanager");
+		expect(custom.headers.get("Content-Security-Policy")).not.toContain("googletagmanager");
+
+		Object.assign(mocks.env, { GOOGLE_ANALYTICS_ID: undefined });
+		const untagged = await handleWebApp(new Request("https://rezumi.app/dashboard"));
+		expect(await untagged.text()).not.toContain("googletagmanager");
+	});
+});
