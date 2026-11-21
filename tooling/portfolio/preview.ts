@@ -1,12 +1,12 @@
 /**
  * Renders a portfolio persona to an HTML file, for checking a theme by eye (`02-teknis.md` section 22).
  *
- *   pnpm --filter @rezumi/tooling portfolio:preview --out <dir> [--persona nadia|anindya|bayu|citra] [--lang id|en]
- *     [--variant full|minimal|long|rtl] [--scheme light|dark|auto] [--theme lugas|prima|kanvas|mozaik|paper|brutal]
+ *   pnpm --filter @rezumi/tooling portfolio:preview --out <dir> [--persona <id>] [--lang id|en]
+ *     [--variant full|minimal|long|rtl] [--scheme light|dark|auto] [--theme <theme>]
  *     [--accent <#rrggbb>] [--effect none|fade-up|…] [--set work=grid-2] [--name <file>] [--work <slug>] [--works]
  *
- * Nadia (Lugas) in Indonesian is the default; each persona renders in its own theme unless `--theme` says otherwise
- * (`persona.ts`). The page and the persona's pictures land in `<dir>`; open the HTML file in a browser. `--set` picks a
+ * Nadia (Lugas) in Indonesian is the default. With `--theme`, the gallery persona for that theme is the default.
+ * With `--persona` alone, the persona's own theme is used. The page and pictures land in `<dir>`. `--set` picks a
  * section variant (`hero`, `work`, `services`, `testimonials`, `clients`, `experience`, `education`, `skills`,
  * `metric`). The page renders exactly as the server renders it; the page script fills in the local time. `--work`
  * also writes that work's own page (Phase 13 B2), `--works` every listed work's, each beside the home page as
@@ -16,14 +16,19 @@ import type { PortfolioHeroEffect, PortfolioScheme, PortfolioTheme } from "@rezu
 import { resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { listedWorkSlugs, parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
-import { PORTFOLIO_HERO_EFFECTS, PORTFOLIO_SCHEMES, PORTFOLIO_THEMES } from "@rezumi/schema/portfolio/themes";
-import { buildPersona, isPersonaId, PERSONA_LANGS, PERSONA_VARIANTS } from "./persona";
+import {
+	PORTFOLIO_HERO_EFFECTS,
+	PORTFOLIO_SCHEMES,
+	PORTFOLIO_THEME_INFO,
+	PORTFOLIO_THEMES,
+} from "@rezumi/schema/portfolio/themes";
+import { buildPersona, isPersonaId, PERSONA_LANGS, PERSONA_VARIANTS, THEME_PERSONAS } from "./persona";
 import { writePersonaPage } from "./render";
 
 const { values } = parseArgs({
 	options: {
 		out: { type: "string", default: "." },
-		persona: { type: "string", default: "nadia" },
+		persona: { type: "string" },
 		lang: { type: "string", default: "id" },
 		variant: { type: "string", default: "full" },
 		scheme: { type: "string" },
@@ -43,15 +48,18 @@ function oneOf<T extends string>(name: string, value: string, options: readonly 
 	throw new Error(`Unknown ${name} "${value}": use ${options.join(", ")}.`);
 }
 
-if (!isPersonaId(values.persona)) throw new Error(`Unknown persona "${values.persona}".`);
+const theme = values.theme ? oneOf<PortfolioTheme>("theme", values.theme, PORTFOLIO_THEMES) : undefined;
+const personaId = values.persona ?? (theme ? THEME_PERSONAS[theme] : "nadia");
+if (!isPersonaId(personaId)) throw new Error(`Unknown persona "${personaId}".`);
+const accent = values.accent ?? (theme ? PORTFOLIO_THEME_INFO[theme].fallbackAccent : undefined);
 const options = {
-	persona: values.persona,
+	persona: personaId,
 	lang: oneOf("language", values.lang, PERSONA_LANGS),
 	variant: oneOf("variant", values.variant, PERSONA_VARIANTS),
-	...(values.theme ? { theme: oneOf<PortfolioTheme>("theme", values.theme, PORTFOLIO_THEMES) } : {}),
+	...(theme ? { theme } : {}),
 	...(values.scheme ? { scheme: oneOf<PortfolioScheme>("scheme", values.scheme, PORTFOLIO_SCHEMES) } : {}),
 	...(values.effect ? { effect: oneOf<PortfolioHeroEffect>("effect", values.effect, PORTFOLIO_HERO_EFFECTS) } : {}),
-	...(values.accent ? { accent: values.accent } : {}),
+	...(accent ? { accent } : {}),
 	variants: Object.fromEntries(values.set.map((assignment) => assignment.split("=", 2) as [string, string])),
 };
 const page = await writePersonaPage(resolve(values.out), values.name, options);

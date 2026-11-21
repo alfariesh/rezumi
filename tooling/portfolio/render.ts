@@ -8,7 +8,7 @@
 import type { PersonaId, PersonaLang, PersonaVariant } from "./persona";
 import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
 import type { PortfolioHeroEffect, PortfolioScheme, PortfolioTheme } from "@rezumi/schema/portfolio/themes";
-import { mkdir, stat, writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
 import { renderPortfolioDocument } from "@rezumi/portfolio/document";
@@ -16,7 +16,7 @@ import { PREVIEW_STILL_CSS } from "@rezumi/portfolio/effects";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
 import { buildPortfolioView, portfolioPageLocale } from "@rezumi/portfolio/view";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
-import { buildPersona, paperPortrait } from "./persona";
+import { buildPersona } from "./persona";
 
 export type PageOptions = {
 	persona: PersonaId;
@@ -38,7 +38,7 @@ export type PageOptions = {
 	 * A still sample for a gallery's preview: the page without its script, the intro effect at its end, pictures from
 	 * `assetBase` (an absolute path, where the `img/` folder is published) and links that lead nowhere.
 	 */
-	sample?: { assetBase: string; imageDir: string };
+	sample?: { assetBase: string; imageDir: string; assetVersion: string };
 };
 
 /** The file a work's own page is written to, beside its home page `home`: `<home>.work-<slug>.html`. */
@@ -65,15 +65,8 @@ const copied = new Set<string>();
 
 async function copyOnce(path: string, read: () => Promise<Buffer>) {
 	if (copied.has(path)) return;
-	copied.add(path);
-	if (
-		await stat(path).then(
-			() => true,
-			() => false,
-		)
-	)
-		return;
 	await writeFile(path, await read());
+	copied.add(path);
 }
 
 /** Writes `<dir>/<name>` and the files it uses to `<dir>/img/`. */
@@ -81,19 +74,22 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 	const persona = buildPersona(options.persona, {
 		...(options.lang ? { lang: options.lang } : {}),
 		...(options.variant ? { variant: options.variant } : {}),
+		...(options.theme ? { theme: options.theme } : {}),
+		...(options.scheme ? { scheme: options.scheme } : {}),
 	});
-	const photo = options.theme === "paper" && options.persona === "nadia" ? paperPortrait : persona.photo;
+	const photo = persona.photo;
 	const imageDir = join(options.sample?.imageDir ?? dir, "img");
 	const assetBase = options.sample?.assetBase ?? "img/";
+	const assetUrl = (name: string) =>
+		`${assetBase}${name}${options.sample && name.endsWith(".webp") ? `?v=${options.sample.assetVersion}` : ""}`;
 	await mkdir(imageDir, { recursive: true });
 	for (const file of [...persona.files, photo]) await copyOnce(join(imageDir, file.name), file.read);
 
 	const resume = persona.resume;
-	resume.picture.url = `${assetBase}${photo.name}`;
+	resume.picture.url = assetUrl(photo.name);
 	let data = persona.portfolio;
 	data = {
 		...data,
-		...(options.theme ? { theme: options.theme } : {}),
 		...(options.effect
 			? { hero: { ...data.hero, effect: { ...data.hero?.effect, id: options.effect } as HeroEffectInput } }
 			: {}),
@@ -125,7 +121,7 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 		owner: persona.owner,
 		entitlements: { hidePortfolioCredit: false },
 		messages: portfolioViewMessages(messages),
-		fileUrl: (key) => `${assetBase}${names.get(key) ?? "missing.png"}`,
+		fileUrl: (key) => assetUrl(names.get(key) ?? "missing.png"),
 		links: {
 			resume: "#cv",
 			resumePdf: "#pdf",

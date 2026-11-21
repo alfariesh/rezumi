@@ -236,10 +236,11 @@ export function PortfolioShowcase({ billingEnabled = true }: PortfolioShowcasePr
 								className="group relative block w-full cursor-pointer rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
 							>
 								<img
-									src={themePicture(theme.id, i18n.locale)}
+									{...themePicture(theme.id, i18n.locale)}
 									alt={t`${theme.name} portfolio theme preview`}
 									width={600}
 									height={375}
+									sizes="auto, (min-width: 1024px) 280px, 42vw"
 									loading="lazy"
 									decoding="async"
 									className="aspect-[600/375] w-full rounded-lg bg-surface-secondary object-cover shadow-surface"

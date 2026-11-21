@@ -50,7 +50,7 @@ for (const theme of themes) {
 			...(info.fallbackAccent ? { accent: info.fallbackAccent } : {}),
 			lang,
 			scheme: info.defaultScheme,
-			sample: { assetBase: "/portfolio-themes/sample/img/", imageDir: values.out },
+			sample: { assetBase: "/portfolio-themes/sample/img/", imageDir: values.out, assetVersion: "2" },
 		});
 		console.log(`${theme} ${lang}: ${THEME_PERSONAS[theme]}, ${Math.round(page.bytes / 1024)} KB`);
 	}

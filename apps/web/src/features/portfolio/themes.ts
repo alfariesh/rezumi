@@ -5,15 +5,18 @@ import { t } from "@lingui/core/macro";
  * A theme's gallery picture (`pnpm --filter @rezumi/tooling portfolio:previews`): the top of its sample page with a
  * fictional persona. Indonesian pages show the Indonesian one, every other language the English one.
  */
-export const themePicture = (theme: PortfolioTheme, locale: string) =>
-	`/portfolio-themes/thumb/${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.webp`;
+export function themePicture(theme: PortfolioTheme, locale: string) {
+	const file = `${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.webp`;
+	const src = `/portfolio-themes/thumb/${file}?v=2`;
+	return { src, srcSet: `${src} 600w, /portfolio-themes/webp/${file} 1200w` };
+}
 
 /**
  * A theme's whole sample page (`pnpm --filter @rezumi/tooling portfolio:samples`): the same persona as its picture, as
  * a still document without script, for a sandboxed preview frame. Indonesian pages show the Indonesian one.
  */
 export const themeSample = (theme: PortfolioTheme, locale: string) =>
-	`/portfolio-themes/sample/${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.html`;
+	`/portfolio-themes/sample/${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.html?v=4`;
 
 /** What each theme looks like, in the theme gallery (create dialog and Design). */
 export const themeDescription = (theme: PortfolioTheme) =>

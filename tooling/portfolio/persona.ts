@@ -4,19 +4,17 @@
  * Mahendra (Sintaks) and Laras Kusumawardhani (Warta). Their
  * careers are the gallery's resume personas (`tooling/templates/personas`), their portfolios follow the Phase 00
  * mockups (`.agents/docs/plans/portfolio/mockups/<theme>.html`). Every name, company, client, testimonial, number and
- * link is made up. Generated WebP pictures live in `images/`; remaining drawings live in `mockups/img`. Client logos
- * and the sample PDFs are drawn here.
+ * link is made up. Theme-specific WebP pictures live in `images/`. Sample wordmarks come from `logos/`. Sample PDFs are drawn here.
  *
  * Variants (`02-teknis.md` section 22): `full` (A) fills everything, every block type included; `minimal` (B) has no
  * photo, no work pictures and one Text block per work; `long` (C) has many works, a very long name and long work
  * titles; `rtl` (D) is the full portfolio as an Arabic (`ar-SA`) page with an Arabic intro.
  */
 import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
-import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
+import type { PortfolioScheme, PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
 import { readFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { personas as resumePersonas } from "../templates/personas";
 import { buildPersonaResume } from "../templates/personas/persona";
@@ -27,8 +25,7 @@ import { laras } from "./personas/laras";
 import { nadia } from "./personas/nadia";
 import { raka } from "./personas/raka";
 
-const MOCKUP_IMAGES = new URL("../../.agents/docs/plans/portfolio/mockups/img/", import.meta.url);
-const GENERATED_IMAGES = new URL("./images/", import.meta.url);
+const IMAGES = new URL("./images/", import.meta.url);
 
 export const PERSONA_IDS = ["nadia", "anindya", "bayu", "citra", "raka", "laras"] as const;
 export type PersonaId = (typeof PERSONA_IDS)[number];
@@ -60,7 +57,7 @@ type WorkSource = {
 	role: Text;
 	date: Text;
 	tags?: readonly Text[];
-	/** A project cover from the generated assets or mockup drawings. */
+	/** A project cover from the theme's image set. */
 	cover: string;
 	/** The first is the metric the work's card highlights; they form a Metrics block after the first block. */
 	metrics: readonly MetricInput[];
@@ -71,10 +68,9 @@ type WorkSource = {
 /** What a persona's portfolio is written with: the language and its stored media. */
 type PersonaKit = {
 	t: (text: Text) => string;
-	/** A stored picture (1200×900 unless `size` says otherwise). */
+	/** A stored picture (960×720 unless `size` says otherwise). */
 	picture: (file: string, alt?: Text, size?: { width: number; height: number }) => ImageInput;
-	/** A made-up client's wordmark: one of six abstract marks and the name, in `color`. */
-	logo: (name: string, mark: number, color: string) => ImageInput;
+	clients: NonNullable<PortfolioDataInput["clients"]>;
 	/** A sample PDF with `pages` pages, as its storage key. */
 	pdf: (name: string, title: string, pages: number) => string;
 	metric: (id: string, label: Text, value: number | Text, extra?: MetricExtra) => MetricInput;
@@ -90,7 +86,7 @@ export type PersonaDefinition = {
 	username: string;
 	/** The resume's accent, which the portfolio follows ("Follow resume", the mockup's own colour). */
 	accent: string;
-	/** The portrait filename in `images/` or `mockups/img`. */
+	/** The portrait filename in `images/`. */
 	photo: string;
 	profiles: readonly { network: string; username: string; url: string; icon: string }[];
 	/** Variant B's one-sentence intro. */
@@ -141,31 +137,25 @@ export type Persona = {
 	photo: Pick<PersonaFile, "name" | "read">;
 };
 
-const mockup = (name: string) => () =>
-	readFile(fileURLToPath(new URL(name, name.endsWith(".webp") ? GENERATED_IMAGES : MOCKUP_IMAGES)));
+const readPicture = (name: string) => () => readFile(new URL(name, IMAGES));
 
-/** Paper has its own illustrated portrait while sharing Nadia's portfolio content with Lugas. */
-export const paperPortrait = { name: "paper-portrait.webp", read: mockup("paper-portrait.webp") };
+// These themes reuse a persona's project stories with their own art direction.
+type AlternateArt = { persona: PersonaId; theme: PortfolioTheme; prefix: string };
+
+const ALTERNATE_ART: Partial<Record<PortfolioTheme, AlternateArt>> = {
+	paper: { persona: "nadia", theme: "paper", prefix: "lugas-" },
+	brutal: { persona: "citra", theme: "brutal", prefix: "mozaik-" },
+};
 
 const escapeXml = (text: string) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-/** The mockups' six abstract client marks, on a 24×24 grid. */
-const MARKS = [
-	'<circle cx="12" cy="12" r="9" fill="none" stroke="C" stroke-width="2.4"/><circle cx="12" cy="12" r="3.6" fill="C"/>',
-	'<rect x="3" y="5" width="18" height="5" rx="2.5" fill="C"/><rect x="3" y="14" width="12" height="5" rx="2.5" fill="C"/>',
-	'<path d="M2 20 9.5 7l4 6.5L16 10l6 10z" fill="C"/>',
-	'<path d="M5 19C5 10 10 4 20 4c0 10-6 15-15 15z" fill="C"/><path d="M5 19 13 11" stroke="#fff" stroke-width="1.6"/>',
-	'<rect x="3" y="3" width="8" height="8" rx="2" fill="C"/><rect x="13" y="3" width="8" height="8" rx="4" fill="C"/><rect x="3" y="13" width="8" height="8" rx="4" fill="C"/><rect x="13" y="13" width="8" height="8" rx="2" fill="C"/>',
-	'<path d="M2 9c3.3-3 6.7 3 10 0s6.7 3 10 0M2 15c3.3-3 6.7 3 10 0s6.7 3 10 0" fill="none" stroke="C" stroke-width="2.4" stroke-linecap="round"/>',
-];
-
-/** A wordmark 64 px high: the mark at 40 px, then the name in bold. Widths are estimated from the name's length. */
-function logoSvg(name: string, mark: number, color: string): { svg: string; width: number; height: number } {
-	const width = Math.round(64 + name.length * 13.6);
-	const shape = (MARKS[mark % MARKS.length] ?? "").replaceAll('"C"', `"${color}"`);
-	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="64" viewBox="0 0 ${width} 64"><g transform="translate(4 12) scale(1.6667)">${shape}</g><text x="56" y="42" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="${color}">${escapeXml(name)}</text></svg>`;
-	return { svg, width, height: 64 };
-}
+const CLIENT_LOGOS = [
+	{ slug: "boltshift", name: "Boltshift", width: 207 },
+	{ slug: "45-degrees", name: "45 Degrees", width: 251 },
+	{ slug: "3portals", name: "3portals", width: 203 },
+	{ slug: "acme-corp", name: "Acme Corp", width: 263 },
+	{ slug: "building-blocks", name: "Building Blocks", width: 323 },
+] as const;
 
 /** A small valid PDF of A4 pages, each with the title on it. */
 function samplePdf(title: string, pages: number): Buffer {
@@ -196,20 +186,27 @@ function samplePdf(title: string, pages: number): Buffer {
 	return Buffer.from(body, "latin1");
 }
 
-function createKit(definition: PersonaDefinition, lang: PersonaLang, files: Map<string, PersonaFile>): PersonaKit {
+function createKit(
+	definition: PersonaDefinition,
+	lang: PersonaLang,
+	files: Map<string, PersonaFile>,
+	alternate: AlternateArt | undefined,
+	useDarkLogos: boolean,
+): PersonaKit {
 	const t = (text: Text) => (typeof text === "string" ? text : text[lang === "en" ? 0 : 1]);
 	const root = `uploads/persona-${definition.id}`;
 	const register = (file: PersonaFile) => {
 		if (!files.has(file.key)) files.set(file.key, file);
 		return file;
 	};
-	const picture: PersonaKit["picture"] = (name, alt = "", size = { width: 1200, height: 900 }) => {
+	const picture: PersonaKit["picture"] = (source, alt = "", size = { width: 960, height: 720 }) => {
+		const name = alternate ? source.replace(alternate.prefix, `${alternate.theme}-`) : source;
 		const file = register({
-			key: `${root}/pictures/portfolio/${name.replace(/\.\w+$/, "")}.${name.endsWith(".webp") ? "webp" : "png"}`,
+			key: `${root}/pictures/portfolio/${name}`,
 			name,
 			kind: "image",
 			...size,
-			read: mockup(name),
+			read: readPicture(name),
 		});
 		return { key: file.key, width: file.width, height: file.height, alt: t(alt) };
 	};
@@ -229,18 +226,23 @@ function createKit(definition: PersonaDefinition, lang: PersonaLang, files: Map<
 	return {
 		t,
 		picture,
-		logo: (name, mark, color) => {
-			const slug = name.toLowerCase().replace(/[^\da-z]+/g, "-");
-			const { svg, width, height } = logoSvg(name, mark, color);
-			const file = register({
-				key: `${root}/pictures/portfolio/logo-${slug}.png`,
-				name: `${definition.id}-logo-${slug}.svg`,
-				kind: "image",
-				width,
-				height,
-				read: () => Promise.resolve(Buffer.from(svg)),
-			});
-			return { key: file.key, width, height, alt: name };
+		clients: {
+			items: CLIENT_LOGOS.map(({ slug, name, width }) => {
+				const filename = `untitled-ui-${slug}${useDarkLogos ? "-dark" : ""}.webp`;
+				const file = register({
+					key: `${root}/pictures/portfolio/${filename}`,
+					name: filename,
+					kind: "image",
+					width,
+					height: 64,
+					read: () => readFile(new URL(`./logos/${filename}`, import.meta.url)),
+				});
+				return {
+					id: `client-${slug}`,
+					name,
+					logo: { key: file.key, width: file.width, height: file.height, alt: name },
+				};
+			}),
 		},
 		pdf: (name, title, pages) => {
 			const file = register({
@@ -327,16 +329,23 @@ function copies<T>(items: readonly T[], tag: string): T[] {
  * One persona in one language and variant: the resume, the portfolio data (in its own theme) and the files it uses.
  * Storage keys name a placeholder account (`uploads/persona-<id>/…`).
  */
-export function buildPersona(id: PersonaId, options: { lang?: PersonaLang; variant?: PersonaVariant } = {}): Persona {
-	const { lang = "id", variant = "full" } = options;
+export function buildPersona(
+	id: PersonaId,
+	options: { lang?: PersonaLang; variant?: PersonaVariant; theme?: PortfolioTheme; scheme?: PortfolioScheme } = {},
+): Persona {
 	const definition = DEFINITIONS[id];
+	const { lang = "id", variant = "full", theme = definition.theme } = options;
+	const art = ALTERNATE_ART[theme];
+	const alternate = art?.persona === id ? art : undefined;
+	const photo = alternate ? `${theme}-portrait.webp` : definition.photo;
 	const files = new Map<string, PersonaFile>();
-	const kit = createKit(definition, lang, files);
+	const useDarkLogos = theme === "kanvas" && (options.scheme ?? "dark") === "dark";
+	const kit = createKit(definition, lang, files, alternate, useDarkLogos);
 	const resume = personaResume(definition, lang);
-	const full = definition.portfolio(kit);
+	const full = { ...definition.portfolio(kit), clients: kit.clients };
 	let portfolio: PortfolioDataInput = {
 		...full,
-		theme: definition.theme,
+		theme,
 		locale: lang === "en" ? "en-US" : "id-ID",
 	};
 
@@ -349,7 +358,7 @@ export function buildPersona(id: PersonaId, options: { lang?: PersonaLang; varia
 			};
 		});
 		portfolio = {
-			theme: definition.theme,
+			theme,
 			locale: portfolio.locale,
 			basics: { picture: null },
 			hero: { greeting: kit.t(definition.minimal), showPicture: false, buttons: [{ kind: "contact" }] },
@@ -388,7 +397,6 @@ export function buildPersona(id: PersonaId, options: { lang?: PersonaLang; varia
 			testimonials: {
 				items: [...(full.testimonials?.items ?? []), ...copies(full.testimonials?.items ?? [], "copy")],
 			},
-			clients: { items: [...(full.clients?.items ?? []), ...copies(full.clients?.items ?? [], "copy")] },
 		};
 	}
 
@@ -407,12 +415,12 @@ export function buildPersona(id: PersonaId, options: { lang?: PersonaLang; varia
 
 	return {
 		id,
-		theme: definition.theme,
+		theme,
 		owner: { name: resume.basics.name, username: definition.username },
 		resume,
 		portfolio,
 		files: [...files.values()],
-		photo: { name: definition.photo, read: mockup(definition.photo) },
+		photo: { name: photo, read: readPicture(photo) },
 	};
 }
 

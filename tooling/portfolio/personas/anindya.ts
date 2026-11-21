@@ -29,7 +29,7 @@ export const anindya: PersonaDefinition = {
 		greeting: "أرافق العائلات في إدارة ثرواتها عبر الأجيال، من خلافة الأعمال إلى تعليم الأبناء في الخارج.",
 		availability: "متاحة لمنصب رئيسة الخدمات المصرفية الخاصة",
 	},
-	portfolio: ({ t, picture, logo, pdf, metric, text, work }) => ({
+	portfolio: ({ t, picture, pdf, metric, text, work }) => ({
 		hero: {
 			greeting: t([
 				"I help families manage their wealth across generations, from business succession to children's education abroad.",
@@ -171,9 +171,9 @@ export const anindya: PersonaDefinition = {
 							]),
 							pages: 9,
 							bytes: 1_100_000,
-							preview: picture("prima-pdf.svg", ["First page of the framework", "Halaman pertama kerangka"], {
-								width: 800,
-								height: 1131,
+							preview: picture("prima-pdf.webp", ["First page of the framework", "Halaman pertama kerangka"], {
+								width: 640,
+								height: 905,
 							}),
 						},
 						{
@@ -388,16 +388,6 @@ export const anindya: PersonaDefinition = {
 				},
 			],
 		},
-		clients: {
-			items: [
-				{ id: "cl-1", name: "Bank Karsa Utama", logo: logo("Bank Karsa Utama", 4, "#161E34") },
-				{ id: "cl-2", name: "Bank Samudra Raya", logo: logo("Bank Samudra Raya", 5, "#1D4ED8") },
-				{ id: "cl-3", name: "Akademi Perbankan Nusa", logo: logo("Akademi Perbankan Nusa", 1, "#7C2D12") },
-				{ id: "cl-4", name: "Forum Keluarga Usaha", logo: logo("Forum Keluarga Usaha", 0, "#0F766E") },
-				{ id: "cl-5", name: "Mandala Perencana" },
-				{ id: "cl-6", name: "Asuransi Jiwa Teduh" },
-			],
-		},
 		custom: [
 			{
 				id: "principles",
@@ -414,11 +404,11 @@ export const anindya: PersonaDefinition = {
 			point: { lat: -6.2, lng: 106.85, precision: "city" },
 			showMap: true,
 			map: {
-				light: picture("map-prima-light.svg", ["Map around Jakarta", "Peta sekitar Jakarta"], {
+				light: picture("map-prima-light.webp", ["Map around Jakarta", "Peta sekitar Jakarta"], {
 					width: 800,
 					height: 480,
 				}),
-				dark: picture("map-prima-dark.svg", ["Map around Jakarta", "Peta sekitar Jakarta"], {
+				dark: picture("map-prima-dark.webp", ["Map around Jakarta", "Peta sekitar Jakarta"], {
 					width: 800,
 					height: 480,
 				}),

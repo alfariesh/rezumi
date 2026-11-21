@@ -31,7 +31,7 @@ export const citra: PersonaDefinition = {
 		greeting: "مصممة علامات تجارية في بالي، أساعد الفلل والمقاهي والحرفيين على امتلاك هوية سهلة التذكر ومتّسقة.",
 		availability: "تتوفر مواعيد لمشاريع يناير 2026",
 	},
-	portfolio: ({ t, picture, logo, pdf, metric, text, work }) => ({
+	portfolio: ({ t, picture, pdf, metric, text, work }) => ({
 		hero: {
 			greeting: t([
 				"Brand designer in Bali. I help villas, coffee shops and makers get an identity that is easy to remember and stays consistent.",
@@ -147,9 +147,9 @@ export const citra: PersonaDefinition = {
 							title: t(["Tenun Lestari brand guidelines", "Panduan merek Tenun Lestari"]),
 							pages: 32,
 							bytes: 6_200_000,
-							preview: picture("mozaik-pdf.svg", ["The guidelines' cover", "Sampul panduan merek"], {
-								width: 800,
-								height: 1131,
+							preview: picture("mozaik-pdf.webp", ["The guidelines' cover", "Sampul panduan merek"], {
+								width: 640,
+								height: 905,
 							}),
 						},
 						{
@@ -366,16 +366,6 @@ export const citra: PersonaDefinition = {
 				},
 			],
 		},
-		clients: {
-			items: [
-				{ id: "cl-1", name: "Tenun Lestari", logo: logo("Tenun Lestari", 4, "#9F1239") },
-				{ id: "cl-2", name: "Kopi Pagi Sanur", logo: logo("Kopi Pagi Sanur", 0, "#6B4423") },
-				{ id: "cl-3", name: "Sari Segara", logo: logo("Sari Segara", 5, "#1D6F73") },
-				{ id: "cl-4", name: "Vila Teras Ubud", logo: logo("Vila Teras Ubud", 3, "#15803D") },
-				{ id: "cl-5", name: "Ombak Digital" },
-				{ id: "cl-6", name: "Rumah Kopi Senja" },
-			],
-		},
 		custom: [
 			{
 				id: "process",
@@ -392,11 +382,11 @@ export const citra: PersonaDefinition = {
 			point: { lat: -8.65, lng: 115.22, precision: "city" },
 			showMap: true,
 			map: {
-				light: picture("map-mozaik-light.svg", ["Map around Denpasar", "Peta sekitar Denpasar"], {
+				light: picture("map-mozaik-light.webp", ["Map around Denpasar", "Peta sekitar Denpasar"], {
 					width: 800,
 					height: 480,
 				}),
-				dark: picture("map-mozaik-dark.svg", ["Map around Denpasar", "Peta sekitar Denpasar"], {
+				dark: picture("map-mozaik-dark.webp", ["Map around Denpasar", "Peta sekitar Denpasar"], {
 					width: 800,
 					height: 480,
 				}),
