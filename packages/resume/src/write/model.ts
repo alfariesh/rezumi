@@ -1,7 +1,9 @@
+import type { MoveTarget } from "../move-item";
 import type {
 	CustomSection,
 	CustomSectionItem,
 	CustomSectionType,
+	LayoutPage,
 	ResumeData,
 	SectionType,
 } from "@rezumi/schema/resume/data";
@@ -9,6 +11,7 @@ import type { WritableDraft } from "immer";
 import { sectionTypeSchema } from "@rezumi/schema/resume/data";
 import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
 import { generateId, stripHtml } from "@rezumi/utils/string";
+import { moveItem as moveResumeItem } from "../move-item";
 
 type Data = ResumeData | WritableDraft<ResumeData>;
 
@@ -238,7 +241,7 @@ export function isSectionInUse(data: Data, id: string, recentlyAdded: ReadonlySe
 	return getEntries(data, section).length > 0;
 }
 
-type LayoutColumn = "main" | "sidebar";
+export type LayoutColumn = "main" | "sidebar";
 
 /** A row of the outline, in print order, with where it sits in the layout and whether it prints. */
 export type OutlineRow = { id: string; page: number; column: LayoutColumn; hidden: boolean };
@@ -274,7 +277,8 @@ export function getOutlineRows(data: Data, recentlyAdded?: ReadonlySet<string>):
 	return rows;
 }
 
-function removeFromLayout(draft: WritableDraft<ResumeData>, id: string) {
+/** Takes a section out of every page and column (it keeps its content). */
+export function removeFromLayout(draft: WritableDraft<ResumeData>, id: string) {
 	for (const page of draft.metadata.layout.pages) {
 		page.main = page.main.filter((section) => section !== id);
 		page.sidebar = page.sidebar.filter((section) => section !== id);
@@ -347,3 +351,65 @@ export function addCustomSection(draft: WritableDraft<ResumeData>, type: CustomS
 	ensurePlaced(draft, section.id);
 	return { sectionId: section.id, entryId: entry.id };
 }
+
+/** Removes a custom section and its place in the layout (Delete section). */
+export function deleteCustomSection(draft: WritableDraft<ResumeData>, id: string) {
+	draft.customSections = draft.customSections.filter((custom) => custom.id !== id);
+	removeFromLayout(draft, id);
+}
+
+/** Section options → Move to…: puts a section at the start of a page's column, or on a new last page. */
+export function placeSection(
+	draft: WritableDraft<ResumeData>,
+	id: string,
+	target: { page: number; column: LayoutColumn } | "new-page",
+) {
+	if (target !== "new-page" && !draft.metadata.layout.pages[target.page]) return;
+	removeFromLayout(draft, id);
+	if (target === "new-page") draft.metadata.layout.pages.push({ fullWidth: false, main: [id], sidebar: [] });
+	else draft.metadata.layout.pages[target.page]?.[target.column].unshift(id);
+}
+
+/** Where a section sits in the layout, for Move to…'s checked choice. */
+export function findPlacement(pages: readonly LayoutPage[], id: string): { page: number; column: LayoutColumn } | null {
+	for (const [page, layout] of pages.entries()) {
+		if (layout.main.includes(id)) return { page, column: "main" };
+		if (layout.sidebar.includes(id)) return { page, column: "sidebar" };
+	}
+	return null;
+}
+
+/** Moves an entry within its section to `to` (clamped). */
+export function moveEntry(draft: WritableDraft<ResumeData>, section: WriteSection, entryId: string, to: number) {
+	const entries = getEntries(draft, section);
+	const from = entries.findIndex((entry) => entry.id === entryId);
+	if (from === -1) return;
+	const [entry] = entries.splice(from, 1);
+	if (entry) entries.splice(Math.max(0, Math.min(to, entries.length)), 0, entry);
+}
+
+/** Entry options → Move to…: sections of the same type on each page an entry can move to. Callers resolve titles. */
+export function getCompatibleMoveTargets(data: Data, type: CustomSectionType, sourceSectionId: string) {
+	return data.metadata.layout.pages.map((page, pageIndex) => ({
+		pageIndex,
+		sectionIds: [...page.main, ...page.sidebar].filter(
+			(id) =>
+				id !== sourceSectionId &&
+				(id === type || data.customSections.some((custom) => custom.id === id && custom.type === type)),
+		),
+	}));
+}
+
+/** Moves an entry atomically, then removes only a custom source section emptied by that move. */
+export const moveSectionItem = (
+	draft: WritableDraft<ResumeData>,
+	section: WriteSection,
+	itemId: string,
+	target: MoveTarget,
+) =>
+	moveResumeItem(draft, {
+		itemId,
+		type: section.type,
+		customSectionId: section.kind === "custom" ? section.id : undefined,
+		target,
+	});

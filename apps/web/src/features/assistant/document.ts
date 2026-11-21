@@ -14,13 +14,13 @@ import {
 	getProposalState,
 	getStateIn,
 } from "@rezumi/resume/proposals";
+import { describeEntry } from "@rezumi/resume/write";
 import { toast } from "@rezumi/ui/components/toast";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { useCurrentResume } from "@/features/resume/builder/draft";
 import { getSectionName } from "@/features/resume/editor/check/issues";
 import { acceptResumeProposals } from "@/features/resume/editor/proposals/proposals";
-import { describeEntry } from "@/features/resume/editor/write/model";
 
 type AssistantDocumentBase = {
 	id: string;

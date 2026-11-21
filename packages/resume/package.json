@@ -4,11 +4,13 @@
 	"type": "module",
 	"private": true,
 	"exports": {
+		"./ats": "./src/ats/index.ts",
+		"./ats-pdf": "./src/ats-pdf/index.ts",
 		"./contact-details": "./src/contact-details.ts",
 		"./cover-letter": "./src/cover-letter.ts",
 		"./design-catalog": "./src/design-catalog.ts",
-		"./ats": "./src/ats/index.ts",
-		"./ats-pdf": "./src/ats-pdf/index.ts",
+		"./design-presets": "./src/design-presets.ts",
+		"./draft": "./src/draft/index.ts",
 		"./export-sections": "./src/export-sections.ts",
 		"./icon-picker": "./src/icon-picker.ts",
 		"./icons": "./src/icons.ts",
@@ -26,7 +28,8 @@
 		"./stylesheet/registry": "./src/stylesheet/registry/index.ts",
 		"./stylesheet/types": "./src/stylesheet/semantic-types.ts",
 		"./template-preset": "./src/template-preset.ts",
-		"./uploaded-fonts": "./src/uploaded-fonts.ts"
+		"./uploaded-fonts": "./src/uploaded-fonts.ts",
+		"./write": "./src/write/index.ts"
 	},
 	"scripts": {
 		"typecheck": "tsrs --noEmit",
@@ -40,8 +43,10 @@
 		"@rezumi/utils": "workspace:*",
 		"css-tree": "^3.2.1",
 		"fast-json-patch": "^3.1.1",
+		"immer": "^11.2.9",
 		"wink-porter2-stemmer": "2.0.1",
-		"zod": "catalog:"
+		"zod": "catalog:",
+		"zustand": "^5.0.16"
 	},
 	"devDependencies": {
 		"@rezumi/config": "workspace:*",

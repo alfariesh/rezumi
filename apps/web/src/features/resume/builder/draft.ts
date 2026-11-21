@@ -9,6 +9,7 @@ import { debounce, isEqual } from "es-toolkit";
 import { useCallback, useEffect, useState } from "react";
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand/react";
+import { MAX_HISTORY_ENTRIES, shouldCoalesceEdit } from "@rezumi/resume/draft";
 import { syncResumeDates } from "@rezumi/schema/resume/dates";
 import { toast } from "@rezumi/ui/components/toast";
 import { generateId } from "@rezumi/utils/string";
@@ -114,12 +115,6 @@ type ResumeUpdateSubscriptionOptions = {
 
 const SAVE_DEBOUNCE_MS = 500;
 const NAVIGATION_SAVE_WAIT_MS = 10_000;
-// Edits without a field key coalesce within this window (e.g. dragging); keyed edits to the same field
-// coalesce within FIELD_COALESCE_MS (typing a sentence).
-const HISTORY_COALESCE_MS = 500;
-const FIELD_COALESCE_MS = 1000;
-// Bounded stacks. Entries are shared-structure references, so 200 steps stay cheap.
-export const MAX_HISTORY_ENTRIES = 200;
 const UNSAVED_STORAGE_PREFIX = "rezumi:unsaved:";
 const runtimes = new Map<string, Runtime>();
 
@@ -132,16 +127,6 @@ function resetHistoryRuntime() {
 	historyLastEditAt = 0;
 	historyLastKey = undefined;
 	historyCanCoalesce = false;
-}
-
-/** Whether the next edit merges into the current undo step. The Profile's editor keeps its history the same way. */
-export function shouldCoalesceEdit(
-	previous: { at: number; key: string | undefined; canCoalesce: boolean },
-	next: { at: number; key: string | undefined; newStep: boolean },
-): boolean {
-	if (next.newStep || !previous.canCoalesce || previous.key !== next.key) return false;
-	const window = next.key === undefined ? HISTORY_COALESCE_MS : FIELD_COALESCE_MS;
-	return next.at - previous.at < window;
 }
 
 // Unsaved changes survive a reload or a closed tab: they're kept on this device until a save succeeds.

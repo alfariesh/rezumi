@@ -1,4 +1,4 @@
-import type { DraftEnvironment } from "./store";
+import type { DraftEnvironment } from "@rezumi/resume/draft";
 import type { NetworkState } from "expo-network";
 import * as Network from "expo-network";
 import Storage from "expo-sqlite/kv-store";

@@ -4,11 +4,11 @@ import type { PlanId } from "@rezumi/schema/billing";
 import type { Template } from "@rezumi/schema/templates";
 import { t } from "@lingui/core/macro";
 import { useQuery } from "@tanstack/react-query";
+import { templateName } from "@rezumi/resume/design-presets";
 import { FREE_TEMPLATES, isFreeTemplate } from "@rezumi/schema/billing";
 import { canShowPlans } from "./plan-alert";
 import { orpc } from "@/api/client";
 import { useSession } from "@/auth/session";
-import { templateName } from "@/features/design/presets";
 
 export { canShowPlans, showPlanAlert } from "./plan-alert";
 export type { PlanFeature } from "./plan-alert";

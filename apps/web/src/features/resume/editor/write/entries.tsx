@@ -1,5 +1,5 @@
 import type { EntryWriter } from "./fields";
-import type { Entry } from "./model";
+import type { Entry } from "@rezumi/resume/write";
 import type { CustomSectionType, RoleItem, Website } from "@rezumi/schema/resume/data";
 import type { DateFormat, ResumeDates } from "@rezumi/schema/resume/dates";
 import type { IconName } from "@rezumi/ui/components/icon";

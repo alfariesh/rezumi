@@ -17,7 +17,7 @@ import {
 	getSectionKind,
 	getSectionType,
 	isDraftEntry,
-	PRIMARY_FIELD,
+	getPrimaryField,
 } from "@/features/write/model";
 import { Alert, Card, EmptyState, ListRow, ListSection, Screen, Text } from "@/ui";
 
@@ -74,7 +74,7 @@ export function EntryEditor({ sectionId, entryId, focusField }: EntryEditorProps
 		);
 
 	const { title } = describeEntry(section.type, entry);
-	const primary = PRIMARY_FIELD[section.type];
+	const primary = getPrimaryField(section.type);
 	const hint = isDraftEntry(section.type, entry) && primary ? DRAFT_HINTS[primary] : undefined;
 
 	return (

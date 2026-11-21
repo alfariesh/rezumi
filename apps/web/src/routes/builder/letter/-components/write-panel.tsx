@@ -13,6 +13,7 @@ import { Link as RouterLink } from "@tanstack/react-router";
 import { useReducedMotion } from "motion/react";
 import { useRef, useState } from "react";
 import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@rezumi/resume/cover-letter";
+import { ACCENTS, FONT_PAIRINGS, matchFontPairing, rgbaToHex } from "@rezumi/resume/design-presets";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -29,7 +30,6 @@ import { countWords, LETTER_LENGTH, letterLength } from "@/features/letters/leng
 import { discardLetterDraft, startLetterDraft, useLetterEditorStore } from "@/features/letters/store";
 import { useLetterMode } from "@/features/letters/use-letter-mode";
 import { profileHasCareer, profileQueryOptions } from "@/features/profile/queries";
-import { ACCENTS, FONT_PAIRINGS, matchFontPairing, rgbaToHex } from "@/features/resume/editor/design/presets";
 import { RichTextEditor } from "@/features/resume/editor/write/rich-text-editor";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";

@@ -2,8 +2,8 @@ import type { PlanFeatures } from "@rezumi/schema/billing";
 import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { Alert, Platform } from "react-native";
+import { templateName } from "@rezumi/resume/design-presets";
 import { FREE_TEMPLATES } from "@rezumi/schema/billing";
-import { templateName } from "@/features/design/presets";
 
 // Kept apart from plan.ts, which reads the API: the API client shows these alerts and must not import itself.
 

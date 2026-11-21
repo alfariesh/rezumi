@@ -6,6 +6,7 @@ import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
+import { applyTextSize } from "@rezumi/resume/design-presets";
 import { templateLineup } from "@rezumi/schema/templates";
 import {
 	ACCENTS,
@@ -25,7 +26,6 @@ import { relinkLetter } from "./save";
 import { relinked } from "./write";
 import { useLetterStore } from "@/draft";
 import { isLabelledTemplate, isLockedTemplate, listedTemplates, showPlanAlert, usePlan } from "@/features/billing/plan";
-import { applyTextSize } from "@/features/design/presets";
 import { routes } from "@/routes";
 import { Button, IconButton, ListRow, Segmented, SelectSheet, Switch, Text, TextField, useTheme } from "@/ui-legacy";
 

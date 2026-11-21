@@ -10,6 +10,7 @@ import { Image } from "expo-image";
 import { useMemo, useState } from "react";
 import { Pressable, View } from "react-native";
 import { offeredTemplates } from "@rezumi/career/onboarding";
+import { templateName } from "@rezumi/resume/design-presets";
 import { resumeDataFromProfile } from "@rezumi/resume/profile";
 import { applyTemplatePreset } from "@rezumi/resume/template-preset";
 import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
@@ -17,7 +18,6 @@ import { isLocale } from "@rezumi/utils/locale";
 import { useSession } from "@/auth/session";
 import { isLabelledTemplate, isLockedTemplate, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { canShowPlans } from "@/features/billing/plan-alert";
-import { templateName } from "@/features/design/presets";
 import {
 	readStoredTemplateThumbnail,
 	storeTemplateThumbnail,

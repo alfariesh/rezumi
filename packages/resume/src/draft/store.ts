@@ -1,8 +1,10 @@
 import type { DraftStore, UpdateOptions } from "./types";
 import type { WritableDraft } from "immer";
+import type { StoreApi } from "zustand/vanilla";
 import { produce } from "immer";
-import { create } from "zustand";
+import { createStore } from "zustand/vanilla";
 import { generateId } from "@rezumi/utils/string";
+import { joinsUndoStep, MAX_HISTORY_ENTRIES, pushBounded } from "./history";
 
 type Document = { id: string; isLocked: boolean };
 type Record<D> = { baseline: D; document: D; sessionId: string; copyId?: string };
@@ -23,6 +25,7 @@ export type DraftAdapter<D extends Document, T> = {
 	isConflict: (error: unknown) => boolean;
 };
 
+/** What the engine needs from its platform: synchronous storage (SQLite kv in the app), the account, connectivity. */
 export type DraftEnvironment = {
 	storage: {
 		getItemSync: (key: string) => string | null;
@@ -46,8 +49,34 @@ const emptyState = {
 	canRedo: false,
 } as const;
 
-/** Shared save owner for resumes and letters; adapters own their different API contracts. */
-export function createDraftStore<D extends Document, T>(adapter: DraftAdapter<D, T>, env: DraftEnvironment) {
+export type DraftEngine<D, T> = {
+	store: StoreApi<DraftStore<D, T>>;
+	/** The current account's recoverable drafts, from disk and from memory (writes kept after a disk failure). */
+	listPending: () => Promise<D[]>;
+	subscribePending: (listener: () => void) => () => void;
+	/** The server copy may have changed (an update event): apply it unless there are unsaved edits or a field has focus. */
+	refresh: () => Promise<void>;
+	/** Sends the current account's drafts of other documents kept on this device (offline edits, a force close). */
+	replay: () => Promise<void>;
+	/** Editing ended: apply a deferred server copy, then save. */
+	blur: () => Promise<void>;
+	/** Editing started: server copies wait until `blur`. */
+	focus: () => void;
+	/** Removes one account's drafts (signing out); never another account's. */
+	clearDraftsFor: (owner: string) => void;
+	/** Session changes stop requests and hide the old account's in-memory draft immediately. */
+	suspend: () => void;
+};
+
+/**
+ * Shared save owner for resumes and letters: a debounced save queue, undo/redo, a copy on the device that survives a
+ * closed app or no connection, replay on reconnect, and a version check that turns a newer server copy into a
+ * conflict. Adapters own the different API contracts; the environment owns storage, the account and connectivity.
+ */
+export function createDraftStore<D extends Document, T>(
+	adapter: DraftAdapter<D, T>,
+	env: DraftEnvironment,
+): DraftEngine<D, T> {
 	let scope: string | null = null;
 	let record: Record<D> | null = null;
 	let dirty = false;
@@ -73,7 +102,7 @@ export function createDraftStore<D extends Document, T>(adapter: DraftAdapter<D,
 		if (!scope || !record) throw new Error("No draft is open.");
 		return `${prefix(scope)}${record.document.id}`;
 	};
-	const store = create<DraftStore<D, T>>(() => ({
+	const store = createStore<DraftStore<D, T>>(() => ({
 		...emptyState,
 		open,
 		close,
@@ -265,12 +294,7 @@ export function createDraftStore<D extends Document, T>(adapter: DraftAdapter<D,
 		const next = produce(before, recipe);
 		if (next === before) return;
 		const now = Date.now();
-		const coalesce =
-			!options.newStep &&
-			last?.coalesce &&
-			last.key === options.coalesceKey &&
-			((options.sameStep && options.coalesceKey !== undefined) || now - last.at < (options.coalesceKey ? 1000 : 500));
-		if (!coalesce) undo = [...undo.slice(-199), before];
+		if (!joinsUndoStep(last, options, now)) undo = pushBounded(undo, before);
 		redo = [];
 		last = { at: now, key: options.coalesceKey, coalesce: !options.newStep };
 		history();
@@ -299,7 +323,7 @@ export function createDraftStore<D extends Document, T>(adapter: DraftAdapter<D,
 		const next = from.pop();
 		if (next === undefined) return;
 		to.push(adapter.data(record.document));
-		if (to.length > 200) to.shift();
+		if (to.length > MAX_HISTORY_ENTRIES) to.shift();
 		last = null;
 		history();
 		queue(adapter.withData(record.document, next));
@@ -528,7 +552,6 @@ export function createDraftStore<D extends Document, T>(adapter: DraftAdapter<D,
 		focus: () => {
 			editing = true;
 		},
-		/** Session changes stop requests and hide the old account's in-memory draft immediately. */
 		suspend: () => {
 			persist();
 			reset();

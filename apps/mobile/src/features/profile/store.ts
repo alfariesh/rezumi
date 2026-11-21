@@ -4,6 +4,7 @@ import type { UpdateOptions } from "@/draft";
 // (`@rezumi/resume/profile-draft`), sending the version it read. A version conflict keeps the edits and asks which
 // version to keep; a failed save (offline) keeps them and sends again when the connection is back.
 import type { ProfileDto } from "@/features/onboarding/queries";
+import type { LastEdit } from "@rezumi/resume/draft";
 import type { FollowedResume, ProfileDraftStatus, ProfileSaveResult } from "@rezumi/resume/profile-draft";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { QueryClient } from "@tanstack/react-query";
@@ -13,13 +14,12 @@ import { onlineManager } from "@tanstack/react-query";
 import { produce } from "immer";
 import { AppState } from "react-native";
 import { create } from "zustand";
+import { joinsUndoStep, pushBounded } from "@rezumi/resume/draft";
 import { profileFromResume, resumeDataFromProfile } from "@rezumi/resume/profile";
 import { createProfileSaver, mergeFollowed } from "@rezumi/resume/profile-draft";
 import { syncResumeDates } from "@rezumi/schema/resume/dates";
 import { client, orpc } from "@/api/client";
 import { profileQuery, storeSavedProfile } from "@/features/onboarding/queries";
-
-const MAX_HISTORY = 100;
 
 export type ProfileEditorState = {
 	/** The account the open Profile belongs to; edits never cross to another one. */
@@ -50,7 +50,7 @@ const initial: ProfileEditorState = {
 export const useProfileEditor = create<ProfileEditorState>()(() => initial);
 
 let queryClient: QueryClient | undefined;
-let last: { at: number; key: string | undefined; coalesce: boolean } | null = null;
+let last: LastEdit | null = null;
 
 const state = () => useProfileEditor.getState();
 
@@ -133,15 +133,11 @@ export function updateProfile(recipe: (draft: WritableDraft<ResumeData>) => void
 	});
 	if (next === data) return;
 	const now = Date.now();
-	const coalesce =
-		!options.newStep &&
-		last?.coalesce === true &&
-		last.key === options.coalesceKey &&
-		((options.sameStep && options.coalesceKey !== undefined) || now - last.at < (options.coalesceKey ? 1000 : 500));
+	const coalesce = joinsUndoStep(last, options, now);
 	last = { at: now, key: options.coalesceKey, coalesce: !options.newStep };
 	useProfileEditor.setState((current) => ({
 		data: next,
-		undoStack: coalesce ? current.undoStack : [...current.undoStack.slice(-(MAX_HISTORY - 1)), data],
+		undoStack: coalesce ? current.undoStack : pushBounded(current.undoStack, data),
 		redoStack: [],
 	}));
 	pendingRetry = false;

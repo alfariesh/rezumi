@@ -1,7 +1,7 @@
-import type { WriteSection } from "./model";
 import type { WriteSource } from "./source";
+import type { WriteSection } from "@rezumi/resume/write";
+import { createEntry, getEntries } from "@rezumi/resume/write";
 import { useEditorStore } from "../store";
-import { createEntry, getEntries } from "./model";
 
 /** Opens an entry: expands its section, selects it (outlining it on the page) and focuses a new draft. */
 export function openEntry(sectionId: string, entryId: string, options: { focus?: boolean } = {}) {

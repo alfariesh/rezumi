@@ -5,6 +5,7 @@ import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { isSectionInUse } from "@rezumi/resume/write";
 import { PROFILE_SECTION_TYPES } from "@rezumi/schema/profile/data";
 import { Icon } from "@rezumi/ui/components/icon";
 import { stripHtml } from "@rezumi/utils/string";
@@ -22,7 +23,6 @@ import { CareerLoadError } from "@/features/career/load-state";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { AddSectionMenu, StartSuggestions } from "@/features/resume/editor/write/add-section";
 import { BasicsCard } from "@/features/resume/editor/write/basics-card";
-import { isSectionInUse } from "@/features/resume/editor/write/model";
 import { OutlineSection } from "@/features/resume/editor/write/outline";
 import { useWriteSelector, WriteSourceProvider } from "@/features/resume/editor/write/source";
 

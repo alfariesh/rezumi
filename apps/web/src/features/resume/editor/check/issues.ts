@@ -5,8 +5,8 @@ import type { IconName } from "@rezumi/ui/components/icon";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { atsRuleCategory } from "@rezumi/resume/ats";
+import { describeEntry, findEntry, getSectionObject, resolveSection } from "@rezumi/resume/write";
 import { formatList } from "@rezumi/utils/locale";
-import { describeEntry, findEntry, getSectionObject, resolveSection } from "../write/model";
 import { getSectionTitle } from "@/libs/resume/section";
 
 /** How a card fixes its issue: in one step on the resume (with undo), or by opening the entry in Write. */

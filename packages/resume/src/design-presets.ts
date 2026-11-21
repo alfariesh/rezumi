@@ -1,5 +1,10 @@
+// The Design panel's presets and colour helpers, shared by the web and the app. Pure: no React, no Lingui.
 import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { DateFormat } from "@rezumi/schema/resume/dates";
+import type { Template } from "@rezumi/schema/templates";
 import type { WritableDraft } from "immer";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { contrastOnWhite } from "@rezumi/utils/color";
 
 type Data = ResumeData | WritableDraft<ResumeData>;
@@ -83,12 +88,12 @@ export function applyMargins(metadata: WritableDraft<Metadata>, id: MarginId) {
 
 export const TEXT_SIZE = { min: 9, max: 12.5, step: 0.5 } as const;
 
-/** Sets the body size and scales the heading with it, keeping their ratio. */
-export function applyTextSize(metadata: WritableDraft<Metadata>, size: number) {
+/** Sets the body size and scales the heading with it, keeping their ratio within the schema's 6–24pt bounds. */
+export function applyTextSize(metadata: WritableDraft<Pick<Metadata, "typography">>, size: number) {
 	const { body, heading } = metadata.typography;
 	const ratio = body.fontSize > 0 ? heading.fontSize / body.fontSize : 1.4;
 	body.fontSize = size;
-	heading.fontSize = Math.round(size * ratio * 2) / 2;
+	heading.fontSize = Math.min(24, Math.max(6, Math.round(size * ratio * 2) / 2));
 }
 
 /** Eight accents, all readable on white. */
@@ -106,7 +111,7 @@ export const ACCENTS = [
 const HEX = /^#?([0-9a-f]{6})$/i;
 
 export const hexToRgba = (hex: string) => {
-	const value = Number.parseInt(HEX.exec(hex)?.[1] ?? "000000", 16);
+	const value = Number.parseInt(HEX.exec(hex.trim())?.[1] ?? "000000", 16);
 	return `rgba(${(value >> 16) & 255}, ${(value >> 8) & 255}, ${value & 255}, 1)`;
 };
 
@@ -121,9 +126,63 @@ export function rgbaToHex(color: string): string | null {
 		.toUpperCase()}`;
 }
 
+export const isValidHex = (hex: string) => HEX.test(hex.trim());
+
+type Rgba = { r: number; g: number; b: number; a: number };
+
+/** `rgb(a)(…)` with channels 0–255 and alpha 0–1, else null. */
+function parseRgba(value: string): Rgba | null {
+	const match = /^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(\d*\.?\d+)\s*)?\)$/i.exec(value.trim());
+	if (!match) return null;
+	const [r, g, b] = match.slice(1, 4).map(Number) as [number, number, number];
+	const a = match[4] === undefined ? 1 : Number(match[4]);
+	return [r, g, b].every((channel) => channel <= 255) && a <= 1 ? { r, g, b, a } : null;
+}
+
+const toRgba = ({ r, g, b, a }: Rgba) => `rgba(${r}, ${g}, ${b}, ${a})`;
+
+/** Typed colour text as a canonical `rgba(r, g, b, a)`: hex with or without #, or rgb(a) in range. Else null. */
+export function parseColorInput(text: string): string | null {
+	const value = text.trim();
+	if (isValidHex(value)) return hexToRgba(value);
+	const rgba = parseRgba(value);
+	return rgba ? toRgba(rgba) : null;
+}
+
+const toRgb = (color: string): Rgba | null =>
+	parseRgba(color) ?? (isValidHex(color) ? parseRgba(hexToRgba(color)) : null);
+const over = (top: Rgba, bottom: Rgba): Rgba => ({
+	r: top.r * top.a + bottom.r * (1 - top.a),
+	g: top.g * top.a + bottom.g * (1 - top.a),
+	b: top.b * top.a + bottom.b * (1 - top.a),
+	a: 1,
+});
+const linear = (channel: number) => {
+	const value = channel / 255;
+	return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+};
+const luminance = ({ r, g, b }: Rgba) => 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b);
+
+/**
+ * WCAG contrast of `color` as it prints on `background`: the background is laid over white paper and the colour
+ * over the background, so transparency counts. 1 when either can't be read.
+ */
+export function contrastOver(color: string, background = "#FFFFFF"): number {
+	const white = { r: 255, g: 255, b: 255, a: 1 };
+	const top = toRgb(color);
+	const bottom = toRgb(background);
+	if (!top || !bottom) return 1;
+	const paper = over(bottom, white);
+	const [light, dark] = [luminance(paper), luminance(over(top, paper))].sort((x, y) => y - x) as [number, number];
+	return (light + 0.05) / (dark + 0.05);
+}
+
+/** Below this the Color group warns (WCAG AA for normal text). */
+export const MIN_CONTRAST = 4.5;
+
 /** The same hue, darkened step by step until it reads on white (at least 4.6:1). */
 export function darkenForWhite(hex: string): string {
-	const value = Number.parseInt(HEX.exec(hex)?.[1] ?? "000000", 16);
+	const value = Number.parseInt(HEX.exec(hex.trim())?.[1] ?? "000000", 16);
 	let channels = [(value >> 16) & 255, (value >> 8) & 255, value & 255];
 	for (let step = 0; step < 40; step++) {
 		const candidate =
@@ -174,4 +233,39 @@ export async function fitToPages(
 		state = { ...state, ...step };
 	}
 	return { fits: false, state };
+}
+
+/** Example labels are dates, not words, so they need no translation. */
+export const DATE_FORMATS: { value: DateFormat; label: string }[] = [
+	{ value: "short", label: "Mar 2022" },
+	{ value: "long", label: "March 2022" },
+	{ value: "numeric", label: "03/2022" },
+	{ value: "iso", label: "2022-03" },
+];
+
+/**
+ * Reset design defaults: typography, design, sidebar width and the look's page values. Paper, language, date
+ * format, section placement and custom CSS are the user's, not the look's; they stay.
+ */
+export function resetDesign(metadata: WritableDraft<ResumeData["metadata"]>) {
+	const defaults = defaultResumeData.metadata;
+	metadata.typography = structuredClone(defaults.typography);
+	metadata.design = structuredClone(defaults.design);
+	metadata.layout.sidebarWidth = defaults.layout.sidebarWidth;
+	const { gapX, gapY, marginX, marginY, hideLinkUnderline } = defaults.page;
+	Object.assign(metadata.page, { gapX, gapY, marginX, marginY, hideLinkUnderline });
+}
+
+export type TemplateFilter = "all" | "one" | "two" | "ats";
+
+export const TEMPLATES: readonly Template[] = templateLineup;
+
+export const templateName = (id: Template) => id.charAt(0).toUpperCase() + id.slice(1);
+
+export function matchesFilter(id: Template, filter: TemplateFilter) {
+	const layout = templateLayouts[id];
+	if (filter === "one") return layout.columns === 1;
+	if (filter === "two") return layout.columns === 2;
+	if (filter === "ats") return layout.atsSafe;
+	return true;
 }

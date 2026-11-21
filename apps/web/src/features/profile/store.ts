@@ -9,12 +9,12 @@ import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand/react";
+import { MAX_HISTORY_ENTRIES, shouldCoalesceEdit } from "@rezumi/resume/draft";
 import { profileFromResume, resumeDataFromProfile } from "@rezumi/resume/profile";
 import { createProfileSaver, mergeFollowed } from "@rezumi/resume/profile-draft";
 import { syncResumeDates } from "@rezumi/schema/resume/dates";
 import { toast } from "@rezumi/ui/components/toast";
 import { storeSavedProfile } from "./queries";
-import { MAX_HISTORY_ENTRIES, shouldCoalesceEdit } from "@/features/resume/builder/draft";
 import { client, orpc } from "@/libs/orpc/client";
 
 /**

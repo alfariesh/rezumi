@@ -9,7 +9,7 @@ import { EntryFields } from "./entry-fields";
 import { EntrySheet } from "./entry-sheet";
 import { DRAFT_HINTS } from "./fields";
 import { consumeFocus, useEntry, useEntryWriter, useSectionTitle, useWriteData } from "./hooks";
-import { describeEntry, getSectionKind, getSectionType, isDraftEntry, PRIMARY_FIELD } from "./model";
+import { describeEntry, getSectionKind, getSectionType, getPrimaryField, isDraftEntry } from "./model";
 import { RichTextField, RichTextToolbar } from "./rich-text-field";
 import { useIsResumeLocked, useResumeStore } from "@/draft";
 import { Banner, EmptyState, IconButton, Text, useTheme } from "@/ui-legacy";
@@ -81,7 +81,7 @@ export function EntryScreen({ resumeId, sectionId, entryId, focusField }: EntryS
 	if (!section || !entry) return <EditorScreen title={t`Entry`}>{null}</EditorScreen>;
 
 	const { title } = describeEntry(section.type, entry);
-	const primary = PRIMARY_FIELD[section.type];
+	const primary = getPrimaryField(section.type);
 	const hint = isDraftEntry(section.type, entry) && primary ? DRAFT_HINTS[primary] : undefined;
 
 	return (

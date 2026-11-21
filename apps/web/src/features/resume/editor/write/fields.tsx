@@ -1,4 +1,4 @@
-import type { Entry } from "./model";
+import type { Entry } from "@rezumi/resume/write";
 import type { Website } from "@rezumi/schema/resume/data";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ComponentProps, ReactNode } from "react";
@@ -6,9 +6,9 @@ import { Checkbox, Description, Disclosure, FieldError, Input, Label, TextField 
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useCallback, useState } from "react";
+import { findEntry } from "@rezumi/resume/write";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { cn } from "@rezumi/utils/style";
-import { findEntry } from "./model";
 import { useWriteSelector, useWriteUpdate } from "./source";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { URLInput } from "@/components/input/url-input";
