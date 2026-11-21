@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Modal, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLetterStore, useResumeStore } from "./runtime";
-import { Button, ConfirmDialog, Text, useTheme } from "@/ui";
+import { Button, ConfirmDialog, Text, useTheme } from "@/ui-legacy";
 
 type DraftConflictSheetProps = {
 	open: boolean;

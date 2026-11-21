@@ -12,7 +12,7 @@ import { useThreads } from "@/features/assistant/chat";
 import { ChatView } from "@/features/assistant/chat-view";
 import { ModelButton, ModelSheet, ProviderGate, useConversationProvider } from "@/features/assistant/provider";
 import { useDeleteThread, useThreadTime, useThreadTitle } from "@/features/assistant/threads";
-import { Banner, IconButton, ListRow, Sheet, Text, useTheme } from "@/ui";
+import { Banner, IconButton, ListRow, Sheet, Text, useTheme } from "@/ui-legacy";
 
 type CoachSheetProps = { application: Application; tab: WorkspaceTab; open: boolean; onClose: () => void };
 

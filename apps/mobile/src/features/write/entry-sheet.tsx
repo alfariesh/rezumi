@@ -15,7 +15,7 @@ import {
 	selectPages,
 } from "./model";
 import { routes } from "@/routes";
-import { ListRow, Sheet } from "@/ui";
+import { ListRow, Sheet } from "@/ui-legacy";
 
 type EntrySheetProps = {
 	resumeId: string;

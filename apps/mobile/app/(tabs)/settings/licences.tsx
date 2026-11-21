@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 import { useState } from "react";
 import { FlatList, View } from "react-native";
 import { javascriptNotices, licenceTexts, nativeNotices } from "@/features/licences/notices";
-import { ListRow, Screen, Segmented, Text, useTheme } from "@/ui";
+import { ListRow, Screen, Segmented, Text, useTheme } from "@/ui-legacy";
 
 export default function LicencesScreen() {
 	const { t } = useLingui();

@@ -9,7 +9,7 @@ import { getLostCharactersMessage } from "./messages";
 import { safeFileName } from "./model";
 import { client, rest } from "@/api/client";
 import { createPreviewPipeline } from "@/preview/pipeline";
-import { showToast } from "@/ui";
+import { showToast } from "@/ui-legacy";
 
 export type ExportFormat = "pdf" | "docx" | "odt" | "md" | "json";
 const mime = {

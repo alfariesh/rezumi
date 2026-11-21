@@ -32,7 +32,7 @@ import {
 	TextField,
 	showToast,
 	useTheme,
-} from "@/ui";
+} from "@/ui-legacy";
 
 type LetterFormat = ExportFormat | "both";
 

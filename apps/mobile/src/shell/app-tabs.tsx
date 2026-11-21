@@ -1,4 +1,4 @@
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import type { BottomTabBarProps } from "expo-router/tabs";
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
@@ -14,8 +14,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { routes } from "@/routes";
-import { Button, Icon, Text, haptics, useReducedMotion, useTheme } from "@/ui";
-import { useKeyboardVisible } from "@/ui/keyboard";
+import { Button, Icon, Text, haptics, useReducedMotion, useTheme } from "@/ui-legacy";
+import { useKeyboardVisible } from "@/ui-legacy/keyboard";
 
 /** The tab routes of `app/(tabs)`, in tab-bar order. `create` is the raised "+" that opens New. */
 const appTabIcons: Record<string, IconName> = {

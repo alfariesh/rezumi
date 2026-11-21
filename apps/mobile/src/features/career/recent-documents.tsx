@@ -4,7 +4,7 @@ import { Pressable, ScrollView, View } from "react-native";
 import { useDocuments } from "@/features/documents/queries";
 import { Thumbnail } from "@/features/documents/thumbnail";
 import { routes } from "@/routes";
-import { Button, Icon, Text, useTheme } from "@/ui";
+import { Button, Icon, Text, useTheme } from "@/ui-legacy";
 
 /** How many documents Home previews, before the tile that starts a new one. */
 const LIMIT = 3;

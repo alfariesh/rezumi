@@ -74,7 +74,7 @@ function load(path, extra = {}) {
 	);
 	return module.exports;
 }
-const tokens = load("ui/tokens.ts");
+const tokens = load("ui-legacy/tokens.ts");
 const theme = { ...tokens, colors: tokens.colors.light, shadows: tokens.shadows.light };
 const ui = {
 	Text: "Text",
@@ -84,18 +84,18 @@ const ui = {
 	haptics: { selection() {} },
 	useTheme: () => theme,
 };
-mocks["@/ui"] = ui;
+mocks["@/ui-legacy"] = ui;
 mocks["./theme"] = ui;
 // Gesture state has its own timing regression; layout fixtures do not pull.
 const pullRefresh = { usePullRefresh: () => ({ refreshing: false, onRefresh() {} }) };
 mocks["./use-pull-refresh"] = pullRefresh;
-mocks["@/ui/use-pull-refresh"] = pullRefresh;
+mocks["@/ui-legacy/use-pull-refresh"] = pullRefresh;
 mocks["@/components/collection-header"] = { CollectionHeader: "CollectionHeader" };
 const { useIsTablet: isTablet } = load("shell/use-is-tablet.ts");
 mocks["./use-is-tablet"] = { useIsTablet: isTablet };
 const keyboardLayout = load("ui/keyboard.tsx");
 mocks["./keyboard"] = keyboardLayout;
-mocks["@/ui/keyboard"] = keyboardLayout;
+mocks["@/ui-legacy/keyboard"] = keyboardLayout;
 const resizedKeyboard = keyboardLayout.KeyboardFrame({}).type;
 for (const height of [0, 300, 200]) {
 	keyboardHeight = height;
@@ -110,7 +110,7 @@ for (const height of [0, 300, 200]) {
 }
 resizedKeyboard.current = false;
 keyboardHeight = 0;
-const { Screen } = load("ui/text.tsx");
+const { Screen } = load("ui-legacy/text.tsx");
 const { TopBar } = load("shell/top-bar.tsx");
 const { AppSidebar } = load("shell/app-tabs.tsx", { "react-native-reanimated": {} });
 const nodes = (tree) =>
@@ -477,8 +477,8 @@ const componentFixtures = {
 	"../../assets/avatar-placeholder.webp": 1,
 };
 const { CollectionHeader } = load("components/collection-header.tsx");
-const { ListRow, EmptyState } = load("ui/layout.tsx", componentFixtures);
-const { Segmented } = load("ui/fields.tsx", {
+const { ListRow, EmptyState } = load("ui-legacy/layout.tsx", componentFixtures);
+const { Segmented } = load("ui-legacy/fields.tsx", {
 	...componentFixtures,
 	"./layout": { ListRow },
 	"./overlays": { Sheet: "Sheet" },
@@ -493,7 +493,7 @@ const { KnowledgeScreen } = load("features/career/knowledge.tsx", {
 	"./shared": { LoadState: "LoadState" },
 	"./hooks": { useCareerQueries: () => ({ profile: {} }) },
 	"@/auth/session": { useSession: () => ({ server: "fixture" }) },
-	"@/ui": { ...ui, Screen: "Screen", Segmented: "Segmented" },
+	"@/ui-legacy": { ...ui, Screen: "Screen", Segmented: "Segmented" },
 });
 native.FlatList = "FlatList";
 const documentQuery = { data: [], isError: false, refetch() {} };
@@ -514,7 +514,7 @@ const { DocumentsLibrary } = load("features/documents/library.tsx", {
 	"@lingui/core/macro": { plural: (count, options) => options[count === 1 ? "one" : "other"].replace("#", count) },
 	"react-native-gesture-handler/ReanimatedSwipeable": {},
 	"react-native-reanimated": { ...animation, FlatList: "FlatList" },
-	"@/ui": {
+	"@/ui-legacy": {
 		...ui,
 		Screen: "Screen",
 		ListRow: "ListRow",
@@ -702,7 +702,7 @@ const { IconPickerSheet } = load("features/write/pickers.tsx", {
 	"react-native-svg": { SvgXml: "SvgXml" },
 	"@rezumi/pdf/icons": { default: iconPaths, __esModule: true },
 	"@rezumi/schema/icons": { icons: resumeIcons },
-	"@/ui": { ...ui, Sheet: "Sheet", TextField: "TextField", ListRow: "ListRow" },
+	"@/ui-legacy": { ...ui, Sheet: "Sheet", TextField: "TextField", ListRow: "ListRow" },
 });
 hooks.length = 0;
 const selections = [];
@@ -758,14 +758,9 @@ assert.equal(render(ListRow, { title: "Status", value: "Saved" }).props.accessib
 assert.equal(render(ListRow, { title: "Open", onPress() {} }).props.accessible, true);
 
 // An unknown decorative icon crashes its entire screen, including rows accepting ReactNode leading content.
-const { Icon: NativeIcon } = load(
-	"ui/icon.tsx",
-	Object.fromEntries(
-		[
-			...readFileSync(new URL("../src/ui/icon.tsx", import.meta.url), "utf8").matchAll(
-				/import \{ (\w+) \} from "(phosphor-react-native\/src\/icons\/[^"]+)"/g,
-			),
-		].map(([, symbol, path]) => [path, { [symbol]: symbol }]),
+const appIconNames = new Set(
+	Object.keys(
+		JSON.parse(readFileSync(new URL("../../../packages/icons/src/generated/app-icons.json", import.meta.url))),
 	),
 );
 for (const directory of [new URL("../src/", import.meta.url), new URL("../app/", import.meta.url)]) {
@@ -773,7 +768,7 @@ for (const directory of [new URL("../src/", import.meta.url), new URL("../app/",
 		const source = readFileSync(new URL(path, directory), "utf8");
 		for (const pattern of [/\b(?:icon|leading)="([^"]+)"/g, /<Icon\b[^>]*\bname="([^"]+)"/g]) {
 			for (const [, name] of source.matchAll(pattern)) {
-				assert.ok(NativeIcon({ name }).type, `${path}: icon "${name}" must resolve before its screen renders`);
+				assert.ok(appIconNames.has(name), `${path}: icon "${name}" must resolve before its screen renders`);
 			}
 		}
 	}

@@ -20,29 +20,32 @@ import { useOpenReminder } from "@/features/reminders/open";
 import { useReviewPrompt } from "@/features/reviews/use-review-prompt";
 import { i18n, initI18n } from "@/i18n";
 import { ErrorBoundary } from "@/shell/error-boundary";
-import { EmptyState, Screen, Toaster, WindowSafeAreaProvider, useReducedMotion, useTheme } from "@/ui";
+import { ToastBridge, WindowSafeAreaProvider, useColorSchemeValue, useReducedMotion, useThemeColor } from "@/ui";
+import { EmptyState, Screen, Toaster } from "@/ui-legacy";
 import { fontAssets } from "@/ui/fonts";
 import { initTheme } from "@/ui/theme";
 
 void SplashScreen.preventAutoHideAsync();
 
+// React Navigation's chrome (stack headers, native tab bar) in the design system's colors and Google Sans.
 function useNavigationTheme() {
-	const { scheme, colors, fonts } = useTheme();
+	const scheme = useColorSchemeValue();
+	const [accent, background, surface, foreground, border, danger] = useThemeColor([
+		"accent",
+		"background",
+		"surface",
+		"foreground",
+		"border",
+		"danger",
+	]);
 	return {
 		dark: scheme === "dark",
-		colors: {
-			primary: colors.accent,
-			background: colors.bg,
-			card: colors.surface,
-			text: colors.ink,
-			border: colors.line,
-			notification: colors.danger,
-		},
+		colors: { primary: accent, background, card: surface, text: foreground, border, notification: danger },
 		fonts: {
-			regular: { fontFamily: fonts.ui[400], fontWeight: "400" as const },
-			medium: { fontFamily: fonts.ui[500], fontWeight: "500" as const },
-			bold: { fontFamily: fonts.ui[600], fontWeight: "600" as const },
-			heavy: { fontFamily: fonts.ui[700], fontWeight: "700" as const },
+			regular: { fontFamily: "GoogleSans-Regular", fontWeight: "400" as const },
+			medium: { fontFamily: "GoogleSans-Medium", fontWeight: "500" as const },
+			bold: { fontFamily: "GoogleSans-SemiBold", fontWeight: "600" as const },
+			heavy: { fontFamily: "GoogleSans-Bold", fontWeight: "700" as const },
 		},
 	} satisfies typeof DefaultTheme;
 }
@@ -117,7 +120,7 @@ function RootLayout() {
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
-			<HeroUINativeProvider>
+			<HeroUINativeProvider config={{ devInfo: { stylingPrinciples: false } }}>
 				<SafeAreaProvider>
 					<WindowSafeAreaProvider>
 						<KeyboardProvider>
@@ -129,6 +132,7 @@ function RootLayout() {
 											<SessionGate />
 										</ErrorBoundary>
 										<Toaster />
+										<ToastBridge />
 									</TrueSheetProvider>
 								</I18nProvider>
 							</QueryClientProvider>

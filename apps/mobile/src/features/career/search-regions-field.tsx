@@ -10,7 +10,7 @@ import {
 	shownSearchRegions,
 } from "@rezumi/utils/region";
 import { deviceTimeZone } from "@/features/reminders/schedule";
-import { Button, Chip, SelectSheet, Text, useTheme } from "@/ui";
+import { Button, Chip, SelectSheet, Text, useTheme } from "@/ui-legacy";
 
 export type SearchRegionsFieldProps = {
 	value: string[] | null | undefined;

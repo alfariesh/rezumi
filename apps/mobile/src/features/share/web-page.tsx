@@ -14,7 +14,18 @@ import { flushResume } from "./document";
 import { client, orpc } from "@/api/client";
 import { useResumeStore } from "@/draft";
 import { resume as draftResume } from "@/draft/runtime";
-import { Banner, Button, ConfirmDialog, ListGroup, ListRow, Sheet, Switch, TextField, showToast, useTheme } from "@/ui";
+import {
+	Banner,
+	Button,
+	ConfirmDialog,
+	ListGroup,
+	ListRow,
+	Sheet,
+	Switch,
+	TextField,
+	showToast,
+	useTheme,
+} from "@/ui-legacy";
 
 type WebPageSettingsProps = {
 	resume: ResumeDocument;

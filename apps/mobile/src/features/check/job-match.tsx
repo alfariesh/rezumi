@@ -11,7 +11,7 @@ import { useResumeStore } from "@/draft";
 import { resume } from "@/draft/runtime";
 import { useApplication, useApplications, useInvalidateApplications } from "@/features/applications/queries";
 import { routes } from "@/routes";
-import { Banner, Button, Card, Chip, SelectSheet, Sheet, Skeleton, Text, TextArea, useTheme } from "@/ui";
+import { Banner, Button, Card, Chip, SelectSheet, Sheet, Skeleton, Text, TextArea, useTheme } from "@/ui-legacy";
 
 type JobMatchProps = {
 	id: string;

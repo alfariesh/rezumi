@@ -1,9 +1,9 @@
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import type { ReactNode } from "react";
 import { createContext, use } from "react";
 import { View } from "react-native";
 import { useIsTablet } from "./use-is-tablet";
-import { Icon, Text, useReducedMotion, useTheme } from "@/ui";
+import { Icon, Text, useReducedMotion, useTheme } from "@/ui-legacy";
 
 const BannerAboveContext = createContext(false);
 

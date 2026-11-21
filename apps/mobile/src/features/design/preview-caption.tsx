@@ -2,7 +2,7 @@ import { useLingui } from "@lingui/react/macro";
 import { Pressable } from "react-native";
 import { applyTemplate, usePreviewTemplate } from "./draft";
 import { templateName } from "./presets";
-import { Text, useTheme } from "@/ui";
+import { Text, useTheme } from "@/ui-legacy";
 
 /** "Previewing X · tap to apply" over the top of the page while a template is held in Design. */
 export function TemplatePreviewCaption() {

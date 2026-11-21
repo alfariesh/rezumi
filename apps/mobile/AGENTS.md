@@ -3,8 +3,8 @@
 Expo SDK 58 / React Native 0.88 app for iOS and Android (Expo Router, TanStack Query, oRPC, Lingui, HeroUI Native +
 Uniwind, the native Forme PDF engine from `packages/forme-native`). The app is being rebuilt: read
 `.agents/docs/plans/mobile/README.md` (rules for every session), `00-keputusan.md` (decisions), `01-desain.md` (design)
-and `02-teknis.md` (architecture, tests, two-platform checklist) before changing it. Visual rules will live in
-`apps/mobile/DESIGN.md` (Phase 02).
+and `02-teknis.md` (architecture, tests, two-platform checklist) before changing it. Visual rules: `DESIGN.md` (the
+design system in `src/ui`; gallery at `app.rezumi://dev/ui` in development builds).
 
 ## Owner's Mac: one heavy job at a time
 
@@ -93,8 +93,10 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
   (`src/api`, `src/auth`, `src/draft`, `src/linking`, `src/i18n`, `src/preview`) is kept: change it carefully and with
   tests.
 - No business rules in the app: shared logic goes to workspace packages (`02-teknis.md` 5). Never copy from `apps/web`.
-- Styling through `src/ui` components and tokens (HeroUI Native from Phase 02); `Platform.OS` only in `src/ui` and
-  `src/shell` (and permission prompts).
+- Styling through `@/ui` components and `className` tokens (HeroUI Native + Uniwind, `DESIGN.md`); never `@/ui-legacy`
+  in a rebuilt file. `src/design-guard.test.ts` fails a file outside `src/design-guard.legacy.json` that holds a hex
+  color, a `style={{…}}` literal or a legacy import; remove a screen from that list when you rebuild it.
+  `Platform.OS` only in `src/ui` and `src/shell` (and permission prompts).
 - Data through `useQuery` with oRPC query options. The `QueryClient` (`src/api/query-client.ts`) refetches on
   foreground (`focusManager` ↔ `AppState`), pauses offline (`onlineManager` ↔ `expo-network`), retries network and 5xx
   failures twice and never retries 4xx, account switches or mutations.
@@ -104,9 +106,12 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
 
 ## Tests
 
-- **Jest + React Native Testing Library** (`jest.config.js`, preset `jest-expo`): component and hook tests next to the
-  source as `*.test.ts(x)`. `@/` maps to `src/`; `.mjs` dependencies (oRPC) go through `babel-jest`. RNTL 14's
-  `render`/`fireEvent` are async: `await` them.
+- **Jest + React Native Testing Library** (`jest.config.js`, preset `jest-expo`, `jest.setup.js`): component and hook
+  tests next to the source as `*.test.ts(x)`. `@/` maps to `src/`; `.mjs` dependencies (oRPC) go through `babel-jest`.
+  RNTL 14's `render`/`fireEvent` are async: `await` them. Render design-system components with `renderUi` from
+  `src/ui/test-utils.tsx` (HeroUI provider, safe area, animations off). `jest.setup.js` mocks Reanimated (with
+  `modify`), worklets, gesture handler and keyboard controller; a new native package that crashes on import under Jest
+  gets its published mock there, or joins `transformIgnorePatterns` when it ships untranspiled ESM.
 - **`scripts/*.test.mjs`** (`node:test` with hand-made React Native fixtures): legacy; kept only until their logic moves
   to packages (Vitest there), then deleted.
 - **Maestro** flows in `e2e/` (see `e2e/README.md`); installed with `brew install mobile-dev-inc/tap/maestro`, run with
@@ -115,6 +120,8 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
   and Indonesian; screenshots for each phase go to `.agents/docs/plans/mobile/laporan/phase-NN/`.
 
 ## Gotchas found
+
+- The first `app.rezumi://…` link sent to a running simulator sometimes does not navigate; send it again.
 
 - CocoaPods 1.17 on Ruby 4 crashes with `Unicode Normalization not appropriate for ASCII-8BIT` unless the shell locale
   is UTF-8: export `LANG`/`LC_ALL=en_US.UTF-8` before `expo run:ios`.

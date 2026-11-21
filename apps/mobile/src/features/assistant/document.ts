@@ -8,7 +8,7 @@ import { getAccountScope } from "@/auth/session";
 import { useLetterStore, useResumeStore } from "@/draft";
 import { letterAdapter } from "@/draft/adapters";
 import { useApplications } from "@/features/applications/queries";
-import { dismissToast, showToast } from "@/ui";
+import { dismissToast, showToast } from "@/ui-legacy";
 
 /** The document the assistant works on (web: AssistantDocument). Each builder layout owns its draft. */
 export type AssistantDocument = {

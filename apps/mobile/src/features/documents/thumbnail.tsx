@@ -11,7 +11,7 @@ import { useSession } from "@/auth/session";
 import { useLetterStore, useResumeStore } from "@/draft/runtime";
 import { A4_WIDTH_PT, enqueueThumbnail, renderFirstPage, thumbnailPixelWidth } from "@/preview/thumbnail-queue";
 import { usePreview } from "@/preview/usePreview";
-import { Icon, Text, useTheme } from "@/ui";
+import { Icon, Text, useTheme } from "@/ui-legacy";
 
 type ThumbnailProps = { document: DocumentSummary; visible: boolean; compact?: boolean };
 

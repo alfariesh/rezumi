@@ -11,7 +11,7 @@ import { nativeEnvironment } from "@/draft/native";
 import { PageImage } from "@/preview/page-image";
 import { usePageZoom, ZoomViewport } from "@/preview/use-page-zoom";
 import { usePreview } from "@/preview/usePreview";
-import { Banner, Button, IconButton, Skeleton, Text, useReducedMotion, useTheme } from "@/ui";
+import { Banner, Button, IconButton, Skeleton, Text, useReducedMotion, useTheme } from "@/ui-legacy";
 
 /** A4 in PDF points, the size to lay out before the first render lands. */
 const A4 = { width: 595.28, height: 841.89 };

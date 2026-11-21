@@ -13,7 +13,7 @@ import { useApplication, useApplicationMutations } from "@/features/applications
 import { getClosedReasonLabel } from "@/features/applications/stages";
 import { syncReminders } from "@/features/reminders";
 import { routes } from "@/routes";
-import { Banner, Button, Card, ConfirmDialog, EmptyState, Screen, showToast, Text, useTheme } from "@/ui";
+import { Banner, Button, Card, ConfirmDialog, EmptyState, Screen, showToast, Text, useTheme } from "@/ui-legacy";
 
 type ApplicationDetailProps = { id: string };
 

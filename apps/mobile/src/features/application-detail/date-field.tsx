@@ -2,7 +2,7 @@ import { useLingui } from "@lingui/react/macro";
 import DateTimePicker, { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { Platform, Pressable, View } from "react-native";
-import { Button, Text, useTheme } from "@/ui";
+import { Button, Text, useTheme } from "@/ui-legacy";
 
 type WallClockFieldProps = {
 	label: string;

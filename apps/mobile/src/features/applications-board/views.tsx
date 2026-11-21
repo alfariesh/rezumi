@@ -9,7 +9,7 @@ import { useApplicationSearch } from "./search";
 import { CollectionHeader } from "@/components/collection-header";
 import { AddApplicationSheet } from "@/features/applications/add-sheet";
 import { routes } from "@/routes";
-import { Segmented, IconButton, useTheme } from "@/ui";
+import { Segmented, IconButton, useTheme } from "@/ui-legacy";
 
 type ApplicationsViewFrameProps = {
 	current: ApplicationsView;

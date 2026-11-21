@@ -34,7 +34,7 @@ import {
 	TextField,
 	showToast,
 	useTheme,
-} from "@/ui";
+} from "@/ui-legacy";
 
 /** Sharing settings: saved beside the resume, not in its data. */
 export type ShareSettings = Partial<

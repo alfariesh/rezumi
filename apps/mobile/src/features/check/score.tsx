@@ -11,7 +11,7 @@ import Animated, {
 	withTiming,
 } from "react-native-reanimated";
 import Svg, { Circle } from "react-native-svg";
-import { Card, Text, useReducedMotion, useTheme } from "@/ui";
+import { Card, Text, useReducedMotion, useTheme } from "@/ui-legacy";
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 type ScoreProps = { report: AtsReport };

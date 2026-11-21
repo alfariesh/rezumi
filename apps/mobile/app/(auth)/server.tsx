@@ -10,7 +10,7 @@ import { serverErrorMessage } from "@/auth/messages";
 import { discover, isAllowedServer, ServerError, toOrigin } from "@/auth/oauth";
 import { useSession } from "@/auth/session";
 import { routes } from "@/routes";
-import { Button, Screen, Text, TextField, useTheme } from "@/ui";
+import { Button, Screen, Text, TextField, useTheme } from "@/ui-legacy";
 
 const continueTo = (server: string, router: ImperativeRouter) =>
 	router.push({ pathname: routes.signIn(), params: { server } });

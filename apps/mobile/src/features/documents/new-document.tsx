@@ -18,7 +18,19 @@ import { getServer, useSession } from "@/auth/session";
 import { AIProviderSetupSheet, useHasAIProvider } from "@/features/ai/providers";
 import { describeImportedDesign, usePlan } from "@/features/billing/plan";
 import { routes } from "@/routes";
-import { Banner, Button, Card, ListRow, Screen, SelectSheet, Switch, Text, TextField, showToast, useTheme } from "@/ui";
+import {
+	Banner,
+	Button,
+	Card,
+	ListRow,
+	Screen,
+	SelectSheet,
+	Switch,
+	Text,
+	TextField,
+	showToast,
+	useTheme,
+} from "@/ui-legacy";
 
 type Step = "choose" | "copy" | "import";
 

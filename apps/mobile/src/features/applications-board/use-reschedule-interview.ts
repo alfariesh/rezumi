@@ -11,7 +11,7 @@ import {
 	useInvalidateApplications,
 } from "@/features/applications/queries";
 import { syncReminders } from "@/features/reminders";
-import { showToast } from "@/ui";
+import { showToast } from "@/ui-legacy";
 
 type RescheduleInput = { id: string; entryId: string; at: string; durationMinutes: number };
 

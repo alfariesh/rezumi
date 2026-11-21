@@ -1,5 +1,5 @@
 import type { ApplicationSummary as Application } from "./types";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { plural, t } from "@lingui/core/macro";
 import { getClosedReasonLabel } from "./stages";

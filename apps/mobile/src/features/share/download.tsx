@@ -16,7 +16,7 @@ import { useLetterStore, useResumeStore } from "@/draft";
 import { useApplications } from "@/features/applications/queries";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { routes } from "@/routes";
-import { Banner, Button, ListRow, SelectSheet, Switch, Text, TextField, useTheme } from "@/ui";
+import { Banner, Button, ListRow, SelectSheet, Switch, Text, TextField, useTheme } from "@/ui-legacy";
 
 type DownloadProps = { resume: ResumeDocument; offline: boolean };
 export function DownloadTab({ resume, offline }: DownloadProps) {

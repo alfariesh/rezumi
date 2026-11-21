@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Platform, Pressable, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useIsTablet } from "./use-is-tablet";
-import { Icon, IconButton, Text, useTheme } from "@/ui";
+import { Icon, IconButton, Text, useTheme } from "@/ui-legacy";
 
 // Tablet frame: the name and status take at most 320 pt, leaving the middle for the mode switch.
 const tabletTitleWidth = 320;

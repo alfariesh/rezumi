@@ -1,7 +1,7 @@
 // Career → Coach (ported from apps/web/src/features/career/coach.tsx): conversations about the whole search, with what
 // each message shares chosen in the composer.
 import type { MessageContext, ThreadSummary } from "./chat";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import { plural } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,7 +15,7 @@ import { useDeleteThread, useThreadTime, useThreadTitle } from "./threads";
 import { client, orpc } from "@/api/client";
 import { useSession } from "@/auth/session";
 import { useHasAIProvider } from "@/features/ai/providers";
-import { Button, Icon, IconButton, ListRow, Sheet, Text, TextField, showToast, useTheme } from "@/ui";
+import { Button, Icon, IconButton, ListRow, Sheet, Text, TextField, showToast, useTheme } from "@/ui-legacy";
 
 type Chips = { application: boolean; memory: boolean; web: boolean; offers: boolean };
 const DEFAULT_CHIPS: Chips = { application: true, memory: true, web: false, offers: true };

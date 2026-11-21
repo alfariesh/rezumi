@@ -24,7 +24,7 @@ import {
 	TextField,
 	showToast,
 	useTheme,
-} from "@/ui";
+} from "@/ui-legacy";
 
 type Version = RouterOutput["resume"]["listVersions"][number];
 function versionTitle(version: Version) {

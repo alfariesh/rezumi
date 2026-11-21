@@ -33,7 +33,7 @@ import {
 	TextArea,
 	showToast,
 	useTheme,
-} from "@/ui";
+} from "@/ui-legacy";
 
 type Practice = SavedData<"practice">;
 type Attempt = SavedItem & { data: Practice };

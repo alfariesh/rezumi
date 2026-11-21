@@ -40,8 +40,8 @@ import {
 	listLayout,
 	useFirstAppearance,
 	useTheme,
-} from "@/ui";
-import { usePullRefresh } from "@/ui/use-pull-refresh";
+} from "@/ui-legacy";
+import { usePullRefresh } from "@/ui-legacy/use-pull-refresh";
 
 type DocumentItemProps = {
 	document: DocumentSummary;

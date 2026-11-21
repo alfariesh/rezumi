@@ -6,7 +6,7 @@ import { create } from "zustand";
 import { templateName } from "./presets";
 import { readOnlyDraft, writeTo } from "./write";
 import { useResumeStore } from "@/draft";
-import { showToast } from "@/ui";
+import { showToast } from "@/ui-legacy";
 
 export type { DesignWrite } from "./write";
 

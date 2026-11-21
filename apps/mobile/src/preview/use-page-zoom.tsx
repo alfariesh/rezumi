@@ -5,7 +5,7 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 import { snapZoom, zoomOffset } from "./zoom";
-import { useReducedMotion, useTheme, workletEaseMove } from "@/ui";
+import { useReducedMotion, useTheme, workletEaseMove } from "@/ui-legacy";
 
 export function usePageZoom() {
 	const [zoom, setZoom] = useState<number | null>(null);

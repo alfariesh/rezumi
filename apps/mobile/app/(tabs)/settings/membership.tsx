@@ -1,4 +1,4 @@
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import { useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { Redirect } from "expo-router";
@@ -11,7 +11,7 @@ import { PaidPlanCard } from "@/features/billing/plan-card";
 import { SettingsGroup, SettingsPage } from "@/features/settings/layout";
 import { useProfile } from "@/features/settings/queries";
 import { routes } from "@/routes";
-import { Icon, ListRow, Skeleton, Text, useTheme } from "@/ui";
+import { Icon, ListRow, Skeleton, Text, useTheme } from "@/ui-legacy";
 
 // The account's timezone; until one is chosen it reads UTC, and Rezumi sells in Indonesia, so dates show in WIB.
 const planTimeZone = (timezone: string | null | undefined) =>

@@ -7,7 +7,7 @@ import { Preferences } from "./preferences";
 import { LoadState } from "./shared";
 import { Stories } from "./stories";
 import { useSession } from "@/auth/session";
-import { Screen, Segmented, Text, useTheme } from "@/ui";
+import { Screen, Segmented, Text, useTheme } from "@/ui-legacy";
 
 export function KnowledgeScreen() {
 	const { t } = useLingui();

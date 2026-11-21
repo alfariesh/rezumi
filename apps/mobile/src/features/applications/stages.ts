@@ -1,4 +1,4 @@
-import type { Colors, ColorToken } from "@/ui/tokens";
+import type { Colors, ColorToken } from "@/ui-legacy/tokens";
 import type { ApplicationClosedReason, ApplicationStatus } from "@rezumi/schema/applications/data";
 import { t } from "@lingui/core/macro";
 

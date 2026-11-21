@@ -65,8 +65,8 @@ const mocks = {
 	"@lingui/react/macro": { useLingui: () => ({ t: tag }) },
 	"@lingui/core/macro": { t: tag, plural: (value, forms) => forms.other.replace("#", String(value)) },
 	"@/routes": { routes },
-	"@/ui": ui,
-	"@/ui/use-pull-refresh": { usePullRefresh: () => ({ refreshing: false, onRefresh: () => undefined }) },
+	"@/ui-legacy": ui,
+	"@/ui-legacy/use-pull-refresh": { usePullRefresh: () => ({ refreshing: false, onRefresh: () => undefined }) },
 	"react-native-reanimated": {
 		View: "Animated.View",
 		useSharedValue: (initial) => ({ get: () => initial, set() {} }),
@@ -420,7 +420,7 @@ const { ApplicationsListScreen } = load("features/applications/list-screen.tsx",
 	},
 	"@/routes": { routes: { ...routes, applicationDetails: (id) => `/applications/${id}` } },
 	"react-native": { View: "View", Pressable: "Pressable", SectionList: "SectionList" },
-	"@/ui": { ...ui, Screen: "Screen", EmptyState: "EmptyState", Sheet: "Sheet", SelectSheet: "SelectSheet" },
+	"@/ui-legacy": { ...ui, Screen: "Screen", EmptyState: "EmptyState", Sheet: "Sheet", SelectSheet: "SelectSheet" },
 });
 reset();
 const List = render(ApplicationsListScreen, {}).type;

@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { AppState } from "react-native";
-import { dismissToast, showToast, toastLifetime } from "@/ui";
+import { dismissToast, showToast, toastLifetime } from "@/ui-legacy";
 
 type UndoOptions = { message: string; commit: () => Promise<unknown>; restore: () => void; failed: () => void };
 

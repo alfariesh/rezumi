@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { memo } from "react";
 import { Linking, View } from "react-native";
-import { Text, useTheme } from "@/ui";
+import { Text, useTheme } from "@/ui-legacy";
 
 // ponytail: a small Markdown subset (paragraphs, headings, lists, quotes, code, bold/italic/code/links). Tables show as
 // monospaced text. Web renders full GFM with react-markdown; add a parser here only if replies need more.

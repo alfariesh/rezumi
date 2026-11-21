@@ -7,7 +7,7 @@ import { hostOf } from "./auth-header";
 import { getSession, signOut, subscribeIdentity, subscribeSession, useSession } from "./session";
 import { useSignIn } from "./use-sign-in";
 import { routes } from "@/routes";
-import { Banner, Button, Sheet, showToast, useTheme } from "@/ui";
+import { Banner, Button, Sheet, showToast, useTheme } from "@/ui-legacy";
 
 /**
  * Route guard and session-expired prompt. Mounted once in app/_layout.tsx.

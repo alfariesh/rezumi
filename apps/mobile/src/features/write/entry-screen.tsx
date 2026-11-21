@@ -12,8 +12,8 @@ import { consumeFocus, useEntry, useEntryWriter, useSectionTitle, useWriteData }
 import { describeEntry, getSectionKind, getSectionType, isDraftEntry, PRIMARY_FIELD } from "./model";
 import { RichTextField, RichTextToolbar } from "./rich-text-field";
 import { useIsResumeLocked, useResumeStore } from "@/draft";
-import { Banner, EmptyState, IconButton, Text, useTheme } from "@/ui";
-import { useKeyboardScrollSpace } from "@/ui/keyboard";
+import { Banner, EmptyState, IconButton, Text, useTheme } from "@/ui-legacy";
+import { useKeyboardScrollSpace } from "@/ui-legacy/keyboard";
 
 type EditorScreenProps = { title: string; backTitle?: string | undefined; right?: ReactNode; children: ReactNode };
 

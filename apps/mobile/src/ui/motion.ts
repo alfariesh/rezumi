@@ -3,7 +3,7 @@ import * as Haptics from "expo-haptics";
 import Storage from "expo-sqlite/kv-store";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { AccessibilityInfo, useWindowDimensions } from "react-native";
-import { Easing, FadeInDown, FadeOut, LinearTransition, ReduceMotion } from "react-native-reanimated";
+import { FadeInDown, FadeOut, LinearTransition, ReduceMotion } from "react-native-reanimated";
 import { motion, size } from "./tokens";
 
 let reduceMotion = false;
@@ -68,7 +68,10 @@ export const haptics = {
 	medium: () => play(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)),
 	/** Confirming a destructive action. */
 	warning: () => play(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)),
+	/** A task finished (saved, sent, exported). */
 	success: () => play(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)),
+	/** A failure the person has to notice (a failed save, a rejected form). */
+	error: () => play(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)),
 };
 
 /**
@@ -80,30 +83,30 @@ export function useIsWide(): boolean {
 	return Math.min(width, height) >= size.formSheet;
 }
 
-// Shared list motion. Reanimated needs its own (worklet) easing, so these repeat the `motion.ease` and `motion.easeMove` curves.
-const listEase = Easing.bezier(0.2, 0.8, 0.2, 1);
+// Shared list motion on the worklet curves of `tokens.motion`.
+const listEase = motion.ease;
 /** `motion.easeMove` for Reanimated: React Native's `Easing` is not a worklet and crashes on the UI thread. */
-export const workletEaseMove = Easing.bezier(0.77, 0, 0.175, 1);
+export const workletEaseMove = motion.easeMove;
 const listStagger = 40;
 const listStaggerCap = 8;
 
 /** A row fading in from 8 pt below its place, staggered by its index (capped at 8). Reduced motion: no movement. */
 const listEntering = (index: number) =>
-	FadeInDown.duration(motion.d2)
+	FadeInDown.duration(motion.standard)
 		.easing(listEase)
 		.withInitialValues({ opacity: 0, transform: [{ translateY: 8 }] })
 		.delay(Math.min(index, listStaggerCap) * listStagger)
 		.reduceMotion(ReduceMotion.System);
 
 /** A removed row fades out, faster than it came in. */
-const listExiting = FadeOut.duration(motion.d1).reduceMotion(ReduceMotion.System);
+const listExiting = FadeOut.duration(motion.quick).reduceMotion(ReduceMotion.System);
 
 /** Spread on a row's `Animated.View`: staggers in on the screen's first appearance only, always fades out. */
 export const listItemMotion = (index: number, first: boolean) =>
 	first ? { entering: listEntering(index), exiting: listExiting } : { exiting: listExiting };
 
 /** Rows sliding into the gap a removed or moved row leaves. */
-export const listLayout = LinearTransition.duration(motion.d2)
+export const listLayout = LinearTransition.duration(motion.standard)
 	.easing(workletEaseMove)
 	.reduceMotion(ReduceMotion.System);
 

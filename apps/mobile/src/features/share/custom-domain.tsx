@@ -6,7 +6,19 @@ import { useState } from "react";
 import { Linking, View } from "react-native";
 import { cvDomainRegistrationUrl, formatTimeSince } from "@rezumi/resume/sharing";
 import { orpc } from "@/api/client";
-import { Banner, Button, Icon, ListGroup, ListRow, Sheet, Text, TextField, haptics, showToast, useTheme } from "@/ui";
+import {
+	Banner,
+	Button,
+	Icon,
+	ListGroup,
+	ListRow,
+	Sheet,
+	Text,
+	TextField,
+	haptics,
+	showToast,
+	useTheme,
+} from "@/ui-legacy";
 
 const CODE = "RX";
 

@@ -11,7 +11,7 @@ import { refreshThreads, useConversationConnection } from "./chat";
 import { client } from "@/api/client";
 import { getAccountScope } from "@/auth/session";
 import { AIProviderSetupSheet } from "@/features/ai/providers";
-import { Banner, Button, Icon, ListRow, Sheet, Text, showToast, useTheme } from "@/ui";
+import { Banner, Button, Icon, ListRow, Sheet, Text, showToast, useTheme } from "@/ui-legacy";
 
 type Providers = ReturnType<typeof useHasAIProvider>;
 export type UsableProvider = Providers["usableProviders"][number];

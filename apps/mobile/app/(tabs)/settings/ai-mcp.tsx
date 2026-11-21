@@ -1,7 +1,7 @@
 import { useLingui } from "@lingui/react/macro";
 import { Stack } from "expo-router";
 import { useSession } from "@/auth/session";
-import { Card, Screen, Text } from "@/ui";
+import { Card, Screen, Text } from "@/ui-legacy";
 
 export default function McpScreen() {
 	const { t } = useLingui();

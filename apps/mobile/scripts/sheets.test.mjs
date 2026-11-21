@@ -48,7 +48,7 @@ const mocks = {
 	"./theme": { useTheme: () => theme },
 };
 const module = { exports: {} };
-const code = transformSync(readFileSync(new URL("../src/ui/overlays.tsx", import.meta.url), "utf8"), {
+const code = transformSync(readFileSync(new URL("../src/ui-legacy/overlays.tsx", import.meta.url), "utf8"), {
 	loader: "tsx",
 	format: "cjs",
 	jsx: "transform",

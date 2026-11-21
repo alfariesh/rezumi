@@ -108,6 +108,12 @@ export function parseDeepLink(input: string, currentServer: string): DeepLink | 
 		}
 	}
 
+	// Development builds only: the design-system gallery (app/dev/ui.tsx), with one known group parameter.
+	if (__DEV__ && native && first === "dev" && second === "ui" && segments.length === 2) {
+		const group = /[?&]group=([a-z]+)(?:&|#|$)/.exec(path)?.[1];
+		return target((group ? `/dev/ui?group=${group}` : "/dev/ui") as AppHref);
+	}
+
 	if (first === "builder") {
 		// Web editor mode is a query parameter. Never forward arbitrary queries (e.g. assistant auto-send prompts).
 		let mode: BuilderPane = "write";

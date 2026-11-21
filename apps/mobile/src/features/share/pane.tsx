@@ -4,7 +4,7 @@ import { ScrollView, View } from "react-native";
 import { useShareDocument } from "./document";
 import { LinkTab } from "./link";
 import { useSession } from "@/auth/session";
-import { Banner, Skeleton, useTheme } from "@/ui";
+import { Banner, Skeleton, useTheme } from "@/ui-legacy";
 
 /** The builder's Share pane: publishing, the web page and who sees what. */
 export function SharePane({ id }: { id: string }) {

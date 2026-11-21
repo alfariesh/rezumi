@@ -1,6 +1,6 @@
 import { useLingui } from "@lingui/react/macro";
 import { useRouter, Stack } from "expo-router";
-import { Card, ListRow, Screen, Text } from "@/ui";
+import { Card, ListRow, Screen, Text } from "@/ui-legacy";
 
 export default function AiScreen() {
 	const router = useRouter();

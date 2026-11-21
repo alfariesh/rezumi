@@ -1,4 +1,4 @@
-import type { ThemePreference } from "@/ui";
+import type { ThemePreference } from "@/ui-legacy";
 import type { Locale } from "@rezumi/utils/locale";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -29,7 +29,7 @@ import {
 	useHapticsEnabled,
 	useTheme,
 	useThemePreference,
-} from "@/ui";
+} from "@/ui-legacy";
 
 export default function PreferencesScreen() {
 	const { t, i18n } = useLingui();

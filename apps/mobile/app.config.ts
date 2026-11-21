@@ -7,7 +7,7 @@ const microphonePermission = "Rezumi records your answers when you practise for 
 const config: ExpoConfig = {
 	name: "Rezumi",
 	slug: "rezumi",
-	platforms: process.env.EXPO_MOBILE_WEB_PREVIEW === "1" ? ["ios", "android", "web"] : ["ios", "android"],
+	platforms: ["ios", "android"],
 	scheme: "app.rezumi",
 	version: "1.0.0",
 	runtimeVersion: { policy: "fingerprint" },
@@ -126,8 +126,8 @@ const config: ExpoConfig = {
 			{
 				image: "./assets/splash-icon.png",
 				imageWidth: 160,
-				backgroundColor: "#F8F7F3",
-				dark: { image: "./assets/splash-icon-dark.png", backgroundColor: "#100F0C" },
+				backgroundColor: "#F5F5F5", // the `background` token (DESIGN.md); native config, applies from the next build
+				dark: { image: "./assets/splash-icon-dark.png", backgroundColor: "#060607" },
 			},
 		],
 		[

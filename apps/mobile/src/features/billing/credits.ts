@@ -1,5 +1,5 @@
 import type { RouterOutput } from "@/api/client";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import { plural, t } from "@lingui/core/macro";
 import { useQuery } from "@tanstack/react-query";
 import { orpc } from "@/api/client";

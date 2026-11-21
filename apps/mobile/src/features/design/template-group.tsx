@@ -20,7 +20,7 @@ import {
 	templateThumbnailKey,
 } from "@/features/documents/thumbnail-store";
 import { enqueueThumbnail, renderFirstPage, thumbnailPixelWidth } from "@/preview/thumbnail-queue";
-import { Chip, Icon, Segmented, Text, haptics, useTheme } from "@/ui";
+import { Chip, Icon, Segmented, Text, haptics, useTheme } from "@/ui-legacy";
 
 type TemplateGroupProps = {
 	data: ResumeData;

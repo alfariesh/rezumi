@@ -1,5 +1,5 @@
 import type { AtsResult } from "./check";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import type { PdfAtsReport, PdfCategory } from "@rezumi/resume/ats-pdf";
 import type { DocumentPickerAsset } from "expo-document-picker";
 import type { ReactNode } from "react";
@@ -18,7 +18,7 @@ import { OriginalPage } from "./original-page";
 import { getServer, useSession } from "@/auth/session";
 import { ImportError, importDocument } from "@/features/documents/import-file";
 import { routes } from "@/routes";
-import { Banner, Button, Chip, Icon, Segmented, Text, TextArea, useTheme } from "@/ui";
+import { Banner, Button, Chip, Icon, Segmented, Text, TextArea, useTheme } from "@/ui-legacy";
 
 type PickedFile = Pick<DocumentPickerAsset, "uri" | "name" | "size" | "mimeType" | "lastModified">;
 

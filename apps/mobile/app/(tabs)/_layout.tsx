@@ -14,8 +14,8 @@ import { AppStrip, BannerAbove } from "@/shell/app-banner";
 import { AppSidebar, PhoneTabBar } from "@/shell/app-tabs";
 import { useKeyCommands } from "@/shell/key-commands";
 import { useIsTablet } from "@/shell/use-is-tablet";
-import { useReducedMotion, useTheme } from "@/ui";
-import { KeyboardFrame } from "@/ui/keyboard";
+import { useReducedMotion, useTheme } from "@/ui-legacy";
+import { KeyboardFrame } from "@/ui-legacy/keyboard";
 
 /**
  * Five tabs: Documents, Applications, the raised "+" (opens New as a modal), Career, Settings. Phone: the bottom tab

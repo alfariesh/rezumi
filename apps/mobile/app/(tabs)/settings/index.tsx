@@ -9,7 +9,7 @@ import { SettingsGroup, SettingsPage } from "@/features/settings/layout";
 import { useProfile } from "@/features/settings/queries";
 import { SignOutRow } from "@/features/settings/sign-out";
 import { routes } from "@/routes";
-import { Avatar, ListRow, Text, showToast, useTheme, useThemePreference } from "@/ui";
+import { Avatar, ListRow, Text, showToast, useTheme, useThemePreference } from "@/ui-legacy";
 
 export default function SettingsScreen() {
 	const router = useRouter();

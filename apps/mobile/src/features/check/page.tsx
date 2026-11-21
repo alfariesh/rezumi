@@ -11,7 +11,7 @@ import { computeCheck, issuePins, sameTarget, termTargets } from "./model";
 import { Parser } from "./parser";
 import { useResumeStore } from "@/draft";
 import { usePreview } from "@/preview/usePreview";
-import { Banner, Button, IconButton, Segmented, Skeleton, Text, useTheme } from "@/ui";
+import { Banner, Button, IconButton, Segmented, Skeleton, Text, useTheme } from "@/ui-legacy";
 
 type CheckPageProps = {
 	id: string;

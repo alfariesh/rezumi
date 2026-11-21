@@ -27,8 +27,8 @@ import {
 	listLayout,
 	useFirstAppearance,
 	useTheme,
-} from "@/ui";
-import { usePullRefresh } from "@/ui/use-pull-refresh";
+} from "@/ui-legacy";
+import { usePullRefresh } from "@/ui-legacy/use-pull-refresh";
 
 const categoryLabel = (category: string) =>
 	({ accomplishment: t`Accomplishment`, experience: t`Experience`, skill: t`Skill`, preference: t`Preference` })[

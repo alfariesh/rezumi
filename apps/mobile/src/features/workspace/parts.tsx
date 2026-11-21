@@ -1,6 +1,6 @@
 // Small pieces every workspace tab uses, ported from apps/web/src/features/career/shared.tsx.
-import type { IconName } from "@/ui";
-import type { ColorToken } from "@/ui/tokens";
+import type { IconName } from "@/ui-legacy";
+import type { ColorToken } from "@/ui-legacy/tokens";
 import type { GenerateTask, WorkspaceTab } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
@@ -9,7 +9,7 @@ import { Children, useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, View } from "react-native";
 import { AIProviderSetupSheet, useHasAIProvider } from "@/features/ai/providers";
 import { ReportAiContent } from "@/features/ai/report-content";
-import { Banner, Button, Card, Icon, Text, useTheme } from "@/ui";
+import { Banner, Button, Card, Icon, Text, useTheme } from "@/ui-legacy";
 
 export const tabLabel = (tab: WorkspaceTab) =>
 	({

@@ -27,7 +27,7 @@ import { useLetterStore } from "@/draft";
 import { isLabelledTemplate, isLockedTemplate, listedTemplates, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { applyTextSize } from "@/features/design/presets";
 import { routes } from "@/routes";
-import { Button, IconButton, ListRow, Segmented, SelectSheet, Switch, Text, TextField, useTheme } from "@/ui";
+import { Button, IconButton, ListRow, Segmented, SelectSheet, Switch, Text, TextField, useTheme } from "@/ui-legacy";
 
 type Metadata = WritableDraft<LetterDocument["style"]["metadata"]>;
 

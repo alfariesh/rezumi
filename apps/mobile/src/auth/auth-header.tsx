@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { openBrowserAsync } from "expo-web-browser";
 import { View } from "react-native";
 import { LEGAL_URLS } from "@rezumi/schema/billing";
-import { Button, Text, showToast, useTheme } from "@/ui";
+import { Button, Text, showToast, useTheme } from "@/ui-legacy";
 
 type AuthHeaderProps = {
 	subtitle?: string | undefined;

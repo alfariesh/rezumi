@@ -28,8 +28,8 @@ import {
 	showToast,
 	useFirstAppearance,
 	useTheme,
-} from "@/ui";
-import { usePullRefresh } from "@/ui/use-pull-refresh";
+} from "@/ui-legacy";
+import { usePullRefresh } from "@/ui-legacy/use-pull-refresh";
 
 export function TodayScreen() {
 	const { t } = useLingui();

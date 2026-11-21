@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { orpc } from "@/api/client";
 import { ProviderList } from "@/features/ai/provider-list";
-import { Screen, Text } from "@/ui";
+import { Screen, Text } from "@/ui-legacy";
 
 export default function ProvidersScreen() {
 	const { t } = useLingui();

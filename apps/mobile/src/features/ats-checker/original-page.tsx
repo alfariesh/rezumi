@@ -5,7 +5,7 @@ import { Image } from "expo-image";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, PixelRatio, ScrollView, View } from "react-native";
 import { pdfPages } from "../../../modules/pdf-pages";
-import { Text, useTheme } from "@/ui";
+import { Text, useTheme } from "@/ui-legacy";
 
 // ponytail: rasterises up to 10 pages at once; page-by-page virtualisation if long files show up.
 const MAX_PAGES = 10;

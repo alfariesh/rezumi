@@ -8,7 +8,7 @@
 			"ignoreExportsUsedInFile": true,
 			"ignoreDependencies": ["expo-apple-authentication", "expo-image-manipulator"],
 			"ignoreIssues": {
-				"src/ui/overlays.tsx": ["duplicates"]
+				"src/ui-legacy/overlays.tsx": ["duplicates"]
 			},
 			"entry": [
 				"fingerprint.config.js",
@@ -21,7 +21,8 @@
 				"src/features/workspace/hooks.ts",
 				"src/features/write/{fields,rich-text}.ts",
 				"src/features/write/outline.tsx",
-				"src/ui/{index,tokens}.ts"
+				"src/ui-legacy/{index,tokens}.ts",
+				"src/ui/index.ts"
 			]
 		},
 		"apps/extension": {

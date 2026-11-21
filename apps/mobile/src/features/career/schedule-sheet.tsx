@@ -14,7 +14,7 @@ import { useFlags } from "@/api/flags";
 import { useSession } from "@/auth/session";
 import { AIProviderSetupSheet, useHasAIProvider } from "@/features/ai/providers";
 import { useApplications } from "@/features/applications/queries";
-import { Banner, Button, SelectSheet, Sheet, Text, TextField, useTheme } from "@/ui";
+import { Banner, Button, SelectSheet, Sheet, Text, TextField, useTheme } from "@/ui-legacy";
 
 type Input = RouterInput["career"]["saveSchedule"];
 export const scheduleTitle = (kind: string) =>

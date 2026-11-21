@@ -8,7 +8,7 @@ import { ScrollView, View } from "react-native";
 import { refreshThreads } from "./chat";
 import { client } from "@/api/client";
 import { getAccountScope } from "@/auth/session";
-import { ConfirmDialog, IconButton, ListRow, Text, showToast, useTheme } from "@/ui";
+import { ConfirmDialog, IconButton, ListRow, Text, showToast, useTheme } from "@/ui-legacy";
 
 /** "Find weak bullets" — the server titles new conversations in English until their first message. */
 export const useThreadTitle = () => {

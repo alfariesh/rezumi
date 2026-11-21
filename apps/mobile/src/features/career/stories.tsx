@@ -21,7 +21,7 @@ import {
 	listLayout,
 	useFirstAppearance,
 	useTheme,
-} from "@/ui";
+} from "@/ui-legacy";
 
 const parts = () =>
 	[

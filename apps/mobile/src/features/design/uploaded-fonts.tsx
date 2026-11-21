@@ -14,7 +14,7 @@ import { useResumeStore } from "@/draft";
 import { nativeEnvironment } from "@/draft/native";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { claimUpload, commitUpload } from "@/features/write/upload";
-import { Button, ConfirmDialog, ListRow, Text, showToast, useTheme } from "@/ui";
+import { Button, ConfirmDialog, ListRow, Text, showToast, useTheme } from "@/ui-legacy";
 
 const uploadContext: UploadContext = {
 	resumeId: () => useResumeStore.getState().document?.id,

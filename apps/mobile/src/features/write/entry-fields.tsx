@@ -13,7 +13,7 @@ import { ENTRY_FIELDS } from "./fields";
 import { ColorPickerSheet, ColorRow, IconPickerSheet } from "./pickers";
 import { RichTextField } from "./rich-text-field";
 import { resumeFieldFocus } from "@/draft";
-import { Button, ChipInput, IconButton, ListRow, Segmented, Switch, Text, TextField, useTheme } from "@/ui";
+import { Button, ChipInput, IconButton, ListRow, Segmented, Switch, Text, TextField, useTheme } from "@/ui-legacy";
 
 export type PageSettings = { locale: string; dateFormat?: DateFormat | undefined };
 

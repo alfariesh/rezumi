@@ -1,5 +1,5 @@
 import type { RichTextSession } from "@/features/write/rich-text";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import type { RefObject } from "react";
 import type { EnrichedTextInputInstance, OnChangeStateEvent } from "react-native-enriched-html";
 import { useLingui } from "@lingui/react/macro";
@@ -9,8 +9,8 @@ import { EnrichedTextInput } from "react-native-enriched-html";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { letterFieldFocus } from "@/draft";
 import { createRichTextSession } from "@/features/write/rich-text";
-import { Button, IconButton, Text, useTheme } from "@/ui";
-import { useKeyboardVisible } from "@/ui/keyboard";
+import { Button, IconButton, Text, useTheme } from "@/ui-legacy";
+import { useKeyboardVisible } from "@/ui-legacy/keyboard";
 
 /** The focused editor, for the toolbar docked above the keyboard (one per screen). */
 type ActiveEditor = {

@@ -6,7 +6,7 @@ import { Platform } from "react-native";
 import { computeCheck } from "./model";
 import { useResumeStore } from "@/draft";
 import { routes } from "@/routes";
-import { dismissToast, haptics, showToast } from "@/ui";
+import { dismissToast, haptics, showToast } from "@/ui-legacy";
 
 /** Shared draft owner retains history; a toast must never undo a later, unrelated edit. */
 export function editWithUndo(id: string, edit: (draft: ResumeData) => void, message: string) {

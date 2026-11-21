@@ -47,8 +47,8 @@ import {
 	useFirstAppearance,
 	useReducedMotion,
 	useTheme,
-} from "@/ui";
-import { usePullRefresh } from "@/ui/use-pull-refresh";
+} from "@/ui-legacy";
+import { usePullRefresh } from "@/ui-legacy/use-pull-refresh";
 
 const STAGES: readonly ApplicationStatus[] = ["saved", "applied", "screening", "interview", "offer", "closed"];
 // Column widths from the mockup (career.html `.column`): phone 268 pt, tablet 250 pt.

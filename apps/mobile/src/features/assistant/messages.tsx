@@ -13,7 +13,7 @@ import { AssistantMarkdown } from "./markdown";
 import { isProposeEdits, skippedCount, toProposals } from "./proposals";
 import { client, orpc } from "@/api/client";
 import { ReportAiContent } from "@/features/ai/report-content";
-import { Button, Icon, Text, showToast, useTheme } from "@/ui";
+import { Button, Icon, Text, showToast, useTheme } from "@/ui-legacy";
 
 export type EditStatus = Proposal["status"];
 

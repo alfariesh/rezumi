@@ -5,7 +5,7 @@ import { SafeAreaInsetsContext, SafeAreaView, useSafeAreaInsets } from "react-na
 import { CollectionHeader } from "@/components/collection-header";
 import { routes } from "@/routes";
 import { useTabStackOptions } from "@/shell/app-banner";
-import { Segmented, useTheme } from "@/ui";
+import { Segmented, useTheme } from "@/ui-legacy";
 
 export default function CareerLayout() {
 	const { t } = useLingui();

@@ -9,7 +9,7 @@ import { DownloadTab } from "./download";
 import { useSession } from "@/auth/session";
 import { DocumentMenu } from "@/features/document-menu";
 import { HistoryPanel } from "@/features/history/history";
-import { Banner, Button, Segmented, Skeleton, useTheme } from "@/ui";
+import { Banner, Button, Segmented, Skeleton, useTheme } from "@/ui-legacy";
 
 type ExportScreenProps = { id: string; history?: boolean };
 /** Download & history, over the builder. */

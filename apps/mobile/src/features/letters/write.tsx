@@ -38,8 +38,8 @@ import {
 	showToast,
 	useReducedMotion,
 	useTheme,
-} from "@/ui";
-import { useKeyboardScrollSpace } from "@/ui/keyboard";
+} from "@/ui-legacy";
+import { useKeyboardScrollSpace } from "@/ui-legacy/keyboard";
 
 type Recipe = (letter: WritableDraft<LetterDocument>) => void;
 

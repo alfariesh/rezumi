@@ -88,8 +88,8 @@ const mocks = {
 		documentError: (err) => String(err),
 		useDocumentOperations: () => ({ busy: false, run: async (fn) => fn() }),
 	},
-	"@/ui": ui,
-	"@/ui/use-document-operations": { useDocumentOperations: () => ({ busy: false, run: async (fn) => fn() }) },
+	"@/ui-legacy": ui,
+	"@/ui-legacy/use-document-operations": { useDocumentOperations: () => ({ busy: false, run: async (fn) => fn() }) },
 	"@rezumi/resume/sharing": createRequire(new URL("../package.json", import.meta.url))("@rezumi/resume/sharing"),
 };
 

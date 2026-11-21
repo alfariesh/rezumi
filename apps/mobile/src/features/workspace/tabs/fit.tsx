@@ -14,7 +14,7 @@ import { Actions, AiNotice, Block, EmptyNotice, StatusPill, useWorking, workingS
 import { WorkspaceScreen } from "../shell";
 import { orpc } from "@/api/client";
 import { useHasAIProvider } from "@/features/ai/providers";
-import { Button, Icon, Skeleton, Text, TextArea, showToast, useTheme } from "@/ui";
+import { Button, Icon, Skeleton, Text, TextArea, showToast, useTheme } from "@/ui-legacy";
 
 type FitItem = SavedItem & { data: SavedData<"fit"> };
 type Requirement = SavedData<"fit">["requirements"][number];

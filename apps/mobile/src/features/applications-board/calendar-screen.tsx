@@ -49,8 +49,8 @@ import {
 	Skeleton,
 	Text,
 	useTheme,
-} from "@/ui";
-import { usePullRefresh } from "@/ui/use-pull-refresh";
+} from "@/ui-legacy";
+import { usePullRefresh } from "@/ui-legacy/use-pull-refresh";
 
 // Chips per day cell on tablet before "+N more"; phone cells show up to this many dots.
 const MAX_PER_DAY = 3;

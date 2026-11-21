@@ -16,7 +16,7 @@ import { DATE_FORMATS, parseColorInput, resetDesign, rgbaToHex } from "./presets
 import { UploadedFonts } from "./uploaded-fonts";
 import { useResumeStore } from "@/draft";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
-import { Button, Chip, Icon, ListRow, SelectSheet, Text, showToast, useTheme, type IconName } from "@/ui";
+import { Button, Chip, Icon, ListRow, SelectSheet, Text, showToast, useTheme, type IconName } from "@/ui-legacy";
 
 export type AdvancedId = "typography" | "colours" | "page" | "layout" | "styles";
 

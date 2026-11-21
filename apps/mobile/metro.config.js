@@ -7,18 +7,6 @@ const config = getDefaultConfig(__dirname);
 
 config.transformer.babelTransformerPath = require.resolve("@lingui/metro-transformer/expo");
 config.resolver.sourceExts.push("po");
-config.resolver.assetExts.push("wasm");
-
-// SQLite's browser worker uses shared memory, including in the local Metro preview.
-const enhanceMiddleware = config.server.enhanceMiddleware;
-config.server.enhanceMiddleware = (middleware, server) => {
-	const handler = enhanceMiddleware ? enhanceMiddleware(middleware, server) : middleware;
-	return (request, response, next) => {
-		response.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-		response.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
-		return handler(request, response, next);
-	};
-};
 
 // Uniwind compiles Tailwind v4 for HeroUI Native; it must wrap the config last.
 module.exports = withUniwindConfig(config, { cssEntryFile: "./global.css", dtsFile: "./uniwind-types.d.ts" });

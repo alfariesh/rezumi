@@ -1,6 +1,6 @@
 import type { RouterOutput } from "@/api/client";
 import type { DocumentSummary } from "@/features/documents/filter";
-import type { IconName, ThemePreference } from "@/ui";
+import type { IconName, ThemePreference } from "@/ui-legacy";
 import type { Href } from "expo-router";
 import { useLingui } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
@@ -14,7 +14,7 @@ import { useApplications } from "@/features/applications/queries";
 import { useDocuments } from "@/features/documents/queries";
 import { routes } from "@/routes";
 import { useIsTablet } from "@/shell/use-is-tablet";
-import { EmptyState, Icon, IconButton, ListRow, Text, setThemePreference, showToast, useTheme } from "@/ui";
+import { EmptyState, Icon, IconButton, ListRow, Text, setThemePreference, showToast, useTheme } from "@/ui-legacy";
 
 type Page = "root" | "resumes" | "applications" | "threads" | "theme";
 type Thread = RouterOutput["agent"]["threads"]["list"][number];

@@ -11,7 +11,7 @@ import { usePageZoom, ZoomViewport } from "./use-page-zoom";
 import { usePreview } from "./usePreview";
 import { PageImage } from "@/preview/page-image";
 import { routes } from "@/routes";
-import { Banner, Button, IconButton, Text, useTheme } from "@/ui";
+import { Banner, Button, IconButton, Text, useTheme } from "@/ui-legacy";
 
 export type ResumePageProps = {
 	id: string;

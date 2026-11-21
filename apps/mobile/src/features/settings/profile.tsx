@@ -7,7 +7,7 @@ import { useState } from "react";
 import { View } from "react-native";
 import { client, orpc, rest } from "@/api/client";
 import { useSession } from "@/auth/session";
-import { Avatar, Button, ListRow, Sheet, TextField, showToast, useTheme } from "@/ui";
+import { Avatar, Button, ListRow, Sheet, TextField, showToast, useTheme } from "@/ui-legacy";
 
 type Profile = RouterOutput["auth"]["getProfile"];
 type ProfileFieldProps = { field: "name" | "username"; value: string; server: string };

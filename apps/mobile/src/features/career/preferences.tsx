@@ -12,7 +12,7 @@ import { SearchRegionsField } from "./search-regions-field";
 import { client, orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
 import { routes } from "@/routes";
-import { Banner, Button, ChipInput, SelectSheet, Text, TextArea, TextField, useTheme } from "@/ui";
+import { Banner, Button, ChipInput, SelectSheet, Text, TextArea, TextField, useTheme } from "@/ui-legacy";
 
 type PreferencesProps = { initial: CareerProfileData };
 export function Preferences({ initial }: PreferencesProps) {

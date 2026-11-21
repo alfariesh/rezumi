@@ -48,7 +48,7 @@ import {
 	TextArea,
 	TextField,
 	useTheme,
-} from "@/ui";
+} from "@/ui-legacy";
 
 type SectionProps = { application: Application };
 type InterviewOpener = { onOpenInterview: (interview: InterviewTimelineEntry | null) => void };

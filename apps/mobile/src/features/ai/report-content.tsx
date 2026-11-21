@@ -4,7 +4,7 @@ import { useState } from "react";
 import { View } from "react-native";
 import { client } from "@/api/client";
 import { getAccountScope, getServer } from "@/auth/session";
-import { Button, SelectSheet, Sheet, Text, TextArea, showToast, useTheme } from "@/ui";
+import { Button, SelectSheet, Sheet, Text, TextArea, showToast, useTheme } from "@/ui-legacy";
 
 type Report = RouterInput["ai"]["reportContent"];
 type ReportAiContentProps = { source: Exclude<Report["source"], "public-resume">; text?: string };

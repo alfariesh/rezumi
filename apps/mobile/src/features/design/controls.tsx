@@ -5,7 +5,7 @@ import { I18nManager, TextInput, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
-import { Icon, IconButton, Switch, Text, haptics, useTheme } from "@/ui";
+import { Icon, IconButton, Switch, Text, haptics, useTheme } from "@/ui-legacy";
 
 type FieldProps = { label: string; value?: string | undefined; helper?: string | undefined; children: ReactNode };
 

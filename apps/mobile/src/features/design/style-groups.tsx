@@ -32,7 +32,7 @@ import {
 } from "./presets";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { localeMap } from "@/features/settings/locale-names";
-import { Button, Icon, IconButton, Segmented, Text, haptics, listLayout, useTheme } from "@/ui";
+import { Button, Icon, IconButton, Segmented, Text, haptics, listLayout, useTheme } from "@/ui-legacy";
 
 export type GroupProps = {
 	data: ResumeData;

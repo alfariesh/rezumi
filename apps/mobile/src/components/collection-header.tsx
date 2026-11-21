@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { I18nManager, Keyboard, TextInput, View, useWindowDimensions } from "react-native";
-import { Icon, IconButton, Text, useTheme } from "@/ui";
+import { Icon, IconButton, Text, useTheme } from "@/ui-legacy";
 
 type CollectionHeaderProps = {
 	title: string;

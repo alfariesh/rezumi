@@ -29,7 +29,7 @@ import { useFlags } from "@/api/flags";
 import { useHasAIProvider } from "@/features/ai/providers";
 import { interviewTypeLabel, useUserTime } from "@/features/application-detail/hooks";
 import { routes } from "@/routes";
-import { Banner, Button, ListRow, Sheet, Skeleton, Switch, Text, showToast, useTheme } from "@/ui";
+import { Banner, Button, ListRow, Sheet, Skeleton, Switch, Text, showToast, useTheme } from "@/ui-legacy";
 
 type Briefing = SavedItem & { data: SavedData<"briefing"> };
 

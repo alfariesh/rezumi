@@ -8,7 +8,7 @@ import { SettingsGroup, SettingsPage } from "@/features/settings/layout";
 import { ProfileEditor } from "@/features/settings/profile";
 import { useProfile } from "@/features/settings/queries";
 import { SignOutRow } from "@/features/settings/sign-out";
-import { Banner, Icon, ListRow, Skeleton, showToast, useTheme } from "@/ui";
+import { Banner, Icon, ListRow, Skeleton, showToast, useTheme } from "@/ui-legacy";
 
 export default function AccountScreen() {
 	const { t } = useLingui();

@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { File, Paths } from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import { client } from "@/api/client";
-import { ListRow, showToast } from "@/ui";
+import { ListRow, showToast } from "@/ui-legacy";
 
 export function ExportDataRow() {
 	const { t } = useLingui();

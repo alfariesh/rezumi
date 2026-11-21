@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { PixelRatio } from "react-native";
 import { createPreviewPipeline } from "./pipeline";
 import { PreviewScheduler } from "./scheduler";
-import { space } from "@/ui/tokens";
+import { space } from "@/ui-legacy/tokens";
 
 export type PreviewOptions = Pick<RenderRequest, "focused" | "pages" | "renderOptions"> & {
 	scale?: number | undefined;

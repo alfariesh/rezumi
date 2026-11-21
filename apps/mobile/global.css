@@ -3,3 +3,96 @@
 
 @import "heroui-native/styles";
 @import "heroui-native-pro/styles";
+
+/* Pro's stylesheet does not register its own sources, so the utility classes its components compose in JavaScript
+   (`data-[orientation=horizontal]:flex-row`, …) are only generated when Tailwind scans the package. */
+@source "./node_modules/heroui-native-pro/lib/module";
+
+/*
+ * Rezumi's theme for the native app: the web's HeroUI default theme (@heroui/styles 3.2.7, read by
+ * packages/ui/src/styles/globals.css) on HeroUI Native. HeroUI Native 1.1 ships the same palette in oklch, which Uniwind
+ * compiles for iOS and Android; only the values where the native default differs from the web are set here, so a
+ * screen and its web page share every color, radius and shadow. apps/mobile/DESIGN.md explains each token.
+ */
+@theme {
+	/* Fields round at 1.5 × radius (12px) like the web, not HeroUI Native's 1.75. */
+	--field-radius: calc(var(--radius) * 1.5);
+
+	/*
+	 * Google Sans for the interface and Google Sans Code for code, bundled as static weights (src/ui/fonts.ts). A weight
+	 * utility (`font-medium`) selects its own family: Android picks a custom font's weight by family name only.
+	 */
+	--font-normal: "GoogleSans-Regular";
+	--font-medium: "GoogleSans-Medium";
+	--font-semibold: "GoogleSans-SemiBold";
+	--font-bold: "GoogleSans-Bold";
+	--font-mono: "GoogleSansCode-Regular";
+
+	/* Google Sans is tight at small sizes: the web's tracking on the three steps the interface reads most. */
+	--text-xs--letter-spacing: 0.02em;
+	--text-sm--letter-spacing: 0.02em;
+	--text-base--letter-spacing: 0.01em;
+
+	/* The resume page is white in both themes and never inverts. */
+	--color-paper: #ffffff;
+
+	/* Application stages: only ever shown next to the stage name. */
+	--color-stage-saved: #908c7f;
+	--color-stage-applied: #5590cc;
+	--color-stage-screening: #00a0a6;
+	--color-stage-interview: #af8433;
+	--color-stage-offer: #579f68;
+	--color-stage-closed: #c67067;
+}
+
+@layer theme {
+	:root {
+		@variant light {
+			--separator: oklch(92% 0.004 286.32);
+			--backdrop: rgba(0, 0, 0, 0.5);
+			/* Fields sit flat: no drop shadow (the web's --field-shadow). */
+			--field-shadow: 0 0 0 0 transparent;
+			--overlay-shadow:
+				0 2px 8px 0 rgba(0, 0, 0, 0.06), 0 -6px 12px 0 rgba(0, 0, 0, 0.03), 0 14px 28px 0 rgba(0, 0, 0, 0.08);
+		}
+
+		@variant dark {
+			--separator: oklch(25% 0.006 286.033);
+			--backdrop: rgba(0, 0, 0, 0.6);
+			--field-shadow: 0 0 0 0 transparent inset;
+			--overlay-shadow: 0 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+		}
+	}
+}
+
+/* Paragraph leading (the web's text-body utilities): anything that can wrap; one-line text keeps the step's own. */
+@utility text-body {
+	@apply text-base leading-7;
+}
+
+@utility text-body-sm {
+	@apply text-sm leading-6;
+}
+
+@utility text-body-xs {
+	@apply text-xs leading-5;
+}
+
+@layer components {
+	/* Touch inputs read at 16 pt (web DESIGN.md → Typography), not React Native's 14 default. */
+	.input__input,
+	.search-field__input {
+		font-size: var(--text-base);
+	}
+
+	/* A secondary field (for white surfaces) is filled with the page background, as on the web. */
+	.input__input--variant-secondary {
+		background-color: var(--color-background);
+	}
+
+	/* Titles at 18 and below keep normal tracking; only h1–h4 stay tight. */
+	.text__root--type-h5,
+	.text__root--type-h6 {
+		letter-spacing: 0;
+	}
+}

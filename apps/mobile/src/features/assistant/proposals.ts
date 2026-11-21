@@ -17,7 +17,7 @@ import {
 } from "@rezumi/resume/proposals";
 import { getAccountScope } from "@/auth/session";
 import { useResumeStore } from "@/draft";
-import { dismissToast, showToast } from "@/ui";
+import { dismissToast, showToast } from "@/ui-legacy";
 
 type ProposeEditsOutput = {
 	edits?: Array<Omit<Proposal, "source" | "target"> & { target: Record<string, string | undefined> }>;

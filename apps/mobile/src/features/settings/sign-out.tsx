@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { SignOutCleanupError, signOut, useSession } from "@/auth/session";
 import { routes } from "@/routes";
-import { ConfirmDialog, ListRow, showToast } from "@/ui";
+import { ConfirmDialog, ListRow, showToast } from "@/ui-legacy";
 
 type SignOutRowProps = { switchServer?: boolean };
 export function SignOutRow({ switchServer = false }: SignOutRowProps) {

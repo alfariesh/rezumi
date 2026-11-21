@@ -17,7 +17,7 @@ import { orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
 import { getDraftScope } from "@/draft";
 import { useHasAIProvider } from "@/features/ai/providers";
-import { showToast } from "@/ui";
+import { showToast } from "@/ui-legacy";
 
 export type SavedItem = RouterOutput["career"]["savedItems"][number];
 export type SavedData<K extends SavedItem["data"]["kind"]> = Extract<SavedItem["data"], { kind: K }>;

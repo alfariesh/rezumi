@@ -34,8 +34,8 @@ import {
 	listItemMotion,
 	useFirstAppearance,
 	useTheme,
-} from "@/ui";
-import { usePullRefresh } from "@/ui/use-pull-refresh";
+} from "@/ui-legacy";
+import { usePullRefresh } from "@/ui-legacy/use-pull-refresh";
 
 const VIEWABILITY_CONFIG = { itemVisiblePercentThreshold: 30 };
 

@@ -12,7 +12,7 @@ import { PrepareTab } from "@/features/workspace/tabs/prepare";
 import { SavedTab } from "@/features/workspace/tabs/saved";
 import { routes } from "@/routes";
 import { useWorkspaceChrome } from "@/shell/workspace-chrome";
-import { Button } from "@/ui";
+import { Button } from "@/ui-legacy";
 
 const WORKSPACE: Record<WorkspaceTab, ComponentType> = {
 	fit: FitTab,

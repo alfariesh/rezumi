@@ -7,7 +7,7 @@ import { withUndo } from "./undo";
 import { client, orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
 import { useProfile } from "@/features/settings/queries";
-import { showToast } from "@/ui";
+import { showToast } from "@/ui-legacy";
 
 export type Career = RouterOutput["career"];
 export type Fact = Career["facts"][number];

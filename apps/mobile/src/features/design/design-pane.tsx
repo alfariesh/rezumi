@@ -26,8 +26,8 @@ import { useResumeStore } from "@/draft";
 import { nativeEnvironment } from "@/draft/native";
 import { ResumePage } from "@/preview/page";
 import { useIsTablet } from "@/shell/use-is-tablet";
-import { Banner, IconButton, Skeleton, Text, haptics, showToast, useReducedMotion, useTheme } from "@/ui";
-import { useKeyboardScrollSpace } from "@/ui/keyboard";
+import { Banner, IconButton, Skeleton, Text, haptics, showToast, useReducedMotion, useTheme } from "@/ui-legacy";
+import { useKeyboardScrollSpace } from "@/ui-legacy/keyboard";
 
 type Tab = "template" | "entries" | "type" | "color" | "icons" | "page";
 type Entry = { kind: "advanced"; id: AdvancedId } | { kind: "picker"; spec: PickerSpec };

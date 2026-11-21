@@ -1,5 +1,5 @@
 import type { RichTextSession } from "./rich-text";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import type { ComponentRef, RefObject } from "react";
 import type { EnrichedTextInputInstance, OnChangeStateEvent } from "react-native-enriched-html";
 import { plural } from "@lingui/core/macro";
@@ -12,8 +12,8 @@ import { ImprovePanel } from "./improve";
 import { PromptSheet } from "./pickers";
 import { createRichTextSession, fromEnrichedHtml, lineAtCaret, replaceLine } from "./rich-text";
 import { resumeFieldFocus } from "@/draft";
-import { Button, IconButton, ListRow, Sheet, Text, useTheme } from "@/ui";
-import { useKeyboardVisible } from "@/ui/keyboard";
+import { Button, IconButton, ListRow, Sheet, Text, useTheme } from "@/ui-legacy";
+import { useKeyboardVisible } from "@/ui-legacy/keyboard";
 
 /** The focused editor, for the toolbar docked above the keyboard (one per screen). */
 type ActiveEditor = {

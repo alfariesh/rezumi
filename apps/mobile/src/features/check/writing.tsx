@@ -15,7 +15,7 @@ import { client } from "@/api/client";
 import { useResumeStore } from "@/draft";
 import { AIProviderSetupSheet, useHasAIProvider } from "@/features/ai/providers";
 import { ReportAiContent } from "@/features/ai/report-content";
-import { Banner, Button, Card, SelectSheet, Skeleton, Text, useTheme } from "@/ui";
+import { Banner, Button, Card, SelectSheet, Skeleton, Text, useTheme } from "@/ui-legacy";
 
 type WritingProps = {
 	id: string;

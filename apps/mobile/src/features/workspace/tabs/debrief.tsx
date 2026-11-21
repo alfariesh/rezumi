@@ -19,7 +19,7 @@ import { orpc } from "@/api/client";
 import { useHasAIProvider } from "@/features/ai/providers";
 import { isInterview, useUserTime } from "@/features/application-detail/hooks";
 import { buildIcs } from "@/features/reminders";
-import { Banner, Button, Chip, Skeleton, Text, TextArea, TextField, showToast, useTheme } from "@/ui";
+import { Banner, Button, Chip, Skeleton, Text, TextArea, TextField, showToast, useTheme } from "@/ui-legacy";
 
 type Debrief = SavedData<"debrief">;
 type Review = Pick<SavedItem, "id" | "interviewId" | "evidence"> & { data: Debrief };

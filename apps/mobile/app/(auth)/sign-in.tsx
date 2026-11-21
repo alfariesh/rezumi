@@ -7,7 +7,7 @@ import { getFlags, isAllowedServer, toOrigin } from "@/auth/oauth";
 import { useSession } from "@/auth/session";
 import { useSignIn } from "@/auth/use-sign-in";
 import { routes } from "@/routes";
-import { Banner, Button, Card, ListRow, Screen, Text, useTheme } from "@/ui";
+import { Banner, Button, Card, ListRow, Screen, Text, useTheme } from "@/ui-legacy";
 
 /** The server from the picker (`?server=`), else the current one. Only servers `isAllowedServer` accepts. */
 function useTargetServer(): string {
