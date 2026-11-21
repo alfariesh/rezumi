@@ -48,3 +48,10 @@ console.error = (...args) => {
 	if (typeof args[0] === "string" && args[0].startsWith("[colorKit")) return;
 	error(...args);
 };
+
+// Screens import @/ui, whose Sheet loads TrueSheet's native view: a stand-in that never presents. Tests of Sheet itself
+// (src/ui/sheet.test.tsx) replace it with a fake that does.
+jest.mock("@lodev09/react-native-true-sheet", () => {
+	const { forwardRef } = require("react");
+	return { TrueSheet: forwardRef(() => null), TrueSheetProvider: ({ children }) => children };
+});

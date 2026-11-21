@@ -184,6 +184,11 @@ msgstr "{0, plural, other {# fakta}}"
 msgid "{0, plural, one {# match} other {# matches}}"
 msgstr "{0, plural, one {# padanan} other {# padanan}}"
 
+#. placeholder {0}: interview.durationMinutes
+#: src/features/home/coming-up.tsx
+msgid "{0, plural, one {# min} other {# min}}"
+msgstr ""
+
 #. placeholder {0}: data.officeDays
 #: src/features/career/offers.tsx
 msgid "{0, plural, one {# office day a week} other {# office days a week}}"
@@ -245,11 +250,6 @@ msgstr "{0, plural, one {Padam # permohonan} other {Padam # permohonan}}"
 #: src/features/documents/library.tsx
 msgid "{0, plural, one {Delete # document forever?} other {Delete # documents forever?}}"
 msgstr "{0, plural, one {Padam # dokumen selama-lamanya?} other {Padam # dokumen selama-lamanya?}}"
-
-#. placeholder {0}: row.intervalDays
-#: src/features/career/today.tsx
-msgid "{0, plural, one {Every day} other {Every # days}}"
-msgstr "{0, plural, one {Setiap hari} other {Setiap # hari}}"
 
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
@@ -341,13 +341,13 @@ msgstr ""
 
 #. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
 #. placeholder {1}: TRIAL_CREDITS.validDays
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{0} expire on {1}"
 msgstr ""
 
@@ -527,6 +527,10 @@ msgstr "{day} · {length} min"
 msgid "{days, plural, =0 {· since today} one {· for # day} other {· for # days}}"
 msgstr "{days, plural, =0 {· sejak hari ini} one {· selama # hari} other {· selama # hari}}"
 
+#: src/features/home/coming-up.tsx
+msgid "{days, plural, one {In # day} other {In # days}}"
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{done} of {count} done"
 msgstr "{done} daripada {count} selesai"
@@ -558,6 +562,10 @@ msgstr "{facts, plural, other {# fakta}}"
 #: src/features/applications-board/calendar-screen.tsx
 msgid "{followUps, plural, one {# follow-up} other {# follow-ups}}"
 msgstr "{followUps, plural, one {# susulan} other {# susulan}}"
+
+#: src/features/home/coming-up.tsx
+msgid "{hours, plural, one {In # hour} other {In # hours}}"
+msgstr ""
 
 #: src/features/workspace/shell.tsx
 msgid "{hours} h"
@@ -595,6 +603,10 @@ msgstr ""
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
 msgstr "Sambungan {label}"
+
+#: src/shell/app-tabs.tsx
+msgid "{label}, {count} unread"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
@@ -710,6 +722,14 @@ msgstr "{title} dibersihkan"
 msgid "{title} deleted"
 msgstr "{title} dipadamkan"
 
+#: src/features/home/schedules.tsx
+msgid "{title} is on · next {next}"
+msgstr ""
+
+#: src/features/home/schedules.tsx
+msgid "{title} paused"
+msgstr "{title} dijeda"
+
 #: src/features/write/outline.tsx
 msgid "{toCheck, plural, one {# field needs a look.} other {# fields need a look.}}"
 msgstr "{toCheck, plural, one {Medan # perlu dilihat.} other {Medan # perlu dilihat.}}"
@@ -718,11 +738,11 @@ msgstr "{toCheck, plural, one {Medan # perlu dilihat.} other {Medan # perlu dili
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {# untuk menyemak} other {# untuk menyemak}}"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{used} of {max}"
 msgstr ""
 
@@ -761,6 +781,7 @@ msgid "2 files"
 msgstr "2 fail"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/schedules.tsx
 msgid "2 hours before"
 msgstr "2 jam sebelum"
 
@@ -769,6 +790,7 @@ msgid "2–3 sentences reads best"
 msgstr "2–3 ayat paling sesuai dibaca"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "24 jam sebelum"
 
@@ -906,12 +928,16 @@ msgstr "Tawaran diterima"
 msgid "Accomplishment"
 msgstr "Pencapaian"
 
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/account.tsx
+#: app/account/index.tsx
 #: src/features/search/search-screen.tsx
-#: src/shell/app-tabs.tsx
+#: src/shell/account-menu.tsx
 msgid "Account"
 msgstr "Akaun"
+
+#: src/shell/account-menu.tsx
+msgid "Account menu"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Action (required)"
@@ -927,25 +953,22 @@ msgstr "Tindakan"
 msgid "Actions for {0} at {1}"
 msgstr "Tindakan untuk {0} di {1}"
 
-#: src/features/ai/web-access.tsx
-msgid "Active"
-msgstr "Aktif"
-
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Active cover letters"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Active resumes"
 msgstr ""
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr ""
 
 #: src/features/application-detail/sections.tsx
+#: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Add"
 msgstr "Tambah"
@@ -1143,10 +1166,6 @@ msgstr "Tambah rujukan"
 msgid "Add role"
 msgstr "Tambah peranan"
 
-#: src/features/career/today.tsx
-msgid "Add schedule"
-msgstr "Tambah jadual"
-
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Add screening calls and technical interviews to see them here and on the calendar."
 msgstr "Tambahkan panggilan saringan dan temu duga teknikal untuk melihatnya di sini dan pada kalendar."
@@ -1273,8 +1292,8 @@ msgstr "Selepas ulasan pertama anda, pelan ringan untuk minggu ini muncul di sin
 msgid "Against your requirements"
 msgstr "Berbanding keperluan anda"
 
-#: app/(tabs)/settings/ai.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/ai.tsx
+#: app/account/index.tsx
 #: src/features/search/search-screen.tsx
 msgid "AI & developer"
 msgstr "AI & pembangun"
@@ -1311,8 +1330,8 @@ msgstr "AI pengayaan tidak tersedia. Semak butiran halaman atau isi secara manua
 msgid "AI provider"
 msgstr "AI pembekal"
 
-#: app/(tabs)/settings/ai-providers.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-providers.tsx
+#: app/account/ai.tsx
 #: src/features/search/search-screen.tsx
 msgid "AI providers"
 msgstr "Pembekal AI"
@@ -1356,7 +1375,7 @@ msgstr "Semua ({0})"
 msgid "All applications"
 msgstr "Semua permohonan"
 
-#: src/features/career/recent-documents.tsx
+#: src/features/home/recent-documents.tsx
 msgid "All documents"
 msgstr ""
 
@@ -1506,12 +1525,11 @@ msgstr ""
 msgid "API and MCP access isn't in your plan"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "API and MCP for other apps"
 msgstr ""
 
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "API key"
 msgstr "Kunci API"
 
@@ -1528,7 +1546,11 @@ msgstr "Kekunci API"
 msgid "API keys need the Plus or Pro AI plan"
 msgstr ""
 
-#: app/(tabs)/settings/preferences.tsx
+#: src/shell/account-menu.tsx
+msgid "App settings"
+msgstr ""
+
+#: app/account/preferences.tsx
 msgid "Appearance"
 msgstr "Penampilan"
 
@@ -1598,6 +1620,7 @@ msgstr "Paparan permohonan"
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Applications"
 msgstr "Permohonan"
 
@@ -1643,7 +1666,7 @@ msgstr "Digunakan. Susulan ditetapkan untuk {0}."
 msgid "Applied. The application is updated."
 msgstr "Digunakan. Permohonan telah dikemas kini."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Applies to this device only."
 msgstr "Terpakai pada peranti ini sahaja."
 
@@ -1721,10 +1744,6 @@ msgstr "Tanya jurulatih"
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Minta pentadbir pelayan anda untuk mendayakan penyulitan kelayakan atau mengkonfigurasi sambungan kongsi."
-
-#: src/features/ai/web-access.tsx
-msgid "Ask your server administrator to enable credential encryption or configure a shared web connection."
-msgstr "Minta pentadbir pelayan anda untuk mendayakan penyulitan kelayakan atau mengkonfigurasi sambungan web yang dikongsi."
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Ask, or describe a change…"
@@ -1929,7 +1948,7 @@ msgstr ""
 msgid "Behavioral"
 msgstr "Tingkah laku"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Behavioral interview"
 msgstr "Temu bual tingkah laku"
 
@@ -1996,7 +2015,7 @@ msgstr "Memecahkan perkataan yang panjang antara suku kata, menggunakan bahasa y
 msgid "Briefing"
 msgstr "Taklimat"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Briefing ready"
 msgstr "Taklimat sedia"
 
@@ -2007,10 +2026,6 @@ msgstr "Muat semula taklimat dihidupkan · {next}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "Penyegaran taklimat dijeda"
-
-#: src/features/ai/web-access.tsx
-msgid "Built-in reader"
-msgstr "Pembaca terbina dalam"
 
 #: src/features/settings/locale-names.ts
 msgid "Bulgarian"
@@ -2031,7 +2046,7 @@ msgstr "Senarai bertitik tumpu mata"
 msgid "Burgundy"
 msgstr "Burgundi"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "by <0>Salman Alfariesh</0>"
 msgstr "oleh <0>Salman Alfariesh</0>"
 
@@ -2049,7 +2064,6 @@ msgstr "Bolehkah perisian membaca resume anda?"
 
 #: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/list-screen.tsx
@@ -2062,7 +2076,7 @@ msgstr "Bolehkah perisian membaca resume anda?"
 #: src/features/write/improve.tsx
 #: src/features/write/pickers.tsx
 #: src/linking/open.ts
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Cancel"
 msgstr "Batal"
 
@@ -2078,11 +2092,6 @@ msgstr "Batalkan rakaman"
 msgid "Cancel request"
 msgstr "Batalkan permintaan"
 
-#: app/(tabs)/_layout.tsx
-#: app/(tabs)/career/_layout.tsx
-msgid "Career"
-msgstr "Kerjaya"
-
 #: src/features/settings/locale-names.ts
 msgid "Catalan"
 msgstr "Catalan"
@@ -2095,10 +2104,6 @@ msgstr "Pensijilan"
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Berubah"
-
-#: src/features/ai/web-access.tsx
-msgid "Change connection"
-msgstr "Tukar sambungan"
 
 #: src/features/letters/write.tsx
 msgid "Change it in Design."
@@ -2450,10 +2455,11 @@ msgstr "tertutup"
 msgid "Closed: {closed}"
 msgstr "Ditutup: {closed}"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/_layout.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/billing/credits.ts
 #: src/features/workspace/coach-sheet.tsx
+#: src/shell/tab-chrome.tsx
 msgid "Coach"
 msgstr "Jurulatih"
 
@@ -2479,7 +2485,7 @@ msgid "Columns can scramble the order text is read in."
 msgstr "Lajur boleh berebut teks pesanan yang dibaca."
 
 #: src/features/applications-board/calendar-screen.tsx
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Coming up"
 msgstr "Akan datang"
 
@@ -2562,10 +2568,6 @@ msgstr "Sambung {0}"
 msgid "Connect {domain}"
 msgstr "Sambung {domain}"
 
-#: src/features/ai/web-access.tsx
-msgid "Connect a service"
-msgstr "Sambungkan perkhidmatan"
-
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
 msgid "Connect AI provider"
@@ -2586,15 +2588,11 @@ msgstr "Sambungkan pembekal AI dalam Tetapan untuk menyegarkannya secara automat
 msgid "Connect an AI provider to read details from pasted text. Manual entry works without AI."
 msgstr "Sambungkan penyedia AI untuk membaca butiran daripada teks yang ditampal. Kemasukan manual berfungsi tanpa AI."
 
-#: src/features/ai/web-access.tsx
-msgid "Connect an AI provider to use the assistant. Saving and preparing jobs doesn't need one."
-msgstr "Sambungkan penyedia AI untuk menggunakan pembantu. Menyimpan dan menyediakan pekerjaan tidak memerlukannya."
-
 #: src/features/assistant/provider.tsx
 msgid "Connect another…"
 msgstr "Sambungkan yang lain…"
 
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai.tsx
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "Sambungkan alat yang anda gunakan untuk menulis, mencari pekerjaan dan bekerja dengan resume anda."
 
@@ -2610,11 +2608,7 @@ msgstr "Bersambung. Domain anda membuka resume utama anda."
 msgid "Connecting the dots"
 msgstr "Menghubungkan titik-titik"
 
-#: src/features/ai/web-access.tsx
-msgid "Connection saved"
-msgstr "Sambungan disimpan"
-
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -2769,13 +2763,17 @@ msgstr ""
 msgid "Couldn't attach the file. Try again."
 msgstr "Tidak dapat melampirkan fail. Cuba lagi."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't change the language. Try again."
 msgstr "Tidak dapat menukar bahasa. Cuba lagi."
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Couldn't change the schedule. Try again."
 msgstr "Tidak dapat menukar jadual. Cuba lagi."
+
+#: src/features/home/schedules.tsx
+msgid "Couldn't change this schedule. Try again."
+msgstr "Tidak dapat menukar jadual ini. Cuba lagi."
 
 #: src/features/share/download.tsx
 msgid "Couldn't check for a linked cover letter."
@@ -2794,13 +2792,9 @@ msgid "Couldn't complete the request. Check your connection and try again."
 msgstr "Tidak dapat melengkapkan permintaan. Semak sambungan anda dan cuba lagi."
 
 #: src/features/documents/queries.ts
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Couldn't complete this action. Try again."
 msgstr "Tidak dapat menyelesaikan tindakan ini. Cuba lagi."
-
-#: src/features/ai/web-access.tsx
-msgid "Couldn't confirm AI connections. Try again before using the assistant."
-msgstr "Tidak dapat mengesahkan sambungan AI. Cuba lagi sebelum menggunakan pembantu."
 
 #: src/features/applications/add-sheet.tsx
 msgid "Couldn't confirm the save. Check Applications before retrying to avoid a duplicate."
@@ -2830,6 +2824,10 @@ msgstr "Tidak dapat memadam perbualan. Cuba lagi."
 msgid "Couldn't delete the interview. Try again."
 msgstr "Tidak dapat memadam temu duga. Cuba lagi."
 
+#: src/features/home/home-screen.tsx
+msgid "Couldn't delete this schedule. Try again."
+msgstr "Tidak dapat memadam jadual ini. Cuba lagi."
+
 #: src/features/settings/export.tsx
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
@@ -2842,6 +2840,10 @@ msgstr "Tidak dapat menjana fail ini. Cuba lagi atau muat turun PDF sebaliknya."
 #: src/features/write/improve.tsx
 msgid "Couldn't get a suggestion. Nothing changed."
 msgstr "Tidak dapat cadangan. Tiada apa yang berubah."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't hide this role. Try again."
+msgstr "Tidak dapat menyembunyikan peranan ini. Cuba lagi."
 
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't import the file. Try again from Documents."
@@ -2922,12 +2924,16 @@ msgstr "Tidak dapat memuatkan halaman versi ini."
 msgid "Couldn't load this. Check your connection and try again."
 msgstr "Tidak dapat memuatkan ini. Sahkan sambungan anda dan cuba lagi."
 
+#: src/features/home/section.tsx
+msgid "Couldn't load this. Check your connection."
+msgstr ""
+
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
 msgid "Couldn't load versions."
 msgstr "Tidak dapat memuatkan versi."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "Tidak dapat memuatkan profil anda."
 
@@ -2939,7 +2945,7 @@ msgstr "Tidak dapat memuatkan alamat awam anda."
 msgid "Couldn't load your resumes."
 msgstr "Tidak dapat memuatkan resume anda."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't load your timezone."
 msgstr "Tidak dapat memuatkan zon waktu anda."
 
@@ -2947,18 +2953,23 @@ msgstr "Tidak dapat memuatkan zon waktu anda."
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Tidak dapat menandakannya sebagai dimohon. Cuba lagi."
 
+#: src/features/home/needs-you.tsx
+msgid "Couldn't mark this as read. Try again."
+msgstr "Tidak dapat menandakan ini sebagai dibaca. Cuba lagi."
+
 #: src/features/applications-board/use-reschedule-interview.ts
 msgid "Couldn't move the interview. Try again."
 msgstr ""
 
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/account.tsx
+#: app/account/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
+#: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Tidak dapat membuka penyemak imbas. Cuba lagi."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Couldn't open the posting. Try again."
 msgstr "Tidak dapat membuka siaran kerja. Cuba lagi."
 
@@ -3009,6 +3020,10 @@ msgstr "Tidak dapat memuat semula dokumen anda."
 #: src/features/assistant/messages.tsx
 msgid "Couldn't remember that. Try again."
 msgstr "Tidak dapat mengingati itu. Cuba lagi."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't remove it from Applications. Try again."
+msgstr "Tidak dapat mengalih keluarnya daripada Permohonan. Cuba lagi."
 
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't remove the file. Try again."
@@ -3066,13 +3081,17 @@ msgstr "Tidak dapat menyimpan nota. Teks anda masih ada di sini."
 msgid "Couldn't save the tags. Try again."
 msgstr "Tidak dapat menyimpan teg. Cuba lagi."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't save the theme. Try again."
 msgstr "Tidak dapat menyimpan tema. Cuba lagi."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Tidak dapat menyimpan zon waktu. Cuba lagi."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't save this role to Applications. Try again."
+msgstr "Tidak dapat menyimpan peranan ini ke Permohonan. Cuba lagi."
 
 #: src/features/letters/write.tsx
 msgid "Couldn't save your changes, so drafting didn't start. Nothing on the page changed."
@@ -3270,7 +3289,7 @@ msgstr "Cipta resume baharu"
 msgid "Create a resume first, then ask about it."
 msgstr "Buat resume dahulu, kemudian tanya tentangnya."
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "Buat kunci API daripada tetapan Akaun dalam penyemak imbas anda. Kekunci bertindak sebagai anda dan boleh membaca dan mengedit dokumen anda."
 
@@ -3299,7 +3318,7 @@ msgstr "Dibuat {0} · Terakhir digunakan {1} · Tamat tempoh {2}"
 msgid "Creating document…"
 msgstr "Mencipta dokumen…"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
 msgstr ""
 
@@ -3331,7 +3350,7 @@ msgstr "Medan tersuai"
 msgid "Custom section"
 msgstr "Bahagian tersuai"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 msgid "Custom styles"
@@ -3365,6 +3384,10 @@ msgstr ""
 msgid "Czech"
 msgstr "Czech"
 
+#: src/features/home/schedules.tsx
+msgid "Daily at {clock} · next {day}"
+msgstr ""
+
 #. placeholder {0}: summary.peak
 #: src/features/share/link.tsx
 msgid "Daily views over 30 days, peak {0}"
@@ -3378,8 +3401,8 @@ msgstr "Nasihat berbahaya atau haram"
 msgid "Danish"
 msgstr "Danish"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "Dark"
 msgstr "Gelap"
 
@@ -3493,7 +3516,7 @@ msgstr "Padam “{0}”?"
 msgid "Delete {0}"
 msgstr "Padamkan {0}"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Delete account"
 msgstr "Padam akaun"
@@ -3596,7 +3619,7 @@ msgstr "Memadam bahagian dan entrinya. Anda boleh buat asal."
 msgid "Density"
 msgstr "Ketumpatan"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Dependency type"
 msgstr "Jenis kebergantungan"
 
@@ -3656,18 +3679,21 @@ msgid "Direction"
 msgstr "Arah"
 
 #: src/features/letters/write.tsx
+#: src/shell/unsaved-changes.ts
 msgid "Discard"
 msgstr "Buang"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Discard changes"
 msgstr "Buang perubahan"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Discard changes?"
 msgstr "Buang perubahan?"
+
+#: src/shell/unsaved-changes.ts
+msgid "Discard your changes?"
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "Discard your offline edits and load the saved version."
@@ -3678,7 +3704,7 @@ msgid "Discard your offline edits?"
 msgstr "Buang suntingan luar talian anda?"
 
 #: src/features/letters/write.tsx
-#: src/ui/layout.tsx
+#: src/ui-legacy/layout.tsx
 msgid "Dismiss"
 msgstr "Ketepikan"
 
@@ -3700,9 +3726,10 @@ msgid "Document type"
 msgstr "Jenis dokumen"
 
 #: app/(tabs)/_layout.tsx
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Documents"
 msgstr "Dokumen"
 
@@ -3714,7 +3741,7 @@ msgstr "Dokumen dipadam secara kekal selepas 30 hari."
 msgid "Documents for this job"
 msgstr "Dokumen untuk kerja ini"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Documents in Trash don't count."
 msgstr ""
 
@@ -3740,9 +3767,8 @@ msgstr "Jangan hantar iklan kerja {0}"
 msgid "Don't share"
 msgstr "Jangan kongsi"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/applications/list-screen.tsx
-#: src/features/career/today.tsx
 #: src/features/documents/library.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/date-field.tsx
@@ -3750,6 +3776,10 @@ msgstr "Jangan kongsi"
 #: src/features/write/rich-text-field.tsx
 msgid "Done"
 msgstr "Selesai"
+
+#: src/features/home/schedules.tsx
+msgid "Done · {day}"
+msgstr ""
 
 #: src/features/applications/list-screen.tsx
 msgid "Done selecting"
@@ -3929,7 +3959,7 @@ msgstr "mesej terdahulu dalam sembang ini"
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/career/stories.tsx
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Edit"
 msgstr "Sunting"
@@ -4001,7 +4031,7 @@ msgstr "Pendidikan"
 msgid "Education swaps school and field of study the same way."
 msgstr ""
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "E-mel"
@@ -4041,10 +4071,6 @@ msgstr "Bahasa Inggeris"
 #: src/features/settings/locale-names.ts
 msgid "English (United Kingdom)"
 msgstr "Bahasa Inggeris (United Kingdom)"
-
-#: src/features/ai/web-access.tsx
-msgid "Enhanced reading failed"
-msgstr "Bacaan dipertingkatkan gagal"
 
 #: src/features/assistant/messages.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
@@ -4120,6 +4146,10 @@ msgstr "Pilihan kemasukan"
 msgid "Equity"
 msgstr "Ekuiti"
 
+#: src/features/home/schedules.tsx
+msgid "Every {days} days at {clock} · next {day}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Every 3 days"
 msgstr "Setiap 3 hari"
@@ -4148,7 +4178,7 @@ msgstr ""
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Setiap peranan menyatakan apa yang anda lakukan. Pendapat tentang perkataan secara langsung dalam tab Penulisan."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Every template"
 msgstr ""
 
@@ -4163,6 +4193,10 @@ msgstr "Setiap minggu"
 #: src/features/workspace/tabs/saved.tsx
 msgid "Everything the coach wrote for {company}, newest first."
 msgstr "Semua yang ditulis oleh penasihat kerjaya untuk {company}, terbaharu dahulu."
+
+#: app/(tabs)/profile/index.tsx
+msgid "Everything your resumes, letters and Coach start from. For now, your facts and stories are in Knowledge."
+msgstr ""
 
 #: src/features/career/facts.tsx
 #: src/features/write/fields.ts
@@ -4227,7 +4261,7 @@ msgstr "Fakta"
 msgid "Failed"
 msgstr "gagal"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "Maklum balas"
 
@@ -4461,10 +4495,17 @@ msgstr "Melupakan menyahpaut fakta ini daripada cerita dan item yang disimpan. S
 msgid "Formatting"
 msgstr "Memformat"
 
-#. placeholder {0}: time.when(row.firstSeenAt)
-#: src/features/career/today.tsx
-msgid "Found {0}"
-msgstr "Ditemui {0}"
+#: src/features/home/new-roles.tsx
+msgid "Found {day}"
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "Found today"
+msgstr "Ditemui hari ini"
+
+#: src/features/home/new-roles.tsx
+msgid "Found yesterday"
+msgstr "Ditemui semalam"
 
 #: src/features/billing/plan.ts
 msgid "Free"
@@ -4485,7 +4526,7 @@ msgstr "daripada"
 
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr ""
@@ -4515,11 +4556,6 @@ msgstr "Lebar penuh"
 msgid "German"
 msgstr "Bahasa Jerman"
 
-#. placeholder {0}: sites[provider]
-#: src/features/ai/web-access.tsx
-msgid "Get a key at {0}. It's stored encrypted and used only for your requests."
-msgstr "Dapatkan kunci di {0}. Ia disimpan secara disulitkan dan digunakan hanya untuk permintaan anda."
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback"
 msgstr "Dapatkan maklum balas"
@@ -4528,9 +4564,9 @@ msgstr "Dapatkan maklum balas"
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "Dapatkan maklum balas menghantar soalan, jawapan anda, siaran kerja ini dan cerita anda kepada {providerName}."
 
-#: src/features/career/today.tsx
-msgid "Get new roles here every morning"
-msgstr "Dapatkan peranan baharu di sini setiap pagi"
+#: src/features/home/new-roles.tsx
+msgid "Get new jobs for your search here every morning"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4569,7 +4605,7 @@ msgstr "Salam pembuka"
 msgid "Grid view"
 msgstr "Pandangan grid"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Haptic feedback"
 msgstr "Maklum balas haptik"
 
@@ -4627,9 +4663,13 @@ msgstr "terdengar balik"
 msgid "Hebrew"
 msgstr "Ibrani"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Help & docs"
 msgstr "Bantuan & dokumen"
+
+#: src/shell/account-menu.tsx
+msgid "Help & legal"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
@@ -4650,7 +4690,7 @@ msgstr "Hex"
 msgid "Hidden"
 msgstr "Tersembunyi"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Hidden from New roles"
 msgstr "Disembunyikan daripada Peranan baharu"
 
@@ -4686,11 +4726,11 @@ msgstr "Sembunyikan daripada halaman"
 msgid "Hide key"
 msgstr "Sembunyikan kunci"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Hide license"
 msgstr "Sembunyikan lesen"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Hide read"
 msgstr "Sembunyikan item yang dibaca"
 
@@ -4724,6 +4764,12 @@ msgstr "tahan ⋮⋮ untuk bergerak"
 #: src/features/documents/library.tsx
 msgid "Hold to delete"
 msgstr "Tahan untuk memadam"
+
+#: app/(tabs)/_layout.tsx
+#: src/features/home/home-screen.tsx
+#: src/shell/app-tabs.tsx
+msgid "Home"
+msgstr "Laman Utama"
 
 #: src/features/design/advanced.tsx
 msgid "Horizontal margin"
@@ -4821,18 +4867,9 @@ msgstr ""
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
 msgstr "Jika ia berasal daripada imbasan, itu dijangka. Jika tidak, buang ia; perekrut menganggapnya sebagai pengisian kata kunci."
 
-#. placeholder {0}: reader ?? provider.provider
 #: src/api/ai-consent.ts
-msgid "If web access is used, links and search terms also go to {0} and the sites being read."
-msgstr "Jika akses web digunakan, pautan dan istilah carian juga pergi ke {0} dan tapak yang sedang dibaca."
-
-#: src/api/ai-consent.ts
-msgid "If web access is used, search terms go to your server's search service and the search engines it uses, and links go to {reader} and the sites being read."
-msgstr "Jika akses web digunakan, istilah carian pergi ke perkhidmatan carian pelayan anda dan enjin carian yang digunakannya, dan pautan pergi ke {reader} dan tapak yang sedang dibaca."
-
-#: src/api/ai-consent.ts
-msgid "If web access is used, search terms go to your server's search service and the search engines it uses, and links go to the sites being read."
-msgstr "Jika akses web digunakan, istilah carian pergi ke perkhidmatan carian pelayan anda dan enjin carian yang digunakannya, dan pautan pergi ke tapak yang dibaca."
+msgid "If the web is used, search terms go to your server's search service and links go to the sites being read."
+msgstr ""
 
 #: src/features/check/screen.tsx
 msgid "Ignore"
@@ -4874,6 +4911,10 @@ msgstr "Import ia"
 msgid "Import with AI"
 msgstr ""
 
+#: src/features/home/home-screen.tsx
+msgid "Import your current resume, or start blank or from a sample. We lay out every section for you to refine."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Import your current resume, or start fresh with your name."
 msgstr "Import resume semasa anda, atau mulakan baru dengan nama anda."
@@ -4907,7 +4948,7 @@ msgstr "Meningkatkan…"
 msgid "In progress"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Included"
 msgstr ""
 
@@ -4948,14 +4989,14 @@ msgstr "Wawasan"
 msgid "Interests"
 msgstr "Minat"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Antara muka sahaja. Setiap resume menetapkan bahasanya sendiri dalam Reka Bentuk."
 
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Interview"
 msgstr "Temu duga"
 
@@ -4984,6 +5025,7 @@ msgid "Interview practice"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/needs-you.tsx
 msgid "Interview preparation"
 msgstr "Persediaan temu duga"
 
@@ -4999,7 +5041,7 @@ msgstr "Temu duga disimpan. Tidak dapat mengemas kini peringatannya. Sunting tem
 msgid "Interview saved. The reminder time has already passed."
 msgstr "Temu bual disimpan. Masa peringatan telah pun berlalu."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "Masa temu duga, peringatan dan jadual dalam Kerjaya menggunakannya."
 
@@ -5073,13 +5115,17 @@ msgstr "Kuncinya yang disimpan dipadamkan. Perbualan yang menggunakannya memerlu
 msgid "Japanese"
 msgstr "Jepun"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "JavaScript"
 msgstr "JavaScript"
 
 #: src/features/search/search-screen.tsx
 msgid "Job"
 msgstr "Ayub"
+
+#: src/features/home/needs-you.tsx
+msgid "Job alert"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Job description"
@@ -5139,8 +5185,8 @@ msgstr "Kekalkan satu alamat sahaja, supaya perisian tidak perlu meneka yang man
 msgid "Keep both"
 msgstr "Simpan kedua-duanya"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/shell/unsaved-changes.ts
+#: src/ui-legacy/overlays.tsx
 msgid "Keep editing"
 msgstr "Teruskan menyunting"
 
@@ -5198,10 +5244,6 @@ msgstr "Menyimpan bahagian yang paling spesifik"
 msgid "Kept as it is"
 msgstr "Disimpan seadanya"
 
-#: src/features/ai/web-access.tsx
-msgid "Key stored encrypted"
-msgstr "Kunci disimpan disulitkan"
-
 #: src/features/settings/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "Kunci bertindak sebagai anda dan boleh mengakses dokumen anda. Kekunci baharu dibuat dalam tetapan akaun penyemak imbas anda."
@@ -5222,7 +5264,7 @@ msgstr "Khmer"
 msgid "Kind regards,"
 msgstr "salam hormat,"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: src/features/career/knowledge.tsx
 msgid "Knowledge"
 msgstr "Pengetahuan"
@@ -5244,7 +5286,7 @@ msgstr "Label"
 msgid "Landscape"
 msgstr "Lanskap"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/search/search-screen.tsx
@@ -5269,7 +5311,7 @@ msgstr "Kali terakhir disemak {lastChecked} lalu"
 msgid "Last edited"
 msgstr "Terakhir diedit"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Later"
 msgstr "Nanti"
 
@@ -5329,7 +5371,7 @@ msgstr "Biarkan kosong untuk mengalih keluar pautan."
 msgid "Left"
 msgstr "kiri"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Legal"
 msgstr "Perundangan"
 
@@ -5359,16 +5401,17 @@ msgstr "Kurang"
 msgid "Less than 48 hours left."
 msgstr "Kurang daripada 48 jam lagi."
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "Benarkan klien AI seperti Claude atau Cursor membaca dan mengedit resume anda dengan kunci API."
 
 #: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
 msgid "Let's start with what you have"
 msgstr "Mari mulakan dengan apa yang anda ada"
 
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
 msgid "Letter"
 msgstr "Surat"
@@ -5406,7 +5449,7 @@ msgstr "Surat tidak mempunyai pautan awam. Resume berkunci mengekalkan keterliha
 msgid "Level"
 msgstr "Tahap"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Licenses"
 msgstr "Lesen"
 
@@ -5414,8 +5457,8 @@ msgstr "Lesen"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligatur boleh menggugurkan huruf daripada perkataan seperti \"workflow\"."
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "Light"
 msgstr "Cerah"
 
@@ -5483,7 +5526,7 @@ msgstr "Pautan dikemas kini"
 msgid "Linked · not sent yet"
 msgstr "Dipautkan · belum dihantar lagi"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Linked accounts"
 msgstr "Akaun terpaut"
 
@@ -5533,6 +5576,7 @@ msgid "Live at {url}"
 msgstr "Diterbitkan di {url}"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/section.tsx
 msgid "Loading"
 msgstr "Memuatkan"
 
@@ -5586,10 +5630,6 @@ msgstr "Memuatkan resume…"
 msgid "Loading saved version…"
 msgstr "Memuatkan versi yang disimpan…"
 
-#: src/features/ai/web-access.tsx
-msgid "Loading web access…"
-msgstr "Memuatkan akses web…"
-
 #: src/features/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "Memuatkan ruang kerja…"
@@ -5598,7 +5638,7 @@ msgstr "Memuatkan ruang kerja…"
 msgid "Loading your public address…"
 msgstr "Memuatkan alamat awam anda…"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: app/builder/[id]/write.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/improve.tsx
@@ -5692,10 +5732,6 @@ msgstr "Jadikan ia lebih pendek"
 msgid "Make primary"
 msgstr "Jadikan utama"
 
-#: src/features/career/today.tsx
-msgid "Make room for the next step."
-msgstr "Beri ruang untuk langkah seterusnya."
-
 #: src/features/assistant/assistant-screen.tsx
 msgid "Make the opening stronger"
 msgstr "Jadikan pembukaan lebih kuat"
@@ -5723,10 +5759,6 @@ msgstr "Malayalam"
 #: src/features/application-detail/sections.tsx
 msgid "Manage contacts"
 msgstr "Urus kenalan"
-
-#: src/features/ai/web-access.tsx
-msgid "Managed by server"
-msgstr "Diuruskan oleh pelayan"
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
@@ -5763,7 +5795,7 @@ msgstr "Margin ditetapkan kepada {minimum} pt"
 msgid "Mark as applied"
 msgstr "Tandakan sebagai dimohon"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Mark as read"
 msgstr "Tandakan sebagai dibaca"
 
@@ -5788,7 +5820,7 @@ msgstr "Markdown (.md)"
 msgid "Marked as applied. The versions you sent are kept."
 msgstr "Ditandakan sebagai dimohon. Versi yang anda hantar disimpan."
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Marked as read"
 msgstr "Ditandakan sebagai dibaca"
 
@@ -5828,8 +5860,8 @@ msgstr "Mungkin tersedia"
 msgid "MCP"
 msgstr "MCP"
 
-#: app/(tabs)/settings/ai-mcp.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-mcp.tsx
+#: app/account/ai.tsx
 msgid "MCP server"
 msgstr "Pelayan MCP"
 
@@ -5862,7 +5894,7 @@ msgstr "Gaji pokok minimum"
 msgid "Minimum salary cannot be compared in these terms."
 msgstr "Gaji minimum tidak boleh dibandingkan dalam istilah ini."
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "MIT License"
 msgstr "Lesen MIT"
 
@@ -5910,6 +5942,10 @@ msgstr "Lebih banyak pembekal dan pilihan ada di Tetapan. Penyuntingan, reka ben
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "Lebih daripada satu alamat e-mel muncul."
+
+#: src/features/home/schedules.tsx
+msgid "Morning of"
+msgstr "Pagi hari itu"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Morning of · 08:00 local"
@@ -5967,7 +6003,7 @@ msgstr "Pindahkan permohonan"
 
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
-#: src/ui/sortable.tsx
+#: src/ui-legacy/sortable.tsx
 msgid "Move down"
 msgstr "Bergerak ke bawah"
 
@@ -6030,7 +6066,7 @@ msgstr "Pindah ke…"
 
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
-#: src/ui/sortable.tsx
+#: src/ui-legacy/sortable.tsx
 msgid "Move up"
 msgstr "Bergerak ke atas"
 
@@ -6114,7 +6150,7 @@ msgstr "Nama, tag atau permohonan"
 msgid "Narrow"
 msgstr "Sempit"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Native & fonts"
 msgstr "Komponen natif & fon"
 
@@ -6122,7 +6158,7 @@ msgstr "Komponen natif & fon"
 msgid "Needs attention"
 msgstr "Perlu perhatian"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Needs you"
 msgstr "Memerlukan anda"
 
@@ -6143,6 +6179,7 @@ msgstr "tidak pernah"
 #: app/(tabs)/_layout.tsx
 #: src/features/documents/library.tsx
 #: src/shell/app-tabs.tsx
+#: src/shell/tab-chrome.tsx
 msgid "New"
 msgstr "baru"
 
@@ -6169,9 +6206,9 @@ msgstr "Perbualan baru"
 msgid "New cover letter instead"
 msgstr "Surat lamaran baharu sebaliknya"
 
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/search/search-screen.tsx
 msgid "New document"
 msgstr "Dokumen baharu"
@@ -6182,13 +6219,9 @@ msgstr "Dokumen baharu"
 msgid "New page"
 msgstr "Halaman baharu"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "Peranan baharu daripada carian anda"
-
-#: src/features/career/today.tsx
-msgid "New roles, reminders and finished briefings appear here."
-msgstr "Peranan baharu, peringatan dan taklimat yang siap muncul di sini."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "New schedule"
@@ -6286,11 +6319,11 @@ msgstr "Tiada tajuk bahagian konvensional ditemui."
 msgid "No conversations about this document yet."
 msgstr "Tiada perbualan tentang dokumen ini lagi."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "No credit activity yet."
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "No credits to spend right now"
 msgstr ""
 
@@ -6318,7 +6351,7 @@ msgstr "Tiada alamat e-mel"
 msgid "No email address was found."
 msgstr "Tiada alamat e-mel ditemui."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr ""
@@ -6343,7 +6376,7 @@ msgstr "Belum ada kerja"
 msgid "No keys yet."
 msgstr "Tiada kunci lagi."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "No language matches."
 msgstr "Tiada padanan bahasa."
 
@@ -6360,7 +6393,7 @@ msgid "No location"
 msgstr "Tiada lokasi"
 
 #: src/features/documents/library.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "No matches"
 msgstr "Tiada padanan"
 
@@ -6369,14 +6402,21 @@ msgstr "Tiada padanan"
 msgid "No matching applications"
 msgstr "Tiada permohonan yang sepadan"
 
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery is paused."
-msgstr "Tiada peranan baharu. Penemuan dijeda."
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again on {day} at {clock}."
+msgstr ""
 
-#. placeholder {0}: time.when(discovery.nextRunAt)
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again at {0}."
-msgstr "Tiada peranan baru. Discovery berjalan semula pada {0}."
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again today at {clock}."
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again tomorrow at {clock}."
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert is paused."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
@@ -6394,17 +6434,9 @@ msgstr "Tiada nombor telefon ditemui."
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "Tiada foto. Kebanyakan ATS mengabaikan foto; sesetengah wilayah mengharapkan satu."
 
-#: src/features/applications/add-sheet.tsx
-msgid "No postings found. Try different keywords."
-msgstr "Tiada siaran pekerjaan ditemui. Cuba kata kunci yang berbeza."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "Tiada istilah yang dikenali dalam siaran kerja ini."
-
-#: src/features/career/today.tsx
-msgid "No reply yet"
-msgstr "Tiada balasan lagi"
 
 #: src/features/applications/stages.ts
 msgid "No response"
@@ -6459,13 +6491,9 @@ msgstr "Tiada cadangan untuk pembekal ini. Masukkan sebarang ID model."
 msgid "No text could be read from this file."
 msgstr "Tiada teks dapat dibaca daripada fail ini."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "No timezone matches."
 msgstr "Tiada zon waktu yang sepadan."
-
-#: src/features/career/today.tsx
-msgid "No upcoming interviews."
-msgstr "Tiada temu duga akan datang."
 
 #: src/features/check/issues.ts
 msgid "No work experience shows"
@@ -6522,7 +6550,7 @@ msgstr "Belum bersambung. Tambahkan rekod DNSnya di tempat anda mengurus domain,
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "Bukan untuk saya"
 
@@ -6534,7 +6562,7 @@ msgstr "Tidak ditemui:"
 msgid "Not in your resume · add only if true"
 msgstr "Tiada dalam resume anda · tambah hanya jika benar"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Not included"
 msgstr ""
 
@@ -6582,10 +6610,6 @@ msgstr "Nota"
 msgid "Nothing here should cost you a match."
 msgstr "Tiada apa-apa di sini yang patut membebankan anda."
 
-#: src/features/career/today.tsx
-msgid "Nothing is applied for or created until you choose."
-msgstr "Tiada apa-apa dimohon atau dicipta sehingga anda memilih."
-
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
 msgstr "Tiada apa-apa menandakan peranan sebagai sedang berjalan."
@@ -6602,7 +6626,7 @@ msgstr "Belum ada apa-apa yang disimpan"
 msgid "Nothing scheduled yet"
 msgstr "Tiada apa-apa yang dijadualkan lagi"
 
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 msgid "Nothing scheduled yet."
 msgstr "Belum ada apa-apa yang dijadualkan."
 
@@ -6670,7 +6694,9 @@ msgstr "Mati. Surat itu menyimpan salinan butiran anda sendiri."
 msgid "Offer"
 msgstr "Tawaran"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
+#: src/features/applications-board/views.tsx
+#: src/features/applications/list-screen.tsx
 msgid "Offers"
 msgstr "Tawaran"
 
@@ -6682,7 +6708,7 @@ msgstr "Hari di pejabat seminggu, paling banyak"
 msgid "Office days are unknown."
 msgstr "Bilangan hari di pejabat tidak diketahui."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Office days not stated"
 msgstr "Hari di pejabat tidak dinyatakan"
 
@@ -6694,7 +6720,7 @@ msgstr "Hari di pejabat seminggu"
 msgid "Offline · saved on this device"
 msgstr "Luar talian · disimpan pada peranti ini"
 
-#: app/(tabs)/_layout.tsx
+#: src/shell/offline-strip.tsx
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "Luar talian. Pengeditan disimpan pada peranti ini dan disegerakkan apabila anda menyambung semula."
 
@@ -6702,10 +6728,6 @@ msgstr "Luar talian. Pengeditan disimpan pada peranti ini dan disegerakkan apabi
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
-
-#: src/features/career/today.tsx
-msgid "On"
-msgstr "hidup"
 
 #: src/features/share/link.tsx
 msgid "On. Anyone with the link can see your web page."
@@ -6784,11 +6806,12 @@ msgstr "Hanya anda yang melihat ini"
 msgid "Onsite"
 msgstr "Di lokasi"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Onsite interview"
 msgstr "Temu duga di lokasi"
 
 #: src/features/documents/document-sheets.tsx
+#: src/features/home/needs-you.tsx
 msgid "Open"
 msgstr "Buka"
 
@@ -6803,7 +6826,7 @@ msgstr "Buka tetapan AI"
 msgid "Open application"
 msgstr "Buka permohonan"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Open briefing"
 msgstr "Buka taklimat"
 
@@ -6824,9 +6847,17 @@ msgstr "Buka editor dalam"
 msgid "Open in Offers"
 msgstr "Buka dalam Tawaran"
 
+#: app/(tabs)/profile/index.tsx
+msgid "Open Knowledge"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open letter"
 msgstr "Buka surat"
+
+#: src/shell/preparing-tab.tsx
+msgid "Open on the web"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Open questions"
@@ -6835,10 +6866,6 @@ msgstr "Soalan belum terjawab"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open resume"
 msgstr "Buka resume"
-
-#: src/features/career/today.tsx
-msgid "Open settings"
-msgstr "Buka tetapan"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Open story"
@@ -6856,7 +6883,7 @@ msgstr "Buka fail dalam Word dan simpan sebagai .docx dahulu."
 msgid "Open the list"
 msgstr "Buka senarai"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Open the schedule"
 msgstr "Buka jadual"
 
@@ -6864,11 +6891,11 @@ msgstr "Buka jadual"
 msgid "Open web page"
 msgstr "Buka halaman web"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Open workspace"
 msgstr "Buka ruang kerja"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Open-source licenses"
 msgstr "Lesen sumber terbuka"
 
@@ -6896,10 +6923,6 @@ msgstr "Dibuka dalam Kerjaya → Tawaran."
 #: src/features/career/schedule-sheet.tsx
 msgid "Opportunity discovery"
 msgstr "Penemuan peluang"
-
-#: src/features/ai/web-access.tsx
-msgid "Optional"
-msgstr "Pilihan"
 
 #: src/features/ai/provider-editor.tsx
 msgid "Optional for local Ollama"
@@ -7040,12 +7063,12 @@ msgstr "perenggan {n}"
 msgid "Partly supported"
 msgstr "Disokong sebahagian"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "Passkey"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
@@ -7088,7 +7111,6 @@ msgid "Paste the question from the form"
 msgstr "Tampal soalan daripada borang"
 
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "Paste your key"
 msgstr "Tampal kunci anda"
 
@@ -7097,9 +7119,9 @@ msgstr "Tampal kunci anda"
 msgid "Pasted description"
 msgstr "Penerangan ditampal"
 
-#: src/features/career/today.tsx
-msgid "Paused"
-msgstr "Dijeda"
+#: src/features/home/schedules.tsx
+msgid "Paused · {line}"
+msgstr "Dijeda · {line}"
 
 #: src/features/career/preferences.tsx
 msgid "Pay period"
@@ -7149,7 +7171,7 @@ msgstr "setiap bulan"
 msgid "Per year"
 msgstr "Setahun"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Permanently removes everything. Opens your browser account settings."
 msgstr "Mengalih keluar segala-galanya secara kekal. Membuka tetapan akaun penyemak imbas anda."
 
@@ -7215,8 +7237,9 @@ msgstr "Teks biasa (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Teks biasa dengan tajuk. Tampalkan ke dalam borang dan nota permohonan kerja."
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/membership.tsx
+#: app/account/index.tsx
+#: app/account/membership.tsx
+#: src/shell/account-menu.tsx
 msgid "Plan"
 msgstr ""
 
@@ -7236,13 +7259,13 @@ msgstr "Rancang apa yang hendak ditanya"
 msgid "Planning your week"
 msgstr "Merancang minggu anda"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
 
@@ -7262,6 +7285,12 @@ msgstr "Poland"
 #: src/features/workspace/parts.tsx
 msgid "Polishing"
 msgstr "Menggilap"
+
+#: app/(tabs)/_layout.tsx
+#: app/(tabs)/portfolio/index.tsx
+#: src/shell/app-tabs.tsx
+msgid "Portfolio"
+msgstr ""
 
 #: src/features/write/picture-screen.tsx
 msgid "Portrait"
@@ -7329,8 +7358,8 @@ msgstr "Utamakan satu lajur, atau kekalkan lajur sisi kepada senarai pendek dan 
 msgid "Preference"
 msgstr "Keutamaan"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 #: src/features/career/knowledge.tsx
 #: src/features/search/search-screen.tsx
 msgid "Preferences"
@@ -7383,7 +7412,7 @@ msgstr "Menyediakan fail…"
 msgid "Present"
 msgstr "Kini"
 
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Press and hold"
 msgstr "Tekan dan tahan"
 
@@ -7453,7 +7482,7 @@ msgstr "Cetak atau eksport borang kepada PDF rata sebelum menghantarnya."
 msgid "Privacy"
 msgstr "Privasi"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 #: src/auth/auth-header.tsx
 msgid "Privacy policy"
 msgstr "Dasar privasi"
@@ -7475,8 +7504,11 @@ msgstr "Profesional"
 msgid "Proficiency"
 msgstr "Kecekapan"
 
-#: app/(tabs)/settings/account.tsx
+#: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/index.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Profile"
 msgstr "Profil"
 
@@ -7508,13 +7540,8 @@ msgstr "Projek"
 msgid "Proposed changes"
 msgstr "Perubahan yang dicadangkan"
 
-#: src/features/ai/web-access.tsx
-msgid "Provided by your server: {connected}. Search and reading are set up for everyone here. Ask your administrator about changes."
-msgstr "Disediakan oleh pelayan anda: {connected}. Carian dan pembacaan disediakan untuk semua orang di sini. Tanya pentadbir anda tentang perubahan."
-
 #: src/api/ai-consent.ts
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "Provider"
 msgstr "Penyedia"
 
@@ -7562,6 +7589,10 @@ msgstr "Terbitkan halaman web untuk mengira tontonan dan muat turun. Kiraan adal
 #: src/features/share/web-page.tsx
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "Terbitkan resume ini untuk membukanya di pautan pendek dan domain tersuai anda."
+
+#: app/(tabs)/portfolio/index.tsx
+msgid "Publish, share and see who visited from your phone. Until then, manage it on the web."
+msgstr ""
 
 #: src/features/write/fields.ts
 msgid "Publisher"
@@ -7635,12 +7666,12 @@ msgstr "Baca taklimat"
 msgid "Read it for me"
 msgstr "Bacakan untuk saya"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Read license"
 msgstr "Baca lesen"
 
 #: src/features/applications/add-sheet.tsx
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Read posting"
 msgstr "Baca siaran kerja"
 
@@ -7655,10 +7686,6 @@ msgstr "Baca lampiran"
 #: src/features/check/parser.tsx
 msgid "Read the exported PDF"
 msgstr "Baca PDF yang dieksport"
-
-#: app/(tabs)/settings/ai-web-access.tsx
-msgid "Read the job links you save. Saving and preparing jobs works without a connection."
-msgstr "Baca pautan kerja yang anda simpan. Menyimpan dan menyediakan kerja berfungsi tanpa sambungan."
 
 #: src/features/assistant/messages.tsx
 msgid "Read the letter"
@@ -7716,10 +7743,6 @@ msgstr "Membaca teks"
 msgid "Reading this file with AI needs a tested AI provider. Set one up, then retry."
 msgstr "Membaca fail ini dengan AI memerlukan pembekal AI yang diuji. Sediakan satu, kemudian cuba semula."
 
-#: src/features/ai/web-access.tsx
-msgid "Reading works"
-msgstr "Membaca berfungsi"
-
 #: src/features/workspace/parts.tsx
 msgid "Reading your answer"
 msgstr "Membaca jawapan anda"
@@ -7732,10 +7755,6 @@ msgstr "Membaca nota anda"
 #: src/features/check/score.tsx
 msgid "Reads cleanly"
 msgstr "Membaca dengan bersih"
-
-#: src/features/ai/web-access.tsx
-msgid "Reads supported public job pages. No account needed."
-msgstr "Membaca halaman kerja awam yang disokong. Tiada akaun diperlukan."
 
 #: src/features/ai/provider-list.tsx
 #: src/features/workspace/tabs/prepare.tsx
@@ -7751,11 +7770,11 @@ msgstr "Sebab"
 msgid "Recalled"
 msgstr "Diingat semula"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Recent activity"
 msgstr ""
 
-#: src/features/career/recent-documents.tsx
+#: src/features/home/recent-documents.tsx
 msgid "Recent documents"
 msgstr ""
 
@@ -7832,7 +7851,7 @@ msgstr "Segarkan taklimat 24 jam sebelum"
 msgid "Refresh the briefing on the morning of"
 msgstr "Segarkan taklimat pada pagi hari itu"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -7854,7 +7873,7 @@ msgstr "Tolak"
 msgid "Rejected"
 msgstr "ditolak"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Reload now"
 msgstr "Muat semula sekarang"
 
@@ -7900,10 +7919,6 @@ msgstr "Peringatan"
 msgid "Reminders"
 msgstr "Peringatan"
 
-#: src/features/career/today.tsx
-msgid "Reminders appear here. Email copies are optional and need a verified address."
-msgstr "Peringatan muncul di sini. Salinan e-mel adalah pilihan dan memerlukan alamat yang disahkan."
-
 #: src/features/career/offers.tsx
 #: src/features/career/preferences.tsx
 msgid "Remote"
@@ -7911,7 +7926,7 @@ msgstr "Jarak jauh"
 
 #: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Remove"
 msgstr "Alih keluar"
 
@@ -7928,14 +7943,6 @@ msgstr ""
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
 msgstr "Alih keluar {name}"
-
-#: src/features/ai/web-access.tsx
-msgid "Remove connection"
-msgstr "Alih keluar sambungan"
-
-#: src/features/ai/web-access.tsx
-msgid "Remove connection?"
-msgstr "Alih keluar sambungan?"
 
 #: src/features/write/basics-screen.tsx
 msgid "Remove field"
@@ -8057,8 +8064,8 @@ msgstr "Balasan disalin"
 msgid "Report"
 msgstr "Laporan"
 
-#: app/(tabs)/settings/ai-report.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-report.tsx
+#: app/account/ai.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "Laporkan kandungan AI"
@@ -8107,7 +8114,7 @@ msgstr "Balas sebelum"
 msgid "Response deadline has passed."
 msgstr "Tarikh akhir maklum balas telah berlalu."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Restart to change text direction"
 msgstr "Mulakan semula untuk menukar arah teks"
 
@@ -8143,8 +8150,8 @@ msgstr "Hasil"
 #: app/builder/[id]/_layout.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/facts.tsx
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
 msgid "Resume"
 msgstr "Resume"
@@ -8186,7 +8193,7 @@ msgstr ""
 msgid "Resumes"
 msgstr "Resume"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "resume sentiasa dipaparkan di atas kertas putih, apa jua temanya."
 
@@ -8214,6 +8221,7 @@ msgstr "Diambil {0} menggunakan {1}. Masa perolehan tidak mewujudkan kesegaran a
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/features/history/history.tsx
+#: src/features/home/section.tsx
 #: src/features/letters/page.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
@@ -8269,7 +8277,7 @@ msgid "Returned: no usable result"
 msgstr ""
 
 #: src/features/assistant/page-marks.tsx
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Review"
 msgstr "Semakan"
 
@@ -8281,7 +8289,7 @@ msgstr "Semakan permohonan"
 msgid "Review Check"
 msgstr "Lihat Semakan"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Review draft"
 msgstr "Semak draf"
 
@@ -8345,7 +8353,7 @@ msgstr "Tulis semula diterima"
 msgid "Rezumi"
 msgstr "Rezumi"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -8381,10 +8389,6 @@ msgstr "Peranan / tajuk"
 #: src/features/applications-board/views.tsx
 msgid "Role, company or contact"
 msgstr "Jawatan, syarikat atau kenalan"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Role, company or location"
-msgstr "Peranan, syarikat atau lokasi"
 
 #: src/features/write/fields.ts
 msgid "Roles"
@@ -8446,7 +8450,7 @@ msgstr "Karat"
 msgid "Salary"
 msgstr "Gaji"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Salary not listed"
 msgstr "Gaji tidak dinyatakan"
 
@@ -8495,17 +8499,9 @@ msgstr "Simpan tawaran lain untuk dibandingkan"
 msgid "Save changes"
 msgstr "Simpan perubahan"
 
-#: src/features/ai/web-access.tsx
-msgid "Save connection"
-msgstr "Simpan sambungan"
-
 #: src/features/career/facts.tsx
 msgid "Save fact"
 msgstr "Simpan fakta"
-
-#: src/features/ai/web-access.tsx
-msgid "Save first, then test search and reading. No test runs automatically."
-msgstr "Simpan dahulu, kemudian uji carian dan bacaan. Tiada ujian berjalan secara automatik."
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Save interview"
@@ -8572,6 +8568,11 @@ msgctxt "Application workspace tab: earlier results kept for this job"
 msgid "Saved"
 msgstr "Disimpan"
 
+#. placeholder {0}: companyOf(row)
+#: src/features/home/new-roles.tsx
+msgid "Saved {0} to Applications"
+msgstr "{0} disimpan ke Permohonan"
+
 #: src/features/assistant/messages.tsx
 msgid "Saved a story: {title}"
 msgstr "Cerita disimpan: {title}"
@@ -8580,7 +8581,7 @@ msgstr "Cerita disimpan: {title}"
 msgid "Saved description"
 msgstr "Perihalan disimpan"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Saved to Applications with the posting"
 msgstr "Disimpan ke Permohonan bersama siaran kerja"
 
@@ -8612,7 +8613,7 @@ msgstr "Menyimpan…"
 msgid "Schedule an interview"
 msgstr "Jadualkan temuduga"
 
-#: src/features/career/today.tsx
+#: src/features/home/home-screen.tsx
 msgid "Schedule deleted"
 msgstr "Jadual dipadam"
 
@@ -8628,7 +8629,7 @@ msgstr "Kerja berjadual tidak tersedia pada pelayan ini. Minta pentadbir pelayan
 msgid "Scheduled work isn't available on this server."
 msgstr "Kerja berjadual tidak tersedia pada pelayan ini."
 
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 msgid "Schedules"
 msgstr "Jadual"
 
@@ -8642,21 +8643,17 @@ msgstr "Sekolah"
 msgid "Screening"
 msgstr "saringan"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Screening interview"
 msgstr "Temu bual saringan"
 
 #: app/_layout.tsx
 #: app/(tabs)/_layout.tsx
-#: src/features/applications/add-sheet.tsx
 #: src/features/design/picker.tsx
-#: src/ui/fields.tsx
+#: src/shell/tab-chrome.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Search"
 msgstr "Carian"
-
-#: src/features/ai/web-access.tsx
-msgid "Search and enhanced reading"
-msgstr "Cari dan bacaan dipertingkatkan"
 
 #: src/features/applications-board/views.tsx
 #: src/features/letters/write.tsx
@@ -8683,27 +8680,15 @@ msgstr "Enjin carian seperti Google mungkin menyenaraikan halaman web anda. Ia b
 msgid "Search facts"
 msgstr "Cari fakta"
 
-#: src/features/ai/web-access.tsx
-msgid "Search failed"
-msgstr "Carian gagal"
-
 #: src/features/search/search-screen.tsx
 msgid "Search for…"
 msgstr "Cari…"
-
-#: src/features/ai/web-access.tsx
-msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
-msgstr "Cari daripada permohonan kerja dan pembantu, dan baca halaman yang tidak boleh dibaca oleh pembaca terbina dalam. Satu perkhidmatan merangkumi kedua-duanya."
 
 #: src/features/write/pickers.tsx
 msgid "Search icons"
 msgstr "Cari ikon"
 
-#: src/features/applications/add-sheet.tsx
-msgid "Search job postings"
-msgstr "Cari siaran kerja"
-
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Search languages"
 msgstr "Cari bahasa"
 
@@ -8715,24 +8700,12 @@ msgstr "Istilah carian dihantar ke perkhidmatan carian web anda."
 msgid "Search the web"
 msgstr ""
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Search timezones"
 msgstr "Cari zon waktu"
 
-#: src/features/ai/web-access.tsx
-msgid "Search was tested with your server's search, and reading with {connected}."
-msgstr "Carian telah diuji dengan carian pelayan anda dan membaca dengan {connected}."
-
-#: src/features/ai/web-access.tsx
-msgid "Search was tested with your server's search. Links are read with the built-in reader."
-msgstr "Carian telah diuji dengan carian pelayan anda. Pautan dibaca dengan pembaca terbina dalam."
-
-#: src/features/ai/web-access.tsx
-msgid "Search works"
-msgstr "Carian berfungsi"
-
 #: src/features/search/search-screen.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Search…"
 msgstr "Cari…"
 
@@ -8891,6 +8864,10 @@ msgstr "Tetapkan kata laluan"
 msgid "Set the document language when exporting."
 msgstr "Tetapkan bahasa dokumen semasa mengeksport."
 
+#: src/features/home/new-roles.tsx
+msgid "Set up a job alert"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/write/improve.tsx
 msgid "Set up a provider"
@@ -8900,27 +8877,18 @@ msgstr "Sediakan pembekal"
 msgid "Set up AI provider"
 msgstr "Sediakan pembekal AI."
 
-#: src/features/career/today.tsx
-msgid "Set up discovery"
-msgstr "Sediakan penemuan"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Set up web search"
-msgstr "Sediakan carian web"
-
 #: src/features/career/schedule-sheet.tsx
 msgid "Set up web search in Settings to find roles."
 msgstr "Sediakan carian web dalam Tetapan untuk mencari peranan."
 
-#: app/(tabs)/_layout.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
 #: src/features/search/search-screen.tsx
 msgid "Settings"
 msgstr "Tetapan"
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Setup guide"
 msgstr "Panduan persediaan"
 
@@ -9021,9 +8989,16 @@ msgid "Show “Made with Rezumi”"
 msgstr "Tunjukkan “Dibuat dengan Rezumi”"
 
 #. placeholder {0}: Math.min(remaining, COLUMN_PAGE_SIZE)
+#. placeholder {0}: visible.length - shown.length
 #: src/features/applications-board/board-screen.tsx
+#: src/features/home/new-roles.tsx
 msgid "Show {0} more"
 msgstr "Tunjukkan {0} lagi"
+
+#. placeholder {0}: read.length
+#: src/features/home/needs-you.tsx
+msgid "Show {0} read"
+msgstr "Tunjukkan {0} yang dibaca"
 
 #: src/features/write/outline.tsx
 msgid "Show {title} on the page"
@@ -9077,9 +9052,8 @@ msgstr "Tunjukkan kunci"
 msgid "Show link in title"
 msgstr "Tunjukkan pautan dalam tajuk"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/application-detail/interview-sheet.tsx
-#: src/features/career/today.tsx
 msgid "Show more"
 msgstr "Tunjukkan lagi"
 
@@ -9092,10 +9066,6 @@ msgstr "Tunjukkan pada halaman"
 #: src/features/write/picture-screen.tsx
 msgid "Show photo"
 msgstr "Tunjukkan foto"
-
-#: src/features/career/today.tsx
-msgid "Show read"
-msgstr "Tunjukkan item yang dibaca"
 
 #: src/features/applications-board/time-grid.tsx
 msgid "Show this day"
@@ -9208,14 +9178,16 @@ msgstr "Log masuk untuk melihat resume ini."
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "Sign out"
 msgstr "Log keluar"
 
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "Sign out?"
 msgstr "Log keluar?"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Sign-in & security"
 msgstr "Log masuk & keselamatan"
 
@@ -9446,6 +9418,10 @@ msgstr "Mulakan"
 msgid "Start a debrief"
 msgstr "Mulakan ulasan"
 
+#: src/features/home/home-screen.tsx
+msgid "Start a document"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 #: src/features/documents/new-document.tsx
 msgid "Start blank"
@@ -9500,6 +9476,14 @@ msgstr "Mulakan dengan bahagian yang ada pada kebanyakan resume."
 msgid "Start with your name. Build from there."
 msgstr "Mulakan dengan nama anda. Bina dari situ."
 
+#: src/features/home/coming-up.tsx
+msgid "Started"
+msgstr "Telah bermula"
+
+#: src/features/home/coming-up.tsx
+msgid "Starts in {minutes} minutes"
+msgstr "Bermula dalam {minutes} minit"
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
 msgstr "Bermula sekarang"
@@ -9507,6 +9491,10 @@ msgstr "Bermula sekarang"
 #: src/features/documents/new-document.tsx
 msgid "Stay in Documents"
 msgstr "Tinggal dalam Dokumen"
+
+#: src/shell/account-menu.tsx
+msgid "Stay signed in"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 #: src/features/letters/write.tsx
@@ -9609,7 +9597,7 @@ msgstr "Mencadangkan pemotongan, tidak pernah memadam sendiri"
 msgid "Summary"
 msgstr "Ringkasan"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Support"
 msgstr "Sokongan"
 
@@ -9659,8 +9647,8 @@ msgstr "Tukar kepada satu lajur"
 msgid "Switched to one column"
 msgstr "Bertukar kepada satu lajur"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "System"
 msgstr "Sistem pengendalian"
 
@@ -9743,7 +9731,7 @@ msgstr "Biru kehijauan"
 msgid "Technical"
 msgstr "Teknikal"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Technical interview"
 msgstr "Temuduga teknikal"
 
@@ -9786,25 +9774,13 @@ msgstr "Templat, jenis dan warna mengikut resume, jadi pasangan itu sentiasa sep
 msgid "Terms from the posting"
 msgstr "Syarat dari siaran kerja"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Terms of service"
 msgstr "Terma perkhidmatan"
 
 #: src/features/ai/provider-list.tsx
 msgid "Test"
 msgstr "Ujian"
-
-#: src/features/ai/web-access.tsx
-msgid "Test connection"
-msgstr "Uji sambungan"
-
-#: src/features/ai/web-access.tsx
-msgid "Test search"
-msgstr "Uji fungsi carian"
-
-#: src/features/ai/web-access.tsx
-msgid "Tested with {connected}. Only this service was tested."
-msgstr "Diuji dengan {connected}. Hanya perkhidmatan ini telah diuji."
 
 #: src/features/ai/provider-editor.tsx
 msgid "Testing the connection…"
@@ -9888,6 +9864,10 @@ msgstr "Rakaman itu kosong atau melebihi 2 MB. Cuba jawapan yang lebih pendek."
 msgid "That reminder time has already passed."
 msgstr "Masa peringatan itu telah pun berlalu."
 
+#: src/features/home/home-screen.tsx
+msgid "That schedule no longer exists."
+msgstr ""
+
 #: src/api/ai-consent.ts
 msgid "The account changed. Try again."
 msgstr "Akaun berubah. Cuba lagi."
@@ -9904,29 +9884,9 @@ msgstr "Permohonan menyimpan butiran lain."
 msgid "The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else works without it."
 msgstr "Pembantu tidak disediakan pada pelayan ini. Sesiapa yang menjalankannya perlu menetapkan ENCRYPTION_SECRET. Semua yang lain berfungsi tanpanya."
 
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches and reads pages with {connected}, whichever AI provider you use."
-msgstr "Pembantu mencari dan membaca halaman dengan {connected}, mana-mana pembekal AI yang anda gunakan."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches with your server's search and reads links with the built-in reader, whichever AI provider you use."
-msgstr "Pembantu mencari dengan carian pelayan anda dan membaca pautan dengan pembaca terbina dalam, mana-mana pembekal AI yang anda gunakan."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches with your server's search and reads pages with {connected}, whichever AI provider you use."
-msgstr "Pembantu mencari dengan carian pelayan anda dan membaca halaman dengan {connected}, mana-mana pembekal AI yang anda gunakan."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant uses your AI provider's own web search where supported, and reads links with the built-in reader."
-msgstr "Pembantu menggunakan carian web penyedia AI anda sendiri yang disokong oleh bukti dan membaca pautan dengan pembaca terbina dalam."
-
 #: src/features/assistant/provider.tsx
 msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
 msgstr "Pembantu menggunakan kunci anda sendiri. Tiada apa-apa dihantar ke mana-mana sehingga anda menyambungkannya."
-
-#: src/features/ai/web-access.tsx
-msgid "The built-in reader remains active."
-msgstr "Pembaca terbina dalam kekal aktif."
 
 #: src/features/check/writing.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
@@ -10086,22 +10046,6 @@ msgstr "Versi pelayan tidak dapat dimuatkan. Teks anda disimpan; cuba lagi."
 msgid "The service couldn't be reached. Try again or fill the details manually."
 msgstr "Perkhidmatan tidak dapat dihubungi. Cuba lagi atau isi butiran secara manual."
 
-#: src/features/ai/web-access.tsx
-msgid "The service didn't respond in time. Try again."
-msgstr "Perkhidmatan tidak bertindak balas dalam masa. Cuba lagi."
-
-#: src/features/ai/web-access.tsx
-msgid "The service is unavailable or doesn't support this operation. Try again later or connect another service."
-msgstr "Perkhidmatan tidak tersedia atau tidak menyokong operasi ini. Cuba lagi kemudian atau sambungkan perkhidmatan lain."
-
-#: src/features/ai/web-access.tsx
-msgid "The service quota is used up. Check your plan with the service."
-msgstr "Kuota perkhidmatan telah habis. Semak pelan anda dengan perkhidmatan itu."
-
-#: src/features/ai/web-access.tsx
-msgid "The service rejected the credentials. Check the API key."
-msgstr "Perkhidmatan menolak kelayakan. Semak kunci API."
-
 #: src/features/ai/error.ts
 msgid "The test didn't run. Try again."
 msgstr "Ujian tidak berjalan. Cuba lagi."
@@ -10122,13 +10066,13 @@ msgstr "Bahagian atas halaman pertama tidak kelihatan seperti nama."
 msgid "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 msgstr "Versi yang anda hantar disimpan dalam Disimpan. Pengeditan di sini tidak mengubah apa yang {company} terima."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "Tema"
 
 #. placeholder {0}: getPlanName(next.planId)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr ""
@@ -10149,7 +10093,7 @@ msgstr "Tiada perenggan ringkasan."
 msgid "These are the answers saved when you applied."
 msgstr "Ini ialah jawapan yang disimpan semasa anda memohon."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "Ini membuka tetapan akaun pelayan anda dalam tab penyemak imbas di dalam apl. Anda mungkin perlu log masuk di sana."
 
@@ -10165,7 +10109,7 @@ msgstr "Berfikir"
 msgid "Thinking…"
 msgstr "Berfikir…"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Third-party software notices. Tap a dependency to read its license."
 msgstr "Notis perisian pihak ketiga. Ketik kebergantungan untuk membaca lesennya."
 
@@ -10521,7 +10465,7 @@ msgstr "Masa ditunjukkan dalam {timeZone}."
 msgid "Times are shown in {timezone}. Change timezone in Settings → Preferences."
 msgstr "Masa ditunjukkan dalam {timezone}. Tukar zon waktu dalam Tetapan → Keutamaan."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Timezone"
 msgstr "Zon waktu"
 
@@ -10546,8 +10490,8 @@ msgstr "Untuk menyemak"
 msgid "To get a reminder, allow notifications in your device settings."
 msgstr "Untuk mendapatkan peringatan, benarkan pemberitahuan dalam tetapan peranti anda."
 
-#: app/(tabs)/career/_layout.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/home/needs-you.tsx
 #: src/features/share/link.tsx
 msgid "Today"
 msgstr "Hari ini"
@@ -10561,6 +10505,7 @@ msgid "Toggle selection"
 msgstr "Togol pilihan"
 
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/home/needs-you.tsx
 msgid "Tomorrow"
 msgstr "Esok"
 
@@ -10569,7 +10514,6 @@ msgid "Too light for headings on white. It may be hard to read and print faintly
 msgstr "Terlalu ringan untuk tajuk berwarna putih. Mungkin sukar untuk membaca dan mencetak dengan samar-samar."
 
 #: src/features/ai/error.ts
-#: src/features/ai/web-access.tsx
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
 #: src/features/documents/import-file.ts
@@ -10589,7 +10533,7 @@ msgstr ""
 msgid "Tool logos aren't in your plan"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/design/style-groups.tsx
 msgid "Tool logos in skills"
 msgstr ""
@@ -10598,7 +10542,7 @@ msgstr ""
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "Jumlah tidak dijumlahkan. Bonus dan ekuiti bergantung pada syarat; nilai ekuiti tidak menentu. Baca dokumen tawaran asal."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Track in Applications"
 msgstr "Jejak dalam Permohonan"
 
@@ -10629,7 +10573,6 @@ msgstr "Model transkripsi"
 
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
-#: src/shell/app-tabs.tsx
 msgid "Trash"
 msgstr "Sampah"
 
@@ -10637,7 +10580,7 @@ msgstr "Sampah"
 msgid "Trash is empty"
 msgstr "Sampah kosong"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/credits.ts
 msgid "Trial credits"
 msgstr ""
@@ -10652,11 +10595,10 @@ msgstr "Cuba {suggestion}"
 
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/account.tsx
+#: app/account/preferences.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
-#: src/features/ai/web-access.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/letters/write.tsx
 #: src/features/settings/api-keys.tsx
@@ -10729,7 +10671,7 @@ msgstr "Dua lajur"
 msgid "Two stories"
 msgstr "Dua cerita"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Two-step verification"
 msgstr "Pengesahan dua langkah"
 
@@ -10763,7 +10705,7 @@ msgstr "Tipografi"
 msgid "Ukrainian"
 msgstr "Ukraine"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Unavailable"
 msgstr "Tidak tersedia"
 
@@ -10789,10 +10731,11 @@ msgstr "Garis bawah pautan"
 #: src/features/design/draft.ts
 #: src/features/document-menu/index.tsx
 #: src/features/documents/queries.ts
+#: src/features/home/new-roles.tsx
 #: src/features/workspace/tabs/fit.tsx
 #: src/features/write/hooks.ts
 #: src/preview/page.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Undo"
 msgstr "Buat asal"
 
@@ -11005,10 +10948,6 @@ msgstr "Gunakan satu lajur"
 msgid "Use plain headings such as \"Experience\", \"Education\" and \"Skills\"."
 msgstr "Gunakan tajuk biasa seperti \"Experience\", \"Education\" dan \"Skills\"."
 
-#: src/features/applications/add-sheet.tsx
-msgid "Use posting link; review before saving"
-msgstr "Gunakan pautan iklan pekerjaan; semak sebelum menyimpan"
-
 #: src/api/ai-consent.ts
 msgid "Use Rezumi AI?"
 msgstr ""
@@ -11043,7 +10982,7 @@ msgstr "Gunakan jawapan ini"
 msgid "Use this date"
 msgstr "Gunakan tarikh ini"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Use this device's timezone ({deviceTimezone})"
 msgstr "Gunakan zon waktu peranti ini ({deviceTimezone})"
 
@@ -11075,10 +11014,6 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Digunakan untuk menyemak peranan dan tawaran. Setiap satu ialah nombor, jadi jurulatih boleh membandingkan tanpa meneka."
 
-#: src/features/ai/web-access.tsx
-msgid "Used when {connected} can't read a page. No account needed."
-msgstr "Digunakan apabila {connected} tidak boleh membaca halaman. Tiada akaun diperlukan."
-
 #: src/features/settings/profile.tsx
 #: src/features/write/fields.ts
 msgid "Username"
@@ -11091,10 +11026,6 @@ msgstr "Menggunakan fakta daripada resume anda"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Uses the linked application"
 msgstr "Menggunakan permohonan kerja yang dipautkan"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Uses the web search service set up in Settings. Search results wait for your review."
-msgstr "Menggunakan perkhidmatan carian web yang disediakan dalam Tetapan. Hasil carian menunggu semakan anda."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Uses web search set up in Settings. Results wait in Today. Applications and documents are never created for you."
@@ -11235,15 +11166,6 @@ msgstr "Menunggu untuk mendengar kembali"
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "Kami membaca “{0}”. Pilih bulan supaya ia diisih dan dicetak secara konsisten."
 
-#: app/(tabs)/settings/ai-web-access.tsx
-#: app/(tabs)/settings/ai.tsx
-msgid "Web access"
-msgstr "Akses web"
-
-#: src/features/ai/web-access.tsx
-msgid "Web access settings couldn't be saved or loaded."
-msgstr "Tetapan akses web tidak dapat disimpan atau dimuatkan."
-
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "Halaman web"
@@ -11271,6 +11193,10 @@ msgstr "Laman web"
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Week"
+msgstr ""
+
+#: src/features/home/schedules.tsx
+msgid "Weekly at {clock} · next {day}"
 msgstr ""
 
 #: src/features/workspace/parts.tsx
@@ -11365,7 +11291,7 @@ msgstr "Apa yang anda hantar"
 msgid "What you're looking for"
 msgstr "Apa yang anda cari"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "What's included"
 msgstr ""
 
@@ -11373,7 +11299,7 @@ msgstr ""
 msgid "What's working"
 msgstr "Apa yang berfungsi"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr ""
 
@@ -11451,7 +11377,7 @@ msgstr "Word"
 msgid "Word and ODT aren't available"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Word and ODT downloads"
 msgstr ""
 
@@ -11466,10 +11392,6 @@ msgstr "Import Word, Perbaiki, Penolong, draf surat, bimbingan dan penjanaan Ker
 #: src/features/ats-checker/messages.ts
 msgid "Words run together when the text is extracted."
 msgstr "Perkataan bercantum apabila teks diekstrak."
-
-#: src/features/ai/web-access.tsx
-msgid "Working…"
-msgstr "Bekerja…"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Works without AI or new research"
@@ -11543,13 +11465,17 @@ msgstr "Tulis jawapan anda, atau draf satu daripada Pengetahuan anda."
 msgid "Writing"
 msgstr "Penulisan"
 
-#: app/(tabs)/settings/ai-providers.tsx
+#: app/account/ai-providers.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Bantuan menulis, cadangan yang disesuaikan dan penolong. Pembekal lalai digunakan di mana-mana anda tidak memilih satu. Kunci anda kekal disulitkan."
 
 #: src/features/career/offers.tsx
 msgid "Written offer"
 msgstr "Tawaran bertulis"
+
+#: src/features/home/needs-you.tsx
+msgid "Yesterday"
+msgstr "Semalam"
 
 #: src/features/assistant/chat-view.tsx
 msgid "You"
@@ -11592,7 +11518,11 @@ msgstr "Anda membatalkan log masuk sebelum ia selesai."
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "Anda telah melupakan ini sebelum ini, jadi ia tidak disimpan semula."
 
-#: src/ui/overlays.tsx
+#: src/shell/unsaved-changes.ts
+msgid "You have edits that aren't saved yet. Leaving now loses them."
+msgstr ""
+
+#: src/ui-legacy/overlays.tsx
 msgid "You have unsaved changes."
 msgstr "Anda mempunyai perubahan yang belum disimpan."
 
@@ -11605,6 +11535,7 @@ msgid "You submit on the employer's site yourself. Marking it applied keeps the 
 msgstr "Anda menghantar sendiri di laman majikan. Menandakannya sebagai dimohon menyimpan versi tepat yang anda hantar."
 
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "Anda akan dilog keluar daripada {server}. Sebarang pengeditan yang belum disegerakkan daripada peranti ini akan hilang."
 
@@ -11650,9 +11581,9 @@ msgstr "Anda di luar talian. Cek PDF terakhir kekal di sini; sambung untuk menye
 msgid "You're offline. Try again when you reconnect."
 msgstr "Anda di luar talian. Cuba lagi apabila anda menyambung semula."
 
-#: src/features/career/today.tsx
-msgid "You're up to date"
-msgstr "Anda sudah dikemas kini"
+#: src/features/home/needs-you.tsx
+msgid "You're up to date. New roles, reminders and finished briefings appear here."
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/practise.tsx
@@ -11695,7 +11626,7 @@ msgstr "Perubahan anda pada peranti ini akan digantikan dengan versi yang disimp
 msgid "Your contact details are not on the first page."
 msgstr "Butiran hubungan anda tiada pada halaman pertama."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Your data"
 msgstr "Data anda"
 
@@ -11744,7 +11675,7 @@ msgstr "Pencarian kerja anda bermula di sini"
 msgid "your Knowledge"
 msgstr "Pengetahuan anda"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 msgstr "Bahasa anda disimpan. Mulakan semula Rezumi untuk menggunakan reka letak kiri-ke-kanan atau kanan-ke-kiri baharu."
 
@@ -11788,7 +11719,15 @@ msgstr "Pembukaan anda"
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "Pembukaan anda, cerita untuk dibawa dan soalan untuk ditanya. Ia menjadi senarai semak anda 10 minit sebelum panggilan."
 
-#: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-alert.ts
+msgid "Your own domain isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own domain isn't in your plan"
+msgstr ""
+
+#: app/account/membership.tsx
 msgid "Your own fonts"
 msgstr ""
 
@@ -11808,18 +11747,30 @@ msgstr ""
 msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
+#: src/features/billing/plan-alert.ts
+msgid "Your page keeps its address on Rezumi."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Nombor telefon anda ditulis dalam bentuk yang luar biasa."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
+msgstr ""
+
+#: app/(tabs)/portfolio/index.tsx
+msgid "Your portfolio is coming to the app"
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "your preferences"
 msgstr "keutamaan anda"
+
+#: app/(tabs)/profile/index.tsx
+msgid "Your Profile is coming to the app"
+msgstr ""
 
 #: src/features/settings/export.tsx
 msgid "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
@@ -11865,10 +11816,6 @@ msgstr "Resume, surat dan permohonan anda, pada {host}."
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Fon pilihan anda tidak dapat memaparkan sesetengah aksara. Aksara tersebut dipaparkan sebagai “?”. Dalam Reka Bentuk, pilih fon yang menyokongnya."
 
-#: src/features/ai/web-access.tsx
-msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
-msgstr "Pelayan anda menyediakan carian web dalam bahagian Permohonan dan untuk pembantu. Sambungkan perkhidmatan untuk membaca halaman web yang tidak dapat dibaca oleh pembaca terbina dalam."
-
 #: src/api/ai-consent.ts
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "Pelayan anda menghantar gesaan ujian dan kunci API yang disimpan kepada pembekal ini."
@@ -11909,10 +11856,6 @@ msgstr "Cerita anda tidak dapat dimuatkan."
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "Pengenalan diri dua minit anda"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Your unsaved job details will be discarded before opening web search settings."
-msgstr "Butiran kerja anda yang belum disimpan akan dibuang sebelum membuka tetapan carian web."
 
 #: src/features/letters/page.tsx
 #: src/preview/page.tsx

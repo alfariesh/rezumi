@@ -1,6 +1,7 @@
 // Rezumi's native design system: HeroUI Native (+ Pro) on the web's tokens, with the few wrappers the app needs.
 // Screens import from "@/ui" only. apps/mobile/DESIGN.md says which component to use when; app/dev/ui.tsx shows them.
 export { Button, CloseButton, IconButton, LinkButton, type IconButtonProps } from "./button";
+export { Card, Surface } from "heroui-native";
 export { cx } from "./cx";
 export {
 	Avatar,
@@ -105,6 +106,7 @@ export {
 	ToastBridge,
 	hideToast,
 	showToast,
+	toastLifetime,
 	useAppToast,
 	type AppToast,
 	type AppToastOptions,
@@ -112,4 +114,4 @@ export {
 } from "./toast";
 export { TopBar, type TopBarProps } from "./top-bar";
 export { usePullRefresh } from "./use-pull-refresh";
-export { useThemeColor } from "heroui-native";
+export { useThemeColor, type ThemeColor } from "heroui-native";

@@ -1,7 +1,8 @@
 // A screen on the background desk: safe areas, scrolling that keeps the focused field above the keyboard, and pull to
 // refresh. Content gets the 16 pt phone gutter and 16 pt between blocks.
-import type { ReactNode } from "react";
+import type { ReactNode, Ref } from "react";
 import type { ViewProps } from "react-native";
+import type { KeyboardAwareScrollViewRef } from "react-native-keyboard-controller";
 import { useThemeColor } from "heroui-native";
 import { RefreshControl, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
@@ -22,6 +23,8 @@ export type ScreenProps = {
 	bare?: boolean | undefined;
 	onRefresh?: (() => Promise<unknown>) | undefined;
 	onLayout?: ViewProps["onLayout"];
+	/** The scroll view, for screens that scroll to a section ("Review" on Home). */
+	scrollRef?: Ref<KeyboardAwareScrollViewRef> | undefined;
 	testID?: string | undefined;
 };
 
@@ -32,6 +35,7 @@ export function Screen({
 	bare = false,
 	onRefresh,
 	onLayout,
+	scrollRef,
 	testID,
 }: ScreenProps) {
 	const [background, accent] = useThemeColor(["background", "accent"]);
@@ -53,6 +57,7 @@ export function Screen({
 		>
 			{scroll ? (
 				<KeyboardAwareScrollView
+					ref={scrollRef}
 					onLayout={onLayout}
 					extraKeyboardSpace={keyboardSpace}
 					bottomOffset={space[4]}

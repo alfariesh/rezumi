@@ -6,17 +6,17 @@ import { SignOutCleanupError, signOut, useSession } from "@/auth/session";
 import { routes } from "@/routes";
 import { ConfirmDialog, ListRow, showToast } from "@/ui-legacy";
 
-type SignOutRowProps = { switchServer?: boolean };
-export function SignOutRow({ switchServer = false }: SignOutRowProps) {
+/**
+ * Signs out of the current server (or out of it to pick another, `switchServer`): cancels queries, clears this
+ * account's data on the device and returns to sign-in. Settings' row and the avatar menu share it.
+ */
+export function useSignOut(switchServer = false) {
 	const router = useRouter();
 	const { t } = useLingui();
-	const { server } = useSession();
 	const queryClient = useQueryClient();
 	const pendingSettings = useIsMutating({ mutationKey: ["settings"] });
-	const [open, setOpen] = useState(false);
 	const [busy, setBusy] = useState(false);
 	const leave = async () => {
-		setOpen(false);
 		setBusy(true);
 		try {
 			await queryClient.cancelQueries();
@@ -37,6 +37,15 @@ export function SignOutRow({ switchServer = false }: SignOutRowProps) {
 			setBusy(false);
 		}
 	};
+	return { leave, disabled: busy || pendingSettings > 0 };
+}
+
+type SignOutRowProps = { switchServer?: boolean };
+export function SignOutRow({ switchServer = false }: SignOutRowProps) {
+	const { t } = useLingui();
+	const { server } = useSession();
+	const [open, setOpen] = useState(false);
+	const { leave, disabled } = useSignOut(switchServer);
 	return (
 		<>
 			<ListRow
@@ -45,7 +54,7 @@ export function SignOutRow({ switchServer = false }: SignOutRowProps) {
 				leading={switchServer ? "globe" : "sign-out"}
 				destructive={!switchServer}
 				chevron={switchServer}
-				disabled={busy || pendingSettings > 0}
+				disabled={disabled}
 				onPress={() => setOpen(true)}
 			/>
 			<ConfirmDialog
@@ -55,7 +64,10 @@ export function SignOutRow({ switchServer = false }: SignOutRowProps) {
 				confirmLabel={t`Sign out`}
 				destructive
 				onCancel={() => setOpen(false)}
-				onConfirm={() => void leave()}
+				onConfirm={() => {
+					setOpen(false);
+					void leave();
+				}}
 			/>
 		</>
 	);

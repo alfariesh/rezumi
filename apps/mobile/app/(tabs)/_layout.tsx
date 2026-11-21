@@ -2,25 +2,33 @@ import { useLingui } from "@lingui/react/macro";
 import { useNetworkState } from "expo-network";
 import { useRouter } from "expo-router";
 import { Tabs } from "expo-router/tabs";
-import { View } from "react-native";
+import { Easing, View } from "react-native";
 import {
 	SafeAreaInsetsContext,
 	SafeAreaProvider,
 	SafeAreaView,
 	useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { usePortfolioEnabled } from "@/features/home/queries";
 import { routes } from "@/routes";
-import { AppStrip, BannerAbove } from "@/shell/app-banner";
+import { BannerAbove } from "@/shell/app-banner";
 import { AppSidebar, PhoneTabBar } from "@/shell/app-tabs";
 import { useKeyCommands } from "@/shell/key-commands";
+import { OfflineStrip } from "@/shell/offline-strip";
+import { InTabs } from "@/shell/tab-chrome";
 import { useIsTablet } from "@/shell/use-is-tablet";
-import { useReducedMotion, useTheme } from "@/ui-legacy";
-import { KeyboardFrame } from "@/ui-legacy/keyboard";
+import { motion, useReducedMotion } from "@/ui";
+import { KeyboardFrame } from "@/ui/keyboard";
+
+// Third-party views (keyboard controller, safe area) take no className.
+const fill = { flex: 1 };
+// React Navigation animates with React Native's Animated, which needs its own easing (tokens.motion's is a worklet).
+const tabEase = Easing.bezier(0.23, 1, 0.32, 1);
 
 /**
- * Five tabs: Documents, Applications, the raised "+" (opens New as a modal), Career, Settings. Phone: the bottom tab
- * bar. Tablet: the 240 pt sidebar. The offline strip (from the network state) sits under the status bar above every
- * tab. Screens end at the top of the keyboard.
+ * Five tabs (01-desain 2): Home, Documents, Applications, Portfolio (only for accounts with portfolios), Profile. The
+ * bottom bar on phones, the sidebar from 700 pt. The offline strip sits under the status bar above every tab, and
+ * screens end at the top of the keyboard.
  */
 export default function TabsLayout() {
 	const router = useRouter();
@@ -29,7 +37,7 @@ export default function TabsLayout() {
 	const insets = useSafeAreaInsets();
 	const network = useNetworkState();
 	const offline = network.isConnected === false || network.isInternetReachable === false;
-	const { colors, motion } = useTheme();
+	const portfolio = usePortfolioEnabled();
 	const reduced = useReducedMotion();
 	useKeyCommands(
 		[
@@ -38,55 +46,47 @@ export default function TabsLayout() {
 		],
 		"global",
 	);
+	const stripFrame = { paddingTop: insets.top, paddingStart: insets.left, paddingEnd: insets.right };
 
 	return (
-		<View style={{ flex: 1, backgroundColor: colors.bg }}>
+		<View className="flex-1 bg-background">
 			{offline ? (
-				<View style={{ paddingTop: insets.top, paddingStart: insets.left, paddingEnd: insets.right }}>
-					<AppStrip
-						tone="info"
-						icon="cloud-slash"
-						message={t`Offline. Edits are saved on this device and sync when you reconnect.`}
-					/>
+				<View style={stripFrame}>
+					<OfflineStrip />
 				</View>
 			) : null}
-			{/* Under a banner the status bar is already cleared, so the tabs' headers must not pad it again. */}
+			{/* Under the strip the status bar is already cleared, so the tabs must not pad it again. */}
 			<SafeAreaInsetsContext value={offline ? { ...insets, top: 0 } : insets}>
 				<BannerAbove value={offline}>
-					<KeyboardFrame behavior="padding" automaticOffset style={{ flex: 1 }}>
-						<SafeAreaView edges={["left", "right"]} style={{ flex: 1 }}>
-							<SafeAreaProvider>
-								<Tabs
-									tabBar={(props) => (tablet ? <AppSidebar {...props} /> : <PhoneTabBar {...props} />)}
-									screenOptions={{
-										// Owner asked for a swipe between tabs; reduced motion keeps a short crossfade.
-										animation: reduced ? "fade" : "shift",
-										transitionSpec: {
-											animation: "timing",
-											config: { duration: reduced ? motion.d1 : 220, easing: motion.ease },
-										},
-										headerShown: false,
-										tabBarPosition: tablet ? "left" : "bottom",
-									}}
-								>
-									<Tabs.Screen name="documents" options={{ title: t`Documents` }} />
-									<Tabs.Screen name="applications" options={{ title: t`Applications` }} />
-									<Tabs.Screen
-										name="create"
-										options={{ title: t`New` }}
-										listeners={{
-											tabPress: (event) => {
-												event.preventDefault();
-												router.push(routes.new());
+					<InTabs value>
+						<KeyboardFrame behavior="padding" automaticOffset style={fill}>
+							<SafeAreaView edges={["left", "right"]} style={fill}>
+								<SafeAreaProvider>
+									<Tabs
+										tabBar={(props) => (tablet ? <AppSidebar {...props} /> : <PhoneTabBar {...props} />)}
+										screenOptions={{
+											animation: "fade",
+											transitionSpec: {
+												animation: "timing",
+												config: { duration: reduced ? 0 : motion.quick, easing: tabEase },
 											},
+											headerShown: false,
+											tabBarPosition: tablet ? "left" : "bottom",
 										}}
-									/>
-									<Tabs.Screen name="career" options={{ title: t`Career` }} />
-									<Tabs.Screen name="settings" options={{ title: t`Settings` }} />
-								</Tabs>
-							</SafeAreaProvider>
-						</SafeAreaView>
-					</KeyboardFrame>
+									>
+										<Tabs.Screen name="home" options={{ title: t`Home` }} />
+										<Tabs.Screen name="documents" options={{ title: t`Documents` }} />
+										<Tabs.Screen name="applications" options={{ title: t`Applications` }} />
+										<Tabs.Screen
+											name="portfolio"
+											options={{ title: t`Portfolio`, ...(portfolio ? {} : { href: null }) }}
+										/>
+										<Tabs.Screen name="profile" options={{ title: t`Profile` }} />
+									</Tabs>
+								</SafeAreaProvider>
+							</SafeAreaView>
+						</KeyboardFrame>
+					</InTabs>
 				</BannerAbove>
 			</SafeAreaInsetsContext>
 		</View>

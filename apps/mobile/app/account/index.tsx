@@ -23,14 +23,14 @@ export default function SettingsScreen() {
 	const theme = useThemePreference();
 	const appearance = { system: t`System`, light: t`Light`, dark: t`Dark` }[theme];
 	return (
-		<SettingsPage onRefresh={profile.refetch} title={t`Settings`} root>
+		<SettingsPage onRefresh={profile.refetch} title={t`Settings`}>
 			<SettingsGroup>
 				<ListRow
 					title={profile.data?.name ?? t`Account`}
 					subtitle={profile.data?.email}
 					leading={<Avatar name={profile.data?.name ?? t`Account`} uri={profile.data?.image} />}
 					chevron
-					onPress={() => router.push(routes.settings("account"))}
+					onPress={() => router.push(routes.account("account"))}
 				/>
 			</SettingsGroup>
 			<SettingsGroup>
@@ -39,9 +39,9 @@ export default function SettingsScreen() {
 					leading="circle-half"
 					value={appearance}
 					chevron
-					onPress={() => router.push(routes.settings("preferences"))}
+					onPress={() => router.push(routes.account("preferences"))}
 				/>
-				<ListRow title={t`AI & developer`} leading="robot" chevron onPress={() => router.push(routes.settings("ai"))} />
+				<ListRow title={t`AI & developer`} leading="robot" chevron onPress={() => router.push(routes.account("ai"))} />
 				{/* Android shows the plan without selling it; iOS shows nothing about plans (store rules). */}
 				{canShowPlans() && plan?.enabled ? (
 					<ListRow
@@ -49,7 +49,7 @@ export default function SettingsScreen() {
 						leading="seal-check"
 						value={getPlanName(plan.planId)}
 						chevron
-						onPress={() => router.push(routes.settings("membership"))}
+						onPress={() => router.push(routes.account("membership"))}
 					/>
 				) : null}
 			</SettingsGroup>
@@ -84,7 +84,7 @@ export default function SettingsScreen() {
 					title={t`Open-source licenses`}
 					leading="file-text"
 					chevron
-					onPress={() => router.push("/(tabs)/settings/licences")}
+					onPress={() => router.push(routes.account("licences"))}
 				/>
 			</SettingsGroup>
 			<SettingsGroup>

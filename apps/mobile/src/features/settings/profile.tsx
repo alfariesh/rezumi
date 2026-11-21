@@ -7,6 +7,7 @@ import { useState } from "react";
 import { View } from "react-native";
 import { client, orpc, rest } from "@/api/client";
 import { useSession } from "@/auth/session";
+import { useUnsavedChangesGuard } from "@/shell/unsaved-changes";
 import { Avatar, Button, ListRow, Sheet, TextField, showToast, useTheme } from "@/ui-legacy";
 
 type Profile = RouterOutput["auth"]["getProfile"];
@@ -31,6 +32,8 @@ function ProfileField({ field, value, server }: ProfileFieldProps) {
 			setEdit(null);
 		},
 	});
+	// An edit that can't be saved (invalid, or the save failed) asks before the screen closes; a valid one saves on blur.
+	useUnsavedChangesGuard({ dirty: edit !== null && trimmed !== value && (invalid || mutation.isError) });
 	const commit = () => {
 		setTouched(true);
 		if (!invalid && trimmed !== value && !mutation.isPending) mutation.mutate();

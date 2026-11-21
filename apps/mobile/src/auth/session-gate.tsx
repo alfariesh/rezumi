@@ -14,7 +14,7 @@ import { Banner, Button, Sheet, showToast, useTheme } from "@/ui-legacy";
  * - Signed out anywhere but `(auth)`: go to sign-in.
  * - Signing out: go to sign-in at once, in the same tick, so a caller that navigates after `signOut()` (Settings →
  *   Switch server) always has the last word; then the AU7 toast.
- * - Signed in on an `(auth)` screen: go to Documents.
+ * - Signed in on an `(auth)` screen: go to Home.
  * - Expired: stay where the user is, under a sheet that asks to sign in again (AU8).
  * - Account change (sign-in, switch, sign-out, expiry): the React Query cache is cancelled and cleared.
  */
@@ -65,7 +65,7 @@ export function SessionGate() {
 		if (!navigationReady || atCallback) return;
 		const signedOutNow = before === "signed-in" || before === "expired";
 		if (status === "signed-out" && !inAuth && !signedOutNow) router.replace(routes.signIn());
-		else if (status === "signed-in" && inAuth) router.replace(routes.documents());
+		else if (status === "signed-in" && inAuth) router.replace(routes.home());
 	}, [navigationReady, status, inAuth, atCallback, router]);
 
 	return status === "expired" ? <SessionExpiredSheet /> : null;

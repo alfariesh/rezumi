@@ -29,7 +29,7 @@ export default function MembershipScreen() {
 	const profile = useProfile();
 	const queryClient = useQueryClient();
 	const history = useRecentCredits(canShowPlans() && Boolean(plan?.credits));
-	if (!canShowPlans()) return <Redirect href={routes.settings()} />;
+	if (!canShowPlans()) return <Redirect href={routes.account()} />;
 
 	const timeZone = planTimeZone(profile.data?.timezone);
 	const formatDate = (date: Date) =>

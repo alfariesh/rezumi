@@ -1,12 +1,10 @@
 import { useWindowDimensions } from "react-native";
+import { size } from "@/ui";
 
 /**
- * Below this window width the app uses the phone layout. It goes by the window, not the device, so an iPad in
- * Split View or a narrow Stage Manager window gets the phone layout (below 700 pt wide).
+ * True when the window is wide enough for the sidebar and the builder's panel + page split (700 pt, `size.wide`). It
+ * goes by the window, not the device: an iPad in Split View or a narrow Stage Manager window gets the phone layout.
  */
-const tabletMinWidth = 700;
-
-/** True when the window is wide enough for the sidebar and the builder's panel + page split. */
 export function useIsTablet() {
-	return useWindowDimensions().width >= tabletMinWidth;
+	return useWindowDimensions().width >= size.wide;
 }

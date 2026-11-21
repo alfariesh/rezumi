@@ -139,9 +139,9 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 	const action = (row: SavedData<"briefing">["plan"][number]) => {
 		switch (row.action) {
 			case "story":
-				return { label: t`Open story`, onPress: () => router.push(routes.career("knowledge")) };
+				return { label: t`Open story`, onPress: () => router.push(routes.knowledge()) };
 			case "draft-story":
-				return { label: t`Draft story`, onPress: () => router.push(routes.career("knowledge")) };
+				return { label: t`Draft story`, onPress: () => router.push(routes.knowledge()) };
 			case "practise":
 				return { label: t`Practice`, onPress: () => go("practise", { speak: true }) };
 			case "questions":
@@ -344,7 +344,7 @@ function StoriesToBring({ application, briefing }: StoriesToBringProps) {
 					title={story.data.title}
 					leading="book-open"
 					chevron
-					onPress={() => router.push(routes.career("knowledge"))}
+					onPress={() => router.push(routes.knowledge())}
 				/>
 			))}
 			{briefing.data.missingStory ? <Banner tone="warn" icon="question" message={briefing.data.missingStory} /> : null}

@@ -41,3 +41,7 @@ Ikuti `.agents/docs/mobile-release-handoff.md` (gerbang, lingkungan, matriks) da
 - App diajukan ke dua toko (atau sudah terbit), dengan bukti uji dari build toko.
 - OTA jalan otomatis setelah deploy server yang sehat.
 - Dokumen rilis mencerminkan keadaan nyata.
+
+### Cek tambahan dari Phase 03
+
+- Tidak ada lagi layar sementara "sedang disiapkan": `src/shell/preparing-tab.tsx` dan pemakainya di `app/(tabs)/portfolio` dan `app/(tabs)/profile` sudah dihapus oleh Phase 06 dan 12. Bila masih ada, rilis berhenti.

@@ -11,6 +11,7 @@ import { refreshThreads, useConversationConnection } from "./chat";
 import { client } from "@/api/client";
 import { getAccountScope } from "@/auth/session";
 import { AIProviderSetupSheet } from "@/features/ai/providers";
+import { routes } from "@/routes";
 import { Banner, Button, Icon, ListRow, Sheet, Text, showToast, useTheme } from "@/ui-legacy";
 
 type Providers = ReturnType<typeof useHasAIProvider>;
@@ -81,7 +82,7 @@ export function ModelSheet({ open, onClose, providers, currentId, onChoose }: Mo
 				chevron
 				onPress={() => {
 					onClose();
-					router.push("/settings/ai-providers");
+					router.push(routes.account("ai-providers"));
 				}}
 			/>
 		</Sheet>
@@ -178,7 +179,7 @@ export function ProviderGate({
 					More providers and options are in Settings. Editing, design, Check issues and downloads work without AI.
 				</Trans>
 			</Text>
-			<Button variant="link" label={t`Open AI settings`} onPress={() => router.push("/settings/ai-providers")} />
+			<Button variant="link" label={t`Open AI settings`} onPress={() => router.push(routes.account("ai-providers"))} />
 			<AIProviderSetupSheet open={setupOpen} onClose={() => setSetupOpen(false)} />
 		</View>
 	);

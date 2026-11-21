@@ -184,6 +184,11 @@ msgstr "{0, plural, one {# чињеница} few {# чињенице} other {# �
 msgid "{0, plural, one {# match} other {# matches}}"
 msgstr "{0, plural, one {# поклапање} few {# поклапања} other {# поклапања}}"
 
+#. placeholder {0}: interview.durationMinutes
+#: src/features/home/coming-up.tsx
+msgid "{0, plural, one {# min} other {# min}}"
+msgstr ""
+
 #. placeholder {0}: data.officeDays
 #: src/features/career/offers.tsx
 msgid "{0, plural, one {# office day a week} other {# office days a week}}"
@@ -245,11 +250,6 @@ msgstr "{0, plural, one {Обриши # пријаву} few {Обриши # пр
 #: src/features/documents/library.tsx
 msgid "{0, plural, one {Delete # document forever?} other {Delete # documents forever?}}"
 msgstr "{0, plural, one {Трајно обрисати # документ?} few {Трајно обрисати # документа?} other {Трајно обрисати # докумената?}}"
-
-#. placeholder {0}: row.intervalDays
-#: src/features/career/today.tsx
-msgid "{0, plural, one {Every day} other {Every # days}}"
-msgstr "{0, plural, =1 {Сваког дана} one {Сваки # дан} few {Свака # дана} other {Сваких # дана}}"
 
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
@@ -341,13 +341,13 @@ msgstr ""
 
 #. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
 #. placeholder {1}: TRIAL_CREDITS.validDays
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{0} expire on {1}"
 msgstr ""
 
@@ -527,6 +527,10 @@ msgstr "{day} · {length}м"
 msgid "{days, plural, =0 {· since today} one {· for # day} other {· for # days}}"
 msgstr "{days, plural, =0 {· од данас} one {· већ # дан} few {· већ # дана} other {· већ # дана}}"
 
+#: src/features/home/coming-up.tsx
+msgid "{days, plural, one {In # day} other {In # days}}"
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{done} of {count} done"
 msgstr "Готово: {done} од {count}"
@@ -558,6 +562,10 @@ msgstr "{facts, plural, one {# чињеница} few {# чињенице} other 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "{followUps, plural, one {# follow-up} other {# follow-ups}}"
 msgstr "{followUps, plural, one {# накнадно јављање} few {# накнадна јављања} other {# накнадних јављања}}"
+
+#: src/features/home/coming-up.tsx
+msgid "{hours, plural, one {In # hour} other {In # hours}}"
+msgstr ""
 
 #: src/features/workspace/shell.tsx
 msgid "{hours} h"
@@ -595,6 +603,10 @@ msgstr ""
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
 msgstr "Веза {label}"
+
+#: src/shell/app-tabs.tsx
+msgid "{label}, {count} unread"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
@@ -710,6 +722,14 @@ msgstr "{title} избрисан"
 msgid "{title} deleted"
 msgstr "{title} избрисан"
 
+#: src/features/home/schedules.tsx
+msgid "{title} is on · next {next}"
+msgstr ""
+
+#: src/features/home/schedules.tsx
+msgid "{title} paused"
+msgstr "{title}: паузирано"
+
 #: src/features/write/outline.tsx
 msgid "{toCheck, plural, one {# field needs a look.} other {# fields need a look.}}"
 msgstr "{toCheck, plural, one {# поље треба погледати.} other {# поља треба погледати.}}"
@@ -718,11 +738,11 @@ msgstr "{toCheck, plural, one {# поље треба погледати.} other 
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {# за проверу} other {# за проверу}}"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{used} of {max}"
 msgstr ""
 
@@ -761,6 +781,7 @@ msgid "2 files"
 msgstr "2 фајла"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/schedules.tsx
 msgid "2 hours before"
 msgstr "2 сата пре"
 
@@ -769,6 +790,7 @@ msgid "2–3 sentences reads best"
 msgstr "2-3 реченице најбоље читају"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "24 сата пре"
 
@@ -906,12 +928,16 @@ msgstr "Прихваћена понуда"
 msgid "Accomplishment"
 msgstr "Достигнуће"
 
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/account.tsx
+#: app/account/index.tsx
 #: src/features/search/search-screen.tsx
-#: src/shell/app-tabs.tsx
+#: src/shell/account-menu.tsx
 msgid "Account"
 msgstr "Налог"
+
+#: src/shell/account-menu.tsx
+msgid "Account menu"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Action (required)"
@@ -927,25 +953,22 @@ msgstr "Акције"
 msgid "Actions for {0} at {1}"
 msgstr "Радње за {0} на {1}"
 
-#: src/features/ai/web-access.tsx
-msgid "Active"
-msgstr "Активан"
-
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Active cover letters"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Active resumes"
 msgstr ""
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr ""
 
 #: src/features/application-detail/sections.tsx
+#: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Add"
 msgstr "Додај"
@@ -1143,10 +1166,6 @@ msgstr "Додајте референцу"
 msgid "Add role"
 msgstr "Додајте улогу"
 
-#: src/features/career/today.tsx
-msgid "Add schedule"
-msgstr "Додај распоред"
-
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Add screening calls and technical interviews to see them here and on the calendar."
 msgstr "Додајте позиве за проверу и техничке интервјуе да бисте их видели овде и у календару."
@@ -1273,8 +1292,8 @@ msgstr "После вашег првог прегледа, овде се пој�
 msgid "Against your requirements"
 msgstr "У односу на ваше захтеве"
 
-#: app/(tabs)/settings/ai.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/ai.tsx
+#: app/account/index.tsx
 #: src/features/search/search-screen.tsx
 msgid "AI & developer"
 msgstr "АИ и програмер"
@@ -1311,8 +1330,8 @@ msgstr "АИ обогаћивање није било доступно. Прег
 msgid "AI provider"
 msgstr "АИ провајдер"
 
-#: app/(tabs)/settings/ai-providers.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-providers.tsx
+#: app/account/ai.tsx
 #: src/features/search/search-screen.tsx
 msgid "AI providers"
 msgstr "АИ провајдери"
@@ -1356,7 +1375,7 @@ msgstr "Све ({0})"
 msgid "All applications"
 msgstr "Све пријаве"
 
-#: src/features/career/recent-documents.tsx
+#: src/features/home/recent-documents.tsx
 msgid "All documents"
 msgstr ""
 
@@ -1506,12 +1525,11 @@ msgstr ""
 msgid "API and MCP access isn't in your plan"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "API and MCP for other apps"
 msgstr ""
 
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "API key"
 msgstr "Кључ API"
 
@@ -1528,7 +1546,11 @@ msgstr "API кључеви"
 msgid "API keys need the Plus or Pro AI plan"
 msgstr ""
 
-#: app/(tabs)/settings/preferences.tsx
+#: src/shell/account-menu.tsx
+msgid "App settings"
+msgstr ""
+
+#: app/account/preferences.tsx
 msgid "Appearance"
 msgstr "Изглед"
 
@@ -1598,6 +1620,7 @@ msgstr "Прикази пријава"
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Applications"
 msgstr "Пријаве"
 
@@ -1643,7 +1666,7 @@ msgstr "Примењено. Праћење је заказано за {0}."
 msgid "Applied. The application is updated."
 msgstr "Примењено. Пријава је ажурирана."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Applies to this device only."
 msgstr "Важи само за овај уређај."
 
@@ -1721,10 +1744,6 @@ msgstr "Питајте саветника"
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Замолите администратора сервера да омогући шифровање акредитива или да конфигурише заједничку везу."
-
-#: src/features/ai/web-access.tsx
-msgid "Ask your server administrator to enable credential encryption or configure a shared web connection."
-msgstr "Замолите администратора сервера да омогући шифровање акредитива или да конфигурише заједничку веб везу."
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Ask, or describe a change…"
@@ -1929,7 +1948,7 @@ msgstr ""
 msgid "Behavioral"
 msgstr "Бихевиорални"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Behavioral interview"
 msgstr "Бихевиорални интервју"
 
@@ -1996,7 +2015,7 @@ msgstr "Прекида дугачке речи између слогова, ко
 msgid "Briefing"
 msgstr "Брифинг"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Briefing ready"
 msgstr "Брифинг је спреман"
 
@@ -2007,10 +2026,6 @@ msgstr "Освежавање припреме је укључено · {next}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "Освежавање брифинга је паузирано"
-
-#: src/features/ai/web-access.tsx
-msgid "Built-in reader"
-msgstr "Уграђени читач"
 
 #: src/features/settings/locale-names.ts
 msgid "Bulgarian"
@@ -2031,7 +2046,7 @@ msgstr "Листа за набрајање"
 msgid "Burgundy"
 msgstr "Бордо"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "by <0>Salman Alfariesh</0>"
 msgstr "аутор: <0>Salman Alfariesh</0>"
 
@@ -2049,7 +2064,6 @@ msgstr "Може ли софтвер да прочита ваш резиме?"
 
 #: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/list-screen.tsx
@@ -2062,7 +2076,7 @@ msgstr "Може ли софтвер да прочита ваш резиме?"
 #: src/features/write/improve.tsx
 #: src/features/write/pickers.tsx
 #: src/linking/open.ts
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Cancel"
 msgstr "Откажи"
 
@@ -2078,11 +2092,6 @@ msgstr "Откажите снимање"
 msgid "Cancel request"
 msgstr "Откажи захтев"
 
-#: app/(tabs)/_layout.tsx
-#: app/(tabs)/career/_layout.tsx
-msgid "Career"
-msgstr "Каријера"
-
 #: src/features/settings/locale-names.ts
 msgid "Catalan"
 msgstr "Каталонски"
@@ -2095,10 +2104,6 @@ msgstr "Сертификације"
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Промена"
-
-#: src/features/ai/web-access.tsx
-msgid "Change connection"
-msgstr "Промените везу"
 
 #: src/features/letters/write.tsx
 msgid "Change it in Design."
@@ -2450,10 +2455,11 @@ msgstr "Затворено"
 msgid "Closed: {closed}"
 msgstr "Затворено: {closed}"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/_layout.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/billing/credits.ts
 #: src/features/workspace/coach-sheet.tsx
+#: src/shell/tab-chrome.tsx
 msgid "Coach"
 msgstr "Саветник"
 
@@ -2479,7 +2485,7 @@ msgid "Columns can scramble the order text is read in."
 msgstr "Колоне могу шифровати редослед читања текста."
 
 #: src/features/applications-board/calendar-screen.tsx
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Coming up"
 msgstr "Предстоји"
 
@@ -2562,10 +2568,6 @@ msgstr "Повежи {0}"
 msgid "Connect {domain}"
 msgstr "Повежи {domain}"
 
-#: src/features/ai/web-access.tsx
-msgid "Connect a service"
-msgstr "Повежите услугу"
-
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
 msgid "Connect AI provider"
@@ -2586,15 +2588,11 @@ msgstr "Повежите АИ провајдера у Подешавањима �
 msgid "Connect an AI provider to read details from pasted text. Manual entry works without AI."
 msgstr "Повежите добављача вештачке интелигенције да бисте читали детаље из налепљеног текста. Ручни унос ради без АИ."
 
-#: src/features/ai/web-access.tsx
-msgid "Connect an AI provider to use the assistant. Saving and preparing jobs doesn't need one."
-msgstr "Повежите AI провајдера да бисте користили асистента. Није потребан за чување послова и припрему."
-
 #: src/features/assistant/provider.tsx
 msgid "Connect another…"
 msgstr "Повежите другу…"
 
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai.tsx
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "Повежите алате које користите за писање, тражење посла и рад са својим биографијама."
 
@@ -2610,11 +2608,7 @@ msgstr "Повезано. Ваш домен отвара ваш примарни
 msgid "Connecting the dots"
 msgstr "Повезивање тачака"
 
-#: src/features/ai/web-access.tsx
-msgid "Connection saved"
-msgstr "Веза је сачувана"
-
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -2769,13 +2763,17 @@ msgstr ""
 msgid "Couldn't attach the file. Try again."
 msgstr "Није могуће приложити датотеку. Покушајте поново."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't change the language. Try again."
 msgstr "Није могуће променити језик. Покушајте поново."
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Couldn't change the schedule. Try again."
 msgstr "Није могуће променити распоред. Покушајте поново."
+
+#: src/features/home/schedules.tsx
+msgid "Couldn't change this schedule. Try again."
+msgstr "Није могуће променити овај распоред. Покушајте поново."
 
 #: src/features/share/download.tsx
 msgid "Couldn't check for a linked cover letter."
@@ -2794,13 +2792,9 @@ msgid "Couldn't complete the request. Check your connection and try again."
 msgstr "Није могуће довршити захтев. Проверите везу и покушајте поново."
 
 #: src/features/documents/queries.ts
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Couldn't complete this action. Try again."
 msgstr "Довршавање ове радње није успело. Покушајте поново."
-
-#: src/features/ai/web-access.tsx
-msgid "Couldn't confirm AI connections. Try again before using the assistant."
-msgstr "Није могуће потврдити АИ везе. Покушајте поново пре коришћења помоћника."
 
 #: src/features/applications/add-sheet.tsx
 msgid "Couldn't confirm the save. Check Applications before retrying to avoid a duplicate."
@@ -2830,6 +2824,10 @@ msgstr "Није могуће обрисати разговор. Покушај�
 msgid "Couldn't delete the interview. Try again."
 msgstr "Није могуће обрисати интервју. Покушајте поново."
 
+#: src/features/home/home-screen.tsx
+msgid "Couldn't delete this schedule. Try again."
+msgstr "Није могуће обрисати овај распоред. Покушајте поново."
+
 #: src/features/settings/export.tsx
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
@@ -2842,6 +2840,10 @@ msgstr "Није могуће генерисати ову датотеку. По
 #: src/features/write/improve.tsx
 msgid "Couldn't get a suggestion. Nothing changed."
 msgstr "Није могуће добити предлог. Ништа се није променило."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't hide this role. Try again."
+msgstr "Није могуће сакрити ову улогу. Покушајте поново."
 
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't import the file. Try again from Documents."
@@ -2922,12 +2924,16 @@ msgstr "Није могуће учитати страницу ове верзи�
 msgid "Couldn't load this. Check your connection and try again."
 msgstr "Није могуће учитати ово. Проверите везу и покушајте поново."
 
+#: src/features/home/section.tsx
+msgid "Couldn't load this. Check your connection."
+msgstr ""
+
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
 msgid "Couldn't load versions."
 msgstr "Учитавање верзија није успело."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "Учитавање вашег профила није успело."
 
@@ -2939,7 +2945,7 @@ msgstr "Учитавање ваше јавне адресе није успел�
 msgid "Couldn't load your resumes."
 msgstr "Учитавање ваших резимеа није успело."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't load your timezone."
 msgstr "Није могуће учитати вашу временску зону."
 
@@ -2947,18 +2953,23 @@ msgstr "Није могуће учитати вашу временску зон�
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Није могуће означити као пријављено. Покушајте поново."
 
+#: src/features/home/needs-you.tsx
+msgid "Couldn't mark this as read. Try again."
+msgstr "Није могуће означити као прочитано. Покушајте поново."
+
 #: src/features/applications-board/use-reschedule-interview.ts
 msgid "Couldn't move the interview. Try again."
 msgstr ""
 
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/account.tsx
+#: app/account/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
+#: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Није могуће отворити прегледач. Покушајте поново."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Couldn't open the posting. Try again."
 msgstr "Није могуће отворити оглас. Покушајте поново."
 
@@ -3009,6 +3020,10 @@ msgstr "Освежавање докумената није успело."
 #: src/features/assistant/messages.tsx
 msgid "Couldn't remember that. Try again."
 msgstr "Није могуће запамтити то. Покушајте поново."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't remove it from Applications. Try again."
+msgstr "Није могуће уклонити из Пријава. Покушајте поново."
 
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't remove the file. Try again."
@@ -3066,13 +3081,17 @@ msgstr "Није могуће сачувати белешке. Ваш текст
 msgid "Couldn't save the tags. Try again."
 msgstr "Није могуће сачувати ознаке. Покушајте поново."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't save the theme. Try again."
 msgstr "Није могуће сачувати тему. Покушајте поново."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Није могуће сачувати временску зону. Покушајте поново."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't save this role to Applications. Try again."
+msgstr "Није могуће сачувати ову улогу у Пријаве. Покушајте поново."
 
 #: src/features/letters/write.tsx
 msgid "Couldn't save your changes, so drafting didn't start. Nothing on the page changed."
@@ -3270,7 +3289,7 @@ msgstr "Креирајте нови резиме"
 msgid "Create a resume first, then ask about it."
 msgstr "Прво направите резиме, а затим питајте о њему."
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "Направите API кључ у подешавањима налога у прегледачу. Кључеви делују у ваше име и могу да читају и уређују ваше документе."
 
@@ -3299,7 +3318,7 @@ msgstr "Направљено {0} · Последње коришћено {1} · �
 msgid "Creating document…"
 msgstr "Прављење документа…"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
 msgstr ""
 
@@ -3331,7 +3350,7 @@ msgstr "Прилагођена поља"
 msgid "Custom section"
 msgstr "Прилагођени одељак"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 msgid "Custom styles"
@@ -3365,6 +3384,10 @@ msgstr ""
 msgid "Czech"
 msgstr "Чешки"
 
+#: src/features/home/schedules.tsx
+msgid "Daily at {clock} · next {day}"
+msgstr ""
+
 #. placeholder {0}: summary.peak
 #: src/features/share/link.tsx
 msgid "Daily views over 30 days, peak {0}"
@@ -3378,8 +3401,8 @@ msgstr "Опасан или незаконит савет"
 msgid "Danish"
 msgstr "Дански"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "Dark"
 msgstr "Тамна"
 
@@ -3493,7 +3516,7 @@ msgstr "Избрисати „{0}“?"
 msgid "Delete {0}"
 msgstr "Обриши {0}"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Delete account"
 msgstr "Избриши налог"
@@ -3596,7 +3619,7 @@ msgstr "Брише одељак и његове уносе. Можете пон�
 msgid "Density"
 msgstr "Густина"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Dependency type"
 msgstr "Тип зависности"
 
@@ -3656,18 +3679,21 @@ msgid "Direction"
 msgstr "Правац"
 
 #: src/features/letters/write.tsx
+#: src/shell/unsaved-changes.ts
 msgid "Discard"
 msgstr "Одбаци"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Discard changes"
 msgstr "Одбаци измене"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Discard changes?"
 msgstr "Одбацити измене?"
+
+#: src/shell/unsaved-changes.ts
+msgid "Discard your changes?"
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "Discard your offline edits and load the saved version."
@@ -3678,7 +3704,7 @@ msgid "Discard your offline edits?"
 msgstr "Желите ли да одбаците своје офлајн измене?"
 
 #: src/features/letters/write.tsx
-#: src/ui/layout.tsx
+#: src/ui-legacy/layout.tsx
 msgid "Dismiss"
 msgstr "Одбаци"
 
@@ -3700,9 +3726,10 @@ msgid "Document type"
 msgstr "Врста документа"
 
 #: app/(tabs)/_layout.tsx
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Documents"
 msgstr "Документи"
 
@@ -3714,7 +3741,7 @@ msgstr "Документи се трајно бришу након 30 дана."
 msgid "Documents for this job"
 msgstr "Документи за овај посао"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Documents in Trash don't count."
 msgstr ""
 
@@ -3740,9 +3767,8 @@ msgstr "Не шаљите {0} оглас за посао"
 msgid "Don't share"
 msgstr "Не делите"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/applications/list-screen.tsx
-#: src/features/career/today.tsx
 #: src/features/documents/library.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/date-field.tsx
@@ -3750,6 +3776,10 @@ msgstr "Не делите"
 #: src/features/write/rich-text-field.tsx
 msgid "Done"
 msgstr "Готово"
+
+#: src/features/home/schedules.tsx
+msgid "Done · {day}"
+msgstr ""
 
 #: src/features/applications/list-screen.tsx
 msgid "Done selecting"
@@ -3929,7 +3959,7 @@ msgstr "раније поруке у овом ћаскању"
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/career/stories.tsx
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Edit"
 msgstr "Измени"
@@ -4001,7 +4031,7 @@ msgstr "Образовање"
 msgid "Education swaps school and field of study the same way."
 msgstr ""
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "Е-пошта"
@@ -4041,10 +4071,6 @@ msgstr "Енглески"
 #: src/features/settings/locale-names.ts
 msgid "English (United Kingdom)"
 msgstr "Енглески (Уједињено Краљевство)"
-
-#: src/features/ai/web-access.tsx
-msgid "Enhanced reading failed"
-msgstr "Побољшано читање није успело"
 
 #: src/features/assistant/messages.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
@@ -4120,6 +4146,10 @@ msgstr "Опције уласка"
 msgid "Equity"
 msgstr "Власнички удео"
 
+#: src/features/home/schedules.tsx
+msgid "Every {days} days at {clock} · next {day}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Every 3 days"
 msgstr "Свака 3 дана"
@@ -4148,7 +4178,7 @@ msgstr ""
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Свака улога говори шта сте урадили. Мишљења о формулацијама уживо на картици Писање."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Every template"
 msgstr ""
 
@@ -4163,6 +4193,10 @@ msgstr "Сваке недеље"
 #: src/features/workspace/tabs/saved.tsx
 msgid "Everything the coach wrote for {company}, newest first."
 msgstr "Све што је тренер написао за {company}, прво најновије."
+
+#: app/(tabs)/profile/index.tsx
+msgid "Everything your resumes, letters and Coach start from. For now, your facts and stories are in Knowledge."
+msgstr ""
 
 #: src/features/career/facts.tsx
 #: src/features/write/fields.ts
@@ -4227,7 +4261,7 @@ msgstr "Чињенице"
 msgid "Failed"
 msgstr "Није успело"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "Повратне информације"
 
@@ -4461,10 +4495,17 @@ msgstr "Заборављање уклања ову чињеницу са при�
 msgid "Formatting"
 msgstr "Форматирање"
 
-#. placeholder {0}: time.when(row.firstSeenAt)
-#: src/features/career/today.tsx
-msgid "Found {0}"
-msgstr "Пронађено {0}"
+#: src/features/home/new-roles.tsx
+msgid "Found {day}"
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "Found today"
+msgstr "Пронађено данас"
+
+#: src/features/home/new-roles.tsx
+msgid "Found yesterday"
+msgstr "Пронађено јуче"
 
 #: src/features/billing/plan.ts
 msgid "Free"
@@ -4485,7 +4526,7 @@ msgstr "Од"
 
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr ""
@@ -4515,11 +4556,6 @@ msgstr "Пуна ширина"
 msgid "German"
 msgstr "Немачки"
 
-#. placeholder {0}: sites[provider]
-#: src/features/ai/web-access.tsx
-msgid "Get a key at {0}. It's stored encrypted and used only for your requests."
-msgstr "Набавите кључ на {0}. Чува се шифровано и користи се само за ваше захтеве."
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback"
 msgstr "Добиј повратне информације"
@@ -4528,9 +4564,9 @@ msgstr "Добиј повратне информације"
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "„Добиј повратне информације“ шаље питање, ваш одговор, овај оглас и ваше приче. Прималац: {providerName}."
 
-#: src/features/career/today.tsx
-msgid "Get new roles here every morning"
-msgstr "Добијајте нове улоге овде сваког јутра"
+#: src/features/home/new-roles.tsx
+msgid "Get new jobs for your search here every morning"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4569,7 +4605,7 @@ msgstr "Обраћање"
 msgid "Grid view"
 msgstr "Мрежни приказ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Haptic feedback"
 msgstr "Хаптичке повратне информације"
 
@@ -4627,9 +4663,13 @@ msgstr "чуо узвратио"
 msgid "Hebrew"
 msgstr "Хебрејски"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Help & docs"
 msgstr "Помоћ и документи"
+
+#: src/shell/account-menu.tsx
+msgid "Help & legal"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
@@ -4650,7 +4690,7 @@ msgstr "Hex"
 msgid "Hidden"
 msgstr "Сакривено"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Hidden from New roles"
 msgstr "Сакривено из Нових улога"
 
@@ -4686,11 +4726,11 @@ msgstr "Сакриј са странице"
 msgid "Hide key"
 msgstr "Сакриј кључ"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Hide license"
 msgstr "Сакриј лиценцу"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Hide read"
 msgstr "Сакриј прочитано"
 
@@ -4724,6 +4764,12 @@ msgstr "држите ⋮⋮ за померање"
 #: src/features/documents/library.tsx
 msgid "Hold to delete"
 msgstr "Задржите за брисање"
+
+#: app/(tabs)/_layout.tsx
+#: src/features/home/home-screen.tsx
+#: src/shell/app-tabs.tsx
+msgid "Home"
+msgstr "Почетна"
 
 #: src/features/design/advanced.tsx
 msgid "Horizontal margin"
@@ -4821,18 +4867,9 @@ msgstr ""
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
 msgstr "Ако потиче од скенирања, то је очекивано. У супротном, уклоните то; регрутери то тумаче као гомилање кључних речи."
 
-#. placeholder {0}: reader ?? provider.provider
 #: src/api/ai-consent.ts
-msgid "If web access is used, links and search terms also go to {0} and the sites being read."
-msgstr "Ако се користи приступ вебу, везе и термини за претрагу такође иду на {0} и на сајтове који се читају."
-
-#: src/api/ai-consent.ts
-msgid "If web access is used, search terms go to your server's search service and the search engines it uses, and links go to {reader} and the sites being read."
-msgstr "Ако се користи веб приступ, термини за претрагу иду до услуге претраге вашег сервера и претраживача које користи, а везе иду до {reader} и сајтова који се читају."
-
-#: src/api/ai-consent.ts
-msgid "If web access is used, search terms go to your server's search service and the search engines it uses, and links go to the sites being read."
-msgstr "Ако се користи приступ вебу, термини за претрагу иду до услуге претраге вашег сервера и претраживача које користи, а везе иду до сајтова који се читају."
+msgid "If the web is used, search terms go to your server's search service and links go to the sites being read."
+msgstr ""
 
 #: src/features/check/screen.tsx
 msgid "Ignore"
@@ -4874,6 +4911,10 @@ msgstr "Увезите га"
 msgid "Import with AI"
 msgstr ""
 
+#: src/features/home/home-screen.tsx
+msgid "Import your current resume, or start blank or from a sample. We lay out every section for you to refine."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Import your current resume, or start fresh with your name."
 msgstr "Увезите свој тренутни животопис или почните изнова са својим именом."
@@ -4907,7 +4948,7 @@ msgstr "Побољшање…"
 msgid "In progress"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Included"
 msgstr ""
 
@@ -4948,14 +4989,14 @@ msgstr "Инсигхтс"
 msgid "Interests"
 msgstr "Интересовања"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Само интерфејс. Сваки резиме поставља свој језик у дизајну."
 
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Interview"
 msgstr "Интервју"
 
@@ -4984,6 +5025,7 @@ msgid "Interview practice"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/needs-you.tsx
 msgid "Interview preparation"
 msgstr "Припрема за интервју"
 
@@ -4999,7 +5041,7 @@ msgstr "Интервју је сачуван. Није могуће ажурир
 msgid "Interview saved. The reminder time has already passed."
 msgstr "Интервју је сачуван. Време подсетника је већ прошло."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "Користе је времена интервјуа, подсетници и распореди у Каријери."
 
@@ -5073,13 +5115,17 @@ msgstr "Његов сачувани кључ се брише. За разгов�
 msgid "Japanese"
 msgstr "Јапански"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "JavaScript"
 msgstr "JavaScript"
 
 #: src/features/search/search-screen.tsx
 msgid "Job"
 msgstr "Посао"
+
+#: src/features/home/needs-you.tsx
+msgid "Job alert"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Job description"
@@ -5139,8 +5185,8 @@ msgstr "Држите једну једину адресу, како софтве
 msgid "Keep both"
 msgstr "Задржи оба"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/shell/unsaved-changes.ts
+#: src/ui-legacy/overlays.tsx
 msgid "Keep editing"
 msgstr "Настави уређивање"
 
@@ -5198,10 +5244,6 @@ msgstr "Чува најспецифичније делове"
 msgid "Kept as it is"
 msgstr "Одржано како јесте"
 
-#: src/features/ai/web-access.tsx
-msgid "Key stored encrypted"
-msgstr "Кључ се чува шифрован"
-
 #: src/features/settings/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "Кључеви се понашају као ви и могу приступити вашим документима. Нови кључеви се креирају у подешавањима налога вашег претраживача."
@@ -5222,7 +5264,7 @@ msgstr "Кмерски"
 msgid "Kind regards,"
 msgstr "срдачан поздрав,"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: src/features/career/knowledge.tsx
 msgid "Knowledge"
 msgstr "Знање"
@@ -5244,7 +5286,7 @@ msgstr "Ознака"
 msgid "Landscape"
 msgstr "Пејзаж"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/search/search-screen.tsx
@@ -5269,7 +5311,7 @@ msgstr "Последња провера пре {lastChecked}"
 msgid "Last edited"
 msgstr "Последње измењено"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Later"
 msgstr "касније"
 
@@ -5329,7 +5371,7 @@ msgstr "Оставите празно да бисте уклонили везу.
 msgid "Left"
 msgstr "Лево"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Legal"
 msgstr "Правне информације"
 
@@ -5359,16 +5401,17 @@ msgstr "Мање"
 msgid "Less than 48 hours left."
 msgstr "Остало је мање од 48 сати."
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "Дозволите АИ клијентима као што су Claude или Cursor да читају и уређују ваше резимеи, користећи API кључ."
 
 #: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
 msgid "Let's start with what you have"
 msgstr "Почнимо са оним што имате"
 
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
 msgid "Letter"
 msgstr "Писмо"
@@ -5406,7 +5449,7 @@ msgstr "пропратна писма немају јавну везу. Закљ
 msgid "Level"
 msgstr "Ниво"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Licenses"
 msgstr "Лиценце"
 
@@ -5414,8 +5457,8 @@ msgstr "Лиценце"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Лигатуре могу да избаце слова из речи попут „workflow“."
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "Light"
 msgstr "Светла"
 
@@ -5483,7 +5526,7 @@ msgstr "Линк је ажуриран"
 msgid "Linked · not sent yet"
 msgstr "Повезано · још није послато"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Linked accounts"
 msgstr "Повезани налози"
 
@@ -5533,6 +5576,7 @@ msgid "Live at {url}"
 msgstr "Уживо на {url}"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/section.tsx
 msgid "Loading"
 msgstr "Лоадинг"
 
@@ -5586,10 +5630,6 @@ msgstr "Учитавање биографија…"
 msgid "Loading saved version…"
 msgstr "Учитавање сачуване верзије…"
 
-#: src/features/ai/web-access.tsx
-msgid "Loading web access…"
-msgstr "Учитавање приступа вебу…"
-
 #: src/features/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "Учитавање радног простора…"
@@ -5598,7 +5638,7 @@ msgstr "Учитавање радног простора…"
 msgid "Loading your public address…"
 msgstr "Учитавање ваше јавне адресе…"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: app/builder/[id]/write.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/improve.tsx
@@ -5692,10 +5732,6 @@ msgstr "Нека буде краће"
 msgid "Make primary"
 msgstr "Постави као примарни"
 
-#: src/features/career/today.tsx
-msgid "Make room for the next step."
-msgstr "Направите места за следећи корак."
-
 #: src/features/assistant/assistant-screen.tsx
 msgid "Make the opening stronger"
 msgstr "Ојачајте отвор"
@@ -5723,10 +5759,6 @@ msgstr "Малајалам"
 #: src/features/application-detail/sections.tsx
 msgid "Manage contacts"
 msgstr "Управљајте контактима"
-
-#: src/features/ai/web-access.tsx
-msgid "Managed by server"
-msgstr "Управља сервер"
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
@@ -5763,7 +5795,7 @@ msgstr "Марже постављене на {minimum} пт"
 msgid "Mark as applied"
 msgstr "Означи као пријављено"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Mark as read"
 msgstr "Означи као прочитано"
 
@@ -5788,7 +5820,7 @@ msgstr "Markdown (.md)"
 msgid "Marked as applied. The versions you sent are kept."
 msgstr "Означено као пријављено. Верзије које сте послали су сачуване."
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Marked as read"
 msgstr "Означено као прочитано"
 
@@ -5828,8 +5860,8 @@ msgstr "Можда је слободан"
 msgid "MCP"
 msgstr "MCP"
 
-#: app/(tabs)/settings/ai-mcp.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-mcp.tsx
+#: app/account/ai.tsx
 msgid "MCP server"
 msgstr "MCP сервер"
 
@@ -5862,7 +5894,7 @@ msgstr "Минимална основна плата"
 msgid "Minimum salary cannot be compared in these terms."
 msgstr "Минимална плата се не може поредити у овим условима."
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "MIT License"
 msgstr "MIT лиценца"
 
@@ -5910,6 +5942,10 @@ msgstr "Више провајдера и опција је у Подешавањ
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "Појављује се више од једне имејл адресе."
+
+#: src/features/home/schedules.tsx
+msgid "Morning of"
+msgstr "Ујутру тог дана"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Morning of · 08:00 local"
@@ -5967,7 +6003,7 @@ msgstr "Премести пријаве"
 
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
-#: src/ui/sortable.tsx
+#: src/ui-legacy/sortable.tsx
 msgid "Move down"
 msgstr "Помери се доле"
 
@@ -6030,7 +6066,7 @@ msgstr "Премести у…"
 
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
-#: src/ui/sortable.tsx
+#: src/ui-legacy/sortable.tsx
 msgid "Move up"
 msgstr "Помери се горе"
 
@@ -6114,7 +6150,7 @@ msgstr "Имена, ознаке или пријаве"
 msgid "Narrow"
 msgstr "Уско"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Native & fonts"
 msgstr "Нативне компоненте и фонтови"
 
@@ -6122,7 +6158,7 @@ msgstr "Нативне компоненте и фонтови"
 msgid "Needs attention"
 msgstr "Потребна је пажња"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Needs you"
 msgstr "Чека на вас"
 
@@ -6143,6 +6179,7 @@ msgstr "Никада"
 #: app/(tabs)/_layout.tsx
 #: src/features/documents/library.tsx
 #: src/shell/app-tabs.tsx
+#: src/shell/tab-chrome.tsx
 msgid "New"
 msgstr "Ново"
 
@@ -6169,9 +6206,9 @@ msgstr "Нови разговор"
 msgid "New cover letter instead"
 msgstr "Уместо тога, ново пропратно писмо"
 
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/search/search-screen.tsx
 msgid "New document"
 msgstr "Нови документ"
@@ -6182,13 +6219,9 @@ msgstr "Нови документ"
 msgid "New page"
 msgstr "Нова страница"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "Нове улоге из ваше претраге"
-
-#: src/features/career/today.tsx
-msgid "New roles, reminders and finished briefings appear here."
-msgstr "Нове улоге, подсетници и завршени брифинзи појављују се овде."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "New schedule"
@@ -6286,11 +6319,11 @@ msgstr "Нису пронађени уобичајени наслови одељ
 msgid "No conversations about this document yet."
 msgstr "Још нема разговора о овом документу."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "No credit activity yet."
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "No credits to spend right now"
 msgstr ""
 
@@ -6318,7 +6351,7 @@ msgstr "Нема адресе е-поште"
 msgid "No email address was found."
 msgstr "Није пронађена имејл адреса."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr ""
@@ -6343,7 +6376,7 @@ msgstr "Још нема посла"
 msgid "No keys yet."
 msgstr "Још нема кључева."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "No language matches."
 msgstr "Нема подударања језика."
 
@@ -6360,7 +6393,7 @@ msgid "No location"
 msgstr "Нема локације"
 
 #: src/features/documents/library.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "No matches"
 msgstr "Нема поклапања"
 
@@ -6369,14 +6402,21 @@ msgstr "Нема поклапања"
 msgid "No matching applications"
 msgstr "Нема одговарајућих пријава"
 
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery is paused."
-msgstr "Нема нових улога. Откривање је паузирано."
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again on {day} at {clock}."
+msgstr ""
 
-#. placeholder {0}: time.when(discovery.nextRunAt)
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again at {0}."
-msgstr "Нема нових позиција. Претрага се поново покреће у {0}."
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again today at {clock}."
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again tomorrow at {clock}."
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert is paused."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
@@ -6394,17 +6434,9 @@ msgstr "Није пронађен број телефона."
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "Нема фотографије. Већина ATS игнорише фотографије; неки региони то очекују."
 
-#: src/features/applications/add-sheet.tsx
-msgid "No postings found. Try different keywords."
-msgstr "Није пронађен ниједан оглас за посао. Пробајте различите кључне речи."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "У овом огласу нема препознатљивих термина."
-
-#: src/features/career/today.tsx
-msgid "No reply yet"
-msgstr "Још нема одговора"
 
 #: src/features/applications/stages.ts
 msgid "No response"
@@ -6459,13 +6491,9 @@ msgstr "Нема предлога за овог провајдера. Унеси
 msgid "No text could be read from this file."
 msgstr "Из ове датотеке није могао да се прочита никакав текст."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "No timezone matches."
 msgstr "Ниједна временска зона се не поклапа."
-
-#: src/features/career/today.tsx
-msgid "No upcoming interviews."
-msgstr "Нема предстојећих интервјуа."
 
 #: src/features/check/issues.ts
 msgid "No work experience shows"
@@ -6522,7 +6550,7 @@ msgstr "Још није повезан. Додајте његове DNS запи
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "Није за мене"
 
@@ -6534,7 +6562,7 @@ msgstr "Није пронађено:"
 msgid "Not in your resume · add only if true"
 msgstr "Не у свом резимеу · додајте само ако је тачно"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Not included"
 msgstr ""
 
@@ -6582,10 +6610,6 @@ msgstr "Белешке"
 msgid "Nothing here should cost you a match."
 msgstr "Ништа овде не би требало да вас кошта утакмице."
 
-#: src/features/career/today.tsx
-msgid "Nothing is applied for or created until you choose."
-msgstr "Ништа се не пријављује нити прави док не одлучите."
-
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
 msgstr "Ништа не означава улогу као актуелну."
@@ -6602,7 +6626,7 @@ msgstr "Још ништа није сачувано"
 msgid "Nothing scheduled yet"
 msgstr "Још ништа није заказано"
 
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 msgid "Nothing scheduled yet."
 msgstr "Још ништа није заказано."
 
@@ -6670,7 +6694,9 @@ msgstr "Офф. Писмо задржава сопствену копију ва
 msgid "Offer"
 msgstr "Понуда"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
+#: src/features/applications-board/views.tsx
+#: src/features/applications/list-screen.tsx
 msgid "Offers"
 msgstr "Понуде"
 
@@ -6682,7 +6708,7 @@ msgstr "Највише дана у канцеларији недељно"
 msgid "Office days are unknown."
 msgstr "Дани службе су непознати."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Office days not stated"
 msgstr "Дани у канцеларији нису наведени"
 
@@ -6694,7 +6720,7 @@ msgstr "Канцеларијски дани у недељи"
 msgid "Offline · saved on this device"
 msgstr "Офлајн · сачувано на овом уређају"
 
-#: app/(tabs)/_layout.tsx
+#: src/shell/offline-strip.tsx
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "Оффлине. Измене се чувају на овом уређају и синхронизују се када се поново повежете."
 
@@ -6702,10 +6728,6 @@ msgstr "Оффлине. Измене се чувају на овом уређа�
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
-
-#: src/features/career/today.tsx
-msgid "On"
-msgstr "Укључено"
 
 #: src/features/share/link.tsx
 msgid "On. Anyone with the link can see your web page."
@@ -6784,11 +6806,12 @@ msgstr "Само ти видиш ове"
 msgid "Onsite"
 msgstr "Уживо"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Onsite interview"
 msgstr "Интервју на лицу места"
 
 #: src/features/documents/document-sheets.tsx
+#: src/features/home/needs-you.tsx
 msgid "Open"
 msgstr "Отвори"
 
@@ -6803,7 +6826,7 @@ msgstr "Отворите подешавања АИ"
 msgid "Open application"
 msgstr "Отворите пријаву"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Open briefing"
 msgstr "Отвори брифинг"
 
@@ -6824,9 +6847,17 @@ msgstr "Отворите уређивач"
 msgid "Open in Offers"
 msgstr "Отвори у Понудама"
 
+#: app/(tabs)/profile/index.tsx
+msgid "Open Knowledge"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open letter"
 msgstr "Отвори писмо"
+
+#: src/shell/preparing-tab.tsx
+msgid "Open on the web"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Open questions"
@@ -6835,10 +6866,6 @@ msgstr "Отворена питања"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open resume"
 msgstr "Отворите резиме"
-
-#: src/features/career/today.tsx
-msgid "Open settings"
-msgstr "Отворите подешавања"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Open story"
@@ -6856,7 +6883,7 @@ msgstr "Отворите датотеку у Word и прво је сачува�
 msgid "Open the list"
 msgstr "Отворите листу"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Open the schedule"
 msgstr "Отвори распоред"
 
@@ -6864,11 +6891,11 @@ msgstr "Отвори распоред"
 msgid "Open web page"
 msgstr "Отвори веб-страницу"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Open workspace"
 msgstr "Отвори радни простор"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Open-source licenses"
 msgstr "Лиценце отвореног кода"
 
@@ -6896,10 +6923,6 @@ msgstr "Отвара се у Каријера → Понуде."
 #: src/features/career/schedule-sheet.tsx
 msgid "Opportunity discovery"
 msgstr "Откривање прилика"
-
-#: src/features/ai/web-access.tsx
-msgid "Optional"
-msgstr "Опционо"
 
 #: src/features/ai/provider-editor.tsx
 msgid "Optional for local Ollama"
@@ -7040,12 +7063,12 @@ msgstr "став {n}"
 msgid "Partly supported"
 msgstr "Делимично поткрепљено"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "Кључеви за приступ"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
@@ -7088,7 +7111,6 @@ msgid "Paste the question from the form"
 msgstr "Налепите питање из обрасца"
 
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "Paste your key"
 msgstr "Налепите свој кључ"
 
@@ -7097,9 +7119,9 @@ msgstr "Налепите свој кључ"
 msgid "Pasted description"
 msgstr "Налепљен опис"
 
-#: src/features/career/today.tsx
-msgid "Paused"
-msgstr "Паузирано"
+#: src/features/home/schedules.tsx
+msgid "Paused · {line}"
+msgstr "Паузирано · {line}"
 
 #: src/features/career/preferences.tsx
 msgid "Pay period"
@@ -7149,7 +7171,7 @@ msgstr "Месечно"
 msgid "Per year"
 msgstr "Годишње"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Permanently removes everything. Opens your browser account settings."
 msgstr "Трајно уклања све. Отвара подешавања налога вашег претраживача."
 
@@ -7215,8 +7237,9 @@ msgstr "Обичан текст (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Обичан текст са насловима. Залепите у формуларе за пријаву и белешке."
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/membership.tsx
+#: app/account/index.tsx
+#: app/account/membership.tsx
+#: src/shell/account-menu.tsx
 msgid "Plan"
 msgstr ""
 
@@ -7236,13 +7259,13 @@ msgstr "Испланирај шта да питаш"
 msgid "Planning your week"
 msgstr "Планирање ваше недеље"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
 
@@ -7262,6 +7285,12 @@ msgstr "Пољски"
 #: src/features/workspace/parts.tsx
 msgid "Polishing"
 msgstr "Дотеривање"
+
+#: app/(tabs)/_layout.tsx
+#: app/(tabs)/portfolio/index.tsx
+#: src/shell/app-tabs.tsx
+msgid "Portfolio"
+msgstr ""
 
 #: src/features/write/picture-screen.tsx
 msgid "Portrait"
@@ -7329,8 +7358,8 @@ msgstr "Дајте предност једној колони, или задрж
 msgid "Preference"
 msgstr "Преференција"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 #: src/features/career/knowledge.tsx
 #: src/features/search/search-screen.tsx
 msgid "Preferences"
@@ -7383,7 +7412,7 @@ msgstr "Припрема датотеке…"
 msgid "Present"
 msgstr "До данас"
 
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Press and hold"
 msgstr "Притисните и задржите"
 
@@ -7453,7 +7482,7 @@ msgstr "Одштампајте или извезите формулар у ра�
 msgid "Privacy"
 msgstr "Приватност"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 #: src/auth/auth-header.tsx
 msgid "Privacy policy"
 msgstr "Политика приватности"
@@ -7475,8 +7504,11 @@ msgstr "Професионални стил"
 msgid "Proficiency"
 msgstr "Степен познавања"
 
-#: app/(tabs)/settings/account.tsx
+#: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/index.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Profile"
 msgstr "Профил"
 
@@ -7508,13 +7540,8 @@ msgstr "Пројекти"
 msgid "Proposed changes"
 msgstr "Предложене измене"
 
-#: src/features/ai/web-access.tsx
-msgid "Provided by your server: {connected}. Search and reading are set up for everyone here. Ask your administrator about changes."
-msgstr "Обезбеђује ваш сервер: {connected}. Претрага и читање су постављени за све овде. Питајте свог администратора о променама."
-
 #: src/api/ai-consent.ts
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "Provider"
 msgstr "Провајдер"
 
@@ -7562,6 +7589,10 @@ msgstr "Објавите веб-страницу да бисте бројали 
 #: src/features/share/web-page.tsx
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "Објавите овај резиме да би се отварао на вашој краткој вези и сопственом домену."
+
+#: app/(tabs)/portfolio/index.tsx
+msgid "Publish, share and see who visited from your phone. Until then, manage it on the web."
+msgstr ""
 
 #: src/features/write/fields.ts
 msgid "Publisher"
@@ -7635,12 +7666,12 @@ msgstr "Прочитај брифинг"
 msgid "Read it for me"
 msgstr "Прочитај уместо мене"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Read license"
 msgstr "Прочитај лиценцу"
 
 #: src/features/applications/add-sheet.tsx
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Read posting"
 msgstr "Прочитајте оглас за посао"
 
@@ -7655,10 +7686,6 @@ msgstr "Прочитајте прилог"
 #: src/features/check/parser.tsx
 msgid "Read the exported PDF"
 msgstr "Прочитајте извезени PDF"
-
-#: app/(tabs)/settings/ai-web-access.tsx
-msgid "Read the job links you save. Saving and preparing jobs works without a connection."
-msgstr "Прочитајте везе за посао које сачувате. Чување и припрема послова ради без везе."
 
 #: src/features/assistant/messages.tsx
 msgid "Read the letter"
@@ -7716,10 +7743,6 @@ msgstr "Читање текста"
 msgid "Reading this file with AI needs a tested AI provider. Set one up, then retry."
 msgstr "За читање ове датотеке помоћу АИ потребан је тестиран АИ провајдер. Подесите један, а затим покушајте поново."
 
-#: src/features/ai/web-access.tsx
-msgid "Reading works"
-msgstr "Читање дела"
-
 #: src/features/workspace/parts.tsx
 msgid "Reading your answer"
 msgstr "Читање вашег одговора"
@@ -7732,10 +7755,6 @@ msgstr "Читање ваших белешки"
 #: src/features/check/score.tsx
 msgid "Reads cleanly"
 msgstr "Чита чисто"
-
-#: src/features/ai/web-access.tsx
-msgid "Reads supported public job pages. No account needed."
-msgstr "Чита подржане јавне странице послова. Није потребан налог."
 
 #: src/features/ai/provider-list.tsx
 #: src/features/workspace/tabs/prepare.tsx
@@ -7751,11 +7770,11 @@ msgstr "Разлог"
 msgid "Recalled"
 msgstr "Из сећања"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Recent activity"
 msgstr ""
 
-#: src/features/career/recent-documents.tsx
+#: src/features/home/recent-documents.tsx
 msgid "Recent documents"
 msgstr ""
 
@@ -7832,7 +7851,7 @@ msgstr "Освежи брифинг 24 сата пре"
 msgid "Refresh the briefing on the morning of"
 msgstr "Освежи брифинг ујутру тог дана"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -7854,7 +7873,7 @@ msgstr "Одбити"
 msgid "Rejected"
 msgstr "Одбијено"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Reload now"
 msgstr "Поново учитај"
 
@@ -7900,10 +7919,6 @@ msgstr "Подсетник"
 msgid "Reminders"
 msgstr "Подсетници"
 
-#: src/features/career/today.tsx
-msgid "Reminders appear here. Email copies are optional and need a verified address."
-msgstr "Подсетници се појављују овде. Копије имејлом су опционе и захтевају потврђену адресу."
-
 #: src/features/career/offers.tsx
 #: src/features/career/preferences.tsx
 msgid "Remote"
@@ -7911,7 +7926,7 @@ msgstr "Удаљено"
 
 #: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Remove"
 msgstr "Уклони"
 
@@ -7928,14 +7943,6 @@ msgstr ""
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
 msgstr "Уклони {name}"
-
-#: src/features/ai/web-access.tsx
-msgid "Remove connection"
-msgstr "Уклоните везу"
-
-#: src/features/ai/web-access.tsx
-msgid "Remove connection?"
-msgstr "Желите ли да уклоните везу?"
 
 #: src/features/write/basics-screen.tsx
 msgid "Remove field"
@@ -8057,8 +8064,8 @@ msgstr "Одговор копиран"
 msgid "Report"
 msgstr "Извештај"
 
-#: app/(tabs)/settings/ai-report.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-report.tsx
+#: app/account/ai.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "Пријавите садржај АИ"
@@ -8107,7 +8114,7 @@ msgstr "Одговорите до"
 msgid "Response deadline has passed."
 msgstr "Рок за одговор је прошао."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Restart to change text direction"
 msgstr "Поново покрените да бисте променили правац текста"
 
@@ -8143,8 +8150,8 @@ msgstr "Резултат"
 #: app/builder/[id]/_layout.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/facts.tsx
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
 msgid "Resume"
 msgstr "Резиме"
@@ -8186,7 +8193,7 @@ msgstr ""
 msgid "Resumes"
 msgstr "Резимеи"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "резимеи се увек приказују на белом папиру, без обзира на тему."
 
@@ -8214,6 +8221,7 @@ msgstr "Преузето {0} помоћу {1}. Време преузимања �
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/features/history/history.tsx
+#: src/features/home/section.tsx
 #: src/features/letters/page.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
@@ -8269,7 +8277,7 @@ msgid "Returned: no usable result"
 msgstr ""
 
 #: src/features/assistant/page-marks.tsx
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Review"
 msgstr "Преглед"
 
@@ -8281,7 +8289,7 @@ msgstr "Прегледајте апликацију"
 msgid "Review Check"
 msgstr "Прегледај Проверу"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Review draft"
 msgstr "Прегледај нацрт"
 
@@ -8345,7 +8353,7 @@ msgstr "Преписивање је прихваћено"
 msgid "Rezumi"
 msgstr "Rezumi"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -8381,10 +8389,6 @@ msgstr "Улога / наслов"
 #: src/features/applications-board/views.tsx
 msgid "Role, company or contact"
 msgstr "Радно место, компанија или контакт"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Role, company or location"
-msgstr "Улога, компанија или локација"
 
 #: src/features/write/fields.ts
 msgid "Roles"
@@ -8446,7 +8450,7 @@ msgstr "Рђастосмеђа"
 msgid "Salary"
 msgstr "Плата"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Salary not listed"
 msgstr "Плата није наведена"
 
@@ -8495,17 +8499,9 @@ msgstr "Сачувајте још једну понуду за поређење"
 msgid "Save changes"
 msgstr "Сачувај промене"
 
-#: src/features/ai/web-access.tsx
-msgid "Save connection"
-msgstr "Сачувај везу"
-
 #: src/features/career/facts.tsx
 msgid "Save fact"
 msgstr "Сачувај чињеницу"
-
-#: src/features/ai/web-access.tsx
-msgid "Save first, then test search and reading. No test runs automatically."
-msgstr "Прво сачувајте, а затим тестирајте претрагу и читање. Ниједан тест се не покреће аутоматски."
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Save interview"
@@ -8572,6 +8568,11 @@ msgctxt "Application workspace tab: earlier results kept for this job"
 msgid "Saved"
 msgstr "Сачувано"
 
+#. placeholder {0}: companyOf(row)
+#: src/features/home/new-roles.tsx
+msgid "Saved {0} to Applications"
+msgstr "{0} сачувано у Пријаве"
+
 #: src/features/assistant/messages.tsx
 msgid "Saved a story: {title}"
 msgstr "Сачувано прича: {title}"
@@ -8580,7 +8581,7 @@ msgstr "Сачувано прича: {title}"
 msgid "Saved description"
 msgstr "Сачуван опис"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Saved to Applications with the posting"
 msgstr "Сачувано у Пријаве са огласом"
 
@@ -8612,7 +8613,7 @@ msgstr "Чување…"
 msgid "Schedule an interview"
 msgstr "Закажите интервју"
 
-#: src/features/career/today.tsx
+#: src/features/home/home-screen.tsx
 msgid "Schedule deleted"
 msgstr "Распоред обрисан"
 
@@ -8628,7 +8629,7 @@ msgstr "Планирани рад није доступан на овом сер
 msgid "Scheduled work isn't available on this server."
 msgstr "Заказани послови нису доступни на овом серверу."
 
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 msgid "Schedules"
 msgstr "Распореди"
 
@@ -8642,21 +8643,17 @@ msgstr "Школа"
 msgid "Screening"
 msgstr "Уводни разговор"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Screening interview"
 msgstr "Селекциони интервју"
 
 #: app/_layout.tsx
 #: app/(tabs)/_layout.tsx
-#: src/features/applications/add-sheet.tsx
 #: src/features/design/picker.tsx
-#: src/ui/fields.tsx
+#: src/shell/tab-chrome.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Search"
 msgstr "Претрага"
-
-#: src/features/ai/web-access.tsx
-msgid "Search and enhanced reading"
-msgstr "Претрага и побољшано читање"
 
 #: src/features/applications-board/views.tsx
 #: src/features/letters/write.tsx
@@ -8683,27 +8680,15 @@ msgstr "Претраживачи као што је Google могу да при�
 msgid "Search facts"
 msgstr "Претражи чињенице"
 
-#: src/features/ai/web-access.tsx
-msgid "Search failed"
-msgstr "Претрага није успела"
-
 #: src/features/search/search-screen.tsx
 msgid "Search for…"
 msgstr "Претражи…"
-
-#: src/features/ai/web-access.tsx
-msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
-msgstr "Претражујте из Пријава и помоћника и читајте странице које уграђени читач не може. Једна услуга покрива обоје."
 
 #: src/features/write/pickers.tsx
 msgid "Search icons"
 msgstr "Тражи иконе"
 
-#: src/features/applications/add-sheet.tsx
-msgid "Search job postings"
-msgstr "Претражите огласе за посао"
-
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Search languages"
 msgstr "Тражи језике"
 
@@ -8715,24 +8700,12 @@ msgstr "Термини за претрагу иду вашој услузи за
 msgid "Search the web"
 msgstr ""
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Search timezones"
 msgstr "Претражи временске зоне"
 
-#: src/features/ai/web-access.tsx
-msgid "Search was tested with your server's search, and reading with {connected}."
-msgstr "Претрага је тестирана претрагом вашег сервера, а читање са {connected}."
-
-#: src/features/ai/web-access.tsx
-msgid "Search was tested with your server's search. Links are read with the built-in reader."
-msgstr "Претрага је тестирана претрагом вашег сервера. Везе се читају помоћу уграђеног читача."
-
-#: src/features/ai/web-access.tsx
-msgid "Search works"
-msgstr "Претрага ради"
-
 #: src/features/search/search-screen.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Search…"
 msgstr "Претрага…"
 
@@ -8891,6 +8864,10 @@ msgstr "Поставите лозинку"
 msgid "Set the document language when exporting."
 msgstr "Подесите језик документа приликом извоза."
 
+#: src/features/home/new-roles.tsx
+msgid "Set up a job alert"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/write/improve.tsx
 msgid "Set up a provider"
@@ -8900,27 +8877,18 @@ msgstr "Подесите провајдера"
 msgid "Set up AI provider"
 msgstr "Подесите АИ провајдера"
 
-#: src/features/career/today.tsx
-msgid "Set up discovery"
-msgstr "Подеси откривање"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Set up web search"
-msgstr "Подесите веб претрагу"
-
 #: src/features/career/schedule-sheet.tsx
 msgid "Set up web search in Settings to find roles."
 msgstr "Подесите веб претрагу у Подешавања да бисте пронашли улоге."
 
-#: app/(tabs)/_layout.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
 #: src/features/search/search-screen.tsx
 msgid "Settings"
 msgstr "Подешавања"
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Setup guide"
 msgstr "Упутство за подешавање"
 
@@ -9021,9 +8989,16 @@ msgid "Show “Made with Rezumi”"
 msgstr "Прикажи „Направљено помоћу Rezumi“"
 
 #. placeholder {0}: Math.min(remaining, COLUMN_PAGE_SIZE)
+#. placeholder {0}: visible.length - shown.length
 #: src/features/applications-board/board-screen.tsx
+#: src/features/home/new-roles.tsx
 msgid "Show {0} more"
 msgstr "Прикажи још {0}"
+
+#. placeholder {0}: read.length
+#: src/features/home/needs-you.tsx
+msgid "Show {0} read"
+msgstr "Прикажи прочитане ({0})"
 
 #: src/features/write/outline.tsx
 msgid "Show {title} on the page"
@@ -9077,9 +9052,8 @@ msgstr "Прикажи кључ"
 msgid "Show link in title"
 msgstr "Прикажи линк у наслову"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/application-detail/interview-sheet.tsx
-#: src/features/career/today.tsx
 msgid "Show more"
 msgstr "Покажи више"
 
@@ -9092,10 +9066,6 @@ msgstr "Прикажи на страници"
 #: src/features/write/picture-screen.tsx
 msgid "Show photo"
 msgstr "Прикажи фотографију"
-
-#: src/features/career/today.tsx
-msgid "Show read"
-msgstr "Прикажи прочитано"
 
 #: src/features/applications-board/time-grid.tsx
 msgid "Show this day"
@@ -9208,14 +9178,16 @@ msgstr "Пријавите се да бисте видели овај резим
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "Sign out"
 msgstr "Одјава"
 
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "Sign out?"
 msgstr "Одјавити се?"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Sign-in & security"
 msgstr "Пријава и безбедност"
 
@@ -9446,6 +9418,10 @@ msgstr "Почни"
 msgid "Start a debrief"
 msgstr "Започни анализу"
 
+#: src/features/home/home-screen.tsx
+msgid "Start a document"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 #: src/features/documents/new-document.tsx
 msgid "Start blank"
@@ -9500,6 +9476,14 @@ msgstr "Почните са одељцима које већина резиме�
 msgid "Start with your name. Build from there."
 msgstr "Почните са својим именом. Градите одатле."
 
+#: src/features/home/coming-up.tsx
+msgid "Started"
+msgstr "Почело"
+
+#: src/features/home/coming-up.tsx
+msgid "Starts in {minutes} minutes"
+msgstr "Почиње за {minutes} мин"
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
 msgstr "Почиње сада"
@@ -9507,6 +9491,10 @@ msgstr "Почиње сада"
 #: src/features/documents/new-document.tsx
 msgid "Stay in Documents"
 msgstr "Останите у Документи"
+
+#: src/shell/account-menu.tsx
+msgid "Stay signed in"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 #: src/features/letters/write.tsx
@@ -9609,7 +9597,7 @@ msgstr "Предлаже резове, никада не брише самост
 msgid "Summary"
 msgstr "Сажетак"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Support"
 msgstr "Подршка"
 
@@ -9659,8 +9647,8 @@ msgstr "Пређите на једну колону"
 msgid "Switched to one column"
 msgstr "Прешао на једну колону"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "System"
 msgstr "Оперативни систем"
 
@@ -9743,7 +9731,7 @@ msgstr "Теал"
 msgid "Technical"
 msgstr "Технички"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Technical interview"
 msgstr "Технички интервју"
 
@@ -9786,25 +9774,13 @@ msgstr "Шаблон, тип и боје прате резиме, тако да 
 msgid "Terms from the posting"
 msgstr "Термини из огласа за посао"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Terms of service"
 msgstr "Услови коришћења"
 
 #: src/features/ai/provider-list.tsx
 msgid "Test"
 msgstr "Тест"
-
-#: src/features/ai/web-access.tsx
-msgid "Test connection"
-msgstr "Тестирајте везу"
-
-#: src/features/ai/web-access.tsx
-msgid "Test search"
-msgstr "Тестирајте функцију претраживања"
-
-#: src/features/ai/web-access.tsx
-msgid "Tested with {connected}. Only this service was tested."
-msgstr "Тестирано са {connected}. Тестирана је само ова услуга."
 
 #: src/features/ai/provider-editor.tsx
 msgid "Testing the connection…"
@@ -9888,6 +9864,10 @@ msgstr "Тај снимак је био празан или већи од 2 MB. 
 msgid "That reminder time has already passed."
 msgstr "То време подсетника је већ прошло."
 
+#: src/features/home/home-screen.tsx
+msgid "That schedule no longer exists."
+msgstr ""
+
 #: src/api/ai-consent.ts
 msgid "The account changed. Try again."
 msgstr "Рачун је промењен. Покушајте поново."
@@ -9904,29 +9884,9 @@ msgstr "Пријава за посао задржава своје остале 
 msgid "The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else works without it."
 msgstr "Помоћник није подешен на овом серверу. Ко год да га покрене треба да подеси ENCRYPTION_SECRET. Све остало ради без тога."
 
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches and reads pages with {connected}, whichever AI provider you use."
-msgstr "Помоћник претражује и чита странице помоћу {connected}, који год добављач вештачке интелигенције да користите."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches with your server's search and reads links with the built-in reader, whichever AI provider you use."
-msgstr "Помоћник претражује помоћу претраге вашег сервера и чита везе помоћу уграђеног читача, који год АИ провајдер да користите."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches with your server's search and reads pages with {connected}, whichever AI provider you use."
-msgstr "Помоћник претражује помоћу претраге вашег сервера и чита странице са {connected}, који год АИ провајдер да користите."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant uses your AI provider's own web search where supported, and reads links with the built-in reader."
-msgstr "Помоћник користи сопствену веб претрагу вашег АИ провајдера где је то подржано и чита везе са уграђеним читачем."
-
 #: src/features/assistant/provider.tsx
 msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
 msgstr "Помоћник користи ваш сопствени кључ. Ништа се никуда не шаље док га не повежете."
-
-#: src/features/ai/web-access.tsx
-msgid "The built-in reader remains active."
-msgstr "Уграђени читач остаје активан."
 
 #: src/features/check/writing.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
@@ -10086,22 +10046,6 @@ msgstr "Није могуће учитати верзију сервера. Ва
 msgid "The service couldn't be reached. Try again or fill the details manually."
 msgstr "Услуга није доступна. Покушајте поново или ручно попуните детаље."
 
-#: src/features/ai/web-access.tsx
-msgid "The service didn't respond in time. Try again."
-msgstr "Услуга није одговорила на време. Покушајте поново."
-
-#: src/features/ai/web-access.tsx
-msgid "The service is unavailable or doesn't support this operation. Try again later or connect another service."
-msgstr "Услуга је недоступна или не подржава ову операцију. Покушајте поново касније или повежите другу услугу."
-
-#: src/features/ai/web-access.tsx
-msgid "The service quota is used up. Check your plan with the service."
-msgstr "Квота услуге је потрошена. Проверите свој план код услуге."
-
-#: src/features/ai/web-access.tsx
-msgid "The service rejected the credentials. Check the API key."
-msgstr "Услуга је одбила акредитиве. Проверите API кључ."
-
 #: src/features/ai/error.ts
 msgid "The test didn't run. Try again."
 msgstr "Тест није покренут. Покушајте поново."
@@ -10122,13 +10066,13 @@ msgstr "Врх прве странице не изгледа као име."
 msgid "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 msgstr "Верзије које сте послали чувају се у Сачувано. Измене овде не мењају оно што је {company} примио."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "Тема"
 
 #. placeholder {0}: getPlanName(next.planId)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr ""
@@ -10149,7 +10093,7 @@ msgstr "Не постоји пасус са сажетком."
 msgid "These are the answers saved when you applied."
 msgstr "Ово су одговори сачувани када сте се пријавили."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "Ово отвара подешавања налога вашег сервера на картици прегледача унутар апликације. Можда ћете морати да се пријавите тамо."
 
@@ -10165,7 +10109,7 @@ msgstr "Размишљање"
 msgid "Thinking…"
 msgstr "Размишљајући…"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Third-party software notices. Tap a dependency to read its license."
 msgstr "Обавештења о софтверу трећих страна. Додирните зависност да бисте прочитали њену лиценцу."
 
@@ -10521,7 +10465,7 @@ msgstr "Времена су приказана у зони {timeZone}."
 msgid "Times are shown in {timezone}. Change timezone in Settings → Preferences."
 msgstr "Времена су приказана у {timezone}. Промените временску зону у Подешавања → Поставке."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Timezone"
 msgstr "Временска зона"
 
@@ -10546,8 +10490,8 @@ msgstr "Да проверим"
 msgid "To get a reminder, allow notifications in your device settings."
 msgstr "Да бисте добили подсетник, дозволите обавештења у подешавањима уређаја."
 
-#: app/(tabs)/career/_layout.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/home/needs-you.tsx
 #: src/features/share/link.tsx
 msgid "Today"
 msgstr "данас"
@@ -10561,6 +10505,7 @@ msgid "Toggle selection"
 msgstr "Пребаци избор"
 
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/home/needs-you.tsx
 msgid "Tomorrow"
 msgstr "сутра"
 
@@ -10569,7 +10514,6 @@ msgid "Too light for headings on white. It may be hard to read and print faintly
 msgstr "Превише светло за наслове на белом. Можда ће бити тешко читати и слабо штампати."
 
 #: src/features/ai/error.ts
-#: src/features/ai/web-access.tsx
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
 #: src/features/documents/import-file.ts
@@ -10589,7 +10533,7 @@ msgstr ""
 msgid "Tool logos aren't in your plan"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/design/style-groups.tsx
 msgid "Tool logos in skills"
 msgstr ""
@@ -10598,7 +10542,7 @@ msgstr ""
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "Износи се не сабирају. Бонус и власнички удео зависе од услова; вредност удела је неизвесна. Прочитајте оригиналну документацију понуде."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Track in Applications"
 msgstr "Прати у Пријавама"
 
@@ -10629,7 +10573,6 @@ msgstr "Модел транскрипције"
 
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
-#: src/shell/app-tabs.tsx
 msgid "Trash"
 msgstr "Отпад"
 
@@ -10637,7 +10580,7 @@ msgstr "Отпад"
 msgid "Trash is empty"
 msgstr "Отпад је празан"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/credits.ts
 msgid "Trial credits"
 msgstr ""
@@ -10652,11 +10595,10 @@ msgstr "Пробајте {suggestion}"
 
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/account.tsx
+#: app/account/preferences.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
-#: src/features/ai/web-access.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/letters/write.tsx
 #: src/features/settings/api-keys.tsx
@@ -10729,7 +10671,7 @@ msgstr "Две колоне"
 msgid "Two stories"
 msgstr "Две приче"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Two-step verification"
 msgstr "Верификација у два корака"
 
@@ -10763,7 +10705,7 @@ msgstr "Типографија"
 msgid "Ukrainian"
 msgstr "Украјински"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Unavailable"
 msgstr "Недоступно"
 
@@ -10789,10 +10731,11 @@ msgstr "Подвуци везе"
 #: src/features/design/draft.ts
 #: src/features/document-menu/index.tsx
 #: src/features/documents/queries.ts
+#: src/features/home/new-roles.tsx
 #: src/features/workspace/tabs/fit.tsx
 #: src/features/write/hooks.ts
 #: src/preview/page.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Undo"
 msgstr "Поништи"
 
@@ -11005,10 +10948,6 @@ msgstr "Користите једну колону"
 msgid "Use plain headings such as \"Experience\", \"Education\" and \"Skills\"."
 msgstr "Користите обичне наслове као „Experience“, „Education“ и „Skills“."
 
-#: src/features/applications/add-sheet.tsx
-msgid "Use posting link; review before saving"
-msgstr "Користите везу за објављивање посла; прегледајте пре чувања"
-
 #: src/api/ai-consent.ts
 msgid "Use Rezumi AI?"
 msgstr ""
@@ -11043,7 +10982,7 @@ msgstr "Користи ове одговоре"
 msgid "Use this date"
 msgstr "Користите овај датум"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Use this device's timezone ({deviceTimezone})"
 msgstr "Користите временску зону овог уређаја ({deviceTimezone})"
 
@@ -11075,10 +11014,6 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Користи се за проверу улога и понуда. Сваки је број, па саветник може да пореди без нагађања."
 
-#: src/features/ai/web-access.tsx
-msgid "Used when {connected} can't read a page. No account needed."
-msgstr "Користи се када {connected} не може да прочита страницу. Није потребан налог."
-
 #: src/features/settings/profile.tsx
 #: src/features/write/fields.ts
 msgid "Username"
@@ -11091,10 +11026,6 @@ msgstr "Користи чињенице из вашег резимеа"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Uses the linked application"
 msgstr "Користи повезану пријаву за посао"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Uses the web search service set up in Settings. Search results wait for your review."
-msgstr "Користи услугу веб претраге подешену у Подешавања. Резултати претраге чекају ваш преглед."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Uses web search set up in Settings. Results wait in Today. Applications and documents are never created for you."
@@ -11235,15 +11166,6 @@ msgstr "Чекам одговор"
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "Прочитали смо „{0}“. Изаберите месец да би се доследно сортирао и штампао."
 
-#: app/(tabs)/settings/ai-web-access.tsx
-#: app/(tabs)/settings/ai.tsx
-msgid "Web access"
-msgstr "Веб приступ"
-
-#: src/features/ai/web-access.tsx
-msgid "Web access settings couldn't be saved or loaded."
-msgstr "Подешавања приступа вебу нису могла да се сачувају или учитају."
-
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "Веб-страница"
@@ -11271,6 +11193,10 @@ msgstr "Веб-сајт"
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Week"
+msgstr ""
+
+#: src/features/home/schedules.tsx
+msgid "Weekly at {clock} · next {day}"
 msgstr ""
 
 #: src/features/workspace/parts.tsx
@@ -11365,7 +11291,7 @@ msgstr "Оно што сте послали"
 msgid "What you're looking for"
 msgstr "Шта тражите"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "What's included"
 msgstr ""
 
@@ -11373,7 +11299,7 @@ msgstr ""
 msgid "What's working"
 msgstr "Шта ради"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr ""
 
@@ -11451,7 +11377,7 @@ msgstr "Word"
 msgid "Word and ODT aren't available"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Word and ODT downloads"
 msgstr ""
 
@@ -11466,10 +11392,6 @@ msgstr "AI веза је потребна за Word увоз, Побољшај, 
 #: src/features/ats-checker/messages.ts
 msgid "Words run together when the text is extracted."
 msgstr "Речи се спајају када се текст извуче."
-
-#: src/features/ai/web-access.tsx
-msgid "Working…"
-msgstr "Ради…"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Works without AI or new research"
@@ -11543,13 +11465,17 @@ msgstr "Напишите одговор или направите нацрт и�
 msgid "Writing"
 msgstr "Текст"
 
-#: app/(tabs)/settings/ai-providers.tsx
+#: app/account/ai-providers.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Помоћ при писању, прилагођени предлози и асистент. Подразумевани провајдер се користи свуда где не изаберете неког. Ваши кључеви остају шифровани."
 
 #: src/features/career/offers.tsx
 msgid "Written offer"
 msgstr "Писана понуда"
+
+#: src/features/home/needs-you.tsx
+msgid "Yesterday"
+msgstr "Јуче"
 
 #: src/features/assistant/chat-view.tsx
 msgid "You"
@@ -11592,7 +11518,11 @@ msgstr "Отказали сте пријављивање пре него што 
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "Ово сте раније заборавили, па није поново сачувано."
 
-#: src/ui/overlays.tsx
+#: src/shell/unsaved-changes.ts
+msgid "You have edits that aren't saved yet. Leaving now loses them."
+msgstr ""
+
+#: src/ui-legacy/overlays.tsx
 msgid "You have unsaved changes."
 msgstr "Имате несачуване промене."
 
@@ -11605,6 +11535,7 @@ msgid "You submit on the employer's site yourself. Marking it applied keeps the 
 msgstr "Пријаву шаљете сами на сајту послодавца. Када означите да сте се пријавили, чувају се тачне верзије које сте послали."
 
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "Бићете одјављени са {server}. Све измене које још нису синхронизоване са овог уређаја биће изгубљене."
 
@@ -11650,9 +11581,9 @@ msgstr "Ван мреже сте. Последња PDF провера остај
 msgid "You're offline. Try again when you reconnect."
 msgstr "Ви сте ван мреже. Покушајте поново када се поново повежете."
 
-#: src/features/career/today.tsx
-msgid "You're up to date"
-msgstr "Све сте прегледали"
+#: src/features/home/needs-you.tsx
+msgid "You're up to date. New roles, reminders and finished briefings appear here."
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/practise.tsx
@@ -11695,7 +11626,7 @@ msgstr "Ваше промене на овом уређају ће бити за�
 msgid "Your contact details are not on the first page."
 msgstr "Ваши контакт подаци нису на првој страници."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Your data"
 msgstr "Ваши подаци"
 
@@ -11744,7 +11675,7 @@ msgstr "Ваша потрага за послом почиње овде"
 msgid "your Knowledge"
 msgstr "ваше Знање"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 msgstr "Ваш језик је сачуван. Поново покрените Rezumi да бисте применили нови распоред слева надесно или здесна налево."
 
@@ -11788,7 +11719,15 @@ msgstr "Ваш увод"
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "Ваш увод, приче које ћете донети и питања која ћете поставити. 10 минута пре позива постаје ваша контролна листа."
 
-#: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-alert.ts
+msgid "Your own domain isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own domain isn't in your plan"
+msgstr ""
+
+#: app/account/membership.tsx
 msgid "Your own fonts"
 msgstr ""
 
@@ -11808,18 +11747,30 @@ msgstr ""
 msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
+#: src/features/billing/plan-alert.ts
+msgid "Your page keeps its address on Rezumi."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Ваш број телефона је написан у необичном облику."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
+msgstr ""
+
+#: app/(tabs)/portfolio/index.tsx
+msgid "Your portfolio is coming to the app"
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "your preferences"
 msgstr "ваше преференције"
+
+#: app/(tabs)/profile/index.tsx
+msgid "Your Profile is coming to the app"
+msgstr ""
 
 #: src/features/settings/export.tsx
 msgid "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
@@ -11865,10 +11816,6 @@ msgstr "Ваше резимеи, пропратна писма и пријаве
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Изабрани фонт не може да прикаже неке знакове. Приказују се као “?”. У одељку Дизајн изаберите фонт који их садржи."
 
-#: src/features/ai/web-access.tsx
-msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
-msgstr "Ваш сервер обезбеђује веб претрагу у одељку Пријаве и за помоћника. Повежите услугу за читање веб страница које уграђени читач не може да чита."
-
 #: src/api/ai-consent.ts
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "Ваш сервер шаље тест промпт и сачувани АПИ кључ овом провајдеру."
@@ -11909,10 +11856,6 @@ msgstr "Ваша прича није могла да се учита."
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "Ваше представљање од два минута"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Your unsaved job details will be discarded before opening web search settings."
-msgstr "Ваши несачувани детаљи посла ће бити одбачени пре отварања подешавања веб претраге."
 
 #: src/features/letters/page.tsx
 #: src/preview/page.tsx

@@ -1,5 +1,6 @@
 import { useLingui } from "@lingui/react/macro";
 import { useRouter, Stack } from "expo-router";
+import { routes } from "@/routes";
 import { Card, ListRow, Screen, Text } from "@/ui-legacy";
 
 export default function AiScreen() {
@@ -14,19 +15,19 @@ export default function AiScreen() {
 					title={t`AI providers`}
 					leading="sparkle"
 					chevron
-					onPress={() => router.push("/settings/ai-providers")}
+					onPress={() => router.push(routes.account("ai-providers"))}
 				/>
 				<ListRow
 					title={t`MCP server`}
 					leading="terminal-window"
 					chevron
-					onPress={() => router.push("/settings/ai-mcp")}
+					onPress={() => router.push(routes.account("ai-mcp"))}
 				/>
 				<ListRow
 					title={t`Report AI content`}
 					leading="warning-circle"
 					chevron
-					onPress={() => router.push("/settings/ai-report")}
+					onPress={() => router.push(routes.account("ai-report"))}
 				/>
 			</Card>
 		</Screen>

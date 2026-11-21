@@ -1,10 +1,13 @@
 import { t } from "@lingui/core/macro";
 import { AppState } from "react-native";
-import { dismissToast, showToast, toastLifetime } from "@/ui-legacy";
+import { hideToast, showToast, toastLifetime } from "@/ui";
 
 type UndoOptions = { message: string; commit: () => Promise<unknown>; restore: () => void; failed: () => void };
 
-/** Own timer because M1 Toast has no close callback. Backgrounding flushes before JS suspension. */
+/**
+ * Hides at once and commits when the Undo toast's time is up (the toast has no close callback, so this keeps its own
+ * timer). Backgrounding the app commits first, before JavaScript is suspended.
+ */
 export function withUndo({ message, commit, restore, failed }: UndoOptions) {
 	let settled = false;
 	const finish = (apply: boolean) => {
@@ -12,7 +15,7 @@ export function withUndo({ message, commit, restore, failed }: UndoOptions) {
 		settled = true;
 		clearTimeout(timer);
 		listener.remove();
-		dismissToast(toast);
+		if (toast) hideToast(toast);
 		if (apply)
 			void Promise.resolve()
 				.then(commit)
@@ -22,10 +25,10 @@ export function withUndo({ message, commit, restore, failed }: UndoOptions) {
 				});
 		else restore();
 	};
-	const timer = setTimeout(() => finish(true), toastLifetime(6000));
+	const timer = setTimeout(() => finish(true), toastLifetime());
 	const listener = AppState.addEventListener("change", (state) => {
 		if (state === "background") finish(true);
 	});
-	const toast = showToast({ message, duration: 6000, action: { label: t`Undo`, onPress: () => finish(false) } });
+	const toast = showToast({ title: message, undo: { label: t`Undo`, onUndo: () => finish(false) } });
 	return { flush: () => finish(true), cancel: () => finish(false) };
 }

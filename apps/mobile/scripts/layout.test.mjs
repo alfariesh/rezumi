@@ -91,6 +91,9 @@ const pullRefresh = { usePullRefresh: () => ({ refreshing: false, onRefresh() {}
 mocks["./use-pull-refresh"] = pullRefresh;
 mocks["@/ui-legacy/use-pull-refresh"] = pullRefresh;
 mocks["@/components/collection-header"] = { CollectionHeader: "CollectionHeader" };
+// The rebuilt tab chrome (Jest-tested in src/shell) only matters here as the old headers' outside-the-tabs default.
+mocks["@/shell/tab-chrome"] = { TabBarActions: "TabBarActions", useInTabs: () => false };
+mocks["@/ui"] = { size: { wide: 700 } };
 const { useIsTablet: isTablet } = load("shell/use-is-tablet.ts");
 mocks["./use-is-tablet"] = { useIsTablet: isTablet };
 const keyboardLayout = load("ui/keyboard.tsx");
@@ -112,22 +115,12 @@ resizedKeyboard.current = false;
 keyboardHeight = 0;
 const { Screen } = load("ui-legacy/text.tsx");
 const { TopBar } = load("shell/top-bar.tsx");
-const { AppSidebar } = load("shell/app-tabs.tsx", { "react-native-reanimated": {} });
 const nodes = (tree) =>
 	!tree || typeof tree !== "object"
 		? []
 		: Array.isArray(tree)
 			? tree.flatMap(nodes)
 			: [tree, ...nodes(tree.props.children)];
-const expanded = (tree) =>
-	!tree || typeof tree !== "object"
-		? tree
-		: Array.isArray(tree)
-			? tree.map(expanded)
-			: typeof tree.type === "function"
-				? expanded(tree.type(tree.props))
-				: { ...tree, props: { ...tree.props, children: expanded(tree.props.children) } };
-
 // Navigation follows window width; content measurements account for cutouts and sidebars.
 for (const [width, right, expected] of [
 	[466, 84, false],
@@ -153,46 +146,6 @@ provider.type.current = provider.props.value;
 insets = { ...insets, left: 0, right: 0 };
 assert.equal(Screen({}).props.style.paddingRight, 0, "Pane must not consume window insets twice");
 assert.equal(windowInsets().right, 84, "Portalled sheets must retain original window cutout");
-const state = {
-	index: 0,
-	routes: ["documents", "applications", "create", "career", "settings"].map((name) => ({ name, key: name })),
-};
-const titles = { documents: "Documents", applications: "Applications", career: "Career", settings: "Settings" };
-const props = {
-	state,
-	insets,
-	descriptors: Object.fromEntries(state.routes.map(({ key }) => [key, { options: { title: titles[key] ?? key } }])),
-	emitter: { emit: () => ({ defaultPrevented: false }) },
-	navigateToTab: (key) => calls.push(key),
-};
-window = { width: 951, height: 669, fontScale: 1 };
-insets = { top: 0, left: 0, right: 84, bottom: 20 };
-props.insets = insets;
-const rail = expanded(AppSidebar(props));
-assert.ok(rail.props.style.width < tokens.size.sidebar / 2, "Opened Duo must retain most width for content");
-assert.ok(
-	nodes(rail).some((node) => node.type === "ScrollView"),
-	"Short windows must keep navigation reachable",
-);
-for (const label of ["Documents", "Applications", "Career", "Settings", "Trash", "New", "Account"]) {
-	const action = nodes(rail).find((node) => node.type === "Pressable" && node.props.accessibilityLabel === label);
-	assert.ok(action, `Missing rail action ${label}`);
-	assert.ok(action.props.style({ pressed: false }).minHeight >= 44);
-	assert.equal(action.props.accessibilityRole, ["New", "Account"].includes(label) ? "button" : "tab");
-	if (label !== "Documents") action.props.onPress();
-}
-assert.deepEqual(calls, ["applications", "career", "settings", "/documents/trash", "/new", "/settings/account"]);
-window = { ...window, width: 750 };
-insets = { ...insets, right: 0 };
-window = { ...window, width: 951, fontScale: 1.8 };
-assert.ok(AppSidebar(props).props.style.width > rail.props.style.width, "Enlarged labels need wider rail");
-window = { ...window, width: 750, fontScale: 1 };
-native.I18nManager.isRTL = true;
-window = { ...window, width: 951 };
-props.insets = { ...props.insets, right: 84 };
-assert.equal(AppSidebar(props).props.style.width, rail.props.style.width + 84);
-assert.equal(AppSidebar(props).props.style.paddingStart, 84 + tokens.space.s3);
-native.I18nManager.isRTL = false;
 window = { ...window, width: 750 };
 const modes = element("Modes", {});
 const topBar = () => TopBar({ backLabel: "Back", onBack() {}, title: "Long fictional resume title", center: modes });
@@ -205,8 +158,6 @@ assert.equal(
 assert.ok(nodes(topBar()).some((node) => node.type === "Modes"));
 window = { ...window, width: 1366 };
 insets = { ...insets, right: 0 };
-props.insets = insets;
-assert.equal(AppSidebar(props).props.style.width, tokens.size.sidebar, "Large tablets retain full sidebar");
 assert.ok(nodes(primary()).some((node) => node.type === "Modes"));
 window = { ...window, fontScale: 1.8 };
 assert.equal(
@@ -330,7 +281,7 @@ const render = (component, props = {}) => {
 };
 // Android activity recreation can leave event caches visible after the native keyboard has closed.
 react.Children = { count: (children) => (children == null ? 0 : Array.isArray(children) ? children.length : 1) };
-const { Bar: VisibilityBar } = load("shell/app-tabs.tsx", {
+const { Bar: VisibilityBar } = load("shell/editor-bar.tsx", {
 	"react-native-reanimated": {},
 	"react-native-keyboard-controller": { useKeyboardState: () => true },
 });
@@ -351,7 +302,7 @@ const { BuilderChrome } = load("shell/builder-chrome.tsx", {
 		Stack: builderStack,
 	},
 	"./app-banner": { AppStrip: "AppStrip" },
-	"./app-tabs": { Bar: "Bar", BarItem: "BarItem" },
+	"./editor-bar": { Bar: "Bar", BarItem: "BarItem" },
 	"./key-commands": { useKeyCommands() {} },
 	"./slot": { createSlot: () => ({ Provider: "SlotProvider", useFill() {} }) },
 	"./top-bar": { TopBar },
@@ -485,7 +436,7 @@ const { Segmented } = load("ui-legacy/fields.tsx", {
 	"./switch": { Switch: "Switch" },
 	"@rezumi/utils/string": { filterOptions: (options) => options },
 });
-const { BarItem } = load("shell/app-tabs.tsx", { "react-native-reanimated": animation });
+const { BarItem } = load("shell/editor-bar.tsx", { "react-native-reanimated": animation });
 const { KnowledgeScreen } = load("features/career/knowledge.tsx", {
 	"./facts": { Facts: "Facts" },
 	"./stories": { Stories: "Stories" },

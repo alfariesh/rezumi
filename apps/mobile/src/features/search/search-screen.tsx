@@ -167,7 +167,7 @@ export function SearchScreen() {
 			keywords: [],
 			account: true,
 			root: true,
-			onPress: () => go(routes.settings()),
+			onPress: () => go(routes.account()),
 		},
 		{
 			key: "documents",
@@ -191,7 +191,7 @@ export function SearchScreen() {
 			title: t`Account`,
 			keywords: [t`Profile`, t`Password`, t`Passkeys`, t`Export data`, t`Delete account`],
 			account: true,
-			onPress: () => go(routes.settings("account")),
+			onPress: () => go(routes.account("account")),
 		},
 		{
 			key: "preferences",
@@ -199,7 +199,7 @@ export function SearchScreen() {
 			title: t`Preferences`,
 			keywords: [t`Theme`, t`Language`],
 			account: true,
-			onPress: () => go(routes.settings("preferences")),
+			onPress: () => go(routes.account("preferences")),
 		},
 		{
 			key: "ai",
@@ -207,7 +207,7 @@ export function SearchScreen() {
 			title: t`AI & developer`,
 			keywords: [t`AI providers`, t`API keys`, t`MCP`],
 			account: true,
-			onPress: () => go(routes.settings("ai")),
+			onPress: () => go(routes.account("ai")),
 		},
 		{
 			key: "theme",
@@ -224,7 +224,7 @@ export function SearchScreen() {
 			keywords: [t`Language`],
 			account: true,
 			root: true,
-			onPress: () => go(routes.settings("preferences")),
+			onPress: () => go(routes.account("preferences")),
 		},
 	];
 	const available = actions.filter((action) => signedIn || !action.account);

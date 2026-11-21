@@ -184,6 +184,11 @@ msgstr "{0, plural, one {#ଟି ତଥ୍ୟ} other {#ଟି ତଥ୍ୟ}}"
 msgid "{0, plural, one {# match} other {# matches}}"
 msgstr "{0, plural, one {# ମେଳ} other {# ମେଳ}}"
 
+#. placeholder {0}: interview.durationMinutes
+#: src/features/home/coming-up.tsx
+msgid "{0, plural, one {# min} other {# min}}"
+msgstr ""
+
 #. placeholder {0}: data.officeDays
 #: src/features/career/offers.tsx
 msgid "{0, plural, one {# office day a week} other {# office days a week}}"
@@ -245,11 +250,6 @@ msgstr "{0, plural, one {#ଟି ଆବେଦନ ଡିଲିଟ୍ କରନ୍
 #: src/features/documents/library.tsx
 msgid "{0, plural, one {Delete # document forever?} other {Delete # documents forever?}}"
 msgstr "{0, plural, one {#ଟି ଡକ୍ୟୁମେଣ୍ଟ୍ ସବୁଦିନ ପାଇଁ ବିଲୋପ କରିବେ?} other {#ଟି ଡକ୍ୟୁମେଣ୍ଟ୍ ସବୁଦିନ ପାଇଁ ବିଲୋପ କରିବେ?}}"
-
-#. placeholder {0}: row.intervalDays
-#: src/features/career/today.tsx
-msgid "{0, plural, one {Every day} other {Every # days}}"
-msgstr "{0, plural, one {ପ୍ରତିଦିନ} other {ପ୍ରତି # ଦିନରେ}}"
 
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
@@ -341,13 +341,13 @@ msgstr ""
 
 #. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
 #. placeholder {1}: TRIAL_CREDITS.validDays
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{0} expire on {1}"
 msgstr ""
 
@@ -527,6 +527,10 @@ msgstr "{day} · {length} ମିନିଟ୍"
 msgid "{days, plural, =0 {· since today} one {· for # day} other {· for # days}}"
 msgstr "{days, plural, =0 {· ଆଜିଠାରୁ} one {· # ଦିନ ହେଲା} other {· # ଦିନ ହେଲା}}"
 
+#: src/features/home/coming-up.tsx
+msgid "{days, plural, one {In # day} other {In # days}}"
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{done} of {count} done"
 msgstr "{count} ମଧ୍ୟରୁ {done} ସମାପ୍ତ"
@@ -558,6 +562,10 @@ msgstr "{facts, plural, one {#ଟି ତଥ୍ୟ} other {#ଟି ତଥ୍ୟ}}
 #: src/features/applications-board/calendar-screen.tsx
 msgid "{followUps, plural, one {# follow-up} other {# follow-ups}}"
 msgstr "{followUps, plural, one {# ପରବର୍ତ୍ତୀ ଯୋଗାଯୋଗ} other {# ପରବର୍ତ୍ତୀ ଯୋଗାଯୋଗ}}"
+
+#: src/features/home/coming-up.tsx
+msgid "{hours, plural, one {In # hour} other {In # hours}}"
+msgstr ""
 
 #: src/features/workspace/shell.tsx
 msgid "{hours} h"
@@ -595,6 +603,10 @@ msgstr ""
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
 msgstr "{label} ସଂଯୋଗ"
+
+#: src/shell/app-tabs.tsx
+msgid "{label}, {count} unread"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
@@ -710,6 +722,14 @@ msgstr "{title} ସଫା ହେଲା |"
 msgid "{title} deleted"
 msgstr "{title} ବିଲୋପ ହେଲା |"
 
+#: src/features/home/schedules.tsx
+msgid "{title} is on · next {next}"
+msgstr ""
+
+#: src/features/home/schedules.tsx
+msgid "{title} paused"
+msgstr "{title} ବିରତ"
+
 #: src/features/write/outline.tsx
 msgid "{toCheck, plural, one {# field needs a look.} other {# fields need a look.}}"
 msgstr "{toCheck, plural, one {# କ୍ଷେତ୍ର ଏକ ଲୁକ୍ ଆବଶ୍ୟକ କରେ |} other {# କ୍ଷେତ୍ରଗୁଡିକ ଏକ ଲୁକ୍ ଆବଶ୍ୟକ କରେ |}}"
@@ -718,11 +738,11 @@ msgstr "{toCheck, plural, one {# କ୍ଷେତ୍ର ଏକ ଲୁକ୍ ଆ�
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {ଯାଞ୍ଚ କରିବାକୁ # |} other {ଯାଞ୍ଚ କରିବାକୁ # |}}"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{used} of {max}"
 msgstr ""
 
@@ -761,6 +781,7 @@ msgid "2 files"
 msgstr "2 ଫାଇଲ୍ |"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/schedules.tsx
 msgid "2 hours before"
 msgstr "2 ଘଣ୍ଟା ପୂର୍ବରୁ"
 
@@ -769,6 +790,7 @@ msgid "2–3 sentences reads best"
 msgstr "2-3 ବାକ୍ୟଗୁଡ଼ିକ ସର୍ବୋତ୍ତମ ପ read ଼େ |"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "24 ଘଣ୍ଟା ପୂର୍ବରୁ"
 
@@ -906,12 +928,16 @@ msgstr "ଅଫର୍ ଗ୍ରହଣ କରାଯାଇଛି"
 msgid "Accomplishment"
 msgstr "ସଫଳତା"
 
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/account.tsx
+#: app/account/index.tsx
 #: src/features/search/search-screen.tsx
-#: src/shell/app-tabs.tsx
+#: src/shell/account-menu.tsx
 msgid "Account"
 msgstr "ଆକାଉଣ୍ଟ"
+
+#: src/shell/account-menu.tsx
+msgid "Account menu"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Action (required)"
@@ -927,25 +953,22 @@ msgstr "କାର୍ଯ୍ୟ"
 msgid "Actions for {0} at {1}"
 msgstr "{1}ରେ {0} ପାଇଁ କାର୍ଯ୍ୟ"
 
-#: src/features/ai/web-access.tsx
-msgid "Active"
-msgstr "ସକ୍ରିୟ |"
-
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Active cover letters"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Active resumes"
 msgstr ""
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr ""
 
 #: src/features/application-detail/sections.tsx
+#: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Add"
 msgstr "ଯୋଡନ୍ତୁ |"
@@ -1143,10 +1166,6 @@ msgstr "ରେଫରେନ୍ସ ଯୋଡନ୍ତୁ |"
 msgid "Add role"
 msgstr "ଭୂମିକା ଯୋଡନ୍ତୁ |"
 
-#: src/features/career/today.tsx
-msgid "Add schedule"
-msgstr "କାର୍ଯ୍ୟସୂଚୀ ଯୋଡନ୍ତୁ।"
-
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Add screening calls and technical interviews to see them here and on the calendar."
 msgstr "ସ୍କ୍ରିନିଂ କଲ୍ ଓ ବୈଷୟିକ ସାକ୍ଷାତକାର ଯୋଡ଼ନ୍ତୁ, ଯାହାଫଳରେ ସେଗୁଡ଼ିକ ଏଠାରେ ଓ କ୍ୟାଲେଣ୍ଡରରେ ଦେଖାଯିବ।"
@@ -1273,8 +1292,8 @@ msgstr "ଆପଣଙ୍କ ପ୍ରଥମ ସମୀକ୍ଷା ପରେ, ଏ�
 msgid "Against your requirements"
 msgstr "ଆପଣଙ୍କ ଆବଶ୍ୟକତା ତୁଳନାରେ"
 
-#: app/(tabs)/settings/ai.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/ai.tsx
+#: app/account/index.tsx
 #: src/features/search/search-screen.tsx
 msgid "AI & developer"
 msgstr "AI ଏବଂ ବିକାଶକାରୀ |"
@@ -1311,8 +1330,8 @@ msgstr "AI ସମୃଦ୍ଧତା ଉପଲବ୍ଧ ନଥିଲା। ପେ
 msgid "AI provider"
 msgstr "AI ପ୍ରଦାତା।"
 
-#: app/(tabs)/settings/ai-providers.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-providers.tsx
+#: app/account/ai.tsx
 #: src/features/search/search-screen.tsx
 msgid "AI providers"
 msgstr "AI ପ୍ରଦାନକାରୀ |"
@@ -1356,7 +1375,7 @@ msgstr "ସମସ୍ତ ({0})"
 msgid "All applications"
 msgstr "ସମସ୍ତ ଆବେଦନ"
 
-#: src/features/career/recent-documents.tsx
+#: src/features/home/recent-documents.tsx
 msgid "All documents"
 msgstr ""
 
@@ -1508,12 +1527,11 @@ msgstr ""
 msgid "API and MCP access isn't in your plan"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "API and MCP for other apps"
 msgstr ""
 
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "API key"
 msgstr "API କି"
 
@@ -1530,7 +1548,11 @@ msgstr "API କିଗୁଡ଼ିକ |"
 msgid "API keys need the Plus or Pro AI plan"
 msgstr ""
 
-#: app/(tabs)/settings/preferences.tsx
+#: src/shell/account-menu.tsx
+msgid "App settings"
+msgstr ""
+
+#: app/account/preferences.tsx
 msgid "Appearance"
 msgstr "ଦୃଶ୍ୟ"
 
@@ -1600,6 +1622,7 @@ msgstr "ଚାକିରି ଆବେଦନ ଦୃଶ୍ୟ।"
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Applications"
 msgstr "ଆବେଦନଗୁଡ଼ିକ"
 
@@ -1645,7 +1668,7 @@ msgstr "ପ୍ରୟୋଗ ହେଲା। {0} ପାଇଁ ଅନୁସରଣ �
 msgid "Applied. The application is updated."
 msgstr "ପ୍ରୟୋଗ ହେଲା। ଆବେଦନ ଅପଡେଟ୍ ହୋଇଛି।"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Applies to this device only."
 msgstr "କେବଳ ଏହି ଡିଭାଇସ୍‌ରେ ଲାଗୁ।"
 
@@ -1723,10 +1746,6 @@ msgstr "କୋଚ୍‌କୁ ପଚାରନ୍ତୁ"
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "ପରିଚୟ ଏନକ୍ରିପସନ୍ ସକ୍ଷମ କରିବାକୁ କିମ୍ବା ଏକ ଅଂଶୀଦାର ସଂଯୋଗକୁ ବିନ୍ୟାସ କରିବାକୁ ଆପଣଙ୍କର ସର୍ଭର ପ୍ରଶାସକଙ୍କୁ କୁହନ୍ତୁ।"
-
-#: src/features/ai/web-access.tsx
-msgid "Ask your server administrator to enable credential encryption or configure a shared web connection."
-msgstr "ପରିଚୟ ଏନକ୍ରିପସନ୍ ସକ୍ଷମ କରିବାକୁ କିମ୍ବା ଏକ ଅଂଶୀଦାର ୱେବ୍ ସଂଯୋଗକୁ ବିନ୍ୟାସ କରିବାକୁ ଆପଣଙ୍କର ସର୍ଭର ପ୍ରଶାସକଙ୍କୁ କୁହନ୍ତୁ |"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Ask, or describe a change…"
@@ -1931,7 +1950,7 @@ msgstr ""
 msgid "Behavioral"
 msgstr "ଆଚରଣଗତ"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Behavioral interview"
 msgstr "ଆଚରଣଭିତ୍ତିକ ସାକ୍ଷାତକାର।"
 
@@ -1998,7 +2017,7 @@ msgstr "ପୃଷ୍ଠାରେ ଭାଷା ସେଟ୍ ବ୍ୟବହାର
 msgid "Briefing"
 msgstr "ବ୍ରିଫିଂ"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Briefing ready"
 msgstr "ବ୍ରିଫିଂ ପ୍ରସ୍ତୁତ"
 
@@ -2009,10 +2028,6 @@ msgstr "ବ୍ରିଫିଂ ରିଫ୍ରେସ୍ ଚାଲୁ ଅଛି ·
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "ବ୍ରିଫିଂ ରିଫ୍ରେସ୍ ବିରତ"
-
-#: src/features/ai/web-access.tsx
-msgid "Built-in reader"
-msgstr "ବିଲ୍ଟ-ଇନ୍ ରିଡର୍ |"
 
 #: src/features/settings/locale-names.ts
 msgid "Bulgarian"
@@ -2033,7 +2048,7 @@ msgstr "ବୁଲେଟେଡ୍ ତାଲିକା |"
 msgid "Burgundy"
 msgstr "ଗାଢ଼ ଲାଲ୍"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "by <0>Salman Alfariesh</0>"
 msgstr "<0>Salman Alfariesh</0>ଙ୍କ ଦ୍ୱାରା"
 
@@ -2051,7 +2066,6 @@ msgstr "ସଫ୍ଟୱେର୍ ତୁମର ରେଜୁମ୍ ପ read ି �
 
 #: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/list-screen.tsx
@@ -2064,7 +2078,7 @@ msgstr "ସଫ୍ଟୱେର୍ ତୁମର ରେଜୁମ୍ ପ read ି �
 #: src/features/write/improve.tsx
 #: src/features/write/pickers.tsx
 #: src/linking/open.ts
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Cancel"
 msgstr "ବାତିଲ୍ କରନ୍ତୁ"
 
@@ -2080,11 +2094,6 @@ msgstr "ରେକର୍ଡିଂ ବାତିଲ୍ କରନ୍ତୁ।"
 msgid "Cancel request"
 msgstr "ଅନୁରୋଧ ବାତିଲ୍ କରନ୍ତୁ।"
 
-#: app/(tabs)/_layout.tsx
-#: app/(tabs)/career/_layout.tsx
-msgid "Career"
-msgstr "କ୍ୟାରିଅର୍"
-
 #: src/features/settings/locale-names.ts
 msgid "Catalan"
 msgstr "କାଟାଲାନ୍"
@@ -2097,10 +2106,6 @@ msgstr "ପ୍ରମାଣପତ୍ରଗୁଡିକ"
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "ପରିବର୍ତ୍ତନ କରନ୍ତୁ |"
-
-#: src/features/ai/web-access.tsx
-msgid "Change connection"
-msgstr "ସଂଯୋଗ ପରିବର୍ତ୍ତନ କରନ୍ତୁ |"
 
 #: src/features/letters/write.tsx
 msgid "Change it in Design."
@@ -2456,10 +2461,11 @@ msgstr "ବନ୍ଦ |"
 msgid "Closed: {closed}"
 msgstr "ବନ୍ଦ: {closed}"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/_layout.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/billing/credits.ts
 #: src/features/workspace/coach-sheet.tsx
+#: src/shell/tab-chrome.tsx
 msgid "Coach"
 msgstr "କୋଚ୍"
 
@@ -2485,7 +2491,7 @@ msgid "Columns can scramble the order text is read in."
 msgstr "ସ୍ତମ୍ଭଗୁଡ଼ିକ ପ read ଼ାଯାଇଥିବା ଅର୍ଡର ପାଠ୍ୟକୁ ସ୍କ୍ରାମ କରିପାରେ |"
 
 #: src/features/applications-board/calendar-screen.tsx
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Coming up"
 msgstr "ଆଗାମୀ"
 
@@ -2568,10 +2574,6 @@ msgstr "{0} ଯୋଡନ୍ତୁ"
 msgid "Connect {domain}"
 msgstr "{domain} ଯୋଡନ୍ତୁ"
 
-#: src/features/ai/web-access.tsx
-msgid "Connect a service"
-msgstr "ଏକ ସେବା ସଂଯୋଗ କରନ୍ତୁ |"
-
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
 msgid "Connect AI provider"
@@ -2592,15 +2594,11 @@ msgstr "ଏହାକୁ ସ୍ୱୟଂଚାଳିତ ଭାବେ ରିଫ୍
 msgid "Connect an AI provider to read details from pasted text. Manual entry works without AI."
 msgstr "ଲେପନ ହୋଇଥିବା ଲେଖାରୁ ବିବରଣୀ ପଢ଼ିବାକୁ AI ପ୍ରଦାତା ସଂଯୋଗ କରନ୍ତୁ। ନିଜେ ଲେଖିବାକୁ AI ଦରକାର ନାହିଁ।"
 
-#: src/features/ai/web-access.tsx
-msgid "Connect an AI provider to use the assistant. Saving and preparing jobs doesn't need one."
-msgstr "ସହକାରୀ ବ୍ୟବହାର ପାଇଁ AI ପ୍ରଦାତା ସଂଯୋଗ କରନ୍ତୁ। ଚାକିରି ସେଭ୍ ଓ ପ୍ରସ୍ତୁତି ପାଇଁ ଏହା ଦରକାର ନାହିଁ।"
-
 #: src/features/assistant/provider.tsx
 msgid "Connect another…"
 msgstr "ଅନ୍ୟକୁ ସଂଯୋଗ କରନ୍ତୁ…"
 
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai.tsx
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "ଲେଖିବା, ଚାକିରି ଖୋଜିବା ଏବଂ ତୁମର ରେଜୁମ୍ ସହିତ କାର୍ଯ୍ୟ କରିବା ପାଇଁ ଆପଣ ବ୍ୟବହାର କରୁଥିବା ଉପକରଣଗୁଡ଼ିକୁ ସଂଯୋଗ କରନ୍ତୁ |"
 
@@ -2616,11 +2614,7 @@ msgstr "ସଂଯୁକ୍ତ। ଆପଣଙ୍କ ଡୋମେନ୍ ଆପଣ
 msgid "Connecting the dots"
 msgstr "ସୂତ୍ର ଯୋଡ଼ୁଛି"
 
-#: src/features/ai/web-access.tsx
-msgid "Connection saved"
-msgstr "ସଂଯୋଗ ସଞ୍ଚୟ ହୋଇଛି |"
-
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -2777,13 +2771,17 @@ msgstr ""
 msgid "Couldn't attach the file. Try again."
 msgstr "ଫାଇଲ୍ ସଂଲଗ୍ନ କରିପାରିଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't change the language. Try again."
 msgstr "ଭାଷା ପରିବର୍ତ୍ତନ କରିପାରିଲା ନାହିଁ। ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Couldn't change the schedule. Try again."
 msgstr "ସମୟସୂଚୀ ବଦଳାଇହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/home/schedules.tsx
+msgid "Couldn't change this schedule. Try again."
+msgstr "ଏହି ସମୟସୂଚୀ ବଦଳାଇହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
 #: src/features/share/download.tsx
 msgid "Couldn't check for a linked cover letter."
@@ -2802,13 +2800,9 @@ msgid "Couldn't complete the request. Check your connection and try again."
 msgstr "ଅନୁରୋଧ ସମ୍ପୂର୍ଣ୍ଣ କରିହେଲା ନାହିଁ। ଆପଣଙ୍କ ସଂଯୋଗ ଯାଞ୍ଚ କରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
 #: src/features/documents/queries.ts
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Couldn't complete this action. Try again."
 msgstr "ଏହି କ୍ରିୟା ସଂପୂର୍ଣ୍ଣ କରିପାରିଲା ନାହିଁ। ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।"
-
-#: src/features/ai/web-access.tsx
-msgid "Couldn't confirm AI connections. Try again before using the assistant."
-msgstr "AI ସଂଯୋଗକୁ ନିଶ୍ଚିତ କରିପାରିଲା ନାହିଁ। ସହାୟକ ବ୍ୟବହାର କରିବା ପୂର୍ବରୁ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।"
 
 #: src/features/applications/add-sheet.tsx
 msgid "Couldn't confirm the save. Check Applications before retrying to avoid a duplicate."
@@ -2838,6 +2832,10 @@ msgstr "ବାର୍ତ୍ତାଳାପ ବିଲୋପ କରିହେଲା 
 msgid "Couldn't delete the interview. Try again."
 msgstr "ସାକ୍ଷାତକାର ବିଲୋପ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
+#: src/features/home/home-screen.tsx
+msgid "Couldn't delete this schedule. Try again."
+msgstr "ଏହି ସମୟସୂଚୀ ବିଲୋପ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
 #: src/features/settings/export.tsx
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
@@ -2850,6 +2848,10 @@ msgstr "ଏହି ଫାଇଲ୍ ତିଆରି ହୋଇପାରିଲା �
 #: src/features/write/improve.tsx
 msgid "Couldn't get a suggestion. Nothing changed."
 msgstr "ଏକ ପରାମର୍ଶ ପାଇପାରିଲା ନାହିଁ | କିଛି ପରିବର୍ତ୍ତନ ହୋଇନାହିଁ |"
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't hide this role. Try again."
+msgstr "ଏହି ଭୂମିକା ଲୁଚାଇହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't import the file. Try again from Documents."
@@ -2930,12 +2932,16 @@ msgstr "ଏହି ସଂସ୍କରଣର ପେଜ୍ ଲୋଡ୍ ହୋଇ�
 msgid "Couldn't load this. Check your connection and try again."
 msgstr "ଏହାକୁ ଲୋଡ୍ କରିପାରିଲା ନାହିଁ। ଆପଣଙ୍କର ସଂଯୋଗ ଯାଞ୍ଚ କରନ୍ତୁ ଏବଂ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।"
 
+#: src/features/home/section.tsx
+msgid "Couldn't load this. Check your connection."
+msgstr ""
+
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
 msgid "Couldn't load versions."
 msgstr "ସଂସ୍କରଣ ଲୋଡ୍ ହୋଇପାରିଲା ନାହିଁ।"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "ଆପଣଙ୍କର ପ୍ରୋଫାଇଲ୍ ଲୋଡ୍ ହୋଇପାରିଲା ନାହିଁ।"
 
@@ -2947,7 +2953,7 @@ msgstr "ଆପଣଙ୍କର ସାର୍ବଜନୀନ ଠିକଣା ଲୋ
 msgid "Couldn't load your resumes."
 msgstr "ଆପଣଙ୍କ ରେଜ୍ୟୁମେଗୁଡ଼ିକୁ ଲୋଡ୍ କରିହେଲା ନାହିଁ।"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't load your timezone."
 msgstr "ଆପଣଙ୍କ ଟାଇମଜୋନ ଲୋଡ୍ କରିପାରିଲା ନାହିଁ।"
 
@@ -2955,18 +2961,23 @@ msgstr "ଆପଣଙ୍କ ଟାଇମଜୋନ ଲୋଡ୍ କରିପାର
 msgid "Couldn't mark it as applied. Try again."
 msgstr "ଏହାକୁ ଆବେଦନ କରାଯାଇଛି ବୋଲି ଚିହ୍ନିତ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
+#: src/features/home/needs-you.tsx
+msgid "Couldn't mark this as read. Try again."
+msgstr "ଏହାକୁ ପଢ଼ାଯାଇଛି ବୋଲି ଚିହ୍ନିତ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
 #: src/features/applications-board/use-reschedule-interview.ts
 msgid "Couldn't move the interview. Try again."
 msgstr ""
 
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/account.tsx
+#: app/account/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
+#: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "ବ୍ରାଉଜର୍ ଖୋଲିପାରିଲା ନାହିଁ। ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Couldn't open the posting. Try again."
 msgstr "ଚାକିରି ବିଜ୍ଞାପନ ଖୋଲିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
@@ -3017,6 +3028,10 @@ msgstr "ଆପଣଙ୍କ ଡକ୍ୟୁମେଣ୍ଟ୍ ରିଫ୍ରେ�
 #: src/features/assistant/messages.tsx
 msgid "Couldn't remember that. Try again."
 msgstr "ତାହା ମନେ ରଖିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't remove it from Applications. Try again."
+msgstr "ଏହାକୁ ଆବେଦନଗୁଡ଼ିକରୁ ହଟାଇହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't remove the file. Try again."
@@ -3074,13 +3089,17 @@ msgstr "ନୋଟ୍ ସେଭ୍ ହୋଇପାରିଲା ନାହିଁ।
 msgid "Couldn't save the tags. Try again."
 msgstr "ଟ୍ୟାଗ୍ ସେଭ୍ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't save the theme. Try again."
 msgstr "ଥିମ୍ ସଞ୍ଚୟ କରିପାରିଲା ନାହିଁ। ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "ସମୟ ମଣ୍ଡଳ ସେଭ୍ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't save this role to Applications. Try again."
+msgstr "ଏହି ପଦବୀକୁ ଆବେଦନଗୁଡ଼ିକରେ ସେଭ୍ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
 #: src/features/letters/write.tsx
 msgid "Couldn't save your changes, so drafting didn't start. Nothing on the page changed."
@@ -3279,7 +3298,7 @@ msgstr "ଗୋଟିଏ ନୂତନ ରେଜ୍ୟୁମେ ତିଆରି �
 msgid "Create a resume first, then ask about it."
 msgstr "ପ୍ରଥମେ ଏକ ରେଜୁମ୍ ସୃଷ୍ଟି କରନ୍ତୁ, ତାପରେ ଏହା ବିଷୟରେ ପଚାରନ୍ତୁ |"
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "ବ୍ରାଉଜର୍‌ର ଆକାଉଣ୍ଟ ସେଟିଂସ୍‌ରେ API କୀ ତିଆରି କରନ୍ତୁ। କୀ ଆପଣଙ୍କ ନାମରେ କାମ କରେ ଓ ଡକ୍ୟୁମେଣ୍ଟ୍ ପଢ଼ି ବଦଳାଇପାରେ।"
 
@@ -3308,7 +3327,7 @@ msgstr "ସୃଷ୍ଟି {0} · ଶେଷ ବ୍ୟବହୃତ {1} · ମି�
 msgid "Creating document…"
 msgstr "ଡକ୍ୟୁମେଣ୍ଟ୍ ସୃଷ୍ଟି କରିବା…"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
 msgstr ""
 
@@ -3341,7 +3360,7 @@ msgstr "କଷ୍ଟମ୍ ଫିଲ୍ଡସ୍।"
 msgid "Custom section"
 msgstr "କଷ୍ଟମ୍ ବିଭାଗ |"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 msgid "Custom styles"
@@ -3375,6 +3394,10 @@ msgstr ""
 msgid "Czech"
 msgstr "ଚେକ୍"
 
+#: src/features/home/schedules.tsx
+msgid "Daily at {clock} · next {day}"
+msgstr ""
+
 #. placeholder {0}: summary.peak
 #: src/features/share/link.tsx
 msgid "Daily views over 30 days, peak {0}"
@@ -3389,8 +3412,8 @@ msgstr "|\n"
 msgid "Danish"
 msgstr "ଡାନିସ୍"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "Dark"
 msgstr "ଡାର୍କ"
 
@@ -3506,7 +3529,7 @@ msgstr "“{0}” ବିଲୋପ କରିବେ?"
 msgid "Delete {0}"
 msgstr "{0} ବିଲୋପ କରନ୍ତୁ |"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Delete account"
 msgstr "ଖାତା ବିଲୋପ କରନ୍ତୁ |"
@@ -3609,7 +3632,7 @@ msgstr "ବିଭାଗ ଏବଂ ଏହାର ଏଣ୍ଟ୍ରିଗୁଡି
 msgid "Density"
 msgstr "ଘନତା"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Dependency type"
 msgstr "ନିର୍ଭରତା ପ୍ରକାର"
 
@@ -3669,18 +3692,21 @@ msgid "Direction"
 msgstr "ଦିଗ"
 
 #: src/features/letters/write.tsx
+#: src/shell/unsaved-changes.ts
 msgid "Discard"
 msgstr "ପରିତ୍ୟାଗ କରନ୍ତୁ |"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Discard changes"
 msgstr "ପରିବର୍ତ୍ତନଗୁଡ଼ିକ ବାତିଲ୍ କରନ୍ତୁ"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Discard changes?"
 msgstr "ପରିବର୍ତ୍ତନ ପରିତ୍ୟାଗ କରିବେ?"
+
+#: src/shell/unsaved-changes.ts
+msgid "Discard your changes?"
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "Discard your offline edits and load the saved version."
@@ -3691,7 +3717,7 @@ msgid "Discard your offline edits?"
 msgstr "ଆପଣଙ୍କର ଅଫଲାଇନ୍ ସମ୍ପାଦନାକୁ ପରିତ୍ୟାଗ କରନ୍ତୁ?"
 
 #: src/features/letters/write.tsx
-#: src/ui/layout.tsx
+#: src/ui-legacy/layout.tsx
 msgid "Dismiss"
 msgstr "ଖାରଜ କରନ୍ତୁ"
 
@@ -3713,9 +3739,10 @@ msgid "Document type"
 msgstr "ଡକ୍ୟୁମେଣ୍ଟ୍ ପ୍ରକାର |"
 
 #: app/(tabs)/_layout.tsx
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Documents"
 msgstr "ଡକ୍ୟୁମେଣ୍ଟ୍"
 
@@ -3727,7 +3754,7 @@ msgstr "ଡକ୍ୟୁମେଣ୍ଟଗୁଡ଼ିକ 30 ଦିନ ପରେ 
 msgid "Documents for this job"
 msgstr "ଏହି କାର୍ଯ୍ୟ ପାଇଁ ଡକ୍ୟୁମେଣ୍ଟ୍ |"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Documents in Trash don't count."
 msgstr ""
 
@@ -3754,9 +3781,8 @@ msgid "Don't share"
 msgstr "|\n"
 "ଅଂଶୀଦାର କରନ୍ତୁ ନାହିଁ |"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/applications/list-screen.tsx
-#: src/features/career/today.tsx
 #: src/features/documents/library.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/date-field.tsx
@@ -3764,6 +3790,10 @@ msgstr "|\n"
 #: src/features/write/rich-text-field.tsx
 msgid "Done"
 msgstr "ସମାପ୍ତ"
+
+#: src/features/home/schedules.tsx
+msgid "Done · {day}"
+msgstr ""
 
 #: src/features/applications/list-screen.tsx
 msgid "Done selecting"
@@ -3944,7 +3974,7 @@ msgstr "ଏହି ଚାଟ୍‌ର ପୂର୍ବ ବାର୍ତ୍ତା"
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/career/stories.tsx
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Edit"
 msgstr "ସମ୍ପାଦନ କରନ୍ତୁ"
@@ -4016,7 +4046,7 @@ msgstr "ଶିକ୍ଷା"
 msgid "Education swaps school and field of study the same way."
 msgstr ""
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "ଇମେଲ୍"
@@ -4056,10 +4086,6 @@ msgstr "ଇଂରାଜୀ"
 #: src/features/settings/locale-names.ts
 msgid "English (United Kingdom)"
 msgstr "ଇଂରାଜୀ (ଯୁକ୍ତରାଜ୍ୟ)"
-
-#: src/features/ai/web-access.tsx
-msgid "Enhanced reading failed"
-msgstr "ଉନ୍ନତ ପ reading ିବା ବିଫଳ ହେଲା |"
 
 #: src/features/assistant/messages.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
@@ -4135,6 +4161,10 @@ msgstr "ପ୍ରବେଶ ବିକଳ୍ପଗୁଡ଼ିକ"
 msgid "Equity"
 msgstr "ଇକ୍ୱିଟି"
 
+#: src/features/home/schedules.tsx
+msgid "Every {days} days at {clock} · next {day}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Every 3 days"
 msgstr "ପ୍ରତି 3 ଦିନରେ"
@@ -4163,7 +4193,7 @@ msgstr ""
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "ପ୍ରତ୍ୟେକ ଭୂମିକା ତୁମେ ଯାହା କରିଛ ତାହା କହିଥାଏ | ଲେଖା ଟ୍ୟାବରେ ଲାଇଭ୍ ୱାର୍ଡିଂ ଉପରେ ମତାମତ |"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Every template"
 msgstr ""
 
@@ -4178,6 +4208,10 @@ msgstr "ପ୍ରତି ସପ୍ତାହ"
 #: src/features/workspace/tabs/saved.tsx
 msgid "Everything the coach wrote for {company}, newest first."
 msgstr "{company} ପାଇଁ କୋଚ୍ ଲେଖିଥିବା ସବୁ, ନୂଆଟି ପ୍ରଥମେ।"
+
+#: app/(tabs)/profile/index.tsx
+msgid "Everything your resumes, letters and Coach start from. For now, your facts and stories are in Knowledge."
+msgstr ""
 
 #: src/features/career/facts.tsx
 #: src/features/write/fields.ts
@@ -4242,7 +4276,7 @@ msgstr "ତଥ୍ୟ"
 msgid "Failed"
 msgstr "ବିଫଳ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "ମତାମତ"
 
@@ -4477,10 +4511,17 @@ msgstr "ଭୁଲିଗଲେ କାହାଣୀ ଓ ସେଭ୍ ଆଇଟମ�
 msgid "Formatting"
 msgstr "ଫର୍ମାଟିଂ"
 
-#. placeholder {0}: time.when(row.firstSeenAt)
-#: src/features/career/today.tsx
-msgid "Found {0}"
-msgstr "{0} ମିଳିଲା"
+#: src/features/home/new-roles.tsx
+msgid "Found {day}"
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "Found today"
+msgstr "ଆଜି ମିଳିଲା"
+
+#: src/features/home/new-roles.tsx
+msgid "Found yesterday"
+msgstr "ଗତକାଲି ମିଳିଲା"
 
 #: src/features/billing/plan.ts
 msgid "Free"
@@ -4501,7 +4542,7 @@ msgstr "ଠାରୁ"
 
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr ""
@@ -4531,11 +4572,6 @@ msgstr "ପୁରା ପ୍ରସ୍ଥ"
 msgid "German"
 msgstr "ଜର୍ମାନ୍"
 
-#. placeholder {0}: sites[provider]
-#: src/features/ai/web-access.tsx
-msgid "Get a key at {0}. It's stored encrypted and used only for your requests."
-msgstr "{0}ରେ କୀ ପାଆନ୍ତୁ। ଏହା ଏନକ୍ରିପ୍ଟ ଭାବେ ରହେ ଓ କେବଳ ଆପଣଙ୍କ ଅନୁରୋଧରେ ବ୍ୟବହୃତ ହୁଏ।"
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback"
 msgstr "ମତାମତ ପାଆନ୍ତୁ"
@@ -4544,9 +4580,9 @@ msgstr "ମତାମତ ପାଆନ୍ତୁ"
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "“ମତାମତ ପାଆନ୍ତୁ” ପ୍ରଶ୍ନ, ଆପଣଙ୍କ ଉତ୍ତର, ଏହି ଚାକିରି ବିଜ୍ଞାପନ ଓ ଆପଣଙ୍କ କାହାଣୀ {providerName}କୁ ପଠାଏ।"
 
-#: src/features/career/today.tsx
-msgid "Get new roles here every morning"
-msgstr "ପ୍ରତି ସକାଳେ ଏଠାରେ ନୂଆ ଭୂମିକା ପାଆନ୍ତୁ"
+#: src/features/home/new-roles.tsx
+msgid "Get new jobs for your search here every morning"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4585,7 +4621,7 @@ msgstr "ସମ୍ବୋଧନ"
 msgid "Grid view"
 msgstr "ଗ୍ରୀଡ୍ ଦୃଶ୍ୟ।"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Haptic feedback"
 msgstr "ହାପ୍ଟିକ୍ ଫିଡବ୍ୟାକ୍"
 
@@ -4644,9 +4680,13 @@ msgstr "ଶୁଣିଲି"
 msgid "Hebrew"
 msgstr "ହିବ୍ରୁ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Help & docs"
 msgstr "ସହାୟତା & ଡକସ୍"
+
+#: src/shell/account-menu.tsx
+msgid "Help & legal"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
@@ -4667,7 +4707,7 @@ msgstr "Hex"
 msgid "Hidden"
 msgstr "ଲୁଚାଇଦିଆଯାଇଛି"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Hidden from New roles"
 msgstr "ନୂଆ ଭୂମିକାରୁ ଲୁଚାଯାଇଛି"
 
@@ -4704,11 +4744,11 @@ msgstr "ପୃଷ୍ଠାରୁ ଲୁଚାନ୍ତୁ |"
 msgid "Hide key"
 msgstr "ଚାବି ଲୁଚାନ୍ତୁ।"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Hide license"
 msgstr "ଲାଇସେନ୍ସ ଲୁଚାନ୍ତୁ"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Hide read"
 msgstr "ପଢ଼ାଯାଇଥିବା ଆଇଟମ୍ ଲୁଚାନ୍ତୁ"
 
@@ -4742,6 +4782,12 @@ msgstr "ଘୁଞ୍ଚାଇବାକୁ ⋮⋮ ଧରିରଖନ୍ତୁ"
 #: src/features/documents/library.tsx
 msgid "Hold to delete"
 msgstr "ବିଲୋପ କରିବାକୁ ଦବାଇ ରଖନ୍ତୁ"
+
+#: app/(tabs)/_layout.tsx
+#: src/features/home/home-screen.tsx
+#: src/shell/app-tabs.tsx
+msgid "Home"
+msgstr "ହୋମ୍"
 
 #: src/features/design/advanced.tsx
 msgid "Horizontal margin"
@@ -4839,19 +4885,9 @@ msgstr ""
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
 msgstr "ଯଦି ଏହା ସ୍କାନ୍‌ରୁ ଆସିଥାଏ, ତେବେ ତାହା ଆଶାନୁରୂପ। ନଚେତ୍ ଏହାକୁ ହଟାନ୍ତୁ; ନିଯୁକ୍ତିକାରୀମାନେ ଏହାକୁ କୀୱାର୍ଡ ଭରଣ ଭାବରେ ପଢ଼ନ୍ତି।"
 
-#. placeholder {0}: reader ?? provider.provider
 #: src/api/ai-consent.ts
-msgid "If web access is used, links and search terms also go to {0} and the sites being read."
-msgstr "|\n"
-"ଯଦି ୱେବ୍ ଆକ୍ସେସ୍ ବ୍ୟବହୃତ ହୁଏ, ଲିଙ୍କ୍ ଏବଂ ସନ୍ଧାନ ସର୍ତ୍ତାବଳୀ ମଧ୍ୟ {0} ଏବଂ ପ are ାଯାଉଥିବା ସାଇଟଗୁଡିକ କୁ ଯାଏ |"
-
-#: src/api/ai-consent.ts
-msgid "If web access is used, search terms go to your server's search service and the search engines it uses, and links go to {reader} and the sites being read."
-msgstr "ୱେବ୍ ପ୍ରବେଶ ବ୍ୟବହାର କଲେ, ସନ୍ଧାନ ଶବ୍ଦଗୁଡ଼ିକ ଆପଣଙ୍କ ସର୍ଭରର ସନ୍ଧାନ ସେବା ଏବଂ ଏହା ବ୍ୟବହାର କରୁଥିବା ସନ୍ଧାନ ଇଞ୍ଜିନ୍‌ଗୁଡ଼ିକୁ ପଠାଯାଏ। ଲିଙ୍କ୍‌ଗୁଡ଼ିକ {reader} ଏବଂ ପଢ଼ାଯାଉଥିବା ୱେବସାଇଟ୍‌ଗୁଡ଼ିକୁ ପଠାଯାଏ।"
-
-#: src/api/ai-consent.ts
-msgid "If web access is used, search terms go to your server's search service and the search engines it uses, and links go to the sites being read."
-msgstr "ୱେବ୍ ପ୍ରବେଶ ବ୍ୟବହାର କଲେ, ସନ୍ଧାନ ଶବ୍ଦଗୁଡ଼ିକ ଆପଣଙ୍କ ସର୍ଭରର ସନ୍ଧାନ ସେବା ଏବଂ ଏହା ବ୍ୟବହାର କରୁଥିବା ସନ୍ଧାନ ଇଞ୍ଜିନ୍‌ଗୁଡ଼ିକୁ ପଠାଯାଏ। ଲିଙ୍କ୍‌ଗୁଡ଼ିକ ପଢ଼ାଯାଉଥିବା ୱେବସାଇଟ୍‌ଗୁଡ଼ିକୁ ପଠାଯାଏ।"
+msgid "If the web is used, search terms go to your server's search service and links go to the sites being read."
+msgstr ""
 
 #: src/features/check/screen.tsx
 msgid "Ignore"
@@ -4893,6 +4929,10 @@ msgstr "ଏହାକୁ ଆମଦାନି କରନ୍ତୁ।"
 msgid "Import with AI"
 msgstr ""
 
+#: src/features/home/home-screen.tsx
+msgid "Import your current resume, or start blank or from a sample. We lay out every section for you to refine."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Import your current resume, or start fresh with your name."
 msgstr "ଆପଣଙ୍କ ସାମ୍ପ୍ରତିକ ରେଜ୍ୟୁମେ ଆମଦାନି କର, କିମ୍ବା ଆପଣଙ୍କ ନାମ ସହିତ ସତେଜ ଆରମ୍ଭ କର।"
@@ -4926,7 +4966,7 @@ msgstr "ଉନ୍ନତି…"
 msgid "In progress"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Included"
 msgstr ""
 
@@ -4967,14 +5007,14 @@ msgstr "ଅନ୍ତର୍ଦୃଷ୍ଟି |"
 msgid "Interests"
 msgstr "ରୁଚିଗୁଡିକ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "କେବଳ ଇଣ୍ଟରଫେସ୍ | ପ୍ରତ୍ୟେକ ରେଜୁମ୍ ଡିଜାଇନ୍ରେ ନିଜସ୍ୱ ଭାଷା ସେଟ୍ କରେ |"
 
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Interview"
 msgstr "ସାକ୍ଷାତକାର"
 
@@ -5003,6 +5043,7 @@ msgid "Interview practice"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/needs-you.tsx
 msgid "Interview preparation"
 msgstr "ସାକ୍ଷାତକାର ପ୍ରସ୍ତୁତି"
 
@@ -5018,7 +5059,7 @@ msgstr "ସାକ୍ଷାତକାର ସେଭ୍ ହେଲା। ଏହାର
 msgid "Interview saved. The reminder time has already passed."
 msgstr "ସାକ୍ଷାତକାର ସଞ୍ଚୟ ହୋଇଛି। ସ୍ମାରକପତ୍ର ସମୟ ଅତିବାହିତ ହୋଇସାରିଛି।"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "କ୍ୟାରିଅର୍‌ରେ ସାକ୍ଷାତକାର ସମୟ, ସ୍ମାରକ ଓ ସମୟସୂଚୀ ଏହାକୁ ବ୍ୟବହାର କରେ।"
 
@@ -5092,13 +5133,17 @@ msgstr "ଏହାର ସେଭ୍ କୀ ଡିଲିଟ୍ ହୋଇଛି | �
 msgid "Japanese"
 msgstr "ଜାପାନୀ"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "JavaScript"
 msgstr "JavaScript"
 
 #: src/features/search/search-screen.tsx
 msgid "Job"
 msgstr "ଚାକିରି"
+
+#: src/features/home/needs-you.tsx
+msgid "Job alert"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Job description"
@@ -5158,8 +5203,8 @@ msgstr "ଗୋଟିଏ ମାତ୍ର ଠିକଣା ରଖନ୍ତୁ, ଯ�
 msgid "Keep both"
 msgstr "ଉଭୟ ରଖ।"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/shell/unsaved-changes.ts
+#: src/ui-legacy/overlays.tsx
 msgid "Keep editing"
 msgstr "ସମ୍ପାଦନା ଜାରି ରଖନ୍ତୁ"
 
@@ -5217,10 +5262,6 @@ msgstr "ସବୁଠାରୁ ନିର୍ଦ୍ଦିଷ୍ଟ ଅଂଶଗୁ�
 msgid "Kept as it is"
 msgstr "ଯେପରି ଅଛି"
 
-#: src/features/ai/web-access.tsx
-msgid "Key stored encrypted"
-msgstr "କି ଗଚ୍ଛିତ ଏନକ୍ରିପ୍ଟ ହୋଇଛି |"
-
 #: src/features/settings/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "ଚାବିଗୁଡ଼ିକ ତୁମ ପରି କାର୍ଯ୍ୟ କରେ ଏବଂ ଆପଣଙ୍କ ଡକ୍ୟୁମେଣ୍ଟକୁ ପ୍ରବେଶ କରିପାରିବ। ଆପଣଙ୍କର ବ୍ରାଉଜର୍ ଆକାଉଣ୍ଟ୍ ସେଟିଂସମୂହରେ ନୂତନ କିଗୁଡ଼ିକ ସୃଷ୍ଟି ହୋଇଛି।"
@@ -5241,7 +5282,7 @@ msgstr "ଖ୍ମେର୍"
 msgid "Kind regards,"
 msgstr "ଦୟାକରି,"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: src/features/career/knowledge.tsx
 msgid "Knowledge"
 msgstr "ଜ୍ଞାନ"
@@ -5263,7 +5304,7 @@ msgstr "ଲେବେଲ୍"
 msgid "Landscape"
 msgstr "ଲ୍ୟାଣ୍ଡସ୍କେପ୍"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/search/search-screen.tsx
@@ -5288,7 +5329,7 @@ msgstr "ଶେଷ ଯାଞ୍ଚ {lastChecked} ପୂର୍ବେ"
 msgid "Last edited"
 msgstr "ଶେଷ ସମ୍ପାଦିତ |"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Later"
 msgstr "ପରେ"
 
@@ -5348,7 +5389,7 @@ msgstr "ଲିଙ୍କ୍ ଅପସାରଣ କରିବାକୁ ଏହାକ
 msgid "Left"
 msgstr "ବାମ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Legal"
 msgstr "ଆଇନଗତ"
 
@@ -5378,16 +5419,17 @@ msgstr "କମ୍।"
 msgid "Less than 48 hours left."
 msgstr "48 ଘଣ୍ଟାରୁ କମ୍ ସମୟ ବାକି ଅଛି।"
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "API କୀରେ Claude ବା Cursor ପରି AI କ୍ଲାଏଣ୍ଟକୁ ରେଜ୍ୟୁମେ ପଢ଼ିବା ଓ ସମ୍ପାଦନା କରିବାକୁ ଦିଅନ୍ତୁ।"
 
 #: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
 msgid "Let's start with what you have"
 msgstr "ତୁମର ଯାହା ଅଛି ତାହାଠାରୁ ଆରମ୍ଭ କରିବା |"
 
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
 msgid "Letter"
 msgstr "ଚିଠି"
@@ -5425,7 +5467,7 @@ msgstr "କଭର୍ ଚିଠିର ସାର୍ବଜନୀନ ଲିଙ୍କ
 msgid "Level"
 msgstr "ସ୍ତର"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Licenses"
 msgstr "ଲାଇସେନ୍ସଗୁଡ଼ିକ"
 
@@ -5433,8 +5475,8 @@ msgstr "ଲାଇସେନ୍ସଗୁଡ଼ିକ"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "ଲିଗେଚର୍ \"workflow\" ପରି ଶବ୍ଦରୁ ଅକ୍ଷର ଛାଡ଼ି ଦେଇପାରେ।"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "Light"
 msgstr "ଲାଇଟ୍"
 
@@ -5502,7 +5544,7 @@ msgstr "ଲିଙ୍କ୍ ଅପଡେଟ୍ ହୋଇଛି |"
 msgid "Linked · not sent yet"
 msgstr "ଲିଙ୍କ୍ · ଏପର୍ଯ୍ୟନ୍ତ ପଠାଯାଇ ନାହିଁ |"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Linked accounts"
 msgstr "ଲିଙ୍କ୍ ହୋଇଥିବା ଖାତା।"
 
@@ -5552,6 +5594,7 @@ msgid "Live at {url}"
 msgstr "{url}ରେ ଉପଲବ୍ଧ"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/section.tsx
 msgid "Loading"
 msgstr "ଲୋଡିଂ"
 
@@ -5605,10 +5648,6 @@ msgstr "ରିଜ୍ୟୁମ୍ ଲୋଡ୍ ହେଉଛି…"
 msgid "Loading saved version…"
 msgstr "ସେଭ୍ ହୋଇଥିବା ସଂସ୍କରଣ ଲୋଡ୍ ହେଉଛି…"
 
-#: src/features/ai/web-access.tsx
-msgid "Loading web access…"
-msgstr "ୱେବ୍ ଆକ୍ସେସ୍ ଲୋଡ୍ କରୁଛି…"
-
 #: src/features/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "ୱାର୍କସ୍ପେସ୍ ଲୋଡ୍ ହେଉଛି…"
@@ -5617,7 +5656,7 @@ msgstr "ୱାର୍କସ୍ପେସ୍ ଲୋଡ୍ ହେଉଛି…"
 msgid "Loading your public address…"
 msgstr "ଆପଣଙ୍କର ସର୍ବସାଧାରଣ ଠିକଣା ଲୋଡ୍ କରୁଛି…"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: app/builder/[id]/write.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/improve.tsx
@@ -5711,10 +5750,6 @@ msgstr "ଏହାକୁ ଛୋଟ କର |"
 msgid "Make primary"
 msgstr "ପ୍ରାଥମିକ କରନ୍ତୁ"
 
-#: src/features/career/today.tsx
-msgid "Make room for the next step."
-msgstr "ପରବର୍ତ୍ତୀ ପଦକ୍ଷେପ ପାଇଁ ସ୍ଥାନ ପ୍ରସ୍ତୁତ କରନ୍ତୁ।"
-
 #: src/features/assistant/assistant-screen.tsx
 msgid "Make the opening stronger"
 msgstr "ଖୋଲିବାକୁ ଅଧିକ ଶକ୍ତିଶାଳୀ କର |"
@@ -5742,10 +5777,6 @@ msgstr "ମଲୟାଳମ"
 #: src/features/application-detail/sections.tsx
 msgid "Manage contacts"
 msgstr "ସମ୍ପର୍କଗୁଡିକ ପରିଚାଳନା କରନ୍ତୁ"
-
-#: src/features/ai/web-access.tsx
-msgid "Managed by server"
-msgstr "ସର୍ଭର ଦ୍ୱାରା ପରିଚାଳିତ |"
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
@@ -5782,7 +5813,7 @@ msgstr "ମାର୍ଜିନ୍ {minimum} pt ରେ ସେଟ୍ ହୋଇଛ�
 msgid "Mark as applied"
 msgstr "ଆବେଦନ କରାଯାଇଛି ବୋଲି ଚିହ୍ନିତ କରନ୍ତୁ"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Mark as read"
 msgstr "ପଢ଼ାଯାଇଛି ବୋଲି ଚିହ୍ନିତ କରନ୍ତୁ"
 
@@ -5807,7 +5838,7 @@ msgstr "Markdown (.md)"
 msgid "Marked as applied. The versions you sent are kept."
 msgstr "ଆବେଦନ କରାଯାଇଛି ବୋଲି ଚିହ୍ନିତ ହେଲା। ଆପଣ ପଠାଇଥିବା ସଂସ୍କରଣଗୁଡ଼ିକ ରଖାଯାଇଛି।"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Marked as read"
 msgstr "ପଢ଼ାଯାଇଛି ବୋଲି ଚିହ୍ନିତ ହେଲା"
 
@@ -5847,8 +5878,8 @@ msgstr "ଉପଲବ୍ଧ ହୋଇପାରେ"
 msgid "MCP"
 msgstr "MCP"
 
-#: app/(tabs)/settings/ai-mcp.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-mcp.tsx
+#: app/account/ai.tsx
 msgid "MCP server"
 msgstr "MCP ସର୍ଭର |"
 
@@ -5881,7 +5912,7 @@ msgstr "ସର୍ବନିମ୍ନ ମୂଳ ଦରମା"
 msgid "Minimum salary cannot be compared in these terms."
 msgstr "ଏହି ସର୍ତ୍ତରେ ସର୍ବନିମ୍ନ ଦରମା ତୁଳନା କରାଯାଇପାରିବ ନାହିଁ।"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "MIT License"
 msgstr "MIT ଲାଇସେନ୍ସ"
 
@@ -5930,6 +5961,10 @@ msgstr "ଅଧିକ ପ୍ରଦାତା ଓ ବିକଳ୍ପ ସେଟି�
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "ଏକରୁ ଅଧିକ ଇମେଲ୍ ଠିକଣା ଦେଖାଯାଏ।"
+
+#: src/features/home/schedules.tsx
+msgid "Morning of"
+msgstr "ସେହି ଦିନ ସକାଳେ"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Morning of · 08:00 local"
@@ -5987,7 +6022,7 @@ msgstr "ଆବେଦନ ଘୁଞ୍ଚାନ୍ତୁ"
 
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
-#: src/ui/sortable.tsx
+#: src/ui-legacy/sortable.tsx
 msgid "Move down"
 msgstr "ତଳକୁ ଯାଅ |"
 
@@ -6050,7 +6085,7 @@ msgstr "କୁ…"
 
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
-#: src/ui/sortable.tsx
+#: src/ui-legacy/sortable.tsx
 msgid "Move up"
 msgstr "ଉପରକୁ ଯାଅ |"
 
@@ -6134,7 +6169,7 @@ msgstr "ନାମ, ଟ୍ୟାଗ୍ କିମ୍ବା ଆବେଦନ"
 msgid "Narrow"
 msgstr "ସଂକୀର୍ଣ୍ଣ |"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Native & fonts"
 msgstr "ନେଟିଭ୍ ଉପାଦାନ ଓ ଫଣ୍ଟ୍"
 
@@ -6142,7 +6177,7 @@ msgstr "ନେଟିଭ୍ ଉପାଦାନ ଓ ଫଣ୍ଟ୍"
 msgid "Needs attention"
 msgstr "ଧ୍ୟାନର ଆବଶ୍ୟକତା |"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Needs you"
 msgstr "ଆପଣଙ୍କ ଅପେକ୍ଷାରେ"
 
@@ -6163,6 +6198,7 @@ msgstr "କଦାପି ନୁହେଁ |"
 #: app/(tabs)/_layout.tsx
 #: src/features/documents/library.tsx
 #: src/shell/app-tabs.tsx
+#: src/shell/tab-chrome.tsx
 msgid "New"
 msgstr "ନୂତନ"
 
@@ -6189,9 +6225,9 @@ msgstr "ନୂତନ ବାର୍ତ୍ତାଳାପ |"
 msgid "New cover letter instead"
 msgstr "ଏହା ବଦଳରେ ନୂଆ କଭର ଅକ୍ଷର |"
 
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/search/search-screen.tsx
 msgid "New document"
 msgstr "ନୂତନ ଡକ୍ୟୁମେଣ୍ଟ୍ |"
@@ -6202,13 +6238,9 @@ msgstr "ନୂତନ ଡକ୍ୟୁମେଣ୍ଟ୍ |"
 msgid "New page"
 msgstr "ନୂତନ ପୃଷ୍ଠା |"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "ଆପଣଙ୍କ ଖୋଜରୁ ନୂଆ ଭୂମିକା"
-
-#: src/features/career/today.tsx
-msgid "New roles, reminders and finished briefings appear here."
-msgstr "ନୂଆ ଭୂମିକା, ସ୍ମାରକ ଓ ସମ୍ପୂର୍ଣ୍ଣ ବ୍ରିଫିଂ ଏଠାରେ ଦେଖାଯାଏ।"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "New schedule"
@@ -6307,11 +6339,11 @@ msgstr "କୌଣସି ପାରମ୍ପରିକ ବିଭାଗ ଶୀର୍
 msgid "No conversations about this document yet."
 msgstr "ଏହି ଡକ୍ୟୁମେଣ୍ଟ ବିଷୟରେ ଏପର୍ଯ୍ୟନ୍ତ କ No ଣସି ବାର୍ତ୍ତାଳାପ ନାହିଁ |"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "No credit activity yet."
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "No credits to spend right now"
 msgstr ""
 
@@ -6339,7 +6371,7 @@ msgstr "କ email ଣସି ଇମେଲ ଠିକଣା ନାହିଁ |"
 msgid "No email address was found."
 msgstr "କୌଣସି ଇମେଲ୍ ଠିକଣା ମିଳିଲା ନାହିଁ।"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr ""
@@ -6364,7 +6396,7 @@ msgstr "ଏପର୍ଯ୍ୟନ୍ତ କ job ଣସି କାମ ନାହି�
 msgid "No keys yet."
 msgstr "ଏପର୍ଯ୍ୟନ୍ତ କ keys ଣସି ଚାବି ନାହିଁ |"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "No language matches."
 msgstr "କୌଣସି ଭାଷା ମେଳ ଖାଉନାହିଁ।"
 
@@ -6381,7 +6413,7 @@ msgid "No location"
 msgstr "କ location ଣସି ଅବସ୍ଥାନ ନାହିଁ |"
 
 #: src/features/documents/library.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "No matches"
 msgstr "କୌଣସି ମେଳ ନାହିଁ"
 
@@ -6390,14 +6422,21 @@ msgstr "କୌଣସି ମେଳ ନାହିଁ"
 msgid "No matching applications"
 msgstr "ମେଳ ଖାଉଥିବା ଆବେଦନ ନାହିଁ"
 
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery is paused."
-msgstr "କୌଣସି ନୂଆ ଭୂମିକା ନାହିଁ। ସୁଯୋଗ ସନ୍ଧାନ ବିରତ ଅଛି।"
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again on {day} at {clock}."
+msgstr ""
 
-#. placeholder {0}: time.when(discovery.nextRunAt)
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again at {0}."
-msgstr "ନୂଆ ପଦବୀ ନାହିଁ। ଖୋଜା ପୁଣି {0}ରେ ଚାଲିବ।"
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again today at {clock}."
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again tomorrow at {clock}."
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert is paused."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
@@ -6415,17 +6454,9 @@ msgstr "କୌଣସି ଫୋନ୍ ନମ୍ବର ମିଳିଲା ନା�
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "କ photo ଣସି ଫଟୋ ନାହିଁ | ଅଧିକାଂଶ ATS ଫଟୋକୁ ଅଣଦେଖା କରନ୍ତି; କେତେକ ଅଞ୍ଚଳ ଗୋଟିଏ ଆଶା କରନ୍ତି |"
 
-#: src/features/applications/add-sheet.tsx
-msgid "No postings found. Try different keywords."
-msgstr "କୌଣସି ଚାକିରି ବିଜ୍ଞାପନ ମିଳିଲା ନାହିଁ। ଭିନ୍ନ କୀୱାର୍ଡ ଚେଷ୍ଟା କରନ୍ତୁ।"
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "ଏହି ଚାକିରି ବିଜ୍ଞାପନରେ ଚିହ୍ନିହେବା ଭଳି ପଦ ନାହିଁ।"
-
-#: src/features/career/today.tsx
-msgid "No reply yet"
-msgstr "ଏପର୍ଯ୍ୟନ୍ତ ଉତ୍ତର ନାହିଁ"
 
 #: src/features/applications/stages.ts
 msgid "No response"
@@ -6480,13 +6511,9 @@ msgstr "ଏହି ପ୍ରଦାନକାରୀ ପାଇଁ କ suggestions �
 msgid "No text could be read from this file."
 msgstr "ଏହି ଫାଇଲରୁ କୌଣସି ଟେକ୍ସଟ୍ ପଢ଼ିହେଲା ନାହିଁ।"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "No timezone matches."
 msgstr "କୌଣସି ସମୟ ଅଞ୍ଚଳ ମେଳ ଖାଉନାହିଁ।"
-
-#: src/features/career/today.tsx
-msgid "No upcoming interviews."
-msgstr "ଆଗାମୀ ସାକ୍ଷାତକାର ନାହିଁ।"
 
 #: src/features/check/issues.ts
 msgid "No work experience shows"
@@ -6543,7 +6570,7 @@ msgstr "ଏପର୍ଯ୍ୟନ୍ତ ସଂଯୁକ୍ତ ହୋଇନାହ�
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "ମୋ ପାଇଁ ନୁହେଁ"
 
@@ -6555,7 +6582,7 @@ msgstr "ମିଳିଲା ନାହିଁ:"
 msgid "Not in your resume · add only if true"
 msgstr "ତୁମର ରେଜୁମ୍ ରେ ନୁହେଁ · କେବଳ ସତ ହେଲେ ଯୋଗ କର |"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Not included"
 msgstr ""
 
@@ -6603,10 +6630,6 @@ msgstr "ଟିପ୍ପଣୀ"
 msgid "Nothing here should cost you a match."
 msgstr "ଏଠାରେ କ othing ଣସି ଜିନିଷ ଆପଣଙ୍କୁ ଏକ ମ୍ୟାଚ୍ ଖର୍ଚ୍ଚ କରିବା ଉଚିତ୍ ନୁହେଁ |"
 
-#: src/features/career/today.tsx
-msgid "Nothing is applied for or created until you choose."
-msgstr "ଆପଣ ନ ବାଛିବା ପର୍ଯ୍ୟନ୍ତ କିଛି ପାଇଁ ଆବେଦନ କରାଯାଏ ନାହିଁ କିମ୍ବା କିଛି ସୃଷ୍ଟି ହୁଏ ନାହିଁ।"
-
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
 msgstr "କୌଣସି ଜିନିଷ ଏକ ଭୂମିକାକୁ ଚାଲୁ ବୋଲି ଚିହ୍ନଟ କରେ ନାହିଁ।"
@@ -6623,7 +6646,7 @@ msgstr "ଏପର୍ଯ୍ୟନ୍ତ କିଛି ସେଭ୍ ହୋଇନା
 msgid "Nothing scheduled yet"
 msgstr "ଏପର୍ଯ୍ୟନ୍ତ କିଛି ସ୍ଥିର ହୋଇନାହିଁ |"
 
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 msgid "Nothing scheduled yet."
 msgstr "ଏପର୍ଯ୍ୟନ୍ତ କିଛି ନିର୍ଧାରିତ ହୋଇନାହିଁ।"
 
@@ -6691,7 +6714,9 @@ msgstr "ବନ୍ଦ ଚିଠିଟି ତୁମର ସବିଶେଷ ତଥ�
 msgid "Offer"
 msgstr "ଅଫର୍"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
+#: src/features/applications-board/views.tsx
+#: src/features/applications/list-screen.tsx
 msgid "Offers"
 msgstr "ଅଫର୍"
 
@@ -6703,7 +6728,7 @@ msgstr "ସପ୍ତାହରେ ସର୍ବାଧିକ ଅଫିସ୍ ଦି
 msgid "Office days are unknown."
 msgstr "ଅଫିସ୍ ଦିନ ଜଣାନାହିଁ।"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Office days not stated"
 msgstr "ଅଫିସ୍ ଦିନ ଉଲ୍ଲେଖ ନାହିଁ"
 
@@ -6715,7 +6740,7 @@ msgstr "ସପ୍ତାହକୁ ଅଫିସ୍ ଦିନ"
 msgid "Offline · saved on this device"
 msgstr "ଅଫଲାଇନ୍ · ଏହି ଡିଭାଇସରେ ସେଭ୍ ହୋଇଛି |"
 
-#: app/(tabs)/_layout.tsx
+#: src/shell/offline-strip.tsx
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "ଅଫଲାଇନ୍। ସମ୍ପାଦନା ଏହି ଡିଭାଇସ୍‌ରେ ସେଭ୍ ହୁଏ ଓ ପୁଣି ସଂଯୋଗ ହେଲେ ସିଙ୍କ୍ ହୁଏ।"
 
@@ -6723,10 +6748,6 @@ msgstr "ଅଫଲାଇନ୍। ସମ୍ପାଦନା ଏହି ଡିଭା
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
-
-#: src/features/career/today.tsx
-msgid "On"
-msgstr "ଚାଲୁ"
 
 #: src/features/share/link.tsx
 msgid "On. Anyone with the link can see your web page."
@@ -6806,11 +6827,12 @@ msgstr "କେବଳ ତୁମେ ଏଗୁଡ଼ିକୁ ଦେଖ |"
 msgid "Onsite"
 msgstr "ଅନସାଇଟ୍"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Onsite interview"
 msgstr "ସ୍ଥାନରେ ସାକ୍ଷାତକାର"
 
 #: src/features/documents/document-sheets.tsx
+#: src/features/home/needs-you.tsx
 msgid "Open"
 msgstr "ଖୋଲନ୍ତୁ"
 
@@ -6825,7 +6847,7 @@ msgstr "AI ସେଟିଂସମୂହ ଖୋଲନ୍ତୁ |"
 msgid "Open application"
 msgstr "ଆବେଦନ ଖୋଲନ୍ତୁ"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Open briefing"
 msgstr "ବ୍ରିଫିଂ ଖୋଲନ୍ତୁ"
 
@@ -6846,9 +6868,17 @@ msgstr "ଏଡିଟର୍ ଖୋଲନ୍ତୁ |"
 msgid "Open in Offers"
 msgstr "ଅଫର୍‌ରେ ଖୋଲନ୍ତୁ"
 
+#: app/(tabs)/profile/index.tsx
+msgid "Open Knowledge"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open letter"
 msgstr "ଚିଠି ଖୋଲନ୍ତୁ"
+
+#: src/shell/preparing-tab.tsx
+msgid "Open on the web"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Open questions"
@@ -6857,10 +6887,6 @@ msgstr "ଅନୁତ୍ତରିତ ପ୍ରଶ୍ନ"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open resume"
 msgstr "ରେଜ୍ୟୁମେ ଖୋଲନ୍ତୁ"
-
-#: src/features/career/today.tsx
-msgid "Open settings"
-msgstr "ସେଟିଂସ୍ ଖୋଲନ୍ତୁ"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Open story"
@@ -6878,7 +6904,7 @@ msgstr "ପ୍ରଥମେ ଫାଇଲ୍‌କୁ Wordରେ ଖୋଲି .doc
 msgid "Open the list"
 msgstr "ତାଲିକା ଖୋଲନ୍ତୁ"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Open the schedule"
 msgstr "ସମୟସୂଚୀ ଖୋଲନ୍ତୁ"
 
@@ -6886,11 +6912,11 @@ msgstr "ସମୟସୂଚୀ ଖୋଲନ୍ତୁ"
 msgid "Open web page"
 msgstr "ୱେବ୍ ପୃଷ୍ଠା ଖୋଲନ୍ତୁ"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Open workspace"
 msgstr "ୱାର୍କସ୍ପେସ୍ ଖୋଲନ୍ତୁ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Open-source licenses"
 msgstr "ଓପନ୍-ସୋର୍ସ ଲାଇସେନ୍ସଗୁଡ଼ିକ"
 
@@ -6918,10 +6944,6 @@ msgstr "କ୍ୟାରିଅର୍ → ଅଫର୍‌ରେ ଖୋଲେ।"
 #: src/features/career/schedule-sheet.tsx
 msgid "Opportunity discovery"
 msgstr "ସୁଯୋଗ ସନ୍ଧାନ"
-
-#: src/features/ai/web-access.tsx
-msgid "Optional"
-msgstr "ବ tion କଳ୍ପିକ"
 
 #: src/features/ai/provider-editor.tsx
 msgid "Optional for local Ollama"
@@ -7063,12 +7085,12 @@ msgstr "ଅନୁଚ୍ଛେଦ {n} |"
 msgid "Partly supported"
 msgstr "ଆଂଶିକ ସମର୍ଥିତ"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "ପାସକିଗୁଡିକ"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
@@ -7111,7 +7133,6 @@ msgid "Paste the question from the form"
 msgstr "ଫର୍ମରୁ ପ୍ରଶ୍ନ ପେଷ୍ଟ କରନ୍ତୁ"
 
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "Paste your key"
 msgstr "ତୁମର ଚାବି ଲେପନ କର |"
 
@@ -7120,9 +7141,9 @@ msgstr "ତୁମର ଚାବି ଲେପନ କର |"
 msgid "Pasted description"
 msgstr "ଅତୀତର ବର୍ଣ୍ଣନା |"
 
-#: src/features/career/today.tsx
-msgid "Paused"
-msgstr "ବିରତ ଅଛି"
+#: src/features/home/schedules.tsx
+msgid "Paused · {line}"
+msgstr "ବିରତ · {line}"
 
 #: src/features/career/preferences.tsx
 msgid "Pay period"
@@ -7172,7 +7193,7 @@ msgstr "ପ୍ରତି ମାସ"
 msgid "Per year"
 msgstr "ପ୍ରତି ବର୍ଷ"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Permanently removes everything. Opens your browser account settings."
 msgstr "ସବୁକିଛି ସ୍ଥାୟୀଭାବେ ହଟାଏ। ବ୍ରାଉଜର୍‌ରେ ଆକାଉଣ୍ଟ ସେଟିଂସ୍ ଖୋଲେ।"
 
@@ -7238,8 +7259,9 @@ msgstr "ସାଧାରଣ ଟେକ୍ସଟ୍ (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "ହେଡିଙ୍ଗ୍ ସହିତ ସାଧା ପାଠ | ଚାକିରି ଆବେଦନ ଫର୍ମ ଏବଂ ନୋଟରେ ଲେପନ କରନ୍ତୁ |"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/membership.tsx
+#: app/account/index.tsx
+#: app/account/membership.tsx
+#: src/shell/account-menu.tsx
 msgid "Plan"
 msgstr ""
 
@@ -7259,13 +7281,13 @@ msgstr "କ'ଣ ପଚାରିବେ ଯୋଜନା କରନ୍ତୁ"
 msgid "Planning your week"
 msgstr "ଆପଣଙ୍କ ସପ୍ତାହର ଯୋଜନା କରୁଛି"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
 
@@ -7285,6 +7307,12 @@ msgstr "ପୋଲିଶ୍"
 #: src/features/workspace/parts.tsx
 msgid "Polishing"
 msgstr "ପରିମାର୍ଜନ କରୁଛି"
+
+#: app/(tabs)/_layout.tsx
+#: app/(tabs)/portfolio/index.tsx
+#: src/shell/app-tabs.tsx
+msgid "Portfolio"
+msgstr ""
 
 #: src/features/write/picture-screen.tsx
 msgid "Portrait"
@@ -7352,8 +7380,8 @@ msgstr "ଏକକ କଲମ୍‌କୁ ପସନ୍ଦ କରନ୍ତୁ, କ�
 msgid "Preference"
 msgstr "ପସନ୍ଦ"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 #: src/features/career/knowledge.tsx
 #: src/features/search/search-screen.tsx
 msgid "Preferences"
@@ -7409,7 +7437,7 @@ msgstr "ଫାଇଲ୍ ପ୍ରସ୍ତୁତ କରୁଛି…"
 msgid "Present"
 msgstr "ବର୍ତ୍ତମାନ"
 
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Press and hold"
 msgstr "ଦବାଇ ରଖନ୍ତୁ"
 
@@ -7480,7 +7508,7 @@ msgstr "ପଠାଇବା ପୂର୍ବରୁ ଫର୍ମକୁ ଏକ ଫ�
 msgid "Privacy"
 msgstr "ଗୋପନୀୟତା"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 #: src/auth/auth-header.tsx
 msgid "Privacy policy"
 msgstr "ଗୋପନୀୟତା ନୀତି"
@@ -7502,8 +7530,11 @@ msgstr "ପେସାଦାର"
 msgid "Proficiency"
 msgstr "ପ୍ରବୀଣତା"
 
-#: app/(tabs)/settings/account.tsx
+#: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/index.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Profile"
 msgstr "ପ୍ରୋଫାଇଲ୍"
 
@@ -7535,13 +7566,8 @@ msgstr "ପ୍ରକଳ୍ପଗୁଡିକ"
 msgid "Proposed changes"
 msgstr "ପ୍ରସ୍ତାବିତ ପରିବର୍ତ୍ତନ"
 
-#: src/features/ai/web-access.tsx
-msgid "Provided by your server: {connected}. Search and reading are set up for everyone here. Ask your administrator about changes."
-msgstr "ସର୍ଭର୍‌ରୁ ମିଳିଛି: {connected}। ଏଠାରେ ସମସ୍ତଙ୍କ ପାଇଁ ଖୋଜା ଓ ପଢ଼ା ସଜାଡ଼ାଯାଇଛି। ପରିବର୍ତ୍ତନ ପାଇଁ ପ୍ରଶାସକଙ୍କୁ ପଚାରନ୍ତୁ।"
-
 #: src/api/ai-consent.ts
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "Provider"
 msgstr "ପ୍ରଦାନକାରୀ"
 
@@ -7590,6 +7616,10 @@ msgstr "ଦର୍ଶନ ଏବଂ ଡାଉନଲୋଡ୍ ଗଣନା କର�
 #: src/features/share/web-page.tsx
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "ଆପଣଙ୍କ ଛୋଟ ଲିଙ୍କ୍ ଏବଂ କଷ୍ଟମ୍ ଡୋମେନ୍‌ରେ ଖୋଲିବା ପାଇଁ ଏହି ରେଜ୍ୟୁମେ ପ୍ରକାଶ କରନ୍ତୁ।"
+
+#: app/(tabs)/portfolio/index.tsx
+msgid "Publish, share and see who visited from your phone. Until then, manage it on the web."
+msgstr ""
 
 #: src/features/write/fields.ts
 msgid "Publisher"
@@ -7663,12 +7693,12 @@ msgstr "ବ୍ରିଫିଂ ପଢ଼ନ୍ତୁ"
 msgid "Read it for me"
 msgstr "ମୋ ପାଇଁ ପଢ଼ନ୍ତୁ"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Read license"
 msgstr "ଲାଇସେନ୍ସ ପଢ଼ନ୍ତୁ"
 
 #: src/features/applications/add-sheet.tsx
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Read posting"
 msgstr "ଚାକିରି ବିଜ୍ଞାପନ ପଢ଼ନ୍ତୁ"
 
@@ -7683,10 +7713,6 @@ msgstr "ସଂଲଗ୍ନକ ପ Read ଼ନ୍ତୁ |"
 #: src/features/check/parser.tsx
 msgid "Read the exported PDF"
 msgstr "ରପ୍ତାନି ହୋଇଥିବା PDF ପଢ଼ନ୍ତୁ"
-
-#: app/(tabs)/settings/ai-web-access.tsx
-msgid "Read the job links you save. Saving and preparing jobs works without a connection."
-msgstr "ଆପଣ ସଞ୍ଚୟ କରିଥିବା କାର୍ଯ୍ୟ ଲିଙ୍କଗୁଡିକ ପ Read ନ୍ତୁ | ଚାକିରି ସଞ୍ଚୟ ଏବଂ ପ୍ରସ୍ତୁତି ବିନା ସଂଯୋଗରେ କାମ କରେ |"
 
 #: src/features/assistant/messages.tsx
 msgid "Read the letter"
@@ -7744,10 +7770,6 @@ msgstr "ପାଠ ପ Reading ଼ିବା"
 msgid "Reading this file with AI needs a tested AI provider. Set one up, then retry."
 msgstr "AIରେ ଏହି ଫାଇଲ୍ ପଢ଼ିବାକୁ ପରୀକ୍ଷିତ AI ପ୍ରଦାତା ଦରକାର। ଗୋଟିଏ ସଜାଡ଼ି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
-#: src/features/ai/web-access.tsx
-msgid "Reading works"
-msgstr "ପ Reading ିବା କାର୍ଯ୍ୟ"
-
 #: src/features/workspace/parts.tsx
 msgid "Reading your answer"
 msgstr "ଆପଣଙ୍କ ଉତ୍ତର ପଢ଼ୁଛି"
@@ -7760,10 +7782,6 @@ msgstr "ଆପଣଙ୍କ ଟିପ୍ପଣୀ ପଢ଼ୁଛି"
 #: src/features/check/score.tsx
 msgid "Reads cleanly"
 msgstr "ପରିଷ୍କାର ଭାବରେ ପ .େ |"
-
-#: src/features/ai/web-access.tsx
-msgid "Reads supported public job pages. No account needed."
-msgstr "ସମର୍ଥିତ ସାର୍ବଜନୀନ କାର୍ଯ୍ୟ ପୃଷ୍ଠାଗୁଡ଼ିକୁ ପ .଼େ | କ account ଣସି ଖାତା ଆବଶ୍ୟକ ନାହିଁ |"
 
 #: src/features/ai/provider-list.tsx
 #: src/features/workspace/tabs/prepare.tsx
@@ -7779,11 +7797,11 @@ msgstr "କାରଣ"
 msgid "Recalled"
 msgstr "ମନେ ପକାଯାଇଥିବା"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Recent activity"
 msgstr ""
 
-#: src/features/career/recent-documents.tsx
+#: src/features/home/recent-documents.tsx
 msgid "Recent documents"
 msgstr ""
 
@@ -7860,7 +7878,7 @@ msgstr "24 ଘଣ୍ଟା ପୂର୍ବରୁ ବ୍ରିଫିଂ ରିଫ
 msgid "Refresh the briefing on the morning of"
 msgstr "ସେହି ଦିନ ସକାଳେ ବ୍ରିଫିଂ ରିଫ୍ରେସ୍ କରନ୍ତୁ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -7882,7 +7900,7 @@ msgstr "ପ୍ରତ୍ୟାଖ୍ୟାନ କରନ୍ତୁ |"
 msgid "Rejected"
 msgstr "ପ୍ରତ୍ୟାଖ୍ୟାନ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Reload now"
 msgstr "ଏବେ ପୁଣି ଲୋଡ୍ କରନ୍ତୁ"
 
@@ -7928,10 +7946,6 @@ msgstr "ସ୍ମାରକ"
 msgid "Reminders"
 msgstr "ସ୍ମାରକଗୁଡ଼ିକ"
 
-#: src/features/career/today.tsx
-msgid "Reminders appear here. Email copies are optional and need a verified address."
-msgstr "ସ୍ମାରକ ଏଠାରେ ଦେଖାଯାଏ। ଇମେଲ୍ କପି ଇଚ୍ଛାଧୀନ ଏବଂ ଏକ ଯାଞ୍ଚିତ ଠିକଣା ଆବଶ୍ୟକ କରେ।"
-
 #: src/features/career/offers.tsx
 #: src/features/career/preferences.tsx
 msgid "Remote"
@@ -7939,7 +7953,7 @@ msgstr "ରିମୋଟ୍"
 
 #: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Remove"
 msgstr "ଅପସାରଣ କରନ୍ତୁ |"
 
@@ -7956,14 +7970,6 @@ msgstr ""
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
 msgstr "{name} ହଟାନ୍ତୁ"
-
-#: src/features/ai/web-access.tsx
-msgid "Remove connection"
-msgstr "ସଂଯୋଗ ଅପସାରଣ କରନ୍ତୁ |"
-
-#: src/features/ai/web-access.tsx
-msgid "Remove connection?"
-msgstr "ସଂଯୋଗ ହଟାଇବେ?"
 
 #: src/features/write/basics-screen.tsx
 msgid "Remove field"
@@ -8085,8 +8091,8 @@ msgstr "ଉତ୍ତର କପି ହେଲା"
 msgid "Report"
 msgstr "ରିପୋର୍ଟ"
 
-#: app/(tabs)/settings/ai-report.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-report.tsx
+#: app/account/ai.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "|\n"
@@ -8137,7 +8143,7 @@ msgstr "ଉତ୍ତର ଦେବାର ଶେଷ ତାରିଖ"
 msgid "Response deadline has passed."
 msgstr "ଉତ୍ତର ଦେବା ସମୟସୀମା ସରିଛି।"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Restart to change text direction"
 msgstr "ଲେଖାର ଦିଗ ବଦଳାଇବାକୁ ପୁଣି ଆରମ୍ଭ କରନ୍ତୁ"
 
@@ -8173,8 +8179,8 @@ msgstr "ଫଳାଫଳ"
 #: app/builder/[id]/_layout.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/facts.tsx
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
 msgid "Resume"
 msgstr "ରେଜ୍ୟୁମେ"
@@ -8216,7 +8222,7 @@ msgstr ""
 msgid "Resumes"
 msgstr "ରେଜ୍ୟୁମେଗୁଡିକ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "ଥିମ୍ ଯାହା ବି ହେଉ, ରେଜୁମ୍ ସବୁବେଳେ ଧଳା କାଗଜରେ ଉପସ୍ଥାପନ କରେ |"
 
@@ -8244,6 +8250,7 @@ msgstr "{1} ବ୍ୟବହାର କରି {0} ଉଦ୍ଧାର କରାଯ�
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/features/history/history.tsx
+#: src/features/home/section.tsx
 #: src/features/letters/page.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
@@ -8299,7 +8306,7 @@ msgid "Returned: no usable result"
 msgstr ""
 
 #: src/features/assistant/page-marks.tsx
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Review"
 msgstr "ସମୀକ୍ଷା କରନ୍ତୁ |"
 
@@ -8312,7 +8319,7 @@ msgstr "|\n"
 msgid "Review Check"
 msgstr "ଯାଞ୍ଚ ଫଳାଫଳ ଦେଖନ୍ତୁ"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Review draft"
 msgstr "ଡ୍ରାଫ୍ଟ ସମୀକ୍ଷା କରନ୍ତୁ"
 
@@ -8376,7 +8383,7 @@ msgstr "ପୁନର୍ଲିଖନ ଗ୍ରହଣ ହେଲା"
 msgid "Rezumi"
 msgstr "Rezumi"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -8412,10 +8419,6 @@ msgstr "ଭୂମିକା / ଆଖ୍ୟା"
 #: src/features/applications-board/views.tsx
 msgid "Role, company or contact"
 msgstr "ପଦବୀ, କମ୍ପାନୀ କିମ୍ବା ଯୋଗାଯୋଗ ବ୍ୟକ୍ତି"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Role, company or location"
-msgstr "ଭୂମିକା, କମ୍ପାନୀ କିମ୍ବା ଅବସ୍ଥାନ |"
 
 #: src/features/write/fields.ts
 msgid "Roles"
@@ -8477,7 +8480,7 @@ msgstr "କଳଙ୍କି ବାଦାମୀ"
 msgid "Salary"
 msgstr "ଦରମା"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Salary not listed"
 msgstr "ଦରମା ଉଲ୍ଲେଖ ନାହିଁ"
 
@@ -8526,17 +8529,9 @@ msgstr "ତୁଳନା କରିବାକୁ ଅନ୍ୟ ଏକ ଅଫର୍ �
 msgid "Save changes"
 msgstr "ପରିବର୍ତ୍ତନଗୁଡିକ ସଞ୍ଚୟ କରନ୍ତୁ |"
 
-#: src/features/ai/web-access.tsx
-msgid "Save connection"
-msgstr "ସଂଯୋଗ ସଞ୍ଚୟ କରନ୍ତୁ |"
-
 #: src/features/career/facts.tsx
 msgid "Save fact"
 msgstr "ତଥ୍ୟ ସେଭ୍ କରନ୍ତୁ"
-
-#: src/features/ai/web-access.tsx
-msgid "Save first, then test search and reading. No test runs automatically."
-msgstr "ପ୍ରଥମେ ସଞ୍ଚୟ କରନ୍ତୁ, ତାପରେ ସନ୍ଧାନ ଏବଂ ପଠନ ପରୀକ୍ଷା କରନ୍ତୁ | କ test ଣସି ପରୀକ୍ଷା ସ୍ୱୟଂଚାଳିତ ଭାବରେ ଚାଲିବ ନାହିଁ |"
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Save interview"
@@ -8603,6 +8598,11 @@ msgctxt "Application workspace tab: earlier results kept for this job"
 msgid "Saved"
 msgstr "ସେଭ୍‍ କରାଯାଇଛି"
 
+#. placeholder {0}: companyOf(row)
+#: src/features/home/new-roles.tsx
+msgid "Saved {0} to Applications"
+msgstr "{0}କୁ ଆବେଦନଗୁଡ଼ିକରେ ସେଭ୍ କରାଗଲା"
+
 #: src/features/assistant/messages.tsx
 msgid "Saved a story: {title}"
 msgstr "କାହାଣୀ ସେଭ୍ ହେଲା: {title}"
@@ -8611,7 +8611,7 @@ msgstr "କାହାଣୀ ସେଭ୍ ହେଲା: {title}"
 msgid "Saved description"
 msgstr "ସଞ୍ଚୟ ବର୍ଣ୍ଣନା"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Saved to Applications with the posting"
 msgstr "ଚାକିରି ବିଜ୍ଞାପନ ସହ ଆବେଦନଗୁଡ଼ିକରେ ସେଭ୍ ହେଲା"
 
@@ -8644,7 +8644,7 @@ msgstr "ସେଭ୍ କରୁଛି…"
 msgid "Schedule an interview"
 msgstr "ଏକ ସାକ୍ଷାତକାର ନିର୍ଦ୍ଧାରଣ କରନ୍ତୁ |"
 
-#: src/features/career/today.tsx
+#: src/features/home/home-screen.tsx
 msgid "Schedule deleted"
 msgstr "ସମୟସୂଚୀ ବିଲୋପ ହେଲା"
 
@@ -8660,7 +8660,7 @@ msgstr "ଏହି ସର୍ଭରରେ ନିର୍ଧାରିତ କାର୍
 msgid "Scheduled work isn't available on this server."
 msgstr "ଏହି ସର୍ଭରରେ ନିର୍ଧାରିତ କାମ ଉପଲବ୍ଧ ନାହିଁ।"
 
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 msgid "Schedules"
 msgstr "ସମୟସୂଚୀ"
 
@@ -8674,21 +8674,17 @@ msgstr "ବିଦ୍ୟାଳୟ"
 msgid "Screening"
 msgstr "ସ୍କ୍ରିନିଂ"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Screening interview"
 msgstr "ପ୍ରାରମ୍ଭିକ ସାକ୍ଷାତକାର"
 
 #: app/_layout.tsx
 #: app/(tabs)/_layout.tsx
-#: src/features/applications/add-sheet.tsx
 #: src/features/design/picker.tsx
-#: src/ui/fields.tsx
+#: src/shell/tab-chrome.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Search"
 msgstr "ଖୋଜନ୍ତୁ"
-
-#: src/features/ai/web-access.tsx
-msgid "Search and enhanced reading"
-msgstr "ସନ୍ଧାନ ଏବଂ ବର୍ଦ୍ଧିତ ପଠନ |"
 
 #: src/features/applications-board/views.tsx
 #: src/features/letters/write.tsx
@@ -8715,27 +8711,15 @@ msgstr "Google ପରି ସନ୍ଧାନ ଇଞ୍ଜିନ୍‌ଗୁଡ଼
 msgid "Search facts"
 msgstr "ତଥ୍ୟ ଖୋଜନ୍ତୁ"
 
-#: src/features/ai/web-access.tsx
-msgid "Search failed"
-msgstr "ସନ୍ଧାନ ବିଫଳ ହେଲା |"
-
 #: src/features/search/search-screen.tsx
 msgid "Search for…"
 msgstr "… ଖୋଜନ୍ତୁ"
-
-#: src/features/ai/web-access.tsx
-msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
-msgstr "ଆବେଦନଗୁଡ଼ିକ ଓ ସହାୟକରୁ ଖୋଜନ୍ତୁ, ଏବଂ ବିଲ୍ଟ-ଇନ୍ ରିଡର୍ ପଢ଼ିପାରୁନଥିବା ପୃଷ୍ଠା ପଢ଼ନ୍ତୁ। ଗୋଟିଏ ସେବା ଉଭୟକୁ ସମ୍ଭାଳେ।"
 
 #: src/features/write/pickers.tsx
 msgid "Search icons"
 msgstr "ଆଇକନ୍ ଖୋଜନ୍ତୁ"
 
-#: src/features/applications/add-sheet.tsx
-msgid "Search job postings"
-msgstr "ଚାକିରି ପୋଷ୍ଟିଂ ଖୋଜ |"
-
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Search languages"
 msgstr "ଭାଷା ଖୋଜନ୍ତୁ"
 
@@ -8747,24 +8731,12 @@ msgstr "ସର୍ଚ୍ଚ ଶବ୍ଦଗୁଡ଼ିକ ଆପଣଙ୍କ ୱ
 msgid "Search the web"
 msgstr ""
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Search timezones"
 msgstr "ସମୟ ଅଞ୍ଚଳ ଖୋଜନ୍ତୁ"
 
-#: src/features/ai/web-access.tsx
-msgid "Search was tested with your server's search, and reading with {connected}."
-msgstr "ଆପଣଙ୍କ ସର୍ଭରର ସନ୍ଧାନ ସେବା ସହିତ ସନ୍ଧାନ ଏବଂ {connected} ସହିତ ପଢ଼ିବା ପରୀକ୍ଷା କରାଯାଇଛି।"
-
-#: src/features/ai/web-access.tsx
-msgid "Search was tested with your server's search. Links are read with the built-in reader."
-msgstr "ଆପଣଙ୍କ ସର୍ଭରର ସନ୍ଧାନ ସେବା ସହିତ ସନ୍ଧାନ ପରୀକ୍ଷା କରାଯାଇଛି। ଲିଙ୍କ୍‌ଗୁଡ଼ିକ ଅନ୍ତର୍ନିହିତ ରିଡର୍ ସହିତ ପଢ଼ାଯାଏ।"
-
-#: src/features/ai/web-access.tsx
-msgid "Search works"
-msgstr "ସନ୍ଧାନ କାର୍ଯ୍ୟ"
-
 #: src/features/search/search-screen.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Search…"
 msgstr "ଖୋଜନ୍ତୁ…"
 
@@ -8925,6 +8897,10 @@ msgstr "ପାସୱାର୍ଡ ସେଟ୍ କରନ୍ତୁ"
 msgid "Set the document language when exporting."
 msgstr "ରପ୍ତାନି କରିବା ସମୟରେ ଡକ୍ୟୁମେଣ୍ଟ ଭାଷା ସେଟ୍ କରନ୍ତୁ।"
 
+#: src/features/home/new-roles.tsx
+msgid "Set up a job alert"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/write/improve.tsx
 msgid "Set up a provider"
@@ -8934,27 +8910,18 @@ msgstr "ପ୍ରଦାତା ସଜାଡ଼ନ୍ତୁ"
 msgid "Set up AI provider"
 msgstr "AI ପ୍ରଦାତା ସଜାଡ଼ନ୍ତୁ"
 
-#: src/features/career/today.tsx
-msgid "Set up discovery"
-msgstr "ସୁଯୋଗ ସନ୍ଧାନ ସେଟ୍ ଅପ୍ କରନ୍ତୁ"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Set up web search"
-msgstr "ୱେବ୍ ଖୋଜା ସଜାଡ଼ନ୍ତୁ"
-
 #: src/features/career/schedule-sheet.tsx
 msgid "Set up web search in Settings to find roles."
 msgstr "ପଦବୀ ଖୋଜିବାକୁ ସେଟିଂସ୍‌ରେ ୱେବ୍ ଖୋଜା ସଜାଡ଼ନ୍ତୁ।"
 
-#: app/(tabs)/_layout.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
 #: src/features/search/search-screen.tsx
 msgid "Settings"
 msgstr "ସେଟିଂସ୍"
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Setup guide"
 msgstr "ସେଟଅପ୍ ଗାଇଡ୍ |"
 
@@ -9059,9 +9026,16 @@ msgid "Show “Made with Rezumi”"
 msgstr "“Rezumi ସହିତ ନିର୍ମିତ” ଦେଖାନ୍ତୁ"
 
 #. placeholder {0}: Math.min(remaining, COLUMN_PAGE_SIZE)
+#. placeholder {0}: visible.length - shown.length
 #: src/features/applications-board/board-screen.tsx
+#: src/features/home/new-roles.tsx
 msgid "Show {0} more"
 msgstr "{0} ଅଧିକ ଦେଖାନ୍ତୁ |"
+
+#. placeholder {0}: read.length
+#: src/features/home/needs-you.tsx
+msgid "Show {0} read"
+msgstr "ପଢ଼ାଯାଇଥିବା {0}ଟି ଦେଖାନ୍ତୁ"
 
 #: src/features/write/outline.tsx
 msgid "Show {title} on the page"
@@ -9116,9 +9090,8 @@ msgstr "କୀ ଦେଖାନ୍ତୁ"
 msgid "Show link in title"
 msgstr "ଶୀର୍ଷକରେ ଲିଙ୍କ ଦେଖାନ୍ତୁ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/application-detail/interview-sheet.tsx
-#: src/features/career/today.tsx
 msgid "Show more"
 msgstr "ଅଧିକ ଦେଖାନ୍ତୁ"
 
@@ -9131,10 +9104,6 @@ msgstr "ପୃଷ୍ଠାରେ ଦେଖାନ୍ତୁ |"
 #: src/features/write/picture-screen.tsx
 msgid "Show photo"
 msgstr "ଫଟୋ ଦେଖାନ୍ତୁ"
-
-#: src/features/career/today.tsx
-msgid "Show read"
-msgstr "ପଢ଼ାଯାଇଥିବାଗୁଡ଼ିକ ଦେଖାନ୍ତୁ"
 
 #: src/features/applications-board/time-grid.tsx
 msgid "Show this day"
@@ -9247,14 +9216,16 @@ msgstr "ଏହି ରେଜ୍ୟୁମେ ଦେଖିବାକୁ ସାଇନ
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "Sign out"
 msgstr "ସାଇନ୍ ଆଉଟ୍ କରନ୍ତୁ"
 
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "Sign out?"
 msgstr "ସାଇନ୍ ଆଉଟ୍ କରିବେ?"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Sign-in & security"
 msgstr "ସାଇନ୍ ଇନ୍ ଏବଂ ସୁରକ୍ଷା |"
 
@@ -9485,6 +9456,10 @@ msgstr "ଆରମ୍ଭ କରନ୍ତୁ |"
 msgid "Start a debrief"
 msgstr "ଏକ ସମୀକ୍ଷା ଆରମ୍ଭ କରନ୍ତୁ"
 
+#: src/features/home/home-screen.tsx
+msgid "Start a document"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 #: src/features/documents/new-document.tsx
 msgid "Start blank"
@@ -9539,6 +9514,14 @@ msgstr "ଅଧିକାଂଶ ରେଜୁମସ୍ ଥିବା ବିଭାଗ
 msgid "Start with your name. Build from there."
 msgstr "ନିଜ ନାମରୁ ଆରମ୍ଭ କରନ୍ତୁ। ସେଠାରୁ ଆଗକୁ ବଢ଼ନ୍ତୁ।"
 
+#: src/features/home/coming-up.tsx
+msgid "Started"
+msgstr "ଆରମ୍ଭ ହେଲା"
+
+#: src/features/home/coming-up.tsx
+msgid "Starts in {minutes} minutes"
+msgstr "{minutes} ମିନିଟରେ ଆରମ୍ଭ"
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
 msgstr "ଏବେ ଆରମ୍ଭ"
@@ -9546,6 +9529,10 @@ msgstr "ଏବେ ଆରମ୍ଭ"
 #: src/features/documents/new-document.tsx
 msgid "Stay in Documents"
 msgstr "ଡକ୍ୟୁମେଣ୍ଟ୍‌ରେ ରୁହନ୍ତୁ"
+
+#: src/shell/account-menu.tsx
+msgid "Stay signed in"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 #: src/features/letters/write.tsx
@@ -9648,7 +9635,7 @@ msgstr "କାଟିବାକୁ ପରାମର୍ଶ ଦିଅନ୍ତି, �
 msgid "Summary"
 msgstr "ସାରାଂଶ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Support"
 msgstr "ସମର୍ଥନ"
 
@@ -9698,8 +9685,8 @@ msgstr "ଗୋଟିଏ ସ୍ତମ୍ଭକୁ ଯାଆନ୍ତୁ |"
 msgid "Switched to one column"
 msgstr "ଗୋଟିଏ ସ୍ତମ୍ଭକୁ ସୁଇଚ୍ ହୋଇଛି |"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "System"
 msgstr "ଅପରେଟିଂ ସିଷ୍ଟମ୍ |"
 
@@ -9782,7 +9769,7 @@ msgstr "ନୀଳସବୁଜ"
 msgid "Technical"
 msgstr "ଟେକ୍ନିକାଲ୍"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Technical interview"
 msgstr "ବୈଷୟିକ ସାକ୍ଷାତକାର"
 
@@ -9825,25 +9812,13 @@ msgstr "ଟେମ୍ପଲେଟ୍, ପ୍ରକାର ଏବଂ ରଙ୍ଗ �
 msgid "Terms from the posting"
 msgstr "ଚାକିରି ବିଜ୍ଞାପନରୁ ଶବ୍ଦ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Terms of service"
 msgstr "ସେବା ସର୍ତ୍ତାବଳୀ"
 
 #: src/features/ai/provider-list.tsx
 msgid "Test"
 msgstr "ପରୀକ୍ଷା"
-
-#: src/features/ai/web-access.tsx
-msgid "Test connection"
-msgstr "ପରୀକ୍ଷା ସଂଯୋଗ |"
-
-#: src/features/ai/web-access.tsx
-msgid "Test search"
-msgstr "ସନ୍ଧାନ ପରୀକ୍ଷା କରନ୍ତୁ"
-
-#: src/features/ai/web-access.tsx
-msgid "Tested with {connected}. Only this service was tested."
-msgstr "{connected} ସହ ପରୀକ୍ଷିତ। କେବଳ ଏହି ସେବା ପରୀକ୍ଷା ହୋଇଛି।"
 
 #: src/features/ai/provider-editor.tsx
 msgid "Testing the connection…"
@@ -9927,6 +9902,10 @@ msgstr "ସେହି ରେକର୍ଡିଂ ଖାଲି ଥିଲା କି�
 msgid "That reminder time has already passed."
 msgstr "ସେହି ସ୍ମାରକ ସମୟ ଗଡ଼ିଯାଇଛି।"
 
+#: src/features/home/home-screen.tsx
+msgid "That schedule no longer exists."
+msgstr ""
+
 #: src/api/ai-consent.ts
 msgid "The account changed. Try again."
 msgstr "|\n"
@@ -9944,29 +9923,9 @@ msgstr "ଆବେଦନର ଅନ୍ୟ ବିବରଣୀ ରହିବ।"
 msgid "The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else works without it."
 msgstr "ସହାୟକ ଏହି ସର୍ଭରରେ ସେଟ୍ ଅପ୍ ହୋଇନାହିଁ | ଯିଏ ଏହାକୁ ଚଲାଇଥାଏ ENCRYPTION_SECRET ସେଟ୍ କରିବା ଆବଶ୍ୟକ | ଏହା ବିନା ଅନ୍ୟ ସବୁକିଛି କାମ କରେ |"
 
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches and reads pages with {connected}, whichever AI provider you use."
-msgstr "ଆପଣ ଯେଉଁ AI ପ୍ରଦାତା ବ୍ୟବହାର କଲେ ମଧ୍ୟ ସହକାରୀ {connected}ରେ ପେଜ୍ ଖୋଜେ ଓ ପଢ଼େ।"
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches with your server's search and reads links with the built-in reader, whichever AI provider you use."
-msgstr "ଆପଣ ଯେକୌଣସି AI ପ୍ରଦାନକାରୀ ବ୍ୟବହାର କଲେ ମଧ୍ୟ, ସହାୟକ ଆପଣଙ୍କ ସର୍ଭରର ସନ୍ଧାନ ସେବା ସହିତ ଖୋଜେ ଏବଂ ଅନ୍ତର୍ନିହିତ ରିଡର୍ ସହିତ ଲିଙ୍କ୍‌ଗୁଡ଼ିକ ପଢ଼େ।"
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches with your server's search and reads pages with {connected}, whichever AI provider you use."
-msgstr "ଆପଣ ଯେକୌଣସି AI ପ୍ରଦାନକାରୀ ବ୍ୟବହାର କଲେ ମଧ୍ୟ, ସହାୟକ ଆପଣଙ୍କ ସର୍ଭରର ସନ୍ଧାନ ସେବା ସହିତ ଖୋଜେ ଏବଂ {connected} ସହିତ ପୃଷ୍ଠାଗୁଡ଼ିକ ପଢ଼େ।"
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant uses your AI provider's own web search where supported, and reads links with the built-in reader."
-msgstr "ସମର୍ଥିତ ହେଲେ ସହକାରୀ AI ପ୍ରଦାତାଙ୍କ ନିଜ ୱେବ୍ ଖୋଜା ବ୍ୟବହାର କରେ ଓ ଅନ୍ତର୍ନିର୍ମିତ ପାଠକରେ ଲିଙ୍କ୍ ପଢ଼େ।"
-
 #: src/features/assistant/provider.tsx
 msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
 msgstr "ସହାୟକ ତୁମର ଚାବି ବ୍ୟବହାର କରେ | ଯେପର୍ଯ୍ୟନ୍ତ ଆପଣ ଗୋଟିଏ ସଂଯୋଗ ନକରନ୍ତି ସେ ପର୍ଯ୍ୟନ୍ତ କ anywhere ଣସି ଜିନିଷ ପଠାଯାଏ ନାହିଁ |"
-
-#: src/features/ai/web-access.tsx
-msgid "The built-in reader remains active."
-msgstr "ବିଲ୍ଟ-ଇନ୍ ରିଡର୍ ସକ୍ରିୟ ରହିଥାଏ |"
 
 #: src/features/check/writing.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
@@ -10126,22 +10085,6 @@ msgstr "ସର୍ଭର୍ ସଂସ୍କରଣ ଲୋଡ୍ ହୋଇପାର
 msgid "The service couldn't be reached. Try again or fill the details manually."
 msgstr "ସେବା ସହ ଯୋଗାଯୋଗ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ କିମ୍ବା ବିବରଣୀ ନିଜେ ପୂରଣ କରନ୍ତୁ।"
 
-#: src/features/ai/web-access.tsx
-msgid "The service didn't respond in time. Try again."
-msgstr "ସେବା ସମୟରେ ପ୍ରତିକ୍ରିୟା ଦେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
-
-#: src/features/ai/web-access.tsx
-msgid "The service is unavailable or doesn't support this operation. Try again later or connect another service."
-msgstr "ସେବା ଉପଲବ୍ଧ ନାହିଁ କିମ୍ବା ଏହି କାର୍ଯ୍ୟକୁ ସମର୍ଥନ କରେ ନାହିଁ। ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ କିମ୍ବା ଅନ୍ୟ ଏକ ସେବା ସଂଯୋଗ କରନ୍ତୁ।"
-
-#: src/features/ai/web-access.tsx
-msgid "The service quota is used up. Check your plan with the service."
-msgstr "ସେବା କୋଟା ସରିଯାଇଛି। ସେବା ସହ ଆପଣଙ୍କ ପ୍ଲାନ୍ ଯାଞ୍ଚ କରନ୍ତୁ।"
-
-#: src/features/ai/web-access.tsx
-msgid "The service rejected the credentials. Check the API key."
-msgstr "ସେବା କ୍ରେଡେନସିଆଲ୍ ପ୍ରତ୍ୟାଖ୍ୟାନ କଲା। API କି ଯାଞ୍ଚ କରନ୍ତୁ।"
-
 #: src/features/ai/error.ts
 msgid "The test didn't run. Try again."
 msgstr "ପରୀକ୍ଷା ଚାଲିଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
@@ -10163,13 +10106,13 @@ msgstr "ପ୍ରଥମ ପୃଷ୍ଠାର ଶୀର୍ଷ ଏକ ନାମ �
 msgid "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 msgstr "ପଠାଇଥିବା ସଂସ୍କରଣ “ସେଭ୍‍ କରାଯାଇଛି”ରେ ରହେ। ଏଠାର ସମ୍ପାଦନାରେ {company} ପାଇଥିବା ବିଷୟ ବଦଳେନାହିଁ।"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "ଥିମ୍"
 
 #. placeholder {0}: getPlanName(next.planId)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr ""
@@ -10190,7 +10133,7 @@ msgstr "କୌଣସି ସାରାଂଶ ଅନୁଚ୍ଛେଦ ନାହି
 msgid "These are the answers saved when you applied."
 msgstr "ଆପଣ ଆବେଦନ କରିବା ସମୟରେ ସେଭ୍ ହୋଇଥିବା ଉତ୍ତର ଏଗୁଡ଼ିକ।"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "ଏଗୁଡ଼ିକ ଆପ୍ ଭିତର ବ୍ରାଉଜର୍ ଟ୍ୟାବ୍‌ରେ ସର୍ଭର୍‌ର ଆକାଉଣ୍ଟ ସେଟିଂସ୍ ଖୋଲେ। ସେଠାରେ ସାଇନ୍ ଇନ୍ ଦରକାର ହୋଇପାରେ।"
 
@@ -10206,7 +10149,7 @@ msgstr "ଭାବୁଛି"
 msgid "Thinking…"
 msgstr "ଭାବୁଛି…"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Third-party software notices. Tap a dependency to read its license."
 msgstr "ତୃତୀୟ-ପକ୍ଷ ସଫ୍ଟୱେର୍ ସୂଚନା। ଏହାର ଲାଇସେନ୍ସ ପଢ଼ିବାକୁ ଏକ ନିର୍ଭରତା ଉପରେ ଟାପ୍ କରନ୍ତୁ।"
 
@@ -10562,7 +10505,7 @@ msgstr "ସମୟ {timeZone}ରେ ଦେଖାଯାଏ।"
 msgid "Times are shown in {timezone}. Change timezone in Settings → Preferences."
 msgstr "ସମୟ {timezone}ରେ ଦେଖାଯାଏ। ସେଟିଂସ୍ → ପସନ୍ଦରେ ସମୟମଣ୍ଡଳ ବଦଳାନ୍ତୁ।"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Timezone"
 msgstr "ସମୟ ଅଞ୍ଚଳ"
 
@@ -10587,8 +10530,8 @@ msgstr "ଯାଞ୍ଚ କରିବାକୁ"
 msgid "To get a reminder, allow notifications in your device settings."
 msgstr "ସ୍ମାରକ ପାଇଁ ଡିଭାଇସ୍ ସେଟିଂସ୍‌ରେ ବିଜ୍ଞପ୍ତି ଅନୁମତି ଦିଅନ୍ତୁ।"
 
-#: app/(tabs)/career/_layout.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/home/needs-you.tsx
 #: src/features/share/link.tsx
 msgid "Today"
 msgstr "ଆଜି |"
@@ -10602,6 +10545,7 @@ msgid "Toggle selection"
 msgstr "ଚୟନ ବଦଳାନ୍ତୁ"
 
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/home/needs-you.tsx
 msgid "Tomorrow"
 msgstr "ଆସନ୍ତାକାଲି |"
 
@@ -10610,7 +10554,6 @@ msgid "Too light for headings on white. It may be hard to read and print faintly
 msgstr "ଧଳା ରଙ୍ଗର ହେଡିଙ୍ଗ୍ ପାଇଁ ଅତ୍ୟଧିକ ହାଲୁକା | ଦୁର୍ବଳ ଭାବରେ ପ read ିବା ଏବଂ ମୁଦ୍ରଣ କରିବା କଷ୍ଟକର ହୋଇପାରେ |"
 
 #: src/features/ai/error.ts
-#: src/features/ai/web-access.tsx
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
 #: src/features/documents/import-file.ts
@@ -10630,7 +10573,7 @@ msgstr ""
 msgid "Tool logos aren't in your plan"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/design/style-groups.tsx
 msgid "Tool logos in skills"
 msgstr ""
@@ -10639,7 +10582,7 @@ msgstr ""
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "ମୋଟ ଯୋଗ ହୁଏନାହିଁ। ବୋନସ୍ ଓ ଅଂଶଧନ ସର୍ତ୍ତ ଉପରେ ନିର୍ଭର କରେ; ଅଂଶଧନର ମୂଲ୍ୟ ଅନିଶ୍ଚିତ। ମୂଳ ଅଫର୍ ଡକ୍ୟୁମେଣ୍ଟ୍ ପଢ଼ନ୍ତୁ।"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Track in Applications"
 msgstr "ଆବେଦନଗୁଡ଼ିକରେ ଟ୍ରାକ୍ କରନ୍ତୁ"
 
@@ -10670,7 +10613,6 @@ msgstr "ଲିପ୍ୟନ୍ତର ମଡେଲ୍"
 
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
-#: src/shell/app-tabs.tsx
 msgid "Trash"
 msgstr "ଆବର୍ଜନା"
 
@@ -10678,7 +10620,7 @@ msgstr "ଆବର୍ଜନା"
 msgid "Trash is empty"
 msgstr "ଆବର୍ଜନା ଖାଲି ଅଛି |"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/credits.ts
 msgid "Trial credits"
 msgstr ""
@@ -10693,11 +10635,10 @@ msgstr "{suggestion} ଚେଷ୍ଟା କରନ୍ତୁ"
 
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/account.tsx
+#: app/account/preferences.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
-#: src/features/ai/web-access.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/letters/write.tsx
 #: src/features/settings/api-keys.tsx
@@ -10770,7 +10711,7 @@ msgstr "ଦୁଇଟି ସ୍ତମ୍ଭ"
 msgid "Two stories"
 msgstr "ଦୁଇଟି କାହାଣୀ"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Two-step verification"
 msgstr "ଦୁଇ ସୋପାନ ଯାଞ୍ଚ |"
 
@@ -10804,7 +10745,7 @@ msgstr "ଟାଇପୋଗ୍ରାଫି"
 msgid "Ukrainian"
 msgstr "ୟୁକ୍ରେନିଆନ୍"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Unavailable"
 msgstr "ଅନୁପଲବ୍ଧ"
 
@@ -10830,10 +10771,11 @@ msgstr "ଲିଙ୍କଗୁଡିକ ଅଣ୍ଡରଲାଇନ୍ କରନ�
 #: src/features/design/draft.ts
 #: src/features/document-menu/index.tsx
 #: src/features/documents/queries.ts
+#: src/features/home/new-roles.tsx
 #: src/features/workspace/tabs/fit.tsx
 #: src/features/write/hooks.ts
 #: src/preview/page.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Undo"
 msgstr "ପୂର୍ବବତ୍ କରନ୍ତୁ"
 
@@ -11048,10 +10990,6 @@ msgstr "ଗୋଟିଏ ସ୍ତମ୍ଭ ବ୍ୟବହାର କରନ୍ତ
 msgid "Use plain headings such as \"Experience\", \"Education\" and \"Skills\"."
 msgstr "\"Experience\", \"Education\" ଏବଂ \"Skills\" ପରି ସରଳ ଶୀର୍ଷକ ବ୍ୟବହାର କରନ୍ତୁ।"
 
-#: src/features/applications/add-sheet.tsx
-msgid "Use posting link; review before saving"
-msgstr "ବିଜ୍ଞାପନ ଲିଙ୍କ୍ ବ୍ୟବହାର କରନ୍ତୁ; ସେଭ୍ ପୂର୍ବରୁ ସମୀକ୍ଷା କରନ୍ତୁ"
-
 #: src/api/ai-consent.ts
 msgid "Use Rezumi AI?"
 msgstr ""
@@ -11087,7 +11025,7 @@ msgid "Use this date"
 msgstr "|\n"
 "ଏହି ତାରିଖ ବ୍ୟବହାର କରନ୍ତୁ |"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Use this device's timezone ({deviceTimezone})"
 msgstr "ଏହି ଡିଭାଇସ୍‌ର ସମୟମଣ୍ଡଳ ବ୍ୟବହାର କରନ୍ତୁ ({deviceTimezone})"
 
@@ -11120,10 +11058,6 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "ଭୂମିକା ଓ ଅଫର୍ ଯାଞ୍ଚ କରିବାକୁ ବ୍ୟବହୃତ। ପ୍ରତ୍ୟେକଟି ଏକ ସଂଖ୍ୟା, ତେଣୁ କୋଚ୍ ଅନୁମାନ ନ କରି ତୁଳନା କରିପାରେ।"
 
-#: src/features/ai/web-access.tsx
-msgid "Used when {connected} can't read a page. No account needed."
-msgstr "{connected} ପେଜ୍ ପଢ଼ିନପାରିଲେ ବ୍ୟବହୃତ ହୁଏ। ଆକାଉଣ୍ଟ ଦରକାର ନାହିଁ।"
-
 #: src/features/settings/profile.tsx
 #: src/features/write/fields.ts
 msgid "Username"
@@ -11136,10 +11070,6 @@ msgstr "ତୁମର ରେଜୁମାରୁ ତଥ୍ୟ ବ୍ୟବହାର
 #: src/features/assistant/assistant-screen.tsx
 msgid "Uses the linked application"
 msgstr "ଲିଙ୍କ୍ ହୋଇଥିବା ଚାକିରି ଆବେଦନ ବ୍ୟବହାର କରେ"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Uses the web search service set up in Settings. Search results wait for your review."
-msgstr "ସେଟିଂସ୍‌ରେ ସଜାଡ଼ାଯାଇଥିବା ୱେବ୍ ଖୋଜା ବ୍ୟବହାର କରେ। ଫଳାଫଳ ଆପଣଙ୍କ ସମୀକ୍ଷାକୁ ଅପେକ୍ଷା କରେ।"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Uses web search set up in Settings. Results wait in Today. Applications and documents are never created for you."
@@ -11282,15 +11212,6 @@ msgstr "ପୁନର୍ବାର ଶୁଣିବାକୁ ଅପେକ୍ଷା 
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "ଆମେ \"{0}\" ପ read ଼ୁ | ଏକ ମାସ ବାଛନ୍ତୁ ତେଣୁ ଏହା କ୍ରମାଗତ ଭାବରେ ସଜାଡ଼େ ଏବଂ ମୁଦ୍ରଣ କରେ |"
 
-#: app/(tabs)/settings/ai-web-access.tsx
-#: app/(tabs)/settings/ai.tsx
-msgid "Web access"
-msgstr "ୱେବ୍ ଆକ୍ସେସ୍ |"
-
-#: src/features/ai/web-access.tsx
-msgid "Web access settings couldn't be saved or loaded."
-msgstr "ୱେବ୍ ଆକ୍ସେସ୍ ସେଟିଂସମୂହ ସଞ୍ଚୟ କିମ୍ବା ଲୋଡ୍ ହୋଇପାରିବ ନାହିଁ |"
-
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "ୱେବ୍ ପୃଷ୍ଠା"
@@ -11318,6 +11239,10 @@ msgstr "ୱେବସାଇଟ୍"
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Week"
+msgstr ""
+
+#: src/features/home/schedules.tsx
+msgid "Weekly at {clock} · next {day}"
 msgstr ""
 
 #: src/features/workspace/parts.tsx
@@ -11412,7 +11337,7 @@ msgstr "ତୁମେ ଯାହା ପଠାଇଲ"
 msgid "What you're looking for"
 msgstr "ଆପଣ କ'ଣ ଖୋଜୁଛନ୍ତି"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "What's included"
 msgstr ""
 
@@ -11420,7 +11345,7 @@ msgstr ""
 msgid "What's working"
 msgstr "କ’ଣ କାମ କରୁଛି |"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr ""
 
@@ -11498,7 +11423,7 @@ msgstr "Word"
 msgid "Word and ODT aren't available"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Word and ODT downloads"
 msgstr ""
 
@@ -11513,10 +11438,6 @@ msgstr "Word ଆମଦାନି, ଉନ୍ନତି, ସହକାରୀ, ଚି�
 #: src/features/ats-checker/messages.ts
 msgid "Words run together when the text is extracted."
 msgstr "ଟେକ୍ସଟ୍ ବାହାର କରାଗଲେ ଶବ୍ଦଗୁଡ଼ିକ ଏକାଠି ମିଶିଯାʼନ୍ତି।"
-
-#: src/features/ai/web-access.tsx
-msgid "Working…"
-msgstr "କାମ ଚାଲିଛି…"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Works without AI or new research"
@@ -11590,13 +11511,17 @@ msgstr "ଆପଣଙ୍କ ଉତ୍ତର ଲେଖନ୍ତୁ, କିମ୍�
 msgid "Writing"
 msgstr "ଲେଖା"
 
-#: app/(tabs)/settings/ai-providers.tsx
+#: app/account/ai-providers.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "ଲେଖା ସାହାଯ୍ୟ, ଅନୁକୂଳିତ ପରାମର୍ଶ ଓ ସହକାରୀ। ଆପଣ ଯେଉଁଠି ପ୍ରଦାନକାରୀ ବାଛନ୍ତି ନାହିଁ, ସେଠାରେ ଡିଫଲ୍ଟ ପ୍ରଦାନକାରୀ ବ୍ୟବହୃତ ହୁଏ। ଆପଣଙ୍କ କି ଏନକ୍ରିପ୍ଟେଡ୍ ରହେ।"
 
 #: src/features/career/offers.tsx
 msgid "Written offer"
 msgstr "ଲିଖିତ ଅଫର୍"
+
+#: src/features/home/needs-you.tsx
+msgid "Yesterday"
+msgstr "ଗତକାଲି"
 
 #: src/features/assistant/chat-view.tsx
 msgid "You"
@@ -11640,7 +11565,11 @@ msgstr "ସମ୍ପୂର୍ଣ୍ଣ ହେବା ପୂର୍ବରୁ ଆପ
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "ଆପଣ ଏହାକୁ ପୂର୍ବରୁ ଭୁଲାଇ ଦେଇଥିଲେ, ତେଣୁ ଏହା ପୁଣି ସେଭ୍ ହେଲା ନାହିଁ।"
 
-#: src/ui/overlays.tsx
+#: src/shell/unsaved-changes.ts
+msgid "You have edits that aren't saved yet. Leaving now loses them."
+msgstr ""
+
+#: src/ui-legacy/overlays.tsx
 msgid "You have unsaved changes."
 msgstr "ସେଭ୍ ହୋଇନଥିବା ପରିବର୍ତ୍ତନ ଅଛି।"
 
@@ -11653,6 +11582,7 @@ msgid "You submit on the employer's site yourself. Marking it applied keeps the 
 msgstr "ଆପଣ ନିଯୁକ୍ତିଦାତାଙ୍କ ସାଇଟ୍‌ରେ ନିଜେ ଦାଖଲ କରନ୍ତି। ଆବେଦନ କରାଯାଇଛି ବୋଲି ଚିହ୍ନିତ କଲେ ଆପଣ ପଠାଇଥିବା ସଠିକ୍ ସଂସ୍କରଣଗୁଡ଼ିକ ରଖାଯାଏ।"
 
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "ଆପଣ {server}ରୁ ସାଇନ୍ ଆଉଟ୍ ହେବେ। ଏହି ଡିଭାଇସ୍‌ରୁ ସିଙ୍କ୍ ହୋଇନଥିବା ସମ୍ପାଦନା ହରାଇଯିବ।"
 
@@ -11698,9 +11628,9 @@ msgstr "ଆପଣ ଅଫଲାଇନ୍। ଶେଷ PDF ଯାଞ୍ଚ ଏଠ�
 msgid "You're offline. Try again when you reconnect."
 msgstr "ଆପଣ ଅଫଲାଇନ୍। ପୁଣି ସଂଯୋଗ ହେଲେ ଚେଷ୍ଟା କରନ୍ତୁ।"
 
-#: src/features/career/today.tsx
-msgid "You're up to date"
-msgstr "ଆପଣ ଅପ୍-ଟୁ-ଡେଟ୍ ଅଛନ୍ତି"
+#: src/features/home/needs-you.tsx
+msgid "You're up to date. New roles, reminders and finished briefings appear here."
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/practise.tsx
@@ -11743,7 +11673,7 @@ msgstr "ଏହି ଡିଭାଇସ୍‌ର ପରିବର୍ତ୍ତନ ସ
 msgid "Your contact details are not on the first page."
 msgstr "ଆପଣଙ୍କ ଯୋଗାଯୋଗ ବିବରଣୀ ପ୍ରଥମ ପୃଷ୍ଠାରେ ନାହିଁ।"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Your data"
 msgstr "ଆପଣଙ୍କର ତଥ୍ୟ"
 
@@ -11792,7 +11722,7 @@ msgstr "ଆପଣଙ୍କ ଚାକିରି ଖୋଜା ଏଠାରୁ ଆ�
 msgid "your Knowledge"
 msgstr "ଆପଣଙ୍କ ଜ୍ଞାନ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 msgstr "ଭାଷା ସେଭ୍ ହେଲା। ନୂଆ ବାମରୁ ଡାହାଣ ବା ଡାହାଣରୁ ବାମ ଲେଆଉଟ୍ ପାଇଁ Rezumi ପୁଣି ଆରମ୍ଭ କରନ୍ତୁ।"
 
@@ -11836,7 +11766,15 @@ msgstr "ଆପଣଙ୍କ ଆରମ୍ଭ"
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "ଆପଣଙ୍କ ଆରମ୍ଭ, ଆଣିବାକୁ ଥିବା କାହାଣୀ ଓ ପଚାରିବାକୁ ଥିବା ପ୍ରଶ୍ନ। କଲ୍‌ର 10 ମିନିଟ୍ ପୂର୍ବରୁ ଏହା ଆପଣଙ୍କ ଚେକଲିଷ୍ଟ ହୋଇଯାଏ।"
 
-#: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-alert.ts
+msgid "Your own domain isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own domain isn't in your plan"
+msgstr ""
+
+#: app/account/membership.tsx
 msgid "Your own fonts"
 msgstr ""
 
@@ -11856,18 +11794,30 @@ msgstr ""
 msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
+#: src/features/billing/plan-alert.ts
+msgid "Your page keeps its address on Rezumi."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "ଆପଣଙ୍କ ଫୋନ୍ ନମ୍ବର ଏକ ଅସାଧାରଣ ଆକାରରେ ଲେଖାଯାଇଛି।"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
+msgstr ""
+
+#: app/(tabs)/portfolio/index.tsx
+msgid "Your portfolio is coming to the app"
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "your preferences"
 msgstr "ଆପଣଙ୍କ ପସନ୍ଦ"
+
+#: app/(tabs)/profile/index.tsx
+msgid "Your Profile is coming to the app"
+msgstr ""
 
 #: src/features/settings/export.tsx
 msgid "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
@@ -11915,10 +11865,6 @@ msgstr "ଆପଣଙ୍କ ରେଜ୍ୟୁମେ, ଚିଠି ଓ ଆବେ�
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "ଆପଣ ଚୟନ କରିଥିବା ଫଣ୍ଟ କିଛି ଅକ୍ଷର ଦେଖାଇପାରିବ ନାହିଁ। ଏଗୁଡ଼ିକ “?” ଭାବେ ଦେଖାଯାଏ। ଡିଜାଇନ୍ ଟ୍ୟାବରେ, ଏଗୁଡ଼ିକ ଥିବା ଏକ ଫଣ୍ଟ ବାଛନ୍ତୁ।"
 
-#: src/features/ai/web-access.tsx
-msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
-msgstr "ଆପଣଙ୍କ ସର୍ଭର ଆବେଦନଗୁଡ଼ିକ ଏବଂ ସହାୟକ ପାଇଁ ୱେବ୍ ସନ୍ଧାନ ଯୋଗାଏ। ଅନ୍ତର୍ନିହିତ ରିଡର୍ ପଢ଼ିପାରୁନଥିବା ପୃଷ୍ଠାଗୁଡ଼ିକ ପଢ଼ିବା ପାଇଁ ଏକ ସେବା ସଂଯୋଗ କରନ୍ତୁ।"
-
 #: src/api/ai-consent.ts
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "|\n"
@@ -11960,11 +11906,6 @@ msgstr "ଆପଣଙ୍କ କାହାଣୀ ଲୋଡ୍ କରିହେଲା
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "ଆପଣଙ୍କ ଦୁଇ ମିନିଟ୍‌ର ପରିଚୟ"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Your unsaved job details will be discarded before opening web search settings."
-msgstr "|\n"
-"ୱେବ୍ ସନ୍ଧାନ ସେଟିଂ ଖୋଲିବା ପୂର୍ବରୁ ଆପଣଙ୍କର ସଞ୍ଚିତ କାର୍ଯ୍ୟ ବିବରଣୀଗୁଡିକ ବର୍ଜନ କରାଯିବ |"
 
 #: src/features/letters/page.tsx
 #: src/preview/page.tsx

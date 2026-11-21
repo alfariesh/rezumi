@@ -8,7 +8,7 @@ import { createContext, use, useEffect, useState } from "react";
 import { ActivityIndicator, I18nManager, Platform, Pressable, View } from "react-native";
 import { SafeAreaInsetsContext, useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppStrip } from "./app-banner";
-import { Bar, BarItem } from "./app-tabs";
+import { Bar, BarItem } from "./editor-bar";
 import { useKeyCommands } from "./key-commands";
 import { createSlot } from "./slot";
 import { TopBar } from "./top-bar";

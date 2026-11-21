@@ -1,486 +1,274 @@
-import type { IconName } from "@/ui-legacy";
+// The app's main navigation (01-desain 2): five bottom tabs on phones, the web's sidebar from 700 pt wide. Both read
+// the tab routes of app/(tabs) and their options; a tab hidden with `href: null` (Portfolio without access) is skipped.
+import type { AppTab } from "@/routes";
+import type { IconName } from "@/ui";
 import type { BottomTabBarProps } from "expo-router/tabs";
-import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { useRouter, usePathname } from "expo-router";
-import { Children, useEffect, useState } from "react";
-import { I18nManager, Platform, Pressable, ScrollView, View, useWindowDimensions } from "react-native";
-import Animated, {
-	useAnimatedStyle,
-	useSharedValue,
-	withSequence,
-	withSpring,
-	withTiming,
-} from "react-native-reanimated";
+import { useRouter } from "expo-router";
+import { Platform, Pressable, ScrollView, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AccountButton } from "./account-menu";
+import { useUnreadCount, useSidebarCounts } from "@/features/home/queries";
 import { routes } from "@/routes";
-import { Button, Icon, Text, haptics, useReducedMotion, useTheme } from "@/ui-legacy";
-import { useKeyboardVisible } from "@/ui-legacy/keyboard";
+import { Button, Icon, Text, cx, haptics, useThemeColor } from "@/ui";
+import { useKeyboardVisible } from "@/ui/keyboard";
 
-/** The tab routes of `app/(tabs)`, in tab-bar order. `create` is the raised "+" that opens New. */
-const appTabIcons: Record<string, IconName> = {
+const tabIcons: Record<AppTab, IconName> = {
+	home: "house",
 	documents: "file-text",
 	applications: "briefcase",
-	career: "compass",
-	settings: "gear-six",
+	portfolio: "globe-hemisphere-west",
+	profile: "user-circle",
 };
 
-// The active-tab marker on the bar's top rule; Android tab cells are 64 tall.
-const railMarker = { width: 28, height: 3 };
-// The edge moving toward the new tab arrives first; the other catches up with a little overshoot, so the marker stretches.
-const leadingEdge = { duration: 260, dampingRatio: 0.8 };
-const trailingEdge = { duration: 420, dampingRatio: 0.62 };
-const androidTabHeight = 64;
-const badgeMinWidth = 18;
+/** The web sidebar's order (owner, 2026-11-16): Home, Portfolio, Documents, Profile, Applications. */
+const sidebarOrder: readonly AppTab[] = ["home", "portfolio", "documents", "profile", "applications"];
 
-/** Applications shows a quiet count of open applications; every other badge is a filled unread count. */
-const quietBadges = new Set(["applications"]);
+/** Below this width the sidebar is a rail of icons with short labels. */
+const fullSidebarWidth = 1000;
 
 type TabRoute = BottomTabBarProps["state"]["routes"][number];
 
-function useTabPress({ state, emitter, navigateToTab }: BottomTabBarProps) {
-	return (route: TabRoute) => {
-		const focused = state.routes[state.index]?.key === route.key;
-		const event = emitter.emit({ type: "tabPress", target: route.key, canPreventDefault: true });
-		if (!focused && !event.defaultPrevented) navigateToTab(route.key);
+function isAppTab(name: string): name is AppTab {
+	return name in tabIcons;
+}
+
+function useTabLabels(): Record<AppTab, string> {
+	const { t } = useLingui();
+	return {
+		home: t`Home`,
+		documents: t`Documents`,
+		applications: t`Applications`,
+		portfolio: t`Portfolio`,
+		profile: t`Profile`,
 	};
 }
 
-const tabLabel = ({ descriptors }: BottomTabBarProps, route: TabRoute) => {
-	const { title, tabBarLabel } = descriptors[route.key]?.options ?? {};
-	return typeof tabBarLabel === "string" ? tabBarLabel : (title ?? route.name);
-};
-
-/** A count of 0 shows nothing, like the web sidebar. */
-const tabBadge = ({ descriptors }: BottomTabBarProps, route: TabRoute) => {
-	const badge = descriptors[route.key]?.options.tabBarBadge;
-	return badge === 0 || badge === "0" ? undefined : badge;
-};
-
-/** `quiet`: a grey count. `accent`: unread. `warn`: open issues on Check. */
-type BadgeTone = "quiet" | "accent" | "warn";
-
-const badgeColors = {
-	quiet: { background: "sunken", text: "ink2" },
-	accent: { background: "accent", text: "onAccent" },
-	warn: { background: "warnSoft", text: "warnText" },
-} as const;
-
-type BadgeProps = {
-	value: string | number;
-	tone: BadgeTone;
-};
-
-function TabBadge({ value, tone }: BadgeProps) {
-	const { colors, radius, size, space } = useTheme();
-	return (
-		<View
-			style={{
-				position: "absolute",
-				top: -space.s1,
-				// Just past the middle of the icon cell (left 50% + 6px).
-				start: size.icon.bar / 2 + space.s1,
-				minWidth: badgeMinWidth,
-				paddingHorizontal: space.s1,
-				borderRadius: radius.rLg,
-				borderWidth: space.s0,
-				borderColor: colors.surface,
-				backgroundColor: colors[badgeColors[tone].background],
-				alignItems: "center",
-			}}
-		>
-			<Text variant="micro" color={badgeColors[tone].text}>
-				{value}
-			</Text>
-		</View>
-	);
-}
-
-type BarItemProps = {
-	label: string;
-	/** Omitted for the raised "+" pill. */
-	icon?: IconName | undefined;
-	focused: boolean;
-	onPress: () => void;
-	badge?: string | number | undefined;
-	badgeTone?: BadgeTone | undefined;
-};
-
-/** One cell of a bottom bar: the app tab bar and the editor's Write / Page / Design / Check bar share it. */
-export function BarItem({ label, icon, focused, onPress, badge, badgeTone = "accent" }: BarItemProps) {
-	const { colors, radius, size, space } = useTheme();
-	const android = Platform.OS === "android";
-
-	return (
-		<Pressable
-			accessibilityRole={icon ? "tab" : "button"}
-			accessibilityState={icon ? { selected: focused } : {}}
-			accessibilityLabel={badge === undefined ? label : `${label}, ${badge}`}
-			onPress={() => {
-				if (icon && !focused) haptics.selection();
-				onPress();
-			}}
-			android_ripple={{ color: colors.press, borderless: false }}
-			style={({ pressed }) => ({
-				flex: 1,
-				minHeight: android ? androidTabHeight : size.tabBar,
-				alignItems: "center",
-				justifyContent: "flex-start",
-				gap: space.s0,
-				paddingTop: space.s2,
-				paddingBottom: space.s1,
-				paddingHorizontal: space.s1,
-				backgroundColor: pressed && !android ? colors.press : "transparent",
-			})}
-		>
-			{icon ? (
-				<View style={{ height: size.newPill.height, alignItems: "center", justifyContent: "center" }}>
-					<Icon name={icon} filled={focused} color={focused ? colors.ink : colors.ink2} size={size.icon.bar} />
-					{badge === undefined ? null : <TabBadge value={badge} tone={badgeTone} />}
-				</View>
-			) : (
-				<View
-					style={{
-						...size.newPill,
-						borderRadius: radius.rLg,
-						backgroundColor: colors.accent,
-						alignItems: "center",
-						justifyContent: "center",
-					}}
-				>
-					<Icon name="plus" color={colors.onAccent} size={size.icon.row} />
-				</View>
-			)}
-			<Text
-				variant="micro"
-				color={focused ? "ink" : "ink2"}
-				align="center"
-				// Fit long words within a cell; translated phrases can still wrap at spaces.
-				numberOfLines={label.split(" ").length}
-				adjustsFontSizeToFit
-				minimumFontScale={0.7}
-				style={{ alignSelf: "stretch" }}
-			>
-				{label}
-			</Text>
-		</Pressable>
-	);
-}
-
-type RailMarkerProps = {
-	index: number;
-	count: number;
-	/** The width of the row of cells. */
-	width: number;
-};
-
-/** The `accent` marker on the bar's top rule, over the focused cell. Its two edges spring separately, so it stretches. */
-function RailMarker({ index, count, width }: RailMarkerProps) {
-	const { colors, motion } = useTheme();
-	const reduced = useReducedMotion();
-	const cell = width / count;
-	// Cells are equal `flex: 1`; in RTL the row runs right to left but translateX does not.
-	const slot = I18nManager.isRTL ? count - 1 - index : index;
-	const target = slot * cell + (cell - railMarker.width) / 2;
-	const left = useSharedValue(target);
-	const right = useSharedValue(target + railMarker.width);
-	const opacity = useSharedValue(1);
-
-	useEffect(() => {
-		const end = target + railMarker.width;
-		if (reduced) {
-			// No stretch or travel: jump, then fade in.
-			left.set(target);
-			right.set(end);
-			opacity.set(withSequence(withTiming(0, { duration: 0 }), withTiming(1, { duration: motion.d1 })));
-			return;
+/** Visible tab routes, with React Navigation's press semantics: a focused tab's press goes to the tab (pop to top). */
+function useTabs({ state, descriptors, emitter, navigateToTab }: BottomTabBarProps) {
+	const focusedKey = state.routes[state.index]?.key;
+	const visible = state.routes.filter((route) => {
+		const options = descriptors[route.key]?.options as { hidden?: boolean } | undefined;
+		return isAppTab(route.name) && !options?.hidden;
+	});
+	const press = (route: TabRoute) => {
+		const focused = route.key === focusedKey;
+		const event = emitter.emit({ type: "tabPress", target: route.key, canPreventDefault: true });
+		if (!focused && !event.defaultPrevented) {
+			haptics.selection();
+			navigateToTab(route.key);
 		}
-		// Springs start from where the marker is now, so a tap mid-flight retargets instead of restarting.
-		const forward = target > left.get();
-		left.set(withSpring(target, forward ? trailingEdge : leadingEdge));
-		right.set(withSpring(end, forward ? leadingEdge : trailingEdge));
-	}, [target, reduced, left, right, opacity, motion.d1]);
-
-	const style = useAnimatedStyle(() => ({
-		opacity: opacity.get(),
-		// Absolute and childless, so animating width costs no sibling layout.
-		width: Math.max(right.get() - left.get(), railMarker.height),
-		transform: [{ translateX: left.get() }],
-	}));
-
-	return (
-		<Animated.View
-			pointerEvents="none"
-			style={[
-				{
-					position: "absolute",
-					// Sits on the bar's 1 pt top rule.
-					top: -1,
-					left: 0,
-					height: railMarker.height,
-					backgroundColor: colors.accent,
-				},
-				style,
-			]}
-		/>
-	);
+	};
+	return { visible, focusedKey, press };
 }
 
-type BarProps = {
-	children: ReactNode;
-	/** The focused cell, marked on the top rule. Omit for no marker. */
-	activeIndex?: number | undefined;
-};
+type BadgeProps = { count: number | undefined };
 
-/** A bottom bar on `surface` with a top rule, padding the bottom and side safe areas. Hidden while the keyboard is up. */
-export function Bar({ children, activeIndex }: BarProps) {
-	const insets = useSafeAreaInsets();
-	const { colors } = useTheme();
-	const keyboardVisible = useKeyboardVisible();
-	const [width, setWidth] = useState(0);
-	const count = Children.count(children);
-
-	if (keyboardVisible) return null;
-
+/** Unread count on the Home tab; nothing at zero, "99+" above it. */
+function Badge({ count }: BadgeProps) {
+	if (!count) return null;
 	return (
-		<View
-			accessibilityRole="tablist"
-			style={{
-				flexDirection: "row",
-				paddingBottom: insets.bottom,
-				paddingLeft: insets.left,
-				paddingRight: insets.right,
-				backgroundColor: colors.surface,
-				borderTopWidth: 1,
-				borderTopColor: colors.line,
-			}}
-		>
-			<View style={{ flex: 1, flexDirection: "row" }} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
-				{children}
-				{activeIndex !== undefined && activeIndex >= 0 && width > 0 && count > 0 ? (
-					<RailMarker index={activeIndex} count={count} width={width} />
-				) : null}
-			</View>
+		<View className="absolute -end-3 -top-1 h-[18px] min-w-[18px] items-center justify-center rounded-full bg-accent px-1">
+			<Text size="xs" weight="semibold" className="text-accent-foreground" tabular>
+				{count > 99 ? "99+" : String(count)}
+			</Text>
 		</View>
 	);
 }
 
 /**
- * The phone tab bar: five cells, the active tab with a filled icon and the `accent` 28×3 marker on the top
- * rule (both platforms), and the raised "+" pill in the middle. Labels stay under the icons at every text
- * size (`micro` caps its scale); phrases wrap and long words fit within their cells.
+ * The phone tab bar: a bar on `surface` with a hairline on top, the selected tab in accent with its duotone glyph,
+ * the Home badge for unread notifications. Hidden while the keyboard is up.
  */
 export function PhoneTabBar(props: BottomTabBarProps) {
 	const { t } = useLingui();
-	const onPress = useTabPress(props);
+	const labels = useTabLabels();
+	const unread = useUnreadCount();
+	const insets = useSafeAreaInsets();
+	const keyboard = useKeyboardVisible();
+	const ripple = useThemeColor("default");
+	const { visible, focusedKey, press } = useTabs(props);
+	if (keyboard) return null;
+	const frame = { paddingBottom: insets.bottom, paddingLeft: insets.left, paddingRight: insets.right };
 
 	return (
-		<Bar activeIndex={props.state.index}>
-			{props.state.routes.map((route, index) => (
-				<BarItem
-					key={route.key}
-					label={route.name === "create" ? t`New` : tabLabel(props, route)}
-					icon={appTabIcons[route.name]}
-					focused={index === props.state.index}
-					badge={tabBadge(props, route)}
-					badgeTone={quietBadges.has(route.name) ? "quiet" : "accent"}
-					onPress={() => onPress(route)}
-				/>
-			))}
-		</Bar>
+		<View accessibilityRole="tablist" className="flex-row border-t border-separator bg-surface" style={frame}>
+			{visible.map((route) => {
+				const name = route.name as AppTab;
+				const label = labels[name];
+				const focused = route.key === focusedKey;
+				const count = name === "home" ? unread : undefined;
+				return (
+					<Pressable
+						key={route.key}
+						accessibilityRole="tab"
+						accessibilityState={{ selected: focused }}
+						accessibilityLabel={count ? t`${label}, ${count} unread` : label}
+						android_ripple={Platform.OS === "android" ? { color: ripple, borderless: true } : undefined}
+						onPress={() => press(route)}
+						testID={`tab-${name}`}
+						className="min-h-14 flex-1 items-center justify-center gap-0.5 px-1 pt-1.5 pb-1"
+					>
+						<View>
+							<Icon
+								name={tabIcons[name]}
+								size={24}
+								variant={focused ? "duotone" : "stroke"}
+								tone={focused ? "accent" : "muted"}
+							/>
+							<Badge count={count} />
+						</View>
+						<Text
+							size="xs"
+							weight="medium"
+							tone={focused ? "accent" : "muted"}
+							numberOfLines={1}
+							adjustsFontSizeToFit
+							minimumFontScale={0.8}
+							maxFontSizeMultiplier={1.3}
+						>
+							{labels[name]}
+						</Text>
+					</Pressable>
+				);
+			})}
+		</View>
 	);
 }
 
 type SidebarItemProps = {
 	icon: IconName;
 	label: string;
-	active: boolean;
+	selected: boolean;
+	count?: number | undefined;
+	/** Unread (Home): an accent pill. Otherwise a quiet number, as on the web. */
+	unread?: boolean | undefined;
+	compact: boolean;
 	onPress: () => void;
-	badge?: string | number | undefined;
-	quiet?: boolean | undefined;
-	compact?: boolean;
-	role?: "tab" | "button";
+	testID?: string | undefined;
 };
 
-function SidebarItem({
-	icon,
-	label,
-	active,
-	onPress,
-	badge,
-	quiet = true,
-	compact = false,
-	role = "tab",
-}: SidebarItemProps) {
-	const { colors, radius, size, space } = useTheme();
-
+function SidebarItem({ icon, label, selected, count, unread = false, compact, onPress, testID }: SidebarItemProps) {
+	const { t } = useLingui();
 	return (
 		<Pressable
-			accessibilityRole={role}
-			accessibilityState={{ selected: active }}
-			accessibilityLabel={badge === undefined ? label : `${label}, ${badge}`}
-			onPress={() => {
-				if (!active) haptics.selection();
-				onPress();
-			}}
-			style={({ pressed }) => ({
-				flexDirection: compact ? "column" : "row",
-				alignItems: "center",
-				justifyContent: "center",
-				gap: compact ? space.s0 : space.s3,
-				minHeight: size.hit,
-				paddingHorizontal: compact ? space.s1 : space.s3,
-				paddingVertical: compact ? space.s2 : 0,
-				borderRadius: radius.rLg,
-				backgroundColor: active ? colors.selectedFill : pressed ? colors.press : "transparent",
-			})}
+			accessibilityRole="tab"
+			accessibilityState={{ selected }}
+			accessibilityLabel={count ? (unread ? t`${label}, ${count} unread` : `${label}, ${count}`) : label}
+			onPress={onPress}
+			testID={testID}
+			className={cx(
+				"min-h-11 items-center rounded-xl",
+				compact ? "gap-0.5 px-1 py-2" : "flex-row gap-3 px-3",
+				selected && "bg-accent-soft",
+			)}
 		>
-			<Icon name={icon} filled={active} size={size.icon.toolbar} color={active ? colors.accentText : colors.ink2} />
+			<Icon
+				name={icon}
+				size={compact ? 24 : 20}
+				variant={selected ? "duotone" : "stroke"}
+				tone={selected ? "accent" : "muted"}
+			/>
 			<Text
-				variant={compact ? "micro" : active ? "label" : "body"}
-				align={compact ? "center" : undefined}
-				color={active ? "accentText" : "ink2"}
-				style={compact ? undefined : { flex: 1 }}
+				size={compact ? "xs" : "sm"}
+				weight={selected ? "semibold" : "medium"}
+				tone={selected ? "accent" : "muted"}
+				numberOfLines={1}
+				className={compact ? "text-center" : "flex-1"}
 			>
 				{label}
 			</Text>
-			{badge === undefined ? null : quiet ? (
-				<Text variant="callout" color={active ? "ink2" : "ink3"}>
-					{badge}
-				</Text>
-			) : (
-				<View
-					style={{
-						minWidth: badgeMinWidth,
-						paddingHorizontal: space.s1,
-						borderRadius: radius.rLg,
-						backgroundColor: colors.accent,
-						alignItems: "center",
-					}}
-				>
-					<Text variant="micro" color="onAccent">
-						{badge}
+			{!compact && count ? (
+				unread ? (
+					<View className="min-w-5 items-center rounded-full bg-accent px-1.5">
+						<Text size="xs" weight="semibold" className="text-accent-foreground" tabular>
+							{count > 99 ? "99+" : String(count)}
+						</Text>
+					</View>
+				) : (
+					<Text size="xs" tone="muted" tabular>
+						{String(count)}
 					</Text>
-				</View>
-			)}
+				)
+			) : null}
 		</Pressable>
 	);
 }
 
 /**
- * The tablet sidebar (240 pt): brand, the four sections, then Trash, New and the
- * account row at the bottom. Section counts come from each tab's `tabBarBadge` option.
+ * The sidebar from 700 pt wide (iPad, foldables, landscape tablets): the brand, the sections in the web's order with
+ * their counts, then New and the account at the foot. Under 1000 pt it is a rail of icons with short labels.
  */
 export function AppSidebar(props: BottomTabBarProps) {
-	const router = useRouter();
 	const { t } = useLingui();
-	const { state, insets } = props;
-	const pathname = usePathname();
-	const { colors, size, space, type } = useTheme();
-	const { width, fontScale } = useWindowDimensions();
-	const compact = width - insets.left - insets.right < 1000;
-	const railWidth = (size.hit + space.s8 * 2) * Math.max(1, Math.min(fontScale, type.micro.maxFontSizeMultiplier));
-	const leadingInset = I18nManager.isRTL ? insets.right : insets.left;
-	const onPress = useTabPress(props);
-	const inTrash = pathname.startsWith(routes.trash());
+	const router = useRouter();
+	const labels = useTabLabels();
+	const unread = useUnreadCount();
+	const counts = useSidebarCounts();
+	const insets = useSafeAreaInsets();
+	const { width } = useWindowDimensions();
+	const compact = width < fullSidebarWidth;
+	const { visible, focusedKey, press } = useTabs(props);
+	const ordered = sidebarOrder.flatMap((name) => visible.filter((route) => route.name === name));
+	const countOf: Partial<Record<AppTab, number | undefined>> = {
+		home: unread,
+		documents: counts.documents,
+		applications: counts.applications,
+	};
+	const frame = {
+		paddingTop: insets.top + 12,
+		paddingBottom: insets.bottom + 12,
+		paddingStart: insets.left + 12,
+	};
 
 	return (
 		<View
 			accessibilityRole="tablist"
-			style={{
-				width: (compact ? railWidth : size.sidebar) + leadingInset,
-				paddingTop: insets.top + space.s3,
-				paddingBottom: insets.bottom + space.s3,
-				paddingStart: leadingInset + space.s3,
-				paddingEnd: space.s3,
-				gap: space.s0,
-				backgroundColor: colors.surface,
-				borderEndWidth: 1,
-				borderEndColor: colors.line,
-			}}
+			className={cx("border-e border-separator bg-surface pe-3", compact ? "w-24" : "w-64")}
+			style={frame}
 		>
 			<Text
-				variant="heading"
-				accessibilityLabel="Rezumi"
-				align={compact ? "center" : undefined}
+				weight="bold"
+				size="base"
+				accessibilityRole="header"
 				numberOfLines={1}
-				style={{ paddingHorizontal: compact ? 0 : space.s3, paddingBottom: space.s3 }}
+				className={cx("pb-4", compact ? "text-center" : "px-3")}
 			>
-				{compact ? "Rx" : "Rezumi"}
+				Rezumi
 			</Text>
-			<ScrollView contentContainerStyle={{ flexGrow: 1, gap: space.s0 }} showsVerticalScrollIndicator={false}>
-				{state.routes.map((route, index) => {
-					const icon = appTabIcons[route.name];
-					if (!icon) return null;
-					const badge = tabBadge(props, route);
+			<ScrollView contentContainerClassName="grow gap-1" showsVerticalScrollIndicator={false}>
+				{ordered.map((route) => {
+					const name = route.name as AppTab;
 					return (
 						<SidebarItem
 							key={route.key}
-							icon={icon}
-							label={tabLabel(props, route)}
-							active={index === state.index && !inTrash}
-							badge={badge}
-							quiet={quietBadges.has(route.name)}
+							icon={tabIcons[name]}
+							label={labels[name]}
+							selected={route.key === focusedKey}
+							count={countOf[name]}
+							unread={name === "home"}
 							compact={compact}
-							onPress={() =>
-								inTrash && route.name === "documents" ? router.navigate(routes.documents()) : onPress(route)
-							}
+							onPress={() => press(route)}
+							testID={`sidebar-${name}`}
 						/>
 					);
 				})}
-				<View style={{ flex: 1 }} />
-				<SidebarItem
-					icon="trash"
-					label={t`Trash`}
-					active={inTrash}
-					compact={compact}
-					onPress={() => router.navigate(routes.trash())}
-				/>
-				<View style={{ paddingVertical: space.s2 }}>
+				<View className="flex-1" />
+				<View className="gap-2 pt-2">
 					{compact ? (
-						<SidebarItem
-							icon="plus"
-							label={t`New`}
-							active={false}
-							compact
-							role="button"
-							onPress={() => router.push(routes.new())}
-						/>
+						<Button isIconOnly variant="primary" accessibilityLabel={t`New`} onPress={() => router.push(routes.new())}>
+							<Icon name="plus" size={20} tone="accent-foreground" />
+						</Button>
 					) : (
-						<Button icon="plus" label={t`New`} fullWidth onPress={() => router.push(routes.new())} />
+						<Button variant="primary" onPress={() => router.push(routes.new())}>
+							<Icon name="plus" size={20} tone="accent-foreground" />
+							<Button.Label>{t`New`}</Button.Label>
+						</Button>
 					)}
+					<View className={cx("border-t border-separator pt-2", compact && "items-center")}>
+						<AccountButton showName={!compact} />
+					</View>
 				</View>
-				{compact ? (
-					<SidebarItem
-						icon="user-circle"
-						label={t`Account`}
-						active={false}
-						compact
-						role="button"
-						onPress={() => router.navigate(routes.settings("account"))}
-					/>
-				) : (
-					<Pressable
-						accessibilityRole="button"
-						accessibilityLabel={t`Account`}
-						onPress={() => router.navigate(routes.settings("account"))}
-						style={{
-							flexDirection: "row",
-							alignItems: "center",
-							gap: space.s3,
-							minHeight: size.row,
-							paddingHorizontal: space.s3,
-							paddingTop: space.s2,
-							borderTopWidth: 1,
-							borderTopColor: colors.line,
-						}}
-					>
-						<Icon name="user-circle" size={size.icon.bar} color={colors.ink2} />
-						<Text variant="body" color="ink2">
-							{t`Account`}
-						</Text>
-					</Pressable>
-				)}
 			</ScrollView>
 		</View>
 	);

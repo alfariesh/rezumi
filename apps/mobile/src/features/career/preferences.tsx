@@ -198,7 +198,7 @@ export function Preferences({ initial }: PreferencesProps) {
 				<Banner tone="warn" message={t`Check your preferences. Invalid changes are not saved.`} />
 			) : null}
 			<Text color="ink3">{t`Times are shown in ${timeZone}.`}</Text>
-			<Button label={t`Change timezone`} variant="ghost" onPress={() => router.push(routes.settings("preferences"))} />
+			<Button label={t`Change timezone`} variant="ghost" onPress={() => router.push(routes.account("preferences"))} />
 		</View>
 	);
 }

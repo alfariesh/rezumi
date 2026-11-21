@@ -2,6 +2,24 @@ import type { ExpoConfig } from "expo/config";
 
 // The official host. Universal Links, App Links and the OAuth callback (`/auth/native-callback`) verify against it.
 const host = "rezumi.app";
+/** Web pages under /dashboard that open their app screen (with `/dashboard` itself). */
+const appLinkPrefixes = [
+	"/dashboard/career",
+	"/dashboard/documents",
+	"/dashboard/resumes",
+	"/dashboard/cover-letters",
+	"/dashboard/trash",
+	"/dashboard/applications",
+	"/dashboard/jobs",
+	"/dashboard/coach",
+	"/dashboard/profile",
+	"/dashboard/portfolio",
+	"/dashboard/settings/account",
+	"/dashboard/settings/profile",
+	"/dashboard/settings/preferences",
+	"/dashboard/settings/app",
+	"/dashboard/settings/ai",
+];
 const microphonePermission = "Rezumi records your answers when you practise for an interview.";
 
 const config: ExpoConfig = {
@@ -99,9 +117,13 @@ const config: ExpoConfig = {
 				action: "VIEW",
 				autoVerify: true,
 				category: ["BROWSABLE", "DEFAULT"],
+				// The pages with an app screen (plans/mobile 02-teknis 7); keep in step with apps/server/src/http/app-links.ts.
+				// Billing and admin stay on the web: a checkout returning to /dashboard/settings/billing must not open the app.
 				data: [
 					{ scheme: "https", host, path: "/auth/native-callback" },
 					{ scheme: "https", host, pathPrefix: "/builder/" },
+					{ scheme: "https", host, path: "/dashboard" },
+					...appLinkPrefixes.map((pathPrefix) => ({ scheme: "https", host, pathPrefix })),
 				],
 			},
 		],

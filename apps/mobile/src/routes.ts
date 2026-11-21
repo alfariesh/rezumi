@@ -4,8 +4,18 @@ import type { WorkspaceTab } from "@rezumi/schema/career";
 
 export type BuilderPane = "write" | "page" | "design" | "check" | "share";
 export type LetterPane = "write" | "page" | "design";
-export type CareerPane = "today" | "coach" | "knowledge" | "offers";
-export type SettingsPane = "account" | "preferences" | "ai" | "membership";
+/** Screens of the account stack (`app/account/*`), opened from the avatar menu. Omitted: the stack's index. */
+export type AccountPane =
+	| "account"
+	| "preferences"
+	| "ai"
+	| "ai-providers"
+	| "ai-mcp"
+	| "ai-report"
+	| "membership"
+	| "licences";
+/** The bottom tabs of `app/(tabs)`, in tab-bar order. */
+export type AppTab = "home" | "documents" | "applications" | "portfolio" | "profile";
 export type ApplicationTab = WorkspaceTab;
 /** The Applications tab's views; List is the tab's index. */
 export type ApplicationsView = "list" | "board" | "calendar" | "insights";
@@ -18,16 +28,27 @@ export const routes = {
 	signIn: () => "/sign-in" as const,
 
 	// (tabs)
+	/** `schedule`: a schedule id or "new" opens the schedule sheet (links from notifications and `/dashboard?schedule=`). */
+	home: (schedule?: string) => (schedule ? (`/home?schedule=${segment(schedule)}` as const) : ("/home" as const)),
 	documents: () => "/documents" as const,
 	trash: () => "/documents/trash" as const,
 	applications: (view: ApplicationsView = "list") =>
 		view === "list" ? ("/applications" as const) : (`/applications/${view}` as const),
-	career: (pane: CareerPane = "today") => `/career/${pane}` as const,
-	settings: (pane?: SettingsPane) => (pane ? (`/settings/${pane}` as const) : ("/settings" as const)),
+	offers: () => "/applications/offers" as const,
+	portfolio: () => "/portfolio" as const,
+	profile: () => "/profile" as const,
+	/** The Knowledge screen kept from before the rebuild, under Profile until Phase 06 replaces it. */
+	knowledge: () => "/profile/knowledge" as const,
+
+	// Account stack, opened from the avatar menu
+	account: (pane?: AccountPane) => (pane ? (`/account/${pane}` as const) : ("/account" as const)),
 
 	// Modals and full-screen flows
 	new: () => "/new" as const,
 	search: () => "/search" as const,
+	/** Coach full screen. `offers`: saved offer ids picked in Offers → Plan what to ask. */
+	coach: (offers?: readonly string[]) =>
+		offers?.length ? (`/coach?offers=${offers.map(segment).join(",")}` as const) : ("/coach" as const),
 	atsChecker: () => "/ats-checker" as const,
 	application: (id: string, tab: ApplicationTab = "fit") => `/applications/${segment(id)}/${tab}` as const,
 	/** The application detail; it shares the dynamic `[tab]` route with the workspace tabs. */

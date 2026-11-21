@@ -51,12 +51,7 @@ export function OffersScreen() {
 						/>
 						<Button
 							label={t`Plan what to ask`}
-							onPress={() =>
-								router.push({
-									pathname: routes.career("coach"),
-									params: { offers: [a?.id, b?.id].filter((id): id is string => !!id) },
-								})
-							}
+							onPress={() => router.push(routes.coach([a?.id, b?.id].filter((id): id is string => !!id)))}
 						/>
 					</Actions>
 					<View

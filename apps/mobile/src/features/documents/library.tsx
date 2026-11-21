@@ -286,7 +286,6 @@ export function DocumentsLibrary({ trashed = false }: DocumentsLibraryProps) {
 											}}
 										/>
 									)}
-									<IconButton icon="plus" label={t`New document`} onPress={() => router.push(routes.new())} />
 								</>
 							)
 						}

@@ -184,6 +184,11 @@ msgstr "{0, plural, one {# ಸಂಗತಿ} other {# ಸಂಗತಿಗಳು}}"
 msgid "{0, plural, one {# match} other {# matches}}"
 msgstr "{0, plural, one {# ಹೊಂದಾಣಿಕೆ} other {# ಹೊಂದಾಣಿಕೆಗಳು}}"
 
+#. placeholder {0}: interview.durationMinutes
+#: src/features/home/coming-up.tsx
+msgid "{0, plural, one {# min} other {# min}}"
+msgstr ""
+
 #. placeholder {0}: data.officeDays
 #: src/features/career/offers.tsx
 msgid "{0, plural, one {# office day a week} other {# office days a week}}"
@@ -245,11 +250,6 @@ msgstr "{0, plural, one {# ಅರ್ಜಿಯನ್ನು ಅಳಿಸಿ} other
 #: src/features/documents/library.tsx
 msgid "{0, plural, one {Delete # document forever?} other {Delete # documents forever?}}"
 msgstr "{0, plural, one {# ದಾಖಲೆಯನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸುವುದೇ?} other {# ದಾಖಲೆಗಳನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸುವುದೇ?}}"
-
-#. placeholder {0}: row.intervalDays
-#: src/features/career/today.tsx
-msgid "{0, plural, one {Every day} other {Every # days}}"
-msgstr "{0, plural, one {ಪ್ರತಿದಿನ} other {ಪ್ರತಿ # ದಿನಗಳಿಗೊಮ್ಮೆ}}"
 
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
@@ -341,13 +341,13 @@ msgstr ""
 
 #. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
 #. placeholder {1}: TRIAL_CREDITS.validDays
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{0} expire on {1}"
 msgstr ""
 
@@ -527,6 +527,10 @@ msgstr "{day} · {length}ಮಿ"
 msgid "{days, plural, =0 {· since today} one {· for # day} other {· for # days}}"
 msgstr "{days, plural, =0 {· ಇಂದಿನಿಂದ} one {· # ದಿನದಿಂದ} other {· # ದಿನಗಳಿಂದ}}"
 
+#: src/features/home/coming-up.tsx
+msgid "{days, plural, one {In # day} other {In # days}}"
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{done} of {count} done"
 msgstr "{count} ರಲ್ಲಿ {done} ಮುಗಿದಿದೆ"
@@ -558,6 +562,10 @@ msgstr "{facts, plural, one {# ಸಂಗತಿ} other {# ಸಂಗತಿಗಳ�
 #: src/features/applications-board/calendar-screen.tsx
 msgid "{followUps, plural, one {# follow-up} other {# follow-ups}}"
 msgstr "{followUps, plural, one {# ಫಾಲೋ-ಅಪ್} other {# ಫಾಲೋ-ಅಪ್}}"
+
+#: src/features/home/coming-up.tsx
+msgid "{hours, plural, one {In # hour} other {In # hours}}"
+msgstr ""
 
 #: src/features/workspace/shell.tsx
 msgid "{hours} h"
@@ -595,6 +603,10 @@ msgstr ""
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
 msgstr "{label} ಸಂಪರ್ಕ"
+
+#: src/shell/app-tabs.tsx
+msgid "{label}, {count} unread"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
@@ -710,6 +722,14 @@ msgstr "{title} ತೆರವುಗೊಳಿಸಲಾಗಿದೆ"
 msgid "{title} deleted"
 msgstr "{title} ಅಳಿಸಲಾಗಿದೆ"
 
+#: src/features/home/schedules.tsx
+msgid "{title} is on · next {next}"
+msgstr ""
+
+#: src/features/home/schedules.tsx
+msgid "{title} paused"
+msgstr "{title} ವಿರಾಮಗೊಂಡಿದೆ"
+
 #: src/features/write/outline.tsx
 msgid "{toCheck, plural, one {# field needs a look.} other {# fields need a look.}}"
 msgstr "{toCheck, plural, one {# ಕ್ಷೇತ್ರಕ್ಕೆ ಒಂದು ನೋಟದ ಅಗತ್ಯವಿದೆ.} other {# ಕ್ಷೇತ್ರಗಳಿಗೆ ಒಂದು ನೋಟ ಬೇಕು.}}"
@@ -718,11 +738,11 @@ msgstr "{toCheck, plural, one {# ಕ್ಷೇತ್ರಕ್ಕೆ ಒಂದು 
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {ಪರಿಶೀಲಿಸಲು #} other {ಪರಿಶೀಲಿಸಲು #}}"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{used} of {max}"
 msgstr ""
 
@@ -761,6 +781,7 @@ msgid "2 files"
 msgstr "2 ಫೈಲ್‌ಗಳು"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/schedules.tsx
 msgid "2 hours before"
 msgstr "2 ಗಂಟೆಗಳ ಮೊದಲು"
 
@@ -769,6 +790,7 @@ msgid "2–3 sentences reads best"
 msgstr "2-3 ವಾಕ್ಯಗಳು ಉತ್ತಮವಾಗಿ ಓದುತ್ತವೆ"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "24 ಗಂಟೆಗಳ ಮೊದಲು"
 
@@ -906,12 +928,16 @@ msgstr "ಸ್ವೀಕರಿಸಿದ ಆಫರ್"
 msgid "Accomplishment"
 msgstr "ಸಾಧನೆ"
 
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/account.tsx
+#: app/account/index.tsx
 #: src/features/search/search-screen.tsx
-#: src/shell/app-tabs.tsx
+#: src/shell/account-menu.tsx
 msgid "Account"
 msgstr "ಖಾತೆ"
+
+#: src/shell/account-menu.tsx
+msgid "Account menu"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Action (required)"
@@ -927,25 +953,22 @@ msgstr "ಕ್ರಿಯೆಗಳು"
 msgid "Actions for {0} at {1}"
 msgstr "{1} ನಲ್ಲಿ {0} ಗಾಗಿ ಕ್ರಿಯೆಗಳು"
 
-#: src/features/ai/web-access.tsx
-msgid "Active"
-msgstr "ಸಕ್ರಿಯ"
-
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Active cover letters"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Active resumes"
 msgstr ""
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr ""
 
 #: src/features/application-detail/sections.tsx
+#: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Add"
 msgstr "ಸೇರಿಸಿ"
@@ -1143,10 +1166,6 @@ msgstr "ಉಲ್ಲೇಖವನ್ನು ಸೇರಿಸಿ"
 msgid "Add role"
 msgstr "ಪಾತ್ರವನ್ನು ಸೇರಿಸಿ"
 
-#: src/features/career/today.tsx
-msgid "Add schedule"
-msgstr "ವೇಳಾಪಟ್ಟಿಯನ್ನು ಸೇರಿಸಿ"
-
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Add screening calls and technical interviews to see them here and on the calendar."
 msgstr "ಅವುಗಳನ್ನು ಇಲ್ಲಿ ಮತ್ತು ಕ್ಯಾಲೆಂಡರ್‌ನಲ್ಲಿ ನೋಡಲು ಸ್ಕ್ರೀನಿಂಗ್ ಕರೆಗಳು ಮತ್ತು ತಾಂತ್ರಿಕ ಸಂದರ್ಶನಗಳನ್ನು ಸೇರಿಸಿ."
@@ -1273,8 +1292,8 @@ msgstr "ನಿಮ್ಮ ಮೊದಲ ಪರಿಶೀಲನೆಯ ನಂತರ, �
 msgid "Against your requirements"
 msgstr "ನಿಮ್ಮ ಅವಶ್ಯಕತೆಗಳಿಗೆ ಹೋಲಿಸಿದರೆ"
 
-#: app/(tabs)/settings/ai.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/ai.tsx
+#: app/account/index.tsx
 #: src/features/search/search-screen.tsx
 msgid "AI & developer"
 msgstr "AI ಮತ್ತು ಡೆವಲಪರ್"
@@ -1311,8 +1330,8 @@ msgstr "AI ಪುಷ್ಟೀಕರಣವು ಲಭ್ಯವಿಲ್ಲ. ಪು
 msgid "AI provider"
 msgstr "AI ಒದಗಿಸುವವರು"
 
-#: app/(tabs)/settings/ai-providers.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-providers.tsx
+#: app/account/ai.tsx
 #: src/features/search/search-screen.tsx
 msgid "AI providers"
 msgstr "AI ಪೂರೈಕೆದಾರರು"
@@ -1356,7 +1375,7 @@ msgstr "ಎಲ್ಲಾ ({0})"
 msgid "All applications"
 msgstr "ಎಲ್ಲಾ ಅರ್ಜಿಗಳು"
 
-#: src/features/career/recent-documents.tsx
+#: src/features/home/recent-documents.tsx
 msgid "All documents"
 msgstr ""
 
@@ -1506,12 +1525,11 @@ msgstr ""
 msgid "API and MCP access isn't in your plan"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "API and MCP for other apps"
 msgstr ""
 
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "API key"
 msgstr "API ಕೀ"
 
@@ -1528,7 +1546,11 @@ msgstr "API ಕೀಗಳು"
 msgid "API keys need the Plus or Pro AI plan"
 msgstr ""
 
-#: app/(tabs)/settings/preferences.tsx
+#: src/shell/account-menu.tsx
+msgid "App settings"
+msgstr ""
+
+#: app/account/preferences.tsx
 msgid "Appearance"
 msgstr "ಗೋಚರತೆ"
 
@@ -1598,6 +1620,7 @@ msgstr "ಅರ್ಜಿ ವೀಕ್ಷಣೆಗಳು"
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Applications"
 msgstr "ಅರ್ಜಿಗಳು"
 
@@ -1643,7 +1666,7 @@ msgstr "ಅನ್ವಯಿಸಲಾಗಿದೆ. {0} ಕ್ಕೆ ಫಾಲೋ-�
 msgid "Applied. The application is updated."
 msgstr "ಅನ್ವಯಿಸಲಾಗಿದೆ. ಅರ್ಜಿಯನ್ನು ನವೀಕರಿಸಲಾಗಿದೆ."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Applies to this device only."
 msgstr "ಈ ಸಾಧನಕ್ಕೆ ಮಾತ್ರ ಅನ್ವಯಿಸುತ್ತದೆ."
 
@@ -1721,10 +1744,6 @@ msgstr "ಕೋಚ್ ಅನ್ನು ಕೇಳಿ"
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "ರುಜುವಾತು ಎನ್‌ಕ್ರಿಪ್ಶನ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಅಥವಾ ಹಂಚಿದ ಸಂಪರ್ಕವನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲು ನಿಮ್ಮ ಸರ್ವರ್ ನಿರ್ವಾಹಕರನ್ನು ಕೇಳಿ."
-
-#: src/features/ai/web-access.tsx
-msgid "Ask your server administrator to enable credential encryption or configure a shared web connection."
-msgstr "ರುಜುವಾತು ಎನ್‌ಕ್ರಿಪ್ಶನ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಅಥವಾ ಹಂಚಿದ ವೆಬ್ ಸಂಪರ್ಕವನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲು ನಿಮ್ಮ ಸರ್ವರ್ ನಿರ್ವಾಹಕರನ್ನು ಕೇಳಿ."
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Ask, or describe a change…"
@@ -1929,7 +1948,7 @@ msgstr ""
 msgid "Behavioral"
 msgstr "ನಡವಳಿಕೆಯ"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Behavioral interview"
 msgstr "ವರ್ತನೆಯ ಸಂದರ್ಶನ"
 
@@ -1996,7 +2015,7 @@ msgstr "ಪುಟದಲ್ಲಿ ಹೊಂದಿಸಲಾದ ಭಾಷೆಯನ�
 msgid "Briefing"
 msgstr "ಬ್ರೀಫಿಂಗ್"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Briefing ready"
 msgstr "ಬ್ರೀಫಿಂಗ್ ಸಿದ್ಧವಾಗಿದೆ"
 
@@ -2007,10 +2026,6 @@ msgstr "ಬ್ರೀಫಿಂಗ್ ರಿಫ್ರೆಶ್ ಆನ್ ಆಗಿ
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "ಬ್ರೀಫಿಂಗ್ ರಿಫ್ರೆಶ್ ವಿರಾಮಗೊಂಡಿದೆ"
-
-#: src/features/ai/web-access.tsx
-msgid "Built-in reader"
-msgstr "ಅಂತರ್ನಿರ್ಮಿತ ರೀಡರ್"
 
 #: src/features/settings/locale-names.ts
 msgid "Bulgarian"
@@ -2031,7 +2046,7 @@ msgstr "ಬುಲೆಟ್ ಪಟ್ಟಿ"
 msgid "Burgundy"
 msgstr "ಬರ್ಗಂಡಿ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "by <0>Salman Alfariesh</0>"
 msgstr "<0>Salman Alfariesh</0> ಅವರಿಂದ"
 
@@ -2049,7 +2064,6 @@ msgstr "ಸಾಫ್ಟ್‌ವೇರ್ ನಿಮ್ಮ ರೆಸ್ಯೂಮ�
 
 #: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/list-screen.tsx
@@ -2062,7 +2076,7 @@ msgstr "ಸಾಫ್ಟ್‌ವೇರ್ ನಿಮ್ಮ ರೆಸ್ಯೂಮ�
 #: src/features/write/improve.tsx
 #: src/features/write/pickers.tsx
 #: src/linking/open.ts
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Cancel"
 msgstr "ರದ್ದು ಮಾಡಿ"
 
@@ -2078,11 +2092,6 @@ msgstr "ರೆಕಾರ್ಡಿಂಗ್ ರದ್ದುಮಾಡಿ"
 msgid "Cancel request"
 msgstr "ವಿನಂತಿಯನ್ನು ರದ್ದುಮಾಡಿ"
 
-#: app/(tabs)/_layout.tsx
-#: app/(tabs)/career/_layout.tsx
-msgid "Career"
-msgstr "ವೃತ್ತಿಜೀವನ"
-
 #: src/features/settings/locale-names.ts
 msgid "Catalan"
 msgstr "ಕ್ಯಾಟಲನ್"
@@ -2095,10 +2104,6 @@ msgstr "ಪ್ರಮಾಣಪತ್ರಗಳು"
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "ಬದಲಾವಣೆ"
-
-#: src/features/ai/web-access.tsx
-msgid "Change connection"
-msgstr "ಸಂಪರ್ಕವನ್ನು ಬದಲಾಯಿಸಿ"
 
 #: src/features/letters/write.tsx
 msgid "Change it in Design."
@@ -2450,10 +2455,11 @@ msgstr "ಮುಚ್ಚಲಾಗಿದೆ"
 msgid "Closed: {closed}"
 msgstr "ಮುಚ್ಚಲಾಗಿದೆ: {closed}"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/_layout.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/billing/credits.ts
 #: src/features/workspace/coach-sheet.tsx
+#: src/shell/tab-chrome.tsx
 msgid "Coach"
 msgstr "ಕೋಚ್"
 
@@ -2479,7 +2485,7 @@ msgid "Columns can scramble the order text is read in."
 msgstr "ಕಾಲಮ್‌ಗಳು ಓದುವ ಕ್ರಮದ ಪಠ್ಯವನ್ನು ಸ್ಕ್ರಾಂಬಲ್ ಮಾಡಬಹುದು."
 
 #: src/features/applications-board/calendar-screen.tsx
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Coming up"
 msgstr "ಮುಂಬರುವವು"
 
@@ -2562,10 +2568,6 @@ msgstr "{0} ಅನ್ನು ಸಂಪರ್ಕಿಸಿ"
 msgid "Connect {domain}"
 msgstr "{domain} ಅನ್ನು ಸಂಪರ್ಕಿಸಿ"
 
-#: src/features/ai/web-access.tsx
-msgid "Connect a service"
-msgstr "ಸೇವೆಯನ್ನು ಸಂಪರ್ಕಿಸಿ"
-
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
 msgid "Connect AI provider"
@@ -2586,15 +2588,11 @@ msgstr "ಇದನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ರಿಫ�
 msgid "Connect an AI provider to read details from pasted text. Manual entry works without AI."
 msgstr "ಅಂಟಿಸಿದ ಪಠ್ಯದಿಂದ ವಿವರಗಳನ್ನು ಓದಲು AI ಪೂರೈಕೆದಾರರನ್ನು ಸಂಪರ್ಕಿಸಿ. ಹಸ್ತಚಾಲಿತ ನಮೂದು AI ಇಲ್ಲದೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ."
 
-#: src/features/ai/web-access.tsx
-msgid "Connect an AI provider to use the assistant. Saving and preparing jobs doesn't need one."
-msgstr "ಸಹಾಯಕವನ್ನು ಬಳಸಲು AI ಪೂರೈಕೆದಾರರನ್ನು ಸಂಪರ್ಕಿಸಿ. ಉದ್ಯೋಗಗಳನ್ನು ಉಳಿಸುವುದು ಮತ್ತು ಸಿದ್ಧಪಡಿಸುವುದು ಒಂದು ಅಗತ್ಯವಿಲ್ಲ."
-
 #: src/features/assistant/provider.tsx
 msgid "Connect another…"
 msgstr "ಇನ್ನೊಂದನ್ನು ಸಂಪರ್ಕಿಸಿ..."
 
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai.tsx
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "ಬರೆಯಲು, ಉದ್ಯೋಗ ಹುಡುಕಾಟ ಮತ್ತು ನಿಮ್ಮ ರೆಸ್ಯೂಮ್‌ಗಳೊಂದಿಗೆ ಕೆಲಸ ಮಾಡಲು ನೀವು ಬಳಸುವ ಪರಿಕರಗಳನ್ನು ಸಂಪರ್ಕಿಸಿ."
 
@@ -2610,11 +2608,7 @@ msgstr "ಸಂಪರ್ಕಿಸಲಾಗಿದೆ. ನಿಮ್ಮ ಡೊಮೇ
 msgid "Connecting the dots"
 msgstr "ಚುಕ್ಕೆಗಳನ್ನು ಜೋಡಿಸಲಾಗುತ್ತಿದೆ"
 
-#: src/features/ai/web-access.tsx
-msgid "Connection saved"
-msgstr "ಸಂಪರ್ಕವನ್ನು ಉಳಿಸಲಾಗಿದೆ"
-
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -2769,13 +2763,17 @@ msgstr ""
 msgid "Couldn't attach the file. Try again."
 msgstr "ಫೈಲ್ ಲಗತ್ತಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't change the language. Try again."
 msgstr "ಭಾಷೆಯನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Couldn't change the schedule. Try again."
 msgstr "ವೇಳಾಪಟ್ಟಿಯನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+
+#: src/features/home/schedules.tsx
+msgid "Couldn't change this schedule. Try again."
+msgstr "ಈ ವೇಳಾಪಟ್ಟಿಯನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #: src/features/share/download.tsx
 msgid "Couldn't check for a linked cover letter."
@@ -2794,13 +2792,9 @@ msgid "Couldn't complete the request. Check your connection and try again."
 msgstr "ವಿನಂತಿಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #: src/features/documents/queries.ts
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Couldn't complete this action. Try again."
 msgstr "ಈ ಕ್ರಿಯೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
-
-#: src/features/ai/web-access.tsx
-msgid "Couldn't confirm AI connections. Try again before using the assistant."
-msgstr "AI ಸಂಪರ್ಕಗಳನ್ನು ಖಚಿತಪಡಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಸಹಾಯಕವನ್ನು ಬಳಸುವ ಮೊದಲು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #: src/features/applications/add-sheet.tsx
 msgid "Couldn't confirm the save. Check Applications before retrying to avoid a duplicate."
@@ -2830,6 +2824,10 @@ msgstr "ಸಂಭಾಷಣೆಯನ್ನು ಅಳಿಸಲು ಸಾಧ್ಯ�
 msgid "Couldn't delete the interview. Try again."
 msgstr "ಸಂದರ್ಶನವನ್ನು ಅಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
+#: src/features/home/home-screen.tsx
+msgid "Couldn't delete this schedule. Try again."
+msgstr "ಈ ವೇಳಾಪಟ್ಟಿಯನ್ನು ಅಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+
 #: src/features/settings/export.tsx
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
@@ -2842,6 +2840,10 @@ msgstr "ಈ ಫೈಲ್ ಅನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವ�
 #: src/features/write/improve.tsx
 msgid "Couldn't get a suggestion. Nothing changed."
 msgstr "ಸಲಹೆಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಏನೂ ಬದಲಾಗಿಲ್ಲ."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't hide this role. Try again."
+msgstr "ಈ ಹುದ್ದೆಯನ್ನು ಮರೆಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't import the file. Try again from Documents."
@@ -2922,12 +2924,16 @@ msgstr "ಈ ಆವೃತ್ತಿಯ ಪುಟವನ್ನು ಲೋಡ್ ಮ�
 msgid "Couldn't load this. Check your connection and try again."
 msgstr "ಇದನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
+#: src/features/home/section.tsx
+msgid "Couldn't load this. Check your connection."
+msgstr ""
+
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
 msgid "Couldn't load versions."
 msgstr "ಆವೃತ್ತಿಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
 
@@ -2939,7 +2945,7 @@ msgstr "ನಿಮ್ಮ ಸಾರ್ವಜನಿಕ ವಿಳಾಸವನ್ನ�
 msgid "Couldn't load your resumes."
 msgstr "ನಿಮ್ಮ ರೆಸ್ಯೂಮ್‌ಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗಲಿಲ್ಲ."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't load your timezone."
 msgstr "ನಿಮ್ಮ ಸಮಯವಲಯವನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
 
@@ -2947,18 +2953,23 @@ msgstr "ನಿಮ್ಮ ಸಮಯವಲಯವನ್ನು ಲೋಡ್ ಮಾಡ
 msgid "Couldn't mark it as applied. Try again."
 msgstr "ಅದನ್ನು ಅರ್ಜಿ ಸಲ್ಲಿಸಲಾಗಿದೆ ಎಂದು ಗುರುತಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
+#: src/features/home/needs-you.tsx
+msgid "Couldn't mark this as read. Try again."
+msgstr "ಇದನ್ನು ಓದಲಾಗಿದೆ ಎಂದು ಗುರುತಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+
 #: src/features/applications-board/use-reschedule-interview.ts
 msgid "Couldn't move the interview. Try again."
 msgstr ""
 
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/account.tsx
+#: app/account/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
+#: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "ಬ್ರೌಸರ್ ತೆರೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Couldn't open the posting. Try again."
 msgstr "ಉದ್ಯೋಗ ಜಾಹೀರಾತನ್ನು ತೆರೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
@@ -3009,6 +3020,10 @@ msgstr "ನಿಮ್ಮ ಡಾಕ್ಯುಮೆಂಟ್‌ಗಳನ್ನು �
 #: src/features/assistant/messages.tsx
 msgid "Couldn't remember that. Try again."
 msgstr "ಅದನ್ನು ನೆನಪಿಟ್ಟುಕೊಳ್ಳಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't remove it from Applications. Try again."
+msgstr "ಅದನ್ನು ಅರ್ಜಿಗಳಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't remove the file. Try again."
@@ -3066,13 +3081,17 @@ msgstr "ಟಿಪ್ಪಣಿಗಳನ್ನು ಉಳಿಸಲು ಸಾಧ್�
 msgid "Couldn't save the tags. Try again."
 msgstr "ಟ್ಯಾಗ್‌ಗಳನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't save the theme. Try again."
 msgstr "ಥೀಮ್ ಅನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "ಸಮಯ ವಲಯವನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't save this role to Applications. Try again."
+msgstr "ಈ ಹುದ್ದೆಯನ್ನು ಅರ್ಜಿಗಳಿಗೆ ಉಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #: src/features/letters/write.tsx
 msgid "Couldn't save your changes, so drafting didn't start. Nothing on the page changed."
@@ -3270,7 +3289,7 @@ msgstr "ಹೊಸ ರೆಸ್ಯೂಮ್ ಅನ್ನು ರಚಿಸಿ"
 msgid "Create a resume first, then ask about it."
 msgstr "ಮೊದಲು ರೆಸ್ಯೂಮೆ ರಚಿಸಿ, ನಂತರ ಅದರ ಬಗ್ಗೆ ಕೇಳಿ."
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಖಾತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಂದ API ಕೀಯನ್ನು ರಚಿಸಿ. ಕೀಗಳು ನಿಮ್ಮಂತೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತವೆ ಮತ್ತು ನಿಮ್ಮ ಡಾಕ್ಯುಮೆಂಟ್‌ಗಳನ್ನು ಓದಬಹುದು ಮತ್ತು ಸಂಪಾದಿಸಬಹುದು."
 
@@ -3299,7 +3318,7 @@ msgstr "ರಚಿಸಲಾಗಿದೆ {0} · ಕೊನೆಯದಾಗಿ ಬಳ
 msgid "Creating document…"
 msgstr "ಡಾಕ್ಯುಮೆಂಟ್ ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
 msgstr ""
 
@@ -3331,7 +3350,7 @@ msgstr "ಕಸ್ಟಮ್ ಕ್ಷೇತ್ರಗಳು"
 msgid "Custom section"
 msgstr "ಕಸ್ಟಮ್ ವಿಭಾಗ"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 msgid "Custom styles"
@@ -3365,6 +3384,10 @@ msgstr ""
 msgid "Czech"
 msgstr "ಚೆಕ್"
 
+#: src/features/home/schedules.tsx
+msgid "Daily at {clock} · next {day}"
+msgstr ""
+
 #. placeholder {0}: summary.peak
 #: src/features/share/link.tsx
 msgid "Daily views over 30 days, peak {0}"
@@ -3378,8 +3401,8 @@ msgstr "ಅಪಾಯಕಾರಿ ಅಥವಾ ಕಾನೂನುಬಾಹಿರ 
 msgid "Danish"
 msgstr "ಡ್ಯಾನಿಶ್"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "Dark"
 msgstr "ಕತ್ತಲೆ"
 
@@ -3493,7 +3516,7 @@ msgstr "“{0}” ಅಳಿಸುವುದೇ?"
 msgid "Delete {0}"
 msgstr "{0} ಅಳಿಸಿ"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Delete account"
 msgstr "ಖಾತೆಯನ್ನು ಅಳಿಸಿ"
@@ -3596,7 +3619,7 @@ msgstr "ವಿಭಾಗ ಮತ್ತು ಅದರ ನಮೂದುಗಳನ್ನ
 msgid "Density"
 msgstr "ಸಾಂದ್ರತೆ"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Dependency type"
 msgstr "ಅವಲಂಬನೆಯ ಪ್ರಕಾರ"
 
@@ -3656,18 +3679,21 @@ msgid "Direction"
 msgstr "ನಿರ್ದೇಶನ"
 
 #: src/features/letters/write.tsx
+#: src/shell/unsaved-changes.ts
 msgid "Discard"
 msgstr "ತಿರಸ್ಕರಿಸು"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Discard changes"
 msgstr "ಬದಲಾವಣೆಗಳನ್ನು ತ್ಯಜಿಸಿ"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Discard changes?"
 msgstr "ಬದಲಾವಣೆಗಳನ್ನು ತಿರಸ್ಕರಿಸುವುದೇ?"
+
+#: src/shell/unsaved-changes.ts
+msgid "Discard your changes?"
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "Discard your offline edits and load the saved version."
@@ -3678,7 +3704,7 @@ msgid "Discard your offline edits?"
 msgstr "ನಿಮ್ಮ ಆಫ್‌ಲೈನ್ ಸಂಪಾದನೆಗಳನ್ನು ತ್ಯಜಿಸುವುದೇ?"
 
 #: src/features/letters/write.tsx
-#: src/ui/layout.tsx
+#: src/ui-legacy/layout.tsx
 msgid "Dismiss"
 msgstr "ವಜಾಗೊಳಿಸಿ"
 
@@ -3700,9 +3726,10 @@ msgid "Document type"
 msgstr "ಡಾಕ್ಯುಮೆಂಟ್ ಪ್ರಕಾರ"
 
 #: app/(tabs)/_layout.tsx
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Documents"
 msgstr "ದಾಖಲೆಗಳು"
 
@@ -3714,7 +3741,7 @@ msgstr "ದಾಖಲೆಗಳನ್ನು 30 ದಿನಗಳ ನಂತರ ಶಾ
 msgid "Documents for this job"
 msgstr "ಈ ಕೆಲಸಕ್ಕಾಗಿ ದಾಖಲೆಗಳು"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Documents in Trash don't count."
 msgstr ""
 
@@ -3740,9 +3767,8 @@ msgstr "{0} ಉದ್ಯೋಗ ಜಾಹೀರಾತನ್ನು ಕಳುಹಿ
 msgid "Don't share"
 msgstr "ಹಂಚಿಕೊಳ್ಳಬೇಡಿ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/applications/list-screen.tsx
-#: src/features/career/today.tsx
 #: src/features/documents/library.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/date-field.tsx
@@ -3750,6 +3776,10 @@ msgstr "ಹಂಚಿಕೊಳ್ಳಬೇಡಿ"
 #: src/features/write/rich-text-field.tsx
 msgid "Done"
 msgstr "ಮುಗಿದಿದೆ"
+
+#: src/features/home/schedules.tsx
+msgid "Done · {day}"
+msgstr ""
 
 #: src/features/applications/list-screen.tsx
 msgid "Done selecting"
@@ -3929,7 +3959,7 @@ msgstr "ಈ ಚಾಟ್‌ನ ಹಿಂದಿನ ಸಂದೇಶಗಳು"
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/career/stories.tsx
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Edit"
 msgstr "ಸಂಪಾದಿಸಿ"
@@ -4001,7 +4031,7 @@ msgstr "ಶಿಕ್ಷಣ"
 msgid "Education swaps school and field of study the same way."
 msgstr ""
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "ಇಮೇಲ್"
@@ -4041,10 +4071,6 @@ msgstr "ಇಂಗ್ಲಿಷ್"
 #: src/features/settings/locale-names.ts
 msgid "English (United Kingdom)"
 msgstr "ಇಂಗ್ಲಿಷ್ (ಯುನೈಟೆಡ್ ಕಿಂಗ್ಡಮ್)"
-
-#: src/features/ai/web-access.tsx
-msgid "Enhanced reading failed"
-msgstr "ವರ್ಧಿತ ಓದುವಿಕೆ ವಿಫಲವಾಗಿದೆ"
 
 #: src/features/assistant/messages.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
@@ -4120,6 +4146,10 @@ msgstr "ಪ್ರವೇಶ ಆಯ್ಕೆಗಳು"
 msgid "Equity"
 msgstr "ಈಕ್ವಿಟಿ"
 
+#: src/features/home/schedules.tsx
+msgid "Every {days} days at {clock} · next {day}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Every 3 days"
 msgstr "ಪ್ರತಿ 3 ದಿನಗಳಿಗೊಮ್ಮೆ"
@@ -4148,7 +4178,7 @@ msgstr ""
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "ಪ್ರತಿಯೊಂದು ಪಾತ್ರವೂ ನೀವು ಮಾಡಿದ್ದನ್ನು ಹೇಳುತ್ತದೆ. ಬರವಣಿಗೆ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ಪದಗಳ ಕುರಿತು ಅಭಿಪ್ರಾಯಗಳು ಲೈವ್ ಆಗಿರುತ್ತವೆ."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Every template"
 msgstr ""
 
@@ -4163,6 +4193,10 @@ msgstr "ಪ್ರತಿ ವಾರ"
 #: src/features/workspace/tabs/saved.tsx
 msgid "Everything the coach wrote for {company}, newest first."
 msgstr "ವೃತ್ತಿ ಸಲಹೆಗಾರರು {company} ಗಾಗಿ ಬರೆದದ್ದೆಲ್ಲವೂ ಹೊಸತು."
+
+#: app/(tabs)/profile/index.tsx
+msgid "Everything your resumes, letters and Coach start from. For now, your facts and stories are in Knowledge."
+msgstr ""
 
 #: src/features/career/facts.tsx
 #: src/features/write/fields.ts
@@ -4227,7 +4261,7 @@ msgstr "ಸಂಗತಿಗಳು"
 msgid "Failed"
 msgstr "ವಿಫಲವಾಗಿದೆ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "ಪ್ರತಿಕ್ರಿಯೆ"
 
@@ -4461,10 +4495,17 @@ msgstr "ಈ ಸಂಗತಿಯನ್ನು ಮರೆಯುವುದರಿಂದ 
 msgid "Formatting"
 msgstr "ಫಾರ್ಮ್ಯಾಟಿಂಗ್"
 
-#. placeholder {0}: time.when(row.firstSeenAt)
-#: src/features/career/today.tsx
-msgid "Found {0}"
-msgstr "{0} ರಂದು ಕಂಡುಬಂದಿದೆ"
+#: src/features/home/new-roles.tsx
+msgid "Found {day}"
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "Found today"
+msgstr "ಇಂದು ಕಂಡುಬಂದಿದೆ"
+
+#: src/features/home/new-roles.tsx
+msgid "Found yesterday"
+msgstr "ನಿನ್ನೆ ಕಂಡುಬಂದಿದೆ"
 
 #: src/features/billing/plan.ts
 msgid "Free"
@@ -4485,7 +4526,7 @@ msgstr "ಇಂದ"
 
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr ""
@@ -4515,11 +4556,6 @@ msgstr "ಪೂರ್ಣ ಅಗಲ"
 msgid "German"
 msgstr "ಜರ್ಮನ್"
 
-#. placeholder {0}: sites[provider]
-#: src/features/ai/web-access.tsx
-msgid "Get a key at {0}. It's stored encrypted and used only for your requests."
-msgstr "{0} ನಲ್ಲಿ ಕೀಯನ್ನು ಪಡೆಯಿರಿ. ಇದನ್ನು ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡಲಾಗಿದೆ ಮತ್ತು ನಿಮ್ಮ ವಿನಂತಿಗಳಿಗಾಗಿ ಮಾತ್ರ ಬಳಸಲಾಗುತ್ತದೆ."
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback"
 msgstr "ಪ್ರತಿಕ್ರಿಯೆ ಪಡೆಯಿರಿ"
@@ -4528,9 +4564,9 @@ msgstr "ಪ್ರತಿಕ್ರಿಯೆ ಪಡೆಯಿರಿ"
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "“ಪ್ರತಿಕ್ರಿಯೆ ಪಡೆಯಿರಿ” ಪ್ರಶ್ನೆ, ನಿಮ್ಮ ಉತ್ತರ, ಈ ಉದ್ಯೋಗ ಜಾಹೀರಾತು ಮತ್ತು ನಿಮ್ಮ ಕಥೆಗಳನ್ನು {providerName} ಗೆ ಕಳುಹಿಸುತ್ತದೆ."
 
-#: src/features/career/today.tsx
-msgid "Get new roles here every morning"
-msgstr "ಪ್ರತಿದಿನ ಬೆಳಿಗ್ಗೆ ಇಲ್ಲಿ ಹೊಸ ಹುದ್ದೆಗಳನ್ನು ಪಡೆಯಿರಿ"
+#: src/features/home/new-roles.tsx
+msgid "Get new jobs for your search here every morning"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4569,7 +4605,7 @@ msgstr "ಸಂಬೋಧನೆ"
 msgid "Grid view"
 msgstr "ಗ್ರಿಡ್ ನೋಟ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Haptic feedback"
 msgstr "ಹ್ಯಾಪ್ಟಿಕ್ ಪ್ರತಿಕ್ರಿಯೆ"
 
@@ -4627,9 +4663,13 @@ msgstr "ಮತ್ತೆ ಕೇಳಿದ"
 msgid "Hebrew"
 msgstr "ಹೀಬ್ರೂ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Help & docs"
 msgstr "ಸಹಾಯ ಮತ್ತು ಡಾಕ್ಸ್"
+
+#: src/shell/account-menu.tsx
+msgid "Help & legal"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
@@ -4650,7 +4690,7 @@ msgstr "Hex"
 msgid "Hidden"
 msgstr "ಮರೆಮಾಡಲಾಗಿದೆ"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Hidden from New roles"
 msgstr "“ಹೊಸ ಹುದ್ದೆಗಳು” ಇಂದ ಮರೆಮಾಡಲಾಗಿದೆ"
 
@@ -4686,11 +4726,11 @@ msgstr "ಪುಟದಿಂದ ಮರೆಮಾಡಿ"
 msgid "Hide key"
 msgstr "ಕೀಲಿಯನ್ನು ಮರೆಮಾಡಿ"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Hide license"
 msgstr "ಪರವಾನಗಿ ಮರೆಮಾಡಿ"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Hide read"
 msgstr "ಓದಿದ ವಸ್ತುಗಳನ್ನು ಮರೆಮಾಡಿ"
 
@@ -4724,6 +4764,12 @@ msgstr "ಸರಿಸಲು ⋮⋮ ಹಿಡಿದುಕೊಳ್ಳಿ"
 #: src/features/documents/library.tsx
 msgid "Hold to delete"
 msgstr "ಅಳಿಸಲು ಒತ್ತಿ ಹಿಡಿಯಿರಿ"
+
+#: app/(tabs)/_layout.tsx
+#: src/features/home/home-screen.tsx
+#: src/shell/app-tabs.tsx
+msgid "Home"
+msgstr "ಮುಖ್ಯ ಪುಟ"
 
 #: src/features/design/advanced.tsx
 msgid "Horizontal margin"
@@ -4821,18 +4867,9 @@ msgstr ""
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
 msgstr "ಇದು ಸ್ಕ್ಯಾನ್‌ನಿಂದ ಬಂದಿದ್ದರೆ, ಅದು ನಿರೀಕ್ಷಿತ. ಇಲ್ಲದಿದ್ದರೆ ಅದನ್ನು ತೆಗೆದುಹಾಕಿ; ನೇಮಕಾತಿದಾರರು ಇದನ್ನು ಕೀವರ್ಡ್ ತುಂಬುವಿಕೆ ಎಂದು ಓದುತ್ತಾರೆ."
 
-#. placeholder {0}: reader ?? provider.provider
 #: src/api/ai-consent.ts
-msgid "If web access is used, links and search terms also go to {0} and the sites being read."
-msgstr "ವೆಬ್ ಪ್ರವೇಶವನ್ನು ಬಳಸಿದರೆ, ಲಿಂಕ್‌ಗಳು ಮತ್ತು ಹುಡುಕಾಟ ಪದಗಳು ಸಹ {0} ಮತ್ತು ಓದುತ್ತಿರುವ ಸೈಟ್‌ಗಳಿಗೆ ಹೋಗುತ್ತವೆ."
-
-#: src/api/ai-consent.ts
-msgid "If web access is used, search terms go to your server's search service and the search engines it uses, and links go to {reader} and the sites being read."
-msgstr "ವೆಬ್ ಪ್ರವೇಶವನ್ನು ಬಳಸಿದರೆ, ಹುಡುಕಾಟ ಪದಗಳು ನಿಮ್ಮ ಸರ್ವರ್‌ನ ಹುಡುಕಾಟ ಸೇವೆ ಮತ್ತು ಅದು ಬಳಸುವ ಸರ್ಚ್ ಇಂಜಿನ್‌ಗಳಿಗೆ ಹೋಗುತ್ತವೆ ಮತ್ತು ಲಿಂಕ್‌ಗಳು {reader} ಮತ್ತು ಓದುತ್ತಿರುವ ಸೈಟ್‌ಗಳಿಗೆ ಹೋಗುತ್ತವೆ."
-
-#: src/api/ai-consent.ts
-msgid "If web access is used, search terms go to your server's search service and the search engines it uses, and links go to the sites being read."
-msgstr "ವೆಬ್ ಪ್ರವೇಶವನ್ನು ಬಳಸಿದರೆ, ಹುಡುಕಾಟ ಪದಗಳು ನಿಮ್ಮ ಸರ್ವರ್‌ನ ಹುಡುಕಾಟ ಸೇವೆಗೆ ಮತ್ತು ಅದು ಬಳಸುವ ಹುಡುಕಾಟ ಎಂಜಿನ್‌ಗಳಿಗೆ ಹೋಗುತ್ತವೆ ಮತ್ತು ಲಿಂಕ್‌ಗಳು ಓದುತ್ತಿರುವ ಸೈಟ್‌ಗಳಿಗೆ ಹೋಗುತ್ತವೆ."
+msgid "If the web is used, search terms go to your server's search service and links go to the sites being read."
+msgstr ""
 
 #: src/features/check/screen.tsx
 msgid "Ignore"
@@ -4874,6 +4911,10 @@ msgstr "ಅದನ್ನು ಆಮದು ಮಾಡಿಕೊಳ್ಳಿ"
 msgid "Import with AI"
 msgstr ""
 
+#: src/features/home/home-screen.tsx
+msgid "Import your current resume, or start blank or from a sample. We lay out every section for you to refine."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Import your current resume, or start fresh with your name."
 msgstr "ನಿಮ್ಮ ಪ್ರಸ್ತುತ ರೆಸ್ಯೂಮ್ ಅನ್ನು ಆಮದು ಮಾಡಿಕೊಳ್ಳಿ ಅಥವಾ ನಿಮ್ಮ ಹೆಸರಿನೊಂದಿಗೆ ಹೊಸದಾಗಿ ಪ್ರಾರಂಭಿಸಿ."
@@ -4907,7 +4948,7 @@ msgstr "ಸುಧಾರಿಸುತ್ತಿದೆ..."
 msgid "In progress"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Included"
 msgstr ""
 
@@ -4948,14 +4989,14 @@ msgstr "ಒಳನೋಟಗಳು"
 msgid "Interests"
 msgstr "ಆಸಕ್ತಿಗಳು"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "ಇಂಟರ್ಫೇಸ್ ಮಾತ್ರ. ಪ್ರತಿಯೊಂದು ರೆಸ್ಯೂಮೆಯು ತನ್ನದೇ ಆದ ಭಾಷೆಯನ್ನು ವಿನ್ಯಾಸದಲ್ಲಿ ಹೊಂದಿಸುತ್ತದೆ."
 
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Interview"
 msgstr "ಸಂದರ್ಶನ"
 
@@ -4984,6 +5025,7 @@ msgid "Interview practice"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/needs-you.tsx
 msgid "Interview preparation"
 msgstr "ಸಂದರ್ಶನದ ಸಿದ್ಧತೆ"
 
@@ -4999,7 +5041,7 @@ msgstr "ಸಂದರ್ಶನವನ್ನು ಉಳಿಸಲಾಗಿದೆ. ಅ
 msgid "Interview saved. The reminder time has already passed."
 msgstr "ಸಂದರ್ಶನವನ್ನು ಉಳಿಸಲಾಗಿದೆ. ಜ್ಞಾಪನೆ ಸಮಯವು ಈಗಾಗಲೇ ಕಳೆದಿದೆ."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "ವೃತ್ತಿಜೀವನದಲ್ಲಿನ ಸಂದರ್ಶನ ಸಮಯಗಳು, ಜ್ಞಾಪನೆಗಳು ಮತ್ತು ವೇಳಾಪಟ್ಟಿಗಳು ಇದನ್ನು ಬಳಸುತ್ತವೆ."
 
@@ -5073,13 +5115,17 @@ msgstr "ಅದರ ಉಳಿಸಿದ ಕೀ ಅಳಿಸಲಾಗಿದೆ. ಅ�
 msgid "Japanese"
 msgstr "ಜಾಪನೀಸ್"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "JavaScript"
 msgstr "JavaScript"
 
 #: src/features/search/search-screen.tsx
 msgid "Job"
 msgstr "ಉದ್ಯೋಗ"
+
+#: src/features/home/needs-you.tsx
+msgid "Job alert"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Job description"
@@ -5139,8 +5185,8 @@ msgstr "ಒಂದೇ ವಿಳಾಸವನ್ನು ಇಟ್ಟುಕೊಳ್�
 msgid "Keep both"
 msgstr "ಎರಡನ್ನೂ ಇಟ್ಟುಕೊಳ್ಳಿ"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/shell/unsaved-changes.ts
+#: src/ui-legacy/overlays.tsx
 msgid "Keep editing"
 msgstr "ಸಂಪಾದನೆ ಮುಂದುವರಿಸಿ"
 
@@ -5198,10 +5244,6 @@ msgstr "ಅತ್ಯಂತ ನಿರ್ದಿಷ್ಟವಾದ ಭಾಗಗಳ�
 msgid "Kept as it is"
 msgstr "ಹಾಗೆಯೇ ಇಡಲಾಗಿದೆ"
 
-#: src/features/ai/web-access.tsx
-msgid "Key stored encrypted"
-msgstr "ಕೀಲಿಯನ್ನು ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡಲಾಗಿದೆ"
-
 #: src/features/settings/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "ಕೀಗಳು ನಿಮ್ಮಂತೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತವೆ ಮತ್ತು ನಿಮ್ಮ ಡಾಕ್ಯುಮೆಂಟ್‌ಗಳನ್ನು ಪ್ರವೇಶಿಸಬಹುದು. ನಿಮ್ಮ ಬ್ರೌಸರ್ ಖಾತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಹೊಸ ಕೀಗಳನ್ನು ರಚಿಸಲಾಗಿದೆ."
@@ -5222,7 +5264,7 @@ msgstr "ಖ್ಮೇರ್"
 msgid "Kind regards,"
 msgstr "ಆತ್ಮೀಯ ವಂದನೆಗಳು,"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: src/features/career/knowledge.tsx
 msgid "Knowledge"
 msgstr "ಜ್ಞಾನ"
@@ -5244,7 +5286,7 @@ msgstr "ಲೇಬಲ್"
 msgid "Landscape"
 msgstr "ಲೆಂಡ್ಸ್ಕೇಪ್"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/search/search-screen.tsx
@@ -5269,7 +5311,7 @@ msgstr "ಕೊನೆಯ ಪರಿಶೀಲನೆ {lastChecked} ಹಿಂದೆ"
 msgid "Last edited"
 msgstr "ಕೊನೆಯದಾಗಿ ಸಂಪಾದಿಸಲಾಗಿದೆ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Later"
 msgstr "ನಂತರ"
 
@@ -5329,7 +5371,7 @@ msgstr "ಲಿಂಕ್ ಅನ್ನು ತೆಗೆದುಹಾಕಲು ಅದ
 msgid "Left"
 msgstr "ಎಡಕ್ಕೆ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Legal"
 msgstr "ಕಾನೂನು"
 
@@ -5359,16 +5401,17 @@ msgstr "ಕಡಿಮೆ"
 msgid "Less than 48 hours left."
 msgstr "48 ಗಂಟೆಗಳಿಗಿಂತ ಕಡಿಮೆ ಸಮಯ ಉಳಿದಿದೆ."
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "Claude ಅಥವಾ Cursor ನಂತಹ AI ಕ್ಲೈಂಟ್‌ಗಳು API ಕೀಯನ್ನು ಬಳಸಿಕೊಂಡು ನಿಮ್ಮ ರೆಸ್ಯೂಮ್‌ಗಳನ್ನು ಓದಲು ಮತ್ತು ಸಂಪಾದಿಸಲು ಅವಕಾಶ ಮಾಡಿಕೊಡಿ."
 
 #: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
 msgid "Let's start with what you have"
 msgstr "ನೀವು ಹೊಂದಿರುವುದನ್ನು ಪ್ರಾರಂಭಿಸೋಣ"
 
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
 msgid "Letter"
 msgstr "ಪತ್ರ"
@@ -5406,7 +5449,7 @@ msgstr "ಪತ್ರಗಳಿಗೆ ಯಾವುದೇ ಸಾರ್ವಜನಿ�
 msgid "Level"
 msgstr "ಮಟ್ಟ"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Licenses"
 msgstr "ಪರವಾನಗಿಗಳು"
 
@@ -5414,8 +5457,8 @@ msgstr "ಪರವಾನಗಿಗಳು"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "ಲಿಗೇಚರ್‌ಗಳು \"workflow\" ನಂತಹ ಪದಗಳಿಂದ ಅಕ್ಷರಗಳನ್ನು ಬಿಟ್ಟುಬಿಡಬಹುದು."
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "Light"
 msgstr "ತಿಳಿ ಬಣ್ಣ"
 
@@ -5483,7 +5526,7 @@ msgstr "ಲಿಂಕ್ ಅನ್ನು ನವೀಕರಿಸಲಾಗಿದೆ"
 msgid "Linked · not sent yet"
 msgstr "ಲಿಂಕ್ ಮಾಡಲಾಗಿದೆ · ಇನ್ನೂ ಕಳುಹಿಸಲಾಗಿಲ್ಲ"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Linked accounts"
 msgstr "ಲಿಂಕ್ ಮಾಡಿದ ಖಾತೆಗಳು"
 
@@ -5533,6 +5576,7 @@ msgid "Live at {url}"
 msgstr "{url} ನಲ್ಲಿ ಲೈವ್"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/section.tsx
 msgid "Loading"
 msgstr "ಲೋಡ್ ಆಗುತ್ತಿದೆ"
 
@@ -5586,10 +5630,6 @@ msgstr "ರೆಸ್ಯೂಮ್‌ಗಳನ್ನು ಲೋಡ್ ಮಾಡಲ�
 msgid "Loading saved version…"
 msgstr "ಉಳಿಸಿದ ಆವೃತ್ತಿಯನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ…"
 
-#: src/features/ai/web-access.tsx
-msgid "Loading web access…"
-msgstr "ವೆಬ್ ಪ್ರವೇಶವನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ..."
-
 #: src/features/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರವನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ…"
@@ -5598,7 +5638,7 @@ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರವನ್ನು ಲೋಡ್ ಮಾ�
 msgid "Loading your public address…"
 msgstr "ನಿಮ್ಮ ಸಾರ್ವಜನಿಕ ವಿಳಾಸವನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ..."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: app/builder/[id]/write.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/improve.tsx
@@ -5692,10 +5732,6 @@ msgstr "ಅದನ್ನು ಚಿಕ್ಕದಾಗಿಸಿ"
 msgid "Make primary"
 msgstr "ಪ್ರಾಥಮಿಕವಾಗಿಸಿ"
 
-#: src/features/career/today.tsx
-msgid "Make room for the next step."
-msgstr "ಮುಂದಿನ ಹಂತಕ್ಕೆ ಸ್ಥಳಾವಕಾಶ ಮಾಡಿ."
-
 #: src/features/assistant/assistant-screen.tsx
 msgid "Make the opening stronger"
 msgstr "ತೆರೆಯುವಿಕೆಯನ್ನು ಬಲಗೊಳಿಸಿ"
@@ -5723,10 +5759,6 @@ msgstr "ಮಲಯಾಳಂ"
 #: src/features/application-detail/sections.tsx
 msgid "Manage contacts"
 msgstr "ಸಂಪರ್ಕಗಳನ್ನು ನಿರ್ವಹಿಸಿ"
-
-#: src/features/ai/web-access.tsx
-msgid "Managed by server"
-msgstr "ಸರ್ವರ್ ಮೂಲಕ ನಿರ್ವಹಿಸಲಾಗಿದೆ"
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
@@ -5763,7 +5795,7 @@ msgstr "ಅಂಚುಗಳನ್ನು {minimum} pt ಗೆ ಹೊಂದಿಸಲ
 msgid "Mark as applied"
 msgstr "ಅರ್ಜಿ ಸಲ್ಲಿಸಲಾಗಿದೆ ಎಂದು ಗುರುತಿಸಿ"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Mark as read"
 msgstr "ಓದಲಾಗಿದೆ ಎಂದು ಗುರುತಿಸಿ"
 
@@ -5788,7 +5820,7 @@ msgstr "Markdown (.md)"
 msgid "Marked as applied. The versions you sent are kept."
 msgstr "ಅರ್ಜಿ ಸಲ್ಲಿಸಲಾಗಿದೆ ಎಂದು ಗುರುತಿಸಲಾಗಿದೆ. ನೀವು ಕಳುಹಿಸಿದ ಆವೃತ್ತಿಗಳನ್ನು ಇರಿಸಲಾಗಿದೆ."
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Marked as read"
 msgstr "ಓದಲಾಗಿದೆ ಎಂದು ಗುರುತಿಸಲಾಗಿದೆ"
 
@@ -5828,8 +5860,8 @@ msgstr "ಲಭ್ಯವಿರಬಹುದು"
 msgid "MCP"
 msgstr "MCP"
 
-#: app/(tabs)/settings/ai-mcp.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-mcp.tsx
+#: app/account/ai.tsx
 msgid "MCP server"
 msgstr "MCP ಸರ್ವರ್"
 
@@ -5862,7 +5894,7 @@ msgstr "ಕನಿಷ್ಠ ಮೂಲ ವೇತನ"
 msgid "Minimum salary cannot be compared in these terms."
 msgstr "ಈ ನಿಯಮಗಳಲ್ಲಿ ಕನಿಷ್ಠ ವೇತನವನ್ನು ಹೋಲಿಸಲಾಗುವುದಿಲ್ಲ."
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "MIT License"
 msgstr "MIT ಪರವಾನಗಿ"
 
@@ -5910,6 +5942,10 @@ msgstr "ಹೆಚ್ಚಿನ ಪೂರೈಕೆದಾರರು ಮತ್ತು 
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚು ಇಮೇಲ್ ವಿಳಾಸ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ."
+
+#: src/features/home/schedules.tsx
+msgid "Morning of"
+msgstr "ಅದೇ ದಿನ ಬೆಳಿಗ್ಗೆ"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Morning of · 08:00 local"
@@ -5967,7 +6003,7 @@ msgstr "ಅರ್ಜಿಗಳನ್ನು ಸರಿಸಿ"
 
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
-#: src/ui/sortable.tsx
+#: src/ui-legacy/sortable.tsx
 msgid "Move down"
 msgstr "ಕೆಳಗೆ ಸರಿಸಿ"
 
@@ -6030,7 +6066,7 @@ msgstr "ಇದಕ್ಕೆ ಸರಿಸಿ..."
 
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
-#: src/ui/sortable.tsx
+#: src/ui-legacy/sortable.tsx
 msgid "Move up"
 msgstr "ಮೇಲಕ್ಕೆ ಸರಿಸಿ"
 
@@ -6114,7 +6150,7 @@ msgstr "ಹೆಸರುಗಳು, ಟ್ಯಾಗ್‌ಗಳು ಅಥವಾ �
 msgid "Narrow"
 msgstr "ಕಿರಿದಾದ"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Native & fonts"
 msgstr "ನೇಟಿವ್ ಕೋಡ್ ಮತ್ತು ಫಾಂಟ್‌ಗಳು"
 
@@ -6122,7 +6158,7 @@ msgstr "ನೇಟಿವ್ ಕೋಡ್ ಮತ್ತು ಫಾಂಟ್‌ಗಳ
 msgid "Needs attention"
 msgstr "ಗಮನ ಬೇಕು"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Needs you"
 msgstr "ನಿಮ್ಮ ಗಮನ ಬೇಕು"
 
@@ -6143,6 +6179,7 @@ msgstr "ಎಂದಿಗೂ ಇಲ್ಲ"
 #: app/(tabs)/_layout.tsx
 #: src/features/documents/library.tsx
 #: src/shell/app-tabs.tsx
+#: src/shell/tab-chrome.tsx
 msgid "New"
 msgstr "ಹೊಸದು"
 
@@ -6169,9 +6206,9 @@ msgstr "ಹೊಸ ಸಂಭಾಷಣೆ"
 msgid "New cover letter instead"
 msgstr "ಬದಲಿಗೆ ಹೊಸ ಕವರ್ ಲೆಟರ್"
 
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/search/search-screen.tsx
 msgid "New document"
 msgstr "ಹೊಸ ಡಾಕ್ಯುಮೆಂಟ್"
@@ -6182,13 +6219,9 @@ msgstr "ಹೊಸ ಡಾಕ್ಯುಮೆಂಟ್"
 msgid "New page"
 msgstr "ಹೊಸ ಪುಟ"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "ನಿಮ್ಮ ಹುಡುಕಾಟದಿಂದ ಹೊಸ ಹುದ್ದೆಗಳು"
-
-#: src/features/career/today.tsx
-msgid "New roles, reminders and finished briefings appear here."
-msgstr "ಹೊಸ ಹುದ್ದೆಗಳು, ಜ್ಞಾಪನೆಗಳು ಮತ್ತು ಪೂರ್ಣಗೊಂಡ ಬ್ರೀಫಿಂಗ್‌ಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "New schedule"
@@ -6286,11 +6319,11 @@ msgstr "ಯಾವುದೇ ಸಾಂಪ್ರದಾಯಿಕ ವಿಭಾಗ ಶ
 msgid "No conversations about this document yet."
 msgstr "ಈ ಡಾಕ್ಯುಮೆಂಟ್ ಕುರಿತು ಇನ್ನೂ ಯಾವುದೇ ಸಂಭಾಷಣೆಗಳಿಲ್ಲ."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "No credit activity yet."
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "No credits to spend right now"
 msgstr ""
 
@@ -6318,7 +6351,7 @@ msgstr "ಇಮೇಲ್ ವಿಳಾಸವಿಲ್ಲ"
 msgid "No email address was found."
 msgstr "ಯಾವುದೇ ಇಮೇಲ್ ವಿಳಾಸ ಕಂಡುಬಂದಿಲ್ಲ."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr ""
@@ -6343,7 +6376,7 @@ msgstr "ಇನ್ನೂ ಕೆಲಸವಿಲ್ಲ"
 msgid "No keys yet."
 msgstr "ಇನ್ನೂ ಯಾವುದೇ ಕೀಗಳಿಲ್ಲ."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "No language matches."
 msgstr "ಯಾವುದೇ ಭಾಷೆ ಹೊಂದಾಣಿಕೆಯಾಗುವುದಿಲ್ಲ."
 
@@ -6360,7 +6393,7 @@ msgid "No location"
 msgstr "ಸ್ಥಳವಿಲ್ಲ"
 
 #: src/features/documents/library.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "No matches"
 msgstr "ಯಾವುದೇ ಹೊಂದಾಣಿಕೆಗಳಿಲ್ಲ"
 
@@ -6369,14 +6402,21 @@ msgstr "ಯಾವುದೇ ಹೊಂದಾಣಿಕೆಗಳಿಲ್ಲ"
 msgid "No matching applications"
 msgstr "ಯಾವುದೇ ಹೊಂದಾಣಿಕೆಯ ಅರ್ಜಿಗಳಿಲ್ಲ"
 
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery is paused."
-msgstr "ಹೊಸ ಹುದ್ದೆಗಳಿಲ್ಲ. ಅವಕಾಶಗಳ ಹುಡುಕಾಟವನ್ನು ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ."
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again on {day} at {clock}."
+msgstr ""
 
-#. placeholder {0}: time.when(discovery.nextRunAt)
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again at {0}."
-msgstr "ಹೊಸ ಪಾತ್ರಗಳಿಲ್ಲ. ಡಿಸ್ಕವರಿ ಮತ್ತೆ {0} ನಲ್ಲಿ ರನ್ ಆಗುತ್ತದೆ."
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again today at {clock}."
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again tomorrow at {clock}."
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert is paused."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
@@ -6394,17 +6434,9 @@ msgstr "ಯಾವುದೇ ಫೋನ್ ಸಂಖ್ಯೆ ಕಂಡುಬಂದ
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "ಫೋಟೋ ಇಲ್ಲ. ಹೆಚ್ಚಿನ ATS ಫೋಟೋಗಳನ್ನು ನಿರ್ಲಕ್ಷಿಸಿ; ಕೆಲವು ಪ್ರದೇಶಗಳು ಒಂದನ್ನು ನಿರೀಕ್ಷಿಸುತ್ತವೆ."
 
-#: src/features/applications/add-sheet.tsx
-msgid "No postings found. Try different keywords."
-msgstr "ಯಾವುದೇ ಉದ್ಯೋಗ ಪೋಸ್ಟಿಂಗ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ. ವಿಭಿನ್ನ ಕೀವರ್ಡ್‌ಗಳನ್ನು ಪ್ರಯತ್ನಿಸಿ."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "ಈ ಉದ್ಯೋಗ ಜಾಹೀರಾತಿನಲ್ಲಿ ಗುರುತಿಸಬಹುದಾದ ಪದಗಳಿಲ್ಲ."
-
-#: src/features/career/today.tsx
-msgid "No reply yet"
-msgstr "ಇನ್ನೂ ಉತ್ತರವಿಲ್ಲ"
 
 #: src/features/applications/stages.ts
 msgid "No response"
@@ -6459,13 +6491,9 @@ msgstr "ಈ ಪೂರೈಕೆದಾರರಿಗೆ ಯಾವುದೇ ಸಲಹ
 msgid "No text could be read from this file."
 msgstr "ಈ ಫೈಲ್‌ನಿಂದ ಯಾವುದೇ ಪಠ್ಯವನ್ನು ಓದಲಾಗಲಿಲ್ಲ."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "No timezone matches."
 msgstr "ಯಾವುದೇ ಸಮಯ ವಲಯ ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ."
-
-#: src/features/career/today.tsx
-msgid "No upcoming interviews."
-msgstr "ಮುಂಬರುವ ಸಂದರ್ಶನಗಳಿಲ್ಲ."
 
 #: src/features/check/issues.ts
 msgid "No work experience shows"
@@ -6522,7 +6550,7 @@ msgstr "ಇನ್ನೂ ಸಂಪರ್ಕಿಸಲಾಗಿಲ್ಲ. ನೀವ
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "ನನಗಲ್ಲ"
 
@@ -6534,7 +6562,7 @@ msgstr "ಕಂಡುಬಂದಿಲ್ಲ:"
 msgid "Not in your resume · add only if true"
 msgstr "ನಿಮ್ಮ ರೆಸ್ಯೂಮೆಯಲ್ಲಿ ಇಲ್ಲ · ನಿಜವಾಗಿದ್ದರೆ ಮಾತ್ರ ಸೇರಿಸಿ"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Not included"
 msgstr ""
 
@@ -6582,10 +6610,6 @@ msgstr "ಟಿಪ್ಪಣಿಗಳು"
 msgid "Nothing here should cost you a match."
 msgstr "ಇಲ್ಲಿ ಯಾವುದೂ ನಿಮಗೆ ಪಂದ್ಯವನ್ನು ವೆಚ್ಚ ಮಾಡಬಾರದು."
 
-#: src/features/career/today.tsx
-msgid "Nothing is applied for or created until you choose."
-msgstr "ನೀವು ಆಯ್ಕೆ ಮಾಡುವವರೆಗೆ ಯಾವುದಕ್ಕೂ ಅರ್ಜಿ ಸಲ್ಲಿಸಲಾಗುವುದಿಲ್ಲ ಅಥವಾ ಏನನ್ನೂ ರಚಿಸಲಾಗುವುದಿಲ್ಲ."
-
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
 msgstr "ಯಾವುದೇ ಪಾತ್ರವನ್ನು ನಡೆಯುತ್ತಿರುವಂತೆ ಗುರುತಿಸುವುದಿಲ್ಲ."
@@ -6602,7 +6626,7 @@ msgstr "ಇನ್ನೂ ಏನನ್ನೂ ಉಳಿಸಿಲ್ಲ"
 msgid "Nothing scheduled yet"
 msgstr "ಇನ್ನೂ ಯಾವುದನ್ನೂ ನಿಗದಿಪಡಿಸಿಲ್ಲ"
 
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 msgid "Nothing scheduled yet."
 msgstr "ಇನ್ನೂ ಏನನ್ನೂ ನಿಗದಿಪಡಿಸಿಲ್ಲ."
 
@@ -6670,7 +6694,9 @@ msgstr "ಆಫ್. ಪತ್ರವು ನಿಮ್ಮ ವಿವರಗಳ ಸ್�
 msgid "Offer"
 msgstr "ಆಫರ್"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
+#: src/features/applications-board/views.tsx
+#: src/features/applications/list-screen.tsx
 msgid "Offers"
 msgstr "ಆಫರ್‌ಗಳು"
 
@@ -6682,7 +6708,7 @@ msgstr "ವಾರಕ್ಕೆ ಗರಿಷ್ಠ ಕಚೇರಿ ದಿನಗಳ
 msgid "Office days are unknown."
 msgstr "ಕಚೇರಿಗೆ ಹೋಗುವ ದಿನಗಳು ತಿಳಿದಿಲ್ಲ."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Office days not stated"
 msgstr "ಕಚೇರಿ ದಿನಗಳನ್ನು ತಿಳಿಸಿಲ್ಲ"
 
@@ -6694,7 +6720,7 @@ msgstr "ವಾರಕ್ಕೆ ಕಚೇರಿಗೆ ಹೋಗುವ ದಿನಗ
 msgid "Offline · saved on this device"
 msgstr "ಆಫ್‌ಲೈನ್ · ಈ ಸಾಧನದಲ್ಲಿ ಉಳಿಸಲಾಗಿದೆ"
 
-#: app/(tabs)/_layout.tsx
+#: src/shell/offline-strip.tsx
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "ಆಫ್‌ಲೈನ್. ಈ ಸಾಧನದಲ್ಲಿ ಸಂಪಾದನೆಗಳನ್ನು ಉಳಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ನೀವು ಮರುಸಂಪರ್ಕಿಸಿದಾಗ ಸಿಂಕ್ ಮಾಡಲಾಗುತ್ತದೆ."
 
@@ -6702,10 +6728,6 @@ msgstr "ಆಫ್‌ಲೈನ್. ಈ ಸಾಧನದಲ್ಲಿ ಸಂಪಾ�
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
-
-#: src/features/career/today.tsx
-msgid "On"
-msgstr "ಆನ್"
 
 #: src/features/share/link.tsx
 msgid "On. Anyone with the link can see your web page."
@@ -6784,11 +6806,12 @@ msgstr "ನೀವು ಮಾತ್ರ ಇವುಗಳನ್ನು ನೋಡುತ
 msgid "Onsite"
 msgstr "ಕಚೇರಿಯಲ್ಲಿ"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Onsite interview"
 msgstr "ಸ್ಥಳದಲ್ಲೇ ಸಂದರ್ಶನ"
 
 #: src/features/documents/document-sheets.tsx
+#: src/features/home/needs-you.tsx
 msgid "Open"
 msgstr "ತೆರೆಯಿರಿ"
 
@@ -6803,7 +6826,7 @@ msgstr "AI ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿ�
 msgid "Open application"
 msgstr "ಅರ್ಜಿ ತೆರೆಯಿರಿ"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Open briefing"
 msgstr "ಬ್ರೀಫಿಂಗ್ ತೆರೆಯಿರಿ"
 
@@ -6824,9 +6847,17 @@ msgstr "ಇನ್ ಎಡಿಟರ್ ತೆರೆಯಿರಿ"
 msgid "Open in Offers"
 msgstr "“ಆಫರ್‌ಗಳು” ನಲ್ಲಿ ತೆರೆಯಿರಿ"
 
+#: app/(tabs)/profile/index.tsx
+msgid "Open Knowledge"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open letter"
 msgstr "ಪತ್ರ ತೆರೆಯಿರಿ"
+
+#: src/shell/preparing-tab.tsx
+msgid "Open on the web"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Open questions"
@@ -6835,10 +6866,6 @@ msgstr "ಉತ್ತರಿಸಬೇಕಾದ ಪ್ರಶ್ನೆಗಳು"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open resume"
 msgstr "ರೆಸ್ಯೂಮ್ ತೆರೆಯಿರಿ"
-
-#: src/features/career/today.tsx
-msgid "Open settings"
-msgstr "ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Open story"
@@ -6856,7 +6883,7 @@ msgstr "ಫೈಲ್ ಅನ್ನು Word ನಲ್ಲಿ ತೆರೆಯಿರ�
 msgid "Open the list"
 msgstr "ಪಟ್ಟಿಯನ್ನು ತೆರೆಯಿರಿ"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Open the schedule"
 msgstr "ವೇಳಾಪಟ್ಟಿಯನ್ನು ತೆರೆಯಿರಿ"
 
@@ -6864,11 +6891,11 @@ msgstr "ವೇಳಾಪಟ್ಟಿಯನ್ನು ತೆರೆಯಿರಿ"
 msgid "Open web page"
 msgstr "ವೆಬ್ ಪುಟ ತೆರೆಯಿರಿ"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Open workspace"
 msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರವನ್ನು ತೆರೆಯಿರಿ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Open-source licenses"
 msgstr "ಮುಕ್ತ ಮೂಲ ಪರವಾನಗಿಗಳು"
 
@@ -6896,10 +6923,6 @@ msgstr "ವೃತ್ತಿಜೀವನ → ಆಫರ್‌ಗಳು ನಲ್ಲ
 #: src/features/career/schedule-sheet.tsx
 msgid "Opportunity discovery"
 msgstr "ಅವಕಾಶಗಳ ಹುಡುಕಾಟ"
-
-#: src/features/ai/web-access.tsx
-msgid "Optional"
-msgstr "ಐಚ್ಛಿಕ"
 
 #: src/features/ai/provider-editor.tsx
 msgid "Optional for local Ollama"
@@ -7040,12 +7063,12 @@ msgstr "ಪ್ಯಾರಾಗ್ರಾಫ್ {n}"
 msgid "Partly supported"
 msgstr "ಭಾಗಶಃ ಬೆಂಬಲಿತ"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "ಪಾಸ್‌ಕೀಗಳು"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
@@ -7088,7 +7111,6 @@ msgid "Paste the question from the form"
 msgstr "ಫಾರ್ಮ್‌ನಿಂದ ಪ್ರಶ್ನೆಯನ್ನು ಅಂಟಿಸಿ"
 
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "Paste your key"
 msgstr "ನಿಮ್ಮ ಕೀಲಿಯನ್ನು ಅಂಟಿಸಿ"
 
@@ -7097,9 +7119,9 @@ msgstr "ನಿಮ್ಮ ಕೀಲಿಯನ್ನು ಅಂಟಿಸಿ"
 msgid "Pasted description"
 msgstr "ಅಂಟಿಸಿದ ವಿವರಣೆ"
 
-#: src/features/career/today.tsx
-msgid "Paused"
-msgstr "ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ"
+#: src/features/home/schedules.tsx
+msgid "Paused · {line}"
+msgstr "ವಿರಾಮಗೊಂಡಿದೆ · {line}"
 
 #: src/features/career/preferences.tsx
 msgid "Pay period"
@@ -7149,7 +7171,7 @@ msgstr "ತಿಂಗಳಿಗೆ"
 msgid "Per year"
 msgstr "ವರ್ಷಕ್ಕೆ"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Permanently removes everything. Opens your browser account settings."
 msgstr "ಎಲ್ಲವನ್ನೂ ಶಾಶ್ವತವಾಗಿ ತೆಗೆದುಹಾಕುತ್ತದೆ. ನಿಮ್ಮ ಬ್ರೌಸರ್ ಖಾತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯುತ್ತದೆ."
 
@@ -7215,8 +7237,9 @@ msgstr "ಸರಳ ಪಠ್ಯ (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "ಶೀರ್ಷಿಕೆಗಳೊಂದಿಗೆ ಸರಳ ಪಠ್ಯ. ಉದ್ಯೋಗ ಅರ್ಜಿ ನಮೂನೆಗಳು ಮತ್ತು ಟಿಪ್ಪಣಿಗಳಲ್ಲಿ ಅಂಟಿಸಿ."
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/membership.tsx
+#: app/account/index.tsx
+#: app/account/membership.tsx
+#: src/shell/account-menu.tsx
 msgid "Plan"
 msgstr ""
 
@@ -7236,13 +7259,13 @@ msgstr "ಏನು ಕೇಳಬೇಕೆಂದು ಯೋಜಿಸಿ"
 msgid "Planning your week"
 msgstr "ನಿಮ್ಮ ವಾರವನ್ನು ಯೋಜಿಸಲಾಗುತ್ತಿದೆ"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
 
@@ -7262,6 +7285,12 @@ msgstr "ಪೋಲಿಷ್"
 #: src/features/workspace/parts.tsx
 msgid "Polishing"
 msgstr "ನಯಗೊಳಿಸಲಾಗುತ್ತಿದೆ"
+
+#: app/(tabs)/_layout.tsx
+#: app/(tabs)/portfolio/index.tsx
+#: src/shell/app-tabs.tsx
+msgid "Portfolio"
+msgstr ""
 
 #: src/features/write/picture-screen.tsx
 msgid "Portrait"
@@ -7329,8 +7358,8 @@ msgstr "ಒಂದೇ ಕಾಲಮ್ ಆಯ್ಕೆಮಾಡಿ, ಅಥವಾ �
 msgid "Preference"
 msgstr "ಆದ್ಯತೆ"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 #: src/features/career/knowledge.tsx
 #: src/features/search/search-screen.tsx
 msgid "Preferences"
@@ -7383,7 +7412,7 @@ msgstr "ಫೈಲ್ ಅನ್ನು ಸಿದ್ಧಪಡಿಸಲಾಗುತ�
 msgid "Present"
 msgstr "ಪ್ರಸ್ತುತ"
 
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Press and hold"
 msgstr "ಒತ್ತಿ ಹಿಡಿಯಿರಿ"
 
@@ -7453,7 +7482,7 @@ msgstr "ಕಳುಹಿಸುವ ಮೊದಲು ಫಾರ್ಮ್ ಅನ್ನ
 msgid "Privacy"
 msgstr "ಗೌಪ್ಯತೆ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 #: src/auth/auth-header.tsx
 msgid "Privacy policy"
 msgstr "ಗೌಪ್ಯತೆ ನೀತಿ"
@@ -7475,8 +7504,11 @@ msgstr "ವೃತ್ತಿಪರ"
 msgid "Proficiency"
 msgstr "ಪಾರುಂಗತತೆ"
 
-#: app/(tabs)/settings/account.tsx
+#: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/index.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Profile"
 msgstr "ಪ್ರೊಫೈಲ್"
 
@@ -7508,13 +7540,8 @@ msgstr "ಯೋಜನೆಗಳು"
 msgid "Proposed changes"
 msgstr "ಪ್ರಸ್ತಾವಿತ ಬದಲಾವಣೆಗಳು"
 
-#: src/features/ai/web-access.tsx
-msgid "Provided by your server: {connected}. Search and reading are set up for everyone here. Ask your administrator about changes."
-msgstr "ನಿಮ್ಮ ಸರ್ವರ್‌ನಿಂದ ಒದಗಿಸಲಾಗಿದೆ: {connected}. ಇಲ್ಲಿ ಎಲ್ಲರಿಗೂ ಹುಡುಕಾಟ ಮತ್ತು ಓದುವಿಕೆಯನ್ನು ಹೊಂದಿಸಲಾಗಿದೆ. ಬದಲಾವಣೆಗಳ ಬಗ್ಗೆ ನಿಮ್ಮ ನಿರ್ವಾಹಕರನ್ನು ಕೇಳಿ."
-
 #: src/api/ai-consent.ts
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "Provider"
 msgstr "ಪೂರೈಕೆದಾರ"
 
@@ -7562,6 +7589,10 @@ msgstr "ವೀಕ್ಷಣೆಗಳು ಮತ್ತು ಡೌನ್‌ಲೋಡ�
 #: src/features/share/web-page.tsx
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "ನಿಮ್ಮ ಕಿರು ಲಿಂಕ್ ಮತ್ತು ಕಸ್ಟಮ್ ಡೊಮೇನ್‌ನಲ್ಲಿ ತೆರೆಯಲು ಈ ರೆಸ್ಯೂಮ್ ಅನ್ನು ಪ್ರಕಟಿಸಿ."
+
+#: app/(tabs)/portfolio/index.tsx
+msgid "Publish, share and see who visited from your phone. Until then, manage it on the web."
+msgstr ""
 
 #: src/features/write/fields.ts
 msgid "Publisher"
@@ -7635,12 +7666,12 @@ msgstr "ಬ್ರೀಫಿಂಗ್ ಓದಿ"
 msgid "Read it for me"
 msgstr "ನನಗಾಗಿ ಓದಿ"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Read license"
 msgstr "ಪರವಾನಗಿ ಓದಿ"
 
 #: src/features/applications/add-sheet.tsx
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Read posting"
 msgstr "ಉದ್ಯೋಗ ಪೋಸ್ಟ್ ಅನ್ನು ಓದಿ"
 
@@ -7655,10 +7686,6 @@ msgstr "ಲಗತ್ತನ್ನು ಓದಿ"
 #: src/features/check/parser.tsx
 msgid "Read the exported PDF"
 msgstr "ರಫ್ತು ಮಾಡಿದ PDF ಅನ್ನು ಓದಿ"
-
-#: app/(tabs)/settings/ai-web-access.tsx
-msgid "Read the job links you save. Saving and preparing jobs works without a connection."
-msgstr "ನೀವು ಉಳಿಸುವ ಉದ್ಯೋಗ ಲಿಂಕ್‌ಗಳನ್ನು ಓದಿ. ಸಂಪರ್ಕವಿಲ್ಲದೆ ಕೆಲಸಗಳನ್ನು ಉಳಿಸುವುದು ಮತ್ತು ಸಿದ್ಧಪಡಿಸುವುದು."
 
 #: src/features/assistant/messages.tsx
 msgid "Read the letter"
@@ -7716,10 +7743,6 @@ msgstr "ಪಠ್ಯವನ್ನು ಓದುವುದು"
 msgid "Reading this file with AI needs a tested AI provider. Set one up, then retry."
 msgstr "ಈ ಫೈಲ್ ಅನ್ನು AI ನೊಂದಿಗೆ ಓದಲು ಪರೀಕ್ಷಿತ AI ಪೂರೈಕೆದಾರರ ಅಗತ್ಯವಿದೆ. ಒಂದನ್ನು ಹೊಂದಿಸಿ, ನಂತರ ಮರುಪ್ರಯತ್ನಿಸಿ."
 
-#: src/features/ai/web-access.tsx
-msgid "Reading works"
-msgstr "ಓದುವ ಕೆಲಸಗಳು"
-
 #: src/features/workspace/parts.tsx
 msgid "Reading your answer"
 msgstr "ನಿಮ್ಮ ಉತ್ತರವನ್ನು ಓದಲಾಗುತ್ತಿದೆ"
@@ -7732,10 +7755,6 @@ msgstr "ನಿಮ್ಮ ಟಿಪ್ಪಣಿಗಳನ್ನು ಓದಲಾಗ�
 #: src/features/check/score.tsx
 msgid "Reads cleanly"
 msgstr "ಸ್ವಚ್ಛವಾಗಿ ಓದುತ್ತಾರೆ"
-
-#: src/features/ai/web-access.tsx
-msgid "Reads supported public job pages. No account needed."
-msgstr "ಬೆಂಬಲಿತ ಸಾರ್ವಜನಿಕ ಉದ್ಯೋಗ ಪುಟಗಳನ್ನು ಓದುತ್ತದೆ. ಯಾವುದೇ ಖಾತೆಯ ಅಗತ್ಯವಿಲ್ಲ."
 
 #: src/features/ai/provider-list.tsx
 #: src/features/workspace/tabs/prepare.tsx
@@ -7751,11 +7770,11 @@ msgstr "ಕಾರಣ"
 msgid "Recalled"
 msgstr "ನೆನಪಿಸಿಕೊಂಡದ್ದು"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Recent activity"
 msgstr ""
 
-#: src/features/career/recent-documents.tsx
+#: src/features/home/recent-documents.tsx
 msgid "Recent documents"
 msgstr ""
 
@@ -7832,7 +7851,7 @@ msgstr "24 ಗಂಟೆಗಳ ಮೊದಲು ಬ್ರೀಫಿಂಗ್ ರಿ
 msgid "Refresh the briefing on the morning of"
 msgstr "ಅದೇ ದಿನ ಬೆಳಿಗ್ಗೆ ಬ್ರೀಫಿಂಗ್ ರಿಫ್ರೆಶ್ ಮಾಡಿ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -7854,7 +7873,7 @@ msgstr "ತಿರಸ್ಕರಿಸಿ"
 msgid "Rejected"
 msgstr "ತಿರಸ್ಕರಿಸಲಾಗಿದೆ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Reload now"
 msgstr "ಈಗ ಮರುಲೋಡ್ ಮಾಡಿ"
 
@@ -7900,10 +7919,6 @@ msgstr "ಜ್ಞಾಪನೆ"
 msgid "Reminders"
 msgstr "ಜ್ಞಾಪನೆಗಳು"
 
-#: src/features/career/today.tsx
-msgid "Reminders appear here. Email copies are optional and need a verified address."
-msgstr "ಜ್ಞಾಪನೆಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ. ಇಮೇಲ್ ಪ್ರತಿಗಳು ಐಚ್ಛಿಕ ಮತ್ತು ಅವುಗಳಿಗೆ ಪರಿಶೀಲಿಸಿದ ವಿಳಾಸದ ಅಗತ್ಯವಿದೆ."
-
 #: src/features/career/offers.tsx
 #: src/features/career/preferences.tsx
 msgid "Remote"
@@ -7911,7 +7926,7 @@ msgstr "ರಿಮೋಟ್"
 
 #: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Remove"
 msgstr "ತೆಗೆದುಹಾಕಿ"
 
@@ -7928,14 +7943,6 @@ msgstr ""
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
 msgstr "{name} ತೆಗೆದುಹಾಕಿ"
-
-#: src/features/ai/web-access.tsx
-msgid "Remove connection"
-msgstr "ಸಂಪರ್ಕವನ್ನು ತೆಗೆದುಹಾಕಿ"
-
-#: src/features/ai/web-access.tsx
-msgid "Remove connection?"
-msgstr "ಸಂಪರ್ಕವನ್ನು ತೆಗೆದುಹಾಕುವುದೇ?"
 
 #: src/features/write/basics-screen.tsx
 msgid "Remove field"
@@ -8057,8 +8064,8 @@ msgstr "ಪ್ರತ್ಯುತ್ತರವನ್ನು ನಕಲಿಸಲಾ�
 msgid "Report"
 msgstr "ವರದಿ"
 
-#: app/(tabs)/settings/ai-report.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-report.tsx
+#: app/account/ai.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "AI ವಿಷಯವನ್ನು ವರದಿ ಮಾಡಿ"
@@ -8107,7 +8114,7 @@ msgstr "ಉತ್ತರಿಸುವ ಗಡುವು"
 msgid "Response deadline has passed."
 msgstr "ಪ್ರತಿಕ್ರಿಯೆಯ ಗಡುವು ಮುಗಿದಿದೆ."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Restart to change text direction"
 msgstr "ಪಠ್ಯದ ದಿಕ್ಕನ್ನು ಬದಲಾಯಿಸಲು ಮರುಪ್ರಾರಂಭಿಸಿ"
 
@@ -8143,8 +8150,8 @@ msgstr "ಫಲಿತಾಂಶ"
 #: app/builder/[id]/_layout.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/facts.tsx
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
 msgid "Resume"
 msgstr "ರೆಸ್ಯೂಮ್"
@@ -8186,7 +8193,7 @@ msgstr ""
 msgid "Resumes"
 msgstr "ರೆಸ್ಯೂಮ್‌ಗಳು"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "ರೆಸ್ಯೂಮೆಗಳು ಯಾವಾಗಲೂ ಬಿಳಿ ಕಾಗದದ ಮೇಲೆ ನಿರೂಪಿಸುತ್ತವೆ, ಯಾವುದೇ ಥೀಮ್."
 
@@ -8214,6 +8221,7 @@ msgstr "{1} ಬಳಸಿಕೊಂಡು {0} ಅನ್ನು ಮರುಪಡೆ�
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/features/history/history.tsx
+#: src/features/home/section.tsx
 #: src/features/letters/page.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
@@ -8269,7 +8277,7 @@ msgid "Returned: no usable result"
 msgstr ""
 
 #: src/features/assistant/page-marks.tsx
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Review"
 msgstr "ವಿಮರ್ಶೆ"
 
@@ -8281,7 +8289,7 @@ msgstr "ಅರ್ಜಿಯನ್ನು ಪರಿಶೀಲಿಸಿ"
 msgid "Review Check"
 msgstr "ಪರಿಶೀಲನೆಯನ್ನು ವಿಮರ್ಶಿಸಿ"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Review draft"
 msgstr "ಡ್ರಾಫ್ಟ್ ಪರಿಶೀಲಿಸಿ"
 
@@ -8345,7 +8353,7 @@ msgstr "ಪುನಃ ಬರೆಯಲು ಸ್ವೀಕರಿಸಲಾಗಿದ�
 msgid "Rezumi"
 msgstr "Rezumi"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -8381,10 +8389,6 @@ msgstr "ಪಾತ್ರ / ಶೀರ್ಷಿಕೆ"
 #: src/features/applications-board/views.tsx
 msgid "Role, company or contact"
 msgstr "ಹುದ್ದೆ, ಕಂಪನಿ ಅಥವಾ ಸಂಪರ್ಕ"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Role, company or location"
-msgstr "ಪಾತ್ರ, ಕಂಪನಿ ಅಥವಾ ಸ್ಥಳ"
 
 #: src/features/write/fields.ts
 msgid "Roles"
@@ -8446,7 +8450,7 @@ msgstr "ತುಕ್ಕು"
 msgid "Salary"
 msgstr "ಸಂಬಳ"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Salary not listed"
 msgstr "ವೇತನ ನಮೂದಿಸಿಲ್ಲ"
 
@@ -8495,17 +8499,9 @@ msgstr "ಹೋಲಿಸಲು ಇನ್ನೊಂದು ಆಫರ್ ಅನ್ನ
 msgid "Save changes"
 msgstr "ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಿ"
 
-#: src/features/ai/web-access.tsx
-msgid "Save connection"
-msgstr "ಸಂಪರ್ಕವನ್ನು ಉಳಿಸಿ"
-
 #: src/features/career/facts.tsx
 msgid "Save fact"
 msgstr "ಸತ್ಯವನ್ನು ಉಳಿಸಿ"
-
-#: src/features/ai/web-access.tsx
-msgid "Save first, then test search and reading. No test runs automatically."
-msgstr "ಮೊದಲು ಉಳಿಸಿ, ನಂತರ ಹುಡುಕಾಟ ಮತ್ತು ಓದುವಿಕೆಯನ್ನು ಪರೀಕ್ಷಿಸಿ. ಯಾವುದೇ ಪರೀಕ್ಷೆಯು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ರನ್ ಆಗುವುದಿಲ್ಲ."
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Save interview"
@@ -8572,6 +8568,11 @@ msgctxt "Application workspace tab: earlier results kept for this job"
 msgid "Saved"
 msgstr "ಉಳಿಸಲಾಗಿದೆ"
 
+#. placeholder {0}: companyOf(row)
+#: src/features/home/new-roles.tsx
+msgid "Saved {0} to Applications"
+msgstr "{0} ಅನ್ನು ಅರ್ಜಿಗಳಿಗೆ ಉಳಿಸಲಾಗಿದೆ"
+
 #: src/features/assistant/messages.tsx
 msgid "Saved a story: {title}"
 msgstr "ಕಥೆ ಉಳಿಸಲಾಗಿದೆ: {title}"
@@ -8580,7 +8581,7 @@ msgstr "ಕಥೆ ಉಳಿಸಲಾಗಿದೆ: {title}"
 msgid "Saved description"
 msgstr "ಉಳಿಸಿದ ವಿವರಣೆ"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Saved to Applications with the posting"
 msgstr "ಉದ್ಯೋಗ ಜಾಹೀರಾತಿನೊಂದಿಗೆ ಅರ್ಜಿಗಳಿಗೆ ಉಳಿಸಲಾಗಿದೆ"
 
@@ -8612,7 +8613,7 @@ msgstr "ಉಳಿಸಲಾಗುತ್ತಿದೆ…"
 msgid "Schedule an interview"
 msgstr "ಸಂದರ್ಶನವನ್ನು ನಿಗದಿಪಡಿಸಿ"
 
-#: src/features/career/today.tsx
+#: src/features/home/home-screen.tsx
 msgid "Schedule deleted"
 msgstr "ವೇಳಾಪಟ್ಟಿಯನ್ನು ಅಳಿಸಲಾಗಿದೆ"
 
@@ -8628,7 +8629,7 @@ msgstr "ಈ ಸರ್ವರ್‌ನಲ್ಲಿ ನಿಗದಿತ ಕೆಲಸ
 msgid "Scheduled work isn't available on this server."
 msgstr "ಈ ಸರ್ವರ್‌ನಲ್ಲಿ ನಿಗದಿತ ಕೆಲಸ ಲಭ್ಯವಿಲ್ಲ."
 
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 msgid "Schedules"
 msgstr "ವೇಳಾಪಟ್ಟಿಗಳು"
 
@@ -8642,21 +8643,17 @@ msgstr "ಶಾಲೆ"
 msgid "Screening"
 msgstr "ಸ್ಕ್ರೀನಿಂಗ್"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Screening interview"
 msgstr "ಸ್ಕ್ರೀನಿಂಗ್ ಸಂದರ್ಶನ"
 
 #: app/_layout.tsx
 #: app/(tabs)/_layout.tsx
-#: src/features/applications/add-sheet.tsx
 #: src/features/design/picker.tsx
-#: src/ui/fields.tsx
+#: src/shell/tab-chrome.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Search"
 msgstr "ಹುಡುಕಿ Kannada"
-
-#: src/features/ai/web-access.tsx
-msgid "Search and enhanced reading"
-msgstr "ಹುಡುಕಾಟ ಮತ್ತು ವರ್ಧಿತ ಓದುವಿಕೆ"
 
 #: src/features/applications-board/views.tsx
 #: src/features/letters/write.tsx
@@ -8683,27 +8680,15 @@ msgstr "Google ನಂತಹ ಸರ್ಚ್ ಎಂಜಿನ್‌ಗಳು ನ�
 msgid "Search facts"
 msgstr "ಸಂಗತಿಗಳನ್ನು ಹುಡುಕಿ"
 
-#: src/features/ai/web-access.tsx
-msgid "Search failed"
-msgstr "ಹುಡುಕಾಟ ವಿಫಲವಾಗಿದೆ"
-
 #: src/features/search/search-screen.tsx
 msgid "Search for…"
 msgstr "… ಗಾಗಿ ಹುಡುಕಿ"
-
-#: src/features/ai/web-access.tsx
-msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
-msgstr "ಅರ್ಜಿಗಳು ಮತ್ತು ಸಹಾಯಕದಿಂದ ಹುಡುಕಿ ಮತ್ತು ಅಂತರ್ನಿರ್ಮಿತ ಓದುಗರಿಗೆ ಸಾಧ್ಯವಾಗದ ಪುಟಗಳನ್ನು ಓದಿ. ಒಂದು ಸೇವೆ ಎರಡನ್ನೂ ಒಳಗೊಳ್ಳುತ್ತದೆ."
 
 #: src/features/write/pickers.tsx
 msgid "Search icons"
 msgstr "ಹುಡುಕಾಟ ಐಕಾನ್‌ಗಳು"
 
-#: src/features/applications/add-sheet.tsx
-msgid "Search job postings"
-msgstr "ಉದ್ಯೋಗ ಪೋಸ್ಟಿಂಗ್‌ಗಳನ್ನು ಹುಡುಕಿ"
-
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Search languages"
 msgstr "ಭಾಷೆಗಳನ್ನು ಹುಡುಕಿ"
 
@@ -8715,24 +8700,12 @@ msgstr "ಹುಡುಕಾಟ ಪದಗಳು ನಿಮ್ಮ ವೆಬ್ ಹ�
 msgid "Search the web"
 msgstr ""
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Search timezones"
 msgstr "ಸಮಯ ವಲಯಗಳನ್ನು ಹುಡುಕಿ"
 
-#: src/features/ai/web-access.tsx
-msgid "Search was tested with your server's search, and reading with {connected}."
-msgstr "ನಿಮ್ಮ ಸರ್ವರ್‌ನ ಹುಡುಕಾಟದೊಂದಿಗೆ ಹುಡುಕಾಟವನ್ನು ಪರೀಕ್ಷಿಸಲಾಗಿದೆ ಮತ್ತು {connected} ಜೊತೆಗೆ ಓದುವುದು."
-
-#: src/features/ai/web-access.tsx
-msgid "Search was tested with your server's search. Links are read with the built-in reader."
-msgstr "ನಿಮ್ಮ ಸರ್ವರ್‌ನ ಹುಡುಕಾಟದೊಂದಿಗೆ ಹುಡುಕಾಟವನ್ನು ಪರೀಕ್ಷಿಸಲಾಗಿದೆ. ಅಂತರ್ನಿರ್ಮಿತ ರೀಡರ್ನೊಂದಿಗೆ ಲಿಂಕ್ಗಳನ್ನು ಓದಲಾಗುತ್ತದೆ."
-
-#: src/features/ai/web-access.tsx
-msgid "Search works"
-msgstr "ಹುಡುಕಾಟ ಕಾರ್ಯಗಳು"
-
 #: src/features/search/search-screen.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Search…"
 msgstr "… ಹುಡುಕಿ"
 
@@ -8891,6 +8864,10 @@ msgstr "ಪಾಸ್ವರ್ಡ್ ಹೊಂದಿಸಿ"
 msgid "Set the document language when exporting."
 msgstr "ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಮಾಡುವಾಗ ಡಾಕ್ಯುಮೆಂಟ್ ಭಾಷೆಯನ್ನು ಹೊಂದಿಸಿ."
 
+#: src/features/home/new-roles.tsx
+msgid "Set up a job alert"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/write/improve.tsx
 msgid "Set up a provider"
@@ -8900,27 +8877,18 @@ msgstr "ಪೂರೈಕೆದಾರರನ್ನು ಹೊಂದಿಸಿ"
 msgid "Set up AI provider"
 msgstr "AI ಪೂರೈಕೆದಾರರನ್ನು ಹೊಂದಿಸಿ"
 
-#: src/features/career/today.tsx
-msgid "Set up discovery"
-msgstr "ಅವಕಾಶಗಳ ಹುಡುಕಾಟವನ್ನು ಹೊಂದಿಸಿ"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Set up web search"
-msgstr "ವೆಬ್ ಹುಡುಕಾಟವನ್ನು ಹೊಂದಿಸಿ"
-
 #: src/features/career/schedule-sheet.tsx
 msgid "Set up web search in Settings to find roles."
 msgstr "ಪಾತ್ರಗಳನ್ನು ಹುಡುಕಲು ವೆಬ್ ಹುಡುಕಾಟವನ್ನು ಸೆಟ್ಟಿಂಗ್ಸಗಳು ನಲ್ಲಿ ಹೊಂದಿಸಿ."
 
-#: app/(tabs)/_layout.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
 #: src/features/search/search-screen.tsx
 msgid "Settings"
 msgstr "ಸೆಟ್ಟಿಂಗ್ಸಗಳು"
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Setup guide"
 msgstr "ಸೆಟಪ್ ಮಾರ್ಗದರ್ಶಿ"
 
@@ -9021,9 +8989,16 @@ msgid "Show “Made with Rezumi”"
 msgstr "“Rezumi ನಿಂದ ಮಾಡಲಾಗಿದೆ” ತೋರಿಸಿ"
 
 #. placeholder {0}: Math.min(remaining, COLUMN_PAGE_SIZE)
+#. placeholder {0}: visible.length - shown.length
 #: src/features/applications-board/board-screen.tsx
+#: src/features/home/new-roles.tsx
 msgid "Show {0} more"
 msgstr "ಇನ್ನೂ {0} ತೋರಿಸಿ"
+
+#. placeholder {0}: read.length
+#: src/features/home/needs-you.tsx
+msgid "Show {0} read"
+msgstr "ಓದಿದ {0} ತೋರಿಸಿ"
 
 #: src/features/write/outline.tsx
 msgid "Show {title} on the page"
@@ -9077,9 +9052,8 @@ msgstr "ಕೀಲಿಯನ್ನು ತೋರಿಸಿ"
 msgid "Show link in title"
 msgstr "ಶೀರ್ಷಿಕೆಯಲ್ಲಿ ಲಿಂಕ್ ತೋರಿಸಿ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/application-detail/interview-sheet.tsx
-#: src/features/career/today.tsx
 msgid "Show more"
 msgstr "ಇನ್ನಷ್ಟು ತೋರಿಸು"
 
@@ -9092,10 +9066,6 @@ msgstr "ಪುಟದಲ್ಲಿ ತೋರಿಸಿ"
 #: src/features/write/picture-screen.tsx
 msgid "Show photo"
 msgstr "ಫೋಟೋ ತೋರಿಸಿ"
-
-#: src/features/career/today.tsx
-msgid "Show read"
-msgstr "ಓದಿದ ವಸ್ತುಗಳನ್ನು ತೋರಿಸಿ"
 
 #: src/features/applications-board/time-grid.tsx
 msgid "Show this day"
@@ -9208,14 +9178,16 @@ msgstr "ಈ ರೆಸ್ಯೂಮ್ ಅನ್ನು ವೀಕ್ಷಿಸಲು
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "Sign out"
 msgstr "ಸೈನ್ ಔಟ್"
 
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "Sign out?"
 msgstr "ಸೈನ್ ಔಟ್ ಮಾಡುವುದೇ?"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Sign-in & security"
 msgstr "ಸೈನ್ ಇನ್ ಮತ್ತು ಭದ್ರತೆ"
 
@@ -9446,6 +9418,10 @@ msgstr "ಪ್ರಾರಂಭಿಸಿ"
 msgid "Start a debrief"
 msgstr "ಪರಾಮರ್ಶೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ"
 
+#: src/features/home/home-screen.tsx
+msgid "Start a document"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 #: src/features/documents/new-document.tsx
 msgid "Start blank"
@@ -9500,6 +9476,14 @@ msgstr "ಹೆಚ್ಚಿನ ರೆಸ್ಯೂಮೆಗಳು ಹೊಂದಿ�
 msgid "Start with your name. Build from there."
 msgstr "ನಿಮ್ಮ ಹೆಸರಿನೊಂದಿಗೆ ಪ್ರಾರಂಭಿಸಿ. ಅಲ್ಲಿಂದ ನಿರ್ಮಿಸಿ."
 
+#: src/features/home/coming-up.tsx
+msgid "Started"
+msgstr "ಪ್ರಾರಂಭವಾಗಿದೆ"
+
+#: src/features/home/coming-up.tsx
+msgid "Starts in {minutes} minutes"
+msgstr "{minutes} ನಿಮಿಷಗಳಲ್ಲಿ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ"
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
 msgstr "ಈಗ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ"
@@ -9507,6 +9491,10 @@ msgstr "ಈಗ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ"
 #: src/features/documents/new-document.tsx
 msgid "Stay in Documents"
 msgstr "ದಾಖಲೆಗಳು ನಲ್ಲಿ ಉಳಿಯಿರಿ"
+
+#: src/shell/account-menu.tsx
+msgid "Stay signed in"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 #: src/features/letters/write.tsx
@@ -9609,7 +9597,7 @@ msgstr "ಕಡಿತವನ್ನು ಸೂಚಿಸುತ್ತದೆ, ಎಂದ
 msgid "Summary"
 msgstr "ಸಾರಾಂಶ"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Support"
 msgstr "ಬೆಂಬಲ"
 
@@ -9659,8 +9647,8 @@ msgstr "ಒಂದು ಕಾಲಮ್‌ಗೆ ಬದಲಿಸಿ"
 msgid "Switched to one column"
 msgstr "ಒಂದು ಕಾಲಮ್‌ಗೆ ಬದಲಾಯಿಸಲಾಗಿದೆ"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "System"
 msgstr "ಆಪರೇಟಿಂಗ್ ಸಿಸ್ಟಮ್"
 
@@ -9743,7 +9731,7 @@ msgstr "ಟೀಲ್"
 msgid "Technical"
 msgstr "ತಾಂತ್ರಿಕ"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Technical interview"
 msgstr "ತಾಂತ್ರಿಕ ಸಂದರ್ಶನ"
 
@@ -9786,25 +9774,13 @@ msgstr "ಟೆಂಪ್ಲೇಟ್, ಪ್ರಕಾರ ಮತ್ತು ಬಣ�
 msgid "Terms from the posting"
 msgstr "ಉದ್ಯೋಗ ಪೋಸ್ಟ್‌ನಿಂದ ನಿಯಮಗಳು"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Terms of service"
 msgstr "ಸೇವಾ ನಿಯಮಗಳು"
 
 #: src/features/ai/provider-list.tsx
 msgid "Test"
 msgstr "ಪರೀಕ್ಷೆ"
-
-#: src/features/ai/web-access.tsx
-msgid "Test connection"
-msgstr "ಪರೀಕ್ಷಾ ಸಂಪರ್ಕ"
-
-#: src/features/ai/web-access.tsx
-msgid "Test search"
-msgstr "ಹುಡುಕಾಟ ಕಾರ್ಯವನ್ನು ಪರೀಕ್ಷಿಸಿ"
-
-#: src/features/ai/web-access.tsx
-msgid "Tested with {connected}. Only this service was tested."
-msgstr "{connected} ನೊಂದಿಗೆ ಪರೀಕ್ಷಿಸಲಾಗಿದೆ. ಈ ಸೇವೆಯನ್ನು ಮಾತ್ರ ಪರೀಕ್ಷಿಸಲಾಗಿದೆ."
 
 #: src/features/ai/provider-editor.tsx
 msgid "Testing the connection…"
@@ -9888,6 +9864,10 @@ msgstr "ಆ ರೆಕಾರ್ಡಿಂಗ್ ಖಾಲಿಯಾಗಿತ್ತ�
 msgid "That reminder time has already passed."
 msgstr "ಆ ರಿಮೈಂಡರ್ ಸಮಯ ಈಗಾಗಲೇ ಕಳೆದಿದೆ."
 
+#: src/features/home/home-screen.tsx
+msgid "That schedule no longer exists."
+msgstr ""
+
 #: src/api/ai-consent.ts
 msgid "The account changed. Try again."
 msgstr "ಖಾತೆ ಬದಲಾಗಿದೆ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
@@ -9904,29 +9884,9 @@ msgstr "ಅರ್ಜಿಯು ಅದರ ಇತರ ವಿವರಗಳನ್ನು
 msgid "The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else works without it."
 msgstr "ಈ ಸರ್ವರ್‌ನಲ್ಲಿ ಸಹಾಯಕವನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ. ಯಾರು ಇದನ್ನು ಚಲಾಯಿಸುತ್ತಾರೋ ಅವರು ENCRYPTION_SECRET ಅನ್ನು ಹೊಂದಿಸಬೇಕಾಗುತ್ತದೆ. ಅದು ಇಲ್ಲದೆ ಉಳಿದಂತೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ."
 
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches and reads pages with {connected}, whichever AI provider you use."
-msgstr "ನೀವು ಯಾವ AI ಪೂರೈಕೆದಾರರನ್ನು ಬಳಸುತ್ತೀರೋ ಆ ಸಹಾಯಕವು {connected} ನೊಂದಿಗೆ ಪುಟಗಳನ್ನು ಹುಡುಕುತ್ತದೆ ಮತ್ತು ಓದುತ್ತದೆ."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches with your server's search and reads links with the built-in reader, whichever AI provider you use."
-msgstr "ಸಹಾಯಕವು ನಿಮ್ಮ ಸರ್ವರ್‌ನ ಹುಡುಕಾಟದೊಂದಿಗೆ ಹುಡುಕುತ್ತದೆ ಮತ್ತು ಅಂತರ್ನಿರ್ಮಿತ ರೀಡರ್‌ನೊಂದಿಗೆ ಲಿಂಕ್‌ಗಳನ್ನು ಓದುತ್ತದೆ, ನೀವು ಬಳಸುವ AI ಪೂರೈಕೆದಾರರು."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches with your server's search and reads pages with {connected}, whichever AI provider you use."
-msgstr "ಸಹಾಯಕವು ನಿಮ್ಮ ಸರ್ವರ್‌ನ ಹುಡುಕಾಟದೊಂದಿಗೆ ಹುಡುಕುತ್ತದೆ ಮತ್ತು ನೀವು ಯಾವ AI ಪೂರೈಕೆದಾರರನ್ನು ಬಳಸುತ್ತೀರೋ ಅದನ್ನು {connected} ನೊಂದಿಗೆ ಪುಟಗಳನ್ನು ಓದುತ್ತದೆ."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant uses your AI provider's own web search where supported, and reads links with the built-in reader."
-msgstr "ಸಹಾಯಕವು ನಿಮ್ಮ AI ಪೂರೈಕೆದಾರರ ಸ್ವಂತ ವೆಬ್ ಹುಡುಕಾಟವನ್ನು ಬಳಸುತ್ತದೆ, ಅಲ್ಲಿ ಪುರಾವೆಗಳಿಂದ ಬೆಂಬಲಿತವಾಗಿದೆ ಮತ್ತು ಅಂತರ್ನಿರ್ಮಿತ ರೀಡರ್‌ನೊಂದಿಗೆ ಲಿಂಕ್‌ಗಳನ್ನು ಓದುತ್ತದೆ."
-
 #: src/features/assistant/provider.tsx
 msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
 msgstr "ಸಹಾಯಕರು ನಿಮ್ಮದೇ ಕೀಲಿಯನ್ನು ಬಳಸುತ್ತಾರೆ. ನೀವು ಒಂದನ್ನು ಸಂಪರ್ಕಿಸುವವರೆಗೆ ಯಾವುದನ್ನೂ ಎಲ್ಲಿಯೂ ಕಳುಹಿಸಲಾಗುವುದಿಲ್ಲ."
-
-#: src/features/ai/web-access.tsx
-msgid "The built-in reader remains active."
-msgstr "ಅಂತರ್ನಿರ್ಮಿತ ರೀಡರ್ ಸಕ್ರಿಯವಾಗಿ ಉಳಿಯುತ್ತದೆ."
 
 #: src/features/check/writing.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
@@ -10086,22 +10046,6 @@ msgstr "ಸರ್ವರ್ ಆವೃತ್ತಿಯನ್ನು ಲೋಡ್ ಮ
 msgid "The service couldn't be reached. Try again or fill the details manually."
 msgstr "ಸೇವೆಯನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ವಿವರಗಳನ್ನು ಕೈಯಾರೆ ಭರ್ತಿ ಮಾಡಿ."
 
-#: src/features/ai/web-access.tsx
-msgid "The service didn't respond in time. Try again."
-msgstr "ಸೇವೆ ಸಮಯಕ್ಕೆ ಪ್ರತಿಕ್ರಿಯಿಸಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
-
-#: src/features/ai/web-access.tsx
-msgid "The service is unavailable or doesn't support this operation. Try again later or connect another service."
-msgstr "ಸೇವೆ ಲಭ್ಯವಿಲ್ಲ ಅಥವಾ ಈ ಕಾರ್ಯಾಚರಣೆಯನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ. ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ಬೇರೆ ಸೇವೆಯನ್ನು ಸಂಪರ್ಕಿಸಿ."
-
-#: src/features/ai/web-access.tsx
-msgid "The service quota is used up. Check your plan with the service."
-msgstr "ಸೇವೆಯ ಕೋಟಾ ಮುಗಿದಿದೆ. ಸೇವೆಯೊಂದಿಗೆ ನಿಮ್ಮ ಯೋಜನೆಯನ್ನು ಪರಿಶೀಲಿಸಿ."
-
-#: src/features/ai/web-access.tsx
-msgid "The service rejected the credentials. Check the API key."
-msgstr "ಸೇವೆ ರುಜುವಾತುಗಳನ್ನು ತಿರಸ್ಕರಿಸಿದೆ. API ಕೀಯನ್ನು ಪರಿಶೀಲಿಸಿ."
-
 #: src/features/ai/error.ts
 msgid "The test didn't run. Try again."
 msgstr "ಪರೀಕ್ಷೆ ನಡೆಯಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
@@ -10122,13 +10066,13 @@ msgstr "ಮೊದಲ ಪುಟದ ಮೇಲ್ಭಾಗ ಹೆಸರಿನಂತ
 msgid "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 msgstr "ನೀವು ಕಳುಹಿಸಿದ ಆವೃತ್ತಿಗಳನ್ನು ಉಳಿಸಲಾಗಿದೆ. ಇಲ್ಲಿ ಸಂಪಾದನೆಗಳು {company} ಸ್ವೀಕರಿಸಿದ್ದನ್ನು ಬದಲಾಯಿಸುವುದಿಲ್ಲ."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "ಥೀಮ್"
 
 #. placeholder {0}: getPlanName(next.planId)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr ""
@@ -10149,7 +10093,7 @@ msgstr "ಯಾವುದೇ ಸಾರಾಂಶ ಪ್ಯಾರಾಗ್ರಾಫ�
 msgid "These are the answers saved when you applied."
 msgstr "ನೀವು ಅರ್ಜಿ ಸಲ್ಲಿಸಿದಾಗ ಉಳಿಸಲಾದ ಉತ್ತರಗಳು ಇವು."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "ಇವುಗಳು ನಿಮ್ಮ ಸರ್ವರ್‌ನ ಖಾತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಅಪ್ಲಿಕೇಶನ್‌ನ ಒಳಗಿನ ಬ್ರೌಸರ್ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತವೆ. ನೀವು ಅಲ್ಲಿ ಸೈನ್ ಇನ್ ಮಾಡಬೇಕಾಗಬಹುದು."
 
@@ -10165,7 +10109,7 @@ msgstr "ಯೋಚಿಸಲಾಗುತ್ತಿದೆ"
 msgid "Thinking…"
 msgstr "ಯೋಚಿಸುತ್ತಿದೆ..."
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Third-party software notices. Tap a dependency to read its license."
 msgstr "ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸಾಫ್ಟ್‌ವೇರ್ ಸೂಚನೆಗಳು. ಅದರ ಪರವಾನಗಿಯನ್ನು ಓದಲು ಡಿಪೆಂಡೆನ್ಸಿಯನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ."
 
@@ -10521,7 +10465,7 @@ msgstr "ಸಮಯಗಳನ್ನು {timeZone} ನಲ್ಲಿ ತೋರಿಸ�
 msgid "Times are shown in {timezone}. Change timezone in Settings → Preferences."
 msgstr "ಸಮಯವನ್ನು {timezone} ನಲ್ಲಿ ತೋರಿಸಲಾಗಿದೆ. ಸೆಟ್ಟಿಂಗ್ಸಗಳು → ಆದ್ಯತೆಗಳಲ್ಲಿ ಸಮಯವಲಯವನ್ನು ಬದಲಾಯಿಸಿ."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Timezone"
 msgstr "ಸಮಯ ವಲಯ"
 
@@ -10546,8 +10490,8 @@ msgstr "ಪರಿಶೀಲಿಸಲು"
 msgid "To get a reminder, allow notifications in your device settings."
 msgstr "ಜ್ಞಾಪನೆಯನ್ನು ಪಡೆಯಲು, ನಿಮ್ಮ ಸಾಧನದ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಅಧಿಸೂಚನೆಗಳನ್ನು ಅನುಮತಿಸಿ."
 
-#: app/(tabs)/career/_layout.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/home/needs-you.tsx
 #: src/features/share/link.tsx
 msgid "Today"
 msgstr "ಇಂದು"
@@ -10561,6 +10505,7 @@ msgid "Toggle selection"
 msgstr "ಆಯ್ಕೆಯನ್ನು ಟಾಗಲ್ ಮಾಡಿ"
 
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/home/needs-you.tsx
 msgid "Tomorrow"
 msgstr "ನಾಳೆ"
 
@@ -10569,7 +10514,6 @@ msgid "Too light for headings on white. It may be hard to read and print faintly
 msgstr "ಬಿಳಿಯ ಶೀರ್ಷಿಕೆಗಳಿಗೆ ತುಂಬಾ ಹಗುರವಾಗಿದೆ. ಓದಲು ಮತ್ತು ಮಸುಕಾಗಿ ಮುದ್ರಿಸಲು ಕಷ್ಟವಾಗಬಹುದು."
 
 #: src/features/ai/error.ts
-#: src/features/ai/web-access.tsx
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
 #: src/features/documents/import-file.ts
@@ -10589,7 +10533,7 @@ msgstr ""
 msgid "Tool logos aren't in your plan"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/design/style-groups.tsx
 msgid "Tool logos in skills"
 msgstr ""
@@ -10598,7 +10542,7 @@ msgstr ""
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "ಮೊತ್ತಗಳನ್ನು ಕೂಡಿಸುವುದಿಲ್ಲ. ಬೋನಸ್ ಮತ್ತು ಷೇರು ಮಾಲೀಕತ್ವ ಷರತ್ತುಗಳಿಗೆ ಒಳಪಟ್ಟಿವೆ; ಷೇರುಗಳ ಮೌಲ್ಯ ಅನಿಶ್ಚಿತ. ಮೂಲ ಆಫರ್ ದಾಖಲೆಗಳನ್ನು ಓದಿ."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Track in Applications"
 msgstr "ಅರ್ಜಿಗಳಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ"
 
@@ -10629,7 +10573,6 @@ msgstr "ಪ್ರತಿಲೇಖನ ಮಾದರಿ"
 
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
-#: src/shell/app-tabs.tsx
 msgid "Trash"
 msgstr "ಅನುಪಯುಕ್ತ"
 
@@ -10637,7 +10580,7 @@ msgstr "ಅನುಪಯುಕ್ತ"
 msgid "Trash is empty"
 msgstr "ಕಸ ಖಾಲಿಯಾಗಿದೆ"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/credits.ts
 msgid "Trial credits"
 msgstr ""
@@ -10652,11 +10595,10 @@ msgstr "{suggestion} ಪ್ರಯತ್ನಿಸಿ"
 
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/account.tsx
+#: app/account/preferences.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
-#: src/features/ai/web-access.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/letters/write.tsx
 #: src/features/settings/api-keys.tsx
@@ -10729,7 +10671,7 @@ msgstr "ಎರಡು ಕಾಲಮ್‌ಗಳು"
 msgid "Two stories"
 msgstr "ಎರಡು ಕಥೆಗಳು"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Two-step verification"
 msgstr "ಎರಡು ಹಂತದ ಪರಿಶೀಲನೆ"
 
@@ -10763,7 +10705,7 @@ msgstr "ಮುದ್ರಣಕಲೆ"
 msgid "Ukrainian"
 msgstr "ಉಕ್ರೇನಿಯನ್"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Unavailable"
 msgstr "ಲಭ್ಯವಿಲ್ಲ"
 
@@ -10789,10 +10731,11 @@ msgstr "ಲಿಂಕ್‌ಗಳನ್ನು ಅಂಡರ್‌ಲೈನ್ ಮ�
 #: src/features/design/draft.ts
 #: src/features/document-menu/index.tsx
 #: src/features/documents/queries.ts
+#: src/features/home/new-roles.tsx
 #: src/features/workspace/tabs/fit.tsx
 #: src/features/write/hooks.ts
 #: src/preview/page.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Undo"
 msgstr "ರದ್ದುಗೊಳಿಸಿ"
 
@@ -11005,10 +10948,6 @@ msgstr "ಒಂದು ಕಾಲಮ್ ಬಳಸಿ"
 msgid "Use plain headings such as \"Experience\", \"Education\" and \"Skills\"."
 msgstr "\"Experience\", \"Education\" ಮತ್ತು \"Skills\" ನಂತಹ ಸರಳ ಶೀರ್ಷಿಕೆಗಳನ್ನು ಬಳಸಿ."
 
-#: src/features/applications/add-sheet.tsx
-msgid "Use posting link; review before saving"
-msgstr "ಉದ್ಯೋಗ ಜಾಹೀರಾತು ಲಿಂಕ್ ಬಳಸಿ; ಉಳಿಸುವ ಮೊದಲು ಪರಿಶೀಲಿಸಿ"
-
 #: src/api/ai-consent.ts
 msgid "Use Rezumi AI?"
 msgstr ""
@@ -11043,7 +10982,7 @@ msgstr "ಈ ಉತ್ತರಗಳನ್ನು ಬಳಸಿ"
 msgid "Use this date"
 msgstr "ಈ ದಿನಾಂಕವನ್ನು ಬಳಸಿ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Use this device's timezone ({deviceTimezone})"
 msgstr "ಈ ಸಾಧನದ ಸಮಯವಲಯವನ್ನು ಬಳಸಿ ({deviceTimezone})"
 
@@ -11075,10 +11014,6 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "ಹುದ್ದೆಗಳು ಮತ್ತು ಆಫರ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ಬಳಸಲಾಗುತ್ತದೆ. ಪ್ರತಿಯೊಂದೂ ಒಂದು ಸಂಖ್ಯೆಯಾಗಿರುವುದರಿಂದ, ಕೋಚ್ ಊಹಿಸದೆ ಹೋಲಿಸಬಹುದು."
 
-#: src/features/ai/web-access.tsx
-msgid "Used when {connected} can't read a page. No account needed."
-msgstr "{connected} ಪುಟವನ್ನು ಓದಲು ಸಾಧ್ಯವಾಗದಿದ್ದಾಗ ಬಳಸಲಾಗುತ್ತದೆ. ಯಾವುದೇ ಖಾತೆಯ ಅಗತ್ಯವಿಲ್ಲ."
-
 #: src/features/settings/profile.tsx
 #: src/features/write/fields.ts
 msgid "Username"
@@ -11091,10 +11026,6 @@ msgstr "ನಿಮ್ಮ ರೆಸ್ಯೂಮೆಯಿಂದ ಸತ್ಯಗಳ�
 #: src/features/assistant/assistant-screen.tsx
 msgid "Uses the linked application"
 msgstr "ಲಿಂಕ್ ಮಾಡಲಾದ ಉದ್ಯೋಗ ಅರ್ಜಿಯನ್ನು ಬಳಸುತ್ತದೆ"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Uses the web search service set up in Settings. Search results wait for your review."
-msgstr "ಸೆಟ್ಟಿಂಗ್ಸಗಳು ನಲ್ಲಿ ಹೊಂದಿಸಲಾದ ವೆಬ್ ಹುಡುಕಾಟ ಸೇವೆಯನ್ನು ಬಳಸುತ್ತದೆ. ಹುಡುಕಾಟ ಫಲಿತಾಂಶಗಳು ನಿಮ್ಮ ವಿಮರ್ಶೆಗಾಗಿ ಕಾಯುತ್ತಿವೆ."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Uses web search set up in Settings. Results wait in Today. Applications and documents are never created for you."
@@ -11235,15 +11166,6 @@ msgstr "ಮತ್ತೆ ಕೇಳಲು ಕಾಯುತ್ತಿದ್ದೇನ�
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "ನಾವು “{0}” ಎಂದು ಓದಿದ್ದೇವೆ. ಸ್ಥಿರವಾಗಿ ವಿಂಗಡಣೆ ಮತ್ತು ಮುದ್ರಣಗೊಳ್ಳುವಂತೆ ತಿಂಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ."
 
-#: app/(tabs)/settings/ai-web-access.tsx
-#: app/(tabs)/settings/ai.tsx
-msgid "Web access"
-msgstr "ವೆಬ್ ಪ್ರವೇಶ"
-
-#: src/features/ai/web-access.tsx
-msgid "Web access settings couldn't be saved or loaded."
-msgstr "ವೆಬ್ ಪ್ರವೇಶ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಉಳಿಸಲು ಅಥವಾ ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
-
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "ವೆಬ್ ಪುಟ"
@@ -11271,6 +11193,10 @@ msgstr "ಜಾಲತಾಣ"
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Week"
+msgstr ""
+
+#: src/features/home/schedules.tsx
+msgid "Weekly at {clock} · next {day}"
 msgstr ""
 
 #: src/features/workspace/parts.tsx
@@ -11365,7 +11291,7 @@ msgstr "ನೀವು ಏನು ಕಳುಹಿಸಿದ್ದೀರಿ"
 msgid "What you're looking for"
 msgstr "ನೀವು ಹುಡುಕುತ್ತಿರುವುದು"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "What's included"
 msgstr ""
 
@@ -11373,7 +11299,7 @@ msgstr ""
 msgid "What's working"
 msgstr "ಏನು ಕೆಲಸ ಮಾಡುತ್ತಿದೆ"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr ""
 
@@ -11451,7 +11377,7 @@ msgstr "Word"
 msgid "Word and ODT aren't available"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Word and ODT downloads"
 msgstr ""
 
@@ -11466,10 +11392,6 @@ msgstr "Word ಆಮದು, ಸುಧಾರಿಸಿ, ಸಹಾಯಕ, ಪತ್�
 #: src/features/ats-checker/messages.ts
 msgid "Words run together when the text is extracted."
 msgstr "ಪಠ್ಯ ಹೊರತೆಗೆದಾಗ ಪದಗಳು ಒಟ್ಟಿಗೆ ಸೇರಿಕೊಳ್ಳುತ್ತವೆ."
-
-#: src/features/ai/web-access.tsx
-msgid "Working…"
-msgstr "ಕೆಲಸ ಮಾಡುತ್ತಿದೆ..."
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Works without AI or new research"
@@ -11543,13 +11465,17 @@ msgstr "ನಿಮ್ಮ ಉತ್ತರವನ್ನು ಬರೆಯಿರಿ, �
 msgid "Writing"
 msgstr "ಬರವಣಿಗೆ"
 
-#: app/(tabs)/settings/ai-providers.tsx
+#: app/account/ai-providers.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "ಬರವಣಿಗೆಯ ಸಹಾಯ, ಹೊಂದಿಸಿದ ಸಲಹೆಗಳು ಮತ್ತು ಸಹಾಯಕ. ನೀವು ಒಂದನ್ನು ಆರಿಸದ ಎಲ್ಲೆಡೆ ಡೀಫಾಲ್ಟ್ ಪೂರೈಕೆದಾರರನ್ನು ಬಳಸಲಾಗುತ್ತದೆ. ನಿಮ್ಮ ಕೀಗಳು ಎನ್‌ಕ್ರಿಪ್ಟ್ ಆಗಿಯೇ ಇರುತ್ತವೆ."
 
 #: src/features/career/offers.tsx
 msgid "Written offer"
 msgstr "ಲಿಖಿತ ಆಫರ್"
+
+#: src/features/home/needs-you.tsx
+msgid "Yesterday"
+msgstr "ನಿನ್ನೆ"
 
 #: src/features/assistant/chat-view.tsx
 msgid "You"
@@ -11592,7 +11518,11 @@ msgstr "ಸೈನ್-ಇನ್ ಪೂರ್ಣಗೊಳ್ಳುವ ಮೊದಲ
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "ನೀವು ಇದನ್ನು ಮೊದಲೇ ಮರೆಯುವಂತೆ ಹೇಳಿದ್ದರಿಂದ, ಇದನ್ನು ಮತ್ತೆ ಉಳಿಸಲಾಗಿಲ್ಲ."
 
-#: src/ui/overlays.tsx
+#: src/shell/unsaved-changes.ts
+msgid "You have edits that aren't saved yet. Leaving now loses them."
+msgstr ""
+
+#: src/ui-legacy/overlays.tsx
 msgid "You have unsaved changes."
 msgstr "ನೀವು ಉಳಿಸದ ಬದಲಾವಣೆಗಳನ್ನು ಹೊಂದಿರುವಿರಿ."
 
@@ -11605,6 +11535,7 @@ msgid "You submit on the employer's site yourself. Marking it applied keeps the 
 msgstr "ನೀವು ಉದ್ಯೋಗದಾತರ ಸೈಟ್‌ನಲ್ಲಿ ನೀವೇ ಸಲ್ಲಿಸುತ್ತೀರಿ. ಅರ್ಜಿ ಸಲ್ಲಿಸಲಾಗಿದೆ ಎಂದು ಗುರುತಿಸಿದರೆ ನೀವು ಕಳುಹಿಸಿದ ನಿಖರವಾದ ಆವೃತ್ತಿಗಳನ್ನು ಇರಿಸಲಾಗುತ್ತದೆ."
 
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "ನೀವು {server} ನಿಂದ ಸೈನ್ ಔಟ್ ಆಗುತ್ತೀರಿ. ಈ ಸಾಧನದಿಂದ ಇನ್ನೂ ಸಿಂಕ್ ಮಾಡದ ಯಾವುದೇ ಸಂಪಾದನೆಗಳು ಕಳೆದುಹೋಗುತ್ತವೆ."
 
@@ -11650,9 +11581,9 @@ msgstr "ನೀವು ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿರುವಿರ�
 msgid "You're offline. Try again when you reconnect."
 msgstr "ನೀವು ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿರುವಿರಿ. ನೀವು ಮರುಸಂಪರ್ಕಿಸಿದಾಗ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: src/features/career/today.tsx
-msgid "You're up to date"
-msgstr "ನೀವು ಎಲ್ಲವನ್ನೂ ನೋಡಿದ್ದೀರಿ"
+#: src/features/home/needs-you.tsx
+msgid "You're up to date. New roles, reminders and finished briefings appear here."
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/practise.tsx
@@ -11695,7 +11626,7 @@ msgstr "ಈ ಸಾಧನದಲ್ಲಿನ ನಿಮ್ಮ ಬದಲಾವಣೆ
 msgid "Your contact details are not on the first page."
 msgstr "ನಿಮ್ಮ ಸಂಪರ್ಕ ವಿವರಗಳು ಮೊದಲ ಪುಟದಲ್ಲಿಲ್ಲ."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Your data"
 msgstr "ನಿಮ್ಮ ಡೇಟಾ"
 
@@ -11744,7 +11675,7 @@ msgstr "ನಿಮ್ಮ ಉದ್ಯೋಗ ಹುಡುಕಾಟ ಇಲ್ಲಿ
 msgid "your Knowledge"
 msgstr "ನಿಮ್ಮ ಜ್ಞಾನ"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 msgstr "ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಉಳಿಸಲಾಗಿದೆ. ಹೊಸ ಎಡದಿಂದ ಬಲಕ್ಕೆ ಅಥವಾ ಬಲದಿಂದ ಎಡಕ್ಕೆ ಲೇಔಟ್ ಅನ್ನು ಅನ್ವಯಿಸಲು Rezumi ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ."
 
@@ -11788,7 +11719,15 @@ msgstr "ನಿಮ್ಮ ಆರಂಭಿಕ ಮಾತು"
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "ನಿಮ್ಮ ಆರಂಭಿಕ ಮಾತು, ತರಬೇಕಾದ ಕಥೆಗಳು ಮತ್ತು ಕೇಳಬೇಕಾದ ಪ್ರಶ್ನೆಗಳು. ಕರೆಗೆ 10 ನಿಮಿಷ ಮೊದಲು ಇದು ನಿಮ್ಮ ಪರಿಶೀಲನಾಪಟ್ಟಿಯಾಗುತ್ತದೆ."
 
-#: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-alert.ts
+msgid "Your own domain isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own domain isn't in your plan"
+msgstr ""
+
+#: app/account/membership.tsx
 msgid "Your own fonts"
 msgstr ""
 
@@ -11808,18 +11747,30 @@ msgstr ""
 msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
+#: src/features/billing/plan-alert.ts
+msgid "Your page keeps its address on Rezumi."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "ನಿಮ್ಮ ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ಅಸಾಮಾನ್ಯ ರೂಪದಲ್ಲಿ ಬರೆಯಲಾಗಿದೆ."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
+msgstr ""
+
+#: app/(tabs)/portfolio/index.tsx
+msgid "Your portfolio is coming to the app"
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "your preferences"
 msgstr "ನಿಮ್ಮ ಆದ್ಯತೆಗಳು"
+
+#: app/(tabs)/profile/index.tsx
+msgid "Your Profile is coming to the app"
+msgstr ""
 
 #: src/features/settings/export.tsx
 msgid "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
@@ -11865,10 +11816,6 @@ msgstr "ನಿಮ್ಮ ರೆಸ್ಯೂಮ್‌ಗಳು, ಪತ್ರಗಳ
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "ನೀವು ಆಯ್ಕೆ ಮಾಡಿದ ಫಾಂಟ್ ಕೆಲವು ಅಕ್ಷರಗಳನ್ನು ತೋರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಅವು “?” ಆಗಿ ಕಾಣಿಸುತ್ತವೆ. ವಿನ್ಯಾಸದಲ್ಲಿ, ಅವುಗಳನ್ನು ಹೊಂದಿರುವ ಫಾಂಟ್ ಆಯ್ಕೆಮಾಡಿ."
 
-#: src/features/ai/web-access.tsx
-msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
-msgstr "ನಿಮ್ಮ ಸರ್ವರ್ ಅರ್ಜಿಗಳು ವಿಭಾಗದಲ್ಲಿ ಮತ್ತು ಸಹಾಯಕಕ್ಕಾಗಿ ವೆಬ್ ಹುಡುಕಾಟವನ್ನು ಒದಗಿಸುತ್ತದೆ. ಅಂತರ್ನಿರ್ಮಿತ ರೀಡರ್ ಓದಲು ಸಾಧ್ಯವಾಗದ ವೆಬ್ ಪುಟಗಳನ್ನು ಓದಲು ಸೇವೆಯನ್ನು ಸಂಪರ್ಕಿಸಿ."
-
 #: src/api/ai-consent.ts
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "ನಿಮ್ಮ ಸರ್ವರ್ ಈ ಪೂರೈಕೆದಾರರಿಗೆ ಪರೀಕ್ಷಾ ಪ್ರಾಂಪ್ಟ್ ಮತ್ತು ಉಳಿಸಿದ API ಕೀಯನ್ನು ಕಳುಹಿಸುತ್ತದೆ."
@@ -11909,10 +11856,6 @@ msgstr "ನಿಮ್ಮ ಕಥೆಯನ್ನು ಲೋಡ್ ಮಾಡಲು �
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "ನಿಮ್ಮ ಎರಡು ನಿಮಿಷಗಳ ಪರಿಚಯ"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Your unsaved job details will be discarded before opening web search settings."
-msgstr "ವೆಬ್ ಹುಡುಕಾಟ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯುವ ಮೊದಲು ನಿಮ್ಮ ಉಳಿಸದ ಕೆಲಸದ ವಿವರಗಳನ್ನು ತ್ಯಜಿಸಲಾಗುತ್ತದೆ."
 
 #: src/features/letters/page.tsx
 #: src/preview/page.tsx

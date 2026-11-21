@@ -1,5 +1,24 @@
 import { env } from "@rezumi/env/server";
 
+/** Web pages under /dashboard that open their app screen in the mobile app. */
+const APP_LINK_PREFIXES = [
+	"/dashboard/career",
+	"/dashboard/documents",
+	"/dashboard/resumes",
+	"/dashboard/cover-letters",
+	"/dashboard/trash",
+	"/dashboard/applications",
+	"/dashboard/jobs",
+	"/dashboard/coach",
+	"/dashboard/profile",
+	"/dashboard/portfolio",
+	"/dashboard/settings/account",
+	"/dashboard/settings/profile",
+	"/dashboard/settings/preferences",
+	"/dashboard/settings/app",
+	"/dashboard/settings/ai",
+];
+
 export function handleAppleAppSiteAssociation() {
 	if (!env.MOBILE_IOS_APP_IDS.length) return new Response(null, { status: 404 });
 	return Response.json({
@@ -7,9 +26,15 @@ export function handleAppleAppSiteAssociation() {
 			apps: [],
 			details: env.MOBILE_IOS_APP_IDS.map((appID) => ({
 				appID,
+				// The pages with an app screen (plans/mobile 02-teknis 7), in step with `intentFilters` in
+				// apps/mobile/app.config.ts. Billing and admin stay on the web: a checkout returning to
+				// /dashboard/settings/billing must not open the app.
 				paths: [
 					"/auth/native-callback",
 					"/builder/*",
+					"/dashboard",
+					"/dashboard/",
+					...APP_LINK_PREFIXES.map((prefix) => `${prefix}*`),
 					"NOT /auth/*",
 					"NOT /api/*",
 					"NOT /mcp/*",

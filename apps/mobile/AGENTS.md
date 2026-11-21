@@ -121,6 +121,18 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
 
 ## Gotchas found
 
+- Hermes has no `Intl.RelativeTimeFormat`, and `Intl.NumberFormat` with `style: "unit"` prints nonsense ("2,700s" for
+  45 minutes). Write relative days and durations as Lingui strings or plurals.
+- `tokens.motion` easings are Reanimated worklets; React Navigation animates with React Native's `Animated`, which
+  crashes on them ("Object is not a function"). Use `Easing` from `react-native` in navigator `transitionSpec`s.
+- The development client's floating **Tools** button sits on the avatar in the top bar. Turn it off in the dev menu
+  (Tools button switch) before tapping the account menu or taking screenshots.
+- Local test data for Home (fictional notifications, roles, a schedule, an interview) is inserted with SQL into
+  `rezumi_mobile_dev` (ids prefixed `p03-`); the `rezumi-mobile` launch config runs with `PORTFOLIO_MODE=on` so the
+  Portfolio tab shows.
+- Screen tests render with `renderScreen` from `src/test/render-screen.tsx` (providers, Lingui, a fresh QueryClient)
+  and mock the feature's query hooks; `jest.setup.js` stubs TrueSheet for every suite.
+
 - The first `app.rezumi://…` link sent to a running simulator sometimes does not navigate; send it again.
 
 - CocoaPods 1.17 on Ruby 4 crashes with `Unicode Normalization not appropriate for ASCII-8BIT` unless the shell locale

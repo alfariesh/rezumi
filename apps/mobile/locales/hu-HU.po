@@ -184,6 +184,11 @@ msgstr "{0, plural, one {# tény} other {# tény}}"
 msgid "{0, plural, one {# match} other {# matches}}"
 msgstr "{0, plural, one {# találat} other {# találat}}"
 
+#. placeholder {0}: interview.durationMinutes
+#: src/features/home/coming-up.tsx
+msgid "{0, plural, one {# min} other {# min}}"
+msgstr ""
+
 #. placeholder {0}: data.officeDays
 #: src/features/career/offers.tsx
 msgid "{0, plural, one {# office day a week} other {# office days a week}}"
@@ -245,11 +250,6 @@ msgstr "{0, plural, one {# jelentkezés törlése} other {# jelentkezés törlé
 #: src/features/documents/library.tsx
 msgid "{0, plural, one {Delete # document forever?} other {Delete # documents forever?}}"
 msgstr "{0, plural, one {Véglegesen törlöd a(z) # dokumentumot?} other {Véglegesen törlöd a(z) # dokumentumot?}}"
-
-#. placeholder {0}: row.intervalDays
-#: src/features/career/today.tsx
-msgid "{0, plural, one {Every day} other {Every # days}}"
-msgstr "{0, plural, one {Naponta} other {# naponta}}"
 
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
@@ -341,13 +341,13 @@ msgstr ""
 
 #. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
 #. placeholder {1}: TRIAL_CREDITS.validDays
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{0} expire on {1}"
 msgstr ""
 
@@ -527,6 +527,10 @@ msgstr "{day} · {length} m"
 msgid "{days, plural, =0 {· since today} one {· for # day} other {· for # days}}"
 msgstr "{days, plural, =0 {· ma óta} one {· # napja} other {· # napja}}"
 
+#: src/features/home/coming-up.tsx
+msgid "{days, plural, one {In # day} other {In # days}}"
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{done} of {count} done"
 msgstr "{done}/{count} kész"
@@ -558,6 +562,10 @@ msgstr "{facts, plural, one {# tény} other {# tény}}"
 #: src/features/applications-board/calendar-screen.tsx
 msgid "{followUps, plural, one {# follow-up} other {# follow-ups}}"
 msgstr "{followUps, plural, one {# utánkövetés} other {# utánkövetés}}"
+
+#: src/features/home/coming-up.tsx
+msgid "{hours, plural, one {In # hour} other {In # hours}}"
+msgstr ""
 
 #: src/features/workspace/shell.tsx
 msgid "{hours} h"
@@ -595,6 +603,10 @@ msgstr ""
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
 msgstr "{label} kapcsolat"
+
+#: src/shell/app-tabs.tsx
+msgid "{label}, {count} unread"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
@@ -710,6 +722,14 @@ msgstr "{title} törölve"
 msgid "{title} deleted"
 msgstr "{title} törölve"
 
+#: src/features/home/schedules.tsx
+msgid "{title} is on · next {next}"
+msgstr ""
+
+#: src/features/home/schedules.tsx
+msgid "{title} paused"
+msgstr "{title} szüneteltetve"
+
 #: src/features/write/outline.tsx
 msgid "{toCheck, plural, one {# field needs a look.} other {# fields need a look.}}"
 msgstr "{toCheck, plural, one {A # mezőt meg kell nézni.} other {A # mezőket meg kell nézni.}}"
@@ -718,11 +738,11 @@ msgstr "{toCheck, plural, one {A # mezőt meg kell nézni.} other {A # mezőket 
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {# ellenőrizni} other {# ellenőrizni}}"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "{used} of {max}"
 msgstr ""
 
@@ -761,6 +781,7 @@ msgid "2 files"
 msgstr "2 fájl"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/schedules.tsx
 msgid "2 hours before"
 msgstr "2 órával előtte"
 
@@ -769,6 +790,7 @@ msgid "2–3 sentences reads best"
 msgstr "2-3 mondat olvasható a legjobban"
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "24 órával előtte"
 
@@ -906,12 +928,16 @@ msgstr "Elfogadott ajánlat"
 msgid "Accomplishment"
 msgstr "Teljesítmény"
 
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/account.tsx
+#: app/account/index.tsx
 #: src/features/search/search-screen.tsx
-#: src/shell/app-tabs.tsx
+#: src/shell/account-menu.tsx
 msgid "Account"
 msgstr "Fiók"
+
+#: src/shell/account-menu.tsx
+msgid "Account menu"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Action (required)"
@@ -927,25 +953,22 @@ msgstr "Akciók"
 msgid "Actions for {0} at {1}"
 msgstr "Műveletek a következőhöz: {0}, {1}"
 
-#: src/features/ai/web-access.tsx
-msgid "Active"
-msgstr "Aktív"
-
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Active cover letters"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Active resumes"
 msgstr ""
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr ""
 
 #: src/features/application-detail/sections.tsx
+#: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Add"
 msgstr "Hozzáadás"
@@ -1143,10 +1166,6 @@ msgstr "Referencia hozzáadása"
 msgid "Add role"
 msgstr "Szerep hozzáadása"
 
-#: src/features/career/today.tsx
-msgid "Add schedule"
-msgstr "Ütemezés hozzáadása"
-
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Add screening calls and technical interviews to see them here and on the calendar."
 msgstr "Adjon hozzá szűrőhívásokat és technikai interjúkat, hogy megtekinthesse őket itt és a naptárban."
@@ -1273,8 +1292,8 @@ msgstr "Az első értékelésed után itt jelenik meg egy könnyű terv erre a h
 msgid "Against your requirements"
 msgstr "Az elvárásaidhoz mérve"
 
-#: app/(tabs)/settings/ai.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/ai.tsx
+#: app/account/index.tsx
 #: src/features/search/search-screen.tsx
 msgid "AI & developer"
 msgstr "AI és fejlesztő"
@@ -1311,8 +1330,8 @@ msgstr "Az AI-dúsítás nem volt elérhető. Tekintse át az oldal részleteit,
 msgid "AI provider"
 msgstr "AI szolgáltató"
 
-#: app/(tabs)/settings/ai-providers.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-providers.tsx
+#: app/account/ai.tsx
 #: src/features/search/search-screen.tsx
 msgid "AI providers"
 msgstr "AI szolgáltatók"
@@ -1356,7 +1375,7 @@ msgstr "Mind ({0})"
 msgid "All applications"
 msgstr "Összes jelentkezés"
 
-#: src/features/career/recent-documents.tsx
+#: src/features/home/recent-documents.tsx
 msgid "All documents"
 msgstr ""
 
@@ -1506,12 +1525,11 @@ msgstr ""
 msgid "API and MCP access isn't in your plan"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "API and MCP for other apps"
 msgstr ""
 
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "API key"
 msgstr "API kulcs"
 
@@ -1528,7 +1546,11 @@ msgstr "API kulcsok"
 msgid "API keys need the Plus or Pro AI plan"
 msgstr ""
 
-#: app/(tabs)/settings/preferences.tsx
+#: src/shell/account-menu.tsx
+msgid "App settings"
+msgstr ""
+
+#: app/account/preferences.tsx
 msgid "Appearance"
 msgstr "Megjelenés"
 
@@ -1598,6 +1620,7 @@ msgstr "Jelentkezési nézetek"
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Applications"
 msgstr "Jelentkezések"
 
@@ -1643,7 +1666,7 @@ msgstr "Alkalmazva. Utánkövetés beállítva: {0}."
 msgid "Applied. The application is updated."
 msgstr "Alkalmazva. A jelentkezés frissült."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Applies to this device only."
 msgstr "Csak erre az eszközre vonatkozik."
 
@@ -1721,10 +1744,6 @@ msgstr "Kérdezd a coachot"
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Kérje meg a kiszolgáló rendszergazdáját, hogy engedélyezze a hitelesítő adatok titkosítását vagy konfiguráljon egy megosztott kapcsolatot."
-
-#: src/features/ai/web-access.tsx
-msgid "Ask your server administrator to enable credential encryption or configure a shared web connection."
-msgstr "Kérje meg a kiszolgáló rendszergazdáját, hogy engedélyezze a hitelesítő adatok titkosítását, vagy konfiguráljon egy megosztott webkapcsolatot."
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Ask, or describe a change…"
@@ -1929,7 +1948,7 @@ msgstr ""
 msgid "Behavioral"
 msgstr "Viselkedési"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Behavioral interview"
 msgstr "Viselkedési interjú"
 
@@ -1996,7 +2015,7 @@ msgstr "A hosszú szavakat szótagok közé bontja a Page-ben beállított nyelv
 msgid "Briefing"
 msgstr "Eligazítás"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Briefing ready"
 msgstr "Az eligazítás elkészült"
 
@@ -2007,10 +2026,6 @@ msgstr "A tájékoztató frissítése be van kapcsolva · {next}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "Eligazítás frissítése szüneteltetve"
-
-#: src/features/ai/web-access.tsx
-msgid "Built-in reader"
-msgstr "Beépített olvasó"
 
 #: src/features/settings/locale-names.ts
 msgid "Bulgarian"
@@ -2031,7 +2046,7 @@ msgstr "Felsorolásos lista"
 msgid "Burgundy"
 msgstr "Bordó"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "by <0>Salman Alfariesh</0>"
 msgstr "készítette: <0>Salman Alfariesh</0>"
 
@@ -2049,7 +2064,6 @@ msgstr "A szoftver be tudja olvasni az önéletrajzát?"
 
 #: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/list-screen.tsx
@@ -2062,7 +2076,7 @@ msgstr "A szoftver be tudja olvasni az önéletrajzát?"
 #: src/features/write/improve.tsx
 #: src/features/write/pickers.tsx
 #: src/linking/open.ts
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Cancel"
 msgstr "Mégsem"
 
@@ -2078,11 +2092,6 @@ msgstr "Felvétel megszakítása"
 msgid "Cancel request"
 msgstr "Törölje a kérést"
 
-#: app/(tabs)/_layout.tsx
-#: app/(tabs)/career/_layout.tsx
-msgid "Career"
-msgstr "Karrier"
-
 #: src/features/settings/locale-names.ts
 msgid "Catalan"
 msgstr "katalán"
@@ -2095,10 +2104,6 @@ msgstr "Tanúsítványok"
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Változás"
-
-#: src/features/ai/web-access.tsx
-msgid "Change connection"
-msgstr "Változtassa meg a kapcsolatot"
 
 #: src/features/letters/write.tsx
 msgid "Change it in Design."
@@ -2450,10 +2455,11 @@ msgstr "Zárt"
 msgid "Closed: {closed}"
 msgstr "Zárva: {closed}"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/_layout.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/billing/credits.ts
 #: src/features/workspace/coach-sheet.tsx
+#: src/shell/tab-chrome.tsx
 msgid "Coach"
 msgstr "Coach"
 
@@ -2479,7 +2485,7 @@ msgid "Columns can scramble the order text is read in."
 msgstr "Az oszlopok kódolhatják a sorrend szövegének beolvasását."
 
 #: src/features/applications-board/calendar-screen.tsx
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Coming up"
 msgstr "Hamarosan"
 
@@ -2562,10 +2568,6 @@ msgstr "{0} csatlakoztatása"
 msgid "Connect {domain}"
 msgstr "{domain} csatlakoztatása"
 
-#: src/features/ai/web-access.tsx
-msgid "Connect a service"
-msgstr "Szolgáltatás csatlakoztatása"
-
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
 msgid "Connect AI provider"
@@ -2586,15 +2588,11 @@ msgstr "Csatlakoztass egy AI-szolgáltatót a Beállításokban az automatikus f
 msgid "Connect an AI provider to read details from pasted text. Manual entry works without AI."
 msgstr "Csatlakozzon egy AI-szolgáltatóhoz, hogy részleteket olvashasson be a beillesztett szövegből. A kézi bevitel AI nélkül is működik."
 
-#: src/features/ai/web-access.tsx
-msgid "Connect an AI provider to use the assistant. Saving and preparing jobs doesn't need one."
-msgstr "Az asszisztens használatához csatlakoztasson egy AI-szolgáltatót. A munkák mentéséhez és előkészítéséhez nincs szükség rá."
-
 #: src/features/assistant/provider.tsx
 msgid "Connect another…"
 msgstr "Csatlakoztasson egy másikat…"
 
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai.tsx
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "Csatlakoztassa az íráshoz, álláskereséshez és munkához használt eszközöket önéletrajzaihoz."
 
@@ -2610,11 +2608,7 @@ msgstr "Csatlakoztatva. A domained az elsődleges önéletrajzodat nyitja meg."
 msgid "Connecting the dots"
 msgstr "Összefüggések keresése"
 
-#: src/features/ai/web-access.tsx
-msgid "Connection saved"
-msgstr "A kapcsolat mentve"
-
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -2769,13 +2763,17 @@ msgstr ""
 msgid "Couldn't attach the file. Try again."
 msgstr "Nem sikerült csatolni a fájlt. Próbáld újra."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't change the language. Try again."
 msgstr "Nem sikerült megváltoztatni a nyelvet. Próbáld újra."
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Couldn't change the schedule. Try again."
 msgstr "Nem sikerült módosítani az ütemezést. Próbáld újra."
+
+#: src/features/home/schedules.tsx
+msgid "Couldn't change this schedule. Try again."
+msgstr "Nem sikerült módosítani ezt az ütemezést. Próbáld újra."
 
 #: src/features/share/download.tsx
 msgid "Couldn't check for a linked cover letter."
@@ -2794,13 +2792,9 @@ msgid "Couldn't complete the request. Check your connection and try again."
 msgstr "Nem sikerült teljesíteni a kérést. Ellenőrizd a kapcsolatot, és próbáld újra."
 
 #: src/features/documents/queries.ts
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Couldn't complete this action. Try again."
 msgstr "Ezt a műveletet nem sikerült végrehajtani. Próbáld újra."
-
-#: src/features/ai/web-access.tsx
-msgid "Couldn't confirm AI connections. Try again before using the assistant."
-msgstr "Nem sikerült megerősíteni az AI-kapcsolatokat. Próbálja újra az asszisztens használata előtt."
 
 #: src/features/applications/add-sheet.tsx
 msgid "Couldn't confirm the save. Check Applications before retrying to avoid a duplicate."
@@ -2830,6 +2824,10 @@ msgstr "Nem sikerült törölni a beszélgetést. Próbáld újra."
 msgid "Couldn't delete the interview. Try again."
 msgstr "Nem sikerült törölni az interjút. Próbáld újra."
 
+#: src/features/home/home-screen.tsx
+msgid "Couldn't delete this schedule. Try again."
+msgstr "Nem sikerült törölni ezt az ütemezést. Próbáld újra."
+
 #: src/features/settings/export.tsx
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
@@ -2842,6 +2840,10 @@ msgstr "Nem sikerült létrehozni ezt a fájlt. Próbálja újra, vagy töltse l
 #: src/features/write/improve.tsx
 msgid "Couldn't get a suggestion. Nothing changed."
 msgstr "Nem sikerült javaslatot kapni. Semmi sem változott."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't hide this role. Try again."
+msgstr "Nem sikerült elrejteni ezt a pozíciót. Próbáld újra."
 
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't import the file. Try again from Documents."
@@ -2922,12 +2924,16 @@ msgstr "Nem sikerült betölteni ennek a verziónak az oldalát."
 msgid "Couldn't load this. Check your connection and try again."
 msgstr "Nem sikerült betölteni. Ellenőrizze a kapcsolatot, és próbálja újra."
 
+#: src/features/home/section.tsx
+msgid "Couldn't load this. Check your connection."
+msgstr ""
+
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
 msgid "Couldn't load versions."
 msgstr "Nem sikerült betölteni a verziókat."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "Nem sikerült betölteni a profilt."
 
@@ -2939,7 +2945,7 @@ msgstr "Nem sikerült betölteni nyilvános címét."
 msgid "Couldn't load your resumes."
 msgstr "Nem sikerült betölteni az önéletrajzait."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't load your timezone."
 msgstr "Nem sikerült betölteni az időzónát."
 
@@ -2947,18 +2953,23 @@ msgstr "Nem sikerült betölteni az időzónát."
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Nem sikerült beadottként megjelölni. Próbáld újra."
 
+#: src/features/home/needs-you.tsx
+msgid "Couldn't mark this as read. Try again."
+msgstr "Nem sikerült olvasottként megjelölni. Próbáld újra."
+
 #: src/features/applications-board/use-reschedule-interview.ts
 msgid "Couldn't move the interview. Try again."
 msgstr ""
 
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/account.tsx
+#: app/account/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
+#: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Nem sikerült megnyitni a böngészőt. Próbáld újra."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Couldn't open the posting. Try again."
 msgstr "Nem sikerült megnyitni az álláshirdetést. Próbáld újra."
 
@@ -3009,6 +3020,10 @@ msgstr "Nem sikerült frissíteni a dokumentumokat."
 #: src/features/assistant/messages.tsx
 msgid "Couldn't remember that. Try again."
 msgstr "Nem sikerült megjegyezni. Próbáld újra."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't remove it from Applications. Try again."
+msgstr "Nem sikerült eltávolítani a Jelentkezésekből. Próbáld újra."
 
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't remove the file. Try again."
@@ -3066,13 +3081,17 @@ msgstr "Nem sikerült menteni a jegyzeteket. A szöveged még mindig itt van."
 msgid "Couldn't save the tags. Try again."
 msgstr "Nem sikerült menteni a címkéket. Próbáld újra."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't save the theme. Try again."
 msgstr "Nem sikerült menteni a témát. Próbáld újra."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Nem sikerült menteni az időzónát. Próbáld újra."
+
+#: src/features/home/new-roles.tsx
+msgid "Couldn't save this role to Applications. Try again."
+msgstr "Nem sikerült menteni ezt a pozíciót a Jelentkezésekbe. Próbáld újra."
 
 #: src/features/letters/write.tsx
 msgid "Couldn't save your changes, so drafting didn't start. Nothing on the page changed."
@@ -3270,7 +3289,7 @@ msgstr "Új önéletrajz létrehozása"
 msgid "Create a resume first, then ask about it."
 msgstr "Először készítsen önéletrajzot, majd kérdezzen rá."
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "Hozzon létre API-kulcsot a böngészőben, a fiókbeállításokban. A kulcsok az Ön nevében működnek, és olvashatják, szerkeszthetik a dokumentumait."
 
@@ -3299,7 +3318,7 @@ msgstr "Létrehozva: {0} · Utoljára használt: {1} · Lejár: {2}"
 msgid "Creating document…"
 msgstr "Dokumentum létrehozása…"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
 msgstr ""
 
@@ -3331,7 +3350,7 @@ msgstr "Egyéni mezők"
 msgid "Custom section"
 msgstr "Egyedi szakasz"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 msgid "Custom styles"
@@ -3365,6 +3384,10 @@ msgstr ""
 msgid "Czech"
 msgstr "cseh"
 
+#: src/features/home/schedules.tsx
+msgid "Daily at {clock} · next {day}"
+msgstr ""
+
 #. placeholder {0}: summary.peak
 #: src/features/share/link.tsx
 msgid "Daily views over 30 days, peak {0}"
@@ -3378,8 +3401,8 @@ msgstr "Veszélyes vagy illegális tanácsok"
 msgid "Danish"
 msgstr "dán"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "Dark"
 msgstr "Sötét"
 
@@ -3493,7 +3516,7 @@ msgstr "Törli ezt: „{0}”?"
 msgid "Delete {0}"
 msgstr "{0} törlése"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Delete account"
 msgstr "Fiók törlése"
@@ -3596,7 +3619,7 @@ msgstr "Törli a szakaszt és bejegyzéseit. Visszavonhatja."
 msgid "Density"
 msgstr "Sűrűség"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Dependency type"
 msgstr "Függőség típusa"
 
@@ -3656,18 +3679,21 @@ msgid "Direction"
 msgstr "Irány"
 
 #: src/features/letters/write.tsx
+#: src/shell/unsaved-changes.ts
 msgid "Discard"
 msgstr "Eldobni"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Discard changes"
 msgstr "Módosítások elvetése"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Discard changes?"
 msgstr "Elveted a módosításokat?"
+
+#: src/shell/unsaved-changes.ts
+msgid "Discard your changes?"
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "Discard your offline edits and load the saved version."
@@ -3678,7 +3704,7 @@ msgid "Discard your offline edits?"
 msgstr "Elveti az offline szerkesztéseket?"
 
 #: src/features/letters/write.tsx
-#: src/ui/layout.tsx
+#: src/ui-legacy/layout.tsx
 msgid "Dismiss"
 msgstr "Elvetés"
 
@@ -3700,9 +3726,10 @@ msgid "Document type"
 msgstr "Dokumentum típusa"
 
 #: app/(tabs)/_layout.tsx
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Documents"
 msgstr "Dokumentumok"
 
@@ -3714,7 +3741,7 @@ msgstr "A dokumentumok 30 nap után véglegesen törlődnek."
 msgid "Documents for this job"
 msgstr "Dokumentumok ehhez a munkához"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Documents in Trash don't count."
 msgstr ""
 
@@ -3740,9 +3767,8 @@ msgstr "Ne küldjön {0} álláshirdetést"
 msgid "Don't share"
 msgstr "Ne oszd meg"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/applications/list-screen.tsx
-#: src/features/career/today.tsx
 #: src/features/documents/library.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/date-field.tsx
@@ -3750,6 +3776,10 @@ msgstr "Ne oszd meg"
 #: src/features/write/rich-text-field.tsx
 msgid "Done"
 msgstr "Kész"
+
+#: src/features/home/schedules.tsx
+msgid "Done · {day}"
+msgstr ""
 
 #: src/features/applications/list-screen.tsx
 msgid "Done selecting"
@@ -3929,7 +3959,7 @@ msgstr "a csevegés korábbi üzenetei"
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/career/stories.tsx
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Edit"
 msgstr "Szerkesztés"
@@ -4001,7 +4031,7 @@ msgstr "Tanulmányok"
 msgid "Education swaps school and field of study the same way."
 msgstr ""
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "E‑mail"
@@ -4041,10 +4071,6 @@ msgstr "Angol"
 #: src/features/settings/locale-names.ts
 msgid "English (United Kingdom)"
 msgstr "Angol (Egyesült Királyság)"
-
-#: src/features/ai/web-access.tsx
-msgid "Enhanced reading failed"
-msgstr "A továbbfejlesztett olvasás sikertelen"
 
 #: src/features/assistant/messages.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
@@ -4120,6 +4146,10 @@ msgstr "Belépési lehetőségek"
 msgid "Equity"
 msgstr "Részesedés"
 
+#: src/features/home/schedules.tsx
+msgid "Every {days} days at {clock} · next {day}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Every 3 days"
 msgstr "3 naponta"
@@ -4148,7 +4178,7 @@ msgstr ""
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Minden szerep azt mondja, hogy mit csináltál. A fogalmazással kapcsolatos vélemények az Írás fülön élnek."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Every template"
 msgstr ""
 
@@ -4163,6 +4193,10 @@ msgstr "Hetente"
 #: src/features/workspace/tabs/saved.tsx
 msgid "Everything the coach wrote for {company}, newest first."
 msgstr "Minden, amit az edző írt a {company} számára, a legújabbak először."
+
+#: app/(tabs)/profile/index.tsx
+msgid "Everything your resumes, letters and Coach start from. For now, your facts and stories are in Knowledge."
+msgstr ""
 
 #: src/features/career/facts.tsx
 #: src/features/write/fields.ts
@@ -4227,7 +4261,7 @@ msgstr "Tények"
 msgid "Failed"
 msgstr "Sikertelen"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "Visszajelzés"
 
@@ -4461,10 +4495,17 @@ msgstr "Az elfelejtés leválasztja ezt a tényt a történetekről és mentett 
 msgid "Formatting"
 msgstr "Formázás"
 
-#. placeholder {0}: time.when(row.firstSeenAt)
-#: src/features/career/today.tsx
-msgid "Found {0}"
-msgstr "Találva: {0}"
+#: src/features/home/new-roles.tsx
+msgid "Found {day}"
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "Found today"
+msgstr "Ma találva"
+
+#: src/features/home/new-roles.tsx
+msgid "Found yesterday"
+msgstr "Tegnap találva"
 
 #: src/features/billing/plan.ts
 msgid "Free"
@@ -4485,7 +4526,7 @@ msgstr "Tól"
 
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr ""
@@ -4515,11 +4556,6 @@ msgstr "Teljes szélesség"
 msgid "German"
 msgstr "Német"
 
-#. placeholder {0}: sites[provider]
-#: src/features/ai/web-access.tsx
-msgid "Get a key at {0}. It's stored encrypted and used only for your requests."
-msgstr "Szerezzen kulcsot a következő címen: {0}. Titkosítva tárolja, és csak az Ön kéréseihez használja."
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback"
 msgstr "Visszajelzés kérése"
@@ -4528,9 +4564,9 @@ msgstr "Visszajelzés kérése"
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "A Visszajelzés kérése elküldi a kérdést, a válaszodat, ezt a hirdetést és a történeteidet ide: {providerName}."
 
-#: src/features/career/today.tsx
-msgid "Get new roles here every morning"
-msgstr "Kapj új pozíciókat itt minden reggel"
+#: src/features/home/new-roles.tsx
+msgid "Get new jobs for your search here every morning"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4569,7 +4605,7 @@ msgstr "Megszólítás"
 msgid "Grid view"
 msgstr "Rács nézet"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Haptic feedback"
 msgstr "Haptikus visszajelzés"
 
@@ -4627,9 +4663,13 @@ msgstr "hallotta vissza"
 msgid "Hebrew"
 msgstr "héber"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Help & docs"
 msgstr "Súgó és dokumentumok"
+
+#: src/shell/account-menu.tsx
+msgid "Help & legal"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
@@ -4650,7 +4690,7 @@ msgstr "Hex"
 msgid "Hidden"
 msgstr "Rejtett"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Hidden from New roles"
 msgstr "Elrejtve az Új pozíciók közül"
 
@@ -4686,11 +4726,11 @@ msgstr "Elrejtés az oldalról"
 msgid "Hide key"
 msgstr "Kulcs elrejtése"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Hide license"
 msgstr "Licenc elrejtése"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Hide read"
 msgstr "Olvasottak elrejtése"
 
@@ -4724,6 +4764,12 @@ msgstr "tartsa nyomva a ⋮⋮ ikont a mozgatáshoz"
 #: src/features/documents/library.tsx
 msgid "Hold to delete"
 msgstr "Tartsd lenyomva a törléshez"
+
+#: app/(tabs)/_layout.tsx
+#: src/features/home/home-screen.tsx
+#: src/shell/app-tabs.tsx
+msgid "Home"
+msgstr "Kezdőlap"
 
 #: src/features/design/advanced.tsx
 msgid "Horizontal margin"
@@ -4821,18 +4867,9 @@ msgstr ""
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
 msgstr "Ha szkennelésből származik, ez elvárható. Egyébként távolítsd el; a toborzók kulcsszó-tömésnek tekintik."
 
-#. placeholder {0}: reader ?? provider.provider
 #: src/api/ai-consent.ts
-msgid "If web access is used, links and search terms also go to {0} and the sites being read."
-msgstr "Webes hozzáférés használata esetén a hivatkozások és a keresési kifejezések a {0}-ra és az olvasott webhelyekre is eljutnak."
-
-#: src/api/ai-consent.ts
-msgid "If web access is used, search terms go to your server's search service and the search engines it uses, and links go to {reader} and the sites being read."
-msgstr "Ha webes hozzáférést használ, a keresőkifejezések a szerver keresőszolgáltatásához és az általa használt keresőmotorokhoz, a hivatkozások pedig a {reader} címre és az éppen olvasott webhelyekre mennek."
-
-#: src/api/ai-consent.ts
-msgid "If web access is used, search terms go to your server's search service and the search engines it uses, and links go to the sites being read."
-msgstr "Webes hozzáférés használata esetén a keresőkifejezések a szerver keresőszolgáltatásához és az általa használt keresőmotorokhoz, a hivatkozások pedig az éppen olvasott webhelyekre mennek."
+msgid "If the web is used, search terms go to your server's search service and links go to the sites being read."
+msgstr ""
 
 #: src/features/check/screen.tsx
 msgid "Ignore"
@@ -4874,6 +4911,10 @@ msgstr "Importálja"
 msgid "Import with AI"
 msgstr ""
 
+#: src/features/home/home-screen.tsx
+msgid "Import your current resume, or start blank or from a sample. We lay out every section for you to refine."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Import your current resume, or start fresh with your name."
 msgstr "Importálja jelenlegi önéletrajzát, vagy kezdje újra a nevét."
@@ -4907,7 +4948,7 @@ msgstr "Javuló…"
 msgid "In progress"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Included"
 msgstr ""
 
@@ -4948,14 +4989,14 @@ msgstr "Elemzések"
 msgid "Interests"
 msgstr "Érdeklődési körök"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Csak interfész. Minden önéletrajz beállítja a saját nyelvét a Designban."
 
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Interview"
 msgstr "Interjú"
 
@@ -4984,6 +5025,7 @@ msgid "Interview practice"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
+#: src/features/home/needs-you.tsx
 msgid "Interview preparation"
 msgstr "Interjúfelkészülés"
 
@@ -4999,7 +5041,7 @@ msgstr "Interjú mentve. Nem sikerült frissíteni az emlékeztetőjét. Szerkes
 msgid "Interview saved. The reminder time has already passed."
 msgstr "Interjú mentve. Az emlékeztető ideje már lejárt."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "A Karrier interjúidőpontjai, emlékeztetői és ütemezései ezt használják."
 
@@ -5073,13 +5115,17 @@ msgstr "A mentett kulcs törlődik. Az ezt használó beszélgetésekhez másik 
 msgid "Japanese"
 msgstr "japán"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "JavaScript"
 msgstr "JavaScript"
 
 #: src/features/search/search-screen.tsx
 msgid "Job"
 msgstr "Munka"
+
+#: src/features/home/needs-you.tsx
+msgid "Job alert"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Job description"
@@ -5139,8 +5185,8 @@ msgstr "Csak egy címet adjon meg, hogy a szoftvernek ne kelljen találgatnia, m
 msgid "Keep both"
 msgstr "Tartsa meg mindkettőt"
 
-#: src/features/applications/add-sheet.tsx
-#: src/ui/overlays.tsx
+#: src/shell/unsaved-changes.ts
+#: src/ui-legacy/overlays.tsx
 msgid "Keep editing"
 msgstr "Szerkesztés folytatása"
 
@@ -5198,10 +5244,6 @@ msgstr "Megtartja a legspecifikusabb részeket"
 msgid "Kept as it is"
 msgstr "Megtartva, ahogy van"
 
-#: src/features/ai/web-access.tsx
-msgid "Key stored encrypted"
-msgstr "A kulcs titkosítva tárolva"
-
 #: src/features/settings/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "A kulcsok az Ön nevében működnek, és hozzáférhetnek a dokumentumaihoz. Új kulcsot a böngészőben, a fiókbeállításokban hozhat létre."
@@ -5222,7 +5264,7 @@ msgstr "khmer"
 msgid "Kind regards,"
 msgstr "Üdvözlettel,"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: src/features/career/knowledge.tsx
 msgid "Knowledge"
 msgstr "Tudástár"
@@ -5244,7 +5286,7 @@ msgstr "Címke"
 msgid "Landscape"
 msgstr "Fekvő"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/search/search-screen.tsx
@@ -5269,7 +5311,7 @@ msgstr "Utoljára ellenőrizve: {lastChecked} ezelőtt"
 msgid "Last edited"
 msgstr "Utoljára szerkesztve"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Later"
 msgstr "Később"
 
@@ -5329,7 +5371,7 @@ msgstr "A hivatkozás eltávolításához hagyja üresen."
 msgid "Left"
 msgstr "Balra"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Legal"
 msgstr "Jogi információk"
 
@@ -5359,16 +5401,17 @@ msgstr "Kevesebbet"
 msgid "Less than 48 hours left."
 msgstr "Kevesebb, mint 48 óra van hátra."
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "Hagyja, hogy az AI kliensek, például a Claude vagy a Cursor API-kulcs segítségével elolvassák és szerkeszthessék önéletrajzait."
 
 #: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
 msgid "Let's start with what you have"
 msgstr "Kezdjük azzal, ami van"
 
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
 msgid "Letter"
 msgstr "Levél"
@@ -5406,7 +5449,7 @@ msgstr "a motivációs leveleknek nincs nyilvános hivatkozása. A zárolt öné
 msgid "Level"
 msgstr "Szint"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Licenses"
 msgstr "Licencek"
 
@@ -5414,8 +5457,8 @@ msgstr "Licencek"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "A ligatúrák betűket ejthetnek ki az olyan szavakból, mint a \"workflow\"."
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "Light"
 msgstr "Világos"
 
@@ -5483,7 +5526,7 @@ msgstr "Link frissítve"
 msgid "Linked · not sent yet"
 msgstr "Linkelve · még nem küldték el"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Linked accounts"
 msgstr "Összekapcsolt fiókok"
 
@@ -5533,6 +5576,7 @@ msgid "Live at {url}"
 msgstr "Élő itt: {url}"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/section.tsx
 msgid "Loading"
 msgstr "Betöltés"
 
@@ -5586,10 +5630,6 @@ msgstr "Önéletrajzok betöltése…"
 msgid "Loading saved version…"
 msgstr "Mentett verzió betöltése…"
 
-#: src/features/ai/web-access.tsx
-msgid "Loading web access…"
-msgstr "Internetes hozzáférés betöltése…"
-
 #: src/features/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "Munkatér betöltése…"
@@ -5598,7 +5638,7 @@ msgstr "Munkatér betöltése…"
 msgid "Loading your public address…"
 msgstr "Nyilvános cím betöltése…"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: app/builder/[id]/write.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/improve.tsx
@@ -5692,10 +5732,6 @@ msgstr "Legyen rövidebb"
 msgid "Make primary"
 msgstr "Beállítás elsődlegesként"
 
-#: src/features/career/today.tsx
-msgid "Make room for the next step."
-msgstr "Adjon helyet a következő lépésnek."
-
 #: src/features/assistant/assistant-screen.tsx
 msgid "Make the opening stronger"
 msgstr "Erősítse meg a nyílást"
@@ -5723,10 +5759,6 @@ msgstr "malajálam"
 #: src/features/application-detail/sections.tsx
 msgid "Manage contacts"
 msgstr "Névjegyek kezelése"
-
-#: src/features/ai/web-access.tsx
-msgid "Managed by server"
-msgstr "Szerver által kezelt"
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
@@ -5763,7 +5795,7 @@ msgstr "A margók {minimum} pt"
 msgid "Mark as applied"
 msgstr "Megjelölés beadottként"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Mark as read"
 msgstr "Megjelölés olvasottként"
 
@@ -5788,7 +5820,7 @@ msgstr "Markdown (.md)"
 msgid "Marked as applied. The versions you sent are kept."
 msgstr "Beadottként megjelölve. Az elküldött verziók megmaradnak."
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Marked as read"
 msgstr "Olvasottként megjelölve"
 
@@ -5828,8 +5860,8 @@ msgstr "Lehet, hogy szabad"
 msgid "MCP"
 msgstr "MCP"
 
-#: app/(tabs)/settings/ai-mcp.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-mcp.tsx
+#: app/account/ai.tsx
 msgid "MCP server"
 msgstr "MCP szerver"
 
@@ -5862,7 +5894,7 @@ msgstr "Minimális alapfizetés"
 msgid "Minimum salary cannot be compared in these terms."
 msgstr "A minimálbér nem hasonlítható össze ezekkel a feltételekkel."
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "MIT License"
 msgstr "MIT licenc"
 
@@ -5910,6 +5942,10 @@ msgstr "További szolgáltatók és lehetőségek a Beállításokban. A szerkes
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "Egynél több e-mail cím szerepel."
+
+#: src/features/home/schedules.tsx
+msgid "Morning of"
+msgstr "Aznap reggel"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Morning of · 08:00 local"
@@ -5967,7 +6003,7 @@ msgstr "Jelentkezések áthelyezése"
 
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
-#: src/ui/sortable.tsx
+#: src/ui-legacy/sortable.tsx
 msgid "Move down"
 msgstr "Mozgás lefelé"
 
@@ -6030,7 +6066,7 @@ msgstr "Áthelyezés ide…"
 
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
-#: src/ui/sortable.tsx
+#: src/ui-legacy/sortable.tsx
 msgid "Move up"
 msgstr "Lépj felfelé"
 
@@ -6114,7 +6150,7 @@ msgstr "Nevek, címkék vagy jelentkezések"
 msgid "Narrow"
 msgstr "Keskeny"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Native & fonts"
 msgstr "Natív kód és betűtípusok"
 
@@ -6122,7 +6158,7 @@ msgstr "Natív kód és betűtípusok"
 msgid "Needs attention"
 msgstr "Figyelmet igényel"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Needs you"
 msgstr "Rád vár"
 
@@ -6143,6 +6179,7 @@ msgstr "Soha"
 #: app/(tabs)/_layout.tsx
 #: src/features/documents/library.tsx
 #: src/shell/app-tabs.tsx
+#: src/shell/tab-chrome.tsx
 msgid "New"
 msgstr "Új"
 
@@ -6169,9 +6206,9 @@ msgstr "Új beszélgetés"
 msgid "New cover letter instead"
 msgstr "Helyette új kísérőlevél"
 
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/search/search-screen.tsx
 msgid "New document"
 msgstr "Új dokumentum"
@@ -6182,13 +6219,9 @@ msgstr "Új dokumentum"
 msgid "New page"
 msgstr "Új oldal"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "Új pozíciók a keresésedből"
-
-#: src/features/career/today.tsx
-msgid "New roles, reminders and finished briefings appear here."
-msgstr "Az új pozíciók, emlékeztetők és kész eligazítások itt jelennek meg."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "New schedule"
@@ -6286,11 +6319,11 @@ msgstr "Nem található megszokott szakaszcím."
 msgid "No conversations about this document yet."
 msgstr "Még nincsenek beszélgetések erről a dokumentumról."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "No credit activity yet."
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "No credits to spend right now"
 msgstr ""
 
@@ -6318,7 +6351,7 @@ msgstr "Nincs e-mail cím"
 msgid "No email address was found."
 msgstr "Nem található e-mail cím."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr ""
@@ -6343,7 +6376,7 @@ msgstr "Még nincs állás"
 msgid "No keys yet."
 msgstr "Még nincsenek kulcsok."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "No language matches."
 msgstr "Egyetlen nyelv sem egyezik."
 
@@ -6360,7 +6393,7 @@ msgid "No location"
 msgstr "Nincs hely"
 
 #: src/features/documents/library.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "No matches"
 msgstr "Nincs egyezés"
 
@@ -6369,14 +6402,21 @@ msgstr "Nincs egyezés"
 msgid "No matching applications"
 msgstr "Nincsenek megfelelő jelentkezések"
 
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery is paused."
-msgstr "Nincsenek új pozíciók. A felfedezés szünetel."
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again on {day} at {clock}."
+msgstr ""
 
-#. placeholder {0}: time.when(discovery.nextRunAt)
-#: src/features/career/today.tsx
-msgid "No new roles. Discovery runs again at {0}."
-msgstr "Nincs új állás. A keresés következő futása: {0}."
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again today at {clock}."
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert checks again tomorrow at {clock}."
+msgstr ""
+
+#: src/features/home/new-roles.tsx
+msgid "No new roles. Your job alert is paused."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
@@ -6394,17 +6434,9 @@ msgstr "Nem található telefonszám."
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "Nincs fénykép. A legtöbb ATS figyelmen kívül hagyja a fényképeket; egyes régiók erre számítanak."
 
-#: src/features/applications/add-sheet.tsx
-msgid "No postings found. Try different keywords."
-msgstr "Nem található álláshirdetés. Próbáljon ki különböző kulcsszavakat."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "Ebben az álláshirdetésben nincsenek felismerhető kifejezések."
-
-#: src/features/career/today.tsx
-msgid "No reply yet"
-msgstr "Még nincs válasz"
 
 #: src/features/applications/stages.ts
 msgid "No response"
@@ -6459,13 +6491,9 @@ msgstr "Nincsenek javaslatok ehhez a szolgáltatóhoz. Adjon meg bármilyen mode
 msgid "No text could be read from this file."
 msgstr "Nem sikerült szöveget kiolvasni ebből a fájlból."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "No timezone matches."
 msgstr "Nincs egyező időzóna."
-
-#: src/features/career/today.tsx
-msgid "No upcoming interviews."
-msgstr "Nincsenek közelgő interjúk."
 
 #: src/features/check/issues.ts
 msgid "No work experience shows"
@@ -6522,7 +6550,7 @@ msgstr "Még nincs csatlakoztatva. Add hozzá a DNS-rekordjait ott, ahol a domai
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "Nem nekem való"
 
@@ -6534,7 +6562,7 @@ msgstr "Nem található:"
 msgid "Not in your resume · add only if true"
 msgstr "Nem szerepel az önéletrajzában · csak akkor írja be, ha igaz"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Not included"
 msgstr ""
 
@@ -6582,10 +6610,6 @@ msgstr "Jegyzetek"
 msgid "Nothing here should cost you a match."
 msgstr "Itt semmi sem kerülhet egy gyufába."
 
-#: src/features/career/today.tsx
-msgid "Nothing is applied for or created until you choose."
-msgstr "Semmilyen jelentkezés vagy létrehozás nem történik, amíg nem döntesz."
-
 #: src/features/ats-checker/messages.ts
 msgid "Nothing marks a role as ongoing."
 msgstr "Semmi nem jelzi, hogy egy pozíció folyamatban van."
@@ -6602,7 +6626,7 @@ msgstr "Még nincs semmi mentve"
 msgid "Nothing scheduled yet"
 msgstr "Még semmi nincs ütemezve"
 
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 msgid "Nothing scheduled yet."
 msgstr "Még nincs semmi ütemezve."
 
@@ -6670,7 +6694,9 @@ msgstr "Le. A levél megőrzi saját másolatát az Ön adatairól."
 msgid "Offer"
 msgstr "Ajánlat"
 
-#: app/(tabs)/career/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
+#: src/features/applications-board/views.tsx
+#: src/features/applications/list-screen.tsx
 msgid "Offers"
 msgstr "Ajánlatok"
 
@@ -6682,7 +6708,7 @@ msgstr "Irodai napok hetente, legfeljebb"
 msgid "Office days are unknown."
 msgstr "Az iroda napjai ismeretlenek."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Office days not stated"
 msgstr "Irodai napok nincsenek megadva"
 
@@ -6694,7 +6720,7 @@ msgstr "Irodai napok hetente"
 msgid "Offline · saved on this device"
 msgstr "Offline · mentve erre az eszközre"
 
-#: app/(tabs)/_layout.tsx
+#: src/shell/offline-strip.tsx
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "Offline. A módosításokat a rendszer ezen az eszközön menti, és újracsatlakozáskor szinkronizálja őket."
 
@@ -6702,10 +6728,6 @@ msgstr "Offline. A módosításokat a rendszer ezen az eszközön menti, és új
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
-
-#: src/features/career/today.tsx
-msgid "On"
-msgstr "Bekapcsolva"
 
 #: src/features/share/link.tsx
 msgid "On. Anyone with the link can see your web page."
@@ -6784,11 +6806,12 @@ msgstr "Ezeket csak te látod"
 msgid "Onsite"
 msgstr "Helyszíni"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Onsite interview"
 msgstr "Helyszíni interjú"
 
 #: src/features/documents/document-sheets.tsx
+#: src/features/home/needs-you.tsx
 msgid "Open"
 msgstr "Megnyitás"
 
@@ -6803,7 +6826,7 @@ msgstr "Nyissa meg az AI beállításokat"
 msgid "Open application"
 msgstr "Nyissa meg az jelentkezést"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Open briefing"
 msgstr "Eligazítás megnyitása"
 
@@ -6824,9 +6847,17 @@ msgstr "Nyissa meg a szerkesztőt"
 msgid "Open in Offers"
 msgstr "Megnyitás az Ajánlatokban"
 
+#: app/(tabs)/profile/index.tsx
+msgid "Open Knowledge"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open letter"
 msgstr "Levél megnyitása"
+
+#: src/shell/preparing-tab.tsx
+msgid "Open on the web"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Open questions"
@@ -6835,10 +6866,6 @@ msgstr "Nyitott kérdések"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open resume"
 msgstr "Nyitott önéletrajz"
-
-#: src/features/career/today.tsx
-msgid "Open settings"
-msgstr "Nyissa meg a beállításokat"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Open story"
@@ -6856,7 +6883,7 @@ msgstr "Nyissa meg a fájlt a Word mappában, és először mentse el .docx form
 msgid "Open the list"
 msgstr "Nyissa meg a listát"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Open the schedule"
 msgstr "Ütemezés megnyitása"
 
@@ -6864,11 +6891,11 @@ msgstr "Ütemezés megnyitása"
 msgid "Open web page"
 msgstr "Weboldal megnyitása"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Open workspace"
 msgstr "Munkatér megnyitása"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Open-source licenses"
 msgstr "Nyílt forráskódú licencek"
 
@@ -6896,10 +6923,6 @@ msgstr "A Karrier → Ajánlatok részben nyílik meg."
 #: src/features/career/schedule-sheet.tsx
 msgid "Opportunity discovery"
 msgstr "Lehetőségek felfedezése"
-
-#: src/features/ai/web-access.tsx
-msgid "Optional"
-msgstr "Választható"
 
 #: src/features/ai/provider-editor.tsx
 msgid "Optional for local Ollama"
@@ -7040,12 +7063,12 @@ msgstr "bekezdés {n}"
 msgid "Partly supported"
 msgstr "Részben alátámasztva"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "Passkeys"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
@@ -7088,7 +7111,6 @@ msgid "Paste the question from the form"
 msgstr "Illeszd be a kérdést az űrlapról"
 
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "Paste your key"
 msgstr "Illessze be a kulcsot"
 
@@ -7097,9 +7119,9 @@ msgstr "Illessze be a kulcsot"
 msgid "Pasted description"
 msgstr "Leírás beillesztve"
 
-#: src/features/career/today.tsx
-msgid "Paused"
-msgstr "Szüneteltetve"
+#: src/features/home/schedules.tsx
+msgid "Paused · {line}"
+msgstr "Szüneteltetve · {line}"
 
 #: src/features/career/preferences.tsx
 msgid "Pay period"
@@ -7149,7 +7171,7 @@ msgstr "havonta"
 msgid "Per year"
 msgstr "Évente"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Permanently removes everything. Opens your browser account settings."
 msgstr "Véglegesen eltávolít mindent. Megnyitja a böngésző fiók beállításait."
 
@@ -7215,8 +7237,9 @@ msgstr "Egyszerű szöveg (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Egyszerű szöveg címsorokkal. Illessze be az állásjelentkezési űrlapokba és jegyzetekbe."
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/membership.tsx
+#: app/account/index.tsx
+#: app/account/membership.tsx
+#: src/shell/account-menu.tsx
 msgid "Plan"
 msgstr ""
 
@@ -7236,13 +7259,13 @@ msgstr "Kérdések megtervezése"
 msgid "Planning your week"
 msgstr "A heted megtervezése"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
 
@@ -7262,6 +7285,12 @@ msgstr "lengyel"
 #: src/features/workspace/parts.tsx
 msgid "Polishing"
 msgstr "Csiszolás"
+
+#: app/(tabs)/_layout.tsx
+#: app/(tabs)/portfolio/index.tsx
+#: src/shell/app-tabs.tsx
+msgid "Portfolio"
+msgstr ""
 
 #: src/features/write/picture-screen.tsx
 msgid "Portrait"
@@ -7329,8 +7358,8 @@ msgstr "Részesítsd előnyben az egyoszlopos elrendezést, vagy tartsd meg az o
 msgid "Preference"
 msgstr "Preferencia"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 #: src/features/career/knowledge.tsx
 #: src/features/search/search-screen.tsx
 msgid "Preferences"
@@ -7383,7 +7412,7 @@ msgstr "Fájl előkészítése…"
 msgid "Present"
 msgstr "Jelenleg"
 
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Press and hold"
 msgstr "Nyomja meg és tartsa lenyomva"
 
@@ -7453,7 +7482,7 @@ msgstr "Nyomtasd ki vagy exportáld az űrlapot lapos PDF-ként, mielőtt elkül
 msgid "Privacy"
 msgstr "Adatvédelem"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 #: src/auth/auth-header.tsx
 msgid "Privacy policy"
 msgstr "Adatvédelmi szabályzat"
@@ -7475,8 +7504,11 @@ msgstr "Professzionális stílus"
 msgid "Proficiency"
 msgstr "Jártasság"
 
-#: app/(tabs)/settings/account.tsx
+#: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/index.tsx
+#: app/account/account.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/app-tabs.tsx
 msgid "Profile"
 msgstr "Profil"
 
@@ -7508,13 +7540,8 @@ msgstr "Projektek"
 msgid "Proposed changes"
 msgstr "Javasolt módosítások"
 
-#: src/features/ai/web-access.tsx
-msgid "Provided by your server: {connected}. Search and reading are set up for everyone here. Ask your administrator about changes."
-msgstr "Az Ön szervere biztosítja: {connected}. Itt mindenki számára be van állítva a keresés és az olvasás. Kérdezze meg rendszergazdáját a változtatásokról."
-
 #: src/api/ai-consent.ts
 #: src/features/ai/provider-editor.tsx
-#: src/features/ai/web-access.tsx
 msgid "Provider"
 msgstr "Szolgáltató"
 
@@ -7562,6 +7589,10 @@ msgstr "Tedd közzé a weboldalt a megtekintések és letöltések számlálás�
 #: src/features/share/web-page.tsx
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "Tedd közzé ezt az önéletrajzot, hogy a rövid linkeden és a saját domaineden megnyíljon."
+
+#: app/(tabs)/portfolio/index.tsx
+msgid "Publish, share and see who visited from your phone. Until then, manage it on the web."
+msgstr ""
 
 #: src/features/write/fields.ts
 msgid "Publisher"
@@ -7635,12 +7666,12 @@ msgstr "Eligazítás elolvasása"
 msgid "Read it for me"
 msgstr "Olvasd el helyettem"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Read license"
 msgstr "Licenc elolvasása"
 
 #: src/features/applications/add-sheet.tsx
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Read posting"
 msgstr "Olvassa el az álláshirdetést"
 
@@ -7655,10 +7686,6 @@ msgstr "Olvassa el a mellékletet"
 #: src/features/check/parser.tsx
 msgid "Read the exported PDF"
 msgstr "Olvassa el az exportált PDF"
-
-#: app/(tabs)/settings/ai-web-access.tsx
-msgid "Read the job links you save. Saving and preparing jobs works without a connection."
-msgstr "Olvassa el a mentett álláshivatkozásokat. A munkák mentése és előkészítése kapcsolat nélkül működik."
 
 #: src/features/assistant/messages.tsx
 msgid "Read the letter"
@@ -7716,10 +7743,6 @@ msgstr "A szöveg olvasása"
 msgid "Reading this file with AI needs a tested AI provider. Set one up, then retry."
 msgstr "A fájl MI-vel történő olvasásához tesztelt mesterségesintelligencia-szolgáltatóra van szükség. Állítson be egyet, majd próbálja újra."
 
-#: src/features/ai/web-access.tsx
-msgid "Reading works"
-msgstr "Művek olvasása"
-
 #: src/features/workspace/parts.tsx
 msgid "Reading your answer"
 msgstr "Válaszod olvasása"
@@ -7732,10 +7755,6 @@ msgstr "Jegyzeteid olvasása"
 #: src/features/check/score.tsx
 msgid "Reads cleanly"
 msgstr "Tisztán olvas"
-
-#: src/features/ai/web-access.tsx
-msgid "Reads supported public job pages. No account needed."
-msgstr "Olvassa a támogatott állami állásoldalakat. Nincs szükség fiókra."
 
 #: src/features/ai/provider-list.tsx
 #: src/features/workspace/tabs/prepare.tsx
@@ -7751,11 +7770,11 @@ msgstr "Ok"
 msgid "Recalled"
 msgstr "Felidézett"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Recent activity"
 msgstr ""
 
-#: src/features/career/recent-documents.tsx
+#: src/features/home/recent-documents.tsx
 msgid "Recent documents"
 msgstr ""
 
@@ -7832,7 +7851,7 @@ msgstr "Eligazítás frissítése 24 órával előtte"
 msgid "Refresh the briefing on the morning of"
 msgstr "Eligazítás frissítése aznap reggel"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -7854,7 +7873,7 @@ msgstr "Elutasít"
 msgid "Rejected"
 msgstr "Elutasítva"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Reload now"
 msgstr "Újratöltés most"
 
@@ -7900,10 +7919,6 @@ msgstr "Emlékeztető"
 msgid "Reminders"
 msgstr "Emlékeztetők"
 
-#: src/features/career/today.tsx
-msgid "Reminders appear here. Email copies are optional and need a verified address."
-msgstr "Az emlékeztetők itt jelennek meg. Az e-mail-másolat nem kötelező, és megerősített címet igényel."
-
 #: src/features/career/offers.tsx
 #: src/features/career/preferences.tsx
 msgid "Remote"
@@ -7911,7 +7926,7 @@ msgstr "Távmunka"
 
 #: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Remove"
 msgstr "Távolítsa el"
 
@@ -7928,14 +7943,6 @@ msgstr ""
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
 msgstr "{name} eltávolítása"
-
-#: src/features/ai/web-access.tsx
-msgid "Remove connection"
-msgstr "Távolítsa el a kapcsolatot"
-
-#: src/features/ai/web-access.tsx
-msgid "Remove connection?"
-msgstr "Eltávolítja a kapcsolatot?"
 
 #: src/features/write/basics-screen.tsx
 msgid "Remove field"
@@ -8057,8 +8064,8 @@ msgstr "Válaszüzenet másolva"
 msgid "Report"
 msgstr "Jelentés"
 
-#: app/(tabs)/settings/ai-report.tsx
-#: app/(tabs)/settings/ai.tsx
+#: app/account/ai-report.tsx
+#: app/account/ai.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "Az AI-tartalom bejelentése"
@@ -8107,7 +8114,7 @@ msgstr "Válaszhatáridő"
 msgid "Response deadline has passed."
 msgstr "A válaszadási határidő lejárt."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Restart to change text direction"
 msgstr "Indítsa újra a szöveg irányának megváltoztatásához"
 
@@ -8143,8 +8150,8 @@ msgstr "Eredmény"
 #: app/builder/[id]/_layout.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/facts.tsx
-#: src/features/career/recent-documents.tsx
 #: src/features/documents/library.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
 msgid "Resume"
 msgstr "Önéletrajz"
@@ -8186,7 +8193,7 @@ msgstr ""
 msgid "Resumes"
 msgstr "Önéletrajzok"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "Az önéletrajzok mindig fehér papírra jelennek meg, bármilyen témáról is legyen szó."
 
@@ -8214,6 +8221,7 @@ msgstr "A {0} letöltve a {1} használatával. A visszakeresési idő nem határ
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/features/history/history.tsx
+#: src/features/home/section.tsx
 #: src/features/letters/page.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
@@ -8269,7 +8277,7 @@ msgid "Returned: no usable result"
 msgstr ""
 
 #: src/features/assistant/page-marks.tsx
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Review"
 msgstr "Tekintse át"
 
@@ -8281,7 +8289,7 @@ msgstr "Az alkalmazás áttekintése"
 msgid "Review Check"
 msgstr "Ellenőrzés áttekintése"
 
-#: src/features/career/today.tsx
+#: src/features/home/needs-you.tsx
 msgid "Review draft"
 msgstr "Vázlat áttekintése"
 
@@ -8345,7 +8353,7 @@ msgstr "Átírás elfogadva"
 msgid "Rezumi"
 msgstr "Rezumi"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -8381,10 +8389,6 @@ msgstr "Szerepkör / cím"
 #: src/features/applications-board/views.tsx
 msgid "Role, company or contact"
 msgstr "Munkakör, vállalat vagy kapcsolattartó"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Role, company or location"
-msgstr "Szerep, cég vagy hely"
 
 #: src/features/write/fields.ts
 msgid "Roles"
@@ -8446,7 +8450,7 @@ msgstr "Rozsdabarna"
 msgid "Salary"
 msgstr "Fizetés"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Salary not listed"
 msgstr "Fizetés nincs megadva"
 
@@ -8495,17 +8499,9 @@ msgstr "Ments egy másik ajánlatot az összehasonlításhoz"
 msgid "Save changes"
 msgstr "Módosítások mentése"
 
-#: src/features/ai/web-access.tsx
-msgid "Save connection"
-msgstr "Kapcsolat mentése"
-
 #: src/features/career/facts.tsx
 msgid "Save fact"
 msgstr "Tény mentése"
-
-#: src/features/ai/web-access.tsx
-msgid "Save first, then test search and reading. No test runs automatically."
-msgstr "Először mentse, majd tesztelje a keresést és az olvasást. Egyetlen teszt sem fut automatikusan."
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Save interview"
@@ -8572,6 +8568,11 @@ msgctxt "Application workspace tab: earlier results kept for this job"
 msgid "Saved"
 msgstr "Mentett"
 
+#. placeholder {0}: companyOf(row)
+#: src/features/home/new-roles.tsx
+msgid "Saved {0} to Applications"
+msgstr "Mentve a Jelentkezésekbe: {0}"
+
 #: src/features/assistant/messages.tsx
 msgid "Saved a story: {title}"
 msgstr "Mentett egy történet: {title}"
@@ -8580,7 +8581,7 @@ msgstr "Mentett egy történet: {title}"
 msgid "Saved description"
 msgstr "Leírás mentve"
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Saved to Applications with the posting"
 msgstr "Mentve a Jelentkezésekbe a hirdetéssel együtt"
 
@@ -8612,7 +8613,7 @@ msgstr "Mentés…"
 msgid "Schedule an interview"
 msgstr "Időpont egyeztetés"
 
-#: src/features/career/today.tsx
+#: src/features/home/home-screen.tsx
 msgid "Schedule deleted"
 msgstr "Ütemezés törölve"
 
@@ -8628,7 +8629,7 @@ msgstr "Az ütemezett munka nem érhető el ezen a szerveren. Kérd meg a szerve
 msgid "Scheduled work isn't available on this server."
 msgstr "Az ütemezett feladatok nem érhetők el ezen a szerveren."
 
-#: src/features/career/today.tsx
+#: src/features/home/schedules.tsx
 msgid "Schedules"
 msgstr "Ütemezések"
 
@@ -8642,21 +8643,17 @@ msgstr "Iskola"
 msgid "Screening"
 msgstr "Szűrés"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Screening interview"
 msgstr "Előszűrő interjú"
 
 #: app/_layout.tsx
 #: app/(tabs)/_layout.tsx
-#: src/features/applications/add-sheet.tsx
 #: src/features/design/picker.tsx
-#: src/ui/fields.tsx
+#: src/shell/tab-chrome.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Search"
 msgstr "Keresés"
-
-#: src/features/ai/web-access.tsx
-msgid "Search and enhanced reading"
-msgstr "Keresés és továbbfejlesztett olvasás"
 
 #: src/features/applications-board/views.tsx
 #: src/features/letters/write.tsx
@@ -8683,27 +8680,15 @@ msgstr "A keresőmotorok, például a Google, listázhatják a weboldaladat. Het
 msgid "Search facts"
 msgstr "Tények keresése"
 
-#: src/features/ai/web-access.tsx
-msgid "Search failed"
-msgstr "A keresés sikertelen"
-
 #: src/features/search/search-screen.tsx
 msgid "Search for…"
 msgstr "Keresés:…"
-
-#: src/features/ai/web-access.tsx
-msgid "Search from Applications and the assistant, and read pages the built-in reader can't. One service covers both."
-msgstr "Keressen az álláspályázatokból és az asszisztensből, és olvasson el olyan oldalakat, amelyeket a beépített olvasó nem tud. Egy szolgáltatás mindkettőre kiterjed."
 
 #: src/features/write/pickers.tsx
 msgid "Search icons"
 msgstr "Keresés ikonok"
 
-#: src/features/applications/add-sheet.tsx
-msgid "Search job postings"
-msgstr "Álláshirdetések keresése"
-
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Search languages"
 msgstr "Nyelvek keresése"
 
@@ -8715,24 +8700,12 @@ msgstr "A keresési kifejezések a webes keresőszolgáltatásodhoz kerülnek."
 msgid "Search the web"
 msgstr ""
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Search timezones"
 msgstr "Időzónák keresése"
 
-#: src/features/ai/web-access.tsx
-msgid "Search was tested with your server's search, and reading with {connected}."
-msgstr "A keresést a szerver keresésével, az olvasást pedig a {connected} segítségével teszteltük."
-
-#: src/features/ai/web-access.tsx
-msgid "Search was tested with your server's search. Links are read with the built-in reader."
-msgstr "A keresést a szerver keresésével teszteltük. A hivatkozásokat a beépített olvasóval olvassa el."
-
-#: src/features/ai/web-access.tsx
-msgid "Search works"
-msgstr "A keresés működik"
-
 #: src/features/search/search-screen.tsx
-#: src/ui/fields.tsx
+#: src/ui-legacy/fields.tsx
 msgid "Search…"
 msgstr "Keresés…"
 
@@ -8891,6 +8864,10 @@ msgstr "Jelszó beállítása"
 msgid "Set the document language when exporting."
 msgstr "Állítsd be a dokumentum nyelvét exportáláskor."
 
+#: src/features/home/new-roles.tsx
+msgid "Set up a job alert"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/write/improve.tsx
 msgid "Set up a provider"
@@ -8900,27 +8877,18 @@ msgstr "Állítson be egy szolgáltatót"
 msgid "Set up AI provider"
 msgstr "Állítsa be az AI-szolgáltatót"
 
-#: src/features/career/today.tsx
-msgid "Set up discovery"
-msgstr "Felfedezés beállítása"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Set up web search"
-msgstr "Állítsa be a webes keresést"
-
 #: src/features/career/schedule-sheet.tsx
 msgid "Set up web search in Settings to find roles."
 msgstr "Állítsa be az internetes keresést a(z) Beállítások alkalmazásban a szerepek megtalálásához."
 
-#: app/(tabs)/_layout.tsx
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
 #: src/features/search/search-screen.tsx
 msgid "Settings"
 msgstr "Beállítások"
 
-#: app/(tabs)/settings/ai-mcp.tsx
+#: app/account/ai-mcp.tsx
 msgid "Setup guide"
 msgstr "Beállítási útmutató"
 
@@ -9021,9 +8989,16 @@ msgid "Show “Made with Rezumi”"
 msgstr "„Rezumi-val készült” megjelenítése"
 
 #. placeholder {0}: Math.min(remaining, COLUMN_PAGE_SIZE)
+#. placeholder {0}: visible.length - shown.length
 #: src/features/applications-board/board-screen.tsx
+#: src/features/home/new-roles.tsx
 msgid "Show {0} more"
 msgstr "További {0} megjelenítése"
+
+#. placeholder {0}: read.length
+#: src/features/home/needs-you.tsx
+msgid "Show {0} read"
+msgstr "{0} olvasott megjelenítése"
 
 #: src/features/write/outline.tsx
 msgid "Show {title} on the page"
@@ -9077,9 +9052,8 @@ msgstr "Kulcs megjelenítése"
 msgid "Show link in title"
 msgstr "Link megjelenítése a címben"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/application-detail/interview-sheet.tsx
-#: src/features/career/today.tsx
 msgid "Show more"
 msgstr "Mutass többet"
 
@@ -9092,10 +9066,6 @@ msgstr "Megjelenítés az oldalon"
 #: src/features/write/picture-screen.tsx
 msgid "Show photo"
 msgstr "Fotó megjelenítése"
-
-#: src/features/career/today.tsx
-msgid "Show read"
-msgstr "Olvasottak megjelenítése"
 
 #: src/features/applications-board/time-grid.tsx
 msgid "Show this day"
@@ -9208,14 +9178,16 @@ msgstr "Az önéletrajz megtekintéséhez jelentkezzen be."
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "Sign out"
 msgstr "Kijelentkezés"
 
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "Sign out?"
 msgstr "Kijelentkezik?"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Sign-in & security"
 msgstr "Bejelentkezés és biztonság"
 
@@ -9446,6 +9418,10 @@ msgstr "Indul"
 msgid "Start a debrief"
 msgstr "Kiértékelés indítása"
 
+#: src/features/home/home-screen.tsx
+msgid "Start a document"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 #: src/features/documents/new-document.tsx
 msgid "Start blank"
@@ -9500,6 +9476,14 @@ msgstr "Kezdje a legtöbb önéletrajzban található részekkel."
 msgid "Start with your name. Build from there."
 msgstr "Kezdd a neveddel. Építsd onnan."
 
+#: src/features/home/coming-up.tsx
+msgid "Started"
+msgstr "Elkezdődött"
+
+#: src/features/home/coming-up.tsx
+msgid "Starts in {minutes} minutes"
+msgstr "{minutes} perc múlva kezdődik"
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
 msgstr "Most kezdődik"
@@ -9507,6 +9491,10 @@ msgstr "Most kezdődik"
 #: src/features/documents/new-document.tsx
 msgid "Stay in Documents"
 msgstr "Maradjon itt: Dokumentumok"
+
+#: src/shell/account-menu.tsx
+msgid "Stay signed in"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 #: src/features/letters/write.tsx
@@ -9609,7 +9597,7 @@ msgstr "Vágásokat javasol, önmagában soha nem törli"
 msgid "Summary"
 msgstr "Összegzés"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Support"
 msgstr "Támogatás"
 
@@ -9659,8 +9647,8 @@ msgstr "Váltás egy oszlopra"
 msgid "Switched to one column"
 msgstr "Egy oszlopra váltott"
 
-#: app/(tabs)/settings/index.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/index.tsx
+#: app/account/preferences.tsx
 msgid "System"
 msgstr "Operációs rendszer"
 
@@ -9743,7 +9731,7 @@ msgstr "Kékeszöld"
 msgid "Technical"
 msgstr "Szakmai"
 
-#: src/features/career/today.tsx
+#: src/features/home/coming-up.tsx
 msgid "Technical interview"
 msgstr "Technikai interjú"
 
@@ -9786,25 +9774,13 @@ msgstr "A sablon, a típus és a színek követik az önéletrajzot, így a pár
 msgid "Terms from the posting"
 msgstr "Feltételek az álláshirdetésből"
 
-#: app/(tabs)/settings/index.tsx
+#: app/account/index.tsx
 msgid "Terms of service"
 msgstr "Felhasználási feltételek"
 
 #: src/features/ai/provider-list.tsx
 msgid "Test"
 msgstr "Teszt"
-
-#: src/features/ai/web-access.tsx
-msgid "Test connection"
-msgstr "Teszt kapcsolat"
-
-#: src/features/ai/web-access.tsx
-msgid "Test search"
-msgstr "Tesztelje a keresési funkciót"
-
-#: src/features/ai/web-access.tsx
-msgid "Tested with {connected}. Only this service was tested."
-msgstr "Tesztelve: {connected}. Csak ezt a szolgáltatást tesztelték."
 
 #: src/features/ai/provider-editor.tsx
 msgid "Testing the connection…"
@@ -9888,6 +9864,10 @@ msgstr "A felvétel üres volt vagy 2 MB-nál nagyobb. Próbálj rövidebb vála
 msgid "That reminder time has already passed."
 msgstr "Az emlékeztető ideje már lejárt."
 
+#: src/features/home/home-screen.tsx
+msgid "That schedule no longer exists."
+msgstr ""
+
 #: src/api/ai-consent.ts
 msgid "The account changed. Try again."
 msgstr "A számla megváltozott. Próbáld újra."
@@ -9904,29 +9884,9 @@ msgstr "Az jelentkezés egyéb adatait megtartja."
 msgid "The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else works without it."
 msgstr "Az asszisztens nincs beállítva ezen a szerveren. Aki futtatja, annak be kell állítania a ENCRYPTION_SECRET-t. Minden más működik anélkül is."
 
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches and reads pages with {connected}, whichever AI provider you use."
-msgstr "Az asszisztens oldalakat keres és olvas a {connected} használatával, függetlenül attól, hogy melyik MI-szolgáltatót használja."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches with your server's search and reads links with the built-in reader, whichever AI provider you use."
-msgstr "Az asszisztens a szerver keresésével keres, és a beépített olvasóval olvassa be a hivatkozásokat, függetlenül attól, hogy melyik AI-szolgáltatót használja."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant searches with your server's search and reads pages with {connected}, whichever AI provider you use."
-msgstr "Az asszisztens az Ön szerverének keresésével keres, és a {connected} segítségével olvassa be az oldalakat, függetlenül attól, hogy melyik AI-szolgáltatót használja."
-
-#: src/features/ai/web-access.tsx
-msgid "The assistant uses your AI provider's own web search where supported, and reads links with the built-in reader."
-msgstr "Az asszisztens az AI-szolgáltató saját webes keresését használja, ahol ez támogatott, és beolvassa a hivatkozásokat a beépített olvasóval."
-
 #: src/features/assistant/provider.tsx
 msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
 msgstr "Az asszisztens a saját kulcsát használja. Semmit sem küldenek sehova, amíg nem csatlakoztat egyet."
-
-#: src/features/ai/web-access.tsx
-msgid "The built-in reader remains active."
-msgstr "A beépített olvasó aktív marad."
 
 #: src/features/check/writing.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
@@ -10086,22 +10046,6 @@ msgstr "A szerver verzióját nem sikerült betölteni. A szöveged megmarad; pr
 msgid "The service couldn't be reached. Try again or fill the details manually."
 msgstr "A szolgáltatás nem érhető el. Próbáld újra, vagy add meg kézzel az adatokat."
 
-#: src/features/ai/web-access.tsx
-msgid "The service didn't respond in time. Try again."
-msgstr "A szolgáltatás nem válaszolt időben. Próbáld újra."
-
-#: src/features/ai/web-access.tsx
-msgid "The service is unavailable or doesn't support this operation. Try again later or connect another service."
-msgstr "A szolgáltatás nem érhető el, vagy nem támogatja ezt a műveletet. Próbáld újra később, vagy csatlakoztass másik szolgáltatást."
-
-#: src/features/ai/web-access.tsx
-msgid "The service quota is used up. Check your plan with the service."
-msgstr "A szolgáltatás kvótája elfogyott. Ellenőrizd az előfizetésedet a szolgáltatásnál."
-
-#: src/features/ai/web-access.tsx
-msgid "The service rejected the credentials. Check the API key."
-msgstr "A szolgáltatás elutasította a hitelesítő adatokat. Ellenőrizd az API-kulcsot."
-
 #: src/features/ai/error.ts
 msgid "The test didn't run. Try again."
 msgstr "A teszt nem futott le. Próbáld újra."
@@ -10122,13 +10066,13 @@ msgstr "Az első oldal teteje nem néz ki névnek."
 msgid "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 msgstr "Az Ön által elküldött verziókat a Mentett tartalmazza. Az itt végzett módosítások nem változtatják meg, hogy {company} mit kapott."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "Téma"
 
 #. placeholder {0}: getPlanName(next.planId)
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr ""
@@ -10149,7 +10093,7 @@ msgstr "Nincs összefoglaló bekezdés."
 msgid "These are the answers saved when you applied."
 msgstr "Ezek a jelentkezéskor mentett válaszok."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "Ezek megnyitják a szerver fiókbeállításait az alkalmazáson belüli böngészőlapon. Lehet, hogy ott be kell jelentkeznie."
 
@@ -10165,7 +10109,7 @@ msgstr "Gondolkodás"
 msgid "Thinking…"
 msgstr "Gondolkodás…"
 
-#: app/(tabs)/settings/licences.tsx
+#: app/account/licences.tsx
 msgid "Third-party software notices. Tap a dependency to read its license."
 msgstr "Harmadik féltől származó szoftverek közleményei. Koppints egy függőségre a licence elolvasásához."
 
@@ -10521,7 +10465,7 @@ msgstr "Az időpontok ebben az időzónában jelennek meg: {timeZone}."
 msgid "Times are shown in {timezone}. Change timezone in Settings → Preferences."
 msgstr "Az időpontok {timezone} formában jelennek meg. Időzóna módosítása itt: Beállítások → Preferenciák."
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Timezone"
 msgstr "Időzóna"
 
@@ -10546,8 +10490,8 @@ msgstr "Ellenőrizni"
 msgid "To get a reminder, allow notifications in your device settings."
 msgstr "Ha emlékeztetőt szeretne kapni, engedélyezze az értesítéseket az eszköz beállításaiban."
 
-#: app/(tabs)/career/_layout.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/home/needs-you.tsx
 #: src/features/share/link.tsx
 msgid "Today"
 msgstr "Ma"
@@ -10561,6 +10505,7 @@ msgid "Toggle selection"
 msgstr "Kiválasztás váltása"
 
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/home/needs-you.tsx
 msgid "Tomorrow"
 msgstr "Holnap"
 
@@ -10569,7 +10514,6 @@ msgid "Too light for headings on white. It may be hard to read and print faintly
 msgstr "Túl világos a fehér címsorokhoz. Lehet, hogy nehéz olvasni és halványan nyomtatni."
 
 #: src/features/ai/error.ts
-#: src/features/ai/web-access.tsx
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
 #: src/features/documents/import-file.ts
@@ -10589,7 +10533,7 @@ msgstr ""
 msgid "Tool logos aren't in your plan"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/design/style-groups.tsx
 msgid "Tool logos in skills"
 msgstr ""
@@ -10598,7 +10542,7 @@ msgstr ""
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "Az összegek nem adódnak össze. A bónusz és a részesedés feltételektől függ; a részesedés értéke bizonytalan. Olvassa el az eredeti ajánlati dokumentumokat."
 
-#: src/features/career/today.tsx
+#: src/features/home/new-roles.tsx
 msgid "Track in Applications"
 msgstr "Követés a Jelentkezésekben"
 
@@ -10629,7 +10573,6 @@ msgstr "Átírási modell"
 
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
-#: src/shell/app-tabs.tsx
 msgid "Trash"
 msgstr "Kuka"
 
@@ -10637,7 +10580,7 @@ msgstr "Kuka"
 msgid "Trash is empty"
 msgstr "A kuka üres"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/credits.ts
 msgid "Trial credits"
 msgstr ""
@@ -10652,11 +10595,10 @@ msgstr "Próbálja ki a következőt: {suggestion}"
 
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
-#: app/(tabs)/settings/account.tsx
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/account.tsx
+#: app/account/preferences.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
-#: src/features/ai/web-access.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/letters/write.tsx
 #: src/features/settings/api-keys.tsx
@@ -10729,7 +10671,7 @@ msgstr "Két oszlop"
 msgid "Two stories"
 msgstr "Két történet"
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Two-step verification"
 msgstr "Kétlépcsős ellenőrzés"
 
@@ -10763,7 +10705,7 @@ msgstr "Tipográfia"
 msgid "Ukrainian"
 msgstr "ukrán"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Unavailable"
 msgstr "Nem elérhető"
 
@@ -10789,10 +10731,11 @@ msgstr "A hivatkozások aláhúzása"
 #: src/features/design/draft.ts
 #: src/features/document-menu/index.tsx
 #: src/features/documents/queries.ts
+#: src/features/home/new-roles.tsx
 #: src/features/workspace/tabs/fit.tsx
 #: src/features/write/hooks.ts
 #: src/preview/page.tsx
-#: src/ui/overlays.tsx
+#: src/ui-legacy/overlays.tsx
 msgid "Undo"
 msgstr "Visszavonás"
 
@@ -11005,10 +10948,6 @@ msgstr "Használjon egy oszlopot"
 msgid "Use plain headings such as \"Experience\", \"Education\" and \"Skills\"."
 msgstr "Használj egyszerű címsorokat, például \"Tapasztalat\", \"Tanulmányok\" és \"Készségek\"."
 
-#: src/features/applications/add-sheet.tsx
-msgid "Use posting link; review before saving"
-msgstr "Használja az álláshirdetési linket; mentés előtt tekintse át"
-
 #: src/api/ai-consent.ts
 msgid "Use Rezumi AI?"
 msgstr ""
@@ -11043,7 +10982,7 @@ msgstr "Ezeknek a válaszoknak a használata"
 msgid "Use this date"
 msgstr "Használja ezt a dátumot"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Use this device's timezone ({deviceTimezone})"
 msgstr "Az eszköz időzónájának használata ({deviceTimezone})"
 
@@ -11075,10 +11014,6 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "A pozíciók és ajánlatok ellenőrzéséhez használjuk. Mindegyik szám, így a coach találgatás nélkül tud összehasonlítani."
 
-#: src/features/ai/web-access.tsx
-msgid "Used when {connected} can't read a page. No account needed."
-msgstr "Akkor használatos, ha a {connected} nem tud olvasni egy oldalt. Nincs szükség fiókra."
-
 #: src/features/settings/profile.tsx
 #: src/features/write/fields.ts
 msgid "Username"
@@ -11091,10 +11026,6 @@ msgstr "Tényeket használ az önéletrajzából"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Uses the linked application"
 msgstr "A linkelt álláspályázatot használja"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Uses the web search service set up in Settings. Search results wait for your review."
-msgstr "A Beállítások helyen beállított internetes keresőszolgáltatást használja. A keresési eredmények értékelésére várnak."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Uses web search set up in Settings. Results wait in Today. Applications and documents are never created for you."
@@ -11235,15 +11166,6 @@ msgstr "Várja a visszajelzést"
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "Így értelmeztük: „{0}”. Válassz hónapot, hogy egységesen rendeződjön és nyomtatódjon."
 
-#: app/(tabs)/settings/ai-web-access.tsx
-#: app/(tabs)/settings/ai.tsx
-msgid "Web access"
-msgstr "Web hozzáférés"
-
-#: src/features/ai/web-access.tsx
-msgid "Web access settings couldn't be saved or loaded."
-msgstr "A webhozzáférési beállításokat nem sikerült menteni vagy betölteni."
-
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "Weboldal"
@@ -11271,6 +11193,10 @@ msgstr "Weboldal"
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Week"
+msgstr ""
+
+#: src/features/home/schedules.tsx
+msgid "Weekly at {clock} · next {day}"
 msgstr ""
 
 #: src/features/workspace/parts.tsx
@@ -11365,7 +11291,7 @@ msgstr "Amit küldtél"
 msgid "What you're looking for"
 msgstr "Amit keresel"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "What's included"
 msgstr ""
 
@@ -11373,7 +11299,7 @@ msgstr ""
 msgid "What's working"
 msgstr "Mi működik"
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr ""
 
@@ -11451,7 +11377,7 @@ msgstr "Word"
 msgid "Word and ODT aren't available"
 msgstr ""
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 msgid "Word and ODT downloads"
 msgstr ""
 
@@ -11466,10 +11392,6 @@ msgstr "A Word-importáláshoz, a Javítás funkcióhoz, az asszisztenshez, a le
 #: src/features/ats-checker/messages.ts
 msgid "Words run together when the text is extracted."
 msgstr "A szavak összefolynak, amikor a szöveg kinyerésre kerül."
-
-#: src/features/ai/web-access.tsx
-msgid "Working…"
-msgstr "Dolgozik…"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Works without AI or new research"
@@ -11543,13 +11465,17 @@ msgstr "Írd meg a válaszod, vagy fogalmazz meg egyet a Tudástáradból."
 msgid "Writing"
 msgstr "Szövegezés"
 
-#: app/(tabs)/settings/ai-providers.tsx
+#: app/account/ai-providers.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Írássegítség, testreszabott javaslatok és az asszisztens. Ahol nem választasz szolgáltatót, ott az alapértelmezettet használjuk. A kulcsaid titkosítva maradnak."
 
 #: src/features/career/offers.tsx
 msgid "Written offer"
 msgstr "Írásos ajánlat"
+
+#: src/features/home/needs-you.tsx
+msgid "Yesterday"
+msgstr "Tegnap"
 
 #: src/features/assistant/chat-view.tsx
 msgid "You"
@@ -11592,7 +11518,11 @@ msgstr "Megszakítottad a bejelentkezést, mielőtt befejeződött volna."
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "Ezt korábban elfelejtetted, ezért nem mentettük újra."
 
-#: src/ui/overlays.tsx
+#: src/shell/unsaved-changes.ts
+msgid "You have edits that aren't saved yet. Leaving now loses them."
+msgstr ""
+
+#: src/ui-legacy/overlays.tsx
 msgid "You have unsaved changes."
 msgstr "Nem mentett módosításai vannak."
 
@@ -11605,6 +11535,7 @@ msgid "You submit on the employer's site yourself. Marking it applied keeps the 
 msgstr "A munkáltató oldalán te magad adod be. Ha beadottként jelölöd, pontosan az elküldött verziók maradnak meg."
 
 #: src/features/settings/sign-out.tsx
+#: src/shell/account-menu.tsx
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "A rendszer kijelentkezteti a következőből: {server}. Az erről az eszközről még nem szinkronizált szerkesztések elvesznek."
 
@@ -11650,9 +11581,9 @@ msgstr "Offline állapotban van. Az utolsó PDF-ellenőrzés megmarad; a frissí
 msgid "You're offline. Try again when you reconnect."
 msgstr "Ön offline állapotban van. Próbálja újra, amikor újracsatlakozik."
 
-#: src/features/career/today.tsx
-msgid "You're up to date"
-msgstr "Mindennel naprakész vagy"
+#: src/features/home/needs-you.tsx
+msgid "You're up to date. New roles, reminders and finished briefings appear here."
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/practise.tsx
@@ -11695,7 +11626,7 @@ msgstr "Az ezen az eszközön végzett módosítások helyébe a mentett verzió
 msgid "Your contact details are not on the first page."
 msgstr "Az elérhetőségeid nem az első oldalon vannak."
 
-#: app/(tabs)/settings/account.tsx
+#: app/account/account.tsx
 msgid "Your data"
 msgstr "Az Ön adatai"
 
@@ -11744,7 +11675,7 @@ msgstr "Az álláskeresés itt kezdődik"
 msgid "your Knowledge"
 msgstr "a Tudástárad"
 
-#: app/(tabs)/settings/preferences.tsx
+#: app/account/preferences.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 msgstr "Nyelve elmentve. Indítsa újra a(z) Rezumi programot az új balról jobbra vagy jobbról balra elrendezés alkalmazásához."
 
@@ -11788,7 +11719,15 @@ msgstr "A nyitásod"
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "A nyitásod, a magaddal viendő történetek és a felteendő kérdések. 10 perccel a hívás előtt ez lesz az ellenőrzőlistád."
 
-#: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-alert.ts
+msgid "Your own domain isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own domain isn't in your plan"
+msgstr ""
+
+#: app/account/membership.tsx
 msgid "Your own fonts"
 msgstr ""
 
@@ -11808,18 +11747,30 @@ msgstr ""
 msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
+#: src/features/billing/plan-alert.ts
+msgid "Your page keeps its address on Rezumi."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "A telefonszámod szokatlan formában van megírva."
 
-#: app/(tabs)/settings/membership.tsx
+#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
+msgstr ""
+
+#: app/(tabs)/portfolio/index.tsx
+msgid "Your portfolio is coming to the app"
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "your preferences"
 msgstr "a preferenciáid"
+
+#: app/(tabs)/profile/index.tsx
+msgid "Your Profile is coming to the app"
+msgstr ""
 
 #: src/features/settings/export.tsx
 msgid "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
@@ -11865,10 +11816,6 @@ msgstr "Önéletrajzai, motivációs levelei és jelentkezései a következő c�
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "A kiválasztott betűtípus nem tud megjeleníteni néhány karaktert. Ezek “?” jelként jelennek meg. A Dizájn részben válassz olyan betűtípust, amely tartalmazza őket."
 
-#: src/features/ai/web-access.tsx
-msgid "Your server provides search for Applications and the assistant. Connect a service to read pages the built-in reader can't."
-msgstr "Az Ön szervere webes keresést biztosít a Jelentkezések részben és az asszisztens számára. Csatlakoztasson egy szolgáltatást olyan weboldalak olvasásához, amelyeket a beépített olvasó nem tud elolvasni."
-
 #: src/api/ai-consent.ts
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "A szerver tesztpromptot és a mentett API-kulcsot küld ennek a szolgáltatónak."
@@ -11909,10 +11856,6 @@ msgstr "A történetedet nem sikerült betölteni."
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "A kétperces bemutatkozásod"
-
-#: src/features/applications/add-sheet.tsx
-msgid "Your unsaved job details will be discarded before opening web search settings."
-msgstr "A nem mentett munkaadatokat a rendszer elveti az internetes keresési beállítások megnyitása előtt."
 
 #: src/features/letters/page.tsx
 #: src/preview/page.tsx

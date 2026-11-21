@@ -7,7 +7,7 @@ import { withUndo } from "./undo";
 import { client, orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
 import { useProfile } from "@/features/settings/queries";
-import { showToast } from "@/ui-legacy";
+import { showToast } from "@/ui";
 
 export type Career = RouterOutput["career"];
 export type Fact = Career["facts"][number];
@@ -34,32 +34,6 @@ export function useCareerQueries() {
 		queryKey: [...orpc.career.profile.key(), session.server],
 	});
 	return { facts, stories, profile };
-}
-
-export function useTodayQueries() {
-	const session = useSession();
-	const options = { enabled: session.status === "signed-in", retry: false };
-	const notifications = useQuery({
-		...orpc.career.notifications.queryOptions({ input: {} }),
-		...options,
-		queryKey: [...orpc.career.notifications.key(), session.server],
-	});
-	const opportunities = useQuery({
-		...orpc.career.opportunities.queryOptions({ input: {} }),
-		...options,
-		queryKey: [...orpc.career.opportunities.key(), session.server],
-	});
-	const schedules = useQuery({
-		...orpc.career.schedules.queryOptions({ input: {} }),
-		...options,
-		queryKey: [...orpc.career.schedules.key(), session.server],
-	});
-	const briefings = useQuery({
-		...orpc.career.savedItems.queryOptions({ input: { kind: "briefing" } }),
-		...options,
-		queryKey: [...orpc.career.savedItems.key(), session.server, "briefing"],
-	});
-	return { notifications, opportunities, schedules, briefings };
 }
 
 export function useOffers() {
@@ -166,7 +140,8 @@ export function useUndoRows() {
 		const operation = withUndo({
 			message,
 			restore,
-			failed: () => showToast({ message: t`Couldn't save that change. The item is restored; try again.` }),
+			failed: () =>
+				showToast({ title: t`Couldn't save that change. The item is restored; try again.`, variant: "danger" }),
 			commit: async () => {
 				try {
 					if (getServer() === server && active.current.status === "signed-in") await commit();

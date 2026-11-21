@@ -29,6 +29,11 @@ let screenReader = false;
 void AccessibilityInfo.isScreenReaderEnabled().then((value) => (screenReader = value));
 AccessibilityInfo.addEventListener("screenReaderChanged", (value) => (screenReader = value));
 
+/** How long a toast of `duration` stays up: doubled with a screen reader on. Undo timers wait this long. */
+export function toastLifetime(duration = defaultDuration): number {
+	return duration * (screenReader ? 2 : 1);
+}
+
 function present(toast: ToastManager, options: AppToastOptions): string {
 	const { title, description, variant = "default", undo, duration = defaultDuration } = options;
 	// One toast at a time: the new one replaces whatever is showing, and its timer with it.
@@ -40,7 +45,7 @@ function present(toast: ToastManager, options: AppToastOptions): string {
 		variant,
 		placement: "bottom",
 		label: title,
-		duration: duration * (screenReader ? 2 : 1),
+		duration: toastLifetime(duration),
 		...(description ? { description } : {}),
 		...(undo
 			? {
