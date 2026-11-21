@@ -1,5 +1,8 @@
+// The public ATS checker on a phone (plans/mobile Phase 08): pick a PDF, the server reads it and keeps nothing, then
+// the score, what could cost a match, the original pages and the text as software reads it. "Fix these in the editor"
+// imports the same file and opens Check.
 import type { AtsResult } from "./check";
-import type { IconName } from "@/ui-legacy";
+import type { IconName, ThemeColor } from "@/ui";
 import type { PdfAtsReport, PdfCategory } from "@rezumi/resume/ats-pdf";
 import type { DocumentPickerAsset } from "expo-document-picker";
 import type { ReactNode } from "react";
@@ -9,8 +12,8 @@ import * as DocumentPicker from "expo-document-picker";
 import { File, Paths } from "expo-file-system";
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useEffectEvent, useRef, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Pressable, ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Circle } from "react-native-svg";
 import { AtsCheckError, MAX_IMPORT_BYTES, runAtsCheck } from "./check";
 import { getPdfCategoryLabel, getPdfFindingMessage } from "./messages";
@@ -18,7 +21,25 @@ import { OriginalPage } from "./original-page";
 import { getServer, useSession } from "@/auth/session";
 import { ImportError, importDocument } from "@/features/documents/import-file";
 import { routes } from "@/routes";
-import { Banner, Button, Chip, Icon, Segmented, Text, TextArea, useTheme } from "@/ui-legacy";
+import {
+	Alert,
+	Button,
+	Card,
+	Chip,
+	Description,
+	Icon,
+	Label,
+	Screen,
+	Segment,
+	Separator,
+	Spinner,
+	Text,
+	TextArea,
+	TextField,
+	Typography,
+	space,
+	useThemeColor,
+} from "@/ui";
 
 type PickedFile = Pick<DocumentPickerAsset, "uri" | "name" | "size" | "mimeType" | "lastModified">;
 
@@ -34,10 +55,6 @@ const ANALYSING_AFTER_MS = 1500;
 // How long a "Fix these in the editor" press waits for sign-in before the file is forgotten.
 const PENDING_IMPORT_MS = 10 * 60 * 1000;
 
-/**
- * The public checker on a phone: pick a PDF, the server reads it (and keeps nothing), then the score, what could cost
- * a match, and the text as software reads it. "Fix these in the editor" imports the same file and opens Check.
- */
 export function AtsChecker() {
 	const { t } = useLingui();
 	const router = useRouter();
@@ -134,7 +151,7 @@ export function AtsChecker() {
 	}, [signedIn, session.server]);
 
 	return (
-		<SafeAreaView edges={["bottom", "left", "right"]} style={{ flex: 1 }}>
+		<>
 			<Stack.Screen options={{ title: state.name === "done" ? t`Report` : t`ATS checker` }} />
 			{state.name === "importing" ? (
 				<Importing />
@@ -158,7 +175,7 @@ export function AtsChecker() {
 					onSample={() => void sample()}
 				/>
 			)}
-		</SafeAreaView>
+		</>
 	);
 }
 
@@ -172,50 +189,53 @@ type IdleProps = {
 
 function Idle({ error, posting, onPosting, onChoose, onSample }: IdleProps) {
 	const { t } = useLingui();
-	const { colors, radius, space } = useTheme();
-
 	return (
-		<ScrollView
-			keyboardShouldPersistTaps="handled"
-			contentInsetAdjustmentBehavior="automatic"
-			contentContainerStyle={{ padding: space.s4, gap: space.s4 }}
-		>
-			<Text variant="display">{t`Can software read your resume?`}</Text>
-			<Text color="ink2">
-				{t`Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed.`}
-			</Text>
+		<Screen edges={["bottom"]}>
+			<View className="gap-2">
+				<Typography.Heading type="h2">{t`Can software read your resume?`}</Typography.Heading>
+				<Typography type="body-sm" className="text-muted">
+					{t`Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed.`}
+				</Typography>
+			</View>
 			<Pressable
 				accessibilityRole="button"
 				accessibilityLabel={t`Choose a PDF`}
+				accessibilityHint={t`Up to 25 MB · checked on the server and not stored`}
 				onPress={onChoose}
-				style={({ pressed }) => ({
-					alignItems: "center",
-					gap: space.s2,
-					padding: space.s6,
-					borderRadius: radius.rLg,
-					borderWidth: 1.5,
-					borderStyle: "dashed",
-					borderColor: colors.line2,
-					backgroundColor: pressed ? colors.press : colors.surface,
-				})}
+				testID="ats-choose"
+				className="items-center gap-2 rounded-2xl border border-dashed border-border bg-surface p-6 active:bg-surface-secondary"
 			>
-				<Icon name="file-arrow-up" size={28} color={colors.accentText} />
-				<Text variant="title">{t`Choose a PDF`}</Text>
-				<Text variant="callout" color="ink3" align="center">
+				<View className="size-12 items-center justify-center rounded-xl bg-accent-soft">
+					<Icon name="file-arrow-up" size={24} tone="accent" />
+				</View>
+				<Typography.Heading type="h6">{t`Choose a PDF`}</Typography.Heading>
+				<Text size="xs" tone="muted" className="text-center">
 					{t`Up to 25 MB · checked on the server and not stored`}
 				</Text>
 			</Pressable>
-			{error ? <Banner tone="danger" icon="warning-circle" message={error} /> : null}
-			<Button variant="ghost" label={t`Check a sample file`} onPress={onSample} />
-			<TextArea
-				label={t`Job posting · optional, adds a keyword match`}
-				value={posting}
-				onChangeText={onPosting}
-				maxLength={MAX_POSTING}
-				minLines={3}
-				helper={t`Paste the posting to see which of its terms your resume already has.`}
-			/>
-		</ScrollView>
+			{error ? (
+				<Alert status="danger">
+					<Alert.Indicator />
+					<Alert.Content>
+						<Alert.Description>{error}</Alert.Description>
+					</Alert.Content>
+				</Alert>
+			) : null}
+			<Button variant="ghost" onPress={onSample}>
+				<Button.Label>{t`Check a sample file`}</Button.Label>
+			</Button>
+			<TextField>
+				<Label>{t`Job posting · optional, adds a keyword match`}</Label>
+				<TextArea
+					value={posting}
+					onChangeText={onPosting}
+					maxLength={MAX_POSTING}
+					numberOfLines={4}
+					accessibilityLabel={t`Job posting · optional, adds a keyword match`}
+				/>
+				<Description>{t`Paste the posting to see which of its terms your resume already has.`}</Description>
+			</TextField>
+		</Screen>
 	);
 }
 
@@ -223,61 +243,56 @@ type ProgressProps = { name: string; step: number; onCancel: () => void };
 
 function Progress({ name, step, onCancel }: ProgressProps) {
 	const { t } = useLingui();
-	const { colors, radius, space } = useTheme();
 	const steps = [t`Opening the file`, t`Reading the text`, t`Checking layout and content`];
-
 	return (
-		<View accessibilityLiveRegion="polite" style={{ padding: space.s4, paddingTop: space.s6, gap: space.s4 }}>
-			<Text variant="heading" numberOfLines={2}>{t`Checking ${name}`}</Text>
-			{steps.map((label, index) => {
-				// Step 0, opening, is the local read; it is done once the upload starts.
-				return (
-					<View key={label} style={{ flexDirection: "row", alignItems: "center", gap: space.s3 }}>
-						<View style={{ width: 22, alignItems: "center" }}>
-							{index < step ? (
-								<Icon name="check" size={20} color={colors.accentText} />
-							) : index === step ? (
-								<ActivityIndicator color={colors.accent} />
-							) : (
-								<View
-									style={{
-										width: 12,
-										height: 12,
-										borderRadius: radius.rSm,
-										borderWidth: 1.5,
-										borderColor: colors.ink3,
-									}}
-								/>
-							)}
-						</View>
-						<Text color={index > step ? "ink3" : "ink"}>{label}</Text>
-					</View>
-				);
-			})}
-			<Button variant="secondary" label={t`Cancel`} onPress={onCancel} />
-		</View>
+		<Screen edges={["bottom"]}>
+			<View accessibilityLiveRegion="polite" className="gap-4 pt-2">
+				<Typography.Heading type="h4" numberOfLines={2}>{t`Checking ${name}`}</Typography.Heading>
+				<Card>
+					<Card.Body className="gap-3">
+						{/* Step 0, opening, is the local read; it is done once the upload starts. */}
+						{steps.map((label, index) => (
+							<View key={label} className="min-h-6 flex-row items-center gap-3">
+								<View className="size-6 items-center justify-center">
+									{index < step ? (
+										<Icon name="check-circle" tone="success" />
+									) : index === step ? (
+										<Spinner size="sm" />
+									) : (
+										<Icon name="circle" tone="muted" />
+									)}
+								</View>
+								<Text tone={index > step ? "muted" : "default"}>{label}</Text>
+							</View>
+						))}
+					</Card.Body>
+				</Card>
+				<Button variant="secondary" onPress={onCancel}>
+					<Button.Label>{t`Cancel`}</Button.Label>
+				</Button>
+			</View>
+		</Screen>
 	);
 }
 
 function Importing() {
 	const { t } = useLingui();
-	const { colors, space } = useTheme();
-
 	return (
-		<View
-			accessibilityLiveRegion="polite"
-			style={{ flex: 1, alignItems: "center", paddingTop: 120, padding: space.s6, gap: space.s3 }}
-		>
-			<ActivityIndicator size="large" color={colors.accent} />
-			<Text variant="heading" align="center">{t`Importing it into your new resume…`}</Text>
-			<Text color="ink2" align="center">
-				{t`The editor opens on Check, which checks the imported resume again.`}
-			</Text>
-		</View>
+		<Screen edges={["bottom"]}>
+			<View accessibilityLiveRegion="polite" className="items-center gap-3 px-2 pt-24">
+				<Spinner size="lg" />
+				<Typography.Heading type="h4" className="text-center">
+					{t`Importing it into your new resume…`}
+				</Typography.Heading>
+				<Typography type="body-sm" className="text-center text-muted">
+					{t`The editor opens on Check, which checks the imported resume again.`}
+				</Typography>
+			</View>
+		</Screen>
 	);
 }
 
-type Tone = "danger" | "warn" | "accent";
+type Tone = "danger" | "warning" | "accent";
 type Row = {
 	key: string;
 	title: string;
@@ -287,25 +302,25 @@ type Row = {
 	findings: PdfAtsReport["findings"];
 };
 
-/** One row per category with something to fix, worst first; web's `issueRows`. */
-function issueRows(report: PdfAtsReport): Row[] {
+/** One row per category with something to fix, worst first; the web's `issueRows`. */
+export function issueRows(report: PdfAtsReport): Row[] {
 	const byCategory = new Map<PdfCategory, PdfAtsReport["findings"]>();
 	for (const finding of [...report.findings, ...report.tips])
 		byCategory.set(finding.category, [...(byCategory.get(finding.category) ?? []), finding]);
-	const rank = { danger: 0, warn: 1, accent: 2 };
+	const rank = { danger: 0, warning: 1, accent: 2 };
 	return [...byCategory.entries()]
 		.map(([category, findings]) => {
 			const tone: Tone = findings.some((finding) => finding.severity === "blocker")
 				? "danger"
 				: findings.every((finding) => finding.severity === "tip")
 					? "accent"
-					: "warn";
+					: "warning";
 			const icon: IconName =
 				category === "content"
 					? "pencil-simple"
 					: tone === "danger"
 						? "warning-circle"
-						: tone === "warn"
+						: tone === "warning"
 							? "warning"
 							: "info";
 			return {
@@ -331,254 +346,264 @@ type ResultProps = {
 
 function Result({ result, uri, size, onFix, onReset, onBlank }: ResultProps) {
 	const { t } = useLingui();
-	const { colors, radius, space } = useTheme();
+	const insets = useSafeAreaInsets();
 	const { report } = result;
 	const rows = issueRows(report);
 	const [open, setOpen] = useState<string | null>(report.jd ? "posting" : (rows[0]?.key ?? null));
 	const [lens, setLens] = useState<"report" | "page" | "text">("report");
 	const issues = report.findings.length;
-	const toneColor = { danger: colors.dangerText, warn: colors.warnText, accent: colors.accentText };
 	const verdict =
 		report.score >= 80 ? t`Reads cleanly` : report.score >= 50 ? t`Mostly readable` : t`Hard for software to read`;
 	const tooLarge = size > MAX_IMPORT_BYTES;
 	const megabytes = Math.ceil(size / 1_000_000);
-
-	const accordion = (key: string, title: string, count: string, icon: IconName, color: string, body: ReactNode) => {
-		const expanded = open === key;
-		return (
-			<View key={key} style={{ borderTopWidth: 1, borderColor: colors.line }}>
-				<Pressable
-					accessibilityRole="button"
-					accessibilityState={{ expanded }}
-					onPress={() => setOpen(expanded ? null : key)}
-					style={({ pressed }) => ({
-						minHeight: 48,
-						flexDirection: "row",
-						alignItems: "center",
-						gap: space.s3,
-						paddingHorizontal: space.s3,
-						backgroundColor: pressed ? colors.press : "transparent",
-					})}
-				>
-					<Icon name={icon} size={20} color={color} />
-					<Text variant="label" style={{ flex: 1 }}>
-						{title}
-					</Text>
-					<Text variant="caption" color="ink3">
-						{count}
-					</Text>
-					<Icon name="caret-down" size={18} color={colors.ink3} />
-				</Pressable>
-				{expanded ? (
-					<View style={{ paddingHorizontal: space.s3, paddingBottom: space.s3, paddingStart: 44, gap: space.s2 }}>
-						{body}
-					</View>
-				) : null}
-			</View>
-		);
-	};
+	const toggle = (key: string) => setOpen((current) => (current === key ? null : key));
+	const jd = report.jd;
+	// The footer sits above the home indicator.
+	const footerPadding = { paddingBottom: insets.bottom + space[4] };
 
 	return (
-		<View style={{ flex: 1 }}>
-			<ScrollView
-				contentInsetAdjustmentBehavior="automatic"
-				contentContainerStyle={{ padding: space.s4, gap: space.s4 }}
-			>
-				<View style={{ flexDirection: "row", alignItems: "center", gap: space.s4 }}>
-					<ScoreRing score={report.score} color={report.score >= 80 ? colors.accent : colors.warn} />
-					<View style={{ flex: 1, gap: space.s1 }}>
-						<Text variant="title">{verdict}</Text>
-						<Text variant="callout" color="ink2">
-							{issues > 0
-								? plural(issues, { one: "# issue could cost you a match.", other: "# issues could cost you a match." })
-								: t`Nothing here should cost you a match.`}{" "}
-							{t`The score reflects how reliably text is extracted, not your chances.`}
-						</Text>
-					</View>
-				</View>
+		<View className="flex-1 bg-background">
+			<Screen>
+				<Card>
+					<Card.Body className="flex-row items-center gap-4">
+						<ScoreRing score={report.score} />
+						<View className="min-w-0 flex-1 gap-1">
+							<Typography.Heading type="h5">{verdict}</Typography.Heading>
+							<Typography type="body-xs" className="text-muted">
+								{`${
+									issues > 0
+										? plural(issues, {
+												one: "# issue could cost you a match.",
+												other: "# issues could cost you a match.",
+											})
+										: t`Nothing here should cost you a match.`
+								} ${t`The score reflects how reliably text is extracted, not your chances.`}`}
+							</Typography>
+						</View>
+					</Card.Body>
+				</Card>
 
 				{report.document.truncated ? (
-					<Banner
-						tone="info"
-						icon="info"
-						title={t`Only the first ${report.document.pageCount} pages were checked.`}
-						message={t`The rest of the file isn't in this report.`}
-					/>
+					<Alert status="accent">
+						<Alert.Indicator />
+						<Alert.Content>
+							<Alert.Title>{t`Only the first ${report.document.pageCount} pages were checked.`}</Alert.Title>
+							<Alert.Description>{t`The rest of the file isn't in this report.`}</Alert.Description>
+						</Alert.Content>
+					</Alert>
 				) : null}
 
-				<Segmented
-					label={t`How to show the file`}
+				<Segment
+					accessibilityLabel={t`How to show the file`}
 					value={lens}
-					onChange={setLens}
+					onValueChange={setLens}
 					options={[
 						{ value: "report", label: t`Report` },
-						{ value: "page", label: t`Original page` },
-						{ value: "text", label: t`As software reads it` },
+						{ value: "page", label: t`Page` },
+						{ value: "text", label: t`Text` },
 					]}
 				/>
 
 				{lens === "report" ? (
 					<>
-						<View
-							style={{
-								borderRadius: radius.rLg,
-								borderWidth: 1,
-								borderTopWidth: 0,
-								borderColor: colors.line,
-								overflow: "hidden",
-							}}
-						>
-							{report.jd
-								? accordion(
-										"posting",
-										t`Terms from the posting`,
-										`${report.jd.matchedCount}/${report.jd.totalTerms}`,
-										"list-checks",
-										colors.warnText,
-										report.jd.totalTerms === 0 ? (
-											<Text variant="callout" color="ink2">
-												{t`No specific terms could be pulled out of that job description.`}
+						<Card className="p-0">
+							{jd ? (
+								<IssueRow
+									title={t`Terms from the posting`}
+									count={`${jd.matchedCount}/${jd.totalTerms}`}
+									icon="list-checks"
+									tone="warning"
+									expanded={open === "posting"}
+									onToggle={() => toggle("posting")}
+								>
+									{jd.totalTerms === 0 ? (
+										<Typography type="body-xs" className="text-muted">
+											{t`No specific terms could be pulled out of that job description.`}
+										</Typography>
+									) : jd.missingTerms.length === 0 ? (
+										<Typography type="body-xs" className="text-muted">
+											{t`Every term the posting stresses is already there.`}
+										</Typography>
+									) : (
+										<>
+											<Text size="xs" weight="semibold" tone="muted">{t`Not found:`}</Text>
+											<Terms terms={jd.missingTerms} />
+											{jd.matchedTerms.length > 0 ? (
+												<>
+													<Text size="xs" weight="semibold" tone="muted">{t`Already covered:`}</Text>
+													<Terms terms={jd.matchedTerms} covered />
+												</>
+											) : null}
+											<Text size="xs" tone="muted">
+												{t`Counted separately from the parse score. Coverage does not predict anything.`}
 											</Text>
-										) : report.jd.missingTerms.length === 0 ? (
-											<Text variant="callout" color="ink2">
-												{t`Every term the posting stresses is already there.`}
-											</Text>
-										) : (
-											<>
-												<Text variant="callout" color="ink2">{t`Not found:`}</Text>
-												<View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.s2 }}>
-													{report.jd.missingTerms.map((term) => (
-														<Chip key={term} label={term} />
-													))}
+										</>
+									)}
+								</IssueRow>
+							) : null}
+							{rows.map((row, index) => (
+								<View key={row.key}>
+									{index > 0 || jd ? <Separator /> : null}
+									<IssueRow
+										title={row.title}
+										count={row.key === "content" ? t`${row.count} · Not scored` : row.count}
+										icon={row.icon}
+										tone={row.tone}
+										expanded={open === row.key}
+										onToggle={() => toggle(row.key)}
+									>
+										{row.findings.map((finding) => {
+											const message = getPdfFindingMessage(finding.code);
+											return (
+												<View key={finding.code} className="gap-0.5">
+													<Text weight="medium">{message.title}</Text>
+													<Typography type="body-xs" className="text-muted">
+														{message.action}
+													</Typography>
 												</View>
-												{report.jd.matchedTerms.length > 0 ? (
-													<>
-														<Text variant="callout" color="ink2">{t`Already covered:`}</Text>
-														<View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.s2 }}>
-															{report.jd.matchedTerms.map((term) => (
-																<Chip key={term} label={term} selected />
-															))}
-														</View>
-													</>
-												) : null}
-												<Text variant="caption" color="ink3">
-													{t`Counted separately from the parse score. Coverage does not predict anything.`}
-												</Text>
-											</>
-										),
-									)
-								: null}
-							{rows.map((row) =>
-								accordion(
-									row.key,
-									row.title,
-									row.key === "content" ? t`${row.count} · Not scored` : row.count,
-									row.icon,
-									toneColor[row.tone],
-									row.findings.map((finding) => {
-										const message = getPdfFindingMessage(finding.code);
-										return (
-											<View key={finding.code} style={{ gap: space.s0 }}>
-												<Text variant="label">{message.title}</Text>
-												<Text variant="callout" color="ink2">
-													{message.action}
-												</Text>
-											</View>
-										);
-									}),
-								),
-							)}
-						</View>
-						<Text variant="caption" color="ink3">
+											);
+										})}
+									</IssueRow>
+								</View>
+							))}
+						</Card>
+						<Text size="xs" tone="muted" className="px-1 leading-5">
 							{t`This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can.`}
 						</Text>
-						<Button variant="ghost" label={t`Check another file`} onPress={onReset} fullWidth />
+						<Button variant="ghost" onPress={onReset}>
+							<Button.Label>{t`Check another file`}</Button.Label>
+						</Button>
 					</>
 				) : lens === "page" ? (
 					<OriginalPage uri={uri} />
 				) : (
-					<ScrollView
-						horizontal
-						style={{
-							borderRadius: radius.rLg,
-							borderWidth: 1,
-							borderColor: colors.line,
-							backgroundColor: colors.raised,
-						}}
-					>
-						<Text variant="mono" selectable style={{ padding: space.s4 }}>
-							{result.fullText || t`No text could be read from this file.`}
+					<View className="gap-2">
+						<Text size="xs" weight="semibold" tone="muted" className="px-1">
+							{t`As software reads it`}
 						</Text>
-					</ScrollView>
+						<Card className="p-0">
+							<ScrollView horizontal>
+								<Text mono selectable className="p-4">
+									{result.fullText || t`No text could be read from this file.`}
+								</Text>
+							</ScrollView>
+						</Card>
+					</View>
 				)}
-			</ScrollView>
+			</Screen>
 
-			<View
-				style={{
-					padding: space.s4,
-					gap: space.s2,
-					borderTopWidth: 1,
-					borderColor: colors.line,
-					backgroundColor: colors.surface,
-				}}
-			>
+			<View className="gap-3 border-t border-separator bg-surface px-4 pt-4" style={footerPadding}>
 				{tooLarge ? (
 					<>
-						<Banner
-							tone="warn"
-							icon="warning"
-							title={t`This file is ${megabytes} MB. Imports take files up to 10 MB.`}
-							message={t`Export a smaller PDF and check it again, or start a blank resume and fix these there.`}
-						/>
-						<View style={{ flexDirection: "row", gap: space.s2 }}>
-							<View style={{ flex: 1 }}>
-								<Button variant="secondary" label={t`Check another file`} onPress={onReset} fullWidth />
-							</View>
-							<View style={{ flex: 1 }}>
-								<Button label={t`Start blank`} onPress={onBlank} fullWidth />
-							</View>
+						<Alert status="warning">
+							<Alert.Indicator />
+							<Alert.Content>
+								<Alert.Title>{t`This file is ${megabytes} MB. Imports take files up to 10 MB.`}</Alert.Title>
+								<Alert.Description>
+									{t`Export a smaller PDF and check it again, or start a blank resume and fix these there.`}
+								</Alert.Description>
+							</Alert.Content>
+						</Alert>
+						<View className="flex-row gap-2">
+							<Button variant="secondary" className="flex-1" onPress={onReset}>
+								<Button.Label>{t`Check another file`}</Button.Label>
+							</Button>
+							<Button className="flex-1" onPress={onBlank}>
+								<Button.Label>{t`Start blank`}</Button.Label>
+							</Button>
 						</View>
 					</>
 				) : (
-					<Button label={t`Fix these in the editor`} onPress={onFix} fullWidth />
+					<Button onPress={onFix}>
+						<Button.Label>{t`Fix these in the editor`}</Button.Label>
+					</Button>
 				)}
 			</View>
 		</View>
 	);
 }
 
-type ScoreRingProps = { score: number; color: string };
+type IssueRowProps = {
+	title: string;
+	count: string;
+	icon: IconName;
+	tone: ThemeColor;
+	expanded: boolean;
+	onToggle: () => void;
+	children: ReactNode;
+};
 
-function ScoreRing({ score, color }: ScoreRingProps) {
+/** One category of the report: a row that opens to its findings. */
+function IssueRow({ title, count, icon, tone, expanded, onToggle, children }: IssueRowProps) {
+	return (
+		<View>
+			<Pressable
+				accessibilityRole="button"
+				accessibilityLabel={`${title}, ${count}`}
+				accessibilityState={{ expanded }}
+				onPress={onToggle}
+				className="min-h-14 flex-row items-center gap-3 px-4 active:bg-surface-secondary"
+			>
+				<Icon name={icon} tone={tone} />
+				<Text weight="medium" className="flex-1">
+					{title}
+				</Text>
+				<Text size="xs" tone="muted" tabular>
+					{count}
+				</Text>
+				<Icon name={expanded ? "caret-down" : "caret-right"} size={16} tone="muted" />
+			</Pressable>
+			{expanded ? <View className="gap-2 ps-12 pe-4 pb-4">{children}</View> : null}
+		</View>
+	);
+}
+
+function Terms({ terms, covered = false }: { terms: readonly string[]; covered?: boolean }) {
+	return (
+		<View className="flex-row flex-wrap gap-2">
+			{terms.map((term) => (
+				<Chip key={term} size="sm" variant={covered ? "soft" : "secondary"} color={covered ? "success" : "default"}>
+					<Chip.Label>{term}</Chip.Label>
+				</Chip>
+			))}
+		</View>
+	);
+}
+
+const RING = { size: 84, stroke: 7 } as const;
+
+function ScoreRing({ score }: { score: number }) {
 	const { t } = useLingui();
-	const { colors } = useTheme();
-	const size = 84;
-	const stroke = 7;
-	const r = (size - stroke) / 2;
+	const [track, good, fair] = useThemeColor(["default", "success", "warning"]);
+	const r = (RING.size - RING.stroke) / 2;
 	const circumference = 2 * Math.PI * r;
-
+	const value = Math.min(100, Math.max(0, score));
 	return (
 		<View
 			accessible
 			accessibilityRole="image"
 			accessibilityLabel={t`Readability score: ${score} out of 100`}
-			style={{ width: size, height: size, alignItems: "center", justifyContent: "center" }}
+			className="size-21 items-center justify-center"
 		>
-			<Svg width={size} height={size} style={{ position: "absolute", transform: [{ rotate: "-90deg" }] }}>
-				<Circle cx={size / 2} cy={size / 2} r={r} stroke={colors.sunken} strokeWidth={stroke} fill="none" />
-				<Circle
-					cx={size / 2}
-					cy={size / 2}
-					r={r}
-					stroke={color}
-					strokeWidth={stroke}
-					fill="none"
-					strokeLinecap="round"
-					strokeDasharray={`${circumference} ${circumference}`}
-					strokeDashoffset={circumference * (1 - Math.min(100, Math.max(0, score)) / 100)}
-				/>
-			</Svg>
-			<Text variant="heading">{String(score)}</Text>
+			<View className="absolute">
+				<Svg width={RING.size} height={RING.size}>
+					<Circle cx={RING.size / 2} cy={RING.size / 2} r={r} stroke={track} strokeWidth={RING.stroke} fill="none" />
+					<Circle
+						cx={RING.size / 2}
+						cy={RING.size / 2}
+						r={r}
+						stroke={score >= 80 ? good : fair}
+						strokeWidth={RING.stroke}
+						fill="none"
+						strokeLinecap="round"
+						strokeDasharray={`${circumference} ${circumference}`}
+						strokeDashoffset={circumference * (1 - value / 100)}
+						rotation={-90}
+						origin={`${RING.size / 2}, ${RING.size / 2}`}
+					/>
+				</Svg>
+			</View>
+			<Typography.Heading type="h4">{String(score)}</Typography.Heading>
 		</View>
 	);
 }

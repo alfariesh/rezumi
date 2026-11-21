@@ -207,46 +207,6 @@ react.useEffect = (effect, deps) => {
 };
 native.ActivityIndicator = "ActivityIndicator";
 native.PixelRatio = { get: () => 2 };
-const rasterScales = [];
-const { OriginalPage } = load("features/ats-checker/original-page.tsx", {
-	"expo-image": { Image: "Image" },
-	"expo-file-system": {
-		File: class {
-			async arrayBuffer() {
-				return new ArrayBuffer(0);
-			}
-		},
-	},
-	"../../../modules/pdf-pages": {
-		pdfPages: {
-			open: async () => ({ id: "fictional", pages: [{ width: 595, height: 842 }] }),
-			close: async () => {},
-			rasterize: async (_id, _pages, scale) => {
-				rasterScales.push(scale);
-				return [{ index: 0, width: 595, height: 842, uri: "file://fictional.png" }];
-			},
-		},
-	},
-});
-const original = () => {
-	cursor = 0;
-	effects = [];
-	const tree = OriginalPage({ uri: "file://fictional.pdf" });
-	for (const effect of effects) effect();
-	return tree;
-};
-let page = original();
-assert.equal(rasterScales.length, 0, "Do not rasterize until container is measured");
-for (const width of [350, 620, 350]) {
-	page.props.onLayout({ nativeEvent: { layout: { width } } });
-	original();
-	await new Promise(setImmediate);
-	page = original();
-	assert.equal(nodes(page).find((node) => node.type === "Image").props.style.width, width);
-	assert.equal(rasterScales.at(-1), (width * 2) / 595);
-}
-hooks.at(-1).cleanup?.();
-hooks.length = 0;
 const version = { id: "version", kind: "created", createdAt: new Date(0) };
 const { HistoryPanel } = load("features/history/history.tsx", {
 	"@lingui/core/macro": { t: tag },

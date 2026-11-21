@@ -1,23 +1,15 @@
-import type { DomainStatus } from "./domain-progress";
+import type { DomainProgressInput } from "./custom-domain";
 import { describe, expect, it } from "vite-plus/test";
-import { domainSteps, isDomainSettling, isRootDomain } from "./domain-progress";
+import { domainSteps, isDomainSettling, isRootDomain } from "./custom-domain";
 
-const domain = (overrides: Partial<DomainStatus>): DomainStatus => ({
-	hostname: "www.example.com",
-	target: "domains.rezumi.app",
-	txtName: "_rx-verify.www.example.com",
-	txtValue: "rx-verify=token",
-	records: [],
+const domain = (overrides: Partial<DomainProgressInput>): DomainProgressInput => ({
 	verified: true,
-	lastCheckedAt: null,
-	managed: true,
 	stage: "active",
-	problem: null,
-	plan: { state: "ok", until: null },
+	plan: { state: "ok" },
 	...overrides,
 });
 
-const states = (value: DomainStatus, dns: Parameters<typeof domainSteps>[1] = null) =>
+const states = (value: DomainProgressInput, dns: Parameters<typeof domainSteps>[1] = null) =>
 	domainSteps(value, dns).map((step) => step.state);
 
 describe("domainSteps", () => {
@@ -39,7 +31,7 @@ describe("domainSteps", () => {
 	});
 
 	it("marks the certificate failed on a problem and finishes when active", () => {
-		expect(states(domain({ stage: "problem", problem: "caa" }))).toEqual(["done", "done", "failed", "waiting"]);
+		expect(states(domain({ stage: "problem" }))).toEqual(["done", "done", "failed", "waiting"]);
 		expect(states(domain({ stage: "active" }))).toEqual(["done", "done", "done", "done"]);
 	});
 });
@@ -54,7 +46,7 @@ describe("isDomainSettling", () => {
 	});
 
 	it("stops once the domain only redirects, whose hostname may be gone for good", () => {
-		expect(isDomainSettling(domain({ stage: "hostname", plan: { state: "redirecting", until: null } }))).toBe(false);
+		expect(isDomainSettling(domain({ stage: "hostname", plan: { state: "redirecting" } }))).toBe(false);
 	});
 });
 

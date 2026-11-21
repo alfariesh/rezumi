@@ -307,6 +307,11 @@ msgstr "{0, plural, one {Izbrana pisava ne more prikazati {list}. Prikaže se ko
 msgid "{0} · Not scored"
 msgstr "{0} · Ni točkovano"
 
+#. placeholder {0}: option.label
+#: src/features/share/export-options.tsx
+msgid "{0} · Plus"
+msgstr ""
+
 #. placeholder {0}: data.equity
 #: src/features/career/offers.tsx
 msgid "{0} · Value uncertain"
@@ -575,6 +580,10 @@ msgstr "{filled} od 5 delov"
 msgid "{followUps, plural, one {# follow-up} other {# follow-ups}}"
 msgstr "{followUps, plural, one {# ponovni stik} two {# ponovna stika} few {# ponovni stiki} other {# ponovnih stikov}}"
 
+#: src/features/share/custom-domain.tsx
+msgid "{hostname} needs a CNAME at the root, which many providers don't allow. If yours doesn't, connect www.{hostname} and forward {hostname} to it where you manage the domain."
+msgstr ""
+
 #: src/features/home/coming-up.tsx
 msgid "{hours, plural, one {In # hour} other {In # hours}}"
 msgstr ""
@@ -697,8 +706,8 @@ msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} je zadnji v besedilu. Večina sistemov jih še vedno najde; nekateri ne."
 
 #: src/features/letters/write.tsx
-msgid "{pairing} type"
-msgstr "Vrsta {pairing}"
+msgid "{pairingName} type"
+msgstr ""
 
 #: src/features/assistant/page-marks.tsx
 msgid "{pending, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
@@ -834,6 +843,10 @@ msgstr ""
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
 msgstr "Varnostna kopija tega pisma. Uvozi nazaj v Rezumi kot pismo."
 
+#: src/features/share/custom-domain.tsx
+msgid "A CAA record on this domain blocks its HTTPS certificate. Remove that record or allow the certificate authority, then check again."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "A city and country let roles be matched to where you are."
 msgstr "Mesto in država omogočata, da se vloge ujemajo s tem, kje ste."
@@ -857,6 +870,10 @@ msgstr "Časovno obdobje je zapisano v obliki, ki je večina programske opreme n
 #: src/features/check/issues.ts
 msgid "A date won't be read"
 msgstr "Datum ne bo prebran"
+
+#: src/features/share/custom-domain.tsx
+msgid "A domain without www needs a DNS provider that allows it"
+msgstr ""
 
 #: src/features/profile/stories-reader.tsx
 #: src/features/profile/stories.tsx
@@ -910,6 +927,10 @@ msgstr ""
 #: src/features/application-detail/sheets.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "Opomnik za prijavo, prikazan kot naslednji korak, dokler tega ne storite."
+
+#: src/features/letters/write.tsx
+msgid "A resume"
+msgstr ""
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "A resume in minutes"
@@ -1001,6 +1022,10 @@ msgstr "Dejanja"
 #: src/features/applications/list-screen.tsx
 msgid "Actions for {0} at {1}"
 msgstr "Dejanja za {0} pri {1}"
+
+#: src/features/share/custom-domain.tsx
+msgid "Active"
+msgstr "Aktiven"
 
 #: app/account/membership.tsx
 msgid "Active cover letters"
@@ -1218,6 +1243,10 @@ msgstr "Dodajte na stran 1"
 #: src/features/write/fields.ts
 msgid "Add language"
 msgstr "Dodajte jezik"
+
+#: src/features/letters/write.tsx
+msgid "Add one in Applications first."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -2062,8 +2091,7 @@ msgstr "Barva ozadja"
 msgid "Backup code"
 msgstr "Rezervna koda"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Balanced"
 msgstr "Uravnotežen"
 
@@ -2246,8 +2274,7 @@ msgstr "vnos na seznam {n}"
 msgid "Bulleted list"
 msgstr "Seznam z oznakami"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Burgundy"
 msgstr "Bordo"
 
@@ -2321,8 +2348,8 @@ msgid "Change"
 msgstr "spremeniti"
 
 #: src/features/letters/write.tsx
-msgid "Change it in Design."
-msgstr "Spremenite ga v Design."
+msgid "Change it in Design"
+msgstr ""
 
 #: src/features/search/search-screen.tsx
 msgid "Change language to…"
@@ -2386,6 +2413,7 @@ msgstr "Preverite PDF s preverjevalnikom ATS"
 msgid "Check a sample file"
 msgstr "Preverite vzorčno datoteko"
 
+#: src/features/share/custom-domain.tsx
 #: src/features/workspace/tabs/fit.tsx
 msgid "Check again"
 msgstr "Preveri znova"
@@ -2447,6 +2475,8 @@ msgstr "Preverite poglede"
 msgid "Check what we found"
 msgstr ""
 
+#: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/stories.tsx
@@ -2555,8 +2585,8 @@ msgid "Choose a photo smaller than 10 MB."
 msgstr "Izberite fotografijo manjšo od 10 MB."
 
 #: src/features/letters/design.tsx
-msgid "Choose a resume in Write to match its design. Until then, the letter has its own."
-msgstr "V aplikaciji Write izberite življenjepis, ki bo ustrezal njegovemu dizajnu. Do takrat pa ima pismo svoje."
+msgid "Choose a resume under From in Write to match its design. Until then, the letter has its own."
+msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Choose a tested AI provider before sharing data."
@@ -2631,13 +2661,11 @@ msgstr ""
 msgid "Clarify"
 msgstr "Pojasni"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Classic"
 msgstr "Klasična"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Clean"
 msgstr "Čisto"
 
@@ -2688,13 +2716,19 @@ msgstr "Počisti vnose; razdelek ostane. To lahko razveljavite."
 #: src/features/entries/icon-picker.tsx
 #: src/features/entries/photo-field.tsx
 #: src/features/entries/rich-text-field.tsx
+#: src/features/letters/design.tsx
+#: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/profile/career.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/fill-sheet.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/search-regions-field.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/export-screen.tsx
+#: src/features/share/link.tsx
+#: src/features/share/web-page.tsx
 msgid "Close"
 msgstr "Zapri"
 
@@ -2857,14 +2891,13 @@ msgstr ""
 msgid "Connect"
 msgstr "Poveži"
 
-#. placeholder {0}: domain.hostname
-#: src/features/share/custom-domain.tsx
-msgid "Connect {0}"
-msgstr "Poveži {0}"
-
 #: src/features/share/custom-domain.tsx
 msgid "Connect {domain}"
 msgstr "Poveži {domain}"
+
+#: src/features/share/custom-domain.tsx
+msgid "Connect {hostname}"
+msgstr ""
 
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -2899,12 +2932,20 @@ msgid "Connected · {milliseconds} ms"
 msgstr "Povezan · {milliseconds} ms"
 
 #: src/features/share/custom-domain.tsx
+msgid "Connected. Your domain opens your portfolio."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
 msgid "Connected. Your domain opens your primary resume."
 msgstr "Povezano. Vaša domena odpre vaš glavni življenjepis."
 
 #: src/features/workspace/parts.tsx
 msgid "Connecting the dots"
 msgstr "Povezovanje točk"
+
+#: src/features/share/custom-domain.tsx
+msgid "Connection progress"
+msgstr ""
 
 #: app/account/index.tsx
 msgid "Contact & complaints"
@@ -3002,6 +3043,7 @@ msgid "Copied to clipboard"
 msgstr "Kopirano v odložišče"
 
 #: src/features/share/custom-domain.tsx
+#: src/features/share/web-page.tsx
 msgid "Copies it"
 msgstr "Kopira besedilo"
 
@@ -3214,9 +3256,12 @@ msgstr "Ni bilo mogoče naložiti življenjepisov."
 msgid "Couldn't load statistics."
 msgstr "Statistike ni bilo mogoče naložiti."
 
+#: src/features/letters/write.tsx
+msgid "Couldn't load the cover letter"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/letters/share.tsx
-#: src/features/letters/write.tsx
 msgid "Couldn't load the cover letter."
 msgstr "Spremnega pisma ni bilo mogoče naložiti."
 
@@ -3251,8 +3296,11 @@ msgstr "Tega ni bilo mogoče naložiti. Preverite povezavo in poskusite znova."
 msgid "Couldn't load this. Check your connection."
 msgstr ""
 
-#: src/features/history/history.tsx
 #: src/features/letters/share.tsx
+msgid "Couldn't load versions"
+msgstr ""
+
+#: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "Ni bilo mogoče naložiti različic."
 
@@ -3555,6 +3603,10 @@ msgstr "Življenjepisa ni bilo mogoče odkleniti. Poskusite znova."
 msgid "Couldn't unlock this resume. Try again."
 msgstr "Tega življenjepisa ni bilo mogoče odkleniti. Poskusite znova."
 
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't update sharing. Try again."
+msgstr "Deljenja ni bilo mogoče posodobiti. Poskusite znova."
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Couldn't update the application. Nothing was changed; try again."
 msgstr "Prijave ni bilo mogoče posodobiti. Nič ni bilo spremenjeno; poskusite znova."
@@ -3732,6 +3784,10 @@ msgstr "Po meri"
 #: src/features/design/style-groups.tsx
 msgid "Custom color (hex)"
 msgstr "Barva po meri (hex)"
+
+#: src/features/share/custom-domain.tsx
+msgid "Custom domains aren't available here."
+msgstr ""
 
 #: src/features/write/basics-screen.tsx
 msgid "Custom fields"
@@ -4118,10 +4174,27 @@ msgstr "Zavrzite svoja urejanja brez povezave in naložite shranjeno različico.
 msgid "Discard your offline edits?"
 msgstr "Želite zavreči urejanja brez povezave?"
 
+#: src/features/share/custom-domain.tsx
+msgid "Disconnect"
+msgstr "Prekini povezavo"
+
+#. placeholder {0}: current.hostname
+#: src/features/share/custom-domain.tsx
+msgid "Disconnect {0}?"
+msgstr ""
+
 #: src/features/letters/write.tsx
 #: src/ui-legacy/layout.tsx
 msgid "Dismiss"
 msgstr "Zavrzi"
+
+#: src/features/share/custom-domain.tsx
+msgid "DNS is right. HTTPS is being set up, which usually takes a few minutes."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "DNS points to Rezumi"
+msgstr ""
 
 #: src/shell/builder-chrome.tsx
 msgid "Document menu"
@@ -4188,6 +4261,7 @@ msgstr "Ne delite"
 #: src/features/entries/dates-field.tsx
 #: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/write/date-field.tsx
 #: src/features/write/pickers.tsx
 #: src/features/write/rich-text-field.tsx
@@ -4237,12 +4311,9 @@ msgid "Download failed. Try again."
 msgstr "Prenos ni uspel. Poskusite znova."
 
 #: src/features/letters/share.tsx
-msgid "Download opens the system share sheet. Choose a storage provider to save the file."
-msgstr "Prenos odpre sistemsko ploščo za deljenje. Izberite ponudnika shrambe, da shranite datoteko."
-
 #: src/features/share/download.tsx
-msgid "Download opens the system share sheet. Choose a storage provider to save the file. A linked letter opens as a second file."
-msgstr "Prenos odpre list za skupno rabo sistema. Izberite ponudnika pomnilnika, da shranite datoteko. Povezano spremno pismo se odpre kot druga datoteka."
+msgid "Download opens the system share sheet. Choose Save to Files or a storage app to keep the file."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Download PDF instead"
@@ -4270,6 +4341,10 @@ msgid "Draft · uses only the posting"
 msgstr "Osnutek · uporablja samo objavo delovnega mesta"
 
 #: src/features/letters/write.tsx
+msgid "Draft · uses only your Profile"
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Draft · uses only your resume"
 msgstr "Osnutek · uporablja samo vaš življenjepis"
 
@@ -4292,6 +4367,10 @@ msgstr "Pripravite povzetek"
 #: src/features/letters/write.tsx
 msgid "Draft from the posting"
 msgstr "Osnutek iz delovnega oglasa"
+
+#: src/features/letters/write.tsx
+msgid "Draft from your Profile"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Draft from your resume"
@@ -4321,10 +4400,9 @@ msgstr "Za pripravo je potreben ponudnik AI."
 msgid "Drafting questions"
 msgstr "Priprava vprašanj"
 
-#. placeholder {0}: draft.provider
 #: src/features/letters/write.tsx
-msgid "Drafting stopped: {0} didn't respond. Nothing on the page changed."
-msgstr "Osnutek je ustavljen: {0} se ni odzval. Nič na strani se ni spremenilo."
+msgid "Drafting stopped: {provider} didn't respond. Nothing on the page changed."
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Drafting stopped. Nothing on the page changed."
@@ -4458,6 +4536,7 @@ msgstr ""
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
@@ -4503,6 +4582,10 @@ msgstr "Angleščina (Združeno kraljestvo)"
 #: src/features/assistant/messages.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "Izboljšano branje ni na voljo; uporabljal vgrajen čitalnik."
+
+#: src/features/share/custom-domain.tsx
+msgid "Enter a domain such as resume.example.com."
+msgstr ""
 
 #: src/features/profile/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
@@ -4721,6 +4804,7 @@ msgid "Facts"
 msgstr "Dejstva"
 
 #: src/features/ai/provider-list.tsx
+#: src/features/share/custom-domain.tsx
 msgid "Failed"
 msgstr "Ni uspelo"
 
@@ -4753,6 +4837,7 @@ msgstr "Polje odstranjeno"
 msgid "File attached"
 msgstr "Priložena datoteka"
 
+#: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "File format"
 msgstr "Format datoteke"
@@ -4761,8 +4846,7 @@ msgstr "Format datoteke"
 msgid "File is too large. Choose a file up to 10 MB."
 msgstr "Datoteka je prevelika. Izberite datoteko do 10 MB."
 
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
+#: src/features/share/export-options.tsx
 msgid "File name"
 msgstr "Ime datoteke"
 
@@ -4938,10 +5022,9 @@ msgstr "Debeline pisave"
 msgid "For"
 msgstr "Za"
 
-#. placeholder {0}: domain.target
 #: src/features/share/custom-domain.tsx
-msgid "For a root domain such as example.com, use A and AAAA records with {0}'s addresses instead of the CNAME."
-msgstr "Za korensko domeno, kot je example.com, namesto zapisa CNAME uporabite zapise A in AAAA z naslovi {0}."
+msgid "For a root domain such as example.com, use A and AAAA records with {target}'s addresses instead of the CNAME."
+msgstr ""
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -5148,8 +5231,7 @@ msgstr "Pojdi na…"
 msgid "Grade"
 msgstr "Ocena"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Graphite"
 msgstr "Grafit"
 
@@ -5211,6 +5293,7 @@ msgid "Heading changed"
 msgstr "Naslov spremenjen"
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Headline"
@@ -5382,6 +5465,10 @@ msgstr "Kako prikazati datoteko"
 msgid "How well do I fit this role?"
 msgstr "Kako dobro ustrezam tej vlogi?"
 
+#: src/features/share/custom-domain.tsx
+msgid "HTTPS certificate"
+msgstr ""
+
 #: src/features/settings/locale-names.ts
 msgid "Hungarian"
 msgstr "Madžarščina"
@@ -5453,6 +5540,10 @@ msgstr "Če izvira iz skena, je to pričakovano. V nasprotnem primeru ga odstran
 msgid "If the web is used, search terms go to your server's search service and links go to the sites being read."
 msgstr ""
 
+#: src/features/share/custom-domain.tsx
+msgid "If your DNS is on Cloudflare, set the CNAME record to DNS only (grey cloud)."
+msgstr ""
+
 #: src/features/check/screen.tsx
 msgid "Ignore"
 msgstr "Ignoriraj"
@@ -5519,6 +5610,7 @@ msgid "Improving…"
 msgstr "Izboljšanje ..."
 
 #: src/features/billing/credits.ts
+#: src/features/share/custom-domain.tsx
 msgid "In progress"
 msgstr ""
 
@@ -5546,8 +5638,7 @@ msgstr "Indonezijščina"
 msgid "Inferred"
 msgstr "Sklepano"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Ink blue"
 msgstr "Črnilo modro"
 
@@ -5665,6 +5756,10 @@ msgstr "Ima vnose, vendar ni postavljen na stran."
 msgid "It may have been removed on another device."
 msgstr ""
 
+#: src/features/share/download.tsx
+msgid "It opens as a second file."
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "It starts with your Profile. You can switch templates any time."
 msgstr ""
@@ -5779,6 +5874,14 @@ msgstr "Obdrži oboje"
 msgid "Keep editing"
 msgstr "Nadaljuj z urejanjem"
 
+#: src/features/share/web-page.tsx
+msgid "Keep it as it is"
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Keep it connected"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Keep it honest"
 msgstr "Ostanite iskreni"
@@ -5812,6 +5915,14 @@ msgstr "Vsebino življenjepisa ohranite kot pravo besedilo, ne kot slike besedil
 msgid "Keep running heads short, or drop them. They repeat in the extracted text too."
 msgstr "Glave strani naj bodo kratke ali pa jih izpustite. Ponovijo se tudi v izvlečenem besedilu."
 
+#: src/features/letters/share.tsx
+msgid "Keep the current letter"
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Keep the password"
+msgstr ""
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "Keep the recording on this device so I can share it"
 msgstr "Shrani posnetek v tej napravi, da ga lahko delim"
@@ -5828,6 +5939,10 @@ msgstr "Uporabite le dve ali tri družine pisav. Vsaka dodatna pisava je nova pr
 #: src/features/design/layout-screen.tsx
 msgid "Keep together"
 msgstr "Ostanite skupaj"
+
+#: src/features/letters/share.tsx
+msgid "Keep version"
+msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Keeps the most specific parts"
@@ -6145,14 +6260,6 @@ msgstr "Povezan življenjepis"
 msgid "Linked to {0}"
 msgstr "Povezano z {0}"
 
-#: src/features/letters/write.tsx
-msgid "Linked to the resume again"
-msgstr "Ponovno povezan z življenjepisom"
-
-#: src/features/letters/write.tsx
-msgid "Linked. Name, email, phone and city update when the resume does."
-msgstr "Povezano. Ime, e-pošta, telefon in mesto se posodobijo, ko se življenjepis zgodi."
-
 #: src/features/auth/welcome-screen.tsx
 msgid "LinkedIn"
 msgstr "LinkedIn"
@@ -6199,6 +6306,8 @@ msgstr "Objavljeno na {url}"
 #: src/features/profile/facts.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/link.tsx
+#: src/features/share/pane.tsx
 msgid "Loading"
 msgstr "Nalaganje"
 
@@ -6218,10 +6327,6 @@ msgstr "Nalaganje prijav…"
 #: src/features/search/search-screen.tsx
 msgid "Loading conversations…"
 msgstr "Nalaganje pogovorov …"
-
-#: src/features/letters/page.tsx
-msgid "Loading cover letter…"
-msgstr "Nalaganje spremnega pisma…"
 
 #: src/features/documents/thumbnail.tsx
 msgid "Loading letter…"
@@ -6272,6 +6377,7 @@ msgstr "Nalaganje …"
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -6586,8 +6692,7 @@ msgstr "Isto jutro · 08:00 po lokalnem času"
 msgid "Morning of runs at 08:00, or two hours before interviews starting before 10:00."
 msgstr "»Isto jutro« se izvede ob 08:00 ali dve uri pred razgovori, ki se začnejo pred 10:00."
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Moss"
 msgstr "Mah"
 
@@ -6747,6 +6852,7 @@ msgstr "Premik v »Prijavljeno« zahteva podatek o tem, kaj ste dejansko poslali
 #: src/features/documents/new-document.tsx
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/fields.ts
 msgid "Name"
@@ -6799,8 +6905,8 @@ msgstr "Poimenovane različice se hranijo, dokler jih ne izbrišete. Tega ni mog
 msgid "Names, tags or applications"
 msgstr "Imena, oznake ali prijave"
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Narrow"
 msgstr "Ozko"
 
@@ -6968,8 +7074,11 @@ msgstr ""
 msgid "No application"
 msgstr "Brez prošnje za delo"
 
-#: src/features/documents/document-sheets.tsx
 #: src/features/letters/write.tsx
+msgid "No applications yet"
+msgstr "Prijav za delo še ni"
+
+#: src/features/documents/document-sheets.tsx
 msgid "No applications yet. Add one in Applications first."
 msgstr "Prijav za delo še ni. Najprej jo dodajte v Prijavah."
 
@@ -7021,6 +7130,10 @@ msgstr "Brez datuma"
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "Datumov ni bilo mogoče najti."
+
+#: src/features/share/custom-domain.tsx
+msgid "No domain is connected anymore. Pull to refresh."
+msgstr ""
 
 #: src/features/assistant/threads.tsx
 msgid "no edits"
@@ -7158,10 +7271,6 @@ msgstr "Brez odgovora"
 msgid "No results"
 msgstr "Ni rezultatov"
 
-#: src/features/letters/write.tsx
-msgid "No resume"
-msgstr "Brez življenjepisa"
-
 #: src/auth/messages.ts
 msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
 msgstr "Na tem naslovu ni odgovoril noben strežnik Rezumi. Preverite črkovanje ali vprašajte skrbnika, ali strežnik dovoljuje prijavo v aplikacijo."
@@ -7238,8 +7347,8 @@ msgstr ""
 msgid "None of your AI connections can transcribe speech (OpenAI, Google Gemini, Mistral, xAI, Groq or Vercel AI Gateway can). Add one, or type your answer."
 msgstr "Nobena od vaših povezav AI ne more prepisati govora (OpenAI, Google Gemini, Mistral, xAI, Groq ali Vercel AI Gateway lahko). Dodajte enega ali vnesite svoj odgovor."
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Normal"
 msgstr "normalno"
 
@@ -7413,8 +7522,7 @@ msgstr "Oštevilčen seznam"
 msgid "Observation"
 msgstr "Opažanje"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Ochre"
 msgstr "Oker"
 
@@ -7433,10 +7541,6 @@ msgstr "Izklopljeno. Vklopite, da vas bodo kadroviki našli v iskalniku Google."
 #: src/features/share/link.tsx
 msgid "Off. Only you can see this resume."
 msgstr "Izključeno. Samo vi lahko vidite ta življenjepis."
-
-#: src/features/letters/write.tsx
-msgid "Off. The letter keeps its own copy of your details."
-msgstr "Izključeno. Pismo hrani lastno kopijo vaših podatkov."
 
 #: src/features/applications/stages.ts
 #: src/features/onboarding/intro-screen.tsx
@@ -7709,10 +7813,6 @@ msgstr "Ali s svojimi besedami ..."
 msgid "Organization"
 msgstr "Organizacija"
 
-#: src/features/ats-checker/checker.tsx
-msgid "Original page"
-msgstr "Originalna stran"
-
 #: src/features/entries/rich-text-field.tsx
 msgid "Original table formatting is kept. This text is read-only because it can't be edited safely here."
 msgstr ""
@@ -7759,9 +7859,14 @@ msgstr "Zastarelo: besedilo se je od takrat spremenilo."
 msgid "Outcome"
 msgstr "Rezultat"
 
+#: src/features/share/custom-domain.tsx
+msgid "Ownership proven"
+msgstr ""
+
 #: app/builder/[id]/_layout.tsx
 #: app/builder/[id]/page.tsx
 #: app/letter/[id]/_layout.tsx
+#: src/features/ats-checker/checker.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -7772,6 +7877,7 @@ msgstr "Stran"
 #. placeholder {0}: index + 1
 #. placeholder {0}: item.page + 1
 #. placeholder {0}: page.index + 1
+#: src/features/ats-checker/original-page.tsx
 #: src/features/design/layout-screen.tsx
 #: src/features/letters/page.tsx
 #: src/features/write/entry-sheet.tsx
@@ -7987,6 +8093,7 @@ msgid "Personal website"
 msgstr ""
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -8093,8 +8200,7 @@ msgstr ""
 msgid "Play recording"
 msgstr "Predvajanje posnetka"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Plum"
 msgstr "Sliva"
 
@@ -8325,8 +8431,7 @@ msgstr ""
 msgid "Product designer"
 msgstr ""
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Professional"
 msgstr "Profesionalen"
 
@@ -9056,7 +9161,6 @@ msgstr "Rezultat"
 #: src/features/applications/add-sheet.tsx
 #: src/features/documents/library.tsx
 #: src/features/home/recent-documents.tsx
-#: src/features/letters/write.tsx
 msgid "Resume"
 msgstr "Življenjepis"
 
@@ -9386,8 +9490,7 @@ msgstr "Sega na stran {0}"
 msgid "Russian"
 msgstr "ruščina"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Rust"
 msgstr "Rja"
 
@@ -9713,6 +9816,10 @@ msgstr "Razdelki · naročilo tiskanja"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "Razdelki uporabljajo naslove, ki jih sistemi prepoznajo, delovne izkušnje pa so vidne."
 
+#: src/features/share/custom-domain.tsx
+msgid "See plans"
+msgstr ""
+
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr ""
@@ -9743,6 +9850,10 @@ msgstr "Izberite vnos {0}"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "Izberi vidne"
+
+#: src/features/share/export-options.tsx
+msgid "Selected"
+msgstr ""
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -9780,10 +9891,6 @@ msgstr "Pošljite kar sam življenjepis, ne ovoja v obliki portfelja."
 #: src/features/assistant/tool-approvals.tsx
 msgid "Send this exact query to your web search provider?"
 msgstr ""
-
-#: src/features/letters/write.tsx
-msgid "Sender details copied into the letter"
-msgstr "Podatki o pošiljatelju so kopirani v pismo"
 
 #: src/features/ai/report-content.tsx
 #: src/features/auth/check-email-screen.tsx
@@ -9873,6 +9980,10 @@ msgstr "Nastavitev ponudnika AI"
 #: src/features/career/schedule-sheet.tsx
 msgid "Set up web search in Settings to find roles."
 msgstr "Za iskanje delovnih mest nastavite spletno iskanje v Nastavitvah."
+
+#: src/features/share/custom-domain.tsx
+msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
+msgstr ""
 
 #: app/account/index.tsx
 #: src/features/application-detail/interview-sheet.tsx
@@ -9964,6 +10075,14 @@ msgstr "Kratko in direktno. V redu, če objava za delo zahteva kratkost."
 #: src/features/assistant/assistant-screen.tsx
 msgid "Short and polite, for the recruiter"
 msgstr "Kratko in vljudno, za zaposlovalca"
+
+#: src/features/share/web-page.tsx
+msgid "Short link"
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Short link · opens your portfolio"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Short link and domain"
@@ -10473,6 +10592,10 @@ msgid "Start the resume with your name on its own line."
 msgstr "Življenjepis začnite z imenom v svoji vrstici."
 
 #: src/features/letters/write.tsx
+msgid "Start typing, or draft from what we know: the {company} posting and your Profile."
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Start typing, or draft from what we know: the {company} posting and your resume."
 msgstr "Začnite tipkati ali pripraviti osnutek tega, kar vemo: delovno mesto {company} in vaš življenjepis."
 
@@ -10481,12 +10604,16 @@ msgid "Start typing, or draft from what we know: the {company} posting."
 msgstr "Začnite tipkati ali osnutek iz tega, kar vemo: delovno mesto {company}."
 
 #: src/features/letters/write.tsx
+msgid "Start typing, or draft from what we know: your Profile."
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Start typing, or draft from what we know: your resume."
 msgstr "Začnite tipkati ali osnutek tega, kar vemo: vašega življenjepisa."
 
 #: src/features/letters/write.tsx
-msgid "Start typing. To draft one, link a resume or an application first."
-msgstr "Začni tipkati. Če ga želite sestaviti, najprej povežite življenjepis ali prošnjo za zaposlitev."
+msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
+msgstr ""
 
 #: src/features/write/outline.tsx
 msgid "Start with the sections most resumes have."
@@ -10511,6 +10638,10 @@ msgstr "Začne se čez {minutes} min"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
 msgstr "Začne se zdaj"
+
+#: src/features/share/link.tsx
+msgid "Statistics need a connection."
+msgstr ""
 
 #: src/features/documents/new-document.tsx
 msgid "Stay in Documents"
@@ -10781,8 +10912,7 @@ msgstr "Ciljne vloge"
 msgid "Task"
 msgstr "Naloga"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Teal"
 msgstr "Modrozelena"
 
@@ -10820,6 +10950,10 @@ msgstr "teluguščina"
 #: src/features/letters/design.tsx
 msgid "Template"
 msgstr "Predloga"
+
+#: src/features/letters/design.tsx
+msgid "Template and type"
+msgstr ""
 
 #. placeholder {0}: templateName(template)
 #: src/features/design/draft.ts
@@ -10859,6 +10993,7 @@ msgid "Testing…"
 msgstr "Testiranje…"
 
 #: src/features/applications/add-sheet.tsx
+#: src/features/ats-checker/checker.tsx
 #: src/features/write/fields.ts
 msgid "Text"
 msgstr "Besedilo"
@@ -11010,6 +11145,10 @@ msgstr "Povezave ni bilo mogoče naložiti ali shraniti. Poskusite znova."
 msgid "The current state will be saved as “Before restore” first."
 msgstr "Trenutno stanje bo najprej shranjeno kot »Pred obnovitvijo«."
 
+#: src/features/share/custom-domain.tsx
+msgid "The domain changed while it was being checked. Check it again."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "The editor opens on Check, which checks the imported resume again."
 msgstr "Urejevalnik se odpre v Preverjanju, ki znova preveri uvoženi življenjepis."
@@ -11034,6 +11173,10 @@ msgstr "Ponovni stik je shranjen. Za opomnik dovolite obvestila v nastavitvah na
 #: src/features/letters/write.tsx
 msgid "The greeting follows the name."
 msgstr "Pozdrav sledi imenu."
+
+#: src/features/share/custom-domain.tsx
+msgid "The HTTPS certificate couldn't be issued. Make sure the DNS records are still there, then check again."
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
@@ -11111,6 +11254,10 @@ msgstr "Zapisi še niso vidni. Preverite znova pozneje."
 #: src/features/ats-checker/checker.tsx
 msgid "The rest of the file isn't in this report."
 msgstr "Preostanek datoteke ni v tem poročilu."
+
+#: src/features/letters/write.tsx
+msgid "the resume"
+msgstr "življenjepis"
 
 #: src/features/history/history.tsx
 msgid "The resume as it is"
@@ -11293,6 +11440,22 @@ msgstr "Ta dokument je zaklenjen. Še vedno lahko prenesete in poimenujete razli
 msgid "This document is no longer available. Refresh and try again."
 msgstr "Ta dokument ni več na voljo. Osvežite in poskusite znova."
 
+#: src/features/share/custom-domain.tsx
+msgid "This domain can't be connected. Try a subdomain such as www."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain has been blocked and can't be connected. Contact support if you think that's wrong."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain needs your attention. See what's below."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain no longer points to Rezumi. Put its CNAME record back, then check again."
+msgstr ""
+
 #: src/api/ai-consent.ts
 msgid "This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs."
 msgstr "To omogoča ponavljajočo se obdelavo, medtem ko je urnik vklopljen, z uporabo izbranih ponudnikov vašega strežnika. Izklopite urnik, da ustavite prihodnja izvajanja."
@@ -11429,6 +11592,7 @@ msgstr "To pismo in vaš življenjepis kot dva PDF-ja z ujemajočima imenoma."
 msgid "This letter changed elsewhere"
 msgstr "To spremno pismo se je spremenilo drugje"
 
+#: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
 msgid "This letter is locked. Unlock it in Documents to edit."
 msgstr "To pismo je zaklenjeno. Za urejanje ga odklenite v Dokumentih."
@@ -11436,6 +11600,10 @@ msgstr "To pismo je zaklenjeno. Za urejanje ga odklenite v Dokumentih."
 #: src/features/letters/write.tsx
 msgid "This letter keeps its recipient as written."
 msgstr "To pismo ohrani svojega prejemnika, kot je bilo napisano."
+
+#: src/features/letters/write.tsx
+msgid "This letter only"
+msgstr ""
 
 #: src/features/auth/reset-password-screen.tsx
 msgid "This link has expired"
@@ -11736,8 +11904,7 @@ msgstr ""
 msgid "Track in Applications"
 msgstr "Spremljaj v Prijavah"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Traditional"
 msgstr "Tradicionalno"
 
@@ -11893,7 +12060,6 @@ msgstr "Preverjanje v dveh korakih"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
-#: src/features/letters/design.tsx
 #: src/features/profile/facts-add.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "Type"
@@ -12179,14 +12345,6 @@ msgstr ""
 msgid "Use default"
 msgstr "Uporabi privzeto"
 
-#: src/features/letters/write.tsx
-msgid "Use details from “{resumeName}”"
-msgstr "Uporabi podatke iz »{resumeName}«"
-
-#: src/features/letters/write.tsx
-msgid "Use details from the resume"
-msgstr "Uporabi podatke iz življenjepisa"
-
 #: src/features/profile/facts-detail.tsx
 msgid "Use for all applications"
 msgstr "Uporabi za vse prijave"
@@ -12284,6 +12442,10 @@ msgstr "Uporabite tega ponudnika"
 msgid "Use this time"
 msgstr "Izkoristi ta čas"
 
+#: src/features/share/custom-domain.tsx
+msgid "Use www.{hostname}"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Use your editor's normal bullet list, so stray glyphs do not land mid-sentence."
 msgstr "Uporabite navaden alinejni seznam svojega urejevalnika, da se naključni znaki ne znajdejo sredi stavka."
@@ -12373,6 +12535,10 @@ msgstr "Poslana različica {date}"
 msgid "Version sent {date} · Check {0}"
 msgstr "Poslana različica {date} · Preverite {0}"
 
+#: src/features/letters/share.tsx
+msgid "Versions"
+msgstr "Različice"
+
 #: src/features/design/advanced.tsx
 msgid "Vertical margin"
 msgstr "Navpični rob"
@@ -12443,6 +12609,10 @@ msgstr "Nastavitve glasu"
 msgid "Volunteer"
 msgstr "Prostovoljec"
 
+#: src/features/share/custom-domain.tsx
+msgid "Waiting"
+msgstr ""
+
 #. placeholder {0}: waitingFor.join(", ")
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Waiting for {0}…"
@@ -12455,6 +12625,10 @@ msgstr "Čaka na vas"
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
 msgstr "Čakam na odgovor"
+
+#: src/features/share/custom-domain.tsx
+msgid "We can't set up more domains right now. The problem is on our side, and your domain connects by itself once it's solved."
+msgstr ""
 
 #: src/features/onboarding/source-fields.tsx
 msgid "We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
@@ -12508,6 +12682,7 @@ msgid "Web searches look for work here, up to three countries."
 msgstr "Spletno iskanje išče službe v teh državah. Izberite do tri države."
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Website"
@@ -12709,8 +12884,8 @@ msgstr "S kom se boste srečali"
 msgid "Why do you want this role at {company}?"
 msgstr "Zakaj želite to vlogo v podjetju {company}?"
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Wide"
 msgstr "Široko"
 
@@ -13028,6 +13203,14 @@ msgstr "Vaši datumi so zapisani na več različnih načinov."
 msgid "Your details"
 msgstr ""
 
+#: src/features/letters/write.tsx
+msgid "Your details from"
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your details were copied into the letter. Edit them here."
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Your document was saved. Review it in the editor."
 msgstr "Vaš dokument je bil shranjen. Preglejte ga v urejevalniku."
@@ -13035,6 +13218,18 @@ msgstr "Vaš dokument je bil shranjen. Preglejte ga v urejevalniku."
 #: src/features/share/custom-domain.tsx
 msgid "Your domain"
 msgstr "Vaša domena"
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain now goes to your Rezumi address"
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain stops opening your page right away. To connect it again, its DNS is checked and HTTPS is set up again, which can take a while."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain stops working on {until}"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Your email address is broken across pieces of text."
@@ -13086,9 +13281,14 @@ msgstr "vaše sporočilo"
 msgid "Your name"
 msgstr "Vaše ime"
 
+#. placeholder {0}: resumeName ?? t`the resume`
 #: src/features/letters/write.tsx
-msgid "Your name and contact details come from a resume."
-msgstr "Vaše ime in kontaktni podatki so iz življenjepisa."
+msgid "Your name and contact details follow “{0}”."
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your name and contact details follow your Profile."
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
@@ -13139,6 +13339,7 @@ msgid "Your own fonts aren't in your plan. Fonts already added keep working on t
 msgstr ""
 
 #: src/features/billing/plan-alert.ts
+#: src/features/share/custom-domain.tsx
 msgid "Your page keeps its address on Rezumi."
 msgstr ""
 
@@ -13151,6 +13352,10 @@ msgstr "Vaša telefonska številka je zapisana v nenavadni obliki."
 msgid "Your plan"
 msgstr ""
 
+#: src/features/share/custom-domain.tsx
+msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
+msgstr ""
+
 #: app/(tabs)/portfolio/index.tsx
 msgid "Your portfolio is coming to the app"
 msgstr ""
@@ -13161,6 +13366,10 @@ msgstr "vaše želje"
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "your Profile"
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your Profile"
 msgstr ""
 
 #: src/features/profile/bring-screen.tsx
@@ -13198,6 +13407,14 @@ msgstr "vašega ponudnika"
 #: src/features/settings/profile.tsx
 msgid "Your public links begin with {server}/"
 msgstr "Vaše javne povezave se začnejo z {server}/"
+
+#: src/features/share/web-page.tsx
+msgid "Your published portfolio opens at your short link and custom domain."
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Your published portfolio opens at your short link and custom domain. This resume is shown there if the portfolio is unpublished."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "Your recording goes to {transcriberName} after you stop, to be transcribed. Your provider may charge. The server keeps transcripts, never recordings."
@@ -13250,10 +13467,9 @@ msgstr ""
 msgid "Your session expired. Sign in again."
 msgstr "Vaša seja je potekla. Ponovno se prijavite."
 
-#. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx
-msgid "Your short link and custom domain open “{0}”."
-msgstr "Vaša kratka povezava in lastna domena odpreta „{0}“."
+msgid "Your short link and custom domain open “{otherPrimary}”."
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Your short link and custom domain open this resume."

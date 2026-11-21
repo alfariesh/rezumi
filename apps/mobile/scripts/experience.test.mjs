@@ -66,6 +66,7 @@ const mocks = {
 	"@lingui/core/macro": { t: tag, plural: (value, forms) => forms.other.replace("#", String(value)) },
 	"@/routes": { routes },
 	"@/ui-legacy": ui,
+	"@/ui": ui,
 	"@/ui-legacy/use-pull-refresh": { usePullRefresh: () => ({ refreshing: false, onRefresh: () => undefined }) },
 	"react-native-reanimated": {
 		View: "Animated.View",
@@ -113,17 +114,6 @@ const control = (tree, label) => {
 	assert.ok(found, `Missing user action: ${label}`);
 	return found.props;
 };
-const settle = async () => {
-	for (let index = 0; index < 20; index++) await Promise.resolve();
-};
-
-const resume = { id: "resume-a", name: "Fictional resume", data: { basics: { name: "Alex Example" } } };
-let state = { document: resume, status: "saved", conflict: null, flush: async () => calls.push("flush") };
-const draftBoundary = {
-	useResumeStore: { getState: () => state },
-	useLetterStore: { getState: () => ({ document: null }) },
-};
-const document = load("features/share/document.ts", { "@/draft": draftBoundary });
 const { safeFileName } = load("features/share/model.ts");
 const exportedBytes = new Uint8Array([1, 2, 3]);
 const translatedLetterWords = {
@@ -174,110 +164,7 @@ for (const format of ["docx", "odt", "md", "json"]) {
 		"Localized letter exports must use OpenAPI object query parameters",
 	);
 }
-let rejectExport = false;
-let releaseExport;
-let holdExport = false;
-const exportBoundary = {
-	exportDirectory: () => "cache-batch",
-	exportFile: async (options) => {
-		calls.push({ export: options });
-		if (holdExport) await new Promise((resolve) => (releaseExport = resolve));
-		if (rejectExport) throw new Error("Export unavailable");
-		return { uri: "file://fictional-resume.pdf" };
-	},
-	shareExport: async (file, format) => calls.push({ shared: format, uri: file.uri }),
-	printResume: async () => calls.push("print"),
-};
-const { DownloadTab } = load("features/share/download.tsx", {
-	"expo-web-browser": { openBrowserAsync: async (url) => calls.push({ browser: url }) },
-	"@rezumi/resume/ats": { lintResumeForAts: () => ({ findings: [] }) },
-	"@rezumi/resume/cover-letter": {},
-	"./document": document,
-	"./files": exportBoundary,
-	"./letter": {},
-	"./model": { safeFileName },
-	"@/api/client": { client: {} },
-	"@/features/billing/plan": {
-		canShowPlans: () => true,
-		hasPlanFeature: () => true,
-		showPlanAlert: () => {},
-		usePlan: () => undefined,
-	},
-	"@/draft": draftBoundary,
-	"@/features/applications/queries": { useApplications: () => ({ data: [] }) },
-});
-const { ExportScreen } = load("features/share/export-screen.tsx", {
-	"expo-network": { useNetworkState: () => ({ isConnected: true }) },
-	"react-native-safe-area-context": { SafeAreaProvider: "SafeAreaProvider", SafeAreaView: "SafeAreaView" },
-	"./document": { useShareDocument: () => state },
-	"./download": { DownloadTab },
-	"@/auth/session": { useSession: () => ({ status: "signed-in" }) },
-	"@/features/document-menu": { DocumentMenu: "DocumentMenu" },
-	"@/features/history/history": { HistoryPanel: "HistoryPanel" },
-});
-reset();
-let tree = render(ExportScreen, { id: resume.id });
-assert.equal(control(tree, "Download & history").value, "download", "Ordinary sharing must start with the file action");
-assert.ok(nodes(tree).some((node) => node.type === DownloadTab));
-reset();
-tree = render(ExportScreen, { id: resume.id, history: true });
-assert.equal(control(tree, "Download & history").value, "history", "Explicit version history keeps its destination");
-
-reset();
-tree = render(DownloadTab, { resume, offline: false });
-assert.equal(control(tree, "File name").value, "Alex Example-Resume");
-holdExport = true;
-control(tree, "Share PDF").onPress();
-control(tree, "Share PDF").onPress();
-await settle();
-assert.equal(calls.filter((call) => call?.export).length, 1, "Repeated taps must not duplicate generation");
-releaseExport();
-await settle();
-holdExport = false;
-assert.equal(calls.filter((call) => call?.shared === "pdf").length, 1);
-assert.equal(calls.find((call) => call?.export).export.name, "Alex Example-Resume");
-tree = render(DownloadTab, { resume, offline: false });
-control(tree, "Print").onPress();
-await settle();
-
-reset();
-state = {
-	...state,
-	status: "offline",
-	flush: async () => {
-		throw new Error("Offline must not wait for a save");
-	},
-};
-tree = render(DownloadTab, { resume, offline: true });
-control(tree, "Share PDF").onPress();
-await settle();
-assert.equal(calls.filter((call) => call?.shared === "pdf").length, 1, "Local PDF must remain available offline");
-
-reset();
-state = { ...state, status: "error", flush: async () => undefined };
-tree = render(DownloadTab, { resume, offline: false });
-control(tree, "Share PDF").onPress();
-await settle();
-assert.equal(calls.filter((call) => call?.export).length, 0, "An unsaved online document must not export stale text");
-
-reset();
-state = { ...state, status: "saved" };
-tree = render(DownloadTab, { resume, offline: false });
-control(tree, "File format").onChange("docx");
-tree = render(DownloadTab, { resume, offline: false });
-rejectExport = true;
-control(tree, "Download DOCX").onPress();
-await settle();
-tree = render(DownloadTab, { resume, offline: false });
-assert.ok(nodes(tree).some((node) => node.props.message === "Export unavailable"));
-rejectExport = false;
-control(tree, "Share PDF instead").onPress();
-await settle();
-assert.equal(
-	calls.filter((call) => call?.shared === "pdf").length,
-	1,
-	"Failed alternate format retains a working PDF fallback",
-);
+// Download and Export are rebuilt on src/ui and tested with Jest (src/features/share/download.test.tsx).
 
 const stages = load("features/applications/stages.ts");
 const nextSteps = load("features/applications/next-step.ts", { "./stages": stages });
@@ -318,7 +205,7 @@ const application = {
 	followUpAt: null,
 };
 reset();
-tree = render(StageStepper, { application, onMarkApplied: () => calls.push("mark-applied") });
+let tree = render(StageStepper, { application, onMarkApplied: () => calls.push("mark-applied") });
 assert.equal(
 	nodes(tree).filter((node) => node.props.accessibilityRole === "tab").length,
 	0,

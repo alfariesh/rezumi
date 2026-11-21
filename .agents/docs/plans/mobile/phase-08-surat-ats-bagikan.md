@@ -33,3 +33,7 @@
 
 - Surat, ATS, Bagikan, Ekspor setara web di dua platform.
 - Butir terkait surat dan domain di "Feature parity exceptions" dihapus.
+
+## Kemajuan
+
+- **2026-11-21, sesi 1:** langkah 1–6 selesai di atas `src/ui`, kecuali kerangka editor surat (bar mode, judul, status simpan), yang ikut Phase 07 langkah 8 karena Phase 07 baru selesai bagian 1. Hasil teknis: `02-teknis.md` 20. Sisa: Maestro dan cek Android (ditunda pemilik), domain kustom dilihat di simulator dengan server yang menyalakan fiturnya.

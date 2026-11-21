@@ -11,7 +11,7 @@ import { LetterShareSheet } from "@/features/letters/share";
 import { routes } from "@/routes";
 import { BuilderChrome, useBuilderChrome } from "@/shell/builder-chrome";
 import { useKeyCommands } from "@/shell/key-commands";
-import { IconButton } from "@/ui-legacy";
+import { IconButton } from "@/ui";
 
 /** Fills the chrome from the draft once for every pane: name and save status. ⌘Z / ⇧⌘Z undo and redo. */
 function DraftChrome({ id }: { id: string }) {

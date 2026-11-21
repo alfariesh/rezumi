@@ -1,10 +1,8 @@
 import type { DesignWrite } from "./draft";
 import type { PickerSpec } from "./picker";
-import type { MessageDescriptor } from "@lingui/core";
-import type { DensityId, FontPairingId, MarginId } from "@rezumi/resume/design-presets";
+import type { DensityId, MarginId } from "@rezumi/resume/design-presets";
 import type { EntryHeader, IconDesign, IconStyle, ResumeData } from "@rezumi/schema/resume/data";
 import type { Locale } from "@rezumi/utils/locale";
-import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { Pressable, TextInput, View } from "react-native";
@@ -30,6 +28,7 @@ import {
 import { entryHeaderLayouts, entryHeaderOf, iconDesignOf } from "@rezumi/schema/resume/data";
 import { localeSchema } from "@rezumi/utils/locale";
 import { Field, Slider, SwitchRow } from "./controls";
+import { ACCENT_NAMES, PAIRING_NAMES } from "./preset-names";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { localeMap } from "@/features/settings/locale-names";
 import { Button, Icon, IconButton, Segmented, Text, haptics, listLayout, useTheme } from "@/ui-legacy";
@@ -40,25 +39,6 @@ export type GroupProps = {
 	disabled: boolean;
 	/** Pushes a searchable list over the sheet. */
 	pick: (spec: PickerSpec) => void;
-};
-
-const PAIRING_NAMES: Record<FontPairingId, MessageDescriptor> = {
-	classic: msg`Classic`,
-	traditional: msg`Traditional`,
-	balanced: msg`Balanced`,
-	professional: msg`Professional`,
-	clean: msg`Clean`,
-};
-
-const ACCENT_NAMES: Record<(typeof ACCENTS)[number]["hex"], MessageDescriptor> = {
-	"#3E6B4F": msg`Moss`,
-	"#2F5A8A": msg`Ink blue`,
-	"#1F6E73": msg`Teal`,
-	"#6B3E6E": msg`Plum`,
-	"#A0442A": msg`Rust`,
-	"#8A2C3F": msg`Burgundy`,
-	"#7A5A12": msg`Ochre`,
-	"#3B3F45": msg`Graphite`,
 };
 
 const familiesLabel = (heading: string, body: string) => (heading === body ? heading : `${heading} + ${body}`);
@@ -381,13 +361,13 @@ export function ColorGroup({ data, write, disabled }: GroupProps) {
 				accessibilityLabel={t`Accent color`}
 				style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: space.s3 }}
 			>
-				{ACCENTS.map(({ hex }) => {
+				{ACCENTS.map(({ hex, label }) => {
 					const selected = hex === current;
 					return (
 						<Pressable
 							key={hex}
 							accessibilityRole="radio"
-							accessibilityLabel={i18n._(ACCENT_NAMES[hex])}
+							accessibilityLabel={i18n._(ACCENT_NAMES[label])}
 							accessibilityState={{ checked: selected, disabled }}
 							disabled={disabled}
 							onPress={() => {

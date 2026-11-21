@@ -47,3 +47,26 @@ export function formatTimeSince(date: Date, locale: string, now = Date.now()) {
 	const { unit, ms } = UNITS.find(({ ms, below }) => elapsed / ms < below) ?? UNITS[4];
 	return new Intl.NumberFormat(locale, { style: "unit", unit, unitDisplay: "narrow" }).format(Math.floor(elapsed / ms));
 }
+
+type PortfolioVisibility = { isPublic: boolean; suspendedAt: Date | string | null };
+
+/**
+ * Whether visitors can open the portfolio: published and not taken down. The server decides the same way before it
+ * serves the page (`portfolioOwnsProfilePath`), so no screen calls a page live that answers "not found".
+ */
+export function isPortfolioLive(portfolio: PortfolioVisibility | null | undefined): boolean {
+	return Boolean(portfolio?.isPublic && !portfolio.suspendedAt);
+}
+
+/** `portfolio.status`, the part Share reads. */
+type PortfolioState = { enabled: boolean; portfolio: PortfolioVisibility | null } | null;
+
+/**
+ * Whether the account's published portfolio holds the short link (`/<username>`) and custom domain, the way the
+ * server decides it (`portfolioOwnsProfilePath`): portfolios are open to the account, and its portfolio is live
+ * (published and not taken down). While portfolios are switched off this is always false, and Share reads as it
+ * always has.
+ */
+export function portfolioHoldsShortLink(state: PortfolioState | undefined): boolean {
+	return Boolean(state?.enabled && isPortfolioLive(state.portfolio));
+}

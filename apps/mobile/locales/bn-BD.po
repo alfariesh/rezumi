@@ -307,6 +307,11 @@ msgstr "{0, plural, one {আপনার নির্বাচিত ফন্�
 msgid "{0} · Not scored"
 msgstr "{0} · স্কোর করা হয়নি"
 
+#. placeholder {0}: option.label
+#: src/features/share/export-options.tsx
+msgid "{0} · Plus"
+msgstr ""
+
 #. placeholder {0}: data.equity
 #: src/features/career/offers.tsx
 msgid "{0} · Value uncertain"
@@ -575,6 +580,10 @@ msgstr "5টির মধ্যে {filled}টি অংশ"
 msgid "{followUps, plural, one {# follow-up} other {# follow-ups}}"
 msgstr "{followUps, plural, one {# ফলো-আপ} other {#টি ফলো-আপ}}"
 
+#: src/features/share/custom-domain.tsx
+msgid "{hostname} needs a CNAME at the root, which many providers don't allow. If yours doesn't, connect www.{hostname} and forward {hostname} to it where you manage the domain."
+msgstr ""
+
 #: src/features/home/coming-up.tsx
 msgid "{hours, plural, one {In # hour} other {In # hours}}"
 msgstr ""
@@ -697,8 +706,8 @@ msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} টেক্সটে শেষ আসে। অধিকাংশ সিস্টেম এখনও তাদের খুঁজে; কিছু না."
 
 #: src/features/letters/write.tsx
-msgid "{pairing} type"
-msgstr "{pairing} প্রকার"
+msgid "{pairingName} type"
+msgstr ""
 
 #: src/features/assistant/page-marks.tsx
 msgid "{pending, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
@@ -834,6 +843,10 @@ msgstr ""
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
 msgstr "এই চিঠির একটি ব্যাকআপ. একটি চিঠি হিসাবে Rezumi এ আবার আমদানি করে।"
 
+#: src/features/share/custom-domain.tsx
+msgid "A CAA record on this domain blocks its HTTPS certificate. Remove that record or allow the certificate authority, then check again."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "A city and country let roles be matched to where you are."
 msgstr "একটি শহর এবং দেশ আপনি যেখানে আছেন তার সাথে ভূমিকা মেলে।"
@@ -857,6 +870,10 @@ msgstr "একটি তারিখ পরিসর এমন ফর্মে �
 #: src/features/check/issues.ts
 msgid "A date won't be read"
 msgstr "একটি তারিখ পড়া হবে না"
+
+#: src/features/share/custom-domain.tsx
+msgid "A domain without www needs a DNS provider that allows it"
+msgstr ""
 
 #: src/features/profile/stories-reader.tsx
 #: src/features/profile/stories.tsx
@@ -910,6 +927,10 @@ msgstr ""
 #: src/features/application-detail/sheets.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "চেক ইন করার জন্য একটি অনুস্মারক, আপনি না করা পর্যন্ত পরবর্তী পদক্ষেপ হিসাবে দেখানো হয়েছে৷"
+
+#: src/features/letters/write.tsx
+msgid "A resume"
+msgstr ""
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "A resume in minutes"
@@ -1001,6 +1022,10 @@ msgstr "কর্ম"
 #: src/features/applications/list-screen.tsx
 msgid "Actions for {0} at {1}"
 msgstr "{1} এ {0}-এর জন্য অ্যাকশন"
+
+#: src/features/share/custom-domain.tsx
+msgid "Active"
+msgstr "সক্রিয়"
 
 #: app/account/membership.tsx
 msgid "Active cover letters"
@@ -1218,6 +1243,10 @@ msgstr "পৃষ্ঠা 1 এ যোগ করুন"
 #: src/features/write/fields.ts
 msgid "Add language"
 msgstr "ভাষা যোগ করুন"
+
+#: src/features/letters/write.tsx
+msgid "Add one in Applications first."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -2062,8 +2091,7 @@ msgstr "ব্যাকগ্রাউন্ডের রং"
 msgid "Backup code"
 msgstr "ব্যাকআপ কোড"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Balanced"
 msgstr "সুষম"
 
@@ -2246,8 +2274,7 @@ msgstr "তালিকা এন্ট্রি {n}"
 msgid "Bulleted list"
 msgstr "বুলেটেড তালিকা"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Burgundy"
 msgstr "বারগান্ডি"
 
@@ -2321,8 +2348,8 @@ msgid "Change"
 msgstr "পরিবর্তন"
 
 #: src/features/letters/write.tsx
-msgid "Change it in Design."
-msgstr "এটি ডিজাইনে পরিবর্তন করুন।"
+msgid "Change it in Design"
+msgstr ""
 
 #: src/features/search/search-screen.tsx
 msgid "Change language to…"
@@ -2386,6 +2413,7 @@ msgstr "ATS পরীক্ষক দিয়ে PDF পরীক্ষা ক�
 msgid "Check a sample file"
 msgstr "একটি নমুনা ফাইল চেক করুন"
 
+#: src/features/share/custom-domain.tsx
 #: src/features/workspace/tabs/fit.tsx
 msgid "Check again"
 msgstr "আবার যাচাই করুন"
@@ -2447,6 +2475,8 @@ msgstr "ভিউ পরীক্ষা করুন"
 msgid "Check what we found"
 msgstr ""
 
+#: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/stories.tsx
@@ -2555,8 +2585,8 @@ msgid "Choose a photo smaller than 10 MB."
 msgstr "10 MB এর চেয়ে ছোট একটি ফটো চয়ন করুন৷"
 
 #: src/features/letters/design.tsx
-msgid "Choose a resume in Write to match its design. Until then, the letter has its own."
-msgstr "এর ডিজাইনের সাথে মেলে লিখতে একটি জীবনবৃত্তান্ত চয়ন করুন। ততক্ষণ পর্যন্ত চিঠির নিজস্বতা আছে।"
+msgid "Choose a resume under From in Write to match its design. Until then, the letter has its own."
+msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Choose a tested AI provider before sharing data."
@@ -2631,13 +2661,11 @@ msgstr ""
 msgid "Clarify"
 msgstr "স্পষ্ট করা দরকার"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Classic"
 msgstr "ক্লাসিক"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Clean"
 msgstr "পরিচ্ছন্ন"
 
@@ -2688,13 +2716,19 @@ msgstr "এর এন্ট্রি সাফ করে; বিভাগ থে
 #: src/features/entries/icon-picker.tsx
 #: src/features/entries/photo-field.tsx
 #: src/features/entries/rich-text-field.tsx
+#: src/features/letters/design.tsx
+#: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/profile/career.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/fill-sheet.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/search-regions-field.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/export-screen.tsx
+#: src/features/share/link.tsx
+#: src/features/share/web-page.tsx
 msgid "Close"
 msgstr "বন্ধ"
 
@@ -2857,14 +2891,13 @@ msgstr ""
 msgid "Connect"
 msgstr "কনেক্ট করুন"
 
-#. placeholder {0}: domain.hostname
-#: src/features/share/custom-domain.tsx
-msgid "Connect {0}"
-msgstr "{0} কনেক্ট করুন"
-
 #: src/features/share/custom-domain.tsx
 msgid "Connect {domain}"
 msgstr "{domain} কনেক্ট করুন"
+
+#: src/features/share/custom-domain.tsx
+msgid "Connect {hostname}"
+msgstr ""
 
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -2899,12 +2932,20 @@ msgid "Connected · {milliseconds} ms"
 msgstr "সংযুক্ত · {milliseconds} মি.সে"
 
 #: src/features/share/custom-domain.tsx
+msgid "Connected. Your domain opens your portfolio."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
 msgid "Connected. Your domain opens your primary resume."
 msgstr "সংযুক্ত। আপনার ডোমেইন আপনার প্রধান জীবনবৃত্তান্ত খোলে।"
 
 #: src/features/workspace/parts.tsx
 msgid "Connecting the dots"
 msgstr "সূত্রগুলো মেলানো হচ্ছে"
+
+#: src/features/share/custom-domain.tsx
+msgid "Connection progress"
+msgstr ""
 
 #: app/account/index.tsx
 msgid "Contact & complaints"
@@ -3002,6 +3043,7 @@ msgid "Copied to clipboard"
 msgstr "ক্লিপবোর্ডে কপি করা হয়েছে"
 
 #: src/features/share/custom-domain.tsx
+#: src/features/share/web-page.tsx
 msgid "Copies it"
 msgstr "টেক্সট কপি করে"
 
@@ -3214,9 +3256,12 @@ msgstr "জীবনবৃত্তান্তগুলি লোড করা 
 msgid "Couldn't load statistics."
 msgstr "পরিসংখ্যান লোড করা যায়নি।"
 
+#: src/features/letters/write.tsx
+msgid "Couldn't load the cover letter"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/letters/share.tsx
-#: src/features/letters/write.tsx
 msgid "Couldn't load the cover letter."
 msgstr "কভার লেটারটি লোড করা যায়নি।"
 
@@ -3251,8 +3296,11 @@ msgstr "এটি লোড করা যায়নি। আপনার স�
 msgid "Couldn't load this. Check your connection."
 msgstr ""
 
-#: src/features/history/history.tsx
 #: src/features/letters/share.tsx
+msgid "Couldn't load versions"
+msgstr ""
+
+#: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "সংস্করণ লোড করা যায়নি।"
 
@@ -3555,6 +3603,10 @@ msgstr "জীবনবৃত্তান্তটি আনলক করা য
 msgid "Couldn't unlock this resume. Try again."
 msgstr "এই জীবনবৃত্তান্ত আনলক করা যায়নি. আবার চেষ্টা করুন"
 
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't update sharing. Try again."
+msgstr "শেয়ারিং আপডেট করা যায়নি। আবার চেষ্টা করুন।"
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Couldn't update the application. Nothing was changed; try again."
 msgstr "আবেদনটি আপডেট করা যায়নি। কিছুই পরিবর্তন হয়নি; আবার চেষ্টা করুন।"
@@ -3732,6 +3784,10 @@ msgstr "কাস্টম"
 #: src/features/design/style-groups.tsx
 msgid "Custom color (hex)"
 msgstr "কাস্টম রং (hex)"
+
+#: src/features/share/custom-domain.tsx
+msgid "Custom domains aren't available here."
+msgstr ""
 
 #: src/features/write/basics-screen.tsx
 msgid "Custom fields"
@@ -4118,10 +4174,27 @@ msgstr "আপনার অফলাইন সম্পাদনাগুলি 
 msgid "Discard your offline edits?"
 msgstr "আপনার অফলাইন সম্পাদনাগুলি বাতিল করবেন?"
 
+#: src/features/share/custom-domain.tsx
+msgid "Disconnect"
+msgstr "ডিসকনেক্ট করুন"
+
+#. placeholder {0}: current.hostname
+#: src/features/share/custom-domain.tsx
+msgid "Disconnect {0}?"
+msgstr ""
+
 #: src/features/letters/write.tsx
 #: src/ui-legacy/layout.tsx
 msgid "Dismiss"
 msgstr "খারিজ করুন"
+
+#: src/features/share/custom-domain.tsx
+msgid "DNS is right. HTTPS is being set up, which usually takes a few minutes."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "DNS points to Rezumi"
+msgstr ""
 
 #: src/shell/builder-chrome.tsx
 msgid "Document menu"
@@ -4188,6 +4261,7 @@ msgstr "শেয়ার করবেন না"
 #: src/features/entries/dates-field.tsx
 #: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/write/date-field.tsx
 #: src/features/write/pickers.tsx
 #: src/features/write/rich-text-field.tsx
@@ -4237,12 +4311,9 @@ msgid "Download failed. Try again."
 msgstr "ডাউনলোড ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
 
 #: src/features/letters/share.tsx
-msgid "Download opens the system share sheet. Choose a storage provider to save the file."
-msgstr "ডাউনলোড করলে সিস্টেমের শেয়ার মেনু খোলে। ফাইল সংরক্ষণ করতে স্টোরেজ প্রদানকারী বেছে নিন।"
-
 #: src/features/share/download.tsx
-msgid "Download opens the system share sheet. Choose a storage provider to save the file. A linked letter opens as a second file."
-msgstr "ডাউনলোড সিস্টেম শেয়ার প্যানেল খোলে। ফাইল সংরক্ষণ করতে একটি স্টোরেজ প্রদানকারী চয়ন করুন. একটি লিঙ্কযুক্ত চিঠি একটি দ্বিতীয় ফাইল হিসাবে খোলে।"
+msgid "Download opens the system share sheet. Choose Save to Files or a storage app to keep the file."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Download PDF instead"
@@ -4270,6 +4341,10 @@ msgid "Draft · uses only the posting"
 msgstr "খসড়া · শুধুমাত্র চাকরির পোস্টিং ব্যবহার করে"
 
 #: src/features/letters/write.tsx
+msgid "Draft · uses only your Profile"
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Draft · uses only your resume"
 msgstr "খসড়া · শুধুমাত্র আপনার জীবনবৃত্তান্ত ব্যবহার করে"
 
@@ -4292,6 +4367,10 @@ msgstr "একটি সারসংক্ষেপ খসড়া"
 #: src/features/letters/write.tsx
 msgid "Draft from the posting"
 msgstr "চাকরির পোস্টিং থেকে খসড়া"
+
+#: src/features/letters/write.tsx
+msgid "Draft from your Profile"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Draft from your resume"
@@ -4321,10 +4400,9 @@ msgstr "খসড়া তৈরির জন্য একজন AI প্র�
 msgid "Drafting questions"
 msgstr "প্রশ্নের খসড়া করা হচ্ছে"
 
-#. placeholder {0}: draft.provider
 #: src/features/letters/write.tsx
-msgid "Drafting stopped: {0} didn't respond. Nothing on the page changed."
-msgstr "খসড়া বন্ধ করা হয়েছে: {0} সাড়া দেয়নি। পৃষ্ঠার কিছুই পরিবর্তন হয়নি।"
+msgid "Drafting stopped: {provider} didn't respond. Nothing on the page changed."
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Drafting stopped. Nothing on the page changed."
@@ -4458,6 +4536,7 @@ msgstr ""
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
@@ -4503,6 +4582,10 @@ msgstr "ইংরেজি (যুক্তরাজ্য)"
 #: src/features/assistant/messages.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "উন্নত পড়া অনুপলব্ধ; বিল্ট-ইন রিডার ব্যবহার করা হয়েছে।"
+
+#: src/features/share/custom-domain.tsx
+msgid "Enter a domain such as resume.example.com."
+msgstr ""
 
 #: src/features/profile/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
@@ -4721,6 +4804,7 @@ msgid "Facts"
 msgstr "তথ্যসমূহ"
 
 #: src/features/ai/provider-list.tsx
+#: src/features/share/custom-domain.tsx
 msgid "Failed"
 msgstr "ব্যর্থ হয়েছে"
 
@@ -4753,6 +4837,7 @@ msgstr "ক্ষেত্র সরানো হয়েছে"
 msgid "File attached"
 msgstr "ফাইল সংযুক্ত"
 
+#: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "File format"
 msgstr "ফাইল ফরম্যাট"
@@ -4761,8 +4846,7 @@ msgstr "ফাইল ফরম্যাট"
 msgid "File is too large. Choose a file up to 10 MB."
 msgstr "ফাইলটি খুব বড়। 10 MB পর্যন্ত একটি ফাইল চয়ন করুন৷"
 
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
+#: src/features/share/export-options.tsx
 msgid "File name"
 msgstr "ফাইলের নাম"
 
@@ -4938,10 +5022,9 @@ msgstr "ফন্টের ওজনসমূহ"
 msgid "For"
 msgstr "জন্য"
 
-#. placeholder {0}: domain.target
 #: src/features/share/custom-domain.tsx
-msgid "For a root domain such as example.com, use A and AAAA records with {0}'s addresses instead of the CNAME."
-msgstr "example.com-এর মতো রুট ডোমেইনের জন্য CNAME-এর বদলে {0}-এর ঠিকানাসহ A ও AAAA রেকর্ড ব্যবহার করুন।"
+msgid "For a root domain such as example.com, use A and AAAA records with {target}'s addresses instead of the CNAME."
+msgstr ""
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -5148,8 +5231,7 @@ msgstr "… এ যান"
 msgid "Grade"
 msgstr "গ্রেড"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Graphite"
 msgstr "গ্রাফাইট"
 
@@ -5211,6 +5293,7 @@ msgid "Heading changed"
 msgstr "শিরোনাম পরিবর্তন করা হয়েছে"
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Headline"
@@ -5382,6 +5465,10 @@ msgstr "কিভাবে ফাইল দেখাবেন"
 msgid "How well do I fit this role?"
 msgstr "আমি এই ভূমিকায় কতটা উপযুক্ত?"
 
+#: src/features/share/custom-domain.tsx
+msgid "HTTPS certificate"
+msgstr ""
+
 #: src/features/settings/locale-names.ts
 msgid "Hungarian"
 msgstr "হাঙ্গেরিয়ান"
@@ -5453,6 +5540,10 @@ msgstr "যদি এটি স্ক্যান থেকে এসে থা�
 msgid "If the web is used, search terms go to your server's search service and links go to the sites being read."
 msgstr ""
 
+#: src/features/share/custom-domain.tsx
+msgid "If your DNS is on Cloudflare, set the CNAME record to DNS only (grey cloud)."
+msgstr ""
+
 #: src/features/check/screen.tsx
 msgid "Ignore"
 msgstr "উপেক্ষা করুন"
@@ -5519,6 +5610,7 @@ msgid "Improving…"
 msgstr "উন্নতি হচ্ছে..."
 
 #: src/features/billing/credits.ts
+#: src/features/share/custom-domain.tsx
 msgid "In progress"
 msgstr ""
 
@@ -5546,8 +5638,7 @@ msgstr "ইন্দোনেশিয়ান"
 msgid "Inferred"
 msgstr "অনুমিত"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Ink blue"
 msgstr "কালি নীল"
 
@@ -5665,6 +5756,10 @@ msgstr "এটিতে এন্ট্রি আছে কিন্তু এ�
 msgid "It may have been removed on another device."
 msgstr ""
 
+#: src/features/share/download.tsx
+msgid "It opens as a second file."
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "It starts with your Profile. You can switch templates any time."
 msgstr ""
@@ -5779,6 +5874,14 @@ msgstr "দুটোই রাখুন"
 msgid "Keep editing"
 msgstr "সম্পাদনা চালিয়ে যান"
 
+#: src/features/share/web-page.tsx
+msgid "Keep it as it is"
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Keep it connected"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Keep it honest"
 msgstr "সৎ থাকুন"
@@ -5812,6 +5915,14 @@ msgstr "জীবনবৃত্তান্তের কনটেন্ট ট�
 msgid "Keep running heads short, or drop them. They repeat in the extracted text too."
 msgstr "রানিং হেড সংক্ষিপ্ত রাখুন, অথবা বাদ দিন। এগুলো এক্সট্র্যাক্ট করা টেক্সটেও পুনরাবৃত্তি হয়।"
 
+#: src/features/letters/share.tsx
+msgid "Keep the current letter"
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Keep the password"
+msgstr ""
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "Keep the recording on this device so I can share it"
 msgstr "এই ডিভাইসে রেকর্ডিং রাখুন যাতে আমি এটি শেয়ার করতে পারি"
@@ -5828,6 +5939,10 @@ msgstr "দুই বা তিনটি ফন্ট পরিবারে স�
 #: src/features/design/layout-screen.tsx
 msgid "Keep together"
 msgstr "একসাথে থাকুন"
+
+#: src/features/letters/share.tsx
+msgid "Keep version"
+msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Keeps the most specific parts"
@@ -6145,14 +6260,6 @@ msgstr "লিঙ্ক করা জীবনবৃত্তান্ত"
 msgid "Linked to {0}"
 msgstr "{0} এর সাথে লিঙ্ক করা হয়েছে"
 
-#: src/features/letters/write.tsx
-msgid "Linked to the resume again"
-msgstr "আবার জীবনবৃত্তান্ত লিঙ্ক"
-
-#: src/features/letters/write.tsx
-msgid "Linked. Name, email, phone and city update when the resume does."
-msgstr "লিঙ্কযুক্ত। নাম, ইমেল, ফোন এবং শহর আপডেট যখন জীবনবৃত্তান্ত করে।"
-
 #: src/features/auth/welcome-screen.tsx
 msgid "LinkedIn"
 msgstr "লিংকডইন"
@@ -6199,6 +6306,8 @@ msgstr "{url} এ লাইভ"
 #: src/features/profile/facts.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/link.tsx
+#: src/features/share/pane.tsx
 msgid "Loading"
 msgstr "লোড হচ্ছে"
 
@@ -6218,10 +6327,6 @@ msgstr "আবেদন লোড হচ্ছে…"
 #: src/features/search/search-screen.tsx
 msgid "Loading conversations…"
 msgstr "কথোপকথন লোড হচ্ছে..."
-
-#: src/features/letters/page.tsx
-msgid "Loading cover letter…"
-msgstr "কভার লেটার লোড হচ্ছে…"
 
 #: src/features/documents/thumbnail.tsx
 msgid "Loading letter…"
@@ -6272,6 +6377,7 @@ msgstr "লোড হচ্ছে..."
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -6586,8 +6692,7 @@ msgstr "সকাল ০৮:০০ স্থানীয়"
 msgid "Morning of runs at 08:00, or two hours before interviews starting before 10:00."
 msgstr "সকাল 08:00 এ, বা 10:00 এর আগে ইন্টারভিউ শুরু হওয়ার দুই ঘন্টা আগে।"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Moss"
 msgstr "মস"
 
@@ -6747,6 +6852,7 @@ msgstr "আবেদন করা হয়েছে ধাপে সরাল�
 #: src/features/documents/new-document.tsx
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/fields.ts
 msgid "Name"
@@ -6799,8 +6905,8 @@ msgstr "নামযুক্ত সংস্করণগুলি রাখা 
 msgid "Names, tags or applications"
 msgstr "নাম, ট্যাগ বা আবেদন"
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Narrow"
 msgstr "সংকীর্ণ"
 
@@ -6968,8 +7074,11 @@ msgstr ""
 msgid "No application"
 msgstr "চাকরির আবেদন নেই"
 
-#: src/features/documents/document-sheets.tsx
 #: src/features/letters/write.tsx
+msgid "No applications yet"
+msgstr "এখনো কোনো চাকরির আবেদন নেই"
+
+#: src/features/documents/document-sheets.tsx
 msgid "No applications yet. Add one in Applications first."
 msgstr "এখনো কোনো চাকরির আবেদন নেই। চাকরির আবেদনে প্রথমে একটি যোগ করুন।"
 
@@ -7021,6 +7130,10 @@ msgstr "তারিখ নেই"
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "কোনো তারিখ পাওয়া যায়নি।"
+
+#: src/features/share/custom-domain.tsx
+msgid "No domain is connected anymore. Pull to refresh."
+msgstr ""
 
 #: src/features/assistant/threads.tsx
 msgid "no edits"
@@ -7158,10 +7271,6 @@ msgstr "কোন সাড়া নেই"
 msgid "No results"
 msgstr "কোন ফলাফল নেই"
 
-#: src/features/letters/write.tsx
-msgid "No resume"
-msgstr "জীবনবৃত্তান্ত নেই"
-
 #: src/auth/messages.ts
 msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
 msgstr "এই ঠিকানায় কোনো Rezumi সার্ভার উত্তর দেয়নি৷ বানান যাচাই করুন, অথবা সার্ভার অ্যাপ সাইন-ইন করার অনুমতি দেয় কিনা তা আপনার প্রশাসককে জিজ্ঞাসা করুন।"
@@ -7238,8 +7347,8 @@ msgstr ""
 msgid "None of your AI connections can transcribe speech (OpenAI, Google Gemini, Mistral, xAI, Groq or Vercel AI Gateway can). Add one, or type your answer."
 msgstr "আপনার কোনো AI সংযোগ স্পিচ প্রতিলিপি করতে পারে না (OpenAI, Google Gemini, Mistral, xAI, Groq বা Vercel AI Gateway পারে)। একটি যোগ করুন, অথবা আপনার উত্তর টাইপ করুন."
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Normal"
 msgstr "স্বাভাবিক"
 
@@ -7413,8 +7522,7 @@ msgstr "সংখ্যাযুক্ত তালিকা"
 msgid "Observation"
 msgstr "পর্যবেক্ষণ"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Ochre"
 msgstr "ওচার"
 
@@ -7433,10 +7541,6 @@ msgstr "বন্ধ। এটি চালু করে নিয়োগক�
 #: src/features/share/link.tsx
 msgid "Off. Only you can see this resume."
 msgstr "বন্ধ শুধুমাত্র আপনি এই জীবনবৃত্তান্ত দেখতে পারেন."
-
-#: src/features/letters/write.tsx
-msgid "Off. The letter keeps its own copy of your details."
-msgstr "বন্ধ চিঠিটি আপনার বিবরণের নিজস্ব অনুলিপি রাখে।"
 
 #: src/features/applications/stages.ts
 #: src/features/onboarding/intro-screen.tsx
@@ -7709,10 +7813,6 @@ msgstr "অথবা আপনার নিজের ভাষায়..."
 msgid "Organization"
 msgstr "প্রতিষ্ঠান"
 
-#: src/features/ats-checker/checker.tsx
-msgid "Original page"
-msgstr "মূল পাতা"
-
 #: src/features/entries/rich-text-field.tsx
 msgid "Original table formatting is kept. This text is read-only because it can't be edited safely here."
 msgstr ""
@@ -7759,9 +7859,14 @@ msgstr "পুরানো: এর পর থেকে পাঠ্যটি প
 msgid "Outcome"
 msgstr "ফলাফল"
 
+#: src/features/share/custom-domain.tsx
+msgid "Ownership proven"
+msgstr ""
+
 #: app/builder/[id]/_layout.tsx
 #: app/builder/[id]/page.tsx
 #: app/letter/[id]/_layout.tsx
+#: src/features/ats-checker/checker.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -7772,6 +7877,7 @@ msgstr "পৃষ্ঠা"
 #. placeholder {0}: index + 1
 #. placeholder {0}: item.page + 1
 #. placeholder {0}: page.index + 1
+#: src/features/ats-checker/original-page.tsx
 #: src/features/design/layout-screen.tsx
 #: src/features/letters/page.tsx
 #: src/features/write/entry-sheet.tsx
@@ -7987,6 +8093,7 @@ msgid "Personal website"
 msgstr ""
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -8093,8 +8200,7 @@ msgstr ""
 msgid "Play recording"
 msgstr "রেকর্ডিং চালান"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Plum"
 msgstr "বরই"
 
@@ -8325,8 +8431,7 @@ msgstr ""
 msgid "Product designer"
 msgstr ""
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Professional"
 msgstr "প্রফেশনাল"
 
@@ -9056,7 +9161,6 @@ msgstr "ফলাফল"
 #: src/features/applications/add-sheet.tsx
 #: src/features/documents/library.tsx
 #: src/features/home/recent-documents.tsx
-#: src/features/letters/write.tsx
 msgid "Resume"
 msgstr "জীবনবৃত্তান্ত"
 
@@ -9386,8 +9490,7 @@ msgstr "পৃষ্ঠা {0}-এ চলে"
 msgid "Russian"
 msgstr "রুশ"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Rust"
 msgstr "মরিচা"
 
@@ -9713,6 +9816,10 @@ msgstr "বিভাগ · প্রিন্ট অর্ডার"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "সেকশনগুলো এমন শিরোনাম ব্যবহার করে যা সিস্টেম চিনতে পারে, এবং কাজের অভিজ্ঞতা দেখা যায়।"
 
+#: src/features/share/custom-domain.tsx
+msgid "See plans"
+msgstr ""
+
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr ""
@@ -9743,6 +9850,10 @@ msgstr "এন্ট্রি নির্বাচন করুন {0}"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "দৃশ্যমান নির্বাচন করুন"
+
+#: src/features/share/export-options.tsx
+msgid "Selected"
+msgstr ""
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -9780,10 +9891,6 @@ msgstr "পোর্টফোলিও র‍্যাপারের বদল�
 #: src/features/assistant/tool-approvals.tsx
 msgid "Send this exact query to your web search provider?"
 msgstr ""
-
-#: src/features/letters/write.tsx
-msgid "Sender details copied into the letter"
-msgstr "প্রেরকের বিবরণ চিঠিতে অনুলিপি করা হয়েছে"
 
 #: src/features/ai/report-content.tsx
 #: src/features/auth/check-email-screen.tsx
@@ -9873,6 +9980,10 @@ msgstr "AI প্রদানকারী সেট আপ করুন"
 #: src/features/career/schedule-sheet.tsx
 msgid "Set up web search in Settings to find roles."
 msgstr "চাকরি খুঁজতে সেটিংস-এ ওয়েব অনুসন্ধান সেট আপ করুন।"
+
+#: src/features/share/custom-domain.tsx
+msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
+msgstr ""
 
 #: app/account/index.tsx
 #: src/features/application-detail/interview-sheet.tsx
@@ -9964,6 +10075,14 @@ msgstr "সংক্ষিপ্ত এবং সরাসরি। চাকর
 #: src/features/assistant/assistant-screen.tsx
 msgid "Short and polite, for the recruiter"
 msgstr "সংক্ষিপ্ত এবং ভদ্র, নিয়োগকারীর জন্য"
+
+#: src/features/share/web-page.tsx
+msgid "Short link"
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Short link · opens your portfolio"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Short link and domain"
@@ -10473,6 +10592,10 @@ msgid "Start the resume with your name on its own line."
 msgstr "জীবনবৃত্তান্তটি আপনার নাম দিয়ে শুরু করুন, নিজস্ব একটি লাইনে।"
 
 #: src/features/letters/write.tsx
+msgid "Start typing, or draft from what we know: the {company} posting and your Profile."
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Start typing, or draft from what we know: the {company} posting and your resume."
 msgstr "টাইপ করা শুরু করুন বা আমরা যা জানি তা থেকে খসড়া তৈরি করুন: {company} চাকরির পোস্টিং এবং আপনার জীবনবৃত্তান্ত।"
 
@@ -10481,12 +10604,16 @@ msgid "Start typing, or draft from what we know: the {company} posting."
 msgstr "টাইপ করা শুরু করুন বা আমরা যা জানি তা থেকে খসড়া তৈরি করুন: {company} চাকরির পোস্টিং।"
 
 #: src/features/letters/write.tsx
+msgid "Start typing, or draft from what we know: your Profile."
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Start typing, or draft from what we know: your resume."
 msgstr "টাইপ করা শুরু করুন, বা আমরা যা জানি তা থেকে খসড়া তৈরি করুন: আপনার জীবনবৃত্তান্ত।"
 
 #: src/features/letters/write.tsx
-msgid "Start typing. To draft one, link a resume or an application first."
-msgstr "টাইপ করা শুরু করুন। একটি খসড়া তৈরি করতে, প্রথমে একটি জীবনবৃত্তান্ত বা চাকরির আবেদন লিঙ্ক করুন৷"
+msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
+msgstr ""
 
 #: src/features/write/outline.tsx
 msgid "Start with the sections most resumes have."
@@ -10511,6 +10638,10 @@ msgstr "{minutes} মিনিটের মধ্যে শুরু"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
 msgstr "এখনই শুরু"
+
+#: src/features/share/link.tsx
+msgid "Statistics need a connection."
+msgstr ""
 
 #: src/features/documents/new-document.tsx
 msgid "Stay in Documents"
@@ -10781,8 +10912,7 @@ msgstr "লক্ষ্য পদ"
 msgid "Task"
 msgstr "কাজ"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Teal"
 msgstr "টিল"
 
@@ -10820,6 +10950,10 @@ msgstr "তেলেগু"
 #: src/features/letters/design.tsx
 msgid "Template"
 msgstr "টেমপ্লেট"
+
+#: src/features/letters/design.tsx
+msgid "Template and type"
+msgstr ""
 
 #. placeholder {0}: templateName(template)
 #: src/features/design/draft.ts
@@ -10859,6 +10993,7 @@ msgid "Testing…"
 msgstr "পরীক্ষা…"
 
 #: src/features/applications/add-sheet.tsx
+#: src/features/ats-checker/checker.tsx
 #: src/features/write/fields.ts
 msgid "Text"
 msgstr "পাঠ্য"
@@ -11010,6 +11145,10 @@ msgstr "সংযোগটি লোড বা সংরক্ষণ করা �
 msgid "The current state will be saved as “Before restore” first."
 msgstr "বর্তমান অবস্থা প্রথমে “পুনরুদার করার আগে” হিসাবে সংরক্ষণ করা হবে।"
 
+#: src/features/share/custom-domain.tsx
+msgid "The domain changed while it was being checked. Check it again."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "The editor opens on Check, which checks the imported resume again."
 msgstr "সম্পাদকটি পরীক্ষায় খোলে, যা আবার আমদানি করা জীবনবৃত্তান্ত পরীক্ষা করে।"
@@ -11034,6 +11173,10 @@ msgstr "ফলো আপ সংরক্ষিত হয়. একটি অন
 #: src/features/letters/write.tsx
 msgid "The greeting follows the name."
 msgstr "অভিবাদন নাম অনুসরণ করে।"
+
+#: src/features/share/custom-domain.tsx
+msgid "The HTTPS certificate couldn't be issued. Make sure the DNS records are still there, then check again."
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
@@ -11111,6 +11254,10 @@ msgstr "রেকর্ডগুলো এখনও দেখা যাচ্ছ
 #: src/features/ats-checker/checker.tsx
 msgid "The rest of the file isn't in this report."
 msgstr "বাকি ফাইল এই প্রতিবেদনে নেই।"
+
+#: src/features/letters/write.tsx
+msgid "the resume"
+msgstr "জীবনবৃত্তান্ত"
 
 #: src/features/history/history.tsx
 msgid "The resume as it is"
@@ -11293,6 +11440,22 @@ msgstr "এই নথি লক করা আছে। সংস্করণ ড
 msgid "This document is no longer available. Refresh and try again."
 msgstr "এই নথিটি আর উপলব্ধ নেই৷ রিফ্রেশ করে আবার চেষ্টা করুন।"
 
+#: src/features/share/custom-domain.tsx
+msgid "This domain can't be connected. Try a subdomain such as www."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain has been blocked and can't be connected. Contact support if you think that's wrong."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain needs your attention. See what's below."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain no longer points to Rezumi. Put its CNAME record back, then check again."
+msgstr ""
+
 #: src/api/ai-consent.ts
 msgid "This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs."
 msgstr "এটি আপনার সার্ভারের নির্বাচিত প্রদানকারীদের ব্যবহার করে, সময়সূচী চালু থাকাকালীন পুনরাবৃত্ত প্রক্রিয়াকরণ সক্ষম করে। ভবিষ্যতের রান বন্ধ করতে সময়সূচী বন্ধ করুন।"
@@ -11429,6 +11592,7 @@ msgstr "এই চিঠি ও আপনার জীবনবৃত্তা�
 msgid "This letter changed elsewhere"
 msgstr "এই চিঠিটি অন্যত্র পরিবর্তিত হয়েছে"
 
+#: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
 msgid "This letter is locked. Unlock it in Documents to edit."
 msgstr "এই চিঠি লক করা আছে। সম্পাদনা করতে নথিপত্রে গিয়ে আনলক করুন।"
@@ -11436,6 +11600,10 @@ msgstr "এই চিঠি লক করা আছে। সম্পাদন�
 #: src/features/letters/write.tsx
 msgid "This letter keeps its recipient as written."
 msgstr "এই চিঠিটি তার প্রাপককে লিখিত হিসাবে রাখে।"
+
+#: src/features/letters/write.tsx
+msgid "This letter only"
+msgstr ""
 
 #: src/features/auth/reset-password-screen.tsx
 msgid "This link has expired"
@@ -11736,8 +11904,7 @@ msgstr ""
 msgid "Track in Applications"
 msgstr "আবেদনে ট্র্যাক করুন"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Traditional"
 msgstr "প্রথাগত"
 
@@ -11893,7 +12060,6 @@ msgstr "দ্বি-পদক্ষেপ যাচাইকরণ"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
-#: src/features/letters/design.tsx
 #: src/features/profile/facts-add.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "Type"
@@ -12179,14 +12345,6 @@ msgstr ""
 msgid "Use default"
 msgstr "ডিফল্ট ব্যবহার করুন"
 
-#: src/features/letters/write.tsx
-msgid "Use details from “{resumeName}”"
-msgstr "“{resumeName}” থেকে তথ্য ব্যবহার করুন"
-
-#: src/features/letters/write.tsx
-msgid "Use details from the resume"
-msgstr "জীবনবৃত্তান্ত থেকে বিবরণ ব্যবহার করুন"
-
 #: src/features/profile/facts-detail.tsx
 msgid "Use for all applications"
 msgstr "সব আবেদনের জন্য ব্যবহার করুন"
@@ -12284,6 +12442,10 @@ msgstr "এই প্রদানকারী ব্যবহার করুন
 msgid "Use this time"
 msgstr "এই সময় ব্যবহার করুন"
 
+#: src/features/share/custom-domain.tsx
+msgid "Use www.{hostname}"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Use your editor's normal bullet list, so stray glyphs do not land mid-sentence."
 msgstr "আপনার এডিটরের সাধারণ বুলেট তালিকা ব্যবহার করুন, যাতে বিচ্ছিন্ন গ্লিফ বাক্যের মাঝখানে না বসে।"
@@ -12373,6 +12535,10 @@ msgstr "সংস্করণ {date} পাঠানো হয়েছে"
 msgid "Version sent {date} · Check {0}"
 msgstr "সংস্করণ পাঠানো হয়েছে {date} · {0} চেক করুন"
 
+#: src/features/letters/share.tsx
+msgid "Versions"
+msgstr "সংস্করণ"
+
 #: src/features/design/advanced.tsx
 msgid "Vertical margin"
 msgstr "উল্লম্ব মার্জিন"
@@ -12443,6 +12609,10 @@ msgstr "কণ্ঠের সেটিংস"
 msgid "Volunteer"
 msgstr "স্বেচ্ছাসেবী"
 
+#: src/features/share/custom-domain.tsx
+msgid "Waiting"
+msgstr ""
+
 #. placeholder {0}: waitingFor.join(", ")
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Waiting for {0}…"
@@ -12455,6 +12625,10 @@ msgstr "আপনার অপেক্ষায়"
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
 msgstr "ফিরে শোনার অপেক্ষায়"
+
+#: src/features/share/custom-domain.tsx
+msgid "We can't set up more domains right now. The problem is on our side, and your domain connects by itself once it's solved."
+msgstr ""
 
 #: src/features/onboarding/source-fields.tsx
 msgid "We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
@@ -12508,6 +12682,7 @@ msgid "Web searches look for work here, up to three countries."
 msgstr "ওয়েব অনুসন্ধান এই দেশগুলিতে চাকরির সন্ধান করে। তিনটি পর্যন্ত দেশ বেছে নিন।"
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Website"
@@ -12709,8 +12884,8 @@ msgstr "যাদের সাথে দেখা হবে"
 msgid "Why do you want this role at {company}?"
 msgstr "{company}-এ এই পদটি কেন চান?"
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Wide"
 msgstr "প্রশস্ত"
 
@@ -13028,6 +13203,14 @@ msgstr "আপনার তারিখগুলো বিভিন্ন উপ
 msgid "Your details"
 msgstr ""
 
+#: src/features/letters/write.tsx
+msgid "Your details from"
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your details were copied into the letter. Edit them here."
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Your document was saved. Review it in the editor."
 msgstr "আপনার নথি সংরক্ষণ করা হয়েছে. সম্পাদক এটি পর্যালোচনা."
@@ -13035,6 +13218,18 @@ msgstr "আপনার নথি সংরক্ষণ করা হয়ে�
 #: src/features/share/custom-domain.tsx
 msgid "Your domain"
 msgstr "আপনার ডোমেইন"
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain now goes to your Rezumi address"
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain stops opening your page right away. To connect it again, its DNS is checked and HTTPS is set up again, which can take a while."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain stops working on {until}"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Your email address is broken across pieces of text."
@@ -13086,9 +13281,14 @@ msgstr "আপনার বার্তা"
 msgid "Your name"
 msgstr "আপনার নাম"
 
+#. placeholder {0}: resumeName ?? t`the resume`
 #: src/features/letters/write.tsx
-msgid "Your name and contact details come from a resume."
-msgstr "আপনার নাম এবং যোগাযোগের বিবরণ একটি জীবনবৃত্তান্ত থেকে আসে।"
+msgid "Your name and contact details follow “{0}”."
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your name and contact details follow your Profile."
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
@@ -13139,6 +13339,7 @@ msgid "Your own fonts aren't in your plan. Fonts already added keep working on t
 msgstr ""
 
 #: src/features/billing/plan-alert.ts
+#: src/features/share/custom-domain.tsx
 msgid "Your page keeps its address on Rezumi."
 msgstr ""
 
@@ -13151,6 +13352,10 @@ msgstr "আপনার ফোন নম্বর অস্বাভাবিক
 msgid "Your plan"
 msgstr ""
 
+#: src/features/share/custom-domain.tsx
+msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
+msgstr ""
+
 #: app/(tabs)/portfolio/index.tsx
 msgid "Your portfolio is coming to the app"
 msgstr ""
@@ -13161,6 +13366,10 @@ msgstr "আপনার পছন্দসমূহ"
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "your Profile"
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your Profile"
 msgstr ""
 
 #: src/features/profile/bring-screen.tsx
@@ -13198,6 +13407,14 @@ msgstr "আপনার প্রদানকারী"
 #: src/features/settings/profile.tsx
 msgid "Your public links begin with {server}/"
 msgstr "আপনার সর্বজনীন লিঙ্কগুলি {server}/ দিয়ে শুরু হয়"
+
+#: src/features/share/web-page.tsx
+msgid "Your published portfolio opens at your short link and custom domain."
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Your published portfolio opens at your short link and custom domain. This resume is shown there if the portfolio is unpublished."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "Your recording goes to {transcriberName} after you stop, to be transcribed. Your provider may charge. The server keeps transcripts, never recordings."
@@ -13250,10 +13467,9 @@ msgstr ""
 msgid "Your session expired. Sign in again."
 msgstr "আপনার সেশনের মেয়াদ শেষ হয়েছে। আবার সাইন ইন করুন."
 
-#. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx
-msgid "Your short link and custom domain open “{0}”."
-msgstr "আপনার ছোট লিঙ্ক ও কাস্টম ডোমেইন “{0}” খোলে।"
+msgid "Your short link and custom domain open “{otherPrimary}”."
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Your short link and custom domain open this resume."

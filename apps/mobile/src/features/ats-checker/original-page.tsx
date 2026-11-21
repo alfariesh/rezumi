@@ -1,21 +1,20 @@
+// The uploaded PDF as pages, rasterised on the device (modules/pdf-pages): what the checker read, beside its report.
 import type { PageImage } from "../../../modules/pdf-pages";
 import { useLingui } from "@lingui/react/macro";
 import { File } from "expo-file-system";
 import { Image } from "expo-image";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, PixelRatio, ScrollView, View } from "react-native";
+import { PixelRatio, View } from "react-native";
 import { pdfPages } from "../../../modules/pdf-pages";
-import { Text, useTheme } from "@/ui-legacy";
+import { EmptyState, Skeleton, Text } from "@/ui";
 
 // ponytail: rasterises up to 10 pages at once; page-by-page virtualisation if long files show up.
 const MAX_PAGES = 10;
 
 type OriginalPageProps = { uri: string };
 
-/** The uploaded PDF as pages, rasterised on the device (modules/pdf-pages, M3-T4). Pinch zooms on iOS (ScrollView zoom). */
 export function OriginalPage({ uri }: OriginalPageProps) {
 	const { t } = useLingui();
-	const { colors, radius, shadows, space } = useTheme();
 	const [width, setWidth] = useState(0);
 	const [pages, setPages] = useState<PageImage[] | null>(null);
 	const [failed, setFailed] = useState(false);
@@ -46,32 +45,27 @@ export function OriginalPage({ uri }: OriginalPageProps) {
 	}, [uri, width]);
 
 	return (
-		<ScrollView
-			onLayout={(event) => setWidth(event.nativeEvent.layout.width)}
-			maximumZoomScale={3}
-			minimumZoomScale={1}
-			contentContainerStyle={{ gap: space.s3 }}
-		>
+		<View className="gap-4" onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
 			{failed ? (
-				<Text variant="callout" color="ink2">
-					{t`This file couldn't be shown as pages. The report above still applies.`}
-				</Text>
+				<EmptyState kind="inline" title={t`This file couldn't be shown as pages. The report above still applies.`} />
 			) : !pages ? (
-				<ActivityIndicator color={colors.accent} style={{ padding: space.s8 }} />
+				<Skeleton variant="none" className="aspect-[1/1.414] w-full rounded-lg" />
 			) : (
 				pages.map((page) => (
-					<View
-						key={page.index}
-						style={{ borderRadius: radius.rSm, backgroundColor: colors.paper, boxShadow: shadows.ePage.boxShadow }}
-					>
-						<Image
-							source={{ uri: page.uri }}
-							accessibilityLabel={t`Page ${page.index + 1} of the uploaded PDF`}
-							style={{ width, aspectRatio: page.width / page.height }}
-						/>
+					<View key={page.index} className="gap-2">
+						<View className="overflow-hidden rounded-lg bg-paper shadow-surface">
+							<Image
+								source={{ uri: page.uri }}
+								accessibilityLabel={t`Page ${page.index + 1} of the uploaded PDF`}
+								style={[{ width, aspectRatio: page.width / page.height }]}
+							/>
+						</View>
+						<Text size="xs" tone="muted" className="text-center">
+							{t`Page ${page.index + 1}`}
+						</Text>
 					</View>
 				))
 			)}
-		</ScrollView>
+		</View>
 	);
 }

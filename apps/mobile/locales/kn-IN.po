@@ -307,6 +307,11 @@ msgstr "{0, plural, one {ನೀವು ಆಯ್ಕೆ ಮಾಡಿದ ಫಾಂ�
 msgid "{0} · Not scored"
 msgstr "{0} · ಸ್ಕೋರ್ ಮಾಡಲಾಗಿಲ್ಲ"
 
+#. placeholder {0}: option.label
+#: src/features/share/export-options.tsx
+msgid "{0} · Plus"
+msgstr ""
+
 #. placeholder {0}: data.equity
 #: src/features/career/offers.tsx
 msgid "{0} · Value uncertain"
@@ -575,6 +580,10 @@ msgstr "5 ರಲ್ಲಿ {filled} ಭಾಗಗಳು"
 msgid "{followUps, plural, one {# follow-up} other {# follow-ups}}"
 msgstr "{followUps, plural, one {# ಫಾಲೋ-ಅಪ್} other {# ಫಾಲೋ-ಅಪ್}}"
 
+#: src/features/share/custom-domain.tsx
+msgid "{hostname} needs a CNAME at the root, which many providers don't allow. If yours doesn't, connect www.{hostname} and forward {hostname} to it where you manage the domain."
+msgstr ""
+
 #: src/features/home/coming-up.tsx
 msgid "{hours, plural, one {In # hour} other {In # hours}}"
 msgstr ""
@@ -697,8 +706,8 @@ msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} ಪಠ್ಯದಲ್ಲಿ ಕೊನೆಯದಾಗಿ ಬರುತ್ತದೆ. ಹೆಚ್ಚಿನ ವ್ಯವಸ್ಥೆಗಳು ಇನ್ನೂ ಅವುಗಳನ್ನು ಕಂಡುಕೊಳ್ಳುತ್ತವೆ; ಕೆಲವರು ಮಾಡುವುದಿಲ್ಲ."
 
 #: src/features/letters/write.tsx
-msgid "{pairing} type"
-msgstr "{pairing} ಪ್ರಕಾರ"
+msgid "{pairingName} type"
+msgstr ""
 
 #: src/features/assistant/page-marks.tsx
 msgid "{pending, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
@@ -834,6 +843,10 @@ msgstr ""
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
 msgstr "ಈ ಪತ್ರದ ಬ್ಯಾಕಪ್. ಅಕ್ಷರದಂತೆ Rezumi ಗೆ ಮರಳಿ ಆಮದು ಮಾಡಿಕೊಳ್ಳುತ್ತದೆ."
 
+#: src/features/share/custom-domain.tsx
+msgid "A CAA record on this domain blocks its HTTPS certificate. Remove that record or allow the certificate authority, then check again."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "A city and country let roles be matched to where you are."
 msgstr "ನಗರ ಮತ್ತು ದೇಶವು ನೀವು ಇರುವ ಸ್ಥಳಕ್ಕೆ ಪಾತ್ರಗಳನ್ನು ಹೊಂದಿಸಲು ಅವಕಾಶ ಮಾಡಿಕೊಡಿ."
@@ -857,6 +870,10 @@ msgstr "ದಿನಾಂಕ ವ್ಯಾಪ್ತಿಯನ್ನು ಹೆಚ್�
 #: src/features/check/issues.ts
 msgid "A date won't be read"
 msgstr "ದಿನಾಂಕವನ್ನು ಓದಲಾಗುವುದಿಲ್ಲ"
+
+#: src/features/share/custom-domain.tsx
+msgid "A domain without www needs a DNS provider that allows it"
+msgstr ""
 
 #: src/features/profile/stories-reader.tsx
 #: src/features/profile/stories.tsx
@@ -910,6 +927,10 @@ msgstr ""
 #: src/features/application-detail/sheets.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "ಚೆಕ್ ಇನ್ ಮಾಡಲು ಜ್ಞಾಪನೆ, ನೀವು ಮಾಡುವವರೆಗೆ ಮುಂದಿನ ಹಂತವಾಗಿ ತೋರಿಸಲಾಗಿದೆ."
+
+#: src/features/letters/write.tsx
+msgid "A resume"
+msgstr ""
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "A resume in minutes"
@@ -1001,6 +1022,10 @@ msgstr "ಕ್ರಿಯೆಗಳು"
 #: src/features/applications/list-screen.tsx
 msgid "Actions for {0} at {1}"
 msgstr "{1} ನಲ್ಲಿ {0} ಗಾಗಿ ಕ್ರಿಯೆಗಳು"
+
+#: src/features/share/custom-domain.tsx
+msgid "Active"
+msgstr "ಸಕ್ರಿಯ"
 
 #: app/account/membership.tsx
 msgid "Active cover letters"
@@ -1218,6 +1243,10 @@ msgstr "ಅದನ್ನು ಪುಟ 1 ಕ್ಕೆ ಸೇರಿಸಿ"
 #: src/features/write/fields.ts
 msgid "Add language"
 msgstr "ಭಾಷೆಯನ್ನು ಸೇರಿಸಿ"
+
+#: src/features/letters/write.tsx
+msgid "Add one in Applications first."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -2062,8 +2091,7 @@ msgstr "ಹಿನ್ನೆಲೆ ಬಣ್ಣ"
 msgid "Backup code"
 msgstr "ಬ್ಯಾಕಪ್ ಕೋಡ್"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Balanced"
 msgstr "ಸಮತೋಲಿತ"
 
@@ -2246,8 +2274,7 @@ msgstr "ಪಟ್ಟಿ ನಮೂದು {n}"
 msgid "Bulleted list"
 msgstr "ಬುಲೆಟ್ ಪಟ್ಟಿ"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Burgundy"
 msgstr "ಬರ್ಗಂಡಿ"
 
@@ -2321,8 +2348,8 @@ msgid "Change"
 msgstr "ಬದಲಾವಣೆ"
 
 #: src/features/letters/write.tsx
-msgid "Change it in Design."
-msgstr "ಅದನ್ನು ವಿನ್ಯಾಸದಲ್ಲಿ ಬದಲಾಯಿಸಿ."
+msgid "Change it in Design"
+msgstr ""
 
 #: src/features/search/search-screen.tsx
 msgid "Change language to…"
@@ -2386,6 +2413,7 @@ msgstr "ATS ಪರಿಶೀಲಕದಿಂದ PDF ಪರಿಶೀಲಿಸಿ"
 msgid "Check a sample file"
 msgstr "ಮಾದರಿ ಫೈಲ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ"
 
+#: src/features/share/custom-domain.tsx
 #: src/features/workspace/tabs/fit.tsx
 msgid "Check again"
 msgstr "ಮತ್ತೆ ಪರಿಶೀಲಿಸಿ"
@@ -2447,6 +2475,8 @@ msgstr "ವೀಕ್ಷಣೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ"
 msgid "Check what we found"
 msgstr ""
 
+#: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/stories.tsx
@@ -2555,8 +2585,8 @@ msgid "Choose a photo smaller than 10 MB."
 msgstr "10 MB ಗಿಂತ ಚಿಕ್ಕದಾದ ಫೋಟೋವನ್ನು ಆಯ್ಕೆಮಾಡಿ."
 
 #: src/features/letters/design.tsx
-msgid "Choose a resume in Write to match its design. Until then, the letter has its own."
-msgstr "ಅದರ ವಿನ್ಯಾಸವನ್ನು ಹೊಂದಿಸಲು ಬರವಣಿಗೆಯಲ್ಲಿ ರೆಸ್ಯೂಮೆಯನ್ನು ಆರಿಸಿ. ಅಲ್ಲಿಯವರೆಗೆ, ಪತ್ರವು ತನ್ನದೇ ಆದದ್ದಾಗಿದೆ."
+msgid "Choose a resume under From in Write to match its design. Until then, the letter has its own."
+msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Choose a tested AI provider before sharing data."
@@ -2631,13 +2661,11 @@ msgstr ""
 msgid "Clarify"
 msgstr "ಸ್ಪಷ್ಟಪಡಿಸಿ"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Classic"
 msgstr "ಕ್ಲಾಸಿಕ್"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Clean"
 msgstr "ಸರಳ"
 
@@ -2688,13 +2716,19 @@ msgstr "ಅದರ ನಮೂದುಗಳನ್ನು ತೆರವುಗೊಳಿ�
 #: src/features/entries/icon-picker.tsx
 #: src/features/entries/photo-field.tsx
 #: src/features/entries/rich-text-field.tsx
+#: src/features/letters/design.tsx
+#: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/profile/career.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/fill-sheet.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/search-regions-field.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/export-screen.tsx
+#: src/features/share/link.tsx
+#: src/features/share/web-page.tsx
 msgid "Close"
 msgstr "ಮುಚ್ಚಿ"
 
@@ -2857,14 +2891,13 @@ msgstr ""
 msgid "Connect"
 msgstr "ಕನೆಕ್ಟ್ ಮಾಡಿ"
 
-#. placeholder {0}: domain.hostname
-#: src/features/share/custom-domain.tsx
-msgid "Connect {0}"
-msgstr "{0} ಅನ್ನು ಸಂಪರ್ಕಿಸಿ"
-
 #: src/features/share/custom-domain.tsx
 msgid "Connect {domain}"
 msgstr "{domain} ಅನ್ನು ಸಂಪರ್ಕಿಸಿ"
+
+#: src/features/share/custom-domain.tsx
+msgid "Connect {hostname}"
+msgstr ""
 
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -2899,12 +2932,20 @@ msgid "Connected · {milliseconds} ms"
 msgstr "ಸಂಪರ್ಕಗೊಂಡಿದೆ · {milliseconds} ms"
 
 #: src/features/share/custom-domain.tsx
+msgid "Connected. Your domain opens your portfolio."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
 msgid "Connected. Your domain opens your primary resume."
 msgstr "ಸಂಪರ್ಕಿಸಲಾಗಿದೆ. ನಿಮ್ಮ ಡೊಮೇನ್ ನಿಮ್ಮ ಪ್ರಾಥಮಿಕ ರೆಸ್ಯೂಮ್ ಅನ್ನು ತೆರೆಯುತ್ತದೆ."
 
 #: src/features/workspace/parts.tsx
 msgid "Connecting the dots"
 msgstr "ಚುಕ್ಕೆಗಳನ್ನು ಜೋಡಿಸಲಾಗುತ್ತಿದೆ"
+
+#: src/features/share/custom-domain.tsx
+msgid "Connection progress"
+msgstr ""
 
 #: app/account/index.tsx
 msgid "Contact & complaints"
@@ -3002,6 +3043,7 @@ msgid "Copied to clipboard"
 msgstr "ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ"
 
 #: src/features/share/custom-domain.tsx
+#: src/features/share/web-page.tsx
 msgid "Copies it"
 msgstr "ಇದನ್ನು ನಕಲಿಸುತ್ತದೆ"
 
@@ -3214,9 +3256,12 @@ msgstr "ರೆಸ್ಯೂಮ್‌ಗಳನ್ನು ಲೋಡ್ ಮಾಡಲ�
 msgid "Couldn't load statistics."
 msgstr "ಅಂಕಿಅಂಶಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
 
+#: src/features/letters/write.tsx
+msgid "Couldn't load the cover letter"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/letters/share.tsx
-#: src/features/letters/write.tsx
 msgid "Couldn't load the cover letter."
 msgstr "ಕವರ್ ಲೆಟರ್ ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
 
@@ -3251,8 +3296,11 @@ msgstr "ಇದನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗ
 msgid "Couldn't load this. Check your connection."
 msgstr ""
 
-#: src/features/history/history.tsx
 #: src/features/letters/share.tsx
+msgid "Couldn't load versions"
+msgstr ""
+
+#: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "ಆವೃತ್ತಿಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
 
@@ -3555,6 +3603,10 @@ msgstr "ರೆಸ್ಯೂಮ್ ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಸಾ
 msgid "Couldn't unlock this resume. Try again."
 msgstr "ಈ ರೆಸ್ಯೂಮ್ ಅನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't update sharing. Try again."
+msgstr "ಹಂಚಿಕೆಯನ್ನು ನವೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Couldn't update the application. Nothing was changed; try again."
 msgstr "ಅರ್ಜಿಯನ್ನು ನವೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಏನನ್ನೂ ಬದಲಾಯಿಸಲಾಗಿಲ್ಲ; ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
@@ -3732,6 +3784,10 @@ msgstr "ಕಸ್ಟಮ್"
 #: src/features/design/style-groups.tsx
 msgid "Custom color (hex)"
 msgstr "ಕಸ್ಟಮ್ ಬಣ್ಣ (ಹೆಕ್ಸ್)"
+
+#: src/features/share/custom-domain.tsx
+msgid "Custom domains aren't available here."
+msgstr ""
 
 #: src/features/write/basics-screen.tsx
 msgid "Custom fields"
@@ -4118,10 +4174,27 @@ msgstr "ನಿಮ್ಮ ಆಫ್‌ಲೈನ್ ಸಂಪಾದನೆಗಳನ�
 msgid "Discard your offline edits?"
 msgstr "ನಿಮ್ಮ ಆಫ್‌ಲೈನ್ ಸಂಪಾದನೆಗಳನ್ನು ತ್ಯಜಿಸುವುದೇ?"
 
+#: src/features/share/custom-domain.tsx
+msgid "Disconnect"
+msgstr "ಡಿಸ್ಕನೆಕ್ಟ್ ಮಾಡಿ"
+
+#. placeholder {0}: current.hostname
+#: src/features/share/custom-domain.tsx
+msgid "Disconnect {0}?"
+msgstr ""
+
 #: src/features/letters/write.tsx
 #: src/ui-legacy/layout.tsx
 msgid "Dismiss"
 msgstr "ವಜಾಗೊಳಿಸಿ"
+
+#: src/features/share/custom-domain.tsx
+msgid "DNS is right. HTTPS is being set up, which usually takes a few minutes."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "DNS points to Rezumi"
+msgstr ""
 
 #: src/shell/builder-chrome.tsx
 msgid "Document menu"
@@ -4188,6 +4261,7 @@ msgstr "ಹಂಚಿಕೊಳ್ಳಬೇಡಿ"
 #: src/features/entries/dates-field.tsx
 #: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/write/date-field.tsx
 #: src/features/write/pickers.tsx
 #: src/features/write/rich-text-field.tsx
@@ -4237,12 +4311,9 @@ msgid "Download failed. Try again."
 msgstr "ಡೌನ್‌ಲೋಡ್ ವಿಫಲವಾಗಿದೆ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #: src/features/letters/share.tsx
-msgid "Download opens the system share sheet. Choose a storage provider to save the file."
-msgstr "ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದಾಗ ಸಿಸ್ಟಂನ ಹಂಚಿಕೆ ಮೆನು ತೆರೆಯುತ್ತದೆ. ಫೈಲ್ ಉಳಿಸಲು ಸಂಗ್ರಹಣೆ ಪೂರೈಕೆದಾರರನ್ನು ಆಯ್ಕೆಮಾಡಿ."
-
 #: src/features/share/download.tsx
-msgid "Download opens the system share sheet. Choose a storage provider to save the file. A linked letter opens as a second file."
-msgstr "ಡೌನ್‌ಲೋಡ್ ಸಿಸ್ಟಮ್ ಹಂಚಿಕೆ ಫಲಕವನ್ನು ತೆರೆಯುತ್ತದೆ. ಫೈಲ್ ಅನ್ನು ಉಳಿಸಲು ಶೇಖರಣಾ ಪೂರೈಕೆದಾರರನ್ನು ಆಯ್ಕೆಮಾಡಿ. ಲಿಂಕ್ ಮಾಡಿದ ಪತ್ರವು ಎರಡನೇ ಫೈಲ್ ಆಗಿ ತೆರೆಯುತ್ತದೆ."
+msgid "Download opens the system share sheet. Choose Save to Files or a storage app to keep the file."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Download PDF instead"
@@ -4270,6 +4341,10 @@ msgid "Draft · uses only the posting"
 msgstr "ಡ್ರಾಫ್ಟ್ · ಉದ್ಯೋಗ ಪೋಸ್ಟ್ ಅನ್ನು ಮಾತ್ರ ಬಳಸುತ್ತದೆ"
 
 #: src/features/letters/write.tsx
+msgid "Draft · uses only your Profile"
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Draft · uses only your resume"
 msgstr "ಡ್ರಾಫ್ಟ್ · ನಿಮ್ಮ ರೆಸ್ಯೂಮ್ ಅನ್ನು ಮಾತ್ರ ಬಳಸುತ್ತದೆ"
 
@@ -4292,6 +4367,10 @@ msgstr "ಕರಡು ಸಾರಾಂಶ"
 #: src/features/letters/write.tsx
 msgid "Draft from the posting"
 msgstr "ಕೆಲಸದ ಪೋಸ್ಟ್‌ನಿಂದ ಡ್ರಾಫ್ಟ್"
+
+#: src/features/letters/write.tsx
+msgid "Draft from your Profile"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Draft from your resume"
@@ -4321,10 +4400,9 @@ msgstr "ಡ್ರಾಫ್ಟಿಂಗ್‌ಗೆ AI ಪೂರೈಕೆದಾ�
 msgid "Drafting questions"
 msgstr "ಪ್ರಶ್ನೆಗಳನ್ನು ಡ್ರಾಫ್ಟ್ ಮಾಡಲಾಗುತ್ತಿದೆ"
 
-#. placeholder {0}: draft.provider
 #: src/features/letters/write.tsx
-msgid "Drafting stopped: {0} didn't respond. Nothing on the page changed."
-msgstr "ಡ್ರಾಫ್ಟಿಂಗ್ ನಿಲ್ಲಿಸಲಾಗಿದೆ: {0} ಪ್ರತಿಕ್ರಿಯಿಸಲಿಲ್ಲ. ಪುಟದಲ್ಲಿ ಏನೂ ಬದಲಾಗಿಲ್ಲ."
+msgid "Drafting stopped: {provider} didn't respond. Nothing on the page changed."
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Drafting stopped. Nothing on the page changed."
@@ -4458,6 +4536,7 @@ msgstr ""
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
@@ -4503,6 +4582,10 @@ msgstr "ಇಂಗ್ಲಿಷ್ (ಯುನೈಟೆಡ್ ಕಿಂಗ್ಡಮ
 #: src/features/assistant/messages.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "ವರ್ಧಿತ ಓದುವಿಕೆ ಲಭ್ಯವಿಲ್ಲ; ಅಂತರ್ನಿರ್ಮಿತ ರೀಡರ್ ಅನ್ನು ಬಳಸಲಾಗಿದೆ."
+
+#: src/features/share/custom-domain.tsx
+msgid "Enter a domain such as resume.example.com."
+msgstr ""
 
 #: src/features/profile/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
@@ -4721,6 +4804,7 @@ msgid "Facts"
 msgstr "ಸಂಗತಿಗಳು"
 
 #: src/features/ai/provider-list.tsx
+#: src/features/share/custom-domain.tsx
 msgid "Failed"
 msgstr "ವಿಫಲವಾಗಿದೆ"
 
@@ -4753,6 +4837,7 @@ msgstr "ಕ್ಷೇತ್ರವನ್ನು ತೆಗೆದುಹಾಕಲಾ�
 msgid "File attached"
 msgstr "ಫೈಲ್ ಲಗತ್ತಿಸಲಾಗಿದೆ"
 
+#: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "File format"
 msgstr "ಫೈಲ್ ಫಾರ್ಮ್ಯಾಟ್"
@@ -4761,8 +4846,7 @@ msgstr "ಫೈಲ್ ಫಾರ್ಮ್ಯಾಟ್"
 msgid "File is too large. Choose a file up to 10 MB."
 msgstr "ಫೈಲ್ ತುಂಬಾ ದೊಡ್ಡದಾಗಿದೆ. 10 MB ವರೆಗಿನ ಫೈಲ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ."
 
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
+#: src/features/share/export-options.tsx
 msgid "File name"
 msgstr "ಫೈಲ್ ಹೆಸರು"
 
@@ -4938,10 +5022,9 @@ msgstr "ಫಾಂಟ್ ತೂಕಗಳು"
 msgid "For"
 msgstr "ಫಾರ್"
 
-#. placeholder {0}: domain.target
 #: src/features/share/custom-domain.tsx
-msgid "For a root domain such as example.com, use A and AAAA records with {0}'s addresses instead of the CNAME."
-msgstr "example.com ನಂತಹ ರೂಟ್ ಡೊಮೇನ್‌ಗೆ, CNAME ಬದಲು {0} ನ ವಿಳಾಸಗಳೊಂದಿಗೆ A ಮತ್ತು AAAA ರೆಕಾರ್ಡ್‌ಗಳನ್ನು ಬಳಸಿ."
+msgid "For a root domain such as example.com, use A and AAAA records with {target}'s addresses instead of the CNAME."
+msgstr ""
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -5148,8 +5231,7 @@ msgstr "… ಗೆ ಹೋಗಿ"
 msgid "Grade"
 msgstr "ಗ್ರೇಡ್"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Graphite"
 msgstr "ಗ್ರ್ಯಾಫೈಟ್"
 
@@ -5211,6 +5293,7 @@ msgid "Heading changed"
 msgstr "ಶೀರ್ಷಿಕೆ ಬದಲಾಗಿದೆ"
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Headline"
@@ -5382,6 +5465,10 @@ msgstr "ಫೈಲ್ ಅನ್ನು ಹೇಗೆ ತೋರಿಸುವುದು
 msgid "How well do I fit this role?"
 msgstr "ನಾನು ಈ ಪಾತ್ರಕ್ಕೆ ಎಷ್ಟು ಚೆನ್ನಾಗಿ ಹೊಂದಿಕೊಳ್ಳುತ್ತೇನೆ?"
 
+#: src/features/share/custom-domain.tsx
+msgid "HTTPS certificate"
+msgstr ""
+
 #: src/features/settings/locale-names.ts
 msgid "Hungarian"
 msgstr "ಹಂಗೇರಿಯನ್"
@@ -5453,6 +5540,10 @@ msgstr "ಇದು ಸ್ಕ್ಯಾನ್‌ನಿಂದ ಬಂದಿದ್ದ�
 msgid "If the web is used, search terms go to your server's search service and links go to the sites being read."
 msgstr ""
 
+#: src/features/share/custom-domain.tsx
+msgid "If your DNS is on Cloudflare, set the CNAME record to DNS only (grey cloud)."
+msgstr ""
+
 #: src/features/check/screen.tsx
 msgid "Ignore"
 msgstr "ನಿರ್ಲಕ್ಷಿಸಿ"
@@ -5519,6 +5610,7 @@ msgid "Improving…"
 msgstr "ಸುಧಾರಿಸುತ್ತಿದೆ..."
 
 #: src/features/billing/credits.ts
+#: src/features/share/custom-domain.tsx
 msgid "In progress"
 msgstr ""
 
@@ -5546,8 +5638,7 @@ msgstr "ಇಂಡೋನೇಷಿಯನ್"
 msgid "Inferred"
 msgstr "ಊಹಿಸಲಾಗಿದೆ"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Ink blue"
 msgstr "ಶಾಯಿ ನೀಲಿ"
 
@@ -5665,6 +5756,10 @@ msgstr "ಇದು ನಮೂದುಗಳನ್ನು ಹೊಂದಿದೆ ಆದ
 msgid "It may have been removed on another device."
 msgstr ""
 
+#: src/features/share/download.tsx
+msgid "It opens as a second file."
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "It starts with your Profile. You can switch templates any time."
 msgstr ""
@@ -5779,6 +5874,14 @@ msgstr "ಎರಡನ್ನೂ ಇಟ್ಟುಕೊಳ್ಳಿ"
 msgid "Keep editing"
 msgstr "ಸಂಪಾದನೆ ಮುಂದುವರಿಸಿ"
 
+#: src/features/share/web-page.tsx
+msgid "Keep it as it is"
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Keep it connected"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Keep it honest"
 msgstr "ಪ್ರಾಮಾಣಿಕವಾಗಿರಿ"
@@ -5812,6 +5915,14 @@ msgstr "ರೆಸ್ಯೂಮೆ ವಿಷಯವನ್ನು ಪಠ್ಯದ ಚ
 msgid "Keep running heads short, or drop them. They repeat in the extracted text too."
 msgstr "ಪುನರಾವರ್ತಿತ ಶೀರ್ಷಿಕೆಗಳನ್ನು ಚಿಕ್ಕದಾಗಿ ಇರಿಸಿ, ಅಥವಾ ಅವುಗಳನ್ನು ಕೈಬಿಡಿ. ಅವು ಹೊರತೆಗೆದ ಪಠ್ಯದಲ್ಲಿಯೂ ಪುನರಾವರ್ತನೆಯಾಗುತ್ತವೆ."
 
+#: src/features/letters/share.tsx
+msgid "Keep the current letter"
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Keep the password"
+msgstr ""
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "Keep the recording on this device so I can share it"
 msgstr "ರೆಕಾರ್ಡಿಂಗ್ ಅನ್ನು ಈ ಸಾಧನದಲ್ಲಿ ಇರಿಸಿಕೊಳ್ಳಿ ಇದರಿಂದ ನಾನು ಅದನ್ನು ಹಂಚಿಕೊಳ್ಳಬಹುದು"
@@ -5828,6 +5939,10 @@ msgstr "ಎರಡು ಅಥವಾ ಮೂರು ಫಾಂಟ್ ಕುಟುಂ�
 #: src/features/design/layout-screen.tsx
 msgid "Keep together"
 msgstr "ಒಟ್ಟಿಗೆ ಇರಿಸಿ"
+
+#: src/features/letters/share.tsx
+msgid "Keep version"
+msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Keeps the most specific parts"
@@ -6145,14 +6260,6 @@ msgstr "ಲಿಂಕ್ ಮಾಡಿದ ರೆಸ್ಯೂಮೆ"
 msgid "Linked to {0}"
 msgstr "{0} ಗೆ ಲಿಂಕ್ ಮಾಡಲಾಗಿದೆ"
 
-#: src/features/letters/write.tsx
-msgid "Linked to the resume again"
-msgstr "ಮತ್ತೆ ರೆಸ್ಯೂಮೆಗೆ ಲಿಂಕ್ ಮಾಡಲಾಗಿದೆ"
-
-#: src/features/letters/write.tsx
-msgid "Linked. Name, email, phone and city update when the resume does."
-msgstr "ಲಿಂಕ್ ಮಾಡಲಾಗಿದೆ. ರೆಸ್ಯೂಮೆ ಮಾಡಿದಾಗ ಹೆಸರು, ಇಮೇಲ್, ಫೋನ್ ಮತ್ತು ನಗರವನ್ನು ನವೀಕರಿಸಿ."
-
 #: src/features/auth/welcome-screen.tsx
 msgid "LinkedIn"
 msgstr "LinkedIn"
@@ -6199,6 +6306,8 @@ msgstr "{url} ನಲ್ಲಿ ಲೈವ್"
 #: src/features/profile/facts.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/link.tsx
+#: src/features/share/pane.tsx
 msgid "Loading"
 msgstr "ಲೋಡ್ ಆಗುತ್ತಿದೆ"
 
@@ -6218,10 +6327,6 @@ msgstr "ಅರ್ಜಿಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ�
 #: src/features/search/search-screen.tsx
 msgid "Loading conversations…"
 msgstr "ಸಂಭಾಷಣೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ..."
-
-#: src/features/letters/page.tsx
-msgid "Loading cover letter…"
-msgstr "ಕವರ್ ಲೆಟರ್ ಲೋಡ್ ಆಗುತ್ತಿದೆ…"
 
 #: src/features/documents/thumbnail.tsx
 msgid "Loading letter…"
@@ -6272,6 +6377,7 @@ msgstr "ಲೋಡ್ ಆಗುತ್ತಿದೆ..."
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -6586,8 +6692,7 @@ msgstr "ಬೆಳಿಗ್ಗೆ · 08:00 ಸ್ಥಳೀಯ"
 msgid "Morning of runs at 08:00, or two hours before interviews starting before 10:00."
 msgstr "08:00 ಕ್ಕೆ ರನ್‌ಗಳ ಬೆಳಿಗ್ಗೆ, ಅಥವಾ 10:00 ಕ್ಕಿಂತ ಮೊದಲು ಪ್ರಾರಂಭವಾಗುವ ಸಂದರ್ಶನಗಳಿಗೆ ಎರಡು ಗಂಟೆಗಳ ಮೊದಲು."
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Moss"
 msgstr "ಪಾಚಿ"
 
@@ -6747,6 +6852,7 @@ msgstr "ಅರ್ಜಿ ಸಲ್ಲಿಸಿದ ಹಂತಕ್ಕೆ ಸರಿ
 #: src/features/documents/new-document.tsx
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/fields.ts
 msgid "Name"
@@ -6799,8 +6905,8 @@ msgstr "ನೀವು ಅವುಗಳನ್ನು ಅಳಿಸುವವರೆಗ�
 msgid "Names, tags or applications"
 msgstr "ಹೆಸರುಗಳು, ಟ್ಯಾಗ್‌ಗಳು ಅಥವಾ ಅರ್ಜಿಗಳು"
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Narrow"
 msgstr "ಕಿರಿದಾದ"
 
@@ -6968,8 +7074,11 @@ msgstr ""
 msgid "No application"
 msgstr "ಉದ್ಯೋಗ ಅರ್ಜಿ ಇಲ್ಲ"
 
-#: src/features/documents/document-sheets.tsx
 #: src/features/letters/write.tsx
+msgid "No applications yet"
+msgstr "ಇನ್ನೂ ಯಾವುದೇ ಉದ್ಯೋಗ ಅರ್ಜಿಗಳಿಲ್ಲ"
+
+#: src/features/documents/document-sheets.tsx
 msgid "No applications yet. Add one in Applications first."
 msgstr "ಇನ್ನೂ ಯಾವುದೇ ಉದ್ಯೋಗ ಅರ್ಜಿಗಳಿಲ್ಲ. ಮೊದಲು ಉದ್ಯೋಗ ಅರ್ಜಿಗಳಲ್ಲಿ ಒಂದನ್ನು ಸೇರಿಸಿ."
 
@@ -7021,6 +7130,10 @@ msgstr "ದಿನಾಂಕವಿಲ್ಲ"
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "ಯಾವುದೇ ದಿನಾಂಕಗಳು ಕಂಡುಬಂದಿಲ್ಲ."
+
+#: src/features/share/custom-domain.tsx
+msgid "No domain is connected anymore. Pull to refresh."
+msgstr ""
 
 #: src/features/assistant/threads.tsx
 msgid "no edits"
@@ -7158,10 +7271,6 @@ msgstr "ಪ್ರತಿಕ್ರಿಯೆ ಇಲ್ಲ"
 msgid "No results"
 msgstr "ಯಾವುದೇ ಫಲಿತಾಂಶಗಳಿಲ್ಲ"
 
-#: src/features/letters/write.tsx
-msgid "No resume"
-msgstr "ರೆಸ್ಯೂಮೆ ಇಲ್ಲ"
-
 #: src/auth/messages.ts
 msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
 msgstr "ಈ ವಿಳಾಸದಲ್ಲಿ ಯಾವುದೇ Rezumi ಸರ್ವರ್ ಉತ್ತರಿಸಿಲ್ಲ. ಕಾಗುಣಿತವನ್ನು ಪರಿಶೀಲಿಸಿ ಅಥವಾ ಸರ್ವರ್ ಅಪ್ಲಿಕೇಶನ್ ಸೈನ್-ಇನ್ ಅನ್ನು ಅನುಮತಿಸುತ್ತದೆಯೇ ಎಂದು ನಿಮ್ಮ ನಿರ್ವಾಹಕರನ್ನು ಕೇಳಿ."
@@ -7238,8 +7347,8 @@ msgstr ""
 msgid "None of your AI connections can transcribe speech (OpenAI, Google Gemini, Mistral, xAI, Groq or Vercel AI Gateway can). Add one, or type your answer."
 msgstr "ನಿಮ್ಮ ಯಾವುದೇ AI ಸಂಪರ್ಕಗಳು ಭಾಷಣವನ್ನು ಲಿಪ್ಯಂತರ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ (OpenAI, Google Gemini, Mistral, xAI, Groq ಅಥವಾ Vercel AI Gateway ಮಾಡಬಹುದು). ಒಂದನ್ನು ಸೇರಿಸಿ ಅಥವಾ ನಿಮ್ಮ ಉತ್ತರವನ್ನು ಟೈಪ್ ಮಾಡಿ."
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Normal"
 msgstr "ಸಾಮಾನ್ಯ"
 
@@ -7413,8 +7522,7 @@ msgstr "ಸಂಖ್ಯೆಯ ಪಟ್ಟಿ"
 msgid "Observation"
 msgstr "ಗಮನಿಸಿದ್ದು"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Ochre"
 msgstr "ಓಚರ್"
 
@@ -7433,10 +7541,6 @@ msgstr "ಆಫ್. ಇದನ್ನು ಆನ್ ಮಾಡಿ, ನೇಮಕಾತ
 #: src/features/share/link.tsx
 msgid "Off. Only you can see this resume."
 msgstr "ಆಫ್. ನೀವು ಮಾತ್ರ ಈ ರೆಸ್ಯೂಮೆಯನ್ನು ನೋಡಬಹುದು."
-
-#: src/features/letters/write.tsx
-msgid "Off. The letter keeps its own copy of your details."
-msgstr "ಆಫ್. ಪತ್ರವು ನಿಮ್ಮ ವಿವರಗಳ ಸ್ವಂತ ಪ್ರತಿಯನ್ನು ಇರಿಸುತ್ತದೆ."
 
 #: src/features/applications/stages.ts
 #: src/features/onboarding/intro-screen.tsx
@@ -7709,10 +7813,6 @@ msgstr "ಅಥವಾ ನಿಮ್ಮ ಮಾತಿನಲ್ಲಿ..."
 msgid "Organization"
 msgstr "ಸಂಸ್ಥೆ"
 
-#: src/features/ats-checker/checker.tsx
-msgid "Original page"
-msgstr "ಮೂಲ ಪುಟ"
-
 #: src/features/entries/rich-text-field.tsx
 msgid "Original table formatting is kept. This text is read-only because it can't be edited safely here."
 msgstr ""
@@ -7759,9 +7859,14 @@ msgstr "ಅವಧಿ ಮೀರಿದೆ: ಪಠ್ಯವು ಅಂದಿನಿ�
 msgid "Outcome"
 msgstr "ಫಲಿತಾಂಶ"
 
+#: src/features/share/custom-domain.tsx
+msgid "Ownership proven"
+msgstr ""
+
 #: app/builder/[id]/_layout.tsx
 #: app/builder/[id]/page.tsx
 #: app/letter/[id]/_layout.tsx
+#: src/features/ats-checker/checker.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -7772,6 +7877,7 @@ msgstr "ಪುಟ"
 #. placeholder {0}: index + 1
 #. placeholder {0}: item.page + 1
 #. placeholder {0}: page.index + 1
+#: src/features/ats-checker/original-page.tsx
 #: src/features/design/layout-screen.tsx
 #: src/features/letters/page.tsx
 #: src/features/write/entry-sheet.tsx
@@ -7987,6 +8093,7 @@ msgid "Personal website"
 msgstr ""
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -8093,8 +8200,7 @@ msgstr ""
 msgid "Play recording"
 msgstr "ರೆಕಾರ್ಡಿಂಗ್ ಪ್ಲೇ ಮಾಡಿ"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Plum"
 msgstr "ಪ್ಲಮ್"
 
@@ -8325,8 +8431,7 @@ msgstr ""
 msgid "Product designer"
 msgstr ""
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Professional"
 msgstr "ವೃತ್ತಿಪರ"
 
@@ -9056,7 +9161,6 @@ msgstr "ಫಲಿತಾಂಶ"
 #: src/features/applications/add-sheet.tsx
 #: src/features/documents/library.tsx
 #: src/features/home/recent-documents.tsx
-#: src/features/letters/write.tsx
 msgid "Resume"
 msgstr "ರೆಸ್ಯೂಮ್"
 
@@ -9386,8 +9490,7 @@ msgstr "ಪುಟ {0} ನಲ್ಲಿ ಚಲಿಸುತ್ತದೆ"
 msgid "Russian"
 msgstr "ರಷಿಯನ್"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Rust"
 msgstr "ತುಕ್ಕು"
 
@@ -9713,6 +9816,10 @@ msgstr "ವಿಭಾಗಗಳು · ಪ್ರಿಂಟ್ ಆರ್ಡರ್"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "ವಿಭಾಗಗಳು ಸಿಸ್ಟಂಗಳು ಗುರುತಿಸುವ ಶೀರ್ಷಿಕೆಗಳನ್ನು ಬಳಸುತ್ತವೆ, ಮತ್ತು ಕೆಲಸದ ಅನುಭವ ಕಾಣಿಸುತ್ತದೆ."
 
+#: src/features/share/custom-domain.tsx
+msgid "See plans"
+msgstr ""
+
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr ""
@@ -9743,6 +9850,10 @@ msgstr "ನಮೂದನ್ನು ಆಯ್ಕೆಮಾಡಿ {0}"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "ಗೋಚರಿಸುವಿಕೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ"
+
+#: src/features/share/export-options.tsx
+msgid "Selected"
+msgstr ""
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -9780,10 +9891,6 @@ msgstr "ಪೋರ್ಟ್‌ಫೋಲಿಯೊ ಹೊದಿಕೆಯ ಬದಲ�
 #: src/features/assistant/tool-approvals.tsx
 msgid "Send this exact query to your web search provider?"
 msgstr ""
-
-#: src/features/letters/write.tsx
-msgid "Sender details copied into the letter"
-msgstr "ಕಳುಹಿಸುವವರ ವಿವರಗಳನ್ನು ಪತ್ರಕ್ಕೆ ನಕಲಿಸಲಾಗಿದೆ"
 
 #: src/features/ai/report-content.tsx
 #: src/features/auth/check-email-screen.tsx
@@ -9873,6 +9980,10 @@ msgstr "AI ಪೂರೈಕೆದಾರರನ್ನು ಹೊಂದಿಸಿ"
 #: src/features/career/schedule-sheet.tsx
 msgid "Set up web search in Settings to find roles."
 msgstr "ಪಾತ್ರಗಳನ್ನು ಹುಡುಕಲು ವೆಬ್ ಹುಡುಕಾಟವನ್ನು ಸೆಟ್ಟಿಂಗ್ಸಗಳು ನಲ್ಲಿ ಹೊಂದಿಸಿ."
+
+#: src/features/share/custom-domain.tsx
+msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
+msgstr ""
 
 #: app/account/index.tsx
 #: src/features/application-detail/interview-sheet.tsx
@@ -9964,6 +10075,14 @@ msgstr "ಸಂಕ್ಷಿಪ್ತ ಮತ್ತು ನೇರ. ಜಾಬ್ ಪ�
 #: src/features/assistant/assistant-screen.tsx
 msgid "Short and polite, for the recruiter"
 msgstr "ಸಣ್ಣ ಮತ್ತು ಸಭ್ಯ, ನೇಮಕಾತಿಗಾಗಿ"
+
+#: src/features/share/web-page.tsx
+msgid "Short link"
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Short link · opens your portfolio"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Short link and domain"
@@ -10473,6 +10592,10 @@ msgid "Start the resume with your name on its own line."
 msgstr "ರೆಸ್ಯೂಮೆಯನ್ನು ನಿಮ್ಮ ಹೆಸರಿನಿಂದ ಪ್ರತ್ಯೇಕ ಸಾಲಿನಲ್ಲಿ ಪ್ರಾರಂಭಿಸಿ."
 
 #: src/features/letters/write.tsx
+msgid "Start typing, or draft from what we know: the {company} posting and your Profile."
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Start typing, or draft from what we know: the {company} posting and your resume."
 msgstr "ಟೈಪ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಿ ಅಥವಾ ನಮಗೆ ತಿಳಿದಿರುವ ವಿಷಯದಿಂದ ಡ್ರಾಫ್ಟ್ ಮಾಡಿ: {company} ಉದ್ಯೋಗ ಪೋಸ್ಟ್ ಮಾಡುವಿಕೆ ಮತ್ತು ನಿಮ್ಮ ರೆಸ್ಯೂಮೆ."
 
@@ -10481,12 +10604,16 @@ msgid "Start typing, or draft from what we know: the {company} posting."
 msgstr "ಟೈಪ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಿ ಅಥವಾ ನಮಗೆ ತಿಳಿದಿರುವ ವಿಷಯದಿಂದ ಡ್ರಾಫ್ಟ್ ಮಾಡಿ: {company} ಉದ್ಯೋಗ ಪೋಸ್ಟ್ ಮಾಡುವಿಕೆ."
 
 #: src/features/letters/write.tsx
+msgid "Start typing, or draft from what we know: your Profile."
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Start typing, or draft from what we know: your resume."
 msgstr "ಟೈಪ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಿ ಅಥವಾ ನಮಗೆ ತಿಳಿದಿರುವ ವಿಷಯದಿಂದ ಡ್ರಾಫ್ಟ್ ಮಾಡಿ: ನಿಮ್ಮ ರೆಸ್ಯೂಮ್."
 
 #: src/features/letters/write.tsx
-msgid "Start typing. To draft one, link a resume or an application first."
-msgstr "ಟೈಪ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಿ. ಒಂದನ್ನು ಡ್ರಾಫ್ಟ್ ಮಾಡಲು, ಮೊದಲು ರೆಸ್ಯೂಮ್ ಅಥವಾ ಉದ್ಯೋಗ ಅರ್ಜಿಯನ್ನು ಲಿಂಕ್ ಮಾಡಿ."
+msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
+msgstr ""
 
 #: src/features/write/outline.tsx
 msgid "Start with the sections most resumes have."
@@ -10511,6 +10638,10 @@ msgstr "{minutes} ನಿಮಿಷಗಳಲ್ಲಿ ಪ್ರಾರಂಭವಾ�
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
 msgstr "ಈಗ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ"
+
+#: src/features/share/link.tsx
+msgid "Statistics need a connection."
+msgstr ""
 
 #: src/features/documents/new-document.tsx
 msgid "Stay in Documents"
@@ -10781,8 +10912,7 @@ msgstr "ಗುರಿ ಹುದ್ದೆಗಳು"
 msgid "Task"
 msgstr "ಕಾರ್ಯ"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Teal"
 msgstr "ಟೀಲ್"
 
@@ -10820,6 +10950,10 @@ msgstr "ತೆಲುಗು"
 #: src/features/letters/design.tsx
 msgid "Template"
 msgstr "ಟೆಂಪ್ಲೇಟ್"
+
+#: src/features/letters/design.tsx
+msgid "Template and type"
+msgstr ""
 
 #. placeholder {0}: templateName(template)
 #: src/features/design/draft.ts
@@ -10859,6 +10993,7 @@ msgid "Testing…"
 msgstr "… ಪರೀಕ್ಷಿಸಲಾಗುತ್ತಿದೆ"
 
 #: src/features/applications/add-sheet.tsx
+#: src/features/ats-checker/checker.tsx
 #: src/features/write/fields.ts
 msgid "Text"
 msgstr "ಪಠ್ಯ"
@@ -11010,6 +11145,10 @@ msgstr "ಸಂಪರ್ಕವನ್ನು ಲೋಡ್ ಮಾಡಲು ಅಥವ
 msgid "The current state will be saved as “Before restore” first."
 msgstr "ಪ್ರಸ್ತುತ ಸ್ಥಿತಿಯನ್ನು ಮೊದಲು “ಪುನಃಸ್ಥಾಪಿಸುವ ಮೊದಲು” ಎಂದು ಉಳಿಸಲಾಗುತ್ತದೆ."
 
+#: src/features/share/custom-domain.tsx
+msgid "The domain changed while it was being checked. Check it again."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "The editor opens on Check, which checks the imported resume again."
 msgstr "ಎಡಿಟರ್ ಪರಿಶೀಲನೆಯಲ್ಲಿ ತೆರೆಯುತ್ತದೆ, ಇದು ಆಮದು ಮಾಡಿದ ರೆಸ್ಯೂಮ್ ಅನ್ನು ಮತ್ತೊಮ್ಮೆ ಪರಿಶೀಲಿಸುತ್ತದೆ."
@@ -11034,6 +11173,10 @@ msgstr "ಅನುಸರಣೆಯನ್ನು ಉಳಿಸಲಾಗಿದೆ. ಜ
 #: src/features/letters/write.tsx
 msgid "The greeting follows the name."
 msgstr "ಶುಭಾಶಯವು ಹೆಸರನ್ನು ಅನುಸರಿಸುತ್ತದೆ."
+
+#: src/features/share/custom-domain.tsx
+msgid "The HTTPS certificate couldn't be issued. Make sure the DNS records are still there, then check again."
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
@@ -11111,6 +11254,10 @@ msgstr "ರೆಕಾರ್ಡ್‌ಗಳು ಇನ್ನೂ ಕಾಣಿಸು�
 #: src/features/ats-checker/checker.tsx
 msgid "The rest of the file isn't in this report."
 msgstr "ಉಳಿದ ಫೈಲ್ ಈ ವರದಿಯಲ್ಲಿಲ್ಲ."
+
+#: src/features/letters/write.tsx
+msgid "the resume"
+msgstr "ರೆಸ್ಯೂಮೆ"
 
 #: src/features/history/history.tsx
 msgid "The resume as it is"
@@ -11293,6 +11440,22 @@ msgstr "ಈ ಡಾಕ್ಯುಮೆಂಟ್ ಲಾಕ್ ಆಗಿದೆ. ನ�
 msgid "This document is no longer available. Refresh and try again."
 msgstr "ಈ ಡಾಕ್ಯುಮೆಂಟ್ ಇನ್ನು ಮುಂದೆ ಲಭ್ಯವಿಲ್ಲ. ರಿಫ್ರೆಶ್ ಮಾಡಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
+#: src/features/share/custom-domain.tsx
+msgid "This domain can't be connected. Try a subdomain such as www."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain has been blocked and can't be connected. Contact support if you think that's wrong."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain needs your attention. See what's below."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain no longer points to Rezumi. Put its CNAME record back, then check again."
+msgstr ""
+
 #: src/api/ai-consent.ts
 msgid "This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs."
 msgstr "ನಿಮ್ಮ ಸರ್ವರ್‌ನ ಆಯ್ಕೆಮಾಡಿದ ಪೂರೈಕೆದಾರರನ್ನು ಬಳಸಿಕೊಂಡು ವೇಳಾಪಟ್ಟಿಯು ಆನ್ ಆಗಿರುವಾಗ ಇದು ಮರುಕಳಿಸುವ ಪ್ರಕ್ರಿಯೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸುತ್ತದೆ. ಭವಿಷ್ಯದ ರನ್‌ಗಳನ್ನು ನಿಲ್ಲಿಸಲು ವೇಳಾಪಟ್ಟಿಯನ್ನು ಆಫ್ ಮಾಡಿ."
@@ -11429,6 +11592,7 @@ msgstr "ಈ ಪತ್ರ ಮತ್ತು ನಿಮ್ಮ ರೆಸ್ಯೂಮ�
 msgid "This letter changed elsewhere"
 msgstr "ಈ ಪತ್ರ ಬೇರೆಡೆ ಬದಲಾಗಿದೆ"
 
+#: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
 msgid "This letter is locked. Unlock it in Documents to edit."
 msgstr "ಈ ಪತ್ರ ಲಾಕ್ ಆಗಿದೆ. ಸಂಪಾದಿಸಲು ದಾಖಲೆಗಳಲ್ಲಿ ಅದನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ."
@@ -11436,6 +11600,10 @@ msgstr "ಈ ಪತ್ರ ಲಾಕ್ ಆಗಿದೆ. ಸಂಪಾದಿಸಲ�
 #: src/features/letters/write.tsx
 msgid "This letter keeps its recipient as written."
 msgstr "ಈ ಪತ್ರವು ಅದರ ಸ್ವೀಕರಿಸುವವರನ್ನು ಬರೆದಂತೆ ಇರಿಸುತ್ತದೆ."
+
+#: src/features/letters/write.tsx
+msgid "This letter only"
+msgstr ""
 
 #: src/features/auth/reset-password-screen.tsx
 msgid "This link has expired"
@@ -11736,8 +11904,7 @@ msgstr ""
 msgid "Track in Applications"
 msgstr "ಅರ್ಜಿಗಳಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Traditional"
 msgstr "ಸಾಂಪ್ರದಾಯಿಕ"
 
@@ -11893,7 +12060,6 @@ msgstr "ಎರಡು ಹಂತದ ಪರಿಶೀಲನೆ"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
-#: src/features/letters/design.tsx
 #: src/features/profile/facts-add.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "Type"
@@ -12179,14 +12345,6 @@ msgstr ""
 msgid "Use default"
 msgstr "ಡೀಫಾಲ್ಟ್ ಬಳಸಿ"
 
-#: src/features/letters/write.tsx
-msgid "Use details from “{resumeName}”"
-msgstr "“{resumeName}” ನಿಂದ ವಿವರಗಳನ್ನು ಬಳಸಿ"
-
-#: src/features/letters/write.tsx
-msgid "Use details from the resume"
-msgstr "ರೆಸ್ಯೂಮ್‌ನಿಂದ ವಿವರಗಳನ್ನು ಬಳಸಿ"
-
 #: src/features/profile/facts-detail.tsx
 msgid "Use for all applications"
 msgstr "ಎಲ್ಲಾ ಅರ್ಜಿಗಳಿಗೂ ಬಳಸಿ"
@@ -12284,6 +12442,10 @@ msgstr "ಈ ಪೂರೈಕೆದಾರರನ್ನು ಬಳಸಿ"
 msgid "Use this time"
 msgstr "ಈ ಸಮಯವನ್ನು ಬಳಸಿ"
 
+#: src/features/share/custom-domain.tsx
+msgid "Use www.{hostname}"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Use your editor's normal bullet list, so stray glyphs do not land mid-sentence."
 msgstr "ನಿಮ್ಮ ಎಡಿಟರ್‌ನ ಸಾಮಾನ್ಯ ಬುಲೆಟ್ ಪಟ್ಟಿ ಬಳಸಿ, ಇದರಿಂದ ಅಲೆದಾಡುವ ಗ್ಲಿಫ್‌ಗಳು ವಾಕ್ಯದ ಮಧ್ಯದಲ್ಲಿ ಬೀಳುವುದಿಲ್ಲ."
@@ -12373,6 +12535,10 @@ msgstr "ಆವೃತ್ತಿಯನ್ನು ಕಳುಹಿಸಲಾಗಿದ�
 msgid "Version sent {date} · Check {0}"
 msgstr "ಆವೃತ್ತಿಯನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ {date} · {0} ಪರಿಶೀಲಿಸಿ"
 
+#: src/features/letters/share.tsx
+msgid "Versions"
+msgstr "ಆವೃತ್ತಿಗಳು"
+
 #: src/features/design/advanced.tsx
 msgid "Vertical margin"
 msgstr "ಲಂಬ ಅಂಚು"
@@ -12443,6 +12609,10 @@ msgstr "ಧ್ವನಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
 msgid "Volunteer"
 msgstr "ಸ್ವಯಂಸೇವಕ"
 
+#: src/features/share/custom-domain.tsx
+msgid "Waiting"
+msgstr ""
+
 #. placeholder {0}: waitingFor.join(", ")
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Waiting for {0}…"
@@ -12455,6 +12625,10 @@ msgstr "ನಿಮಗಾಗಿ ಕಾಯುತ್ತಿದೆ"
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
 msgstr "ಮತ್ತೆ ಕೇಳಲು ಕಾಯುತ್ತಿದ್ದೇನೆ"
+
+#: src/features/share/custom-domain.tsx
+msgid "We can't set up more domains right now. The problem is on our side, and your domain connects by itself once it's solved."
+msgstr ""
 
 #: src/features/onboarding/source-fields.tsx
 msgid "We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
@@ -12508,6 +12682,7 @@ msgid "Web searches look for work here, up to three countries."
 msgstr "ವೆಬ್ ಹುಡುಕಾಟಗಳು ಈ ದೇಶಗಳಲ್ಲಿ ಉದ್ಯೋಗಗಳನ್ನು ಹುಡುಕುತ್ತವೆ. ಮೂರು ದೇಶಗಳವರೆಗೆ ಆಯ್ಕೆಮಾಡಿ."
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Website"
@@ -12709,8 +12884,8 @@ msgstr "ನೀವು ಭೇಟಿಯಾಗುವವರು"
 msgid "Why do you want this role at {company}?"
 msgstr "{company} ನಲ್ಲಿ ಈ ಹುದ್ದೆಯನ್ನು ನೀವು ಏಕೆ ಬಯಸುತ್ತೀರಿ?"
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Wide"
 msgstr "ಅಗಲ"
 
@@ -13028,6 +13203,14 @@ msgstr "ನಿಮ್ಮ ದಿನಾಂಕಗಳನ್ನು ಹಲವಾರು 
 msgid "Your details"
 msgstr ""
 
+#: src/features/letters/write.tsx
+msgid "Your details from"
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your details were copied into the letter. Edit them here."
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Your document was saved. Review it in the editor."
 msgstr "ನಿಮ್ಮ ಡಾಕ್ಯುಮೆಂಟ್ ಅನ್ನು ಉಳಿಸಲಾಗಿದೆ. ಸಂಪಾದಕದಲ್ಲಿ ಅದನ್ನು ಪರಿಶೀಲಿಸಿ."
@@ -13035,6 +13218,18 @@ msgstr "ನಿಮ್ಮ ಡಾಕ್ಯುಮೆಂಟ್ ಅನ್ನು ಉಳ
 #: src/features/share/custom-domain.tsx
 msgid "Your domain"
 msgstr "ನಿಮ್ಮ ಡೊಮೇನ್"
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain now goes to your Rezumi address"
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain stops opening your page right away. To connect it again, its DNS is checked and HTTPS is set up again, which can take a while."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain stops working on {until}"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Your email address is broken across pieces of text."
@@ -13086,9 +13281,14 @@ msgstr "ನಿಮ್ಮ ಸಂದೇಶ"
 msgid "Your name"
 msgstr "ನಿಮ್ಮ ಹೆಸರು"
 
+#. placeholder {0}: resumeName ?? t`the resume`
 #: src/features/letters/write.tsx
-msgid "Your name and contact details come from a resume."
-msgstr "ನಿಮ್ಮ ಹೆಸರು ಮತ್ತು ಸಂಪರ್ಕ ವಿವರಗಳು ರೆಸ್ಯೂಮೆಯಿಂದ ಬಂದಿವೆ."
+msgid "Your name and contact details follow “{0}”."
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your name and contact details follow your Profile."
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
@@ -13139,6 +13339,7 @@ msgid "Your own fonts aren't in your plan. Fonts already added keep working on t
 msgstr ""
 
 #: src/features/billing/plan-alert.ts
+#: src/features/share/custom-domain.tsx
 msgid "Your page keeps its address on Rezumi."
 msgstr ""
 
@@ -13151,6 +13352,10 @@ msgstr "ನಿಮ್ಮ ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ಅಸಾ
 msgid "Your plan"
 msgstr ""
 
+#: src/features/share/custom-domain.tsx
+msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
+msgstr ""
+
 #: app/(tabs)/portfolio/index.tsx
 msgid "Your portfolio is coming to the app"
 msgstr ""
@@ -13161,6 +13366,10 @@ msgstr "ನಿಮ್ಮ ಆದ್ಯತೆಗಳು"
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "your Profile"
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your Profile"
 msgstr ""
 
 #: src/features/profile/bring-screen.tsx
@@ -13198,6 +13407,14 @@ msgstr "ನಿಮ್ಮ ಪೂರೈಕೆದಾರ"
 #: src/features/settings/profile.tsx
 msgid "Your public links begin with {server}/"
 msgstr "ನಿಮ್ಮ ಸಾರ್ವಜನಿಕ ಲಿಂಕ್‌ಗಳು {server}/ ನೊಂದಿಗೆ ಪ್ರಾರಂಭವಾಗುತ್ತವೆ"
+
+#: src/features/share/web-page.tsx
+msgid "Your published portfolio opens at your short link and custom domain."
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Your published portfolio opens at your short link and custom domain. This resume is shown there if the portfolio is unpublished."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "Your recording goes to {transcriberName} after you stop, to be transcribed. Your provider may charge. The server keeps transcripts, never recordings."
@@ -13250,10 +13467,9 @@ msgstr ""
 msgid "Your session expired. Sign in again."
 msgstr "ನಿಮ್ಮ ಅವಧಿ ಮುಗಿದಿದೆ. ಮತ್ತೆ ಸೈನ್ ಇನ್ ಮಾಡಿ."
 
-#. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx
-msgid "Your short link and custom domain open “{0}”."
-msgstr "ನಿಮ್ಮ ಕಿರು ಲಿಂಕ್ ಮತ್ತು ಕಸ್ಟಮ್ ಡೊಮೇನ್ “{0}” ಅನ್ನು ತೆರೆಯುತ್ತವೆ."
+msgid "Your short link and custom domain open “{otherPrimary}”."
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Your short link and custom domain open this resume."

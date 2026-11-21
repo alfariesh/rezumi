@@ -51,7 +51,7 @@ function useNavigationTheme() {
 	} satisfies typeof DefaultTheme;
 }
 
-const overTabs = (name: string) => name === "coach" || name.startsWith("account/");
+const overTabs = (name: string) => name === "coach" || name === "ats-checker" || name.startsWith("account/");
 
 type CrashScreenProps = { onRetry: () => void };
 
@@ -83,7 +83,7 @@ function RootStack() {
 				screenOptions={({ route }) => ({
 					animation: reduced ? "fade" : "default",
 					headerTitleStyle: { fontFamily: navigationTheme.fonts.bold.fontFamily },
-					// Screens pushed over the tabs (account stack, Coach) would read "(tabs)" as their back title.
+					// Screens pushed over the tabs (account stack, Coach, ATS checker) would read "(tabs)" as their back title.
 					...(overTabs(route.name) ? { headerBackButtonDisplayMode: "minimal" as const } : {}),
 				})}
 			>

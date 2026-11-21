@@ -9,7 +9,7 @@ import { getLostCharactersMessage } from "./messages";
 import { safeFileName } from "./model";
 import { client, rest } from "@/api/client";
 import { createPreviewPipeline } from "@/preview/pipeline";
-import { showToast } from "@/ui-legacy";
+import { showToast } from "@/ui";
 
 export type ExportFormat = "pdf" | "docx" | "odt" | "md" | "json";
 const mime = {
@@ -57,7 +57,7 @@ export async function localPdf(data: ResumeData, letter = false) {
 
 function warnTextLoss(result: Awaited<ReturnType<typeof localPdf>>) {
 	if (result.hasTextLoss || result.lostCharacters.length) {
-		showToast({ message: getLostCharactersMessage(result.lostCharacters), duration: 10000 });
+		showToast({ title: getLostCharactersMessage(result.lostCharacters), variant: "warning", duration: 10000 });
 	}
 }
 

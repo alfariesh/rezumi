@@ -1,3 +1,5 @@
+// The letter as it prints, rendered on the device with the native PDF engine: sender header, recipient block and date,
+// greeting, body, sign-off and signature. A draft being written shows in place of the body until it's kept.
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
@@ -11,7 +13,11 @@ import { nativeEnvironment } from "@/draft/native";
 import { PageImage } from "@/preview/page-image";
 import { usePageZoom, ZoomViewport } from "@/preview/use-page-zoom";
 import { usePreview } from "@/preview/usePreview";
-import { Banner, Button, IconButton, Skeleton, Text, useReducedMotion, useTheme } from "@/ui-legacy";
+import { Alert, Button, IconButton, Skeleton, Text, size, space, useReducedMotion } from "@/ui";
+
+/** A rendered page at its display size, on paper white (never inverts) with the surface shadow. */
+const pageStyle = (width: number, height: number) => [{ width, height }, PAPER] as const;
+const PAPER = { backgroundColor: "white", boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12)" };
 
 /** A4 in PDF points, the size to lay out before the first render lands. */
 const A4 = { width: 595.28, height: 841.89 };
@@ -33,14 +39,34 @@ function useThrottled<T>(value: T, ms: number) {
 	return shown;
 }
 
-/** The pages of a letter's render data, with errors, text loss and a zoom bar. Also shows read-only versions. */
-export function LetterPages({ data, zoomBar = true }: { data: ResumeData | null; zoomBar?: boolean | undefined }) {
+function Notice({ status, message, action }: { status: "warning" | "danger"; message: string; action?: () => void }) {
 	const { t } = useLingui();
-	const { colors, shadows, size, space } = useTheme();
+	return (
+		<View className="gap-2 p-4 pb-0">
+			<Alert status={status}>
+				<Alert.Indicator />
+				<Alert.Content>
+					<Alert.Description>{message}</Alert.Description>
+				</Alert.Content>
+			</Alert>
+			{action ? (
+				<Button size="sm" variant="secondary" className="self-start" onPress={action}>
+					{t`Retry`}
+				</Button>
+			) : null}
+		</View>
+	);
+}
+
+type LetterPagesProps = { data: ResumeData | null; zoomBar?: boolean | undefined };
+
+/** The pages of a letter's render data, with errors, text loss and a zoom bar. Also shows read-only versions. */
+export function LetterPages({ data, zoomBar = true }: LetterPagesProps) {
+	const { t } = useLingui();
 	const [width, setWidth] = useState(0);
 	const zoomController = usePageZoom();
 	const { zoom, step, change } = zoomController;
-	const pageWidth = Math.max(size.hit, width - space.s8);
+	const pageWidth = Math.max(size.hit, width - space[8]);
 	const [firstWidth, setFirstWidth] = useState(A4.width);
 	const displayScale = pageWidth / firstWidth;
 	const preview = usePreview(width ? data : null, undefined, {
@@ -52,21 +78,20 @@ export function LetterPages({ data, zoomBar = true }: { data: ResumeData | null;
 	// Letter and free-form pages differ from A4; the scale follows the rendered width.
 	const renderedWidth = result?.pages[0]?.width;
 	if (renderedWidth && renderedWidth !== firstWidth) setFirstWidth(renderedWidth);
+	const placeholder = { width: pageWidth, height: (pageWidth * A4.height) / A4.width };
+
 	return (
-		<View
-			style={{ flex: 1, backgroundColor: colors.sunken }}
-			onLayout={(event) => setWidth(event.nativeEvent.layout.width)}
-		>
+		<View className="flex-1 bg-surface-secondary" onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
 			{preview.error ? (
-				<Banner
-					tone="danger"
+				<Notice
+					status="danger"
 					message={t`Couldn't render the preview. Retry, or try another template or font in Design.`}
-					action={{ label: t`Retry`, onPress: preview.retry }}
+					action={preview.retry}
 				/>
 			) : null}
 			{result?.hasTextLoss ? (
-				<Banner
-					tone="warn"
+				<Notice
+					status="warning"
 					message={
 						result.lostCharacters.length > 0
 							? t`Some characters couldn't be drawn: ${result.lostCharacters.join(", ")}. Choose another font in Design.`
@@ -75,27 +100,22 @@ export function LetterPages({ data, zoomBar = true }: { data: ResumeData | null;
 				/>
 			) : null}
 			<ZoomViewport controller={zoomController} width={width} pageWidth={pageWidth}>
-				<View accessibilityLabel={t`Letter page`} style={{ gap: space.s6, alignItems: "center" }}>
+				<View accessibilityLabel={t`Letter page`} className="items-center gap-6">
 					{!result ? (
 						preview.error ? null : (
-							<View style={{ width: pageWidth, gap: space.s3, alignItems: "center" }}>
-								<Skeleton height={(pageWidth * A4.height) / A4.width} />
-								<Text color="ink3">{t`Rendering preview…`}</Text>
+							<View className="items-center gap-3">
+								<Skeleton variant="none" className="rounded-sm" style={placeholder} />
+								<Text tone="muted">{t`Rendering preview…`}</Text>
 							</View>
 						)
 					) : (
 						result.pages.map((page) => (
-							<View key={page.index} style={{ gap: space.s2 }}>
-								<Text variant="caption" color="ink3" align="center">{t`Page ${page.index + 1}`}</Text>
+							<View key={page.index} className="gap-2">
+								<Text size="xs" tone="muted" className="text-center">{t`Page ${page.index + 1}`}</Text>
 								<PageImage
 									uri={page.uri}
 									accessibilityLabel={t`Letter page ${page.index + 1}`}
-									style={{
-										width: page.width * displayScale,
-										height: page.height * displayScale,
-										backgroundColor: colors.paper,
-										boxShadow: shadows.ePage.boxShadow,
-									}}
+									style={pageStyle(page.width * displayScale, page.height * displayScale)}
 								/>
 							</View>
 						))
@@ -103,23 +123,25 @@ export function LetterPages({ data, zoomBar = true }: { data: ResumeData | null;
 				</View>
 			</ZoomViewport>
 			{zoomBar ? (
-				<View
-					style={{
-						flexDirection: "row",
-						alignItems: "center",
-						justifyContent: "space-around",
-						backgroundColor: colors.surface,
-						padding: space.s1,
-					}}
-				>
-					<IconButton icon="minus" label={t`Zoom out`} disabled={(zoom ?? 1) <= 0.6} onPress={() => step(-0.1)} />
-					<Button
+				<View className="flex-row items-center justify-around border-t border-separator bg-surface p-1">
+					<IconButton
+						icon="minus"
 						variant="ghost"
-						label={zoom === null ? t`Fit` : t`${Math.round(zoom * 100)}%`}
-						onPress={() => change(1)}
+						label={t`Zoom out`}
+						isDisabled={(zoom ?? 1) <= 0.6}
+						onPress={() => step(-0.1)}
 					/>
-					<IconButton icon="plus" label={t`Zoom in`} disabled={(zoom ?? 1) >= 1.5} onPress={() => step(0.1)} />
-					<Text variant="caption" color="ink3">
+					<Button variant="ghost" size="sm" onPress={() => change(1)}>
+						{zoom === null ? t`Fit` : t`${Math.round(zoom * 100)}%`}
+					</Button>
+					<IconButton
+						icon="plus"
+						variant="ghost"
+						label={t`Zoom in`}
+						isDisabled={(zoom ?? 1) >= 1.5}
+						onPress={() => step(0.1)}
+					/>
+					<Text size="xs" tone="muted">
 						{plural(result?.pageCount ?? 1, { one: "# page", other: "# pages" })}
 					</Text>
 				</View>
@@ -128,12 +150,7 @@ export function LetterPages({ data, zoomBar = true }: { data: ResumeData | null;
 	);
 }
 
-/**
- * The letter as it prints, rendered on the device: sender header, recipient block and date, greeting, body, sign-off
- * and signature. A draft being written shows in place of the body until it's kept or discarded.
- */
 export function LetterPage({ id }: { id: string }) {
-	const { t } = useLingui();
 	const letter = useLetterStore((state) => (state.document?.id === id ? state.document : null));
 	const words = useLetterWords(letter?.style.metadata.page.locale);
 	const draft = useLetterDrafting((state) => state.draft);
@@ -148,6 +165,11 @@ export function LetterPage({ id }: { id: string }) {
 		return letterPageData(shownDraft ? { ...letter, content: coverLetterTextToHtml(shownDraft) } : letter, words);
 	}, [letter, words, shownDraft]);
 
-	if (!letter) return <Banner tone="info" message={t`Loading cover letter…`} />;
+	if (!letter)
+		return (
+			<View className="flex-1 items-center bg-surface-secondary p-4">
+				<Skeleton variant="none" className="aspect-[0.707] w-full rounded-sm" />
+			</View>
+		);
 	return <LetterPages data={data} />;
 }

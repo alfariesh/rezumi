@@ -307,6 +307,11 @@ msgstr "{0, plural, one {您選擇的字體無法顯示 {list}，它會顯示為
 msgid "{0} · Not scored"
 msgstr "{0}·未得分"
 
+#. placeholder {0}: option.label
+#: src/features/share/export-options.tsx
+msgid "{0} · Plus"
+msgstr ""
+
 #. placeholder {0}: data.equity
 #: src/features/career/offers.tsx
 msgid "{0} · Value uncertain"
@@ -575,6 +580,10 @@ msgstr "{filled}/5 部分"
 msgid "{followUps, plural, one {# follow-up} other {# follow-ups}}"
 msgstr "{followUps, plural, one {# 次後續聯繫} other {# 次後續聯繫}}"
 
+#: src/features/share/custom-domain.tsx
+msgid "{hostname} needs a CNAME at the root, which many providers don't allow. If yours doesn't, connect www.{hostname} and forward {hostname} to it where you manage the domain."
+msgstr ""
+
 #: src/features/home/coming-up.tsx
 msgid "{hours, plural, one {In # hour} other {In # hours}}"
 msgstr ""
@@ -697,8 +706,8 @@ msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} 在文本中排在最後。大多數系統仍然可以找到它們；有些則不然。"
 
 #: src/features/letters/write.tsx
-msgid "{pairing} type"
-msgstr "{pairing}型"
+msgid "{pairingName} type"
+msgstr ""
 
 #: src/features/assistant/page-marks.tsx
 msgid "{pending, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
@@ -834,6 +843,10 @@ msgstr ""
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
 msgstr "這封信的備份。作為信件導入回 Rezumi。"
 
+#: src/features/share/custom-domain.tsx
+msgid "A CAA record on this domain blocks its HTTPS certificate. Remove that record or allow the certificate authority, then check again."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "A city and country let roles be matched to where you are."
 msgstr "城市和國家讓角色與您所在的位置相符。"
@@ -857,6 +870,10 @@ msgstr "有一個時間段的寫法是大多數軟體無法讀取的。"
 #: src/features/check/issues.ts
 msgid "A date won't be read"
 msgstr "不會讀取日期"
+
+#: src/features/share/custom-domain.tsx
+msgid "A domain without www needs a DNS provider that allows it"
+msgstr ""
 
 #: src/features/profile/stories-reader.tsx
 #: src/features/profile/stories.tsx
@@ -910,6 +927,10 @@ msgstr ""
 #: src/features/application-detail/sheets.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "簽到提醒，在您簽到之前顯示為下一步。"
+
+#: src/features/letters/write.tsx
+msgid "A resume"
+msgstr ""
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "A resume in minutes"
@@ -1001,6 +1022,10 @@ msgstr "行動"
 #: src/features/applications/list-screen.tsx
 msgid "Actions for {0} at {1}"
 msgstr "{1} 的 {0} 操作"
+
+#: src/features/share/custom-domain.tsx
+msgid "Active"
+msgstr "積極的"
 
 #: app/account/membership.tsx
 msgid "Active cover letters"
@@ -1218,6 +1243,10 @@ msgstr "加到第 1 頁"
 #: src/features/write/fields.ts
 msgid "Add language"
 msgstr "新增語言"
+
+#: src/features/letters/write.tsx
+msgid "Add one in Applications first."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -2062,8 +2091,7 @@ msgstr "背景顏色"
 msgid "Backup code"
 msgstr "備份程式碼"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Balanced"
 msgstr "平衡"
 
@@ -2246,8 +2274,7 @@ msgstr "清單條目 {n}"
 msgid "Bulleted list"
 msgstr "項目符號清單"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Burgundy"
 msgstr "勃根地"
 
@@ -2321,8 +2348,8 @@ msgid "Change"
 msgstr "改變"
 
 #: src/features/letters/write.tsx
-msgid "Change it in Design."
-msgstr "在設計中更改它。"
+msgid "Change it in Design"
+msgstr ""
 
 #: src/features/search/search-screen.tsx
 msgid "Change language to…"
@@ -2386,6 +2413,7 @@ msgstr "使用 ATS 檢查工具檢查 PDF"
 msgid "Check a sample file"
 msgstr "檢查範例文件"
 
+#: src/features/share/custom-domain.tsx
 #: src/features/workspace/tabs/fit.tsx
 msgid "Check again"
 msgstr "重新檢查"
@@ -2447,6 +2475,8 @@ msgstr "檢查視圖"
 msgid "Check what we found"
 msgstr ""
 
+#: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/stories.tsx
@@ -2555,8 +2585,8 @@ msgid "Choose a photo smaller than 10 MB."
 msgstr "選擇小於10MB的照片。"
 
 #: src/features/letters/design.tsx
-msgid "Choose a resume in Write to match its design. Until then, the letter has its own."
-msgstr "在 Write 中選擇一份與其設計相符的履歷。到那時，這封信就有了它自己的。"
+msgid "Choose a resume under From in Write to match its design. Until then, the letter has its own."
+msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Choose a tested AI provider before sharing data."
@@ -2631,13 +2661,11 @@ msgstr ""
 msgid "Clarify"
 msgstr "釐清"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Classic"
 msgstr "經典的"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Clean"
 msgstr "清潔"
 
@@ -2688,13 +2716,19 @@ msgstr "清除其項目；該部分保留。您可以撤銷。"
 #: src/features/entries/icon-picker.tsx
 #: src/features/entries/photo-field.tsx
 #: src/features/entries/rich-text-field.tsx
+#: src/features/letters/design.tsx
+#: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/profile/career.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/fill-sheet.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/search-regions-field.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/export-screen.tsx
+#: src/features/share/link.tsx
+#: src/features/share/web-page.tsx
 msgid "Close"
 msgstr "關閉"
 
@@ -2857,14 +2891,13 @@ msgstr ""
 msgid "Connect"
 msgstr "連結"
 
-#. placeholder {0}: domain.hostname
-#: src/features/share/custom-domain.tsx
-msgid "Connect {0}"
-msgstr "連結 {0}"
-
 #: src/features/share/custom-domain.tsx
 msgid "Connect {domain}"
 msgstr "連結 {domain}"
+
+#: src/features/share/custom-domain.tsx
+msgid "Connect {hostname}"
+msgstr ""
 
 #: src/features/applications/add-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -2899,12 +2932,20 @@ msgid "Connected · {milliseconds} ms"
 msgstr "已連接·{milliseconds}毫秒"
 
 #: src/features/share/custom-domain.tsx
+msgid "Connected. Your domain opens your portfolio."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
 msgid "Connected. Your domain opens your primary resume."
 msgstr "已連結。您的網域會開啟您的主要履歷。"
 
 #: src/features/workspace/parts.tsx
 msgid "Connecting the dots"
 msgstr "正在串起線索"
+
+#: src/features/share/custom-domain.tsx
+msgid "Connection progress"
+msgstr ""
 
 #: app/account/index.tsx
 msgid "Contact & complaints"
@@ -3002,6 +3043,7 @@ msgid "Copied to clipboard"
 msgstr "已複製到剪貼簿"
 
 #: src/features/share/custom-domain.tsx
+#: src/features/share/web-page.tsx
 msgid "Copies it"
 msgstr "複製此內容"
 
@@ -3214,9 +3256,12 @@ msgstr "無法載入履歷。"
 msgid "Couldn't load statistics."
 msgstr "無法載入統計資料。"
 
+#: src/features/letters/write.tsx
+msgid "Couldn't load the cover letter"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/letters/share.tsx
-#: src/features/letters/write.tsx
 msgid "Couldn't load the cover letter."
 msgstr "無法載入求職信。"
 
@@ -3251,8 +3296,11 @@ msgstr "無法載入此內容。檢查您的連線並重試。"
 msgid "Couldn't load this. Check your connection."
 msgstr ""
 
-#: src/features/history/history.tsx
 #: src/features/letters/share.tsx
+msgid "Couldn't load versions"
+msgstr ""
+
+#: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "無法載入版本。"
 
@@ -3555,6 +3603,10 @@ msgstr "無法解鎖履歷。請再試一次。"
 msgid "Couldn't unlock this resume. Try again."
 msgstr "無法解鎖此履歷。再試一次。"
 
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't update sharing. Try again."
+msgstr "無法更新分享設定。請再試一次。"
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Couldn't update the application. Nothing was changed; try again."
 msgstr "無法更新應徵紀錄。未做任何變更，請再試一次。"
@@ -3732,6 +3784,10 @@ msgstr "自訂"
 #: src/features/design/style-groups.tsx
 msgid "Custom color (hex)"
 msgstr "自訂顏色（十六進位）"
+
+#: src/features/share/custom-domain.tsx
+msgid "Custom domains aren't available here."
+msgstr ""
 
 #: src/features/write/basics-screen.tsx
 msgid "Custom fields"
@@ -4118,10 +4174,27 @@ msgstr "放棄您的離線編輯並載入已儲存的版本。"
 msgid "Discard your offline edits?"
 msgstr "放棄您的離線編輯嗎？"
 
+#: src/features/share/custom-domain.tsx
+msgid "Disconnect"
+msgstr "中斷連結"
+
+#. placeholder {0}: current.hostname
+#: src/features/share/custom-domain.tsx
+msgid "Disconnect {0}?"
+msgstr ""
+
 #: src/features/letters/write.tsx
 #: src/ui-legacy/layout.tsx
 msgid "Dismiss"
 msgstr "解僱"
+
+#: src/features/share/custom-domain.tsx
+msgid "DNS is right. HTTPS is being set up, which usually takes a few minutes."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "DNS points to Rezumi"
+msgstr ""
 
 #: src/shell/builder-chrome.tsx
 msgid "Document menu"
@@ -4188,6 +4261,7 @@ msgstr "不要分享"
 #: src/features/entries/dates-field.tsx
 #: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/write/date-field.tsx
 #: src/features/write/pickers.tsx
 #: src/features/write/rich-text-field.tsx
@@ -4237,12 +4311,9 @@ msgid "Download failed. Try again."
 msgstr "下載失敗。請再試一次。"
 
 #: src/features/letters/share.tsx
-msgid "Download opens the system share sheet. Choose a storage provider to save the file."
-msgstr "下載會開啟系統分享面板。請選擇儲存服務供應商以儲存檔案。"
-
 #: src/features/share/download.tsx
-msgid "Download opens the system share sheet. Choose a storage provider to save the file. A linked letter opens as a second file."
-msgstr "下載會開啟系統分享面板。請選擇儲存服務來儲存檔案。連結的求職信會以第二個檔案開啟。"
+msgid "Download opens the system share sheet. Choose Save to Files or a storage app to keep the file."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Download PDF instead"
@@ -4270,6 +4341,10 @@ msgid "Draft · uses only the posting"
 msgstr "草稿·僅使用職缺發布"
 
 #: src/features/letters/write.tsx
+msgid "Draft · uses only your Profile"
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Draft · uses only your resume"
 msgstr "草稿 · 僅使用你的履歷"
 
@@ -4292,6 +4367,10 @@ msgstr "起草總結"
 #: src/features/letters/write.tsx
 msgid "Draft from the posting"
 msgstr "根據職缺公告起草"
+
+#: src/features/letters/write.tsx
+msgid "Draft from your Profile"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Draft from your resume"
@@ -4321,10 +4400,9 @@ msgstr "起草需要 AI 供應商。"
 msgid "Drafting questions"
 msgstr "正在擬定問題"
 
-#. placeholder {0}: draft.provider
 #: src/features/letters/write.tsx
-msgid "Drafting stopped: {0} didn't respond. Nothing on the page changed."
-msgstr "起草停止：{0} 沒有回應。頁面上沒有任何變化。"
+msgid "Drafting stopped: {provider} didn't respond. Nothing on the page changed."
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Drafting stopped. Nothing on the page changed."
@@ -4458,6 +4536,7 @@ msgstr ""
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
@@ -4503,6 +4582,10 @@ msgstr "英語（英國）"
 #: src/features/assistant/messages.tsx
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "增強閱讀不可用；使用內建閱讀器。"
+
+#: src/features/share/custom-domain.tsx
+msgid "Enter a domain such as resume.example.com."
+msgstr ""
 
 #: src/features/profile/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
@@ -4721,6 +4804,7 @@ msgid "Facts"
 msgstr "事實"
 
 #: src/features/ai/provider-list.tsx
+#: src/features/share/custom-domain.tsx
 msgid "Failed"
 msgstr "失敗的"
 
@@ -4753,6 +4837,7 @@ msgstr "欄位被移除"
 msgid "File attached"
 msgstr "所附文件"
 
+#: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "File format"
 msgstr "文件格式"
@@ -4761,8 +4846,7 @@ msgstr "文件格式"
 msgid "File is too large. Choose a file up to 10 MB."
 msgstr "文件太大。選擇最大 10 MB 的檔案。"
 
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
+#: src/features/share/export-options.tsx
 msgid "File name"
 msgstr "檔案名稱"
 
@@ -4938,10 +5022,9 @@ msgstr "字重預設"
 msgid "For"
 msgstr "為了"
 
-#. placeholder {0}: domain.target
 #: src/features/share/custom-domain.tsx
-msgid "For a root domain such as example.com, use A and AAAA records with {0}'s addresses instead of the CNAME."
-msgstr "若是 example.com 這類根網域，請改用指向 {0} 位址的 A 和 AAAA 記錄，而不是 CNAME。"
+msgid "For a root domain such as example.com, use A and AAAA records with {target}'s addresses instead of the CNAME."
+msgstr ""
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -5148,8 +5231,7 @@ msgstr "前往…"
 msgid "Grade"
 msgstr "成績"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Graphite"
 msgstr "石墨"
 
@@ -5211,6 +5293,7 @@ msgid "Heading changed"
 msgstr "標題已更改"
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Headline"
@@ -5382,6 +5465,10 @@ msgstr "如何顯示文件"
 msgid "How well do I fit this role?"
 msgstr "我有多適合這個角色？"
 
+#: src/features/share/custom-domain.tsx
+msgid "HTTPS certificate"
+msgstr ""
+
 #: src/features/settings/locale-names.ts
 msgid "Hungarian"
 msgstr "匈牙利語"
@@ -5453,6 +5540,10 @@ msgstr "如果是掃描檔導致的，這屬於正常情況。否則請刪除它
 msgid "If the web is used, search terms go to your server's search service and links go to the sites being read."
 msgstr ""
 
+#: src/features/share/custom-domain.tsx
+msgid "If your DNS is on Cloudflare, set the CNAME record to DNS only (grey cloud)."
+msgstr ""
+
 #: src/features/check/screen.tsx
 msgid "Ignore"
 msgstr "忽略"
@@ -5519,6 +5610,7 @@ msgid "Improving…"
 msgstr "改善…"
 
 #: src/features/billing/credits.ts
+#: src/features/share/custom-domain.tsx
 msgid "In progress"
 msgstr ""
 
@@ -5546,8 +5638,7 @@ msgstr "印尼語"
 msgid "Inferred"
 msgstr "推斷"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Ink blue"
 msgstr "墨藍色"
 
@@ -5665,6 +5756,10 @@ msgstr "它有條目但未放置在頁面上。"
 msgid "It may have been removed on another device."
 msgstr ""
 
+#: src/features/share/download.tsx
+msgid "It opens as a second file."
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "It starts with your Profile. You can switch templates any time."
 msgstr ""
@@ -5779,6 +5874,14 @@ msgstr "保留兩者"
 msgid "Keep editing"
 msgstr "繼續編輯"
 
+#: src/features/share/web-page.tsx
+msgid "Keep it as it is"
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Keep it connected"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Keep it honest"
 msgstr "保持誠實"
@@ -5812,6 +5915,14 @@ msgstr "讓履歷內容保持為真實文字，而不是文字的圖片。"
 msgid "Keep running heads short, or drop them. They repeat in the extracted text too."
 msgstr "將頁首文字保持簡短，或乾脆去掉。它們也會在擷取出的文字中重複出現。"
 
+#: src/features/letters/share.tsx
+msgid "Keep the current letter"
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Keep the password"
+msgstr ""
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "Keep the recording on this device so I can share it"
 msgstr "將錄音保留在此裝置上，以便我可以分享它"
@@ -5828,6 +5939,10 @@ msgstr "字體最多保留兩三種。每多一種字體，就多一次映射出
 #: src/features/design/layout-screen.tsx
 msgid "Keep together"
 msgstr "保持團結"
+
+#: src/features/letters/share.tsx
+msgid "Keep version"
+msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Keeps the most specific parts"
@@ -6145,14 +6260,6 @@ msgstr "連結簡歷"
 msgid "Linked to {0}"
 msgstr "連結至{0}"
 
-#: src/features/letters/write.tsx
-msgid "Linked to the resume again"
-msgstr "再次連結到簡歷"
-
-#: src/features/letters/write.tsx
-msgid "Linked. Name, email, phone and city update when the resume does."
-msgstr "已連結。姓名、電子郵件、電話和城市會隨著履歷的更新而更新。"
-
 #: src/features/auth/welcome-screen.tsx
 msgid "LinkedIn"
 msgstr "LinkedIn"
@@ -6199,6 +6306,8 @@ msgstr "已發布於 {url}"
 #: src/features/profile/facts.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/link.tsx
+#: src/features/share/pane.tsx
 msgid "Loading"
 msgstr "載入中"
 
@@ -6218,10 +6327,6 @@ msgstr "正在載入應徵紀錄…"
 #: src/features/search/search-screen.tsx
 msgid "Loading conversations…"
 msgstr "正在加載對話..."
-
-#: src/features/letters/page.tsx
-msgid "Loading cover letter…"
-msgstr "正在載入求職信…"
 
 #: src/features/documents/thumbnail.tsx
 msgid "Loading letter…"
@@ -6272,6 +6377,7 @@ msgstr "載入中…"
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -6586,8 +6692,7 @@ msgstr "當天早上 · 當地時間 08:00"
 msgid "Morning of runs at 08:00, or two hours before interviews starting before 10:00."
 msgstr "「當天早上」會於 08:00 執行；10:00 前開始的面試則會提前兩小時執行。"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Moss"
 msgstr "苔綠"
 
@@ -6747,6 +6852,7 @@ msgstr "移至已應徵時，會詢問您實際寄出了哪些文件。"
 #: src/features/documents/new-document.tsx
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
+#: src/features/letters/write.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/fields.ts
 msgid "Name"
@@ -6799,8 +6905,8 @@ msgstr "命名版本將保留，直到您將其刪除。這無法撤消。"
 msgid "Names, tags or applications"
 msgstr "姓名、標籤或應徵紀錄"
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Narrow"
 msgstr "狹窄的"
 
@@ -6968,8 +7074,11 @@ msgstr ""
 msgid "No application"
 msgstr "沒有工作申請"
 
-#: src/features/documents/document-sheets.tsx
 #: src/features/letters/write.tsx
+msgid "No applications yet"
+msgstr "還沒有工作申請"
+
+#: src/features/documents/document-sheets.tsx
 msgid "No applications yet. Add one in Applications first."
 msgstr "還沒有工作申請。首先在工作申請中新增一個。"
 
@@ -7021,6 +7130,10 @@ msgstr "無日期"
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "未找到任何日期。"
+
+#: src/features/share/custom-domain.tsx
+msgid "No domain is connected anymore. Pull to refresh."
+msgstr ""
 
 #: src/features/assistant/threads.tsx
 msgid "no edits"
@@ -7158,10 +7271,6 @@ msgstr "沒有回應"
 msgid "No results"
 msgstr "無結果"
 
-#: src/features/letters/write.tsx
-msgid "No resume"
-msgstr "沒有履歷"
-
 #: src/auth/messages.ts
 msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
 msgstr "沒有Rezumi伺服器在此位址應答。檢查拼寫，或詢問管理員伺服器是否允許應用程式登入。"
@@ -7238,8 +7347,8 @@ msgstr ""
 msgid "None of your AI connections can transcribe speech (OpenAI, Google Gemini, Mistral, xAI, Groq or Vercel AI Gateway can). Add one, or type your answer."
 msgstr "您的 AI 連線都無法轉錄語音（OpenAI、Google Gemini、Mistral、xAI、Groq 或 Vercel AI Gateway 可以）。新增一個，或輸入您的答案。"
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Normal"
 msgstr "普通的"
 
@@ -7413,8 +7522,7 @@ msgstr "編號列表"
 msgid "Observation"
 msgstr "觀察"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Ochre"
 msgstr "赭色"
 
@@ -7433,10 +7541,6 @@ msgstr "已關閉。開啟後，招募人員就能在 Google 上找到您。"
 #: src/features/share/link.tsx
 msgid "Off. Only you can see this resume."
 msgstr "離開。只有您可以看到這份履歷。"
-
-#: src/features/letters/write.tsx
-msgid "Off. The letter keeps its own copy of your details."
-msgstr "離開。這封信保留了您的詳細資料的單獨副本。"
 
 #: src/features/applications/stages.ts
 #: src/features/onboarding/intro-screen.tsx
@@ -7709,10 +7813,6 @@ msgstr "或用自己的話說..."
 msgid "Organization"
 msgstr "組織"
 
-#: src/features/ats-checker/checker.tsx
-msgid "Original page"
-msgstr "原頁"
-
 #: src/features/entries/rich-text-field.tsx
 msgid "Original table formatting is kept. This text is read-only because it can't be edited safely here."
 msgstr ""
@@ -7759,9 +7859,14 @@ msgstr "已過時：此後文字已更改。"
 msgid "Outcome"
 msgstr "成果"
 
+#: src/features/share/custom-domain.tsx
+msgid "Ownership proven"
+msgstr ""
+
 #: app/builder/[id]/_layout.tsx
 #: app/builder/[id]/page.tsx
 #: app/letter/[id]/_layout.tsx
+#: src/features/ats-checker/checker.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -7772,6 +7877,7 @@ msgstr "頁"
 #. placeholder {0}: index + 1
 #. placeholder {0}: item.page + 1
 #. placeholder {0}: page.index + 1
+#: src/features/ats-checker/original-page.tsx
 #: src/features/design/layout-screen.tsx
 #: src/features/letters/page.tsx
 #: src/features/write/entry-sheet.tsx
@@ -7987,6 +8093,7 @@ msgid "Personal website"
 msgstr ""
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -8093,8 +8200,7 @@ msgstr ""
 msgid "Play recording"
 msgstr "播放錄音"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Plum"
 msgstr "梅紫"
 
@@ -8325,8 +8431,7 @@ msgstr ""
 msgid "Product designer"
 msgstr ""
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Professional"
 msgstr "專業"
 
@@ -9056,7 +9161,6 @@ msgstr "結果"
 #: src/features/applications/add-sheet.tsx
 #: src/features/documents/library.tsx
 #: src/features/home/recent-documents.tsx
-#: src/features/letters/write.tsx
 msgid "Resume"
 msgstr "履歷"
 
@@ -9386,8 +9490,7 @@ msgstr "延伸至第 {0} 頁"
 msgid "Russian"
 msgstr "俄文"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Rust"
 msgstr "鐵鏽紅"
 
@@ -9713,6 +9816,10 @@ msgstr "章節·列印順序"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "各區塊使用系統能辨識的標題，且工作經歷已顯示。"
 
+#: src/features/share/custom-domain.tsx
+msgid "See plans"
+msgstr ""
+
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr ""
@@ -9743,6 +9850,10 @@ msgstr "選擇項目 {0}"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "選取可見項目"
+
+#: src/features/share/export-options.tsx
+msgid "Selected"
+msgstr ""
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -9780,10 +9891,6 @@ msgstr "直接傳送履歷本身，而不是包在作品集外層的檔案。"
 #: src/features/assistant/tool-approvals.tsx
 msgid "Send this exact query to your web search provider?"
 msgstr ""
-
-#: src/features/letters/write.tsx
-msgid "Sender details copied into the letter"
-msgstr "寄件者詳細資料複製到信件中"
 
 #: src/features/ai/report-content.tsx
 #: src/features/auth/check-email-screen.tsx
@@ -9873,6 +9980,10 @@ msgstr "設定 AI 供應商"
 #: src/features/career/schedule-sheet.tsx
 msgid "Set up web search in Settings to find roles."
 msgstr "在設定中設定網路搜尋，即可尋找職缺。"
+
+#: src/features/share/custom-domain.tsx
+msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
+msgstr ""
 
 #: app/account/index.tsx
 #: src/features/application-detail/interview-sheet.tsx
@@ -9964,6 +10075,14 @@ msgstr "簡短而直接。如果招募啟事要求簡潔，那就沒問題。"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Short and polite, for the recruiter"
 msgstr "簡短而禮貌，適合招募人員"
+
+#: src/features/share/web-page.tsx
+msgid "Short link"
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Short link · opens your portfolio"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Short link and domain"
@@ -10473,6 +10592,10 @@ msgid "Start the resume with your name on its own line."
 msgstr "履歷開頭單獨用一行寫上您的姓名。"
 
 #: src/features/letters/write.tsx
+msgid "Start typing, or draft from what we know: the {company} posting and your Profile."
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Start typing, or draft from what we know: the {company} posting and your resume."
 msgstr "開始打字，或根據我們所知道的內容起草：{company} 職位發布和您的簡歷。"
 
@@ -10481,12 +10604,16 @@ msgid "Start typing, or draft from what we know: the {company} posting."
 msgstr "開始打字，或根據我們所知道的內容起草：{company} 職位發布。"
 
 #: src/features/letters/write.tsx
+msgid "Start typing, or draft from what we know: your Profile."
+msgstr ""
+
+#: src/features/letters/write.tsx
 msgid "Start typing, or draft from what we know: your resume."
 msgstr "開始打字，或根據我們所知道的內容起草：您的履歷。"
 
 #: src/features/letters/write.tsx
-msgid "Start typing. To draft one, link a resume or an application first."
-msgstr "開始打字。要起草一份，請先連結簡歷或工作申請。"
+msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
+msgstr ""
 
 #: src/features/write/outline.tsx
 msgid "Start with the sections most resumes have."
@@ -10511,6 +10638,10 @@ msgstr "{minutes} 分鐘後開始"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
 msgstr "現在開始"
+
+#: src/features/share/link.tsx
+msgid "Statistics need a connection."
+msgstr ""
 
 #: src/features/documents/new-document.tsx
 msgid "Stay in Documents"
@@ -10781,8 +10912,7 @@ msgstr "目標職位"
 msgid "Task"
 msgstr "任務"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Teal"
 msgstr "藍綠"
 
@@ -10820,6 +10950,10 @@ msgstr "泰盧固語"
 #: src/features/letters/design.tsx
 msgid "Template"
 msgstr "範本"
+
+#: src/features/letters/design.tsx
+msgid "Template and type"
+msgstr ""
 
 #. placeholder {0}: templateName(template)
 #: src/features/design/draft.ts
@@ -10859,6 +10993,7 @@ msgid "Testing…"
 msgstr "測試…"
 
 #: src/features/applications/add-sheet.tsx
+#: src/features/ats-checker/checker.tsx
 #: src/features/write/fields.ts
 msgid "Text"
 msgstr "文字"
@@ -11010,6 +11145,10 @@ msgstr "無法載入或儲存連線。請重試。"
 msgid "The current state will be saved as “Before restore” first."
 msgstr "目前狀態會先儲存為「還原前」。"
 
+#: src/features/share/custom-domain.tsx
+msgid "The domain changed while it was being checked. Check it again."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "The editor opens on Check, which checks the imported resume again."
 msgstr "編輯器會開啟檢查，再次檢查匯入的履歷。"
@@ -11034,6 +11173,10 @@ msgstr "已儲存後續聯繫。若要收到提醒，請在裝置設定中允許
 #: src/features/letters/write.tsx
 msgid "The greeting follows the name."
 msgstr "問候語跟在名字之後。"
+
+#: src/features/share/custom-domain.tsx
+msgid "The HTTPS certificate couldn't be issued. Make sure the DNS records are still there, then check again."
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
@@ -11111,6 +11254,10 @@ msgstr "尚未偵測到這些記錄。請稍後再檢查。"
 #: src/features/ats-checker/checker.tsx
 msgid "The rest of the file isn't in this report."
 msgstr "此報告未包含檔案的其餘部分。"
+
+#: src/features/letters/write.tsx
+msgid "the resume"
+msgstr "履歷"
 
 #: src/features/history/history.tsx
 msgid "The resume as it is"
@@ -11293,6 +11440,22 @@ msgstr "此文件已鎖定。仍可下載版本及為其命名。請解鎖以編
 msgid "This document is no longer available. Refresh and try again."
 msgstr "此文件已無法使用。請重新整理後重試。"
 
+#: src/features/share/custom-domain.tsx
+msgid "This domain can't be connected. Try a subdomain such as www."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain has been blocked and can't be connected. Contact support if you think that's wrong."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain needs your attention. See what's below."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "This domain no longer points to Rezumi. Put its CNAME record back, then check again."
+msgstr ""
+
 #: src/api/ai-consent.ts
 msgid "This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs."
 msgstr "这样可以在计划执行时使用服务器选择的提供程序进行重复处理。关闭计划以停止未来的运行。"
@@ -11429,6 +11592,7 @@ msgstr "這封信和您的履歷，作為兩個名稱相符的 PDF。"
 msgid "This letter changed elsewhere"
 msgstr "此求職信已在其他地方變更"
 
+#: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
 msgid "This letter is locked. Unlock it in Documents to edit."
 msgstr "此求職信已鎖定。請在「文件」中解鎖後再編輯。"
@@ -11436,6 +11600,10 @@ msgstr "此求職信已鎖定。請在「文件」中解鎖後再編輯。"
 #: src/features/letters/write.tsx
 msgid "This letter keeps its recipient as written."
 msgstr "這封信將保留其收件者所寫的內容。"
+
+#: src/features/letters/write.tsx
+msgid "This letter only"
+msgstr ""
 
 #: src/features/auth/reset-password-screen.tsx
 msgid "This link has expired"
@@ -11736,8 +11904,7 @@ msgstr ""
 msgid "Track in Applications"
 msgstr "在「應徵紀錄」中追蹤"
 
-#: src/features/design/style-groups.tsx
-#: src/features/letters/design-presets.ts
+#: src/features/design/preset-names.ts
 msgid "Traditional"
 msgstr "傳統"
 
@@ -11893,7 +12060,6 @@ msgstr "兩步驟驗證"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
-#: src/features/letters/design.tsx
 #: src/features/profile/facts-add.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "Type"
@@ -12179,14 +12345,6 @@ msgstr ""
 msgid "Use default"
 msgstr "使用預設值"
 
-#: src/features/letters/write.tsx
-msgid "Use details from “{resumeName}”"
-msgstr "使用「{resumeName}」中的資料"
-
-#: src/features/letters/write.tsx
-msgid "Use details from the resume"
-msgstr "使用履歷中的資料"
-
 #: src/features/profile/facts-detail.tsx
 msgid "Use for all applications"
 msgstr "用於所有應徵"
@@ -12284,6 +12442,10 @@ msgstr "使用該提供者"
 msgid "Use this time"
 msgstr "利用這個時間"
 
+#: src/features/share/custom-domain.tsx
+msgid "Use www.{hostname}"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Use your editor's normal bullet list, so stray glyphs do not land mid-sentence."
 msgstr "使用編輯器自帶的一般項目符號清單功能，避免出現落在句子中間的雜散符號。"
@@ -12373,6 +12535,10 @@ msgstr "版本已發送 {date}"
 msgid "Version sent {date} · Check {0}"
 msgstr "版本已發送 {date} · 檢查 {0}"
 
+#: src/features/letters/share.tsx
+msgid "Versions"
+msgstr "版本"
+
 #: src/features/design/advanced.tsx
 msgid "Vertical margin"
 msgstr "垂直邊界"
@@ -12443,6 +12609,10 @@ msgstr "語音設定"
 msgid "Volunteer"
 msgstr "志工服務"
 
+#: src/features/share/custom-domain.tsx
+msgid "Waiting"
+msgstr ""
+
 #. placeholder {0}: waitingFor.join(", ")
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Waiting for {0}…"
@@ -12455,6 +12625,10 @@ msgstr "等待您處理"
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
 msgstr "等待回音"
+
+#: src/features/share/custom-domain.tsx
+msgid "We can't set up more domains right now. The problem is on our side, and your domain connects by itself once it's solved."
+msgstr ""
 
 #: src/features/onboarding/source-fields.tsx
 msgid "We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
@@ -12508,6 +12682,7 @@ msgid "Web searches look for work here, up to three countries."
 msgstr "網路搜尋尋找這些國家的工作機會。最多選擇三個國家。"
 
 #: src/features/entries/basics-form.tsx
+#: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Website"
@@ -12709,8 +12884,8 @@ msgstr "面試官"
 msgid "Why do you want this role at {company}?"
 msgstr "您為什麼想在 {company} 擔任這個職位？"
 
+#: src/features/design/preset-names.ts
 #: src/features/design/style-groups.tsx
-#: src/features/letters/design.tsx
 msgid "Wide"
 msgstr "寬的"
 
@@ -13028,6 +13203,14 @@ msgstr "您的日期寫法不統一，用了好幾種不同的方式。"
 msgid "Your details"
 msgstr ""
 
+#: src/features/letters/write.tsx
+msgid "Your details from"
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your details were copied into the letter. Edit them here."
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Your document was saved. Review it in the editor."
 msgstr "文件已儲存。請在編輯器中檢視。"
@@ -13035,6 +13218,18 @@ msgstr "文件已儲存。請在編輯器中檢視。"
 #: src/features/share/custom-domain.tsx
 msgid "Your domain"
 msgstr "您的網域"
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain now goes to your Rezumi address"
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain stops opening your page right away. To connect it again, its DNS is checked and HTTPS is set up again, which can take a while."
+msgstr ""
+
+#: src/features/share/custom-domain.tsx
+msgid "Your domain stops working on {until}"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Your email address is broken across pieces of text."
@@ -13086,9 +13281,14 @@ msgstr "您的訊息"
 msgid "Your name"
 msgstr "你的名字"
 
+#. placeholder {0}: resumeName ?? t`the resume`
 #: src/features/letters/write.tsx
-msgid "Your name and contact details come from a resume."
-msgstr "您的姓名和聯絡方式來自履歷。"
+msgid "Your name and contact details follow “{0}”."
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your name and contact details follow your Profile."
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
@@ -13139,6 +13339,7 @@ msgid "Your own fonts aren't in your plan. Fonts already added keep working on t
 msgstr ""
 
 #: src/features/billing/plan-alert.ts
+#: src/features/share/custom-domain.tsx
 msgid "Your page keeps its address on Rezumi."
 msgstr ""
 
@@ -13151,6 +13352,10 @@ msgstr "您的電話號碼寫法不太常見。"
 msgid "Your plan"
 msgstr ""
 
+#: src/features/share/custom-domain.tsx
+msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
+msgstr ""
+
 #: app/(tabs)/portfolio/index.tsx
 msgid "Your portfolio is coming to the app"
 msgstr ""
@@ -13161,6 +13366,10 @@ msgstr "您的偏好"
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "your Profile"
+msgstr ""
+
+#: src/features/letters/write.tsx
+msgid "Your Profile"
 msgstr ""
 
 #: src/features/profile/bring-screen.tsx
@@ -13198,6 +13407,14 @@ msgstr "您的提供者"
 #: src/features/settings/profile.tsx
 msgid "Your public links begin with {server}/"
 msgstr "您的公開連結以 {server}/ 開頭"
+
+#: src/features/share/web-page.tsx
+msgid "Your published portfolio opens at your short link and custom domain."
+msgstr ""
+
+#: src/features/share/web-page.tsx
+msgid "Your published portfolio opens at your short link and custom domain. This resume is shown there if the portfolio is unpublished."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "Your recording goes to {transcriberName} after you stop, to be transcribed. Your provider may charge. The server keeps transcripts, never recordings."
@@ -13250,10 +13467,9 @@ msgstr ""
 msgid "Your session expired. Sign in again."
 msgstr "工作階段已過期。請重新登入。"
 
-#. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx
-msgid "Your short link and custom domain open “{0}”."
-msgstr "您的短網址和自訂網域會開啟「{0}」。"
+msgid "Your short link and custom domain open “{otherPrimary}”."
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Your short link and custom domain open this resume."

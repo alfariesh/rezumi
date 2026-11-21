@@ -134,6 +134,9 @@ export const letterAdapter: DraftAdapter<LetterDocument, LetterDocument> = {
 			...("senderLinked" in changes ? { senderLinked: document.senderLinked } : {}),
 			...("designLinked" in changes ? { designLinked: document.designLinked } : {}),
 		};
+		// The letter's own sender details ("This letter only"); linked details come from the resume or the Profile.
+		if (!document.senderLinked && "basics" in changedFields(document.style, baseline.style))
+			input.basics = document.style.basics;
 		const metadata = changedFields(document.style.metadata, baseline.style.metadata);
 		if ("template" in metadata) input.template = document.style.metadata.template;
 		if ("typography" in metadata || "design" in metadata || "page" in metadata)
