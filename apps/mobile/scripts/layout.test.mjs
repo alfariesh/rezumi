@@ -43,7 +43,6 @@ const mocks = {
 	"react-native-safe-area-context": safe,
 	"@lingui/react/macro": { useLingui: () => ({ t: tag }) },
 	"expo-router": { useRouter: () => router, usePathname: () => "/documents" },
-	"expo-observe": { useObserve: () => ({ markInteractive() {} }) },
 	"react-native-keyboard-controller": { KeyboardAwareScrollView: "ScrollView", useKeyboardState: () => false },
 	"react-native-reanimated": { useAnimatedReaction: (prepare, react) => effects.push(() => react(prepare(), null)) },
 	"react-native-worklets": { scheduleOnRN: (run, ...args) => run(...args) },
@@ -691,13 +690,13 @@ for (const title of ["All your applications are closed", "Your job search starts
 }
 
 // Browse every printable glyph, search beyond the old 60-result cap, select and clear.
-const iconDirectory = new URL("../../../packages/pdf/src/forme/phosphor-icons/", import.meta.url);
-const iconPaths = Object.assign(
-	{},
-	...readdirSync(iconDirectory)
-		.filter((file) => file.endsWith(".json"))
-		.map((file) => JSON.parse(readFileSync(new URL(file, iconDirectory)))),
-);
+// `@rezumi/pdf/icons` is the generated Hugeicons catalog; build it from the same JSON the PDF package ships.
+const hugeicons = new URL("../../../packages/pdf/src/forme/hugeicons/", import.meta.url);
+const iconPaths = load("../../../packages/pdf/src/forme/hugeicons/all.ts", {
+	"./index": load("../../../packages/pdf/src/forme/hugeicons/index.ts"),
+	"./standard/common.json": JSON.parse(readFileSync(new URL("standard/common.json", hugeicons))),
+	"./standard/rest.json": JSON.parse(readFileSync(new URL("standard/rest.json", hugeicons))),
+}).default;
 const resumeIcons = load("../../../packages/schema/src/icons.ts").icons;
 const { IconPickerSheet } = load("features/write/pickers.tsx", {
 	"react-native-svg": { SvgXml: "SvgXml" },
@@ -707,7 +706,7 @@ const { IconPickerSheet } = load("features/write/pickers.tsx", {
 });
 hooks.length = 0;
 const selections = [];
-const pickerProps = { open: true, value: "github-logo", onClose() {}, onChange: (name) => selections.push(name) };
+const pickerProps = { open: true, value: "github", onClose() {}, onChange: (name) => selections.push(name) };
 const pickerList = (props = pickerProps) =>
 	nodes(render(IconPickerSheet, props)).find((node) => node.type === "FlatList");
 let picker = pickerList();
@@ -735,9 +734,9 @@ for (const width of [240, 480, 320]) {
 	const cellWidth = width / picker.props.numColumns;
 	assert.ok(cellWidth >= theme.size.hit, "Grid preserves minimum touch target on narrow screens");
 }
-picker.props.renderItem({ item: "github-logo" }).props.onPress();
+picker.props.renderItem({ item: "github" }).props.onPress();
 picker.props.renderItem({ item: "" }).props.onPress();
-assert.deepEqual(selections, ["github-logo", ""]);
+assert.deepEqual(selections, ["github", ""]);
 const search = (query) => {
 	const tree = render(IconPickerSheet, pickerProps);
 	nodes(tree)
@@ -745,9 +744,9 @@ const search = (query) => {
 		.props.onChangeText(query);
 	return pickerList();
 };
-picker = search(" Arrow ");
+picker = search(" User ");
 assert.ok(picker.props.data.length > 60, "Search must not truncate large result sets");
-assert.ok(picker.props.data.every((name) => !name || name.includes("arrow")));
+assert.ok(picker.props.data.every((name) => !name || name.includes("user")));
 
 assert.equal(
 	render(ListRow, { title: "Setting", trailing: element("Switch", {}) }).props.accessible,

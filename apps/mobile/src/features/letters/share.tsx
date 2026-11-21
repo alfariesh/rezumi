@@ -46,7 +46,7 @@ async function flushLetter(id: string) {
 
 type LetterShareSheetProps = { id: string; open: boolean; onClose: () => void; version?: string | undefined };
 /**
- * Share & export for letters (builder.html L7): Download and History. Letters have no public link. Opened from
+ * Share & export for letters: Download and History. Letters have no public link. Opened from
  * Share in the letter chrome; the letter layout owns the draft, so this only subscribes. `version` opens History on
  * that version, read-only.
  */

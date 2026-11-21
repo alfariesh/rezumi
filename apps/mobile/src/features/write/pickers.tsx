@@ -60,7 +60,7 @@ type IconPickerSheetProps = {
 	onChange: (icon: string) => void;
 };
 
-/** Every printable Phosphor icon, virtualized so the full catalog stays cheap to browse. */
+/** Every printable resume icon, virtualized so the full catalog stays cheap to browse. */
 export function IconPickerSheet({ open, value, onClose, onChange }: IconPickerSheetProps) {
 	const { t } = useLingui();
 	const { colors, radius, size, space } = useTheme();

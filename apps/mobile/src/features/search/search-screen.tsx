@@ -329,7 +329,7 @@ export function SearchScreen() {
 
 	return (
 		<View style={{ flex: 1, backgroundColor: colors.bg }}>
-			{/* Tablet: a centred form sheet over the library (app.html Q1). Android keeps the full-screen modal. */}
+			{/* Tablet: a centred form sheet over the library. Android keeps the full-screen modal. */}
 			<Stack.Screen
 				options={{ headerShown: false, presentation: Platform.OS === "ios" && tablet ? "formSheet" : "modal" }}
 			/>

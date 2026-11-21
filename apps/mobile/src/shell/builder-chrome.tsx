@@ -87,7 +87,7 @@ type FrameValue = {
 const FrameContext = createContext<FrameValue | null>(null);
 
 /**
- * The resume and letter editor shell (builder.html). It renders the editor's Stack itself.
+ * The resume and letter editor shell. It renders the editor's Stack itself.
  *
  * - Phone: the top bar (Back, name + save status, actions, Download) is the header of each pane screen, and the bottom
  *   pane tabs show under pane screens. Pushed screens (entry, history) have their own stack header and full height.

@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useIsTablet } from "./use-is-tablet";
 import { Icon, IconButton, Text, useTheme } from "@/ui";
 
-// builder.html tablet frame: the name and status take at most 320 pt, leaving the middle for the mode switch.
+// Tablet frame: the name and status take at most 320 pt, leaving the middle for the mode switch.
 const tabletTitleWidth = 320;
 
 type TopBarProps = {
@@ -24,7 +24,7 @@ type TopBarProps = {
 };
 
 /**
- * The editor and workspace top bar (builder.html `ebar`): `surface`, 56 pt on phone and 60 pt on tablet, Back, the
+ * The editor and workspace top bar: `surface`, 56 pt on phone and 60 pt on tablet, Back, the
  * title with a status line, and actions at the end. It pads the top and side safe areas itself.
  */
 export function TopBar({ backLabel, onBack, title, onTitlePress, titleLabel, subtitle, center, actions }: TopBarProps) {

@@ -12,12 +12,12 @@ export type TextVariant = keyof typeof typeScale;
 
 /** Layout styles (`flex`, padding) may go in `style`; typography and colour come from the tokens. */
 export type TextProps = NativeTextProps & {
-	/** A type token from tokens.md §2. Defaults to `body`. */
+	/** A type token (old design system; replaced in plans/mobile Phase 02). Defaults to `body`. */
 	variant?: TextVariant | undefined;
 	/** A colour token. Defaults to `ink`. */
 	color?: ColorToken | undefined;
 	/**
-	 * Figtree weight for UI variants, where tokens.md names one (field labels 600, document names 600).
+	 * Figtree weight for UI variants, where the design names one (field labels 600, document names 600).
 	 * Ignored for the Instrument Serif (single weight) and mono variants.
 	 */
 	weight?: 400 | 500 | 600 | 700 | undefined;

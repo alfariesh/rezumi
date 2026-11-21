@@ -54,7 +54,7 @@ function Group({ title, children }: { title: string; children: ReactNode }) {
 }
 
 /**
- * Design for letters (builder.html L6): by default a letter matches its resume's design, changed on the resume.
+ * Design for letters: by default a letter matches its resume's design, changed on the resume.
  * Turned off, the letter keeps a design of its own: template, type, colour and page. Ported from web's
  * `design-panel.tsx`.
  */

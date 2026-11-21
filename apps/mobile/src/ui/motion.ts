@@ -1,4 +1,4 @@
-// Reduced motion, haptics and the tablet check shared by the primitives (tokens.md §6).
+// Reduced motion, haptics and the tablet check shared by the primitives.
 import * as Haptics from "expo-haptics";
 import Storage from "expo-sqlite/kv-store";
 import { useEffect, useState, useSyncExternalStore } from "react";
@@ -58,7 +58,7 @@ const play = (feedback: () => Promise<void>) => {
 	if (hapticsEnabled) void feedback().catch(ignore);
 };
 
-/** tokens.md §6 Haptics. Separate from motion: they play with reduced motion on too. Every haptic goes through here. */
+/** Haptics. Separate from motion: they play with reduced motion on too. Every haptic goes through here. */
 export const haptics = {
 	/** Segmented change, detent change, lifting a row to reorder. */
 	selection: () => play(Haptics.selectionAsync),

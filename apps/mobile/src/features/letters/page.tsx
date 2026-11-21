@@ -130,7 +130,7 @@ export function LetterPages({ data, zoomBar = true }: { data: ResumeData | null;
 
 /**
  * The letter as it prints, rendered on the device: sender header, recipient block and date, greeting, body, sign-off
- * and signature (builder.html L5). A draft being written shows in place of the body until it's kept or discarded.
+ * and signature. A draft being written shows in place of the body until it's kept or discarded.
  */
 export function LetterPage({ id }: { id: string }) {
 	const { t } = useLingui();

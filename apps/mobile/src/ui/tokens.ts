@@ -247,7 +247,7 @@ export const shadows: Record<ColorScheme, Record<"e1" | "e2" | "e3" | "ePage", S
 	},
 };
 
-// §6 Motion. With reduced motion on, d1–d3 become 0 for movement (see tokens.md §6).
+// §6 Motion. With reduced motion on, d1–d3 become 0 for movement.
 export const motion = {
 	d1: 120,
 	d2: 200,

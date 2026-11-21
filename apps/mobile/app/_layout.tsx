@@ -3,9 +3,8 @@ import type { DefaultTheme } from "expo-router";
 import { I18nProvider } from "@lingui/react";
 import { useLingui } from "@lingui/react/macro";
 import { TrueSheetProvider } from "@lodev09/react-native-true-sheet";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
-import { Observe, ObserveErrorBoundary, ObserveRoot } from "expo-observe";
 import { Stack, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
@@ -14,22 +13,18 @@ import { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { bindQueryManagers, queryClient } from "@/api/query-client";
 import { restoreSession } from "@/auth/session";
 import { SessionGate } from "@/auth/session-gate";
 import { useOpenReminder } from "@/features/reminders/open";
 import { useReviewPrompt } from "@/features/reviews/use-review-prompt";
 import { i18n, initI18n } from "@/i18n";
+import { ErrorBoundary } from "@/shell/error-boundary";
 import { EmptyState, Screen, Toaster, WindowSafeAreaProvider, useReducedMotion, useTheme } from "@/ui";
 import { fontAssets } from "@/ui/fonts";
 import { initTheme } from "@/ui/theme";
 
-// One configure call: each call replaces the whole config, and it must run before any screen mounts.
-// The OAuth callback carries `code` and `state`; `server` can name a private self-hosted instance.
-Observe.configure({ integrations: { "expo-router": { filteredParams: ["code", "state", "token", "server"] } } });
-
 void SplashScreen.preventAutoHideAsync();
-
-const queryClient = new QueryClient();
 
 function useNavigationTheme() {
 	const { scheme, colors, fonts } = useTheme();
@@ -107,7 +102,9 @@ function RootLayout() {
 
 	useEffect(() => {
 		initTheme();
+		const unbindQueryManagers = bindQueryManagers();
 		void Promise.all([initI18n(), restoreSession()]).finally(() => setReady(true));
+		return unbindQueryManagers;
 	}, []);
 
 	const loaded = ready && (fontsLoaded || !!fontError);
@@ -127,10 +124,10 @@ function RootLayout() {
 							<QueryClientProvider client={queryClient}>
 								<I18nProvider i18n={i18n}>
 									<TrueSheetProvider>
-										<ObserveErrorBoundary fallback={({ resetError }) => <CrashScreen onRetry={resetError} />}>
+										<ErrorBoundary fallback={({ resetError }) => <CrashScreen onRetry={resetError} />}>
 											<RootStack />
 											<SessionGate />
-										</ObserveErrorBoundary>
+										</ErrorBoundary>
 										<Toaster />
 									</TrueSheetProvider>
 								</I18nProvider>
@@ -143,4 +140,4 @@ function RootLayout() {
 	);
 }
 
-export default ObserveRoot.wrap(RootLayout);
+export default RootLayout;

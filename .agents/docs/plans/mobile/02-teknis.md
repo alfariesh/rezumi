@@ -140,6 +140,8 @@ Tiap modul native baru mengubah fingerprint dan menuntut build ulang. Karena itu
 | `expo-image-manipulator`                                                               | Kecilkan gambar sebelum `portfolio.uploadImage`      | Server tidak mengecilkan gambar                               |
 | `@internationalized/date`                                                              | Peer pemilih tanggal Pro                             | JS saja                                                       |
 
+**Terpasang di Phase 01 (2026-11-21, `expo install`, SDK 58):** `react-native-webview` 14.0.1, `react-native-skia` 3.10.2 (paket tanpa scope; itulah yang dimuat HeroUI Native Pro, bukan `@shopify/react-native-skia`), `react-native-pager-view` 9.0.7, `react-native-reanimated-dnd` 2.0.0, `expo-apple-authentication` 58.0.3, `expo-image-manipulator` 58.0.16, `@internationalized/date` 3.12.4, dan `expo-blur` 58.0.6 (peer opsional HeroUI Native yang dipakai satu komponen Pro; ditambah sekarang supaya tidak memicu build ulang nanti). Google Sign-In ditunda ke Phase 04 (pustaka belum dipilih). `expo-observe` **dihapus** (butuh proyek Expo; diganti `src/shell/error-boundary.tsx`).
+
 Sudah terpasang dan cukup: `expo-image-picker`, `expo-document-picker`, `expo-audio`, `expo-notifications`, `expo-sqlite`, `expo-secure-store`, `expo-sharing`, `expo-print`, `react-native-qrcode-svg`, `expo-haptics`. Pustaka yang mungkin bisa dibuang setelah migrasi: `phosphor-react-native`, `@radix-ui/*` dan `react-dom`/`react-native-web` bila galeri web tidak dipertahankan (putuskan di Phase 02).
 
 ## 4. Masuk dan daftar asli (K4)
@@ -225,6 +227,8 @@ Android App Links sekarang hanya mencakup `/builder/` dan callback: perluas `int
 - Lowongan: stub treg lokal (`TREG_BASE_URL`) seperti tes browser web; panggilan nyata hanya dengan izin pemilik.
 
 ## 10. Daftar cek dua platform (syarat selesai tiap phase)
+
+> **Android ditangguhkan di Mac pemilik sejak 2026-11-21** (`00-keputusan.md` log). Butir Android di bawah dicatat "belum dicek" sampai pemilik mengizinkan lagi; jangan menjalankan emulator atau build Android lokal.
 
 Untuk tiap layar baru atau yang diubah:
 
