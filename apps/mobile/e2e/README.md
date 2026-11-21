@@ -5,7 +5,7 @@ Run later on an installed development/preview build, **phone portrait**, English
 Maestro is not installed on the M8-T2 host. YAML parsing passed; `maestro check-syntax` and all device runs remain for the coordinator:
 
 ```sh
-for flow in apps/mobile/.maestro/*.yaml; do maestro check-syntax "$flow"; done
+for flow in apps/mobile/e2e/*.yaml; do maestro check-syntax "$flow"; done
 ```
 
 Supply `SERVER_ORIGIN`, `EMAIL` and `PASSWORD` through the runner environment for `sign-in.yaml`. Start signed out, with browser cookies cleared for the test server, email sign-in enabled and no 2FA. The flow selects Another server, discovers it, signs in through the system browser, accepts OAuth consent when shown, and waits for Documents. Do not store credentials in YAML or commit runner output: input steps and screenshots may expose test credentials.
@@ -19,7 +19,7 @@ For each remaining flow, supply `RESUME_ID` for an **unlocked disposable resume*
 Example for a non-secret parameter:
 
 ```sh
-maestro test -e RESUME_ID="$RESUME_ID" -e SHARE_SHEET_TEXT="Save to Files" apps/mobile/.maestro/export.yaml
+maestro test -e RESUME_ID="$RESUME_ID" -e SHARE_SHEET_TEXT="Save to Files" apps/mobile/e2e/export.yaml
 ```
 
 OS browser-consent text, native rich-text accessibility and sheet gestures may need selector adjustments after the first device run. No app-only test flags, authentication bypasses or production test seams were added.

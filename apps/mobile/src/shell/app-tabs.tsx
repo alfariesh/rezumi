@@ -25,7 +25,7 @@ const appTabIcons: Record<string, IconName> = {
 	settings: "gear-six",
 };
 
-// tokens.md §7: the active-tab marker on the bar's top rule; Android tab cells are 64 tall (app.html).
+// The active-tab marker on the bar's top rule; Android tab cells are 64 tall.
 const railMarker = { width: 28, height: 3 };
 // The edge moving toward the new tab arrives first; the other catches up with a little overshoot, so the marker stretches.
 const leadingEdge = { duration: 260, dampingRatio: 0.8 };
@@ -78,7 +78,7 @@ function TabBadge({ value, tone }: BadgeProps) {
 			style={{
 				position: "absolute",
 				top: -space.s1,
-				// Just past the middle of the icon cell (app.html: left 50% + 6px).
+				// Just past the middle of the icon cell (left 50% + 6px).
 				start: size.icon.bar / 2 + space.s1,
 				minWidth: badgeMinWidth,
 				paddingHorizontal: space.s1,
@@ -266,7 +266,7 @@ export function Bar({ children, activeIndex }: BarProps) {
 }
 
 /**
- * The phone tab bar (app.html): five cells, the active tab with a filled icon and the `accent` 28×3 marker on the top
+ * The phone tab bar: five cells, the active tab with a filled icon and the `accent` 28×3 marker on the top
  * rule (both platforms), and the raised "+" pill in the middle. Labels stay under the icons at every text
  * size (`micro` caps its scale); phrases wrap and long words fit within their cells.
  */
@@ -368,7 +368,7 @@ function SidebarItem({
 }
 
 /**
- * The tablet sidebar (app.html `side`, 240 pt): brand, the four sections, then Trash, New and the
+ * The tablet sidebar (240 pt): brand, the four sections, then Trash, New and the
  * account row at the bottom. Section counts come from each tab's `tabBarBadge` option.
  */
 export function AppSidebar(props: BottomTabBarProps) {

@@ -1,5 +1,5 @@
 // Runs before any other module (see index.ts). Hermes with Expo 58 already has structuredClone, AbortSignal.timeout,
-// TextDecoder({ fatal }), streaming fetch, URL and btoa/atob (reports/S2.md); these are the remaining gaps.
+// TextDecoder({ fatal }), streaming fetch, URL and btoa/atob; these are the remaining gaps.
 import { getRandomValues } from "expo-crypto";
 // Hermes has no Intl.PluralRules, and every Lingui plural needs it (reports/M2-T1.md has the Intl matrix). Its polyfill
 // resolves region-tagged locales such as `en-US` through Intl.Locale, which Hermes lacks too, so that one loads first.

@@ -9,15 +9,11 @@ const config: ExpoConfig = {
 	slug: "rezumi",
 	platforms: process.env.EXPO_MOBILE_WEB_PREVIEW === "1" ? ["ios", "android", "web"] : ["ios", "android"],
 	scheme: "app.rezumi",
-	owner: "reactive-resume",
 	version: "1.0.0",
 	runtimeVersion: { policy: "fingerprint" },
-	updates: {
-		url: "https://u.expo.dev/5830280e-e1ba-45b7-b9c9-ba048fa3bd4d",
-		requestHeaders: { "expo-channel-name": process.env.MOBILE_UPDATE_CHANNEL ?? "production" },
-		checkAutomatically: "ON_LOAD",
-		fallbackToCacheTimeout: 0,
-	},
+	// OTA (EAS Update) is off until the owner has an Expo project of their own (plans/mobile 02-teknis 13, Phase 16).
+	// The fingerprint runtime version still tells a JavaScript-only change from one that needs a store build.
+	updates: { enabled: false, checkAutomatically: "NEVER" },
 	icon: "./assets/icon.png",
 	orientation: "default",
 	userInterfaceStyle: "automatic",
@@ -28,7 +24,7 @@ const config: ExpoConfig = {
 			dark: "./assets/icon-dark.png",
 		},
 		bundleIdentifier: "app.rezumi",
-		appleTeamId: "654ASRW868",
+		appleTeamId: "ZAVWN3Z2YX",
 		deploymentTarget: "17.4",
 		supportsTablet: true,
 		infoPlist: { CADisableMinimumFrameDurationOnPhone: true },
@@ -154,9 +150,6 @@ const config: ExpoConfig = {
 		["expo-notifications", { enableRemoteNotifications: false, enableBackgroundRemoteNotifications: false }],
 		"@react-native-community/datetimepicker",
 	],
-	extra: {
-		eas: { projectId: "5830280e-e1ba-45b7-b9c9-ba048fa3bd4d" },
-	},
 };
 
 export default config;

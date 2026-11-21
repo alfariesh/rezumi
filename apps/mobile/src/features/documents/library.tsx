@@ -5,9 +5,8 @@ import { AnimatedLegendList } from "@legendapp/list/reanimated";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
-import { useObserve } from "expo-observe";
 import { useRouter, Stack, useFocusEffect } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { RefreshControl, I18nManager, Platform, Pressable, ScrollView, View, useWindowDimensions } from "react-native";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import Animated from "react-native-reanimated";
@@ -164,11 +163,6 @@ export function DocumentsLibrary({ trashed = false }: DocumentsLibraryProps) {
 	const [width, setWidth] = useState(0);
 	const session = useSession();
 	const documents = useDocuments(trashed);
-	const { markInteractive } = useObserve();
-	// Documents is the signed-in launch screen; only the first call per session is recorded.
-	useEffect(() => {
-		if (!trashed && !documents.isPending) markInteractive();
-	}, [trashed, documents.isPending, markInteractive]);
 	const pending = usePendingDocuments();
 	const countsOptions = orpc.documents.counts.queryOptions();
 	const counts = useQuery({

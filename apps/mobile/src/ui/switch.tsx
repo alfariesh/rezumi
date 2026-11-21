@@ -14,7 +14,7 @@ export type SwitchProps = {
 	disabled?: boolean | undefined;
 };
 
-// tokens.md §7: iOS 51×31 track with a 27 pt thumb; Android Material 3 52×32 with a 16 pt thumb off, 24 pt on.
+// iOS 51×31 track with a 27 pt thumb; Android Material 3 52×32 with a 16 pt thumb off, 24 pt on.
 const track = android ? { width: 52, height: 32 } : { width: 51, height: 31 };
 
 export function Switch({ value, onValueChange, label, disabled }: SwitchProps) {

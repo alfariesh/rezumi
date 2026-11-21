@@ -29,7 +29,7 @@ This is the operational handoff. See [mobile-store-review.md](./mobile-store-rev
 | Google forms         | Sign-in access, no ads, category/support details, target ages 13–15/16–17/18+, IARC, Advertising ID No, and Data safety saved. App content page reported no outstanding declarations; changes still await submission |
 | Reviewer account     | Owner created account; browser login succeeded; fictional resume, cover letter, and saved job application seeded. Owner confirms credentials saved privately in both stores                                          |
 
-Brand is **Rezumi**, `rxresume`, or `reactive-resume`. The official domain `rezumi.app`, scheme/package `app.rezumi`, and registered Apple Services ID are existing technical identifiers; do not rename them casually.
+Brand is **Rezumi**, `rxresume`, or `reactive-resume`. The official domain `rezumi.app`, scheme/package `app.rezumi`, and registered Apple Services ID (re-check in the owner's account) are existing technical identifiers; do not rename them casually.
 
 ## Production deployment and quirks
 
@@ -45,7 +45,7 @@ The checked-in `.github/workflows/deploy-cloudflare.yml` currently behaves as fo
 
 ### Over-the-air updates
 
-`apps/mobile/app.config.ts` enables EAS Update for the existing Expo project. Preview
+OTA is currently disabled in `apps/mobile/app.config.ts`: the old Expo project (`reactive-resume/reactive-resume`) is dropped, and EAS Update and Observe stay off until the owner creates their own Expo account named `rezumi` (plans/mobile Phase 16). The rest of this section describes how OTA works once enabled. Preview
 and production build profiles use separate channels. Fingerprint runtime versions keep
 updates compatible with the installed native modules, including the Forme Rust sources
 and reviewed prebuilt checksum. JavaScript-only changes can use OTA; native dependencies,
@@ -73,8 +73,8 @@ device QA; Expo UI switches use the web preview implementation in the browser.
 
 One-time activation:
 
-1. Create an Expo access token with access to the `reactive-resume` project and save it as
-   GitHub Actions secret `EXPO_TOKEN`. Never commit the token or put it in release notes.
+1. After the owner's own Expo project exists, create an Expo access token for it and save it as
+   GitHub Actions secret `EXPO_TOKEN` (not needed before then). Never commit the token or put it in release notes.
 2. From `apps/mobile`, create `preview` and `production` channels with
    `eas channel:create preview --non-interactive` and
    `eas channel:create production --non-interactive` if they do not already exist.
@@ -127,7 +127,7 @@ track as appropriate, and record actual store-build results separately.
 ### Required mobile environment
 
 ```dotenv
-MOBILE_IOS_APP_IDS=654ASRW868.app.rezumi
+MOBILE_IOS_APP_IDS=ZAVWN3Z2YX.app.rezumi
 MOBILE_ANDROID_PACKAGES=app.rezumi
 MOBILE_ANDROID_CERT_SHA256=3E:8A:8B:56:BB:3D:B6:55:C6:04:F3:85:99:A8:4B:B0:4F:B7:E1:72:60:0A:95:8C:41:CD:59:D7:04:82:25:81
 APPLE_CLIENT_ID=app.rezumi.web
@@ -136,9 +136,9 @@ APPLE_CLIENT_SECRET=<supply protected deployment value; never commit it>
 
 The Android fingerprint was read from **Play App Signing → Digital Asset Links JSON**, not EAS's upload certificate. Never use the local inspection APK's debug certificate in production. If Play rotates signing keys, update the supported fingerprint list from Play Console and retest links on affected Android versions.
 
-Apple setup is registered for domain `rezumi.app` and callback `https://rezumi.app/api/auth/callback/apple`, associated with primary app `654ASRW868.app.rezumi`. Associated Domains and Sign in with Apple capabilities were enabled. These settings do not replace the runtime client ID/secret.
+Apple setup is registered for domain `rezumi.app` and callback `https://rezumi.app/api/auth/callback/apple`, associated with primary app `ZAVWN3Z2YX.app.rezumi`. Associated Domains and Sign in with Apple capabilities were enabled. These settings do not replace the runtime client ID/secret.
 
-Protected Apple deployment values are local at `/Users/amruth/.config/rxresu/apple-sign-in.env`, mode 600; the authentication `.p8` key is outside the repository. **Client-secret JWT expires 2027-04-15T15:13:47Z; rotate before expiry.** Upload/signing API keys and the Sign in with Apple authentication key have different purposes. Do not copy any private key, JWT, reviewer password, or service-account JSON into this branch, logs, screenshots, or issue comments.
+**Owner to fill in (plans/mobile Phase 16):** the Apple Sign in client secret (JWT) and its `.p8` authentication key are the owner's own, kept outside the repository (the previous owner's JWT, expiring 2027-04-15, is not usable). Generate and record the new expiry and rotate before it. Upload/signing API keys and the Sign in with Apple authentication key have different purposes. Do not copy any private key, JWT, reviewer password, or service-account JSON into this branch, logs, screenshots, or issue comments.
 
 ### Post-deploy acceptance
 
@@ -178,7 +178,7 @@ Existing installed binaries retain the old native bridge until a new store build
 1. Deploy the backend first. Keep the API backward compatible: older binaries and OTA bundles remain in use.
 2. Optionally bump `version` in `apps/mobile/app.config.ts` (for example `1.0.0` to `1.1.0`). CI supplies increasing iOS build numbers and Android version codes. iOS needs a new version string after a version is released; Play needs only a higher `versionCode`.
 3. Complete the [signed-device test matrix](#signed-device-test-matrix), store declarations, listing/reviewer details, and release notes before submission. The workflow retains saved listings and screenshots. Ensure Play credentials permit production releases and the App Store Connect key has App Manager or Admin access. No testing tracks or TestFlight groups are required.
-4. Dispatch **Mobile release** on `main`, platform `all`, **format=store**, and **upload** enabled. Approve `mobile-signing`, inspect this run's signed artifacts, then approve `mobile-store` to submit them. Latest main-push CI must have passed for the exact source commit before upload begins. Leave **upload** disabled if only checking a build. The [Blacksmith setup guide](./mobile-ci.md) covers credentials, build numbering, and approval environments. No EAS Build credits are used. Fastlane does not synchronize Apple capabilities. If exporting credentials through `eas credentials`, keep `EXPO_NO_CAPABILITY_SYNC=1`; Apple sign-in uses web Services ID `app.rezumi.web`, so turning off its primary App ID's Sign in with Apple capability would break sign-in.
+4. Dispatch **Mobile release** on `main`, platform `all`, **format=store**, and **upload** enabled. Approve `mobile-signing`, inspect this run's signed artifacts, then approve `mobile-store` to submit them. Latest main-push CI must have passed for the exact source commit before upload begins. Leave **upload** disabled if only checking a build. The [Blacksmith setup guide](./mobile-ci.md) covers credentials, build numbering, and approval environments. No EAS Build credits are used. Fastlane does not synchronize Apple capabilities. If exporting credentials through `eas credentials`, keep `EXPO_NO_CAPABILITY_SYNC=1`; Apple sign-in uses web Services ID `app.rezumi.web` (re-check in the owner's account), so turning off its primary App ID's Sign in with Apple capability would break sign-in.
 5. **App Store Connect:** the workflow uploads the IPA, creates or updates its app version, waits for its matching processed build, submits for App Review, and sets automatic release after approval. Missing metadata or a pending review can block submission; review status and public availability must be checked separately.
 6. **Play Console:** the workflow uploads directly to production with a completed, full rollout and sends changes for review. It does not publish to testing tracks. Review and Managed Publishing still control public availability; if Managed Publishing is enabled, publish approved changes in the console, or disable it there for automatic publication after review.
 7. Verify both public store versions and smoke-test store-installed builds. Workflow success proves submission, not approval or publication. Confirm that a later OTA update reaches each new binary, because its fingerprint and runtime version changed.
@@ -212,18 +212,18 @@ expires; the maximum 90-day retention is not permanent archival storage.
 
 ## Native artifacts and signing
 
+The table below lists **historical builds from the previous owner, superseded**. They are not proven to belong to the owner's accounts; the owner re-checks the app record, signing keys and store state in their own accounts (plans/mobile Phase 16). Do not rely on them.
+
 | Field       | iOS                                                                                                                                            | Android                                                                                                                                                      |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Version     | 1.0.0 (4)                                                                                                                                      | 1.0.0, version code 5                                                                                                                                        |
-| EAS build   | `afe7e122-ebf2-44fa-906d-dbcada3a8b20`                                                                                                         | `1bd29d31-4d2c-4bc7-9e3f-2bbe5a5ff061`                                                                                                                       |
-| Build URL   | [EAS iOS](https://expo.dev/accounts/reactive-resume/projects/reactive-resume/builds/afe7e122-ebf2-44fa-906d-dbcada3a8b20)                      | [EAS Android](https://expo.dev/accounts/reactive-resume/projects/reactive-resume/builds/1bd29d31-4d2c-4bc7-9e3f-2bbe5a5ff061)                                |
 | SHA-256     | `455a1e71eda35aa21e5be644802c61f5ad46ff6d484632b0a3bef1abac1bdbcd`                                                                             | `da8a204762e7173d0cc43ee4f58f344ed08c010304bf86aeb96cbc801c8ce4fb`                                                                                           |
 | Validation  | Strict deep code signing; iOS SDK 27.1; matching entitlements; 14 non-tracking privacy manifests; no development Bonjour/local-network entries | Bundletool and upload signature valid; target API 36, min API 24; non-debuggable; all 68 64-bit ELF LOAD and inspection APK ZIP alignments pass 16 KB checks |
-| Store state | App `6823975835`; build resource `dbaa48a2-520f-4109-9756-aa1c1dc036ca`; attached to 1.0.0                                                     | App `4975481521325019096`; internal track `4701728381949252022`; draft release 1; no testers/rollout yet                                                     |
+| Store state | App `6823975835` (re-check in the owner's account); build resource `dbaa48a2-520f-4109-9756-aa1c1dc036ca`; attached to 1.0.0                   | App `4975481521325019096`; internal track `4701728381949252022`; draft release 1; no testers/rollout yet                                                     |
 
-Earlier builds are superseded. Local IPA/AAB/inspection outputs and evidence are under `/tmp/rxresu-store-artifacts`; listing verification is under `/tmp/reactive-resume-listing-audit`. These are temporary local evidence, not durable build storage. Retrieve store artifacts through EAS links if local files disappear. The inspection APK is debug-signed solely for inspection; it does not prove Play-installed identity or behavior.
+Earlier builds are superseded. Local evidence files from the previous owner are not available. The inspection APK is debug-signed solely for inspection; it does not prove Play-installed identity or behavior.
 
-EAS project is `reactive-resume/reactive-resume`, ID `5830280e-e1ba-45b7-b9c9-ba048fa3bd4d`, retained for OTA updates and Observe. The historical EAS builds used remote version counters; Blacksmith uses the GitHub counter and migration offset described in [mobile-ci.md](./mobile-ci.md). Never reset versions to 4/5. Apple capabilities remain manually configured; `EXPO_NO_CAPABILITY_SYNC=1` is still required when using `eas credentials`.
+The old Expo project is dropped and not used. The historical EAS builds used remote version counters; Blacksmith uses the GitHub counter and migration offset described in [mobile-ci.md](./mobile-ci.md). Never reset versions to 4/5 if those store records turn out to be the owner's. Apple capabilities remain manually configured; `EXPO_NO_CAPABILITY_SYNC=1` is still required when using `eas credentials`.
 
 Historically, submission keys lived in EAS credentials and `apps/mobile/eas.json` held no credential paths. Blacksmith requires exporting those existing signing credentials and storing upload keys in Actions secrets. iOS upload used an existing developer API key, while distribution signing required an approved Admin team key. Android's first AAB upload was manual. Never commit credential files. Historical Expo Doctor result: 20/20 after adding direct `expo-asset` dependency.
 

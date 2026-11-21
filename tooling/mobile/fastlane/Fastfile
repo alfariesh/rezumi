@@ -78,16 +78,16 @@ platform :ios do
         installed = install_provisioning_profile(path: profile)
         begin
           profile_data = FastlaneCore::ProvisioningProfile.parse(profile)
-          UI.user_error!("Provisioning profile must belong to app.rezumi and team 654ASRW868") unless
-            profile_data["Entitlements"]["application-identifier"] == "654ASRW868.app.rezumi" &&
-            profile_data["TeamIdentifier"].include?("654ASRW868")
+          UI.user_error!("Provisioning profile must belong to app.rezumi and team ZAVWN3Z2YX") unless
+            profile_data["Entitlements"]["application-identifier"] == "ZAVWN3Z2YX.app.rezumi" &&
+            profile_data["TeamIdentifier"].include?("ZAVWN3Z2YX")
           UI.user_error!("Use an App Store distribution profile") if
             profile_data["ProvisionedDevices"] || profile_data["ProvisionsAllDevices"] ||
             profile_data["Entitlements"]["get-task-allow"]
           cocoapods(podfile: File.join(MOBILE, "ios/Podfile"))
           update_code_signing_settings(
             path: File.join(MOBILE, "ios/Rezumi.xcodeproj"),
-            use_automatic_signing: false, team_id: "654ASRW868", targets: ["Rezumi"],
+            use_automatic_signing: false, team_id: "ZAVWN3Z2YX", targets: ["Rezumi"],
             build_configurations: ["Release"], code_sign_identity: "Apple Distribution",
             profile_uuid: profile_data.fetch("UUID")
           )
@@ -99,7 +99,7 @@ platform :ios do
             archive_path: File.join(ENV.fetch("RUNNER_TEMP"), "Rezumi.xcarchive"),
             buildlog_path: File.join(ENV.fetch("RUNNER_TEMP"), "mobile-build-logs"), xcodebuild_formatter: "",
             export_options: {
-              signingStyle: "manual", teamID: "654ASRW868",
+              signingStyle: "manual", teamID: "ZAVWN3Z2YX",
               provisioningProfiles: { "app.rezumi" => profile_data.fetch("UUID") }
             }
           )

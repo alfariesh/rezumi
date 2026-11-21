@@ -75,7 +75,7 @@ export function ListRow({
 	const { fontScale } = useWindowDimensions();
 	const stacked = fontScale > 1.3;
 	const tone: ColorToken = destructive ? "dangerText" : accent ? "accentText" : "ink";
-	// ink3 is too light on selectedFill (tokens.md §1); secondary text uses ink2 there.
+	// ink3 is too light on selectedFill; secondary text uses ink2 there.
 	const quiet: ColorToken = selected ? "ink2" : "ink3";
 	const pressable = !!onPress || !!onLongPress;
 	const Container = pressable ? Pressable : View;
@@ -192,7 +192,7 @@ export type ListGroupProps = {
 };
 
 /**
- * Rows grouped like the platform's settings lists (tokens.md §7): iOS inset grouped (`raised`, `rLg`, hairlines
+ * Rows grouped like the platform's settings lists: iOS inset grouped (`raised`, `rLg`, hairlines
  * between rows); Android full-width rows on `bg`, so the group bleeds through the screen's `s4` side padding.
  */
 export function ListGroup({ title, footer, children }: ListGroupProps) {
@@ -334,7 +334,7 @@ export function EmptyState({ icon, title, message, action, secondaryAction }: Em
 /** `accent` is the success banner (for example "Imported from LinkedIn"). */
 export type BannerTone = "info" | "warn" | "danger" | "accent";
 
-/** The app-wide banners from tokens.md §1: each sets its tone and icon. The screen still supplies the copy. */
+/** The app-wide banners from the old design system: each sets its tone and icon. The screen still supplies the copy. */
 export type BannerVariant = "offline" | "locked" | "guest" | "sessionExpired";
 
 export type BannerProps = {

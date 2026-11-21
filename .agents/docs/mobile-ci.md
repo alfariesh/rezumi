@@ -3,16 +3,15 @@
 The **Mobile release** GitHub Actions workflow builds Android on Blacksmith Linux and
 iOS on Blacksmith Apple Silicon macOS. Expo Prebuild generates native projects; Gradle
 and Xcode compile them; Fastlane signs and optionally uploads them. It does not call
-EAS Build or EAS Submit. EAS Update still delivers compatible OTA updates. `mobile-ota-update.yml` was a
+EAS Build or EAS Submit. The old Expo project is no longer used: OTA (EAS Update) and Observe are off in app config until the owner creates their own Expo account (`rezumi`, Phase 16), and `EXPO_TOKEN` is not needed until then. `mobile-ota-update.yml` was a
 `workflow_call` from the Docker publish workflow, which has been deleted; nothing triggers
 it today.
 
-Setup verified on **2026-10-21**: all eleven signing/upload secrets were copied from
-existing EAS credentials into repository Actions secrets; the existing `EXPO_TOKEN`
-was retained. The initial `MOBILE_BUILD_NUMBER_BASE` was **100**. Live store counters were iOS **6**
+Setup from the previous owner (**2026-10-21**, historical, to be re-checked): signing/upload secrets were copied from
+the old EAS credentials into repository Actions secrets. **Owner to fill in (plans/mobile Phase 16):** re-enter every signing and upload secret from the owner's own Apple Developer (team `ZAVWN3Z2YX`), App Store Connect and Play Console accounts. The previous initial `MOBILE_BUILD_NUMBER_BASE` was **100**. Live store counters were iOS **6**
 and Android **8**; workflow run 1, attempt 1 will allocate **100**. Environment
-`mobile-store` requires approval from `amruthpillai`, allows self-review, disallows admin
-bypass, and accepts only branch `main`. The workflow is manually dispatched after its
+`mobile-store` requires approval from the owner's GitHub account, allows self-review, disallows admin
+bypass, and accepts only branch `main`. **Owner to fill in (plans/mobile Phase 16):** confirm the approver on both environments. The workflow is manually dispatched after its
 changes reach `main`; no Blacksmith app build or store upload was run during setup.
 
 ## One-time migration
@@ -29,14 +28,14 @@ Download the **existing** Android upload keystore and iOS distribution certifica
 (including its private key) and App Store provisioning profile using `eas credentials`
 from `apps/mobile`. Do not generate replacement signing identities for this migration.
 If using that CLI for iOS, set `EXPO_NO_CAPABILITY_SYNC=1`: Apple capabilities remain
-managed manually. Native Apple sign-in uses the web Services ID `app.rezumi.web`;
+managed manually. Native Apple sign-in uses the web Services ID `app.rezumi.web` (re-check in the owner's account);
 neither this workflow nor Fastlane changes capabilities in Apple's portal.
 
 Save these as **repository Actions secrets**, using GitHub's settings or a secure local
 file as input to `gh secret set`. Never paste credentials into chat, source, logs or
 workflow artifacts. Base64 is encoding, not encryption.
 
-- `EXPO_TOKEN`: existing token, retained for production environment variables and OTA tooling.
+- `EXPO_TOKEN`: not needed now. Create it only after the owner sets up their own Expo account (Phase 16).
 - `ANDROID_KEYSTORE_BASE64`: base64 of the existing Android upload `.jks`.
 - `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`:
   existing upload-keystore values.
@@ -44,7 +43,7 @@ workflow artifacts. Base64 is encoding, not encryption.
   the certificate and private key.
 - `IOS_DISTRIBUTION_P12_PASSWORD`: password for that `.p12`.
 - `IOS_PROVISION_PROFILE_BASE64`: base64 of the App Store profile for `app.rezumi`,
-  team `654ASRW868`, covering the current app entitlements and certificate.
+  team `ZAVWN3Z2YX`, covering the current app entitlements and certificate.
 - `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON`: raw service-account JSON with release-to-production
   permission for this app. Required only for Android uploads.
 - `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_PRIVATE_KEY`: App Store Connect team API key ID,
@@ -78,7 +77,7 @@ systems do not allocate competing versions. `eas.json` remains legacy configurat
 its remote counters and auto-increment do not govern this workflow.
 
 Create separate GitHub environments **`mobile-signing`** and **`mobile-store`**.
-Restrict both to branch `main`, require approval from `amruthpillai`, allow self-review,
+Restrict both to branch `main`, require approval from the owner's GitHub account, allow self-review,
 and disallow admin bypass. The signing environment gates every job that reads signing
 credentials; the store environment separately gates jobs that read upload credentials.
 The preparation job validates inputs and allocates versions without any secrets.
@@ -173,7 +172,7 @@ platform selections are rejected before credentials are accessed.
 
 ## OTA compatibility and observability
 
-The update URL, EAS project and fingerprint policy remain unchanged. The production
+OTA is currently disabled in app config (no Expo project). The notes below describe how it works once the owner enables it with their own Expo account; the fingerprint policy is unchanged. The production
 channel is explicitly embedded through `updates.requestHeaders`; manual APK builds
 select `preview` with `MOBILE_UPDATE_CHANNEL`. Setting a channel in
 `eas.json` alone does not configure a build produced outside EAS Build. Build numbers
@@ -186,7 +185,7 @@ After the first store-installed Blacksmith build, publish a matching OTA update 
 both platforms. A native change requires a new store binary. Existing binaries keep
 receiving updates for their compatible runtime; never force a runtime match.
 
-EAS Observe instrumentation remains bundled. However, Expo currently supports native
+EAS Observe is off until the owner has an Expo account. When it is on, Expo currently supports native
 embedded-bundle source-map uploads only for builds on EAS Build servers, so the new
 embedded bundles do not have that managed symbolication/build-dashboard linkage.
 Keep the generated maps/symbols for debugging. `mobile-ota-update.yml` still uses

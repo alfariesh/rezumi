@@ -145,7 +145,7 @@ export function LetterRichText({ label, value, onChange, disabled, autoFocus, mi
 
 /**
  * Bold, italic, underline and lists above the keyboard while a rich-text field has focus, with Done at the end. No
- * Improve on letters (builder.html). Render it last in the screen: the editor chrome ends content at the keyboard.
+ * Improve on letters. Render it last in the screen: the editor chrome ends content at the keyboard.
  */
 export function LetterRichTextToolbar() {
 	const { t } = useLingui();

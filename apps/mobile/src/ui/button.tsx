@@ -59,7 +59,7 @@ export function Button({
 		dangerOutline: "transparent",
 		link: "transparent",
 	}[variant];
-	// iOS highlights in place; Android draws a ripple in `press` instead (tokens.md §7).
+	// iOS highlights in place; Android draws a ripple in `press` instead.
 	const pressedBackground = {
 		primary: colors.accentHover,
 		danger: colors.dangerText,

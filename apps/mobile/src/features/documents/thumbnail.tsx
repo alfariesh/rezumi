@@ -69,7 +69,7 @@ export function Thumbnail({ document, visible, compact = false }: ThumbnailProps
 			}}
 		>
 			{document.type === "letter" ? (
-				// A miniature of the page: it scales with the card, not with the text-size setting (tokens.md `pageThumb`).
+				// A miniature of the page: it scales with the card, not with the text-size setting.
 				<Text variant="callout" color="paperInk" numberOfLines={compact ? 2 : 12} maxFontSizeMultiplier={1}>
 					{(draftText === undefined ? (letter.data ?? "") : letterText(draftText)) ||
 						(letter.isError ? t`Couldn't load letter` : letter.isPending ? t`Loading letter…` : t`Empty letter`)}

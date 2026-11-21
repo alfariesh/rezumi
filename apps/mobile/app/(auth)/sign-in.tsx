@@ -1,6 +1,5 @@
 import { useLingui } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
-import { ObserveInteractiveMarker } from "expo-observe";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 import { AuthHeader, PrivacyPolicyLink, hostOf } from "@/auth/auth-header";
@@ -36,7 +35,6 @@ export default function SignInScreen() {
 			edges={["top", "bottom"]}
 			contentStyle={{ width: "100%", maxWidth: size.panel, alignSelf: "center" }}
 		>
-			<ObserveInteractiveMarker />
 			<ScrollView
 				style={{ flex: 1 }}
 				contentInsetAdjustmentBehavior="automatic"
