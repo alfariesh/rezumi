@@ -36,7 +36,7 @@ export type PageOptions = {
 	background?: "soft-gradient" | "pattern" | "image";
 	/**
 	 * A still sample for a gallery's preview: the page without its script, the intro effect at its end, pictures from
-	 * `assetBase` (an absolute path, where the `img/` folder is published) and links that lead nowhere.
+	 * `assetBase` (an absolute path, where the `img/` folder is published).
 	 */
 	sample?: { assetBase: string; imageDir: string; assetVersion: string };
 };
@@ -50,6 +50,7 @@ export type RenderedPage = {
 	file: string;
 	/** The first listed work's slug, whose own page `work` draws; null when the page lists no work. */
 	firstWork: string | null;
+	workSlugs: string[];
 	theme: PortfolioTheme;
 	scheme: PortfolioScheme;
 	/** The intro effect the page plays (the theme's own when it doesn't support the one asked for). */
@@ -125,8 +126,8 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 		links: {
 			resume: "#cv",
 			resumePdf: "#pdf",
-			home: options.sample ? "#" : name,
-			work: (slug) => (options.sample ? "#work" : workPageFile(name, slug)),
+			home: name,
+			work: (slug) => workPageFile(name, slug),
 			// There is no server to download the card from; the button shows, pointing at Contact.
 			vcard: "#contact",
 		},
@@ -167,6 +168,7 @@ export async function writePersonaPage(dir: string, name: string, options: PageO
 	return {
 		file,
 		firstWork: first ? first.slug : null,
+		workSlugs: view.works.map((item) => item.slug),
 		theme: view.theme,
 		scheme: view.design.scheme,
 		effect: view.design.effect.id,

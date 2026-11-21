@@ -16,7 +16,7 @@ export function themePicture(theme: PortfolioTheme, locale: string) {
  * a still document without script, for a sandboxed preview frame. Indonesian pages show the Indonesian one.
  */
 export const themeSample = (theme: PortfolioTheme, locale: string) =>
-	`/portfolio-themes/sample/${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.html?v=4`;
+	`/portfolio-themes/sample/${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.html?v=5`;
 
 /** What each theme looks like, in the theme gallery (create dialog and Design). */
 export const themeDescription = (theme: PortfolioTheme) =>
