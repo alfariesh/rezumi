@@ -80,6 +80,9 @@ vi.mock("@rezumi/pdf/server", () => ({
 	},
 }));
 vi.mock("@rezumi/api/features/jobs/allowance", () => ({ configureJobSearchLimiter: vi.fn() }));
+vi.mock("@rezumi/api/features/jobs/maintenance", () => ({
+	runJobListingJobs: vi.fn().mockResolvedValue(undefined),
+}));
 vi.mock("@rezumi/api/features/portfolio/public", () => ({ portfolioFileAccess: mocks.publicPortfolioFile }));
 vi.mock("@rezumi/api/features/portfolio/public-limit", () => ({
 	configurePortfolioPublicLimiter: vi.fn(),
