@@ -156,6 +156,8 @@ Rancangan awal, **diverifikasi lewat spike di awal Phase 04**:
 4. GitHub, LinkedIn, passkey, OIDC kustom: tetap alur browser yang ada (`ASWebAuthenticationSession` / Custom Tabs), dengan parameter petunjuk penyedia supaya pengguna langsung sampai ke penyedia yang dipilih.
 5. Cadangan bila 2 dan 3 gagal uji keamanan: pertahankan alur browser, perbaiki layar pembuka (tombol per penyedia, tanpa baris Server) dan halaman web `/auth/*` untuk tampilan ponsel.
 
+Temuan Phase 01 (2026-11-21): app menyimpan `client_id` per server dan hanya menghapusnya bila endpoint token menjawab `invalid_client`. Bila database server diganti (self-host dipulihkan, klien dihapus), halaman `authorize` menampilkan "client not found" tanpa kembali ke app, sehingga app terjebak sampai dipasang ulang. Phase 04: deteksi kasus ini (mis. cek klien lewat pendaftaran ulang saat `authorize` gagal atau dibatalkan berulang) dan daftar ulang otomatis.
+
 Wajib: tinjauan keamanan terpisah (agent baca-saja) sebelum merge Phase 04; tes integrasi di `packages/auth`; batas laju pada endpoint baru; tidak ada kata sandi atau token di log; 2FA dan verifikasi email tidak bisa dilewati lewat jalur asli. Pilihan Server: dipertahankan di kode (sesi, deep link, dan scope draf bergantung padanya), UI-nya hanya muncul di build pengembangan.
 
 ## 5. Logika bersama (K9)
@@ -251,6 +253,8 @@ Untuk tiap layar baru atau yang diubah:
 | Gulir daftar dokumen/lamaran/lowongan   | tanpa frame jatuh yang terlihat            |
 | Pratinjau PDF setelah berhenti mengetik | ≤ 1 detik untuk CV 2 halaman               |
 | Ukuran unduhan                          | tidak naik > 15% dari build dasar Phase 01 |
+
+Dasar ukur Phase 01 (2026-11-21, iPhone 17 simulator iOS 27.2, build pengembangan): `Rezumi.app` 228 MB (101 MB `Rezumi.debug.dylib` + 102 MB `Frameworks`); build iOS dari cache 94 detik. Build rilis lokal, ukuran unduhan rilis, dan waktu buka dingin **belum diukur** (build rilis terlalu berat untuk Mac pemilik di sesi itu; ukur sendirian di Phase 02 atau lewat `mobile-release.yml`). Android belum diukur (ditunda pemilik).
 
 Katalog bahasa sekarang 22 MB untuk 55 bahasa: muat per bahasa saat dibutuhkan, bukan semuanya di bundel awal **[cek]** cara `src/i18n` memuatnya.
 

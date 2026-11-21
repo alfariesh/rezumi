@@ -21,6 +21,8 @@ export function useSignIn() {
 				done ? { state: "idle" } : { state: "failed", message: t`You canceled the sign-in before it finished.` },
 			);
 		} catch (error) {
+			// The screen shows a generic message; development builds keep the cause (never tokens: errors carry codes only).
+			if (__DEV__) console.warn("Sign-in failed", error);
 			setAttempt({ state: "failed", message: signInErrorMessage(i18n, error) });
 		}
 	};

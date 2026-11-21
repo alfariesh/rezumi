@@ -42,11 +42,17 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
    development OAuth redirect (`app.rezumi:/auth/native-callback`):
 
    ```sh
-   PORT=3400 SERVER_PORT=3401 APP_URL=http://localhost:3400 FLAG_ALLOW_UNSAFE_OAUTH_REDIRECT_URI=true \
-     FLAG_DISABLE_API_RATE_LIMIT=true pnpm exec dotenvx run -f .env.local -- turbo run dev --filter=web --filter=server
+   docker exec rezumi-postgres-1 psql -U postgres -c "create database rezumi_mobile_dev"   # once
+   PORT=3400 SERVER_PORT=3401 APP_URL=http://localhost:3400 \
+     DATABASE_URL=postgresql://postgres:postgres@localhost:5432/rezumi_mobile_dev \
+     STORAGE_BACKEND=local LOCAL_STORAGE_PATH="$PWD/data/mobile-dev" \
+     FLAG_ALLOW_UNSAFE_OAUTH_REDIRECT_URI=true FLAG_DISABLE_API_RATE_LIMIT=true \
+     pnpm exec dotenvx run -f .env.local -- turbo run dev --filter=web --filter=server
    ```
 
-   (`.claude/launch.json` → `rezumi-mobile`). Never set that flag on a public deployment.
+   (`.claude/launch.json` → `rezumi-mobile`). Use this own database: the shared local `postgres` database holds JWKS
+   keys encrypted with another session's `AUTH_SECRET`, and `/oauth2/token` then fails with "Failed to decrypt private
+   key". Never set the OAuth flag on a public deployment.
 
 2. **Forme native binaries.** `node packages/forme-native/scripts/fetch-prebuilt.mjs --platform ios` installs the
    binaries pinned in `packages/forme-native/scripts/prebuilt.json` when the pin matches the Rust sources. When it says
@@ -68,10 +74,18 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
    reaches the dev server as `localhost` (with `10.0.2.2` OAuth fails: the server's issuer is `localhost`). Development
    builds accept `http://` only for `localhost`, `127.0.0.1` and `10.0.2.2` (`src/auth/oauth.ts`).
 
-5. **Metro.** `pnpm exec expo start` from `apps/mobile` (port 8081), then open the app. Sign in: **Another server** →
-   `http://localhost:3400` → **Continue in browser**. Test accounts: sign up through `/api/auth/sign-up/email` (needs
-   `username` and `displayUsername`), then mark the email verified in the local database. Keep passwords out of the
-   repository, logs and chat.
+5. **Metro.** `pnpm exec expo start` from `apps/mobile` (port 8081); in the dev client tap **Enter URL manually** if it
+   does not find Metro. Sign in: **Another server** → `http://localhost:3400` → **Continue in browser**. Test accounts:
+   sign up through `/api/auth/sign-up/email` (needs `username` without `-`, and `displayUsername`), then mark the email
+   verified in the database. Use a lowercase hex password (`openssl rand -hex 16`) kept in a scratch file and in
+   `~/.argent/secrets.env`; never in the repository, logs or chat.
+
+   Typing into Safari's sign-in sheet on the simulator is unreliable: iOS turns shift on after a paste (the first typed
+   letter becomes a capital) and Safari autofill can duplicate text. What works: paste the email with Argent `paste`,
+   move to the password field with the keyboard's **Next**, put the password on the simulator clipboard from the file
+   (`… | xcrun simctl pbcopy <udid>`, check with `xcrun simctl pbpaste <udid> | wc -c`), tap the field twice and choose
+   **Paste**, then clear both clipboards (`printf '' | pbcopy`). Choose "Never for This Website" on the save-password
+   prompt.
 
 ## Code rules (summary; full list in `02-teknis.md` 2)
 
@@ -115,5 +129,11 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
   `src/shell/error-boundary.tsx`.
 - The Apple team is the owner's `ZAVWN3Z2YX`; simulator builds need no signing. Store identities still to re-check are
   listed in `.agents/docs/mobile-release-handoff.md`.
+- The app caches its OAuth `client_id` per server in SecureStore. If that server's database is replaced, the browser
+  shows "client not found" and the app never re-registers (it only forgets the client on a token-endpoint
+  `invalid_client`). Workaround on a development build: delete the `client.<hex of origin>` SecureStore key through the
+  debugger. Fix belongs to Phase 04 (`02-teknis.md` 4).
+- Sign-in failures in development builds log the cause (`console.warn("Sign-in failed", …)` in
+  `src/auth/use-sign-in.ts`); the screen still shows the generic message.
 - `.github/workflows/mobile-release.yml` still names Blacksmith runners directly; without Blacksmith on the repository
   its jobs never leave the queue (fix before Phase 16, like `mobile-forme-build.yml`).
