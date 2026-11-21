@@ -80,13 +80,17 @@ export function localizedUrl(pageUrl: string, locale?: Locale) {
 }
 
 // Lingui's pseudo-locale (lingui.config.ts): accented, stretched English for testing layouts, not a translation.
-const pseudoLocale: Locale = "zu-ZA";
+export const pseudoLocale: Locale = "zu-ZA";
 
 /** hreflang alternates for a page: every real locale plus x-default. "sr-SP" isn't a valid region, so it's "sr". */
+/** The languages a page is published in: every locale but the pseudo-locale. */
+export const publishedLocales: Locale[] = localeSchema.options.filter((locale) => locale !== pseudoLocale);
+
 export function getLocaleAlternates(pageUrl: string) {
-	const alternates = localeSchema.options
-		.filter((locale) => locale !== pseudoLocale)
-		.map((locale) => ({ hreflang: locale === "sr-SP" ? "sr" : locale, href: localizedUrl(pageUrl, locale) }));
+	const alternates = publishedLocales.map((locale) => ({
+		hreflang: locale === "sr-SP" ? "sr" : locale,
+		href: localizedUrl(pageUrl, locale),
+	}));
 	return [...alternates, { hreflang: "x-default", href: localizedUrl(pageUrl) }];
 }
 
