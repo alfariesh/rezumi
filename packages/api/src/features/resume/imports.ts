@@ -1,8 +1,70 @@
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { call, ORPCError } from "@orpc/server";
 import z from "zod";
 import { protectedProcedure } from "../../context";
 import { storageUploadRateLimit } from "../../middleware/rate-limit";
 import { crudRouter } from "./crud";
+
+/** The file formats read without AI. */
+export const resumeFileFormatSchema = z.enum([
+	"REACTIVE_RESUME",
+	"REACTIVE_RESUME_V4",
+	"JSON_RESUME",
+	"LINKEDIN",
+	"PDF",
+]);
+
+export type ResumeFileFormat = z.infer<typeof resumeFileFormatSchema>;
+
+/**
+ * Reads a resume file without AI: a PDF's text layer, a LinkedIn export, Rezumi or JSON Resume JSON. Shared by the
+ * import (which saves it as a resume) and the Profile's file source (which only returns it for review).
+ */
+export async function readResumeFileData(
+	file: File,
+	format: ResumeFileFormat,
+	signal?: AbortSignal,
+): Promise<ResumeData> {
+	let data: ResumeData;
+	try {
+		if (format === "PDF") {
+			const [{ extractPdf }, { documentToLines }, { buildExtractedDocument }, { parseResumeText }] = await Promise.all([
+				import("./pdf-analysis"),
+				import("@rezumi/import/pdf-lines"),
+				import("@rezumi/resume/ats-pdf"),
+				import("@rezumi/import/plain-text"),
+			]);
+			const raw = await extractPdf(file, signal, 0);
+			if (raw.truncated) throw new Error("The PDF has too many pages to import completely.");
+			const lines = documentToLines(buildExtractedDocument(raw));
+			if (lines.length === 0) throw new Error("The PDF has no readable text layer.");
+			data = parseResumeText(lines.join("\n"));
+		} else if (format === "LINKEDIN") {
+			const { parseLinkedInExport } = await import("@rezumi/import/linkedin");
+			data = parseLinkedInExport(new Uint8Array(await file.arrayBuffer()));
+		} else {
+			const text = await file.text();
+			if (format === "JSON_RESUME") {
+				const { parseJSONResume } = await import("@rezumi/import/json-resume");
+				data = parseJSONResume(text);
+			} else if (format === "REACTIVE_RESUME_V4") {
+				const { parseReactiveResumeV4JSON } = await import("@rezumi/import/reactive-resume-v4-json");
+				data = parseReactiveResumeV4JSON(text);
+			} else {
+				const { parseReactiveResumeJSON } = await import("@rezumi/import/reactive-resume-json");
+				data = parseReactiveResumeJSON(text);
+			}
+		}
+		const { convertLegacyStylesheet, needsLegacyStyleConversion } = await import("@rezumi/pdf/semantic-legacy");
+		if (needsLegacyStyleConversion(data.metadata)) data.metadata.stylesheet = convertLegacyStylesheet(data);
+	} catch (error) {
+		throw new ORPCError("BAD_REQUEST", {
+			message: "This file isn't a valid resume in the selected format. Check the format and try again.",
+			cause: error,
+		});
+	}
+	return data;
+}
 
 export const importResumeFile = protectedProcedure
 	.route({
@@ -17,50 +79,12 @@ export const importResumeFile = protectedProcedure
 	.input(
 		z.object({
 			file: z.file().max(10 * 1024 * 1024),
-			format: z.enum(["REACTIVE_RESUME", "REACTIVE_RESUME_V4", "JSON_RESUME", "LINKEDIN", "PDF"]),
+			format: resumeFileFormatSchema,
 		}),
 	)
 	.output(z.string().describe("The imported resume ID."))
 	.use(storageUploadRateLimit)
 	.handler(async ({ input, context, signal }) => {
-		let data;
-		try {
-			if (input.format === "PDF") {
-				const [{ extractPdf }, { documentToLines }, { buildExtractedDocument }, { parseResumeText }] =
-					await Promise.all([
-						import("./pdf-analysis"),
-						import("@rezumi/import/pdf-lines"),
-						import("@rezumi/resume/ats-pdf"),
-						import("@rezumi/import/plain-text"),
-					]);
-				const raw = await extractPdf(input.file, signal, 0);
-				if (raw.truncated) throw new Error("The PDF has too many pages to import completely.");
-				const lines = documentToLines(buildExtractedDocument(raw));
-				if (lines.length === 0) throw new Error("The PDF has no readable text layer.");
-				data = parseResumeText(lines.join("\n"));
-			} else if (input.format === "LINKEDIN") {
-				const { parseLinkedInExport } = await import("@rezumi/import/linkedin");
-				data = parseLinkedInExport(new Uint8Array(await input.file.arrayBuffer()));
-			} else {
-				const text = await input.file.text();
-				if (input.format === "JSON_RESUME") {
-					const { parseJSONResume } = await import("@rezumi/import/json-resume");
-					data = parseJSONResume(text);
-				} else if (input.format === "REACTIVE_RESUME_V4") {
-					const { parseReactiveResumeV4JSON } = await import("@rezumi/import/reactive-resume-v4-json");
-					data = parseReactiveResumeV4JSON(text);
-				} else {
-					const { parseReactiveResumeJSON } = await import("@rezumi/import/reactive-resume-json");
-					data = parseReactiveResumeJSON(text);
-				}
-			}
-			const { convertLegacyStylesheet, needsLegacyStyleConversion } = await import("@rezumi/pdf/semantic-legacy");
-			if (needsLegacyStyleConversion(data.metadata)) data.metadata.stylesheet = convertLegacyStylesheet(data);
-		} catch (error) {
-			throw new ORPCError("BAD_REQUEST", {
-				message: "This file isn't a valid resume in the selected format. Check the format and try again.",
-				cause: error,
-			});
-		}
+		const data = await readResumeFileData(input.file, input.format, signal);
 		return call(crudRouter.import, { data }, { context });
 	});

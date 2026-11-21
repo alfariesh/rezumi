@@ -1,23 +1,27 @@
 import type { ProfileBasicsField, ProfileData, ProfileSectionType } from "@rezumi/schema/profile/data";
 import type { SourceResult } from "@rezumi/schema/profile/sources";
-import { ORPCError } from "@orpc/client";
-import { isBlank, mergeProfileData, sameContent } from "@rezumi/resume/profile";
 import { PROFILE_BASICS_FIELDS, PROFILE_SECTION_TYPES } from "@rezumi/schema/profile/data";
 import { gitHubLogin, linkedInProfileId } from "@rezumi/schema/profile/sources";
 import { stripHtml } from "@rezumi/utils/string";
+import { isBlank, mergeProfileData, sameContent } from "./profile";
 
 /**
  * Filling the Profile from what a person already has: a resume file, a LinkedIn profile, a GitHub account, a personal
  * website. Each source runs on its own and may fail on its own; what they find is merged over the Profile in this
- * order (an earlier source's version of an entry wins) and shown for review before anything is saved.
+ * order (an earlier source's version of an entry wins) and shown for review before anything is saved. Shared by the
+ * web's onboarding and Profile, and the app's onboarding: the file is the platform's own (a browser `File`, a picked
+ * document), so the types take it as a parameter.
  */
 export const SOURCE_IDS = ["file", "linkedin", "github", "website"] as const;
 
 export type SourceId = (typeof SOURCE_IDS)[number];
 
+/** A chosen resume file as far as these rules need it: a browser `File` or an app's picked document both fit. */
+export type SourceFile = { name: string; size?: number | null; lastModified?: number | null; uri?: string };
+
 /** What the person entered. Empty text means the source isn't used. */
-export type SourceInputs = {
-	file: File | null;
+export type SourceInputs<F extends SourceFile = SourceFile> = {
+	file: F | null;
 	linkedin: string;
 	/** "This is my own profile": LinkedIn runs only with it. */
 	linkedinOwn: boolean;
@@ -25,7 +29,7 @@ export type SourceInputs = {
 	website: string;
 };
 
-export const emptySourceInputs = (github = ""): SourceInputs => ({
+export const emptySourceInputs = <F extends SourceFile = SourceFile>(github = ""): SourceInputs<F> => ({
 	file: null,
 	linkedin: "",
 	linkedinOwn: false,
@@ -36,8 +40,8 @@ export const emptySourceInputs = (github = ""): SourceInputs => ({
 /** The sources this account and server offer (`profile.sources.status`); a file is always offered. */
 export type SourceAvailability = { linkedin: boolean; github: boolean; website: boolean };
 
-export type SourceRequest =
-	| { id: "file"; key: string; file: File }
+export type SourceRequest<F extends SourceFile = SourceFile> =
+	| { id: "file"; key: string; file: F }
 	| { id: "linkedin"; key: string; url: string }
 	| { id: "github"; key: string; username: string }
 	| { id: "website"; key: string; url: string };
@@ -61,11 +65,12 @@ export function websiteAddress(input: string): string | null {
 	return url.toString();
 }
 
-const fileKey = (file: File) => `${file.name}:${file.size}:${file.lastModified}`;
+// The same file chosen again keeps its key, so a found result isn't read twice.
+const fileKey = (file: SourceFile) => `${file.name}:${file.size ?? ""}:${file.lastModified ?? file.uri ?? ""}`;
 
 /** The sources to run for what was entered, in merge order, with the problems of those that can't run yet. */
-export function readSourceInputs(inputs: SourceInputs, availability: SourceAvailability) {
-	const requests: SourceRequest[] = [];
+export function readSourceInputs<F extends SourceFile>(inputs: SourceInputs<F>, availability: SourceAvailability) {
+	const requests: SourceRequest<F>[] = [];
 	const problems: Partial<Record<SourceId, SourceInputProblem>> = {};
 
 	if (inputs.file) requests.push({ id: "file", key: fileKey(inputs.file), file: inputs.file });
@@ -93,7 +98,7 @@ export function readSourceInputs(inputs: SourceInputs, availability: SourceAvail
 }
 
 /** Whether anything was entered at all, valid or not. */
-export const hasSourceInput = (inputs: SourceInputs, availability: SourceAvailability) =>
+export const hasSourceInput = (inputs: SourceInputs<SourceFile>, availability: SourceAvailability) =>
 	Boolean(
 		inputs.file ||
 		(availability.linkedin && inputs.linkedin.trim()) ||
@@ -109,14 +114,14 @@ export type SourceRun =
 export type SourceRuns = Partial<Record<SourceId, SourceRun>>;
 
 /** What has to run (again): sources that are new, whose input changed, or that failed. Running or found ones stay. */
-export const requestsToRun = (requests: SourceRequest[], runs: SourceRuns) =>
+export const requestsToRun = <R extends SourceRequest<SourceFile>>(requests: R[], runs: SourceRuns) =>
 	requests.filter((request) => {
 		const run = runs[request.id];
 		return !run || run.key !== request.key || run.status === "failed";
 	});
 
 /** The runs still wanted: a source cleared since it ran is dropped, so its result isn't merged. */
-export const keepRequested = (runs: SourceRuns, requests: SourceRequest[]): SourceRuns =>
+export const keepRequested = (runs: SourceRuns, requests: SourceRequest<SourceFile>[]): SourceRuns =>
 	Object.fromEntries(
 		requests.flatMap((request) => {
 			const run = runs[request.id];
@@ -242,9 +247,130 @@ const FINAL_CODES = new Set([
 	"PAYMENT_REQUIRED",
 ]);
 
+/** The code of a server error (oRPC's `ORPCError`, read by shape so this stays free of the client), else null. */
+export function sourceErrorCode(error: unknown): string | null {
+	if (!(error instanceof Error) || error.name === "AbortError") return null;
+	const code = (error as { code?: unknown }).code;
+	return typeof code === "string" ? code : null;
+}
+
 /** Whether Retry is worth offering: a provider or the network failed, not the input or the account. */
 export function canRetrySource(error: unknown): boolean {
-	if (error instanceof ORPCError) return !FINAL_CODES.has(error.code);
+	const code = sourceErrorCode(error);
+	if (code !== null) return !FINAL_CODES.has(code);
 	// A request that never reached the server (offline, a dropped connection).
 	return error instanceof TypeError;
 }
+
+/** The photo kept: the one picked while it's still offered, else the first one offered (null: none). */
+export function keptPhoto(photos: PhotoCandidate[], choice: string | null | undefined): string | null {
+	if (choice === undefined || (choice !== null && !photos.some((candidate) => candidate.url === choice)))
+		return photos[0]?.url ?? null;
+	return choice;
+}
+
+/** A field's problem goes as soon as it's edited; the rest wait for the next try. */
+export function clearEditedProblems(
+	problems: Partial<Record<SourceId, SourceInputProblem>>,
+	patch: Partial<SourceInputs<SourceFile>>,
+): Partial<Record<SourceId, SourceInputProblem>> {
+	const next = { ...problems };
+	if ("linkedin" in patch || "linkedinOwn" in patch) delete next.linkedin;
+	if ("github" in patch) delete next.github;
+	if ("website" in patch) delete next.website;
+	return next;
+}
+
+/**
+ * The reviewed Profile with the kept photo in: a file's own picture as it is, anything else copied into the account's
+ * uploads first (`copy`, which is `profile.sources.adoptPhoto`), so the Profile never points at someone else's server.
+ * `copied` remembers copies, so saving again doesn't copy twice. A photo that can't be copied is left out
+ * (`photoFailed`), and the rest still goes in.
+ */
+export async function withKeptPhoto(
+	data: ProfileData,
+	candidate: PhotoCandidate | null,
+	copied: Map<string, string>,
+	copy: (url: string) => Promise<string>,
+): Promise<{ data: ProfileData; photoFailed: boolean }> {
+	if (!candidate) return { data, photoFailed: false };
+	try {
+		const url = copied.get(candidate.url) ?? (candidate.source === "file" ? candidate.url : await copy(candidate.url));
+		copied.set(candidate.url, url);
+		return { data: { ...data, picture: { ...data.picture, url } }, photoFailed: false };
+	} catch {
+		return { data, photoFailed: true };
+	}
+}
+
+/** Reads one source; passed with each run, so it is always the caller's latest (its AI choice, its file reader). */
+export type SourceFetch<F extends SourceFile> = (request: SourceRequest<F>) => Promise<SourceResult>;
+
+type SourceRunnerOptions<F extends SourceFile> = {
+	/** Every change to the runs, in order. */
+	onChange: (runs: SourceRuns) => void;
+	/** A run of the latest attempt failed (to explain plan or credit refusals the platform's way). */
+	onError?: (error: unknown, request: SourceRequest<F>) => void;
+	/** Runs kept from before (an onboarding picked up again): finished ones stay, nothing restarts. */
+	initial?: SourceRuns;
+};
+
+/**
+ * Runs the chosen sources side by side. Each has its own state (loading, done or failed) and its own Retry; a newer
+ * run of a source drops what an older one brings back, and so does clearing the source meanwhile. Nothing is saved:
+ * results wait for review. The web and the app wrap it in their own hook.
+ */
+export function createSourceRunner<F extends SourceFile>(options: SourceRunnerOptions<F>) {
+	const attempts = new Map<SourceId, number>();
+	const requests = new Map<SourceId, SourceRequest<F>>();
+	let read: SourceFetch<F> | null = null;
+	let latest: SourceRuns = options.initial ?? {};
+	const update = (change: (previous: SourceRuns) => SourceRuns) => {
+		latest = change(latest);
+		options.onChange(latest);
+	};
+
+	const settle = (id: SourceId, attempt: number, run: SourceRun) => {
+		if (attempts.get(id) !== attempt) return;
+		update((previous) => ({ ...previous, [id]: run }));
+	};
+
+	const start = (request: SourceRequest<F>, fetch: SourceFetch<F>) => {
+		const attempt = (attempts.get(request.id) ?? 0) + 1;
+		attempts.set(request.id, attempt);
+		requests.set(request.id, request);
+		update((previous) => ({ ...previous, [request.id]: { status: "loading", key: request.key } }));
+		// A fetch that throws before its promise still settles as a failed run.
+		Promise.resolve()
+			.then(() => fetch(request))
+			.then(
+				(result) => settle(request.id, attempt, { status: "done", key: request.key, result }),
+				(error: unknown) => {
+					if (attempts.get(request.id) !== attempt) return;
+					options.onError?.(error, request);
+					settle(request.id, attempt, { status: "failed", key: request.key, error });
+				},
+			);
+	};
+
+	return {
+		runs: () => latest,
+		/** Starts what's new, changed or failed in `wanted`, and forgets sources no longer wanted. */
+		run: (wanted: SourceRequest<F>[], fetch: SourceFetch<F>) => {
+			read = fetch;
+			const pending = requestsToRun(wanted, latest);
+			const kept = new Set(wanted.map((request) => request.id));
+			// A source cleared while it runs: its answer no longer matches the latest attempt, so it's dropped.
+			for (const [id, attempt] of attempts) if (!kept.has(id)) attempts.set(id, attempt + 1);
+			update((previous) => keepRequested(previous, wanted));
+			for (const request of pending) start(request, fetch);
+		},
+		/** Runs a source again with what it was last run with; a source never run here does nothing. */
+		retry: (id: SourceId, fetch: SourceFetch<F> | null = read) => {
+			const request = requests.get(id);
+			if (request && fetch) start(request, fetch);
+		},
+	};
+}
+
+export type SourceRunner<F extends SourceFile = SourceFile> = ReturnType<typeof createSourceRunner<F>>;

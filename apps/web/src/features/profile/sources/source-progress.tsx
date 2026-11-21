@@ -1,11 +1,11 @@
-import type { SourceId, SourceRun, SourceRuns } from "./model";
+import type { SourceId, SourceRun, SourceRuns } from "@rezumi/resume/profile-sources";
 import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { canRetrySource, SOURCE_IDS, sourceFindings } from "@rezumi/resume/profile-sources";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { SOURCE_ICONS, sourceErrorMessage, sourceLabel, sourceNoteMessage } from "./messages";
-import { canRetrySource, SOURCE_IDS, sourceFindings } from "./model";
 import { RowIcon } from "@/components/layout/icon-row";
 import { ENTER_CLASS, POP_CLASS, stagger } from "@/libs/motion";
 import { getSectionTitle } from "@/libs/resume/section";

@@ -20,6 +20,7 @@ import { useOpenReminder } from "@/features/reminders/open";
 import { useReviewPrompt } from "@/features/reviews/use-review-prompt";
 import { i18n, initI18n } from "@/i18n";
 import { ErrorBoundary } from "@/shell/error-boundary";
+import { PermissionPrimerHost } from "@/shell/permissions";
 import { ToastBridge, WindowSafeAreaProvider, useColorSchemeValue, useReducedMotion, useThemeColor } from "@/ui";
 import { EmptyState, Screen, Toaster } from "@/ui-legacy";
 import { fontAssets } from "@/ui/fonts";
@@ -89,6 +90,10 @@ function RootStack() {
 				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 				<Stack.Screen name="(auth)" options={{ headerShown: false }} />
 				<Stack.Screen name="check-email" options={{ headerShown: false, gestureEnabled: false }} />
+				<Stack.Screen
+					name="onboarding"
+					options={{ headerShown: false, gestureEnabled: false, animation: reduced ? "fade" : "slide_from_bottom" }}
+				/>
 				<Stack.Screen name="builder/[id]" options={{ headerShown: false, title: t`Resume` }} />
 				<Stack.Screen name="letter/[id]" options={{ headerShown: false, title: t`Cover letter` }} />
 				<Stack.Screen
@@ -139,6 +144,7 @@ function RootLayout() {
 										</ErrorBoundary>
 										<Toaster />
 										<ToastBridge />
+										<PermissionPrimerHost />
 									</TrueSheetProvider>
 								</I18nProvider>
 							</QueryClientProvider>

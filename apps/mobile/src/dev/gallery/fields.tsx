@@ -6,6 +6,7 @@ import { View } from "react-native";
 import { Caption, GallerySection } from "./section";
 import {
 	Checkbox,
+	ChipInput,
 	ControlField,
 	Description,
 	FieldError,
@@ -216,8 +217,23 @@ function Search() {
 export function FieldsGallery() {
 	const [summary, setSummary] = useState("");
 	const [volume, setVolume] = useState(40);
+	const [roles, setRoles] = useState(["Product designer"]);
 	return (
 		<View className="gap-8">
+			<GallerySection
+				title="ChipInput"
+				note="Short values one at a time (roles, places): return, a comma or leaving the field adds; each tag removes."
+			>
+				<ChipInput
+					label="Target roles"
+					placeholder="Add a role"
+					description="For example: Product designer, Data analyst."
+					values={roles}
+					onChange={setRoles}
+					removeLabel={(role) => `Remove ${role}`}
+				/>
+			</GallerySection>
+
 			<GallerySection
 				title="TextField"
 				note="Label, input, then description or error. Fields sit flat: a fill, no border, no shadow."

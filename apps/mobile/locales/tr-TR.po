@@ -345,6 +345,11 @@ msgstr ""
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
+#. placeholder {0}: sourceLabel(id)
+#: src/features/onboarding/messages.ts
+msgid "{0} didn't answer in time. Try again in a moment."
+msgstr ""
+
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
 #: app/account/membership.tsx
@@ -587,6 +592,15 @@ msgstr "{issues, plural, one {# sorunu size bir eşleşmeye mal olabilir.} other
 msgid "{issues, plural, one {Check has # thing to review. You can still download.} other {Check has # things to review. You can still download.}}"
 msgstr "{issues, plural, one {Kontrolde incelenecek # öğesi var. Hala indirebilirsiniz.} other {Kontrolde incelenecek # şeyler var. Hala indirebilirsiniz.}}"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "{kept} entries ticked"
+msgstr ""
+
+#. placeholder {0}: keys.length
+#: src/features/onboarding/source-review.tsx
+msgid "{kept} of {0}"
+msgstr ""
+
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind} röportajı"
@@ -764,6 +778,10 @@ msgstr "1 sütun, satır içi"
 msgid "1 day"
 msgstr "1 gün"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "1 entry ticked"
+msgstr ""
+
 #: src/features/application-detail/hooks.ts
 msgid "1 h"
 msgstr "1 saat"
@@ -793,6 +811,10 @@ msgstr "2-3 cümle en iyi şekilde okunur"
 #: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "24 saat önce"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "3 new roles match you"
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
@@ -862,9 +884,17 @@ msgstr "Sayısal bir tarih farklı ülkelerde farklı okunur."
 msgid "A page is rotated."
 msgstr "Bir sayfa döndürülmüş."
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "A portfolio and a coach"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "Check-in yapana kadar bir sonraki adım olarak gösterilen bir hatırlatıcı."
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "A resume in minutes"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "A role has no description"
@@ -1009,6 +1039,10 @@ msgstr "Kişi ekle"
 msgid "Add a phone number"
 msgstr "Telefon numarası ekleyin"
 
+#: src/features/onboarding/questions.tsx
+msgid "Add a place"
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Add a question from the form"
 msgstr "Formdan soru ekle"
@@ -1016,6 +1050,10 @@ msgstr "Formdan soru ekle"
 #: src/features/write/improve.tsx
 msgid "Add a result"
 msgstr "Sonuç ekle"
+
+#: src/features/onboarding/questions.tsx
+msgid "Add a role"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Add a role or company to look for."
@@ -1072,6 +1110,10 @@ msgstr "Plan yapmak için bir görüşme ekleyin"
 #: src/features/career/schedule-sheet.tsx
 msgid "Add an upcoming interview in Applications first."
 msgstr "Önce Başvurular'da yapılacak bir mülakatı ekleyin."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Add any of these and we'll fill in your Profile. You check everything before it's saved."
+msgstr ""
 
 #: src/features/search/search-screen.tsx
 msgid "Add application"
@@ -1227,6 +1269,10 @@ msgstr "Gönüllülük ekle"
 msgid "Add your name"
 msgstr "Adınızı ekleyin"
 
+#: src/features/onboarding/messages.ts
+msgid "Add your own AI connection in Settings, or choose Rezumi AI."
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr ""
@@ -1255,6 +1301,10 @@ msgstr "Adres"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "O zamana kadar yanıt alamazsanız Bugün'e bir hatırlatıcı ekler."
+
+#: src/features/onboarding/source-fields.tsx
+msgid "Adds your own public projects."
+msgstr ""
 
 #: src/features/design/advanced.tsx
 msgid "Advanced"
@@ -1395,10 +1445,6 @@ msgstr "Tüm etiketler"
 msgid "All your applications are closed"
 msgstr "Tüm başvurularınız kapatıldı"
 
-#: src/features/settings/profile.tsx
-msgid "Allow camera access in your device settings to take a photo."
-msgstr "Fotoğraf çekmek için cihaz ayarlarınızdan kamera erişimine izin verin."
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Allow microphone access in device settings, or type your answer."
 msgstr "Cihaz ayarlarında mikrofon erişimine izin verin veya cevabınızı yazın."
@@ -1472,6 +1518,10 @@ msgstr "bir hata"
 msgid "Ana Putri"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Analytics lead"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
 msgid "and {0} more"
@@ -1514,6 +1564,7 @@ msgid "Answers copied"
 msgstr "Cevaplar kopyalandı"
 
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Any"
 msgstr "Fark etmez"
 
@@ -1656,6 +1707,7 @@ msgstr "Haftalık gönderilen başvurular (son 8 hafta)"
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/stages.ts
 #: src/features/check/writing.tsx
+#: src/features/onboarding/intro-screen.tsx
 msgid "Applied"
 msgstr "Başvuruldu"
 
@@ -1796,8 +1848,13 @@ msgid "ATS checker"
 msgstr "ATS denetleyici"
 
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "ATS-safe"
 msgstr "ATS-güvenli"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "ATS-safe template"
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 msgid "Attach a cover letter (PDF)"
@@ -1865,6 +1922,7 @@ msgstr "Azerice"
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/entry-sheet.tsx
@@ -1992,6 +2050,10 @@ msgstr "Asgari taban maaşınızın altında."
 msgid "Bengali"
 msgstr "Bengalce"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "BI analyst"
+msgstr ""
+
 #: src/features/applications-board/views.tsx
 msgid "Board"
 msgstr "Pano"
@@ -2034,6 +2096,10 @@ msgstr "Kenar ovalliği"
 msgid "Border width"
 msgstr "Kenar kalınlığı"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Both are optional. They help the coach find roles that fit you."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Break the resume into the usual sections so it can be segmented."
 msgstr "Bölümlere ayrılabilmesi için özgeçmişi alışılmış bölümlere ayırın."
@@ -2058,6 +2124,24 @@ msgstr "Brifing yenileme açık · {next}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "Brifing yenileme duraklatıldı"
+
+#: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
+msgid "Bring in my details"
+msgstr ""
+
+#: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
+msgid "Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample."
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Bring what you have"
+msgstr ""
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Bring your LinkedIn or an old resume, pick a template, and download a clean PDF."
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Bulgarian"
@@ -2093,6 +2177,10 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "Yazılım özgeçmişinizi okuyabilir mi?"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Can you help me answer \"Tell me about yourself\"?"
+msgstr ""
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
@@ -2258,6 +2346,14 @@ msgstr "Bu pozisyonu kanıtlarınızla karşılaştırın"
 msgid "Check views"
 msgstr "Görünümleri kontrol edin"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Check what we found"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Check your connection, then try again."
+msgstr ""
+
 #: src/features/auth/check-email-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
 msgid "Check your email"
@@ -2312,6 +2408,10 @@ msgstr "Çince (Basitleştirilmiş)"
 msgid "Chinese (Traditional)"
 msgstr "Çince (Geleneksel)"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Choose"
+msgstr ""
+
 #: src/features/application-detail/date-field.tsx
 msgid "Choose a date"
 msgstr "Bir tarih seçin"
@@ -2339,6 +2439,10 @@ msgstr "Bir PDF dosyası seçin. Seçilen dosya yüklenmedi."
 #: src/features/application-detail/sections.tsx
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "10 MB'tan küçük bir PDF seçin. Seçilen dosya yüklenmedi."
+
+#: src/shell/permissions.tsx
+msgid "Choose a photo"
+msgstr ""
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2404,6 +2508,10 @@ msgstr "Toplu işlem başına 200'e kadar başvuru seçin."
 #: src/features/design/advanced.tsx
 msgid "Circle"
 msgstr "Daire"
+
+#: src/features/onboarding/questions.tsx
+msgid "Cities or countries. Leave it empty for anywhere."
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "Clarify"
@@ -2606,6 +2714,10 @@ msgstr "Yeni bir görüşme eklemeden önce saati teyit edin."
 msgid "Confirm the time with {contact} before adding a new interview."
 msgstr "Yeni bir görüşme eklemeden önce saati {contact} ile teyit edin."
 
+#: src/features/onboarding/messages.ts
+msgid "Confirm this is your own profile."
+msgstr ""
+
 #: src/features/assistant/provider.tsx
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
@@ -2707,6 +2819,8 @@ msgstr "Bağlam belirtilmediği için bunun yerine yeni bir mesajla yanıt verin
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
 #: src/features/auth/check-email-screen.tsx
+#: src/features/onboarding/onboarding-screen.tsx
+#: src/shell/permissions.tsx
 msgid "Continue"
 msgstr "Devam et"
 
@@ -2857,6 +2971,10 @@ msgstr "Kaydetme onaylanamadı. Yinelenen kayıt oluşmaması için tekrar denem
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "Kaydetme onaylanamadı. Yinelenen kayıt oluşmaması için tekrar denemeden önce başvuruyu kontrol edin."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't copy the photo. You can add one later in your Profile."
+msgstr ""
+
 #: src/features/assistant/chat-view.tsx
 msgid "Couldn't copy the transcript. Try again."
 msgstr "Konuşma metni kopyalanamadı. Tekrar deneyin."
@@ -2864,6 +2982,10 @@ msgstr "Konuşma metni kopyalanamadı. Tekrar deneyin."
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't create the letter. Try again."
 msgstr "Mektup oluşturulamadı. Tekrar deneyin."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't create the resume. Try again."
+msgstr ""
 
 #: src/features/workspace/tabs/saved.tsx
 msgid "Couldn't delete it. It's back in Saved."
@@ -2986,6 +3108,10 @@ msgstr ""
 msgid "Couldn't load versions."
 msgstr "Sürümler yüklenemedi."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't load your details"
+msgstr ""
+
 #: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "Profiliniz yüklenemedi."
@@ -3039,6 +3165,10 @@ msgstr "Yazdırılamadı. Tekrar deneyin."
 msgid "Couldn't propose these edits: {0}"
 msgstr "Bu düzenlemeler önerilemedi: {0}"
 
+#: src/features/onboarding/messages.ts
+msgid "Couldn't reach the AI provider. Try again in a moment."
+msgstr "AI sağlayıcısına ulaşılamadı. Birazdan tekrar deneyin."
+
 #: src/features/check/writing.tsx
 msgid "Couldn't reach your AI provider. Try again or check its key in AI settings."
 msgstr "AI sağlayıcınıza ulaşılamadı. Tekrar deneyin veya AI ayarlarında anahtarını kontrol edin."
@@ -3048,6 +3178,11 @@ msgstr "AI sağlayıcınıza ulaşılamadı. Tekrar deneyin veya AI ayarlarında
 msgid "Couldn't read “{0}”. Enter the dates so they sort and print consistently."
 msgstr "“{0}” okunamadı. Tutarlı şekilde sıralanıp yazdırılmaları için tarihleri girin."
 
+#. placeholder {0}: sourceLabel(id)
+#: src/features/onboarding/messages.ts
+msgid "Couldn't read {0}. Try again."
+msgstr ""
+
 #: src/features/ats-checker/check.ts
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't read that file. Try again."
@@ -3056,6 +3191,10 @@ msgstr "Bu dosya okunamadı. Tekrar deneyin."
 #: src/features/check/parser.tsx
 msgid "Couldn't read the exported PDF."
 msgstr "Dışa aktarılan PDF okunamadı."
+
+#: src/features/onboarding/read-file.ts
+msgid "Couldn't read the file. Try again."
+msgstr ""
 
 #. placeholder {0}: part.errorText
 #: src/features/assistant/messages.tsx
@@ -3146,6 +3285,10 @@ msgstr "Saat dilimi kaydedilemedi. Tekrar deneyin."
 msgid "Couldn't save this role to Applications. Try again."
 msgstr "Bu pozisyon Başvurulara kaydedilemedi. Tekrar deneyin."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your answers. You can add them later in Profile → Preferences."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Couldn't save your changes, so drafting didn't start. Nothing on the page changed."
 msgstr "Değişiklikleriniz kaydedilemediği için taslak oluşturma başlamadı. Sayfada hiçbir şey değişmedi."
@@ -3163,6 +3306,14 @@ msgstr "Değişiklikleriniz kaydedilemedi. Düzenlemeleriniz hâlâ bu cihazda. 
 #: src/features/career/preferences.tsx
 msgid "Couldn't save your preferences. Your draft is still here."
 msgstr "Tercihleriniz kaydedilemedi. Taslağınız hâlâ burada."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your Profile, so this would open again. Try again."
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your Profile. Try again."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't save. Try again."
@@ -3355,6 +3506,10 @@ msgstr "Tarayıcınızdaki Hesap ayarlarından bir API anahtarı oluşturun. Ana
 msgid "Create copy"
 msgstr "Kopya oluştur"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Create my resume"
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Create or import a resume first, then return to copy it for this job."
 msgstr "Önce bir özgeçmiş oluşturun veya içe aktarın, ardından bu iş için kopyalamak üzere geri dönün."
@@ -3378,6 +3533,10 @@ msgstr "Doküman oluşturuluyor…"
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Creating your account…"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Creating…"
 msgstr ""
 
 #: app/account/membership.tsx
@@ -3471,6 +3630,14 @@ msgstr "Karanlık"
 #: src/features/search/search-screen.tsx
 msgid "Dark theme"
 msgstr "Karanlık tema"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Data analyst"
+msgstr ""
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Data analyst · Bandung"
+msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Data sharing canceled. Nothing was sent to the AI provider."
@@ -3725,6 +3892,7 @@ msgstr "Tasarım varsayılanlara sıfırlandı"
 
 #: app/applications/[id]/[tab].tsx
 #: src/features/document-menu/index.tsx
+#: src/features/onboarding/messages.ts
 msgid "Details"
 msgstr "Detaylar"
 
@@ -4097,6 +4265,7 @@ msgstr ""
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "E-Posta"
@@ -4144,6 +4313,10 @@ msgstr "Gelişmiş okuma kullanılamıyor; yerleşik okuyucuyu kullandı."
 #: src/features/career/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
 msgstr "95000 gibi tam bir tutar girin. Önceki tutarınız değişmedi."
+
+#: src/features/onboarding/messages.ts
+msgid "Enter a GitHub username, like octocat."
+msgstr ""
 
 #: src/features/write/pickers.tsx
 msgid "Enter a hex color like #1a1a1a, or rgba(…)."
@@ -4214,6 +4387,10 @@ msgstr "Adınızı girin."
 #: src/features/auth/email-sign-in-screen.tsx
 msgid "Enter your password."
 msgstr "Şifrenizi girin."
+
+#: src/features/onboarding/messages.ts
+msgid "Enter your site's address, like yourname.com."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4290,6 +4467,7 @@ msgid "Everything your resumes, letters and Coach start from. For now, your fact
 msgstr ""
 
 #: src/features/career/facts.tsx
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/write/fields.ts
 msgid "Experience"
 msgstr "Deneyim"
@@ -4434,6 +4612,10 @@ msgstr "Fince"
 msgid "First offer"
 msgstr "İlk teklif"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "First resume"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "First run (YYYY-MM-DD)"
 msgstr "İlk çalıştırma (YYYY-MM-DD)"
@@ -4555,6 +4737,10 @@ msgstr "Örneğin, Lumen'a gönderildi"
 msgid "For example: “{name}: I did … at … in 2024, and it led to …”"
 msgstr "Örneğin: “{name}: 2024'te …'de yaptım ve bu şuna yol açtı…”"
 
+#: src/features/onboarding/questions.tsx
+msgid "For example: Product designer, Data analyst."
+msgstr ""
+
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "For LibreOffice and other open-source editors. Layout is simplified."
@@ -4606,6 +4792,10 @@ msgstr "Bugün bulundu"
 msgid "Found yesterday"
 msgstr "Dün bulundu"
 
+#: src/features/onboarding/messages.ts
+msgid "Found: {list}"
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "Free"
 msgstr ""
@@ -4638,14 +4828,23 @@ msgstr ""
 msgid "From Fit"
 msgstr "“Uygunluk” sekmesinden"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "From your account"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "From your experience entries"
 msgstr "Deneyim girişlerinizden"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "From your GitHub sign-in."
+msgstr ""
 
 #: src/features/career/search-regions-field.tsx
 msgid "From your timezone"
 msgstr "Saat diliminize göre"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Full name"
 msgstr "Ad Soyad"
@@ -4659,6 +4858,10 @@ msgstr "Tam genişlik"
 msgid "German"
 msgstr "Almanca"
 
+#: src/shell/permissions.tsx
+msgid "Get a nudge at the right time"
+msgstr ""
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback"
 msgstr "Geri bildirim al"
@@ -4671,6 +4874,10 @@ msgstr "“Geri bildirim al”, soruyu, cevabınızı, bu ilanı ve hikayelerini
 msgid "Get new jobs for your search here every morning"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Get started"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "Uzamaya başladı. \"Daha Kısa\"yı deneyin veya en az spesifik olan paragrafı kesin."
@@ -4678,6 +4885,10 @@ msgstr "Uzamaya başladı. \"Daha Kısa\"yı deneyin veya en az spesifik olan pa
 #: src/features/auth/welcome-screen.tsx
 msgid "GitHub"
 msgstr "GitHub"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "GitHub username"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4754,6 +4965,7 @@ msgstr "Başlık 3"
 msgid "Heading changed"
 msgstr "Başlık değiştirildi"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Headline"
 msgstr "Başlık"
@@ -5022,14 +5234,6 @@ msgstr "İçe aktar"
 msgid "Import with AI"
 msgstr ""
 
-#: src/features/home/home-screen.tsx
-msgid "Import your current resume, or start blank or from a sample. We lay out every section for you to refine."
-msgstr ""
-
-#: src/features/documents/library.tsx
-msgid "Import your current resume, or start fresh with your name."
-msgstr "Mevcut özgeçmişinizi içe aktarın veya adınızla yeni bir başlangıç ​​yapın."
-
 #: src/features/history/history.tsx
 msgid "Imported"
 msgstr "İthal"
@@ -5108,6 +5312,7 @@ msgstr "Yalnızca arayüz. Tasarımda her özgeçmiş kendi dilini belirler."
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/coming-up.tsx
+#: src/features/onboarding/intro-screen.tsx
 msgid "Interview"
 msgstr "Görüşme"
 
@@ -5196,6 +5401,10 @@ msgstr "Sorunlar"
 #: src/features/check/issues.ts
 msgid "It has entries but isn't placed on a page."
 msgstr "Girişleri var ancak bir sayfaya yerleştirilmiyor."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "It starts with your Profile. You can switch templates any time."
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 msgid "It's removed from the timeline for good."
@@ -5670,6 +5879,14 @@ msgstr "Bağlantılı. Özgeçmiş güncellendiğinde ad, e-posta, telefon ve ş
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
+#: src/features/onboarding/messages.ts
+msgid "LinkedIn import isn't available right now. Add your LinkedIn export or a resume file instead."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "LinkedIn profile link"
+msgstr ""
+
 #: src/features/applications-board/views.tsx
 msgid "List"
 msgstr "Liste"
@@ -5686,6 +5903,10 @@ msgstr "Liste görünümü"
 msgid "Lithuanian"
 msgstr "Litvanca"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Live"
+msgstr ""
+
 #: src/features/check/score.tsx
 msgid "Live · updates as you edit"
 msgstr "Canlı · siz düzenledikçe güncellenir"
@@ -5696,6 +5917,7 @@ msgstr "{url} adresinde yayında"
 
 #: src/features/design/design-pane.tsx
 #: src/features/home/section.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Loading"
 msgstr "Yükleniyor"
 
@@ -5768,6 +5990,7 @@ msgstr "Yükleniyor…"
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/style-groups.tsx
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
 msgid "Location"
@@ -6058,6 +6281,10 @@ msgstr "Daha kişisel"
 msgid "More providers and options are in Settings. Editing, design, Check issues and downloads work without AI."
 msgstr "Daha fazla sağlayıcı ve seçenek Ayarlar'dadır. Düzenleme, tasarım, Kontrol sorunları ve indirmeler AI olmadan çalışır."
 
+#: src/features/onboarding/template-choice.tsx
+msgid "More templates"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "Birden fazla e-posta adresi görünüyor."
@@ -6090,6 +6317,10 @@ msgstr "Çoğu madde işareti, yaptığınız bir şey yerine dolgu ifadeyle ba�
 #: src/features/ats-checker/messages.ts
 msgid "Most entries have no dates."
 msgstr "Girişlerin çoğunda tarih yok."
+
+#: src/features/onboarding/messages.ts
+msgid "Most of this profile is private, so little came in."
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
@@ -6382,6 +6613,10 @@ msgstr "Yeni STARR hikayesi"
 msgid "New to Rezumi? Create an account"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Next"
+msgstr ""
+
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
 msgstr ""
@@ -6577,9 +6812,17 @@ msgstr "Telefon numarası yok"
 msgid "No phone number was found."
 msgstr "Telefon numarası bulunamadı."
 
+#: src/features/onboarding/source-review.tsx
+msgid "No photo"
+msgstr ""
+
 #: src/features/write/basics-screen.tsx
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "Fotoğraf yok. Çoğu ATS fotoğrafları yok sayar; bazı bölgeler bir tane bekliyor."
+
+#: src/features/onboarding/messages.ts
+msgid "No public repositories of your own, so no projects came in."
+msgstr ""
 
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
@@ -6697,6 +6940,10 @@ msgstr "Henüz bağlanmadı. DNS kayıtlarını alan adını yönettiğiniz yere
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "Not enough Rezumi AI credits to read it."
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "Bana göre değil"
@@ -6714,7 +6961,9 @@ msgid "Not included"
 msgstr ""
 
 #: src/features/assistant/messages.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/workspace/tabs/debrief.tsx
+#: src/shell/permissions.tsx
 msgid "Not now"
 msgstr "Şimdi değil"
 
@@ -6761,6 +7010,10 @@ msgstr "Buradaki hiçbir şey sana bir kibrite mal olmamalı."
 msgid "Nothing marks a role as ongoing."
 msgstr "Hiçbir şey bir rolü devam ediyor olarak işaretlemiyor."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Nothing new to add"
+msgstr ""
+
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Nothing on this day."
 msgstr "Bu günde hiçbir şey yok."
@@ -6777,6 +7030,10 @@ msgstr "Henüz planlanmış bir şey yok"
 msgid "Nothing scheduled yet."
 msgstr "Henüz zamanlanmış bir şey yok."
 
+#: src/features/onboarding/messages.ts
+msgid "Nothing to add from here."
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Nothing to apply"
 msgstr "Uygulanacak bir şey yok"
@@ -6788,6 +7045,10 @@ msgstr "Düzeltilecek bir şey yok"
 #: src/features/ats-checker/messages.ts
 msgid "Nothing to fix. The remaining pages were simply not covered by this report."
 msgstr "Düzeltilecek bir şey yok. Kalan sayfalar bu rapor kapsamında değerlendirilmedi."
+
+#: src/features/onboarding/messages.ts
+msgid "Nothing was found at that address. Check it and try again."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Notice period (weeks)"
@@ -6837,6 +7098,7 @@ msgid "Off. The letter keeps its own copy of your details."
 msgstr "Kapalı. Mektup, bilgilerinizin kendi kopyasını saklar."
 
 #: src/features/applications/stages.ts
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/workspace/tabs/saved.tsx
 msgid "Offer"
 msgstr "Teklif"
@@ -6848,6 +7110,7 @@ msgid "Offers"
 msgstr "Teklifler"
 
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Office days a week, at most"
 msgstr "Haftada en fazla ofis günü"
 
@@ -6889,6 +7152,7 @@ msgid "Once you've sent a few applications, this shows how far they get and how 
 msgstr "Birkaç iş başvurusu gönderdiğinizde bu, bunların ne kadar ilerlediğini ve insanların ne kadar hızlı yanıt verdiğini gösterir."
 
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "One column"
 msgstr "Bir sütun"
 
@@ -7014,6 +7278,10 @@ msgstr "Yanıt bekleyen sorular"
 msgid "Open resume"
 msgstr "Açık özgeçmiş"
 
+#: src/shell/permissions.tsx
+msgid "Open Settings"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Open story"
 msgstr "Hikayeyi aç"
@@ -7023,6 +7291,7 @@ msgid "Open the exported file and confirm you can select and copy every part of 
 msgstr "Dışa aktarılan dosyayı açın ve her bölümünü seçip kopyalayabildiğinizi doğrulayın."
 
 #: src/features/documents/import-file.ts
+#: src/features/onboarding/read-file.ts
 msgid "Open the file in Word and save it as .docx first."
 msgstr "Dosyayı Word'da açın ve önce .docx olarak kaydedin."
 
@@ -7120,6 +7389,10 @@ msgstr "Diğer yan haklar"
 msgid "Other concern"
 msgstr "Diğer endişe"
 
+#: src/features/onboarding/source-review.tsx
+msgid "Other details"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/threads.tsx
 msgid "Other documents · {0}"
@@ -7171,6 +7444,13 @@ msgstr "Sayfa {0} · Kenar Çubuğu"
 #: src/features/check/page.tsx
 msgid "Page {0} of {1}"
 msgstr "Sayfa {0} / {1}"
+
+#. placeholder {0}: index + 1
+#. placeholder {1}: pages.length
+#. placeholder {2}: item.title
+#: src/features/onboarding/intro-screen.tsx
+msgid "Page {0} of {1}: {2}"
+msgstr ""
 
 #. placeholder {0}: page.index + 1
 #: src/features/ats-checker/original-page.tsx
@@ -7275,6 +7555,10 @@ msgstr "Formdaki soruyu yapıştırın"
 msgid "Paste your key"
 msgstr "Anahtarınızı yapıştırın"
 
+#: src/features/onboarding/messages.ts
+msgid "Paste your profile link, like linkedin.com/in/your-name."
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/add-sheet.tsx
 msgid "Pasted description"
@@ -7313,6 +7597,10 @@ msgstr "PDF stilleri CSS'nun bir alt kümesini destekler. Döndürme, kesikli ve
 msgid "PDF uses your AI provider when one is ready. Turn off the AI switch to read its text layer on your server. Word (.docx) needs an AI provider. Current and v4 Rezumi JSON, cover letters, JSON Resume and LinkedIn exports (.zip) are supported. Up to 10 MB."
 msgstr "PDF, hazır olduğunda AI sağlayıcınızı kullanır. Metin katmanını sunucunuzda okumak için AI seçeneğini kapatın. Word (.docx) bir AI sağlayıcısı gerektirir. Güncel ve v4 Rezumi JSON, ön yazılar, JSON Resume ve LinkedIn dışa aktarımları (.zip) desteklenir. En fazla 10 MB."
 
+#: src/features/onboarding/source-fields.tsx
+msgid "PDF, Word, a LinkedIn export or a Rezumi file"
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "PDF, Word, Rezumi, JSON Resume or LinkedIn export."
 msgstr "PDF, Word, Rezumi, JSON Resume veya LinkedIn dışa aktarma."
@@ -7340,6 +7628,11 @@ msgstr "Her şeyi kalıcı olarak kaldırır. Tarayıcı hesap ayarlarınızı a
 msgid "Persian"
 msgstr "Farsça"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Personal website"
+msgstr ""
+
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
 msgid "Phone"
@@ -7349,6 +7642,7 @@ msgstr "Telefon"
 msgid "Phone (optional)"
 msgstr "Telefon (isteğe bağlı)"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Photo"
 msgstr "Fotoğraf"
@@ -7368,6 +7662,10 @@ msgstr "Sayfadaki fotoğraf."
 #: src/features/write/date-field.tsx
 msgid "Pick {label}"
 msgstr "{label}'ı seçin"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Pick a look for your first resume"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Pick a time after now."
@@ -7510,6 +7808,10 @@ msgstr "Pratik önceliği:"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Practicing your story: {storyTitle}"
 msgstr "Hikayenizle pratik yapıyorsunuz: {storyTitle}"
+
+#: src/shell/permissions.tsx
+msgid "Practise out loud"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Prefer a single column, or keep the side column to short, self-contained lists."
@@ -7788,6 +8090,10 @@ msgstr "Soru seçenekleri"
 msgid "Question removed"
 msgstr "Soru kaldırıldı"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Questions"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Questions to ask"
 msgstr "Sorulacak sorular"
@@ -7819,6 +8125,10 @@ msgstr "Yazı tiplerini gömerek yeniden dışa aktarın ve metnin temiz şekild
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Yazı tiplerini gömerek yeniden dışa aktarın, ardından dosyayı açıp metnin temiz şekilde kopyalandığını kontrol edin."
+
+#: src/features/onboarding/source-fields.tsx
+msgid "Read before. Choose another to replace it."
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7861,6 +8171,10 @@ msgstr "Sayfayı okuyun"
 msgid "Read the resume"
 msgstr "Özgeçmişi okudu"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Read with AI. Only what's on the page comes in."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Readability"
 msgstr "Okunabilirlik"
@@ -7880,6 +8194,10 @@ msgstr "Sayfa okunuyor…"
 #: src/features/documents/new-document.tsx
 msgid "Reading the file and finding sections…"
 msgstr "Dosyayı okuma ve bölümleri bulma…"
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading the file…"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Reading the message"
@@ -7905,6 +8223,10 @@ msgstr "Metni okumak"
 msgid "Reading this file with AI needs a tested AI provider. Set one up, then retry."
 msgstr "Bu dosyayı AI ile okumak için test edilmiş bir AI sağlayıcısı gerekir. Bir tane kurun ve tekrar deneyin."
 
+#: src/features/onboarding/read-file.ts
+msgid "Reading Word files needs an AI connection. Add one in Settings → AI providers, or choose a PDF instead."
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "Reading your answer"
 msgstr "Cevabınız okunuyor"
@@ -7912,6 +8234,14 @@ msgstr "Cevabınız okunuyor"
 #: src/features/workspace/parts.tsx
 msgid "Reading your notes"
 msgstr "Notlarınız okunuyor"
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading your profile…"
+msgstr ""
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading…"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 #: src/features/check/score.tsx
@@ -8083,6 +8413,7 @@ msgstr "Hatırlatıcılar"
 
 #: src/features/career/offers.tsx
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Remote"
 msgstr "Uzaktan"
 
@@ -8092,8 +8423,10 @@ msgstr "Uzaktan"
 msgid "Remove"
 msgstr "Kaldırmak"
 
+#. placeholder {0}: chosen.name
 #. placeholder {0}: contact.name
 #: src/features/application-detail/sheets.tsx
+#: src/features/onboarding/source-fields.tsx
 msgid "Remove {0}"
 msgstr "{0}'yu kaldırın"
 
@@ -8105,6 +8438,14 @@ msgstr ""
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
 msgstr "{name}'ı kaldır"
+
+#: src/features/onboarding/questions.tsx
+msgid "Remove {place}"
+msgstr ""
+
+#: src/features/onboarding/questions.tsx
+msgid "Remove {role}"
+msgstr ""
 
 #: src/features/write/basics-screen.tsx
 msgid "Remove field"
@@ -8335,6 +8676,8 @@ msgid "Resume details"
 msgstr "özgeçmiş ayrıntıları"
 
 #: src/features/application-detail/sections.tsx
+#: src/features/onboarding/messages.ts
+#: src/features/onboarding/source-fields.tsx
 msgid "Resume file"
 msgstr "Özgeçmiş dosyası"
 
@@ -8399,6 +8742,7 @@ msgstr "{1} kullanılarak {0} alındı. Geri alma süresi menşe tazeliğini sa�
 #: src/features/letters/page.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
+#: src/features/onboarding/source-progress.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -8452,6 +8796,7 @@ msgstr ""
 
 #: src/features/assistant/page-marks.tsx
 #: src/features/home/needs-you.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Review"
 msgstr "Gözden geçirmek"
 
@@ -8495,6 +8840,10 @@ msgstr "Kaydetmeden önce ayrıntıları inceleyin. Alınan içerik, iş ilanın
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "Seçili özgeçmişi ve ön yazıyı kendi düzenleyicilerinde gözden geçirin."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Review what we found"
+msgstr ""
+
 #: src/features/check/writing.tsx
 msgid "Review writing"
 msgstr "İnceleme yazımı"
@@ -8527,10 +8876,34 @@ msgstr "Yeniden yazma kabul edildi"
 msgid "Rezumi AI credits"
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "Rezumi AI isn't available right now. Use your own AI connection, or add a resume file instead."
+msgstr ""
+
 #. placeholder {0}: creditCount(CREDIT_COSTS[action])
 #. placeholder {1}: creditCount(balance)
 #: src/features/billing/ai-source.ts
 msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi records only while you answer a practice question, to turn your answer into text. You can change this any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi sends reminders you set and new roles from your schedules. Nothing else. You can turn notifications off any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi uses the camera only while you take a photo for your Profile or resume. You can change this any time in Settings."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -8722,6 +9095,10 @@ msgstr ""
 msgid "Save to Knowledge"
 msgstr "Bilgi Bankasına kaydet"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Save to my Profile"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 msgid "Save your version over theirs."
 msgstr "Onların sürümünü kendi sürümünüzle değiştirin."
@@ -8777,6 +9154,7 @@ msgstr "İşi kaydediyorum. Başka bir değişiklik yapmadan önce onay bekleyin
 
 #: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Saving…"
@@ -8915,6 +9293,10 @@ msgstr "Bölümler · yazdırma sırası"
 #: src/features/check/issues.ts
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "Bölümler, sistemlerin tanıdığı başlıkları kullanır ve iş deneyimini gösterir."
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "See where each one stands, get new roles that fit you, and never miss an interview."
+msgstr ""
 
 #: src/features/documents/document-sheets.tsx
 msgid "Select"
@@ -9138,6 +9520,10 @@ msgstr "Bölümleri paylaş"
 msgid "Share via…"
 msgstr "Şununla paylaş:"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Share your work on your own page, and practise with a coach that knows your story."
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -9308,7 +9694,6 @@ msgstr "Kenar çubukları genellikle en son okunur veya ana sütuna karıştır�
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
-#: src/linking/open.ts
 msgid "Sign in"
 msgstr "Giriş yap"
 
@@ -9325,10 +9710,6 @@ msgstr "Bu özgeçmişi kontrol etmeye devam etmek için tekrar oturum açın."
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "Çalışmaya devam etmek için tekrar oturum açın. Yaptığınız düzenlemeler bu cihazda saklanır ve oturum açtıktan sonra senkronize edilir."
 
-#: src/linking/open.ts
-msgid "Sign in to {server}, then continue to the linked document."
-msgstr "{server}'da oturum açın, ardından bağlantılı belgeye geçin."
-
 #: src/features/documents/new-document.tsx
 #: src/features/documents/queries.ts
 #: src/features/share/export-screen.tsx
@@ -9343,10 +9724,6 @@ msgstr "Belge oluşturmak veya içe aktarmak için oturum açın."
 #: app/builder/[id]/write.tsx
 msgid "Sign in to edit this resume."
 msgstr "Bu özgeçmişi düzenlemek için giriş yapın."
-
-#: src/linking/open.ts
-msgid "Sign in to open this link"
-msgstr "Bu bağlantıyı açmak için oturum açın"
 
 #: src/features/documents/library.tsx
 msgid "Sign in to see your documents"
@@ -9436,6 +9813,7 @@ msgstr "Boyut"
 msgid "Skill"
 msgstr "Yetenek"
 
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/write/fields.ts
 msgid "Skills"
 msgstr "Yetenekler"
@@ -9445,6 +9823,8 @@ msgid "Skills, interests and profiles"
 msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
+#: src/features/onboarding/intro-screen.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Skip"
 msgstr "Atla"
@@ -9645,6 +10025,10 @@ msgstr "Şundan başla:"
 msgid "Start from one you have and link the application."
 msgstr "Sahip olduğunuz birinden başlayın ve iş başvurusunu bağlayın."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Start from scratch"
+msgstr ""
+
 #: src/features/write/section-sheet.tsx
 msgid "Start on a new page"
 msgstr "Yeni bir sayfadan başlayın"
@@ -9678,6 +10062,10 @@ msgstr "Yazmaya başlayın. Bir taslak hazırlamak için önce bir özgeçmiş v
 msgid "Start with the sections most resumes have."
 msgstr "Çoğu özgeçmişin sahip olduğu bölümlerle başlayın."
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Start with your dashboard project at Kopi Senja: it cut report time by half."
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Start with your name. Build from there."
 msgstr "İsminizle başlayın. Oradan inşa edin."
@@ -9700,6 +10088,16 @@ msgstr "Belgeler'de kalın"
 
 #: src/shell/account-menu.tsx
 msgid "Stay signed in"
+msgstr ""
+
+#. placeholder {0}: ONBOARDING_STEPS.indexOf(step) + 1
+#. placeholder {1}: ONBOARDING_STEPS.length
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Step {0} of {1}"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Step {index} of {total}"
 msgstr ""
 
 #: src/features/assistant/chat-view.tsx
@@ -9906,6 +10304,10 @@ msgstr "{company} iş ilanına göre uyarlayın"
 msgid "Tailored vs. base resume"
 msgstr "uyarlanmış ve temel özgeçmiş"
 
+#: src/shell/permissions.tsx
+msgid "Take a photo"
+msgstr ""
+
 #: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "Fotoğraf çek"
@@ -9983,6 +10385,10 @@ msgstr "Şablon {0} olarak değiştirildi"
 #: src/features/letters/design.tsx
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "Şablon, tür ve renkler özgeçmişi takip eder, böylece çift her zaman eşleşir."
+
+#: src/features/onboarding/template-choice.tsx
+msgid "Templates"
+msgstr "Şablonlar"
 
 #: src/features/auth/welcome-screen.tsx
 msgid "Terms"
@@ -10078,6 +10484,10 @@ msgstr "Bu dosya kontrol edilemeyecek kadar büyük. PDFs 25'e kadar MB çalış
 msgid "That link couldn't be read. Paste the posting text instead."
 msgstr "Bu bağlantı okunamadı. Bunun yerine iş ilanı metnini yapıştırın."
 
+#: src/features/onboarding/messages.ts
+msgid "That profile wasn't found, or it isn't public. Check the link."
+msgstr ""
+
 #: src/features/ai/error.ts
 msgid "That provider setup isn't valid. Check the key, model and base URL."
 msgstr "Bu sağlayıcı kurulumu geçerli değil. Anahtarı, modeli ve temel URL'yi doğrulayın."
@@ -10155,6 +10565,14 @@ msgstr "Düzenleyici, içe aktarılan özgeçmişleri tekrar kontrol eden Kontro
 msgid "The end is before the start."
 msgstr "Son, başlangıçtan öncedir."
 
+#: src/features/onboarding/messages.ts
+msgid "The file couldn't be read as a resume."
+msgstr "Dosya özgeçmiş olarak okunamadı."
+
+#: src/features/onboarding/read-file.ts
+msgid "The file is too large. Choose one up to 10 MB."
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "The follow-up is saved. To get a reminder, allow notifications in your device settings."
 msgstr "Takip kaydedilir. Hatırlatıcı almak için cihaz ayarlarınızda bildirimlere izin verin."
@@ -10210,6 +10628,10 @@ msgstr "Metnin depolandığı sıra, okunduğu sırayla ciddi şekilde çelişiy
 #: src/features/career/facts.tsx
 msgid "The original stays in correction history. Stories using it will need review."
 msgstr "Orijinal, düzeltme geçmişinde kalır. Bunu kullanan hikayelerin gözden geçirilmesi gerekecek."
+
+#: src/features/onboarding/messages.ts
+msgid "The page is long, so only its first part was read."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "The pages are pictures, with no text behind them."
@@ -10315,6 +10737,10 @@ msgstr "Bir profile, portföye veya depoya bağlantı yok."
 msgid "There is no summary paragraph."
 msgstr "Bir özet paragrafı yok."
 
+#: src/features/onboarding/messages.ts
+msgid "There's no GitHub account with that username."
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "These are the answers saved when you applied."
 msgstr "Bunlar başvurduğunuzda kaydedilen cevaplardır."
@@ -10417,6 +10843,10 @@ msgstr "Bu giriş"
 msgid "This entry was deleted."
 msgstr "Bu giriş silindi."
 
+#: src/features/onboarding/read-file.ts
+msgid "This file can't be read. Choose a PDF, Word file, LinkedIn export (.zip) or resume JSON."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file contains form fields."
 msgstr "Bu dosya form alanları içeriyor."
@@ -10428,6 +10858,10 @@ msgstr "Bu dosya görünmez şekilde çizilmiş metin içeriyor."
 #: src/features/ats-checker/messages.ts
 msgid "This file contains white-on-white text."
 msgstr "Bu dosya beyaz zemin üzerine beyaz metin içeriyor."
+
+#: src/features/onboarding/read-file.ts
+msgid "This file couldn't be read as a resume."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (.zip)."
@@ -10485,6 +10919,10 @@ msgstr "Bu dosyanın boyutu okunamadı. Başka bir PDF seçin."
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr ""
 
+#: src/features/onboarding/read-file.ts
+msgid "This is a cover letter. Add a resume or a LinkedIn export instead."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "Bu bir PDF Portföyü: görünen sayfa yalnızca bir kapak."
@@ -10493,9 +10931,21 @@ msgstr "Bu bir PDF Portföyü: görünen sayfa yalnızca bir kapak."
 msgid "This is an XFA form, so most software reads only the empty shell."
 msgstr "Bu bir XFA formu, bu nedenle çoğu yazılım yalnızca boş kabuğu okur."
 
+#: src/features/onboarding/source-fields.tsx
+msgid "This is my own profile"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "Bu, yaygın bir özgeçmiş sayfa boyutu değil."
+
+#: src/features/onboarding/messages.ts
+msgid "This isn't available for your account."
+msgstr ""
+
+#: src/features/onboarding/read-file.ts
+msgid "This JSON isn't a resume Rezumi can read."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "This JSON isn't a supported resume or cover letter."
@@ -10560,6 +11010,10 @@ msgstr "Bu pasaj değişti. İncelemeyi yeniden çalıştırın."
 #: src/features/check/parser.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "Bu PDF'nun metin katmanı yoktur, dolayısıyla ayrıştırıcı bundan hiçbir şey okumaz."
+
+#: src/features/onboarding/read-file.ts
+msgid "This PDF has no text to read (a scan or a picture). Try the Word version, or add LinkedIn or GitHub instead."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
@@ -10767,6 +11221,10 @@ msgstr "Beyaz başlıklar için fazla hafif. Hafifçe okunması ve yazdırılmas
 msgid "Too many attempts. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/onboarding/read-file.ts
+msgid "Too many files in a short time. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10774,6 +11232,10 @@ msgstr ""
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "Çok fazla istek var. Daha sonra tekrar deneyin."
+
+#: src/features/onboarding/messages.ts
+msgid "Too many tries in a short time. Wait a minute, then try again."
+msgstr ""
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
@@ -10799,6 +11261,10 @@ msgstr ""
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "Toplamlar hesaplanmaz. Prim ve hisse hakları koşullara bağlıdır; hisselerin değeri belirsizdir. Asıl teklif belgelerini okuyun."
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Track every application"
+msgstr ""
 
 #: src/features/home/new-roles.tsx
 msgid "Track in Applications"
@@ -10859,6 +11325,7 @@ msgstr "{suggestion}'ı deneyin"
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/letters/write.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/shell.tsx
@@ -10921,9 +11388,18 @@ msgstr "Bir adres seçmek için bağlantıyı açın."
 msgid "Turn this schedule on"
 msgstr "Bu zamanlamayı aç"
 
+#: src/shell/permissions.tsx
+msgid "Turned off in Settings"
+msgstr ""
+
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "Two columns"
 msgstr "İki sütun"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Two quick questions"
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Two stories"
@@ -11032,6 +11508,10 @@ msgstr "Adsız anahtar"
 msgid "Unsynced on this device"
 msgstr "Bu cihazda senkronize edilmedi"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Untick anything you'd rather leave out. You can change it all later in your Profile."
+msgstr ""
+
 #: src/features/write/entry-screen.tsx
 #: src/features/write/outline.tsx
 msgid "Untitled"
@@ -11042,6 +11522,7 @@ msgid "Untitled letter"
 msgstr "Başlıksız mektup"
 
 #: src/features/documents/new-document.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Untitled resume"
 msgstr "Başlıksız özgeçmiş"
 
@@ -11452,6 +11933,11 @@ msgstr "Ses ayarları"
 msgid "Volunteer"
 msgstr "Gönüllü"
 
+#. placeholder {0}: waitingFor.join(", ")
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Waiting for {0}…"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Waiting for you"
 msgstr "Sizi bekliyor"
@@ -11459,6 +11945,18 @@ msgstr "Sizi bekliyor"
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
 msgstr "Geri bildirimi bekliyorum"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue: LinkedIn profiles through treg or Apify, GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue. Nothing goes into your Profile until you check it."
+msgstr ""
 
 #. placeholder {0}: dates.raw
 #: src/features/write/date-field.tsx
@@ -11498,6 +11996,7 @@ msgstr "Web araması başarısız oldu: {0}"
 msgid "Web searches look for work here, up to three countries."
 msgstr "Web aramaları bu ülkelerdeki işleri arar. En fazla üç ülke seçin."
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "İnternet sitesi"
@@ -11570,6 +12069,10 @@ msgstr "Ne istiyor"
 msgid "What matters to you"
 msgstr "Sizin için önemli olanlar"
 
+#: src/features/onboarding/questions.tsx
+msgid "What roles are you aiming for?"
+msgstr ""
+
 #: src/features/write/improve.tsx
 msgid "What should change?"
 msgstr "Ne değişmeli?"
@@ -11630,6 +12133,10 @@ msgstr "Gönder'e dokunduğunuzda {list}, {connection} bağlantısına gider."
 msgid "Where applications come from"
 msgstr "Başvuruların geldiği yerler"
 
+#: src/features/onboarding/questions.tsx
+msgid "Where do you want to work?"
+msgstr ""
+
 #: src/features/career/preferences.tsx
 msgid "Where you want to work"
 msgstr "Çalışmak istediğiniz yer"
@@ -11649,6 +12156,10 @@ msgstr "Başvurularınızın gittiği yerler"
 #: src/features/assistant/coach-screen.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "Hangi fırsatlar önceliklerime en çok uyuyor?"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "While we read your details"
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Who you'll meet"
@@ -11824,6 +12335,10 @@ msgstr ""
 msgid "You canceled the sign-in before it finished."
 msgstr "Oturum açma tamamlanmadan önce iptal ettiniz."
 
+#: src/features/onboarding/messages.ts
+msgid "You chose not to share it, so it wasn't read. Retry to choose again."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "Bunun daha önce unutulmasını istemiştiniz, bu yüzden yeniden kaydedilmedi."
@@ -11835,6 +12350,10 @@ msgstr ""
 #: src/ui-legacy/overlays.tsx
 msgid "You have unsaved changes."
 msgstr "Kaydedilmemiş değişiklikleriniz var."
+
+#: src/features/onboarding/messages.ts
+msgid "You seem to be offline. Check your connection and try again."
+msgstr ""
 
 #: src/features/workspace/tabs/messages.tsx
 msgid "You send it from your own email."
@@ -11899,6 +12418,18 @@ msgstr "Çevrimdışısınız. Yeniden bağlandığınızda tekrar deneyin."
 msgid "You're up to date. New roles, reminders and finished briefings appear here."
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "You've used this as often as you can today. Try again tomorrow."
+msgstr ""
+
+#: src/features/onboarding/messages.ts
+msgid "You've used today's LinkedIn imports. Try again tomorrow, or add your LinkedIn export."
+msgstr ""
+
+#: src/features/onboarding/messages.ts
+msgid "Your account"
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "your AI connection"
@@ -11947,6 +12478,11 @@ msgstr "Verileriniz"
 #: src/features/ats-checker/messages.ts
 msgid "Your dates are written several different ways."
 msgstr "Tarihleriniz birkaç farklı şekilde yazılmış."
+
+#: src/features/onboarding/onboarding-screen.tsx
+#: src/features/onboarding/source-review.tsx
+msgid "Your details"
+msgstr ""
 
 #: src/features/documents/new-document.tsx
 msgid "Your document was saved. Review it in the editor."
@@ -12082,8 +12618,16 @@ msgstr ""
 msgid "your preferences"
 msgstr "tercihleriniz"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
+msgstr ""
+
 #: app/(tabs)/profile/index.tsx
 msgid "Your Profile is coming to the app"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Your Profile was changed somewhere else. Check what's new, then save again."
 msgstr ""
 
 #: src/features/settings/export.tsx
@@ -12114,6 +12658,10 @@ msgstr "İsteğiniz ve ilgili özgeçmiş, mektup, iş ilanı, başvuru, kariyer
 msgid "Your requirements"
 msgstr "Gereksinimleriniz"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Your resume file"
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Your resume has a photo"
 msgstr "Özgeçmişinizde fotoğraf var"
@@ -12132,6 +12680,10 @@ msgstr "Sunucunuz bu sağlayıcıya bir test istemi ve kaydedilen API anahtarın
 
 #: src/auth/session-gate.tsx
 msgid "Your session ended"
+msgstr ""
+
+#: src/features/onboarding/read-file.ts
+msgid "Your session ended. Sign in again, then try again."
 msgstr ""
 
 #: src/features/ai/error.ts
@@ -12154,6 +12706,10 @@ msgstr "Kısa bağlantınız ve özel alan adınız bu özgeçmişi açar."
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Kısa bağlantınız ve özel alan adınız, siz yeniden yayınlayana kadar bu özgeçmişin paylaşılmadığını belirtir."
 
+#: src/features/onboarding/source-progress.tsx
+msgid "Your sources"
+msgstr ""
+
 #: src/features/assistant/coach-screen.tsx
 msgid "your stories"
 msgstr "hikayeleriniz"
@@ -12165,6 +12721,10 @@ msgstr "Hikayeniz yüklenemedi."
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "İki dakikalık tanıtımınız"
+
+#: src/features/onboarding/messages.ts
+msgid "Your website"
+msgstr ""
 
 #: src/features/letters/page.tsx
 #: src/preview/page.tsx

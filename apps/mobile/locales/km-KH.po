@@ -345,6 +345,11 @@ msgstr ""
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
+#. placeholder {0}: sourceLabel(id)
+#: src/features/onboarding/messages.ts
+msgid "{0} didn't answer in time. Try again in a moment."
+msgstr ""
+
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
 #: app/account/membership.tsx
@@ -587,6 +592,15 @@ msgstr "{issues, plural, one {បញ្ហា # អាចធ្វើឱ្យ�
 msgid "{issues, plural, one {Check has # thing to review. You can still download.} other {Check has # things to review. You can still download.}}"
 msgstr "{issues, plural, one {ពិនិត្យមានរឿង # ដើម្បីពិនិត្យ។ អ្នកនៅតែអាចទាញយកបាន។} other {ពិនិត្យមានរឿង # ដើម្បីពិនិត្យមើល។ អ្នកនៅតែអាចទាញយកបាន។}}"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "{kept} entries ticked"
+msgstr ""
+
+#. placeholder {0}: keys.length
+#: src/features/onboarding/source-review.tsx
+msgid "{kept} of {0}"
+msgstr ""
+
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "សំភាសន៍ {kind}"
@@ -764,6 +778,10 @@ msgstr "1 ជួរឈរ, ក្នុងជួរ"
 msgid "1 day"
 msgstr "១ ថ្ងៃ។"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "1 entry ticked"
+msgstr ""
+
 #: src/features/application-detail/hooks.ts
 msgid "1 h"
 msgstr "១ ម៉ោង។"
@@ -793,6 +811,10 @@ msgstr "2-3 ប្រយោគអានបានល្អបំផុត"
 #: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "24 ម៉ោងមុន"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "3 new roles match you"
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
@@ -862,9 +884,17 @@ msgstr "កាលបរិច្ឆេទជាលេខអានខុសគ្
 msgid "A page is rotated."
 msgstr "ទំព័រមួយត្រូវបានបង្វិល។"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "A portfolio and a coach"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "ការរំលឹកឱ្យចូល បង្ហាញជាជំហានបន្ទាប់ រហូតដល់អ្នកធ្វើ។"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "A resume in minutes"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "A role has no description"
@@ -1009,6 +1039,10 @@ msgstr "បន្ថែមមនុស្ស"
 msgid "Add a phone number"
 msgstr "បន្ថែមលេខទូរស័ព្ទ"
 
+#: src/features/onboarding/questions.tsx
+msgid "Add a place"
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Add a question from the form"
 msgstr "បន្ថែមសំណួរពីទម្រង់"
@@ -1016,6 +1050,10 @@ msgstr "បន្ថែមសំណួរពីទម្រង់"
 #: src/features/write/improve.tsx
 msgid "Add a result"
 msgstr "បន្ថែមលទ្ធផល"
+
+#: src/features/onboarding/questions.tsx
+msgid "Add a role"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Add a role or company to look for."
@@ -1072,6 +1110,10 @@ msgstr "បន្ថែមការសម្ភាសន៍ ដើម្បី�
 #: src/features/career/schedule-sheet.tsx
 msgid "Add an upcoming interview in Applications first."
 msgstr "សូមបន្ថែមការសម្ភាសន៍ខាងមុខក្នុងពាក្យសុំការងារជាមុន។"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Add any of these and we'll fill in your Profile. You check everything before it's saved."
+msgstr ""
 
 #: src/features/search/search-screen.tsx
 msgid "Add application"
@@ -1227,6 +1269,10 @@ msgstr "បន្ថែមការស្ម័គ្រចិត្ត"
 msgid "Add your name"
 msgstr "បន្ថែមឈ្មោះរបស់អ្នក។"
 
+#: src/features/onboarding/messages.ts
+msgid "Add your own AI connection in Settings, or choose Rezumi AI."
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr ""
@@ -1255,6 +1301,10 @@ msgstr "អាស័យដ្ឋាន"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "បន្ថែមការរំលឹកទៅ “ថ្ងៃនេះ” ប្រសិនបើអ្នកមិនទាន់ទទួលបានការឆ្លើយតបនៅពេលនោះ។"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "Adds your own public projects."
+msgstr ""
 
 #: src/features/design/advanced.tsx
 msgid "Advanced"
@@ -1395,10 +1445,6 @@ msgstr "ស្លាកទាំងអស់។"
 msgid "All your applications are closed"
 msgstr "ពាក្យសុំទាំងអស់របស់អ្នកត្រូវបានបិទ"
 
-#: src/features/settings/profile.tsx
-msgid "Allow camera access in your device settings to take a photo."
-msgstr "អនុញ្ញាតឱ្យចូលប្រើកាមេរ៉ានៅក្នុងការកំណត់ឧបករណ៍របស់អ្នកដើម្បីថតរូប។"
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Allow microphone access in device settings, or type your answer."
 msgstr "អនុញ្ញាតឱ្យចូលប្រើមីក្រូហ្វូននៅក្នុងការកំណត់ឧបករណ៍ ឬវាយចម្លើយរបស់អ្នក។"
@@ -1472,6 +1518,10 @@ msgstr "កំហុស"
 msgid "Ana Putri"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Analytics lead"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
 msgid "and {0} more"
@@ -1514,6 +1564,7 @@ msgid "Answers copied"
 msgstr "បានចម្លងចម្លើយ"
 
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Any"
 msgstr "ណាមួយក៏បាន"
 
@@ -1656,6 +1707,7 @@ msgstr "ពាក្យសុំបានផ្ញើក្នុងមួយស
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/stages.ts
 #: src/features/check/writing.tsx
+#: src/features/onboarding/intro-screen.tsx
 msgid "Applied"
 msgstr "បានដាក់ពាក្យ"
 
@@ -1796,8 +1848,13 @@ msgid "ATS checker"
 msgstr "ឧបករណ៍ពិនិត្យ ATS"
 
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "ATS-safe"
 msgstr "ATS-សុវត្ថិភាព"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "ATS-safe template"
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 msgid "Attach a cover letter (PDF)"
@@ -1865,6 +1922,7 @@ msgstr "Azerbaijani"
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/entry-sheet.tsx
@@ -1992,6 +2050,10 @@ msgstr "ក្រោមប្រាក់ខែគោលអប្បបរមា
 msgid "Bengali"
 msgstr "Bengali"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "BI analyst"
+msgstr ""
+
 #: src/features/applications-board/views.tsx
 msgid "Board"
 msgstr "ក្តារ"
@@ -2034,6 +2096,10 @@ msgstr "រ៉េឌីយ៉ូសគែម"
 msgid "Border width"
 msgstr "ទទឹងគែម"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Both are optional. They help the coach find roles that fit you."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Break the resume into the usual sections so it can be segmented."
 msgstr "បំបែកប្រវត្តិរូបសង្ខេបជាផ្នែកធម្មតា ដើម្បីឱ្យវាអាចត្រូវបានបែងចែក។"
@@ -2058,6 +2124,24 @@ msgstr "ការធ្វើឱ្យស្រស់សង្ខេបត្រ
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "ការធ្វើឱ្យឯកសារសង្ខេបថ្មីត្រូវបានផ្អាក"
+
+#: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
+msgid "Bring in my details"
+msgstr ""
+
+#: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
+msgid "Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample."
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Bring what you have"
+msgstr ""
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Bring your LinkedIn or an old resume, pick a template, and download a clean PDF."
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Bulgarian"
@@ -2093,6 +2177,10 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "តើកម្មវិធីអាចអានប្រវត្តិរូបសង្ខេបរបស់អ្នកបានទេ?"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Can you help me answer \"Tell me about yourself\"?"
+msgstr ""
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
@@ -2258,6 +2346,14 @@ msgstr "ពិនិត្យតួនាទីនេះធៀបនឹងភស
 msgid "Check views"
 msgstr "ពិនិត្យទិដ្ឋភាព"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Check what we found"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Check your connection, then try again."
+msgstr ""
+
 #: src/features/auth/check-email-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
 msgid "Check your email"
@@ -2312,6 +2408,10 @@ msgstr "Chinese (Simplified)"
 msgid "Chinese (Traditional)"
 msgstr "Chinese (Traditional)"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Choose"
+msgstr ""
+
 #: src/features/application-detail/date-field.tsx
 msgid "Choose a date"
 msgstr "ជ្រើសរើសកាលបរិច្ឆេទ"
@@ -2339,6 +2439,10 @@ msgstr "ជ្រើសរើសឯកសារ PDF ។ ឯកសារដែល
 #: src/features/application-detail/sections.tsx
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "ជ្រើសរើស PDF តូចជាង 10 MB ។ ឯកសារដែលបានជ្រើសរើសមិនត្រូវបានផ្ទុកឡើងទេ។"
+
+#: src/shell/permissions.tsx
+msgid "Choose a photo"
+msgstr ""
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2404,6 +2508,10 @@ msgstr "ជ្រើសរើសពាក្យសុំការងាររហ
 #: src/features/design/advanced.tsx
 msgid "Circle"
 msgstr "រង្វង់"
+
+#: src/features/onboarding/questions.tsx
+msgid "Cities or countries. Leave it empty for anywhere."
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "Clarify"
@@ -2606,6 +2714,10 @@ msgstr "បញ្ជាក់ពេលវេលា មុនពេលបន្�
 msgid "Confirm the time with {contact} before adding a new interview."
 msgstr "បញ្ជាក់ពេលវេលាជាមួយ {contact} មុនពេលបន្ថែមការសម្ភាសន៍ថ្មី។"
 
+#: src/features/onboarding/messages.ts
+msgid "Confirm this is your own profile."
+msgstr ""
+
 #: src/features/assistant/provider.tsx
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
@@ -2707,6 +2819,8 @@ msgstr "បរិបទត្រូវបានទុកចោល ដូច្�
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
 #: src/features/auth/check-email-screen.tsx
+#: src/features/onboarding/onboarding-screen.tsx
+#: src/shell/permissions.tsx
 msgid "Continue"
 msgstr "បន្ត"
 
@@ -2857,6 +2971,10 @@ msgstr "មិនអាចបញ្ជាក់ការរក្សាទុក
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "មិនអាចបញ្ជាក់ការរក្សាទុកបានទេ។ ពិនិត្យពាក្យសុំមុននឹងព្យាយាមម្តងទៀត ដើម្បីជៀសវាងការស្ទួនគ្នា។"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't copy the photo. You can add one later in your Profile."
+msgstr ""
+
 #: src/features/assistant/chat-view.tsx
 msgid "Couldn't copy the transcript. Try again."
 msgstr "មិនអាចចម្លងប្រតិចារិកបានទេ។ ព្យាយាមម្តងទៀត។"
@@ -2864,6 +2982,10 @@ msgstr "មិនអាចចម្លងប្រតិចារិកបាន
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't create the letter. Try again."
 msgstr "មិនអាចបង្កើតលិខិតបានទេ។ ព្យាយាមម្តងទៀត។"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't create the resume. Try again."
+msgstr ""
 
 #: src/features/workspace/tabs/saved.tsx
 msgid "Couldn't delete it. It's back in Saved."
@@ -2986,6 +3108,10 @@ msgstr ""
 msgid "Couldn't load versions."
 msgstr "មិនអាចផ្ទុកកំណែបានទេ។"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't load your details"
+msgstr ""
+
 #: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "មិនអាចផ្ទុកកម្រងព័ត៌មានរបស់អ្នកបានទេ។"
@@ -3039,6 +3165,10 @@ msgstr "មិនអាចបោះពុម្ពបានទេ។ ព្យ�
 msgid "Couldn't propose these edits: {0}"
 msgstr "មិនអាចស្នើការកែសម្រួលទាំងនេះបានទេ៖ {0}"
 
+#: src/features/onboarding/messages.ts
+msgid "Couldn't reach the AI provider. Try again in a moment."
+msgstr "មិនអាចទាក់ទងអ្នកផ្តល់សេវា AI បានទេ។ ព្យាយាមម្តងទៀតក្នុងពេលបន្តិចទៀត។"
+
 #: src/features/check/writing.tsx
 msgid "Couldn't reach your AI provider. Try again or check its key in AI settings."
 msgstr "មិនអាចទាក់ទងអ្នកផ្តល់សេវា AI របស់អ្នកបានទេ។ ព្យាយាមម្តងទៀត ឬពិនិត្យមើលសោរបស់វានៅក្នុងការកំណត់ AI។"
@@ -3048,6 +3178,11 @@ msgstr "មិនអាចទាក់ទងអ្នកផ្តល់សេវ
 msgid "Couldn't read “{0}”. Enter the dates so they sort and print consistently."
 msgstr "មិនអាចអាន “{0}” បានទេ។ បញ្ចូលកាលបរិច្ឆេទ ដើម្បីឱ្យវាតម្រៀប និងបោះពុម្ពបានជាប់លាប់។"
 
+#. placeholder {0}: sourceLabel(id)
+#: src/features/onboarding/messages.ts
+msgid "Couldn't read {0}. Try again."
+msgstr ""
+
 #: src/features/ats-checker/check.ts
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't read that file. Try again."
@@ -3056,6 +3191,10 @@ msgstr "មិនអាចអានឯកសារនោះបានទេ។ �
 #: src/features/check/parser.tsx
 msgid "Couldn't read the exported PDF."
 msgstr "មិនអាចអាន PDF ដែលបាននាំចេញទេ។"
+
+#: src/features/onboarding/read-file.ts
+msgid "Couldn't read the file. Try again."
+msgstr ""
 
 #. placeholder {0}: part.errorText
 #: src/features/assistant/messages.tsx
@@ -3146,6 +3285,10 @@ msgstr "មិនអាចរក្សាទុកតំបន់ពេលវេ
 msgid "Couldn't save this role to Applications. Try again."
 msgstr "មិនអាចរក្សាទុកតួនាទីនេះទៅពាក្យសុំបានទេ។ ព្យាយាមម្តងទៀត។"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your answers. You can add them later in Profile → Preferences."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Couldn't save your changes, so drafting didn't start. Nothing on the page changed."
 msgstr "មិនអាចរក្សាទុកការផ្លាស់ប្តូររបស់អ្នកបានទេ ដូច្នេះការសរសេរសេចក្តីព្រាងមិនបានចាប់ផ្តើមឡើយ។ គ្មានអ្វីនៅលើទំព័រត្រូវបានផ្លាស់ប្តូរទេ។"
@@ -3163,6 +3306,14 @@ msgstr "មិនអាចរក្សាទុកការផ្លាស់ប
 #: src/features/career/preferences.tsx
 msgid "Couldn't save your preferences. Your draft is still here."
 msgstr "មិនអាចរក្សាទុកចំណូលចិត្តរបស់អ្នកបានទេ។ សេចក្តីព្រាងរបស់អ្នកនៅតែនៅទីនេះ។"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your Profile, so this would open again. Try again."
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your Profile. Try again."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't save. Try again."
@@ -3355,6 +3506,10 @@ msgstr "បង្កើតសោ API ពីការកំណត់គណនី�
 msgid "Create copy"
 msgstr "បង្កើតច្បាប់ចម្លង"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Create my resume"
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Create or import a resume first, then return to copy it for this job."
 msgstr "បង្កើត ឬនាំចូល ប្រវត្តិរូបសង្ខេប ជាមុនសិន បន្ទាប់មកត្រឡប់ទៅចម្លងវាវិញសម្រាប់ការងារនេះ។"
@@ -3378,6 +3533,10 @@ msgstr "កំពុងបង្កើតឯកសារ…"
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Creating your account…"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Creating…"
 msgstr ""
 
 #: app/account/membership.tsx
@@ -3471,6 +3630,14 @@ msgstr "ងងឹត"
 #: src/features/search/search-screen.tsx
 msgid "Dark theme"
 msgstr "ស្បែកងងឹត"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Data analyst"
+msgstr ""
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Data analyst · Bandung"
+msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Data sharing canceled. Nothing was sent to the AI provider."
@@ -3725,6 +3892,7 @@ msgstr "ការរចនាកំណត់ឡើងវិញទៅលំនា
 
 #: app/applications/[id]/[tab].tsx
 #: src/features/document-menu/index.tsx
+#: src/features/onboarding/messages.ts
 msgid "Details"
 msgstr "ព័ត៌មានលម្អិត"
 
@@ -4097,6 +4265,7 @@ msgstr ""
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "អ៊ីមែល"
@@ -4144,6 +4313,10 @@ msgstr "មិន​អាច​អាន​បាន​ប្រសើរ​ឡ
 #: src/features/career/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
 msgstr "បញ្ចូលចំនួនពេញ ដូចជា 95000។ ចំនួនពីមុនរបស់អ្នកមិនបានផ្លាស់ប្តូរទេ។"
+
+#: src/features/onboarding/messages.ts
+msgid "Enter a GitHub username, like octocat."
+msgstr ""
 
 #: src/features/write/pickers.tsx
 msgid "Enter a hex color like #1a1a1a, or rgba(…)."
@@ -4214,6 +4387,10 @@ msgstr "បញ្ចូលឈ្មោះរបស់អ្នក។"
 #: src/features/auth/email-sign-in-screen.tsx
 msgid "Enter your password."
 msgstr "បញ្ចូលពាក្យសម្ងាត់របស់អ្នក។"
+
+#: src/features/onboarding/messages.ts
+msgid "Enter your site's address, like yourname.com."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4290,6 +4467,7 @@ msgid "Everything your resumes, letters and Coach start from. For now, your fact
 msgstr ""
 
 #: src/features/career/facts.tsx
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/write/fields.ts
 msgid "Experience"
 msgstr "បទពិសោធន៍"
@@ -4434,6 +4612,10 @@ msgstr "Finnish"
 msgid "First offer"
 msgstr "ការផ្តល់ជូនដំបូង"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "First resume"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "First run (YYYY-MM-DD)"
 msgstr "ការរត់លើកដំបូង (YYYY-MM-DD)"
@@ -4555,6 +4737,10 @@ msgstr "ឧទាហរណ៍ ផ្ញើទៅ Lumen"
 msgid "For example: “{name}: I did … at … in 2024, and it led to …”"
 msgstr "ឧទាហរណ៍៖ “{name}៖ ខ្ញុំបានធ្វើ … នៅ … ក្នុងឆ្នាំ 2024 ហើយវានាំទៅដល់…”"
 
+#: src/features/onboarding/questions.tsx
+msgid "For example: Product designer, Data analyst."
+msgstr ""
+
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "For LibreOffice and other open-source editors. Layout is simplified."
@@ -4606,6 +4792,10 @@ msgstr "បានរកឃើញថ្ងៃនេះ"
 msgid "Found yesterday"
 msgstr "បានរកឃើញម្សិលមិញ"
 
+#: src/features/onboarding/messages.ts
+msgid "Found: {list}"
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "Free"
 msgstr ""
@@ -4638,14 +4828,23 @@ msgstr ""
 msgid "From Fit"
 msgstr "ពីភាពសមស្រប"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "From your account"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "From your experience entries"
 msgstr "ពីធាតុបទពិសោធន៍របស់អ្នក។"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "From your GitHub sign-in."
+msgstr ""
 
 #: src/features/career/search-regions-field.tsx
 msgid "From your timezone"
 msgstr "ផ្អែកលើតំបន់ពេលវេលារបស់អ្នក"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Full name"
 msgstr "ឈ្មោះពេញ"
@@ -4659,6 +4858,10 @@ msgstr "ទទឹងពេញ"
 msgid "German"
 msgstr "ភាសាអាល្លឺម៉ង់"
 
+#: src/shell/permissions.tsx
+msgid "Get a nudge at the right time"
+msgstr ""
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback"
 msgstr "ទទួលមតិកែលម្អ"
@@ -4671,6 +4874,10 @@ msgstr "“ទទួលមតិកែលម្អ” ផ្ញើសំណួ�
 msgid "Get new jobs for your search here every morning"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Get started"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "កាន់តែយូរ។ សាកល្បង \"ខ្លីជាង\" ឬកាត់កថាខណ្ឌជាក់លាក់តិចបំផុត។"
@@ -4678,6 +4885,10 @@ msgstr "កាន់តែយូរ។ សាកល្បង \"ខ្លីជ�
 #: src/features/auth/welcome-screen.tsx
 msgid "GitHub"
 msgstr "GitHub"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "GitHub username"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4754,6 +4965,7 @@ msgstr "ចំណងជើង 3"
 msgid "Heading changed"
 msgstr "ក្បាលបានផ្លាស់ប្តូរ"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Headline"
 msgstr "ក្បាលសារពណ៌នាខ្លី"
@@ -5022,14 +5234,6 @@ msgstr "នាំចូលវា។"
 msgid "Import with AI"
 msgstr ""
 
-#: src/features/home/home-screen.tsx
-msgid "Import your current resume, or start blank or from a sample. We lay out every section for you to refine."
-msgstr ""
-
-#: src/features/documents/library.tsx
-msgid "Import your current resume, or start fresh with your name."
-msgstr "នាំចូល ប្រវត្តិរូបសង្ខេប បច្ចុប្បន្នរបស់អ្នក ឬចាប់ផ្តើមថ្មីជាមួយឈ្មោះរបស់អ្នក។"
-
 #: src/features/history/history.tsx
 msgid "Imported"
 msgstr "នាំចូល"
@@ -5108,6 +5312,7 @@ msgstr "ចំណុចប្រទាក់តែប៉ុណ្ណោះ។ �
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/coming-up.tsx
+#: src/features/onboarding/intro-screen.tsx
 msgid "Interview"
 msgstr "សម្ភាសន៍"
 
@@ -5196,6 +5401,10 @@ msgstr "បញ្ហា"
 #: src/features/check/issues.ts
 msgid "It has entries but isn't placed on a page."
 msgstr "វាមានធាតុប៉ុន្តែមិនត្រូវបានដាក់នៅលើទំព័រមួយ។"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "It starts with your Profile. You can switch templates any time."
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 msgid "It's removed from the timeline for good."
@@ -5670,6 +5879,14 @@ msgstr "ភ្ជាប់។ ឈ្មោះ អ៊ីមែល ទូរសព
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
+#: src/features/onboarding/messages.ts
+msgid "LinkedIn import isn't available right now. Add your LinkedIn export or a resume file instead."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "LinkedIn profile link"
+msgstr ""
+
 #: src/features/applications-board/views.tsx
 msgid "List"
 msgstr "បញ្ជី"
@@ -5686,6 +5903,10 @@ msgstr "ទិដ្ឋភាពបញ្ជី"
 msgid "Lithuanian"
 msgstr "Lithuanian"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Live"
+msgstr ""
+
 #: src/features/check/score.tsx
 msgid "Live · updates as you edit"
 msgstr "ផ្សាយផ្ទាល់ · ធ្វើបច្ចុប្បន្នភាពនៅពេលអ្នកកែសម្រួល"
@@ -5696,6 +5917,7 @@ msgstr "បានផ្សព្វផ្សាយនៅ {url}"
 
 #: src/features/design/design-pane.tsx
 #: src/features/home/section.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Loading"
 msgstr "កំពុងផ្ទុក"
 
@@ -5768,6 +5990,7 @@ msgstr "កំពុងផ្ទុក…"
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/style-groups.tsx
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
 msgid "Location"
@@ -6058,6 +6281,10 @@ msgstr "ផ្ទាល់ខ្លួនបន្ថែមទៀត"
 msgid "More providers and options are in Settings. Editing, design, Check issues and downloads work without AI."
 msgstr "អ្នកផ្តល់សេវា និងជម្រើសច្រើនទៀតស្ថិតនៅក្នុងការកំណត់។ ការកែសម្រួល ការរចនា ពិនិត្យបញ្ហា និងការទាញយកដំណើរការដោយគ្មាន AI ។"
 
+#: src/features/onboarding/template-choice.tsx
+msgid "More templates"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "អាសយដ្ឋានអ៊ីមែលច្រើនជាងមួយបានលេចឡើង។"
@@ -6090,6 +6317,10 @@ msgstr "ចំណុចគ្រាប់ភាគច្រើនចាប់ផ
 #: src/features/ats-checker/messages.ts
 msgid "Most entries have no dates."
 msgstr "ធាតុភាគច្រើនគ្មានកាលបរិច្ឆេទ។"
+
+#: src/features/onboarding/messages.ts
+msgid "Most of this profile is private, so little came in."
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
@@ -6382,6 +6613,10 @@ msgstr "រឿង STARR ថ្មី។"
 msgid "New to Rezumi? Create an account"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Next"
+msgstr ""
+
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
 msgstr ""
@@ -6577,9 +6812,17 @@ msgstr "គ្មានលេខទូរស័ព្ទ"
 msgid "No phone number was found."
 msgstr "រកមិនឃើញលេខទូរស័ព្ទទេ។"
 
+#: src/features/onboarding/source-review.tsx
+msgid "No photo"
+msgstr ""
+
 #: src/features/write/basics-screen.tsx
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "គ្មានរូបថតទេ។ ATS ភាគច្រើនមិនអើពើរូបថត; តំបន់ខ្លះរំពឹងមួយ។"
+
+#: src/features/onboarding/messages.ts
+msgid "No public repositories of your own, so no projects came in."
+msgstr ""
 
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
@@ -6697,6 +6940,10 @@ msgstr "មិនទាន់បានភ្ជាប់នៅឡើយទេ។
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "Not enough Rezumi AI credits to read it."
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "មិនមែនសម្រាប់ខ្ញុំ"
@@ -6714,7 +6961,9 @@ msgid "Not included"
 msgstr ""
 
 #: src/features/assistant/messages.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/workspace/tabs/debrief.tsx
+#: src/shell/permissions.tsx
 msgid "Not now"
 msgstr "មិនមែនពេលនេះ"
 
@@ -6761,6 +7010,10 @@ msgstr "គ្មានអ្វីនៅទីនេះគួរធ្វើឱ
 msgid "Nothing marks a role as ongoing."
 msgstr "គ្មានអ្វីសម្គាល់តួនាទីមួយថាកំពុងបន្តទេ។"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Nothing new to add"
+msgstr ""
+
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Nothing on this day."
 msgstr "គ្មានអ្វីនៅថ្ងៃនេះទេ។"
@@ -6777,6 +7030,10 @@ msgstr "មិន​ទាន់​មាន​អ្វី​បាន​គ្
 msgid "Nothing scheduled yet."
 msgstr "មិនទាន់មានអ្វីត្រូវបានកំណត់ពេលទេ។"
 
+#: src/features/onboarding/messages.ts
+msgid "Nothing to add from here."
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Nothing to apply"
 msgstr "គ្មានអ្វីត្រូវអនុវត្តទេ"
@@ -6788,6 +7045,10 @@ msgstr "គ្មានអ្វីត្រូវជួសជុលទេ។"
 #: src/features/ats-checker/messages.ts
 msgid "Nothing to fix. The remaining pages were simply not covered by this report."
 msgstr "គ្មានអ្វីត្រូវកែតម្រូវទេ។ ទំព័រដែលនៅសល់គ្រាន់តែមិនត្រូវបានគ្របដណ្តប់ដោយរបាយការណ៍នេះ។"
+
+#: src/features/onboarding/messages.ts
+msgid "Nothing was found at that address. Check it and try again."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Notice period (weeks)"
@@ -6837,6 +7098,7 @@ msgid "Off. The letter keeps its own copy of your details."
 msgstr "បិទ។ លិខិតនោះរក្សាច្បាប់ចម្លងនៃព័ត៌មានលម្អិតរបស់អ្នក។"
 
 #: src/features/applications/stages.ts
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/workspace/tabs/saved.tsx
 msgid "Offer"
 msgstr "ផ្តល់ការងារ"
@@ -6848,6 +7110,7 @@ msgid "Offers"
 msgstr "ការផ្តល់ការងារ"
 
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Office days a week, at most"
 msgstr "ចំនួនថ្ងៃនៅការិយាល័យក្នុងមួយសប្តាហ៍ អតិបរមា"
 
@@ -6889,6 +7152,7 @@ msgid "Once you've sent a few applications, this shows how far they get and how 
 msgstr "នៅពេលដែលអ្នកបានផ្ញើពាក្យសុំការងារមួយចំនួន វាបង្ហាញពីចម្ងាយដែលពួកគេទទួលបាន និងថាតើមនុស្សឆ្លើយតបលឿនប៉ុណ្ណា។"
 
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "One column"
 msgstr "ជួរឈរមួយ។"
 
@@ -7014,6 +7278,10 @@ msgstr "សំណួរបើកចំហ"
 msgid "Open resume"
 msgstr "បើក ប្រវត្តិរូបសង្ខេប"
 
+#: src/shell/permissions.tsx
+msgid "Open Settings"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Open story"
 msgstr "បើករឿង"
@@ -7023,6 +7291,7 @@ msgid "Open the exported file and confirm you can select and copy every part of 
 msgstr "បើកឯកសារដែលបាននាំចេញ ហើយបញ្ជាក់ថាអ្នកអាចជ្រើសរើស និងចម្លងគ្រប់ផ្នែកទាំងអស់របស់វា។"
 
 #: src/features/documents/import-file.ts
+#: src/features/onboarding/read-file.ts
 msgid "Open the file in Word and save it as .docx first."
 msgstr "បើកឯកសារក្នុង Word ហើយរក្សាទុកវាជា .docx ជាមុនសិន។"
 
@@ -7120,6 +7389,10 @@ msgstr "អត្ថប្រយោជន៍ផ្សេងទៀត"
 msgid "Other concern"
 msgstr "កង្វល់ផ្សេងទៀត។"
 
+#: src/features/onboarding/source-review.tsx
+msgid "Other details"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/threads.tsx
 msgid "Other documents · {0}"
@@ -7171,6 +7444,13 @@ msgstr "ទំព័រ {0} · របារចំហៀង"
 #: src/features/check/page.tsx
 msgid "Page {0} of {1}"
 msgstr "ទំព័រ {0} នៃ {1}"
+
+#. placeholder {0}: index + 1
+#. placeholder {1}: pages.length
+#. placeholder {2}: item.title
+#: src/features/onboarding/intro-screen.tsx
+msgid "Page {0} of {1}: {2}"
+msgstr ""
 
 #. placeholder {0}: page.index + 1
 #: src/features/ats-checker/original-page.tsx
@@ -7275,6 +7555,10 @@ msgstr "បិទភ្ជាប់សំណួរពីទម្រង់"
 msgid "Paste your key"
 msgstr "បិទភ្ជាប់សោរបស់អ្នក។"
 
+#: src/features/onboarding/messages.ts
+msgid "Paste your profile link, like linkedin.com/in/your-name."
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/add-sheet.tsx
 msgid "Pasted description"
@@ -7313,6 +7597,10 @@ msgstr "រចនាប័ទ្ម PDF គាំទ្រសំណុំរង�
 msgid "PDF uses your AI provider when one is ready. Turn off the AI switch to read its text layer on your server. Word (.docx) needs an AI provider. Current and v4 Rezumi JSON, cover letters, JSON Resume and LinkedIn exports (.zip) are supported. Up to 10 MB."
 msgstr "PDF ប្រើអ្នកផ្តល់សេវា AI របស់អ្នកពេលរួចរាល់។ បិទ AI ដើម្បីអានស្រទាប់អត្ថបទនៅលើម៉ាស៊ីនមេ។ Word (.docx) ត្រូវការអ្នកផ្តល់សេវា AI។ គាំទ្រ Rezumi JSON បច្ចុប្បន្ន និង v4 លិខិតអម JSON Resume និងឯកសារនាំចេញ LinkedIn (.zip)។ រហូតដល់ 10 MB។"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "PDF, Word, a LinkedIn export or a Rezumi file"
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "PDF, Word, Rezumi, JSON Resume or LinkedIn export."
 msgstr "PDF, Word, Rezumi, JSON Resume ឬ LinkedIn នាំចេញ។"
@@ -7340,6 +7628,11 @@ msgstr "ដកអ្វីៗទាំងអស់ចេញជាអចិន្
 msgid "Persian"
 msgstr "Persian"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Personal website"
+msgstr ""
+
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
 msgid "Phone"
@@ -7349,6 +7642,7 @@ msgstr "ទូរស័ព្ទ"
 msgid "Phone (optional)"
 msgstr "ទូរស័ព្ទ (ជាជម្រើស)"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Photo"
 msgstr "រូបថត"
@@ -7368,6 +7662,10 @@ msgstr "រូបថតនៅលើទំព័រ។"
 #: src/features/write/date-field.tsx
 msgid "Pick {label}"
 msgstr "ជ្រើសរើស {label}"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Pick a look for your first resume"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Pick a time after now."
@@ -7510,6 +7808,10 @@ msgstr "អាទិភាពហាត់សម៖"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Practicing your story: {storyTitle}"
 msgstr "កំពុងហាត់សមរឿងរបស់អ្នក៖ {storyTitle}"
+
+#: src/shell/permissions.tsx
+msgid "Practise out loud"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Prefer a single column, or keep the side column to short, self-contained lists."
@@ -7788,6 +8090,10 @@ msgstr "ជម្រើសសំណួរ"
 msgid "Question removed"
 msgstr "បានដកសំណួរចេញ"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Questions"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Questions to ask"
 msgstr "សំណួរដែលត្រូវសួរ"
@@ -7819,6 +8125,10 @@ msgstr "នាំចេញម្តងទៀតជាមួយពុម្ពអ
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "នាំចេញម្តងទៀតជាមួយពុម្ពអក្សរដែលបានបង្កប់ បន្ទាប់មកបើកឯកសារ ហើយត្រួតពិនិត្យថាអត្ថបទចម្លងចេញយ៉ាងស្អាត។"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "Read before. Choose another to replace it."
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7861,6 +8171,10 @@ msgstr "អានទំព័រ"
 msgid "Read the resume"
 msgstr "បានអានប្រវត្តិរូបសង្ខេប"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Read with AI. Only what's on the page comes in."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Readability"
 msgstr "ភាពងាយស្រួលអាន"
@@ -7880,6 +8194,10 @@ msgstr "កំពុងអានទំព័រ…"
 #: src/features/documents/new-document.tsx
 msgid "Reading the file and finding sections…"
 msgstr "កំពុងអានឯកសារ និងស្វែងរកផ្នែក…"
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading the file…"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Reading the message"
@@ -7905,6 +8223,10 @@ msgstr "ការអានអត្ថបទ"
 msgid "Reading this file with AI needs a tested AI provider. Set one up, then retry."
 msgstr "ការអានឯកសារនេះជាមួយ AI ត្រូវការអ្នកផ្តល់សេវា AI ដែលបានសាកល្បង។ រៀបចំមួយ រួចព្យាយាមម្តងទៀត។"
 
+#: src/features/onboarding/read-file.ts
+msgid "Reading Word files needs an AI connection. Add one in Settings → AI providers, or choose a PDF instead."
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "Reading your answer"
 msgstr "កំពុងអានចម្លើយរបស់អ្នក"
@@ -7912,6 +8234,14 @@ msgstr "កំពុងអានចម្លើយរបស់អ្នក"
 #: src/features/workspace/parts.tsx
 msgid "Reading your notes"
 msgstr "កំពុងអានកំណត់ចំណាំរបស់អ្នក"
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading your profile…"
+msgstr ""
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading…"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 #: src/features/check/score.tsx
@@ -8083,6 +8413,7 @@ msgstr "ការរំលឹក"
 
 #: src/features/career/offers.tsx
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Remote"
 msgstr "ពីចម្ងាយ"
 
@@ -8092,8 +8423,10 @@ msgstr "ពីចម្ងាយ"
 msgid "Remove"
 msgstr "ដកចេញ"
 
+#. placeholder {0}: chosen.name
 #. placeholder {0}: contact.name
 #: src/features/application-detail/sheets.tsx
+#: src/features/onboarding/source-fields.tsx
 msgid "Remove {0}"
 msgstr "លុប {0}"
 
@@ -8105,6 +8438,14 @@ msgstr ""
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
 msgstr "លុប {name}"
+
+#: src/features/onboarding/questions.tsx
+msgid "Remove {place}"
+msgstr ""
+
+#: src/features/onboarding/questions.tsx
+msgid "Remove {role}"
+msgstr ""
 
 #: src/features/write/basics-screen.tsx
 msgid "Remove field"
@@ -8335,6 +8676,8 @@ msgid "Resume details"
 msgstr "ប្រវត្តិរូបសង្ខេប"
 
 #: src/features/application-detail/sections.tsx
+#: src/features/onboarding/messages.ts
+#: src/features/onboarding/source-fields.tsx
 msgid "Resume file"
 msgstr "ឯកសារប្រវត្តិរូបសង្ខេប"
 
@@ -8399,6 +8742,7 @@ msgstr "បានទាញយក {0} ដោយប្រើ {1} ។ ពេលវ�
 #: src/features/letters/page.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
+#: src/features/onboarding/source-progress.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -8452,6 +8796,7 @@ msgstr ""
 
 #: src/features/assistant/page-marks.tsx
 #: src/features/home/needs-you.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Review"
 msgstr "ពិនិត្យ"
 
@@ -8495,6 +8840,10 @@ msgstr "ពិនិត្យព័ត៌មានលម្អិតមុនព
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "ពិនិត្យប្រវត្តិរូបសង្ខេប និងលិខិតអមដែលបានជ្រើសរើស នៅក្នុងកម្មវិធីកែសម្រួលរបស់វា។"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Review what we found"
+msgstr ""
+
 #: src/features/check/writing.tsx
 msgid "Review writing"
 msgstr "ការសរសេរឡើងវិញ"
@@ -8527,10 +8876,34 @@ msgstr "ទទួលយកការសរសេរឡើងវិញ"
 msgid "Rezumi AI credits"
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "Rezumi AI isn't available right now. Use your own AI connection, or add a resume file instead."
+msgstr ""
+
 #. placeholder {0}: creditCount(CREDIT_COSTS[action])
 #. placeholder {1}: creditCount(balance)
 #: src/features/billing/ai-source.ts
 msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi records only while you answer a practice question, to turn your answer into text. You can change this any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi sends reminders you set and new roles from your schedules. Nothing else. You can turn notifications off any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi uses the camera only while you take a photo for your Profile or resume. You can change this any time in Settings."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -8722,6 +9095,10 @@ msgstr ""
 msgid "Save to Knowledge"
 msgstr "រក្សាទុកទៅចំណេះដឹង"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Save to my Profile"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 msgid "Save your version over theirs."
 msgstr "រក្សាទុកកំណែរបស់អ្នកលើកំណែរបស់ពួកគេ។"
@@ -8777,6 +9154,7 @@ msgstr "ការរក្សាទុកការងារ។ រង់ចា�
 
 #: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Saving…"
@@ -8915,6 +9293,10 @@ msgstr "ផ្នែក · លំដាប់បោះពុម្ព"
 #: src/features/check/issues.ts
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "ផ្នែកប្រើចំណងជើងដែលប្រព័ន្ធទទួលស្គាល់ ហើយបទពិសោធន៍ការងារត្រូវបានបង្ហាញ។"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "See where each one stands, get new roles that fit you, and never miss an interview."
+msgstr ""
 
 #: src/features/documents/document-sheets.tsx
 msgid "Select"
@@ -9138,6 +9520,10 @@ msgstr "ចែករំលែកផ្នែក"
 msgid "Share via…"
 msgstr "ចែករំលែកតាមរយៈ…"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Share your work on your own page, and practise with a coach that knows your story."
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -9308,7 +9694,6 @@ msgstr "របារចំហៀងត្រូវបានអានជាញឹ
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
-#: src/linking/open.ts
 msgid "Sign in"
 msgstr "ចូល"
 
@@ -9325,10 +9710,6 @@ msgstr "ចូលម្តងទៀត ដើម្បីបន្តពិន�
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "ចូលម្តងទៀត ដើម្បីបន្តដំណើរការ។ ការកែសម្រួលដែលអ្នកបានធ្វើត្រូវបានរក្សាទុកនៅលើឧបករណ៍នេះ ហើយធ្វើសមកាលកម្មបន្ទាប់ពីអ្នកចូល។"
 
-#: src/linking/open.ts
-msgid "Sign in to {server}, then continue to the linked document."
-msgstr "ចូល {server} បន្ទាប់មកបន្តទៅឯកសារដែលបានភ្ជាប់។"
-
 #: src/features/documents/new-document.tsx
 #: src/features/documents/queries.ts
 #: src/features/share/export-screen.tsx
@@ -9343,10 +9724,6 @@ msgstr "ចូលដើម្បីបង្កើត ឬនាំចូលឯ�
 #: app/builder/[id]/write.tsx
 msgid "Sign in to edit this resume."
 msgstr "ចូលដើម្បីកែសម្រួល ប្រវត្តិរូបសង្ខេប នេះ។"
-
-#: src/linking/open.ts
-msgid "Sign in to open this link"
-msgstr "ចូលដើម្បីបើកតំណនេះ។"
 
 #: src/features/documents/library.tsx
 msgid "Sign in to see your documents"
@@ -9436,6 +9813,7 @@ msgstr "ទំហំ"
 msgid "Skill"
 msgstr "ជំនាញ"
 
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/write/fields.ts
 msgid "Skills"
 msgstr "ជំនាញ"
@@ -9445,6 +9823,8 @@ msgid "Skills, interests and profiles"
 msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
+#: src/features/onboarding/intro-screen.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Skip"
 msgstr "រំលង"
@@ -9645,6 +10025,10 @@ msgstr "ចាប់ផ្តើមពី"
 msgid "Start from one you have and link the application."
 msgstr "ចាប់ផ្តើមពីមួយដែលអ្នកមាន ហើយភ្ជាប់ពាក្យសុំការងារ។"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Start from scratch"
+msgstr ""
+
 #: src/features/write/section-sheet.tsx
 msgid "Start on a new page"
 msgstr "ចាប់ផ្តើមនៅលើទំព័រថ្មី។"
@@ -9678,6 +10062,10 @@ msgstr "ចាប់ផ្តើមវាយ។ ដើម្បីព្រា�
 msgid "Start with the sections most resumes have."
 msgstr "ចាប់ផ្តើមជាមួយនឹងផ្នែកដែលប្រវត្តិរូបសង្ខេបភាគច្រើនមាន។"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Start with your dashboard project at Kopi Senja: it cut report time by half."
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Start with your name. Build from there."
 msgstr "ចាប់ផ្តើមដោយឈ្មោះរបស់អ្នក។ សាងសង់ពីទីនោះ។"
@@ -9700,6 +10088,16 @@ msgstr "ស្នាក់នៅក្នុងឯកសារ"
 
 #: src/shell/account-menu.tsx
 msgid "Stay signed in"
+msgstr ""
+
+#. placeholder {0}: ONBOARDING_STEPS.indexOf(step) + 1
+#. placeholder {1}: ONBOARDING_STEPS.length
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Step {0} of {1}"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Step {index} of {total}"
 msgstr ""
 
 #: src/features/assistant/chat-view.tsx
@@ -9906,6 +10304,10 @@ msgstr "កែសម្រួលឱ្យសមនឹងប្រកាសកា
 msgid "Tailored vs. base resume"
 msgstr "សម្របខ្លួនធៀបនឹងប្រវត្តិរូបសង្ខេប"
 
+#: src/shell/permissions.tsx
+msgid "Take a photo"
+msgstr ""
+
 #: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "ថតរូប"
@@ -9983,6 +10385,10 @@ msgstr "ពុម្ពបានប្តូរទៅ {0}"
 #: src/features/letters/design.tsx
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "គំរូ ប្រភេទ និងពណ៌ធ្វើតាមប្រវត្តិរូបសង្ខេប ដូច្នេះគូតែងតែត្រូវគ្នា។"
+
+#: src/features/onboarding/template-choice.tsx
+msgid "Templates"
+msgstr "ពុម្ព"
 
 #: src/features/auth/welcome-screen.tsx
 msgid "Terms"
@@ -10078,6 +10484,10 @@ msgstr "ឯកសារនោះធំពេកមិនអាចពិនិត
 msgid "That link couldn't be read. Paste the posting text instead."
 msgstr "តំណនោះមិនអាចអានបានទេ។ បិទភ្ជាប់អត្ថបទប្រកាសការងារជំនួសវិញ។"
 
+#: src/features/onboarding/messages.ts
+msgid "That profile wasn't found, or it isn't public. Check the link."
+msgstr ""
+
 #: src/features/ai/error.ts
 msgid "That provider setup isn't valid. Check the key, model and base URL."
 msgstr "ការដំឡើងអ្នកផ្តល់សេវានោះមិនត្រឹមត្រូវទេ។ ពិនិត្យសោ គំរូ និង URL មូលដ្ឋាន។"
@@ -10155,6 +10565,14 @@ msgstr "កម្មវិធីកែសម្រួលបើកនៅផ្ន
 msgid "The end is before the start."
 msgstr "ចុងបញ្ចប់គឺមុនពេលចាប់ផ្តើម។"
 
+#: src/features/onboarding/messages.ts
+msgid "The file couldn't be read as a resume."
+msgstr "ឯកសារមិនអាចអានជាប្រវត្តិរូបសង្ខេបបានទេ។"
+
+#: src/features/onboarding/read-file.ts
+msgid "The file is too large. Choose one up to 10 MB."
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "The follow-up is saved. To get a reminder, allow notifications in your device settings."
 msgstr "ការតាមដានត្រូវបានរក្សាទុក។ ដើម្បីទទួលបានការរំលឹក សូមអនុញ្ញាតការជូនដំណឹងនៅក្នុងការកំណត់ឧបករណ៍របស់អ្នក។"
@@ -10210,6 +10628,10 @@ msgstr "លំដាប់ដែលអត្ថបទត្រូវបានផ
 #: src/features/career/facts.tsx
 msgid "The original stays in correction history. Stories using it will need review."
 msgstr "ដើមស្ថិតនៅក្នុងប្រវត្តិកែ។ រឿងដែលប្រើវានឹងត្រូវការការពិនិត្យឡើងវិញ។"
+
+#: src/features/onboarding/messages.ts
+msgid "The page is long, so only its first part was read."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "The pages are pictures, with no text behind them."
@@ -10315,6 +10737,10 @@ msgstr "គ្មានតំណភ្ជាប់ទៅកាន់ប្រវ
 msgid "There is no summary paragraph."
 msgstr "គ្មានកថាខណ្ឌសង្ខេបទេ។"
 
+#: src/features/onboarding/messages.ts
+msgid "There's no GitHub account with that username."
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "These are the answers saved when you applied."
 msgstr "ទាំងនេះជាចម្លើយដែលបានរក្សាទុក នៅពេលអ្នកដាក់ពាក្យ។"
@@ -10417,6 +10843,10 @@ msgstr "ធាតុនេះ។"
 msgid "This entry was deleted."
 msgstr "ធាតុនេះត្រូវបានលុប។"
 
+#: src/features/onboarding/read-file.ts
+msgid "This file can't be read. Choose a PDF, Word file, LinkedIn export (.zip) or resume JSON."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file contains form fields."
 msgstr "ឯកសារនេះមានវាលទម្រង់។"
@@ -10428,6 +10858,10 @@ msgstr "ឯកសារនេះមានអត្ថបទដែលបានគ
 #: src/features/ats-checker/messages.ts
 msgid "This file contains white-on-white text."
 msgstr "ឯកសារនេះមានអត្ថបទពណ៌ស​លើផ្ទៃពណ៌ស។"
+
+#: src/features/onboarding/read-file.ts
+msgid "This file couldn't be read as a resume."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (.zip)."
@@ -10485,6 +10919,10 @@ msgstr "ទំហំឯកសារនេះមិនអាចអានបាន
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr ""
 
+#: src/features/onboarding/read-file.ts
+msgid "This is a cover letter. Add a resume or a LinkedIn export instead."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "នេះជា PDF Portfolio៖ ទំព័រដែលមើលឃើញគឺគ្រាន់តែជាគម្រប។"
@@ -10493,9 +10931,21 @@ msgstr "នេះជា PDF Portfolio៖ ទំព័រដែលមើលឃើ
 msgid "This is an XFA form, so most software reads only the empty shell."
 msgstr "នេះជាទម្រង់ XFA ដូច្នេះកម្មវិធីភាគច្រើនអានតែសំបកទទេប៉ុណ្ណោះ។"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "This is my own profile"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "នេះមិនមែនជាទំហំទំព័រប្រវត្តិរូបសង្ខេបធម្មតាទេ។"
+
+#: src/features/onboarding/messages.ts
+msgid "This isn't available for your account."
+msgstr ""
+
+#: src/features/onboarding/read-file.ts
+msgid "This JSON isn't a resume Rezumi can read."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "This JSON isn't a supported resume or cover letter."
@@ -10560,6 +11010,10 @@ msgstr "វគ្គនេះបានផ្លាស់ប្តូរ។ ដ�
 #: src/features/check/parser.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "PDF នេះមិនមានស្រទាប់អត្ថបទទេ ដូច្នេះអ្នកញែកមិនអានអ្វីពីវាទេ។"
+
+#: src/features/onboarding/read-file.ts
+msgid "This PDF has no text to read (a scan or a picture). Try the Word version, or add LinkedIn or GitHub instead."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
@@ -10767,6 +11221,10 @@ msgstr "ស្រាលពេកសម្រាប់ក្បាលពណ៌ស
 msgid "Too many attempts. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/onboarding/read-file.ts
+msgid "Too many files in a short time. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10774,6 +11232,10 @@ msgstr ""
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "សំណើច្រើនពេក។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។"
+
+#: src/features/onboarding/messages.ts
+msgid "Too many tries in a short time. Wait a minute, then try again."
+msgstr ""
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
@@ -10799,6 +11261,10 @@ msgstr ""
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "មិនបូកទឹកប្រាក់សរុបទេ។ ប្រាក់រង្វាន់ និងភាគហ៊ុនអាស្រ័យលើលក្ខខណ្ឌ ហើយតម្លៃភាគហ៊ុនមិនប្រាកដប្រជា។ សូមអានឯកសារផ្តល់ការងារដើម។"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Track every application"
+msgstr ""
 
 #: src/features/home/new-roles.tsx
 msgid "Track in Applications"
@@ -10859,6 +11325,7 @@ msgstr "សាកល្បង {suggestion}"
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/letters/write.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/shell.tsx
@@ -10921,9 +11388,18 @@ msgstr "បើកតំណដើម្បីជ្រើសរើសអាសយ
 msgid "Turn this schedule on"
 msgstr "បើកកាលវិភាគនេះ"
 
+#: src/shell/permissions.tsx
+msgid "Turned off in Settings"
+msgstr ""
+
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "Two columns"
 msgstr "ជួរឈរពីរ"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Two quick questions"
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Two stories"
@@ -11032,6 +11508,10 @@ msgstr "សោគ្មានឈ្មោះ"
 msgid "Unsynced on this device"
 msgstr "មិនបានធ្វើសមកាលកម្មនៅលើឧបករណ៍នេះ។"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Untick anything you'd rather leave out. You can change it all later in your Profile."
+msgstr ""
+
 #: src/features/write/entry-screen.tsx
 #: src/features/write/outline.tsx
 msgid "Untitled"
@@ -11042,6 +11522,7 @@ msgid "Untitled letter"
 msgstr "សំបុត្រគ្មានចំណងជើង"
 
 #: src/features/documents/new-document.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Untitled resume"
 msgstr "ប្រវត្តិរូបសង្ខេបគ្មានចំណងជើង"
 
@@ -11452,6 +11933,11 @@ msgstr "ការកំណត់សំឡេង"
 msgid "Volunteer"
 msgstr "ស្ម័គ្រចិត្ត"
 
+#. placeholder {0}: waitingFor.join(", ")
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Waiting for {0}…"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Waiting for you"
 msgstr "កំពុងរង់ចាំអ្នក"
@@ -11459,6 +11945,18 @@ msgstr "កំពុងរង់ចាំអ្នក"
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
 msgstr "រង់ចាំស្តាប់ឡើងវិញ"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue: LinkedIn profiles through treg or Apify, GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue. Nothing goes into your Profile until you check it."
+msgstr ""
 
 #. placeholder {0}: dates.raw
 #: src/features/write/date-field.tsx
@@ -11498,6 +11996,7 @@ msgstr "ការស្វែងរកគេហទំព័របានបរា
 msgid "Web searches look for work here, up to three countries."
 msgstr "គេហទំព័រស្វែងរកការងារនៅក្នុងប្រទេសទាំងនេះ។ ជ្រើសរើសប្រទេសរហូតដល់បី។"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "គេហទំព័រ"
@@ -11570,6 +12069,10 @@ msgstr "អ្វីដែលវាស្នើសុំ"
 msgid "What matters to you"
 msgstr "អ្វីដែលសំខាន់សម្រាប់អ្នក"
 
+#: src/features/onboarding/questions.tsx
+msgid "What roles are you aiming for?"
+msgstr ""
+
 #: src/features/write/improve.tsx
 msgid "What should change?"
 msgstr "តើគួរផ្លាស់ប្តូរអ្វី?"
@@ -11630,6 +12133,10 @@ msgstr "នៅពេលអ្នកប៉ះផ្ញើ {list} នឹងទៅ�
 msgid "Where applications come from"
 msgstr "ពាក្យសុំមកពីណា"
 
+#: src/features/onboarding/questions.tsx
+msgid "Where do you want to work?"
+msgstr ""
+
 #: src/features/career/preferences.tsx
 msgid "Where you want to work"
 msgstr "កន្លែងដែលអ្នកចង់ធ្វើការ"
@@ -11649,6 +12156,10 @@ msgstr "ពាក្យសុំរបស់អ្នកបានទៅណា"
 #: src/features/assistant/coach-screen.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "តើឱកាសណាខ្លះដែលត្រូវនឹងអាទិភាពរបស់ខ្ញុំបំផុត?"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "While we read your details"
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Who you'll meet"
@@ -11824,6 +12335,10 @@ msgstr ""
 msgid "You canceled the sign-in before it finished."
 msgstr "អ្នកបានបោះបង់ការចូលមុនពេលវាបញ្ចប់។"
 
+#: src/features/onboarding/messages.ts
+msgid "You chose not to share it, so it wasn't read. Retry to choose again."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "អ្នកបានបំភ្លេចវាពីមុនរួចហើយ ដូច្នេះវាមិនត្រូវបានរក្សាទុកម្តងទៀតទេ។"
@@ -11835,6 +12350,10 @@ msgstr ""
 #: src/ui-legacy/overlays.tsx
 msgid "You have unsaved changes."
 msgstr "អ្នកមានការផ្លាស់ប្តូរដែលមិនបានរក្សាទុក។"
+
+#: src/features/onboarding/messages.ts
+msgid "You seem to be offline. Check your connection and try again."
+msgstr ""
 
 #: src/features/workspace/tabs/messages.tsx
 msgid "You send it from your own email."
@@ -11899,6 +12418,18 @@ msgstr "អ្នកគ្មានអ៊ីនធឺណិតទេ។ ព្�
 msgid "You're up to date. New roles, reminders and finished briefings appear here."
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "You've used this as often as you can today. Try again tomorrow."
+msgstr ""
+
+#: src/features/onboarding/messages.ts
+msgid "You've used today's LinkedIn imports. Try again tomorrow, or add your LinkedIn export."
+msgstr ""
+
+#: src/features/onboarding/messages.ts
+msgid "Your account"
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "your AI connection"
@@ -11947,6 +12478,11 @@ msgstr "ទិន្នន័យរបស់អ្នក។"
 #: src/features/ats-checker/messages.ts
 msgid "Your dates are written several different ways."
 msgstr "កាលបរិច្ឆេទរបស់អ្នកត្រូវបានសរសេរតាមវិធីផ្សេងគ្នាជាច្រើន។"
+
+#: src/features/onboarding/onboarding-screen.tsx
+#: src/features/onboarding/source-review.tsx
+msgid "Your details"
+msgstr ""
 
 #: src/features/documents/new-document.tsx
 msgid "Your document was saved. Review it in the editor."
@@ -12082,8 +12618,16 @@ msgstr ""
 msgid "your preferences"
 msgstr "ចំណង់ចំណូលចិត្តរបស់អ្នក"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
+msgstr ""
+
 #: app/(tabs)/profile/index.tsx
 msgid "Your Profile is coming to the app"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Your Profile was changed somewhere else. Check what's new, then save again."
 msgstr ""
 
 #: src/features/settings/export.tsx
@@ -12114,6 +12658,10 @@ msgstr "សំណើរបស់អ្នក និងប្រវត្តិ�
 msgid "Your requirements"
 msgstr "លក្ខខណ្ឌតម្រូវរបស់អ្នក"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Your resume file"
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Your resume has a photo"
 msgstr "ប្រវត្តិរូបសង្ខេបរបស់អ្នកមានរូបថតមួយ។"
@@ -12132,6 +12680,10 @@ msgstr "ម៉ាស៊ីនមេរបស់អ្នកផ្ញើប្រ
 
 #: src/auth/session-gate.tsx
 msgid "Your session ended"
+msgstr ""
+
+#: src/features/onboarding/read-file.ts
+msgid "Your session ended. Sign in again, then try again."
 msgstr ""
 
 #: src/features/ai/error.ts
@@ -12154,6 +12706,10 @@ msgstr "តំណខ្លី និងដែនផ្ទាល់ខ្លួ�
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "តំណខ្លី និងដែនផ្ទាល់ខ្លួនរបស់អ្នកបង្ហាញថា ប្រវត្តិរូបសង្ខេបនេះមិនត្រូវបានចែករំលែកទេ រហូតដល់អ្នកបោះពុម្ពផ្សាយវាម្ដងទៀត។"
 
+#: src/features/onboarding/source-progress.tsx
+msgid "Your sources"
+msgstr ""
+
 #: src/features/assistant/coach-screen.tsx
 msgid "your stories"
 msgstr "រឿងរបស់អ្នក"
@@ -12165,6 +12721,10 @@ msgstr "មិនអាចផ្ទុករឿងរបស់អ្នកបា
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "ការណែនាំខ្លួនរយៈពេលពីរនាទីរបស់អ្នក"
+
+#: src/features/onboarding/messages.ts
+msgid "Your website"
+msgstr ""
 
 #: src/features/letters/page.tsx
 #: src/preview/page.tsx

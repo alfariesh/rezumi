@@ -1,4 +1,4 @@
-import type { PhotoSource, SourceId, SourceInputProblem } from "./model";
+import type { PhotoSource, SourceId, SourceInputProblem } from "@rezumi/resume/profile-sources";
 import type { IconName } from "@rezumi/ui/components/icon";
 import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";

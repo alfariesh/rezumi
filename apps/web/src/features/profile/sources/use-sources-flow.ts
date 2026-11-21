@@ -1,16 +1,25 @@
-import type { PhotoCandidate, SourceAvailability, SourceId, SourceInputProblem, SourceInputs } from "./model";
+import type {
+	PhotoCandidate,
+	SourceAvailability,
+	SourceId,
+	SourceInputProblem,
+	SourceInputs,
+} from "@rezumi/resume/profile-sources";
 import type { ProfileData } from "@rezumi/schema/profile/data";
 import { useState } from "react";
 import {
 	applyReview,
+	clearEditedProblems,
 	emptySourceInputs,
 	hasSourceInput,
 	isFetching,
+	keptPhoto,
 	mergeSourceResults,
 	photoCandidates,
 	readSourceInputs,
 	reviewGroups,
-} from "./model";
+	withKeptPhoto,
+} from "@rezumi/resume/profile-sources";
 import { useSourceRuns } from "./use-source-runs";
 import { client } from "@/libs/orpc/client";
 
@@ -29,7 +38,7 @@ type SourcesFlowOptions = {
  * found (everything ticked, the first photo offered). Onboarding and the Profile's empty state both drive it.
  */
 export function useSourcesFlow({ base, availability, accountImage, github = "" }: SourcesFlowOptions) {
-	const [inputs, setInputs] = useState<SourceInputs>(() => emptySourceInputs(github));
+	const [inputs, setInputs] = useState<SourceInputs<File>>(() => emptySourceInputs<File>(github));
 	const [problems, setProblems] = useState<Partial<Record<SourceId, SourceInputProblem>>>({});
 	const [excluded, setExcluded] = useState<Set<string>>(() => new Set());
 	// Undefined until the person picks: then the first photo offered is the one kept.
@@ -39,10 +48,7 @@ export function useSourcesFlow({ base, availability, accountImage, github = "" }
 	const merged = mergeSourceResults(base, sources.runs);
 	const groups = reviewGroups(base, merged);
 	const photos = photoCandidates(base, sources.runs, accountImage);
-	const photo =
-		photoChoice === undefined || (photoChoice !== null && !photos.some((candidate) => candidate.url === photoChoice))
-			? (photos[0]?.url ?? null)
-			: photoChoice;
+	const photo = keptPhoto(photos, photoChoice);
 
 	return {
 		inputs,
@@ -55,16 +61,9 @@ export function useSourcesFlow({ base, availability, accountImage, github = "" }
 		photos,
 		photo,
 		hasInput: hasSourceInput(inputs, availability),
-		change: (patch: Partial<SourceInputs>) => {
+		change: (patch: Partial<SourceInputs<File>>) => {
 			setInputs((current) => ({ ...current, ...patch }));
-			// A field's problem goes as soon as it's edited; the rest wait for the next try.
-			setProblems((current) => {
-				const next = { ...current };
-				if ("linkedin" in patch || "linkedinOwn" in patch) delete next.linkedin;
-				if ("github" in patch) delete next.github;
-				if ("website" in patch) delete next.website;
-				return next;
-			});
+			setProblems((current) => clearEditedProblems(current, patch));
 		},
 		/**
 		 * Starts the sources entered (those already found stay as they are). Returns the problems that stop it, or null
@@ -93,30 +92,9 @@ export function useSourcesFlow({ base, availability, accountImage, github = "" }
 
 export type SourcesFlow = ReturnType<typeof useSourcesFlow>;
 
-/**
- * The address to save for a kept photo: a file's own picture as it is, anything else copied into the account's
- * uploads first, so the Profile never points at someone else's server.
- */
-async function keepPhoto(candidate: PhotoCandidate): Promise<string> {
-	if (candidate.source === "file") return candidate.url;
-	const { url } = await client.profile.sources.adoptPhoto({ url: candidate.url });
-	return url;
-}
-
-/**
- * The reviewed Profile with the kept photo copied in. `copied` remembers copies, so saving again doesn't copy twice.
- * A photo that can't be copied is left out (`photoFailed`), and the rest still goes in.
- */
-export async function finishReview(flow: SourcesFlow, copied: Map<string, string>) {
-	const data = flow.reviewed();
-	const candidate = flow.photoCandidate();
-	if (!candidate) return { data, photoFailed: false };
-	try {
-		const url = copied.get(candidate.url) ?? (await keepPhoto(candidate));
-		copied.set(candidate.url, url);
-		data.picture.url = url;
-		return { data, photoFailed: false };
-	} catch {
-		return { data, photoFailed: true };
-	}
-}
+/** The reviewed Profile with the kept photo copied into the account's uploads (`withKeptPhoto`). */
+export const finishReview = (flow: SourcesFlow, copied: Map<string, string>) =>
+	withKeptPhoto(flow.reviewed(), flow.photoCandidate(), copied, async (url) => {
+		const { url: kept } = await client.profile.sources.adoptPhoto({ url });
+		return kept;
+	});

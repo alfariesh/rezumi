@@ -1,9 +1,11 @@
 import z from "zod";
+import { profileFromResume } from "@rezumi/resume/profile";
 import { sourceResultSchema, sourcesStatusSchema } from "@rezumi/schema/profile/sources";
 import { protectedProcedure } from "../../../context";
 import { aiRequestRateLimit, storageUploadRateLimit } from "../../../middleware/rate-limit";
 import { aiErrors } from "../../ai/procedure";
 import { aiSourceInput } from "../../billing/ai-source";
+import { readResumeFileData, resumeFileFormatSchema } from "../../resume/imports";
 import { assertNotGuest } from "./account";
 import { SOURCE_ERRORS } from "./errors";
 import { readGitHub } from "./github";
@@ -90,6 +92,25 @@ export const profileSourcesRouter = {
 		.handler(async ({ context, input, signal }) => {
 			await assertNotGuest(context.user.id);
 			return readWebsite(context.user.id, input, signal);
+		}),
+
+	file: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/profile/sources/file",
+			operationId: "readProfileSourceFile",
+			summary: "Read a resume file",
+			description:
+				"Multipart form with file and format fields. Reads a resume file without AI (a PDF's text layer, a LinkedIn export, Rezumi or JSON Resume JSON) into Profile data to review; nothing is saved. The native app's file source; the web reads these in the browser.",
+		})
+		.use(storageUploadRateLimit)
+		.input(z.object({ file: z.file().max(10 * 1024 * 1024), format: resumeFileFormatSchema }))
+		.output(sourceResultSchema)
+		.handler(async ({ input, signal }) => {
+			const data = await readResumeFileData(input.file, input.format, signal);
+			// A file's own picture stays in its data, as the web keeps it: it is offered as the file's photo.
+			return { data: profileFromResume(data), photoUrl: null, notes: [] };
 		}),
 
 	adoptPhoto: protectedProcedure

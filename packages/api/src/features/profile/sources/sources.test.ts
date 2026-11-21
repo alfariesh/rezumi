@@ -584,3 +584,23 @@ describe("profile.sources.adoptPhoto", () => {
 		expect(isPhotoHost("licdn.com")).toBe(false);
 	});
 });
+
+describe("profile.sources.file", () => {
+	it("reads a resume file into Profile data without saving it", async () => {
+		const file = new File(
+			[JSON.stringify({ basics: { name: "Ayu Pratiwi", label: "Data analyst" }, skills: [{ name: "SQL" }] })],
+			"resume.json",
+			{ type: "application/json" },
+		);
+		const result = await client().call.file({ file, format: "JSON_RESUME" });
+
+		expect(result.data.basics.name).toBe("Ayu Pratiwi");
+		expect(result.data.sections.skills.map((skill) => skill.name)).toEqual(["SQL"]);
+		expect(result).toMatchObject({ photoUrl: null, notes: [] });
+	});
+
+	it("refuses a file that isn't a resume in the format given", async () => {
+		const file = new File(["not json"], "resume.json", { type: "application/json" });
+		await expect(client().call.file({ file, format: "JSON_RESUME" })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+	});
+});

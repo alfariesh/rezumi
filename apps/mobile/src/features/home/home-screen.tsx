@@ -22,6 +22,7 @@ import { useNow } from "@/features/career/hooks";
 import { ScheduleSheet } from "@/features/career/schedule-sheet";
 import { withUndo } from "@/features/career/undo";
 import { useDocuments } from "@/features/documents/queries";
+import { useOnboardingRedirect } from "@/features/onboarding/use-onboarding-redirect";
 import { routes } from "@/routes";
 import { NewFab, TabTopBar } from "@/shell/tab-chrome";
 import { useIsTablet } from "@/shell/use-is-tablet";
@@ -54,6 +55,7 @@ export function HomeScreen({ schedule }: HomeScreenProps) {
 	const columnY = useRef(0);
 	const rolesY = useRef(0);
 	const firstRun = documents.data?.length === 0;
+	useOnboardingRedirect();
 
 	const openSchedule = (target: Schedule | "new") =>
 		setSheet(
@@ -129,8 +131,9 @@ export function HomeScreen({ schedule }: HomeScreenProps) {
 						kind="page"
 						icon="file-arrow-up"
 						title={t`Let's start with what you have`}
-						description={t`Import your current resume, or start blank or from a sample. We lay out every section for you to refine.`}
-						action={{ label: t`Start a document`, onPress: () => router.push(routes.new()) }}
+						description={t`Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample.`}
+						action={{ label: t`Bring in my details`, onPress: () => router.push(routes.onboarding()) }}
+						secondaryAction={{ label: t`Start a document`, onPress: () => router.push(routes.new()) }}
 					/>
 				) : null}
 				<View

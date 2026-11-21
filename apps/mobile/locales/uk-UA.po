@@ -345,6 +345,11 @@ msgstr ""
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
+#. placeholder {0}: sourceLabel(id)
+#: src/features/onboarding/messages.ts
+msgid "{0} didn't answer in time. Try again in a moment."
+msgstr ""
+
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
 #: app/account/membership.tsx
@@ -587,6 +592,15 @@ msgstr "{issues, plural, one {Проблема # може коштувати з�
 msgid "{issues, plural, one {Check has # thing to review. You can still download.} other {Check has # things to review. You can still download.}}"
 msgstr "{issues, plural, one {У чеку є #, що варто переглянути. Ви все ще можете завантажити.} other {Чек має # речі для перегляду. Ви все ще можете завантажити.}}"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "{kept} entries ticked"
+msgstr ""
+
+#. placeholder {0}: keys.length
+#: src/features/onboarding/source-review.tsx
+msgid "{kept} of {0}"
+msgstr ""
+
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "Інтерв'ю {kind}"
@@ -764,6 +778,10 @@ msgstr "1 колонка, в рядку"
 msgid "1 day"
 msgstr "1 день"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "1 entry ticked"
+msgstr ""
+
 #: src/features/application-detail/hooks.ts
 msgid "1 h"
 msgstr "1 год"
@@ -793,6 +811,10 @@ msgstr "2–3 речення читаються найкраще"
 #: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "За 24 години"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "3 new roles match you"
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
@@ -862,9 +884,17 @@ msgstr "Числова дата читається по-різному в різ
 msgid "A page is rotated."
 msgstr "Сторінка повернута."
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "A portfolio and a coach"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "Нагадування про реєстрацію, яке відображається як наступний крок, доки ви це не зробите."
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "A resume in minutes"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "A role has no description"
@@ -1009,6 +1039,10 @@ msgstr "Додати людину"
 msgid "Add a phone number"
 msgstr "Додайте номер телефону"
 
+#: src/features/onboarding/questions.tsx
+msgid "Add a place"
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Add a question from the form"
 msgstr "Додати запитання з форми"
@@ -1016,6 +1050,10 @@ msgstr "Додати запитання з форми"
 #: src/features/write/improve.tsx
 msgid "Add a result"
 msgstr "Додайте результат"
+
+#: src/features/onboarding/questions.tsx
+msgid "Add a role"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Add a role or company to look for."
@@ -1072,6 +1110,10 @@ msgstr "Додайте співбесіду, щоб спланувати під�
 #: src/features/career/schedule-sheet.tsx
 msgid "Add an upcoming interview in Applications first."
 msgstr "Спочатку додайте майбутню співбесіду в Заявках."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Add any of these and we'll fill in your Profile. You check everything before it's saved."
+msgstr ""
 
 #: src/features/search/search-screen.tsx
 msgid "Add application"
@@ -1227,6 +1269,10 @@ msgstr "Додайте волонтерство"
 msgid "Add your name"
 msgstr "Додайте своє ім'я"
 
+#: src/features/onboarding/messages.ts
+msgid "Add your own AI connection in Settings, or choose Rezumi AI."
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr ""
@@ -1255,6 +1301,10 @@ msgstr "Адреса"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "Додає нагадування в «Сьогодні», якщо до того часу ви не отримаєте відповіді."
+
+#: src/features/onboarding/source-fields.tsx
+msgid "Adds your own public projects."
+msgstr ""
 
 #: src/features/design/advanced.tsx
 msgid "Advanced"
@@ -1395,10 +1445,6 @@ msgstr "Всі теги"
 msgid "All your applications are closed"
 msgstr "Усі ваші заявки закрито"
 
-#: src/features/settings/profile.tsx
-msgid "Allow camera access in your device settings to take a photo."
-msgstr "Щоб зробити фото, надайте доступ до камери в налаштуваннях пристрою."
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Allow microphone access in device settings, or type your answer."
 msgstr "Надайте доступ до мікрофона в налаштуваннях пристрою або введіть свою відповідь."
@@ -1472,6 +1518,10 @@ msgstr "помилка"
 msgid "Ana Putri"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Analytics lead"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
 msgid "and {0} more"
@@ -1514,6 +1564,7 @@ msgid "Answers copied"
 msgstr "Відповіді скопійовано"
 
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Any"
 msgstr "Неважливо"
 
@@ -1656,6 +1707,7 @@ msgstr "Заявки, надіслані за тиждень (останні 8 �
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/stages.ts
 #: src/features/check/writing.tsx
+#: src/features/onboarding/intro-screen.tsx
 msgid "Applied"
 msgstr "Подано"
 
@@ -1796,8 +1848,13 @@ msgid "ATS checker"
 msgstr "Шашка ATS"
 
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "ATS-safe"
 msgstr "ATS-безпечний"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "ATS-safe template"
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 msgid "Attach a cover letter (PDF)"
@@ -1865,6 +1922,7 @@ msgstr "Азербайджанська"
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/entry-sheet.tsx
@@ -1992,6 +2050,10 @@ msgstr "Нижче вашої мінімальної базової зарпла
 msgid "Bengali"
 msgstr "Бенгальська"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "BI analyst"
+msgstr ""
+
 #: src/features/applications-board/views.tsx
 msgid "Board"
 msgstr "Дошка"
@@ -2034,6 +2096,10 @@ msgstr "Округлення кутів"
 msgid "Border width"
 msgstr "Товщина рамки"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Both are optional. They help the coach find roles that fit you."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Break the resume into the usual sections so it can be segmented."
 msgstr "Розбийте резюме на звичні розділи, щоб його можна було сегментувати."
@@ -2058,6 +2124,24 @@ msgstr "Оновлення брифінгу ввімкнено · {next}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "Оновлення брифінгу призупинено"
+
+#: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
+msgid "Bring in my details"
+msgstr ""
+
+#: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
+msgid "Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample."
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Bring what you have"
+msgstr ""
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Bring your LinkedIn or an old resume, pick a template, and download a clean PDF."
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Bulgarian"
@@ -2093,6 +2177,10 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "Чи може програмне забезпечення прочитати ваше резюме?"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Can you help me answer \"Tell me about yourself\"?"
+msgstr ""
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
@@ -2258,6 +2346,14 @@ msgstr "Перевірте цю вакансію на відповідність
 msgid "Check views"
 msgstr "Перевірте перегляди"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Check what we found"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Check your connection, then try again."
+msgstr ""
+
 #: src/features/auth/check-email-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
 msgid "Check your email"
@@ -2312,6 +2408,10 @@ msgstr "Китайська (спрощена)"
 msgid "Chinese (Traditional)"
 msgstr "Китайська (традиційна)"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Choose"
+msgstr ""
+
 #: src/features/application-detail/date-field.tsx
 msgid "Choose a date"
 msgstr "Виберіть дату"
@@ -2339,6 +2439,10 @@ msgstr "Виберіть файл PDF. Вибраний файл не було �
 #: src/features/application-detail/sections.tsx
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "Виберіть PDF розміром менше 10 МБ. Вибраний файл не було завантажено."
+
+#: src/shell/permissions.tsx
+msgid "Choose a photo"
+msgstr ""
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2404,6 +2508,10 @@ msgstr "Виберіть до 200 заявок для масової дії."
 #: src/features/design/advanced.tsx
 msgid "Circle"
 msgstr "Кругле"
+
+#: src/features/onboarding/questions.tsx
+msgid "Cities or countries. Leave it empty for anywhere."
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "Clarify"
@@ -2606,6 +2714,10 @@ msgstr "Підтвердьте час, перш ніж додавати нову
 msgid "Confirm the time with {contact} before adding a new interview."
 msgstr "Підтвердьте час із контактною особою {contact}, перш ніж додавати нову співбесіду."
 
+#: src/features/onboarding/messages.ts
+msgid "Confirm this is your own profile."
+msgstr ""
+
 #: src/features/assistant/provider.tsx
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
@@ -2707,6 +2819,8 @@ msgstr "Контекст пропущено, тому надішліть нов�
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
 #: src/features/auth/check-email-screen.tsx
+#: src/features/onboarding/onboarding-screen.tsx
+#: src/shell/permissions.tsx
 msgid "Continue"
 msgstr "Продовжити"
 
@@ -2857,6 +2971,10 @@ msgstr "Не вдалося підтвердити збереження. Пер�
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "Не вдалося підтвердити збереження. Перевірте заявку перед повторною спробою, щоб уникнути дублювання."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't copy the photo. You can add one later in your Profile."
+msgstr ""
+
 #: src/features/assistant/chat-view.tsx
 msgid "Couldn't copy the transcript. Try again."
 msgstr "Не вдалося скопіювати стенограму. Спробуйте ще раз."
@@ -2864,6 +2982,10 @@ msgstr "Не вдалося скопіювати стенограму. Спро�
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't create the letter. Try again."
 msgstr "Не вдалося створити лист. Спробуйте ще раз."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't create the resume. Try again."
+msgstr ""
 
 #: src/features/workspace/tabs/saved.tsx
 msgid "Couldn't delete it. It's back in Saved."
@@ -2986,6 +3108,10 @@ msgstr ""
 msgid "Couldn't load versions."
 msgstr "Не вдалося завантажити версії."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't load your details"
+msgstr ""
+
 #: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "Не вдалося завантажити ваш профіль."
@@ -3039,6 +3165,10 @@ msgstr "Не вдалося надрукувати. Спробуйте знов�
 msgid "Couldn't propose these edits: {0}"
 msgstr "Не вдалося запропонувати ці зміни: {0}"
 
+#: src/features/onboarding/messages.ts
+msgid "Couldn't reach the AI provider. Try again in a moment."
+msgstr "Не вдалося зв’язатися з постачальником AI. Повторіть спробу за мить."
+
 #: src/features/check/writing.tsx
 msgid "Couldn't reach your AI provider. Try again or check its key in AI settings."
 msgstr "Не вдалося зв’язатися з вашим постачальником AI. Спробуйте ще раз або перевірте його ключ у налаштуваннях ШІ."
@@ -3048,6 +3178,11 @@ msgstr "Не вдалося зв’язатися з вашим постачал
 msgid "Couldn't read “{0}”. Enter the dates so they sort and print consistently."
 msgstr "Не вдалося прочитати «{0}». Введіть дати, щоб вони сортувалися та друкувалися узгоджено."
 
+#. placeholder {0}: sourceLabel(id)
+#: src/features/onboarding/messages.ts
+msgid "Couldn't read {0}. Try again."
+msgstr ""
+
 #: src/features/ats-checker/check.ts
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't read that file. Try again."
@@ -3056,6 +3191,10 @@ msgstr "Не вдалося прочитати цей файл. Спробуйт
 #: src/features/check/parser.tsx
 msgid "Couldn't read the exported PDF."
 msgstr "Не вдалося прочитати експортований PDF."
+
+#: src/features/onboarding/read-file.ts
+msgid "Couldn't read the file. Try again."
+msgstr ""
 
 #. placeholder {0}: part.errorText
 #: src/features/assistant/messages.tsx
@@ -3146,6 +3285,10 @@ msgstr "Не вдалося зберегти часовий пояс. Спроб
 msgid "Couldn't save this role to Applications. Try again."
 msgstr "Не вдалося зберегти цю вакансію в Заявках. Спробуйте ще раз."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your answers. You can add them later in Profile → Preferences."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Couldn't save your changes, so drafting didn't start. Nothing on the page changed."
 msgstr "Не вдалося зберегти зміни, тому створення чернетки не почалося. На сторінці нічого не змінилося."
@@ -3163,6 +3306,14 @@ msgstr "Не вдалося зберегти зміни. Ваші зміни в�
 #: src/features/career/preferences.tsx
 msgid "Couldn't save your preferences. Your draft is still here."
 msgstr "Не вдалося зберегти ваші налаштування. Ваша чернетка все ще тут."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your Profile, so this would open again. Try again."
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your Profile. Try again."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't save. Try again."
@@ -3355,6 +3506,10 @@ msgstr "Створіть ключ API у налаштуваннях обліко
 msgid "Create copy"
 msgstr "Створити копію"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Create my resume"
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Create or import a resume first, then return to copy it for this job."
 msgstr "Спочатку створіть або імпортуйте резюме, а потім поверніться, щоб скопіювати його для цієї роботи."
@@ -3378,6 +3533,10 @@ msgstr "Створення документа…"
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Creating your account…"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Creating…"
 msgstr ""
 
 #: app/account/membership.tsx
@@ -3471,6 +3630,14 @@ msgstr "Темна"
 #: src/features/search/search-screen.tsx
 msgid "Dark theme"
 msgstr "Темна тема"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Data analyst"
+msgstr ""
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Data analyst · Bandung"
+msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Data sharing canceled. Nothing was sent to the AI provider."
@@ -3725,6 +3892,7 @@ msgstr "Скидання дизайну до значень за замовчу�
 
 #: app/applications/[id]/[tab].tsx
 #: src/features/document-menu/index.tsx
+#: src/features/onboarding/messages.ts
 msgid "Details"
 msgstr "Подробиці"
 
@@ -4097,6 +4265,7 @@ msgstr ""
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "Ел. пошта"
@@ -4144,6 +4313,10 @@ msgstr "Розширене читання недоступне; користув
 #: src/features/career/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
 msgstr "Введіть повну суму, наприклад 95000. Попередня сума не змінилася."
+
+#: src/features/onboarding/messages.ts
+msgid "Enter a GitHub username, like octocat."
+msgstr ""
 
 #: src/features/write/pickers.tsx
 msgid "Enter a hex color like #1a1a1a, or rgba(…)."
@@ -4214,6 +4387,10 @@ msgstr "Введіть своє ім'я."
 #: src/features/auth/email-sign-in-screen.tsx
 msgid "Enter your password."
 msgstr "Введіть пароль."
+
+#: src/features/onboarding/messages.ts
+msgid "Enter your site's address, like yourname.com."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4290,6 +4467,7 @@ msgid "Everything your resumes, letters and Coach start from. For now, your fact
 msgstr ""
 
 #: src/features/career/facts.tsx
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/write/fields.ts
 msgid "Experience"
 msgstr "Досвід"
@@ -4434,6 +4612,10 @@ msgstr "Фінська"
 msgid "First offer"
 msgstr "Перша пропозиція"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "First resume"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "First run (YYYY-MM-DD)"
 msgstr "Перший запуск (YYYY-MM-DD)"
@@ -4555,6 +4737,10 @@ msgstr "Наприклад, Sent to Lumen"
 msgid "For example: “{name}: I did … at … in 2024, and it led to …”"
 msgstr "Наприклад: «{name}: я зробив … у … у 2024 році, і це призвело до…»"
 
+#: src/features/onboarding/questions.tsx
+msgid "For example: Product designer, Data analyst."
+msgstr ""
+
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "For LibreOffice and other open-source editors. Layout is simplified."
@@ -4606,6 +4792,10 @@ msgstr "Знайдено сьогодні"
 msgid "Found yesterday"
 msgstr "Знайдено вчора"
 
+#: src/features/onboarding/messages.ts
+msgid "Found: {list}"
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "Free"
 msgstr ""
@@ -4638,14 +4828,23 @@ msgstr ""
 msgid "From Fit"
 msgstr "З перевірки відповідності"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "From your account"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "From your experience entries"
 msgstr "З ваших записів про досвід"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "From your GitHub sign-in."
+msgstr ""
 
 #: src/features/career/search-regions-field.tsx
 msgid "From your timezone"
 msgstr "На основі вашого часового поясу"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Full name"
 msgstr "ПІБ"
@@ -4659,6 +4858,10 @@ msgstr "На всю ширину"
 msgid "German"
 msgstr "Німецька"
 
+#: src/shell/permissions.tsx
+msgid "Get a nudge at the right time"
+msgstr ""
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback"
 msgstr "Отримати відгук"
@@ -4671,6 +4874,10 @@ msgstr "«Отримати відгук» надсилає запитання, �
 msgid "Get new jobs for your search here every morning"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Get started"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "Отримувати довго. Спробуйте «Коротше» або виріжте найменш конкретний абзац."
@@ -4678,6 +4885,10 @@ msgstr "Отримувати довго. Спробуйте «Коротше» �
 #: src/features/auth/welcome-screen.tsx
 msgid "GitHub"
 msgstr "GitHub"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "GitHub username"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4754,6 +4965,7 @@ msgstr "Заголовок 3"
 msgid "Heading changed"
 msgstr "Заголовок змінено"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Headline"
 msgstr "Заголовна інформація"
@@ -5022,14 +5234,6 @@ msgstr "Імпортуйте його"
 msgid "Import with AI"
 msgstr ""
 
-#: src/features/home/home-screen.tsx
-msgid "Import your current resume, or start blank or from a sample. We lay out every section for you to refine."
-msgstr ""
-
-#: src/features/documents/library.tsx
-msgid "Import your current resume, or start fresh with your name."
-msgstr "Імпортуйте своє поточне резюме або почніть заново зі свого імені."
-
 #: src/features/history/history.tsx
 msgid "Imported"
 msgstr "Імпортні"
@@ -5108,6 +5312,7 @@ msgstr "Тільки інтерфейс. Кожне резюме встанов�
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/coming-up.tsx
+#: src/features/onboarding/intro-screen.tsx
 msgid "Interview"
 msgstr "Співбесіда"
 
@@ -5196,6 +5401,10 @@ msgstr "Питання"
 #: src/features/check/issues.ts
 msgid "It has entries but isn't placed on a page."
 msgstr "У ньому є записи, але він не розміщений на сторінці."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "It starts with your Profile. You can switch templates any time."
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 msgid "It's removed from the timeline for good."
@@ -5670,6 +5879,14 @@ msgstr "Пов'язано. Оновлення імені, електронної
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
+#: src/features/onboarding/messages.ts
+msgid "LinkedIn import isn't available right now. Add your LinkedIn export or a resume file instead."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "LinkedIn profile link"
+msgstr ""
+
 #: src/features/applications-board/views.tsx
 msgid "List"
 msgstr "Список"
@@ -5686,6 +5903,10 @@ msgstr "Перегляд списку"
 msgid "Lithuanian"
 msgstr "Литовська"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Live"
+msgstr ""
+
 #: src/features/check/score.tsx
 msgid "Live · updates as you edit"
 msgstr "Живі · оновлення під час редагування"
@@ -5696,6 +5917,7 @@ msgstr "Наживо {url}"
 
 #: src/features/design/design-pane.tsx
 #: src/features/home/section.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Loading"
 msgstr "Завантаження"
 
@@ -5768,6 +5990,7 @@ msgstr "Завантаження…"
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/style-groups.tsx
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
 msgid "Location"
@@ -6058,6 +6281,10 @@ msgstr "Більш особисте"
 msgid "More providers and options are in Settings. Editing, design, Check issues and downloads work without AI."
 msgstr "Інші постачальники та параметри є в Налаштуваннях. Редагування, Дизайн, проблеми в Перевірці та завантаження працюють без ШІ."
 
+#: src/features/onboarding/template-choice.tsx
+msgid "More templates"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "З'являється більше однієї електронної адреси."
@@ -6090,6 +6317,10 @@ msgstr "Більшість маркованих пунктів починают�
 #: src/features/ats-checker/messages.ts
 msgid "Most entries have no dates."
 msgstr "Більшість записів не мають дат."
+
+#: src/features/onboarding/messages.ts
+msgid "Most of this profile is private, so little came in."
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
@@ -6382,6 +6613,10 @@ msgstr "Нова історія STARR"
 msgid "New to Rezumi? Create an account"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Next"
+msgstr ""
+
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
 msgstr ""
@@ -6577,9 +6812,17 @@ msgstr "Немає номера телефону"
 msgid "No phone number was found."
 msgstr "Номер телефону не знайдено."
 
+#: src/features/onboarding/source-review.tsx
+msgid "No photo"
+msgstr ""
+
 #: src/features/write/basics-screen.tsx
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "Немає фото. Більшість ATS ігнорують фотографії; деякі регіони очікують один."
+
+#: src/features/onboarding/messages.ts
+msgid "No public repositories of your own, so no projects came in."
+msgstr ""
 
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
@@ -6697,6 +6940,10 @@ msgstr "Ще не підключено. Додайте його DNS-записи
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "Not enough Rezumi AI credits to read it."
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "Не для мене"
@@ -6714,7 +6961,9 @@ msgid "Not included"
 msgstr ""
 
 #: src/features/assistant/messages.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/workspace/tabs/debrief.tsx
+#: src/shell/permissions.tsx
 msgid "Not now"
 msgstr "Не зараз"
 
@@ -6761,6 +7010,10 @@ msgstr "Ніщо тут не повинно коштувати вам матчу
 msgid "Nothing marks a role as ongoing."
 msgstr "Ніщо не позначає посаду як поточну."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Nothing new to add"
+msgstr ""
+
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Nothing on this day."
 msgstr "Нічого в цей день."
@@ -6777,6 +7030,10 @@ msgstr "Ще нічого не заплановано"
 msgid "Nothing scheduled yet."
 msgstr "Поки нічого не заплановано."
 
+#: src/features/onboarding/messages.ts
+msgid "Nothing to add from here."
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Nothing to apply"
 msgstr "Нічого застосовувати"
@@ -6788,6 +7045,10 @@ msgstr "Нічого виправити"
 #: src/features/ats-checker/messages.ts
 msgid "Nothing to fix. The remaining pages were simply not covered by this report."
 msgstr "Нічого виправляти. Решта сторінок просто не увійшла до цього звіту."
+
+#: src/features/onboarding/messages.ts
+msgid "Nothing was found at that address. Check it and try again."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Notice period (weeks)"
@@ -6837,6 +7098,7 @@ msgid "Off. The letter keeps its own copy of your details."
 msgstr "Вимкнено. У листі зберігається власна копія ваших даних."
 
 #: src/features/applications/stages.ts
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/workspace/tabs/saved.tsx
 msgid "Offer"
 msgstr "Пропозиція"
@@ -6848,6 +7110,7 @@ msgid "Offers"
 msgstr "Пропозиції"
 
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Office days a week, at most"
 msgstr "Максимум днів в офісі на тиждень"
 
@@ -6889,6 +7152,7 @@ msgid "Once you've sent a few applications, this shows how far they get and how 
 msgstr "Після того, як ви надіслали кілька заявок на роботу, це покаже, наскільки далеко вони заходять і як швидко люди відповідають."
 
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "One column"
 msgstr "Одна колонка"
 
@@ -7014,6 +7278,10 @@ msgstr "Відкриті запитання"
 msgid "Open resume"
 msgstr "Відкрийте резюме"
 
+#: src/shell/permissions.tsx
+msgid "Open Settings"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Open story"
 msgstr "Відкрити розповідь"
@@ -7023,6 +7291,7 @@ msgid "Open the exported file and confirm you can select and copy every part of 
 msgstr "Відкрийте експортований файл і переконайтеся, що можете виділити та скопіювати кожну його частину."
 
 #: src/features/documents/import-file.ts
+#: src/features/onboarding/read-file.ts
 msgid "Open the file in Word and save it as .docx first."
 msgstr "Відкрийте файл у Word і спершу збережіть його як .docx."
 
@@ -7120,6 +7389,10 @@ msgstr "Інші пільги"
 msgid "Other concern"
 msgstr "Інші проблеми"
 
+#: src/features/onboarding/source-review.tsx
+msgid "Other details"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/threads.tsx
 msgid "Other documents · {0}"
@@ -7171,6 +7444,13 @@ msgstr "Сторінка {0} · Бічна панель"
 #: src/features/check/page.tsx
 msgid "Page {0} of {1}"
 msgstr "Сторінка {0} з {1}"
+
+#. placeholder {0}: index + 1
+#. placeholder {1}: pages.length
+#. placeholder {2}: item.title
+#: src/features/onboarding/intro-screen.tsx
+msgid "Page {0} of {1}: {2}"
+msgstr ""
 
 #. placeholder {0}: page.index + 1
 #: src/features/ats-checker/original-page.tsx
@@ -7275,6 +7555,10 @@ msgstr "Вставте запитання з форми"
 msgid "Paste your key"
 msgstr "Вставте свій ключ"
 
+#: src/features/onboarding/messages.ts
+msgid "Paste your profile link, like linkedin.com/in/your-name."
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/add-sheet.tsx
 msgid "Pasted description"
@@ -7313,6 +7597,10 @@ msgstr "Стилі PDF підтримують підмножину CSS. Обер
 msgid "PDF uses your AI provider when one is ready. Turn off the AI switch to read its text layer on your server. Word (.docx) needs an AI provider. Current and v4 Rezumi JSON, cover letters, JSON Resume and LinkedIn exports (.zip) are supported. Up to 10 MB."
 msgstr "PDF використовує вашого постачальника AI, коли він готовий. Вимкніть перемикач AI, щоб читати його текстовий шар на вашому сервері. Word (.docx) потребує постачальника AI. Підтримуються поточні та v4 Rezumi JSON, супровідні листи, JSON Resume і LinkedIn експорт (.zip). До 10 Мб."
 
+#: src/features/onboarding/source-fields.tsx
+msgid "PDF, Word, a LinkedIn export or a Rezumi file"
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "PDF, Word, Rezumi, JSON Resume or LinkedIn export."
 msgstr "PDF, Word, Rezumi, JSON Resume або експорт LinkedIn."
@@ -7340,6 +7628,11 @@ msgstr "Назавжди видаляє все. Відкриває налашт�
 msgid "Persian"
 msgstr "Перська"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Personal website"
+msgstr ""
+
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
 msgid "Phone"
@@ -7349,6 +7642,7 @@ msgstr "Номер телефону"
 msgid "Phone (optional)"
 msgstr "Телефон (необов'язково)"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Photo"
 msgstr "Фото"
@@ -7368,6 +7662,10 @@ msgstr "Фото на сторінці."
 #: src/features/write/date-field.tsx
 msgid "Pick {label}"
 msgstr "Виберіть {label}"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Pick a look for your first resume"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Pick a time after now."
@@ -7510,6 +7808,10 @@ msgstr "Пріоритет для тренування:"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Practicing your story: {storyTitle}"
 msgstr "Тренуєте розповідь: {storyTitle}"
+
+#: src/shell/permissions.tsx
+msgid "Practise out loud"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Prefer a single column, or keep the side column to short, self-contained lists."
@@ -7788,6 +8090,10 @@ msgstr "Параметри запитання"
 msgid "Question removed"
 msgstr "Запитання видалено"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Questions"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Questions to ask"
 msgstr "Запитання для роботодавця"
@@ -7819,6 +8125,10 @@ msgstr "Експортуйте знову з вбудованими шрифта
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Експортуйте знову з вбудованими шрифтами, потім відкрийте файл і перевірте, що текст коректно копіюється."
+
+#: src/features/onboarding/source-fields.tsx
+msgid "Read before. Choose another to replace it."
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7861,6 +8171,10 @@ msgstr "Прочитайте сторінку"
 msgid "Read the resume"
 msgstr "Прочитано резюме"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Read with AI. Only what's on the page comes in."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Readability"
 msgstr "Читабельність"
@@ -7880,6 +8194,10 @@ msgstr "Читання сторінки…"
 #: src/features/documents/new-document.tsx
 msgid "Reading the file and finding sections…"
 msgstr "Читання файлу та пошук розділів…"
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading the file…"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Reading the message"
@@ -7905,6 +8223,10 @@ msgstr "Читання тексту"
 msgid "Reading this file with AI needs a tested AI provider. Set one up, then retry."
 msgstr "Для читання цього файлу за допомогою AI потрібен перевірений постачальник AI. Налаштуйте один і повторіть спробу."
 
+#: src/features/onboarding/read-file.ts
+msgid "Reading Word files needs an AI connection. Add one in Settings → AI providers, or choose a PDF instead."
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "Reading your answer"
 msgstr "Читаю вашу відповідь"
@@ -7912,6 +8234,14 @@ msgstr "Читаю вашу відповідь"
 #: src/features/workspace/parts.tsx
 msgid "Reading your notes"
 msgstr "Читаю ваші нотатки"
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading your profile…"
+msgstr ""
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading…"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 #: src/features/check/score.tsx
@@ -8083,6 +8413,7 @@ msgstr "Нагадування"
 
 #: src/features/career/offers.tsx
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Remote"
 msgstr "Віддалено"
 
@@ -8092,8 +8423,10 @@ msgstr "Віддалено"
 msgid "Remove"
 msgstr "видалити"
 
+#. placeholder {0}: chosen.name
 #. placeholder {0}: contact.name
 #: src/features/application-detail/sheets.tsx
+#: src/features/onboarding/source-fields.tsx
 msgid "Remove {0}"
 msgstr "Видаліть {0}"
 
@@ -8105,6 +8438,14 @@ msgstr ""
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
 msgstr "Видалити {name}"
+
+#: src/features/onboarding/questions.tsx
+msgid "Remove {place}"
+msgstr ""
+
+#: src/features/onboarding/questions.tsx
+msgid "Remove {role}"
+msgstr ""
 
 #: src/features/write/basics-screen.tsx
 msgid "Remove field"
@@ -8335,6 +8676,8 @@ msgid "Resume details"
 msgstr "деталі резюме"
 
 #: src/features/application-detail/sections.tsx
+#: src/features/onboarding/messages.ts
+#: src/features/onboarding/source-fields.tsx
 msgid "Resume file"
 msgstr "Файл резюме"
 
@@ -8399,6 +8742,7 @@ msgstr "Отримано {0} за допомогою {1}. Час пошуку н
 #: src/features/letters/page.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
+#: src/features/onboarding/source-progress.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -8452,6 +8796,7 @@ msgstr ""
 
 #: src/features/assistant/page-marks.tsx
 #: src/features/home/needs-you.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Review"
 msgstr "огляд"
 
@@ -8495,6 +8840,10 @@ msgstr "Перегляньте деталі перед збереженням. �
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "Перегляньте вибране резюме та супровідний лист у їхніх редакторах."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Review what we found"
+msgstr ""
+
 #: src/features/check/writing.tsx
 msgid "Review writing"
 msgstr "Написання огляду"
@@ -8527,10 +8876,34 @@ msgstr "Переписати прийнято"
 msgid "Rezumi AI credits"
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "Rezumi AI isn't available right now. Use your own AI connection, or add a resume file instead."
+msgstr ""
+
 #. placeholder {0}: creditCount(CREDIT_COSTS[action])
 #. placeholder {1}: creditCount(balance)
 #: src/features/billing/ai-source.ts
 msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi records only while you answer a practice question, to turn your answer into text. You can change this any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi sends reminders you set and new roles from your schedules. Nothing else. You can turn notifications off any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi uses the camera only while you take a photo for your Profile or resume. You can change this any time in Settings."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -8722,6 +9095,10 @@ msgstr ""
 msgid "Save to Knowledge"
 msgstr "Зберегти в Знаннях"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Save to my Profile"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 msgid "Save your version over theirs."
 msgstr "Замінити іншу версію своєю."
@@ -8777,6 +9154,7 @@ msgstr "Збереження роботи. Зачекайте підтвердж
 
 #: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Saving…"
@@ -8915,6 +9293,10 @@ msgstr "Розділи · порядок друку"
 #: src/features/check/issues.ts
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "Розділи використовують заголовки, які системи розпізнають, і досвід роботи показує."
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "See where each one stands, get new roles that fit you, and never miss an interview."
+msgstr ""
 
 #: src/features/documents/document-sheets.tsx
 msgid "Select"
@@ -9138,6 +9520,10 @@ msgstr "Поділіться розділами"
 msgid "Share via…"
 msgstr "Поділіться через…"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Share your work on your own page, and practise with a coach that knows your story."
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -9308,7 +9694,6 @@ msgstr "Бічні панелі часто читаються в останню 
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
-#: src/linking/open.ts
 msgid "Sign in"
 msgstr "Увійти"
 
@@ -9325,10 +9710,6 @@ msgstr "Увійдіть знову, щоб продовжити перевір�
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "Увійдіть знову, щоб продовжити роботу. Внесені вами зміни зберігаються на цьому пристрої та синхронізуються після входу."
 
-#: src/linking/open.ts
-msgid "Sign in to {server}, then continue to the linked document."
-msgstr "Увійдіть до {server}, а потім перейдіть до пов’язаного документа."
-
 #: src/features/documents/new-document.tsx
 #: src/features/documents/queries.ts
 #: src/features/share/export-screen.tsx
@@ -9343,10 +9724,6 @@ msgstr "Увійдіть, щоб створити або імпортувати 
 #: app/builder/[id]/write.tsx
 msgid "Sign in to edit this resume."
 msgstr "Увійдіть, щоб редагувати це резюме."
-
-#: src/linking/open.ts
-msgid "Sign in to open this link"
-msgstr "Увійдіть, щоб відкрити це посилання"
 
 #: src/features/documents/library.tsx
 msgid "Sign in to see your documents"
@@ -9436,6 +9813,7 @@ msgstr "Розмір"
 msgid "Skill"
 msgstr "Навичка"
 
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/write/fields.ts
 msgid "Skills"
 msgstr "Навички"
@@ -9445,6 +9823,8 @@ msgid "Skills, interests and profiles"
 msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
+#: src/features/onboarding/intro-screen.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Skip"
 msgstr "Пропустити"
@@ -9645,6 +10025,10 @@ msgstr "Почати з"
 msgid "Start from one you have and link the application."
 msgstr "Почніть із того, що у вас є, і зв’яжіть заявку на роботу."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Start from scratch"
+msgstr ""
+
 #: src/features/write/section-sheet.tsx
 msgid "Start on a new page"
 msgstr "Почніть з нової сторінки"
@@ -9678,6 +10062,10 @@ msgstr "Почніть друкувати. Щоб скласти його, сп�
 msgid "Start with the sections most resumes have."
 msgstr "Почніть із тих розділів, які є в більшості резюме."
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Start with your dashboard project at Kopi Senja: it cut report time by half."
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Start with your name. Build from there."
 msgstr "Почніть зі свого імені. Будуйте звідти."
@@ -9700,6 +10088,16 @@ msgstr "Залишайтеся в Документи"
 
 #: src/shell/account-menu.tsx
 msgid "Stay signed in"
+msgstr ""
+
+#. placeholder {0}: ONBOARDING_STEPS.indexOf(step) + 1
+#. placeholder {1}: ONBOARDING_STEPS.length
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Step {0} of {1}"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Step {index} of {total}"
 msgstr ""
 
 #: src/features/assistant/chat-view.tsx
@@ -9906,6 +10304,10 @@ msgstr "Адаптувати до оголошення {company}"
 msgid "Tailored vs. base resume"
 msgstr "адаптоване проти базового резюме"
 
+#: src/shell/permissions.tsx
+msgid "Take a photo"
+msgstr ""
+
 #: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "Зробіть фото"
@@ -9983,6 +10385,10 @@ msgstr "Шаблон змінено на {0}"
 #: src/features/letters/design.tsx
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "Шаблон, тип і кольори відповідають резюме, тому пара завжди збігається."
+
+#: src/features/onboarding/template-choice.tsx
+msgid "Templates"
+msgstr "Шаблони"
 
 #: src/features/auth/welcome-screen.tsx
 msgid "Terms"
@@ -10078,6 +10484,10 @@ msgstr "Цей файл завеликий для перевірки. PDFs до 
 msgid "That link couldn't be read. Paste the posting text instead."
 msgstr "Це посилання не вдалося прочитати. Натомість вставте текст оголошення про роботу."
 
+#: src/features/onboarding/messages.ts
+msgid "That profile wasn't found, or it isn't public. Check the link."
+msgstr ""
+
 #: src/features/ai/error.ts
 msgid "That provider setup isn't valid. Check the key, model and base URL."
 msgstr "Це налаштування постачальника недійсне. Перевірте ключ, модель і базову URL-адресу."
@@ -10155,6 +10565,14 @@ msgstr "Редактор відкривається на вкладці Пере
 msgid "The end is before the start."
 msgstr "Кінець перед початком."
 
+#: src/features/onboarding/messages.ts
+msgid "The file couldn't be read as a resume."
+msgstr "Не вдалося прочитати файл як резюме."
+
+#: src/features/onboarding/read-file.ts
+msgid "The file is too large. Choose one up to 10 MB."
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "The follow-up is saved. To get a reminder, allow notifications in your device settings."
 msgstr "Подальше збережено. Щоб отримувати нагадування, дозвольте сповіщення в налаштуваннях пристрою."
@@ -10210,6 +10628,10 @@ msgstr "Порядок зберігання тексту сильно розхо
 #: src/features/career/facts.tsx
 msgid "The original stays in correction history. Stories using it will need review."
 msgstr "Оригінал залишається в історії виправлень. Історії з його використанням потребують перегляду."
+
+#: src/features/onboarding/messages.ts
+msgid "The page is long, so only its first part was read."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "The pages are pictures, with no text behind them."
@@ -10315,6 +10737,10 @@ msgstr "Немає посилання на профіль, портфоліо ч
 msgid "There is no summary paragraph."
 msgstr "Немає абзацу з підсумком."
 
+#: src/features/onboarding/messages.ts
+msgid "There's no GitHub account with that username."
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "These are the answers saved when you applied."
 msgstr "Це відповіді, збережені під час подання заявки."
@@ -10417,6 +10843,10 @@ msgstr "Цей запис"
 msgid "This entry was deleted."
 msgstr "Цей запис було видалено."
 
+#: src/features/onboarding/read-file.ts
+msgid "This file can't be read. Choose a PDF, Word file, LinkedIn export (.zip) or resume JSON."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file contains form fields."
 msgstr "Цей файл містить поля форми."
@@ -10428,6 +10858,10 @@ msgstr "Цей файл містить текст, намальований не
 #: src/features/ats-checker/messages.ts
 msgid "This file contains white-on-white text."
 msgstr "Цей файл містить білий текст на білому тлі."
+
+#: src/features/onboarding/read-file.ts
+msgid "This file couldn't be read as a resume."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (.zip)."
@@ -10485,6 +10919,10 @@ msgstr "Розмір цього файлу не вдалося прочитат�
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr ""
 
+#: src/features/onboarding/read-file.ts
+msgid "This is a cover letter. Add a resume or a LinkedIn export instead."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "Це PDF-портфоліо: видима сторінка — лише обкладинка."
@@ -10493,9 +10931,21 @@ msgstr "Це PDF-портфоліо: видима сторінка — лише 
 msgid "This is an XFA form, so most software reads only the empty shell."
 msgstr "Це форма XFA, тому більшість програм читає лише порожню оболонку."
 
+#: src/features/onboarding/source-fields.tsx
+msgid "This is my own profile"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "Це нетиповий розмір сторінки для резюме."
+
+#: src/features/onboarding/messages.ts
+msgid "This isn't available for your account."
+msgstr ""
+
+#: src/features/onboarding/read-file.ts
+msgid "This JSON isn't a resume Rezumi can read."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "This JSON isn't a supported resume or cover letter."
@@ -10560,6 +11010,10 @@ msgstr "Цей уривок змінився. Повторіть перевір�
 #: src/features/check/parser.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "Цей PDF не має текстового шару, тому аналізатор нічого не читає з нього."
+
+#: src/features/onboarding/read-file.ts
+msgid "This PDF has no text to read (a scan or a picture). Try the Word version, or add LinkedIn or GitHub instead."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
@@ -10767,6 +11221,10 @@ msgstr "Занадто світлий для заголовків на біло�
 msgid "Too many attempts. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/onboarding/read-file.ts
+msgid "Too many files in a short time. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10774,6 +11232,10 @@ msgstr ""
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "Забагато запитів. Повторіть спробу пізніше."
+
+#: src/features/onboarding/messages.ts
+msgid "Too many tries in a short time. Wait a minute, then try again."
+msgstr ""
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
@@ -10799,6 +11261,10 @@ msgstr ""
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "Суми не додаються. Бонус і частка в компанії залежать від умов; вартість частки невизначена. Читайте оригінальні документи пропозиції."
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Track every application"
+msgstr ""
 
 #: src/features/home/new-roles.tsx
 msgid "Track in Applications"
@@ -10859,6 +11325,7 @@ msgstr "Спробуйте {suggestion}"
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/letters/write.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/shell.tsx
@@ -10921,9 +11388,18 @@ msgstr "Увімкніть посилання, щоб вибрати адрес�
 msgid "Turn this schedule on"
 msgstr "Увімкнути цей розклад"
 
+#: src/shell/permissions.tsx
+msgid "Turned off in Settings"
+msgstr ""
+
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "Two columns"
 msgstr "Дві колонки"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Two quick questions"
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Two stories"
@@ -11032,6 +11508,10 @@ msgstr "Безіменний ключ"
 msgid "Unsynced on this device"
 msgstr "Не синхронізовано на цьому пристрої"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Untick anything you'd rather leave out. You can change it all later in your Profile."
+msgstr ""
+
 #: src/features/write/entry-screen.tsx
 #: src/features/write/outline.tsx
 msgid "Untitled"
@@ -11042,6 +11522,7 @@ msgid "Untitled letter"
 msgstr "Лист без назви"
 
 #: src/features/documents/new-document.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Untitled resume"
 msgstr "Резюме без назви"
 
@@ -11452,6 +11933,11 @@ msgstr "Налаштування голосу"
 msgid "Volunteer"
 msgstr "Волонтерство"
 
+#. placeholder {0}: waitingFor.join(", ")
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Waiting for {0}…"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Waiting for you"
 msgstr "Чекає на вас"
@@ -11459,6 +11945,18 @@ msgstr "Чекає на вас"
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
 msgstr "Чекаю на відповідь"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue: LinkedIn profiles through treg or Apify, GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue. Nothing goes into your Profile until you check it."
+msgstr ""
 
 #. placeholder {0}: dates.raw
 #: src/features/write/date-field.tsx
@@ -11498,6 +11996,7 @@ msgstr "Помилка веб-пошуку: {0}"
 msgid "Web searches look for work here, up to three countries."
 msgstr "Веб-пошук шукає роботу в цих країнах. Виберіть до трьох країн."
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "Вебсайт"
@@ -11570,6 +12069,10 @@ msgstr "Що він вимагає"
 msgid "What matters to you"
 msgstr "Що для вас важливо"
 
+#: src/features/onboarding/questions.tsx
+msgid "What roles are you aiming for?"
+msgstr ""
+
 #: src/features/write/improve.tsx
 msgid "What should change?"
 msgstr "Що має змінитися?"
@@ -11630,6 +12133,10 @@ msgstr "Коли ви торкнетеся «Надіслати», {list} буд
 msgid "Where applications come from"
 msgstr "Звідки надходять заявки"
 
+#: src/features/onboarding/questions.tsx
+msgid "Where do you want to work?"
+msgstr ""
+
 #: src/features/career/preferences.tsx
 msgid "Where you want to work"
 msgstr "Де ви хочете працювати"
@@ -11649,6 +12156,10 @@ msgstr "Куди пішли ваші заявки"
 #: src/features/assistant/coach-screen.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "Які можливості найкраще відповідають моїм пріоритетам?"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "While we read your details"
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Who you'll meet"
@@ -11824,6 +12335,10 @@ msgstr ""
 msgid "You canceled the sign-in before it finished."
 msgstr "Ви скасували вхід до його завершення."
 
+#: src/features/onboarding/messages.ts
+msgid "You chose not to share it, so it wasn't read. Retry to choose again."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "Раніше ви забули це, тому повторно не збережено."
@@ -11835,6 +12350,10 @@ msgstr ""
 #: src/ui-legacy/overlays.tsx
 msgid "You have unsaved changes."
 msgstr "У вас є незбережені зміни."
+
+#: src/features/onboarding/messages.ts
+msgid "You seem to be offline. Check your connection and try again."
+msgstr ""
 
 #: src/features/workspace/tabs/messages.tsx
 msgid "You send it from your own email."
@@ -11899,6 +12418,18 @@ msgstr "Ви офлайн. Повторіть спробу, коли відно�
 msgid "You're up to date. New roles, reminders and finished briefings appear here."
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "You've used this as often as you can today. Try again tomorrow."
+msgstr ""
+
+#: src/features/onboarding/messages.ts
+msgid "You've used today's LinkedIn imports. Try again tomorrow, or add your LinkedIn export."
+msgstr ""
+
+#: src/features/onboarding/messages.ts
+msgid "Your account"
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "your AI connection"
@@ -11947,6 +12478,11 @@ msgstr "Ваші дані"
 #: src/features/ats-checker/messages.ts
 msgid "Your dates are written several different ways."
 msgstr "Ваші дати записані кількома різними способами."
+
+#: src/features/onboarding/onboarding-screen.tsx
+#: src/features/onboarding/source-review.tsx
+msgid "Your details"
+msgstr ""
 
 #: src/features/documents/new-document.tsx
 msgid "Your document was saved. Review it in the editor."
@@ -12082,8 +12618,16 @@ msgstr ""
 msgid "your preferences"
 msgstr "ваші побажання"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
+msgstr ""
+
 #: app/(tabs)/profile/index.tsx
 msgid "Your Profile is coming to the app"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Your Profile was changed somewhere else. Check what's new, then save again."
 msgstr ""
 
 #: src/features/settings/export.tsx
@@ -12114,6 +12658,10 @@ msgstr "Ваш запит і відповідне резюме, лист, ого
 msgid "Your requirements"
 msgstr "Ваші вимоги"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Your resume file"
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Your resume has a photo"
 msgstr "Ваше резюме має фото"
@@ -12132,6 +12680,10 @@ msgstr "Ваш сервер надсилає тестовий запит і зб
 
 #: src/auth/session-gate.tsx
 msgid "Your session ended"
+msgstr ""
+
+#: src/features/onboarding/read-file.ts
+msgid "Your session ended. Sign in again, then try again."
 msgstr ""
 
 #: src/features/ai/error.ts
@@ -12154,6 +12706,10 @@ msgstr "Ваше коротке посилання і власний домен 
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Ваше коротке посилання і власний домен повідомляють, що це резюме не поширюється, доки ви не опублікуєте його знову."
 
+#: src/features/onboarding/source-progress.tsx
+msgid "Your sources"
+msgstr ""
+
 #: src/features/assistant/coach-screen.tsx
 msgid "your stories"
 msgstr "ваші розповіді"
@@ -12165,6 +12721,10 @@ msgstr "Не вдалося завантажити вашу розповідь."
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "Ваша двохвилинна самопрезентація"
+
+#: src/features/onboarding/messages.ts
+msgid "Your website"
+msgstr ""
 
 #: src/features/letters/page.tsx
 #: src/preview/page.tsx

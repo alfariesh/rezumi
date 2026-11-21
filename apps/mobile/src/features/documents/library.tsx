@@ -474,7 +474,7 @@ export function DocumentsLibrary({ trashed = false }: DocumentsLibraryProps) {
 									? t`Try another search or clear your filters.`
 									: trashed
 										? t`Documents you move here stay for 30 days.`
-										: t`Import your current resume, or start fresh with your name.`
+										: t`Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample.`
 							}
 							action={
 								all.length
@@ -482,6 +482,11 @@ export function DocumentsLibrary({ trashed = false }: DocumentsLibraryProps) {
 									: trashed
 										? undefined
 										: { label: t`New document`, onPress: () => router.push(routes.new()) }
+							}
+							secondaryAction={
+								all.length || trashed
+									? undefined
+									: { label: t`Bring in my details`, onPress: () => router.push(routes.onboarding()) }
 							}
 						/>
 					)

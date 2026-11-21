@@ -15,7 +15,10 @@ const fill = { flex: 1 };
 const metrics = { frame: { x: 0, y: 0, width: 390, height: 844 }, insets: { top: 47, left: 0, right: 0, bottom: 34 } };
 
 export async function renderScreen(ui: ReactElement) {
-	const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+	// No garbage collection: its five-minute timer would keep Jest from exiting after a screen writes to the cache.
+	const queryClient = new QueryClient({
+		defaultOptions: { queries: { retry: false, gcTime: Number.POSITIVE_INFINITY } },
+	});
 	function Providers({ children }: { children: ReactNode }) {
 		return (
 			<GestureHandlerRootView style={fill}>

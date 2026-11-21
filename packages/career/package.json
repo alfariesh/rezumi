@@ -1,0 +1,25 @@
+{
+	"name": "@rezumi/career",
+	"version": "0.0.0",
+	"type": "module",
+	"private": true,
+	"exports": {
+		"./onboarding": "./src/onboarding.ts"
+	},
+	"scripts": {
+		"typecheck": "tsrs --noEmit",
+		"test": "vp test run --passWithNoTests",
+		"test:coverage": "vp test run --coverage --passWithNoTests",
+		"test:ci": "vp test run --reporter=default --reporter=github-actions --reporter=json --reporter=junit --outputFile.json=reports/vitest-results.json --outputFile.junit=reports/vitest-junit.xml --passWithNoTests"
+	},
+	"dependencies": {
+		"@rezumi/resume": "workspace:*",
+		"@rezumi/schema": "workspace:*"
+	},
+	"devDependencies": {
+		"@rezumi/config": "workspace:*",
+		"tsrs": "catalog:",
+		"typescript": "catalog:",
+		"vite-plus": "catalog:"
+	}
+}

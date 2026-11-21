@@ -11,6 +11,7 @@ import * as Sharing from "expo-sharing";
 import { Platform } from "react-native";
 import { buildIcs } from "./ics";
 import { reminderId, reminderTime } from "./schedule";
+import { askPermission } from "@/shell/permissions";
 
 export * from "./ics";
 export * from "./schedule";
@@ -32,13 +33,14 @@ const CHANNEL = "reminders";
 const queryKey = (applicationId: string) => ["reminders", applicationId] as const;
 const idOf = (target: ReminderTarget) => reminderId(target.kind, target.applicationId, target.entryId);
 
-/** Asks for permission only if it hasn't been answered; false when notifications are off. */
-async function requestPermission() {
-	const current = await Notifications.getPermissionsAsync();
-	if (current.granted) return true;
-	if (!current.canAskAgain) return false;
-	return (await Notifications.requestPermissionsAsync()).granted;
-}
+/** Asks for permission (after the explaining sheet) only if it hasn't been answered; false when notifications are off. */
+const requestPermission = () =>
+	askPermission(
+		"notifications",
+		{ get: () => Notifications.getPermissionsAsync(), request: () => Notifications.requestPermissionsAsync() },
+		// The reminder screen says itself when notifications are off.
+		true,
+	);
 
 async function schedule(target: ReminderTarget, lead: number): Promise<ScheduleResult> {
 	const id = idOf(target);

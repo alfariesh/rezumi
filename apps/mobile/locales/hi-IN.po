@@ -345,6 +345,11 @@ msgstr ""
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
+#. placeholder {0}: sourceLabel(id)
+#: src/features/onboarding/messages.ts
+msgid "{0} didn't answer in time. Try again in a moment."
+msgstr ""
+
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
 #: app/account/membership.tsx
@@ -587,6 +592,15 @@ msgstr "{issues, plural, one {# समस्या से आपको मैच
 msgid "{issues, plural, one {Check has # thing to review. You can still download.} other {Check has # things to review. You can still download.}}"
 msgstr "{issues, plural, one {चेक में समीक्षा के लिए # चीज़ है। आप अभी भी डाउनलोड कर सकते हैं.} other {चेक में समीक्षा के लिए # चीज़ें हैं। आप अभी भी डाउनलोड कर सकते हैं.}}"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "{kept} entries ticked"
+msgstr ""
+
+#. placeholder {0}: keys.length
+#: src/features/onboarding/source-review.tsx
+msgid "{kept} of {0}"
+msgstr ""
+
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind} साक्षात्कार"
@@ -764,6 +778,10 @@ msgstr "1 कॉलम, इनलाइन"
 msgid "1 day"
 msgstr "1 दिन"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "1 entry ticked"
+msgstr ""
+
 #: src/features/application-detail/hooks.ts
 msgid "1 h"
 msgstr "1 घंटा"
@@ -793,6 +811,10 @@ msgstr "2-3 वाक्य सबसे अच्छे से पढ़े ज
 #: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "24 घंटे पहले"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "3 new roles match you"
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
@@ -862,9 +884,17 @@ msgstr "एक अंकीय तारीख अलग-अलग देशो�
 msgid "A page is rotated."
 msgstr "एक पेज घुमाया हुआ है।"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "A portfolio and a coach"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "चेक इन करने के लिए एक अनुस्मारक, आपके ऐसा करने तक अगले चरण के रूप में दिखाया जाता है।"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "A resume in minutes"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "A role has no description"
@@ -1009,6 +1039,10 @@ msgstr "व्यक्ति जोड़ें"
 msgid "Add a phone number"
 msgstr "एक फ़ोन नंबर जोड़ें"
 
+#: src/features/onboarding/questions.tsx
+msgid "Add a place"
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Add a question from the form"
 msgstr "फ़ॉर्म से एक सवाल जोड़ें"
@@ -1016,6 +1050,10 @@ msgstr "फ़ॉर्म से एक सवाल जोड़ें"
 #: src/features/write/improve.tsx
 msgid "Add a result"
 msgstr "एक परिणाम जोड़ें"
+
+#: src/features/onboarding/questions.tsx
+msgid "Add a role"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Add a role or company to look for."
@@ -1072,6 +1110,10 @@ msgstr "उसकी तैयारी की योजना बनाने �
 #: src/features/career/schedule-sheet.tsx
 msgid "Add an upcoming interview in Applications first."
 msgstr "पहले आवेदन में एक आगामी साक्षात्कार जोड़ें।"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Add any of these and we'll fill in your Profile. You check everything before it's saved."
+msgstr ""
 
 #: src/features/search/search-screen.tsx
 msgid "Add application"
@@ -1227,6 +1269,10 @@ msgstr "स्वयंसेवा जोड़ें"
 msgid "Add your name"
 msgstr "अपना नाम जोड़ें"
 
+#: src/features/onboarding/messages.ts
+msgid "Add your own AI connection in Settings, or choose Rezumi AI."
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr ""
@@ -1255,6 +1301,10 @@ msgstr "पता"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "अगर तब तक जवाब नहीं आता, तो \"आज\" में एक रिमाइंडर जोड़ता है।"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "Adds your own public projects."
+msgstr ""
 
 #: src/features/design/advanced.tsx
 msgid "Advanced"
@@ -1395,10 +1445,6 @@ msgstr "सभी टैग"
 msgid "All your applications are closed"
 msgstr "आपके सभी आवेदन बंद हैं"
 
-#: src/features/settings/profile.tsx
-msgid "Allow camera access in your device settings to take a photo."
-msgstr "फ़ोटो लेने के लिए अपनी डिवाइस सेटिंग में कैमरा एक्सेस की अनुमति दें।"
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Allow microphone access in device settings, or type your answer."
 msgstr "डिवाइस सेटिंग में माइक्रोफ़ोन एक्सेस की अनुमति दें, या अपना उत्तर टाइप करें।"
@@ -1472,6 +1518,10 @@ msgstr "एक गलती"
 msgid "Ana Putri"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Analytics lead"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
 msgid "and {0} more"
@@ -1514,6 +1564,7 @@ msgid "Answers copied"
 msgstr "जवाब कॉपी किए गए"
 
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Any"
 msgstr "कोई भी"
 
@@ -1656,6 +1707,7 @@ msgstr "प्रति सप्ताह भेजे गए आवेदन (
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/stages.ts
 #: src/features/check/writing.tsx
+#: src/features/onboarding/intro-screen.tsx
 msgid "Applied"
 msgstr "आवेदन किया"
 
@@ -1796,8 +1848,13 @@ msgid "ATS checker"
 msgstr "ATS चेकर"
 
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "ATS-safe"
 msgstr "ATS-सुरक्षित"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "ATS-safe template"
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 msgid "Attach a cover letter (PDF)"
@@ -1865,6 +1922,7 @@ msgstr "अज़रबैजानी"
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/entry-sheet.tsx
@@ -1992,6 +2050,10 @@ msgstr "आपके न्यूनतम आधार वेतन से न�
 msgid "Bengali"
 msgstr "बंगाली"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "BI analyst"
+msgstr ""
+
 #: src/features/applications-board/views.tsx
 msgid "Board"
 msgstr "बोर्ड"
@@ -2034,6 +2096,10 @@ msgstr "सीमा त्रिज्या"
 msgid "Border width"
 msgstr "बॉर्डर चौड़ाई"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Both are optional. They help the coach find roles that fit you."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Break the resume into the usual sections so it can be segmented."
 msgstr "बायोडाटा को सामान्य सेक्शन में बांटें ताकि इसे विभाजित किया जा सके।"
@@ -2058,6 +2124,24 @@ msgstr "ब्रीफिंग रिफ्रेश चालू है · {n
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "ब्रीफ़िंग रीफ़्रेश रुका हुआ है"
+
+#: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
+msgid "Bring in my details"
+msgstr ""
+
+#: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
+msgid "Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample."
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Bring what you have"
+msgstr ""
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Bring your LinkedIn or an old resume, pick a template, and download a clean PDF."
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Bulgarian"
@@ -2093,6 +2177,10 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "क्या सॉफ़्टवेयर आपका बायोडाटा पढ़ सकता है?"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Can you help me answer \"Tell me about yourself\"?"
+msgstr ""
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
@@ -2258,6 +2346,14 @@ msgstr "इस पद को अपने प्रमाणों से मि
 msgid "Check views"
 msgstr "दृश्य जांचें"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Check what we found"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Check your connection, then try again."
+msgstr ""
+
 #: src/features/auth/check-email-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
 msgid "Check your email"
@@ -2312,6 +2408,10 @@ msgstr "चीनी (सरलीकृत)"
 msgid "Chinese (Traditional)"
 msgstr "चीनी (परंपरागत)"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Choose"
+msgstr ""
+
 #: src/features/application-detail/date-field.tsx
 msgid "Choose a date"
 msgstr "एक तारीख चुनें"
@@ -2339,6 +2439,10 @@ msgstr "एक PDF फ़ाइल चुनें. चयनित फ़ाइ
 #: src/features/application-detail/sections.tsx
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "10 एमबी से छोटा PDF चुनें। चयनित फ़ाइल अपलोड नहीं की गई थी."
+
+#: src/shell/permissions.tsx
+msgid "Choose a photo"
+msgstr ""
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2404,6 +2508,10 @@ msgstr "प्रति थोक कार्रवाई 200 आवेदन �
 #: src/features/design/advanced.tsx
 msgid "Circle"
 msgstr "गोला"
+
+#: src/features/onboarding/questions.tsx
+msgid "Cities or countries. Leave it empty for anywhere."
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "Clarify"
@@ -2606,6 +2714,10 @@ msgstr "नया साक्षात्कार जोड़ने से �
 msgid "Confirm the time with {contact} before adding a new interview."
 msgstr "नया साक्षात्कार जोड़ने से पहले {contact} के साथ समय की पुष्टि करें।"
 
+#: src/features/onboarding/messages.ts
+msgid "Confirm this is your own profile."
+msgstr ""
+
 #: src/features/assistant/provider.tsx
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
@@ -2707,6 +2819,8 @@ msgstr "प्रसंग छूट गया है, इसलिए इसक
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
 #: src/features/auth/check-email-screen.tsx
+#: src/features/onboarding/onboarding-screen.tsx
+#: src/shell/permissions.tsx
 msgid "Continue"
 msgstr "जारी रखें"
 
@@ -2857,6 +2971,10 @@ msgstr "सहेजे जाने की पुष्टि नहीं क�
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "सहेजे जाने की पुष्टि नहीं की जा सकी। डुप्लिकेट से बचने के लिए पुनः प्रयास करने से पहले आवेदन जाँचें।"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't copy the photo. You can add one later in your Profile."
+msgstr ""
+
 #: src/features/assistant/chat-view.tsx
 msgid "Couldn't copy the transcript. Try again."
 msgstr "प्रतिलेख कॉपी नहीं किया जा सका। पुनः प्रयास करें।"
@@ -2864,6 +2982,10 @@ msgstr "प्रतिलेख कॉपी नहीं किया जा �
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't create the letter. Try again."
 msgstr "पत्र नहीं बनाया जा सका। पुनः प्रयास करें।"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't create the resume. Try again."
+msgstr ""
 
 #: src/features/workspace/tabs/saved.tsx
 msgid "Couldn't delete it. It's back in Saved."
@@ -2986,6 +3108,10 @@ msgstr ""
 msgid "Couldn't load versions."
 msgstr "संस्करण लोड नहीं किये जा सके."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't load your details"
+msgstr ""
+
 #: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "आपकी प्रोफ़ाइल लोड नहीं की जा सकी."
@@ -3039,6 +3165,10 @@ msgstr "मुद्रित नहीं किया जा सका. पु
 msgid "Couldn't propose these edits: {0}"
 msgstr "इन संपादनों का प्रस्ताव नहीं किया जा सका: {0}"
 
+#: src/features/onboarding/messages.ts
+msgid "Couldn't reach the AI provider. Try again in a moment."
+msgstr "एआई प्रदाता तक नहीं पहुंच सका. थोड़ी देर में पुनः प्रयास करें."
+
 #: src/features/check/writing.tsx
 msgid "Couldn't reach your AI provider. Try again or check its key in AI settings."
 msgstr "आपके AI प्रदाता तक नहीं पहुंच सका. पुनः प्रयास करें या AI सेटिंग में इसकी कुंजी जाँचें।"
@@ -3048,6 +3178,11 @@ msgstr "आपके AI प्रदाता तक नहीं पहुं�
 msgid "Couldn't read “{0}”. Enter the dates so they sort and print consistently."
 msgstr "“{0}” पढ़ा नहीं जा सका। तारीखें दर्ज करें ताकि वे एक जैसे क्रम में लगें और प्रिंट हों।"
 
+#. placeholder {0}: sourceLabel(id)
+#: src/features/onboarding/messages.ts
+msgid "Couldn't read {0}. Try again."
+msgstr ""
+
 #: src/features/ats-checker/check.ts
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't read that file. Try again."
@@ -3056,6 +3191,10 @@ msgstr "वह फ़ाइल पढ़ी नहीं जा सकी। प
 #: src/features/check/parser.tsx
 msgid "Couldn't read the exported PDF."
 msgstr "निर्यातित PDF को पढ़ा नहीं जा सका."
+
+#: src/features/onboarding/read-file.ts
+msgid "Couldn't read the file. Try again."
+msgstr ""
 
 #. placeholder {0}: part.errorText
 #: src/features/assistant/messages.tsx
@@ -3146,6 +3285,10 @@ msgstr "समय क्षेत्र सहेजा नहीं जा स�
 msgid "Couldn't save this role to Applications. Try again."
 msgstr "यह पद आवेदनों में सहेजा नहीं जा सका। पुनः प्रयास करें।"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your answers. You can add them later in Profile → Preferences."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Couldn't save your changes, so drafting didn't start. Nothing on the page changed."
 msgstr "आपके बदलाव सहेजे नहीं जा सके, इसलिए मसौदा बनाना शुरू नहीं हुआ। पृष्ठ पर कुछ नहीं बदला।"
@@ -3163,6 +3306,14 @@ msgstr "आपके परिवर्तन सहेजे नहीं ज�
 #: src/features/career/preferences.tsx
 msgid "Couldn't save your preferences. Your draft is still here."
 msgstr "आपकी प्राथमिकताएँ सहेजी नहीं जा सकीं. आपका ड्राफ्ट अभी भी यहाँ है."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your Profile, so this would open again. Try again."
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your Profile. Try again."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't save. Try again."
@@ -3355,6 +3506,10 @@ msgstr "अपने ब्राउज़र में खाता सेट�
 msgid "Create copy"
 msgstr "प्रति बनाएँ"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Create my resume"
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Create or import a resume first, then return to copy it for this job."
 msgstr "पहले एक रेज़्यूमे बनाएं या आयात करें, फिर इस कार्य के लिए इसे कॉपी करने के लिए वापस लौटें।"
@@ -3378,6 +3533,10 @@ msgstr "दस्तावेज़ बनाया जा रहा है..."
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Creating your account…"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Creating…"
 msgstr ""
 
 #: app/account/membership.tsx
@@ -3471,6 +3630,14 @@ msgstr "डार्क"
 #: src/features/search/search-screen.tsx
 msgid "Dark theme"
 msgstr "डार्क थीम"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Data analyst"
+msgstr ""
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Data analyst · Bandung"
+msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Data sharing canceled. Nothing was sent to the AI provider."
@@ -3725,6 +3892,7 @@ msgstr "डिज़ाइन को डिफ़ॉल्ट पर रीस�
 
 #: app/applications/[id]/[tab].tsx
 #: src/features/document-menu/index.tsx
+#: src/features/onboarding/messages.ts
 msgid "Details"
 msgstr "विवरण"
 
@@ -4097,6 +4265,7 @@ msgstr ""
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "ई‑मेल"
@@ -4144,6 +4313,10 @@ msgstr "उन्नत पठन अनुपलब्ध; अंतर्न�
 #: src/features/career/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
 msgstr "पूरी राशि दर्ज करें, जैसे 95000। आपकी पिछली राशि नहीं बदली है।"
+
+#: src/features/onboarding/messages.ts
+msgid "Enter a GitHub username, like octocat."
+msgstr ""
 
 #: src/features/write/pickers.tsx
 msgid "Enter a hex color like #1a1a1a, or rgba(…)."
@@ -4214,6 +4387,10 @@ msgstr "अपना नाम दर्ज करें।"
 #: src/features/auth/email-sign-in-screen.tsx
 msgid "Enter your password."
 msgstr "अपना पासवर्ड दर्ज करें।"
+
+#: src/features/onboarding/messages.ts
+msgid "Enter your site's address, like yourname.com."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4290,6 +4467,7 @@ msgid "Everything your resumes, letters and Coach start from. For now, your fact
 msgstr ""
 
 #: src/features/career/facts.tsx
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/write/fields.ts
 msgid "Experience"
 msgstr "अनुभव"
@@ -4434,6 +4612,10 @@ msgstr "फिनिश"
 msgid "First offer"
 msgstr "पहला ऑफ़र"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "First resume"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "First run (YYYY-MM-DD)"
 msgstr "पहला रन (YYYY-MM-DD)"
@@ -4555,6 +4737,10 @@ msgstr "उदाहरण के लिए, Lumen को भेजा गया
 msgid "For example: “{name}: I did … at … in 2024, and it led to …”"
 msgstr "उदाहरण के लिए: “{name}: मैंने 2024 में... किया था, और इसके परिणामस्वरूप...”"
 
+#: src/features/onboarding/questions.tsx
+msgid "For example: Product designer, Data analyst."
+msgstr ""
+
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "For LibreOffice and other open-source editors. Layout is simplified."
@@ -4606,6 +4792,10 @@ msgstr "आज मिला"
 msgid "Found yesterday"
 msgstr "कल मिला"
 
+#: src/features/onboarding/messages.ts
+msgid "Found: {list}"
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "Free"
 msgstr ""
@@ -4638,14 +4828,23 @@ msgstr ""
 msgid "From Fit"
 msgstr "उपयुक्तता से"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "From your account"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "From your experience entries"
 msgstr "आपके अनुभव प्रविष्टियों से"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "From your GitHub sign-in."
+msgstr ""
 
 #: src/features/career/search-regions-field.tsx
 msgid "From your timezone"
 msgstr "आपके समय क्षेत्र के आधार पर"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Full name"
 msgstr "पूरा नाम"
@@ -4659,6 +4858,10 @@ msgstr "पूर्ण चौड़ाई"
 msgid "German"
 msgstr "जर्मन"
 
+#: src/shell/permissions.tsx
+msgid "Get a nudge at the right time"
+msgstr ""
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback"
 msgstr "फ़ीडबैक पाएँ"
@@ -4671,6 +4874,10 @@ msgstr "\"फ़ीडबैक पाएँ\" सवाल, आपका जव
 msgid "Get new jobs for your search here every morning"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Get started"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "लम्बा हो रहा है. \"छोटा\" आज़माएं, या कम से कम विशिष्ट पैराग्राफ़ काटें।"
@@ -4678,6 +4885,10 @@ msgstr "लम्बा हो रहा है. \"छोटा\" आज़म�
 #: src/features/auth/welcome-screen.tsx
 msgid "GitHub"
 msgstr "गिटहब"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "GitHub username"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4754,6 +4965,7 @@ msgstr "शीर्षक 3"
 msgid "Heading changed"
 msgstr "शीर्षक बदल गया"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Headline"
 msgstr "हेडलाइन"
@@ -5022,14 +5234,6 @@ msgstr "इसे आयात करें"
 msgid "Import with AI"
 msgstr ""
 
-#: src/features/home/home-screen.tsx
-msgid "Import your current resume, or start blank or from a sample. We lay out every section for you to refine."
-msgstr ""
-
-#: src/features/documents/library.tsx
-msgid "Import your current resume, or start fresh with your name."
-msgstr "अपना वर्तमान रेज़्यूमे आयात करें, या अपने नाम के साथ नए सिरे से शुरुआत करें।"
-
 #: src/features/history/history.tsx
 msgid "Imported"
 msgstr "आयातित"
@@ -5108,6 +5312,7 @@ msgstr "केवल इंटरफ़ेस. प्रत्येक बा�
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/coming-up.tsx
+#: src/features/onboarding/intro-screen.tsx
 msgid "Interview"
 msgstr "साक्षात्कार"
 
@@ -5196,6 +5401,10 @@ msgstr "समस्याएँ"
 #: src/features/check/issues.ts
 msgid "It has entries but isn't placed on a page."
 msgstr "इसमें प्रविष्टियाँ हैं लेकिन किसी पृष्ठ पर नहीं रखी गई हैं।"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "It starts with your Profile. You can switch templates any time."
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 msgid "It's removed from the timeline for good."
@@ -5670,6 +5879,14 @@ msgstr "जुड़ा हुआ. बायोडाटा आने पर न
 msgid "LinkedIn"
 msgstr "लिंक्डइन"
 
+#: src/features/onboarding/messages.ts
+msgid "LinkedIn import isn't available right now. Add your LinkedIn export or a resume file instead."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "LinkedIn profile link"
+msgstr ""
+
 #: src/features/applications-board/views.tsx
 msgid "List"
 msgstr "सूची"
@@ -5686,6 +5903,10 @@ msgstr "लिस्ट व्यू"
 msgid "Lithuanian"
 msgstr "लिथुआनियाई"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Live"
+msgstr ""
+
 #: src/features/check/score.tsx
 msgid "Live · updates as you edit"
 msgstr "जैसे ही आप संपादित करते हैं लाइव · अपडेट"
@@ -5696,6 +5917,7 @@ msgstr "{url} पर लाइव"
 
 #: src/features/design/design-pane.tsx
 #: src/features/home/section.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Loading"
 msgstr "लोड हो रहा है"
 
@@ -5768,6 +5990,7 @@ msgstr "लोड हो रहा है..."
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/style-groups.tsx
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
 msgid "Location"
@@ -6058,6 +6281,10 @@ msgstr "अधिक व्यक्तिगत"
 msgid "More providers and options are in Settings. Editing, design, Check issues and downloads work without AI."
 msgstr "समायोजन में और प्रदाता व विकल्प हैं। संपादन, डिज़ाइन, जाँच की समस्याएँ और डाउनलोड AI के बिना काम करते हैं।"
 
+#: src/features/onboarding/template-choice.tsx
+msgid "More templates"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "एक से अधिक ईमेल पता दिखाई देता है।"
@@ -6090,6 +6317,10 @@ msgstr "अधिकतर बुलेट किसी काम के बज�
 #: src/features/ats-checker/messages.ts
 msgid "Most entries have no dates."
 msgstr "अधिकतर प्रविष्टियों में कोई तारीख नहीं है।"
+
+#: src/features/onboarding/messages.ts
+msgid "Most of this profile is private, so little came in."
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
@@ -6382,6 +6613,10 @@ msgstr "नई STARR कहानी"
 msgid "New to Rezumi? Create an account"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Next"
+msgstr ""
+
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
 msgstr ""
@@ -6577,9 +6812,17 @@ msgstr "कोई फ़ोन नंबर नहीं"
 msgid "No phone number was found."
 msgstr "कोई फ़ोन नंबर नहीं मिला।"
 
+#: src/features/onboarding/source-review.tsx
+msgid "No photo"
+msgstr ""
+
 #: src/features/write/basics-screen.tsx
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "कोई फोटो नहीं। अधिकांश ATS फ़ोटो को अनदेखा करते हैं; कुछ क्षेत्र इसकी अपेक्षा करते हैं।"
+
+#: src/features/onboarding/messages.ts
+msgid "No public repositories of your own, so no projects came in."
+msgstr ""
 
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
@@ -6697,6 +6940,10 @@ msgstr "अभी जुड़ा नहीं है। इसके DNS रि
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "Not enough Rezumi AI credits to read it."
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "मेरे लिए नहीं"
@@ -6714,7 +6961,9 @@ msgid "Not included"
 msgstr ""
 
 #: src/features/assistant/messages.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/workspace/tabs/debrief.tsx
+#: src/shell/permissions.tsx
 msgid "Not now"
 msgstr "अभी नहीं"
 
@@ -6761,6 +7010,10 @@ msgstr "यहां किसी भी चीज की कीमत आपक
 msgid "Nothing marks a role as ongoing."
 msgstr "कुछ भी किसी भूमिका को जारी नहीं दिखाता।"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Nothing new to add"
+msgstr ""
+
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Nothing on this day."
 msgstr "इस दिन कुछ भी नहीं."
@@ -6777,6 +7030,10 @@ msgstr "अभी तक कुछ भी निर्धारित नही�
 msgid "Nothing scheduled yet."
 msgstr "अभी कुछ भी शेड्यूल नहीं है।"
 
+#: src/features/onboarding/messages.ts
+msgid "Nothing to add from here."
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Nothing to apply"
 msgstr "लागू करने को कुछ नहीं"
@@ -6788,6 +7045,10 @@ msgstr "ठीक करने के लिए कुछ भी नहीं"
 #: src/features/ats-checker/messages.ts
 msgid "Nothing to fix. The remaining pages were simply not covered by this report."
 msgstr "ठीक करने के लिए कुछ नहीं। बचे हुए पेज बस इस रिपोर्ट में शामिल नहीं थे।"
+
+#: src/features/onboarding/messages.ts
+msgid "Nothing was found at that address. Check it and try again."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Notice period (weeks)"
@@ -6837,6 +7098,7 @@ msgid "Off. The letter keeps its own copy of your details."
 msgstr "बंद। पत्र आपके विवरण की अपनी प्रति रखता है।"
 
 #: src/features/applications/stages.ts
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/workspace/tabs/saved.tsx
 msgid "Offer"
 msgstr "ऑफ़र"
@@ -6848,6 +7110,7 @@ msgid "Offers"
 msgstr "ऑफ़र"
 
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Office days a week, at most"
 msgstr "हफ़्ते में ऑफ़िस के दिन, अधिकतम"
 
@@ -6889,6 +7152,7 @@ msgid "Once you've sent a few applications, this shows how far they get and how 
 msgstr "एक बार जब आप नौकरी के लिए कुछ आवेदन भेज देते हैं, तो इससे पता चलता है कि वे कितनी दूर तक पहुँचते हैं और लोग कितनी जल्दी उत्तर देते हैं।"
 
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "One column"
 msgstr "एक स्तंभ"
 
@@ -7014,6 +7278,10 @@ msgstr "अनसुलझे प्रश्न"
 msgid "Open resume"
 msgstr "रेज़्यूमे खोलें"
 
+#: src/shell/permissions.tsx
+msgid "Open Settings"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Open story"
 msgstr "कहानी खोलें"
@@ -7023,6 +7291,7 @@ msgid "Open the exported file and confirm you can select and copy every part of 
 msgstr "एक्सपोर्ट की गई फ़ाइल खोलें और पुष्टि करें कि आप इसके हर हिस्से को चुन और कॉपी कर सकते हैं।"
 
 #: src/features/documents/import-file.ts
+#: src/features/onboarding/read-file.ts
 msgid "Open the file in Word and save it as .docx first."
 msgstr "फ़ाइल को Word में खोलें और पहले इसे .docx के रूप में सहेजें।"
 
@@ -7120,6 +7389,10 @@ msgstr "अन्य लाभ"
 msgid "Other concern"
 msgstr "अन्य चिंता"
 
+#: src/features/onboarding/source-review.tsx
+msgid "Other details"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/threads.tsx
 msgid "Other documents · {0}"
@@ -7171,6 +7444,13 @@ msgstr "पृष्ठ {0} · साइडबार"
 #: src/features/check/page.tsx
 msgid "Page {0} of {1}"
 msgstr "पृष्ठ {0} का {1}"
+
+#. placeholder {0}: index + 1
+#. placeholder {1}: pages.length
+#. placeholder {2}: item.title
+#: src/features/onboarding/intro-screen.tsx
+msgid "Page {0} of {1}: {2}"
+msgstr ""
 
 #. placeholder {0}: page.index + 1
 #: src/features/ats-checker/original-page.tsx
@@ -7275,6 +7555,10 @@ msgstr "फ़ॉर्म से सवाल पेस्ट करें"
 msgid "Paste your key"
 msgstr "अपनी कुंजी चिपकाएँ"
 
+#: src/features/onboarding/messages.ts
+msgid "Paste your profile link, like linkedin.com/in/your-name."
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/add-sheet.tsx
 msgid "Pasted description"
@@ -7313,6 +7597,10 @@ msgstr "PDF शैलियाँ CSS के सबसेट का समर्
 msgid "PDF uses your AI provider when one is ready. Turn off the AI switch to read its text layer on your server. Word (.docx) needs an AI provider. Current and v4 Rezumi JSON, cover letters, JSON Resume and LinkedIn exports (.zip) are supported. Up to 10 MB."
 msgstr "जब कोई तैयार हो तो PDF आपके AI प्रदाता का उपयोग करता है। अपने सर्वर पर इसकी टेक्स्ट परत को पढ़ने के लिए AI स्विच को बंद करें। Word (.docx) को एक AI प्रदाता की आवश्यकता है। वर्तमान और v4 Rezumi JSON, कवर लेटर, JSON Resume और LinkedIn निर्यात (.zip) समर्थित हैं। 10 एमबी तक."
 
+#: src/features/onboarding/source-fields.tsx
+msgid "PDF, Word, a LinkedIn export or a Rezumi file"
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "PDF, Word, Rezumi, JSON Resume or LinkedIn export."
 msgstr "PDF, Word, Rezumi, JSON Resume या LinkedIn निर्यात करें।"
@@ -7340,6 +7628,11 @@ msgstr "सब कुछ स्थायी रूप से हटा देत
 msgid "Persian"
 msgstr "फ़ारसी"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Personal website"
+msgstr ""
+
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
 msgid "Phone"
@@ -7349,6 +7642,7 @@ msgstr "फ़ोन"
 msgid "Phone (optional)"
 msgstr "फ़ोन (वैकल्पिक)"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Photo"
 msgstr "फ़ोटो"
@@ -7368,6 +7662,10 @@ msgstr "पेज पर फोटो."
 #: src/features/write/date-field.tsx
 msgid "Pick {label}"
 msgstr "{label} चुनें"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Pick a look for your first resume"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Pick a time after now."
@@ -7510,6 +7808,10 @@ msgstr "अभ्यास की प्राथमिकता:"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Practicing your story: {storyTitle}"
 msgstr "आपकी कहानी का अभ्यास: {storyTitle}"
+
+#: src/shell/permissions.tsx
+msgid "Practise out loud"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Prefer a single column, or keep the side column to short, self-contained lists."
@@ -7788,6 +8090,10 @@ msgstr "सवाल के विकल्प"
 msgid "Question removed"
 msgstr "सवाल हटाया गया"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Questions"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Questions to ask"
 msgstr "पूछने के लिए सवाल"
@@ -7819,6 +8125,10 @@ msgstr "फ़ॉन्ट एम्बेड करके दोबारा �
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "फ़ॉन्ट एम्बेड करके दोबारा एक्सपोर्ट करें, फिर फ़ाइल खोलें और जांचें कि टेक्स्ट सही तरह से कॉपी होता है।"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "Read before. Choose another to replace it."
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7861,6 +8171,10 @@ msgstr "पेज पढ़ें"
 msgid "Read the resume"
 msgstr "रेज़्यूमे पढ़ा"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Read with AI. Only what's on the page comes in."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Readability"
 msgstr "पठनीयता"
@@ -7880,6 +8194,10 @@ msgstr "पेज पढ़ा जा रहा है..."
 #: src/features/documents/new-document.tsx
 msgid "Reading the file and finding sections…"
 msgstr "फ़ाइल को पढ़ना और अनुभाग ढूँढना..."
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading the file…"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Reading the message"
@@ -7905,6 +8223,10 @@ msgstr "पाठ पढ़ना"
 msgid "Reading this file with AI needs a tested AI provider. Set one up, then retry."
 msgstr "इस फ़ाइल को AI के साथ पढ़ने के लिए एक परीक्षित AI प्रदाता की आवश्यकता है। एक सेट करें, फिर पुनः प्रयास करें।"
 
+#: src/features/onboarding/read-file.ts
+msgid "Reading Word files needs an AI connection. Add one in Settings → AI providers, or choose a PDF instead."
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "Reading your answer"
 msgstr "आपका जवाब पढ़ रहा है"
@@ -7912,6 +8234,14 @@ msgstr "आपका जवाब पढ़ रहा है"
 #: src/features/workspace/parts.tsx
 msgid "Reading your notes"
 msgstr "आपकी टिप्पणियाँ पढ़ रहा है"
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading your profile…"
+msgstr ""
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading…"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 #: src/features/check/score.tsx
@@ -8083,6 +8413,7 @@ msgstr "अनुस्मारक"
 
 #: src/features/career/offers.tsx
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Remote"
 msgstr "रिमोट"
 
@@ -8092,8 +8423,10 @@ msgstr "रिमोट"
 msgid "Remove"
 msgstr "निकालना"
 
+#. placeholder {0}: chosen.name
 #. placeholder {0}: contact.name
 #: src/features/application-detail/sheets.tsx
+#: src/features/onboarding/source-fields.tsx
 msgid "Remove {0}"
 msgstr "{0} निकालें"
 
@@ -8105,6 +8438,14 @@ msgstr ""
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
 msgstr "{name} हटाएं"
+
+#: src/features/onboarding/questions.tsx
+msgid "Remove {place}"
+msgstr ""
+
+#: src/features/onboarding/questions.tsx
+msgid "Remove {role}"
+msgstr ""
 
 #: src/features/write/basics-screen.tsx
 msgid "Remove field"
@@ -8335,6 +8676,8 @@ msgid "Resume details"
 msgstr "बायोडाटा विवरण"
 
 #: src/features/application-detail/sections.tsx
+#: src/features/onboarding/messages.ts
+#: src/features/onboarding/source-fields.tsx
 msgid "Resume file"
 msgstr "रेज़्यूमे फ़ाइल"
 
@@ -8399,6 +8742,7 @@ msgstr "{1} का उपयोग करके {0} को पुनः प्�
 #: src/features/letters/page.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
+#: src/features/onboarding/source-progress.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -8452,6 +8796,7 @@ msgstr ""
 
 #: src/features/assistant/page-marks.tsx
 #: src/features/home/needs-you.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Review"
 msgstr "समीक्षा"
 
@@ -8495,6 +8840,10 @@ msgstr "सहेजने से पहले विवरण की समी�
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "चुने गए रेज़्यूमे और कवर लेटर की उनके एडिटर में समीक्षा करें।"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Review what we found"
+msgstr ""
+
 #: src/features/check/writing.tsx
 msgid "Review writing"
 msgstr "समीक्षा लेखन"
@@ -8527,10 +8876,34 @@ msgstr "पुनः लिखना स्वीकार किया गय�
 msgid "Rezumi AI credits"
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "Rezumi AI isn't available right now. Use your own AI connection, or add a resume file instead."
+msgstr ""
+
 #. placeholder {0}: creditCount(CREDIT_COSTS[action])
 #. placeholder {1}: creditCount(balance)
 #: src/features/billing/ai-source.ts
 msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi records only while you answer a practice question, to turn your answer into text. You can change this any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi sends reminders you set and new roles from your schedules. Nothing else. You can turn notifications off any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi uses the camera only while you take a photo for your Profile or resume. You can change this any time in Settings."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -8722,6 +9095,10 @@ msgstr ""
 msgid "Save to Knowledge"
 msgstr "ज्ञानकोश में सहेजें"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Save to my Profile"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 msgid "Save your version over theirs."
 msgstr "उनके संस्करण के स्थान पर अपना संस्करण सहेजें।"
@@ -8777,6 +9154,7 @@ msgstr "नौकरी बचा रहा हूँ. कोई अन्य �
 
 #: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Saving…"
@@ -8915,6 +9293,10 @@ msgstr "अनुभाग · मुद्रण आदेश"
 #: src/features/check/issues.ts
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "अनुभाग ऐसे शीर्षकों का उपयोग करते हैं जिन्हें सिस्टम पहचानते हैं, और कार्य अनुभव दिखाई देता है।"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "See where each one stands, get new roles that fit you, and never miss an interview."
+msgstr ""
 
 #: src/features/documents/document-sheets.tsx
 msgid "Select"
@@ -9138,6 +9520,10 @@ msgstr "अनुभाग साझा करें"
 msgid "Share via…"
 msgstr "के माध्यम से साझा करें..."
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Share your work on your own page, and practise with a coach that knows your story."
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -9308,7 +9694,6 @@ msgstr "साइडबार को अक्सर सबसे आखिर �
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
-#: src/linking/open.ts
 msgid "Sign in"
 msgstr "साइन इन"
 
@@ -9325,10 +9710,6 @@ msgstr "इस रेज़्यूमे की जाँच जारी र�
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "काम जारी रखने के लिए फिर से साइन इन करें। आपके द्वारा किए गए संपादन इस डिवाइस पर रखे जाते हैं और आपके साइन इन करने के बाद सिंक हो जाते हैं।"
 
-#: src/linking/open.ts
-msgid "Sign in to {server}, then continue to the linked document."
-msgstr "{server} में साइन इन करें, फिर लिंक किए गए दस्तावेज़ पर आगे बढ़ें।"
-
 #: src/features/documents/new-document.tsx
 #: src/features/documents/queries.ts
 #: src/features/share/export-screen.tsx
@@ -9343,10 +9724,6 @@ msgstr "दस्तावेज़ बनाने या आयात कर�
 #: app/builder/[id]/write.tsx
 msgid "Sign in to edit this resume."
 msgstr "इस रेज़्यूमे को संपादित करने के लिए साइन इन करें।"
-
-#: src/linking/open.ts
-msgid "Sign in to open this link"
-msgstr "इस लिंक को खोलने के लिए साइन इन करें"
 
 #: src/features/documents/library.tsx
 msgid "Sign in to see your documents"
@@ -9436,6 +9813,7 @@ msgstr "आकार"
 msgid "Skill"
 msgstr "कौशल"
 
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/write/fields.ts
 msgid "Skills"
 msgstr "कौशल"
@@ -9445,6 +9823,8 @@ msgid "Skills, interests and profiles"
 msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
+#: src/features/onboarding/intro-screen.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Skip"
 msgstr "छोड़ें"
@@ -9645,6 +10025,10 @@ msgstr "से शुरु करें"
 msgid "Start from one you have and link the application."
 msgstr "आपके पास जो है उससे शुरू करें और नौकरी आवेदन को लिंक करें।"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Start from scratch"
+msgstr ""
+
 #: src/features/write/section-sheet.tsx
 msgid "Start on a new page"
 msgstr "एक नये पृष्ठ पर प्रारंभ करें"
@@ -9678,6 +10062,10 @@ msgstr "टाइप करना प्रारंभ करें. किस�
 msgid "Start with the sections most resumes have."
 msgstr "उन अनुभागों से प्रारंभ करें जो अधिकांश बायोडाटा में होते हैं।"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Start with your dashboard project at Kopi Senja: it cut report time by half."
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Start with your name. Build from there."
 msgstr "अपने नाम से शुरू करें. वहां से निर्माण करें."
@@ -9700,6 +10088,16 @@ msgstr "दस्तावेज़ में रहें"
 
 #: src/shell/account-menu.tsx
 msgid "Stay signed in"
+msgstr ""
+
+#. placeholder {0}: ONBOARDING_STEPS.indexOf(step) + 1
+#. placeholder {1}: ONBOARDING_STEPS.length
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Step {0} of {1}"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Step {index} of {total}"
 msgstr ""
 
 #: src/features/assistant/chat-view.tsx
@@ -9906,6 +10304,10 @@ msgstr "{company} नौकरी विज्ञापन के अनुर�
 msgid "Tailored vs. base resume"
 msgstr "अनुकूलित बनाम आधार बायोडाटा"
 
+#: src/shell/permissions.tsx
+msgid "Take a photo"
+msgstr ""
+
 #: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "फोटो लो"
@@ -9983,6 +10385,10 @@ msgstr "टेम्प्लेट को {0} में बदल दिया 
 #: src/features/letters/design.tsx
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "टेम्प्लेट, प्रकार और रंग बायोडाटा का अनुसरण करते हैं, इसलिए जोड़ी हमेशा मेल खाती है।"
+
+#: src/features/onboarding/template-choice.tsx
+msgid "Templates"
+msgstr "टेम्प्लेट"
 
 #: src/features/auth/welcome-screen.tsx
 msgid "Terms"
@@ -10078,6 +10484,10 @@ msgstr "वह फ़ाइल जांचने के लिए बहुत 
 msgid "That link couldn't be read. Paste the posting text instead."
 msgstr "वह लिंक पढ़ा नहीं जा सका. इसके स्थान पर जॉब पोस्टिंग टेक्स्ट चिपकाएँ।"
 
+#: src/features/onboarding/messages.ts
+msgid "That profile wasn't found, or it isn't public. Check the link."
+msgstr ""
+
 #: src/features/ai/error.ts
 msgid "That provider setup isn't valid. Check the key, model and base URL."
 msgstr "वह प्रदाता सेटअप मान्य नहीं है. कुंजी, मॉडल और आधार URL सत्यापित करें."
@@ -10155,6 +10565,14 @@ msgstr "संपादक जाँच पर खुलता है, जो �
 msgid "The end is before the start."
 msgstr "अंत प्रारंभ से पहले है."
 
+#: src/features/onboarding/messages.ts
+msgid "The file couldn't be read as a resume."
+msgstr "फ़ाइल को बायोडाटा के रूप में नहीं पढ़ा जा सका."
+
+#: src/features/onboarding/read-file.ts
+msgid "The file is too large. Choose one up to 10 MB."
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "The follow-up is saved. To get a reminder, allow notifications in your device settings."
 msgstr "अनुवर्ती सहेजा गया है. अनुस्मारक प्राप्त करने के लिए, अपनी डिवाइस सेटिंग में सूचनाओं की अनुमति दें।"
@@ -10210,6 +10628,10 @@ msgstr "जिस क्रम में टेक्स्ट संग्र�
 #: src/features/career/facts.tsx
 msgid "The original stays in correction history. Stories using it will need review."
 msgstr "मूल सुधार इतिहास में रहता है। इसका उपयोग करने वाली कहानियों की समीक्षा की आवश्यकता होगी।"
+
+#: src/features/onboarding/messages.ts
+msgid "The page is long, so only its first part was read."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "The pages are pictures, with no text behind them."
@@ -10315,6 +10737,10 @@ msgstr "किसी प्रोफ़ाइल, पोर्टफ़ोलि
 msgid "There is no summary paragraph."
 msgstr "कोई सारांश पैराग्राफ नहीं है।"
 
+#: src/features/onboarding/messages.ts
+msgid "There's no GitHub account with that username."
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "These are the answers saved when you applied."
 msgstr "ये वे जवाब हैं जो आवेदन करते समय सहेजे गए थे।"
@@ -10417,6 +10843,10 @@ msgstr "यह प्रविष्टि"
 msgid "This entry was deleted."
 msgstr "यह प्रविष्टि हटा दी गई."
 
+#: src/features/onboarding/read-file.ts
+msgid "This file can't be read. Choose a PDF, Word file, LinkedIn export (.zip) or resume JSON."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file contains form fields."
 msgstr "इस फ़ाइल में फ़ॉर्म फ़ील्ड हैं।"
@@ -10428,6 +10858,10 @@ msgstr "इस फ़ाइल में अदृश्य रूप से ब
 #: src/features/ats-checker/messages.ts
 msgid "This file contains white-on-white text."
 msgstr "इस फ़ाइल में सफ़ेद पर सफ़ेद टेक्स्ट है।"
+
+#: src/features/onboarding/read-file.ts
+msgid "This file couldn't be read as a resume."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (.zip)."
@@ -10485,6 +10919,10 @@ msgstr "इस फ़ाइल का आकार पढ़ा नहीं ज
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr ""
 
+#: src/features/onboarding/read-file.ts
+msgid "This is a cover letter. Add a resume or a LinkedIn export instead."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "यह एक PDF पोर्टफ़ोलियो है: दिखने वाला पेज केवल एक कवर है।"
@@ -10493,9 +10931,21 @@ msgstr "यह एक PDF पोर्टफ़ोलियो है: दिख
 msgid "This is an XFA form, so most software reads only the empty shell."
 msgstr "यह एक XFA फ़ॉर्म है, इसलिए अधिकतर सॉफ़्टवेयर केवल खाली ढांचा पढ़ता है।"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "This is my own profile"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "यह बायोडाटा का सामान्य पेज आकार नहीं है।"
+
+#: src/features/onboarding/messages.ts
+msgid "This isn't available for your account."
+msgstr ""
+
+#: src/features/onboarding/read-file.ts
+msgid "This JSON isn't a resume Rezumi can read."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "This JSON isn't a supported resume or cover letter."
@@ -10560,6 +11010,10 @@ msgstr "यह मार्ग बदल गया. समीक्षा फि
 #: src/features/check/parser.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "इस PDF में कोई टेक्स्ट परत नहीं है, इसलिए पार्सर इसमें से कुछ भी नहीं पढ़ता है।"
+
+#: src/features/onboarding/read-file.ts
+msgid "This PDF has no text to read (a scan or a picture). Try the Word version, or add LinkedIn or GitHub instead."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
@@ -10767,6 +11221,10 @@ msgstr "सफ़ेद पर शीर्षकों के लिए बह�
 msgid "Too many attempts. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/onboarding/read-file.ts
+msgid "Too many files in a short time. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10774,6 +11232,10 @@ msgstr ""
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "बहुत सारे अनुरोध. बाद में पुन: प्रयास।"
+
+#: src/features/onboarding/messages.ts
+msgid "Too many tries in a short time. Wait a minute, then try again."
+msgstr ""
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
@@ -10799,6 +11261,10 @@ msgstr ""
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "कुल रकम नहीं जोड़ी जाती। बोनस और शेयरों की हिस्सेदारी शर्तों पर निर्भर हैं; शेयरों का मूल्य अनिश्चित है। मूल ऑफ़र के दस्तावेज़ पढ़ें।"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Track every application"
+msgstr ""
 
 #: src/features/home/new-roles.tsx
 msgid "Track in Applications"
@@ -10859,6 +11325,7 @@ msgstr "{suggestion} आज़माएं"
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/letters/write.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/shell.tsx
@@ -10921,9 +11388,18 @@ msgstr "पता चुनने के लिए लिंक चालू क
 msgid "Turn this schedule on"
 msgstr "यह शेड्यूल चालू करें"
 
+#: src/shell/permissions.tsx
+msgid "Turned off in Settings"
+msgstr ""
+
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "Two columns"
 msgstr "दो कॉलम"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Two quick questions"
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Two stories"
@@ -11032,6 +11508,10 @@ msgstr "अनाम कुंजी"
 msgid "Unsynced on this device"
 msgstr "इस डिवाइस पर अनसिंक किया गया"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Untick anything you'd rather leave out. You can change it all later in your Profile."
+msgstr ""
+
 #: src/features/write/entry-screen.tsx
 #: src/features/write/outline.tsx
 msgid "Untitled"
@@ -11042,6 +11522,7 @@ msgid "Untitled letter"
 msgstr "शीर्षकहीन पत्र"
 
 #: src/features/documents/new-document.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Untitled resume"
 msgstr "शीर्षकहीन बायोडाटा"
 
@@ -11452,6 +11933,11 @@ msgstr "आवाज़ सेटिंग्स"
 msgid "Volunteer"
 msgstr "स्वयंसेवा"
 
+#. placeholder {0}: waitingFor.join(", ")
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Waiting for {0}…"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Waiting for you"
 msgstr "आपका इंतज़ार है"
@@ -11459,6 +11945,18 @@ msgstr "आपका इंतज़ार है"
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
 msgstr "वापस सुनने का इंतज़ार कर रहा हूँ"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue: LinkedIn profiles through treg or Apify, GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue. Nothing goes into your Profile until you check it."
+msgstr ""
 
 #. placeholder {0}: dates.raw
 #: src/features/write/date-field.tsx
@@ -11498,6 +11996,7 @@ msgstr "वेब खोज विफल: {0}"
 msgid "Web searches look for work here, up to three countries."
 msgstr "वेब खोज इन देशों में नौकरियों की तलाश करती है। अधिकतम तीन देश चुनें."
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "वेबसाइट"
@@ -11570,6 +12069,10 @@ msgstr "यह क्या मांगता है"
 msgid "What matters to you"
 msgstr "आपके लिए क्या मायने रखता है"
 
+#: src/features/onboarding/questions.tsx
+msgid "What roles are you aiming for?"
+msgstr ""
+
 #: src/features/write/improve.tsx
 msgid "What should change?"
 msgstr "क्या बदलना चाहिए?"
@@ -11630,6 +12133,10 @@ msgstr "भेजें पर टैप करने पर, {list} {connection
 msgid "Where applications come from"
 msgstr "आवेदन कहाँ से आते हैं"
 
+#: src/features/onboarding/questions.tsx
+msgid "Where do you want to work?"
+msgstr ""
+
 #: src/features/career/preferences.tsx
 msgid "Where you want to work"
 msgstr "आप कहाँ काम करना चाहते हैं"
@@ -11649,6 +12156,10 @@ msgstr "आपके आवेदन कहाँ गए"
 #: src/features/assistant/coach-screen.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "कौन-से अवसर मेरी प्राथमिकताओं से सबसे अच्छा मेल खाते हैं?"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "While we read your details"
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Who you'll meet"
@@ -11824,6 +12335,10 @@ msgstr ""
 msgid "You canceled the sign-in before it finished."
 msgstr "आपने साइन इन पूरा होने से पहले ही रद्द कर दिया।"
 
+#: src/features/onboarding/messages.ts
+msgid "You chose not to share it, so it wasn't read. Retry to choose again."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "आपने इसे पहले भुला दिया था, इसलिए इसे दोबारा सहेजा नहीं गया।"
@@ -11835,6 +12350,10 @@ msgstr ""
 #: src/ui-legacy/overlays.tsx
 msgid "You have unsaved changes."
 msgstr "आपके पास सहेजे नहीं गए परिवर्तन हैं."
+
+#: src/features/onboarding/messages.ts
+msgid "You seem to be offline. Check your connection and try again."
+msgstr ""
 
 #: src/features/workspace/tabs/messages.tsx
 msgid "You send it from your own email."
@@ -11899,6 +12418,18 @@ msgstr "आप ऑफ़लाइन हैं. पुनः कनेक्ट 
 msgid "You're up to date. New roles, reminders and finished briefings appear here."
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "You've used this as often as you can today. Try again tomorrow."
+msgstr ""
+
+#: src/features/onboarding/messages.ts
+msgid "You've used today's LinkedIn imports. Try again tomorrow, or add your LinkedIn export."
+msgstr ""
+
+#: src/features/onboarding/messages.ts
+msgid "Your account"
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "your AI connection"
@@ -11947,6 +12478,11 @@ msgstr "आपका डेटा"
 #: src/features/ats-checker/messages.ts
 msgid "Your dates are written several different ways."
 msgstr "आपकी तारीखें कई अलग-अलग तरीकों से लिखी गई हैं।"
+
+#: src/features/onboarding/onboarding-screen.tsx
+#: src/features/onboarding/source-review.tsx
+msgid "Your details"
+msgstr ""
 
 #: src/features/documents/new-document.tsx
 msgid "Your document was saved. Review it in the editor."
@@ -12082,8 +12618,16 @@ msgstr ""
 msgid "your preferences"
 msgstr "आपकी प्राथमिकताएँ"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
+msgstr ""
+
 #: app/(tabs)/profile/index.tsx
 msgid "Your Profile is coming to the app"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Your Profile was changed somewhere else. Check what's new, then save again."
 msgstr ""
 
 #: src/features/settings/export.tsx
@@ -12114,6 +12658,10 @@ msgstr "आपका अनुरोध और प्रासंगिक ब�
 msgid "Your requirements"
 msgstr "आपकी ज़रूरतें"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Your resume file"
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Your resume has a photo"
 msgstr "आपके बायोडाटा में एक फोटो है"
@@ -12132,6 +12680,10 @@ msgstr "आपका सर्वर इस प्रदाता को एक 
 
 #: src/auth/session-gate.tsx
 msgid "Your session ended"
+msgstr ""
+
+#: src/features/onboarding/read-file.ts
+msgid "Your session ended. Sign in again, then try again."
 msgstr ""
 
 #: src/features/ai/error.ts
@@ -12154,6 +12706,10 @@ msgstr "आपका छोटा लिंक और कस्टम डोम�
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "आपका छोटा लिंक और कस्टम डोमेन बताते हैं कि जब तक आप इसे फिर से प्रकाशित नहीं करते, यह रेज़्यूमे शेयर नहीं किया गया है।"
 
+#: src/features/onboarding/source-progress.tsx
+msgid "Your sources"
+msgstr ""
+
 #: src/features/assistant/coach-screen.tsx
 msgid "your stories"
 msgstr "आपकी कहानियाँ"
@@ -12165,6 +12721,10 @@ msgstr "आपकी कहानी लोड नहीं हो सकी।"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "आपका दो मिनट का परिचय"
+
+#: src/features/onboarding/messages.ts
+msgid "Your website"
+msgstr ""
 
 #: src/features/letters/page.tsx
 #: src/preview/page.tsx

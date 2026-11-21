@@ -1,25 +1,37 @@
-import type { SourceRun, SourceRuns } from "./model";
+import type { SourceRun, SourceRuns } from "./profile-sources";
 import type { ProfileData } from "@rezumi/schema/profile/data";
 import type { SourceResult } from "@rezumi/schema/profile/sources";
-import { describe, expect, it } from "vite-plus/test";
-import { ORPCError } from "@orpc/client";
+import { describe, expect, it, vi } from "vite-plus/test";
 import { emptyProfileData } from "@rezumi/schema/profile/data";
 import {
 	applyReview,
 	canRetrySource,
+	clearEditedProblems,
 	countReviewEntries,
+	createSourceRunner,
 	emptySourceInputs,
 	hasSourceInput,
 	isFetching,
 	keepRequested,
+	keptPhoto,
 	mergeSourceResults,
 	photoCandidates,
 	readSourceInputs,
 	requestsToRun,
 	reviewGroups,
+	sourceErrorCode,
 	sourceFindings,
 	websiteAddress,
-} from "./model";
+	withKeptPhoto,
+} from "./profile-sources";
+
+/** The shape of an oRPC error, which the rules read by its `code`. */
+class ORPCError extends Error {
+	constructor(readonly code: string) {
+		super(code);
+		this.name = "ORPCError";
+	}
+}
 
 const everything = { linkedin: true, github: true, website: true };
 
@@ -257,5 +269,118 @@ describe("photos", () => {
 			data.picture.url = "/uploads/me.jpg";
 		});
 		expect(photoCandidates(withPhoto, runs, null)).toEqual([]);
+	});
+});
+
+describe("app files and errors", () => {
+	it("keys an app's picked document by its name, size and address", () => {
+		const picked = { name: "cv.pdf", size: 1200, uri: "file:///tmp/cv.pdf" };
+		const { requests } = readSourceInputs({ ...emptySourceInputs<typeof picked>(), file: picked }, everything);
+		expect(requests).toEqual([{ id: "file", key: "cv.pdf:1200:file:///tmp/cv.pdf", file: picked }]);
+	});
+
+	it("reads a server error's code by its shape, never an aborted request's", () => {
+		expect(sourceErrorCode(new ORPCError("SOURCE_LIMIT"))).toBe("SOURCE_LIMIT");
+		expect(sourceErrorCode(new Error("plain"))).toBeNull();
+		expect(sourceErrorCode(Object.assign(new Error("gone"), { name: "AbortError", code: "x" }))).toBeNull();
+		expect(sourceErrorCode("SOURCE_LIMIT")).toBeNull();
+	});
+
+	it("clears a field's problem once it's edited, and only that one", () => {
+		const problems = { linkedin: "unconfirmed", github: "invalid" } as const;
+		expect(clearEditedProblems(problems, { linkedinOwn: true })).toEqual({ github: "invalid" });
+		expect(clearEditedProblems(problems, { website: "x" })).toEqual(problems);
+	});
+});
+
+describe("the kept photo", () => {
+	const photos = [
+		{ source: "linkedin", url: "https://media.licdn.com/a.jpg" },
+		{ source: "file", url: "/uploads/b.jpg" },
+	] as const;
+
+	it("keeps the first offered until one is picked, and none when picked so", () => {
+		expect(keptPhoto([...photos], undefined)).toBe("https://media.licdn.com/a.jpg");
+		expect(keptPhoto([...photos], "/uploads/b.jpg")).toBe("/uploads/b.jpg");
+		expect(keptPhoto([...photos], null)).toBeNull();
+		expect(keptPhoto([...photos], "https://gone.test/c.jpg")).toBe("https://media.licdn.com/a.jpg");
+	});
+
+	it("copies a photo from elsewhere once, takes a file's as it is, and leaves out one that fails", async () => {
+		const copy = vi.fn(async () => "/uploads/copied.jpg");
+		const copied = new Map<string, string>();
+		const first = await withKeptPhoto(emptyProfileData(), photos[0], copied, copy);
+		const again = await withKeptPhoto(emptyProfileData(), photos[0], copied, copy);
+		expect(first.data.picture.url).toBe("/uploads/copied.jpg");
+		expect(again.data.picture.url).toBe("/uploads/copied.jpg");
+		expect(copy).toHaveBeenCalledTimes(1);
+		expect((await withKeptPhoto(emptyProfileData(), photos[1], new Map(), copy)).data.picture.url).toBe(
+			"/uploads/b.jpg",
+		);
+		const failed = await withKeptPhoto(emptyProfileData(), photos[0], new Map(), async () => {
+			throw new Error("blocked");
+		});
+		expect(failed).toEqual({ data: emptyProfileData(), photoFailed: true });
+		expect(await withKeptPhoto(emptyProfileData(), null, new Map(), copy)).toEqual({
+			data: emptyProfileData(),
+			photoFailed: false,
+		});
+	});
+});
+
+describe("the runner", () => {
+	const github = { id: "github", key: "dewi-dev", username: "dewi-dev" } as const;
+	const result = (name: string): SourceResult => ({
+		data: profile((data) => {
+			data.basics.name = name;
+		}),
+		photoUrl: null,
+		notes: [],
+	});
+	const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+	it("loads, then settles each source on its own, and retries with the same request", async () => {
+		const changes: SourceRuns[] = [];
+		const fetch = vi.fn().mockRejectedValueOnce(new TypeError("offline")).mockResolvedValue(result("Dewi"));
+		const onError = vi.fn();
+		const runner = createSourceRunner({ onChange: (runs) => changes.push(runs), onError });
+		runner.run([github], fetch);
+		expect(runner.runs().github?.status).toBe("loading");
+		await settle();
+		expect(runner.runs().github?.status).toBe("failed");
+		expect(onError).toHaveBeenCalledWith(expect.any(TypeError), github);
+		runner.retry("github");
+		await settle();
+		expect(runner.runs().github).toMatchObject({ status: "done", key: "dewi-dev" });
+		expect(fetch).toHaveBeenCalledTimes(2);
+		expect(changes.at(-1)).toBe(runner.runs());
+	});
+
+	it("drops the answer of a source cleared or run again meanwhile", async () => {
+		let resolveFirst: (value: SourceResult) => void = () => undefined;
+		const fetch = vi
+			.fn()
+			.mockImplementationOnce(() => new Promise<SourceResult>((resolve) => (resolveFirst = resolve)))
+			.mockResolvedValue(result("Second"));
+		const runner = createSourceRunner({ onChange: () => undefined });
+		runner.run([github], fetch);
+		await settle();
+		runner.run([{ ...github, key: "other", username: "other" }], fetch);
+		await settle();
+		resolveFirst(result("First"));
+		await settle();
+		const run = runner.runs().github;
+		expect(run?.status === "done" && run.result.data.basics.name).toBe("Second");
+		runner.run([], fetch);
+		expect(runner.runs()).toEqual({});
+	});
+
+	it("keeps finished runs it starts with and doesn't run them again", () => {
+		const fetch = vi.fn();
+		const initial: SourceRuns = { github: { status: "done", key: "dewi-dev", result: result("Dewi") } };
+		const runner = createSourceRunner({ onChange: () => undefined, initial });
+		runner.run([github], fetch);
+		expect(fetch).not.toHaveBeenCalled();
+		expect(runner.runs()).toEqual(initial);
 	});
 });

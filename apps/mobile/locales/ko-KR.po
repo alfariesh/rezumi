@@ -345,6 +345,11 @@ msgstr ""
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
+#. placeholder {0}: sourceLabel(id)
+#: src/features/onboarding/messages.ts
+msgid "{0} didn't answer in time. Try again in a moment."
+msgstr ""
+
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
 #: app/account/membership.tsx
@@ -587,6 +592,15 @@ msgstr "{issues, plural, one {# 문제로 인해 일치 비용이 발생할 수 
 msgid "{issues, plural, one {Check has # thing to review. You can still download.} other {Check has # things to review. You can still download.}}"
 msgstr "{issues, plural, one {수표에는 검토할 # 항목이 있습니다. 아직 다운로드할 수 있습니다.} other {수표에는 검토할 # 항목이 있습니다. 아직 다운로드할 수 있습니다.}}"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "{kept} entries ticked"
+msgstr ""
+
+#. placeholder {0}: keys.length
+#: src/features/onboarding/source-review.tsx
+msgid "{kept} of {0}"
+msgstr ""
+
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind} 인터뷰"
@@ -764,6 +778,10 @@ msgstr "열 1개, 인라인"
 msgid "1 day"
 msgstr "1일"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "1 entry ticked"
+msgstr ""
+
 #: src/features/application-detail/hooks.ts
 msgid "1 h"
 msgstr "1시간"
@@ -793,6 +811,10 @@ msgstr "2~3개의 문장이 가장 잘 읽힙니다."
 #: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "24시간 전"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "3 new roles match you"
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
@@ -862,9 +884,17 @@ msgstr "숫자로만 된 날짜는 국가마다 다르게 해석됩니다."
 msgid "A page is rotated."
 msgstr "페이지가 회전되어 있습니다."
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "A portfolio and a coach"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "체크인 알림은 체크인할 때까지 다음 단계로 표시됩니다."
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "A resume in minutes"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "A role has no description"
@@ -1009,6 +1039,10 @@ msgstr "사람 추가"
 msgid "Add a phone number"
 msgstr "전화번호 추가"
 
+#: src/features/onboarding/questions.tsx
+msgid "Add a place"
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Add a question from the form"
 msgstr "양식의 질문 추가"
@@ -1016,6 +1050,10 @@ msgstr "양식의 질문 추가"
 #: src/features/write/improve.tsx
 msgid "Add a result"
 msgstr "결과 추가"
+
+#: src/features/onboarding/questions.tsx
+msgid "Add a role"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Add a role or company to look for."
@@ -1072,6 +1110,10 @@ msgstr "면접을 추가하면 준비 계획을 세울 수 있습니다"
 #: src/features/career/schedule-sheet.tsx
 msgid "Add an upcoming interview in Applications first."
 msgstr "먼저 지원 목록에 예정된 인터뷰를 추가하세요."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Add any of these and we'll fill in your Profile. You check everything before it's saved."
+msgstr ""
 
 #: src/features/search/search-screen.tsx
 msgid "Add application"
@@ -1227,6 +1269,10 @@ msgstr "자원봉사 추가"
 msgid "Add your name"
 msgstr "이름을 추가하세요"
 
+#: src/features/onboarding/messages.ts
+msgid "Add your own AI connection in Settings, or choose Rezumi AI."
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr ""
@@ -1255,6 +1301,10 @@ msgstr "주소"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "그때까지 답이 없으면 오늘에 알림을 추가합니다."
+
+#: src/features/onboarding/source-fields.tsx
+msgid "Adds your own public projects."
+msgstr ""
 
 #: src/features/design/advanced.tsx
 msgid "Advanced"
@@ -1395,10 +1445,6 @@ msgstr "모든 태그"
 msgid "All your applications are closed"
 msgstr "모든 지원이 마감되었어요"
 
-#: src/features/settings/profile.tsx
-msgid "Allow camera access in your device settings to take a photo."
-msgstr "사진을 찍으려면 기기 설정에서 카메라 액세스를 허용하세요."
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Allow microphone access in device settings, or type your answer."
 msgstr "기기 설정에서 마이크 액세스를 허용하거나 답변을 입력하세요."
@@ -1472,6 +1518,10 @@ msgstr "오류"
 msgid "Ana Putri"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Analytics lead"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
 msgid "and {0} more"
@@ -1514,6 +1564,7 @@ msgid "Answers copied"
 msgstr "답변이 복사되었습니다"
 
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Any"
 msgstr "상관없음"
 
@@ -1656,6 +1707,7 @@ msgstr "주당 보낸 지원서 (최근 8주)"
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/stages.ts
 #: src/features/check/writing.tsx
+#: src/features/onboarding/intro-screen.tsx
 msgid "Applied"
 msgstr "지원함"
 
@@ -1796,8 +1848,13 @@ msgid "ATS checker"
 msgstr "ATS 체커"
 
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "ATS-safe"
 msgstr "ATS-안전"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "ATS-safe template"
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 msgid "Attach a cover letter (PDF)"
@@ -1865,6 +1922,7 @@ msgstr "아제르바이잔어"
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/entry-sheet.tsx
@@ -1992,6 +2050,10 @@ msgstr "최저 기본급보다 낮습니다."
 msgid "Bengali"
 msgstr "벵골어"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "BI analyst"
+msgstr ""
+
 #: src/features/applications-board/views.tsx
 msgid "Board"
 msgstr "보드"
@@ -2034,6 +2096,10 @@ msgstr "테두리 반경"
 msgid "Border width"
 msgstr "테두리 두께"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Both are optional. They help the coach find roles that fit you."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Break the resume into the usual sections so it can be segmented."
 msgstr "이력서를 일반적인 섹션으로 나누어 구분할 수 있게 하세요."
@@ -2058,6 +2124,24 @@ msgstr "브리핑 새로 고침 켜짐 · {next}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Briefing refresh paused"
 msgstr "브리핑 새로 고침 일시 중지됨"
+
+#: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
+msgid "Bring in my details"
+msgstr ""
+
+#: src/features/documents/library.tsx
+#: src/features/home/home-screen.tsx
+msgid "Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample."
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Bring what you have"
+msgstr ""
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Bring your LinkedIn or an old resume, pick a template, and download a clean PDF."
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Bulgarian"
@@ -2093,6 +2177,10 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "소프트웨어가 이력서를 읽을 수 있나요?"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Can you help me answer \"Tell me about yourself\"?"
+msgstr ""
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
@@ -2258,6 +2346,14 @@ msgstr "이 직무를 내 근거와 대조해 확인"
 msgid "Check views"
 msgstr "조회수 확인"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Check what we found"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Check your connection, then try again."
+msgstr ""
+
 #: src/features/auth/check-email-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
 msgid "Check your email"
@@ -2312,6 +2408,10 @@ msgstr "중국어(간체)"
 msgid "Chinese (Traditional)"
 msgstr "중국어(번체)"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Choose"
+msgstr ""
+
 #: src/features/application-detail/date-field.tsx
 msgid "Choose a date"
 msgstr "날짜를 선택하세요"
@@ -2339,6 +2439,10 @@ msgstr "PDF 파일을 선택하세요. 선택한 파일이 업로드되지 않�
 #: src/features/application-detail/sections.tsx
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "10MB보다 작은 PDF를 선택하세요. 선택한 파일이 업로드되지 않았습니다."
+
+#: src/shell/permissions.tsx
+msgid "Choose a photo"
+msgstr ""
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2404,6 +2508,10 @@ msgstr "일괄 작업당 최대 200개의 지원 내역를 선택하세요."
 #: src/features/design/advanced.tsx
 msgid "Circle"
 msgstr "원"
+
+#: src/features/onboarding/questions.tsx
+msgid "Cities or countries. Leave it empty for anywhere."
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "Clarify"
@@ -2606,6 +2714,10 @@ msgstr "새 면접을 추가하기 전에 시간을 확인하세요."
 msgid "Confirm the time with {contact} before adding a new interview."
 msgstr "새 면접을 추가하기 전에 {contact} 님과 시간을 확인하세요."
 
+#: src/features/onboarding/messages.ts
+msgid "Confirm this is your own profile."
+msgstr ""
+
 #: src/features/assistant/provider.tsx
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
@@ -2707,6 +2819,8 @@ msgstr "컨텍스트가 누락되었으므로 대신 새 메시지로 답장하�
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
 #: src/features/auth/check-email-screen.tsx
+#: src/features/onboarding/onboarding-screen.tsx
+#: src/shell/permissions.tsx
 msgid "Continue"
 msgstr "계속"
 
@@ -2857,6 +2971,10 @@ msgstr "저장 여부를 확인할 수 없습니다. 중복을 피하려면 다�
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "저장 여부를 확인할 수 없습니다. 중복을 피하려면 다시 시도하기 전에 지원 내용을 확인하세요."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't copy the photo. You can add one later in your Profile."
+msgstr ""
+
 #: src/features/assistant/chat-view.tsx
 msgid "Couldn't copy the transcript. Try again."
 msgstr "대화 기록을 복사할 수 없습니다. 다시 시도해 보세요."
@@ -2864,6 +2982,10 @@ msgstr "대화 기록을 복사할 수 없습니다. 다시 시도해 보세요.
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't create the letter. Try again."
 msgstr "레터를 만들 수 없습니다. 다시 시도해 보세요."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't create the resume. Try again."
+msgstr ""
 
 #: src/features/workspace/tabs/saved.tsx
 msgid "Couldn't delete it. It's back in Saved."
@@ -2986,6 +3108,10 @@ msgstr ""
 msgid "Couldn't load versions."
 msgstr "버전을 로드할 수 없습니다."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't load your details"
+msgstr ""
+
 #: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "프로필을 로드할 수 없습니다."
@@ -3039,6 +3165,10 @@ msgstr "인쇄할 수 없습니다. 다시 시도해 보세요."
 msgid "Couldn't propose these edits: {0}"
 msgstr "다음 수정사항을 제안할 수 없습니다: {0}"
 
+#: src/features/onboarding/messages.ts
+msgid "Couldn't reach the AI provider. Try again in a moment."
+msgstr "AI 제공업체에 연결할 수 없습니다. 잠시 후에 다시 시도해 보세요."
+
 #: src/features/check/writing.tsx
 msgid "Couldn't reach your AI provider. Try again or check its key in AI settings."
 msgstr "AI 제공업체에 연결할 수 없습니다. 다시 시도하거나 AI 설정에서 키를 확인하세요."
@@ -3048,6 +3178,11 @@ msgstr "AI 제공업체에 연결할 수 없습니다. 다시 시도하거나 AI
 msgid "Couldn't read “{0}”. Enter the dates so they sort and print consistently."
 msgstr "“{0}”을(를) 읽을 수 없습니다. 일관되게 정렬되고 인쇄되도록 날짜를 입력하세요."
 
+#. placeholder {0}: sourceLabel(id)
+#: src/features/onboarding/messages.ts
+msgid "Couldn't read {0}. Try again."
+msgstr ""
+
 #: src/features/ats-checker/check.ts
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't read that file. Try again."
@@ -3056,6 +3191,10 @@ msgstr "해당 파일을 읽을 수 없습니다. 다시 시도해 보세요."
 #: src/features/check/parser.tsx
 msgid "Couldn't read the exported PDF."
 msgstr "내보낸 PDF을(를) 읽을 수 없습니다."
+
+#: src/features/onboarding/read-file.ts
+msgid "Couldn't read the file. Try again."
+msgstr ""
 
 #. placeholder {0}: part.errorText
 #: src/features/assistant/messages.tsx
@@ -3146,6 +3285,10 @@ msgstr "시간대를 저장할 수 없습니다. 다시 시도해 보세요."
 msgid "Couldn't save this role to Applications. Try again."
 msgstr "이 직무를 지원 목록에 저장할 수 없습니다. 다시 시도해 보세요."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your answers. You can add them later in Profile → Preferences."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Couldn't save your changes, so drafting didn't start. Nothing on the page changed."
 msgstr "변경 사항을 저장할 수 없어 초안 작성을 시작하지 않았습니다. 페이지 내용은 변경되지 않았습니다."
@@ -3163,6 +3306,14 @@ msgstr "변경사항을 저장할 수 없습니다. 수정사항이 아직 이 �
 #: src/features/career/preferences.tsx
 msgid "Couldn't save your preferences. Your draft is still here."
 msgstr "환경설정을 저장할 수 없습니다. 초안이 아직 여기에 있습니다."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your Profile, so this would open again. Try again."
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Couldn't save your Profile. Try again."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't save. Try again."
@@ -3355,6 +3506,10 @@ msgstr "브라우저의 계정 설정에서 API 키를 생성하세요. 키는 �
 msgid "Create copy"
 msgstr "사본 만들기"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Create my resume"
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Create or import a resume first, then return to copy it for this job."
 msgstr "먼저 이력서를 작성하거나 가져온 다음 돌아와서 이 직무에 대한 사본을 작성하세요."
@@ -3378,6 +3533,10 @@ msgstr "문서 생성 중…"
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Creating your account…"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Creating…"
 msgstr ""
 
 #: app/account/membership.tsx
@@ -3471,6 +3630,14 @@ msgstr "다크"
 #: src/features/search/search-screen.tsx
 msgid "Dark theme"
 msgstr "다크 테마"
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Data analyst"
+msgstr ""
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Data analyst · Bandung"
+msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Data sharing canceled. Nothing was sent to the AI provider."
@@ -3725,6 +3892,7 @@ msgstr "디자인을 기본값으로 재설정"
 
 #: app/applications/[id]/[tab].tsx
 #: src/features/document-menu/index.tsx
+#: src/features/onboarding/messages.ts
 msgid "Details"
 msgstr "세부"
 
@@ -4097,6 +4265,7 @@ msgstr ""
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "이메일"
@@ -4144,6 +4313,10 @@ msgstr "향상된 읽기 기능을 사용할 수 없습니다. 내장 리더기�
 #: src/features/career/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
 msgstr "95000처럼 전체 금액을 입력하세요. 이전 금액은 변경되지 않았습니다."
+
+#: src/features/onboarding/messages.ts
+msgid "Enter a GitHub username, like octocat."
+msgstr ""
 
 #: src/features/write/pickers.tsx
 msgid "Enter a hex color like #1a1a1a, or rgba(…)."
@@ -4214,6 +4387,10 @@ msgstr "이름을 입력하세요."
 #: src/features/auth/email-sign-in-screen.tsx
 msgid "Enter your password."
 msgstr "비밀번호를 입력하세요."
+
+#: src/features/onboarding/messages.ts
+msgid "Enter your site's address, like yourname.com."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4290,6 +4467,7 @@ msgid "Everything your resumes, letters and Coach start from. For now, your fact
 msgstr ""
 
 #: src/features/career/facts.tsx
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/write/fields.ts
 msgid "Experience"
 msgstr "경력"
@@ -4434,6 +4612,10 @@ msgstr "핀란드어"
 msgid "First offer"
 msgstr "첫 번째 제안"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "First resume"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "First run (YYYY-MM-DD)"
 msgstr "첫 실행 (YYYY-MM-DD)"
@@ -4555,6 +4737,10 @@ msgstr "예를 들어 Lumen으로 전송됨"
 msgid "For example: “{name}: I did … at … in 2024, and it led to …”"
 msgstr "예: “{name}: 2024년에 …에서 …을 했고, 그 결과 …”"
 
+#: src/features/onboarding/questions.tsx
+msgid "For example: Product designer, Data analyst."
+msgstr ""
+
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "For LibreOffice and other open-source editors. Layout is simplified."
@@ -4606,6 +4792,10 @@ msgstr "오늘 발견"
 msgid "Found yesterday"
 msgstr "어제 발견"
 
+#: src/features/onboarding/messages.ts
+msgid "Found: {list}"
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "Free"
 msgstr ""
@@ -4638,14 +4828,23 @@ msgstr ""
 msgid "From Fit"
 msgstr "적합도에서"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "From your account"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "From your experience entries"
 msgstr "귀하의 경험 항목에서"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "From your GitHub sign-in."
+msgstr ""
 
 #: src/features/career/search-regions-field.tsx
 msgid "From your timezone"
 msgstr "내 시간대 기준"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Full name"
 msgstr "이름"
@@ -4659,6 +4858,10 @@ msgstr "전체 너비"
 msgid "German"
 msgstr "독일어"
 
+#: src/shell/permissions.tsx
+msgid "Get a nudge at the right time"
+msgstr ""
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback"
 msgstr "피드백 받기"
@@ -4671,6 +4874,10 @@ msgstr "피드백 받기를 누르면 질문, 답변, 이 채용 공고, 내 스
 msgid "Get new jobs for your search here every morning"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Get started"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "점점 길어진다. \"더 짧게\" 시도하거나 최소한의 구체적인 단락을 잘라보세요."
@@ -4678,6 +4885,10 @@ msgstr "점점 길어진다. \"더 짧게\" 시도하거나 최소한의 구체�
 #: src/features/auth/welcome-screen.tsx
 msgid "GitHub"
 msgstr "GitHub"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "GitHub username"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4754,6 +4965,7 @@ msgstr "제목 3"
 msgid "Heading changed"
 msgstr "제목이 변경됨"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Headline"
 msgstr "헤드라인"
@@ -5022,14 +5234,6 @@ msgstr "가져오기"
 msgid "Import with AI"
 msgstr ""
 
-#: src/features/home/home-screen.tsx
-msgid "Import your current resume, or start blank or from a sample. We lay out every section for you to refine."
-msgstr ""
-
-#: src/features/documents/library.tsx
-msgid "Import your current resume, or start fresh with your name."
-msgstr "현재 이력서를 가져오거나 귀하의 이름으로 새로 시작하세요."
-
 #: src/features/history/history.tsx
 msgid "Imported"
 msgstr "수입됨"
@@ -5108,6 +5312,7 @@ msgstr "인터페이스 전용. 각 이력서는 디자인에서 고유한 언�
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/coming-up.tsx
+#: src/features/onboarding/intro-screen.tsx
 msgid "Interview"
 msgstr "면접"
 
@@ -5196,6 +5401,10 @@ msgstr "문제"
 #: src/features/check/issues.ts
 msgid "It has entries but isn't placed on a page."
 msgstr "항목이 있지만 페이지에 배치되지 않습니다."
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "It starts with your Profile. You can switch templates any time."
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 msgid "It's removed from the timeline for good."
@@ -5670,6 +5879,14 @@ msgstr "연결됨. 이력서에 이름, 이메일, 전화번호, 도시가 업�
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
+#: src/features/onboarding/messages.ts
+msgid "LinkedIn import isn't available right now. Add your LinkedIn export or a resume file instead."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "LinkedIn profile link"
+msgstr ""
+
 #: src/features/applications-board/views.tsx
 msgid "List"
 msgstr "목록"
@@ -5686,6 +5903,10 @@ msgstr "목록 보기"
 msgid "Lithuanian"
 msgstr "리투아니아어"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Live"
+msgstr ""
+
 #: src/features/check/score.tsx
 msgid "Live · updates as you edit"
 msgstr "실시간 · 편집 시 업데이트"
@@ -5696,6 +5917,7 @@ msgstr "{url}에서 라이브"
 
 #: src/features/design/design-pane.tsx
 #: src/features/home/section.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Loading"
 msgstr "로드 중"
 
@@ -5768,6 +5990,7 @@ msgstr "로드 중…"
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/style-groups.tsx
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
 msgid "Location"
@@ -6058,6 +6281,10 @@ msgstr "좀 더 개인적인"
 msgid "More providers and options are in Settings. Editing, design, Check issues and downloads work without AI."
 msgstr "더 많은 공급자와 옵션이 설정에 있습니다. 편집, 디자인, 검토 문제 및 다운로드는 AI 없이 작동합니다."
 
+#: src/features/onboarding/template-choice.tsx
+msgid "More templates"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "More than one email address appears."
 msgstr "이메일 주소가 두 개 이상 나타납니다."
@@ -6090,6 +6317,10 @@ msgstr "대부분의 항목이 실제로 한 일이 아닌 불필요한 표현�
 #: src/features/ats-checker/messages.ts
 msgid "Most entries have no dates."
 msgstr "대부분의 항목에 날짜가 없습니다."
+
+#: src/features/onboarding/messages.ts
+msgid "Most of this profile is private, so little came in."
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
@@ -6382,6 +6613,10 @@ msgstr "새로운 STARR 스토리"
 msgid "New to Rezumi? Create an account"
 msgstr ""
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Next"
+msgstr ""
+
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
 msgstr ""
@@ -6577,9 +6812,17 @@ msgstr "전화번호 없음"
 msgid "No phone number was found."
 msgstr "전화번호를 찾을 수 없습니다."
 
+#: src/features/onboarding/source-review.tsx
+msgid "No photo"
+msgstr ""
+
 #: src/features/write/basics-screen.tsx
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "사진이 없습니다. 대부분의 ATS는 사진을 무시합니다. 일부 지역에서는 이를 기대합니다."
+
+#: src/features/onboarding/messages.ts
+msgid "No public repositories of your own, so no projects came in."
+msgstr ""
 
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
@@ -6697,6 +6940,10 @@ msgstr "아직 연결되지 않았습니다. 도메인을 관리하는 곳에 DN
 msgid "Not enough Rezumi AI credits"
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "Not enough Rezumi AI credits to read it."
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "나와 맞지 않음"
@@ -6714,7 +6961,9 @@ msgid "Not included"
 msgstr ""
 
 #: src/features/assistant/messages.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/workspace/tabs/debrief.tsx
+#: src/shell/permissions.tsx
 msgid "Not now"
 msgstr "나중에"
 
@@ -6761,6 +7010,10 @@ msgstr "여기서는 일치하는 비용이 들지 않습니다."
 msgid "Nothing marks a role as ongoing."
 msgstr "진행 중임을 나타내는 표시가 없습니다."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Nothing new to add"
+msgstr ""
+
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Nothing on this day."
 msgstr "오늘은 아무것도 없습니다."
@@ -6777,6 +7030,10 @@ msgstr "아직 예정된 것이 없습니다"
 msgid "Nothing scheduled yet."
 msgstr "아직 예정된 스케줄이 없습니다."
 
+#: src/features/onboarding/messages.ts
+msgid "Nothing to add from here."
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Nothing to apply"
 msgstr "적용할 항목 없음"
@@ -6788,6 +7045,10 @@ msgstr "고칠 것이 없습니다"
 #: src/features/ats-checker/messages.ts
 msgid "Nothing to fix. The remaining pages were simply not covered by this report."
 msgstr "수정할 항목이 없습니다. 나머지 페이지는 이 보고서에서 다루지 않았을 뿐입니다."
+
+#: src/features/onboarding/messages.ts
+msgid "Nothing was found at that address. Check it and try again."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Notice period (weeks)"
@@ -6837,6 +7098,7 @@ msgid "Off. The letter keeps its own copy of your details."
 msgstr "끄다. 편지에는 귀하의 세부 정보에 대한 자체 사본이 보관되어 있습니다."
 
 #: src/features/applications/stages.ts
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/workspace/tabs/saved.tsx
 msgid "Offer"
 msgstr "오퍼"
@@ -6848,6 +7110,7 @@ msgid "Offers"
 msgstr "오퍼"
 
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Office days a week, at most"
 msgstr "주당 최대 출근일"
 
@@ -6889,6 +7152,7 @@ msgid "Once you've sent a few applications, this shows how far they get and how 
 msgstr "몇 개의 입사 지원서를 보내고 나면 지원서의 도달 범위와 응답 속도가 얼마나 빠른지 알 수 있습니다."
 
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "One column"
 msgstr "열 1개"
 
@@ -7014,6 +7278,10 @@ msgstr "미해결 질문"
 msgid "Open resume"
 msgstr "이력서 열기"
 
+#: src/shell/permissions.tsx
+msgid "Open Settings"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Open story"
 msgstr "스토리 열기"
@@ -7023,6 +7291,7 @@ msgid "Open the exported file and confirm you can select and copy every part of 
 msgstr "내보낸 파일을 열어 모든 부분을 선택하고 복사할 수 있는지 확인하세요."
 
 #: src/features/documents/import-file.ts
+#: src/features/onboarding/read-file.ts
 msgid "Open the file in Word and save it as .docx first."
 msgstr "먼저 Word에서 파일을 열고 .docx로 저장하세요."
 
@@ -7120,6 +7389,10 @@ msgstr "기타 복리후생"
 msgid "Other concern"
 msgstr "기타 우려 사항"
 
+#: src/features/onboarding/source-review.tsx
+msgid "Other details"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/threads.tsx
 msgid "Other documents · {0}"
@@ -7171,6 +7444,13 @@ msgstr "페이지 {0} · 사이드바"
 #: src/features/check/page.tsx
 msgid "Page {0} of {1}"
 msgstr "{1}의 페이지 {0}"
+
+#. placeholder {0}: index + 1
+#. placeholder {1}: pages.length
+#. placeholder {2}: item.title
+#: src/features/onboarding/intro-screen.tsx
+msgid "Page {0} of {1}: {2}"
+msgstr ""
 
 #. placeholder {0}: page.index + 1
 #: src/features/ats-checker/original-page.tsx
@@ -7275,6 +7555,10 @@ msgstr "양식의 질문 붙여넣기"
 msgid "Paste your key"
 msgstr "키를 붙여넣으세요"
 
+#: src/features/onboarding/messages.ts
+msgid "Paste your profile link, like linkedin.com/in/your-name."
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/add-sheet.tsx
 msgid "Pasted description"
@@ -7313,6 +7597,10 @@ msgstr "PDF 스타일은 CSS의 하위 집합을 지원합니다. 회전, 파선
 msgid "PDF uses your AI provider when one is ready. Turn off the AI switch to read its text layer on your server. Word (.docx) needs an AI provider. Current and v4 Rezumi JSON, cover letters, JSON Resume and LinkedIn exports (.zip) are supported. Up to 10 MB."
 msgstr "준비된 AI 제공자가 있으면 PDF에 사용합니다. AI 스위치를 끄면 서버에서 텍스트 레이어를 읽습니다. Word(.docx)에는 AI 제공자가 필요합니다. 현재 및 v4 Rezumi JSON, 커버레터, JSON Resume, LinkedIn 내보내기(.zip)를 지원합니다. 최대 10MB입니다."
 
+#: src/features/onboarding/source-fields.tsx
+msgid "PDF, Word, a LinkedIn export or a Rezumi file"
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "PDF, Word, Rezumi, JSON Resume or LinkedIn export."
 msgstr "PDF, Word, Rezumi, JSON Resume 또는 LinkedIn 내보내기."
@@ -7340,6 +7628,11 @@ msgstr "모든 것을 영구적으로 제거합니다. 브라우저 계정 설�
 msgid "Persian"
 msgstr "페르시아어"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Personal website"
+msgstr ""
+
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
 msgid "Phone"
@@ -7349,6 +7642,7 @@ msgstr "전화"
 msgid "Phone (optional)"
 msgstr "전화번호(선택)"
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Photo"
 msgstr "사진"
@@ -7368,6 +7662,10 @@ msgstr "페이지의 사진."
 #: src/features/write/date-field.tsx
 msgid "Pick {label}"
 msgstr "{label} 선택"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Pick a look for your first resume"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Pick a time after now."
@@ -7510,6 +7808,10 @@ msgstr "연습 우선순위:"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Practicing your story: {storyTitle}"
 msgstr "이야기 연습 중: {storyTitle}"
+
+#: src/shell/permissions.tsx
+msgid "Practise out loud"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Prefer a single column, or keep the side column to short, self-contained lists."
@@ -7788,6 +8090,10 @@ msgstr "질문 옵션"
 msgid "Question removed"
 msgstr "질문이 제거되었습니다"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Questions"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Questions to ask"
 msgstr "물어볼 질문"
@@ -7819,6 +8125,10 @@ msgstr "폰트를 임베드하여 다시 내보낸 뒤, 텍스트가 깔끔하�
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "폰트를 임베드하여 다시 내보낸 뒤 파일을 열어 텍스트가 깔끔하게 복사되는지 확인하세요."
+
+#: src/features/onboarding/source-fields.tsx
+msgid "Read before. Choose another to replace it."
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7861,6 +8171,10 @@ msgstr "페이지 읽기"
 msgid "Read the resume"
 msgstr "이력서를 읽음"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Read with AI. Only what's on the page comes in."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Readability"
 msgstr "가독성"
@@ -7880,6 +8194,10 @@ msgstr "페이지를 읽는 중…"
 #: src/features/documents/new-document.tsx
 msgid "Reading the file and finding sections…"
 msgstr "파일을 읽고 섹션을 찾는 중…"
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading the file…"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Reading the message"
@@ -7905,6 +8223,10 @@ msgstr "텍스트 읽기"
 msgid "Reading this file with AI needs a tested AI provider. Set one up, then retry."
 msgstr "AI로 이 파일을 읽으려면 테스트된 AI 공급자가 필요합니다. 하나를 설정한 후 다시 시도하세요."
 
+#: src/features/onboarding/read-file.ts
+msgid "Reading Word files needs an AI connection. Add one in Settings → AI providers, or choose a PDF instead."
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "Reading your answer"
 msgstr "답변 읽는 중"
@@ -7912,6 +8234,14 @@ msgstr "답변 읽는 중"
 #: src/features/workspace/parts.tsx
 msgid "Reading your notes"
 msgstr "노트 읽는 중"
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading your profile…"
+msgstr ""
+
+#: src/features/onboarding/source-progress.tsx
+msgid "Reading…"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 #: src/features/check/score.tsx
@@ -8083,6 +8413,7 @@ msgstr "알림"
 
 #: src/features/career/offers.tsx
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/questions.tsx
 msgid "Remote"
 msgstr "원격"
 
@@ -8092,8 +8423,10 @@ msgstr "원격"
 msgid "Remove"
 msgstr "제거하다"
 
+#. placeholder {0}: chosen.name
 #. placeholder {0}: contact.name
 #: src/features/application-detail/sheets.tsx
+#: src/features/onboarding/source-fields.tsx
 msgid "Remove {0}"
 msgstr "{0} 제거"
 
@@ -8105,6 +8438,14 @@ msgstr ""
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
 msgstr "{name} 제거"
+
+#: src/features/onboarding/questions.tsx
+msgid "Remove {place}"
+msgstr ""
+
+#: src/features/onboarding/questions.tsx
+msgid "Remove {role}"
+msgstr ""
 
 #: src/features/write/basics-screen.tsx
 msgid "Remove field"
@@ -8335,6 +8676,8 @@ msgid "Resume details"
 msgstr "이력서 세부정보"
 
 #: src/features/application-detail/sections.tsx
+#: src/features/onboarding/messages.ts
+#: src/features/onboarding/source-fields.tsx
 msgid "Resume file"
 msgstr "이력서 파일"
 
@@ -8399,6 +8742,7 @@ msgstr "{1}를 사용하여 {0}를 검색했습니다. 검색 시간은 원본 �
 #: src/features/letters/page.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
+#: src/features/onboarding/source-progress.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -8452,6 +8796,7 @@ msgstr ""
 
 #: src/features/assistant/page-marks.tsx
 #: src/features/home/needs-you.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Review"
 msgstr "검토"
 
@@ -8495,6 +8840,10 @@ msgstr "저장하기 전에 세부정보를 검토하세요. 검색된 콘텐츠
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "선택한 이력서와 커버레터를 각 편집기에서 검토하세요."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Review what we found"
+msgstr ""
+
 #: src/features/check/writing.tsx
 msgid "Review writing"
 msgstr "리뷰 작성"
@@ -8527,10 +8876,34 @@ msgstr "재작성이 허용됨"
 msgid "Rezumi AI credits"
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "Rezumi AI isn't available right now. Use your own AI connection, or add a resume file instead."
+msgstr ""
+
 #. placeholder {0}: creditCount(CREDIT_COSTS[action])
 #. placeholder {1}: creditCount(balance)
 #: src/features/billing/ai-source.ts
 msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi records only while you answer a practice question, to turn your answer into text. You can change this any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi sends reminders you set and new roles from your schedules. Nothing else. You can turn notifications off any time in Settings."
+msgstr ""
+
+#: src/shell/permissions.tsx
+msgid "Rezumi uses the camera only while you take a photo for your Profile or resume. You can change this any time in Settings."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -8722,6 +9095,10 @@ msgstr ""
 msgid "Save to Knowledge"
 msgstr "지식에 저장"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Save to my Profile"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 msgid "Save your version over theirs."
 msgstr "내 버전으로 상대 버전 덮어쓰기."
@@ -8777,6 +9154,7 @@ msgstr "작업을 저장합니다. 다른 변경을 하기 전에 확인을 기�
 
 #: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Saving…"
@@ -8915,6 +9293,10 @@ msgstr "섹션 · 인쇄 주문"
 #: src/features/check/issues.ts
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "섹션에 시스템이 인식하는 제목이 사용되고, 경력이 표시됩니다."
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "See where each one stands, get new roles that fit you, and never miss an interview."
+msgstr ""
 
 #: src/features/documents/document-sheets.tsx
 msgid "Select"
@@ -9138,6 +9520,10 @@ msgstr "섹션 공유"
 msgid "Share via…"
 msgstr "다음을 통해 공유…"
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Share your work on your own page, and practise with a coach that knows your story."
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -9308,7 +9694,6 @@ msgstr "사이드바는 종종 마지막으로 읽히거나 기본 열에 혼합
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
-#: src/linking/open.ts
 msgid "Sign in"
 msgstr "로그인"
 
@@ -9325,10 +9710,6 @@ msgstr "이 이력서를 계속 확인하려면 다시 로그인하세요."
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "계속 작업하려면 다시 로그인하세요. 수정한 내용은 이 기기에 보관되며 로그인한 후에 동기화됩니다."
 
-#: src/linking/open.ts
-msgid "Sign in to {server}, then continue to the linked document."
-msgstr "{server}에 로그인한 다음 연결된 문서로 이동하세요."
-
 #: src/features/documents/new-document.tsx
 #: src/features/documents/queries.ts
 #: src/features/share/export-screen.tsx
@@ -9343,10 +9724,6 @@ msgstr "문서를 만들거나 가져오려면 로그인하세요."
 #: app/builder/[id]/write.tsx
 msgid "Sign in to edit this resume."
 msgstr "이 이력서를 편집하려면 로그인하세요."
-
-#: src/linking/open.ts
-msgid "Sign in to open this link"
-msgstr "이 링크를 열려면 로그인하세요."
 
 #: src/features/documents/library.tsx
 msgid "Sign in to see your documents"
@@ -9436,6 +9813,7 @@ msgstr "크기"
 msgid "Skill"
 msgstr "기술"
 
+#: src/features/onboarding/intro-screen.tsx
 #: src/features/write/fields.ts
 msgid "Skills"
 msgstr "기술"
@@ -9445,6 +9823,8 @@ msgid "Skills, interests and profiles"
 msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
+#: src/features/onboarding/intro-screen.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Skip"
 msgstr "건너뛰기"
@@ -9645,6 +10025,10 @@ msgstr "다음에서 시작"
 msgid "Start from one you have and link the application."
 msgstr "가지고 있는 것부터 시작하여 입사 지원서를 연결하세요."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Start from scratch"
+msgstr ""
+
 #: src/features/write/section-sheet.tsx
 msgid "Start on a new page"
 msgstr "새 페이지에서 시작"
@@ -9678,6 +10062,10 @@ msgstr "입력을 시작하세요. 초안을 작성하려면 먼저 이력서나
 msgid "Start with the sections most resumes have."
 msgstr "대부분의 이력서에 있는 섹션부터 시작하세요."
 
+#: src/features/onboarding/intro-screen.tsx
+msgid "Start with your dashboard project at Kopi Senja: it cut report time by half."
+msgstr ""
+
 #: src/features/documents/new-document.tsx
 msgid "Start with your name. Build from there."
 msgstr "당신의 이름으로 시작하세요. 거기에서 빌드하십시오."
@@ -9700,6 +10088,16 @@ msgstr "서류에 머무르세요"
 
 #: src/shell/account-menu.tsx
 msgid "Stay signed in"
+msgstr ""
+
+#. placeholder {0}: ONBOARDING_STEPS.indexOf(step) + 1
+#. placeholder {1}: ONBOARDING_STEPS.length
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Step {0} of {1}"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Step {index} of {total}"
 msgstr ""
 
 #: src/features/assistant/chat-view.tsx
@@ -9906,6 +10304,10 @@ msgstr "{company} 채용 공고에 맞게 조정"
 msgid "Tailored vs. base resume"
 msgstr "적응된 이력서와 기본 이력서"
 
+#: src/shell/permissions.tsx
+msgid "Take a photo"
+msgstr ""
+
 #: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "사진 찍기"
@@ -9983,6 +10385,10 @@ msgstr "템플릿이 {0}로 변경되었습니다."
 #: src/features/letters/design.tsx
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "템플릿, 유형 및 색상은 이력서를 따르므로 쌍이 항상 일치합니다."
+
+#: src/features/onboarding/template-choice.tsx
+msgid "Templates"
+msgstr "템플릿"
 
 #: src/features/auth/welcome-screen.tsx
 msgid "Terms"
@@ -10078,6 +10484,10 @@ msgstr "파일이 너무 커서 확인할 수 없습니다. PDFs 최대 25개의
 msgid "That link couldn't be read. Paste the posting text instead."
 msgstr "링크를 읽을 수 없습니다. 대신 채용 공고 텍스트를 붙여넣으세요."
 
+#: src/features/onboarding/messages.ts
+msgid "That profile wasn't found, or it isn't public. Check the link."
+msgstr ""
+
 #: src/features/ai/error.ts
 msgid "That provider setup isn't valid. Check the key, model and base URL."
 msgstr "해당 제공업체 설정이 유효하지 않습니다. 키, 모델, 기본 URL을 확인하세요."
@@ -10155,6 +10565,14 @@ msgstr "편집기는 검토에서 열리며 가져온 이력서를 다시 검사
 msgid "The end is before the start."
 msgstr "끝은 시작 전입니다."
 
+#: src/features/onboarding/messages.ts
+msgid "The file couldn't be read as a resume."
+msgstr "파일을 이력서로 읽을 수 없습니다."
+
+#: src/features/onboarding/read-file.ts
+msgid "The file is too large. Choose one up to 10 MB."
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "The follow-up is saved. To get a reminder, allow notifications in your device settings."
 msgstr "후속 조치가 저장됩니다. 알림을 받으려면 기기 설정에서 알림을 허용하세요."
@@ -10210,6 +10628,10 @@ msgstr "텍스트가 저장된 순서가 실제로 읽히는 순서와 크게 �
 #: src/features/career/facts.tsx
 msgid "The original stays in correction history. Stories using it will need review."
 msgstr "원본은 수정 이력에 남습니다. 이를 사용한 이야기는 검토가 필요합니다."
+
+#: src/features/onboarding/messages.ts
+msgid "The page is long, so only its first part was read."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "The pages are pictures, with no text behind them."
@@ -10315,6 +10737,10 @@ msgstr "프로필, 포트폴리오 또는 저장소로 연결되는 링크가 �
 msgid "There is no summary paragraph."
 msgstr "요약 문단이 없습니다."
 
+#: src/features/onboarding/messages.ts
+msgid "There's no GitHub account with that username."
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "These are the answers saved when you applied."
 msgstr "지원할 때 저장된 답변입니다."
@@ -10417,6 +10843,10 @@ msgstr "이 항목"
 msgid "This entry was deleted."
 msgstr "이 항목은 삭제되었습니다."
 
+#: src/features/onboarding/read-file.ts
+msgid "This file can't be read. Choose a PDF, Word file, LinkedIn export (.zip) or resume JSON."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file contains form fields."
 msgstr "이 파일에 양식 필드가 포함되어 있습니다."
@@ -10428,6 +10858,10 @@ msgstr "이 파일에는 보이지 않게 그려진 텍스트가 포함되어 �
 #: src/features/ats-checker/messages.ts
 msgid "This file contains white-on-white text."
 msgstr "이 파일에는 흰 배경에 흰색 텍스트가 포함되어 있습니다."
+
+#: src/features/onboarding/read-file.ts
+msgid "This file couldn't be read as a resume."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (.zip)."
@@ -10485,6 +10919,10 @@ msgstr "이 파일의 크기를 읽을 수 없습니다. 다른 PDF를 선택하
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr ""
 
+#: src/features/onboarding/read-file.ts
+msgid "This is a cover letter. Add a resume or a LinkedIn export instead."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "이 파일은 PDF 포트폴리오입니다. 보이는 페이지는 표지일 뿐입니다."
@@ -10493,9 +10931,21 @@ msgstr "이 파일은 PDF 포트폴리오입니다. 보이는 페이지는 표�
 msgid "This is an XFA form, so most software reads only the empty shell."
 msgstr "이 파일은 XFA 양식이므로 대부분의 소프트웨어는 빈 틀만 읽습니다."
 
+#: src/features/onboarding/source-fields.tsx
+msgid "This is my own profile"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "일반적인 이력서 페이지 크기가 아닙니다."
+
+#: src/features/onboarding/messages.ts
+msgid "This isn't available for your account."
+msgstr ""
+
+#: src/features/onboarding/read-file.ts
+msgid "This JSON isn't a resume Rezumi can read."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "This JSON isn't a supported resume or cover letter."
@@ -10560,6 +11010,10 @@ msgstr "이 구절이 바뀌었습니다. 검토를 다시 실행하세요."
 #: src/features/check/parser.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "이 PDF에는 텍스트 레이어가 없으므로 파서는 이 레이어에서 아무것도 읽지 않습니다."
+
+#: src/features/onboarding/read-file.ts
+msgid "This PDF has no text to read (a scan or a picture). Try the Word version, or add LinkedIn or GitHub instead."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
@@ -10767,6 +11221,10 @@ msgstr "흰색 제목에 너무 밝습니다. 희미하게 인쇄되어 읽기 �
 msgid "Too many attempts. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/onboarding/read-file.ts
+msgid "Too many files in a short time. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10774,6 +11232,10 @@ msgstr ""
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "요청이 너무 많습니다. 나중에 다시 시도하세요."
+
+#: src/features/onboarding/messages.ts
+msgid "Too many tries in a short time. Wait a minute, then try again."
+msgstr ""
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
@@ -10799,6 +11261,10 @@ msgstr ""
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "합계는 계산하지 않습니다. 보너스와 지분은 조건에 따라 달라지며 지분 가치는 불확실합니다. 원본 제안 문서를 확인하세요."
+
+#: src/features/onboarding/intro-screen.tsx
+msgid "Track every application"
+msgstr ""
 
 #: src/features/home/new-roles.tsx
 msgid "Track in Applications"
@@ -10859,6 +11325,7 @@ msgstr "{suggestion}를 사용해 보세요"
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/letters/write.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/shell.tsx
@@ -10921,9 +11388,18 @@ msgstr "주소를 선택하려면 링크를 켜세요."
 msgid "Turn this schedule on"
 msgstr "이 스케줄 켜기"
 
+#: src/shell/permissions.tsx
+msgid "Turned off in Settings"
+msgstr ""
+
 #: src/features/design/template-group.tsx
+#: src/features/onboarding/template-choice.tsx
 msgid "Two columns"
 msgstr "두 개의 열"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Two quick questions"
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Two stories"
@@ -11032,6 +11508,10 @@ msgstr "이름 없는 키"
 msgid "Unsynced on this device"
 msgstr "이 기기에서 동기화되지 않았습니다."
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Untick anything you'd rather leave out. You can change it all later in your Profile."
+msgstr ""
+
 #: src/features/write/entry-screen.tsx
 #: src/features/write/outline.tsx
 msgid "Untitled"
@@ -11042,6 +11522,7 @@ msgid "Untitled letter"
 msgstr "제목 없는 편지"
 
 #: src/features/documents/new-document.tsx
+#: src/features/onboarding/onboarding-screen.tsx
 msgid "Untitled resume"
 msgstr "제목 없는 이력서"
 
@@ -11452,6 +11933,11 @@ msgstr "음성 설정"
 msgid "Volunteer"
 msgstr "봉사"
 
+#. placeholder {0}: waitingFor.join(", ")
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Waiting for {0}…"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "Waiting for you"
 msgstr "확인 대기 중"
@@ -11459,6 +11945,18 @@ msgstr "확인 대기 중"
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
 msgstr "답장을 기다리는 중"
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue: LinkedIn profiles through treg or Apify, GitHub accounts through GitHub, websites with AI. Nothing goes into your Profile until you check it."
+msgstr ""
+
+#: src/features/onboarding/source-fields.tsx
+msgid "We only read what you add here, once you continue. Nothing goes into your Profile until you check it."
+msgstr ""
 
 #. placeholder {0}: dates.raw
 #: src/features/write/date-field.tsx
@@ -11498,6 +11996,7 @@ msgstr "웹 검색 실패: {0}"
 msgid "Web searches look for work here, up to three countries."
 msgstr "웹 검색을 통해 해당 국가의 일자리를 찾아보세요. 최대 3개 국가를 선택하세요."
 
+#: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "웹사이트"
@@ -11570,6 +12069,10 @@ msgstr "무엇을 요구하는가"
 msgid "What matters to you"
 msgstr "나에게 중요한 것"
 
+#: src/features/onboarding/questions.tsx
+msgid "What roles are you aiming for?"
+msgstr ""
+
 #: src/features/write/improve.tsx
 msgid "What should change?"
 msgstr "무엇이 바뀌어야 할까요?"
@@ -11630,6 +12133,10 @@ msgstr "보내기를 탭하면 {list}이(가) {connection}(으)로 전송됩니�
 msgid "Where applications come from"
 msgstr "지원 유입 경로"
 
+#: src/features/onboarding/questions.tsx
+msgid "Where do you want to work?"
+msgstr ""
+
 #: src/features/career/preferences.tsx
 msgid "Where you want to work"
 msgstr "일하고 싶은 곳"
@@ -11649,6 +12156,10 @@ msgstr "지원 결과 분포"
 #: src/features/assistant/coach-screen.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "내 우선순위에 가장 잘 맞는 기회는 무엇인가요?"
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "While we read your details"
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Who you'll meet"
@@ -11824,6 +12335,10 @@ msgstr ""
 msgid "You canceled the sign-in before it finished."
 msgstr "로그인이 완료되기 전에 취소했습니다."
 
+#: src/features/onboarding/messages.ts
+msgid "You chose not to share it, so it wasn't read. Retry to choose again."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "이전에 잊은 내용이라 다시 저장하지 않았습니다."
@@ -11835,6 +12350,10 @@ msgstr ""
 #: src/ui-legacy/overlays.tsx
 msgid "You have unsaved changes."
 msgstr "저장되지 않은 변경사항이 있습니다."
+
+#: src/features/onboarding/messages.ts
+msgid "You seem to be offline. Check your connection and try again."
+msgstr ""
 
 #: src/features/workspace/tabs/messages.tsx
 msgid "You send it from your own email."
@@ -11899,6 +12418,18 @@ msgstr "오프라인 상태입니다. 다시 연결되면 다시 시도하세요
 msgid "You're up to date. New roles, reminders and finished briefings appear here."
 msgstr ""
 
+#: src/features/onboarding/messages.ts
+msgid "You've used this as often as you can today. Try again tomorrow."
+msgstr ""
+
+#: src/features/onboarding/messages.ts
+msgid "You've used today's LinkedIn imports. Try again tomorrow, or add your LinkedIn export."
+msgstr ""
+
+#: src/features/onboarding/messages.ts
+msgid "Your account"
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "your AI connection"
@@ -11947,6 +12478,11 @@ msgstr "귀하의 데이터"
 #: src/features/ats-checker/messages.ts
 msgid "Your dates are written several different ways."
 msgstr "날짜가 여러 다른 형식으로 작성되어 있습니다."
+
+#: src/features/onboarding/onboarding-screen.tsx
+#: src/features/onboarding/source-review.tsx
+msgid "Your details"
+msgstr ""
 
 #: src/features/documents/new-document.tsx
 msgid "Your document was saved. Review it in the editor."
@@ -12082,8 +12618,16 @@ msgstr ""
 msgid "your preferences"
 msgstr "내 선호 사항"
 
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
+msgstr ""
+
 #: app/(tabs)/profile/index.tsx
 msgid "Your Profile is coming to the app"
+msgstr ""
+
+#: src/features/onboarding/onboarding-screen.tsx
+msgid "Your Profile was changed somewhere else. Check what's new, then save again."
 msgstr ""
 
 #: src/features/settings/export.tsx
@@ -12114,6 +12658,10 @@ msgstr "귀하의 요청과 관련 이력서, 편지, 채용 공고, 지원서, 
 msgid "Your requirements"
 msgstr "내 요건"
 
+#: src/features/onboarding/source-fields.tsx
+msgid "Your resume file"
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Your resume has a photo"
 msgstr "이력서에 사진이 있습니다"
@@ -12132,6 +12680,10 @@ msgstr "서버는 테스트 프롬프트와 저장된 API 키를 이 공급자�
 
 #: src/auth/session-gate.tsx
 msgid "Your session ended"
+msgstr ""
+
+#: src/features/onboarding/read-file.ts
+msgid "Your session ended. Sign in again, then try again."
 msgstr ""
 
 #: src/features/ai/error.ts
@@ -12154,6 +12706,10 @@ msgstr "짧은 링크와 사용자 지정 도메인에서 이 이력서가 열�
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "다시 게시할 때까지 짧은 링크와 사용자 지정 도메인에는 이 이력서가 공유되지 않았다고 표시됩니다."
 
+#: src/features/onboarding/source-progress.tsx
+msgid "Your sources"
+msgstr ""
+
 #: src/features/assistant/coach-screen.tsx
 msgid "your stories"
 msgstr "내 스토리"
@@ -12165,6 +12721,10 @@ msgstr "스토리를 불러올 수 없습니다."
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "2분 자기소개"
+
+#: src/features/onboarding/messages.ts
+msgid "Your website"
+msgstr ""
 
 #: src/features/letters/page.tsx
 #: src/preview/page.tsx

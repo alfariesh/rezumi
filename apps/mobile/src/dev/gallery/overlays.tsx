@@ -4,7 +4,7 @@ import type { MenuKey } from "@/ui/overlays";
 import { useState } from "react";
 import { View } from "react-native";
 import { Caption, GallerySection, Row } from "./section";
-import { Button, Description, Input, Label, ListRow, ListSection, Text, TextField } from "@/ui";
+import { Button, Description, Input, Label, ListRow, ListSection, PermissionPrimer, Text, TextField } from "@/ui";
 import { ConfirmDialog, Dialog, Menu, Popover } from "@/ui/overlays";
 import { Sheet } from "@/ui/sheet";
 import { showToast, useAppToast } from "@/ui/toast";
@@ -298,9 +298,40 @@ function Toasts() {
 	);
 }
 
+/** The sheet before a system permission prompt, opened from a button as a feature would. */
+function Primer() {
+	const [open, setOpen] = useState(false);
+	return (
+		<>
+			<Button variant="secondary" onPress={() => setOpen(true)}>
+				Before notifications
+			</Button>
+			<PermissionPrimer
+				isOpen={open}
+				icon="bell"
+				title="Get a nudge at the right time"
+				description="Rezumi sends reminders you set and new roles from your schedules. Nothing else. You can turn notifications off any time in Settings."
+				continueLabel="Continue"
+				notNowLabel="Not now"
+				onContinue={() => setOpen(false)}
+				onNotNow={() => setOpen(false)}
+			/>
+		</>
+	);
+}
+
 export function OverlaysGallery() {
 	return (
 		<View className="gap-8">
+			<GallerySection
+				title="PermissionPrimer"
+				note="Why the app asks, before the system dialog; only Continue opens it. Never at launch."
+			>
+				<Row>
+					<Primer />
+				</Row>
+			</GallerySection>
+
 			<GallerySection title="Dialog" note="A form or a decision, sized to its content.">
 				<Row>
 					<FormDialog />

@@ -57,6 +57,8 @@ jest.mock("@/shell/tab-chrome", () => {
 	return { TabTopBar: ({ title }: { title: string }) => <Text>{title}</Text>, NewFab: () => null };
 });
 jest.mock("@/shell/use-is-tablet", () => ({ useIsTablet: () => false }));
+// Handing a new account over to onboarding has its own tests (features/onboarding).
+jest.mock("@/features/onboarding/use-onboarding-redirect", () => ({ useOnboardingRedirect: () => undefined }));
 
 const application = {
 	id: "app_1",
@@ -130,7 +132,7 @@ describe("HomeScreen", () => {
 		expect(screen.queryByText("Let's start with what you have")).toBeNull();
 	});
 
-	it("leads with starting a document on a new account, and says each block is empty", async () => {
+	it("offers bringing in details or starting a document to an account without any, and says each block is empty", async () => {
 		setReads({
 			notifications: query([]),
 			opportunities: query([]),
@@ -147,6 +149,8 @@ describe("HomeScreen", () => {
 		expect(screen.getByText("Get new jobs for your search here every morning")).toBeOnTheScreen();
 		expect(screen.getByText("Nothing scheduled yet.")).toBeOnTheScreen();
 		expect(screen.queryByText("Coming up")).toBeNull();
+		await fireEvent.press(screen.getByText("Bring in my details"));
+		expect(mockPush).toHaveBeenCalledWith("/onboarding");
 		await fireEvent.press(screen.getByText("Start a document"));
 		expect(mockPush).toHaveBeenCalledWith("/new");
 	});

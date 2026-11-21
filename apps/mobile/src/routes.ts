@@ -24,6 +24,8 @@ const segment = (value: string) => encodeURIComponent(value);
 
 export const routes = {
 	// (auth)
+	/** The three intro pages, before Welcome on a fresh install. */
+	intro: () => "/intro" as const,
 	/** Development builds only: pick another server. */
 	server: () => "/server" as const,
 	/** Welcome: Apple, Google, email, Create account, other ways. */
@@ -56,6 +58,8 @@ export const routes = {
 	account: (pane?: AccountPane) => (pane ? (`/account/${pane}` as const) : ("/account" as const)),
 
 	// Modals and full-screen flows
+	/** The first run of a new account: sources, two questions, review, first resume. */
+	onboarding: () => "/onboarding" as const,
 	new: () => "/new" as const,
 	search: () => "/search" as const,
 	/** Coach full screen. `offers`: saved offer ids picked in Offers → Plan what to ask. */

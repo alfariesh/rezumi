@@ -1,5 +1,5 @@
-import type { PhotoCandidate, ReviewEntry, ReviewGroup } from "./model";
 import type { Entry } from "@/features/resume/editor/write/model";
+import type { PhotoCandidate, ReviewEntry, ReviewGroup } from "@rezumi/resume/profile-sources";
 import type { ProfileBasicsField, ProfileData } from "@rezumi/schema/profile/data";
 import { Checkbox, Radio, RadioGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
