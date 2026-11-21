@@ -6,7 +6,7 @@ import { expect, test } from "../fixtures/test";
 test.skip(process.env.PORTFOLIO_MODE !== "on", "Needs PORTFOLIO_MODE=on on the test server");
 
 for (const device of ["Desktop", "Phone"] as const) {
-	test(`scrolls to case studies in the Prima landing preview on ${device}`, async ({ page }) => {
+	test(`opens case studies in the Prima landing preview on ${device}`, async ({ page }) => {
 		await page.setViewportSize({ width: 1440, height: 900 });
 		await page.goto("/");
 		const dialog = page.getByRole("dialog", { name: "Prima", exact: true });
@@ -34,6 +34,16 @@ for (const device of ["Desktop", "Phone"] as const) {
 			.click();
 		await expect(heading).toBeInViewport();
 		await expect(menu).not.toHaveAttribute("open", "");
+
+		const title = "Second-generation family business succession";
+		await preview.getByRole("link", { name: title }).click();
+		await expect(preview.getByRole("heading", { level: 1, name: title })).toBeVisible();
+		await preview.locator('a[rel="next"]').click();
+		await expect(
+			preview.getByRole("heading", { level: 1, name: "Education funds for three children abroad" }),
+		).toBeVisible();
+		await preview.getByRole("link", { name: "All work" }).click();
+		await expect(heading).toBeInViewport();
 	});
 }
 

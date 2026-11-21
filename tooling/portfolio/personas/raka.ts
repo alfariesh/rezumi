@@ -3,7 +3,7 @@ import type { PersonaDefinition } from "../persona";
 /**
  * Sintaks: Raka Mahendra, who leads data analytics and analytics engineering at a marketplace in Jakarta (the
  * gallery's Horizon resume). His works read as repositories, so their tags are the tools they're built with. Every
- * company, repository, number and person here is made up; the drawings are `mockups/img/sintaks-*.svg`.
+ * company, repository, number and person here is made up; the images are `images/sintaks-*.webp`.
  */
 export const raka: PersonaDefinition = {
 	id: "raka",
@@ -34,7 +34,7 @@ export const raka: PersonaDefinition = {
 		greeting: "أبني طبقة بيانات تثق بها الشركة: تعريف واحد لكل مقياس، مُختبَر مثل الشيفرة، وسريع بما يكفي للسؤال التالي.",
 		availability: "متاح لأدوار مهندس تحليلات أول",
 	},
-	portfolio: ({ t, picture, logo, pdf, metric, text, work }) => ({
+	portfolio: ({ t, picture, pdf, metric, text, work }) => ({
 		basics: {
 			headline: t(["Analytics engineering lead · SQL, Python, dbt", "Lead analytics engineering · SQL, Python, dbt"]),
 		},
@@ -171,7 +171,7 @@ export const raka: PersonaDefinition = {
 								provider: "google-slides",
 								ref: "1sKq9RkM4fJ2tLwPz8VbXn3HcYdQe7UaBm5",
 								title: t(["Slides: one number per question", "Slide: satu angka per pertanyaan"]),
-								thumbnail: picture("sintaks-slides.svg", ["The talk's first slide", "Slide pertama talk"]),
+								thumbnail: picture("sintaks-slides.webp", ["The talk's first slide", "Slide pertama talk"]),
 							},
 							{
 								id: "w-metrics-pdf",
@@ -180,9 +180,9 @@ export const raka: PersonaDefinition = {
 								title: t(["Metric definitions handbook (public sample)", "Buku saku definisi metrik (contoh publik)"]),
 								pages: 14,
 								bytes: 1_600_000,
-								preview: picture("sintaks-pdf.svg", ["The handbook's first page", "Halaman pertama buku saku"], {
-									width: 800,
-									height: 1131,
+								preview: picture("sintaks-pdf.webp", ["The handbook's first page", "Halaman pertama buku saku"], {
+									width: 640,
+									height: 905,
 								}),
 							},
 							{
@@ -399,16 +399,6 @@ export const raka: PersonaDefinition = {
 				},
 			],
 		},
-		clients: {
-			items: [
-				{ id: "cl-1", name: "Seranta", logo: logo("Seranta", 4, "#16A34A") },
-				{ id: "cl-2", name: "Jalur Kirim", logo: logo("Jalur Kirim", 2, "#2563EB") },
-				{ id: "cl-3", name: "Kedai Daring", logo: logo("Kedai Daring", 0, "#D97706") },
-				{ id: "cl-4", name: "Bank Cakrawala Nusantara", logo: logo("Bank Cakrawala", 1, "#0891B2") },
-				{ id: "cl-5", name: "Pasar Pagi" },
-				{ id: "cl-6", name: "Lumbung Data" },
-			],
-		},
 		custom: [
 			{
 				id: "now",
@@ -425,11 +415,11 @@ export const raka: PersonaDefinition = {
 			point: { lat: -6.2, lng: 106.85, precision: "city" },
 			showMap: true,
 			map: {
-				light: picture("map-prima-light.svg", ["Map around Jakarta", "Peta sekitar Jakarta"], {
+				light: picture("map-sintaks-light.webp", ["Map around Jakarta", "Peta sekitar Jakarta"], {
 					width: 800,
 					height: 480,
 				}),
-				dark: picture("map-prima-dark.svg", ["Map around Jakarta", "Peta sekitar Jakarta"], {
+				dark: picture("map-sintaks-dark.webp", ["Map around Jakarta", "Peta sekitar Jakarta"], {
 					width: 800,
 					height: 480,
 				}),

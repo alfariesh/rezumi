@@ -7,8 +7,7 @@
  *   pnpm --filter @rezumi/tooling portfolio:previews [themes…] [--lang en|id] [--out <dir>]
  *
  * Writes, under `apps/web/public/portfolio-themes` unless `--out` says otherwise (Indonesian in an `id/` folder of
- * each, as the resume template gallery does): `jpg/<theme>.jpg` at 1200×750 (the theme's larger picture) and
- * `thumb/<theme>.webp` at 600×375 (gallery cards, `themePicture` in `apps/web/src/features/portfolio/theme-gallery.tsx`).
+ * each): `webp/<theme>.webp` at 1200×750 and `thumb/<theme>.webp` at 600×375 (gallery cards from `themePicture`).
  */
 import type { PersonaLang } from "./persona";
 import { mkdir, mkdtemp, rm } from "node:fs/promises";
@@ -39,7 +38,7 @@ const langs = values.lang.map((lang) => {
 	return lang as PersonaLang;
 });
 const viewport = { width: 1440, height: 900 };
-const sizes = { jpg: { width: 1200, height: 750 }, thumb: { width: 600, height: 375 } };
+const sizes = { preview: { width: 1200, height: 750 }, thumb: { width: 600, height: 375 } };
 
 const work = await mkdtemp(join(tmpdir(), "rezumi-portfolio-previews-"));
 const camera = await Camera.start();
@@ -61,20 +60,20 @@ try {
 			await closePage(tab);
 
 			const folder = lang === "en" ? "" : lang;
-			const jpg = join(values.out, "jpg", folder, `${theme}.jpg`);
+			const preview = join(values.out, "webp", folder, `${theme}.webp`);
 			const thumb = join(values.out, "thumb", folder, `${theme}.webp`);
-			await mkdir(join(values.out, "jpg", folder), { recursive: true });
+			await mkdir(join(values.out, "webp", folder), { recursive: true });
 			await mkdir(join(values.out, "thumb", folder), { recursive: true });
 			const image = await sharp(shot)
-				.resize({ ...sizes.jpg, fit: "fill" })
-				.jpeg({ quality: 80, mozjpeg: true })
-				.toFile(jpg);
+				.resize({ ...sizes.preview, fit: "fill" })
+				.webp({ quality: 83, effort: 6, smartSubsample: true })
+				.toFile(preview);
 			const small = await sharp(shot)
 				.resize({ ...sizes.thumb, fit: "fill" })
 				.webp({ quality: 80, effort: 6, smartSubsample: true })
 				.toFile(thumb);
 			console.log(
-				`${theme} ${lang}: ${THEME_PERSONAS[theme]}, jpg ${Math.round(image.size / 1024)} KB, thumb ${Math.round(small.size / 1024)} KB`,
+				`${theme} ${lang}: ${THEME_PERSONAS[theme]}, preview ${Math.round(image.size / 1024)} KB, thumb ${Math.round(small.size / 1024)} KB`,
 			);
 		}
 	}

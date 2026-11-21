@@ -19,24 +19,47 @@ type ThemePreviewProps = {
 	billingEnabled: boolean;
 };
 
-function followSampleAnchor(event: MouseEvent) {
+type SamplePage = { url: string; anchor: string };
+
+function getSamplePage(href: string, home: string): SamplePage | undefined {
+	const base = new URL(home, window.location.origin);
+	const target = new URL(href, base);
+	const workPrefix = base.pathname.replace(/\.html$/, ".work-");
+	const isWork =
+		target.pathname.startsWith(workPrefix) && /^[a-z0-9-]+\.html$/.test(target.pathname.slice(workPrefix.length));
+	if (target.origin !== base.origin || (target.pathname !== base.pathname && !isWork)) return;
+	return { url: target.pathname + base.search, anchor: target.hash.slice(1) };
+}
+
+function followSampleLink(event: MouseEvent, home: string, onNavigate: (page: SamplePage) => void) {
 	const target = event.target as Element | null;
 	const link = target?.closest?.("a[href]");
 	const href = link?.getAttribute("href");
-	if (!link || !href?.startsWith("#") || event.defaultPrevented) return;
+	if (!link || !href || event.defaultPrevented) return;
 
 	// A fragment in srcDoc resolves against the landing page, which refuses to be framed.
+	if (href.startsWith("#")) {
+		event.preventDefault();
+		link.closest("details.pf-menu")?.removeAttribute("open");
+		link.ownerDocument.getElementById(href.slice(1))?.scrollIntoView();
+		return;
+	}
+
+	const page = getSamplePage(href, home);
+	if (!page) return;
 	event.preventDefault();
-	link.closest("details.pf-menu")?.removeAttribute("open");
-	link.ownerDocument.getElementById(href.slice(1))?.scrollIntoView();
+	onNavigate(page);
 }
 
 type ThemeSampleFrameProps = {
 	sample: string;
 	title: string;
+	home: string;
+	anchor: string;
+	onNavigate: (page: SamplePage) => void;
 };
 
-function ThemeSampleFrame({ sample, title }: ThemeSampleFrameProps) {
+function ThemeSampleFrame({ sample, title, home, anchor, onNavigate }: ThemeSampleFrameProps) {
 	const [ready, setReady] = useState(false);
 
 	return (
@@ -52,7 +75,8 @@ function ThemeSampleFrame({ sample, title }: ThemeSampleFrameProps) {
 				onLoad={(event) => {
 					const document = event.currentTarget.contentDocument;
 					if (document?.URL !== "about:srcdoc") return;
-					document.addEventListener("click", followSampleAnchor);
+					document.addEventListener("click", (click) => followSampleLink(click, home, onNavigate));
+					if (anchor) document.getElementById(anchor)?.scrollIntoView();
 					setReady(true);
 				}}
 				sandbox="allow-same-origin"
@@ -72,8 +96,11 @@ export function ThemePreview({ theme, onThemeChange, billingEnabled }: ThemePrev
 	const [device, setDevice] = useState<Device>("desktop");
 	const [documents, setDocuments] = useState<Readonly<Record<string, string>>>({});
 	const [failedUrl, setFailedUrl] = useState<string | null>(null);
+	const [selection, setSelection] = useState<(SamplePage & { home: string }) | null>(null);
 
-	const url = theme ? themeSample(theme, i18n.locale) : null;
+	const home = theme ? themeSample(theme, i18n.locale) : null;
+	const selectedPage = selection?.home === home ? selection : null;
+	const url = selectedPage?.url ?? home;
 	const sample = url ? documents[url] : undefined;
 	const index = portfolioThemeLineup.findIndex((item) => item.id === theme);
 	const info = portfolioThemeLineup[index];
@@ -92,11 +119,19 @@ export function ThemePreview({ theme, onThemeChange, billingEnabled }: ThemePrev
 
 	const step = (by: number) => {
 		const next = portfolioThemeLineup[(index + by + portfolioThemeLineup.length) % portfolioThemeLineup.length];
+		setSelection(null);
 		if (next) onThemeChange(next.id);
 	};
 
 	return (
-		<Modal.Backdrop isOpen={theme !== null} onOpenChange={(open) => !open && onThemeChange(null)}>
+		<Modal.Backdrop
+			isOpen={theme !== null}
+			onOpenChange={(open) => {
+				if (open) return;
+				setSelection(null);
+				onThemeChange(null);
+			}}
+		>
 			<Modal.Container size="full">
 				<Modal.Dialog aria-labelledby={titleId} className="flex h-full flex-col gap-0 overflow-hidden p-0">
 					<Modal.CloseTrigger aria-label={t`Close`} />
@@ -157,8 +192,15 @@ export function ThemePreview({ theme, onThemeChange, billingEnabled }: ThemePrev
 								device === "phone" ? "md:max-w-[390px]" : "max-w-full",
 							)}
 						>
-							{sample !== undefined ? (
-								<ThemeSampleFrame key={url} title={t`${info?.name ?? ""} portfolio theme sample`} sample={sample} />
+							{home && sample !== undefined ? (
+								<ThemeSampleFrame
+									key={url}
+									title={t`${info?.name ?? ""} portfolio theme sample`}
+									sample={sample}
+									home={home}
+									anchor={selectedPage?.anchor ?? ""}
+									onNavigate={(page) => setSelection({ ...page, home })}
+								/>
 							) : failedUrl === url ? (
 								<div role="alert" className="grid size-full place-items-center p-6 text-center text-sm text-muted">
 									{t`The sample couldn't be loaded. Check your connection and try again.`}

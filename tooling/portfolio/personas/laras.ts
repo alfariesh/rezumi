@@ -3,7 +3,7 @@ import type { PersonaDefinition } from "../persona";
 /**
  * Warta: Laras Kusumawardhani, a features editor and content strategist in Yogyakarta (the gallery's Aksara resume).
  * Her works read as articles, so each one's first tag is its rubric. Every publication, number and person here is made
- * up; the drawings are `mockups/img/warta-*.svg`.
+ * up; the images are `images/warta-*.webp`.
  */
 export const laras: PersonaDefinition = {
 	id: "laras",
@@ -34,7 +34,7 @@ export const laras: PersonaDefinition = {
 		greeting: "أحرر قصصاً طويلة عن المدن والطعام والناس الذين يحيونها، ثم أخطط لوصولها إلى القرّاء.",
 		availability: "متاحة لأدوار مديرة التحرير",
 	},
-	portfolio: ({ t, picture, logo, pdf, metric, text, work }) => ({
+	portfolio: ({ t, picture, pdf, metric, text, work }) => ({
 		hero: {
 			greeting: t([
 				"I edit long-form stories about cities, food and the people who keep them going, then plan how they reach readers.",
@@ -143,10 +143,7 @@ export const laras: PersonaDefinition = {
 									"Ruang Tunggu, episode 31: the land is leaving",
 									"Ruang Tunggu, episode 31: tanahnya yang pergi",
 								]),
-								thumbnail: picture("warta-3.webp", ["The podcast's cover", "Sampul podcast"], {
-									width: 600,
-									height: 600,
-								}),
+								thumbnail: picture("warta-3.webp", ["The podcast's cover", "Sampul podcast"]),
 							},
 							{
 								id: "w-coast-v",
@@ -154,7 +151,7 @@ export const laras: PersonaDefinition = {
 								provider: "youtube",
 								videoId: "Lk7pQw2NmZr",
 								title: t(["Short film: three walls, one year", "Film pendek: tiga dinding, satu tahun"]),
-								thumbnail: picture("warta-g2.webp", [
+								thumbnail: picture("warta-interview.webp", [
 									"Video: three walls, one year",
 									"Video: tiga dinding, satu tahun",
 								]),
@@ -166,9 +163,9 @@ export const laras: PersonaDefinition = {
 								title: t(["The print edition, 8 pages", "Edisi cetak, 8 halaman"]),
 								pages: 8,
 								bytes: 3_200_000,
-								preview: picture("warta-pdf.svg", ["The feature's opening spread", "Halaman pembuka feature"], {
-									width: 800,
-									height: 1131,
+								preview: picture("warta-pdf.webp", ["The feature's opening spread", "Halaman pembuka feature"], {
+									width: 640,
+									height: 905,
 								}),
 							},
 							{
@@ -238,10 +235,7 @@ export const laras: PersonaDefinition = {
 								provider: "soundcloud",
 								ref: "laraskusuma/sets/ruang-tunggu",
 								title: t(["Ruang Tunggu, season two", "Ruang Tunggu, musim kedua"]),
-								thumbnail: picture("warta-3.webp", ["The podcast's cover", "Sampul podcast"], {
-									width: 600,
-									height: 600,
-								}),
+								thumbnail: picture("warta-3.webp", ["The podcast's cover", "Sampul podcast"]),
 							},
 						],
 					}),
@@ -381,16 +375,6 @@ export const laras: PersonaDefinition = {
 				},
 			],
 		},
-		clients: {
-			items: [
-				{ id: "cl-1", name: "Majalah Lembayung" },
-				{ id: "cl-2", name: "Kanal Kota" },
-				{ id: "cl-3", name: "Warta Jogja" },
-				{ id: "cl-4", name: "Yayasan Kota Kita", logo: logo("Yayasan Kota Kita", 5, "#9A3412") },
-				{ id: "cl-5", name: "Penerbit Serambi" },
-				{ id: "cl-6", name: "Radio Suara Kampung", logo: logo("Suara Kampung", 3, "#1E3A5F") },
-			],
-		},
 		custom: [
 			{
 				id: "teaching",
@@ -407,11 +391,11 @@ export const laras: PersonaDefinition = {
 			point: { lat: -7.8, lng: 110.36, precision: "city" },
 			showMap: true,
 			map: {
-				light: picture("map-lugas-light.svg", ["Map around Yogyakarta", "Peta sekitar Yogyakarta"], {
+				light: picture("map-warta-light.webp", ["Map around Yogyakarta", "Peta sekitar Yogyakarta"], {
 					width: 800,
 					height: 480,
 				}),
-				dark: picture("map-lugas-dark.svg", ["Map around Yogyakarta", "Peta sekitar Yogyakarta"], {
+				dark: picture("map-warta-dark.webp", ["Map around Yogyakarta", "Peta sekitar Yogyakarta"], {
 					width: 800,
 					height: 480,
 				}),

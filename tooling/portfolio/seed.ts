@@ -15,7 +15,6 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { Pool } from "pg";
-import sharp from "sharp";
 import { parsePortfolioData, parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { generateId } from "@rezumi/utils/string";
 import { buildPersona, isPersonaId, PERSONA_LANGS } from "./persona";
@@ -66,19 +65,12 @@ try {
 	};
 
 	for (const file of persona.files) {
-		const source = await file.read();
-		// Drawings are SVG; the app stores pictures as PNG, JPEG or WebP.
-		const bytes =
-			file.kind === "pdf"
-				? source
-				: file.key.endsWith(".webp")
-					? await sharp(source).resize(file.width, file.height, { fit: "cover" }).webp({ quality: 80 }).toBuffer()
-					: await sharp(source, { density: 144 }).resize(file.width, file.height, { fit: "cover" }).png().toBuffer();
+		const bytes = await file.read();
 		const key = own(file.key);
 		await store(key, bytes);
 		await pool.query(
 			`insert into portfolio_file (id, user_id, kind, key, bytes, width, height, pages) values ($1, $2, $3, $4, $5, $6, $7, $8)
-			 on conflict (key) do update set bytes = excluded.bytes`,
+			 on conflict (key) do update set bytes = excluded.bytes, width = excluded.width, height = excluded.height`,
 			[
 				generateId(),
 				user.id,

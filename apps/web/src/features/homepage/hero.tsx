@@ -1,5 +1,4 @@
 import type { SVGProps } from "react";
-import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { HeroResume } from "./resume";
@@ -92,11 +91,8 @@ export function Hero({ portfolioEnabled = false }: HeroProps) {
 								? t`Publish a portfolio website, build an ATS-friendly resume from the same details, and track every application in one place.`
 								: t`Build an ATS-friendly resume, tailor it to each role, and track every application in one place.`}
 						</p>
-						<div className="mt-8 flex flex-wrap gap-3">
+						<div className="mt-8">
 							<CtaLink />
-							<a href="#pricing" className={buttonVariants({ variant: "outline", size: "lg" })}>
-								{t`See pricing`}
-							</a>
 						</div>
 						<p className="mt-4 text-sm text-muted">{t`Free plan, no card needed. PDF downloads without a watermark.`}</p>
 					</div>

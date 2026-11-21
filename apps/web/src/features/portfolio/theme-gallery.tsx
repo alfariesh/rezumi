@@ -68,10 +68,11 @@ export function ThemeGallery({ value, onChange, columns = 1 }: ThemeGalleryProps
 								}
 							>
 								<img
-									src={themePicture(theme, i18n.locale)}
+									{...themePicture(theme, i18n.locale)}
 									alt=""
-									width={640}
-									height={400}
+									width={600}
+									height={375}
+									sizes="auto, 320px"
 									loading="lazy"
 									decoding="async"
 									className="aspect-[16/10] w-full rounded-xl border border-separator bg-default object-cover object-top"

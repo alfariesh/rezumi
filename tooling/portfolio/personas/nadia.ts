@@ -29,7 +29,7 @@ export const nadia: PersonaDefinition = {
 		greeting: "أبني منتجات دفع يستخدمها الملايين كل يوم، وأحرص على أن يكون كل إصدار قابلاً للقياس.",
 		availability: "متاحة لدور قائدة منتجات",
 	},
-	portfolio: ({ t, picture, logo, pdf, metric, text, work }) => ({
+	portfolio: ({ t, picture, pdf, metric, text, work }) => ({
 		hero: {
 			greeting: t([
 				"I build payment products millions of people use every day, and make sure every release can be measured.",
@@ -159,9 +159,9 @@ export const nadia: PersonaDefinition = {
 							title: t(["QR checkout case study (public version)", "Studi kasus QR checkout (versi publik)"]),
 							pages: 12,
 							bytes: 2_400_000,
-							preview: picture("lugas-pdf.svg", ["First page of the case study", "Halaman pertama studi kasus"], {
-								width: 800,
-								height: 1131,
+							preview: picture("lugas-pdf.webp", ["First page of the case study", "Halaman pertama studi kasus"], {
+								width: 640,
+								height: 905,
 							}),
 						},
 						{
@@ -364,16 +364,6 @@ export const nadia: PersonaDefinition = {
 				},
 			],
 		},
-		clients: {
-			items: [
-				{ id: "cl-1", name: "Kilau Pay", logo: logo("Kilau Pay", 0, "#1F3A68") },
-				{ id: "cl-2", name: "Rantai Logistik", logo: logo("Rantai Logistik", 1, "#B45309") },
-				{ id: "cl-3", name: "Ladang Digital", logo: logo("Ladang Digital", 2, "#15803D") },
-				{ id: "cl-4", name: "Pasar Pagi", logo: logo("Pasar Pagi", 3, "#0F766E") },
-				{ id: "cl-5", name: "Koperasi Arta" },
-				{ id: "cl-6", name: "Nusa Kurir" },
-			],
-		},
 		custom: [
 			{
 				id: "notes",
@@ -395,11 +385,11 @@ export const nadia: PersonaDefinition = {
 			point: { lat: -6.2, lng: 106.85, precision: "city" },
 			showMap: true,
 			map: {
-				light: picture("map-lugas-light.svg", ["Map around Jakarta", "Peta sekitar Jakarta"], {
+				light: picture("map-lugas-light.webp", ["Map around Jakarta", "Peta sekitar Jakarta"], {
 					width: 800,
 					height: 480,
 				}),
-				dark: picture("map-lugas-dark.svg", ["Map around Jakarta", "Peta sekitar Jakarta"], {
+				dark: picture("map-lugas-dark.webp", ["Map around Jakarta", "Peta sekitar Jakarta"], {
 					width: 800,
 					height: 480,
 				}),

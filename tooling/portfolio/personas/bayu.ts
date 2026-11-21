@@ -30,7 +30,7 @@ export const bayu: PersonaDefinition = {
 		greeting: "أبني العلامات التجارية من أول لوحة إلهام حتى آخر تعديل، وما زلت أصوّر حملاتها بنفسي.",
 		availability: "أقبل مشاريع حملات 2026",
 	},
-	portfolio: ({ t, picture, logo, pdf, metric, text, work }) => ({
+	portfolio: ({ t, picture, pdf, metric, text, work }) => ({
 		hero: {
 			greeting: t([
 				"I build brands from the first moodboard to the last retouch, and still shoot their campaigns myself.",
@@ -141,7 +141,7 @@ export const bayu: PersonaDefinition = {
 							provider: "spotify",
 							ref: "episode/3Vt8KmQ2xRb7Lp4Nw9Zc1H",
 							title: t(["Podcast: shooting coffee at dawn", "Podcast: memotret kopi saat subuh"]),
-							thumbnail: picture("kanvas-g1.webp", ["Podcast cover", "Sampul podcast"], { width: 600, height: 600 }),
+							thumbnail: picture("kanvas-g1.webp", ["Podcast cover", "Sampul podcast"]),
 						},
 						{
 							id: "w-kopi-soundcloud",
@@ -157,9 +157,9 @@ export const bayu: PersonaDefinition = {
 							title: t(["“From the Slopes” campaign lookbook", "Lookbook kampanye “Dari Lereng”"]),
 							pages: 24,
 							bytes: 8_600_000,
-							preview: picture("kanvas-pdf.svg", ["The lookbook's cover", "Sampul lookbook"], {
-								width: 800,
-								height: 1131,
+							preview: picture("kanvas-pdf.webp", ["The lookbook's cover", "Sampul lookbook"], {
+								width: 640,
+								height: 905,
 							}),
 						},
 						{
@@ -356,16 +356,6 @@ export const bayu: PersonaDefinition = {
 				},
 			],
 		},
-		clients: {
-			items: [
-				{ id: "cl-1", name: "Kopi Tanah Tinggi", logo: logo("Kopi Tanah Tinggi", 2, "#6B4423") },
-				{ id: "cl-2", name: "Batik Lembayung", logo: logo("Batik Lembayung", 4, "#7C3AED") },
-				{ id: "cl-3", name: "Jalur Utara", logo: logo("Jalur Utara", 5, "#0F766E") },
-				{ id: "cl-4", name: "Renyah", logo: logo("Renyah", 3, "#D6603F") },
-				{ id: "cl-5", name: "Majalah Rupa" },
-				{ id: "cl-6", name: "Rimbun Kreatif" },
-			],
-		},
 		custom: [
 			{
 				id: "exhibition",
@@ -388,11 +378,11 @@ export const bayu: PersonaDefinition = {
 			point: { lat: -6.92, lng: 107.61, precision: "city" },
 			showMap: true,
 			map: {
-				light: picture("map-kanvas-light.svg", ["Map around Bandung", "Peta sekitar Bandung"], {
+				light: picture("map-kanvas-light.webp", ["Map around Bandung", "Peta sekitar Bandung"], {
 					width: 800,
 					height: 480,
 				}),
-				dark: picture("map-kanvas-dark.svg", ["Map around Bandung", "Peta sekitar Bandung"], {
+				dark: picture("map-kanvas-dark.webp", ["Map around Bandung", "Peta sekitar Bandung"], {
 					width: 800,
 					height: 480,
 				}),
