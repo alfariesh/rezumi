@@ -178,7 +178,7 @@ const CONSENT_REGIONS = [
  * (apps/web/src/libs/analytics.ts), so resume names and ids in titles and paths never reach Google. Turn off "page
  * changes based on browser history events" in the stream's enhanced measurement to match.
  */
-export function analyticsTag(id: string) {
+function analyticsTag(id: string) {
 	const consent = JSON.stringify({
 		ad_storage: "denied",
 		ad_user_data: "denied",
