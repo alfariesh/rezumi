@@ -1284,6 +1284,10 @@ msgstr "スクリーニングの後"
 msgid "After the technical interview"
 msgstr "技術面接の後"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "After this, you're signed out on your other devices."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "最初のレビューの後、今週の軽めのプランがここに表示されます。"
@@ -1419,6 +1423,10 @@ msgstr "すでに取り上げられています。1 つ選択してページ上�
 msgid "Already covered:"
 msgstr "すでにカバーされています:"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Already have an account? Sign in"
+msgstr ""
+
 #: src/features/check/screen.tsx
 msgid "Also check the exported PDF"
 msgstr "エクスポートされたPDFも確認してください。"
@@ -1444,6 +1452,10 @@ msgstr "常に 今日 に表示されます。電子メールには、検証済�
 msgid "Amharic"
 msgstr "アムハラ語"
 
+#: src/features/auth/errors.ts
+msgid "An account with this email already exists. Sign in instead, or reset your password."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
 msgstr "埋め込まれたフォントを読み取れませんでした。"
@@ -1455,6 +1467,10 @@ msgstr "エントリに日付がありません"
 #: src/features/assistant/chat-view.tsx
 msgid "an error"
 msgstr "エラー"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Ana Putri"
+msgstr ""
 
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
@@ -1617,6 +1633,7 @@ msgid "Application views"
 msgstr "応募ビュー"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -1766,6 +1783,12 @@ msgstr "アシスタントの会話"
 msgid "At 09:00 that day ({timeZone})."
 msgstr "その日の午前 9 時 ({timeZone})。"
 
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "At least {0} characters. A longer password is stronger."
+msgstr ""
+
 #: app/_layout.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/search/search-screen.tsx
@@ -1838,6 +1861,7 @@ msgid "Azerbaijani"
 msgstr "アゼルバイジャン語"
 
 #: app/(auth)/server.tsx
+#: src/features/auth/frame.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
@@ -1846,6 +1870,10 @@ msgstr "アゼルバイジャン語"
 #: src/features/write/entry-sheet.tsx
 msgid "Back"
 msgstr "戻る"
+
+#: src/shell/tab-root-back.tsx
+msgid "Back to {label}"
+msgstr ""
 
 #: app/applications/[id]/_layout.tsx
 #: src/features/application-detail/detail-screen.tsx
@@ -1879,7 +1907,7 @@ msgstr "今に戻る"
 msgid "Back to posting"
 msgstr "求人情報に戻る"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Back to sign in"
 msgstr "サインインに戻る"
 
@@ -1891,6 +1919,10 @@ msgstr "裏付け"
 #: src/features/design/advanced.tsx
 msgid "Background color"
 msgstr "背景色"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Backup code"
+msgstr "バックアップコード"
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
@@ -2062,7 +2094,6 @@ msgstr ""
 msgid "Can software read your resume?"
 msgstr "ソフトウェアはあなたの履歴書を読み取ることができますか?"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
@@ -2100,7 +2131,6 @@ msgstr "カタロニア語"
 msgid "Certifications"
 msgstr "資格・認定"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "変化"
@@ -2200,6 +2230,10 @@ msgstr "正確であることを確認してください。"
 msgid "Check the details"
 msgstr "詳細を確認"
 
+#: src/features/auth/errors.ts
+msgid "Check the email address and password, then try again."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Check the exported file contains everything you expect, and that all of it is selectable text."
 msgstr "エクスポートしたファイルに想定通りの内容が含まれ、すべてが選択可能なテキストであることを確認してください。"
@@ -2223,6 +2257,11 @@ msgstr "この職種をあなたの根拠と照合"
 #: src/features/check/screen.tsx
 msgid "Check views"
 msgstr "ビューを確認する"
+
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Check your email"
+msgstr "メールを確認してください"
 
 #: src/features/career/preferences.tsx
 msgid "Check your preferences. Invalid changes are not saved."
@@ -2248,6 +2287,10 @@ msgstr "レイアウトや内容を確認する"
 #: src/features/workspace/parts.tsx
 msgid "Checking your preferences"
 msgstr "希望条件を確認中"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Checking…"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Checking… Copy is available after saving."
@@ -2279,6 +2322,10 @@ msgstr "ファイルを選択してください"
 
 #: src/features/design/uploaded-fonts.tsx
 msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Choose a new password"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -2404,6 +2451,7 @@ msgstr "宛名の挨拶または結びの言葉を省略するには、内容を
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "エントリをクリアします。セクションは残ります。元に戻すことができます。"
 
+#: src/features/auth/welcome-screen.tsx
 #: src/features/career/facts.tsx
 #: src/features/check/page.tsx
 #: src/features/documents/document-sheets.tsx
@@ -2466,6 +2514,10 @@ msgstr "コーチ"
 #: src/features/share/custom-domain.tsx
 msgid "Code copied"
 msgstr "コードをコピーしました"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Codes look like a1b2c-d3e4f."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -2654,16 +2706,17 @@ msgstr "コンテキストは省略されるため、代わりに新しいメッ
 #: app/(auth)/server.tsx
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/auth/check-email-screen.tsx
 msgid "Continue"
 msgstr "続行"
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue as guest"
-msgstr "ゲストとして続ける"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with email"
+msgstr ""
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue in browser"
-msgstr "ブラウザで続行"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with Google"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 msgid "Conversation"
@@ -2963,7 +3016,7 @@ msgstr ""
 
 #: app/account/account.tsx
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
@@ -3148,6 +3201,7 @@ msgid "Couldn't sign out. Try again."
 msgstr "サインアウトできませんでした。もう一度やり直してください。"
 
 #: src/auth/messages.ts
+#: src/features/auth/errors.ts
 msgid "Couldn't sign you in. Try again."
 msgstr "サインインできませんでした。もう一度お試しください。"
 
@@ -3289,6 +3343,10 @@ msgstr "新しいレジュメを作成"
 msgid "Create a resume first, then ask about it."
 msgstr "まず履歴書を作成してから、それについて質問してください。"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Create account"
+msgstr "アカウントを作成"
+
 #: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "ブラウザのアカウント設定から API キーを作成します。キーはユーザーとして機能し、書類を読み取ったり編集したりできます。"
@@ -3317,6 +3375,10 @@ msgstr "作成された {0} · 最後に使用された {1} · 有効期限が�
 #: src/features/documents/new-document.tsx
 msgid "Creating document…"
 msgstr "文書を作成中…"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Creating your account…"
+msgstr ""
 
 #: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
@@ -4032,6 +4094,9 @@ msgid "Education swaps school and field of study the same way."
 msgstr ""
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "メール"
@@ -4116,13 +4181,39 @@ msgstr "0 ～ 52 の整数を入力するか、空白のままにします。"
 msgid "Enter an address like resume.example.org."
 msgstr "resume.example.org などのアドレスを入力します。"
 
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter an email like name@example.com."
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Enter any model ID supported by your endpoint."
 msgstr "エンドポイントでサポートされているモデル ID を入力します。"
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter one of the backup codes you saved when you turned on two-step verification. Each works once."
+msgstr ""
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter the 6-digit code from your authenticator app."
+msgstr ""
+
 #: app/(auth)/server.tsx
 msgid "Enter the address you open Rezumi at in a browser. The app checks it's a Rezumi server that allows app sign-in before you continue."
 msgstr "ブラウザで Rezumi を開くアドレスを入力します。アプリは、続行する前に、アプリのサインインを許可する Rezumi サーバーであることを確認します。"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter the email of your account. We'll send you a link to choose a new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Enter your name."
+msgstr "名前を入力してください。"
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Enter your password."
+msgstr "パスワードを入力してください。"
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4261,6 +4352,10 @@ msgstr "事実"
 msgid "Failed"
 msgstr "失敗した"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Fair"
+msgstr ""
+
 #: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "フィードバック"
@@ -4327,9 +4422,9 @@ msgstr "弱いリストのエントリを見つける"
 msgid "Finding what works"
 msgstr "うまくいく方法を探しています"
 
-#: app/(auth)/sign-in.tsx
-msgid "Finish signing in in the browser"
-msgstr "ブラウザーでサインインを完了してください"
+#: src/features/auth/welcome-screen.tsx
+msgid "Finish in the browser…"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Finnish"
@@ -4490,6 +4585,10 @@ msgstr "忘れさせる"
 msgid "Forgetting unlinks this fact from stories and saved items. The original source stays unchanged."
 msgstr "この事実を忘れると、ストーリーや保存済みの項目との関連付けが解除されます。元の情報は変わりません。"
 
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Forgot password?"
+msgstr "パスワードをお忘れですか？"
+
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Formatting"
@@ -4509,6 +4608,10 @@ msgstr "昨日見つかりました"
 
 #: src/features/billing/plan.ts
 msgid "Free"
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Free to start. You can add a photo, username and more later."
 msgstr ""
 
 #: src/features/design/style-groups.tsx
@@ -4571,6 +4674,10 @@ msgstr ""
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "長くなりました。 「短く」するか、具体性の低い段落を削除してください。"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "GitHub"
+msgstr "ギットハブ"
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4861,6 +4968,10 @@ msgstr "アイコン…"
 
 #: src/features/design/design-pane.tsx
 msgid "Icons"
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "If {sentTo} has a Rezumi account, a link to choose a new password is on its way. It works for one hour."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -5510,6 +5621,10 @@ msgstr "応募類をリンクするか、求人説明を貼り付けてキーワ
 msgid "Link copied"
 msgstr "リンクがコピーされました"
 
+#: src/features/auth/check-email-screen.tsx
+msgid "Link sent"
+msgstr ""
+
 #: src/features/documents/document-sheets.tsx
 msgid "Link to application"
 msgstr "求人応募へのリンク"
@@ -5550,6 +5665,10 @@ msgstr "再び履歴書にリンクされました"
 #: src/features/letters/write.tsx
 msgid "Linked. Name, email, phone and city update when the resume does."
 msgstr "リンクされています。履歴書が作成されると、名前、電子メール、電話番号、都市が更新されます。"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "LinkedIn"
+msgstr "LinkedIn"
 
 #: src/features/applications-board/views.tsx
 msgid "List"
@@ -5943,6 +6062,10 @@ msgstr "その他のプロバイダーとオプションは 設定 にありま�
 msgid "More than one email address appears."
 msgstr "複数のメールアドレスが記載されています。"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "More ways to sign in"
+msgstr ""
+
 #: src/features/home/schedules.tsx
 msgid "Morning of"
 msgstr "当日の朝"
@@ -6097,6 +6220,7 @@ msgstr "「応募済み」に移動すると、実際に送った内容を確認
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/auth/create-account-screen.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -6130,6 +6254,12 @@ msgstr "このバージョンに名前を付けます"
 #: src/features/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
 msgstr "名前、電子メール、電話番号、所在地が見つかり、リンクは完全なアドレスです。"
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "name@example.com"
+msgstr ""
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -6183,9 +6313,17 @@ msgstr "一度もない"
 msgid "New"
 msgstr "新しい"
 
-#: app/(auth)/sign-in.tsx
-msgid "New account sign-ups are currently disabled on this server."
-msgstr "このサーバーでは現在、新規アカウントの登録が無効になっています。"
+#: src/features/auth/welcome-screen.tsx
+msgid "New account sign-ups are turned off on this server."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "New account sign-ups are turned off on this server. Sign in with an account you already have."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "New account sign-ups are turned off. Sign in with an account you already have."
+msgstr ""
 
 #: src/features/settings/api-keys.tsx
 msgid "New API key"
@@ -6219,6 +6357,10 @@ msgstr "新しいドキュメント"
 msgid "New page"
 msgstr "新しいページ"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "New password"
+msgstr "新しいパスワード"
+
 #: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "検索で見つかった新しい求人"
@@ -6234,6 +6376,11 @@ msgstr "新しいセクション"
 #: src/features/career/stories.tsx
 msgid "New STARR story"
 msgstr "新しい STARR のストーリー"
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "New to Rezumi? Create an account"
+msgstr ""
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
@@ -7063,16 +7210,30 @@ msgstr "段落{n}"
 msgid "Partly supported"
 msgstr "一部裏付けあり"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Passkey"
+msgstr "パスキー"
+
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "パスキー"
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
 msgstr "パスワード"
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Password changed. Sign in with your new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Password strength: {label}"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
@@ -7483,7 +7644,7 @@ msgid "Privacy"
 msgstr "プライバシー"
 
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "プライバシーポリシー"
 
@@ -7505,6 +7666,7 @@ msgid "Proficiency"
 msgstr "熟練度"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: app/(tabs)/profile/index.tsx
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
@@ -8106,6 +8268,14 @@ msgstr "大文字は短い見出しにのみ使用してください。読む速
 msgid "Reset design defaults"
 msgstr "デザインのデフォルトをリセットする"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Reset links work once, for one hour. Ask for a new one."
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Reset your password"
+msgstr "パスワードをリセット"
+
 #: src/features/career/offers.tsx
 msgid "Respond by"
 msgstr "回答期限"
@@ -8196,6 +8366,10 @@ msgstr "レジュメ"
 #: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "履歴書は、テーマが何であれ、常に白い紙にレンダリングされます。"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Resumes, cover letters, applications and your portfolio, in one place."
+msgstr ""
 
 #. placeholder {0}: source.retrievedAt
 #. placeholder {1}: source.method
@@ -8348,10 +8522,6 @@ msgstr "この API キーを取り消します"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "書き換えを受け付けました"
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -8511,6 +8681,10 @@ msgstr "面接を保存"
 msgid "Save job"
 msgstr "ジョブの保存"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Save new password"
+msgstr ""
+
 #: src/features/share/files.ts
 msgid "Save or share file"
 msgstr "ファイルを保存または共有する"
@@ -8601,6 +8775,7 @@ msgstr "「保存済み」に保存しました · 練習"
 msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "ジョブを保存しています。別の変更を行う前に、確認を待ってください。"
 
+#: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
@@ -8781,9 +8956,21 @@ msgstr "セマンティックCSSスタイルシート"
 msgid "Send"
 msgstr "送信"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Send a new link"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Send report"
 msgstr "レポートの送信"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Send reset link"
+msgstr "リセットリンクを送信"
+
+#: src/features/auth/check-email-screen.tsx
+msgid "Send the link again"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
@@ -8798,6 +8985,8 @@ msgid "Sender details copied into the letter"
 msgstr "送信者の詳細をレターにコピーしました"
 
 #: src/features/ai/report-content.tsx
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Sending…"
 msgstr "送信中…"
 
@@ -8842,11 +9031,14 @@ msgstr "{0} に送信されました"
 msgid "Serbian"
 msgstr "セルビア語"
 
-#: app/(auth)/sign-in.tsx
 #: src/api/ai-consent.ts
 #: src/features/settings/sign-out.tsx
 msgid "Server"
 msgstr "サーバー"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Server (development builds only)"
+msgstr ""
 
 #: app/(auth)/server.tsx
 msgid "Server address"
@@ -9112,6 +9304,8 @@ msgid "Sidebars are often read last, or mixed into the main column."
 msgstr "サイドバーは多くの場合、最後に読まれるか、メインコラムに混ぜて読まれます。"
 
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/linking/open.ts
@@ -9130,10 +9324,6 @@ msgstr "このレジュメの確認を続けるには、もう一度サインイ
 #: src/auth/session-gate.tsx
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "作業を続けるには、再度サインインしてください。行った編集内容はこのデバイスに保存され、サインイン後に同期されます。"
-
-#: app/(auth)/sign-in.tsx
-msgid "Sign in or create an account in the browser, with email, a passkey, Google, GitHub or LinkedIn. You come back here when you're done."
-msgstr "電子メール、パスキー、Google、GitHub、または LinkedIn を使用してブラウザでサインインするか、アカウントを作成します。それからここに戻ってください。"
 
 #: src/linking/open.ts
 msgid "Sign in to {server}, then continue to the linked document."
@@ -9191,7 +9381,7 @@ msgstr "サインアウト？"
 msgid "Sign-in & security"
 msgstr "サインインとセキュリティ"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/linking/open.ts
 msgid "Sign-in didn't complete"
 msgstr "サインインが完了しませんでした"
@@ -9200,19 +9390,31 @@ msgstr "サインインが完了しませんでした"
 msgid "Sign-off"
 msgstr "結びの言葉"
 
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Signed out of {0}. Your documents are still there."
-msgstr "{0} からサインアウトしました。あなたの書類はまだそこにあります。"
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Signed in with Apple, Google or another provider? You have no password here: sign in with that provider instead."
+msgstr ""
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "サインアウトしましたが、このデバイス上の一部のデータを削除できませんでした。"
 
+#: src/auth/session-gate.tsx
+msgid "Signed out. Your documents are still there."
+msgstr ""
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "Signing in…"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "since last view"
 msgstr "最後に見たときから"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Single sign-on"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Situation (required)"
@@ -9325,6 +9527,10 @@ msgstr "一部のテキストがページの外にはみ出しています。"
 #: src/features/ats-checker/messages.ts
 msgid "Some text is rotated."
 msgstr "一部のテキストが回転しています。"
+
+#: src/features/auth/errors.ts
+msgid "Something went wrong on the server. Try again in a moment."
+msgstr ""
 
 #: src/features/documents/library.tsx
 msgid "Sort"
@@ -9541,6 +9747,14 @@ msgstr "強化ポイント"
 #: src/features/write/rich-text-field.tsx
 msgid "Strikethrough"
 msgstr "取り消し線"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Strong"
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Strong password."
+msgstr ""
 
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
@@ -9770,6 +9984,10 @@ msgstr "テンプレートが {0} に変更されました"
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "テンプレート、タイプ、色は履歴書に従うため、ペアは常に一致します。"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Terms"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "求人掲載の条件"
@@ -9839,6 +10057,14 @@ msgstr "{minimum} pt の下のテキストは、システムが再レンダリ�
 #: src/features/settings/locale-names.ts
 msgid "Thai"
 msgstr "タイ語"
+
+#: src/features/auth/errors.ts
+msgid "That code didn't work. Check it and try again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "That email and password don't match. Try again, or reset your password."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "That file couldn't be read as a PDF."
@@ -10093,6 +10319,10 @@ msgstr "概要の段落がありません。"
 msgid "These are the answers saved when you applied."
 msgstr "これは応募時に保存された回答です。"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
+msgstr ""
+
 #: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "これらにより、アプリ内のブラウザー タブでサーバーのアカウント設定が開きます。そこにサインインする必要がある場合があります。"
@@ -10291,6 +10521,10 @@ msgstr "このカバーレターはロックされています。編集するに
 msgid "This letter keeps its recipient as written."
 msgstr "この手紙は宛先を書かれたままにします。"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "This link has expired"
+msgstr ""
+
 #: src/linking/open.ts
 msgid "This link opens {server}. Sign in there to continue. Your current server is {current}."
 msgstr "このリンクにより {server} が開きます。続行するには、そこにサインインしてください。現在のサーバーは {current} です。"
@@ -10330,6 +10564,10 @@ msgstr "この PDF にはテキスト レイヤーがないため、パーサー
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "このPDFはパスワードで保護されています。保護されていないコピーを保存してから、もう一度お試しください。"
+
+#: src/features/auth/errors.ts
+msgid "This reset link expired or was already used. Ask for a new one."
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "This resume changed elsewhere"
@@ -10386,6 +10624,18 @@ msgstr "このサーバーは http を使用します。アプリには https �
 #: src/auth/messages.ts
 msgid "This sign-in attempt expired or was already used. Sign in again."
 msgstr "このサインイン試行は期限切れか、すでに使用されています。もう一度サインインしてください。"
+
+#: src/features/auth/errors.ts
+msgid "This sign-in attempt expired. Start again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in option isn't available right now. Use another way to sign in."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in took too long. Start again."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
@@ -10513,6 +10763,10 @@ msgstr "明日"
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "白の見出しには軽すぎます。薄く印刷すると読みにくい場合があります。"
 
+#: src/features/auth/errors.ts
+msgid "Too many attempts. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10520,6 +10774,10 @@ msgstr "白の見出しには軽すぎます。薄く印刷すると読みにく
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "リクエストが多すぎます。後でもう一度試してください。"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Too short"
+msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "Tool logos aren't available"
@@ -10610,10 +10868,6 @@ msgstr "{suggestion} をお試しください"
 msgid "Try again"
 msgstr "もう一度やり直してください"
 
-#: app/(auth)/sign-in.tsx
-msgid "Try again in browser"
-msgstr "ブラウザでもう一度お試しください"
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Try again with this"
 msgstr "これでもう一度試す"
@@ -10642,6 +10896,10 @@ msgstr "この冒頭を試す"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "履歴書のサンプルを使って試してみる"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Try without an account"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -10672,6 +10930,7 @@ msgid "Two stories"
 msgstr "2つのストーリー"
 
 #: app/account/account.tsx
+#: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "二段階認証"
 
@@ -10840,6 +11099,11 @@ msgstr "写真をアップロード中…"
 msgid "URL"
 msgstr "URL"
 
+#. placeholder {0}: passwordLimits.max
+#: src/features/auth/create-account-screen.tsx
+msgid "Use {0} characters or fewer."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Use {minimum}"
 msgstr "{minimum}を使用"
@@ -10863,6 +11127,15 @@ msgstr "3 ～ 64 文字の小文字、数字、ドット、ハイフン、アン
 #: src/features/share/web-page.tsx
 msgid "Use 6–64 characters."
 msgstr "6 ～ 64 文字を使用してください。"
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/errors.ts
+msgid "Use 64 characters or fewer."
+msgstr "64 文字以内で入力してください。"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use a backup code instead"
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 msgid "Use a darker shade"
@@ -10900,6 +11173,16 @@ msgstr "保存する前に、http または https 求人情報リンクを使用
 #: src/features/applications/add-sheet.tsx
 msgid "Use an http or https link."
 msgstr "http または https リンクを使用します。"
+
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "Use at least {0} characters."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "Use at least 8 characters."
+msgstr "8 文字以上で入力してください。"
 
 #: src/features/ats-checker/messages.ts
 msgid "Use at least 9pt."
@@ -10960,11 +11243,19 @@ msgstr "サーバーのバージョンを使用する"
 msgid "Use six hex digits, like #3E6B4F."
 msgstr "#3E6B4F のように16進数6桁で入力してください。"
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use the authenticator app"
+msgstr ""
+
 #: src/features/assistant/document.ts
 #: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "以前の変更を取り消すには、エディターの「元に戻す」を使ってください。"
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Use the email and password of your Rezumi account."
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Use the standard heading"
@@ -11050,6 +11341,14 @@ msgstr "書き出しにバリエーションを持たせ、定型文のように
 #: src/features/career/offers.tsx
 msgid "Verbal offer"
 msgstr "口頭でのオファー"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Verify"
+msgstr "確認"
+
+#: src/features/auth/errors.ts
+msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Version"
@@ -11166,6 +11465,18 @@ msgstr "返事を待っています"
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "「{0}」と読み取りました。並べ替えと印刷が一貫するように月を選んでください。"
 
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a link to {email}. Open it on any device to confirm your address."
+msgstr ""
+
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a new link to {email}."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Weak"
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "Web ページ"
@@ -11202,6 +11513,10 @@ msgstr ""
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"
 msgstr "各要件を検討中"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Welcome to Rezumi"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Went well"
@@ -11310,10 +11625,6 @@ msgstr "決断が必要になるのはいつですか?"
 #: src/features/assistant/coach-screen.tsx
 msgid "When you tap send, {list} go to {connection}."
 msgstr "送信をタップすると、{list} が {connection} に送られます。"
-
-#: app/(auth)/sign-in.tsx
-msgid "When you're done, the browser closes and you come back here."
-msgstr "完了するとブラウザが閉じて、ここに戻ります。"
 
 #: src/features/applications-board/insights-screen.tsx
 msgid "Where applications come from"
@@ -11505,12 +11816,11 @@ msgstr ""
 msgid "You can keep up to 30 application questions."
 msgstr "応募の質問は30件まで保持できます。"
 
-#: app/(auth)/sign-in.tsx
-msgid "You can sign in with an account you already have."
-msgstr "すでにお持ちのアカウントでサインインできます。"
+#: src/features/auth/check-email-screen.tsx
+msgid "You can start now. Publishing your portfolio, job alerts and payments wait until your email is confirmed. No email? Check spam, or send it again."
+msgstr ""
 
 #: src/auth/messages.ts
-#: src/auth/use-sign-in.ts
 msgid "You canceled the sign-in before it finished."
 msgstr "完了する前にサインインをキャンセルしました。"
 
@@ -11542,6 +11852,10 @@ msgstr "{server} からログアウトされます。このデバイスからま
 #: src/features/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "保存済みの版を表示しています。編集はできません。"
+
+#: src/features/auth/errors.ts
+msgid "You're offline, or the server didn't answer. Check your connection and try again."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "You're offline. Connect to check a file."
@@ -11808,10 +12122,6 @@ msgstr "履歴書には写真が付いています"
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "履歴書内に「I」や「my」が使われています。"
 
-#: app/(auth)/sign-in.tsx
-msgid "Your resumes, letters and applications, on {host}."
-msgstr "{host}にあるレジュメ、カバーレター、応募。"
-
 #: src/features/share/messages.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "選択したフォントでは一部の文字を表示できないため、“?” と表示されます。デザインで、これらの文字を含むフォントを選んでください。"
@@ -11820,17 +12130,16 @@ msgstr "選択したフォントでは一部の文字を表示できないため
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "サーバーは、テスト プロンプトと保存された API キーをこのプロバイダーに送信します。"
 
+#: src/auth/session-gate.tsx
+msgid "Your session ended"
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
 msgid "Your session expired. Sign in again."
 msgstr "セッションの有効期限が切れました。再度サインインします。"
-
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Your session on {0} ended"
-msgstr "{0} でのセッションが終了しました"
 
 #. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 import { slugify } from "./slug";
-import { filterOptions, toUsername } from "./string";
+import { filterOptions, toUsername, usernameFromEmail } from "./string";
 
 describe("slugify", () => {
 	it("falls back to a non-empty slug for CJK input", () => {
@@ -53,5 +53,18 @@ describe("filterOptions", () => {
 		} finally {
 			locale.mockRestore();
 		}
+	});
+});
+
+describe("usernameFromEmail", () => {
+	it("proposes the email's local part in allowed characters", () => {
+		expect(usernameFromEmail("Jane.Doe+cv@example.com")).toBe("jane.doecv");
+		expect(usernameFromEmail("ana-maria@example.com")).toBe("ana.maria");
+	});
+
+	it("pads, trims and appends the suffix", () => {
+		expect(usernameFromEmail("al@example.com")).toBe("al0");
+		expect(usernameFromEmail("--@example.com")).toBe("user");
+		expect(usernameFromEmail("a.very.long.local.part.indeed@example.com", "4821")).toBe("a.very.long.local.pa4821");
 	});
 });

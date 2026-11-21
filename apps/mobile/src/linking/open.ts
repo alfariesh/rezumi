@@ -3,6 +3,7 @@ import * as WebBrowser from "expo-web-browser";
 import { Alert } from "react-native";
 import { createSerialQueue } from "@rezumi/utils/queue";
 import { parseDeepLink } from "./parse";
+import { setAfterSignIn } from "@/auth/after-sign-in";
 import { getAccessToken, getServer, restoreSession, signIn } from "@/auth/session";
 import { initI18n } from "@/i18n";
 
@@ -51,6 +52,8 @@ export function redirectSystemPath({
 			const link = parseDeepLink(path, current);
 			if (!link || link.kind !== "target") return browserFallback(path, fallback);
 			const server = link.server ?? current;
+			// The reset email's link works signed out: forgetting the password is why the person is not signed in.
+			if (server === current && link.href.startsWith("/auth/reset-password")) return link.href;
 			if (server !== current) {
 				if (
 					!(await confirm(
@@ -62,14 +65,10 @@ export function redirectSystemPath({
 					return fallback;
 			} else if (await getAccessToken()) {
 				return getServer() === server ? link.href : browserFallback(path, fallback);
-			} else if (
-				!(await confirm(
-					t`Sign in to open this link`,
-					t`Sign in to ${server}, then continue to the linked document.`,
-					t`Sign in`,
-				))
-			) {
-				return fallback;
+			} else {
+				// Signed out on this server: the sign-in screens, then the linked screen once signed in.
+				setAfterSignIn(link.href);
+				return "/sign-in";
 			}
 			// signIn commits server and tokens together; cancelled/failed sign-in leaves the old account untouched.
 			for (;;) {

@@ -1284,6 +1284,10 @@ msgstr "初筛之后"
 msgid "After the technical interview"
 msgstr "技术面试之后"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "After this, you're signed out on your other devices."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "完成第一次复盘后，本周的轻量计划会显示在这里。"
@@ -1419,6 +1423,10 @@ msgstr "已经涵盖·选择一个在页面上找到它"
 msgid "Already covered:"
 msgstr "已经涵盖："
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Already have an account? Sign in"
+msgstr ""
+
 #: src/features/check/screen.tsx
 msgid "Also check the exported PDF"
 msgstr "同时检查导出的PDF"
@@ -1444,6 +1452,10 @@ msgstr "始终显示在“今天”中。电子邮件需要已验证的地址及
 msgid "Amharic"
 msgstr "阿姆哈拉语"
 
+#: src/features/auth/errors.ts
+msgid "An account with this email already exists. Sign in instead, or reset your password."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
 msgstr "有一款嵌入的字体无法读取。"
@@ -1455,6 +1467,10 @@ msgstr "条目没有日期"
 #: src/features/assistant/chat-view.tsx
 msgid "an error"
 msgstr "一个错误"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Ana Putri"
+msgstr ""
 
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
@@ -1617,6 +1633,7 @@ msgid "Application views"
 msgstr "申请视图"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -1766,6 +1783,12 @@ msgstr "助理对话"
 msgid "At 09:00 that day ({timeZone})."
 msgstr "当日 09:00（{timeZone}）。"
 
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "At least {0} characters. A longer password is stronger."
+msgstr ""
+
 #: app/_layout.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/search/search-screen.tsx
@@ -1838,6 +1861,7 @@ msgid "Azerbaijani"
 msgstr "阿塞拜疆语"
 
 #: app/(auth)/server.tsx
+#: src/features/auth/frame.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
@@ -1846,6 +1870,10 @@ msgstr "阿塞拜疆语"
 #: src/features/write/entry-sheet.tsx
 msgid "Back"
 msgstr "后退"
+
+#: src/shell/tab-root-back.tsx
+msgid "Back to {label}"
+msgstr ""
 
 #: app/applications/[id]/_layout.tsx
 #: src/features/application-detail/detail-screen.tsx
@@ -1879,7 +1907,7 @@ msgstr "回到现在"
 msgid "Back to posting"
 msgstr "返回招聘信息"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Back to sign in"
 msgstr "返回登录"
 
@@ -1891,6 +1919,10 @@ msgstr "依据"
 #: src/features/design/advanced.tsx
 msgid "Background color"
 msgstr "背景色"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Backup code"
+msgstr "备份代码"
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
@@ -2062,7 +2094,6 @@ msgstr ""
 msgid "Can software read your resume?"
 msgstr "软件可以读取您的简历吗？"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
@@ -2100,7 +2131,6 @@ msgstr "加泰罗尼亚语"
 msgid "Certifications"
 msgstr "证书"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "改变"
@@ -2200,6 +2230,10 @@ msgstr "检查一下是否准确。"
 msgid "Check the details"
 msgstr "核对详情"
 
+#: src/features/auth/errors.ts
+msgid "Check the email address and password, then try again."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Check the exported file contains everything you expect, and that all of it is selectable text."
 msgstr "检查导出的文件是否包含你期望的所有内容，并且全部都是可选取的文本。"
@@ -2223,6 +2257,11 @@ msgstr "用您的证据检查这个职位"
 #: src/features/check/screen.tsx
 msgid "Check views"
 msgstr "检查视图"
+
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Check your email"
+msgstr "查看你的邮箱"
 
 #: src/features/career/preferences.tsx
 msgid "Check your preferences. Invalid changes are not saved."
@@ -2248,6 +2287,10 @@ msgstr "检查布局和内容"
 #: src/features/workspace/parts.tsx
 msgid "Checking your preferences"
 msgstr "正在检查您的偏好"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Checking…"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Checking… Copy is available after saving."
@@ -2279,6 +2322,10 @@ msgstr "选择一个文件"
 
 #: src/features/design/uploaded-fonts.tsx
 msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Choose a new password"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -2404,6 +2451,7 @@ msgstr "清空称呼或结束语即可省略。清空结束语也会移除自动
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "清除其条目；该部分保留。您可以撤消。"
 
+#: src/features/auth/welcome-screen.tsx
 #: src/features/career/facts.tsx
 #: src/features/check/page.tsx
 #: src/features/documents/document-sheets.tsx
@@ -2466,6 +2514,10 @@ msgstr "教练"
 #: src/features/share/custom-domain.tsx
 msgid "Code copied"
 msgstr "优惠码已复制"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Codes look like a1b2c-d3e4f."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -2654,16 +2706,17 @@ msgstr "上下文被遗漏，因此请回复一条新消息。"
 #: app/(auth)/server.tsx
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/auth/check-email-screen.tsx
 msgid "Continue"
 msgstr "继续"
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue as guest"
-msgstr "以访客身份继续"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with email"
+msgstr ""
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue in browser"
-msgstr "在浏览器中继续"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with Google"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 msgid "Conversation"
@@ -2963,7 +3016,7 @@ msgstr ""
 
 #: app/account/account.tsx
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
@@ -3148,6 +3201,7 @@ msgid "Couldn't sign out. Try again."
 msgstr "无法退出。再试一次。"
 
 #: src/auth/messages.ts
+#: src/features/auth/errors.ts
 msgid "Couldn't sign you in. Try again."
 msgstr "无法让你登录。请重试。"
 
@@ -3289,6 +3343,10 @@ msgstr "创建新简历"
 msgid "Create a resume first, then ask about it."
 msgstr "首先创建一份简历，然后询问。"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Create account"
+msgstr "创建账户"
+
 #: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "在浏览器的账户设置中创建API密钥。密钥代表您操作，可读取和编辑您的文档。"
@@ -3317,6 +3375,10 @@ msgstr "创建 {0} · 上次使用 {1} · 过期 {2}"
 #: src/features/documents/new-document.tsx
 msgid "Creating document…"
 msgstr "正在创建文档…"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Creating your account…"
+msgstr ""
 
 #: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
@@ -4032,6 +4094,9 @@ msgid "Education swaps school and field of study the same way."
 msgstr ""
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "电子邮件"
@@ -4116,13 +4181,39 @@ msgstr "输入 0 到 52 之间的整数，或留空。"
 msgid "Enter an address like resume.example.org."
 msgstr "请输入类似resume.example.org的地址。"
 
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter an email like name@example.com."
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Enter any model ID supported by your endpoint."
 msgstr "输入您的终端支持的任何型号 ID。"
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter one of the backup codes you saved when you turned on two-step verification. Each works once."
+msgstr ""
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter the 6-digit code from your authenticator app."
+msgstr ""
+
 #: app/(auth)/server.tsx
 msgid "Enter the address you open Rezumi at in a browser. The app checks it's a Rezumi server that allows app sign-in before you continue."
 msgstr "输入您在浏览器中打开 Rezumi 的地址。在您继续之前，应用会检查其是否是允许应用登录的 Rezumi 服务器。"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter the email of your account. We'll send you a link to choose a new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Enter your name."
+msgstr "请输入你的姓名。"
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Enter your password."
+msgstr "请输入你的密码。"
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4261,6 +4352,10 @@ msgstr "事实"
 msgid "Failed"
 msgstr "失败的"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Fair"
+msgstr ""
+
 #: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "反馈"
@@ -4327,9 +4422,9 @@ msgstr "查找弱列表条目"
 msgid "Finding what works"
 msgstr "正在寻找亮点"
 
-#: app/(auth)/sign-in.tsx
-msgid "Finish signing in in the browser"
-msgstr "在浏览器中完成登录"
+#: src/features/auth/welcome-screen.tsx
+msgid "Finish in the browser…"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Finnish"
@@ -4490,6 +4585,10 @@ msgstr "忘记"
 msgid "Forgetting unlinks this fact from stories and saved items. The original source stays unchanged."
 msgstr "忘记会取消这一事实与故事和保存的项目的链接。原始来源保持不变。"
 
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Forgot password?"
+msgstr "忘记密码？"
+
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Formatting"
@@ -4509,6 +4608,10 @@ msgstr "昨天发现"
 
 #: src/features/billing/plan.ts
 msgid "Free"
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Free to start. You can add a photo, username and more later."
 msgstr ""
 
 #: src/features/design/style-groups.tsx
@@ -4571,6 +4674,10 @@ msgstr ""
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "越来越长。尝试“更短”，或者删除最不具体的段落。"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "GitHub"
+msgstr "GitHub"
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4861,6 +4968,10 @@ msgstr "图标…"
 
 #: src/features/design/design-pane.tsx
 msgid "Icons"
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "If {sentTo} has a Rezumi account, a link to choose a new password is on its way. It works for one hour."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -5510,6 +5621,10 @@ msgstr "关联申请或粘贴招聘信息，以对比其中的关键词。"
 msgid "Link copied"
 msgstr "链接已复制"
 
+#: src/features/auth/check-email-screen.tsx
+msgid "Link sent"
+msgstr ""
+
 #: src/features/documents/document-sheets.tsx
 msgid "Link to application"
 msgstr "职位申请链接"
@@ -5550,6 +5665,10 @@ msgstr "再次链接到简历"
 #: src/features/letters/write.tsx
 msgid "Linked. Name, email, phone and city update when the resume does."
 msgstr "已链接。姓名、电子邮件、电话和城市会随着简历的更新而更新。"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "LinkedIn"
+msgstr "LinkedIn"
 
 #: src/features/applications-board/views.tsx
 msgid "List"
@@ -5943,6 +6062,10 @@ msgstr "更多提供商和选项位于 设置。编辑、设计、检查问题�
 msgid "More than one email address appears."
 msgstr "出现了不止一个电子邮件地址。"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "More ways to sign in"
+msgstr ""
+
 #: src/features/home/schedules.tsx
 msgid "Morning of"
 msgstr "当天早上"
@@ -6097,6 +6220,7 @@ msgstr "移至“已申请”时，会询问您实际发送了哪些内容。"
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/auth/create-account-screen.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -6130,6 +6254,12 @@ msgstr "命名此版本"
 #: src/features/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
 msgstr "找到姓名、电子邮件、电话和位置，链接是完整地址。"
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "name@example.com"
+msgstr ""
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -6183,9 +6313,17 @@ msgstr "绝不"
 msgid "New"
 msgstr "新的"
 
-#: app/(auth)/sign-in.tsx
-msgid "New account sign-ups are currently disabled on this server."
-msgstr "此服务器当前已停用新账户注册。"
+#: src/features/auth/welcome-screen.tsx
+msgid "New account sign-ups are turned off on this server."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "New account sign-ups are turned off on this server. Sign in with an account you already have."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "New account sign-ups are turned off. Sign in with an account you already have."
+msgstr ""
 
 #: src/features/settings/api-keys.tsx
 msgid "New API key"
@@ -6219,6 +6357,10 @@ msgstr "新文件"
 msgid "New page"
 msgstr "新页面"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "New password"
+msgstr "新密码"
+
 #: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "来自您搜索的新职位"
@@ -6234,6 +6376,11 @@ msgstr "新版块"
 #: src/features/career/stories.tsx
 msgid "New STARR story"
 msgstr "新的STARR故事"
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "New to Rezumi? Create an account"
+msgstr ""
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
@@ -7063,16 +7210,30 @@ msgstr "第{n}款"
 msgid "Partly supported"
 msgstr "部分有证据"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Passkey"
+msgstr "通行密钥"
+
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "通行密钥"
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
 msgstr "密码"
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Password changed. Sign in with your new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Password strength: {label}"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
@@ -7483,7 +7644,7 @@ msgid "Privacy"
 msgstr "隐私"
 
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "隐私政策"
 
@@ -7505,6 +7666,7 @@ msgid "Proficiency"
 msgstr "熟练度"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: app/(tabs)/profile/index.tsx
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
@@ -8106,6 +8268,14 @@ msgstr "全大写只用于简短的标题。它会拖慢阅读速度，还可能
 msgid "Reset design defaults"
 msgstr "重置设计默认值"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Reset links work once, for one hour. Ask for a new one."
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Reset your password"
+msgstr "重置密码"
+
 #: src/features/career/offers.tsx
 msgid "Respond by"
 msgstr "答复截止"
@@ -8196,6 +8366,10 @@ msgstr "简历"
 #: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "无论主题是什么，简历总是呈现在白纸上。"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Resumes, cover letters, applications and your portfolio, in one place."
+msgstr ""
 
 #. placeholder {0}: source.retrievedAt
 #. placeholder {1}: source.method
@@ -8348,10 +8522,6 @@ msgstr "撤销此 API 密钥"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "重写已接受"
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -8511,6 +8681,10 @@ msgstr "保存面试"
 msgid "Save job"
 msgstr "保存工作"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Save new password"
+msgstr ""
+
 #: src/features/share/files.ts
 msgid "Save or share file"
 msgstr "保存或共享文件"
@@ -8601,6 +8775,7 @@ msgstr "已保存到“已保存” · 练习"
 msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "拯救工作。等待确认后再进行另一次更改。"
 
+#: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
@@ -8781,9 +8956,21 @@ msgstr "语义化 CSS 样式表"
 msgid "Send"
 msgstr "发送"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Send a new link"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Send report"
 msgstr "发送报告"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Send reset link"
+msgstr "发送重置链接"
+
+#: src/features/auth/check-email-screen.tsx
+msgid "Send the link again"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
@@ -8798,6 +8985,8 @@ msgid "Sender details copied into the letter"
 msgstr "发件人详细信息复制到信件中"
 
 #: src/features/ai/report-content.tsx
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Sending…"
 msgstr "正在发送..."
 
@@ -8842,11 +9031,14 @@ msgstr "发送至{0}"
 msgid "Serbian"
 msgstr "塞尔维亚语"
 
-#: app/(auth)/sign-in.tsx
 #: src/api/ai-consent.ts
 #: src/features/settings/sign-out.tsx
 msgid "Server"
 msgstr "服务器"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Server (development builds only)"
+msgstr ""
 
 #: app/(auth)/server.tsx
 msgid "Server address"
@@ -9112,6 +9304,8 @@ msgid "Sidebars are often read last, or mixed into the main column."
 msgstr "侧边栏通常是最后阅读的，或者混合到主栏中。"
 
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/linking/open.ts
@@ -9130,10 +9324,6 @@ msgstr "重新登录以继续检查此简历。"
 #: src/auth/session-gate.tsx
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "重新登录以继续工作。您所做的编辑将保留在此设备上，并在您登录后同步。"
-
-#: app/(auth)/sign-in.tsx
-msgid "Sign in or create an account in the browser, with email, a passkey, Google, GitHub or LinkedIn. You come back here when you're done."
-msgstr "在浏览器中通过电子邮件、通行密钥、Google、GitHub或LinkedIn登录或注册，完成后返回此处。"
 
 #: src/linking/open.ts
 msgid "Sign in to {server}, then continue to the linked document."
@@ -9191,7 +9381,7 @@ msgstr "登出？"
 msgid "Sign-in & security"
 msgstr "登录和安全"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/linking/open.ts
 msgid "Sign-in didn't complete"
 msgstr "登录未完成"
@@ -9200,19 +9390,31 @@ msgstr "登录未完成"
 msgid "Sign-off"
 msgstr "结束语"
 
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Signed out of {0}. Your documents are still there."
-msgstr "已退出 {0}。您的文件还在那里。"
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Signed in with Apple, Google or another provider? You have no password here: sign in with that provider instead."
+msgstr ""
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "已注销，但无法删除该设备上的某些数据。"
 
+#: src/auth/session-gate.tsx
+msgid "Signed out. Your documents are still there."
+msgstr ""
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "Signing in…"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "since last view"
 msgstr "自上次查看以来"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Single sign-on"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Situation (required)"
@@ -9325,6 +9527,10 @@ msgstr "有些文字落在页面之外。"
 #: src/features/ats-checker/messages.ts
 msgid "Some text is rotated."
 msgstr "有些文字被旋转了。"
+
+#: src/features/auth/errors.ts
+msgid "Something went wrong on the server. Try again in a moment."
+msgstr ""
 
 #: src/features/documents/library.tsx
 msgid "Sort"
@@ -9541,6 +9747,14 @@ msgstr "可加强"
 #: src/features/write/rich-text-field.tsx
 msgid "Strikethrough"
 msgstr "删除线"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Strong"
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Strong password."
+msgstr ""
 
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
@@ -9770,6 +9984,10 @@ msgstr "模板更改为{0}"
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "模板、类型和颜色遵循简历，因此两者始终匹配。"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Terms"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "职位发布中的条款"
@@ -9839,6 +10057,14 @@ msgstr "当系统重新渲染时，{minimum} pt 下的文本可能会被误读�
 #: src/features/settings/locale-names.ts
 msgid "Thai"
 msgstr "泰语"
+
+#: src/features/auth/errors.ts
+msgid "That code didn't work. Check it and try again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "That email and password don't match. Try again, or reset your password."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "That file couldn't be read as a PDF."
@@ -10093,6 +10319,10 @@ msgstr "没有个人简介段落。"
 msgid "These are the answers saved when you applied."
 msgstr "这些是您申请时保存的回答。"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
+msgstr ""
+
 #: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "这些将在应用程序内的浏览器选项卡中打开服务器的帐户设置。您可能需要在那里登录。"
@@ -10291,6 +10521,10 @@ msgstr "此求职信已锁定。请在“文档”中解锁后再编辑。"
 msgid "This letter keeps its recipient as written."
 msgstr "这封信将保留其收件人所写的内容。"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "This link has expired"
+msgstr ""
+
 #: src/linking/open.ts
 msgid "This link opens {server}. Sign in there to continue. Your current server is {current}."
 msgstr "此链接将打开 {server}。在那里登录以继续。您当前的服务器是{current}。"
@@ -10330,6 +10564,10 @@ msgstr "此 PDF 没有文本层，因此解析器不会从中读取任何内容�
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "此 PDF 受密码保护。请保存一份不受保护的副本后重试。"
+
+#: src/features/auth/errors.ts
+msgid "This reset link expired or was already used. Ask for a new one."
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "This resume changed elsewhere"
@@ -10386,6 +10624,18 @@ msgstr "该服务器使用http。该应用程序需要 https。"
 #: src/auth/messages.ts
 msgid "This sign-in attempt expired or was already used. Sign in again."
 msgstr "此次登录尝试已过期或已被使用。请重新登录。"
+
+#: src/features/auth/errors.ts
+msgid "This sign-in attempt expired. Start again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in option isn't available right now. Use another way to sign in."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in took too long. Start again."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
@@ -10513,6 +10763,10 @@ msgstr "明天"
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "对于白色标题来说太亮了。微弱地阅读和打印可能会很困难。"
 
+#: src/features/auth/errors.ts
+msgid "Too many attempts. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10520,6 +10774,10 @@ msgstr "对于白色标题来说太亮了。微弱地阅读和打印可能会很
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "请求太多。稍后再试。"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Too short"
+msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "Tool logos aren't available"
@@ -10610,10 +10868,6 @@ msgstr "尝试{suggestion}"
 msgid "Try again"
 msgstr "再试一次"
 
-#: app/(auth)/sign-in.tsx
-msgid "Try again in browser"
-msgstr "在浏览器中重试"
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Try again with this"
 msgstr "用这个再试一次"
@@ -10642,6 +10896,10 @@ msgstr "试试这个开场白"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "尝试使用简历样本"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Try without an account"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -10672,6 +10930,7 @@ msgid "Two stories"
 msgstr "两个故事"
 
 #: app/account/account.tsx
+#: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "两步验证"
 
@@ -10840,6 +11099,11 @@ msgstr "正在上传照片…"
 msgid "URL"
 msgstr "URL"
 
+#. placeholder {0}: passwordLimits.max
+#: src/features/auth/create-account-screen.tsx
+msgid "Use {0} characters or fewer."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Use {minimum}"
 msgstr "使用{minimum}"
@@ -10863,6 +11127,15 @@ msgstr "使用 3 到 64 个小写字母、数字、点、连字符和下划线�
 #: src/features/share/web-page.tsx
 msgid "Use 6–64 characters."
 msgstr "使用 6–64 个字符。"
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/errors.ts
+msgid "Use 64 characters or fewer."
+msgstr "最多使用 64 个字符。"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use a backup code instead"
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 msgid "Use a darker shade"
@@ -10900,6 +11173,16 @@ msgstr "保存前使用 http 或 https 职位发布链接。"
 #: src/features/applications/add-sheet.tsx
 msgid "Use an http or https link."
 msgstr "使用 http 或 https 链接。"
+
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "Use at least {0} characters."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "Use at least 8 characters."
+msgstr "至少使用 8 个字符。"
 
 #: src/features/ats-checker/messages.ts
 msgid "Use at least 9pt."
@@ -10960,11 +11243,19 @@ msgstr "使用服务器版本"
 msgid "Use six hex digits, like #3E6B4F."
 msgstr "请输入六位 Hex 数字，例如 #3E6B4F。"
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use the authenticator app"
+msgstr ""
+
 #: src/features/assistant/document.ts
 #: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "使用编辑器的“撤销”取消之前的更改。"
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Use the email and password of your Rezumi account."
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Use the standard heading"
@@ -11050,6 +11341,14 @@ msgstr "变换开头方式，避免这部分读起来像套话。"
 #: src/features/career/offers.tsx
 msgid "Verbal offer"
 msgstr "口头录用"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Verify"
+msgstr "验证"
+
+#: src/features/auth/errors.ts
+msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Version"
@@ -11166,6 +11465,18 @@ msgstr "等待回音"
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "读取为“{0}”。请选择月份，以便一致地排序和打印。"
 
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a link to {email}. Open it on any device to confirm your address."
+msgstr ""
+
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a new link to {email}."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Weak"
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "网页"
@@ -11202,6 +11513,10 @@ msgstr ""
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"
 msgstr "正在权衡每项要求"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Welcome to Rezumi"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Went well"
@@ -11310,10 +11625,6 @@ msgstr "您什么时候需要做出决定？"
 #: src/features/assistant/coach-screen.tsx
 msgid "When you tap send, {list} go to {connection}."
 msgstr "点按发送后，{list}将发送至{connection}。"
-
-#: app/(auth)/sign-in.tsx
-msgid "When you're done, the browser closes and you come back here."
-msgstr "完成后，浏览器将关闭，您将返回此处。"
 
 #: src/features/applications-board/insights-screen.tsx
 msgid "Where applications come from"
@@ -11505,12 +11816,11 @@ msgstr ""
 msgid "You can keep up to 30 application questions."
 msgstr "最多可保存 30 个申请问题。"
 
-#: app/(auth)/sign-in.tsx
-msgid "You can sign in with an account you already have."
-msgstr "您可以使用已有的帐户登录。"
+#: src/features/auth/check-email-screen.tsx
+msgid "You can start now. Publishing your portfolio, job alerts and payments wait until your email is confirmed. No email? Check spam, or send it again."
+msgstr ""
 
 #: src/auth/messages.ts
-#: src/auth/use-sign-in.ts
 msgid "You canceled the sign-in before it finished."
 msgstr "您在登录完成前取消了登录。"
 
@@ -11542,6 +11852,10 @@ msgstr "您将退出 {server}。任何尚未从该设备同步的编辑都将丢
 #: src/features/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "您正在查看已保存的版本。它无法编辑。"
+
+#: src/features/auth/errors.ts
+msgid "You're offline, or the server didn't answer. Check your connection and try again."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "You're offline. Connect to check a file."
@@ -11808,10 +12122,6 @@ msgstr "你的简历有照片"
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "你的简历使用了“我”和“我的”这类词。"
 
-#: app/(auth)/sign-in.tsx
-msgid "Your resumes, letters and applications, on {host}."
-msgstr "您在{host}上的简历、求职信和申请。"
-
 #: src/features/share/messages.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "您选择的字体无法显示部分字符，它们会显示为“?”。请在“设计”中选择包含这些字符的字体。"
@@ -11820,17 +12130,16 @@ msgstr "您选择的字体无法显示部分字符，它们会显示为“?”�
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "您的服务器向该提供商发送测试提示和保存的 API 密钥。"
 
+#: src/auth/session-gate.tsx
+msgid "Your session ended"
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
 msgid "Your session expired. Sign in again."
 msgstr "您的会话已过期。再次登录。"
-
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Your session on {0} ended"
-msgstr "您在 {0} 上的会话结束"
 
 #. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx

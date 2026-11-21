@@ -1284,6 +1284,10 @@ msgstr "Na de screening"
 msgid "After the technical interview"
 msgstr "Na het technische gesprek"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "After this, you're signed out on your other devices."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "Na uw eerste nabespreking verschijnt hier een licht plan voor deze week."
@@ -1419,6 +1423,10 @@ msgstr "Al behandeld · kies er een om deze op de pagina te vinden"
 msgid "Already covered:"
 msgstr "Al behandeld:"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Already have an account? Sign in"
+msgstr ""
+
 #: src/features/check/screen.tsx
 msgid "Also check the exported PDF"
 msgstr "Controleer ook de geëxporteerde PDF"
@@ -1444,6 +1452,10 @@ msgstr "Verschijnt altijd in Vandaag. Voor e-mail zijn een geverifieerd adres en
 msgid "Amharic"
 msgstr "Amhaars"
 
+#: src/features/auth/errors.ts
+msgid "An account with this email already exists. Sign in instead, or reset your password."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
 msgstr "Een ingesloten lettertype kon niet worden gelezen."
@@ -1455,6 +1467,10 @@ msgstr "Een vermelding heeft geen datums"
 #: src/features/assistant/chat-view.tsx
 msgid "an error"
 msgstr "een fout"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Ana Putri"
+msgstr ""
 
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
@@ -1617,6 +1633,7 @@ msgid "Application views"
 msgstr "Sollicitatieweergaven"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -1766,6 +1783,12 @@ msgstr "Assistent gesprekken"
 msgid "At 09:00 that day ({timeZone})."
 msgstr "Om 09:00 uur die dag ({timeZone})."
 
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "At least {0} characters. A longer password is stronger."
+msgstr ""
+
 #: app/_layout.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/search/search-screen.tsx
@@ -1838,6 +1861,7 @@ msgid "Azerbaijani"
 msgstr "Azerbeidzjaans"
 
 #: app/(auth)/server.tsx
+#: src/features/auth/frame.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
@@ -1846,6 +1870,10 @@ msgstr "Azerbeidzjaans"
 #: src/features/write/entry-sheet.tsx
 msgid "Back"
 msgstr "Rug"
+
+#: src/shell/tab-root-back.tsx
+msgid "Back to {label}"
+msgstr ""
 
 #: app/applications/[id]/_layout.tsx
 #: src/features/application-detail/detail-screen.tsx
@@ -1879,7 +1907,7 @@ msgstr "Terug naar nu"
 msgid "Back to posting"
 msgstr "Terug naar vacature"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Back to sign in"
 msgstr "Terug naar inloggen"
 
@@ -1891,6 +1919,10 @@ msgstr "Onderbouwd door"
 #: src/features/design/advanced.tsx
 msgid "Background color"
 msgstr "Achtergrondkleur"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Backup code"
+msgstr "Back-upcode"
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
@@ -2062,7 +2094,6 @@ msgstr ""
 msgid "Can software read your resume?"
 msgstr "Kan software uw cv lezen?"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
@@ -2100,7 +2131,6 @@ msgstr "Catalaans"
 msgid "Certifications"
 msgstr "Certificeringen"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Wijziging"
@@ -2200,6 +2230,10 @@ msgstr "Controleer of het klopt."
 msgid "Check the details"
 msgstr "Controleer de gegevens"
 
+#: src/features/auth/errors.ts
+msgid "Check the email address and password, then try again."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Check the exported file contains everything you expect, and that all of it is selectable text."
 msgstr "Controleer of het geëxporteerde bestand alles bevat wat je verwacht, en dat alles selecteerbare tekst is."
@@ -2223,6 +2257,11 @@ msgstr "Toets deze functie aan uw bewijs"
 #: src/features/check/screen.tsx
 msgid "Check views"
 msgstr "Controleer weergaven"
+
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Check your email"
+msgstr "Controleer uw e-mail"
 
 #: src/features/career/preferences.tsx
 msgid "Check your preferences. Invalid changes are not saved."
@@ -2248,6 +2287,10 @@ msgstr "Controle opmaak en inhoud"
 #: src/features/workspace/parts.tsx
 msgid "Checking your preferences"
 msgstr "Uw voorkeuren controleren"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Checking…"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Checking… Copy is available after saving."
@@ -2279,6 +2322,10 @@ msgstr "Kies een bestand"
 
 #: src/features/design/uploaded-fonts.tsx
 msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Choose a new password"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -2404,6 +2451,7 @@ msgstr "Maak de aanhef of afsluiting leeg om deze weg te laten. Als je de afslui
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "Wist zijn invoer; het gedeelte blijft. Je kunt het ongedaan maken."
 
+#: src/features/auth/welcome-screen.tsx
 #: src/features/career/facts.tsx
 #: src/features/check/page.tsx
 #: src/features/documents/document-sheets.tsx
@@ -2466,6 +2514,10 @@ msgstr "Coach"
 #: src/features/share/custom-domain.tsx
 msgid "Code copied"
 msgstr "Code gekopieerd"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Codes look like a1b2c-d3e4f."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -2654,16 +2706,17 @@ msgstr "Context wordt weggelaten, dus antwoord in plaats daarvan met een nieuw b
 #: app/(auth)/server.tsx
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/auth/check-email-screen.tsx
 msgid "Continue"
 msgstr "Doorgaan"
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue as guest"
-msgstr "Doorgaan als gast"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with email"
+msgstr ""
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue in browser"
-msgstr "Ga verder in de browser"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with Google"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 msgid "Conversation"
@@ -2963,7 +3016,7 @@ msgstr ""
 
 #: app/account/account.tsx
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
@@ -3148,6 +3201,7 @@ msgid "Couldn't sign out. Try again."
 msgstr "Kan niet uitloggen. Probeer het opnieuw."
 
 #: src/auth/messages.ts
+#: src/features/auth/errors.ts
 msgid "Couldn't sign you in. Try again."
 msgstr "Kan u niet inloggen. Probeer het opnieuw."
 
@@ -3289,6 +3343,10 @@ msgstr "Maak een nieuwe cv aan"
 msgid "Create a resume first, then ask about it."
 msgstr "Maak eerst een CV en vraag ernaar."
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Create account"
+msgstr "Account aanmaken"
+
 #: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "Maak een API-sleutel via Accountinstellingen in je browser. Sleutels fungeren als je en kunnen je documenten lezen en bewerken."
@@ -3317,6 +3375,10 @@ msgstr "Gemaakt op {0} · Laatst gebruikt op {1} · Verloopt op {2}"
 #: src/features/documents/new-document.tsx
 msgid "Creating document…"
 msgstr "Document maken…"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Creating your account…"
+msgstr ""
 
 #: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
@@ -4032,6 +4094,9 @@ msgid "Education swaps school and field of study the same way."
 msgstr ""
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "E-mail"
@@ -4116,13 +4181,39 @@ msgstr "Voer een geheel getal in van 0 tot 52, of laat dit leeg."
 msgid "Enter an address like resume.example.org."
 msgstr "Voer een adres in zoals resume.example.org."
 
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter an email like name@example.com."
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Enter any model ID supported by your endpoint."
 msgstr "Voer een model-ID in die door uw eindpunt wordt ondersteund."
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter one of the backup codes you saved when you turned on two-step verification. Each works once."
+msgstr ""
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter the 6-digit code from your authenticator app."
+msgstr ""
+
 #: app/(auth)/server.tsx
 msgid "Enter the address you open Rezumi at in a browser. The app checks it's a Rezumi server that allows app sign-in before you continue."
 msgstr "Voer het adres in waarop je Rezumi in een browser opent. De app controleert of het een Rezumi-server is waarop inloggen via de app mogelijk is voordat je doorgaat."
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter the email of your account. We'll send you a link to choose a new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Enter your name."
+msgstr "Voer uw naam in."
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Enter your password."
+msgstr "Voer uw wachtwoord in."
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4261,6 +4352,10 @@ msgstr "Feiten"
 msgid "Failed"
 msgstr "Mislukt"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Fair"
+msgstr ""
+
 #: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "Feedback"
@@ -4327,9 +4422,9 @@ msgstr "Vind zwakke lijstvermeldingen"
 msgid "Finding what works"
 msgstr "Uitzoeken wat werkt"
 
-#: app/(auth)/sign-in.tsx
-msgid "Finish signing in in the browser"
-msgstr "Voltooi het inloggen in de browser"
+#: src/features/auth/welcome-screen.tsx
+msgid "Finish in the browser…"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Finnish"
@@ -4490,6 +4585,10 @@ msgstr "Vergeten"
 msgid "Forgetting unlinks this fact from stories and saved items. The original source stays unchanged."
 msgstr "Door te vergeten wordt dit feit ontkoppeld van verhalen en opgeslagen items. De oorspronkelijke bron blijft ongewijzigd."
 
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Forgot password?"
+msgstr "Wachtwoord vergeten?"
+
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Formatting"
@@ -4509,6 +4608,10 @@ msgstr "Gisteren gevonden"
 
 #: src/features/billing/plan.ts
 msgid "Free"
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Free to start. You can add a photo, username and more later."
 msgstr ""
 
 #: src/features/design/style-groups.tsx
@@ -4571,6 +4674,10 @@ msgstr ""
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "Lang worden. Probeer ‘Korter’, of knip de minst specifieke paragraaf af."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "GitHub"
+msgstr "GitHub"
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4861,6 +4968,10 @@ msgstr "Pictogram…"
 
 #: src/features/design/design-pane.tsx
 msgid "Icons"
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "If {sentTo} has a Rezumi account, a link to choose a new password is on its way. It works for one hour."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -5510,6 +5621,10 @@ msgstr "Koppel een sollicitatie of plak een vacature om de voorwaarden ervan te 
 msgid "Link copied"
 msgstr "Link gekopieerd"
 
+#: src/features/auth/check-email-screen.tsx
+msgid "Link sent"
+msgstr ""
+
 #: src/features/documents/document-sheets.tsx
 msgid "Link to application"
 msgstr "Link naar sollicitatie"
@@ -5550,6 +5665,10 @@ msgstr "Opnieuw gekoppeld aan het CV"
 #: src/features/letters/write.tsx
 msgid "Linked. Name, email, phone and city update when the resume does."
 msgstr "Gekoppeld. Naam, e-mailadres, telefoon en stad worden bijgewerkt wanneer het cv dat doet."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "LinkedIn"
+msgstr "LinkedIn"
 
 #: src/features/applications-board/views.tsx
 msgid "List"
@@ -5943,6 +6062,10 @@ msgstr "Meer providers en opties staan in Instellingen. Bewerken, ontwerpen, Con
 msgid "More than one email address appears."
 msgstr "Er komt meer dan één e-mailadres voor."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "More ways to sign in"
+msgstr ""
+
 #: src/features/home/schedules.tsx
 msgid "Morning of"
 msgstr "Ochtend van de dag zelf"
@@ -6097,6 +6220,7 @@ msgstr "Bij verplaatsing naar het stadium gesolliciteerd geef je aan wat je werk
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/auth/create-account-screen.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -6130,6 +6254,12 @@ msgstr "Geef deze versie een naam"
 #: src/features/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
 msgstr "Naam, e-mailadres, telefoonnummer en locatie worden gevonden en links zijn volledige adressen."
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "name@example.com"
+msgstr ""
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -6183,9 +6313,17 @@ msgstr "Nooit"
 msgid "New"
 msgstr "Nieuw"
 
-#: app/(auth)/sign-in.tsx
-msgid "New account sign-ups are currently disabled on this server."
-msgstr "Registratie van nieuwe accounts is op deze server momenteel uitgeschakeld."
+#: src/features/auth/welcome-screen.tsx
+msgid "New account sign-ups are turned off on this server."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "New account sign-ups are turned off on this server. Sign in with an account you already have."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "New account sign-ups are turned off. Sign in with an account you already have."
+msgstr ""
 
 #: src/features/settings/api-keys.tsx
 msgid "New API key"
@@ -6219,6 +6357,10 @@ msgstr "Nieuw document"
 msgid "New page"
 msgstr "Nieuwe pagina"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "New password"
+msgstr "Nieuw wachtwoord"
+
 #: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "Nieuwe functies uit uw zoekopdracht"
@@ -6234,6 +6376,11 @@ msgstr "Nieuwe sectie"
 #: src/features/career/stories.tsx
 msgid "New STARR story"
 msgstr "Nieuw STARR-verhaal"
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "New to Rezumi? Create an account"
+msgstr ""
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
@@ -7063,16 +7210,30 @@ msgstr "paragraaf {n}"
 msgid "Partly supported"
 msgstr "Deels onderbouwd"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Passkey"
+msgstr "Passkey"
+
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "Passleutels"
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
 msgstr "Wachtwoord"
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Password changed. Sign in with your new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Password strength: {label}"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
@@ -7483,7 +7644,7 @@ msgid "Privacy"
 msgstr "Privacy"
 
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "Privacybeleid"
 
@@ -7505,6 +7666,7 @@ msgid "Proficiency"
 msgstr "Vaardigheid"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: app/(tabs)/profile/index.tsx
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
@@ -8106,6 +8268,14 @@ msgstr "Gebruik hoofdletters alleen voor korte kopjes. Ze vertragen het lezen en
 msgid "Reset design defaults"
 msgstr "Ontwerpstandaarden opnieuw instellen"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Reset links work once, for one hour. Ask for a new one."
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Reset your password"
+msgstr "Reset uw wachtwoord"
+
 #: src/features/career/offers.tsx
 msgid "Respond by"
 msgstr "Reageren vóór"
@@ -8196,6 +8366,10 @@ msgstr "Cv's"
 #: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "CV's worden altijd weergegeven op wit papier, ongeacht het thema."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Resumes, cover letters, applications and your portfolio, in one place."
+msgstr ""
 
 #. placeholder {0}: source.retrievedAt
 #. placeholder {1}: source.method
@@ -8348,10 +8522,6 @@ msgstr "Trek deze API-sleutel in"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Herschrijven geaccepteerd"
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -8511,6 +8681,10 @@ msgstr "Gesprek opslaan"
 msgid "Save job"
 msgstr "Baan opslaan"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Save new password"
+msgstr ""
+
 #: src/features/share/files.ts
 msgid "Save or share file"
 msgstr "Bestand opslaan of delen"
@@ -8601,6 +8775,7 @@ msgstr "Opgeslagen in Opgeslagen · Oefening"
 msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "De baan opslaan. Wacht op bevestiging voordat u nog een wijziging aanbrengt."
 
+#: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
@@ -8781,9 +8956,21 @@ msgstr "Semantische CSS-stijlpagina"
 msgid "Send"
 msgstr "Versturen"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Send a new link"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Send report"
 msgstr "Rapport verzenden"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Send reset link"
+msgstr "Resetlink verzenden"
+
+#: src/features/auth/check-email-screen.tsx
+msgid "Send the link again"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
@@ -8798,6 +8985,8 @@ msgid "Sender details copied into the letter"
 msgstr "Afzendergegevens gekopieerd naar de brief"
 
 #: src/features/ai/report-content.tsx
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Sending…"
 msgstr "Verzenden…"
 
@@ -8842,11 +9031,14 @@ msgstr "Verzonden naar {0}"
 msgid "Serbian"
 msgstr "Servisch"
 
-#: app/(auth)/sign-in.tsx
 #: src/api/ai-consent.ts
 #: src/features/settings/sign-out.tsx
 msgid "Server"
 msgstr "Server"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Server (development builds only)"
+msgstr ""
 
 #: app/(auth)/server.tsx
 msgid "Server address"
@@ -9112,6 +9304,8 @@ msgid "Sidebars are often read last, or mixed into the main column."
 msgstr "Zijbalken worden vaak als laatste gelezen of in de hoofdkolom gemengd."
 
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/linking/open.ts
@@ -9130,10 +9324,6 @@ msgstr "Meld je opnieuw aan om dit cv verder te bekijken."
 #: src/auth/session-gate.tsx
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "Meld je opnieuw aan om verder te werken. Bewerkingen die je heeft aangebracht, worden op dit apparaat bewaard en gesynchroniseerd nadat je zich heeft aangemeld."
-
-#: app/(auth)/sign-in.tsx
-msgid "Sign in or create an account in the browser, with email, a passkey, Google, GitHub or LinkedIn. You come back here when you're done."
-msgstr "Meld je aan of maak een account in de browser, met e-mail, een toegangssleutel, Google, GitHub of LinkedIn. Kom hier terug als je klaar bent."
 
 #: src/linking/open.ts
 msgid "Sign in to {server}, then continue to the linked document."
@@ -9191,7 +9381,7 @@ msgstr "Uitloggen?"
 msgid "Sign-in & security"
 msgstr "Inloggen en beveiliging"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/linking/open.ts
 msgid "Sign-in didn't complete"
 msgstr "Inloggen is niet voltooid"
@@ -9200,19 +9390,31 @@ msgstr "Inloggen is niet voltooid"
 msgid "Sign-off"
 msgstr "Afsluiting"
 
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Signed out of {0}. Your documents are still there."
-msgstr "Afgemeld bij {0}. Je documenten zijn er nog."
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Signed in with Apple, Google or another provider? You have no password here: sign in with that provider instead."
+msgstr ""
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "Uitgelogd, maar sommige gegevens op dit apparaat kunnen niet worden verwijderd."
 
+#: src/auth/session-gate.tsx
+msgid "Signed out. Your documents are still there."
+msgstr ""
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "Signing in…"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "since last view"
 msgstr "sinds de laatste keer bekeken"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Single sign-on"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Situation (required)"
@@ -9325,6 +9527,10 @@ msgstr "Sommige tekst valt buiten de pagina."
 #: src/features/ats-checker/messages.ts
 msgid "Some text is rotated."
 msgstr "Sommige tekst is gedraaid."
+
+#: src/features/auth/errors.ts
+msgid "Something went wrong on the server. Try again in a moment."
+msgstr ""
 
 #: src/features/documents/library.tsx
 msgid "Sort"
@@ -9541,6 +9747,14 @@ msgstr "Versterken"
 #: src/features/write/rich-text-field.tsx
 msgid "Strikethrough"
 msgstr "Doorhalen"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Strong"
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Strong password."
+msgstr ""
 
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
@@ -9770,6 +9984,10 @@ msgstr "Sjabloon gewijzigd in {0}"
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "Sjabloon, type en kleuren volgen het cv, zodat het paar altijd bij elkaar past."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Terms"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "Voorwaarden uit de vacature"
@@ -9839,6 +10057,14 @@ msgstr "Tekst onder {minimum} pt kan verkeerd worden gelezen wanneer een systeem
 #: src/features/settings/locale-names.ts
 msgid "Thai"
 msgstr "Thais"
+
+#: src/features/auth/errors.ts
+msgid "That code didn't work. Check it and try again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "That email and password don't match. Try again, or reset your password."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "That file couldn't be read as a PDF."
@@ -10093,6 +10319,10 @@ msgstr "Er is geen samenvattende alinea."
 msgid "These are the answers saved when you applied."
 msgstr "Dit zijn de antwoorden die zijn opgeslagen toen u solliciteerde."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
+msgstr ""
+
 #: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "Deze openen de accountinstellingen van je server op een browsertabblad in de app. Mogelijk moet je zich daar aanmelden."
@@ -10291,6 +10521,10 @@ msgstr "Deze brief is vergrendeld. Ontgrendel deze in Documenten om te bewerken.
 msgid "This letter keeps its recipient as written."
 msgstr "Deze brief behoudt de ontvanger zoals geschreven."
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "This link has expired"
+msgstr ""
+
 #: src/linking/open.ts
 msgid "This link opens {server}. Sign in there to continue. Your current server is {current}."
 msgstr "Deze link opent {server}. Meld je daar aan om door te gaan. Je huidige server is {current}."
@@ -10330,6 +10564,10 @@ msgstr "Deze PDF heeft geen tekstlaag, dus een parser leest er niets uit."
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "Deze PDF is met een wachtwoord beveiligd. Sla een onbeveiligde kopie op en probeer het opnieuw."
+
+#: src/features/auth/errors.ts
+msgid "This reset link expired or was already used. Ask for a new one."
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "This resume changed elsewhere"
@@ -10386,6 +10624,18 @@ msgstr "Deze server gebruikt http. De app heeft https nodig."
 #: src/auth/messages.ts
 msgid "This sign-in attempt expired or was already used. Sign in again."
 msgstr "Deze inlogpoging is verlopen of al gebruikt. Log opnieuw in."
+
+#: src/features/auth/errors.ts
+msgid "This sign-in attempt expired. Start again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in option isn't available right now. Use another way to sign in."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in took too long. Start again."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
@@ -10513,6 +10763,10 @@ msgstr "Morgen"
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "Te licht voor koppen op wit. Het kan moeilijk zijn om vaag te lezen en af ​​te drukken."
 
+#: src/features/auth/errors.ts
+msgid "Too many attempts. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10520,6 +10774,10 @@ msgstr "Te licht voor koppen op wit. Het kan moeilijk zijn om vaag te lezen en a
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "Te veel verzoeken. Probeer het later opnieuw."
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Too short"
+msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "Tool logos aren't available"
@@ -10610,10 +10868,6 @@ msgstr "Probeer {suggestion}"
 msgid "Try again"
 msgstr "Probeer het opnieuw"
 
-#: app/(auth)/sign-in.tsx
-msgid "Try again in browser"
-msgstr "Probeer het opnieuw in de browser"
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Try again with this"
 msgstr "Probeer het opnieuw hiermee"
@@ -10642,6 +10896,10 @@ msgstr "Probeer deze opening"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "Probeer het met een voorbeeld-cv"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Try without an account"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -10672,6 +10930,7 @@ msgid "Two stories"
 msgstr "Twee verhalen"
 
 #: app/account/account.tsx
+#: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "Tweestapsverificatie"
 
@@ -10840,6 +11099,11 @@ msgstr "Foto uploaden…"
 msgid "URL"
 msgstr "URL"
 
+#. placeholder {0}: passwordLimits.max
+#: src/features/auth/create-account-screen.tsx
+msgid "Use {0} characters or fewer."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Use {minimum}"
 msgstr "Gebruik {minimum}"
@@ -10863,6 +11127,15 @@ msgstr "Gebruik 3 tot 64 kleine letters, cijfers, punten, koppeltekens en onders
 #: src/features/share/web-page.tsx
 msgid "Use 6–64 characters."
 msgstr "Gebruik 6–64 tekens."
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/errors.ts
+msgid "Use 64 characters or fewer."
+msgstr "Gebruik maximaal 64 tekens."
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use a backup code instead"
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 msgid "Use a darker shade"
@@ -10900,6 +11173,16 @@ msgstr "Gebruik een http- of https-vacaturelink voordat u opslaat."
 #: src/features/applications/add-sheet.tsx
 msgid "Use an http or https link."
 msgstr "Gebruik een http- of https-link."
+
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "Use at least {0} characters."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "Use at least 8 characters."
+msgstr "Gebruik minimaal 8 tekens."
 
 #: src/features/ats-checker/messages.ts
 msgid "Use at least 9pt."
@@ -10960,11 +11243,19 @@ msgstr "Gebruik de serverversie"
 msgid "Use six hex digits, like #3E6B4F."
 msgstr "Gebruik zes Hex-cijfers, zoals #3E6B4F."
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use the authenticator app"
+msgstr ""
+
 #: src/features/assistant/document.ts
 #: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "Gebruik de Ongedaan maken van de bouwer om eerdere wijzigingen ongedaan te maken."
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Use the email and password of your Rezumi account."
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Use the standard heading"
@@ -11050,6 +11341,14 @@ msgstr "Varieer de openingszinnen, zodat de sectie niet als standaardtekst overk
 #: src/features/career/offers.tsx
 msgid "Verbal offer"
 msgstr "Mondeling aanbod"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Verify"
+msgstr "Verifiëren"
+
+#: src/features/auth/errors.ts
+msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Version"
@@ -11166,6 +11465,18 @@ msgstr "Wachten om terug te horen"
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "We lezen \"{0}\". Kies een maand, zodat deze consistent sorteert en afdrukt."
 
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a link to {email}. Open it on any device to confirm your address."
+msgstr ""
+
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a new link to {email}."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Weak"
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "Webpagina"
@@ -11202,6 +11513,10 @@ msgstr ""
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"
 msgstr "Elke eis afwegen"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Welcome to Rezumi"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Went well"
@@ -11310,10 +11625,6 @@ msgstr "Wanneer heeft je een besluit nodig?"
 #: src/features/assistant/coach-screen.tsx
 msgid "When you tap send, {list} go to {connection}."
 msgstr "Wanneer u op verzenden tikt, gaan {list} naar {connection}."
-
-#: app/(auth)/sign-in.tsx
-msgid "When you're done, the browser closes and you come back here."
-msgstr "Als je klaar bent, sluit de browser en kom je hier terug."
 
 #: src/features/applications-board/insights-screen.tsx
 msgid "Where applications come from"
@@ -11505,12 +11816,11 @@ msgstr ""
 msgid "You can keep up to 30 application questions."
 msgstr "U kunt maximaal 30 sollicitatievragen bewaren."
 
-#: app/(auth)/sign-in.tsx
-msgid "You can sign in with an account you already have."
-msgstr "Je kunt inloggen met een account dat je al heeft."
+#: src/features/auth/check-email-screen.tsx
+msgid "You can start now. Publishing your portfolio, job alerts and payments wait until your email is confirmed. No email? Check spam, or send it again."
+msgstr ""
 
 #: src/auth/messages.ts
-#: src/auth/use-sign-in.ts
 msgid "You canceled the sign-in before it finished."
 msgstr "Je hebt het inloggen geannuleerd voordat het klaar was."
 
@@ -11542,6 +11852,10 @@ msgstr "Je wordt afgemeld bij {server}. Alle bewerkingen die nog niet vanaf dit 
 #: src/features/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "U bekijkt een opgeslagen versie. Deze kan niet worden bewerkt."
+
+#: src/features/auth/errors.ts
+msgid "You're offline, or the server didn't answer. Check your connection and try again."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "You're offline. Connect to check a file."
@@ -11808,10 +12122,6 @@ msgstr "Je CV bevat een foto"
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "Je cv gebruikt „ik” en „mijn”."
 
-#: app/(auth)/sign-in.tsx
-msgid "Your resumes, letters and applications, on {host}."
-msgstr "Je cv's, sollicitatiebrieven en sollicitaties, op {host}."
-
 #: src/features/share/messages.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Je gekozen lettertype kan sommige tekens niet weergeven. Ze worden getoond als “?”. Kies in Ontwerp een lettertype dat ze bevat."
@@ -11820,17 +12130,16 @@ msgstr "Je gekozen lettertype kan sommige tekens niet weergeven. Ze worden getoo
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "Uw server stuurt een testprompt en de opgeslagen API-sleutel naar deze provider."
 
+#: src/auth/session-gate.tsx
+msgid "Your session ended"
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
 msgid "Your session expired. Sign in again."
 msgstr "Je sessie is verlopen. Meld je opnieuw aan."
-
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Your session on {0} ended"
-msgstr "Je sessie op {0} is beëindigd"
 
 #. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx

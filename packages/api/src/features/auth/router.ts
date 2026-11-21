@@ -173,6 +173,33 @@ export const authRouter = {
 				),
 			)
 			.handler(() => authService.providers.list()),
+		native: publicProcedure
+			.route({
+				method: "GET",
+				path: "/auth/providers/native",
+				tags: ["Authentication"],
+				operationId: "getNativeSignInOptions",
+				summary: "Get native app sign-in options",
+				description:
+					"Returns what Rezumi's mobile apps need to offer native Sign in with Apple and Google: whether Apple sign-in is enabled, and Google's public OAuth client ids. No authentication required.",
+				successDescription: "Native sign-in options for this instance.",
+			})
+			.input(z.object({}).optional())
+			.output(
+				z.object({
+					apple: z.boolean().describe("Whether Sign in with Apple is enabled."),
+					google: z
+						.object({
+							webClientId: z
+								.string()
+								.describe("Google's web OAuth client id (Android asks Credential Manager for it)."),
+							iosClientId: z.string().nullable().describe("Google's iOS OAuth client id, when configured."),
+						})
+						.nullable()
+						.describe("Google sign-in, when enabled."),
+				}),
+			)
+			.handler(() => authService.providers.native()),
 	},
 
 	createApiKey: protectedProcedure

@@ -1284,6 +1284,10 @@ msgstr "Setelah tahap penyaringan"
 msgid "After the technical interview"
 msgstr "Setelah wawancara teknis"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "After this, you're signed out on your other devices."
+msgstr "Setelah ini, kamu keluar dari perangkat lainnya."
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "Setelah tinjauan pertama Anda, rencana ringan untuk minggu ini muncul di sini."
@@ -1419,6 +1423,10 @@ msgstr "Sudah tercakup · pilih satu untuk menemukannya di halaman"
 msgid "Already covered:"
 msgstr "Sudah dibahas:"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Already have an account? Sign in"
+msgstr "Sudah punya akun? Masuk"
+
 #: src/features/check/screen.tsx
 msgid "Also check the exported PDF"
 msgstr "Periksa juga PDF yang diekspor"
@@ -1444,6 +1452,10 @@ msgstr "Selalu muncul di Hari ini. Email memerlukan alamat terverifikasi dan pen
 msgid "Amharic"
 msgstr "Amharik"
 
+#: src/features/auth/errors.ts
+msgid "An account with this email already exists. Sign in instead, or reset your password."
+msgstr "Akun dengan email ini sudah ada. Masuk saja, atau atur ulang kata sandimu."
+
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
 msgstr "Font yang disematkan tidak dapat dibaca."
@@ -1455,6 +1467,10 @@ msgstr "Sebuah entri tidak memiliki tanggal"
 #: src/features/assistant/chat-view.tsx
 msgid "an error"
 msgstr "sebuah kesalahan"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Ana Putri"
+msgstr "Ana Putri"
 
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
@@ -1617,6 +1633,7 @@ msgid "Application views"
 msgstr "Tampilan lamaran"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -1766,6 +1783,12 @@ msgstr "Percakapan asisten"
 msgid "At 09:00 that day ({timeZone})."
 msgstr "Pukul 09.00 hari itu ({timeZone})."
 
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "At least {0} characters. A longer password is stronger."
+msgstr "Minimal {0} karakter. Kata sandi yang lebih panjang lebih kuat."
+
 #: app/_layout.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/search/search-screen.tsx
@@ -1838,6 +1861,7 @@ msgid "Azerbaijani"
 msgstr "Azerbaijani"
 
 #: app/(auth)/server.tsx
+#: src/features/auth/frame.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
@@ -1846,6 +1870,10 @@ msgstr "Azerbaijani"
 #: src/features/write/entry-sheet.tsx
 msgid "Back"
 msgstr "Kembali"
+
+#: src/shell/tab-root-back.tsx
+msgid "Back to {label}"
+msgstr "Kembali ke {label}"
 
 #: app/applications/[id]/_layout.tsx
 #: src/features/application-detail/detail-screen.tsx
@@ -1879,7 +1907,7 @@ msgstr "Kembali ke sekarang"
 msgid "Back to posting"
 msgstr "Kembali ke lowongan"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Back to sign in"
 msgstr "Kembali ke masuk"
 
@@ -1891,6 +1919,10 @@ msgstr "Didukung oleh"
 #: src/features/design/advanced.tsx
 msgid "Background color"
 msgstr "Warna latar belakang"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Backup code"
+msgstr "Kode cadangan"
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
@@ -2062,7 +2094,6 @@ msgstr "Tampilan kalender"
 msgid "Can software read your resume?"
 msgstr "Bisakah perangkat lunak membaca resume Anda?"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
@@ -2100,7 +2131,6 @@ msgstr "Katala"
 msgid "Certifications"
 msgstr "Sertifikasi"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Mengubah"
@@ -2200,6 +2230,10 @@ msgstr "Periksa keakuratannya."
 msgid "Check the details"
 msgstr "Periksa detailnya"
 
+#: src/features/auth/errors.ts
+msgid "Check the email address and password, then try again."
+msgstr "Periksa alamat email dan kata sandi, lalu coba lagi."
+
 #: src/features/ats-checker/messages.ts
 msgid "Check the exported file contains everything you expect, and that all of it is selectable text."
 msgstr "Periksa bahwa file yang diekspor memuat semua yang Anda harapkan, dan semuanya berupa teks yang dapat dipilih."
@@ -2223,6 +2257,11 @@ msgstr "Periksa posisi ini terhadap bukti Anda"
 #: src/features/check/screen.tsx
 msgid "Check views"
 msgstr "Periksa tampilan"
+
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Check your email"
+msgstr "Periksa email Anda"
 
 #: src/features/career/preferences.tsx
 msgid "Check your preferences. Invalid changes are not saved."
@@ -2248,6 +2287,10 @@ msgstr "Memeriksa tata letak dan konten"
 #: src/features/workspace/parts.tsx
 msgid "Checking your preferences"
 msgstr "Memeriksa preferensi Anda"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Checking…"
+msgstr "Memeriksa…"
 
 #: src/features/share/link.tsx
 msgid "Checking… Copy is available after saving."
@@ -2280,6 +2323,10 @@ msgstr "Pilih file"
 #: src/features/design/uploaded-fonts.tsx
 msgid "Choose a font file smaller than 8 MB."
 msgstr "Pilih file font yang lebih kecil dari 8 MB."
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Choose a new password"
+msgstr "Buat kata sandi baru"
 
 #: src/features/ats-checker/checker.tsx
 msgid "Choose a PDF"
@@ -2404,6 +2451,7 @@ msgstr "Kosongkan salam pembuka atau salam penutup untuk menghilangkannya. Mengo
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "Menghapus entri-entrinya; bagian itu tetap ada. Anda dapat membatalkan."
 
+#: src/features/auth/welcome-screen.tsx
 #: src/features/career/facts.tsx
 #: src/features/check/page.tsx
 #: src/features/documents/document-sheets.tsx
@@ -2466,6 +2514,10 @@ msgstr "Coach"
 #: src/features/share/custom-domain.tsx
 msgid "Code copied"
 msgstr "Kode disalin"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Codes look like a1b2c-d3e4f."
+msgstr "Bentuk kodenya seperti a1b2c-d3e4f."
 
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -2654,16 +2706,17 @@ msgstr "Konteksnya tidak disertakan, jadi balas dengan pesan baru."
 #: app/(auth)/server.tsx
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/auth/check-email-screen.tsx
 msgid "Continue"
 msgstr "Lanjutkan"
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue as guest"
-msgstr "Lanjutkan sebagai tamu"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with email"
+msgstr "Lanjut dengan email"
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue in browser"
-msgstr "Lanjutkan di browser"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with Google"
+msgstr "Lanjut dengan Google"
 
 #: src/features/assistant/chat-view.tsx
 msgid "Conversation"
@@ -2963,7 +3016,7 @@ msgstr "Gagal memindahkan wawancara. Coba lagi."
 
 #: app/account/account.tsx
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
@@ -3148,6 +3201,7 @@ msgid "Couldn't sign out. Try again."
 msgstr "Tidak dapat keluar. Coba lagi."
 
 #: src/auth/messages.ts
+#: src/features/auth/errors.ts
 msgid "Couldn't sign you in. Try again."
 msgstr "Tidak dapat memasukkan Anda. Coba lagi."
 
@@ -3289,6 +3343,10 @@ msgstr "Buat resume baru"
 msgid "Create a resume first, then ask about it."
 msgstr "Buat resume terlebih dahulu, lalu tanyakan tentangnya."
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Create account"
+msgstr "Buat akun"
+
 #: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "Buat kunci API dari pengaturan Akun di browser Anda. Kunci bertindak sebagai Anda dan dapat membaca serta mengedit dokumen Anda."
@@ -3317,6 +3375,10 @@ msgstr "Dibuat {0} · Terakhir digunakan {1} · Kedaluwarsa {2}"
 #: src/features/documents/new-document.tsx
 msgid "Creating document…"
 msgstr "Membuat dokumen…"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Creating your account…"
+msgstr "Membuat akunmu…"
 
 #: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
@@ -4032,6 +4094,9 @@ msgid "Education swaps school and field of study the same way."
 msgstr "Pendidikan menukar sekolah dan bidang studi dengan cara yang sama."
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "Email"
@@ -4116,13 +4181,39 @@ msgstr "Masukkan bilangan bulat dari 0 hingga 52, atau biarkan kosong."
 msgid "Enter an address like resume.example.org."
 msgstr "Masukkan alamat seperti resume.example.org."
 
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter an email like name@example.com."
+msgstr "Masukkan email seperti nama@contoh.com."
+
 #: src/features/ai/provider-editor.tsx
 msgid "Enter any model ID supported by your endpoint."
 msgstr "Masukkan ID model apa pun yang didukung oleh titik akhir Anda."
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter one of the backup codes you saved when you turned on two-step verification. Each works once."
+msgstr "Masukkan salah satu kode cadangan yang kamu simpan saat menyalakan verifikasi dua langkah. Tiap kode hanya berlaku sekali."
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter the 6-digit code from your authenticator app."
+msgstr "Masukkan kode 6 digit dari aplikasi autentikatormu."
+
 #: app/(auth)/server.tsx
 msgid "Enter the address you open Rezumi at in a browser. The app checks it's a Rezumi server that allows app sign-in before you continue."
 msgstr "Masukkan alamat tempat Anda membuka Rezumi di browser. Aplikasi memeriksa bahwa itu adalah server Rezumi yang mengizinkan masuk aplikasi sebelum Anda melanjutkan."
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter the email of your account. We'll send you a link to choose a new password."
+msgstr "Masukkan email akunmu. Kami kirim tautan untuk membuat kata sandi baru."
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Enter your name."
+msgstr "Masukkan nama Anda."
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Enter your password."
+msgstr "Masukkan kata sandi Anda."
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4261,6 +4352,10 @@ msgstr "Fakta"
 msgid "Failed"
 msgstr "Gagal"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Fair"
+msgstr "Cukup"
+
 #: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "Masukan"
@@ -4327,9 +4422,9 @@ msgstr "Temukan entri daftar yang lemah"
 msgid "Finding what works"
 msgstr "Mencari yang berhasil"
 
-#: app/(auth)/sign-in.tsx
-msgid "Finish signing in in the browser"
-msgstr "Selesaikan masuk di browser"
+#: src/features/auth/welcome-screen.tsx
+msgid "Finish in the browser…"
+msgstr "Selesaikan di browser…"
 
 #: src/features/settings/locale-names.ts
 msgid "Finnish"
@@ -4490,6 +4585,10 @@ msgstr "Lupakan"
 msgid "Forgetting unlinks this fact from stories and saved items. The original source stays unchanged."
 msgstr "Lupa akan membatalkan tautan fakta ini dari cerita dan item yang disimpan. Sumber aslinya tetap tidak berubah."
 
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Forgot password?"
+msgstr "Lupa kata sandi?"
+
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Formatting"
@@ -4510,6 +4609,10 @@ msgstr "Ditemukan kemarin"
 #: src/features/billing/plan.ts
 msgid "Free"
 msgstr "Gratis"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Free to start. You can add a photo, username and more later."
+msgstr "Gratis untuk mulai. Foto, username, dan lainnya bisa ditambah nanti."
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
@@ -4571,6 +4674,10 @@ msgstr "Dapatkan lowongan baru untuk pencarianmu di sini setiap pagi"
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "Semakin lama. Coba “Lebih Pendek”, atau potong paragraf yang paling tidak spesifik."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "GitHub"
+msgstr "GitHub"
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4862,6 +4969,10 @@ msgstr "Ikon…"
 #: src/features/design/design-pane.tsx
 msgid "Icons"
 msgstr "Ikon"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "If {sentTo} has a Rezumi account, a link to choose a new password is on its way. It works for one hour."
+msgstr "Jika {sentTo} punya akun Rezumi, tautan untuk membuat kata sandi baru sedang dikirim. Tautan berlaku satu jam."
 
 #: src/features/ats-checker/messages.ts
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
@@ -5510,6 +5621,10 @@ msgstr "Tautkan lamaran pekerjaan atau tempelkan lowongan untuk membandingkan pe
 msgid "Link copied"
 msgstr "Tautan disalin"
 
+#: src/features/auth/check-email-screen.tsx
+msgid "Link sent"
+msgstr "Tautan terkirim"
+
 #: src/features/documents/document-sheets.tsx
 msgid "Link to application"
 msgstr "Tautan ke lamaran pekerjaan"
@@ -5550,6 +5665,10 @@ msgstr "Ditautkan ke resume lagi"
 #: src/features/letters/write.tsx
 msgid "Linked. Name, email, phone and city update when the resume does."
 msgstr "Tertaut. Nama, email, telepon, dan kota diperbarui saat resume diperbarui."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "LinkedIn"
+msgstr "LinkedIn"
 
 #: src/features/applications-board/views.tsx
 msgid "List"
@@ -5943,6 +6062,10 @@ msgstr "Penyedia dan opsi lainnya ada di Pengaturan. Pengeditan, desain, masalah
 msgid "More than one email address appears."
 msgstr "Lebih dari satu alamat email muncul."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "More ways to sign in"
+msgstr "Cara masuk lainnya"
+
 #: src/features/home/schedules.tsx
 msgid "Morning of"
 msgstr "Pagi harinya"
@@ -6097,6 +6220,7 @@ msgstr "Saat memindahkan ke tahap sudah melamar, Anda diminta mencatat apa yang 
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/auth/create-account-screen.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -6130,6 +6254,12 @@ msgstr "Beri nama versi ini"
 #: src/features/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
 msgstr "Nama, email, telepon dan lokasi ditemukan, dan tautan adalah alamat lengkap."
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "name@example.com"
+msgstr "nama@contoh.com"
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -6183,9 +6313,17 @@ msgstr "Tidak pernah"
 msgid "New"
 msgstr "Baru"
 
-#: app/(auth)/sign-in.tsx
-msgid "New account sign-ups are currently disabled on this server."
-msgstr "Pendaftaran akun baru saat ini dinonaktifkan di server ini."
+#: src/features/auth/welcome-screen.tsx
+msgid "New account sign-ups are turned off on this server."
+msgstr "Pendaftaran akun baru dimatikan di server ini."
+
+#: src/features/auth/create-account-screen.tsx
+msgid "New account sign-ups are turned off on this server. Sign in with an account you already have."
+msgstr "Pendaftaran akun baru dimatikan di server ini. Masuk dengan akun yang sudah kamu punya."
+
+#: src/features/auth/errors.ts
+msgid "New account sign-ups are turned off. Sign in with an account you already have."
+msgstr "Pendaftaran akun baru dimatikan. Masuk dengan akun yang sudah kamu punya."
 
 #: src/features/settings/api-keys.tsx
 msgid "New API key"
@@ -6219,6 +6357,10 @@ msgstr "Dokumen baru"
 msgid "New page"
 msgstr "Lembaran baru"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "New password"
+msgstr "Kata sandi baru"
+
 #: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "Posisi baru dari pencarian Anda"
@@ -6234,6 +6376,11 @@ msgstr "Bagian baru"
 #: src/features/career/stories.tsx
 msgid "New STARR story"
 msgstr "Cerita STARR baru"
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "New to Rezumi? Create an account"
+msgstr "Baru di Rezumi? Buat akun"
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
@@ -7063,16 +7210,30 @@ msgstr "paragraf {n}"
 msgid "Partly supported"
 msgstr "Didukung sebagian"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Passkey"
+msgstr "Kunci sandi"
+
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "Passkeys"
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
 msgstr "Kata Sandi"
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Password changed. Sign in with your new password."
+msgstr "Kata sandi diganti. Masuk dengan kata sandi barumu."
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Password strength: {label}"
+msgstr "Kekuatan kata sandi: {label}"
 
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
@@ -7483,7 +7644,7 @@ msgid "Privacy"
 msgstr "Privasi"
 
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "Kebijakan privasi"
 
@@ -7505,6 +7666,7 @@ msgid "Proficiency"
 msgstr "Kemahiran"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: app/(tabs)/profile/index.tsx
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
@@ -8106,6 +8268,14 @@ msgstr "Simpan huruf kapital hanya untuk judul singkat. Huruf kapital memperlamb
 msgid "Reset design defaults"
 msgstr "Setel ulang default desain"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Reset links work once, for one hour. Ask for a new one."
+msgstr "Tautan atur ulang hanya berlaku sekali, selama satu jam. Minta tautan baru."
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Reset your password"
+msgstr "Atur ulang kata sandi Anda"
+
 #: src/features/career/offers.tsx
 msgid "Respond by"
 msgstr "Tanggapi paling lambat"
@@ -8196,6 +8366,10 @@ msgstr "CV"
 #: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "resume selalu ditampilkan di kertas putih, apa pun temanya."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Resumes, cover letters, applications and your portfolio, in one place."
+msgstr "CV, surat lamaran, lamaran kerja, dan portofoliomu, di satu tempat."
 
 #. placeholder {0}: source.retrievedAt
 #. placeholder {1}: source.method
@@ -8348,10 +8522,6 @@ msgstr "Cabut kunci API ini"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Penulisan ulang diterima"
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -8511,6 +8681,10 @@ msgstr "Simpan wawancara"
 msgid "Save job"
 msgstr "Simpan pekerjaan"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Save new password"
+msgstr "Simpan kata sandi baru"
+
 #: src/features/share/files.ts
 msgid "Save or share file"
 msgstr "Simpan atau bagikan file"
@@ -8601,6 +8775,7 @@ msgstr "Disimpan ke Tersimpan · Latihan"
 msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "Menyimpan pekerjaan. Tunggu konfirmasi sebelum melakukan perubahan lainnya."
 
+#: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
@@ -8781,9 +8956,21 @@ msgstr "Lembar gaya CSS semantik"
 msgid "Send"
 msgstr "Mengirim"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Send a new link"
+msgstr "Kirim tautan baru"
+
 #: src/features/ai/report-content.tsx
 msgid "Send report"
 msgstr "Kirim laporan"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Send reset link"
+msgstr "Kirim tautan atur ulang"
+
+#: src/features/auth/check-email-screen.tsx
+msgid "Send the link again"
+msgstr "Kirim ulang tautan"
 
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
@@ -8798,6 +8985,8 @@ msgid "Sender details copied into the letter"
 msgstr "Detail pengirim disalin ke dalam surat"
 
 #: src/features/ai/report-content.tsx
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Sending…"
 msgstr "Mengirim…"
 
@@ -8842,11 +9031,14 @@ msgstr "Dikirim ke {0}"
 msgid "Serbian"
 msgstr "Serbia"
 
-#: app/(auth)/sign-in.tsx
 #: src/api/ai-consent.ts
 #: src/features/settings/sign-out.tsx
 msgid "Server"
 msgstr "pelayan"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Server (development builds only)"
+msgstr "Server (hanya build pengembangan)"
 
 #: app/(auth)/server.tsx
 msgid "Server address"
@@ -9112,6 +9304,8 @@ msgid "Sidebars are often read last, or mixed into the main column."
 msgstr "Sidebar sering kali dibaca terakhir, atau digabungkan ke dalam kolom utama."
 
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/linking/open.ts
@@ -9130,10 +9324,6 @@ msgstr "Masuk lagi untuk melanjutkan pengecekan CV ini."
 #: src/auth/session-gate.tsx
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "Masuk lagi untuk terus bekerja. Hasil edit yang Anda buat disimpan di perangkat ini dan disinkronkan setelah Anda masuk."
-
-#: app/(auth)/sign-in.tsx
-msgid "Sign in or create an account in the browser, with email, a passkey, Google, GitHub or LinkedIn. You come back here when you're done."
-msgstr "Masuk atau buat akun di browser, dengan email, kunci sandi, Google, GitHub atau LinkedIn. Anda kembali ke sini setelah selesai."
 
 #: src/linking/open.ts
 msgid "Sign in to {server}, then continue to the linked document."
@@ -9191,7 +9381,7 @@ msgstr "Keluar?"
 msgid "Sign-in & security"
 msgstr "Masuk & keamanan"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/linking/open.ts
 msgid "Sign-in didn't complete"
 msgstr "Proses masuk tidak selesai"
@@ -9200,19 +9390,31 @@ msgstr "Proses masuk tidak selesai"
 msgid "Sign-off"
 msgstr "Salam penutup"
 
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Signed out of {0}. Your documents are still there."
-msgstr "Keluar dari {0}. Dokumen Anda masih ada."
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Signed in with Apple, Google or another provider? You have no password here: sign in with that provider instead."
+msgstr "Masuk lewat Apple, Google, atau penyedia lain? Kamu tidak punya kata sandi di sini: masuk saja lewat penyedia itu."
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "Keluar, namun beberapa data di perangkat ini tidak dapat dihapus."
 
+#: src/auth/session-gate.tsx
+msgid "Signed out. Your documents are still there."
+msgstr "Kamu sudah keluar. Dokumenmu tetap aman."
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "Signing in…"
+msgstr "Sedang masuk…"
+
 #: src/features/share/link.tsx
 msgid "since last view"
 msgstr "sejak tampilan terakhir"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Single sign-on"
+msgstr "Single sign-on"
 
 #: src/features/career/stories.tsx
 msgid "Situation (required)"
@@ -9325,6 +9527,10 @@ msgstr "Beberapa teks jatuh di luar halaman."
 #: src/features/ats-checker/messages.ts
 msgid "Some text is rotated."
 msgstr "Beberapa teks diputar."
+
+#: src/features/auth/errors.ts
+msgid "Something went wrong on the server. Try again in a moment."
+msgstr "Ada masalah di server. Coba lagi sebentar lagi."
 
 #: src/features/documents/library.tsx
 msgid "Sort"
@@ -9541,6 +9747,14 @@ msgstr "Perkuat"
 #: src/features/write/rich-text-field.tsx
 msgid "Strikethrough"
 msgstr "Coret"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Strong"
+msgstr "Kuat"
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Strong password."
+msgstr "Kata sandi kuat."
 
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
@@ -9770,6 +9984,10 @@ msgstr "Templat diubah menjadi {0}"
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "Template, jenis dan warna mengikuti resume, sehingga pasangannya selalu serasi."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Terms"
+msgstr "Ketentuan"
+
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "Persyaratan dari postingan pekerjaan"
@@ -9839,6 +10057,14 @@ msgstr "Teks di bawah {minimum} pt dapat salah dibaca ketika sistem merendernya 
 #: src/features/settings/locale-names.ts
 msgid "Thai"
 msgstr "Thai"
+
+#: src/features/auth/errors.ts
+msgid "That code didn't work. Check it and try again."
+msgstr "Kode itu tidak berhasil. Periksa lalu coba lagi."
+
+#: src/features/auth/errors.ts
+msgid "That email and password don't match. Try again, or reset your password."
+msgstr "Email dan kata sandi tidak cocok. Coba lagi, atau atur ulang kata sandimu."
 
 #: src/features/ats-checker/check.ts
 msgid "That file couldn't be read as a PDF."
@@ -10093,6 +10319,10 @@ msgstr "Tidak ada paragraf ringkasan."
 msgid "These are the answers saved when you applied."
 msgstr "Ini adalah jawaban yang disimpan saat Anda melamar."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
+msgstr "Pilihan ini membuka halaman masuk Rezumi di lembar browser yang aman. Kamu kembali ke sini setelah selesai."
+
 #: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "Ini membuka pengaturan akun server Anda di tab browser di dalam aplikasi. Anda mungkin perlu masuk ke sana."
@@ -10291,6 +10521,10 @@ msgstr "Surat ini terkunci. Buka kuncinya di Dokumen untuk menyunting."
 msgid "This letter keeps its recipient as written."
 msgstr "Surat ini menjaga penerimanya tetap seperti yang tertulis."
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "This link has expired"
+msgstr "Tautan ini sudah kedaluwarsa"
+
 #: src/linking/open.ts
 msgid "This link opens {server}. Sign in there to continue. Your current server is {current}."
 msgstr "Tautan ini membuka {server}. Masuk ke sana untuk melanjutkan. Server Anda saat ini adalah {current}."
@@ -10330,6 +10564,10 @@ msgstr "PDF ini tidak memiliki lapisan teks, jadi parser tidak membaca apa pun d
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "PDF ini dilindungi kata sandi. Simpan salinan yang tidak dilindungi dan coba lagi."
+
+#: src/features/auth/errors.ts
+msgid "This reset link expired or was already used. Ask for a new one."
+msgstr "Tautan atur ulang ini kedaluwarsa atau sudah dipakai. Minta tautan baru."
 
 #: src/draft/conflict-sheet.tsx
 msgid "This resume changed elsewhere"
@@ -10386,6 +10624,18 @@ msgstr "Server ini menggunakan http. Aplikasi ini membutuhkan https."
 #: src/auth/messages.ts
 msgid "This sign-in attempt expired or was already used. Sign in again."
 msgstr "Upaya masuk ini kedaluwarsa atau sudah digunakan. Masuk lagi."
+
+#: src/features/auth/errors.ts
+msgid "This sign-in attempt expired. Start again."
+msgstr "Upaya masuk ini kedaluwarsa. Mulai lagi."
+
+#: src/features/auth/errors.ts
+msgid "This sign-in option isn't available right now. Use another way to sign in."
+msgstr "Cara masuk ini sedang tidak tersedia. Gunakan cara masuk lain."
+
+#: src/features/auth/errors.ts
+msgid "This sign-in took too long. Start again."
+msgstr "Proses masuk terlalu lama. Mulai lagi."
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
@@ -10513,6 +10763,10 @@ msgstr "Besok"
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "Terlalu terang untuk judul berwarna putih. Mungkin sulit untuk membaca dan mencetak dengan samar."
 
+#: src/features/auth/errors.ts
+msgid "Too many attempts. Wait a minute, then try again."
+msgstr "Terlalu banyak percobaan. Tunggu satu menit, lalu coba lagi."
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10520,6 +10774,10 @@ msgstr "Terlalu terang untuk judul berwarna putih. Mungkin sulit untuk membaca d
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "Terlalu banyak permintaan. Coba lagi nanti."
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Too short"
+msgstr "Terlalu pendek"
 
 #: src/features/billing/plan-alert.ts
 msgid "Tool logos aren't available"
@@ -10610,10 +10868,6 @@ msgstr "Coba {suggestion}"
 msgid "Try again"
 msgstr "Coba lagi"
 
-#: app/(auth)/sign-in.tsx
-msgid "Try again in browser"
-msgstr "Coba lagi di browser"
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Try again with this"
 msgstr "Coba lagi dengan ini"
@@ -10642,6 +10896,10 @@ msgstr "Coba pembuka ini"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "Coba dengan contoh resume"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Try without an account"
+msgstr "Coba tanpa akun"
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -10672,6 +10930,7 @@ msgid "Two stories"
 msgstr "Dua cerita"
 
 #: app/account/account.tsx
+#: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "Verifikasi dua langkah"
 
@@ -10840,6 +11099,11 @@ msgstr "Mengunggah foto…"
 msgid "URL"
 msgstr "URL"
 
+#. placeholder {0}: passwordLimits.max
+#: src/features/auth/create-account-screen.tsx
+msgid "Use {0} characters or fewer."
+msgstr "Gunakan {0} karakter atau kurang."
+
 #: src/features/check/issues.ts
 msgid "Use {minimum}"
 msgstr "Gunakan {minimum}"
@@ -10863,6 +11127,15 @@ msgstr "Gunakan 3 hingga 64 huruf kecil, angka, titik, tanda hubung, dan garis b
 #: src/features/share/web-page.tsx
 msgid "Use 6–64 characters."
 msgstr "Gunakan 6–64 karakter."
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/errors.ts
+msgid "Use 64 characters or fewer."
+msgstr "Gunakan maksimal 64 karakter."
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use a backup code instead"
+msgstr "Pakai kode cadangan"
 
 #: src/features/design/style-groups.tsx
 msgid "Use a darker shade"
@@ -10900,6 +11173,16 @@ msgstr "Gunakan tautan postingan pekerjaan http atau https sebelum menyimpan."
 #: src/features/applications/add-sheet.tsx
 msgid "Use an http or https link."
 msgstr "Gunakan tautan http atau https."
+
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "Use at least {0} characters."
+msgstr "Gunakan minimal {0} karakter."
+
+#: src/features/auth/errors.ts
+msgid "Use at least 8 characters."
+msgstr "Gunakan minimal 8 karakter."
 
 #: src/features/ats-checker/messages.ts
 msgid "Use at least 9pt."
@@ -10960,11 +11243,19 @@ msgstr "Gunakan versi server"
 msgid "Use six hex digits, like #3E6B4F."
 msgstr "Gunakan enam digit heksadesimal, seperti #3E6B4F."
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use the authenticator app"
+msgstr "Pakai aplikasi autentikator"
+
 #: src/features/assistant/document.ts
 #: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "Gunakan Membuka pembuat untuk membatalkan perubahan sebelumnya."
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Use the email and password of your Rezumi account."
+msgstr "Gunakan email dan kata sandi akun Rezumi-mu."
 
 #: src/features/check/issues.ts
 msgid "Use the standard heading"
@@ -11050,6 +11341,14 @@ msgstr "Variasikan kalimat pembuka agar bagian ini tidak terasa seperti teks bak
 #: src/features/career/offers.tsx
 msgid "Verbal offer"
 msgstr "Penawaran lisan"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Verify"
+msgstr "Verifikasi"
+
+#: src/features/auth/errors.ts
+msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
+msgstr "Verifikasi emailmu dulu. Kami sudah mengirim tautan; buka di ponsel ini, lalu masuk."
 
 #: src/features/letters/share.tsx
 msgid "Version"
@@ -11166,6 +11465,18 @@ msgstr "Menunggu untuk mendengarnya kembali"
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "Terbaca “{0}”. Pilih bulan agar terurut dan dicetak secara konsisten."
 
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a link to {email}. Open it on any device to confirm your address."
+msgstr "Kami mengirim tautan ke {email}. Buka di perangkat mana saja untuk mengonfirmasi alamatmu."
+
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a new link to {email}."
+msgstr "Kami mengirim tautan baru ke {email}."
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Weak"
+msgstr "Lemah"
+
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "Halaman web"
@@ -11202,6 +11513,10 @@ msgstr "Setiap minggu pukul {clock} · berikutnya {day}"
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"
 msgstr "Menimbang setiap persyaratan"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Welcome to Rezumi"
+msgstr "Selamat datang di Rezumi"
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Went well"
@@ -11310,10 +11625,6 @@ msgstr "Kapan Anda membutuhkan keputusan?"
 #: src/features/assistant/coach-screen.tsx
 msgid "When you tap send, {list} go to {connection}."
 msgstr "Saat Anda mengetuk kirim, {list} dikirim ke {connection}."
-
-#: app/(auth)/sign-in.tsx
-msgid "When you're done, the browser closes and you come back here."
-msgstr "Setelah selesai, browser ditutup dan Anda kembali ke sini."
 
 #: src/features/applications-board/insights-screen.tsx
 msgid "Where applications come from"
@@ -11505,12 +11816,11 @@ msgstr "Kamu bisa menyimpan hingga {max} CV di luar Sampah. Pindahkan yang tidak
 msgid "You can keep up to 30 application questions."
 msgstr "Anda dapat menyimpan hingga 30 pertanyaan lamaran."
 
-#: app/(auth)/sign-in.tsx
-msgid "You can sign in with an account you already have."
-msgstr "Anda dapat masuk dengan akun yang sudah Anda miliki."
+#: src/features/auth/check-email-screen.tsx
+msgid "You can start now. Publishing your portfolio, job alerts and payments wait until your email is confirmed. No email? Check spam, or send it again."
+msgstr "Kamu bisa mulai sekarang. Menerbitkan portofolio, notifikasi lowongan, dan pembayaran menunggu sampai emailmu terkonfirmasi. Tidak ada email? Cek folder spam, atau kirim ulang."
 
 #: src/auth/messages.ts
-#: src/auth/use-sign-in.ts
 msgid "You canceled the sign-in before it finished."
 msgstr "Anda membatalkan proses masuk sebelum selesai."
 
@@ -11542,6 +11852,10 @@ msgstr "Anda akan keluar dari {server}. Pengeditan apa pun yang belum disinkronk
 #: src/features/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "Anda sedang melihat versi tersimpan. Versi ini tidak dapat diedit."
+
+#: src/features/auth/errors.ts
+msgid "You're offline, or the server didn't answer. Check your connection and try again."
+msgstr "Kamu sedang offline, atau server tidak menjawab. Periksa koneksi lalu coba lagi."
 
 #: src/features/ats-checker/check.ts
 msgid "You're offline. Connect to check a file."
@@ -11808,10 +12122,6 @@ msgstr "Resume Anda memiliki foto"
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "Resume Anda menggunakan \"I\" dan \"my\"."
 
-#: app/(auth)/sign-in.tsx
-msgid "Your resumes, letters and applications, on {host}."
-msgstr "CV, surat lamaran, dan lamaran pekerjaan Anda, di {host}."
-
 #: src/features/share/messages.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Font yang Anda pilih tidak dapat menampilkan beberapa karakter. Karakter tersebut ditampilkan sebagai “?”. Di Desain, pilih font yang memilikinya."
@@ -11820,17 +12130,16 @@ msgstr "Font yang Anda pilih tidak dapat menampilkan beberapa karakter. Karakter
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "Server Anda mengirimkan perintah pengujian dan kunci API yang disimpan ke penyedia ini."
 
+#: src/auth/session-gate.tsx
+msgid "Your session ended"
+msgstr "Sesimu berakhir"
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
 msgid "Your session expired. Sign in again."
 msgstr "Sesi Anda telah berakhir. Masuk lagi."
-
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Your session on {0} ended"
-msgstr "Sesi Anda pada {0} telah berakhir"
 
 #. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx

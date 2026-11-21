@@ -1284,6 +1284,10 @@ msgstr "Ön elemeden sonra"
 msgid "After the technical interview"
 msgstr "Teknik görüşmeden sonra"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "After this, you're signed out on your other devices."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "İlk değerlendirmenizden sonra bu hafta için hafif bir plan burada görünür."
@@ -1419,6 +1423,10 @@ msgstr "Zaten ele alındı ​​· sayfada bulmak için birini seçin"
 msgid "Already covered:"
 msgstr "Zaten dahil:"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Already have an account? Sign in"
+msgstr ""
+
 #: src/features/check/screen.tsx
 msgid "Also check the exported PDF"
 msgstr "Ayrıca dışa aktarılan PDF'yu da kontrol edin"
@@ -1444,6 +1452,10 @@ msgstr "Her zaman Bugün'de görünür. E-posta, doğrulanmış bir adres ve sun
 msgid "Amharic"
 msgstr "Amharca"
 
+#: src/features/auth/errors.ts
+msgid "An account with this email already exists. Sign in instead, or reset your password."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
 msgstr "Gömülü bir yazı tipi okunamadı."
@@ -1455,6 +1467,10 @@ msgstr "Bir girişin tarihi yok"
 #: src/features/assistant/chat-view.tsx
 msgid "an error"
 msgstr "bir hata"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Ana Putri"
+msgstr ""
 
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
@@ -1617,6 +1633,7 @@ msgid "Application views"
 msgstr "Başvuru görünümleri"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -1766,6 +1783,12 @@ msgstr "Asistan görüşmeleri"
 msgid "At 09:00 that day ({timeZone})."
 msgstr "O gün saat 09:00'da ({timeZone})."
 
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "At least {0} characters. A longer password is stronger."
+msgstr ""
+
 #: app/_layout.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/search/search-screen.tsx
@@ -1838,6 +1861,7 @@ msgid "Azerbaijani"
 msgstr "Azerice"
 
 #: app/(auth)/server.tsx
+#: src/features/auth/frame.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
@@ -1846,6 +1870,10 @@ msgstr "Azerice"
 #: src/features/write/entry-sheet.tsx
 msgid "Back"
 msgstr "Geri"
+
+#: src/shell/tab-root-back.tsx
+msgid "Back to {label}"
+msgstr ""
 
 #: app/applications/[id]/_layout.tsx
 #: src/features/application-detail/detail-screen.tsx
@@ -1879,7 +1907,7 @@ msgstr "Şimdi geri dön"
 msgid "Back to posting"
 msgstr "İş ilanına geri dön"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Back to sign in"
 msgstr "Oturum açmaya dön"
 
@@ -1891,6 +1919,10 @@ msgstr "Dayanağı"
 #: src/features/design/advanced.tsx
 msgid "Background color"
 msgstr "Arka plan rengi"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Backup code"
+msgstr "Yedekleme kodu"
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
@@ -2062,7 +2094,6 @@ msgstr ""
 msgid "Can software read your resume?"
 msgstr "Yazılım özgeçmişinizi okuyabilir mi?"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
@@ -2100,7 +2131,6 @@ msgstr "Katalanca"
 msgid "Certifications"
 msgstr "Sertifikalar"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Değiştirmek"
@@ -2200,6 +2230,10 @@ msgstr "Doğru olup olmadığını kontrol edin."
 msgid "Check the details"
 msgstr "Ayrıntıları kontrol et"
 
+#: src/features/auth/errors.ts
+msgid "Check the email address and password, then try again."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Check the exported file contains everything you expect, and that all of it is selectable text."
 msgstr "Dışa aktarılan dosyanın beklediğiniz her şeyi içerdiğini ve tamamının seçilebilir metin olduğunu kontrol edin."
@@ -2223,6 +2257,11 @@ msgstr "Bu pozisyonu kanıtlarınızla karşılaştırın"
 #: src/features/check/screen.tsx
 msgid "Check views"
 msgstr "Görünümleri kontrol edin"
+
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Check your email"
+msgstr "E-postanızı kontrol edin"
 
 #: src/features/career/preferences.tsx
 msgid "Check your preferences. Invalid changes are not saved."
@@ -2248,6 +2287,10 @@ msgstr "Düzeni ve içeriği kontrol etme"
 #: src/features/workspace/parts.tsx
 msgid "Checking your preferences"
 msgstr "Tercihleriniz kontrol ediliyor"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Checking…"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Checking… Copy is available after saving."
@@ -2279,6 +2322,10 @@ msgstr "Bir dosya seçin"
 
 #: src/features/design/uploaded-fonts.tsx
 msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Choose a new password"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -2404,6 +2451,7 @@ msgstr "Hitabı veya kapanış ifadesini çıkarmak için içeriğini temizleyin
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "Girişlerini temizler; bölüm kalıyor. Geri alabilirsiniz."
 
+#: src/features/auth/welcome-screen.tsx
 #: src/features/career/facts.tsx
 #: src/features/check/page.tsx
 #: src/features/documents/document-sheets.tsx
@@ -2466,6 +2514,10 @@ msgstr "Koç"
 #: src/features/share/custom-domain.tsx
 msgid "Code copied"
 msgstr "Kod kopyalandı"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Codes look like a1b2c-d3e4f."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -2654,16 +2706,17 @@ msgstr "Bağlam belirtilmediği için bunun yerine yeni bir mesajla yanıt verin
 #: app/(auth)/server.tsx
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/auth/check-email-screen.tsx
 msgid "Continue"
 msgstr "Devam et"
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue as guest"
-msgstr "Misafir olarak devam et"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with email"
+msgstr ""
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue in browser"
-msgstr "Tarayıcıda devam et"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with Google"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 msgid "Conversation"
@@ -2963,7 +3016,7 @@ msgstr ""
 
 #: app/account/account.tsx
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
@@ -3148,6 +3201,7 @@ msgid "Couldn't sign out. Try again."
 msgstr "Oturum kapatılamadı. Tekrar deneyin."
 
 #: src/auth/messages.ts
+#: src/features/auth/errors.ts
 msgid "Couldn't sign you in. Try again."
 msgstr "Oturumunuz açılamadı. Tekrar deneyin."
 
@@ -3289,6 +3343,10 @@ msgstr "Yeni bir özgeçmiş oluştur"
 msgid "Create a resume first, then ask about it."
 msgstr "Önce bir özgeçmiş oluşturun, sonra sorun."
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Create account"
+msgstr "Hesap oluştur"
+
 #: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "Tarayıcınızdaki Hesap ayarlarından bir API anahtarı oluşturun. Anahtarlar sizin gibi davranır ve belgelerinizi okuyabilir ve düzenleyebilir."
@@ -3317,6 +3375,10 @@ msgstr "Oluşturuldu: {0} · Son kullanılan {1} · Süresi doluyor: {2}"
 #: src/features/documents/new-document.tsx
 msgid "Creating document…"
 msgstr "Doküman oluşturuluyor…"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Creating your account…"
+msgstr ""
 
 #: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
@@ -4032,6 +4094,9 @@ msgid "Education swaps school and field of study the same way."
 msgstr ""
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "E-Posta"
@@ -4116,13 +4181,39 @@ msgstr "0'dan 52'ye kadar bir tam sayı girin veya boş bırakın."
 msgid "Enter an address like resume.example.org."
 msgstr "resume.example.org gibi bir adres girin."
 
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter an email like name@example.com."
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Enter any model ID supported by your endpoint."
 msgstr "Uç noktanız tarafından desteklenen herhangi bir model kimliğini girin."
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter one of the backup codes you saved when you turned on two-step verification. Each works once."
+msgstr ""
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter the 6-digit code from your authenticator app."
+msgstr ""
+
 #: app/(auth)/server.tsx
 msgid "Enter the address you open Rezumi at in a browser. The app checks it's a Rezumi server that allows app sign-in before you continue."
 msgstr "Rezumi uygulamasını tarayıcıda açtığınız adresi girin. Devam etmeden önce bu adresin mobil oturum açmaya izin veren bir Rezumi sunucusu olduğu doğrulanır."
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter the email of your account. We'll send you a link to choose a new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Enter your name."
+msgstr "Adınızı girin."
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Enter your password."
+msgstr "Şifrenizi girin."
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4261,6 +4352,10 @@ msgstr "Bilgiler"
 msgid "Failed"
 msgstr "Arızalı"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Fair"
+msgstr ""
+
 #: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "Geri bildirim"
@@ -4327,9 +4422,9 @@ msgstr "Zayıf liste girişlerini bulun"
 msgid "Finding what works"
 msgstr "İşe yarayanlar bulunuyor"
 
-#: app/(auth)/sign-in.tsx
-msgid "Finish signing in in the browser"
-msgstr "Tarayıcıda oturum açmayı tamamlayın"
+#: src/features/auth/welcome-screen.tsx
+msgid "Finish in the browser…"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Finnish"
@@ -4490,6 +4585,10 @@ msgstr "Unut"
 msgid "Forgetting unlinks this fact from stories and saved items. The original source stays unchanged."
 msgstr "Unutmak, bu bilginin hikâyelerle ve kaydedilen öğelerle bağlantısını kaldırır. Asıl kaynak değişmez."
 
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Forgot password?"
+msgstr "Şifreni mi unuttun?"
+
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Formatting"
@@ -4509,6 +4608,10 @@ msgstr "Dün bulundu"
 
 #: src/features/billing/plan.ts
 msgid "Free"
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Free to start. You can add a photo, username and more later."
 msgstr ""
 
 #: src/features/design/style-groups.tsx
@@ -4571,6 +4674,10 @@ msgstr ""
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "Uzamaya başladı. \"Daha Kısa\"yı deneyin veya en az spesifik olan paragrafı kesin."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "GitHub"
+msgstr "GitHub"
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4861,6 +4968,10 @@ msgstr "Simge…"
 
 #: src/features/design/design-pane.tsx
 msgid "Icons"
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "If {sentTo} has a Rezumi account, a link to choose a new password is on its way. It works for one hour."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -5510,6 +5621,10 @@ msgstr "Bir başvuruyu bağlayın veya koşullarını karşılaştırmak için b
 msgid "Link copied"
 msgstr "Bağlantı kopyalandı"
 
+#: src/features/auth/check-email-screen.tsx
+msgid "Link sent"
+msgstr ""
+
 #: src/features/documents/document-sheets.tsx
 msgid "Link to application"
 msgstr "İş başvurusuna bağlantı"
@@ -5550,6 +5665,10 @@ msgstr "Özgeçmişe tekrar bağlantı verildi"
 #: src/features/letters/write.tsx
 msgid "Linked. Name, email, phone and city update when the resume does."
 msgstr "Bağlantılı. Özgeçmiş güncellendiğinde ad, e-posta, telefon ve şehir bilgisi güncellenir."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "LinkedIn"
+msgstr "LinkedIn"
 
 #: src/features/applications-board/views.tsx
 msgid "List"
@@ -5943,6 +6062,10 @@ msgstr "Daha fazla sağlayıcı ve seçenek Ayarlar'dadır. Düzenleme, tasarım
 msgid "More than one email address appears."
 msgstr "Birden fazla e-posta adresi görünüyor."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "More ways to sign in"
+msgstr ""
+
 #: src/features/home/schedules.tsx
 msgid "Morning of"
 msgstr "O günün sabahı"
@@ -6097,6 +6220,7 @@ msgstr "Başvuruldu aşamasına taşırken gerçekte ne gönderdiğiniz sorulur.
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/auth/create-account-screen.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -6130,6 +6254,12 @@ msgstr "Bu sürümü adlandırın"
 #: src/features/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
 msgstr "Ad, e-posta, telefon ve konum bulunur ve bağlantılar tam adreslerdir."
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "name@example.com"
+msgstr ""
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -6183,9 +6313,17 @@ msgstr "Asla"
 msgid "New"
 msgstr "Yeni"
 
-#: app/(auth)/sign-in.tsx
-msgid "New account sign-ups are currently disabled on this server."
-msgstr "Bu sunucuda yeni hesap kayıtları şu anda devre dışı."
+#: src/features/auth/welcome-screen.tsx
+msgid "New account sign-ups are turned off on this server."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "New account sign-ups are turned off on this server. Sign in with an account you already have."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "New account sign-ups are turned off. Sign in with an account you already have."
+msgstr ""
 
 #: src/features/settings/api-keys.tsx
 msgid "New API key"
@@ -6219,6 +6357,10 @@ msgstr "Yeni belge"
 msgid "New page"
 msgstr "Yeni sayfa"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "New password"
+msgstr "Yeni şifre"
+
 #: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "Aramanızdan yeni pozisyonlar"
@@ -6234,6 +6376,11 @@ msgstr "Yeni bölüm"
 #: src/features/career/stories.tsx
 msgid "New STARR story"
 msgstr "Yeni STARR hikayesi"
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "New to Rezumi? Create an account"
+msgstr ""
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
@@ -7063,16 +7210,30 @@ msgstr "paragraf {n}"
 msgid "Partly supported"
 msgstr "Kısmen kanıtlı"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Passkey"
+msgstr "Passkey"
+
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "Geçiş anahtarları"
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
 msgstr "Şifre"
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Password changed. Sign in with your new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Password strength: {label}"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
@@ -7483,7 +7644,7 @@ msgid "Privacy"
 msgstr "Gizlilik"
 
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "Gizlilik politikası"
 
@@ -7505,6 +7666,7 @@ msgid "Proficiency"
 msgstr "Yeterlilik"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: app/(tabs)/profile/index.tsx
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
@@ -8106,6 +8268,14 @@ msgstr "Büyük harfleri kısa başlıklar için saklayın. Okumayı yavaşlatı
 msgid "Reset design defaults"
 msgstr "Tasarım varsayılanlarını sıfırla"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Reset links work once, for one hour. Ask for a new one."
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Reset your password"
+msgstr "Şifrenizi sıfırlayın"
+
 #: src/features/career/offers.tsx
 msgid "Respond by"
 msgstr "Son yanıt tarihi"
@@ -8196,6 +8366,10 @@ msgstr "Özgeçmişler"
 #: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "Tema ne olursa olsun özgeçmişler her zaman beyaz kağıda işlenir."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Resumes, cover letters, applications and your portfolio, in one place."
+msgstr ""
 
 #. placeholder {0}: source.retrievedAt
 #. placeholder {1}: source.method
@@ -8348,10 +8522,6 @@ msgstr "Bu API anahtarı iptal edin"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Yeniden yazma kabul edildi"
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -8511,6 +8681,10 @@ msgstr "Görüşmeyi kaydet"
 msgid "Save job"
 msgstr "İşi kaydet"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Save new password"
+msgstr ""
+
 #: src/features/share/files.ts
 msgid "Save or share file"
 msgstr "Dosyayı kaydedin veya paylaşın"
@@ -8601,6 +8775,7 @@ msgstr "“Kaydedilenler” · Pratik altına kaydedildi"
 msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "İşi kaydediyorum. Başka bir değişiklik yapmadan önce onay bekleyin."
 
+#: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
@@ -8781,9 +8956,21 @@ msgstr "Anlamsal CSS stil sayfası"
 msgid "Send"
 msgstr "Göndermek"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Send a new link"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Send report"
 msgstr "Raporu gönder"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Send reset link"
+msgstr "Sıfırlama bağlantısı gönder"
+
+#: src/features/auth/check-email-screen.tsx
+msgid "Send the link again"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
@@ -8798,6 +8985,8 @@ msgid "Sender details copied into the letter"
 msgstr "Gönderenin ayrıntıları mektuba kopyalandı"
 
 #: src/features/ai/report-content.tsx
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Sending…"
 msgstr "Gönderiliyor…"
 
@@ -8842,11 +9031,14 @@ msgstr "{0} adresine gönderildi"
 msgid "Serbian"
 msgstr "Sırpça"
 
-#: app/(auth)/sign-in.tsx
 #: src/api/ai-consent.ts
 #: src/features/settings/sign-out.tsx
 msgid "Server"
 msgstr "Sunucu"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Server (development builds only)"
+msgstr ""
 
 #: app/(auth)/server.tsx
 msgid "Server address"
@@ -9112,6 +9304,8 @@ msgid "Sidebars are often read last, or mixed into the main column."
 msgstr "Kenar çubukları genellikle en son okunur veya ana sütuna karıştırılır."
 
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/linking/open.ts
@@ -9130,10 +9324,6 @@ msgstr "Bu özgeçmişi kontrol etmeye devam etmek için tekrar oturum açın."
 #: src/auth/session-gate.tsx
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "Çalışmaya devam etmek için tekrar oturum açın. Yaptığınız düzenlemeler bu cihazda saklanır ve oturum açtıktan sonra senkronize edilir."
-
-#: app/(auth)/sign-in.tsx
-msgid "Sign in or create an account in the browser, with email, a passkey, Google, GitHub or LinkedIn. You come back here when you're done."
-msgstr "Tarayıcıda e-posta, passkey, Google, GitHub veya LinkedIn ile oturum açın ya da hesap oluşturun. İşlem bitince buraya dönersiniz."
 
 #: src/linking/open.ts
 msgid "Sign in to {server}, then continue to the linked document."
@@ -9191,7 +9381,7 @@ msgstr "Oturumu Kapat?"
 msgid "Sign-in & security"
 msgstr "Oturum açma ve güvenlik"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/linking/open.ts
 msgid "Sign-in didn't complete"
 msgstr "Oturum açma tamamlanmadı"
@@ -9200,19 +9390,31 @@ msgstr "Oturum açma tamamlanmadı"
 msgid "Sign-off"
 msgstr "Kapanış ifadesi"
 
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Signed out of {0}. Your documents are still there."
-msgstr "{0} oturumu kapatıldı. Belgeleriniz hala orada."
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Signed in with Apple, Google or another provider? You have no password here: sign in with that provider instead."
+msgstr ""
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "Oturum kapatıldı ancak bu cihazdaki bazı veriler kaldırılamadı."
 
+#: src/auth/session-gate.tsx
+msgid "Signed out. Your documents are still there."
+msgstr ""
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "Signing in…"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "since last view"
 msgstr "son görüntülemeden bu yana"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Single sign-on"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Situation (required)"
@@ -9325,6 +9527,10 @@ msgstr "Bazı metinler sayfa dışına taşıyor."
 #: src/features/ats-checker/messages.ts
 msgid "Some text is rotated."
 msgstr "Bazı metinler döndürülmüş."
+
+#: src/features/auth/errors.ts
+msgid "Something went wrong on the server. Try again in a moment."
+msgstr ""
 
 #: src/features/documents/library.tsx
 msgid "Sort"
@@ -9541,6 +9747,14 @@ msgstr "Güçlendirilecekler"
 #: src/features/write/rich-text-field.tsx
 msgid "Strikethrough"
 msgstr "Üstü çizili"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Strong"
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Strong password."
+msgstr ""
 
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
@@ -9770,6 +9984,10 @@ msgstr "Şablon {0} olarak değiştirildi"
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "Şablon, tür ve renkler özgeçmişi takip eder, böylece çift her zaman eşleşir."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Terms"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "İş ilanındaki şartlar"
@@ -9839,6 +10057,14 @@ msgstr "{minimum} pt altındaki metin, sistem onu ​​yeniden oluşturduğunda
 #: src/features/settings/locale-names.ts
 msgid "Thai"
 msgstr "Tayca"
+
+#: src/features/auth/errors.ts
+msgid "That code didn't work. Check it and try again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "That email and password don't match. Try again, or reset your password."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "That file couldn't be read as a PDF."
@@ -10093,6 +10319,10 @@ msgstr "Bir özet paragrafı yok."
 msgid "These are the answers saved when you applied."
 msgstr "Bunlar başvurduğunuzda kaydedilen cevaplardır."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
+msgstr ""
+
 #: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "Bunlar, sunucunuzun hesap ayarlarını uygulamanın içindeki bir tarayıcı sekmesinde açar. Orada oturum açmanız gerekebilir."
@@ -10291,6 +10521,10 @@ msgstr "Bu ön yazı kilitli. Düzenlemek için Belgeler’de kilidini açın."
 msgid "This letter keeps its recipient as written."
 msgstr "Bu mektup alıcısına yazıldığı haliyle kalır."
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "This link has expired"
+msgstr ""
+
 #: src/linking/open.ts
 msgid "This link opens {server}. Sign in there to continue. Your current server is {current}."
 msgstr "Bu bağlantı {server}'ı açar. Devam etmek için orada oturum açın. Mevcut sunucunuz {current}."
@@ -10330,6 +10564,10 @@ msgstr "Bu PDF'nun metin katmanı yoktur, dolayısıyla ayrıştırıcı bundan 
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "Bu PDF parola korumalı. Korumasız bir kopya kaydedip tekrar deneyin."
+
+#: src/features/auth/errors.ts
+msgid "This reset link expired or was already used. Ask for a new one."
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "This resume changed elsewhere"
@@ -10386,6 +10624,18 @@ msgstr "Bu sunucu http kullanıyor. Uygulamanın https'a ihtiyacı var."
 #: src/auth/messages.ts
 msgid "This sign-in attempt expired or was already used. Sign in again."
 msgstr "Bu oturum açma denemesinin süresi doldu veya zaten kullanıldı. Yeniden giriş yapın."
+
+#: src/features/auth/errors.ts
+msgid "This sign-in attempt expired. Start again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in option isn't available right now. Use another way to sign in."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in took too long. Start again."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
@@ -10513,6 +10763,10 @@ msgstr "Yarın"
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "Beyaz başlıklar için fazla hafif. Hafifçe okunması ve yazdırılması zor olabilir."
 
+#: src/features/auth/errors.ts
+msgid "Too many attempts. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10520,6 +10774,10 @@ msgstr "Beyaz başlıklar için fazla hafif. Hafifçe okunması ve yazdırılmas
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "Çok fazla istek var. Daha sonra tekrar deneyin."
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Too short"
+msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "Tool logos aren't available"
@@ -10610,10 +10868,6 @@ msgstr "{suggestion}'ı deneyin"
 msgid "Try again"
 msgstr "Tekrar deneyin"
 
-#: app/(auth)/sign-in.tsx
-msgid "Try again in browser"
-msgstr "Tarayıcıda tekrar deneyin"
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Try again with this"
 msgstr "Bununla tekrar dene"
@@ -10642,6 +10896,10 @@ msgstr "Bu açılışı deneyin"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "Örnek bir özgeçmişle deneyin"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Try without an account"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -10672,6 +10930,7 @@ msgid "Two stories"
 msgstr "İki hikaye"
 
 #: app/account/account.tsx
+#: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "İki adımlı doğrulama"
 
@@ -10840,6 +11099,11 @@ msgstr "Fotoğraf yükleniyor…"
 msgid "URL"
 msgstr "URL"
 
+#. placeholder {0}: passwordLimits.max
+#: src/features/auth/create-account-screen.tsx
+msgid "Use {0} characters or fewer."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Use {minimum}"
 msgstr "{minimum}'yu kullanın"
@@ -10863,6 +11127,15 @@ msgstr "3 ile 64 arasında küçük harf, rakam, nokta, tire ve alt çizgi kulla
 #: src/features/share/web-page.tsx
 msgid "Use 6–64 characters."
 msgstr "6-64 karakter kullanın."
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/errors.ts
+msgid "Use 64 characters or fewer."
+msgstr "En fazla 64 karakter kullanın."
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use a backup code instead"
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 msgid "Use a darker shade"
@@ -10900,6 +11173,16 @@ msgstr "Kaydetmeden önce bir http veya https iş ilanı bağlantısı kullanın
 #: src/features/applications/add-sheet.tsx
 msgid "Use an http or https link."
 msgstr "Bir http veya https bağlantısı kullanın."
+
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "Use at least {0} characters."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "Use at least 8 characters."
+msgstr "En az 8 karakter kullanın."
 
 #: src/features/ats-checker/messages.ts
 msgid "Use at least 9pt."
@@ -10960,11 +11243,19 @@ msgstr "Sunucu sürümünü kullan"
 msgid "Use six hex digits, like #3E6B4F."
 msgstr "#3E6B4F gibi altı Hex basamağı kullanın."
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use the authenticator app"
+msgstr ""
+
 #: src/features/assistant/document.ts
 #: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "Daha önceki değişiklikleri geri almak için oluşturucunun Geri Al seçeneğini kullanın."
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Use the email and password of your Rezumi account."
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Use the standard heading"
@@ -11050,6 +11341,14 @@ msgstr "Bölümün kalıp metin gibi okunmaması için başlangıçları çeşit
 #: src/features/career/offers.tsx
 msgid "Verbal offer"
 msgstr "Sözlü teklif"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Verify"
+msgstr "Doğrula"
+
+#: src/features/auth/errors.ts
+msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Version"
@@ -11166,6 +11465,18 @@ msgstr "Geri bildirimi bekliyorum"
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "“{0}” olarak okuduk. Tutarlı şekilde sıralanıp yazdırılması için bir ay seçin."
 
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a link to {email}. Open it on any device to confirm your address."
+msgstr ""
+
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a new link to {email}."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Weak"
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "Web sayfası"
@@ -11202,6 +11513,10 @@ msgstr ""
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"
 msgstr "Her gereksinim tartılıyor"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Welcome to Rezumi"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Went well"
@@ -11310,10 +11625,6 @@ msgstr "Ne zaman bir karara ihtiyacınız var?"
 #: src/features/assistant/coach-screen.tsx
 msgid "When you tap send, {list} go to {connection}."
 msgstr "Gönder'e dokunduğunuzda {list}, {connection} bağlantısına gider."
-
-#: app/(auth)/sign-in.tsx
-msgid "When you're done, the browser closes and you come back here."
-msgstr "İşiniz bittiğinde tarayıcı kapanır ve buraya geri dönersiniz."
 
 #: src/features/applications-board/insights-screen.tsx
 msgid "Where applications come from"
@@ -11505,12 +11816,11 @@ msgstr ""
 msgid "You can keep up to 30 application questions."
 msgstr "En fazla 30 başvuru sorusu tutabilirsiniz."
 
-#: app/(auth)/sign-in.tsx
-msgid "You can sign in with an account you already have."
-msgstr "Zaten sahip olduğunuz bir hesapla oturum açabilirsiniz."
+#: src/features/auth/check-email-screen.tsx
+msgid "You can start now. Publishing your portfolio, job alerts and payments wait until your email is confirmed. No email? Check spam, or send it again."
+msgstr ""
 
 #: src/auth/messages.ts
-#: src/auth/use-sign-in.ts
 msgid "You canceled the sign-in before it finished."
 msgstr "Oturum açma tamamlanmadan önce iptal ettiniz."
 
@@ -11542,6 +11852,10 @@ msgstr "{server} oturumunuz kapatılacak. Henüz bu cihazdan senkronize edilmemi
 #: src/features/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "Kayıtlı bir sürüme bakıyorsunuz. Düzenlenemez."
+
+#: src/features/auth/errors.ts
+msgid "You're offline, or the server didn't answer. Check your connection and try again."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "You're offline. Connect to check a file."
@@ -11808,10 +12122,6 @@ msgstr "Özgeçmişinizde fotoğraf var"
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "Özgeçmişiniz \"I\" ve \"my\" kullanıyor."
 
-#: app/(auth)/sign-in.tsx
-msgid "Your resumes, letters and applications, on {host}."
-msgstr "{host} üzerindeki özgeçmişleriniz, mektuplarınız ve başvurularınız."
-
 #: src/features/share/messages.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Seçtiğiniz yazı tipi bazı karakterleri gösteremiyor. “?” olarak görünüyorlar. Tasarım bölümünde bu karakterleri içeren bir yazı tipi seçin."
@@ -11820,17 +12130,16 @@ msgstr "Seçtiğiniz yazı tipi bazı karakterleri gösteremiyor. “?” olarak
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "Sunucunuz bu sağlayıcıya bir test istemi ve kaydedilen API anahtarını gönderir."
 
+#: src/auth/session-gate.tsx
+msgid "Your session ended"
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
 msgid "Your session expired. Sign in again."
 msgstr "Oturumunuzun süresi doldu. Tekrar oturum açın."
-
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Your session on {0} ended"
-msgstr "{0} tarihindeki oturumunuz sona erdi"
 
 #. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx

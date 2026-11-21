@@ -19,3 +19,4 @@ export {
 	TextArea,
 	TextField,
 } from "heroui-native";
+export type { InputRef } from "heroui-native";

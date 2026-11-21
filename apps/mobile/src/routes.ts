@@ -24,8 +24,20 @@ const segment = (value: string) => encodeURIComponent(value);
 
 export const routes = {
 	// (auth)
+	/** Development builds only: pick another server. */
 	server: () => "/server" as const,
+	/** Welcome: Apple, Google, email, Create account, other ways. */
 	signIn: () => "/sign-in" as const,
+	emailSignIn: (email?: string) =>
+		email ? (`/sign-in/email?email=${segment(email)}` as const) : ("/sign-in/email" as const),
+	createAccount: () => "/create-account" as const,
+	checkEmail: (email: string) => `/check-email?email=${segment(email)}` as const,
+	forgotPassword: (email?: string) =>
+		email ? (`/forgot-password?email=${segment(email)}` as const) : ("/forgot-password" as const),
+	/** From the reset email (`/auth/reset-password?token=`, an app link). */
+	resetPassword: (token?: string) =>
+		token ? (`/auth/reset-password?token=${segment(token)}` as const) : ("/auth/reset-password" as const),
+	twoFactor: () => "/two-factor" as const,
 
 	// (tabs)
 	/** `schedule`: a schedule id or "new" opens the schedule sheet (links from notifications and `/dashboard?schedule=`). */

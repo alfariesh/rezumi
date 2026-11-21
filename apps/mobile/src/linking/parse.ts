@@ -175,6 +175,15 @@ export function parseDeepLink(input: string, currentServer: string): DeepLink | 
 		return href ? target(href) : null;
 	}
 	if (!first || !second) return null;
+	// The reset email's link, after the server checked the token (`?token=`, or `?error=INVALID_TOKEN`).
+	if (first === "auth" && second === "reset-password" && segments.length === 2) {
+		const token = queryParam(path, "token");
+		return target(
+			token && /^[A-Za-z0-9_-]{8,256}$/.test(token) && !queryParam(path, "error")
+				? routes.resetPassword(token)
+				: routes.resetPassword(),
+		);
+	}
 
 	if (__DEV__ && native && pathname === "/builder/preview-sample/page") {
 		for (const pair of path.split("#", 1)[0]?.split("?", 2)[1]?.split("&") ?? []) {

@@ -3,7 +3,12 @@ import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 const mocks = vi.hoisted(() => ({
 	betterAuth: vi.fn(),
 	delete: vi.fn(() => ({ where: vi.fn(async () => undefined) })),
-	env: { APP_URL: "http://localhost:3000", AUTH_SECRET: "auth-lifecycle-test", FLAG_DISABLE_EMAIL_AUTH: false },
+	env: {
+		MOBILE_IOS_APP_IDS: [] as string[],
+		APP_URL: "http://localhost:3000",
+		AUTH_SECRET: "auth-lifecycle-test",
+		FLAG_DISABLE_EMAIL_AUTH: false,
+	},
 }));
 
 vi.mock("better-auth", async (importOriginal) => ({

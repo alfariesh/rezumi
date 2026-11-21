@@ -31,6 +31,7 @@ export function handleAppleAppSiteAssociation() {
 				// /dashboard/settings/billing must not open the app.
 				paths: [
 					"/auth/native-callback",
+					"/auth/reset-password",
 					"/builder/*",
 					"/dashboard",
 					"/dashboard/",

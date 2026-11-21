@@ -88,6 +88,7 @@ function RootStack() {
 			>
 				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 				<Stack.Screen name="(auth)" options={{ headerShown: false }} />
+				<Stack.Screen name="check-email" options={{ headerShown: false, gestureEnabled: false }} />
 				<Stack.Screen name="builder/[id]" options={{ headerShown: false, title: t`Resume` }} />
 				<Stack.Screen name="letter/[id]" options={{ headerShown: false, title: t`Cover letter` }} />
 				<Stack.Screen

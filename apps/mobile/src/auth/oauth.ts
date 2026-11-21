@@ -235,3 +235,19 @@ export type ServerFlags = RouterOutput["flags"]["get"];
 export async function getFlags(origin: string): Promise<ServerFlags> {
 	return (await getJson(`${origin}/api/openapi/flags`)) as ServerFlags;
 }
+
+export type SignInOptions = {
+	/** Enabled providers (`auth.providers.list`): credential, passkey, apple, google, github, linkedin, custom. */
+	providers: Partial<Record<"credential" | "passkey" | "apple" | "google" | "github" | "linkedin" | "custom", string>>;
+	/** Native Apple and Google (`auth.providers.native`); null on a server that predates native sign-in. */
+	native: RouterOutput["auth"]["providers"]["native"] | null;
+};
+
+/** What the sign-in screens can offer on a server the app is not signed in to yet. */
+export async function getSignInOptions(origin: string): Promise<SignInOptions> {
+	const [providers, native] = await Promise.all([
+		getJson(`${origin}/api/openapi/auth/providers`) as Promise<SignInOptions["providers"]>,
+		(getJson(`${origin}/api/openapi/auth/providers/native`) as Promise<SignInOptions["native"]>).catch(() => null),
+	]);
+	return { providers, native };
+}

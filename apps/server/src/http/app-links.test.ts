@@ -24,6 +24,7 @@ describe("apple-app-site-association", () => {
 		const paths = body.applinks.details[0]?.paths ?? [];
 		for (const path of [
 			"/auth/native-callback",
+			"/auth/reset-password",
 			"/builder/abc",
 			"/dashboard",
 			"/dashboard/career",

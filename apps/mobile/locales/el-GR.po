@@ -1284,6 +1284,10 @@ msgstr "Μετά την προκαταρκτική αξιολόγηση"
 msgid "After the technical interview"
 msgstr "Μετά την τεχνική συνέντευξη"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "After this, you're signed out on your other devices."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "Μετά τον πρώτο σας έλεγχο, εδώ εμφανίζεται ένα ελαφρύ πλάνο για αυτή την εβδομάδα."
@@ -1419,6 +1423,10 @@ msgstr "Καλυμμένο ήδη · επιλέξτε ένα για να το β
 msgid "Already covered:"
 msgstr "Καλύπτεται ήδη:"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Already have an account? Sign in"
+msgstr ""
+
 #: src/features/check/screen.tsx
 msgid "Also check the exported PDF"
 msgstr "Ελέγξτε επίσης το εξαγόμενο PDF"
@@ -1444,6 +1452,10 @@ msgstr "Εμφανίζεται πάντα στο Σήμερα. Το email απα
 msgid "Amharic"
 msgstr "Αμχαρικά"
 
+#: src/features/auth/errors.ts
+msgid "An account with this email already exists. Sign in instead, or reset your password."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
 msgstr "Μια ενσωματωμένη γραμματοσειρά δεν μπόρεσε να διαβαστεί."
@@ -1455,6 +1467,10 @@ msgstr "Μια καταχώρηση δεν έχει ημερομηνίες"
 #: src/features/assistant/chat-view.tsx
 msgid "an error"
 msgstr "ένα λάθος"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Ana Putri"
+msgstr ""
 
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
@@ -1617,6 +1633,7 @@ msgid "Application views"
 msgstr "Προβολές αιτήσεων"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -1766,6 +1783,12 @@ msgstr "Βοηθητικές συνομιλίες"
 msgid "At 09:00 that day ({timeZone})."
 msgstr "Στις 09:00 εκείνης της ημέρας ({timeZone})."
 
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "At least {0} characters. A longer password is stronger."
+msgstr ""
+
 #: app/_layout.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/search/search-screen.tsx
@@ -1838,6 +1861,7 @@ msgid "Azerbaijani"
 msgstr "Αζερικά"
 
 #: app/(auth)/server.tsx
+#: src/features/auth/frame.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
@@ -1846,6 +1870,10 @@ msgstr "Αζερικά"
 #: src/features/write/entry-sheet.tsx
 msgid "Back"
 msgstr "Πίσω"
+
+#: src/shell/tab-root-back.tsx
+msgid "Back to {label}"
+msgstr ""
 
 #: app/applications/[id]/_layout.tsx
 #: src/features/application-detail/detail-screen.tsx
@@ -1879,7 +1907,7 @@ msgstr "Επιστροφή στο τώρα"
 msgid "Back to posting"
 msgstr "Επιστροφή στην αγγελία εργασίας"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Back to sign in"
 msgstr "Επιστροφή στη σύνδεση"
 
@@ -1891,6 +1919,10 @@ msgstr "Βασίζεται σε"
 #: src/features/design/advanced.tsx
 msgid "Background color"
 msgstr "Χρώμα φόντου"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Backup code"
+msgstr "Εφεδρικός κωδικός"
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
@@ -2062,7 +2094,6 @@ msgstr ""
 msgid "Can software read your resume?"
 msgstr "Μπορεί το λογισμικό να διαβάσει το βιογραφικό σας;"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
@@ -2100,7 +2131,6 @@ msgstr "Καταλανικά"
 msgid "Certifications"
 msgstr "Πιστοποιήσεις"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Αλλαγή"
@@ -2200,6 +2230,10 @@ msgstr "Ελέγξτε ότι είναι ακριβές."
 msgid "Check the details"
 msgstr "Ελέγξτε τις λεπτομέρειες"
 
+#: src/features/auth/errors.ts
+msgid "Check the email address and password, then try again."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Check the exported file contains everything you expect, and that all of it is selectable text."
 msgstr "Ελέγξτε ότι το εξαγόμενο αρχείο περιέχει όλα όσα περιμένετε και ότι όλο το περιεχόμενο είναι επιλέξιμο κείμενο."
@@ -2223,6 +2257,11 @@ msgstr "Ελέγξτε αυτή τη θέση με βάση τα τεκμήρι�
 #: src/features/check/screen.tsx
 msgid "Check views"
 msgstr "Ελέγξτε τις προβολές"
+
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Check your email"
+msgstr "Ελέγξτε το email σας"
 
 #: src/features/career/preferences.tsx
 msgid "Check your preferences. Invalid changes are not saved."
@@ -2248,6 +2287,10 @@ msgstr "Έλεγχος διάταξης και περιεχομένου"
 #: src/features/workspace/parts.tsx
 msgid "Checking your preferences"
 msgstr "Έλεγχος των προτιμήσεών σας"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Checking…"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Checking… Copy is available after saving."
@@ -2279,6 +2322,10 @@ msgstr "Επιλέξτε ένα αρχείο"
 
 #: src/features/design/uploaded-fonts.tsx
 msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Choose a new password"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -2404,6 +2451,7 @@ msgstr "Διαγράψτε την προσφώνηση ή τον αποχαιρ�
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "Διαγράφει τις καταχωρίσεις· η ενότητα παραμένει. Μπορείτε να αναιρέσετε."
 
+#: src/features/auth/welcome-screen.tsx
 #: src/features/career/facts.tsx
 #: src/features/check/page.tsx
 #: src/features/documents/document-sheets.tsx
@@ -2466,6 +2514,10 @@ msgstr "Σύμβουλος"
 #: src/features/share/custom-domain.tsx
 msgid "Code copied"
 msgstr "Ο κωδικός αντιγράφηκε"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Codes look like a1b2c-d3e4f."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -2654,16 +2706,17 @@ msgstr "Το περιεχόμενο παραλείπεται, επομένως �
 #: app/(auth)/server.tsx
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/auth/check-email-screen.tsx
 msgid "Continue"
 msgstr "Συνέχεια"
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue as guest"
-msgstr "Συνέχεια ως επισκέπτης"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with email"
+msgstr ""
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue in browser"
-msgstr "Συνέχεια στο πρόγραμμα περιήγησης"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with Google"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 msgid "Conversation"
@@ -2963,7 +3016,7 @@ msgstr ""
 
 #: app/account/account.tsx
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
@@ -3148,6 +3201,7 @@ msgid "Couldn't sign out. Try again."
 msgstr "Δεν ήταν δυνατή η αποσύνδεση. Προσπαθήστε ξανά."
 
 #: src/auth/messages.ts
+#: src/features/auth/errors.ts
 msgid "Couldn't sign you in. Try again."
 msgstr "Δεν ήταν δυνατή η σύνδεσή σας. Προσπαθήστε ξανά."
 
@@ -3289,6 +3343,10 @@ msgstr "Δημιουργία νέου βιογραφικού σημειώματ�
 msgid "Create a resume first, then ask about it."
 msgstr "Δημιουργήστε πρώτα ένα βιογραφικό και μετά ρωτήστε το."
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Create account"
+msgstr "Δημιουργία λογαριασμού"
+
 #: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "Δημιουργήστε ένα κλειδί API από τις ρυθμίσεις λογαριασμού στο πρόγραμμα περιήγησής σας. Τα κλειδιά λειτουργούν όπως εσείς και μπορούν να διαβάσουν και να επεξεργαστούν τα έγγραφά σας."
@@ -3317,6 +3375,10 @@ msgstr "Δημιουργήθηκε {0} · Τελευταία χρήση {1} · �
 #: src/features/documents/new-document.tsx
 msgid "Creating document…"
 msgstr "Δημιουργία εγγράφου…"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Creating your account…"
+msgstr ""
 
 #: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
@@ -4032,6 +4094,9 @@ msgid "Education swaps school and field of study the same way."
 msgstr ""
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "Ηλ. ταχυδρομείο"
@@ -4116,13 +4181,39 @@ msgstr "Εισαγάγετε έναν ακέραιο αριθμό από το 0 
 msgid "Enter an address like resume.example.org."
 msgstr "Εισαγάγετε διεύθυνση όπως resume.example.org."
 
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter an email like name@example.com."
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Enter any model ID supported by your endpoint."
 msgstr "Εισαγάγετε οποιοδήποτε αναγνωριστικό μοντέλου που υποστηρίζεται από το τελικό σημείο σας."
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter one of the backup codes you saved when you turned on two-step verification. Each works once."
+msgstr ""
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter the 6-digit code from your authenticator app."
+msgstr ""
+
 #: app/(auth)/server.tsx
 msgid "Enter the address you open Rezumi at in a browser. The app checks it's a Rezumi server that allows app sign-in before you continue."
 msgstr "Εισαγάγετε τη διεύθυνση στην οποία ανοίγετε το Rezumi σε ένα πρόγραμμα περιήγησης. Η εφαρμογή ελέγχει ότι είναι διακομιστής Rezumi που επιτρέπει τη σύνδεση στην εφαρμογή προτού συνεχίσετε."
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter the email of your account. We'll send you a link to choose a new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Enter your name."
+msgstr "Εισαγάγετε το όνομά σας."
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Enter your password."
+msgstr "Εισαγάγετε τον κωδικό πρόσβασής σας."
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4261,6 +4352,10 @@ msgstr "Γεγονότα"
 msgid "Failed"
 msgstr "Αποτυχημένος"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Fair"
+msgstr ""
+
 #: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "Ανατροφοδότηση"
@@ -4327,9 +4422,9 @@ msgstr "Βρείτε καταχωρήσεις αδύνατης λίστας"
 msgid "Finding what works"
 msgstr "Αναζήτηση του τι λειτουργεί"
 
-#: app/(auth)/sign-in.tsx
-msgid "Finish signing in in the browser"
-msgstr "Ολοκληρώστε τη σύνδεση στο πρόγραμμα περιήγησης"
+#: src/features/auth/welcome-screen.tsx
+msgid "Finish in the browser…"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Finnish"
@@ -4490,6 +4585,10 @@ msgstr "Ξεχάστε"
 msgid "Forgetting unlinks this fact from stories and saved items. The original source stays unchanged."
 msgstr "Η λήθη αποσυνδέει αυτό το γεγονός από ιστορίες και αποθηκευμένα αντικείμενα. Η αρχική πηγή παραμένει αμετάβλητη."
 
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Forgot password?"
+msgstr "Ξεχάσατε τον κωδικό πρόσβασης;"
+
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Formatting"
@@ -4509,6 +4608,10 @@ msgstr "Βρέθηκε χθες"
 
 #: src/features/billing/plan.ts
 msgid "Free"
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Free to start. You can add a photo, username and more later."
 msgstr ""
 
 #: src/features/design/style-groups.tsx
@@ -4571,6 +4674,10 @@ msgstr ""
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "Αργότερα. Δοκιμάστε το \"Sorter\" ή κόψτε τη λιγότερο συγκεκριμένη παράγραφο."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "GitHub"
+msgstr "GitHub"
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4861,6 +4968,10 @@ msgstr "Εικόνισμα…"
 
 #: src/features/design/design-pane.tsx
 msgid "Icons"
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "If {sentTo} has a Rezumi account, a link to choose a new password is on its way. It works for one hour."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -5510,6 +5621,10 @@ msgstr "Συνδέστε μια αίτηση ή επικολλήστε μια α
 msgid "Link copied"
 msgstr "Ο σύνδεσμος αντιγράφηκε"
 
+#: src/features/auth/check-email-screen.tsx
+msgid "Link sent"
+msgstr ""
+
 #: src/features/documents/document-sheets.tsx
 msgid "Link to application"
 msgstr "Σύνδεσμος για την αίτηση εργασίας"
@@ -5550,6 +5665,10 @@ msgstr "Συνδέθηκε ξανά με το βιογραφικό"
 #: src/features/letters/write.tsx
 msgid "Linked. Name, email, phone and city update when the resume does."
 msgstr "Συνδεδεμένο. Ενημέρωση ονόματος, email, τηλεφώνου και πόλης όταν γίνει το βιογραφικό."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "LinkedIn"
+msgstr "LinkedIn"
 
 #: src/features/applications-board/views.tsx
 msgid "List"
@@ -5943,6 +6062,10 @@ msgstr "Περισσότεροι πάροχοι και επιλογές βρίσ
 msgid "More than one email address appears."
 msgstr "Εμφανίζεται περισσότερη από μία διεύθυνση email."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "More ways to sign in"
+msgstr ""
+
 #: src/features/home/schedules.tsx
 msgid "Morning of"
 msgstr "Το πρωί της ημέρας"
@@ -6097,6 +6220,7 @@ msgstr "Η μετακίνηση στο «Υποβλήθηκε» ζητά να δ
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/auth/create-account-screen.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -6130,6 +6254,12 @@ msgstr "Ονομάστε αυτήν την έκδοση"
 #: src/features/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
 msgstr "Βρίσκονται το όνομα, το email, το τηλέφωνο και η τοποθεσία και οι σύνδεσμοι είναι πλήρεις διευθύνσεις."
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "name@example.com"
+msgstr ""
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -6183,9 +6313,17 @@ msgstr "Ποτέ"
 msgid "New"
 msgstr "Νέος"
 
-#: app/(auth)/sign-in.tsx
-msgid "New account sign-ups are currently disabled on this server."
-msgstr "Οι εγγραφές νέων λογαριασμών είναι προς το παρόν απενεργοποιημένες σε αυτόν τον διακομιστή."
+#: src/features/auth/welcome-screen.tsx
+msgid "New account sign-ups are turned off on this server."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "New account sign-ups are turned off on this server. Sign in with an account you already have."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "New account sign-ups are turned off. Sign in with an account you already have."
+msgstr ""
 
 #: src/features/settings/api-keys.tsx
 msgid "New API key"
@@ -6219,6 +6357,10 @@ msgstr "Νέο έγγραφο"
 msgid "New page"
 msgstr "Νέα σελίδα"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "New password"
+msgstr "Νέος κωδικός πρόσβασης"
+
 #: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "Νέες θέσεις από την αναζήτησή σας"
@@ -6234,6 +6376,11 @@ msgstr "Νέα ενότητα"
 #: src/features/career/stories.tsx
 msgid "New STARR story"
 msgstr "Νέα ιστορία STARR"
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "New to Rezumi? Create an account"
+msgstr ""
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
@@ -7063,16 +7210,30 @@ msgstr "παράγραφος {n}"
 msgid "Partly supported"
 msgstr "Μερικώς τεκμηριωμένο"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Passkey"
+msgstr "Κλειδί πρόσβασης"
+
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "Passkeys"
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
 msgstr "Κωδικός"
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Password changed. Sign in with your new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Password strength: {label}"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
@@ -7483,7 +7644,7 @@ msgid "Privacy"
 msgstr "Απόρρητο"
 
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "Πολιτική απορρήτου"
 
@@ -7505,6 +7666,7 @@ msgid "Proficiency"
 msgstr "Επάρκεια"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: app/(tabs)/profile/index.tsx
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
@@ -8106,6 +8268,14 @@ msgstr "Χρησιμοποιήστε τα κεφαλαία μόνο για σύ�
 msgid "Reset design defaults"
 msgstr "Επαναφορά προεπιλογών σχεδίασης"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Reset links work once, for one hour. Ask for a new one."
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Reset your password"
+msgstr "Επαναφορά κωδικού πρόσβασης"
+
 #: src/features/career/offers.tsx
 msgid "Respond by"
 msgstr "Απάντηση έως"
@@ -8196,6 +8366,10 @@ msgstr "Βιογραφικά σημειώματα"
 #: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "τα βιογραφικά αποδίδονται πάντα σε λευκό χαρτί, ανεξάρτητα από το θέμα."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Resumes, cover letters, applications and your portfolio, in one place."
+msgstr ""
 
 #. placeholder {0}: source.retrievedAt
 #. placeholder {1}: source.method
@@ -8348,10 +8522,6 @@ msgstr "Ανάκληση αυτού του κλειδιού API"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Αποδεκτή επανεγγραφή"
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -8511,6 +8681,10 @@ msgstr "Αποθήκευση συνέντευξης"
 msgid "Save job"
 msgstr "Αποθήκευση εργασίας"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Save new password"
+msgstr ""
+
 #: src/features/share/files.ts
 msgid "Save or share file"
 msgstr "Αποθήκευση ή κοινή χρήση αρχείου"
@@ -8601,6 +8775,7 @@ msgstr "Αποθηκεύτηκε στην καρτέλα \"Αποθηκευμέ�
 msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "Σώζοντας τη δουλειά. Περιμένετε για επιβεβαίωση πριν κάνετε άλλη αλλαγή."
 
+#: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
@@ -8781,9 +8956,21 @@ msgstr "Φύλλο στυλ σημασιολογικού CSS"
 msgid "Send"
 msgstr "Στέλνω"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Send a new link"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Send report"
 msgstr "Αποστολή αναφοράς"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Send reset link"
+msgstr "Αποστολή συνδέσμου επαναφοράς"
+
+#: src/features/auth/check-email-screen.tsx
+msgid "Send the link again"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
@@ -8798,6 +8985,8 @@ msgid "Sender details copied into the letter"
 msgstr "Τα στοιχεία του αποστολέα αντιγράφηκαν στην επιστολή"
 
 #: src/features/ai/report-content.tsx
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Sending…"
 msgstr "Αποστολή…"
 
@@ -8842,11 +9031,14 @@ msgstr "Στάλθηκε στο {0}"
 msgid "Serbian"
 msgstr "Σερβικά"
 
-#: app/(auth)/sign-in.tsx
 #: src/api/ai-consent.ts
 #: src/features/settings/sign-out.tsx
 msgid "Server"
 msgstr "Διακομιστής"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Server (development builds only)"
+msgstr ""
 
 #: app/(auth)/server.tsx
 msgid "Server address"
@@ -9112,6 +9304,8 @@ msgid "Sidebars are often read last, or mixed into the main column."
 msgstr "Οι πλευρικές γραμμές συχνά διαβάζονται τελευταίες ή αναμιγνύονται στην κύρια στήλη."
 
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/linking/open.ts
@@ -9130,10 +9324,6 @@ msgstr "Συνδεθείτε ξανά για να συνεχίσετε τον έ
 #: src/auth/session-gate.tsx
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "Συνδεθείτε ξανά για να συνεχίσετε να εργάζεστε. Οι τροποποιήσεις που κάνατε διατηρούνται σε αυτήν τη συσκευή και συγχρονίζονται αφού συνδεθείτε."
-
-#: app/(auth)/sign-in.tsx
-msgid "Sign in or create an account in the browser, with email, a passkey, Google, GitHub or LinkedIn. You come back here when you're done."
-msgstr "Συνδεθείτε ή δημιουργήστε λογαριασμό στο πρόγραμμα περιήγησης με email, κλειδί πρόσβασης, Google, GitHub ή LinkedIn. Όταν τελειώσετε, επιστρέφετε εδώ."
 
 #: src/linking/open.ts
 msgid "Sign in to {server}, then continue to the linked document."
@@ -9191,7 +9381,7 @@ msgstr "Έξοδος;"
 msgid "Sign-in & security"
 msgstr "Είσοδος και ασφάλεια"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/linking/open.ts
 msgid "Sign-in didn't complete"
 msgstr "Η σύνδεση δεν ολοκληρώθηκε"
@@ -9200,19 +9390,31 @@ msgstr "Η σύνδεση δεν ολοκληρώθηκε"
 msgid "Sign-off"
 msgstr "Αποχαιρετισμός"
 
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Signed out of {0}. Your documents are still there."
-msgstr "Έγινε έξοδος από το {0}. Τα έγγραφά σας είναι ακόμα εκεί."
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Signed in with Apple, Google or another provider? You have no password here: sign in with that provider instead."
+msgstr ""
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "Έγινε αποσύνδεση, αλλά δεν ήταν δυνατή η κατάργηση ορισμένων δεδομένων από αυτήν τη συσκευή."
 
+#: src/auth/session-gate.tsx
+msgid "Signed out. Your documents are still there."
+msgstr ""
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "Signing in…"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "since last view"
 msgstr "από την τελευταία προβολή"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Single sign-on"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Situation (required)"
@@ -9325,6 +9527,10 @@ msgstr "Ορισμένο κείμενο βρίσκεται εκτός της σ�
 #: src/features/ats-checker/messages.ts
 msgid "Some text is rotated."
 msgstr "Ορισμένο κείμενο είναι περιστραμμένο."
+
+#: src/features/auth/errors.ts
+msgid "Something went wrong on the server. Try again in a moment."
+msgstr ""
 
 #: src/features/documents/library.tsx
 msgid "Sort"
@@ -9541,6 +9747,14 @@ msgstr "Προς ενίσχυση"
 #: src/features/write/rich-text-field.tsx
 msgid "Strikethrough"
 msgstr "Διακριτή διαγραφή"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Strong"
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Strong password."
+msgstr ""
 
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
@@ -9770,6 +9984,10 @@ msgstr "Το πρότυπο άλλαξε σε {0}"
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "Το πρότυπο, ο τύπος και τα χρώματα ακολουθούν το βιογραφικό, έτσι ώστε το ζευγάρι να ταιριάζει πάντα."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Terms"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "Όροι από την ανάρτηση εργασίας"
@@ -9839,6 +10057,14 @@ msgstr "Το κείμενο κάτω από το {minimum} pt μπορεί να 
 #: src/features/settings/locale-names.ts
 msgid "Thai"
 msgstr "Ταϊλανδικά"
+
+#: src/features/auth/errors.ts
+msgid "That code didn't work. Check it and try again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "That email and password don't match. Try again, or reset your password."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "That file couldn't be read as a PDF."
@@ -10093,6 +10319,10 @@ msgstr "Δεν υπάρχει παράγραφος περίληψης."
 msgid "These are the answers saved when you applied."
 msgstr "Αυτές είναι οι απαντήσεις που αποθηκεύτηκαν όταν υποβάλατε την αίτηση."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
+msgstr ""
+
 #: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "Αυτά ανοίγουν τις ρυθμίσεις λογαριασμού του διακομιστή σας σε μια καρτέλα προγράμματος περιήγησης μέσα στην εφαρμογή. Ίσως χρειαστεί να συνδεθείτε εκεί."
@@ -10291,6 +10521,10 @@ msgstr "Αυτή η επιστολή είναι κλειδωμένη. Ξεκλε
 msgid "This letter keeps its recipient as written."
 msgstr "Αυτή η επιστολή διατηρεί τον παραλήπτη της όπως έχει γραφτεί."
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "This link has expired"
+msgstr ""
+
 #: src/linking/open.ts
 msgid "This link opens {server}. Sign in there to continue. Your current server is {current}."
 msgstr "Αυτός ο σύνδεσμος ανοίγει το {server}. Συνδεθείτε εκεί για να συνεχίσετε. Ο τρέχων διακομιστής σας είναι {current}."
@@ -10330,6 +10564,10 @@ msgstr "Αυτό το PDF δεν έχει επίπεδο κειμένου, επ�
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "Αυτό το PDF προστατεύεται με κωδικό πρόσβασης. Αποθηκεύστε ένα μη προστατευμένο αντίγραφο και δοκιμάστε ξανά."
+
+#: src/features/auth/errors.ts
+msgid "This reset link expired or was already used. Ask for a new one."
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "This resume changed elsewhere"
@@ -10386,6 +10624,18 @@ msgstr "Αυτός ο διακομιστής χρησιμοποιεί http. Η �
 #: src/auth/messages.ts
 msgid "This sign-in attempt expired or was already used. Sign in again."
 msgstr "Δοκιμάστε ξανά ή επανεκκινήστε την εφαρμογή."
+
+#: src/features/auth/errors.ts
+msgid "This sign-in attempt expired. Start again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in option isn't available right now. Use another way to sign in."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in took too long. Start again."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
@@ -10513,6 +10763,10 @@ msgstr "Αύριο"
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "Πολύ ελαφρύ για επικεφαλίδες σε λευκό. Μπορεί να είναι δύσκολο να διαβαστεί και να εκτυπωθεί αχνά."
 
+#: src/features/auth/errors.ts
+msgid "Too many attempts. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10520,6 +10774,10 @@ msgstr "Πολύ ελαφρύ για επικεφαλίδες σε λευκό. �
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "Πάρα πολλά αιτήματα. Δοκιμάστε ξανά αργότερα."
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Too short"
+msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "Tool logos aren't available"
@@ -10610,10 +10868,6 @@ msgstr "Δοκιμάστε το {suggestion}"
 msgid "Try again"
 msgstr "Δοκιμάστε ξανά"
 
-#: app/(auth)/sign-in.tsx
-msgid "Try again in browser"
-msgstr "Δοκιμάστε ξανά στο πρόγραμμα περιήγησης"
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Try again with this"
 msgstr "Δοκιμάστε ξανά με αυτό"
@@ -10642,6 +10896,10 @@ msgstr "Δοκιμάστε αυτή την εισαγωγή"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "Δοκιμάστε με ένα δείγμα βιογραφικού"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Try without an account"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -10672,6 +10930,7 @@ msgid "Two stories"
 msgstr "Δύο ιστορίες"
 
 #: app/account/account.tsx
+#: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "Επαλήθευση σε δύο βήματα"
 
@@ -10840,6 +11099,11 @@ msgstr "Μεταφόρτωση φωτογραφίας…"
 msgid "URL"
 msgstr "URL"
 
+#. placeholder {0}: passwordLimits.max
+#: src/features/auth/create-account-screen.tsx
+msgid "Use {0} characters or fewer."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Use {minimum}"
 msgstr "Χρησιμοποιήστε το {minimum}"
@@ -10863,6 +11127,15 @@ msgstr "Χρησιμοποιήστε 3 έως 64 πεζά γράμματα, αρ
 #: src/features/share/web-page.tsx
 msgid "Use 6–64 characters."
 msgstr "Χρησιμοποιήστε 6–64 χαρακτήρες."
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/errors.ts
+msgid "Use 64 characters or fewer."
+msgstr "Χρησιμοποιήστε έως 64 χαρακτήρες."
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use a backup code instead"
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 msgid "Use a darker shade"
@@ -10900,6 +11173,16 @@ msgstr "Χρησιμοποιήστε έναν σύνδεσμο ανάρτηση�
 #: src/features/applications/add-sheet.tsx
 msgid "Use an http or https link."
 msgstr "Χρησιμοποιήστε έναν σύνδεσμο http ή https."
+
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "Use at least {0} characters."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "Use at least 8 characters."
+msgstr "Χρησιμοποιήστε τουλάχιστον 8 χαρακτήρες."
 
 #: src/features/ats-checker/messages.ts
 msgid "Use at least 9pt."
@@ -10960,11 +11243,19 @@ msgstr "Χρησιμοποιήστε την έκδοση διακομιστή"
 msgid "Use six hex digits, like #3E6B4F."
 msgstr "Χρησιμοποιήστε έξι δεκαεξαδικά ψηφία, όπως #3E6B4F."
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use the authenticator app"
+msgstr ""
+
 #: src/features/assistant/document.ts
 #: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "Χρησιμοποιήστε την Αναίρεση του επεξεργαστή για παλαιότερες αλλαγές."
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Use the email and password of your Rezumi account."
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Use the standard heading"
@@ -11050,6 +11341,14 @@ msgstr "Ποικίλετε τις εναρκτήριες φράσεις ώστε
 #: src/features/career/offers.tsx
 msgid "Verbal offer"
 msgstr "Προφορική προσφορά"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Verify"
+msgstr "Επαλήθευση"
+
+#: src/features/auth/errors.ts
+msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Version"
@@ -11166,6 +11465,18 @@ msgstr "Περιμένοντας να ακούσω πίσω"
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "Διαβάσαμε «{0}». Επιλέξτε μήνα ώστε να ταξινομείται και να εκτυπώνεται με συνέπεια."
 
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a link to {email}. Open it on any device to confirm your address."
+msgstr ""
+
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a new link to {email}."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Weak"
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "Ιστοσελίδα"
@@ -11202,6 +11513,10 @@ msgstr ""
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"
 msgstr "Στάθμιση κάθε απαίτησης"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Welcome to Rezumi"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Went well"
@@ -11310,10 +11625,6 @@ msgstr "Πότε χρειάζεστε μια απόφαση;"
 #: src/features/assistant/coach-screen.tsx
 msgid "When you tap send, {list} go to {connection}."
 msgstr "Όταν πατήσετε αποστολή, τα {list} πηγαίνουν στο {connection}."
-
-#: app/(auth)/sign-in.tsx
-msgid "When you're done, the browser closes and you come back here."
-msgstr "Όταν τελειώσετε, το πρόγραμμα περιήγησης κλείνει και επιστρέφετε εδώ."
 
 #: src/features/applications-board/insights-screen.tsx
 msgid "Where applications come from"
@@ -11505,12 +11816,11 @@ msgstr ""
 msgid "You can keep up to 30 application questions."
 msgstr "Μπορείτε να κρατήσετε έως 30 ερωτήσεις αίτησης."
 
-#: app/(auth)/sign-in.tsx
-msgid "You can sign in with an account you already have."
-msgstr "Μπορείτε να συνδεθείτε με έναν λογαριασμό που έχετε ήδη."
+#: src/features/auth/check-email-screen.tsx
+msgid "You can start now. Publishing your portfolio, job alerts and payments wait until your email is confirmed. No email? Check spam, or send it again."
+msgstr ""
 
 #: src/auth/messages.ts
-#: src/auth/use-sign-in.ts
 msgid "You canceled the sign-in before it finished."
 msgstr "Ακυρώσατε τη σύνδεση πριν ολοκληρωθεί."
 
@@ -11542,6 +11852,10 @@ msgstr "Θα αποσυνδεθείτε από το {server}. Τυχόν αλλ�
 #: src/features/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "Βλέπετε μια αποθηκευμένη έκδοση. Δεν είναι δυνατή η επεξεργασία της."
+
+#: src/features/auth/errors.ts
+msgid "You're offline, or the server didn't answer. Check your connection and try again."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "You're offline. Connect to check a file."
@@ -11808,10 +12122,6 @@ msgstr "Το βιογραφικό σας έχει φωτογραφία"
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "Το βιογραφικό σας χρησιμοποιεί τα «εγώ» και «μου»."
 
-#: app/(auth)/sign-in.tsx
-msgid "Your resumes, letters and applications, on {host}."
-msgstr "Τα βιογραφικά σας, οι συνοδευτικές επιστολές και οι αιτήσεις σας, στο {host}."
-
 #: src/features/share/messages.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Η γραμματοσειρά που επιλέξατε δεν μπορεί να εμφανίσει ορισμένους χαρακτήρες. Εμφανίζονται ως “?”. Στην καρτέλα Σχεδιασμός, επιλέξτε μια γραμματοσειρά που τους περιέχει."
@@ -11820,17 +12130,16 @@ msgstr "Η γραμματοσειρά που επιλέξατε δεν μπορ�
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "Ο διακομιστής σας στέλνει μια ερώτηση δοκιμής και το αποθηκευμένο κλειδί API σε αυτόν τον πάροχο."
 
+#: src/auth/session-gate.tsx
+msgid "Your session ended"
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
 msgid "Your session expired. Sign in again."
 msgstr "Η συνεδρία σας έληξε. Συνδεθείτε ξανά."
-
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Your session on {0} ended"
-msgstr "Η συνεδρία σας στο {0} έληξε"
 
 #. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx

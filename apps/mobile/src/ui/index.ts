@@ -1,5 +1,6 @@
 // Rezumi's native design system: HeroUI Native (+ Pro) on the web's tokens, with the few wrappers the app needs.
 // Screens import from "@/ui" only. apps/mobile/DESIGN.md says which component to use when; app/dev/ui.tsx shows them.
+export { AppleSignInButton } from "./apple-sign-in-button";
 export { Button, CloseButton, IconButton, LinkButton, type IconButtonProps } from "./button";
 export { Card, Surface } from "heroui-native";
 export { cx } from "./cx";
@@ -44,6 +45,7 @@ export {
 	Switch,
 	TextArea,
 	TextField,
+	type InputRef,
 } from "./fields";
 export { Icon, type IconName, type IconProps } from "./icon";
 export { ListGroup, ListRow, ListSection, Separator, type ListRowProps, type ListSectionProps } from "./lists";

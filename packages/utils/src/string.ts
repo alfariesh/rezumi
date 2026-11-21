@@ -36,6 +36,17 @@ export function toUsername(value: string) {
 }
 
 /**
+ * The username a sign-up proposes when the person does not choose one (the mobile app's Create account): the email's
+ * local part through `toUsername`, without hyphens (reserved for generated guest names), at most 20 characters, padded
+ * to the 3-character minimum, then `suffix` (digits that make a taken name free). The account can change it later.
+ */
+export function usernameFromEmail(email: string, suffix = "") {
+	const local = toUsername((email.split("@")[0] ?? "").replaceAll("-", ".")).replace(/^[._]+|[._]+$/g, "");
+	const base = (local || "user").slice(0, 20).padEnd(3, "0");
+	return `${base}${suffix}`;
+}
+
+/**
  * Strips HTML tags from a string and returns the text content.
  * @param html - The HTML string to strip.
  * @returns The text content without HTML tags.

@@ -42,6 +42,8 @@ const config: ExpoConfig = {
 			dark: "./assets/icon-dark.png",
 		},
 		bundleIdentifier: "app.rezumi",
+		// Sign in with Apple (K4): the `com.apple.developer.applesignin` entitlement.
+		usesAppleSignIn: true,
 		appleTeamId: "ZAVWN3Z2YX",
 		deploymentTarget: "17.4",
 		supportsTablet: true,
@@ -121,6 +123,7 @@ const config: ExpoConfig = {
 				// Billing and admin stay on the web: a checkout returning to /dashboard/settings/billing must not open the app.
 				data: [
 					{ scheme: "https", host, path: "/auth/native-callback" },
+					{ scheme: "https", host, path: "/auth/reset-password" },
 					{ scheme: "https", host, pathPrefix: "/builder/" },
 					{ scheme: "https", host, path: "/dashboard" },
 					...appLinkPrefixes.map((pathPrefix) => ({ scheme: "https", host, pathPrefix })),

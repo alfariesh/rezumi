@@ -1284,6 +1284,10 @@ msgstr "پس از غربالگری"
 msgid "After the technical interview"
 msgstr "پس از مصاحبهٔ فنی"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "After this, you're signed out on your other devices."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "پس از نخستین بازبینی شما، برنامه‌ای سبک برای این هفته اینجا نمایش داده می‌شود."
@@ -1419,6 +1423,10 @@ msgstr "قبلاً پوشش داده شده است · یکی را برای پی�
 msgid "Already covered:"
 msgstr "قبلاً پوشش داده شده است:"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Already have an account? Sign in"
+msgstr ""
+
 #: src/features/check/screen.tsx
 msgid "Also check the exported PDF"
 msgstr "همچنین PDF صادر شده را بررسی کنید"
@@ -1444,6 +1452,10 @@ msgstr "همیشه در امروز ظاهر می شود. ایمیل نیاز ب�
 msgid "Amharic"
 msgstr "امهری"
 
+#: src/features/auth/errors.ts
+msgid "An account with this email already exists. Sign in instead, or reset your password."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
 msgstr "یک فونت جاسازی‌شده قابل خواندن نبود."
@@ -1455,6 +1467,10 @@ msgstr "یک ورودی تاریخ ندارد"
 #: src/features/assistant/chat-view.tsx
 msgid "an error"
 msgstr "یک خطا"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Ana Putri"
+msgstr ""
 
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
@@ -1617,6 +1633,7 @@ msgid "Application views"
 msgstr "نماهای درخواست‌ها"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -1766,6 +1783,12 @@ msgstr "مکالمات دستیار"
 msgid "At 09:00 that day ({timeZone})."
 msgstr "ساعت 09:00 آن روز ({timeZone})."
 
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "At least {0} characters. A longer password is stronger."
+msgstr ""
+
 #: app/_layout.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/search/search-screen.tsx
@@ -1838,6 +1861,7 @@ msgid "Azerbaijani"
 msgstr "آذربایجانی"
 
 #: app/(auth)/server.tsx
+#: src/features/auth/frame.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
@@ -1846,6 +1870,10 @@ msgstr "آذربایجانی"
 #: src/features/write/entry-sheet.tsx
 msgid "Back"
 msgstr "برگشت"
+
+#: src/shell/tab-root-back.tsx
+msgid "Back to {label}"
+msgstr ""
 
 #: app/applications/[id]/_layout.tsx
 #: src/features/application-detail/detail-screen.tsx
@@ -1879,7 +1907,7 @@ msgstr "برگشت به الان"
 msgid "Back to posting"
 msgstr "بازگشت به آگهی استخدام"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Back to sign in"
 msgstr "بازگشت به ورود"
 
@@ -1891,6 +1919,10 @@ msgstr "مستند به"
 #: src/features/design/advanced.tsx
 msgid "Background color"
 msgstr "رنگ پس‌زمینه"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Backup code"
+msgstr "کد پشتیبان"
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
@@ -2062,7 +2094,6 @@ msgstr ""
 msgid "Can software read your resume?"
 msgstr "آیا نرم افزار می تواند رزومه شما را بخواند؟"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
@@ -2100,7 +2131,6 @@ msgstr "کاتالان"
 msgid "Certifications"
 msgstr "گواهینامه‌ها"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "تغییر دهید"
@@ -2200,6 +2230,10 @@ msgstr "بررسی کنید دقیق است"
 msgid "Check the details"
 msgstr "جزئیات را بررسی کنید"
 
+#: src/features/auth/errors.ts
+msgid "Check the email address and password, then try again."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Check the exported file contains everything you expect, and that all of it is selectable text."
 msgstr "بررسی کنید فایل خروجی همهٔ چیزی را که انتظار دارید داشته باشد و همهٔ آن متن قابل انتخاب باشد."
@@ -2223,6 +2257,11 @@ msgstr "این موقعیت شغلی را با شواهد خود بسنجید"
 #: src/features/check/screen.tsx
 msgid "Check views"
 msgstr "نماها را بررسی کنید"
+
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Check your email"
+msgstr "ایمیل خود را بررسی کنید"
 
 #: src/features/career/preferences.tsx
 msgid "Check your preferences. Invalid changes are not saved."
@@ -2248,6 +2287,10 @@ msgstr "بررسی طرح و محتوا"
 #: src/features/workspace/parts.tsx
 msgid "Checking your preferences"
 msgstr "در حال بررسی ترجیحات شما"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Checking…"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Checking… Copy is available after saving."
@@ -2279,6 +2322,10 @@ msgstr "یک فایل را انتخاب کنید"
 
 #: src/features/design/uploaded-fonts.tsx
 msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Choose a new password"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -2404,6 +2451,7 @@ msgstr "برای حذف خطاب یا عبارت پایانی، آن را پاک
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "ورودی های خود را پاک می کند. بخش باقی می ماند می توانید لغو کنید."
 
+#: src/features/auth/welcome-screen.tsx
 #: src/features/career/facts.tsx
 #: src/features/check/page.tsx
 #: src/features/documents/document-sheets.tsx
@@ -2466,6 +2514,10 @@ msgstr "مربی"
 #: src/features/share/custom-domain.tsx
 msgid "Code copied"
 msgstr "کد کپی شد"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Codes look like a1b2c-d3e4f."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -2654,16 +2706,17 @@ msgstr "متن حذف شده است، بنابراین به جای آن با ی�
 #: app/(auth)/server.tsx
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/auth/check-email-screen.tsx
 msgid "Continue"
 msgstr "ادامه"
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue as guest"
-msgstr "ادامه به‌عنوان مهمان"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with email"
+msgstr ""
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue in browser"
-msgstr "ادامه در مرورگر"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with Google"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 msgid "Conversation"
@@ -2963,7 +3016,7 @@ msgstr ""
 
 #: app/account/account.tsx
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
@@ -3148,6 +3201,7 @@ msgid "Couldn't sign out. Try again."
 msgstr "نمی توان از سیستم خارج شد. دوباره امتحان کنید."
 
 #: src/auth/messages.ts
+#: src/features/auth/errors.ts
 msgid "Couldn't sign you in. Try again."
 msgstr "ورود شما ممکن نشد. دوباره امتحان کنید."
 
@@ -3289,6 +3343,10 @@ msgstr "ایجاد رزومهٔ جدید"
 msgid "Create a resume first, then ask about it."
 msgstr "ابتدا یک رزومه ایجاد کنید، سپس در مورد آن بپرسید."
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Create account"
+msgstr "ایجاد حساب کاربری"
+
 #: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "یک کلید API از تنظیمات حساب در مرورگر خود ایجاد کنید. کلیدها مانند شما عمل می کنند و می توانند اسناد شما را بخوانند و ویرایش کنند."
@@ -3317,6 +3375,10 @@ msgstr "ایجاد {0} · آخرین استفاده {1} · تاریخ انقضا
 #: src/features/documents/new-document.tsx
 msgid "Creating document…"
 msgstr "در حال ایجاد سند…"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Creating your account…"
+msgstr ""
 
 #: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
@@ -4032,6 +4094,9 @@ msgid "Education swaps school and field of study the same way."
 msgstr ""
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "ایمیل"
@@ -4116,13 +4181,39 @@ msgstr "یک عدد کامل از 0 تا 52 وارد کنید یا خالی بگ
 msgid "Enter an address like resume.example.org."
 msgstr "نشانی‌ای مانند resume.example.org وارد کنید."
 
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter an email like name@example.com."
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Enter any model ID supported by your endpoint."
 msgstr "هر شناسه مدلی را که توسط نقطه پایانی شما پشتیبانی می شود وارد کنید."
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter one of the backup codes you saved when you turned on two-step verification. Each works once."
+msgstr ""
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter the 6-digit code from your authenticator app."
+msgstr ""
+
 #: app/(auth)/server.tsx
 msgid "Enter the address you open Rezumi at in a browser. The app checks it's a Rezumi server that allows app sign-in before you continue."
 msgstr "آدرسی را که در آن باز می‌کنید Rezumi را در مرورگر وارد کنید. این برنامه بررسی می‌کند که سرور Rezumi است که اجازه می‌دهد قبل از ادامه وارد برنامه شوید."
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter the email of your account. We'll send you a link to choose a new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Enter your name."
+msgstr "نام خود را وارد کنید."
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Enter your password."
+msgstr "گذرواژهٔ خود را وارد کنید."
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4261,6 +4352,10 @@ msgstr "واقعیت‌ها"
 msgid "Failed"
 msgstr "شکست خورد"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Fair"
+msgstr ""
+
 #: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "بازخورد"
@@ -4327,9 +4422,9 @@ msgstr "ورودی های لیست ضعیف را پیدا کنید"
 msgid "Finding what works"
 msgstr "در حال یافتن آنچه جواب می‌دهد"
 
-#: app/(auth)/sign-in.tsx
-msgid "Finish signing in in the browser"
-msgstr "ورود به سیستم را در مرورگر به پایان برسانید"
+#: src/features/auth/welcome-screen.tsx
+msgid "Finish in the browser…"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Finnish"
@@ -4490,6 +4585,10 @@ msgstr "فراموش کردن"
 msgid "Forgetting unlinks this fact from stories and saved items. The original source stays unchanged."
 msgstr "فراموشی این واقعیت را از داستان ها و موارد ذخیره شده جدا می کند. منبع اصلی بدون تغییر باقی می ماند."
 
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Forgot password?"
+msgstr "گذرواژه را فراموش کرده‌اید؟"
+
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Formatting"
@@ -4509,6 +4608,10 @@ msgstr "دیروز پیدا شد"
 
 #: src/features/billing/plan.ts
 msgid "Free"
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Free to start. You can add a photo, username and more later."
 msgstr ""
 
 #: src/features/design/style-groups.tsx
@@ -4571,6 +4674,10 @@ msgstr ""
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "طولانی شدن «کوتاه‌تر» را امتحان کنید یا پاراگراف‌هایی را که کمتر مشخص هستند را برش دهید."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "GitHub"
+msgstr "گیت‌هاب"
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4861,6 +4968,10 @@ msgstr "نماد…"
 
 #: src/features/design/design-pane.tsx
 msgid "Icons"
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "If {sentTo} has a Rezumi account, a link to choose a new password is on its way. It works for one hour."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -5510,6 +5621,10 @@ msgstr "یک درخواست شغلی را پیوند دهید یا یک پست �
 msgid "Link copied"
 msgstr "لینک کپی شد"
 
+#: src/features/auth/check-email-screen.tsx
+msgid "Link sent"
+msgstr ""
+
 #: src/features/documents/document-sheets.tsx
 msgid "Link to application"
 msgstr "لینک درخواست کار"
@@ -5550,6 +5665,10 @@ msgstr "دوباره به رزومه لینک شد"
 #: src/features/letters/write.tsx
 msgid "Linked. Name, email, phone and city update when the resume does."
 msgstr "پیوند داده شده است. نام، ایمیل، تلفن و شهر به‌روزرسانی زمانی که رزومه انجام می‌شود."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "LinkedIn"
+msgstr "لینکدین"
 
 #: src/features/applications-board/views.tsx
 msgid "List"
@@ -5943,6 +6062,10 @@ msgstr "ارائه دهندگان و گزینه های بیشتر در تنظی�
 msgid "More than one email address appears."
 msgstr "بیش از یک آدرس ایمیل ظاهر شده است."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "More ways to sign in"
+msgstr ""
+
 #: src/features/home/schedules.tsx
 msgid "Morning of"
 msgstr "صبح همان روز"
@@ -6097,6 +6220,7 @@ msgstr "هنگام انتقال به مرحلهٔ درخواست ارسال‌ش
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/auth/create-account-screen.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -6130,6 +6254,12 @@ msgstr "این نسخه را نام ببرید"
 #: src/features/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
 msgstr "نام، ایمیل، تلفن و مکان یافت می شود و پیوندها آدرس کامل هستند."
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "name@example.com"
+msgstr ""
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -6183,9 +6313,17 @@ msgstr "هرگز"
 msgid "New"
 msgstr "جدید"
 
-#: app/(auth)/sign-in.tsx
-msgid "New account sign-ups are currently disabled on this server."
-msgstr "ثبت‌نام حساب‌های جدید در حال حاضر روی این سرور غیرفعال است."
+#: src/features/auth/welcome-screen.tsx
+msgid "New account sign-ups are turned off on this server."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "New account sign-ups are turned off on this server. Sign in with an account you already have."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "New account sign-ups are turned off. Sign in with an account you already have."
+msgstr ""
 
 #: src/features/settings/api-keys.tsx
 msgid "New API key"
@@ -6219,6 +6357,10 @@ msgstr "سند جدید"
 msgid "New page"
 msgstr "صفحه جدید"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "New password"
+msgstr "گذرواژهٔ جدید"
+
 #: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "موقعیت‌های جدید از جستجوی شما"
@@ -6234,6 +6376,11 @@ msgstr "بخش جدید"
 #: src/features/career/stories.tsx
 msgid "New STARR story"
 msgstr "داستان جدید STARR"
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "New to Rezumi? Create an account"
+msgstr ""
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
@@ -7063,16 +7210,30 @@ msgstr "پاراگراف {n}"
 msgid "Partly supported"
 msgstr "تا حدی مستند"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Passkey"
+msgstr "کلید عبور"
+
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "کلیدهای عبور"
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
 msgstr "رمز عبور"
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Password changed. Sign in with your new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Password strength: {label}"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
@@ -7483,7 +7644,7 @@ msgid "Privacy"
 msgstr "حریم خصوصی"
 
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "سیاست حفظ حریم خصوصی"
 
@@ -7505,6 +7666,7 @@ msgid "Proficiency"
 msgstr "مهارت"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: app/(tabs)/profile/index.tsx
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
@@ -8106,6 +8268,14 @@ msgstr "حروف بزرگ را فقط برای عنوان‌های کوتاه ن
 msgid "Reset design defaults"
 msgstr "بازنشانی پیش فرض های طراحی"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Reset links work once, for one hour. Ask for a new one."
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Reset your password"
+msgstr "تنظیم مجدد گذرواژهٔ شما"
+
 #: src/features/career/offers.tsx
 msgid "Respond by"
 msgstr "مهلت پاسخ"
@@ -8196,6 +8366,10 @@ msgstr "رزومه‌ها"
 #: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "رزومه ها همیشه روی کاغذ سفید ارائه می شوند، هر موضوعی که باشد."
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Resumes, cover letters, applications and your portfolio, in one place."
+msgstr ""
 
 #. placeholder {0}: source.retrievedAt
 #. placeholder {1}: source.method
@@ -8348,10 +8522,6 @@ msgstr "این کلید API را لغو کنید"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "بازنویسی پذیرفته شد"
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -8511,6 +8681,10 @@ msgstr "ذخیرهٔ مصاحبه"
 msgid "Save job"
 msgstr "شغل را ذخیره کنید"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Save new password"
+msgstr ""
+
 #: src/features/share/files.ts
 msgid "Save or share file"
 msgstr "فایل را ذخیره یا به اشتراک بگذارید"
@@ -8601,6 +8775,7 @@ msgstr "در «ذخیره شده» · تمرین ذخیره شد"
 msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "صرفه جویی در کار. قبل از ایجاد تغییر دیگر منتظر تایید باشید."
 
+#: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
@@ -8781,9 +8956,21 @@ msgstr "شیوه‌نامه CSS معنایی"
 msgid "Send"
 msgstr "ارسال کنید"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Send a new link"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Send report"
 msgstr "ارسال گزارش"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Send reset link"
+msgstr "ارسال پیوند بازنشانی"
+
+#: src/features/auth/check-email-screen.tsx
+msgid "Send the link again"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
@@ -8798,6 +8985,8 @@ msgid "Sender details copied into the letter"
 msgstr "جزئیات فرستنده در نامه کپی شده است"
 
 #: src/features/ai/report-content.tsx
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Sending…"
 msgstr "در حال ارسال…"
 
@@ -8842,11 +9031,14 @@ msgstr "به {0} ارسال شد"
 msgid "Serbian"
 msgstr "صربی"
 
-#: app/(auth)/sign-in.tsx
 #: src/api/ai-consent.ts
 #: src/features/settings/sign-out.tsx
 msgid "Server"
 msgstr "سرور"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Server (development builds only)"
+msgstr ""
 
 #: app/(auth)/server.tsx
 msgid "Server address"
@@ -9112,6 +9304,8 @@ msgid "Sidebars are often read last, or mixed into the main column."
 msgstr "نوارهای کناری اغلب آخرین خوانده می شوند یا در ستون اصلی ترکیب می شوند."
 
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/linking/open.ts
@@ -9130,10 +9324,6 @@ msgstr "برای ادامه بررسی این رزومه دوباره وارد �
 #: src/auth/session-gate.tsx
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "برای ادامه کار دوباره وارد سیستم شوید. ویرایش‌هایی که انجام داده‌اید در این دستگاه نگهداری می‌شوند و پس از ورود به سیستم همگام‌سازی می‌شوند."
-
-#: app/(auth)/sign-in.tsx
-msgid "Sign in or create an account in the browser, with email, a passkey, Google, GitHub or LinkedIn. You come back here when you're done."
-msgstr "با ایمیل، کلید عبور، Google، GitHub یا LinkedIn، به سیستم وارد شوید یا یک حساب در مرورگر ایجاد کنید. وقتی کارت تمام شد به اینجا برمی گردی."
 
 #: src/linking/open.ts
 msgid "Sign in to {server}, then continue to the linked document."
@@ -9191,7 +9381,7 @@ msgstr "از سیستم خارج شوید؟"
 msgid "Sign-in & security"
 msgstr "ورود به سیستم و امنیت"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/linking/open.ts
 msgid "Sign-in didn't complete"
 msgstr "ورود کامل نشد"
@@ -9200,19 +9390,31 @@ msgstr "ورود کامل نشد"
 msgid "Sign-off"
 msgstr "عبارت پایانی"
 
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Signed out of {0}. Your documents are still there."
-msgstr "از سیستم {0} خارج شدید. مدارک شما هنوز موجود است."
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Signed in with Apple, Google or another provider? You have no password here: sign in with that provider instead."
+msgstr ""
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "از سیستم خارج شده‌اید، اما برخی از داده‌های این دستگاه حذف نشدند."
 
+#: src/auth/session-gate.tsx
+msgid "Signed out. Your documents are still there."
+msgstr ""
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "Signing in…"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "since last view"
 msgstr "از آخرین مشاهده"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Single sign-on"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Situation (required)"
@@ -9325,6 +9527,10 @@ msgstr "بخشی از متن خارج از صفحه قرار گرفته است."
 #: src/features/ats-checker/messages.ts
 msgid "Some text is rotated."
 msgstr "بخشی از متن چرخانده شده است."
+
+#: src/features/auth/errors.ts
+msgid "Something went wrong on the server. Try again in a moment."
+msgstr ""
 
 #: src/features/documents/library.tsx
 msgid "Sort"
@@ -9541,6 +9747,14 @@ msgstr "تقویت کنید"
 #: src/features/write/rich-text-field.tsx
 msgid "Strikethrough"
 msgstr "خط‌خورده"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Strong"
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Strong password."
+msgstr ""
 
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
@@ -9770,6 +9984,10 @@ msgstr "الگو به {0} تغییر کرد"
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "الگو، نوع و رنگ ها از رزومه پیروی می کنند، بنابراین این جفت همیشه مطابقت دارد."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Terms"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "شرایط از آگهی استخدام"
@@ -9839,6 +10057,14 @@ msgstr "متن زیر {minimum} pt ممکن است زمانی که یک سیست
 #: src/features/settings/locale-names.ts
 msgid "Thai"
 msgstr "تایلندی"
+
+#: src/features/auth/errors.ts
+msgid "That code didn't work. Check it and try again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "That email and password don't match. Try again, or reset your password."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "That file couldn't be read as a PDF."
@@ -10093,6 +10319,10 @@ msgstr "هیچ پاراگراف خلاصه‌ای وجود ندارد."
 msgid "These are the answers saved when you applied."
 msgstr "این‌ها پاسخ‌هایی هستند که هنگام ارسال درخواست ذخیره شدند."
 
+#: src/features/auth/welcome-screen.tsx
+msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
+msgstr ""
+
 #: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "اینها تنظیمات حساب سرور شما را در یک برگه مرورگر در داخل برنامه باز می کنند. ممکن است لازم باشد در آنجا وارد شوید."
@@ -10291,6 +10521,10 @@ msgstr "این نامه قفل است. برای ویرایش، قفل آن را 
 msgid "This letter keeps its recipient as written."
 msgstr "این نامه گیرنده خود را همانطور که نوشته شده نگه می دارد."
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "This link has expired"
+msgstr ""
+
 #: src/linking/open.ts
 msgid "This link opens {server}. Sign in there to continue. Your current server is {current}."
 msgstr "این پیوند {server} را باز می کند. برای ادامه در آنجا وارد شوید. سرور فعلی شما {current} است."
@@ -10330,6 +10564,10 @@ msgstr "این PDF لایه متنی ندارد، بنابراین تجزیه ک
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "این PDF با رمز عبور محافظت شده است. یک نسخهٔ بدون محافظت ذخیره کنید و دوباره تلاش کنید."
+
+#: src/features/auth/errors.ts
+msgid "This reset link expired or was already used. Ask for a new one."
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "This resume changed elsewhere"
@@ -10386,6 +10624,18 @@ msgstr "این سرور از http استفاده می کند. برنامه به 
 #: src/auth/messages.ts
 msgid "This sign-in attempt expired or was already used. Sign in again."
 msgstr "این تلاش برای ورود منقضی شده یا قبلاً استفاده شده است. دوباره وارد شوید."
+
+#: src/features/auth/errors.ts
+msgid "This sign-in attempt expired. Start again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in option isn't available right now. Use another way to sign in."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in took too long. Start again."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
@@ -10513,6 +10763,10 @@ msgstr "فردا"
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "برای سرفصل های روی سفید خیلی سبک است. ممکن است خواندن و چاپ کم رنگ آن سخت باشد."
 
+#: src/features/auth/errors.ts
+msgid "Too many attempts. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10520,6 +10774,10 @@ msgstr "برای سرفصل های روی سفید خیلی سبک است. مم�
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "درخواست های خیلی زیاد بعداً دوباره امتحان کنید."
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Too short"
+msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "Tool logos aren't available"
@@ -10610,10 +10868,6 @@ msgstr "{suggestion} را امتحان کنید"
 msgid "Try again"
 msgstr "دوباره امتحان کنید"
 
-#: app/(auth)/sign-in.tsx
-msgid "Try again in browser"
-msgstr "دوباره در مرورگر امتحان کنید"
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Try again with this"
 msgstr "دوباره با این امتحان کنید"
@@ -10642,6 +10896,10 @@ msgstr "این شروع را امتحان کنید"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "با نمونه رزومه امتحان کنید"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Try without an account"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -10672,6 +10930,7 @@ msgid "Two stories"
 msgstr "دو داستان"
 
 #: app/account/account.tsx
+#: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "تایید دو مرحله ای"
 
@@ -10840,6 +11099,11 @@ msgstr "در حال آپلود عکس…"
 msgid "URL"
 msgstr "آدرس وبسایت"
 
+#. placeholder {0}: passwordLimits.max
+#: src/features/auth/create-account-screen.tsx
+msgid "Use {0} characters or fewer."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Use {minimum}"
 msgstr "از {minimum} استفاده کنید"
@@ -10863,6 +11127,15 @@ msgstr "از 3 تا 64 حروف کوچک، اعداد، نقطه، خط فاصل
 #: src/features/share/web-page.tsx
 msgid "Use 6–64 characters."
 msgstr "از 6 تا 64 کاراکتر استفاده کنید."
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/errors.ts
+msgid "Use 64 characters or fewer."
+msgstr "از ۶۴ نویسه یا کمتر استفاده کنید."
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use a backup code instead"
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 msgid "Use a darker shade"
@@ -10900,6 +11173,16 @@ msgstr "قبل از ذخیره از یک پیوند پست شغلی http یا ht
 #: src/features/applications/add-sheet.tsx
 msgid "Use an http or https link."
 msgstr "از لینک http یا https استفاده کنید."
+
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "Use at least {0} characters."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "Use at least 8 characters."
+msgstr "دست‌کم از ۸ نویسه استفاده کنید."
 
 #: src/features/ats-checker/messages.ts
 msgid "Use at least 9pt."
@@ -10960,11 +11243,19 @@ msgstr "از نسخه سرور استفاده کنید"
 msgid "Use six hex digits, like #3E6B4F."
 msgstr "از شش رقم در مبنای شانزده، مانند #3E6B4F، استفاده کنید."
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use the authenticator app"
+msgstr ""
+
 #: src/features/assistant/document.ts
 #: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "از لغو سازنده برای لغو تغییرات قبلی استفاده کنید."
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Use the email and password of your Rezumi account."
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Use the standard heading"
@@ -11050,6 +11341,14 @@ msgstr "شروع‌ها را متنوع کنید تا بخش، کلیشه‌ای
 #: src/features/career/offers.tsx
 msgid "Verbal offer"
 msgstr "پیشنهاد شفاهی"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Verify"
+msgstr "تأیید"
+
+#: src/features/auth/errors.ts
+msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Version"
@@ -11166,6 +11465,18 @@ msgstr "در انتظار شنیدن پاسخ"
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "«{0}» را خواندیم. یک ماه انتخاب کنید تا به‌طور یکسان مرتب و چاپ شود."
 
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a link to {email}. Open it on any device to confirm your address."
+msgstr ""
+
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a new link to {email}."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Weak"
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "صفحه وب"
@@ -11202,6 +11513,10 @@ msgstr ""
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"
 msgstr "در حال سنجیدن هر الزام"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Welcome to Rezumi"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Went well"
@@ -11310,10 +11625,6 @@ msgstr "چه زمانی به تصمیم نیاز دارید؟"
 #: src/features/assistant/coach-screen.tsx
 msgid "When you tap send, {list} go to {connection}."
 msgstr "وقتی روی ارسال ضربه بزنید، {list} به {connection} فرستاده می‌شود."
-
-#: app/(auth)/sign-in.tsx
-msgid "When you're done, the browser closes and you come back here."
-msgstr "وقتی کارتان تمام شد، مرورگر بسته می شود و شما به اینجا باز می گردید."
 
 #: src/features/applications-board/insights-screen.tsx
 msgid "Where applications come from"
@@ -11505,12 +11816,11 @@ msgstr ""
 msgid "You can keep up to 30 application questions."
 msgstr "می‌توانید حداکثر ۳۰ پرسش درخواست نگه دارید."
 
-#: app/(auth)/sign-in.tsx
-msgid "You can sign in with an account you already have."
-msgstr "می توانید با حسابی که از قبل دارید وارد شوید."
+#: src/features/auth/check-email-screen.tsx
+msgid "You can start now. Publishing your portfolio, job alerts and payments wait until your email is confirmed. No email? Check spam, or send it again."
+msgstr ""
 
 #: src/auth/messages.ts
-#: src/auth/use-sign-in.ts
 msgid "You canceled the sign-in before it finished."
 msgstr "ورود را پیش از تکمیل آن لغو کردید."
 
@@ -11542,6 +11852,10 @@ msgstr "شما از سیستم {server} خارج خواهید شد. هر ویر�
 #: src/features/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "در حال مشاهدهٔ یک نسخهٔ ذخیره‌شده هستید. قابل ویرایش نیست."
+
+#: src/features/auth/errors.ts
+msgid "You're offline, or the server didn't answer. Check your connection and try again."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "You're offline. Connect to check a file."
@@ -11808,10 +12122,6 @@ msgstr "رزومه شما دارای عکس است"
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "رزومهٔ شما از \"I\" و \"my\" استفاده می‌کند."
 
-#: app/(auth)/sign-in.tsx
-msgid "Your resumes, letters and applications, on {host}."
-msgstr "رزومه، نامه‌های پوششی و درخواست های شغلی شما در {host}."
-
 #: src/features/share/messages.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "فونت انتخاب‌شدهٔ شما نمی‌تواند برخی نویسه‌ها را نمایش دهد. به‌صورت “?” نشان داده می‌شوند. در طراحی، فونتی را انتخاب کنید که آن‌ها را داشته باشد."
@@ -11820,17 +12130,16 @@ msgstr "فونت انتخاب‌شدهٔ شما نمی‌تواند برخی ن�
 msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "سرور شما یک درخواست آزمایشی و کلید API ذخیره شده را برای این ارائه دهنده ارسال می کند."
 
+#: src/auth/session-gate.tsx
+msgid "Your session ended"
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
 msgid "Your session expired. Sign in again."
 msgstr "جلسه شما منقضی شد دوباره وارد شوید."
-
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Your session on {0} ended"
-msgstr "جلسه شما در {0} به پایان رسید"
 
 #. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx

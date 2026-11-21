@@ -1284,6 +1284,10 @@ msgstr "ସ୍କ୍ରିନିଂ ପରେ"
 msgid "After the technical interview"
 msgstr "ଟେକ୍ନିକାଲ୍ ସାକ୍ଷାତକାର ପରେ"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "After this, you're signed out on your other devices."
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "ଆପଣଙ୍କ ପ୍ରଥମ ସମୀକ୍ଷା ପରେ, ଏହି ସପ୍ତାହ ପାଇଁ ଏକ ହାଲୁକା ଯୋଜନା ଏଠାରେ ଦେଖାଯିବ।"
@@ -1421,6 +1425,10 @@ msgstr "ପୃଷ୍ଠାରେ ଏହାକୁ ଖୋଜିବା ପାଇଁ
 msgid "Already covered:"
 msgstr "ଆଗରୁ ସାମିଲ:"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Already have an account? Sign in"
+msgstr ""
+
 #: src/features/check/screen.tsx
 msgid "Also check the exported PDF"
 msgstr "ରପ୍ତାନି ହୋଇଥିବା PDF କୁ ମଧ୍ୟ ଯାଞ୍ଚ କରନ୍ତୁ |"
@@ -1446,6 +1454,10 @@ msgstr "ସବୁବେଳେ ଆଜିରେ ଦେଖାଯାଏ। ଇମେ
 msgid "Amharic"
 msgstr "ଆମହାରିକ୍"
 
+#: src/features/auth/errors.ts
+msgid "An account with this email already exists. Sign in instead, or reset your password."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
 msgstr "ଏକ ଏମ୍ବେଡ୍ ହୋଇଥିବା ଫଣ୍ଟ ପଢ଼ିହେଲା ନାହିଁ।"
@@ -1457,6 +1469,10 @@ msgstr "ଏକ ପ୍ରବେଶର କ dates ଣସି ତାରିଖ ନା�
 #: src/features/assistant/chat-view.tsx
 msgid "an error"
 msgstr "ଏକ ତ୍ରୁଟି |"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Ana Putri"
+msgstr ""
 
 #. placeholder {0}: others.length
 #: src/features/application-detail/sections.tsx
@@ -1619,6 +1635,7 @@ msgid "Application views"
 msgstr "ଚାକିରି ଆବେଦନ ଦୃଶ୍ୟ।"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/applications/_layout.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -1768,6 +1785,12 @@ msgstr "ସହକାରୀ ବାର୍ତ୍ତାଳାପ |"
 msgid "At 09:00 that day ({timeZone})."
 msgstr "ସେଦିନ 09:00 ରେ ({timeZone})।"
 
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "At least {0} characters. A longer password is stronger."
+msgstr ""
+
 #: app/_layout.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/search/search-screen.tsx
@@ -1840,6 +1863,7 @@ msgid "Azerbaijani"
 msgstr "ଆଜେରବାଇଜାନୀ"
 
 #: app/(auth)/server.tsx
+#: src/features/auth/frame.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
@@ -1848,6 +1872,10 @@ msgstr "ଆଜେରବାଇଜାନୀ"
 #: src/features/write/entry-sheet.tsx
 msgid "Back"
 msgstr "ପଛକୁ"
+
+#: src/shell/tab-root-back.tsx
+msgid "Back to {label}"
+msgstr ""
 
 #: app/applications/[id]/_layout.tsx
 #: src/features/application-detail/detail-screen.tsx
@@ -1881,7 +1909,7 @@ msgstr "ବର୍ତ୍ତମାନ ଫେରିଯାନ୍ତୁ |"
 msgid "Back to posting"
 msgstr "ବିଜ୍ଞାପନକୁ ଫେରନ୍ତୁ"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Back to sign in"
 msgstr "ସାଇନ୍ ଇନ୍‌କୁ ଫେରନ୍ତୁ"
 
@@ -1893,6 +1921,10 @@ msgstr "ସମର୍ଥନ"
 #: src/features/design/advanced.tsx
 msgid "Background color"
 msgstr "ପୃଷ୍ଠଭୂମି ରଙ୍ଗ"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Backup code"
+msgstr "ବ୍ୟାକଅପ୍ କୋଡ୍"
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
@@ -2064,7 +2096,6 @@ msgstr ""
 msgid "Can software read your resume?"
 msgstr "ସଫ୍ଟୱେର୍ ତୁମର ରେଜୁମ୍ ପ read ି ପାରିବ କି?"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/date-field.tsx
 #: src/features/application-detail/sheets.tsx
@@ -2102,7 +2133,6 @@ msgstr "କାଟାଲାନ୍"
 msgid "Certifications"
 msgstr "ପ୍ରମାଣପତ୍ରଗୁଡିକ"
 
-#: app/(auth)/sign-in.tsx
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "ପରିବର୍ତ୍ତନ କରନ୍ତୁ |"
@@ -2203,6 +2233,10 @@ msgstr "ଏହା ସଠିକ୍ ଯାଞ୍ଚ କରନ୍ତୁ |"
 msgid "Check the details"
 msgstr "ବିବରଣୀ ଯାଞ୍ଚ କରନ୍ତୁ"
 
+#: src/features/auth/errors.ts
+msgid "Check the email address and password, then try again."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Check the exported file contains everything you expect, and that all of it is selectable text."
 msgstr "ରପ୍ତାନି ହୋଇଥିବା ଫାଇଲରେ ଆପଣ ଆଶାକରୁଥିବା ସବୁକିଛି ଅଛି କି ଏବଂ ଏହା ସମ୍ପୂର୍ଣ୍ଣ ଚୟନଯୋଗ୍ୟ ଟେକ୍ସଟ୍ କି ଯାଞ୍ଚ କରନ୍ତୁ।"
@@ -2226,6 +2260,11 @@ msgstr "ଆପଣଙ୍କ ପ୍ରମାଣ ସହ ଏହି ଭୂମିକ�
 #: src/features/check/screen.tsx
 msgid "Check views"
 msgstr "ଦୃଶ୍ୟ ଯାଞ୍ଚ କରନ୍ତୁ |"
+
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Check your email"
+msgstr "ଆପଣଙ୍କ ଇମେଲ୍ ଯାଞ୍ଚ କରନ୍ତୁ"
 
 #: src/features/career/preferences.tsx
 msgid "Check your preferences. Invalid changes are not saved."
@@ -2251,6 +2290,10 @@ msgstr "ଲେଆଉଟ୍ ଏବଂ ବିଷୟବସ୍ତୁ ଯାଞ୍ଚ
 #: src/features/workspace/parts.tsx
 msgid "Checking your preferences"
 msgstr "ଆପଣଙ୍କ ପସନ୍ଦ ଯାଞ୍ଚ କରୁଛି"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Checking…"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Checking… Copy is available after saving."
@@ -2282,6 +2325,10 @@ msgstr "ଏକ ଫାଇଲ୍ ବାଛନ୍ତୁ |"
 
 #: src/features/design/uploaded-fonts.tsx
 msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Choose a new password"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -2410,6 +2457,7 @@ msgstr "ସମ୍ବୋଧନ କିମ୍ବା ସମାପ୍ତି ବାଦ
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "ଏହାର ଏଣ୍ଟ୍ରିଗୁଡିକ ସଫା କରେ; ବିଭାଗଟି ରହିଥାଏ। ଆପଣ ପୂର୍ବବତ୍ କରିପାରିବେ।"
 
+#: src/features/auth/welcome-screen.tsx
 #: src/features/career/facts.tsx
 #: src/features/check/page.tsx
 #: src/features/documents/document-sheets.tsx
@@ -2472,6 +2520,10 @@ msgstr "କୋଚ୍"
 #: src/features/share/custom-domain.tsx
 msgid "Code copied"
 msgstr "କୋଡ୍ କପି ହୋଇଛି"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Codes look like a1b2c-d3e4f."
+msgstr ""
 
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -2662,16 +2714,17 @@ msgstr "|\n"
 #: app/(auth)/server.tsx
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/auth/check-email-screen.tsx
 msgid "Continue"
 msgstr "ଜାରି ରଖନ୍ତୁ"
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue as guest"
-msgstr "ଅତିଥି ଭାବରେ ଜାରି ରଖନ୍ତୁ"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with email"
+msgstr ""
 
-#: app/(auth)/sign-in.tsx
-msgid "Continue in browser"
-msgstr "ବ୍ରାଉଜର୍‌ରେ ଜାରି ରଖନ୍ତୁ"
+#: src/features/auth/welcome-screen.tsx
+msgid "Continue with Google"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 msgid "Conversation"
@@ -2971,7 +3024,7 @@ msgstr ""
 
 #: app/account/account.tsx
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/features/settings/api-keys.tsx
 #: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
@@ -3157,6 +3210,7 @@ msgid "Couldn't sign out. Try again."
 msgstr "ସାଇନ୍ ଆଉଟ୍ ହୋଇପାରିଲା ନାହିଁ। ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।"
 
 #: src/auth/messages.ts
+#: src/features/auth/errors.ts
 msgid "Couldn't sign you in. Try again."
 msgstr "ଆପଣଙ୍କୁ ସାଇନ୍ ଇନ୍ କରାଇହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
@@ -3298,6 +3352,10 @@ msgstr "ଗୋଟିଏ ନୂତନ ରେଜ୍ୟୁମେ ତିଆରି �
 msgid "Create a resume first, then ask about it."
 msgstr "ପ୍ରଥମେ ଏକ ରେଜୁମ୍ ସୃଷ୍ଟି କରନ୍ତୁ, ତାପରେ ଏହା ବିଷୟରେ ପଚାରନ୍ତୁ |"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Create account"
+msgstr "ଆକାଉଣ୍ଟ ତିଆରି କରନ୍ତୁ"
+
 #: app/account/ai-mcp.tsx
 msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 msgstr "ବ୍ରାଉଜର୍‌ର ଆକାଉଣ୍ଟ ସେଟିଂସ୍‌ରେ API କୀ ତିଆରି କରନ୍ତୁ। କୀ ଆପଣଙ୍କ ନାମରେ କାମ କରେ ଓ ଡକ୍ୟୁମେଣ୍ଟ୍ ପଢ଼ି ବଦଳାଇପାରେ।"
@@ -3326,6 +3384,10 @@ msgstr "ସୃଷ୍ଟି {0} · ଶେଷ ବ୍ୟବହୃତ {1} · ମି�
 #: src/features/documents/new-document.tsx
 msgid "Creating document…"
 msgstr "ଡକ୍ୟୁମେଣ୍ଟ୍ ସୃଷ୍ଟି କରିବା…"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Creating your account…"
+msgstr ""
 
 #: app/account/membership.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
@@ -4047,6 +4109,9 @@ msgid "Education swaps school and field of study the same way."
 msgstr ""
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
 msgstr "ଇମେଲ୍"
@@ -4131,13 +4196,39 @@ msgstr "0 ରୁ 52 ପର୍ଯ୍ୟନ୍ତ ଏକ ସମ୍ପୂର୍ଣ�
 msgid "Enter an address like resume.example.org."
 msgstr "resume.example.org ପରି ଠିକଣା ଦିଅନ୍ତୁ।"
 
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter an email like name@example.com."
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Enter any model ID supported by your endpoint."
 msgstr "ଆପଣଙ୍କର ଶେଷ ପଏଣ୍ଟ ଦ୍ୱାରା ସମର୍ଥିତ ଯେକ any ଣସି ମଡେଲ୍ ID ପ୍ରବେଶ କରନ୍ତୁ |"
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter one of the backup codes you saved when you turned on two-step verification. Each works once."
+msgstr ""
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Enter the 6-digit code from your authenticator app."
+msgstr ""
+
 #: app/(auth)/server.tsx
 msgid "Enter the address you open Rezumi at in a browser. The app checks it's a Rezumi server that allows app sign-in before you continue."
 msgstr "ବ୍ରାଉଜର୍‌ରେ Rezumi ଖୋଲୁଥିବା ଠିକଣା ଦିଅନ୍ତୁ। ଜାରି ରଖିବା ପୂର୍ବରୁ ଆପ୍ ଏହା ଆପ୍ ସାଇନ୍ ଇନ୍ ଅନୁମତି ଦେଉଥିବା Rezumi ସର୍ଭର୍ କି ନାହିଁ ଯାଞ୍ଚ କରେ।"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Enter the email of your account. We'll send you a link to choose a new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Enter your name."
+msgstr "ଆପଣଙ୍କ ନାମ ପ୍ରବେଶ କରନ୍ତୁ।"
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Enter your password."
+msgstr "ଆପଣଙ୍କ ପାସୱାର୍ଡ ପ୍ରବେଶ କରନ୍ତୁ।"
 
 #: src/features/design/design-pane.tsx
 msgid "Entries"
@@ -4276,6 +4367,10 @@ msgstr "ତଥ୍ୟ"
 msgid "Failed"
 msgstr "ବିଫଳ"
 
+#: src/features/auth/create-account-screen.tsx
+msgid "Fair"
+msgstr ""
+
 #: app/account/preferences.tsx
 msgid "Feedback"
 msgstr "ମତାମତ"
@@ -4343,9 +4438,9 @@ msgstr "ଦୁର୍ବଳ ତାଲିକା ପ୍ରବିଷ୍ଟଗୁଡ�
 msgid "Finding what works"
 msgstr "କ'ଣ କାମ କରେ ଖୋଜୁଛି"
 
-#: app/(auth)/sign-in.tsx
-msgid "Finish signing in in the browser"
-msgstr "ବ୍ରାଉଜରରେ ସାଇନ୍ ଇନ୍ ଶେଷ କରନ୍ତୁ।"
+#: src/features/auth/welcome-screen.tsx
+msgid "Finish in the browser…"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Finnish"
@@ -4506,6 +4601,10 @@ msgstr "ଭୁଲିଯାଆନ୍ତୁ"
 msgid "Forgetting unlinks this fact from stories and saved items. The original source stays unchanged."
 msgstr "ଭୁଲିଗଲେ କାହାଣୀ ଓ ସେଭ୍ ଆଇଟମ୍‌ରୁ ଏହି ତଥ୍ୟର ଲିଙ୍କ୍ ହଟେ। ମୂଳ ଉତ୍ସ ବଦଳେନାହିଁ।"
 
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Forgot password?"
+msgstr "ପାସୱାର୍ଡ ଭୁଲିଗଲେ କି?"
+
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Formatting"
@@ -4525,6 +4624,10 @@ msgstr "ଗତକାଲି ମିଳିଲା"
 
 #: src/features/billing/plan.ts
 msgid "Free"
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Free to start. You can add a photo, username and more later."
 msgstr ""
 
 #: src/features/design/style-groups.tsx
@@ -4587,6 +4690,10 @@ msgstr ""
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
 msgstr "ଲମ୍ବା ହେବା “ଛୋଟ” ଚେଷ୍ଟା କରନ୍ତୁ, କିମ୍ବା ସର୍ବନିମ୍ନ ନିର୍ଦ୍ଦିଷ୍ଟ ଅନୁଚ୍ଛେଦ କାଟନ୍ତୁ |"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "GitHub"
+msgstr "GitHub"
 
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
@@ -4879,6 +4986,10 @@ msgstr "ଆଇକନ୍…"
 
 #: src/features/design/design-pane.tsx
 msgid "Icons"
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "If {sentTo} has a Rezumi account, a link to choose a new password is on its way. It works for one hour."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -5528,6 +5639,10 @@ msgstr "ଏକ ଚାକିରି ଆବେଦନକୁ ଲିଙ୍କ୍ କ�
 msgid "Link copied"
 msgstr "ଲିଙ୍କ୍ କପି ହୋଇଛି |"
 
+#: src/features/auth/check-email-screen.tsx
+msgid "Link sent"
+msgstr ""
+
 #: src/features/documents/document-sheets.tsx
 msgid "Link to application"
 msgstr "ଚାକିରି ଆବେଦନ ସହିତ ଲିଙ୍କ୍ |"
@@ -5568,6 +5683,10 @@ msgstr "ପୁନର୍ବାର ରେଜୁମ୍ ସହିତ ଲିଙ୍କ
 #: src/features/letters/write.tsx
 msgid "Linked. Name, email, phone and city update when the resume does."
 msgstr "ଲିଙ୍କ୍ ହୋଇଛି | ରେଜୁମ୍ କଲାବେଳେ ନାମ, ଇମେଲ୍, ଫୋନ୍ ଏବଂ ସିଟି ଅପଡେଟ୍ |"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "LinkedIn"
+msgstr "LinkedIn"
 
 #: src/features/applications-board/views.tsx
 msgid "List"
@@ -5962,6 +6081,10 @@ msgstr "ଅଧିକ ପ୍ରଦାତା ଓ ବିକଳ୍ପ ସେଟି�
 msgid "More than one email address appears."
 msgstr "ଏକରୁ ଅଧିକ ଇମେଲ୍ ଠିକଣା ଦେଖାଯାଏ।"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "More ways to sign in"
+msgstr ""
+
 #: src/features/home/schedules.tsx
 msgid "Morning of"
 msgstr "ସେହି ଦିନ ସକାଳେ"
@@ -6116,6 +6239,7 @@ msgstr "“ଆବେଦନ କରାଯାଇଛି” ପର୍ଯ୍ୟାୟ�
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/auth/create-account-screen.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
@@ -6149,6 +6273,12 @@ msgstr "ଏହି ସଂସ୍କରଣର ନାମ ଦିଅ |"
 #: src/features/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
 msgstr "ନାମ, ଇମେଲ୍, ଫୋନ୍ ଏବଂ ଅବସ୍ଥାନ ମିଳିଲା, ଏବଂ ଲିଙ୍କଗୁଡ଼ିକ ହେଉଛି ସମ୍ପୂର୍ଣ୍ଣ ଠିକଣା |"
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
+msgid "name@example.com"
+msgstr ""
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -6202,9 +6332,17 @@ msgstr "କଦାପି ନୁହେଁ |"
 msgid "New"
 msgstr "ନୂତନ"
 
-#: app/(auth)/sign-in.tsx
-msgid "New account sign-ups are currently disabled on this server."
-msgstr "ଏହି ସର୍ଭରରେ ନୂଆ ଆକାଉଣ୍ଟ ପଞ୍ଜୀକରଣ ବର୍ତ୍ତମାନ ବନ୍ଦ ଅଛି।"
+#: src/features/auth/welcome-screen.tsx
+msgid "New account sign-ups are turned off on this server."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "New account sign-ups are turned off on this server. Sign in with an account you already have."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "New account sign-ups are turned off. Sign in with an account you already have."
+msgstr ""
 
 #: src/features/settings/api-keys.tsx
 msgid "New API key"
@@ -6238,6 +6376,10 @@ msgstr "ନୂତନ ଡକ୍ୟୁମେଣ୍ଟ୍ |"
 msgid "New page"
 msgstr "ନୂତନ ପୃଷ୍ଠା |"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "New password"
+msgstr "ନୂତନ ପାସୱାର୍ଡ"
+
 #: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "ଆପଣଙ୍କ ଖୋଜରୁ ନୂଆ ଭୂମିକା"
@@ -6253,6 +6395,11 @@ msgstr "ନୂତନ ବିଭାଗ"
 #: src/features/career/stories.tsx
 msgid "New STARR story"
 msgstr "ନୂଆ STARR କାହାଣୀ"
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "New to Rezumi? Create an account"
+msgstr ""
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Next day"
@@ -7085,16 +7232,30 @@ msgstr "ଅନୁଚ୍ଛେଦ {n} |"
 msgid "Partly supported"
 msgstr "ଆଂଶିକ ସମର୍ଥିତ"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Passkey"
+msgstr "ପାସକି"
+
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "ପାସକିଗୁଡିକ"
 
 #: app/account/account.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/share/web-page.tsx
 msgid "Password"
 msgstr "ପାସୱାର୍ଡ"
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Password changed. Sign in with your new password."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Password strength: {label}"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
@@ -7509,7 +7670,7 @@ msgid "Privacy"
 msgstr "ଗୋପନୀୟତା"
 
 #: app/account/index.tsx
-#: src/auth/auth-header.tsx
+#: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "ଗୋପନୀୟତା ନୀତି"
 
@@ -7531,6 +7692,7 @@ msgid "Proficiency"
 msgstr "ପ୍ରବୀଣତା"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/profile/_layout.tsx
 #: app/(tabs)/profile/index.tsx
 #: app/account/account.tsx
 #: src/features/search/search-screen.tsx
@@ -8135,6 +8297,14 @@ msgstr "ଛୋଟ ଶୀର୍ଷକ ପାଇଁ ବଡ଼ ଅକ୍ଷର ସ�
 msgid "Reset design defaults"
 msgstr "ଡିଜାଇନ୍ ଡିଫଲ୍ଟଗୁଡିକ ପୁନ Res ସେଟ୍ କରନ୍ତୁ |"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Reset links work once, for one hour. Ask for a new one."
+msgstr ""
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Reset your password"
+msgstr "ଆପଣଙ୍କ ପାସୱାର୍ଡ ରିସେଟ୍ କରନ୍ତୁ"
+
 #: src/features/career/offers.tsx
 msgid "Respond by"
 msgstr "ଉତ୍ତର ଦେବାର ଶେଷ ତାରିଖ"
@@ -8225,6 +8395,10 @@ msgstr "ରେଜ୍ୟୁମେଗୁଡିକ"
 #: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "ଥିମ୍ ଯାହା ବି ହେଉ, ରେଜୁମ୍ ସବୁବେଳେ ଧଳା କାଗଜରେ ଉପସ୍ଥାପନ କରେ |"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Resumes, cover letters, applications and your portfolio, in one place."
+msgstr ""
 
 #. placeholder {0}: source.retrievedAt
 #. placeholder {1}: source.method
@@ -8378,10 +8552,6 @@ msgstr "ଏହି API କୀ ପ୍ରତ୍ୟାହାର କରନ୍ତୁ"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "ପୁନର୍ଲିଖନ ଗ୍ରହଣ ହେଲା"
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -8541,6 +8711,10 @@ msgstr "ସାକ୍ଷାତକାର ସେଭ୍ କରନ୍ତୁ"
 msgid "Save job"
 msgstr "ଚାକିରି ସଞ୍ଚୟ କର |"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Save new password"
+msgstr ""
+
 #: src/features/share/files.ts
 msgid "Save or share file"
 msgstr "ଫାଇଲ୍ ସେଭ୍ କିମ୍ବା ସେୟାର୍ କରନ୍ତୁ"
@@ -8632,6 +8806,7 @@ msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "|\n"
 "ଚାକିରି ସଞ୍ଚୟ କରିବା | ଅନ୍ୟ ଏକ ପରିବର୍ତ୍ତନ କରିବା ପୂର୍ବରୁ ନିଶ୍ଚିତକରଣ ପାଇଁ ଅପେକ୍ଷା କରନ୍ତୁ |"
 
+#: src/features/auth/reset-password-screen.tsx
 #: src/features/career/preferences.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
@@ -8812,10 +8987,22 @@ msgstr "ଅର୍ଥଗତ CSS ଷ୍ଟାଇଲସିଟ୍"
 msgid "Send"
 msgstr "ପଠାନ୍ତୁ |"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "Send a new link"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Send report"
 msgstr "|\n"
 "ରିପୋର୍ଟ ପଠାନ୍ତୁ |"
+
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Send reset link"
+msgstr "ରିସେଟ୍ ଲିଙ୍କ୍ ପଠାନ୍ତୁ"
+
+#: src/features/auth/check-email-screen.tsx
+msgid "Send the link again"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Send the resume itself rather than a portfolio wrapper."
@@ -8830,6 +9017,8 @@ msgid "Sender details copied into the letter"
 msgstr "ପ୍ରେରକଙ୍କ ବିବରଣୀ ଚିଠିରେ କପି ହୋଇଛି |"
 
 #: src/features/ai/report-content.tsx
+#: src/features/auth/check-email-screen.tsx
+#: src/features/auth/forgot-password-screen.tsx
 msgid "Sending…"
 msgstr "|\n"
 "ପଠାଉଛି…"
@@ -8875,11 +9064,14 @@ msgstr "{0} କୁ ପଠାଯାଇଛି |"
 msgid "Serbian"
 msgstr "ସର୍ବିଆନ୍"
 
-#: app/(auth)/sign-in.tsx
 #: src/api/ai-consent.ts
 #: src/features/settings/sign-out.tsx
 msgid "Server"
 msgstr "ସର୍ଭର୍"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Server (development builds only)"
+msgstr ""
 
 #: app/(auth)/server.tsx
 msgid "Server address"
@@ -9150,6 +9342,8 @@ msgid "Sidebars are often read last, or mixed into the main column."
 msgstr "ସାଇଡ୍ ବାର୍ ଗୁଡିକ ପ୍ରାୟତ last ଶେଷ ପ read ାଯାଏ, କିମ୍ବା ମୁଖ୍ୟ ସ୍ତମ୍ଭରେ ମିଶ୍ରିତ |"
 
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/email-sign-in-screen.tsx
 #: src/features/documents/library.tsx
 #: src/features/documents/new-document.tsx
 #: src/linking/open.ts
@@ -9168,10 +9362,6 @@ msgstr "ଏହି ରେଜ୍ୟୁମେ ଯାଞ୍ଚ ଜାରି ରଖ�
 #: src/auth/session-gate.tsx
 msgid "Sign in again to keep working. Edits you made are kept on this device and sync after you sign in."
 msgstr "କାମ ଜାରି ରଖିବାକୁ ପୁଣି ସାଇନ୍ ଇନ୍ କରନ୍ତୁ। ସମ୍ପାଦନା ଏହି ଡିଭାଇସ୍‌ରେ ରହେ ଓ ସାଇନ୍ ଇନ୍ ପରେ ସିଙ୍କ୍ ହୁଏ।"
-
-#: app/(auth)/sign-in.tsx
-msgid "Sign in or create an account in the browser, with email, a passkey, Google, GitHub or LinkedIn. You come back here when you're done."
-msgstr "ବ୍ରାଉଜର୍‌ରେ ଇମେଲ୍, ପାସ୍‌କୀ, Google, GitHub କିମ୍ବା LinkedInରେ ସାଇନ୍ ଇନ୍ କିମ୍ବା ଆକାଉଣ୍ଟ ତିଆରି କରନ୍ତୁ। ସରିଲେ ଏଠାକୁ ଫେରିବେ।"
 
 #: src/linking/open.ts
 msgid "Sign in to {server}, then continue to the linked document."
@@ -9229,7 +9419,7 @@ msgstr "ସାଇନ୍ ଆଉଟ୍ କରିବେ?"
 msgid "Sign-in & security"
 msgstr "ସାଇନ୍ ଇନ୍ ଏବଂ ସୁରକ୍ଷା |"
 
-#: app/(auth)/sign-in.tsx
+#: src/features/auth/welcome-screen.tsx
 #: src/linking/open.ts
 msgid "Sign-in didn't complete"
 msgstr "ସାଇନ୍ ଇନ୍ ସମ୍ପୂର୍ଣ୍ଣ ହେଲା ନାହିଁ"
@@ -9238,19 +9428,31 @@ msgstr "ସାଇନ୍ ଇନ୍ ସମ୍ପୂର୍ଣ୍ଣ ହେଲା �
 msgid "Sign-off"
 msgstr "ସମାପ୍ତି"
 
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Signed out of {0}. Your documents are still there."
-msgstr "{0}ରୁ ସାଇନ୍ ଆଉଟ୍ ହୋଇଛି। ଡକ୍ୟୁମେଣ୍ଟ୍ ସେଠାରେ ଅଛି।"
+#: src/features/auth/forgot-password-screen.tsx
+msgid "Signed in with Apple, Google or another provider? You have no password here: sign in with that provider instead."
+msgstr ""
 
 #: src/auth/session-gate.tsx
 #: src/features/settings/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "ସାଇନ୍ ଆଉଟ୍ ହୋଇଛି, କିନ୍ତୁ ଏହି ଡିଭାଇସ୍‌ର କିଛି ତଥ୍ୟ ହଟାଯାଇପାରିଲା ନାହିଁ।"
 
+#: src/auth/session-gate.tsx
+msgid "Signed out. Your documents are still there."
+msgstr ""
+
+#: src/features/auth/email-sign-in-screen.tsx
+#: src/features/auth/welcome-screen.tsx
+msgid "Signing in…"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "since last view"
 msgstr "ଶେଷ ଦର୍ଶନ ଠାରୁ"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Single sign-on"
+msgstr ""
 
 #: src/features/career/stories.tsx
 msgid "Situation (required)"
@@ -9363,6 +9565,10 @@ msgstr "କିଛି ଟେକ୍ସଟ୍ ପୃଷ୍ଠା ବାହାରେ
 #: src/features/ats-checker/messages.ts
 msgid "Some text is rotated."
 msgstr "କିଛି ଟେକ୍ସଟ୍ ଘୂରାଇ ଦିଆଯାଇଛି।"
+
+#: src/features/auth/errors.ts
+msgid "Something went wrong on the server. Try again in a moment."
+msgstr ""
 
 #: src/features/documents/library.tsx
 msgid "Sort"
@@ -9579,6 +9785,14 @@ msgstr "ଶକ୍ତିଶାଳୀ କରନ୍ତୁ"
 #: src/features/write/rich-text-field.tsx
 msgid "Strikethrough"
 msgstr "ଷ୍ଟ୍ରାଇକଥ୍ରୁ"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Strong"
+msgstr ""
+
+#: src/features/auth/reset-password-screen.tsx
+msgid "Strong password."
+msgstr ""
 
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
@@ -9808,6 +10022,10 @@ msgstr "ଟେମ୍ପଲେଟ୍ {0} କୁ ବଦଳିଗଲା |"
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "ଟେମ୍ପଲେଟ୍, ପ୍ରକାର ଏବଂ ରଙ୍ଗ ରେଜୁମ୍ ଅନୁସରଣ କରେ, ତେଣୁ ଏହି ଯୋଡି ସର୍ବଦା ମେଳ ହୁଏ |"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "Terms"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "ଚାକିରି ବିଜ୍ଞାପନରୁ ଶବ୍ଦ"
@@ -9877,6 +10095,14 @@ msgstr "{minimum} pt ଅନ୍ତର୍ଗତ ପାଠ୍ୟ ଭୁଲ ଭା�
 #: src/features/settings/locale-names.ts
 msgid "Thai"
 msgstr "ଥାଇ"
+
+#: src/features/auth/errors.ts
+msgid "That code didn't work. Check it and try again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "That email and password don't match. Try again, or reset your password."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "That file couldn't be read as a PDF."
@@ -10133,6 +10359,10 @@ msgstr "କୌଣସି ସାରାଂଶ ଅନୁଚ୍ଛେଦ ନାହି
 msgid "These are the answers saved when you applied."
 msgstr "ଆପଣ ଆବେଦନ କରିବା ସମୟରେ ସେଭ୍ ହୋଇଥିବା ଉତ୍ତର ଏଗୁଡ଼ିକ।"
 
+#: src/features/auth/welcome-screen.tsx
+msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
+msgstr ""
+
 #: app/account/account.tsx
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "ଏଗୁଡ଼ିକ ଆପ୍ ଭିତର ବ୍ରାଉଜର୍ ଟ୍ୟାବ୍‌ରେ ସର୍ଭର୍‌ର ଆକାଉଣ୍ଟ ସେଟିଂସ୍ ଖୋଲେ। ସେଠାରେ ସାଇନ୍ ଇନ୍ ଦରକାର ହୋଇପାରେ।"
@@ -10331,6 +10561,10 @@ msgstr "ଏହି ଚିଠି ଲକ୍ ହୋଇଛି। ସମ୍ପାଦ�
 msgid "This letter keeps its recipient as written."
 msgstr "ଏହି ଚିଠିଟି ପ୍ରାପ୍ତକର୍ତ୍ତାଙ୍କୁ ଲିଖିତ ଭାବରେ ରଖେ |"
 
+#: src/features/auth/reset-password-screen.tsx
+msgid "This link has expired"
+msgstr ""
+
 #: src/linking/open.ts
 msgid "This link opens {server}. Sign in there to continue. Your current server is {current}."
 msgstr "ଏହି ଲିଙ୍କ୍ {server} ଖୋଲେ। ଜାରି ରଖିବାକୁ ସେଠାରେ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ। ବର୍ତ୍ତମାନର ସର୍ଭର୍ {current}।"
@@ -10370,6 +10604,10 @@ msgstr "ଏହି PDF ର କ text ଣସି ପାଠ୍ୟ ସ୍ତର ନା
 #: src/features/ats-checker/check.ts
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "ଏହି PDF ପାସୱାର୍ଡ ସୁରକ୍ଷିତ। ଏକ ଅସୁରକ୍ଷିତ କପି ସେଭ୍ କରନ୍ତୁ ଏବଂ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/auth/errors.ts
+msgid "This reset link expired or was already used. Ask for a new one."
+msgstr ""
 
 #: src/draft/conflict-sheet.tsx
 msgid "This resume changed elsewhere"
@@ -10426,6 +10664,18 @@ msgstr "ଏହି ସର୍ଭର୍ http ବ୍ୟବହାର କରେ। ଆ
 #: src/auth/messages.ts
 msgid "This sign-in attempt expired or was already used. Sign in again."
 msgstr "ଏହି ସାଇନ୍-ଇନ୍ ପ୍ରୟାସର ମିଆଦ ସରିଯାଇଛି କିମ୍ବା ପୂର୍ବରୁ ବ୍ୟବହୃତ ହୋଇଛି। ପୁଣି ସାଇନ୍ ଇନ୍ କରନ୍ତୁ।"
+
+#: src/features/auth/errors.ts
+msgid "This sign-in attempt expired. Start again."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in option isn't available right now. Use another way to sign in."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "This sign-in took too long. Start again."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
@@ -10553,6 +10803,10 @@ msgstr "ଆସନ୍ତାକାଲି |"
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "ଧଳା ରଙ୍ଗର ହେଡିଙ୍ଗ୍ ପାଇଁ ଅତ୍ୟଧିକ ହାଲୁକା | ଦୁର୍ବଳ ଭାବରେ ପ read ିବା ଏବଂ ମୁଦ୍ରଣ କରିବା କଷ୍ଟକର ହୋଇପାରେ |"
 
+#: src/features/auth/errors.ts
+msgid "Too many attempts. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/ats-checker/check.ts
@@ -10560,6 +10814,10 @@ msgstr "ଧଳା ରଙ୍ଗର ହେଡିଙ୍ଗ୍ ପାଇଁ ଅତ�
 #: src/features/documents/queries.ts
 msgid "Too many requests. Try again later."
 msgstr "ବହୁତ ଅନୁରୋଧ | ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ |"
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Too short"
+msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "Tool logos aren't available"
@@ -10650,10 +10908,6 @@ msgstr "{suggestion} ଚେଷ୍ଟା କରନ୍ତୁ"
 msgid "Try again"
 msgstr "ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ"
 
-#: app/(auth)/sign-in.tsx
-msgid "Try again in browser"
-msgstr "ବ୍ରାଉଜର୍‌ରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ"
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Try again with this"
 msgstr "ଏହା ସହ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ"
@@ -10682,6 +10936,10 @@ msgstr "ଏହି ଆରମ୍ଭ ଚେଷ୍ଟା କରନ୍ତୁ"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "ଏକ ନମୁନା ରେଜୁମ୍ ସହିତ ଚେଷ୍ଟା କରନ୍ତୁ |"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Try without an account"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -10712,6 +10970,7 @@ msgid "Two stories"
 msgstr "ଦୁଇଟି କାହାଣୀ"
 
 #: app/account/account.tsx
+#: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "ଦୁଇ ସୋପାନ ଯାଞ୍ଚ |"
 
@@ -10881,6 +11140,11 @@ msgstr "ଫଟୋ ଅପଲୋଡ୍ କରୁଛି…"
 msgid "URL"
 msgstr "URL"
 
+#. placeholder {0}: passwordLimits.max
+#: src/features/auth/create-account-screen.tsx
+msgid "Use {0} characters or fewer."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Use {minimum}"
 msgstr "{minimum} ବ୍ୟବହାର କରନ୍ତୁ |"
@@ -10904,6 +11168,15 @@ msgstr "3 ରୁ 64 ଲୋୟର କେସ୍ ଅକ୍ଷର, ସଂଖ୍ୟ�
 #: src/features/share/web-page.tsx
 msgid "Use 6–64 characters."
 msgstr "6–64 ଅକ୍ଷର ବ୍ୟବହାର କରନ୍ତୁ।"
+
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/errors.ts
+msgid "Use 64 characters or fewer."
+msgstr "64 କିମ୍ବା ତାଠାରୁ କମ୍ ଅକ୍ଷର ବ୍ୟବହାର କରନ୍ତୁ।"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use a backup code instead"
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 msgid "Use a darker shade"
@@ -10942,6 +11215,16 @@ msgstr "|\n"
 #: src/features/applications/add-sheet.tsx
 msgid "Use an http or https link."
 msgstr "http କିମ୍ବା https ଲିଙ୍କ୍ ବ୍ୟବହାର କରନ୍ତୁ।"
+
+#. placeholder {0}: passwordLimits.min
+#: src/features/auth/create-account-screen.tsx
+#: src/features/auth/reset-password-screen.tsx
+msgid "Use at least {0} characters."
+msgstr ""
+
+#: src/features/auth/errors.ts
+msgid "Use at least 8 characters."
+msgstr "ଅତି କମରେ 8 ଅକ୍ଷର ବ୍ୟବହାର କରନ୍ତୁ।"
 
 #: src/features/ats-checker/messages.ts
 msgid "Use at least 9pt."
@@ -11002,11 +11285,19 @@ msgstr "ସର୍ଭର୍ ସଂସ୍କରଣ ବ୍ୟବହାର କରନ
 msgid "Use six hex digits, like #3E6B4F."
 msgstr "#3E6B4F ପରି ଛଅଟି Hex ଅଙ୍କ ବ୍ୟବହାର କରନ୍ତୁ।"
 
+#: src/features/auth/two-factor-screen.tsx
+msgid "Use the authenticator app"
+msgstr ""
+
 #: src/features/assistant/document.ts
 #: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "ପୂର୍ବ ପରିବର୍ତ୍ତନ ଫେରାଇବାକୁ ସମ୍ପାଦକର “ପୂର୍ବବତ୍ କରନ୍ତୁ” ବ୍ୟବହାର କରନ୍ତୁ।"
+
+#: src/features/auth/email-sign-in-screen.tsx
+msgid "Use the email and password of your Rezumi account."
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Use the standard heading"
@@ -11094,6 +11385,14 @@ msgstr "ଆରମ୍ଭକୁ ବିଭିନ୍ନ କରନ୍ତୁ ଯାହ
 #: src/features/career/offers.tsx
 msgid "Verbal offer"
 msgstr "ମୌଖିକ ଅଫର୍"
+
+#: src/features/auth/two-factor-screen.tsx
+msgid "Verify"
+msgstr "ସତ୍ୟାପନ କରନ୍ତୁ"
+
+#: src/features/auth/errors.ts
+msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Version"
@@ -11212,6 +11511,18 @@ msgstr "ପୁନର୍ବାର ଶୁଣିବାକୁ ଅପେକ୍ଷା 
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "ଆମେ \"{0}\" ପ read ଼ୁ | ଏକ ମାସ ବାଛନ୍ତୁ ତେଣୁ ଏହା କ୍ରମାଗତ ଭାବରେ ସଜାଡ଼େ ଏବଂ ମୁଦ୍ରଣ କରେ |"
 
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a link to {email}. Open it on any device to confirm your address."
+msgstr ""
+
+#: src/features/auth/check-email-screen.tsx
+msgid "We sent a new link to {email}."
+msgstr ""
+
+#: src/features/auth/create-account-screen.tsx
+msgid "Weak"
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Web page"
 msgstr "ୱେବ୍ ପୃଷ୍ଠା"
@@ -11248,6 +11559,10 @@ msgstr ""
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"
 msgstr "ପ୍ରତ୍ୟେକ ଆବଶ୍ୟକତାକୁ ମୂଲ୍ୟାୟନ କରୁଛି"
+
+#: src/features/auth/welcome-screen.tsx
+msgid "Welcome to Rezumi"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Went well"
@@ -11356,10 +11671,6 @@ msgstr "କେବେ ସୁଦ୍ଧା ନିଷ୍ପତ୍ତି ଦରକା
 #: src/features/assistant/coach-screen.tsx
 msgid "When you tap send, {list} go to {connection}."
 msgstr "ଆପଣ ପଠାନ୍ତୁ ଟାପ୍ କଲେ, {list} {connection} କୁ ଯାଏ।"
-
-#: app/(auth)/sign-in.tsx
-msgid "When you're done, the browser closes and you come back here."
-msgstr "ସରିଲେ ବ୍ରାଉଜର୍ ବନ୍ଦ ହୁଏ ଓ ଆପଣ ଏଠାକୁ ଫେରନ୍ତି।"
 
 #: src/features/applications-board/insights-screen.tsx
 msgid "Where applications come from"
@@ -11552,12 +11863,11 @@ msgstr ""
 msgid "You can keep up to 30 application questions."
 msgstr "ଆପଣ 30ଟି ପର୍ଯ୍ୟନ୍ତ ଆବେଦନ ପ୍ରଶ୍ନ ରଖିପାରିବେ।"
 
-#: app/(auth)/sign-in.tsx
-msgid "You can sign in with an account you already have."
-msgstr "ଆପଣଙ୍କ ଥିବା ଆକାଉଣ୍ଟରେ ସାଇନ୍ ଇନ୍ କରିପାରିବେ।"
+#: src/features/auth/check-email-screen.tsx
+msgid "You can start now. Publishing your portfolio, job alerts and payments wait until your email is confirmed. No email? Check spam, or send it again."
+msgstr ""
 
 #: src/auth/messages.ts
-#: src/auth/use-sign-in.ts
 msgid "You canceled the sign-in before it finished."
 msgstr "ସମ୍ପୂର୍ଣ୍ଣ ହେବା ପୂର୍ବରୁ ଆପଣ ସାଇନ୍ ଇନ୍ ବାତିଲ୍ କରିଦେଲେ।"
 
@@ -11589,6 +11899,10 @@ msgstr "ଆପଣ {server}ରୁ ସାଇନ୍ ଆଉଟ୍ ହେବେ। �
 #: src/features/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "ଆପଣ ଏକ ସେଭ୍ ହୋଇଥିବା ସଂସ୍କରଣ ଦେଖୁଛନ୍ତି। ଏହାକୁ ସମ୍ପାଦନ କରିହେବ ନାହିଁ।"
+
+#: src/features/auth/errors.ts
+msgid "You're offline, or the server didn't answer. Check your connection and try again."
+msgstr ""
 
 #: src/features/ats-checker/check.ts
 msgid "You're offline. Connect to check a file."
@@ -11857,10 +12171,6 @@ msgstr "ତୁମର ରେଜୁମର ଏକ ଫଟୋ ଅଛି |"
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "ଆପଣଙ୍କ ରେଜ୍ୟୁମେ \"I\" ଏବଂ \"my\" ବ୍ୟବହାର କରେ।"
 
-#: app/(auth)/sign-in.tsx
-msgid "Your resumes, letters and applications, on {host}."
-msgstr "ଆପଣଙ୍କ ରେଜ୍ୟୁମେ, ଚିଠି ଓ ଆବେଦନ, {host}ରେ।"
-
 #: src/features/share/messages.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "ଆପଣ ଚୟନ କରିଥିବା ଫଣ୍ଟ କିଛି ଅକ୍ଷର ଦେଖାଇପାରିବ ନାହିଁ। ଏଗୁଡ଼ିକ “?” ଭାବେ ଦେଖାଯାଏ। ଡିଜାଇନ୍ ଟ୍ୟାବରେ, ଏଗୁଡ଼ିକ ଥିବା ଏକ ଫଣ୍ଟ ବାଛନ୍ତୁ।"
@@ -11870,17 +12180,16 @@ msgid "Your server sends a test prompt and the saved API key to this provider."
 msgstr "|\n"
 "ଆପଣଙ୍କର ସର୍ଭର ଏହି ପ୍ରଦାନକାରୀଙ୍କୁ ଏକ ପରୀକ୍ଷା ପ୍ରମ୍ପ୍ଟ ଏବଂ ସଞ୍ଚିତ API କି ପଠାଏ |"
 
+#: src/auth/session-gate.tsx
+msgid "Your session ended"
+msgstr ""
+
 #: src/features/ai/error.ts
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
 msgid "Your session expired. Sign in again."
 msgstr "ସେସନ୍ ସମୟ ସରିଛି। ପୁଣି ସାଇନ୍ ଇନ୍ କରନ୍ତୁ।"
-
-#. placeholder {0}: hostOf(server)
-#: src/auth/session-gate.tsx
-msgid "Your session on {0} ended"
-msgstr "{0}ରେ ଆପଣଙ୍କ ସେସନ୍ ଶେଷ ହେଲା"
 
 #. placeholder {0}: otherPrimary.name
 #: src/features/share/web-page.tsx

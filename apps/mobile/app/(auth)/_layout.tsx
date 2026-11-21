@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { useReducedMotion } from "@/ui-legacy";
+import { useReducedMotion } from "@/ui";
 
 export default function AuthLayout() {
 	const reduced = useReducedMotion();

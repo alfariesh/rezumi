@@ -1,21 +1,21 @@
+import type { Href } from "expo-router";
 import { useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRootNavigationState, useRouter, useSegments } from "expo-router";
+import { usePathname, useRootNavigationState, useRouter, useSegments } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
-import { hostOf } from "./auth-header";
+import { setAfterSignIn, takeAfterSignIn } from "./after-sign-in";
 import { getSession, signOut, subscribeIdentity, subscribeSession, useSession } from "./session";
-import { useSignIn } from "./use-sign-in";
 import { routes } from "@/routes";
-import { Banner, Button, Sheet, showToast, useTheme } from "@/ui-legacy";
+import { Alert, Button, Sheet, showToast } from "@/ui";
 
 /**
  * Route guard and session-expired prompt. Mounted once in app/_layout.tsx.
  * - Signed out anywhere but `(auth)`: go to sign-in.
- * - Signing out: go to sign-in at once, in the same tick, so a caller that navigates after `signOut()` (Settings →
- *   Switch server) always has the last word; then the AU7 toast.
- * - Signed in on an `(auth)` screen: go to Home.
- * - Expired: stay where the user is, under a sheet that asks to sign in again (AU8).
+ * - Signing out: go to sign-in at once, in the same tick, so a caller that navigates after `signOut()` always has the
+ *   last word; then a toast.
+ * - Signed in on an `(auth)` screen: go to Home (or the screen `setAfterSignIn` named).
+ * - Expired: stay where the user is, under a sheet that asks to sign in again.
  * - Account change (sign-in, switch, sign-out, expiry): the React Query cache is cancelled and cleared.
  */
 export function SessionGate() {
@@ -29,6 +29,8 @@ export function SessionGate() {
 	const inAuth = path.startsWith("(auth)");
 	// The OAuth redirect route steps back by itself (app/(auth)/auth/native-callback.tsx).
 	const atCallback = path === "(auth)/auth/native-callback";
+	// The reset link works whatever the session: a signed-in person may reset the password of the account they forgot.
+	const atReset = path === "(auth)/auth/reset-password";
 	const where = useRef({ inAuth });
 	const queryClient = useQueryClient();
 
@@ -50,12 +52,13 @@ export function SessionGate() {
 	useEffect(() => {
 		let last = getSession().status;
 		return subscribeSession(() => {
-			const { status: next, server } = getSession();
+			const { status: next } = getSession();
 			const leaving = next === "signed-out" && (last === "signed-in" || last === "expired");
 			last = next;
 			if (!leaving) return;
+			setAfterSignIn(null);
 			if (!where.current.inAuth) router.replace(routes.signIn());
-			showToast({ message: t`Signed out of ${hostOf(server)}. Your documents are still there.` });
+			showToast({ title: t`Signed out. Your documents are still there.` });
 		});
 	}, [router, t]);
 
@@ -65,54 +68,60 @@ export function SessionGate() {
 		if (!navigationReady || atCallback) return;
 		const signedOutNow = before === "signed-in" || before === "expired";
 		if (status === "signed-out" && !inAuth && !signedOutNow) router.replace(routes.signIn());
-		else if (status === "signed-in" && inAuth) router.replace(routes.home());
-	}, [navigationReady, status, inAuth, atCallback, router]);
+		else if (status === "signed-in" && inAuth && !atReset) {
+			const next = takeAfterSignIn();
+			// Back to the screen the expired session was on (it is still in the stack), or Home.
+			if (next) router.dismissTo(next);
+			else router.replace(routes.home());
+		}
+	}, [navigationReady, status, inAuth, atCallback, atReset, router]);
 
-	return status === "expired" ? <SessionExpiredSheet /> : null;
+	return status === "expired" && !inAuth ? <SessionExpiredSheet /> : null;
 }
 
 function SessionExpiredSheet() {
 	const { t } = useLingui();
-	const { space } = useTheme();
-	const { server } = useSession();
-	const { attempt, start, reset } = useSignIn();
+	const router = useRouter();
+	const pathname = usePathname();
 	// The sheet cannot be dismissed: swiping it away presents it again.
 	const [presentation, setPresentation] = useState(0);
 
-	useEffect(() => {
-		if (attempt.state !== "failed") return;
-		showToast({ message: attempt.message });
-		reset();
-	}, [attempt, reset]);
+	const signInAgain = () => {
+		setAfterSignIn(pathname as Href);
+		router.push(routes.signIn());
+	};
 
 	return (
-		<Sheet key={presentation} open title={t`Sign in again`} onClose={() => setPresentation((count) => count + 1)}>
-			<View style={{ gap: space.s3, paddingHorizontal: space.s4 }}>
-				<Banner
-					tone="warn"
-					icon="clock"
-					title={t`Your session on ${hostOf(server)} ended`}
-					message={t`Sign in again to keep working. Edits you made are kept on this device and sync after you sign in.`}
-				/>
+		<Sheet
+			key={presentation}
+			isOpen
+			onOpenChange={() => setPresentation((count) => count + 1)}
+			title={t`Sign in again`}
+		>
+			<View className="gap-3 pb-4">
+				<Alert status="warning">
+					<Alert.Indicator />
+					<Alert.Content>
+						<Alert.Title>{t`Your session ended`}</Alert.Title>
+						<Alert.Description>
+							{t`Sign in again to keep working. Edits you made are kept on this device and sync after you sign in.`}
+						</Alert.Description>
+					</Alert.Content>
+				</Alert>
+				<Button size="lg" onPress={signInAgain} testID="session-expired-sign-in">
+					<Button.Label>{t`Sign in again`}</Button.Label>
+				</Button>
 				<Button
-					label={t`Sign in again`}
-					icon="arrow-square-out"
-					size="lg"
-					fullWidth
-					loading={attempt.state === "waiting"}
-					onPress={() => void start(server)}
-				/>
-				<Button
-					label={t`Sign out`}
 					variant="ghost"
 					size="lg"
-					fullWidth
 					onPress={() =>
 						void signOut().catch(() =>
-							showToast({ message: t`Signed out, but some data on this device couldn't be removed.` }),
+							showToast({ title: t`Signed out, but some data on this device couldn't be removed.` }),
 						)
 					}
-				/>
+				>
+					<Button.Label>{t`Sign out`}</Button.Label>
+				</Button>
 			</View>
 		</Sheet>
 	);

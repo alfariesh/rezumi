@@ -10,7 +10,7 @@ vi.mock("better-auth", async (importOriginal) => ({
 vi.mock("@rezumi/db/client", () => ({ db: { select: mocks.select } }));
 vi.mock("@rezumi/email/transport", () => ({ sendEmail: vi.fn() }));
 vi.mock("@rezumi/env/server", () => ({
-	env: { APP_URL: "https://resume.example", AUTH_SECRET: "oauth-test" },
+	env: { MOBILE_IOS_APP_IDS: [] as string[], APP_URL: "https://resume.example", AUTH_SECRET: "oauth-test" },
 }));
 
 const { verifyOAuthToken } = await import("./config");

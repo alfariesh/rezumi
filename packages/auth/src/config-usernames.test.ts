@@ -5,7 +5,12 @@ const mocks = vi.hoisted(() => ({
 	betterAuth: vi.fn(),
 	/** Rows of `released_username` the lookup finds: none, so only the app's own paths are refused. */
 	released: [] as { userId: string }[],
-	env: { APP_URL: "http://localhost:3000", AUTH_SECRET: "auth-username-test", FLAG_DISABLE_EMAIL_AUTH: false },
+	env: {
+		MOBILE_IOS_APP_IDS: [] as string[],
+		APP_URL: "http://localhost:3000",
+		AUTH_SECRET: "auth-username-test",
+		FLAG_DISABLE_EMAIL_AUTH: false,
+	},
 }));
 
 vi.mock("better-auth", async (importOriginal) => ({

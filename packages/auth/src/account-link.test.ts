@@ -26,7 +26,7 @@ vi.mock("@rezumi/db/client", () => ({
 }));
 vi.mock("@rezumi/email/transport", () => ({ sendEmail: vi.fn() }));
 vi.mock("@rezumi/env/server", () => ({
-	env: { APP_URL: "https://resume.example", AUTH_SECRET: "link-test" },
+	env: { MOBILE_IOS_APP_IDS: [] as string[], APP_URL: "https://resume.example", AUTH_SECRET: "link-test" },
 }));
 
 const { linkAnonymousAccount, setAccountLinkHook } = await import("./config");

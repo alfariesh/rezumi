@@ -67,6 +67,14 @@ describe("parseDeepLink: web pages to app screens", () => {
 		expect(web(path)).toBeNull();
 	});
 
+	it("opens the reset email's link in the app, and an expired one on the expired screen", () => {
+		expect(href("/auth/reset-password?token=AbC123_-xyz9")).toBe("/auth/reset-password?token=AbC123_-xyz9");
+		expect(href("/auth/reset-password?error=INVALID_TOKEN")).toBe("/auth/reset-password");
+		expect(href("/auth/reset-password?token=bad%20token")).toBe("/auth/reset-password");
+		expect(href("/auth/reset-password/extra")).toBeNull();
+		expect(href("/auth/login")).toBeNull();
+	});
+
 	it("drops a malformed schedule id instead of forwarding it", () => {
 		expect(href("/dashboard?schedule=a%20b")).toBe("/home");
 		expect(href(`/dashboard?schedule=${"x".repeat(200)}`)).toBe("/home");
