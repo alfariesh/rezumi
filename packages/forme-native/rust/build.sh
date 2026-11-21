@@ -21,7 +21,10 @@ xcodebuild -create-xcframework \
   -library target/aarch64-apple-ios/release/libforme_native.a -headers ../ios/include \
   -library target/aarch64-apple-ios-sim/release/libforme_native.a -headers ../ios/include \
   -output ../ios/FormeNative.xcframework
+# Start clean: cargo-ndk also copies the vendored forme-pdf cdylib (libforme.so), which nothing loads.
+rm -rf ../android/src/main/jniLibs
 cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 --platform 24 -o ../android/src/main/jniLibs build --locked --release -j "${CARGO_BUILD_JOBS:-4}"
+find ../android/src/main/jniLibs -name '*.so' ! -name libforme_native.so -delete
 for library in ../android/src/main/jniLibs/*/libforme_native.so; do
   "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-strip" --strip-unneeded "$library"
 done
