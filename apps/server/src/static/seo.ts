@@ -3,12 +3,16 @@ import { publicResumeUrl } from "@rezumi/resume/sharing";
 import { templateLineup } from "@rezumi/schema/templates";
 import { getLocaleAlternates } from "@rezumi/utils/locale";
 
-const DOCS_URL = "https://docs.rezumi.app";
 export const CONTEXT7_ASK_URL = "https://context7.com/api/v2/ask?siteKey=ask_b3fd9335a63f1b21b1a814ac";
 export const CONTEXT7_ASK_DESCRIPTION = `This site has a search endpoint: ${CONTEXT7_ASK_URL}&query=<URL-encoded question>. It returns documentation that answers the question, with a source link for each part. No API key is needed. If nothing matches, it says so.`;
 
 function appUrl() {
 	return env.APP_URL.replace(/\/+$/, "");
+}
+
+/** The docs live in the app at /docs (apps/web/src/features/docs), listed on the app's own sitemap. */
+function docsUrl() {
+	return `${appUrl()}/docs`;
 }
 
 function textResponse(body: string) {
@@ -37,7 +41,6 @@ export function handleRobots() {
 		"Allow: /.well-known/agent-skills/",
 		"",
 		`Sitemap: ${baseUrl}/sitemap.xml`,
-		`Sitemap: ${DOCS_URL}/sitemap.xml`,
 		"",
 	].join("\n");
 
@@ -178,13 +181,12 @@ export function handleLlms() {
 		"",
 		"## Documentation",
 		"",
-		`- [Documentation](${DOCS_URL}): guides for using Rezumi.`,
-		`- [Documentation llms.txt](${DOCS_URL}/llms.txt)`,
-		`- [API reference](${DOCS_URL}/api-reference)`,
+		`- [Documentation](${docsUrl()}): guides for using Rezumi.`,
+		`- [API guide](${docsUrl()}/guides/using-the-api)`,
 		`- [OpenAPI specification](${baseUrl}/openapi.json)`,
 		`- [Resume JSON schema](${baseUrl}/schema.json)`,
-		`- [MCP server guide](${DOCS_URL}/guides/using-the-mcp-server): connect any MCP client to ${baseUrl}/mcp with OAuth or an API key.`,
-		`- [Agent skills](${DOCS_URL}/guides/using-agent-skills): eight job-search skills, also listed at ${baseUrl}/.well-known/agent-skills/index.json.`,
+		`- [MCP server guide](${docsUrl()}/guides/using-the-mcp-server): connect any MCP client to ${baseUrl}/mcp with OAuth or an API key.`,
+		`- [Agent skills](${docsUrl()}/guides/using-agent-skills): eight job-search skills, also listed at ${baseUrl}/.well-known/agent-skills/index.json.`,
 		`- [Integrations](${baseUrl}/.well-known/integrations.json): every API and MCP surface with its authentication.`,
 		"",
 	].join("\n");

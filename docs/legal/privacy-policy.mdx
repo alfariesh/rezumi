@@ -23,11 +23,18 @@ This covers rezumi.app and apps connected to it. Other servers have their own op
 Avoid unnecessary identity numbers, health data, children's data and sensitive information in documents/prompts.
 Only provide others' data with a lawful basis. We do not sell data or use resumes for advertising.
 Cookies support login, theme and language, and access to a portfolio protected by a password (12 hours); device storage may hold drafts/preferences.
-At draft time the official apps include no third-party advertising analytics; security logs and resume statistics still operate.
+The official apps include no advertising analytics. The website (rezumi.app, outside portfolios and custom domains) and the
+blog use Google Analytics to count visits; security logs and resume statistics still operate.
 
 ## Recipients
 
 - **Cloudflare:** Workers, network/security and private R2 uploads, including request metadata.
+- **Google Analytics (Google LLC, United States):** counts visits to rezumi.app and blog.rezumi.app: pages opened, the
+  page's route pattern rather than its full address (resume and account ids, names and query text are left out), referring
+  site and campaign, whether the visit led to a sign-up, a checkout or a payment (with the plan and amount, never your
+  name, email or account), device, browser, approximate location from the IP address, and an analytics cookie. Advertising
+  features, Google signals and ad personalization are off. Visitors from the EEA, the UK and Switzerland are counted without
+  analytics cookies. You can block it with your browser or Google's opt-out add-on.
 - **Neon:** managed PostgreSQL for accounts, documents and service records. Database/backup region: **Singapore (AWS ap-southeast-1)**.
 - **Dodo Payments (Dodo Payments, Inc. and its group companies, United States and India):** the merchant of record for card
   subscriptions. At checkout Rezumi sends your account id, name, email and language; you enter payment details and billing address

@@ -25,9 +25,9 @@ export const BILLING_SELLER = {
 
 /** Indonesian legal text governs; English translations remain available from each legal page. */
 export const LEGAL_URLS = {
-	terms: "https://docs.rezumi.app/legal/syarat-dan-ketentuan",
-	privacy: "https://docs.rezumi.app/legal/kebijakan-privasi",
-	refund: "https://docs.rezumi.app/legal/kebijakan-pengembalian-dana",
-	contact: "https://docs.rezumi.app/legal/kontak",
-	license: "https://docs.rezumi.app/legal/license",
+	terms: "https://rezumi.app/docs/legal/syarat-dan-ketentuan",
+	privacy: "https://rezumi.app/docs/legal/kebijakan-privasi",
+	refund: "https://rezumi.app/docs/legal/kebijakan-pengembalian-dana",
+	contact: "https://rezumi.app/docs/legal/kontak",
+	license: "https://rezumi.app/docs/legal/license",
 } as const;

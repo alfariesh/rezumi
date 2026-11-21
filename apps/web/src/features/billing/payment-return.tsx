@@ -8,7 +8,7 @@ import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { billingCurrencySchema } from "@rezumi/schema/billing";
+import { billingCurrencySchema, toMajorUnits } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { BackToPlanLink } from "./back-link";
@@ -28,6 +28,7 @@ import {
 } from "./purchase";
 import { ReceiptLink } from "./receipt-link";
 import { PageHeader } from "@/components/layout/page-header";
+import { trackEvent } from "@/libs/analytics";
 import { orpc } from "@/libs/orpc/client";
 import { renderAsH2 } from "@/libs/typography";
 
@@ -287,6 +288,27 @@ type PaymentReturnPageProps = {
 };
 
 /**
+ * Records a paid checkout in Google Analytics, once per payment in this browser (GA also drops a repeated
+ * `transaction_id`). The value is before tax, as GA expects, with the tax beside it.
+ */
+function trackPurchase(payment: PaymentDetail) {
+	const key = `rezumi:analytics:purchase:${payment.id}`;
+	try {
+		if (sessionStorage.getItem(key)) return;
+		sessionStorage.setItem(key, "1");
+	} catch {
+		// GA's own transaction_id check still drops the repeat.
+	}
+	trackEvent("purchase", {
+		transaction_id: payment.id,
+		currency: payment.currency.toUpperCase(),
+		value: toMajorUnits(payment.amount, payment.currency),
+		tax: toMajorUnits(payment.taxAmount, payment.currency),
+		items: [{ item_id: payment.planId, item_variant: payment.interval }],
+	});
+}
+
+/**
  * Where the checkout sends the customer back after paying. Getting here only says the browser was redirected, so the
  * page asks the server, which checks with Dodo Payments: every 3 seconds for up to 2 minutes while the payment is open and the tab is
  * visible, then on request. The webhook usually lands first.
@@ -318,6 +340,10 @@ export function PaymentReturnPage({ paymentId }: PaymentReturnPageProps) {
 		// The plan, its credits and the payment list changed with it.
 		if (state === "paid") void queryClient.invalidateQueries({ queryKey: orpc.billing.key() });
 	}, [queryClient, state]);
+
+	useEffect(() => {
+		if (state === "paid" && payment) trackPurchase(payment);
+	}, [payment, state]);
 
 	const checkAgain = () => {
 		setPollingSince(Date.now());

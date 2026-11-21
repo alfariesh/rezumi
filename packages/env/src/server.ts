@@ -305,6 +305,14 @@ export const env = createEnv({
 		// Cloudflare Turnstile keeps bots off the portfolio contact form; without both keys the form isn't offered.
 		TURNSTILE_SITE_KEY: z.string().trim().min(1).optional(),
 		TURNSTILE_SECRET_KEY: z.string().trim().min(1).optional(),
+
+		// Google Analytics 4: the web stream's measurement ID (G-…). Set, the app's own pages on APP_URL load the tag;
+		// unset, nothing loads. Portfolios and custom domains never carry it.
+		GOOGLE_ANALYTICS_ID: z
+			.string()
+			.trim()
+			.regex(/^G-[A-Z0-9]{4,16}$/, "Use the measurement ID from the GA4 web stream, e.g. G-ABC123DEF4")
+			.optional(),
 	},
 	runtimeEnv: deploymentEnvironment(process.env),
 	emptyStringAsUndefined: true,

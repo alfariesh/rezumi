@@ -1,5 +1,6 @@
 import { RouterProvider } from "@tanstack/react-router";
 import ReactDOM from "react-dom/client";
+import { trackPageViews } from "./libs/analytics";
 import { followReducedMotion } from "./libs/motion";
 import { getRouter } from "./router";
 import "./index.css";
@@ -10,6 +11,7 @@ if (!rootElement) throw new Error("Root element not found");
 followReducedMotion();
 
 const router = await getRouter();
+trackPageViews(router);
 
 // The router owns the title, description and robots tags from here on (see libs/seo.ts), so the copies in the served
 // HTML go; everything else the server wrote into <head> (canonical, hreflang, social cards, structured data) stays.

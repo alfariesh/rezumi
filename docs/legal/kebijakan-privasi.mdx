@@ -23,11 +23,18 @@ Kebijakan ini untuk layanan resmi rezumi.app dan app yang terhubung ke sana. Kon
 Jangan memasukkan NIK, data kesehatan, data anak atau informasi sensitif yang tidak diperlukan dalam CV/prompt.
 Data pihak lain hanya boleh dimasukkan dengan dasar yang sah. Kami tidak menjual data atau memakai CV untuk iklan.
 Cookie diperlukan untuk login, tema dan bahasa, dan untuk akses ke portfolio yang berkata sandi (12 jam); penyimpanan lokal dapat berisi draf dan preferensi.
-Tidak ada analytics iklan pihak ketiga dalam app resmi saat draf ini dibuat; log keamanan dan statistik CV tetap diproses.
+App resmi tidak memakai analytics iklan. Situs (rezumi.app, di luar portfolio dan domain kustom) dan blog memakai Google
+Analytics untuk menghitung kunjungan; log keamanan dan statistik CV tetap diproses.
 
 ## Penerima data
 
 - **Cloudflare:** Worker, jaringan, pengamanan dan penyimpanan unggahan privat di R2; termasuk metadata permintaan.
+- **Google Analytics (Google LLC, Amerika Serikat):** menghitung kunjungan ke rezumi.app dan blog.rezumi.app: halaman yang dibuka
+  (pola rute halaman, bukan alamat lengkapnya; id CV dan akun, nama dan teks pencarian tidak dikirim), situs perujuk dan kampanye,
+  apakah kunjungan berujung pada pendaftaran, checkout atau pembayaran (dengan paket dan jumlahnya, tanpa nama, email
+  atau akun Anda), perangkat, browser, perkiraan lokasi dari alamat IP, dan cookie analytics. Fitur iklan, Google signals dan personalisasi iklan
+  dimatikan. Pengunjung dari EEA, Inggris dan Swiss dihitung tanpa cookie analytics. Anda dapat memblokirnya lewat browser atau
+  add-on opt-out dari Google.
 - **Neon:** basis data PostgreSQL terkelola untuk akun, dokumen dan catatan layanan. Wilayah basis data/backup: **Singapura (AWS ap-southeast-1)**.
 - **Dodo Payments (Dodo Payments, Inc. dan grup perusahaannya, Amerika Serikat dan India):** penjual resmi (_Merchant of Record_)
   langganan kartu. Saat checkout, Rezumi mengirim id akun, nama, email dan bahasa; pelanggan mengisi data pembayaran dan alamat

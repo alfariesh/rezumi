@@ -3,8 +3,6 @@ import { auth } from "@rezumi/auth/config";
 import { env } from "@rezumi/env/server";
 import { appVersion } from "../app-version";
 
-const DOCS_URL = "https://docs.rezumi.app";
-
 export const handleOAuthAuthorizationServer = oauthProviderAuthServerMetadata(auth);
 export const handleOpenIdConfiguration = oauthProviderOpenIdConfigMetadata(auth);
 
@@ -37,7 +35,7 @@ export function handleAgentCatalog() {
 	const baseUrl = appUrl();
 	const catalog = {
 		specVersion: "1.0",
-		host: { displayName: "Rezumi", documentationUrl: DOCS_URL, logoUrl: `${baseUrl}/pwa-512x512.png` },
+		host: { displayName: "Rezumi", documentationUrl: `${appUrl()}/docs`, logoUrl: `${baseUrl}/pwa-512x512.png` },
 		entries: [
 			{
 				identifier: `urn:air:${new URL(baseUrl).hostname}:mcp:rezumi`,
@@ -135,7 +133,7 @@ function buildIntegrations() {
 				type: "http",
 				slug: "rezumi-api",
 				name: "Rezumi REST API",
-				docs: `${DOCS_URL}/guides/using-the-api`,
+				docs: `${appUrl()}/docs/guides/using-the-api`,
 				basis,
 				spec: `${baseUrl}/openapi.json`,
 				url: `${baseUrl}/api/openapi`,
@@ -159,7 +157,7 @@ function buildIntegrations() {
 				type: "mcp",
 				slug: "rezumi-mcp",
 				name: "Rezumi MCP server",
-				docs: `${DOCS_URL}/guides/using-the-mcp-server`,
+				docs: `${appUrl()}/docs/guides/using-the-mcp-server`,
 				basis,
 				url: `${baseUrl}/mcp`,
 				transports: ["streamable-http"],
@@ -189,13 +187,13 @@ export function handleApiCatalog() {
 			{
 				anchor: `${baseUrl}/api/openapi`,
 				"service-desc": [{ href: `${baseUrl}/openapi.json`, type: "application/vnd.oai.openapi+json" }],
-				"service-doc": [{ href: `${DOCS_URL}/guides/using-the-api`, type: "text/html" }],
+				"service-doc": [{ href: `${appUrl()}/docs/guides/using-the-api`, type: "text/html" }],
 				status: [{ href: `${baseUrl}/api/health`, type: "application/json" }],
 			},
 			{
 				anchor: `${baseUrl}/mcp`,
 				"service-desc": [{ href: `${baseUrl}/.well-known/mcp/server-card.json`, type: "application/json" }],
-				"service-doc": [{ href: `${DOCS_URL}/guides/using-the-mcp-server`, type: "text/html" }],
+				"service-doc": [{ href: `${appUrl()}/docs/guides/using-the-mcp-server`, type: "text/html" }],
 			},
 		],
 	};
