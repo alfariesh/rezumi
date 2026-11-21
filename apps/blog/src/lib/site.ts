@@ -17,7 +17,7 @@ export const APP_URL = "https://rezumi.app";
  * packages.
  */
 export const LEGAL_URLS = {
-	privacy: "https://docs.rezumi.app/legal/kebijakan-privasi",
-	terms: "https://docs.rezumi.app/legal/syarat-dan-ketentuan",
-	contact: "https://docs.rezumi.app/legal/kontak",
+	privacy: "https://rezumi.app/docs/legal/kebijakan-privasi",
+	terms: "https://rezumi.app/docs/legal/syarat-dan-ketentuan",
+	contact: "https://rezumi.app/docs/legal/kontak",
 } as const;

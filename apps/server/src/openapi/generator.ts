@@ -119,7 +119,7 @@ export async function generateOpenApiSpec({ appUrl, version }: GenerateOpenApiSp
 				},
 			},
 		},
-		externalDocs: { url: "https://docs.rezumi.app", description: "Rezumi Documentation" },
+		externalDocs: { url: "https://rezumi.app/docs", description: "Rezumi Documentation" },
 		commonSchemas: {
 			ResumeData: { schema: writableResumeDataSchema, strategy: "input" },
 		},
