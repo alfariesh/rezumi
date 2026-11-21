@@ -50,7 +50,19 @@ const year = new Date().getFullYear();
 
 type FooterLinkItemProps = { link: FooterLink };
 
+// Marketing pages published in every language: from a page in another language, link to the same language's version,
+// so each one is reachable by a crawler through a plain link (not only the sitemap).
+const localizedPages = new Set(["/ats-checker", "/resume-templates"]);
+
 function FooterLinkItem({ link }: FooterLinkItemProps) {
+	const { i18n } = useLingui();
+	if ("to" in link && localizedPages.has(link.to) && i18n.locale !== defaultLocale) {
+		return (
+			<a href={`${link.to}?locale=${i18n.locale}`} className={linkClass}>
+				{link.label}
+			</a>
+		);
+	}
 	if ("to" in link) {
 		return (
 			<Link to={link.to} className={linkClass}>
