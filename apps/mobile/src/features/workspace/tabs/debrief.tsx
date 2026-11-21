@@ -1,4 +1,4 @@
-// Debrief (web workspace/debrief.tsx): write the interview down while it's fresh, review it against Knowledge, choose
+// Debrief (web workspace/debrief.tsx): write the interview down while it's fresh, review it against the Profile, choose
 // what to remember, and a light practice plan for the week.
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "../shell";
@@ -186,7 +186,7 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 					<Button label={reviewLabel} disabled={!ready || !provider} loading={generate.isPending} onPress={submit} />
 					{provider ? (
 						<PrivacyLine>
-							{t`Review my answer sends the question, what you said, this posting and your Knowledge to ${providerName}.`}
+							{t`Review my answer sends the question, what you said, this posting and your Profile to ${providerName}.`}
 						</PrivacyLine>
 					) : (
 						<>
@@ -221,16 +221,17 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 				setDismissed(true);
 			}
 		},
-		onError: (error) => showToast({ message: workspaceError(error, t`Couldn't save that to Knowledge. Try again.`) }),
+		onError: (error) =>
+			showToast({ message: workspaceError(error, t`Couldn't save that to your Profile. Try again.`) }),
 	});
 	const remembered =
 		Boolean(save.data) ||
 		(facts.data?.some((fact) => fact.source.kind === "debrief" && fact.source.id === review.id) ?? false);
-	// Fact ids the model left in its text read as "your Knowledge".
+	// Fact ids the model left in its text read as "your Profile".
 	const readable = (text: string) =>
 		[...new Set([...review.evidence.factIds, ...(facts.data ?? []).map((fact) => fact.id)])]
 			.filter(Boolean)
-			.reduce((value, id) => value.split(id).join(t`your Knowledge`), text);
+			.reduce((value, id) => value.split(id).join(t`your Profile`), text);
 	const company = application.company;
 	const nextRound = readable(data.nextRound);
 	const priority = readable(data.priority);
@@ -258,7 +259,7 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 			) : null}
 			{data.remember && !readOnly && !dismissed ? (
 				remembered ? (
-					<Banner tone="info" icon="check-circle" message={t`Saved to Knowledge, private to this application.`} />
+					<Banner tone="info" icon="check-circle" message={t`Saved to your Profile, private to this application.`} />
 				) : (
 					<View style={{ gap: space.s2 }}>
 						<Banner

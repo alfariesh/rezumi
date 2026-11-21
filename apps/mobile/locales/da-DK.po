@@ -130,6 +130,7 @@ msgid "{0, plural, one {# application selected.} other {# applications selected.
 msgstr "{0, plural, one {# ansøgning valgt.} other {# ansøgninger valgt.}}"
 
 #. placeholder {0}: text.trim().length
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "{0, plural, one {# character} other {# characters}}"
 msgstr "{0, plural, one {# tegn} other {# tegn}}"
@@ -232,7 +233,7 @@ msgid "{0, plural, one {Applied # day ago} other {Applied # days ago}}"
 msgstr "{0, plural, one {Ansøgt for # dag siden} other {Ansøgt for # dage siden}}"
 
 #. placeholder {0}: fact.usedBy.stories
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {Backs # story} other {Backs # stories}}"
 msgstr "{0, plural, one {Underbygger # historie} other {Underbygger # historier}}"
 
@@ -256,11 +257,6 @@ msgstr "{0, plural, one {Slet # dokument for altid?} other {Slet # dokumenter fo
 msgid "{0, plural, one {For # day} other {For # days}}"
 msgstr "{0, plural, one {For # dag} other {For # dage}}"
 
-#. placeholder {0}: knowledge.facts
-#: src/features/assistant/coach-screen.tsx
-msgid "{0, plural, one {Knowledge · # fact} other {Knowledge · # facts}}"
-msgstr "{0, plural, one {Viden · # faktum} other {Viden · # fakta}}"
-
 #. placeholder {0}: [...all, ...recoverable].filter((document) => document.type === "letter").length
 #: src/features/documents/library.tsx
 msgid "{0, plural, one {Letter (#)} other {Letters (#)}}"
@@ -270,6 +266,11 @@ msgstr "{0, plural, one {Følgebrev (#)} other {Følgebreve (#)}}"
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {No reply in # day} other {No reply in # days}}"
 msgstr "{0, plural, one {Intet svar i # dag} other {Intet svar i # dage}}"
+
+#. placeholder {0}: knowledge.facts
+#: src/features/assistant/coach-screen.tsx
+msgid "{0, plural, one {Profile · # fact} other {Profile · # facts}}"
+msgstr ""
 
 #. placeholder {0}: [...all, ...recoverable].filter((document) => document.type === "resume").length
 #: src/features/documents/library.tsx
@@ -287,7 +288,7 @@ msgid "{0, plural, one {Started # minute ago} other {Started # minutes ago}}"
 msgstr "{0, plural, one {Startede for # minut siden} other {Startede for # minutter siden}}"
 
 #. placeholder {0}: fact.usedBy.savedItems
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
 msgstr "{0, plural, one {brugt i # gemt element} other {brugt i # gemte elementer}}"
 
@@ -427,7 +428,8 @@ msgid "{0} of {1} tailored applications got a reply; {2} of {3} sent with anothe
 msgstr "{0} af {1} tilpassede jobansøgninger fik svar; {2} af {3} sendt med et andet CV."
 
 #. placeholder {0}: fact.company
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
+#: src/features/profile/facts.tsx
 msgid "{0} only"
 msgstr "Kun {0}"
 
@@ -476,8 +478,8 @@ msgid "{active, plural, one {# active application} other {# active applications}
 msgstr "{active, plural, one {# aktiv ansøgning} other {# aktive ansøgninger}}"
 
 #: src/features/workspace/tabs/prepare.tsx
-msgid "{at} · {providerLabel}. Sends this application and your Knowledge; your provider may charge."
-msgstr "{at} · {providerLabel}. Sender denne ansøgning og din Viden. Din udbyder kan opkræve betaling."
+msgid "{at} · {providerLabel}. Sends this application and your Profile; your provider may charge."
+msgstr ""
 
 #: src/preview/page.tsx
 msgid "{authored, plural, =1 {Fit to one page} other {Fit to # pages}}"
@@ -560,9 +562,14 @@ msgstr "{entry} siger ikke hvornår. Datoer placerer det på din tidslinje."
 msgid "{entry} names the role but not what you did, so it adds no keywords."
 msgstr "{entry} navngiver rollen, men ikke hvad du gjorde, så den tilføjer ingen nøgleord."
 
+#: src/features/profile/stories.tsx
 #: src/features/workspace/tabs/saved.tsx
 msgid "{facts, plural, one {# fact} other {# facts}}"
 msgstr "{facts, plural, one {# faktum} other {# fakta}}"
+
+#: src/features/profile/stories.tsx
+msgid "{filled} of 5 parts"
+msgstr "{filled} af 5 dele"
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "{followUps, plural, one {# follow-up} other {# follow-ups}}"
@@ -593,6 +600,7 @@ msgid "{issues, plural, one {Check has # thing to review. You can still download
 msgstr "{issues, plural, one {Check har # ting at gennemgå. Du kan stadig downloade.} other {Check har # ting at gennemgå. Du kan stadig downloade.}}"
 
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
 msgid "{kept} entries ticked"
 msgstr ""
 
@@ -624,6 +632,10 @@ msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
+msgstr ""
+
+#: src/features/entries/entry-fields.tsx
+msgid "{level} of 5"
 msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
@@ -779,6 +791,7 @@ msgid "1 day"
 msgstr "1 dag"
 
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
 msgid "1 entry ticked"
 msgstr ""
 
@@ -803,6 +816,7 @@ msgstr "2 filer"
 msgid "2 hours before"
 msgstr "2 timer før"
 
+#: app/(tabs)/profile/summary.tsx
 #: src/features/write/entry-screen.tsx
 msgid "2–3 sentences reads best"
 msgstr "2-3 sætninger lyder bedst"
@@ -844,7 +858,8 @@ msgstr "Et datointerval er skrevet i et format, som de fleste programmer ikke ka
 msgid "A date won't be read"
 msgstr "En dato vil ikke blive læst"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories-reader.tsx
+#: src/features/profile/stories.tsx
 msgid "A fact changed. Review this story."
 msgstr "Et faktum er ændret. Gennemgå denne historie."
 
@@ -871,6 +886,10 @@ msgstr "Et link er ikke en fuldstændig adresse"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "Et link peger et andet sted hen end den adresse, det viser."
+
+#: src/features/entries/basics-form.tsx
+msgid "A messenger handle, a portfolio, a driving licence: anything with an icon."
+msgstr ""
 
 #: src/features/check/writing.tsx
 msgid "A model's opinion, not a verdict. It can be wrong."
@@ -954,7 +973,7 @@ msgstr "Accepterede et andet tilbud"
 msgid "Accepted offer"
 msgstr "Accepteret tilbud"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "Accomplishment"
 msgstr "Præstation"
 
@@ -969,9 +988,9 @@ msgstr "Konto"
 msgid "Account menu"
 msgstr ""
 
-#: src/features/career/stories.tsx
-msgid "Action (required)"
-msgstr "Handling (påkrævet)"
+#: src/features/profile/stories-parts.ts
+msgid "Action"
+msgstr "Handling"
 
 #: src/features/search/search-screen.tsx
 msgid "Actions"
@@ -998,23 +1017,21 @@ msgid "Active until {0}"
 msgstr ""
 
 #: src/features/application-detail/sections.tsx
+#: src/features/entries/photo-field.tsx
 #: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Add"
 msgstr "Tilføje"
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Add a country"
 msgstr "Tilføj et land"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts.tsx
 msgid "Add a fact"
 msgstr "Tilføj fakta"
 
-#: src/features/career/facts.tsx
-msgid "Add a fact or try another word or type."
-msgstr "Tilføj et faktum, eller prøv et andet ord eller en anden type."
-
+#: src/features/entries/basics-form.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Add a link"
 msgstr "Tilføj et link"
@@ -1043,6 +1060,10 @@ msgstr "Tilføj et telefonnummer"
 msgid "Add a place"
 msgstr ""
 
+#: src/features/profile/preferences.tsx
+msgid "Add a place, then Return"
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Add a question from the form"
 msgstr "Tilføj et spørgsmål fra formularen"
@@ -1059,6 +1080,10 @@ msgstr ""
 msgid "Add a role or company to look for."
 msgstr "Tilføj en stilling eller virksomhed at søge efter."
 
+#: src/features/profile/preferences.tsx
+msgid "Add a role, then Return"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Education\". Many systems have a required education field."
 msgstr "Tilføj et afsnit med overskriften \"Uddannelse\". Mange systemer har et påkrævet uddannelsesfelt."
@@ -1067,9 +1092,9 @@ msgstr "Tilføj et afsnit med overskriften \"Uddannelse\". Mange systemer har et
 msgid "Add a section headed \"Experience\" or \"Work Experience\". It is the field most systems rank on."
 msgstr "Tilføj et afsnit med overskriften \"Erfaring\" eller \"Arbejdserfaring\". Det er det felt, de fleste systemer rangerer efter."
 
-#: src/features/career/stories.tsx
-msgid "Add a story"
-msgstr "Tilføj en historie"
+#: src/features/profile/career.tsx
+msgid "Add a summary"
+msgstr ""
 
 #: src/features/check/writing.tsx
 msgid "Add a summary or describe a role first; there's nothing to review yet."
@@ -1079,10 +1104,15 @@ msgstr "Tilføj et resumé eller beskriv en rolle først; der er ikke noget at a
 msgid "Add a tag"
 msgstr "Tilføj et tag"
 
+#: src/features/profile/stories-editor.tsx
+msgid "Add a tag, then Return"
+msgstr ""
+
 #: src/features/ai/provider-list.tsx
 msgid "Add AI provider"
 msgstr "Tilføj AI-udbyder"
 
+#: src/features/entries/text-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
 msgstr "Tilføj et @ og domænet, som name@example.com"
@@ -1115,6 +1145,10 @@ msgstr "Tilføj et kommende interview i Ansøgninger først."
 msgid "Add any of these and we'll fill in your Profile. You check everything before it's saved."
 msgstr ""
 
+#: src/features/profile/bring-screen.tsx
+msgid "Add any of these and we'll find what your Profile is missing. You check everything before it's added."
+msgstr ""
+
 #: src/features/search/search-screen.tsx
 msgid "Add application"
 msgstr "Tilføj ansøgning"
@@ -1139,6 +1173,10 @@ msgstr "Tilføj følgebrev"
 msgid "Add dates"
 msgstr "Tilføj datoer"
 
+#: src/features/entries/basics-form.tsx
+msgid "Add detail"
+msgstr ""
+
 #: src/features/write/fields.ts
 msgid "Add education"
 msgstr "Tilføj uddannelse"
@@ -1155,6 +1193,11 @@ msgstr "Tilføj belæg"
 #: src/features/write/fields.ts
 msgid "Add experience"
 msgstr "Tilføj erfaring"
+
+#: src/features/profile/facts-add.tsx
+#: src/features/profile/facts.tsx
+msgid "Add fact"
+msgstr ""
 
 #: src/features/write/basics-screen.tsx
 msgid "Add field"
@@ -1204,6 +1247,7 @@ msgstr "Tilføj publikation"
 msgid "Add reference"
 msgstr "Tilføj reference"
 
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Add role"
 msgstr "Tilføj rolle"
@@ -1212,6 +1256,7 @@ msgstr "Tilføj rolle"
 msgid "Add screening calls and technical interviews to see them here and on the calendar."
 msgstr "Tilføj screeningsopkald og tekniske interviews for at se dem her og i kalenderen."
 
+#: src/features/profile/career.tsx
 #: src/features/write/outline.tsx
 msgid "Add section"
 msgstr "Tilføj sektion"
@@ -1224,6 +1269,10 @@ msgstr "Tilføj færdigheder"
 msgid "Add some whitespace between sections so a person can skim it."
 msgstr "Tilføj lidt luft mellem afsnittene, så en person kan skimme det."
 
+#: src/features/profile/facts.tsx
+msgid "Add something true you can support. The coach and your documents use the facts you turn on."
+msgstr ""
+
 #: src/features/applications/list-screen.tsx
 msgid "Add tag"
 msgstr "Tilføj tag"
@@ -1232,10 +1281,12 @@ msgstr "Tilføj tag"
 msgid "Add text"
 msgstr "Tilføj tekst"
 
+#: src/features/entries/text-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Add the domain after the @, like {name}@example.com"
 msgstr "Tilføj domænet efter @, som {name}@example.com"
 
+#: src/features/entries/text-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Add the domain ending, like {domain}.com"
 msgstr "Tilføj domæneendelsen, som {domain}.com"
@@ -1248,6 +1299,10 @@ msgstr "Tilføj disse poster der, hvor du administrerer domænet, og tjek dereft
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Add to calendar"
 msgstr "Tilføj til kalender"
+
+#: src/features/profile/bring-screen.tsx
+msgid "Add to my Profile"
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "Add to questions"
@@ -1265,6 +1320,10 @@ msgstr "Tilføj to eller tre linjer øverst, der beskriver, hvad du laver."
 msgid "Add volunteering"
 msgstr "Tilføj frivilligt arbejde"
 
+#: src/features/profile/stories-editor.tsx
+msgid "Add what happened before you can save."
+msgstr "Tilføj, hvad der skete, før du kan gemme."
+
 #: src/features/check/issues.ts
 msgid "Add your name"
 msgstr "Tilføj dit navn"
@@ -1277,23 +1336,38 @@ msgstr ""
 msgid "Added by Rezumi"
 msgstr ""
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 #: src/features/workspace/parts.tsx
 msgid "Added by you"
 msgstr "Tilføjet af dig"
-
-#: src/features/assistant/messages.tsx
-msgid "Added to Knowledge."
-msgstr "Tilføjet til Viden."
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "Added to Prepare"
 msgstr "Føjet til Forbered"
 
+#: src/features/profile/bring-screen.tsx
+msgid "Added to your Profile"
+msgstr ""
+
+#: src/features/assistant/messages.tsx
+msgid "Added to your Profile."
+msgstr ""
+
+#: src/features/profile/bring-screen.tsx
+msgid "Added. It saves once you're back online."
+msgstr ""
+
+#: src/features/profile/bring-screen.tsx
+#: src/features/profile/facts-add.tsx
+msgid "Adding…"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Additional details (optional)"
 msgstr "Yderligere detaljer (valgfrit)"
 
+#: src/features/entries/basics-form.tsx
+#: src/features/entries/rich-text-field.tsx
 #: src/features/share/link.tsx
 msgid "Address"
 msgstr "Adresse"
@@ -1301,6 +1375,10 @@ msgstr "Adresse"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "Tilføjer en påmindelse under I dag, hvis du ikke har fået svar inden da."
+
+#: src/features/profile/fill-sheet.tsx
+msgid "Adds what your Profile doesn't have yet. Nothing you've written here is replaced."
+msgstr ""
 
 #: src/features/onboarding/source-fields.tsx
 msgid "Adds your own public projects."
@@ -1414,8 +1492,8 @@ msgstr "AI læser kun indsat tekst, når du beder om det. Links kan bruge sidens
 msgid "Albanian"
 msgstr "Albansk"
 
-#: src/features/career/facts.tsx
 #: src/features/design/template-group.tsx
+#: src/features/profile/facts.tsx
 #: src/features/workspace/tabs/saved.tsx
 msgid "All"
 msgstr "Alle"
@@ -1425,7 +1503,7 @@ msgstr "Alle"
 msgid "All ({0})"
 msgstr "Alle ({0})"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
 msgid "All applications"
 msgstr "Alle ansøgninger"
 
@@ -1563,8 +1641,8 @@ msgstr "Svar"
 msgid "Answers copied"
 msgstr "Svarene er kopieret"
 
-#: src/features/career/preferences.tsx
 #: src/features/onboarding/questions.tsx
+#: src/features/profile/preferences.tsx
 msgid "Any"
 msgstr "Ingen grænse"
 
@@ -1580,7 +1658,7 @@ msgstr "Alle med linket vil kunne se dit CV."
 msgid "Anything to remember about this job"
 msgstr "Alt at huske om dette job"
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Anywhere"
 msgstr "Hvor som helst"
 
@@ -1790,7 +1868,7 @@ msgstr "Spørg om din jobsøgning, eller tag en præstation med, som du gerne vi
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {tabName}."
 msgstr "Spørg om alt vedrørende dette job. Coachen læser jobopslaget, dine noter og det, du har sendt, og ved, at du er på {tabName}."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Ask first"
 msgstr "Spørg først"
 
@@ -1873,7 +1951,6 @@ msgid "Attach up to 10 files to a message."
 msgstr "Vedhæft op til 10 filer til en besked."
 
 #: src/features/assistant/messages.tsx
-#: src/features/career/facts.tsx
 msgid "Attachment"
 msgstr "Vedhæftet fil"
 
@@ -1889,7 +1966,7 @@ msgstr "Vedhæftede filer kan være op til 100 MB i alt."
 msgid "audio file"
 msgstr "lydfil"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Automatically"
 msgstr "Automatisk"
 
@@ -1922,7 +1999,9 @@ msgstr "Aserbajdsjansk"
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/entries/entry-editor.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/entry-sheet.tsx
@@ -1969,7 +2048,8 @@ msgstr "Tilbage til jobopslag"
 msgid "Back to sign in"
 msgstr "Tilbage til log ind"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories-editor.tsx
+#: src/features/profile/stories-reader.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Backed by"
 msgstr "Bygger på"
@@ -2071,6 +2151,7 @@ msgstr "Brødteksten er meget lille"
 msgid "Body text set to {minimum} pt"
 msgstr "Brødtekst sat til {minimum} pt"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Bold"
@@ -2125,6 +2206,10 @@ msgstr "Briefing-opdatering er aktiveret · {next}"
 msgid "Briefing refresh paused"
 msgstr "Opdatering af briefing er sat på pause"
 
+#: src/features/profile/career.tsx
+msgid "Bring a resume file, LinkedIn, GitHub or your website and check what we found, or copy from a resume you've made. You can also type it in below."
+msgstr ""
+
 #: src/features/documents/library.tsx
 #: src/features/home/home-screen.tsx
 msgid "Bring in my details"
@@ -2135,7 +2220,10 @@ msgstr ""
 msgid "Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample."
 msgstr ""
 
+#: app/(tabs)/profile/_layout.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
+#: src/features/profile/career.tsx
 msgid "Bring what you have"
 msgstr ""
 
@@ -2151,6 +2239,7 @@ msgstr "Bulgarsk"
 msgid "bullet {n}"
 msgstr "listepost {n}"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 #: src/features/write/section-sheet.tsx
@@ -2190,6 +2279,9 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 #: src/features/check/parser.tsx
 #: src/features/check/writing.tsx
+#: src/features/profile/facts-detail.tsx
+#: src/features/profile/facts.tsx
+#: src/features/profile/stories.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/workspace/tabs/fit.tsx
 #: src/features/write/improve.tsx
@@ -2211,6 +2303,10 @@ msgstr "Annuller optagelse"
 msgid "Cancel request"
 msgstr "Annuller anmodning"
 
+#: src/features/profile/profile-screen.tsx
+msgid "Career"
+msgstr ""
+
 #: src/features/settings/locale-names.ts
 msgid "Catalan"
 msgstr "Katalansk"
@@ -2219,6 +2315,7 @@ msgstr "Katalansk"
 msgid "Certifications"
 msgstr "Certificeringer"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Forandring"
@@ -2253,7 +2350,7 @@ msgstr "Skift cv'ets design"
 msgid "Change theme to…"
 msgstr "Skift tema til…"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Change timezone"
 msgstr "Skift tidszone"
 
@@ -2350,7 +2447,14 @@ msgstr "Tjek visninger"
 msgid "Check what we found"
 msgstr ""
 
+#: src/features/profile/facts.tsx
+#: src/features/profile/preferences.tsx
+#: src/features/profile/stories.tsx
+msgid "Check your connection and try again."
+msgstr "Tjek din forbindelse, og prøv igen."
+
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/states.tsx
 msgid "Check your connection, then try again."
 msgstr ""
 
@@ -2359,7 +2463,7 @@ msgstr ""
 msgid "Check your email"
 msgstr "Tjek din e-mail"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Check your preferences. Invalid changes are not saved."
 msgstr "Tjek dine præferencer. Ugyldige ændringer gemmes ikke."
 
@@ -2373,8 +2477,8 @@ msgid "Checking {name}"
 msgstr "Kontrollerer {name}"
 
 #: src/features/workspace/parts.tsx
-msgid "Checking against Knowledge"
-msgstr "Tjekker op mod Viden"
+msgid "Checking against your Profile"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "Checking layout and content"
@@ -2444,6 +2548,7 @@ msgstr "Vælg en PDF mindre end 10 MB. Den valgte fil blev ikke uploadet."
 msgid "Choose a photo"
 msgstr ""
 
+#: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Choose a photo smaller than 10 MB."
@@ -2493,9 +2598,14 @@ msgstr ""
 msgid "Choose date"
 msgstr "Vælg dato"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 msgid "Choose from library"
 msgstr "Vælg fra biblioteket"
+
+#: src/features/entries/basics-form.tsx
+msgid "Choose icon"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Choose time"
@@ -2513,6 +2623,10 @@ msgstr "Cirkel"
 msgid "Cities or countries. Leave it empty for anywhere."
 msgstr ""
 
+#: src/features/entries/basics-form.tsx
+msgid "City, country"
+msgstr ""
+
 #: src/features/workspace/tabs/fit.tsx
 msgid "Clarify"
 msgstr "Afklar"
@@ -2528,6 +2642,7 @@ msgid "Clean"
 msgstr "Enkelt"
 
 #: src/features/application-detail/sheets.tsx
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Clear"
 msgstr "Ryd"
@@ -2541,6 +2656,11 @@ msgstr "Klar dato"
 #: src/features/documents/library.tsx
 msgid "Clear filters"
 msgstr "Klare filtre"
+
+#: src/features/profile/facts.tsx
+#: src/features/profile/search-regions-field.tsx
+msgid "Clear search"
+msgstr "Ryd søgning"
 
 #: src/features/write/section-sheet.tsx
 msgid "Clear section"
@@ -2560,10 +2680,20 @@ msgid "Clears its entries; the section stays. You can undo."
 msgstr "Rydder posterne, men beholder sektionen. Du kan fortryde."
 
 #: src/features/auth/welcome-screen.tsx
-#: src/features/career/facts.tsx
 #: src/features/check/page.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/entries/basics-form.tsx
+#: src/features/entries/dates-field.tsx
+#: src/features/entries/icon-picker.tsx
+#: src/features/entries/photo-field.tsx
+#: src/features/entries/rich-text-field.tsx
+#: src/features/profile/career.tsx
+#: src/features/profile/facts.tsx
+#: src/features/profile/fill-sheet.tsx
+#: src/features/profile/save-note.tsx
+#: src/features/profile/search-regions-field.tsx
+#: src/features/profile/stories.tsx
 #: src/features/share/export-screen.tsx
 msgid "Close"
 msgstr "Luk"
@@ -2618,6 +2748,10 @@ msgstr "Lukket: {closed}"
 #: src/shell/tab-chrome.tsx
 msgid "Coach"
 msgstr "Coach"
+
+#: src/features/profile/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "Code copied"
@@ -2820,6 +2954,7 @@ msgstr "Kontekst er udeladt, så svar med en ny besked i stedet."
 #: src/features/assistant/chat-view.tsx
 #: src/features/auth/check-email-screen.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
 #: src/shell/permissions.tsx
 msgid "Continue"
 msgstr "Fortsæt"
@@ -2910,17 +3045,22 @@ msgstr "Kopiér teksten ud af den eksporterede fil, og læs den igennem; ret alt
 msgid "Copy transcript"
 msgstr "Kopi afskrift"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
 msgid "Correct"
 msgstr "Ret"
-
-#: src/features/career/facts.tsx
-msgid "Correct fact"
-msgstr "Ret fakta"
 
 #: src/features/ats-checker/messages.ts
 msgid "Correct the year, or write \"Present\" for ongoing work."
 msgstr "Ret årstallet, eller skriv \"Nuværende\" for igangværende arbejde."
+
+#: src/features/profile/facts-detail.tsx
+msgid "Correct this fact"
+msgstr "Ret dette faktum"
+
+#. placeholder {0}: date(lastRevision.at)
+#: src/features/profile/facts-detail.tsx
+msgid "Corrected {0} · original kept"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Correction by Rezumi"
@@ -2971,6 +3111,10 @@ msgstr "Kunne ikke bekræfte, at der blev gemt. Tjek Ansøgninger, før du prøv
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "Kunne ikke bekræfte, at der blev gemt. Tjek ansøgningen, før du prøver igen, for at undgå en dublet."
 
+#: src/features/profile/bring-screen.tsx
+msgid "Couldn't copy the photo. You can add one in Details."
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Couldn't copy the photo. You can add one later in your Profile."
 msgstr ""
@@ -3007,6 +3151,10 @@ msgstr "Kunne ikke slette denne tidsplan. Prøv igen."
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
 msgstr "Kunne ikke eksportere. Prøv igen."
+
+#: src/features/profile/fill-sheet.tsx
+msgid "Couldn't fill your Profile. Check your connection and try again."
+msgstr ""
 
 #: src/features/share/files.ts
 msgid "Couldn't generate this file. Try again, or download PDF instead."
@@ -3112,6 +3260,18 @@ msgstr "Kunne ikke indlæse versioner."
 msgid "Couldn't load your details"
 msgstr ""
 
+#: src/features/profile/facts.tsx
+msgid "Couldn't load your facts"
+msgstr ""
+
+#: src/features/profile/preferences.tsx
+msgid "Couldn't load your preferences"
+msgstr ""
+
+#: src/features/profile/states.tsx
+msgid "Couldn't load your Profile"
+msgstr ""
+
 #: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "Kunne ikke indlæse din profil."
@@ -3121,8 +3281,13 @@ msgid "Couldn't load your public address."
 msgstr "Kunne ikke indlæse din offentlige adresse."
 
 #: src/features/letters/write.tsx
+#: src/features/profile/fill-sheet.tsx
 msgid "Couldn't load your resumes."
 msgstr "Kunne ikke indlæse dine CV'er."
+
+#: src/features/profile/stories.tsx
+msgid "Couldn't load your stories"
+msgstr ""
 
 #: app/account/preferences.tsx
 msgid "Couldn't load your timezone."
@@ -3174,6 +3339,7 @@ msgid "Couldn't reach your AI provider. Try again or check its key in AI setting
 msgstr "Kunne ikke kontakte din AI-udbyder. Prøv igen, eller tjek nøglen i AI-indstillingerne."
 
 #. placeholder {0}: dates.raw
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Couldn't read “{0}”. Enter the dates so they sort and print consistently."
 msgstr "Kunne ikke læse “{0}”. Indtast datoerne, så de sorteres og udskrives ensartet."
@@ -3238,8 +3404,8 @@ msgstr "Kunne ikke gengive dette CV."
 msgid "Couldn't revoke the key. Try again."
 msgstr "Kunne ikke tilbagekalde nøglen. Prøv igen."
 
-#: src/features/career/facts.tsx
 #: src/features/career/hooks.ts
+#: src/features/profile/facts.tsx
 #: src/features/workspace/hooks.ts
 msgid "Couldn't save that change. Check your connection and try again."
 msgstr "Kunne ikke gemme ændringen. Tjek din forbindelse, og prøv igen."
@@ -3250,8 +3416,8 @@ msgstr "Kunne ikke gemme ændringen. Posten er gendannet; prøv igen."
 
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/fit.tsx
-msgid "Couldn't save that to Knowledge. Try again."
-msgstr "Kunne ikke gemme det i Viden. Prøv igen."
+msgid "Couldn't save that to your Profile. Try again."
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Couldn't save the contacts. Try again."
@@ -3303,7 +3469,7 @@ msgstr "Kunne ikke gemme dine ændringer. Prøv igen, før du fortsætter."
 msgid "Couldn't save your changes. Your edits are still on this device. Try again."
 msgstr "Kunne ikke gemme dine ændringer. Dine redigeringer er stadig på denne enhed. Prøv igen."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Couldn't save your preferences. Your draft is still here."
 msgstr "Kunne ikke gemme dine præferencer. Dit udkast er her stadig."
 
@@ -3413,6 +3579,7 @@ msgstr "Kunne ikke uploade filen. Prøv igen."
 msgid "Couldn't upload the font. Try again."
 msgstr ""
 
+#: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
 msgstr "Billedet kunne ikke uploades."
@@ -3448,7 +3615,6 @@ msgstr "Udfyld"
 #: app/_layout.tsx
 #: app/letter/[id]/_layout.tsx
 #: src/features/application-detail/sections.tsx
-#: src/features/career/facts.tsx
 msgid "Cover letter"
 msgstr "Følgebrev"
 
@@ -3543,9 +3709,13 @@ msgstr ""
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
 msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Currency"
 msgstr "Valuta"
+
+#: src/features/entries/rich-text-field.tsx
+msgid "Current"
+msgstr ""
 
 #. placeholder {0}: getStageLabel(status)
 #: src/features/application-detail/sections.tsx
@@ -3647,6 +3817,7 @@ msgstr "Datadeling annulleret. Intet blev sendt til AI-udbyderen."
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
+#: src/features/entries/dates-field.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
 #: src/features/write/fields.ts
@@ -3696,7 +3867,6 @@ msgstr "Kære {name},"
 msgid "Dear hiring team,"
 msgstr "Kære ansættelsesteam,"
 
-#: src/features/career/facts.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/tabs/saved.tsx
 #: src/shell/workspace-chrome.tsx
@@ -3722,6 +3892,7 @@ msgstr "Grad"
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
+#: src/features/profile/stories.tsx
 #: src/features/workspace/tabs/saved.tsx
 #: src/features/write/entry-sheet.tsx
 msgid "Delete"
@@ -3763,6 +3934,7 @@ msgid "Delete conversation"
 msgstr "Slet samtale"
 
 #: src/features/application-detail/sections.tsx
+#: src/features/entries/entry-editor.tsx
 msgid "Delete entry"
 msgstr "Slet post"
 
@@ -3799,7 +3971,7 @@ msgstr "Slet tidsplan"
 msgid "Delete section"
 msgstr "Slet afsnit"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories.tsx
 msgid "Delete story"
 msgstr "Slet historie"
 
@@ -3873,6 +4045,7 @@ msgid "Description is clipped to 20,000 characters. Review it before preparing."
 msgstr "Beskrivelsen er afkortet til 20.000 tegn. Gennemgå den før forberedelsen."
 
 #. placeholder {0}: index + 1
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Description of role {0}"
 msgstr "Beskrivelse af rolle {0}"
@@ -3890,9 +4063,19 @@ msgstr "Design"
 msgid "Design reset to defaults"
 msgstr "Design nulstillet til standardindstillinger"
 
+#. placeholder {0}: index + 1
+#: src/features/entries/basics-form.tsx
+msgid "Detail {0}"
+msgstr ""
+
+#: src/features/entries/basics-form.tsx
+msgid "Detail removed"
+msgstr ""
+
 #: app/applications/[id]/[tab].tsx
 #: src/features/document-menu/index.tsx
 #: src/features/onboarding/messages.ts
+#: src/features/profile/profile-screen.tsx
 msgid "Details"
 msgstr "Detaljer"
 
@@ -3909,6 +4092,7 @@ msgid "Direction"
 msgstr "Retning"
 
 #: src/features/letters/write.tsx
+#: src/features/profile/stories.tsx
 #: src/shell/unsaved-changes.ts
 msgid "Discard"
 msgstr "Kassér"
@@ -3921,6 +4105,7 @@ msgstr "Kassér ændringer"
 msgid "Discard changes?"
 msgstr "Kassér ændringer?"
 
+#: src/features/profile/stories.tsx
 #: src/shell/unsaved-changes.ts
 msgid "Discard your changes?"
 msgstr ""
@@ -4000,6 +4185,8 @@ msgstr "Del ikke"
 #: app/account/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/documents/library.tsx
+#: src/features/entries/dates-field.tsx
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/date-field.tsx
 #: src/features/write/pickers.tsx
@@ -4179,8 +4366,12 @@ msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "Hvert svar, du får feedback på, gemmes her, nyeste først."
 
 #: src/features/workspace/tabs/fit.tsx
-msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
-msgstr "Hvert krav i jobopslaget tjekkes op mod fakta og historier i din Viden. Huller vises som manglende belæg, aldrig som manglende evner."
+msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr ""
+
+#: src/features/entries/photo-field.tsx
+msgid "Each resume decides whether to show it."
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "earlier messages in this chat"
@@ -4188,8 +4379,8 @@ msgstr "tidligere beskeder i denne chat"
 
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/sections.tsx
-#: src/features/career/stories.tsx
 #: src/features/home/schedules.tsx
+#: src/features/profile/stories.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Edit"
 msgstr "Redigere"
@@ -4216,6 +4407,7 @@ msgstr "Rediger post"
 msgid "Edit interview"
 msgstr "Rediger interview"
 
+#: src/features/entries/basics-form.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Edit link"
 msgstr "Rediger link"
@@ -4232,9 +4424,9 @@ msgstr "Redigér spørgsmål"
 msgid "Edit schedule"
 msgstr "Redigér tidsplan"
 
-#: src/features/career/stories.tsx
-msgid "Edit STARR story"
-msgstr "Rediger STARR historie"
+#: src/features/profile/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Edit the email"
@@ -4265,6 +4457,7 @@ msgstr ""
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
@@ -4294,6 +4487,7 @@ msgstr "Tomt følgebrev"
 msgid "Empty trash"
 msgstr "Tøm papirkurv"
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "End"
 msgstr "Ende"
@@ -4310,7 +4504,7 @@ msgstr "Engelsk (Storbritannien)"
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "Forbedret læsning er ikke tilgængelig; brugte den indbyggede læser."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
 msgstr "Indtast et fuldt beløb, f.eks. 95000. Dit tidligere beløb er uændret."
 
@@ -4326,7 +4520,7 @@ msgstr "Indtast en hex-farve som #1a1a1a eller rgba(…)."
 msgid "Enter a name, up to 64 characters."
 msgstr "Indtast et navn på op til 64 tegn."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Enter a three-letter currency code."
 msgstr "Indtast en valutakode på tre bogstaver."
 
@@ -4342,11 +4536,12 @@ msgstr "Indtast en gyldig e-mailadresse."
 msgid "Enter a value."
 msgstr "Indtast en værdi."
 
+#: src/features/entries/text-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Enter a web address, like example.com"
 msgstr "Indtast en webadresse, som eksempel .com"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Enter a whole number from 0 to 52, or leave blank."
 msgstr "Indtast et helt tal fra 0 til 52, eller lad det være tomt."
 
@@ -4396,10 +4591,12 @@ msgstr ""
 msgid "Entries"
 msgstr ""
 
+#: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-screen.tsx
 msgid "Entry"
 msgstr "Post"
 
+#: src/features/entries/hooks.ts
 #: src/features/write/hooks.ts
 msgid "Entry deleted"
 msgstr "Indlæg slettet"
@@ -4446,6 +4643,10 @@ msgstr ""
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Hver rolle siger, hvad du gjorde. Udtalelser om formulering lever i fanen Skrivning."
 
+#: src/features/profile/career.tsx
+msgid "Every section is in use."
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "Every template"
 msgstr ""
@@ -4462,12 +4663,8 @@ msgstr "Hver uge"
 msgid "Everything the coach wrote for {company}, newest first."
 msgstr "Alt, coachen skrev til {company}, nyeste først."
 
-#: app/(tabs)/profile/index.tsx
-msgid "Everything your resumes, letters and Coach start from. For now, your facts and stories are in Knowledge."
-msgstr ""
-
-#: src/features/career/facts.tsx
 #: src/features/onboarding/intro-screen.tsx
+#: src/features/profile/facts-labels.ts
 #: src/features/write/fields.ts
 msgid "Experience"
 msgstr "Erfaring"
@@ -4509,20 +4706,17 @@ msgctxt "Entry header layout"
 msgid "Eyebrow"
 msgstr ""
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-add.tsx
+#: src/features/profile/facts.tsx
 msgid "Fact"
 msgstr "Fakta"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts.tsx
 msgid "Fact forgotten"
 msgstr "Faktum glemt"
 
-#: src/features/career/stories.tsx
-msgid "Fact no longer available"
-msgstr "Fakta er ikke længere tilgængelig"
-
 #: src/features/application-detail/sections.tsx
-#: src/features/career/knowledge.tsx
+#: src/features/profile/profile-screen.tsx
 msgid "Facts"
 msgstr "Fakta"
 
@@ -4541,6 +4735,10 @@ msgstr "Feedback"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Feedback needs an AI connection. Nothing is sent until you ask."
 msgstr "Feedback kræver en AI-forbindelse. Der sendes intet, før du spørger."
+
+#: src/features/entries/entry-fields.tsx
+msgid "Fewer options"
+msgstr ""
 
 #. placeholder {0}: index + 1
 #: src/features/write/basics-screen.tsx
@@ -4584,9 +4782,26 @@ msgstr "Udfyld detaljerne manuelt"
 msgid "Fill empty fields with AI"
 msgstr "Udfyld tomme felter med AI"
 
+#: src/features/profile/career.tsx
+#: src/features/profile/fill-sheet.tsx
+msgid "Fill from a resume"
+msgstr ""
+
+#: src/features/profile/career.tsx
+msgid "Fill your career in one go"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Filled from the application. The greeting follows the name."
 msgstr "Udfyldt fra jobansøgningen. Hilsenen følger navnet."
+
+#: src/features/profile/fill-sheet.tsx
+msgid "Filled in from “{name}”"
+msgstr ""
+
+#: src/features/profile/fill-sheet.tsx
+msgid "Filling…"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
@@ -4763,11 +4978,12 @@ msgstr "Kun til dette besøg. Link en jobansøgning for at beholde sit jobopslag
 msgid "For which job?"
 msgstr "Til hvilket job?"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
+#: src/features/profile/facts.tsx
 msgid "Forget"
 msgstr "Glem"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
 msgid "Forgetting unlinks this fact from stories and saved items. The original source stays unchanged."
 msgstr "Forgetting fjerner denne kendsgerning fra historier og gemte genstande. Den originale kilde forbliver uændret."
 
@@ -4775,6 +4991,7 @@ msgstr "Forgetting fjerner denne kendsgerning fra historier og gemte genstande. 
 msgid "Forgot password?"
 msgstr "Glemt adgangskode?"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Formatting"
@@ -4824,6 +5041,14 @@ msgstr "Fra"
 msgid "From {0} until {1}"
 msgstr ""
 
+#: src/features/profile/facts-labels.ts
+msgid "From a debrief"
+msgstr "Fra en opsamling"
+
+#: src/features/profile/facts-labels.ts
+msgid "From a document you attached"
+msgstr "Fra et dokument, du vedhæftede"
+
 #: src/features/workspace/tabs/fit.tsx
 msgid "From Fit"
 msgstr "Fra Match"
@@ -4831,6 +5056,10 @@ msgstr "Fra Match"
 #: src/features/onboarding/source-fields.tsx
 msgid "From your account"
 msgstr ""
+
+#: src/features/profile/facts-labels.ts
+msgid "From your cover letter"
+msgstr "Fra dit følgebrev"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "From your experience entries"
@@ -4840,10 +5069,19 @@ msgstr "Fra dine erfaringer"
 msgid "From your GitHub sign-in."
 msgstr ""
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/facts-labels.ts
+msgid "From your message"
+msgstr "Fra din besked"
+
+#: src/features/profile/facts-labels.ts
+msgid "From your resume"
+msgstr "Fra dit CV"
+
+#: src/features/profile/search-regions-field.tsx
 msgid "From your timezone"
 msgstr "Ud fra din tidszone"
 
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Full name"
@@ -4898,6 +5136,10 @@ msgstr "Giv hver rolle en periode, som \"Jan 2020 - Nuværende\", så din tidsli
 msgid "Give every role and qualification a date range."
 msgstr "Giv hver rolle og kvalifikation et datointerval."
 
+#: src/features/profile/stories-editor.tsx
+msgid "Give the story a title before you can save."
+msgstr "Giv historien en titel, før du kan gemme."
+
 #: src/features/search/search-screen.tsx
 msgid "Go to…"
 msgstr "Gå til…"
@@ -4949,14 +5191,17 @@ msgctxt "Headings or Titles (H1, H2, H3, H4, H5, H6)"
 msgid "Heading"
 msgstr "Overskrift"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Heading 1"
 msgstr "Overskrift 1"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Heading 2"
 msgstr "Overskrift 2"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Heading 3"
 msgstr "Overskrift 3"
@@ -4965,6 +5210,7 @@ msgstr "Overskrift 3"
 msgid "Heading changed"
 msgstr "Overskrift ændret"
 
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Headline"
@@ -5004,6 +5250,7 @@ msgid "Hex"
 msgstr "Hex"
 
 #: src/features/design/advanced.tsx
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 #: src/features/write/outline.tsx
 msgid "Hidden"
@@ -5028,6 +5275,11 @@ msgstr "Skjulte termer er tilbage"
 #: src/features/write/outline.tsx
 msgid "Hide {title} from the page"
 msgstr "Skjul {title} fra siden"
+
+#: src/features/profile/facts.tsx
+#: src/features/profile/stories.tsx
+msgid "Hide actions"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Hide contact details"
@@ -5159,6 +5411,8 @@ msgid "I withdrew"
 msgstr "Jeg trak mig tilbage"
 
 #: src/features/design/advanced.tsx
+#: src/features/entries/entry-fields.tsx
+#: src/features/entries/icon-picker.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/entry-fields.tsx
 #: src/features/write/fields.ts
@@ -5172,6 +5426,11 @@ msgstr "Ikonfarve"
 
 #: src/features/design/style-groups.tsx
 msgid "Icon style"
+msgstr ""
+
+#. placeholder {0}: field.icon
+#: src/features/entries/basics-form.tsx
+msgid "Icon: {0}"
 msgstr ""
 
 #: src/features/write/section-sheet.tsx
@@ -5402,6 +5661,10 @@ msgstr "Problemer"
 msgid "It has entries but isn't placed on a page."
 msgstr "Den har poster, men er ikke placeret på en side."
 
+#: src/features/entries/entry-editor.tsx
+msgid "It may have been removed on another device."
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "It starts with your Profile. You can switch templates any time."
 msgstr ""
@@ -5414,6 +5677,7 @@ msgstr "Det er fjernet fra tidslinjen for altid."
 msgid "Italian"
 msgstr "Italiensk"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Italic"
@@ -5430,6 +5694,10 @@ msgstr "Dens eget design ({summary})."
 #: src/features/ai/provider-editor.tsx
 msgid "Its saved key is deleted. Conversations using it need another provider."
 msgstr "Dens gemte nøgle slettes. Samtaler, der bruger det, kræver en anden udbyder."
+
+#: src/features/profile/facts.tsx
+msgid "Its source, what uses it and its corrections show here."
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Japanese"
@@ -5505,6 +5773,7 @@ msgstr "Hold dig til én adresse, så software ikke skal gætte, hvilken den ska
 msgid "Keep both"
 msgstr "Behold begge"
 
+#: src/features/profile/stories.tsx
 #: src/shell/unsaved-changes.ts
 #: src/ui-legacy/overlays.tsx
 msgid "Keep editing"
@@ -5522,6 +5791,10 @@ msgstr "Hold den under 2,5 MB, som regel ved at fjerne eller formindske billeder
 #: src/features/write/improve.tsx
 msgid "Keep mine"
 msgstr "Behold min"
+
+#: src/features/profile/conflict-sheet.tsx
+msgid "Keep my changes"
+msgstr ""
 
 #: src/features/write/section-sheet.tsx
 msgid "Keep on one page"
@@ -5564,6 +5837,10 @@ msgstr "Beholder de mest specifikke dele"
 msgid "Kept as it is"
 msgstr "Gemt som det er"
 
+#: src/features/profile/facts-detail.tsx
+msgid "Kept, but not used."
+msgstr ""
+
 #: src/features/settings/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "Nøgler fungerer som dig og kan få adgang til dine dokumenter. Nye nøgler oprettes i din browserkontoindstillinger."
@@ -5583,15 +5860,6 @@ msgstr "Khmer"
 #: src/features/share/letter.ts
 msgid "Kind regards,"
 msgstr "Venlig hilsen,"
-
-#: app/(tabs)/profile/_layout.tsx
-#: src/features/career/knowledge.tsx
-msgid "Knowledge"
-msgstr "Viden"
-
-#: src/features/assistant/coach-screen.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Viden kunne ikke indlæses. Prøv igen, eller slå Viden fra, før du sender."
 
 #: src/features/settings/locale-names.ts
 msgid "Korean"
@@ -5682,6 +5950,8 @@ msgstr "Lad være tom for at beholde den gemte nøgle"
 msgid "Leave empty to reset the title to the original."
 msgstr "Lad det være tomt for at nulstille titlen til originalen."
 
+#: src/features/entries/basics-form.tsx
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Leave it empty to remove the link."
@@ -5764,6 +6034,7 @@ msgid "Letters have no public link. Locked resumes keep their current visibility
 msgstr "Følgebreve har intet offentligt link. Låste CV’er bevarer deres nuværende synlighed."
 
 #: src/features/design/advanced.tsx
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 #: src/features/write/fields.ts
 msgid "Level"
@@ -5808,11 +6079,14 @@ msgstr "Linjer så tæt på kan løbe sammen, når de læses. Brug mindst {minim
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/add-sheet.tsx
+#: src/features/entries/basics-form.tsx
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/fields.ts
 #: src/features/write/rich-text-field.tsx
 msgid "Link"
 msgstr "Forbindelse"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Link address"
 msgstr "Link adresse"
@@ -5829,6 +6103,10 @@ msgstr "Tilknyt en ansøgning, eller indsæt et jobopslag for at sammenligne nø
 #: src/features/share/web-page.tsx
 msgid "Link copied"
 msgstr "Linket er kopieret"
+
+#: src/features/entries/text-fields.tsx
+msgid "Link label"
+msgstr ""
 
 #: src/features/auth/check-email-screen.tsx
 msgid "Link sent"
@@ -5918,6 +6196,9 @@ msgstr "Live på {url}"
 #: src/features/design/design-pane.tsx
 #: src/features/home/section.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/facts.tsx
+#: src/features/profile/preferences.tsx
+#: src/features/profile/stories.tsx
 msgid "Loading"
 msgstr "Indlæser"
 
@@ -5941,10 +6222,6 @@ msgstr "Indlæser samtaler..."
 #: src/features/letters/page.tsx
 msgid "Loading cover letter…"
 msgstr "Indlæser følgebrev…"
-
-#: src/features/assistant/coach-screen.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Indlæser Viden, før du sender…"
 
 #: src/features/documents/thumbnail.tsx
 msgid "Loading letter…"
@@ -5975,6 +6252,10 @@ msgstr "Indlæser gemt version…"
 msgid "Loading workspace…"
 msgstr "Indlæser arbejdsområde…"
 
+#: src/features/assistant/coach-screen.tsx
+msgid "Loading your Profile before you send…"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Loading your public address…"
 msgstr "Indlæser din offentlige adresse…"
@@ -5990,6 +6271,7 @@ msgstr "Indlæser…"
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/style-groups.tsx
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -6018,6 +6300,7 @@ msgstr "Låst"
 msgid "Locked documents were skipped. Unlock them first."
 msgstr "Låste dokumenter blev sprunget over. Lås dem op først."
 
+#: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/outline.tsx
 msgid "Locked. Unlock to edit."
@@ -6111,6 +6394,7 @@ msgstr "Administreret af din server"
 msgid "Many bullets start with the same phrase."
 msgstr "Mange punkter starter med den samme frase."
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Mar 2022"
 msgstr "marts 2022"
@@ -6215,10 +6499,6 @@ msgstr "median til første svar"
 msgid "Meets your minimum base salary."
 msgstr "Opfylder din mindste grundløn."
 
-#: src/features/career/facts.tsx
-msgid "Message"
-msgstr "Meddelelse"
-
 #: src/features/assistant/chat-view.tsx
 msgid "Message the assistant"
 msgstr "Send besked til assistenten"
@@ -6228,7 +6508,7 @@ msgstr "Send besked til assistenten"
 msgid "Messages"
 msgstr "Beskeder"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Minimum base salary"
 msgstr "Mindste grundløn"
 
@@ -6269,6 +6549,7 @@ msgstr "Mere"
 msgid "More details"
 msgstr "Flere detaljer"
 
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "More options"
 msgstr "Flere muligheder"
@@ -6355,6 +6636,11 @@ msgstr "Flyt alt indhold inden for sidens grænser, og eksporter igen."
 msgid "Move applications"
 msgstr "Flyt jobansøgninger"
 
+#: src/features/entries/basics-form.tsx
+msgid "Move detail up"
+msgstr ""
+
+#: src/features/entries/entry-editor.tsx
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
 #: src/ui-legacy/sortable.tsx
@@ -6377,10 +6663,12 @@ msgstr "Flyt den til hovedkolonnen"
 msgid "Move real content into the body of the page; some software discards the margins."
 msgstr "Flyt reelt indhold ind i selve siden; nogle programmer forkaster margenerne."
 
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Move role down"
 msgstr "Flyt rollen ned"
 
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Move role up"
 msgstr "Flyt rollen op"
@@ -6418,6 +6706,7 @@ msgstr "Flyt til papirkurven"
 msgid "Move to…"
 msgstr "Flyt til..."
 
+#: src/features/entries/entry-editor.tsx
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
 #: src/ui-legacy/sortable.tsx
@@ -6477,6 +6766,10 @@ msgstr "Navn på person {0}"
 msgid "Name or team"
 msgstr "Navn eller hold"
 
+#: src/features/profile/stories-editor.tsx
+msgid "Name the story"
+msgstr "Navngiv historien"
+
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
 msgid "Name this version"
@@ -6531,7 +6824,7 @@ msgstr "Nepalesisk"
 msgid "Network"
 msgstr "Netværk"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 #: src/features/settings/api-keys.tsx
 msgid "Never"
 msgstr "Aldrig"
@@ -6592,6 +6885,10 @@ msgstr "Ny side"
 msgid "New password"
 msgstr "Ny adgangskode"
 
+#: src/features/profile/details.tsx
+msgid "New resumes, letters and your portfolio start from these details."
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "Nye stillinger fra din søgning"
@@ -6604,9 +6901,9 @@ msgstr "Ny tidsplan"
 msgid "New section"
 msgstr "Nyt afsnit"
 
-#: src/features/career/stories.tsx
-msgid "New STARR story"
-msgstr "Ny STARR historie"
+#: src/features/profile/stories.tsx
+msgid "New story"
+msgstr ""
 
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/welcome-screen.tsx
@@ -6701,6 +6998,14 @@ msgstr "Der blev ikke fundet nogen konventionelle afsnitsoverskrifter."
 msgid "No conversations about this document yet."
 msgstr "Ingen samtaler om dette dokument endnu."
 
+#: src/features/profile/facts-detail.tsx
+msgid "No corrections"
+msgstr "Ingen rettelser"
+
+#: src/features/profile/search-regions-field.tsx
+msgid "No country matches."
+msgstr "Ingen lande fundet."
+
 #: app/account/membership.tsx
 msgid "No credit activity yet."
 msgstr ""
@@ -6742,9 +7047,26 @@ msgstr ""
 msgid "No evidence yet"
 msgstr "Intet belæg endnu"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts.tsx
 msgid "No facts match"
 msgstr "Ingen fakta matcher"
+
+#: src/features/profile/stories-editor.tsx
+msgid "No facts to link yet. Add them in Facts."
+msgstr "Ingen fakta at linke til endnu. Tilføj dem under Fakta."
+
+#: src/features/profile/facts.tsx
+msgid "No facts yet"
+msgstr ""
+
+#: src/features/entries/icon-picker.tsx
+msgid "No icon"
+msgstr ""
+
+#. placeholder {0}: query.trim()
+#: src/features/entries/icon-picker.tsx
+msgid "No icons match “{0}”."
+msgstr ""
 
 #: src/features/write/pickers.tsx
 msgid "No icons match."
@@ -6860,21 +7182,25 @@ msgstr "Der blev ikke fundet noget kompetenceafsnit."
 msgid "No source data yet."
 msgstr "Ingen kildedata endnu."
 
-#: src/features/career/facts.tsx
-msgid "No source quote recorded."
-msgstr "Intet kildecitat er registreret."
-
 #: src/features/ats-checker/checker.tsx
 msgid "No specific terms could be pulled out of that job description."
 msgstr "Ingen specifikke vilkår kunne trækkes ud af den jobbeskrivelse."
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories.tsx
 msgid "No stories yet"
 msgstr "Ingen historier endnu"
 
 #: src/features/ai/provider-editor.tsx
 msgid "No suggestions for this provider. Enter any model ID."
 msgstr "Ingen forslag til denne udbyder. Indtast et vilkårligt model-id."
+
+#: src/features/profile/stories-reader.tsx
+msgid "No supporting facts. Link one before using this story."
+msgstr "Ingen understøttende fakta. Link et, før du bruger denne historie."
+
+#: src/features/profile/stories-reader.tsx
+msgid "No tags yet"
+msgstr "Ingen tags endnu"
 
 #: src/features/ats-checker/checker.tsx
 #: src/features/ats-checker/messages.ts
@@ -6896,6 +7222,7 @@ msgstr "Der blev ikke fundet noget arbejdserfaringsafsnit."
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/advanced.tsx
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 #: src/features/write/pickers.tsx
 #: src/features/write/section-sheet.tsx
@@ -6944,6 +7271,10 @@ msgstr ""
 msgid "Not enough Rezumi AI credits to read it."
 msgstr ""
 
+#: src/features/profile/career.tsx
+msgid "Not finished: add the main detail."
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "Ikke noget for mig"
@@ -6971,14 +7302,18 @@ msgstr "Ikke nu"
 msgid "Not recorded"
 msgstr "Ikke optaget"
 
-#: src/features/career/stories.tsx
-msgid "Not recorded yet. Leave blank until you can support it."
-msgstr "Endnu ikke registreret. Lad feltet stå tomt, indtil du har belæg."
+#: src/features/profile/stories-reader.tsx
+msgid "Not recorded yet. Leave it blank until you can support it."
+msgstr "Ikke registreret endnu. Lad feltet stå tomt, indtil du kan underbygge det."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Not saved"
 msgstr "Ikke gemt"
+
+#: src/features/profile/save-note.tsx
+msgid "Not saved yet. Your changes are kept on this device."
+msgstr ""
 
 #: src/features/applications/stages.ts
 msgid "Not selected"
@@ -6988,9 +7323,13 @@ msgstr "Ikke valgt"
 msgid "Not true for me, hide it"
 msgstr "Ikke sandt for mig, skjul det"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "Not used in a story or saved item yet"
 msgstr "Endnu ikke brugt i en historie eller et gemt element"
+
+#: src/features/profile/stories-editor.tsx
+msgid "Not used in coaching, so it can't back a story."
+msgstr "Bruges ikke i coaching, så det kan ikke underbygge en historie."
 
 #: src/features/application-detail/sheets.tsx
 msgid "Note"
@@ -7011,6 +7350,7 @@ msgid "Nothing marks a role as ongoing."
 msgstr "Intet markerer en rolle som igangværende."
 
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
 msgid "Nothing new to add"
 msgstr ""
 
@@ -7050,7 +7390,7 @@ msgstr "Intet at rette. De resterende sider var simpelthen ikke dækket af denne
 msgid "Nothing was found at that address. Check it and try again."
 msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Notice period (weeks)"
 msgstr "Opsigelsesvarsel (uger)"
 
@@ -7063,6 +7403,7 @@ msgstr "-meddelelser er slået fra"
 msgid "Now"
 msgstr "Nu"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Numbered list"
@@ -7109,8 +7450,8 @@ msgstr "Tilbud"
 msgid "Offers"
 msgstr "Tilbud"
 
-#: src/features/career/preferences.tsx
 #: src/features/onboarding/questions.tsx
+#: src/features/profile/preferences.tsx
 msgid "Office days a week, at most"
 msgstr "Kontordage om ugen, højst"
 
@@ -7139,6 +7480,10 @@ msgstr "Offline. Redigeringer gemmes på denne enhed og synkroniseres, når du g
 msgid "OK"
 msgstr ""
 
+#: src/features/entries/rich-text-field.tsx
+msgid "On"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "Til. Alle med linket kan se din webside."
@@ -7165,10 +7510,6 @@ msgstr ""
 #: src/features/design/layout-screen.tsx
 msgid "Only applies when the section fits on a single page."
 msgstr "Gælder kun, når afsnittet passer på en enkelt side."
-
-#: src/features/career/stories.tsx
-msgid "Only enabled facts can back a story. Leave unsupported outcomes blank."
-msgstr "Kun aktiverede fakta kan understøtte en historie. Lad ikke-understøttede resultater stå tomme."
 
 #: src/features/ats-checker/messages.ts
 msgid "Only one recognizable section heading was found."
@@ -7258,10 +7599,6 @@ msgstr "Åbn in-editoren"
 msgid "Open in Offers"
 msgstr "Åbn i Tilbud"
 
-#: app/(tabs)/profile/index.tsx
-msgid "Open Knowledge"
-msgstr ""
-
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open letter"
 msgstr "Åbn brev"
@@ -7336,6 +7673,10 @@ msgstr "Åbner CV'et…"
 msgid "Opens in Career → Offers."
 msgstr "Åbner i Karriere → Tilbud."
 
+#: src/features/profile/facts.tsx
+msgid "Opens the fact's source and history"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Opportunity discovery"
 msgstr "Søgning efter muligheder"
@@ -7343,6 +7684,10 @@ msgstr "Søgning efter muligheder"
 #: src/features/ai/provider-editor.tsx
 msgid "Optional for local Ollama"
 msgstr "Valgfrit til lokale Ollama"
+
+#: src/features/entries/photo-field.tsx
+msgid "Optional. Some regions expect one; most ATS ignore it."
+msgstr ""
 
 #. placeholder {0}: document.name
 #. placeholder {0}: versionTitle(version)
@@ -7368,6 +7713,10 @@ msgstr "Organisation"
 msgid "Original page"
 msgstr "Original side"
 
+#: src/features/entries/rich-text-field.tsx
+msgid "Original table formatting is kept. This text is read-only because it can't be edited safely here."
+msgstr ""
+
 #: src/features/write/rich-text-field.tsx
 msgid "Original table formatting is preserved. This content is read-only because it cannot be edited safely."
 msgstr "Den oprindelige tabelformatering bevares. Dette indhold er skrivebeskyttet, fordi det ikke kan redigeres sikkert."
@@ -7388,6 +7737,10 @@ msgstr "Andre goder"
 #: src/features/ai/report-content.tsx
 msgid "Other concern"
 msgstr "Anden bekymring"
+
+#: src/features/entries/basics-form.tsx
+msgid "Other contact details"
+msgstr ""
 
 #: src/features/onboarding/source-review.tsx
 msgid "Other details"
@@ -7478,6 +7831,7 @@ msgstr "Sidevisning"
 msgid "Paper"
 msgstr "Papir"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Paragraph"
 msgstr "Afsnit"
@@ -7568,7 +7922,7 @@ msgstr "Indsat beskrivelse"
 msgid "Paused · {line}"
 msgstr "På pause · {line}"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Pay period"
 msgstr "Lønperiode"
 
@@ -7606,17 +7960,17 @@ msgid "PDF, Word, Rezumi, JSON Resume or LinkedIn export."
 msgstr "PDF, Word, Rezumi, JSON Resume eller LinkedIn eksport."
 
 #: src/features/career/offers.tsx
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Per hour"
 msgstr "i timen"
 
 #: src/features/career/offers.tsx
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Per month"
 msgstr "pr. måned"
 
 #: src/features/career/offers.tsx
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Per year"
 msgstr "pr. år"
 
@@ -7632,6 +7986,7 @@ msgstr "Persisk"
 msgid "Personal website"
 msgstr ""
 
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -7642,6 +7997,7 @@ msgstr "Telefon"
 msgid "Phone (optional)"
 msgstr "Telefon (valgfrit)"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Photo"
@@ -7659,9 +8015,14 @@ msgstr "Foto skjult fra siden."
 msgid "Photo on the page."
 msgstr "Foto på siden."
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Pick {label}"
 msgstr "Vælg {label}"
+
+#: src/features/profile/facts.tsx
+msgid "Pick a fact"
+msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Pick a look for your first resume"
@@ -7764,6 +8125,7 @@ msgid "Portuguese (Portugal)"
 msgstr "Portugisisk (Portugal)"
 
 #: src/features/design/style-groups.tsx
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 #: src/features/write/fields.ts
 msgid "Position"
@@ -7817,13 +8179,13 @@ msgstr ""
 msgid "Prefer a single column, or keep the side column to short, self-contained lists."
 msgstr "Foretræk én kolonne, eller hold sidekolonnen til korte, selvstændige lister."
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "Preference"
 msgstr "Præference"
 
 #: app/account/index.tsx
 #: app/account/preferences.tsx
-#: src/features/career/knowledge.tsx
+#: src/features/profile/profile-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Preferences"
 msgstr "Præferencer"
@@ -7871,6 +8233,7 @@ msgstr "Forbereder eksport…"
 msgid "Preparing file…"
 msgstr "Forbereder fil…"
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Present"
 msgstr "Nu"
@@ -7958,6 +8321,10 @@ msgstr "Privat. Kun du kan se det."
 msgid "Pro AI credits"
 msgstr ""
 
+#: src/features/entries/basics-form.tsx
+msgid "Product designer"
+msgstr ""
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
 msgid "Professional"
@@ -7969,8 +8336,8 @@ msgstr "Kompetenceniveau"
 
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
-#: app/(tabs)/profile/index.tsx
 #: app/account/account.tsx
+#: src/features/profile/profile-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Profile"
@@ -7987,6 +8354,10 @@ msgstr "Profillinks skal være offentlige HTTPS-adresser."
 #: src/features/settings/profile.tsx
 msgid "Profile photo"
 msgstr "Profilbillede"
+
+#: src/features/profile/profile-screen.tsx
+msgid "Profile sections"
+msgstr ""
 
 #: src/features/write/fields.ts
 msgid "Profiles"
@@ -8240,6 +8611,7 @@ msgid "Reading your profile…"
 msgstr ""
 
 #: src/features/onboarding/source-progress.tsx
+#: src/features/profile/bring-screen.tsx
 msgid "Reading…"
 msgstr ""
 
@@ -8327,7 +8699,7 @@ msgstr "Referencer"
 msgid "Referral"
 msgstr "Henvisning"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories-parts.ts
 msgid "Reflection"
 msgstr "Refleksion"
 
@@ -8374,7 +8746,7 @@ msgstr "Genindlæs nu"
 msgid "Remember"
 msgstr "Husk"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Husk fakta fra mine beskeder"
 
@@ -8412,8 +8784,8 @@ msgid "Reminders"
 msgstr "Påmindelser"
 
 #: src/features/career/offers.tsx
-#: src/features/career/preferences.tsx
 #: src/features/onboarding/questions.tsx
+#: src/features/profile/preferences.tsx
 msgid "Remote"
 msgstr "Fjernarbejde"
 
@@ -8436,15 +8808,31 @@ msgid "Remove {0}?"
 msgstr ""
 
 #: src/features/assistant/messages.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Remove {name}"
 msgstr "Fjern {name}"
 
 #: src/features/onboarding/questions.tsx
+#: src/features/profile/preferences.tsx
 msgid "Remove {place}"
 msgstr ""
 
 #: src/features/onboarding/questions.tsx
+#: src/features/profile/preferences.tsx
 msgid "Remove {role}"
+msgstr ""
+
+#: src/features/profile/stories-editor.tsx
+msgid "Remove {tag}"
+msgstr ""
+
+#: src/features/entries/entry-fields.tsx
+msgid "Remove {value}"
+msgstr "Fjern {value}"
+
+#. placeholder {0}: index + 1
+#: src/features/entries/basics-form.tsx
+msgid "Remove detail {0}"
 msgstr ""
 
 #: src/features/write/basics-screen.tsx
@@ -8468,6 +8856,7 @@ msgstr "Fjern adgangskode"
 msgid "Remove person {0}"
 msgstr "Fjern person {0}"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Remove photo"
@@ -8480,6 +8869,11 @@ msgstr "Fjern spørgsmål"
 #: src/features/write/entry-fields.tsx
 msgid "Remove role"
 msgstr "Fjern rolle"
+
+#. placeholder {0}: index + 1
+#: src/features/entries/entry-fields.tsx
+msgid "Remove role {0}"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Remove the password?"
@@ -8581,7 +8975,7 @@ msgstr "Rapport modtaget af din serveroperatør. Tak."
 msgid "Require a password"
 msgstr "Kræv en adgangskode"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Requirements"
 msgstr "Krav"
 
@@ -8653,14 +9047,13 @@ msgstr "Gendan version"
 msgid "Restored a version"
 msgstr "Gendannet en version"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories-parts.ts
 msgid "Result"
 msgstr "Resultat"
 
 #: app/_layout.tsx
 #: app/builder/[id]/_layout.tsx
 #: src/features/applications/add-sheet.tsx
-#: src/features/career/facts.tsx
 #: src/features/documents/library.tsx
 #: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
@@ -8710,6 +9103,10 @@ msgstr "CV'er"
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "CV'er gengives altid på hvidt papir, uanset temaet."
 
+#: src/features/profile/save-note.tsx
+msgid "Resumes that followed"
+msgstr ""
+
 #: src/features/auth/welcome-screen.tsx
 msgid "Resumes, cover letters, applications and your portfolio, in one place."
 msgstr ""
@@ -8726,7 +9123,6 @@ msgstr "Hentet {0} ved hjælp af {1}. Hentetiden fastslår ikke oprindelsens fri
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/assistant/provider.tsx
-#: src/features/career/preferences.tsx
 #: src/features/career/shared.tsx
 #: src/features/check/job-match.tsx
 #: src/features/check/page.tsx
@@ -8743,6 +9139,11 @@ msgstr "Hentet {0} ved hjælp af {1}. Hentetiden fastslår ikke oprindelsens fri
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
 #: src/features/onboarding/source-progress.tsx
+#: src/features/profile/facts.tsx
+#: src/features/profile/fill-sheet.tsx
+#: src/features/profile/preferences.tsx
+#: src/features/profile/save-note.tsx
+#: src/features/profile/stories.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -8825,8 +9226,8 @@ msgid "Review my answer"
 msgstr "Gennemgå mit svar"
 
 #: src/features/workspace/tabs/debrief.tsx
-msgid "Review my answer sends the question, what you said, this posting and your Knowledge to {providerName}."
-msgstr "\"Gennemgå mit svar\" sender spørgsmålet, det, du sagde, dette jobopslag og din Viden til {providerName}."
+msgid "Review my answer sends the question, what you said, this posting and your Profile to {providerName}."
+msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
 msgid "Review required form answers and remove unsupported claims."
@@ -8921,6 +9322,7 @@ msgid "Role (optional)"
 msgstr "Rolle (valgfri)"
 
 #. placeholder {0}: index + 1
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Role {0}"
 msgstr "Rolle {0}"
@@ -9042,9 +9444,9 @@ msgstr "Gem endnu et tilbud for at sammenligne"
 msgid "Save changes"
 msgstr "Gem ændringer"
 
-#: src/features/career/facts.tsx
-msgid "Save fact"
-msgstr "Gem fakta"
+#: src/features/profile/facts-detail.tsx
+msgid "Save correction"
+msgstr "Gem rettelse"
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Save interview"
@@ -9053,6 +9455,11 @@ msgstr "Gem interview"
 #: src/features/applications/add-sheet.tsx
 msgid "Save job"
 msgstr "Gem job"
+
+#: src/features/entries/basics-form.tsx
+#: src/features/entries/rich-text-field.tsx
+msgid "Save link"
+msgstr ""
 
 #: src/features/auth/reset-password-screen.tsx
 msgid "Save new password"
@@ -9067,7 +9474,7 @@ msgid "Save schedule"
 msgstr "Gem tidsplan"
 
 #: src/features/assistant/tool-approvals.tsx
-#: src/features/career/stories.tsx
+#: src/features/profile/stories.tsx
 msgid "Save story"
 msgstr "Gem historie"
 
@@ -9088,15 +9495,15 @@ msgid "Save these offer terms to compare"
 msgstr "Gem disse tilbudsvilkår til sammenligning"
 
 #: src/features/assistant/tool-approvals.tsx
-msgid "Save this story to Knowledge?"
+msgid "Save this story to your Profile?"
 msgstr ""
-
-#: src/features/workspace/tabs/fit.tsx
-msgid "Save to Knowledge"
-msgstr "Gem i Viden"
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Save to my Profile"
+msgstr ""
+
+#: src/features/workspace/tabs/fit.tsx
+msgid "Save to Profile"
 msgstr ""
 
 #: src/draft/conflict-sheet.tsx
@@ -9108,7 +9515,8 @@ msgid "Save yours as a new document and keep theirs here."
 msgstr "Gem din version som et nyt dokument, og behold deres her."
 
 #: src/features/applications/stages.ts
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
+#: src/features/profile/save-note.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Saved"
 msgstr "Gemt"
@@ -9136,25 +9544,31 @@ msgstr "Gemt beskrivelse"
 msgid "Saved to Applications with the posting"
 msgstr "Gemt i Ansøgninger med jobopslaget"
 
-#: src/features/workspace/tabs/fit.tsx
-msgid "Saved to Knowledge as a fact"
-msgstr "Gemt i Viden som et faktum"
-
-#: src/features/workspace/tabs/debrief.tsx
-msgid "Saved to Knowledge, private to this application."
-msgstr "Gemt i Viden, privat for denne ansøgning."
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Saved to Saved · Practice"
 msgstr "Gemt under Gemt · Øvelse"
+
+#: src/features/workspace/tabs/fit.tsx
+msgid "Saved to your Profile as a fact"
+msgstr ""
+
+#: src/features/workspace/tabs/debrief.tsx
+msgid "Saved to your Profile, private to this application."
+msgstr ""
+
+#: src/features/profile/save-note.tsx
+msgid "Saves as you type. Resumes that still use a part follow your changes."
+msgstr ""
 
 #: src/features/applications/add-sheet.tsx
 msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "Redder jobbet. Vent på bekræftelse, før du foretager en anden ændring."
 
 #: src/features/auth/reset-password-screen.tsx
-#: src/features/career/preferences.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/preferences.tsx
+#: src/features/profile/save-note.tsx
+#: src/features/profile/stories.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Saving…"
@@ -9217,6 +9631,10 @@ msgstr "Søg jobansøgninger"
 msgid "Search commands"
 msgstr "Kommandoer til søgning"
 
+#: src/features/profile/search-regions-field.tsx
+msgid "Search countries"
+msgstr ""
+
 #: src/features/search/search-screen.tsx
 msgid "Search covers documents, applications, assistant conversations and actions."
 msgstr "Søgning dækker over dokumenter, jobansøgninger, assistentsamtaler og handlinger."
@@ -9229,7 +9647,7 @@ msgstr "Søg i dokumenter"
 msgid "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
 msgstr "Søgemaskiner som Google kan vise din webside i søgeresultater. Det kan tage uger, før den dukker op – eller forsvinder, når du slår dette fra."
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts.tsx
 msgid "Search facts"
 msgstr "Søg i fakta"
 
@@ -9237,6 +9655,7 @@ msgstr "Søg i fakta"
 msgid "Search for…"
 msgstr "Søg efter…"
 
+#: src/features/entries/icon-picker.tsx
 #: src/features/write/pickers.tsx
 msgid "Search icons"
 msgstr "Søgeikoner"
@@ -9373,24 +9792,24 @@ msgid "Sending…"
 msgstr "Sender..."
 
 #: src/features/workspace/tabs/prepare.tsx
-msgid "Sends this application (posting, notes, interview details) and Knowledge that's switched on to {name}."
-msgstr "Sender denne ansøgning (opslag, noter og samtaledetaljer) og aktiveret Viden til {name}."
+msgid "Sends this application (posting, notes, interview details) and your Profile, if switched on, to {name}."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Sends this application and enabled Knowledge to this connection. Your provider may charge. If it becomes unavailable, scheduled work can use your default usable connection."
-msgstr "Sender denne ansøgning og aktiveret Viden til denne forbindelse. Din udbyder kan opkræve betaling. Hvis forbindelsen bliver utilgængelig, kan planlagte opgaver bruge din fungerende standardforbindelse."
+msgid "Sends this application and your switched-on Profile to this connection. Your provider may charge. If it becomes unavailable, scheduled work can use your default usable connection."
+msgstr ""
 
 #: src/features/workspace/parts.tsx
-msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to {label}."
-msgstr "Sender ansøgningens jobopslag, noter og dokumenter samt aktiveret Viden til {label}."
+msgid "Sends this application's posting, notes and documents, plus your Profile if switched on, to {label}."
+msgstr ""
 
 #: src/features/documents/new-document.tsx
 msgid "Sends this PDF to your configured AI provider instead of reading its text layer."
 msgstr "Sender denne PDF til din konfigurerede AI-udbyder i stedet for at læse dets tekstlag."
 
 #: src/features/workspace/coach-sheet.tsx
-msgid "Sends your message, earlier messages, this application (posting, notes, documents sent) and Knowledge that's switched on to {label}."
-msgstr "Sender din besked, tidligere beskeder, denne jobansøgning (jobopslag, noter og afsendte dokumenter) og aktiveret viden til {label}."
+msgid "Sends your message, earlier messages, this application (posting, notes, documents sent) and your Profile, if switched on, to {label}."
+msgstr ""
 
 #. placeholder {0}: provider?.label
 #. placeholder {1}: provider?.model
@@ -9582,9 +10001,18 @@ msgstr "Vis {0} læste"
 msgid "Show {title} on the page"
 msgstr "Vis {title} på siden"
 
+#: src/features/profile/facts.tsx
+#: src/features/profile/stories.tsx
+msgid "Show actions"
+msgstr ""
+
 #: src/features/search/search-screen.tsx
 msgid "Show all"
 msgstr "Vis alle"
+
+#: src/features/profile/facts.tsx
+msgid "Show all facts"
+msgstr ""
 
 #: src/features/applications/list-screen.tsx
 msgid "Show closed"
@@ -9626,6 +10054,7 @@ msgstr "Vis i søgemaskiner"
 msgid "Show key"
 msgstr "Vis nøgle"
 
+#: src/features/entries/text-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Show link in title"
 msgstr "Vis link i titel"
@@ -9793,15 +10222,15 @@ msgstr "siden sidste visning"
 msgid "Single sign-on"
 msgstr ""
 
-#: src/features/career/stories.tsx
-msgid "Situation (required)"
-msgstr "Situation (påkrævet)"
+#: src/features/profile/stories-parts.ts
+msgid "Situation"
+msgstr "Situation"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Situation, action, result"
 msgstr "Situation, handling, resultat"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories.tsx
 msgid "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
 msgstr "Situation, opgave, handling, resultat, refleksion. Knyt hver historie til fakta, du kan underbygge; lad ukendte resultater stå tomme."
 
@@ -9809,7 +10238,7 @@ msgstr "Situation, opgave, handling, resultat, refleksion. Knyt hver historie ti
 msgid "Size"
 msgstr "Størrelse"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "Skill"
 msgstr "Færdighed"
 
@@ -9908,6 +10337,10 @@ msgstr "Noget tekst falder uden for siden."
 msgid "Some text is rotated."
 msgstr "Noget tekst er roteret."
 
+#: src/features/profile/facts-add.tsx
+msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
+msgstr ""
+
 #: src/features/auth/errors.ts
 msgid "Something went wrong on the server. Try again in a moment."
 msgstr ""
@@ -9932,10 +10365,6 @@ msgstr "Sortér efter dato"
 #: src/features/applications/add-sheet.tsx
 msgid "Source"
 msgstr "Kilde"
-
-#: src/features/career/facts.tsx
-msgid "Source and correction history"
-msgstr "Kilde og rettelseshistorik"
 
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/messages.tsx
@@ -9996,6 +10425,7 @@ msgstr "Fasen forbliver {stage}"
 msgid "Standard"
 msgstr ""
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Start"
 msgstr "Starte"
@@ -10125,7 +10555,7 @@ msgstr "Stoppet"
 msgid "Stopped. No edits were proposed."
 msgstr "Stoppet. Ingen ændringer blev foreslået."
 
-#: src/features/career/knowledge.tsx
+#: src/features/profile/profile-screen.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Stories"
 msgstr "Historier"
@@ -10134,14 +10564,23 @@ msgstr "Historier"
 msgid "Stories to bring"
 msgstr "Historier at tage med"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories.tsx
+msgid "Story"
+msgstr "Historie"
+
+#: src/features/profile/stories.tsx
 msgid "Story deleted"
 msgstr "Historie slettet"
+
+#: src/features/profile/stories.tsx
+msgid "Story saved"
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "Strengthen"
 msgstr "Styrk"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Strikethrough"
 msgstr "Gennemstregning"
@@ -10204,6 +10643,10 @@ msgstr "Forslag fra models.dev. Du kan også indtaste ethvert model-id."
 msgid "Suggests cuts, never deletes on its own"
 msgstr "Foreslår nedskæringer, sletter aldrig af sig selv"
 
+#: app/(tabs)/profile/_layout.tsx
+#: app/(tabs)/profile/summary.tsx
+#: src/features/entries/entry-editor.tsx
+#: src/features/profile/career.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/fields.ts
 msgid "Summary"
@@ -10282,9 +10725,9 @@ msgstr "Tilføj tags til valgte ansøgninger"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/add-sheet.tsx
-#: src/features/career/stories.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
+#: src/features/profile/stories-editor.tsx
 msgid "Tags"
 msgstr "Tags"
 
@@ -10308,6 +10751,7 @@ msgstr "tilpasset vs. basis cv"
 msgid "Take a photo"
 msgstr ""
 
+#: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "Tag billede"
@@ -10329,13 +10773,13 @@ msgstr "Tamil"
 msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
 msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Target roles"
 msgstr "Ønskede stillinger"
 
-#: src/features/career/stories.tsx
-msgid "Task (required)"
-msgstr "Opgave (påkrævet)"
+#: src/features/profile/stories-parts.ts
+msgid "Task"
+msgstr "Opgave"
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
@@ -10448,6 +10892,7 @@ msgstr "Tekst sidder i sidehoved- eller sidefodsområdet."
 msgid "Text size"
 msgstr "Tekststørrelse"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Text style"
 msgstr "Teksttypografi"
@@ -10524,11 +10969,19 @@ msgstr "Assistenten er ikke konfigureret på denne server. Den, der kører det, 
 msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
 msgstr "Assistenten bruger din egen nøgle. Der sendes intet nogen steder, før du tilslutter en."
 
+#: src/features/profile/conflict-sheet.tsx
+msgid "The changes you made on this device since then will be lost."
+msgstr ""
+
 #: src/features/check/writing.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Kontrollerne er mekaniske. Dette spørger en sprogmodel, hvordan en læser kan reagere på dine listeposter, og foreslår omskrivninger. Det er ikke en del af partituret."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/facts-detail.tsx
+msgid "The coach and your documents can use this fact."
+msgstr ""
+
+#: src/features/profile/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "Coachen husker intet fra dine beskeder."
 
@@ -10537,14 +10990,14 @@ msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRY
 msgstr "Coachen er ikke sat op på denne server. Den, der administrerer serveren, skal indstille ENCRYPTION_SECRET."
 
 #: src/features/assistant/coach-screen.tsx
-msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
-msgstr "Coachen er ikke sat op på denne server. Den, der driver serveren, skal angive ENCRYPTION_SECRET. Viden, Tilbud og dine ansøgninger fungerer uden."
+msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and your applications work without it."
+msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "Coachen foreslår hvert faktum i chatten. Intet gemmes, før du siger ja."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Coachen gemmer fakta, du oplyser, og fortæller dig det. Du kan fortryde."
 
@@ -10561,6 +11014,7 @@ msgstr "Den aktuelle tilstand vil blive gemt som “Før gendannelse” først."
 msgid "The editor opens on Check, which checks the imported resume again."
 msgstr "Editoren åbner på Tjek, som inspicerer det importerede CV igen."
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "The end is before the start."
 msgstr "Slutningen er før starten."
@@ -10625,9 +11079,9 @@ msgstr "beskeden"
 msgid "The order the text is stored in disagrees badly with the order it reads in."
 msgstr "Den rækkefølge, teksten er gemt i, stemmer dårligt overens med den rækkefølge, den læses i."
 
-#: src/features/career/facts.tsx
-msgid "The original stays in correction history. Stories using it will need review."
-msgstr "Originalen forbliver i rettelseshistorikken. Historier, der bruger det, skal gennemgås."
+#: src/features/profile/facts-detail.tsx
+msgid "The original stays in the history."
+msgstr "Originalen forbliver i historikken."
 
 #: src/features/onboarding/messages.ts
 msgid "The page is long, so only its first part was read."
@@ -10753,6 +11207,10 @@ msgstr ""
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "Disse åbner din servers kontoindstillinger i en browserfane i appen. Du skal muligvis logge ind der."
 
+#: src/features/profile/save-note.tsx
+msgid "These resumes still used the parts you changed, so they changed too. Parts a resume changed itself stay as they are."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "They look for headings such as Experience, Education and Skills."
 msgstr "De leder efter overskrifter som Erfaring, Uddannelse og Færdigheder."
@@ -10803,6 +11261,10 @@ msgstr "Denne samtale kunne ikke åbnes."
 msgid "This cover letter file isn't valid."
 msgstr "Denne følgebrevsfil er ikke gyldig."
 
+#: src/features/entries/dates-field.tsx
+msgid "This date hasn't been saved. Use a month and year, like Mar 2022, or just a year. The last valid date is kept."
+msgstr ""
+
 #: src/features/write/date-field.tsx
 msgid "This date hasn't been saved. Use a month and year, like Mar 2022, or just a year. The resume keeps the last valid date."
 msgstr "Denne dato er ikke blevet gemt. Brug en måned og et år, som marts 2022, eller bare et år. CV'et beholder den sidste gyldige dato."
@@ -10838,6 +11300,10 @@ msgstr "Dette muliggør tilbagevendende behandling, mens tidsplanen er på, ved 
 #: src/features/check/issues.ts
 msgid "This entry"
 msgstr "Denne post"
+
+#: src/features/entries/entry-editor.tsx
+msgid "This entry was deleted"
+msgstr ""
 
 #: src/features/write/entry-screen.tsx
 msgid "This entry was deleted."
@@ -11161,7 +11627,7 @@ msgstr "Tidspunkt, link, hvem, hvad du sendte"
 msgid "Timeline"
 msgstr "Tidslinje"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Tidspunkter vises i {timeZone}."
 
@@ -11177,7 +11643,7 @@ msgstr "Tidszone"
 msgid "Timing the plan"
 msgstr "Tidsætter planen"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories-editor.tsx
 #: src/features/write/fields.ts
 msgid "Title"
 msgstr "Titel"
@@ -11313,6 +11779,10 @@ msgstr ""
 msgid "Trimming words"
 msgstr "Skærer ord væk"
 
+#: src/features/profile/facts.tsx
+msgid "True things about your work. The coach and your documents use only the facts you turn on."
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Try {suggestion}"
 msgstr "Prøv {suggestion}"
@@ -11324,8 +11794,10 @@ msgstr "Prøv {suggestion}"
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/detail-screen.tsx
+#: src/features/entries/photo-field.tsx
 #: src/features/letters/write.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/states.tsx
 #: src/features/settings/api-keys.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/shell.tsx
@@ -11343,9 +11815,17 @@ msgstr "Prøv igen med dette"
 msgid "Try again, or restart the app."
 msgstr "Prøv igen, eller genstart appen."
 
+#: src/features/profile/search-regions-field.tsx
+msgid "Try another name."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Try another search or clear your filters."
 msgstr "Prøv en anden søgning, eller ryd dine filtre."
+
+#: src/features/profile/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/features/applications-board/board-screen.tsx
 #: src/features/applications/list-screen.tsx
@@ -11411,10 +11891,10 @@ msgid "Two-step verification"
 msgstr "To-trins verifikation"
 
 #: src/features/application-detail/interview-sheet.tsx
-#: src/features/career/facts.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
+#: src/features/profile/facts-add.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "Type"
 msgstr "Type"
@@ -11444,6 +11924,7 @@ msgstr "Ukrainsk"
 msgid "Unavailable"
 msgstr "Ikke tilgængelig"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Underline"
@@ -11466,6 +11947,7 @@ msgstr "Understreg links"
 #: src/features/design/draft.ts
 #: src/features/document-menu/index.tsx
 #: src/features/documents/queries.ts
+#: src/features/entries/hooks.ts
 #: src/features/home/new-roles.tsx
 #: src/features/workspace/tabs/fit.tsx
 #: src/features/write/hooks.ts
@@ -11512,6 +11994,7 @@ msgstr "Ikke synkroniseret på denne enhed"
 msgid "Untick anything you'd rather leave out. You can change it all later in your Profile."
 msgstr ""
 
+#: src/features/profile/career.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/outline.tsx
 msgid "Untitled"
@@ -11547,6 +12030,15 @@ msgstr "Opdateret"
 msgid "Updated {completed} of {0}. Locked documents, and letters for public links, were skipped. Refresh and retry any failures."
 msgstr "Opdateret {completed} af {0}. Låste dokumenter og følgebreve til offentlige links blev sprunget over. Opdater, og prøv mislykkede ændringer igen."
 
+#. placeholder {0}: followed.length
+#: src/features/profile/save-note.tsx
+msgid "Updated in {0} resumes"
+msgstr ""
+
+#: src/features/profile/save-note.tsx
+msgid "Updated in 1 resume"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Updating preview…"
 msgstr "Opdaterer forhåndsvisning…"
@@ -11575,6 +12067,10 @@ msgstr ""
 #: src/features/write/picture-screen.tsx
 msgid "Uploading photo…"
 msgstr "Uploader billede…"
+
+#: src/features/entries/photo-field.tsx
+msgid "Uploading…"
+msgstr ""
 
 #: src/features/write/picture-screen.tsx
 msgid "URL"
@@ -11691,16 +12187,26 @@ msgstr "Brug oplysninger fra “{resumeName}”"
 msgid "Use details from the resume"
 msgstr "Brug oplysninger fra CV'et"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
 msgid "Use for all applications"
 msgstr "Brug til alle ansøgninger"
+
+#: src/features/profile/facts-detail.tsx
+msgid "Use in coaching"
+msgstr ""
+
+#. placeholder {0}: factExcerpt(fact)
+#: src/features/profile/facts-detail.tsx
+#: src/features/profile/facts.tsx
+msgid "Use in coaching: {0}"
+msgstr ""
 
 #: src/features/document-menu/index.tsx
 #: src/features/share/link.tsx
 msgid "Use lowercase letters, numbers and single dashes."
 msgstr "Brug små bogstaver, tal og enkelte bindestreger."
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Use my timezone"
 msgstr "Brug min tidszone"
 
@@ -11714,6 +12220,10 @@ msgstr "Brug enkle overskrifter som \"Erfaring\", \"Uddannelse\" og \"Kompetence
 
 #: src/api/ai-consent.ts
 msgid "Use Rezumi AI?"
+msgstr ""
+
+#: src/features/profile/conflict-sheet.tsx
+msgid "Use saved version"
 msgstr ""
 
 #: src/features/workspace/parts.tsx
@@ -11738,6 +12248,14 @@ msgstr "Brug builderens Fortryd til at fortryde tidligere ændringer."
 msgid "Use the email and password of your Rezumi account."
 msgstr ""
 
+#: src/features/profile/conflict-sheet.tsx
+msgid "Use the saved version"
+msgstr ""
+
+#: src/features/profile/conflict-sheet.tsx
+msgid "Use the saved version?"
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Use the standard heading"
 msgstr "Brug standardoverskriften"
@@ -11757,10 +12275,6 @@ msgstr "Brug denne dato"
 #: app/account/preferences.tsx
 msgid "Use this device's timezone ({deviceTimezone})"
 msgstr "Brug denne enheds tidszone ({deviceTimezone})"
-
-#: src/features/career/facts.tsx
-msgid "Use this fact"
-msgstr "Brug dette faktum"
 
 #: src/features/ai/provider-editor.tsx
 msgid "Use this provider"
@@ -11782,7 +12296,7 @@ msgstr "brugte {used}"
 msgid "Used on {at}"
 msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Bruges til at tjekke stillinger og tilbud. Hver er et tal, så coachen kan sammenligne uden at gætte."
 
@@ -11895,10 +12409,6 @@ msgstr "Se stillingsopslaget"
 msgid "View saved work"
 msgstr "Se gemt arbejde"
 
-#: src/features/career/facts.tsx
-msgid "View source"
-msgstr "Se kilde"
-
 #. placeholder {0}: versionTitle(selected)
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -11959,6 +12469,7 @@ msgid "We only read what you add here, once you continue. Nothing goes into your
 msgstr ""
 
 #. placeholder {0}: dates.raw
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "Vi læste “{0}”. Vælg en måned, så det sorteres og udskrives ensartet."
@@ -11992,10 +12503,11 @@ msgstr "Websøgning blev ikke afsluttet."
 msgid "Web search failed: {0}"
 msgstr "Websøgning mislykkedes: {0}"
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Web searches look for work here, up to three countries."
 msgstr "Websøgninger leder efter job i disse lande. Vælg op til tre lande."
 
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Website"
@@ -12033,9 +12545,17 @@ msgstr "Hvad en person ser"
 msgid "What are you working on?"
 msgstr "Hvad arbejder du på?"
 
+#: src/features/profile/stories-parts.ts
+msgid "What changed? Leave blank if you can’t support it."
+msgstr "Hvad ændrede sig? Lad feltet stå tomt, hvis du ikke kan underbygge det."
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "What did they ask?"
 msgstr "Hvad spurgte de om?"
+
+#: src/features/profile/stories-parts.ts
+msgid "What did you do, specifically?"
+msgstr "Hvad gjorde du helt konkret?"
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "What did you say, as close as you remember?"
@@ -12065,7 +12585,7 @@ msgstr "Hvad er grundlønnen?"
 msgid "What it asks for"
 msgstr "Hvad den beder om"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "What matters to you"
 msgstr "Det, der betyder noget for dig"
 
@@ -12093,9 +12613,25 @@ msgstr "Hvad de bad dig forberede"
 msgid "What to do"
 msgstr "Hvad skal man gøre"
 
+#: src/features/profile/stories-parts.ts
+msgid "What was happening before you started?"
+msgstr "Hvad skete der, før du gik i gang?"
+
+#: src/features/profile/stories-parts.ts
+msgid "What were you responsible for?"
+msgstr "Hvad var du ansvarlig for?"
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "What works"
 msgstr "Det, der virker"
+
+#: src/features/profile/stories-parts.ts
+msgid "What would you do differently?"
+msgstr "Hvad ville du gøre anderledes?"
+
+#: src/features/profile/stories.tsx
+msgid "What you changed in this story is lost."
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "What you did: {name}"
@@ -12105,7 +12641,11 @@ msgstr "Hvad du gjorde: {name}"
 msgid "What you sent"
 msgstr "Hvad du sendte"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
+msgid "What you want next. Job searches, fit checks, offers and the coach use it."
+msgstr ""
+
+#: src/features/profile/preferences.tsx
 msgid "What you're looking for"
 msgstr "Hvad du leder efter"
 
@@ -12137,7 +12677,7 @@ msgstr "Hvor ansøgningerne kommer fra"
 msgid "Where do you want to work?"
 msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Where you want to work"
 msgstr "Hvor du vil arbejde"
 
@@ -12145,7 +12685,7 @@ msgstr "Hvor du vil arbejde"
 msgid "Where you work"
 msgstr "Hvor du arbejder"
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Where you're looking for work"
 msgstr "Hvor du søger arbejde"
 
@@ -12265,9 +12805,9 @@ msgstr "Skriv det selv"
 msgid "Write numbers as digits"
 msgstr "Skriv tal som cifre"
 
-#: src/features/career/stories.tsx
-msgid "Write one about something you did, in five parts."
-msgstr "Skriv en historie i fem dele om noget, du har gjort."
+#: src/features/profile/stories.tsx
+msgid "Write one about something you did, in five parts. Leave a part blank until you can support it."
+msgstr "Skriv en om noget, du har gjort, i fem dele. Lad en del stå tom, indtil du kan underbygge den."
 
 #: src/features/ats-checker/messages.ts
 msgid "Write the full address so it is recognized as a link."
@@ -12278,8 +12818,8 @@ msgid "Write what you did."
 msgstr "Skriv, hvad du gjorde."
 
 #: src/features/workspace/tabs/apply.tsx
-msgid "Write your answer, or draft one from your Knowledge."
-msgstr "Skriv dit svar, eller lav et udkast ud fra din Viden."
+msgid "Write your answer, or draft one from your Profile."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 #: src/features/check/issues.ts
@@ -12345,6 +12885,10 @@ msgstr "Du har glemt dette før, så det blev ikke gemt igen."
 
 #: src/shell/unsaved-changes.ts
 msgid "You have edits that aren't saved yet. Leaving now loses them."
+msgstr ""
+
+#: src/features/profile/fill-sheet.tsx
+msgid "You have no resumes yet."
 msgstr ""
 
 #: src/ui-legacy/overlays.tsx
@@ -12500,9 +13044,10 @@ msgstr "Din e-mailadresse er brudt op over flere tekststykker."
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "Din e-mail, telefon, placering og andre oplysninger i sidehovedet samt referencers telefonnumre udelades fra websiden, dens PDF og søgeresultater."
 
-#: src/features/career/knowledge.tsx
-msgid "Your facts, stories and preferences. Editing Knowledge sends nothing to an AI connection."
-msgstr "Dine fakta, historier og præferencer. Redigering af Viden sender intet til en AI-forbindelse."
+#. placeholder {0}: visible.length
+#: src/features/profile/facts.tsx
+msgid "Your facts · {0}"
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your focus"
@@ -12520,10 +13065,6 @@ msgstr "Dine overskrifter ser ud som din brødtekst."
 #: src/features/applications/list-screen.tsx
 msgid "Your job search starts here"
 msgstr "Din jobsøgning starter her"
-
-#: src/features/workspace/tabs/debrief.tsx
-msgid "your Knowledge"
-msgstr "din Viden"
 
 #: app/account/preferences.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
@@ -12618,16 +13159,32 @@ msgstr ""
 msgid "your preferences"
 msgstr "dine præferencer"
 
+#: src/features/workspace/tabs/debrief.tsx
+msgid "your Profile"
+msgstr ""
+
+#: src/features/profile/bring-screen.tsx
+msgid "Your Profile already has what we found, or the sources couldn't be read."
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr ""
 
-#: app/(tabs)/profile/index.tsx
-msgid "Your Profile is coming to the app"
+#: src/features/profile/conflict-sheet.tsx
+msgid "Your Profile changed elsewhere"
+msgstr ""
+
+#: src/features/assistant/coach-screen.tsx
+msgid "Your Profile couldn't load. Try again or switch Profile off before sending."
 msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Your Profile was changed somewhere else. Check what's new, then save again."
+msgstr ""
+
+#: src/features/profile/conflict-sheet.tsx
+msgid "Your Profile was saved on another device or on the web while you were editing here. Your changes are still on this device. Choose which version to keep."
 msgstr ""
 
 #: src/features/settings/export.tsx
@@ -12713,6 +13270,11 @@ msgstr ""
 #: src/features/assistant/coach-screen.tsx
 msgid "your stories"
 msgstr "dine historier"
+
+#. placeholder {0}: rows.length
+#: src/features/profile/stories.tsx
+msgid "Your stories · {0}"
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "Your story couldn't be loaded."

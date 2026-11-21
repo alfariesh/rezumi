@@ -544,7 +544,7 @@ function ProposalOutcome({ state, locked, onAccept, onReject }: ProposalOutcomeP
 	);
 }
 
-// ---- Coach memory: a fact proposed for Knowledge, or saved automatically with Undo ----
+// ---- Coach memory: a fact proposed for the Profile, or saved automatically with Undo ----
 
 type RememberOutput = { status?: unknown; id?: unknown; fact?: { text?: unknown } };
 
@@ -590,7 +590,7 @@ function RememberNote({ part }: { part: ToolPart }) {
 	if (outcome === "saved")
 		return (
 			<Status>
-				<Trans>Added to Knowledge.</Trans>
+				<Trans>Added to your Profile.</Trans>
 			</Status>
 		);
 

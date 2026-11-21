@@ -254,7 +254,7 @@ function ScheduleForm({
 							options={ai.usableProviders.map((row) => ({ value: row.id, label: row.label }))}
 						/>
 						<Button variant="secondary" label={t`Connect AI provider`} onPress={() => setSetup(true)} />
-						<Text color="ink3">{t`Sends this application and enabled Knowledge to this connection. Your provider may charge. If it becomes unavailable, scheduled work can use your default usable connection.`}</Text>
+						<Text color="ink3">{t`Sends this application and your switched-on Profile to this connection. Your provider may charge. If it becomes unavailable, scheduled work can use your default usable connection.`}</Text>
 					</>
 				) : (
 					<>

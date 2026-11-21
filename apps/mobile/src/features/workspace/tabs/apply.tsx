@@ -376,7 +376,7 @@ function AnswerCard({
 					value={text}
 					maxLength={6000}
 					editable={!disabled}
-					helper={t`Write your answer, or draft one from your Knowledge.`}
+					helper={t`Write your answer, or draft one from your Profile.`}
 					onChangeText={setText}
 					onBlur={answerSave.flush}
 				/>

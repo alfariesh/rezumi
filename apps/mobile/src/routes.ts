@@ -16,6 +16,10 @@ export type AccountPane =
 	| "licences";
 /** The bottom tabs of `app/(tabs)`, in tab-bar order. */
 export type AppTab = "home" | "documents" | "applications" | "portfolio" | "profile";
+
+/** The Profile's sections, in the order of its tab row. */
+export const PROFILE_TABS = ["details", "career", "facts", "stories", "preferences"] as const;
+export type ProfileTab = (typeof PROFILE_TABS)[number];
 export type ApplicationTab = WorkspaceTab;
 /** The Applications tab's views; List is the tab's index. */
 export type ApplicationsView = "list" | "board" | "calendar" | "insights";
@@ -50,9 +54,13 @@ export const routes = {
 		view === "list" ? ("/applications" as const) : (`/applications/${view}` as const),
 	offers: () => "/applications/offers" as const,
 	portfolio: () => "/portfolio" as const,
-	profile: () => "/profile" as const,
-	/** The Knowledge screen kept from before the rebuild, under Profile until Phase 06 replaces it. */
-	knowledge: () => "/profile/knowledge" as const,
+	/** `tab`: the Profile section to open (Details by default). */
+	profile: (tab?: ProfileTab) => (tab && tab !== "details" ? (`/profile?tab=${tab}` as const) : ("/profile" as const)),
+	/** One Profile entry (Career), full screen. */
+	profileEntry: (section: string, item: string) => `/profile/entry/${segment(section)}/${segment(item)}` as const,
+	profileSummary: () => "/profile/summary" as const,
+	/** Bring what you have: a file, LinkedIn, GitHub or a website fills the Profile after a review. */
+	profileBring: () => "/profile/bring" as const,
 
 	// Account stack, opened from the avatar menu
 	account: (pane?: AccountPane) => (pane ? (`/account/${pane}` as const) : ("/account" as const)),

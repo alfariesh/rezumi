@@ -1,6 +1,6 @@
-import type { AccountPane, AppHref, BuilderPane } from "../routes";
+import type { AccountPane, AppHref, BuilderPane, ProfileTab } from "../routes";
 import { WORKSPACE_TABS } from "@rezumi/schema/career";
-import { routes } from "../routes";
+import { PROFILE_TABS, routes } from "../routes";
 import { DEFAULT_SERVER } from "@/auth/session";
 
 export type DeepLink =
@@ -41,6 +41,10 @@ const nativeReserved = new Set([
 ]);
 const panes = new Set<string>(["write", "page", "design", "check", "share"]);
 const workspaceTabs = new Set<string>(WORKSPACE_TABS);
+const profileTabs = new Set<string>(PROFILE_TABS);
+/** `/dashboard/profile/stories/st_1` → Stories: the web's Profile pages map to the app's sections. */
+const profileTab = (name: string | undefined): ProfileTab | undefined =>
+	name && profileTabs.has(name) ? (name as ProfileTab) : undefined;
 // Web settings pages and the app screen holding the same settings. Billing has no app page (K6): the settings index.
 const settingsPanes: Record<string, AccountPane | undefined> = {
 	account: "account",
@@ -90,13 +94,13 @@ function dashboardHref(rest: readonly string[], path: string): AppHref | null {
 		case "portfolio":
 			return routes.portfolio();
 		case "profile":
-			return routes.profile();
+			return routes.profile(profileTab(second));
 		case "jobs":
 			return routes.applications();
 		case "coach":
 			return rest.length <= 2 ? routes.coach() : null;
 		case "career":
-			if (second === "knowledge") return routes.profile();
+			if (second === "knowledge") return routes.profile(profileTab(third) ?? "facts");
 			if (second === "offers") return rest.length === 2 ? routes.offers() : null;
 			if (second === "coach") return rest.length <= 3 ? routes.coach() : null;
 			return null;

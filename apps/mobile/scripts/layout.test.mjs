@@ -429,23 +429,7 @@ const componentFixtures = {
 };
 const { CollectionHeader } = load("components/collection-header.tsx");
 const { ListRow, EmptyState } = load("ui-legacy/layout.tsx", componentFixtures);
-const { Segmented } = load("ui-legacy/fields.tsx", {
-	...componentFixtures,
-	"./layout": { ListRow },
-	"./overlays": { Sheet: "Sheet" },
-	"./switch": { Switch: "Switch" },
-	"@rezumi/utils/string": { filterOptions: (options) => options },
-});
 const { BarItem } = load("shell/editor-bar.tsx", { "react-native-reanimated": animation });
-const { KnowledgeScreen } = load("features/career/knowledge.tsx", {
-	"./facts": { Facts: "Facts" },
-	"./stories": { Stories: "Stories" },
-	"./preferences": { Preferences: "Preferences" },
-	"./shared": { LoadState: "LoadState" },
-	"./hooks": { useCareerQueries: () => ({ profile: {} }) },
-	"@/auth/session": { useSession: () => ({ server: "fixture" }) },
-	"@/ui-legacy": { ...ui, Screen: "Screen", Segmented: "Segmented" },
-});
 native.FlatList = "FlatList";
 const documentQuery = { data: [], isError: false, refetch() {} };
 const { DocumentsLibrary } = load("features/documents/library.tsx", {
@@ -541,11 +525,6 @@ for (const fontScale of [1, 1.95, 3.12]) {
 	assert.equal(values.length, 1);
 	if (fontScale > 1.3) assert.equal(values[0].props.numberOfLines, undefined);
 	hooks.length = 0;
-	const knowledge = render(KnowledgeScreen);
-	const choice = nodes(knowledge).find((node) => node.type === "Segmented");
-	assert.ok(choice, "Three Knowledge choices must remain inline");
-	const segments = render(Segmented, choice.props);
-	assert.equal(segments.props.style.flexDirection, fontScale > 1.3 ? "column" : "row");
 	for (const label of ["Documents", "Applications", "Career", "Settings", "Podania o pracę", "தொழில் வாழ்க்கை"]) {
 		const item = render(BarItem, { label, icon: "file-text", focused: false, onPress() {} });
 		const text = nodes(item).find((node) => node.props.children?.includes(label));

@@ -60,11 +60,11 @@ export type ChatViewProps = {
 	/** Sent once, as soon as it can be (a question asked from another screen). */
 	prompt?: string | null;
 	onPromptSent?: () => void;
-	/** Nothing can be sent (locked document, Knowledge still loading). */
+	/** Nothing can be sent (locked document, the Profile still loading). */
 	disabled?: boolean;
 	/** Error line: Switch model. */
 	onSwitchModel?: () => void;
-	/** After each reply, for example to refresh Knowledge. */
+	/** After each reply, for example to refresh the Profile. */
 	onFinish?: () => void;
 };
 

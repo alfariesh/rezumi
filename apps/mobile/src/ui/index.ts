@@ -119,3 +119,5 @@ export { usePullRefresh } from "./use-pull-refresh";
 export { useThemeColor, type ThemeColor } from "heroui-native";
 export { ChipInput, addChips, type ChipInputProps } from "./chip-input";
 export { PermissionPrimer, type PermissionPrimerProps } from "./permission-primer";
+export { MonthPicker, type MonthPickerProps } from "./month-picker";
+export { useKeyboardVisible } from "./keyboard";

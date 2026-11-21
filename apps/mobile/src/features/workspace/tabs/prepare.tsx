@@ -100,7 +100,7 @@ function PlanEmpty({ application, interview }: PlanEmptyProps) {
 						onPress={() => void generate.run({ task: "briefing", interviewId: interview.id }).catch(() => undefined)}
 					/>
 					<PrivacyLine centered>
-						{t`Sends this application (posting, notes, interview details) and Knowledge that's switched on to ${name}.`}
+						{t`Sends this application (posting, notes, interview details) and your Profile, if switched on, to ${name}.`}
 					</PrivacyLine>
 				</>
 			) : (
@@ -139,9 +139,9 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 	const action = (row: SavedData<"briefing">["plan"][number]) => {
 		switch (row.action) {
 			case "story":
-				return { label: t`Open story`, onPress: () => router.push(routes.knowledge()) };
+				return { label: t`Open story`, onPress: () => router.push(routes.profile("stories")) };
 			case "draft-story":
-				return { label: t`Draft story`, onPress: () => router.push(routes.knowledge()) };
+				return { label: t`Draft story`, onPress: () => router.push(routes.profile("stories")) };
 			case "practise":
 				return { label: t`Practice`, onPress: () => go("practise", { speak: true }) };
 			case "questions":
@@ -159,7 +159,7 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 					{t`${doneMinutes} of ${total} min`}
 				</Text>
 			</View>
-			{/* The interview, posting or Knowledge changed since it was planned: plan again on request. */}
+			{/* The interview, posting or Profile changed since it was planned: plan again on request. */}
 			{briefing.outdated && !readOnly && provider && interview ? (
 				<Button
 					variant="secondary"
@@ -290,7 +290,7 @@ function RefreshSwitch({ application, interview }: RefreshSwitchProps) {
 			? t`AI connections are unavailable.`
 			: !providerId
 				? t`Connect an AI provider in Settings to refresh it automatically.`
-				: t`${at} · ${providerLabel}. Sends this application and your Knowledge; your provider may charge.`;
+				: t`${at} · ${providerLabel}. Sends this application and your Profile; your provider may charge.`;
 
 	return (
 		<Block>
@@ -344,7 +344,7 @@ function StoriesToBring({ application, briefing }: StoriesToBringProps) {
 					title={story.data.title}
 					leading="book-open"
 					chevron
-					onPress={() => router.push(routes.knowledge())}
+					onPress={() => router.push(routes.profile("stories"))}
 				/>
 			))}
 			{briefing.data.missingStory ? <Banner tone="warn" icon="question" message={briefing.data.missingStory} /> : null}

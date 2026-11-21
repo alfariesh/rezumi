@@ -5,6 +5,7 @@ import { Fragment, useState } from "react";
 import { View } from "react-native";
 import { Caption, GallerySection } from "./section";
 import {
+	Button,
 	Checkbox,
 	ChipInput,
 	ControlField,
@@ -15,6 +16,7 @@ import {
 	InputGroup,
 	InputOTP,
 	Label,
+	MonthPicker,
 	Radio,
 	RadioGroup,
 	SearchField,
@@ -23,6 +25,7 @@ import {
 	Slider,
 	Switch,
 	TextArea,
+	Text,
 	TextField,
 	cx,
 } from "@/ui";
@@ -300,6 +303,10 @@ export function FieldsGallery() {
 				</Surface>
 			</GallerySection>
 
+			<GallerySection title="MonthPicker" note="Resume dates: the calendar button beside a typed month.">
+				<MonthPickerDemo />
+			</GallerySection>
+
 			<GallerySection title="Slider" note="Approximate values with a visible output.">
 				<Slider value={volume} onChange={(next) => setVolume(Array.isArray(next) ? (next[0] ?? 0) : next)}>
 					<View className="flex-row items-center justify-between">
@@ -338,6 +345,30 @@ export function FieldsGallery() {
 					</InputOTP.Group>
 				</InputOTP>
 			</GallerySection>
+		</View>
+	);
+}
+
+function MonthPickerDemo() {
+	const [isOpen, setIsOpen] = useState(false);
+	const [value, setValue] = useState(new Date(2022, 2, 1));
+	return (
+		<View className="flex-row items-center gap-3">
+			<Button variant="secondary" onPress={() => setIsOpen(true)}>
+				Pick a month
+			</Button>
+			<Text tabular>{`${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}`}</Text>
+			<MonthPicker
+				isOpen={isOpen}
+				onOpenChange={setIsOpen}
+				title="Start"
+				value={value}
+				onPick={setValue}
+				onClear={() => undefined}
+				clearLabel="Clear"
+				doneLabel="Done"
+				closeLabel="Close"
+			/>
 		</View>
 	);
 }

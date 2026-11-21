@@ -130,6 +130,7 @@ msgid "{0, plural, one {# application selected.} other {# applications selected.
 msgstr "{0, plural, one {# müraciət seçildi.} other {# müraciət seçildi.}}"
 
 #. placeholder {0}: text.trim().length
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "{0, plural, one {# character} other {# characters}}"
 msgstr "{0, plural, one {# simvolu} other {# simvolları}}"
@@ -232,7 +233,7 @@ msgid "{0, plural, one {Applied # day ago} other {Applied # days ago}}"
 msgstr "{0, plural, one {# gün əvvəl müraciət edilib} other {# gün əvvəl müraciət edilib}}"
 
 #. placeholder {0}: fact.usedBy.stories
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {Backs # story} other {Backs # stories}}"
 msgstr "{0, plural, one {# hekayəni dəstəkləyir} other {# hekayəni dəstəkləyir}}"
 
@@ -256,11 +257,6 @@ msgstr "{0, plural, one {# sənəd həmişəlik silinsin?} other {# sənəd həm
 msgid "{0, plural, one {For # day} other {For # days}}"
 msgstr "{0, plural, one {# gün üçün} other {# günlər üçün}}"
 
-#. placeholder {0}: knowledge.facts
-#: src/features/assistant/coach-screen.tsx
-msgid "{0, plural, one {Knowledge · # fact} other {Knowledge · # facts}}"
-msgstr "{0, plural, one {Biliklər · # fakt} other {Biliklər · # fakt}}"
-
 #. placeholder {0}: [...all, ...recoverable].filter((document) => document.type === "letter").length
 #: src/features/documents/library.tsx
 msgid "{0, plural, one {Letter (#)} other {Letters (#)}}"
@@ -270,6 +266,11 @@ msgstr "{0, plural, one {Məktub (#)} other {Məktublar (#)}}"
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {No reply in # day} other {No reply in # days}}"
 msgstr "{0, plural, one {# gündə cavab yoxdur} other {# gün ərzində cavab yoxdur}}"
+
+#. placeholder {0}: knowledge.facts
+#: src/features/assistant/coach-screen.tsx
+msgid "{0, plural, one {Profile · # fact} other {Profile · # facts}}"
+msgstr ""
 
 #. placeholder {0}: [...all, ...recoverable].filter((document) => document.type === "resume").length
 #: src/features/documents/library.tsx
@@ -287,7 +288,7 @@ msgid "{0, plural, one {Started # minute ago} other {Started # minutes ago}}"
 msgstr "{0, plural, one {# dəqiqə əvvəl başladı} other {# dəqiqə əvvəl başladı}}"
 
 #. placeholder {0}: fact.usedBy.savedItems
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
 msgstr "{0, plural, one {# saxlanılmış elementdə istifadə olunub} other {# saxlanılmış elementdə istifadə olunub}}"
 
@@ -427,7 +428,8 @@ msgid "{0} of {1} tailored applications got a reply; {2} of {3} sent with anothe
 msgstr "{1} uyğunlaşdırılmış müraciətdən {0} cavab aldı; başqa CV ilə göndərilən {3} müraciətdən {2} cavab aldı."
 
 #. placeholder {0}: fact.company
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
+#: src/features/profile/facts.tsx
 msgid "{0} only"
 msgstr "Yalnız {0}"
 
@@ -476,8 +478,8 @@ msgid "{active, plural, one {# active application} other {# active applications}
 msgstr "{active, plural, one {# aktiv müraciət} other {# aktiv müraciət}}"
 
 #: src/features/workspace/tabs/prepare.tsx
-msgid "{at} · {providerLabel}. Sends this application and your Knowledge; your provider may charge."
-msgstr "{at} · {providerLabel}. Bu müraciəti və Biliklərinizi göndərir; provayderiniz ödəniş tələb edə bilər."
+msgid "{at} · {providerLabel}. Sends this application and your Profile; your provider may charge."
+msgstr ""
 
 #: src/preview/page.tsx
 msgid "{authored, plural, =1 {Fit to one page} other {Fit to # pages}}"
@@ -560,9 +562,14 @@ msgstr "{entry} nə vaxt demir. Tarixlər onu taymlaynınıza yerləşdirir."
 msgid "{entry} names the role but not what you did, so it adds no keywords."
 msgstr "{entry} rolu adlandırır, lakin sizin etdiyinizi deyil, ona görə də heç bir açar söz əlavə etmir."
 
+#: src/features/profile/stories.tsx
 #: src/features/workspace/tabs/saved.tsx
 msgid "{facts, plural, one {# fact} other {# facts}}"
 msgstr "{facts, plural, one {# fakt} other {# fakt}}"
+
+#: src/features/profile/stories.tsx
+msgid "{filled} of 5 parts"
+msgstr "{filled} / 5 hissə"
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "{followUps, plural, one {# follow-up} other {# follow-ups}}"
@@ -593,6 +600,7 @@ msgid "{issues, plural, one {Check has # thing to review. You can still download
 msgstr "{issues, plural, one {Yoxlamada nəzərdən keçirilməli # var. Siz hələ də yükləyə bilərsiniz.} other {Yoxlamanın nəzərdən keçirilməsi üçün # şeyləri var. Siz hələ də yükləyə bilərsiniz.}}"
 
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
 msgid "{kept} entries ticked"
 msgstr ""
 
@@ -624,6 +632,10 @@ msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
+msgstr ""
+
+#: src/features/entries/entry-fields.tsx
+msgid "{level} of 5"
 msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
@@ -779,6 +791,7 @@ msgid "1 day"
 msgstr "1 gün"
 
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
 msgid "1 entry ticked"
 msgstr ""
 
@@ -803,6 +816,7 @@ msgstr "2 fayl"
 msgid "2 hours before"
 msgstr "2 saat əvvəl"
 
+#: app/(tabs)/profile/summary.tsx
 #: src/features/write/entry-screen.tsx
 msgid "2–3 sentences reads best"
 msgstr "2-3 cümlə ən yaxşı oxuyur"
@@ -844,7 +858,8 @@ msgstr "Tarix aralığı əksər proqramların oxuya bilmədiyi formatda yazıl�
 msgid "A date won't be read"
 msgstr "Tarix oxunmayacaq"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories-reader.tsx
+#: src/features/profile/stories.tsx
 msgid "A fact changed. Review this story."
 msgstr "Bir fakt dəyişib. Bu hekayəni nəzərdən keçirin."
 
@@ -871,6 +886,10 @@ msgstr "Link tam ünvan deyil"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "Keçid göstərdiyi ünvandan fərqli yerə yönləndirir."
+
+#: src/features/entries/basics-form.tsx
+msgid "A messenger handle, a portfolio, a driving licence: anything with an icon."
+msgstr ""
 
 #: src/features/check/writing.tsx
 msgid "A model's opinion, not a verdict. It can be wrong."
@@ -954,7 +973,7 @@ msgstr "Başqa bir təklifi qəbul etdi"
 msgid "Accepted offer"
 msgstr "Təklif qəbul edildi"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "Accomplishment"
 msgstr "Nailiyyət"
 
@@ -969,9 +988,9 @@ msgstr "Hesab"
 msgid "Account menu"
 msgstr ""
 
-#: src/features/career/stories.tsx
-msgid "Action (required)"
-msgstr "Fəaliyyət (tələb olunur)"
+#: src/features/profile/stories-parts.ts
+msgid "Action"
+msgstr "Hərəkət"
 
 #: src/features/search/search-screen.tsx
 msgid "Actions"
@@ -998,23 +1017,21 @@ msgid "Active until {0}"
 msgstr ""
 
 #: src/features/application-detail/sections.tsx
+#: src/features/entries/photo-field.tsx
 #: src/features/home/schedules.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Add"
 msgstr "Əlavə et"
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Add a country"
 msgstr "Ölkə əlavə edin"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts.tsx
 msgid "Add a fact"
 msgstr "Bir fakt əlavə edin"
 
-#: src/features/career/facts.tsx
-msgid "Add a fact or try another word or type."
-msgstr "Fakt əlavə edin və ya başqa söz və ya yazı yazın."
-
+#: src/features/entries/basics-form.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Add a link"
 msgstr "Link əlavə edin"
@@ -1043,6 +1060,10 @@ msgstr "Telefon nömrəsi əlavə edin"
 msgid "Add a place"
 msgstr ""
 
+#: src/features/profile/preferences.tsx
+msgid "Add a place, then Return"
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Add a question from the form"
 msgstr "Formadan sual əlavə et"
@@ -1059,6 +1080,10 @@ msgstr ""
 msgid "Add a role or company to look for."
 msgstr "Axtarmaq üçün vəzifə və ya şirkət əlavə edin."
 
+#: src/features/profile/preferences.tsx
+msgid "Add a role, then Return"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Education\". Many systems have a required education field."
 msgstr "\"Təhsil\" başlıqlı bölmə əlavə edin. Bir çox sistemlərdə təhsil sahəsi məcburidir."
@@ -1067,9 +1092,9 @@ msgstr "\"Təhsil\" başlıqlı bölmə əlavə edin. Bir çox sistemlərdə tə
 msgid "Add a section headed \"Experience\" or \"Work Experience\". It is the field most systems rank on."
 msgstr "\"Təcrübə\" və ya \"İş Təcrübəsi\" başlıqlı bölmə əlavə edin. Bu, əksər sistemlərin sıralama etdiyi sahədir."
 
-#: src/features/career/stories.tsx
-msgid "Add a story"
-msgstr "Hekayə əlavə et"
+#: src/features/profile/career.tsx
+msgid "Add a summary"
+msgstr ""
 
 #: src/features/check/writing.tsx
 msgid "Add a summary or describe a role first; there's nothing to review yet."
@@ -1079,10 +1104,15 @@ msgstr "Xülasə əlavə edin və ya əvvəlcə rolu təsvir edin; hələ nəzə
 msgid "Add a tag"
 msgstr "Etiket əlavə edin"
 
+#: src/features/profile/stories-editor.tsx
+msgid "Add a tag, then Return"
+msgstr ""
+
 #: src/features/ai/provider-list.tsx
 msgid "Add AI provider"
 msgstr "AI provayderi əlavə edin"
 
+#: src/features/entries/text-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
 msgstr "@ və name@example.com kimi domen əlavə edin"
@@ -1115,6 +1145,10 @@ msgstr "Əvvəlcə iş müraciətlərinə qarşıdan gələn müsahibəni əlav�
 msgid "Add any of these and we'll fill in your Profile. You check everything before it's saved."
 msgstr ""
 
+#: src/features/profile/bring-screen.tsx
+msgid "Add any of these and we'll find what your Profile is missing. You check everything before it's added."
+msgstr ""
+
 #: src/features/search/search-screen.tsx
 msgid "Add application"
 msgstr "Müraciət əlavə edin"
@@ -1139,6 +1173,10 @@ msgstr "Qapaq məktubu əlavə edin"
 msgid "Add dates"
 msgstr "Tarixlər əlavə edin"
 
+#: src/features/entries/basics-form.tsx
+msgid "Add detail"
+msgstr ""
+
 #: src/features/write/fields.ts
 msgid "Add education"
 msgstr "Təhsil əlavə edin"
@@ -1155,6 +1193,11 @@ msgstr "Sübut əlavə et"
 #: src/features/write/fields.ts
 msgid "Add experience"
 msgstr "Təcrübə əlavə edin"
+
+#: src/features/profile/facts-add.tsx
+#: src/features/profile/facts.tsx
+msgid "Add fact"
+msgstr ""
 
 #: src/features/write/basics-screen.tsx
 msgid "Add field"
@@ -1204,6 +1247,7 @@ msgstr "Nəşr əlavə edin"
 msgid "Add reference"
 msgstr "İstinad əlavə edin"
 
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Add role"
 msgstr "Rol əlavə edin"
@@ -1212,6 +1256,7 @@ msgstr "Rol əlavə edin"
 msgid "Add screening calls and technical interviews to see them here and on the calendar."
 msgstr "Burada və təqvimdə görmək üçün yoxlama zəngləri və texniki müsahibələr əlavə edin."
 
+#: src/features/profile/career.tsx
 #: src/features/write/outline.tsx
 msgid "Add section"
 msgstr "Bölmə əlavə edin"
@@ -1224,6 +1269,10 @@ msgstr "Bacarıq əlavə edin"
 msgid "Add some whitespace between sections so a person can skim it."
 msgstr "Bölmələr arasında bir az boş yer buraxın ki, insan onu gözdən keçirə bilsin."
 
+#: src/features/profile/facts.tsx
+msgid "Add something true you can support. The coach and your documents use the facts you turn on."
+msgstr ""
+
 #: src/features/applications/list-screen.tsx
 msgid "Add tag"
 msgstr "Etiket əlavə edin"
@@ -1232,10 +1281,12 @@ msgstr "Etiket əlavə edin"
 msgid "Add text"
 msgstr "Mətn əlavə edin"
 
+#: src/features/entries/text-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Add the domain after the @, like {name}@example.com"
 msgstr "{name}@example.com kimi @-dan sonra domen əlavə edin"
 
+#: src/features/entries/text-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Add the domain ending, like {domain}.com"
 msgstr "{domain}.com kimi domen sonunu əlavə edin"
@@ -1248,6 +1299,10 @@ msgstr "Bu qeydləri domeni idarə etdiyiniz yerdə əlavə edin, sonra yoxlayı
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Add to calendar"
 msgstr "Təqvimə əlavə edin"
+
+#: src/features/profile/bring-screen.tsx
+msgid "Add to my Profile"
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "Add to questions"
@@ -1265,6 +1320,10 @@ msgstr "Yuxarı hissəyə nə etdiyinizi təsvir edən iki-üç sətir əlavə e
 msgid "Add volunteering"
 msgstr "Könüllülük əlavə edin"
 
+#: src/features/profile/stories-editor.tsx
+msgid "Add what happened before you can save."
+msgstr "Yadda saxlamazdan əvvəl nə baş verdiyini əlavə edin."
+
 #: src/features/check/issues.ts
 msgid "Add your name"
 msgstr "Adınızı əlavə edin"
@@ -1277,23 +1336,38 @@ msgstr ""
 msgid "Added by Rezumi"
 msgstr ""
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 #: src/features/workspace/parts.tsx
 msgid "Added by you"
 msgstr "Siz əlavə etmisiniz"
-
-#: src/features/assistant/messages.tsx
-msgid "Added to Knowledge."
-msgstr "Biliklər üzərinə əlavə edildi."
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "Added to Prepare"
 msgstr "Hazırlığa əlavə edildi"
 
+#: src/features/profile/bring-screen.tsx
+msgid "Added to your Profile"
+msgstr ""
+
+#: src/features/assistant/messages.tsx
+msgid "Added to your Profile."
+msgstr ""
+
+#: src/features/profile/bring-screen.tsx
+msgid "Added. It saves once you're back online."
+msgstr ""
+
+#: src/features/profile/bring-screen.tsx
+#: src/features/profile/facts-add.tsx
+msgid "Adding…"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Additional details (optional)"
 msgstr "Əlavə təfərrüatlar (isteğe bağlı)"
 
+#: src/features/entries/basics-form.tsx
+#: src/features/entries/rich-text-field.tsx
 #: src/features/share/link.tsx
 msgid "Address"
 msgstr "Ünvan"
@@ -1301,6 +1375,10 @@ msgstr "Ünvan"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "O vaxta qədər cavab almasanız, Bu gün bölməsinə xatırlatma əlavə edir."
+
+#: src/features/profile/fill-sheet.tsx
+msgid "Adds what your Profile doesn't have yet. Nothing you've written here is replaced."
+msgstr ""
 
 #: src/features/onboarding/source-fields.tsx
 msgid "Adds your own public projects."
@@ -1414,8 +1492,8 @@ msgstr "AI yapışdırılmış mətni yalnız siz soruşduqda oxuyur. Linklər A
 msgid "Albanian"
 msgstr "Albanca"
 
-#: src/features/career/facts.tsx
 #: src/features/design/template-group.tsx
+#: src/features/profile/facts.tsx
 #: src/features/workspace/tabs/saved.tsx
 msgid "All"
 msgstr "Hamısı"
@@ -1425,7 +1503,7 @@ msgstr "Hamısı"
 msgid "All ({0})"
 msgstr "Hamısı ({0})"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
 msgid "All applications"
 msgstr "Bütün müraciətlər"
 
@@ -1563,8 +1641,8 @@ msgstr "Cavablar"
 msgid "Answers copied"
 msgstr "Cavablar kopyalandı"
 
-#: src/features/career/preferences.tsx
 #: src/features/onboarding/questions.tsx
+#: src/features/profile/preferences.tsx
 msgid "Any"
 msgstr "İstənilən"
 
@@ -1580,7 +1658,7 @@ msgstr "Linki olan hər kəs rezyumenizə baxa biləcək."
 msgid "Anything to remember about this job"
 msgstr "Bu iş haqqında yadda qalan hər şey var"
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Anywhere"
 msgstr "Hər yerdə"
 
@@ -1790,7 +1868,7 @@ msgstr "Axtarışınız haqqında soruşun və ya daha yaxşı izah etmək istə
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {tabName}."
 msgstr "Bu iş haqqında istənilən sualı verin. Kouç iş elanını, qeydlərinizi və göndərdiklərinizi oxuyur və {tabName} bölməsində olduğunuzu bilir."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Ask first"
 msgstr "Əvvəlcə soruş"
 
@@ -1873,7 +1951,6 @@ msgid "Attach up to 10 files to a message."
 msgstr "Mesaja 10-a qədər fayl əlavə edin."
 
 #: src/features/assistant/messages.tsx
-#: src/features/career/facts.tsx
 msgid "Attachment"
 msgstr "Əlavə"
 
@@ -1889,7 +1966,7 @@ msgstr "Qoşmalar ümumilikdə 100 MB-a qədər ola bilər."
 msgid "audio file"
 msgstr "audio fayl"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Automatically"
 msgstr "Avtomatik"
 
@@ -1922,7 +1999,9 @@ msgstr "Azərbaycan"
 #: src/features/design/design-pane.tsx
 #: src/features/document-menu/index.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/entries/entry-editor.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/entry-sheet.tsx
@@ -1969,7 +2048,8 @@ msgstr "İş elanına qayıt"
 msgid "Back to sign in"
 msgstr "Girişə qayıt"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories-editor.tsx
+#: src/features/profile/stories-reader.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Backed by"
 msgstr "Əsaslandığı"
@@ -2071,6 +2151,7 @@ msgstr "Əsas mətn çox kiçikdir"
 msgid "Body text set to {minimum} pt"
 msgstr "Əsas mətn {minimum} pt olaraq ayarlandı"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Bold"
@@ -2125,6 +2206,10 @@ msgstr "Brifinq yeniləməsi aktivdir · {next}"
 msgid "Briefing refresh paused"
 msgstr "Brifinqin yenilənməsi dayandırılıb"
 
+#: src/features/profile/career.tsx
+msgid "Bring a resume file, LinkedIn, GitHub or your website and check what we found, or copy from a resume you've made. You can also type it in below."
+msgstr ""
+
 #: src/features/documents/library.tsx
 #: src/features/home/home-screen.tsx
 msgid "Bring in my details"
@@ -2135,7 +2220,10 @@ msgstr ""
 msgid "Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample."
 msgstr ""
 
+#: app/(tabs)/profile/_layout.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
+#: src/features/profile/career.tsx
 msgid "Bring what you have"
 msgstr ""
 
@@ -2151,6 +2239,7 @@ msgstr "Bolqar"
 msgid "bullet {n}"
 msgstr "siyahı girişi {n}"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 #: src/features/write/section-sheet.tsx
@@ -2190,6 +2279,9 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 #: src/features/check/parser.tsx
 #: src/features/check/writing.tsx
+#: src/features/profile/facts-detail.tsx
+#: src/features/profile/facts.tsx
+#: src/features/profile/stories.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/workspace/tabs/fit.tsx
 #: src/features/write/improve.tsx
@@ -2211,6 +2303,10 @@ msgstr "Qeydi ləğv edin"
 msgid "Cancel request"
 msgstr "Sorğunu ləğv edin"
 
+#: src/features/profile/profile-screen.tsx
+msgid "Career"
+msgstr ""
+
 #: src/features/settings/locale-names.ts
 msgid "Catalan"
 msgstr "Katalan"
@@ -2219,6 +2315,7 @@ msgstr "Katalan"
 msgid "Certifications"
 msgstr "Sertifikatlar"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Dəyişmək"
@@ -2253,7 +2350,7 @@ msgstr "CV-nin dizaynını dəyişdirin"
 msgid "Change theme to…"
 msgstr "Temanı… olaraq dəyişdirin"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Change timezone"
 msgstr "Saat qurşağını dəyiş"
 
@@ -2350,7 +2447,14 @@ msgstr "Baxışları yoxlayın"
 msgid "Check what we found"
 msgstr ""
 
+#: src/features/profile/facts.tsx
+#: src/features/profile/preferences.tsx
+#: src/features/profile/stories.tsx
+msgid "Check your connection and try again."
+msgstr "Bağlantınızı yoxlayın və yenidən cəhd edin."
+
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/states.tsx
 msgid "Check your connection, then try again."
 msgstr ""
 
@@ -2359,7 +2463,7 @@ msgstr ""
 msgid "Check your email"
 msgstr "E-poçtunuzu yoxlayın"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Check your preferences. Invalid changes are not saved."
 msgstr "Tercihlərinizi yoxlayın. Yanlış dəyişikliklər yadda saxlanmır."
 
@@ -2373,8 +2477,8 @@ msgid "Checking {name}"
 msgstr "{name} yoxlanılır"
 
 #: src/features/workspace/parts.tsx
-msgid "Checking against Knowledge"
-msgstr "Biliklərlə yoxlanılır"
+msgid "Checking against your Profile"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "Checking layout and content"
@@ -2444,6 +2548,7 @@ msgstr "10 MB-dan kiçik PDF seçin. Seçilmiş fayl yüklənmədi."
 msgid "Choose a photo"
 msgstr ""
 
+#: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Choose a photo smaller than 10 MB."
@@ -2493,9 +2598,14 @@ msgstr ""
 msgid "Choose date"
 msgstr "Tarixi seçin"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 msgid "Choose from library"
 msgstr "Kitabxanadan seçin"
+
+#: src/features/entries/basics-form.tsx
+msgid "Choose icon"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Choose time"
@@ -2513,6 +2623,10 @@ msgstr "Dairə"
 msgid "Cities or countries. Leave it empty for anywhere."
 msgstr ""
 
+#: src/features/entries/basics-form.tsx
+msgid "City, country"
+msgstr ""
+
 #: src/features/workspace/tabs/fit.tsx
 msgid "Clarify"
 msgstr "Aydınlaşdır"
@@ -2528,6 +2642,7 @@ msgid "Clean"
 msgstr "Sadə"
 
 #: src/features/application-detail/sheets.tsx
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Clear"
 msgstr "Təmizlə"
@@ -2541,6 +2656,11 @@ msgstr "Tarixi təmizləyin"
 #: src/features/documents/library.tsx
 msgid "Clear filters"
 msgstr "Filtrləri təmizləyin"
+
+#: src/features/profile/facts.tsx
+#: src/features/profile/search-regions-field.tsx
+msgid "Clear search"
+msgstr "Axtarışı təmizləyin"
 
 #: src/features/write/section-sheet.tsx
 msgid "Clear section"
@@ -2560,10 +2680,20 @@ msgid "Clears its entries; the section stays. You can undo."
 msgstr "Girişlərini təmizləyir; bölmə qalır. Geri qaytara bilərsiniz."
 
 #: src/features/auth/welcome-screen.tsx
-#: src/features/career/facts.tsx
 #: src/features/check/page.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/new-document.tsx
+#: src/features/entries/basics-form.tsx
+#: src/features/entries/dates-field.tsx
+#: src/features/entries/icon-picker.tsx
+#: src/features/entries/photo-field.tsx
+#: src/features/entries/rich-text-field.tsx
+#: src/features/profile/career.tsx
+#: src/features/profile/facts.tsx
+#: src/features/profile/fill-sheet.tsx
+#: src/features/profile/save-note.tsx
+#: src/features/profile/search-regions-field.tsx
+#: src/features/profile/stories.tsx
 #: src/features/share/export-screen.tsx
 msgid "Close"
 msgstr "Bağlayın"
@@ -2618,6 +2748,10 @@ msgstr "Bağlanıb: {closed}"
 #: src/shell/tab-chrome.tsx
 msgid "Coach"
 msgstr "Kouç"
+
+#: src/features/profile/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "Code copied"
@@ -2820,6 +2954,7 @@ msgstr "Kontekst buraxılıb, ona görə də əvəzinə yeni mesajla cavab verin
 #: src/features/assistant/chat-view.tsx
 #: src/features/auth/check-email-screen.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
 #: src/shell/permissions.tsx
 msgid "Continue"
 msgstr "Davam et"
@@ -2910,17 +3045,22 @@ msgstr "İxrac edilmiş fayldan mətni kopyalayın və oxuyun; səhv yerdə çı
 msgid "Copy transcript"
 msgstr "Transkripti kopyalayın"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
 msgid "Correct"
 msgstr "Düzəlt"
-
-#: src/features/career/facts.tsx
-msgid "Correct fact"
-msgstr "Bu faktı düzəldin"
 
 #: src/features/ats-checker/messages.ts
 msgid "Correct the year, or write \"Present\" for ongoing work."
 msgstr "İli düzəldin, ya da davam edən iş üçün \"Present\" yazın."
+
+#: src/features/profile/facts-detail.tsx
+msgid "Correct this fact"
+msgstr "Bu faktı düzəlt"
+
+#. placeholder {0}: date(lastRevision.at)
+#: src/features/profile/facts-detail.tsx
+msgid "Corrected {0} · original kept"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Correction by Rezumi"
@@ -2971,6 +3111,10 @@ msgstr "Yadda saxlama təsdiqlənmədi. Təkrarlanmanın qarşısını almaq ü�
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "Yadda saxlamanı təsdiqləmək mümkün olmadı. Dublikatın qarşısını almaq üçün yenidən cəhd etməzdən əvvəl müraciəti yoxlayın."
 
+#: src/features/profile/bring-screen.tsx
+msgid "Couldn't copy the photo. You can add one in Details."
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Couldn't copy the photo. You can add one later in your Profile."
 msgstr ""
@@ -3007,6 +3151,10 @@ msgstr "Bu cədvəli silmək mümkün olmadı. Yenidən cəhd edin."
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
 msgstr "İxrac etmək mümkün olmadı. Yenidən cəhd edin."
+
+#: src/features/profile/fill-sheet.tsx
+msgid "Couldn't fill your Profile. Check your connection and try again."
+msgstr ""
 
 #: src/features/share/files.ts
 msgid "Couldn't generate this file. Try again, or download PDF instead."
@@ -3112,6 +3260,18 @@ msgstr "Versiyaları yükləmək mümkün olmadı."
 msgid "Couldn't load your details"
 msgstr ""
 
+#: src/features/profile/facts.tsx
+msgid "Couldn't load your facts"
+msgstr ""
+
+#: src/features/profile/preferences.tsx
+msgid "Couldn't load your preferences"
+msgstr ""
+
+#: src/features/profile/states.tsx
+msgid "Couldn't load your Profile"
+msgstr ""
+
 #: app/account/account.tsx
 msgid "Couldn't load your profile."
 msgstr "Profilinizi yükləmək mümkün olmadı."
@@ -3121,8 +3281,13 @@ msgid "Couldn't load your public address."
 msgstr "Ümumi ünvanınızı yükləmək mümkün olmadı."
 
 #: src/features/letters/write.tsx
+#: src/features/profile/fill-sheet.tsx
 msgid "Couldn't load your resumes."
 msgstr "CV-lərinizi yükləmək mümkün olmadı."
+
+#: src/features/profile/stories.tsx
+msgid "Couldn't load your stories"
+msgstr ""
 
 #: app/account/preferences.tsx
 msgid "Couldn't load your timezone."
@@ -3174,6 +3339,7 @@ msgid "Couldn't reach your AI provider. Try again or check its key in AI setting
 msgstr "AI provayderinizlə əlaqə saxlamaq mümkün olmadı. Yenidən cəhd edin və ya AI parametrlərində onun açarını yoxlayın."
 
 #. placeholder {0}: dates.raw
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Couldn't read “{0}”. Enter the dates so they sort and print consistently."
 msgstr "“{0}” oxunmadı. Tarixləri daxil edin ki, ardıcıl şəkildə sıralansın və çap olunsun."
@@ -3238,8 +3404,8 @@ msgstr "Bu CV-ni təqdim etmək mümkün olmadı."
 msgid "Couldn't revoke the key. Try again."
 msgstr "Açarı ləğv etmək mümkün olmadı. Yenidən cəhd edin."
 
-#: src/features/career/facts.tsx
 #: src/features/career/hooks.ts
+#: src/features/profile/facts.tsx
 #: src/features/workspace/hooks.ts
 msgid "Couldn't save that change. Check your connection and try again."
 msgstr "Həmin dəyişikliyi saxlamaq mümkün olmadı. Bağlantınızı yoxlayıb yenidən cəhd edin."
@@ -3250,8 +3416,8 @@ msgstr "Həmin dəyişikliyi saxlamaq mümkün olmadı. Element bərpa edildi; y
 
 #: src/features/workspace/tabs/debrief.tsx
 #: src/features/workspace/tabs/fit.tsx
-msgid "Couldn't save that to Knowledge. Try again."
-msgstr "Bunu Biliklərə saxlamaq mümkün olmadı. Yenidən cəhd edin."
+msgid "Couldn't save that to your Profile. Try again."
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Couldn't save the contacts. Try again."
@@ -3303,7 +3469,7 @@ msgstr "Dəyişikliklərinizi saxlamaq mümkün olmadı. Davam etməzdən əvvə
 msgid "Couldn't save your changes. Your edits are still on this device. Try again."
 msgstr "Dəyişikliklərinizi saxlamaq mümkün olmadı. Redaktələriniz hələ də bu cihazdadır. Yenidən cəhd edin."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Couldn't save your preferences. Your draft is still here."
 msgstr "Tərcihlərinizi saxlamaq mümkün olmadı. Layihəniz hələ də buradadır."
 
@@ -3413,6 +3579,7 @@ msgstr "Faylı yükləmək mümkün olmadı. Yenidən cəhd edin."
 msgid "Couldn't upload the font. Try again."
 msgstr ""
 
+#: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
 msgstr "Fotonu yükləmək mümkün olmadı."
@@ -3448,7 +3615,6 @@ msgstr "Doldur"
 #: app/_layout.tsx
 #: app/letter/[id]/_layout.tsx
 #: src/features/application-detail/sections.tsx
-#: src/features/career/facts.tsx
 msgid "Cover letter"
 msgstr "Müşayiət məktubu"
 
@@ -3543,9 +3709,13 @@ msgstr ""
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
 msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Currency"
 msgstr "Valyuta"
+
+#: src/features/entries/rich-text-field.tsx
+msgid "Current"
+msgstr ""
 
 #. placeholder {0}: getStageLabel(status)
 #: src/features/application-detail/sections.tsx
@@ -3647,6 +3817,7 @@ msgstr "Data paylaşımı ləğv edildi. AI provayderinə heç nə göndərilmə
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
+#: src/features/entries/dates-field.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
 #: src/features/write/fields.ts
@@ -3696,7 +3867,6 @@ msgstr "Hörmətli {name},"
 msgid "Dear hiring team,"
 msgstr "Hörmətli işə qəbul komandası,"
 
-#: src/features/career/facts.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/tabs/saved.tsx
 #: src/shell/workspace-chrome.tsx
@@ -3722,6 +3892,7 @@ msgstr "Dərəcə"
 
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
+#: src/features/profile/stories.tsx
 #: src/features/workspace/tabs/saved.tsx
 #: src/features/write/entry-sheet.tsx
 msgid "Delete"
@@ -3763,6 +3934,7 @@ msgid "Delete conversation"
 msgstr "Söhbəti sil"
 
 #: src/features/application-detail/sections.tsx
+#: src/features/entries/entry-editor.tsx
 msgid "Delete entry"
 msgstr "Girişi silin"
 
@@ -3799,7 +3971,7 @@ msgstr "Cədvəli silin"
 msgid "Delete section"
 msgstr "Bölməni silin"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories.tsx
 msgid "Delete story"
 msgstr "Hekayəni sil"
 
@@ -3873,6 +4045,7 @@ msgid "Description is clipped to 20,000 characters. Review it before preparing."
 msgstr "Təsvir 20.000 simvola kəsilib. Hazırlamadan əvvəl nəzərdən keçirin."
 
 #. placeholder {0}: index + 1
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Description of role {0}"
 msgstr "{0} rolunun təsviri"
@@ -3890,9 +4063,19 @@ msgstr "Dizayn"
 msgid "Design reset to defaults"
 msgstr "Dizayn standartlarına sıfırlanır"
 
+#. placeholder {0}: index + 1
+#: src/features/entries/basics-form.tsx
+msgid "Detail {0}"
+msgstr ""
+
+#: src/features/entries/basics-form.tsx
+msgid "Detail removed"
+msgstr ""
+
 #: app/applications/[id]/[tab].tsx
 #: src/features/document-menu/index.tsx
 #: src/features/onboarding/messages.ts
+#: src/features/profile/profile-screen.tsx
 msgid "Details"
 msgstr "Təfərrüatlar"
 
@@ -3909,6 +4092,7 @@ msgid "Direction"
 msgstr "İstiqamət"
 
 #: src/features/letters/write.tsx
+#: src/features/profile/stories.tsx
 #: src/shell/unsaved-changes.ts
 msgid "Discard"
 msgstr "Atın"
@@ -3921,6 +4105,7 @@ msgstr "Dəyişikliklərdən imtina et"
 msgid "Discard changes?"
 msgstr "Dəyişikliklər ləğv edilsin?"
 
+#: src/features/profile/stories.tsx
 #: src/shell/unsaved-changes.ts
 msgid "Discard your changes?"
 msgstr ""
@@ -4000,6 +4185,8 @@ msgstr "Paylaşma"
 #: app/account/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/documents/library.tsx
+#: src/features/entries/dates-field.tsx
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/date-field.tsx
 #: src/features/write/pickers.tsx
@@ -4179,8 +4366,12 @@ msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "Rəy aldığınız hər cavab burada saxlanılır, ən yenisi birinci."
 
 #: src/features/workspace/tabs/fit.tsx
-msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
-msgstr "İş elanındakı hər tələb Biliklərinizdəki fakt və hekayələrlə yoxlanılır. Boşluqlar çatışmayan bacarıq kimi deyil, həmişə çatışmayan sübut kimi göstərilir."
+msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr ""
+
+#: src/features/entries/photo-field.tsx
+msgid "Each resume decides whether to show it."
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "earlier messages in this chat"
@@ -4188,8 +4379,8 @@ msgstr "bu söhbətdəki əvvəlki mesajlar"
 
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/sections.tsx
-#: src/features/career/stories.tsx
 #: src/features/home/schedules.tsx
+#: src/features/profile/stories.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Edit"
 msgstr "Redaktə edin"
@@ -4216,6 +4407,7 @@ msgstr "Girişi redaktə edin"
 msgid "Edit interview"
 msgstr "Müsahibəni redaktə edin"
 
+#: src/features/entries/basics-form.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Edit link"
 msgstr "Linki redaktə edin"
@@ -4232,9 +4424,9 @@ msgstr "Sualı redaktə et"
 msgid "Edit schedule"
 msgstr "Cədvəli redaktə et"
 
-#: src/features/career/stories.tsx
-msgid "Edit STARR story"
-msgstr "STARR hekayəsini redaktə edin"
+#: src/features/profile/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Edit the email"
@@ -4265,6 +4457,7 @@ msgstr ""
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Email"
@@ -4294,6 +4487,7 @@ msgstr "Boş müşayiət məktubu"
 msgid "Empty trash"
 msgstr "Zibil qutusunu boşalt"
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "End"
 msgstr "Son"
@@ -4310,7 +4504,7 @@ msgstr "İngilis (Böyük Britaniya)"
 msgid "Enhanced reading unavailable; used the built-in reader."
 msgstr "Təkmilləşdirilmiş oxu mümkün deyil; daxili oxucudan istifadə etdi."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
 msgstr "Tam məbləği daxil edin, məsələn, 95000. Əvvəlki məbləğiniz dəyişməz qalır."
 
@@ -4326,7 +4520,7 @@ msgstr "#1a1a1a və ya rgba(…) kimi hex rəng daxil edin."
 msgid "Enter a name, up to 64 characters."
 msgstr "64 simvola qədər ad daxil edin."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Enter a three-letter currency code."
 msgstr "Üç əlifba simvolundan ibarət valyuta kodunu daxil edin."
 
@@ -4342,11 +4536,12 @@ msgstr "Etibarlı e-poçt ünvanı daxil edin."
 msgid "Enter a value."
 msgstr "Dəyər daxil edin."
 
+#: src/features/entries/text-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Enter a web address, like example.com"
 msgstr "Məsələn.com kimi veb ünvanı daxil edin"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Enter a whole number from 0 to 52, or leave blank."
 msgstr "0-dan 52-yə qədər tam ədəd daxil edin və ya boş buraxın."
 
@@ -4396,10 +4591,12 @@ msgstr ""
 msgid "Entries"
 msgstr ""
 
+#: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-screen.tsx
 msgid "Entry"
 msgstr "Qeyd"
 
+#: src/features/entries/hooks.ts
 #: src/features/write/hooks.ts
 msgid "Entry deleted"
 msgstr "Giriş silindi"
@@ -4446,6 +4643,10 @@ msgstr ""
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Hər rol sizin nə etdiyinizi deyir. Yazı ilə bağlı rəylər Yazı tabında canlıdır."
 
+#: src/features/profile/career.tsx
+msgid "Every section is in use."
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "Every template"
 msgstr ""
@@ -4462,12 +4663,8 @@ msgstr "Hər həftə"
 msgid "Everything the coach wrote for {company}, newest first."
 msgstr "Məşqçinin {company} üçün yazdığı hər şey, ən yenisi əvvəlcə."
 
-#: app/(tabs)/profile/index.tsx
-msgid "Everything your resumes, letters and Coach start from. For now, your facts and stories are in Knowledge."
-msgstr ""
-
-#: src/features/career/facts.tsx
 #: src/features/onboarding/intro-screen.tsx
+#: src/features/profile/facts-labels.ts
 #: src/features/write/fields.ts
 msgid "Experience"
 msgstr "Təcrübə"
@@ -4509,20 +4706,17 @@ msgctxt "Entry header layout"
 msgid "Eyebrow"
 msgstr ""
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-add.tsx
+#: src/features/profile/facts.tsx
 msgid "Fact"
 msgstr "Fakt"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts.tsx
 msgid "Fact forgotten"
 msgstr "Fakt unuduldu"
 
-#: src/features/career/stories.tsx
-msgid "Fact no longer available"
-msgstr "Fakt artıq mövcud deyil"
-
 #: src/features/application-detail/sections.tsx
-#: src/features/career/knowledge.tsx
+#: src/features/profile/profile-screen.tsx
 msgid "Facts"
 msgstr "Faktlar"
 
@@ -4541,6 +4735,10 @@ msgstr "Rəy"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Feedback needs an AI connection. Nothing is sent until you ask."
 msgstr "Rəy üçün AI bağlantısı lazımdır. Siz soruşana qədər heç nə göndərilmir."
+
+#: src/features/entries/entry-fields.tsx
+msgid "Fewer options"
+msgstr ""
 
 #. placeholder {0}: index + 1
 #: src/features/write/basics-screen.tsx
@@ -4584,9 +4782,26 @@ msgstr "Detalları əl ilə doldurun"
 msgid "Fill empty fields with AI"
 msgstr "Boş sahələri AI ilə doldurun"
 
+#: src/features/profile/career.tsx
+#: src/features/profile/fill-sheet.tsx
+msgid "Fill from a resume"
+msgstr ""
+
+#: src/features/profile/career.tsx
+msgid "Fill your career in one go"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Filled from the application. The greeting follows the name."
 msgstr "İş ərizəsindən doldurulmuşdur. Salamlama addan sonra gəlir."
+
+#: src/features/profile/fill-sheet.tsx
+msgid "Filled in from “{name}”"
+msgstr ""
+
+#: src/features/profile/fill-sheet.tsx
+msgid "Filling…"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
@@ -4763,11 +4978,12 @@ msgstr "Yalnız bu ziyarət üçün. Elanı burada saxlamaq üçün müraciəti 
 msgid "For which job?"
 msgstr "Hansı iş üçün?"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
+#: src/features/profile/facts.tsx
 msgid "Forget"
 msgstr "Unut"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
 msgid "Forgetting unlinks this fact from stories and saved items. The original source stays unchanged."
 msgstr "Unutmaq bu faktı hekayələrdən və yadda saxlanılan elementlərdən ayırır. Orijinal mənbə dəyişməz olaraq qalır."
 
@@ -4775,6 +4991,7 @@ msgstr "Unutmaq bu faktı hekayələrdən və yadda saxlanılan elementlərdən 
 msgid "Forgot password?"
 msgstr "Parolu unutmusunuz?"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Formatting"
@@ -4824,6 +5041,14 @@ msgstr "Göndərən"
 msgid "From {0} until {1}"
 msgstr ""
 
+#: src/features/profile/facts-labels.ts
+msgid "From a debrief"
+msgstr "Təhlildən"
+
+#: src/features/profile/facts-labels.ts
+msgid "From a document you attached"
+msgstr "Əlavə etdiyiniz sənəddən"
+
 #: src/features/workspace/tabs/fit.tsx
 msgid "From Fit"
 msgstr "Uyğunluqdan"
@@ -4831,6 +5056,10 @@ msgstr "Uyğunluqdan"
 #: src/features/onboarding/source-fields.tsx
 msgid "From your account"
 msgstr ""
+
+#: src/features/profile/facts-labels.ts
+msgid "From your cover letter"
+msgstr "Müşayiət məktubunuzdan"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "From your experience entries"
@@ -4840,10 +5069,19 @@ msgstr "Təcrübə qeydlərinizdən"
 msgid "From your GitHub sign-in."
 msgstr ""
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/facts-labels.ts
+msgid "From your message"
+msgstr "Mesajınızdan"
+
+#: src/features/profile/facts-labels.ts
+msgid "From your resume"
+msgstr "CV-nizdən"
+
+#: src/features/profile/search-regions-field.tsx
 msgid "From your timezone"
 msgstr "Saat qurşağınızdan"
 
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Full name"
@@ -4898,6 +5136,10 @@ msgstr "Hər vəzifəyə \"Jan 2020 - Present\" kimi bir müddət verin ki, zama
 msgid "Give every role and qualification a date range."
 msgstr "Hər vəzifəyə və ixtisasa tarix aralığı verin."
 
+#: src/features/profile/stories-editor.tsx
+msgid "Give the story a title before you can save."
+msgstr "Yadda saxlamazdan əvvəl hekayəyə başlıq verin."
+
 #: src/features/search/search-screen.tsx
 msgid "Go to…"
 msgstr "… bölməsinə keçin"
@@ -4949,14 +5191,17 @@ msgctxt "Headings or Titles (H1, H2, H3, H4, H5, H6)"
 msgid "Heading"
 msgstr "Başlıq"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Heading 1"
 msgstr "Başlıq 1"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Heading 2"
 msgstr "Başlıq 2"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Heading 3"
 msgstr "Başlıq 3"
@@ -4965,6 +5210,7 @@ msgstr "Başlıq 3"
 msgid "Heading changed"
 msgstr "Başlıq dəyişdirildi"
 
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Headline"
@@ -5004,6 +5250,7 @@ msgid "Hex"
 msgstr "Hex"
 
 #: src/features/design/advanced.tsx
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 #: src/features/write/outline.tsx
 msgid "Hidden"
@@ -5028,6 +5275,11 @@ msgstr "Gizli şərtlər geri döndü"
 #: src/features/write/outline.tsx
 msgid "Hide {title} from the page"
 msgstr "{title} səhifədən gizlədin"
+
+#: src/features/profile/facts.tsx
+#: src/features/profile/stories.tsx
+msgid "Hide actions"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Hide contact details"
@@ -5159,6 +5411,8 @@ msgid "I withdrew"
 msgstr "geri çəkildim"
 
 #: src/features/design/advanced.tsx
+#: src/features/entries/entry-fields.tsx
+#: src/features/entries/icon-picker.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/entry-fields.tsx
 #: src/features/write/fields.ts
@@ -5172,6 +5426,11 @@ msgstr "Simge rəngi"
 
 #: src/features/design/style-groups.tsx
 msgid "Icon style"
+msgstr ""
+
+#. placeholder {0}: field.icon
+#: src/features/entries/basics-form.tsx
+msgid "Icon: {0}"
 msgstr ""
 
 #: src/features/write/section-sheet.tsx
@@ -5402,6 +5661,10 @@ msgstr "Məsələlər"
 msgid "It has entries but isn't placed on a page."
 msgstr "Onun qeydləri var, lakin səhifədə yerləşdirilməyib."
 
+#: src/features/entries/entry-editor.tsx
+msgid "It may have been removed on another device."
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "It starts with your Profile. You can switch templates any time."
 msgstr ""
@@ -5414,6 +5677,7 @@ msgstr "O, həmişəlik qrafikdən silinib."
 msgid "Italian"
 msgstr "İtalyan"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Italic"
@@ -5430,6 +5694,10 @@ msgstr "Öz dizaynı ({summary})."
 #: src/features/ai/provider-editor.tsx
 msgid "Its saved key is deleted. Conversations using it need another provider."
 msgstr "Onun saxlanmış açarı silinir. Onu istifadə edən söhbətlər üçün başqa provayder lazımdır."
+
+#: src/features/profile/facts.tsx
+msgid "Its source, what uses it and its corrections show here."
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Japanese"
@@ -5505,6 +5773,7 @@ msgstr "Yalnız bir ünvan saxlayın ki, proqram hansından istifadə edəcəyin
 msgid "Keep both"
 msgstr "İkisini də saxla"
 
+#: src/features/profile/stories.tsx
 #: src/shell/unsaved-changes.ts
 #: src/ui-legacy/overlays.tsx
 msgid "Keep editing"
@@ -5522,6 +5791,10 @@ msgstr "Adətən şəkilləri silərək və ya kiçildərək 2,5 MB-dan aşağı
 #: src/features/write/improve.tsx
 msgid "Keep mine"
 msgstr "Mənimkini saxla"
+
+#: src/features/profile/conflict-sheet.tsx
+msgid "Keep my changes"
+msgstr ""
 
 #: src/features/write/section-sheet.tsx
 msgid "Keep on one page"
@@ -5564,6 +5837,10 @@ msgstr "Ən xüsusi hissələri saxlayır"
 msgid "Kept as it is"
 msgstr "Olduğu kimi saxlanılır"
 
+#: src/features/profile/facts-detail.tsx
+msgid "Kept, but not used."
+msgstr ""
+
 #: src/features/settings/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "Açarlar sizin kimi fəaliyyət göstərir və sənədlərinizə daxil ola bilər. Brauzer hesabınızın parametrlərində yeni açarlar yaradılır."
@@ -5583,15 +5860,6 @@ msgstr "Kxmer"
 #: src/features/share/letter.ts
 msgid "Kind regards,"
 msgstr "Hörmətlə,"
-
-#: app/(tabs)/profile/_layout.tsx
-#: src/features/career/knowledge.tsx
-msgid "Knowledge"
-msgstr "Biliklər"
-
-#: src/features/assistant/coach-screen.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Biliklər yüklənmədi. Göndərməzdən əvvəl yenidən cəhd edin və ya Bilikləri söndürün."
 
 #: src/features/settings/locale-names.ts
 msgid "Korean"
@@ -5682,6 +5950,8 @@ msgstr "Saxlanmış açarı saxlamaq üçün boş buraxın"
 msgid "Leave empty to reset the title to the original."
 msgstr "Başlığı orijinal vəziyyətinə qaytarmaq üçün boş saxlayın."
 
+#: src/features/entries/basics-form.tsx
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Leave it empty to remove the link."
@@ -5764,6 +6034,7 @@ msgid "Letters have no public link. Locked resumes keep their current visibility
 msgstr "Qapaq məktublarının ictimai əlaqəsi yoxdur. Kilidlənmiş CV-lər cari görünmə qabiliyyətini saxlayır."
 
 #: src/features/design/advanced.tsx
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 #: src/features/write/fields.ts
 msgid "Level"
@@ -5808,11 +6079,14 @@ msgstr "Bu qədər yaxın olan sətirlər oxunduqda birləşə bilər. Ən azı 
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/add-sheet.tsx
+#: src/features/entries/basics-form.tsx
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/fields.ts
 #: src/features/write/rich-text-field.tsx
 msgid "Link"
 msgstr "Keçid"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Link address"
 msgstr "Əlaqə ünvanı"
@@ -5829,6 +6103,10 @@ msgstr "Açar sözləri müqayisə etmək üçün müraciəti əlaqələndirin v
 #: src/features/share/web-page.tsx
 msgid "Link copied"
 msgstr "Link kopyalandı"
+
+#: src/features/entries/text-fields.tsx
+msgid "Link label"
+msgstr ""
 
 #: src/features/auth/check-email-screen.tsx
 msgid "Link sent"
@@ -5918,6 +6196,9 @@ msgstr "{url} ünvanında canlı"
 #: src/features/design/design-pane.tsx
 #: src/features/home/section.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/facts.tsx
+#: src/features/profile/preferences.tsx
+#: src/features/profile/stories.tsx
 msgid "Loading"
 msgstr "Yüklənir"
 
@@ -5941,10 +6222,6 @@ msgstr "Söhbətlər yüklənir..."
 #: src/features/letters/page.tsx
 msgid "Loading cover letter…"
 msgstr "Müşayiət məktubu yüklənir…"
-
-#: src/features/assistant/coach-screen.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Göndərməzdən əvvəl Biliklər yüklənir…"
 
 #: src/features/documents/thumbnail.tsx
 msgid "Loading letter…"
@@ -5975,6 +6252,10 @@ msgstr "Saxlanılmış versiya yüklənir…"
 msgid "Loading workspace…"
 msgstr "İş sahəsi yüklənir…"
 
+#: src/features/assistant/coach-screen.tsx
+msgid "Loading your Profile before you send…"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Loading your public address…"
 msgstr "Ümumi ünvanınız yüklənir..."
@@ -5990,6 +6271,7 @@ msgstr "Yüklənir..."
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/style-groups.tsx
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -6018,6 +6300,7 @@ msgstr "Kilidlənib"
 msgid "Locked documents were skipped. Unlock them first."
 msgstr "Kilidlənmiş sənədlər atlandı. Əvvəlcə onların kilidini açın."
 
+#: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/outline.tsx
 msgid "Locked. Unlock to edit."
@@ -6111,6 +6394,7 @@ msgstr "Serveriniz tərəfindən idarə olunur"
 msgid "Many bullets start with the same phrase."
 msgstr "Bir çox ifadə eyni sözlə başlayır."
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Mar 2022"
 msgstr "Mart 2022"
@@ -6215,10 +6499,6 @@ msgstr "ilk cavab üçün median"
 msgid "Meets your minimum base salary."
 msgstr "Minimum əmək haqqınıza cavab verir."
 
-#: src/features/career/facts.tsx
-msgid "Message"
-msgstr "Mesaj"
-
 #: src/features/assistant/chat-view.tsx
 msgid "Message the assistant"
 msgstr "Köməkçiyə mesaj göndərin"
@@ -6228,7 +6508,7 @@ msgstr "Köməkçiyə mesaj göndərin"
 msgid "Messages"
 msgstr "Mesajlar"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Minimum base salary"
 msgstr "Minimum əsas maaş"
 
@@ -6269,6 +6549,7 @@ msgstr "Daha çox"
 msgid "More details"
 msgstr "Daha ətraflı"
 
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "More options"
 msgstr "Daha çox seçim"
@@ -6355,6 +6636,11 @@ msgstr "Bütün məzmunu səhifə sərhədləri daxilinə köçürün və yenid�
 msgid "Move applications"
 msgstr "Müraciətləri köçür"
 
+#: src/features/entries/basics-form.tsx
+msgid "Move detail up"
+msgstr ""
+
+#: src/features/entries/entry-editor.tsx
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
 #: src/ui-legacy/sortable.tsx
@@ -6377,10 +6663,12 @@ msgstr "Onu əsas sütuna köçürün"
 msgid "Move real content into the body of the page; some software discards the margins."
 msgstr "Əsl məzmunu səhifənin əsas hissəsinə köçürün; bəzi proqramlar kənar boşluqları atır."
 
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Move role down"
 msgstr "Rolu aşağı köçürün"
 
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Move role up"
 msgstr "Rolu yuxarı köçürün"
@@ -6418,6 +6706,7 @@ msgstr "Zibil qutusuna köçürün"
 msgid "Move to…"
 msgstr "Bura köçürün..."
 
+#: src/features/entries/entry-editor.tsx
 #: src/features/write/outline.tsx
 #: src/features/write/section-sheet.tsx
 #: src/ui-legacy/sortable.tsx
@@ -6477,6 +6766,10 @@ msgstr "{0} nömrəli şəxsin adı"
 msgid "Name or team"
 msgstr "Ad və ya komanda"
 
+#: src/features/profile/stories-editor.tsx
+msgid "Name the story"
+msgstr "Hekayəyə ad verin"
+
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
 msgid "Name this version"
@@ -6531,7 +6824,7 @@ msgstr "Nepal"
 msgid "Network"
 msgstr "Şəbəkə"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 #: src/features/settings/api-keys.tsx
 msgid "Never"
 msgstr "Heç vaxt"
@@ -6592,6 +6885,10 @@ msgstr "Yeni səhifə"
 msgid "New password"
 msgstr "Yeni parol"
 
+#: src/features/profile/details.tsx
+msgid "New resumes, letters and your portfolio start from these details."
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "New roles from your search"
 msgstr "Axtarışınızdan yeni vəzifələr"
@@ -6604,9 +6901,9 @@ msgstr "Yeni cədvəl"
 msgid "New section"
 msgstr "Yeni bölmə"
 
-#: src/features/career/stories.tsx
-msgid "New STARR story"
-msgstr "Yeni STARR hekayəsi"
+#: src/features/profile/stories.tsx
+msgid "New story"
+msgstr ""
 
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/welcome-screen.tsx
@@ -6701,6 +6998,14 @@ msgstr "Heç bir adi bölmə başlığı tapılmadı."
 msgid "No conversations about this document yet."
 msgstr "Bu sənədlə bağlı hələ heç bir söhbət yoxdur."
 
+#: src/features/profile/facts-detail.tsx
+msgid "No corrections"
+msgstr "Düzəliş yoxdur"
+
+#: src/features/profile/search-regions-field.tsx
+msgid "No country matches."
+msgstr "Heç bir ölkə tapılmadı."
+
 #: app/account/membership.tsx
 msgid "No credit activity yet."
 msgstr ""
@@ -6742,9 +7047,26 @@ msgstr ""
 msgid "No evidence yet"
 msgstr "Hələ sübut yoxdur"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts.tsx
 msgid "No facts match"
 msgstr "Heç bir fakt uyğun gəlmir"
+
+#: src/features/profile/stories-editor.tsx
+msgid "No facts to link yet. Add them in Facts."
+msgstr "Hələ bağlanacaq fakt yoxdur. Onları Faktlar bölməsində əlavə edin."
+
+#: src/features/profile/facts.tsx
+msgid "No facts yet"
+msgstr ""
+
+#: src/features/entries/icon-picker.tsx
+msgid "No icon"
+msgstr ""
+
+#. placeholder {0}: query.trim()
+#: src/features/entries/icon-picker.tsx
+msgid "No icons match “{0}”."
+msgstr ""
 
 #: src/features/write/pickers.tsx
 msgid "No icons match."
@@ -6860,21 +7182,25 @@ msgstr "Bacarıqlar bölməsi tapılmadı."
 msgid "No source data yet."
 msgstr "Hələlik mənbə məlumatları yoxdur."
 
-#: src/features/career/facts.tsx
-msgid "No source quote recorded."
-msgstr "Heç bir mənbə sitatı qeydə alınmayıb."
-
 #: src/features/ats-checker/checker.tsx
 msgid "No specific terms could be pulled out of that job description."
 msgstr "Bu iş təsvirindən heç bir xüsusi şərtlər çıxarıla bilməz."
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories.tsx
 msgid "No stories yet"
 msgstr "Hələ hekayə yoxdur"
 
 #: src/features/ai/provider-editor.tsx
 msgid "No suggestions for this provider. Enter any model ID."
 msgstr "Bu provayder üçün təklif yoxdur. İstənilən model ID-ni daxil edin."
+
+#: src/features/profile/stories-reader.tsx
+msgid "No supporting facts. Link one before using this story."
+msgstr "Dəstəkləyən fakt yoxdur. Bu hekayədən istifadə etməzdən əvvəl birini bağlayın."
+
+#: src/features/profile/stories-reader.tsx
+msgid "No tags yet"
+msgstr "Hələ teq yoxdur"
 
 #: src/features/ats-checker/checker.tsx
 #: src/features/ats-checker/messages.ts
@@ -6896,6 +7222,7 @@ msgstr "İş təcrübəsi bölməsi tapılmadı."
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications/add-sheet.tsx
 #: src/features/design/advanced.tsx
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 #: src/features/write/pickers.tsx
 #: src/features/write/section-sheet.tsx
@@ -6944,6 +7271,10 @@ msgstr ""
 msgid "Not enough Rezumi AI credits to read it."
 msgstr ""
 
+#: src/features/profile/career.tsx
+msgid "Not finished: add the main detail."
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "Not for me"
 msgstr "Mənlik deyil"
@@ -6971,14 +7302,18 @@ msgstr "İndi yox"
 msgid "Not recorded"
 msgstr "Qeydə alınmayıb"
 
-#: src/features/career/stories.tsx
-msgid "Not recorded yet. Leave blank until you can support it."
-msgstr "Hələ qeydə alınmayıb. Dəstəkləyənə qədər boş buraxın."
+#: src/features/profile/stories-reader.tsx
+msgid "Not recorded yet. Leave it blank until you can support it."
+msgstr "Hələ qeydə alınmayıb. Dəstəkləyə bilənə qədər boş saxlayın."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Not saved"
 msgstr "Saxlanmadı"
+
+#: src/features/profile/save-note.tsx
+msgid "Not saved yet. Your changes are kept on this device."
+msgstr ""
 
 #: src/features/applications/stages.ts
 msgid "Not selected"
@@ -6988,9 +7323,13 @@ msgstr "Seçilməyib"
 msgid "Not true for me, hide it"
 msgstr "Mənim üçün doğru deyil, gizlət"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "Not used in a story or saved item yet"
 msgstr "Hələ hekayədə və ya saxlanılmış elementdə istifadə olunmayıb"
+
+#: src/features/profile/stories-editor.tsx
+msgid "Not used in coaching, so it can't back a story."
+msgstr "Kouçinqdə istifadə olunmur, ona görə də hekayəni dəstəkləyə bilməz."
 
 #: src/features/application-detail/sheets.tsx
 msgid "Note"
@@ -7011,6 +7350,7 @@ msgid "Nothing marks a role as ongoing."
 msgstr "Heç nə vəzifənin davam etdiyini göstərmir."
 
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/bring-screen.tsx
 msgid "Nothing new to add"
 msgstr ""
 
@@ -7050,7 +7390,7 @@ msgstr "Düzəldiləcək heç nə yoxdur. Qalan səhifələr sadəcə bu hesabat
 msgid "Nothing was found at that address. Check it and try again."
 msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Notice period (weeks)"
 msgstr "Xəbərdarlıq müddəti (həftə)"
 
@@ -7063,6 +7403,7 @@ msgstr "Bildirişlər deaktivdir"
 msgid "Now"
 msgstr "İndi"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Numbered list"
@@ -7109,8 +7450,8 @@ msgstr "Təklif"
 msgid "Offers"
 msgstr "Təkliflər"
 
-#: src/features/career/preferences.tsx
 #: src/features/onboarding/questions.tsx
+#: src/features/profile/preferences.tsx
 msgid "Office days a week, at most"
 msgstr "Həftədə ofis günləri, ən çox"
 
@@ -7139,6 +7480,10 @@ msgstr "Oflayn. Redaktələr bu cihazda yadda saxlanılır və siz yenidən qoş
 msgid "OK"
 msgstr ""
 
+#: src/features/entries/rich-text-field.tsx
+msgid "On"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "Yandırılıb. Keçidi olan hər kəs veb səhifənizi görə bilər."
@@ -7165,10 +7510,6 @@ msgstr ""
 #: src/features/design/layout-screen.tsx
 msgid "Only applies when the section fits on a single page."
 msgstr "Yalnız bölmə tək bir səhifəyə sığdıqda tətbiq olunur."
-
-#: src/features/career/stories.tsx
-msgid "Only enabled facts can back a story. Leave unsupported outcomes blank."
-msgstr "Yalnız aktiv faktlar hekayəni dəstəkləyə bilər. Dəstəklənməyən nəticələri boş buraxın."
 
 #: src/features/ats-checker/messages.ts
 msgid "Only one recognizable section heading was found."
@@ -7258,10 +7599,6 @@ msgstr "Redaktoru açın"
 msgid "Open in Offers"
 msgstr "Təkliflərdə aç"
 
-#: app/(tabs)/profile/index.tsx
-msgid "Open Knowledge"
-msgstr ""
-
 #: src/features/assistant/assistant-screen.tsx
 msgid "Open letter"
 msgstr "Məktubu aç"
@@ -7336,6 +7673,10 @@ msgstr "Resume açılır..."
 msgid "Opens in Career → Offers."
 msgstr "Karyera → Təkliflər bölməsində açılır."
 
+#: src/features/profile/facts.tsx
+msgid "Opens the fact's source and history"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Opportunity discovery"
 msgstr "İmkanların axtarışı"
@@ -7343,6 +7684,10 @@ msgstr "İmkanların axtarışı"
 #: src/features/ai/provider-editor.tsx
 msgid "Optional for local Ollama"
 msgstr "Yerli Ollama üçün isteğe bağlıdır"
+
+#: src/features/entries/photo-field.tsx
+msgid "Optional. Some regions expect one; most ATS ignore it."
+msgstr ""
 
 #. placeholder {0}: document.name
 #. placeholder {0}: versionTitle(version)
@@ -7368,6 +7713,10 @@ msgstr "Təşkilat"
 msgid "Original page"
 msgstr "Orijinal səhifə"
 
+#: src/features/entries/rich-text-field.tsx
+msgid "Original table formatting is kept. This text is read-only because it can't be edited safely here."
+msgstr ""
+
 #: src/features/write/rich-text-field.tsx
 msgid "Original table formatting is preserved. This content is read-only because it cannot be edited safely."
 msgstr "Orijinal cədvəl formatı qorunur. Bu məzmun yalnız oxunur, çünki onu təhlükəsiz şəkildə redaktə etmək mümkün deyil."
@@ -7388,6 +7737,10 @@ msgstr "Digər imtiyazlar"
 #: src/features/ai/report-content.tsx
 msgid "Other concern"
 msgstr "Digər narahatlıq"
+
+#: src/features/entries/basics-form.tsx
+msgid "Other contact details"
+msgstr ""
 
 #: src/features/onboarding/source-review.tsx
 msgid "Other details"
@@ -7478,6 +7831,7 @@ msgstr "Səhifə görünüşü"
 msgid "Paper"
 msgstr "Kağız"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Paragraph"
 msgstr "Paraqraf"
@@ -7568,7 +7922,7 @@ msgstr "Təsvir yapışdırıldı"
 msgid "Paused · {line}"
 msgstr "Dayandırılıb · {line}"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Pay period"
 msgstr "Ödəniş dövrü"
 
@@ -7606,17 +7960,17 @@ msgid "PDF, Word, Rezumi, JSON Resume or LinkedIn export."
 msgstr "PDF, Word, Rezumi, JSON Resume və ya LinkedIn ixracı."
 
 #: src/features/career/offers.tsx
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Per hour"
 msgstr "Saatda"
 
 #: src/features/career/offers.tsx
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Per month"
 msgstr "Ayda"
 
 #: src/features/career/offers.tsx
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Per year"
 msgstr "İldə"
 
@@ -7632,6 +7986,7 @@ msgstr "Fars"
 msgid "Personal website"
 msgstr ""
 
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 #: src/features/write/fields.ts
@@ -7642,6 +7997,7 @@ msgstr "Telefon"
 msgid "Phone (optional)"
 msgstr "Telefon (isteğe bağlı)"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Photo"
@@ -7659,9 +8015,14 @@ msgstr "Şəkil səhifədən gizlədilib."
 msgid "Photo on the page."
 msgstr "Şəkil səhifədə."
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Pick {label}"
 msgstr "{label} seçin"
+
+#: src/features/profile/facts.tsx
+msgid "Pick a fact"
+msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Pick a look for your first resume"
@@ -7764,6 +8125,7 @@ msgid "Portuguese (Portugal)"
 msgstr "Portuqal (Portuqaliya)"
 
 #: src/features/design/style-groups.tsx
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 #: src/features/write/fields.ts
 msgid "Position"
@@ -7817,13 +8179,13 @@ msgstr ""
 msgid "Prefer a single column, or keep the side column to short, self-contained lists."
 msgstr "Tək sütunu üstün tutun, ya da yan sütunu qısa, müstəqil siyahılarla məhdudlaşdırın."
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "Preference"
 msgstr "Tərcih"
 
 #: app/account/index.tsx
 #: app/account/preferences.tsx
-#: src/features/career/knowledge.tsx
+#: src/features/profile/profile-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Preferences"
 msgstr "Tərcihlər"
@@ -7871,6 +8233,7 @@ msgstr "İxrac hazırlanır..."
 msgid "Preparing file…"
 msgstr "Fayl hazırlanır..."
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Present"
 msgstr "Hazırda"
@@ -7958,6 +8321,10 @@ msgstr "Şəxsi. Onu yalnız siz görə bilərsiniz."
 msgid "Pro AI credits"
 msgstr ""
 
+#: src/features/entries/basics-form.tsx
+msgid "Product designer"
+msgstr ""
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
 msgid "Professional"
@@ -7969,8 +8336,8 @@ msgstr "Bacarıq Səviyyəsi"
 
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
-#: app/(tabs)/profile/index.tsx
 #: app/account/account.tsx
+#: src/features/profile/profile-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Profile"
@@ -7987,6 +8354,10 @@ msgstr "Profil linkləri ictimai HTTPS ünvanları olmalıdır."
 #: src/features/settings/profile.tsx
 msgid "Profile photo"
 msgstr "Profil şəkli"
+
+#: src/features/profile/profile-screen.tsx
+msgid "Profile sections"
+msgstr ""
 
 #: src/features/write/fields.ts
 msgid "Profiles"
@@ -8240,6 +8611,7 @@ msgid "Reading your profile…"
 msgstr ""
 
 #: src/features/onboarding/source-progress.tsx
+#: src/features/profile/bring-screen.tsx
 msgid "Reading…"
 msgstr ""
 
@@ -8327,7 +8699,7 @@ msgstr "Referanslar"
 msgid "Referral"
 msgstr "İstinad"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories-parts.ts
 msgid "Reflection"
 msgstr "Refleksiya"
 
@@ -8374,7 +8746,7 @@ msgstr "İndi yenidən yükləyin"
 msgid "Remember"
 msgstr "Yadda saxla"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Mesajlarımdan faktları yadda saxla"
 
@@ -8412,8 +8784,8 @@ msgid "Reminders"
 msgstr "Xatırlatmalar"
 
 #: src/features/career/offers.tsx
-#: src/features/career/preferences.tsx
 #: src/features/onboarding/questions.tsx
+#: src/features/profile/preferences.tsx
 msgid "Remote"
 msgstr "Uzaqdan"
 
@@ -8436,15 +8808,31 @@ msgid "Remove {0}?"
 msgstr ""
 
 #: src/features/assistant/messages.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Remove {name}"
 msgstr "{name} silin"
 
 #: src/features/onboarding/questions.tsx
+#: src/features/profile/preferences.tsx
 msgid "Remove {place}"
 msgstr ""
 
 #: src/features/onboarding/questions.tsx
+#: src/features/profile/preferences.tsx
 msgid "Remove {role}"
+msgstr ""
+
+#: src/features/profile/stories-editor.tsx
+msgid "Remove {tag}"
+msgstr ""
+
+#: src/features/entries/entry-fields.tsx
+msgid "Remove {value}"
+msgstr "{value} çıxarın"
+
+#. placeholder {0}: index + 1
+#: src/features/entries/basics-form.tsx
+msgid "Remove detail {0}"
 msgstr ""
 
 #: src/features/write/basics-screen.tsx
@@ -8468,6 +8856,7 @@ msgstr "Parolu sil"
 msgid "Remove person {0}"
 msgstr "{0} nömrəli şəxsi sil"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Remove photo"
@@ -8480,6 +8869,11 @@ msgstr "Sualı sil"
 #: src/features/write/entry-fields.tsx
 msgid "Remove role"
 msgstr "Rolu silin"
+
+#. placeholder {0}: index + 1
+#: src/features/entries/entry-fields.tsx
+msgid "Remove role {0}"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Remove the password?"
@@ -8581,7 +8975,7 @@ msgstr "Server operatorunuz tərəfindən qəbul edilmiş hesabat. təşəkkür 
 msgid "Require a password"
 msgstr "Parol tələb edin"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Requirements"
 msgstr "Tələblər"
 
@@ -8653,14 +9047,13 @@ msgstr "Versiyanı bərpa et"
 msgid "Restored a version"
 msgstr "Versiya bərpa edildi"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories-parts.ts
 msgid "Result"
 msgstr "Nəticə"
 
 #: app/_layout.tsx
 #: app/builder/[id]/_layout.tsx
 #: src/features/applications/add-sheet.tsx
-#: src/features/career/facts.tsx
 #: src/features/documents/library.tsx
 #: src/features/home/recent-documents.tsx
 #: src/features/letters/write.tsx
@@ -8710,6 +9103,10 @@ msgstr "CV-lər"
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "Mövzu nə olursa olsun, rezyumelər həmişə ağ kağızda göstərilir."
 
+#: src/features/profile/save-note.tsx
+msgid "Resumes that followed"
+msgstr ""
+
 #: src/features/auth/welcome-screen.tsx
 msgid "Resumes, cover letters, applications and your portfolio, in one place."
 msgstr ""
@@ -8726,7 +9123,6 @@ msgstr "{1} istifadə edərək {0} əldə edildi. Alma vaxtı mənşənin təzə
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/assistant/provider.tsx
-#: src/features/career/preferences.tsx
 #: src/features/career/shared.tsx
 #: src/features/check/job-match.tsx
 #: src/features/check/page.tsx
@@ -8743,6 +9139,11 @@ msgstr "{1} istifadə edərək {0} əldə edildi. Alma vaxtı mənşənin təzə
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
 #: src/features/onboarding/source-progress.tsx
+#: src/features/profile/facts.tsx
+#: src/features/profile/fill-sheet.tsx
+#: src/features/profile/preferences.tsx
+#: src/features/profile/save-note.tsx
+#: src/features/profile/stories.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -8825,8 +9226,8 @@ msgid "Review my answer"
 msgstr "Cavabımı nəzərdən keçir"
 
 #: src/features/workspace/tabs/debrief.tsx
-msgid "Review my answer sends the question, what you said, this posting and your Knowledge to {providerName}."
-msgstr "“Cavabımı nəzərdən keçir” sualı, dediklərinizi, bu iş elanını və Biliklərinizi {providerName} provayderinə göndərir."
+msgid "Review my answer sends the question, what you said, this posting and your Profile to {providerName}."
+msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
 msgid "Review required form answers and remove unsupported claims."
@@ -8921,6 +9322,7 @@ msgid "Role (optional)"
 msgstr "Rol (könüllü)"
 
 #. placeholder {0}: index + 1
+#: src/features/entries/entry-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Role {0}"
 msgstr "Rol {0}"
@@ -9042,9 +9444,9 @@ msgstr "Müqayisə üçün başqa təklif saxlayın"
 msgid "Save changes"
 msgstr "Dəyişiklikləri yadda saxla"
 
-#: src/features/career/facts.tsx
-msgid "Save fact"
-msgstr "Faktı yadda saxla"
+#: src/features/profile/facts-detail.tsx
+msgid "Save correction"
+msgstr "Düzəlişi saxla"
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Save interview"
@@ -9053,6 +9455,11 @@ msgstr "Müsahibəni saxla"
 #: src/features/applications/add-sheet.tsx
 msgid "Save job"
 msgstr "İşə qənaət edin"
+
+#: src/features/entries/basics-form.tsx
+#: src/features/entries/rich-text-field.tsx
+msgid "Save link"
+msgstr ""
 
 #: src/features/auth/reset-password-screen.tsx
 msgid "Save new password"
@@ -9067,7 +9474,7 @@ msgid "Save schedule"
 msgstr "Cədvəli saxla"
 
 #: src/features/assistant/tool-approvals.tsx
-#: src/features/career/stories.tsx
+#: src/features/profile/stories.tsx
 msgid "Save story"
 msgstr "Hekayəni saxla"
 
@@ -9088,15 +9495,15 @@ msgid "Save these offer terms to compare"
 msgstr "Müqayisə üçün bu təklif şərtlərini saxla"
 
 #: src/features/assistant/tool-approvals.tsx
-msgid "Save this story to Knowledge?"
+msgid "Save this story to your Profile?"
 msgstr ""
-
-#: src/features/workspace/tabs/fit.tsx
-msgid "Save to Knowledge"
-msgstr "Biliklərə saxla"
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Save to my Profile"
+msgstr ""
+
+#: src/features/workspace/tabs/fit.tsx
+msgid "Save to Profile"
 msgstr ""
 
 #: src/draft/conflict-sheet.tsx
@@ -9108,7 +9515,8 @@ msgid "Save yours as a new document and keep theirs here."
 msgstr "Versiyanızı yeni sənəd kimi yadda saxlayın. Onların versiyasını burada saxlayın."
 
 #: src/features/applications/stages.ts
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
+#: src/features/profile/save-note.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Saved"
 msgstr "Yadda saxlanıldı"
@@ -9136,25 +9544,31 @@ msgstr "Saxlanmış təsvir"
 msgid "Saved to Applications with the posting"
 msgstr "İş elanı ilə birlikdə Müraciətlərə saxlanıldı"
 
-#: src/features/workspace/tabs/fit.tsx
-msgid "Saved to Knowledge as a fact"
-msgstr "Biliklərə fakt kimi saxlanıldı"
-
-#: src/features/workspace/tabs/debrief.tsx
-msgid "Saved to Knowledge, private to this application."
-msgstr "Biliklərə saxlanıldı, yalnız bu müraciət üçün."
-
 #: src/features/workspace/tabs/practise.tsx
 msgid "Saved to Saved · Practice"
 msgstr "Saxlanılanlara əlavə edildi · Məşq"
+
+#: src/features/workspace/tabs/fit.tsx
+msgid "Saved to your Profile as a fact"
+msgstr ""
+
+#: src/features/workspace/tabs/debrief.tsx
+msgid "Saved to your Profile, private to this application."
+msgstr ""
+
+#: src/features/profile/save-note.tsx
+msgid "Saves as you type. Resumes that still use a part follow your changes."
+msgstr ""
 
 #: src/features/applications/add-sheet.tsx
 msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "İşə qənaət. Başqa bir dəyişiklik etməzdən əvvəl təsdiqi gözləyin."
 
 #: src/features/auth/reset-password-screen.tsx
-#: src/features/career/preferences.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/preferences.tsx
+#: src/features/profile/save-note.tsx
+#: src/features/profile/stories.tsx
 #: src/features/settings/profile.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Saving…"
@@ -9217,6 +9631,10 @@ msgstr "İş ərizələrini axtarın"
 msgid "Search commands"
 msgstr "Axtarış əmrləri"
 
+#: src/features/profile/search-regions-field.tsx
+msgid "Search countries"
+msgstr ""
+
 #: src/features/search/search-screen.tsx
 msgid "Search covers documents, applications, assistant conversations and actions."
 msgstr "Axtarış sənədləri, iş müraciətlərini, köməkçi söhbətlərini və hərəkətləri əhatə edir."
@@ -9229,7 +9647,7 @@ msgstr "Sənədləri axtarın"
 msgid "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
 msgstr "Google kimi axtarış sistemləri veb səhifənizi siyahıya sala bilər. Onun görünməsi və ya bunu söndürdükdən sonra yox olması həftələr çəkə bilər."
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts.tsx
 msgid "Search facts"
 msgstr "Faktlarda axtar"
 
@@ -9237,6 +9655,7 @@ msgstr "Faktlarda axtar"
 msgid "Search for…"
 msgstr "… üçün axtarış"
 
+#: src/features/entries/icon-picker.tsx
 #: src/features/write/pickers.tsx
 msgid "Search icons"
 msgstr "Nişanları axtarın"
@@ -9373,24 +9792,24 @@ msgid "Sending…"
 msgstr "Göndərilir..."
 
 #: src/features/workspace/tabs/prepare.tsx
-msgid "Sends this application (posting, notes, interview details) and Knowledge that's switched on to {name}."
-msgstr "Bu müraciəti (elan, qeydlər, müsahibə təfərrüatları) və aktiv Bilikləri {name} ünvanına göndərir."
+msgid "Sends this application (posting, notes, interview details) and your Profile, if switched on, to {name}."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Sends this application and enabled Knowledge to this connection. Your provider may charge. If it becomes unavailable, scheduled work can use your default usable connection."
-msgstr "Bu müraciəti və aktiv Bilikləri bu bağlantıya göndərir. Provayderiniz ödəniş tələb edə bilər. Bağlantı əlçatmaz olarsa, planlı tapşırıqlar işlək standart bağlantınızdan istifadə edə bilər."
+msgid "Sends this application and your switched-on Profile to this connection. Your provider may charge. If it becomes unavailable, scheduled work can use your default usable connection."
+msgstr ""
 
 #: src/features/workspace/parts.tsx
-msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to {label}."
-msgstr "Bu müraciətin elanını, qeydlərini, sənədlərini və aktiv Bilikləri {label} ünvanına göndərir."
+msgid "Sends this application's posting, notes and documents, plus your Profile if switched on, to {label}."
+msgstr ""
 
 #: src/features/documents/new-document.tsx
 msgid "Sends this PDF to your configured AI provider instead of reading its text layer."
 msgstr "Bu PDF mətn qatını oxumaq əvəzinə konfiqurasiya edilmiş AI provayderinizə göndərir."
 
 #: src/features/workspace/coach-sheet.tsx
-msgid "Sends your message, earlier messages, this application (posting, notes, documents sent) and Knowledge that's switched on to {label}."
-msgstr "Mesajınızı, əvvəlki mesajları, bu iş müraciətini (iş elanı, qeydlər və göndərilmiş sənədlər) və aktiv Bilik məlumatlarını {label} xidmətinə göndərir."
+msgid "Sends your message, earlier messages, this application (posting, notes, documents sent) and your Profile, if switched on, to {label}."
+msgstr ""
 
 #. placeholder {0}: provider?.label
 #. placeholder {1}: provider?.model
@@ -9582,9 +10001,18 @@ msgstr "Oxunmuşları göstər ({0})"
 msgid "Show {title} on the page"
 msgstr "Səhifədə {title} göstərin"
 
+#: src/features/profile/facts.tsx
+#: src/features/profile/stories.tsx
+msgid "Show actions"
+msgstr ""
+
 #: src/features/search/search-screen.tsx
 msgid "Show all"
 msgstr "Hamısını göstər"
+
+#: src/features/profile/facts.tsx
+msgid "Show all facts"
+msgstr ""
 
 #: src/features/applications/list-screen.tsx
 msgid "Show closed"
@@ -9626,6 +10054,7 @@ msgstr "Axtarış sistemlərində göstər"
 msgid "Show key"
 msgstr "Açarı göstər"
 
+#: src/features/entries/text-fields.tsx
 #: src/features/write/entry-fields.tsx
 msgid "Show link in title"
 msgstr "Başlıqda keçid göstər"
@@ -9793,15 +10222,15 @@ msgstr "son baxışdan"
 msgid "Single sign-on"
 msgstr ""
 
-#: src/features/career/stories.tsx
-msgid "Situation (required)"
-msgstr "Vəziyyət (tələb olunur)"
+#: src/features/profile/stories-parts.ts
+msgid "Situation"
+msgstr "Vəziyyət"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Situation, action, result"
 msgstr "Vəziyyət, hərəkət, nəticə"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories.tsx
 msgid "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
 msgstr "Vəziyyət, Tapşırıq, Hərəkət, Nəticə, Refleksiya. Hər hekayəni dəstəkləyə bildiyiniz faktlara bağlayın; naməlum nəticələri boş saxlayın."
 
@@ -9809,7 +10238,7 @@ msgstr "Vəziyyət, Tapşırıq, Hərəkət, Nəticə, Refleksiya. Hər hekayən
 msgid "Size"
 msgstr "Ölçü"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-labels.ts
 msgid "Skill"
 msgstr "Bacarıq"
 
@@ -9908,6 +10337,10 @@ msgstr "Bəzi mətn səhifədən kənara düşür."
 msgid "Some text is rotated."
 msgstr "Bəzi mətn döndərilib."
 
+#: src/features/profile/facts-add.tsx
+msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
+msgstr ""
+
 #: src/features/auth/errors.ts
 msgid "Something went wrong on the server. Try again in a moment."
 msgstr ""
@@ -9932,10 +10365,6 @@ msgstr "Tarixə görə çeşidləyin"
 #: src/features/applications/add-sheet.tsx
 msgid "Source"
 msgstr "Mənbə"
-
-#: src/features/career/facts.tsx
-msgid "Source and correction history"
-msgstr "Mənbə və düzəliş tarixi"
 
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/messages.tsx
@@ -9996,6 +10425,7 @@ msgstr "Mərhələ dəyişmir: {stage}"
 msgid "Standard"
 msgstr ""
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "Start"
 msgstr "Başlayın"
@@ -10125,7 +10555,7 @@ msgstr "Dayandırıldı"
 msgid "Stopped. No edits were proposed."
 msgstr "Dayandı. Heç bir redaktə təklif edilmədi."
 
-#: src/features/career/knowledge.tsx
+#: src/features/profile/profile-screen.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Stories"
 msgstr "Hekayələr"
@@ -10134,14 +10564,23 @@ msgstr "Hekayələr"
 msgid "Stories to bring"
 msgstr "Gətiriləcək hekayələr"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories.tsx
+msgid "Story"
+msgstr "Hekayə"
+
+#: src/features/profile/stories.tsx
 msgid "Story deleted"
 msgstr "Hekayə silindi"
+
+#: src/features/profile/stories.tsx
+msgid "Story saved"
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "Strengthen"
 msgstr "Gücləndir"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Strikethrough"
 msgstr "Üstündən xətt çək"
@@ -10204,6 +10643,10 @@ msgstr "models.dev tərəfindən təkliflər. Siz həmçinin istənilən model I
 msgid "Suggests cuts, never deletes on its own"
 msgstr "Kəsmə təklif edir, heç vaxt öz-özünə silmir"
 
+#: app/(tabs)/profile/_layout.tsx
+#: app/(tabs)/profile/summary.tsx
+#: src/features/entries/entry-editor.tsx
+#: src/features/profile/career.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/fields.ts
 msgid "Summary"
@@ -10282,9 +10725,9 @@ msgstr "Seçilmiş iş müraciətlərini etiketləyin"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/add-sheet.tsx
-#: src/features/career/stories.tsx
 #: src/features/documents/document-sheets.tsx
 #: src/features/documents/library.tsx
+#: src/features/profile/stories-editor.tsx
 msgid "Tags"
 msgstr "Teqlər"
 
@@ -10308,6 +10751,7 @@ msgstr "uyğunlaşdırılmış və əsas rezyume"
 msgid "Take a photo"
 msgstr ""
 
+#: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "Şəkil çəkin"
@@ -10329,13 +10773,13 @@ msgstr "Tamil"
 msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
 msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Target roles"
 msgstr "Hədəf vəzifələr"
 
-#: src/features/career/stories.tsx
-msgid "Task (required)"
-msgstr "Tapşırıq (tələb olunur)"
+#: src/features/profile/stories-parts.ts
+msgid "Task"
+msgstr "Tapşırıq"
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
@@ -10448,6 +10892,7 @@ msgstr "Mətn başlıq və ya alt bilgi sahəsində yerləşir."
 msgid "Text size"
 msgstr "Mətn ölçüsü"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Text style"
 msgstr "Mətn üslubu"
@@ -10524,11 +10969,19 @@ msgstr "Köməkçi bu serverdə quraşdırılmayıb. Kim işlədirsə, ENCRYPTIO
 msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
 msgstr "Köməkçi öz açarınızdan istifadə edir. Siz birini bağlayana qədər heç bir yerə heç nə göndərilmir."
 
+#: src/features/profile/conflict-sheet.tsx
+msgid "The changes you made on this device since then will be lost."
+msgstr ""
+
 #: src/features/check/writing.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Yoxlamalar mexanikidir. Bu, dil modelindən oxucunun sizin siyahı qeydlərinizə necə reaksiya verə biləcəyini soruşur və yenidən yazmağı təklif edir. Bu, hesabın bir hissəsi deyil."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/facts-detail.tsx
+msgid "The coach and your documents can use this fact."
+msgstr ""
+
+#: src/features/profile/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "Kouç mesajlarınızdan heç nəyi yadda saxlamır."
 
@@ -10537,14 +10990,14 @@ msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRY
 msgstr "Bu serverdə məşqçi qurulmayıb. Serveri idarə edən şəxs ENCRYPTION_SECRET parametrini təyin etməlidir."
 
 #: src/features/assistant/coach-screen.tsx
-msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
-msgstr "Kouç bu serverdə qurulmayıb. Onu idarə edən şəxs ENCRYPTION_SECRET dəyərini təyin etməlidir. Biliklər, Təkliflər və müraciətləriniz onsuz da işləyir."
+msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and your applications work without it."
+msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "Kouç hər faktı söhbətdə təklif edir. Siz razılaşmayınca heç nə saxlanılmır."
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Kouç dediyiniz faktları saxlayır və sizə bildirir. Geri qaytara bilərsiniz."
 
@@ -10561,6 +11014,7 @@ msgstr "Cari vəziyyət əvvəlcə “Bərpa etməzdən əvvəl” kimi yadda sa
 msgid "The editor opens on Check, which checks the imported resume again."
 msgstr "Redaktor Yoxlama bölməsində açılır və idxal edilmiş CV-ni yenidən yoxlayır."
 
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "The end is before the start."
 msgstr "Son başlanğıcdan əvvəldir."
@@ -10625,9 +11079,9 @@ msgstr "mesaj"
 msgid "The order the text is stored in disagrees badly with the order it reads in."
 msgstr "Mətnin saxlanma ardıcıllığı onun oxunma ardıcıllığı ilə ciddi şəkildə uyğun gəlmir."
 
-#: src/features/career/facts.tsx
-msgid "The original stays in correction history. Stories using it will need review."
-msgstr "Orijinal düzəliş tarixində qalır. Onu istifadə edən hekayələr nəzərdən keçirilməlidir."
+#: src/features/profile/facts-detail.tsx
+msgid "The original stays in the history."
+msgstr "Orijinal tarixçədə qalır."
 
 #: src/features/onboarding/messages.ts
 msgid "The page is long, so only its first part was read."
@@ -10753,6 +11207,10 @@ msgstr ""
 msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
 msgstr "Bunlar serverinizin hesab parametrlərini proqram daxilindəki brauzer nişanında açır. Orada daxil olmağınız lazım ola bilər."
 
+#: src/features/profile/save-note.tsx
+msgid "These resumes still used the parts you changed, so they changed too. Parts a resume changed itself stay as they are."
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "They look for headings such as Experience, Education and Skills."
 msgstr "Təcrübə, Təhsil və Bacarıqlar kimi başlıqları axtarırlar."
@@ -10803,6 +11261,10 @@ msgstr "Bu söhbəti açmaq mümkün olmadı."
 msgid "This cover letter file isn't valid."
 msgstr "Bu müşayiət məktubu faylı etibarlı deyil."
 
+#: src/features/entries/dates-field.tsx
+msgid "This date hasn't been saved. Use a month and year, like Mar 2022, or just a year. The last valid date is kept."
+msgstr ""
+
 #: src/features/write/date-field.tsx
 msgid "This date hasn't been saved. Use a month and year, like Mar 2022, or just a year. The resume keeps the last valid date."
 msgstr "Bu tarix yadda saxlanmayıb. Mart 2022 və ya sadəcə bir il kimi bir ay və il istifadə edin. Resume son etibarlı tarixi saxlayır."
@@ -10838,6 +11300,10 @@ msgstr "Bu, serverinizin seçilmiş provayderlərindən istifadə edərək, cəd
 #: src/features/check/issues.ts
 msgid "This entry"
 msgstr "Bu giriş"
+
+#: src/features/entries/entry-editor.tsx
+msgid "This entry was deleted"
+msgstr ""
 
 #: src/features/write/entry-screen.tsx
 msgid "This entry was deleted."
@@ -11161,7 +11627,7 @@ msgstr "Vaxt, link, kim, nə göndərdiniz"
 msgid "Timeline"
 msgstr "Zaman qrafiki"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Vaxtlar {timeZone} üzrə göstərilir."
 
@@ -11177,7 +11643,7 @@ msgstr "Saat qurşağı"
 msgid "Timing the plan"
 msgstr "Plan vaxta bölünür"
 
-#: src/features/career/stories.tsx
+#: src/features/profile/stories-editor.tsx
 #: src/features/write/fields.ts
 msgid "Title"
 msgstr "Başlıq"
@@ -11313,6 +11779,10 @@ msgstr ""
 msgid "Trimming words"
 msgstr "Sözlər ixtisar edilir"
 
+#: src/features/profile/facts.tsx
+msgid "True things about your work. The coach and your documents use only the facts you turn on."
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Try {suggestion}"
 msgstr "{suggestion} cəhd edin"
@@ -11324,8 +11794,10 @@ msgstr "{suggestion} cəhd edin"
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 #: src/features/application-detail/detail-screen.tsx
+#: src/features/entries/photo-field.tsx
 #: src/features/letters/write.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/profile/states.tsx
 #: src/features/settings/api-keys.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/shell.tsx
@@ -11343,9 +11815,17 @@ msgstr "Bununla yenidən cəhd et"
 msgid "Try again, or restart the app."
 msgstr "Yenidən cəhd edin və ya tətbiqi yenidən başladın."
 
+#: src/features/profile/search-regions-field.tsx
+msgid "Try another name."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Try another search or clear your filters."
 msgstr "Başqa bir axtarışa cəhd edin və ya filtrlərinizi silin."
+
+#: src/features/profile/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/features/applications-board/board-screen.tsx
 #: src/features/applications/list-screen.tsx
@@ -11411,10 +11891,10 @@ msgid "Two-step verification"
 msgstr "İki addımlı doğrulama"
 
 #: src/features/application-detail/interview-sheet.tsx
-#: src/features/career/facts.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
+#: src/features/profile/facts-add.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "Type"
 msgstr "Növ"
@@ -11444,6 +11924,7 @@ msgstr "Ukrayn"
 msgid "Unavailable"
 msgstr "Əlçatan deyil"
 
+#: src/features/entries/rich-text-field.tsx
 #: src/features/letters/rich-text-field.tsx
 #: src/features/write/rich-text-field.tsx
 msgid "Underline"
@@ -11466,6 +11947,7 @@ msgstr "Bağlantıların altını çəkin"
 #: src/features/design/draft.ts
 #: src/features/document-menu/index.tsx
 #: src/features/documents/queries.ts
+#: src/features/entries/hooks.ts
 #: src/features/home/new-roles.tsx
 #: src/features/workspace/tabs/fit.tsx
 #: src/features/write/hooks.ts
@@ -11512,6 +11994,7 @@ msgstr "Bu cihazda sinxronizasiya edilmədi"
 msgid "Untick anything you'd rather leave out. You can change it all later in your Profile."
 msgstr ""
 
+#: src/features/profile/career.tsx
 #: src/features/write/entry-screen.tsx
 #: src/features/write/outline.tsx
 msgid "Untitled"
@@ -11547,6 +12030,15 @@ msgstr "Yenilənib"
 msgid "Updated {completed} of {0}. Locked documents, and letters for public links, were skipped. Refresh and retry any failures."
 msgstr "{completed} yeniləndi: {0}. Açıq bağlantılar üçün kilidlənmiş sənədlər və müşayiət məktubları atlandı. Siyahını yeniləyin və uğursuz əməliyyatları yenidən cəhd edin."
 
+#. placeholder {0}: followed.length
+#: src/features/profile/save-note.tsx
+msgid "Updated in {0} resumes"
+msgstr ""
+
+#: src/features/profile/save-note.tsx
+msgid "Updated in 1 resume"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Updating preview…"
 msgstr "Önizləmə yenilənir..."
@@ -11575,6 +12067,10 @@ msgstr ""
 #: src/features/write/picture-screen.tsx
 msgid "Uploading photo…"
 msgstr "Foto yüklənir..."
+
+#: src/features/entries/photo-field.tsx
+msgid "Uploading…"
+msgstr ""
 
 #: src/features/write/picture-screen.tsx
 msgid "URL"
@@ -11691,16 +12187,26 @@ msgstr "“{resumeName}” məlumatlarından istifadə et"
 msgid "Use details from the resume"
 msgstr "CV-dəki məlumatlardan istifadə et"
 
-#: src/features/career/facts.tsx
+#: src/features/profile/facts-detail.tsx
 msgid "Use for all applications"
 msgstr "Bütün müraciətlər üçün istifadə et"
+
+#: src/features/profile/facts-detail.tsx
+msgid "Use in coaching"
+msgstr ""
+
+#. placeholder {0}: factExcerpt(fact)
+#: src/features/profile/facts-detail.tsx
+#: src/features/profile/facts.tsx
+msgid "Use in coaching: {0}"
+msgstr ""
 
 #: src/features/document-menu/index.tsx
 #: src/features/share/link.tsx
 msgid "Use lowercase letters, numbers and single dashes."
 msgstr "Kiçik hərflərdən, rəqəmlərdən və tək tirelərdən istifadə edin."
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Use my timezone"
 msgstr "Saat qurşağımdan istifadə et"
 
@@ -11714,6 +12220,10 @@ msgstr "\"Experience\", \"Education\" və \"Skills\" kimi sadə başlıqlardan i
 
 #: src/api/ai-consent.ts
 msgid "Use Rezumi AI?"
+msgstr ""
+
+#: src/features/profile/conflict-sheet.tsx
+msgid "Use saved version"
 msgstr ""
 
 #: src/features/workspace/parts.tsx
@@ -11738,6 +12248,14 @@ msgstr "Əvvəlki dəyişiklikləri ləğv etmək üçün redaktorda “Geri al�
 msgid "Use the email and password of your Rezumi account."
 msgstr ""
 
+#: src/features/profile/conflict-sheet.tsx
+msgid "Use the saved version"
+msgstr ""
+
+#: src/features/profile/conflict-sheet.tsx
+msgid "Use the saved version?"
+msgstr ""
+
 #: src/features/check/issues.ts
 msgid "Use the standard heading"
 msgstr "Standart başlıqdan istifadə edin"
@@ -11757,10 +12275,6 @@ msgstr "Bu tarixdən istifadə edin"
 #: app/account/preferences.tsx
 msgid "Use this device's timezone ({deviceTimezone})"
 msgstr "Bu cihazın saat qurşağından istifadə edin ({deviceTimezone})"
-
-#: src/features/career/facts.tsx
-msgid "Use this fact"
-msgstr "Bu faktdan istifadə edin"
 
 #: src/features/ai/provider-editor.tsx
 msgid "Use this provider"
@@ -11782,7 +12296,7 @@ msgstr "istifadə edilib: {used}"
 msgid "Used on {at}"
 msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Vəzifələri və təklifləri yoxlamaq üçün istifadə olunur. Hər biri rəqəmdir ki, kouç təxmin etmədən müqayisə edə bilsin."
 
@@ -11895,10 +12409,6 @@ msgstr "İş elanına baxın"
 msgid "View saved work"
 msgstr "Saxlanmış işə baxın"
 
-#: src/features/career/facts.tsx
-msgid "View source"
-msgstr "Mənbəyə baxın"
-
 #. placeholder {0}: versionTitle(selected)
 #: src/features/history/history.tsx
 #: src/features/letters/share.tsx
@@ -11959,6 +12469,7 @@ msgid "We only read what you add here, once you continue. Nothing goes into your
 msgstr ""
 
 #. placeholder {0}: dates.raw
+#: src/features/entries/dates-field.tsx
 #: src/features/write/date-field.tsx
 msgid "We read “{0}”. Pick a month so it sorts and prints consistently."
 msgstr "“{0}” kimi oxuduq. Ardıcıl sıralanması və çap olunması üçün ay seçin."
@@ -11992,10 +12503,11 @@ msgstr "Veb axtarışı bitmədi."
 msgid "Web search failed: {0}"
 msgstr "Veb axtarış uğursuz oldu: {0}"
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Web searches look for work here, up to three countries."
 msgstr "Veb axtarışları bu ölkələrdə iş axtarır. Üç ölkəyə qədər seçin."
 
+#: src/features/entries/basics-form.tsx
 #: src/features/onboarding/source-review.tsx
 #: src/features/write/basics-screen.tsx
 msgid "Website"
@@ -12033,9 +12545,17 @@ msgstr "İnsanın gördüyü"
 msgid "What are you working on?"
 msgstr "Nə üzərində işləyirsiniz?"
 
+#: src/features/profile/stories-parts.ts
+msgid "What changed? Leave blank if you can’t support it."
+msgstr "Nə dəyişdi? Dəstəkləyə bilmirsinizsə, boş saxlayın."
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "What did they ask?"
 msgstr "Nə soruşdular?"
+
+#: src/features/profile/stories-parts.ts
+msgid "What did you do, specifically?"
+msgstr "Konkret olaraq nə etdiniz?"
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "What did you say, as close as you remember?"
@@ -12065,7 +12585,7 @@ msgstr "Əsas əmək haqqı nədir?"
 msgid "What it asks for"
 msgstr "Nə tələb edir"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "What matters to you"
 msgstr "Sizin üçün vacib olanlar"
 
@@ -12093,9 +12613,25 @@ msgstr "Hazırlamağınızı istədikləri"
 msgid "What to do"
 msgstr "Nə etməli"
 
+#: src/features/profile/stories-parts.ts
+msgid "What was happening before you started?"
+msgstr "Siz başlamazdan əvvəl nə baş verirdi?"
+
+#: src/features/profile/stories-parts.ts
+msgid "What were you responsible for?"
+msgstr "Nəyə görə məsuliyyət daşıyırdınız?"
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "What works"
 msgstr "İşə yarayanlar"
+
+#: src/features/profile/stories-parts.ts
+msgid "What would you do differently?"
+msgstr "Nəyi fərqli edərdiniz?"
+
+#: src/features/profile/stories.tsx
+msgid "What you changed in this story is lost."
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "What you did: {name}"
@@ -12105,7 +12641,11 @@ msgstr "Nə etdiniz: {name}"
 msgid "What you sent"
 msgstr "Nə göndərdiyin"
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
+msgid "What you want next. Job searches, fit checks, offers and the coach use it."
+msgstr ""
+
+#: src/features/profile/preferences.tsx
 msgid "What you're looking for"
 msgstr "Nə axtarırsınız"
 
@@ -12137,7 +12677,7 @@ msgstr "Müraciətlər haradan gəlir"
 msgid "Where do you want to work?"
 msgstr ""
 
-#: src/features/career/preferences.tsx
+#: src/features/profile/preferences.tsx
 msgid "Where you want to work"
 msgstr "Harada işləmək istəyirsiniz"
 
@@ -12145,7 +12685,7 @@ msgstr "Harada işləmək istəyirsiniz"
 msgid "Where you work"
 msgstr "İş yeri"
 
-#: src/features/career/search-regions-field.tsx
+#: src/features/profile/search-regions-field.tsx
 msgid "Where you're looking for work"
 msgstr "İş axtardığınız yerdə"
 
@@ -12265,9 +12805,9 @@ msgstr "Özüm yazın"
 msgid "Write numbers as digits"
 msgstr "Rəqəmləri rəqəmlə yazın"
 
-#: src/features/career/stories.tsx
-msgid "Write one about something you did, in five parts."
-msgstr "Etdiyiniz bir şey haqqında beş hissədən birini yazın."
+#: src/features/profile/stories.tsx
+msgid "Write one about something you did, in five parts. Leave a part blank until you can support it."
+msgstr "Etdiyiniz bir iş haqqında beş hissədə yazın. Dəstəkləyə bilənə qədər hissəni boş saxlayın."
 
 #: src/features/ats-checker/messages.ts
 msgid "Write the full address so it is recognized as a link."
@@ -12278,8 +12818,8 @@ msgid "Write what you did."
 msgstr "Nə etdiyinizi yazın."
 
 #: src/features/workspace/tabs/apply.tsx
-msgid "Write your answer, or draft one from your Knowledge."
-msgstr "Cavabınızı yazın və ya Biliklərinizdən qaralama hazırlayın."
+msgid "Write your answer, or draft one from your Profile."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 #: src/features/check/issues.ts
@@ -12345,6 +12885,10 @@ msgstr "Bunu əvvəllər unutmusunuz, ona görə də yenidən saxlanılmadı."
 
 #: src/shell/unsaved-changes.ts
 msgid "You have edits that aren't saved yet. Leaving now loses them."
+msgstr ""
+
+#: src/features/profile/fill-sheet.tsx
+msgid "You have no resumes yet."
 msgstr ""
 
 #: src/ui-legacy/overlays.tsx
@@ -12500,9 +13044,10 @@ msgstr "E-poçt ünvanınız mətn parçaları arasında bölünüb."
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "E-poçtunuz, telefonunuz, məkanınız və digər başlıq məlumatları, həmçinin referansların telefon nömrələri veb səhifəyə, onun PDF-inə və axtarış nəticələrinə daxil edilmir."
 
-#: src/features/career/knowledge.tsx
-msgid "Your facts, stories and preferences. Editing Knowledge sends nothing to an AI connection."
-msgstr "Faktlarınız, hekayələriniz və üstünlükləriniz. Biliklər redaktəsi AI bağlantısına heç nə göndərmir."
+#. placeholder {0}: visible.length
+#: src/features/profile/facts.tsx
+msgid "Your facts · {0}"
+msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your focus"
@@ -12520,10 +13065,6 @@ msgstr "Başlıqlarınız əsas mətninizlə eyni görünür."
 #: src/features/applications/list-screen.tsx
 msgid "Your job search starts here"
 msgstr "İş axtarışınız buradan başlayır"
-
-#: src/features/workspace/tabs/debrief.tsx
-msgid "your Knowledge"
-msgstr "Bilikləriniz"
 
 #: app/account/preferences.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
@@ -12618,16 +13159,32 @@ msgstr ""
 msgid "your preferences"
 msgstr "tərcihləriniz"
 
+#: src/features/workspace/tabs/debrief.tsx
+msgid "your Profile"
+msgstr ""
+
+#: src/features/profile/bring-screen.tsx
+msgid "Your Profile already has what we found, or the sources couldn't be read."
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr ""
 
-#: app/(tabs)/profile/index.tsx
-msgid "Your Profile is coming to the app"
+#: src/features/profile/conflict-sheet.tsx
+msgid "Your Profile changed elsewhere"
+msgstr ""
+
+#: src/features/assistant/coach-screen.tsx
+msgid "Your Profile couldn't load. Try again or switch Profile off before sending."
 msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Your Profile was changed somewhere else. Check what's new, then save again."
+msgstr ""
+
+#: src/features/profile/conflict-sheet.tsx
+msgid "Your Profile was saved on another device or on the web while you were editing here. Your changes are still on this device. Choose which version to keep."
 msgstr ""
 
 #: src/features/settings/export.tsx
@@ -12713,6 +13270,11 @@ msgstr ""
 #: src/features/assistant/coach-screen.tsx
 msgid "your stories"
 msgstr "hekayələriniz"
+
+#. placeholder {0}: rows.length
+#: src/features/profile/stories.tsx
+msgid "Your stories · {0}"
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "Your story couldn't be loaded."

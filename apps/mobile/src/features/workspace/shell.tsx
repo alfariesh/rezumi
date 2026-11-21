@@ -36,7 +36,7 @@ export type WorkspaceTabProps = {
 	interview: InterviewTimelineEntry | undefined;
 	/** Practise: open with Speak selected. */
 	speak: boolean;
-	/** Practise: a story from Knowledge to practise. */
+	/** Practise: a story from the Profile to practise. */
 	story: string | undefined;
 	now: Date;
 	go: (tab: WorkspaceTab, search?: WorkspaceSearch) => void;

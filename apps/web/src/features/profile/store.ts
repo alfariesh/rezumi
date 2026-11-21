@@ -1,5 +1,6 @@
 import type { ProfileDto, ProfileSaveResult } from "./queries";
 import type { WriteSource, WriteUpdateOptions } from "@/features/resume/editor/write/source";
+import type { ProfileDraftStatus } from "@rezumi/resume/profile-draft";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { QueryClient } from "@tanstack/react-query";
 import type { WritableDraft } from "immer";
@@ -9,6 +10,7 @@ import { ORPCError } from "@orpc/client";
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand/react";
 import { profileFromResume, resumeDataFromProfile } from "@rezumi/resume/profile";
+import { createProfileSaver, mergeFollowed } from "@rezumi/resume/profile-draft";
 import { syncResumeDates } from "@rezumi/schema/resume/dates";
 import { toast } from "@rezumi/ui/components/toast";
 import { storeSavedProfile } from "./queries";
@@ -22,13 +24,11 @@ import { client, orpc } from "@/libs/orpc/client";
  */
 
 /** `idle`: nothing sent yet this visit. `error`: the last save failed; the next edit or Retry sends again. */
-type ProfileSaveStatus = "idle" | "saving" | "saved" | "error";
-
 type ProfileDraftState = {
 	data: ResumeData | null;
 	/** The version the next save sends back; null before the Profile's first save. */
 	updatedAt: Date | null;
-	status: ProfileSaveStatus;
+	status: ProfileDraftStatus;
 	/** The resumes this visit's saves carried changes into, for "Updated in N resumes". */
 	followed: ProfileSaveResult["updatedResumes"];
 	undoStack: ResumeData[];
@@ -45,11 +45,6 @@ type ProfileDraftActions = {
 
 type ProfileDraftStore = ProfileDraftState & ProfileDraftActions;
 
-const SAVE_DELAY_MS = 800;
-
-let saveTimer: number | undefined;
-let saving: Promise<boolean> | null = null;
-let unsent = false;
 let boundQueryClient: QueryClient | undefined;
 let lastEditAt = 0;
 let lastKey: string | undefined;
@@ -60,6 +55,26 @@ function resetHistoryRuntime() {
 	lastKey = undefined;
 	canCoalesce = false;
 }
+
+const saver = createProfileSaver({
+	read: () => {
+		const { data, updatedAt } = useProfileDraftStore.getState();
+		return data ? { data: profileFromResume(data), updatedAt } : null;
+	},
+	send: (input) => client.profile.update(input),
+	isConflict: (error) => error instanceof ORPCError && error.code === "PROFILE_VERSION_CONFLICT",
+	onStatus: (status) => useProfileDraftStore.setState({ status }),
+	onSaved: (result) => {
+		useProfileDraftStore.setState((state) => ({
+			updatedAt: result.updatedAt,
+			followed: mergeFollowed(state.followed, result.updatedResumes),
+		}));
+		if (boundQueryClient) storeSavedProfile(boundQueryClient, result);
+	},
+	onConflict: reloadAfterConflict,
+	setTimer: (run, ms) => window.setTimeout(run, ms),
+	clearTimer: (timer) => window.clearTimeout(timer as number),
+});
 
 export const useProfileDraftStore = create<ProfileDraftStore>()(
 	immer((set, get) => ({
@@ -72,8 +87,7 @@ export const useProfileDraftStore = create<ProfileDraftStore>()(
 
 		load: (profile) => {
 			resetHistoryRuntime();
-			unsent = false;
-			window.clearTimeout(saveTimer);
+			saver.reset();
 			set((state) => {
 				state.data = resumeDataFromProfile(profile.data) as WritableDraft<ResumeData>;
 				state.updatedAt = profile.updatedAt;
@@ -110,7 +124,7 @@ export const useProfileDraftStore = create<ProfileDraftStore>()(
 				fn(state.data);
 				syncResumeDates(state.data as ResumeData);
 			});
-			queueSave();
+			saver.queue();
 		},
 
 		undo: () => {
@@ -123,12 +137,11 @@ export const useProfileDraftStore = create<ProfileDraftStore>()(
 				state.redoStack.push(data as WritableDraft<ResumeData>);
 				state.data = previous as WritableDraft<ResumeData>;
 			});
-			queueSave();
+			saver.queue();
 		},
 
 		retry: () => {
-			unsent = true;
-			void saveProfileNow();
+			void saver.retry();
 		},
 	})),
 );
@@ -152,17 +165,7 @@ export function bindProfileQueryClient(queryClient: QueryClient) {
 
 /** Edits not on the server yet: typed and waiting, or being sent. */
 export function hasUnsavedProfileChanges() {
-	return unsent || saving !== null;
-}
-
-function queueSave() {
-	unsent = true;
-	window.clearTimeout(saveTimer);
-	saveTimer = window.setTimeout(() => void saveProfileNow(), SAVE_DELAY_MS);
-}
-
-function isVersionConflict(error: unknown) {
-	return error instanceof ORPCError && error.code === "PROFILE_VERSION_CONFLICT";
+	return saver.hasUnsavedChanges();
 }
 
 /** Reads the Profile again after a conflict and shows it in place of the edits that couldn't be saved. */
@@ -186,43 +189,5 @@ async function reloadAfterConflict() {
  * and before an action the server runs on the saved Profile (Fill from a resume).
  */
 export function saveProfileNow(): Promise<boolean> {
-	window.clearTimeout(saveTimer);
-	if (saving) return saving.then(() => (unsent ? saveProfileNow() : true));
-	const { data, updatedAt } = useProfileDraftStore.getState();
-	if (!unsent || !data) return Promise.resolve(true);
-
-	unsent = false;
-	useProfileDraftStore.setState({ status: "saving" });
-	saving = (async () => {
-		try {
-			const result = await client.profile.update({ data: profileFromResume(data), expectedUpdatedAt: updatedAt });
-			useProfileDraftStore.setState((state) => ({
-				updatedAt: result.updatedAt,
-				status: unsent ? "saving" : "saved",
-				followed: [
-					...state.followed,
-					...result.updatedResumes.filter((resume) => !state.followed.some((known) => known.id === resume.id)),
-				],
-			}));
-			if (boundQueryClient) storeSavedProfile(boundQueryClient, result);
-			return true;
-		} catch (error) {
-			if (isVersionConflict(error)) {
-				unsent = false;
-				await reloadAfterConflict();
-				return false;
-			}
-			unsent = true;
-			useProfileDraftStore.setState({ status: "error" });
-			return false;
-		} finally {
-			saving = null;
-		}
-	})();
-
-	return saving.then((saved) => {
-		// Edits typed while the save was on its way go next.
-		if (saved && unsent) return saveProfileNow();
-		return saved;
-	});
+	return saver.saveNow();
 }

@@ -127,6 +127,8 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
 
 ## Gotchas found
 
+- Hermes on iOS has no `Intl.NumberFormat.prototype.formatToParts`: read separators from `format()` output
+  (`features/career/amount.ts`).
 - Hermes has no `Intl.RelativeTimeFormat`, and `Intl.NumberFormat` with `style: "unit"` prints nonsense ("2,700s" for
   45 minutes). Write relative days and durations as Lingui strings or plurals.
 - `tokens.motion` easings are Reanimated worklets; React Navigation animates with React Native's `Animated`, which

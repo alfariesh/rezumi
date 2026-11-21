@@ -1,4 +1,4 @@
-// A page of a tab opened straight from a link (Offers, Knowledge) has nothing under it in its stack: the header gets
+// A page of a tab opened straight from a link (Offers, Profile → Stories) has nothing under it in its stack: the header gets
 // a Back that replaces it with the tab's first screen, so the person is never stranded.
 import type { Href } from "expo-router";
 import { useLingui } from "@lingui/react/macro";

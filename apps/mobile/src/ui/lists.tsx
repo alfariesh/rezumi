@@ -29,6 +29,7 @@ export type ListRowProps = {
 	tone?: "default" | "danger" | undefined;
 	isDisabled?: boolean | undefined;
 	accessibilityHint?: string | undefined;
+	testID?: string | undefined;
 };
 
 export function ListRow({
@@ -43,6 +44,7 @@ export function ListRow({
 	tone = "default",
 	isDisabled = false,
 	accessibilityHint,
+	testID,
 }: ListRowProps) {
 	const danger = tone === "danger";
 	return (
@@ -54,6 +56,7 @@ export function ListRow({
 			accessibilityRole={onPress ? "button" : "none"}
 			accessibilityLabel={onPress ? [title, value, description].filter(Boolean).join(", ") : undefined}
 			accessibilityHint={accessibilityHint}
+			testID={testID}
 			accessibilityState={onPress ? { disabled: isDisabled } : undefined}
 			className={cx("min-h-14", isDisabled && "opacity-50")}
 		>
