@@ -231,7 +231,7 @@ const ATS_CHECKER_DESCRIPTION =
 	"Check whether software can read your resume PDF. Runs entirely in your browser, so your file is never uploaded.";
 const TEMPLATES_TITLE = "Resume templates with PDF examples | Rezumi";
 const TEMPLATES_DESCRIPTION =
-	"Preview every resume template and download sample PDFs. Start with 8 templates and watermark-free PDF downloads on Free; unlock every template, Word and ODT with Plus or Pro AI.";
+	"Preview every resume template and download sample PDFs. Free gives you 8 templates; Plus and Pro AI unlock them all, with Word and ODT.";
 
 type StructuredData = Record<string, unknown>;
 

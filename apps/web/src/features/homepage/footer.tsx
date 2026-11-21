@@ -1,7 +1,10 @@
+import type { Locale } from "@rezumi/utils/locale";
 import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
 import { LEGAL_URLS } from "@rezumi/schema/billing";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
+import { defaultLocale, publishedLocales } from "@rezumi/utils/locale";
 import { Container } from "./ui";
 
 type FooterLink =
@@ -62,7 +65,53 @@ function FooterLinkItem({ link }: FooterLinkItemProps) {
 	);
 }
 
-/** The footer: the brand and its promise, the links, and the build. */
+const languageOf = (locale: Locale) => locale.split("-")[0] ?? locale;
+
+/**
+ * A language's name in itself ("Deutsch", "日本語"), so a visitor finds their own. The region shows only where two
+ * locales share a language (English, Portuguese, Chinese).
+ */
+function nativeName(locale: Locale) {
+	const language = languageOf(locale);
+	const shared = publishedLocales.filter((other) => languageOf(other) === language).length > 1;
+	try {
+		return new Intl.DisplayNames([locale], { type: "language" }).of(shared ? locale : language) ?? locale;
+	} catch {
+		return locale;
+	}
+}
+
+/**
+ * The home page in every language, as plain links: the language menu is a script, so without these a crawler reaches
+ * the other languages only through the sitemap and hreflang tags. Folded by default to keep the footer short.
+ */
+function FooterLanguages() {
+	const { i18n } = useLingui();
+	return (
+		<details className="group">
+			<summary className="cursor-(--cursor-interactive) list-none hover:text-foreground">
+				{t`Languages`}: {nativeName(i18n.locale as Locale)}
+			</summary>
+			<ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+				{publishedLocales.map((locale) => (
+					<li key={locale}>
+						<a
+							href={locale === defaultLocale ? "/" : `/?locale=${locale}`}
+							hrefLang={locale === "sr-SP" ? "sr" : locale}
+							lang={locale}
+							aria-current={locale === i18n.locale ? "page" : undefined}
+							className={linkClass}
+						>
+							{nativeName(locale)}
+						</a>
+					</li>
+				))}
+			</ul>
+		</details>
+	);
+}
+
+/** The footer: the brand and its promise, the links, the languages, and the build. */
 export function LandingFooter() {
 	return (
 		<footer className="border-t border-separator">
@@ -93,6 +142,10 @@ export function LandingFooter() {
 						</nav>
 					))}
 				</div>
+			</Container>
+
+			<Container className="border-t border-separator py-6 text-xs text-muted">
+				<FooterLanguages />
 			</Container>
 
 			<Container className="flex flex-wrap items-center justify-between gap-2 border-t border-separator py-6 text-xs text-muted">

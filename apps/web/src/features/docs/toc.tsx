@@ -96,7 +96,8 @@ export function DocsTocDisclosure({ entries }: DocsTocProps) {
 	if (entries.length === 0) return null;
 	return (
 		<Disclosure isExpanded={open} onExpandedChange={setOpen} className="rounded-xl bg-surface shadow-surface xl:hidden">
-			<Disclosure.Heading>
+			{/* Right after the page's h1: an h3 here would skip a level. */}
+			<Disclosure.Heading level={2}>
 				<Disclosure.Trigger className="flex h-11 w-full cursor-(--cursor-interactive) items-center justify-between gap-2 rounded-xl px-4 text-start text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-focus">
 					{t`On this page`}
 					<Disclosure.Indicator className="text-muted" />
