@@ -18,9 +18,17 @@ const en = {
 	"nav.search": "Search",
 	"nav.language": "Language",
 
-	"home.eyebrow": "Rezumi Blog",
-	"home.title": "Advice for the job search you're in right now.",
-	"home.description": "Practical guides on resumes, applications and interviews, from the team building Rezumi.",
+	"home.eyebrow": "The Rezumi career guide",
+	"home.title": "From resume to interview.",
+	"home.description":
+		"Tailor your resume to a role, find out what an ATS can read, and prepare for the questions that come next.",
+	"home.browse": "Explore the guides",
+	"home.build": "Build a free resume",
+	"home.tools": "Put the advice to work",
+	"home.templates": "Find a resume template",
+	"home.templatesDescription": "Compare layouts and sample PDFs before you start writing.",
+	"home.ats": "Run a free ATS check",
+	"home.atsDescription": "Upload your PDF to see which details recruiting software can read.",
 	"home.latest": "Latest articles",
 	"home.empty": "No articles yet. The first ones are on their way.",
 
@@ -51,7 +59,7 @@ const en = {
 	"notFound.description": "The page you're looking for doesn't exist or has moved.",
 	"notFound.back": "Go to the blog",
 
-	"cta.build-resume.title": "Your next resume is a few minutes away.",
+	"cta.build-resume.title": "Build a resume for your next application.",
 	"cta.build-resume.description":
 		"Start from scratch or import the one you have. The free plan is yours for as long as you need it.",
 	"cta.build-resume.action": "Build your resume",
@@ -99,16 +107,24 @@ const id: Record<MessageKey, string> = {
 	"nav.search": "Cari",
 	"nav.language": "Bahasa",
 
-	"home.eyebrow": "Blog Rezumi",
-	"home.title": "Saran untuk pencarian kerja yang sedang Anda jalani.",
-	"home.description": "Panduan praktis seputar CV, lamaran, dan wawancara kerja, dari tim yang membangun Rezumi.",
+	"home.eyebrow": "Panduan karier Rezumi",
+	"home.title": "Dari CV ke wawancara.",
+	"home.description":
+		"Sesuaikan CV dengan lowongan, cek bagian yang terbaca oleh ATS, dan siapkan jawaban untuk wawancara.",
+	"home.browse": "Jelajahi panduan",
+	"home.build": "Buat CV gratis",
+	"home.tools": "Praktikkan dengan Rezumi",
+	"home.templates": "Pilih template CV",
+	"home.templatesDescription": "Bandingkan tata letak dan contoh PDF sebelum mulai menulis.",
+	"home.ats": "Cek keterbacaan CV",
+	"home.atsDescription": "Unggah PDF untuk melihat bagian CV yang bisa dibaca sistem rekrutmen. Gratis.",
 	"home.latest": "Artikel terbaru",
 	"home.empty": "Belum ada artikel. Yang pertama segera hadir.",
 
 	"post.readingTime": "{minutes} menit baca",
 	"post.updated": "Diperbarui {date}",
 	"post.by": "Oleh {names}",
-	"post.onThisPage": "Di halaman ini",
+	"post.onThisPage": "Daftar isi",
 	"post.tags": "Tag",
 	"post.keepReading": "Baca juga",
 	"post.translated": "Artikel ini belum tersedia dalam {language}.",
@@ -132,7 +148,7 @@ const id: Record<MessageKey, string> = {
 	"notFound.description": "Halaman yang Anda cari tidak ada atau sudah dipindahkan.",
 	"notFound.back": "Buka blog",
 
-	"cta.build-resume.title": "CV Anda berikutnya hanya beberapa menit lagi.",
+	"cta.build-resume.title": "Buat CV untuk lamaran berikutnya.",
 	"cta.build-resume.description":
 		"Mulai dari nol atau impor CV yang sudah ada. Paket gratis bisa Anda pakai selama dibutuhkan.",
 	"cta.build-resume.action": "Buat CV Anda",

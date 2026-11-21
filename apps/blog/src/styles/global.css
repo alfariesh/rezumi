@@ -45,6 +45,15 @@
 		@apply bg-background text-foreground proportional-nums antialiased selection:bg-accent-soft selection:text-foreground;
 	}
 
+	@media (width < 64rem) {
+		html {
+			--header-height: 6.875rem;
+		}
+		html:has([data-toc][data-enhanced]) {
+			scroll-padding-top: calc(var(--header-height, 6.5rem) + 4.5rem);
+		}
+	}
+
 	/* HeroUI components draw their own focus ring; everything else gets a 2px ring with a 2px gap. */
 	:focus-visible {
 		outline: 2px solid var(--focus);
@@ -59,5 +68,11 @@
 			animation-duration: 1ms !important;
 			scroll-behavior: auto !important;
 		}
+	}
+}
+
+@layer components {
+	.journal-wrap {
+		@apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
 	}
 }

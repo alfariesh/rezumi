@@ -1,11 +1,8 @@
 ---
-/**
- * "On this page", like the docs' (apps/web/DESIGN.md → Docs): the article's sections, the one being read marked by an
- * accent bar once the script below runs. Without JavaScript it is a plain list of links.
- */
 import type { Locale } from "../i18n/config";
 import type { HeadingAnchor } from "../lib/portable-text";
 import { getTranslator } from "../i18n/messages";
+import Icon from "./Icon.astro";
 
 type Props = { locale: Locale; headings: readonly HeadingAnchor[] };
 
@@ -13,47 +10,129 @@ const { locale, headings } = Astro.props;
 const t = getTranslator(locale);
 ---
 
-<nav aria-labelledby="toc-title" data-toc class="text-sm">
-	<h2 id="toc-title" class="mb-3 text-xs font-semibold text-muted">{t("post.onThisPage")}</h2>
-	<ul class="flex flex-col border-s border-separator">
-		{
-			headings.map((heading) => (
+<nav aria-label={t("post.onThisPage")} class="rounded-2xl bg-surface shadow-surface">
+	<details data-toc class="group/toc">
+		<summary class="flex min-h-14 cursor-(--cursor-interactive) list-none items-center gap-2.5 rounded-2xl px-4 py-3 text-sm font-semibold [&::-webkit-details-marker]:hidden">
+			<Icon name="list" size={20} />
+			<span>{t("post.onThisPage")}</span>
+			<span class="ms-auto font-mono text-xs font-normal text-muted" data-toc-position aria-hidden="true"></span>
+			<Icon name="chevron-down" size={16} class="shrink-0 text-muted transition-transform group-open/toc:rotate-180" />
+		</summary>
+		<ol class="toc-links mx-2 overflow-y-auto overscroll-contain border-t border-separator px-1 py-2">
+			{headings.map((heading) => (
 				<li>
-					<a
-						href={`#${heading.id}`}
-						data-toc-link={heading.id}
-						class:list={[
-							"-ms-px block border-s-2 border-transparent py-1 text-muted transition-colors hover:text-foreground aria-[current=location]:border-accent aria-[current=location]:text-foreground",
-							heading.level === 3 ? "ps-6" : "ps-3",
-						]}
-					>
+					<a href={`#${heading.id}`} data-toc-link={heading.id}
+						class:list={["toc-link", heading.level === 3 && "toc-child"]}>
 						{heading.text}
 					</a>
 				</li>
-			))
-		}
-	</ul>
+			))}
+		</ol>
+	</details>
 </nav>
 
+<style>
+	.toc-links {
+		max-height: min(50dvh, calc(100dvh - var(--header-height, 4rem) - 6rem));
+		scrollbar-width: thin;
+	}
+	.toc-link {
+		position: relative;
+		display: flex;
+		align-items: center;
+		min-height: 2.75rem;
+		padding: 0.5rem 0.75rem 0.5rem 1.25rem;
+		border-radius: var(--radius);
+		font-size: 0.875rem;
+		line-height: 1.45;
+		color: var(--muted);
+		overflow-wrap: anywhere;
+	}
+	.toc-child {
+		padding-inline-start: 2.25rem;
+	}
+	.toc-child::after {
+		content: "";
+		position: absolute;
+		inset-inline-start: 1.25rem;
+		width: 0.45rem;
+		border-top: 1px solid currentColor;
+	}
+	.toc-link:hover {
+		background: var(--default);
+		color: var(--foreground);
+	}
+	.toc-link[aria-current] {
+		background: var(--accent-soft);
+		color: var(--accent-soft-foreground);
+		font-weight: 600;
+	}
+	.toc-link[aria-current]::before {
+		content: "";
+		position: absolute;
+		inset-inline-start: 0.4rem;
+		inset-block: 0.6rem;
+		width: 3px;
+		border-radius: 1rem;
+		background: var(--accent);
+	}
+	@media (min-width: 64rem) {
+		.toc-links {
+			max-height: calc(100dvh - var(--header-height, 4rem) - 7rem);
+		}
+	}
+</style>
+
 <script>
-	// Mark the section whose heading most recently scrolled past the top third of the viewport.
-	for (const toc of document.querySelectorAll<HTMLElement>("[data-toc]")) {
-		const links = new Map(
-			[...toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")].map((link) => [link.dataset.tocLink, link]),
-		);
-		const headings = [...links.keys()]
-			.map((id) => (id ? document.getElementById(id) : null))
-			.filter((heading): heading is HTMLElement => heading !== null);
-		const mark = () => {
-			const line = window.innerHeight / 3;
-			const current = headings.filter((heading) => heading.getBoundingClientRect().top <= line).at(-1) ?? headings[0];
-			for (const [id, link] of links) {
-				if (id === current?.id) link.setAttribute("aria-current", "location");
-				else link.removeAttribute("aria-current");
+	const toc = document.querySelector<HTMLDetailsElement>("[data-toc]");
+	if (toc) {
+		const desktop = window.matchMedia("(min-width: 64rem)");
+		const syncLayout = () => {
+			toc.open = desktop.matches;
+		};
+		syncLayout();
+		desktop.addEventListener("change", syncLayout);
+		toc.dataset.enhanced = "";
+
+		const sections = Array.from(toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")).flatMap((link) => {
+			const heading = document.getElementById(link.hash.slice(1));
+			return heading ? [{ link, heading }] : [];
+		});
+		const position = toc.querySelector<HTMLElement>("[data-toc-position]");
+		let active = -1;
+
+		const markSection = () => {
+			const offset = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) + 2;
+			const index = Math.max(0, sections.findLastIndex(({ heading }) => heading.getBoundingClientRect().top <= offset));
+			const section = sections[index];
+			if (!section || active === index) return;
+			sections[active]?.link.removeAttribute("aria-current");
+			section.link.setAttribute("aria-current", "location");
+			if (position) position.textContent = `${index + 1} / ${sections.length}`;
+			active = index;
+			// Keep the current link in a long desktop outline visible without moving the article.
+			const list = section.link.closest("ol");
+			if (desktop.matches && toc.open && list) {
+				const box = section.link.getBoundingClientRect();
+				const bounds = list.getBoundingClientRect();
+				if (box.bottom > bounds.bottom) list.scrollTop += box.bottom - bounds.bottom;
+				else if (box.top < bounds.top) list.scrollTop += box.top - bounds.top;
 			}
 		};
-		mark();
-		window.addEventListener("scroll", mark, { passive: true });
-		window.addEventListener("resize", mark, { passive: true });
+		let frame = 0;
+		const schedule = () => {
+			if (frame) return;
+			frame = requestAnimationFrame(() => {
+				frame = 0;
+				markSection();
+			});
+		};
+		markSection();
+		window.addEventListener("scroll", schedule, { passive: true });
+		window.addEventListener("resize", schedule);
+		toc.addEventListener("click", (event) => {
+			if (desktop.matches || !(event.target instanceof Element)) return;
+			if (event.target.closest("[data-toc-link]")) toc.open = false;
+		});
 	}
 </script>

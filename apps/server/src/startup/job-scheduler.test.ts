@@ -10,6 +10,9 @@ vi.mock("@rezumi/api/features/portfolio/jobs", () => ({ runPortfolioJobs: portfo
 vi.mock("@rezumi/api/features/applications/extension-jobs", () => ({
 	runExtensionJobs: vi.fn(async () => ({ emailed: false, deleted: 0 })),
 }));
+vi.mock("@rezumi/api/features/jobs/maintenance", () => ({
+	runJobListingJobs: vi.fn().mockResolvedValue(undefined),
+}));
 
 beforeEach(() => {
 	vi.useFakeTimers();

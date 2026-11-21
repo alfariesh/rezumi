@@ -5,11 +5,13 @@
  * search and the language link at their end, like the landing page's section bar.
  */
 import type { Locale } from "../i18n/config";
+import type { CtaKind } from "../lib/cta";
 import type { BlogSettings } from "../lib/site-settings";
 import type { LocaleLinks } from "./LanguageSwitcher.astro";
 import { getTaxonomyTermsWithCacheHint } from "emdash";
 import { getTranslator } from "../i18n/messages";
 import { appLink } from "../lib/app-links";
+import { CTA_DESTINATIONS } from "../lib/cta";
 import { categoryPath, homePath, searchPath } from "../lib/paths";
 import BrandMark from "./BrandMark.astro";
 import Icon from "./Icon.astro";
@@ -23,22 +25,23 @@ type Props = {
 	currentTopic?: string | undefined;
 	/** The article the reader is on, for the call to action's attribution. */
 	campaign?: string | undefined;
+	cta?: CtaKind | undefined;
 };
 
-const { locale, settings, localeLinks, currentTopic, campaign } = Astro.props;
+const { locale, settings, localeLinks, currentTopic, campaign, cta = "build-resume" } = Astro.props;
 const t = getTranslator(locale);
 
 const topics = await getTaxonomyTermsWithCacheHint("category", { locale, includeCounts: false });
 if (Astro.cache?.enabled) Astro.cache.set(topics.cacheHint);
 
-const register = appLink("register", { locale, placement: "header", campaign });
+const action = appLink(CTA_DESTINATIONS[cta], { locale, placement: "header", campaign });
 const topicLink =
 	"block rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap text-muted transition-colors hover:text-foreground aria-[current=page]:bg-accent-soft aria-[current=page]:text-accent-soft-foreground";
 ---
 
 <header data-site-header class="sticky top-0 z-40 border-b border-separator bg-background/90 backdrop-blur-md">
-	<div class="mx-auto flex h-16 w-full max-w-6xl items-center gap-6 px-4 sm:px-6 lg:px-8">
-		<a href={homePath(locale)} class="flex shrink-0 items-center gap-2.5 rounded-lg" aria-label={t("nav.home")}>
+	<div class="mx-auto flex h-16 w-full max-w-6xl items-center gap-1 px-4 sm:gap-6 sm:px-6 lg:px-8">
+		<a href={homePath(locale)} class="flex shrink-0 items-center gap-1.5 rounded-lg sm:gap-2.5" aria-label={t("nav.home")}>
 			{settings.logo ? <img src={settings.logo.url} alt="" class="h-8 w-auto" /> : <BrandMark />}
 			<span class="text-lg font-semibold tracking-tight">Rezumi</span>
 			<span aria-hidden="true" class="h-4 w-px bg-separator"></span>
@@ -47,8 +50,8 @@ const topicLink =
 
 		{
 			topics.data.length > 0 && (
-				<nav aria-label={t("nav.topics")} class="hidden min-w-0 lg:block">
-					<ul class="flex items-center gap-1">
+				<nav aria-label={t("nav.topics")} class="hidden min-w-0 overflow-x-auto [scrollbar-width:none] lg:block">
+					<ul class="flex w-max items-center gap-1">
 						{topics.data.map((topic) => (
 							<li>
 								<a
@@ -76,8 +79,8 @@ const topicLink =
 			<div class="hidden lg:block">
 				<LanguageSwitcher locale={locale} links={localeLinks} />
 			</div>
-			<a href={register} class="button button--primary button--sm ms-1">
-				{t("cta.build-resume.action")}
+			<a href={action} class="button button--primary button--sm ms-1">
+				{t(`cta.${cta}.action`)}
 				<Icon name="arrow-right" size={16} class="hidden shrink-0 sm:block" />
 			</a>
 		</div>
