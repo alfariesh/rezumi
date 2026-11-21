@@ -7,7 +7,7 @@ import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useId, useRef, useState } from "react";
-import { BILLING_SELLER, LEGAL_URLS, PLANS } from "@rezumi/schema/billing";
+import { BILLING_SELLER, LEGAL_URLS, planPrice, PLANS, toMajorUnits } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -25,6 +25,7 @@ import {
 	trialDaysFor,
 	usePlanDates,
 } from "./purchase";
+import { trackEvent } from "@/libs/analytics";
 import { orpc } from "@/libs/orpc/client";
 
 /** Why a checkout or plan change didn't go through, in the user's words; the server's messages aren't translated. */
@@ -171,6 +172,12 @@ export function PurchaseDialog({
 		if (started.current) return;
 		started.current = true;
 		if (kind === "subscribe") {
+			trackEvent("begin_checkout", {
+				currency: currency.toUpperCase(),
+				value: toMajorUnits(planPrice(target.planId, target.interval, currency), currency),
+				payment_type: method,
+				items: [{ item_id: target.planId, item_variant: target.interval }],
+			});
 			checkout.mutate(
 				{ planId: target.planId, interval: target.interval, idempotencyKey, method },
 				{

@@ -31,7 +31,8 @@ blog use Google Analytics to count visits; security logs and resume statistics s
 - **Cloudflare:** Workers, network/security and private R2 uploads, including request metadata.
 - **Google Analytics (Google LLC, United States):** counts visits to rezumi.app and blog.rezumi.app: pages opened, the
   page's route pattern rather than its full address (resume and account ids, names and query text are left out), referring
-  site and campaign, device, browser, approximate location from the IP address, and an analytics cookie. Advertising
+  site and campaign, whether the visit led to a sign-up, a checkout or a payment (with the plan and amount, never your
+  name, email or account), device, browser, approximate location from the IP address, and an analytics cookie. Advertising
   features, Google signals and ad personalization are off. Visitors from the EEA, the UK and Switzerland are counted without
   analytics cookies. You can block it with your browser or Google's opt-out add-on.
 - **Neon:** managed PostgreSQL for accounts, documents and service records. Database/backup region: **Singapore (AWS ap-southeast-1)**.
