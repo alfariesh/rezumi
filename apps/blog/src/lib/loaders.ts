@@ -172,7 +172,7 @@ export async function loadPost(Astro: AstroGlobal, locale: Locale): Promise<Load
 			slug,
 			seo,
 			content: editing ? post.data.content : anchored.blocks,
-			headings: anchored.headings,
+			headings: editing ? [] : anchored.headings.filter((heading) => heading.text.length > 0),
 			readingMinutes: readingMinutes(post.data.content),
 			authors,
 			topic,

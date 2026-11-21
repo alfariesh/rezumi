@@ -9,4 +9,4 @@ const { node } = Astro.props;
 const Tag = node.style === "h3" ? "h3" : "h2";
 ---
 
-<Tag id={node.anchor}><slot /></Tag>
+<Tag id={node.anchor} tabindex="-1"><slot /></Tag>

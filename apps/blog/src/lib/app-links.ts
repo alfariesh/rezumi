@@ -15,7 +15,7 @@ const APP_PATHS = {
 export type AppDestination = keyof typeof APP_PATHS;
 
 /** Where on the blog a link sits; it becomes `utm_content`, so signups can be traced to the placement. */
-export type AppLinkPlacement = "header" | "post" | "closing" | "footer" | "article";
+export type AppLinkPlacement = "header" | "hero" | "toolkit" | "post" | "closing" | "footer" | "article";
 
 /** The app's `?locale=` value for each blog locale (see `localizedUrl` in packages/utils/src/locale.ts). */
 const APP_LOCALES: Record<Locale, string> = { en: "en-US", id: "id-ID" };

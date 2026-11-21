@@ -33,7 +33,7 @@ const columns = [
 		id: "blog",
 		title: t("footer.blog"),
 		links: [
-			{ label: t("home.latest"), href: homePath(locale) },
+			{ label: t("home.latest"), href: `${homePath(locale)}#articles` },
 			{ label: t("nav.search"), href: searchPath(locale) },
 			{ label: t("footer.rss"), href: feedPath(locale) },
 		],

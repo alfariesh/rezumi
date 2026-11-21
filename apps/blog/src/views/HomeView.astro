@@ -1,25 +1,25 @@
 ---
-/**
- * The blog's front page: the promise, the newest article as the lead, a grid of the rest and the closing call to
- * action. Later pages (`?cursor=`) are the grid alone and stay out of search results.
- */
 import type { HomeProps } from "../lib/loaders";
-import CtaPanel from "../components/CtaPanel.astro";
+import Icon from "../components/Icon.astro";
 import Pagination from "../components/Pagination.astro";
 import PostCard from "../components/PostCard.astro";
 import { locales } from "../i18n/config";
 import { getTranslator } from "../i18n/messages";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { homePath } from "../lib/paths";
+import { appLink } from "../lib/app-links";
+import { homePath, searchPath } from "../lib/paths";
 import { documentTitle } from "../lib/site-settings";
 
 type Props = HomeProps;
 
 const { locale, settings, posts, nextCursor, isPaged } = Astro.props;
 const t = getTranslator(locale);
-const lead = isPaged ? undefined : posts[0];
-const rest = isPaged ? posts : posts.slice(1);
 const localeLinks = Object.fromEntries(locales.map((other) => [other, homePath(other)]));
+const tools = [
+	{ destination: "templates", icon: "grid-view", title: "home.templates", description: "home.templatesDescription" },
+	{ destination: "ats-checker", icon: "document-check", title: "home.ats", description: "home.atsDescription" },
+] as const;
+const ListHeading = isPaged ? "h1" : "h2";
 ---
 
 <BaseLayout
@@ -32,55 +32,94 @@ const localeLinks = Object.fromEntries(locales.map((other) => [other, homePath(o
 	robots={isPaged ? "noindex, follow" : undefined}
 	localeLinks={localeLinks}
 >
-	<section aria-labelledby="home-title" class="mx-auto w-full max-w-6xl px-4 pt-14 pb-10 sm:px-6 sm:pt-20 lg:px-8">
-		<p
-			class="inline-flex items-center rounded-full px-4 py-1 text-base font-medium text-accent ring-1 ring-accent/40 ring-inset"
-		>
-			{t("home.eyebrow")}
-		</p>
-		<h1 id="home-title" class="mt-6 max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-6xl">
-			{t("home.title")}
-		</h1>
-		<p class="mt-5 max-w-2xl text-lg text-pretty text-muted sm:text-xl">{t("home.description")}</p>
+	{!isPaged && (
+		<section aria-labelledby="home-title" class="bg-surface">
+			<div class="journal-wrap grid items-center gap-7 py-8 sm:py-12 lg:grid-cols-2 lg:gap-12 lg:py-16">
+				<div>
+					<p class="mb-4 flex items-center gap-2 text-sm font-semibold text-muted">
+						<Icon name="book-open" size={20} />
+						{t("home.eyebrow")}
+					</p>
+					<h1 id="home-title" class="max-w-xl text-5xl leading-none font-semibold tracking-tight text-balance sm:text-6xl lg:text-7xl">
+						{t("home.title")}
+					</h1>
+					<p class="mt-5 max-w-lg text-base leading-relaxed text-pretty text-muted sm:text-lg">{t("home.description")}</p>
+					<div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+						<a href={appLink("register", { locale, placement: "hero" })} class="button button--primary button--lg">
+							{t("home.build")} <Icon name="arrow-right" size={16} />
+						</a>
+						{posts.length > 0 && (
+							<a href="#articles" class="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold hover:underline">
+								{t("home.browse")} <Icon name="chevron-down" size={16} />
+							</a>
+						)}
+					</div>
+				</div>
+				<img
+					src="/editorial/career-guide.webp"
+					srcset="/editorial/career-guide-small.webp 600w, /editorial/career-guide.webp 1200w"
+					sizes="(min-width: 1152px) 520px, (min-width: 1024px) 45vw, 100vw"
+					width="1200" height="800" alt="" fetchpriority="high"
+					class="aspect-[2/1] w-full rounded-2xl rounded-ee-[3.5rem] object-cover sm:aspect-[2.5/1] lg:aspect-[1.4] lg:rounded-ee-[5rem]"
+				/>
+			</div>
+		</section>
+	)}
+
+	<section id="articles" aria-labelledby="latest-title" class="journal-wrap py-12 sm:py-16">
+		<div class="mb-6 flex flex-wrap items-baseline justify-between gap-3 border-b border-separator pb-4">
+			<ListHeading id="latest-title" class="text-3xl font-semibold tracking-tight sm:text-4xl">
+				{isPaged ? t("pagination.older") : t("home.latest")}
+			</ListHeading>
+			<a href={searchPath(locale)} class="inline-flex min-h-11 items-center gap-2 text-sm font-medium hover:text-accent">
+				<Icon name="magnifying-glass" size={16} /> {t("search.label")}
+			</a>
+		</div>
+		{posts.length === 0 ? (
+			<p class="py-8 text-muted">{t("home.empty")}</p>
+		) : (
+			<ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+				{posts.map((post, index) => {
+					const feature = !isPaged && index === 0;
+					return (
+						<li class:list={["flex min-w-0", feature && (posts.length === 1 ? "md:col-span-full" : "lg:col-span-2")]}>
+							<PostCard
+								locale={locale}
+								timezone={settings.timezone}
+								post={post}
+								headingLevel={isPaged ? "h2" : "h3"}
+								variant={feature ? "feature" : "card"}
+							/>
+						</li>
+					);
+				})}
+			</ul>
+		)}
+		<Pagination locale={locale} basePath={homePath(locale)} nextCursor={nextCursor} isPaged={isPaged} />
 	</section>
 
-	<div class="mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6 sm:pb-28 lg:px-8">
-		{
-			posts.length === 0 ? (
-				<p class="rounded-3xl bg-surface p-10 text-center text-muted shadow-surface">{t("home.empty")}</p>
-			) : (
-				<>
-					{lead && (
-						<PostCard
-							locale={locale}
-							timezone={settings.timezone}
-							post={lead}
-							variant="feature"
-							headingLevel="h2"
-							priority
-						/>
-					)}
-					{rest.length > 0 && (
-						<section aria-labelledby="latest-title" class:list={[lead && "mt-16"]}>
-							<h2 id="latest-title" class="text-2xl font-semibold tracking-tight">
-								{t("home.latest")}
-							</h2>
-							<ul class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-								{rest.map((post) => (
-									<li class="flex">
-										<PostCard locale={locale} timezone={settings.timezone} post={post} />
-									</li>
-								))}
-							</ul>
-						</section>
-					)}
-					<Pagination locale={locale} basePath={homePath(locale)} nextCursor={nextCursor} isPaged={isPaged} />
-				</>
-			)
-		}
-
-		<div class="mt-20 sm:mt-28">
-			<CtaPanel locale={locale} kind="build-resume" placement="closing" size="large" />
-		</div>
-	</div>
+	{!isPaged && (
+		<section aria-labelledby="tools-title" class="dark bg-background text-foreground">
+			<div class="journal-wrap py-12 sm:py-16">
+				<h2 id="tools-title" class="text-3xl font-semibold tracking-tight sm:text-4xl">{t("home.tools")}</h2>
+				<ul class="mt-6 grid gap-3 md:grid-cols-2">
+					{tools.map((tool) => (
+						<li>
+							<a href={appLink(tool.destination, { locale, placement: "toolkit" })}
+								class="group flex h-full gap-4 rounded-2xl bg-surface p-5 transition-colors hover:bg-surface-secondary sm:p-7">
+								<span class="grid size-11 shrink-0 place-items-center rounded-xl bg-default">
+									<Icon name={tool.icon} size={24} />
+								</span>
+								<span class="flex-1">
+									<strong class="block text-xl font-semibold tracking-tight">{t(tool.title)}</strong>
+									<span class="mt-1 block max-w-sm text-sm leading-relaxed text-muted">{t(tool.description)}</span>
+								</span>
+								<Icon name="arrow-up-right" size={20} class="shrink-0 transition-transform group-hover:-translate-y-0.5" />
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+		</section>
+	)}
 </BaseLayout>

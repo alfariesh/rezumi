@@ -1,9 +1,4 @@
 ---
-/**
- * An article. The header (topic, title, summary, credits) and the featured image span the column; below, the body
- * reads at 68 characters with "On this page" beside it from `xl` (folded above the body before that), then tags, the
- * article's call to action and three articles to read next.
- */
 import type { PostProps } from "../lib/loaders";
 import { Image, PortableText } from "emdash/ui";
 import CtaPanel from "../components/CtaPanel.astro";
@@ -76,24 +71,24 @@ const breadcrumbs = {
 	localeLinks={localeLinks}
 	currentTopic={topic?.slug}
 	campaign={slug}
+	headerCta={cta ?? undefined}
 >
 	<JsonLd data={breadcrumbs} />
-	<article class="mx-auto w-full max-w-6xl px-4 pt-12 pb-16 sm:px-6 sm:pt-16 lg:px-8">
-		<header class="max-w-3xl">
-			{
-				topic && (
-					<a
-						href={categoryPath(locale, topic.slug)}
-						class="text-sm font-medium text-accent underline-offset-4 hover:underline"
-					>
-						{topic.label}
-					</a>
-				)
-			}
-			<h1 class="mt-3 text-4xl font-semibold tracking-tight text-balance sm:text-5xl" {...post.edit.title}>
+	<article class="journal-wrap pb-14 sm:pb-20">
+		<header class="border-b border-separator pt-8 pb-8 sm:pt-12 sm:pb-10">
+			<div class="mb-6 flex flex-wrap items-center gap-2 text-sm font-medium text-muted">
+				<a href={homePath(locale)} class="rounded hover:text-foreground">{t("footer.blog")}</a>
+				{topic && (
+					<>
+						<span aria-hidden="true">/</span>
+						<a href={categoryPath(locale, topic.slug)} class="rounded hover:text-foreground">{topic.label}</a>
+					</>
+				)}
+			</div>
+			<h1 class="max-w-4xl text-4xl leading-tight font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl" {...post.edit.title}>
 				{title}
 			</h1>
-			<p class="mt-5 text-lg text-pretty text-muted sm:text-xl" {...post.edit.excerpt}>{excerpt}</p>
+			<p class="mt-4 max-w-3xl text-lg text-pretty text-muted sm:text-xl" {...post.edit.excerpt}>{excerpt}</p>
 			<PostMeta
 				locale={locale}
 				timezone={settings.timezone}
@@ -114,25 +109,13 @@ const breadcrumbs = {
 			)
 		}
 
-		<div class:list={["mt-10 grid gap-12", showToc && "xl:grid-cols-[minmax(0,1fr)_16rem]"]}>
-			<div class="min-w-0 max-w-[68ch]">
-				{
-					showToc && (
-						<details class="group mb-8 rounded-2xl bg-surface p-4 shadow-surface xl:hidden">
-							<summary class="cursor-(--cursor-interactive) text-sm font-semibold">{t("post.onThisPage")}</summary>
-							<ul class="mt-3 flex flex-col gap-2 text-sm">
-								{headings.map((heading) => (
-									<li class:list={[heading.level === 3 && "ps-4"]}>
-										<a href={`#${heading.id}`} class="text-muted hover:text-foreground">
-											{heading.text}
-										</a>
-									</li>
-								))}
-							</ul>
-						</details>
-					)
-				}
-
+		<div class:list={["mt-6 sm:mt-10", showToc && "grid items-start gap-6 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-14 xl:gap-20"]}>
+			{showToc && (
+				<aside class="top-[var(--header-height,4rem)] z-20 min-w-0 has-[[data-enhanced]]:sticky lg:sticky lg:top-[calc(var(--header-height,4rem)+1.5rem)]">
+					<TableOfContents locale={locale} headings={headings} />
+				</aside>
+			)}
+			<div class:list={["min-w-0 max-w-[70ch]", !showToc && "mx-auto"]}>
 				<div class="prose" {...post.edit.content}>
 					<PortableText value={content} components={{ block: { h2: PostHeading, h3: PostHeading } }} />
 				</div>
@@ -157,21 +140,11 @@ const breadcrumbs = {
 				{
 					cta && (
 						<div class="mt-12">
-							<CtaPanel locale={locale} kind={cta} placement="article" campaign={slug} />
+							<CtaPanel locale={locale} kind={cta} campaign={slug} />
 						</div>
 					)
 				}
 			</div>
-
-			{
-				showToc && (
-					<aside class="hidden xl:block">
-						<div class="sticky top-[calc(var(--header-height,4rem)+2rem)]">
-							<TableOfContents locale={locale} headings={headings} />
-						</div>
-					</aside>
-				)
-			}
 		</div>
 	</article>
 
