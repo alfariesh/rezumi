@@ -6,11 +6,12 @@ import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { useInView } from "motion/react";
 import { useRef } from "react";
+import { templateSample } from "@rezumi/resume/design-presets";
 import { templateLayouts } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { useTemplateThumbnail } from "./thumbnails";
-import { templateSample, templates } from "@/dialogs/resume/template/data";
+import { templates } from "@/dialogs/resume/template/data";
 
 const layoutTags = (id: Template) => {
 	const layout = templateLayouts[id];

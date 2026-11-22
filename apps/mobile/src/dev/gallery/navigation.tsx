@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { View } from "react-native";
 import { Caption, GallerySection, Row } from "./section";
-import { Button, PushDrawer, Text } from "@/ui";
+import { Button, EditableTitle, ModeBar, PushDrawer, Text } from "@/ui";
 import { Fab, Segment, Stepper, Tabs } from "@/ui/navigation";
 
 const noop = () => undefined;
@@ -22,8 +22,48 @@ export function NavigationGallery() {
 	const [section, setSection] = useState<"basics" | "experience" | "education" | "skills">("basics");
 	const [step, setStep] = useState(1);
 	const [drawer, setDrawer] = useState(false);
+	const [mode, setMode] = useState<"write" | "page" | "design" | "check" | "share">("write");
+	const [name, setName] = useState("Product designer");
 	return (
 		<View className="gap-8">
+			<GallerySection
+				title="ModeBar"
+				note="The editor's modes at the foot of the screen: icon over name, the picked one in accent on a soft pill, counts at the icon's corner."
+			>
+				<View className="overflow-hidden rounded-2xl border border-border">
+					<ModeBar
+						accessibilityLabel="Editor mode"
+						value={mode}
+						onValueChange={setMode}
+						safeBottom={false}
+						items={[
+							{ value: "write", label: "Write", icon: "pencil-simple" },
+							{ value: "page", label: "Page", icon: "file-text" },
+							{ value: "design", label: "Design", icon: "palette" },
+							{ value: "check", label: "Check", icon: "list-checks", badge: 3 },
+							{ value: "share", label: "Share", icon: "globe" },
+						]}
+					/>
+				</View>
+			</GallerySection>
+
+			<GallerySection
+				title="EditableTitle"
+				note="A name that renames in place (the editor's document name). Return or leaving keeps it; empty puts the old one back."
+			>
+				<View className="flex-row">
+					<EditableTitle
+						value={name}
+						onSubmit={setName}
+						accessibilityLabel="Document name"
+						subtitle={<Caption>Saved</Caption>}
+					/>
+				</View>
+				<View className="flex-row">
+					<EditableTitle value="Locked resume" onSubmit={setName} accessibilityLabel="Document name" isDisabled />
+				</View>
+			</GallerySection>
+
 			<GallerySection
 				title="PushDrawer"
 				note="The phone's main menu, behind the screen: the screen slides aside, rounded and dimmed. Tap the dimmed screen, swipe it back, or press Android Back to close."

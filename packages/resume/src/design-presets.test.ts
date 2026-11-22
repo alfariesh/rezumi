@@ -5,11 +5,17 @@ import {
 	ACCENTS,
 	contrastOver,
 	fitToPages,
+	hasTemplatePreviewContent,
 	matchesFilter,
+	measureContrast,
 	MIN_CONTRAST,
 	nextFitStep,
+	paperTone,
 	parseColorInput,
+	readableShade,
 	resetDesign,
+	suitsCareerField,
+	templateSample,
 	TEMPLATES,
 } from "./design-presets";
 
@@ -50,6 +56,29 @@ describe("colour input and contrast", () => {
 		expect(contrastOver("rgba(0, 0, 0, 0)")).toBeCloseTo(1, 5);
 		expect(ACCENTS.every((accent) => contrastOver(accent.hex) >= MIN_CONTRAST)).toBe(true);
 	});
+
+	it("can't measure colours it can't read", () => {
+		expect(measureContrast("hsl(0, 0%, 0%)")).toBeNull();
+		expect(measureContrast("#000000", "navy")).toBeNull();
+		expect(measureContrast("#000000", "rgba(255, 255, 255, 1)")).toBeCloseTo(21, 0);
+	});
+
+	it("tells white, light and dark pages apart", () => {
+		expect(paperTone("rgba(255, 255, 255, 1)")).toBe("white");
+		expect(paperTone("rgba(0, 0, 0, 0)")).toBe("white");
+		expect(paperTone("#F4EBD0")).toBe("light");
+		expect(paperTone("#1B1F24")).toBe("dark");
+		expect(paperTone("navy")).toBe("white");
+	});
+
+	it("darkens an accent on light pages and lightens it on dark ones until it reads", () => {
+		const onWhite = readableShade("#FFE066");
+		expect(contrastOver(onWhite)).toBeGreaterThanOrEqual(MIN_CONTRAST);
+		const onDark = readableShade("#2F5A8A", "#1B1F24");
+		expect(contrastOver(onDark, "#1B1F24")).toBeGreaterThanOrEqual(MIN_CONTRAST);
+		// Lighter than where it started: each channel moved toward white.
+		expect(Number.parseInt(onDark.slice(1, 3), 16)).toBeGreaterThan(0x2f);
+	});
 });
 
 describe("reset design and template filters", () => {
@@ -69,5 +98,40 @@ describe("reset design and template filters", () => {
 		const two = TEMPLATES.filter((id) => matchesFilter(id, "two"));
 		expect(one.length + two.length).toBe(TEMPLATES.length);
 		expect(TEMPLATES.filter((id) => matchesFilter(id, "all"))).toEqual(TEMPLATES);
+	});
+});
+
+describe("template gallery", () => {
+	it("filters by field of work, keeping every template for all fields", () => {
+		expect(TEMPLATES.filter((id) => suitsCareerField(id, "all"))).toHaveLength(TEMPLATES.length);
+		const academic = TEMPLATES.filter((id) => suitsCareerField(id, "academic"));
+		expect(academic).toContain("cendekia");
+		expect(academic).not.toContain("vector");
+	});
+
+	it("points Indonesian pages at the Indonesian samples and every other language at English", () => {
+		expect(templateSample("kirana", "id-ID").smallThumbnail).toBe("/templates/thumb/id/kirana-small.webp");
+		expect(templateSample("kirana", "en-US")).toEqual({
+			pdf: "/templates/pdf/kirana.pdf",
+			image: "/templates/jpg/kirana.jpg",
+			thumbnail: "/templates/thumb/kirana.webp",
+			smallThumbnail: "/templates/thumb/kirana-small.webp",
+		});
+	});
+});
+
+describe("template previews", () => {
+	it("draw from the resume only when it holds more than the inherited account details", () => {
+		const account = { ...defaultResumeData, basics: { ...defaultResumeData.basics, name: "Example User" } };
+		expect(hasTemplatePreviewContent(account)).toBe(false);
+		const hidden = produce(defaultResumeData, (draft) => {
+			draft.summary.content = "<p>Hidden summary</p>";
+			draft.summary.hidden = true;
+		});
+		expect(hasTemplatePreviewContent(hidden)).toBe(false);
+		expect(hasTemplatePreviewContent(produce(hidden, (draft) => void (draft.summary.hidden = false)))).toBe(true);
+		const picture = produce(defaultResumeData, (draft) => void (draft.picture.url = "https://example.com/photo.png"));
+		expect(hasTemplatePreviewContent(picture)).toBe(true);
+		expect(hasTemplatePreviewContent(produce(picture, (draft) => void (draft.picture.hidden = true)))).toBe(false);
 	});
 });

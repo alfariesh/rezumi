@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { PixelRatio } from "react-native";
 import { createPreviewPipeline } from "./pipeline";
 import { PreviewScheduler } from "./scheduler";
-import { space } from "@/ui-legacy/tokens";
+import { space } from "@/ui/tokens";
 
 export type PreviewOptions = Pick<RenderRequest, "focused" | "pages" | "renderOptions"> & {
 	scale?: number | undefined;
@@ -35,7 +35,7 @@ export function usePreview(data: ResumeData | null, template?: Template, options
 		(viewport
 			? sizes.reduce<{ indices: number[]; top: number }>(
 					(value, page, index) => {
-						const height = page.height * displayScale + space.s8 + space.s6;
+						const height = page.height * displayScale + space[8] + space[6];
 						return {
 							top: value.top + height,
 							indices:

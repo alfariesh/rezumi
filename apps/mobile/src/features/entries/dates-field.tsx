@@ -13,7 +13,7 @@ import {
 	pickerDate,
 	readTypedDate,
 	showYearMonth,
-} from "@/features/write/dates";
+} from "@/features/entries/dates";
 import { ControlField, Icon, IconButton, InputGroup, Label, MonthPicker, Switch, Text, TextField } from "@/ui";
 
 type MonthInputProps = {

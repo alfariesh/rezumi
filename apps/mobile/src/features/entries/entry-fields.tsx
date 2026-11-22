@@ -1,22 +1,23 @@
-// Every field of one entry, from the field schema shared with the CV builder (`features/write/fields.ts`, as on the
-// web's entries.tsx). Level and icon wait behind "More options".
+// Every field of one entry, from the field schema shared with the CV builder (`features/entries/fields.ts`, as on the
+// web's entries.tsx). Level, icon and its color wait behind "More options".
 import type { EntryWriter } from "./hooks";
 import type { PageSettings } from "./source";
-import type { EntryField } from "@/features/write/fields";
-import type { Entry } from "@/features/write/model";
+import type { EntryField } from "@/features/entries/fields";
+import type { Entry } from "@/features/entries/model";
 import type { CustomSectionType, RoleItem, Website } from "@rezumi/schema/resume/data";
 import type { ResumeDates } from "@rezumi/schema/resume/dates";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { View } from "react-native";
+import { parseColorInput } from "@rezumi/resume/design-presets";
 import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
 import { generateId } from "@rezumi/utils/string";
 import { DatesField } from "./dates-field";
 import { IconPickerSheet } from "./icon-picker";
 import { RichTextField } from "./rich-text-field";
 import { BoundText, LinkField } from "./text-fields";
-import { ENTRY_FIELDS } from "@/features/write/fields";
-import { Button, ChipInput, IconButton, Label, ListRow, ListSection, Slider, Surface, Text } from "@/ui";
+import { ENTRY_FIELDS } from "@/features/entries/fields";
+import { Button, ChipInput, ColorField, IconButton, Label, ListRow, ListSection, Slider, Surface, Text } from "@/ui";
 
 type Values = Record<string, unknown> & {
 	website?: Website & { inlineLink?: boolean };
@@ -68,10 +69,11 @@ function Level({ entry, write, disabled }: FieldProps) {
 	);
 }
 
-/** The icon printed before the entry. Its colour is a design choice, set in the CV builder. */
+/** The icon printed before the entry, and its color (blank: the template's). */
 function EntryIcon({ entry, write, disabled }: FieldProps) {
 	const { t } = useLingui();
-	const icon = str((entry as unknown as Values).icon);
+	const values = entry as unknown as Values;
+	const icon = str(values.icon);
 	const [open, setOpen] = useState(false);
 	return (
 		<>
@@ -84,6 +86,23 @@ function EntryIcon({ entry, write, disabled }: FieldProps) {
 					onPress={() => setOpen(true)}
 				/>
 			</ListSection>
+			{icon ? (
+				<ColorField
+					label={t`Icon color`}
+					value={str(values.iconColor)}
+					placeholder={t`Template color`}
+					invalidLabel={t`Enter a color like #1a73e8, or leave it empty for the template's.`}
+					isDisabled={disabled}
+					onChange={(text) => {
+						const color = text ? parseColorInput(text) : "";
+						if (color === null) return false;
+						write("iconColor", (target) => {
+							target.iconColor = color;
+						});
+						return true;
+					}}
+				/>
+			) : null}
 			<IconPickerSheet
 				isOpen={open}
 				value={icon}

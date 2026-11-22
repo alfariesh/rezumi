@@ -1,5 +1,6 @@
 import type { PageMap, PageMapTarget } from "@rezumi/pdf/page-map";
 import type { PdfAtsReport } from "@rezumi/resume/ats-pdf";
+import type { WritingNote } from "@rezumi/resume/check";
 import type { Proposal } from "@rezumi/resume/proposals";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
@@ -18,15 +19,6 @@ export type MobileView = "page" | EditorMode | "work";
 
 /** What the panel shows over the editor's mode: the assistant or History; null shows the mode. */
 export type PanelView = "assistant" | "history" | null;
-
-/** A writing note that isn't a rewrite: where it is, how much it matters, the words and what to consider. */
-export type WritingNote = {
-	location: string;
-	impact: "high" | "medium" | "low";
-	quote: string;
-	note: string;
-	target: PageMapTarget | null;
-};
 
 /** Check → Writing: the model's review. Its rewrites are the proposals. */
 type WritingReview = { summary: string; strengths: readonly string[]; notes: readonly WritingNote[] };
@@ -130,15 +122,6 @@ export const selectPanelView = (state: Pick<EditorStore, "assistantOpen" | "hist
 	state.assistantOpen ? "assistant" : state.historyOpen ? "history" : null;
 
 const clampZoom = (zoom: number) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(zoom * 100) / 100));
-
-export const isSameSelection = (a: EditorSelection | null, b: EditorSelection | null) => {
-	if (!a || !b) return a === b;
-	if (a.kind !== b.kind) return false;
-	if (a.kind === "header") return true;
-	if (a.kind === "section" && b.kind === "section") return a.sectionId === b.sectionId;
-	if (a.kind === "item" && b.kind === "item") return a.sectionId === b.sectionId && a.itemId === b.itemId;
-	return false;
-};
 
 const initialState = {
 	pendingMode: null,

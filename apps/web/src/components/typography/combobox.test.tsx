@@ -3,7 +3,6 @@
 import { render } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { FontWeightCombobox } from "./combobox";
-import { getNextWeights } from "./get-next-weights";
 
 const comboboxMock = vi.hoisted(() => ({
 	props: undefined as { onValueChange?: (value: string[] | null) => void } | undefined,
@@ -26,10 +25,6 @@ describe("FontWeightCombobox", () => {
 		render(<FontWeightCombobox single fontFamily="Source Sans 3" value={["600"]} onValueChange={onValueChange} />);
 		comboboxMock.props?.onValueChange?.(["600", "700"]);
 		expect(onValueChange).toHaveBeenCalledWith(["700"]);
-	});
-	it("selects regular and bold body weights, and one heading weight for a new family", () => {
-		expect(getNextWeights("Source Sans 3")).toEqual(["400", "700"]);
-		expect(getNextWeights("Source Sans 3", true)).toEqual(["600"]);
 	});
 	beforeEach(() => {
 		comboboxMock.props = undefined;

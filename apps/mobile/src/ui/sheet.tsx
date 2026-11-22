@@ -50,6 +50,11 @@ export type SheetProps = {
 	 */
 	canDismiss?: boolean | undefined;
 	onDismissAttempt?: (() => void) | undefined;
+	/**
+	 * Called once the sheet has finished sliding away, however it closed. Present the next screen or dialog from here:
+	 * iOS can drop a presentation started while the sheet is still dismissing.
+	 */
+	onDidDismiss?: (() => void) | undefined;
 	testID?: string | undefined;
 };
 
@@ -82,6 +87,7 @@ export function Sheet({
 	padded = true,
 	canDismiss = true,
 	onDismissAttempt,
+	onDidDismiss: onDismissed,
 	testID,
 }: SheetProps) {
 	const background = useThemeColor("overlay");
@@ -137,6 +143,7 @@ export function Sheet({
 		} else if (wantsOpen.current) {
 			onOpenChange(false);
 		}
+		onDismissed?.();
 	};
 
 	const onDetentChange = ({ nativeEvent: { index } }: DetentChangeEvent) => {

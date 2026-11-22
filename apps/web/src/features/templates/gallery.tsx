@@ -4,9 +4,10 @@ import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { careerFields, templateCareerFields, templateLayouts, templateLineup } from "@rezumi/schema/templates";
+import { suitsCareerField, templateSample } from "@rezumi/resume/design-presets";
+import { careerFields, templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
-import { careerFieldNames, templateSample, templates } from "@/dialogs/resume/template/data";
+import { careerFieldNames, templates } from "@/dialogs/resume/template/data";
 import { freeTemplates } from "@/features/homepage/plans";
 
 export function TemplateGallery() {
@@ -14,9 +15,7 @@ export function TemplateGallery() {
 	const count = i18n.number(templateLineup.length);
 	const freeCount = i18n.number(freeTemplates.length);
 	const [field, setField] = useState<CareerField | "all">("all");
-	const shown = templateLineup.filter(
-		(id) => field === "all" || (templateCareerFields[id] as readonly CareerField[]).includes(field),
-	);
+	const shown = templateLineup.filter((id) => suitsCareerField(id, field));
 
 	return (
 		<main id="main-content" className="min-h-svh bg-background px-5 pt-28 pb-16 text-foreground sm:px-8">

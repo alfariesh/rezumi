@@ -4,6 +4,7 @@ import { InputGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
+import { nextFontWeights } from "@rezumi/fonts/uploaded";
 import { typographySchema } from "@rezumi/schema/resume/data";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
@@ -11,7 +12,7 @@ import { SectionBase } from "../shared/section-base";
 import { NumberInput } from "@/components/input/number-input";
 import { FontFamilyCombobox, FontWeightCombobox } from "@/components/typography/combobox";
 import { useCurrentResume, useUpdateResumeData } from "@/features/resume/builder/draft";
-import { nextFontWeights, UploadedFonts } from "@/features/resume/editor/design/uploaded-fonts";
+import { UploadedFonts } from "@/features/resume/editor/design/uploaded-fonts";
 import { useSyncFormValues } from "@/hooks/use-sync-form-values";
 import { useAppForm } from "@/libs/tanstack-form";
 

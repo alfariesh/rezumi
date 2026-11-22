@@ -2,11 +2,11 @@ import type { Template } from "@rezumi/schema/templates";
 import { Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
+import { templateSample } from "@rezumi/resume/template-sample";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { BentoCard } from "./bento-card";
 import { Container, SectionHeading, SectionTitle } from "./ui";
-import { templateSample } from "@/dialogs/resume/template/data";
 
 /** A resume page in miniature: bars for lines, one of them marked as the line being edited. */
 type MiniPageProps = { className?: string };

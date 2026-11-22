@@ -1,7 +1,7 @@
 import type { LetterPane } from "@/routes";
 import type { PaneTab } from "@/shell/builder-chrome";
 import { useLingui } from "@lingui/react/macro";
-import { useRouter, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
+import { useGlobalSearchParams, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import PageScreen from "./page";
 import { LetterConflictSheet, useLetterDraftOwner, useLetterStore } from "@/draft";
@@ -9,35 +9,15 @@ import { discardLetterDraft } from "@/features/letters/drafting";
 import { nextLetterVisit } from "@/features/letters/save";
 import { LetterShareSheet } from "@/features/letters/share";
 import { routes } from "@/routes";
-import { BuilderChrome, useBuilderChrome } from "@/shell/builder-chrome";
-import { useKeyCommands } from "@/shell/key-commands";
+import { BuilderChrome, DraftChrome } from "@/shell/builder-chrome";
 import { IconButton } from "@/ui";
 
-/** Fills the chrome from the draft once for every pane: name and save status. ⌘Z / ⇧⌘Z undo and redo. */
-function DraftChrome({ id }: { id: string }) {
-	const router = useRouter();
-	const { t } = useLingui();
-	const name = useLetterStore((state) => state.document?.name);
-	const status = useLetterStore((state) => state.status);
-	const locked = useLetterStore((state) => state.locked);
-	const retry = useLetterStore((state) => state.retry);
-	useBuilderChrome({
-		title: name,
-		save: name ? { status, locked, onRetry: retry } : undefined,
-		actions: <IconButton icon="sparkle" label={t`Assistant`} onPress={() => router.push(routes.letterAssistant(id))} />,
-	});
-	useKeyCommands([
-		{ id: "undo", input: "z", title: t`Undo`, run: () => useLetterStore.getState().undo() },
-		{ id: "redo", input: "z", shift: true, title: t`Redo`, run: () => useLetterStore.getState().redo() },
-	]);
-	return null;
-}
-
 /**
- * Cover letter editor. Phone: Write, Page and Design as bottom tabs (no Check). Tablet: the
+ * Cover letter editor. Phone: Write, Page and Design in the mode bar (no Check). Tablet: the
  * Write / Design panel with the Page beside it. Share opens Share & export (Download, History) as a sheet.
  */
 export default function LetterLayout() {
+	const router = useRouter();
 	const { t } = useLingui();
 	const { id } = useLocalSearchParams<{ id: string }>();
 	// `?version=` (Applications' "What you sent") opens History on that version; it's the child route's param.
@@ -69,8 +49,19 @@ export default function LetterLayout() {
 			title={t`Cover letter`}
 			onExport={() => setSharing(true)}
 			modals={["assistant"]}
+			fullScreenModals={["preview"]}
 		>
-			<DraftChrome id={id} />
+			<DraftChrome
+				useStore={useLetterStore}
+				actions={
+					<IconButton
+						icon="sparkle"
+						label={t`Assistant`}
+						size="sm"
+						onPress={() => router.push(routes.letterAssistant(id))}
+					/>
+				}
+			/>
 			<LetterConflictSheet />
 			<LetterShareSheet id={id} open={sharing} onClose={() => setSharing(false)} version={version} />
 		</BuilderChrome>

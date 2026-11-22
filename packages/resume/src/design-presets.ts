@@ -1,11 +1,12 @@
 // The Design panel's presets and colour helpers, shared by the web and the app. Pure: no React, no Lingui.
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { DateFormat } from "@rezumi/schema/resume/dates";
-import type { Template } from "@rezumi/schema/templates";
+import type { CareerField, Template } from "@rezumi/schema/templates";
 import type { WritableDraft } from "immer";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
-import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
+import { templateCareerFields, templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { contrastOnWhite } from "@rezumi/utils/color";
+import { buildMarkdown } from "./markdown";
 
 type Data = ResumeData | WritableDraft<ResumeData>;
 /** The design a resume and a letter share. */
@@ -163,22 +164,62 @@ const linear = (channel: number) => {
 };
 const luminance = ({ r, g, b }: Rgba) => 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b);
 
+const WHITE: Rgba = { r: 255, g: 255, b: 255, a: 1 };
+/** The page colour as it prints: the background laid over white paper; null when it can't be read. */
+const paperOf = (background: string) => {
+	const bottom = toRgb(background);
+	return bottom ? over(bottom, WHITE) : null;
+};
+
 /**
  * WCAG contrast of `color` as it prints on `background`: the background is laid over white paper and the colour
- * over the background, so transparency counts. 1 when either can't be read.
+ * over the background, so transparency counts. Null when either isn't hex or rgb(a) (a named or hsl colour).
  */
-export function contrastOver(color: string, background = "#FFFFFF"): number {
-	const white = { r: 255, g: 255, b: 255, a: 1 };
+export function measureContrast(color: string, background = "#FFFFFF"): number | null {
 	const top = toRgb(color);
-	const bottom = toRgb(background);
-	if (!top || !bottom) return 1;
-	const paper = over(bottom, white);
+	const paper = paperOf(background);
+	if (!top || !paper) return null;
 	const [light, dark] = [luminance(paper), luminance(over(top, paper))].sort((x, y) => y - x) as [number, number];
 	return (light + 0.05) / (dark + 0.05);
 }
 
+/** `measureContrast`, with 1 when either colour can't be read. */
+export function contrastOver(color: string, background = "#FFFFFF"): number {
+	return measureContrast(color, background) ?? 1;
+}
+
+/**
+ * How the page prints: plain white, another light colour (an accent must be darker than it) or a dark one (an accent
+ * must be lighter). A background that can't be read counts as white, as the page falls back to it.
+ */
+export function paperTone(background: string): "white" | "light" | "dark" {
+	const paper = paperOf(background) ?? WHITE;
+	if (paper.r === 255 && paper.g === 255 && paper.b === 255) return "white";
+	// Above this luminance black text contrasts more than white text.
+	return luminance(paper) > 0.179 ? "light" : "dark";
+}
+
 /** Below this the Color group warns (WCAG AA for normal text). */
 export const MIN_CONTRAST = 4.5;
+
+const toHex = (channels: number[]) =>
+	`#${channels.map((channel) => Math.round(channel).toString(16).padStart(2, "0")).join("")}`.toUpperCase();
+
+/**
+ * The same hue made readable on `background` (at least 4.6:1): darkened step by step on light paper, lightened on
+ * dark paper. Black or white, whichever reads better, when no shade of the hue gets there.
+ */
+export function readableShade(hex: string, background = "#FFFFFF"): string {
+	const value = Number.parseInt(HEX.exec(hex.trim())?.[1] ?? "000000", 16);
+	let channels = [(value >> 16) & 255, (value >> 8) & 255, value & 255];
+	const lighten = paperTone(background) === "dark";
+	for (let step = 0; step < 40; step++) {
+		const candidate = toHex(channels);
+		if (contrastOver(candidate, background) >= 4.6) return candidate;
+		channels = channels.map((channel) => (lighten ? channel + (255 - channel) * 0.1 : channel * 0.93));
+	}
+	return contrastOver("#000000", background) >= contrastOver("#FFFFFF", background) ? "#000000" : "#FFFFFF";
+}
 
 /** The same hue, darkened step by step until it reads on white (at least 4.6:1). */
 export function darkenForWhite(hex: string): string {
@@ -269,3 +310,19 @@ export function matchesFilter(id: Template, filter: TemplateFilter) {
 	if (filter === "ats") return layout.atsSafe;
 	return true;
 }
+
+/** Whether a template suits a field of work (`templateCareerFields`); "all" keeps every template. */
+export const suitsCareerField = (id: Template, field: CareerField | "all") =>
+	field === "all" || (templateCareerFields[id] as readonly CareerField[]).includes(field);
+
+// Also at `@rezumi/resume/template-sample`, for pages that shouldn't load the schemas this module imports.
+export { templateSample } from "./template-sample";
+
+/**
+ * Whether a template preview drawn from this resume shows more than a template's sample would: visible content beyond
+ * the account details a new resume inherits, or a visible picture. Galleries show the sample image otherwise.
+ */
+export const hasTemplatePreviewContent = (data: ResumeData) =>
+	Boolean(
+		buildMarkdown({ ...data, basics: defaultResumeData.basics }).trim() || (!data.picture.hidden && data.picture.url),
+	);

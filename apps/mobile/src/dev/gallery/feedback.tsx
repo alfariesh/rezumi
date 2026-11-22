@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { Caption, GallerySection, Row } from "./section";
 import { Button, ListRow, ListSection, Switch, Text } from "@/ui";
 import { Alert, EmptyState, ProgressBar, Skeleton, SkeletonGroup, Spinner } from "@/ui/feedback";
+import { ProgressCircle } from "@/ui/progress-circle";
 
 const noop = () => undefined;
 
@@ -146,6 +147,20 @@ export function FeedbackGallery() {
 						Sign in
 					</Button>
 				</Alert>
+			</GallerySection>
+
+			<GallerySection
+				title="ProgressCircle"
+				note="Pro. A score or share as a ring with its value inside (Check's readability score)."
+			>
+				<Row>
+					<ProgressCircle value={86} size="lg" color="accent" accessibilityLabel="Readability score: 86 out of 100">
+						86
+					</ProgressCircle>
+					<ProgressCircle value={54} size="lg" color="warning" accessibilityLabel="Readability score: 54 out of 100">
+						54
+					</ProgressCircle>
+				</Row>
 			</GallerySection>
 
 			<GallerySection title="ProgressBar" note="Pro. Known progress (upload, onboarding); accent by default.">

@@ -1,5 +1,5 @@
 import type { WriteSource } from "./source";
-import type { ProfileComparison } from "@rezumi/resume/profile";
+import type { MarkerState } from "@rezumi/resume/profile-link";
 import type { WriteSection } from "@rezumi/resume/write";
 import type { ProfileData, ProfilePart, ProfileSectionType } from "@rezumi/schema/profile/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
@@ -11,12 +11,17 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { createContext, use } from "react";
-import { compareWithProfile, isBlank, takeFromProfile } from "@rezumi/resume/profile";
+import {
+	isLocalEntry,
+	markerState,
+	missingFromProfile,
+	profilePreview,
+	sectionsFromProfile,
+	takeProfilePartsEdit,
+} from "@rezumi/resume/profile-link";
 import { describeEntry } from "@rezumi/resume/write";
-import { PROFILE_SECTION_TYPES } from "@rezumi/schema/profile/data";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
-import { stripHtml } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
 import { openEntry } from "./actions";
 import { readWriteData, useWriteSelector, useWriteSource } from "./source";
@@ -49,73 +54,6 @@ export function useBuilderProfile(): ProfileData | null {
 	return use(ProfileContext);
 }
 
-type ProfileView = { comparison: ProfileComparison; connected: boolean };
-
-// One comparison per version of the resume and the Profile, shared by every marker: both are immutable, so a new
-// version is a new object.
-const views = new WeakMap<ResumeData, { profile: ProfileData; view: ProfileView }>();
-
-function viewOf(data: ResumeData, profile: ProfileData): ProfileView {
-	const cached = views.get(data);
-	if (cached?.profile === profile) return cached.view;
-
-	const comparison = compareWithProfile(data, profile);
-	// Shares something with the Profile: a filled-in part that reads the same, or any entry taken from it.
-	const connected =
-		Object.entries(comparison.basics).some(
-			([field, link]) => link === "linked" && !isBlank(profile.basics[field as keyof ProfileData["basics"]]),
-		) ||
-		(comparison.picture === "linked" && Boolean(profile.picture.url.trim())) ||
-		(comparison.summary === "linked" && !isBlank(stripHtml(profile.summary.content))) ||
-		PROFILE_SECTION_TYPES.some((section) => Object.values(comparison.items[section]).some((link) => link === "linked"));
-
-	const view = { comparison, connected };
-	views.set(data, { profile, view });
-	return view;
-}
-
-/** A part's value in the resume or the Profile, for the blank checks and the preview. */
-function partValue(source: ResumeData | ProfileData, part: ProfilePart): unknown {
-	if (part.kind === "basics") return source.basics[part.field];
-	if (part.kind === "picture") return source.picture.url;
-	if (part.kind === "summary") return stripHtml(source.summary.content);
-	const items = "metadata" in source ? source.sections[part.section].items : source.sections[part.section];
-	return (items as { id: string }[]).find((item) => item.id === part.id);
-}
-
-/**
- * What a part shows. `both`: it differs from the Profile's, with Use Profile's and Save to Profile. `save`: the Profile
- * has nothing there yet, so only Save to Profile. `fill`: the resume leaves blank what the Profile has (never filled
- * for it, so a shared resume doesn't start showing a phone number by itself): no marker, only a quiet Use Profile's.
- */
-type MarkerState = "both" | "save" | "fill";
-
-/** What a part of `data` shows against `profile`; null shows nothing. Exported for tests. */
-export function markerState(data: ResumeData, profile: ProfileData, part: ProfilePart): MarkerState | null {
-	const { comparison, connected } = viewOf(data, profile);
-	if (part.kind === "item") {
-		// An entry the Profile has too always came from it (or from a copy), so a difference is worth showing.
-		return comparison.items[part.section][part.id] === "override" ? "both" : null;
-	}
-	const link =
-		part.kind === "basics"
-			? comparison.basics[part.field]
-			: part.kind === "picture"
-				? comparison.picture
-				: comparison.summary;
-	if (link === "empty") return "fill";
-	if (link !== "override" || !connected) return null;
-	return isBlank(partValue(profile, part)) ? "save" : "both";
-}
-
-/** Writes the Profile's version of a part into the resume: an ordinary edit, undone like any other. */
-function applyPart(draft: WritableDraft<ResumeData>, next: ResumeData, part: ProfilePart) {
-	if (part.kind === "basics") (draft.basics as Record<string, unknown>)[part.field] = next.basics[part.field];
-	else if (part.kind === "picture") draft.picture.url = next.picture.url;
-	else if (part.kind === "summary") draft.summary.content = next.summary.content;
-	else (draft.sections[part.section] as { items: unknown[] }).items = next.sections[part.section].items;
-}
-
 /**
  * Use Profile's: takes the Profile's version of parts, or adds Profile entries the resume doesn't have, in one undo
  * step. `prepare` runs first in the same step (placing a section that wasn't on the page).
@@ -127,15 +65,8 @@ export function takeProfileParts(
 	prepare?: (draft: WritableDraft<ResumeData>) => void,
 ) {
 	const data = readWriteData(source);
-	if (!data || parts.length === 0) return;
-	const next = parts.reduce((current, part) => takeFromProfile(current, profile, part), data);
-	source.update(
-		(draft) => {
-			prepare?.(draft);
-			for (const part of parts) applyPart(draft, next, part);
-		},
-		{ newStep: true },
-	);
+	const edit = data ? takeProfilePartsEdit(data, profile, parts, prepare) : null;
+	if (edit) source.update(edit, { newStep: true });
 }
 
 /** Save to Profile: sends pending edits first, since the server reads the resume as saved. */
@@ -279,16 +210,7 @@ type ProfileVersionProps = { part: ProfilePart; profile: ProfileData };
 function ProfilePreview({ part, profile }: ProfileVersionProps) {
 	if (part.kind === "picture")
 		return <img src={profile.picture.url} alt="" className="size-12 rounded-lg object-cover" />;
-	let preview: string;
-	if (part.kind === "item") {
-		const item = partValue(profile, part) as Parameters<typeof describeEntry>[1] | undefined;
-		const described = item ? describeEntry(part.section, item) : null;
-		preview = described ? [described.title, described.meta].filter(Boolean).join(" · ") : "";
-	} else if (part.kind === "basics" && part.field === "website") preview = profile.basics.website.url;
-	else if (part.kind === "basics" && part.field === "customFields")
-		preview = profile.basics.customFields.map((field) => field.text).join(" · ");
-	else preview = String(partValue(profile, part) ?? "");
-	return <span className="break-words">{preview.length > 160 ? `${preview.slice(0, 160)}…` : preview}</span>;
+	return <span className="break-words">{profilePreview(profile, part)}</span>;
 }
 
 /** The preview under "In your Profile", in the marker's popover. */
@@ -311,8 +233,7 @@ export function useLocalEntry({ section, entryId }: LocalEntryOptions) {
 	const profile = useBuilderProfile();
 	const local = useWriteSelector((data) => {
 		if (source.kind !== "resume" || !profile || section.kind !== "builtin") return false;
-		const type = section.id as ProfileSectionType;
-		return viewOf(data, profile).comparison.items[type]?.[entryId] === "local";
+		return isLocalEntry(data, profile, section.id as ProfileSectionType, entryId);
 	});
 	const { save } = useSaveToProfile();
 	return local ? () => void save({ kind: "item", section: section.id as ProfileSectionType, id: entryId }) : null;
@@ -341,7 +262,7 @@ export function AddFromProfile({ section }: AddFromProfileProps) {
 	const type = section.id as ProfileSectionType;
 	const key = useWriteSelector((data) =>
 		source.kind === "resume" && profile && section.kind === "builtin"
-			? (viewOf(data, profile).comparison.missing[type]?.join("\u0000") ?? "")
+			? missingFromProfile(data, profile, type).join("\u0000")
 			: "",
 	);
 	if (!key || !profile) return null;
@@ -406,16 +327,5 @@ export function useSectionsFromProfile(unused: readonly ("summary" | ProfileSect
 	const source = useWriteSource();
 	const profile = useBuilderProfile();
 	if (source.kind !== "resume" || !profile) return [];
-	return unused
-		.map((type) => ({
-			type,
-			count: type === "summary" ? (isBlank(stripHtml(profile.summary.content)) ? 0 : 1) : profile.sections[type].length,
-		}))
-		.filter((entry) => entry.count > 0);
-}
-
-/** The parts that bring a whole section over from the Profile. */
-export function sectionParts(profile: ProfileData, type: "summary" | ProfileSectionType): ProfilePart[] {
-	if (type === "summary") return [{ kind: "summary" }];
-	return (profile.sections[type] as { id: string }[]).map((item) => ({ kind: "item", section: type, id: item.id }));
+	return sectionsFromProfile(profile, unused);
 }

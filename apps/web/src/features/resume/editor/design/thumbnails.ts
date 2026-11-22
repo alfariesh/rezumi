@@ -2,8 +2,7 @@ import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { buildMarkdown } from "@rezumi/resume/markdown";
-import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { hasTemplatePreviewContent } from "@rezumi/resume/design-presets";
 import { fnv1a } from "@rezumi/utils/string";
 import { createResumePdfBlob } from "@/features/resume/export/pdf-document";
 import { createPdfFirstPageImage, releaseThumbnailUrls } from "@/features/resume/preview/pdf-thumbnail";
@@ -24,9 +23,7 @@ export function thumbnailContent(data: ResumeData): ThumbnailContent {
 	return {
 		hash: fingerprint(data),
 		// New resumes inherit account details; those alone don't show a template's section layout.
-		hasContent: Boolean(
-			buildMarkdown({ ...data, basics: defaultResumeData.basics }).trim() || (!data.picture.hidden && data.picture.url),
-		),
+		hasContent: hasTemplatePreviewContent(data),
 	};
 }
 

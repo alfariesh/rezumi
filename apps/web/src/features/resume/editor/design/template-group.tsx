@@ -8,9 +8,9 @@ import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useEffect, useState } from "react";
-import { matchesFilter, TEMPLATES } from "@rezumi/resume/design-presets";
+import { matchesFilter, suitsCareerField, TEMPLATES } from "@rezumi/resume/design-presets";
 import { applyTemplatePreset, hasTemplatePreset } from "@rezumi/resume/template-preset";
-import { careerFields, templateCareerFields, templateLayouts, templatePresets } from "@rezumi/schema/templates";
+import { careerFields, templateLayouts, templatePresets } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { isRTL } from "@rezumi/utils/locale";
@@ -23,9 +23,6 @@ import { careerFieldNames, templates } from "@/dialogs/resume/template/data";
 import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
-
-const suitsField = (id: Template, field: CareerField | "all") =>
-	field === "all" || (templateCareerFields[id] as readonly CareerField[]).includes(field);
 
 /**
  * Applies a template with the page's cross-fade and an Undo toast. Font, size and colour carry across. A template the
@@ -70,7 +67,7 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 
 	const current = data.metadata.template;
 	const content = thumbnailContent(data);
-	const shown = TEMPLATES.filter((id) => matchesFilter(id, filter) && suitsField(id, field));
+	const shown = TEMPLATES.filter((id) => matchesFilter(id, filter) && suitsCareerField(id, field));
 	const filters: { id: TemplateFilter; label: string }[] = [
 		{ id: "all", label: t`All` },
 		{ id: "one", label: t`One column` },

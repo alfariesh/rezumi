@@ -1,32 +1,21 @@
 import type { CheckIssue } from "./issues";
 import type { PageMap, PageMapNode, PageMapTarget } from "@rezumi/pdf/page-map";
-import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
 import { Segment } from "@heroui-pro/react";
 import { Button, Toolbar } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { findBlock, isSameTarget, placeIssuePins, targetsMentioning, toTarget } from "@rezumi/resume/check";
 import { getProposalState } from "@rezumi/resume/proposals";
-import { findEntry } from "@rezumi/resume/write";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
-import { isSameSelection, useEditorStore } from "../store";
+import { useEditorStore } from "../store";
 import { scrollToIssue, useCheckActions } from "./actions";
 import { getIssueTone } from "./issues";
 import { useCheck } from "./use-check";
 import { getPdfFindingMessage } from "@/features/ats-checker/messages";
-
-const toTarget = (node: PageMapNode): PageMapTarget => {
-	if (node.kind === "item") return { kind: "item", sectionId: node.sectionId, itemId: node.itemId };
-	if (node.kind === "section") return { kind: "section", sectionId: node.sectionId };
-	return { kind: "header" };
-};
-
-/** The first block drawn for a target, on whichever page it starts. */
-const findNode = (pageMap: PageMap, target: PageMapTarget) =>
-	pageMap.nodes.find((node) => isSameSelection(toTarget(node), target));
 
 /**
  * A marker in the page margin, level with the top of a block: 30px left of it, but never off the page, whose
@@ -58,37 +47,6 @@ const TONE = {
 const PIN_CLASS =
 	"pointer-events-auto absolute grid size-[22px] cursor-(--cursor-interactive) place-items-center rounded-full border-2 border-(--paper) text-xs font-bold tabular-nums shadow-[0_1px_3px_oklch(0_0_0/0.25)]";
 
-const text = (value: unknown): string =>
-	typeof value === "string"
-		? value
-		: typeof value === "object" && value
-			? Object.values(value).map(text).join(" ")
-			: "";
-
-/** The blocks whose text mentions a term: the header, the summary or entries. */
-function targetsMentioning(data: ResumeData, term: string): PageMapTarget[] {
-	const needle = term.toLowerCase();
-	const mentions = (value: unknown) => text(value).toLowerCase().includes(needle);
-	const targets: PageMapTarget[] = [];
-
-	if (mentions(data.basics)) targets.push({ kind: "header" });
-	if (mentions(data.summary.content)) targets.push({ kind: "section", sectionId: "summary" });
-
-	const sections = [
-		...Object.entries(data.sections).map(([id, section]) => ({ id, items: section.items as { id: string }[] })),
-		...data.customSections.map((section) => ({ id: section.id, items: section.items as { id: string }[] })),
-	];
-	for (const section of sections) {
-		for (const item of section.items) {
-			if (mentions(findEntry(data, section.id, item.id))) {
-				targets.push({ kind: "item", sectionId: section.id, itemId: item.id });
-			}
-		}
-	}
-
-	return targets;
-}
-
 type CheckPageLayerProps = { pageIndex: number; pageMap: PageMap | undefined };
 
 /**
@@ -116,17 +74,14 @@ export function CheckPageLayer({ pageIndex, pageMap }: CheckPageLayerProps) {
 		if (breakpoint !== "mobile") scrollToIssue(issue.key, "panel");
 	};
 
-	const perBlock = new Map<string, number>();
 	const pins =
 		tab === "writing"
 			? []
-			: check.issues.flatMap((issue) => {
-					const node = issue.target ? findNode(pageMap, issue.target) : undefined;
-					if (!node || node.page !== pageIndex) return [];
-					const stack = perBlock.get(node.key) ?? 0;
-					perBlock.set(node.key, stack + 1);
-					return [{ issue, node, stack }];
-				});
+			: placeIssuePins(check.issues, pageMap.nodes, pageIndex).map(({ issue, block, stack }) => ({
+					issue,
+					node: block,
+					stack,
+				}));
 
 	const markers =
 		tab === "writing"
@@ -135,7 +90,7 @@ export function CheckPageLayer({ pageIndex, pageMap }: CheckPageLayerProps) {
 					const target: PageMapTarget = proposal.target.itemId
 						? { kind: "item", sectionId: proposal.target.sectionId, itemId: proposal.target.itemId }
 						: { kind: "section", sectionId: proposal.target.sectionId };
-					const node = findNode(pageMap, target);
+					const node = findBlock(pageMap.nodes, target);
 					return node && node.page === pageIndex ? [{ number: index + 1, node }] : [];
 				})
 			: [];
@@ -151,7 +106,7 @@ export function CheckPageLayer({ pageIndex, pageMap }: CheckPageLayerProps) {
 			: [];
 
 	const tinted = highlighted.flatMap((target) =>
-		pageMap.nodes.filter((node) => node.page === pageIndex && isSameSelection(toTarget(node), target)),
+		pageMap.nodes.filter((node) => node.page === pageIndex && isSameTarget(toTarget(node), target)),
 	);
 
 	return (

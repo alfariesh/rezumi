@@ -1,6 +1,7 @@
 // One entry, full screen: its fields saved as you type, then Move and Delete. Deleting is immediate, with Undo in the
-// toast. Also the summary editor. Both read and write through the open source (Profile now, a resume in Phase 07).
-import type { WriteSection } from "@/features/write/model";
+// toast. Also the summary editor. Both read and write through the open source (the Profile or a resume); the CV
+// builder adds its Profile marker (`top`) and its entry options (`extra`).
+import type { WriteSection } from "@/features/entries/model";
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { Stack, useRouter } from "expo-router";
@@ -10,7 +11,7 @@ import { EntryFields } from "./entry-fields";
 import { consumeFocus, useDeleteEntry, useEntry, useEntryWriter, useMoveEntry, useSectionTitle } from "./hooks";
 import { RichTextField, RichTextToolbar } from "./rich-text-field";
 import { useWriteData, useWriteSource } from "./source";
-import { DRAFT_HINTS } from "@/features/write/fields";
+import { DRAFT_HINTS } from "@/features/entries/fields";
 import {
 	describeEntry,
 	getEntries,
@@ -18,7 +19,7 @@ import {
 	getSectionType,
 	isDraftEntry,
 	getPrimaryField,
-} from "@/features/write/model";
+} from "@/features/entries/model";
 import { Alert, Card, EmptyState, ListRow, ListSection, Screen, Text } from "@/ui";
 
 type EditorFrameProps = { title: string; children: ReactNode };
@@ -34,9 +35,17 @@ export function EditorFrame({ title, children }: EditorFrameProps) {
 	);
 }
 
-type EntryEditorProps = { sectionId: string; entryId: string; focusField?: string | undefined };
+type EntryEditorProps = {
+	sectionId: string;
+	entryId: string;
+	focusField?: string | undefined;
+	/** Above the fields (the resume's Profile marker). */
+	top?: ReactNode;
+	/** Between the fields and Move / Delete (the resume's entry options). */
+	extra?: ReactNode;
+};
 
-export function EntryEditor({ sectionId, entryId, focusField }: EntryEditorProps) {
+export function EntryEditor({ sectionId, entryId, focusField, top, extra }: EntryEditorProps) {
 	const { t, i18n } = useLingui();
 	const router = useRouter();
 	const source = useWriteSource();
@@ -80,6 +89,7 @@ export function EntryEditor({ sectionId, entryId, focusField }: EntryEditorProps
 	return (
 		<EditorFrame title={title || sectionTitle}>
 			{locked ? <LockedNote /> : null}
+			{top}
 			{hint ? (
 				<Text size="xs" tone="muted">
 					{i18n._(hint)}
@@ -98,6 +108,7 @@ export function EntryEditor({ sectionId, entryId, focusField }: EntryEditorProps
 					/>
 				</Card.Body>
 			</Card>
+			{!locked ? extra : null}
 			{!locked ? (
 				<ListSection>
 					<ListRow
@@ -141,10 +152,15 @@ function LockedNote() {
 	);
 }
 
-type SummaryEditorProps = { title: string; hint: string };
+type SummaryEditorProps = {
+	title: string;
+	hint: string;
+	/** Beside the field's label (the resume's Profile marker). */
+	labelAction?: ReactNode;
+};
 
 /** The summary: one rich text, with the web's guidance. */
-export function SummaryEditor({ title, hint }: SummaryEditorProps) {
+export function SummaryEditor({ title, hint, labelAction }: SummaryEditorProps) {
 	const { t } = useLingui();
 	const source = useWriteSource();
 	const locked = source.useLocked();
@@ -161,6 +177,7 @@ export function SummaryEditor({ title, hint }: SummaryEditorProps) {
 						value={content}
 						disabled={locked}
 						hint={hint}
+						labelAction={labelAction}
 						autoFocus={!locked && autoFocus}
 						testID="summary-field"
 						onChange={(html) =>

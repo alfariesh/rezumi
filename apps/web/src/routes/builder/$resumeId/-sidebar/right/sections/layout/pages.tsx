@@ -1,6 +1,5 @@
 import type { SortableTarget } from "@/components/input/sortable";
 import type { Key } from "@heroui/react";
-import type { ResumeData, SectionType } from "@rezumi/schema/resume/data";
 import { Button, Description, Dropdown, Label, Separator, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -8,6 +7,15 @@ import { useCallback } from "react";
 import { mergeProps } from "react-aria";
 import { match } from "ts-pattern";
 import { filterSections } from "@rezumi/pdf/filtering";
+import {
+	addLayoutPage,
+	deleteLayoutPage,
+	moveSectionToEnd,
+	moveSectionToNewPage,
+	readSectionBreak,
+	setPageFullWidth,
+	toggleSectionBreak,
+} from "@rezumi/resume/layout";
 import { templateLayouts } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -145,49 +153,23 @@ export function LayoutPages() {
 	);
 
 	const handleAddPage = useCallback(() => {
-		updateResumeData((draft) => {
-			draft.metadata.layout.pages.push({
-				fullWidth: false,
-				main: [],
-				sidebar: [],
-			});
-		});
+		updateResumeData((draft) => addLayoutPage(draft.metadata.layout));
 	}, [updateResumeData]);
 
 	const handleDeletePage = useCallback(
 		(pageIndex: number) => {
 			if (layout.pages.length <= 1) return; // Don't allow deleting the last page
 
-			updateResumeData((draft) => {
-				const pageToDelete = draft.metadata.layout.pages[pageIndex];
-				// Find the first available page that isn't being deleted
-				const targetPageIndex = pageIndex === 0 ? 1 : 0;
-				const targetPage = draft.metadata.layout.pages[targetPageIndex];
-				if (!pageToDelete || !targetPage) return;
-
-				// Move all sections from deleted page to target page
-				targetPage.main.push(...pageToDelete.main);
-				targetPage.sidebar.push(...pageToDelete.sidebar);
-
-				draft.metadata.layout.pages.splice(pageIndex, 1);
-			});
+			// Its sections move to the first remaining page.
+			updateResumeData((draft) => deleteLayoutPage(draft.metadata.layout, pageIndex));
 		},
 		[layout.pages.length, updateResumeData],
 	);
 
 	const handleToggleFullWidth = useCallback(
 		(pageIndex: number, fullWidth: boolean) => {
-			updateResumeData((draft) => {
-				const page = draft.metadata.layout.pages[pageIndex];
-				if (!page) return;
-				page.fullWidth = fullWidth;
-
-				if (fullWidth) {
-					// Move all sidebar sections to main
-					page.main.push(...page.sidebar);
-					page.sidebar = [];
-				}
-			});
+			// Full width moves the sidebar's sections into Main.
+			updateResumeData((draft) => setPageFullWidth(draft.metadata.layout, pageIndex, fullWidth));
 		},
 		[updateResumeData],
 	);
@@ -372,25 +354,12 @@ function MoveToSubmenu({ id, pageIndex, columnId }: MoveToSubmenuProps) {
 
 	const moveTo = (targetPageIndex: number, targetColumnId: ColumnId) => {
 		updateResumeData((draft) => {
-			const from = draft.metadata.layout.pages[pageIndex]?.[columnId];
-			const to = draft.metadata.layout.pages[targetPageIndex]?.[targetColumnId];
-			if (!from || !to) return;
-			const index = from.indexOf(id);
-			if (index === -1) return;
-			from.splice(index, 1);
-			to.push(id);
+			moveSectionToEnd(draft.metadata.layout, id, { page: targetPageIndex, column: targetColumnId });
 		});
 	};
 
 	const moveToNewPage = () => {
-		updateResumeData((draft) => {
-			const from = draft.metadata.layout.pages[pageIndex]?.[columnId];
-			if (!from) return;
-			const index = from.indexOf(id);
-			if (index === -1) return;
-			from.splice(index, 1);
-			draft.metadata.layout.pages.push({ fullWidth: false, main: [id], sidebar: [] });
-		});
+		updateResumeData((draft) => moveSectionToNewPage(draft.metadata.layout, id));
 	};
 
 	return (
@@ -460,14 +429,6 @@ function MoveToSubmenu({ id, pageIndex, columnId }: MoveToSubmenuProps) {
 	);
 }
 
-type SectionBreakField = "keepTogether" | "startOnNewPage";
-
-const readSectionBreak = (data: ResumeData, id: string, field: SectionBreakField): boolean => {
-	if (id === "summary") return data.summary[field];
-	if (id in data.sections) return data.sections[id as SectionType][field];
-	return data.customSections.find((section) => section.id === id)?.[field] ?? false;
-};
-
 type SectionBreakItemsProps = {
 	id: string;
 };
@@ -484,20 +445,8 @@ function SectionBreakItems({ id }: SectionBreakItemsProps) {
 	const keepTogether = readSectionBreak(resume.data, id, "keepTogether");
 	const startOnNewPage = readSectionBreak(resume.data, id, "startOnNewPage");
 
-	const toggle = (field: SectionBreakField) => {
-		updateResumeData((draft) => {
-			if (id === "summary") {
-				draft.summary[field] = !draft.summary[field];
-				return;
-			}
-			if (id in draft.sections) {
-				const section = draft.sections[id as SectionType];
-				section[field] = !section[field];
-				return;
-			}
-			const custom = draft.customSections.find((section) => section.id === id);
-			if (custom) custom[field] = !custom[field];
-		});
+	const toggle = (field: "keepTogether" | "startOnNewPage") => {
+		updateResumeData((draft) => toggleSectionBreak(draft, id, field));
 	};
 
 	const selected = new Set<Key>([

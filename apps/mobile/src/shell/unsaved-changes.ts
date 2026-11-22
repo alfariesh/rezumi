@@ -10,9 +10,11 @@ type UnsavedChangesOptions = {
 	/** Overrides the default question, for example "Discard this schedule?". */
 	title?: string | undefined;
 	message?: string | undefined;
+	/** The button that leaves anyway ("Discard" by default). */
+	leaveLabel?: string | undefined;
 };
 
-export function useUnsavedChangesGuard({ dirty, title, message }: UnsavedChangesOptions) {
+export function useUnsavedChangesGuard({ dirty, title, message, leaveLabel }: UnsavedChangesOptions) {
 	const navigation = useNavigation();
 	usePreventRemove(dirty, ({ data }) => {
 		Alert.alert(
@@ -20,7 +22,7 @@ export function useUnsavedChangesGuard({ dirty, title, message }: UnsavedChanges
 			message ?? t`You have edits that aren't saved yet. Leaving now loses them.`,
 			[
 				{ text: t`Keep editing`, style: "cancel" },
-				{ text: t`Discard`, style: "destructive", onPress: () => navigation.dispatch(data.action) },
+				{ text: leaveLabel ?? t`Discard`, style: "destructive", onPress: () => navigation.dispatch(data.action) },
 			],
 			{ cancelable: true },
 		);

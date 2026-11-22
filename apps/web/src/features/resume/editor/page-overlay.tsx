@@ -2,23 +2,18 @@ import type { EditorSelection } from "./store";
 import type { PageMap, PageMapNode } from "@rezumi/pdf/page-map";
 import type { MouseEvent } from "react";
 import { Trans } from "@lingui/react/macro";
+import { isSameTarget, toTarget } from "@rezumi/resume/check";
 import { getSectionType } from "@rezumi/resume/write";
 import { entryHeaderOf } from "@rezumi/schema/resume/data";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
-import { isSameSelection, useEditorStore } from "./store";
+import { useEditorStore } from "./store";
 import { useCurrentBuilderResumeSelector, useUpdateResumeData } from "@/features/resume/builder/draft";
 
 type PageOverlayProps = {
 	pageIndex: number;
 	pageMap: PageMap | undefined;
 	onSelect: (selection: EditorSelection) => void;
-};
-
-const toSelection = (node: PageMapNode): EditorSelection => {
-	if (node.kind === "item") return { kind: "item", sectionId: node.sectionId, itemId: node.itemId };
-	if (node.kind === "section") return { kind: "section", sectionId: node.sectionId };
-	return { kind: "header" };
 };
 
 const readSelection = (element: HTMLElement): EditorSelection | null => {
@@ -51,7 +46,7 @@ export function PageOverlay({ pageIndex, pageMap, onSelect }: PageOverlayProps) 
 	// (the summary, for example) are blocks of their own.
 	const sectionsWithItems = new Set(nodes.flatMap((node) => (node.kind === "item" ? [node.sectionId] : [])));
 	const blocks = nodes.filter((node) => node.kind !== "section" || !sectionsWithItems.has(node.sectionId));
-	const selected = blocks.filter((node) => isSameSelection(selection, toSelection(node)));
+	const selected = blocks.filter((node) => isSameTarget(selection, toTarget(node)));
 
 	// Custom Styles: each node the rule under the cursor matches, outlined as the closest block the page map knows
 	// (a field inside an entry lights up its entry).

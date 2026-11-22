@@ -1,6 +1,6 @@
 // Profile → Career: the summary and every career section in the Profile's fixed order, each entry opening full screen.
 // Empty sections wait in Add section. While the career is empty: Bring what you have, or Fill from a resume.
-import type { WriteSection } from "@/features/write/model";
+import type { WriteSection } from "@/features/entries/model";
 import type { ProfileSectionType } from "@rezumi/schema/profile/data";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
@@ -13,10 +13,10 @@ import { SaveNote } from "./save-note";
 import { profileWriteSource, useProfileQuery } from "./source";
 import { ProfileLoadError, ProfileSkeleton } from "./states";
 import { refreshProfile } from "./store";
+import { ADD_LABELS, SECTION_ICONS, SECTION_TITLES } from "@/features/entries/fields";
 import { requestFocus, useAddEntry, useSectionTitle } from "@/features/entries/hooks";
+import { describeEntry, isDraftEntry } from "@/features/entries/model";
 import { WriteSourceProvider, useWriteData } from "@/features/entries/source";
-import { ADD_LABELS, SECTION_ICONS, SECTION_TITLES } from "@/features/write/fields";
-import { describeEntry, isDraftEntry } from "@/features/write/model";
 import { routes } from "@/routes";
 import { Button, Card, EmptyState, ListRow, ListSection, Screen, Sheet, Text } from "@/ui";
 

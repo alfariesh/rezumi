@@ -4,6 +4,8 @@ import type { WorkspaceTab } from "@rezumi/schema/career";
 
 export type BuilderPane = "write" | "page" | "design" | "check" | "share";
 export type LetterPane = "write" | "page" | "design";
+/** Design's pushed screens inside the builder (`app/builder/[id]/design/*`). */
+export type DesignScreen = "templates" | "typography" | "colors" | "page" | "layout";
 /** Screens of the account stack (`app/account/*`), opened from the avatar menu. Omitted: the stack's index. */
 export type AccountPane =
 	| "account"
@@ -49,7 +51,7 @@ export const routes = {
 	/** `schedule`: a schedule id or "new" opens the schedule sheet (links from notifications and `/dashboard?schedule=`). */
 	home: (schedule?: string) => (schedule ? (`/home?schedule=${segment(schedule)}` as const) : ("/home" as const)),
 	documents: () => "/documents" as const,
-	trash: () => "/documents/trash" as const,
+	trash: () => "/documents?segment=trash" as const,
 	applications: (view: ApplicationsView = "list") =>
 		view === "list" ? ("/applications" as const) : (`/applications/${view}` as const),
 	offers: () => "/applications/offers" as const,
@@ -92,8 +94,14 @@ export const routes = {
 			? (`/builder/${segment(id)}/history?version=${segment(version)}` as const)
 			: (`/builder/${segment(id)}/history` as const),
 	assistant: (id: string) => `/builder/${segment(id)}/assistant` as const,
+	/** One of Design's screens (the template gallery, typography, colors, page, layout). */
+	design: (id: string, screen: DesignScreen) => `/builder/${segment(id)}/design/${screen}` as const,
+	/** The pages full screen, over the builder. */
+	preview: (id: string) => `/builder/${segment(id)}/preview` as const,
 
 	letterAssistant: (id: string) => `/letter/${segment(id)}/assistant` as const,
+	/** The letter full screen, over its editor. */
+	letterPreview: (id: string) => `/letter/${segment(id)}/preview` as const,
 
 	// Cover letter editor
 	/** `version` opens Share & export's History on that version, read-only (Applications' "What you sent"). */

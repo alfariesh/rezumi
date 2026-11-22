@@ -1,18 +1,13 @@
 import type { CheckIssue } from "./issues";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
+import { checkStateOf, ignoreIssue } from "@rezumi/resume/check";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { useEditorStore } from "../store";
 import { useEditorMode } from "../use-editor-mode";
 import { getScrollBehavior, revealSelectionInPanel } from "../write/reveal";
 import { useResumeStore } from "@/features/resume/builder/draft";
-
-/** The author's Check choices on a draft, created on first use. */
-export function checkStateOf(draft: ResumeData) {
-	draft.metadata.check ??= { ignored: [], hiddenTerms: [] };
-	return draft.metadata.check;
-}
 
 /** One undo step, confirmed in a toast whose Undo takes it back. */
 export function editWithUndo(edit: (draft: ResumeData) => void, message: string) {
@@ -59,13 +54,7 @@ export function useCheckActions() {
 	};
 
 	const ignore = (issue: CheckIssue) => {
-		editWithUndo(
-			(draft) => {
-				const state = checkStateOf(draft);
-				if (!state.ignored.includes(issue.key)) state.ignored.push(issue.key);
-			},
-			issue.keepLabel ? t`Kept as it is` : t`Issue ignored`,
-		);
+		editWithUndo((draft) => ignoreIssue(draft, issue.key), issue.keepLabel ? t`Kept as it is` : t`Issue ignored`);
 		useEditorStore.setState({ checkIssue: null });
 	};
 

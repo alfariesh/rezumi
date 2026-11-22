@@ -1,5 +1,6 @@
 // Text fields bound to the open source: errors appear after the first blur and say how to fix them.
 import type { Website } from "@rezumi/schema/resume/data";
+import type { ReactNode } from "react";
 import type { TextInputProps } from "react-native";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
@@ -48,8 +49,23 @@ export type BoundTextProps = {
 	autoFocus?: boolean | undefined;
 	disabled?: boolean | undefined;
 	onBlur?: (() => void) | undefined;
+	/** A small control at the end of the label's line (the Profile marker), kept outside the label. */
+	labelAction?: ReactNode;
 	testID?: string | undefined;
 };
+
+type LabelLineProps = { label: string; action?: ReactNode };
+
+/** A field's label with an optional control at the end of its line. */
+export function LabelLine({ label, action }: LabelLineProps) {
+	if (!action) return <Label>{label}</Label>;
+	return (
+		<View className="min-h-6 flex-row items-center justify-between gap-2">
+			<Label className="shrink">{label}</Label>
+			{action}
+		</View>
+	);
+}
 
 /** A labelled text field bound to the source, on a white surface (cards and sheets). */
 export function BoundText({
@@ -64,6 +80,7 @@ export function BoundText({
 	autoFocus,
 	disabled,
 	onBlur,
+	labelAction,
 	testID,
 }: BoundTextProps) {
 	const { focus } = useWriteSource();
@@ -71,7 +88,7 @@ export function BoundText({
 	const error = touched ? validate?.(value) : undefined;
 	return (
 		<TextField isInvalid={error !== undefined} isDisabled={disabled ?? false}>
-			<Label>{label}</Label>
+			<LabelLine label={label} action={labelAction} />
 			<Input
 				variant="secondary"
 				value={value}
@@ -107,10 +124,19 @@ type LinkFieldProps = {
 	allowInlineLink?: boolean | undefined;
 	autoFocus?: boolean | undefined;
 	disabled?: boolean | undefined;
+	labelAction?: ReactNode;
 };
 
 /** Address, the label printed instead of it, and "Show link in title". https:// is added when left without one. */
-export function LinkField({ label, value, onChange, allowInlineLink = true, autoFocus, disabled }: LinkFieldProps) {
+export function LinkField({
+	label,
+	value,
+	onChange,
+	allowInlineLink = true,
+	autoFocus,
+	disabled,
+	labelAction,
+}: LinkFieldProps) {
 	const { t } = useLingui();
 	const validate = useValidators();
 	const inline = value.inlineLink ?? false;
@@ -119,6 +145,7 @@ export function LinkField({ label, value, onChange, allowInlineLink = true, auto
 		<View className="gap-3">
 			<BoundText
 				label={label}
+				labelAction={labelAction}
 				value={value.url}
 				placeholder="https://"
 				keyboardType="url"

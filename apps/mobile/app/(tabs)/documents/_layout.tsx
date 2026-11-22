@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
-import { useTabStackOptions } from "@/shell/app-banner";
 
+/** The library draws its own top bar (`TabTopBar`), like Home. */
 export default function DocumentsLayout() {
-	return <Stack screenOptions={useTabStackOptions()} />;
+	return <Stack screenOptions={{ headerShown: false }} />;
 }

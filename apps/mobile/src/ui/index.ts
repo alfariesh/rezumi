@@ -127,3 +127,17 @@ export { ChipInput, addChips, type ChipInputProps } from "./chip-input";
 export { PermissionPrimer, type PermissionPrimerProps } from "./permission-primer";
 export { MonthPicker, type MonthPickerProps } from "./month-picker";
 export { useKeyboardVisible } from "./keyboard";
+export { ModeBar, type ModeBarItem, type ModeBarProps } from "./mode-bar";
+export { EditableTitle, type EditableTitleProps } from "./editable-title";
+export { ProgressCircle, type ProgressCircleProps } from "./progress-circle";
+export { PickerSheet, type PickerOption, type PickerSheetProps } from "./picker-sheet";
+export { NumberStepper, type NumberStepperProps } from "./number-stepper";
+export {
+	SortableHandle,
+	SortableList,
+	type SortableHandleProps,
+	type SortableItemInfo,
+	type SortableListProps,
+} from "./sortable-list";
+export { ColorField, type ColorFieldProps } from "./color-field";
+export { ValueSlider, type ValueSliderProps } from "./value-slider";

@@ -1,4 +1,5 @@
 import type { FontWeight } from "./index";
+import { getNextWeights } from "./index";
 
 /** The largest font file a user may upload. Résumé faces are rarely over 1 MB; CJK faces are the exception. */
 export const MAX_UPLOADED_FONT_BYTES = 8 * 1024 * 1024;
@@ -169,6 +170,10 @@ export function uploadedFontWeights(faces: readonly UploadedFace[] | undefined, 
 	const weights = new Set((upright.length > 0 ? upright : own).map((face) => face.weight));
 	return [...weights].sort((a, b) => Number(a) - Number(b));
 }
+
+/** The weights to switch to when a document picks `family`: its uploaded weights, else the catalog's. */
+export const nextFontWeights = (faces: readonly UploadedFace[] | undefined, family: string, heading: boolean) =>
+	getNextWeights(family, heading, uploadedFontWeights(faces, family));
 
 const uploadedFontPath = /^\/api\/uploads\/([A-Za-z0-9_-]+)\/fonts\/([A-Za-z0-9-]+)\.(ttf|otf)$/;
 

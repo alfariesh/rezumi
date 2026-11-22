@@ -15,7 +15,7 @@ const mockResumes = { data: [{ id: "resume-1", name: "Product designer" }], isEr
 jest.mock("./save", () => ({ relinkLetter: (recipe: Recipe) => mockRelink(recipe) }));
 jest.mock("./queries", () => ({ useResumes: () => mockResumes }));
 jest.mock("./compose", () => ({ useLetterWords: () => undefined }));
-jest.mock("./rich-text-field", () => ({ LetterRichText: () => null, LetterRichTextToolbar: () => null }));
+jest.mock("@/features/entries/rich-text-field", () => ({ RichTextField: () => null, RichTextToolbar: () => null }));
 jest.mock("expo-router", () => ({ useRouter: () => ({ push: jest.fn(), replace: jest.fn() }) }));
 jest.mock("@/auth/session", () => ({ useSession: () => ({ status: "signed-in", server: "https://rezumi.app" }) }));
 jest.mock("@/features/applications/queries", () => ({ useApplications: () => ({ data: [] }) }));

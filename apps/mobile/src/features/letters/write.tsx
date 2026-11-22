@@ -20,7 +20,6 @@ import { useLetterWords } from "./compose";
 import { discardLetterDraft, startLetterDraft, useLetterDrafting } from "./drafting";
 import { LETTER_LENGTH, countWords, letterLength } from "./length";
 import { useResumes } from "./queries";
-import { LetterRichText, LetterRichTextToolbar } from "./rich-text-field";
 import { relinkLetter } from "./save";
 import { useSession } from "@/auth/session";
 import { letterFieldFocus, useLetterStore } from "@/draft";
@@ -29,6 +28,7 @@ import { ReportAiContent } from "@/features/ai/report-content";
 import { useApplications } from "@/features/applications/queries";
 import { getStageLabel } from "@/features/applications/stages";
 import { ACCENT_NAMES, PAIRING_NAMES } from "@/features/design/preset-names";
+import { RichTextField, RichTextToolbar } from "@/features/entries/rich-text-field";
 import { profileQuery } from "@/features/onboarding/queries";
 import { routes } from "@/routes";
 import {
@@ -149,7 +149,7 @@ export function LetterWrite({ id }: { id: string }) {
 				/>
 				<DesignNote letter={letter} />
 			</Screen>
-			<LetterRichTextToolbar />
+			<RichTextToolbar />
 		</View>
 	);
 }
@@ -285,7 +285,9 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 	if (letter.layout === "freeform") {
 		return (
 			<Section title={t`To`}>
-				<LetterRichText
+				<RichTextField
+					tools="letter"
+					focus={letterFieldFocus}
 					key={letter.id}
 					label={t`Recipient`}
 					value={letter.recipient}
@@ -524,7 +526,9 @@ function BodySection({ letter, application, disabled }: LetterSectionProps) {
 				}}
 			/>
 		) : showEditor ? (
-			<LetterRichText
+			<RichTextField
+				tools="letter"
+				focus={letterFieldFocus}
 				key={letter.id}
 				label={t`Letter body`}
 				value={letter.content}

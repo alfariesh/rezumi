@@ -54,10 +54,16 @@ function Notice({ status, message, action }: { status: "warning" | "danger"; mes
 	);
 }
 
-type LetterPagesProps = { data: ResumeData | null; zoomBar?: boolean | undefined };
+type LetterPagesProps = {
+	data: ResumeData | null;
+	zoomBar?: boolean | undefined;
+	/** The zoom bar's full-screen button: opens the letter full screen, or closes it when `fullScreen` is set. */
+	onFullScreen?: (() => void) | undefined;
+	fullScreen?: boolean | undefined;
+};
 
 /** The pages of a letter's render data, with errors, text loss and a zoom bar. Also shows read-only versions. */
-export function LetterPages({ data, zoomBar = true }: LetterPagesProps) {
+export function LetterPages({ data, zoomBar = true, onFullScreen, fullScreen }: LetterPagesProps) {
 	const { t } = useLingui();
 	const [width, setWidth] = useState(0);
 	const zoomController = usePageZoom();
@@ -143,13 +149,26 @@ export function LetterPages({ data, zoomBar = true }: LetterPagesProps) {
 					<Text size="xs" tone="muted">
 						{plural(result?.pageCount ?? 1, { one: "# page", other: "# pages" })}
 					</Text>
+					{onFullScreen ? (
+						<IconButton
+							icon={fullScreen ? "arrows-in-simple" : "arrows-out-simple"}
+							label={fullScreen ? t`Exit full screen` : t`Full screen`}
+							onPress={onFullScreen}
+						/>
+					) : null}
 				</View>
 			) : null}
 		</View>
 	);
 }
 
-export function LetterPage({ id }: { id: string }) {
+type LetterPageProps = {
+	id: string;
+	onFullScreen?: (() => void) | undefined;
+	fullScreen?: boolean | undefined;
+};
+
+export function LetterPage({ id, onFullScreen, fullScreen }: LetterPageProps) {
 	const letter = useLetterStore((state) => (state.document?.id === id ? state.document : null));
 	const words = useLetterWords(letter?.style.metadata.page.locale);
 	const draft = useLetterDrafting((state) => state.draft);
@@ -170,5 +189,5 @@ export function LetterPage({ id }: { id: string }) {
 				<Skeleton variant="none" className="aspect-[0.707] w-full rounded-sm" />
 			</View>
 		);
-	return <LetterPages data={data} />;
+	return <LetterPages data={data} onFullScreen={onFullScreen} fullScreen={fullScreen} />;
 }

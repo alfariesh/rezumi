@@ -11,7 +11,7 @@ import { cn } from "@rezumi/utils/style";
 import { LinkApplicationDialog, TagsDialog, useBatchActions } from "./document-actions";
 import { DocumentCard } from "./document-card";
 import { DocumentList, documentKey } from "./document-list";
-import { collectTags, filterDocuments } from "./filter";
+import { collectTags, filterDocuments, isFiltered } from "./filter";
 import { LibraryError } from "./library-error";
 import { useStartDocument } from "./use-start-document";
 import { SelectField } from "@/components/input/select-field";
@@ -85,7 +85,7 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 	const shown = filterDocuments(all, search);
 	const tags = collectTags(all);
 	const hasPublic = all.some((document) => document.isPublic);
-	const filtered = search.q.trim() !== "" || search.tags.length > 0 || search.public === true;
+	const filtered = isFiltered(search);
 	// Resumes or Letters with none of that type yet: say what goes here rather than "nothing matches".
 	const emptyType =
 		!isPending && search.type !== "all" && !all.some((document) => document.type === search.type) ? search.type : null;
