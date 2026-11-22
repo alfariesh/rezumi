@@ -14,7 +14,7 @@ import { AgendaList } from "./agenda-list";
 import { ApplicationPickerSheet } from "./application-picker";
 import { CalendarToolbar } from "./calendar-toolbar";
 import { MonthGrid } from "./month-grid";
-import { TimeGrid } from "./time-grid";
+import { TimeGrid, TimeGridHeader } from "./time-grid";
 import { useCalendar } from "./use-calendar";
 import { useLoadState } from "@/features/applications/board/load-states";
 import { ApplicationsFrame, useOpenApplication } from "@/features/applications/frame";
@@ -84,6 +84,18 @@ export function CalendarBody() {
 								onPickSlot={calendar.open.length ? (date, time) => schedule({ date, time }) : undefined}
 								onOpenDay={(day) => calendar.show("day", day)}
 								onDragChange={setDragging}
+								part={calendar.tablet ? "all" : "body"}
+							/>
+						)
+					}
+					header={
+						calendar.view === "month" || calendar.tablet ? null : (
+							<TimeGridHeader
+								days={calendar.days}
+								events={calendar.events}
+								today={calendar.today}
+								onFollowUp={(application) => openApplication(application.id)}
+								onOpenDay={(day) => calendar.show("day", day)}
 							/>
 						)
 					}
@@ -138,11 +150,13 @@ type CalendarLayoutProps = {
 	calendar: Calendar;
 	dragging: boolean;
 	grid: ReactNode;
+	/** Phones: the day names above the scrolling hours, so they stay in view. */
+	header: ReactNode;
 	agenda: ReactNode;
 	onSchedule: () => void;
 };
 
-function CalendarLayout({ calendar, dragging, grid, agenda, onSchedule }: CalendarLayoutProps) {
+function CalendarLayout({ calendar, dragging, grid, header, agenda, onSchedule }: CalendarLayoutProps) {
 	const { t } = useLingui();
 	const accent = useThemeColor("accent");
 	const pull = usePullRefresh(calendar.query.refetch);
@@ -200,16 +214,26 @@ function CalendarLayout({ calendar, dragging, grid, agenda, onSchedule }: Calend
 	return (
 		<View className="flex-1">
 			<CalendarToolbar calendar={calendar} onSchedule={onSchedule} />
+			{header ? (
+				<View className="gap-2 px-4 pt-3">
+					{hint}
+					{header}
+				</View>
+			) : null}
 			<ScrollView
 				ref={scroll}
 				scrollEnabled={!dragging}
 				refreshControl={refresh}
-				contentContainerClassName="gap-6 px-4 pt-3 pb-6"
+				contentContainerClassName={header ? "gap-6 px-4 pb-6" : "gap-6 px-4 pt-3 pb-6"}
 			>
-				<View className="gap-2">
-					{hint}
-					{grid}
-				</View>
+				{header ? (
+					grid
+				) : (
+					<View className="gap-2">
+						{hint}
+						{grid}
+					</View>
+				)}
 				{agenda}
 			</ScrollView>
 		</View>

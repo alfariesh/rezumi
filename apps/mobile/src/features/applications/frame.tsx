@@ -12,7 +12,7 @@ import { ApplicationDetailSheet } from "./detail/detail-sheet";
 import { SaveJobSheet } from "./save-sheet";
 import { AllViewsSegment, ApplicationsViewsRow } from "./views-row";
 import { TabTopBar } from "@/shell/tab-chrome";
-import { Button, Icon } from "@/ui";
+import { IconButton } from "@/ui";
 
 /** Opens an application's detail sheet over the current layout (`?open=`), or closes it with null. */
 export function useOpenApplication() {
@@ -44,10 +44,14 @@ export function ApplicationsFrame({ view, children, detailBeside = false }: Appl
 			<ApplicationsViewsRow current={view} />
 			<View className="flex-row items-center gap-3 px-4 pt-3 pb-1">
 				<AllViewsSegment current={view} />
-				<Button size="sm" variant="secondary" onPress={() => setSaving(true)} testID="save-job">
-					<Icon name="plus" size={16} />
-					<Button.Label>{t`Save a job`}</Button.Label>
-				</Button>
+				{/* Icon only, so List, Board and Calendar keep their whole names on a phone. */}
+				<IconButton
+					icon="plus"
+					label={t`Save a job`}
+					variant="secondary"
+					onPress={() => setSaving(true)}
+					testID="save-job"
+				/>
 			</View>
 			<View className="flex-1">{children}</View>
 			<ApplicationDetailSheet applicationId={detailBeside ? null : openId} onClose={() => openApplication(null)} />

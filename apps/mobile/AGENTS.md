@@ -165,3 +165,9 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
   before the test file's constants: delegate (`(...args) => mockObject.fn(...args)`), as `auth-screens.test.tsx` does.
 - `.github/workflows/mobile-release.yml` still names Blacksmith runners directly; without Blacksmith on the repository
   its jobs never leave the queue (fix before Phase 16, like `mobile-forme-build.yml`).
+- `heroui-native-pro` charts load `react-native-skia`, which does not load under Jest: mock the chart subpath in the
+  test (`jest.mock("heroui-native-pro/bar-chart", …)`, see `src/ui/column-chart.test.tsx`).
+- Online state for screens: `useOnline`/`isOnline` from `@/api/online` (the query client's `onlineManager`). The user's
+  clock (profile time zone, else the device's): `useUserTime` from `@/features/applications/date`.
+- The Applications detail is a sheet driven by `?open=<id>` on List/Board/Calendar (`useOpenApplication` in
+  `features/applications/frame.tsx`); Back from the workspace returns to the list with the sheet still open.

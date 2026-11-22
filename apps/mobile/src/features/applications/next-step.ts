@@ -66,7 +66,7 @@ export function describeNextStep(
 				: {
 						icon: "hourglass",
 						title: t`Waiting to hear back`,
-						sub: plural(step.days, { one: "For # day", other: "For # days" }),
+						sub: step.days === 0 ? t`Since today` : plural(step.days, { one: "For # day", other: "For # days" }),
 						tone: "normal",
 					};
 		case "not-applied":

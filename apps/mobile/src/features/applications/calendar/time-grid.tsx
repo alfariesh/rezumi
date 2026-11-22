@@ -26,14 +26,78 @@ export type TimeGridProps = {
 	onOpenDay: (day: string) => void;
 	/** True while an interview is held, so the screen stops scrolling. */
 	onDragChange: (dragging: boolean) => void;
+	/** `body`: the hours only, when `TimeGridHeader` stays above the scrolling grid. */
+	part?: "all" | "body" | undefined;
 };
+
+type HeaderProps = Pick<TimeGridProps, "days" | "events" | "today" | "onOpenDay" | "onFollowUp">;
 
 export function TimeGrid(props: TimeGridProps) {
 	const { days, events, timeZone, today, now, hourHeight } = props;
-	const { t, i18n } = useLingui();
 	const [width, setWidth] = useState(0);
 	const gutter = size.hit;
 	const columnWidth = days.length ? Math.max(0, (width - gutter) / days.length) : 0;
+	const nowMinutes = minutesOf(zonedTime(now, timeZone));
+	const body = { height: hourHeight * 24 };
+
+	return (
+		<View
+			className={cx(
+				"overflow-hidden border border-border bg-surface",
+				props.part === "body" ? "rounded-b-2xl border-t-0" : "rounded-2xl",
+			)}
+			onLayout={(event) => setWidth(event.nativeEvent.layout.width - 2)}
+			testID="time-grid"
+		>
+			{props.part === "body" ? null : <HeaderRows {...props} />}
+
+			<View className={cx("flex-row border-border", props.part !== "body" && "border-t")} style={body}>
+				<View className="w-11" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+					{HOURS.map((hour) =>
+						hour ? (
+							<View key={hour} className="absolute w-full items-center" style={at(hour * hourHeight - 8)}>
+								<Text size="xs" tone="muted" tabular>
+									{timeOf(hour * 60)}
+								</Text>
+							</View>
+						) : null,
+					)}
+				</View>
+				{days.map((day, index) => (
+					<DayColumn
+						key={day}
+						day={day}
+						index={index}
+						columns={days.length}
+						columnWidth={columnWidth}
+						perMinute={hourHeight / 60}
+						timeZone={timeZone}
+						events={events}
+						hourHeight={hourHeight}
+						nowMinutes={day === today ? nowMinutes : null}
+						onPickSlot={props.onPickSlot}
+						onEdit={props.onEdit}
+						onReschedule={props.onReschedule}
+						onDragChange={props.onDragChange}
+					/>
+				))}
+			</View>
+		</View>
+	);
+}
+
+/** The day names (tap opens the day) and the follow-ups row, above the hours. */
+export function TimeGridHeader(props: HeaderProps) {
+	return (
+		<View className="overflow-hidden rounded-t-2xl border border-b-0 border-border bg-surface">
+			<HeaderRows {...props} />
+		</View>
+	);
+}
+
+function HeaderRows(props: HeaderProps) {
+	const { days, events, today } = props;
+	const { t, i18n } = useLingui();
 	const utc = (options: Intl.DateTimeFormatOptions) =>
 		new Intl.DateTimeFormat(i18n.locale, { timeZone: "UTC", ...options });
 	const weekday = utc({ weekday: "short" });
@@ -42,15 +106,8 @@ export function TimeGrid(props: TimeGridProps) {
 		(event): event is Extract<AppEvent, { kind: "follow-up" }> =>
 			event.kind === "follow-up" && days.includes(event.day),
 	);
-	const nowMinutes = minutesOf(zonedTime(now, timeZone));
-	const body = { height: hourHeight * 24 };
-
 	return (
-		<View
-			className="overflow-hidden rounded-2xl border border-border bg-surface"
-			onLayout={(event) => setWidth(event.nativeEvent.layout.width - 2)}
-			testID="time-grid"
-		>
+		<>
 			{days.length > 1 ? (
 				<View className="flex-row ps-11">
 					{days.map((day) => {
@@ -103,38 +160,6 @@ export function TimeGrid(props: TimeGridProps) {
 					))}
 				</View>
 			) : null}
-
-			<View className="flex-row border-t border-border" style={body}>
-				<View className="w-11" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-					{HOURS.map((hour) =>
-						hour ? (
-							<View key={hour} className="absolute w-full items-center" style={at(hour * hourHeight - 8)}>
-								<Text size="xs" tone="muted" tabular>
-									{timeOf(hour * 60)}
-								</Text>
-							</View>
-						) : null,
-					)}
-				</View>
-				{days.map((day, index) => (
-					<DayColumn
-						key={day}
-						day={day}
-						index={index}
-						columns={days.length}
-						columnWidth={columnWidth}
-						perMinute={hourHeight / 60}
-						timeZone={timeZone}
-						events={events}
-						hourHeight={hourHeight}
-						nowMinutes={day === today ? nowMinutes : null}
-						onPickSlot={props.onPickSlot}
-						onEdit={props.onEdit}
-						onReschedule={props.onReschedule}
-						onDragChange={props.onDragChange}
-					/>
-				))}
-			</View>
-		</View>
+		</>
 	);
 }
