@@ -1,20 +1,19 @@
-// The app's main navigation (01-desain 2): five bottom tabs on phones, the web's sidebar from 700 pt wide. Both read
-// the tab routes of app/(tabs) and their options; a tab hidden with `href: null` (Portfolio without access) is skipped.
+// The sections of app/(tabs) (01-desain 2): the web's sidebar from 700 pt wide, and the names, icons and press
+// semantics the phone drawer (app-drawer.tsx) shares with it. A tab hidden with `href: null` (Portfolio without
+// access) is skipped.
 import type { AppTab } from "@/routes";
 import type { IconName } from "@/ui";
 import type { BottomTabBarProps } from "expo-router/tabs";
 import { useLingui } from "@lingui/react/macro";
-import { useIsFocused, useRouter } from "expo-router";
-import { useEffect, useRef } from "react";
-import { Platform, Pressable, ScrollView, View, useWindowDimensions } from "react-native";
+import { useRouter } from "expo-router";
+import { Pressable, ScrollView, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AccountButton } from "./account-menu";
 import { useUnreadCount, useSidebarCounts } from "@/features/home/queries";
 import { routes } from "@/routes";
-import { Button, Icon, Text, cx, haptics, setToastBarHeight, useThemeColor } from "@/ui";
-import { useKeyboardVisible } from "@/ui/keyboard";
+import { Button, Icon, Text, cx, haptics } from "@/ui";
 
-const tabIcons: Record<AppTab, IconName> = {
+export const tabIcons: Record<AppTab, IconName> = {
 	home: "house",
 	documents: "file-text",
 	applications: "briefcase",
@@ -23,7 +22,7 @@ const tabIcons: Record<AppTab, IconName> = {
 };
 
 /** The web sidebar's order (owner, 2026-11-16): Home, Portfolio, Documents, Profile, Applications. */
-const sidebarOrder: readonly AppTab[] = ["home", "portfolio", "documents", "profile", "applications"];
+export const sidebarOrder: readonly AppTab[] = ["home", "portfolio", "documents", "profile", "applications"];
 
 /** Below this width the sidebar is a rail of icons with short labels. */
 const fullSidebarWidth = 1000;
@@ -34,7 +33,7 @@ function isAppTab(name: string): name is AppTab {
 	return name in tabIcons;
 }
 
-function useTabLabels(): Record<AppTab, string> {
+export function useTabLabels(): Record<AppTab, string> {
 	const { t } = useLingui();
 	return {
 		home: t`Home`,
@@ -46,7 +45,7 @@ function useTabLabels(): Record<AppTab, string> {
 }
 
 /** Visible tab routes, with React Navigation's press semantics: a focused tab's press goes to the tab (pop to top). */
-function useTabs({ state, descriptors, emitter, navigateToTab }: BottomTabBarProps) {
+export function readTabs({ state, descriptors, emitter, navigateToTab }: BottomTabBarProps) {
 	const focusedKey = state.routes[state.index]?.key;
 	const visible = state.routes.filter((route) => {
 		const options = descriptors[route.key]?.options as { hidden?: boolean } | undefined;
@@ -61,96 +60,6 @@ function useTabs({ state, descriptors, emitter, navigateToTab }: BottomTabBarPro
 		}
 	};
 	return { visible, focusedKey, press };
-}
-
-type BadgeProps = { count: number | undefined };
-
-/** Unread count on the Home tab; nothing at zero, "99+" above it. */
-function Badge({ count }: BadgeProps) {
-	if (!count) return null;
-	return (
-		<View className="absolute -end-3 -top-1 h-4.5 min-w-4.5 items-center justify-center rounded-full bg-accent px-1">
-			<Text size="xs" weight="semibold" className="text-accent-foreground" tabular>
-				{count > 99 ? "99+" : String(count)}
-			</Text>
-		</View>
-	);
-}
-
-/**
- * The phone tab bar: a bar on `surface` with a hairline on top, the selected tab in accent with its duotone glyph,
- * the Home badge for unread notifications. Hidden while the keyboard is up. While it shows (the tabs are the screen in
- * front), toasts sit above it.
- */
-export function PhoneTabBar(props: BottomTabBarProps) {
-	const { t } = useLingui();
-	const labels = useTabLabels();
-	const unread = useUnreadCount();
-	const insets = useSafeAreaInsets();
-	const keyboard = useKeyboardVisible();
-	const ripple = useThemeColor("default");
-	const { visible, focusedKey, press } = useTabs(props);
-	// False while a screen is pushed or presented over the tabs: the bar is then covered and toasts drop to the bottom.
-	const front = useIsFocused();
-	const height = useRef(0);
-	const showing = front && !keyboard;
-	useEffect(() => setToastBarHeight("tabs", showing ? height.current : 0), [showing]);
-	useEffect(() => () => setToastBarHeight("tabs", 0), []);
-	if (keyboard) return null;
-	const frame = { paddingBottom: insets.bottom, paddingLeft: insets.left, paddingRight: insets.right };
-
-	return (
-		<View
-			accessibilityRole="tablist"
-			className="flex-row border-t border-separator bg-surface"
-			style={frame}
-			testID="phone-tab-bar"
-			onLayout={(event) => {
-				height.current = event.nativeEvent.layout.height;
-				if (showing) setToastBarHeight("tabs", height.current);
-			}}
-		>
-			{visible.map((route) => {
-				const name = route.name as AppTab;
-				const label = labels[name];
-				const focused = route.key === focusedKey;
-				const count = name === "home" ? unread : undefined;
-				return (
-					<Pressable
-						key={route.key}
-						accessibilityRole="tab"
-						accessibilityState={{ selected: focused }}
-						accessibilityLabel={count ? t`${label}, ${count} unread` : label}
-						android_ripple={Platform.OS === "android" ? { color: ripple, borderless: true } : undefined}
-						onPress={() => press(route)}
-						testID={`tab-${name}`}
-						className="min-h-14 flex-1 items-center justify-center gap-0.5 px-1 pt-1.5 pb-1"
-					>
-						<View>
-							<Icon
-								name={tabIcons[name]}
-								size={24}
-								variant={focused ? "duotone" : "stroke"}
-								tone={focused ? "accent" : "muted"}
-							/>
-							<Badge count={count} />
-						</View>
-						<Text
-							size="xs"
-							weight="medium"
-							tone={focused ? "accent" : "muted"}
-							numberOfLines={1}
-							adjustsFontSizeToFit
-							minimumFontScale={0.8}
-							maxFontSizeMultiplier={1.3}
-						>
-							{labels[name]}
-						</Text>
-					</Pressable>
-				);
-			})}
-		</View>
-	);
 }
 
 type SidebarItemProps = {
@@ -225,7 +134,7 @@ export function AppSidebar(props: BottomTabBarProps) {
 	const insets = useSafeAreaInsets();
 	const { width } = useWindowDimensions();
 	const compact = width < fullSidebarWidth;
-	const { visible, focusedKey, press } = useTabs(props);
+	const { visible, focusedKey, press } = readTabs(props);
 	const ordered = sidebarOrder.flatMap((name) => visible.filter((route) => route.name === name));
 	const countOf: Partial<Record<AppTab, number | undefined>> = {
 		home: unread,

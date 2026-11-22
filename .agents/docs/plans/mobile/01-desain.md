@@ -16,20 +16,25 @@ Sumber kebenaran tampilan adalah `apps/web/DESIGN.md` (web) dan, setelah Phase 0
 
 ### 2.1 Ponsel
 
+Sejak 2026-11-22 (permintaan pemilik): **tanpa tab bawah.** Lima bagian ada di laci di belakang layar, seperti app X: avatar di kiri atas (atau geser dari tepi kiri di layar utama tiap bagian) menggeser layar ke kanan, membulat dan meredup, dan menampakkan menu. Ketuk atau geser layar yang redup, atau tombol Back Android, untuk menutup.
+
 ```text
-Tab bawah (5)
+Laci (urutan web)
+├ Akun         foto, nama, email → Profile
 ├ Home         Recent documents · Needs you · New roles · Coming up · Schedules
 ├ Documents    All · Resumes · Letters · Trash          (segmen di atas daftar)
 ├ Applications All (List | Board | Calendar) · Jobs · Insights · Offers
 ├ Portfolio    ringkasan, statistik, pesan; tombol Edit membuka editor   (disembunyikan bila akun belum mendapat Portofolio)
 └ Profile      Details · Career · Facts · Stories · Preferences
+  (urutan di laci: Home, Portfolio, Documents, Profile, Applications; hitungan dan jumlah belum dibaca di samping)
+  New · Account · Plan (Android) · App settings · Help & legal
+  Sign out · ganti tampilan terang/gelap
 
-Bar atas di setiap tab: judul · Coach (ikon kilau) · Search · avatar
-Avatar → Account, Plan, App settings, Help & legal, Sign out
+Bar atas di setiap bagian: avatar (membuka laci; titik bila ada notifikasi belum dibaca) · judul · Coach · Search
 Tombol Baru (mengambang) di Home dan Documents → New resume · New letter · Import · Save a job
 ```
 
-Editor layar penuh (tanpa tab bawah): pembuat CV, pembuat surat, editor Portofolio, ruang kerja lamaran, Coach layar penuh.
+Editor layar penuh (tanpa laci): pembuat CV, pembuat surat, editor Portofolio, ruang kerja lamaran, Coach layar penuh.
 
 ### 2.2 Tablet, iPad, ponsel lipat terbuka (lebar ≥ 700)
 

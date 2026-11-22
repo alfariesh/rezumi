@@ -118,6 +118,7 @@ export {
 	type AppToastVariant,
 } from "./toast";
 export { TopBar, type TopBarProps } from "./top-bar";
+export { PushDrawer, type PushDrawerProps } from "./drawer";
 export { usePullRefresh } from "./use-pull-refresh";
 export { useThemeColor, type ThemeColor } from "heroui-native";
 // Token class names as a style object, for native inputs that take no `className` (the rich-text editors).

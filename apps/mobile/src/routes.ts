@@ -14,7 +14,7 @@ export type AccountPane =
 	| "ai-report"
 	| "membership"
 	| "licences";
-/** The bottom tabs of `app/(tabs)`, in tab-bar order. */
+/** The sections of `app/(tabs)` (the phone drawer and the tablet sidebar). */
 export type AppTab = "home" | "documents" | "applications" | "portfolio" | "profile";
 
 /** The Profile's sections, in the order of its tab row. */

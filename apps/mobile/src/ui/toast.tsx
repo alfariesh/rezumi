@@ -8,8 +8,8 @@ import { useEffect, useMemo, useSyncExternalStore } from "react";
 import { AccessibilityInfo, Platform } from "react-native";
 import { haptics } from "./motion";
 
-// The bottom bars showing now (the phone tab bar, the editor's pane bar) by source, with their heights: toasts sit
-// above the tallest, so an Undo never covers a tab.
+// The bottom bars showing now (the editor's pane bar) by source, with their heights: toasts sit above the tallest, so
+// an Undo never covers a control.
 const bottomBars = new Map<string, number>();
 let barHeight = 0;
 const barListeners = new Set<() => void>();

@@ -1,4 +1,4 @@
-// A tab whose screen is not rebuilt yet (Portfolio until Phase 12): the tab bar and its actions work, the page says
+// A section whose screen is not rebuilt yet (Portfolio until Phase 12): the drawer and the top bar work, the page says
 // what is coming and opens the web page that does it meanwhile. Never in a store build (Phase 16 checks).
 import type { IconName } from "@/ui";
 import { useLingui } from "@lingui/react/macro";

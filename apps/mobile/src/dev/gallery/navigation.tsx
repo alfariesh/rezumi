@@ -1,8 +1,8 @@
-// Gallery: tabs, segments, steps and the floating action.
+// Gallery: the push drawer, tabs, segments, steps and the floating action.
 import { useState } from "react";
 import { View } from "react-native";
 import { Caption, GallerySection, Row } from "./section";
-import { Button, Text } from "@/ui";
+import { Button, PushDrawer, Text } from "@/ui";
 import { Fab, Segment, Stepper, Tabs } from "@/ui/navigation";
 
 const noop = () => undefined;
@@ -21,8 +21,35 @@ export function NavigationGallery() {
 	const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
 	const [section, setSection] = useState<"basics" | "experience" | "education" | "skills">("basics");
 	const [step, setStep] = useState(1);
+	const [drawer, setDrawer] = useState(false);
 	return (
 		<View className="gap-8">
+			<GallerySection
+				title="PushDrawer"
+				note="The phone's main menu, behind the screen: the screen slides aside, rounded and dimmed. Tap the dimmed screen, swipe it back, or press Android Back to close."
+			>
+				<View className="h-72 overflow-hidden rounded-2xl border border-border">
+					<PushDrawer
+						open={drawer}
+						onOpenChange={setDrawer}
+						closeLabel="Close menu"
+						drawer={
+							<View className="gap-2 p-4">
+								<Text weight="semibold">Menu</Text>
+								<Caption>Sections, account, appearance</Caption>
+							</View>
+						}
+					>
+						<View className="flex-1 items-start gap-2 p-4">
+							<Text weight="medium">A section&apos;s screen</Text>
+							<Button size="sm" variant="secondary" onPress={() => setDrawer(true)}>
+								<Button.Label>Open the drawer</Button.Label>
+							</Button>
+						</View>
+					</PushDrawer>
+				</View>
+			</GallerySection>
+
 			<GallerySection title="Tabs" note="Panels of one screen. Secondary variant under a title; primary in a card.">
 				<Tabs value={tab} onValueChange={setTab} variant="secondary">
 					<Tabs.List>

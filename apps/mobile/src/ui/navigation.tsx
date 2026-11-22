@@ -172,8 +172,8 @@ export type FabProps = {
 	/** A speed dial: the trigger opens these instead of acting itself (the icon turns 45°, so use `plus`). */
 	actions?: readonly FabAction[] | undefined;
 	/**
-	 * Floats at the bottom end of the screen, 16 pt above the bottom safe area (default). Inside a tab screen whose frame
-	 * already ends above the tab bar, pass `safeArea={false}`; `floating={false}` lays it out in place (gallery, tests).
+	 * Floats at the bottom end of the screen, 16 pt above the bottom safe area (default). Inside a section's screen, whose frame
+	 * already ends above the home indicator, pass `safeArea={false}`; `floating={false}` lays it out in place (gallery, tests).
 	 */
 	floating?: boolean | undefined;
 	safeArea?: boolean | undefined;

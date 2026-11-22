@@ -121,8 +121,8 @@ function RootStack() {
 
 type UiProviderProps = { children: ReactNode };
 
-// HeroUI's toast region clears the bottom bar that shows (tab bar, editor pane bar; the legacy Toaster reads the same
-// height), so an Undo toast never covers a tab. Only this wrapper re-renders when the height changes.
+// HeroUI's toast region clears the bottom bar that shows (the editor's pane bar; the legacy Toaster reads the same
+// height), so an Undo toast never covers its buttons. Only this wrapper re-renders when the height changes.
 function UiProvider({ children }: UiProviderProps) {
 	const bar = useToastBarHeight();
 	const config = useMemo(

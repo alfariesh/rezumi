@@ -1,15 +1,15 @@
-// The chrome every tab shares (01-desain 2.1): the top bar's Coach · Search · avatar, the page title, and the one
-// floating New button of Home and Documents. Screens not rebuilt yet get the same actions through their old header
-// (`CollectionHeader` reads `InTabs`).
+// The chrome every section shares (01-desain 2.1): on phones the avatar that opens the drawer at the start of the top
+// bar, Coach and Search at its end, the page title, and the one floating New button of Home and Documents. Screens not
+// rebuilt yet get the same controls through their old header (`CollectionHeader` reads `InTabs`).
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { createContext, use } from "react";
-import { AccountButton } from "./account-menu";
+import { DrawerButton } from "./app-drawer";
 import { useIsTablet } from "./use-is-tablet";
 import { routes } from "@/routes";
 import { Fab, IconButton, TopBar } from "@/ui";
 
-/** True inside the tab shell: the old screens' headers then add the tab bar's actions. */
+/** True inside the section shell: the old screens' headers then add the drawer's avatar, Coach and Search. */
 export const InTabs = createContext(false);
 
 export function useInTabs() {
@@ -25,12 +25,16 @@ function useOpenCoach() {
 	return () => router.push(routes.coach());
 }
 
-/** Coach, Search and the account menu, at the end of a tab's top bar. */
+/** The drawer's avatar at the start of a section's top bar on phones; tablets have the sidebar instead. */
+export function TabBarLeading() {
+	return useIsTablet() ? null : <DrawerButton />;
+}
+
+/** Coach and Search, at the end of a section's top bar. */
 export function TabBarActions() {
 	const { t } = useLingui();
 	const router = useRouter();
 	const openCoach = useOpenCoach();
-	const tablet = useIsTablet();
 	return (
 		<>
 			<IconButton icon="sparkle" label={t`Coach`} onPress={openCoach} testID="open-coach" />
@@ -40,8 +44,6 @@ export function TabBarActions() {
 				onPress={() => router.push(routes.search())}
 				testID="open-search"
 			/>
-			{/* The sidebar holds the account on tablets. */}
-			{tablet ? null : <AccountButton />}
 		</>
 	);
 }
@@ -50,7 +52,7 @@ type TabTopBarProps = { title: string };
 
 /** A tab's top bar: the actions row, then the 30 pt page title. */
 export function TabTopBar({ title }: TabTopBarProps) {
-	return <TopBar title={title} large actions={<TabBarActions />} />;
+	return <TopBar title={title} large leading={<TabBarLeading />} actions={<TabBarActions />} />;
 }
 
 /** New (resume, letter, import, sample) from Home and Documents on phones; the sidebar has its own New on tablets. */

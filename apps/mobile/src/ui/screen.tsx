@@ -17,7 +17,7 @@ export type ScreenProps = {
 	children?: ReactNode;
 	/** Scrolls its content (default). Lists that scroll themselves pass false. */
 	scroll?: boolean | undefined;
-	/** Vertical safe areas this screen pads itself; headers and the tab bar usually own them. */
+	/** Vertical safe areas this screen pads itself; headers and the section frame usually own them. */
 	edges?: Edge[] | undefined;
 	/** Drops the gutter and gap, for full-bleed content (a list, a canvas). */
 	bare?: boolean | undefined;
