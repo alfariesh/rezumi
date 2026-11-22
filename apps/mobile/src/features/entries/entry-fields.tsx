@@ -1,9 +1,9 @@
-// Every field of one entry, from the field schema shared with the CV builder (`features/write/fields.ts`, as on the
+// Every field of one entry, from the field schema shared with the CV builder (`features/entries/fields.ts`, as on the
 // web's entries.tsx). Level and icon wait behind "More options".
 import type { EntryWriter } from "./hooks";
 import type { PageSettings } from "./source";
-import type { EntryField } from "@/features/write/fields";
-import type { Entry } from "@/features/write/model";
+import type { EntryField } from "@/features/entries/fields";
+import type { Entry } from "@/features/entries/model";
 import type { CustomSectionType, RoleItem, Website } from "@rezumi/schema/resume/data";
 import type { ResumeDates } from "@rezumi/schema/resume/dates";
 import { useLingui } from "@lingui/react/macro";
@@ -15,7 +15,7 @@ import { DatesField } from "./dates-field";
 import { IconPickerSheet } from "./icon-picker";
 import { RichTextField } from "./rich-text-field";
 import { BoundText, LinkField } from "./text-fields";
-import { ENTRY_FIELDS } from "@/features/write/fields";
+import { ENTRY_FIELDS } from "@/features/entries/fields";
 import { Button, ChipInput, IconButton, Label, ListRow, ListSection, Slider, Surface, Text } from "@/ui";
 
 type Values = Record<string, unknown> & {

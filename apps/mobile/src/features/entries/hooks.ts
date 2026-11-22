@@ -1,12 +1,12 @@
 // Reading and writing entries through the open source (Profile or resume), with Undo for what doesn't ask first.
-import type { WriteSection } from "@/features/write/model";
+import type { WriteSection } from "@/features/entries/model";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
 import { useLingui } from "@lingui/react/macro";
 import { useCallback } from "react";
 import { useWriteData, useWriteSource } from "./source";
-import { SECTION_TITLES } from "@/features/write/fields";
-import { createEntry, findEntry, getEntries, getSectionObject } from "@/features/write/model";
+import { SECTION_TITLES } from "@/features/entries/fields";
+import { createEntry, findEntry, getEntries, getSectionObject } from "@/features/entries/model";
 import { showToast } from "@/ui";
 
 /** One entry, re-rendering only when it changes; null once it's deleted. */

@@ -1,4 +1,4 @@
-import type { FlatRow, OutlineRow } from "./model";
+import type { FlatRow, OutlineRow } from "@/features/entries/model";
 import type { CustomSectionType, ResumeData, SectionType } from "@rezumi/schema/resume/data";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
@@ -9,8 +9,14 @@ import { useMemo, useState } from "react";
 import { Pressable, View } from "react-native";
 import { getInitials } from "@rezumi/utils/string";
 import { EntrySheet } from "./entry-sheet";
-import { ADD_LABELS, SECTION_ICONS, SECTION_TITLES } from "./fields";
 import { addEntry, edit, requestFocus, useWriteData } from "./hooks";
+import { resolvePictureUrl } from "./picture-screen";
+import { SectionSheet } from "./section-sheet";
+import { client } from "@/api/client";
+import { useSession } from "@/auth/session";
+import { useIsResumeLocked } from "@/draft";
+import { resume } from "@/draft/runtime";
+import { ADD_LABELS, SECTION_ICONS, SECTION_TITLES } from "@/features/entries/fields";
 import {
 	addBuiltinSection,
 	addCustomSection,
@@ -31,13 +37,7 @@ import {
 	resolveDrop,
 	resolveSection,
 	summarizeContent,
-} from "./model";
-import { resolvePictureUrl } from "./picture-screen";
-import { SectionSheet } from "./section-sheet";
-import { client } from "@/api/client";
-import { useSession } from "@/auth/session";
-import { useIsResumeLocked } from "@/draft";
-import { resume } from "@/draft/runtime";
+} from "@/features/entries/model";
 import { routes } from "@/routes";
 import {
 	Banner,

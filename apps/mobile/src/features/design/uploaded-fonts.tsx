@@ -1,5 +1,5 @@
 import type { GroupProps } from "./style-groups";
-import type { UploadContext } from "@/features/write/upload";
+import type { UploadContext } from "@/features/entries/upload";
 import type { CustomFontFace } from "@rezumi/schema/resume/data";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
@@ -13,7 +13,7 @@ import { rest } from "@/api/client";
 import { useResumeStore } from "@/draft";
 import { nativeEnvironment } from "@/draft/native";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
-import { claimUpload, commitUpload } from "@/features/write/upload";
+import { claimUpload, commitUpload } from "@/features/entries/upload";
 import { Button, ConfirmDialog, ListRow, Text, showToast, useTheme } from "@/ui-legacy";
 
 const uploadContext: UploadContext = {

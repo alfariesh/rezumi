@@ -1,6 +1,6 @@
 // One entry, full screen: its fields saved as you type, then Move and Delete. Deleting is immediate, with Undo in the
 // toast. Also the summary editor. Both read and write through the open source (Profile now, a resume in Phase 07).
-import type { WriteSection } from "@/features/write/model";
+import type { WriteSection } from "@/features/entries/model";
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { Stack, useRouter } from "expo-router";
@@ -10,7 +10,7 @@ import { EntryFields } from "./entry-fields";
 import { consumeFocus, useDeleteEntry, useEntry, useEntryWriter, useMoveEntry, useSectionTitle } from "./hooks";
 import { RichTextField, RichTextToolbar } from "./rich-text-field";
 import { useWriteData, useWriteSource } from "./source";
-import { DRAFT_HINTS } from "@/features/write/fields";
+import { DRAFT_HINTS } from "@/features/entries/fields";
 import {
 	describeEntry,
 	getEntries,
@@ -18,7 +18,7 @@ import {
 	getSectionType,
 	isDraftEntry,
 	getPrimaryField,
-} from "@/features/write/model";
+} from "@/features/entries/model";
 import { Alert, Card, EmptyState, ListRow, ListSection, Screen, Text } from "@/ui";
 
 type EditorFrameProps = { title: string; children: ReactNode };

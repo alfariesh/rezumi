@@ -1,11 +1,18 @@
-import type { LayoutColumn, WriteSection } from "./model";
+import type { LayoutColumn, WriteSection } from "@/features/entries/model";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { addEntry, edit, requestFocus, useSectionTitle, useSortByDate, useUndoToast, useWriteData } from "./hooks";
-import { deleteCustomSection, findPlacement, getSectionObject, NO_PAGES, placeSection, selectPages } from "./model";
 import { IconPickerSheet, PromptSheet } from "./pickers";
+import {
+	deleteCustomSection,
+	findPlacement,
+	getSectionObject,
+	NO_PAGES,
+	placeSection,
+	selectPages,
+} from "@/features/entries/model";
 import { routes } from "@/routes";
 import { Icon, ListRow, Sheet, Switch, Text, useTheme } from "@/ui-legacy";
 

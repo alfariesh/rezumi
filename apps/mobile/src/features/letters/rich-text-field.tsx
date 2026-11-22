@@ -1,7 +1,7 @@
 // Rich text (react-native-enriched-html) for the letter body and an older letter's recipient. Only an edited field is
-// re-serialised; the session logic lives in `features/write/rich-text.ts`. Render `LetterRichTextToolbar` once on the
+// re-serialised; the session logic lives in `features/entries/rich-text.ts`. Render `LetterRichTextToolbar` once on the
 // screen for bold, italic, underline and lists above the keyboard. No Improve on letters.
-import type { RichTextSession } from "@/features/write/rich-text";
+import type { RichTextSession } from "@/features/entries/rich-text";
 import type { IconName } from "@/ui";
 import type { RefObject } from "react";
 import type { EnrichedTextInputInstance, OnChangeStateEvent } from "react-native-enriched-html";
@@ -11,7 +11,7 @@ import { ScrollView, View } from "react-native";
 import { EnrichedTextInput } from "react-native-enriched-html";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { letterFieldFocus } from "@/draft";
-import { createRichTextSession } from "@/features/write/rich-text";
+import { createRichTextSession } from "@/features/entries/rich-text";
 import { Button, IconButton, Label, cx, space, useKeyboardVisible, useResolveClassNames, useThemeColor } from "@/ui";
 
 /** The focused editor, for the toolbar docked above the keyboard (one per screen). */

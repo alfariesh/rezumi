@@ -1,4 +1,4 @@
-import type { RichTextSession } from "./rich-text";
+import type { RichTextSession } from "@/features/entries/rich-text";
 import type { IconName } from "@/ui-legacy";
 import type { ComponentRef, RefObject } from "react";
 import type { EnrichedTextInputInstance, OnChangeStateEvent } from "react-native-enriched-html";
@@ -10,8 +10,8 @@ import { EnrichedTextInput } from "react-native-enriched-html";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ImprovePanel } from "./improve";
 import { PromptSheet } from "./pickers";
-import { createRichTextSession, fromEnrichedHtml, lineAtCaret, replaceLine } from "./rich-text";
 import { resumeFieldFocus } from "@/draft";
+import { createRichTextSession, fromEnrichedHtml, lineAtCaret, replaceLine } from "@/features/entries/rich-text";
 import { Button, IconButton, ListRow, Sheet, Text, useTheme } from "@/ui-legacy";
 import { useKeyboardVisible } from "@/ui/keyboard";
 

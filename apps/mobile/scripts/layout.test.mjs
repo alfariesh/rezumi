@@ -309,7 +309,7 @@ for (const width of [443, 852, 443, 852]) {
 hooks.length = 0;
 react.useCallback = (callback) => callback;
 // The first focus must allow Improve for an existing line without requiring another caret tap.
-const richText = load("features/write/rich-text.ts");
+const richText = load("features/entries/rich-text.ts");
 const { RichTextField, RichTextToolbar } = load("features/write/rich-text-field.tsx", {
 	react: {
 		...react,
@@ -320,7 +320,7 @@ const { RichTextField, RichTextToolbar } = load("features/write/rich-text-field.
 	},
 	"@lingui/core/macro": { plural: () => "characters" },
 	"react-native-enriched-html": { EnrichedTextInput: "RichInput" },
-	"./rich-text": richText,
+	"@/features/entries/rich-text": richText,
 	"./improve": { ImprovePanel: "ImprovePanel" },
 	"./pickers": { PromptSheet: "PromptSheet" },
 	"@/draft": { resumeFieldFocus: { onFocus() {}, onBlur() {} } },

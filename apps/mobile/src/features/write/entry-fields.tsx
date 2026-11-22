@@ -1,6 +1,6 @@
-import type { EntryField } from "./fields";
 import type { EntryWriter } from "./hooks";
-import type { Entry } from "./model";
+import type { EntryField } from "@/features/entries/fields";
+import type { Entry } from "@/features/entries/model";
 import type { CustomSectionType, RoleItem, Website } from "@rezumi/schema/resume/data";
 import type { DateFormat, ResumeDates } from "@rezumi/schema/resume/dates";
 import { useLingui } from "@lingui/react/macro";
@@ -9,10 +9,10 @@ import { View } from "react-native";
 import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
 import { generateId } from "@rezumi/utils/string";
 import { DatesField } from "./date-field";
-import { ENTRY_FIELDS } from "./fields";
 import { ColorPickerSheet, ColorRow, IconPickerSheet } from "./pickers";
 import { RichTextField } from "./rich-text-field";
 import { resumeFieldFocus } from "@/draft";
+import { ENTRY_FIELDS } from "@/features/entries/fields";
 import { Button, ChipInput, IconButton, ListRow, Segmented, Switch, Text, TextField, useTheme } from "@/ui-legacy";
 
 export type PageSettings = { locale: string; dateFormat?: DateFormat | undefined };

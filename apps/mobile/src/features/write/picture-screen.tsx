@@ -1,4 +1,4 @@
-import type { UploadContext } from "./upload";
+import type { UploadContext } from "@/features/entries/upload";
 import type { Picture } from "@rezumi/schema/resume/data";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
@@ -10,11 +10,11 @@ import { View } from "react-native";
 import { EditorScreen } from "./entry-screen";
 import { useWriteData } from "./hooks";
 import { ColorPickerSheet, ColorRow, NumberField } from "./pickers";
-import { claimUpload, commitUpload } from "./upload";
 import { client, rest } from "@/api/client";
 import { useSession } from "@/auth/session";
 import { useIsResumeLocked, useResumeStore } from "@/draft";
 import { nativeEnvironment } from "@/draft/native";
+import { claimUpload, commitUpload } from "@/features/entries/upload";
 import { Button, ConfirmDialog, Segmented, Switch, Text, TextField, showToast, useTheme } from "@/ui-legacy";
 
 const MAX_UPLOAD = 10 * 1024 * 1024;

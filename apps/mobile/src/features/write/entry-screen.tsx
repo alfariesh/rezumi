@@ -1,4 +1,4 @@
-import type { WriteSection } from "./model";
+import type { WriteSection } from "@/features/entries/model";
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter, Stack } from "expo-router";
@@ -7,11 +7,11 @@ import { View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { EntryFields } from "./entry-fields";
 import { EntrySheet } from "./entry-sheet";
-import { DRAFT_HINTS } from "./fields";
 import { consumeFocus, useEntry, useEntryWriter, useSectionTitle, useWriteData } from "./hooks";
-import { describeEntry, getSectionKind, getSectionType, getPrimaryField, isDraftEntry } from "./model";
 import { RichTextField, RichTextToolbar } from "./rich-text-field";
 import { useIsResumeLocked, useResumeStore } from "@/draft";
+import { DRAFT_HINTS } from "@/features/entries/fields";
+import { describeEntry, getSectionKind, getSectionType, getPrimaryField, isDraftEntry } from "@/features/entries/model";
 import { Banner, EmptyState, IconButton, Text, useTheme } from "@/ui-legacy";
 import { useKeyboardScrollSpace } from "@/ui/keyboard";
 

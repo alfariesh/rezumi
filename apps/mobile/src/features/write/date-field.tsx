@@ -4,8 +4,15 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { Platform, View } from "react-native";
 import { getPresentLabel } from "@rezumi/schema/resume/dates";
-import { editDates, fromPickerDate, isReversed, pickerDate, readTypedDate, showYearMonth } from "./dates";
 import { resumeFieldFocus } from "@/draft";
+import {
+	editDates,
+	fromPickerDate,
+	isReversed,
+	pickerDate,
+	readTypedDate,
+	showYearMonth,
+} from "@/features/entries/dates";
 import { Button, Icon, IconButton, Sheet, Switch, Text, TextField, useTheme } from "@/ui-legacy";
 
 type MonthInputProps = {

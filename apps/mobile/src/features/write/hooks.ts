@@ -1,12 +1,12 @@
-import type { Entry, WriteSection } from "./model";
+import type { Entry, WriteSection } from "@/features/entries/model";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
 import { useLingui } from "@lingui/react/macro";
 import { useCallback } from "react";
 import { sortSectionItemsByPeriod } from "@rezumi/resume/section-sort";
-import { SECTION_TITLES } from "./fields";
-import { createEntry, findEntry, getEntries, getSectionObject, readData } from "./model";
 import { useResumeStore } from "@/draft";
+import { SECTION_TITLES } from "@/features/entries/fields";
+import { createEntry, findEntry, getEntries, getSectionObject, readData } from "@/features/entries/model";
 import { showToast } from "@/ui-legacy";
 
 /** Reads from the open resume's data. Return stable values (data sub-objects or primitives). */

@@ -1,4 +1,4 @@
-import type { Entry } from "@/features/write/model";
+import type { Entry } from "@/features/entries/model";
 // What the sources found, by part, everything ticked: untick what shouldn't go in the Profile. Nothing is saved until
 // the person goes on. The web's SourceReview on a phone: a group's own row ticks all its entries.
 import type { PhotoCandidate, ReviewEntry, ReviewGroup } from "@rezumi/resume/profile-sources";
@@ -9,8 +9,8 @@ import { stripHtml } from "@rezumi/utils/string";
 import { photoSourceLabel } from "./messages";
 import { initialsOf, photoUrl } from "./photo-url";
 import { useSession } from "@/auth/session";
-import { SECTION_ICONS, SECTION_TITLES } from "@/features/write/fields";
-import { describeEntry } from "@/features/write/model";
+import { SECTION_ICONS, SECTION_TITLES } from "@/features/entries/fields";
+import { describeEntry } from "@/features/entries/model";
 import { Avatar, Checkbox, ControlField, Icon, Label, Text, cx, haptics } from "@/ui";
 
 type SourceReviewProps = {

@@ -1,7 +1,7 @@
-import type { RichTextSession } from "@/features/write/rich-text";
+import type { RichTextSession } from "@/features/entries/rich-text";
 // Rich text (react-native-enriched-html) for descriptions and the summary. The formatting toolbar docks above the
 // keyboard while a field has focus; render `RichTextToolbar` once on the screen. Only an edited field is re-serialised,
-// so opening a description never rewrites it. The session logic lives in `features/write/rich-text.ts`.
+// so opening a description never rewrites it. The session logic lives in `features/entries/rich-text.ts`.
 import type { IconName } from "@/ui";
 import type { ComponentRef, RefObject } from "react";
 import type { EnrichedTextInputInstance, OnChangeStateEvent } from "react-native-enriched-html";
@@ -12,7 +12,7 @@ import { ScrollView, View } from "react-native";
 import { EnrichedTextInput } from "react-native-enriched-html";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useWriteSource } from "./source";
-import { createRichTextSession } from "@/features/write/rich-text";
+import { createRichTextSession } from "@/features/entries/rich-text";
 import {
 	Button,
 	IconButton,

@@ -7,7 +7,7 @@ import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { sourceErrorCode, sourceFindings } from "@rezumi/resume/profile-sources";
 import { ImportError } from "@/features/documents/import-file";
-import { SECTION_TITLES } from "@/features/write/fields";
+import { SECTION_TITLES } from "@/features/entries/fields";
 
 export function sourceLabel(id: SourceId): string {
 	switch (id) {

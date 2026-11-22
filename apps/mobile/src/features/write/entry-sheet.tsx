@@ -1,9 +1,9 @@
-import type { WriteSection } from "./model";
+import type { WriteSection } from "@/features/entries/model";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { SECTION_TITLES } from "./fields";
 import { edit, useDeleteEntry, useEntry, useWriteData } from "./hooks";
+import { SECTION_TITLES } from "@/features/entries/fields";
 import {
 	createEntry,
 	getCompatibleMoveTargets,
@@ -13,7 +13,7 @@ import {
 	NO_PAGES,
 	resolveSection,
 	selectPages,
-} from "./model";
+} from "@/features/entries/model";
 import { routes } from "@/routes";
 import { ListRow, Sheet } from "@/ui-legacy";
 
