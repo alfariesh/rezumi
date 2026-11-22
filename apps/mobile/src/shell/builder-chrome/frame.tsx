@@ -167,7 +167,12 @@ function Frame<T extends string>({
 												unstable_nativeProps: { headerConfig: { disableTopInsetApplication: tablet } },
 											};
 										const animation = reduced ? "fade" : paneAnimation;
-										return tablet ? { headerShown: false, animation } : { header: () => <ChromeTopBar />, animation };
+										// The mode's name is the back button's label on screens pushed over it.
+										const label = panes.find(({ pane }) => pane === route.name)?.label;
+										const title = label ? { title: label } : {};
+										return tablet
+											? { headerShown: false, animation, ...title }
+											: { header: () => <ChromeTopBar />, animation, ...title };
 									}}
 								>
 									{modals.map((name) => (

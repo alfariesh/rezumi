@@ -26,8 +26,18 @@ export default function BuilderLayout() {
 		{ pane: "write", label: t`Write`, icon: "pencil-simple", href: routes.builder(id, "write") },
 		{ pane: "page", label: t`Page`, icon: "file-text", href: routes.builder(id, "page") },
 		{ pane: "design", label: t`Design`, icon: "palette", href: routes.builder(id, "design") },
-		{ pane: "check", label: t`Check`, icon: "list-checks", href: routes.builder(id, "check") },
-		{ pane: "share", label: t`Share`, icon: "globe", href: routes.builder(id, "share") },
+		{
+			pane: "check",
+			label: t({ message: "Check", context: "Editor mode" }),
+			icon: "list-checks",
+			href: routes.builder(id, "check"),
+		},
+		{
+			pane: "share",
+			label: t({ message: "Share", context: "Editor mode" }),
+			icon: "globe",
+			href: routes.builder(id, "share"),
+		},
 	];
 
 	return (

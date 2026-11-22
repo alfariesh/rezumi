@@ -2,7 +2,6 @@
 // Share, each an icon over its name like the web's mode rail, the picked one in accent on a soft accent pill with its
 // duotone glyph, and a count (Check's open issues) at the icon's corner. It pads the bottom safe area itself.
 import type { IconName } from "./icon";
-import { Badge } from "heroui-native-pro/badge";
 import { Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { cx } from "./cx";
@@ -82,7 +81,7 @@ function ModeBarCell<T extends string>({ item, selected, onPress }: ModeBarCellP
 			className="min-h-12 flex-1 items-center justify-center gap-1 rounded-2xl active:opacity-70"
 		>
 			<View className={cx("h-8 w-14 items-center justify-center rounded-full", selected && "bg-accent-soft")}>
-				<Badge.Anchor>
+				<View>
 					<Icon
 						name={item.icon}
 						size={size.icon.lg}
@@ -90,11 +89,13 @@ function ModeBarCell<T extends string>({ item, selected, onPress }: ModeBarCellP
 						tone={selected ? "accent" : "muted"}
 					/>
 					{hasBadge ? (
-						<Badge color="warning" variant="soft" size="sm" placement="top-right">
-							{String(item.badge)}
-						</Badge>
+						<View className="absolute -end-3 -top-1.5 h-4 min-w-4 items-center justify-center rounded-full bg-warning-soft px-1">
+							<Text size="xs" weight="semibold" tone="warning" maxFontSizeMultiplier={1}>
+								{String(item.badge)}
+							</Text>
+						</View>
 					) : null}
-				</Badge.Anchor>
+				</View>
 			</View>
 			<Text
 				size="xs"

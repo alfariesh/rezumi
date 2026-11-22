@@ -22,6 +22,7 @@ export function SegmentHeader({ segment, counts, onChange }: SegmentHeaderProps)
 	return (
 		<View className="gap-3">
 			<Segment
+				size="sm"
 				value={segment}
 				onValueChange={onChange}
 				accessibilityLabel={t`Documents sections`}
