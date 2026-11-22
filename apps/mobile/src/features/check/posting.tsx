@@ -69,14 +69,17 @@ export function PostingSource({ id, application, locked, offline, onClearPasted,
 				onUnlink={() => void link(null)}
 			/>
 			<SavePostingSheet
+				resumeId={id}
 				isOpen={saving}
 				onOpenChange={setSaving}
 				posting={pasted}
 				onSaved={async (applicationId) => {
-					if (await link(applicationId)) {
+					const linked = await link(applicationId);
+					if (linked) {
 						onClearPasted();
 						showToast({ title: t`Saved as an application and linked` });
 					}
+					return linked;
 				}}
 			/>
 		</CheckSection>

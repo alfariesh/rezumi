@@ -42,12 +42,15 @@ export function editWithUndo(id: string, edit: Edit, message: string, undoLabel:
 	return true;
 }
 
-/** Where Write opens an issue's field: the basics, the summary, an entry, or the outline for a whole section. */
-export function writeHref(id: string, target: CheckTarget) {
-	if (target.kind === "header") return routes.entry(id, "basics", "basics");
-	if (target.kind === "item") return routes.entry(id, target.sectionId, target.itemId);
-	if (target.sectionId === "summary") return routes.entry(id, "summary", "summary");
-	return routes.builder(id, "write");
+/**
+ * Where Write opens an issue's field: the basics, the summary, an entry, or the outline with a whole section opened
+ * (Write's `section` parameter). `field` names the field to focus.
+ */
+export function writeHref(id: string, target: CheckTarget, field: string) {
+	if (target.kind === "header") return { pathname: routes.entry(id, "basics", "basics"), params: { field } };
+	if (target.kind === "item") return { pathname: routes.entry(id, target.sectionId, target.itemId), params: { field } };
+	if (target.sectionId === "summary") return { pathname: routes.entry(id, "summary", "summary"), params: { field } };
+	return { pathname: routes.builder(id, "write"), params: { field, section: target.sectionId } };
 }
 
 /** What a Check card can do: fix in one step, open the field in Write, or set the issue aside. */
@@ -68,10 +71,7 @@ export function useCheckActions(id: string) {
 			if (!current.locked) edit(fresh.fix.apply, t`${issue.done}. Issue resolved.`);
 			return;
 		}
-		router.push({
-			pathname: writeHref(id, fresh.fix.target),
-			params: { field: getFindingField(fresh.finding.pointer) },
-		});
+		router.push(writeHref(id, fresh.fix.target, getFindingField(fresh.finding.pointer)));
 	};
 
 	const ignore = (issue: CheckIssue) =>

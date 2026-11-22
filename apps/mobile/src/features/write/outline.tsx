@@ -1,6 +1,7 @@
 // The outline (the web's outline.tsx on a phone): one sortable list of page and sidebar labels, section rows and,
 // under open sections, their entries and Add rows. Hold ⋮⋮ to move a section (across pages and into the sidebar) or
 // an entry within its section; screen readers move rows with Move up / Move down. Hidden sections wait at the end.
+import type { SectionMoves } from "./section-row";
 import type { FlatRow, WriteSection } from "@/features/entries/model";
 import type { ReactElement } from "react";
 import { useLingui } from "@lingui/react/macro";
@@ -62,6 +63,11 @@ export function Outline({ added, open, onToggle, onOpenEntry, onOpenSummary, hea
 		return data ? resolveSection(data, id) : null;
 	};
 	const active = flat.flatMap((row) => (row.kind === "section" && !row.row.hidden ? [row.row] : []));
+	// Hidden sections wait at the end and don't move; the first and last can only move one way.
+	const movesOf = (id: string): SectionMoves => {
+		const index = active.findIndex((row) => row.id === id);
+		return { up: index > 0, down: index !== -1 && index < active.length - 1 };
+	};
 	const moveRow = (id: string, direction: "up" | "down") => {
 		const index = active.findIndex((row) => row.id === id);
 		const target = active[direction === "up" ? index - 1 : index + 1];
@@ -83,6 +89,7 @@ export function Outline({ added, open, onToggle, onOpenEntry, onOpenSummary, hea
 						row={item.row}
 						open={open.has(item.row.id)}
 						locked={locked}
+						moves={movesOf(item.row.id)}
 						onDrag={drag}
 						onToggle={() => (item.row.id === "summary" ? onOpenSummary() : onToggle(item.row.id))}
 						onMove={(direction) => moveRow(item.row.id, direction)}
@@ -137,6 +144,7 @@ export function Outline({ added, open, onToggle, onOpenEntry, onOpenSummary, hea
 				section={sectionFor}
 				onClose={() => setSectionFor(null)}
 				onAddEntry={add}
+				moves={sectionFor ? movesOf(sectionFor.id) : { up: false, down: false }}
 				onMove={(direction) => sectionFor && moveRow(sectionFor.id, direction)}
 			/>
 			<EntrySheet target={entryFor} onClose={() => setEntryFor(null)} onOpen={onOpenEntry} />

@@ -164,7 +164,7 @@ export function ImprovePanel({ line, where, context, onClose, onReplace }: Impro
 	return (
 		<Surface variant="secondary" className="gap-2 rounded-xl p-3" testID="improve-panel">
 			<Text size="xs" weight="semibold" tone="muted">
-				{t`Improve selected line`}
+				{t`Improve this line`}
 			</Text>
 			<Text tone="muted" numberOfLines={2}>
 				{line.text}

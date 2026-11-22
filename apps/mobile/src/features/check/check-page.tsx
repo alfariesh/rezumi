@@ -1,5 +1,7 @@
 import type { CheckIssue } from "./messages";
 import type { CheckResult } from "./use-check";
+import type { PageMapNode } from "@rezumi/pdf/page-map";
+import type { CheckTarget } from "@rezumi/resume/check";
 import { useLingui } from "@lingui/react/macro";
 import { useMemo, useState } from "react";
 import { View } from "react-native";
@@ -7,10 +9,18 @@ import { findBlock, targetsMentioning } from "@rezumi/resume/check";
 import { IssueStepper } from "./issue-stepper";
 import { PagePins } from "./page-pins";
 import { ParserView } from "./parser-view";
+import { useParsedPdf } from "./use-parsed-pdf";
 import { usePreview } from "@/preview/usePreview";
 import { Alert, Button, IconButton, Segment, Sheet, Skeleton, Text } from "@/ui";
 
 export type PageLens = "person" | "parser";
+
+/** The first page showing the issue's block, else the first showing any of the term's blocks. */
+function focusPage(nodes: readonly PageMapNode[], target: CheckTarget | null, terms: readonly CheckTarget[]) {
+	if (target) return findBlock(nodes, target)?.page;
+	const pages = terms.flatMap((term) => findBlock(nodes, term)?.page ?? []);
+	return pages.length > 0 ? Math.min(...pages) : undefined;
+}
 
 type CheckPageSheetProps = {
 	isOpen: boolean;
@@ -45,7 +55,30 @@ export function CheckPageSheet(props: CheckPageSheetProps) {
 	const result = preview.result;
 	const pageCount = result?.pageCount ?? 1;
 	const page = result?.pages.find((entry) => entry.index === pageIndex);
-	const highlighted = highlightTerm ? targetsMentioning(check.data, highlightTerm) : [];
+	const highlighted = useMemo(
+		() => (highlightTerm ? targetsMentioning(check.data, highlightTerm) : []),
+		[check.data, highlightTerm],
+	);
+	const [parserOptedIn, setParserOptedIn] = useState(false);
+	// Owned here, not by the parser view, so switching views keeps the consent and the result.
+	const parsed = useParsedPdf(
+		!preview.rendering && !preview.error ? (result?.pdf ?? null) : null,
+		check.data,
+		props.isOpen && lens === "parser" && parserOptedIn && !props.offline,
+	);
+
+	// Opens on the page holding what the sheet was opened for: the picked issue's block, or the first block naming
+	// the term. It waits for the current render's page map; turning pages by hand afterwards is left alone.
+	const nodes = preview.rendering ? undefined : result?.pageMap.nodes;
+	const focus = props.isOpen ? (selected ? `issue:${selected}` : highlightTerm ? `term:${highlightTerm}` : null) : null;
+	const [shownFocus, setShownFocus] = useState<string | null>(null);
+	if (focus !== shownFocus && (focus === null || nodes)) {
+		setShownFocus(focus);
+		const target = focus ? focusPage(nodes ?? [], issue?.target ?? null, selected ? [] : highlighted) : undefined;
+		if (target !== undefined) setPageIndex(target);
+	}
+	// The resume got shorter while a later page was open.
+	if (result && pageIndex > Math.max(0, result.pageCount - 1)) setPageIndex(Math.max(0, result.pageCount - 1));
 
 	const select = (key: string | null) => {
 		onSelect(key);
@@ -77,6 +110,9 @@ export function CheckPageSheet(props: CheckPageSheetProps) {
 					pdf={!preview.rendering && !preview.error ? (result?.pdf ?? null) : null}
 					issues={check.issues}
 					offline={props.offline}
+					optedIn={parserOptedIn}
+					onOptIn={() => setParserOptedIn(true)}
+					parsed={parsed}
 					onSelect={(key) => {
 						props.onLensChange("person");
 						select(key);

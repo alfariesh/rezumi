@@ -73,13 +73,28 @@ export function useImport({ aiAvailable, aiPdf, applicationId }: ImportOptions) 
 			if (network.isConnected === false || network.isInternetReachable === false)
 				throw new ImportError(t`You're offline. Try again when you reconnect.`);
 			const document = await importDocument(file, aiAvailable, aiPdf, controller.signal);
-			if (!current()) return;
+			if (getServer() !== session.server) return;
+			useNewDocuments.getState().markNew(document);
+			if (!current()) {
+				// Canceled or replaced after the server made it: the document exists, so the library still shows it.
+				void queryClient.invalidateQueries({ queryKey: orpc.documents.key() });
+				return;
+			}
 			// The server fits an imported design to the plan; say what changed.
 			const notice = document.design ? describeImportedDesign(plan, document.design) : null;
 			if (notice) showToast({ title: notice });
-			if (applicationId)
-				await client.documents.linkApplication({ type: document.type, id: document.id, applicationId });
-			useNewDocuments.getState().markNew(document);
+			if (applicationId) {
+				// The document exists either way: a failed link must not lead to a second import.
+				try {
+					await client.documents.linkApplication({ type: document.type, id: document.id, applicationId });
+				} catch {
+					showToast({
+						title: t`Couldn't link the application. Check Applications before retrying.`,
+						variant: "warning",
+					});
+				}
+				void queryClient.invalidateQueries({ queryKey: orpc.applications.key() });
+			}
 			void queryClient.invalidateQueries({ queryKey: orpc.documents.key() });
 			dropFile();
 			const summary = document.type === "resume" ? await summarize(document.id, controller.signal) : null;
@@ -111,6 +126,12 @@ export function useImport({ aiAvailable, aiPdf, applicationId }: ImportOptions) 
 			attempt.current++;
 			abort.current?.abort();
 			setStep({ name: "idle" });
+			// The server may have finished the import before the request was dropped.
+			void queryClient.invalidateQueries({ queryKey: orpc.documents.key() });
+			showToast({
+				title: t`Import canceled. Refresh Documents before retrying if the upload had finished.`,
+				variant: "warning",
+			});
 		},
 	};
 }

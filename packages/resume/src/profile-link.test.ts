@@ -157,6 +157,28 @@ describe("entries and sections from the Profile", () => {
 		]);
 		expect(sectionParts(source, "summary")).toEqual([{ kind: "summary" }]);
 	});
+
+	it("doesn't offer a Profile entry the resume keeps in a custom section", () => {
+		const source = profile();
+		source.sections.experience.push(job("job-2", "Kopi Studio", "Barista"));
+		const data = resumeDataFromProfile(profile());
+		// job-1 moved out of Experience into a custom section keeps its Profile id.
+		const [moved] = data.sections.experience.items.splice(0, 1);
+		data.customSections.push({
+			id: "custom-1",
+			type: "experience",
+			title: "Freelance",
+			icon: "",
+			hidden: false,
+			showHeading: true,
+			columns: 1,
+			keepTogether: false,
+			startOnNewPage: false,
+			items: [moved],
+		} as never);
+
+		expect(missingFromProfile(data, source, "experience")).toEqual(["job-2"]);
+	});
 });
 
 describe("profileSectionOf", () => {

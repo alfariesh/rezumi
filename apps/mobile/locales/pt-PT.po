@@ -23,7 +23,7 @@ msgstr "«{0}» adicionado a Competências"
 msgid "“{0}” hidden"
 msgstr "“{0}” oculto"
 
-#. placeholder {0}: documents[0]?.name ?? ""
+#. placeholder {0}: document.name
 #: src/features/documents/queries.ts
 msgid "“{0}” moved to Trash"
 msgstr "“{0}” movido para a Reciclagem"
@@ -134,11 +134,6 @@ msgstr "{0, plural, one {Falta # dia} other {Faltam # dias}}"
 msgid "{0, plural, one {# day} other {# days}}"
 msgstr "{0, plural, one {# dia} other {# dias}}"
 
-#. placeholder {0}: done.length
-#: src/features/documents/queries.ts
-msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
-msgstr "{0, plural, one {# documento movido para a Lixeira} other {# documentos movidos para a Lixeira}}"
-
 #. placeholder {0}: counts.resume + counts.letter
 #: src/features/documents/segment-header.tsx
 msgid "{0, plural, one {# document} other {# documents}}"
@@ -210,6 +205,11 @@ msgstr "{0, plural, one {Candidatura enviada há # dia} other {Candidatura envia
 #: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {Backs # story} other {Backs # stories}}"
 msgstr "{0, plural, one {Sustenta # história} other {Sustenta # histórias}}"
+
+#. placeholder {0}: Number(badge)
+#: app/builder/[id]/_layout.tsx
+msgid "{0, plural, one {Check, # issue} other {Check, # issues}}"
+msgstr ""
 
 #. placeholder {0}: selectedIds.length
 #: src/features/applications/list-screen.tsx
@@ -457,10 +457,6 @@ msgstr "{closed} encerradas"
 msgid "{company} · {tabName}"
 msgstr "{company} · {tabName}"
 
-#: src/features/documents/queries.ts
-msgid "{completed, plural, one {# document updated} other {# documents updated}}"
-msgstr "{completed, plural, one {# documento atualizado} other {# documentos atualizados}}"
-
 #: src/features/write/section-sheet-pages.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# coluna} other {# colunas}}"
@@ -543,10 +539,6 @@ msgstr "{done} de {total}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{doneMinutes} of {total} min"
 msgstr "{doneMinutes} de {total} min"
-
-#: src/features/write/write-header.tsx
-msgid "{entries, plural, one {# entry} other {# entries}}"
-msgstr "{entries, plural, one {Entrada #} other {Entradas #}}"
 
 #: src/features/check/messages.ts
 msgid "{entry} doesn't say when. Dates place it on your timeline."
@@ -749,10 +741,6 @@ msgstr "{pending, plural, one {# alteração proposta nesta página · nada muda
 msgid "{role} · {company}"
 msgstr "{role} · {company}"
 
-#: src/features/write/write-header.tsx
-msgid "{sections, plural, one {# section} other {# sections}}"
-msgstr "{sections, plural, one {Secção #} other {Secções #}}"
-
 #: src/features/design/gallery-filters.tsx
 msgid "{shown} of {listed} shown"
 msgstr ""
@@ -805,6 +793,14 @@ msgstr "{toCheck, plural, one {O campo # precisa de uma vista de olhos.} other {
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {# para verificar} other {# para verificar}}"
 
+#: src/features/documents/segment-header.tsx
+msgid "{TRASH_DAYS, plural, one {Documents are deleted permanently after # day.} other {Documents are deleted permanently after # days.}}"
+msgstr ""
+
+#: src/features/documents/library-states.tsx
+msgid "{TRASH_DAYS, plural, one {Documents you move here stay for # day.} other {Documents you move here stay for # days.}}"
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
@@ -815,6 +811,10 @@ msgstr ""
 
 #: src/features/design/type-group.tsx
 msgid "{value} pt"
+msgstr ""
+
+#: src/features/design/typography-screen.tsx
+msgid "{weight}, not in this font"
 msgstr ""
 
 #: src/features/letters/write.tsx
@@ -2104,11 +2104,12 @@ msgstr "Azerbaijano"
 #: src/features/auth/frame.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
-#: src/features/documents/new-document-screen.tsx
+#: src/features/documents/new-copy.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/bring-screen.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
 msgstr "Costas"
 
@@ -2126,10 +2127,6 @@ msgstr "Voltar às candidaturas"
 #: src/features/workspace/shell.tsx
 msgid "Back to current"
 msgstr "Voltar à versão atual"
-
-#: src/shell/builder-chrome/top-bar.tsx
-msgid "Back to Documents"
-msgstr "Voltar para Documentos"
 
 #: src/features/history/history-panel.tsx
 #: src/features/letters/share.tsx
@@ -2417,6 +2414,10 @@ msgstr "Certificações"
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Mudar"
+
+#: src/features/entries/custom-fields.tsx
+msgid "Change icon"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Change it in Design"
@@ -3335,6 +3336,11 @@ msgstr "Não foi possível importar o ficheiro. Tente novamente em Documentos."
 #: src/features/documents/import-file.ts
 msgid "Couldn't import this file. Check the selected format. PDFs need a readable text layer; account archives must be extracted first."
 msgstr "Não foi possível importar este ficheiro. Verifique o formato selecionado. Os PDF necessitam de uma camada de texto legível; os ficheiros da conta devem ser extraídos primeiro."
+
+#: src/features/documents/use-import.ts
+#: src/features/documents/use-start-document.ts
+msgid "Couldn't link the application. Check Applications before retrying."
+msgstr ""
 
 #: src/features/check/use-link-application.ts
 msgid "Couldn't link the application. Try again."
@@ -4370,10 +4376,6 @@ msgstr "Opções de documento"
 msgid "Documents"
 msgstr "Documentos"
 
-#: src/features/documents/segment-header.tsx
-msgid "Documents are deleted permanently after 30 days."
-msgstr "Os documentos são eliminados permanentemente após 30 dias."
-
 #: src/features/application-detail/sections.tsx
 msgid "Documents for this job"
 msgstr "Documentos para este trabalho"
@@ -4385,10 +4387,6 @@ msgstr ""
 #: src/features/documents/segment-header.tsx
 msgid "Documents sections"
 msgstr ""
-
-#: src/features/documents/library-states.tsx
-msgid "Documents you move here stay for 30 days."
-msgstr "Os documentos que mover para aqui ficam durante 30 dias."
 
 #: src/features/share/custom-domain.tsx
 msgid "Domain connected"
@@ -5100,12 +5098,12 @@ msgstr "Ajuste"
 msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
 msgstr "Verificações de adequação, briefings, feedback de treino, balanços, respostas e rascunhos de resposta aparecem aqui à medida que os outros separadores os criam."
 
-#: src/preview/page-parts.tsx
-msgid "Fit to width"
-msgstr ""
-
 #: src/features/design/preset-names.ts
 msgid "Fitness"
+msgstr ""
+
+#: src/preview/page-parts.tsx
+msgid "Fits the page to the width"
 msgstr ""
 
 #: src/preview/page-parts.tsx
@@ -5726,6 +5724,7 @@ msgstr "Eu retirei-me"
 
 #: src/features/design/colors-screen.tsx
 #: src/features/design/icon-picker.tsx
+#: src/features/entries/custom-fields.tsx
 #: src/features/entries/entry-fields.tsx
 #: src/features/entries/fields.ts
 #: src/features/entries/icon-picker.tsx
@@ -5742,11 +5741,6 @@ msgstr "Cor do ícone"
 
 #: src/features/design/icons-group.tsx
 msgid "Icon style"
-msgstr ""
-
-#. placeholder {0}: field.icon
-#: src/features/entries/custom-fields.tsx
-msgid "Icon: {0}"
 msgstr ""
 
 #: src/features/write/section-menu.tsx
@@ -5801,6 +5795,10 @@ msgstr "Importe um currículo"
 msgid "Import canceled."
 msgstr "Importação cancelada."
 
+#: src/features/documents/use-import.ts
+msgid "Import canceled. Refresh Documents before retrying if the upload had finished."
+msgstr ""
+
 #: src/features/write/add-section.tsx
 msgid "Import it"
 msgstr "Importe-o"
@@ -5819,8 +5817,8 @@ msgid "Imported"
 msgstr "Importado"
 
 #: src/features/write/write-header.tsx
-msgid "Imported from {source}."
-msgstr "Importado de {source}."
+msgid "Imported from {source}. Found {sections, plural, one {# section} other {# sections}} and {entries, plural, one {# entry} other {# entries}}."
+msgstr ""
 
 #: src/features/documents/new-import.tsx
 msgid "Importing"
@@ -5836,8 +5834,8 @@ msgstr "Melhorar precisa de um fornecedor de IA. Ligue um para continuar."
 
 #: src/features/entries/improve.tsx
 #: src/features/entries/rich-text-toolbar.tsx
-msgid "Improve selected line"
-msgstr "Melhorar a linha selecionada"
+msgid "Improve this line"
+msgstr ""
 
 #: src/features/entries/improve.tsx
 msgid "Improving…"
@@ -6288,6 +6286,10 @@ msgid "Label for detail {0}"
 msgstr ""
 
 #: src/features/entries/custom-fields.tsx
+msgid "Label removed"
+msgstr ""
+
+#: src/features/entries/custom-fields.tsx
 msgid "Label, e.g. Languages"
 msgstr ""
 
@@ -6544,6 +6546,10 @@ msgstr ""
 msgid "Link sent"
 msgstr ""
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "Link the application"
+msgstr ""
+
 #: src/features/documents/library-menu.tsx
 msgid "Link to application"
 msgstr "Link para formulário de emprego"
@@ -6569,6 +6575,7 @@ msgid "Linked resume"
 msgstr "Currículo vinculado"
 
 #. placeholder {0}: document.application.company
+#: src/features/documents/document-item.tsx
 #: src/features/search/search-screen.tsx
 msgid "Linked to {0}"
 msgstr "Ligado a {0}"
@@ -7071,6 +7078,8 @@ msgstr "Mover candidaturas"
 msgid "Move detail up"
 msgstr ""
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7127,6 +7136,8 @@ msgstr "Mover para a lixeira"
 msgid "Move to…"
 msgstr "Mude para…"
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7137,12 +7148,6 @@ msgstr "Subir"
 #: src/features/ats-checker/messages.ts
 msgid "Move your email and phone number to the top of page one."
 msgstr "Mova o seu email e número de telefone para o topo da primeira página."
-
-#. placeholder {0}: done.length
-#. placeholder {1}: documents.length
-#: src/features/documents/queries.ts
-msgid "Moved {0} of {1} to Trash. Locked documents were skipped. Refresh and retry any failures."
-msgstr "{0} de {1} movidos para a Lixeira. Os documentos bloqueados foram ignorados. Atualize e repita as operações que falharam."
 
 #. placeholder {0}: getStageLabel(entry.stage)
 #. placeholder {0}: getStageLabel(stage)
@@ -8783,10 +8788,6 @@ msgstr ""
 msgid "Press and hold"
 msgstr "Mantenha premido"
 
-#: src/features/design/layout-column.tsx
-msgid "Press and hold, then drag to another column or page."
-msgstr "Prima sem soltar e arraste para outra coluna ou página."
-
 #: src/features/share/web-page.tsx
 msgid "Preview web page"
 msgstr "Pré-visualizar página web"
@@ -9440,7 +9441,6 @@ msgstr "Reabrir"
 msgid "Reorder {name}"
 msgstr ""
 
-#: src/features/design/layout-column.tsx
 #: src/features/write/section-row.tsx
 msgid "Reorder {title}"
 msgstr "Reordenar {title}"
@@ -10934,10 +10934,6 @@ msgstr ""
 msgid "Something went wrong on the server. Try again in a moment."
 msgstr ""
 
-#: src/features/history/history-panel.tsx
-msgid "Something went wrong. Try again."
-msgstr ""
-
 #: src/features/documents/library-toolbar.tsx
 msgid "Sort"
 msgstr "Ordenar"
@@ -11607,6 +11603,10 @@ msgstr "A conta mudou. Tente novamente."
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "O endereço deve conter apenas letras minúsculas e números, separados por hífens simples."
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "The application is saved. Linking it to this resume didn't work yet."
+msgstr ""
+
 #: src/features/application-detail/sections.tsx
 msgid "The application keeps its other details."
 msgstr "O candidatura mantém os seus outros dados."
@@ -12191,6 +12191,10 @@ msgstr ""
 msgid "This resume changed elsewhere"
 msgstr "Este currículo mudou noutro"
 
+#: src/features/write/profile-link.tsx
+msgid "This resume couldn't be found. It may have been deleted."
+msgstr ""
+
 #: src/features/check/check-pane.tsx
 msgid "This resume is locked. Checks are available; editing is disabled."
 msgstr "Este currículo está bloqueado. As verificações estão disponíveis; a edição está desativada."
@@ -12386,6 +12390,14 @@ msgid "Tomorrow"
 msgstr "Amanhã"
 
 #: src/features/design/color-group.tsx
+msgid "Too dark for headings on this background color. It may be hard to read."
+msgstr ""
+
+#: src/features/design/color-group.tsx
+msgid "Too light for headings on this background color. It may be hard to read and print faintly."
+msgstr ""
+
+#: src/features/design/color-group.tsx
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "Muito claro para títulos em branco. Pode ser difícil de ler e imprimir com pouca nitidez."
 
@@ -12402,6 +12414,7 @@ msgstr ""
 #: src/features/ats-checker/check.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Too many requests. Try again later."
 msgstr "Muitos pedidos. Tente novamente mais tarde."
 
@@ -12652,10 +12665,7 @@ msgstr "Sublinhar ligações"
 #: src/features/assistant/proposals.ts
 #: src/features/career/undo.ts
 #: src/features/check/actions.ts
-#: src/features/design/advanced-group.tsx
 #: src/features/design/draft.ts
-#: src/features/design/template-group.tsx
-#: src/features/design/uploaded-fonts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/queries.ts
 #: src/features/entries/hooks.ts
@@ -12754,11 +12764,6 @@ msgstr "Até 25 MB · verificado no servidor e não armazenado"
 msgid "Updated"
 msgstr "Atualizado"
 
-#. placeholder {0}: documents.length
-#: src/features/documents/queries.ts
-msgid "Updated {completed} of {0}. Locked documents, and letters for public links, were skipped. Refresh and retry any failures."
-msgstr "{completed} de {0} atualizados. Foram ignorados documentos bloqueados e cartas para ligações públicas. Atualize e repita as operações que falharam."
-
 #. placeholder {0}: followed.length
 #: src/features/profile/save-note.tsx
 msgid "Updated in {0} resumes"
@@ -12841,6 +12846,10 @@ msgstr "Use um tom mais escuro"
 #: src/features/design/colors-screen.tsx
 msgid "Use a hex value like #3E6B4F or rgba(62, 107, 79, 1)."
 msgstr "Utilize um valor hexadecimal como #3E6B4F ou rgba(62, 107, 79, 1)."
+
+#: src/features/design/color-group.tsx
+msgid "Use a lighter shade"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Use a plain international form, such as +1 555 010 1234."
@@ -13852,7 +13861,7 @@ msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or 
 msgstr "O idioma foi guardado. Reinicie o Rezumi para aplicar o novo esquema da esquerda para a direita ou da direita para a esquerda."
 
 #: src/shell/builder-chrome/draft-chrome.tsx
-msgid "Your latest changes aren't on the server yet. They stay on this phone and are sent when it can reach the server again."
+msgid "Your latest changes aren't on the server yet. They stay on this device and are sent when it can reach the server again."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -13962,8 +13971,16 @@ msgstr ""
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr ""
 
+#: src/features/write/profile-link.tsx
+msgid "Your Profile can't take this part as it is. Check it and try again."
+msgstr ""
+
 #: src/features/profile/conflict-sheet.tsx
 msgid "Your Profile changed elsewhere"
+msgstr ""
+
+#: src/features/write/profile-link.tsx
+msgid "Your Profile changed somewhere else. Try again."
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
@@ -14050,6 +14067,7 @@ msgstr ""
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Your session expired. Sign in again."
 msgstr "A sua sessão expirou. Faça login novamente."
 
@@ -14099,6 +14117,15 @@ msgstr "Ampliar"
 #: src/preview/page-parts.tsx
 msgid "Zoom out"
 msgstr "Afastar"
+
+#. placeholder {0}: Math.round(zoom * 100)
+#: src/preview/page-parts.tsx
+msgid "Zoom: {0}%"
+msgstr ""
+
+#: src/preview/page-parts.tsx
+msgid "Zoom: fit to width"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Zulu"

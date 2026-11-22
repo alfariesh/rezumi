@@ -1,6 +1,7 @@
 // A section's options (the web's section menu) in one sheet: the menu, and Rename, Columns, Keyword layout and
 // Move to… as pages inside it. The icon grid opens over it.
 import type { SectionPage } from "./section-menu";
+import type { SectionMoves } from "./section-row";
 import type { WriteSection } from "@/features/entries/model";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
@@ -18,10 +19,11 @@ type SectionSheetProps = {
 	section: WriteSection | null;
 	onClose: () => void;
 	onAddEntry: (section: WriteSection) => void;
+	moves: SectionMoves;
 	onMove: (direction: "up" | "down") => void;
 };
 
-export function SectionSheet({ section, onClose, onAddEntry, onMove }: SectionSheetProps) {
+export function SectionSheet({ section, onClose, onAddEntry, moves, onMove }: SectionSheetProps) {
 	const { t } = useLingui();
 	const title = useSectionTitle(section);
 	const settings = useWriteData((data) => (section ? (getSectionObject(data, section) ?? null) : null), null);
@@ -62,6 +64,7 @@ export function SectionSheet({ section, onClose, onAddEntry, onMove }: SectionSh
 					where={where}
 					onPage={(next) => (next === "icon" ? setIconOpen(true) : setPage(next))}
 					onAddEntry={onAddEntry}
+					moves={moves}
 					onMove={onMove}
 					onClose={close}
 				/>

@@ -5,16 +5,17 @@ import { Pressable, View } from "react-native";
 import {
 	ACCENTS,
 	MIN_CONTRAST,
-	contrastOver,
-	darkenForWhite,
 	hexToRgba,
 	isValidHex,
+	measureContrast,
+	paperTone,
+	readableShade,
 	rgbaToHex,
 } from "@rezumi/resume/design-presets";
 import { ACCENT_NAMES } from "./preset-names";
 import { Alert, Button, FieldError, Icon, Input, Label, Text, TextField, cx } from "@/ui";
 
-/** Color: eight accents or any hex, with its contrast on the page and a darker shade when it's too light. */
+/** Color: eight accents or any hex, with its contrast on the page and a readable shade when it's too faint there. */
 export function ColorGroup({ data, write, disabled }: DesignProps) {
 	const { t, i18n } = useLingui();
 	const { primary, background } = data.metadata.design.colors;
@@ -27,8 +28,10 @@ export function ColorGroup({ data, write, disabled }: DesignProps) {
 		setShown(current);
 		if (!isValidHex(hex) || rgbaToHex(hexToRgba(hex)) !== current) setHex(current);
 	}
-	const ratio = contrastOver(primary, background);
-	const tooLight = ratio < MIN_CONTRAST;
+	// Measured on the page's own background; a colour that can't be read (named, hsl) shows no ratio and no warning.
+	const ratio = measureContrast(primary, background);
+	const unreadable = ratio !== null && ratio < MIN_CONTRAST;
+	const tone = paperTone(background);
 	const setAccent = (next: string, discrete = true) =>
 		write(
 			"accent",
@@ -85,36 +88,43 @@ export function ColorGroup({ data, write, disabled }: DesignProps) {
 							if (isValidHex(value)) setAccent(value, false);
 						}}
 					/>
-					<Text
-						mono
-						tabular
-						tone={tooLight ? "warning" : "muted"}
-						accessibilityLabel={t`Contrast ${ratio.toFixed(1)} to 1`}
-					>
-						{`${ratio.toFixed(1)}:1`}
-					</Text>
+					{ratio === null ? null : (
+						<Text
+							mono
+							tabular
+							tone={unreadable ? "warning" : "muted"}
+							accessibilityLabel={t`Contrast ${ratio.toFixed(1)} to 1`}
+						>
+							{`${ratio.toFixed(1)}:1`}
+						</Text>
+					)}
 				</View>
 				<FieldError>{t`Use six hex digits, like #3E6B4F.`}</FieldError>
 			</TextField>
 
-			{tooLight ? (
+			{unreadable && current ? (
 				<Alert status="warning">
 					<Alert.Indicator />
 					<Alert.Content>
-						<Alert.Description>{t`Too light for headings on white. It may be hard to read and print faintly.`}</Alert.Description>
+						<Alert.Description>
+							{tone === "white"
+								? t`Too light for headings on white. It may be hard to read and print faintly.`
+								: tone === "light"
+									? t`Too light for headings on this background color. It may be hard to read and print faintly.`
+									: t`Too dark for headings on this background color. It may be hard to read.`}
+						</Alert.Description>
 						<Button
 							size="sm"
 							variant="secondary"
 							isDisabled={disabled}
 							className="mt-2 self-start"
 							onPress={() => {
-								if (!current) return;
-								const darker = darkenForWhite(current);
-								setHex(darker);
-								setAccent(darker);
+								const shade = readableShade(current, background);
+								setHex(shade);
+								setAccent(shade);
 							}}
 						>
-							<Button.Label>{t`Use a darker shade`}</Button.Label>
+							<Button.Label>{tone === "dark" ? t`Use a lighter shade` : t`Use a darker shade`}</Button.Label>
 						</Button>
 					</Alert.Content>
 				</Alert>

@@ -23,7 +23,7 @@ msgstr "បានបន្ថែម «{0}» ទៅជំនាញ"
 msgid "“{0}” hidden"
 msgstr "\"{0}\" លាក់"
 
-#. placeholder {0}: documents[0]?.name ?? ""
+#. placeholder {0}: document.name
 #: src/features/documents/queries.ts
 msgid "“{0}” moved to Trash"
 msgstr "“{0}” បានផ្លាស់ទីទៅធុងសំរាម"
@@ -134,11 +134,6 @@ msgstr "{0, plural, one {នៅសល់ # ថ្ងៃ} other {នៅសល់ 
 msgid "{0, plural, one {# day} other {# days}}"
 msgstr "{0, plural, one {# ថ្ងៃ។} other {# ថ្ងៃ។}}"
 
-#. placeholder {0}: done.length
-#: src/features/documents/queries.ts
-msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
-msgstr "{0, plural, one {ឯកសារចំនួន # ត្រូវបានផ្លាស់ទីទៅធុងសំរាម} other {ឯកសារចំនួន # ត្រូវបានផ្លាស់ទីទៅធុងសំរាម}}"
-
 #. placeholder {0}: counts.resume + counts.letter
 #: src/features/documents/segment-header.tsx
 msgid "{0, plural, one {# document} other {# documents}}"
@@ -210,6 +205,11 @@ msgstr "{0, plural, other {បានដាក់ពាក្យ # ថ្ងៃ�
 #: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {Backs # story} other {Backs # stories}}"
 msgstr "{0, plural, other {គាំទ្ររឿង #}}"
+
+#. placeholder {0}: Number(badge)
+#: app/builder/[id]/_layout.tsx
+msgid "{0, plural, one {Check, # issue} other {Check, # issues}}"
+msgstr ""
 
 #. placeholder {0}: selectedIds.length
 #: src/features/applications/list-screen.tsx
@@ -457,10 +457,6 @@ msgstr "{closed} បានបិទ"
 msgid "{company} · {tabName}"
 msgstr "{company} · {tabName}"
 
-#: src/features/documents/queries.ts
-msgid "{completed, plural, one {# document updated} other {# documents updated}}"
-msgstr "{completed, plural, one {ឯកសារ # បានធ្វើបច្ចុប្បន្នភាព} other {ឯកសារ # បានធ្វើបច្ចុប្បន្នភាព}}"
-
 #: src/features/write/section-sheet-pages.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# ជួរឈរ} other {# ជួរឈរ}}"
@@ -543,10 +539,6 @@ msgstr "{done} នៃ {total}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{doneMinutes} of {total} min"
 msgstr "{doneMinutes} នៃ {total} នាទី"
-
-#: src/features/write/write-header.tsx
-msgid "{entries, plural, one {# entry} other {# entries}}"
-msgstr "{entries, plural, one {ធាតុ #} other {ធាតុ #}}"
 
 #: src/features/check/messages.ts
 msgid "{entry} doesn't say when. Dates place it on your timeline."
@@ -749,10 +741,6 @@ msgstr "{pending, plural, one {សំណើកែប្រែ # នៅលើទ�
 msgid "{role} · {company}"
 msgstr "{role} · {company}"
 
-#: src/features/write/write-header.tsx
-msgid "{sections, plural, one {# section} other {# sections}}"
-msgstr "{sections, plural, one {ផ្នែក #} other {ផ្នែក #}}"
-
 #: src/features/design/gallery-filters.tsx
 msgid "{shown} of {listed} shown"
 msgstr ""
@@ -805,6 +793,14 @@ msgstr "{toCheck, plural, one {វាល # ត្រូវការមើល។}
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {# ដើម្បីពិនិត្យ} other {# ដើម្បីពិនិត្យ}}"
 
+#: src/features/documents/segment-header.tsx
+msgid "{TRASH_DAYS, plural, one {Documents are deleted permanently after # day.} other {Documents are deleted permanently after # days.}}"
+msgstr ""
+
+#: src/features/documents/library-states.tsx
+msgid "{TRASH_DAYS, plural, one {Documents you move here stay for # day.} other {Documents you move here stay for # days.}}"
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
@@ -815,6 +811,10 @@ msgstr ""
 
 #: src/features/design/type-group.tsx
 msgid "{value} pt"
+msgstr ""
+
+#: src/features/design/typography-screen.tsx
+msgid "{weight}, not in this font"
 msgstr ""
 
 #: src/features/letters/write.tsx
@@ -2104,11 +2104,12 @@ msgstr "Azerbaijani"
 #: src/features/auth/frame.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
-#: src/features/documents/new-document-screen.tsx
+#: src/features/documents/new-copy.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/bring-screen.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
 msgstr "ត្រឡប់មកវិញ"
 
@@ -2126,10 +2127,6 @@ msgstr "ត្រឡប់ទៅពាក្យសុំ"
 #: src/features/workspace/shell.tsx
 msgid "Back to current"
 msgstr "ត្រឡប់ទៅកំណែបច្ចុប្បន្ន"
-
-#: src/shell/builder-chrome/top-bar.tsx
-msgid "Back to Documents"
-msgstr "ត្រឡប់ទៅឯកសារ"
 
 #: src/features/history/history-panel.tsx
 #: src/features/letters/share.tsx
@@ -2417,6 +2414,10 @@ msgstr "វិញ្ញាបនបត្រ"
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "ផ្លាស់ប្តូរ"
+
+#: src/features/entries/custom-fields.tsx
+msgid "Change icon"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Change it in Design"
@@ -3335,6 +3336,11 @@ msgstr "មិនអាចនាំចូលឯកសារបានទេ។ �
 #: src/features/documents/import-file.ts
 msgid "Couldn't import this file. Check the selected format. PDFs need a readable text layer; account archives must be extracted first."
 msgstr "មិនអាចនាំចូលឯកសារនេះបានទេ។ ពិនិត្យទម្រង់ដែលបានជ្រើសរើស។ ឯកសារ PDF ត្រូវមានស្រទាប់អត្ថបទដែលអាចអានបាន។ បណ្ណសារគណនីត្រូវពន្លាជាមុន។"
+
+#: src/features/documents/use-import.ts
+#: src/features/documents/use-start-document.ts
+msgid "Couldn't link the application. Check Applications before retrying."
+msgstr ""
 
 #: src/features/check/use-link-application.ts
 msgid "Couldn't link the application. Try again."
@@ -4370,10 +4376,6 @@ msgstr "ជម្រើសឯកសារ"
 msgid "Documents"
 msgstr "ឯកសារ"
 
-#: src/features/documents/segment-header.tsx
-msgid "Documents are deleted permanently after 30 days."
-msgstr "ឯកសារត្រូវបានលុបជាអចិន្ត្រៃយ៍បន្ទាប់ពី 30 ថ្ងៃ។"
-
 #: src/features/application-detail/sections.tsx
 msgid "Documents for this job"
 msgstr "ឯកសារសម្រាប់ការងារនេះ។"
@@ -4385,10 +4387,6 @@ msgstr ""
 #: src/features/documents/segment-header.tsx
 msgid "Documents sections"
 msgstr ""
-
-#: src/features/documents/library-states.tsx
-msgid "Documents you move here stay for 30 days."
-msgstr "ឯកសារដែលអ្នកផ្លាស់ទីមកទីនេះនៅរយៈពេល 30 ថ្ងៃ។"
 
 #: src/features/share/custom-domain.tsx
 msgid "Domain connected"
@@ -5100,12 +5098,12 @@ msgstr "ភាពសមស្រប"
 msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
 msgstr "ការពិនិត្យភាពសមស្រប ឯកសារសង្ខេប មតិកែលម្អលើការហាត់សម ការសង្ខេបក្រោយសម្ភាសន៍ ចម្លើយ និងការឆ្លើយតប នឹងមកដល់ទីនេះ នៅពេលផ្ទាំងផ្សេងទៀតបង្កើតវា។"
 
-#: src/preview/page-parts.tsx
-msgid "Fit to width"
-msgstr ""
-
 #: src/features/design/preset-names.ts
 msgid "Fitness"
+msgstr ""
+
+#: src/preview/page-parts.tsx
+msgid "Fits the page to the width"
 msgstr ""
 
 #: src/preview/page-parts.tsx
@@ -5726,6 +5724,7 @@ msgstr "ខ្ញុំបានដកខ្លួនចេញ"
 
 #: src/features/design/colors-screen.tsx
 #: src/features/design/icon-picker.tsx
+#: src/features/entries/custom-fields.tsx
 #: src/features/entries/entry-fields.tsx
 #: src/features/entries/fields.ts
 #: src/features/entries/icon-picker.tsx
@@ -5742,11 +5741,6 @@ msgstr "ពណ៌រូបតំណាង"
 
 #: src/features/design/icons-group.tsx
 msgid "Icon style"
-msgstr ""
-
-#. placeholder {0}: field.icon
-#: src/features/entries/custom-fields.tsx
-msgid "Icon: {0}"
 msgstr ""
 
 #: src/features/write/section-menu.tsx
@@ -5801,6 +5795,10 @@ msgstr "នាំចូលប្រវត្តិរូបសង្ខេប"
 msgid "Import canceled."
 msgstr "បានបោះបង់ការនាំចូល។"
 
+#: src/features/documents/use-import.ts
+msgid "Import canceled. Refresh Documents before retrying if the upload had finished."
+msgstr ""
+
 #: src/features/write/add-section.tsx
 msgid "Import it"
 msgstr "នាំចូលវា។"
@@ -5819,8 +5817,8 @@ msgid "Imported"
 msgstr "នាំចូល"
 
 #: src/features/write/write-header.tsx
-msgid "Imported from {source}."
-msgstr "នាំចូលពី {source} ។"
+msgid "Imported from {source}. Found {sections, plural, one {# section} other {# sections}} and {entries, plural, one {# entry} other {# entries}}."
+msgstr ""
 
 #: src/features/documents/new-import.tsx
 msgid "Importing"
@@ -5836,8 +5834,8 @@ msgstr "កែលម្អត្រូវការអ្នកផ្តល់ស
 
 #: src/features/entries/improve.tsx
 #: src/features/entries/rich-text-toolbar.tsx
-msgid "Improve selected line"
-msgstr "កែលម្អបន្ទាត់ដែលបានជ្រើសរើស"
+msgid "Improve this line"
+msgstr ""
 
 #: src/features/entries/improve.tsx
 msgid "Improving…"
@@ -6288,6 +6286,10 @@ msgid "Label for detail {0}"
 msgstr ""
 
 #: src/features/entries/custom-fields.tsx
+msgid "Label removed"
+msgstr ""
+
+#: src/features/entries/custom-fields.tsx
 msgid "Label, e.g. Languages"
 msgstr ""
 
@@ -6544,6 +6546,10 @@ msgstr ""
 msgid "Link sent"
 msgstr ""
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "Link the application"
+msgstr ""
+
 #: src/features/documents/library-menu.tsx
 msgid "Link to application"
 msgstr "ភ្ជាប់ទៅពាក្យសុំការងារ"
@@ -6569,6 +6575,7 @@ msgid "Linked resume"
 msgstr "ប្រវត្តិរូបសង្ខេបដែលបានភ្ជាប់"
 
 #. placeholder {0}: document.application.company
+#: src/features/documents/document-item.tsx
 #: src/features/search/search-screen.tsx
 msgid "Linked to {0}"
 msgstr "បានភ្ជាប់ទៅ {0}"
@@ -7071,6 +7078,8 @@ msgstr "ផ្លាស់ទីពាក្យសុំការងារ"
 msgid "Move detail up"
 msgstr ""
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7127,6 +7136,8 @@ msgstr "ផ្លាស់ទីទៅធុងសំរាម"
 msgid "Move to…"
 msgstr "ផ្លាស់ទី​ទៅ…"
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7137,12 +7148,6 @@ msgstr "ផ្លាស់ទីឡើងលើ"
 #: src/features/ats-checker/messages.ts
 msgid "Move your email and phone number to the top of page one."
 msgstr "ផ្លាស់ទីអ៊ីមែល និងលេខទូរស័ព្ទរបស់អ្នកទៅផ្នែកខាងលើនៃទំព័រទីមួយ។"
-
-#. placeholder {0}: done.length
-#. placeholder {1}: documents.length
-#: src/features/documents/queries.ts
-msgid "Moved {0} of {1} to Trash. Locked documents were skipped. Refresh and retry any failures."
-msgstr "បានផ្លាស់ទី {0} នៃ {1} ទៅធុងសំរាម។ ឯកសារចាក់សោត្រូវបានរំលង។ ផ្ទុកឡើងវិញ ហើយព្យាយាមម្តងទៀតនូវការបរាជ័យណាមួយ។"
 
 #. placeholder {0}: getStageLabel(entry.stage)
 #. placeholder {0}: getStageLabel(stage)
@@ -8783,10 +8788,6 @@ msgstr ""
 msgid "Press and hold"
 msgstr "ចុចឱ្យជាប់"
 
-#: src/features/design/layout-column.tsx
-msgid "Press and hold, then drag to another column or page."
-msgstr "ចុចឱ្យជាប់ បន្ទាប់មកអូសទៅជួរឈរ ឬទំព័រផ្សេងទៀត។"
-
 #: src/features/share/web-page.tsx
 msgid "Preview web page"
 msgstr "មើលទំព័រវេបជាមុន"
@@ -9440,7 +9441,6 @@ msgstr "បើកឡើងវិញ"
 msgid "Reorder {name}"
 msgstr ""
 
-#: src/features/design/layout-column.tsx
 #: src/features/write/section-row.tsx
 msgid "Reorder {title}"
 msgstr "បញ្ជាទិញ {title} ឡើងវិញ"
@@ -10934,10 +10934,6 @@ msgstr ""
 msgid "Something went wrong on the server. Try again in a moment."
 msgstr ""
 
-#: src/features/history/history-panel.tsx
-msgid "Something went wrong. Try again."
-msgstr ""
-
 #: src/features/documents/library-toolbar.tsx
 msgid "Sort"
 msgstr "តម្រៀប"
@@ -11607,6 +11603,10 @@ msgstr "គណនីបានផ្លាស់ប្តូរ។ ព្យា�
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "អាសយដ្ឋានត្រូវតែមានតែអក្សរតូច និងលេខប៉ុណ្ណោះ ដោយបំបែកដោយសញ្ញាដាច់ៗតែមួយ។"
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "The application is saved. Linking it to this resume didn't work yet."
+msgstr ""
+
 #: src/features/application-detail/sections.tsx
 msgid "The application keeps its other details."
 msgstr "ពាក្យសុំការងាររក្សាព័ត៌មានលម្អិតផ្សេងទៀតរបស់វា។"
@@ -12191,6 +12191,10 @@ msgstr ""
 msgid "This resume changed elsewhere"
 msgstr "ប្រវត្តិរូបសង្ខេប នេះបានផ្លាស់ប្តូរនៅកន្លែងផ្សេង"
 
+#: src/features/write/profile-link.tsx
+msgid "This resume couldn't be found. It may have been deleted."
+msgstr ""
+
 #: src/features/check/check-pane.tsx
 msgid "This resume is locked. Checks are available; editing is disabled."
 msgstr "ប្រវត្តិរូបសង្ខេប នេះត្រូវបានចាក់សោ។ ការត្រួតពិនិត្យអាចរកបាន; ការកែសម្រួលត្រូវបានបិទ។"
@@ -12386,6 +12390,14 @@ msgid "Tomorrow"
 msgstr "ថ្ងៃស្អែក"
 
 #: src/features/design/color-group.tsx
+msgid "Too dark for headings on this background color. It may be hard to read."
+msgstr ""
+
+#: src/features/design/color-group.tsx
+msgid "Too light for headings on this background color. It may be hard to read and print faintly."
+msgstr ""
+
+#: src/features/design/color-group.tsx
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "ស្រាលពេកសម្រាប់ក្បាលពណ៌ស។ វាអាចពិបាកអាន និងបោះពុម្ពតិចៗ។"
 
@@ -12402,6 +12414,7 @@ msgstr ""
 #: src/features/ats-checker/check.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Too many requests. Try again later."
 msgstr "សំណើច្រើនពេក។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។"
 
@@ -12652,10 +12665,7 @@ msgstr "គូសបន្ទាត់ក្រោមតំណ"
 #: src/features/assistant/proposals.ts
 #: src/features/career/undo.ts
 #: src/features/check/actions.ts
-#: src/features/design/advanced-group.tsx
 #: src/features/design/draft.ts
-#: src/features/design/template-group.tsx
-#: src/features/design/uploaded-fonts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/queries.ts
 #: src/features/entries/hooks.ts
@@ -12754,11 +12764,6 @@ msgstr "រហូតដល់ 25 MB · បានពិនិត្យលើម�
 msgid "Updated"
 msgstr "បានធ្វើបច្ចុប្បន្នភាព"
 
-#. placeholder {0}: documents.length
-#: src/features/documents/queries.ts
-msgid "Updated {completed} of {0}. Locked documents, and letters for public links, were skipped. Refresh and retry any failures."
-msgstr "បានធ្វើបច្ចុប្បន្នភាព {completed} នៃ {0} ។ ឯកសារជាប់សោ និងលិខិតអមសម្រាប់តំណភ្ជាប់សាធារណៈត្រូវបានរំលង។ ផ្ទុកឡើងវិញ ហើយព្យាយាមម្តងទៀតនូវការបរាជ័យណាមួយ។"
-
 #. placeholder {0}: followed.length
 #: src/features/profile/save-note.tsx
 msgid "Updated in {0} resumes"
@@ -12841,6 +12846,10 @@ msgstr "ប្រើស្រមោលងងឹត"
 #: src/features/design/colors-screen.tsx
 msgid "Use a hex value like #3E6B4F or rgba(62, 107, 79, 1)."
 msgstr "ប្រើតម្លៃគោលដប់ប្រាំមួយដូចជា #3E6B4F ឬ rgba(62, 107, 79, 1)។"
+
+#: src/features/design/color-group.tsx
+msgid "Use a lighter shade"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Use a plain international form, such as +1 555 010 1234."
@@ -13852,7 +13861,7 @@ msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or 
 msgstr "ភាសារបស់អ្នកត្រូវបានរក្សាទុក។ ចាប់ផ្ដើម Rezumi ឡើងវិញ ដើម្បីអនុវត្តប្លង់ថ្មីពីឆ្វេងទៅស្តាំ ឬពីស្តាំទៅឆ្វេង។"
 
 #: src/shell/builder-chrome/draft-chrome.tsx
-msgid "Your latest changes aren't on the server yet. They stay on this phone and are sent when it can reach the server again."
+msgid "Your latest changes aren't on the server yet. They stay on this device and are sent when it can reach the server again."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -13962,8 +13971,16 @@ msgstr ""
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr ""
 
+#: src/features/write/profile-link.tsx
+msgid "Your Profile can't take this part as it is. Check it and try again."
+msgstr ""
+
 #: src/features/profile/conflict-sheet.tsx
 msgid "Your Profile changed elsewhere"
+msgstr ""
+
+#: src/features/write/profile-link.tsx
+msgid "Your Profile changed somewhere else. Try again."
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
@@ -14050,6 +14067,7 @@ msgstr ""
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Your session expired. Sign in again."
 msgstr "វគ្គរបស់អ្នកបានផុតកំណត់ហើយ។ ចូលម្តងទៀត។"
 
@@ -14099,6 +14117,15 @@ msgstr "ពង្រីក"
 #: src/preview/page-parts.tsx
 msgid "Zoom out"
 msgstr "បង្រួម"
+
+#. placeholder {0}: Math.round(zoom * 100)
+#: src/preview/page-parts.tsx
+msgid "Zoom: {0}%"
+msgstr ""
+
+#: src/preview/page-parts.tsx
+msgid "Zoom: fit to width"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Zulu"

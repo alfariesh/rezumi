@@ -14,8 +14,13 @@ export type ModeBarItem<T extends string> = {
 	value: T;
 	label: string;
 	icon: IconName;
-	/** A count at the icon's corner, read with the label ("Check, 3"). */
+	/** A count at the icon's corner. Zero hides it. */
 	badge?: number | string | undefined;
+	/**
+	 * What screen readers read while the badge shows, translated by the caller with a plural ("Check, 3 issues").
+	 * Without it they read the label and the bare count.
+	 */
+	badgeLabel?: string | undefined;
 };
 
 export type ModeBarProps<T extends string> = {
@@ -75,7 +80,7 @@ function ModeBarCell<T extends string>({ item, selected, onPress }: ModeBarCellP
 		<Pressable
 			accessibilityRole="tab"
 			accessibilityState={{ selected }}
-			accessibilityLabel={hasBadge ? `${item.label}, ${item.badge}` : item.label}
+			accessibilityLabel={hasBadge ? (item.badgeLabel ?? `${item.label}, ${String(item.badge)}`) : item.label}
 			testID={`mode-${item.value}`}
 			onPress={onPress}
 			className="min-h-12 flex-1 items-center justify-center gap-1 rounded-2xl active:opacity-70"

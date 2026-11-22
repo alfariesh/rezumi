@@ -1,9 +1,11 @@
 // The library's states besides its documents: the loading shape (rows or cards), a failed load, the first run, a
 // type with nothing yet, a search that matched nothing and an empty Trash. Wording from the web's Documents page.
 import type { LibraryView } from "./library-toolbar";
+import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { View } from "react-native";
+import { TRASH_DAYS } from "./filter";
 import { useStartDocument } from "./use-start-document";
 import { routes } from "@/routes";
 import { Alert, Button, EmptyState, Skeleton, cx } from "@/ui";
@@ -132,7 +134,10 @@ export function TrashEmpty() {
 			kind="page"
 			icon="trash"
 			title={t`Trash is empty`}
-			description={t`Documents you move here stay for 30 days.`}
+			description={plural(TRASH_DAYS, {
+				one: "Documents you move here stay for # day.",
+				other: "Documents you move here stay for # days.",
+			})}
 		/>
 	);
 }

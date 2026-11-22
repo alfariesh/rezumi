@@ -4,12 +4,19 @@ import type { RouterOutput } from "@/api/client";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { View } from "react-native";
+import { TRASH_DAYS } from "./filter";
 import { Segment, Typography } from "@/ui";
 
 export type LibrarySegment = "all" | "resume" | "letter" | "trash";
 
 export const isLibrarySegment = (value: unknown): value is LibrarySegment =>
 	value === "all" || value === "resume" || value === "letter" || value === "trash";
+
+const trashNotice = () =>
+	plural(TRASH_DAYS, {
+		one: "Documents are deleted permanently after # day.",
+		other: "Documents are deleted permanently after # days.",
+	});
 
 type SegmentHeaderProps = {
 	segment: LibrarySegment;
@@ -36,7 +43,7 @@ export function SegmentHeader({ segment, counts, onChange }: SegmentHeaderProps)
 			{counts ? (
 				<Typography type="body-xs" color="muted" accessibilityLiveRegion="polite">
 					{segment === "trash"
-						? t`Documents are deleted permanently after 30 days.`
+						? trashNotice()
 						: segment === "resume"
 							? plural(counts.resume, { one: "# resume", other: "# resumes" })
 							: segment === "letter"
@@ -45,7 +52,7 @@ export function SegmentHeader({ segment, counts, onChange }: SegmentHeaderProps)
 				</Typography>
 			) : segment === "trash" ? (
 				<Typography type="body-xs" color="muted">
-					{t`Documents are deleted permanently after 30 days.`}
+					{trashNotice()}
 				</Typography>
 			) : null}
 		</View>

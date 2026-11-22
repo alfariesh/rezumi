@@ -31,11 +31,14 @@ export function EditorTopBar({ fallbackTitle, onBack, onExport, center, safeTop 
 	const locked = slots.save?.locked ?? false;
 	const exportDocument = slots.onExport ?? onExport;
 	const barStyle = { paddingTop: safeTop ? insets.top : 0 };
+	// The side safe areas (a landscape notch). The phone headers sit inside the frame, which pads them and reports 0.
+	const sideStyle = { paddingLeft: insets.left, paddingRight: insets.right };
 
 	return (
-		<View className="bg-background">
+		<View className="bg-background" style={sideStyle} testID="editor-top-bar">
 			<View className="min-h-14 flex-row items-center gap-1 px-2 pb-1" style={barStyle}>
-				<IconButton icon="arrow-left" label={t`Back to Documents`} onPress={onBack} testID="editor-back" />
+				{/* Back returns wherever the editor was opened from (Documents, Home, an application). */}
+				<IconButton icon="arrow-left" label={t`Back`} onPress={onBack} testID="editor-back" />
 				{slots.onRename ? (
 					<EditableTitle
 						value={title}
@@ -118,7 +121,7 @@ const look = {
 const iconTone = { muted: "muted", warning: "warning", danger: "danger" } as const satisfies Record<string, ThemeColor>;
 
 /** The line under the document name, worded like the web's `save-status.tsx`. */
-export function SaveStatusLine({ status, locked, onRetry }: SaveStatusSlot) {
+function SaveStatusLine({ status, locked, onRetry }: SaveStatusSlot) {
 	const { t } = useLingui();
 	const shown = locked ? ({ icon: "lock", tone: "muted" } as const) : look[status];
 	const label = locked

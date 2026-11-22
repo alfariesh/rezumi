@@ -29,7 +29,14 @@ export function IssueCard({ issue, selected, locked, onFix, onShowOnPage, onIgno
 			)}
 		>
 			{/* The number matches the pin on the page; its colour is the issue's severity. */}
-			<Chip size="sm" variant="soft" color={issue.tone} className="min-w-7 self-start" accessibilityElementsHidden>
+			<Chip
+				size="sm"
+				variant="soft"
+				color={issue.tone}
+				className="min-w-7 self-start"
+				accessibilityElementsHidden
+				importantForAccessibility="no-hide-descendants"
+			>
 				<Chip.Label>{String(issue.number)}</Chip.Label>
 			</Chip>
 			<View className="min-w-0 flex-1 gap-3">

@@ -10,8 +10,8 @@ import { useState } from "react";
 import { FlatList, View } from "react-native";
 import { TEMPLATES, matchesFilter, suitsCareerField, templateName } from "@rezumi/resume/design-presets";
 import {
-	applyTemplate,
 	setPreviewTemplate,
+	useApplyTemplate,
 	useClearPreviewOnLeave,
 	useDesignDraft,
 	usePreviewTemplate,
@@ -22,7 +22,7 @@ import { TemplatePreviewCaption } from "./preview-caption";
 import { TemplateCard } from "./template-card";
 import { useThumbnailContent } from "./thumbnails";
 import { nativeEnvironment } from "@/draft/native";
-import { isLabelledTemplate, isLockedTemplate, listedTemplates, showPlanAlert, usePlan } from "@/features/billing/plan";
+import { isLabelledTemplate, listedTemplates, usePlan } from "@/features/billing/plan";
 import { ResumePage } from "@/preview/page";
 import { useIsTablet } from "@/shell/use-is-tablet";
 import { Button, EmptyState, Skeleton, Text, space } from "@/ui";
@@ -64,6 +64,7 @@ function Gallery({ id, opened }: GalleryProps) {
 	const data = draft.data;
 	const plan = usePlan();
 	const tried = usePreviewTemplate();
+	const apply = useApplyTemplate();
 	useClearPreviewOnLeave();
 	const [filter, setFilter] = useState<GalleryFilter>({ field: "all", layout: "all" });
 	const [width, setWidth] = useState(0);
@@ -82,10 +83,6 @@ function Gallery({ id, opened }: GalleryProps) {
 	const cardWidth = width > 0 ? (width - space[4] * 2 - space[3] * (columns - 1)) / columns : 0;
 	const tryOn = (template: Template) =>
 		setPreviewTemplate(template === current || template === tried ? null : template);
-	const apply = (template: Template) =>
-		template !== current && isLockedTemplate(plan, template)
-			? showPlanAlert({ kind: "feature", feature: "premiumTemplates" })
-			: applyTemplate(template);
 
 	return (
 		<View

@@ -26,6 +26,23 @@ describe("ModeBar", () => {
 		await fireEvent.press(screen.getByRole("tab", { name: "Write" }));
 		expect(onValueChange).not.toHaveBeenCalled();
 	});
+
+	it("reads the caller's translated count label, and no count at zero", async () => {
+		await renderUi(
+			<ModeBar
+				items={[
+					{ value: "check", label: "Periksa", icon: "list-checks", badge: 2, badgeLabel: "Periksa, 2 masalah" },
+					{ value: "share", label: "Bagikan", icon: "globe", badge: 0, badgeLabel: "Bagikan, 0" },
+				]}
+				value="check"
+				onValueChange={jest.fn()}
+				accessibilityLabel="Mode editor"
+			/>,
+		);
+
+		expect(screen.getByRole("tab", { name: "Periksa, 2 masalah" })).toBeTruthy();
+		expect(screen.getByRole("tab", { name: "Bagikan" })).toBeTruthy();
+	});
 });
 
 describe("EditableTitle", () => {

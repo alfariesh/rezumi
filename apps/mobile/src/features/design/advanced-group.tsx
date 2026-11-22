@@ -5,8 +5,8 @@ import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { getFontDisplayName } from "@rezumi/fonts";
 import { DATE_FORMATS, resetDesign } from "@rezumi/resume/design-presets";
-import { useResumeStore } from "@/draft";
-import { Button, Icon, ListRow, ListSection, Sheet, showToast } from "@/ui";
+import { changeWithUndoToast } from "./draft";
+import { Button, Icon, ListRow, ListSection, Sheet } from "@/ui";
 
 type AdvancedGroupProps = DesignProps & { onOpen: (screen: DesignScreen) => void };
 
@@ -18,11 +18,10 @@ export function AdvancedGroup({ data, write, disabled, onOpen }: AdvancedGroupPr
 	const dateFormat = metadata.page.dateFormat ?? "short";
 	const reset = () => {
 		// Paper, language, date format and section placement are the person's, not the look's; they stay.
-		write("reset", (draft) => resetDesign(draft.metadata), true);
-		showToast({
-			title: t`Design reset to defaults`,
-			undo: { label: t`Undo`, onUndo: () => useResumeStore.getState().undo() },
-		});
+		changeWithUndoToast(
+			() => write("reset", (draft) => resetDesign(draft.metadata), true),
+			() => t`Design reset to defaults`,
+		);
 	};
 
 	return (

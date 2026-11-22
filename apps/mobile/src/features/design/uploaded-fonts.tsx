@@ -10,6 +10,7 @@ import { getDocumentAsync } from "expo-document-picker";
 import { File } from "expo-file-system";
 import { MAX_DOCUMENT_FONT_FACES, MAX_UPLOADED_FONT_BYTES, uploadedFontFamilies } from "@rezumi/fonts/uploaded";
 import { addUploadedFontFace, removeUploadedFontFamily } from "@rezumi/resume/uploaded-fonts";
+import { changeWithUndoToast } from "./draft";
 import { rest } from "@/api/client";
 import { useResumeStore } from "@/draft";
 import { nativeEnvironment } from "@/draft/native";
@@ -94,13 +95,11 @@ export function UploadedFonts({ data, write, disabled }: DesignProps) {
 	});
 
 	// Reversible: the draft's Undo brings the family back (its files stay on the server).
-	const remove = (family: string) => {
-		write("typography.fonts", (draft) => removeUploadedFontFamily(draft.metadata.typography, family), true);
-		showToast({
-			title: t`${family} removed. Text set in it moves to the default font.`,
-			undo: { label: t`Undo`, onUndo: () => useResumeStore.getState().undo() },
-		});
-	};
+	const remove = (family: string) =>
+		changeWithUndoToast(
+			() => write("typography.fonts", (draft) => removeUploadedFontFamily(draft.metadata.typography, family), true),
+			() => t`${family} removed. Text set in it moves to the default font.`,
+		);
 
 	if (hideUpload && families.length === 0) return null;
 

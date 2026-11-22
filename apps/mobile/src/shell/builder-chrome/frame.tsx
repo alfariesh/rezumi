@@ -4,7 +4,8 @@
 //   document menu) is the header of each pane screen, and the mode bar (Write · Page · Design · Check · Share) sits at
 //   the foot under pane screens. Pushed screens (an entry, History) have their own stack header and full height.
 // - Tablet: one top bar over everything with the mode switch in the middle, the Stack in a 400 pt panel and the page
-//   beside it. Opening the Page pane on a tablet switches to the first tablet pane.
+//   beside it. Opening the Page pane on a tablet switches to the first tablet pane. "Tablet" is a window 700 pt wide
+//   (`useIsTablet`), so most iPhones in landscape get the split too; the top bar pads the side safe areas itself.
 // - Keyboard: everything under the top bar ends at the top of the keyboard and the mode bar hides, so a screen can put a
 //   toolbar last in its layout without its own keyboard handling.
 //
@@ -137,23 +138,25 @@ function Frame<T extends string>({
 		leave: () => (navigation.canGoBack() ? navigation.goBack() : router.replace(routes.documents())),
 		modes:
 			tablet && activePane ? (
-				<Segment
-					size="sm"
-					accessibilityLabel={t`Editor mode`}
-					value={activePane.pane}
-					options={shownPanes.map(({ pane, label, icon }) => ({ value: pane, label, icon }))}
-					onValueChange={pick}
-				/>
+				<TabletModes panes={shownPanes} active={activePane.pane} onPick={pick} label={t`Editor mode`} />
 			) : null,
 	};
+
+	// The panes' own bottom safe area: none while the mode bar under them pads it.
+	const showBar = !tablet && !!barPane && !keyboardVisible;
+	const sideless = { ...insets, left: 0, right: 0, top: tablet ? 0 : insets.top };
+	const paneInsets = showBar && currentPane ? { ...sideless, bottom: 0 } : sideless;
 
 	return (
 		<FrameContext value={frame}>
 			<View className="flex-1 bg-background">
 				{tablet ? <ChromeTopBar /> : null}
 				<KeyboardFrame behavior="padding" automaticOffset style={frameStyle}>
-					{/* On a tablet the top bar has cleared the status bar, so headers inside the panel must not pad it again. */}
-					<SafeAreaInsetsContext value={{ ...insets, left: 0, right: 0, top: tablet ? 0 : insets.top }}>
+					{/*
+					 * The frame pads the sides; on a tablet the top bar has cleared the status bar, so headers inside the panel must
+					 * not pad it again. Full-screen modals read the window's insets (`useWindowSafeAreaInsets`).
+					 */}
+					<SafeAreaInsetsContext value={paneInsets}>
 						<View className="flex-1 flex-row">
 							<View
 								className={tablet && page ? "border-e border-separator bg-surface" : "flex-1"}
@@ -197,10 +200,12 @@ function Frame<T extends string>({
 								</View>
 							) : null}
 						</View>
-						{!tablet && barPane && !keyboardVisible ? (
-							<PaneBar panes={panes} active={barPane.pane} onPick={pick} label={t`Editor mode`} />
-						) : null}
 					</SafeAreaInsetsContext>
+					{showBar && barPane ? (
+						<SafeAreaInsetsContext value={sideless}>
+							<PaneBar panes={panes} active={barPane.pane} onPick={pick} label={t`Editor mode`} />
+						</SafeAreaInsetsContext>
+					) : null}
 				</KeyboardFrame>
 			</View>
 		</FrameContext>
@@ -229,6 +234,31 @@ type PaneBarProps<T extends string> = {
 	label: string;
 };
 
+/** A set badge (zero is none), and the mode's name with it from the layout. */
+function badgeOf<T extends string>(tab: PaneTab<T>, badges: Partial<Record<string, number | string>> | undefined) {
+	const badge = badges?.[tab.pane];
+	if (badge === undefined || badge === 0) return { badge: undefined, badgeLabel: undefined };
+	return { badge, badgeLabel: tab.badgeLabel?.(badge) };
+}
+
+/** The tablet mode switch in the top bar, with the screens' counts in the names ("Check, 3 issues"). */
+function TabletModes<T extends string>({ panes, active, onPick, label }: PaneBarProps<T>) {
+	const slots = slot.useSlot();
+	return (
+		<Segment
+			size="sm"
+			accessibilityLabel={label}
+			value={active}
+			options={panes.map((tab) => ({
+				value: tab.pane,
+				label: badgeOf(tab, slots.badges).badgeLabel ?? tab.label,
+				icon: tab.icon,
+			}))}
+			onValueChange={onPick}
+		/>
+	);
+}
+
 /** The phone mode bar, with the screens' counts. While it shows (the editor in front), toasts sit above it. */
 function PaneBar<T extends string>({ panes, active, onPick, label }: PaneBarProps<T>) {
 	const slots = slot.useSlot();
@@ -244,11 +274,11 @@ function PaneBar<T extends string>({ panes, active, onPick, label }: PaneBarProp
 			accessibilityLabel={label}
 			value={active}
 			onValueChange={onPick}
-			items={panes.map(({ pane, label: name, icon }) => ({
-				value: pane,
-				label: name,
-				icon,
-				badge: slots.badges?.[pane],
+			items={panes.map((tab) => ({
+				value: tab.pane,
+				label: tab.label,
+				icon: tab.icon,
+				...badgeOf(tab, slots.badges),
 			}))}
 			onHeight={(next) => {
 				height.current = next;

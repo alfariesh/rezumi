@@ -46,7 +46,8 @@ export function ImportedNote({ source, onDismiss }: ImportedNoteProps) {
 		return `${sections}/${entries}/${toCheck}`;
 	}, "0/0/0");
 	const [sections = 0, entries = 0, toCheck = 0] = summary.split("/").map(Number);
-	const counts = `${plural(sections, { one: "# section", other: "# sections" })}, ${plural(entries, { one: "# entry", other: "# entries" })}.`;
+	// Whole sentences, so a translation can order the counts its own way.
+	const found = t`Imported from ${source}. Found ${plural(sections, { one: "# section", other: "# sections" })} and ${plural(entries, { one: "# entry", other: "# entries" })}.`;
 	const next =
 		toCheck > 0
 			? plural(toCheck, { one: "# field needs a look.", other: "# fields need a look." })
@@ -55,7 +56,7 @@ export function ImportedNote({ source, onDismiss }: ImportedNoteProps) {
 		<Alert status="success">
 			<Alert.Indicator />
 			<Alert.Content>
-				<Alert.Description>{`${t`Imported from ${source}.`} ${counts} ${next}`}</Alert.Description>
+				<Alert.Description>{`${found} ${next}`}</Alert.Description>
 			</Alert.Content>
 			<IconButton icon="x" size="sm" label={t`Dismiss`} onPress={onDismiss} />
 		</Alert>

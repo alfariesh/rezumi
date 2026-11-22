@@ -11,7 +11,7 @@ export {
 	runCheck,
 } from "./issues";
 export type { JobMatchResult, MatchedTerm, PostingMatcher } from "./job-match";
-export { MAX_POSTING_CHARS, matchPosting, newSkill, termAsWritten } from "./job-match";
+export { MAX_POSTING_CHARS, matchPosting, newSkill } from "./job-match";
 export type { PageBlock } from "./page";
 export { findBlock, isSameTarget, placeIssuePins, targetsMentioning, toTarget } from "./page";
 export type { PdfFindingGroup } from "./pdf-rows";

@@ -23,7 +23,7 @@ msgstr "“{0}” സ്കിൽസ്-ലേക്ക് ചേർത്തു
 msgid "“{0}” hidden"
 msgstr "\"{0}\" മറച്ചിരിക്കുന്നു"
 
-#. placeholder {0}: documents[0]?.name ?? ""
+#. placeholder {0}: document.name
 #: src/features/documents/queries.ts
 msgid "“{0}” moved to Trash"
 msgstr "“{0}” ട്രാഷിലേക്ക് നീക്കി"
@@ -134,11 +134,6 @@ msgstr "{0, plural, one {# ദിവസം ശേഷിക്കുന്നു}
 msgid "{0, plural, one {# day} other {# days}}"
 msgstr "{0, plural, one {# ദിവസം} other {# ദിവസങ്ങൾ}}"
 
-#. placeholder {0}: done.length
-#: src/features/documents/queries.ts
-msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
-msgstr "{0, plural, one {# പ്രമാണം ട്രാഷിലേക്ക് നീക്കി} other {# പ്രമാണങ്ങൾ ട്രാഷിലേക്ക് നീക്കി}}"
-
 #. placeholder {0}: counts.resume + counts.letter
 #: src/features/documents/segment-header.tsx
 msgid "{0, plural, one {# document} other {# documents}}"
@@ -210,6 +205,11 @@ msgstr "{0, plural, one {# ദിവസം മുമ്പ് അപേക്ഷ
 #: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {Backs # story} other {Backs # stories}}"
 msgstr "{0, plural, one {# കഥയെ പിന്തുണയ്ക്കുന്നു} other {# കഥകളെ പിന്തുണയ്ക്കുന്നു}}"
+
+#. placeholder {0}: Number(badge)
+#: app/builder/[id]/_layout.tsx
+msgid "{0, plural, one {Check, # issue} other {Check, # issues}}"
+msgstr ""
 
 #. placeholder {0}: selectedIds.length
 #: src/features/applications/list-screen.tsx
@@ -457,10 +457,6 @@ msgstr "{closed} അടച്ചു"
 msgid "{company} · {tabName}"
 msgstr "{company} · {tabName}"
 
-#: src/features/documents/queries.ts
-msgid "{completed, plural, one {# document updated} other {# documents updated}}"
-msgstr "{completed, plural, one {# പ്രമാണം അപ്‌ഡേറ്റ് ചെയ്‌തു} other {# പ്രമാണങ്ങൾ അപ്‌ഡേറ്റ് ചെയ്‌തു}}"
-
 #: src/features/write/section-sheet-pages.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# കോളം} other {# കോളങ്ങൾ}}"
@@ -543,10 +539,6 @@ msgstr "{done} / {total}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{doneMinutes} of {total} min"
 msgstr "{total} മിനിറ്റിൽ {doneMinutes}"
-
-#: src/features/write/write-header.tsx
-msgid "{entries, plural, one {# entry} other {# entries}}"
-msgstr "{entries, plural, one {# എൻട്രി} other {# എൻട്രികൾ}}"
 
 #: src/features/check/messages.ts
 msgid "{entry} doesn't say when. Dates place it on your timeline."
@@ -749,10 +741,6 @@ msgstr "{pending, plural, one {ഈ പേജിൽ # നിർദ്ദേശി
 msgid "{role} · {company}"
 msgstr "{role} · {company}"
 
-#: src/features/write/write-header.tsx
-msgid "{sections, plural, one {# section} other {# sections}}"
-msgstr "{sections, plural, one {# വിഭാഗം} other {# വിഭാഗങ്ങൾ}}"
-
 #: src/features/design/gallery-filters.tsx
 msgid "{shown} of {listed} shown"
 msgstr ""
@@ -805,6 +793,14 @@ msgstr "{toCheck, plural, one {# ഫീൽഡിന് ഒരു നോട്ട
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {പരിശോധിക്കാൻ #} other {പരിശോധിക്കാൻ #}}"
 
+#: src/features/documents/segment-header.tsx
+msgid "{TRASH_DAYS, plural, one {Documents are deleted permanently after # day.} other {Documents are deleted permanently after # days.}}"
+msgstr ""
+
+#: src/features/documents/library-states.tsx
+msgid "{TRASH_DAYS, plural, one {Documents you move here stay for # day.} other {Documents you move here stay for # days.}}"
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
@@ -815,6 +811,10 @@ msgstr ""
 
 #: src/features/design/type-group.tsx
 msgid "{value} pt"
+msgstr ""
+
+#: src/features/design/typography-screen.tsx
+msgid "{weight}, not in this font"
 msgstr ""
 
 #: src/features/letters/write.tsx
@@ -2104,11 +2104,12 @@ msgstr "അസർബൈജാനി"
 #: src/features/auth/frame.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
-#: src/features/documents/new-document-screen.tsx
+#: src/features/documents/new-copy.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/bring-screen.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
 msgstr "തിരികെ"
 
@@ -2126,10 +2127,6 @@ msgstr "അപേക്ഷകളിലേക്ക് മടങ്ങുക"
 #: src/features/workspace/shell.tsx
 msgid "Back to current"
 msgstr "നിലവിലുള്ളതിലേക്ക് മടങ്ങുക"
-
-#: src/shell/builder-chrome/top-bar.tsx
-msgid "Back to Documents"
-msgstr "പ്രമാണങ്ങൾ എന്നതിലേക്ക് മടങ്ങുക"
 
 #: src/features/history/history-panel.tsx
 #: src/features/letters/share.tsx
@@ -2417,6 +2414,10 @@ msgstr "സർട്ടിഫിക്കേഷനുകൾ"
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "മാറ്റുക"
+
+#: src/features/entries/custom-fields.tsx
+msgid "Change icon"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Change it in Design"
@@ -3335,6 +3336,11 @@ msgstr "ഫയൽ ഇറക്കുമതി ചെയ്യാനായില�
 #: src/features/documents/import-file.ts
 msgid "Couldn't import this file. Check the selected format. PDFs need a readable text layer; account archives must be extracted first."
 msgstr "ഈ ഫയൽ ഇറക്കുമതി ചെയ്യാനായില്ല. തിരഞ്ഞെടുത്ത ഫോർമാറ്റ് പരിശോധിക്കുക. PDF-കൾക്ക് വായിക്കാൻ കഴിയുന്ന ഒരു ടെക്സ്റ്റ് ലെയർ ആവശ്യമാണ്; അക്കൗണ്ട് ആർക്കൈവുകൾ ആദ്യം എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യണം."
+
+#: src/features/documents/use-import.ts
+#: src/features/documents/use-start-document.ts
+msgid "Couldn't link the application. Check Applications before retrying."
+msgstr ""
 
 #: src/features/check/use-link-application.ts
 msgid "Couldn't link the application. Try again."
@@ -4370,10 +4376,6 @@ msgstr "പ്രമാണ ഓപ്ഷനുകൾ"
 msgid "Documents"
 msgstr "പ്രമാണങ്ങൾ"
 
-#: src/features/documents/segment-header.tsx
-msgid "Documents are deleted permanently after 30 days."
-msgstr "പ്രമാണങ്ങൾ 30 ദിവസത്തിന് ശേഷം ശാശ്വതമായി ഇല്ലാതാക്കപ്പെടും."
-
 #: src/features/application-detail/sections.tsx
 msgid "Documents for this job"
 msgstr "ഈ ജോലിക്കുള്ള രേഖകൾ"
@@ -4385,10 +4387,6 @@ msgstr ""
 #: src/features/documents/segment-header.tsx
 msgid "Documents sections"
 msgstr ""
-
-#: src/features/documents/library-states.tsx
-msgid "Documents you move here stay for 30 days."
-msgstr "നിങ്ങൾ ഇവിടേക്ക് നീക്കുന്ന പ്രമാണങ്ങൾ 30 ദിവസം നിലനിൽക്കും."
 
 #: src/features/share/custom-domain.tsx
 msgid "Domain connected"
@@ -5100,12 +5098,12 @@ msgstr "അനുയോജ്യത"
 msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
 msgstr "മറ്റ് ടാബുകൾ സൃഷ്ടിക്കുന്നതനുസരിച്ച് അനുയോജ്യതാ പരിശോധനകൾ, ബ്രീഫിംഗുകൾ, പരിശീലന ഫീഡ്‌ബാക്ക്, അവലോകനങ്ങൾ, ഉത്തരങ്ങൾ, മറുപടികൾ എന്നിവ ഇവിടെ എത്തും."
 
-#: src/preview/page-parts.tsx
-msgid "Fit to width"
-msgstr ""
-
 #: src/features/design/preset-names.ts
 msgid "Fitness"
+msgstr ""
+
+#: src/preview/page-parts.tsx
+msgid "Fits the page to the width"
 msgstr ""
 
 #: src/preview/page-parts.tsx
@@ -5726,6 +5724,7 @@ msgstr "ഞാൻ പിൻവലിച്ചു"
 
 #: src/features/design/colors-screen.tsx
 #: src/features/design/icon-picker.tsx
+#: src/features/entries/custom-fields.tsx
 #: src/features/entries/entry-fields.tsx
 #: src/features/entries/fields.ts
 #: src/features/entries/icon-picker.tsx
@@ -5742,11 +5741,6 @@ msgstr "ഐക്കൺ നിറം"
 
 #: src/features/design/icons-group.tsx
 msgid "Icon style"
-msgstr ""
-
-#. placeholder {0}: field.icon
-#: src/features/entries/custom-fields.tsx
-msgid "Icon: {0}"
 msgstr ""
 
 #: src/features/write/section-menu.tsx
@@ -5801,6 +5795,10 @@ msgstr "ഒരു റെസ്യൂമെ ഇറക്കുമതി ചെയ
 msgid "Import canceled."
 msgstr "ഇമ്പോർട്ട് റദ്ദാക്കി."
 
+#: src/features/documents/use-import.ts
+msgid "Import canceled. Refresh Documents before retrying if the upload had finished."
+msgstr ""
+
 #: src/features/write/add-section.tsx
 msgid "Import it"
 msgstr "അത് ഇറക്കുമതി ചെയ്യുക"
@@ -5819,8 +5817,8 @@ msgid "Imported"
 msgstr "ഇറക്കുമതി ചെയ്തത്"
 
 #: src/features/write/write-header.tsx
-msgid "Imported from {source}."
-msgstr "{source}-ൽ നിന്ന് ഇമ്പോർട്ടുചെയ്‌തു."
+msgid "Imported from {source}. Found {sections, plural, one {# section} other {# sections}} and {entries, plural, one {# entry} other {# entries}}."
+msgstr ""
 
 #: src/features/documents/new-import.tsx
 msgid "Importing"
@@ -5836,8 +5834,8 @@ msgstr "മെച്ചപ്പെടുത്തുക-ന് ഒരു AI ദ
 
 #: src/features/entries/improve.tsx
 #: src/features/entries/rich-text-toolbar.tsx
-msgid "Improve selected line"
-msgstr "തിരഞ്ഞെടുത്ത ലൈൻ മെച്ചപ്പെടുത്തുക"
+msgid "Improve this line"
+msgstr ""
 
 #: src/features/entries/improve.tsx
 msgid "Improving…"
@@ -6288,6 +6286,10 @@ msgid "Label for detail {0}"
 msgstr ""
 
 #: src/features/entries/custom-fields.tsx
+msgid "Label removed"
+msgstr ""
+
+#: src/features/entries/custom-fields.tsx
 msgid "Label, e.g. Languages"
 msgstr ""
 
@@ -6544,6 +6546,10 @@ msgstr ""
 msgid "Link sent"
 msgstr ""
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "Link the application"
+msgstr ""
+
 #: src/features/documents/library-menu.tsx
 msgid "Link to application"
 msgstr "ജോലി അപേക്ഷയിലേക്കുള്ള ലിങ്ക്"
@@ -6569,6 +6575,7 @@ msgid "Linked resume"
 msgstr "ലിങ്ക് ചെയ്ത റെസ്യൂമെ"
 
 #. placeholder {0}: document.application.company
+#: src/features/documents/document-item.tsx
 #: src/features/search/search-screen.tsx
 msgid "Linked to {0}"
 msgstr "{0}-ലേക്ക് ലിങ്ക് ചെയ്‌തു"
@@ -7071,6 +7078,8 @@ msgstr "അപേക്ഷകൾ നീക്കുക"
 msgid "Move detail up"
 msgstr ""
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7127,6 +7136,8 @@ msgstr "ട്രാഷിലേക്ക് നീക്കുക"
 msgid "Move to…"
 msgstr "ഇതിലേക്ക് നീക്കുക..."
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7137,12 +7148,6 @@ msgstr "മുകളിലേക്ക് നീങ്ങുക"
 #: src/features/ats-checker/messages.ts
 msgid "Move your email and phone number to the top of page one."
 msgstr "നിങ്ങളുടെ ഇമെയിലും ഫോൺ നമ്പറും ഒന്നാം പേജിന്റെ മുകളിലേക്ക് നീക്കുക."
-
-#. placeholder {0}: done.length
-#. placeholder {1}: documents.length
-#: src/features/documents/queries.ts
-msgid "Moved {0} of {1} to Trash. Locked documents were skipped. Refresh and retry any failures."
-msgstr "{1}-ൽ {0} ട്രാഷിലേക്ക് നീക്കി. ലോക്ക് ചെയ്ത പ്രമാണങ്ങൾ ഒഴിവാക്കി. പുതുക്കിയശേഷം പരാജയപ്പെട്ടവ വീണ്ടും ശ്രമിക്കുക."
 
 #. placeholder {0}: getStageLabel(entry.stage)
 #. placeholder {0}: getStageLabel(stage)
@@ -8783,10 +8788,6 @@ msgstr ""
 msgid "Press and hold"
 msgstr "അമർത്തിപ്പിടിക്കുക"
 
-#: src/features/design/layout-column.tsx
-msgid "Press and hold, then drag to another column or page."
-msgstr "അമർത്തിപ്പിടിക്കുക, തുടർന്ന് മറ്റൊരു കോളത്തിലേക്കോ പേജിലേക്കോ വലിച്ചിടുക."
-
 #: src/features/share/web-page.tsx
 msgid "Preview web page"
 msgstr "വെബ് പേജ് പ്രിവ്യൂ ചെയ്യുക"
@@ -9440,7 +9441,6 @@ msgstr "വീണ്ടും തുറക്കുക"
 msgid "Reorder {name}"
 msgstr ""
 
-#: src/features/design/layout-column.tsx
 #: src/features/write/section-row.tsx
 msgid "Reorder {title}"
 msgstr "{title} പുനഃക്രമീകരിക്കുക"
@@ -10934,10 +10934,6 @@ msgstr ""
 msgid "Something went wrong on the server. Try again in a moment."
 msgstr ""
 
-#: src/features/history/history-panel.tsx
-msgid "Something went wrong. Try again."
-msgstr ""
-
 #: src/features/documents/library-toolbar.tsx
 msgid "Sort"
 msgstr "അടുക്കുക"
@@ -11607,6 +11603,10 @@ msgstr "അക്കൗണ്ട് മാറ്റി. വീണ്ടും �
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "വിലാസത്തിൽ ചെറിയ അക്ഷരങ്ങളും അക്കങ്ങളും മാത്രമേ ഉണ്ടാകാവൂ, അവ ഒറ്റ ഡാഷുകളാൽ വേർതിരിച്ചിരിക്കണം."
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "The application is saved. Linking it to this resume didn't work yet."
+msgstr ""
+
 #: src/features/application-detail/sections.tsx
 msgid "The application keeps its other details."
 msgstr "അപേക്ഷ അതിൻ്റെ മറ്റ് വിശദാംശങ്ങൾ സൂക്ഷിക്കുന്നു."
@@ -12191,6 +12191,10 @@ msgstr ""
 msgid "This resume changed elsewhere"
 msgstr "ഈ റെസ്യൂമെ മറ്റൊരിടത്ത് മാറി"
 
+#: src/features/write/profile-link.tsx
+msgid "This resume couldn't be found. It may have been deleted."
+msgstr ""
+
 #: src/features/check/check-pane.tsx
 msgid "This resume is locked. Checks are available; editing is disabled."
 msgstr "ഈ റെസ്യൂമെ ലോക്ക് ചെയ്തിരിക്കുന്നു. പരിശോധനകൾ ലഭ്യമാണ്; തിരുത്താനാവില്ല."
@@ -12386,6 +12390,14 @@ msgid "Tomorrow"
 msgstr "നാളെ"
 
 #: src/features/design/color-group.tsx
+msgid "Too dark for headings on this background color. It may be hard to read."
+msgstr ""
+
+#: src/features/design/color-group.tsx
+msgid "Too light for headings on this background color. It may be hard to read and print faintly."
+msgstr ""
+
+#: src/features/design/color-group.tsx
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "വെള്ള നിറത്തിലുള്ള തലക്കെട്ടുകൾക്ക് വളരെ ഭാരം കുറഞ്ഞതാണ്. വായിക്കാനും മങ്ങിയതായി പ്രിൻ്റ് ചെയ്യാനും ബുദ്ധിമുട്ടായിരിക്കാം."
 
@@ -12402,6 +12414,7 @@ msgstr ""
 #: src/features/ats-checker/check.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Too many requests. Try again later."
 msgstr "വളരെയധികം അഭ്യർത്ഥനകൾ. പിന്നീട് വീണ്ടും ശ്രമിക്കുക."
 
@@ -12652,10 +12665,7 @@ msgstr "ലിങ്കുകൾക്ക് അടിവരയിടുക"
 #: src/features/assistant/proposals.ts
 #: src/features/career/undo.ts
 #: src/features/check/actions.ts
-#: src/features/design/advanced-group.tsx
 #: src/features/design/draft.ts
-#: src/features/design/template-group.tsx
-#: src/features/design/uploaded-fonts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/queries.ts
 #: src/features/entries/hooks.ts
@@ -12754,11 +12764,6 @@ msgstr "25 MB വരെ · സെർവറിൽ പരിശോധിച്ച�
 msgid "Updated"
 msgstr "അപ്ഡേറ്റ് ചെയ്തു"
 
-#. placeholder {0}: documents.length
-#: src/features/documents/queries.ts
-msgid "Updated {completed} of {0}. Locked documents, and letters for public links, were skipped. Refresh and retry any failures."
-msgstr "{0}-ൽ {completed} അപ്‌ഡേറ്റ് ചെയ്‌തു. ലോക്ക് ചെയ്ത രേഖകളും പൊതു ലിങ്കുകൾക്കുള്ള കവർ ലെറ്ററുകളും ഒഴിവാക്കി. ലിസ്റ്റ് പുതുക്കി പരാജയപ്പെട്ട പ്രവർത്തനങ്ങൾ വീണ്ടും ശ്രമിക്കുക."
-
 #. placeholder {0}: followed.length
 #: src/features/profile/save-note.tsx
 msgid "Updated in {0} resumes"
@@ -12841,6 +12846,10 @@ msgstr "ഇരുണ്ട നിഴൽ ഉപയോഗിക്കുക"
 #: src/features/design/colors-screen.tsx
 msgid "Use a hex value like #3E6B4F or rgba(62, 107, 79, 1)."
 msgstr "#3E6B4F അല്ലെങ്കിൽ rgba(62, 107, 79, 1) പോലുള്ള ഒരു ഹെക്‌സ് മൂല്യം ഉപയോഗിക്കുക."
+
+#: src/features/design/color-group.tsx
+msgid "Use a lighter shade"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Use a plain international form, such as +1 555 010 1234."
@@ -13852,7 +13861,7 @@ msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or 
 msgstr "നിങ്ങളുടെ ഭാഷ സംരക്ഷിച്ചു. പുതിയ ഇടത്തുനിന്ന് വലത്തോട്ടോ വലത്തുനിന്ന് ഇടത്തോട്ടോ ലേഔട്ട് പ്രയോഗിക്കാൻ Rezumi പുനരാരംഭിക്കുക."
 
 #: src/shell/builder-chrome/draft-chrome.tsx
-msgid "Your latest changes aren't on the server yet. They stay on this phone and are sent when it can reach the server again."
+msgid "Your latest changes aren't on the server yet. They stay on this device and are sent when it can reach the server again."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -13962,8 +13971,16 @@ msgstr ""
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr ""
 
+#: src/features/write/profile-link.tsx
+msgid "Your Profile can't take this part as it is. Check it and try again."
+msgstr ""
+
 #: src/features/profile/conflict-sheet.tsx
 msgid "Your Profile changed elsewhere"
+msgstr ""
+
+#: src/features/write/profile-link.tsx
+msgid "Your Profile changed somewhere else. Try again."
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
@@ -14050,6 +14067,7 @@ msgstr ""
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Your session expired. Sign in again."
 msgstr "നിങ്ങളുടെ സെഷൻ കാലഹരണപ്പെട്ടു. വീണ്ടും സൈൻ ഇൻ ചെയ്യുക."
 
@@ -14099,6 +14117,15 @@ msgstr "സൂം ഇൻ ചെയ്യുക"
 #: src/preview/page-parts.tsx
 msgid "Zoom out"
 msgstr "സൂം ഔട്ട് ചെയ്യുക"
+
+#. placeholder {0}: Math.round(zoom * 100)
+#: src/preview/page-parts.tsx
+msgid "Zoom: {0}%"
+msgstr ""
+
+#: src/preview/page-parts.tsx
+msgid "Zoom: fit to width"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Zulu"

@@ -150,7 +150,8 @@ export function RichTextToolbar() {
 							<IconButton
 								variant="ghost"
 								icon="sparkle"
-								label={t`Improve selected line`}
+								// It works on the line at the caret, not a selection.
+								label={t`Improve this line`}
 								isDisabled={!editor.canImprove}
 								onPress={editor.improve}
 								testID="toolbar-improve"

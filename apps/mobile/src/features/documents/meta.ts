@@ -5,7 +5,7 @@ import { plural, t } from "@lingui/core/macro";
 import { timeSinceParts } from "@rezumi/resume/sharing";
 import { daysLeftInTrash } from "./filter";
 
-export function editedAgo(date: Date, locale: string, now = Date.now()) {
+function editedAgo(date: Date, locale: string, now = Date.now()) {
 	const { count, unit } = timeSinceParts(date, now);
 	if (unit === "minute")
 		return count < 1

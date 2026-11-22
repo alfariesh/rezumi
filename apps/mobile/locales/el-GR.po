@@ -23,7 +23,7 @@ msgstr "Το «{0}» προστέθηκε στις Δεξιότητες"
 msgid "“{0}” hidden"
 msgstr "\"{0}\" κρυφό"
 
-#. placeholder {0}: documents[0]?.name ?? ""
+#. placeholder {0}: document.name
 #: src/features/documents/queries.ts
 msgid "“{0}” moved to Trash"
 msgstr "Το \"{0}\" μετακινήθηκε στον Κάδο απορριμμάτων"
@@ -134,11 +134,6 @@ msgstr "{0, plural, one {Απομένει # ημέρα} other {Απομένου�
 msgid "{0, plural, one {# day} other {# days}}"
 msgstr "{0, plural, one {# ημέρα} other {# ημέρες}}"
 
-#. placeholder {0}: done.length
-#: src/features/documents/queries.ts
-msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
-msgstr "{0, plural, one {# έγγραφο μετακινήθηκε στον Κάδο απορριμμάτων} other {# έγγραφα μετακινήθηκαν στον Κάδο απορριμμάτων}}"
-
 #. placeholder {0}: counts.resume + counts.letter
 #: src/features/documents/segment-header.tsx
 msgid "{0, plural, one {# document} other {# documents}}"
@@ -210,6 +205,11 @@ msgstr "{0, plural, one {Υποβλήθηκε πριν από # ημέρα} othe
 #: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {Backs # story} other {Backs # stories}}"
 msgstr "{0, plural, one {Στηρίζει # ιστορία} other {Στηρίζει # ιστορίες}}"
+
+#. placeholder {0}: Number(badge)
+#: app/builder/[id]/_layout.tsx
+msgid "{0, plural, one {Check, # issue} other {Check, # issues}}"
+msgstr ""
 
 #. placeholder {0}: selectedIds.length
 #: src/features/applications/list-screen.tsx
@@ -457,10 +457,6 @@ msgstr "{closed} κλειστές"
 msgid "{company} · {tabName}"
 msgstr "{company} · {tabName}"
 
-#: src/features/documents/queries.ts
-msgid "{completed, plural, one {# document updated} other {# documents updated}}"
-msgstr "{completed, plural, one {Ενημερώθηκε # έγγραφο} other {Ενημερώθηκαν # έγγραφα}}"
-
 #: src/features/write/section-sheet-pages.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# στήλη} other {# στήλες}}"
@@ -543,10 +539,6 @@ msgstr "{done} από {total}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{doneMinutes} of {total} min"
 msgstr "{doneMinutes} από {total} λεπ."
-
-#: src/features/write/write-header.tsx
-msgid "{entries, plural, one {# entry} other {# entries}}"
-msgstr "{entries, plural, one {Εισαγωγή #} other {Εγγραφές #}}"
 
 #: src/features/check/messages.ts
 msgid "{entry} doesn't say when. Dates place it on your timeline."
@@ -749,10 +741,6 @@ msgstr "{pending, plural, one {# προτεινόμενη αλλαγή σε αυ
 msgid "{role} · {company}"
 msgstr "{role} · {company}"
 
-#: src/features/write/write-header.tsx
-msgid "{sections, plural, one {# section} other {# sections}}"
-msgstr "{sections, plural, one {τμήμα #} other {τμήματα #}}"
-
 #: src/features/design/gallery-filters.tsx
 msgid "{shown} of {listed} shown"
 msgstr ""
@@ -805,6 +793,14 @@ msgstr "{toCheck, plural, one {Το πεδίο # χρειάζεται μια μ�
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {# για έλεγχο} other {# για έλεγχο}}"
 
+#: src/features/documents/segment-header.tsx
+msgid "{TRASH_DAYS, plural, one {Documents are deleted permanently after # day.} other {Documents are deleted permanently after # days.}}"
+msgstr ""
+
+#: src/features/documents/library-states.tsx
+msgid "{TRASH_DAYS, plural, one {Documents you move here stay for # day.} other {Documents you move here stay for # days.}}"
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
@@ -815,6 +811,10 @@ msgstr ""
 
 #: src/features/design/type-group.tsx
 msgid "{value} pt"
+msgstr ""
+
+#: src/features/design/typography-screen.tsx
+msgid "{weight}, not in this font"
 msgstr ""
 
 #: src/features/letters/write.tsx
@@ -2104,11 +2104,12 @@ msgstr "Αζερικά"
 #: src/features/auth/frame.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
-#: src/features/documents/new-document-screen.tsx
+#: src/features/documents/new-copy.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/bring-screen.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
 msgstr "Πίσω"
 
@@ -2126,10 +2127,6 @@ msgstr "Πίσω στις αιτήσεις"
 #: src/features/workspace/shell.tsx
 msgid "Back to current"
 msgstr "Πίσω στην τρέχουσα"
-
-#: src/shell/builder-chrome/top-bar.tsx
-msgid "Back to Documents"
-msgstr "Πίσω στα Έγγραφα"
 
 #: src/features/history/history-panel.tsx
 #: src/features/letters/share.tsx
@@ -2417,6 +2414,10 @@ msgstr "Πιστοποιήσεις"
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Αλλαγή"
+
+#: src/features/entries/custom-fields.tsx
+msgid "Change icon"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Change it in Design"
@@ -3335,6 +3336,11 @@ msgstr "Δεν ήταν δυνατή η εισαγωγή του αρχείου. 
 #: src/features/documents/import-file.ts
 msgid "Couldn't import this file. Check the selected format. PDFs need a readable text layer; account archives must be extracted first."
 msgstr "Δεν ήταν δυνατή η εισαγωγή αυτού του αρχείου. Ελέγξτε την επιλεγμένη μορφή. Τα PDF χρειάζονται ένα ευανάγνωστο επίπεδο κειμένου. Τα αρχεία λογαριασμών πρέπει να εξαχθούν πρώτα."
+
+#: src/features/documents/use-import.ts
+#: src/features/documents/use-start-document.ts
+msgid "Couldn't link the application. Check Applications before retrying."
+msgstr ""
 
 #: src/features/check/use-link-application.ts
 msgid "Couldn't link the application. Try again."
@@ -4370,10 +4376,6 @@ msgstr "Επιλογές εγγράφου"
 msgid "Documents"
 msgstr "Έγγραφα"
 
-#: src/features/documents/segment-header.tsx
-msgid "Documents are deleted permanently after 30 days."
-msgstr "Τα έγγραφα διαγράφονται οριστικά μετά από 30 ημέρες."
-
 #: src/features/application-detail/sections.tsx
 msgid "Documents for this job"
 msgstr "Έγγραφα για αυτή τη δουλειά"
@@ -4385,10 +4387,6 @@ msgstr ""
 #: src/features/documents/segment-header.tsx
 msgid "Documents sections"
 msgstr ""
-
-#: src/features/documents/library-states.tsx
-msgid "Documents you move here stay for 30 days."
-msgstr "Τα έγγραφα που μετακινείτε εδώ παραμένουν για 30 ημέρες."
 
 #: src/features/share/custom-domain.tsx
 msgid "Domain connected"
@@ -5100,12 +5098,12 @@ msgstr "Καταλληλότητα"
 msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
 msgstr "Έλεγχοι καταλληλότητας, ενημερωτικά, ανατροφοδότηση εξάσκησης, απολογισμοί, απαντήσεις φορμών και απαντήσεις σε μηνύματα εμφανίζονται εδώ καθώς τα δημιουργούν οι άλλες καρτέλες."
 
-#: src/preview/page-parts.tsx
-msgid "Fit to width"
-msgstr ""
-
 #: src/features/design/preset-names.ts
 msgid "Fitness"
+msgstr ""
+
+#: src/preview/page-parts.tsx
+msgid "Fits the page to the width"
 msgstr ""
 
 #: src/preview/page-parts.tsx
@@ -5726,6 +5724,7 @@ msgstr "αποσύρθηκα"
 
 #: src/features/design/colors-screen.tsx
 #: src/features/design/icon-picker.tsx
+#: src/features/entries/custom-fields.tsx
 #: src/features/entries/entry-fields.tsx
 #: src/features/entries/fields.ts
 #: src/features/entries/icon-picker.tsx
@@ -5742,11 +5741,6 @@ msgstr "Χρώμα εικονιδίου"
 
 #: src/features/design/icons-group.tsx
 msgid "Icon style"
-msgstr ""
-
-#. placeholder {0}: field.icon
-#: src/features/entries/custom-fields.tsx
-msgid "Icon: {0}"
 msgstr ""
 
 #: src/features/write/section-menu.tsx
@@ -5801,6 +5795,10 @@ msgstr "Εισαγωγή βιογραφικού"
 msgid "Import canceled."
 msgstr "Η εισαγωγή ακυρώθηκε."
 
+#: src/features/documents/use-import.ts
+msgid "Import canceled. Refresh Documents before retrying if the upload had finished."
+msgstr ""
+
 #: src/features/write/add-section.tsx
 msgid "Import it"
 msgstr "Εισαγάγετε το"
@@ -5819,8 +5817,8 @@ msgid "Imported"
 msgstr "Εισαγόμενος"
 
 #: src/features/write/write-header.tsx
-msgid "Imported from {source}."
-msgstr "Εισήχθη από {source}."
+msgid "Imported from {source}. Found {sections, plural, one {# section} other {# sections}} and {entries, plural, one {# entry} other {# entries}}."
+msgstr ""
 
 #: src/features/documents/new-import.tsx
 msgid "Importing"
@@ -5836,8 +5834,8 @@ msgstr "Η Βελτίωση απαιτεί πάροχο AI. Συνδέστε έ�
 
 #: src/features/entries/improve.tsx
 #: src/features/entries/rich-text-toolbar.tsx
-msgid "Improve selected line"
-msgstr "Βελτιώστε την επιλεγμένη γραμμή"
+msgid "Improve this line"
+msgstr ""
 
 #: src/features/entries/improve.tsx
 msgid "Improving…"
@@ -6288,6 +6286,10 @@ msgid "Label for detail {0}"
 msgstr ""
 
 #: src/features/entries/custom-fields.tsx
+msgid "Label removed"
+msgstr ""
+
+#: src/features/entries/custom-fields.tsx
 msgid "Label, e.g. Languages"
 msgstr ""
 
@@ -6544,6 +6546,10 @@ msgstr ""
 msgid "Link sent"
 msgstr ""
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "Link the application"
+msgstr ""
+
 #: src/features/documents/library-menu.tsx
 msgid "Link to application"
 msgstr "Σύνδεσμος για την αίτηση εργασίας"
@@ -6569,6 +6575,7 @@ msgid "Linked resume"
 msgstr "Συνδεδεμένο βιογραφικό"
 
 #. placeholder {0}: document.application.company
+#: src/features/documents/document-item.tsx
 #: src/features/search/search-screen.tsx
 msgid "Linked to {0}"
 msgstr "Συνδέεται με το {0}"
@@ -7071,6 +7078,8 @@ msgstr "Μετακίνηση αιτήσεων εργασίας"
 msgid "Move detail up"
 msgstr ""
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7127,6 +7136,8 @@ msgstr "Μετακίνηση στον Κάδο απορριμμάτων"
 msgid "Move to…"
 msgstr "Μετακίνηση σε…"
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7137,12 +7148,6 @@ msgstr "Μετακινηθείτε προς τα πάνω"
 #: src/features/ats-checker/messages.ts
 msgid "Move your email and phone number to the top of page one."
 msgstr "Μετακινήστε το email και τον αριθμό τηλεφώνου σας στην κορυφή της πρώτης σελίδας."
-
-#. placeholder {0}: done.length
-#. placeholder {1}: documents.length
-#: src/features/documents/queries.ts
-msgid "Moved {0} of {1} to Trash. Locked documents were skipped. Refresh and retry any failures."
-msgstr "Μεταφέρθηκαν {0} από {1} στον Κάδο απορριμμάτων. Τα κλειδωμένα έγγραφα παραλείφθηκαν. Ανανεώστε και ξαναδοκιμάστε όσα απέτυχαν."
 
 #. placeholder {0}: getStageLabel(entry.stage)
 #. placeholder {0}: getStageLabel(stage)
@@ -8783,10 +8788,6 @@ msgstr ""
 msgid "Press and hold"
 msgstr "Πατήστε παρατεταμένα"
 
-#: src/features/design/layout-column.tsx
-msgid "Press and hold, then drag to another column or page."
-msgstr "Πατήστε παρατεταμένα και μετά σύρετε σε άλλη στήλη ή σελίδα."
-
 #: src/features/share/web-page.tsx
 msgid "Preview web page"
 msgstr "Προεπισκόπηση ιστοσελίδας"
@@ -9440,7 +9441,6 @@ msgstr "Ξανανοίγω"
 msgid "Reorder {name}"
 msgstr ""
 
-#: src/features/design/layout-column.tsx
 #: src/features/write/section-row.tsx
 msgid "Reorder {title}"
 msgstr "Αναπαραγγελία {title}"
@@ -10934,10 +10934,6 @@ msgstr ""
 msgid "Something went wrong on the server. Try again in a moment."
 msgstr ""
 
-#: src/features/history/history-panel.tsx
-msgid "Something went wrong. Try again."
-msgstr ""
-
 #: src/features/documents/library-toolbar.tsx
 msgid "Sort"
 msgstr "Είδος"
@@ -11607,6 +11603,10 @@ msgstr "Ο λογαριασμός άλλαξε. Προσπαθήστε ξανά.
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "Η διεύθυνση πρέπει να περιέχει μόνο πεζά γράμματα και αριθμούς, διαχωρισμένα με μεμονωμένες παύλες."
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "The application is saved. Linking it to this resume didn't work yet."
+msgstr ""
+
 #: src/features/application-detail/sections.tsx
 msgid "The application keeps its other details."
 msgstr "Η αίτηση διατηρεί τα υπόλοιπα στοιχεία της."
@@ -12191,6 +12191,10 @@ msgstr ""
 msgid "This resume changed elsewhere"
 msgstr "Αυτό το βιογραφικό άλλαξε αλλού"
 
+#: src/features/write/profile-link.tsx
+msgid "This resume couldn't be found. It may have been deleted."
+msgstr ""
+
 #: src/features/check/check-pane.tsx
 msgid "This resume is locked. Checks are available; editing is disabled."
 msgstr "Αυτό το βιογραφικό είναι κλειδωμένο. Διατίθενται έλεγχοι. η επεξεργασία είναι απενεργοποιημένη."
@@ -12386,6 +12390,14 @@ msgid "Tomorrow"
 msgstr "Αύριο"
 
 #: src/features/design/color-group.tsx
+msgid "Too dark for headings on this background color. It may be hard to read."
+msgstr ""
+
+#: src/features/design/color-group.tsx
+msgid "Too light for headings on this background color. It may be hard to read and print faintly."
+msgstr ""
+
+#: src/features/design/color-group.tsx
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "Πολύ ελαφρύ για επικεφαλίδες σε λευκό. Μπορεί να είναι δύσκολο να διαβαστεί και να εκτυπωθεί αχνά."
 
@@ -12402,6 +12414,7 @@ msgstr ""
 #: src/features/ats-checker/check.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Too many requests. Try again later."
 msgstr "Πάρα πολλά αιτήματα. Δοκιμάστε ξανά αργότερα."
 
@@ -12652,10 +12665,7 @@ msgstr "Υπογράμμισε συνδέσμους"
 #: src/features/assistant/proposals.ts
 #: src/features/career/undo.ts
 #: src/features/check/actions.ts
-#: src/features/design/advanced-group.tsx
 #: src/features/design/draft.ts
-#: src/features/design/template-group.tsx
-#: src/features/design/uploaded-fonts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/queries.ts
 #: src/features/entries/hooks.ts
@@ -12754,11 +12764,6 @@ msgstr "Έως 25 MB · ελεγμένα στον διακομιστή και δ
 msgid "Updated"
 msgstr "Ενημερώθηκε"
 
-#. placeholder {0}: documents.length
-#: src/features/documents/queries.ts
-msgid "Updated {completed} of {0}. Locked documents, and letters for public links, were skipped. Refresh and retry any failures."
-msgstr "Ενημερώθηκαν {completed} από {0}. Παραλείφθηκαν κλειδωμένα έγγραφα και επιστολές για δημόσιους συνδέσμους. Ανανεώστε και ξαναδοκιμάστε όσα απέτυχαν."
-
 #. placeholder {0}: followed.length
 #: src/features/profile/save-note.tsx
 msgid "Updated in {0} resumes"
@@ -12841,6 +12846,10 @@ msgstr "Χρησιμοποιήστε μια πιο σκούρα απόχρωση
 #: src/features/design/colors-screen.tsx
 msgid "Use a hex value like #3E6B4F or rgba(62, 107, 79, 1)."
 msgstr "Χρησιμοποιήστε μια δεκαεξαδική τιμή όπως #3E6B4F ή rgba(62, 107, 79, 1)."
+
+#: src/features/design/color-group.tsx
+msgid "Use a lighter shade"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Use a plain international form, such as +1 555 010 1234."
@@ -13852,7 +13861,7 @@ msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or 
 msgstr "Η γλώσσα σας έχει αποθηκευτεί. Επανεκκινήστε το Rezumi για να εφαρμόσετε τη νέα διάταξη από αριστερά προς τα δεξιά ή από δεξιά προς τα αριστερά."
 
 #: src/shell/builder-chrome/draft-chrome.tsx
-msgid "Your latest changes aren't on the server yet. They stay on this phone and are sent when it can reach the server again."
+msgid "Your latest changes aren't on the server yet. They stay on this device and are sent when it can reach the server again."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -13962,8 +13971,16 @@ msgstr ""
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr ""
 
+#: src/features/write/profile-link.tsx
+msgid "Your Profile can't take this part as it is. Check it and try again."
+msgstr ""
+
 #: src/features/profile/conflict-sheet.tsx
 msgid "Your Profile changed elsewhere"
+msgstr ""
+
+#: src/features/write/profile-link.tsx
+msgid "Your Profile changed somewhere else. Try again."
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
@@ -14050,6 +14067,7 @@ msgstr ""
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Your session expired. Sign in again."
 msgstr "Η συνεδρία σας έληξε. Συνδεθείτε ξανά."
 
@@ -14099,6 +14117,15 @@ msgstr "Μεγέθυνση"
 #: src/preview/page-parts.tsx
 msgid "Zoom out"
 msgstr "Σμίκρυνση"
+
+#. placeholder {0}: Math.round(zoom * 100)
+#: src/preview/page-parts.tsx
+msgid "Zoom: {0}%"
+msgstr ""
+
+#: src/preview/page-parts.tsx
+msgid "Zoom: fit to width"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Zulu"

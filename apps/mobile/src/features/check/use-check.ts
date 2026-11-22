@@ -24,8 +24,16 @@ export function useCheckDraft(id: string) {
 export function useCheck(data: ResumeData | null): CheckResult | null {
 	const deferred = useDeferredValue(data);
 	// Subscribes to the locale, so the cards are worded again when it changes.
-	useLingui();
+	const { i18n } = useLingui();
+	const locale = i18n.locale;
 	const checked = useMemo(() => (deferred ? runCheck(deferred) : null), [deferred]);
-	if (!deferred || !checked) return null;
-	return { data: deferred, report: checked.report, issues: describeIssues(checked.issues, deferred) };
+	// `describeIssues` words the cards from the global catalog, so the locale is what makes them stale.
+	return useMemo(
+		() =>
+			deferred && checked
+				? { data: deferred, report: checked.report, issues: describeIssues(checked.issues, deferred) }
+				: null,
+		// oxlint-disable-next-line react/exhaustive-deps -- the locale isn't read here but changes the wording.
+		[deferred, checked, locale],
+	);
 }

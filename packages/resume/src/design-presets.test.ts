@@ -7,9 +7,12 @@ import {
 	fitToPages,
 	hasTemplatePreviewContent,
 	matchesFilter,
+	measureContrast,
 	MIN_CONTRAST,
 	nextFitStep,
+	paperTone,
 	parseColorInput,
+	readableShade,
 	resetDesign,
 	suitsCareerField,
 	templateSample,
@@ -52,6 +55,29 @@ describe("colour input and contrast", () => {
 		expect(contrastOver("#000000")).toBeCloseTo(21, 0);
 		expect(contrastOver("rgba(0, 0, 0, 0)")).toBeCloseTo(1, 5);
 		expect(ACCENTS.every((accent) => contrastOver(accent.hex) >= MIN_CONTRAST)).toBe(true);
+	});
+
+	it("can't measure colours it can't read", () => {
+		expect(measureContrast("hsl(0, 0%, 0%)")).toBeNull();
+		expect(measureContrast("#000000", "navy")).toBeNull();
+		expect(measureContrast("#000000", "rgba(255, 255, 255, 1)")).toBeCloseTo(21, 0);
+	});
+
+	it("tells white, light and dark pages apart", () => {
+		expect(paperTone("rgba(255, 255, 255, 1)")).toBe("white");
+		expect(paperTone("rgba(0, 0, 0, 0)")).toBe("white");
+		expect(paperTone("#F4EBD0")).toBe("light");
+		expect(paperTone("#1B1F24")).toBe("dark");
+		expect(paperTone("navy")).toBe("white");
+	});
+
+	it("darkens an accent on light pages and lightens it on dark ones until it reads", () => {
+		const onWhite = readableShade("#FFE066");
+		expect(contrastOver(onWhite)).toBeGreaterThanOrEqual(MIN_CONTRAST);
+		const onDark = readableShade("#2F5A8A", "#1B1F24");
+		expect(contrastOver(onDark, "#1B1F24")).toBeGreaterThanOrEqual(MIN_CONTRAST);
+		// Lighter than where it started: each channel moved toward white.
+		expect(Number.parseInt(onDark.slice(1, 3), 16)).toBeGreaterThan(0x2f);
 	});
 });
 

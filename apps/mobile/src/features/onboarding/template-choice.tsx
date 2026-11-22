@@ -13,6 +13,7 @@ import { offeredTemplates } from "@rezumi/career/onboarding";
 import { templateName } from "@rezumi/resume/design-presets";
 import { resumeDataFromProfile } from "@rezumi/resume/profile";
 import { applyTemplatePreset } from "@rezumi/resume/template-preset";
+import { templateSample } from "@rezumi/resume/template-sample";
 import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { isLocale } from "@rezumi/utils/locale";
 import { useSession } from "@/auth/session";
@@ -103,7 +104,7 @@ type TemplateCardProps = {
 };
 
 function TemplateCard({ id, data, content, width, selected, labelled, onChoose }: TemplateCardProps) {
-	const { t } = useLingui();
+	const { t, i18n } = useLingui();
 	const { server } = useSession();
 	const pixelWidth = thumbnailPixelWidth(width);
 	const { data: thumbnail } = useQuery({
@@ -151,7 +152,7 @@ function TemplateCard({ id, data, content, width, selected, labelled, onChoose }
 				)}
 			>
 				<Image
-					source={{ uri: thumbnail ?? `${server}/templates/jpg/${id}.jpg` }}
+					source={{ uri: thumbnail ?? `${server}${templateSample(id, i18n.locale).image}` }}
 					contentFit="cover"
 					contentPosition="top"
 					style={page}

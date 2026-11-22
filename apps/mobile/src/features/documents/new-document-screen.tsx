@@ -4,7 +4,6 @@
 import { useLingui } from "@lingui/react/macro";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { View } from "react-native";
 import { NewChoices } from "./new-choices";
 import { NewCopy } from "./new-copy";
 import { useNewDocuments } from "./new-documents";
@@ -17,7 +16,7 @@ import { useSession } from "@/auth/session";
 import { useHasAIProvider } from "@/features/ai/providers";
 import { AddApplicationSheet } from "@/features/applications/add-sheet";
 import { routes } from "@/routes";
-import { Button, EmptyState, Screen } from "@/ui";
+import { EmptyState, Screen } from "@/ui";
 
 type Step = "choose" | "copy";
 
@@ -90,7 +89,13 @@ export function NewDocumentScreen() {
 					onStay={() => router.back()}
 				/>
 			) : step === "copy" ? (
-				<NewCopy initialSourceId={params.sourceResumeId} initialJobId={applicationId} busy={busy} onCreate={copy} />
+				<NewCopy
+					initialSourceId={params.sourceResumeId}
+					initialJobId={applicationId}
+					busy={busy}
+					onCreate={copy}
+					onBack={() => setStep("choose")}
+				/>
 			) : (
 				<NewChoices
 					busy={busy}
@@ -106,13 +111,6 @@ export function NewDocumentScreen() {
 					onAtsChecker={() => router.replace(routes.atsChecker())}
 				/>
 			)}
-			{step === "copy" && !importing ? (
-				<View>
-					<Button variant="ghost" isDisabled={busy} onPress={() => setStep("choose")}>
-						<Button.Label>{t`Back`}</Button.Label>
-					</Button>
-				</View>
-			) : null}
 			{savingJob ? <AddApplicationSheet onClose={() => setSavingJob(false)} /> : null}
 		</Screen>
 	);

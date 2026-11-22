@@ -55,6 +55,11 @@ export type RichTextFieldProps = {
 	focus?: FieldFocus | undefined;
 	/** A small control at the end of the label's line (the Profile marker). */
 	labelAction?: ReactNode;
+	/**
+	 * Text holding a table reads only, since the native editor can't edit table markup safely. Defaults to on for
+	 * resume text; letters stay editable, as they always were.
+	 */
+	lockTables?: boolean | undefined;
 	disabled?: boolean | undefined;
 	autoFocus?: boolean | undefined;
 	testID?: string | undefined;
@@ -69,6 +74,7 @@ export function RichTextField({
 	minLines,
 	focus: focusProp,
 	labelAction,
+	lockTables = tools === "resume",
 	disabled = false,
 	autoFocus,
 	testID,
@@ -94,7 +100,7 @@ export function RichTextField({
 	const plain = useRef("");
 	const editor = useRef<ActiveEditor | null>(null);
 	// Table markup can't be edited safely by the native editor; it stays as it is.
-	const readOnly = useMemo(() => /<table[\s>]/i.test(value), [value]);
+	const readOnly = useMemo(() => lockTables && /<table[\s>]/i.test(value), [lockTables, value]);
 	const editable = !disabled && !readOnly;
 
 	const readBaseline = () => loadBaseline(ref, session, onChange);

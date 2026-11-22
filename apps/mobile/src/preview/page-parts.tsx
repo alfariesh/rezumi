@@ -43,7 +43,14 @@ export function ZoomBar({ zoom, onStep, onReset, currentPage, pageCount, onFullS
 		<View className="flex-row items-center justify-between border-t border-separator bg-surface px-2 py-1">
 			<View className="flex-row items-center">
 				<IconButton icon="minus" label={t`Zoom out`} isDisabled={(zoom ?? 1) <= 0.6} onPress={() => onStep(-0.1)} />
-				<Button variant="ghost" size="sm" onPress={onReset} accessibilityLabel={t`Fit to width`}>
+				<Button
+					variant="ghost"
+					size="sm"
+					onPress={onReset}
+					accessibilityLabel={zoom === null ? t`Zoom: fit to width` : t`Zoom: ${Math.round(zoom * 100)}%`}
+					accessibilityHint={t`Fits the page to the width`}
+					testID="page-zoom-reset"
+				>
 					{zoom === null ? t`Fit` : t`${Math.round(zoom * 100)}%`}
 				</Button>
 				<IconButton icon="plus" label={t`Zoom in`} isDisabled={(zoom ?? 1) >= 1.5} onPress={() => onStep(0.1)} />

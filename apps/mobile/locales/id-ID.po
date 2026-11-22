@@ -23,7 +23,7 @@ msgstr "“{0}” ditambahkan ke Keahlian"
 msgid "“{0}” hidden"
 msgstr "“{0}” disembunyikan"
 
-#. placeholder {0}: documents[0]?.name ?? ""
+#. placeholder {0}: document.name
 #: src/features/documents/queries.ts
 msgid "“{0}” moved to Trash"
 msgstr "“{0}” dipindahkan ke Sampah"
@@ -134,11 +134,6 @@ msgstr "{0, plural, one {Tersisa # hari} other {Tersisa # hari}}"
 msgid "{0, plural, one {# day} other {# days}}"
 msgstr "{0, plural, one {# hari} other {# hari}}"
 
-#. placeholder {0}: done.length
-#: src/features/documents/queries.ts
-msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
-msgstr "{0, plural, one {# dokumen dipindahkan ke Sampah} other {# dokumen dipindahkan ke Sampah}}"
-
 #. placeholder {0}: counts.resume + counts.letter
 #: src/features/documents/segment-header.tsx
 msgid "{0, plural, one {# document} other {# documents}}"
@@ -210,6 +205,11 @@ msgstr "{0, plural, other {Dilamar # hari yang lalu}}"
 #: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {Backs # story} other {Backs # stories}}"
 msgstr "{0, plural, other {Mendukung # cerita}}"
+
+#. placeholder {0}: Number(badge)
+#: app/builder/[id]/_layout.tsx
+msgid "{0, plural, one {Check, # issue} other {Check, # issues}}"
+msgstr "{0, plural, other {Cek, # masalah}}"
 
 #. placeholder {0}: selectedIds.length
 #: src/features/applications/list-screen.tsx
@@ -457,10 +457,6 @@ msgstr "{closed} ditutup"
 msgid "{company} · {tabName}"
 msgstr "{company} · {tabName}"
 
-#: src/features/documents/queries.ts
-msgid "{completed, plural, one {# document updated} other {# documents updated}}"
-msgstr "{completed, plural, one {# dokumen diperbarui} other {# dokumen diperbarui}}"
-
 #: src/features/write/section-sheet-pages.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# kolom} other {# kolom}}"
@@ -543,10 +539,6 @@ msgstr "{done} dari {total}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{doneMinutes} of {total} min"
 msgstr "{doneMinutes} dari {total} mnt"
-
-#: src/features/write/write-header.tsx
-msgid "{entries, plural, one {# entry} other {# entries}}"
-msgstr "{entries, plural, one {Entri #} other {Entri #}}"
 
 #: src/features/check/messages.ts
 msgid "{entry} doesn't say when. Dates place it on your timeline."
@@ -749,10 +741,6 @@ msgstr "{pending, plural, one {# usulan edit di halaman ini · tidak ada yang be
 msgid "{role} · {company}"
 msgstr "{role} · {company}"
 
-#: src/features/write/write-header.tsx
-msgid "{sections, plural, one {# section} other {# sections}}"
-msgstr "{sections, plural, one {Bagian #} other {Bagian #}}"
-
 #: src/features/design/gallery-filters.tsx
 msgid "{shown} of {listed} shown"
 msgstr "{shown} dari {listed} ditampilkan"
@@ -805,6 +793,14 @@ msgstr "{toCheck, plural, one {Bidang # perlu dilihat.} other {Bidang # perlu di
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {# untuk memeriksa} other {# untuk memeriksa}}"
 
+#: src/features/documents/segment-header.tsx
+msgid "{TRASH_DAYS, plural, one {Documents are deleted permanently after # day.} other {Documents are deleted permanently after # days.}}"
+msgstr "{TRASH_DAYS, plural, other {Dokumen dihapus permanen setelah # hari.}}"
+
+#: src/features/documents/library-states.tsx
+msgid "{TRASH_DAYS, plural, one {Documents you move here stay for # day.} other {Documents you move here stay for # days.}}"
+msgstr "{TRASH_DAYS, plural, other {Dokumen yang Anda pindahkan ke sini disimpan selama # hari.}}"
+
 #: app/account/membership.tsx
 msgid "{used} in use"
 msgstr "{used} terpakai"
@@ -816,6 +812,10 @@ msgstr "{used} dari {max}"
 #: src/features/design/type-group.tsx
 msgid "{value} pt"
 msgstr "{value} pt"
+
+#: src/features/design/typography-screen.tsx
+msgid "{weight}, not in this font"
+msgstr "{weight}, tidak ada di font ini"
 
 #: src/features/letters/write.tsx
 #: src/features/workspace/tabs/apply.tsx
@@ -2104,11 +2104,12 @@ msgstr "Azerbaijani"
 #: src/features/auth/frame.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
-#: src/features/documents/new-document-screen.tsx
+#: src/features/documents/new-copy.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/bring-screen.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
 msgstr "Kembali"
 
@@ -2126,10 +2127,6 @@ msgstr "Kembali ke lamaran"
 #: src/features/workspace/shell.tsx
 msgid "Back to current"
 msgstr "Kembali ke versi saat ini"
-
-#: src/shell/builder-chrome/top-bar.tsx
-msgid "Back to Documents"
-msgstr "Kembali ke Dokumen"
 
 #: src/features/history/history-panel.tsx
 #: src/features/letters/share.tsx
@@ -2417,6 +2414,10 @@ msgstr "Sertifikasi"
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "Mengubah"
+
+#: src/features/entries/custom-fields.tsx
+msgid "Change icon"
+msgstr "Ganti ikon"
 
 #: src/features/letters/write.tsx
 msgid "Change it in Design"
@@ -3335,6 +3336,11 @@ msgstr "Tidak dapat mengimpor file. Coba lagi dari Dokumen."
 #: src/features/documents/import-file.ts
 msgid "Couldn't import this file. Check the selected format. PDFs need a readable text layer; account archives must be extracted first."
 msgstr "Tidak dapat mengimpor file ini. Periksa format yang dipilih. PDF memerlukan lapisan teks yang dapat dibaca; arsip akun harus di ekstrak terlebih dahulu."
+
+#: src/features/documents/use-import.ts
+#: src/features/documents/use-start-document.ts
+msgid "Couldn't link the application. Check Applications before retrying."
+msgstr "Gagal menautkan lamaran. Periksa Lamaran sebelum mencoba lagi."
 
 #: src/features/check/use-link-application.ts
 msgid "Couldn't link the application. Try again."
@@ -4370,10 +4376,6 @@ msgstr "Opsi dokumen"
 msgid "Documents"
 msgstr "Dokumen"
 
-#: src/features/documents/segment-header.tsx
-msgid "Documents are deleted permanently after 30 days."
-msgstr "Dokumen dihapus secara permanen setelah 30 hari."
-
 #: src/features/application-detail/sections.tsx
 msgid "Documents for this job"
 msgstr "Dokumen untuk pekerjaan ini"
@@ -4385,10 +4387,6 @@ msgstr "Dokumen di Sampah tidak dihitung."
 #: src/features/documents/segment-header.tsx
 msgid "Documents sections"
 msgstr "Bagian Dokumen"
-
-#: src/features/documents/library-states.tsx
-msgid "Documents you move here stay for 30 days."
-msgstr "Dokumen yang Anda pindahkan ke sini disimpan selama 30 hari."
 
 #: src/features/share/custom-domain.tsx
 msgid "Domain connected"
@@ -5100,13 +5098,13 @@ msgstr "Kecocokan"
 msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
 msgstr "Pemeriksaan kecocokan, briefing, masukan latihan, evaluasi, jawaban, dan balasan masuk ke sini saat tab lain membuatnya."
 
-#: src/preview/page-parts.tsx
-msgid "Fit to width"
-msgstr "Paskan ke lebar"
-
 #: src/features/design/preset-names.ts
 msgid "Fitness"
 msgstr "Kebugaran"
+
+#: src/preview/page-parts.tsx
+msgid "Fits the page to the width"
+msgstr "Menyesuaikan halaman dengan lebar layar"
 
 #: src/preview/page-parts.tsx
 msgid "Fitting…"
@@ -5726,6 +5724,7 @@ msgstr "saya mundur"
 
 #: src/features/design/colors-screen.tsx
 #: src/features/design/icon-picker.tsx
+#: src/features/entries/custom-fields.tsx
 #: src/features/entries/entry-fields.tsx
 #: src/features/entries/fields.ts
 #: src/features/entries/icon-picker.tsx
@@ -5743,11 +5742,6 @@ msgstr "Warna ikon"
 #: src/features/design/icons-group.tsx
 msgid "Icon style"
 msgstr "Gaya ikon"
-
-#. placeholder {0}: field.icon
-#: src/features/entries/custom-fields.tsx
-msgid "Icon: {0}"
-msgstr "Ikon: {0}"
 
 #: src/features/write/section-menu.tsx
 msgid "Icon…"
@@ -5801,6 +5795,10 @@ msgstr "Impor resume"
 msgid "Import canceled."
 msgstr "Impor dibatalkan."
 
+#: src/features/documents/use-import.ts
+msgid "Import canceled. Refresh Documents before retrying if the upload had finished."
+msgstr "Impor dibatalkan. Muat ulang Dokumen sebelum mencoba lagi, siapa tahu unggahan sudah selesai."
+
 #: src/features/write/add-section.tsx
 msgid "Import it"
 msgstr "Impor itu"
@@ -5819,8 +5817,8 @@ msgid "Imported"
 msgstr "Impor"
 
 #: src/features/write/write-header.tsx
-msgid "Imported from {source}."
-msgstr "Diimpor dari {source}."
+msgid "Imported from {source}. Found {sections, plural, one {# section} other {# sections}} and {entries, plural, one {# entry} other {# entries}}."
+msgstr "Diimpor dari {source}. Ditemukan {sections, plural, other {# bagian}} dan {entries, plural, other {# entri}}."
 
 #: src/features/documents/new-import.tsx
 msgid "Importing"
@@ -5836,8 +5834,8 @@ msgstr "Memperbaiki memerlukan penyedia AI. Hubungkan satu untuk melanjutkan."
 
 #: src/features/entries/improve.tsx
 #: src/features/entries/rich-text-toolbar.tsx
-msgid "Improve selected line"
-msgstr "Tingkatkan garis yang dipilih"
+msgid "Improve this line"
+msgstr "Perbaiki baris ini"
 
 #: src/features/entries/improve.tsx
 msgid "Improving…"
@@ -6288,6 +6286,10 @@ msgid "Label for detail {0}"
 msgstr "Label untuk detail {0}"
 
 #: src/features/entries/custom-fields.tsx
+msgid "Label removed"
+msgstr "Label dihapus"
+
+#: src/features/entries/custom-fields.tsx
 msgid "Label, e.g. Languages"
 msgstr "Label, mis. Bahasa"
 
@@ -6544,6 +6546,10 @@ msgstr "Label tautan"
 msgid "Link sent"
 msgstr "Tautan terkirim"
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "Link the application"
+msgstr "Tautkan lamaran"
+
 #: src/features/documents/library-menu.tsx
 msgid "Link to application"
 msgstr "Tautan ke lamaran pekerjaan"
@@ -6569,6 +6575,7 @@ msgid "Linked resume"
 msgstr "Resume tertaut"
 
 #. placeholder {0}: document.application.company
+#: src/features/documents/document-item.tsx
 #: src/features/search/search-screen.tsx
 msgid "Linked to {0}"
 msgstr "Tertaut ke {0}"
@@ -7071,6 +7078,8 @@ msgstr "Pindahkan lamaran kerja"
 msgid "Move detail up"
 msgstr "Naikkan detail"
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7127,6 +7136,8 @@ msgstr "Pindah ke Sampah"
 msgid "Move to…"
 msgstr "Pindah ke…"
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7137,12 +7148,6 @@ msgstr "Naik"
 #: src/features/ats-checker/messages.ts
 msgid "Move your email and phone number to the top of page one."
 msgstr "Pindahkan alamat email dan nomor telepon Anda ke bagian atas halaman pertama."
-
-#. placeholder {0}: done.length
-#. placeholder {1}: documents.length
-#: src/features/documents/queries.ts
-msgid "Moved {0} of {1} to Trash. Locked documents were skipped. Refresh and retry any failures."
-msgstr "Memindahkan {0} dari {1} ke Sampah. Dokumen yang dikunci dilewati. Segarkan dan coba lagi jika ada kegagalan."
 
 #. placeholder {0}: getStageLabel(entry.stage)
 #. placeholder {0}: getStageLabel(stage)
@@ -8783,10 +8788,6 @@ msgstr "Presentasi"
 msgid "Press and hold"
 msgstr "Tekan dan tahan"
 
-#: src/features/design/layout-column.tsx
-msgid "Press and hold, then drag to another column or page."
-msgstr "Tekan dan tahan, lalu seret ke kolom atau halaman lain."
-
 #: src/features/share/web-page.tsx
 msgid "Preview web page"
 msgstr "Pratinjau halaman web"
@@ -9440,7 +9441,6 @@ msgstr "Buka kembali"
 msgid "Reorder {name}"
 msgstr "Ubah urutan {name}"
 
-#: src/features/design/layout-column.tsx
 #: src/features/write/section-row.tsx
 msgid "Reorder {title}"
 msgstr "Susun ulang {title}"
@@ -9623,7 +9623,7 @@ msgstr "CV"
 
 #: app/account/preferences.tsx
 msgid "Resumes always render on white paper, whatever the theme."
-msgstr "resume selalu ditampilkan di kertas putih, apa pun temanya."
+msgstr "Resume selalu ditampilkan di kertas putih, apa pun temanya."
 
 #: src/features/profile/save-note.tsx
 msgid "Resumes that followed"
@@ -10934,10 +10934,6 @@ msgstr "Hal benar yang bisa kamu buktikan, seperti “Saya membimbing dua associ
 msgid "Something went wrong on the server. Try again in a moment."
 msgstr "Ada masalah di server. Coba lagi sebentar lagi."
 
-#: src/features/history/history-panel.tsx
-msgid "Something went wrong. Try again."
-msgstr "Terjadi kesalahan. Coba lagi."
-
 #: src/features/documents/library-toolbar.tsx
 msgid "Sort"
 msgstr "Menyortir"
@@ -11607,6 +11603,10 @@ msgstr "Akunnya berubah. Coba lagi."
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "Alamat hanya boleh berisi huruf kecil dan angka, dipisahkan oleh tanda hubung tunggal."
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "The application is saved. Linking it to this resume didn't work yet."
+msgstr "Lamaran sudah disimpan, tetapi belum berhasil ditautkan ke resume ini."
+
 #: src/features/application-detail/sections.tsx
 msgid "The application keeps its other details."
 msgstr "Lamaran pekerjaan menyimpan rincian lainnya."
@@ -12191,6 +12191,10 @@ msgstr "Tautan atur ulang ini kedaluwarsa atau sudah dipakai. Minta tautan baru.
 msgid "This resume changed elsewhere"
 msgstr "CV ini berubah di tempat lain"
 
+#: src/features/write/profile-link.tsx
+msgid "This resume couldn't be found. It may have been deleted."
+msgstr "Resume ini tidak ditemukan. Mungkin sudah dihapus."
+
 #: src/features/check/check-pane.tsx
 msgid "This resume is locked. Checks are available; editing is disabled."
 msgstr "CV ini terkunci. Cek tersedia; pengeditan dinonaktifkan."
@@ -12386,6 +12390,14 @@ msgid "Tomorrow"
 msgstr "Besok"
 
 #: src/features/design/color-group.tsx
+msgid "Too dark for headings on this background color. It may be hard to read."
+msgstr "Terlalu gelap untuk judul di warna latar ini. Mungkin sulit dibaca."
+
+#: src/features/design/color-group.tsx
+msgid "Too light for headings on this background color. It may be hard to read and print faintly."
+msgstr "Terlalu terang untuk judul di warna latar ini. Mungkin sulit dibaca dan tercetak pudar."
+
+#: src/features/design/color-group.tsx
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "Terlalu terang untuk judul berwarna putih. Mungkin sulit untuk membaca dan mencetak dengan samar."
 
@@ -12402,6 +12414,7 @@ msgstr "Terlalu banyak file dalam waktu singkat. Tunggu sebentar, lalu coba lagi
 #: src/features/ats-checker/check.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Too many requests. Try again later."
 msgstr "Terlalu banyak permintaan. Coba lagi nanti."
 
@@ -12652,10 +12665,7 @@ msgstr "Garis bawahi tautan"
 #: src/features/assistant/proposals.ts
 #: src/features/career/undo.ts
 #: src/features/check/actions.ts
-#: src/features/design/advanced-group.tsx
 #: src/features/design/draft.ts
-#: src/features/design/template-group.tsx
-#: src/features/design/uploaded-fonts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/queries.ts
 #: src/features/entries/hooks.ts
@@ -12754,11 +12764,6 @@ msgstr "Hingga 25 MB · diperiksa di server dan tidak disimpan"
 msgid "Updated"
 msgstr "Diperbarui"
 
-#. placeholder {0}: documents.length
-#: src/features/documents/queries.ts
-msgid "Updated {completed} of {0}. Locked documents, and letters for public links, were skipped. Refresh and retry any failures."
-msgstr "Memperbarui {completed} dari {0}. Dokumen yang dikunci, dan surat lamaran untuk tautan publik, dilewati. Segarkan dan coba lagi jika ada kegagalan."
-
 #. placeholder {0}: followed.length
 #: src/features/profile/save-note.tsx
 msgid "Updated in {0} resumes"
@@ -12841,6 +12846,10 @@ msgstr "Gunakan warna yang lebih gelap"
 #: src/features/design/colors-screen.tsx
 msgid "Use a hex value like #3E6B4F or rgba(62, 107, 79, 1)."
 msgstr "Gunakan nilai hex seperti #3E6B4F atau rgba(62, 107, 79, 1)."
+
+#: src/features/design/color-group.tsx
+msgid "Use a lighter shade"
+msgstr "Gunakan warna yang lebih terang"
 
 #: src/features/ats-checker/messages.ts
 msgid "Use a plain international form, such as +1 555 010 1234."
@@ -13852,8 +13861,8 @@ msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or 
 msgstr "Bahasa Anda disimpan. Mulai ulang Rezumi untuk menerapkan tata letak kiri-ke-kanan atau kanan-ke-kiri yang baru."
 
 #: src/shell/builder-chrome/draft-chrome.tsx
-msgid "Your latest changes aren't on the server yet. They stay on this phone and are sent when it can reach the server again."
-msgstr "Perubahan terakhirmu belum ada di server. Perubahan itu tetap di ponsel ini dan dikirim saat server bisa dijangkau lagi."
+msgid "Your latest changes aren't on the server yet. They stay on this device and are sent when it can reach the server again."
+msgstr "Perubahan terakhir Anda belum sampai ke server. Perubahan tetap tersimpan di perangkat ini dan dikirim saat server bisa dijangkau lagi."
 
 #: src/features/ats-checker/messages.ts
 msgid "Your lines are packed very tightly."
@@ -13962,9 +13971,17 @@ msgstr "Profilmu sudah punya yang kami temukan, atau sumbernya tidak bisa dibaca
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr "Profil Anda sudah berisi yang kami temukan, atau sumbernya tidak bisa dibaca. Isi kapan saja."
 
+#: src/features/write/profile-link.tsx
+msgid "Your Profile can't take this part as it is. Check it and try again."
+msgstr "Bagian ini belum bisa disimpan ke Profil apa adanya. Periksa lalu coba lagi."
+
 #: src/features/profile/conflict-sheet.tsx
 msgid "Your Profile changed elsewhere"
 msgstr "Profilmu berubah di tempat lain"
+
+#: src/features/write/profile-link.tsx
+msgid "Your Profile changed somewhere else. Try again."
+msgstr "Profil Anda diubah di tempat lain. Coba lagi."
 
 #: src/features/assistant/coach-screen.tsx
 msgid "Your Profile couldn't load. Try again or switch Profile off before sending."
@@ -14050,6 +14067,7 @@ msgstr "Sesimu berakhir. Masuk lagi, lalu coba lagi."
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Your session expired. Sign in again."
 msgstr "Sesi Anda telah berakhir. Masuk lagi."
 
@@ -14099,6 +14117,15 @@ msgstr "Perbesar"
 #: src/preview/page-parts.tsx
 msgid "Zoom out"
 msgstr "Perkecil"
+
+#. placeholder {0}: Math.round(zoom * 100)
+#: src/preview/page-parts.tsx
+msgid "Zoom: {0}%"
+msgstr "Zoom: {0}%"
+
+#: src/preview/page-parts.tsx
+msgid "Zoom: fit to width"
+msgstr "Zoom: pas selebar layar"
 
 #: src/features/settings/locale-names.ts
 msgid "Zulu"

@@ -62,8 +62,9 @@ export function DocumentsScreen({ segment }: DocumentsScreenProps) {
 	const liveRows = live.data ?? [];
 	const type = segment === "resume" || segment === "letter" ? segment : "all";
 	const filters = { type, q, tags, sort, public: publicOnly } as const;
+	// Trash has no search field or chips, so the library's filters never hide a trashed document there.
 	const shown = trash
-		? filterDocuments(all, { ...filters, type: "all", tags: [], public: false })
+		? filterDocuments(all, { ...filters, type: "all", q: "", tags: [], public: false })
 		: filterDocuments(all, filters);
 	const unsynced = new Set(pending.map(documentKey));
 	const recoverable = trash

@@ -56,7 +56,7 @@ export function DraftChrome({ useStore, actions }: DraftChromeProps) {
 	useUnsavedChangesGuard({
 		dirty: status === "error" && !locked,
 		title: t`Leave before saving?`,
-		message: t`Your latest changes aren't on the server yet. They stay on this phone and are sent when it can reach the server again.`,
+		message: t`Your latest changes aren't on the server yet. They stay on this device and are sent when it can reach the server again.`,
 		leaveLabel: t`Leave`,
 	});
 	return null;

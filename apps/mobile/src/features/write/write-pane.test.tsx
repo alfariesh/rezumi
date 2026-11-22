@@ -4,7 +4,9 @@ import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 // version of a part that differs (Use Profile's with Undo, Save to Profile through `profile.savePart`).
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { act, fireEvent, screen, within } from "@testing-library/react-native";
+import { ORPCError } from "@orpc/client";
 import { emptyProfileData } from "@rezumi/schema/profile/data";
+import { saveToProfileError } from "./profile-link";
 import { sampleResume } from "./test-store";
 import { WritePane } from "./write-pane";
 import { useResumeStore } from "@/draft";
@@ -61,7 +63,13 @@ const sidebar = () => data().metadata.layout.pages[0]?.sidebar ?? [];
 const main = () => data().metadata.layout.pages[0]?.main ?? [];
 
 function load(resume: ResumeData = sampleResume()) {
-	useResumeStore.setState({ document: { id: "r1", name: "CV" }, data: resume, locked: false, past: [] } as never);
+	useResumeStore.setState({
+		document: { id: "r1", name: "CV" },
+		data: resume,
+		locked: false,
+		past: [],
+		last: null,
+	} as never);
 }
 
 beforeEach(() => {
@@ -87,23 +95,57 @@ describe("Write outline", () => {
 
 	it("moves a section with the screen reader's Move down and up, across into the sidebar", async () => {
 		await renderScreen(<WritePane id="r1" />);
-		// Experience is the main column's only section in use; below it comes Skills, first in the sidebar.
-		await fireEvent(screen.getByTestId("section-experience"), "accessibilityAction", {
-			nativeEvent: { actionName: "down" },
-		});
+		// The actions sit on the focusable title (the one a screen reader lands on), not on the row around it.
+		const title = () => screen.getByLabelText("Experience, 2 entries");
+		const actions = () => (title().props.accessibilityActions as { name: string }[]).map((action) => action.name);
+		// Experience is the main column's only section in use and comes first: it can only move down.
+		expect(actions()).toEqual(["down"]);
+		// Below it comes Skills, first in the sidebar.
+		await fireEvent(title(), "accessibilityAction", { nativeEvent: { actionName: "down" } });
 		expect(main()).not.toContain("experience");
 		expect(sidebar().slice(0, 2)).toEqual(["skills", "experience"]);
-		await fireEvent(screen.getByTestId("section-experience"), "accessibilityAction", {
-			nativeEvent: { actionName: "up" },
-		});
+		// Now last of the two sections in use: it can only move back up.
+		expect(actions()).toEqual(["up"]);
+		await fireEvent(title(), "accessibilityAction", { nativeEvent: { actionName: "up" } });
 		expect(sidebar().slice(0, 2)).toEqual(["experience", "skills"]);
+	});
+
+	it("offers Move up and Move down only where they act, and none for a hidden section", async () => {
+		await renderScreen(<WritePane id="r1" />);
+		await fireEvent.press(screen.getByLabelText("Options for Experience"));
+		const sheet = screen.getByTestId("section-sheet");
+		expect(within(sheet).queryByText("Move up")).toBeNull();
+		expect(within(sheet).getByText("Move down")).toBeOnTheScreen();
+		await fireEvent.press(screen.getByLabelText("Close"));
+
+		await fireEvent.press(screen.getByLabelText("Hide Experience from the page"));
+		expect(screen.getByLabelText("Experience, 2 entries").props.accessibilityActions).toEqual([]);
+	});
+
+	it("leaves a section where it is when Move to… picks its own place", async () => {
+		await renderScreen(<WritePane id="r1" />);
+		// Experience moves into the sidebar below Skills; placed there again, it would jump to the top.
+		await fireEvent(screen.getByLabelText("Experience, 2 entries"), "accessibilityAction", {
+			nativeEvent: { actionName: "down" },
+		});
+		const moved = sidebar();
+		expect(moved.slice(0, 2)).toEqual(["skills", "experience"]);
+		await fireEvent.press(screen.getByLabelText("Options for Experience"));
+		await fireEvent.press(within(screen.getByTestId("section-sheet")).getByText("Move to…"));
+		await fireEvent.press(screen.getByText("Page 1 · Sidebar"));
+		expect(sidebar()).toEqual(moved);
 	});
 
 	it("opens a section's entries and moves an entry down", async () => {
 		await renderScreen(<WritePane id="r1" />);
 		await fireEvent.press(screen.getByLabelText("Experience, 2 entries"));
 		expect(screen.getByTestId("entry-job-a")).toBeOnTheScreen();
-		await fireEvent(screen.getByTestId("entry-job-a"), "accessibilityAction", { nativeEvent: { actionName: "down" } });
+		expect(screen.getByTestId("entry-job-a-title").props.accessibilityActions).toEqual([
+			{ name: "down", label: "Move down" },
+		]);
+		await fireEvent(screen.getByTestId("entry-job-a-title"), "accessibilityAction", {
+			nativeEvent: { actionName: "down" },
+		});
 		expect(data().sections.experience.items.map((item) => item.id)).toEqual(["job-b", "job-a"]);
 		await fireEvent.press(screen.getByLabelText("Designer, entry 1 of 2"));
 		expect(mockRouter.push).toHaveBeenCalledWith("/builder/r1/entry/experience/job-b");
@@ -188,6 +230,20 @@ describe("Profile markers", () => {
 			resumeId: "r1",
 			part: { kind: "item", section: "experience", id: "job-a" },
 		});
+	});
+
+	it("says why Save to Profile failed instead of only asking to try again", () => {
+		expect(saveToProfileError(new ORPCError("NOT_FOUND"))).toBe(
+			"This resume couldn't be found. It may have been deleted.",
+		);
+		expect(saveToProfileError(new ORPCError("PROFILE_VERSION_CONFLICT"))).toBe(
+			"Your Profile changed somewhere else. Try again.",
+		);
+		expect(saveToProfileError(new ORPCError("FORBIDDEN", { message: "Ask your admin." }))).toBe("Ask your admin.");
+		expect(saveToProfileError(new ORPCError("INTERNAL_SERVER_ERROR", { message: "stack" }))).toBe(
+			"Couldn't save to your Profile. Try again.",
+		);
+		expect(saveToProfileError(new Error("offline"))).toBe("Couldn't save to your Profile. Try again.");
 	});
 
 	it("adds a section from the Profile with its entries", async () => {

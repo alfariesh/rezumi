@@ -5,9 +5,11 @@ import { act, fireEvent, screen } from "@testing-library/react-native";
 import { RichTextField, RichTextToolbar } from "./rich-text-field";
 import { renderScreen } from "@/test/render-screen";
 
+const EDITOR_HTML = "<html><p>Led a team</p></html>";
+
 const mockEditor = {
 	props: null as Record<string, (event: unknown) => void> | null,
-	html: "<html><p>Led a team</p></html>",
+	html: EDITOR_HTML,
 	commands: [] as string[],
 	record: (props: Record<string, (event: unknown) => void>) => {
 		mockEditor.props = props;
@@ -44,16 +46,10 @@ jest.mock("@/features/ai/providers", () => ({
 
 const focusMarks = { onFocus: jest.fn(), onBlur: jest.fn() };
 
-async function renderField(tools: RichTextTools, onChange = jest.fn()) {
+async function renderField(tools: RichTextTools, onChange = jest.fn(), value = "<p>Led a team</p>") {
 	await renderScreen(
 		<>
-			<RichTextField
-				label="Description"
-				value="<p>Led a team</p>"
-				tools={tools}
-				focus={focusMarks}
-				onChange={onChange}
-			/>
+			<RichTextField label="Description" value={value} tools={tools} focus={focusMarks} onChange={onChange} />
 			<RichTextToolbar />
 		</>,
 	);
@@ -72,6 +68,11 @@ beforeEach(() => {
 	mockEditor.commands = [];
 });
 
+afterEach(() => {
+	// A test may change what the editor holds; the next one starts from the default, even after a failure.
+	mockEditor.html = EDITOR_HTML;
+});
+
 describe("RichTextField", () => {
 	it("gives resume text the full toolbar and tells the draft about focus", async () => {
 		await renderField("resume");
@@ -79,7 +80,7 @@ describe("RichTextField", () => {
 		expect(focusMarks.onFocus).toHaveBeenCalled();
 		expect(screen.getByLabelText("Link")).toBeOnTheScreen();
 		expect(screen.getByLabelText("Text style")).toBeOnTheScreen();
-		expect(screen.getByLabelText("Improve selected line")).toBeOnTheScreen();
+		expect(screen.getByLabelText("Improve this line")).toBeOnTheScreen();
 		expect(screen.queryByLabelText("Underline")).toBeNull();
 		await act(async () => mockEditor.props?.onBlur?.({}));
 		expect(focusMarks.onBlur).toHaveBeenCalled();
@@ -92,7 +93,7 @@ describe("RichTextField", () => {
 		expect(screen.getByLabelText("Underline")).toBeOnTheScreen();
 		expect(screen.getByLabelText("Numbered list")).toBeOnTheScreen();
 		expect(screen.queryByLabelText("Link")).toBeNull();
-		expect(screen.queryByLabelText("Improve selected line")).toBeNull();
+		expect(screen.queryByLabelText("Improve this line")).toBeNull();
 		await fireEvent.press(screen.getByLabelText("Underline"));
 		expect(mockEditor.commands).toContain("underline");
 	});
@@ -122,6 +123,17 @@ describe("RichTextField", () => {
 		await fireEvent.press(await screen.findByTestId("improve-replace"));
 		expect(onChange).not.toHaveBeenCalledWith(expect.stringContaining("six"));
 		expect(screen.getByText("The line changed since you asked, so it wasn't replaced.")).toBeOnTheScreen();
-		mockEditor.html = "<html><p>Led a team</p></html>";
+	});
+
+	it("keeps resume text with a table read-only, but a letter with one stays editable", async () => {
+		const table = "<table><tr><td>Q1</td></tr></table><p>Led a team</p>";
+		await renderField("resume", jest.fn(), table);
+		expect(mockEditor.props?.editable).toBe(false);
+		expect(screen.getByText(/This text is read-only/)).toBeOnTheScreen();
+		screen.unmount();
+
+		await renderField("letter", jest.fn(), table);
+		expect(mockEditor.props?.editable).toBe(true);
+		expect(screen.queryByText(/This text is read-only/)).toBeNull();
 	});
 });

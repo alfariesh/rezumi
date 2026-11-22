@@ -47,13 +47,13 @@ function FontGroup({ data, write, disabled, prefix }: FontGroupProps) {
 		...uploaded.map((family) => ({ value: family, label: family })),
 		...CATALOG.filter((option) => !uploaded.includes(option.value)),
 	];
-	const available = sortFontWeights([
-		...new Set(
-			uploadedFontWeights(typography.customFonts, item.fontFamily) ??
-				getFont(item.fontFamily)?.weights ??
-				item.fontWeights,
-		),
-	]) as FontWeight[];
+	const supported = new Set<string>(
+		uploadedFontWeights(typography.customFonts, item.fontFamily) ??
+			getFont(item.fontFamily)?.weights ??
+			item.fontWeights,
+	);
+	// A stored weight the family lacks (kept from another font) still shows, marked, so it can be taken off.
+	const available = sortFontWeights([...new Set([...supported, ...item.fontWeights])]) as FontWeight[];
 	const name = uploaded.includes(item.fontFamily) ? item.fontFamily : getFontDisplayName(item.fontFamily);
 	const title =
 		prefix === "body"
@@ -84,18 +84,19 @@ function FontGroup({ data, write, disabled, prefix }: FontGroupProps) {
 				<View accessibilityRole={prefix === "heading" ? "radiogroup" : "list"} className="flex-row flex-wrap gap-2">
 					{available.map((weight) => {
 						const selected = item.fontWeights.includes(weight);
+						const missing = !supported.has(weight);
 						return (
 							<Chip
 								key={weight}
 								variant={selected ? "primary" : "secondary"}
-								color={selected ? "accent" : "default"}
+								color={missing ? "warning" : selected ? "accent" : "default"}
 								accessibilityRole={prefix === "heading" ? "radio" : "checkbox"}
 								accessibilityState={{ checked: selected, disabled }}
 								disabled={disabled}
 								onPress={() => toggle(weight)}
 								className="min-h-9"
 							>
-								<Chip.Label>{weight}</Chip.Label>
+								<Chip.Label>{missing ? t`${weight}, not in this font` : weight}</Chip.Label>
 							</Chip>
 						);
 					})}

@@ -22,6 +22,22 @@ type IconPickerSheetProps = {
 
 const ALL = "all";
 
+/**
+ * A screen-reader name for an icon id (Hugeicons file names carry no label): words capitalised, the first variant's
+ * "01" dropped and later ones numbered ("mortarboard-01" → "Mortarboard", "mail-02" → "Mail 2").
+ */
+export function iconLabel(id: string): string {
+	const words = id.split("-");
+	const last = words.at(-1) ?? "";
+	if (words.length > 1 && /^\d+$/.test(last)) {
+		words.pop();
+		const variant = Number(last);
+		if (variant > 1) words.push(String(variant));
+	}
+	const text = words.join(" ");
+	return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 export function IconPickerSheet({ isOpen, onOpenChange, value, iconStyle, onChange }: IconPickerSheetProps) {
 	const { t, i18n } = useLingui();
 	const glyphs = useIconGlyphs(iconStyle);
@@ -93,7 +109,7 @@ export function IconPickerSheet({ isOpen, onOpenChange, value, iconStyle, onChan
 				renderItem={({ item: icon }) => (
 					<Pressable
 						accessibilityRole="radio"
-						accessibilityLabel={icon || t`No icon`}
+						accessibilityLabel={icon ? iconLabel(icon) : t`No icon`}
 						accessibilityState={{ checked: value === icon }}
 						onPress={() => pick(icon)}
 						style={[{ width: `${100 / columns}%` }]}

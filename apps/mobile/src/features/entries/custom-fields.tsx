@@ -8,7 +8,7 @@ import { useState } from "react";
 import { View } from "react-native";
 import { generateId } from "@rezumi/utils/string";
 import { useUndoToast } from "./hooks";
-import { IconPickerSheet } from "./icon-picker";
+import { IconPickerSheet, ResumeIconGlyph, hasResumeIcon } from "./icon-picker";
 import { useWriteSource } from "./source";
 import { Button, IconButton, Input, Label, Sheet, Surface, Text, TextField } from "@/ui";
 
@@ -29,6 +29,16 @@ export function CustomFields({ fields, disabled, marker }: CustomFieldsProps) {
 			const found = list.find((field) => field.id === id);
 			if (found) mutate(found);
 		});
+	// Moving and removing are undo steps of their own, and act on the detail by id (never a stale index).
+	const step = (id: string, mutate: (list: CustomField[], index: number) => void) =>
+		update(
+			(draft) => {
+				const list = draft.basics.customFields;
+				const index = list.findIndex((field) => field.id === id);
+				if (index !== -1) mutate(list, index);
+			},
+			{ newStep: true },
+		);
 	const saveLink = () => {
 		const value = link.trim() === "https://" ? "" : link.trim();
 		if (linkFor)
@@ -61,9 +71,20 @@ export function CustomFields({ fields, disabled, marker }: CustomFieldsProps) {
 						setLink(field.link || "https://");
 						setLinkFor(field.id);
 					}}
-					onMoveUp={() => edit(`${field.id}.move`, (list) => list.splice(index - 1, 0, ...list.splice(index, 1)))}
+					onMoveUp={() =>
+						step(field.id, (list, at) => {
+							if (at > 0) list.splice(at - 1, 0, ...list.splice(at, 1));
+						})
+					}
+					onRemoveLabel={() => {
+						step(field.id, (list, at) => {
+							const target = list[at];
+							if (target) target.label = "";
+						});
+						undoToast(t`Label removed`);
+					}}
 					onRemove={() => {
-						update((draft) => void draft.basics.customFields.splice(index, 1), { newStep: true });
+						step(field.id, (list, at) => void list.splice(at, 1));
 						undoToast(t`Detail removed`);
 					}}
 				/>
@@ -130,6 +151,7 @@ type CustomFieldRowProps = {
 	onIcon: () => void;
 	onLink: () => void;
 	onMoveUp: () => void;
+	onRemoveLabel: () => void;
 	onRemove: () => void;
 };
 
@@ -142,20 +164,19 @@ function CustomFieldRow({
 	onIcon,
 	onLink,
 	onMoveUp,
+	onRemoveLabel,
 	onRemove,
 }: CustomFieldRowProps) {
 	const { t } = useLingui();
 	const { focus } = useWriteSource();
 	const [labelOpen, setLabelOpen] = useState(Boolean(field.label));
+	const drawn = Boolean(field.icon) && hasResumeIcon(field.icon);
 	// A label that appears from elsewhere (an undo, a remote copy) shows its field too.
 	if (field.label && !labelOpen) setLabelOpen(true);
 
-	// Hiding the label field drops its text, so what shows is what prints.
+	// Hiding the label field drops its text (its own undo step, with Undo), so what shows is what prints.
 	const toggleLabel = () => {
-		if (labelOpen && field.label)
-			editField(field.id, "label", (target) => {
-				target.label = "";
-			});
+		if (labelOpen && field.label) onRemoveLabel();
 		setLabelOpen(!labelOpen);
 	};
 
@@ -199,8 +220,16 @@ function CustomFieldRow({
 				/>
 			</TextField>
 			<View className="flex-row items-center">
-				<Button variant="ghost" size="sm" isDisabled={disabled} onPress={onIcon}>
-					{field.icon ? t`Icon: ${field.icon}` : t`Choose icon`}
+				{/* The chosen icon itself: its id is an English file name, not a label. */}
+				<Button
+					variant="ghost"
+					size="sm"
+					isDisabled={disabled}
+					onPress={onIcon}
+					accessibilityLabel={drawn ? t`Change icon` : t`Choose icon`}
+				>
+					{drawn ? <ResumeIconGlyph name={field.icon} /> : null}
+					<Button.Label>{drawn ? t`Icon` : t`Choose icon`}</Button.Label>
 				</Button>
 				<View className="flex-1" />
 				<IconButton

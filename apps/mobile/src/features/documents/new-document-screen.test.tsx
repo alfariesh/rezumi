@@ -2,6 +2,7 @@
 // the document in place of the sheet, Copy a resume for a job, an import that fails with a way forward, and Save a job.
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import { NewDocumentScreen } from "./new-document-screen";
+import { useNewDocuments } from "./new-documents";
 import { renderScreen } from "@/test/render-screen";
 
 const mockReplace = jest.fn();
@@ -11,9 +12,12 @@ const mockClient = {
 	createResume: jest.fn((_input: unknown) => Promise.resolve("resume-new")),
 	createLetter: jest.fn((_input: unknown) => Promise.resolve({ id: "letter-new" })),
 	copyForJob: jest.fn((_input: unknown) => Promise.resolve("resume-copy")),
+	linkApplication: jest.fn((_input: unknown) => Promise.resolve()),
 };
+const mockApplications: { applications: unknown[] } = { applications: [] };
 const mockPicker = jest.fn();
 const mockImport = jest.fn();
+const mockToast = jest.fn();
 
 jest.mock("expo-router", () => ({
 	useRouter: () => ({ push: mockPush, replace: mockReplace, back: jest.fn() }),
@@ -37,7 +41,10 @@ jest.mock("@/api/client", () => ({
 	client: {
 		resume: { create: (input: unknown) => mockClient.createResume(input) },
 		coverLetters: { create: (input: unknown) => mockClient.createLetter(input) },
-		documents: { copyForJob: (input: unknown) => mockClient.copyForJob(input) },
+		documents: {
+			copyForJob: (input: unknown) => mockClient.copyForJob(input),
+			linkApplication: (input: unknown) => mockClient.linkApplication(input),
+		},
 	},
 	orpc: {
 		documents: { key: () => ["documents"], list: { key: () => ["documents", "list"] } },
@@ -45,7 +52,12 @@ jest.mock("@/api/client", () => ({
 		coverLetters: { key: () => ["coverLetters"] },
 		applications: {
 			key: () => ["applications"],
-			listSummary: { queryOptions: () => ({ queryKey: ["applications"], queryFn: () => Promise.resolve([]) }) },
+			listSummary: {
+				queryOptions: () => ({
+					queryKey: ["applications"],
+					queryFn: () => Promise.resolve(mockApplications.applications),
+				}),
+			},
 		},
 	},
 }));
@@ -74,9 +86,11 @@ jest.mock("@/features/applications/add-sheet", () => {
 	const { Text } = jest.requireActual("react-native");
 	return { AddApplicationSheet: () => <Text>Save a job sheet</Text> };
 });
+jest.mock("@/ui", () => ({ ...jest.requireActual("@/ui"), showToast: (options: unknown) => mockToast(options) }));
 
 beforeEach(() => {
 	jest.clearAllMocks();
+	mockApplications.applications = [];
 	for (const key of Object.keys(mockParams)) delete mockParams[key];
 });
 
@@ -131,5 +145,59 @@ describe("New", () => {
 		await renderScreen(<NewDocumentScreen />);
 		await fireEvent.press(screen.getByTestId("new-save-job"));
 		expect(screen.getByText("Save a job sheet")).toBeTruthy();
+	});
+});
+
+describe("New: recovering from interruptions", () => {
+	it("Back from an open list in Copy for a job returns to the copy form", async () => {
+		mockParams.step = "copy";
+		await renderScreen(<NewDocumentScreen />);
+		await fireEvent.press(screen.getByText("Start from"));
+		expect(screen.queryByRole("button", { name: "Create copy" })).toBeNull();
+		await fireEvent.press(screen.getByTestId("new-copy-back"));
+		expect(screen.getByRole("button", { name: "Create copy" })).toBeTruthy();
+		await fireEvent.press(screen.getByTestId("new-copy-back"));
+		expect(screen.getByText("Import a resume")).toBeTruthy();
+	});
+
+	it("keeps a closed application New was opened from", async () => {
+		mockParams.step = "copy";
+		mockParams.applicationId = "a1";
+		mockApplications.applications = [{ id: "a1", status: "closed", company: "Lumen", role: "Designer" }];
+		await renderScreen(<NewDocumentScreen />);
+		expect(await screen.findByDisplayValue("Product designer — Lumen")).toBeTruthy();
+	});
+
+	it("opens the new resume even when linking it to the application fails", async () => {
+		mockParams.applicationId = "a1";
+		mockClient.linkApplication.mockRejectedValueOnce(new Error("offline"));
+		await renderScreen(<NewDocumentScreen />);
+		await fireEvent.press(screen.getByTestId("new-resume"));
+		await waitFor(() => expect(mockReplace).toHaveBeenCalledWith("/builder/resume-new/write"));
+		expect(mockClient.createResume).toHaveBeenCalledTimes(1);
+		expect(mockToast).toHaveBeenCalledWith({
+			title: "Couldn't link the application. Check Applications before retrying.",
+			variant: "warning",
+		});
+	});
+
+	it("warns that a canceled import may have finished, and lists it if it did", async () => {
+		mockPicker.mockResolvedValue({ canceled: false, assets: [{ uri: "file:///cv.pdf", name: "cv.pdf" }] });
+		let finish: (document: unknown) => void = () => {};
+		mockImport.mockReturnValue(
+			new Promise((resolve) => {
+				finish = resolve;
+			}),
+		);
+		await renderScreen(<NewDocumentScreen />);
+		await fireEvent.press(screen.getByTestId("new-import"));
+		await fireEvent.press(await screen.findByRole("button", { name: "Cancel" }));
+		expect(mockToast).toHaveBeenCalledWith({
+			title: "Import canceled. Refresh Documents before retrying if the upload had finished.",
+			variant: "warning",
+		});
+		finish({ type: "resume", id: "resume-late", design: null });
+		await waitFor(() => expect(useNewDocuments.getState().ids).toContain("https://rezumi.app:resume:resume-late"));
+		expect(screen.getByText("Import a resume")).toBeTruthy();
 	});
 });

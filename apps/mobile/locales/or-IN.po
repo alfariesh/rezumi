@@ -23,7 +23,7 @@ msgstr "“{0}” କୌଶଳଗୁଡିକରେ ଯୋଡ଼ାଗଲା"
 msgid "“{0}” hidden"
 msgstr "“{0}” ଲୁକ୍କାୟିତ |"
 
-#. placeholder {0}: documents[0]?.name ?? ""
+#. placeholder {0}: document.name
 #: src/features/documents/queries.ts
 msgid "“{0}” moved to Trash"
 msgstr "“{0}” ଟ୍ରାଶକୁ ଚାଲିଗଲା |"
@@ -134,11 +134,6 @@ msgstr "{0, plural, one {# ଦିନ ବାକି} other {# ଦିନ ବାକ�
 msgid "{0, plural, one {# day} other {# days}}"
 msgstr "{0, plural, one {# ଦିନ |} other {# ଦିନ |}}"
 
-#. placeholder {0}: done.length
-#: src/features/documents/queries.ts
-msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
-msgstr "{0, plural, one {# ଡକ୍ୟୁମେଣ୍ଟ୍ ଟ୍ରାଶକୁ ଚାଲିଗଲା} other {# ଡକ୍ୟୁମେଣ୍ଟ୍ ଟ୍ରାଶକୁ ଚାଲିଗଲା}}"
-
 #. placeholder {0}: counts.resume + counts.letter
 #: src/features/documents/segment-header.tsx
 msgid "{0, plural, one {# document} other {# documents}}"
@@ -210,6 +205,11 @@ msgstr "{0, plural, one {# ଦିନ ପୂର୍ବରୁ ଆବେଦନ କ�
 #: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {Backs # story} other {Backs # stories}}"
 msgstr "{0, plural, one {#ଟି କାହାଣୀକୁ ସମର୍ଥନ କରେ} other {#ଟି କାହାଣୀକୁ ସମର୍ଥନ କରେ}}"
+
+#. placeholder {0}: Number(badge)
+#: app/builder/[id]/_layout.tsx
+msgid "{0, plural, one {Check, # issue} other {Check, # issues}}"
+msgstr ""
 
 #. placeholder {0}: selectedIds.length
 #: src/features/applications/list-screen.tsx
@@ -457,10 +457,6 @@ msgstr "{closed} ବନ୍ଦ"
 msgid "{company} · {tabName}"
 msgstr "{company} · {tabName}"
 
-#: src/features/documents/queries.ts
-msgid "{completed, plural, one {# document updated} other {# documents updated}}"
-msgstr "{completed, plural, one {# ଡକ୍ୟୁମେଣ୍ଟ୍ ଅପଡେଟ୍ ହେଲା} other {# ଡକ୍ୟୁମେଣ୍ଟ୍ ଅପଡେଟ୍ ହେଲା}}"
-
 #: src/features/write/section-sheet-pages.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# ସ୍ତମ୍ଭ} other {# ସ୍ତମ୍ଭ}}"
@@ -543,10 +539,6 @@ msgstr "{total}ରୁ {done}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{doneMinutes} of {total} min"
 msgstr "{total} ମିନିଟ୍ ମଧ୍ୟରୁ {doneMinutes}"
-
-#: src/features/write/write-header.tsx
-msgid "{entries, plural, one {# entry} other {# entries}}"
-msgstr "{entries, plural, one {# ପ୍ରବେଶ} other {# ଭରଣଗୁଡ଼ିକ |}}"
 
 #: src/features/check/messages.ts
 msgid "{entry} doesn't say when. Dates place it on your timeline."
@@ -749,10 +741,6 @@ msgstr "{pending, plural, one {ଏହି ପେଜ୍‌ରେ # ପ୍ରସ୍
 msgid "{role} · {company}"
 msgstr "{role} · {company}"
 
-#: src/features/write/write-header.tsx
-msgid "{sections, plural, one {# section} other {# sections}}"
-msgstr "{sections, plural, one {# ବିଭାଗ |} other {# ବିଭାଗଗୁଡିକ |}}"
-
 #: src/features/design/gallery-filters.tsx
 msgid "{shown} of {listed} shown"
 msgstr ""
@@ -805,6 +793,14 @@ msgstr "{toCheck, plural, one {# କ୍ଷେତ୍ର ଏକ ଲୁକ୍ ଆ�
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {ଯାଞ୍ଚ କରିବାକୁ # |} other {ଯାଞ୍ଚ କରିବାକୁ # |}}"
 
+#: src/features/documents/segment-header.tsx
+msgid "{TRASH_DAYS, plural, one {Documents are deleted permanently after # day.} other {Documents are deleted permanently after # days.}}"
+msgstr ""
+
+#: src/features/documents/library-states.tsx
+msgid "{TRASH_DAYS, plural, one {Documents you move here stay for # day.} other {Documents you move here stay for # days.}}"
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
@@ -815,6 +811,10 @@ msgstr ""
 
 #: src/features/design/type-group.tsx
 msgid "{value} pt"
+msgstr ""
+
+#: src/features/design/typography-screen.tsx
+msgid "{weight}, not in this font"
 msgstr ""
 
 #: src/features/letters/write.tsx
@@ -2106,11 +2106,12 @@ msgstr "ଆଜେରବାଇଜାନୀ"
 #: src/features/auth/frame.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
-#: src/features/documents/new-document-screen.tsx
+#: src/features/documents/new-copy.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/bring-screen.tsx
 #: src/features/search/search-screen.tsx
+#: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
 msgstr "ପଛକୁ"
 
@@ -2128,10 +2129,6 @@ msgstr "ଆବେଦନଗୁଡ଼ିକକୁ ଫେରନ୍ତୁ"
 #: src/features/workspace/shell.tsx
 msgid "Back to current"
 msgstr "ବର୍ତ୍ତମାନକୁ ଫେରନ୍ତୁ"
-
-#: src/shell/builder-chrome/top-bar.tsx
-msgid "Back to Documents"
-msgstr "ଡକ୍ୟୁମେଣ୍ଟ୍ କୁ ଫେରନ୍ତୁ।"
 
 #: src/features/history/history-panel.tsx
 #: src/features/letters/share.tsx
@@ -2419,6 +2416,10 @@ msgstr "ପ୍ରମାଣପତ୍ରଗୁଡିକ"
 #: src/features/letters/write.tsx
 msgid "Change"
 msgstr "ପରିବର୍ତ୍ତନ କରନ୍ତୁ |"
+
+#: src/features/entries/custom-fields.tsx
+msgid "Change icon"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Change it in Design"
@@ -3343,6 +3344,11 @@ msgstr "ଫାଇଲ୍ ଆମଦାନି କରିପାରିଲା ନାହ
 #: src/features/documents/import-file.ts
 msgid "Couldn't import this file. Check the selected format. PDFs need a readable text layer; account archives must be extracted first."
 msgstr "ଏହି ଫାଇଲ୍ ଆମଦାନି କରିପାରିଲା ନାହିଁ। ମନୋନୀତ ଫର୍ମାଟ୍ ଯାଞ୍ଚ କରନ୍ତୁ। PDF ଗୁଡିକ ଏକ ପଠନୀୟ ପାଠ୍ୟ ସ୍ତର ଆବଶ୍ୟକ କରେ। ଖାତା ଅଭିଲେଖାଗାର ପ୍ରଥମେ ବାହାର କରାଯିବା ଆବଶ୍ୟକ।"
+
+#: src/features/documents/use-import.ts
+#: src/features/documents/use-start-document.ts
+msgid "Couldn't link the application. Check Applications before retrying."
+msgstr ""
 
 #: src/features/check/use-link-application.ts
 msgid "Couldn't link the application. Try again."
@@ -4383,10 +4389,6 @@ msgstr "ଡକ୍ୟୁମେଣ୍ଟ୍ ବିକଳ୍ପଗୁଡିକ।"
 msgid "Documents"
 msgstr "ଡକ୍ୟୁମେଣ୍ଟ୍"
 
-#: src/features/documents/segment-header.tsx
-msgid "Documents are deleted permanently after 30 days."
-msgstr "ଡକ୍ୟୁମେଣ୍ଟଗୁଡ଼ିକ 30 ଦିନ ପରେ ସ୍ଥାୟୀ ଭାବେ ବିଲୋପ ହୁଏ।"
-
 #: src/features/application-detail/sections.tsx
 msgid "Documents for this job"
 msgstr "ଏହି କାର୍ଯ୍ୟ ପାଇଁ ଡକ୍ୟୁମେଣ୍ଟ୍ |"
@@ -4398,10 +4400,6 @@ msgstr ""
 #: src/features/documents/segment-header.tsx
 msgid "Documents sections"
 msgstr ""
-
-#: src/features/documents/library-states.tsx
-msgid "Documents you move here stay for 30 days."
-msgstr "ଆପଣ ଏଠାକୁ ନେଉଥିବା ଡକ୍ୟୁମେଣ୍ଟଗୁଡ଼ିକ 30 ଦିନ ରହେ।"
 
 #: src/features/share/custom-domain.tsx
 msgid "Domain connected"
@@ -5116,12 +5114,12 @@ msgstr "ଉପଯୁକ୍ତତା"
 msgid "Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create them."
 msgstr "ଅନ୍ୟ ଟ୍ୟାବ୍‌ଗୁଡ଼ିକ ସୃଷ୍ଟି କରିବା ସହ ଉପଯୁକ୍ତତା ଯାଞ୍ଚ, ବ୍ରିଫିଂ, ଅଭ୍ୟାସ ମତାମତ, ସମୀକ୍ଷା, ଉତ୍ତର ଓ ପ୍ରତ୍ୟୁତ୍ତର ଏଠାରେ ଆସେ।"
 
-#: src/preview/page-parts.tsx
-msgid "Fit to width"
-msgstr ""
-
 #: src/features/design/preset-names.ts
 msgid "Fitness"
+msgstr ""
+
+#: src/preview/page-parts.tsx
+msgid "Fits the page to the width"
 msgstr ""
 
 #: src/preview/page-parts.tsx
@@ -5744,6 +5742,7 @@ msgstr "ମୁଁ ସେଠାରୁ ଚାଲିଗଲି"
 
 #: src/features/design/colors-screen.tsx
 #: src/features/design/icon-picker.tsx
+#: src/features/entries/custom-fields.tsx
 #: src/features/entries/entry-fields.tsx
 #: src/features/entries/fields.ts
 #: src/features/entries/icon-picker.tsx
@@ -5760,11 +5759,6 @@ msgstr "ଆଇକନ୍ ରଙ୍ଗ |"
 
 #: src/features/design/icons-group.tsx
 msgid "Icon style"
-msgstr ""
-
-#. placeholder {0}: field.icon
-#: src/features/entries/custom-fields.tsx
-msgid "Icon: {0}"
 msgstr ""
 
 #: src/features/write/section-menu.tsx
@@ -5819,6 +5813,10 @@ msgstr "ଏକ ରେଜୁମ୍ ଆମଦାନି କରନ୍ତୁ |"
 msgid "Import canceled."
 msgstr "ଆମଦାନୀ ବାତିଲ ହୋଇଛି।"
 
+#: src/features/documents/use-import.ts
+msgid "Import canceled. Refresh Documents before retrying if the upload had finished."
+msgstr ""
+
 #: src/features/write/add-section.tsx
 msgid "Import it"
 msgstr "ଏହାକୁ ଆମଦାନି କରନ୍ତୁ।"
@@ -5837,8 +5835,8 @@ msgid "Imported"
 msgstr "ଆମଦାନୀ ହୋଇଛି |"
 
 #: src/features/write/write-header.tsx
-msgid "Imported from {source}."
-msgstr "{source}ରୁ ଆମଦାନି।"
+msgid "Imported from {source}. Found {sections, plural, one {# section} other {# sections}} and {entries, plural, one {# entry} other {# entries}}."
+msgstr ""
 
 #: src/features/documents/new-import.tsx
 msgid "Importing"
@@ -5854,8 +5852,8 @@ msgstr "“ଉନ୍ନତି” ପାଇଁ AI ପ୍ରଦାତା ଦରକ
 
 #: src/features/entries/improve.tsx
 #: src/features/entries/rich-text-toolbar.tsx
-msgid "Improve selected line"
-msgstr "ମନୋନୀତ ରେଖା ଉନ୍ନତ କରନ୍ତୁ |"
+msgid "Improve this line"
+msgstr ""
 
 #: src/features/entries/improve.tsx
 msgid "Improving…"
@@ -6306,6 +6304,10 @@ msgid "Label for detail {0}"
 msgstr ""
 
 #: src/features/entries/custom-fields.tsx
+msgid "Label removed"
+msgstr ""
+
+#: src/features/entries/custom-fields.tsx
 msgid "Label, e.g. Languages"
 msgstr ""
 
@@ -6562,6 +6564,10 @@ msgstr ""
 msgid "Link sent"
 msgstr ""
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "Link the application"
+msgstr ""
+
 #: src/features/documents/library-menu.tsx
 msgid "Link to application"
 msgstr "ଚାକିରି ଆବେଦନ ସହିତ ଲିଙ୍କ୍ |"
@@ -6587,6 +6593,7 @@ msgid "Linked resume"
 msgstr "ଲିଙ୍କ୍ ରେଜୁମ୍ |"
 
 #. placeholder {0}: document.application.company
+#: src/features/documents/document-item.tsx
 #: src/features/search/search-screen.tsx
 msgid "Linked to {0}"
 msgstr "{0} ସହ ସଂଯୁକ୍ତ"
@@ -7090,6 +7097,8 @@ msgstr "ଆବେଦନ ଘୁଞ୍ଚାନ୍ତୁ"
 msgid "Move detail up"
 msgstr ""
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7146,6 +7155,8 @@ msgstr "ଆବର୍ଜନାକୁ ଘୁଞ୍ଚାନ୍ତୁ"
 msgid "Move to…"
 msgstr "କୁ…"
 
+#: src/features/design/layout-column.tsx
+#: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
@@ -7156,12 +7167,6 @@ msgstr "ଉପରକୁ ଯାଅ |"
 #: src/features/ats-checker/messages.ts
 msgid "Move your email and phone number to the top of page one."
 msgstr "ଆପଣଙ୍କ ଇମେଲ୍ ଏବଂ ଫୋନ୍ ନମ୍ବରକୁ ପ୍ରଥମ ପୃଷ୍ଠାର ଶୀର୍ଷକୁ ନିଅନ୍ତୁ।"
-
-#. placeholder {0}: done.length
-#. placeholder {1}: documents.length
-#: src/features/documents/queries.ts
-msgid "Moved {0} of {1} to Trash. Locked documents were skipped. Refresh and retry any failures."
-msgstr "{1}ରୁ {0} ଆବର୍ଜନାକୁ ଘୁଞ୍ଚାଗଲା। ଲକ୍ ଥିବା ଡକ୍ୟୁମେଣ୍ଟ୍ ଛାଡ଼ିଦିଆଗଲା। ରିଫ୍ରେସ୍ କରି ବିଫଳ କାମ ପୁଣି କରନ୍ତୁ।"
 
 #. placeholder {0}: getStageLabel(entry.stage)
 #. placeholder {0}: getStageLabel(stage)
@@ -8808,10 +8813,6 @@ msgstr ""
 msgid "Press and hold"
 msgstr "ଦବାଇ ରଖନ୍ତୁ"
 
-#: src/features/design/layout-column.tsx
-msgid "Press and hold, then drag to another column or page."
-msgstr "ଦବାଇ ଧରି ଅନ୍ୟ ସ୍ତମ୍ଭ କିମ୍ବା ପେଜ୍‌କୁ ଟାଣନ୍ତୁ।"
-
 #: src/features/share/web-page.tsx
 msgid "Preview web page"
 msgstr "ୱେବ୍ ପୃଷ୍ଠା ପ୍ରିଭ୍ୟୁ କରନ୍ତୁ"
@@ -9467,7 +9468,6 @@ msgstr "ଖୋଲନ୍ତୁ |"
 msgid "Reorder {name}"
 msgstr ""
 
-#: src/features/design/layout-column.tsx
 #: src/features/write/section-row.tsx
 msgid "Reorder {title}"
 msgstr "{title} ରେକର୍ଡ କରନ୍ତୁ |"
@@ -10972,10 +10972,6 @@ msgstr ""
 msgid "Something went wrong on the server. Try again in a moment."
 msgstr ""
 
-#: src/features/history/history-panel.tsx
-msgid "Something went wrong. Try again."
-msgstr ""
-
 #: src/features/documents/library-toolbar.tsx
 msgid "Sort"
 msgstr "ସର୍ଟ କରନ୍ତୁ |"
@@ -11646,6 +11642,10 @@ msgstr "|\n"
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "ଠିକଣାରେ କେବଳ ଛୋଟ ଅକ୍ଷର ଏବଂ ସଂଖ୍ୟା ରହିବା ଉଚିତ, ଯାହା ଏକକ ଡ୍ୟାସ୍ ଦ୍ୱାରା ପୃଥକ ହୋଇଥିବ।"
 
+#: src/features/check/save-posting-sheet.tsx
+msgid "The application is saved. Linking it to this resume didn't work yet."
+msgstr ""
+
 #: src/features/application-detail/sections.tsx
 msgid "The application keeps its other details."
 msgstr "ଆବେଦନର ଅନ୍ୟ ବିବରଣୀ ରହିବ।"
@@ -12231,6 +12231,10 @@ msgstr ""
 msgid "This resume changed elsewhere"
 msgstr "ଏହି ରେଜ୍ୟୁମେ ଅନ୍ୟ ସ୍ଥାନରେ ବଦଳିଛି"
 
+#: src/features/write/profile-link.tsx
+msgid "This resume couldn't be found. It may have been deleted."
+msgstr ""
+
 #: src/features/check/check-pane.tsx
 msgid "This resume is locked. Checks are available; editing is disabled."
 msgstr "ଏହି ରେଜ୍ୟୁମେ ଲକ୍ ଅଛି। ଯାଞ୍ଚ ଉପଲବ୍ଧ; ସମ୍ପାଦନା ବନ୍ଦ।"
@@ -12426,6 +12430,14 @@ msgid "Tomorrow"
 msgstr "ଆସନ୍ତାକାଲି |"
 
 #: src/features/design/color-group.tsx
+msgid "Too dark for headings on this background color. It may be hard to read."
+msgstr ""
+
+#: src/features/design/color-group.tsx
+msgid "Too light for headings on this background color. It may be hard to read and print faintly."
+msgstr ""
+
+#: src/features/design/color-group.tsx
 msgid "Too light for headings on white. It may be hard to read and print faintly."
 msgstr "ଧଳା ରଙ୍ଗର ହେଡିଙ୍ଗ୍ ପାଇଁ ଅତ୍ୟଧିକ ହାଲୁକା | ଦୁର୍ବଳ ଭାବରେ ପ read ିବା ଏବଂ ମୁଦ୍ରଣ କରିବା କଷ୍ଟକର ହୋଇପାରେ |"
 
@@ -12442,6 +12454,7 @@ msgstr ""
 #: src/features/ats-checker/check.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Too many requests. Try again later."
 msgstr "ବହୁତ ଅନୁରୋଧ | ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ |"
 
@@ -12692,10 +12705,7 @@ msgstr "ଲିଙ୍କଗୁଡିକ ଅଣ୍ଡରଲାଇନ୍ କରନ�
 #: src/features/assistant/proposals.ts
 #: src/features/career/undo.ts
 #: src/features/check/actions.ts
-#: src/features/design/advanced-group.tsx
 #: src/features/design/draft.ts
-#: src/features/design/template-group.tsx
-#: src/features/design/uploaded-fonts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/queries.ts
 #: src/features/entries/hooks.ts
@@ -12795,11 +12805,6 @@ msgstr "25 MB ପର୍ଯ୍ୟନ୍ତ · ସର୍ଭର୍‌ରେ ଯା�
 msgid "Updated"
 msgstr "ଅଦ୍ୟତନ କରାଯାଇଛି"
 
-#. placeholder {0}: documents.length
-#: src/features/documents/queries.ts
-msgid "Updated {completed} of {0}. Locked documents, and letters for public links, were skipped. Refresh and retry any failures."
-msgstr "{0}ରୁ {completed} ଅପଡେଟ୍ ହେଲା। ଲକ୍ ଡକ୍ୟୁମେଣ୍ଟ୍ ଓ ସାର୍ବଜନୀନ ଲିଙ୍କ୍ ପାଇଁ ଚିଠି ଛାଡ଼ିଦିଆଗଲା। ରିଫ୍ରେସ୍ କରି ବିଫଳ କାମ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
-
 #. placeholder {0}: followed.length
 #: src/features/profile/save-note.tsx
 msgid "Updated in {0} resumes"
@@ -12882,6 +12887,10 @@ msgstr "ଏକ ଗା er ଼ ଛାଇ ବ୍ୟବହାର କରନ୍ତୁ 
 #: src/features/design/colors-screen.tsx
 msgid "Use a hex value like #3E6B4F or rgba(62, 107, 79, 1)."
 msgstr "#3E6B4F କିମ୍ବା rgba(62, 107, 79, 1) ପରି ହେକ୍ସ ମୂଲ୍ୟ ବ୍ୟବହାର କରନ୍ତୁ।"
+
+#: src/features/design/color-group.tsx
+msgid "Use a lighter shade"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Use a plain international form, such as +1 555 010 1234."
@@ -13899,7 +13908,7 @@ msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or 
 msgstr "ଭାଷା ସେଭ୍ ହେଲା। ନୂଆ ବାମରୁ ଡାହାଣ ବା ଡାହାଣରୁ ବାମ ଲେଆଉଟ୍ ପାଇଁ Rezumi ପୁଣି ଆରମ୍ଭ କରନ୍ତୁ।"
 
 #: src/shell/builder-chrome/draft-chrome.tsx
-msgid "Your latest changes aren't on the server yet. They stay on this phone and are sent when it can reach the server again."
+msgid "Your latest changes aren't on the server yet. They stay on this device and are sent when it can reach the server again."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -14009,8 +14018,16 @@ msgstr ""
 msgid "Your Profile already has what we found, or the sources couldn't be read. Fill it in any time."
 msgstr ""
 
+#: src/features/write/profile-link.tsx
+msgid "Your Profile can't take this part as it is. Check it and try again."
+msgstr ""
+
 #: src/features/profile/conflict-sheet.tsx
 msgid "Your Profile changed elsewhere"
+msgstr ""
+
+#: src/features/write/profile-link.tsx
+msgid "Your Profile changed somewhere else. Try again."
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
@@ -14100,6 +14117,7 @@ msgstr ""
 #: src/features/applications/error.ts
 #: src/features/documents/import-file.ts
 #: src/features/documents/queries.ts
+#: src/features/write/profile-link.tsx
 msgid "Your session expired. Sign in again."
 msgstr "ସେସନ୍ ସମୟ ସରିଛି। ପୁଣି ସାଇନ୍ ଇନ୍ କରନ୍ତୁ।"
 
@@ -14149,6 +14167,15 @@ msgstr "ଜୁମ୍ ଇନ୍ କରନ୍ତୁ"
 #: src/preview/page-parts.tsx
 msgid "Zoom out"
 msgstr "ଜୁମ୍ ଆଉଟ୍ କରନ୍ତୁ"
+
+#. placeholder {0}: Math.round(zoom * 100)
+#: src/preview/page-parts.tsx
+msgid "Zoom: {0}%"
+msgstr ""
+
+#: src/preview/page-parts.tsx
+msgid "Zoom: fit to width"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Zulu"

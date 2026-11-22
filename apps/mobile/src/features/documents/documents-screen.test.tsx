@@ -1,9 +1,13 @@
 // Documents (plans/mobile Phase 07 step 3): loading, failed, first run, a search with no match, a row's menu, a
 // swipe to Trash with Undo, and Trash's Restore and Delete forever. The reads are fixtures; the screen, its actions
 // (through the document operations) and its wording are the real ones.
+import type { DocumentItemHandlers } from "./document-item";
+import type { DocumentSummary } from "./filter";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
+import { ORPCError } from "@orpc/client";
 import { State } from "react-native-gesture-handler";
 import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils";
+import { DocumentItem } from "./document-item";
 import { DocumentsScreen } from "./documents-screen";
 import { renderScreen } from "@/test/render-screen";
 
@@ -25,6 +29,7 @@ const mockClient = {
 	restore: jest.fn((_input: unknown) => Promise.resolve()),
 	purge: jest.fn((_input: unknown) => Promise.resolve()),
 	duplicate: jest.fn((_input: unknown) => Promise.resolve("copy-1")),
+	setTags: jest.fn((_input: unknown) => Promise.resolve()),
 };
 
 jest.mock("expo-router", () => ({
@@ -43,6 +48,7 @@ jest.mock("@/api/client", () => ({
 			trash: (input: unknown) => mockClient.trash(input),
 			restore: (input: unknown) => mockClient.restore(input),
 			purge: (input: unknown) => mockClient.purge(input),
+			setTags: (input: unknown) => mockClient.setTags(input),
 		},
 		resume: { duplicate: (input: unknown) => mockClient.duplicate(input) },
 	},
@@ -240,5 +246,116 @@ describe("Documents", () => {
 		mockReads.trash = query([]);
 		await renderScreen(<DocumentsScreen segment="trash" />);
 		expect(screen.getByText("Trash is empty")).toBeTruthy();
+	});
+});
+
+describe("Documents: failures and filters", () => {
+	it("doesn't let a search typed in the library hide trashed documents", async () => {
+		const trashed = doc({ id: "r2", name: "Old resume", trashedAt: new Date(Date.now() - 2 * day) });
+		mockReads.live = query([designer]);
+		mockReads.trash = query([trashed]);
+		const view = await renderScreen(<DocumentsScreen segment="all" />);
+		await fireEvent.changeText(screen.getByLabelText("Search documents"), "pilot");
+		expect(screen.getByText("Nothing matches “pilot”")).toBeTruthy();
+		await view.rerender(<DocumentsScreen segment="trash" />);
+		expect(screen.queryByLabelText("Search documents")).toBeNull();
+		expect(screen.getByText("Old resume")).toBeTruthy();
+	});
+
+	it("says why a move to Trash failed, without a Trash toast", async () => {
+		mockReads.live = query([designer]);
+		mockClient.trash.mockRejectedValueOnce(new ORPCError("FORBIDDEN"));
+		await renderScreen(<DocumentsScreen segment="all" />);
+		await fireEvent.press(screen.getByRole("button", { name: "Options for Product designer" }));
+		await waitFor(() => expect(screen.getByTestId("document-menu-trash")).toBeTruthy());
+		await fireEvent.press(screen.getByTestId("document-menu-trash"));
+		await waitFor(() =>
+			expect(mockToast).toHaveBeenCalledWith({ title: "Unlock it first, then try again.", variant: "danger" }),
+		);
+		expect(mockToast).not.toHaveBeenCalledWith(expect.objectContaining({ title: "“Product designer” moved to Trash" }));
+	});
+
+	it("keeps Tags open and says why when saving them fails", async () => {
+		mockReads.live = query([designer]);
+		mockClient.setTags.mockRejectedValueOnce(new ORPCError("TOO_MANY_REQUESTS"));
+		await renderScreen(<DocumentsScreen segment="all" />);
+		await fireEvent.press(screen.getByRole("button", { name: "Options for Product designer" }));
+		await waitFor(() => expect(screen.getByTestId("document-menu-tags")).toBeTruthy());
+		await fireEvent.press(screen.getByTestId("document-menu-tags"));
+		await fireEvent.press(await screen.findByRole("button", { name: "Save tags" }));
+		await waitFor(() =>
+			expect(mockToast).toHaveBeenCalledWith({ title: "Too many requests. Try again later.", variant: "danger" }),
+		);
+		expect(mockClient.setTags).toHaveBeenCalledWith({ type: "resume", id: "r1", tags: ["design"] });
+		expect(screen.getByRole("button", { name: "Save tags" })).toBeTruthy();
+	});
+
+	it("reads a row's badges to screen readers", async () => {
+		const shared = doc({
+			id: "r3",
+			name: "Data analyst",
+			isPublic: true,
+			isLocked: true,
+			application: { id: "a1", company: "Lumen", role: "Analyst" },
+		});
+		mockReads.live = query([shared]);
+		await renderScreen(<DocumentsScreen segment="all" />);
+		expect(screen.getByTestId("document-r3").props.accessibilityLabel).toBe(
+			"Data analyst, Resume · Edited 2 days ago, Public, Locked, Linked to Lumen",
+		);
+	});
+});
+
+type Node = ReturnType<typeof screen.getByText>;
+
+/** The nearest ancestor of `node` that matches. */
+function ancestor(node: Node, matches: (candidate: Node) => boolean): Node {
+	let current = node.parent;
+	while (current && !matches(current)) current = current.parent;
+	if (!current) throw new Error("No matching ancestor");
+	return current;
+}
+
+describe("Document row", () => {
+	const handlers: DocumentItemHandlers = {
+		onOpen: jest.fn(),
+		onMenu: jest.fn(),
+		onTrash: jest.fn(),
+		onDuplicate: jest.fn(),
+		onRestore: jest.fn(),
+		onPurge: jest.fn(),
+	};
+	const row = (document: unknown) => (
+		<DocumentItem
+			document={document as DocumentSummary}
+			layout="list"
+			visible
+			isNew={false}
+			unsynced={false}
+			busy={false}
+			handlers={handlers}
+		/>
+	);
+
+	it("doesn't carry swiped-open actions over when the list recycles the row for another document", async () => {
+		const view = await renderScreen(row(designer));
+		// The rail measures itself before it offers the screen-reader action: lay out the rail, then its mask.
+		const rail = ancestor(
+			screen.getByLabelText("Duplicate", { includeHiddenElements: true }),
+			(node) => node.props.importantForAccessibility === "no-hide-descendants",
+		);
+		await fireEvent(rail, "layout", { nativeEvent: { layout: { width: 160, height: 52 } } });
+		const mask = ancestor(rail, (node) => node.props.pointerEvents === "box-none");
+		await fireEvent(mask, "layout", { nativeEvent: { layout: { width: 168, height: 64 } } });
+		const card = ancestor(
+			screen.getByText("Product designer"),
+			(node) => node.props.accessibilityActions !== undefined,
+		);
+		await fireEvent(card, "accessibilityAction", { nativeEvent: { actionName: "swipeable-row-open-end" } });
+		expect(screen.getByRole("button", { name: "Duplicate" })).toBeTruthy();
+
+		await view.rerender(row(doc({ id: "r9", name: "Data analyst" })));
+		expect(screen.getByText("Data analyst")).toBeTruthy();
+		expect(screen.queryByRole("button", { name: "Duplicate" })).toBeNull();
 	});
 });

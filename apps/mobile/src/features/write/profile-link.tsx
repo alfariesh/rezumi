@@ -6,8 +6,9 @@ import type { ProfileData, ProfilePart } from "@rezumi/schema/profile/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
 import type { ReactNode } from "react";
-import { plural } from "@lingui/core/macro";
+import { plural, t as translate } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
+import { ORPCError } from "@orpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createContext, use, useState } from "react";
 import { markerState, takeProfilePartsEdit } from "@rezumi/resume/profile-link";
@@ -61,6 +62,24 @@ export function useTakeProfileParts() {
 	};
 }
 
+/**
+ * Why Save to Profile failed, in the person's language: known server codes map to translated text; another server
+ * message that explains the problem shows as sent (web `allowServerMessage`); anything else is the generic retry.
+ */
+export function saveToProfileError(error: unknown): string {
+	if (error instanceof ORPCError) {
+		if (error.code === "PROFILE_VERSION_CONFLICT") return translate`Your Profile changed somewhere else. Try again.`;
+		if (error.code === "NOT_FOUND") return translate`This resume couldn't be found. It may have been deleted.`;
+		if (error.code === "BAD_REQUEST")
+			return translate`Your Profile can't take this part as it is. Check it and try again.`;
+		if (error.code === "UNAUTHORIZED") return translate`Your session expired. Sign in again.`;
+		if (error.code === "TOO_MANY_REQUESTS" || error.code === "RATE_LIMIT_EXCEEDED")
+			return translate`Too many requests. Try again later.`;
+		if (error.message && error.code !== "INTERNAL_SERVER_ERROR") return error.message;
+	}
+	return translate`Couldn't save to your Profile. Try again.`;
+}
+
 /** Save to Profile: sends this resume's pending edits first, since the server reads the resume as saved. */
 export function useSaveToProfile() {
 	const { t } = useLingui();
@@ -94,8 +113,8 @@ export function useSaveToProfile() {
 				variant: "success",
 			});
 			return true;
-		} catch {
-			showToast({ title: t`Couldn't save to your Profile. Try again.`, variant: "danger" });
+		} catch (error) {
+			showToast({ title: saveToProfileError(error), variant: "danger" });
 			return false;
 		}
 	};

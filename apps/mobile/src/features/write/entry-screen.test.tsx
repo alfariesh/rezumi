@@ -1,7 +1,7 @@
 // A resume entry full screen through `resumeWriteSource`: fields write to the draft, the entry's options act on it,
 // Basics keeps custom field labels, and a locked resume reads but doesn't edit.
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import { fireEvent, screen } from "@testing-library/react-native";
+import { act, fireEvent, screen } from "@testing-library/react-native";
 import { Basics } from "./basics-screen";
 import { EntryScreen, ResumeScreen } from "./entry-screen";
 import { sampleResume } from "./test-store";
@@ -49,6 +49,7 @@ beforeEach(() => {
 		data: sampleResume(),
 		locked: false,
 		past: [],
+		last: null,
 	} as never);
 });
 
@@ -76,6 +77,11 @@ describe("Resume entry screen", () => {
 		expect(screen.getByText("Locked. Unlock to edit.")).toBeOnTheScreen();
 		expect(screen.queryByTestId("entry-delete")).toBeNull();
 		expect(screen.queryByTestId("entry-toggle-hidden")).toBeNull();
+		const company = screen.getByTestId("entry-company");
+		expect(company.props.editable).toBe(false);
+		// Typing into a field that can't be edited changes nothing.
+		await fireEvent.changeText(company, "Northwind");
+		expect(data().sections.experience.items[0]?.company).not.toBe("Northwind");
 	});
 
 	it("waits for the draft rather than saying the entry is gone", async () => {
@@ -101,5 +107,45 @@ describe("Basics", () => {
 		expect(data().basics.customFields[0]?.label).toBe("Nationality");
 		await fireEvent.press(screen.getByLabelText("Remove label"));
 		expect(data().basics.customFields[0]?.label).toBe("");
+		// Removing the label is its own step: Undo brings the label back, not an empty one.
+		await act(async () => useResumeStore.getState().undo());
+		expect(data().basics.customFields[0]?.label).toBe("Nationality");
+	});
+
+	it("moves and removes details by id, each its own undo step, and shows the icon instead of its name", async () => {
+		const resume = sampleResume();
+		resume.basics.customFields = [
+			{ id: "f1", icon: "flag-01", text: "Indonesian", link: "" },
+			{ id: "f2", icon: "flag-01", text: "Driving licence", link: "" },
+			{ id: "f3", icon: "flag-01", text: "Portfolio", link: "" },
+		];
+		useResumeStore.setState({ data: resume });
+		await renderScreen(
+			<ResumeScreen id="r1">
+				<Basics id="r1" />
+			</ResumeScreen>,
+		);
+		const ids = () => data().basics.customFields.map((field) => field.id);
+		const moveUp = async (index: number) => {
+			const button = screen.getAllByLabelText("Move detail up")[index];
+			if (!button) throw new Error(`No Move up for detail ${index + 1}`);
+			await fireEvent.press(button);
+		};
+		expect(screen.queryByText(/Icon: /)).toBeNull();
+		expect(screen.getAllByLabelText("Change icon")).toHaveLength(3);
+
+		await fireEvent.changeText(screen.getByLabelText("Detail 3"), "Portfolio site");
+		// Portfolio moves up twice: two undo steps, neither folded into the typing before them.
+		await moveUp(2);
+		await moveUp(1);
+		expect(ids()).toEqual(["f3", "f1", "f2"]);
+		await act(async () => useResumeStore.getState().undo());
+		expect(ids()).toEqual(["f1", "f3", "f2"]);
+		await act(async () => useResumeStore.getState().undo());
+		expect(ids()).toEqual(["f1", "f2", "f3"]);
+		expect(data().basics.customFields[2]?.text).toBe("Portfolio site");
+
+		await fireEvent.press(screen.getByLabelText("Remove detail 1"));
+		expect(ids()).toEqual(["f2", "f3"]);
 	});
 });

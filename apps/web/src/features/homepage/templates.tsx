@@ -3,7 +3,7 @@ import { Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
-import { templateSample } from "@rezumi/resume/design-presets";
+import { templateSample } from "@rezumi/resume/template-sample";
 import { templateLineup } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { freeTemplates } from "./plans";

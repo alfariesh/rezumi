@@ -23,6 +23,9 @@ const PIN = { warning: "bg-warning", danger: "bg-danger" } as const;
 const PIN_TEXT = { warning: "text-warning-foreground", danger: "text-danger-foreground" } as const;
 const OUTLINE = { warning: "border-warning", danger: "border-danger" } as const;
 
+/** The top of a pin's 44 pt target: level with its block, the nth further pin on that block a whole target lower. */
+export const pinTop = (blockTop: number, stack: number) => Math.max(0, blockTop - size.hit / 4) + stack * size.hit;
+
 /**
  * One page with Check's marks: a numbered pin in the margin for each open issue (warning, or danger for errors),
  * the picked issue's block outlined, and the blocks mentioning a job-match term tinted.
@@ -65,7 +68,8 @@ export function PagePins({ page, scale, blocks, issues, selected, highlighted, o
 								style={box(block)}
 							/>
 						) : null}
-						{/* A 44 pt target in the left margin, level with the block; more issues on it stack below. */}
+						{/* A 44 pt target in the left margin, level with the block; more issues on it stack below, one full
+						    target apart so no two hit areas overlap. */}
 						<Pressable
 							accessibilityRole="button"
 							accessibilityLabel={t`Issue ${issue.number}: ${issue.title}`}
@@ -76,7 +80,7 @@ export function PagePins({ page, scale, blocks, issues, selected, highlighted, o
 							style={[
 								{
 									left: Math.max(0, block.x * scale - size.hit),
-									top: Math.max(0, block.y * scale - size.hit / 4 + stack * (size.hit / 2)),
+									top: pinTop(block.y * scale, stack),
 									width: size.hit,
 									height: size.hit,
 								},

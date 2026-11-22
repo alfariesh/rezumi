@@ -49,9 +49,16 @@ export function LibraryMenu({ document, actions, onClose, onPurge }: LibraryMenu
 	const close = () => {
 		if (!actions.busy) onClose();
 	};
+	// An action that opens another screen or dialog waits until the sheet has gone: iOS can drop a presentation
+	// started while the sheet is still sliding away.
+	const [pending, setPending] = useState<{ run: () => unknown } | null>(null);
 	const closeThen = (run: () => unknown) => () => {
+		setPending({ run });
 		onClose();
-		void run();
+	};
+	const onDidDismiss = () => {
+		setPending(null);
+		if (pending) void pending.run();
 	};
 	const after = (task: Promise<boolean>) =>
 		void task.then((done) => {
@@ -169,6 +176,7 @@ export function LibraryMenu({ document, actions, onClose, onPurge }: LibraryMenu
 			title={titles[step]}
 			closeLabel={t`Close`}
 			canDismiss={!actions.busy}
+			onDidDismiss={onDidDismiss}
 			testID="document-menu"
 		>
 			{shown && step === "menu" ? (
@@ -200,11 +208,7 @@ export function LibraryMenu({ document, actions, onClose, onPurge }: LibraryMenu
 						<RenamePanel name={shown.name} busy={actions.busy} onSave={(name) => after(actions.rename(shown, name))} />
 					) : null}
 					{step === "tags" ? (
-						<TagsPanel
-							documents={[shown]}
-							busy={actions.busy}
-							onSave={(tags) => after(actions.setTags([shown], tags))}
-						/>
+						<TagsPanel document={shown} busy={actions.busy} onSave={(tags) => after(actions.setTags(shown, tags))} />
 					) : null}
 					{step === "link" ? (
 						<LinkPanel document={shown} busy={actions.busy} onLink={(id) => after(actions.link(shown, id))} />

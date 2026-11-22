@@ -16,12 +16,16 @@ type SectionRowProps = {
 	locked: boolean;
 	onDrag: () => void;
 	onToggle: () => void;
-	/** Move up / Move down for screen readers (and the options sheet); none at the ends. */
+	/** Which way it can move: none at the ends, and none for a hidden section (they wait at the end). */
+	moves: SectionMoves;
+	/** Move up / Move down for screen readers (the options sheet offers them too). */
 	onMove: (direction: "up" | "down") => void;
 	onOptions: () => void;
 };
 
-export function SectionRow({ row, open, locked, onDrag, onToggle, onMove, onOptions }: SectionRowProps) {
+export type SectionMoves = { up: boolean; down: boolean };
+
+export function SectionRow({ row, open, locked, moves, onDrag, onToggle, onMove, onOptions }: SectionRowProps) {
 	const { t } = useLingui();
 	const section = useWriteSection(row.id);
 	const title = useSectionTitle(section);
@@ -35,27 +39,26 @@ export function SectionRow({ row, open, locked, onDrag, onToggle, onMove, onOpti
 	const countLabel = plural(count, { one: "# entry", other: "# entries" });
 
 	return (
-		<View
-			className="mx-2 min-h-12 flex-row items-center rounded-xl"
-			accessibilityActions={
-				locked
-					? undefined
-					: [
-							{ name: "up", label: t`Move up` },
-							{ name: "down", label: t`Move down` },
-						]
-			}
-			onAccessibilityAction={({ nativeEvent }) => {
-				if (nativeEvent.actionName === "up" || nativeEvent.actionName === "down") onMove(nativeEvent.actionName);
-			}}
-			testID={`section-${row.id}`}
-		>
+		<View className="mx-2 min-h-12 flex-row items-center rounded-xl" testID={`section-${row.id}`}>
 			<SortableHandle label={t`Reorder ${title}`} isDisabled={locked} onDrag={onDrag} />
 			<Pressable
 				accessibilityRole="button"
 				accessibilityLabel={summary ? title : `${title}, ${countLabel}`}
 				accessibilityState={summary ? undefined : { expanded: open }}
+				// On the focusable title, where a screen reader's actions menu finds them.
+				accessibilityActions={
+					locked
+						? undefined
+						: [
+								...(moves.up ? [{ name: "up", label: t`Move up` }] : []),
+								...(moves.down ? [{ name: "down", label: t`Move down` }] : []),
+							]
+				}
+				onAccessibilityAction={({ nativeEvent }) => {
+					if (nativeEvent.actionName === "up" || nativeEvent.actionName === "down") onMove(nativeEvent.actionName);
+				}}
 				onPress={onToggle}
+				testID={`section-${row.id}-title`}
 				className="min-h-11 flex-1 flex-row items-center gap-2"
 			>
 				<Text

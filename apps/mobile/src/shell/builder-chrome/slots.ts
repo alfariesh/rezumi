@@ -51,4 +51,14 @@ export const slot = createSlot<BuilderChromeSlots>();
  */
 export const useBuilderChrome = slot.useFill;
 
-export type PaneTab<T extends string> = { pane: T; label: string; icon: IconName; href: Href };
+export type PaneTab<T extends string> = {
+	pane: T;
+	label: string;
+	icon: IconName;
+	href: Href;
+	/**
+	 * The mode's name with its badge, translated by the layout with a plural ("Check, 3 issues"): read by screen readers
+	 * on the phone mode bar and shown in the tablet mode switch while the badge is set.
+	 */
+	badgeLabel?: ((badge: number | string) => string) | undefined;
+};

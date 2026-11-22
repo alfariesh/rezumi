@@ -10,6 +10,7 @@ import { formatVersionMoment, formatVersionTime, getVersionDetail, getVersionTit
 import { useHistory } from "./use-history";
 import { VersionOptions } from "./version-options";
 import { VersionPage } from "./version-page";
+import { useDocumentOperations } from "@/features/documents/queries";
 import {
 	Alert,
 	Button,
@@ -38,19 +39,10 @@ export function HistoryPanel({ resume, offline }: HistoryPanelProps) {
 	const selectedId = picked === undefined ? (linked ?? null) : picked;
 	const selected = versions?.find((version) => version.id === selectedId) ?? null;
 	const [name, setName] = useState("");
-	const [busy, setBusy] = useState(false);
 	const [options, setOptions] = useState<Version | null>(null);
+	// One action at a time, after a session and network check; failures read as translated sentences.
+	const { run, busy } = useDocumentOperations();
 	const when = (version: Version) => formatVersionTime(version.createdAt, i18n.locale);
-
-	const run = async (action: () => Promise<void>, failure = t`Something went wrong. Try again.`) => {
-		setBusy(true);
-		try {
-			await action();
-		} catch (error) {
-			showToast({ title: error instanceof Error && error.message ? error.message : failure, variant: "danger" });
-		}
-		setBusy(false);
-	};
 
 	const save = () => {
 		const trimmed = name.trim();
@@ -62,23 +54,27 @@ export function HistoryPanel({ resume, offline }: HistoryPanelProps) {
 		});
 	};
 
-	const restore = (version: Version) =>
+	const undo = (before: string) =>
 		void run(async () => {
-			const since = new Date(Date.now() - 60_000);
-			await history.restore(version.id);
+			await history.restore(before);
+			showToast({ title: t`Restore undone` });
+		});
+
+	const restore = (version: Version) => {
+		let before: string | null = null;
+		// The toast comes once the action has finished, so its Undo isn't refused as a second action in flight.
+		void run(async () => {
+			before = await history.restore(version.id);
+		}).then((done) => {
+			if (!done) return;
 			setPicked(null);
+			const undoTo = before;
 			showToast({
 				title: t`Restored the version from ${formatVersionMoment(version.createdAt, i18n.locale)}. Your previous state is saved as “Before restore”.`,
-				undo: {
-					label: t`Undo`,
-					onUndo: () =>
-						void run(async () => {
-							await history.undoRestore(since);
-							showToast({ title: t`Restore undone` });
-						}),
-				},
+				...(undoTo ? { undo: { label: t`Undo`, onUndo: () => undo(undoTo) } } : {}),
 			});
 		});
+	};
 
 	return (
 		<View className="gap-4" testID="history-panel">

@@ -1,5 +1,6 @@
-// An exact number in a row: the label, − and +, and the value typed between them (a margin in pt, a line height). Out
-// of range typing is clamped and rounded to the step when the field is left or submitted.
+// An exact number in a row: the label, − and +, and the value typed between them (a margin in pt, a line height). A
+// typed value is rounded to the nearest step (counted from `min`) and kept within the range when the field is left or
+// submitted.
 import { useState } from "react";
 import { View } from "react-native";
 import { IconButton } from "./button";
@@ -26,9 +27,11 @@ export type NumberStepperProps = {
 
 const decimals = (step: number) => (String(step).split(".")[1] ?? "").length;
 
-/** `next` clamped to the range and rounded to the step's decimals. */
+/** `next` rounded to the nearest step counted from `min`, then kept within the range (the step's decimals, no float dust). */
 export function clampStep(next: number, min: number, max: number, step: number) {
-	return Number(Math.min(max, Math.max(min, next)).toFixed(decimals(step)));
+	const places = Math.max(decimals(step), decimals(min));
+	const snapped = step > 0 ? min + Math.round((next - min) / step) * step : next;
+	return Number(Math.min(max, Math.max(min, snapped)).toFixed(places));
 }
 
 export function NumberStepper(props: NumberStepperProps) {

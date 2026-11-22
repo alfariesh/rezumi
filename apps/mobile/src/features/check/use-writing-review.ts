@@ -3,7 +3,7 @@ import type { WritingNote } from "@rezumi/resume/check";
 import type { Proposal } from "@rezumi/resume/proposals";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { useLingui } from "@lingui/react/macro";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { mapWritingReview } from "@rezumi/resume/check";
 import { buildMarkdown } from "@rezumi/resume/markdown";
 import { collectPassages } from "@rezumi/resume/proposals";
@@ -22,13 +22,18 @@ export type WritingReview = { summary: string; strengths: string[]; proposals: P
 /** The passages a review may rewrite: bullets and paragraphs, labelled by where they are. */
 export function usePassages(data: ResumeData) {
 	const { t } = useLingui();
-	return collectPassages(data, {
-		summary: getSectionName(data, "summary"),
-		sectionTitle: (sectionId) => getSectionName(data, sectionId),
-		entryTitle: (type, entry) => describeEntry(type as never, entry as never).title,
-		bullet: (n) => t`bullet ${n}`,
-		paragraph: (n) => t`paragraph ${n}`,
-	}).slice(0, MAX_PASSAGES);
+	// `t` changes with the locale, which also renames the sections.
+	return useMemo(
+		() =>
+			collectPassages(data, {
+				summary: getSectionName(data, "summary"),
+				sectionTitle: (sectionId) => getSectionName(data, sectionId),
+				entryTitle: (type, entry) => describeEntry(type as never, entry as never).title,
+				bullet: (n) => t`bullet ${n}`,
+				paragraph: (n) => t`paragraph ${n}`,
+			}).slice(0, MAX_PASSAGES),
+		[data, t],
+	);
 }
 
 /**

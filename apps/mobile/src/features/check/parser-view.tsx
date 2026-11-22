@@ -1,10 +1,9 @@
 import type { CheckIssue } from "./messages";
+import type { ParsedPdf } from "./use-parsed-pdf";
 import type { AtsResult } from "@/features/ats-checker/check";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
-import { useState } from "react";
 import { View } from "react-native";
-import { useParsedPdf } from "./use-parsed-pdf";
 import { getPdfFindingMessage } from "@/features/ats-checker/messages";
 import { Alert, Button, Card, Chip, EmptyState, Skeleton, Spinner, Text, Typography } from "@/ui";
 
@@ -12,6 +11,11 @@ type ParserViewProps = {
 	pdf: Uint8Array | null;
 	issues: readonly CheckIssue[];
 	offline: boolean;
+	/** The person agreed to send the PDF; kept by the page sheet so switching views doesn't ask again. */
+	optedIn: boolean;
+	onOptIn: () => void;
+	/** The read, owned by the page sheet so its result outlives this view. */
+	parsed: ParsedPdf;
 	onSelect: (key: string) => void;
 };
 
@@ -32,10 +36,8 @@ function Notice({ status, message }: NoticeProps) {
  * "What a parser reads": the text the server's checker gets out of the PDF on the page, in reading order, with the
  * lines behind open issues marked, and what the file-level check found. It runs only after the person agrees.
  */
-export function ParserView({ pdf, issues, offline, onSelect }: ParserViewProps) {
+export function ParserView({ pdf, issues, offline, optedIn, onOptIn, parsed, onSelect }: ParserViewProps) {
 	const { t } = useLingui();
-	const [optedIn, setOptedIn] = useState(false);
-	const parsed = useParsedPdf(pdf, optedIn && !offline);
 
 	if (!optedIn)
 		return (
@@ -43,7 +45,7 @@ export function ParserView({ pdf, issues, offline, onSelect }: ParserViewProps) 
 				<Typography type="body-sm">
 					{t`The PDF is checked on the server and not stored. Send this preview to see what software reads.`}
 				</Typography>
-				<Button isDisabled={offline || !pdf} onPress={() => setOptedIn(true)} testID="parser-opt-in">
+				<Button isDisabled={offline || !pdf} onPress={onOptIn} testID="parser-opt-in">
 					<Button.Label>{t`Read the exported PDF`}</Button.Label>
 				</Button>
 				{offline ? <Text tone="muted">{t`You're offline. Connect to check a file.`}</Text> : null}

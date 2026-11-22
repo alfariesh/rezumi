@@ -16,13 +16,6 @@ function ReorderableList<T>({ onReorder, ...props }: ReorderableProps<T>) {
 	return <FlatList {...props} />;
 }
 
-export function reorderItems<T>(data: T[], from: number, to: number): T[] {
-	const next = [...data];
-	const [moved] = next.splice(from, 1);
-	if (moved !== undefined) next.splice(to, 0, moved);
-	return next;
-}
-
 export const useReorderableDrag = () => () => undefined;
 export const useIsActive = () => false;
 export default ReorderableList;

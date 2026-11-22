@@ -5,16 +5,28 @@ import { moveSectionToEnd, moveSectionToNewPage, readSectionBreak, toggleSection
 import { templateLayouts } from "@rezumi/schema/templates";
 import { ListRow, ListSection, Sheet, Switch } from "@/ui";
 
-export type MoveTarget = { id: string; title: string; at: LayoutLocation };
+export type MoveTarget = {
+	id: string;
+	title: string;
+	at: LayoutLocation;
+	/** Which way it can move within its column. */
+	moves: { up: boolean; down: boolean };
+};
 
 type SectionMoveSheetProps = DesignProps & {
 	target: MoveTarget | null;
 	onClose: () => void;
 	columnLabel: (column: LayoutColumnId) => string;
+	/** One place up or down within its column. */
+	onReorder: (target: MoveTarget, direction: "up" | "down") => void;
 };
 
-/** One section's menu: move it to another page or column (or a new page), and its two page-break switches. */
-export function SectionMoveSheet({ data, write, disabled, target, onClose, columnLabel }: SectionMoveSheetProps) {
+/**
+ * One section's menu: Move up / Move down within its column (only those that can act), move it to another page or
+ * column (or a new page), and its two page-break switches.
+ */
+export function SectionMoveSheet(props: SectionMoveSheetProps) {
+	const { data, write, disabled, target, onClose, columnLabel, onReorder } = props;
 	const { t } = useLingui();
 	const { pages } = data.metadata.layout;
 	const oneColumn = templateLayouts[data.metadata.template].columns === 1;
@@ -25,6 +37,34 @@ export function SectionMoveSheet({ data, write, disabled, target, onClose, colum
 		<Sheet isOpen={!!target} onOpenChange={(open) => !open && onClose()} title={target?.title} closeLabel={t`Close`}>
 			{target ? (
 				<>
+					{target.moves.up || target.moves.down ? (
+						<ListSection>
+							{target.moves.up ? (
+								<ListRow
+									icon="arrow-up"
+									title={t`Move up`}
+									chevron={false}
+									isDisabled={disabled}
+									onPress={() => {
+										onReorder(target, "up");
+										onClose();
+									}}
+								/>
+							) : null}
+							{target.moves.down ? (
+								<ListRow
+									icon="arrow-down"
+									title={t`Move down`}
+									chevron={false}
+									isDisabled={disabled}
+									onPress={() => {
+										onReorder(target, "down");
+										onClose();
+									}}
+								/>
+							) : null}
+						</ListSection>
+					) : null}
 					<ListSection title={t`Move to`}>
 						{pages.flatMap((page, index) =>
 							// Full-width pages and one-column templates hide the sidebar, so it's never offered.

@@ -1,5 +1,6 @@
 import type { SaveStatus } from "@rezumi/resume/draft";
 import { fireEvent, screen } from "@testing-library/react-native";
+import { SafeAreaInsetsContext } from "react-native-safe-area-context";
 import { create } from "zustand";
 import { DraftChrome } from "./draft-chrome";
 import { slot } from "./slots";
@@ -64,7 +65,7 @@ describe("editor chrome", () => {
 
 		await fireEvent.press(screen.getByLabelText("Undo"));
 		expect(store.getState().undo).toHaveBeenCalled();
-		await fireEvent.press(screen.getByLabelText("Back to Documents"));
+		await fireEvent.press(screen.getByLabelText("Back"));
 		expect(onBack).toHaveBeenCalled();
 	});
 
@@ -94,6 +95,18 @@ describe("editor chrome", () => {
 		await fireEvent.press(screen.getByRole("button", { name: "Retry saving" }));
 		expect(store.getState().retry).toHaveBeenCalled();
 		expect(mockGuard).toHaveBeenLastCalledWith(expect.objectContaining({ dirty: true, leaveLabel: "Leave" }));
+	});
+
+	it("keeps Back clear of a landscape notch", async () => {
+		const insets = { top: 0, bottom: 21, left: 59, right: 47 };
+		await renderScreen(
+			<SafeAreaInsetsContext value={insets}>
+				<slot.Provider>
+					<EditorTopBar fallbackTitle="Resume" onBack={jest.fn()} safeTop />
+				</slot.Provider>
+			</SafeAreaInsetsContext>,
+		);
+		expect(screen.getByTestId("editor-top-bar")).toHaveStyle({ paddingLeft: 59, paddingRight: 47 });
 	});
 
 	it("explains offline editing", async () => {

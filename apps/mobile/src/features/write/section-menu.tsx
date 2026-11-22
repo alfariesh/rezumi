@@ -1,12 +1,15 @@
 // The first page of a section's options: add, sort and move; title, icon and what shows; columns and page breaks;
 // then clear or delete with Undo.
+import type { SectionMoves } from "./section-row";
 import type { WriteSection, getSectionObject } from "@/features/entries/model";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
+import { View } from "react-native";
 import { useEditSection, useSortByDate } from "./hooks";
 import { useEdit, useSectionTitle, useUndoToast } from "@/features/entries/hooks";
+import { ResumeIconGlyph, hasResumeIcon } from "@/features/entries/icon-picker";
 import { deleteCustomSection } from "@/features/entries/model";
-import { ListRow, ListSection, Switch } from "@/ui";
+import { Icon, ListRow, ListSection, Switch } from "@/ui";
 
 export type SectionPage = "menu" | "rename" | "columns" | "keywords" | "move" | "icon";
 
@@ -17,11 +20,22 @@ type SectionMenuProps = {
 	where: string | undefined;
 	onPage: (page: SectionPage) => void;
 	onAddEntry: (section: WriteSection) => void;
+	/** Which way it can move; Move up / Move down show only when they can act. */
+	moves: SectionMoves;
 	onMove: (direction: "up" | "down") => void;
 	onClose: () => void;
 };
 
-export function SectionMenu({ section, settings, where, onPage, onAddEntry, onMove, onClose }: SectionMenuProps) {
+export function SectionMenu({
+	section,
+	settings,
+	where,
+	onPage,
+	onAddEntry,
+	moves,
+	onMove,
+	onClose,
+}: SectionMenuProps) {
 	const { t } = useLingui();
 	const title = useSectionTitle(section);
 	const edit = useEdit();
@@ -29,6 +43,7 @@ export function SectionMenu({ section, settings, where, onPage, onAddEntry, onMo
 	const sortByDate = useSortByDate();
 	const undoToast = useUndoToast();
 	const change = (mutate: Parameters<ReturnType<typeof useEditSection>>[1]) => editSection(section, mutate);
+	const hasIcon = Boolean(settings.icon) && hasResumeIcon(settings.icon);
 	const isSkills = section.type === "skills";
 	const canSort = section.type === "experience" || section.type === "education";
 	const skills = settings as { layout?: string; keywordLayout?: string };
@@ -52,8 +67,12 @@ export function SectionMenu({ section, settings, where, onPage, onAddEntry, onMo
 				{canSort ? (
 					<ListRow title={t`Sort by date`} icon="arrow-down" chevron={false} onPress={act(() => sortByDate(section))} />
 				) : null}
-				<ListRow title={t`Move up`} icon="arrow-up" chevron={false} onPress={act(() => onMove("up"))} />
-				<ListRow title={t`Move down`} icon="arrow-down" chevron={false} onPress={act(() => onMove("down"))} />
+				{moves.up ? (
+					<ListRow title={t`Move up`} icon="arrow-up" chevron={false} onPress={act(() => onMove("up"))} />
+				) : null}
+				{moves.down ? (
+					<ListRow title={t`Move down`} icon="arrow-down" chevron={false} onPress={act(() => onMove("down"))} />
+				) : null}
 				<ListRow title={t`Move to…`} icon="arrows-left-right" value={where} onPress={() => onPage("move")} />
 			</ListSection>
 			<ListSection>
@@ -67,7 +86,16 @@ export function SectionMenu({ section, settings, where, onPage, onAddEntry, onMo
 				<ListRow
 					title={t`Icon…`}
 					icon="bookmark-simple"
-					value={settings.icon && settings.icon !== "none" ? settings.icon : t`None`}
+					// The chosen icon itself: its id is an English file name, not a label.
+					value={hasIcon ? undefined : t`None`}
+					trailing={
+						hasIcon ? (
+							<View className="flex-row items-center gap-2">
+								<ResumeIconGlyph name={settings.icon} />
+								<Icon name="caret-right" size={16} tone="muted" />
+							</View>
+						) : undefined
+					}
 					onPress={() => onPage("icon")}
 				/>
 				{toggle(t`Show on page`, !settings.hidden, (shown) =>

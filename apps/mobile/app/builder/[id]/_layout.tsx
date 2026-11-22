@@ -1,5 +1,6 @@
 import type { BuilderPane } from "@/routes";
 import type { PaneTab } from "@/shell/builder-chrome";
+import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import PageScreen from "./page";
@@ -7,6 +8,7 @@ import { ResumeConflictSheet, useResumeDraftOwner, useResumeStore } from "@/draf
 import { DocumentMenu } from "@/features/documents/document-menu";
 import { routes } from "@/routes";
 import { BuilderChrome, DraftChrome } from "@/shell/builder-chrome";
+import { CheckBadge } from "@/shell/builder-chrome/check-badge";
 import { IconButton } from "@/ui";
 
 /**
@@ -31,6 +33,7 @@ export default function BuilderLayout() {
 			label: t({ message: "Check", context: "Editor mode" }),
 			icon: "list-checks",
 			href: routes.builder(id, "check"),
+			badgeLabel: (badge) => plural(Number(badge), { one: "Check, # issue", other: "Check, # issues" }),
 		},
 		{
 			pane: "share",
@@ -57,6 +60,7 @@ export default function BuilderLayout() {
 				}
 			/>
 			<DocumentMenu id={id} inChrome />
+			<CheckBadge id={id} />
 			<ResumeConflictSheet />
 		</BuilderChrome>
 	);

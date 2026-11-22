@@ -16,9 +16,38 @@ type NewCopyProps = {
 	initialJobId?: string | undefined;
 	busy: boolean;
 	onCreate: (input: { resumeId: string; name: string; applicationId?: string | undefined }) => void;
+	/** Back to New's choices; while a list is open, Back closes it instead. */
+	onBack: () => void;
 };
 
-export function NewCopy({ initialSourceId, initialJobId, busy, onCreate }: NewCopyProps) {
+export function NewCopy(props: NewCopyProps) {
+	const { t } = useLingui();
+	const [picking, setPicking] = useState<Picking>(null);
+	return (
+		<View className="gap-4">
+			<CopyForm {...props} picking={picking} onPickingChange={setPicking} />
+			<Button
+				variant="ghost"
+				isDisabled={props.busy}
+				onPress={() => (picking ? setPicking(null) : props.onBack())}
+				testID="new-copy-back"
+			>
+				<Button.Label>{t`Back`}</Button.Label>
+			</Button>
+		</View>
+	);
+}
+
+type CopyFormProps = NewCopyProps & { picking: Picking; onPickingChange: (picking: Picking) => void };
+
+function CopyForm({
+	initialSourceId,
+	initialJobId,
+	busy,
+	onCreate,
+	picking,
+	onPickingChange: setPicking,
+}: CopyFormProps) {
 	const { t } = useLingui();
 	const session = useSession();
 	const documents = useDocuments();
@@ -28,7 +57,6 @@ export function NewCopy({ initialSourceId, initialJobId, busy, onCreate }: NewCo
 		queryKey: [...options.queryKey, session.server],
 		enabled: session.status === "signed-in",
 	});
-	const [picking, setPicking] = useState<Picking>(null);
 	const [sourceId, setSourceId] = useState(initialSourceId ?? null);
 	const [jobId, setJobId] = useState(initialJobId ?? null);
 	const [name, setName] = useState<string | null>(null);
@@ -36,7 +64,10 @@ export function NewCopy({ initialSourceId, initialJobId, busy, onCreate }: NewCo
 		.filter((document) => document.type === "resume")
 		.toSorted((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
 	const source = resumes.find((document) => document.id === sourceId) ?? resumes[0];
-	const jobs = (applications.data ?? []).filter((application) => application.status !== "closed");
+	// Closed applications stay out, except the one New was opened from.
+	const jobs = (applications.data ?? []).filter(
+		(application) => application.status !== "closed" || application.id === initialJobId,
+	);
 	const job = jobs.find((application) => application.id === jobId);
 	const suggested = (
 		job ? `${source?.name.split(" — ")[0] ?? ""} — ${job.company}` : t`${source?.name ?? ""} (copy)`

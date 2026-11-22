@@ -35,25 +35,27 @@ export function EntryRow({ row, locked, onDrag, onOpen, onMove, onOptions }: Ent
 				"ms-8 me-4 my-0.5 min-h-14 flex-row items-center rounded-xl border border-border bg-surface",
 				entry.hidden && "opacity-60",
 			)}
-			accessibilityActions={
-				locked
-					? undefined
-					: [
-							...(row.index > 0 ? [{ name: "up", label: t`Move up` }] : []),
-							...(row.index < row.count - 1 ? [{ name: "down", label: t`Move down` }] : []),
-						]
-			}
-			onAccessibilityAction={({ nativeEvent }) => {
-				if (nativeEvent.actionName === "up") onMove(row.index - 1);
-				if (nativeEvent.actionName === "down") onMove(row.index + 1);
-			}}
 			testID={`entry-${row.entryId}`}
 		>
 			<SortableHandle label={t`Reorder ${name}`} isDisabled={locked} onDrag={onDrag} />
 			<Pressable
 				accessibilityRole="button"
 				accessibilityLabel={t`${name}, entry ${row.index + 1} of ${row.count}`}
+				// On the focusable title, where a screen reader's actions menu finds them; none at the ends.
+				accessibilityActions={
+					locked
+						? undefined
+						: [
+								...(row.index > 0 ? [{ name: "up", label: t`Move up` }] : []),
+								...(row.index < row.count - 1 ? [{ name: "down", label: t`Move down` }] : []),
+							]
+				}
+				onAccessibilityAction={({ nativeEvent }) => {
+					if (nativeEvent.actionName === "up") onMove(row.index - 1);
+					if (nativeEvent.actionName === "down") onMove(row.index + 1);
+				}}
 				onPress={onOpen}
+				testID={`entry-${row.entryId}-title`}
 				className="min-h-11 flex-1 justify-center gap-0.5 py-2"
 			>
 				<View className="flex-row flex-wrap items-center gap-1">

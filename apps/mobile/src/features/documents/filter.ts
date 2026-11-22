@@ -2,12 +2,11 @@ import type { RouterOutput } from "@/api/client";
 
 // The library's rules (search, sort, tags, Trash days) are shared with the web's Documents page.
 export {
-	changedTags,
 	collectTags,
 	daysLeftInTrash,
 	documentKey,
 	filterDocuments,
-	sharedTags,
+	TRASH_DAYS,
 	type DocumentSort,
 } from "@rezumi/resume/documents";
 

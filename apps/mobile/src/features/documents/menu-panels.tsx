@@ -4,7 +4,6 @@ import { useLingui } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { View } from "react-native";
-import { sharedTags } from "./filter";
 import { orpc } from "@/api/client";
 import { useSession } from "@/auth/session";
 import {
@@ -48,12 +47,12 @@ export function RenamePanel({ name: initial, busy, onSave }: RenamePanelProps) {
 	);
 }
 
-type TagsPanelProps = { documents: readonly DocumentSummary[]; busy: boolean; onSave: (tags: string[]) => void };
+type TagsPanelProps = { document: DocumentSummary; busy: boolean; onSave: (tags: string[]) => void };
 
 /** Tags… for one document: tags group documents in the library; pick one above the list to filter by it. */
-export function TagsPanel({ documents, busy, onSave }: TagsPanelProps) {
+export function TagsPanel({ document, busy, onSave }: TagsPanelProps) {
 	const { t } = useLingui();
-	const [tags, setTags] = useState(() => sharedTags(documents));
+	const [tags, setTags] = useState(() => [...document.tags]);
 	return (
 		<View className="gap-4">
 			<Typography type="body-sm" color="muted">
@@ -89,7 +88,10 @@ export function LinkPanel({ document, busy, onLink }: LinkPanelProps) {
 		queryKey: [...options.queryKey, session.server],
 		enabled: session.status === "signed-in",
 	});
-	const jobs = (applications.data ?? []).filter((application) => application.status !== "closed");
+	// Closed applications stay out, except the one the letter is already linked to.
+	const jobs = (applications.data ?? []).filter(
+		(application) => application.status !== "closed" || application.id === document.application?.id,
+	);
 	return (
 		<View className="gap-4">
 			<Typography type="body-sm" color="muted">

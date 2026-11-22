@@ -120,9 +120,15 @@ export function ResumePage({ id, draft, focused, previewData, onFullScreen, full
 		}
 		setSelected(selected ? { node: selected, data } : null);
 	};
+	// Opens the picked entry (a header opens Basics) in the editor, the way Write does; full screen closes first, so the
+	// entry never stacks over the full-screen modal.
 	const edit = () => {
-		if (selection?.kind === "item") router.push(routes.entry(id, selection.sectionId, selection.itemId));
-		else router.push(routes.builder(id, "write"));
+		const target =
+			selection?.kind === "item"
+				? routes.entry(id, selection.sectionId, selection.itemId)
+				: routes.entry(id, "basics", "basics");
+		if (fullScreen && router.canDismiss()) router.dismiss();
+		router.push(target);
 	};
 
 	return (

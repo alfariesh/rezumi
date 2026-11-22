@@ -5,6 +5,7 @@ import { FlatList, Pressable } from "react-native";
 import { SvgXml } from "react-native-svg";
 import iconPaths from "@rezumi/pdf/icons";
 import { icons as resumeIcons } from "@rezumi/schema/icons";
+import { upgradeIconName } from "@rezumi/schema/resume/icon-names";
 import { EmptyState, Icon, SearchField, Sheet, size, useThemeColor } from "@/ui";
 
 type IconPickerSheetProps = {
@@ -15,6 +16,38 @@ type IconPickerSheetProps = {
 };
 
 const paths = iconPaths as Record<string, string>;
+
+/** The drawing for a resume icon name (a former Phosphor name draws its closest match); undefined for none. */
+function drawingOf(name: string): string | undefined {
+	const icon = upgradeIconName(name);
+	return icon && icon !== "none" && Object.hasOwn(paths, icon) ? paths[icon] : undefined;
+}
+
+/** Whether a resume icon name draws anything. */
+export const hasResumeIcon = (name: string) => drawingOf(name) !== undefined;
+
+type ResumeIconGlyphProps = { name: string; size?: number };
+
+/**
+ * A resume icon drawn as it prints, for showing the current choice: icon ids are English file names, not labels.
+ * Hidden from screen readers; the control it sits in carries the label.
+ */
+export function ResumeIconGlyph({ name, size: side = size.icon.md }: ResumeIconGlyphProps) {
+	const [foreground] = useThemeColor(["foreground"]);
+	const drawing = drawingOf(name);
+	if (!drawing) return null;
+	return (
+		<SvgXml
+			xml={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">${drawing}</svg>`}
+			color={foreground}
+			width={side}
+			height={side}
+			accessibilityElementsHidden
+			importantForAccessibility="no-hide-descendants"
+			testID={`resume-icon-${name}`}
+		/>
+	);
+}
 
 export function IconPickerSheet({ isOpen, value, onOpenChange, onChange }: IconPickerSheetProps) {
 	const { t } = useLingui();

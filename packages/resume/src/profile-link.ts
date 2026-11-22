@@ -117,9 +117,28 @@ export function isLocalEntry(data: ResumeData, profile: ProfileData, section: Pr
 	return profileView(data, profile).comparison.items[section]?.[id] === "local";
 }
 
-/** The Profile entries a section of the resume doesn't have, in the Profile's order. */
+// Every entry id in a version of the resume, built-in and custom sections alike.
+const entryIds = new WeakMap<ResumeData, ReadonlySet<string>>();
+
+function entryIdsOf(data: ResumeData): ReadonlySet<string> {
+	const cached = entryIds.get(data);
+	if (cached) return cached;
+	const ids = new Set<string>();
+	for (const section of Object.values(data.sections))
+		for (const item of section.items as { id: string }[]) ids.add(item.id);
+	for (const section of data.customSections) for (const item of section.items as { id: string }[]) ids.add(item.id);
+	entryIds.set(data, ids);
+	return ids;
+}
+
+/**
+ * The Profile entries a section of the resume doesn't have, in the Profile's order. An entry the resume keeps anywhere
+ * else (moved into a custom section, say) still counts as had: adding it again would give two entries one id.
+ */
 export function missingFromProfile(data: ResumeData, profile: ProfileData, section: ProfileSectionType): string[] {
-	return profileView(data, profile).comparison.missing[section] ?? [];
+	const missing = profileView(data, profile).comparison.missing[section] ?? [];
+	const ids = entryIdsOf(data);
+	return missing.filter((id) => !ids.has(id));
 }
 
 /**

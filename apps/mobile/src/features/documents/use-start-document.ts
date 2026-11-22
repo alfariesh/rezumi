@@ -46,7 +46,17 @@ export function useStartDocument({ applicationId, navigation = "push" }: StartOp
 			}
 			const document = await create();
 			if (getServer() !== session.server) return;
-			if (applicationId) await client.documents.linkApplication({ ...document, applicationId });
+			if (applicationId) {
+				// The document exists either way: open it, so a retry doesn't make a second one.
+				try {
+					await client.documents.linkApplication({ ...document, applicationId });
+				} catch {
+					showToast({
+						title: t`Couldn't link the application. Check Applications before retrying.`,
+						variant: "warning",
+					});
+				}
+			}
 			useNewDocuments.getState().markNew(document);
 			void queryClient.invalidateQueries({ queryKey: orpc.documents.key() });
 			if (applicationId) void queryClient.invalidateQueries({ queryKey: orpc.applications.key() });

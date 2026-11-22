@@ -1,4 +1,5 @@
 import type { DesignWrite } from "./write";
+import type { TemplateFilter } from "@rezumi/resume/design-presets";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CareerField } from "@rezumi/schema/templates";
 
@@ -6,4 +7,4 @@ import type { CareerField } from "@rezumi/schema/templates";
 export type DesignProps = { data: ResumeData; write: DesignWrite; disabled: boolean };
 
 /** The template gallery's filters: field of work and layout. */
-export type GalleryFilter = { field: CareerField | "all"; layout: "all" | "one" | "two" | "ats" };
+export type GalleryFilter = { field: CareerField | "all"; layout: TemplateFilter };

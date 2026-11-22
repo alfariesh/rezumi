@@ -22,11 +22,17 @@ type SectionRowProps = {
 	/** `commit` is false when the drag was cancelled. */
 	onDrop: (commit: boolean) => void;
 	onMenu: () => void;
+	/** Which way it can move within its column; screen readers get Move up / Move down only when they can act. */
+	moves: { up: boolean; down: boolean };
+	onReorder: (direction: "up" | "down") => void;
 };
 
-/** A section in a column: hold ⋮⋮ to lift and drag it; ⋮ moves it without dragging (and serves screen readers). */
+/**
+ * A section in a column: hold ⋮⋮ to lift and drag it; ⋮ moves it without dragging. Screen readers skip the handle and
+ * reorder from the title's actions (Move up / Move down) or move it elsewhere from ⋮.
+ */
 export function SectionRow(props: SectionRowProps) {
-	const { title, lifted, offset, disabled, register, onLift, onMove, onDrop, onMenu } = props;
+	const { title, lifted, offset, disabled, register, onLift, onMove, onDrop, onMenu, moves, onReorder } = props;
 	const { t } = useLingui();
 	const gesture = Gesture.Pan()
 		.enabled(!disabled)
@@ -34,8 +40,10 @@ export function SectionRow(props: SectionRowProps) {
 		.activateAfterLongPress(300)
 		.onStart(onLift)
 		.onUpdate((event) => onMove(event.absoluteY, event.translationY))
-		.onEnd(() => onDrop(true))
-		.onFinalize(() => onDrop(false));
+		// RNGH ends a cancelled or failed pan with success false: only a real release drops the section.
+		.onEnd((_event, success) => onDrop(success))
+		.onFinalize(() => onDrop(false))
+		.withTestId(`layout-drag-${props.id}`);
 	return (
 		<View
 			ref={register}
@@ -47,19 +55,33 @@ export function SectionRow(props: SectionRowProps) {
 			style={lifted ? [{ transform: [{ translateY: offset }] }] : undefined}
 		>
 			<GestureDetector gesture={gesture}>
+				{/* Dragging can't be done with a screen reader: the handle is hidden and the title carries the moves. */}
 				<View
-					accessible
-					accessibilityRole="button"
-					accessibilityLabel={t`Reorder ${title}`}
-					accessibilityHint={t`Press and hold, then drag to another column or page.`}
+					accessibilityElementsHidden
+					importantForAccessibility="no-hide-descendants"
 					className="h-11 w-11 items-center justify-center"
 				>
 					<Icon name="dots-six-vertical" size={size.icon.md} tone="muted" />
 				</View>
 			</GestureDetector>
-			<Text numberOfLines={1} className="flex-1">
-				{title}
-			</Text>
+			<View
+				accessible
+				accessibilityLabel={title}
+				accessibilityActions={
+					disabled
+						? undefined
+						: [
+								...(moves.up ? [{ name: "up", label: t`Move up` }] : []),
+								...(moves.down ? [{ name: "down", label: t`Move down` }] : []),
+							]
+				}
+				onAccessibilityAction={({ nativeEvent }) => {
+					if (nativeEvent.actionName === "up" || nativeEvent.actionName === "down") onReorder(nativeEvent.actionName);
+				}}
+				className="min-h-11 flex-1 justify-center"
+			>
+				<Text numberOfLines={1}>{title}</Text>
+			</View>
 			<IconButton
 				icon="dots-three-vertical"
 				variant="ghost"

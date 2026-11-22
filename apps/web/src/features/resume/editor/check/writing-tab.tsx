@@ -1,5 +1,5 @@
-import type { WritingNote } from "../store";
 import type { CheckIssue } from "./issues";
+import type { WritingNote } from "@rezumi/resume/check";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { ReactNode } from "react";
 import { Button, Chip, Spinner, buttonVariants } from "@heroui/react";

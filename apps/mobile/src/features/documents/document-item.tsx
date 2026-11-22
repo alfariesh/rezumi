@@ -6,6 +6,7 @@ import type { SwipeAction } from "@/ui";
 import { useLingui } from "@lingui/react/macro";
 import { memo } from "react";
 import { Pressable, View } from "react-native";
+import { documentKey } from "./filter";
 import { documentMeta } from "./meta";
 import { Thumbnail } from "./thumbnail";
 import { Chip, Icon, IconButton, SwipeableRow, Text, cx, haptics } from "@/ui";
@@ -35,10 +36,20 @@ export const DocumentItem = memo(function DocumentItem(props: DocumentItemProps)
 	return props.layout === "grid" ? <DocumentCard {...props} /> : <DocumentRow {...props} />;
 });
 
-function useItem({ document, handlers }: DocumentItemProps) {
+function useItem({ document, isNew, unsynced, handlers }: DocumentItemProps) {
 	const { t, i18n } = useLingui();
+	const meta = documentMeta(document, i18n.locale);
+	// The badges are part of what a screen reader announces for the row.
+	const statuses = [
+		isNew && !document.trashedAt ? t`New` : null,
+		unsynced ? t`Unsynced on this device` : null,
+		document.isPublic ? t`Public` : null,
+		document.isLocked ? t`Locked` : null,
+		document.application ? t`Linked to ${document.application.company}` : null,
+	].filter((status) => status !== null);
 	return {
-		meta: documentMeta(document, i18n.locale),
+		meta,
+		label: [document.name, meta, ...statuses].join(", "),
 		press: () => (document.trashedAt ? handlers.onMenu(document) : handlers.onOpen(document)),
 		longPress: () => {
 			haptics.light();
@@ -112,7 +123,9 @@ function DocumentRow(props: DocumentItemProps) {
 				{ key: "duplicate", label: t`Duplicate`, icon: "copy", onPress: () => handlers.onDuplicate(document) },
 			];
 	return (
+		// The list recycles rows: a new key per document drops a swipe left open on the document shown here before.
 		<SwipeableRow
+			key={documentKey(document)}
 			variant="inline"
 			actions={actions}
 			fullSwipe={!document.isLocked}
@@ -124,7 +137,7 @@ function DocumentRow(props: DocumentItemProps) {
 			<View className={cx("flex-row items-center gap-1 bg-surface pe-2", document.trashedAt && "opacity-80")}>
 				<Pressable
 					accessibilityRole="button"
-					accessibilityLabel={`${document.name}, ${item.meta}`}
+					accessibilityLabel={item.label}
 					accessibilityHint={item.hint}
 					onPress={item.press}
 					onLongPress={item.longPress}
@@ -155,7 +168,7 @@ function DocumentCard(props: DocumentItemProps) {
 		<View className={cx("gap-2", document.trashedAt && "opacity-80")} testID={`document-card-${document.id}`}>
 			<Pressable
 				accessibilityRole="button"
-				accessibilityLabel={`${document.name}, ${item.meta}`}
+				accessibilityLabel={item.label}
 				accessibilityHint={item.hint}
 				onPress={item.press}
 				onLongPress={item.longPress}

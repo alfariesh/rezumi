@@ -4,7 +4,7 @@
 import type { ReactElement } from "react";
 import { Pressable, View } from "react-native";
 import { useSharedValue, withTiming } from "react-native-reanimated";
-import ReorderableList, { reorderItems, useIsActive, useReorderableDrag } from "react-native-reorderable-list";
+import ReorderableList, { useIsActive, useReorderableDrag } from "react-native-reorderable-list";
 import { cx } from "./cx";
 import { Icon } from "./icon";
 import { haptics, useReducedMotion } from "./motion";
@@ -29,6 +29,15 @@ export type SortableListProps<T> = {
 	ListFooterComponent?: ReactElement | undefined;
 	testID?: string | undefined;
 };
+
+/** The rows after a drop: the row at `from` moved to `to`, the others keeping their order. */
+function moveRow<T>(data: readonly T[], from: number, to: number): T[] {
+	const next = [...data];
+	const [moved] = next.splice(from, 1);
+	if (moved === undefined) return next;
+	next.splice(to, 0, moved);
+	return next;
+}
 
 type CellProps<T> = { item: T; index: number; renderItem: SortableListProps<T>["renderItem"] };
 
@@ -61,7 +70,7 @@ export function SortableList<T>({ data, keyExtractor, renderItem, onReorder, ...
 			data={data as T[]}
 			keyExtractor={keyExtractor}
 			renderItem={({ item, index }) => <Cell item={item} index={index} renderItem={renderItem} />}
-			onReorder={({ from, to }) => onReorder(reorderItems([...data], from, to), { from, to })}
+			onReorder={({ from, to }) => onReorder(moveRow(data, from, to), { from, to })}
 			shouldUpdateActiveItem
 			keyboardShouldPersistTaps="handled"
 			animationDuration={reduced ? 0 : motion.standard}
@@ -80,17 +89,22 @@ export function SortableList<T>({ data, keyExtractor, renderItem, onReorder, ...
 }
 
 export type SortableHandleProps = {
-	/** "Reorder Experience": read by screen readers, which move rows with the row's own actions instead. */
+	/**
+	 * "Reorder Experience": names the handle for tests and tools. Screen readers skip the handle (it only answers a long
+	 * press) and move rows with the row's own Move up / Move down actions.
+	 */
 	label: string;
 	onDrag: () => void;
 	isDisabled?: boolean | undefined;
 };
 
-/** ⋮⋮ beside a row: hold to lift it. A 44 pt target. */
+/** ⋮⋮ beside a row: hold to lift it. A 44 pt target, hidden from screen readers. */
 export function SortableHandle({ label, onDrag, isDisabled = false }: SortableHandleProps) {
 	return (
 		<Pressable
-			accessibilityRole="button"
+			accessible={false}
+			accessibilityElementsHidden
+			importantForAccessibility="no-hide-descendants"
 			accessibilityLabel={label}
 			accessibilityState={{ disabled: isDisabled }}
 			disabled={isDisabled}

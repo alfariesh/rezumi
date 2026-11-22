@@ -24,7 +24,25 @@ describe("NumberStepper", () => {
 		await fireEvent.changeText(field, "9,123");
 		await fireEvent(field, "blur");
 		expect(onChange).toHaveBeenCalledWith(4);
-		expect(clampStep(1.2345, 0.5, 4, 0.05)).toBe(1.23);
+	});
+
+	it("rounds a typed value to the nearest step within the range", async () => {
+		const onChange = jest.fn();
+		await renderUi(
+			<NumberStepper label="Line height" value={1.5} min={0.5} max={4} step={0.05} onChange={onChange} {...labels} />,
+		);
+		const field = screen.getByLabelText("Line height");
+		await fireEvent.changeText(field, "1,2345");
+		await fireEvent(field, "submitEditing");
+		expect(onChange).toHaveBeenLastCalledWith(1.25);
+
+		expect(clampStep(1.22, 0.5, 4, 0.05)).toBe(1.2);
+		expect(clampStep(7, 0, 360, 5)).toBe(5);
+		expect(clampStep(8, 0, 360, 5)).toBe(10);
+		// Steps count from `min`, and the ends stay reachable when `max` is off the steps.
+		expect(clampStep(33.4, 32, 99, 1)).toBe(33);
+		expect(clampStep(12.4, 10, 12.3, 0.5)).toBe(12.3);
+		expect(clampStep(0.1 + 0.2, 0, 1, 0.1)).toBe(0.3);
 	});
 
 	it("ignores text that isn't a number and an unchanged value", async () => {

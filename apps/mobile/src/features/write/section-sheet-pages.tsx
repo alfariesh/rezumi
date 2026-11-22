@@ -119,7 +119,9 @@ export function MovePage({ section, onDone }: PageProps) {
 	if (!pages) return null;
 	const placement = findPlacement(pages, section.id);
 	const place = (target: { page: number; column: LayoutColumn } | "new-page") => {
-		edit((draft) => placeSection(draft, section.id, target));
+		// Where it already is: placing it again would jump it to the top of that column.
+		const here = target !== "new-page" && placement?.page === target.page && placement.column === target.column;
+		if (!here) edit((draft) => placeSection(draft, section.id, target));
 		onDone();
 	};
 	return (

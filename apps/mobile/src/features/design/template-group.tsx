@@ -7,11 +7,11 @@ import { templateName } from "@rezumi/resume/design-presets";
 import { applyTemplatePreset, hasTemplatePreset } from "@rezumi/resume/template-preset";
 import { templateLayouts, templatePresets } from "@rezumi/schema/templates";
 import { isRTL } from "@rezumi/utils/locale";
+import { changeWithUndoToast } from "./draft";
 import { FieldLabel } from "./section";
 import { TemplatePicture, useLayoutTags } from "./template-card";
 import { useThumbnailContent } from "./thumbnails";
-import { useResumeStore } from "@/draft";
-import { Button, Icon, Segment, Surface, Text, ValueSlider, showToast } from "@/ui";
+import { Button, Icon, Segment, Surface, Text, ValueSlider } from "@/ui";
 
 type TemplateGroupProps = DesignProps & { onBrowse: () => void };
 
@@ -84,13 +84,12 @@ function PresetPanel({ data, write, disabled, template }: PanelProps) {
 				size="sm"
 				isDisabled={disabled || inUse}
 				className="self-start"
-				onPress={() => {
-					write("preset", (draft) => applyTemplatePreset(draft, template), true);
-					showToast({
-						title: t`${name} style applied`,
-						undo: { label: t`Undo`, onUndo: () => useResumeStore.getState().undo() },
-					});
-				}}
+				onPress={() =>
+					changeWithUndoToast(
+						() => write("preset", (draft) => applyTemplatePreset(draft, template), true),
+						() => t`${name} style applied`,
+					)
+				}
 			>
 				<Icon name={inUse ? "check" : "palette"} size={16} />
 				<Button.Label>{inUse ? t`Style in use` : t`Use ${name} style`}</Button.Label>

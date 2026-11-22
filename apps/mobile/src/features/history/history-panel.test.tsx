@@ -1,7 +1,8 @@
 // History (plans/mobile Phase 07 step 7): the versions list, opening a version read-only, restoring it with Undo,
 // naming the current state, and the loading and error states. Requests are replaced; the screen is the real one.
 import type { Version } from "./format";
-import { act, fireEvent, screen } from "@testing-library/react-native";
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native";
+import { ORPCError } from "@orpc/client";
 import { HistoryPanel } from "./history-panel";
 import { renderScreen } from "@/test/render-screen";
 
@@ -20,21 +21,37 @@ const mock = {
 		isSuccess: true,
 		refetch: jest.fn(),
 	},
-	save: jest.fn(() => Promise.resolve()),
-	restore: jest.fn(() => Promise.resolve()),
-	undoRestore: jest.fn(() => Promise.resolve()),
+	save: jest.fn<Promise<void>, [string]>(() => Promise.resolve()),
+	restore: jest.fn<Promise<string | null>, [string]>(() => Promise.resolve("b1")),
 	rename: jest.fn(() => Promise.resolve()),
 	remove: jest.fn(() => Promise.resolve()),
-	toast: jest.fn<string, [{ title: string; undo?: { onUndo: () => void } }]>(() => "toast"),
+	toast: jest.fn<string, [{ title: string; variant?: string; undo?: { onUndo: () => void } }]>(() => "toast"),
+	online: true,
 };
 
 jest.mock("expo-router", () => ({ useLocalSearchParams: () => mock.params }));
+// The real document operations run every action: the session and network checks and the error wording.
+jest.mock("expo-network", () => ({
+	getNetworkStateAsync: () => Promise.resolve({ isConnected: mock.online, isInternetReachable: mock.online }),
+}));
+jest.mock("@/auth/session", () => ({
+	useSession: () => ({ status: "signed-in", server: "https://rezumi.app" }),
+	getServer: () => "https://rezumi.app",
+}));
+jest.mock("@/api/client", () => ({
+	client: {},
+	orpc: {
+		documents: { key: () => ["documents"] },
+		resume: { key: () => ["resume"] },
+		coverLetters: { key: () => ["coverLetters"] },
+		applications: { key: () => ["applications"] },
+	},
+}));
 jest.mock("./use-history", () => ({
 	useHistory: () => ({
 		list: mock.list,
-		save: (...args: unknown[]) => mock.save(...(args as [])),
-		restore: (...args: unknown[]) => mock.restore(...(args as [])),
-		undoRestore: (...args: unknown[]) => mock.undoRestore(...(args as [])),
+		save: (name: string) => mock.save(name),
+		restore: (id: string) => mock.restore(id),
 		rename: (...args: unknown[]) => mock.rename(...(args as [])),
 		remove: (...args: unknown[]) => mock.remove(...(args as [])),
 	}),
@@ -52,6 +69,7 @@ const resume = { id: "r1", isLocked: false };
 
 beforeEach(() => {
 	jest.clearAllMocks();
+	mock.online = true;
 	mock.params = {};
 	mock.list = { ...mock.list, data: versions, isPending: false, isError: false, isSuccess: true };
 });
@@ -94,9 +112,54 @@ describe("History", () => {
 		expect(mock.restore).toHaveBeenCalledWith("v1");
 		const [toast] = mock.toast.mock.calls.at(-1) ?? [];
 		expect(toast?.title).toMatch(/^Restored the version from .*“Before restore”\.$/);
+		// Undo restores the exact "Before restore" version the server reported, not one picked by the device clock.
 		await act(async () => toast?.undo?.onUndo());
-		expect(mock.undoRestore).toHaveBeenCalledTimes(1);
-		expect(mock.toast.mock.calls.at(-1)?.[0].title).toBe("Restore undone");
+		await waitFor(() => expect(mock.restore).toHaveBeenLastCalledWith("b1"));
+		await waitFor(() => expect(mock.toast.mock.calls.at(-1)?.[0].title).toBe("Restore undone"));
+	});
+
+	it("offers no Undo when the state before the restore can't be read back", async () => {
+		mock.params = { version: "v1" };
+		mock.restore.mockResolvedValueOnce(null);
+		await renderScreen(<HistoryPanel resume={resume} offline={false} />);
+		await act(async () => {
+			await fireEvent.press(screen.getByTestId("history-restore"));
+		});
+		await waitFor(() => expect(mock.toast).toHaveBeenCalled());
+		expect(mock.toast.mock.calls.at(-1)?.[0].undo).toBeUndefined();
+	});
+
+	it("words a failed restore for people, not with the server's message", async () => {
+		mock.params = { version: "v1" };
+		mock.restore.mockRejectedValueOnce(new ORPCError("RESUME_LOCKED", { message: "resume_locked: row 42" }));
+		await renderScreen(<HistoryPanel resume={resume} offline={false} />);
+		await act(async () => {
+			await fireEvent.press(screen.getByTestId("history-restore"));
+		});
+		await waitFor(() =>
+			expect(mock.toast).toHaveBeenCalledWith({
+				title: "This resume is locked. Unlock it to make changes.",
+				variant: "danger",
+			}),
+		);
+	});
+
+	it("checks the connection before saving a version", async () => {
+		mock.online = false;
+		await renderScreen(<HistoryPanel resume={resume} offline={false} />);
+		await act(async () => {
+			await fireEvent.changeText(screen.getByLabelText("Name this version"), "Sent to Orbit");
+		});
+		await act(async () => {
+			await fireEvent.press(screen.getByTestId("history-save"));
+		});
+		await waitFor(() =>
+			expect(mock.toast).toHaveBeenCalledWith({
+				title: "You're offline. Try again when you reconnect.",
+				variant: "danger",
+			}),
+		);
+		expect(mock.save).not.toHaveBeenCalled();
 	});
 
 	it("doesn't restore over a locked resume", async () => {

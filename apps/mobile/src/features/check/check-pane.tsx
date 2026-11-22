@@ -5,7 +5,7 @@ import type { PageLens } from "./check-page";
 import type { CheckIssue } from "./messages";
 import { useLingui } from "@lingui/react/macro";
 import { useNetworkState } from "expo-network";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { View } from "react-native";
 import { useCheckActions } from "./actions";
 import { CheckPageSheet } from "./check-page";
@@ -16,7 +16,6 @@ import { useCheck, useCheckDraft } from "./use-check";
 import { useWritingReview } from "./use-writing-review";
 import { WritingTab } from "./writing-tab";
 import { useResumeStore } from "@/draft";
-import { useBuilderChrome } from "@/shell/builder-chrome";
 import { Alert, EmptyState, Screen, Segment, Skeleton } from "@/ui";
 
 type CheckTab = "issues" | "match" | "writing";
@@ -28,8 +27,6 @@ export function CheckPane({ id }: CheckPaneProps) {
 	const check = useCheck(draft.data);
 	const network = useNetworkState();
 	const offline = draft.status === "offline" || network.isConnected === false || network.isInternetReachable === false;
-	const open = check?.issues.length ?? 0;
-	useBuilderChrome(useMemo(() => ({ badges: { check: open } }), [open]));
 
 	if (!check && draft.status === "error")
 		return (

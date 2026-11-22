@@ -3,13 +3,12 @@
 import type { DesignProps } from "./types";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
-import { View } from "react-native";
-import { parseColorInput, rgbaToHex } from "@rezumi/resume/design-presets";
+import { parseColorInput } from "@rezumi/resume/design-presets";
 import { iconDesignOf } from "@rezumi/schema/resume/data";
-import { IconPickerSheet } from "./icon-picker";
+import { IconPickerSheet, iconLabel } from "./icon-picker";
 import { ResumeIcon, useIconGlyphs } from "./resume-icon";
 import { DesignSubScreen } from "./sub-screen";
-import { FieldError, Input, Label, ListRow, ListSection, Sheet, TextField } from "@/ui";
+import { ColorField, ListRow, ListSection, Sheet } from "@/ui";
 
 const LEVEL_TYPES = ["hidden", "circle", "square", "rectangle", "rectangle-full", "progress-bar", "icon"] as const;
 type LevelType = (typeof LEVEL_TYPES)[number];
@@ -21,9 +20,9 @@ export function ColorsScreen({ id }: { id: string }) {
 		<DesignSubScreen id={id} title={t`Colors and levels`}>
 			{(props) => (
 				<>
-					<ColorField {...props} name="primary" label={t`Primary color`} />
-					<ColorField {...props} name="text" label={t`Text color`} />
-					<ColorField {...props} name="background" label={t`Background color`} />
+					<DesignColorField {...props} name="primary" label={t`Primary color`} />
+					<DesignColorField {...props} name="text" label={t`Text color`} />
+					<DesignColorField {...props} name="background" label={t`Background color`} />
 					<Levels {...props} />
 				</>
 			)}
@@ -31,39 +30,24 @@ export function ColorsScreen({ id }: { id: string }) {
 	);
 }
 
-type ColorFieldProps = DesignProps & { name: ColorName; label: string };
+type DesignColorFieldProps = DesignProps & { name: ColorName; label: string };
 
-/** A colour as hex or rgba text, with its swatch; applies while typing once the value reads. */
-function ColorField({ data, write, disabled, name, label }: ColorFieldProps) {
+/** One document colour as hex or rgba text (the shared field: checked and saved when left, one undo step). */
+function DesignColorField({ data, write, disabled, name, label }: DesignColorFieldProps) {
 	const { t } = useLingui();
-	const value = data.metadata.design.colors[name];
-	const [typed, setTyped] = useState<string | null>(null);
-	const invalid = typed !== null && parseColorInput(typed) === null;
 	return (
-		<TextField isInvalid={invalid} isDisabled={disabled}>
-			<Label>{label}</Label>
-			<View className="flex-row items-center gap-2">
-				{/* A document colour: computed, so a style. */}
-				<View
-					className="size-11 rounded-xl border border-border bg-paper"
-					style={[{ backgroundColor: rgbaToHex(value) ?? undefined }]}
-				/>
-				<Input
-					value={typed ?? value}
-					autoCapitalize="none"
-					autoCorrect={false}
-					accessibilityLabel={label}
-					className="flex-1 font-mono"
-					onChangeText={(text) => {
-						setTyped(text);
-						const parsed = parseColorInput(text);
-						if (parsed) write(`colors.${name}`, (draft) => void (draft.metadata.design.colors[name] = parsed));
-					}}
-					onBlur={() => setTyped(null)}
-				/>
-			</View>
-			<FieldError>{t`Use a hex value like #3E6B4F or rgba(62, 107, 79, 1).`}</FieldError>
-		</TextField>
+		<ColorField
+			label={label}
+			value={data.metadata.design.colors[name]}
+			isDisabled={disabled}
+			invalidLabel={t`Use a hex value like #3E6B4F or rgba(62, 107, 79, 1).`}
+			onChange={(text) => {
+				const parsed = parseColorInput(text);
+				if (!parsed) return false;
+				write(`colors.${name}`, (draft) => void (draft.metadata.design.colors[name] = parsed), true);
+				return true;
+			}}
+		/>
 	);
 }
 
@@ -97,7 +81,7 @@ function Levels({ data, write, disabled }: DesignProps) {
 					title={t`Icon`}
 					value={level.icon ? undefined : t`None`}
 					leading={level.icon ? <ResumeIcon name={level.icon} glyphs={glyphs} size={20} /> : undefined}
-					description={level.icon || undefined}
+					description={level.icon ? iconLabel(level.icon) : undefined}
 					isDisabled={disabled}
 					onPress={() => setOpen("icon")}
 				/>

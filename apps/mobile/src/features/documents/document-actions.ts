@@ -5,7 +5,7 @@
 import type { DocumentSummary } from "./filter";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
-import { changedTags, documentRef, sharedTags } from "./filter";
+import { documentRef } from "./filter";
 import { useNewDocuments } from "./new-documents";
 import { useDocumentOperations } from "./queries";
 import { client } from "@/api/client";
@@ -56,24 +56,15 @@ export function useDocumentActions() {
 		setLocked: (document: DocumentSummary, isLocked: boolean) =>
 			operations.run(() => client.documents.setLocked({ ...documentRef(document), isLocked })),
 
-		/** A tag added goes on each document, a tag removed comes off each; their other tags stay. Locked ones keep theirs. */
-		setTags: (documents: readonly DocumentSummary[], next: readonly string[]) => {
-			const shared = sharedTags(documents);
-			return operations.run(() =>
-				operations.batch(
-					documents,
-					(document) =>
-						client.documents.setTags({ ...documentRef(document), tags: changedTags(document, shared, next) }),
-					{ applies: (document) => !document.isLocked, notify: false },
-				),
-			);
-		},
+		/** The menu offers Tags only while the document is unlocked. */
+		setTags: (document: DocumentSummary, tags: readonly string[]) =>
+			operations.run(() => client.documents.setTags({ ...documentRef(document), tags: [...tags] })),
 
 		link: (document: DocumentSummary, applicationId: string | null) =>
 			operations.run(() => client.documents.linkApplication({ ...documentRef(document), applicationId })),
 
 		/** Undoable, so it doesn't ask first. */
-		trash: (document: DocumentSummary) => operations.trash([document]),
+		trash: (document: DocumentSummary) => operations.trash(document),
 
 		restore: (document: DocumentSummary) =>
 			operations.run(async () => {
