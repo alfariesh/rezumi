@@ -1,40 +1,16 @@
 import type { ApplicationSummary } from "./types";
-import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { INTERVIEW_KINDS } from "@rezumi/schema/applications/data";
+import type { ScheduledInterview as SharedScheduledInterview } from "@rezumi/career/applications";
 
-export type ScheduledInterview = {
-	application: ApplicationSummary;
-	interview: InterviewTimelineEntry;
-	start: Date;
-	end: Date;
-};
+export {
+	collectInterviews,
+	dayKey,
+	groupInterviewsByDay as groupByDay,
+	interviewKindOf,
+	isInterview,
+	upcomingInterviews,
+} from "@rezumi/career/applications";
 
-export const interviewKindOf = (kind: InterviewKind) => INTERVIEW_KINDS.find((item) => item.value === kind);
-
-export const isInterview = (entry: ApplicationSummary["activity"][number]): entry is InterviewTimelineEntry =>
-	entry.type === "interview";
-
-// Every interview across the given applications, soonest first.
-export function collectInterviews(applications: ApplicationSummary[]): ScheduledInterview[] {
-	return applications
-		.flatMap((application) =>
-			application.activity.filter(isInterview).map((interview) => {
-				const start = new Date(interview.at);
-				return {
-					application,
-					interview,
-					start,
-					end: new Date(start.getTime() + interview.durationMinutes * 60_000),
-				};
-			}),
-		)
-		.sort((a, b) => a.start.getTime() - b.start.getTime());
-}
-
-// Interviews that haven't finished yet, soonest first.
-export function upcomingInterviews(interviews: ScheduledInterview[], now = new Date()) {
-	return interviews.filter((item) => item.end.getTime() >= now.getTime());
-}
+export type ScheduledInterview = SharedScheduledInterview<ApplicationSummary>;
 
 // "30 min", "1 hr", "1 hr 30 min" — localized unit names via Intl.
 export function formatDuration(minutes: number, locale?: string) {
@@ -45,32 +21,4 @@ export function formatDuration(minutes: number, locale?: string) {
 	return [hours > 0 ? unit(hours, "hour") : null, rest > 0 || hours === 0 ? unit(rest, "minute") : null]
 		.filter(Boolean)
 		.join(" ");
-}
-
-const pad = (value: number) => String(value).padStart(2, "0");
-
-// Local calendar day key (YYYY-MM-DD); interviews are bucketed by the viewer's timezone.
-export const dayKey = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-
-// Value for <input type="datetime-local"> in the viewer's timezone.
-export function toDateTimeLocal(value: Date | string) {
-	const date = new Date(value);
-	if (Number.isNaN(date.getTime())) return "";
-	return `${dayKey(date)}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
-
-// A datetime-local value is interpreted in the viewer's timezone and sent as an absolute ISO timestamp.
-export function fromDateTimeLocal(value: string) {
-	if (!value) return null;
-	const date = new Date(value);
-	return Number.isNaN(date.getTime()) ? null : date.toISOString();
-}
-
-export function groupByDay(interviews: ScheduledInterview[]) {
-	const map = new Map<string, ScheduledInterview[]>();
-	for (const item of interviews) {
-		const key = dayKey(item.start);
-		map.set(key, [...(map.get(key) ?? []), item]);
-	}
-	return map;
 }

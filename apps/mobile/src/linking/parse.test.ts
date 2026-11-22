@@ -34,7 +34,7 @@ describe("parseDeepLink: web pages to app screens", () => {
 		["/dashboard/career/knowledge/facts", "/profile?tab=facts"],
 		["/dashboard/career/knowledge/preferences", "/profile?tab=preferences"],
 		["/dashboard/applications", "/applications"],
-		["/dashboard/applications/app_1", "/applications/app_1/fit"],
+		["/dashboard/applications/app_1", "/applications/app_1/default"],
 		["/dashboard/applications/app_1/prepare", "/applications/app_1/prepare"],
 		["/dashboard/applications/app_1/messages", "/applications/app_1/messages"],
 		["/dashboard/applications/jobs", "/applications/jobs"],

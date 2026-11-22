@@ -1,5 +1,8 @@
-// When local reminders fire, and wall-clock time in a named timezone. Pure: Node runs it in the M5-T2 scenarios.
+// When local reminders fire. Pure: no React Native imports. Wall-clock time in a named time zone comes from
+// `@rezumi/career/time` (re-exported here for the app's older imports).
 import { fromZonedDateTime } from "@rezumi/utils/timezone";
+
+export { deviceTimeZone } from "@rezumi/career/time";
 
 /** Minutes before an interview that a reminder can fire. */
 export const REMINDER_LEADS = [10, 30, 60, 1440] as const;
@@ -23,32 +26,3 @@ export function reminderTime(start: Date, leadMinutes: number, now = new Date())
 
 /** A follow-up day ("2026-10-21") as the instant 09:00 on that day in `timeZone`. */
 export const followUpStart = (date: string, timeZone: string) => fromZonedDateTime(date, FOLLOW_UP_TIME, timeZone);
-
-export const isTimeZone = (value: string) => {
-	try {
-		new Intl.DateTimeFormat("en", { timeZone: value });
-		return true;
-	} catch {
-		return false;
-	}
-};
-
-export const deviceTimeZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-
-/** An instant as the date ("2026-10-08") and time ("17:58") on a clock in `timeZone`. */
-export function zonedParts(instant: Date | string, timeZone: string) {
-	const parts = Object.fromEntries(
-		new Intl.DateTimeFormat("en-CA", {
-			timeZone,
-			year: "numeric",
-			month: "2-digit",
-			day: "2-digit",
-			hour: "2-digit",
-			minute: "2-digit",
-			hourCycle: "h23",
-		})
-			.formatToParts(new Date(instant))
-			.map(({ type, value }) => [type, value]),
-	);
-	return { date: `${parts.year}-${parts.month}-${parts.day}`, time: `${parts.hour}:${parts.minute}` };
-}

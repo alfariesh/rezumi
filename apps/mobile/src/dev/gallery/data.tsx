@@ -3,7 +3,7 @@ import type { Stage } from "@/ui/stage";
 import { Fragment, useState } from "react";
 import { View } from "react-native";
 import { Caption, GallerySection, Row } from "./section";
-import { Separator, Text } from "@/ui";
+import { BarList, ColumnChart, Separator, Text } from "@/ui";
 import { Avatar, Chip, DatePicker, SwipeableRow, TagGroup } from "@/ui/data";
 import { StageDot, StageLabel } from "@/ui/stage";
 
@@ -246,6 +246,29 @@ export function DataGallery() {
 					/>
 				</View>
 				<Caption>{`deadline: ${deadline ?? "null"} · start: ${start ?? "null"}`}</Caption>
+			</GallerySection>
+			<GallerySection
+				title="Charts"
+				note="ColumnChart (Pro bar-chart, Skia) for a series over time; BarList for categories, stage colors beside names."
+			>
+				<ColumnChart
+					accessibilityLabel="Applications per week: 2, 5, 3, 0, 4"
+					data={[
+						{ label: "Oct 27", value: 2 },
+						{ label: "Nov 3", value: 5 },
+						{ label: "Nov 10", value: 3 },
+						{ label: "Nov 17", value: 0 },
+						{ label: "Nov 24", value: 4 },
+					]}
+				/>
+				<BarList
+					items={[
+						{ key: "applied", label: "Applied", value: 12, stage: "applied" },
+						{ key: "screening", label: "Screening", value: 6, note: "50%", stage: "screening" },
+						{ key: "interview", label: "Interview", value: 3, note: "50%", stage: "interview" },
+						{ key: "linkedin", label: "LinkedIn", value: 7 },
+					]}
+				/>
 			</GallerySection>
 		</View>
 	);

@@ -141,3 +141,6 @@ export {
 } from "./sortable-list";
 export { ColorField, type ColorFieldProps } from "./color-field";
 export { ValueSlider, type ValueSliderProps } from "./value-slider";
+export { BarList, type BarListItem, type BarListProps } from "./bar-list";
+export { ColumnChart, countTicks, type ColumnChartPoint, type ColumnChartProps } from "./column-chart";
+export { TimeField, formatTime, parseTime, type TimeFieldProps } from "./time-field";

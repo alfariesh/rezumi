@@ -1,1 +1,1 @@
-export { InsightsScreen as default } from "@/features/applications-board/insights-screen";
+export { InsightsScreen as default } from "@/features/applications/insights/insights-screen";

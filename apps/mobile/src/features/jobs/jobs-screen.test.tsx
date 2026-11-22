@@ -43,8 +43,8 @@ jest.mock("@/features/ai/providers", () => ({
 jest.mock("@/features/ai/report-content", () => ({ ReportAiContent: () => null }));
 jest.mock("@/features/career/hooks", () => ({ useNow: () => new Date("2026-11-22T09:00:00Z") }));
 jest.mock("@/features/career/schedule-sheet", () => ({ ScheduleSheet: () => null }));
-jest.mock("@/features/applications/add-sheet", () => ({ AddApplicationSheet: () => null }));
-jest.mock("@/features/applications-board/views-row", () => ({ ApplicationsViewsRow: () => null }));
+jest.mock("@/features/applications/save-sheet", () => ({ SaveJobSheet: () => null }));
+jest.mock("@/features/applications/views-row", () => ({ ApplicationsViewsRow: () => null }));
 jest.mock("@/shell/tab-chrome", () => {
 	const { Text } = jest.requireActual("react-native");
 	return { TabTopBar: ({ title }: { title: string }) => <Text>{title}</Text> };

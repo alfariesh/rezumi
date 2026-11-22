@@ -5,7 +5,14 @@
 	"private": true,
 	"exports": {
 		"./onboarding": "./src/onboarding.ts",
-		"./jobs": "./src/jobs.ts"
+		"./jobs": "./src/jobs.ts",
+		"./applications": "./src/applications.ts",
+		"./calendar": "./src/calendar.ts",
+		"./ics": "./src/ics.ts",
+		"./insights": "./src/insights.ts",
+		"./offers": "./src/offers.ts",
+		"./time": "./src/time.ts",
+		"./workspace": "./src/workspace.ts"
 	},
 	"scripts": {
 		"typecheck": "tsrs --noEmit",
@@ -20,6 +27,7 @@
 	},
 	"devDependencies": {
 		"@rezumi/config": "workspace:*",
+		"@rezumi/utils": "workspace:*",
 		"tsrs": "catalog:",
 		"typescript": "catalog:",
 		"vite-plus": "catalog:"

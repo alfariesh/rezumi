@@ -24,7 +24,7 @@ export const PROFILE_TABS = ["details", "career", "facts", "stories", "preferenc
 export type ProfileTab = (typeof PROFILE_TABS)[number];
 export type ApplicationTab = WorkspaceTab;
 /** The Applications tab's views; List is the tab's index. Jobs searches current listings (Phase 09). */
-export type ApplicationsView = "list" | "board" | "calendar" | "insights" | "jobs";
+export type ApplicationsView = "list" | "board" | "calendar" | "insights" | "jobs" | "offers";
 
 const segment = (value: string) => encodeURIComponent(value);
 
@@ -55,6 +55,9 @@ export const routes = {
 	applications: (view: ApplicationsView = "list") =>
 		view === "list" ? ("/applications" as const) : (`/applications/${view}` as const),
 	offers: () => "/applications/offers" as const,
+	/** An application's detail sheet over List, Board or Calendar (`?open=`); tablets show it beside the list. */
+	applicationOpen: (id: string, view: "list" | "board" | "calendar" = "list") =>
+		`${view === "list" ? "/applications" : `/applications/${view}`}?open=${segment(id)}` as const,
 	portfolio: () => "/portfolio" as const,
 	/** `tab`: the Profile section to open (Details by default). */
 	profile: (tab?: ProfileTab) => (tab && tab !== "details" ? (`/profile?tab=${tab}` as const) : ("/profile" as const)),
@@ -78,9 +81,11 @@ export const routes = {
 	coach: (offers?: readonly string[]) =>
 		offers?.length ? (`/coach?offers=${offers.map(segment).join(",")}` as const) : ("/coach" as const),
 	atsChecker: () => "/ats-checker" as const,
-	application: (id: string, tab: ApplicationTab = "fit") => `/applications/${segment(id)}/${tab}` as const,
-	/** The application detail; it shares the dynamic `[tab]` route with the workspace tabs. */
-	applicationDetails: (id: string) => `/applications/${segment(id)}/details` as const,
+	/** An application's workspace; without a part it opens the one its stage needs (`default`). */
+	application: (id: string, tab: ApplicationTab | "default" = "default") =>
+		`/applications/${segment(id)}/${tab}` as const,
+	/** The application detail: its sheet over the list. */
+	applicationDetails: (id: string) => `/applications?open=${segment(id)}` as const,
 	publicResume: (username: string, slug: string) => `/r/${segment(username)}/${segment(slug)}` as const,
 
 	// Resume builder

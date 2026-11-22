@@ -1,1 +1,1 @@
-export { CalendarScreen as default } from "@/features/applications-board/calendar-screen";
+export { CalendarScreen as default } from "@/features/applications/calendar/calendar-view";

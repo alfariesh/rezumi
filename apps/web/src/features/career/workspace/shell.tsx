@@ -25,6 +25,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { m } from "motion/react";
 import { useState } from "react";
+import { buildIcs } from "@rezumi/career/ics";
+import { currentInterview } from "@rezumi/career/workspace";
 import { WORKSPACE_TABS } from "@rezumi/schema/career";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -49,7 +51,6 @@ import { SectionLayout } from "@/components/layout/section-layout";
 import { ApplicationNotes } from "@/features/applications/components/application-notes";
 import { CompanyMark } from "@/features/applications/components/company-mark";
 import { InterviewDialog } from "@/features/applications/components/interview-dialog";
-import { buildIcs } from "@/features/applications/ics";
 import { formatDuration, interviewKindOf, isInterview } from "@/features/applications/interviews";
 import { describeNextStep, getNextStep } from "@/features/applications/next-step";
 import { getStageLabel, PIPELINE } from "@/features/applications/stages";
@@ -79,7 +80,6 @@ export type WorkspaceTabProps = {
 	go: (tab: WorkspaceTab, search?: WorkspaceSearch) => void;
 };
 
-const DAY = 86_400_000;
 const archiveKinds = {
 	fit: "fit",
 	apply: "answers",
@@ -131,18 +131,9 @@ function interviewEnded(interview: InterviewTimelineEntry | undefined, now: Date
 }
 
 /** The interview a workspace is about: the next one to come, else the latest one if it ended in the last day. */
-function currentInterview(application: Application, now: Date) {
-	const interviews = application.activity.filter(isInterview).sort((a, b) => +new Date(a.at) - +new Date(b.at));
-	const end = (interview: InterviewTimelineEntry) => +new Date(interview.at) + interview.durationMinutes * 60_000;
-	return (
-		interviews.find((interview) => end(interview) >= +now) ??
-		interviews.filter((interview) => +now - end(interview) < DAY).at(-1)
-	);
-}
-
 /** Rule 7: the tab a stage opens on. Offers are compared in Applications › Offers, so an offer opens on its messages. */
 function defaultTab(application: Application, now: Date): WorkspaceTab {
-	const ended = interviewEnded(currentInterview(application, now), now);
+	const ended = interviewEnded(currentInterview(application.activity, now), now);
 	switch (application.status) {
 		case "saved":
 			return "fit";
@@ -221,7 +212,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 		);
 
 	const tab = requested ?? defaultTab(application, now);
-	const interview = currentInterview(application, now);
+	const interview = currentInterview(application.activity, now);
 	const version = search.version ? saved.data?.find((item) => item.id === search.version) : undefined;
 	const archived = search.version !== undefined;
 	const archiveUnavailable = archived && (!version || version.data.kind !== archiveKinds[tab]);

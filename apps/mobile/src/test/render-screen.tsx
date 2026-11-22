@@ -17,7 +17,10 @@ const metrics = { frame: { x: 0, y: 0, width: 390, height: 844 }, insets: { top:
 export async function renderScreen(ui: ReactElement) {
 	// No garbage collection: its five-minute timer would keep Jest from exiting after a screen writes to the cache.
 	const queryClient = new QueryClient({
-		defaultOptions: { queries: { retry: false, gcTime: Number.POSITIVE_INFINITY } },
+		defaultOptions: {
+			queries: { retry: false, gcTime: Number.POSITIVE_INFINITY },
+			mutations: { gcTime: Number.POSITIVE_INFINITY },
+		},
 	});
 	function Providers({ children }: { children: ReactNode }) {
 		return (

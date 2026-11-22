@@ -1,66 +1,12 @@
 import type { ApplicationSummary } from "./types";
-import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import type { NextStep } from "@rezumi/career/applications";
 import type { IconName } from "@rezumi/ui/components/icon";
 import { plural, t } from "@lingui/core/macro";
-import { interviewKindOf, isInterview } from "./interviews";
+import { interviewKindOf } from "@rezumi/career/applications";
 import { getClosedReasonLabel } from "./stages";
 
-const DAY_MS = 86_400_000;
-
-/** Days without a reply after applying before a follow-up is suggested. */
-const FOLLOW_UP_AFTER_DAYS = 10;
-
-type NextStepSource = Pick<ApplicationSummary, "status" | "activity" | "followUpAt" | "followUpNote" | "appliedAt">;
-
-/**
- * What an application needs next, derived rather than stored: the earliest interview still to come, else the
- * follow-up date, else how long it has been waiting. Closed applications need nothing.
- */
-export type NextStep =
-	| { kind: "interview"; interview: InterviewTimelineEntry; at: Date }
-	| { kind: "follow-up"; at: Date; note: string; overdue: boolean }
-	| { kind: "no-reply"; days: number }
-	| { kind: "waiting"; days: number }
-	| { kind: "not-applied" }
-	| { kind: "closed" };
-
-/** When the application entered its current stage (its latest entry for that stage), or when it was added. */
-function stageSince(application: Pick<ApplicationSummary, "status" | "activity" | "appliedAt">): Date {
-	const entries = application.activity
-		.filter((entry) => entry.type === "stage" && entry.stage === application.status)
-		.map((entry) => new Date(entry.at).getTime());
-	return new Date(entries.length > 0 ? Math.max(...entries) : new Date(application.appliedAt).getTime());
-}
-
-const daysBetween = (from: Date, to: Date) => Math.max(0, Math.floor((to.getTime() - from.getTime()) / DAY_MS));
-
-/** Whole days the application has spent in its current stage. */
-export const daysInStage = (
-	application: Pick<ApplicationSummary, "status" | "activity" | "appliedAt">,
-	now = new Date(),
-) => daysBetween(stageSince(application), now);
-
-export function getNextStep(application: NextStepSource, now = new Date()): NextStep {
-	if (application.status === "closed") return { kind: "closed" };
-
-	const upcoming = application.activity
-		.filter(isInterview)
-		.map((interview) => ({ interview, at: new Date(interview.at) }))
-		.filter(({ interview, at }) => at.getTime() + interview.durationMinutes * 60_000 >= now.getTime())
-		.sort((a, b) => a.at.getTime() - b.at.getTime())[0];
-	if (upcoming) return { kind: "interview", ...upcoming };
-
-	if (application.followUpAt) {
-		const at = new Date(application.followUpAt);
-		return { kind: "follow-up", at, note: application.followUpNote ?? "", overdue: at.getTime() < now.getTime() };
-	}
-
-	if (application.status === "saved") return { kind: "not-applied" };
-
-	const days = daysInStage(application, now);
-	if (application.status === "applied" && days >= FOLLOW_UP_AFTER_DAYS) return { kind: "no-reply", days };
-	return { kind: "waiting", days };
-}
+export { daysInStage, getNextStep } from "@rezumi/career/applications";
+export type { NextStep } from "@rezumi/career/applications";
 
 export type NextStepText = { icon: IconName; title: string; sub: string; tone: "normal" | "warn" | "muted" };
 

@@ -1,10 +1,10 @@
 import type { IconName } from "./icon";
 import type { ColorToken } from "./tokens";
-import type { ReactElement, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { DimensionValue, LayoutChangeEvent, StyleProp, ViewStyle } from "react-native";
 import { useLingui } from "@lingui/react/macro";
 import { Image } from "expo-image";
-import { Children, cloneElement, isValidElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Platform, Pressable, StyleSheet, View, useWindowDimensions } from "react-native";
 import Animated, {
 	cancelAnimation,
@@ -180,49 +180,6 @@ export function ListRow({
 				</>
 			)}
 		</Container>
-	);
-}
-
-export type ListGroupProps = {
-	/** Group header: `ink3` caption on iOS, `accentText` on Android. */
-	title?: string | undefined;
-	/** Small print under the group. */
-	footer?: string | undefined;
-	children?: ReactNode;
-};
-
-/**
- * Rows grouped like the platform's settings lists: iOS inset grouped (`raised`, `rLg`, hairlines
- * between rows); Android full-width rows on `bg`, so the group bleeds through the screen's `s4` side padding.
- */
-export function ListGroup({ title, footer, children }: ListGroupProps) {
-	const { colors, fonts, radius, space } = useTheme();
-	const rows = Children.toArray(children).filter(isValidElement) as ReactElement<ListRowProps>[];
-
-	return (
-		<View style={{ marginHorizontal: android ? -space.s4 : 0 }}>
-			{title ? (
-				<Text
-					accessibilityRole="header"
-					variant="callout"
-					color={android ? "accentText" : "ink3"}
-					style={[
-						{ paddingHorizontal: space.s4, paddingBottom: space.s1 },
-						android ? { fontFamily: fonts.ui[600], paddingTop: space.s2 } : null,
-					]}
-				>
-					{title}
-				</Text>
-			) : null}
-			<View style={android ? null : { backgroundColor: colors.raised, borderRadius: radius.rLg, overflow: "hidden" }}>
-				{rows.map((row, index) => (row.type === ListRow && index > 0 ? cloneElement(row, { divider: true }) : row))}
-			</View>
-			{footer ? (
-				<Text variant="callout" color="ink3" style={{ paddingHorizontal: space.s4, paddingTop: space.s1 }}>
-					{footer}
-				</Text>
-			) : null}
-		</View>
 	);
 }
 
