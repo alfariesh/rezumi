@@ -1,17 +1,17 @@
 import type { ResumeDraftStore } from "@/draft/types";
 import type { PageMapNode } from "@rezumi/pdf/page-map";
-import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { ActivityIndicator, Pressable, View, useWindowDimensions } from "react-native";
+import { Pressable, View, useWindowDimensions } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { fitResume } from "./fit";
+import { OverflowCard, PageNotice, SelectionBar, ZoomBar } from "./page-parts";
 import { usePageZoom, ZoomViewport } from "./use-page-zoom";
 import { usePreview } from "./usePreview";
 import { PageImage } from "@/preview/page-image";
 import { routes } from "@/routes";
-import { Banner, Button, IconButton, Text, useTheme } from "@/ui-legacy";
+import { Button, Skeleton, Text, size, space } from "@/ui";
 
 export type ResumePageProps = {
 	id: string;
@@ -19,14 +19,18 @@ export type ResumePageProps = {
 	focused?: boolean | undefined;
 	/** What the page renders, when it differs from the draft (the Assistant's pending edits marked). Fit and editing use the draft. */
 	previewData?: ResumeDraftStore["data"] | undefined;
+	/** The zoom bar's full-screen button: opens the pages full screen, or closes it when `fullScreen` is set. */
+	onFullScreen?: (() => void) | undefined;
+	fullScreen?: boolean | undefined;
 };
 
-/** The Page body consumes M1's DraftStore contract; shells and draft persistence stay with their owners. */
-export function ResumePage({ id, draft, focused, previewData }: ResumePageProps) {
+/**
+ * The resume's pages rendered on the device: pinch or double-tap to zoom, tap to pick an entry and edit it, Fit when the
+ * content runs over. The draft store's owner and the shell around it stay with the caller.
+ */
+export function ResumePage({ id, draft, focused, previewData, onFullScreen, fullScreen }: ResumePageProps) {
 	const router = useRouter();
 	const { t } = useLingui();
-	const theme = useTheme();
-	const { colors, space, size, shadows } = theme;
 	const window = useWindowDimensions();
 	const [viewport, setViewport] = useState({ width: window.width, height: window.height });
 	const zoomController = usePageZoom();
@@ -44,7 +48,7 @@ export function ResumePage({ id, draft, focused, previewData }: ResumePageProps)
 	}, [draft.data]);
 	const mounted = useRef(true);
 	const { data } = draft;
-	const fitWidth = Math.max(size.hit, viewport.width - space.s8);
+	const fitWidth = Math.max(size.hit, viewport.width - space[8]);
 	const measured = Object.entries(rows)
 		.filter(
 			([, row]) => (row.y + row.height) * (zoom ?? 1) >= offset && row.y * (zoom ?? 1) <= offset + viewport.height,
@@ -122,20 +126,17 @@ export function ResumePage({ id, draft, focused, previewData }: ResumePageProps)
 	};
 
 	return (
-		<View
-			style={{ flex: 1, backgroundColor: colors.sunken }}
-			onLayout={(event) => setViewport(event.nativeEvent.layout)}
-		>
+		<View className="flex-1 bg-surface-secondary" onLayout={(event) => setViewport(event.nativeEvent.layout)}>
 			{preview.error ? (
-				<Banner
-					tone="danger"
+				<PageNotice
+					status="danger"
 					message={t`Couldn't render the preview. Retry, or try another template or font in Design.`}
-					action={{ label: t`Retry`, onPress: preview.retry }}
+					onRetry={preview.retry}
 				/>
 			) : null}
 			{result?.hasTextLoss ? (
-				<Banner
-					tone="warn"
+				<PageNotice
+					status="warning"
 					message={
 						result.lostCharacters.length > 0
 							? t`Some characters couldn't be drawn: ${result.lostCharacters.join(", ")}. Choose another font in Design.`
@@ -144,38 +145,49 @@ export function ResumePage({ id, draft, focused, previewData }: ResumePageProps)
 				/>
 			) : null}
 			{fitFailed ? (
-				<Banner tone="warn" message={t`Content still runs over. Hide a section or shorten entries.`} />
+				<PageNotice status="warning" message={t`Content still runs over. Hide a section or shorten entries.`} />
 			) : null}
 			{fitApplied ? (
 				<Button
-					variant="link"
-					label={t`Undo`}
+					variant="ghost"
+					size="sm"
+					className="self-start"
 					onPress={() => {
 						draft.undo();
 						setFitApplied(false);
 						setFitFailed(false);
 					}}
-				/>
+				>
+					{t`Undo fit`}
+				</Button>
 			) : null}
 			{!result && !preview.error ? (
-				<View style={{ padding: space.s8, alignItems: "center", gap: space.s3 }}>
-					<ActivityIndicator color={colors.accent} />
-					<Text color="ink3">{data ? t`Rendering preview…` : t`Loading resume…`}</Text>
+				<View className="items-center gap-3 p-4">
+					<Skeleton variant="none" className="aspect-[0.707] w-full rounded-sm" />
+					<Text tone="muted">{data ? t`Rendering preview…` : t`Loading resume…`}</Text>
 				</View>
 			) : null}
 			<ZoomViewport controller={zoomController} width={viewport.width} pageWidth={fitWidth} onScroll={setOffset}>
-				<View style={{ gap: space.s8, alignItems: "center" }}>
+				<View className="items-center gap-8">
 					{pageSizes.map((page, index) => {
 						const image = result?.pages.find((entry) => entry.index === index);
-						const width = page.width * displayScale;
-						const height = page.height * displayScale;
+						const box = { width: page.width * displayScale, height: page.height * displayScale };
+						const highlight =
+							selection?.page === index
+								? {
+										left: selection.x * displayScale,
+										top: selection.y * displayScale,
+										width: selection.width * displayScale,
+										height: selection.height * displayScale,
+									}
+								: null;
 						return (
 							<View
 								key={index}
-								style={{ gap: space.s2 }}
+								className="gap-2"
 								onLayout={(event) => {
 									const { y: rowY, height } = event.nativeEvent.layout;
-									const y = rowY + space.s4;
+									const y = rowY + space[4];
 									setRows((previous) =>
 										previous[index]?.y === y && previous[index]?.height === height
 											? previous
@@ -183,20 +195,15 @@ export function ResumePage({ id, draft, focused, previewData }: ResumePageProps)
 									);
 								}}
 							>
-								<Text variant="caption" color="ink3" align="center">{t`Page ${index + 1}`}</Text>
+								<Text size="xs" tone="muted" className="text-center">{t`Page ${index + 1}`}</Text>
 								{index === 0 && overflow ? (
-									<View style={{ maxWidth: width, gap: space.s1 }}>
-										<Text variant="callout" color="warnText">{t`Runs onto page ${authored + 1}`}</Text>
-										<Button
-											variant="secondary"
-											label={plural(authored, { 1: "Fit to one page", other: "Fit to # pages" })}
-											disabled={draft.locked || preview.rendering}
-											loading={fitting}
-											onPress={() => {
-												void fit();
-											}}
-										/>
-									</View>
+									<OverflowCard
+										authored={authored}
+										disabled={draft.locked || preview.rendering}
+										fitting={fitting}
+										onFit={() => void fit()}
+										maxWidth={box.width}
+									/>
 								) : null}
 								<GestureDetector
 									gesture={Gesture.Tap()
@@ -218,23 +225,16 @@ export function ResumePage({ id, draft, focused, previewData }: ResumePageProps)
 											);
 											if (node) setSelected({ node, data });
 										}}
-										onAccessibilityTap={() => selectAt(index, width / 2, height / 2)}
-										style={{ width, height, backgroundColor: colors.paper, boxShadow: shadows.ePage.boxShadow }}
+										onAccessibilityTap={() => selectAt(index, box.width / 2, box.height / 2)}
+										className="bg-paper shadow-surface"
+										style={box}
 									>
-										{image ? <PageImage uri={image.uri} style={{ width, height }} accessible={false} /> : null}
-										{selection?.page === index ? (
+										{image ? <PageImage uri={image.uri} style={box} accessible={false} /> : null}
+										{highlight ? (
 											<View
 												pointerEvents="none"
-												style={{
-													position: "absolute",
-													left: selection.x * displayScale,
-													top: selection.y * displayScale,
-													width: selection.width * displayScale,
-													height: selection.height * displayScale,
-													borderWidth: 1,
-													borderColor: colors.pageSelectLine,
-													backgroundColor: colors.pageSelectFill,
-												}}
+												className="absolute border border-accent bg-accent-soft"
+												style={highlight}
 											/>
 										) : null}
 									</Pressable>
@@ -245,44 +245,17 @@ export function ResumePage({ id, draft, focused, previewData }: ResumePageProps)
 				</View>
 			</ZoomViewport>
 			{selection ? (
-				<View
-					style={{
-						flexDirection: "row",
-						alignItems: "center",
-						paddingHorizontal: space.s4,
-						backgroundColor: colors.surface,
-						gap: space.s2,
-					}}
-				>
-					<Text style={{ flex: 1 }} numberOfLines={1}>
-						{selection.kind === "header" ? t`Basics` : t`Selected entry`}
-					</Text>
-					<Button label={t`Edit entry`} variant="ghost" icon="pencil-simple" onPress={edit} />
-					<IconButton icon="x" label={t`Clear selection`} onPress={() => setSelected(null)} />
-				</View>
+				<SelectionBar header={selection.kind === "header"} onEdit={edit} onClear={() => setSelected(null)} />
 			) : null}
-			<View
-				style={{
-					flexDirection: "row",
-					alignItems: "center",
-					justifyContent: "space-around",
-					backgroundColor: colors.surface,
-					padding: space.s1,
-				}}
-			>
-				<IconButton icon="minus" label={t`Zoom out`} disabled={(zoom ?? 1) <= 0.6} onPress={() => step(-0.1)} />
-				<Button
-					variant="ghost"
-					label={zoom === null ? t`Fit` : t`${Math.round(zoom * 100)}%`}
-					onPress={() => change(1)}
-				/>
-				<IconButton icon="plus" label={t`Zoom in`} disabled={(zoom ?? 1) >= 1.5} onPress={() => step(0.1)} />
-				<Text
-					variant="caption"
-					color="ink3"
-					accessibilityLiveRegion="polite"
-				>{t`Page ${currentPage} of ${result?.pageCount ?? 1}`}</Text>
-			</View>
+			<ZoomBar
+				zoom={zoom}
+				onStep={step}
+				onReset={() => change(1)}
+				currentPage={currentPage}
+				pageCount={result?.pageCount ?? 1}
+				onFullScreen={onFullScreen}
+				fullScreen={fullScreen}
+			/>
 		</View>
 	);
 }

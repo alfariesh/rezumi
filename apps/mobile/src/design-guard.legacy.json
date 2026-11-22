@@ -1,8 +1,5 @@
 {
 	"$comment": "Screens not yet rebuilt on src/ui (plans/mobile 02-teknis 9.1). Each phase removes the files it rebuilds; never add one.",
-	"$exceptions": {
-		"src/shell/editor-bar.tsx": "Added in Phase 03, against the rule above: the builder's Write / Page / Design / Check bar moved out of the old tab bar unchanged when the tabs were rebuilt. Temporary; Phase 07 step 8 rebuilds the builder chrome on src/ui and removes it from this list."
-	},
 	"files": [
 		"app/(auth)/server.tsx",
 		"app/_layout.tsx",
@@ -16,7 +13,6 @@
 		"app/account/preferences.tsx",
 		"app/applications/[id]/[tab].tsx",
 		"app/applications/[id]/_layout.tsx",
-		"app/builder/[id]/page.tsx",
 		"app/builder/[id]/write.tsx",
 		"app/search.tsx",
 		"src/features/ai/provider-editor.tsx",
@@ -109,8 +105,6 @@
 		"src/features/write/rich-text-field.tsx",
 		"src/features/write/section-sheet.tsx",
 		"src/shell/app-banner.tsx",
-		"src/shell/builder-chrome.tsx",
-		"src/shell/editor-bar.tsx",
 		"src/shell/top-bar.tsx",
 		"src/shell/workspace-chrome.tsx"
 	]

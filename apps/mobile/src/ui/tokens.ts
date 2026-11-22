@@ -31,4 +31,6 @@ export const size = {
 	/** Width from which the tablet layout (sidebar, list beside detail, form sheets) applies. */
 	wide: 700,
 	formSheet: 540,
+	/** The editor's side panel on tablets (Write, Design, Check beside the page). */
+	panel: 400,
 } as const;

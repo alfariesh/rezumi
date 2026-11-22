@@ -92,8 +92,12 @@ export const routes = {
 			? (`/builder/${segment(id)}/history?version=${segment(version)}` as const)
 			: (`/builder/${segment(id)}/history` as const),
 	assistant: (id: string) => `/builder/${segment(id)}/assistant` as const,
+	/** The pages full screen, over the builder. */
+	preview: (id: string) => `/builder/${segment(id)}/preview` as const,
 
 	letterAssistant: (id: string) => `/letter/${segment(id)}/assistant` as const,
+	/** The letter full screen, over its editor. */
+	letterPreview: (id: string) => `/letter/${segment(id)}/preview` as const,
 
 	// Cover letter editor
 	/** `version` opens Share & export's History on that version, read-only (Applications' "What you sent"). */

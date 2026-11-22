@@ -5,18 +5,17 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 import { snapZoom, zoomOffset } from "./zoom";
-import { useReducedMotion, useTheme, workletEaseMove } from "@/ui-legacy";
+import { motion, space, useReducedMotion } from "@/ui";
 
 export function usePageZoom() {
 	const [zoom, setZoom] = useState<number | null>(null);
 	const live = useSharedValue(1);
 	const reduced = useReducedMotion();
-	const { motion } = useTheme();
 	const commit = (value: number) => setZoom(snapZoom(value));
 	const change = (value: number) => {
 		const target = snapZoom(value) ?? 1;
 		live.set(
-			withTiming(target, { duration: reduced ? 0 : motion.d2, easing: workletEaseMove }, (finished) => {
+			withTiming(target, { duration: reduced ? 0 : motion.standard, easing: motion.easeMove }, (finished) => {
 				if (finished) scheduleOnRN(commit, target);
 			}),
 		);
@@ -42,7 +41,6 @@ type ZoomViewportProps = {
 export function ZoomViewport({ controller, width, pageWidth, children, onScroll }: ZoomViewportProps) {
 	const { zoom, live, commit } = controller;
 	const effective = zoom ?? 1;
-	const { space } = useTheme();
 	const [height, setHeight] = useState(0);
 	const horizontal = useRef<ComponentRef<typeof ScrollView>>(null);
 	const vertical = useRef<ComponentRef<typeof ScrollView>>(null);
@@ -53,14 +51,14 @@ export function ZoomViewport({ controller, width, pageWidth, children, onScroll 
 	const anchor = useSharedValue({ x: 0, y: 0 });
 	const pinching = useSharedValue(false);
 	const [pending, setPending] = useState<{ x: number; y: number } | null>(null);
-	const insetX = Math.max(space.s4, (width - pageWidth * effective) / 2);
+	const insetX = Math.max(space[4], (width - pageWidth * effective) / 2);
 	const finish = (value: number, x: number, y: number, fx: number, fy: number) => {
 		const next = snapZoom(value) ?? 1;
 		if (next === effective) return;
-		const nextInset = Math.max(space.s4, (width - pageWidth * next) / 2);
+		const nextInset = Math.max(space[4], (width - pageWidth * next) / 2);
 		setPending({
 			x: Math.max(0, zoomOffset(x, fx, effective, next, insetX) + nextInset - insetX),
-			y: zoomOffset(y, fy, effective, next, space.s4),
+			y: zoomOffset(y, fy, effective, next, space[4]),
 		});
 		commit(next);
 	};
@@ -80,7 +78,7 @@ export function ZoomViewport({ controller, width, pageWidth, children, onScroll 
 		.onStart((event) => {
 			start.set(live.get());
 			focal.set({ x: event.focalX, y: event.focalY });
-			anchor.set({ x: scrollX.get() + event.focalX - insetX, y: scrollY.get() + event.focalY - space.s4 });
+			anchor.set({ x: scrollX.get() + event.focalX - insetX, y: scrollY.get() + event.focalY - space[4] });
 			pinching.set(true);
 		})
 		.onUpdate((event) => live.set(Math.min(1.5, Math.max(0.6, start.get() * event.scale))))
@@ -119,7 +117,7 @@ export function ZoomViewport({ controller, width, pageWidth, children, onScroll 
 			>
 				<ScrollView
 					ref={vertical}
-					style={{ width: Math.max(width, pageWidth * effective + space.s4 * 2) }}
+					style={{ width: Math.max(width, pageWidth * effective + space[4] * 2) }}
 					onContentSizeChange={() => requestAnimationFrame(restore)}
 					scrollEventThrottle={16}
 					onScroll={(event) => {
@@ -127,7 +125,7 @@ export function ZoomViewport({ controller, width, pageWidth, children, onScroll 
 						scrollY.set(y);
 						onScroll?.(y);
 					}}
-					contentContainerStyle={{ padding: space.s4, alignItems: "center" }}
+					contentContainerStyle={{ padding: space[4], alignItems: "center" }}
 				>
 					<View style={{ width: pageWidth * effective, height: height * effective }}>
 						<Animated.View

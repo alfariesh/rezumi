@@ -1,32 +1,17 @@
 import type { BuilderPane } from "@/routes";
 import type { PaneTab } from "@/shell/builder-chrome";
 import { useLingui } from "@lingui/react/macro";
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import PageScreen from "./page";
 import { ResumeConflictSheet, useResumeDraftOwner, useResumeStore } from "@/draft";
 import { DocumentMenu } from "@/features/document-menu";
 import { routes } from "@/routes";
-import { BuilderChrome, useBuilderChrome } from "@/shell/builder-chrome";
-import { useKeyCommands } from "@/shell/key-commands";
-
-/** Fills the chrome from the draft once for every pane: name and save status. ⌘Z / ⇧⌘Z undo and redo. */
-function DraftChrome() {
-	const { t } = useLingui();
-	const name = useResumeStore((state) => state.document?.name);
-	const status = useResumeStore((state) => state.status);
-	const locked = useResumeStore((state) => state.locked);
-	const retry = useResumeStore((state) => state.retry);
-	useBuilderChrome({ title: name, save: name ? { status, locked, onRetry: retry } : undefined });
-	useKeyCommands([
-		{ id: "undo", input: "z", title: t`Undo`, run: () => useResumeStore.getState().undo() },
-		{ id: "redo", input: "z", shift: true, title: t`Redo`, run: () => useResumeStore.getState().redo() },
-	]);
-	return null;
-}
+import { BuilderChrome, DraftChrome } from "@/shell/builder-chrome";
+import { IconButton } from "@/ui";
 
 /**
- * Resume builder. Phone: Write, Page, Design, Check and Share as bottom tabs. Tablet: the Write / Design / Check /
- * Share panel with the Page screen beside it. Entry and history push inside the editor; Download & history and the
+ * Resume builder. Phone: Write, Page, Design, Check and Share in the mode bar. Tablet: the Write / Design / Check /
+ * Share panel with the page beside it. Entries and History push inside the editor; Download & history and the
  * assistant open as modals.
  */
 export default function BuilderLayout() {
@@ -53,8 +38,14 @@ export default function BuilderLayout() {
 			title={t`Resume`}
 			onExport={() => router.push(routes.export(id))}
 			modals={["export", "assistant"]}
+			fullScreenModals={["preview"]}
 		>
-			<DraftChrome />
+			<DraftChrome
+				useStore={useResumeStore}
+				actions={
+					<IconButton icon="sparkle" label={t`Assistant`} size="sm" onPress={() => router.push(routes.assistant(id))} />
+				}
+			/>
 			<DocumentMenu id={id} inChrome />
 			<ResumeConflictSheet />
 		</BuilderChrome>

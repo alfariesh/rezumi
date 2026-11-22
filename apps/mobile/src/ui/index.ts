@@ -127,3 +127,5 @@ export { ChipInput, addChips, type ChipInputProps } from "./chip-input";
 export { PermissionPrimer, type PermissionPrimerProps } from "./permission-primer";
 export { MonthPicker, type MonthPickerProps } from "./month-picker";
 export { useKeyboardVisible } from "./keyboard";
+export { ModeBar, type ModeBarItem, type ModeBarProps } from "./mode-bar";
+export { EditableTitle, type EditableTitleProps } from "./editable-title";
