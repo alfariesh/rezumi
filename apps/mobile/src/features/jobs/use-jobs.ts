@@ -4,22 +4,16 @@
 // recent searches, since opening it would use one of today's searches.
 import type { JobsSearch } from "@rezumi/career/jobs";
 import type { JobListingCard, JobListingMatch, JobSearchResult } from "@rezumi/schema/jobs/search";
-import { onlineManager, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { fromCriteria, jobsSearchSchema, startingSearch, toSearchRequest } from "@rezumi/career/jobs";
 import { jobQuotaKey, jobSearchKey, useJobDefaults, useJobQuota, useJobSearch, useRecentSearches } from "./queries";
 import { readSavedSearch, writeSavedSearch } from "./saved-search";
 import { orpc } from "@/api/client";
+import { useOnline } from "@/api/online";
 import { getAccountScope, useSession } from "@/auth/session";
 
 export const EMPTY_SEARCH: JobsSearch = jobsSearchSchema.parse({});
-
-const subscribeOnline = (listener: () => void) => onlineManager.subscribe(listener);
-const isOnlineNow = () => onlineManager.isOnline();
-
-export function useOnline() {
-	return useSyncExternalStore(subscribeOnline, isOnlineNow);
-}
 
 export function useJobs() {
 	const queryClient = useQueryClient();

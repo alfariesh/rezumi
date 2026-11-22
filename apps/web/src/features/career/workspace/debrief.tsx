@@ -20,6 +20,8 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
+import { buildIcs } from "@rezumi/career/ics";
+import { debriefRound, nextEvening } from "@rezumi/career/workspace";
 import { ThinkingOrb } from "@rezumi/ui/components/thinking-orb";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
@@ -28,7 +30,6 @@ import { latest, useDefaultProvider, useGenerate, useSavedItems, useTicks } from
 import { CareerWidget, MemoryProposal, PrivacyLine, useCareerTime, Working, workingSteps } from "../shared";
 import { EmptyBlock } from "@/components/layout/empty-block";
 import { WidgetHeading } from "@/components/layout/widget-heading";
-import { buildIcs } from "@/features/applications/ics";
 import { isInterview } from "@/features/applications/interviews";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -44,12 +45,6 @@ type Draft = { question: string; answer: string; landed: Debrief["landed"] | nul
 const isDebrief = (item: SavedItem | undefined): item is SavedItem & { data: Debrief } => item?.data.kind === "debrief";
 
 /** The round to write down: the most recent interview that has ended, else the next one. */
-function debriefRound(application: Application, now: Date) {
-	const interviews = application.activity.filter(isInterview).sort((a, b) => +new Date(a.at) - +new Date(b.at));
-	const ended = interviews.filter((interview) => +new Date(interview.at) + interview.durationMinutes * 60_000 <= +now);
-	return ended.at(-1) ?? interviews[0];
-}
-
 const afterRound = (kind: InterviewKind | undefined) =>
 	({
 		screening: t`After the screening`,
@@ -65,7 +60,7 @@ export function DebriefTab({ application, version, now }: WorkspaceTabProps) {
 	const viewing = isDebrief(version) ? version : undefined;
 	const round = viewing
 		? application.activity.filter(isInterview).find((entry) => entry.id === viewing.interviewId)
-		: debriefRound(application, now);
+		: debriefRound(application.activity, now);
 	const forRound = latest(saved.data, "debrief", round?.id ?? null);
 	const review = viewing ?? fresh ?? forRound;
 	const plan = viewing ?? fresh ?? latest(saved.data, "debrief");
@@ -379,43 +374,6 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 }
 
 // ---- This week's plan ----
-
-const WEEKDAYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const;
-
-function zonedParts(at: Date, timeZone: string) {
-	const parts = new Intl.DateTimeFormat("en-US", {
-		timeZone,
-		weekday: "short",
-		year: "numeric",
-		month: "numeric",
-		day: "numeric",
-		hour: "numeric",
-		minute: "numeric",
-		hourCycle: "h23",
-	}).formatToParts(at);
-	const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((item) => item.type === type)?.value ?? "";
-	const number = (type: Intl.DateTimeFormatPartTypes) => Number(part(type));
-	return {
-		weekday: WEEKDAYS.indexOf(part("weekday").toLowerCase() as (typeof WEEKDAYS)[number]),
-		year: number("year"),
-		month: number("month"),
-		day: number("day"),
-		hour: number("hour"),
-		minute: number("minute"),
-	};
-}
-
-/** The next `weekday` at 18:00 in the account timezone; today when it's that day and 18:00 is still ahead. */
-function nextEvening(weekday: (typeof WEEKDAYS)[number], now: Date, timeZone: string) {
-	const today = zonedParts(now, timeZone);
-	let ahead = (WEEKDAYS.indexOf(weekday) - today.weekday + 7) % 7;
-	if (ahead === 0 && today.hour >= 18) ahead = 7;
-	// 18:00 on that date read as UTC, moved by the zone's offset at that moment.
-	// ponytail: the offset is taken at the guess, so a DST switch that same evening lands an hour off.
-	const guess = Date.UTC(today.year, today.month - 1, today.day + ahead, 18);
-	const there = zonedParts(new Date(guess), timeZone);
-	return new Date(guess - (Date.UTC(there.year, there.month - 1, there.day, there.hour, there.minute) - guess));
-}
 
 type WeekPlanProps = { application: Application; review: Review; now: Date; readOnly: boolean };
 

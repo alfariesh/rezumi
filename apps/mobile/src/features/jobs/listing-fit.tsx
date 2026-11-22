@@ -13,7 +13,7 @@ import { client } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
 import { useHasAIProvider } from "@/features/ai/providers";
 import { ReportAiContent } from "@/features/ai/report-content";
-import { useWorking, workingSteps } from "@/features/workspace/parts";
+import { useWorking, workingSteps } from "@/features/workspace/working";
 import { routes } from "@/routes";
 import { Button, Chip, Icon, Skeleton, Spinner, Text, Typography, cx, haptics, showToast } from "@/ui";
 

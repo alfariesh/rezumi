@@ -2,26 +2,7 @@ import type { ApplicationClosedReason, ApplicationStatus } from "@rezumi/schema/
 import { t } from "@lingui/core/macro";
 import { STAGES } from "@rezumi/schema/applications/data";
 
-/** The stages an application moves through; closed ends it from any of them. */
-export const PIPELINE: readonly ApplicationStatus[] = ["saved", "applied", "screening", "interview", "offer"];
-
-/** The list's group order: what needs you first, closed last. */
-export const LIST_ORDER: readonly ApplicationStatus[] = [
-	"interview",
-	"offer",
-	"screening",
-	"applied",
-	"saved",
-	"closed",
-];
-
-export const CLOSED_REASONS: readonly ApplicationClosedReason[] = [
-	"accepted",
-	"not-selected",
-	"withdrew",
-	"accepted-other",
-	"no-response",
-];
+export { CLOSED_REASONS, getNextStage, LIST_ORDER, PIPELINE } from "@rezumi/career/applications";
 
 export const getStageLabel = (status: ApplicationStatus) =>
 	({
@@ -44,9 +25,3 @@ export const getClosedReasonLabel = (reason: ApplicationClosedReason) =>
 		"accepted-other": t`Accepted another offer`,
 		"no-response": t`No response`,
 	})[reason];
-
-/** The stage after this one in the pipeline, or null at Offer and for closed applications. */
-export function getNextStage(status: ApplicationStatus): ApplicationStatus | null {
-	const index = PIPELINE.indexOf(status);
-	return index === -1 ? null : (PIPELINE[index + 1] ?? null);
-}

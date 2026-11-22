@@ -82,9 +82,9 @@ jest.mock("@/features/ai/providers", () => ({
 	AIProviderSetupSheet: () => null,
 }));
 jest.mock("@/features/billing/plan", () => ({ usePlan: () => undefined, describeImportedDesign: () => null }));
-jest.mock("@/features/applications/add-sheet", () => {
+jest.mock("@/features/applications/save-sheet", () => {
 	const { Text } = jest.requireActual("react-native");
-	return { AddApplicationSheet: () => <Text>Save a job sheet</Text> };
+	return { SaveJobSheet: ({ isOpen }: { isOpen: boolean }) => (isOpen ? <Text>Save a job sheet</Text> : null) };
 });
 jest.mock("@/ui", () => ({ ...jest.requireActual("@/ui"), showToast: (options: unknown) => mockToast(options) }));
 

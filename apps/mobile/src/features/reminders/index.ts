@@ -1,19 +1,19 @@
 // Local, on-device reminders for interviews and follow-ups (owner decision: no push server), and .ics sharing.
 // Permission is asked only when the user turns a reminder on. Each reminder's identifier comes from `reminderId`, so
 // scheduling again replaces it, and its `data` remembers the lead time and start it was scheduled for.
-import type { CalendarEvent } from "./ics";
 import type { ReminderKind } from "./schedule";
+import type { CalendarEvent } from "@rezumi/career/ics";
 import { t } from "@lingui/core/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { File, Paths } from "expo-file-system";
 import * as Notifications from "expo-notifications";
 import * as Sharing from "expo-sharing";
 import { Platform } from "react-native";
-import { buildIcs } from "./ics";
+import { buildIcs } from "@rezumi/career/ics";
 import { reminderId, reminderTime } from "./schedule";
 import { askPermission } from "@/shell/permissions";
 
-export * from "./ics";
+export * from "@rezumi/career/ics";
 export * from "./schedule";
 
 export type ReminderTarget = {
@@ -41,6 +41,16 @@ const requestPermission = () =>
 		// The reminder screen says itself when notifications are off.
 		true,
 	);
+
+/**
+ * Asks for notifications when the person turns a reminder on (the primer first, the system prompt once); true when
+ * reminders can fire.
+ */
+export const allowReminders = () =>
+	askPermission("notifications", {
+		get: () => Notifications.getPermissionsAsync(),
+		request: () => Notifications.requestPermissionsAsync(),
+	});
 
 async function schedule(target: ReminderTarget, lead: number): Promise<ScheduleResult> {
 	const id = idOf(target);

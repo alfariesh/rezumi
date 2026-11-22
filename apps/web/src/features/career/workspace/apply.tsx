@@ -20,6 +20,7 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "motion/react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { countWords, diffWords, shortLabel } from "@rezumi/career/workspace";
 import { careerWorkspaceSchema } from "@rezumi/schema/career";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -37,14 +38,6 @@ import { renderAsH2 } from "@/libs/typography";
 
 type Answer = CareerWorkspace["answers"][number];
 type CountUnit = "words" | "characters";
-
-const countWords = (text: string) => text.split(/\s+/).filter(Boolean).length;
-
-/** A fact's chip label: its first few words. The tooltip has the whole fact. */
-const shortLabel = (text: string) => {
-	const words = text.split(/\s+/).filter(Boolean);
-	return words.length > 4 ? `${words.slice(0, 4).join(" ")}…` : text;
-};
 
 const checklistItems = () => [
 	t`Review the selected resume and cover letter in their editors.`,
@@ -462,51 +455,6 @@ function AnswerCard({
 			)}
 		</CareerWidget>
 	);
-}
-
-type DiffPart = { type: "same" | "removed" | "added"; text: string };
-
-/**
- * Word-level diff by longest common subsequence. ponytail: O(words²) table, fine for form answers (≤ ~1,000 words);
- * swap in a Myers diff if answers grow far past that.
- */
-function diffWords(before: string, after: string): DiffPart[] {
-	const a = before.split(/\s+/).filter(Boolean);
-	const b = after.split(/\s+/).filter(Boolean);
-	const width = b.length + 1;
-	const table = new Uint16Array((a.length + 1) * width);
-	for (let i = a.length - 1; i >= 0; i--)
-		for (let j = b.length - 1; j >= 0; j--)
-			table[i * width + j] =
-				a[i] === b[j]
-					? (table[(i + 1) * width + j + 1] ?? 0) + 1
-					: Math.max(table[(i + 1) * width + j] ?? 0, table[i * width + j + 1] ?? 0);
-
-	const parts: DiffPart[] = [];
-	const push = (type: DiffPart["type"], word: string) => {
-		const last = parts.at(-1);
-		if (last?.type === type) last.text += ` ${word}`;
-		else parts.push({ type, text: word });
-	};
-	let i = 0;
-	let j = 0;
-	while (i < a.length || j < b.length) {
-		if (i < a.length && j < b.length && a[i] === b[j]) {
-			push("same", a[i] ?? "");
-			i++;
-			j++;
-		} else if (
-			j < b.length &&
-			(i >= a.length || (table[i * width + j + 1] ?? 0) >= (table[(i + 1) * width + j] ?? 0))
-		) {
-			push("added", b[j] ?? "");
-			j++;
-		} else {
-			push("removed", a[i] ?? "");
-			i++;
-		}
-	}
-	return parts;
 }
 
 type ChecklistProps = {

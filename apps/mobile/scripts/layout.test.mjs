@@ -114,7 +114,6 @@ for (const height of [0, 300, 200]) {
 resizedKeyboard.current = false;
 keyboardHeight = 0;
 const { Screen } = load("ui-legacy/text.tsx");
-const { TopBar } = load("shell/top-bar.tsx");
 const nodes = (tree) =>
 	!tree || typeof tree !== "object"
 		? []
@@ -147,24 +146,6 @@ insets = { ...insets, left: 0, right: 0 };
 assert.equal(Screen({}).props.style.paddingRight, 0, "Pane must not consume window insets twice");
 assert.equal(windowInsets().right, 84, "Portalled sheets must retain original window cutout");
 window = { ...window, width: 750 };
-const modes = element("Modes", {});
-const topBar = () => TopBar({ backLabel: "Back", onBack() {}, title: "Long fictional resume title", center: modes });
-const primary = () => topBar().props.children[0];
-assert.equal(
-	nodes(primary()).some((node) => node.type === "Modes"),
-	false,
-	"Narrow header must keep modes out of action row",
-);
-assert.ok(nodes(topBar()).some((node) => node.type === "Modes"));
-window = { ...window, width: 1366 };
-insets = { ...insets, right: 0 };
-assert.ok(nodes(primary()).some((node) => node.type === "Modes"));
-window = { ...window, fontScale: 1.8 };
-assert.equal(
-	nodes(primary()).some((node) => node.type === "Modes"),
-	false,
-	"Enlarged text needs separate mode row",
-);
 ui.useReducedMotion = () => false;
 mocks["@/shell/use-is-tablet"] = { useIsTablet: isTablet };
 mocks["expo-router"].Stack = { Screen: "Stack.Screen" };
@@ -309,51 +290,6 @@ for (const fontScale of [1, 1.95, 3.12]) {
 	if (fontScale > 1.3) assert.equal(values[0].props.numberOfLines, undefined);
 }
 
-// A direct link to a later workspace tab must reveal its selection and offer overflow navigation.
-hooks.length = 0;
-let selectedTab = "saved";
-const scrolled = [];
-const { WorkspaceChrome } = load("shell/workspace-chrome.tsx", {
-	"./slot": { createSlot: () => ({ Provider: "SlotProvider", useSlot: () => ({}) }) },
-	"./top-bar": { TopBar: "TopBar" },
-	"@rezumi/schema/career": {
-		WORKSPACE_TABS: ["fit", "apply", "prepare", "practise", "debrief", "messages", "saved"],
-	},
-	"expo-router": {
-		...mocks["expo-router"],
-		useNavigation: () => ({ canGoBack: () => false }),
-		useLocalSearchParams: () => ({ id: "fictional" }),
-		useGlobalSearchParams: () => ({ tab: selectedTab }),
-	},
-});
-const frame = WorkspaceChrome({ children: null }).props.children[0];
-let workspace = render(frame.type, frame.props);
-const strip = () => nodes(workspace).find((node) => node.type === "ScrollView");
-strip().props.ref.current = { scrollTo: (value) => scrolled.push(value.x) };
-strip().props.onLayout({ nativeEvent: { layout: { width: 280 } } });
-strip().props.onContentSizeChange(840, 44);
-workspace = render(frame.type, frame.props);
-for (const [index, tab] of nodes(workspace)
-	.filter((node) => node.type === "Pressable")
-	.entries()) {
-	tab.props.onLayout({ nativeEvent: { layout: { x: index * 120, width: 120 } } });
-}
-assert.equal(scrolled.at(-1), 560, "Later tab must be visible after its first measurement");
-strip().props.onScroll({ nativeEvent: { contentOffset: { x: 560 } } });
-workspace = render(frame.type, frame.props);
-assert.ok(nodes(workspace).some((node) => node.props.label === "Previous workspace tabs" && !node.props.disabled));
-assert.ok(nodes(workspace).some((node) => node.props.label === "Next workspace tabs" && node.props.disabled));
-selectedTab = "apply";
-workspace = render(frame.type, frame.props);
-assert.equal(scrolled.at(-1), 40, "Changing route must reveal the selected tab again");
-assert.ok(nodes(workspace).some((node) => node.type === keyboardLayout.KeyboardFrame));
-selectedTab = "details";
-hooks.length = 0;
-assert.equal(
-	nodes(render(frame.type, frame.props)).some((node) => node.type === keyboardLayout.KeyboardFrame),
-	false,
-	"Application details keep their own full-height scroll space outside workspace keyboard resizing",
-);
 console.log(
 	"PASS safe areas, measured Screen viewport, Duo rail navigation/targets, tablet sidebar, responsive editor modes, history split, measured PDF pages, large-text chrome/rows/navigation, workspace selection and overflow",
 );

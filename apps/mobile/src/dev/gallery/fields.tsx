@@ -11,6 +11,7 @@ import {
 	ColorField,
 	NumberStepper,
 	PickerSheet,
+	TimeField,
 	ValueSlider,
 	ControlField,
 	Description,
@@ -438,6 +439,27 @@ function MonthPickerDemo() {
 				doneLabel="Done"
 				closeLabel="Close"
 			/>
+			<TimeGallery />
 		</View>
+	);
+}
+
+function TimeGallery() {
+	const [time, setTime] = useState<string | null>("09:30");
+	return (
+		<GallerySection
+			title="TimeField"
+			note="The system time picker (Android dialog, iOS wheel with Done); values in and out as HH:MM."
+		>
+			<TimeField
+				label="Starts at"
+				value={time}
+				onChange={setTime}
+				placeholder="Choose a time"
+				doneLabel="Done"
+				minuteInterval={15}
+			/>
+			<TimeField label="Empty" value={null} onChange={setTime} placeholder="Choose a time" doneLabel="Done" />
+		</GallerySection>
 	);
 }

@@ -482,6 +482,7 @@ const applicationSummarySelect = {
 	createdAt: schema.application.createdAt,
 	updatedAt: schema.application.updatedAt,
 	companyLogoUrl: schema.application.companyLogoUrl,
+	postingClosedAt: schema.application.postingClosedAt,
 };
 
 export const applicationService = {

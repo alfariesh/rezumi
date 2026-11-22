@@ -14,7 +14,7 @@ import { useStartDocument } from "./use-start-document";
 import { client } from "@/api/client";
 import { useSession } from "@/auth/session";
 import { useHasAIProvider } from "@/features/ai/providers";
-import { AddApplicationSheet } from "@/features/applications/add-sheet";
+import { SaveJobSheet } from "@/features/applications/save-sheet";
 import { routes } from "@/routes";
 import { EmptyState, Screen } from "@/ui";
 
@@ -111,7 +111,7 @@ export function NewDocumentScreen() {
 					onAtsChecker={() => router.replace(routes.atsChecker())}
 				/>
 			)}
-			{savingJob ? <AddApplicationSheet onClose={() => setSavingJob(false)} /> : null}
+			<SaveJobSheet isOpen={savingJob} onOpenChange={setSavingJob} />
 		</Screen>
 	);
 }

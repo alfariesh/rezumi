@@ -192,7 +192,7 @@ describe("HomeScreen", () => {
 		expect(screen.queryByText("Let's start with what you have")).toBeNull();
 		// A closed posting opens its application through the deep-link map.
 		await fireEvent.press(screen.getByText("Open"));
-		expect(mockPush).toHaveBeenCalledWith("/applications/app_1/fit");
+		expect(mockPush).toHaveBeenCalledWith("/applications/app_1/default");
 	});
 
 	it("keeps the page usable when a read fails, with a retry per block", async () => {

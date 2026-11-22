@@ -1,1 +1,1 @@
-export { BoardScreen as default } from "@/features/applications-board/board-screen";
+export { BoardScreen as default } from "@/features/applications/board/board-view";

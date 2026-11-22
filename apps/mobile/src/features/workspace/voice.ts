@@ -1,7 +1,7 @@
 // Speaking an answer on the device (web workspace/recorder.ts and practise.tsx voice parts). expo-audio records an
 // .m4a that stays on the device until the user stops; then it goes to `career.voice.transcribe`. Questions are read
 // aloud from `career.voice.speak`. There is no on-device speech recognition (README §5.10).
-import type { VoiceChoice } from "./logic";
+import type { VoiceChoice } from "@rezumi/career/workspace";
 import type { AudioPlayer } from "expo-audio";
 import {
 	createAudioPlayer,
@@ -14,11 +14,17 @@ import {
 import { File, Paths } from "expo-file-system";
 import Storage from "expo-sqlite/kv-store";
 import { useEffect, useRef, useState } from "react";
-import { audioProblem, chooseVoice, MAX_SECONDS, RECORDING_OPTIONS, speechExtension, voiceCapable } from "./logic";
+import {
+	audioProblem,
+	chooseVoice,
+	MAX_SECONDS,
+	RECORDING_OPTIONS,
+	speechExtension,
+	voiceCapable,
+} from "@rezumi/career/workspace";
 import { client, rest } from "@/api/client";
 import { useSession } from "@/auth/session";
 import { useHasAIProvider } from "@/features/ai/providers";
-import { askPermission } from "@/shell/permissions";
 
 // ---- Voice settings: kept on this device, per server ----
 
@@ -78,11 +84,25 @@ export type RecordStop =
 	| { kind: "recorded"; recording: Recording; atLimit: boolean }
 	| { kind: "empty" | "too-large"; atLimit: boolean };
 
+/** The microphone permission, asked through the app's primer (`askPermission` in src/shell/permissions.tsx). */
+export const microphone = {
+	get: () => getRecordingPermissionsAsync(),
+	request: () => requestRecordingPermissionsAsync(),
+};
+
+export type Recorder = {
+	recording: boolean;
+	seconds: number;
+	start: () => Promise<"started" | "failed">;
+	stop: () => Promise<void>;
+	cancel: () => Promise<void>;
+};
+
 /**
- * The microphone. `start` asks for permission when needed ("denied" when it's refused); `stop` hands over the file,
- * refusing an empty or over-2 MB one; `cancel` throws it away. Recording stops itself at 2 minutes.
+ * The microphone, once permission is granted. `stop` hands over the file, refusing an empty or over-2 MB one;
+ * `cancel` throws it away. Recording stops itself at 2 minutes (`atLimit`).
  */
-export function useRecorder(onStop: (result: RecordStop) => void) {
+export function useRecorder(onStop: (result: RecordStop) => void): Recorder {
 	const recorder = useAudioRecorder(RECORDING_OPTIONS);
 	const state = useAudioRecorderState(recorder, 250);
 	const active = useRef(false);
@@ -130,14 +150,7 @@ export function useRecorder(onStop: (result: RecordStop) => void) {
 	return {
 		recording: state.isRecording,
 		seconds,
-		start: async (): Promise<"started" | "denied" | "failed"> => {
-			const allowed = await askPermission(
-				"microphone",
-				{ get: () => getRecordingPermissionsAsync(), request: () => requestRecordingPermissionsAsync() },
-				// The practice screen explains a refusal itself.
-				true,
-			);
-			if (!allowed) return "denied";
+		start: async () => {
 			try {
 				await setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
 				await recorder.prepareToRecordAsync();

@@ -124,6 +124,7 @@ const applicationSummarySchema = applicationSchema.pick({
 	appliedAt: true,
 	createdAt: true,
 	updatedAt: true,
+	postingClosedAt: true,
 });
 
 const applicationSummaryWithInitialDetailSchema = applicationSummarySchema.extend({

@@ -17,3 +17,11 @@ export function applicationError(error: unknown) {
 	}
 	return t`Couldn't complete the request. Check your connection and try again.`;
 }
+
+/** Why saving a job failed; the form keeps the details so the person can try again. */
+export function saveJobError(error: unknown) {
+	if (error instanceof ORPCError && error.code === "NOT_FOUND")
+		return t`The chosen resume or letter is no longer available. Choose another one, or None.`;
+	if (error instanceof ORPCError && error.code !== "SERVICE_UNAVAILABLE") return applicationError(error);
+	return t`Couldn't save the job. Your details are still here. Try again.`;
+}

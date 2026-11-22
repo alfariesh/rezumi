@@ -18,8 +18,8 @@ import { useJobs } from "./use-jobs";
 import { useListingActions } from "./use-listing-actions";
 import { client, orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
-import { ApplicationsViewsRow } from "@/features/applications-board/views-row";
-import { AddApplicationSheet } from "@/features/applications/add-sheet";
+import { SaveJobSheet } from "@/features/applications/save-sheet";
+import { ApplicationsViewsRow } from "@/features/applications/views-row";
 import { useNow } from "@/features/career/hooks";
 import { ScheduleSheet } from "@/features/career/schedule-sheet";
 import { withUndo } from "@/features/career/undo";
@@ -153,7 +153,7 @@ export function JobsScreen() {
 					onDelete={deleteAlert}
 				/>
 			) : null}
-			{adding ? <AddApplicationSheet onClose={() => setAdding(false)} /> : null}
+			<SaveJobSheet isOpen={adding} onOpenChange={setAdding} />
 		</View>
 	);
 }
